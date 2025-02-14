@@ -57,7 +57,6 @@
 #include "crypt.h"
 #include "cryptglue.h"
 #include "expando_smime.h"
-#include "globals.h"
 #include "handler.h"
 #include "mutt_logging.h"
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
@@ -244,8 +243,9 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
   struct Buffer *cmd = buf_pool_get();
   smime_command(cmd, &cctx, exp);
 
-  pid_t pid = filter_create_fd(buf_string(cmd), fp_smime_in, fp_smime_out, fp_smime_err,
-                               fp_smime_infd, fp_smime_outfd, fp_smime_errfd, EnvList);
+  pid_t pid = filter_create_fd(buf_string(cmd), fp_smime_in, fp_smime_out,
+                               fp_smime_err, fp_smime_infd, fp_smime_outfd,
+                               fp_smime_errfd, NeoMutt->env);
   buf_pool_release(&cmd);
   return pid;
 }

@@ -82,7 +82,6 @@
 #include "attach.h"
 #include "attachments.h"
 #include "functions.h"
-#include "globals.h"
 #include "hook.h"
 #include "mutt_logging.h"
 #include "mview.h"
@@ -146,7 +145,7 @@ static int attach_make_entry(struct Menu *menu, int line, int max_cols, struct B
   const struct Expando *c_attach_format = cs_subset_expando(NeoMutt->sub, "attach_format");
   return expando_filter(c_attach_format, AttachRenderCallbacks,
                         (actx->idx[actx->v2r[line]]), MUTT_FORMAT_ARROWCURSOR,
-                        max_cols, EnvList, buf);
+                        max_cols, NeoMutt->env, buf);
 }
 
 /**

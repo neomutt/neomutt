@@ -29,10 +29,7 @@
 extern bool ErrorBufMessage; ///< true if the last message was an error
 extern char ErrorBuf[1024];  ///< Copy of the last error message
 
-extern char *HomeDir;        ///< User's home directory
 extern char *ShortHostname;  ///< Short version of the hostname
-
-extern char *Username;       ///< User's login name
 
 extern char *CurrentFolder;  ///< Currently selected mailbox
 extern char *LastFolder;     ///< Previously selected mailbox
@@ -64,7 +61,5 @@ extern bool OptNoCurses;            ///< (pseudo) when sending in batch mode
 extern bool OptPgpCheckTrust;       ///< (pseudo) used by dlg_pgp()
 extern bool OptResortInit;          ///< (pseudo) used to force the next resort to be from scratch
 extern bool OptSortSubthreads;      ///< (pseudo) used when $sort_aux changes
-
-extern char **EnvList;              ///< Private copy of the environment variables
 
 #endif /* MUTT_GLOBALS_H */

@@ -137,7 +137,7 @@ bool pgp_use_gpg_agent(void)
   if (tty)
   {
     setenv("GPG_TTY", tty, 0);
-    envlist_set(&EnvList, "GPG_TTY", tty, false);
+    envlist_set(&NeoMutt->env, "GPG_TTY", tty, false);
   }
 
   return true;

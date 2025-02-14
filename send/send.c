@@ -112,7 +112,7 @@ static void append_signature(FILE *fp, struct ConfigSubset *sub)
   // If the user hasn't set $signature, don't warn them if it doesn't exist
   struct Buffer *def_sig = buf_pool_get();
   cs_str_initial_get(sub->cs, "signature", def_sig);
-  mutt_path_canon(def_sig, HomeDir, false);
+  mutt_path_canon(def_sig, NeoMutt->home_dir, false);
   bool notify_missing = !mutt_str_equal(c_signature, buf_string(def_sig));
   buf_pool_release(&def_sig);
 
@@ -691,7 +691,7 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
   struct Buffer *buf = buf_pool_get();
 
   expando_filter(c_greeting, GreetingRenderCallbacks, e, TOKEN_NO_FLAGS,
-                 buf->dsize, EnvList, buf);
+                 buf->dsize, NeoMutt->env, buf);
 
   fputs(buf_string(buf), fp_out);
   fputc('\n', fp_out);
@@ -1403,11 +1403,11 @@ struct Address *mutt_default_from(struct ConfigSubset *sub)
   }
 
   char domain[1024] = { 0 };
-  const char *mailbox = Username;
+  const char *mailbox = NeoMutt->username;
   const bool c_use_domain = cs_subset_bool(sub, "use_domain");
   if (c_use_domain)
   {
-    snprintf(domain, sizeof(domain), "%s@%s", NONULL(Username),
+    snprintf(domain, sizeof(domain), "%s@%s", NONULL(NeoMutt->username),
              NONULL(mutt_fqdn(true, sub)));
     mailbox = domain;
   }

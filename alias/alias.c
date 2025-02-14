@@ -606,29 +606,30 @@ bool mutt_addr_is_user(const struct Address *addr)
     return false;
   }
 
-  if (mutt_istr_equal(buf_string(addr->mailbox), Username))
+  if (mutt_istr_equal(buf_string(addr->mailbox), NeoMutt->username))
   {
-    mutt_debug(LL_DEBUG5, "#1 yes, %s = %s\n", buf_string(addr->mailbox), Username);
+    mutt_debug(LL_DEBUG5, "#1 yes, %s = %s\n", buf_string(addr->mailbox),
+               NeoMutt->username);
     return true;
   }
-  if (string_is_address(buf_string(addr->mailbox), Username, ShortHostname))
+  if (string_is_address(buf_string(addr->mailbox), NeoMutt->username, ShortHostname))
   {
     mutt_debug(LL_DEBUG5, "#2 yes, %s = %s @ %s\n", buf_string(addr->mailbox),
-               Username, ShortHostname);
+               NeoMutt->username, ShortHostname);
     return true;
   }
   const char *fqdn = mutt_fqdn(false, NeoMutt->sub);
-  if (string_is_address(buf_string(addr->mailbox), Username, fqdn))
+  if (string_is_address(buf_string(addr->mailbox), NeoMutt->username, fqdn))
   {
     mutt_debug(LL_DEBUG5, "#3 yes, %s = %s @ %s\n", buf_string(addr->mailbox),
-               Username, NONULL(fqdn));
+               NeoMutt->username, NONULL(fqdn));
     return true;
   }
   fqdn = mutt_fqdn(true, NeoMutt->sub);
-  if (string_is_address(buf_string(addr->mailbox), Username, fqdn))
+  if (string_is_address(buf_string(addr->mailbox), NeoMutt->username, fqdn))
   {
     mutt_debug(LL_DEBUG5, "#4 yes, %s = %s @ %s\n", buf_string(addr->mailbox),
-               Username, NONULL(fqdn));
+               NeoMutt->username, NONULL(fqdn));
     return true;
   }
 

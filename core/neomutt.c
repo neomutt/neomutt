@@ -98,6 +98,11 @@ void neomutt_free(struct NeoMutt **ptr)
   if (n->time_c_locale)
     freelocale(n->time_c_locale);
 
+  FREE(&n->home_dir);
+  FREE(&n->username);
+
+  envlist_free(&n->env);
+
   FREE(ptr);
 }
 

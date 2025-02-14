@@ -53,7 +53,6 @@
 #include "adata.h"
 #include "edata.h"
 #include "expando_newsrc.h"
-#include "globals.h"
 #include "mdata.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -1029,7 +1028,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
     const struct Expando *c_newsrc = cs_subset_expando(NeoMutt->sub, "newsrc");
     struct Buffer *buf = buf_pool_get();
     expando_filter(c_newsrc, NntpRenderCallbacks, adata, MUTT_FORMAT_NO_FLAGS,
-                   buf->dsize, EnvList, buf);
+                   buf->dsize, NeoMutt->env, buf);
     buf_expand_path(buf);
     adata->newsrc_file = buf_strdup(buf);
     buf_pool_release(&buf);

@@ -448,7 +448,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
 
   char columns[16] = { 0 };
   snprintf(columns, sizeof(columns), "%d", win->state.cols);
-  envlist_set(&EnvList, "COLUMNS", columns, true);
+  envlist_set(&NeoMutt->env, "COLUMNS", columns, true);
 
   if (use_mailcap)
   {
@@ -562,7 +562,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
       unlink_pagerfile = true;
 
       pid = filter_create_fd(buf_string(cmd), NULL, NULL, NULL, use_pipe ? fd_temp : -1,
-                             use_pager ? fd_pager : -1, -1, EnvList);
+                             use_pager ? fd_pager : -1, -1, NeoMutt->env);
 
       if (pid == -1)
       {
@@ -722,7 +722,7 @@ return_error:
   buf_pool_release(&tempfile);
   buf_pool_release(&pagerfile);
   buf_pool_release(&cmd);
-  envlist_unset(&EnvList, "COLUMNS");
+  envlist_unset(&NeoMutt->env, "COLUMNS");
 
   return rc;
 }
@@ -765,9 +765,9 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char 
   mutt_endwin();
 
   if (outfile && *outfile)
-    pid = filter_create_fd(path, &fp_filter, NULL, NULL, -1, out, -1, EnvList);
+    pid = filter_create_fd(path, &fp_filter, NULL, NULL, -1, out, -1, NeoMutt->env);
   else
-    pid = filter_create(path, &fp_filter, NULL, NULL, EnvList);
+    pid = filter_create(path, &fp_filter, NULL, NULL, NeoMutt->env);
   if (pid < 0)
   {
     mutt_perror(_("Can't create filter"));
@@ -1187,7 +1187,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
         goto mailcap_cleanup;
       }
 
-      pid = filter_create(buf_string(cmd), &fp_out, NULL, NULL, EnvList);
+      pid = filter_create(buf_string(cmd), &fp_out, NULL, NULL, NeoMutt->env);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
@@ -1252,7 +1252,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
       mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", buf_string(newfile));
 
       mutt_endwin();
-      pid = filter_create(NONULL(c_print_command), &fp_out, NULL, NULL, EnvList);
+      pid = filter_create(NONULL(c_print_command), &fp_out, NULL, NULL, NeoMutt->env);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));

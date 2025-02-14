@@ -52,7 +52,6 @@
 #include "color/lib.h"
 #include "expando/lib.h"
 #include "ncrypt/lib.h"
-#include "globals.h"
 #include "hook.h"
 #include "maillist.h"
 #include "mutt_thread.h"
@@ -726,7 +725,7 @@ static void email_index_hook(const struct ExpandoNode *node, void *data,
     return;
 
   expando_filter(exp, IndexRenderCallbacks, data, MUTT_FORMAT_NO_FLAGS,
-                 buf->dsize, EnvList, buf);
+                 buf->dsize, NeoMutt->env, buf);
 }
 
 /**

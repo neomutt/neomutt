@@ -303,7 +303,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
     }
     mutt_endwin();
 
-    pid = filter_create(cmd, &fp_out, NULL, NULL, EnvList);
+    pid = filter_create(cmd, &fp_out, NULL, NULL, NeoMutt->env);
     if (pid < 0)
     {
       mutt_perror(_("Can't create filter process"));
@@ -349,7 +349,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
         struct Email *e = *ep;
         mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
         mutt_endwin();
-        pid = filter_create(cmd, &fp_out, NULL, NULL, EnvList);
+        pid = filter_create(cmd, &fp_out, NULL, NULL, NeoMutt->env);
         if (pid < 0)
         {
           mutt_perror(_("Can't create filter process"));
@@ -369,7 +369,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
     else
     {
       mutt_endwin();
-      pid = filter_create(cmd, &fp_out, NULL, NULL, EnvList);
+      pid = filter_create(cmd, &fp_out, NULL, NULL, NeoMutt->env);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter process"));

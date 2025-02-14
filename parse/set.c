@@ -38,7 +38,6 @@
 #include "set.h"
 #include "commands.h"
 #include "extract.h"
-#include "globals.h"
 #include "muttlib.h"
 
 /**
@@ -64,7 +63,7 @@ void command_set_expand_value(int type, struct Buffer *value)
     if (type & (D_PATH_DIR | D_PATH_FILE))
       buf_expand_path(value);
     else
-      mutt_path_tilde(value, HomeDir);
+      mutt_path_tilde(value, NeoMutt->home_dir);
   }
   else if (IS_MAILBOX(type))
   {

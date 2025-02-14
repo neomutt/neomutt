@@ -44,7 +44,6 @@
 #include "lib.h"
 #include "expando/lib.h"
 #include "expando_command.h"
-#include "globals.h"
 #include "mutt_logging.h"
 #include "pgpkey.h"
 #include "protos.h"
@@ -109,7 +108,7 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
   mutt_pgp_command(cmd, &cctx, exp);
 
   pid_t pid = filter_create_fd(buf_string(cmd), fp_pgp_in, fp_pgp_out, fp_pgp_err,
-                               fd_pgp_in, fd_pgp_out, fd_pgp_err, EnvList);
+                               fd_pgp_in, fd_pgp_out, fd_pgp_err, NeoMutt->env);
   buf_pool_release(&cmd);
   return pid;
 }

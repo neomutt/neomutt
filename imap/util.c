@@ -1103,7 +1103,7 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
   if (a1->flags & a2->flags & MUTT_ACCT_USER)
     return mutt_str_equal(a1->user, a2->user);
 
-  const char *user = NONULL(Username);
+  const char *user = NONULL(NeoMutt->username);
 
   const char *const c_imap_user = cs_subset_string(NeoMutt->sub, "imap_user");
   if ((a1->type == MUTT_ACCT_TYPE_IMAP) && c_imap_user)

@@ -37,9 +37,6 @@
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 /**
  * print_bind - Display the bindings for one menu

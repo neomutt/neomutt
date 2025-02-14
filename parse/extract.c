@@ -37,7 +37,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "extract.h"
-#include "globals.h"
 
 /**
  * parse_extract_token - Extract one token from a string
@@ -195,7 +194,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         buf_strcpy(cmd, tok->dptr);
       }
       *pc = '`';
-      pid = filter_create(buf_string(cmd), NULL, &fp, NULL, EnvList);
+      pid = filter_create(buf_string(cmd), NULL, &fp, NULL, NeoMutt->env);
       if (pid < 0)
       {
         mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", buf_string(cmd));

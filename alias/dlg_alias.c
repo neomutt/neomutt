@@ -92,7 +92,6 @@
 #include "alias.h"
 #include "expando.h"
 #include "functions.h"
-#include "globals.h"
 #include "gui.h"
 #include "mutt_logging.h"
 
@@ -131,7 +130,7 @@ static int alias_make_entry(struct Menu *menu, int line, int max_cols, struct Bu
 
   const struct Expando *c_alias_format = cs_subset_expando(mdata->sub, "alias_format");
   return expando_filter(c_alias_format, AliasRenderCallbacks, av,
-                        MUTT_FORMAT_ARROWCURSOR, max_cols, EnvList, buf);
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, NeoMutt->env, buf);
 }
 
 /**

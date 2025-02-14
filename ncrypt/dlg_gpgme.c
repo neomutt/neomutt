@@ -84,7 +84,6 @@
 #include "menu/lib.h"
 #include "crypt_gpgme.h"
 #include "expando_gpgme.h"
-#include "globals.h"
 #include "gpgme_functions.h"
 #include "mutt_logging.h"
 #include "sort.h"
@@ -123,8 +122,8 @@ static int crypt_make_entry(struct Menu *menu, int line, int max_cols, struct Bu
   }
 
   const struct Expando *c_pgp_entry_format = cs_subset_expando(NeoMutt->sub, "pgp_entry_format");
-  return expando_filter(c_pgp_entry_format, PgpEntryGpgmeRenderCallbacks,
-                        &entry, MUTT_FORMAT_ARROWCURSOR, max_cols, EnvList, buf);
+  return expando_filter(c_pgp_entry_format, PgpEntryGpgmeRenderCallbacks, &entry,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, NeoMutt->env, buf);
 }
 
 /**

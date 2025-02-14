@@ -567,7 +567,7 @@ static int ssl_init(void)
 /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
     add_entropy(mutt_str_getenv("EGDSOCKET"));
-    buf_printf(path, "%s/.entropy", NONULL(HomeDir));
+    buf_printf(path, "%s/.entropy", NONULL(NeoMutt->home_dir));
     add_entropy(buf_string(path));
     add_entropy(TMPDIR "/entropy");
 #endif

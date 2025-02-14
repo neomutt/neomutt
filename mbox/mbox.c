@@ -1318,7 +1318,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
     const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
     buf_printf(savefile, "%s/neomutt.%s-%s-%u", NONULL(c_tmp_dir),
-               NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());
+               NONULL(NeoMutt->username), NONULL(ShortHostname), (unsigned int) getpid());
     rename(buf_string(tempfile), buf_string(savefile));
     mutt_sig_unblock();
     mx_fastclose_mailbox(m, false);
@@ -1605,7 +1605,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
  */
 static int mbox_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(path, HomeDir, false);
+  mutt_path_canon(path, NeoMutt->home_dir, false);
   return 0;
 }
 

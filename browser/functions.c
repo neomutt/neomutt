@@ -746,7 +746,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
           if (examine_directory(priv->mailbox, priv->menu, &priv->state,
                                 buf_string(&LastDir), buf_string(priv->prefix)) == -1)
           {
-            buf_strcpy(&LastDir, HomeDir);
+            buf_strcpy(&LastDir, NeoMutt->home_dir);
             priv->done = true;
             return FR_DONE;
           }

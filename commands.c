@@ -371,9 +371,9 @@ static enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s,
   buf_expand_path(buf);
   if (buf_is_empty(buf))
   {
-    if (HomeDir)
+    if (NeoMutt->home_dir)
     {
-      buf_strcpy(buf, HomeDir);
+      buf_strcpy(buf, NeoMutt->home_dir);
     }
     else
     {
@@ -935,7 +935,7 @@ static int envlist_sort(const void *a, const void *b, void *sdata)
 static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
                                        intptr_t data, struct Buffer *err)
 {
-  char **envp = EnvList;
+  char **envp = NeoMutt->env;
 
   bool query = false;
   bool prefix = false;
@@ -962,12 +962,12 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
     }
 
     int count = 0;
-    for (char **env = EnvList; *env; env++)
+    for (char **env = NeoMutt->env; *env; env++)
       count++;
 
-    mutt_qsort_r(EnvList, count, sizeof(char *), envlist_sort, NULL);
+    mutt_qsort_r(NeoMutt->env, count, sizeof(char *), envlist_sort, NULL);
 
-    for (char **env = EnvList; *env; env++)
+    for (char **env = NeoMutt->env; *env; env++)
       fprintf(fp_out, "%s\n", *env);
 
     mutt_file_fclose(&fp_out);
@@ -1052,7 +1052,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   if (unset)
   {
-    if (!envlist_unset(&EnvList, buf->data))
+    if (!envlist_unset(&NeoMutt->env, buf->data))
     {
       buf_printf(err, _("%s is unset"), buf->data);
       return MUTT_CMD_WARNING;
@@ -1076,7 +1076,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   char *name = mutt_str_dup(buf->data);
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  envlist_set(&EnvList, name, buf->data, true);
+  envlist_set(&NeoMutt->env, name, buf->data, true);
   FREE(&name);
 
   return MUTT_CMD_SUCCESS;

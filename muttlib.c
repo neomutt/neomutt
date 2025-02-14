@@ -141,7 +141,7 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
       {
         if ((s[1] == '/') || (s[1] == '\0'))
         {
-          buf_strcpy(p, HomeDir);
+          buf_strcpy(p, NeoMutt->home_dir);
           tail = s + 1;
         }
         else
@@ -505,7 +505,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
     *buf++ = '=';
     memmove(buf, buf + len, mutt_str_len(buf + len) + 1);
   }
-  else if ((len = mutt_str_startswith(buf, HomeDir)) && (buf[len] == '/'))
+  else if ((len = mutt_str_startswith(buf, NeoMutt->home_dir)) && (buf[len] == '/'))
   {
     *buf++ = '~';
     memmove(buf, buf + len - 1, mutt_str_len(buf + len - 1) + 1);
@@ -716,7 +716,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
 
     p[len - 1] = 0;
     mutt_endwin();
-    *thepid = filter_create(p, NULL, &fp, NULL, EnvList);
+    *thepid = filter_create(p, NULL, &fp, NULL, NeoMutt->env);
     FREE(&p);
   }
   else

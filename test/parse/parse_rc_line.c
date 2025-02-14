@@ -68,7 +68,7 @@ static void test_command_set_expand_value(void)
 {
   void command_set_expand_value(uint32_t type, struct Buffer *value);
 
-  HomeDir = "/home/neomutt";
+  mutt_str_replace(&NeoMutt->home_dir, "/home/neomutt");
   struct Buffer *buf = buf_pool_get();
   int type;
 

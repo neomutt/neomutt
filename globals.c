@@ -34,10 +34,7 @@
 bool ErrorBufMessage; ///< true if the last message was an error
 char ErrorBuf[1024];  ///< Copy of the last error message
 
-char *HomeDir = NULL;       ///< User's home directory
 char *ShortHostname = NULL; ///< Short version of the hostname
-
-char *Username = NULL; ///< User's login name
 
 char *CurrentFolder = NULL; ///< Currently selected mailbox
 char *LastFolder = NULL;    ///< Previously selected mailbox
@@ -71,5 +68,3 @@ bool OptPgpCheckTrust;      ///< (pseudo) used by dlg_pgp()
 bool OptResortInit;         ///< (pseudo) used to force the next resort to be from scratch
 bool OptSortSubthreads;     ///< (pseudo) used when $sort_aux changes
 // clang-format on
-
-char **EnvList = NULL; ///< Private copy of the environment variables

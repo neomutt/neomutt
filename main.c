@@ -444,9 +444,9 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
   if (!p)
   {
 #ifdef HOMESPOOL
-    buf_concat_path(buf, NONULL(HomeDir), MAILPATH);
+    buf_concat_path(buf, NONULL(NeoMutt->home_dir), MAILPATH);
 #else
-    buf_concat_path(buf, MAILPATH, NONULL(Username));
+    buf_concat_path(buf, MAILPATH, NONULL(NeoMutt->username));
 #endif
     p = buf_string(buf);
   }
@@ -540,13 +540,13 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
   {
     const char *xdg_cfg_home = mutt_str_getenv("XDG_CONFIG_HOME");
 
-    if (!xdg_cfg_home && HomeDir)
+    if (!xdg_cfg_home && NeoMutt->home_dir)
     {
-      buf_printf(buf, "%s/.config", HomeDir);
+      buf_printf(buf, "%s/.config", NeoMutt->home_dir);
       xdg_cfg_home = buf_string(buf);
     }
 
-    char *config = find_cfg(HomeDir, xdg_cfg_home);
+    char *config = find_cfg(NeoMutt->home_dir, xdg_cfg_home);
     if (config)
     {
       mutt_list_insert_tail(&Muttrc, config);
@@ -903,21 +903,21 @@ static bool get_user_info(struct ConfigSet *cs)
   struct passwd *pw = getpwuid(getuid());
   if (pw)
   {
-    if (!Username)
-      Username = mutt_str_dup(pw->pw_name);
-    if (!HomeDir)
-      HomeDir = mutt_str_dup(pw->pw_dir);
+    if (!NeoMutt->username)
+      NeoMutt->username = mutt_str_dup(pw->pw_name);
+    if (!NeoMutt->home_dir)
+      NeoMutt->home_dir = mutt_str_dup(pw->pw_dir);
     if (!shell)
       shell = pw->pw_shell;
   }
 
-  if (!Username)
+  if (!NeoMutt->username)
   {
     mutt_error(_("unable to determine username"));
     return false; // TEST05: neomutt (unset $USER, delete user from /etc/passwd)
   }
 
-  if (!HomeDir)
+  if (!NeoMutt->home_dir)
   {
     mutt_error(_("unable to determine home directory"));
     return false; // TEST06: neomutt (unset $HOME, delete user from /etc/passwd)
@@ -1068,7 +1068,18 @@ int main(int argc, char *argv[], char *envp[])
 
   init_locale();
 
-  EnvList = envlist_init(envp);
+  cs = cs_new(500);
+  if (!cs)
+    goto main_curses;
+
+  NeoMutt = neomutt_new(cs);
+
+  NeoMutt->env = envlist_init(envp);
+  mutt_str_replace(&NeoMutt->username, mutt_str_getenv("USER"));
+  mutt_str_replace(&NeoMutt->home_dir, mutt_str_getenv("HOME"));
+
+  init_config(cs);
+
   for (optind = 1; optind < double_dash;)
   {
     /* We're getopt'ing POSIXLY, so we'll be here every time getopt()
@@ -1218,16 +1229,6 @@ int main(int argc, char *argv[], char *envp[])
     else
       goto main_curses;
   }
-
-  mutt_str_replace(&Username, mutt_str_getenv("USER"));
-  mutt_str_replace(&HomeDir, mutt_str_getenv("HOME"));
-
-  cs = cs_new(500);
-  if (!cs)
-    goto main_curses;
-
-  NeoMutt = neomutt_new(cs);
-  init_config(cs);
 
   // Change the current umask, and save the original one
   NeoMutt->user_default_umask = umask(077);
@@ -1990,7 +1991,8 @@ main_exit:
   crypto_module_cleanup();
   rootwin_cleanup();
   buf_pool_cleanup();
-  envlist_free(&EnvList);
+  if (NeoMutt)
+    envlist_free(&NeoMutt->env);
   mutt_browser_cleanup();
   external_cleanup();
   menu_cleanup();
@@ -2025,10 +2027,8 @@ main_exit:
   colors_cleanup();
 
   FREE(&CurrentFolder);
-  FREE(&HomeDir);
   FREE(&LastFolder);
   FREE(&ShortHostname);
-  FREE(&Username);
 
   mutt_replacelist_free(&SpamList);
 

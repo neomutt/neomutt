@@ -51,7 +51,6 @@
 #include "progress/lib.h"
 #include "copy.h"
 #include "errno.h"
-#include "globals.h"
 #include "mdata.h"
 #include "mhemail.h"
 #include "mx.h"
@@ -1189,7 +1188,7 @@ static int mh_msg_close(struct Mailbox *m, struct Message *msg)
  */
 static int mh_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(path, HomeDir, true);
+  mutt_path_canon(path, NeoMutt->home_dir, true);
   return 0;
 }
 

@@ -33,10 +33,10 @@
  */
 
 #include "config.h"
+#include "core/lib.h"
 #include "status.h"
 #include "expando/lib.h"
 #include "expando_status.h"
-#include "globals.h"
 
 /**
  * menu_status_line - Create the status line
@@ -54,5 +54,5 @@ void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared,
   struct MenuStatusLineData data = { shared, menu };
 
   expando_filter(exp, StatusRenderCallbacks, &data, MUTT_FORMAT_NO_FLAGS,
-                 max_cols, EnvList, buf);
+                 max_cols, NeoMutt->env, buf);
 }

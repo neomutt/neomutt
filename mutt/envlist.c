@@ -83,7 +83,7 @@ char **envlist_init(char **envp)
  * @retval false Variable exists and overwrite was false
  *
  * It's broken out because some other parts of neomutt (filter.c) need to
- * set/overwrite environment variables in EnvList before calling exec().
+ * set/overwrite environment variables in NeoMutt->env before calling exec().
  */
 bool envlist_set(char ***envp, const char *name, const char *value, bool overwrite)
 {

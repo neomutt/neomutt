@@ -49,6 +49,10 @@ struct NeoMutt
   locale_t time_c_locale;        ///< Current locale but LC_TIME=C
   mode_t user_default_umask;     ///< User's default file writing permissions (inferred from umask)
   struct CommandArray commands;  ///< NeoMutt commands
+
+  char *home_dir;                ///< User's home directory
+  char *username;                ///< User's login name
+  char **env;                    ///< Private copy of the environment variables
 };
 
 extern struct NeoMutt *NeoMutt;

@@ -1090,7 +1090,8 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
       char buf[64] = { 0 };
       mutt_date_localtime_format_locale(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y",
                                         msg->received, NeoMutt->time_c_locale);
-      fprintf(msg->fp, "From %s %s\n", p ? buf_string(p->mailbox) : NONULL(Username), buf);
+      fprintf(msg->fp, "From %s %s\n",
+              p ? buf_string(p->mailbox) : NONULL(NeoMutt->username), buf);
     }
   }
   else
@@ -1423,7 +1424,7 @@ int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *typ
       }
       else if (buf_at(path, 0) == '~')
       {
-        buf_inline_replace(path, 0, 1, HomeDir);
+        buf_inline_replace(path, 0, 1, NeoMutt->home_dir);
       }
     }
     else if (buf_at(path, 0) == '@')
@@ -1459,7 +1460,7 @@ int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *typ
 
   if (ops->path_canon(path) < 0)
   {
-    mutt_path_canon(path, HomeDir, true);
+    mutt_path_canon(path, NeoMutt->home_dir, true);
   }
 
   return 0;

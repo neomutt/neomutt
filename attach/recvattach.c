@@ -56,7 +56,6 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "external.h"
-#include "globals.h"
 #include "handler.h"
 #include "hook.h"
 #include "mailcap.h"
@@ -749,7 +748,8 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   if (!filter && !c_attach_split)
   {
     mutt_endwin();
-    pid_t pid = filter_create(buf_string(buf), &state.fp_out, NULL, NULL, EnvList);
+    pid_t pid = filter_create(buf_string(buf), &state.fp_out, NULL, NULL,
+                              NeoMutt->env);
     pipe_attachment_list(buf_string(buf), actx, fp, tag, b, filter, &state);
     mutt_file_fclose(&state.fp_out);
     const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
@@ -913,7 +913,8 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
       return;
     mutt_endwin();
     const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
-    pid_t pid = filter_create(NONULL(c_print_command), &state.fp_out, NULL, NULL, EnvList);
+    pid_t pid = filter_create(NONULL(c_print_command), &state.fp_out, NULL,
+                              NULL, NeoMutt->env);
     print_attachment_list(actx, fp, tag, b, &state);
     mutt_file_fclose(&state.fp_out);
     const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");

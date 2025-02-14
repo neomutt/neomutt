@@ -50,7 +50,6 @@
 #include "lib.h"
 #include "expando/lib.h"
 #include "expando.h"
-#include "globals.h"
 #include "hook.h"
 #include "mx.h"
 #include "protos.h"
@@ -872,7 +871,7 @@ static enum MailboxType comp_path_probe(const char *path, const struct stat *st)
  */
 static int comp_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(path, HomeDir, false);
+  mutt_path_canon(path, NeoMutt->home_dir, false);
   return 0;
 }
 

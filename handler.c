@@ -584,12 +584,12 @@ static int autoview_handler(struct Body *b_email, struct State *state)
       fflush(fp_in);
       rewind(fp_in);
       pid = filter_create_fd(buf_string(cmd), NULL, &fp_out, &fp_err,
-                             fileno(fp_in), -1, -1, EnvList);
+                             fileno(fp_in), -1, -1, NeoMutt->env);
     }
     else
     {
       mutt_file_fclose(&fp_in);
-      pid = filter_create(buf_string(cmd), NULL, &fp_out, &fp_err, EnvList);
+      pid = filter_create(buf_string(cmd), NULL, &fp_out, &fp_err, NeoMutt->env);
     }
 
     if (pid < 0)

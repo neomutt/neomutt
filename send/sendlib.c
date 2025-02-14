@@ -104,7 +104,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *b, const char *path)
         mutt_str_copy(buf, PKGDATADIR "/mime.types", sizeof(buf));
         break;
       case 3:
-        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
+        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(NeoMutt->home_dir));
         break;
       default:
         mutt_debug(LL_DEBUG1, "Internal error, count = %d\n", count);
@@ -575,7 +575,7 @@ static void run_mime_type_query(struct Body *b, struct ConfigSubset *sub)
 
   buf_file_expand_fmt_quote(cmd, c_mime_type_query_command, b->filename);
 
-  pid = filter_create(buf_string(cmd), NULL, &fp, &fp_err, EnvList);
+  pid = filter_create(buf_string(cmd), NULL, &fp, &fp_err, NeoMutt->env);
   if (pid < 0)
   {
     mutt_error(_("Error running \"%s\""), buf_string(cmd));

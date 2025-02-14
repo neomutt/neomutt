@@ -40,10 +40,9 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "set.h"
 #include "types.h"
-
-extern char *HomeDir;
 
 /**
  * path_tidy - Tidy a path for storage
@@ -63,7 +62,7 @@ static char *path_tidy(const char *path, bool is_dir)
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, path);
 
-  mutt_path_tilde(buf, HomeDir);
+  mutt_path_tilde(buf, NeoMutt->home_dir);
   mutt_path_tidy(buf, is_dir);
 
   char *tidy_path = buf_strdup(buf);

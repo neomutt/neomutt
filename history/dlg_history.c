@@ -69,7 +69,6 @@
 #include "menu/lib.h"
 #include "expando.h"
 #include "functions.h"
-#include "globals.h"
 #include "mutt_logging.h"
 
 /// Help Bar for the History Selection dialog
@@ -106,7 +105,7 @@ static int history_make_entry(struct Menu *menu, int line, int max_cols, struct 
 
   const struct Expando *c_history_format = cs_subset_expando(NeoMutt->sub, "history_format");
   return expando_filter(c_history_format, HistoryRenderCallbacks, &h,
-                        MUTT_FORMAT_ARROWCURSOR, max_cols, EnvList, buf);
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, NeoMutt->env, buf);
 }
 
 /**

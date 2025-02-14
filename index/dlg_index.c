@@ -814,7 +814,8 @@ int mutt_make_string(struct Buffer *buf, size_t max_cols,
   efi.msg_in_pager = inpgr;
   efi.pager_progress = progress;
 
-  return expando_filter(exp, IndexRenderCallbacks, &efi, flags, max_cols, EnvList, buf);
+  return expando_filter(exp, IndexRenderCallbacks, &efi, flags, max_cols,
+                        NeoMutt->env, buf);
 }
 
 /**
