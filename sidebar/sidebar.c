@@ -51,8 +51,10 @@ static const struct Command SbCommands[] = {
   { "sidebar_pin",   sb_parse_sidebar_pin,     0 },
   { "sidebar_unpin", sb_parse_sidebar_unpin,   0 },
 
+  // Deprecated
   { "sidebar_whitelist",   sb_parse_sidebar_pin,     0 },
   { "unsidebar_whitelist", sb_parse_sidebar_unpin,   0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -201,7 +203,7 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
  */
 void sb_init(void)
 {
-  commands_register(SbCommands, mutt_array_size(SbCommands));
+  commands_register(&NeoMutt->commands, SbCommands);
 
   // Set a default style
   struct AttrColor *ac = simple_color_get(MT_COLOR_SIDEBAR_HIGHLIGHT);

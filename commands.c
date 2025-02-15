@@ -548,8 +548,8 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
   bool res = cs_subset_lookup(NeoMutt->sub, buf->data) // a variable?
              || feature_enabled(buf->data)             // a compiled-in feature?
              || is_function(buf->data)                 // a function?
-             || command_get(buf->data)                 // a command?
-             || is_color_object(buf->data)             // a color?
+             || commands_get(&NeoMutt->commands, buf->data) // a command?
+             || is_color_object(buf->data)                  // a color?
 #ifdef USE_HCACHE
              || store_is_valid_backend(buf->data) // a store? (database)
 #endif
@@ -1738,13 +1738,14 @@ static const struct Command MuttCommands[] = {
   { "unsubjectrx",         parse_unsubjectrx_list, 0 },
   { "unsubscribe",         parse_unsubscribe,      0 },
   { "version",             parse_version,          0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
 /**
  * commands_init - Initialize commands array and register default commands
  */
-void commands_init(void)
+bool commands_init(void)
 {
-  commands_register(MuttCommands, mutt_array_size(MuttCommands));
+  return commands_register(&NeoMutt->commands, MuttCommands);
 }

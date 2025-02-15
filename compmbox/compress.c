@@ -65,6 +65,7 @@ static const struct Command CompCommands[] = {
   { "append-hook", mutt_parse_hook, MUTT_APPEND_HOOK },
   { "close-hook",  mutt_parse_hook, MUTT_CLOSE_HOOK },
   { "open-hook",   mutt_parse_hook, MUTT_OPEN_HOOK },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -89,7 +90,7 @@ const struct ExpandoDefinition CompressFormatDef[] = {
  */
 void mutt_comp_init(void)
 {
-  commands_register(CompCommands, mutt_array_size(CompCommands));
+  commands_register(&NeoMutt->commands, CompCommands);
 }
 
 /**

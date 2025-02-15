@@ -33,6 +33,7 @@ struct Command mutt_commands[] = {
   { "set",    parse_set, MUTT_SET_SET },
   { "toggle", parse_set, MUTT_SET_INV },
   { "unset",  parse_set, MUTT_SET_UNSET },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 

@@ -1580,19 +1580,17 @@ void test_command_set(void)
     return;
   }
 
-  commands_register(mutt_commands, 4);
+  commands_register(&NeoMutt->commands, mutt_commands);
   MuttLogger = log_disp_null;
 
-  struct Command *cmd = NULL;
-  size_t num = commands_array(&cmd);
-
-  TEST_CHECK(cmd != NULL);
+  size_t num = ARRAY_SIZE(&NeoMutt->commands);
   TEST_CHECK_NUM_EQ(num, 4);
 
-  cmd = command_get("toggle");
+  const struct Command *cmd = NULL;
+  cmd = commands_get(&NeoMutt->commands, "toggle");
   TEST_CHECK(cmd != NULL);
 
-  cmd = command_get("apple");
+  cmd = commands_get(&NeoMutt->commands, "apple");
   TEST_CHECK(cmd == NULL);
 
   test_command_set_expand_value();
@@ -1615,5 +1613,5 @@ void test_command_set(void)
   test_invalid_syntax();
   test_path_expanding();
 
-  commands_cleanup();
+  commands_clear(&NeoMutt->commands);
 }

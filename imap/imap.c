@@ -86,6 +86,7 @@ static const struct Command ImapCommands[] = {
   // clang-format off
   { "subscribe-to",     parse_subscribe_to,     0 },
   { "unsubscribe-from", parse_unsubscribe_from, 0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -94,7 +95,7 @@ static const struct Command ImapCommands[] = {
  */
 void imap_init(void)
 {
-  commands_register(ImapCommands, mutt_array_size(ImapCommands));
+  commands_register(&NeoMutt->commands, ImapCommands);
 }
 
 /**
