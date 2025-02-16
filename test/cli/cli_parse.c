@@ -72,6 +72,8 @@ static void serialise_help(struct CliHelp *help, struct Buffer *res)
   serialise_bool(help->version, res);
   serialise_bool(help->license, res);
 
+  buf_addch(res, '0' + help->mode);
+
   buf_addstr(res, ")");
 }
 
@@ -239,12 +241,12 @@ void test_cli_parse(void)
       { "",                      "" },
 
       // Help
-      { "-h",                    "H(YNN)" },
-      { "-v",                    "H(NYN)" },
-      { "-h -v",                 "H(YYN)" },
-      { "-v -v",                 "H(NYY)" },
-      { "-vv",                   "H(NYY)" },
-      { "-vhv",                  "H(YYY)" },
+      { "-h",                    "H(YNN0)" },
+      { "-v",                    "H(NYN0)" },
+      { "-h -v",                 "H(YYN0)" },
+      { "-v -v",                 "H(NYY0)" },
+      { "-vv",                   "H(NYY0)" },
+      { "-vhv",                  "H(YYY0)" },
 
       // Shared
       { "-n",                    "X(:{}Y:{}:-:-:-)" },
@@ -319,6 +321,15 @@ void test_cli_parse(void)
       { "apple -- banana",                  "S(NN:{}:{}:{}:{apple,banana}:-:-:-)" },
       { "-A apple banana -- cherry",        "I(NNNN:{apple,banana}:{})S(NN:{}:{}:{}:{cherry}:-:-:-)" },
       { "-Q apple banana -- cherry damson", "I(NNNN:{}:{apple,banana})S(NN:{}:{}:{}:{cherry,damson}:-:-:-)" },
+
+      // Help modes
+      { "-h",                    "H(YNN0)" },
+      { "-h shared",             "H(YNN1)" },
+      { "-h help",               "H(YNN2)" },
+      { "-h info",               "H(YNN3)" },
+      { "-h send",               "H(YNN4)" },
+      { "-h tui",                "H(YNN5)" },
+      { "-h all",                "H(YNN6)" },
       // clang-format on
     };
 
@@ -369,7 +380,7 @@ void test_cli_parse(void)
       TEST_CHECK(rc == false);
 
       serialise_cli(cli, res);
-      TEST_CHECK_STR_EQ(buf_string(res), "H(YNN)");
+      TEST_CHECK_STR_EQ(buf_string(res), "H(YNN0)");
 
       args_clear(&sa);
       command_line_free(&cli);

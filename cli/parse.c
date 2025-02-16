@@ -34,6 +34,28 @@
 #include "objects.h"
 
 /**
+ * check_help_mode - Check for help mode
+ * @param mode String to check
+ * @retval enum #HelpMode, e.g. HM_CONFIG
+ */
+int check_help_mode(const char *mode)
+{
+  if (mutt_istr_equal(mode, "shared"))
+    return HM_SHARED;
+  if (mutt_istr_equal(mode, "help"))
+    return HM_HELP;
+  if (mutt_istr_equal(mode, "info"))
+    return HM_INFO;
+  if (mutt_istr_equal(mode, "send"))
+    return HM_SEND;
+  if (mutt_istr_equal(mode, "tui"))
+    return HM_TUI;
+  if (mutt_istr_equal(mode, "all"))
+    return HM_ALL;
+  return 0;
+}
+
+/**
  * mop_up - Eat multiple arguments
  * @param[in]  argc  Size of argument array
  * @param[in]  argv  Array of argument strings
@@ -141,6 +163,12 @@ bool cli_parse(int argc, char **argv, struct CommandLine *cli)
       // Help
       case 'h': // help
       {
+        if (optind < argc)
+        {
+          cli->help.mode = check_help_mode(argv[optind]);
+          if (cli->help.mode != HM_NONE)
+            optind++;
+        }
         cli->help.help = true;
         cli->help.is_set = true;
         break;
