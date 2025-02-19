@@ -99,10 +99,6 @@ static int op_shell_escape(int op)
  */
 static int op_show_log_messages(int op)
 {
-  const struct LogLineList lll = log_queue_get();
-  if (STAILQ_EMPTY(&lll))
-    return FR_NO_ACTION;
-
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
 
@@ -116,6 +112,7 @@ static int op_show_log_messages(int op)
 
   char buf[32] = { 0 };
   struct LogLine *ll = NULL;
+  const struct LogLineList lll = log_queue_get();
   STAILQ_FOREACH(ll, &lll, entries)
   {
     mutt_date_localtime_format(buf, sizeof(buf), "%H:%M:%S", ll->time);
