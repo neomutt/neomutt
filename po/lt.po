@@ -4060,7 +4060,6 @@ msgstr "siųsti PGP viešą raktą"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-#, fuzzy
 msgid "verify a public key"
 msgstr "patikrinti viešą raktą"
 
@@ -4372,9 +4371,9 @@ msgid "Option %s must be between %d and %d inclusive"
 msgstr "Parametras %s turi būti tarp %d ir %d imtinai"
 
 #: help.c:243
-#, fuzzy, c-format
+#, c-format
 msgid "%s bindings:"
-msgstr "Bendri susiejimai:"
+msgstr "%s susiejimai:"
 
 #: help.c:254
 msgid "Generic bindings:"
@@ -4382,7 +4381,7 @@ msgstr "Bendri susiejimai:"
 
 #: help.c:264
 msgid "macros:"
-msgstr ""
+msgstr "makrokomandos:"
 
 #: help.c:357
 msgid "Unbound functions:"
@@ -5488,9 +5487,8 @@ msgid "  -D            Dump all config variables as 'name=value' pairs to stdout
 msgstr "  -D            Spausdinti visus kintamuosius 'vardas=reikšmė' poromis"
 
 #: main.c:801
-#, fuzzy
 msgid "  -D -D         (or -DD) Like -D, but only show changed config"
-msgstr "  -D -O         Kaip -D, bet rodyti trumpą aprašymą"
+msgstr "  -D -D         (arba -DD) Kaip -D, bet rodyti tik pakeistus kintamuosius"
 
 #: main.c:802
 msgid "  -D -O         Like -D, but show one-liner documentation"
