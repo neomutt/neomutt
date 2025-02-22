@@ -319,6 +319,9 @@ int get_op(const struct MenuFuncOp *funcs, const char *start, size_t len)
  */
 const char *mutt_get_func(const struct MenuFuncOp *funcs, int op)
 {
+  if (!funcs)
+    return NULL;
+
   for (int i = 0; funcs[i].name; i++)
   {
     if (funcs[i].op == op)
@@ -600,7 +603,7 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
  * @retval str  Key binding
  * @retval NULL No key binding found
  */
-const char *help_lookup_function(int op, enum MenuType menu)
+static const char *help_lookup_function(int op, enum MenuType menu)
 {
   if ((menu != MENU_PAGER) && (menu != MENU_EDITOR) && (menu != MENU_GENERIC))
   {

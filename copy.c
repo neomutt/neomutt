@@ -74,7 +74,7 @@ ARRAY_HEAD(HeaderArray, char *);
  * If a header already exists in that position, the new text will be
  * concatenated on the old.
  */
-static void add_one_header(struct HeaderArray *headers, size_t pos, char *value)
+static void add_one_header(struct HeaderArray *headers, int pos, char *value)
 {
   char **old = ARRAY_GET(headers, pos);
   if (old && *old)

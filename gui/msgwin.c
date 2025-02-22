@@ -138,7 +138,7 @@ void measure(struct MwCharArray *chars, const char *str, const struct AttrColor 
 
     if (wc == 0xfe0f) // Emoji variation
     {
-      size_t size = ARRAY_SIZE(chars);
+      int size = ARRAY_SIZE(chars);
       if (size > 0)
       {
         struct MwChar *es_prev = ARRAY_GET(chars, size - 1);

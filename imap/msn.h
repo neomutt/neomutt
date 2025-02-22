@@ -30,9 +30,9 @@ struct MSNArray;
 struct Email;
 
 void          imap_msn_free   (struct MSNArray *msn);
-struct Email *imap_msn_get    (const struct MSNArray *msn, size_t idx);
+struct Email *imap_msn_get    (const struct MSNArray *msn, int idx);
 size_t        imap_msn_highest(const struct MSNArray *msn);
-void          imap_msn_remove (struct MSNArray *msn, size_t idx);
+void          imap_msn_remove (struct MSNArray *msn, int idx);
 void          imap_msn_reserve(struct MSNArray *msn, size_t num);
 void          imap_msn_set    (struct MSNArray *msn, size_t idx, struct Email *e);
 size_t        imap_msn_shrink (struct MSNArray *msn, size_t num);

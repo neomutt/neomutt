@@ -80,7 +80,7 @@ size_t imap_msn_highest(const struct MSNArray *msn)
  * @param idx Index to retrieve
  * @retval ptr Pointer to Email or NULL
  */
-struct Email *imap_msn_get(const struct MSNArray *msn, size_t idx)
+struct Email *imap_msn_get(const struct MSNArray *msn, int idx)
 {
   struct Email **ep = ARRAY_GET(msn, idx);
   return ep ? *ep : NULL;
@@ -113,7 +113,7 @@ size_t imap_msn_shrink(struct MSNArray *msn, size_t num)
  * @param msn MSN structure
  * @param idx Index to invalidate
  */
-void imap_msn_remove(struct MSNArray *msn, size_t idx)
+void imap_msn_remove(struct MSNArray *msn, int idx)
 {
   struct Email **ep = ARRAY_GET(msn, idx);
   if (ep)

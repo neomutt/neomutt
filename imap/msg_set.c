@@ -35,7 +35,6 @@
  */
 
 #include "config.h"
-#include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -75,12 +74,12 @@ int imap_make_msg_set(struct UidArray *uida, struct Buffer *buf, int *pos)
   if (!uida || !buf || !pos)
     return 0;
 
-  const size_t array_size = ARRAY_SIZE(uida);
+  const int array_size = ARRAY_SIZE(uida);
   if ((array_size == 0) || (*pos >= array_size))
     return 0;
 
   int count = 1; // Number of UIDs added to the set
-  size_t i = *pos;
+  int i = *pos;
   unsigned int start = *ARRAY_GET(uida, i);
   unsigned int prev = start;
 
