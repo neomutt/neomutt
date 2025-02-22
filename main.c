@@ -102,6 +102,7 @@
  * | subjectrx.c     | @subpage neo_subjrx        |
  * | system.c        | @subpage neo_system        |
  * | timegm.c        | @subpage neo_timegm        |
+ * | usage.c         | @subpage neo_usage         |
  * | version.c       | @subpage neo_version       |
  * | wcscasecmp.c    | @subpage neo_wcscasecmp    |
  *
@@ -132,7 +133,6 @@
 #include <locale.h>
 #include <pwd.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -197,6 +197,8 @@
 #endif
 
 bool StartupComplete = false; ///< When the config has been read
+
+void show_cli(enum HelpMode mode, bool use_color);
 
 /**
  * execute_commands - Execute a set of NeoMutt commands
@@ -744,82 +746,6 @@ static void localise_config(struct ConfigSet *cs)
 #endif
 
 /**
- * usage - Display NeoMutt command line
- * @retval true Text displayed
- */
-static bool usage(void)
-{
-  puts(mutt_make_version());
-
-  // clang-format off
-  /* L10N: Try to limit to 80 columns */
-  puts(_("usage:"));
-  puts(_("  neomutt [-CEn] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
-         "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
-         "          <address> [...]"));
-  puts(_("  neomutt [-Cn] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
-         "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"));
-  puts(_("  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -D [-D] [-O] [-S]"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -G"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -g <server>"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -p"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -Z"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"));
-  puts(_("  neomutt -v[v]\n"));
-
-  /* L10N: Try to limit to 80 columns.  If more space is needed add an indented line */
-  puts(_("options:"));
-  puts(_("  --            Special argument forces NeoMutt to stop option parsing and treat\n"
-         "                remaining arguments as addresses even if they start with a dash"));
-  puts(_("  -A <alias>    Print an expanded version of the given alias to stdout and exit"));
-  puts(_("  -a <file>     Attach one or more files to a message (must be the last option)\n"
-         "                Add any addresses after the '--' argument"));
-  puts(_("  -b <address>  Specify a blind carbon copy (Bcc) recipient"));
-  puts(_("  -c <address>  Specify a carbon copy (Cc) recipient"));
-  puts(_("  -C            Enable Command-line Crypto (signing/encryption)"));
-  puts(_("  -D            Dump all config variables as 'name=value' pairs to stdout"));
-  puts(_("  -D -D         (or -DD) Like -D, but only show changed config"));
-  puts(_("  -D -O         Like -D, but show one-liner documentation"));
-  puts(_("  -D -S         Like -D, but hide the value of sensitive variables"));
-  puts(_("  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
-         "                The level can range from 1-5 and affects verbosity"));
-  puts(_("  -E            Edit draft (-H) or include (-i) file during message composition"));
-  puts(_("  -e <command>  Specify a command to be run after reading the config files"));
-  puts(_("  -F <config>   Specify an alternative initialization file to read"));
-  puts(_("  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"));
-  puts(_("  -G            Start NeoMutt with a listing of subscribed newsgroups"));
-  puts(_("  -g <server>   Like -G, but start at specified news server"));
-  puts(_("  -H <draft>    Specify a draft file with header and body for message composing"));
-  puts(_("  -h            Print this help message and exit"));
-  puts(_("  -i <include>  Specify an include file to be embedded in the body of a message"));
-  puts(_("  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"));
-  puts(_("  -m <type>     Specify a default mailbox format type for newly created folders\n"
-         "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"));
-  puts(_("  -n            Do not read the system-wide configuration file"));
-  puts(_("  -p            Resume a prior postponed message, if any"));
-  puts(_("  -Q <variable> Query a configuration variable and print its value to stdout\n"
-         "                (after the config has been read and any commands executed)\n"
-         "                Add -O for one-liner documentation"));
-  puts(_("  -R            Open mailbox in read-only mode"));
-  puts(_("  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"));
-  puts(_("  -v            Print the NeoMutt version and compile-time definitions and exit"));
-  puts(_("  -vv           Print the NeoMutt license and copyright information and exit"));
-  puts(_("  -y            Start NeoMutt with a listing of all defined mailboxes"));
-  puts(_("  -Z            Open the first mailbox with new message or exit immediately with\n"
-         "                exit code 1 if none is found in all defined mailboxes"));
-  puts(_("  -z            Open the first or specified (-f) mailbox if it holds any message\n"
-         "                or exit immediately with exit code 1 otherwise"));
-  // clang-format on
-
-  fflush(stdout);
-  return !ferror(stdout);
-}
-
-/**
  * start_curses - Start the Curses UI
  * @retval 0 Success
  * @retval 1 Failure
@@ -1015,9 +941,11 @@ static bool show_help(struct CliHelp *help)
 
   log_queue_flush(log_disp_terminal);
 
+  const bool tty = isatty(STDOUT_FILENO);
+
   if (help->help)
   {
-    usage();
+    show_cli(help->mode, tty);
   }
   else if (help->license)
   {

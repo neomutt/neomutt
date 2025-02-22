@@ -29,6 +29,20 @@
 ARRAY_HEAD(StringArray, char *);
 
 /**
+ * enum HelpMode - Show detailed help
+ */
+enum HelpMode
+{
+  HM_NONE,         ///< No extra help
+  HM_SHARED,       ///< Help about shared config options
+  HM_HELP,         ///< Help about help
+  HM_INFO,         ///< Help about info options
+  HM_SEND,         ///< Help about sending email options
+  HM_TUI,          ///< Help about starting the tui options
+  HM_ALL,          ///< Help about all options
+};
+
+/**
  * struct CliShared - Shared Command Line options
  */
 struct CliShared
@@ -54,6 +68,8 @@ struct CliHelp
   bool help;                        ///< `-h`  Print help
   bool version;                     ///< `-v`  Print version
   bool license;                     ///< `-vv` Print license
+
+  enum HelpMode mode;               ///< Display detailed help
 };
 
 /**
