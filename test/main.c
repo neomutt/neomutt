@@ -162,6 +162,9 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_ch_lookup_remove)                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_set_charset)                                  \
                                                                                \
+  /* cli */                                                                    \
+  NEOMUTT_TEST_ITEM(test_cli_parse)                                            \
+                                                                               \
   /* color */                                                                  \
   NEOMUTT_TEST_ITEM(test_ansi_color)                                           \
   NEOMUTT_TEST_ITEM(test_ansi_color_parse_single)                              \

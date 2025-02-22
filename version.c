@@ -503,8 +503,7 @@ bool print_version(FILE *fp)
   fprintf(fp, "\n");
   fputs(_(ReachingUs), fp);
 
-  fflush(fp);
-  return !ferror(fp);
+  return true;
 }
 
 /**
