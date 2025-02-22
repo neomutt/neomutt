@@ -53,6 +53,10 @@ static void print_header(const char *section, const char *desc, bool use_color)
  */
 static void show_cli_overview(bool use_color)
 {
+  // L10N: Help Overview -- `neomutt -h`
+  //       The modes are: help, info, send, tui
+  //       Plus two helper modes: shared, all
+  //       These should not be translated.
   printf("%s ", _("NeoMutt has four modes of operation:"));
   if (use_color)
     puts("\033[1;4mhelp\033[0m, \033[1;4minfo\033[0m, \033[1;4msend\033[0m, \033[1;4mtui\033[0m");
@@ -62,9 +66,10 @@ static void show_cli_overview(bool use_color)
   puts(_("The default mode, if no command line arguments are specified, is tui."));
   puts("");
 
+  // L10N: Parameters in <>s may be translated
   print_header("shared", _("Options that apply to all modes"), use_color);
-  puts(_("neomutt -F <config>                  Use this user config file"));
-  puts(_("        -n                           Don't read system config file"));
+  puts(_("neomutt -n                           Don't read system config file"));
+  puts(_("        -F <config>                  Use this user config file"));
   puts(_("        -e <command>                 Run extra commands"));
   puts(_("        -m <type>                    Set default mailbox type"));
   puts(_("        -d <level>                   Set logging level (1..5)"));
@@ -118,11 +123,14 @@ static void show_cli_overview(bool use_color)
  */
 static void show_cli_shared(bool use_color)
 {
+  // L10N: Shared Help -- `neomutt -h shared`
   print_header("shared", _("Options that apply to all modes"), use_color);
   puts("");
 
   puts(_("By default NeoMutt loads one system and one user config file,"));
   puts(_("e.g. /etc/neomuttrc and ~/.neomuttrc"));
+
+  // L10N: Parameters in <>s may be translated
   puts(_("  -n            Don't read system config file"));
   puts(_("  -F <config>   Use this user config file"));
   puts(_("                May be used multiple times"));
@@ -135,7 +143,7 @@ static void show_cli_shared(bool use_color)
   puts(_("                May be used multiple times"));
   puts("");
 
-  puts(_("These logging override the config:"));
+  puts(_("These logging options override the config:"));
   puts(_("  -d <level>    Set logging level"));
   puts(_("                0 (off), 1 (low) .. 5 (high)"));
   puts(_("  -l <file>     Set logging file"));
@@ -147,6 +155,7 @@ static void show_cli_shared(bool use_color)
   else
     printf("%s\n", _("Examples:"));
 
+  // L10N: Examples: Filenames may be translated
   puts(_("  neomutt -n"));
   puts(_("  neomutt -F work.rc"));
   puts(_("  neomutt -F work.rc -F colours.rc"));
@@ -170,9 +179,11 @@ static void show_cli_shared(bool use_color)
  */
 static void show_cli_help(bool use_color)
 {
+  // L10N: Help Help -- `neomutt -h help`
   print_header("help", _("Get command line help for NeoMutt"), use_color);
   puts("");
 
+  // L10N: Parameters in <>s may be translated
   puts(_("  -h         Overview of command line options"));
   puts(_("  -h <mode>  Detailed help for: shared, help, info, send, tui, all"));
   puts(_("  -v         NeoMutt version and build parameters"));
@@ -184,6 +195,7 @@ static void show_cli_help(bool use_color)
   else
     printf("%s\n", _("Examples:"));
 
+  // L10N: Examples
   puts(_("  neomutt -h info"));
   puts(_("  neomutt -vv"));
 }
@@ -194,9 +206,11 @@ static void show_cli_help(bool use_color)
  */
 static void show_cli_info(bool use_color)
 {
+  // L10N: Info Help -- `neomutt -h info`
   print_header("info", _("Ask NeoMutt for config information"), use_color);
   puts("");
 
+  // L10N: Parameters in <>s may be translated
   puts(_("  -A <alias> [...]  Lookup email aliases"));
   puts(_("                    Multiple aliases can be looked up (space-separated)"));
   puts("");
@@ -218,6 +232,7 @@ static void show_cli_info(bool use_color)
   else
     printf("%s\n", _("Examples:"));
 
+  // L10N: Examples
   puts(_("  neomutt -A flatcap gahr"));
   puts(_("  neomutt -D -O"));
   puts(_("  neomutt -DD -S"));
@@ -230,6 +245,7 @@ static void show_cli_info(bool use_color)
  */
 static void show_cli_send(bool use_color)
 {
+  // L10N: Sending Help -- `neomutt -h send`
   print_header("send", _("Send an email from the command line"), use_color);
   puts("");
 
@@ -239,6 +255,7 @@ static void show_cli_send(bool use_color)
   puts(_("Aliases may be used in place of addresses."));
   puts("");
 
+  // L10N: Parameters in <>s may be translated
   puts(_("  -a <file> [...]     Attach files"));
   puts(_("                      Terminated by -- or another option"));
   puts(_("  -b <address>        Add Bcc: address"));
@@ -259,6 +276,7 @@ static void show_cli_send(bool use_color)
   else
     printf("%s\n", _("Examples:"));
 
+  // L10N: Examples: Filenames and email subjects may be translated
   puts(_("  neomutt flatcap -s 'Meeting' < meeting.txt"));
   puts(_("  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"));
   puts(_("  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"));
@@ -271,6 +289,7 @@ static void show_cli_send(bool use_color)
  */
 static void show_cli_tui(bool use_color)
 {
+  // L10N: TUI Help -- `neomutt -h tui`
   print_header("tui", _("Start NeoMutt's TUI (Terminal User Interface)"), use_color);
   puts("");
 
@@ -285,6 +304,7 @@ static void show_cli_tui(bool use_color)
   puts(_("  -z            Check for any mail"));
   puts("");
 
+  // L10N: Parameters in <>s may be translated
   puts(_("These options change the starting behavior:"));
   puts(_("  -f <mailbox>  Open this mailbox"));
   puts(_("  -G            Open NNTP browser"));
@@ -298,6 +318,7 @@ static void show_cli_tui(bool use_color)
   else
     printf("%s\n", _("Examples:"));
 
+  // L10N: Examples: Path may be translated
   puts(_("  neomutt -f ~/mail -Z"));
   puts(_("  neomutt -p"));
   puts(_("  neomutt -y"));
