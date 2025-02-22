@@ -32,7 +32,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
-#include "common.h"
+#include "common.h" // IWYU pragma: keep
 #include "test_common.h" // IWYU pragma: keep
 
 extern const struct Mapping MboxTypeMap[];

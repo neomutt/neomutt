@@ -24,12 +24,11 @@
 #include "config.h"
 #include "acutest.h"
 #include <string.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
 #include "test_common.h"
-
-struct Buffer;
 
 enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 {

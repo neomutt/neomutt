@@ -20,10 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config/number.h"
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "test_common.h"

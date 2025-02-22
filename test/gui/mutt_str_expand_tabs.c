@@ -20,7 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mutt/memory.h"
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"

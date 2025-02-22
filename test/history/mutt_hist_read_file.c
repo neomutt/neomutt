@@ -23,9 +23,6 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
-
-struct ConfigSet;
 
 void test_mutt_hist_read_file(void)
 {
