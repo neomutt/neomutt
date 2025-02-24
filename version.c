@@ -36,6 +36,7 @@
 #include "gui/lib.h"
 #include "version.h"
 #include "compress/lib.h"
+#include "store/lib.h"
 #include "globals.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"
@@ -56,9 +57,6 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
 #endif
-
-struct Slist *store_backend_list(void);
-const char *store_compress_list(void);
 
 /// CLI: Width to wrap version info
 static const int SCREEN_WIDTH = 80;
@@ -484,13 +482,22 @@ bool print_version(FILE *fp, bool use_ansi)
       if (STAILQ_NEXT(np, entries))
         fputs(", ", fp);
     }
-    fputs("\n", fp);
     slist_free(&storage);
   }
 #ifdef USE_HCACHE_COMPRESSION
-  const char *backends = compress_list();
-  fprintf(fp, "\n%scompression:%s %s", col_bold, col_end, backends);
-  FREE(&backends);
+  struct Slist *compression = compress_list();
+  if (compression)
+  {
+    fprintf(fp, "\n%scompression:%s ", col_bold, col_end);
+    struct ListNode *np = NULL;
+    STAILQ_FOREACH(np, &compression->head, entries)
+    {
+      fputs(np->data, fp);
+      if (STAILQ_NEXT(np, entries))
+        fputs(", ", fp);
+    }
+    slist_free(&compression);
+  }
 #endif
 #endif
 

@@ -91,9 +91,9 @@ static const char *compress_test_data =
 
 void test_compress_common(void)
 {
-  const char *list = compress_list();
+  struct Slist *list = compress_list();
   TEST_CHECK(list != NULL);
-  FREE(&list);
+  slist_free(&list);
 
   const struct ComprOps *compr_ops = compress_get_ops(NULL);
   TEST_CHECK(compr_ops != NULL);
