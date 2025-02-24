@@ -57,7 +57,7 @@
 #include <pcre2.h>
 #endif
 
-const char *store_backend_list(void);
+struct Slist *store_backend_list(void);
 const char *store_compress_list(void);
 
 /// CLI: Width to wrap version info
@@ -473,11 +473,22 @@ bool print_version(FILE *fp, bool use_ansi)
 #endif
 
 #ifdef USE_HCACHE
-  const char *backends = store_backend_list();
-  fprintf(fp, "\n%sstorage:%s %s", col_bold, col_end, backends);
-  FREE(&backends);
+  struct Slist *storage = store_backend_list();
+  if (storage)
+  {
+    fprintf(fp, "\n%sstorage:%s ", col_bold, col_end);
+    struct ListNode *np = NULL;
+    STAILQ_FOREACH(np, &storage->head, entries)
+    {
+      fputs(np->data, fp);
+      if (STAILQ_NEXT(np, entries))
+        fputs(", ", fp);
+    }
+    fputs("\n", fp);
+    slist_free(&storage);
+  }
 #ifdef USE_HCACHE_COMPRESSION
-  backends = compress_list();
+  const char *backends = compress_list();
   fprintf(fp, "\n%scompression:%s %s", col_bold, col_end, backends);
   FREE(&backends);
 #endif
