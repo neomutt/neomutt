@@ -37,6 +37,7 @@
 #include "globals.h"
 #include "muttlib.h"
 #include "shared_data.h"
+#include "version.h"
 
 /**
  * compose_attach_count_num - Compose: Number of attachments - Implements ::get_number_t - @ingroup expando_get_number_api

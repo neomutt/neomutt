@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+const char *mutt_make_version(void);
 bool print_version(FILE *fp, bool use_ansi);
 bool print_copyright(void);
 bool feature_enabled(const char *name);

@@ -50,6 +50,7 @@
 #include "muttlib.h"
 #include "mview.h"
 #include "shared_data.h"
+#include "version.h"
 
 static void index_mailbox_path(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf);

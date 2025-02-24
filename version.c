@@ -36,6 +36,7 @@
 #include "gui/lib.h"
 #include "version.h"
 #include "compress/lib.h"
+#include "globals.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"
 #endif
@@ -56,7 +57,6 @@
 #include <pcre2.h>
 #endif
 
-const char *mutt_make_version(void);
 const char *store_backend_list(void);
 const char *store_compress_list(void);
 
@@ -296,6 +296,19 @@ static const struct CompileOptions DebugOpts[] = {
 #endif
   { NULL, 0 },
 };
+
+/**
+ * mutt_make_version - Generate the NeoMutt version string
+ * @retval ptr Version string
+ *
+ * @note This returns a pointer to a static buffer
+ */
+const char *mutt_make_version(void)
+{
+  static char vstring[256];
+  snprintf(vstring, sizeof(vstring), "NeoMutt %s%s", PACKAGE_VERSION, GitVer);
+  return vstring;
+}
 
 /**
  * print_compile_options - Print a list of enabled/disabled features
