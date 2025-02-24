@@ -48,7 +48,6 @@ void        mutt_encode_path(struct Buffer *buf, const char *src);
 char *      mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 void        mutt_get_parent_path(const char *path, char *buf, size_t buflen);
 bool        mutt_is_text_part(const struct Body *b);
-const char *mutt_make_version(void);
 bool        mutt_needs_mailcap(struct Body *b);
 FILE *      mutt_open_read(const char *path, pid_t *thepid);
 void        mutt_pretty_mailbox(char *buf, size_t buflen);

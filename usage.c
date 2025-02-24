@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "cli/lib.h"
-#include "muttlib.h"
+#include "version.h"
 
 /**
  * print_header - Print a section header

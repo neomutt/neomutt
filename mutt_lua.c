@@ -51,6 +51,7 @@
 #include "mutt_lua.h"
 #include "parse/lib.h"
 #include "muttlib.h"
+#include "version.h"
 
 /// Global Lua State
 static lua_State *LuaState = NULL;

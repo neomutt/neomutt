@@ -128,6 +128,6 @@ extern const struct ComprOps compr_zlib_ops;
 extern const struct ComprOps compr_zstd_ops;
 
 const struct ComprOps *compress_get_ops(const char *compr);
-const char *           compress_list   (void);
+struct Slist *         compress_list   (void);
 
 #endif /* MUTT_COMPRESS_LIB_H */

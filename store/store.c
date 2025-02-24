@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,6 +31,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "lib.h"
 
 #define STORE_BACKEND(name) extern const struct StoreOps store_##name##_ops;
@@ -77,26 +78,22 @@ static const struct StoreOps *StoreOps[] = {
 
 /**
  * store_backend_list - Get a list of backend names
- * @retval ptr Comma-space-separated list of names
+ * @retval ptr List of names
  *
- * The caller should free the string.
+ * @note Caller should free the Slist
  */
-const char *store_backend_list(void)
+struct Slist *store_backend_list(void)
 {
-  char tmp[256] = { 0 };
+  struct Slist *sl = slist_new(D_SLIST_SEP_SPACE);
+
   const struct StoreOps **store_ops = StoreOps;
-  size_t len = 0;
 
   for (; *store_ops; store_ops++)
   {
-    if (len != 0)
-    {
-      len += snprintf(tmp + len, sizeof(tmp) - len, ", ");
-    }
-    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*store_ops)->name);
+    slist_add_string(sl, (*store_ops)->name);
   }
 
-  return mutt_str_dup(tmp);
+  return sl;
 }
 
 /**
