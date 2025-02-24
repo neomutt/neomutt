@@ -646,6 +646,8 @@ bool print_version(FILE *fp, bool use_ansi)
   {
     STAILQ_FOREACH(np, &ver->configure->head, entries)
     {
+      if (!np || !np->data)
+        continue;
       fputs(np->data, fp);
       if (STAILQ_NEXT(np, entries))
         fputs(" ", fp);
@@ -653,14 +655,19 @@ bool print_version(FILE *fp, bool use_ansi)
   }
   fputs("\n\n", fp);
 
-  fprintf(fp, "%sCompilation CFLAGS:%s ", col_bold, col_end);
-  STAILQ_FOREACH(np, &ver->compilation->head, entries)
+  if (ver->compilation)
   {
-    fputs(np->data, fp);
-    if (STAILQ_NEXT(np, entries))
-      fputs(" ", fp);
+    fprintf(fp, "%sCompilation CFLAGS:%s ", col_bold, col_end);
+    STAILQ_FOREACH(np, &ver->compilation->head, entries)
+    {
+      if (!np || !np->data)
+        continue;
+      fputs(np->data, fp);
+      if (STAILQ_NEXT(np, entries))
+        fputs(" ", fp);
+    }
+    fputs("\n\n", fp);
   }
-  fputs("\n\n", fp);
 
   fprintf(fp, "%s%s%s\n", col_bold, _("Compile options:"), col_end);
   print_compile_options(ver->feature, fp, use_ansi);
