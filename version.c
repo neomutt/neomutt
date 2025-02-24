@@ -33,6 +33,7 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "gui/lib.h"
 #include "version.h"
 #include "compress/lib.h"
@@ -112,19 +113,9 @@ static const char *Notice =
        "under certain conditions; type 'neomutt -vv' for details.\n");
 // clang-format on
 
-/**
- * struct CompileOptions - List of built-in capabilities
- */
-struct CompileOptions
-{
-  const char *name; ///< Option name
-  int enabled;      ///< 0 Disabled, 1 Enabled, 2 Devel only
-};
-
 /* These are sorted by the display string */
-
 /// Compile options strings for `neomutt -v` output
-static const struct CompileOptions CompOpts[] = {
+static const struct CompileOption CompOpts[] = {
 #ifdef USE_AUTOCRYPT
   { "autocrypt", 1 },
 #else
@@ -254,8 +245,8 @@ static const struct CompileOptions CompOpts[] = {
   { NULL, 0 },
 };
 
-/// Debug options strings for `neomutt -v` output
-static const struct CompileOptions DebugOpts[] = {
+/// Devel options strings for `neomutt -v` output
+static const struct CompileOption DevelOpts[] = {
 #ifdef USE_ASAN
   { "asan", 2 },
 #endif
@@ -309,6 +300,230 @@ const char *mutt_make_version(void)
 }
 
 /**
+ * rstrip_in_place - Strip a trailing carriage return
+ * @param s  String to be modified
+ * @retval ptr The modified string
+ *
+ * The string has its last carriage return set to NUL.
+ */
+static char *rstrip_in_place(char *s)
+{
+  if (!s)
+    return NULL;
+
+  char *p = &s[strlen(s)];
+  if (p == s)
+    return s;
+  p--;
+  while ((p >= s) && ((*p == '\n') || (*p == '\r')))
+    *p-- = '\0';
+  return s;
+}
+
+/**
+ * system_get - Get info about system libraries
+ * @param[out] kva Array for results
+ */
+static void system_get(struct KeyValueArray *kva)
+{
+  struct Buffer *buf = buf_pool_get();
+  struct KeyValue kv = { 0 };
+
+  struct utsname uts = { 0 };
+  uname(&uts);
+
+#ifdef SCO
+  buf_printf(buf, "SCO %s", uts.release);
+#else
+  buf_printf(buf, "%s %s", uts.sysname, uts.release);
+#endif
+  buf_add_printf(buf, " (%s)", uts.machine);
+
+  kv.key = mutt_str_dup("System");
+  kv.value = buf_strdup(buf);
+  ARRAY_ADD(kva, kv);
+
+  buf_strcpy(buf, curses_version());
+#ifdef NCURSES_VERSION
+  buf_add_printf(buf, " (compiled with %s.%d)", NCURSES_VERSION, NCURSES_VERSION_PATCH);
+#endif
+  kv.key = mutt_str_dup("ncurses");
+  kv.value = buf_strdup(buf);
+  ARRAY_ADD(kva, kv);
+
+#ifdef _LIBICONV_VERSION
+  buf_printf(buf, "%d.%d", _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 0xff);
+  kv.key = mutt_str_dup("libiconv");
+  kv.value = buf_strdup(buf);
+  ARRAY_ADD(kva, kv);
+#endif
+
+#ifdef HAVE_LIBIDN
+  kv.key = mutt_str_dup("libidn2");
+  kv.value = mutt_str_dup(mutt_idna_print_version());
+  ARRAY_ADD(kva, kv);
+#endif
+
+#ifdef CRYPT_BACKEND_GPGME
+  kv.key = mutt_str_dup("GPGME");
+  kv.value = mutt_str_dup(mutt_gpgme_print_version());
+  ARRAY_ADD(kva, kv);
+#endif
+
+#ifdef USE_SSL_OPENSSL
+#ifdef LIBRESSL_VERSION_TEXT
+  kv.key = mutt_str_dup("LibreSSL");
+  kv.value = mutt_str_dup(LIBRESSL_VERSION_TEXT);
+#endif
+#ifdef OPENSSL_VERSION_TEXT
+  kv.key = mutt_str_dup("OpenSSL");
+  kv.value = mutt_str_dup(OPENSSL_VERSION_TEXT);
+#endif
+  ARRAY_ADD(kva, kv);
+#endif
+
+#ifdef USE_SSL_GNUTLS
+  kv.key = mutt_str_dup("GnuTLS");
+  kv.value = mutt_str_dup(GNUTLS_VERSION);
+  ARRAY_ADD(kva, kv);
+#endif
+
+#ifdef HAVE_NOTMUCH
+  buf_printf(buf, "%d.%d.%d", LIBNOTMUCH_MAJOR_VERSION,
+             LIBNOTMUCH_MINOR_VERSION, LIBNOTMUCH_MICRO_VERSION);
+  kv.key = mutt_str_dup("libnotmuch");
+  kv.value = buf_strdup(buf);
+  ARRAY_ADD(kva, kv);
+#endif
+
+#ifdef HAVE_PCRE2
+  char version[24] = { 0 };
+  pcre2_config(PCRE2_CONFIG_VERSION, version);
+  kv.key = mutt_str_dup("PCRE2");
+  kv.value = mutt_str_dup(version);
+  ARRAY_ADD(kva, kv);
+#endif
+
+  buf_pool_release(&buf);
+}
+
+/**
+ * paths_get - Get compiled-in paths
+ * @param[out] kva Array for results
+ */
+static void paths_get(struct KeyValueArray *kva)
+{
+  struct KeyValue kv = { 0 };
+
+#ifdef DOMAIN
+  kv.key = mutt_str_dup("DOMAIN");
+  kv.value = mutt_str_dup(DOMAIN);
+  ARRAY_ADD(kva, kv);
+#endif
+
+#ifdef ISPELL
+  kv.key = mutt_str_dup("ISPELL");
+  kv.value = mutt_str_dup(ISPELL);
+  ARRAY_ADD(kva, kv);
+#endif
+  kv.key = mutt_str_dup("MAILPATH");
+  kv.value = mutt_str_dup(MAILPATH);
+  ARRAY_ADD(kva, kv);
+
+  kv.key = mutt_str_dup("PKGDATADIR");
+  kv.value = mutt_str_dup(PKGDATADIR);
+  ARRAY_ADD(kva, kv);
+
+  kv.key = mutt_str_dup("SENDMAIL");
+  kv.value = mutt_str_dup(SENDMAIL);
+  ARRAY_ADD(kva, kv);
+
+  kv.key = mutt_str_dup("SYSCONFDIR");
+  kv.value = mutt_str_dup(SYSCONFDIR);
+  ARRAY_ADD(kva, kv);
+}
+
+/**
+ * kva_clear - Free the strings of a KeyValueArray
+ * @param kva KeyValueArray to clear
+ *
+ * @note KeyValueArray itself is not freed
+ */
+static void kva_clear(struct KeyValueArray *kva)
+{
+  struct KeyValue *kv = NULL;
+
+  ARRAY_FOREACH(kv, kva)
+  {
+    FREE(&kv->key);
+    FREE(&kv->value);
+  }
+
+  ARRAY_FREE(kva);
+}
+
+/**
+ * version_get - Get NeoMutt version info
+ * @retval ptr NeoMuttVersion
+ */
+struct NeoMuttVersion *version_get(void)
+{
+  struct NeoMuttVersion *ver = MUTT_MEM_CALLOC(1, struct NeoMuttVersion);
+
+  ver->version = mutt_str_dup(mutt_make_version());
+
+  ARRAY_INIT(&ver->system);
+  system_get(&ver->system);
+
+#ifdef USE_HCACHE
+  ver->storage = store_backend_list();
+#ifdef USE_HCACHE_COMPRESSION
+  ver->compression = compress_list();
+#endif
+#endif
+
+  rstrip_in_place((char *) configure_options);
+  ver->configure = slist_parse((char *) configure_options, D_SLIST_SEP_SPACE);
+
+  rstrip_in_place((char *) cc_cflags);
+  ver->compilation = slist_parse((char *) cc_cflags, D_SLIST_SEP_SPACE);
+
+  ver->feature = CompOpts;
+
+  if (DevelOpts[0].name)
+    ver->devel = DevelOpts;
+
+  ARRAY_INIT(&ver->paths);
+  paths_get(&ver->paths);
+
+  return ver;
+}
+
+/**
+ * version_free - Free a NeoMuttVersion
+ * @param ptr NeoMuttVersion to free
+ */
+void version_free(struct NeoMuttVersion **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct NeoMuttVersion *ver = *ptr;
+
+  FREE(&ver->version);
+
+  kva_clear(&ver->system);
+  kva_clear(&ver->paths);
+
+  slist_free(&ver->storage);
+  slist_free(&ver->compression);
+  slist_free(&ver->configure);
+  slist_free(&ver->compilation);
+
+  FREE(ptr);
+}
+
+/**
  * print_compile_options - Print a list of enabled/disabled features
  * @param co       Array of compile options
  * @param fp       file to write to
@@ -321,7 +536,7 @@ const char *mutt_make_version(void)
  * The output is of the form: "+enabled_feature -disabled_feature" and is
  * wrapped to SCREEN_WIDTH characters.
  */
-static void print_compile_options(const struct CompileOptions *co, FILE *fp, bool use_ansi)
+static void print_compile_options(const struct CompileOption *co, FILE *fp, bool use_ansi)
 {
   if (!co || !fp)
     return;
@@ -365,27 +580,6 @@ static void print_compile_options(const struct CompileOptions *co, FILE *fp, boo
 }
 
 /**
- * rstrip_in_place - Strip a trailing carriage return
- * @param s  String to be modified
- * @retval ptr The modified string
- *
- * The string has its last carriage return set to NUL.
- */
-static char *rstrip_in_place(char *s)
-{
-  if (!s)
-    return NULL;
-
-  char *p = &s[strlen(s)];
-  if (p == s)
-    return s;
-  p--;
-  while ((p >= s) && ((*p == '\n') || (*p == '\r')))
-    *p-- = '\0';
-  return s;
-}
-
-/**
  * print_version - Print system and compile info to a file
  * @param fp       File to print to
  * @param use_ansi Use ANSI colour escape sequences
@@ -399,7 +593,9 @@ bool print_version(FILE *fp, bool use_ansi)
   if (!fp)
     return false;
 
-  struct utsname uts = { 0 };
+  struct KeyValue *kv = NULL;
+  struct ListNode *np = NULL;
+  struct NeoMuttVersion *ver = version_get();
 
   const char *col_cyan = "";
   const char *col_bold = "";
@@ -412,125 +608,80 @@ bool print_version(FILE *fp, bool use_ansi)
     col_end = "\033[0m";     // Escape, end
   }
 
-  fprintf(fp, "%s%s%s\n", col_cyan, mutt_make_version(), col_end);
+  fprintf(fp, "%s%s%s\n", col_cyan, ver->version, col_end);
   fprintf(fp, "%s\n", _(Notice));
 
-  uname(&uts);
-
-  fprintf(fp, "%sSystem:%s ", col_bold, col_end);
-#ifdef SCO
-  fprintf(fp, "SCO %s", uts.release);
-#else
-  fprintf(fp, "%s %s", uts.sysname, uts.release);
-#endif
-
-  fprintf(fp, " (%s)", uts.machine);
-
-  fprintf(fp, "\n%sncurses:%s %s", col_bold, col_end, curses_version());
-#ifdef NCURSES_VERSION
-  fprintf(fp, " (compiled with %s.%d)", NCURSES_VERSION, NCURSES_VERSION_PATCH);
-#endif
-
-#ifdef _LIBICONV_VERSION
-  fprintf(fp, "\n%slibiconv:%s %d.%d", col_bold, col_end,
-          _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 0xff);
-#endif
-
-#ifdef HAVE_LIBIDN
-  fprintf(fp, "\n%slibidn2:%s %s", col_bold, col_end, mutt_idna_print_version());
-#endif
-
-#ifdef CRYPT_BACKEND_GPGME
-  fprintf(fp, "\n%sGPGME:%s %s", col_bold, col_end, mutt_gpgme_print_version());
-#endif
-
-#ifdef USE_SSL_OPENSSL
-#ifdef LIBRESSL_VERSION_TEXT
-  fprintf(fp, "\n%sLibreSSL:%s %s", col_bold, col_end, LIBRESSL_VERSION_TEXT);
-#endif
-#ifdef OPENSSL_VERSION_TEXT
-  fprintf(fp, "\n%sOpenSSL:%s %s", col_bold, col_end, OPENSSL_VERSION_TEXT);
-#endif
-#endif
-
-#ifdef USE_SSL_GNUTLS
-  fprintf(fp, "\n%sGnuTLS:%s %s", col_bold, col_end, GNUTLS_VERSION);
-#endif
-
-#ifdef HAVE_NOTMUCH
-  fprintf(fp, "\n%slibnotmuch:%s %d.%d.%d", col_bold, col_end, LIBNOTMUCH_MAJOR_VERSION,
-          LIBNOTMUCH_MINOR_VERSION, LIBNOTMUCH_MICRO_VERSION);
-#endif
-
-#ifdef HAVE_PCRE2
+  ARRAY_FOREACH(kv, &ver->system)
   {
-    char version[24] = { 0 };
-    pcre2_config(PCRE2_CONFIG_VERSION, version);
-    fprintf(fp, "\n%sPCRE2:%s %s", col_bold, col_end, version);
+    fprintf(fp, "%s%s:%s %s\n", col_bold, kv->key, col_end, kv->value);
   }
-#endif
 
-#ifdef USE_HCACHE
-  struct Slist *storage = store_backend_list();
-  if (storage)
+  if (ver->storage)
   {
-    fprintf(fp, "\n%sstorage:%s ", col_bold, col_end);
-    struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &storage->head, entries)
+    fprintf(fp, "%sstorage:%s ", col_bold, col_end);
+    STAILQ_FOREACH(np, &ver->storage->head, entries)
     {
       fputs(np->data, fp);
       if (STAILQ_NEXT(np, entries))
         fputs(", ", fp);
     }
-    slist_free(&storage);
+    fputs("\n", fp);
   }
-#ifdef USE_HCACHE_COMPRESSION
-  struct Slist *compression = compress_list();
-  if (compression)
+
+  if (ver->compression)
   {
-    fprintf(fp, "\n%scompression:%s ", col_bold, col_end);
-    struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &compression->head, entries)
+    fprintf(fp, "%scompression:%s ", col_bold, col_end);
+    STAILQ_FOREACH(np, &ver->compression->head, entries)
     {
       fputs(np->data, fp);
       if (STAILQ_NEXT(np, entries))
         fputs(", ", fp);
     }
-    slist_free(&compression);
+    fputs("\n", fp);
   }
-#endif
-#endif
+  fputs("\n", fp);
 
-  rstrip_in_place((char *) configure_options);
-  fprintf(fp, "\n\n%sConfigure options:%s %s\n", col_bold, col_end, (char *) configure_options);
-
-  rstrip_in_place((char *) cc_cflags);
-  fprintf(fp, "\n%sCompilation CFLAGS:%s %s\n", col_bold, col_end, (char *) cc_cflags);
-
-  fprintf(fp, "\n%s%s%s\n", col_bold, _("Compile options:"), col_end);
-  print_compile_options(CompOpts, fp, use_ansi);
-
-  if (DebugOpts[0].name)
+  fprintf(fp, "%sConfigure options:%s ", col_bold, col_end);
+  if (ver->configure)
   {
-    fprintf(fp, "\n%s%s%s\n", col_bold, _("Devel options:"), col_end);
-    print_compile_options(DebugOpts, fp, use_ansi);
+    STAILQ_FOREACH(np, &ver->configure->head, entries)
+    {
+      fputs(np->data, fp);
+      if (STAILQ_NEXT(np, entries))
+        fputs(" ", fp);
+    }
+  }
+  fputs("\n\n", fp);
+
+  fprintf(fp, "%sCompilation CFLAGS:%s ", col_bold, col_end);
+  STAILQ_FOREACH(np, &ver->compilation->head, entries)
+  {
+    fputs(np->data, fp);
+    if (STAILQ_NEXT(np, entries))
+      fputs(" ", fp);
+  }
+  fputs("\n\n", fp);
+
+  fprintf(fp, "%s%s%s\n", col_bold, _("Compile options:"), col_end);
+  print_compile_options(ver->feature, fp, use_ansi);
+  fputs("\n", fp);
+
+  if (ver->devel)
+  {
+    fprintf(fp, "%s%s%s\n", col_bold, _("Devel options:"), col_end);
+    print_compile_options(ver->devel, fp, use_ansi);
+    fputs("\n", fp);
   }
 
-  fprintf(fp, "\n");
-#ifdef DOMAIN
-  fprintf(fp, "DOMAIN=\"%s\"\n", DOMAIN);
-#endif
-#ifdef ISPELL
-  fprintf(fp, "ISPELL=\"%s\"\n", ISPELL);
-#endif
-  fprintf(fp, "MAILPATH=\"%s\"\n", MAILPATH);
-  fprintf(fp, "PKGDATADIR=\"%s\"\n", PKGDATADIR);
-  fprintf(fp, "SENDMAIL=\"%s\"\n", SENDMAIL);
-  fprintf(fp, "SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
+  ARRAY_FOREACH(kv, &ver->paths)
+  {
+    fprintf(fp, "%s%s%s=\"%s\"\n", col_bold, kv->key, col_end, kv->value);
+  }
+  fputs("\n", fp);
 
-  fprintf(fp, "\n");
   fputs(_(ReachingUs), fp);
 
+  version_free(&ver);
   return true;
 }
 
@@ -561,7 +712,7 @@ bool print_copyright(void)
  *
  * Many of the larger features of neomutt can be disabled at compile time.
  * They define a symbol and use ifdef's around their code.
- * The symbols are mirrored in "CompileOptions CompOpts[]" in this
+ * The symbols are mirrored in "CompileOption CompOpts[]" in this
  * file.
  *
  * This function checks if one of these symbols is present in the code.

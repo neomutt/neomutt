@@ -3,7 +3,7 @@
  * Display version and copyright about NeoMutt
  *
  * @authors
- * Copyright (C) 2017-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,6 +25,50 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/lib.h"
+
+/**
+ * struct KeyValue - Key/Value pairs
+ */
+struct KeyValue
+{
+  const char *key;
+  const char *value;
+};
+ARRAY_HEAD(KeyValueArray, struct KeyValue);
+
+/**
+ * struct CompileOption - Built-in capability
+ */
+struct CompileOption
+{
+  const char *name; ///< Option name
+  int enabled;      ///< 0 Disabled, 1 Enabled, 2 Devel only
+};
+
+/**
+ * struct NeoMuttVersion - Version info about NeoMutt
+ */
+struct NeoMuttVersion
+{
+  const char *version;                    ///< Version of NeoMutt: YYYYMMDD-NUM-HASH (number of commits, git hash)
+
+  struct KeyValueArray system;            ///< System information
+
+  struct Slist *storage;                  ///< Storage backends, e.g. lmdb
+  struct Slist *compression;              ///< Compression methods, e.g. zlib
+
+  struct Slist *configure;                ///< Configure options
+  struct Slist *compilation;              ///< Compilation CFLAGS
+
+  const struct CompileOption *feature;    ///< Compiled-in features
+  const struct CompileOption *devel;      ///< Compiled-in development features
+
+  struct KeyValueArray paths;             ///< Compiled-in paths
+};
+
+struct NeoMuttVersion *version_get (void);
+void                   version_free(struct NeoMuttVersion **ptr);
 
 const char *mutt_make_version(void);
 bool print_version(FILE *fp, bool use_ansi);
