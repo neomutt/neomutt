@@ -51,7 +51,6 @@ enum ColorId
   MT_COLOR_ITALIC,                   ///< Italic text
   MT_COLOR_MARKERS,                  ///< Pager: markers, line continuation
   MT_COLOR_MESSAGE,                  ///< Informational message
-  MT_COLOR_MESSAGE_LOG,              ///< Menu showing log messages
   MT_COLOR_NORMAL,                   ///< Plain text
   MT_COLOR_OPTIONS,                  ///< Options in prompt
   MT_COLOR_PROGRESS,                 ///< Progress bar
