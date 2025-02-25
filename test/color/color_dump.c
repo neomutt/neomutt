@@ -72,7 +72,7 @@ void test_color_dump(void)
   ac.attrs = A_ITALIC;
   ac.fg.prefix = COLOR_PREFIX_NONE;
   ac.fg.color = COLOR_DEFAULT;
-  simple_color_set(MT_COLOR_MESSAGE_LOG, &ac);
+  simple_color_set(MT_COLOR_BOLD, &ac);
 
   ac.fg.color = 123;
   ac.fg.type = CT_PALETTE;

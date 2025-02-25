@@ -1113,7 +1113,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     }
     else
     {
-      cur_line->cid = MT_COLOR_MESSAGE_LOG;
+      cur_line->cid = MT_COLOR_NORMAL;
       if (buf[11] == 'M')
         cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_MESSAGE);
       else if (buf[11] == 'W')
