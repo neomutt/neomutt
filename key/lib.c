@@ -393,6 +393,9 @@ void escape_macro(const char *macro, struct Buffer *buf)
  */
 bool is_bound(const struct KeymapList *km_list, int op)
 {
+  if (!km_list)
+    return false;
+
   struct Keymap *map = NULL;
   STAILQ_FOREACH(map, km_list, entries)
   {
@@ -444,6 +447,9 @@ int measure_column(struct BindingInfoArray *bia, int col)
 int gather_unbound(const struct MenuFuncOp *funcs, const struct KeymapList *km_menu,
                    const struct KeymapList *km_aux, struct BindingInfoArray *bia_unbound)
 {
+  if (!funcs)
+    return 0;
+
   for (int i = 0; funcs[i].name; i++)
   {
     if (!is_bound(km_menu, funcs[i].op) &&

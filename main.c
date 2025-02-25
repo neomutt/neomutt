@@ -255,6 +255,9 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
     { NULL, NULL },
   };
 
+  struct Buffer *buf = buf_pool_get();
+  char *cfg = NULL;
+
   for (int i = 0; locations[i][0] || locations[i][1]; i++)
   {
     if (!locations[i][0])
@@ -262,15 +265,18 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
 
     for (int j = 0; names[j]; j++)
     {
-      char buf[256] = { 0 };
-
-      snprintf(buf, sizeof(buf), "%s/%s%s", locations[i][0], locations[i][1], names[j]);
-      if (access(buf, F_OK) == 0)
-        return mutt_str_dup(buf);
+      buf_printf(buf, "%s/%s%s", locations[i][0], locations[i][1], names[j]);
+      if (access(buf_string(buf), F_OK) == 0)
+      {
+        cfg = buf_strdup(buf);
+        goto done;
+      }
     }
   }
 
-  return NULL;
+done:
+  buf_pool_release(&buf);
+  return cfg;
 }
 
 #ifndef DOMAIN
@@ -544,7 +550,7 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
     char *config = find_cfg(NeoMutt->home_dir, xdg_cfg_home);
     if (config)
     {
-      ARRAY_ADD(user_files, mutt_str_dup(config));
+      ARRAY_ADD(user_files, config);
     }
   }
   else
@@ -953,7 +959,7 @@ static bool show_help(struct CliHelp *help)
   }
   else
   {
-    print_version(stdout, isatty(STDOUT_FILENO));
+    print_version(stdout, tty);
   }
 
   return false; // Stop
