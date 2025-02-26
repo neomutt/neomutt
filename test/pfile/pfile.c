@@ -150,13 +150,13 @@ void test_pfile(void)
 
     if (st->use_text)
     {
-      paged_row_add_text(pr, "AAAbbb");
-      paged_row_add_colored_text(pr, MT_COLOR_INDICATOR, "CCCdddEEE");
-      paged_row_add_text(pr, "fffGGG");
+      paged_row_add_text(pf->source, pr, "AAAbbb");
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_INDICATOR, "CCCdddEEE");
+      paged_row_add_text(pf->source, pr, "fffGGG");
     }
     else
     {
-      paged_row_add_text(pr, "AAAbbbCCCdddEEEfffGGG");
+      paged_row_add_text(pf->source, pr, "AAAbbbCCCdddEEEfffGGG");
     }
 
     if (st->search_start >= 0)

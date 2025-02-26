@@ -31,6 +31,7 @@
 #include "core/lib.h"
 #include "paged_file.h"
 #include "paged_row.h"
+#include "source.h"
 
 /**
  * paged_file_free - Free a PagedFile
@@ -42,9 +43,6 @@ void paged_file_free(struct PagedFile **pptr)
     return;
 
   struct PagedFile *pf = *pptr;
-
-  if (pf->close_fp)
-    mutt_file_fclose(&pf->fp);
 
   struct PagedRow *pr = NULL;
   ARRAY_FOREACH(pr, &pf->rows)
@@ -65,28 +63,10 @@ void paged_file_free(struct PagedFile **pptr)
  */
 struct PagedFile *paged_file_new(FILE *fp)
 {
-  bool close_fp = false;
-
-  if (fp)
-  {
-    // stat file
-  }
-  else
-  {
-    fp = mutt_file_mkstemp();
-    close_fp = true;
-  }
-
-  if (!fp)
-  {
-    mutt_perror(_("Can't create temporary file"));
-    return NULL;
-  }
-
   struct PagedFile *pf = MUTT_MEM_CALLOC(1, struct PagedFile);
 
-  pf->fp = fp;
-  pf->close_fp = close_fp;
+  pf->source = source_new(fp);
+
   ARRAY_INIT(&pf->rows);
 
   return pf;
@@ -101,12 +81,17 @@ struct PagedFile *paged_file_new(FILE *fp)
  */
 struct PagedRow *paged_file_new_row(struct PagedFile *pf)
 {
-  if (!pf || !pf->fp)
+  if (!pf)
     return NULL;
 
   struct PagedRow pr = { 0 };
   pr.paged_file = pf;
-  pr.offset = ftell(pf->fp);
+
+  struct PagedRow *pr_prev = ARRAY_LAST(&pf->rows);
+  if (pr_prev)
+  {
+    pr.offset = pr_prev->offset + pr_prev->num_bytes;
+  }
 
   ARRAY_ADD(&pf->rows, pr);
 

@@ -43,10 +43,10 @@ struct PagedTextMarkup
   int cid;                              ///< Colour ID, e.g. #MT_COLOR_SIGNATURE
   const struct AttrColor *ac_text;      ///< Curses colour of text
   const struct AttrColor *ac_merged;    ///< Curses colour of text
+
+  struct Source *source;                ///< XXX
 };
 ARRAY_HEAD(PagedTextMarkupArray, struct PagedTextMarkup);
-
-void paged_text_markup_clear(struct PagedTextMarkupArray *ptma);
 
 struct PagedTextMarkup *paged_text_markup_new(struct PagedTextMarkupArray *ptma);
 

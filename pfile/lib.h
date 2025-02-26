@@ -39,6 +39,7 @@
 #include "paged_file.h"
 #include "paged_row.h"
 #include "paged_text.h"
+#include "source.h"
 // IWYU pragma: end_keep
 
 #endif /* MUTT_PFILE_LIB_H */

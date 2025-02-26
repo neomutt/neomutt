@@ -30,6 +30,7 @@
 
 struct AttrColor;
 struct PagedFile;
+struct Source;
 
 /**
  * typedef RowWrapFlags - Flags controlling the wrapping of text
@@ -67,7 +68,7 @@ struct PagedRow
   struct PagedTextMarkupArray text;     ///< Array of text with markup in the row
   struct PagedTextMarkupArray search;   ///< Array of search matches in the row
 
-  char *cached_text;                    ///< Cached copy of the text
+  const char *cached_text;              ///< Cached copy of the text
   int num_bytes;                        ///< Number of bytes (including newline)
   int num_cols;                         ///< Number of screen columns
   struct SegmentArray segments;         ///< Lengths of wrapped parts of the Row
@@ -76,14 +77,16 @@ ARRAY_HEAD(PagedRowArray, struct PagedRow);
 
 void paged_row_clear(struct PagedRow *pr);
 
-int paged_row_add_colored_text(struct PagedRow *pr, int cid, const char *text);
-int paged_row_add_ac_text     (struct PagedRow *pr, struct AttrColor *ac, const char *text);
-int paged_row_add_newline     (struct PagedRow *pr);
-int paged_row_add_raw_text    (struct PagedRow *pr, const char *text);
-int paged_row_add_text        (struct PagedRow *pr, const char *text);
-int paged_row_add_multirow    (struct PagedFile *pf, const char *text);
+int paged_row_add_colored_text(struct Source *src, struct PagedRow *pr, int cid, const char *text);
+int paged_row_add_ac_text     (struct Source *src, struct PagedRow *pr, struct AttrColor *ac, const char *text);
+int paged_row_add_newline     (struct Source *src, struct PagedRow *pr);
+int paged_row_add_raw_text    (struct Source *src, struct PagedRow *pr, const char *text);
+int paged_row_add_text        (struct Source *src, struct PagedRow *pr, const char *text);
+int paged_row_add_multirow    (struct Source *src, struct PagedFile *pf, const char *text);
 
 void paged_row_add_search     (struct PagedRow *pr, int first, int last);
+
+const char *paged_row_get_plain(struct PagedRow *pr);
 
 void        paged_row_cache           (struct PagedRow *pr);
 const char *paged_row_get_text        (struct PagedRow *pr);
@@ -93,5 +96,7 @@ const char *paged_row_get_virtual_text(struct PagedRow *pr, struct Segment *seg)
 int  paged_rows_count_virtual_rows(struct PagedRowArray *pra);
 bool paged_rows_find_virtual_row  (struct PagedRowArray *pra, int virt_row, int *pr_index, int *seg_index);
 void paged_rows_wrap              (struct PagedRowArray *pra, int width, RowWrapFlags flags);
+
+void paged_row_normalise(struct PagedRow *pr, struct PagedRow *pr_normal);
 
 #endif /* MUTT_PFILE_PAGED_ROW_H */

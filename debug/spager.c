@@ -48,8 +48,10 @@ void dump_markup(struct PagedTextMarkupArray *ptma, const char *label)
     if (ptm->cid > 0)
     {
       buf_add_printf(buf, "%s(%d) ", name_color_id(ptm->cid), ptm->cid);
-      if (ptm->ac_text)
-        buf_add_printf(buf, "ac_text %p ", (void *) ptm->ac_text);
+    }
+    else if (ptm->ac_text)
+    {
+      buf_add_printf(buf, "ac_text %p ", (void *) ptm->ac_text);
     }
     else
     {
@@ -77,8 +79,21 @@ void dump_rows(struct PagedRowArray *pra)
   {
     if (count++ > 10)
       break;
+
+    paged_row_cache(pr);
+
     mutt_debug(LL_DEBUG1, "    offset %ld\n", pr->offset);
     mutt_debug(LL_DEBUG1, "    %d bytes, %d cols\n", pr->num_bytes, pr->num_cols);
+
+    if ((pr->num_bytes > 0) && pr->cached_text)
+    {
+      int num_bytes = pr->num_bytes;
+      if ((num_bytes > 0) && pr->cached_text && (pr->cached_text[num_bytes - 1] == '\n'))
+        num_bytes--;
+
+      mutt_debug(LL_DEBUG1, "    '%.*s'\n", num_bytes, pr->cached_text);
+    }
+
     if (pr->cid > 0)
     {
       mutt_debug(LL_DEBUG1, "    cid %s (%d)\n", name_color_id(pr->cid), pr->cid);
@@ -96,12 +111,24 @@ void dump_rows(struct PagedRowArray *pra)
   }
 }
 
+void dump_source(struct Source *src)
+{
+  if (!src)
+    return;
+
+  mutt_debug(LL_DEBUG1, "Source: %p\n", src);
+  mutt_debug(LL_DEBUG1, "    fp = %p (%d)\n", src->fp, src->fp ? fileno(src->fp) : -1);
+  mutt_debug(LL_DEBUG1, "    close_fp = %s\n", src->close_fp ? "true" : "false");
+  mutt_debug(LL_DEBUG1, "    cache_size = %d\n", src->cache_size);
+  mutt_debug(LL_DEBUG1, "    cache =\n%s\n", src->cache);
+}
+
 void dump_spager(struct PagedFile *pf)
 {
   if (!pf)
     return;
 
   mutt_debug(LL_DEBUG1, "PagedFile\n");
-  mutt_debug(LL_DEBUG1, "fd %d\n", fileno(pf->fp));
+  dump_source(pf->source);
   dump_rows(&pf->rows);
 }

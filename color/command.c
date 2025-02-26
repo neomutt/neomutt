@@ -50,6 +50,9 @@
 #include "parse_color.h"
 #include "regex4.h"
 #include "simple2.h"
+#ifdef USE_DEBUG_SPAGER
+#include "debug/lib.h"
+#endif
 
 /**
  * ColorFields - Mapping of colour names to their IDs
@@ -330,7 +333,17 @@ static enum CommandResult parse_color_command(struct Buffer *buf,
       struct AttrColorList acl = TAILQ_HEAD_INITIALIZER(acl);
       struct PagedFile *pf = paged_file_new(NULL);
       color_dump(pf, &acl, true);
+      dump_spager(pf);
+
+#if 1
       dlg_spager(pf, "color", NeoMutt->sub);
+#else
+      struct PagedFile *pf_file = paged_file_new(pf->source->fp);
+      // XXX add filters
+      dlg_spager(pf_file, "color", NeoMutt->sub);
+      paged_file_free(&pf_file);
+#endif
+
       paged_file_free(&pf);
       attr_color_list_clear(&acl);
     }

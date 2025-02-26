@@ -132,7 +132,7 @@ void spager_get_data(struct MuttWindow *win, struct SimplePagerExport *spe)
   spe->num_rows = ARRAY_SIZE(pra);
   spe->num_vrows = paged_rows_count_virtual_rows(pra);
   spe->top_vrow = wdata->vrow;
-  spe->bytes_total = mutt_file_get_size_fp(pf->fp);
+  spe->bytes_total = mutt_file_get_size_fp(pf->source->fp);
   spe->percentage = 0;
   if (spe->bytes_total > 0)
     spe->percentage = (spe->bytes_pos * 100) / spe->bytes_total;

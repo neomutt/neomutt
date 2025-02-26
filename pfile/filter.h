@@ -1,6 +1,6 @@
 /**
  * @file
- * Backing File for the Simple Pager
+ * Filter XXX
  *
  * @authors
  * Copyright (C) 2024-2025 Richard Russon <rich@flatcap.org>
@@ -20,26 +20,35 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_PFILE_PAGED_FILE_H
-#define MUTT_PFILE_PAGED_FILE_H
-
-#include <stdbool.h>
-#include <stdio.h>
-#include "paged_row.h"
+#ifndef MUTT_PFILE_FILTER_H
+#define MUTT_PFILE_FILTER_H
 
 /**
- * struct PagedFile - A File for the Simple Pager
+ * struct Filter - XXX
  */
-struct PagedFile
+struct Filter
 {
-  struct Source *source;                ///< XXX
-  struct PagedRowArray rows;            ///< Markup
-  const struct AttrColor *ac_file;      ///< Default colour for the entire Window
+  struct Source *source;              ///< XXX
+
+  void *fdata;                        ///< Filter specific data
+
+  /**
+   * @defgroup filter_fdata_free Filter Private Data API
+   *
+   * fdata_free - Free the private data attached to the Filter
+   * @param ptr Private data to be freed
+   *
+   * @pre ptr  is not NULL
+   * @pre *ptr is not NULL
+   */
+  void (*fdata_free)(void **ptr);
+
+  /**
+   * @defgroup filter_apply Apply a Filter XXX
+   *
+   * filter_apply - Apply a Filter XXX
+   */
+  void (*filter_apply)(void);
 };
 
-void              paged_file_free(struct PagedFile **pptr);
-struct PagedFile *paged_file_new (FILE *fp);
-
-struct PagedRow *paged_file_new_row(struct PagedFile *pf);
-
-#endif /* MUTT_PFILE_PAGED_FILE_H */
+#endif /* MUTT_PFILE_FILTER_H */

@@ -230,7 +230,8 @@ static void display_row2(struct MuttWindow *win, int row, const char *text,
   }
 
   mutt_window_move(win, row, pos - col);
-  mutt_curses_set_color(pr->ac_merged);
+  // mutt_curses_set_color(pr->ac_merged);
+  mutt_curses_set_color(simple_color_get(MT_COLOR_NORMAL));
 #ifndef USE_DEBUG_WINDOW
   mutt_window_clrtoeol(win);
 #endif
@@ -253,8 +254,8 @@ static int win_spager_repaint(struct MuttWindow *win)
 #endif
 
   struct PagedFile *pf = wdata->paged_file;
-  FILE *fp = pf->fp;
-  rewind(fp);
+  // FILE *fp = pf->source->fp;
+  // rewind(fp);
 
   const char *text = NULL;
 
@@ -282,7 +283,11 @@ static int win_spager_repaint(struct MuttWindow *win)
       if (seg_next)
         text_end = seg_next->offset_bytes;
 
-      display_row2(win, screen_row, text, text_offset, text_end, pr);
+      struct PagedRow pr_normal = { 0 };
+      paged_row_normalise(pr, &pr_normal);
+      display_row2(win, screen_row, text, text_offset, text_end, &pr_normal);
+      paged_row_clear(&pr_normal);
+
 #ifdef USE_DEBUG_WINDOW
       mutt_refresh();
 #endif
