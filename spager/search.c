@@ -140,7 +140,7 @@ enum SearchResult spager_search_search(struct SimplePagerSearch *sps,
 
   ARRAY_FOREACH(pr, sps->pra)
   {
-    const char *text = paged_row_get_text(pr);
+    const char *text = paged_row_get_virtual_text(pr, NULL);
     if (!text)
       continue;
 

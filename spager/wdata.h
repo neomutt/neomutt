@@ -26,9 +26,31 @@
 #include "config.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "pfile/lib.h"
 #include "search.h"
 
 struct MuttWindow;
+
+/**
+ * SpagerWrapFlags - Simple Pager Wrapping flags
+ */
+typedef uint8_t SpagerWrapFlags;    ///< Flags, e.g. #SPW_POSITIVE
+#define SPW_NO_FLAGS            0   ///< No flags are set
+#define SPW_POSITIVE      (1 << 0)  ///< Wrap width measures distance from left-hand-side
+#define SPW_NEGATIVE      (1 << 1)  ///< Wrap width measures distance from right-hand-side
+#define SPW_MARKERS       (1 << 2)  ///< Show markers before wrapped text
+#define SPW_SMART         (1 << 3)  ///< Perform smart wrapper (at word boundaries)
+#define SPW_NO_WRAP       (1 << 4)  ///< Do not wrap text
+
+/**
+ * enum SpagerTristate - Tri-state for features
+ */
+enum SpagerTristate
+{
+  SPT_ENABLED = 1,       ///< Feature is always enabled
+  SPT_DISABLED,          ///< Feature is always disabled
+  SPT_CONFIG,            ///< Feature is controlled by config settings
+};
 
 /**
  * struct EventSimplePager - An Event that happened to a SimplePager
@@ -71,6 +93,19 @@ struct SimplePagerExport
 };
 
 /**
+ * struct ViewRow - XXX
+ */
+struct ViewRow
+{
+  const char *text;                       ///< Plain text
+  struct PagedTextMarkupArray markup;     ///< Markup for the text
+  int num_bytes;                          ///< Number of bytes in the text
+  int num_cols;                           ///< Number of screen columns used by the text
+  struct SegmentArray segments;           ///< Lengths of wrapped parts of the Row
+};
+ARRAY_HEAD(ViewRowArray, struct ViewRow *);
+
+/**
  * struct SimplePagerWindowData - Window state data for the Simple Pager
  */
 struct SimplePagerWindowData
@@ -91,6 +126,17 @@ struct SimplePagerWindowData
   int vrow;                           ///< Virtual Row at the top of the view
 
   struct Notify *notify;              ///< Notifications: #NotifySimplePager
+
+  struct ViewRowArray vrows;          ///< XXX
+
+  int scr_row;                        ///< Screen position
+  int scr_col;                        ///< XXX
+  int scr_off;                        ///< XXX
+
+  // Effectively the cursor; the top Row visible in the View
+  int top_row;                        ///< View top is this Row
+  int top_col;                        ///< View top is this column of the Row
+  int top_off;                        ///< View top if this byte offset into the Row
 };
 
 void                          spager_wdata_free(struct MuttWindow *win, void **ptr);

@@ -35,6 +35,7 @@
 #include "color/lib.h"
 #include "paged_file.h"
 #include "paged_text.h"
+#include "source.h"
 
 /**
  * paged_row_clear - Clear a PagedRow
@@ -57,14 +58,19 @@ void paged_row_clear(struct PagedRow *pr)
  * @param pr PagedRow to add to
  * @retval num Number of screen columns used
  */
-int paged_row_add_newline(struct PagedRow *pr)
+int paged_row_add_newline(struct Source *src, struct PagedRow *pr)
 {
   if (!pr || !pr->paged_file)
     return 0;
 
   // The GUI doesn't care about newlines,
   // so add it to the file, but don't adjust the counters.
-  fputs("\n", pr->paged_file->fp);
+  // fputs("\n", pr->paged_file->fp);
+  // long offset =
+  source_add_text(src, "\n", 1);
+
+  pr->num_bytes++;
+  pr->num_cols++;
 
   return 0;
 }
@@ -75,12 +81,15 @@ int paged_row_add_newline(struct PagedRow *pr)
  * @param text Text to add
  * @retval num Number of screen columns used
  */
-int paged_row_add_raw_text(struct PagedRow *pr, const char *text)
+int paged_row_add_raw_text(struct Source *src, struct PagedRow *pr, const char *text)
 {
   if (!pr || !pr->paged_file || !text || (text[0] == '\0'))
     return 0;
 
-  fputs(text, pr->paged_file->fp);
+  // fputs(text, pr->paged_file->fp);
+  int bytes = mutt_str_len(text);
+  // long offset =
+  source_add_text(src, text, bytes);
 
   // We don't alter num_cols as this text won't be displayed
   pr->num_bytes += mutt_str_len(text);
@@ -94,15 +103,23 @@ int paged_row_add_raw_text(struct PagedRow *pr, const char *text)
  * @param text Text to add
  * @retval num Number of screen columns used
  */
-int paged_row_add_text(struct PagedRow *pr, const char *text)
+int paged_row_add_text(struct Source *src, struct PagedRow *pr, const char *text)
 {
   if (!pr || !pr->paged_file || !text)
     return 0;
 
+  struct PagedTextMarkup *ptm = paged_text_markup_new(&pr->text);
+
   int bytes = mutt_str_len(text);
   int cols = mutt_strwidth(text);
 
-  fputs(text, pr->paged_file->fp);
+  // fputs(text, pr->paged_file->fp);
+  // long offset =
+  source_add_text(src, text, bytes);
+
+  ptm->first = pr->num_bytes;
+  ptm->bytes = bytes;
+  ptm->source = src;
 
   pr->num_bytes += bytes;
   pr->num_cols += cols;
@@ -116,7 +133,7 @@ int paged_row_add_text(struct PagedRow *pr, const char *text)
  * @param text Text to add
  * @retval num Number of rows used
  */
-int paged_row_add_multirow(struct PagedFile *pf, const char *text)
+int paged_row_add_multirow(struct Source *src, struct PagedFile *pf, const char *text)
 {
   if (!pf || !text)
     return 0;
@@ -133,8 +150,15 @@ int paged_row_add_multirow(struct PagedFile *pf, const char *text)
     pr->num_cols = mutt_strnwidth(text, pr->num_bytes);
     pr->num_bytes++; // Count the newline, but don't measure it
 
-    if (fwrite(text, pr->num_bytes, 1, pf->fp) != 1)
-      break;
+    // if (fwrite(text, pr->num_bytes, 1, pf->fp) != 1)
+    //   break;
+    // long offset =
+    source_add_text(src, text, pr->num_bytes);
+
+    struct PagedTextMarkup *ptm = paged_text_markup_new(&pr->text);
+    ptm->first = 0;
+    ptm->bytes = pr->num_bytes;
+    ptm->source = src;
 
     text = ptr + 1;
     count++;
@@ -146,7 +170,9 @@ int paged_row_add_multirow(struct PagedFile *pf, const char *text)
 
     pr->num_bytes = mutt_str_len(text);
     pr->num_cols = mutt_strnwidth(text, pr->num_bytes);
-    fputs(text, pf->fp);
+    // fputs(text, pf->fp);
+    // long offset =
+    source_add_text(src, text, pr->num_bytes);
     count++;
   }
 
@@ -160,7 +186,7 @@ int paged_row_add_multirow(struct PagedFile *pf, const char *text)
  * @param text Text to add
  * @retval num Number of screen columns used
  */
-int paged_row_add_colored_text(struct PagedRow *pr, int cid, const char *text)
+int paged_row_add_colored_text(struct Source *src, struct PagedRow *pr, int cid, const char *text)
 {
   if (!pr || !pr->paged_file || !text)
     return 0;
@@ -170,11 +196,14 @@ int paged_row_add_colored_text(struct PagedRow *pr, int cid, const char *text)
   int bytes = mutt_str_len(text);
   int cols = mutt_strwidth(text);
 
-  fputs(text, pr->paged_file->fp);
+  // fputs(text, pr->paged_file->fp);
+  // long offset =
+  source_add_text(src, text, bytes);
 
   ptm->first = pr->num_bytes;
   ptm->bytes = bytes;
   ptm->cid = cid;
+  ptm->source = src;
 
   pr->num_bytes += bytes;
   pr->num_cols += cols;
@@ -189,7 +218,7 @@ int paged_row_add_colored_text(struct PagedRow *pr, int cid, const char *text)
  * @param text Text to add
  * @retval num Number of screen columns used
  */
-int paged_row_add_ac_text(struct PagedRow *pr, struct AttrColor *ac, const char *text)
+int paged_row_add_ac_text(struct Source *src, struct PagedRow *pr, struct AttrColor *ac, const char *text)
 {
   if (!pr || !pr->paged_file || !text)
     return 0;
@@ -199,12 +228,15 @@ int paged_row_add_ac_text(struct PagedRow *pr, struct AttrColor *ac, const char 
   int bytes = mutt_str_len(text);
   int cols = mutt_strwidth(text);
 
-  fputs(text, pr->paged_file->fp);
+  // fputs(text, pr->paged_file->fp);
+  // long offset =
+  source_add_text(src, text, bytes);
 
   ptm->first = pr->num_bytes;
   ptm->bytes = bytes;
   ptm->cid = MT_COLOR_NONE;
   ptm->ac_text = ac;
+  ptm->source = src;
 
   pr->num_bytes += bytes;
   pr->num_cols += cols;
@@ -231,6 +263,33 @@ void paged_row_add_search(struct PagedRow *pr, int first, int bytes)
 }
 
 /**
+ * paged_row_get_plain - XXX
+ */
+const char *paged_row_get_plain(struct PagedRow *pr)
+{
+  if (!pr)
+    return NULL;
+
+  struct Buffer *buf = buf_pool_get();
+
+  struct PagedTextMarkup *ptm = NULL;
+  ARRAY_FOREACH(ptm, &pr->text)
+  {
+    const char *text = source_get_text(ptm->source, pr->offset + ptm->first);
+    buf_addstr_n(buf, text, ptm->bytes);
+  }
+
+  //XXX Strip trailing CR, LF
+  int len = strcspn(buf_string(buf), "\r\n");
+  buf->data[len] = '\0';
+
+  const char *str = buf_strdup(buf);
+  buf_pool_release(&buf);
+
+  return str;
+}
+
+/**
  * paged_row_cache - Read and cache a Row of the File
  * @param pr PagedRow
  */
@@ -239,12 +298,14 @@ void paged_row_cache(struct PagedRow *pr)
   if (!pr || pr->cached_text)
     return;
 
-  FILE *fp = pr->paged_file->fp;
-  char *text = NULL;
-  size_t size = 0;
+  pr->cached_text = paged_row_get_plain(pr);
 
-  fseek(fp, pr->offset, SEEK_SET);
-  pr->cached_text = mutt_file_read_line(text, &size, fp, NULL, MUTT_RL_NO_FLAGS);
+  // FILE *fp = pr->paged_file->fp;
+  // char *text = NULL;
+  // size_t size = 0;
+
+  // fseek(fp, pr->offset, SEEK_SET);
+  // pr->cached_text = mutt_file_read_line(text, &size, fp, NULL, MUTT_RL_NO_FLAGS);
 
   pr->num_bytes = mutt_str_len(pr->cached_text);
   pr->num_cols = mutt_strwidth(pr->cached_text);
@@ -273,7 +334,7 @@ void paged_row_wrap(struct PagedRow *pr, int width, RowWrapFlags flags)
   int total_cols = 0;
 
   size_t bytes = 0;
-  size_t text_len = pr->num_bytes;
+  size_t text_len = pr->num_bytes - 1; //QWQ workaround for infinite loop
   size_t cols = 0;
 
   mutt_debug(LL_DEBUG1, "Wrapping: %s\n", pr->cached_text);
@@ -303,23 +364,6 @@ void paged_row_wrap(struct PagedRow *pr, int width, RowWrapFlags flags)
     mutt_debug(LL_DEBUG1, "Row %ld -- Segment %d: %d bytes, %d cols\n", pr_index,
                ARRAY_FOREACH_IDX_seg, seg->offset_bytes, seg->offset_cols);
   }
-}
-
-/**
- * paged_row_get_text - Get the text for a Row
- * @param pr PagedRow
- */
-const char *paged_row_get_text(struct PagedRow *pr)
-{
-  if (!pr)
-    return NULL;
-
-  paged_row_cache(pr);
-
-  if (pr->cached_text)
-    return pr->cached_text;
-
-  return NULL;
 }
 
 /**
@@ -436,4 +480,69 @@ void paged_rows_wrap(struct PagedRowArray *pra, int width, RowWrapFlags flags)
   {
     paged_row_wrap(pr, width, flags);
   }
+}
+
+/**
+ * paged_row_normalise - XXX
+ */
+void paged_row_normalise(struct PagedRow *pr, struct PagedRow *pr_normal)
+{
+  if (!pr || !pr_normal)
+    return;
+
+  int num_bytes = 0;
+
+  struct PagedTextMarkup *ptm = NULL;
+  ARRAY_FOREACH(ptm, &pr->text)
+  {
+    struct PagedTextMarkup *ptm_normal = paged_text_markup_new(&pr_normal->text);
+
+    // Copy these members
+    ptm_normal->bytes = ptm->bytes;
+    ptm_normal->cid = ptm->cid;
+    ptm_normal->source = ptm->source;
+    ptm_normal->ac_text = ptm->ac_text;
+    ptm_normal->ac_merged = ptm->ac_merged;
+
+    ptm_normal->first = num_bytes;
+    num_bytes += ptm->bytes;
+  }
+}
+
+/**
+ * paged_row_normalise2 - XXX
+ */
+void paged_row_normalise2(struct PagedRow *pr, struct PagedTextMarkupArray *ptma)
+{
+  if (!pr || !ptma)
+    return;
+
+  int num_bytes = 0;
+
+  struct PagedTextMarkup *ptm = NULL;
+  ARRAY_FOREACH(ptm, &pr->text)
+  {
+    struct PagedTextMarkup *ptm_normal = paged_text_markup_new(ptma);
+
+    // Copy these members
+    ptm_normal->bytes = ptm->bytes;
+    ptm_normal->cid = ptm->cid;
+    ptm_normal->source = ptm->source;
+    ptm_normal->ac_text = ptm->ac_text;
+    ptm_normal->ac_merged = ptm->ac_merged;
+
+    ptm_normal->first = num_bytes;
+    num_bytes += ptm->bytes;
+  }
+}
+
+/**
+ * paged_row_get_filtered - XXX
+ */
+const char *paged_row_get_filtered(struct PagedRow *pr)
+{
+  paged_file_apply_filters(pr);
+
+  const char *text = paged_row_get_plain(pr);
+  return text;
 }

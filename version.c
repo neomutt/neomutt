@@ -549,7 +549,7 @@ static void print_compile_options(const struct CompileOption *co, int width, boo
   struct AttrColor *ac_cyan = NULL;
   struct AttrColor *ac_green = NULL;
   struct AttrColor *ac_red = NULL;
-  struct AttrColor *ac = NULL;
+  // struct AttrColor *ac = NULL;
 
   if (acl)
   {
@@ -603,7 +603,7 @@ static void print_compile_options(const struct CompileOption *co, int width, boo
 
   pr = paged_file_new_row(pf);
   if (width > 0)
-    paged_row_add_text(pr, "  ");
+    paged_row_add_text(pf->source, pr, "  ");
 
   const char *col = NULL;
   const char *prefix = "";
@@ -614,13 +614,13 @@ static void print_compile_options(const struct CompileOption *co, int width, boo
 
     if ((width > 0) && ((used + len) > width))
     {
-      paged_row_add_text(pr, buf_string(buf));
-      paged_row_add_text(pr, "\n");
+      paged_row_add_text(pf->source, pr, buf_string(buf));
+      paged_row_add_text(pf->source, pr, "\n");
       buf_reset(buf);
 
       used = 2;
       pr = paged_file_new_row(pf);
-      paged_row_add_text(pr, "  ");
+      paged_row_add_text(pf->source, pr, "  ");
     }
     used += len;
 
@@ -630,33 +630,37 @@ static void print_compile_options(const struct CompileOption *co, int width, boo
       {
         col = col_red;
         prefix = "-";
-        ac = ac_red;
+        // ac = ac_red;
         break;
       }
       case 1: // Enabled
       {
         col = col_green;
         prefix = "-";
-        ac = ac_green;
+        // ac = ac_green;
         break;
       }
       case 2: // Devel only
       {
         col = col_cyan;
         prefix = "";
-        ac = ac_cyan;
+        // ac = ac_cyan;
         break;
       }
     }
 
-    paged_row_add_raw_text(pr, col);
-    paged_row_add_ac_text(pr, ac, prefix);
-    paged_row_add_ac_text(pr, ac, co[i].name);
-    paged_row_add_raw_text(pr, col_end);
-    paged_row_add_text(pr, " ");
+    // paged_row_add_raw_text(pf->source, pr, col);
+    paged_row_add_text(pf->source, pr, col);
+    // paged_row_add_ac_text(pf->source, pr, ac, prefix);
+    paged_row_add_text(pf->source, pr, prefix);
+    // paged_row_add_ac_text(pf->source, pr, ac, co[i].name);
+    paged_row_add_text(pf->source, pr, co[i].name);
+    // paged_row_add_raw_text(pf->source, pr, col_end);
+    paged_row_add_text(pf->source, pr, col_end);
+    paged_row_add_text(pf->source, pr, " ");
   }
-  paged_row_add_text(pr, buf_string(buf));
-  paged_row_add_text(pr, "\n");
+  paged_row_add_text(pf->source, pr, buf_string(buf));
+  paged_row_add_text(pf->source, pr, "\n");
 
   buf_pool_release(&buf);
 }
@@ -709,145 +713,149 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
 
   pr = paged_file_new_row(pf);
 
-  paged_row_add_raw_text(pr, col_cyan);
-  paged_row_add_ac_text(pr, ac_cyan, ver->version);
-  paged_row_add_raw_text(pr, col_end);
-  paged_row_add_newline(pr);
+  // paged_row_add_raw_text(pf->source, pr, col_cyan);
+  paged_row_add_text(pf->source, pr, col_cyan);
+  // paged_row_add_ac_text(pf->source, pr, ac_cyan, ver->version);
+  paged_row_add_text(pf->source, pr, ver->version);
+  // paged_row_add_raw_text(pf->source, pr, col_end);
+  paged_row_add_text(pf->source, pr, col_end);
 
-  paged_row_add_multirow(pf, _(Notice));
+  paged_row_add_newline(pf->source, pr);
+
+  paged_row_add_multirow(pf->source, pf, _(Notice));
 
   pr = paged_file_new_row(pf);
-  paged_row_add_text(pr, "\n");
+  paged_row_add_newline(pf->source, pr);
 
   ARRAY_FOREACH(kv, &ver->system)
   {
     pr = paged_file_new_row(pf);
-    paged_row_add_raw_text(pr, col_bold);
-    paged_row_add_colored_text(pr, MT_COLOR_BOLD, kv->key);
-    paged_row_add_raw_text(pr, col_end);
-    paged_row_add_text(pr, ": ");
-    paged_row_add_text(pr, kv->value);
-    paged_row_add_newline(pr);
+    paged_row_add_raw_text(pf->source, pr, col_bold);
+    paged_row_add_text(pf->source, pr, kv->key);
+    paged_row_add_raw_text(pf->source, pr, col_end);
+    paged_row_add_text(pf->source, pr, ": ");
+    paged_row_add_text(pf->source, pr, kv->value);
+    paged_row_add_newline(pf->source, pr);
   }
 
   if (ver->storage)
   {
     pr = paged_file_new_row(pf);
-    paged_row_add_raw_text(pr, col_bold);
-    paged_row_add_colored_text(pr, MT_COLOR_BOLD, "Storage");
-    paged_row_add_raw_text(pr, col_end);
-    paged_row_add_text(pr, ": ");
+    paged_row_add_raw_text(pf->source, pr, col_bold);
+    paged_row_add_text(pf->source, pr, "Storage");
+    paged_row_add_raw_text(pf->source, pr, col_end);
+    paged_row_add_text(pf->source, pr, ": ");
 
     STAILQ_FOREACH(np, &ver->storage->head, entries)
     {
-      paged_row_add_text(pr, np->data);
+      paged_row_add_text(pf->source, pr, np->data);
       if (STAILQ_NEXT(np, entries))
-        paged_row_add_text(pr, ", ");
+        paged_row_add_text(pf->source, pr, ", ");
     }
-    paged_row_add_text(pr, "\n");
+    paged_row_add_text(pf->source, pr, "\n");
   }
 
   if (ver->compression)
   {
     pr = paged_file_new_row(pf);
-    paged_row_add_raw_text(pr, col_bold);
-    paged_row_add_colored_text(pr, MT_COLOR_BOLD, "Compression");
-    paged_row_add_raw_text(pr, col_end);
-    paged_row_add_text(pr, ": ");
+    paged_row_add_raw_text(pf->source, pr, col_bold);
+    paged_row_add_text(pf->source, pr, "Compression");
+    paged_row_add_raw_text(pf->source, pr, col_end);
+    paged_row_add_text(pf->source, pr, ": ");
     STAILQ_FOREACH(np, &ver->compression->head, entries)
     {
-      paged_row_add_text(pr, np->data);
+      paged_row_add_text(pf->source, pr, np->data);
       if (STAILQ_NEXT(np, entries))
-        paged_row_add_text(pr, ", ");
+        paged_row_add_text(pf->source, pr, ", ");
     }
-    paged_row_add_text(pr, "\n");
+    paged_row_add_text(pf->source, pr, "\n");
   }
 
   pr = paged_file_new_row(pf);
-  paged_row_add_text(pr, "\n");
+  paged_row_add_text(pf->source, pr, "\n");
 
   pr = paged_file_new_row(pf);
-  paged_row_add_raw_text(pr, col_bold);
-  paged_row_add_colored_text(pr, MT_COLOR_BOLD, "Configure options");
-  paged_row_add_raw_text(pr, col_end);
-  paged_row_add_text(pr, ": ");
+  paged_row_add_raw_text(pf->source, pr, col_bold);
+  paged_row_add_text(pf->source, pr, "Configure options");
+  paged_row_add_raw_text(pf->source, pr, col_end);
+  paged_row_add_text(pf->source, pr, ": ");
   if (ver->configure)
   {
     STAILQ_FOREACH(np, &ver->configure->head, entries)
     {
       if (!np || !np->data)
         continue;
-      paged_row_add_text(pr, np->data);
+      paged_row_add_text(pf->source, pr, np->data);
       if (STAILQ_NEXT(np, entries))
-        paged_row_add_text(pr, " ");
+        paged_row_add_text(pf->source, pr, " ");
     }
-    paged_row_add_text(pr, "\n");
+    paged_row_add_text(pf->source, pr, "\n");
   }
 
   pr = paged_file_new_row(pf);
-  paged_row_add_text(pr, "\n");
+  paged_row_add_newline(pf->source, pr);
 
   if (ver->compilation)
   {
     pr = paged_file_new_row(pf);
-    paged_row_add_raw_text(pr, col_bold);
-    paged_row_add_colored_text(pr, MT_COLOR_BOLD, "Compilation CFLAGS");
-    paged_row_add_raw_text(pr, col_end);
-    paged_row_add_text(pr, ": ");
+    paged_row_add_raw_text(pf->source, pr, col_bold);
+    paged_row_add_text(pf->source, pr, "Compilation CFLAGS");
+    paged_row_add_raw_text(pf->source, pr, col_end);
+    paged_row_add_text(pf->source, pr, ": ");
     STAILQ_FOREACH(np, &ver->compilation->head, entries)
     {
       if (!np || !np->data)
         continue;
-      paged_row_add_text(pr, np->data);
+      paged_row_add_text(pf->source, pr, np->data);
       if (STAILQ_NEXT(np, entries))
-        paged_row_add_text(pr, " ");
+        paged_row_add_text(pf->source, pr, " ");
     }
-    paged_row_add_text(pr, "\n");
+    paged_row_add_text(pf->source, pr, "\n");
   }
 
   pr = paged_file_new_row(pf);
-  paged_row_add_text(pr, "\n");
+  paged_row_add_newline(pf->source, pr);
 
   pr = paged_file_new_row(pf);
-  paged_row_add_raw_text(pr, col_bold);
-  paged_row_add_colored_text(pr, MT_COLOR_BOLD, _("Compile options"));
-  paged_row_add_raw_text(pr, col_end);
-  paged_row_add_text(pr, ":\n");
+  paged_row_add_raw_text(pf->source, pr, col_bold);
+  paged_row_add_text(pf->source, pr, _("Compile options"));
+  paged_row_add_raw_text(pf->source, pr, col_end);
+  paged_row_add_text(pf->source, pr, ":\n");
 
   print_compile_options(ver->feature, width, use_ansi, pf, acl);
 
   pr = paged_file_new_row(pf);
-  paged_row_add_text(pr, "\n");
+  paged_row_add_newline(pf->source, pr);
 
   if (ver->devel)
   {
     pr = paged_file_new_row(pf);
-    paged_row_add_raw_text(pr, col_bold);
-    paged_row_add_colored_text(pr, MT_COLOR_BOLD, _("Devel options"));
-    paged_row_add_raw_text(pr, col_end);
-    paged_row_add_text(pr, ":\n");
+    paged_row_add_raw_text(pf->source, pr, col_bold);
+    paged_row_add_text(pf->source, pr, _("Devel options"));
+    paged_row_add_raw_text(pf->source, pr, col_end);
+    paged_row_add_text(pf->source, pr, ":\n");
 
     print_compile_options(ver->devel, width, use_ansi, pf, acl);
 
     pr = paged_file_new_row(pf);
-    paged_row_add_text(pr, "\n");
+    paged_row_add_newline(pf->source, pr);
   }
 
   ARRAY_FOREACH(kv, &ver->paths)
   {
     pr = paged_file_new_row(pf);
-    paged_row_add_raw_text(pr, col_bold);
-    paged_row_add_colored_text(pr, MT_COLOR_BOLD, kv->key);
-    paged_row_add_raw_text(pr, col_end);
-    paged_row_add_text(pr, "=\"");
-    paged_row_add_text(pr, kv->value);
-    paged_row_add_text(pr, "\"\n");
+    paged_row_add_raw_text(pf->source, pr, col_bold);
+    paged_row_add_text(pf->source, pr, kv->key);
+    paged_row_add_raw_text(pf->source, pr, col_end);
+    paged_row_add_text(pf->source, pr, "=\"");
+    paged_row_add_text(pf->source, pr, kv->value);
+    paged_row_add_text(pf->source, pr, "\"\n");
   }
 
   pr = paged_file_new_row(pf);
-  paged_row_add_text(pr, "\n");
+  paged_row_add_newline(pf->source, pr);
 
-  paged_row_add_multirow(pf, _(ReachingUs));
+  paged_row_add_multirow(pf->source, pf, _(ReachingUs));
 
   version_free(&ver);
   return true;

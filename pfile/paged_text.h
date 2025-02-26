@@ -43,10 +43,10 @@ struct PagedTextMarkup
   int cid;                              ///< Colour ID, e.g. #MT_COLOR_SIGNATURE
   const struct AttrColor *ac_text;      ///< Curses colour of text
   const struct AttrColor *ac_merged;    ///< Curses colour of text
+
+  struct Source *source;                ///< XXX
 };
 ARRAY_HEAD(PagedTextMarkupArray, struct PagedTextMarkup);
-
-void paged_text_markup_clear(struct PagedTextMarkupArray *ptma);
 
 struct PagedTextMarkup *paged_text_markup_new(struct PagedTextMarkupArray *ptma);
 
@@ -71,5 +71,11 @@ static inline bool pos_after_text_markup(int pos, struct PagedTextMarkup *ptm)
 {
   return (ptm && (pos >= (ptm->first + ptm->bytes)));
 }
+
+bool markup_apply (struct PagedTextMarkupArray *ptma, int position, int bytes, int cid, const struct AttrColor *ac);
+bool markup_delete(struct PagedTextMarkupArray *ptma, int position, int bytes);
+bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int position, int first, int bytes);
+
+void markup_dump  (const struct PagedTextMarkupArray *ptma, int first, int last);
 
 #endif /* MUTT_PFILE_PAGED_TEXT_H */

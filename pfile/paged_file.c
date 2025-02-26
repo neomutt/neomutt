@@ -31,6 +31,7 @@
 #include "core/lib.h"
 #include "paged_file.h"
 #include "paged_row.h"
+#include "source.h"
 
 /**
  * paged_file_free - Free a PagedFile
@@ -43,15 +44,18 @@ void paged_file_free(struct PagedFile **pptr)
 
   struct PagedFile *pf = *pptr;
 
-  if (pf->close_fp)
-    mutt_file_fclose(&pf->fp);
-
   struct PagedRow *pr = NULL;
   ARRAY_FOREACH(pr, &pf->rows)
   {
     paged_row_clear(pr);
   }
   ARRAY_FREE(&pf->rows);
+
+  struct Filter **pfil = NULL;
+  ARRAY_FOREACH(pfil, &pf->filters)
+  {
+    (*pfil)->fdata_free(NULL);
+  }
 
   FREE(pptr);
 }
@@ -60,33 +64,15 @@ void paged_file_free(struct PagedFile **pptr)
  * paged_file_new - Create a new PagedFile
  * @param fp File to use (OPTIONAL)
  * @retval ptr New PagedFile
- * 
+ *
  * @note If fp is supplied, the caller must close it
  */
 struct PagedFile *paged_file_new(FILE *fp)
 {
-  bool close_fp = false;
-
-  if (fp)
-  {
-    // stat file
-  }
-  else
-  {
-    fp = mutt_file_mkstemp();
-    close_fp = true;
-  }
-
-  if (!fp)
-  {
-    mutt_perror(_("Can't create temporary file"));
-    return NULL;
-  }
-
   struct PagedFile *pf = MUTT_MEM_CALLOC(1, struct PagedFile);
 
-  pf->fp = fp;
-  pf->close_fp = close_fp;
+  pf->source = source_new(fp);
+
   ARRAY_INIT(&pf->rows);
 
   return pf;
@@ -101,14 +87,58 @@ struct PagedFile *paged_file_new(FILE *fp)
  */
 struct PagedRow *paged_file_new_row(struct PagedFile *pf)
 {
-  if (!pf || !pf->fp)
+  if (!pf)
     return NULL;
 
   struct PagedRow pr = { 0 };
   pr.paged_file = pf;
-  pr.offset = ftell(pf->fp);
+
+  struct PagedRow *pr_prev = ARRAY_LAST(&pf->rows);
+  if (pr_prev)
+  {
+    pr.offset = pr_prev->offset + pr_prev->num_bytes;
+  }
 
   ARRAY_ADD(&pf->rows, pr);
 
   return ARRAY_LAST(&pf->rows);
+}
+
+/**
+ * paged_file_add_filter - XXX
+ */
+void paged_file_add_filter(struct PagedFile *pf, struct Filter *fil)
+{
+  if (!pf || !fil)
+    return;
+
+  ARRAY_ADD(&pf->filters, fil);
+}
+
+/**
+ * paged_file_get_row_from_source - XXX
+ */
+void paged_file_get_row_from_source(struct PagedFile *pf)
+{
+}
+
+/**
+ * paged_file_apply_filters - XXX
+ */
+void paged_file_apply_filters(struct PagedRow *pr)
+{
+  if (!pr || pr->valid)
+    return;
+
+  struct PagedFile *pf = pr->paged_file;
+
+  struct Filter **pfil = NULL;
+  ARRAY_FOREACH(pfil, &pf->filters)
+  {
+    struct Filter *fil = *pfil;
+
+    fil->apply(fil, pr);
+  }
+
+  pr->valid = true;
 }
