@@ -330,7 +330,15 @@ static enum CommandResult parse_color_command(struct Buffer *buf,
       struct AttrColorList acl = TAILQ_HEAD_INITIALIZER(acl);
       struct PagedFile *pf = paged_file_new(NULL);
       color_dump(pf, &acl, true);
+
+#if 1
       dlg_spager(pf, "color", NeoMutt->sub);
+#else
+      struct PagedFile *pf_file = paged_file_new(pf->fp);
+      dlg_spager(pf_file, "color", NeoMutt->sub);
+      paged_file_free(&pf_file);
+#endif
+
       paged_file_free(&pf);
       attr_color_list_clear(&acl);
     }
