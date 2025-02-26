@@ -123,7 +123,7 @@ void ansi_colors_dump(struct PagedFile *pf)
   struct PagedRow *pr = NULL;
 
   pr = paged_file_new_row(pf);
-  paged_row_add_colored_text(pr, MT_COLOR_COMMENT, _("# Ansi Colors\n"));
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, _("# Ansi Colors\n"));
 
   int len;
   struct ColorTable *ct = NULL;
@@ -131,12 +131,12 @@ void ansi_colors_dump(struct PagedFile *pf)
   {
     pr = paged_file_new_row(pf);
 
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, "# ");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "# ");
 
     buf_printf(buf, "%d", ARRAY_FOREACH_IDX_ct + 1);
-    len = paged_row_add_colored_text(pr, MT_COLOR_NUMBER, buf_string(buf));
+    len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_NUMBER, buf_string(buf));
     buf_printf(buf, "%*s", 3 - len, "");
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, buf_string(buf));
 
     len = 0;
     if (!slist_is_empty(ct->attrs))
@@ -144,33 +144,40 @@ void ansi_colors_dump(struct PagedFile *pf)
       struct ListNode *np = NULL;
       STAILQ_FOREACH(np, &ct->attrs->head, entries)
       {
-        len += paged_row_add_colored_text(pr, MT_COLOR_ATTRIBUTE, np->data);
+        len += paged_row_add_colored_text(pf->source, pr, MT_COLOR_ATTRIBUTE, np->data);
         if (STAILQ_NEXT(np, entries))
-          len += paged_row_add_text(pr, " ");
+          len += paged_row_add_text(pf->source, pr, " ");
       }
     }
     buf_printf(buf, "%*s", w_attrs - len + 1, "");
-    paged_row_add_text(pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, buf_string(buf));
 
-    len = paged_row_add_colored_text(pr, MT_COLOR_COLOR, ct->fg);
+    len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_COLOR, ct->fg);
     buf_printf(buf, "%*s", w_fg - len + 1, "");
-    paged_row_add_text(pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, buf_string(buf));
 
-    len = paged_row_add_colored_text(pr, MT_COLOR_COLOR, ct->bg);
+    len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_COLOR, ct->bg);
     buf_printf(buf, "%*s", w_bg - len + 1, "");
-    paged_row_add_text(pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, buf_string(buf));
 
     color_log_color_attrs(ct->attr_color, swatch);
-    paged_row_add_raw_text(pr, buf_string(swatch));
+    // paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+    paged_row_add_text(pf->source, pr, buf_string(swatch));
 
-    paged_row_add_ac_text(pr, ct->attr_color, "XXXXXX");
+    // paged_row_add_ac_text(pf->source, pr, ct->attr_color, "XXXXXX");
+    paged_row_add_text(pf->source, pr, "XXXXXX");
 
-    paged_row_add_raw_text(pr, "\033[0m");
-    paged_row_add_newline(pr);
+    if (!buf_is_empty(swatch))
+    {
+      // paged_row_add_raw_text(pf->source, pr, "\033[0m");
+      paged_row_add_text(pf->source, pr, "\033[0m");
+    }
+
+    paged_row_add_newline(pf->source, pr);
   }
 
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   buf_pool_release(&swatch);
   buf_pool_release(&buf);
@@ -214,10 +221,10 @@ void curses_colors_dump(struct PagedFile *pf, struct AttrColorList *acl)
   struct PagedRow *pr = NULL;
 
   pr = paged_file_new_row(pf);
-  paged_row_add_colored_text(pr, MT_COLOR_COMMENT, _("# Curses Colors\n"));
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, _("# Curses Colors\n"));
 
   pr = paged_file_new_row(pf);
-  paged_row_add_colored_text(pr, MT_COLOR_COMMENT, "# Index rc fg      bg      Color\n");
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "# Index rc fg      bg      Color\n");
 
   int len;
   struct CursesColor *cc = NULL;
@@ -225,38 +232,38 @@ void curses_colors_dump(struct PagedFile *pf, struct AttrColorList *acl)
   {
     pr = paged_file_new_row(pf);
 
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, "# ");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "# ");
 
     buf_printf(buf, "%d", cc->index);
-    len = paged_row_add_colored_text(pr, MT_COLOR_NUMBER, buf_string(buf));
+    len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_NUMBER, buf_string(buf));
     buf_printf(buf, "%*s", 6 - len, "");
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, buf_string(buf));
 
     buf_printf(buf, "%d", cc->ref_count);
-    len = paged_row_add_colored_text(pr, MT_COLOR_NUMBER, buf_string(buf));
+    len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_NUMBER, buf_string(buf));
     buf_printf(buf, "%*s", 3 - len, "");
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, buf_string(buf));
 
     if (cc->fg == -1)
     {
-      paged_row_add_colored_text(pr, MT_COLOR_COMMENT, "-       ");
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "-       ");
     }
     else
     {
       buf_printf(buf, "#%06x", cc->fg);
-      paged_row_add_colored_text(pr, MT_COLOR_COLOR, buf_string(buf));
-      paged_row_add_colored_text(pr, MT_COLOR_COMMENT, " ");
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_COLOR, buf_string(buf));
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, " ");
     }
 
     if (cc->bg == -1)
     {
-      paged_row_add_colored_text(pr, MT_COLOR_COMMENT, "-       ");
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "-       ");
     }
     else
     {
       buf_printf(buf, "#%06x", cc->bg);
-      paged_row_add_colored_text(pr, MT_COLOR_COLOR, buf_string(buf));
-      paged_row_add_colored_text(pr, MT_COLOR_COMMENT, " ");
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_COLOR, buf_string(buf));
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, " ");
     }
 
     struct AttrColor *ac = attr_color_new();
@@ -269,16 +276,23 @@ void curses_colors_dump(struct PagedFile *pf, struct AttrColorList *acl)
     TAILQ_INSERT_TAIL(acl, ac, entries);
 
     color_log_color_attrs(ac, swatch);
-    paged_row_add_raw_text(pr, buf_string(swatch));
+    // paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+    paged_row_add_text(pf->source, pr, buf_string(swatch));
 
-    paged_row_add_ac_text(pr, ac, "XXXXXX");
+    // paged_row_add_ac_text(pf->source, pr, ac, "XXXXXX");
+    paged_row_add_text(pf->source, pr, "XXXXXX");
 
-    paged_row_add_raw_text(pr, "\033[0m");
-    paged_row_add_newline(pr);
+    if (!buf_is_empty(swatch))
+    {
+      // paged_row_add_raw_text(pf->source, pr, "\033[0m");
+      paged_row_add_text(pf->source, pr, "\033[0m");
+    }
+
+    paged_row_add_newline(pf->source, pr);
   }
 
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
   buf_pool_release(&swatch);
   buf_pool_release(&buf);
 }
@@ -322,7 +336,7 @@ void merged_colors_dump(struct PagedFile *pf)
   struct PagedRow *pr = NULL;
 
   pr = paged_file_new_row(pf);
-  paged_row_add_colored_text(pr, MT_COLOR_COMMENT, _("# Merged Colors\n"));
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, _("# Merged Colors\n"));
 
   int len;
   struct ColorTable *ct = NULL;
@@ -330,12 +344,12 @@ void merged_colors_dump(struct PagedFile *pf)
   {
     pr = paged_file_new_row(pf);
 
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, "# ");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "# ");
 
     buf_printf(buf, "%d", ARRAY_FOREACH_IDX_ct + 1);
-    len = paged_row_add_colored_text(pr, MT_COLOR_NUMBER, buf_string(buf));
+    len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_NUMBER, buf_string(buf));
     buf_printf(buf, "%*s", 3 - len, "");
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, buf_string(buf));
 
     len = 0;
     if (!slist_is_empty(ct->attrs))
@@ -343,33 +357,40 @@ void merged_colors_dump(struct PagedFile *pf)
       struct ListNode *np = NULL;
       STAILQ_FOREACH(np, &ct->attrs->head, entries)
       {
-        len += paged_row_add_colored_text(pr, MT_COLOR_ATTRIBUTE, np->data);
+        len += paged_row_add_colored_text(pf->source, pr, MT_COLOR_ATTRIBUTE, np->data);
         if (STAILQ_NEXT(np, entries))
-          len += paged_row_add_colored_text(pr, MT_COLOR_COMMENT, " ");
+          len += paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, " ");
       }
     }
     buf_printf(buf, "%*s", w_attrs - len + 1, "");
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, buf_string(buf));
 
-    len = paged_row_add_colored_text(pr, MT_COLOR_COLOR, ct->fg);
+    len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_COLOR, ct->fg);
     buf_printf(buf, "%*s", w_fg - len + 1, "");
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, buf_string(buf));
 
-    len = paged_row_add_colored_text(pr, MT_COLOR_COLOR, ct->bg);
+    len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_COLOR, ct->bg);
     buf_printf(buf, "%*s", w_bg - len + 1, "");
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, buf_string(buf));
 
     color_log_color_attrs(ct->attr_color, swatch);
-    paged_row_add_raw_text(pr, buf_string(swatch));
+    // paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+    paged_row_add_text(pf->source, pr, buf_string(swatch));
 
-    paged_row_add_ac_text(pr, ct->attr_color, "XXXXXX");
+    // paged_row_add_ac_text(pf->source, pr, ct->attr_color, "XXXXXX");
+    paged_row_add_text(pf->source, pr, "XXXXXX");
 
-    paged_row_add_raw_text(pr, "\033[0m");
-    paged_row_add_newline(pr);
+    if (!buf_is_empty(swatch))
+    {
+      // paged_row_add_raw_text(pf->source, pr, "\033[0m");
+      paged_row_add_text(pf->source, pr, "\033[0m");
+    }
+
+    paged_row_add_newline(pf->source, pr);
   }
 
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   buf_pool_release(&swatch);
   buf_pool_release(&buf);
@@ -392,6 +413,6 @@ void log_paged_file(enum LogLevel level, struct PagedFile *pf)
   struct PagedRow *pr = NULL;
   ARRAY_FOREACH(pr, &pf->rows)
   {
-    mutt_debug(level, "%s", paged_row_get_text(pr));
+    mutt_debug(level, "%s", paged_row_get_virtual_text(pr, NULL));
   }
 }

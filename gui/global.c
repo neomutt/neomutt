@@ -118,13 +118,13 @@ static int op_show_log_messages(struct MuttWindow *win, int op)
       pr->cid = MT_COLOR_DEBUG;
 
     mutt_date_localtime_format(buf->data, buf->dsize, "[%H:%M:%S]", ll->time);
-    paged_row_add_text(pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, buf_string(buf));
 
     buf_printf(buf, "<%c> %s", LogLevelAbbr[ll->level + 3], ll->message);
-    paged_row_add_text(pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, buf_string(buf));
 
     if (ll->level <= LL_MESSAGE)
-      paged_row_add_newline(pr);
+      paged_row_add_newline(pf->source, pr);
   }
 
   //QWQ pview.flags = MUTT_PAGER_BOTTOM;

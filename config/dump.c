@@ -330,18 +330,18 @@ void dump_config2(struct ConfigSet *cs, struct HashElemArray *hea,
       {
         ac = simple_color_get(MT_COLOR_COMMENT);
         color_log_color_attrs(ac, swatch);
-        if (!buf_is_empty(swatch))
-          fputs(buf_string(swatch), pf->fp);
+        // if (!buf_is_empty(swatch))
+        //   fputs(buf_string(swatch), pf->fp);
       }
 
-      paged_row_add_colored_text(pr, MT_COLOR_COMMENT, "# ");
-      paged_row_add_colored_text(pr, MT_COLOR_COMMENT, cdef->docs);
-      paged_row_add_newline(pr);
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "# ");
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, cdef->docs);
+      paged_row_add_newline(pf->source, pr);
 
       if (ansi_color)
       {
-        if (!buf_is_empty(swatch))
-          fputs("\033[0m", pf->fp);
+        // if (!buf_is_empty(swatch))
+        //   fputs("\033[0m", pf->fp);
       }
     }
 
@@ -352,39 +352,39 @@ void dump_config2(struct ConfigSet *cs, struct HashElemArray *hea,
     {
       ac = simple_color_get(MT_COLOR_FUNCTION);
       color_log_color_attrs(ac, swatch);
-      if (!buf_is_empty(swatch))
-        fputs(buf_string(swatch), pf->fp);
+      // if (!buf_is_empty(swatch))
+      //   fputs(buf_string(swatch), pf->fp);
     }
 
-    paged_row_add_colored_text(pr, MT_COLOR_FUNCTION, "set");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_FUNCTION, "set");
 
     if (ansi_color)
     {
-      if (!buf_is_empty(swatch))
-        fputs("\033[0m", pf->fp);
+      // if (!buf_is_empty(swatch))
+      //   fputs("\033[0m", pf->fp);
     }
 
-    paged_row_add_text(pr, " ");
+    paged_row_add_text(pf->source, pr, " ");
 
     if (ansi_color)
     {
       ac = simple_color_get(MT_COLOR_IDENTIFIER);
       color_log_color_attrs(ac, swatch);
-      if (!buf_is_empty(swatch))
-        fputs(buf_string(swatch), pf->fp);
+      // if (!buf_is_empty(swatch))
+      //   fputs(buf_string(swatch), pf->fp);
     }
 
     if (link_docs)
     {
       // Used to generate unique ids for the urls
-      static int seq_num = 1;
+      // static int seq_num = 1;
 
       if (CONFIG_TYPE((*hep)->type) == DT_MYVAR)
       {
-        static const char *url = "https://neomutt.org/guide/configuration#set-myvar";
-        fprintf(pf->fp, "\033]8;id=%d;%s\a", seq_num++, url);
-        len = paged_row_add_colored_text(pr, MT_COLOR_IDENTIFIER, cdef->name);
-        fputs("\033]8;;\a", pf->fp);
+        // static const char *url = "https://neomutt.org/guide/configuration#set-myvar";
+        // fprintf(pf->fp, "\033]8;id=%d;%s\a", seq_num++, url);
+        // len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_IDENTIFIER, cdef->name);
+        // fputs("\033]8;;\a", pf->fp);
       }
       else
       {
@@ -394,50 +394,50 @@ void dump_config2(struct ConfigSet *cs, struct HashElemArray *hea,
           *underscore = '-';
         }
 
-        static const char *url = "https://neomutt.org/guide/reference";
-        fprintf(pf->fp, "\033]8;id=%d;%s#%s\a", seq_num++, url, fragment);
-        len = paged_row_add_colored_text(pr, MT_COLOR_IDENTIFIER, cdef->name);
-        fputs("\033]8;;\a", pf->fp);
+        // static const char *url = "https://neomutt.org/guide/reference";
+        // fprintf(pf->fp, "\033]8;id=%d;%s#%s\a", seq_num++, url, fragment);
+        // len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_IDENTIFIER, cdef->name);
+        // fputs("\033]8;;\a", pf->fp);
 
         FREE(&fragment);
       }
     }
     else
     {
-      len = paged_row_add_colored_text(pr, MT_COLOR_IDENTIFIER, cdef->name);
+      len = paged_row_add_colored_text(pf->source, pr, MT_COLOR_IDENTIFIER, cdef->name);
     }
 
     if (ansi_color)
     {
-      if (!buf_is_empty(swatch))
-        fputs("\033[0m", pf->fp);
+      // if (!buf_is_empty(swatch))
+      //   fputs("\033[0m", pf->fp);
     }
 
     if (align_text)
     {
       buf_printf(tmp, "%*s", width - len + 1, "");
-      paged_row_add_text(pr, buf_string(tmp));
+      paged_row_add_text(pf->source, pr, buf_string(tmp));
     }
     else
     {
-      paged_row_add_text(pr, " ");
+      paged_row_add_text(pf->source, pr, " ");
     }
 
     if (ansi_color)
     {
       ac = simple_color_get(MT_COLOR_OPERATOR);
       color_log_color_attrs(ac, swatch);
-      if (!buf_is_empty(swatch))
-        fputs(buf_string(swatch), pf->fp);
+      // if (!buf_is_empty(swatch))
+      //   fputs(buf_string(swatch), pf->fp);
     }
 
-    paged_row_add_colored_text(pr, MT_COLOR_OPERATOR, "=");
-    paged_row_add_text(pr, " ");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_OPERATOR, "=");
+    paged_row_add_text(pf->source, pr, " ");
 
     if (ansi_color)
     {
-      if (!buf_is_empty(swatch))
-        fputs("\033[0m", pf->fp);
+      // if (!buf_is_empty(swatch))
+      //   fputs("\033[0m", pf->fp);
     }
 
     buf_reset(value);
@@ -475,24 +475,24 @@ void dump_config2(struct ConfigSet *cs, struct HashElemArray *hea,
     {
       ac = simple_color_get(cid);
       color_log_color_attrs(ac, swatch);
-      if (!buf_is_empty(swatch))
-        fputs(buf_string(swatch), pf->fp);
+      // if (!buf_is_empty(swatch))
+      //   fputs(buf_string(swatch), pf->fp);
     }
 
-    paged_row_add_colored_text(pr, cid, buf_string(value));
+    paged_row_add_colored_text(pf->source, pr, cid, buf_string(value));
 
     if (ansi_color)
     {
-      if (!buf_is_empty(swatch))
-        fputs("\033[0m", pf->fp);
+      // if (!buf_is_empty(swatch))
+      //   fputs("\033[0m", pf->fp);
     }
 
-    paged_row_add_newline(pr);
+    paged_row_add_newline(pf->source, pr);
 
     if (show_docs)
     {
       pr = paged_file_new_row(pf);
-      paged_row_add_newline(pr);
+      paged_row_add_newline(pf->source, pr);
     }
   }
 

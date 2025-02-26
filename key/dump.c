@@ -74,26 +74,26 @@ static int print_bind(enum MenuType menu, struct PagedFile *pf)
     pr = paged_file_new_row(pf);
 
     // bind menu
-    paged_row_add_colored_text(pr, MT_COLOR_FUNCTION, "bind");
-    paged_row_add_text(pr, " ");
-    paged_row_add_colored_text(pr, MT_COLOR_ENUM, menu_name);
-    paged_row_add_text(pr, " ");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_FUNCTION, "bind");
+    paged_row_add_text(pf->source, pr, " ");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_ENUM, menu_name);
+    paged_row_add_text(pf->source, pr, " ");
 
     // keybinding
-    len0 = paged_row_add_colored_text(pr, MT_COLOR_OPERATOR, bi->a[0]);
+    len0 = paged_row_add_colored_text(pf->source, pr, MT_COLOR_OPERATOR, bi->a[0]);
     buf_printf(buf, "%*s", wb0 - len0, "");
-    paged_row_add_text(pr, buf_string(buf));
-    paged_row_add_text(pr, " ");
+    paged_row_add_text(pf->source, pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, " ");
 
     // function
-    len1 = paged_row_add_colored_text(pr, MT_COLOR_FUNCTION, bi->a[1]);
+    len1 = paged_row_add_colored_text(pf->source, pr, MT_COLOR_FUNCTION, bi->a[1]);
     buf_printf(buf, "%*s", wb1 - len1, "");
-    paged_row_add_text(pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, buf_string(buf));
 
     // function description
-    paged_row_add_text(pr, " ");
+    paged_row_add_text(pf->source, pr, " ");
     buf_printf(buf, "# %s\n", bi->a[2]);
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, buf_string(buf));
   }
   buf_pool_release(&buf);
 
@@ -166,30 +166,30 @@ static int print_macro(enum MenuType menu, struct PagedFile *pf)
     pr = paged_file_new_row(pf);
 
     // macro menu
-    paged_row_add_colored_text(pr, MT_COLOR_FUNCTION, "macro");
-    paged_row_add_text(pr, " ");
-    paged_row_add_colored_text(pr, MT_COLOR_ENUM, menu_name);
-    paged_row_add_text(pr, " ");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_FUNCTION, "macro");
+    paged_row_add_text(pf->source, pr, " ");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_ENUM, menu_name);
+    paged_row_add_text(pf->source, pr, " ");
 
     // keybinding
-    len0 = paged_row_add_colored_text(pr, MT_COLOR_OPERATOR, bi->a[0]);
+    len0 = paged_row_add_colored_text(pf->source, pr, MT_COLOR_OPERATOR, bi->a[0]);
     buf_printf(buf, "%*s", wm0 - len0, "");
-    paged_row_add_text(pr, buf_string(buf));
-    paged_row_add_text(pr, " ");
+    paged_row_add_text(pf->source, pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, " ");
 
     // macro text
     buf_printf(buf, "\"%s\"", bi->a[1]);
-    paged_row_add_colored_text(pr, MT_COLOR_STRING, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_STRING, buf_string(buf));
 
     // description
     if (bi->a[2])
     {
-      paged_row_add_text(pr, " ");
+      paged_row_add_text(pf->source, pr, " ");
       buf_printf(buf, "\"%s\"", bi->a[2]);
-      paged_row_add_colored_text(pr, MT_COLOR_STRING, buf_string(buf));
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_STRING, buf_string(buf));
     }
 
-    paged_row_add_newline(pr);
+    paged_row_add_newline(pf->source, pr);
   }
   buf_pool_release(&buf);
 
@@ -230,7 +230,7 @@ static void colon_macro(enum MenuType menu, struct PagedFile *pf)
       {
         //XXX need to elide last blank line
         pr = paged_file_new_row(pf);
-        paged_row_add_newline(pr);
+        paged_row_add_newline(pf->source, pr);
       }
     }
   }

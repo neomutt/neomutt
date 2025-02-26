@@ -788,7 +788,8 @@ $(PWD)/pattern:
 ###############################################################################
 # libpfile
 LIBPFILE=	libpfile.a
-LIBPFILEOBJS=	pfile/paged_file.o pfile/paged_row.o pfile/paged_text.o
+LIBPFILEOBJS=	pfile/filter.o pfile/paged_file.o pfile/paged_row.o \
+		pfile/paged_text.o pfile/source.o
 CLEANFILES+=	$(LIBPFILE) $(LIBPFILEOBJS)
 ALLOBJS+=	$(LIBPFILEOBJS)
 

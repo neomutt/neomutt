@@ -1640,7 +1640,13 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
 
   struct AttrColorList acl = TAILQ_HEAD_INITIALIZER(acl);
   struct PagedFile *pf = paged_file_new(NULL);
-  print_version(pf, 0, false, &acl);
+  struct Filter *fil = filter_ansi_new();
+  paged_file_add_filter(pf, fil);
+
+  print_version(pf, 9999, true, &acl);
+#ifdef USE_DEBUG_SPAGER
+  dump_spager(pf);
+#endif
   dlg_spager(pf, "version", NeoMutt->sub);
   paged_file_free(&pf);
   attr_color_list_clear(&acl);

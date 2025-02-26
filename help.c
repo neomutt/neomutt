@@ -114,11 +114,11 @@ static void add_heading(struct PagedFile *pf, const char *heading)
   struct PagedRow *pr = NULL;
 
   pr = paged_file_new_row(pf);
-  paged_row_add_colored_text(pr, MT_COLOR_HEADING, heading);
-  paged_row_add_text(pr, "\n");
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_HEADING, heading);
+  paged_row_add_text(pf->source, pr, "\n");
 
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 }
 
 /**
@@ -135,19 +135,19 @@ static void add_chars(struct PagedFile *pf, const char *config, int num_flags,
   struct PagedRow *pr = paged_file_new_row(pf);
 
   const struct MbTable *mb_table = cs_subset_mbtable(NeoMutt->sub, config);
-  paged_row_add_colored_text(pr, MT_COLOR_FUNCTION, "set");
-  paged_row_add_text(pr, " ");
-  paged_row_add_colored_text(pr, MT_COLOR_IDENTIFIER, config);
-  paged_row_add_text(pr, " ");
-  paged_row_add_colored_text(pr, MT_COLOR_OPERATOR, "=");
-  paged_row_add_text(pr, " ");
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_FUNCTION, "set");
+  paged_row_add_text(pf->source, pr, " ");
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_IDENTIFIER, config);
+  paged_row_add_text(pf->source, pr, " ");
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_OPERATOR, "=");
+  paged_row_add_text(pf->source, pr, " ");
 
   buf_reset(buf);
   cs_subset_str_string_get(NeoMutt->sub, config, buf);
-  paged_row_add_colored_text(pr, MT_COLOR_STRING, "\"");
-  paged_row_add_colored_text(pr, MT_COLOR_STRING, buf_string(buf));
-  paged_row_add_colored_text(pr, MT_COLOR_STRING, "\"");
-  paged_row_add_text(pr, "\n");
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_STRING, "\"");
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_STRING, buf_string(buf));
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_STRING, "\"");
+  paged_row_add_text(pf->source, pr, "\n");
 
   const char *flag = NULL;
   int cols;
@@ -157,15 +157,15 @@ static void add_chars(struct PagedFile *pf, const char *config, int num_flags,
     cols = mutt_strwidth(flag);
     pr = paged_file_new_row(pf);
 
-    paged_row_add_text(pr, "    ");
+    paged_row_add_text(pf->source, pr, "    ");
     buf_printf(buf, "'%s'", flag);
-    paged_row_add_colored_text(pr, MT_COLOR_STRING, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_STRING, buf_string(buf));
 
     buf_printf(buf, "%*s", 4 - cols, "");
-    paged_row_add_text(pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, buf_string(buf));
 
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, _(desc[i]));
-    paged_row_add_text(pr, "\n");
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, _(desc[i]));
+    paged_row_add_text(pf->source, pr, "\n");
   }
 
   buf_pool_release(&buf);
@@ -192,15 +192,15 @@ static void dump_message_flags(enum MenuType menu, struct PagedFile *pf)
 
   add_chars(pf, "flag_chars", FLAG_CHAR_MAX, FlagCharsDesc);
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   add_chars(pf, "crypt_chars", FLAG_CHAR_CRYPT_MAX, CryptCharsDesc);
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   add_chars(pf, "to_chars", FLAG_CHAR_TO_MAX, ToCharsDesc);
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   add_heading(pf, _("Status flags:"));
   add_chars(pf, "status_chars", STATUS_CHAR_MAX, StatusCharsDesc);
@@ -268,9 +268,9 @@ void mutt_help(enum MenuType menu)
 
   pr = paged_file_new_row(pf);
   buf_printf(buf, "%s bindings\n", menu_name);
-  paged_row_add_colored_text(pr, MT_COLOR_HEADING, buf_string(buf));
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_HEADING, buf_string(buf));
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   int len0;
   int len1;
@@ -279,120 +279,120 @@ void mutt_help(enum MenuType menu)
     pr = paged_file_new_row(pf);
 
     // keybinding
-    len0 = paged_row_add_colored_text(pr, MT_COLOR_OPERATOR, bi->a[0]);
+    len0 = paged_row_add_colored_text(pf->source, pr, MT_COLOR_OPERATOR, bi->a[0]);
     buf_printf(buf, "%*s", wb0 - len0, "");
-    paged_row_add_text(pr, buf_string(buf));
-    paged_row_add_text(pr, "  ");
+    paged_row_add_text(pf->source, pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, "  ");
 
     // function
-    len1 = paged_row_add_colored_text(pr, MT_COLOR_FUNCTION, bi->a[1]);
+    len1 = paged_row_add_colored_text(pf->source, pr, MT_COLOR_FUNCTION, bi->a[1]);
     buf_printf(buf, "%*s", wb1 - len1, "");
-    paged_row_add_text(pr, buf_string(buf));
-    paged_row_add_text(pr, "  ");
+    paged_row_add_text(pf->source, pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, "  ");
 
     // function description
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, bi->a[2]);
-    paged_row_add_newline(pr);
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, bi->a[2]);
+    paged_row_add_newline(pf->source, pr);
   }
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   if (need_generic)
   {
     // heading + blank row
     pr = paged_file_new_row(pf);
     buf_printf(buf, "%s bindings\n", "generic");
-    paged_row_add_colored_text(pr, MT_COLOR_HEADING, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_HEADING, buf_string(buf));
     pr = paged_file_new_row(pf);
-    paged_row_add_newline(pr);
+    paged_row_add_newline(pf->source, pr);
 
     ARRAY_FOREACH(bi, &bia_gen)
     {
       pr = paged_file_new_row(pf);
 
       // keybinding
-      len0 = paged_row_add_colored_text(pr, MT_COLOR_OPERATOR, bi->a[0]);
+      len0 = paged_row_add_colored_text(pf->source, pr, MT_COLOR_OPERATOR, bi->a[0]);
       buf_printf(buf, "%*s", wb0 - len0, "");
-      paged_row_add_text(pr, buf_string(buf));
-      paged_row_add_text(pr, "  ");
+      paged_row_add_text(pf->source, pr, buf_string(buf));
+      paged_row_add_text(pf->source, pr, "  ");
 
       // function
-      len1 = paged_row_add_colored_text(pr, MT_COLOR_FUNCTION, bi->a[1]);
+      len1 = paged_row_add_colored_text(pf->source, pr, MT_COLOR_FUNCTION, bi->a[1]);
       buf_printf(buf, "%*s", wb1 - len1, "");
-      paged_row_add_text(pr, buf_string(buf));
-      paged_row_add_text(pr, "  ");
+      paged_row_add_text(pf->source, pr, buf_string(buf));
+      paged_row_add_text(pf->source, pr, "  ");
 
       // function description
-      paged_row_add_colored_text(pr, MT_COLOR_COMMENT, bi->a[2]);
-      paged_row_add_newline(pr);
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, bi->a[2]);
+      paged_row_add_newline(pf->source, pr);
     }
     pr = paged_file_new_row(pf);
-    paged_row_add_newline(pr);
+    paged_row_add_newline(pf->source, pr);
   }
 
   // heading + blank row
   pr = paged_file_new_row(pf);
   buf_printf(buf, "macros\n");
-  paged_row_add_colored_text(pr, MT_COLOR_HEADING, buf_string(buf));
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_HEADING, buf_string(buf));
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   ARRAY_FOREACH(bi, &bia_macro)
   {
     pr = paged_file_new_row(pf);
 
     // keybinding
-    len0 = paged_row_add_colored_text(pr, MT_COLOR_OPERATOR, bi->a[0]);
+    len0 = paged_row_add_colored_text(pf->source, pr, MT_COLOR_OPERATOR, bi->a[0]);
     buf_printf(buf, "%*s", wm0 - len0, "");
-    paged_row_add_text(pr, buf_string(buf));
-    paged_row_add_text(pr, " ");
+    paged_row_add_text(pf->source, pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, " ");
 
     // description
     if (bi->a[2])
     {
       buf_printf(buf, "\"%s\"\n", bi->a[2]);
-      paged_row_add_colored_text(pr, MT_COLOR_STRING, buf_string(buf));
+      paged_row_add_colored_text(pf->source, pr, MT_COLOR_STRING, buf_string(buf));
       pr = paged_file_new_row(pf);
     }
 
     // macro text
     buf_printf(buf, "\"%s\"\n", bi->a[1]);
-    paged_row_add_colored_text(pr, MT_COLOR_STRING, buf_string(buf));
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_STRING, buf_string(buf));
 
     // blank row after two-row macro display
     if (bi->a[2])
     {
       pr = paged_file_new_row(pf);
-      paged_row_add_newline(pr);
+      paged_row_add_newline(pf->source, pr);
     }
   }
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   // heading + blank row
   pr = paged_file_new_row(pf);
   buf_printf(buf, "unbound functions\n");
-  paged_row_add_colored_text(pr, MT_COLOR_HEADING, buf_string(buf));
+  paged_row_add_colored_text(pf->source, pr, MT_COLOR_HEADING, buf_string(buf));
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   ARRAY_FOREACH(bi, &bia_unbound)
   {
     pr = paged_file_new_row(pf);
 
     // function
-    len1 = paged_row_add_colored_text(pr, MT_COLOR_FUNCTION, bi->a[1]);
+    len1 = paged_row_add_colored_text(pf->source, pr, MT_COLOR_FUNCTION, bi->a[1]);
     buf_printf(buf, "%*s", wu1 - len1, "");
-    paged_row_add_text(pr, buf_string(buf));
-    paged_row_add_text(pr, "  ");
+    paged_row_add_text(pf->source, pr, buf_string(buf));
+    paged_row_add_text(pf->source, pr, "  ");
 
     // function description
-    paged_row_add_colored_text(pr, MT_COLOR_COMMENT, bi->a[2]);
-    paged_row_add_newline(pr);
+    paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, bi->a[2]);
+    paged_row_add_newline(pf->source, pr);
   }
 
   pr = paged_file_new_row(pf);
-  paged_row_add_newline(pr);
+  paged_row_add_newline(pf->source, pr);
 
   dump_message_flags(menu, pf);
 

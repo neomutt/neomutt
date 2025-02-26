@@ -1,6 +1,6 @@
 /**
  * @file
- * Backing File for the Simple Pager
+ * Source XXX
  *
  * @authors
  * Copyright (C) 2024-2025 Richard Russon <rich@flatcap.org>
@@ -20,32 +20,30 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_PFILE_PAGED_FILE_H
-#define MUTT_PFILE_PAGED_FILE_H
+#ifndef MUTT_PFILE_SOURCE_H
+#define MUTT_PFILE_SOURCE_H
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "paged_row.h"
-#include "filter.h"
 
 /**
- * struct PagedFile - A File for the Simple Pager
+ * struct Source - XXX
  */
-struct PagedFile
+struct Source
 {
-  struct Source *source;                ///< XXX
-  struct PagedRowArray rows;            ///< Markup
-  const struct AttrColor *ac_file;      ///< Default colour for the entire Window
-  struct FilterArray filters;           ///< XXX
+  long  source_size;           ///< Total size of text stored
+
+  char *cache;                 ///< Cache of the beginning of the file, @sa CacheMaxSize
+  int   cache_size;            ///< Current size of the cache
+
+  FILE *fp;                    ///< Temporary file for text
+  bool  close_fp;              ///< Close the file on exit?
 };
 
-void              paged_file_free(struct PagedFile **pptr);
-struct PagedFile *paged_file_new (FILE *fp);
+void           source_free(struct Source **pptr);
+struct Source *source_new (FILE *fp);
 
-struct PagedRow *paged_file_new_row(struct PagedFile *pf);
+long           source_add_text(struct Source *src, const char *text, int bytes);
+const char *   source_get_text(struct Source *src, long offset);
 
-void paged_file_add_filter(struct PagedFile *pf, struct Filter *fil);
-
-void paged_file_apply_filters(struct PagedRow *pr);
-
-#endif /* MUTT_PFILE_PAGED_FILE_H */
+#endif /* MUTT_PFILE_SOURCE_H */
