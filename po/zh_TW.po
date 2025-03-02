@@ -8417,114 +8417,94 @@ msgstr ""
 #. Plus two helper modes: shared, all
 #. These should not be translated.
 #: usage.c:60
-#, fuzzy
 msgid "NeoMutt has four modes of operation:"
-msgstr "NeoMutt has four modes of operation:"
+msgstr "NeoMutt 有四種運作模式："
 
 #: usage.c:66
-#, fuzzy
 msgid "The default mode, if no command line arguments are specified, is tui."
-msgstr "The default mode, if no command line arguments are specified, is tui."
+msgstr "若未特別指定， 預設進入 tui 模式。"
 
 #. L10N: Parameters in <>s may be translated
 #. L10N: Shared Help -- `neomutt -h shared`
 #: usage.c:70 usage.c:127
-#, fuzzy
 msgid "Options that apply to all modes"
-msgstr "Options that apply to all modes"
+msgstr "適用於所有模式的選項"
 
 #: usage.c:71
-#, fuzzy
 msgid "neomutt -n                           Don't read system config file"
-msgstr "neomutt -n                           Don't read system config file"
+msgstr "neomutt -n                           忽略系統設定檔"
 
 #: usage.c:72
-#, fuzzy
 msgid "        -F <config>                  Use this user config file"
-msgstr "        -F <config>                  Use this user config file"
+msgstr "        -F <config>                  採用這個設定檔"
 
 #: usage.c:73
-#, fuzzy
 msgid "        -e <command>                 Run extra commands"
-msgstr "        -e <command>                 Run extra commands"
+msgstr "        -e <command>                 額外執行指令"
 
 #: usage.c:74
-#, fuzzy
 msgid "        -m <type>                    Set default mailbox type"
-msgstr "        -m <type>                    Set default mailbox type"
+msgstr "        -m <type>                    設定預設的信箱類型"
 
 #: usage.c:75
-#, fuzzy
 msgid "        -d <level>                   Set logging level (1..5)"
-msgstr "        -d <level>                   Set logging level (1..5)"
+msgstr "        -d <level>                   設定紀錄/除錯等級 (1..5)"
 
 #: usage.c:76
-#, fuzzy
 msgid "        -l <file>                    Set logging file"
-msgstr "        -l <file>                    Set logging file"
+msgstr "        -l <file>                    指定紀錄檔"
 
 #. L10N: Help Help -- `neomutt -h help`
 #: usage.c:79 usage.c:183
-#, fuzzy
 msgid "Get command line help for NeoMutt"
-msgstr "Get command line help for NeoMutt"
+msgstr "求助/列出命令列參數"
 
 #: usage.c:80
-#, fuzzy
 msgid "neomutt -h <mode>                    Detailed help for a mode"
-msgstr "neomutt -h <mode>                    Detailed help for a mode"
+msgstr "neomutt -h <mode>                    詳述某個模式的使用方式"
 
 #: usage.c:81
-#, fuzzy
 msgid "        -v[v]                        Version or license"
-msgstr "        -v[v]                        Version or license"
+msgstr "        -v[v]                        版本與授權聲明"
 
 #. L10N: Info Help -- `neomutt -h info`
 #: usage.c:84 usage.c:210
 #, fuzzy
 msgid "Ask NeoMutt for config information"
-msgstr "Ask NeoMutt for config information"
+msgstr "查詢設定資訊"
 
 #: usage.c:85
-#, fuzzy
 msgid "neomutt -A <alias> [...]             Lookup email aliases"
-msgstr "neomutt -A <alias> [...]             Lookup email aliases"
+msgstr "neomutt -A <alias> [...]             查詢某 email 別名"
 
 #: usage.c:86
-#, fuzzy
 msgid "        -D [-D] [-O] [-S]            Dump the config"
-msgstr "        -D [-D] [-O] [-S]            Dump the config"
+msgstr "        -D [-D] [-O] [-S]            列印設定值"
 
 #: usage.c:87
-#, fuzzy
 msgid "        -Q <option> [...] [-O] [-S]  Query config options"
 msgstr "        -Q <option> [...] [-O] [-S]  Query config options"
 
 #. L10N: Sending Help -- `neomutt -h send`
 #: usage.c:90 usage.c:249
-#, fuzzy
 msgid "Send an email from the command line"
-msgstr "Send an email from the command line"
+msgstr "從命令列寄信"
 
 #: usage.c:91
-#, fuzzy
 msgid "neomutt -a <file> [...]              Attach files"
-msgstr "neomutt -a <file> [...]              Attach files"
+msgstr "neomutt -a <file> [...]              增加附件"
 
 #: usage.c:92
-#, fuzzy
 msgid "        -b <address>                 Add Bcc: address"
-msgstr "        -b <address>                 Add Bcc: address"
+msgstr "        -b <address>                 增加密件附本 (Bcc) 地址"
 
 #: usage.c:93
-#, fuzzy
 msgid "        -C                           Use crypto (signing/encryption)"
-msgstr "        -C                           Use crypto (signing/encryption)"
+msgstr "        -C                           採用加密演算法 (簽章/加密)"
 
 #: usage.c:94
-#, fuzzy
 msgid "        -c <address>                 Add Cc: address"
-msgstr "        -c <address>                 Add Cc: address"
+msgstr "        -c <address>                 增加附本 (Cc) 地址"
 
 #: usage.c:95
 #, fuzzy
