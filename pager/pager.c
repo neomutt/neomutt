@@ -345,6 +345,13 @@ static int pager_pager_observer(struct NotifyCallback *nc)
   if (!nc->global_data || !nc->event_data)
     return -1;
 
+  struct MuttWindow *win_pager = nc->global_data;
+
+  struct PagerPrivateData *priv = win_pager->wdata;
+  if (!priv)
+    return 0;
+
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   mutt_debug(LL_DEBUG5, "pager done\n");
   return 0;
 }
@@ -366,6 +373,10 @@ static int pager_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != win_pager)
     return 0;
 
+  struct PagerPrivateData *priv = win_pager->wdata;
+  if (!priv)
+    return 0;
+
   struct MuttWindow *dlg = window_find_parent(win_pager, WT_DLG_INDEX);
   if (!dlg)
     dlg = window_find_parent(win_pager, WT_DLG_PAGER);
@@ -375,7 +386,7 @@ static int pager_window_observer(struct NotifyCallback *nc)
   mutt_color_observer_remove(pager_color_observer, win_pager);
   notify_observer_remove(NeoMutt->sub->notify, pager_config_observer, win_pager);
   notify_observer_remove(shared->notify, pager_index_observer, win_pager);
-  notify_observer_remove(shared->notify, pager_pager_observer, win_pager);
+  notify_observer_remove(priv->notify, pager_pager_observer, win_pager);
   notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -402,7 +413,7 @@ struct MuttWindow *pager_window_new(struct IndexSharedData *shared,
   mutt_color_observer_add(pager_color_observer, win);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pager_config_observer, win);
   notify_observer_add(shared->notify, NT_ALL, pager_index_observer, win);
-  notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
+  notify_observer_add(priv->notify, NT_PAGER, pager_pager_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);
 
   return win;

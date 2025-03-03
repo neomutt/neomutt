@@ -375,8 +375,6 @@ int dlg_pager(struct PagerView *pview)
   priv->loop = PAGER_LOOP_CONTINUE;
   do
   {
-    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
     window_redraw(NULL);
 
     const bool c_braille_friendly = cs_subset_bool(NeoMutt->sub, "braille_friendly");
