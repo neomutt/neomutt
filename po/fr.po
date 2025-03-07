@@ -1472,9 +1472,9 @@ msgstr "'charset' doit contenir exactement le nom d'un jeu de caractères"
 # , c-format
 #: config/charset.c:70 config/charset.c:101 hcache/config.c:55
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:121
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
-msgstr "Valeur invalide pour l'option %s : %s"
+msgstr "Valeur non valide pour l'option %s : %s"
 
 #: config/enum.c:58
 #, c-format
@@ -1551,9 +1551,9 @@ msgstr "Le type '%s' ne supporte pas l'opération '%s'"
 
 # , c-format
 #: config/sort.c:88
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort name: %s"
-msgstr "Date relative invalide : %s"
+msgstr "Nom de tri non valide : %s"
 
 # , c-format
 #: config/sort.c:165
@@ -1572,9 +1572,8 @@ msgid "Unhandled key in line <%s: %s>"
 msgstr "Clé non gérée à la ligne <%s : %s>"
 
 #: conn/accountcmd.c:141
-#, fuzzy
 msgid "Unable to run account command"
-msgstr "Impossible de lancer la commande de rafraîchissement"
+msgstr "Impossible d'éxecuter la commande de compte"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:80
@@ -1684,9 +1683,8 @@ msgid "Error processing certificate data"
 msgstr "Erreur de traitement des données du certificat"
 
 #: conn/gnutls.c:491 conn/openssl.c:896
-#, fuzzy
 msgid "Untrusted server certificate"
-msgstr "Attention : le certificat n'a pas pu être sauvé"
+msgstr "Le certificat du serveur n'a pas pu être validé"
 
 #: conn/gnutls.c:509 conn/openssl.c:903
 msgid "This certificate belongs to:"
@@ -2171,9 +2169,8 @@ msgstr "Headers: "
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
 #: envelope/window.c:134 envelope/window.c:478
-#, fuzzy
 msgid "Off"
-msgstr "Off"
+msgstr "Désactivé"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. This is displayed when Autocrypt cannot encrypt to the recipients.
@@ -2187,7 +2184,7 @@ msgstr "Non"
 #. used recently, or if the only key available is a Gossip Header key.
 #: envelope/window.c:142
 msgid "Discouraged"
-msgstr "Découragé"
+msgstr "Non recommandé"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. This is displayed when Autocrypt believes encryption is possible, but
@@ -3452,7 +3449,7 @@ msgstr "ouvrir un autre répertoire en lecture seule"
 msgid "open a different newsgroup"
 msgstr "ouvrir un autre répertoire"
 
-# TODO: « dossier » vs « répertoire »
+# TODO: « dossier » vs « répertoire » and how to translate "newsgroup"
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:526
@@ -3772,9 +3769,8 @@ msgstr "supprimer l'entrée courante, sans utiliser la corbeille"
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:694
-#, fuzzy
 msgid "delete the current thread, bypassing the trash folder"
-msgstr "supprimer l'entrée courante, sans utiliser la corbeille"
+msgstr "supprimer le fil de discussion sélectionné, sans passer par la corbeille"
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
@@ -3808,7 +3804,7 @@ msgstr "rappeler un message ajourné"
 #: gui/opcodes.h:712
 #, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "Cette discussion contient des messages non lus."
+msgstr "cette fil de discussion contient des messages non lus."
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
@@ -3892,9 +3888,8 @@ msgstr "exécuter une commande dans un sous-shell"
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
 #: gui/opcodes.h:768
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "afficher les messages de log (et de debug)"
+msgstr "afficher les messages de log (et de débogage)"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
@@ -4363,6 +4358,7 @@ msgstr[1] ""
 "[-- Cette pièce jointe %s/%s (taille %s octets) a été supprimée --]\n"
 "[-- le %s --]\n"
 
+# TODO: Find out why the plural text is not actually plural.
 # , c-format
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -4792,9 +4788,9 @@ msgid "Connection to %s timed out"
 msgstr "Connexion à %s interrompue"
 
 #: imap/config.c:60 pop/config.c:60 send/config.c:91
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr "L'option %s: %s n'est pas un moyen accepté d'authentification"
+msgstr "L'option %s: %s n'est pas un authentificateur valide"
 
 #: imap/imap.c:117
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
