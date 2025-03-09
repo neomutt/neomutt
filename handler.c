@@ -1316,17 +1316,26 @@ static int multipart_handler(struct Body *b_email, struct State *state)
   return rc;
 }
 
+struct Tempdata {            /* either temp. memory buffer or tempfile name    */
+  bool use_fmemopen;
+  struct Buffer *tempfile;   /* if fmemopen is not used: filename for tempfile */
+  char *temp;                /* if fmemopen is used:  temp-Buffer  with ...    */
+  size_t tempsize;           /*                       its size                 */
+};
+
 /**
  * run_decode_and_handler - Run an appropriate decoder for an email
  * @param b         Body of the email
  * @param state         State to work with
  * @param handler   Callback function to process the content - Implements ::handler_t
  * @param plaintext Is the content in plain text
+ * @param no_fmemopen Are fmemopen-calls disallowed
  * @retval 0 Success
  * @retval -1 Error
  */
 static int run_decode_and_handler(struct Body *b, struct State *state,
-                                  handler_t handler, bool plaintext)
+                                  handler_t handler, bool plaintext,
+                                  bool no_fmemopen)
 {
   const char *save_prefix = NULL;
   FILE *fp = NULL;
@@ -1334,19 +1343,16 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
   LOFF_T tmpoffset = 0;
   int decode = 0;
   int rc = 0;
+  struct Tempdata tempdata = { 0 };
+
 #ifndef USE_FMEMOPEN
-  struct Buffer *tempfile = NULL;
+  no_fmemopen = true; /* never use fmemopen */
 #endif
 
   if (!mutt_file_seek(state->fp_in, b->offset, SEEK_SET))
   {
     return -1;
   }
-
-#ifdef USE_FMEMOPEN
-  char *temp = NULL;
-  size_t tempsize = 0;
-#endif
 
   /* see if we need to decode this part before processing it */
   if ((b->encoding == ENC_BASE64) || (b->encoding == ENC_QUOTED_PRINTABLE) ||
@@ -1362,26 +1368,32 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
     {
       /* decode to a tempfile, saving the original destination */
       fp = state->fp_out;
+      if (!no_fmemopen) 
+      {
 #ifdef USE_FMEMOPEN
-      state->fp_out = open_memstream(&temp, &tempsize);
-      if (!state->fp_out)
-      {
-        mutt_error(_("Unable to open 'memory stream'"));
-        mutt_debug(LL_DEBUG1, "Can't open 'memory stream'\n");
-        return -1;
-      }
-#else
-      tempfile = buf_pool_get();
-      buf_mktemp(tempfile);
-      state->fp_out = mutt_file_fopen(buf_string(tempfile), "w");
-      if (!state->fp_out)
-      {
-        mutt_error(_("Unable to open temporary file"));
-        mutt_debug(LL_DEBUG1, "Can't open %s\n", buf_string(tempfile));
-        buf_pool_release(&tempfile);
-        return -1;
-      }
+        tempdata.use_fmemopen = true;
+        state->fp_out = open_memstream(&tempdata.temp, &tempdata.tempsize);
+        if (!state->fp_out)
+        {
+          mutt_error(_("Unable to open 'memory stream'"));
+          mutt_debug(LL_DEBUG1, "Can't open 'memory stream'\n");
+          return -1;
+        }
 #endif
+      }
+      else
+      {
+        tempdata.tempfile = buf_pool_get();
+        buf_mktemp(tempdata.tempfile);
+        state->fp_out = mutt_file_fopen(buf_string(tempdata.tempfile), "w");
+        if (!state->fp_out)
+        {
+          mutt_error(_("Unable to open temporary file"));
+          mutt_debug(LL_DEBUG1, "Can't open %s\n", buf_string(tempdata.tempfile));
+          buf_pool_release(&tempdata.tempfile);
+          return -1;
+        }
+      }
       /* decoding the attachment changes the size and offset, so save a copy
        * of the "real" values now, and restore them after processing */
       tmplength = b->length;
@@ -1401,37 +1413,42 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
     {
       b->length = ftello(state->fp_out);
       b->offset = 0;
-#ifdef USE_FMEMOPEN
-      /* When running under torify, mutt_file_fclose(&state->fp_out) does not seem to
-       * update tempsize. On the other hand, fflush does.  See
-       * https://github.com/neomutt/neomutt/issues/440 */
-      fflush(state->fp_out);
-#endif
+      if (tempdata.use_fmemopen) {
+        /* When running under torify, mutt_file_fclose(&state->fp_out) does not seem to
+         * update tempsize. On the other hand, fflush does.  See
+         * https://github.com/neomutt/neomutt/issues/440 */
+        fflush(state->fp_out);
+      }
       mutt_file_fclose(&state->fp_out);
 
       /* restore final destination and substitute the tempfile for input */
       state->fp_out = fp;
       fp = state->fp_in;
-#ifdef USE_FMEMOPEN
-      if (tempsize)
+      if (tempdata.use_fmemopen) 
       {
-        state->fp_in = fmemopen(temp, tempsize, "r");
+#ifdef USE_FMEMOPEN
+        if (tempdata.tempsize)
+        {
+          state->fp_in = fmemopen(tempdata.temp, tempdata.tempsize, "r");
+        }
+        else
+        { /* fmemopen can't handle zero-length buffers */
+          state->fp_in = mutt_file_fopen("/dev/null", "r");
+        }
+        if (!state->fp_in)
+        {
+          mutt_perror(_("failed to re-open 'memory stream'"));
+          FREE(&tempdata.temp);
+          return -1;
+        }
+#endif
       }
       else
-      { /* fmemopen can't handle zero-length buffers */
-        state->fp_in = mutt_file_fopen("/dev/null", "r");
-      }
-      if (!state->fp_in)
       {
-        mutt_perror(_("failed to re-open 'memory stream'"));
-        FREE(&temp);
-        return -1;
+        state->fp_in = mutt_file_fopen(buf_string(tempdata.tempfile), "r");
+        unlink(buf_string(tempdata.tempfile));
+        buf_pool_release(&tempdata.tempfile);
       }
-#else
-      state->fp_in = mutt_file_fopen(buf_string(tempfile), "r");
-      unlink(buf_string(tempfile));
-      buf_pool_release(&tempfile);
-#endif
       /* restore the prefix */
       state->prefix = save_prefix;
     }
@@ -1460,9 +1477,10 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
     }
   }
   state->flags |= STATE_FIRSTDONE;
-#ifdef USE_FMEMOPEN
-  FREE(&temp);
-#endif
+  if (tempdata.use_fmemopen)
+  {
+    FREE(&tempdata.temp);
+  }
 
   return rc;
 }
@@ -1481,7 +1499,7 @@ static int valid_pgp_encrypted_handler(struct Body *b_email, struct State *state
   int rc;
   /* Some clients improperly encode the octetstream part. */
   if (octetstream->encoding != ENC_7BIT)
-    rc = run_decode_and_handler(octetstream, state, crypt_pgp_encrypted_handler, 0);
+    rc = run_decode_and_handler(octetstream, state, crypt_pgp_encrypted_handler, 0, false);
   else
     rc = crypt_pgp_encrypted_handler(octetstream, state);
   b_email->goodsig |= octetstream->goodsig;
@@ -1508,7 +1526,7 @@ static int malformed_pgp_encrypted_handler(struct Body *b_email, struct State *s
   mutt_env_free(&octetstream->mime_headers);
 
   /* exchange encodes the octet-stream, so re-run it through the decoder */
-  int rc = run_decode_and_handler(octetstream, state, crypt_pgp_encrypted_handler, false);
+  int rc = run_decode_and_handler(octetstream, state, crypt_pgp_encrypted_handler, false, false);
   b_email->goodsig |= octetstream->goodsig;
 #ifdef USE_AUTOCRYPT
   b_email->is_autocrypt |= octetstream->is_autocrypt;
@@ -1636,6 +1654,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
     return -1;
 
   bool plaintext = false;
+  bool no_fmemopen = false;
   handler_t handler = NULL;
   handler_t encrypted_handler = NULL;
   int rc = 0;
@@ -1682,6 +1701,9 @@ int mutt_body_handler(struct Body *b, struct State *state)
     }
     else if (mutt_istr_equal("enriched", b->subtype))
     {
+      no_fmemopen = true;
+      /* enriched uses fgetwc; glibc's fmemopen-files do not support this. See
+       * https://github.com/neomutt/neomutt/issues/4585 */
       handler = text_enriched_handler;
     }
     else /* text body type without a handler */
@@ -1771,7 +1793,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
       goto cleanup;
     }
 
-    rc = run_decode_and_handler(b, state, handler, plaintext);
+    rc = run_decode_and_handler(b, state, handler, plaintext, no_fmemopen);
   }
   else if (state->flags & STATE_DISPLAY)
   {
