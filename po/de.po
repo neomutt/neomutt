@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-01-09\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-02-22 17:00+0000\n"
-"PO-Revision-Date: 2025-02-22 22:02+0100\n"
+"PO-Revision-Date: 2025-03-08 17:03+0100\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -350,7 +350,7 @@ msgstr "---Anhang: %s: %s"
 #: attach/mutt_attach.c:674
 #, c-format
 msgid "---Attachment: %s"
-msgstr "                    --Anhang: %s"
+msgstr "//f--Anhang: %s"
 
 #: attach/mutt_attach.c:1013 attach/mutt_attach.c:1021
 msgid "Write fault"
@@ -8024,7 +8024,7 @@ msgstr "Der Standardmodus, ohne Argumente auf der Kommandozeile, ist tui."
 #. L10N: Shared Help -- `neomutt -h shared`
 #: usage.c:70 usage.c:127
 msgid "Options that apply to all modes"
-msgstr "Optionen die für alle Modi gelten."
+msgstr "Optionen die für alle Modi gelten"
 
 #: usage.c:71
 msgid "neomutt -n                           Don't read system config file"
@@ -8066,7 +8066,7 @@ msgstr "        -v[v]                        Version oder Lizenz"
 #. L10N: Info Help -- `neomutt -h info`
 #: usage.c:84 usage.c:210
 msgid "Ask NeoMutt for config information"
-msgstr "Frage NeoMutt nach Infos zur Konfig."
+msgstr "Frage NeoMutt nach Infos zur Konfig"
 
 #: usage.c:85
 msgid "neomutt -A <alias> [...]             Lookup email aliases"
@@ -8168,7 +8168,7 @@ msgstr "Für weitere Hilfe, starte:"
 
 #: usage.c:130
 msgid "By default NeoMutt loads one system and one user config file,"
-msgstr "Standardmäßig lädt NeoMutt eine System- und eine Nutzerkonfigurationsdatei."
+msgstr "Standardmäßig lädt NeoMutt eine System- und eine Nutzerkonfigurationsdatei,"
 
 #: usage.c:131
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
