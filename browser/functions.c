@@ -641,8 +641,12 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
 
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-  if (S_ISDIR(ff->mode) ||
-      (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)) || ff->inferiors)
+  if ((priv->menu->tag_prefix) && (op == OP_GENERIC_SELECT_ENTRY))
+  {
+    // Do nothing
+  }
+  else if (S_ISDIR(ff->mode) ||
+           (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)) || ff->inferiors)
   {
     /* make sure this isn't a MH or maildir mailbox */
     struct Buffer *buf = buf_pool_get();
