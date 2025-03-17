@@ -128,7 +128,9 @@ static const struct Mapping PagerNewsHelp[] = {
 void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw)
 {
   priv->redraw |= redraw;
-  priv->pview->win_pager->actions |= WA_RECALC;
+
+  if (priv->pview && priv->pview->win_pager)
+    priv->pview->win_pager->actions |= WA_RECALC;
 }
 
 /**

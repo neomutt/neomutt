@@ -265,6 +265,18 @@ static int pager_color_observer(struct NotifyCallback *nc)
     }
     priv->lines_used = 0;
   }
+  else if ((ev_c->cid == MT_COLOR_ATTACHMENT) || (ev_c->cid == MT_COLOR_ATTACH_HEADERS) ||
+           (ev_c->cid == MT_COLOR_BODY) || (ev_c->cid == MT_COLOR_BOLD) ||
+           (ev_c->cid == MT_COLOR_ERROR) || (ev_c->cid == MT_COLOR_HDRDEFAULT) ||
+           (ev_c->cid == MT_COLOR_HEADER) || (ev_c->cid == MT_COLOR_ITALIC) ||
+           (ev_c->cid == MT_COLOR_MARKERS) || (ev_c->cid == MT_COLOR_MESSAGE) ||
+           (ev_c->cid == MT_COLOR_NORMAL) || (ev_c->cid == MT_COLOR_SEARCH) ||
+           (ev_c->cid == MT_COLOR_SIGNATURE) || (ev_c->cid == MT_COLOR_STRIPE_EVEN) ||
+           (ev_c->cid == MT_COLOR_STRIPE_ODD) || (ev_c->cid == MT_COLOR_TILDE) ||
+           (ev_c->cid == MT_COLOR_UNDERLINE) || (ev_c->cid == MT_COLOR_WARNING))
+  {
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
 
   mutt_debug(LL_DEBUG5, "color done\n");
   return 0;
@@ -287,6 +299,20 @@ static int pager_config_observer(struct NotifyCallback *nc)
   {
     config_pager_index_lines(win_pager);
     mutt_debug(LL_DEBUG5, "config done\n");
+  }
+  else if ((mutt_str_equal(ev_c->name, "allow_ansi")) ||
+           (mutt_str_equal(ev_c->name, "markers")) ||
+           (mutt_str_equal(ev_c->name, "smart_wrap")) ||
+           (mutt_str_equal(ev_c->name, "smileys")) ||
+           (mutt_str_equal(ev_c->name, "tilde")) ||
+           (mutt_str_equal(ev_c->name, "toggle_quoted_show_levels")) ||
+           (mutt_str_equal(ev_c->name, "wrap")))
+  {
+    struct PagerPrivateData *priv = win_pager->parent->wdata;
+    if (!priv)
+      return -1;
+
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
 
   return 0;
