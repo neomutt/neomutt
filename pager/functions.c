@@ -959,10 +959,16 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
  */
 static int op_pager_top(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {
-  if (priv->top_line)
-    priv->top_line = 0;
-  else
+  if (priv->top_line == 0)
+  {
     mutt_message(_("Top of message is shown"));
+  }
+  else
+  {
+    priv->top_line = 0;
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
+
   return FR_SUCCESS;
 }
 
