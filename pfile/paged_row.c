@@ -176,7 +176,7 @@ int paged_row_add_colored_text(struct PagedRow *pr, int cid, const char *text)
   fputs(text, pr->paged_file->fp);
 
   ptm->first = pr->num_bytes;
-  ptm->last = ptm->first + bytes;
+  ptm->bytes = bytes;
   ptm->cid = cid;
 
   pr->num_bytes += bytes;
@@ -205,7 +205,7 @@ int paged_row_add_ac_text(struct PagedRow *pr, struct AttrColor *ac, const char 
   fputs(text, pr->paged_file->fp);
 
   ptm->first = pr->num_bytes;
-  ptm->last = ptm->first + bytes;
+  ptm->bytes = bytes;
   ptm->cid = MT_COLOR_NONE;
   ptm->ac_text = ac;
 
@@ -219,9 +219,9 @@ int paged_row_add_ac_text(struct PagedRow *pr, struct AttrColor *ac, const char 
  * paged_row_add_search - Add a search match to a PagedRow
  * @param pr   PagedRow to add to
  * @param first First matching character
- * @param last  Last matching character (not included)
+ * @param bytes Number of bytes
  */
-void paged_row_add_search(struct PagedRow *pr, int first, int last)
+void paged_row_add_search(struct PagedRow *pr, int first, int bytes)
 {
   if (!pr || !pr->paged_file)
     return;
@@ -229,7 +229,7 @@ void paged_row_add_search(struct PagedRow *pr, int first, int last)
   struct PagedTextMarkup *ptm = paged_text_markup_new(&pr->search);
 
   ptm->first = first;
-  ptm->last = last;
+  ptm->bytes = bytes;
   ptm->cid = MT_COLOR_SEARCH;
 }
 
@@ -255,7 +255,7 @@ int paged_row_add_ansi_text(struct PagedRow *pr, const char *ansi_start,
   fputs(text, pr->paged_file->fp);
 
   ptm->first = pr->num_bytes;
-  ptm->last = ptm->first + bytes;
+  ptm->bytes = bytes;
 
   ptm->ansi_start = mutt_str_dup(ansi_start);
   ptm->ansi_end = mutt_str_dup(ansi_end);
