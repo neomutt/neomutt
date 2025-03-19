@@ -68,9 +68,14 @@ struct PagedFile *paged_file_new(FILE *fp)
   bool close_fp = false;
 
   if (fp)
-    close_fp = true;
+  {
+    // stat file
+  }
   else
+  {
     fp = mutt_file_mkstemp();
+    close_fp = true;
+  }
 
   if (!fp)
   {
