@@ -38,7 +38,7 @@
 struct PagedTextMarkup
 {
   int first;                            ///< First byte in row to be coloured
-  int last;                             ///< Last byte in row to be coloured
+  int bytes;                            ///< Number of bytes coloured
 
   int cid;                              ///< Colour ID, e.g. #MT_COLOR_SIGNATURE
   const struct AttrColor *ac_text;      ///< Curses colour of text
@@ -58,7 +58,7 @@ struct PagedTextMarkup *paged_text_markup_new(struct PagedTextMarkupArray *ptma)
  */
 static inline bool pos_in_text_markup(int pos, struct PagedTextMarkup *ptm)
 {
-  return (ptm && (pos >= ptm->first) && (pos < ptm->last));
+  return (ptm && (pos >= ptm->first) && (pos < (ptm->first + ptm->bytes)));
 }
 
 /**
@@ -69,7 +69,7 @@ static inline bool pos_in_text_markup(int pos, struct PagedTextMarkup *ptm)
  */
 static inline bool pos_after_text_markup(int pos, struct PagedTextMarkup *ptm)
 {
-  return (ptm && (pos >= ptm->last));
+  return (ptm && (pos >= (ptm->first + ptm->bytes)));
 }
 
 #endif /* MUTT_PFILE_PAGED_TEXT_H */

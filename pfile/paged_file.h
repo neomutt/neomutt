@@ -34,9 +34,8 @@ struct PagedFile
 {
   FILE *fp;                             ///< File to be displayed
   bool close_fp;                        ///< Close the file on exit
-  struct PagedRowArray rows;          ///< Markup
+  struct PagedRowArray rows;            ///< Markup
   const struct AttrColor *ac_file;      ///< Default colour for the entire Window
-  const struct AttrColor *ac_markers;   ///< Colour for the wrapping markers
 };
 
 void              paged_file_free(struct PagedFile **pptr);
