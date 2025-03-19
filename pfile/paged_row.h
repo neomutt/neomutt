@@ -61,7 +61,7 @@ struct PagedRow
   long offset;                          ///< Offset into file (PagedFile.fp)
 
   int cid;                              ///< Default row colour, e.g. #MT_COLOR_SIGNATURE
-  const struct AttrColor *ac_row;      ///< Curses colour of text
+  const struct AttrColor *ac_row;       ///< Curses colour of text
   const struct AttrColor *ac_merged;    ///< Default colour for the entire Window
 
   struct PagedTextMarkupArray text;     ///< Array of text with markup in the row
@@ -77,17 +77,17 @@ ARRAY_HEAD(PagedRowArray, struct PagedRow);
 void paged_row_clear(struct PagedRow *pr);
 
 int paged_row_add_colored_text(struct PagedRow *pr, int cid, const char *text);
-int paged_row_add_ac_text(struct PagedRow *pr, struct AttrColor *ac, const char *text);
+int paged_row_add_ac_text     (struct PagedRow *pr, struct AttrColor *ac, const char *text);
 int paged_row_add_newline     (struct PagedRow *pr);
-int paged_row_add_raw_text(struct PagedRow *pr, const char *text);
+int paged_row_add_raw_text    (struct PagedRow *pr, const char *text);
 int paged_row_add_text        (struct PagedRow *pr, const char *text);
-int paged_row_add_multirow(struct PagedFile *pf, const char *text);
+int paged_row_add_multirow    (struct PagedFile *pf, const char *text);
 
 void paged_row_add_search     (struct PagedRow *pr, int first, int last);
 
-void        paged_row_cache   (struct PagedRow *pr);
-const char *paged_row_get_text(struct PagedRow *pr);
-void        paged_row_wrap    (struct PagedRow *pr, int width, RowWrapFlags flags);
+void        paged_row_cache           (struct PagedRow *pr);
+const char *paged_row_get_text        (struct PagedRow *pr);
+void        paged_row_wrap            (struct PagedRow *pr, int width, RowWrapFlags flags);
 const char *paged_row_get_virtual_text(struct PagedRow *pr, struct Segment *seg);
 
 int  paged_rows_count_virtual_rows(struct PagedRowArray *pra);
