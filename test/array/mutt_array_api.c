@@ -547,4 +547,31 @@ void test_mutt_array_api(void)
     }
     ARRAY_FREE(&head);
   }
+
+  /* Test insertion */
+  {
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
+    for (size_t i = 0; i < 20; i++)
+    {
+      ARRAY_ADD(&head, i);
+    }
+
+    size_t *ps = NULL;
+    for (int i = 0; i < 40; i += 2)
+    {
+      size_t s = -i;
+      ARRAY_INSERT(&head, i, &s);
+    }
+
+    struct Buffer *buf = buf_pool_get();
+    ARRAY_FOREACH(ps, &head)
+    {
+      buf_add_printf(buf, "%ld ", *ps);
+    }
+
+    TEST_CHECK_STR_EQ(buf_string(buf), "0 0 -2 1 -4 2 -6 3 -8 4 -10 5 -12 6 -14 7 -16 8 -18 9 -20 10 -22 11 -24 12 -26 13 -28 14 -30 15 -32 16 -34 17 -36 18 -38 19 ");
+
+    buf_pool_release(&buf);
+    ARRAY_FREE(&head);
+  }
 }
