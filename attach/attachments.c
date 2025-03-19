@@ -87,9 +87,9 @@ static struct AttachMatch *attachmatch_new(void)
 }
 
 /**
- * attach_cleanup - Free the attachments lists
+ * attachlist_cleanup - Free the attachments lists
  */
-void attach_cleanup(void)
+void attachlist_cleanup(void)
 {
   notify_free(&AttachmentsNotify);
 
@@ -101,9 +101,9 @@ void attach_cleanup(void)
 }
 
 /**
- * attach_init - Set up the attachments lists
+ * attachlist_init - Set up the attachments lists
  */
-void attach_init(void)
+void attachlist_init(void)
 {
   if (AttachmentsNotify)
     return;

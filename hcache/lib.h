@@ -61,6 +61,7 @@
  * | :------------------ | :----------------- |
  * | hcache/config.c     | @subpage hc_config |
  * | hcache/hcache.c     | @subpage hc_hcache |
+ * | hcache/module.c     | @subpage hc_module |
  * | hcache/serialize.c  | @subpage hc_serial |
  */
 

@@ -28,6 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | bcache/bcache.c     | @subpage bcache_bcache     |
+ * | bcache/module.c     | @subpage bcache_module     |
  */
 
 #ifndef MUTT_BCACHE_LIB_H

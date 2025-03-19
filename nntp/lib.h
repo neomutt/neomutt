@@ -35,6 +35,7 @@
  * | nntp/expando_browser.c    | @subpage nntp_expando_browser |
  * | nntp/expando_newsrc.c     | @subpage nntp_expando_newsrc  |
  * | nntp/mdata.c              | @subpage nntp_mdata           |
+ * | nntp/module.c             | @subpage nntp_module          |
  * | nntp/newsrc.c             | @subpage nntp_newsrc          |
  * | nntp/nntp.c               | @subpage nntp_nntp            |
  */

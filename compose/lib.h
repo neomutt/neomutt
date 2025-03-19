@@ -35,6 +35,7 @@
  * | compose/dlg_compose.c  | @subpage compose_dlg_compose   |
  * | compose/expando.c      | @subpage compose_expando       |
  * | compose/functions.c    | @subpage compose_functions     |
+ * | compose/module.c       | @subpage compose_module        |
  * | compose/preview.c      | @subpage compose_preview       |
  * | compose/shared_data.c  | @subpage compose_shared_data   |
  */
