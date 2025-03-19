@@ -326,6 +326,28 @@
            MAX(0, (ARRAY_SIZE((head)) - ARRAY_IDX((head), (elem)) - 1))),      \
    ARRAY_SHRINK((head), 1))
 
+
+/**
+ * ARRAY_INSERT - Insert an entry into the array, shifting up the subsequent entries
+ * @param head Pointer to a struct defined using ARRAY_HEAD()
+ * @param idx  Index to insert at
+ * @param elem Element to insert
+ *
+ * @note For empty arrays, or to append to an array, use ARRAY_ADD()
+ */
+#define ARRAY_INSERT(head, idx, elem)                                          \
+  do                                                                           \
+  {                                                                            \
+    (head)->size++;                                                            \
+    ARRAY_RESERVE((head), (head)->size);                                       \
+    void *insert = &(head)->entries[idx];                                      \
+    void *next = &(head)->entries[idx + 1];                                    \
+    memmove(next, insert,                                                      \
+            ARRAY_ELEM_SIZE((head)) * MAX(0, (ARRAY_SIZE((head)) - idx - 1))); \
+    memcpy(insert, elem, ARRAY_ELEM_SIZE((head)));                             \
+                                                                               \
+  } while (false)
+
 /**
  * ARRAY_SORT - Sort an array
  * @param head  Pointer to a struct defined using ARRAY_HEAD()
