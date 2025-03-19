@@ -208,7 +208,7 @@
  * ARRAY_FOREACH - Iterate over all elements of the array
  * @param elem Variable to be used as pointer to the element at each iteration
  * @param head Pointer to a struct defined using ARRAY_HEAD()
- * 
+ *
  * @note Range: 0 .. (ARRAY_SIZE(head)-1)
  */
 #define ARRAY_FOREACH(elem, head)                                              \
@@ -259,7 +259,7 @@
  * ARRAY_FOREACH_REVERSE - Iterate backwards over all elements of the array
  * @param elem Variable to be used as pointer to the element at each iteration
  * @param head Pointer to a struct defined using ARRAY_HEAD()
- * 
+ *
  * @note Range: (ARRAY_SIZE(head)-1) .. 0
  */
 #define ARRAY_FOREACH_REVERSE(elem, head)                                      \
@@ -325,6 +325,28 @@
            ARRAY_ELEM_SIZE((head)) *                                           \
            MAX(0, (ARRAY_SIZE((head)) - ARRAY_IDX((head), (elem)) - 1))),      \
    ARRAY_SHRINK((head), 1))
+
+
+/**
+ * ARRAY_INSERT - Insert an entry into the array, shifting up the subsequent entries
+ * @param head Pointer to a struct defined using ARRAY_HEAD()
+ * @param idx  Index to insert at
+ * @param elem Element to insert
+ *
+ * @note For empty arrays, or to append to an array, use ARRAY_ADD()
+ */
+#define ARRAY_INSERT(head, idx, elem)                                          \
+  do                                                                           \
+  {                                                                            \
+    (head)->size++;                                                            \
+    ARRAY_RESERVE((head), (head)->size);                                       \
+    void *insert = &(head)->entries[idx];                                      \
+    void *next = &(head)->entries[idx + 1];                                    \
+    memmove(next, insert,                                                      \
+            ARRAY_ELEM_SIZE((head)) * MAX(0, (ARRAY_SIZE((head)) - idx - 1))); \
+    memcpy(insert, elem, ARRAY_ELEM_SIZE((head)));                             \
+                                                                               \
+  } while (false)
 
 /**
  * ARRAY_SORT - Sort an array
