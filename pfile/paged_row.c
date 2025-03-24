@@ -155,6 +155,11 @@ int paged_row_add_multirow(struct Source *src, struct PagedFile *pf, const char 
     // long offset =
     source_add_text(src, text, pr->num_bytes);
 
+    struct PagedTextMarkup *ptm = paged_text_markup_new(&pr->text);
+    ptm->first = 0;
+    ptm->bytes = pr->num_bytes;
+    ptm->source = src;
+
     text = ptr + 1;
     count++;
   }
@@ -325,7 +330,7 @@ void paged_row_wrap(struct PagedRow *pr, int width, RowWrapFlags flags)
   int total_cols = 0;
 
   size_t bytes = 0;
-  size_t text_len = pr->num_bytes;
+  size_t text_len = pr->num_bytes - 1; //QWQ workaround for infinite loop
   size_t cols = 0;
 
   mutt_debug(LL_DEBUG1, "Wrapping: %s\n", pr->cached_text);

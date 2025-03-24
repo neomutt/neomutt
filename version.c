@@ -549,7 +549,7 @@ static void print_compile_options(const struct CompileOption *co, int width, boo
   struct AttrColor *ac_cyan = NULL;
   struct AttrColor *ac_green = NULL;
   struct AttrColor *ac_red = NULL;
-  struct AttrColor *ac = NULL;
+  // struct AttrColor *ac = NULL;
 
   if (acl)
   {
@@ -630,29 +630,33 @@ static void print_compile_options(const struct CompileOption *co, int width, boo
       {
         col = col_red;
         prefix = "-";
-        ac = ac_red;
+        // ac = ac_red;
         break;
       }
       case 1: // Enabled
       {
         col = col_green;
         prefix = "-";
-        ac = ac_green;
+        // ac = ac_green;
         break;
       }
       case 2: // Devel only
       {
         col = col_cyan;
         prefix = "";
-        ac = ac_cyan;
+        // ac = ac_cyan;
         break;
       }
     }
 
-    paged_row_add_raw_text(pf->source, pr, col);
-    paged_row_add_ac_text(pf->source, pr, ac, prefix);
-    paged_row_add_ac_text(pf->source, pr, ac, co[i].name);
-    paged_row_add_raw_text(pf->source, pr, col_end);
+    // paged_row_add_raw_text(pf->source, pr, col);
+    paged_row_add_text(pf->source, pr, col);
+    // paged_row_add_ac_text(pf->source, pr, ac, prefix);
+    paged_row_add_text(pf->source, pr, prefix);
+    // paged_row_add_ac_text(pf->source, pr, ac, co[i].name);
+    paged_row_add_text(pf->source, pr, co[i].name);
+    // paged_row_add_raw_text(pf->source, pr, col_end);
+    paged_row_add_text(pf->source, pr, col_end);
     paged_row_add_text(pf->source, pr, " ");
   }
   paged_row_add_text(pf->source, pr, buf_string(buf));
@@ -709,9 +713,13 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
 
   pr = paged_file_new_row(pf);
 
-  paged_row_add_raw_text(pf->source, pr, col_cyan);
-  paged_row_add_ac_text(pf->source, pr, ac_cyan, ver->version);
-  paged_row_add_raw_text(pf->source, pr, col_end);
+  // paged_row_add_raw_text(pf->source, pr, col_cyan);
+  paged_row_add_text(pf->source, pr, col_cyan);
+  // paged_row_add_ac_text(pf->source, pr, ac_cyan, ver->version);
+  paged_row_add_text(pf->source, pr, ver->version);
+  // paged_row_add_raw_text(pf->source, pr, col_end);
+  paged_row_add_text(pf->source, pr, col_end);
+
   paged_row_add_newline(pf->source, pr);
 
   paged_row_add_multirow(pf->source, pf, _(Notice));
