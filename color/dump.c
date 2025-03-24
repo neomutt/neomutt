@@ -450,11 +450,18 @@ void regex_colors_dump(struct PagedFile *pf, bool all)
       }
 
       color_log_color_attrs(ct->attr_color, swatch);
-      paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+      // paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+      paged_row_add_text(pf->source, pr, buf_string(swatch));
 
-      paged_row_add_ac_text(pf->source, pr, ct->attr_color, "XXXXXX");
+      // paged_row_add_ac_text(pf->source, pr, ct->attr_color, "XXXXXX");
+      paged_row_add_text(pf->source, pr, "XXXXXX");
 
-      paged_row_add_raw_text(pf->source, pr, "\033[0m");
+      if (!buf_is_empty(swatch))
+      {
+        // paged_row_add_raw_text(pf->source, pr, "\033[0m");
+        paged_row_add_text(pf->source, pr, "\033[0m");
+      }
+
       paged_row_add_newline(pf->source, pr);
     }
 
@@ -568,11 +575,19 @@ void simple_colors_dump(struct PagedFile *pf, bool all)
       paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "# ");
 
       color_log_color_attrs(ct->attr_color, swatch);
-      paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+      // paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+      paged_row_add_text(pf->source, pr, buf_string(swatch));
 
-      paged_row_add_ac_text(pf->source, pr, ct->attr_color, "XXXXXX");
+      // paged_row_add_ac_text(pf->source, pr, ct->attr_color, "XXXXXX");
+      paged_row_add_text(pf->source, pr, "XXXXXX");
 
-      paged_row_add_raw_text(pf->source, pr, "\033[0m");
+      // paged_row_add_raw_text(pf->source, pr, "\033[0m");
+      if (!buf_is_empty(swatch))
+      {
+        // paged_row_add_raw_text(pf->source, pr, "\033[0m");
+        paged_row_add_text(pf->source, pr, "\033[0m");
+      }
+
       paged_row_add_newline(pf->source, pr);
     }
 
@@ -717,11 +732,18 @@ void status_colors_dump(struct PagedFile *pf, bool all)
   paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "# ");
 
   color_log_color_attrs(ac, swatch);
-  paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+  // paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+  paged_row_add_text(pf->source, pr, buf_string(swatch));
 
-  paged_row_add_ac_text(pf->source, pr, ac, "XXXXXX");
+  // paged_row_add_ac_text(pf->source, pr, ac, "XXXXXX");
+  paged_row_add_text(pf->source, pr, "XXXXXX");
 
-  paged_row_add_raw_text(pf->source, pr, "\033[0m");
+  if (!buf_is_empty(swatch))
+  {
+    // paged_row_add_raw_text(pf->source, pr, "\033[0m");
+    paged_row_add_text(pf->source, pr, "\033[0m");
+  }
+
   paged_row_add_newline(pf->source, pr);
 
   //--------------------------------------------------------------------------------------------------
@@ -777,11 +799,18 @@ void status_colors_dump(struct PagedFile *pf, bool all)
     paged_row_add_colored_text(pf->source, pr, MT_COLOR_COMMENT, "# ");
 
     color_log_color_attrs(ct->attr_color, swatch);
-    paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+    // paged_row_add_raw_text(pf->source, pr, buf_string(swatch));
+    paged_row_add_text(pf->source, pr, buf_string(swatch));
 
-    paged_row_add_ac_text(pf->source, pr, ct->attr_color, "XXXXXX");
+    // paged_row_add_ac_text(pf->source, pr, ct->attr_color, "XXXXXX");
+    paged_row_add_text(pf->source, pr, "XXXXXX");
 
-    paged_row_add_raw_text(pf->source, pr, "\033[0m");
+    if (!buf_is_empty(swatch))
+    {
+      // paged_row_add_raw_text(pf->source, pr, "\033[0m");
+      paged_row_add_text(pf->source, pr, "\033[0m");
+    }
+
     paged_row_add_newline(pf->source, pr);
   }
 
