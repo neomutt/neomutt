@@ -51,6 +51,12 @@ void paged_file_free(struct PagedFile **pptr)
   }
   ARRAY_FREE(&pf->rows);
 
+  struct Filter **pfil = NULL;
+  ARRAY_FOREACH(pfil, &pf->filters)
+  {
+    (*pfil)->fdata_free(NULL);
+  }
+
   FREE(pptr);
 }
 
@@ -58,7 +64,7 @@ void paged_file_free(struct PagedFile **pptr)
  * paged_file_new - Create a new PagedFile
  * @param fp File to use (OPTIONAL)
  * @retval ptr New PagedFile
- * 
+ *
  * @note If fp is supplied, the caller must close it
  */
 struct PagedFile *paged_file_new(FILE *fp)
@@ -96,4 +102,15 @@ struct PagedRow *paged_file_new_row(struct PagedFile *pf)
   ARRAY_ADD(&pf->rows, pr);
 
   return ARRAY_LAST(&pf->rows);
+}
+
+/**
+ * paged_file_add_filter - XXX
+ */
+void paged_file_add_filter(struct PagedFile *pf, struct Filter *fil)
+{
+  if (!pf || !fil)
+    return;
+
+  ARRAY_ADD(&pf->filters, fil);
 }

@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "paged_row.h"
+#include "filter.h"
 
 /**
  * struct PagedFile - A File for the Simple Pager
@@ -35,11 +36,14 @@ struct PagedFile
   struct Source *source;                ///< XXX
   struct PagedRowArray rows;            ///< Markup
   const struct AttrColor *ac_file;      ///< Default colour for the entire Window
+  struct FilterArray filters;           ///< XXX
 };
 
 void              paged_file_free(struct PagedFile **pptr);
 struct PagedFile *paged_file_new (FILE *fp);
 
 struct PagedRow *paged_file_new_row(struct PagedFile *pf);
+
+void paged_file_add_filter(struct PagedFile *pf, struct Filter *fil);
 
 #endif /* MUTT_PFILE_PAGED_FILE_H */

@@ -413,6 +413,6 @@ void log_paged_file(enum LogLevel level, struct PagedFile *pf)
   struct PagedRow *pr = NULL;
   ARRAY_FOREACH(pr, &pf->rows)
   {
-    mutt_debug(level, "%s", paged_row_get_text(pr));
+    mutt_debug(level, "%s", paged_row_get_virtual_text(pr, NULL));
   }
 }

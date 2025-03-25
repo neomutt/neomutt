@@ -59,7 +59,7 @@ ARRAY_HEAD(SegmentArray, struct Segment);
 struct PagedRow
 {
   struct PagedFile *paged_file;         ///< Parent of the PagedRow
-  long offset;                          ///< Offset into file (PagedFile.fp)
+  long offset;                          ///< Offset into file (PagedFile.fp) QWQ
 
   int cid;                              ///< Default row colour, e.g. #MT_COLOR_SIGNATURE
   const struct AttrColor *ac_row;       ///< Curses colour of text
@@ -72,6 +72,8 @@ struct PagedRow
   int num_bytes;                        ///< Number of bytes (including newline)
   int num_cols;                         ///< Number of screen columns
   struct SegmentArray segments;         ///< Lengths of wrapped parts of the Row
+
+  bool valid;                           ///< XXX
 };
 ARRAY_HEAD(PagedRowArray, struct PagedRow);
 
@@ -89,7 +91,6 @@ void paged_row_add_search     (struct PagedRow *pr, int first, int last);
 const char *paged_row_get_plain(struct PagedRow *pr);
 
 void        paged_row_cache           (struct PagedRow *pr);
-const char *paged_row_get_text        (struct PagedRow *pr);
 void        paged_row_wrap            (struct PagedRow *pr, int width, RowWrapFlags flags);
 const char *paged_row_get_virtual_text(struct PagedRow *pr, struct Segment *seg);
 

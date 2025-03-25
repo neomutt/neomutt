@@ -722,6 +722,7 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
 
   paged_row_add_newline(pf->source, pr);
 
+  return true;
   paged_row_add_multirow(pf->source, pf, _(Notice));
 
   pr = paged_file_new_row(pf);

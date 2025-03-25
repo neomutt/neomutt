@@ -363,23 +363,6 @@ void paged_row_wrap(struct PagedRow *pr, int width, RowWrapFlags flags)
 }
 
 /**
- * paged_row_get_text - Get the text for a Row
- * @param pr PagedRow
- */
-const char *paged_row_get_text(struct PagedRow *pr)
-{
-  if (!pr)
-    return NULL;
-
-  paged_row_cache(pr);
-
-  if (pr->cached_text)
-    return pr->cached_text;
-
-  return NULL;
-}
-
-/**
  * paged_row_get_virtual_text - Get the text for a Row
  * @param pr  PagedRow
  * @param seg Segment

@@ -23,6 +23,8 @@
 #ifndef MUTT_PFILE_FILTER_H
 #define MUTT_PFILE_FILTER_H
 
+#include "mutt/lib.h"
+
 /**
  * struct Filter - XXX
  */
@@ -36,19 +38,32 @@ struct Filter
    * @defgroup filter_fdata_free Filter Private Data API
    *
    * fdata_free - Free the private data attached to the Filter
-   * @param ptr Private data to be freed
+   * @param pptr Private data to be freed
    *
-   * @pre ptr  is not NULL
-   * @pre *ptr is not NULL
+   * @pre  pptr is not NULL
+   * @pre *pptr is not NULL
    */
-  void (*fdata_free)(void **ptr);
+  void (*fdata_free)(void **pptr);
 
   /**
-   * @defgroup filter_apply Apply a Filter XXX
+   * @defgroup apply Apply a Filter XXX
    *
-   * filter_apply - Apply a Filter XXX
+   * apply - Apply a Filter XXX
    */
-  void (*filter_apply)(void);
+  void (*apply)(void);
 };
+ARRAY_HEAD(FilterArray, struct Filter *);
+
+/**
+ * struct AnsiFilterData - XXX
+ */
+struct AnsiFilterData
+{
+  int dummy;
+};
+
+struct Filter *filter_ansi_new(void);
+void           filter_ansi_fdata_free(void **pptr);
+void           filter_ansi_apply(void);
 
 #endif /* MUTT_PFILE_FILTER_H */
