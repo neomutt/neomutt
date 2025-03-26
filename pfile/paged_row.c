@@ -478,6 +478,9 @@ void paged_rows_wrap(struct PagedRowArray *pra, int width, RowWrapFlags flags)
   }
 }
 
+/**
+ * paged_row_normalise - XXX
+ */
 void paged_row_normalise(struct PagedRow *pr, struct PagedRow *pr_normal)
 {
   if (!pr || !pr_normal)

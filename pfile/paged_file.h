@@ -46,4 +46,6 @@ struct PagedRow *paged_file_new_row(struct PagedFile *pf);
 
 void paged_file_add_filter(struct PagedFile *pf, struct Filter *fil);
 
+void paged_file_apply_filters(struct PagedFile *pf, int row_num);
+
 #endif /* MUTT_PFILE_PAGED_FILE_H */

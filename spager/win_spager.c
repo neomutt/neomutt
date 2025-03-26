@@ -257,7 +257,7 @@ static int win_spager_repaint(struct MuttWindow *win)
   // FILE *fp = pf->source->fp;
   // rewind(fp);
 
-  const char *text = NULL;
+  // const char *text = NULL;
 
   struct PagedRowArray *pra = &wdata->paged_file->rows;
 
@@ -271,7 +271,9 @@ static int win_spager_repaint(struct MuttWindow *win)
       struct PagedRow *pr = ARRAY_GET(pra, pr_index);
       struct Segment *seg = ARRAY_GET(&pr->segments, seg_index);
 
-      text = paged_row_get_virtual_text(pr, seg);
+      paged_file_apply_filters(pf, 0);
+
+      // text = paged_row_get_virtual_text(pr, seg);
 
       int text_offset = 0;
       if (seg)
@@ -284,7 +286,8 @@ static int win_spager_repaint(struct MuttWindow *win)
 
       struct PagedRow pr_normal = { 0 };
       paged_row_normalise(pr, &pr_normal);
-      display_row2(win, screen_row, text, text_offset, text_end, &pr_normal);
+      const char *text2 = paged_row_get_plain(pr);
+      display_row2(win, screen_row, text2, text_offset, text_end, &pr_normal);
       paged_row_clear(&pr_normal);
 
 #ifdef USE_DEBUG_WINDOW

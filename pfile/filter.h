@@ -25,6 +25,8 @@
 
 #include "mutt/lib.h"
 
+struct PagedRow;
+
 /**
  * struct Filter - XXX
  */
@@ -50,7 +52,7 @@ struct Filter
    *
    * apply - Apply a Filter XXX
    */
-  void (*apply)(void);
+  void (*apply)(struct Filter *fil, struct PagedRow *row);
 };
 ARRAY_HEAD(FilterArray, struct Filter *);
 
@@ -64,6 +66,6 @@ struct AnsiFilterData
 
 struct Filter *filter_ansi_new(void);
 void           filter_ansi_fdata_free(void **pptr);
-void           filter_ansi_apply(void);
+void           filter_ansi_apply(struct Filter *fil, struct PagedRow *pr);
 
 #endif /* MUTT_PFILE_FILTER_H */

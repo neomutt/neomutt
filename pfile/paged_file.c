@@ -114,3 +114,36 @@ void paged_file_add_filter(struct PagedFile *pf, struct Filter *fil)
 
   ARRAY_ADD(&pf->filters, fil);
 }
+
+/**
+ * paged_file_get_row_from_source - XXX
+ */
+void paged_file_get_row_from_source(struct PagedFile *pf)
+{
+}
+
+/**
+ * paged_file_apply_filters - XXX
+ */
+void paged_file_apply_filters(struct PagedFile *pf, int row_num)
+{
+  if (!pf || (row_num < 0))
+    return;
+
+  struct PagedRow *pr = ARRAY_GET(&pf->rows, row_num);
+  if (!pr)
+    return;
+
+  if (pr->valid)
+    return;
+
+  struct Filter **pfil = NULL;
+  ARRAY_FOREACH(pfil, &pf->filters)
+  {
+    struct Filter *fil = *pfil;
+
+    fil->apply(fil, pr);
+  }
+
+  pr->valid = true;
+}

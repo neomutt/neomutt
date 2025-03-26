@@ -28,6 +28,8 @@
 
 #include "mutt/lib.h"
 #include "filter.h"
+#include "color/lib.h"
+#include "paged_row.h"
 
 /**
  * filter_new - XXX
@@ -66,8 +68,16 @@ void filter_ansi_fdata_free(void **pptr)
 /**
  * filter_ansi_apply - XXX
  */
-void filter_ansi_apply(void)
+void filter_ansi_apply(struct Filter *fil, struct PagedRow *pr)
 {
+  // markup_dump(&pr->text, -1, -1);
+  markup_delete(&pr->text, 0, 7);
+  // markup_dump(&pr->text, -1, -1);
+  markup_apply(&pr->text, 7, 33, MT_COLOR_INDICATOR);
+  // markup_dump(&pr->text, -1, -1);
+  markup_delete(&pr->text, 40, 4);
+  // markup_dump(&pr->text, -1, -1);
+  mutt_debug(LL_DEBUG1, "FILTER: %ld\n", pr->offset);
 }
 
 /**

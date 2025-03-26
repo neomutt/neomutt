@@ -1645,7 +1645,9 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
   paged_file_add_filter(pf, fil);
 
   print_version(pf, 9999, true, &acl);
+#ifdef USE_DEBUG_SPAGER
   dump_spager(pf);
+#endif
   dlg_spager(pf, "version", NeoMutt->sub);
   paged_file_free(&pf);
   attr_color_list_clear(&acl);
