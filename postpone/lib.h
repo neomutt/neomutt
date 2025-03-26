@@ -29,6 +29,7 @@
  * | :----------------------- | :----------------------------- |
  * | postpone/dlg_postpone.c  | @subpage postpone_dlg_postpone |
  * | postpone/functions.c     | @subpage postpone_functions    |
+ * | postpone/module.c        | @subpage postpone_module       |
  * | postpone/postpone.c      | @subpage postpone_postpone     |
  */
 

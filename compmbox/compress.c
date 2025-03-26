@@ -59,7 +59,7 @@ struct Email;
 /**
  * CompCommands - Compression Commands
  */
-static const struct Command CompCommands[] = {
+const struct Command CompCommands[] = {
   // clang-format off
   { "append-hook", mutt_parse_hook, MUTT_APPEND_HOOK },
   { "close-hook",  mutt_parse_hook, MUTT_CLOSE_HOOK },
@@ -83,14 +83,6 @@ const struct ExpandoDefinition CompressFormatDef[] = {
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
-
-/**
- * mutt_comp_init - Setup Compressed Mailbox commands
- */
-void mutt_comp_init(void)
-{
-  commands_register(&NeoMutt->commands, CompCommands);
-}
 
 /**
  * lock_realpath - Try to lock the Mailbox.realpath
