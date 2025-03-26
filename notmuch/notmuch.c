@@ -571,7 +571,9 @@ static int update_message_path(struct Email *e, const char *path)
 
     mutt_body_free(&e->body);
     mutt_env_free(&e->env);
-    maildir_parse_message(path, e->old, e);
+    if (!maildir_parse_message(path, e->old, e))
+      return 1;
+
     ASSERT(e->body);
     ASSERT(e->env);
 
