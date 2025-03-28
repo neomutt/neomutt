@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-01-09\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-02-22 17:00+0000\n"
+"POT-Creation-Date: 2025-03-28 00:04+0000\n"
 "PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -74,7 +74,7 @@ msgstr "接受?"
 
 #: alias/alias.c:518 attach/recvattach.c:304 attach/recvattach.c:327
 #: attach/recvattach.c:345 attach/recvattach.c:362 attach/recvattach.c:489
-#: pager/functions.c:1018
+#: pager/functions.c:1024
 msgid "Save to file: "
 msgstr "存到文件："
 
@@ -438,15 +438,15 @@ msgstr "无法解密加密信件"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:1282
+#: autocrypt/autocrypt.c:77 main.c:1288
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s 不存在。创建它吗？"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:650
-#: main.c:1286 nntp/newsrc.c:1020
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:656
+#: main.c:1292 nntp/newsrc.c:1020
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "无法创建 %s：%s"
@@ -717,7 +717,7 @@ msgstr "退订"
 msgid "Catchup"
 msgstr "跟上"
 
-#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:767
+#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:771
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s 不是目录"
@@ -817,31 +817,31 @@ msgstr "信箱已删除"
 msgid "File Mask: "
 msgstr "文件掩码："
 
-#: browser/functions.c:843
+#: browser/functions.c:847
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 信箱才支持重命名"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/functions.c:876
+#: browser/functions.c:880
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)反向排序或不反向排序(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/functions.c:878
+#: browser/functions.c:882
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "按日期(d)，字母表(a)，大小(z),描述(e),计数(c),新件(w)排序或不排序(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/functions.c:880
+#: browser/functions.c:884
 msgid "dazecwn"
 msgstr "dazecwn"
 
-#: browser/functions.c:946
+#: browser/functions.c:950
 #, c-format
 msgid "Subscribe pattern: "
 msgstr "订阅模式："
 
-#: browser/functions.c:948
+#: browser/functions.c:952
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "退订模式："
@@ -880,7 +880,7 @@ msgstr "%s：终端不支持显示颜色"
 #: color/command.c:357 color/command.c:393 commands.c:426 commands.c:1135
 #: commands.c:1266 commands.c:1602 hook.c:145 hook.c:225 hook.c:488
 #: key/parse.c:355 key/parse.c:395 key/parse.c:513 key/parse.c:606
-#: mutt_lua.c:512 score.c:108
+#: mutt_lua.c:513 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s：参数太多"
@@ -1000,7 +1000,7 @@ msgstr "查询变量时无法使用前缀"
 msgid "%s is unset"
 msgstr "%s 没有被设定"
 
-#: commands.c:1097 mutt_lua.c:507
+#: commands.c:1097 mutt_lua.c:508
 #, c-format
 msgid "source: error at %s"
 msgstr "source：%s 有错误"
@@ -1210,7 +1210,7 @@ msgstr "打开信箱并从中附加信件"
 msgid "Open newsgroup to attach message from"
 msgstr "打开新闻组并从中附加信件"
 
-#: compose/functions.c:893 main.c:1741
+#: compose/functions.c:893 main.c:1747
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "无法打开信箱 %s"
@@ -1424,7 +1424,7 @@ msgid "Invalid enum value: %ld"
 msgstr "无效的枚举值: %ld"
 
 #: config/helpers.c:340 config/set.c:109 config/set.c:454 config/set.c:601
-#: config/set.c:677 config/set.c:797 main.c:678 parse/set.c:119 parse/set.c:179
+#: config/set.c:677 config/set.c:797 main.c:684 parse/set.c:119 parse/set.c:179
 #: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
 #: parse/set.c:433
 #, fuzzy, c-format
@@ -4838,26 +4838,26 @@ msgstr "没有已标记的信件"
 msgid "Nothing to do"
 msgstr "无事可做"
 
-#: index/expando_status.c:260
+#: index/expando_status.c:261
 msgid "(no mailbox)"
 msgstr "(没有信箱)"
 
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #. L10N: Status bar message: the end of the email is visible in the pager
-#: index/expando_status.c:445 pager/pbar.c:122
+#: index/expando_status.c:446 pager/pbar.c:122
 msgid "end"
 msgstr "结束"
 
 #. L10N: Status bar message: all the emails are visible in the index
 #. L10N: Status bar message: the entire email is visible in the pager
-#: index/expando_status.c:447 pager/message.c:61 pager/pbar.c:120
+#: index/expando_status.c:448 pager/message.c:61 pager/pbar.c:120
 msgid "all"
 msgstr "所有"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: index/expando_status.c:455
+#: index/expando_status.c:456
 #, fuzzy, c-format
 msgid "%d%%"
 msgstr "%d%%"
@@ -5331,64 +5331,64 @@ msgstr "命令行有错：%s"
 msgid "Warning in command line: %s"
 msgstr "命令行有警告：%s"
 
-#: main.c:332
+#: main.c:338
 msgid "unable to determine nodename via uname()"
 msgstr "无法通过 uname() 确定节点名称"
 
-#: main.c:685 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
+#: main.c:691 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
 #: parse/set.c:331 parse/set.c:372 parse/set.c:439
 #, fuzzy, c-format
 msgid "Option %s is deprecated"
 msgstr "配置变量 '%s' 已废弃"
 
-#: main.c:763
+#: main.c:769
 msgid "Error initializing terminal"
 msgstr "初始化终端时出错"
 
-#: main.c:831
+#: main.c:837
 msgid "unable to determine username"
 msgstr "无法确定用户名"
 
-#: main.c:837
+#: main.c:843
 msgid "unable to determine home directory"
 msgstr "无法确定用户主目录"
 
-#: main.c:982
+#: main.c:988
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "错误：变量'%s'对于 -d 来说无效"
 
-#: main.c:1343
+#: main.c:1349
 msgid "Failed to parse mailto: link"
 msgstr "解析 mailto: 链接失败"
 
-#: main.c:1358 main.c:1629 send/send.c:306 send/send.c:2663 send/send.c:2667
+#: main.c:1364 main.c:1635 send/send.c:306 send/send.c:2663 send/send.c:2667
 msgid "No recipients specified"
 msgstr "没有指定接收者"
 
-#: main.c:1392
+#: main.c:1398
 msgid "Can't use -E flag with stdin"
 msgstr "无法使用 -E 选项在stdin情况下"
 
-#: main.c:1482
+#: main.c:1488
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "无法解析信件模板：%s"
 
-#: main.c:1553 mutt_header.c:351
+#: main.c:1559 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s：无法附加文件"
 
-#: main.c:1642
+#: main.c:1648
 msgid "No mailbox with new mail"
 msgstr "没有信箱有新信件"
 
-#: main.c:1662
+#: main.c:1668
 msgid "No incoming mailboxes defined"
 msgstr "未定义收信信箱"
 
-#: main.c:1715
+#: main.c:1721
 msgid "Mailbox is empty"
 msgstr "信箱是空的"
 
@@ -5577,11 +5577,11 @@ msgstr ""
 msgid "Invalid value for option %s: %ld"
 msgstr "选项 %s 的值无效：“%ld”"
 
-#: mutt_lua.c:452
+#: mutt_lua.c:453
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "错误：无法加载 lua 解释器"
 
-#: mutt_lua.c:522
+#: mutt_lua.c:523
 #, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "无法读取 Lua 源码：%s"
@@ -7013,7 +7013,7 @@ msgid "Bottom of message is shown"
 msgstr "已显示信件的最末端"
 
 #: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
-#: pager/functions.c:965
+#: pager/functions.c:964
 msgid "Top of message is shown"
 msgstr "已显示信件的最上端"
 
@@ -7033,11 +7033,11 @@ msgstr "引用文本后没有其他未引用文本"
 msgid "No more quoted text"
 msgstr "无更多引用文本"
 
-#: pager/functions.c:989
+#: pager/functions.c:995
 msgid "Help is currently being shown"
 msgstr "现在正显示帮助"
 
-#: pager/functions.c:1045
+#: pager/functions.c:1051
 #, c-format
 msgid "Saved to: %s"
 msgstr ""
@@ -8691,11 +8691,11 @@ msgstr "  neomutt -p"
 msgid "  neomutt -y"
 msgstr "  neomutt -y"
 
-#: version.c:85
+#: version.c:83
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
 msgstr "许多这里没有提到的人也贡献了代码，修正以及建议。\n"
 
-#: version.c:89
+#: version.c:87
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -8721,7 +8721,7 @@ msgstr ""
 "您应已收到附随于本程序的 GNU 通用公共许可的副本；如果没有，请写信\n"
 "至自由软件基金会，51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
-#: version.c:104
+#: version.c:102
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -8733,7 +8733,7 @@ msgstr ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "或者发送邮件至：<neomutt-devel@neomutt.org>\n"
 
-#: version.c:112
+#: version.c:110
 msgid ""
 "Copyright (C) 2015-2025 Richard Russon and friends\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -8745,11 +8745,11 @@ msgstr ""
 "NeoMutt 是自由软件，欢迎您在某些条件下\n"
 "重新发行它；请键入 'neomutt -vv' 以获取详细信息。\n"
 
-#: version.c:482
+#: version.c:672
 msgid "Compile options:"
 msgstr "编译选项："
 
-#: version.c:487
+#: version.c:678
 msgid "Devel options:"
 msgstr "开发选项："
 
