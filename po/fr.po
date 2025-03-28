@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-01-09\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-02-22 17:00+0000\n"
+"POT-Creation-Date: 2025-03-28 00:04+0000\n"
 "PO-Revision-Date: 2023-05-08 12:38+0000\n"
 "Last-Translator: Ryan d'Huart <homoelectromagneticus@protonmail.com>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -85,7 +85,7 @@ msgstr "Accepter ?"
 
 #: alias/alias.c:518 attach/recvattach.c:304 attach/recvattach.c:327
 #: attach/recvattach.c:345 attach/recvattach.c:362 attach/recvattach.c:489
-#: pager/functions.c:1018
+#: pager/functions.c:1024
 msgid "Save to file: "
 msgstr "Enregistrer dans le fichier : "
 
@@ -460,7 +460,7 @@ msgstr "Impossible de déchiffrer le message chiffré"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:1282
+#: autocrypt/autocrypt.c:77 main.c:1288
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s n'existe pas. Le créer?"
@@ -468,8 +468,8 @@ msgstr "%s n'existe pas. Le créer?"
 # , c-format
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:650
-#: main.c:1286 nntp/newsrc.c:1020
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:656
+#: main.c:1292 nntp/newsrc.c:1020
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Impossible de créer %s : %s"
@@ -747,7 +747,7 @@ msgid "Catchup"
 msgstr "Rattraper"
 
 # , c-format
-#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:767
+#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:771
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s n'est pas un répertoire"
@@ -849,33 +849,33 @@ msgstr "Boîte aux lettres supprimée"
 msgid "File Mask: "
 msgstr "Masque de fichier : "
 
-#: browser/functions.c:843
+#: browser/functions.c:847
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Le renommage n'est possible que pour les boîtes aux lettres IMAP"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/functions.c:876
+#: browser/functions.c:880
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Trier inverse par (d)ate, (a)lphabétique, (t)aille, des(c)ription, (n)ombre, nombre nou(v)eau, ou ne (p)as trier ?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/functions.c:878
+#: browser/functions.c:882
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Trier par (d)ate, (a)lphabétique, (t)aille, des(c)ription, (n)ombre, nombre nou(v)eau, ou ne (p)as trier ?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/functions.c:880
+#: browser/functions.c:884
 msgid "dazecwn"
 msgstr "datcnvp"
 
 # , c-format
-#: browser/functions.c:946
+#: browser/functions.c:950
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Filtre d'abonnement : "
 
 # , c-format
-#: browser/functions.c:948
+#: browser/functions.c:952
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Filtre de désabonnement : "
@@ -917,7 +917,7 @@ msgstr "%s : cette couleur n'est pas prise en charge sur ce terminal"
 #: color/command.c:357 color/command.c:393 commands.c:426 commands.c:1135
 #: commands.c:1266 commands.c:1602 hook.c:145 hook.c:225 hook.c:488
 #: key/parse.c:355 key/parse.c:395 key/parse.c:513 key/parse.c:606
-#: mutt_lua.c:512 score.c:108
+#: mutt_lua.c:513 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: trop d'arguments"
@@ -1044,7 +1044,7 @@ msgid "%s is unset"
 msgstr "%s n'est pas mise"
 
 # , c-format
-#: commands.c:1097 mutt_lua.c:507
+#: commands.c:1097 mutt_lua.c:508
 #, fuzzy, c-format
 msgid "source: error at %s"
 msgstr "source : erreur dans %s"
@@ -1266,7 +1266,7 @@ msgstr "Ouvrir une boîte aux lettres d'où joindre un message"
 msgid "Open newsgroup to attach message from"
 msgstr "Ouvrir une boîte mail d'où attacher un message"
 
-#: compose/functions.c:893 main.c:1741
+#: compose/functions.c:893 main.c:1747
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Impossible d'ouvrir la boîte aux lettres %s"
@@ -1472,9 +1472,9 @@ msgstr "'charset' doit contenir exactement le nom d'un jeu de caractères"
 # , c-format
 #: config/charset.c:70 config/charset.c:101 hcache/config.c:55
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:121
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
-msgstr "Valeur invalide pour l'option %s : %s"
+msgstr "Valeur non valide pour l'option %s : %s"
 
 #: config/enum.c:58
 #, c-format
@@ -1489,7 +1489,7 @@ msgstr "Valeur d'énumération invalide : %ld"
 
 # , c-format
 #: config/helpers.c:340 config/set.c:109 config/set.c:454 config/set.c:601
-#: config/set.c:677 config/set.c:797 main.c:678 parse/set.c:119 parse/set.c:179
+#: config/set.c:677 config/set.c:797 main.c:684 parse/set.c:119 parse/set.c:179
 #: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
 #: parse/set.c:433
 #, c-format
@@ -1551,9 +1551,9 @@ msgstr "Le type '%s' ne supporte pas l'opération '%s'"
 
 # , c-format
 #: config/sort.c:88
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort name: %s"
-msgstr "Date relative invalide : %s"
+msgstr "Nom de tri non valide : %s"
 
 # , c-format
 #: config/sort.c:165
@@ -1572,9 +1572,8 @@ msgid "Unhandled key in line <%s: %s>"
 msgstr "Clé non gérée à la ligne <%s : %s>"
 
 #: conn/accountcmd.c:141
-#, fuzzy
 msgid "Unable to run account command"
-msgstr "Impossible de lancer la commande de rafraîchissement"
+msgstr "Impossible d'éxecuter la commande de compte"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:80
@@ -1684,9 +1683,8 @@ msgid "Error processing certificate data"
 msgstr "Erreur de traitement des données du certificat"
 
 #: conn/gnutls.c:491 conn/openssl.c:896
-#, fuzzy
 msgid "Untrusted server certificate"
-msgstr "Attention : le certificat n'a pas pu être sauvé"
+msgstr "Le certificat du serveur n'a pas pu être validé"
 
 #: conn/gnutls.c:509 conn/openssl.c:903
 msgid "This certificate belongs to:"
@@ -2171,9 +2169,8 @@ msgstr "Headers: "
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
 #: envelope/window.c:134 envelope/window.c:478
-#, fuzzy
 msgid "Off"
-msgstr "Off"
+msgstr "Désactivé"
 
 #. L10N: Autocrypt recommendation flag: no.
 #. This is displayed when Autocrypt cannot encrypt to the recipients.
@@ -2187,7 +2184,7 @@ msgstr "Non"
 #. used recently, or if the only key available is a Gossip Header key.
 #: envelope/window.c:142
 msgid "Discouraged"
-msgstr "Découragé"
+msgstr "Non recommandé"
 
 #. L10N: Autocrypt recommendation flag: available.
 #. This is displayed when Autocrypt believes encryption is possible, but
@@ -3452,7 +3449,7 @@ msgstr "ouvrir un autre répertoire en lecture seule"
 msgid "open a different newsgroup"
 msgstr "ouvrir un autre répertoire"
 
-# TODO: « dossier » vs « répertoire »
+# TODO: « dossier » vs « répertoire » and how to translate "newsgroup"
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:526
@@ -3772,9 +3769,8 @@ msgstr "supprimer l'entrée courante, sans utiliser la corbeille"
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:694
-#, fuzzy
 msgid "delete the current thread, bypassing the trash folder"
-msgstr "supprimer l'entrée courante, sans utiliser la corbeille"
+msgstr "supprimer le fil de discussion sélectionné, sans passer par la corbeille"
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
@@ -3808,7 +3804,7 @@ msgstr "rappeler un message ajourné"
 #: gui/opcodes.h:712
 #, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "Cette discussion contient des messages non lus."
+msgstr "cette fil de discussion contient des messages non lus."
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
@@ -3892,9 +3888,8 @@ msgstr "exécuter une commande dans un sous-shell"
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
 #: gui/opcodes.h:768
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "afficher les messages de log (et de debug)"
+msgstr "afficher les messages de log (et de débogage)"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
@@ -4363,6 +4358,7 @@ msgstr[1] ""
 "[-- Cette pièce jointe %s/%s (taille %s octets) a été supprimée --]\n"
 "[-- le %s --]\n"
 
+# TODO: Find out why the plural text is not actually plural.
 # , c-format
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -4792,9 +4788,9 @@ msgid "Connection to %s timed out"
 msgstr "Connexion à %s interrompue"
 
 #: imap/config.c:60 pop/config.c:60 send/config.c:91
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr "L'option %s: %s n'est pas un moyen accepté d'authentification"
+msgstr "L'option %s: %s n'est pas un authentificateur valide"
 
 #: imap/imap.c:117
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -5036,26 +5032,26 @@ msgstr "Pas de messages marqués"
 msgid "Nothing to do"
 msgstr "Rien à faire"
 
-#: index/expando_status.c:260
+#: index/expando_status.c:261
 msgid "(no mailbox)"
 msgstr "(pas de boîte aux lettres)"
 
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #. L10N: Status bar message: the end of the email is visible in the pager
-#: index/expando_status.c:445 pager/pbar.c:122
+#: index/expando_status.c:446 pager/pbar.c:122
 msgid "end"
 msgstr "fin"
 
 #. L10N: Status bar message: all the emails are visible in the index
 #. L10N: Status bar message: the entire email is visible in the pager
-#: index/expando_status.c:447 pager/message.c:61 pager/pbar.c:120
+#: index/expando_status.c:448 pager/message.c:61 pager/pbar.c:120
 msgid "all"
 msgstr "tout"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: index/expando_status.c:455
+#: index/expando_status.c:456
 #, c-format
 msgid "%d%%"
 msgstr "%d %%"
@@ -5549,67 +5545,67 @@ msgstr "Erreur dans la ligne de commande : %s"
 msgid "Warning in command line: %s"
 msgstr "Erreur dans la ligne de commande : %s"
 
-#: main.c:332
+#: main.c:338
 msgid "unable to determine nodename via uname()"
 msgstr "impossible de déterminer nodename via uname()"
 
-#: main.c:685 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
+#: main.c:691 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
 #: parse/set.c:331 parse/set.c:372 parse/set.c:439
 #, c-format
 msgid "Option %s is deprecated"
 msgstr "La variable de configuration %s n'est plus valide"
 
-#: main.c:763
+#: main.c:769
 msgid "Error initializing terminal"
 msgstr "Erreur d'initialisation du terminal"
 
-#: main.c:831
+#: main.c:837
 msgid "unable to determine username"
 msgstr "impossible de déterminer le nom d'utilisateur"
 
-#: main.c:837
+#: main.c:843
 msgid "unable to determine home directory"
 msgstr "impossible de déterminer le répertoire personnel"
 
-#: main.c:982
+#: main.c:988
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Erreur : la valeur '%s' est invalide pour -d"
 
-#: main.c:1343
+#: main.c:1349
 msgid "Failed to parse mailto: link"
 msgstr "Échec de l'analyse du lien malto"
 
-#: main.c:1358 main.c:1629 send/send.c:306 send/send.c:2663 send/send.c:2667
+#: main.c:1364 main.c:1635 send/send.c:306 send/send.c:2663 send/send.c:2667
 msgid "No recipients specified"
 msgstr "Pas de destinataire spécifié"
 
-#: main.c:1392
+#: main.c:1398
 msgid "Can't use -E flag with stdin"
 msgstr "Impossible d'utiliser l'option -E avec stdin"
 
 # , c-format
-#: main.c:1482
+#: main.c:1488
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "Impossible d'analyser le modèle : %s"
 
 # , c-format
-#: main.c:1553 mutt_header.c:351
+#: main.c:1559 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s : impossible de joindre le fichier"
 
-#: main.c:1642
+#: main.c:1648
 msgid "No mailbox with new mail"
 msgstr "Pas de boîte aux lettres avec des nouveaux messages"
 
-#: main.c:1662
+#: main.c:1668
 #, fuzzy
 msgid "No incoming mailboxes defined"
 msgstr "Pas de boîtes aux lettres recevant du courrier définies"
 
-#: main.c:1715
+#: main.c:1721
 msgid "Mailbox is empty"
 msgstr "La boîte aux lettres est vide"
 
@@ -5809,12 +5805,12 @@ msgstr "NeoMutt avec %<m?%m messages&pas de message>%<n? [%n NOUVEAU(X)]>"
 msgid "Invalid value for option %s: %ld"
 msgstr "Valeur invalide pour l'option %s : \"%ld\""
 
-#: mutt_lua.c:452
+#: mutt_lua.c:453
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Erreur : Impossible de charger l'interpréteur lua"
 
 # , c-format
-#: mutt_lua.c:522
+#: mutt_lua.c:523
 #, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Impossible de charger le fichier source Lua : %s"
@@ -7315,7 +7311,7 @@ msgid "Bottom of message is shown"
 msgstr "La fin du message est affichée"
 
 #: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
-#: pager/functions.c:965
+#: pager/functions.c:964
 msgid "Top of message is shown"
 msgstr "Le début du message est affiché"
 
@@ -7335,12 +7331,12 @@ msgstr "Il n'y a plus de texte non cité après le texte cité"
 msgid "No more quoted text"
 msgstr "Il n'y a plus de texte cité"
 
-#: pager/functions.c:989
+#: pager/functions.c:995
 msgid "Help is currently being shown"
 msgstr "L'aide est actuellement affichée"
 
 # TODO: find out what is being saved? gender agreement may need to change
-#: pager/functions.c:1045
+#: pager/functions.c:1051
 #, c-format
 msgid "Saved to: %s"
 msgstr "Enregistré sous : %s"
@@ -9034,13 +9030,13 @@ msgstr "  neomutt -p"
 msgid "  neomutt -y"
 msgstr "  neomutt -y"
 
-#: version.c:85
+#: version.c:83
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
 msgstr ""
 "De nombreuses autres personnes non mentionnées ici ont fourni\n"
 "du code, des corrections et des suggestions.\n"
 
-#: version.c:89
+#: version.c:87
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -9070,7 +9066,7 @@ msgstr ""
 "avec ce programme ; si ce n'est pas le cas, écrivez à la Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
-#: version.c:104
+#: version.c:102
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -9082,7 +9078,7 @@ msgstr ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "ou envoyez un email à: <neomutt-devel@neomutt.org>\n"
 
-#: version.c:112
+#: version.c:110
 msgid ""
 "Copyright (C) 2015-2025 Richard Russon and friends\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -9094,11 +9090,11 @@ msgstr ""
 "NeoMutt est un logiciel libre, et vous êtes libre de le redistribuer\n"
 "sous certaines conditions ; exécutez 'neomutt -vv' pour les détails.\n"
 
-#: version.c:482
+#: version.c:672
 msgid "Compile options:"
 msgstr "Options de compilation :"
 
-#: version.c:487
+#: version.c:678
 msgid "Devel options:"
 msgstr "Options de développement :"
 

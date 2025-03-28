@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-01-09\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-02-22 17:00+0000\n"
+"POT-Creation-Date: 2025-03-28 00:04+0000\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -72,7 +72,7 @@ msgstr "Запис?"
 
 #: alias/alias.c:518 attach/recvattach.c:304 attach/recvattach.c:327
 #: attach/recvattach.c:345 attach/recvattach.c:362 attach/recvattach.c:489
-#: pager/functions.c:1018
+#: pager/functions.c:1024
 msgid "Save to file: "
 msgstr "Запис във файл:"
 
@@ -447,15 +447,15 @@ msgstr "Грешка при дешифрирането на шифровано �
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:1282
+#: autocrypt/autocrypt.c:77 main.c:1288
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s не съществува. Да бъде ли създаден?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:650
-#: main.c:1286 nntp/newsrc.c:1020
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:656
+#: main.c:1292 nntp/newsrc.c:1020
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Грешка при създаване на %s: %s"
@@ -733,7 +733,7 @@ msgstr "Отписване от %s..."
 msgid "Catchup"
 msgstr ""
 
-#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:767
+#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:771
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s не е директория"
@@ -836,34 +836,34 @@ msgstr "Пощенската кутия е изтрита"
 msgid "File Mask: "
 msgstr "Файлова маска: "
 
-#: browser/functions.c:843
+#: browser/functions.c:847
 #, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Само IMAP пощенски кутии могат да бъдат създавани"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/functions.c:876
+#: browser/functions.c:880
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Обратно подреждане по дата(d), азбучен ред(a), размер(z) или без подреждане(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/functions.c:878
+#: browser/functions.c:882
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Подреждане по дата(d), азбучен ред(a), размер(z) или без подреждане(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/functions.c:880
+#: browser/functions.c:884
 msgid "dazecwn"
 msgstr ""
 
-#: browser/functions.c:946
+#: browser/functions.c:950
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Абониране за %s..."
 
-#: browser/functions.c:948
+#: browser/functions.c:952
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Отписване от %s..."
@@ -902,7 +902,7 @@ msgstr "%s: терминалът не поддържа цветове"
 #: color/command.c:357 color/command.c:393 commands.c:426 commands.c:1135
 #: commands.c:1266 commands.c:1602 hook.c:145 hook.c:225 hook.c:488
 #: key/parse.c:355 key/parse.c:395 key/parse.c:513 key/parse.c:606
-#: mutt_lua.c:512 score.c:108
+#: mutt_lua.c:513 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: твърде много аргументи"
@@ -1024,7 +1024,7 @@ msgstr ""
 msgid "%s is unset"
 msgstr "%s е изключен"
 
-#: commands.c:1097 mutt_lua.c:507
+#: commands.c:1097 mutt_lua.c:508
 #, c-format
 msgid "source: error at %s"
 msgstr "source: грешка при %s"
@@ -1240,7 +1240,7 @@ msgstr "Отваряне на пощенска кутия, от която да 
 msgid "Open newsgroup to attach message from"
 msgstr "Отваряне на пощенска кутия, от която да бъде приложено писмо"
 
-#: compose/functions.c:893 main.c:1741
+#: compose/functions.c:893 main.c:1747
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Грешка при заключване на пощенската кутия!"
@@ -1466,7 +1466,7 @@ msgid "Invalid enum value: %ld"
 msgstr "Невалиден ден от месеца: %s"
 
 #: config/helpers.c:340 config/set.c:109 config/set.c:454 config/set.c:601
-#: config/set.c:677 config/set.c:797 main.c:678 parse/set.c:119 parse/set.c:179
+#: config/set.c:677 config/set.c:797 main.c:684 parse/set.c:119 parse/set.c:179
 #: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
 #: parse/set.c:433
 #, fuzzy, c-format
@@ -5016,26 +5016,26 @@ msgstr "Няма маркирани писма"
 msgid "Nothing to do"
 msgstr "Няма какво да се прави"
 
-#: index/expando_status.c:260
+#: index/expando_status.c:261
 msgid "(no mailbox)"
 msgstr "(няма пощенска кутия)"
 
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #. L10N: Status bar message: the end of the email is visible in the pager
-#: index/expando_status.c:445 pager/pbar.c:122
+#: index/expando_status.c:446 pager/pbar.c:122
 msgid "end"
 msgstr ""
 
 #. L10N: Status bar message: all the emails are visible in the index
 #. L10N: Status bar message: the entire email is visible in the pager
-#: index/expando_status.c:447 pager/message.c:61 pager/pbar.c:120
+#: index/expando_status.c:448 pager/message.c:61 pager/pbar.c:120
 msgid "all"
 msgstr ""
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: index/expando_status.c:455
+#: index/expando_status.c:456
 #, fuzzy, c-format
 msgid "%d%%"
 msgstr "%d%%"
@@ -5539,65 +5539,65 @@ msgstr "Грешка в командния ред: %s"
 msgid "Warning in command line: %s"
 msgstr "Грешка в командния ред: %s"
 
-#: main.c:332
+#: main.c:338
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "потребителското Ви име не може да бъде установено"
 
-#: main.c:685 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
+#: main.c:691 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
 #: parse/set.c:331 parse/set.c:372 parse/set.c:439
 #, c-format
 msgid "Option %s is deprecated"
 msgstr ""
 
-#: main.c:763
+#: main.c:769
 msgid "Error initializing terminal"
 msgstr "Грешка при инициализация на терминала"
 
-#: main.c:831
+#: main.c:837
 msgid "unable to determine username"
 msgstr "потребителското Ви име не може да бъде установено"
 
-#: main.c:837
+#: main.c:843
 msgid "unable to determine home directory"
 msgstr "личната Ви директория не може да бъде намерена"
 
-#: main.c:982
+#: main.c:988
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Грешка: '%s' е невалиден IDN"
 
-#: main.c:1343
+#: main.c:1349
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:1358 main.c:1629 send/send.c:306 send/send.c:2663 send/send.c:2667
+#: main.c:1364 main.c:1635 send/send.c:306 send/send.c:2663 send/send.c:2667
 msgid "No recipients specified"
 msgstr "Не са указани получатели"
 
-#: main.c:1392
+#: main.c:1398
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:1482
+#: main.c:1488
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Грешка при отваряне на файла: %s"
 
-#: main.c:1553 mutt_header.c:351
+#: main.c:1559 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: грешка при прилагането на файл"
 
-#: main.c:1642
+#: main.c:1648
 msgid "No mailbox with new mail"
 msgstr "Няма пощенска кутия с нови писма"
 
-#: main.c:1662
+#: main.c:1668
 msgid "No incoming mailboxes defined"
 msgstr "Не са дефинирани входни пощенски кутии"
 
-#: main.c:1715
+#: main.c:1721
 msgid "Mailbox is empty"
 msgstr "Пощенската кутия е празна"
 
@@ -5787,11 +5787,11 @@ msgstr ""
 msgid "Invalid value for option %s: %ld"
 msgstr "Невалиден ден от месеца: %s"
 
-#: mutt_lua.c:452
+#: mutt_lua.c:453
 msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
-#: mutt_lua.c:522
+#: mutt_lua.c:523
 #, fuzzy, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Невъзможно заключване на %s\n"
@@ -7311,7 +7311,7 @@ msgid "Bottom of message is shown"
 msgstr "Това е краят на писмото"
 
 #: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
-#: pager/functions.c:965
+#: pager/functions.c:964
 msgid "Top of message is shown"
 msgstr "Това е началото на писмото"
 
@@ -7331,11 +7331,11 @@ msgstr "Няма повече нецитиран текст след цитир�
 msgid "No more quoted text"
 msgstr "Няма повече цитиран текст"
 
-#: pager/functions.c:989
+#: pager/functions.c:995
 msgid "Help is currently being shown"
 msgstr "Помощта вече е показана"
 
-#: pager/functions.c:1045
+#: pager/functions.c:1051
 #, c-format
 msgid "Saved to: %s"
 msgstr ""
@@ -9039,11 +9039,11 @@ msgstr "  neomutt -p"
 msgid "  neomutt -y"
 msgstr "  neomutt -y"
 
-#: version.c:85
+#: version.c:83
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
 msgstr ""
 
-#: version.c:89
+#: version.c:87
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -9060,7 +9060,7 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
-#: version.c:104
+#: version.c:102
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -9068,7 +9068,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:112
+#: version.c:110
 #, fuzzy
 msgid ""
 "Copyright (C) 2015-2025 Richard Russon and friends\n"
@@ -9081,11 +9081,11 @@ msgstr ""
 "NeoMutt е свободен софтуер и може да бъде разпространяван\n"
 "при определени условия; напишете 'neomutt -vv' за повече подробности.\n"
 
-#: version.c:482
+#: version.c:672
 msgid "Compile options:"
 msgstr "Опции при компилация:"
 
-#: version.c:487
+#: version.c:678
 #, fuzzy
 msgid "Devel options:"
 msgstr "Опции при компилация:"

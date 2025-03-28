@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-01-09\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-02-22 17:00+0000\n"
+"POT-Creation-Date: 2025-03-28 00:04+0000\n"
 "PO-Revision-Date: 2018-03-19 01:14-0300\n"
 "Last-Translator: Thiago Costa de Paiva <tecepe@tecepe.eng.br>\n"
 "Language-Team: \n"
@@ -69,7 +69,7 @@ msgstr "Aceita?"
 
 #: alias/alias.c:518 attach/recvattach.c:304 attach/recvattach.c:327
 #: attach/recvattach.c:345 attach/recvattach.c:362 attach/recvattach.c:489
-#: pager/functions.c:1018
+#: pager/functions.c:1024
 msgid "Save to file: "
 msgstr "Salvar no arquivo: "
 
@@ -435,15 +435,15 @@ msgstr "Incapaz de desencriptar mensagem encriptada"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:1282
+#: autocrypt/autocrypt.c:77 main.c:1288
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s não existe. Devo criá-lo?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:650
-#: main.c:1286 nntp/newsrc.c:1020
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:656
+#: main.c:1292 nntp/newsrc.c:1020
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Não foi possível criar %s: %s"
@@ -714,7 +714,7 @@ msgstr "Desinscrever"
 msgid "Catchup"
 msgstr "Catchup"
 
-#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:767
+#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:771
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s não é um diretório"
@@ -814,31 +814,31 @@ msgstr "Caixa de mensagens removida"
 msgid "File Mask: "
 msgstr "Máscara de arquivos: "
 
-#: browser/functions.c:843
+#: browser/functions.c:847
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Renomeação de caixa de mensagens somente em IMAP"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/functions.c:876
+#: browser/functions.c:880
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Ordenação reversa por (d)data, (a)alfa, (z)tamanho, (e)descrição, (c)contagem, (w)novas ou (n)sem ordenação?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/functions.c:878
+#: browser/functions.c:882
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Ordenação por (d)data, (a)alfa, (z)tamanho, (e)descrição, (c)contagem, (w)novas ou (n)sem ordenação?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/functions.c:880
+#: browser/functions.c:884
 msgid "dazecwn"
 msgstr "dazecwn"
 
-#: browser/functions.c:946
+#: browser/functions.c:950
 #, c-format
 msgid "Subscribe pattern: "
 msgstr "Padrão para inscrição: "
 
-#: browser/functions.c:948
+#: browser/functions.c:952
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Padrão para desinscrição: "
@@ -877,7 +877,7 @@ msgstr "%s: cor não suportada pelo terminal"
 #: color/command.c:357 color/command.c:393 commands.c:426 commands.c:1135
 #: commands.c:1266 commands.c:1602 hook.c:145 hook.c:225 hook.c:488
 #: key/parse.c:355 key/parse.c:395 key/parse.c:513 key/parse.c:606
-#: mutt_lua.c:512 score.c:108
+#: mutt_lua.c:513 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: muitos argumentos"
@@ -998,7 +998,7 @@ msgstr "Não é possível usar um prefixo quando consultando uma variável"
 msgid "%s is unset"
 msgstr "%s não está atribuída"
 
-#: commands.c:1097 mutt_lua.c:507
+#: commands.c:1097 mutt_lua.c:508
 #, c-format
 msgid "source: error at %s"
 msgstr "fonte: erro em %s"
@@ -1209,7 +1209,7 @@ msgstr "Abrir caixa para obter mensagem a ser anexada"
 msgid "Open newsgroup to attach message from"
 msgstr "Abrir grupo de notícias para obter mensagem a ser anexada"
 
-#: compose/functions.c:893 main.c:1741
+#: compose/functions.c:893 main.c:1747
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Não foi possível abrir a caixa de mensagens %s"
@@ -1423,7 +1423,7 @@ msgid "Invalid enum value: %ld"
 msgstr "Valor enum inválido: %ld"
 
 #: config/helpers.c:340 config/set.c:109 config/set.c:454 config/set.c:601
-#: config/set.c:677 config/set.c:797 main.c:678 parse/set.c:119 parse/set.c:179
+#: config/set.c:677 config/set.c:797 main.c:684 parse/set.c:119 parse/set.c:179
 #: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
 #: parse/set.c:433
 #, fuzzy, c-format
@@ -4845,26 +4845,26 @@ msgstr "Nenhuma mensagem marcada"
 msgid "Nothing to do"
 msgstr "Nada a fazer"
 
-#: index/expando_status.c:260
+#: index/expando_status.c:261
 msgid "(no mailbox)"
 msgstr "(nenhuma caixa de mensagens)"
 
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #. L10N: Status bar message: the end of the email is visible in the pager
-#: index/expando_status.c:445 pager/pbar.c:122
+#: index/expando_status.c:446 pager/pbar.c:122
 msgid "end"
 msgstr "fim"
 
 #. L10N: Status bar message: all the emails are visible in the index
 #. L10N: Status bar message: the entire email is visible in the pager
-#: index/expando_status.c:447 pager/message.c:61 pager/pbar.c:120
+#: index/expando_status.c:448 pager/message.c:61 pager/pbar.c:120
 msgid "all"
 msgstr "tudo"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: index/expando_status.c:455
+#: index/expando_status.c:456
 #, fuzzy, c-format
 msgid "%d%%"
 msgstr "%d%%"
@@ -5339,64 +5339,64 @@ msgstr "Erro na linha de comando: %s"
 msgid "Warning in command line: %s"
 msgstr "Alarme na linha de comando: %s"
 
-#: main.c:332
+#: main.c:338
 msgid "unable to determine nodename via uname()"
 msgstr "não foi possível determinar nodename via uname()"
 
-#: main.c:685 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
+#: main.c:691 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
 #: parse/set.c:331 parse/set.c:372 parse/set.c:439
 #, fuzzy, c-format
 msgid "Option %s is deprecated"
 msgstr "Variável de config. '%s' está descontinuada"
 
-#: main.c:763
+#: main.c:769
 msgid "Error initializing terminal"
 msgstr "Erro ao inicializar terminal"
 
-#: main.c:831
+#: main.c:837
 msgid "unable to determine username"
 msgstr "não foi possível determinar o nome do usuário"
 
-#: main.c:837
+#: main.c:843
 msgid "unable to determine home directory"
 msgstr "não foi possível determinar o diretório do usuário"
 
-#: main.c:982
+#: main.c:988
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Erro: valor '%s' é inválido para -d"
 
-#: main.c:1343
+#: main.c:1349
 msgid "Failed to parse mailto: link"
 msgstr "Falha ao interpretar link 'mailto:'"
 
-#: main.c:1358 main.c:1629 send/send.c:306 send/send.c:2663 send/send.c:2667
+#: main.c:1364 main.c:1635 send/send.c:306 send/send.c:2663 send/send.c:2667
 msgid "No recipients specified"
 msgstr "Nenhum destinatário foi especificado"
 
-#: main.c:1392
+#: main.c:1398
 msgid "Can't use -E flag with stdin"
 msgstr "Incapaz de usar flag -E com stdin"
 
-#: main.c:1482
+#: main.c:1488
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "Incapaz de interpretar modelo de mensagem: %s"
 
-#: main.c:1553 mutt_header.c:351
+#: main.c:1559 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: não foi possível anexar o arquivo"
 
-#: main.c:1642
+#: main.c:1648
 msgid "No mailbox with new mail"
 msgstr "Nenhuma caixa com novas mensagens"
 
-#: main.c:1662
+#: main.c:1668
 msgid "No incoming mailboxes defined"
 msgstr "Nenhuma caixa de entrada definida"
 
-#: main.c:1715
+#: main.c:1721
 msgid "Mailbox is empty"
 msgstr "A caixa de mensagens está vazia"
 
@@ -5585,11 +5585,11 @@ msgstr ""
 msgid "Invalid value for option %s: %ld"
 msgstr "Valor inválido para opção %s: %ld"
 
-#: mutt_lua.c:452
+#: mutt_lua.c:453
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Erro: Não foi possível carregar o interpretador lua"
 
-#: mutt_lua.c:522
+#: mutt_lua.c:523
 #, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Incapaz de importar código lua: %s"
@@ -7024,7 +7024,7 @@ msgid "Bottom of message is shown"
 msgstr "O fim da mensagem está sendo mostrado"
 
 #: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
-#: pager/functions.c:965
+#: pager/functions.c:964
 msgid "Top of message is shown"
 msgstr "O início da mensagem está sendo mostrado"
 
@@ -7044,11 +7044,11 @@ msgstr "Não há mais texto não-citado após o texto citado"
 msgid "No more quoted text"
 msgstr "Não há mais texto citado"
 
-#: pager/functions.c:989
+#: pager/functions.c:995
 msgid "Help is currently being shown"
 msgstr "A ajuda está sendo mostrada"
 
-#: pager/functions.c:1045
+#: pager/functions.c:1051
 #, c-format
 msgid "Saved to: %s"
 msgstr ""
@@ -8707,13 +8707,13 @@ msgstr "  neomutt -p"
 msgid "  neomutt -y"
 msgstr "  neomutt -y"
 
-#: version.c:85
+#: version.c:83
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
 msgstr ""
 "Muitos outros, aqui não mencionados, contribuiram código, correções,\n"
 "e sugestões.\n"
 
-#: version.c:89
+#: version.c:87
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -8743,7 +8743,7 @@ msgstr ""
 "junto com este programa; se não, escreva para a Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Bostom, MA      02110-1301, USA.\n"
 
-#: version.c:104
+#: version.c:102
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -8755,7 +8755,7 @@ msgstr ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "ou envie um email para: <neomutt-devel@neomutt.org>\n"
 
-#: version.c:112
+#: version.c:110
 msgid ""
 "Copyright (C) 2015-2025 Richard Russon and friends\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -8767,11 +8767,11 @@ msgstr ""
 "NeoMutt é um programa livre, e você é encorajado a redistribuí-lo\n"
 "sob certas condições; digite 'neomutt -vv' para os detalhes.\n"
 
-#: version.c:482
+#: version.c:672
 msgid "Compile options:"
 msgstr "Opções de compilação:"
 
-#: version.c:487
+#: version.c:678
 msgid "Devel options:"
 msgstr "Opções de desenvolvimento:"
 
