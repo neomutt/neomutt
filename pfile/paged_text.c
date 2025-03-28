@@ -31,6 +31,20 @@
 #include "paged_text.h"
 
 /**
+ * enum MarkupIntersect - XXX
+ */
+enum MarkupIntersect
+{
+  MI_BEFORE, ///< XXX
+  MI_START,  ///< XXX
+  MI_MIDDLE, ///< XXX
+  MI_ALL,    ///< XXX
+  MI_END,    ///< XXX
+  MI_AFTER,  ///< XXX
+};
+
+
+/**
  * markup_dump - XXX
  */
 void markup_dump(const struct PagedTextMarkupArray *ptma, int first, int last)
@@ -96,10 +110,64 @@ struct PagedTextMarkup *paged_text_markup_new(struct PagedTextMarkupArray *ptma)
   return ARRAY_LAST(ptma);
 }
 
+
+
+/**
+ * markup_intersect - XXX
+ */
+enum MarkupIntersect markup_intersect(struct PagedTextMarkup *ptm, int first, int bytes, int *ifirst, int *ibytes)
+{
+  if ((first + bytes) <= ptm->first)
+  {
+    *ifirst = -1;
+    *ibytes = -1;
+    return MI_BEFORE;
+  }
+
+  if (first >= (ptm->first + ptm->bytes))
+  {
+    *ifirst = -1;
+    *ibytes = -1;
+    return MI_AFTER;
+  }
+
+  if (first <= ptm->first)
+  {
+    if ((first + bytes) >= (ptm->first + ptm->bytes))
+    {
+      *ifirst = ptm->first;
+      *ibytes = ptm->bytes;
+      return MI_ALL;
+    }
+    else
+    {
+      *ifirst = ptm->first;
+      *ibytes = first + bytes - ptm->first;
+      return MI_START;
+    }
+  }
+  else
+  {
+    if ((first + bytes) >= (ptm->first + ptm->bytes))
+    {
+      *ifirst = first;
+      *ibytes = ptm->first + ptm->bytes - first;
+      return MI_END;
+    }
+    else
+    {
+      *ifirst = first;
+      *ibytes = bytes;
+      return MI_MIDDLE;
+    }
+  }
+}
+
+
 /**
  * markup_insert - XXX
  */
-bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int position, int bytes)
+bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int position, int first, int bytes)
 {
   if (!ptma || !text)
     return false;
@@ -122,7 +190,7 @@ bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int posi
       if (start == 0)
       {
         struct PagedTextMarkup ptm_new = { 0 };
-        ptm_new.first = 90;
+        ptm_new.first = first;
         ptm_new.bytes = bytes;
 
         ARRAY_INSERT(ptma, ARRAY_FOREACH_IDX_ptm, &ptm_new);
@@ -131,7 +199,7 @@ bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int posi
       {
         struct PagedTextMarkup ptm_start = *ptm;
         struct PagedTextMarkup ptm_new = { 0 };
-        ptm_new.first = 90;
+        ptm_new.first = first;
         ptm_new.bytes = bytes;
 
         ptm->first += start;
@@ -151,7 +219,7 @@ bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int posi
   }
 
   struct PagedTextMarkup ptm_new = { 0 };
-  ptm_new.first = 90;
+  ptm_new.first = first;
   ptm_new.bytes = bytes;
 
   ARRAY_ADD(ptma, ptm_new);

@@ -70,6 +70,15 @@ void filter_ansi_fdata_free(void **pptr)
  */
 void filter_ansi_apply(struct Filter *fil, struct PagedRow *pr)
 {
+#if 0
+  struct PagedTextMarkup *ptm = ARRAY_GET(&pr->text, 2);
+  ARRAY_REMOVE(&pr->text, ptm);
+  ptm = ARRAY_GET(&pr->text, 0);
+  ARRAY_REMOVE(&pr->text, ptm);
+  pr->text.entries[0].cid = MT_COLOR_INDICATOR;
+  pr->num_bytes -= 11;
+#endif
+
   // markup_dump(&pr->text, -1, -1);
   markup_delete(&pr->text, 0, 7);
   // markup_dump(&pr->text, -1, -1);

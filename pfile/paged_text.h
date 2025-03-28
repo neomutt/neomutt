@@ -74,7 +74,7 @@ static inline bool pos_after_text_markup(int pos, struct PagedTextMarkup *ptm)
 
 bool markup_apply (struct PagedTextMarkupArray *ptma, int position, int bytes, int cid);
 bool markup_delete(struct PagedTextMarkupArray *ptma, int position, int bytes);
-bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int position, int bytes);
+bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int position, int first, int bytes);
 
 void markup_dump  (const struct PagedTextMarkupArray *ptma, int first, int last);
 
