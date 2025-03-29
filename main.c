@@ -1751,7 +1751,6 @@ int main(int argc, char *argv[], char *envp[])
 
       mailbox_free(&m);
       mutt_error(_("Unable to open mailbox %s"), buf_string(folder));
-      repeat_error = false;
     }
     if (m || buf_is_empty(folder))
     {
