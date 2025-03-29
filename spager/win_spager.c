@@ -271,7 +271,7 @@ static int win_spager_repaint(struct MuttWindow *win)
       struct PagedRow *pr = ARRAY_GET(pra, pr_index);
       struct Segment *seg = ARRAY_GET(&pr->segments, seg_index);
 
-      paged_file_apply_filters(pf, 0);
+      paged_file_apply_filters(pf, pr_index);
 
       // text = paged_row_get_virtual_text(pr, seg);
 

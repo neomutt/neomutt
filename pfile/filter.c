@@ -97,15 +97,31 @@ void filter_ansi_apply(struct Filter *fil, struct PagedRow *pr)
   struct AnsiFilterData *afd = fil->fdata;
   const bool c_allow_ansi = true;
 
-  for (int i = 0; plain[i] != '\0'; i++)
+  int del = 0;
+  int off = 0;
+  int e_off = 0;
+  while (plain && (plain[off] != '\0'))
   {
-    if (plain[i] != '\033') // Escape
-      continue;
+    const char *end = strchr(plain + off, '\033'); // Escape
+    if (end)
+      e_off = end - (plain + off);
+    else
+      e_off = strlen(plain + off);
 
-    int len = ansi_color_parse(plain + i, afd->ansi, &afd->ansi_list, !c_allow_ansi);
-    mutt_debug(LL_DEBUG1, "ANSI: off %d, len %d\n", i, len);
-    markup_delete(&pr->text, i, len);
-    i += len;
+    // Existing colour
+    if ((e_off > 0) && afd->ansi.attr_color)
+    {
+      mutt_debug(LL_DEBUG1, "APPLY: off %d\n", e_off);
+      markup_apply(&pr->text, off - del, e_off, MT_COLOR_NONE, afd->ansi.attr_color);
+    }
+
+    off += e_off;
+
+    int len = ansi_color_parse(plain + off, &afd->ansi, &afd->ansi_list, !c_allow_ansi);
+    mutt_debug(LL_DEBUG1, "ANSI: off %d, len %d\n", off, len);
+    markup_delete(&pr->text, off - del, len);
+    off += len;
+    del += len;
     pr->num_bytes -= len;
   }
 
@@ -119,7 +135,10 @@ struct Filter *filter_ansi_new(void)
 {
   struct Filter *fil = filter_new();
 
-  fil->fdata = MUTT_MEM_CALLOC(1, struct AnsiFilterData);
+  struct AnsiFilterData *afd = MUTT_MEM_CALLOC(1, struct AnsiFilterData);
+  TAILQ_INIT(&afd->ansi_list);
+
+  fil->fdata = afd;
   fil->fdata_free = filter_ansi_fdata_free;
   fil->apply = filter_ansi_apply;
 

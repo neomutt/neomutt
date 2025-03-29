@@ -62,7 +62,7 @@ ARRAY_HEAD(FilterArray, struct Filter *);
  */
 struct AnsiFilterData
 {
-  struct AnsiColor    *ansi;         ///< Current ANSI colour
+  struct AnsiColor     ansi;         ///< Current ANSI colour
   struct AttrColorList ansi_list;    ///< List of ANSI colours used by the Filter
 };
 

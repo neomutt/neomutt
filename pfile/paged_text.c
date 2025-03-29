@@ -332,7 +332,7 @@ bool markup_delete(struct PagedTextMarkupArray *ptma, int position, int bytes)
 /**
  * markup_apply - XXX
  */
-bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, int cid)
+bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, int cid, const struct AttrColor *ac)
 {
   if (!ptma)
     return false;
@@ -379,6 +379,7 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
     {
       mutt_debug(LL_DEBUG1, "\t\033[1;7;36mentire\033[0m\n");
       ptm->cid = cid;
+      ptm->ac_text = ac;
     }
     else if ((start > 0) && (last < (ptm->bytes - 1)))
     {
@@ -395,6 +396,7 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
       ptm_new.first = ptm->first + start - last - 1;
       ptm_new.bytes = bytes;
       ptm_new.cid = cid;
+      ptm_new.ac_text = ac;
 
       ARRAY_INSERT(ptma, ARRAY_FOREACH_IDX_ptm, &ptm_new);
       ARRAY_INSERT(ptma, ARRAY_FOREACH_IDX_ptm, &ptm_start);
@@ -411,6 +413,7 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
       ptm_new.first = ptm->first;
       ptm_new.bytes = remainder;
       ptm_new.cid = cid;
+      ptm_new.ac_text = ac;
 
       ptm->first += remainder;
       ptm->bytes -= remainder;
@@ -430,6 +433,7 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
       ptm->first += start;
       ptm->bytes -= start;
       ptm->cid = cid;
+      ptm_new.ac_text = ac;
 
       ARRAY_INSERT(ptma, ARRAY_FOREACH_IDX_ptm, &ptm_new);
       ARRAY_FOREACH_IDX_ptm++;
