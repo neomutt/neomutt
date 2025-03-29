@@ -234,7 +234,12 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
       if (next_tok)
         *next_tok++ = '\0';
 
-      buf_printf(addr, "\"%s\" <%s>", tok, buf);
+      // The address shouldn't be wrapped with <>s, but historically, this was suppported
+      if (buf[0] == '<')
+        buf_printf(addr, "\"%s\" %s", tok, buf);
+      else
+        buf_printf(addr, "\"%s\" <%s>", tok, buf);
+
       mutt_addrlist_parse(&alias->addr, buf_string(addr));
 
       parse_alias_comments(alias, next_tok);
