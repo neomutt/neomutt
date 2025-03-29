@@ -111,7 +111,6 @@ struct PagedTextMarkup *paged_text_markup_new(struct PagedTextMarkupArray *ptma)
 }
 
 
-
 /**
  * markup_intersect - XXX
  */
@@ -172,20 +171,20 @@ bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int posi
   if (!ptma || !text)
     return false;
 
-  // printf("insert: pos %d, '%s' %d bytes\n", position, text, bytes);
-  // printf("\n");
+  mutt_debug(LL_DEBUG1, "insert: pos %d, '%s' %d bytes\n", position, text, bytes);
+  mutt_debug(LL_DEBUG1, "\n");
 
   int total_pos = 0;
 
   struct PagedTextMarkup *ptm = NULL;
   ARRAY_FOREACH(ptm, ptma)
   {
-    // printf("piece %d: %d - %d\n", ARRAY_FOREACH_IDX_ptm, total_pos, total_pos + ptm->bytes - 1);
+    mutt_debug(LL_DEBUG1, "piece %d: %d - %d\n", ARRAY_FOREACH_IDX_ptm, total_pos, total_pos + ptm->bytes - 1);
 
     if ((position >= total_pos) && (position < (total_pos + ptm->bytes)))
     {
       int start = position - total_pos;
-      // printf("    start = %d\n", start);
+      mutt_debug(LL_DEBUG1, "    start = %d\n", start);
 
       if (start == 0)
       {
@@ -237,15 +236,15 @@ bool markup_delete(struct PagedTextMarkupArray *ptma, int position, int bytes)
   if (bytes == 0)
     return true;
 
-  // printf("delete: pos %d, %d bytes\n", position, bytes);
-  // printf("\n");
+  mutt_debug(LL_DEBUG1, "delete: pos %d, %d bytes\n", position, bytes);
+  mutt_debug(LL_DEBUG1, "\n");
 
   int total_pos = 0;
 
   struct PagedTextMarkup *ptm = NULL;
   ARRAY_FOREACH(ptm, ptma)
   {
-    // printf("piece %d: %d - %d\n", ARRAY_FOREACH_IDX_ptm, total_pos, total_pos + ptm->bytes - 1);
+    mutt_debug(LL_DEBUG1, "piece %d: %d - %d\n", ARRAY_FOREACH_IDX_ptm, total_pos, total_pos + ptm->bytes - 1);
 
     int start = -1;
     int last = -1;
@@ -272,18 +271,18 @@ bool markup_delete(struct PagedTextMarkupArray *ptma, int position, int bytes)
 
     if ((start == -1) && (last == -1))
     {
-      // printf("\t\033[1;7;32mignore\033[0m\n");
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;32mignore\033[0m\n");
       continue;
     }
     else if ((start == 0) && (last == (ptm->bytes - 1)))
     {
-      // printf("\t\033[1;7;36mkill\033[0m\n");
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;36mkill\033[0m\n");
       ptm->first = -1;
       ptm->bytes = -1;
     }
     else if ((start > 0) && (last < (ptm->bytes - 1)))
     {
-      // printf("\t\033[1;7;35msplit\033[0m\n");
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;35msplit\033[0m\n");
 
       struct PagedTextMarkup ptm_new = { 0 };
       ptm_new.first = ptm->first;
@@ -296,8 +295,8 @@ bool markup_delete(struct PagedTextMarkupArray *ptma, int position, int bytes)
     }
     else if (start <= 0)
     {
-      // printf("\t\033[1;7;31mstart = %d\033[0m\n", start);
-      // printf("\t\033[1;7;33mlast = %d\033[0m\n", last);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;31mstart = %d\033[0m\n", start);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;33mlast = %d\033[0m\n", last);
 
       int remainder = last + 1;
       ptm->first += remainder;
@@ -305,8 +304,8 @@ bool markup_delete(struct PagedTextMarkupArray *ptma, int position, int bytes)
     }
     else
     {
-      // printf("\t\033[1;7;31mstart = %d\033[0m\n", start);
-      // printf("\t\033[1;7;33mlast = %d\033[0m\n", last);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;31mstart = %d\033[0m\n", start);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;33mlast = %d\033[0m\n", last);
 
       int remainder = last - start + 1;
       ptm->bytes -= remainder;
@@ -326,7 +325,7 @@ bool markup_delete(struct PagedTextMarkupArray *ptma, int position, int bytes)
       i++;
   }
 
-  // printf("\n");
+  mutt_debug(LL_DEBUG1, "\n");
   return true;
 }
 
@@ -338,15 +337,15 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
   if (!ptma)
     return false;
 
-  // printf("markup: pos %d, %d bytes\n", position, bytes);
-  // printf("\n");
+  mutt_debug(LL_DEBUG1, "markup: pos %d, %d bytes\n", position, bytes);
+  mutt_debug(LL_DEBUG1, "\n");
 
   int total_pos = 0;
 
   struct PagedTextMarkup *ptm = NULL;
   ARRAY_FOREACH(ptm, ptma)
   {
-    // printf("piece %d: %d - %d\n", ARRAY_FOREACH_IDX_ptm, total_pos, total_pos + ptm->bytes - 1);
+    mutt_debug(LL_DEBUG1, "piece %d: %d - %d\n", ARRAY_FOREACH_IDX_ptm, total_pos, total_pos + ptm->bytes - 1);
 
     int start = -1;
     int last = -1;
@@ -373,17 +372,17 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
 
     if ((start == -1) && (last == -1))
     {
-      // printf("\t\033[1;7;32mignore\033[0m\n");
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;32mignore\033[0m\n");
       continue;
     }
     else if ((start == 0) && (last == (ptm->bytes - 1)))
     {
-      // printf("\t\033[1;7;36mentire\033[0m\n");
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;36mentire\033[0m\n");
       ptm->cid = cid;
     }
     else if ((start > 0) && (last < (ptm->bytes - 1)))
     {
-      // printf("\t\033[1;7;35msplit\033[0m\n");
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;35msplit\033[0m\n");
 
       struct PagedTextMarkup ptm_start = { 0 };
       ptm_start.first = ptm->first;
@@ -403,8 +402,8 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
     }
     else if (start <= 0)
     {
-      // printf("\t\033[1;7;31mstart = %d\033[0m\n", start);
-      // printf("\t\033[1;7;33mlast = %d\033[0m\n", last);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;31mstart = %d\033[0m\n", start);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;33mlast = %d\033[0m\n", last);
 
       int remainder = last + 1;
 
@@ -421,8 +420,8 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
     }
     else
     {
-      // printf("\t\033[1;7;31mstart = %d\033[0m\n", start);
-      // printf("\t\033[1;7;33mlast = %d\033[0m\n", last);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;31mstart = %d\033[0m\n", start);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;33mlast = %d\033[0m\n", last);
 
       struct PagedTextMarkup ptm_new = { 0 };
       ptm_new.first = ptm->first;
@@ -437,7 +436,7 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
     }
   }
 
-  // printf("\n");
+  mutt_debug(LL_DEBUG1, "\n");
   return true;
 
 }

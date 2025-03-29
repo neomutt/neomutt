@@ -24,6 +24,7 @@
 #define MUTT_PFILE_FILTER_H
 
 #include "mutt/lib.h"
+#include "color/lib.h"
 
 struct PagedRow;
 
@@ -61,7 +62,8 @@ ARRAY_HEAD(FilterArray, struct Filter *);
  */
 struct AnsiFilterData
 {
-  int dummy;
+  struct AnsiColor    *ansi;         ///< Current ANSI colour
+  struct AttrColorList ansi_list;    ///< List of ANSI colours used by the Filter
 };
 
 struct Filter *filter_ansi_new(void);

@@ -79,14 +79,37 @@ void filter_ansi_apply(struct Filter *fil, struct PagedRow *pr)
   pr->num_bytes -= 11;
 #endif
 
+#if 0
   // markup_dump(&pr->text, -1, -1);
   markup_delete(&pr->text, 0, 7);
   // markup_dump(&pr->text, -1, -1);
-  markup_apply(&pr->text, 7, 33, MT_COLOR_INDICATOR);
+  markup_apply(&pr->text, 0, 33, MT_COLOR_INDICATOR);
   // markup_dump(&pr->text, -1, -1);
-  markup_delete(&pr->text, 40, 4);
+  markup_delete(&pr->text, 33, 4);
   // markup_dump(&pr->text, -1, -1);
   mutt_debug(LL_DEBUG1, "FILTER: %ld\n", pr->offset);
+  pr->num_bytes -= 11;
+#endif
+
+  const char *plain = paged_row_get_plain(pr);
+  mutt_debug(LL_DEBUG1, "Plain: %s\n", plain);
+
+  struct AnsiFilterData *afd = fil->fdata;
+  const bool c_allow_ansi = true;
+
+  for (int i = 0; plain[i] != '\0'; i++)
+  {
+    if (plain[i] != '\033') // Escape
+      continue;
+
+    int len = ansi_color_parse(plain + i, afd->ansi, &afd->ansi_list, !c_allow_ansi);
+    mutt_debug(LL_DEBUG1, "ANSI: off %d, len %d\n", i, len);
+    markup_delete(&pr->text, i, len);
+    i += len;
+    pr->num_bytes -= len;
+  }
+
+  FREE(&plain);
 }
 
 /**

@@ -722,7 +722,6 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
 
   paged_row_add_newline(pf->source, pr);
 
-  return true;
   paged_row_add_multirow(pf->source, pf, _(Notice));
 
   pr = paged_file_new_row(pf);
@@ -732,7 +731,7 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
   {
     pr = paged_file_new_row(pf);
     paged_row_add_raw_text(pf->source, pr, col_bold);
-    paged_row_add_colored_text(pf->source, pr, MT_COLOR_BOLD, kv->key);
+    paged_row_add_text(pf->source, pr, kv->key);
     paged_row_add_raw_text(pf->source, pr, col_end);
     paged_row_add_text(pf->source, pr, ": ");
     paged_row_add_text(pf->source, pr, kv->value);
@@ -743,7 +742,7 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
   {
     pr = paged_file_new_row(pf);
     paged_row_add_raw_text(pf->source, pr, col_bold);
-    paged_row_add_colored_text(pf->source, pr, MT_COLOR_BOLD, "Storage");
+    paged_row_add_text(pf->source, pr, "Storage");
     paged_row_add_raw_text(pf->source, pr, col_end);
     paged_row_add_text(pf->source, pr, ": ");
 
@@ -760,7 +759,7 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
   {
     pr = paged_file_new_row(pf);
     paged_row_add_raw_text(pf->source, pr, col_bold);
-    paged_row_add_colored_text(pf->source, pr, MT_COLOR_BOLD, "Compression");
+    paged_row_add_text(pf->source, pr, "Compression");
     paged_row_add_raw_text(pf->source, pr, col_end);
     paged_row_add_text(pf->source, pr, ": ");
     STAILQ_FOREACH(np, &ver->compression->head, entries)
@@ -777,7 +776,7 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
 
   pr = paged_file_new_row(pf);
   paged_row_add_raw_text(pf->source, pr, col_bold);
-  paged_row_add_colored_text(pf->source, pr, MT_COLOR_BOLD, "Configure options");
+  paged_row_add_text(pf->source, pr, "Configure options");
   paged_row_add_raw_text(pf->source, pr, col_end);
   paged_row_add_text(pf->source, pr, ": ");
   if (ver->configure)
@@ -800,7 +799,7 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
   {
     pr = paged_file_new_row(pf);
     paged_row_add_raw_text(pf->source, pr, col_bold);
-    paged_row_add_colored_text(pf->source, pr, MT_COLOR_BOLD, "Compilation CFLAGS");
+    paged_row_add_text(pf->source, pr, "Compilation CFLAGS");
     paged_row_add_raw_text(pf->source, pr, col_end);
     paged_row_add_text(pf->source, pr, ": ");
     STAILQ_FOREACH(np, &ver->compilation->head, entries)
@@ -819,7 +818,7 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
 
   pr = paged_file_new_row(pf);
   paged_row_add_raw_text(pf->source, pr, col_bold);
-  paged_row_add_colored_text(pf->source, pr, MT_COLOR_BOLD, _("Compile options"));
+  paged_row_add_text(pf->source, pr, _("Compile options"));
   paged_row_add_raw_text(pf->source, pr, col_end);
   paged_row_add_text(pf->source, pr, ":\n");
 
@@ -832,7 +831,7 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
   {
     pr = paged_file_new_row(pf);
     paged_row_add_raw_text(pf->source, pr, col_bold);
-    paged_row_add_colored_text(pf->source, pr, MT_COLOR_BOLD, _("Devel options"));
+    paged_row_add_text(pf->source, pr, _("Devel options"));
     paged_row_add_raw_text(pf->source, pr, col_end);
     paged_row_add_text(pf->source, pr, ":\n");
 
@@ -846,7 +845,7 @@ bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrCo
   {
     pr = paged_file_new_row(pf);
     paged_row_add_raw_text(pf->source, pr, col_bold);
-    paged_row_add_colored_text(pf->source, pr, MT_COLOR_BOLD, kv->key);
+    paged_row_add_text(pf->source, pr, kv->key);
     paged_row_add_raw_text(pf->source, pr, col_end);
     paged_row_add_text(pf->source, pr, "=\"");
     paged_row_add_text(pf->source, pr, kv->value);
