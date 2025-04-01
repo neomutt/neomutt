@@ -44,6 +44,41 @@
 const int MaxSyntaxColumns = 4096;
 
 /**
+ * get_vrow - XXX
+ */
+struct ViewRow *get_vrow(struct PagedFile *pf, int row)
+{
+  struct ViewRow *vr = MUTT_MEM_CALLOC(1, struct ViewRow);
+
+  struct PagedRow *pr = ARRAY_GET(&pf->rows, row);
+
+  vr->text = paged_row_get_plain(pr);
+
+  vr->num_bytes = pr->num_bytes;
+  vr->num_cols = pr->num_cols;
+
+  paged_row_normalise2(pr, &vr->markup);
+
+  return vr;
+}
+
+/**
+ * fill_vrows - XXX
+ */
+void fill_vrows(struct SimplePagerWindowData *wdata)
+{
+  for (int i = 0; i < wdata->page_rows; i++)
+  {
+    struct ViewRow **pvr = ARRAY_GET(&wdata->vrows, i);
+    if (pvr && *pvr)
+      continue;
+
+    struct ViewRow *vr = get_vrow(wdata->paged_file, i);
+    ARRAY_SET(&wdata->vrows, i, vr);
+  }
+}
+
+/**
  * win_spager_recalc - Recalculate the Simple Pager display - Implements MuttWindow::recalc() - @ingroup window_recalc
  *
  * Recalculate:
@@ -81,6 +116,10 @@ static int win_spager_recalc(struct MuttWindow *win)
   {
     wrap_width = MAX(wrap_width + wdata->c_wrap, 10);
   }
+
+  wdata->page_rows = win->state.rows;
+  wdata->page_cols = win->state.cols;
+  fill_vrows(wdata);
 
   paged_rows_wrap(&pf->rows, wrap_width, rw_flags);
 

@@ -26,6 +26,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "pfile/lib.h"
 #include "search.h"
 
 struct MuttWindow;
@@ -71,6 +72,19 @@ struct SimplePagerExport
 };
 
 /**
+ * struct ViewRow - XXX
+ */
+struct ViewRow
+{
+  struct PagedTextMarkupArray markup;     ///< XXX
+  const char *text;                       ///< XXX
+  int num_bytes;                          ///< XXX
+  int num_cols;                           ///< XXX
+  struct SegmentArray segments;           ///< Lengths of wrapped parts of the Row
+};
+ARRAY_HEAD(ViewRowArray, struct ViewRow *);
+
+/**
  * struct SimplePagerWindowData - Window state data for the Simple Pager
  */
 struct SimplePagerWindowData
@@ -91,6 +105,16 @@ struct SimplePagerWindowData
   int vrow;                           ///< Virtual Row at the top of the view
 
   struct Notify *notify;              ///< Notifications: #NotifySimplePager
+
+  struct ViewRowArray vrows;          ///< XXX
+
+  int scr_row;                        ///< Screen position
+  int scr_col;                        ///< XXX
+  int scr_off;                        ///< XXX
+
+  int vr_row;                         ///< vrow cache position
+  int vr_col;                         ///< XXX
+  int vr_off;                         ///< XXX
 };
 
 void                          spager_wdata_free(struct MuttWindow *win, void **ptr);

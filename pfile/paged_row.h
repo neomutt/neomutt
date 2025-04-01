@@ -99,5 +99,6 @@ bool paged_rows_find_virtual_row  (struct PagedRowArray *pra, int virt_row, int 
 void paged_rows_wrap              (struct PagedRowArray *pra, int width, RowWrapFlags flags);
 
 void paged_row_normalise(struct PagedRow *pr, struct PagedRow *pr_normal);
+void paged_row_normalise2(struct PagedRow *pr, struct PagedTextMarkupArray *ptma);
 
 #endif /* MUTT_PFILE_PAGED_ROW_H */

@@ -504,3 +504,30 @@ void paged_row_normalise(struct PagedRow *pr, struct PagedRow *pr_normal)
     num_bytes += ptm->bytes;
   }
 }
+
+/**
+ * paged_row_normalise2 - XXX
+ */
+void paged_row_normalise2(struct PagedRow *pr, struct PagedTextMarkupArray *ptma)
+{
+  if (!pr || !ptma)
+    return;
+
+  int num_bytes = 0;
+
+  struct PagedTextMarkup *ptm = NULL;
+  ARRAY_FOREACH(ptm, ptma)
+  {
+    struct PagedTextMarkup *ptm_normal = paged_text_markup_new(ptma);
+
+    // Copy these members
+    ptm_normal->bytes = ptm->bytes;
+    ptm_normal->cid = ptm->cid;
+    ptm_normal->source = ptm->source;
+    ptm_normal->ac_text = ptm->ac_text;
+    ptm_normal->ac_merged = ptm->ac_merged;
+
+    ptm_normal->first = num_bytes;
+    num_bytes += ptm->bytes;
+  }
+}
