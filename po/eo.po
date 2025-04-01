@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-04-04 01:04+0100\n"
-"PO-Revision-Date: 2025-04-04 12:50-0400\n"
+"PO-Revision-Date: 2025-04-04 12:51-0400\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -999,9 +999,9 @@ msgid "source: error at %s"
 msgstr "source: eraro ĉe %s"
 
 #: commands.c:1106
-#, fuzzy, c-format
+#, c-format
 msgid "source: file %s could not be sourced"
-msgstr "Ne eblis presi mesaĝojn"
+msgstr "source: dosiero '%s' estas nefontebla"
 
 #: commands.c:1276 imap/imap.c:1261
 #, c-format
@@ -1009,24 +1009,23 @@ msgid "Subscribed to %s"
 msgstr "Abonas %s"
 
 #: commands.c:1280
-#, fuzzy, c-format
+#, c-format
 msgid "Could not subscribe to %s"
-msgstr "Abonas %s"
+msgstr "Ne eblas ekaboni al %s"
 
 #: commands.c:1288 commands.c:1624
-#, fuzzy
 msgid "No folder specified"
-msgstr "Temlinio ne specifita."
+msgstr "Neniu dosiero specifita."
 
 #: commands.c:1322
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "etikeda formato '%s' jam registrita kiel '%s'"
 
 #: commands.c:1364
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "etikeda aliformigo '%s' jam registrita kiel '%s'"
 
 #: commands.c:1612 imap/imap.c:1263
 #, c-format
@@ -1034,14 +1033,14 @@ msgid "Unsubscribed from %s"
 msgstr "Malabonis de %s"
 
 #: commands.c:1616
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Ne eblis malaboni de %s"
 
 #: compmbox/compress.c:218
 #, c-format
 msgid "Expando parse error: %s"
-msgstr ""
+msgstr "Analiza eraro de ekspando: %s"
 
 #: compmbox/compress.c:347 compmbox/compress.c:478
 #, c-format
@@ -1098,7 +1097,7 @@ msgstr "Eraro.  Konservas dumtempan dosieron: %s"
 #. L10N: $compose_format default format
 #: compose/config.c:71
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
-msgstr ""
+msgstr "-- NeoMutt: Kompono [Proksimume grando: %l  Ecoj: %a]%>-"
 
 #: compose/dlg_compose.c:95 compose/dlg_compose.c:113
 msgid "Send"
@@ -1132,9 +1131,8 @@ msgid "Descrip"
 msgstr "Priskribo"
 
 #: compose/dlg_compose.c:115
-#, fuzzy
 msgid "Newsgroups"
-msgstr "Temlinio ne specifita."
+msgstr "Novaĵgrupoj"
 
 #: compose/dlg_compose.c:335
 msgid "-- Attachments"
@@ -1142,7 +1140,7 @@ msgstr "-- Partoj"
 
 #: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
-msgstr ""
+msgstr "-- Antaŭprezento"
 
 #: compose/functions.c:224
 msgid "There are no attachments"
@@ -1175,24 +1173,21 @@ msgstr "Vi ne povas forviŝi la solan parton"
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
 #: compose/functions.c:360
-#, fuzzy
 msgid "Really delete the main message?"
-msgstr "Ĉu vere forviŝi la poŝtfakon \"%s\"?"
+msgstr "Ĉu vere forviŝi la ĉefmesaĝon?"
 
 #: compose/functions.c:377 compose/functions.c:569
-#, fuzzy
 msgid "Can't leave group with only one attachment"
-msgstr "Vi ne povas forviŝi la solan parton"
+msgstr "Ne eblas meti nur unu kunsendaĵon en grupon"
 
 #: compose/functions.c:537 compose/functions.c:551
 msgid "Attachments to be grouped must have the same parent"
-msgstr ""
+msgstr "Grupigotaj kunsendaĵoj devas havi la saman patron"
 
 #: compose/functions.c:758
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Aldonas la elektitajn dosierojn..."
+msgstr[0] "Aldonas la elektitan dosieron..."
 msgstr[1] "Aldonas la elektitajn dosierojn..."
 
 #: compose/functions.c:778
@@ -1205,9 +1200,8 @@ msgid "Open mailbox to attach message from"
 msgstr "Malfermu poŝtfakon por aldoni mesaĝon el ĝi"
 
 #: compose/functions.c:840
-#, fuzzy
 msgid "Open newsgroup to attach message from"
-msgstr "Malfermu poŝtfakon por aldoni mesaĝon el ĝi"
+msgstr "Malfermu novaĵgrupon por aldoni mesaĝon el ĝi"
 
 #: compose/functions.c:893 main.c:1747
 #, c-format
@@ -1228,7 +1222,7 @@ msgstr "Ne eblas aldoni"
 
 #: compose/functions.c:1048
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
-msgstr ""
+msgstr "Content-ID povas enhavi nur la signojn: -.0-9@A-Z_a-z"
 
 #: compose/functions.c:1127
 msgid "Invalid encoding"
@@ -1236,52 +1230,47 @@ msgstr "Nevalida kodado"
 
 #: compose/functions.c:1164
 msgid "Empty 'Content-Language'"
-msgstr ""
+msgstr "Malplena 'Content-Languge'"
 
 #: compose/functions.c:1227
-#, fuzzy
 msgid "Can't filter multipart attachments"
-msgstr "Mutt kapablas forviŝi nur multipart-partojn"
+msgstr "Ne eblas filtri plurpartajn kunsendaĵojn"
 
 #: compose/functions.c:1262
-#, fuzzy
 msgid "Can't get multipart attachments"
-msgstr "Mutt kapablas forviŝi nur multipart-partojn"
+msgstr "Ne eblas atingi plurpartajn kunsendaĵojn"
 
 #: compose/functions.c:1284
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
-msgstr ""
+msgstr "Grupigo de 'alternatives' postulas minimume du markitajn mesaĝojn"
 
 #: compose/functions.c:1298
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
-msgstr ""
+msgstr "Grupigo de 'multilingual' postulas minimume du markitajn mesaĝojn"
 
 #: compose/functions.c:1310
 msgid "Not all parts have 'Content-Language' set, continue?"
-msgstr ""
+msgstr "'Por ne ĉiuj partoj 'Content-Language' estas agordata. Ĉu daŭrigi?"
 
 #: compose/functions.c:1313
-#, fuzzy
 msgid "Not sending this message"
-msgstr "Eraro dum sendado de mesaĝo"
+msgstr "Ne sendas tiun mesaĝon"
 
 #: compose/functions.c:1328
 msgid "Grouping 'related' requires at least 2 tagged messages"
-msgstr ""
+msgstr "Grupigo de 'related' postulas minimume du markitajn mesaĝojn"
 
 #: compose/functions.c:1361 compose/functions.c:1380
-#, fuzzy
 msgid "Attachment is already at bottom"
-msgstr "Parto filtrita"
+msgstr "Kunsendaĵo jam estas ĉe malsupro"
 
 #: compose/functions.c:1367 compose/functions.c:1421
 msgid "Attachment can't be moved out of group"
-msgstr ""
+msgstr "Ne eblas movi kunsendaĵon el la grupo"
 
 #: compose/functions.c:1416
-#, fuzzy
 msgid "Attachment is already at top"
-msgstr "Parto skribita"
+msgstr "Kunsendaĵo jam estas ĉe supro"
 
 #: compose/functions.c:1449
 msgid "New file: "
@@ -1302,23 +1291,20 @@ msgid "Can't create file %s"
 msgstr "Ne eblas krei dosieron %s"
 
 #: compose/functions.c:1491
-#, fuzzy
 msgid "Error attaching file"
-msgstr "Malsukcesis krei kunsendaĵon"
+msgstr "Malsukcesis aldoni dosieron"
 
 #: compose/functions.c:1533
-#, fuzzy
 msgid "Can't print multipart attachments"
-msgstr "Ĉu presi markitajn partojn?"
+msgstr "Ne eblas printi plurpartajn kunsendaĵojn"
 
 #: compose/functions.c:1559
 msgid "Send attachment with name: "
 msgstr "Sendi parton kun nomo: "
 
 #: compose/functions.c:1584
-#, fuzzy
 msgid "Can't save multipart attachments"
-msgstr "Mutt kapablas forviŝi nur multipart-partojn"
+msgstr "Ne eblas konservi plurpartajn kunsendaĵojn"
 
 #: compose/functions.c:1620
 msgid "Recoding only affects text attachments"
@@ -1333,9 +1319,8 @@ msgid "The current attachment will be converted"
 msgstr "Ĉi tiu parto estos konvertita"
 
 #: compose/functions.c:1656
-#, fuzzy
 msgid "Attachment is not 'multipart'"
-msgstr "Parto skribita"
+msgstr "Kunsendaĵo ne estas plurparta"
 
 #: compose/functions.c:1772 send/send.c:2674
 #, c-format
@@ -1343,14 +1328,12 @@ msgid "Bad IDN in '%s': '%s'"
 msgstr "Malbona IDN en '%s': '%s'"
 
 #: compose/functions.c:1805
-#, fuzzy
 msgid "Can't edit multipart attachments"
-msgstr "Mutt kapablas forviŝi nur multipart-partojn"
+msgstr "Ne eblas redakti plurpartajn kunsendaĵojn"
 
 #: compose/functions.c:1886
-#, fuzzy
 msgid "Can't rename multipart attachments"
-msgstr "Mutt kapablas forviŝi nur multipart-partojn"
+msgstr "Ne eblas alinomi plurpartajn kunsendaĵojn"
 
 #: compose/functions.c:1893
 msgid "Rename to: "
@@ -1381,139 +1364,141 @@ msgid "Message written"
 msgstr "Mesaĝo skribita"
 
 #: compose/functions.c:2045
-#, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Ĉu revoki prokrastitan mesaĝon?"
+msgstr "Ĉu prokrasti malneton?"
 
 #: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
-msgstr ""
+msgstr "Nur entekstaj kunsendaĵoj kun enhavtipo text/* estas antaŭprezenteblaj"
 
 #: compose/preview.c:153
 msgid "Email too large to preview"
-msgstr ""
+msgstr "Retpoŝtaĵo tro grando por antaŭprezenti ĝin"
 
 #: compose/preview.c:199
-#, fuzzy
 msgid "Failed to move cursor!"
-msgstr "Malsukcesis kontroli sendinton"
+msgstr "Malsukcesis movi kursoron!"
 
 #: compose/preview.c:223
 #, c-format
 msgid "-- Preview (%.0f%%)"
-msgstr ""
+msgstr "-- Antaŭprezento (%.0f%%)"
 
 #: config/bool.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %s"
-msgstr "Nevalida relativa dato: %s"
+msgstr "Nevalida bulea valoro: %s"
 
 #: config/bool.c:133
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid boolean value: %ld"
-msgstr "Nevalida relativa dato: %s"
+msgstr "Nevalida bulea valoro: %ld"
 
 #: config/charset.c:54
 msgid "'charset' must contain exactly one character set name"
-msgstr ""
+msgstr "'charset' devas enteni la nomon de ĝuste unu signaro"
 
 #: config/charset.c:70 config/charset.c:101 hcache/config.c:55
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:121
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Nevalida valoro por opcio %s: \"%s\""
 
 #: config/enum.c:58
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %s"
-msgstr "Eraro: score: nevalida nombro"
+msgstr "Nevalida enumeracia valoro: %s"
 
 #: config/enum.c:128
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %ld"
-msgstr "Nevalida valoro por opcio %s: \"%s\""
+msgstr "Nevalida enumeracia valoro: %ld"
 
 #: config/helpers.c:340 config/set.c:109 config/set.c:454 config/set.c:601
 #: config/set.c:677 config/set.c:797 main.c:684 parse/set.c:119 parse/set.c:179
 #: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
 #: parse/set.c:433
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown option %s"
-msgstr "%s: nekonata variablo"
+msgstr "Nekonata opcio %s"
 
 #: config/long.c:58 config/long.c:157 config/long.c:195
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid long: %s"
-msgstr "Nevalida monato: %s"
+msgstr "Nevalida longo: %s"
 
 #: config/long.c:64 config/long.c:118 config/long.c:164 config/long.c:202
 #: config/number.c:97 config/number.c:157 config/number.c:209
 #: config/number.c:250
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
-msgstr "Funkcio nepermesata dum elektado de aldonoj."
+msgstr "Opcio %s ne rajtas esti negativa"
 
 #: config/number.c:85 config/number.c:196 config/number.c:237
 #: expando/node_conddate.c:242 expando/node_expando.c:179
 #: expando/node_expando.c:202
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %s"
-msgstr "Eraro: score: nevalida nombro"
+msgstr "Nevalida nombro: %s"
 
 #: config/number.c:91 config/number.c:203 config/number.c:244
 #, c-format
 msgid "Number is too big: %s"
-msgstr ""
+msgstr "Nombro tro grandas: %s"
 
 #: config/number.c:151
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid number: %ld"
-msgstr "Eraro: score: nevalida nombro"
+msgstr "Nevalida nombro: %ld"
 
+# KB - 'quad' estas agordaĵo kun kvar eblaj valoroj ('yes', 'no', 'ask-yes',
+# 'ask-no'). Mi ne certas kiel traduki tion, do mi uzas la vorton 'kvarvalora'
+# (havanta kvar valorojn), malgraŭ 'kvarvalora valoro' ŝajnas stranga. Ŝajnas
+# ke aliaj lingvoj tute ne tradukas ĝin.
 #: config/quad.c:79
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %s"
-msgstr "Nevalida relativa dato: %s"
+msgstr "Nevalida kvarvalora valoro: %s"
 
 #: config/quad.c:139
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %ld"
-msgstr "Nevalida valoro por opcio %s: \"%s\""
+msgstr "Nevalida kvarvalora valoro: %ld"
 
 #: config/set.c:261 config/set.c:877
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s has an invalid type %d"
-msgstr "Eraro: valoro '%s' ne validas por '-d'"
+msgstr "Agordaĵo %s havas nevalidan tipon %d"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:929 config/set.c:988
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
-msgstr ""
+msgstr "Tipo '%s' ne komprenas operacion '%s'"
 
 #: config/sort.c:88
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort name: %s"
-msgstr "Nevalida relativa dato: %s"
+msgstr "Nevalida nomo de ordigo: %s"
 
 #: config/sort.c:165
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort type: %ld"
-msgstr "Nevalida relativa dato: %s"
+msgstr "Nevalida tipo de ordigo: %ld"
 
 #: conn/accountcmd.c:80
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "Linio estas misformita: <ŝlosilo: valoro> atendita, <%s> ricevita"
 
 #: conn/accountcmd.c:120
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "Netraktita ŝlosilo en linio <%s: %s>"
 
 #: conn/accountcmd.c:141
 msgid "Unable to run account command"
-msgstr ""
+msgstr "En eblas plenumi la komandon account"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:80
@@ -1531,22 +1516,21 @@ msgstr "Pasvorto por %s@%s: "
 #. $*_oauth_refresh_command defined. So the message does not mean "None of
 #. your $*_oauth_refresh_command's are defined."
 #: conn/connaccount.c:212
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "Demandokomando ne difinita"
+msgstr "Neniu refreŝiga komando por OAUTH difinita"
 
 #: conn/connaccount.c:220
 msgid "Unable to run refresh command"
-msgstr ""
+msgstr "Ne eblas plenumi refreŝigan komandon"
 
 #: conn/connaccount.c:235
 msgid "Command returned empty string"
-msgstr ""
+msgstr "Komando redonis malplenan ĉenan"
 
 #: conn/connaccount.c:242
 #, c-format
 msgid "OAUTH token is too big: %ld"
-msgstr ""
+msgstr "Ĵetono de OAUTH tro grandas: %ld"
 
 #: conn/dlg_verifycert.c:204
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
@@ -1622,9 +1606,8 @@ msgid "Error processing certificate data"
 msgstr "Eraro dum traktado de atestilodatenoj"
 
 #: conn/gnutls.c:491 conn/openssl.c:896
-#, fuzzy
 msgid "Untrusted server certificate"
-msgstr "Averto: Ne eblis skribi atestilon"
+msgstr "Nefidinda servila atestilo"
 
 #: conn/gnutls.c:509 conn/openssl.c:903
 msgid "This certificate belongs to:"
@@ -1816,7 +1799,7 @@ msgid "Error talking to %s (%s)"
 msgstr "Eraro dum komunikado kun %s (%s)"
 
 #: conn/raw.c:314
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s has been aborted"
 msgstr "Konekto al %s fermita"
 
@@ -1905,7 +1888,7 @@ msgstr "Mesaĝo ne modifita"
 
 #: editmsg.c:176
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr ""
+msgstr "Mesaĝo de nurlega poŝtujo modifita! Ignorataj ŝanĝoj."
 
 #: editmsg.c:192
 #, c-format
@@ -1920,7 +1903,7 @@ msgstr "Ne eblas aldoni al dosierujo: %s"
 
 #: editor/window.c:52
 msgid "Complete"
-msgstr ""
+msgstr "Kompleta"
 
 #: editor/window.c:53
 msgid "Hist Up"
@@ -8088,9 +8071,8 @@ msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
 #: send/send.c:2019
-#, fuzzy
 msgid "No attachments, cancel sending?"
-msgstr "redakti kodadon de parto"
+msgstr "Neniuj kunsendaĵoj. Ĉu nuligi la sendon?"
 
 #: send/send.c:2070
 msgid "Recall postponed message?"
@@ -8117,9 +8099,8 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Nenia kriptografia modulo estas difinita. Malaktivigas mesaĝosekurecon."
 
 #: send/send.c:2640
-#, fuzzy
 msgid "Article not posted"
-msgstr "Mesaĝo ne sendita"
+msgstr "Artikolo ne afiŝita"
 
 #: send/send.c:2649
 msgid "Message postponed"
@@ -8134,9 +8115,8 @@ msgid "No subject specified"
 msgstr "Temlinio ne specifita"
 
 #: send/send.c:2700
-#, fuzzy
 msgid "No newsgroup specified"
-msgstr "Temlinio ne specifita"
+msgstr "Neniu novaĵgrupo specifita"
 
 #: send/send.c:2745
 msgid "Missing encryption key; mail not sent"
@@ -8163,9 +8143,8 @@ msgid "Mail sent"
 msgstr "Mesaĝo sendita"
 
 #: send/send.c:2908
-#, fuzzy
 msgid "No recipient specified"
-msgstr "Nenia ricevonto specifita"
+msgstr "Neniu ricevonto specifita"
 
 #: send/send.c:2955
 #, fuzzy
@@ -8178,9 +8157,8 @@ msgid "No List-Unsubscribe header found"
 msgstr "Malabonis %s"
 
 #: send/sendlib.c:177
-#, fuzzy
 msgid "Could not find any mime.types file"
-msgstr "Ne eblis sendi la mesaĝon"
+msgstr "Ne eblis trovi dosieron mime.types"
 
 #: send/sendlib.c:272
 #, c-format
@@ -8347,7 +8325,7 @@ msgstr "        -i <inkluzivaĵo>             Inkluzivigi korpan dosieron"
 
 #: usage.c:98
 msgid "        -s <subject>                 Set Subject:"
-msgstr "        -s <temo>                    Specifi temon:"
+msgstr "        -s <temo>                    Specifi temon"
 
 #: usage.c:99
 msgid "        -- <address> [...]           Add To: addresses"
@@ -8527,7 +8505,7 @@ msgstr "  neomutt -vv"
 #. L10N: Parameters in <>s may be translated
 #: usage.c:214
 msgid "  -A <alias> [...]  Lookup email aliases"
-msgstr "  -A <alnomo> [...]  Serĉi alinomojn"
+msgstr "  -A <alinomo> [...]  Serĉi alinomojn"
 
 #: usage.c:215
 msgid "                    Multiple aliases can be looked up (space-separated)"
@@ -8554,213 +8532,173 @@ msgid "Modify the -D and -Q options:"
 msgstr "Modifi la opciojn -D kaj -Q:"
 
 #: usage.c:226
-#, fuzzy
 msgid "  -O                Add one-liner documentation"
-msgstr "  -O                Add one-liner documentation"
+msgstr "  -O                Aldoni unulinian dokumentaron"
 
 #: usage.c:227
-#, fuzzy
 msgid "  -S                Hide the value of sensitive options"
-msgstr "  -S                Hide the value of sensitive options"
+msgstr "  -S                Kaŝi la valoron de kaŝindaj opcioj"
 
 #. L10N: Examples
 #: usage.c:236
-#, fuzzy
 msgid "  neomutt -A flatcap gahr"
 msgstr "  neomutt -A flatcap gahr"
 
 #: usage.c:237
-#, fuzzy
 msgid "  neomutt -D -O"
 msgstr "  neomutt -D -O"
 
 #: usage.c:238
-#, fuzzy
 msgid "  neomutt -DD -S"
 msgstr "  neomutt -DD -S"
 
 #: usage.c:239
-#, fuzzy
 msgid "  neomutt -O -Q alias_format index_format"
 msgstr "  neomutt -O -Q alias_format index_format"
 
 #: usage.c:252
-#, fuzzy
 msgid "These options can supply everything NeoMutt needs to send an email."
-msgstr "These options can supply everything NeoMutt needs to send an email."
+msgstr "Ĉi tiuj opcioj povas provizi ĉion, kion bezonas NeoMutt por sendi retpoŝtaĵon."
 
 #: usage.c:253
-#, fuzzy
 msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
-msgstr "If any parts are missing, NeoMutt will start the TUI to ask for them."
+msgstr "Se mankas iuj partoj, la terminala fasado de NeoMutt petos ilin."
 
 #: usage.c:254
-#, fuzzy
 msgid "Addresses may be used before the options, or after a -- marker."
-msgstr "Addresses may be used before the options, or after a -- marker."
+msgstr "Adresoj estas uzeblaj antaŭ la opcioj, aŭ post la markilo --."
 
 #: usage.c:255
-#, fuzzy
 msgid "Aliases may be used in place of addresses."
-msgstr "Aliases may be used in place of addresses."
+msgstr "Alinomoj estas uzeblaj anstataŭ adresoj."
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:259
-#, fuzzy
 msgid "  -a <file> [...]     Attach files"
-msgstr "  -a <file> [...]     Attach files"
+msgstr "  -a <dosiero> [...]  Aldoni dosierojn"
 
 #: usage.c:260
-#, fuzzy
 msgid "                      Terminated by -- or another option"
-msgstr "                      Terminated by -- or another option"
+msgstr "                      Finigita per -- aŭ alia opcio"
 
 #: usage.c:261
-#, fuzzy
 msgid "  -b <address>        Add Bcc: address"
-msgstr "  -b <address>        Add Bcc: address"
+msgstr "  -b <adreso>         Aldodi trian adreson"
 
 #: usage.c:262
-#, fuzzy
 msgid "  -C                  Use crypto (signing/encryption)"
-msgstr "  -C                  Use crypto (signing/encryption)"
+msgstr "  -C                  Subskribi aŭ ĉifri"
 
 #: usage.c:263
-#, fuzzy
 msgid "                      Must be set up in the config file"
-msgstr "                      Must be set up in the config file"
+msgstr "                      Devas esti agordita en la agordodosiero"
 
 #: usage.c:264
-#, fuzzy
 msgid "  -c <address>        Add Cc: address"
-msgstr "  -c <address>        Add Cc: address"
+msgstr "  -c <adreso>         Aldoni duan adreson"
 
 #: usage.c:265
-#, fuzzy
 msgid "  -E                  Edit message"
-msgstr "  -E                  Edit message"
+msgstr "  -E                  Redakti mesaĝon"
 
 #: usage.c:266
-#, fuzzy
 msgid "                      (supplied by -H or -i)"
-msgstr "                      (supplied by -H or -i)"
+msgstr "                      (provizita per -H aŭ -i)"
 
 #: usage.c:267
-#, fuzzy
 msgid "  -H <draft>          Use draft email"
-msgstr "  -H <draft>          Use draft email"
+msgstr "  -H <malneto>        Uzi malneton"
 
 #: usage.c:268
-#, fuzzy
 msgid "                      Full email with headers and body"
-msgstr "                      Full email with headers and body"
+msgstr "                      Plena retpoŝtaĵo kun ĉapoj kaj korpo"
 
 #: usage.c:269
-#, fuzzy
 msgid "  -i <include>        Include body file"
-msgstr "  -i <include>        Include body file"
+msgstr "  -i <inkluzivaĵo>    Inkluvizigi korpodosieron"
 
 #: usage.c:270
-#, fuzzy
 msgid "  -s <subject>        Set Subject:"
-msgstr "  -s <subject>        Set Subject:"
+msgstr "  -s <subject>        Specifi temon:"
 
 #: usage.c:271
-#, fuzzy
 msgid "  -- <address> [...]  Add To: addresses"
-msgstr "  -- <address> [...]  Add To: addresses"
+msgstr "  -- <adreso>  [...]  Aldoni alsendotajn adresojn"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:280
-#, fuzzy
 msgid "  neomutt flatcap -s 'Meeting' < meeting.txt"
-msgstr "  neomutt flatcap -s 'Meeting' < meeting.txt"
+msgstr "  neomutt flatcap -s 'Kunveno' < kunveno.txt"
 
 #: usage.c:281
-#, fuzzy
 msgid "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
-msgstr "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
+msgstr "  neomutt jim@example.com -c bob@example.com -s 'Festo' -i festo.txt"
 
 #: usage.c:282
-#, fuzzy
 msgid "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
-msgstr "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
+msgstr "  neomutt -s 'Kvitancoj' -a kvitanco1.pdf kvitanco2.pdf -- rocco"
 
 #: usage.c:283
-#, fuzzy
 msgid "  cat secret.txt | neomutt gahr -s 'Secret' -C"
-msgstr "  cat secret.txt | neomutt gahr -s 'Secret' -C"
+msgstr "  cat sekreto.txt | neomutt gahr -s 'Sekreto' -C"
 
 #: usage.c:296
-#, fuzzy
 msgid "Running NeoMutt with no options will read the config and start the TUI."
-msgstr "Running NeoMutt with no options will read the config and start the TUI."
+msgstr "Plenumigo de Neomutt kun neniuj opcioj analizos la agordodosieron kaj startigos la terminalan fasadon."
 
 #: usage.c:297
-#, fuzzy
 msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
-msgstr "By default, it will open the Index Dialog with the $spool_file Mailbox."
+msgstr "Apriore ĝi malfermos la indeksan dialogujon kun la $spool_file Mailbox."
 
 #: usage.c:300
-#, fuzzy
 msgid "These options cause NeoMutt to check a mailbox for mail."
-msgstr "These options cause NeoMutt to check a mailbox for mail."
+msgstr "Per ĉi tiuj opcioj NeoMutt kontroli poŝtujon por poŝtaĵo."
 
 #: usage.c:301
-#, fuzzy
 msgid "If the condition isn't matched, NeoMutt exits."
-msgstr "If the condition isn't matched, NeoMutt exits."
+msgstr "Se la kondiĉo ne estas plenumita, NeoMutt finiĝas."
 
 #: usage.c:302
-#, fuzzy
 msgid "  -p            Resume postponed email"
-msgstr "  -p            Resume postponed email"
+msgstr "  -p            Restarigi prokrastitan retpoŝtaĵon"
 
 #: usage.c:303
-#, fuzzy
 msgid "  -Z            Check for new mail"
-msgstr "  -Z            Check for new mail"
+msgstr "  -Z            Kontroli novajn retpoŝtaĵojn"
 
 #: usage.c:304
-#, fuzzy
 msgid "  -z            Check for any mail"
-msgstr "  -z            Check for any mail"
+msgstr "  -z            Kontroli ĉiajn retpoŝtaĵojn"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:308
-#, fuzzy
 msgid "These options change the starting behavior:"
-msgstr "These options change the starting behavior:"
+msgstr "Ĉi tiuj opcio ŝanĝas kiel NeoMutt startas:"
 
 #: usage.c:309
-#, fuzzy
 msgid "  -f <mailbox>  Open this mailbox"
-msgstr "  -f <mailbox>  Open this mailbox"
+msgstr "  -f <poŝtuoj>  Malfermi specifan poŝtujon"
 
 #: usage.c:310
-#, fuzzy
 msgid "  -G            Open NNTP browser"
-msgstr "  -G            Open NNTP browser"
+msgstr "  -G            Malfermi NNTP-foliumilon"
 
 #: usage.c:311
 msgid "  -g <server>   Use this NNTP server"
 msgstr "  -g <servilo>  Uzi specifan NNTP-servilon"
 
 #: usage.c:312
-#, fuzzy
 msgid "  -R            Open mailbox read-only"
-msgstr "  -R            Open mailbox read-only"
+msgstr "  -R            Malfermi poŝtujon kiel nurlegan"
 
 #: usage.c:313
-#, fuzzy
 msgid "  -y            Open mailbox browser"
-msgstr "  -y            Open mailbox browser"
+msgstr "  -y            Malfermi poŝtujan foliumilon"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
-#, fuzzy
 msgid "  neomutt -f ~/mail -Z"
-msgstr "  neomutt -f ~/mail -Z"
+msgstr "  neomutt -f ~/poŝtaĵoj -Z"
 
 #: usage.c:323
 msgid "  neomutt -p"
@@ -8777,7 +8715,6 @@ msgstr ""
 "riparojn, kaj sugestojn.\n"
 
 #: version.c:87
-#, fuzzy
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -8793,17 +8730,17 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
-"Ĉi tiu programo estas libera; vi povas pludoni kopiojn kaj modifi\n"
-"ĝin sub la kondiĉoj de la Ĝenerala Publika Rajtigilo de GNU,\n"
+"Ĉi tiu programo estas libera; vi rajtas pludoni kajaŭ modifi\n"
+"ĝin laŭ la kondiĉoj de la Ĝenerala Publika Permesilo de GNU,\n"
 "kiel tio estas eldonita de Free Software Foundation; aŭ versio 2\n"
-"de la Rajtigilo, aŭ (laŭ via elekto) iu sekva versio.\n"
+"de la permesilo, aŭ (laŭ via elekto) iu pli nova versio.\n"
 "\n"
 "Ĉi tiu programo estas disdonita kun la espero ke ĝi estos utila,\n"
 "sed SEN IA AJN GARANTIO; eĉ sen la implicita garantio de\n"
 "KOMERCA KVALITO aŭ ADEKVATECO POR DIFINITA CELO. Vidu la\n"
-"Ĝeneralan Publikan Rajtigilon de GNU por pli da detaloj.\n"
+"Ĝeneralan Publikan Permesilon de GNU por pli da detaloj.\n"
 "\n"
-"Vi devus esti ricevinta kopion de la Ĝenerala Publika Rajtigilo de\n"
+"Vi verŝajne ricevis ekzempleron de la Ĝenerala Publika Permesilo de\n"
 "GNU kun ĉi tiu programo; se ne, skribu al Free Software Foundation,\n"
 "Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, Usono.\n"
 
