@@ -8117,139 +8117,113 @@ msgstr "Blogas serverio atsakymas"
 #. Plus two helper modes: shared, all
 #. These should not be translated.
 #: usage.c:60
-#, fuzzy
 msgid "NeoMutt has four modes of operation:"
-msgstr "NeoMutt has four modes of operation:"
+msgstr "NeoMutt turi keturis veikimo režimus:"
 
 #: usage.c:66
-#, fuzzy
 msgid "The default mode, if no command line arguments are specified, is tui."
-msgstr "The default mode, if no command line arguments are specified, is tui."
+msgstr "Pagrindinis režimas, jei nėra komandų eilutės argumentų, yra 'tui'."
 
 #. L10N: Parameters in <>s may be translated
 #. L10N: Shared Help -- `neomutt -h shared`
 #: usage.c:70 usage.c:127
-#, fuzzy
 msgid "Options that apply to all modes"
-msgstr "Options that apply to all modes"
+msgstr "Parametrai tinkantys visiems režimams"
 
 #: usage.c:71
-#, fuzzy
 msgid "neomutt -n                           Don't read system config file"
-msgstr "neomutt -n                           Don't read system config file"
+msgstr "neomutt -n                           Neskaityti sistemos konfigūracijos bylos"
 
 #: usage.c:72
-#, fuzzy
 msgid "        -F <config>                  Use this user config file"
-msgstr "        -F <config>                  Use this user config file"
+msgstr "        -F <konf>                    Naudoti šią konfigūracijos bylą"
 
 #: usage.c:73
-#, fuzzy
 msgid "        -e <command>                 Run extra commands"
-msgstr "        -e <command>                 Run extra commands"
+msgstr "        -e <komanda>                 Vykdyti papildomas komandas"
 
 #: usage.c:74
-#, fuzzy
 msgid "        -m <type>                    Set default mailbox type"
-msgstr "        -m <type>                    Set default mailbox type"
+msgstr "        -m <tipas>                   Nutylėtasis pašto dėžutės tipas"
 
 #: usage.c:75
-#, fuzzy
 msgid "        -d <level>                   Set logging level (1..5)"
-msgstr "        -d <level>                   Set logging level (1..5)"
+msgstr "        -d <lygis>                   Žurnalo lygis (1..5)"
 
 #: usage.c:76
-#, fuzzy
 msgid "        -l <file>                    Set logging file"
-msgstr "        -l <file>                    Set logging file"
+msgstr "        -l <byla>                    Nurodyti žurnalo bylą"
 
 #. L10N: Help Help -- `neomutt -h help`
 #: usage.c:79 usage.c:183
-#, fuzzy
 msgid "Get command line help for NeoMutt"
-msgstr "Get command line help for NeoMutt"
+msgstr "Rodyti NeoMutt komandų eilutės pagalbą"
 
 #: usage.c:80
-#, fuzzy
 msgid "neomutt -h <mode>                    Detailed help for a mode"
-msgstr "neomutt -h <mode>                    Detailed help for a mode"
+msgstr "neomutt -h <režimas>                 Rodyti pagalbą režimui"
 
 #: usage.c:81
-#, fuzzy
 msgid "        -v[v]                        Version or license"
-msgstr "        -v[v]                        Version or license"
+msgstr "        -v[v]                        Versija arba licencija"
 
 #. L10N: Info Help -- `neomutt -h info`
 #: usage.c:84 usage.c:210
-#, fuzzy
 msgid "Ask NeoMutt for config information"
-msgstr "Ask NeoMutt for config information"
+msgstr "Užklausti NeoMutt konfigūracijos informacijos"
 
 #: usage.c:85
-#, fuzzy
 msgid "neomutt -A <alias> [...]             Lookup email aliases"
-msgstr "neomutt -A <alias> [...]             Lookup email aliases"
+msgstr "neomutt -A <aliasas> [...]           Rasti el. pašto aliasą"
 
 #: usage.c:86
-#, fuzzy
 msgid "        -D [-D] [-O] [-S]            Dump the config"
-msgstr "        -D [-D] [-O] [-S]            Dump the config"
+msgstr "        -D [-D] [-O] [-S]            Rodyti konfigūraciją"
 
 #: usage.c:87
-#, fuzzy
 msgid "        -Q <option> [...] [-O] [-S]  Query config options"
-msgstr "        -Q <option> [...] [-O] [-S]  Query config options"
+msgstr "        -Q <parametras> [...] [-O] [-S]  Užklausti konfigūracijos parametrus"
 
 #. L10N: Sending Help -- `neomutt -h send`
 #: usage.c:90 usage.c:249
-#, fuzzy
 msgid "Send an email from the command line"
-msgstr "Send an email from the command line"
+msgstr "Siųsti laišką iš komandų eilutės"
 
 #: usage.c:91
-#, fuzzy
 msgid "neomutt -a <file> [...]              Attach files"
-msgstr "neomutt -a <file> [...]              Attach files"
+msgstr "neomutt -a <byla> [...]              Prikabinti bylas"
 
 #: usage.c:92
-#, fuzzy
 msgid "        -b <address>                 Add Bcc: address"
-msgstr "        -b <address>                 Add Bcc: address"
+msgstr "        -b <adresas>                 Pridėti Bcc: adresą"
 
 #: usage.c:93
-#, fuzzy
 msgid "        -C                           Use crypto (signing/encryption)"
-msgstr "        -C                           Use crypto (signing/encryption)"
+msgstr "        -C                           Naudoti kriptografiją (parašą/šifravimą)"
 
 #: usage.c:94
-#, fuzzy
 msgid "        -c <address>                 Add Cc: address"
-msgstr "        -c <address>                 Add Cc: address"
+msgstr "        -c <adresas>                 Pridėti Cc: adresą"
 
 #: usage.c:95
-#, fuzzy
 msgid "        -E                           Edit message"
-msgstr "        -E                           Edit message"
+msgstr "        -E                           Redaguoti laišką"
 
 #: usage.c:96
-#, fuzzy
 msgid "        -H <draft>                   Use draft email"
-msgstr "        -H <draft>                   Use draft email"
+msgstr "        -H <juodraštis>              Naudoti laiško juodraštį"
 
 #: usage.c:97
-#, fuzzy
 msgid "        -i <include>                 Include body file"
-msgstr "        -i <include>                 Include body file"
+msgstr "        -i <įtraukti>                Įtraukti bylą į žinutės tekstą"
 
 #: usage.c:98
-#, fuzzy
 msgid "        -s <subject>                 Set Subject:"
-msgstr "        -s <subject>                 Set Subject:"
+msgstr "        -s <tema>                    Nurodyti laiško temą"
 
 #: usage.c:99
-#, fuzzy
 msgid "        -- <address> [...]           Add To: addresses"
-msgstr "        -- <address> [...]           Add To: addresses"
+msgstr "        -- <adresas> [...]           Pridėti To: adresus"
 
 #. L10N: TUI Help -- `neomutt -h tui`
 #: usage.c:102 usage.c:293
@@ -8380,9 +8354,8 @@ msgstr "                Default file '~/.neomuttdebug0'"
 
 #: usage.c:154 usage.c:156 usage.c:194 usage.c:196 usage.c:231 usage.c:233
 #: usage.c:275 usage.c:277 usage.c:317 usage.c:319
-#, fuzzy
 msgid "Examples:"
-msgstr "Examples:"
+msgstr "Pavyzdžiai:"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:159
@@ -8414,14 +8387,12 @@ msgid "  neomutt -d 5 -l neolog"
 msgstr "  neomutt -d 5 -l neolog"
 
 #: usage.c:172
-#, fuzzy
 msgid "See also:"
-msgstr "See also:"
+msgstr "Taip pat žr.:"
 
 #: usage.c:173
-#, fuzzy
 msgid "- Config files: https://neomutt.org/guide/configuration"
-msgstr "- Config files: https://neomutt.org/guide/configuration"
+msgstr "- Konfigūracijos bylos: https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:187
@@ -8435,14 +8406,12 @@ msgid "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
 msgstr "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
 
 #: usage.c:189
-#, fuzzy
 msgid "  -v         NeoMutt version and build parameters"
-msgstr "  -v         NeoMutt version and build parameters"
+msgstr "  -v         NeoMutt versija ir kompiliavimo parinktys"
 
 #: usage.c:190
-#, fuzzy
 msgid "  -vv        NeoMutt Copyright and license"
-msgstr "  -vv        NeoMutt Copyright and license"
+msgstr "  -vv        NeoMutt autorių teisės ir licencija"
 
 #. L10N: Examples
 #: usage.c:199
