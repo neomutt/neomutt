@@ -89,6 +89,7 @@ int paged_row_add_multirow    (struct Source *src, struct PagedFile *pf, const c
 void paged_row_add_search     (struct PagedRow *pr, int first, int last);
 
 const char *paged_row_get_plain(struct PagedRow *pr);
+const char *paged_row_get_filtered(struct PagedRow *pr);
 
 void        paged_row_cache           (struct PagedRow *pr);
 void        paged_row_wrap            (struct PagedRow *pr, int width, RowWrapFlags flags);

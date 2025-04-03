@@ -51,8 +51,10 @@ struct ViewRow *get_vrow(struct PagedFile *pf, int row)
   struct ViewRow *vr = MUTT_MEM_CALLOC(1, struct ViewRow);
 
   struct PagedRow *pr = ARRAY_GET(&pf->rows, row);
+  if (!pr)
+    return NULL;
 
-  vr->text = paged_row_get_plain(pr);
+  vr->text = paged_row_get_filtered(pr);
 
   vr->num_bytes = pr->num_bytes;
   vr->num_cols = pr->num_cols;
@@ -74,6 +76,9 @@ void fill_vrows(struct SimplePagerWindowData *wdata)
       continue;
 
     struct ViewRow *vr = get_vrow(wdata->paged_file, i);
+    if (!vr)
+      break;
+
     ARRAY_SET(&wdata->vrows, i, vr);
   }
 }
@@ -310,7 +315,7 @@ static int win_spager_repaint(struct MuttWindow *win)
       struct PagedRow *pr = ARRAY_GET(pra, pr_index);
       struct Segment *seg = ARRAY_GET(&pr->segments, seg_index);
 
-      paged_file_apply_filters(pf, pr_index);
+      // paged_file_apply_filters(pf, pr_index);
 
       // text = paged_row_get_virtual_text(pr, seg);
 
@@ -325,7 +330,7 @@ static int win_spager_repaint(struct MuttWindow *win)
 
       struct PagedRow pr_normal = { 0 };
       paged_row_normalise(pr, &pr_normal);
-      const char *text2 = paged_row_get_plain(pr);
+      const char *text2 = ""; //QWQ paged_row_get_plain(pr);
       display_row2(win, screen_row, text2, text_offset, text_end, &pr_normal);
       paged_row_clear(&pr_normal);
 

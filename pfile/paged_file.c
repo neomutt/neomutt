@@ -125,17 +125,12 @@ void paged_file_get_row_from_source(struct PagedFile *pf)
 /**
  * paged_file_apply_filters - XXX
  */
-void paged_file_apply_filters(struct PagedFile *pf, int row_num)
+void paged_file_apply_filters(struct PagedRow *pr)
 {
-  if (!pf || (row_num < 0))
+  if (!pr || pr->valid)
     return;
 
-  struct PagedRow *pr = ARRAY_GET(&pf->rows, row_num);
-  if (!pr)
-    return;
-
-  if (pr->valid)
-    return;
+  struct PagedFile *pf = pr->paged_file;
 
   struct Filter **pfil = NULL;
   ARRAY_FOREACH(pfil, &pf->filters)

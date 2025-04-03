@@ -516,7 +516,7 @@ void paged_row_normalise2(struct PagedRow *pr, struct PagedTextMarkupArray *ptma
   int num_bytes = 0;
 
   struct PagedTextMarkup *ptm = NULL;
-  ARRAY_FOREACH(ptm, ptma)
+  ARRAY_FOREACH(ptm, &pr->text)
   {
     struct PagedTextMarkup *ptm_normal = paged_text_markup_new(ptma);
 
@@ -530,4 +530,15 @@ void paged_row_normalise2(struct PagedRow *pr, struct PagedTextMarkupArray *ptma
     ptm_normal->first = num_bytes;
     num_bytes += ptm->bytes;
   }
+}
+
+/**
+ * paged_row_get_filtered - XXX
+ */
+const char *paged_row_get_filtered(struct PagedRow *pr)
+{
+  paged_file_apply_filters(pr);
+
+  const char *text = paged_row_get_plain(pr);
+  return text;
 }

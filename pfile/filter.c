@@ -27,6 +27,7 @@
  */
 
 #include "mutt/lib.h"
+#include "gui/lib.h"
 #include "filter.h"
 #include "color/lib.h"
 #include "paged_row.h"
@@ -70,27 +71,6 @@ void filter_ansi_fdata_free(void **pptr)
  */
 void filter_ansi_apply(struct Filter *fil, struct PagedRow *pr)
 {
-#if 0
-  struct PagedTextMarkup *ptm = ARRAY_GET(&pr->text, 2);
-  ARRAY_REMOVE(&pr->text, ptm);
-  ptm = ARRAY_GET(&pr->text, 0);
-  ARRAY_REMOVE(&pr->text, ptm);
-  pr->text.entries[0].cid = MT_COLOR_INDICATOR;
-  pr->num_bytes -= 11;
-#endif
-
-#if 0
-  // markup_dump(&pr->text, -1, -1);
-  markup_delete(&pr->text, 0, 7);
-  // markup_dump(&pr->text, -1, -1);
-  markup_apply(&pr->text, 0, 33, MT_COLOR_INDICATOR);
-  // markup_dump(&pr->text, -1, -1);
-  markup_delete(&pr->text, 33, 4);
-  // markup_dump(&pr->text, -1, -1);
-  mutt_debug(LL_DEBUG1, "FILTER: %ld\n", pr->offset);
-  pr->num_bytes -= 11;
-#endif
-
   const char *plain = paged_row_get_plain(pr);
   mutt_debug(LL_DEBUG1, "Plain: %s\n", plain);
 
@@ -122,10 +102,12 @@ void filter_ansi_apply(struct Filter *fil, struct PagedRow *pr)
     markup_delete(&pr->text, off - del, len);
     off += len;
     del += len;
-    pr->num_bytes -= len;
   }
 
   FREE(&plain);
+
+  pr->num_bytes = mutt_str_len(pr->cached_text);
+  pr->num_cols = mutt_strwidth(pr->cached_text);
 }
 
 /**
