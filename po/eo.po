@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-04-04 01:04+0100\n"
-"PO-Revision-Date: 2025-04-04 12:51-0400\n"
+"PO-Revision-Date: 2025-04-04 12:52-0400\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -26,7 +26,7 @@ msgstr ""
 #: expando/config_type.c:70 expando/config_type.c:168
 #, c-format
 msgid "Option %s may not be empty"
-msgstr "Agordaĵo %s ne eblas esti malplena"
+msgstr "Agordaĵo %s ne rajtas esti malplena"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:396
@@ -2728,7 +2728,7 @@ msgstr "redirekti mesaĝon al alia adreso"
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:194
 msgid "swap the current folder position with $folder if it exists"
-msgstr ""
+msgstr "interŝanĝi la nunan dosierujan pozicion kun $folder se ĝi ekzistas"
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
@@ -2771,7 +2771,7 @@ msgstr "vidigi dosieron"
 #. Index: <op_catchup>
 #: gui/opcodes.h:216
 msgid "mark all articles in newsgroup as read"
-msgstr ""
+msgstr "marki ĉiujn artikolojn en novaĵgrupo kiel legitajn"
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
@@ -3088,13 +3088,13 @@ msgstr "alkroĉi, ŝanĝi, aŭ forigi mesaĝa etikedo"
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:381
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr ""
+msgstr "redakti la kurdan mesaĝon se la poŝtuoj ne estas nurlega; aliokaze vidigi ĝin"
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:384
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr ""
+msgstr "redakti la krudan mesaĝon (edit kaj edit-raw-message estas sinonimaj)"
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
@@ -3161,7 +3161,7 @@ msgstr "plusendi mesaĝon kun komentoj"
 #. Index: <op_post>
 #: gui/opcodes.h:424
 msgid "forward to newsgroup"
-msgstr ""
+msgstr "plusendi al novaĵgrupo"
 
 #. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
 #. Alias Dialog: <op_generic_select_entry>
@@ -3282,7 +3282,7 @@ msgstr "malaboni de dissendolisto"
 #. Browser: <op_load_active>
 #: gui/opcodes.h:501
 msgid "load list of all newsgroups from NNTP server"
-msgstr ""
+msgstr "prezenti liston de ĉiuj novaĵgrupoj de NNTP-servilo"
 
 #. L10N: Help screen description for OP_MACRO
 #: gui/opcodes.h:503
@@ -3324,16 +3324,14 @@ msgstr "malfermi alian poŝtfakon nurlege"
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:523
-#, fuzzy
 msgid "open a different newsgroup"
-msgstr "malfermi alian poŝtfakon"
+msgstr "malfermi alian novaĵgrupon"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:526
-#, fuzzy
 msgid "open a different newsgroup in read only mode"
-msgstr "malfermi alian poŝtfakon nurlege"
+msgstr "malfermi alian novaĵgrupon nurlege"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
@@ -3356,9 +3354,8 @@ msgstr "(mal)kolapsigi la aktualan fadenon"
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
 #: gui/opcodes.h:538
-#, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "forviŝi mesaĝojn laŭ ŝablono"
+msgstr "forviŝi nekaŝitajn mesaĝojn laŭ ŝablono"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
@@ -3395,14 +3392,13 @@ msgstr "ligi markitan mesaĝon al ĉi tiu"
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:557
 msgid "modify (notmuch/imap) tags"
-msgstr ""
+msgstr "modifi (notmuch/IMAP) etikedojn"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:560
-#, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "Vi estas ĉe la unua mesaĝo."
+msgstr "modifi (notmuch/IMAP) etiketojn kaj poste kaŝi mesaĝon"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
@@ -3492,7 +3488,7 @@ msgstr "salti al la antaŭa nelegita mesaĝo"
 #. Index: <op_main_quasi_delete>
 #: gui/opcodes.h:605
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr ""
+msgstr "forviŝi de NeoMutt, ne tuŝi en diskon"
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
@@ -3533,23 +3529,20 @@ msgstr "skribi ŝanĝojn al poŝtfako"
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
 #: gui/opcodes.h:626
-#, fuzzy
 msgid "tag non-hidden messages matching a pattern"
-msgstr "marki mesaĝojn laŭ ŝablono"
+msgstr "marki nekaŝitajn mesaĝojn, kiuj laŭas ŝablonon"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
 #: gui/opcodes.h:629
-#, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
-msgstr "malforviŝi mesaĝojn laŭ ŝablono"
+msgstr "malforviŝi nekaŝitajn mesaĝojn laŭ ŝablono"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
 #: gui/opcodes.h:632
-#, fuzzy
 msgid "untag non-hidden messages matching a pattern"
-msgstr "malmarki mesaĝojn laŭ ŝablono"
+msgstr "malmarki nekaŝitajn mesaĝojn laŭ ŝablono"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
@@ -3599,9 +3592,8 @@ msgstr "ŝalti aŭ malŝalti montradon de citita teksto"
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
 #: gui/opcodes.h:659
-#, fuzzy
 msgid "jump to first line after headers"
-msgstr "salti al la sekva fadeno"
+msgstr "salti al la unua lino post ĉapoj"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
@@ -3618,9 +3610,8 @@ msgstr "salti al la komenco de mesaĝo"
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
 #: gui/opcodes.h:673
-#, fuzzy
 msgid "post message to newsgroup"
-msgstr "Mesaĝa ID mankas en indekso."
+msgstr "afisi mesaĝon en novaĵgrupon"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
@@ -3652,9 +3643,8 @@ msgstr "vere forviŝi ĉi tiun registron, preterpasante rubujon"
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:694
-#, fuzzy
 msgid "delete the current thread, bypassing the trash folder"
-msgstr "vere forviŝi la nunan eron, preterpasante rubujon"
+msgstr "vere forviŝi la nunan fadenon, preterpasante la rubujon"
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
@@ -3686,9 +3676,8 @@ msgstr "revoki prokrastitan mesaĝon"
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
 #: gui/opcodes.h:712
-#, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "Fadeno enhavas nelegitajn mesaĝojn."
+msgstr "rekonstrui fadenon, kiu enhavas la nunan mesaĝon"
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
@@ -3772,9 +3761,8 @@ msgstr "alvoki komandon en subŝelo"
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
 #: gui/opcodes.h:768
-#, fuzzy
 msgid "show log (and debug) messages"
-msgstr "ordigi mesaĝojn"
+msgstr "montri protokolajn (kaj senerarigajn) mesaĝojn"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
@@ -3795,9 +3783,8 @@ msgstr "ordigi mesaĝojn en inversa ordo"
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:781
-#, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
-msgstr "malmarki mesaĝojn laŭ ŝablono"
+msgstr "ekaboni novaĵgrupojn laŭ ŝablono"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
@@ -3842,9 +3829,8 @@ msgstr "ŝanĝi la flagon 'nova' de mesaĝo"
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
 #: gui/opcodes.h:803
-#, fuzzy
 msgid "toggle view of read messages"
-msgstr "salti al la antaŭa nova aŭ nelegita mesaĝo"
+msgstr "baskuli vidon de legitaj mesaĝojn"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
@@ -3879,9 +3865,8 @@ msgstr "malforviŝi ĉiujn mesaĝojn en fadeno"
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:826
-#, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "malmarki mesaĝojn laŭ ŝablono"
+msgstr "malaboni de novaĵgrupoj laŭ ŝablono"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
@@ -3899,9 +3884,8 @@ msgstr "montri MIME-partojn"
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:836
-#, fuzzy
 msgid "show the raw message"
-msgstr "redakti la krudan mesaĝon"
+msgstr "montri la krudan mesaĝon"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
@@ -3933,9 +3917,8 @@ msgstr "eltiri publikajn ŝlosilojn"
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
 #: gui/opcodes.h:856
-#, fuzzy
 msgid "wipe passphrases from memory"
-msgstr "forviŝi pasfrazo(j)n el memoro"
+msgstr "forviŝi pasfrazojn el memoro"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
@@ -3958,7 +3941,6 @@ msgstr "donu dosieron, al kiu la mesaĝo estu skribita"
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
 #: gui/opcodes.h:870
-#, fuzzy
 msgid "edit the Followup-To field"
 msgstr "redakti la kampon Reply-To"
 
@@ -3972,14 +3954,13 @@ msgstr "redakti la From-kampon"
 #. Compose Dialog: <op_envelope_edit_headers>
 #: gui/opcodes.h:876
 msgid "edit the message with headers"
-msgstr "redakti la mesaĝon kun ĉapo"
+msgstr "redakti la mesaĝon kun ĉapoj"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
 #: gui/opcodes.h:879
-#, fuzzy
 msgid "edit the newsgroups list"
-msgstr "redakti la CC-liston"
+msgstr "redakti la novaĵgrupan liston"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
@@ -4002,23 +3983,20 @@ msgstr "redakti la liston de ricevontoj"
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
 #: gui/opcodes.h:891
-#, fuzzy
 msgid "edit the X-Comment-To field"
-msgstr "redakti la kampon Reply-To"
+msgstr "redakti la kampon X-Commment-To"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:897
-#, fuzzy
 msgid "open a different virtual folder"
-msgstr "malfermi alian poŝtfakon"
+msgstr "malfermi alian virtualan dosierujon"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
 #: gui/opcodes.h:900
-#, fuzzy
 msgid "read entire thread of the current message"
-msgstr "krei fulmklavan makroon por nuna mesaĝo"
+msgstr "legi la tutan fadenon kun la nuna mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
@@ -4079,7 +4057,6 @@ msgstr "sendi publikan PGP-ŝlosilon"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-#, fuzzy
 msgid "verify a public key"
 msgstr "kontroli publikan ŝlosilon"
 
@@ -4147,9 +4124,8 @@ msgstr "movi markilon al antaŭan poŝtfakon kun nova poŝto"
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
 #: gui/opcodes.h:973
-#, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "(mal)ŝali, ĉu vidi poŝtfakojn aŭ ĉiujn dosierojn"
+msgstr "baskuli inter poŝtujoj kaj virtualaj poŝtujoj"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
@@ -4168,9 +4144,9 @@ msgid "null operation"
 msgstr "malplena funkcio"
 
 #: handler.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Speco: %s/%s, Kodado: %s, Grando: %s --]\n"
+msgstr "[-- Speco: %s/%s%s%s, Kodoprezento: %s, Grando: %s --]\n"
 
 #: handler.c:107
 #, fuzzy, c-format
