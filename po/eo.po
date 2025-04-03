@@ -172,7 +172,7 @@ msgstr "Atendas respondon..."
 
 #: alias/dlg_query.c:311
 msgid "Query"
-msgstr "Demando"
+msgstr "Peto"
 
 #: alias/dlg_query.c:413 alias/dlg_query.c:486
 msgid "Query command not defined"
@@ -3848,7 +3848,7 @@ msgstr "iri al la supro de la paĝo"
 #. Browser: <op_catchup>
 #: gui/opcodes.h:812
 msgid "mark all articles in newsgroup as unread"
-msgstr ""
+msgstr "marki ĉiujn artikolojn en novaĵgrupo kiel nelegitajn"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
@@ -4002,31 +4002,31 @@ msgstr "legi la tutan fadenon kun la nuna mesaĝo"
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:903
 msgid "generate virtual folder from query"
-msgstr ""
+msgstr "generi virtualan dosierujon el informopeto"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:906
 msgid "generate a read-only virtual folder from query"
-msgstr ""
+msgstr "generi nurlegan virtualan dosierujon el impormopeto"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:909
 msgid "shifts virtual folder time window backwards"
-msgstr ""
+msgstr "fruigas la tempfenestron de la virtuala dosierujo"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:912
 msgid "shifts virtual folder time window forwards"
-msgstr ""
+msgstr "malfruigas la tempfenestron de la virtuala dosierujo"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:915
 msgid "resets virtual folder time window to the present"
-msgstr ""
+msgstr "nuntempigas la tempfenestron de la virtuala dosierujo"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
 #. Compose Dialog: <op_attachment_attach_key>
@@ -4149,9 +4149,9 @@ msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Speco: %s/%s%s%s, Kodoprezento: %s, Grando: %s --]\n"
 
 #: handler.c:107
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Speco: %s/%s, Kodado: %s, Grando: %s --]\n"
+msgstr "[-- Alternativa Speco: #%d: %s/%s%s%s, Kodoprezonto: %s, Grando: %s --]\n"
 
 #: handler.c:566
 #, c-format
@@ -4193,7 +4193,7 @@ msgstr "[-- Eraro: parto message/external ne havas parametro access-type --]\n"
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in muttlib.c
 #: handler.c:828
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -4201,10 +4201,10 @@ msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
 msgstr[0] ""
-"[-- Ĉi tiu %s/%s-parto (grando %s bitokoj) estas forviŝita --]\n"
+"[-- Ĉi tiu %s/%s-kunsendaĵo (grando %s bitoko) estas forviŝita --]\n"
 "[-- je %s --]\n"
 msgstr[1] ""
-"[-- Ĉi tiu %s/%s-parto (grando %s bitokoj) estas forviŝita --]\n"
+"[-- Ĉi tiu %s/%s-kunsendaĵo (grando %s bitokoj) estas forviŝita --]\n"
 "[-- je %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -4222,11 +4222,11 @@ msgstr[1] ""
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in muttlib.c
 #: handler.c:851
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr[0] "[-- Ĉi tiu %s/%s-parto (grando %s bitokoj) estas forviŝita --]\n"
-msgstr[1] "[-- Ĉi tiu %s/%s-parto (grando %s bitokoj) estas forviŝita --]\n"
+msgstr[0] "[-- Ĉi tiu %s/%s-kunsendaĵo (grando %s bitoko) estas forviŝita --]\n"
+msgstr[1] "[-- Ĉi tiu %s/%s-kunsendaĵo (grando %s bitokoj) estas forviŝita --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -4236,21 +4236,20 @@ msgstr[1] "[-- Ĉi tiu %s/%s-parto (grando %s bitokoj) estas forviŝita --]\n"
 #. Caution: Argument three %3$ is also defined but should not be used
 #. in this translation!
 #: handler.c:866
-#, fuzzy
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
 msgstr ""
-"[-- Ĉi tiu %s/%s-parto estas forviŝita --]\n"
+"[-- Ĉi tiu %s/%s-kunsendaĵo estas forviŝita --]\n"
 "[-- je %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #: handler.c:873
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Ĉi tiu %s/%s-parto estas forviŝita --]\n"
+msgstr "[-- Ĉi tiu %s/%s-kunsendaĵo estas forviŝita --]\n"
 
 #: handler.c:883
 #, c-format
@@ -4261,12 +4260,12 @@ msgstr "[-- nomo: %s --]\n"
 #. each line should start with "[-- " and end with " --]".
 #. The "%s/%s" is a MIME type, e.g. "text/plain".
 #: handler.c:902
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has expired --]\n"
 msgstr ""
-"[-- Ĉi tiu %s/%s-parto ne estas inkluzivita, --]\n"
+"[-- Ĉi tiu %s/%s-kunsendaĵo ne estas inkluzivita, --]\n"
 "[-- kaj la indikita ekstera fonto eksvalidiĝis. --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -4275,13 +4274,13 @@ msgstr ""
 #. access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
 #. "LOCAL-FILE", "MAIL-SERVER".
 #: handler.c:923
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
-"[-- Ĉi tiu %s/%s-parto ne estas inkluzivita, --]\n"
-"[-- kaj NeoMutt ne kapablas je la indikita alirmaniero %s. --]\n"
+"[-- Ĉi tiu %s/%s-kunsendaĵo ne estas inkluzivita, --]\n"
+"[-- kaj la indikata atingotipo %s ne estas regata. --]\n"
 
 #: handler.c:1117
 msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
@@ -4289,23 +4288,22 @@ msgstr "[-- Eraro: Neniu parto de Multipart/Alternative estis montrebla --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1271
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Parto #%d: %s --]\n"
+msgstr "[-- Kunsendaĵo #%d: %s --]\n"
 
 #: handler.c:1278
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Parto #%d --]\n"
+msgstr "[-- Kunsendaĵo #%d --]\n"
 
 #: handler.c:1296
 msgid "One or more parts of this message could not be displayed"
 msgstr "Unu aŭ pluraj partoj de ĉi tiu mesaĝo ne montriĝeblas"
 
 #: handler.c:1369
-#, fuzzy
 msgid "Unable to open 'memory stream'"
-msgstr "Ne eblas malfermi dumtempan dosieron"
+msgstr "Ne eblas malfermi la memoran fluon"
 
 #: handler.c:1379
 msgid "Unable to open temporary file"
@@ -4313,51 +4311,49 @@ msgstr "Ne eblas malfermi dumtempan dosieron"
 
 #: handler.c:1426
 msgid "failed to re-open 'memory stream'"
-msgstr ""
+msgstr "malsukcesis remalfermi la memoran fluon"
 
 #: handler.c:1717
 msgid "Error: multipart/signed has no protocol"
 msgstr "Eraro: multipart/signed ne havas parametron 'protocol'!"
 
 #: handler.c:1787
-#, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Ĉi tiu estas parto --]\n"
+msgstr "[-- Ĉi tiu estas kunsendaĵo --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1792
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s ne estas konata --]\n"
 
 #. L10N: %s expands to a keystroke/key binding, e.g. 'v'.
 #: handler.c:1803
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
-msgstr "[-- Ĉi tiu estas parto (uzu '%s' por vidigi ĉi tiun parton) --]\n"
+msgstr "[-- Ĉi tiu estas kunsendaĵo (uzu la klavon '%s' por vidigi ĉi tiun parton) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #. The last %s expands to a keystroke/key binding, e.g. 'v'.
 #: handler.c:1810
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "[-- %s/%s ne estas konata (uzu '%s' por vidigi ĉi tiun parton) --]\n"
+msgstr "[-- %s/%s ne estas konata (uzu la klavon '%s' por vidigi ĉi tiun parton) --]\n"
 
 #: handler.c:1818
-#, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
-msgstr "[-- Ĉi tiu estas parto (bezonas klavodifinon por 'view-attachments') --]\n"
+msgstr "[-- Ĉi tiu estas kunsendaĵo (bezonas klavodifinon por 'view-attachments') --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1823
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s ne estas konata (bezonas klavodifinon por 'view-attachments') --]\n"
 
 #: hcache/config.c:95
 #, c-format
 msgid "Set option %s before setting %s"
-msgstr ""
+msgstr "Agordi agordaĵon %s antaŭ agordaĵo %s"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
@@ -4365,104 +4361,104 @@ msgstr ""
 #: hcache/config.c:112 send/config.c:68
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
-msgstr ""
+msgstr "Agordaĵo %s devas esti inkluzive inter %d kaj %d"
 
 #: help.c:54
 msgid "message is tagged"
-msgstr ""
+msgstr "mesaĝo estas markita"
 
 #: help.c:55
 msgid "message is flagged"
-msgstr ""
+msgstr "mesaĝo estas flagita"
 
 #: help.c:56
 msgid "message is deleted"
-msgstr ""
+msgstr "mesaĝo estas forviŝita"
 
 #: help.c:57
 msgid "attachment is deleted"
-msgstr ""
+msgstr "kunsendaĵo estas forviŝita"
 
 #: help.c:58
 msgid "message has been replied to"
-msgstr ""
+msgstr "mesaĝo estas respondita"
 
 #: help.c:59
 msgid "message has been read"
-msgstr ""
+msgstr "mesaĝo estas legita"
 
 #: help.c:60
 msgid "message is new"
-msgstr ""
+msgstr "mesaĝo estas nova"
 
 #: help.c:61
 msgid "thread has been read"
-msgstr ""
+msgstr "fadeno estas legita"
 
 #: help.c:62
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "fadeno havas almenaŭ unu novan mesaĝon"
 
 #: help.c:63
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "mesaĝo estas legita (ekspando %S)"
 
 #: help.c:64
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "mesaĝo estas legita (ekspando %Z)"
 
 #: help.c:73
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "mesaĝo estas subskribita per kontrolita ŝlosilo"
 
 #: help.c:74
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "mesaĝo estas ĉifrita per PGP"
 
 #: help.c:75
 msgid "message is signed"
-msgstr ""
+msgstr "mesaĝo estas subskribita"
 
 #: help.c:76
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "mesaĝo enhavas PGP-ŝlosilon"
 
 #: help.c:77
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "mesaĝo havas neniajn ĉifrajn informojn"
 
 #: help.c:86
 msgid "message is not To: you"
-msgstr ""
+msgstr "mesaĝo ne estis sendita al vi"
 
 #: help.c:87
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "mesaĝo estis sendita al nur vi"
 
 #: help.c:88
 msgid "message is To: you"
-msgstr ""
+msgstr "mesaĝo estis sendita al vi"
 
 #: help.c:89
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "vi estas la dua alsendito de la mesaĝo"
 
 #: help.c:90
 msgid "message is From: you"
-msgstr ""
+msgstr "vi sendis la mesaĝon"
 
 #: help.c:91
 msgid "message is sent to a subscribed mailing list"
-msgstr ""
+msgstr "la mesaĝo estas sendita al abonata dissendolisto"
 
 #: help.c:92
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "vi estas en la listo de alrespondatoj"
 
 #: help.c:113
 msgid "Message flags:"
-msgstr ""
+msgstr "Mesaĝaj flagoj:"
 
 #: help.c:267
 #, c-format
@@ -4523,9 +4519,8 @@ msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: Ne eblas forviŝi %s de en %s"
 
 #: imap/auth.c:157
-#, fuzzy
 msgid "No authenticators available or wrong credentials"
-msgstr "Nenia rajtiĝilo disponeblas"
+msgstr "Nenia rajtiĝilo disponeblas aŭ malĝustaj legitimiloj"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:56 imap/auth_cram.c:103 imap/auth_gsasl.c:65
@@ -4545,9 +4540,8 @@ msgid "%s authentication failed"
 msgstr "%s-rajtiĝo malsukcesis"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:136
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Rajtiĝo malsukcesis"
+msgstr "SASL-rajtiĝo malsukcesis"
 
 #: imap/auth_login.c:53
 msgid "LOGIN disabled on this server"
@@ -4612,9 +4606,9 @@ msgid "Mailbox %s@%s closed"
 msgstr "Poŝtfako %s@%s fermita"
 
 #: imap/command.c:1224
-#, fuzzy, c-format
+#, c-format
 msgid "IMAP command failed: %s"
-msgstr "Densiga komando fiaskis: %s"
+msgstr "IMAP-komando malsukcesis: %s"
 
 #: imap/command.c:1328 imap/command.c:1449
 #, c-format
@@ -4624,10 +4618,9 @@ msgstr "Konekto al %s fermita pro tempopaso"
 #: imap/config.c:60 pop/config.c:60 send/config.c:91
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr ""
+msgstr "Agordaĵo %s: %s ne estas valida rajtiĝilo"
 
 #: imap/imap.c:117
-#, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Ĉi tiu IMAP-servilo estas antikva.  NeoMutt ne funkcias kun ĝi."
 
@@ -4664,10 +4657,10 @@ msgid "Unsubscribing from %s..."
 msgstr "Malabonas %s..."
 
 #: imap/imap.c:1418 imap/message.c:1803
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
-msgstr[0] "Kopias %d mesaĝojn al %s..."
+msgstr[0] "Kopias %d mesaĝon al %s..."
 msgstr[1] "Kopias %d mesaĝojn al %s..."
 
 #: imap/imap.c:1436 imap/imap.c:2094 imap/message.c:1821 muttlib.c:800
@@ -4680,17 +4673,17 @@ msgid "Expunge failed"
 msgstr "Forviŝo malsukcesis"
 
 #: imap/imap.c:1527
-#, fuzzy, c-format
+#, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "Markas %d mesaĝojn kiel forviŝitajn..."
+msgstr[0] "Markas %d mesaĝon kiel forviŝitan..."
 msgstr[1] "Markas %d mesaĝojn kiel forviŝitajn..."
 
 #: imap/imap.c:1566
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
-msgstr[0] "Skribas ŝanĝitajn mesaĝojn... [%d/%d]"
+msgstr[0] "Skribas ŝanĝitan mesaĝon... [%d/%d]"
 msgstr[1] "Skribas ŝanĝitajn mesaĝojn... [%d/%d]"
 
 #: imap/imap.c:1609
@@ -4719,14 +4712,12 @@ msgid "Error opening mailbox"
 msgstr "Eraro dum malfermado de poŝtfako"
 
 #: imap/imap.c:2205
-#, fuzzy
 msgid "IMAP server doesn't support custom flags"
-msgstr "SMTP-servilo ne akceptas rajtiĝon"
+msgstr "IMAP-servilo ne konas proprajn flagojn"
 
 #: imap/imap.c:2249
-#, fuzzy
 msgid "Invalid IMAP flags"
-msgstr "Nevalida      "
+msgstr "Nevalidaj IMAP-flagoj"
 
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
 #: imap/message.c:509
@@ -4781,7 +4772,7 @@ msgstr "Ĉaposerĉo sen ĉaponomo: %s"
 #: imap/search.c:184
 #, c-format
 msgid "Server-side custom search not supported: %s"
-msgstr ""
+msgstr "Propra serĉo en servilo ne estas regata: %s"
 
 #: imap/util.c:652
 msgid "Continue?"
@@ -4790,7 +4781,7 @@ msgstr "Ĉu daŭrigi?"
 #. L10N: $status_format default format
 #: index/config.c:94
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
-msgstr ""
+msgstr "-%r-NeoMutt: %D [Msĝ-oj:%<M?%M/>%m%<n? Nov:%n>%<o? Maln:%o>%<d? For:%d>%<F? Flag:%F>%<t? Mark:%t>%<p? Afiŝ:%p>%<b? Ink:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
 #: index/dlg_index.c:104 index/dlg_index.c:119
 msgid "Quit"
@@ -4809,9 +4800,8 @@ msgid "Post"
 msgstr "Afiŝi"
 
 #: index/dlg_index.c:124 pager/dlg_pager.c:115
-#, fuzzy
 msgid "Followup"
-msgstr "Ĉu respondi grupe al %s%s?"
+msgstr "Respondi grupe"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
 #: index/dlg_index.c:146
@@ -4872,7 +4862,7 @@ msgstr "ĉio"
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: index/expando_status.c:456
-#, fuzzy, c-format
+#, c-format
 msgid "%d%%"
 msgstr "%d%%"
 
@@ -4886,17 +4876,16 @@ msgstr "Ne eblas forviŝi mesaĝon"
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index/functions.c:560 index/functions.c:1205
-#, fuzzy
 msgid "Can't delete messages"
-msgstr "Ne eblas forviŝi mesaĝon"
+msgstr "Ne eblas forviŝi mesaĝojn"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
 #: index/functions.c:686
-#, fuzzy, c-format
+#, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
-msgstr[0] "%d etikedoj ŝanĝiĝis"
+msgstr[0] "%d etikedo ŝanĝiĝis"
 msgstr[1] "%d etikedoj ŝanĝiĝis"
 
 #. L10N: This is displayed when editing an x-label, but no messages
@@ -4934,9 +4923,8 @@ msgstr "Tiu mesaĝo ne estas videbla"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:1035
-#, fuzzy
 msgid "Can't break thread"
-msgstr "Ne eblas ligi fadenojn"
+msgstr "Ne eblas rompi fadenon"
 
 #: index/functions.c:1058
 msgid "Thread broken"
@@ -4955,9 +4943,8 @@ msgid "Open mailbox"
 msgstr "Malfermi poŝtfakon"
 
 #: index/functions.c:1186
-#, fuzzy
 msgid "Thread contains unread or flagged messages"
-msgstr "Fadeno enhavas nelegitajn mesaĝojn"
+msgstr "Fadeno enhavas nelegitajn aŭ flagitajn mesaĝojn"
 
 #: index/functions.c:1208
 msgid "Delete messages matching: "
@@ -4989,22 +4976,20 @@ msgid "No thread linked"
 msgstr "Neniu fadeno ligita"
 
 #: index/functions.c:1354 mx.c:1287 mx.c:1307
-#, fuzzy
 msgid "Folder doesn't support tagging, aborting"
-msgstr "SMTP-servilo ne akceptas rajtiĝon"
+msgstr "Dosierujo ne regas markadon, faras nenion"
 
 #: index/functions.c:1375
-#, fuzzy
 msgid "No tag specified, aborting"
-msgstr "Mankas temlinio; eliras"
+msgstr "Neniu marko specifita; eliras"
 
 #: index/functions.c:1386
 msgid "Update tags..."
-msgstr ""
+msgstr "Ĝisdatigi markojn..."
 
 #: index/functions.c:1426
 msgid "Failed to modify tags, aborting"
-msgstr ""
+msgstr "Malsukcesis modifi markojn; eliras"
 
 #: index/functions.c:1540
 msgid "No new messages in this limited view"
@@ -5061,9 +5046,8 @@ msgstr "Vi estas ĉe la unua mesaĝo"
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index/functions.c:1759
-#, fuzzy
 msgid "Can't mark messages as read"
-msgstr "Ne eblas marki mesaĝo(j)n kiel legita(j)n"
+msgstr "Ne eblas marki mesaĝojn kiel legitajn"
 
 #: index/functions.c:1836
 msgid "No limit pattern is in effect"
@@ -5078,9 +5062,8 @@ msgstr "Marki mesaĝojn laŭ la ŝablono: "
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index/functions.c:1939 index/functions.c:2453
-#, fuzzy
 msgid "Can't undelete messages"
-msgstr "Ne eblas malforviŝi mesaĝon"
+msgstr "Ne eblas malforviŝi mesaĝojn"
 
 #: index/functions.c:1943
 msgid "Undelete messages matching: "
@@ -5140,14 +5123,12 @@ msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
 #: index/functions.c:2670
-#, fuzzy
 msgid "No deleted messages found in the thread"
-msgstr "forviŝi ĉiujn mesaĝojn en fadeno"
+msgstr "Neniuj forviŝitaj mesaĝoj trovitaj en fadeno"
 
 #: index/functions.c:2695
-#, fuzzy
 msgid "Enter Message-Id: "
-msgstr "Donu keyID: "
+msgstr "Enmetu mesaĝan identigilon "
 
 #: index/functions.c:2707
 msgid "Article has no parent reference"
@@ -5159,53 +5140,50 @@ msgid "Message is not visible in limited view"
 msgstr "Radika mesaĝo ne estas videbla en ĉi tiu limigita rigardo"
 
 #: index/functions.c:2735
-#, fuzzy, c-format
+#, c-format
 msgid "Fetching %s from server..."
-msgstr "Forviŝas mesaĝojn de la servilo..."
+msgstr "Elŝutas %s de la servilo..."
 
 #: index/functions.c:2748 nntp/nntp.c:2719
 #, c-format
 msgid "Article %s not found on the server"
-msgstr ""
+msgstr "Artikolo %s ne trovita en la servilo"
 
 #: index/functions.c:2776
-#, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "Malfermi poŝtfakon nurlege"
+msgstr "Malfermi novaĵgrupon nurlege"
 
 #: index/functions.c:2781
 msgid "Open newsgroup"
-msgstr ""
+msgstr "Malfermi novaĵgrupon"
 
 #: index/functions.c:2852
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr ""
+msgstr "Afiŝi al ĉi tiu grupo ne estas permesata, eble estos kontrolata. Ĉu daŭrigi?"
 
 #: index/functions.c:2888
-#, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Mankas temlinio; eliras"
+msgstr "Neniu virtuala dosierujo kaj neniu mesaĝa identigilo; eliras"
 
 #: index/functions.c:2917
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "malsukcesis trovi masaĝon en notmuch-datumbazo; enmetu la jenon en terminalo: 'notmuch new'"
 
 #: index/functions.c:2929
 msgid "Failed to read thread, aborting"
-msgstr ""
+msgstr "Malsucksesis legi fadenon; eliras"
 
 #: index/functions.c:2969
-#, fuzzy
 msgid "No query, aborting"
-msgstr "Mankas temlinio; eliras"
+msgstr "Neniu serĉo; eliras"
 
 #: index/functions.c:3012
 msgid "Windowed queries disabled"
-msgstr ""
+msgstr "Kunfenestraj informopetoj malŝaltitaj"
 
 #: index/functions.c:3018
 msgid "No notmuch vfolder currently loaded"
-msgstr ""
+msgstr "Neniu virtuala dosierujo de notmuch nune estas prezentata"
 
 #: index/functions.c:3081
 msgid "There are no messages"
@@ -5228,14 +5206,14 @@ msgstr "%s: nekonata menuo"
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
 #. it might also be 'all' when all menus are affected.
 #: key/dump.c:232
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no binds for this menu"
-msgstr "%s: nekonata menuo"
+msgstr "%s: neniuj klavodifinoj por ĉi tiu menuo"
 
 #: key/dump.c:232
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no macros for this menu"
-msgstr "%s: nekonata menuo"
+msgstr "%s: neniuj makrooj por ĉi tiu menuo"
 
 #: key/get.c:302
 msgid "Key is not bound"
@@ -5252,7 +5230,7 @@ msgstr "Cirkla makroo trovita"
 
 #: key/init.c:235
 msgid "Abort key is not set, defaulting to Ctrl-G"
-msgstr ""
+msgstr "Nuliga klavo ne estas agordita: apriore Stir-G"
 
 #: key/init.c:241
 #, c-format
