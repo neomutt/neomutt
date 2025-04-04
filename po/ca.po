@@ -53,9 +53,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-01-09\n"
+"Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-03-28 00:04+0000\n"
+"POT-Creation-Date: 2025-04-04 01:04+0100\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -216,16 +216,16 @@ msgstr "Cerca"
 msgid "Waiting for response..."
 msgstr "S’està esperant una resposta…"
 
-#: alias/dlg_query.c:311
+#: alias/dlg_query.c:316
 #, fuzzy
 msgid "Query"
 msgstr "Consulta: "
 
-#: alias/dlg_query.c:408 alias/dlg_query.c:481
+#: alias/dlg_query.c:413 alias/dlg_query.c:486
 msgid "Query command not defined"
 msgstr "No s’ha definit cap ordre de consulta"
 
-#: alias/dlg_query.c:491 alias/functions.c:303 alias/functions.c:321
+#: alias/dlg_query.c:496 alias/functions.c:303 alias/functions.c:321
 msgid "Query: "
 msgstr "Consulta: "
 
@@ -5585,7 +5585,7 @@ msgstr "S’està llegint «%s»…"
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/mailbox.c:854 mbox/mbox.c:1174 mh/mh.c:1080 mx.c:464
-#: notmuch/notmuch.c:2268
+#: notmuch/notmuch.c:2270
 #, c-format
 msgid "Writing %s..."
 msgstr "S’està escrivint «%s»…"
@@ -7359,7 +7359,7 @@ msgid "unknown reason"
 msgstr "Error desconegut"
 
 # Es refereix a l’esquema d’URL.  ivb
-#: notmuch/mdata.c:83 notmuch/notmuch.c:1823
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1825
 #, fuzzy, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
@@ -7370,23 +7370,23 @@ msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
 msgid "failed to parse notmuch limit: %s"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
 
-#: notmuch/notmuch.c:710
+#: notmuch/notmuch.c:712
 #, fuzzy
 msgid "Reading messages..."
 msgstr "S’està enviant el missatge…"
 
-#: notmuch/notmuch.c:1582
+#: notmuch/notmuch.c:1584
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "No hi ha cap missatge nou en aquesta vista limitada"
 
 # Es refereix a l’esquema d’URL.  ivb
-#: notmuch/notmuch.c:1838
+#: notmuch/notmuch.c:1840
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
 
-#: notmuch/notmuch.c:2348
+#: notmuch/notmuch.c:2350
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
@@ -7394,7 +7394,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 # Condició d’error.  ivb
-#: notmuch/notmuch.c:2408
+#: notmuch/notmuch.c:2410
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "No s’ha pogut obrir la carpeta paperera"

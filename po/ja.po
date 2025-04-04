@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-01-09\n"
+"Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-03-28 00:04+0000\n"
+"POT-Creation-Date: 2025-04-04 01:04+0100\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -171,15 +171,15 @@ msgstr "検索"
 msgid "Waiting for response..."
 msgstr "応答待ち..."
 
-#: alias/dlg_query.c:311
+#: alias/dlg_query.c:316
 msgid "Query"
 msgstr "問い合わせ"
 
-#: alias/dlg_query.c:408 alias/dlg_query.c:481
+#: alias/dlg_query.c:413 alias/dlg_query.c:486
 msgid "Query command not defined"
 msgstr "問い合わせコマンドは定義されていない。"
 
-#: alias/dlg_query.c:491 alias/functions.c:303 alias/functions.c:321
+#: alias/dlg_query.c:496 alias/functions.c:303 alias/functions.c:321
 msgid "Query: "
 msgstr "問い合わせ: "
 
@@ -5416,7 +5416,7 @@ msgstr "%s 読み出し中..."
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/mailbox.c:854 mbox/mbox.c:1174 mh/mh.c:1080 mx.c:464
-#: notmuch/notmuch.c:2268
+#: notmuch/notmuch.c:2270
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 書き込み中..."
@@ -7079,7 +7079,7 @@ msgstr "notmuch データベースを開けない: %s: %s"
 msgid "unknown reason"
 msgstr "不明なエラー"
 
-#: notmuch/mdata.c:83 notmuch/notmuch.c:1823
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1825
 #, fuzzy, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "\"mailto:\" リンクの解析に失敗\n"
@@ -7089,28 +7089,28 @@ msgstr "\"mailto:\" リンクの解析に失敗\n"
 msgid "failed to parse notmuch limit: %s"
 msgstr "\"mailto:\" リンクの解析に失敗\n"
 
-#: notmuch/notmuch.c:710
+#: notmuch/notmuch.c:712
 #, fuzzy
 msgid "Reading messages..."
 msgstr "送信中..."
 
-#: notmuch/notmuch.c:1582
+#: notmuch/notmuch.c:1584
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "この制限された表示範囲には新着メッセージがない。"
 
-#: notmuch/notmuch.c:1838
+#: notmuch/notmuch.c:1840
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "\"mailto:\" リンクの解析に失敗\n"
 
-#: notmuch/notmuch.c:2348
+#: notmuch/notmuch.c:2350
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 
-#: notmuch/notmuch.c:2408
+#: notmuch/notmuch.c:2410
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "ごみ箱をオープンできない"

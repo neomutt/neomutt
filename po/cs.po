@@ -20,9 +20,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-01-09\n"
+"Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-03-28 00:04+0000\n"
+"POT-Creation-Date: 2025-04-04 01:04+0100\n"
 "PO-Revision-Date: 2020-04-20 15:18+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -181,15 +181,15 @@ msgstr "Hledat"
 msgid "Waiting for response..."
 msgstr "Čekám na odpověď…"
 
-#: alias/dlg_query.c:311
+#: alias/dlg_query.c:316
 msgid "Query"
 msgstr "Dotázat se na"
 
-#: alias/dlg_query.c:408 alias/dlg_query.c:481
+#: alias/dlg_query.c:413 alias/dlg_query.c:486
 msgid "Query command not defined"
 msgstr "Příkaz pro dotazy není definován"
 
-#: alias/dlg_query.c:491 alias/functions.c:303 alias/functions.c:321
+#: alias/dlg_query.c:496 alias/functions.c:303 alias/functions.c:321
 msgid "Query: "
 msgstr "Dotázat se na: "
 
@@ -5344,7 +5344,7 @@ msgstr "Čtu %s…"
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/mailbox.c:854 mbox/mbox.c:1174 mh/mh.c:1080 mx.c:464
-#: notmuch/notmuch.c:2268
+#: notmuch/notmuch.c:2270
 #, c-format
 msgid "Writing %s..."
 msgstr "Ukládám %s…"
@@ -6988,7 +6988,7 @@ msgstr "Nelze otevřít notmuch databázi: %s: %s"
 msgid "unknown reason"
 msgstr "neznámá chyba"
 
-#: notmuch/mdata.c:83 notmuch/notmuch.c:1823
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1825
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "rozebrání URL pro notmuch se nezdařilo: %s"
@@ -6998,20 +6998,20 @@ msgstr "rozebrání URL pro notmuch se nezdařilo: %s"
 msgid "failed to parse notmuch limit: %s"
 msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:710
+#: notmuch/notmuch.c:712
 msgid "Reading messages..."
 msgstr "Načítám zprávy…"
 
-#: notmuch/notmuch.c:1582
+#: notmuch/notmuch.c:1584
 msgid "No more messages in the thread"
 msgstr "Žádné nové zprávy v tomto vlákně"
 
-#: notmuch/notmuch.c:1838
+#: notmuch/notmuch.c:1840
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 
-#: notmuch/notmuch.c:2348
+#: notmuch/notmuch.c:2350
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
@@ -7019,7 +7019,7 @@ msgstr[0] "Nelze synchronizovat %d zprávu z důvodu úpravy schránky z vnějš
 msgstr[1] "Nelze synchronizovat %d zprávy z důvodu úpravy schránky z vnější"
 msgstr[2] "Nelze synchronizovat %d zpráv z důvodu úpravy schránky z vnější"
 
-#: notmuch/notmuch.c:2408
+#: notmuch/notmuch.c:2410
 msgid "Can't write to virtual folder"
 msgstr "Nelze zapsat do virtuální složky"
 

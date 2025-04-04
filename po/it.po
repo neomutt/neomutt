@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-01-09\n"
+"Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-03-28 00:04+0000\n"
+"POT-Creation-Date: 2025-04-04 01:04+0100\n"
 "PO-Revision-Date: 2012-05-25 22:14+0200\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: none\n"
@@ -172,16 +172,16 @@ msgstr "Cerca"
 msgid "Waiting for response..."
 msgstr "In attesa di risposta..."
 
-#: alias/dlg_query.c:311
+#: alias/dlg_query.c:316
 #, fuzzy
 msgid "Query"
 msgstr "Cerca: "
 
-#: alias/dlg_query.c:408 alias/dlg_query.c:481
+#: alias/dlg_query.c:413 alias/dlg_query.c:486
 msgid "Query command not defined"
 msgstr "Il comando della ricerca non è definito"
 
-#: alias/dlg_query.c:491 alias/functions.c:303 alias/functions.c:321
+#: alias/dlg_query.c:496 alias/functions.c:303 alias/functions.c:321
 msgid "Query: "
 msgstr "Cerca: "
 
@@ -5497,7 +5497,7 @@ msgstr "Lettura di %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/mailbox.c:854 mbox/mbox.c:1174 mh/mh.c:1080 mx.c:464
-#: notmuch/notmuch.c:2268
+#: notmuch/notmuch.c:2270
 #, c-format
 msgid "Writing %s..."
 msgstr "Scrittura di %s..."
@@ -7202,7 +7202,7 @@ msgstr ""
 msgid "unknown reason"
 msgstr "errore sconosciuto"
 
-#: notmuch/mdata.c:83 notmuch/notmuch.c:1823
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1825
 #, fuzzy, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "Impossibile analizzare il collegamento mailto:\n"
@@ -7212,29 +7212,29 @@ msgstr "Impossibile analizzare il collegamento mailto:\n"
 msgid "failed to parse notmuch limit: %s"
 msgstr "Impossibile analizzare il collegamento mailto:\n"
 
-#: notmuch/notmuch.c:710
+#: notmuch/notmuch.c:712
 #, fuzzy
 msgid "Reading messages..."
 msgstr "Invio il messaggio..."
 
-#: notmuch/notmuch.c:1582
+#: notmuch/notmuch.c:1584
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Il messaggio padre non è visibil in questa visualizzazione limitata"
 
-#: notmuch/notmuch.c:1838
+#: notmuch/notmuch.c:1840
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "Impossibile analizzare il collegamento mailto:\n"
 
-#: notmuch/notmuch.c:2348
+#: notmuch/notmuch.c:2350
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2408
+#: notmuch/notmuch.c:2410
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Impossibile accodare al folder: %s"
