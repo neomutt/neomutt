@@ -1976,13 +1976,13 @@ msgstr "Ordigas poŝtfakon..."
 #. (a)utomatic defers to the recommendation.
 #: envelope/functions.c:69
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr "Autocrypt: ĉ(i)frita, (k)larteksta, (a)ŭtomata."
+msgstr "Autocrypt: ĉ(i)frita, (n)eĉifrita, (a)ŭtomata."
 
 #. L10N: The letter corresponding to the compose menu autocrypt prompt
 #. (e)ncrypt, (c)lear, (a)utomatic
 #: envelope/functions.c:75
 msgid "eca"
-msgstr "ika"
+msgstr "ina"
 
 #: envelope/functions.c:325
 msgid "No PGP backend configured"
@@ -4811,7 +4811,7 @@ msgstr "%s: operacio ne permesiĝas de ACL"
 
 #: index/dlg_index.c:737
 msgid "Failed to create query, aborting"
-msgstr ""
+msgstr "Malsukcesis krei informopeton; eliras"
 
 #: index/dlg_index.c:782 muttlib.c:784 mx.c:205 mx.c:343
 #, c-format
@@ -5120,7 +5120,7 @@ msgstr "Elsalutis el IMAP-serviloj"
 
 #: index/functions.c:2600
 msgid "No Message-Id. Unable to perform operation."
-msgstr ""
+msgstr "Neniu mesaĝa identigilon. Ne eblas plenumi la operacion."
 
 #: index/functions.c:2670
 msgid "No deleted messages found in the thread"
@@ -5132,12 +5132,11 @@ msgstr "Enmetu mesaĝan identigilon "
 
 #: index/functions.c:2707
 msgid "Article has no parent reference"
-msgstr ""
+msgstr "Artikolo havas neniun patran referencon"
 
 #: index/functions.c:2730
-#, fuzzy
 msgid "Message is not visible in limited view"
-msgstr "Radika mesaĝo ne estas videbla en ĉi tiu limigita rigardo"
+msgstr "Mesaĝo ne estas videbla en la limigita rigardo"
 
 #: index/functions.c:2735
 #, c-format
@@ -5195,7 +5194,7 @@ msgstr "Malestas videblaj mesaĝoj"
 
 #: index/index.c:100
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "$use_threads anstataŭ $sort devas esti preferata dum ŝanĝo de fadenigita elmontro"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
 #: key/dump.c:218 key/parse.c:253 key/parse.c:306
@@ -5235,12 +5234,12 @@ msgstr "Nuliga klavo ne estas agordita: apriore Stir-G"
 #: key/init.c:241
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr ""
+msgstr "Specifita abortiga klavsinksekvo (%s) estos mallongigita ĝis la unua klavo"
 
 #: key/parse.c:103
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
-msgstr ""
+msgstr "La klavodifino '%s' estos alinomo de '%s'. Antaŭe provu: 'bind %s %s noop'"
 
 #: key/parse.c:269
 #, c-format
@@ -5250,7 +5249,7 @@ msgstr "%s: malplena klavoserio"
 #: key/parse.c:340
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "Funkcio '%s' ne haveblas por menuo '%s'"
 
 #: key/parse.c:595
 msgid "macro: empty key sequence"
@@ -5295,12 +5294,12 @@ msgstr "mailcap-regulo por speco %s ne trovita"
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:52
 msgid "maildir_field_delimiter must be exactly one character long"
-msgstr ""
+msgstr "maildir_field_delimiter devas havi longon de precize unu signo"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:59
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
-msgstr ""
+msgstr "maildir_field_delimiter devas esti litero, cifero aŭ '-.\\/'"
 
 #: maildir/mailbox.c:497 mh/mh.c:675
 #, c-format
@@ -5324,7 +5323,6 @@ msgid "Could not flush message to disk"
 msgstr "Ne eblis elbufrigi mesaĝon al disko"
 
 #: maildir/message.c:414
-#, fuzzy
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ne eblas ŝanĝi tempon de dosiero"
 
@@ -5334,9 +5332,9 @@ msgid "Error in command line: %s"
 msgstr "Eraro en komandlinio: %s"
 
 #: main.c:221
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in command line: %s"
-msgstr "Eraro en komandlinio: %s"
+msgstr "Averto en komandlinio: %s"
 
 #: main.c:338
 msgid "unable to determine nodename via uname()"
@@ -5346,7 +5344,7 @@ msgstr "ne eblas eltrovi la komputilretnomo per 'uname()'"
 #: parse/set.c:331 parse/set.c:372 parse/set.c:439
 #, c-format
 msgid "Option %s is deprecated"
-msgstr ""
+msgstr "Agordaĵo %s estas eksmoda"
 
 #: main.c:769
 msgid "Error initializing terminal"
@@ -5378,9 +5376,9 @@ msgid "Can't use -E flag with stdin"
 msgstr "Ne eblas uzi opcio '-E' kun ĉefenigujo"
 
 #: main.c:1488
-#, fuzzy, c-format
+#, c-format
 msgid "Can't parse message template: %s"
-msgstr "Ne eblas malfermi mesaĝodosieron: %s"
+msgstr "Ne eblas analizi mesaĝan ŝablonon: %s"
 
 #: main.c:1559 mutt_header.c:351
 #, c-format
@@ -5496,12 +5494,12 @@ msgstr "Mankas markitaj registroj"
 
 #: mutt/buffer.c:353
 msgid "Out of memory"
-msgstr ""
+msgstr "Eluzis memoron"
 
 #: mutt/file.c:664
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to seek file: %s"
-msgstr "Malsukcesis renomi dosieron"
+msgstr "Malsukcesis serĉi dosieron: %s"
 
 #: mutt/file.c:1124
 msgid "Timeout exceeded while attempting fcntl lock"
@@ -5522,39 +5520,38 @@ msgid "Waiting for flock attempt... %d"
 msgstr "Atendas flock-ŝloson... %d"
 
 #: mutt/logging.c:108
-#, fuzzy, c-format
+#, c-format
 msgid "Closed log file: %s"
-msgstr "Ne eblas malfermi mesaĝodosieron: %s"
+msgstr "Fermis protokolon: %s"
 
 #: mutt/logging.c:139
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Sencimigo ĉe la nivelo %d.\n"
+msgstr "Senerarigo ĉe la nivelo %d en la dosiero '%s'"
 
 #: mutt/logging.c:193
-#, fuzzy, c-format
+#, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Sencimigo ĉe la nivelo %d.\n"
+msgstr "Protokolado ĉe la nivelo %d en la dosiero '%s'"
 
 #: mutt/path.c:357
-#, fuzzy
 msgid "Error: converting path to absolute"
-msgstr "Eraro dum konektiĝo al servilo: %s"
+msgstr "Eraro dum konektiĝo vojo al absoluta"
 
 #: mutt/random.c:62
 #, c-format
 msgid "mutt_randbuf buflen=%zu"
-msgstr ""
+msgstr "mutt_randbuf buflen=%zu"
 
 #: mutt/random.c:87
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr ""
+msgstr "open /dev/urandom: %s"
 
 #: mutt/random.c:94
 #, c-format
 msgid "read /dev/urandom: %s"
-msgstr ""
+msgstr "read /dev/urandom: %s"
 
 #: mutt/regex.c:280
 #, c-format
@@ -5568,45 +5565,45 @@ msgstr "Malsufiĉaj subesprimoj por ŝablono"
 #: mutt_config.c:230
 #, c-format
 msgid "index-hook cannot be used as a condition"
-msgstr ""
+msgstr "index-hook ne povas esti uzata kiel kondiĉo"
 
 #. L10N: $ts_icon_format default format
 #: mutt_config.c:768
 msgid "M%<n?AIL&ail>"
-msgstr ""
+msgstr "%?n?N&Neniuj n?ovaj mesaĝoj"
 
 #. L10N: $ts_status_format default format
 #: mutt_config.c:772
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
-msgstr ""
+msgstr "NeoMutt kun %<m?%m mesaĝoj&0 mesaĝoj>%<n? [%n NOVAJ]>"
 
 #: mutt_logging.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Nevalida valoro por opcio %s: \"%s\""
+msgstr "Nevalida valoro por agordaĵo %s: %ld"
 
 #: mutt_lua.c:453
 msgid "Error: Couldn't load the lua interpreter"
-msgstr ""
+msgstr "Eraro: Ne povis uzi la interpretilon lua"
 
 #: mutt_lua.c:523
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Ne eblis ŝlosi %s\n"
+msgstr "Ne eblis fonti la lua-fontotekston: %s"
 
 #: mutt_mailbox.c:255
 msgid "New mail in "
 msgstr "Nova mesaĝo en "
 
 #: mutt_socket.c:71
-#, fuzzy, c-format
+#, c-format
 msgid "SSL is unavailable, can't connect to %s"
-msgstr "SSL ne disponeblas."
+msgstr "SSL ne disponeblas. Ne eblas konektiĝi al %s."
 
 #: mutt_thread.c:111
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
+msgstr "Ne eblas uzi prefikson 'last-' kun 'threads' por %s"
 
 #: mutt_thread.c:1385
 msgid "Parent message is not available"
@@ -5660,29 +5657,27 @@ msgid "Append messages to %s?"
 msgstr "Ĉu aldoni mesaĝojn al %s?"
 
 #: muttlib.c:776
-#, fuzzy
 msgid "Can't save message to news server"
-msgstr "Ne eblas lasi mesaĝojn ĉe la servilo"
+msgstr "Ne eblas skribi mesaĝojn en la novaĵgrupan servilon"
 
 #: mx.c:388
-#, fuzzy, c-format
+#, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Serĉo interrompita."
+msgstr "Legado de %s interrompita..."
 
 #. L10N: Displayed if a mailbox sync fails
 #: mx.c:474
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to write %s"
-msgstr "Ne eblas aldoni %s"
+msgstr "Ne eblas skribi al %s"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
 #: mx.c:531
-#, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
-msgstr[0] "mesaĝo(j) ne forviŝiĝis"
-msgstr[1] "mesaĝo(j) ne forviŝiĝis"
+msgstr[0] "mesaĝo ne forviŝita"
+msgstr[1] "mesaĝoj ne forviŝitaj"
 
 #: mx.c:551
 msgid "Can't open trash folder"
@@ -5690,29 +5685,28 @@ msgstr "Ne eblas malfermi rubujon"
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:569
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "Ne eblas malfermi dumtempan dosieron"
+msgstr "Ne eblas almeti al rubuja dosiero"
 
 #: mx.c:626
 msgid "Mark all articles read?"
-msgstr ""
+msgstr "Ĉu marki ĉiujn artikolojn kiel legitajn?"
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
 #: mx.c:675
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
-msgstr[0] "Ĉu movi legitajn mesaĝojn al %s?"
-msgstr[1] "Ĉu movi legitajn mesaĝojn al %s?"
+msgstr[0] "Ĉu movi %d legitan mesaĝon al %s?"
+msgstr[1] "Ĉu movi %d legitajn mesaĝojn al %s?"
 
 #: mx.c:688 mx.c:949
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Ĉu forpurigi %d forviŝitan mesaĝon?"
-msgstr[1] "Ĉu forpurigi %d forviŝitan mesaĝon?"
+msgstr[1] "Ĉu forpurigi %d forviŝitajn mesaĝojn?"
 
 #: mx.c:711
 #, c-format
@@ -5752,9 +5746,9 @@ msgid "Mailbox checkpointed"
 msgstr "Poŝtfako sinkronigita"
 
 #: mx.c:1352
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open %s: it is a pipe"
-msgstr "Ne eblas malfermi mesaĝodosieron: %s"
+msgstr "%s estas nefermebla; ĝi estas dukto"
 
 #: mx.c:1819
 msgid "Can't toggle write on a readonly mailbox"
@@ -5783,9 +5777,8 @@ msgstr "[-- %s eligo sekvas%s --]\n"
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
 #: ncrypt/crypt.c:104
-#, fuzzy
 msgid "Passphrases forgotten"
-msgstr "Pasfrazo(j) forgesita(j)"
+msgstr "Pasfrazoj forgesitaj"
 
 #: ncrypt/crypt.c:186
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
@@ -5838,12 +5831,11 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1301
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Eraro: malĝusta strukturo de multipart/signed --]\n"
+"[-- Eraro: Mankanta aŭ misformita subskribo de multipart/signed --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1339
@@ -5894,7 +5886,7 @@ msgstr "eraro en rebobenado de datenobjekto: %s"
 
 #: ncrypt/crypt_gpgme.c:540
 msgid "[tempfile]"
-msgstr ""
+msgstr "[dumdosiero]"
 
 #: ncrypt/crypt_gpgme.c:546 ncrypt/crypt_gpgme.c:602
 #, c-format
@@ -5907,7 +5899,7 @@ msgid "secret key '%s' not found: %s"
 msgstr "sekreta ŝlosilo '%s' ne trovita: %s"
 
 #: ncrypt/crypt_gpgme.c:687
-#, fuzzy, c-format
+#, c-format
 msgid "ambiguous specification of secret key '%s'"
 msgstr "plursenca specifo de sekreta ŝlosilo '%s'"
 
@@ -6019,15 +6011,13 @@ msgstr "kreita: "
 #: ncrypt/crypt_gpgme.c:1425
 #, c-format
 msgid "Recipient: %s key, ID %s\n"
-msgstr ""
+msgstr "Ricevonto: ŝlosilo %s, identigilo %s\n"
 
 #: ncrypt/crypt_gpgme.c:1438
-#, fuzzy
 msgid "[-- Begin encryption information --]\n"
-msgstr "[-- Komenco de subskribinformo --]\n"
+msgstr "[-- Komenco de subskribo-informoj --]\n"
 
 #: ncrypt/crypt_gpgme.c:1443
-#, fuzzy
 msgid ""
 "[-- End encryption information --]\n"
 "\n"
@@ -6094,9 +6084,9 @@ msgid ""
 msgstr "[-- Eraro: malĉifrado fiaskis: %s --]\n"
 
 #: ncrypt/crypt_gpgme.c:2332
-#, fuzzy, c-format
+#, c-format
 msgid "Error importing key: %s"
-msgstr "Eraro dum eksportado de ŝlosilo: %s"
+msgstr "Eraro dum importado de ŝlosilo: %s"
 
 #: ncrypt/crypt_gpgme.c:2637
 #, c-format
@@ -6211,7 +6201,7 @@ msgstr "Serĉas ŝlosilojn kiuj kongruas kun \"%s\"..."
 #: ncrypt/crypt_gpgme.c:3516 ncrypt/pgpkey.c:248 ncrypt/smime.c:565
 #, c-format
 msgid "No matching keys found for \"%s\""
-msgstr ""
+msgstr "Neniuj kongruantaj ŝlosiloj trovitaj por \"%s\""
 
 #: ncrypt/crypt_gpgme.c:3570 ncrypt/pgp.c:1496
 #, c-format
@@ -6287,39 +6277,33 @@ msgstr "iskapfo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:3938
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
-msgstr "PGP ĉ(i)fri, (s)ubskribi, (k)iel, (a)mbaŭ, s/(m)ime, (f)or, aŭ (o)ppenc-moduso?"
+msgstr "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, s/(m)ime, (n)eĉifrita, aŭ (o)ppenc-reĝimo?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:3940
-#, fuzzy
 msgid "esabmco"
-msgstr "iskamfo"
+msgstr "iskamno"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:3950
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "S/MIME ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, \"(p)gp\", aŭ (f)orgesi?"
+msgstr "S/MIME ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, (p)gp, aŭ (n)eĉifrita?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:3952
-#, fuzzy
 msgid "esabpc"
-msgstr "iskapf"
+msgstr "iskapn"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:3958
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
-msgstr "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, \"s/(m)ime\", aŭ (f)orgesi?"
+msgstr "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, s/(m)ime, aŭ (n)eĉifrita?"
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:3960
-#, fuzzy
 msgid "esabmc"
-msgstr "iskamf"
+msgstr "iskamn"
 
 #: ncrypt/crypt_gpgme.c:4125
 msgid "Failed to verify sender"
@@ -6858,11 +6842,11 @@ msgstr "ID ne fidatas. Ĉu vi vere volas uzi la ŝlosilon?"
 
 #: nntp/newsrc.c:632
 msgid "Loading list of groups from cache..."
-msgstr ""
+msgstr "Uzas liston da gropoj el la kaŝmemoro..."
 
 #: nntp/newsrc.c:955
 msgid "No news server defined"
-msgstr ""
+msgstr "Neniu novaĵgrupa servilo specifita"
 
 #: nntp/newsrc.c:973
 #, fuzzy, c-format
@@ -6908,12 +6892,11 @@ msgstr "Konektiĝas al %s..."
 
 #: nntp/nntp.c:1842
 msgid "Posting is NOT ok"
-msgstr ""
+msgstr "Afiŝado NE estas aprobata"
 
 #: nntp/nntp.c:1842
-#, fuzzy
 msgid "Posting is ok"
-msgstr "Nenio farenda"
+msgstr "Afiŝado estas aprobata"
 
 #: nntp/nntp.c:1984 nntp/nntp.c:2021
 #, fuzzy, c-format
@@ -6937,7 +6920,7 @@ msgstr "Kontrolas pri novaj mesaĝoj..."
 
 #: nntp/nntp.c:2323
 msgid "Unable to find child articles because server does not support XPAT command"
-msgstr ""
+msgstr "Ne eblas trovi idajn artikolojn ĉar la servilo ne konas la komandon XPAT"
 
 #: nntp/nntp.c:2400
 #, fuzzy, c-format
@@ -6947,23 +6930,23 @@ msgstr "%s ne estas valida POP-vojo"
 #: nntp/nntp.c:2441
 #, c-format
 msgid "Newsgroup %s not found on the server"
-msgstr ""
+msgstr "Novaĵgrupo %s ne trovita en la servilo"
 
 #: nntp/nntp.c:2464
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
-msgstr ""
+msgstr "Novaĵgrupo %s estis forviŝita de la servilo"
 
 #: notmuch/config.c:65
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
+msgstr "nm_default_url devas esti: notmuch://<absolute path> . Nune: %s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
 #: notmuch/config.c:94 notmuch/notmuch.c:322
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr ""
+msgstr "Nevalida valoro por nm_query_window_timebase (validaj valoroj: hour, day, week, month, year)"
 
 #: notmuch/db.c:168
 #, fuzzy, c-format
@@ -6973,7 +6956,7 @@ msgstr "Atendas fcntl-ŝloson... %d"
 #: notmuch/db.c:188
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
-msgstr ""
+msgstr "Ne eblas malformi notmuch-datumbazon: %s: %s"
 
 #: notmuch/db.c:189
 #, fuzzy
@@ -7020,7 +7003,7 @@ msgstr "Ne eblas malfermi rubujon"
 #: notmuch/query.c:116
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "malsukcesis analizi informopetan tipon nde notmuch: %s"
 
 #: pager/dlg_pager.c:76 pager/dlg_pager.c:87 pager/dlg_pager.c:97
 #: pager/dlg_pager.c:112
@@ -7077,7 +7060,7 @@ msgstr "Helpo estas nun montrata"
 #: pager/functions.c:1051
 #, c-format
 msgid "Saved to: %s"
-msgstr ""
+msgstr "Konservita al: %s"
 
 #. L10N: Used for the $crypt_verify_sig prompt
 #: pager/message.c:195
