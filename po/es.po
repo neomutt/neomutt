@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-01-09\n"
+"Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-03-28 00:04+0000\n"
+"POT-Creation-Date: 2025-04-04 01:04+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Adán Somoza\n"
 "Language-Team: \n"
@@ -172,15 +172,15 @@ msgstr "Buscar"
 msgid "Waiting for response..."
 msgstr "Esperando respuesta..."
 
-#: alias/dlg_query.c:311
+#: alias/dlg_query.c:316
 msgid "Query"
 msgstr "Consulta"
 
-#: alias/dlg_query.c:408 alias/dlg_query.c:481
+#: alias/dlg_query.c:413 alias/dlg_query.c:486
 msgid "Query command not defined"
 msgstr "El comando de búsqueda no fue definido"
 
-#: alias/dlg_query.c:491 alias/functions.c:303 alias/functions.c:321
+#: alias/dlg_query.c:496 alias/functions.c:303 alias/functions.c:321
 msgid "Query: "
 msgstr "Buscar: "
 
@@ -5314,7 +5314,7 @@ msgstr "Leyendo %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/mailbox.c:854 mbox/mbox.c:1174 mh/mh.c:1080 mx.c:464
-#: notmuch/notmuch.c:2268
+#: notmuch/notmuch.c:2270
 #, c-format
 msgid "Writing %s..."
 msgstr "Escribiendo %s..."
@@ -6950,7 +6950,7 @@ msgstr "No se pudo abrir la base de datos notmuch: %s: %s"
 msgid "unknown reason"
 msgstr "Razón desconocida"
 
-#: notmuch/mdata.c:83 notmuch/notmuch.c:1823
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1825
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "fallo al interpretar url nontmuch: %s"
@@ -6960,27 +6960,27 @@ msgstr "fallo al interpretar url nontmuch: %s"
 msgid "failed to parse notmuch limit: %s"
 msgstr "fallo al interpretar límite notmuch: %s"
 
-#: notmuch/notmuch.c:710
+#: notmuch/notmuch.c:712
 msgid "Reading messages..."
 msgstr "Leyendo mensajes..."
 
-#: notmuch/notmuch.c:1582
+#: notmuch/notmuch.c:1584
 msgid "No more messages in the thread"
 msgstr "No hay más mensajes en el hilo"
 
-#: notmuch/notmuch.c:1838
+#: notmuch/notmuch.c:1840
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "fallo al interpretar límite: %s"
 
-#: notmuch/notmuch.c:2348
+#: notmuch/notmuch.c:2350
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] "No es posible sincronizar %d el mensaje debido a una modificación externa en el buzón"
 msgstr[1] "No es posible sincronizar %d los mensajes debido a una modificación externa en el buzón"
 
-#: notmuch/notmuch.c:2408
+#: notmuch/notmuch.c:2410
 msgid "Can't write to virtual folder"
 msgstr "No se pudo escribir en la carpeta virtual"
 
