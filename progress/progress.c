@@ -138,7 +138,7 @@ void progress_free(struct Progress **ptr)
  */
 struct Progress *progress_new(enum ProgressType type, size_t size)
 {
-  if (OptNoCurses)
+  if (!OptGui)
     return NULL;
 
   const size_t size_inc = choose_increment(type);

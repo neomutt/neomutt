@@ -192,7 +192,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffer *s,
                                                 struct Buffer *err, bool uncolor)
 {
-  if (OptNoCurses) // No GUI, so quietly discard the command
+  if (!OptGui) // No GUI, so quietly discard the command
   {
     while (MoreArgs(s))
     {
@@ -426,7 +426,7 @@ done:
 enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
                                  intptr_t data, struct Buffer *err)
 {
-  if (OptNoCurses) // No GUI, so quietly discard the command
+  if (!OptGui) // No GUI, so quietly discard the command
   {
     while (MoreArgs(s))
     {
@@ -458,7 +458,7 @@ enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
                                intptr_t data, struct Buffer *err)
 {
   // No GUI, or no colours, so quietly discard the command
-  if (OptNoCurses || (COLORS == 0))
+  if (!OptGui || (COLORS == 0))
   {
     while (MoreArgs(s))
     {
@@ -480,7 +480,7 @@ enum CommandResult parse_mono(struct Buffer *buf, struct Buffer *s,
                               intptr_t data, struct Buffer *err)
 {
   // No GUI, or colours available, so quietly discard the command
-  if (OptNoCurses || (COLORS != 0))
+  if (!OptGui || (COLORS != 0))
   {
     while (MoreArgs(s))
     {
