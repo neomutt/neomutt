@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-04-04 01:04+0100\n"
-"PO-Revision-Date: 2025-04-04 12:52-0400\n"
+"PO-Revision-Date: 2025-04-05 00:22-0400\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -6492,7 +6492,7 @@ msgstr "[Nevalida]"
 
 #. L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA
 #: ncrypt/gpgme_functions.c:469 ncrypt/gpgme_functions.c:604
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
 msgstr[0] "%s, %lu-bita %s\n"
@@ -6557,25 +6557,21 @@ msgstr "Ĉi tiu ŝlosilo ne estas uzebla: eksvalidiĝinta/malŝaltita/revokita"
 
 #: ncrypt/gpgme_functions.c:772 ncrypt/pgp_functions.c:86
 #: ncrypt/smime_functions.c:68
-#, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
-msgstr "ID estas eksvalidiĝinta/malŝaltita/revokita. Ĉu vi vere volas uzi la ŝlosilon?"
+msgstr "Identigilo estas eksvalidiĝinta/malŝaltita/revokita. Ĉu vi malgraŭe deziras uzi la ŝlosilon?"
 
 #: ncrypt/gpgme_functions.c:780 ncrypt/pgp_functions.c:96
-#, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
-msgstr "ID ne estas valida. Ĉu vi vere volas uzi la ŝlosilon?"
+msgstr "Identigilo ne estas valida. Ĉu vi malgraŭe deziras uzi la ŝlosilon?"
 
 #: ncrypt/gpgme_functions.c:783 ncrypt/pgp_functions.c:99
-#, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
-msgstr "ID estas nur iomete valida. Ĉu vi vere volas uzi la ŝlosilon?"
+msgstr "Identigilo estas nur iomete valida. Ĉu vi malgraŭe diziras uzi la ŝlosilon?"
 
 #: ncrypt/gpgme_functions.c:790 ncrypt/pgp_functions.c:93
 #: ncrypt/smime_functions.c:71
-#, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
-msgstr "ID havas nedifinitan validecon. Ĉu vi vere volas uzi la ŝlosilon?"
+msgstr "Identigilo havas nedifinitan validecon. Ĉu vi malgraŭe deziras uzi la ŝlosilon?"
 
 #: ncrypt/pgp.c:102
 msgid "Enter PGP passphrase:"
@@ -6673,15 +6669,13 @@ msgstr "iskaifo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1977
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
-msgstr "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, (f)or, aŭ (o)ppenc-moduso?"
+msgstr "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, (n)eĉifrita, aŭ (o)ppenc-reĝim`o?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1979
-#, fuzzy
 msgid "esabco"
-msgstr "iskafo"
+msgstr "iskano"
 
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1990
@@ -6719,7 +6713,6 @@ msgid "PGP Key %s"
 msgstr "PGP-ŝlosilo %s"
 
 #: ncrypt/pgpkey.c:600
-#, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Ĉi tiu ŝlosilo ne estas uzebla: eksvalidiĝinta/malŝaltita/revokita"
 
@@ -6836,9 +6829,8 @@ msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
 #: ncrypt/smime_functions.c:74
-#, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
-msgstr "ID ne fidatas. Ĉu vi vere volas uzi la ŝlosilon?"
+msgstr "Identigilo ne fidata. Ĉu vi malgraŭe deziras uzi la ŝlosilon?"
 
 #: nntp/newsrc.c:632
 msgid "Loading list of groups from cache..."
@@ -6849,46 +6841,43 @@ msgid "No news server defined"
 msgstr "Neniu novaĵgrupa servilo specifita"
 
 #: nntp/newsrc.c:973
-#, fuzzy, c-format
+#, c-format
 msgid "%s is an invalid news server specification"
-msgstr "%s ne estas valida POP-vojo"
+msgstr "%s estas nevalida novaĵgrupo-servilo specifo"
 
 #: nntp/nntp.c:130 nntp/nntp.c:711 pop/lib.c:416 pop/pop.c:684
 msgid "Server closed connection"
 msgstr "Servilo fermis la konekton"
 
 #: nntp/nntp.c:250
-#, fuzzy
 msgid "Server doesn't support reader mode"
-msgstr "SMTP-servilo ne akceptas rajtiĝon"
+msgstr "Servilo ne regas legan reĝimon"
 
 #: nntp/nntp.c:499 pop/auth.c:620 send/smtp.c:1004
 msgid "No authenticators available"
 msgstr "Nenia rajtiĝilo disponeblas"
 
 #: nntp/nntp.c:767
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s lost. Reconnect?"
-msgstr "Konekto al %s fermita"
+msgstr "Konekto al %s fermita. Ĉu rekonektiĝi?"
 
 #: nntp/nntp.c:1236
-#, fuzzy
 msgid "Fetching list of articles..."
-msgstr "Prenas liston de mesaĝoj..."
+msgstr "Elŝutas liston de mesaĝoj..."
 
 #: nntp/nntp.c:1506 nntp/nntp.c:2121 pop/pop.c:556 pop/pop.c:837
 msgid "Checking for new messages..."
 msgstr "Kontrolas pri novaj mesaĝoj..."
 
 #: nntp/nntp.c:1828 nntp/nntp.c:1923
-#, fuzzy
 msgid "Could not switch to reader mode"
-msgstr "Ne eblis skribi al dumtempa poŝtfako: %s"
+msgstr "Ne eblis ŝanĝi al lega reĝimo"
 
 #: nntp/nntp.c:1841
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to %s. %s"
-msgstr "Konektiĝas al %s..."
+msgstr "Konektiĝis al %s. %s"
 
 #: nntp/nntp.c:1842
 msgid "Posting is NOT ok"
@@ -6899,33 +6888,31 @@ msgid "Posting is ok"
 msgstr "Afiŝado estas aprobata"
 
 #: nntp/nntp.c:1984 nntp/nntp.c:2021
-#, fuzzy, c-format
+#, c-format
 msgid "Can't post article: %s"
-msgstr "Ne eblas ekzameni la dosieron %s: %s"
+msgstr "Ne eblas afiŝi artikolon: %s"
 
 #: nntp/nntp.c:2045
-#, fuzzy, c-format
+#, c-format
 msgid "Loading list of groups from server %s..."
-msgstr "Forviŝas mesaĝojn de la servilo..."
+msgstr "Prezentas liston da grupoj de la servilo %s..."
 
 #: nntp/nntp.c:2088 nntp/nntp.c:2183
-#, fuzzy
 msgid "Loading descriptions..."
-msgstr "Salutas..."
+msgstr "Prezentas priskribojn..."
 
 #: nntp/nntp.c:2110
-#, fuzzy
 msgid "Checking for new newsgroups..."
-msgstr "Kontrolas pri novaj mesaĝoj..."
+msgstr "Konstatas ĉu estas novaj novaĵgrupoj..."
 
 #: nntp/nntp.c:2323
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr "Ne eblas trovi idajn artikolojn ĉar la servilo ne konas la komandon XPAT"
 
 #: nntp/nntp.c:2400
-#, fuzzy, c-format
+#, c-format
 msgid "%s is an invalid newsgroup specification"
-msgstr "%s ne estas valida POP-vojo"
+msgstr "%s estas nevalida novaĵgrupa specifo"
 
 #: nntp/nntp.c:2441
 #, c-format
@@ -6949,44 +6936,41 @@ msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week
 msgstr "Nevalida valoro por nm_query_window_timebase (validaj valoroj: hour, day, week, month, year)"
 
 #: notmuch/db.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "Atendas fcntl-ŝloson... %d"
+msgstr "Atendas notmuch-datumbazon... (%d sekundoj)"
 
 #: notmuch/db.c:188
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
-msgstr "Ne eblas malformi notmuch-datumbazon: %s: %s"
+msgstr "Ne eblas malfermi notmuch-datumbazon: %s: %s"
 
 #: notmuch/db.c:189
-#, fuzzy
 msgid "unknown reason"
-msgstr "nekonata eraro"
+msgstr "nekonata kialo"
 
 #: notmuch/mdata.c:83 notmuch/notmuch.c:1825
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch url: %s"
-msgstr "Malsukcesis analizi 'mailto:'-ligon\n"
+msgstr "malsukcesis analizi notmuch-URL: %s"
 
 #: notmuch/notmuch.c:369
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "Malsukcesis analizi 'mailto:'-ligon\n"
+msgstr "Malsukcesis analizi notmuch-limigon: %s"
 
 #: notmuch/notmuch.c:712
-#, fuzzy
 msgid "Reading messages..."
-msgstr "Sendas mesaĝon..."
+msgstr "Legas mesaĝojn..."
 
 #: notmuch/notmuch.c:1584
-#, fuzzy
 msgid "No more messages in the thread"
-msgstr "Malestas novaj mesaĝoj en ĉi tiu limigita rigardo"
+msgstr "Neniuj pliaj mesaĝoj en la fadeno"
 
 #: notmuch/notmuch.c:1840
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse limit: %s"
-msgstr "Malsukcesis analizi 'mailto:'-ligon\n"
+msgstr "Malsukcesis analizi limigon: %s"
 
 #: notmuch/notmuch.c:2350
 #, c-format
@@ -6996,9 +6980,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: notmuch/notmuch.c:2410
-#, fuzzy
 msgid "Can't write to virtual folder"
-msgstr "Ne eblas malfermi rubujon"
+msgstr "Ne eblas skribi al virtuala dosierujo"
 
 #: notmuch/query.c:116
 #, c-format
@@ -7107,7 +7090,7 @@ msgstr "PGP-subskribo NE povis esti kontrolita"
 #. `%ld` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: pager/pbar.c:114
-#, fuzzy, c-format
+#, c-format
 msgid "%ld%%"
 msgstr "%ld%%"
 
@@ -7119,38 +7102,38 @@ msgstr "%s: nekonata komando"
 #: parse/set.c:390
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
-msgstr ""
+msgstr "Komando '%s' uzeblas kun nur du- aŭ kvarvaloraj variabloj"
 
 #: parse/set.c:513
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
-msgstr ""
+msgstr "'inv', no', '&' kaj '?' ne uzeblas kun la komando '%s'"
 
 #: parse/set.c:561
 msgid "Can't use prefix when incrementing or decrementing a variable"
-msgstr ""
+msgstr "Ne eblas uzi prefikson dum alkremento aŭ dekremento de variablo"
 
 #: parse/set.c:567 parse/set.c:597
 #, c-format
 msgid "Can't set option with the '%s' command"
-msgstr ""
+msgstr "Ne eblas agordi agordaĵon per la komando '%s'"
 
 #: parse/set.c:583
 msgid "'+' and '-' must be followed by '='"
-msgstr ""
+msgstr "'+' kaj '-' devas esti sekvata de '='"
 
 #: parse/set.c:591
 msgid "Can't use prefix when setting a variable"
-msgstr ""
+msgstr "Ne eblas uzi prefikson dum valorizi variablon"
 
 #: parse/set.c:609
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
-msgstr ""
+msgstr "Prefiksoj 'no' kaj 'inv' estas uzeblaj nur kun buleaj/kvarvaloraj/nombraj variabloj"
 
 #: parse/set.c:613
 #, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
-msgstr ""
+msgstr "Komando '%s' estas uzebla kun nur buleaj/kvarvaloraj/nombraj valoroj"
 
 #: pattern/compile.c:75 pattern/compile.c:162 pattern/compile.c:723
 #, c-format
@@ -7162,14 +7145,13 @@ msgid "Empty expression"
 msgstr "Malplena esprimo"
 
 #: pattern/compile.c:154
-#, fuzzy
 msgid "No search command defined"
-msgstr "Demandokomando ne difinita"
+msgstr "Serĉo-komando ne difinita"
 
 #: pattern/compile.c:189
-#, fuzzy, c-format
+#, c-format
 msgid "Running search command: %s ..."
-msgstr "Alvokas aŭtomatan vidigon per: %s"
+msgstr "Plenumas serĉo-komandon: %s..."
 
 #: pattern/compile.c:307 pattern/compile.c:322
 #, c-format
@@ -7294,19 +7276,16 @@ msgid "error: unknown op %d (report this error)"
 msgstr "eraro: nekonata funkcio %d (raportu ĉi tiun cimon)"
 
 #: pattern/exec.c:141
-#, fuzzy
 msgid "Error opening 'memory stream'"
-msgstr "Eraro dum malfermado de poŝtfako"
+msgstr "Eraro dum malfermado de memora fluado"
 
 #: pattern/exec.c:195
-#, fuzzy
 msgid "Error re-opening 'memory stream'"
-msgstr "Eraro dum malfermado de poŝtfako"
+msgstr "Eraro dum remalfermado de memora fluo"
 
 #: pattern/exec.c:205
-#, fuzzy
 msgid "Error opening /dev/null"
-msgstr "Ne eblas malfermi /dev/null"
+msgstr "Eraro dum malfermo de /dev/null"
 
 #: pattern/exec.c:215
 #, fuzzy
@@ -7856,18 +7835,18 @@ msgstr ""
 #: send/config.c:169
 #, c-format
 msgid "On %d, %n wrote:"
-msgstr ""
+msgstr "Je %d, %n skribis:"
 
 #. L10N: $forward_attribution_intro default format
 #: send/config.c:236
 #, c-format
 msgid "----- Forwarded message from %f -----"
-msgstr ""
+msgstr "----- Plusendis mesaĝon de %f -----"
 
 #. L10N: $forward_attribution_trailer default format
 #: send/config.c:240
 msgid "----- End forwarded message -----"
-msgstr ""
+msgstr "----- Fino de plusendita mesaĝo -----"
 
 #: send/send.c:347
 msgid "No subject, abort?"
@@ -7943,14 +7922,14 @@ msgstr "Ĉu konservi kunsendaĵojn en Fcc?"
 #. (s)kip aborts saving.
 #: send/send.c:1788
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
-msgstr ""
+msgstr "Fcc malsukcesis, (r)eprovi, alternativa (l)eterkesto, aŭ (p)preterlasi?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
 #: send/send.c:1792
 msgid "rms"
-msgstr "rpn"
+msgstr "rlp"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
@@ -7960,15 +7939,15 @@ msgstr "Fcc-poŝtfako"
 
 #: send/send.c:1867
 msgid "Can't postpone.  $postponed is unset"
-msgstr ""
+msgstr "Ne eblas prokrasti. $postponi estas malvalorizita"
 
 #: send/send.c:1904 send/send.c:1921
 msgid "Error encrypting message. Check your crypt settings."
-msgstr ""
+msgstr "Eraro dum ĉifrado de mesaĝo. Kontroli viajn ĉifrajn agordaĵojn."
 
 #: send/send.c:2015
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr ""
+msgstr "Mesaĝo enhavas tekston, kiu kongruas kun \"$abort_noattach_regex\". Ne sendata."
 
 #: send/send.c:2019
 msgid "No attachments, cancel sending?"
@@ -8020,7 +7999,7 @@ msgstr "Neniu novaĵgrupo specifita"
 
 #: send/send.c:2745
 msgid "Missing encryption key; mail not sent"
-msgstr ""
+msgstr "Mankas ĉifra ŝlosila; retpoŝtaĵo ne sendita"
 
 #: send/send.c:2769 send/smtp.c:262
 msgid "Sending message..."
@@ -8036,7 +8015,7 @@ msgstr "Sendas en fono"
 
 #: send/send.c:2826
 msgid "Article posted"
-msgstr ""
+msgstr "Artikolo afiŝita"
 
 #: send/send.c:2827
 msgid "Mail sent"
@@ -8047,14 +8026,12 @@ msgid "No recipient specified"
 msgstr "Neniu ricevonto specifita"
 
 #: send/send.c:2955
-#, fuzzy
 msgid "No List-Subscribe header found"
-msgstr "Neniu sekreta ŝlosilo trovita"
+msgstr "La ĉapo List-Subscribe ne trovita"
 
 #: send/send.c:2984
-#, fuzzy
 msgid "No List-Unsubscribe header found"
-msgstr "Malabonis %s"
+msgstr "La ĉapo List-Unsubscribe ne trovita"
 
 #: send/sendlib.c:177
 msgid "Could not find any mime.types file"
@@ -8197,7 +8174,7 @@ msgstr "Sendi retpoŝtmesaĝo per la komandlinio"
 
 #: usage.c:91
 msgid "neomutt -a <file> [...]              Attach files"
-msgstr "neomutt -a <dosiero> [...]           Alkroĉi dosierojn"
+msgstr "neomutt -a <dosiero> [...]           Aldoni dosierojn"
 
 #: usage.c:92
 msgid "        -b <address>                 Add Bcc: address"
