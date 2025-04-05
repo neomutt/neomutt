@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-04-04 01:04+0100\n"
-"PO-Revision-Date: 2025-04-05 00:22-0400\n"
+"PO-Revision-Date: 2025-04-05 12:44-0400\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -7230,7 +7230,7 @@ msgstr "DATOGAMO"
 #.
 #: pattern/dlg_pattern.c:172
 msgid "QUERY"
-msgstr ""
+msgstr "INFORMOPETO"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
@@ -7266,7 +7266,7 @@ msgstr "Ŝablonoj"
 #: pattern/exec.c:95
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
-msgstr ""
+msgstr "Ŝablona operatoro '~%c' estas malŝaltita"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -7288,13 +7288,12 @@ msgid "Error opening /dev/null"
 msgstr "Eraro dum malfermo de /dev/null"
 
 #: pattern/exec.c:215
-#, fuzzy
 msgid "Error checking length of temporary file"
-msgstr "Eraro.  Konservas dumtempan dosieron: %s"
+msgstr "Eraro dum konstatado de la longo de dumtempa dosiero"
 
 #: pattern/exec.c:920
 msgid "error: server custom search only supported with IMAP"
-msgstr ""
+msgstr "eraro: propra serĉo en servilo konata nur al IMAP"
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
@@ -7379,7 +7378,7 @@ msgstr "mesaĝoj, kies mesaĝidentigilo konformas al ESPR"
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
 msgid "messages whose Message-ID is included in the results returned from an external search program"
-msgstr ""
+msgstr "mesaĝoj kies identigiloj inkluzivitaj en la rezultoj redonitaj de ekstera serĉoprogramo"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
@@ -7388,9 +7387,8 @@ msgstr "mesaĝoj, kiuj enhavas PGP-ŝlosilon"
 
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
-#, fuzzy
 msgid "messages whose BCC header matches EXPR"
-msgstr "mesaĝoj, kies Kopie-Al-kampo konformas al ESPR"
+msgstr "mesaĝoj, kies Blindkopie-Al-kampo konformas al ESPR"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:101
@@ -7494,9 +7492,8 @@ msgstr "kriptografie kontrolitaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:161
-#, fuzzy
 msgid "newsgroups matching EXPR"
-msgstr "Neniu dosiero kongruas kun la dosieromasko"
+msgstr "novaĵgrupoj laŭ ESPR"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:164
@@ -7516,7 +7513,7 @@ msgstr "mesaĝoj, kies X-Label-kampo konformas al ESPR"
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:173
 msgid "messages whose tags match EXPR"
-msgstr ""
+msgstr "mesaĝoj kies etikedoj kongruas kun ESPR"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:176
@@ -7535,19 +7532,17 @@ msgstr "nereferencitaj mesaĝoj"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:185
-#, fuzzy
 msgid "broken threads"
-msgstr "Ne restas fadenoj"
+msgstr "rompiĝintaj fadenoj"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:188
 msgid "IMAP custom server-side search for STRING"
-msgstr ""
+msgstr "propra servila serĉo de IMAP por ĈENO"
 
 #: pattern/message.c:105 pattern/message.c:254
-#, fuzzy
 msgid "No current message"
-msgstr "Malestas nelegitaj mesaĝoj."
+msgstr "Neniu nuna mesaĝo"
 
 #: pattern/pattern.c:209 pattern/pattern.c:335 pattern/pattern.c:514
 #: pattern/pattern.c:670
@@ -7629,11 +7624,11 @@ msgid "Can't write header to temporary file"
 msgstr "Ne eblas skribi la ĉapaĵon al dumtempa dosiero"
 
 #: pop/pop.c:388
-#, fuzzy, c-format
+#, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
-msgstr[0] "%d mesaĝoj perdiĝis.  Provu remalfermi la poŝtfakon."
-msgstr[1] "%d mesaĝoj perdiĝis.  Provu remalfermi la poŝtfakon."
+msgstr[0] "%d mesaĝo perdita.  Provu remalfermi la leterkeston."
+msgstr[1] "%d mesaĝoj perditaj.  Provu remalfermi la leterkeston."
 
 #: pop/pop.c:517
 msgid "POP host is not defined"
@@ -7656,7 +7651,7 @@ msgstr "Ĉu forviŝi mesaĝojn de servilo?"
 #, fuzzy, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
-msgstr[0] "Legas novajn mesaĝojn (%d bitokojn)..."
+msgstr[0] "Legas novajn mesaĝojn (%d bitokon)..."
 msgstr[1] "Legas novajn mesaĝojn (%d bitokojn)..."
 
 #: pop/pop.c:652
@@ -7666,10 +7661,10 @@ msgstr "Eraro dum skribado de poŝtfako"
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. the %d right before 'messages', i.e. the total number of messages.
 #: pop/pop.c:658
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
-msgstr[0] "%s [%d el %d mesaĝoj legitaj]"
+msgstr[0] "%s [%d el %d mesaĝo legita]"
 msgstr[1] "%s [%d el %d mesaĝoj legitaj]"
 
 #: pop/pop.c:802
@@ -7701,9 +7696,8 @@ msgid "Decrypting message..."
 msgstr "Malĉifras mesaĝon..."
 
 #: postpone/postpone.c:545
-#, fuzzy
 msgid "Could not decrypt postponed message"
-msgstr "Ne eblis malĉifri PGP-mesaĝon"
+msgstr "Ne eblis malĉifri prokrastitan mesaĝon"
 
 #: postpone/postpone.c:678 postpone/postpone.c:689
 msgid "No postponed messages"
