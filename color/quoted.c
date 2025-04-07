@@ -57,7 +57,7 @@ static int quoted_color_observer(struct NotifyCallback *nc)
   {
     if (simple_color_is_set(i))
     {
-      NumQuotedColors = i + 1;
+      NumQuotedColors = i - MT_COLOR_QUOTED0 + 1;
       break;
     }
   }
