@@ -1638,6 +1638,8 @@ int main(int argc, char *argv[], char *envp[])
   else
   {
     struct Buffer *folder = &cli->tui.folder;
+    bool explicit_folder = !buf_is_empty(folder);
+
     if (cli->tui.start_new_mail)
     {
       const bool c_imap_passive = cs_subset_bool(NeoMutt->sub, "imap_passive");
@@ -1747,7 +1749,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_error(_("Unable to open mailbox %s"), buf_string(folder));
       repeat_error = false;
     }
-    if (m || buf_is_empty(folder))
+    if (m || !explicit_folder)
     {
       struct MuttWindow *dlg = index_pager_init();
       dialog_push(dlg);
