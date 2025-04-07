@@ -1483,7 +1483,12 @@ static void envelope_thread_tree(const struct ExpandoNode *node, void *data,
 
   node_expando_set_color(node, MT_COLOR_TREE);
   node_expando_set_has_tree(node, true);
+#if 0
   buf_strcpy(buf, e->tree);
+#else
+  const int len = mutt_str_len(e->tree);
+  buf_add_printf(buf, "%*s", (len * 2) / 3, "");
+#endif
 }
 
 /**
