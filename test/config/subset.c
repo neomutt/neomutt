@@ -49,12 +49,11 @@ void test_config_subset(void)
   intptr_t value;
   int rc;
 
-  struct ConfigSet *cs = cs_new(30);
-  cs_register_type(cs, &CstNumber);
+  struct NeoMutt *n = NeoMutt;
+  struct ConfigSet *cs = n->sub->cs;
+
   if (!TEST_CHECK(cs_register_variables(cs, Vars)))
     return;
-
-  struct NeoMutt *n = neomutt_new(cs);
 
   cs_subset_free(NULL);
 
@@ -264,8 +263,6 @@ void test_config_subset(void)
   cs_subset_free(&sub_m);
   cs_subset_free(&sub_a);
 
-  neomutt_free(&n);
-  cs_free(&cs);
   buf_pool_release(&err);
   log_line(__func__);
 }

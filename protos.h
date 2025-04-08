@@ -31,7 +31,6 @@
 #include "menu/lib.h"
 
 struct Buffer;
-struct ConfigSet;
 struct Email;
 struct EmailArray;
 struct Mailbox;
@@ -74,6 +73,5 @@ int wcscasecmp(const wchar_t *a, const wchar_t *b);
 #endif
 
 int mutt_reply_observer(struct NotifyCallback *nc);
-void init_config(struct ConfigSet *cs);
 
 #endif /* MUTT_PROTOS_H */

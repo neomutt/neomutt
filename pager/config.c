@@ -40,7 +40,7 @@ extern const struct ExpandoDefinition IndexFormatDef[];
 /**
  * PagerVars - Config definitions for the Pager
  */
-static struct ConfigDef PagerVars[] = {
+struct ConfigDef PagerVars[] = {
   // clang-format off
   { "allow_ansi", DT_BOOL, false, 0, NULL,
     "Allow ANSI color codes in rich text messages"
@@ -115,12 +115,4 @@ const char *pager_get_pager(struct ConfigSubset *sub)
     return NULL;
 
   return c_pager;
-}
-
-/**
- * config_init_pager - Register pager config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_pager(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, PagerVars);
 }
