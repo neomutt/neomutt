@@ -154,6 +154,7 @@ void mutt_help(enum MenuType menu)
   struct BindingInfoArray bia_unbound = ARRAY_HEAD_INITIALIZER;
   struct Buffer *banner = NULL;
   struct Buffer *tempfile = NULL;
+  struct BindingInfo *bi = NULL;
 
   // ---------------------------------------------------------------------------
   // Gather the data
@@ -201,7 +202,6 @@ void mutt_help(enum MenuType menu)
   }
 
   const char *menu_name = mutt_map_get_name(menu, MenuNames);
-  struct BindingInfo *bi = NULL;
 
   fprintf(fp, "%s bindings\n", menu_name);
   fprintf(fp, "\n");
@@ -270,6 +270,22 @@ void mutt_help(enum MenuType menu)
   mutt_do_pager(&pview, NULL);
 
 cleanup:
+
+  ARRAY_FOREACH(bi, &bia_bind)
+  {
+    FREE(&bi->a[0]);
+  }
+
+  ARRAY_FOREACH(bi, &bia_macro)
+  {
+    FREE(&bi->a[0]);
+    FREE(&bi->a[1]);
+  }
+
+  ARRAY_FOREACH(bi, &bia_gen)
+  {
+    FREE(&bi->a[0]);
+  }
 
   buf_pool_release(&banner);
   buf_pool_release(&tempfile);
