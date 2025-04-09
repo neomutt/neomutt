@@ -425,7 +425,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
                      CopyHeaderFlags chflags, const char *prefix, int wraplen)
 {
   char *temp_hdr = NULL;
-  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  const bool c_weed = (chflags & CH_UPDATE) ? false : cs_subset_bool(NeoMutt->sub, "weed");
 
   if (e->env)
   {
@@ -475,7 +475,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
 
   if ((chflags & CH_UPDATE) && ((chflags & CH_NOSTATUS) == 0))
   {
-    if ((e->old || e->read) && !(c_weed && mutt_matches_ignore("Status")))
+    if ((e->old || e->read))
     {
       fputs("Status: ", fp_out);
       if (e->read)
@@ -485,7 +485,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       fputc('\n', fp_out);
     }
 
-    if ((e->flagged || e->replied) && !(c_weed && mutt_matches_ignore("X-Status")))
+    if ((e->flagged || e->replied))
     {
       fputs("X-Status: ", fp_out);
       if (e->replied)
