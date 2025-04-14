@@ -387,6 +387,7 @@ bool mutt_mb_is_display_corrupting_utf8(wchar_t wc)
   if ((wc == (wchar_t) 0x00ad) || /* soft hyphen */
       (wc == (wchar_t) 0x200e) || /* left-to-right mark */
       (wc == (wchar_t) 0x200f) || /* right-to-left mark */
+      (wc == (wchar_t) 0x3000) || /* ideographic space */
       (wc == (wchar_t) 0xfeff))   /* zero width no-break space */
   {
     return true;
