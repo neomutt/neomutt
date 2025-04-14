@@ -484,11 +484,11 @@ if {[get-define want-doc]} {
     user-error "Unable to find xsltproc"
   }
 
-  msg-checking "Checking for DocBook DTDs..."
-  set res [exec xmlcatalog --shell << {public "-//OASIS//DTD DocBook XML V4.2//EN"}]
-  if {[string match {> No entry*} $res]} {
-    msg-result "no"
-    user-error "Install DocBook DTDs or './configure --disable-doc'"
+  msg-checking "Checking for DocBook DTDs and Stylesheets..."
+  foreach catalog { "-//OASIS//DTD DocBook XML V4.2//EN" "http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl" } {
+    if {[catch {exec xmlcatalog "" $catalog}]} {
+      user-error "Install DocBook DTDs and Stylesheets or './configure --disable-doc'"
+    }
   }
   msg-result "yes"
 
