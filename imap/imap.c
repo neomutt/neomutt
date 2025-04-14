@@ -82,21 +82,13 @@ struct stat;
 /**
  * ImapCommands - Imap Commands
  */
-static const struct Command ImapCommands[] = {
+const struct Command ImapCommands[] = {
   // clang-format off
   { "subscribe-to",     parse_subscribe_to,     0 },
   { "unsubscribe-from", parse_unsubscribe_from, 0 },
   { NULL, NULL, 0 },
   // clang-format on
 };
-
-/**
- * imap_init - Setup feature commands
- */
-void imap_init(void)
-{
-  commands_register(&NeoMutt->commands, ImapCommands);
-}
 
 /**
  * check_capabilities - Make sure we can log in to this server

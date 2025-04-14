@@ -31,6 +31,7 @@
  * | send/config.c    | @subpage send_config    |
  * | send/expando.c   | @subpage send_expando   |
  * | send/header.c    | @subpage send_header    |
+ * | send/module.c    | @subpage send_module    |
  * | send/multipart.c | @subpage send_multipart |
  * | send/send.c      | @subpage send_send      |
  * | send/sendlib.c   | @subpage send_sendlib   |

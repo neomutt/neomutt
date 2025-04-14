@@ -308,7 +308,7 @@ int mutt_window_move(struct MuttWindow *win, int row, int col)
  */
 void mutt_window_reflow(struct MuttWindow *win)
 {
-  if (OptNoCurses)
+  if (!OptGui)
     return;
 
   if (!win)

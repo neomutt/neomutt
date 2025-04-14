@@ -40,25 +40,24 @@
 #include "account.h"
 #include "mailbox.h"
 
-struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
-
 /**
- * neomutt_new - Create the main NeoMutt object
- * @param cs Config Set
- * @retval ptr New NeoMutt
+ * init_locale - Initialise the Locale/NLS settings
  */
-struct NeoMutt *neomutt_new(struct ConfigSet *cs)
+static bool init_locale(struct NeoMutt *n)
 {
-  if (!cs)
-    return NULL;
+  if (!n)
+    return false;
 
-  struct NeoMutt *n = MUTT_MEM_CALLOC(1, struct NeoMutt);
+  setlocale(LC_ALL, "");
 
-  TAILQ_INIT(&n->accounts);
-  n->notify = notify_new();
-  n->sub = cs_subset_new(NULL, NULL, n->notify);
-  n->sub->cs = cs;
-  n->sub->scope = SET_SCOPE_NEOMUTT;
+#ifdef ENABLE_NLS
+  const char *domdir = mutt_str_getenv("TEXTDOMAINDIR");
+  if (domdir)
+    bindtextdomain(PACKAGE, domdir);
+  else
+    bindtextdomain(PACKAGE, MUTTLOCALEDIR);
+  textdomain(PACKAGE);
+#endif
 
   n->time_c_locale = duplocale(LC_GLOBAL_LOCALE);
   if (n->time_c_locale)
@@ -67,8 +66,170 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   if (!n->time_c_locale)
   {
     mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
-    mutt_exit(1);                      // LCOV_EXCL_LINE
+    return false;                      // LCOV_EXCL_LINE
   }
+
+  return true;
+}
+
+/**
+ * init_modules - Initialise the Modules
+ * @param n       Neomutt
+ * @param modules Library modules to initialise
+ * @retval true Success
+ */
+static bool init_modules(struct NeoMutt *n, const struct Module **modules)
+{
+  if (!n)
+    return false;
+
+  if (!modules)
+    return true;
+
+  n->modules = modules;
+
+  bool rc = true;
+
+  // Initialise the Modules
+  for (int i = 0; modules[i]; i++)
+  {
+    const struct Module *mod = modules[i];
+
+    if (mod->init)
+    {
+      mutt_debug(LL_DEBUG3, "%s:init()\n", mod->name);
+      rc &= mod->init(n);
+    }
+  }
+
+  return rc;
+}
+
+/**
+ * init_config - Initialise the config system
+ * @param n Neomutt
+ * @retval true Success
+ *
+ * Set up the config variables in three stages:
+ * - Create the config types
+ * - Create the config variables
+ * - Set some run-time defaults
+ */
+static bool init_config(struct NeoMutt *n)
+{
+  if (!n)
+    return false;
+
+  n->sub = cs_subset_new(NULL, NULL, n->notify);
+  n->sub->scope = SET_SCOPE_NEOMUTT;
+  n->sub->cs = cs_new(500);
+
+  if (!n->modules)
+    return true;
+
+  bool rc = true;
+
+  // Set up the Config Types
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->config_define_types)
+    {
+      mutt_debug(LL_DEBUG3, "%s:config_define_types()\n", mod->name);
+      rc &= mod->config_define_types(n, n->sub->cs);
+    }
+  }
+
+  if (!rc)
+    return false;
+
+  // Define the Config Variables
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->config_define_variables)
+    {
+      mutt_debug(LL_DEBUG3, "%s:config_define_variables()\n", mod->name);
+      rc &= mod->config_define_variables(n, n->sub->cs);
+    }
+  }
+
+  return rc;
+}
+
+/**
+ * init_commands - Initialise the NeoMutt commands
+ * @param n Neomutt
+ * @retval true Success
+ */
+static bool init_commands(struct NeoMutt *n)
+{
+  if (!n)
+    return false;
+
+  if (!n->modules)
+    return true;
+
+  struct CommandArray *ca = &n->commands;
+
+  bool rc = true;
+
+  // Set up the Config Types
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->commands_register)
+    {
+      mutt_debug(LL_DEBUG3, "%s:commands_register()\n", mod->name);
+      rc &= mod->commands_register(n, ca);
+    }
+  }
+
+  return rc;
+}
+
+/**
+ * neomutt_new - Create the main NeoMutt object
+ * @retval ptr New NeoMutt
+ */
+struct NeoMutt *neomutt_new(void)
+{
+  struct NeoMutt *n = MUTT_MEM_CALLOC(1, struct NeoMutt);
+
+  return n;
+}
+
+/**
+ * neomutt_init - Initialise NeoMutt
+ * @param n       NeoMutt
+ * @param modules Library modules to initialise
+ * @retval true Success
+ */
+bool neomutt_init(struct NeoMutt *n, const struct Module **modules)
+{
+  if (!n)
+    return false;
+
+  MuttLogger = log_disp_queue;
+  mutt_debug(LL_DEBUG1, "first log message\n");
+
+  if (!init_locale(n))
+    return false;
+
+  if (!init_modules(n, modules))
+    return false;
+
+  if (!init_config(n))
+    return false;
+
+  if (!init_commands(n))
+    return false;
+
+  TAILQ_INIT(&n->accounts);
+  n->notify = notify_new();
 
   n->notify_timeout = notify_new();
   notify_set_parent(n->notify_timeout, n->notify);
@@ -76,7 +237,46 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   n->notify_resize = notify_new();
   notify_set_parent(n->notify_resize, n->notify);
 
-  return n;
+  // Change the current umask, and save the original one
+  n->user_default_umask = umask(077);
+  mutt_debug(LL_DEBUG1, "user's umask %03o\n", NeoMutt->user_default_umask);
+  mutt_debug(LL_DEBUG3, "umask set to 077\n");
+
+  return true;
+}
+
+/**
+ * cleanup_modules - Clean up each of the Modules
+ * @param n NeoMutt
+ */
+static void cleanup_modules(struct NeoMutt *n)
+{
+  if (!n || !n->modules)
+    return;
+
+  // Clean up the Modules
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->cleanup)
+    {
+      mutt_debug(LL_DEBUG3, "%s:cleanup()\n", mod->name);
+      mod->cleanup(n);
+    }
+  }
+}
+
+/**
+ * neomutt_cleanup - Clean up NeoMutt and Modules
+ * @param n NeoMutt
+ */
+void neomutt_cleanup(struct NeoMutt *n)
+{
+  if (!n)
+    return;
+
+  cleanup_modules(n);
 }
 
 /**
@@ -91,12 +291,21 @@ void neomutt_free(struct NeoMutt **ptr)
   struct NeoMutt *n = *ptr;
 
   neomutt_account_remove(n, NULL);
-  cs_subset_free(&n->sub);
+
+  if (n->sub)
+  {
+    cs_free(&n->sub->cs);
+    cs_subset_free(&n->sub);
+  }
+
   notify_free(&n->notify_resize);
   notify_free(&n->notify_timeout);
   notify_free(&n->notify);
+
   if (n->time_c_locale)
     freelocale(n->time_c_locale);
+
+  ARRAY_FREE(&n->commands);
 
   FREE(&n->home_dir);
   FREE(&n->username);
@@ -104,6 +313,55 @@ void neomutt_free(struct NeoMutt **ptr)
   envlist_free(&n->env);
 
   FREE(ptr);
+}
+
+/**
+ * neomutt_gui_init - Initialise NeoMutt's GUI
+ * @param n NeoMutt
+ * @retval true Success
+ */
+bool neomutt_gui_init(struct NeoMutt *n)
+{
+  if (!n || !n->modules)
+    return false;
+
+  bool rc = true;
+
+  // Initialise the GUI
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->gui_init)
+    {
+      mutt_debug(LL_DEBUG3, "%s:gui_init()\n", mod->name);
+      rc &= mod->gui_init(n);
+    }
+  }
+
+  return true;
+}
+
+/**
+ * neomutt_gui_cleanup - Clean up NeoMutt's GUI
+ * @param n NeoMutt
+ */
+void neomutt_gui_cleanup(struct NeoMutt *n)
+{
+  if (!n || !n->modules)
+    return;
+
+  // Clean up the GUI
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->gui_cleanup)
+    {
+      mutt_debug(LL_DEBUG3, "%s:gui_cleanup()\n", mod->name);
+      mod->gui_cleanup(n);
+    }
+  }
 }
 
 /**

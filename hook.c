@@ -1022,7 +1022,7 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
 /**
  * HookCommands - Hook Commands
  */
-static const struct Command HookCommands[] = {
+const struct Command HookCommands[] = {
   // clang-format off
   { "account-hook",      mutt_parse_hook,               MUTT_ACCOUNT_HOOK },
   { "charset-hook",      mutt_parse_charset_iconv_hook, MUTT_CHARSET_HOOK },
@@ -1046,11 +1046,3 @@ static const struct Command HookCommands[] = {
   { NULL, NULL, 0 },
   // clang-format on
 };
-
-/**
- * hooks_init - Setup feature commands
- */
-void hooks_init(void)
-{
-  commands_register(&NeoMutt->commands, HookCommands);
-}
