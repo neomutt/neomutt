@@ -179,26 +179,28 @@ void fill_vrows(struct SimplePagerWindowData *wdata)
         // Add a chunk of the Row
         mutt_debug(LL_DEBUG1, "ROW %2d: %.*s\n", scr_row, wrap_width, text + cur_off);
         struct ViewRow *vr = MUTT_MEM_CALLOC(1, struct ViewRow);
+        ARRAY_INIT(&vr->markup);
         vr->text = mutt_strn_dup(text + cur_off, wrap_width);
         vr->num_bytes = wrap_width;
         vr->num_cols = wrap_width; //XXX
         cur_col += wrap_width;
         cur_off += wrap_width; // XXX need to measure
+        markup_copy_region(&ptma, cur_off, wrap_width, &vr->markup);
         ARRAY_SET(vrows, scr_row, vr);
-        //XXX GEN vr->markup
       }
       else
       {
         // Add the remainder of the Row
         mutt_debug(LL_DEBUG1, "ROW %2d: %s\n", scr_row, text + cur_off);
         struct ViewRow *vr = MUTT_MEM_CALLOC(1, struct ViewRow);
+        ARRAY_INIT(&vr->markup);
         vr->text = mutt_str_dup(text + cur_off);
         vr->num_bytes = row->num_bytes - cur_off;
         vr->num_cols = row->num_cols - cur_off;
         cur_col += row->num_cols - cur_off;
         cur_off += row->num_bytes - cur_off;
+        markup_copy_region(&ptma, cur_off, row->num_bytes - cur_off, &vr->markup);
         ARRAY_SET(vrows, scr_row, vr);
-        //XXX GEN vr->markup
       }
 
       scr_row++;
@@ -206,7 +208,37 @@ void fill_vrows(struct SimplePagerWindowData *wdata)
         goto done;
     }
   }
-done:;
+
+done:
+  struct Buffer *buf = buf_pool_get();
+  struct ViewRow **pvr = NULL;
+
+  mutt_debug(LL_DEBUG1, "VRows:\n");
+  ARRAY_FOREACH(pvr, &wdata->vrows)
+  {
+    struct ViewRow *vr = *pvr;
+
+    buf_reset(buf);
+    buf_add_printf(buf, "%d", ARRAY_FOREACH_IDX_pvr);
+    buf_add_printf(buf, "\t'\033[1m%s\033[0m'", vr->text);
+    mutt_debug(LL_DEBUG1, "%s\n", buf_string(buf));
+
+    buf_reset(buf);
+    buf_add_printf(buf, "%d bytes, %d cols, ", vr->num_bytes, vr->num_cols);
+
+    struct PagedTextMarkup *ptm = NULL;
+    ARRAY_FOREACH(ptm, &vr->markup)
+    {
+      buf_add_printf(buf, "(%d+%d) ", ptm->first, ptm->bytes);
+      if (ptm->cid > 0)
+        buf_add_printf(buf, "cid:%d ", ptm->cid);
+      if (ptm->ac_text)
+        buf_add_printf(buf, "%p", (void *) ptm->ac_text);
+    }
+    mutt_debug(LL_DEBUG1, "\t%s\n", buf_string(buf));
+  }
+
+  buf_pool_release(&buf);
 }
 
 /**
@@ -426,6 +458,9 @@ void display_row3(struct MuttWindow *win, int row, const char *text,
   // struct PagedTextMarkupArray *ptma_search = &vr->search;
 
   mutt_window_move(win, row, 0);
+#ifndef USE_DEBUG_WINDOW
+  mutt_window_clrtoeol(win);
+#endif
 
   if (vr && vr->text)
   {
@@ -433,9 +468,6 @@ void display_row3(struct MuttWindow *win, int row, const char *text,
     mutt_curses_set_color(simple_color_get(MT_COLOR_NORMAL));
     mutt_window_addstr(win, vr->text);
   }
-#ifndef USE_DEBUG_WINDOW
-  mutt_window_clrtoeol(win);
-#endif
 #if 0
   int i_text = 0;
   int i_search = 0;
@@ -458,8 +490,10 @@ void display_row3(struct MuttWindow *win, int row, const char *text,
     mutt_refresh();
 #endif
   }
+#endif
 
-  while (text && (pos < text_end))
+#if 0
+  while (vr->text && (pos < text_end))
   {
     // Skip any text syntax that's behind us
     while (pos_after_text_markup(pos, ptm_text))
@@ -518,7 +552,7 @@ void display_row3(struct MuttWindow *win, int row, const char *text,
     // from:   pos..last
     mutt_window_move(win, row, pos - col);
     mutt_curses_set_color(ac);
-    mutt_window_addnstr(win, text + pos, last - pos);
+    mutt_window_addnstr(win, vr->text + pos, last - pos);
 #ifdef USE_DEBUG_WINDOW
     mutt_refresh();
 #endif
@@ -532,6 +566,50 @@ void display_row3(struct MuttWindow *win, int row, const char *text,
   mutt_window_clrtoeol(win);
 #endif
 #endif
+}
+
+/**
+ * display_row4 - Display a row of text in the Simple Pager
+ * @param win         Window to draw on
+ * @param row         Row in the Window
+ * @param pr          Row to display
+ */
+void display_row4(struct MuttWindow *win, int row, struct ViewRow *vr)
+{
+  // struct SimplePagerWindowData *wdata = win->wdata;
+  // struct PagedTextMarkupArray *ptma_text = &vr->markup;
+  // struct PagedTextMarkupArray *ptma_search = &vr->search;
+
+  mutt_window_move(win, row, 0);
+  if (!vr)
+  {
+    mutt_window_clrtoeol(win);
+    return;
+  }
+
+#ifndef USE_DEBUG_WINDOW
+  mutt_window_clrtoeol(win);
+#endif
+
+  struct PagedTextMarkup *ptm = NULL;
+  ARRAY_FOREACH(ptm, &vr->markup)
+  {
+    // if ((ptm->cid > MT_COLOR_NONE) && !ptm->ac_text)
+    if (ptm->cid > MT_COLOR_NONE)
+      ptm->ac_text = simple_color_get(ptm->cid);
+
+    // if (!ptm->ac_merged)
+    //   ptm->ac_merged = merged_color_overlay(pr->ac_merged, ptm->ac_text);
+
+    // mutt_window_move(win, row, pos - col);
+    mutt_curses_set_color(ptm->ac_text);
+    mutt_window_addnstr(win, vr->text + ptm->first, ptm->bytes);
+#ifdef USE_DEBUG_WINDOW
+    mutt_refresh();
+#endif
+  }
+
+  mutt_window_clrtoeol(win);
 }
 
 /**
@@ -598,7 +676,7 @@ static int win_spager_repaint(struct MuttWindow *win)
       struct ViewRow **pvr = ARRAY_GET(&wdata->vrows, screen_row);
       struct ViewRow *vr = *pvr;
 
-      display_row3(win, screen_row, vr ? vr->text : NULL, 0, 99, vr);
+      display_row4(win, screen_row, vr);
     }
     else
     {

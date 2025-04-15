@@ -442,5 +442,98 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
 
   mutt_debug(LL_DEBUG1, "\n");
   return true;
-
 }
+
+
+void markup_copy_region(const struct PagedTextMarkupArray *src, int first, int bytes, struct PagedTextMarkupArray *dst)
+{
+  mutt_debug(LL_DEBUG1, "markup: pos %d, %d bytes\n", first, bytes);
+  mutt_debug(LL_DEBUG1, "\n");
+
+  int total_pos = 0;
+
+  struct PagedTextMarkup *ptm = NULL;
+  ARRAY_FOREACH(ptm, src)
+  {
+    mutt_debug(LL_DEBUG1, "piece %d: %d - %d\n", ARRAY_FOREACH_IDX_ptm, total_pos, total_pos + ptm->bytes - 1);
+
+    int start = -1;
+    int last = -1;
+
+    if ((first < total_pos) && ((first + bytes - 1) > total_pos))
+    {
+      start = 0;
+    }
+    else if ((first >= total_pos) && (first < (total_pos + ptm->bytes)))
+    {
+      start = first - total_pos;
+    }
+
+    if (((first + bytes - 1) >= total_pos) && ((first + bytes - 1) < (total_pos + ptm->bytes)))
+    {
+      last = first + bytes - 1 - total_pos;
+    }
+    else if ((start != -1) && (first + bytes) >= total_pos)
+    {
+      last = ptm->bytes - 1;
+    }
+
+    total_pos += ptm->bytes;
+
+    if ((start == -1) && (last == -1))
+    {
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;32mignore\033[0m\n");
+      continue;
+    }
+    else if ((start == 0) && (last == (ptm->bytes - 1)))
+    {
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;36mentire\033[0m\n");
+      // Copy the entire Markup
+      ARRAY_ADD(dst, *ptm);
+    }
+    else if ((start > 0) && (last < (ptm->bytes - 1)))
+    {
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;35msplit\033[0m\n");
+
+      struct PagedTextMarkup ptm_new = { 0 };
+      ptm_new.first = ptm->first + start;
+      ptm_new.bytes = bytes - last - 1;
+      ptm_new.cid = ptm->cid;
+      ptm_new.ac_text = ptm->ac_text;
+      ptm_new.source = ptm->source;
+
+      ARRAY_ADD(dst, ptm_new);
+    }
+    else if (start <= 0)
+    {
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;31mstart = %d\033[0m\n", start);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;33mlast = %d\033[0m\n", last);
+
+      struct PagedTextMarkup ptm_new = { 0 };
+      ptm_new.first = ptm->first;
+      ptm_new.bytes = last + 1;
+      ptm_new.cid = ptm->cid;
+      ptm_new.ac_text = ptm->ac_text;
+      ptm_new.source = ptm->source;
+
+      ARRAY_ADD(dst, ptm_new);
+    }
+    else
+    {
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;31mstart = %d\033[0m\n", start);
+      mutt_debug(LL_DEBUG1, "\t\033[1;7;33mlast = %d\033[0m\n", last);
+
+      struct PagedTextMarkup ptm_new = { 0 };
+      ptm_new.first = ptm->first;
+      ptm_new.bytes = start;
+      ptm_new.cid = ptm->cid;
+      ptm_new.ac_text = ptm->ac_text;
+      ptm_new.source = ptm->source;
+
+      ARRAY_ADD(dst, ptm_new);
+    }
+  }
+
+  mutt_debug(LL_DEBUG1, "\n");
+}
+
