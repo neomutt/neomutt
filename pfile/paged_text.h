@@ -77,5 +77,6 @@ bool markup_delete(struct PagedTextMarkupArray *ptma, int position, int bytes);
 bool markup_insert(struct PagedTextMarkupArray *ptma, const char *text, int position, int first, int bytes);
 
 void markup_dump  (const struct PagedTextMarkupArray *ptma, int first, int last);
+void markup_copy_region(const struct PagedTextMarkupArray *src, int first, int bytes, struct PagedTextMarkupArray *dst);
 
 #endif /* MUTT_PFILE_PAGED_TEXT_H */
