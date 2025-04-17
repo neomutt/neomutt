@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-04-04\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-04-04 01:04+0100\n"
-"PO-Revision-Date: 2025-04-05 13:37-0400\n"
+"PO-Revision-Date: 2025-04-17 00:29-0400\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -3049,7 +3049,7 @@ msgstr "alkroĉi, ŝanĝi, aŭ forigi mesaĝa etikedo"
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:381
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr "redakti la kurdan mesaĝon se la leterkesto ne estas nurlega; aliokaze vidigi ĝin"
+msgstr "redakti la krudan mesaĝon se la leterkesto ne estas nurlega; aliokaze vidigi ĝin"
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
