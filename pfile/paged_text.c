@@ -445,6 +445,9 @@ bool markup_apply(struct PagedTextMarkupArray *ptma, int position, int bytes, in
 }
 
 
+/**
+ * markup_copy_region - XXX
+ */
 void markup_copy_region(const struct PagedTextMarkupArray *src, int first, int bytes, struct PagedTextMarkupArray *dst)
 {
   mutt_debug(LL_DEBUG1, "markup: pos %d, %d bytes\n", first, bytes);
@@ -489,18 +492,18 @@ void markup_copy_region(const struct PagedTextMarkupArray *src, int first, int b
     {
       mutt_debug(LL_DEBUG1, "\t\033[1;7;36mentire\033[0m\n");
       // Copy the entire Markup
-      ARRAY_ADD(dst, *ptm);
+      struct PagedTextMarkup ptm_new = *ptm;
+      ptm_new.first = total_pos;
+
+      ARRAY_ADD(dst, ptm_new);
     }
     else if ((start > 0) && (last < (ptm->bytes - 1)))
     {
       mutt_debug(LL_DEBUG1, "\t\033[1;7;35msplit\033[0m\n");
 
-      struct PagedTextMarkup ptm_new = { 0 };
-      ptm_new.first = ptm->first + start;
+      struct PagedTextMarkup ptm_new = *ptm;
+      ptm_new.first = total_pos;
       ptm_new.bytes = bytes - last - 1;
-      ptm_new.cid = ptm->cid;
-      ptm_new.ac_text = ptm->ac_text;
-      ptm_new.source = ptm->source;
 
       ARRAY_ADD(dst, ptm_new);
     }
@@ -509,12 +512,8 @@ void markup_copy_region(const struct PagedTextMarkupArray *src, int first, int b
       mutt_debug(LL_DEBUG1, "\t\033[1;7;31mstart = %d\033[0m\n", start);
       mutt_debug(LL_DEBUG1, "\t\033[1;7;33mlast = %d\033[0m\n", last);
 
-      struct PagedTextMarkup ptm_new = { 0 };
-      ptm_new.first = ptm->first;
-      ptm_new.bytes = last + 1;
-      ptm_new.cid = ptm->cid;
-      ptm_new.ac_text = ptm->ac_text;
-      ptm_new.source = ptm->source;
+      struct PagedTextMarkup ptm_new = *ptm;
+      ptm_new.first = total_pos;
 
       ARRAY_ADD(dst, ptm_new);
     }
@@ -523,12 +522,9 @@ void markup_copy_region(const struct PagedTextMarkupArray *src, int first, int b
       mutt_debug(LL_DEBUG1, "\t\033[1;7;31mstart = %d\033[0m\n", start);
       mutt_debug(LL_DEBUG1, "\t\033[1;7;33mlast = %d\033[0m\n", last);
 
-      struct PagedTextMarkup ptm_new = { 0 };
+      struct PagedTextMarkup ptm_new = *ptm;
       ptm_new.first = ptm->first;
       ptm_new.bytes = start;
-      ptm_new.cid = ptm->cid;
-      ptm_new.ac_text = ptm->ac_text;
-      ptm_new.source = ptm->source;
 
       ARRAY_ADD(dst, ptm_new);
     }

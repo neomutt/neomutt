@@ -180,12 +180,12 @@ void fill_vrows(struct SimplePagerWindowData *wdata)
         mutt_debug(LL_DEBUG1, "ROW %2d: %.*s\n", scr_row, wrap_width, text + cur_off);
         struct ViewRow *vr = MUTT_MEM_CALLOC(1, struct ViewRow);
         ARRAY_INIT(&vr->markup);
+        markup_copy_region(&ptma, cur_off, wrap_width, &vr->markup);
         vr->text = mutt_strn_dup(text + cur_off, wrap_width);
         vr->num_bytes = wrap_width;
         vr->num_cols = wrap_width; //XXX
         cur_col += wrap_width;
         cur_off += wrap_width; // XXX need to measure
-        markup_copy_region(&ptma, cur_off, wrap_width, &vr->markup);
         ARRAY_SET(vrows, scr_row, vr);
       }
       else
@@ -194,12 +194,12 @@ void fill_vrows(struct SimplePagerWindowData *wdata)
         mutt_debug(LL_DEBUG1, "ROW %2d: %s\n", scr_row, text + cur_off);
         struct ViewRow *vr = MUTT_MEM_CALLOC(1, struct ViewRow);
         ARRAY_INIT(&vr->markup);
+        markup_copy_region(&ptma, cur_off, row->num_bytes - cur_off, &vr->markup);
         vr->text = mutt_str_dup(text + cur_off);
         vr->num_bytes = row->num_bytes - cur_off;
         vr->num_cols = row->num_cols - cur_off;
         cur_col += row->num_cols - cur_off;
         cur_off += row->num_bytes - cur_off;
-        markup_copy_region(&ptma, cur_off, row->num_bytes - cur_off, &vr->markup);
         ARRAY_SET(vrows, scr_row, vr);
       }
 
@@ -224,16 +224,16 @@ done:
     mutt_debug(LL_DEBUG1, "%s\n", buf_string(buf));
 
     buf_reset(buf);
-    buf_add_printf(buf, "%d bytes, %d cols, ", vr->num_bytes, vr->num_cols);
+    // buf_add_printf(buf, "%d bytes, %d cols, ", vr->num_bytes, vr->num_cols);
 
     struct PagedTextMarkup *ptm = NULL;
     ARRAY_FOREACH(ptm, &vr->markup)
     {
       buf_add_printf(buf, "(%d+%d) ", ptm->first, ptm->bytes);
-      if (ptm->cid > 0)
-        buf_add_printf(buf, "cid:%d ", ptm->cid);
-      if (ptm->ac_text)
-        buf_add_printf(buf, "%p", (void *) ptm->ac_text);
+      // if (ptm->cid > 0)
+      //   buf_add_printf(buf, "cid:%d ", ptm->cid);
+      // if (ptm->ac_text)
+      //   buf_add_printf(buf, "%p", (void *) ptm->ac_text);
     }
     mutt_debug(LL_DEBUG1, "\t%s\n", buf_string(buf));
   }
