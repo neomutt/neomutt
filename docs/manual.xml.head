@@ -1223,12 +1223,12 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
             </row>
             <row>
               <entry>z or &lt;PageDn&gt;</entry>
-              <entry><literal>&lt;page-down&gt;</literal></entry>
+              <entry><literal>&lt;next-page&gt;</literal></entry>
               <entry>go to the next page</entry>
             </row>
             <row>
               <entry>Z or &lt;PageUp&gt;</entry>
-              <entry><literal>&lt;page-up&gt;</literal></entry>
+              <entry><literal>&lt;previous-page&gt;</literal></entry>
               <entry>go to the previous page</entry>
             </row>
             <row>
@@ -2636,12 +2636,12 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
               </row>
               <row>
                 <entry>f</entry>
-                <entry><literal>&lt;forward&gt;</literal></entry>
+                <entry><literal>&lt;forward-message&gt;</literal></entry>
                 <entry>forward message</entry>
               </row>
               <row>
                 <entry>b</entry>
-                <entry><literal>&lt;bounce&gt;</literal></entry>
+                <entry><literal>&lt;bounce-message&gt;</literal></entry>
                 <entry>bounce (remail) message</entry>
               </row>
               <row>
@@ -3295,8 +3295,8 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
         recipients specified in the Bcc header. Forwarding a message, on the
         other hand, allows you to modify the message before it is resent (for
         example, by adding your own comments). Bouncing is done using the
-        <literal>&lt;bounce&gt;</literal> function and forwarding using the
-        <literal>&lt;forward&gt;</literal> function bound to <quote>b</quote>
+        <literal>&lt;bounce-message&gt;</literal> function and forwarding using the
+        <literal>&lt;forward-message&gt;</literal> function bound to <quote>b</quote>
         and <quote>f</quote> respectively.
       </para>
       <para>
@@ -10453,7 +10453,7 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           command, and indicate which contain new messages. NeoMutt will
           automatically enter this mode when invoked from the command line with
           the <literal>-y</literal> option, or from the index/pager via the
-          <literal>&lt;browse-mailboxes&gt;</literal> function.
+          <literal>&lt;change-folder&gt;</literal> function.
         </para>
         <para>
           For the pager, index and directory browser menus, NeoMutt contains
@@ -10919,7 +10919,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
           <link linkend="resend-message"><literal>&lt;resend-message&gt;</literal></link>,
           and the
           <literal>&lt;reply&gt;</literal> and
-          <literal>&lt;forward&gt;</literal> functions) to attachments of type
+          <literal>&lt;forward-message&gt;</literal> functions) to attachments of type
           <literal>message/rfc822</literal>.
         </para>
         <para>
