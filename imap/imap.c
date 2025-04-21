@@ -1481,6 +1481,8 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
+    return MX_STATUS_ERROR;
 
   if (adata->state < IMAP_SELECTED)
   {
