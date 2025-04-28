@@ -16,4 +16,5 @@ done
 [ -z "$cred" ] || [ -z "$host" ] || [ -z "$user" ] && exit 1
 
 query=$(printf '.host == "%s" and .user == "%s"' "$host" "$user")
+printf "password: "
 gpg -qd "$cred" | jq -r ".[] | select($query) | .pass"
