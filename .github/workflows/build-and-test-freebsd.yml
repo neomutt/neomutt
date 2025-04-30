@@ -8,6 +8,9 @@ on:
       - 'devel/**'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}
+
 jobs:
   build:
     if: github.event.pull_request.draft == false
