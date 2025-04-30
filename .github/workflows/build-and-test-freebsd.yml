@@ -33,12 +33,12 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg install -y perl5 pkgconf gettext libxslt docbook-xsl db5 gdbm gpgme gnutls kyotocabinet tokyocabinet lmdb lua54 pcre2 notmuch qdbm rocksdb cyrus-sasl tdb zstd
+          pkg install -y perl5 pkgconf gettext libxslt docbook-xsl db5 gdbm gpgme gnutls tokyocabinet lmdb lua54 pcre2 notmuch qdbm rocksdb cyrus-sasl tdb zstd
         run: |
           cd test-files
           ./setup.sh
           cd -
-          ./configure --full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
+          ./configure --full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
           make -j ${{steps.cpu-cores.outputs.count}} neomutt
           ./neomutt -v
           ./neomutt -h all
