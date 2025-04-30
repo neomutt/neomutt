@@ -38,14 +38,10 @@ jobs:
           cd test-files
           ./setup.sh
           cd -
-          mkdir build
-          cd build
-          ../configure --full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
+          ./configure --full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
           make -j ${{steps.cpu-cores.outputs.count}} neomutt
           ./neomutt -v
           ./neomutt -h all
-          pwd
-          ls -C
           make validate-docs
           make -j ${{steps.cpu-cores.outputs.count}} test/neomutt-test
           export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
