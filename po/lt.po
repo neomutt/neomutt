@@ -8237,44 +8237,36 @@ msgid "neomutt                              Start NeoMutt's TUI"
 msgstr "neomutt                              Start NeoMutt's TUI"
 
 #: usage.c:104
-#, fuzzy
 msgid "        -f <mailbox>                 Open this mailbox"
-msgstr "        -f <mailbox>                 Open this mailbox"
+msgstr "        -f <dėžutė>                  Atidaryti nurodytą pašto dėžutę"
 
 #: usage.c:105
-#, fuzzy
 msgid "        -G                           Open NNTP browser"
-msgstr "        -G                           Open NNTP browser"
+msgstr "        -G                           Atidaryti NNTP naršyklę"
 
 #: usage.c:106
-#, fuzzy
 msgid "        -g <server>                  Use this NNTP server"
-msgstr "        -g <server>                  Use this NNTP server"
+msgstr "        -g <serveris>                Naudoti nurodytą NNTP serverį"
 
 #: usage.c:107
-#, fuzzy
 msgid "        -p                           Resume postponed email"
-msgstr "        -p                           Resume postponed email"
+msgstr "        -p                           Pratęsti atidėtą laišką"
 
 #: usage.c:108
-#, fuzzy
 msgid "        -R                           Open mailbox read-only"
-msgstr "        -R                           Open mailbox read-only"
+msgstr "        -R                           Atidaryti pašto dėžutę tik skaitymui"
 
 #: usage.c:109
-#, fuzzy
 msgid "        -y                           Open mailbox browser"
-msgstr "        -y                           Open mailbox browser"
+msgstr "        -y                           Atidaryti pašto dėžučių naršyklę"
 
 #: usage.c:110
-#, fuzzy
 msgid "        -Z                           Check for new mail"
-msgstr "        -Z                           Check for new mail"
+msgstr "        -Z                           Ieškoti naujo pašto"
 
 #: usage.c:111
-#, fuzzy
 msgid "        -z                           Check for any mail"
-msgstr "        -z                           Check for any mail"
+msgstr "        -z                           Ieškoti bet kokio pašto"
 
 #: usage.c:115 usage.c:117
 #, fuzzy
@@ -8293,19 +8285,16 @@ msgstr "e.g. /etc/neomuttrc and ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
-#, fuzzy
 msgid "  -n            Don't read system config file"
-msgstr "  -n            Don't read system config file"
+msgstr "  -n            Neskaityti sisteminės konfigūracijos bylos"
 
 #: usage.c:135
-#, fuzzy
 msgid "  -F <config>   Use this user config file"
-msgstr "  -F <config>   Use this user config file"
+msgstr "  -F <konf>     Naudoti nurodytą naudotojo konfigūracijos bylą"
 
 #: usage.c:136 usage.c:143
-#, fuzzy
 msgid "                May be used multiple times"
-msgstr "                May be used multiple times"
+msgstr "                Galima naudoti daugiau nei vieną kartą"
 
 #: usage.c:139
 #, fuzzy
@@ -8313,19 +8302,16 @@ msgid "These options override the config:"
 msgstr "These options override the config:"
 
 #: usage.c:140
-#, fuzzy
 msgid "  -m <type>     Set default mailbox type"
-msgstr "  -m <type>     Set default mailbox type"
+msgstr "  -m <tipas>    Nustatyti nutylėtą pašto dėžutės tipą"
 
 #: usage.c:141
-#, fuzzy
 msgid "                May be: maildir, mbox, mh, mmdf"
-msgstr "                May be: maildir, mbox, mh, mmdf"
+msgstr "                Gali būti: maildir, mbox, mh, mmdf"
 
 #: usage.c:142
-#, fuzzy
 msgid "  -e <command>  Run extra commands"
-msgstr "  -e <command>  Run extra commands"
+msgstr "  -e <komanda>  Vykdyti papildomas komandas"
 
 #: usage.c:146
 #, fuzzy
@@ -8333,24 +8319,20 @@ msgid "These logging options override the config:"
 msgstr "These logging options override the config:"
 
 #: usage.c:147
-#, fuzzy
 msgid "  -d <level>    Set logging level"
-msgstr "  -d <level>    Set logging level"
+msgstr "  -d <lygis>    Nustatyti žurnalo lygį"
 
 #: usage.c:148
-#, fuzzy
 msgid "                0 (off), 1 (low) .. 5 (high)"
-msgstr "                0 (off), 1 (low) .. 5 (high)"
+msgstr "                0 (išjungta), 1 (žemas) ... 5 (aukštas)"
 
 #: usage.c:149
-#, fuzzy
 msgid "  -l <file>     Set logging file"
-msgstr "  -l <file>     Set logging file"
+msgstr "  -l <byla>     Nurodyti žurnalo bylą"
 
 #: usage.c:150
-#, fuzzy
 msgid "                Default file '~/.neomuttdebug0'"
-msgstr "                Default file '~/.neomuttdebug0'"
+msgstr "                Nenurodžius žurnalo byla bus '~/.neomuttdebug0'"
 
 #: usage.c:154 usage.c:156 usage.c:194 usage.c:196 usage.c:231 usage.c:233
 #: usage.c:275 usage.c:277 usage.c:317 usage.c:319
