@@ -1,0 +1,51 @@
+name: Build and Test (FreeBSD)
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+      - 'devel/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  build:
+    if: github.event.pull_request.draft == false
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get number of CPU cores
+      uses: SimenB/github-actions-cpu-cores@v2
+      id: cpu-cores
+
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Checkout Test Files
+      uses: actions/checkout@v4
+      with:
+        repository: neomutt/neomutt-test-files
+        path: test-files
+
+    - name: Build and Test on FreeBSD
+      uses: vmactions/freebsd-vm@v1
+      with:
+        usesh: true
+        prepare: |
+          pkg install -y perl5 pkgconf gettext libxslt docbook-xsl db5 gdbm gpgme gnutls kyotocabinet tokyocabinet lmdb lua54 pcre2 notmuch qdbm rocksdb cyrus-sasl tdb zstd
+        run: |
+          cd test-files
+          ./setup.sh
+          cd -
+          ./configure --full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --kyotocabinet --tokyocabinet --with-lock=fcntl --zlib --zstd
+          make -j ${{steps.cpu-cores.outputs.count}} neomutt
+          ./neomutt -v
+          ./neomutt -h all
+          make validate-docs
+          make -j ${{steps.cpu-cores.outputs.count}} test/neomutt-test
+          export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
+          make test
