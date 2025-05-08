@@ -394,9 +394,9 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
   bye:
     mutt_hist_reset_state(wdata.hclass);
     FREE(&wdata.tempbuf);
-    completion_data_free(&wdata.cd);
   } while (rc == 1);
 
+  completion_data_free(&wdata.cd);
   msgcont_pop_window();
   window_set_focus(old_focus);
   mutt_window_free(&win);
