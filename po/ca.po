@@ -53,9 +53,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-04-04\n"
+"Project-Id-Version: neomutt-2025-05-10\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-04-04 01:04+0100\n"
+"POT-Creation-Date: 2025-05-10 09:08+0100\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -1296,7 +1296,7 @@ msgstr "Bústia a obrir per a adjuntar-ne missatges"
 msgid "Open newsgroup to attach message from"
 msgstr "Bústia a obrir per a adjuntar-ne missatges"
 
-#: compose/functions.c:893 main.c:1747
+#: compose/functions.c:893 main.c:1749
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "No s’ha pogut obrir la bústia «%s»."
@@ -4897,60 +4897,60 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "S’estan copiant %d missatges a «%s»…"
 msgstr[1] "S’estan copiant %d missatges a «%s»…"
 
-#: imap/imap.c:1436 imap/imap.c:2094 imap/message.c:1821 muttlib.c:800
+#: imap/imap.c:1436 imap/imap.c:2096 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "Voleu crear «%s»?"
 
-#: imap/imap.c:1509
+#: imap/imap.c:1511
 msgid "Expunge failed"
 msgstr "No s’han pogut eliminar els missatges."
 
-#: imap/imap.c:1527
+#: imap/imap.c:1529
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "S’estan marcant %d missatges com a esborrats…"
 msgstr[1] "S’estan marcant %d missatges com a esborrats…"
 
-#: imap/imap.c:1566
+#: imap/imap.c:1568
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "S’estan desant els missatges canviats… [%d/%d]"
 msgstr[1] "S’estan desant els missatges canviats… [%d/%d]"
 
-#: imap/imap.c:1609
+#: imap/imap.c:1611
 msgid "Error saving flags. Close anyway?"
 msgstr "Error en desar els senyaladors.  Voleu tancar igualment?"
 
-#: imap/imap.c:1617
+#: imap/imap.c:1619
 msgid "Error saving flags"
 msgstr "Error en desar els senyaladors."
 
-#: imap/imap.c:1644
+#: imap/imap.c:1646
 msgid "Expunging messages from server..."
 msgstr "S’estan eliminant missatges del servidor…"
 
-#: imap/imap.c:1650
+#: imap/imap.c:1652
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: Ha fallat «EXPUNGE»."
 
-#: imap/imap.c:1893 nntp/nntp.c:2452
+#: imap/imap.c:1895 nntp/nntp.c:2452
 #, c-format
 msgid "Selecting %s..."
 msgstr "S’està seleccionant la bústia «%s»…"
 
-#: imap/imap.c:2061
+#: imap/imap.c:2063
 msgid "Error opening mailbox"
 msgstr "Error en obrir la bústia."
 
-#: imap/imap.c:2205
+#: imap/imap.c:2207
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "El servidor SMTP no admet autenticació."
 
-#: imap/imap.c:2249
+#: imap/imap.c:2251
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "No vàlid    "
@@ -5659,15 +5659,15 @@ msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 msgid "%s: unable to attach file"
 msgstr "%s: No s’ha pogut adjuntar el fitxer."
 
-#: main.c:1648
+#: main.c:1650
 msgid "No mailbox with new mail"
 msgstr "No hi ha cap bústia amb correu nou"
 
-#: main.c:1668
+#: main.c:1670
 msgid "No incoming mailboxes defined"
 msgstr "No s’ha definit cap bústia d’entrada"
 
-#: main.c:1721
+#: main.c:1723
 msgid "Mailbox is empty"
 msgstr "La bústia és buida"
 

@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-04-04\n"
+"Project-Id-Version: neomutt-2025-05-10\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-04-04 01:04+0100\n"
+"POT-Creation-Date: 2025-05-10 09:08+0100\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -1233,7 +1233,7 @@ msgstr "메일을 첨부하기 위해 메일함을 염"
 msgid "Open newsgroup to attach message from"
 msgstr "메일을 첨부하기 위해 메일함을 염"
 
-#: compose/functions.c:893 main.c:1747
+#: compose/functions.c:893 main.c:1749
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "메일함을 잠글 수 없음!"
@@ -4805,58 +4805,58 @@ msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d개의 메세지를 %s로 복사 중..."
 
-#: imap/imap.c:1436 imap/imap.c:2094 imap/message.c:1821 muttlib.c:800
+#: imap/imap.c:1436 imap/imap.c:2096 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
 
-#: imap/imap.c:1509
+#: imap/imap.c:1511
 msgid "Expunge failed"
 msgstr "삭제 실패"
 
-#: imap/imap.c:1527
+#: imap/imap.c:1529
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "%d개의 메일을 삭제 표시함..."
 
-#: imap/imap.c:1566
+#: imap/imap.c:1568
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "메세지 상태 플래그 저장... [%d/%d]"
 
-#: imap/imap.c:1609
+#: imap/imap.c:1611
 msgid "Error saving flags. Close anyway?"
 msgstr ""
 
-#: imap/imap.c:1617
+#: imap/imap.c:1619
 #, fuzzy
 msgid "Error saving flags"
 msgstr "주소 분석 중 오류!"
 
-#: imap/imap.c:1644
+#: imap/imap.c:1646
 msgid "Expunging messages from server..."
 msgstr "서버에서 메세지 삭제 중..."
 
-#: imap/imap.c:1650
+#: imap/imap.c:1652
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: 삭제 실패"
 
-#: imap/imap.c:1893 nntp/nntp.c:2452
+#: imap/imap.c:1895 nntp/nntp.c:2452
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s 선택 중..."
 
-#: imap/imap.c:2061
+#: imap/imap.c:2063
 msgid "Error opening mailbox"
 msgstr "메일함 여는중 오류"
 
-#: imap/imap.c:2205
+#: imap/imap.c:2207
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2249
+#: imap/imap.c:2251
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "무효   "
@@ -5562,15 +5562,15 @@ msgstr "메세지 파일을 열 수 없음: %s"
 msgid "%s: unable to attach file"
 msgstr "%s: 파일을 첨부할 수 없음"
 
-#: main.c:1648
+#: main.c:1650
 msgid "No mailbox with new mail"
 msgstr "새 메일이 도착한 메일함 없음"
 
-#: main.c:1668
+#: main.c:1670
 msgid "No incoming mailboxes defined"
 msgstr "수신 메일함이 정의되지 않음"
 
-#: main.c:1721
+#: main.c:1723
 msgid "Mailbox is empty"
 msgstr "메일함이 비었음"
 

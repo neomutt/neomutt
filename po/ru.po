@@ -13,9 +13,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-04-04\n"
+"Project-Id-Version: neomutt-2025-05-10\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-04-04 01:04+0100\n"
+"POT-Creation-Date: 2025-05-10 09:08+0100\n"
 "PO-Revision-Date: 2021-05-16 19:33+0000\n"
 "Last-Translator: Ivan Shmakov\n"
 "Language-Team: \n"
@@ -1219,7 +1219,7 @@ msgstr "Вложить сообщение из почтового ящика"
 msgid "Open newsgroup to attach message from"
 msgstr "Открыть группу для вложения сообщения из"
 
-#: compose/functions.c:893 main.c:1747
+#: compose/functions.c:893 main.c:1749
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Не удалось открыть почтовый ящик %s"
@@ -4753,16 +4753,16 @@ msgstr[0] "%d сообщений копируются в %s..."
 msgstr[1] "%d сообщений копируются в %s..."
 msgstr[2] "%d сообщений копируются в %s..."
 
-#: imap/imap.c:1436 imap/imap.c:2094 imap/message.c:1821 muttlib.c:800
+#: imap/imap.c:1436 imap/imap.c:2096 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "Создать %s?"
 
-#: imap/imap.c:1509
+#: imap/imap.c:1511
 msgid "Expunge failed"
 msgstr "Не удалось очистить почтовый ящик"
 
-#: imap/imap.c:1527
+#: imap/imap.c:1529
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
@@ -4770,7 +4770,7 @@ msgstr[0] "%d сообщений помечаются как удаленные.
 msgstr[1] "%d сообщений помечаются как удаленные..."
 msgstr[2] "%d сообщений помечаются как удаленные..."
 
-#: imap/imap.c:1566
+#: imap/imap.c:1568
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
@@ -4778,36 +4778,36 @@ msgstr[0] "Сохранение изменённых сообщений... [%d/%
 msgstr[1] "Сохранение изменённых сообщений... [%d/%d]"
 msgstr[2] "Сохранение изменённых сообщений... [%d/%d]"
 
-#: imap/imap.c:1609
+#: imap/imap.c:1611
 msgid "Error saving flags. Close anyway?"
 msgstr "Ошибка сохранения флагов. Закрыть почтовый ящик?"
 
-#: imap/imap.c:1617
+#: imap/imap.c:1619
 msgid "Error saving flags"
 msgstr "Ошибка сохранения флагов"
 
-#: imap/imap.c:1644
+#: imap/imap.c:1646
 msgid "Expunging messages from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: imap/imap.c:1650
+#: imap/imap.c:1652
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: ошибка выполнения команды EXPUNGE"
 
-#: imap/imap.c:1893 nntp/nntp.c:2452
+#: imap/imap.c:1895 nntp/nntp.c:2452
 #, c-format
 msgid "Selecting %s..."
 msgstr "Выбирается %s..."
 
-#: imap/imap.c:2061
+#: imap/imap.c:2063
 msgid "Error opening mailbox"
 msgstr "Ошибка открытия почтового ящика"
 
-#: imap/imap.c:2205
+#: imap/imap.c:2207
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP-сервер не поддерживает пользовательские флаги"
 
-#: imap/imap.c:2249
+#: imap/imap.c:2251
 msgid "Invalid IMAP flags"
 msgstr "Недопустимые флаги IMAP"
 
@@ -5495,15 +5495,15 @@ msgstr "Не удалось разобрать шаблон: %s"
 msgid "%s: unable to attach file"
 msgstr "%s: не удалось вложить файл"
 
-#: main.c:1648
+#: main.c:1650
 msgid "No mailbox with new mail"
 msgstr "Нет почтовых ящиков с новой почтой"
 
-#: main.c:1668
+#: main.c:1670
 msgid "No incoming mailboxes defined"
 msgstr "Не определено ни одного почтового ящика со входящими письмами"
 
-#: main.c:1721
+#: main.c:1723
 msgid "Mailbox is empty"
 msgstr "Почтовый ящик пуст"
 

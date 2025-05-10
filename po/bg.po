@@ -11,9 +11,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-04-04\n"
+"Project-Id-Version: neomutt-2025-05-10\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-04-04 01:04+0100\n"
+"POT-Creation-Date: 2025-05-10 09:08+0100\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -1240,7 +1240,7 @@ msgstr "Отваряне на пощенска кутия, от която да 
 msgid "Open newsgroup to attach message from"
 msgstr "Отваряне на пощенска кутия, от която да бъде приложено писмо"
 
-#: compose/functions.c:893 main.c:1747
+#: compose/functions.c:893 main.c:1749
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Грешка при заключване на пощенската кутия!"
@@ -4829,60 +4829,60 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Копиране на %d съобщения в %s..."
 msgstr[1] "Копиране на %d съобщения в %s..."
 
-#: imap/imap.c:1436 imap/imap.c:2094 imap/message.c:1821 muttlib.c:800
+#: imap/imap.c:1436 imap/imap.c:2096 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "Желаете ли да създадете %s?"
 
-#: imap/imap.c:1509
+#: imap/imap.c:1511
 msgid "Expunge failed"
 msgstr "Неуспешно премахване"
 
-#: imap/imap.c:1527
+#: imap/imap.c:1529
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Маркиране на %d съобщения за изтриване..."
 msgstr[1] "Маркиране на %d съобщения за изтриване..."
 
-#: imap/imap.c:1566
+#: imap/imap.c:1568
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Запис на маркировките на писмото... [%d/%d]"
 msgstr[1] "Запис на маркировките на писмото... [%d/%d]"
 
-#: imap/imap.c:1609
+#: imap/imap.c:1611
 msgid "Error saving flags. Close anyway?"
 msgstr ""
 
-#: imap/imap.c:1617
+#: imap/imap.c:1619
 #, fuzzy
 msgid "Error saving flags"
 msgstr "Грешка при разчитане на адресът!"
 
-#: imap/imap.c:1644
+#: imap/imap.c:1646
 msgid "Expunging messages from server..."
 msgstr "Премахване на съобщенията от сървъра..."
 
-#: imap/imap.c:1650
+#: imap/imap.c:1652
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbo: неуспешен EXPUNGE"
 
-#: imap/imap.c:1893 nntp/nntp.c:2452
+#: imap/imap.c:1895 nntp/nntp.c:2452
 #, c-format
 msgid "Selecting %s..."
 msgstr "Избиране на %s..."
 
-#: imap/imap.c:2061
+#: imap/imap.c:2063
 msgid "Error opening mailbox"
 msgstr "Грешка при отваряне на пощенската кутия"
 
-#: imap/imap.c:2205
+#: imap/imap.c:2207
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2249
+#: imap/imap.c:2251
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Невалиден   "
@@ -5589,15 +5589,15 @@ msgstr "Грешка при отваряне на файла: %s"
 msgid "%s: unable to attach file"
 msgstr "%s: грешка при прилагането на файл"
 
-#: main.c:1648
+#: main.c:1650
 msgid "No mailbox with new mail"
 msgstr "Няма пощенска кутия с нови писма"
 
-#: main.c:1668
+#: main.c:1670
 msgid "No incoming mailboxes defined"
 msgstr "Не са дефинирани входни пощенски кутии"
 
-#: main.c:1721
+#: main.c:1723
 msgid "Mailbox is empty"
 msgstr "Пощенската кутия е празна"
 

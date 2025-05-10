@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-04-04\n"
+"Project-Id-Version: neomutt-2025-05-10\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-04-04 01:04+0100\n"
+"POT-Creation-Date: 2025-05-10 09:08+0100\n"
 "PO-Revision-Date: 2006-10-16 14:22-0500\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <ga@li.org>\n"
@@ -1242,7 +1242,7 @@ msgstr "Oscail an bosca poist as a gceanglóidh tú teachtaireacht"
 msgid "Open newsgroup to attach message from"
 msgstr "Oscail an bosca poist as a gceanglóidh tú teachtaireacht"
 
-#: compose/functions.c:893 main.c:1747
+#: compose/functions.c:893 main.c:1749
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Ní féidir an bosca poist a chur faoi ghlas!"
@@ -4869,16 +4869,16 @@ msgstr[2] "%d teachtaireacht á gcóipeáil go %s..."
 msgstr[3] "%d teachtaireacht á gcóipeáil go %s..."
 msgstr[4] "%d teachtaireacht á gcóipeáil go %s..."
 
-#: imap/imap.c:1436 imap/imap.c:2094 imap/message.c:1821 muttlib.c:800
+#: imap/imap.c:1436 imap/imap.c:2096 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "Cruthaigh %s?"
 
-#: imap/imap.c:1509
+#: imap/imap.c:1511
 msgid "Expunge failed"
 msgstr "Theip ar scriosadh"
 
-#: imap/imap.c:1527
+#: imap/imap.c:1529
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
@@ -4888,7 +4888,7 @@ msgstr[2] "Ag marcáil %d teachtaireacht mar scriosta..."
 msgstr[3] "Ag marcáil %d teachtaireacht mar scriosta..."
 msgstr[4] "Ag marcáil %d teachtaireacht mar scriosta..."
 
-#: imap/imap.c:1566
+#: imap/imap.c:1568
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
@@ -4898,36 +4898,36 @@ msgstr[2] "Teachtaireachtaí athraithe á sábháil... [%d/%d]"
 msgstr[3] "Teachtaireachtaí athraithe á sábháil... [%d/%d]"
 msgstr[4] "Teachtaireachtaí athraithe á sábháil... [%d/%d]"
 
-#: imap/imap.c:1609
+#: imap/imap.c:1611
 msgid "Error saving flags. Close anyway?"
 msgstr "Earráid agus bratacha á sábháil. Dún mar sin féin?"
 
-#: imap/imap.c:1617
+#: imap/imap.c:1619
 msgid "Error saving flags"
 msgstr "Earráid agus bratacha á sábháil"
 
-#: imap/imap.c:1644
+#: imap/imap.c:1646
 msgid "Expunging messages from server..."
 msgstr "Teachtaireachtaí á scriosadh ón fhreastalaí..."
 
-#: imap/imap.c:1650
+#: imap/imap.c:1652
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: Theip ar scriosadh"
 
-#: imap/imap.c:1893 nntp/nntp.c:2452
+#: imap/imap.c:1895 nntp/nntp.c:2452
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s á roghnú..."
 
-#: imap/imap.c:2061
+#: imap/imap.c:2063
 msgid "Error opening mailbox"
 msgstr "Earráid ag oscailt an bhosca poist"
 
-#: imap/imap.c:2205
+#: imap/imap.c:2207
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2249
+#: imap/imap.c:2251
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Neamhbhailí  "
@@ -5636,15 +5636,15 @@ msgstr "Níorbh fhéidir an comhad teachtaireachta a oscailt: %s"
 msgid "%s: unable to attach file"
 msgstr "%s: ní féidir comhad a cheangal"
 
-#: main.c:1648
+#: main.c:1650
 msgid "No mailbox with new mail"
 msgstr "Níl aon bhosca le ríomhphost nua"
 
-#: main.c:1668
+#: main.c:1670
 msgid "No incoming mailboxes defined"
 msgstr "Níl aon bhosca isteach socraithe agat"
 
-#: main.c:1721
+#: main.c:1723
 msgid "Mailbox is empty"
 msgstr "Tá an bosca poist folamh"
 

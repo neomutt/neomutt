@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-04-04\n"
+"Project-Id-Version: neomutt-2025-05-10\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-04-04 01:04+0100\n"
+"POT-Creation-Date: 2025-05-10 09:08+0100\n"
 "PO-Revision-Date: 2012-05-25 22:14+0200\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: none\n"
@@ -1232,7 +1232,7 @@ msgstr "Aprire la mailbox da cui allegare il messaggio"
 msgid "Open newsgroup to attach message from"
 msgstr "Aprire la mailbox da cui allegare il messaggio"
 
-#: compose/functions.c:893 main.c:1747
+#: compose/functions.c:893 main.c:1749
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Impossibile bloccare la mailbox!"
@@ -4812,60 +4812,60 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Copia di %d messaggi in %s..."
 msgstr[1] "Copia di %d messaggi in %s..."
 
-#: imap/imap.c:1436 imap/imap.c:2094 imap/message.c:1821 muttlib.c:800
+#: imap/imap.c:1436 imap/imap.c:2096 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "Creare %s?"
 
-#: imap/imap.c:1509
+#: imap/imap.c:1511
 msgid "Expunge failed"
 msgstr "Expunge fallito"
 
-#: imap/imap.c:1527
+#: imap/imap.c:1529
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Segno cancellati %d messaggi..."
 msgstr[1] "Segno cancellati %d messaggi..."
 
-#: imap/imap.c:1566
+#: imap/imap.c:1568
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Salvataggio dei messaggi modificati... [%d/%d]"
 msgstr[1] "Salvataggio dei messaggi modificati... [%d/%d]"
 
-#: imap/imap.c:1609
+#: imap/imap.c:1611
 msgid "Error saving flags. Close anyway?"
 msgstr "Errore nel salvare le flag. Chiudere comunque?"
 
-#: imap/imap.c:1617
+#: imap/imap.c:1619
 msgid "Error saving flags"
 msgstr "Errore nel salvataggio delle flag"
 
-#: imap/imap.c:1644
+#: imap/imap.c:1646
 msgid "Expunging messages from server..."
 msgstr "Cancellazione dei messaggi dal server..."
 
-#: imap/imap.c:1650
+#: imap/imap.c:1652
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE fallito"
 
-#: imap/imap.c:1893 nntp/nntp.c:2452
+#: imap/imap.c:1895 nntp/nntp.c:2452
 #, c-format
 msgid "Selecting %s..."
 msgstr "Seleziono %s..."
 
-#: imap/imap.c:2061
+#: imap/imap.c:2063
 msgid "Error opening mailbox"
 msgstr "Errore durante l'apertura della mailbox"
 
-#: imap/imap.c:2205
+#: imap/imap.c:2207
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "Il server SMTP non supporta l'autenticazione"
 
-#: imap/imap.c:2249
+#: imap/imap.c:2251
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Non valido   "
@@ -5571,15 +5571,15 @@ msgstr "Impossibile aprire il file del messaggio: %s"
 msgid "%s: unable to attach file"
 msgstr "%s: impossibile allegare il file"
 
-#: main.c:1648
+#: main.c:1650
 msgid "No mailbox with new mail"
 msgstr "Nessuna mailbox con nuova posta"
 
-#: main.c:1668
+#: main.c:1670
 msgid "No incoming mailboxes defined"
 msgstr "Non è stata definita una mailbox di ingresso"
 
-#: main.c:1721
+#: main.c:1723
 msgid "Mailbox is empty"
 msgstr "La mailbox è vuota"
 

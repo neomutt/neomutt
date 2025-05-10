@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-04-04\n"
+"Project-Id-Version: neomutt-2025-05-10\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-04-04 01:04+0100\n"
+"POT-Creation-Date: 2025-05-10 09:08+0100\n"
 "PO-Revision-Date: 2022-06-30 00:19+0300\n"
 "Last-Translator: Andrij Mizyk <andmizyk@gmail.com>\n"
 "Language-Team: Ukrainian\n"
@@ -1214,7 +1214,7 @@ msgstr "Відкрити скриньку для прикріплення лис
 msgid "Open newsgroup to attach message from"
 msgstr "Відкрити групу новин для прикріплення листа звідти"
 
-#: compose/functions.c:893 main.c:1747
+#: compose/functions.c:893 main.c:1749
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Неможливо відкрити скриньку %s"
@@ -4688,16 +4688,16 @@ msgstr[0] "Копіювання %d листа до %s..."
 msgstr[1] "Копіювання %d листів до %s..."
 msgstr[2] "Копіювання %d листів до %s..."
 
-#: imap/imap.c:1436 imap/imap.c:2094 imap/message.c:1821 muttlib.c:800
+#: imap/imap.c:1436 imap/imap.c:2096 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
 
-#: imap/imap.c:1509
+#: imap/imap.c:1511
 msgid "Expunge failed"
 msgstr "Помилка видалення"
 
-#: imap/imap.c:1527
+#: imap/imap.c:1529
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
@@ -4705,7 +4705,7 @@ msgstr[0] "Позначення %d листа видаленим..."
 msgstr[1] "Позначення %d листів видаленими..."
 msgstr[2] "Позначення %d листів видаленими..."
 
-#: imap/imap.c:1566
+#: imap/imap.c:1568
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
@@ -4713,36 +4713,36 @@ msgstr[0] "Зберігання змінених листів... [%d/%d]"
 msgstr[1] "Зберігання змінених листів... [%d/%d]"
 msgstr[2] "Зберігання змінених листів... [%d/%d]"
 
-#: imap/imap.c:1609
+#: imap/imap.c:1611
 msgid "Error saving flags. Close anyway?"
 msgstr "Помилка зберігання прапорців. Закрити все одно?"
 
-#: imap/imap.c:1617
+#: imap/imap.c:1619
 msgid "Error saving flags"
 msgstr "Помилка зберігання прапорців"
 
-#: imap/imap.c:1644
+#: imap/imap.c:1646
 msgid "Expunging messages from server..."
 msgstr "Видалення листів із сервера..."
 
-#: imap/imap.c:1650
+#: imap/imap.c:1652
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: помилка EXPUNGE"
 
-#: imap/imap.c:1893 nntp/nntp.c:2452
+#: imap/imap.c:1895 nntp/nntp.c:2452
 #, c-format
 msgid "Selecting %s..."
 msgstr "Вибір %s..."
 
-#: imap/imap.c:2061
+#: imap/imap.c:2063
 msgid "Error opening mailbox"
 msgstr "Помилка відкривання скриньки"
 
-#: imap/imap.c:2205
+#: imap/imap.c:2207
 msgid "IMAP server doesn't support custom flags"
 msgstr "Сервер IMAP не підтримує власні прапорці"
 
-#: imap/imap.c:2249
+#: imap/imap.c:2251
 msgid "Invalid IMAP flags"
 msgstr "Неправильні прапорці IMAP"
 
@@ -5413,15 +5413,15 @@ msgstr "Не можливо розпізнати шаблон листа: %s"
 msgid "%s: unable to attach file"
 msgstr "%s: не можливо прикріпити файл"
 
-#: main.c:1648
+#: main.c:1650
 msgid "No mailbox with new mail"
 msgstr "Нема скриньки з новою поштою"
 
-#: main.c:1668
+#: main.c:1670
 msgid "No incoming mailboxes defined"
 msgstr "Не вказано вхідних скриньок"
 
-#: main.c:1721
+#: main.c:1723
 msgid "Mailbox is empty"
 msgstr "Скринька порожня"
 
