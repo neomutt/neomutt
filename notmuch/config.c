@@ -102,7 +102,7 @@ static int nm_query_window_timebase_validator(const struct ConfigDef *cdef,
 /**
  * NotmuchVars - Config definitions for the Notmuch library
  */
-static struct ConfigDef NotmuchVars[] = {
+struct ConfigDef NotmuchVars[] = {
   // clang-format off
   { "nm_config_file", DT_PATH|D_PATH_FILE, IP "auto", 0, NULL,
     "(notmuch) Configuration file for notmuch. Use 'auto' to detect configuration."
@@ -166,17 +166,3 @@ static struct ConfigDef NotmuchVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_notmuch - Register notmuch config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_notmuch(struct ConfigSet *cs)
-{
-  bool rc = false;
-
-#if defined(USE_NOTMUCH)
-  rc |= cs_register_variables(cs, NotmuchVars);
-#endif
-
-  return rc;
-}

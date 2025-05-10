@@ -1,0 +1,58 @@
+/**
+ * @file
+ * Definition of the Expando Module
+ *
+ * @authors
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @page expando_module Definition of the Expando Module
+ *
+ * Definition of the Expando Module
+ */
+
+#include "config.h"
+#include <stdbool.h>
+#include <stddef.h>
+#include "config/lib.h"
+#include "core/lib.h"
+
+extern const struct ConfigSetType CstExpando;
+
+/**
+ * expando_config_define_types - Set up Config Types - Implements Module::config_define_types()
+ */
+static bool expando_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_type(cs, &CstExpando);
+}
+
+/**
+ * ModuleExpando - Module for the Expando library
+ */
+const struct Module ModuleExpando = {
+  "expando",
+  NULL, // init
+  expando_config_define_types,
+  NULL, // config_define_variables
+  NULL, // commands_register
+  NULL, // gui_init
+  NULL, // gui_cleanup
+  NULL, // cleanup
+  NULL, // mod_data
+};
