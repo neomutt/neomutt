@@ -1,3 +1,22 @@
+2025-05-10  Richard Russon  \<rich@flatcap.org\>
+* Contrib
+  - #4616 Fix gpg-json output
+* Bug Fixes
+  - #4600 main: don't stop if /var/spool/mail is missing
+  - #4602 color: fix quoted maths
+  - #4604 Don't consider "weed" when writing an email to file
+  - #4605 help: fix leaks
+  - #4612 imap: check for incomplete Mailboxes on sync
+  - #4622 fix label completion crash
+* Translations
+  - #4622 update Esperanto translation
+  - Update lt_LT translations
+* Docs
+  -  docs: fix broken functions
+* Build
+  - #4607 Check for DocBook XSL
+  - #4618 Build and test on FreeBSD
+
 2025-04-04  Richard Russon  \<rich@flatcap.org\>
 * Features
   - #4493 config: don't quote enums
