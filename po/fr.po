@@ -360,11 +360,11 @@ msgstr "Pas d'entrée edit pour %s dans mailcap"
 
 #: attach/mutt_attach.c:463
 msgid "No matching mailcap entry found.  Viewing as text."
-msgstr "Pas d'entrée mailcap correspondante. Visualisation en texte."
+msgstr "Pas d'entrée mailcap correspondante. Affichage en texte."
 
 #: attach/mutt_attach.c:478
 msgid "MIME type not defined.  Can't view attachment."
-msgstr "Type MIME non défini. Impossible de afficher la pièce jointe."
+msgstr "Type MIME non défini. Impossible d'afficher la pièce jointe."
 
 #: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1193
 #: attach/mutt_attach.c:1258 handler.c:597 ncrypt/pgp_functions.c:160
@@ -802,11 +802,11 @@ msgstr "Aucun fichier ne correspond au masque"
 
 #: browser/functions.c:275
 msgid "Can't view a directory"
-msgstr "Impossible de visualiser un répertoire"
+msgstr "Impossible de visionner un répertoire"
 
 #: browser/functions.c:291
 msgid "Error trying to view file"
-msgstr "Erreur en essayant de visualiser le fichier"
+msgstr "Erreur en essayant de visionner le fichier"
 
 #: browser/functions.c:359
 msgid "Chdir to: "
@@ -2287,7 +2287,7 @@ msgstr "%s : variable inconnue"
 #: expando/node_expando.c:366
 #, c-format
 msgid "Expando is missing terminator: '%c'"
-msgstr "L'expando lui manque son terminateur '%c'"
+msgstr "L'expando manque son terminateur '%c'"
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
 #: expando/node_padding.c:242
@@ -2491,9 +2491,9 @@ msgid "Content-Type changed to %s"
 msgstr "Content-Type changé à %s"
 
 #: external.c:1134
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; not converting"
-msgstr "Jeu de caractères changé à %s ; pas de conversion"
+msgstr "Le Jeu de caractères a été changé à %s ; pas de conversion"
 
 #: external.c:1135
 #, fuzzy, c-format
@@ -2647,7 +2647,7 @@ msgstr "regrouper les pièces jointes marquées comme 'multipart/multilingual'"
 #: gui/opcodes.h:93
 #, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
-msgstr "regrouper les pièces jointes marquées comme 'multipart/alternative'"
+msgstr "regrouper les pièces jointes marquées comme 'multipart/related'"
 
 #. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
 #. Compose Dialog: <op_attachment_move_down>
@@ -2746,29 +2746,28 @@ msgstr "mettre à jour l'information de codage d'une pièce jointe"
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:137
 msgid "view attachment using mailcap entry if necessary"
-msgstr "visualiser la pièce jointe en utilisant l'entrée mailcap si nécessaire"
+msgstr "visionner la pièce jointe en utilisant l'entrée mailcap si nécessaire"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP
 #. Attach Dialog: <op_attachment_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:141
 msgid "force viewing of attachment using mailcap"
-msgstr "forcer la visualisation d'une pièce jointe en utilisant le fichier mailcap"
+msgstr "forcer l'affichage d'une pièce jointe en utilisant le fichier mailcap"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER
 #. Attach Dialog: <op_attachment_view_pager>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:145
-#, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "forcer la visualisation d'une pièce jointe en utilisant le fichier mailcap"
+msgstr "visionner la pièce jointe avec le visionneur en utilisant mailcap avec l'option 'copiousoutput'"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
 #. Attach Dialog: <op_attachment_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:149
 msgid "view attachment as text"
-msgstr "visualiser la pièce jointe en tant que texte"
+msgstr "visionner la pièce jointe en tant que texte"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
@@ -2880,7 +2879,7 @@ msgstr "se désabonner de la boîte aux lettres actuelle (IMAP seulement)"
 #. Browser: <op_browser_view_file>
 #: gui/opcodes.h:212
 msgid "view file"
-msgstr "visualiser le fichier"
+msgstr "visionner le fichier"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
@@ -7128,9 +7127,8 @@ msgid "Server closed connection"
 msgstr "Le serveur a fermé la connexion"
 
 #: nntp/nntp.c:250
-#, fuzzy
 msgid "Server doesn't support reader mode"
-msgstr "Le serveur ne supporte pas le mode lecture"
+msgstr "Le serveur ne prend pas en charge le mode lecture"
 
 #: nntp/nntp.c:499 pop/auth.c:620 send/smtp.c:1004
 msgid "No authenticators available"
@@ -7138,9 +7136,9 @@ msgstr "Pas d'authentificateurs disponibles"
 
 # , c-format
 #: nntp/nntp.c:767
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s lost. Reconnect?"
-msgstr "Connexion à %s fermée"
+msgstr "Connexion à %s a été fermée. Reconnecter ?"
 
 #: nntp/nntp.c:1236
 #, fuzzy
@@ -7172,9 +7170,9 @@ msgstr "Publier est ok"
 
 # , c-format
 #: nntp/nntp.c:1984 nntp/nntp.c:2021
-#, fuzzy, c-format
+#, c-format
 msgid "Can't post article: %s"
-msgstr "Impossible d'obtenir le statut de %s : %s"
+msgstr "Impossible de publier l'article : %s"
 
 #: nntp/nntp.c:2045
 #, c-format
@@ -7940,10 +7938,10 @@ msgid "Can't write header to temporary file"
 msgstr "Impossible d'écrire l'en-tête dans le fichier temporaire"
 
 #: pop/pop.c:388
-#, fuzzy, c-format
+#, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
-msgstr[0] "%d messages ont été perdus. Essayez de rouvrir la boîte aux lettres."
+msgstr[0] "%d message a été perdu. Essayez de rouvrir la boîte aux lettres."
 msgstr[1] "%d messages ont été perdus. Essayez de rouvrir la boîte aux lettres."
 
 #: pop/pop.c:517
@@ -7961,14 +7959,14 @@ msgstr "Aucun nouveau message dans la boîte aux lettres POP"
 
 #: pop/pop.c:600
 msgid "Delete messages from server?"
-msgstr "Supprimer les messages du serveur?"
+msgstr "Supprimer les messages du serveur ?"
 
 # , c-format
 #: pop/pop.c:604
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
-msgstr[0] "Lecture de nouveaux messages (%d octets)..."
+msgstr[0] "Lecture de nouveaux messages (%d octet)..."
 msgstr[1] "Lecture de nouveaux messages (%d octets)..."
 
 #: pop/pop.c:652
@@ -7979,10 +7977,10 @@ msgstr "Erreur à l'écriture de la boîte aux lettres"
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. the %d right before 'messages', i.e. the total number of messages.
 #: pop/pop.c:658
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
-msgstr[0] "%s [%d messages lus sur %d]"
+msgstr[0] "%s [%d message lu sur %d]"
 msgstr[1] "%s [%d messages lus sur %d]"
 
 #: pop/pop.c:802
@@ -8016,9 +8014,8 @@ msgid "Decrypting message..."
 msgstr "Déchiffrage du message..."
 
 #: postpone/postpone.c:545
-#, fuzzy
 msgid "Could not decrypt postponed message"
-msgstr "Impossible de déchiffrer le message PGP"
+msgstr "Impossible de déchiffrer le message ajourné"
 
 #: postpone/postpone.c:678 postpone/postpone.c:689
 msgid "No postponed messages"
@@ -8092,9 +8089,8 @@ msgid "Can't open temporary file %s"
 msgstr "Impossible d'ouvrir le fichier temporaire %s"
 
 #: recvcmd.c:549
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "Faire suivre sous forme de pièce jointe ?"
+msgstr "Transférer en tant que pièce jointe ?"
 
 #: recvcmd.c:562
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -8146,7 +8142,7 @@ msgstr "%s n'existe plus"
 #: send/config.c:114
 #, fuzzy, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr "L'option %s ne doit pas contenir les métacaractères sheel : %c"
+msgstr "L'option %s ne doit pas contenir les métacaractères shell : %c"
 
 #. L10N: $attribution_intro default format
 #: send/config.c:169
@@ -8181,7 +8177,7 @@ msgstr "Pas d'objet, abandon"
 #. be added as attachments to the new mail, if this is answered yes.
 #: send/send.c:607
 msgid "Forward attachments?"
-msgstr "Faire suivre les pièces jointes ?"
+msgstr "Transférer les pièces jointes ?"
 
 # , c-format
 #. L10N: Asks whether the user respects the reply-to header.
@@ -8189,17 +8185,17 @@ msgstr "Faire suivre les pièces jointes ?"
 #: send/send.c:833
 #, c-format
 msgid "Reply to %s%s?"
-msgstr "Répondre à %s%s?"
+msgstr "Répondre à %s%s ?"
 
 # , c-format
 #: send/send.c:880
-#, c-format
+#, fuzzy, c-format
 msgid "Follow-up to %s%s?"
-msgstr "Suivi de la discussion à %s%s?"
+msgstr "Suivre la discussion à %s%s ?"
 
 #: send/send.c:1164
 msgid "Include message in reply?"
-msgstr "Inclure le message dans la réponse?"
+msgstr "Inclure le message dans la réponse ?"
 
 #: send/send.c:1170
 msgid "Including quoted message..."
@@ -8210,18 +8206,17 @@ msgid "Could not include all requested messages"
 msgstr "Tous les messages demandés n'ont pas pu être inclus"
 
 #: send/send.c:1189
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Faire suivre sous forme de pièce jointe ?"
+msgstr "Transférer en tant que pièce jointe ?"
 
 #: send/send.c:1194
 msgid "Preparing forwarded message..."
-msgstr "Préparation du message à faire suivre..."
+msgstr "Préparation du message transféré..."
 
 # , c-format
 #: send/send.c:1682
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "Attention : Fcc vers une boîte mail IMAP n'est pas supporté en mode batch"
+msgstr "Attention : Fcc vers une boîte mail IMAP n'est pas pris en charge avec le mode batch"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
@@ -8235,7 +8230,7 @@ msgstr "Omission du Fcc dans %s"
 
 #: send/send.c:1728 send/send.c:1740 send/send.c:1766
 msgid "Save attachments in Fcc?"
-msgstr "Enregistrer les pièces jointes dans Fcc?"
+msgstr "Enregistrer les pièces jointes dans Fcc ?"
 
 #. L10N: Called when saving to $record or Fcc failed after sending.
 #. (r)etry tries the same mailbox again.
@@ -8267,9 +8262,8 @@ msgid "Error encrypting message. Check your crypt settings."
 msgstr "Erreur de chiffrement du message. Vérifiez vos paramètres de chiffrement."
 
 #: send/send.c:2015
-#, fuzzy
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr "L'attachement qui correspond à \"$abort_noattach_regex est manquant dans le message"
+msgstr "Le message contient du texte correspondant à \"$abort_noattach_regex\" Pas d'envoi."
 
 #: send/send.c:2019
 msgid "No attachments, cancel sending?"
@@ -8277,7 +8271,7 @@ msgstr "Pas de pièce jointe, abandonner l'envoi ?"
 
 #: send/send.c:2070
 msgid "Recall postponed message?"
-msgstr "Rappeler un message ajourné?"
+msgstr "Rappeler un message ajourné ?"
 
 #: send/send.c:2326
 msgid "Error sending message"
@@ -8285,11 +8279,11 @@ msgstr "Erreur en envoyant le message"
 
 #: send/send.c:2415
 msgid "Edit forwarded message?"
-msgstr "Éditer le message à faire suivre?"
+msgstr "Éditer le message à transférer ?"
 
 #: send/send.c:2456
 msgid "Abort unmodified message?"
-msgstr "Message non modifié. Abandonner?"
+msgstr "Message non modifié. Abandonner ?"
 
 #: send/send.c:2458
 msgid "Aborted unmodified message"
@@ -8309,7 +8303,7 @@ msgstr "Message ajourné"
 
 #: send/send.c:2684
 msgid "No subject, abort sending?"
-msgstr "Pas d'objet (Subject), abandonner l'envoi?"
+msgstr "Pas d'objet (Subject), abandonner l'envoi ?"
 
 #: send/send.c:2688 send/send.c:2694
 msgid "No subject specified"
@@ -8333,11 +8327,11 @@ msgstr "Impossible d'envoyer le message"
 
 #: send/send.c:2825
 msgid "Sending in background"
-msgstr "Envoi en tâche de fond"
+msgstr "Envoi en arrière-plan"
 
 #: send/send.c:2826
 msgid "Article posted"
-msgstr "Article posté"
+msgstr "Article publié"
 
 #: send/send.c:2827
 msgid "Mail sent"
@@ -8969,9 +8963,8 @@ msgid "If the condition isn't matched, NeoMutt exits."
 msgstr "If the condition isn't matched, NeoMutt exits."
 
 #: usage.c:302
-#, fuzzy
 msgid "  -p            Resume postponed email"
-msgstr "  -p            Resume postponed email"
+msgstr "  -p            Reprendre un message adjourné"
 
 #: usage.c:303
 #, fuzzy
@@ -8990,29 +8983,24 @@ msgid "These options change the starting behavior:"
 msgstr "These options change the starting behavior:"
 
 #: usage.c:309
-#, fuzzy
 msgid "  -f <mailbox>  Open this mailbox"
-msgstr "  -f <mailbox>  Open this mailbox"
+msgstr "  -f <boîtes aux lettres>  Ouvrir cette boîte aux lettres"
 
 #: usage.c:310
-#, fuzzy
 msgid "  -G            Open NNTP browser"
-msgstr "  -G            Open NNTP browser"
+msgstr "  -G            Ouvrir le navigateur des serveurs NNTP"
 
 #: usage.c:311
-#, fuzzy
 msgid "  -g <server>   Use this NNTP server"
-msgstr "  -g <server>   Use this NNTP server"
+msgstr "  -g <serveur>   Utiliser ce serveur NNTP"
 
 #: usage.c:312
-#, fuzzy
 msgid "  -R            Open mailbox read-only"
-msgstr "  -R            Open mailbox read-only"
+msgstr "  -R            Ouvrir la boîtes aux lettres en lecture seule"
 
 #: usage.c:313
-#, fuzzy
 msgid "  -y            Open mailbox browser"
-msgstr "  -y            Open mailbox browser"
+msgstr "  -y            Ouvrir le navigateur des boîtes aux lettres"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
@@ -9021,12 +9009,10 @@ msgid "  neomutt -f ~/mail -Z"
 msgstr "  neomutt -f ~/mail -Z"
 
 #: usage.c:323
-#, fuzzy
 msgid "  neomutt -p"
 msgstr "  neomutt -p"
 
 #: usage.c:324
-#, fuzzy
 msgid "  neomutt -y"
 msgstr "  neomutt -y"
 
@@ -9122,9 +9108,8 @@ msgstr "Options de développement :"
 #~ "  -D            Afficher toutes les variables de configuration sous la forme\n"
 #~ "                « nom=valeur » sur stdout"
 
-#, fuzzy
 #~ msgid "  -D -D         (or -DD) Like -D, but only show changed config"
-#~ msgstr "  -D -D         Comme -D, mais afficher la documentation d'une seule ligne"
+#~ msgstr "  -D -D         (ou -DD) Comme -D, mais afficher uniquement la configuration qui a changé"
 
 #~ msgid "  -D -O         Like -D, but show one-liner documentation"
 #~ msgstr "  -D -D         Comme -D, mais afficher la documentation d'une seule ligne"
@@ -9261,57 +9246,56 @@ msgstr "Options de développement :"
 #~ msgid "  neomutt -v[v]\n"
 #~ msgstr "  neomutt -v[v]\n"
 
-#, fuzzy
 #~ msgid ""
 #~ "  neomutt [-CEn] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 #~ "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 #~ "          <address> [...]"
 #~ msgstr ""
-#~ "  neomutt [-CEn] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
-#~ "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
-#~ "          <address> [...]"
+#~ "  neomutt [-CEn] [-e <commande>] [-F <config>] [-H <brouillon>] [-i <include>]\n"
+#~ "          [-b <adresse>] [-c <adresse>] [-s <objet>] [-a <fichier> [...] --]\n"
+#~ "          <adresse> [...]"
 
-#, fuzzy
 #~ msgid ""
 #~ "  neomutt [-Cn] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 #~ "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 #~ msgstr ""
-#~ "  neomutt [-Cn] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
-#~ "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
+#~ "  neomutt [-Cn] [-e <commande>] [-F <config>] [-b <adresse>] [-c <adresse>]\n"
+#~ "          [-s <objet>] [-a <fichier> [...] --] <adresse> [...] < message"
 
 #~ msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
-#~ msgstr "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
+#~ msgstr "  neomutt [-nRy] [-e <commande>] [-F <config>] [-f <boîte aux lettres>] [-m <type>]"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -A <alias>"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -B"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -B"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-D] [-O] [-S]"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -D [-D] [-O] [-S]"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -D [-D] [-O] [-S]"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -G"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -G"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -Q <variable> [-O]"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Z"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -Z"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -d <niveau> -l <fichier>"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -g <serveur>"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -p"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -p"
 
 #~ msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
-#~ msgstr "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
+#~ msgstr "  neomutt [-n] [-e <commande>] [-F <config>] -z [-f <boîte aux lettres>]"
 
+# need context - what is %s here?
 #, fuzzy, c-format
 #~ msgid "%s bindings:"
 #~ msgstr "Affectations génériques :"
@@ -9322,9 +9306,8 @@ msgstr "Options de développement :"
 #~ msgid "Unbound functions:"
 #~ msgstr "Fonctions non affectées :"
 
-#, fuzzy
 #~ msgid "options:"
-#~ msgstr "Options par défaut :"
+#~ msgstr "options :"
 
 #~ msgid "usage:"
 #~ msgstr "utilisation :"
