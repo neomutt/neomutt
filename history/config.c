@@ -53,7 +53,7 @@ static const struct ExpandoDefinition HistoryFormatDef[] = {
 /**
  * HistoryVars - Config definitions for the command history
  */
-static struct ConfigDef HistoryVars[] = {
+struct ConfigDef HistoryVars[] = {
   // clang-format off
   { "history", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
     "Number of history entries to keep in memory per category"
@@ -73,11 +73,3 @@ static struct ConfigDef HistoryVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_history - Register history config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_history(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, HistoryVars);
-}

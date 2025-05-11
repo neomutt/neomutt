@@ -485,7 +485,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)
     return 1;
 
-  if (OptNoCurses)
+  if (!OptGui)
   {
     mutt_debug(LL_DEBUG1, "unable to prompt for certificate in batch mode\n");
     mutt_error(_("Untrusted server certificate"));
@@ -967,7 +967,7 @@ static int tls_negotiate(struct Connection *conn)
 
   tls_get_client_cert(conn);
 
-  if (!OptNoCurses)
+  if (OptGui)
   {
     mutt_message(_("SSL/TLS connection using %s (%s/%s/%s)"),
                  gnutls_protocol_get_name(gnutls_protocol_get_version(data->session)),

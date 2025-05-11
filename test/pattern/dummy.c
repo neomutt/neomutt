@@ -89,7 +89,7 @@ bool g_is_mail_list = false;
 bool g_is_subscribed_list = false;
 bool OptForceRefresh;
 bool OptKeepQuiet;
-bool OptNoCurses;
+bool OptGui;
 
 const struct MenuFuncOp OpAlias = { 0 };
 const struct MenuFuncOp OpAttachment = { 0 };

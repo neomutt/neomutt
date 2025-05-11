@@ -42,8 +42,8 @@ enum NotifyAttach
   NT_ATTACH_DELETE_ALL, ///< All Attachment regexes have been deleted
 };
 
-void attach_init(void);
-void attach_cleanup(void);
+void attachlist_init(void);
+void attachlist_cleanup(void);
 
 void mutt_attachments_reset (struct MailboxView *mv);
 int  mutt_count_body_parts  (struct Email *e, FILE *fp);

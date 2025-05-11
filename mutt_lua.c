@@ -59,7 +59,7 @@ static lua_State *LuaState = NULL;
 /**
  * LuaCommands - List of NeoMutt commands to register
  */
-static const struct Command LuaCommands[] = {
+const struct Command LuaCommands[] = {
   // clang-format off
   { "lua",        mutt_lua_parse,       0 },
   { "lua-source", mutt_lua_source_file, 0 },
@@ -461,14 +461,6 @@ static bool lua_init(lua_State **l)
   luaopen_mutt(*l);
 
   return true;
-}
-
-/**
- * mutt_lua_init - Setup feature commands
- */
-void mutt_lua_init(void)
-{
-  commands_register(&NeoMutt->commands, LuaCommands);
 }
 
 /**

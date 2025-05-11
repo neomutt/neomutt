@@ -35,12 +35,13 @@
  * ## Source
  *
  * @subpage compress_compress
+ * @subpage compress_module
  *
- * | Name                   | File                | Home Page                  |
- * | :--------------------- | :------------------ | :------------------------- |
- * | @subpage compress_lz4  | compress/lz4.c      | https://github.com/lz4/lz4 |
- * | @subpage compress_zlib | compress/zlib.c     | https://www.zlib.net/      |
- * | @subpage compress_zstd | compress/zstd.c     | https://www.zstd.net/      |
+ * | File            | Name                   | Home Page                  |
+ * | :-------------- | :--------------------- | :------------------------- |
+ * | compress/lz4.c  | @subpage compress_lz4  | https://github.com/lz4/lz4 |
+ * | compress/zlib.c | @subpage compress_zlib | https://www.zlib.net/      |
+ * | compress/zstd.c | @subpage compress_zstd | https://www.zstd.net/      |
  *
  * Usage with Compression Level set to X:
  * - open(level X) -> N times compress() -> close()
