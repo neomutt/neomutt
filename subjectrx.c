@@ -31,6 +31,7 @@
 #include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <wchar.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
