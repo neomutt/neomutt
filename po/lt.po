@@ -8489,9 +8489,8 @@ msgstr "Aliases may be used in place of addresses."
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:259
-#, fuzzy
 msgid "  -a <file> [...]     Attach files"
-msgstr "  -a <file> [...]     Attach files"
+msgstr "  -a <byla> [...]     Prikabinti bylas"
 
 #: usage.c:260
 #, fuzzy
@@ -8499,14 +8498,12 @@ msgid "                      Terminated by -- or another option"
 msgstr "                      Terminated by -- or another option"
 
 #: usage.c:261
-#, fuzzy
 msgid "  -b <address>        Add Bcc: address"
-msgstr "  -b <address>        Add Bcc: address"
+msgstr "  -b <adresas>        Pridėti Bcc: adresą"
 
 #: usage.c:262
-#, fuzzy
 msgid "  -C                  Use crypto (signing/encryption)"
-msgstr "  -C                  Use crypto (signing/encryption)"
+msgstr "  -C                  Naudoti kriptografiją (parašą/šifravimą)"
 
 #: usage.c:263
 #, fuzzy
@@ -8514,14 +8511,12 @@ msgid "                      Must be set up in the config file"
 msgstr "                      Must be set up in the config file"
 
 #: usage.c:264
-#, fuzzy
 msgid "  -c <address>        Add Cc: address"
-msgstr "  -c <address>        Add Cc: address"
+msgstr "  -c <adresas>        Pridėti Cc: adresą"
 
 #: usage.c:265
-#, fuzzy
 msgid "  -E                  Edit message"
-msgstr "  -E                  Edit message"
+msgstr "  -E                  Redaguoti laišką"
 
 #: usage.c:266
 #, fuzzy
@@ -8529,9 +8524,8 @@ msgid "                      (supplied by -H or -i)"
 msgstr "                      (supplied by -H or -i)"
 
 #: usage.c:267
-#, fuzzy
 msgid "  -H <draft>          Use draft email"
-msgstr "  -H <draft>          Use draft email"
+msgstr "  -H <juodraštis>     Naudoti laiško juodraštį"
 
 #: usage.c:268
 #, fuzzy
