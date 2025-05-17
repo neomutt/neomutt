@@ -756,12 +756,12 @@ msgstr "%s n'est pas un répertoire"
 #: browser/dlg_browser.c:605
 #, c-format
 msgid "Subscribed newsgroups"
-msgstr "Newsgroups auxquelles vous êtes abonnés"
+msgstr "Forums auxquels vous êtes abonnés"
 
 #: browser/dlg_browser.c:609
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr "Newsgroups sur le serveur [%s]"
+msgstr "Forums sur le serveur [%s]"
 
 # , c-format
 #: browser/dlg_browser.c:617
@@ -790,7 +790,7 @@ msgstr "Nouveau nom de fichier : "
 
 #: browser/functions.c:188
 msgid "No newsgroups match the mask"
-msgstr "Aucun groupe de discussion ne correspond au masque"
+msgstr "Aucun forum ne correspond au masque"
 
 #: browser/functions.c:214
 msgid "There are no mailboxes"
@@ -1028,6 +1028,8 @@ msgstr "Erreur : %s"
 msgid "invalid header field"
 msgstr "en-tête invalide"
 
+# note: this error shows up when you try to launch a command like
+# :toggle sidebar?
 #: commands.c:997 commands.c:1011 parse/set.c:550
 #, fuzzy, c-format
 msgid "Can't query option with the '%s' command"
@@ -1190,9 +1192,8 @@ msgid "Descrip"
 msgstr "Description"
 
 #: compose/dlg_compose.c:115
-#, fuzzy
 msgid "Newsgroups"
-msgstr "Pas d'objet (Subject) spécifié."
+msgstr "Forums"
 
 #: compose/dlg_compose.c:335
 msgid "-- Attachments"
@@ -1259,12 +1260,11 @@ msgstr "Impossible de joindre %s"
 
 #: compose/functions.c:830
 msgid "Open mailbox to attach message from"
-msgstr "Ouvrir une boîte aux lettres d'où joindre un message"
+msgstr "Ouvrir une boîte aux lettres de laquelle vous voulez joindre un message"
 
 #: compose/functions.c:840
-#, fuzzy
 msgid "Open newsgroup to attach message from"
-msgstr "Ouvrir une boîte mail d'où attacher un message"
+msgstr "Ouvrir un forum duquel vous voulez joindre un message"
 
 #: compose/functions.c:893 main.c:1749
 #, c-format
@@ -2144,6 +2144,8 @@ msgstr "Signer avec : "
 msgid "Autocrypt: "
 msgstr "Autocrypt : "
 
+# TODO: should "newsgroups" be translated to « forums » here? It is elsewhere
+# translated that way, but this field in the compose menu is a bit different...
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:121
 msgid "Newsgroups: "
@@ -2886,7 +2888,7 @@ msgstr "visionner le fichier"
 #. Index: <op_catchup>
 #: gui/opcodes.h:216
 msgid "mark all articles in newsgroup as read"
-msgstr "marquer tous les articles de ce newsgroup comme lus"
+msgstr "marquer tous les articles de ce forum comme lus"
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
@@ -3262,23 +3264,22 @@ msgstr "basculer le drapeau 'important' du message"
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
 #: gui/opcodes.h:416
-#, fuzzy
 msgid "followup to newsgroup"
-msgstr "suivi de la discussion à %s%s ?"
+msgstr "suivi du forum"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
 #: gui/opcodes.h:420
 msgid "forward a message with comments"
-msgstr "faire suivre un message avec des commentaires"
+msgstr "transférer un message avec des commentaires"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
 #: gui/opcodes.h:424
 msgid "forward to newsgroup"
-msgstr "faire suivre au newsgroup"
+msgstr "transférer au forum"
 
 #. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
 #. Alias Dialog: <op_generic_select_entry>
@@ -3403,7 +3404,7 @@ msgstr "se désabonner d'une liste de diffusion"
 #. Browser: <op_load_active>
 #: gui/opcodes.h:501
 msgid "load list of all newsgroups from NNTP server"
-msgstr "charger la liste de tous les groupes de discussion du serveur NNTP"
+msgstr "charger la liste de tous les forums du serveur NNTP"
 
 #. L10N: Help screen description for OP_MACRO
 #: gui/opcodes.h:503
@@ -3446,15 +3447,14 @@ msgstr "ouvrir un autre répertoire en lecture seule"
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:523
 msgid "open a different newsgroup"
-msgstr "ouvrir un autre répertoire"
+msgstr "ouvrir un autre forum"
 
 # TODO: « dossier » vs « répertoire » and how to translate "newsgroup"
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:526
-#, fuzzy
 msgid "open a different newsgroup in read only mode"
-msgstr "ouvrir un dossier différent en lecture seule"
+msgstr "ouvrir un autre forum en lecture seule"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
@@ -3734,9 +3734,8 @@ msgstr "aller au début du message"
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
 #: gui/opcodes.h:673
-#, fuzzy
 msgid "post message to newsgroup"
-msgstr "Pas de Message-ID pour la macro."
+msgstr "publier le message à un forum"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
@@ -3910,7 +3909,7 @@ msgstr "trier les messages dans l'ordre inverse"
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:781
 msgid "subscribe to newsgroups matching a pattern"
-msgstr "s'abonner aux newsgroups correspondant à un motif"
+msgstr "s'abonner aux forums correspondant à un motif"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
@@ -3976,7 +3975,7 @@ msgstr "aller en haut de la page"
 #. Browser: <op_catchup>
 #: gui/opcodes.h:812
 msgid "mark all articles in newsgroup as unread"
-msgstr "marquer tous les articles du newsgroup comme non lus"
+msgstr "marquer tous les articles du forum comme non lus"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
@@ -3990,13 +3989,11 @@ msgstr "récupérer tous les messages de la sous-discussion"
 msgid "undelete all messages in thread"
 msgstr "récupérer tous les messages de la discussion"
 
-# TODO: Should "newsgroup" be translated?
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:826
-#, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "se désabonner des newgroups correspondant à un motif"
+msgstr "se désabonner des forums correspondant à un motif"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
@@ -4097,7 +4094,7 @@ msgstr "modifier le message avec ses en-têtes"
 #. Envelope Window: <op_envelope_edit_newsgroups>
 #: gui/opcodes.h:879
 msgid "edit the newsgroups list"
-msgstr "modifier la liste des groupes de discussion"
+msgstr "modifier la liste des forums"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
@@ -5345,11 +5342,11 @@ msgstr "Article %s non trouvé sur le serveur"
 
 #: index/functions.c:2776
 msgid "Open newsgroup in read-only mode"
-msgstr "Ouvrir le newsgroup en lecture seule"
+msgstr "Ouvrir le forum en lecture seule"
 
 #: index/functions.c:2781
 msgid "Open newsgroup"
-msgstr "Ouvrir le newsgroup"
+msgstr "Ouvrir le forum"
 
 #: index/functions.c:2852
 msgid "Posting to this group not allowed, may be moderated. Continue?"
@@ -7184,9 +7181,8 @@ msgid "Loading descriptions..."
 msgstr "Descriptions en cours de chargement..."
 
 #: nntp/nntp.c:2110
-#, fuzzy
 msgid "Checking for new newsgroups..."
-msgstr "Recherche de nouveaux messages..."
+msgstr "Recherche de nouveaux forums..."
 
 # TODO: what is an article in this context?
 #: nntp/nntp.c:2323
@@ -7201,12 +7197,12 @@ msgstr "%s est un chemin POP invalide"
 #: nntp/nntp.c:2441
 #, c-format
 msgid "Newsgroup %s not found on the server"
-msgstr "Newsgroup %s non trouvé sur le serveur"
+msgstr "Forum %s non trouvé sur le serveur"
 
 #: nntp/nntp.c:2464
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
-msgstr "Newsgroup %s a été supprimé du serveur"
+msgstr "Forum %s a été supprimé du serveur"
 
 #: notmuch/config.c:65
 #, c-format
@@ -7800,9 +7796,8 @@ msgstr "messages vérifiés cryptographiquement"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:161
-#, fuzzy
 msgid "newsgroups matching EXPR"
-msgstr "Aucun fichier ne correspond au masque"
+msgstr "forums qui correspondent au EXPR"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:164
@@ -8311,7 +8306,7 @@ msgstr "Pas d'objet (Subject) spécifié"
 
 #: send/send.c:2700
 msgid "No newsgroup specified"
-msgstr "Pas de newsgroup spécifié"
+msgstr "Pas de forum spécifié"
 
 #: send/send.c:2745
 msgid "Missing encryption key; mail not sent"
@@ -9127,8 +9122,7 @@ msgstr "Options de développement :"
 
 #~ msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 #~ msgstr ""
-#~ "  -G            Démarrer NeoMutt avec une liste de groupes de discussion\n"
-#~ "                abonnées"
+#~ "  -G            Démarrer NeoMutt avec une liste de forums abonnés\n"
 
 #~ msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 #~ msgstr ""
