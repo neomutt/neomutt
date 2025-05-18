@@ -2900,7 +2900,7 @@ msgstr "changer de répertoires"
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:222
 msgid "check mailboxes for new mail"
-msgstr "vérifier la présence de nouveaux messages dans les boîtes aux lettres"
+msgstr "vérifier s'il y a de nouveaux messages dans les boîtes aux lettres"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
@@ -5084,7 +5084,7 @@ msgstr "Aucun label n'a changé"
 #. L10N: CHECK_ACL
 #: index/functions.c:716
 msgid "Can't edit message"
-msgstr "Impossible d'éditer le message"
+msgstr "Impossible de modifier le message"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:803
@@ -8363,9 +8363,8 @@ msgid "Bad IDN %s while preparing resent-from"
 msgstr "Mauvais IDN %s lors de la préparation du resent-from"
 
 #: send/sendmail.c:336
-#, fuzzy
 msgid "$sendmail must be set in order to send mail"
-msgstr "$sendmail doit avoir une valeur pour pouvoir envoyer du courrier"
+msgstr "$sendmail doit avoir une valeur pour pouvoir envoyer du courriel"
 
 # , c-format
 #: send/sendmail.c:441
@@ -8411,7 +8410,7 @@ msgstr "La session SMTP a échoué : erreur d'écriture"
 
 #: send/smtp.c:1200
 msgid "Invalid server response"
-msgstr "Réponse du serveur invalide"
+msgstr "La réponse du serveur n'est pas valide"
 
 #. L10N: Help Overview -- `neomutt -h`
 #. The modes are: help, info, send, tui
@@ -8564,44 +8563,36 @@ msgid "neomutt                              Start NeoMutt's TUI"
 msgstr "neomutt                              Start NeoMutt's TUI"
 
 #: usage.c:104
-#, fuzzy
 msgid "        -f <mailbox>                 Open this mailbox"
-msgstr "        -f <mailbox>                 Open this mailbox"
+msgstr "        -f <mailbox>                 Ouvrir cette boîte aux lettres"
 
 #: usage.c:105
-#, fuzzy
 msgid "        -G                           Open NNTP browser"
-msgstr "        -G                           Open NNTP browser"
+msgstr "        -G                           Ouvrir le navigateur des serveurs NNTP"
 
 #: usage.c:106
-#, fuzzy
 msgid "        -g <server>                  Use this NNTP server"
-msgstr "        -g <server>                  Use this NNTP server"
+msgstr "        -g <server>                  Utiliser ce serveur NNTP"
 
 #: usage.c:107
-#, fuzzy
 msgid "        -p                           Resume postponed email"
-msgstr "        -p                           Resume postponed email"
+msgstr "        -p                           Reprendre un message adjourné"
 
 #: usage.c:108
-#, fuzzy
 msgid "        -R                           Open mailbox read-only"
-msgstr "        -R                           Open mailbox read-only"
+msgstr "        -R                           Ouvrir la boîtes aux lettres en lecture seule"
 
 #: usage.c:109
-#, fuzzy
 msgid "        -y                           Open mailbox browser"
-msgstr "        -y                           Open mailbox browser"
+msgstr "        -y                           Ouvrir le navigateur des boîtes aux lettres"
 
 #: usage.c:110
-#, fuzzy
 msgid "        -Z                           Check for new mail"
-msgstr "        -Z                           Check for new mail"
+msgstr "        -Z                           Vérifier s'il y a de nouveaux messages"
 
 #: usage.c:111
-#, fuzzy
 msgid "        -z                           Check for any mail"
-msgstr "        -z                           Check for any mail"
+msgstr "        -z                           Vérifier s'il y a de messages"
 
 #: usage.c:115 usage.c:117
 #, fuzzy
@@ -8614,9 +8605,8 @@ msgid "By default NeoMutt loads one system and one user config file,"
 msgstr "By default NeoMutt loads one system and one user config file,"
 
 #: usage.c:131
-#, fuzzy
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
-msgstr "e.g. /etc/neomuttrc and ~/.neomuttrc"
+msgstr "p. ex. /etc/neomuttrc et ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
@@ -8625,9 +8615,8 @@ msgid "  -n            Don't read system config file"
 msgstr "  -n            Don't read system config file"
 
 #: usage.c:135
-#, fuzzy
 msgid "  -F <config>   Use this user config file"
-msgstr "  -F <config>   Use this user config file"
+msgstr "  -F <config>   Utiliser ce fichier de configuration"
 
 #: usage.c:136 usage.c:143
 #, fuzzy
@@ -8681,25 +8670,21 @@ msgstr "                Default file '~/.neomuttdebug0'"
 
 #: usage.c:154 usage.c:156 usage.c:194 usage.c:196 usage.c:231 usage.c:233
 #: usage.c:275 usage.c:277 usage.c:317 usage.c:319
-#, fuzzy
 msgid "Examples:"
-msgstr "Examples:"
+msgstr "Exemples :"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:159
-#, fuzzy
 msgid "  neomutt -n"
 msgstr "  neomutt -n"
 
 #: usage.c:160
-#, fuzzy
 msgid "  neomutt -F work.rc"
-msgstr "  neomutt -F work.rc"
+msgstr "  neomutt -F travail.rc"
 
 #: usage.c:161
-#, fuzzy
 msgid "  neomutt -F work.rc -F colours.rc"
-msgstr "  neomutt -F work.rc -F colours.rc"
+msgstr "  neomutt -F travail.rc -F couleurs.rc"
 
 #: usage.c:164
 #, fuzzy
@@ -8712,7 +8697,6 @@ msgid "  neomutt -e 'set ask_cc = yes'"
 msgstr "  neomutt -e 'set ask_cc = yes'"
 
 #: usage.c:168
-#, fuzzy
 msgid "  neomutt -d 2"
 msgstr "  neomutt -d 2"
 
@@ -8722,14 +8706,12 @@ msgid "  neomutt -d 5 -l neolog"
 msgstr "  neomutt -d 5 -l neolog"
 
 #: usage.c:172
-#, fuzzy
 msgid "See also:"
-msgstr "See also:"
+msgstr "À voir aussi :"
 
 #: usage.c:173
-#, fuzzy
 msgid "- Config files: https://neomutt.org/guide/configuration"
-msgstr "- Config files: https://neomutt.org/guide/configuration"
+msgstr "- Fichiers de configuration : https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:187
@@ -8754,12 +8736,10 @@ msgstr "  -vv        NeoMutt Copyright and license"
 
 #. L10N: Examples
 #: usage.c:199
-#, fuzzy
 msgid "  neomutt -h info"
 msgstr "  neomutt -h info"
 
 #: usage.c:200
-#, fuzzy
 msgid "  neomutt -vv"
 msgstr "  neomutt -vv"
 
@@ -8948,9 +8928,8 @@ msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
 msgstr "By default, it will open the Index Dialog with the $spool_file Mailbox."
 
 #: usage.c:300
-#, fuzzy
 msgid "These options cause NeoMutt to check a mailbox for mail."
-msgstr "These options cause NeoMutt to check a mailbox for mail."
+msgstr "Ces options font vérifier la présence de messages dans une boîte aux lettres."
 
 #: usage.c:301
 #, fuzzy
@@ -8962,20 +8941,17 @@ msgid "  -p            Resume postponed email"
 msgstr "  -p            Reprendre un message adjourné"
 
 #: usage.c:303
-#, fuzzy
 msgid "  -Z            Check for new mail"
-msgstr "  -Z            Check for new mail"
+msgstr "  -Z            Vérifier s'il y a de nouveaux messages"
 
 #: usage.c:304
-#, fuzzy
 msgid "  -z            Check for any mail"
-msgstr "  -z            Check for any mail"
+msgstr "  -z            Vérifier s'il y a de messages"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:308
-#, fuzzy
 msgid "These options change the starting behavior:"
-msgstr "These options change the starting behavior:"
+msgstr "Ces options changent le comportement au démarrage :"
 
 #: usage.c:309
 msgid "  -f <mailbox>  Open this mailbox"
@@ -8999,9 +8975,8 @@ msgstr "  -y            Ouvrir le navigateur des boîtes aux lettres"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
-#, fuzzy
 msgid "  neomutt -f ~/mail -Z"
-msgstr "  neomutt -f ~/mail -Z"
+msgstr "  neomutt -f ~/courriel -Z"
 
 #: usage.c:323
 msgid "  neomutt -p"
