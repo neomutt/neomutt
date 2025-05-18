@@ -25,7 +25,7 @@ msgstr ""
 #: address/config_type.c:87 config/long.c:51 config/path.c:98 config/path.c:173
 #: config/sort.c:58 config/string.c:69 config/string.c:144
 #: expando/config_type.c:70 expando/config_type.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be empty"
 msgstr "A(z) %s opció nem maradhat üresen"
 
@@ -62,7 +62,7 @@ msgstr "Megjegyzés: "
 
 #: alias/alias.c:474
 msgid "Tags (comma-separated): "
-msgstr ""
+msgstr "Címkék (vesszővel elválasztva): "
 
 #: alias/alias.c:503
 msgid "Accept?"
@@ -188,31 +188,27 @@ msgid "Limit to addresses matching: "
 msgstr "Szűkítés az illeszkedő címekre: "
 
 #: alias/functions.c:267
-#, fuzzy
 msgid "Tag addresses matching: "
-msgstr "Minta a levelek kijelöléséhez: "
+msgstr "Illeszkedő üzenetek megjelölése: "
 
 #: alias/functions.c:283
-#, fuzzy
 msgid "Untag addresses matching: "
-msgstr "Minta a levélkijelölés megszüntetéséhez: "
+msgstr "Illeszkedő üzenetek megjelölésének eltávolítása: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:398
-#, fuzzy
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Fordítva-rendez á(l)név, (c)ím, vagy (n)em rendezett?"
+msgstr "Fordítva-rendez á(l)név, né(v), (e)mail, vagy (n)em rendezett?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
-#, fuzzy
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Rendez á(l)név, (c)ím, vagy (n)em rendezett?"
+msgstr "Rendez á(l)név, né(v), (e)mail, vagy (n)em rendezett?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:402
 msgid "aneu"
-msgstr ""
+msgstr "lven"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:84 index/functions.c:1831
@@ -985,9 +981,9 @@ msgid "invalid header field"
 msgstr "érvénytelen mező a fejlécben"
 
 #: commands.c:997 commands.c:1011 parse/set.c:550
-#, fuzzy, c-format
+#, c-format
 msgid "Can't query option with the '%s' command"
-msgstr "Nem kereshet válltozót az alábbival '%s'"
+msgstr "Nem tudok opciót keresni a '%s' paranccsal "
 
 #: commands.c:1017 parse/set.c:544
 msgid "Can't use a prefix when querying a variable"
@@ -1045,7 +1041,7 @@ msgstr "Nem tudtam leiratkozni erről %s"
 #: compmbox/compress.c:218
 #, c-format
 msgid "Expando parse error: %s"
-msgstr ""
+msgstr "Formátum bővítő beolvasási hiba: %s"
 
 #: compmbox/compress.c:347 compmbox/compress.c:478
 #, c-format
@@ -1102,7 +1098,7 @@ msgstr "Hiba a(z) %s ideiglenes fájl mentésekor"
 #. L10N: $compose_format default format
 #: compose/config.c:71
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
-msgstr ""
+msgstr "-- NeoMutt: Szerkesztés [Üzenet méret kb.: %1  Attribútumok: %a]%>-"
 
 #: compose/dlg_compose.c:95 compose/dlg_compose.c:113
 msgid "Send"
@@ -1145,7 +1141,7 @@ msgstr "-- Mellékletek"
 
 #: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
-msgstr ""
+msgstr "-- Előnézet"
 
 #: compose/functions.c:224
 msgid "There are no attachments"
@@ -1178,9 +1174,8 @@ msgstr "Az egyetlen melléklet nem törölhető"
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
 #: compose/functions.c:360
-#, fuzzy
 msgid "Really delete the main message?"
-msgstr "Valóban törli a \"%s\" postafiókot?"
+msgstr "Valóban törli a fő üzenetet?"
 
 #: compose/functions.c:377 compose/functions.c:569
 msgid "Can't leave group with only one attachment"
@@ -1220,7 +1215,7 @@ msgstr "Nincs levél ebben a postafiókban"
 
 #: compose/functions.c:913
 msgid "Tag the messages you want to attach"
-msgstr "Jelöld ki a csatolandó levelet"
+msgstr "Jelöld meg a csatolandó levelet"
 
 #: compose/functions.c:951
 msgid "Unable to attach"
@@ -1375,21 +1370,20 @@ msgstr "Piszkozat üzenet mentése (későbbre halasztás)"
 
 #: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
-msgstr ""
+msgstr "Csak text/* tartalmú inline csatolmányok előnézete kérhető"
 
 #: compose/preview.c:153
 msgid "Email too large to preview"
-msgstr ""
+msgstr "Túl nagy levél az előnézethez"
 
 #: compose/preview.c:199
-#, fuzzy
 msgid "Failed to move cursor!"
-msgstr "Nem sikerült a küldőt igazolni"
+msgstr "Nem sikerült a kurzort mozgatni!"
 
 #: compose/preview.c:223
 #, c-format
 msgid "-- Preview (%.0f%%)"
-msgstr ""
+msgstr "-- Előnézet (%.0f%%)"
 
 #: config/bool.c:76
 #, c-format
@@ -1407,7 +1401,7 @@ msgstr "'karakterkészlet' ('charset') kell hogy tartalmazzon karakterkészlet n
 
 #: config/charset.c:70 config/charset.c:101 hcache/config.c:55
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:121
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "A(z) %s opció érvénytelen értéket (%s) tartalmaz"
 
@@ -1425,9 +1419,9 @@ msgstr "Érvénytelen felsorolás érték: %ld"
 #: config/set.c:677 config/set.c:797 main.c:684 parse/set.c:119 parse/set.c:179
 #: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
 #: parse/set.c:433
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown option %s"
-msgstr "Ismeretlen változó '%s'"
+msgstr "Ismeretlen opció '%s'"
 
 #: config/long.c:58 config/long.c:157 config/long.c:195
 #, c-format
@@ -1437,9 +1431,9 @@ msgstr "Érvénytelen nagyszám: %s"
 #: config/long.c:64 config/long.c:118 config/long.c:164 config/long.c:202
 #: config/number.c:97 config/number.c:157 config/number.c:209
 #: config/number.c:250
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
-msgstr "Aű(z) %s opció nem lehet negatív"
+msgstr "A(z) %s opció nem lehet negatív"
 
 #: config/number.c:85 config/number.c:196 config/number.c:237
 #: expando/node_conddate.c:242 expando/node_expando.c:179
@@ -1469,9 +1463,9 @@ msgid "Invalid quad value: %ld"
 msgstr "Érvénytelen igen-nem érték (quad value): %ld"
 
 #: config/set.c:261 config/set.c:877
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s has an invalid type %d"
-msgstr "A(z) '%s' változó érvénytelen (%d) típusú"
+msgstr "A(z) '%s' opció érvénytelen (%d) típusú"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:929 config/set.c:988
@@ -1609,9 +1603,8 @@ msgid "Error processing certificate data"
 msgstr "Hiba a taúsítvány adatok feldolgozásakor"
 
 #: conn/gnutls.c:491 conn/openssl.c:896
-#, fuzzy
 msgid "Untrusted server certificate"
-msgstr "Figyelem: A tanúsítvány nem menthető"
+msgstr "Nem megbízható szerver tanúsítvány"
 
 #: conn/gnutls.c:509 conn/openssl.c:903
 msgid "This certificate belongs to:"
@@ -1958,7 +1951,7 @@ msgstr "Szó Törlés"
 #. testing, so be sure to test with $header_cache unset.
 #: email/config.c:65
 msgid "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
-msgstr ""
+msgstr "^((re|válasz|va|vá)(\\[[0-9]+\\])*:[ \t]*)*"
 
 #: email/parse.c:1593
 msgid "multipart message has no boundary parameter"
@@ -2167,48 +2160,48 @@ msgstr[1] "(+%d-al(el) több)"
 
 #. L10N: e.g. "Option index_format:" plus an error message
 #: expando/config_type.c:85 expando/config_type.c:247
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: "
-msgstr "opciók:"
+msgstr "Opció %s:"
 
 #. L10N: The 'ymwdHM' should not be translated
 #: expando/node_conddate.c:256
 #, c-format
 msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
-msgstr ""
+msgstr "Érvénytelen időszak: '%c', 'ymwdHM'
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/node_condition.c:188 expando/node_condition.c:232
 #, c-format
 msgid "Conditional expando is missing '%c'"
-msgstr ""
+msgstr "Feltételes formátum bővítőhöz hiányzik a(z) '%c'"
 
 #. L10N: e.g. "Unknown expando: %Q"
 #: expando/node_expando.c:306
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown expando: %%%.1s"
-msgstr "Ismeretlen változó '%s'"
+msgstr "Ismeretlen formátum bővítő: %%%.1s"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/node_expando.c:366
 #, c-format
 msgid "Expando is missing terminator: '%c'"
-msgstr ""
+msgstr "Formátum bővítőhöz hiányzik a(z) '%c'"
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
 #: expando/node_padding.c:242
 #, c-format
 msgid "Padding cannot be formatted"
-msgstr ""
+msgstr "Kitöltés nem formázható"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
 #: expando/node_padding.c:252
 #, c-format
 msgid "Padding cannot be used as a condition"
-msgstr ""
+msgstr "Kitöltés nem használható feltételként"
 
 #: external.c:109 recvcmd.c:185 recvcmd.c:197
 msgid "Warning: message contains no From: header"
@@ -2660,16 +2653,14 @@ msgstr "melléklet megtekintése szövegként"
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:152
-#, fuzzy
 msgid "show the next page of the message"
-msgstr "ugrás az üzenet tetejére"
+msgstr "ugrás az üzenet következő oldalára"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:155
-#, fuzzy
 msgid "show the previous page of the message"
-msgstr "ugrás az előző új vagy olvasatlan levélre"
+msgstr "ugrás az üzenet előző oldalára"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
@@ -4058,7 +4049,6 @@ msgstr "a PGP nyilvános kulcs elküldése"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-#, fuzzy
 msgid "verify a public key"
 msgstr "a nyilvános kulcs ellenőrzése"
 
@@ -4353,17 +4343,17 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s nem támogatott (a mellélet megtekintéshez 'v' billentyű lenyomás szükséges) --]\n"
 
 #: hcache/config.c:95
-#, fuzzy, c-format
+#, c-format
 msgid "Set option %s before setting %s"
-msgstr "Állítsa be a %s opciót mielőtt beállítani %s-t"
+msgstr "Állítsa be a %s opciót, mielőtt beállítja %s-t"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:68
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must be between %d and %d inclusive"
-msgstr "%s opció %d és %d között kell legyen"
+msgstr "%s opció %d és %d között kell legyen. Beleértve a határértékeket."
 
 #: help.c:54
 msgid "message is tagged"
@@ -4618,7 +4608,7 @@ msgid "Connection to %s timed out"
 msgstr "%s kapcsolat idő lejárt"
 
 #: imap/config.c:60 pop/config.c:60 send/config.c:91
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "%s opció: %s érvénytelen hitelesítő"
 
@@ -4783,7 +4773,7 @@ msgstr "Folytatod?"
 #. L10N: $status_format default format
 #: index/config.c:94
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
-msgstr ""
+msgstr "-%r-NeoMutt: %D [Üzenet:%<M?%M/>%m%<n? Új:%n>%<o? Régi:%o>%<d? Töröl:%d>%<F? Flag:%F>%<t? Címke:%t>%<p? Post:%p>%<b? Növ:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
 #: index/dlg_index.c:104 index/dlg_index.c:119
 msgid "Quit"
@@ -5344,9 +5334,9 @@ msgstr "nem meghatározható a csomópontnév az uname() hívásával"
 
 #: main.c:691 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
 #: parse/set.c:331 parse/set.c:372 parse/set.c:439
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s is deprecated"
-msgstr "A '%s' konvigurációs változó használata elavult"
+msgstr "A '%s' opció elavult"
 
 #: main.c:769
 msgid "Error initializing terminal"
@@ -5496,7 +5486,7 @@ msgstr "Nincsenek kijelölt bejegyzések"
 
 #: mutt/buffer.c:353
 msgid "Out of memory"
-msgstr ""
+msgstr "Elfogyott a memória"
 
 #: mutt/file.c:664
 #, c-format
@@ -5567,22 +5557,22 @@ msgstr "Nincs elég alkifejezés a template-het"
 #: mutt_config.c:230
 #, c-format
 msgid "index-hook cannot be used as a condition"
-msgstr ""
+msgstr "index-hook nem használható feltételként"
 
 #. L10N: $ts_icon_format default format
 #: mutt_config.c:768
 msgid "M%<n?AIL&ail>"
-msgstr ""
+msgstr "L%<n?EVÉL&evél>"
 
 #. L10N: $ts_status_format default format
 #: mutt_config.c:772
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
-msgstr ""
+msgstr "NeoMutt %<m?%m üzenetekkel&üzenetek nélkül>%<n? [%n ÚJ]>"
 
 #: mutt_logging.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "%s opció érvénytelen érték: %ld"
+msgstr "%s opcióhoz érvénytelen érték: %ld"
 
 #: mutt_lua.c:453
 msgid "Error: Couldn't load the lua interpreter"
@@ -6013,20 +6003,18 @@ msgstr "létrehozva: "
 #: ncrypt/crypt_gpgme.c:1425
 #, c-format
 msgid "Recipient: %s key, ID %s\n"
-msgstr ""
+msgstr  "Címzett: %s kulcs, AZON. %s\n"
 
 #: ncrypt/crypt_gpgme.c:1438
-#, fuzzy
 msgid "[-- Begin encryption information --]\n"
-msgstr "[-- Aláírás info kezdete --]\n"
+msgstr "[-- Titkosítási info kezdete --]\n"
 
 #: ncrypt/crypt_gpgme.c:1443
-#, fuzzy
 msgid ""
 "[-- End encryption information --]\n"
 "\n"
 msgstr ""
-"[-- Aláírás információ vége --]\n"
+"[-- Titkositási információ vége --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:1517
@@ -6721,7 +6709,6 @@ msgid "PGP Key %s"
 msgstr "PGP Kulcs %s"
 
 #: ncrypt/pgpkey.c:600
-#, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Ez a kulcs nem használható: lejárt/letiltott/visszavont"
 
@@ -7123,9 +7110,9 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Nem használhat előtagot, amikor növel, vagy csökkent egy változót"
 
 #: parse/set.c:567 parse/set.c:597
-#, fuzzy, c-format
+#, c-format
 msgid "Can't set option with the '%s' command"
-msgstr "Nem lehet változót beállítani a '%s' paranccsal"
+msgstr "Nem lehet opciót beállítani a '%s' paranccsal"
 
 #: parse/set.c:583
 msgid "'+' and '-' must be followed by '='"
@@ -7136,14 +7123,13 @@ msgid "Can't use prefix when setting a variable"
 msgstr "Nem használhat előtagot a változó beállításakor"
 
 #: parse/set.c:609
-#, fuzzy
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
-msgstr "A 'no' és 'inv' előtagokat csak bool/quad váltózókkal együtt lehet használni"
+msgstr "A 'no' és 'inv' előtagokat csak bool/quad/number váltózókkal együtt lehet használni"
 
 #: parse/set.c:613
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
-msgstr "A(z) '%s' parancsot csak bool/quad változókkal együtt lehet használni"
+msgstr "A(z) '%s' parancsot csak bool/quad/number változókkal együtt lehet használni"
 
 #: pattern/compile.c:75 pattern/compile.c:162 pattern/compile.c:723
 #, c-format
@@ -7830,7 +7816,7 @@ msgstr "%s többé nem létezik"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:114
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "A(z) %s opció nem tartalmazhat shell meta-karaktereket: %c"
 
@@ -7838,18 +7824,18 @@ msgstr "A(z) %s opció nem tartalmazhat shell meta-karaktereket: %c"
 #: send/config.c:169
 #, c-format
 msgid "On %d, %n wrote:"
-msgstr ""
+msgstr "%d-én %n írta:"
 
 #. L10N: $forward_attribution_intro default format
 #: send/config.c:236
 #, c-format
 msgid "----- Forwarded message from %f -----"
-msgstr ""
+msgstr "----- Továbbított üzenet %f-tól -----"
 
 #. L10N: $forward_attribution_trailer default format
 #: send/config.c:240
 msgid "----- End forwarded message -----"
-msgstr ""
+msgstr "----- Továbbított üzenet vége -----"
 
 #: send/send.c:347
 msgid "No subject, abort?"
@@ -8002,7 +7988,7 @@ msgstr "Nincs hírcsoport megadva"
 
 #: send/send.c:2745
 msgid "Missing encryption key; mail not sent"
-msgstr ""
+msgstr "Hiányzó titkosító kulcs; levél nem lett elküldve"
 
 #: send/send.c:2769 send/smtp.c:262
 msgid "Sending message..."
@@ -8103,606 +8089,490 @@ msgstr "Érvénytelen szerver válasz"
 #. Plus two helper modes: shared, all
 #. These should not be translated.
 #: usage.c:60
-#, fuzzy
 msgid "NeoMutt has four modes of operation:"
-msgstr "NeoMutt has four modes of operation:"
+msgstr "NeoMuttnak négy működési módja van:"
 
 #: usage.c:66
-#, fuzzy
 msgid "The default mode, if no command line arguments are specified, is tui."
-msgstr "The default mode, if no command line arguments are specified, is tui."
+msgstr "Az alapértelmezett mód, ha nem adsz meg parancssori argumentumokat, a terminál felhasználói interfész (tfi)."
 
 #. L10N: Parameters in <>s may be translated
 #. L10N: Shared Help -- `neomutt -h shared`
 #: usage.c:70 usage.c:127
-#, fuzzy
 msgid "Options that apply to all modes"
 msgstr "Options that apply to all modes"
 
 #: usage.c:71
-#, fuzzy
 msgid "neomutt -n                           Don't read system config file"
-msgstr "neomutt -n                           Don't read system config file"
+msgstr "neomutt -n                           Rendszerkonfigurációs fájl mellőzése"
 
 #: usage.c:72
-#, fuzzy
 msgid "        -F <config>                  Use this user config file"
-msgstr "        -F <config>                  Use this user config file"
+msgstr "        -F <konfiguráció>                  Ez a felhasználói konfigurációs fájl használata"
 
 #: usage.c:73
-#, fuzzy
 msgid "        -e <command>                 Run extra commands"
-msgstr "        -e <command>                 Run extra commands"
+msgstr "        -e <parancs>                 További parancsok futtatása"
 
 #: usage.c:74
-#, fuzzy
 msgid "        -m <type>                    Set default mailbox type"
-msgstr "        -m <type>                    Set default mailbox type"
+msgstr "        -m <típus>                    Alapértelmezett postafiók típus beállítása"
 
 #: usage.c:75
-#, fuzzy
 msgid "        -d <level>                   Set logging level (1..5)"
-msgstr "        -d <level>                   Set logging level (1..5)"
+msgstr "        -d <level>                   Naplózási szint beállítása (1..5)"
 
 #: usage.c:76
-#, fuzzy
 msgid "        -l <file>                    Set logging file"
-msgstr "        -l <file>                    Set logging file"
+msgstr "        -l <fájl>                    Naplófájl beállítása"
 
 #. L10N: Help Help -- `neomutt -h help`
 #: usage.c:79 usage.c:183
-#, fuzzy
 msgid "Get command line help for NeoMutt"
 msgstr "Get command line help for NeoMutt"
 
 #: usage.c:80
-#, fuzzy
 msgid "neomutt -h <mode>                    Detailed help for a mode"
 msgstr "neomutt -h <mode>                    Detailed help for a mode"
 
 #: usage.c:81
-#, fuzzy
 msgid "        -v[v]                        Version or license"
 msgstr "        -v[v]                        Version or license"
 
 #. L10N: Info Help -- `neomutt -h info`
 #: usage.c:84 usage.c:210
-#, fuzzy
 msgid "Ask NeoMutt for config information"
 msgstr "Ask NeoMutt for config information"
 
 #: usage.c:85
-#, fuzzy
 msgid "neomutt -A <alias> [...]             Lookup email aliases"
-msgstr "neomutt -A <alias> [...]             Lookup email aliases"
+msgstr "neomutt -A <álnév> [...]             Email álnevek keresése"
 
 #: usage.c:86
-#, fuzzy
 msgid "        -D [-D] [-O] [-S]            Dump the config"
 msgstr "        -D [-D] [-O] [-S]            Dump the config"
 
 #: usage.c:87
-#, fuzzy
 msgid "        -Q <option> [...] [-O] [-S]  Query config options"
-msgstr "        -Q <option> [...] [-O] [-S]  Query config options"
+msgstr "        -Q <beállítás> [...] [-O] [-S]  Konfigurációs opciók lekérdezése"
 
 #. L10N: Sending Help -- `neomutt -h send`
 #: usage.c:90 usage.c:249
-#, fuzzy
 msgid "Send an email from the command line"
 msgstr "Send an email from the command line"
 
 #: usage.c:91
-#, fuzzy
 msgid "neomutt -a <file> [...]              Attach files"
-msgstr "neomutt -a <file> [...]              Attach files"
+msgstr "neomutt -a <fájl> [...]              Fájlok csatolása"
 
 #: usage.c:92
-#, fuzzy
 msgid "        -b <address>                 Add Bcc: address"
-msgstr "        -b <address>                 Add Bcc: address"
+msgstr "        -b <cím>                     Bcc hozzáadása: cím"
 
 #: usage.c:93
-#, fuzzy
 msgid "        -C                           Use crypto (signing/encryption)"
-msgstr "        -C                           Use crypto (signing/encryption)"
+msgstr "        -C                           Titkosítás használata (aláírás/titkosítás)"
 
 #: usage.c:94
-#, fuzzy
 msgid "        -c <address>                 Add Cc: address"
-msgstr "        -c <address>                 Add Cc: address"
+msgstr "        -c <cím>                 Cc hozzáadása: cím"
 
 #: usage.c:95
-#, fuzzy
 msgid "        -E                           Edit message"
-msgstr "        -E                           Edit message"
+msgstr "        -E                           Üzenet szerkesztése"
 
 #: usage.c:96
-#, fuzzy
 msgid "        -H <draft>                   Use draft email"
-msgstr "        -H <draft>                   Use draft email"
+msgstr "        -H <piszkozat>                   Piszkozat használata"
 
 #: usage.c:97
-#, fuzzy
 msgid "        -i <include>                 Include body file"
-msgstr "        -i <include>                 Include body file"
+msgstr "        -i <törzsfájl>                 Törzsfájl csatolása"
 
 #: usage.c:98
-#, fuzzy
 msgid "        -s <subject>                 Set Subject:"
-msgstr "        -s <subject>                 Set Subject:"
+msgstr "        -s <tárgy>                 Tárgy beállítása:"
 
 #: usage.c:99
-#, fuzzy
 msgid "        -- <address> [...]           Add To: addresses"
-msgstr "        -- <address> [...]           Add To: addresses"
+msgstr "        -- <cím> [...]           Címzettek hozzáadása"
 
 #. L10N: TUI Help -- `neomutt -h tui`
 #: usage.c:102 usage.c:293
-#, fuzzy
 msgid "Start NeoMutt's TUI (Terminal User Interface)"
-msgstr "Start NeoMutt's TUI (Terminal User Interface)"
+msgstr "NeoMutt TUI indítása (Terminal User Interface)"
 
 #: usage.c:103
-#, fuzzy
 msgid "neomutt                              Start NeoMutt's TUI"
-msgstr "neomutt                              Start NeoMutt's TUI"
+msgstr "neomutt                              NeoMutt TUI indítása"
 
 #: usage.c:104
-#, fuzzy
 msgid "        -f <mailbox>                 Open this mailbox"
-msgstr "        -f <mailbox>                 Open this mailbox"
+msgstr "        -f <postafiók>                 Postafiók megnyitása"
 
 #: usage.c:105
-#, fuzzy
 msgid "        -G                           Open NNTP browser"
-msgstr "        -G                           Open NNTP browser"
+msgstr "        -G                           NNTP böngésző megnyitása"
 
 #: usage.c:106
-#, fuzzy
 msgid "        -g <server>                  Use this NNTP server"
-msgstr "        -g <server>                  Use this NNTP server"
+msgstr "        -g <szerver>                  Megadott NNTP szerver használata"
 
 #: usage.c:107
-#, fuzzy
 msgid "        -p                           Resume postponed email"
-msgstr "        -p                           Resume postponed email"
+msgstr "        -p                           Félretett üzenet folytatása"
 
 #: usage.c:108
-#, fuzzy
 msgid "        -R                           Open mailbox read-only"
-msgstr "        -R                           Open mailbox read-only"
+msgstr "        -R                           Postafiók megnyitása csak olvasásra"
 
 #: usage.c:109
-#, fuzzy
 msgid "        -y                           Open mailbox browser"
-msgstr "        -y                           Open mailbox browser"
+msgstr "        -y                           Postafiók böngésző megnyitása"
 
 #: usage.c:110
-#, fuzzy
 msgid "        -Z                           Check for new mail"
-msgstr "        -Z                           Check for new mail"
+msgstr "        -Z                           Új levél ellenőrzése"
 
 #: usage.c:111
-#, fuzzy
 msgid "        -z                           Check for any mail"
-msgstr "        -z                           Check for any mail"
+msgstr "        -z                           Bármilyen levél ellenőrzése"
 
 #: usage.c:115 usage.c:117
-#, fuzzy
 msgid "For detailed help, run:"
-msgstr "For detailed help, run:"
+msgstr "Részletes segítségért futtasd:"
 
 #: usage.c:130
-#, fuzzy
 msgid "By default NeoMutt loads one system and one user config file,"
 msgstr "By default NeoMutt loads one system and one user config file,"
 
 #: usage.c:131
-#, fuzzy
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
-msgstr "e.g. /etc/neomuttrc and ~/.neomuttrc"
+msgstr "pl.: /etc/neomuttrc and ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
-#, fuzzy
 msgid "  -n            Don't read system config file"
-msgstr "  -n            Don't read system config file"
+msgstr "  -n            Rendszerkonfigurációs fájl mellőzése"
 
 #: usage.c:135
-#, fuzzy
 msgid "  -F <config>   Use this user config file"
-msgstr "  -F <config>   Use this user config file"
+msgstr "  -F <konfiguráció>   Ez a felhasználói konfigurációs fájl használata"
 
 #: usage.c:136 usage.c:143
-#, fuzzy
 msgid "                May be used multiple times"
-msgstr "                May be used multiple times"
+msgstr "                Többször is használható"
 
 #: usage.c:139
-#, fuzzy
 msgid "These options override the config:"
-msgstr "These options override the config:"
+msgstr "Ezek az opciók felülírják a konfigurációt:"
 
 #: usage.c:140
-#, fuzzy
 msgid "  -m <type>     Set default mailbox type"
-msgstr "  -m <type>     Set default mailbox type"
+msgstr "  -m <típus>     Alapértelmezett postafiók típus beállítása"
 
 #: usage.c:141
-#, fuzzy
 msgid "                May be: maildir, mbox, mh, mmdf"
-msgstr "                May be: maildir, mbox, mh, mmdf"
+msgstr "                Lehet: maildir, mbox, mh, mmdf"
 
 #: usage.c:142
-#, fuzzy
 msgid "  -e <command>  Run extra commands"
-msgstr "  -e <command>  Run extra commands"
+msgstr "  -e <parancs>  További parancsok futtatása"
 
 #: usage.c:146
-#, fuzzy
 msgid "These logging options override the config:"
-msgstr "These logging options override the config:"
+msgstr "Ezek a naplózási beállítások felülírják a konfigurációt:"
 
 #: usage.c:147
-#, fuzzy
 msgid "  -d <level>    Set logging level"
-msgstr "  -d <level>    Set logging level"
+	msgstr "  -d <szint>    Naplózási szint beállítása"
 
 #: usage.c:148
-#, fuzzy
 msgid "                0 (off), 1 (low) .. 5 (high)"
-msgstr "                0 (off), 1 (low) .. 5 (high)"
+msgstr "                0 (ki), 1 (alacsony) .. 5 (magas)"
 
 #: usage.c:149
-#, fuzzy
 msgid "  -l <file>     Set logging file"
-msgstr "  -l <file>     Set logging file"
+msgstr "  -l <fájl>     Naplófájl beállítása"
 
 #: usage.c:150
-#, fuzzy
 msgid "                Default file '~/.neomuttdebug0'"
-msgstr "                Default file '~/.neomuttdebug0'"
+msgstr "                Alapértelmezett fájl: '~/.neomuttdebug0'"
 
 #: usage.c:154 usage.c:156 usage.c:194 usage.c:196 usage.c:231 usage.c:233
 #: usage.c:275 usage.c:277 usage.c:317 usage.c:319
-#, fuzzy
 msgid "Examples:"
-msgstr "Examples:"
+msgstr "Példák:"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:159
-#, fuzzy
 msgid "  neomutt -n"
 msgstr "  neomutt -n"
 
 #: usage.c:160
-#, fuzzy
 msgid "  neomutt -F work.rc"
-msgstr "  neomutt -F work.rc"
+msgstr "  neomutt -F munka.rc"
 
 #: usage.c:161
-#, fuzzy
 msgid "  neomutt -F work.rc -F colours.rc"
-msgstr "  neomutt -F work.rc -F colours.rc"
+msgstr "  neomutt -F munka.rc -F szinek.rc"
 
 #: usage.c:164
-#, fuzzy
 msgid "  neomutt -m maildir"
 msgstr "  neomutt -m maildir"
 
 #: usage.c:165
-#, fuzzy
 msgid "  neomutt -e 'set ask_cc = yes'"
 msgstr "  neomutt -e 'set ask_cc = yes'"
 
 #: usage.c:168
-#, fuzzy
 msgid "  neomutt -d 2"
 msgstr "  neomutt -d 2"
 
 #: usage.c:169
-#, fuzzy
 msgid "  neomutt -d 5 -l neolog"
 msgstr "  neomutt -d 5 -l neolog"
 
 #: usage.c:172
-#, fuzzy
 msgid "See also:"
-msgstr "See also:"
+msgstr "Lásd még:"
 
 #: usage.c:173
-#, fuzzy
 msgid "- Config files: https://neomutt.org/guide/configuration"
-msgstr "- Config files: https://neomutt.org/guide/configuration"
+msgstr "- Konfig. fájlok: https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:187
-#, fuzzy
 msgid "  -h         Overview of command line options"
-msgstr "  -h         Overview of command line options"
+msgstr "  -h         Parancssori opciók áttekintése"
 
 #: usage.c:188
-#, fuzzy
 msgid "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
-msgstr "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
+msgstr "  -h <mód>  Részletes súgó: shared, help, info, send, tui, all"
 
 #: usage.c:189
-#, fuzzy
 msgid "  -v         NeoMutt version and build parameters"
-msgstr "  -v         NeoMutt version and build parameters"
+msgstr "  -v         NeoMutt verzió és fordítási paraméterek"
 
 #: usage.c:190
-#, fuzzy
 msgid "  -vv        NeoMutt Copyright and license"
-msgstr "  -vv        NeoMutt Copyright and license"
+msgstr "  -vv        NeoMutt szerzői jog és licensz"
 
 #. L10N: Examples
 #: usage.c:199
-#, fuzzy
 msgid "  neomutt -h info"
 msgstr "  neomutt -h info"
 
 #: usage.c:200
-#, fuzzy
 msgid "  neomutt -vv"
 msgstr "  neomutt -vv"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:214
-#, fuzzy
 msgid "  -A <alias> [...]  Lookup email aliases"
-msgstr "  -A <alias> [...]  Lookup email aliases"
+msgstr "  -A <álnév> [...]  Email álnevek keresése"
 
 #: usage.c:215
-#, fuzzy
 msgid "                    Multiple aliases can be looked up (space-separated)"
-msgstr "                    Multiple aliases can be looked up (space-separated)"
+msgstr "                    Több álnév is kereshető (szóközzel elválasztva)"
 
 #: usage.c:218
-#, fuzzy
 msgid "  -D                Dump all the config options"
-msgstr "  -D                Dump all the config options"
+msgstr "  -D                Az összes konfigurációs opció listázása"
 
 #: usage.c:219
-#, fuzzy
 msgid "  -D -D             (or -DD) Like -D, but only show changed config"
-msgstr "  -D -D             (or -DD) Like -D, but only show changed config"
+msgstr "  -D -D             (vagy -DD) Mint a -D, de csak a módosított beállításokat mutatja"
 
 #: usage.c:222
-#, fuzzy
 msgid "  -Q <option> [...] Query config options"
-msgstr "  -Q <option> [...] Query config options"
+msgstr "  -Q <beállítás> [...] Konfigurációs opciók lekérdezése"
 
 #: usage.c:223
-#, fuzzy
 msgid "                    Multiple options can be looked up (space-separated)"
-msgstr "                    Multiple options can be looked up (space-separated)"
+msgstr "                    Több opció is lekérdezhető (szóközzel elválasztva)"
 
 #: usage.c:225
-#, fuzzy
 msgid "Modify the -D and -Q options:"
-msgstr "Modify the -D and -Q options:"
+msgstr "Változtassa meg a -D és -Q opciókat:"
 
 #: usage.c:226
-#, fuzzy
 msgid "  -O                Add one-liner documentation"
-msgstr "  -O                Add one-liner documentation"
+msgstr "  -O                Egysoros dokumentáció hozzáadása"
 
 #: usage.c:227
-#, fuzzy
 msgid "  -S                Hide the value of sensitive options"
-msgstr "  -S                Hide the value of sensitive options"
+msgstr "  -S                Érzékeny beállítások értékének elrejtése"
 
 #. L10N: Examples
 #: usage.c:236
-#, fuzzy
 msgid "  neomutt -A flatcap gahr"
 msgstr "  neomutt -A flatcap gahr"
 
 #: usage.c:237
-#, fuzzy
 msgid "  neomutt -D -O"
 msgstr "  neomutt -D -O"
 
 #: usage.c:238
-#, fuzzy
 msgid "  neomutt -DD -S"
 msgstr "  neomutt -DD -S"
 
 #: usage.c:239
-#, fuzzy
 msgid "  neomutt -O -Q alias_format index_format"
 msgstr "  neomutt -O -Q alias_format index_format"
 
 #: usage.c:252
-#, fuzzy
 msgid "These options can supply everything NeoMutt needs to send an email."
-msgstr "These options can supply everything NeoMutt needs to send an email."
+msgstr "Ezekkel az opciókkal minden megadható, amire a NeoMutt-nak szüksége van egy email küldéséhez."
 
 #: usage.c:253
-#, fuzzy
 msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
-msgstr "If any parts are missing, NeoMutt will start the TUI to ask for them."
+msgstr "Ha valami hiányzik, a NeoMutt elindítja a TUI-t és bekéri."
 
 #: usage.c:254
-#, fuzzy
 msgid "Addresses may be used before the options, or after a -- marker."
-msgstr "Addresses may be used before the options, or after a -- marker."
+msgstr "Címek megadhatók az opciók előtt vagy a -- után."
 
 #: usage.c:255
-#, fuzzy
 msgid "Aliases may be used in place of addresses."
-msgstr "Aliases may be used in place of addresses."
+msgstr "Címek helyett álnevek is használhatók."
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:259
-#, fuzzy
 msgid "  -a <file> [...]     Attach files"
-msgstr "  -a <file> [...]     Attach files"
+msgstr "  -a <fájl> [...]     Fájlok csatolása"
 
 #: usage.c:260
-#, fuzzy
 msgid "                      Terminated by -- or another option"
-msgstr "                      Terminated by -- or another option"
+msgstr "                      Lezárva ezzel: -- vagy egy másik opció"
 
 #: usage.c:261
-#, fuzzy
 msgid "  -b <address>        Add Bcc: address"
-msgstr "  -b <address>        Add Bcc: address"
+msgstr "  -b <cím>        Bcc hozzáadása: cím"
 
 #: usage.c:262
-#, fuzzy
 msgid "  -C                  Use crypto (signing/encryption)"
-msgstr "  -C                  Use crypto (signing/encryption)"
+msgstr "  -C                  Titkosítás használata (aláírás/titkosítás)"
 
 #: usage.c:263
-#, fuzzy
 msgid "                      Must be set up in the config file"
-msgstr "                      Must be set up in the config file"
+msgstr "                      A konfigurációs fájlban kell beállítani"
 
 #: usage.c:264
-#, fuzzy
 msgid "  -c <address>        Add Cc: address"
-msgstr "  -c <address>        Add Cc: address"
+msgstr "  -c <cím>        Cc hozzáadása: cím"
 
 #: usage.c:265
-#, fuzzy
 msgid "  -E                  Edit message"
-msgstr "  -E                  Edit message"
+msgstr "  -E                  Üzenet szerkesztése"
 
 #: usage.c:266
-#, fuzzy
 msgid "                      (supplied by -H or -i)"
-msgstr "                      (supplied by -H or -i)"
+msgstr "                      (-H vagy -i által biztosítva)"
 
 #: usage.c:267
-#, fuzzy
 msgid "  -H <draft>          Use draft email"
-msgstr "  -H <draft>          Use draft email"
+msgstr "  -H <piszkozat>          Piszkozat használata"
 
 #: usage.c:268
-#, fuzzy
 msgid "                      Full email with headers and body"
-msgstr "                      Full email with headers and body"
+msgstr "                      Teljes email fejléccel és törzsszöveggel"
 
 #: usage.c:269
-#, fuzzy
 msgid "  -i <include>        Include body file"
-msgstr "  -i <include>        Include body file"
+msgstr "  -i <törzsfájl>        Törzsfájl csatolása"
 
 #: usage.c:270
-#, fuzzy
 msgid "  -s <subject>        Set Subject:"
-msgstr "  -s <subject>        Set Subject:"
+msgstr "  -s <tárgy>        Tárgy beállítása:"
 
 #: usage.c:271
-#, fuzzy
 msgid "  -- <address> [...]  Add To: addresses"
-msgstr "  -- <address> [...]  Add To: addresses"
+msgstr "  -- <cím> [...]  Címzettek hozzáadása"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:280
-#, fuzzy
 msgid "  neomutt flatcap -s 'Meeting' < meeting.txt"
-msgstr "  neomutt flatcap -s 'Meeting' < meeting.txt"
+msgstr "  neomutt flatcap -s 'Találkozó' < talalkozo.txt"
 
 #: usage.c:281
-#, fuzzy
 msgid "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
-msgstr "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
+msgstr "  neomutt feri@pelda.com -c cecil@pelda.com -s 'Parti lesz' -i parti.txt"
 
 #: usage.c:282
-#, fuzzy
 msgid "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
-msgstr "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
+msgstr "  neomutt -s 'Igazolások' -a igazolas1.pdf igazolas2.pdf -- rocco"
 
 #: usage.c:283
-#, fuzzy
 msgid "  cat secret.txt | neomutt gahr -s 'Secret' -C"
-msgstr "  cat secret.txt | neomutt gahr -s 'Secret' -C"
+msgstr "  cat titkos.txt | neomutt gahr -s 'Titkos' -C"
 
 #: usage.c:296
-#, fuzzy
 msgid "Running NeoMutt with no options will read the config and start the TUI."
-msgstr "Running NeoMutt with no options will read the config and start the TUI."
+msgstr "A NeoMutt opciók nélküli futtatása beolvassa a konfigurációt és elindítja a terminál felhasználó interfészt"
 
 #: usage.c:297
-#, fuzzy
 msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
-msgstr "By default, it will open the Index Dialog with the $spool_file Mailbox."
+msgstr "Alapértelmezésben, az Index dialógusablakot indítja el a $sool_file Mailboxszal."
 
 #: usage.c:300
-#, fuzzy
 msgid "These options cause NeoMutt to check a mailbox for mail."
-msgstr "These options cause NeoMutt to check a mailbox for mail."
+msgstr "Ezek az opciók a NeoMuttal beolvastatják az emaileket."
 
 #: usage.c:301
-#, fuzzy
 msgid "If the condition isn't matched, NeoMutt exits."
-msgstr "If the condition isn't matched, NeoMutt exits."
+msgstr "Ha a feltétel nem teljesül, a NeoMutt kilép."
 
 #: usage.c:302
-#, fuzzy
 msgid "  -p            Resume postponed email"
-msgstr "  -p            Resume postponed email"
+msgstr "  -p            Félretett üzenet folytatása"
 
 #: usage.c:303
-#, fuzzy
 msgid "  -Z            Check for new mail"
-msgstr "  -Z            Check for new mail"
+msgstr "  -Z            Új levél ellenőrzése"
 
 #: usage.c:304
-#, fuzzy
 msgid "  -z            Check for any mail"
-msgstr "  -z            Check for any mail"
+msgstr "  -z            Bármilyen levél ellenőrzése"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:308
-#, fuzzy
 msgid "These options change the starting behavior:"
-msgstr "These options change the starting behavior:"
+msgstr "Ezek az opciók az indulási viselkedést változtatják meg:"
 
 #: usage.c:309
-#, fuzzy
 msgid "  -f <mailbox>  Open this mailbox"
-msgstr "  -f <mailbox>  Open this mailbox"
+msgstr "  -f <postafiók>  Postafiók megnyitása"
 
 #: usage.c:310
-#, fuzzy
 msgid "  -G            Open NNTP browser"
-msgstr "  -G            Open NNTP browser"
+msgstr "  -G            NNTP böngésző megnyitása"
 
 #: usage.c:311
-#, fuzzy
 msgid "  -g <server>   Use this NNTP server"
-msgstr "  -g <server>   Use this NNTP server"
+msgstr "  -g <szerver>   Megadott NNTP szerver használata"
 
 #: usage.c:312
-#, fuzzy
 msgid "  -R            Open mailbox read-only"
-msgstr "  -R            Open mailbox read-only"
+msgstr "  -R            Postafiók megnyitása csak olvasásra"
 
 #: usage.c:313
-#, fuzzy
 msgid "  -y            Open mailbox browser"
-msgstr "  -y            Open mailbox browser"
+msgstr "  -y            Postafiók böngésző megnyitása"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
-#, fuzzy
 msgid "  neomutt -f ~/mail -Z"
 msgstr "  neomutt -f ~/mail -Z"
 
 #: usage.c:323
-#, fuzzy
 msgid "  neomutt -p"
 msgstr "  neomutt -p"
 
 #: usage.c:324
-#, fuzzy
 msgid "  neomutt -y"
 msgstr "  neomutt -y"
+
 
 #: version.c:83
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
