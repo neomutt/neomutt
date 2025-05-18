@@ -2168,7 +2168,7 @@ msgstr "Opció %s:"
 #: expando/node_conddate.c:256
 #, c-format
 msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
-msgstr "Érvénytelen időszak: '%c', 'ymwdHM'
+msgstr "Érvénytelen időszak: '%c', 'ymwdHM'"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
