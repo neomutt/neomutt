@@ -104,12 +104,12 @@ static void test_parse_set(void)
   struct Buffer *err = buf_pool_get();
   char line[64];
 
-  for (size_t v = 0; v < mutt_array_size(vars); v++)
+  for (size_t v = 0; v < countof(vars); v++)
   {
-    for (size_t c = 0; c < mutt_array_size(commands); c++)
+    for (size_t c = 0; c < countof(commands); c++)
     {
       TEST_CASE_("%s %s", commands[c], vars[v]);
-      for (size_t t = 0; t < mutt_array_size(tests); t++)
+      for (size_t t = 0; t < countof(tests); t++)
       {
         buf_reset(err);
 

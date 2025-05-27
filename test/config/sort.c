@@ -181,7 +181,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   struct ConfigSet *cs = sub->cs;
 
   const struct Mapping *map = SortTestMethods;
-  for (unsigned int i = 0; i < mutt_array_size(name_list); i++)
+  for (unsigned int i = 0; i < countof(name_list); i++)
   {
     cs_str_native_set(cs, name_list[i], -1, NULL);
 
@@ -218,7 +218,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
       NULL,
     };
 
-    for (unsigned int j = 0; j < mutt_array_size(invalid); j++)
+    for (unsigned int j = 0; j < countof(invalid); j++)
     {
       buf_reset(err);
       rc = cs_str_string_set(cs, name_list[i], invalid[j], err);
@@ -353,7 +353,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   int rc;
   const struct Mapping *map = SortTestMethods;
-  for (unsigned int i = 0; i < mutt_array_size(name_list); i++)
+  for (unsigned int i = 0; i < countof(name_list); i++)
   {
     cs_str_native_set(cs, name_list[i], -1, NULL);
 
@@ -404,7 +404,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("%s = %d, set to '%d'", name, VarKumquat, value);
 
   int invalid[] = { -1, 999 };
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     cs_str_native_set(cs, name, -1, NULL);
     buf_reset(err);

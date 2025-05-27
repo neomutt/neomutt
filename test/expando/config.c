@@ -193,7 +193,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   const char *name = "Damson";
 
   int rc;
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);
@@ -234,7 +234,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   name = "Elderberry";
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     short_line();
     buf_reset(err);
@@ -346,7 +346,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   struct ConfigSet *cs = sub->cs;
 
   int rc;
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     buf_reset(err);
     struct Expando *exp = expando_parse(valid[i], TestFormatDef, NULL);
@@ -389,7 +389,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   name = "Kumquat";
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     short_line();
     buf_reset(err);
@@ -480,7 +480,7 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
   };
 
   int rc;
-  for (unsigned int i = 0; i < mutt_array_size(PlusTests); i++)
+  for (unsigned int i = 0; i < countof(PlusTests); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, PlusTests[i][0], err);

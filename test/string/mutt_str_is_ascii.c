@@ -54,7 +54,7 @@ void test_mutt_str_is_ascii(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(ascii_tests); i++)
+    for (size_t i = 0; i < countof(ascii_tests); i++)
     {
       struct IsAsciiTest *t = &ascii_tests[i];
       TEST_CASE_("%s", NONULL(t->str));

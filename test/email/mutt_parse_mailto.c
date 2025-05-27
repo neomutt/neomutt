@@ -93,8 +93,8 @@ void test_mutt_parse_mailto(void)
       TEST_MSG("Expected: parsed <%s>", mailto);
       TEST_MSG("Actual  : NULL");
     }
-    check_addrlist(&env->to, to, mutt_array_size(to));
-    check_addrlist(&env->cc, cc, mutt_array_size(cc));
+    check_addrlist(&env->to, to, countof(to));
+    check_addrlist(&env->cc, cc, countof(cc));
     TEST_CHECK_STR_EQ(parsed_body, body);
     FREE(&parsed_body);
     mutt_env_free(&env);

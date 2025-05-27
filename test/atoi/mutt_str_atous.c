@@ -99,7 +99,7 @@ void test_mutt_str_atous(void)
   TEST_CHECK(mutt_str_atous("42", NULL) != 0);
 
   // Normal tests
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     TEST_CASE(tests[i].str);
 

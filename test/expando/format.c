@@ -150,7 +150,7 @@ void test_expando_node_expando_format(void)
   {
     struct ExpandoParseError err = { 0 };
 
-    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    for (size_t i = 0; i < countof(tests); i++)
     {
       const char *str = tests[i].src;
       const char *parsed_until = NULL;
@@ -181,7 +181,7 @@ void test_expando_node_expando_format(void)
 
     struct ExpandoParseError err = { 0 };
 
-    for (size_t i = 0; i < mutt_array_size(no_fmt_tests); i++)
+    for (size_t i = 0; i < countof(no_fmt_tests); i++)
     {
       const char *str = no_fmt_tests[i].src;
       const char *parsed_until = NULL;

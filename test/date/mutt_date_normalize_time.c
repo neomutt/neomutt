@@ -67,7 +67,7 @@ void test_mutt_date_normalize_time(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(time_tests); i++)
+    for (size_t i = 0; i < countof(time_tests); i++)
     {
       struct tm *date = &time_tests[i].date;
       struct tm *expected = &time_tests[i].expected;

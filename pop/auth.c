@@ -501,7 +501,7 @@ static const struct PopAuth PopAuthenticators[] = {
  */
 bool pop_auth_is_valid(const char *authenticator)
 {
-  for (size_t i = 0; i < mutt_array_size(PopAuthenticators); i++)
+  for (size_t i = 0; i < countof(PopAuthenticators); i++)
   {
     const struct PopAuth *auth = &PopAuthenticators[i];
     if (auth->method && mutt_istr_equal(auth->method, authenticator))

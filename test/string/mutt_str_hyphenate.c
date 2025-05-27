@@ -70,7 +70,7 @@ void test_mutt_str_hyphenate(void)
   {
     char result[128];
 
-    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    for (size_t i = 0; i < countof(tests); i++)
     {
       memset(result, 0, sizeof(result));
       TEST_CASE(tests[i].input);

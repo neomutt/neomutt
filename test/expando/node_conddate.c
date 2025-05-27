@@ -143,7 +143,7 @@ void test_expando_node_conddate(void)
     const char *parsed_until = NULL;
     struct ExpandoParseError err = { 0 };
 
-    for (size_t i = 0; i < mutt_array_size(test_dates); i++)
+    for (size_t i = 0; i < countof(test_dates); i++)
     {
       TEST_CASE(test_dates[i].str);
       struct ExpandoNode *node = node_conddate_parse(test_dates[i].str + 2, 1, 2, &parsed_until, &err);
@@ -192,7 +192,7 @@ void test_expando_node_conddate(void)
     const char *parsed_until = NULL;
     struct ExpandoParseError err = { 0 };
 
-    for (size_t i = 0; i < mutt_array_size(test_dates); i++)
+    for (size_t i = 0; i < countof(test_dates); i++)
     {
       TEST_CASE(test_dates[i].str);
       struct ExpandoNode *node = node_conddate_parse(test_dates[i].str + 2, 1, 2, &parsed_until, &err);

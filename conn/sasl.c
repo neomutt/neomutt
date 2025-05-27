@@ -135,7 +135,7 @@ static sasl_secret_t *SecretPtr = NULL;
  */
 bool sasl_auth_validator(const char *authenticator)
 {
-  for (size_t i = 0; i < mutt_array_size(SaslAuthenticators); i++)
+  for (size_t i = 0; i < countof(SaslAuthenticators); i++)
   {
     const char *auth = SaslAuthenticators[i];
     if (mutt_istr_equal(auth, authenticator))

@@ -169,7 +169,7 @@ static const struct SysExits SysExits[] = {
  */
 const char *mutt_str_sysexit(int err_num)
 {
-  for (size_t i = 0; i < mutt_array_size(SysExits); i++)
+  for (size_t i = 0; i < countof(SysExits); i++)
   {
     if (err_num == SysExits[i].err_num)
       return SysExits[i].err_str;

@@ -91,7 +91,7 @@ void test_buf_inline_replace(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(replace_tests); i++)
+    for (size_t i = 0; i < countof(replace_tests); i++)
     {
       const struct InlineReplaceTest *t = &replace_tests[i];
 

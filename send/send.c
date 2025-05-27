@@ -164,7 +164,7 @@ static void add_mailing_lists(struct AddressList *out, const struct AddressList 
 {
   const struct AddressList *const als[] = { t, c };
 
-  for (size_t i = 0; i < mutt_array_size(als); i++)
+  for (size_t i = 0; i < countof(als); i++)
   {
     const struct AddressList *al = als[i];
     struct Address *a = NULL;

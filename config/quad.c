@@ -118,7 +118,7 @@ static int quad_string_get(void *var, const struct ConfigDef *cdef, struct Buffe
   else
     value = (int) cdef->initial;
 
-  if (value >= (mutt_array_size(QuadValues) - 1))
+  if (value >= (countof(QuadValues) - 1))
   {
     mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d\n", value); /* LCOV_EXCL_LINE */
     return CSR_ERR_INVALID | CSR_INV_TYPE; /* LCOV_EXCL_LINE */
@@ -134,7 +134,7 @@ static int quad_string_get(void *var, const struct ConfigDef *cdef, struct Buffe
 static int quad_native_set(void *var, const struct ConfigDef *cdef,
                            intptr_t value, struct Buffer *err)
 {
-  if ((value < 0) || (value >= (mutt_array_size(QuadValues) - 1)))
+  if ((value < 0) || (value >= (countof(QuadValues) - 1)))
   {
     buf_printf(err, _("Invalid quad value: %ld"), (long) value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;

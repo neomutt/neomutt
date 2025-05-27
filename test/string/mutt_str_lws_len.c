@@ -60,7 +60,7 @@ void test_mutt_str_lws_len(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(lws_tests); i++)
+    for (size_t i = 0; i < countof(lws_tests); i++)
     {
       struct LwsLenTest *t = &lws_tests[i];
       TEST_CASE_("%ld, '%s'", i, NONULL(t->str));

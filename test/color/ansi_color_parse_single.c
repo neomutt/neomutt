@@ -81,7 +81,7 @@ void test_ansi_color_parse_single(void)
     };
 
     int len;
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE_("Length %d", i);
 
@@ -136,7 +136,7 @@ void test_ansi_color_parse_single(void)
     };
 
     int len;
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE_("Cancel %d", i);
 
@@ -196,11 +196,11 @@ void test_ansi_color_parse_single(void)
     char str[32];
     for (int i = 38; i < 49; i += 10)
     {
-      for (int r = 0; r < mutt_array_size(red); r++)
+      for (int r = 0; r < countof(red); r++)
       {
-        for (int g = 0; g < mutt_array_size(green); g++)
+        for (int g = 0; g < countof(green); g++)
         {
-          for (int b = 0; b < mutt_array_size(blue); b++)
+          for (int b = 0; b < countof(blue); b++)
           {
             int val_r = red[r];
             int val_g = green[g];
@@ -269,7 +269,7 @@ void test_ansi_color_parse_single(void)
     };
 
     int len;
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE_("Bad %d", i);
 

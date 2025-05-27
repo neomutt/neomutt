@@ -137,7 +137,7 @@ void test_mutt_rfc822_read_line(void)
     fclose(fp);
   }
 
-  for (size_t i = 0; i < mutt_array_size(test_data); ++i)
+  for (size_t i = 0; i < countof(test_data); ++i)
   {
     FILE *fp = test_make_file_with_contents(test_data[i].input,
                                             strlen(test_data[i].input));
