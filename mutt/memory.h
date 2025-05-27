@@ -23,6 +23,11 @@
 #ifndef MUTT_MUTT_MEMORY_H
 #define MUTT_MUTT_MEMORY_H
 
+#if defined __has_include
+# if __has_include(<stdcountof.h>)
+#  include <stdcountof.h>
+# endif
+#endif
 #include <stddef.h>
 
 #undef MAX
@@ -35,7 +40,9 @@
 #undef ROUND_UP
 #define ROUND_UP(NUM, STEP) ((((NUM) + (STEP) -1) / (STEP)) * (STEP))
 
-#define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
+#if !defined(countof)
+# define countof(x)  (sizeof(x) / sizeof((x)[0]))
+#endif
 
 #define MUTT_MEM_CALLOC(n, type)  ((type *) mutt_mem_calloc(n, sizeof(type)))
 #define MUTT_MEM_MALLOC(n, type)  ((type *) mutt_mem_mallocarray(n, sizeof(type)))

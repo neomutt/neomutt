@@ -186,7 +186,7 @@ static time_t add_tz_offset(time_t t, bool w, time_t h, time_t m)
  */
 static const struct Tz *find_tz(const char *s, size_t len)
 {
-  for (size_t i = 0; i < mutt_array_size(TimeZones); i++)
+  for (size_t i = 0; i < countof(TimeZones); i++)
   {
     if (mutt_istrn_equal(TimeZones[i].tzname, s, len))
       return &TimeZones[i];
@@ -244,7 +244,7 @@ time_t mutt_date_make_time(struct tm *t, bool local)
   if (!t)
     return TIME_T_MIN;
 
-  static const int AccumDaysPerMonth[mutt_array_size(Months)] = {
+  static const int AccumDaysPerMonth[countof(Months)] = {
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334,
   };
 
@@ -265,7 +265,7 @@ time_t mutt_date_make_time(struct tm *t, bool local)
     return TIME_T_MAX;
 
   /* Compute the number of days since January 1 in the same year */
-  int yday = AccumDaysPerMonth[t->tm_mon % mutt_array_size(Months)];
+  int yday = AccumDaysPerMonth[t->tm_mon % countof(Months)];
 
   /* The leap years are 1972 and every 4. year until 2096,
    * but this algorithm will fail after year 2099 */
@@ -312,7 +312,7 @@ void mutt_date_normalize_time(struct tm *tm)
   if (!tm)
     return;
 
-  static const char DaysPerMonth[mutt_array_size(Months)] = {
+  static const char DaysPerMonth[countof(Months)] = {
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
   };
   int leap;
@@ -438,7 +438,7 @@ int mutt_date_check_month(const char *s)
   memcpy(buf, s, 3);
   uint32_t sv;
   memcpy(&sv, buf, sizeof(sv));
-  for (int i = 0; i < mutt_array_size(Months); i++)
+  for (int i = 0; i < countof(Months); i++)
   {
     uint32_t mv;
     memcpy(&mv, Months[i], sizeof(mv));

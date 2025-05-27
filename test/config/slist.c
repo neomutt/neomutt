@@ -168,7 +168,7 @@ static bool test_slist_parse(struct Buffer *err)
   buf_reset(err);
 
   struct Slist *list = NULL;
-  for (size_t i = 0; i < mutt_array_size(init); i++)
+  for (size_t i = 0; i < countof(init); i++)
   {
     TEST_CASE_(">>%s<<", init[i] ? init[i] : "NULL");
     list = slist_parse(init[i], flags);
@@ -266,7 +266,7 @@ static bool test_slist_is_member(struct Buffer *err)
 
     static const char *values[] = { "apple", "", "damson", NULL };
 
-    for (size_t i = 0; i < mutt_array_size(values); i++)
+    for (size_t i = 0; i < countof(values); i++)
     {
       TEST_MSG("member '%s' : %s", values[i], slist_is_member(list, values[i]) ? "yes" : "no");
     }
@@ -655,7 +655,7 @@ static bool test_plus_equals(struct ConfigSubset *sub, struct Buffer *err)
   };
 
   int rc;
-  for (size_t i = 0; i < mutt_array_size(PlusTests); i++)
+  for (size_t i = 0; i < countof(PlusTests); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, PlusTests[i][0], err);
@@ -734,7 +734,7 @@ static bool test_minus_equals(struct ConfigSubset *sub, struct Buffer *err)
   };
 
   int rc;
-  for (size_t i = 0; i < mutt_array_size(MinusTests); i++)
+  for (size_t i = 0; i < countof(MinusTests); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, MinusTests[i][0], err);

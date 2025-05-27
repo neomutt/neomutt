@@ -201,7 +201,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
     return NULL;
 
   type = CONFIG_TYPE(type);
-  if (type >= mutt_array_size(cs->types))
+  if (type >= countof(cs->types))
     return NULL; // LCOV_EXCL_LINE
 
   if (!cs->types[type].name)
@@ -227,7 +227,7 @@ bool cs_register_type(struct ConfigSet *cs, const struct ConfigSetType *cst)
     return false;
   }
 
-  if (cst->type >= mutt_array_size(cs->types))
+  if (cst->type >= countof(cs->types))
     return false;
 
   if (cs->types[cst->type].name)

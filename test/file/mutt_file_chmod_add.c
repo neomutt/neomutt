@@ -45,7 +45,7 @@ void test_mutt_file_chmod_add(void)
   struct Buffer *first = buf_pool_get();
   int rc;
 
-  for (size_t i = 0; i < mutt_array_size(tests_fail); i++)
+  for (size_t i = 0; i < countof(tests_fail); i++)
   {
     test_gen_path(first, tests_fail[i].first);
 
@@ -62,7 +62,7 @@ void test_mutt_file_chmod_add(void)
   // clang-format on
 
   struct stat st;
-  for (size_t i = 0; i < mutt_array_size(tests_succeed); i++)
+  for (size_t i = 0; i < countof(tests_succeed); i++)
   {
     test_gen_path(first, tests_succeed[i].first);
 

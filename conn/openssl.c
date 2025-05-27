@@ -867,7 +867,7 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct CertArra
 
   char *line = NULL;
   char *text = NULL;
-  for (size_t i = 0; i < mutt_array_size(part); i++)
+  for (size_t i = 0; i < countof(part); i++)
   {
     text = x509_get_part(x509, part[i]);
     if (text)

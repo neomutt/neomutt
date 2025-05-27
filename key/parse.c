@@ -384,7 +384,7 @@ enum CommandResult parse_bind(struct Buffer *buf, struct Buffer *s,
   int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  char *key = parse_keymap(mtypes, s, mutt_array_size(mtypes), &num_menus, err, true);
+  char *key = parse_keymap(mtypes, s, countof(mtypes), &num_menus, err, true);
   if (!key)
     return MUTT_CMD_ERROR;
 
@@ -584,7 +584,7 @@ enum CommandResult parse_macro(struct Buffer *buf, struct Buffer *s,
   int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  char *key = parse_keymap(mtypes, s, mutt_array_size(mtypes), &num_menus, err, false);
+  char *key = parse_keymap(mtypes, s, countof(mtypes), &num_menus, err, false);
   if (!key)
     return MUTT_CMD_ERROR;
 
@@ -693,7 +693,7 @@ enum CommandResult parse_exec(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
     }
     nops++;
-  } while (MoreArgs(s) && nops < mutt_array_size(ops));
+  } while (MoreArgs(s) && nops < countof(ops));
 
   while (nops)
     mutt_push_macro_event(0, ops[--nops]);

@@ -64,7 +64,7 @@ void test_mutt_str_sysexit(void)
 
   const char *result = NULL;
 
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     TEST_MSG("Testing %d, expecting '%s'", tests[i].err_num, NONULL(tests[i].result));
     result = mutt_str_sysexit(tests[i].err_num);

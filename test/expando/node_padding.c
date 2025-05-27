@@ -201,7 +201,7 @@ void test_expando_node_padding(void)
     struct Buffer *err = buf_pool_get();
     struct Expando *exp = NULL;
 
-    for (int i = 0; i < mutt_array_size(TestStrings); i++)
+    for (int i = 0; i < countof(TestStrings); i++)
     {
       buf_reset(buf);
       buf_reset(err);
@@ -243,7 +243,7 @@ void test_expando_node_padding(void)
     struct Expando *exp = NULL;
     int rc;
 
-    for (int i = 0; i < mutt_array_size(EolTests); i++)
+    for (int i = 0; i < countof(EolTests); i++)
     {
       buf_reset(buf);
       buf_reset(err);
@@ -336,7 +336,7 @@ void test_expando_node_padding(void)
     struct Expando *exp = NULL;
     int rc;
 
-    for (int i = 0; i < mutt_array_size(HardTests); i++)
+    for (int i = 0; i < countof(HardTests); i++)
     {
       buf_reset(buf);
       buf_reset(err);
@@ -429,7 +429,7 @@ void test_expando_node_padding(void)
     struct Expando *exp = NULL;
     int rc;
 
-    for (int i = 0; i < mutt_array_size(SoftTests); i++)
+    for (int i = 0; i < countof(SoftTests); i++)
     {
       buf_reset(buf);
       buf_reset(err);

@@ -56,7 +56,7 @@ void test_mutt_str_skip_whitespace(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(skip_tests); i++)
+    for (size_t i = 0; i < countof(skip_tests); i++)
     {
       struct SkipTest *t = &skip_tests[i];
       TEST_CASE_("'%s'", t->str);

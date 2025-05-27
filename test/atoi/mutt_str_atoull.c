@@ -85,7 +85,7 @@ void test_mutt_str_atoull(void)
   TEST_CHECK(mutt_str_atoull("42", NULL) != NULL);
 
   // Normal tests
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     TEST_CASE(tests[i].str);
 

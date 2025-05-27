@@ -61,7 +61,7 @@ void test_nm_parse_type_from_query(void)
   TEST_CHECK(nm_parse_type_from_query(NULL, NM_QUERY_TYPE_THREADS) == NM_QUERY_TYPE_THREADS);
 
   char buf[1024];
-  for (int i = 0; i < mutt_array_size(tests); i++)
+  for (int i = 0; i < countof(tests); i++)
   {
     const struct NmParseTypeTest *t = &tests[i];
     memset(buf, 0, sizeof(buf));

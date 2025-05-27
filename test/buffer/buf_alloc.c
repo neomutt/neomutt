@@ -52,7 +52,7 @@ void test_buf_alloc(void)
       { 129, 256 },
     };
 
-    for (size_t i = 0; i < mutt_array_size(sizes); i++)
+    for (size_t i = 0; i < countof(sizes); i++)
     {
       struct Buffer *buf = MUTT_MEM_CALLOC(1, struct Buffer);
       buf_alloc(buf, orig_size);

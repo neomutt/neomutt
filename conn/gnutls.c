@@ -443,7 +443,7 @@ static void add_cert(const char *title, gnutls_x509_crt_t cert, bool issuer,
   // Allocate formatted strings and let the array take ownership
   ARRAY_ADD(carr, mutt_str_dup(title));
 
-  for (size_t i = 0; i < mutt_array_size(part); i++)
+  for (size_t i = 0; i < countof(part); i++)
   {
     size_t buflen = sizeof(buf);
     if (issuer)

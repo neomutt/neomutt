@@ -113,7 +113,7 @@ void test_expando_parser(void)
     struct Buffer *err = buf_pool_get();
     struct Expando *exp = NULL;
 
-    for (int i = 0; i < mutt_array_size(TestStrings); i++)
+    for (int i = 0; i < countof(TestStrings); i++)
     {
       buf_reset(buf);
       buf_reset(err);
@@ -157,7 +157,7 @@ void test_expando_parser(void)
     struct Buffer *err = buf_pool_get();
     struct Expando *exp = NULL;
 
-    for (int i = 0; i < mutt_array_size(TestsBad); i++)
+    for (int i = 0; i < countof(TestsBad); i++)
     {
       buf_reset(buf);
       buf_reset(err);

@@ -50,7 +50,7 @@ void test_buf_strcpy_n(void)
     const size_t len = strlen(str);
     size_t sizes[] = { 0, 5, len };
 
-    for (size_t i = 0; i < mutt_array_size(sizes); i++)
+    for (size_t i = 0; i < countof(sizes); i++)
     {
       TEST_CASE_("%ld", sizes[i]);
       struct Buffer *buf = buf_pool_get();
@@ -69,7 +69,7 @@ void test_buf_strcpy_n(void)
     const size_t len = strlen(str);
     size_t sizes[] = { 0, 5, len };
 
-    for (size_t i = 0; i < mutt_array_size(sizes); i++)
+    for (size_t i = 0; i < countof(sizes); i++)
     {
       TEST_CASE_("%ld", sizes[i]);
       struct Buffer *buf = buf_pool_get();
