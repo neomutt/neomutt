@@ -171,7 +171,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   int rc;
 
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);
@@ -198,7 +198,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   name = "Elderberry";
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);

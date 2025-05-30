@@ -60,7 +60,7 @@ void test_mutt_str_find_word(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(find_tests); i++)
+    for (size_t i = 0; i < countof(find_tests); i++)
     {
       struct FindWordTest *t = &find_tests[i];
 

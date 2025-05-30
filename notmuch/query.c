@@ -76,7 +76,7 @@ enum NmQueryType nm_parse_type_from_query(char *buf, enum NmQueryType fallback)
   const char *variants[6] = { "&type=threads", "&type=messages",
                               "type=threads&", "type=messages&",
                               "type=threads",  "type=messages" };
-  int variants_size = mutt_array_size(variants);
+  int variants_size = countof(variants);
 
   for (int i = 0; i < variants_size; i++)
   {

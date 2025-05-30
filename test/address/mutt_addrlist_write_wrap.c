@@ -66,7 +66,7 @@ void test_mutt_addrlist_write_wrap(void)
   };
 
   {
-    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    for (size_t i = 0; i < countof(tests); i++)
     {
       TEST_CASE(test_name(tests[i].address_list));
 

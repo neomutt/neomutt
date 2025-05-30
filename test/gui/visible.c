@@ -134,7 +134,7 @@ void test_window_visible(void)
 
   notify_observer_add(parent->notify, NT_WINDOW, visible_observer, &results);
 
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     parent->old.visible = tests[i].parent_before;
     parent->state.visible = tests[i].parent_after;

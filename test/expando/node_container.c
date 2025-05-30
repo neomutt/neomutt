@@ -124,7 +124,7 @@ void test_expando_node_container(void)
     struct Buffer *buf = buf_pool_get();
     int rc;
 
-    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    for (size_t i = 0; i < countof(tests); i++)
     {
       TEST_CASE_("%d", tests[i].value);
       buf_reset(buf);

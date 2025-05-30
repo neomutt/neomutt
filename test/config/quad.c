@@ -157,7 +157,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   char VarDamson;
 
   int rc;
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     cs_str_native_set(cs, name, ((i + 1) % 4), NULL);
 
@@ -197,7 +197,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     short_line();
   }
 
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, invalid[i], err);
@@ -239,7 +239,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   int valid[] = { MUTT_NO, MUTT_YES, MUTT_ASKNO, MUTT_ASKYES };
 
   int rc;
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     cs_str_native_set(cs, name, valid[i], NULL);
     buf_reset(err);
@@ -310,7 +310,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   int invalid[] = { -1, 4 };
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     short_line();
     cs_str_native_set(cs, name, MUTT_NO, NULL);
@@ -670,7 +670,7 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     char before = tests[i].before;
     char after = tests[i].after;

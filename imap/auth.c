@@ -94,7 +94,7 @@ static const struct ImapAuth ImapAuthenticators[] = {
  */
 bool imap_auth_is_valid(const char *authenticator)
 {
-  for (size_t i = 0; i < mutt_array_size(ImapAuthenticators); i++)
+  for (size_t i = 0; i < countof(ImapAuthenticators); i++)
   {
     const struct ImapAuth *auth = &ImapAuthenticators[i];
     if (auth->method && mutt_istr_equal(auth->method, authenticator))
@@ -127,7 +127,7 @@ int imap_authenticate(struct ImapAccountData *adata)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 
-      for (size_t i = 0; i < mutt_array_size(ImapAuthenticators); i++)
+      for (size_t i = 0; i < countof(ImapAuthenticators); i++)
       {
         const struct ImapAuth *auth = &ImapAuthenticators[i];
         if (!auth->method || mutt_istr_equal(auth->method, np->data))
@@ -146,7 +146,7 @@ int imap_authenticate(struct ImapAccountData *adata)
     /* Fall back to default: any authenticator */
     mutt_debug(LL_DEBUG2, "Trying pre-defined imap_authenticators\n");
 
-    for (size_t i = 0; i < mutt_array_size(ImapAuthenticators); i++)
+    for (size_t i = 0; i < countof(ImapAuthenticators); i++)
     {
       rc = ImapAuthenticators[i].authenticate(adata, NULL);
       if (rc == IMAP_AUTH_SUCCESS)

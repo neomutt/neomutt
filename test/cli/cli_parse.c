@@ -335,7 +335,7 @@ void test_cli_parse(void)
 
     struct Buffer *res = buf_pool_get();
 
-    for (size_t i = 0; i < mutt_array_size(Tests); i++)
+    for (size_t i = 0; i < countof(Tests); i++)
     {
       struct CommandLine *cli = command_line_new();
       struct StringArray sa = ARRAY_HEAD_INITIALIZER;
@@ -368,7 +368,7 @@ void test_cli_parse(void)
 
     opterr = 0; // Disable stderr warnings
 
-    for (size_t i = 0; i < mutt_array_size(Tests); i++)
+    for (size_t i = 0; i < countof(Tests); i++)
     {
       struct CommandLine *cli = command_line_new();
       struct StringArray sa = ARRAY_HEAD_INITIALIZER;

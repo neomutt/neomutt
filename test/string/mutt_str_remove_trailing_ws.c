@@ -69,7 +69,7 @@ void test_mutt_str_remove_trailing_ws(void)
   {
     char buf[64];
 
-    for (size_t i = 0; i < mutt_array_size(trail_tests); i++)
+    for (size_t i = 0; i < countof(trail_tests); i++)
     {
       struct TrailTest *t = &trail_tests[i];
       memset(buf, 0, sizeof(buf));

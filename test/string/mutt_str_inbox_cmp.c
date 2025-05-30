@@ -45,7 +45,7 @@ void test_mutt_str_inbox_cmp(void)
 {
   char *folders[] = { "+Inbox", "+Foo",    "+Inbox.Archive", "+",
                       "+Bar",   "+FooBar", "+FooBar.Baz" };
-  mutt_qsort_r(&folders, mutt_array_size(folders), sizeof(*folders), sort, NULL);
+  mutt_qsort_r(&folders, countof(folders), sizeof(*folders), sort, NULL);
   TEST_CHECK_STR_EQ(folders[0], "+Inbox");
   TEST_CHECK_STR_EQ(folders[1], "+Inbox.Archive");
   TEST_CHECK_STR_EQ(folders[2], "+");

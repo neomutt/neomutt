@@ -183,7 +183,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   int rc;
   unsigned char VarDamson;
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     cs_str_native_set(cs, name, ANIMAL_CASSOWARY, NULL);
 
@@ -212,7 +212,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     short_line();
   }
 
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     TEST_MSG("Setting %s to %s", name, NONULL(invalid[i]));
     buf_reset(err);
@@ -350,7 +350,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   int invalid[] = { -1, 256 };
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     short_line();
     cs_str_native_set(cs, name, ANIMAL_CASSOWARY, NULL);

@@ -80,7 +80,7 @@ void test_mutt_istr_remall(void)
     const char *remove = "apple";
     char buf[64];
 
-    for (size_t i = 0; i < mutt_array_size(remall_tests); i++)
+    for (size_t i = 0; i < countof(remall_tests); i++)
     {
       struct RemallTest *t = &remall_tests[i];
       memset(buf, 0, sizeof(buf));
