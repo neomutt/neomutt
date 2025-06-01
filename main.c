@@ -290,7 +290,7 @@ static char *getmailname(void)
   char *mailname = NULL;
   static const char *mn_files[] = { "/etc/mailname", "/etc/mail/mailname" };
 
-  for (size_t i = 0; i < mutt_array_size(mn_files); i++)
+  for (size_t i = 0; i < countof(mn_files); i++)
   {
     FILE *fp = mutt_file_fopen(mn_files[i], "r");
     if (!fp)
@@ -708,7 +708,7 @@ static void reset_tilde(struct ConfigSet *cs)
   static const char *names[] = { "folder", "mbox", "postponed", "record" };
 
   struct Buffer *value = buf_pool_get();
-  for (size_t i = 0; i < mutt_array_size(names); i++)
+  for (size_t i = 0; i < countof(names); i++)
   {
     struct HashElem *he = cs_get_elem(cs, names[i]);
     if (!he)

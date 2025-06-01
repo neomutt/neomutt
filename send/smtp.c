@@ -925,7 +925,7 @@ static const struct SmtpAuth SmtpAuthenticators[] = {
  */
 bool smtp_auth_is_valid(const char *authenticator)
 {
-  for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
+  for (size_t i = 0; i < countof(SmtpAuthenticators); i++)
   {
     const struct SmtpAuth *auth = &SmtpAuthenticators[i];
     if (auth->method && mutt_istr_equal(auth->method, authenticator))
@@ -956,7 +956,7 @@ static int smtp_authenticate(struct SmtpAccountData *adata)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 
-      for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
+      for (size_t i = 0; i < countof(SmtpAuthenticators); i++)
       {
         const struct SmtpAuth *auth = &SmtpAuthenticators[i];
         if (!auth->method || mutt_istr_equal(auth->method, np->data))
@@ -980,7 +980,7 @@ static int smtp_authenticate(struct SmtpAccountData *adata)
 #else
     mutt_debug(LL_DEBUG2, "Falling back to using any authenticator available\n");
     /* Try all available authentication methods */
-    for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
+    for (size_t i = 0; i < countof(SmtpAuthenticators); i++)
     {
       const struct SmtpAuth *auth = &SmtpAuthenticators[i];
       mutt_debug(LL_DEBUG2, "Trying method %s\n", auth->method ? auth->method : "<variable>");

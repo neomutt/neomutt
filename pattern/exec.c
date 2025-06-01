@@ -472,7 +472,7 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 static bool mutt_is_predicate_recipient(bool all_addr, struct Envelope *env, addr_predicate_t p)
 {
   struct AddressList *als[] = { &env->to, &env->cc };
-  for (size_t i = 0; i < mutt_array_size(als); i++)
+  for (size_t i = 0; i < countof(als); i++)
   {
     struct AddressList *al = als[i];
     struct Address *a = NULL;

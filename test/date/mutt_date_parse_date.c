@@ -135,7 +135,7 @@ void test_mutt_date_parse_date(void)
 
   {
     struct Tz tz;
-    for (size_t i = 0; i < mutt_array_size(parse_tests); i++)
+    for (size_t i = 0; i < countof(parse_tests); i++)
     {
       memset(&tz, 0, sizeof(tz));
       TEST_CASE(parse_tests[i].str);

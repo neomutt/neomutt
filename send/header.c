@@ -68,7 +68,7 @@ enum UserHdrsOverrideIdx
 struct UserHdrsOverride
 {
   /// Which email headers have been overridden
-  bool is_overridden[mutt_array_size(UserhdrsOverrideHeaders)];
+  bool is_overridden[countof(UserhdrsOverrideHeaders)];
 };
 
 /**
@@ -384,7 +384,7 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
     /* check whether the current user-header is an override */
     size_t cur_override = ICONV_ILLEGAL_SEQ;
     const char *const *idx = bsearch(tmp->data, UserhdrsOverrideHeaders,
-                                     mutt_array_size(UserhdrsOverrideHeaders),
+                                     countof(UserhdrsOverrideHeaders),
                                      sizeof(char *), userhdrs_override_cmp);
     if (idx)
     {

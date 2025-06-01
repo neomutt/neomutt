@@ -58,7 +58,7 @@ void test_mutt_file_stat_compare(void)
   struct Buffer *first = buf_pool_get();
   struct Buffer *second = buf_pool_get();
 
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     memset(&st1, 0, sizeof(st1));
     memset(&st2, 0, sizeof(st2));

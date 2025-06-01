@@ -73,7 +73,7 @@ void test_mutt_addrlist_to_intl(void)
     cs_subset_str_native_set(NeoMutt->sub, "idn_decode", true, NULL);
 #endif
 
-    for (size_t i = 0; i < mutt_array_size(local2intl); ++i)
+    for (size_t i = 0; i < countof(local2intl); ++i)
     {
       struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
       mutt_addrlist_append(&al, mutt_addr_create(NULL, local2intl[i].local));

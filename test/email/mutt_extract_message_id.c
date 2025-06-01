@@ -50,7 +50,7 @@ struct TestData
 
 void test_mutt_extract_message_id(void)
 {
-  for (size_t i = 0; i < mutt_array_size(test); i++)
+  for (size_t i = 0; i < countof(test); i++)
   {
     size_t len = 0;
     char *out = mutt_extract_message_id(test[i].in, &len);
@@ -67,14 +67,14 @@ void test_mutt_extract_message_id(void)
     const char *tokens[] = { "foo bar ", "<foo@bar.baz>", " moo mar", "<moo@mar.maz>" };
     char buf[1024];
     size_t off = 0;
-    for (size_t i = 0; i < mutt_array_size(tokens); i++)
+    for (size_t i = 0; i < countof(tokens); i++)
     {
       off += mutt_str_copy(&buf[0] + off, tokens[i], sizeof(buf) - off);
     }
 
     char *tmp = NULL;
     off = 0;
-    size_t elems = mutt_array_size(tokens);
+    size_t elems = countof(tokens);
     for (const char *it = &buf[0]; (tmp = mutt_extract_message_id(it, &off)); it += off)
     {
       TEST_CHECK(tmp[0] == '<');

@@ -48,7 +48,7 @@ void test_mutt_file_resolve_symlink(void)
   struct Buffer *second = buf_pool_get();
 
   struct Buffer *result = buf_pool_get();
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     test_gen_path(first, tests[i].first);
     test_gen_path(second, tests[i].second);

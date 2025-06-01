@@ -77,7 +77,7 @@ void test_nm_windowed_query_from_query(void)
       "(date:3month..3month or (tag:unread and tag:flagged)) and tag:inbox" },
   };
 
-  for (int i = 0; i < mutt_array_size(tests); i++)
+  for (int i = 0; i < countof(tests); i++)
   {
     const struct TestCase *t = &tests[i];
     char buf[1024] = "\0";

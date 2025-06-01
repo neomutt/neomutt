@@ -54,7 +54,7 @@ void test_driver_tags_get_transformed(void)
 
     struct TagList tl = STAILQ_HEAD_INITIALIZER(tl);
 
-    for (size_t i = 0; i < mutt_array_size(tags); i++)
+    for (size_t i = 0; i < countof(tags); i++)
     {
       STAILQ_INSERT_TAIL(&tl, &tags[i], entries);
     }

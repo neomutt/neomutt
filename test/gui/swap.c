@@ -42,7 +42,7 @@ static const char * initial_order[] = {
 };
 // clang-format on
 
-static const int num_children = mutt_array_size(initial_order);
+static const int num_children = countof(initial_order);
 
 static void wdata_free(struct MuttWindow *win, void **ptr)
 {

@@ -57,4 +57,4 @@ const struct Mapping MenuNames[] = {
 };
 
 /// Number of entries in the #MenuNames array
-const int MenuNamesLen = mutt_array_size(MenuNames) - 1;
+const int MenuNamesLen = countof(MenuNames) - 1;

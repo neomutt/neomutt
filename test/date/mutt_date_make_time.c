@@ -61,7 +61,7 @@ void test_mutt_date_make_time(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(time_tests); i++)
+    for (size_t i = 0; i < countof(time_tests); i++)
     {
       struct tm *tm = &time_tests[i].tm;
 

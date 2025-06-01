@@ -298,7 +298,7 @@ static struct EmailGarbageCollector GC = { 0 };
 void mailbox_gc_add(struct Email *e)
 {
   ASSERT(e);
-  if (GC.idx == mutt_array_size(GC.arr))
+  if (GC.idx == countof(GC.arr))
   {
     mailbox_gc_run();
   }

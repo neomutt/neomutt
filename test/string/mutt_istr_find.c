@@ -70,7 +70,7 @@ void test_mutt_istr_find(void)
   {
     const char *find = "apple";
 
-    for (size_t i = 0; i < mutt_array_size(stri_tests); i++)
+    for (size_t i = 0; i < countof(stri_tests); i++)
     {
       struct StriTest *t = &stri_tests[i];
       TEST_CASE_("'%s'", t->str);

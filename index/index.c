@@ -370,7 +370,7 @@ bool config_check_index(const char *option)
     "ts_icon_format",     "ts_status_format"
   };
 
-  for (size_t i = 0; i < mutt_array_size(index_options); i++)
+  for (size_t i = 0; i < countof(index_options); i++)
   {
     if (mutt_str_equal(option, index_options[i]))
       return true;

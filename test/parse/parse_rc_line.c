@@ -571,7 +571,7 @@ static bool set_empty_values(void)
     "Fig",
     "Guava",
   };
-  for (int i = 0; i < mutt_array_size(stringlike); i++)
+  for (int i = 0; i < countof(stringlike); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(NeoMutt->sub->cs, stringlike[i], "", err);
@@ -607,7 +607,7 @@ static void test_set(void)
       "%s = yes",
       "%s",
     };
-    for (int t = 0; t < mutt_array_size(template); t++)
+    for (int t = 0; t < countof(template); t++)
     {
       if (!TEST_CHECK(set_empty_values()))
       {
@@ -619,7 +619,7 @@ static void test_set(void)
         "Apple",
         "Banana",
       };
-      for (int v = 0; v < mutt_array_size(boolish); v++)
+      for (int v = 0; v < countof(boolish); v++)
       {
         buf_reset(err);
         buf_printf(line, template[t], boolish[v]);
@@ -751,7 +751,7 @@ static void test_unset(void)
       { "no%s", MUTT_SET_SET   },
       // clang-format on
     };
-    for (int t = 0; t < mutt_array_size(template); t++)
+    for (int t = 0; t < countof(template); t++)
     {
       if (!TEST_CHECK(set_non_empty_values()))
       {
@@ -763,7 +763,7 @@ static void test_unset(void)
         "Apple",
         "Banana",
       };
-      for (int v = 0; v < mutt_array_size(boolish); v++)
+      for (int v = 0; v < countof(boolish); v++)
       {
         buf_reset(err);
         buf_strcpy(line, boolish[v]);
@@ -914,7 +914,7 @@ static void test_reset(void)
       { "&%s", MUTT_SET_SET   },
       // clang-format on
     };
-    for (int t = 0; t < mutt_array_size(template); t++)
+    for (int t = 0; t < countof(template); t++)
     {
       if (!TEST_CHECK(set_empty_values()))
       {
@@ -1104,7 +1104,7 @@ static void test_toggle(void)
       { "inv%s", MUTT_SET_SET },
       // clang-format on
     };
-    for (int t = 0; t < mutt_array_size(template); t++)
+    for (int t = 0; t < countof(template); t++)
     {
       if (!TEST_CHECK(set_non_empty_values()))
       {
@@ -1124,7 +1124,7 @@ static void test_toggle(void)
         "yes",
         "ask-yes",
       };
-      for (int v = 0; v < mutt_array_size(boolish); v++)
+      for (int v = 0; v < countof(boolish); v++)
       {
         // First toggle
         {
@@ -1212,7 +1212,7 @@ static void test_query(void)
       "%s?",
       "?%s",
     };
-    for (int t = 0; t < mutt_array_size(template); t++)
+    for (int t = 0; t < countof(template); t++)
     {
       if (!TEST_CHECK(set_non_empty_values()))
       {
@@ -1241,7 +1241,7 @@ static void test_query(void)
       const char *expected[] = {
         "yes", "ask-yes", "555", "damson", "foo",
       };
-      for (int v = 0; v < mutt_array_size(vars); v++)
+      for (int v = 0; v < countof(vars); v++)
       {
         buf_reset(err);
         buf_printf(line, template[t], vars[v]);
@@ -1290,7 +1290,7 @@ static void test_query(void)
       "damson",
       "foo",
     };
-    for (int v = 0; v < mutt_array_size(vars); v++)
+    for (int v = 0; v < countof(vars); v++)
     {
       buf_reset(err);
       buf_strcpy(line, vars[v]);
@@ -1362,7 +1362,7 @@ static void test_increment(void)
       "damsonsmell",
       "foobar",
     };
-    for (int v = 0; v < mutt_array_size(vars); v++)
+    for (int v = 0; v < countof(vars); v++)
     {
       buf_reset(err);
       buf_printf(line, "%s += %s", vars[v], increment[v]);
@@ -1427,7 +1427,7 @@ static void test_decrement(void)
     const char *expected[] = {
       "455",
     };
-    for (int v = 0; v < mutt_array_size(vars); v++)
+    for (int v = 0; v < countof(vars); v++)
     {
       buf_reset(err);
       buf_printf(line, "%s -= %s", vars[v], increment[v]);
@@ -1485,7 +1485,7 @@ static void test_invalid_syntax(void)
       // clang-format on
     };
 
-    for (int t = 0; t < mutt_array_size(template); t++)
+    for (int t = 0; t < countof(template); t++)
     {
       buf_reset(err);
       buf_strcpy(line, template[t]);
@@ -1536,7 +1536,7 @@ static void test_path_expanding(void)
       "expanded/~/bar",
       "expanded/=foo",
     };
-    for (int v = 0; v < mutt_array_size(pathlike); v++)
+    for (int v = 0; v < countof(pathlike); v++)
     {
       buf_reset(err);
       buf_printf(line, "%s = %s", pathlike[v], newvalue[v]);

@@ -79,7 +79,7 @@ void test_expando_filter(void)
     last->text = "hello";
     TEST_CHECK(!check_for_pipe(root));
 
-    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    for (size_t i = 0; i < countof(tests); i++)
     {
       TEST_CASE(tests[i].name);
       last->text = tests[i].name;

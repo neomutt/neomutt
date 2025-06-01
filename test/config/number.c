@@ -155,7 +155,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   int rc;
   short VarDamson;
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     cs_str_native_set(cs, name, -42, NULL);
 
@@ -184,7 +184,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     short_line();
   }
 
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     TEST_MSG("Setting %s to %s", name, NONULL(invalid[i]));
     buf_reset(err);
@@ -318,7 +318,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   int invalid[] = { -32769, 32768 };
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     short_line();
     cs_str_native_set(cs, name, 123, NULL);
@@ -381,7 +381,7 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
 
   int rc;
   short VarDamson;
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     cs_str_native_set(cs, name, -42, NULL);
 
@@ -411,7 +411,7 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
     short_line();
   }
 
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     VarDamson = cs_subset_number(sub, "Damson");
     TEST_MSG("Increasing %s with initial value %d by %s", name, VarDamson,
@@ -466,7 +466,7 @@ static bool test_string_minus_equals(struct ConfigSubset *sub, struct Buffer *er
 
   int rc;
   short VarDamson;
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     cs_str_native_set(cs, name, -42, NULL);
 
@@ -496,7 +496,7 @@ static bool test_string_minus_equals(struct ConfigSubset *sub, struct Buffer *er
     short_line();
   }
 
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     VarDamson = cs_subset_number(sub, "Damson");
     TEST_MSG("Decreasing %s with initial value %d by %s", name, VarDamson,

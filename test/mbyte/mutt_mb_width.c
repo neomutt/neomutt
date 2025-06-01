@@ -70,7 +70,7 @@ void test_mutt_mb_width(void)
       // clang-format on
     };
 
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE(test_name(tests[i].str));
       int len = mutt_mb_width(tests[i].str, tests[i].col, false);
@@ -96,7 +96,7 @@ void test_mutt_mb_width(void)
       // clang-format on
     };
 
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE(test_name(tests[i].str));
       int len = mutt_mb_width(tests[i].str, tests[i].col, false);
@@ -115,7 +115,7 @@ void test_mutt_mb_width(void)
       // clang-format on
     };
 
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE(test_name(tests[i].str));
       int len = mutt_mb_width(tests[i].str, tests[i].col, true);

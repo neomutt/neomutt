@@ -59,7 +59,7 @@ void test_mutt_date_parse_imap(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(imap_tests); i++)
+    for (size_t i = 0; i < countof(imap_tests); i++)
     {
       TEST_CASE(imap_tests[i].str);
       time_t result = mutt_date_parse_imap(imap_tests[i].str);
