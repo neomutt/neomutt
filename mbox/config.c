@@ -34,7 +34,7 @@
 /**
  * MboxVars - Config definitions for the Mbox library
  */
-static struct ConfigDef MboxVars[] = {
+struct ConfigDef MboxVars[] = {
   // clang-format off
   { "check_mbox_size", DT_BOOL, false, 0, NULL,
     "(mbox,mmdf) Use mailbox size as an indicator of new mail"
@@ -42,11 +42,3 @@ static struct ConfigDef MboxVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_mbox - Register mbox config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_mbox(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, MboxVars);
-}

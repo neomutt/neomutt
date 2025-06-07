@@ -2765,7 +2765,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       free_clear_content = true;
   }
 
-  if (!OptNoCurses)
+  if (OptGui)
     mutt_message(_("Sending message..."));
 
   mutt_prepare_envelope(e_templ->env, true, sub);
@@ -2820,7 +2820,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (!c_fcc_before_send)
     save_fcc(m, e_templ, fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
-  if (!OptNoCurses)
+  if (OptGui)
   {
     mutt_message((i != 0)            ? _("Sending in background") :
                  (flags & SEND_NEWS) ? _("Article posted") :

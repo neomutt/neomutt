@@ -35,6 +35,7 @@
  * | index/ibar.c           | @subpage index_ibar           |
  * | index/index.c          | @subpage index_index          |
  * | index/ipanel.c         | @subpage index_ipanel         |
+ * | index/module.c         | @subpage index_module         |
  * | index/private_data.c   | @subpage index_private_data   |
  * | index/shared_data.c    | @subpage index_shared_data    |
  * | index/status.c         | @subpage index_status         |

@@ -34,6 +34,7 @@
  * | attach/expando.c      | @subpage attach_expando      |
  * | attach/functions.c    | @subpage attach_functions    |
  * | attach/lib.c          | @subpage attach_lib          |
+ * | attach/module.c       | @subpage attach_module       |
  * | attach/mutt_attach.c  | @subpage attach_mutt_attach  |
  * | attach/private_data.c | @subpage attach_private_data |
  * | attach/recvattach.c   | @subpage attach_recvattach   |

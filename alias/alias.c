@@ -704,25 +704,3 @@ void aliaslist_clear(struct AliasList *al)
   }
   TAILQ_INIT(al);
 }
-
-/**
- * alias_init - Set up the Alias globals
- */
-void alias_init(void)
-{
-  alias_reverse_init();
-}
-
-/**
- * alias_cleanup - Clean up the Alias globals
- */
-void alias_cleanup(void)
-{
-  struct Alias *np = NULL;
-  TAILQ_FOREACH(np, &Aliases, entries)
-  {
-    alias_reverse_delete(np);
-  }
-  aliaslist_clear(&Aliases);
-  alias_reverse_shutdown();
-}
