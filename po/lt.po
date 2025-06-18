@@ -8378,14 +8378,12 @@ msgstr "- Konfigūracijos bylos: https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:187
-#, fuzzy
 msgid "  -h         Overview of command line options"
-msgstr "  -h         Overview of command line options"
+msgstr "  -h         Komandų eilutės parametrų apžvalga"
 
 #: usage.c:188
-#, fuzzy
 msgid "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
-msgstr "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
+msgstr "  -h <mode>  Išsami pagalba režimui (shared, help, info, send, tui, all)"
 
 #: usage.c:189
 msgid "  -v         NeoMutt version and build parameters"
@@ -8416,14 +8414,12 @@ msgid "                    Multiple aliases can be looked up (space-separated)"
 msgstr "                    Multiple aliases can be looked up (space-separated)"
 
 #: usage.c:218
-#, fuzzy
 msgid "  -D                Dump all the config options"
-msgstr "  -D                Dump all the config options"
+msgstr "  -D                Spausdinti visus konfigūracijos kintamuosius"
 
 #: usage.c:219
-#, fuzzy
 msgid "  -D -D             (or -DD) Like -D, but only show changed config"
-msgstr "  -D -D             (or -DD) Like -D, but only show changed config"
+msgstr "  -D -D             (arba -DD) Kaip -D, bet rodyti tik pakeistus kintamuosius"
 
 #: usage.c:222
 #, fuzzy
