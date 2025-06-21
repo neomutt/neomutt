@@ -65,7 +65,7 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
     return -1;
 
   struct stat st = { 0 };
-  if (!((stat(c_message_cache_dir, &st) == 0) && S_ISDIR(st.st_mode)))
+  if ((stat(c_message_cache_dir, &st) == 0) && !S_ISDIR(st.st_mode))
   {
     mutt_error(_("Cache disabled, $message_cache_dir isn't a directory: %s"), c_message_cache_dir);
     return -1;
