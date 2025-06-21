@@ -8,6 +8,7 @@ task:
     CIRRUS_CLONE_DEPTH: 3
     PKG_UPDATE: pkg update -f
     PKG_INSTALL: pkg install -y
+    PKG_PRE: xmlcatmgr
     PKG_COMMON:
       cyrus-sasl db5 docbook-xsl gdbm gettext-tools git gpgme iconv jimtcl
       kyotocabinet libgpg-error libidn2 liblz4 libxslt lmdb lua53 lynx notmuch
@@ -23,6 +24,7 @@ task:
         NEOMUTT_TEST_DIR: ${CIRRUS_WORKING_DIR}/test-files
       install_script:
         - ${PKG_UPDATE}
+        - ${PKG_INSTALL} ${PKG_PRE}
         - ${PKG_INSTALL} ${PKG_COMMON}
         - git clone --depth 1 https://github.com/neomutt/neomutt-test-files.git ${NEOMUTT_TEST_DIR}
         - (cd ${NEOMUTT_TEST_DIR} && ./setup.sh)
@@ -38,6 +40,7 @@ task:
     - name: FreeBSD / OpenSSL
       install_script:
         - ${PKG_UPDATE}
+        - ${PKG_INSTALL} ${PKG_PRE}
         - ${PKG_INSTALL} ${PKG_COMMON} openssl
       configure_script: ./configure ${CONFIGURE_COMMON} --ssl
       build_script: make
@@ -48,6 +51,7 @@ task:
     - name: FreeBSD / LibreSSL
       install_script:
         - ${PKG_UPDATE}
+        - ${PKG_INSTALL} ${PKG_PRE}
         - ${PKG_INSTALL} ${PKG_COMMON} libressl
       configure_script: ./configure ${CONFIGURE_COMMON} --ssl
       build_script: make
@@ -58,6 +62,7 @@ task:
     - name: FreeBSD / GnuTLS
       install_script:
         - ${PKG_UPDATE}
+        - ${PKG_INSTALL} ${PKG_PRE}
         - ${PKG_INSTALL} ${PKG_COMMON} gnutls
       configure_script: ./configure ${CONFIGURE_COMMON} --gnutls
       build_script: make

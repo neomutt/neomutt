@@ -36,6 +36,7 @@ jobs:
       with:
         usesh: true
         prepare: |
+          pkg install -y xmlcatmgr
           pkg install -y perl5 pkgconf gettext libxslt docbook-xsl db5 gdbm gpgme gnutls kyotocabinet tokyocabinet lmdb lua54 pcre2 notmuch qdbm rocksdb cyrus-sasl tdb zstd
         run: |
           cd test-files
