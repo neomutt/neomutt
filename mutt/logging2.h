@@ -103,11 +103,11 @@ int  log_disp_queue   (time_t stamp, const char *file, int line, const char *fun
 int  log_disp_terminal(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
                        __attribute__((__format__(__printf__, 6, 7)));
 
-int                      log_queue_add(struct LogLine *ll);
-void                     log_queue_empty(void);
-void                     log_queue_flush(log_dispatcher_t disp);
-const struct LogLineList log_queue_get(void);
-void                     log_queue_set_max_size(int size);
+int                log_queue_add(struct LogLine *ll);
+void               log_queue_empty(void);
+void               log_queue_flush(log_dispatcher_t disp);
+struct LogLineList log_queue_get(void);
+void               log_queue_set_max_size(int size);
 
 void log_file_close(bool verbose);
 int  log_file_open(bool verbose);
