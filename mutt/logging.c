@@ -359,7 +359,7 @@ void log_queue_flush(log_dispatcher_t disp)
  * log_queue_get - Get the Log Queue
  * @retval obj Log Queue
  */
-const struct LogLineList log_queue_get(void)
+struct LogLineList log_queue_get(void)
 {
   return LogQueue;
 }
