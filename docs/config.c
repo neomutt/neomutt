@@ -999,6 +999,9 @@
 ** before an encrypted part,
 ** with details about the encryption.
 ** (Crypto only)
+** .pp
+** \fBNote:\fP this variable has no effect when the $$devel_security
+** variable is \fIunset\fP.
 */
 
 { "crypt_timestamp", DT_BOOL, true },
@@ -1142,6 +1145,8 @@
 ** .pp
 ** If this option is \fIset\fP, NeoMutt will enable the \fBSecurity\fP development features.
 ** See: https://github.com/neomutt/neomutt/discussions/4251
+** .pp
+** See also: $$crypt_encryption_info
 */
 
 { "digest_collapse", DT_BOOL, true },

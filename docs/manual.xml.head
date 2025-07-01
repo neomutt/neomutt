@@ -14643,9 +14643,10 @@ Recipient: RSA key, ID 0000000000000000
       <sect2 id="encryption-info-usage">
         <title>Usage</title>
         <para>
-          It's enabled by default.
-          The variable to control it is
+          This feature is enabled with the variables
+          <literal>devel_security</literal> and
           <literal>crypt_encryption_info</literal>.
+          The latter is set by default.
         </para>
       </sect2>
 
