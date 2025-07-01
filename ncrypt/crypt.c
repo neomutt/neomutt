@@ -1132,9 +1132,7 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   const int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
   const CopyHeaderFlags chflags = display ? CH_DISPLAY : CH_NO_FLAGS;
   struct Buffer *buf = buf_pool_get();
-  bool weed = (display && c_weed);
-  if (c_devel_security)
-    weed &= c_crypt_protected_headers_weed;
+  bool weed = (display && c_weed && c_crypt_protected_headers_weed);
 
   if (c_devel_security)
   {
