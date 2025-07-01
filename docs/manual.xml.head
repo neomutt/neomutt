@@ -14644,8 +14644,8 @@ Recipient: RSA key, ID 0000000000000000
         <title>Usage</title>
         <para>
           This feature is enabled with the variables
-          <literal>devel_security</literal> and
-          <literal>crypt_encryption_info</literal>.
+          <link linkend="devel-security">$devel_security</link> and
+          <link linkend="crypt-encryption-info">$crypt_encryption_info</link>.
           The latter is set by default.
         </para>
       </sect2>
