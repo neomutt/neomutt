@@ -8279,9 +8279,8 @@ msgid "By default NeoMutt loads one system and one user config file,"
 msgstr "By default NeoMutt loads one system and one user config file,"
 
 #: usage.c:131
-#, fuzzy
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
-msgstr "e.g. /etc/neomuttrc and ~/.neomuttrc"
+msgstr "pvz. /etc/neomuttrc ir ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
@@ -8406,7 +8405,7 @@ msgstr "  neomutt -vv"
 #: usage.c:214
 #, fuzzy
 msgid "  -A <alias> [...]  Lookup email aliases"
-msgstr "  -A <alias> [...]  Lookup email aliases"
+msgstr "  -A <aliasas> [...]  Lookup email aliases"
 
 #: usage.c:215
 #, fuzzy
@@ -8437,14 +8436,12 @@ msgid "Modify the -D and -Q options:"
 msgstr "Modify the -D and -Q options:"
 
 #: usage.c:226
-#, fuzzy
 msgid "  -O                Add one-liner documentation"
-msgstr "  -O                Add one-liner documentation"
+msgstr "  -O                Rodyti trumpą aprašymą"
 
 #: usage.c:227
-#, fuzzy
 msgid "  -S                Hide the value of sensitive options"
-msgstr "  -S                Hide the value of sensitive options"
+msgstr "  -S                Slėpti slaptažodžius"
 
 #. L10N: Examples
 #: usage.c:236
@@ -8474,14 +8471,12 @@ msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
 msgstr "If any parts are missing, NeoMutt will start the TUI to ask for them."
 
 #: usage.c:254
-#, fuzzy
 msgid "Addresses may be used before the options, or after a -- marker."
-msgstr "Addresses may be used before the options, or after a -- marker."
+msgstr "Adresus galima nurodyti prieš parametrus arba po -- skirtuko."
 
 #: usage.c:255
-#, fuzzy
 msgid "Aliases may be used in place of addresses."
-msgstr "Aliases may be used in place of addresses."
+msgstr "Vietoje adresų galima naudoti aliasus."
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:259
@@ -8502,9 +8497,8 @@ msgid "  -C                  Use crypto (signing/encryption)"
 msgstr "  -C                  Naudoti kriptografiją (parašą/šifravimą)"
 
 #: usage.c:263
-#, fuzzy
 msgid "                      Must be set up in the config file"
-msgstr "                      Must be set up in the config file"
+msgstr "                      Tai turi būti sukonfigūruota konfigūracijos faile"
 
 #: usage.c:264
 msgid "  -c <address>        Add Cc: address"
@@ -8515,33 +8509,29 @@ msgid "  -E                  Edit message"
 msgstr "  -E                  Redaguoti laišką"
 
 #: usage.c:266
-#, fuzzy
 msgid "                      (supplied by -H or -i)"
-msgstr "                      (supplied by -H or -i)"
+msgstr "                      (kuris pateiktas naudojant -H arba -i)"
 
 #: usage.c:267
 msgid "  -H <draft>          Use draft email"
 msgstr "  -H <juodraštis>     Naudoti laiško juodraštį"
 
 #: usage.c:268
-#, fuzzy
 msgid "                      Full email with headers and body"
-msgstr "                      Full email with headers and body"
+msgstr "                      Pilnas laiškas su antraštėmis ir tekstu"
 
 #: usage.c:269
-#, fuzzy
 msgid "  -i <include>        Include body file"
-msgstr "  -i <include>        Include body file"
+msgstr "  -i <įtraukti>       Įtraukti žinutės tekstą be antraščių"
 
 #: usage.c:270
 #, fuzzy
 msgid "  -s <subject>        Set Subject:"
-msgstr "  -s <subject>        Set Subject:"
+msgstr "  -s <tema>           Nurodyti laiško temą (Subject: antraštę)"
 
 #: usage.c:271
-#, fuzzy
 msgid "  -- <address> [...]  Add To: addresses"
-msgstr "  -- <address> [...]  Add To: addresses"
+msgstr "  -- <adressas> [...]  Pridėti adresus prie To: antraštės"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:280
@@ -8727,7 +8717,7 @@ msgstr "Derinimo parinktys:"
 #~ msgstr "  -D -D         (arba -DD) Kaip -D, bet rodyti tik pakeistus kintamuosius"
 
 #~ msgid "  -D -O         Like -D, but show one-liner documentation"
-#~ msgstr "  -D -O         Kaip -D, bet rodyti trumpą aprašymą"
+#~ msgstr "  -D -O         Kaip -D, bet rodyti trumpą aprgašymą"
 
 #~ msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 #~ msgstr "  -D -S         Kaip -D, bet slėpti slaptažodžius"
