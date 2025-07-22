@@ -178,6 +178,9 @@ static struct ConfigDef SendVars[] = {
   { "bounce_delivered", DT_BOOL, true, 0, NULL,
     "Add 'Delivered-To' to bounced messages"
   },
+  { "confirm_empty_to", DT_BOOL, false, 0, NULL,
+    "Ask for a confirmation before sending an email with an empty To recipients list"
+  },
   { "content_type", DT_STRING, IP "text/plain", 0, NULL,
     "Default 'Content-Type' for newly composed messages"
   },

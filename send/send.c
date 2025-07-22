@@ -2706,6 +2706,13 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     goto main_loop;
   }
 
+  const bool c_confirm_empty_to = cs_subset_bool(sub, "confirm_empty_to");
+  if (c_confirm_empty_to && TAILQ_EMPTY(&e_templ->env->to) &&
+      (query_yesorno(_("No recipients specified in To. Send anyway?"), MUTT_NO) == MUTT_NO))
+  {
+    goto main_loop;
+  }
+
   if (e_templ->body->next)
     e_templ->body = mutt_make_multipart(e_templ->body);
 
