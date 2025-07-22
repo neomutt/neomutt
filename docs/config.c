@@ -744,6 +744,13 @@
 ** mailbox which does not yet exist before creating it.
 */
 
+{ "confirm_empty_to", DT_BOOL, false },
+/*
+** .pp
+** When \fIset\fP, NeoMutt will prompt for confirmation when sending an e-mail
+** with an empty To recipients list.
+*/
+
 { "content_type", DT_STRING, "text/plain" },
 /*
 ** .pp
