@@ -40,16 +40,11 @@ void test_neomutt_new(void)
   // struct NeoMutt *neomutt_new(struct ConfigSet *cs);
 
   {
-    struct NeoMutt *n = neomutt_new(NULL);
-    TEST_CHECK(n == NULL);
-  }
-
-  {
     struct ConfigSet *cs = cs_new(30);
     cs_register_type(cs, &CstNumber);
     TEST_CHECK(cs_register_variables(cs, Vars));
 
-    struct NeoMutt *n = neomutt_new(cs);
+    struct NeoMutt *n = neomutt_new();
     TEST_CHECK(n != NULL);
 
     neomutt_free(&n);

@@ -33,6 +33,7 @@
  * | pop/config.c  | @subpage pop_config |
  * | pop/edata.c   | @subpage pop_edata  |
  * | pop/lib.c     | @subpage pop_lib    |
+ * | pop/module.c  | @subpage pop_module |
  * | pop/pop.c     | @subpage pop_pop    |
  */
 

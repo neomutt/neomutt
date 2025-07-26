@@ -36,6 +36,7 @@
  * | :---------------- | :----------------------- |
  * | helpbar/config.c  | @subpage helpbar_config  |
  * | helpbar/helpbar.c | @subpage helpbar_helpbar |
+ * | helpbar/module.c  | @subpage helpbar_module  |
  * | helpbar/wdata.c   | @subpage helpbar_wdata   |
  */
 
