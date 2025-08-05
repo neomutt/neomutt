@@ -33,8 +33,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include <wchar.h>
-#include <wctype.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "enriched.h"
@@ -66,27 +64,27 @@ enum RichAttribs
  */
 struct Etags
 {
-  const wchar_t *tag_name; ///< Tag name
+  const char *tag_name; ///< Tag name
   int index;               ///< Index number
 };
 
 /// EnrichedTags - Lookup table of tags allowed in enriched text
 static const struct Etags EnrichedTags[] = {
   // clang-format off
-  { L"param",       RICH_PARAM        },
-  { L"bold",        RICH_BOLD         },
-  { L"italic",      RICH_ITALIC       },
-  { L"underline",   RICH_UNDERLINE    },
-  { L"nofill",      RICH_NOFILL       },
-  { L"excerpt",     RICH_EXCERPT      },
-  { L"indent",      RICH_INDENT       },
-  { L"indentright", RICH_INDENT_RIGHT },
-  { L"center",      RICH_CENTER       },
-  { L"flushleft",   RICH_FLUSHLEFT    },
-  { L"flushright",  RICH_FLUSHRIGHT   },
-  { L"flushboth",   RICH_FLUSHLEFT    },
-  { L"color",       RICH_COLOR        },
-  { L"x-color",     RICH_COLOR        },
+  { "param",       RICH_PARAM        },
+  { "bold",        RICH_BOLD         },
+  { "italic",      RICH_ITALIC       },
+  { "underline",   RICH_UNDERLINE    },
+  { "nofill",      RICH_NOFILL       },
+  { "excerpt",     RICH_EXCERPT      },
+  { "indent",      RICH_INDENT       },
+  { "indentright", RICH_INDENT_RIGHT },
+  { "center",      RICH_CENTER       },
+  { "flushleft",   RICH_FLUSHLEFT    },
+  { "flushright",  RICH_FLUSHRIGHT   },
+  { "flushboth",   RICH_FLUSHLEFT    },
+  { "color",       RICH_COLOR        },
+  { "x-color",     RICH_COLOR        },
   { NULL, -1 },
   // clang-format on
 };
@@ -96,9 +94,9 @@ static const struct Etags EnrichedTags[] = {
  */
 struct EnrichedState
 {
-  wchar_t *buffer;
-  wchar_t *line;
-  wchar_t *param;
+  char *buffer;
+  char *line;
+  char *param;
   size_t buf_len;
   size_t line_len;
   size_t line_used;
@@ -133,7 +131,7 @@ static void enriched_wrap(struct EnrichedState *enriched)
 
       while (y && iswspace(enriched->line[y]))
       {
-        enriched->line[y] = (wchar_t) '\0';
+        enriched->line[y] = '\0';
         y--;
         enriched->line_used--;
         enriched->line_len--;
@@ -181,11 +179,11 @@ static void enriched_wrap(struct EnrichedState *enriched)
         }
       }
     }
-    state_putws(enriched->state, (const wchar_t *) enriched->line);
+    state_puts(enriched->state, enriched->line);
   }
 
   state_putc(enriched->state, '\n');
-  enriched->line[0] = (wchar_t) '\0';
+  enriched->line[0] = '\0';
   enriched->line_len = 0;
   enriched->line_used = 0;
   enriched->indent_len = 0;
@@ -249,14 +247,14 @@ static void enriched_flush(struct EnrichedState *enriched, bool wrap)
 
   if (enriched->buf_used)
   {
-    enriched->buffer[enriched->buf_used] = (wchar_t) '\0';
+    enriched->buffer[enriched->buf_used] = '\0';
     enriched->line_used += enriched->buf_used;
     if (enriched->line_used > enriched->line_max)
     {
       enriched->line_max = enriched->line_used;
-      MUTT_MEM_REALLOC(&enriched->line, enriched->line_max + 1, wchar_t);
+      MUTT_MEM_REALLOC(&enriched->line, enriched->line_max + 1, char);
     }
-    wcscat(enriched->line, enriched->buffer);
+    strcat(enriched->line, enriched->buffer);
     enriched->line_len += enriched->word_len;
     enriched->word_len = 0;
     enriched->buf_used = 0;
@@ -267,11 +265,11 @@ static void enriched_flush(struct EnrichedState *enriched, bool wrap)
 }
 
 /**
- * enriched_putwc - Write one wide character to the state
+ * enriched_putc - Write one character to the state
  * @param c    Character to write
  * @param enriched State of Enriched text
  */
-static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
+static void enriched_putc(char c, struct EnrichedState *enriched)
 {
   if (!enriched)
     return;
@@ -283,7 +281,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
       if ((enriched->param_used + 1) >= enriched->param_len)
       {
         enriched->param_len += 256;
-        MUTT_MEM_REALLOC(&enriched->param, enriched->param_len, wchar_t);
+        MUTT_MEM_REALLOC(&enriched->param, enriched->param_len, char);
       }
 
       enriched->param[enriched->param_used++] = c;
@@ -295,12 +293,12 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
   if ((enriched->buf_len < (enriched->buf_used + 3)) || !enriched->buffer)
   {
     enriched->buf_len += 1024;
-    MUTT_MEM_REALLOC(&enriched->buffer, enriched->buf_len + 1, wchar_t);
+    MUTT_MEM_REALLOC(&enriched->buffer, enriched->buf_len + 1, char);
   }
 
-  if ((!enriched->tag_level[RICH_NOFILL] && iswspace(c)) || (c == (wchar_t) '\0'))
+  if ((!enriched->tag_level[RICH_NOFILL] && iswspace(c)) || (c == '\0'))
   {
-    if (c == (wchar_t) '\t')
+    if (c == '\t')
       enriched->word_len += 8 - (enriched->line_len + enriched->word_len) % 8;
     else
       enriched->word_len++;
@@ -315,19 +313,19 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
       if (enriched->tag_level[RICH_BOLD])
       {
         enriched->buffer[enriched->buf_used++] = c;
-        enriched->buffer[enriched->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
+        enriched->buffer[enriched->buf_used++] = '\010'; // Ctrl-H (backspace)
         enriched->buffer[enriched->buf_used++] = c;
       }
       else if (enriched->tag_level[RICH_UNDERLINE])
       {
         enriched->buffer[enriched->buf_used++] = '_';
-        enriched->buffer[enriched->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
+        enriched->buffer[enriched->buf_used++] = '\010'; // Ctrl-H (backspace)
         enriched->buffer[enriched->buf_used++] = c;
       }
       else if (enriched->tag_level[RICH_ITALIC])
       {
         enriched->buffer[enriched->buf_used++] = c;
-        enriched->buffer[enriched->buf_used++] = (wchar_t) '\010'; // Ctrl-H (backspace)
+        enriched->buffer[enriched->buf_used++] = '\010'; // Ctrl-H (backspace)
         enriched->buffer[enriched->buf_used++] = '_';
       }
       else
@@ -358,12 +356,12 @@ static void enriched_puts(const char *s, struct EnrichedState *enriched)
   if ((enriched->buf_len < (enriched->buf_used + mutt_str_len(s))) || !enriched->buffer)
   {
     enriched->buf_len += 1024;
-    MUTT_MEM_REALLOC(&enriched->buffer, enriched->buf_len + 1, wchar_t);
+    MUTT_MEM_REALLOC(&enriched->buffer, enriched->buf_len + 1, char);
   }
   c = s;
   while (*c)
   {
-    enriched->buffer[enriched->buf_used++] = (wchar_t) *c;
+    enriched->buffer[enriched->buf_used++] = *c;
     c++;
   }
 }
@@ -373,20 +371,20 @@ static void enriched_puts(const char *s, struct EnrichedState *enriched)
  * @param tag      Tag to set
  * @param enriched State of Enriched text
  */
-static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *enriched)
+static void enriched_set_flags(const char *tag, struct EnrichedState *enriched)
 {
   if (!enriched)
     return;
 
-  const wchar_t *tagptr = tag;
+  const char *tagptr = tag;
   int i, j;
 
-  if (*tagptr == (wchar_t) '/')
+  if (*tagptr == '/')
     tagptr++;
 
   for (i = 0, j = -1; EnrichedTags[i].tag_name; i++)
   {
-    if (wcscasecmp(EnrichedTags[i].tag_name, tagptr) == 0)
+    if (mutt_istr_cmp(EnrichedTags[i].tag_name, tagptr) == 0)
     {
       j = EnrichedTags[i].index;
       break;
@@ -398,43 +396,43 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *enriche
     if ((j == RICH_CENTER) || (j == RICH_FLUSHLEFT) || (j == RICH_FLUSHRIGHT))
       enriched_flush(enriched, true);
 
-    if (*tag == (wchar_t) '/')
+    if (*tag == '/')
     {
       if (enriched->tag_level[j]) /* make sure not to go negative */
         enriched->tag_level[j]--;
       if ((enriched->state->flags & STATE_DISPLAY) && (j == RICH_PARAM) &&
           enriched->tag_level[RICH_COLOR])
       {
-        enriched->param[enriched->param_used] = (wchar_t) '\0';
-        if (wcscasecmp(L"black", enriched->param) == 0)
+        enriched->param[enriched->param_used] = '\0';
+        if (mutt_istr_cmp("black", enriched->param) == 0)
         {
           enriched_puts("\033[30m", enriched); // Escape
         }
-        else if (wcscasecmp(L"red", enriched->param) == 0)
+        else if (mutt_istr_cmp("red", enriched->param) == 0)
         {
           enriched_puts("\033[31m", enriched); // Escape
         }
-        else if (wcscasecmp(L"green", enriched->param) == 0)
+        else if (mutt_istr_cmp("green", enriched->param) == 0)
         {
           enriched_puts("\033[32m", enriched); // Escape
         }
-        else if (wcscasecmp(L"yellow", enriched->param) == 0)
+        else if (mutt_istr_cmp("yellow", enriched->param) == 0)
         {
           enriched_puts("\033[33m", enriched); // Escape
         }
-        else if (wcscasecmp(L"blue", enriched->param) == 0)
+        else if (mutt_istr_cmp("blue", enriched->param) == 0)
         {
           enriched_puts("\033[34m", enriched); // Escape
         }
-        else if (wcscasecmp(L"magenta", enriched->param) == 0)
+        else if (mutt_istr_cmp("magenta", enriched->param) == 0)
         {
           enriched_puts("\033[35m", enriched); // Escape
         }
-        else if (wcscasecmp(L"cyan", enriched->param) == 0)
+        else if (mutt_istr_cmp("cyan", enriched->param) == 0)
         {
           enriched_puts("\033[36m", enriched); // Escape
         }
-        else if (wcscasecmp(L"white", enriched->param) == 0)
+        else if (mutt_istr_cmp("white", enriched->param) == 0)
         {
           enriched_puts("\033[37m", enriched); // Escape
         }
@@ -448,7 +446,7 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *enriche
       if (j == RICH_PARAM)
       {
         enriched->param_used = 0;
-        enriched->param[0] = (wchar_t) '\0';
+        enriched->param[0] = '\0';
       }
     }
     else
@@ -480,9 +478,9 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
 
   long bytes = b_email->length;
   struct EnrichedState enriched = { 0 };
-  wint_t wc = 0;
+  int c = 0;
   int tag_len = 0;
-  wchar_t tag[1024 + 1];
+  char tag[1024 + 1];
 
   enriched.state = state;
   enriched.wrap_margin = ((state->wraplen > 4) &&
@@ -490,8 +488,8 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
                              state->wraplen - 4 :
                              72;
   enriched.line_max = enriched.wrap_margin * 4;
-  enriched.line = MUTT_MEM_CALLOC(enriched.line_max + 1, wchar_t);
-  enriched.param = MUTT_MEM_CALLOC(256, wchar_t);
+  enriched.line = MUTT_MEM_CALLOC(enriched.line_max + 1, char);
+  enriched.param = MUTT_MEM_CALLOC(256, char);
 
   enriched.param_len = 256;
   enriched.param_used = 0;
@@ -506,7 +504,7 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
   {
     if (text_state != ST_EOF)
     {
-      if (!bytes || ((wc = fgetwc(state->fp_in)) == WEOF))
+      if (!bytes || ((c = fgetc(state->fp_in)) == WEOF))
         text_state = ST_EOF;
       else
         bytes--;
@@ -515,7 +513,7 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
     switch (text_state)
     {
       case TEXT:
-        switch (wc)
+        switch (c)
         {
           case '<':
             text_state = LANGLE;
@@ -528,20 +526,20 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
             }
             else
             {
-              enriched_putwc((wchar_t) ' ', &enriched);
+              enriched_putc(' ', &enriched);
               text_state = NEWLINE;
             }
             break;
 
           default:
-            enriched_putwc(wc, &enriched);
+            enriched_putc(c, &enriched);
         }
         break;
 
       case LANGLE:
-        if (wc == (wchar_t) '<')
+        if (c == '<')
         {
-          enriched_putwc(wc, &enriched);
+          enriched_putc(c, &enriched);
           text_state = TEXT;
           break;
         }
@@ -554,15 +552,15 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
         FALLTHROUGH;
 
       case TAG:
-        if (wc == (wchar_t) '>')
+        if (c == '>')
         {
-          tag[tag_len] = (wchar_t) '\0';
+          tag[tag_len] = '\0';
           enriched_set_flags(tag, &enriched);
           text_state = TEXT;
         }
         else if (tag_len < 1024) /* ignore overly long tags */
         {
-          tag[tag_len++] = wc;
+          tag[tag_len++] = c;
         }
         else
         {
@@ -571,25 +569,25 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
         break;
 
       case BOGUS_TAG:
-        if (wc == (wchar_t) '>')
+        if (c == '>')
           text_state = TEXT;
         break;
 
       case NEWLINE:
-        if (wc == (wchar_t) '\n')
+        if (c == '\n')
         {
           enriched_flush(&enriched, true);
         }
         else
         {
-          ungetwc(wc, state->fp_in);
+          ungetc(c, state->fp_in);
           bytes++;
           text_state = TEXT;
         }
         break;
 
       case ST_EOF:
-        enriched_putwc((wchar_t) '\0', &enriched);
+        enriched_putc('\0', &enriched);
         enriched_flush(&enriched, true);
         text_state = DONE;
         break;
