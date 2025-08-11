@@ -1249,7 +1249,10 @@ int main(int argc, char *argv[], char *envp[])
   }
 
   if (!dump_info(&cli->info, cs))
+  {
+    rc = 0;
     goto main_curses;
+  }
 
   if (!OptNoCurses)
   {
