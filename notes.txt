@@ -1,0 +1,22 @@
+upgrade to support $auto_tag
+
+check all other dialogs for $auto_tag support
+add it there too
+
+bug; <tag-prefix><tag> doesn't clear all tagged
+
+index/dlg_index.c:1323:18:    const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");
+index/dlg_index.c:1358:16:    else if (c_auto_tag && shared->mailbox && (shared->mailbox->msg_tagged != 0))
+
+index/functions.c:2309:16:  const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");
+index/functions.c:2310:30:  if (priv->tag_prefix && !c_auto_tag)
+
+menu/tagging.c:41:41: * menu_set_prefix - Set tag_prefix on $auto_tag
+
+menu/tagging.c:46:16:  const bool c_auto_tag = cs_subset_bool(menu->sub, "auto_tag");
+menu/tagging.c:47:36:  if ((menu->num_tagged != 0) && c_auto_tag)
+menu/tagging.c:88:16:  const bool c_auto_tag = cs_subset_bool(menu->sub, "auto_tag");
+menu/tagging.c:91:36:  if ((menu->num_tagged != 0) && c_auto_tag)
+menu/tagging.c:100:30:  if (menu->tag_prefix && !c_auto_tag)
+menu/tagging.c:128:52:  menu->tag_prefix = ((menu->num_tagged != 0) && c_auto_tag);
+
