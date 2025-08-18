@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | editor/enter.c      | @subpage editor_enter      |
  * | editor/functions.c  | @subpage editor_functions  |
+ * | editor/module.c     | @subpage editor_module     |
  * | editor/state.c      | @subpage editor_state      |
  * | editor/window.c     | @subpage editor_window     |
  */

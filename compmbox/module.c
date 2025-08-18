@@ -1,0 +1,57 @@
+/**
+ * @file
+ * Definition of the Compmbox Module
+ *
+ * @authors
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @page compmbox_module Definition of the Compmbox Module
+ *
+ * Definition of the Compmbox Module
+ */
+
+#include "config.h"
+#include <stdbool.h>
+#include <stddef.h>
+#include "core/lib.h"
+
+extern const struct Command CompCommands[];
+
+/**
+ * compmbox_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool compmbox_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, CompCommands);
+}
+
+/**
+ * ModuleCompmbox - Module for the Compmbox library
+ */
+const struct Module ModuleCompmbox = {
+  "compmbox",
+  NULL, // init
+  NULL, // config_define_types
+  NULL, // config_define_variables
+  compmbox_commands_register,
+  NULL, // gui_init
+  NULL, // gui_cleanup
+  NULL, // cleanup
+  NULL, // mod_data
+};

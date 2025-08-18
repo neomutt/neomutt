@@ -35,12 +35,99 @@
 #endif
 
 struct ConfigSet;
+struct NeoMutt;
+
+/**
+ * @defgroup module_api NeoMutt library API
+ *
+ * Allow libraries to initialise themselves.
+ */
+struct Module
+{
+  const char *name;                   /// Name of the library module
+
+  /**
+   * @defgroup module_init init()
+   * @ingroup module_api
+   *
+   * init - Initialise a Module
+   * @retval true Success
+   */
+  bool (*init)(struct NeoMutt *n);
+
+  /**
+   * @defgroup module_config_define_types config_define_types()
+   * @ingroup module_api
+   *
+   * config_define_types - Set up Config Types
+   * @param cs Config Set
+   * @retval true Success
+   *
+   * @pre cs is not NULL
+   */
+  bool (*config_define_types)(struct NeoMutt *n, struct ConfigSet *cs);
+
+  /**
+   * @defgroup module_config_define_variables config_define_variables()
+   * @ingroup module_api
+   *
+   * config_define_variables - Define the Config Variables
+   * @param cs Config Set
+   * @retval true Success
+   *
+   * @pre cs is not NULL
+   */
+  bool (*config_define_variables)(struct NeoMutt *n, struct ConfigSet *cs);
+
+  /**
+   * @defgroup module_commands_register commands_register()
+   * @ingroup module_api
+   *
+   * commands_register - Register NeoMutt Commands
+   * @param ca Command Array
+   * @retval true Success
+   *
+   * @pre ca is not NULL
+   */
+  bool (*commands_register)(struct NeoMutt *n, struct CommandArray *ca);
+
+  /**
+   * @defgroup module_gui_init gui_init()
+   * @ingroup module_api
+   *
+   * gui_init - Initialise the GUI
+   * @retval true Success
+   */
+  bool (*gui_init)(struct NeoMutt *n);
+
+  /**
+   * @defgroup module_gui_cleanup gui_cleanup()
+   * @ingroup module_api
+   *
+   * gui_cleanup - Clean up the GUI
+   *
+   * @retval true Success
+   */
+  void (*gui_cleanup)(struct NeoMutt *n);
+
+  /**
+   * @defgroup module_cleanup cleanup()
+   * @ingroup module_api
+   *
+   * cleanup - Clean up a Module
+   * @retval true Success
+   */
+  void (*cleanup)(struct NeoMutt *n);
+
+  void *mod_data;                     ///< Module specific data
+};
 
 /**
  * struct NeoMutt - Container for Accounts, Notifications
  */
 struct NeoMutt
 {
+  const struct Module **modules; ///< Library modules
   struct Notify *notify;         ///< Notifications handler
   struct Notify *notify_resize;  ///< Window resize notifications handler
   struct Notify *notify_timeout; ///< Timeout notifications handler
@@ -72,7 +159,13 @@ enum NotifyGlobal
 bool            neomutt_account_add   (struct NeoMutt *n, struct Account *a);
 bool            neomutt_account_remove(struct NeoMutt *n, const struct Account *a);
 void            neomutt_free          (struct NeoMutt **ptr);
-struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
+struct NeoMutt *neomutt_new           (void);
+
+bool neomutt_init   (struct NeoMutt *n, const struct Module **modules);
+void neomutt_cleanup(struct NeoMutt *n);
+
+bool neomutt_gui_init   (struct NeoMutt *n);
+void neomutt_gui_cleanup(struct NeoMutt *n);
 
 void   neomutt_mailboxlist_clear  (struct MailboxList *ml);
 size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n, enum MailboxType type);
