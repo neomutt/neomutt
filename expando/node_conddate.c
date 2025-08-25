@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
@@ -230,7 +229,7 @@ struct ExpandoNode *node_conddate_parse(const char *str, int did, int uid,
 
   str++;
 
-  if (isdigit(*str))
+  if (mutt_isdigit(*str))
   {
     unsigned short number = 0;
     const char *end_ptr = mutt_str_atous(str, &number);

@@ -34,7 +34,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -654,7 +653,7 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
         len = i;
         break;
       }
-      if (!isalpha(s[i]) && (s[i] != ' '))
+      if (!mutt_isalpha(s[i]) && (s[i] != ' '))
         return -1; /* give up more complex comment parsing */
     }
   }
@@ -679,7 +678,7 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
     {
       for (int i = 0; i < len; i++)
       {
-        if (!isalpha(s[i]))
+        if (!mutt_isalpha(s[i]))
           return -1;
       }
       const struct Tz *tz = find_tz(s, len);

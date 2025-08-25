@@ -35,7 +35,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <string.h>
@@ -305,7 +304,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
        */
       s[0] = '\0';
       s++; /* let s point to the first character of index. */
-      for (t = s; (t[0] != '\0') && isdigit((unsigned char) t[0]); t++)
+      for (t = s; (t[0] != '\0') && mutt_isdigit((unsigned char) t[0]); t++)
         ; // do nothing
 
       encoded = (t[0] == '*');

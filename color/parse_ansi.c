@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -85,7 +84,7 @@ int ansi_color_seq_length(const char *str)
     return 0;
 
   int i = 2;
-  while ((str[i] != '\0') && (isdigit(str[i]) || (str[i] == ';')))
+  while ((str[i] != '\0') && (mutt_isdigit(str[i]) || (str[i] == ';')))
   {
     i++;
   }
@@ -119,7 +118,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
 
   while (pos < seq_len)
   {
-    if ((buf[pos] == '0') && isdigit(buf[pos + 1]))
+    if ((buf[pos] == '0') && mutt_isdigit(buf[pos + 1]))
     {
       pos++; // Skip the leading zero
     }
@@ -133,7 +132,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
       ansi->attrs |= A_BOLD;
       pos += 2;
     }
-    else if ((buf[pos] == '2') && isdigit(buf[pos + 1]) && ansi_is_end_char(buf[pos + 2]))
+    else if ((buf[pos] == '2') && mutt_isdigit(buf[pos + 1]) && ansi_is_end_char(buf[pos + 2]))
     {
       char digit = buf[pos + 1];
       pos += 3;
@@ -176,7 +175,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
       }
       else if (buf[pos + 1] == '8')
       {
-        if (mutt_str_startswith(buf + pos, "38;5;") && isdigit(buf[pos + 5]))
+        if (mutt_str_startswith(buf + pos, "38;5;") && mutt_isdigit(buf[pos + 5]))
         {
           // 38;5;n palette foreground
           char *end = NULL;
@@ -192,7 +191,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
             return 0;
           }
         }
-        else if (mutt_str_startswith(buf + pos, "38;2;") && isdigit(buf[pos + 5]))
+        else if (mutt_str_startswith(buf + pos, "38;2;") && mutt_isdigit(buf[pos + 5]))
         {
           // 38;2;R;G;B true colour foreground
           long r = -1;
@@ -264,7 +263,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
       }
       else if (buf[pos + 1] == '8')
       {
-        if (mutt_str_startswith(buf + pos, "48;5;") && isdigit(buf[pos + 5]))
+        if (mutt_str_startswith(buf + pos, "48;5;") && mutt_isdigit(buf[pos + 5]))
         {
           // 48;5;n palette background
           char *end = NULL;
@@ -280,7 +279,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
             return 0;
           }
         }
-        else if (mutt_str_startswith(buf + pos, "48;2;") && isdigit(buf[pos + 5]))
+        else if (mutt_str_startswith(buf + pos, "48;2;") && mutt_isdigit(buf[pos + 5]))
         {
           // 48;2;R;G;B true colour background
           long r = -1;

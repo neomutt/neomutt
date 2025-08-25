@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <string.h>
@@ -38,6 +37,7 @@
 #include "buffer.h"
 #include "charset.h"
 #include "memory.h"
+#include "mutt/ctype2.h"
 #include "pool.h"
 #include "string2.h"
 
@@ -92,7 +92,7 @@ bool mutt_mb_get_initials(const char *name, char *buf, size_t buflen)
       return false;
 
     /* Ignore punctuation at the beginning of a word */
-    if ((clen == 1) && ispunct(*name))
+    if ((clen == 1) && mutt_ispunct(*name))
     {
       name++;
       continue;
@@ -112,12 +112,12 @@ bool mutt_mb_get_initials(const char *name, char *buf, size_t buflen)
       clen = mutt_mb_charlen(name, NULL);
       if (clen < 1)
         return false;
-      if ((clen == 1) && (isspace(*name) || (*name == '-')))
+      if ((clen == 1) && (mutt_isspace(*name) || (*name == '-')))
         break;
     }
 
     /* Skip any whitespace, or hyphens */
-    while (*name && (isspace(*name) || (*name == '-')))
+    while (*name && (mutt_isspace(*name) || (*name == '-')))
       name++;
   }
 
