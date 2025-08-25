@@ -20,7 +20,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ctype.h"
+#include "ctype2.h"
 #include <ctype.h>
 
 int mutt_isalnum(int arg)

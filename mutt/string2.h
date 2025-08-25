@@ -30,7 +30,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/ctype.h"
+#include "mutt/ctype2.h"
 
 #define STR_COMMAND 8192  ///< Enough space for a long command line
 

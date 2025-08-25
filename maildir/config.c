@@ -34,7 +34,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "mutt/ctype.h"
+#include "mutt/ctype2.h"
 
 /**
  * maildir_field_delimiter_validator - Validate the "maildir_field_delimiter" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator

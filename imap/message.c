@@ -59,7 +59,7 @@
 #include "mdata.h"
 #include "msg_set.h"
 #include "msn.h"
-#include "mutt/ctype.h"
+#include "mutt/ctype2.h"
 #include "mutt_logging.h"
 #include "mx.h"
 #include "protos.h"

@@ -55,7 +55,7 @@
 #include "edata.h"
 #include "globals.h"
 #include "mdata.h"
-#include "mutt/ctype.h"
+#include "mutt/ctype2.h"
 #include "msn.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"

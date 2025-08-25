@@ -49,7 +49,7 @@
 #include "send/lib.h"
 #include "globals.h"
 #include "handler.h"
-#include "mutt/ctype.h"
+#include "mutt/ctype2.h"
 #include "mx.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"

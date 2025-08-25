@@ -48,7 +48,7 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "mutt/ctype.h"
+#include "mutt/ctype2.h"
 #include "muttlib.h"
 #include "browser/lib.h"
 #include "editor/lib.h"

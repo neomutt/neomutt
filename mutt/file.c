@@ -54,7 +54,7 @@
 #include "date.h"
 #include "logging2.h"
 #include "memory.h"
-#include "mutt/ctype.h"
+#include "mutt/ctype2.h"
 #include "message.h"
 #include "path.h"
 #include "pool.h"

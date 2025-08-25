@@ -41,7 +41,7 @@
 #include "exit.h"
 #include "logging2.h"
 #include "memory.h"
-#include "mutt/ctype.h"
+#include "mutt/ctype2.h"
 #include "string2.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
