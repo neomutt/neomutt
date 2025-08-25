@@ -24,8 +24,8 @@
 #ifndef MUTT_PARSE_EXTRACT_H
 #define MUTT_PARSE_EXTRACT_H
 
-#include <ctype.h>
 #include <stdint.h>
+#include "mutt_ctype.h"
 
 struct Buffer;
 
@@ -33,7 +33,7 @@ struct Buffer;
 
 /* The same conditions as in mutt_extract_token() */
 #define MoreArgsF(buf, flags) (*(buf)->dptr && \
-    (!isspace(*(buf)->dptr) || ((flags) & TOKEN_SPACE)) && \
+    (!mutt_isspace(*(buf)->dptr) || ((flags) & TOKEN_SPACE)) && \
     ((*(buf)->dptr != '#') ||  ((flags) & TOKEN_COMMENT)) && \
     ((*(buf)->dptr != '+') || !((flags) & TOKEN_PLUS)) && \
     ((*(buf)->dptr != '-') || !((flags) & TOKEN_MINUS)) && \

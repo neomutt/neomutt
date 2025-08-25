@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -563,7 +562,7 @@ bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
 
     bool have_min = false;
     bool until_now = false;
-    if (isdigit((unsigned char) *pc))
+    if (mutt_isdigit((unsigned char) *pc))
     {
       /* minimum date specified */
       pc = get_date(pc, &min, err);
@@ -678,7 +677,7 @@ static bool eat_range(struct Pattern *pat, PatternCompFlags flags,
     tmp = s->dptr;
   }
 
-  if (isdigit((unsigned char) *tmp))
+  if (mutt_isdigit((unsigned char) *tmp))
   {
     /* range maximum */
     pat->max = strtol(tmp, &tmp, 0);

@@ -34,7 +34,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <fcntl.h>
 #include <iconv.h>
 #include <stdbool.h>

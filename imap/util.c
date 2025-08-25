@@ -33,7 +33,6 @@
 
 #include "config.h"
 #include <arpa/inet.h>
-#include <ctype.h>
 #include <errno.h>
 #include <netdb.h>
 #include <signal.h>
@@ -56,6 +55,7 @@
 #include "edata.h"
 #include "globals.h"
 #include "mdata.h"
+#include "mutt_ctype.h"
 #include "msn.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
@@ -836,7 +836,7 @@ char *imap_next_word(char *s)
     }
     if (*s == '\"')
       quoted = !quoted;
-    if (!quoted && isspace(*s))
+    if (!quoted && mutt_isspace(*s))
       break;
     s++;
   }

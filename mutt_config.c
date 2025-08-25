@@ -33,7 +33,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -45,6 +44,7 @@
 #include "attach/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
+#include "mutt_ctype.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"
@@ -246,7 +246,7 @@ struct ExpandoNode *parse_tags_transformed(const char *str, struct ExpandoFormat
                                            struct ExpandoParseError *err)
 {
   // Tag expando %G must use an suffix from [A-Za-z0-9], e.g. %Ga, %GL
-  if (!isalnum(str[1]))
+  if (!mutt_isalnum(str[1]))
     return NULL;
 
   // Let the basic expando parser do the work

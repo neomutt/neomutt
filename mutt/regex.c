@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -420,7 +419,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, const char *str)
                 buf_addstr_n(dst, src->data + pmatch[n].rm_so,
                              pmatch[n].rm_eo - pmatch[n].rm_so);
               }
-              while (isdigit((unsigned char) *p)) /* skip subst token */
+              while (mutt_isdigit((unsigned char) *p)) /* skip subst token */
                 p++;
             }
           }

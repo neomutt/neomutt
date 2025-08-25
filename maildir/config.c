@@ -28,13 +28,13 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "mutt_ctype.h"
 
 /**
  * maildir_field_delimiter_validator - Validate the "maildir_field_delimiter" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
@@ -53,7 +53,7 @@ static int maildir_field_delimiter_validator(const struct ConfigDef *cdef,
     return CSR_ERR_INVALID;
   }
 
-  if (isalnum(*delim) || strchr("-.\\/", *delim))
+  if (mutt_isalnum(*delim) || strchr("-.\\/", *delim))
   {
     // L10N: maildir_field_delimiter is a config variable and shouldn't be translated
     buf_printf(err, _("maildir_field_delimiter cannot be alphanumeric or '-.\\/'"));

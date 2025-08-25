@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -168,7 +167,7 @@ struct ExpandoFormat *parse_format(const char *str, const char **parsed_until,
   }
 
   // Parse the width (min_cols)
-  if (isdigit(*str))
+  if (mutt_isdigit(*str))
   {
     unsigned short number = 0;
     const char *end_ptr = mutt_str_atous(str, &number);
@@ -192,7 +191,7 @@ struct ExpandoFormat *parse_format(const char *str, const char **parsed_until,
 
     unsigned short number = 1;
 
-    if (isdigit(*str))
+    if (mutt_isdigit(*str))
     {
       const char *end_ptr = mutt_str_atous(str, &number);
 

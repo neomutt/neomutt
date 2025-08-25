@@ -40,7 +40,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -68,6 +67,7 @@
 #include "mdata.h"
 #include "msg_set.h"
 #include "msn.h"
+#include "mutt_ctype.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
@@ -153,7 +153,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
     s++;
     SKIPWS(s);
     const char *flag_word = s;
-    while (*s && (*s != ')') && !isspace(*s))
+    while (*s && (*s != ')') && !mutt_isspace(*s))
       s++;
     const char ctmp = *s;
     *s = '\0';

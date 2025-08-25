@@ -28,9 +28,9 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "mutt_ctype.h"
 #include "tag.h"
 
 /**
@@ -59,7 +59,7 @@ struct NmTags nm_tag_str_to_tags(const char *tag_str)
 
   for (char *p = buf; p && (p[0] != '\0'); p++)
   {
-    if (!tag && isspace(*p))
+    if (!tag && mutt_isspace(*p))
       continue;
     if (!tag)
       tag = p; /* begin of the tag */

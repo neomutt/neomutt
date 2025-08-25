@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -37,6 +36,7 @@
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "mutt_ctype.h"
 
 extern const struct MenuFuncOp OpAlias[];
 extern const struct MenuFuncOp OpAttachment[];
@@ -167,10 +167,10 @@ int parse_fkey(char *s)
   char *t = NULL;
   int n = 0;
 
-  if ((s[0] != '<') || (tolower(s[1]) != 'f'))
+  if ((s[0] != '<') || (mutt_tolower(s[1]) != 'f'))
     return -1;
 
-  for (t = s + 2; *t && isdigit((unsigned char) *t); t++)
+  for (t = s + 2; *t && mutt_isdigit((unsigned char) *t); t++)
   {
     n *= 10;
     n += *t - '0';
@@ -194,7 +194,7 @@ static int parse_keycode(const char *s)
   char *end_char = NULL;
   long int result = strtol(s + 1, &end_char, 8);
   /* allow trailing whitespace, eg.  < 1001 > */
-  while (isspace(*end_char))
+  while (mutt_isspace(*end_char))
     end_char++;
   /* negative keycodes don't make sense, also detect overflow */
   if ((*end_char != '>') || (result < 0) || (result == LONG_MAX))

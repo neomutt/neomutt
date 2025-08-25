@@ -32,7 +32,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -486,7 +485,7 @@ static int nntp_auth(struct NntpAccountData *adata)
     p = authenticators;
     while (*p)
     {
-      *p = toupper(*p);
+      *p = mutt_toupper(*p);
       p++;
     }
 

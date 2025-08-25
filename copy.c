@@ -30,7 +30,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <inttypes.h> // IWYU pragma: keep
 #include <locale.h>
 #include <stdbool.h>
@@ -50,6 +49,7 @@
 #include "send/lib.h"
 #include "globals.h"
 #include "handler.h"
+#include "mutt_ctype.h"
 #include "mx.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
@@ -1085,7 +1085,7 @@ static int address_header_decode(char **h)
   size_t l;
   bool rp = false;
 
-  switch (tolower((unsigned char) *s))
+  switch (mutt_tolower((unsigned char) *s))
   {
     case 'b':
     {

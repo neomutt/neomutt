@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <gpg-error.h>
 #include <gpgme.h>
 #include <langinfo.h>
@@ -46,6 +45,7 @@
 #include "question/lib.h"
 #include "crypt_gpgme.h"
 #include "globals.h"
+#include "mutt_ctype.h"
 #include "mutt_logging.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -355,7 +355,7 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
   {
     fputs(_("[Can't display this user ID (unknown encoding)]"), fp);
   }
-  else if (!isalnum(userid[0]))
+  else if (!mutt_isalnum(userid[0]))
   {
     fputs(_("[Can't display this user ID (invalid encoding)]"), fp);
   }

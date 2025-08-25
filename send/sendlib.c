@@ -30,7 +30,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
@@ -54,6 +53,7 @@
 #include "globals.h"
 #include "handler.h"
 #include "header.h"
+#include "mutt_ctype.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -151,7 +151,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *b, const char *path)
             }
             *p++ = 0;
 
-            for (q = p; *q && !isspace(*q); q++)
+            for (q = p; *q && !mutt_isspace(*q); q++)
               ; // do nothing
 
             mutt_strn_copy(subtype, p, q - p, sizeof(subtype));

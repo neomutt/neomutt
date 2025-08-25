@@ -36,7 +36,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -55,6 +54,7 @@
 #include "date.h"
 #include "logging2.h"
 #include "memory.h"
+#include "mutt_ctype.h"
 #include "message.h"
 #include "path.h"
 #include "pool.h"
@@ -1311,7 +1311,7 @@ char *mutt_file_read_keyword(const char *file, char *buf, size_t buflen)
   SKIPWS(buf);
   char *start = buf;
 
-  while ((*buf != '\0') && !isspace(*buf))
+  while ((*buf != '\0') && !mutt_isspace(*buf))
     buf++;
 
   *buf = '\0';

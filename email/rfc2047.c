@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <iconv.h>
 #include <stdbool.h>
@@ -43,6 +42,7 @@
 #include "rfc2047.h"
 #include "envelope.h"
 #include "mime.h"
+#include "mutt_ctype.h"
 
 #define ENCWORD_LEN_MAX 75
 #define ENCWORD_LEN_MIN 9 /* strlen ("=?.?.?.?=") */
@@ -162,7 +162,7 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
   *charsetlen = mutt_regmatch_len(mcharset);
 
   /* Encoding: either Q or B */
-  *enc = (tolower(str[mutt_regmatch_start(mencoding)]) == 'q') ? ENC_QUOTED_PRINTABLE : ENC_BASE64;
+  *enc = (mutt_tolower(str[mutt_regmatch_start(mencoding)]) == 'q') ? ENC_QUOTED_PRINTABLE : ENC_BASE64;
 
   *text = str + mutt_regmatch_start(mtext);
   *textlen = mutt_regmatch_len(mtext);

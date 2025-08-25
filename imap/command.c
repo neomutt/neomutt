@@ -35,7 +35,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -54,6 +53,7 @@
 #include "edata.h"
 #include "mdata.h"
 #include "msn.h"
+#include "mutt_ctype.h"
 #include "mutt_logging.h"
 #include "mx.h"
 
@@ -558,7 +558,7 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
     for (size_t i = 0; Capabilities[i]; i++)
     {
       size_t len = mutt_istr_startswith(s, Capabilities[i]);
-      if (len != 0 && ((s[len] == '\0') || isspace(s[len])))
+      if (len != 0 && ((s[len] == '\0') || mutt_isspace(s[len])))
       {
         adata->capabilities |= (1 << i);
         mutt_debug(LL_DEBUG3, " Found capability \"%s\": %zu\n", Capabilities[i], i);
@@ -726,7 +726,7 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
   /* zero out current rights set */
   adata->mailbox->rights = 0;
 
-  while (*s && !isspace((unsigned char) *s))
+  while (*s && !mutt_isspace((unsigned char) *s))
   {
     switch (*s)
     {

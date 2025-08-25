@@ -34,7 +34,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -60,6 +59,7 @@
 #include "mdata.h"
 #include "msg_set.h"
 #include "msn.h"
+#include "mutt_ctype.h"
 #include "mutt_logging.h"
 #include "mx.h"
 #include "protos.h"
@@ -256,7 +256,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
       char *flag_word = s;
       bool is_system_keyword = mutt_istr_startswith(s, "\\");
 
-      while (*s && !isspace(*s) && (*s != ')'))
+      while (*s && !mutt_isspace(*s) && (*s != ')'))
         s++;
 
       ctmp = *s;

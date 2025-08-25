@@ -28,10 +28,10 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include "hash.h"
 #include "memory.h"
+#include "mutt_ctype.h"
 #include "string2.h"
 
 #define SOME_PRIME 149711
@@ -76,7 +76,7 @@ static size_t gen_hash_case_string(union HashKey key, size_t num_elems)
     return 0;
 
   while (*s != '\0')
-    hash += ((hash << 7) + tolower(*s++));
+    hash += ((hash << 7) + mutt_tolower(*s++));
   hash = (hash * SOME_PRIME) % num_elems;
 
   return hash;

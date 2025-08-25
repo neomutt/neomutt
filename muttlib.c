@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <pwd.h>
@@ -49,6 +48,7 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "mutt_ctype.h"
 #include "muttlib.h"
 #include "browser/lib.h"
 #include "editor/lib.h"
@@ -683,7 +683,7 @@ void mutt_safe_path(struct Buffer *dest, const struct Address *a)
 {
   buf_save_path(dest, a);
   for (char *p = dest->data; *p; p++)
-    if ((*p == '/') || isspace(*p) || !IsPrint((unsigned char) *p))
+    if ((*p == '/') || mutt_isspace(*p) || !IsPrint((unsigned char) *p))
       *p = '_';
 }
 
@@ -864,7 +864,7 @@ void mutt_encode_path(struct Buffer *buf, const char *src)
   /* convert the path to POSIX "Portable Filename Character Set" */
   for (size_t i = 0; i < len; i++)
   {
-    if (!isalnum(buf->data[i]) && !strchr("/.-_", buf->data[i]))
+    if (!mutt_isalnum(buf->data[i]) && !strchr("/.-_", buf->data[i]))
     {
       buf->data[i] = '_';
     }

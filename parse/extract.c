@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -37,6 +36,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "extract.h"
+#include "mutt_ctype.h"
 
 /**
  * parse_extract_token - Extract one token from a string
@@ -62,7 +62,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
   {
     if (qc == '\0')
     {
-      if (isspace(ch) && !(flags & TOKEN_SPACE))
+      if (mutt_isspace(ch) && !(flags & TOKEN_SPACE))
         break;
       if ((ch == '#') && !(flags & TOKEN_COMMENT))
         break;
@@ -265,7 +265,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       }
       else
       {
-        for (pc = tok->dptr; isalnum((unsigned char) *pc) || (pc[0] == '_'); pc++)
+        for (pc = tok->dptr; mutt_isalnum((unsigned char) *pc) || (pc[0] == '_'); pc++)
           ; // do nothing
 
         var = mutt_strn_dup(tok->dptr, pc - tok->dptr);
