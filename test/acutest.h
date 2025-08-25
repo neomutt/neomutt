@@ -335,6 +335,7 @@ void acutest_abort_(void) ACUTEST_ATTRIBUTE_(noreturn);
 
 #ifndef TEST_NO_MAIN
 
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>

@@ -43,6 +43,7 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
+#include "mutt_ctype.h"
 #include "mview.h"
 
 struct Menu;
