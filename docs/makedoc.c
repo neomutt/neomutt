@@ -60,6 +60,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -68,7 +69,6 @@
 #include <strings.h>
 #include <unistd.h>
 #include "makedoc_defs.h"
-#include "mutt_ctype.h"
 
 char *Progname = NULL;
 short Debug = 0;
@@ -183,7 +183,7 @@ struct VariableTypes types[] = {
 
 static char *skip_ws(char *s)
 {
-  while (*s && mutt_isspace((unsigned char) *s))
+  while (*s && isspace((unsigned char) *s))
     s++;
 
   return s;
@@ -267,7 +267,7 @@ static char *get_token(char *d, size_t l, char *s)
     {
       break;
     }
-    else if (!is_quoted && mutt_isspace((unsigned char) *t))
+    else if (!is_quoted && isspace((unsigned char) *t))
     {
       break;
     }
@@ -985,7 +985,7 @@ static int handle_docline(enum OutputFormats format, char *l, FILE *fp_out, int 
       else
       {
         ref = s;
-        while (mutt_isalnum((unsigned char) *s) || (*s && strchr("-_<>", *s)))
+        while (isalnum((unsigned char) *s) || (*s && strchr("-_<>", *s)))
           s++;
 
         docstat = commit_buf(format, buf, &d, fp_out, docstat);
@@ -1082,7 +1082,7 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
         fprintf(stderr, "WARNING: expected prefix of SORT_ for type DT_SORT instead of %s\n", s);
       strncpy(t, name, l);
       for (; *t; t++)
-        *t = mutt_tolower((unsigned char) *t);
+        *t = tolower((unsigned char) *t);
       break;
     }
     case DT_ADDRESS:
