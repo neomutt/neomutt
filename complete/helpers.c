@@ -44,7 +44,7 @@
 #include "menu/lib.h"
 #include "compapi.h"
 #include "data.h"
-#include "mutt_ctype.h"
+#include "mutt/ctype.h"
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion

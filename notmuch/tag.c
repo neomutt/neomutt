@@ -30,7 +30,7 @@
 #include "config.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "mutt_ctype.h"
+#include "mutt/ctype.h"
 #include "tag.h"
 
 /**

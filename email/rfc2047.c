@@ -42,7 +42,7 @@
 #include "rfc2047.h"
 #include "envelope.h"
 #include "mime.h"
-#include "mutt_ctype.h"
+#include "mutt/ctype.h"
 
 #define ENCWORD_LEN_MAX 75
 #define ENCWORD_LEN_MIN 9 /* strlen ("=?.?.?.?=") */

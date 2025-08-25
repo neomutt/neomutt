@@ -36,7 +36,7 @@
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "mutt_ctype.h"
+#include "mutt/ctype.h"
 
 extern const struct MenuFuncOp OpAlias[];
 extern const struct MenuFuncOp OpAttachment[];

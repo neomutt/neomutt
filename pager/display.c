@@ -42,7 +42,7 @@
 #include "gui/lib.h"
 #include "display.h"
 #include "lib.h"
-#include "mutt_ctype.h"
+#include "mutt/ctype.h"
 #include "color/lib.h"
 #include "private_data.h"
 

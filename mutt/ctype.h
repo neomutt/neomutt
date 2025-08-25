@@ -23,15 +23,13 @@
 #ifndef MUTT_MUTT_CTYPE_H
 #define MUTT_MUTT_CTYPE_H
 
-#include <ctype.h>
-
-#define mutt_isalnum(arg)	(isascii(arg) ? isalnum((unsigned char)arg) : 0)
-#define mutt_isalpha(arg)	(isascii(arg) ? isalpha((unsigned char)arg) : 0)
-#define mutt_isdigit(arg)	(isascii(arg) ? isdigit((unsigned char)arg) : 0)
-#define mutt_ispunct(arg)	(isascii(arg) ? ispunct((unsigned char)arg) : 0)
-#define mutt_isspace(arg)	(isascii(arg) ? isspace((unsigned char)arg) : 0)
-#define mutt_isxdigit(arg)	(isascii(arg) ? isxdigit((unsigned char)arg) : 0)
-#define mutt_tolower(arg)	(isascii(arg) ? tolower((unsigned char)arg) : (arg))
-#define mutt_toupper(arg)	(isascii(arg) ? toupper((unsigned char)arg) : (arg))
+int mutt_isalnum(int arg);
+int mutt_isalpha(int arg);
+int mutt_isdigit(int arg);
+int mutt_ispunct(int arg);
+int mutt_isspace(int arg);
+int mutt_isxdigit(int arg);
+int mutt_tolower(int arg);
+int mutt_toupper(int arg);
 
 #endif /* MUTT_MUTT_CTYPE_H */

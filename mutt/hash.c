@@ -31,7 +31,7 @@
 #include <stdbool.h>
 #include "hash.h"
 #include "memory.h"
-#include "mutt_ctype.h"
+#include "mutt/ctype.h"
 #include "string2.h"
 
 #define SOME_PRIME 149711

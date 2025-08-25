@@ -31,7 +31,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "helpers.h"
-#include "mutt_ctype.h"
+#include "mutt/ctype.h"
 #include "mutt_thread.h"
 #include "render.h"
 

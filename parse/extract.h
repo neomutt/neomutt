@@ -25,7 +25,7 @@
 #define MUTT_PARSE_EXTRACT_H
 
 #include <stdint.h>
-#include "mutt_ctype.h"
+#include "mutt/ctype.h"
 
 struct Buffer;
 

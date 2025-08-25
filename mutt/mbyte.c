@@ -37,7 +37,7 @@
 #include "buffer.h"
 #include "charset.h"
 #include "memory.h"
-#include "mutt_ctype.h"
+#include "mutt/ctype.h"
 #include "pool.h"
 #include "string2.h"
 
