@@ -26,7 +26,7 @@
 int mutt_isalnum(int arg)
 {
   if (isascii(arg))
-    return isalnum((unsigned char) arg);
+    return isalnum(arg);
 
   return 0;
 }
@@ -34,7 +34,7 @@ int mutt_isalnum(int arg)
 int mutt_isalpha(int arg)
 {
   if (isascii(arg))
-    return isalpha((unsigned char) arg);
+    return isalpha(arg);
 
   return 0;
 }
@@ -42,7 +42,7 @@ int mutt_isalpha(int arg)
 int mutt_isdigit(int arg)
 {
   if (isascii(arg))
-    return isdigit((unsigned char) arg);
+    return isdigit(arg);
 
   return 0;
 }
@@ -50,7 +50,7 @@ int mutt_isdigit(int arg)
 int mutt_ispunct(int arg)
 {
   if (isascii(arg))
-    return ispunct((unsigned char) arg);
+    return ispunct(arg);
 
   return 0;
 }
@@ -58,7 +58,7 @@ int mutt_ispunct(int arg)
 int mutt_isspace(int arg)
 {
   if (isascii(arg))
-    return isspace((unsigned char) arg);
+    return isspace(arg);
 
   return 0;
 }
@@ -66,7 +66,7 @@ int mutt_isspace(int arg)
 int mutt_isxdigit(int arg)
 {
   if (isascii(arg))
-    return isxdigit((unsigned char) arg);
+    return isxdigit(arg);
 
   return 0;
 }
@@ -74,7 +74,7 @@ int mutt_isxdigit(int arg)
 int mutt_tolower(int arg)
 {
   if (isascii(arg))
-    return tolower((unsigned char) arg);
+    return tolower(arg);
 
   return arg;
 }
@@ -82,7 +82,7 @@ int mutt_tolower(int arg)
 int mutt_toupper(int arg)
 {
   if (isascii(arg))
-    return toupper((unsigned char) arg);
+    return toupper(arg);
 
   return arg;
 }
