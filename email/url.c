@@ -197,8 +197,8 @@ int url_pct_decode(char *s)
   {
     if (*s == '%')
     {
-      if ((s[1] != '\0') && (s[2] != '\0') && isxdigit((unsigned char) s[1]) &&
-          isxdigit((unsigned char) s[2]) && (hexval(s[1]) >= 0) && (hexval(s[2]) >= 0))
+      if ((s[1] != '\0') && (s[2] != '\0') && mutt_isxdigit(s[1]) &&
+          mutt_isxdigit(s[2]) && (hexval(s[1]) >= 0) && (hexval(s[2]) >= 0))
       {
         *d++ = (hexval(s[1]) << 4) | (hexval(s[2]));
         s += 2;

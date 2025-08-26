@@ -357,7 +357,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       s += plen;
       SKIPWS(s);
       ptmp = tmp;
-      while (isdigit((unsigned char) *s) && (ptmp != (tmp + sizeof(tmp) - 1)))
+      while (mutt_isdigit(*s) && (ptmp != (tmp + sizeof(tmp) - 1)))
         *ptmp++ = *s++;
       *ptmp = '\0';
       if (!mutt_str_atol(tmp, &h->content_length))
@@ -953,7 +953,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
       continue;
 
     fetch_buf = imap_next_word(fetch_buf);
-    if (!isdigit((unsigned char) *fetch_buf) || !mutt_str_atoui(fetch_buf, &header_msn))
+    if (!mutt_isdigit(*fetch_buf) || !mutt_str_atoui(fetch_buf, &header_msn))
       continue;
 
     if ((header_msn < 1) || (header_msn > msn_end) ||

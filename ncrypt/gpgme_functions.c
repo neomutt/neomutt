@@ -194,7 +194,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
   if (*str == '#')
   { /* hexstring */
     str++;
-    for (s = str; isxdigit(*s); s++)
+    for (s = str; mutt_isxdigit(*s); s++)
       s++;
     n = s - str;
     if ((n == 0) || (n & 1))
@@ -218,7 +218,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
         {
           n++;
         }
-        else if (isxdigit(s[0]) && isxdigit(s[1]))
+        else if (mutt_isxdigit(s[0]) && mutt_isxdigit(s[1]))
         {
           s++;
           n++;
@@ -250,7 +250,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
       if (*s == '\\')
       {
         s++;
-        if (isxdigit(*s))
+        if (mutt_isxdigit(*s))
         {
           sscanf(s, "%2hhx", (unsigned char *) p++);
           s++;

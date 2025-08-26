@@ -786,7 +786,7 @@ int imap_get_literal_count(const char *buf, unsigned int *bytes)
 
   pc++;
   pn = pc;
-  while (isdigit((unsigned char) *pc))
+  while (mutt_isdigit(*pc))
     pc++;
   *pc = '\0';
   if (!mutt_str_atoui(pn, bytes))

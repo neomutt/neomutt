@@ -362,7 +362,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
       memmove(&dest[idx + pwnl], &dest[idx + 1],
               MAX((ssize_t) (destlen - idx - pwnl - 1), 0));
       memcpy(&dest[idx], pw->pw_name, MIN(destlen - idx - 1, pwnl));
-      dest[idx] = toupper((unsigned char) dest[idx]);
+      dest[idx] = mutt_toupper(dest[idx]);
     }
   }
 

@@ -85,8 +85,8 @@ static void fix_uid(char *uid)
 
   for (s = uid, d = uid; *s;)
   {
-    if ((s[0] == '\\') && (s[1] == 'x') && isxdigit((unsigned char) s[2]) &&
-        isxdigit((unsigned char) s[3]))
+    if ((s[0] == '\\') && (s[1] == 'x') && mutt_isxdigit(s[2]) &&
+        mutt_isxdigit(s[3]))
     {
       *d++ = (hexval(s[2]) << 4) | hexval(s[3]);
       s += 4;
