@@ -320,7 +320,7 @@ char *mutt_str_lower(char *str)
 
   while (*p)
   {
-    *p = mutt_tolower((unsigned char) *p);
+    *p = mutt_tolower(*p);
     p++;
   }
 
@@ -343,7 +343,7 @@ char *mutt_str_upper(char *str)
 
   while (*p)
   {
-    *p = mutt_toupper((unsigned char) *p);
+    *p = mutt_toupper(*p);
     p++;
   }
 
@@ -479,7 +479,7 @@ const char *mutt_istrn_rfind(const char *haystack, size_t haystack_length, const
   {
     for (size_t i = 0; i < needle_length; i++)
     {
-      if ((mutt_tolower((unsigned char) p[i]) != mutt_tolower((unsigned char) needle[i])))
+      if ((mutt_tolower(p[i]) != mutt_tolower(needle[i])))
         goto next;
     }
     return p;
@@ -531,7 +531,7 @@ const char *mutt_istr_find(const char *haystack, const char *needle)
   while (*(p = haystack))
   {
     for (q = needle;
-         *p && *q && (mutt_tolower((unsigned char) *p) == mutt_tolower((unsigned char) *q));
+         *p && *q && (mutt_tolower(*p) == mutt_tolower(*q));
          p++, q++)
     {
     }

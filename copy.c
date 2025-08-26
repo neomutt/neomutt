@@ -1084,7 +1084,7 @@ static int address_header_decode(char **h)
   size_t l;
   bool rp = false;
 
-  switch (mutt_tolower((unsigned char) *s))
+  switch (mutt_tolower(*s))
   {
     case 'b':
     {

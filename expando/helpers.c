@@ -108,7 +108,7 @@ void buf_lower_special(struct Buffer *buf)
       continue;
     }
 
-    *p = mutt_tolower((unsigned char) *p);
+    *p = mutt_tolower(*p);
     p++;
   }
 }

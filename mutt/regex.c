@@ -419,7 +419,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, const char *str)
                 buf_addstr_n(dst, src->data + pmatch[n].rm_so,
                              pmatch[n].rm_eo - pmatch[n].rm_so);
               }
-              while (mutt_isdigit((unsigned char) *p)) /* skip subst token */
+              while (mutt_isdigit(*p)) /* skip subst token */
                 p++;
             }
           }

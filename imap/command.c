@@ -725,7 +725,7 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
   /* zero out current rights set */
   adata->mailbox->rights = 0;
 
-  while (*s && !mutt_isspace((unsigned char) *s))
+  while (*s && !mutt_isspace(*s))
   {
     switch (*s)
     {
@@ -1020,7 +1020,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
   char *pn = imap_next_word(s);
 
   const bool c_imap_server_noise = cs_subset_bool(NeoMutt->sub, "imap_server_noise");
-  if ((adata->state >= IMAP_SELECTED) && isdigit((unsigned char) *s))
+  if ((adata->state >= IMAP_SELECTED) && mutt_isdigit(*s))
   {
     /* pn vs. s: need initial seqno */
     pn = s;

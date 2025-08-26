@@ -221,7 +221,7 @@ static int qp_decode_triple(char *s, char *d)
     return 1;
 
   /* quoted-printable triple */
-  if ((s[0] == '=') && mutt_isxdigit((unsigned char) s[1]) && mutt_isxdigit((unsigned char) s[2]))
+  if ((s[0] == '=') && mutt_isxdigit(s[1]) && mutt_isxdigit(s[2]))
   {
     *d = (hexval(s[1]) << 4) | hexval(s[2]);
     return 0;

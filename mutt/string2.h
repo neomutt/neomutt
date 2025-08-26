@@ -43,7 +43,7 @@
 /* this macro must check for (*ch == 0) since isspace(0) has unreliable behavior
  * on some systems */
 #define SKIPWS(ch)                                                             \
-  while (*(ch) && mutt_isspace((unsigned char) *(ch)))                              \
+  while (*(ch) && mutt_isspace(*(ch)))                              \
     ch++;
 
 #define terminate_string(str, strlen, buflen)                                  \

@@ -117,7 +117,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
   spaces = pt - buf->data;
 
   pt = buf->data + pos - spaces;
-  while ((pt > buf->data) && !mutt_isspace((unsigned char) *pt))
+  while ((pt > buf->data) && !mutt_isspace(*pt))
     pt--;
 
   if (pt == buf->data) /* complete cmd */
@@ -385,7 +385,7 @@ int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int p
   const int spaces = pt - buf->data;
 
   pt = buf->data + pos - spaces;
-  while ((pt > buf->data) && !mutt_isspace((unsigned char) *pt))
+  while ((pt > buf->data) && !mutt_isspace(*pt))
     pt--;
   pt++;           /* move past the space */
   if (*pt == '=') /* abort if no var before the '=' */

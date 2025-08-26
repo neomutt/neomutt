@@ -169,7 +169,7 @@ int parse_fkey(char *s)
   if ((s[0] != '<') || (mutt_tolower(s[1]) != 'f'))
     return -1;
 
-  for (t = s + 2; *t && mutt_isdigit((unsigned char) *t); t++)
+  for (t = s + 2; *t && mutt_isdigit(*t); t++)
   {
     n *= 10;
     n += *t - '0';
