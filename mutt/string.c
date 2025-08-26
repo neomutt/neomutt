@@ -343,7 +343,7 @@ char *mutt_str_upper(char *str)
 
   while (*p)
   {
-    *p = toupper((unsigned char) *p);
+    *p = mutt_toupper((unsigned char) *p);
     p++;
   }
 

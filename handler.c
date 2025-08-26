@@ -57,7 +57,6 @@
 #include "enriched.h"
 #include "globals.h"
 #include "mailcap.h"
-#include "mutt/ctype2.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "rfc3676.h"

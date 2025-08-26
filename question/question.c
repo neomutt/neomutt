@@ -39,7 +39,6 @@
 #include "gui/lib.h"
 #include "color/lib.h"
 #include "key/lib.h"
-#include "mutt/ctype2.h"
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h> // IWYU pragma: keep
 #endif

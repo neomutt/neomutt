@@ -42,7 +42,6 @@
 #include "gui/lib.h"
 #include "display.h"
 #include "lib.h"
-#include "mutt/ctype2.h"
 #include "color/lib.h"
 #include "private_data.h"
 

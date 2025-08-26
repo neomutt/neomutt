@@ -53,7 +53,6 @@
 #include "globals.h"
 #include "handler.h"
 #include "header.h"
-#include "mutt/ctype2.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"

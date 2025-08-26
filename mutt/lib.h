@@ -34,6 +34,7 @@
  * | mutt/base64.c    | @subpage mutt_base64    |
  * | mutt/buffer.c    | @subpage mutt_buffer    |
  * | mutt/charset.c   | @subpage mutt_charset   |
+ * | mutt/ctype.c     | @subpage mutt_ctype     |
  * | mutt/date.c      | @subpage mutt_date      |
  * | mutt/envlist.c   | @subpage mutt_envlist   |
  * | mutt/eqi.h       | @subpage mutt_eqi       |
@@ -75,6 +76,7 @@
 #include "base64.h"
 #include "buffer.h"
 #include "charset.h"
+#include "ctype2.h"
 #include "date.h"
 #include "envlist.h"
 #include "eqi.h"

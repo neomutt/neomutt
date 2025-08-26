@@ -36,7 +36,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "extract.h"
-#include "mutt/ctype2.h"
 
 /**
  * parse_extract_token - Extract one token from a string
