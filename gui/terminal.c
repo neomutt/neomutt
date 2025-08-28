@@ -33,10 +33,21 @@
 #include "mutt/lib.h"
 #include "terminal.h"
 #include "mutt_curses.h"
+
+/*
+ * The inclusion logic must be kept in sync with that of gui/mutt_curses.h.
+ * We aren't including term.h there because it pollutes the global name space
+ * with a lot of common names that we use in our source code, e.g., `pad_char`,
+ * so we'd like to scope its inclusion to this source file.
+ */
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/term.h>
 #elif defined(HAVE_NCURSES_NCURSES_H)
 #include <ncurses/term.h>
+#elif defined(HAVE_NCURSES_H)
+#include <term.h>
+#else
+#include <term.h>
 #endif
 
 bool TsSupported; ///< Terminal Setting is supported
