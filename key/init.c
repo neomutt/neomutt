@@ -53,6 +53,7 @@ extern const struct MenuOpSeq PostponedDefaultBindings[];
 extern const struct MenuOpSeq QueryDefaultBindings[];
 extern const struct MenuOpSeq SmimeDefaultBindings[];
 
+#ifdef HAVE_USE_EXTENDED_NAMES
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style
  */
@@ -119,6 +120,7 @@ static const char *find_ext_name(const char *key)
   }
   return 0;
 }
+#endif
 
 /**
  * init_extended_keys - Initialise map of ncurses extended keys
