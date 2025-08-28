@@ -33,7 +33,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <string.h>
 #include <time.h>
@@ -473,7 +472,7 @@ void mutt_parse_content_type(const char *s, struct Body *b)
   if (pc)
   {
     *pc++ = 0;
-    while (*pc && isspace(*pc))
+    while (*pc && mutt_isspace(*pc))
       pc++;
     parse_parameters(&b->parameter, pc, false);
 
@@ -495,7 +494,7 @@ void mutt_parse_content_type(const char *s, struct Body *b)
   if (subtype)
   {
     *subtype++ = '\0';
-    for (pc = subtype; *pc && !isspace(*pc) && (*pc != ';'); pc++)
+    for (pc = subtype; *pc && !mutt_isspace(*pc) && (*pc != ';'); pc++)
       ; // do nothing
 
     *pc = '\0';
@@ -1620,7 +1619,7 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
       if (len > 0)
       {
         /* Remove any trailing whitespace, up to the length of the boundary */
-        for (size_t i = len - 1; isspace(buf[i]) && (i >= (blen + 2)); i--)
+        for (size_t i = len - 1; mutt_isspace(buf[i]) && (i >= (blen + 2)); i--)
           buf[i] = '\0';
       }
 

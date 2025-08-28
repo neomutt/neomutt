@@ -28,9 +28,9 @@
 #ifndef MUTT_MUTT_STRING2_H
 #define MUTT_MUTT_STRING2_H
 
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/ctype2.h"
 
 #define STR_COMMAND 8192  ///< Enough space for a long command line
 
@@ -43,7 +43,7 @@
 /* this macro must check for (*ch == 0) since isspace(0) has unreliable behavior
  * on some systems */
 #define SKIPWS(ch)                                                             \
-  while (*(ch) && isspace((unsigned char) *(ch)))                              \
+  while (*(ch) && mutt_isspace(*(ch)))                              \
     ch++;
 
 #define terminate_string(str, strlen, buflen)                                  \

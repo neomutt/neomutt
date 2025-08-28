@@ -32,7 +32,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -102,7 +101,7 @@ static bool mh_valid_message(const char *s)
 {
   for (; *s; s++)
   {
-    if (!isdigit((unsigned char) *s))
+    if (!mutt_isdigit(*s))
       return false;
   }
   return true;
@@ -272,7 +271,7 @@ static int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e
     cp = dep;
     while (*cp)
     {
-      if (!isdigit((unsigned char) *cp))
+      if (!mutt_isdigit(*cp))
         break;
       cp++;
     }

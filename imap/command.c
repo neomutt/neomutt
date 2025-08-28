@@ -35,7 +35,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -558,7 +557,7 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
     for (size_t i = 0; Capabilities[i]; i++)
     {
       size_t len = mutt_istr_startswith(s, Capabilities[i]);
-      if (len != 0 && ((s[len] == '\0') || isspace(s[len])))
+      if (len != 0 && ((s[len] == '\0') || mutt_isspace(s[len])))
       {
         adata->capabilities |= (1 << i);
         mutt_debug(LL_DEBUG3, " Found capability \"%s\": %zu\n", Capabilities[i], i);
@@ -726,7 +725,7 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
   /* zero out current rights set */
   adata->mailbox->rights = 0;
 
-  while (*s && !isspace((unsigned char) *s))
+  while (*s && !mutt_isspace(*s))
   {
     switch (*s)
     {
@@ -1021,7 +1020,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
   char *pn = imap_next_word(s);
 
   const bool c_imap_server_noise = cs_subset_bool(NeoMutt->sub, "imap_server_noise");
-  if ((adata->state >= IMAP_SELECTED) && isdigit((unsigned char) *s))
+  if ((adata->state >= IMAP_SELECTED) && mutt_isdigit(*s))
   {
     /* pn vs. s: need initial seqno */
     pn = s;

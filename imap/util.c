@@ -33,7 +33,6 @@
 
 #include "config.h"
 #include <arpa/inet.h>
-#include <ctype.h>
 #include <errno.h>
 #include <netdb.h>
 #include <signal.h>
@@ -787,7 +786,7 @@ int imap_get_literal_count(const char *buf, unsigned int *bytes)
 
   pc++;
   pn = pc;
-  while (isdigit((unsigned char) *pc))
+  while (mutt_isdigit(*pc))
     pc++;
   *pc = '\0';
   if (!mutt_str_atoui(pn, bytes))
@@ -836,7 +835,7 @@ char *imap_next_word(char *s)
     }
     if (*s == '\"')
       quoted = !quoted;
-    if (!quoted && isspace(*s))
+    if (!quoted && mutt_isspace(*s))
       break;
     s++;
   }

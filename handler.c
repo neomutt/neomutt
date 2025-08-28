@@ -34,7 +34,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <iconv.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -222,7 +221,7 @@ static int qp_decode_triple(char *s, char *d)
     return 1;
 
   /* quoted-printable triple */
-  if ((s[0] == '=') && isxdigit((unsigned char) s[1]) && isxdigit((unsigned char) s[2]))
+  if ((s[0] == '=') && mutt_isxdigit(s[1]) && mutt_isxdigit(s[2]))
   {
     *d = (hexval(s[1]) << 4) | hexval(s[2]);
     return 0;
@@ -337,7 +336,7 @@ static void decode_quoted(struct State *state, long len, bool istext, iconv_t cd
     /* chop trailing whitespace if we got the full line */
     if (last == '\n')
     {
-      while ((linelen > 0) && isspace(line[linelen - 1]))
+      while ((linelen > 0) && mutt_isspace(line[linelen - 1]))
         linelen--;
       line[linelen] = '\0';
     }

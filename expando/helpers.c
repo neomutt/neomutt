@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "helpers.h"
@@ -109,7 +108,7 @@ void buf_lower_special(struct Buffer *buf)
       continue;
     }
 
-    *p = tolower((unsigned char) *p);
+    *p = mutt_tolower(*p);
     p++;
   }
 }

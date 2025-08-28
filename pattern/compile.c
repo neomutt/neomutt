@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -563,7 +562,7 @@ bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
 
     bool have_min = false;
     bool until_now = false;
-    if (isdigit((unsigned char) *pc))
+    if (mutt_isdigit(*pc))
     {
       /* minimum date specified */
       pc = get_date(pc, &min, err);
@@ -648,12 +647,12 @@ static bool eat_range(struct Pattern *pat, PatternCompFlags flags,
     {
       pat->min = strtol(s->dptr, &tmp, 0);
     }
-    if (toupper((unsigned char) *tmp) == 'K') /* is there a prefix? */
+    if (mutt_toupper(*tmp) == 'K') /* is there a prefix? */
     {
       pat->min *= 1024;
       tmp++;
     }
-    else if (toupper((unsigned char) *tmp) == 'M')
+    else if (mutt_toupper(*tmp) == 'M')
     {
       pat->min *= 1048576;
       tmp++;
@@ -678,16 +677,16 @@ static bool eat_range(struct Pattern *pat, PatternCompFlags flags,
     tmp = s->dptr;
   }
 
-  if (isdigit((unsigned char) *tmp))
+  if (mutt_isdigit(*tmp))
   {
     /* range maximum */
     pat->max = strtol(tmp, &tmp, 0);
-    if (toupper((unsigned char) *tmp) == 'K')
+    if (mutt_toupper(*tmp) == 'K')
     {
       pat->max *= 1024;
       tmp++;
     }
-    else if (toupper((unsigned char) *tmp) == 'M')
+    else if (mutt_toupper(*tmp) == 'M')
     {
       pat->max *= 1048576;
       tmp++;
