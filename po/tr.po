@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-05-10\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-08-28 08:41+0100\n"
-"PO-Revision-Date: 2025-02-22 21:00+0300\n"
+"PO-Revision-Date: 2025-08-29 08:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -1016,7 +1016,7 @@ msgstr "%s posta kutusuna abone olunamadı"
 
 #: commands.c:1288 commands.c:1624
 msgid "No folder specified"
-msgstr "Dizin belirtilmedi"
+msgstr "Dizin belirtilmemiş"
 
 #: commands.c:1322
 #, c-format
@@ -4973,7 +4973,7 @@ msgstr "Klasör imleme desteklemiyor, iptal ediliyor"
 
 #: index/functions.c:1375
 msgid "No tag specified, aborting"
-msgstr "Bir im belirtilmedi, iptal ediliyor"
+msgstr "Bir im belirtilmemiş, iptal ediliyor"
 
 #: index/functions.c:1386
 msgid "Update tags..."
@@ -7976,20 +7976,20 @@ msgstr "İleti ertelendi"
 
 #: send/send.c:2684
 msgid "No subject, abort sending?"
-msgstr "Konu girilmedi, gönderme iptal edilsin mi?"
+msgstr "Konu girilmemiş, gönderme iptal edilsin mi?"
 
 #: send/send.c:2688 send/send.c:2694
 msgid "No subject specified"
-msgstr "Konu girilmedi"
+msgstr "Konu belirtilmemiş"
 
 #: send/send.c:2700
 msgid "No newsgroup specified"
 msgstr "Haber grubu belirtilmemiş"
 
 #: send/send.c:2711
-#, fuzzy
 msgid "No recipients specified in To. Send anyway?"
-msgstr "Herhangi bir alıcı belirtilmemiş"
+msgstr ""
+"\"Kime\" kısmına herhangi bir alıcı belirtilmemiş. Yine de gönderilsin mi?"
 
 #: send/send.c:2752
 msgid "Missing encryption key; mail not sent"
@@ -8017,7 +8017,7 @@ msgstr "Posta gönderildi"
 
 #: send/send.c:2915
 msgid "No recipient specified"
-msgstr "Alıcı belirtilmedi"
+msgstr "Alıcı belirtilmemiş"
 
 #: send/send.c:2962
 msgid "No List-Subscribe header found"
