@@ -3,7 +3,8 @@
  * GUI display a file/email/help in a viewport with paging
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -210,6 +211,11 @@ struct TextSyntax;
 struct Line;
 void dump_text_syntax(struct TextSyntax *ts, int num);
 void dump_line(int i, struct Line *line);
+
+#ifdef USE_DEBUG_COLOR
 void dump_pager(struct PagerPrivateData *priv);
+#else
+static inline void dump_pager(struct PagerPrivateData *priv) {}
+#endif
 
 #endif /* MUTT_PAGER_LIB_H */

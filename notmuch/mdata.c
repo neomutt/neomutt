@@ -3,7 +3,7 @@
  * Notmuch-specific Mailbox data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,7 +36,7 @@
 #include "query.h"
 
 /**
- * nm_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
+ * nm_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free() - @ingroup mailbox_mdata_free
  *
  * The NmMboxData struct stores global Notmuch data, such as the connection to
  * the database.  This function will close the database, free the resources and
@@ -70,7 +70,7 @@ struct NmMboxData *nm_mdata_new(const char *url)
   if (!url)
     return NULL;
 
-  struct NmMboxData *mdata = mutt_mem_calloc(1, sizeof(struct NmMboxData));
+  struct NmMboxData *mdata = MUTT_MEM_CALLOC(1, struct NmMboxData);
   mutt_debug(LL_DEBUG1, "nm: initialize mailbox mdata %p\n", (void *) mdata);
 
   const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");

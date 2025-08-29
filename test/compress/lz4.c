@@ -3,7 +3,7 @@
  * Test code for lz4 compression
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,9 +27,13 @@
 #include "mutt/lib.h"
 #include "compress/lib.h"
 #include "test/compress/common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 #define MIN_COMP_LEVEL 1  ///< Minimum compression level for lz4
 #define MAX_COMP_LEVEL 12 ///< Maximum compression level for lz4
+
+struct Lz4ComprData;
+void lz4_cdata_free(struct Lz4ComprData **ptr);
 
 void test_compress_lz4(void)
 {
@@ -51,6 +55,10 @@ void test_compress_lz4(void)
     TEST_CHECK_(1, "compr_ops->close(NULL)");
     compr_ops->close(&compr_handle);
     TEST_CHECK_(1, "compr_ops->close(&compr_handle)");
+
+    struct Lz4ComprData *ptr = NULL;
+    lz4_cdata_free(NULL);
+    lz4_cdata_free(&ptr);
   }
 
   {

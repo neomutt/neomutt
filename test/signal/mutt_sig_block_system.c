@@ -3,7 +3,7 @@
  * Test code for mutt_sig_block_system()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,6 +30,12 @@ void test_mutt_sig_block_system(void)
   // void mutt_sig_block_system(void);
 
   {
+    mutt_sig_block_system();
+    TEST_CHECK_(1, "mutt_sig_block_system()");
+  }
+
+  {
+    mutt_sig_block_system();
     mutt_sig_block_system();
     TEST_CHECK_(1, "mutt_sig_block_system()");
   }

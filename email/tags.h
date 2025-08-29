@@ -4,6 +4,9 @@
  *
  * @authors
  * Copyright (C) 2017 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -44,13 +47,16 @@ struct Tag
 };
 STAILQ_HEAD(TagList, Tag);
 
-void  driver_tags_free               (struct TagList *list);
-char *driver_tags_get                (struct TagList *list);
-char *driver_tags_get_transformed    (struct TagList *list);
-char *driver_tags_get_transformed_for(struct TagList *list, const char *name);
-char *driver_tags_get_with_hidden    (struct TagList *list);
-bool  driver_tags_replace            (struct TagList *list, const char *tags);
-void  driver_tags_add                (struct TagList *list, char *tag);
+void        tag_free(struct Tag **ptr);
+struct Tag *tag_new (void);
+
+void driver_tags_free               (struct TagList *tl);
+void driver_tags_get                (struct TagList *tl, struct Buffer *tags);
+void driver_tags_get_transformed    (struct TagList *tl, struct Buffer *tags);
+void driver_tags_get_transformed_for(struct TagList *tl, const char *name, struct Buffer *tags);
+void driver_tags_get_with_hidden    (struct TagList *tl, struct Buffer *tags);
+bool driver_tags_replace            (struct TagList *tl, const char *tags);
+void driver_tags_add                (struct TagList *tl, char *tag);
 
 void driver_tags_init(void);
 void driver_tags_cleanup(void);

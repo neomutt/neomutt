@@ -4,6 +4,9 @@
  *
  * @authors
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017 Reis Radomil
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,6 +35,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -181,7 +185,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  fp = fopen(buf_string(fname), "r");
+  fp = mutt_file_fopen(buf_string(fname), "r");
   if (!fp)
   {
     rc = -1;
@@ -239,6 +243,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   mx_msg_close(m, &msg);
 
   mx_mbox_close(m);
+  m->last_checked = 0; // force a check on the next mx_mbox_check() call
 
 bail:
   mutt_file_fclose(&fp);

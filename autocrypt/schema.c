@@ -3,6 +3,7 @@
  * Autocrypt database schema
  *
  * @authors
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
  *
  * @copyright
@@ -27,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <sqlite3.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 

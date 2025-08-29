@@ -3,7 +3,7 @@
  * Type representing an enumeration
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,9 +28,9 @@
  */
 struct EnumDef
 {
-  const char *name;       ///< Config variable
-  int count;              ///< Number of documented options
-  struct Mapping *lookup; ///< Lookup table
+  const char     *name;       ///< Config variable
+  int             count;      ///< Number of documented options
+  struct Mapping *lookup;     ///< Lookup table
 };
 
 #endif /* MUTT_CONFIG_ENUM_H */

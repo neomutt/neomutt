@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,18 +24,17 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <string.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "test_common.h"
 
 void test_email_header_update(void)
 {
-  // struct ListNode *header_update(sturct ListNode *hdr, const struct Buffer *buf)
+  // struct ListNode *header_update(struct ListNode *hdr, const struct Buffer *buf)
   const char *existing_header = "X-Found: foo";
   const char *new_value = "X-Found: 3.14";
 
-  struct ListNode *n = mutt_mem_calloc(1, sizeof(struct ListNode));
+  struct ListNode *n = MUTT_MEM_CALLOC(1, struct ListNode);
   n->data = mutt_str_dup(existing_header);
 
   {

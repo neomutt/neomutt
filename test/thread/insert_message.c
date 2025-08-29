@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

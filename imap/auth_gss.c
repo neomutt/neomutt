@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 1999-2001,2005,2009 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -99,7 +101,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 }
 
 /**
- * imap_auth_gss - GSS Authentication support - Implements ImapAuth::authenticate()
+ * imap_auth_gss - GSS Authentication support - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method)
 {

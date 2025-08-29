@@ -3,7 +3,7 @@
  * Test code for mutt_list_insert_after()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "common.h"
 
@@ -58,7 +58,7 @@ void test_mutt_list_insert_after(void)
     struct ListHead expected = test_list_create(expected_names, false);
     struct ListNode *after = STAILQ_FIRST(&start);
     TEST_CHECK(mutt_list_insert_after(&start, after, insert) != NULL);
-    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    TEST_CHECK(mutt_list_equal(&start, &expected) == true);
     mutt_list_clear(&start);
     mutt_list_clear(&expected);
   }
@@ -71,7 +71,7 @@ void test_mutt_list_insert_after(void)
     struct ListHead expected = test_list_create(expected_names, false);
     struct ListNode *after = STAILQ_NEXT(STAILQ_FIRST(&start), entries);
     TEST_CHECK(mutt_list_insert_after(&start, after, insert) != NULL);
-    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    TEST_CHECK(mutt_list_equal(&start, &expected) == true);
     mutt_list_clear(&start);
     mutt_list_clear(&expected);
   }
@@ -84,7 +84,7 @@ void test_mutt_list_insert_after(void)
     struct ListHead expected = test_list_create(expected_names, false);
     struct ListNode *after = STAILQ_NEXT(STAILQ_NEXT(STAILQ_FIRST(&start), entries), entries);
     TEST_CHECK(mutt_list_insert_after(&start, after, insert) != NULL);
-    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    TEST_CHECK(mutt_list_equal(&start, &expected) == true);
     mutt_list_clear(&start);
     mutt_list_clear(&expected);
   }

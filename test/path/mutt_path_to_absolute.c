@@ -3,7 +3,7 @@
  * Test code for mutt_path_to_absolute()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,7 +23,10 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <limits.h>
 #include <stddef.h>
+#include <stdio.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "test_common.h"
 
@@ -80,7 +83,7 @@ void test_mutt_path_to_absolute(void)
   }
 
   {
-    // Unreadable dir
+    // Non-existing dir
     char path[PATH_MAX] = { 0 };
     char reference[PATH_MAX] = { 0 };
     char expected[PATH_MAX] = { 0 };
@@ -89,13 +92,10 @@ void test_mutt_path_to_absolute(void)
     const char *relative = "tmp";
 
     strncpy(path, relative, sizeof(path));
-    snprintf(reference, sizeof(reference), "%s/maildir/damson/cur", test_dir);
-    snprintf(expected, sizeof(expected), "%s/maildir/damson/%s", test_dir, relative);
+    snprintf(reference, sizeof(reference), "%s/maildir/not-there/cur", test_dir);
+    snprintf(expected, sizeof(expected), "%s/maildir/not-there/%s", test_dir, relative);
 
-    // We don't check the return value here.
-    // If the tests are run as root, like under GitHub Actions, then realpath() will succeed.
-    // If they're run as a non-root user, realpath() will fail.
-    mutt_path_to_absolute(path, reference);
-    TEST_CHECK_STR_EQ(path, expected);
+    TEST_CHECK(!mutt_path_to_absolute(path, reference));
+    TEST_CHECK_STR_EQ(path, relative);
   }
 }

@@ -3,7 +3,7 @@
  * Notmuch-specific Account data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +34,7 @@
 #include "adata.h"
 
 /**
- * nm_adata_free - Free the private Account data - Implements Account::adata_free()
+ * nm_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  */
 void nm_adata_free(void **ptr)
 {
@@ -57,9 +57,7 @@ void nm_adata_free(void **ptr)
  */
 struct NmAccountData *nm_adata_new(void)
 {
-  struct NmAccountData *adata = mutt_mem_calloc(1, sizeof(struct NmAccountData));
-
-  return adata;
+  return MUTT_MEM_CALLOC(1, struct NmAccountData);
 }
 
 /**

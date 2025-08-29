@@ -3,8 +3,8 @@
  * Handling of GnuTLS encryption
  *
  * @authors
- * Copyright (C) 2001 Marco d'Itri <md@linux.it>
- * Copyright (C) 2001-2004 Andrew McDonald <andrew@mcdonald.org.uk>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -45,6 +45,8 @@
 #include "globals.h"
 #include "muttlib.h"
 #include "ssl.h"
+
+int gnutls_protocol_set_priority(gnutls_session_t session, const int *list);
 
 // clang-format off
 /* certificate error bitmap values */
@@ -152,30 +154,27 @@ static int tls_verify_peers(gnutls_session_t tlsstate, gnutls_certificate_status
  * tls_fingerprint - Create a fingerprint of a TLS Certificate
  * @param algo   Fingerprint algorithm, e.g. GNUTLS_MAC_SHA256
  * @param buf    Buffer for the fingerprint
- * @param buflen Length of the buffer
  * @param data Certificate
  */
-static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf,
-                            size_t buflen, const gnutls_datum_t *data)
+static void tls_fingerprint(gnutls_digest_algorithm_t algo, struct Buffer *buf,
+                            const gnutls_datum_t *data)
 {
-  unsigned char md[64];
-  size_t n;
-
-  n = 64;
+  unsigned char md[128] = { 0 };
+  size_t n = 64;
 
   if (gnutls_fingerprint(algo, data, (char *) md, &n) < 0)
   {
-    snprintf(buf, buflen, _("[unable to calculate]"));
+    buf_strcpy(buf, _("[unable to calculate]"));
+    return;
   }
-  else
+
+  for (size_t i = 0; i < n; i++)
   {
-    for (int i = 0; i < (int) n; i++)
-    {
-      char ch[8] = { 0 };
-      snprintf(ch, 8, "%02X%s", md[i], ((i % 2) ? " " : ""));
-      mutt_str_cat(buf, buflen, ch);
-    }
-    buf[2 * n + n / 2 - 1] = '\0'; /* don't want trailing space */
+    buf_add_printf(buf, "%02X", md[i]);
+
+    // Put a space after a pair of bytes (except for the last one)
+    if (((i % 2) == 1) && (i < (n - 1)))
+      buf_addch(buf, ' ');
   }
 }
 
@@ -197,9 +196,9 @@ static bool tls_check_stored_hostname(const gnutls_datum_t *cert, const char *ho
   if (!fp)
     return false;
 
-  char buf[80] = { 0 };
-  buf[0] = '\0';
-  tls_fingerprint(GNUTLS_DIG_MD5, buf, sizeof(buf), cert);
+  struct Buffer *buf = buf_pool_get();
+
+  tls_fingerprint(GNUTLS_DIG_MD5, buf, cert);
   while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, NULL, MUTT_RL_NO_FLAGS)))
   {
     regmatch_t *match = mutt_prex_capture(PREX_GNUTLS_CERT_HOST_HASH, linestr);
@@ -210,16 +209,18 @@ static bool tls_check_stored_hostname(const gnutls_datum_t *cert, const char *ho
       linestr[mutt_regmatch_end(mhost)] = '\0';
       linestr[mutt_regmatch_end(mhash)] = '\0';
       if ((mutt_str_equal(linestr + mutt_regmatch_start(mhost), hostname)) &&
-          (mutt_str_equal(linestr + mutt_regmatch_start(mhash), buf)))
+          (mutt_str_equal(linestr + mutt_regmatch_start(mhash), buf_string(buf))))
       {
         FREE(&linestr);
         mutt_file_fclose(&fp);
+        buf_pool_release(&buf);
         return true;
       }
     }
   }
 
   mutt_file_fclose(&fp);
+  buf_pool_release(&buf);
 
   /* not found a matching name */
   return false;
@@ -244,7 +245,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
     return 0;
 
   b64_data.size = st.st_size;
-  b64_data_data = mutt_mem_calloc(1, b64_data.size + 1);
+  b64_data_data = MUTT_MEM_CALLOC(b64_data.size + 1, unsigned char);
   b64_data.data = b64_data_data;
 
   FILE *fp = mutt_file_fopen(c_certificate_file, "r");
@@ -472,7 +473,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   struct CertArray carr = ARRAY_HEAD_INITIALIZER;
   int certerr, savedcert;
   gnutls_x509_crt_t cert;
-  char fpbuf[128] = { 0 };
+  struct Buffer *fpbuf = NULL;
   time_t t;
   char datestr[30] = { 0 };
   char title[256] = { 0 };
@@ -480,6 +481,13 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 
   if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)
     return 1;
+
+  if (OptNoCurses)
+  {
+    mutt_debug(LL_DEBUG1, "unable to prompt for certificate in batch mode\n");
+    mutt_error(_("Untrusted server certificate"));
+    return 0;
+  }
 
   /* interactive check from user */
   if (gnutls_x509_crt_init(&cert) < 0)
@@ -514,18 +522,17 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   ARRAY_ADD(&carr, line);
   ARRAY_ADD(&carr, NULL);
 
-  fpbuf[0] = '\0';
-  tls_fingerprint(GNUTLS_DIG_SHA, fpbuf, sizeof(fpbuf), certdata);
-  mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), fpbuf);
+  fpbuf = buf_pool_get();
+  tls_fingerprint(GNUTLS_DIG_SHA, fpbuf, certdata);
+  mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf_string(fpbuf));
   ARRAY_ADD(&carr, line);
-  fpbuf[0] = '\0';
-  fpbuf[40] = '\0'; /* Ensure the second printed line is null terminated */
-  tls_fingerprint(GNUTLS_DIG_SHA256, fpbuf, sizeof(fpbuf), certdata);
-  fpbuf[39] = '\0'; /* Divide into two carr of output */
-  mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), fpbuf);
+
+  tls_fingerprint(GNUTLS_DIG_SHA256, fpbuf, certdata);
+  fpbuf->data[39] = '\0'; // Divide into two lines of output
+  mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf_string(fpbuf));
   ARRAY_ADD(&carr, line);
   mutt_str_asprintf(&line, "%*s%s", (int) mutt_str_len(_("SHA256 Fingerprint: ")),
-                    "", fpbuf + 40);
+                    "", fpbuf->data + 40);
   ARRAY_ADD(&carr, line);
 
   if (certerr)
@@ -571,9 +578,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     {
       if (certerr & CERTERR_HOSTNAME) // Save hostname if necessary
       {
-        fpbuf[0] = '\0';
-        tls_fingerprint(GNUTLS_DIG_MD5, fpbuf, sizeof(fpbuf), certdata);
-        fprintf(fp, "#H %s %s\n", hostname, fpbuf);
+        tls_fingerprint(GNUTLS_DIG_MD5, fpbuf, certdata);
+        fprintf(fp, "#H %s %s\n", hostname, buf_string(fpbuf));
         saved = true;
       }
       if (certerr ^ CERTERR_HOSTNAME) // Save the cert for all other errors
@@ -596,6 +602,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
       mutt_error(_("Warning: Couldn't save certificate"));
   }
 
+  buf_pool_release(&fpbuf);
   cert_array_clear(&carr);
   ARRAY_FREE(&carr);
   gnutls_x509_crt_deinit(cert);
@@ -690,7 +697,7 @@ static int tls_check_certificate(struct Connection *conn)
  * @param conn Connection to a server
  *
  * @note This function grabs the CN out of the client cert but appears to do
- *       nothing with it.  It does contain a call to mutt_account_getuser().
+ *       nothing with it.
  */
 static void tls_get_client_cert(struct Connection *conn)
 {
@@ -722,17 +729,13 @@ static void tls_get_client_cert(struct Connection *conn)
                                      0, NULL, &cnlen);
   if (((rc >= 0) || (rc == GNUTLS_E_SHORT_MEMORY_BUFFER)) && (cnlen > 0))
   {
-    cn = mutt_mem_calloc(1, cnlen);
+    cn = MUTT_MEM_CALLOC(cnlen, char);
     if (gnutls_x509_crt_get_dn_by_oid(clientcrt, GNUTLS_OID_X520_COMMON_NAME, 0,
                                       0, cn, &cnlen) < 0)
     {
       goto err;
     }
     mutt_debug(LL_DEBUG2, "client certificate CN: %s\n", cn);
-
-    /* if we are using a client cert, SASL may expect an external auth name */
-    if (mutt_account_getuser(&conn->account) < 0)
-      mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
   }
 
 err:
@@ -868,7 +871,7 @@ static int tls_set_priority(struct TlsSockData *data)
  */
 static int tls_negotiate(struct Connection *conn)
 {
-  struct TlsSockData *data = mutt_mem_calloc(1, sizeof(struct TlsSockData));
+  struct TlsSockData *data = MUTT_MEM_CALLOC(1, struct TlsSockData);
   conn->sockdata = data;
   int err = gnutls_certificate_allocate_credentials(&data->xcred);
   if (err < 0)
@@ -980,7 +983,7 @@ fail:
 }
 
 /**
- * tls_socket_poll - Check whether a socket read would block - Implements Connection::poll() - @ingroup connection_poll
+ * tls_socket_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 static int tls_socket_poll(struct Connection *conn, time_t wait_secs)
 {

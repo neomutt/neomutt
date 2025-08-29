@@ -19,7 +19,7 @@ def getKeychainData(user, host, protocol):
 
     user  account name to query in Keychain (-a flag in security program)
     host  server name to query in Keychain (-s flag in security program)
-    protcol protocol name. Used for generating the server name query string,
+    protocol protocol name. Used for generating the server name query string,
           as 'protocol'://'host'.
     """
     params = {
@@ -63,7 +63,7 @@ ap.add_argument("--type", metavar = "t", required = True,
 todo = ap.parse_args()
 
 if( todo.type not in KNOWN_PROTOCOLS ):
-    emit("Unknown protcol type: `" + todo.type + "'.", error = True,
+    emit("Unknown protocol type: `" + todo.type + "'.", error = True,
          quit = True)
 
 if( not (os.path.isfile(SECURITY_PROG) or os.path.islink(SECURITY_PROG)) ):

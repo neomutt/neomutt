@@ -3,7 +3,8 @@
  * Test code for the ConfigSubset object
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,7 +27,6 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -51,7 +51,7 @@ void test_config_subset(void)
 
   struct ConfigSet *cs = cs_new(30);
   cs_register_type(cs, &CstNumber);
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars)))
     return;
 
   struct NeoMutt *n = neomutt_new(cs);
@@ -73,14 +73,14 @@ void test_config_subset(void)
   he = cs_subset_lookup(NULL, NULL);
   if (!TEST_CHECK(he == NULL))
   {
-    TEST_MSG("cs_subset_lookup failed\n");
+    TEST_MSG("cs_subset_lookup failed");
     return;
   }
 
   he = cs_subset_lookup(n->sub, name);
   if (!TEST_CHECK(he != NULL))
   {
-    TEST_MSG("cs_subset_lookup failed\n");
+    TEST_MSG("cs_subset_lookup failed");
     return;
   }
 
@@ -89,7 +89,7 @@ void test_config_subset(void)
   rc = cs_subset_he_native_get(NULL, NULL, err);
   if (!TEST_CHECK(rc == INT_MIN))
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -97,15 +97,7 @@ void test_config_subset(void)
   value = cs_subset_he_native_get(n->sub, he, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
-    TEST_MSG("cs_subset_he_native_get failed\n");
-    return;
-  }
-
-  buf_reset(err);
-  value = cs_subset_str_native_get(n->sub, name, err);
-  if (!TEST_CHECK(value != INT_MIN))
-  {
-    TEST_MSG("cs_subset_str_native_get failed\n");
+    TEST_MSG("cs_subset_he_native_get failed");
     return;
   }
 
@@ -113,7 +105,7 @@ void test_config_subset(void)
   rc = cs_subset_he_native_set(NULL, NULL, value + 100, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("cs_subset_he_native_set failed\n");
+    TEST_MSG("cs_subset_he_native_set failed");
     return;
   }
 
@@ -121,7 +113,7 @@ void test_config_subset(void)
   rc = cs_subset_he_native_set(n->sub, he, value + 100, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
-    TEST_MSG("cs_subset_he_native_set failed\n");
+    TEST_MSG("cs_subset_he_native_set failed");
     return;
   }
 
@@ -129,7 +121,7 @@ void test_config_subset(void)
   rc = cs_subset_str_native_set(n->sub, name, value + 100, err);
   if (!TEST_CHECK(value != INT_MIN))
   {
-    TEST_MSG("cs_subset_str_native_set failed\n");
+    TEST_MSG("cs_subset_str_native_set failed");
     return;
   }
 
@@ -146,7 +138,7 @@ void test_config_subset(void)
   rc = cs_subset_str_string_get(NULL, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -164,7 +156,7 @@ void test_config_subset(void)
   rc = cs_subset_he_string_set(NULL, NULL, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -173,7 +165,7 @@ void test_config_subset(void)
   rc = cs_subset_he_string_set(n->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("cs_subset_he_string_set failed\n");
+    TEST_MSG("cs_subset_he_string_set failed");
     return;
   }
 
@@ -182,7 +174,7 @@ void test_config_subset(void)
   rc = cs_subset_str_string_set(n->sub, name, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("cs_subset_str_string_set failed\n");
+    TEST_MSG("cs_subset_str_string_set failed");
     return;
   }
 
@@ -191,7 +183,7 @@ void test_config_subset(void)
   rc = cs_subset_he_string_plus_equals(NULL, NULL, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -200,16 +192,7 @@ void test_config_subset(void)
   rc = cs_subset_he_string_plus_equals(n->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("cs_subset_he_string_plus_equals failed\n");
-    return;
-  }
-
-  buf_reset(err);
-  expected = "678";
-  rc = cs_subset_str_string_plus_equals(n->sub, name, expected, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-  {
-    TEST_MSG("cs_subset_str_string_plus_equals failed\n");
+    TEST_MSG("cs_subset_he_string_plus_equals failed");
     return;
   }
 
@@ -218,7 +201,7 @@ void test_config_subset(void)
   rc = cs_subset_he_string_minus_equals(NULL, NULL, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -227,16 +210,7 @@ void test_config_subset(void)
   rc = cs_subset_he_string_minus_equals(n->sub, he, expected, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("cs_subset_he_string_minus_equals failed\n");
-    return;
-  }
-
-  buf_reset(err);
-  expected = "678";
-  rc = cs_subset_str_string_minus_equals(n->sub, name, expected, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-  {
-    TEST_MSG("cs_subset_str_string_minus_equals failed\n");
+    TEST_MSG("cs_subset_he_string_minus_equals failed");
     return;
   }
 
@@ -244,7 +218,7 @@ void test_config_subset(void)
   rc = cs_subset_he_reset(NULL, NULL, err);
   if (!TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -252,62 +226,38 @@ void test_config_subset(void)
   rc = cs_subset_he_reset(n->sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("cs_subset_he_reset failed\n");
-    return;
-  }
-
-  buf_reset(err);
-  rc = cs_subset_str_reset(n->sub, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-  {
-    TEST_MSG("cs_subset_str_reset failed\n");
+    TEST_MSG("cs_subset_he_reset failed");
     return;
   }
 
   he = cs_subset_lookup(sub_a, name);
   if (!TEST_CHECK(he != NULL))
   {
-    TEST_MSG("cs_subset_lookup failed\n");
+    TEST_MSG("cs_subset_lookup failed");
     return;
   }
 
   he = cs_subset_lookup(sub_m, name);
   if (!TEST_CHECK(he != NULL))
   {
-    TEST_MSG("cs_subset_lookup failed\n");
+    TEST_MSG("cs_subset_lookup failed");
     return;
   }
 
   rc = cs_subset_he_delete(NULL, NULL, err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
-  // Deleting in sub_m should not delete in sub_a or cs
-  buf_reset(err);
-  rc = cs_subset_str_delete(sub_m, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-  {
-    TEST_MSG("cs_subset_str_delete failed\n");
-    return;
-  }
-
-  he = cs_subset_lookup(sub_m, name);
-  if (!TEST_CHECK(he == NULL))
-  {
-    TEST_MSG("cs_subset_lookup succeeded\n");
-    return;
-  }
-
   he = cs_subset_lookup(sub_a, name);
   if (!TEST_CHECK(he != NULL))
   {
-    TEST_MSG("cs_subset_lookup failed\n");
+    TEST_MSG("cs_subset_lookup failed");
     return;
   }
 
   he = cs_subset_lookup(n->sub, name);
   if (!TEST_CHECK(he != NULL))
   {
-    TEST_MSG("cs_subset_lookup failed\n");
+    TEST_MSG("cs_subset_lookup failed");
     return;
   }
 

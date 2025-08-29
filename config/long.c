@@ -3,7 +3,9 @@
  * Type representing a long
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -56,7 +58,7 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  if ((num < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((num < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -66,6 +68,9 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   {
     if (num == (*(long *) var))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
     if (cdef->validator)
     {
@@ -108,7 +113,7 @@ static int long_string_get(const struct ConfigSet *cs, void *var,
 static int long_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-  if ((value < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((value < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -116,6 +121,9 @@ static int long_native_set(const struct ConfigSet *cs, void *var,
 
   if (value == (*(long *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -153,7 +161,7 @@ static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
   }
 
   long result = *((long *) var) + num;
-  if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((result < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -161,6 +169,9 @@ static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
 
   if (result == (*(long *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -189,7 +200,7 @@ static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
   }
 
   long result = *((long *) var) - num;
-  if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((result < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -197,6 +208,9 @@ static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
 
   if (result == (*(long *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -218,6 +232,9 @@ static int long_reset(const struct ConfigSet *cs, void *var,
 {
   if (cdef->initial == (*(long *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {

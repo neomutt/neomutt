@@ -3,8 +3,11 @@
  * Pager Dialog
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2020-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
+ * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,10 +35,8 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <inttypes.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -51,20 +52,16 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
+#include "sidebar/lib.h"
 #include "display.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mview.h"
 #include "mx.h"
-#include "opcodes.h"
 #include "private_data.h"
 #include "protos.h"
 #include "status.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
 
 /// Braille display: row to leave the cursor
 int BrailleRow = -1;
@@ -107,7 +104,6 @@ static const struct Mapping PagerNormalHelp[] = {
   // clang-format on
 };
 
-#ifdef USE_NNTP
 /// Help Bar for the Pager of an NNTP Mailbox
 static const struct Mapping PagerNewsHelp[] = {
   // clang-format off
@@ -122,7 +118,6 @@ static const struct Mapping PagerNewsHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
-#endif
 
 /**
  * pager_queue_redraw - Queue a request for a redraw
@@ -143,7 +138,7 @@ void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw)
  */
 static const struct Mapping *pager_resolve_help_mapping(enum PagerMode mode, enum MailboxType type)
 {
-  const struct Mapping *result;
+  const struct Mapping *result = NULL;
   switch (mode)
   {
     case PAGER_MODE_EMAIL:
@@ -166,9 +161,9 @@ static const struct Mapping *pager_resolve_help_mapping(enum PagerMode mode, enu
     case PAGER_MODE_UNKNOWN:
     case PAGER_MODE_MAX:
     default:
-      assert(false); // something went really wrong
+      ASSERT(false); // something went really wrong
   }
-  assert(result);
+  ASSERT(result);
   return result;
 }
 
@@ -222,11 +217,11 @@ int dlg_pager(struct PagerView *pview)
   //===========================================================================
   // ACT 1 - Ensure sanity of the caller and determine the mode
   //===========================================================================
-  assert(pview);
-  assert((pview->mode > PAGER_MODE_UNKNOWN) && (pview->mode < PAGER_MODE_MAX));
-  assert(pview->pdata); // view can't exist in a vacuum
-  assert(pview->win_pager);
-  assert(pview->win_pbar);
+  ASSERT(pview);
+  ASSERT((pview->mode > PAGER_MODE_UNKNOWN) && (pview->mode < PAGER_MODE_MAX));
+  ASSERT(pview->pdata); // view can't exist in a vacuum
+  ASSERT(pview->win_pager);
+  ASSERT(pview->win_pbar);
 
   struct MuttWindow *dlg = dialog_find(pview->win_pager);
   struct IndexSharedData *shared = dlg->wdata;
@@ -238,10 +233,10 @@ int dlg_pager(struct PagerView *pview)
       // This case was previously identified by IsEmail macro
       // we expect data to contain email and not contain body
       // We also expect email to always belong to some mailbox
-      assert(shared->mailbox_view);
-      assert(shared->mailbox);
-      assert(shared->email);
-      assert(!pview->pdata->body);
+      ASSERT(shared->mailbox_view);
+      ASSERT(shared->mailbox);
+      ASSERT(shared->email);
+      ASSERT(!pview->pdata->body);
       break;
 
     case PAGER_MODE_ATTACH:
@@ -249,7 +244,7 @@ int dlg_pager(struct PagerView *pview)
       // macros, we expect data to contain:
       //  - body (viewing regular attachment)
       //  - fp and body->email in special case of viewing an attached email.
-      assert(pview->pdata->body);
+      ASSERT(pview->pdata->body);
       if (pview->pdata->fp && pview->pdata->body->email)
       {
         // Special case: attachment is a full-blown email message.
@@ -260,9 +255,9 @@ int dlg_pager(struct PagerView *pview)
 
     case PAGER_MODE_HELP:
     case PAGER_MODE_OTHER:
-      assert(!shared->mailbox_view);
-      assert(!shared->email);
-      assert(!pview->pdata->body);
+      ASSERT(!shared->mailbox_view);
+      ASSERT(!shared->email);
+      ASSERT(!pview->pdata->body);
       break;
 
     case PAGER_MODE_UNKNOWN:
@@ -271,7 +266,7 @@ int dlg_pager(struct PagerView *pview)
       // Unexpected mode. Catch fire and explode.
       // This *should* happen if mode is PAGER_MODE_ATTACH_E, since
       // we do not expect any caller to pass it to us.
-      assert(false);
+      ASSERT(false);
       break;
   }
 
@@ -323,8 +318,8 @@ int dlg_pager(struct PagerView *pview)
   //---------- initialize redraw pdata  -----------------------------------------
   pview->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
   priv->lines_max = LINES; // number of lines on screen, from curses
-  priv->lines = mutt_mem_calloc(priv->lines_max, sizeof(struct Line));
-  priv->fp = fopen(pview->pdata->fname, "r");
+  priv->lines = MUTT_MEM_CALLOC(priv->lines_max, struct Line);
+  priv->fp = mutt_file_fopen(pview->pdata->fname, "r");
   priv->has_types = ((pview->mode == PAGER_MODE_EMAIL) || (pview->flags & MUTT_SHOWCOLOR)) ?
                         MUTT_TYPES :
                         0; // main message or rfc822 attachment
@@ -333,7 +328,7 @@ int dlg_pager(struct PagerView *pview)
   {
     priv->lines[i].cid = -1;
     priv->lines[i].search_arr_size = -1;
-    priv->lines[i].syntax = mutt_mem_calloc(1, sizeof(struct TextSyntax));
+    priv->lines[i].syntax = MUTT_MEM_CALLOC(1, struct TextSyntax);
     (priv->lines[i].syntax)[0].first = -1;
     (priv->lines[i].syntax)[0].last = -1;
   }
@@ -406,7 +401,7 @@ int dlg_pager(struct PagerView *pview)
     // tries to emulate concurrency.
     //-------------------------------------------------------------------------
     bool do_new_mail = false;
-    if (shared->mailbox && !OptAttachMsg)
+    if (shared->mailbox && !shared->attach_msg)
     {
       int oldcount = shared->mailbox->msg_count;
       /* check for new mail */
@@ -451,14 +446,14 @@ int dlg_pager(struct PagerView *pview)
         const bool c_beep_new = cs_subset_bool(NeoMutt->sub, "beep_new");
         if (c_beep_new)
           mutt_beep(true);
-        const char *const c_new_mail_command = cs_subset_string(NeoMutt->sub, "new_mail_command");
+        const struct Expando *c_new_mail_command = cs_subset_expando(NeoMutt->sub, "new_mail_command");
         if (c_new_mail_command)
         {
-          char cmd[1024] = { 0 };
-          menu_status_line(cmd, sizeof(cmd), shared, NULL, sizeof(cmd),
-                           NONULL(c_new_mail_command));
-          if (mutt_system(cmd) != 0)
-            mutt_error(_("Error running \"%s\""), cmd);
+          struct Buffer *cmd = buf_pool_get();
+          menu_status_line(cmd, shared, NULL, -1, c_new_mail_command);
+          if (mutt_system(buf_string(cmd)) != 0)
+            mutt_error(_("Error running \"%s\""), buf_string(cmd));
+          buf_pool_release(&cmd);
         }
       }
     }
@@ -493,9 +488,7 @@ int dlg_pager(struct PagerView *pview)
       continue;
     }
 
-#ifdef USE_DEBUG_COLOR
     dump_pager(priv);
-#endif
 
     //-------------------------------------------------------------------------
     // Finally, read user's key press
@@ -544,10 +537,8 @@ int dlg_pager(struct PagerView *pview)
     {
       if ((rc == FR_UNKNOWN) && priv->pview->win_index)
         rc = index_function_dispatcher(priv->pview->win_index, op);
-#ifdef USE_SIDEBAR
       if (rc == FR_UNKNOWN)
         rc = sb_function_dispatcher(win_sidebar, op);
-#endif
     }
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);

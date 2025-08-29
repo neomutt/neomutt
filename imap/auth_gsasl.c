@@ -3,7 +3,7 @@
  * IMAP GNU SASL authentication method
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <gsasl.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "conn/lib.h"
@@ -36,7 +36,7 @@
 #include "auth.h"
 
 /**
- * imap_auth_gsasl - GNU SASL authenticator - Implements ImapAuth::authenticate()
+ * imap_auth_gsasl - GNU SASL authenticator - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *method)
 {
@@ -58,7 +58,7 @@ enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *meth
 
   if (mutt_gsasl_client_new(adata->conn, chosen_mech, &gsasl_session) < 0)
   {
-    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection.\n");
+    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection\n");
     return IMAP_AUTH_UNAVAIL;
   }
 

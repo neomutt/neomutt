@@ -3,7 +3,7 @@
  * Colour Debugging
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,230 +27,91 @@
  */
 
 #include "config.h"
-#include <stdarg.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "debug.h"
+#include "pager/lib.h"
 #include "attr.h"
-#include "color.h"
 #include "curses2.h"
-#include "merged.h"
-#include "quoted.h"
-#include "regex4.h"
-#include "simple2.h"
+#include "dump.h"
+#include "pager/private_data.h"
+
+extern struct AttrColorList MergedColors;
+extern struct CursesColorList CursesColors;
 
 /**
- * color_debug - Write to the log file
- * @param level  Logging level, e.g. #LL_DEBUG1
- * @param format Printf format string
- * @param ...    Args for printf
- * @retval num Number of characters printed
- */
-int color_debug(enum LogLevel level, const char *format, ...)
-{
-  char buf[1024] = { 0 };
-
-  va_list ap;
-  va_start(ap, format);
-  int len = vsnprintf(buf, sizeof(buf), format, ap);
-  va_end(ap);
-
-  mutt_debug(level, "%s", buf);
-
-  return len;
-}
-
-/**
- * color_debug_log_color_attrs - Get a colourful string to represent a colour in the log
- * @param fg    Foreground colour
- * @param bg    Background colour
- * @param attrs Attributes, e.g. A_UNDERLINE
- * @retval ptr Generated string
- *
- * @note Do not free the returned string
- */
-const char *color_debug_log_color_attrs(int fg, int bg, int attrs)
-{
-  static char text[64];
-  int pos = 0;
-
-  if (attrs & A_BLINK)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[5m");
-  if (attrs & A_BOLD)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[1m");
-  if (attrs & A_NORMAL)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[0m");
-  if (attrs & A_REVERSE)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[7m");
-  if (attrs & A_STANDOUT)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[1m");
-  if (attrs & A_UNDERLINE)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[4m");
-
-  if (fg >= 0)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[38;5;%dm", fg);
-  if (bg >= 0)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[48;5;%dm", bg);
-
-  snprintf(text + pos, sizeof(text) - pos, "XXXXXX\033[0m");
-
-  return text;
-}
-
-/**
- * color_debug_log_color - Get a colourful string to represent a colour in the log
+ * color_log_color - Get a colourful string to represent a colour in the log
  * @param fg Foreground colour
  * @param bg Background colour
  * @retval ptr Generated string
  *
  * @note Do not free the returned string
  */
-const char *color_debug_log_color(int fg, int bg)
+const char *color_log_color(color_t fg, color_t bg)
 {
   static char text[64];
-  snprintf(text, sizeof(text), "\033[38;5;%dm\033[48;5;%dmXXXXXX\033[0m", fg, bg);
-  return text;
-}
+  size_t pos = 0;
+  // snprintf(text, sizeof(text), "\033[38;5;%dm\033[48;5;%dmXXXXXX\033[0m", fg, bg);
 
-/**
- * color_debug_log_attrs - Get a string to represent some attributes in the log
- * @param attrs Attributes, e.g. A_UNDERLINE
- * @retval ptr Generated string
- *
- * @note Do not free the returned string
- */
-const char *color_debug_log_attrs(int attrs)
-{
-  static char text[64];
-  struct Mapping attr_names[] = {
-    { "\033[5mBLI\033[0m", A_BLINK },
-    { "\033[1mBLD\033[0m", A_BOLD },
-    { "\033[0mNOR\033[0m", A_NORMAL },
-    { "\033[7mREV\033[0m", A_REVERSE },
-    { "\033[1mSTD\033[0m", A_STANDOUT },
-    { "\033[4mUND\033[0m", A_UNDERLINE },
-    { NULL, 0 },
-  };
-
-  int offset = 0;
-  text[0] = '\0';
-  for (int i = 0; attr_names[i].name; i++)
+  if (fg != -1)
   {
-    if (attrs & attr_names[i].value)
-    {
-      offset += snprintf(text + offset, sizeof(text) - offset, "%s ",
-                         attr_names[i].name);
-    }
+    int r = (fg >> 16) & 0xff;
+    int g = (fg >> 8) & 0xff;
+    int b = (fg >> 0) & 0xff;
+
+    pos += snprintf(text + pos, sizeof(text) - pos, "\033[38;2;%d;%d;%dm", r, g, b);
   }
-  return text;
-}
 
-/**
- * color_debug_log_attrs_list - Get a string to represent some attributes in the log
- * @param attrs Attributes, e.g. A_UNDERLINE
- * @retval ptr Generated string
- *
- * @note Do not free the returned string
- */
-const char *color_debug_log_attrs_list(int attrs)
-{
-  static char text[64];
+  if (bg != -1)
+  {
+    int r = (bg >> 16) & 0xff;
+    int g = (bg >> 8) & 0xff;
+    int b = (bg >> 0) & 0xff;
 
-  text[0] = '\0';
-  int pos = 0;
-  if (attrs & A_BLINK)
-    pos += snprintf(text + pos, sizeof(text) - pos, "blink ");
-  if (attrs & A_BOLD)
-    pos += snprintf(text + pos, sizeof(text) - pos, "bold ");
-  if (attrs & A_ITALIC)
-    pos += snprintf(text + pos, sizeof(text) - pos, "italic ");
-  if (attrs & A_NORMAL)
-    pos += snprintf(text + pos, sizeof(text) - pos, "normal ");
-  if (attrs & A_REVERSE)
-    pos += snprintf(text + pos, sizeof(text) - pos, "reverse ");
-  if (attrs & A_STANDOUT)
-    pos += snprintf(text + pos, sizeof(text) - pos, "standout ");
-  if (attrs & A_UNDERLINE)
-    pos += snprintf(text + pos, sizeof(text) - pos, "underline ");
+    pos += snprintf(text + pos, sizeof(text) - pos, "\033[48;2;%d;%d;%dm", r, g, b);
+  }
+
+  pos += snprintf(text + pos, sizeof(text) - pos, "XXXXXX\033[0m");
 
   return text;
 }
 
 /**
- * color_debug_log_name - Get a string to represent a colour name
- * @param buf    Buffer for the result
- * @param buflen Length of the Buffer
- * @param color  Palette colour number
- * @retval ptr Generated string
+ * ansi_colors_dump - Dump all the ANSI colours
+ * @param buf   Buffer for result
  */
-const char *color_debug_log_name(char *buf, int buflen, int color)
+void ansi_colors_dump(struct Buffer *buf)
 {
-  if (color < 0)
-    return "default";
-
-  if (color < 256)
-    snprintf(buf, buflen, "color%d", color);
-  else
-    snprintf(buf, buflen, "BAD:%d", color);
-
-  return buf;
-}
-
-/**
- * attr_color_dump - Dump an Attr Colour to the log
- * @param ac     AttrColor to dump
- * @param prefix prefix for the log block
- */
-void attr_color_dump(struct AttrColor *ac, const char *prefix)
-{
-  if (!ac)
+  struct MuttWindow *win = window_get_focus();
+  if (!win || (win->type != WT_CUSTOM) || !win->parent || (win->parent->type != WT_PAGER))
     return;
 
-  int index = ac->curses_color ? ac->curses_color->index : -1;
-
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
-  struct CursesColor *cc = ac->curses_color;
-  if (cc)
-  {
-    fg = cc->fg;
-    bg = cc->bg;
-  }
-  const char *color = color_debug_log_color(fg, bg);
-  const char *attrs = color_debug_log_attrs(ac->attrs);
-  color_debug(LL_DEBUG5, "%s| %5d | %s | 0x%08x | %s\n", NONULL(prefix), index,
-              color, ac->attrs, attrs);
-}
-
-/**
- * attr_color_list_dump - Dump all the Attr Colours to the log
- * @param acl   List of Attr colours
- * @param title Title for the log block
- */
-void attr_color_list_dump(struct AttrColorList *acl, const char *title)
-{
-  if (!acl)
+  struct PagerPrivateData *priv = win->parent->wdata;
+  if (!priv || TAILQ_EMPTY(&priv->ansi_list))
     return;
 
-  int count = 0;
+  struct Buffer *swatch = buf_pool_get();
+  char color_fg[64] = { 0 };
+  char color_bg[64] = { 0 };
+
+  buf_addstr(buf, "# Ansi Colors\n");
   struct AttrColor *ac = NULL;
-  TAILQ_FOREACH(ac, acl, entries)
+  TAILQ_FOREACH(ac, &priv->ansi_list, entries)
   {
-    count++;
+    struct CursesColor *cc = ac->curses_color;
+    if (!cc)
+      continue;
+
+    color_log_color_attrs(ac, swatch);
+    buf_add_printf(buf, "# %-30s %-16s %-16s # %s\n", color_log_attrs_list(ac->attrs),
+                   color_log_name(color_fg, sizeof(color_fg), &ac->fg),
+                   color_log_name(color_bg, sizeof(color_bg), &ac->bg),
+                   buf_string(swatch));
   }
 
-  color_debug(LL_DEBUG5, "\033[1;32m%s:\033[0m (%d)\n", title, count);
-  if (count == 0)
-    return;
-
-  color_debug(LL_DEBUG5, "    | Index | Colour | Attrs      | Attrs\n");
-
-  TAILQ_FOREACH(ac, acl, entries)
-  {
-    attr_color_dump(ac, "    ");
-  }
+  buf_addstr(buf, "\n");
+  buf_pool_release(&swatch);
 }
 
 /**
@@ -263,204 +124,80 @@ void curses_color_dump(struct CursesColor *cc, const char *prefix)
   if (!cc)
     return;
 
-  const char *color = color_debug_log_color(cc->fg, cc->bg);
-  color_debug(LL_DEBUG5, "%s| %5d | %3d %3d | %s | %2d |\n", NONULL(prefix),
-              cc->index, cc->fg, cc->bg, color, cc->ref_count);
+  char fg[16] = "-";
+  char bg[16] = "-";
+
+  if (cc->fg != -1)
+    snprintf(fg, sizeof(fg), "#%06x", cc->fg);
+  if (cc->bg != -1)
+    snprintf(bg, sizeof(bg), "#%06x", cc->bg);
+
+  const char *color = color_log_color(cc->fg, cc->bg);
+  color_debug(LL_DEBUG5, "%s index %d, %s %s %s rc %d\n", NONULL(prefix),
+              cc->index, fg, bg, color, cc->ref_count);
 }
 
 /**
- * curses_colors_dump - Log all the Curses colours
+ * curses_colors_dump - Dump all the Curses colours
+ * @param buf   Buffer for result
  */
-void curses_colors_dump(void)
+void curses_colors_dump(struct Buffer *buf)
 {
-  color_debug(LL_DEBUG5, "\033[1;32mCursesColors:\033[0m (%d)\n", NumCursesColors);
   if (TAILQ_EMPTY(&CursesColors))
     return;
 
-  color_debug(LL_DEBUG5, "    | index |  fg  bg | colour | rc |\n");
+  struct Buffer *swatch = buf_pool_get();
+
+  buf_addstr(buf, "# Curses Colors\n");
+  buf_add_printf(buf, "# Index fg      bg      Color  rc\n");
 
   struct CursesColor *cc = NULL;
   TAILQ_FOREACH(cc, &CursesColors, entries)
   {
-    curses_color_dump(cc, "    ");
+    char fg[16] = "-";
+    char bg[16] = "-";
+
+    if (cc->fg != -1)
+      snprintf(fg, sizeof(fg), "#%06x", cc->fg);
+    if (cc->bg != -1)
+      snprintf(bg, sizeof(bg), "#%06x", cc->bg);
+
+    const char *color = color_log_color(cc->fg, cc->bg);
+    buf_add_printf(buf, "# %5d %-7s %-7s %s %2d\n", cc->index, fg, bg, color, cc->ref_count);
   }
+
+  buf_addstr(buf, "\n");
+  buf_pool_release(&swatch);
 }
 
 /**
- * quoted_color_dump - Log a Quoted colour
- * @param ac      Quoted colour
- * @param q_level Quote level
- * @param prefix  Prefix for the log line
+ * merged_colors_dump - Dump all the Merged colours
+ * @param buf   Buffer for result
  */
-void quoted_color_dump(struct AttrColor *ac, int q_level, const char *prefix)
+void merged_colors_dump(struct Buffer *buf)
 {
-  if (!ac)
+  if (TAILQ_EMPTY(&MergedColors))
     return;
 
-  int index = ac->curses_color ? ac->curses_color->index : -1;
+  struct Buffer *swatch = buf_pool_get();
+  char color_fg[64] = { 0 };
+  char color_bg[64] = { 0 };
 
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
-  struct CursesColor *cc = ac->curses_color;
-  if (cc)
+  buf_addstr(buf, "# Merged Colors\n");
+  struct AttrColor *ac = NULL;
+  TAILQ_FOREACH(ac, &MergedColors, entries)
   {
-    fg = cc->fg;
-    bg = cc->bg;
-  }
-  const char *color = color_debug_log_color(fg, bg);
-  const char *attrs = color_debug_log_attrs(ac->attrs);
-  color_debug(LL_DEBUG5, "%s| quoted%d | %5d | %s | 0x%08x | %s\n", prefix,
-              q_level, index, color, ac->attrs, attrs);
-}
-
-/**
- * quoted_color_list_dump - Log all the Quoted colours
- */
-void quoted_color_list_dump(void)
-{
-  color_debug(LL_DEBUG5, "\033[1;32mQuotedColors:\033[0m (%d)\n", NumQuotedColors);
-  color_debug(LL_DEBUG5, "    | Name    | Index | Colour | Attrs      | Attrs\n");
-  for (size_t i = 0; i < COLOR_QUOTES_MAX; i++)
-  {
-    quoted_color_dump(&QuotedColors[i], i, "    ");
-  }
-}
-
-/**
- * regex_color_dump - Dump a Regex colour to the log
- * @param rcol   Regex to dump
- * @param prefix Prefix for the log line
- */
-void regex_color_dump(struct RegexColor *rcol, const char *prefix)
-{
-  if (!rcol)
-    return;
-
-  struct AttrColor *ac = &rcol->attr_color;
-  int index = ac->curses_color ? ac->curses_color->index : -1;
-
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
-  struct CursesColor *cc = ac->curses_color;
-  if (cc)
-  {
-    fg = cc->fg;
-    bg = cc->bg;
-  }
-  const char *color = color_debug_log_color(fg, bg);
-  const char *attrs = color_debug_log_attrs(ac->attrs);
-  color_debug(LL_DEBUG5, "%s| %5d | %s | 0x%08x | %-8s | %s\n", NONULL(prefix),
-              index, color, ac->attrs, attrs, rcol->pattern);
-}
-
-/**
- * regex_color_list_dump - Dump one Regex's colours to the log
- * @param name Name of the Regex
- * @param rcl  RegexColorList to dump
- */
-void regex_color_list_dump(const char *name, struct RegexColorList *rcl)
-{
-  if (!name || !rcl)
-    return;
-
-  int count = 0;
-  struct RegexColor *rcol = NULL;
-  STAILQ_FOREACH(rcol, rcl, entries)
-  {
-    count++;
-  }
-
-  color_debug(LL_DEBUG5, "\033[1;32mRegexColorList %s\033[0m (%d)\n", name, count);
-  if (count == 0)
-    return;
-
-  color_debug(LL_DEBUG5, "    | Index | Colour | Attrs      | Attrs    | Pattern\n");
-  STAILQ_FOREACH(rcol, rcl, entries)
-  {
-    regex_color_dump(rcol, "    ");
-  }
-}
-
-/**
- * regex_colors_dump_all - Dump all the Regex colours to the log
- */
-void regex_colors_dump_all(void)
-{
-  regex_color_list_dump("AttachList", &AttachList);
-  regex_color_list_dump("BodyList", &BodyList);
-  regex_color_list_dump("HeaderList", &HeaderList);
-  regex_color_list_dump("IndexAuthorList", &IndexAuthorList);
-  regex_color_list_dump("IndexCollapsedList", &IndexCollapsedList);
-  regex_color_list_dump("IndexDateList", &IndexDateList);
-  regex_color_list_dump("IndexFlagsList", &IndexFlagsList);
-  regex_color_list_dump("IndexLabelList", &IndexLabelList);
-  regex_color_list_dump("IndexList", &IndexList);
-  regex_color_list_dump("IndexNumberList", &IndexNumberList);
-  regex_color_list_dump("IndexSizeList", &IndexSizeList);
-  regex_color_list_dump("IndexSubjectList", &IndexSubjectList);
-  regex_color_list_dump("IndexTagList", &IndexTagList);
-  regex_color_list_dump("IndexTagsList", &IndexTagsList);
-  regex_color_list_dump("StatusList", &StatusList);
-}
-
-/**
- * simple_color_dump - Dump a Simple colour to the log
- * @param cid    Colour Id, e.g. #MT_COLOR_UNDERLINE
- * @param prefix Prefix for the log line
- */
-void simple_color_dump(enum ColorId cid, const char *prefix)
-{
-  struct AttrColor *ac = &SimpleColors[cid];
-  int index = ac->curses_color ? ac->curses_color->index : -1;
-  const char *name = NULL;
-  const char *compose = "";
-
-  name = mutt_map_get_name(cid, ColorFields);
-  if (!name)
-  {
-    name = mutt_map_get_name(cid, ComposeColorFields);
-    if (name)
-    {
-      compose = "compose ";
-    }
-  }
-
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
-  struct CursesColor *cc = ac->curses_color;
-  if (cc)
-  {
-    fg = cc->fg;
-    bg = cc->bg;
-  }
-  const char *color_str = color_debug_log_color(fg, bg);
-  const char *attrs_str = color_debug_log_attrs(ac->attrs);
-  color_debug(LL_DEBUG5, "%s| %s%-17s | %5d | %s | 0x%08x | %s\n", prefix,
-              compose, name, index, color_str, ac->attrs, attrs_str);
-}
-
-/**
- * simple_colors_dump - Dump all the Simple colours to the log
- * @param force If true, list unset colours
- */
-void simple_colors_dump(bool force)
-{
-  color_debug(LL_DEBUG5, "\033[1;32mSimpleColors:\033[0m\n");
-  color_debug(LL_DEBUG5, "    | Name              | Index | Colour | Attrs      | Attrs\n");
-  for (enum ColorId cid = MT_COLOR_NONE; cid < MT_COLOR_MAX; cid++)
-  {
-    struct AttrColor *ac = &SimpleColors[cid];
-    if (!force && !attr_color_is_set(ac))
+    struct CursesColor *cc = ac->curses_color;
+    if (!cc)
       continue;
 
-    simple_color_dump(cid, "    ");
+    color_log_color_attrs(ac, swatch);
+    buf_add_printf(buf, "# %-30s %-16s %-16s # %s\n", color_log_attrs_list(ac->attrs),
+                   color_log_name(color_fg, sizeof(color_fg), &ac->fg),
+                   color_log_name(color_bg, sizeof(color_bg), &ac->bg),
+                   buf_string(swatch));
   }
-}
 
-/**
- * merged_colors_dump - Dump all the Merged colours to the log
- */
-void merged_colors_dump(void)
-{
-  attr_color_list_dump(&MergedColors, "MergedColors");
+  buf_addstr(buf, "\n");
+  buf_pool_release(&swatch);
 }

@@ -3,7 +3,7 @@
  * Send/reply with an attachment
  *
  * @authors
- * Copyright (C) 1999-2004 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,10 +31,10 @@ struct Body;
 struct Email;
 struct Mailbox;
 
-void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, struct Body *cur);
-void mutt_attach_resend(FILE *fp, struct Mailbox *m, struct AttachCtx *actx, struct Body *cur);
-void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx, struct Body *cur, SendFlags flags);
-void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e, struct AttachCtx *actx, struct Body *e_cur, SendFlags flags);
-void mutt_attach_mail_sender(struct AttachCtx *actx, struct Body *cur);
+void attach_bounce_message  (struct Mailbox *m, FILE *fp, struct AttachCtx *actx, struct Body *b);
+void mutt_attach_resend     (FILE *fp, struct Mailbox *m, struct AttachCtx *actx, struct Body *b);
+void mutt_attach_forward    (FILE *fp, struct Email *e, struct AttachCtx *actx, struct Body *b, SendFlags flags);
+void mutt_attach_reply      (FILE *fp, struct Mailbox *m, struct Email *e, struct AttachCtx *actx, struct Body *b, SendFlags flags);
+void mutt_attach_mail_sender(struct AttachCtx *actx, struct Body *b);
 
 #endif /* MUTT_RECVCMD_H */

@@ -10,11 +10,11 @@ jobs:
   build:
     name: ${{ matrix.cfg.name }}
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/docker-build
+    container: ghcr.io/neomutt/ubuntu
     continue-on-error: true
 
     env:
-      CONFIGURE_OPTIONS: --autocrypt --bdb --full-doc --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+      CONFIGURE_OPTIONS: --autocrypt --bdb --full-doc --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     strategy:
       # Limit jobs to one at a time so that ccache really helps later builds
@@ -51,7 +51,7 @@ jobs:
 
     steps:
     - name: Get number of CPU cores
-      uses: SimenB/github-actions-cpu-cores@v1
+      uses: SimenB/github-actions-cpu-cores@v2
       id: cpu-cores
 
     - name: Checkout Code

@@ -3,10 +3,10 @@
  * GUI display the mailboxes in a side panel
  *
  * @authors
- * Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
- * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
- * Copyright (C) 2015-2020 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Whitney Cumber
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -101,7 +101,7 @@ void sb_add_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
   struct IndexSharedData *shared = wdata->shared;
-  struct SbEntry *entry = mutt_mem_calloc(1, sizeof(struct SbEntry));
+  struct SbEntry *entry = MUTT_MEM_CALLOC(1, struct SbEntry);
   entry->mailbox = m;
 
   if (wdata->top_index < 0)

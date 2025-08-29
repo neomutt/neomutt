@@ -3,7 +3,9 @@
  * Pager Window
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -59,9 +61,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
-#include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
+#include <stddef.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -71,7 +72,6 @@
 #include "color/lib.h"
 #include "index/lib.h"
 #include "display.h"
-#include "opcodes.h"
 #include "private_data.h"
 
 /**
@@ -134,9 +134,7 @@ static int pager_repaint(struct MuttWindow *win)
   if (!priv || !priv->pview || !priv->pview->pdata)
     return 0;
 
-#ifdef USE_DEBUG_COLOR
   dump_pager(priv);
-#endif
 
   // We need to populate more lines, but not change position
   const bool repopulate = (priv->cur_line > priv->lines_used);
@@ -157,7 +155,7 @@ static int pager_repaint(struct MuttWindow *win)
         priv->lines[i].search_arr_size = -1;
         priv->lines[i].quote = NULL;
 
-        mutt_mem_realloc(&(priv->lines[i].syntax), sizeof(struct TextSyntax));
+        MUTT_MEM_REALLOC(&(priv->lines[i].syntax), 1, struct TextSyntax);
         if (priv->search_compiled && priv->lines[i].search)
           FREE(&(priv->lines[i].search));
       }
@@ -257,7 +255,7 @@ static int pager_color_observer(struct NotifyCallback *nc)
   if ((ev_c->cid == MT_COLOR_QUOTED) || (ev_c->cid == MT_COLOR_MAX))
   {
     // rework quoted colours
-    qstyle_recolour(priv->quote_list);
+    qstyle_recolor(priv->quote_list);
   }
 
   if (ev_c->cid == MT_COLOR_MAX)

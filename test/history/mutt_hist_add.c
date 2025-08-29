@@ -3,7 +3,7 @@
  * Test code for mutt_hist_add()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,12 +23,12 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "config/lib.h"
 #include "core/lib.h"
 #include "history/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 bool config_init_history(struct ConfigSet *cs);
 

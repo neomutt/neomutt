@@ -3,10 +3,8 @@
  * Quick Database Manager (QDBM) backend for the key/value Store
  *
  * @authors
- * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
- * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
- * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
- * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2017 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,29 +29,29 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <depot.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <villa.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
 /**
- * store_qdbm_open - Implements StoreOps::open() - @ingroup store_open
+ * store_qdbm_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_qdbm_open(const char *path)
+static StoreHandle *store_qdbm_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
 
-  VILLA *db = vlopen(path, VL_OWRITER | VL_OCREAT, VL_CMPLEX);
+  VILLA *db = vlopen(path, VL_OWRITER | (create ? VL_OCREAT : 0), VL_CMPLEX);
 
   // Return an opaque pointer
   return (StoreHandle *) db;
 }
 
 /**
- * store_qdbm_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
+ * store_qdbm_fetch - Fetch a Value from the Store - Implements StoreOps::fetch() - @ingroup store_fetch
  */
 static void *store_qdbm_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
@@ -69,7 +67,7 @@ static void *store_qdbm_fetch(StoreHandle *store, const char *key, size_t klen, 
 }
 
 /**
- * store_qdbm_free - Implements StoreOps::free() - @ingroup store_free
+ * store_qdbm_free - Free a Value returned by fetch() - Implements StoreOps::free() - @ingroup store_free
  */
 static void store_qdbm_free(StoreHandle *store, void **ptr)
 {
@@ -77,7 +75,7 @@ static void store_qdbm_free(StoreHandle *store, void **ptr)
 }
 
 /**
- * store_qdbm_store - Implements StoreOps::store() - @ingroup store_store
+ * store_qdbm_store - Write a Value to the Store - Implements StoreOps::store() - @ingroup store_store
  */
 static int store_qdbm_store(StoreHandle *store, const char *key, size_t klen,
                             void *value, size_t vlen)
@@ -94,7 +92,7 @@ static int store_qdbm_store(StoreHandle *store, const char *key, size_t klen,
 }
 
 /**
- * store_qdbm_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
+ * store_qdbm_delete_record - Delete a record from the Store - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
 static int store_qdbm_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
@@ -110,7 +108,7 @@ static int store_qdbm_delete_record(StoreHandle *store, const char *key, size_t 
 }
 
 /**
- * store_qdbm_close - Implements StoreOps::close() - @ingroup store_close
+ * store_qdbm_close - Close a Store connection - Implements StoreOps::close() - @ingroup store_close
  */
 static void store_qdbm_close(StoreHandle **ptr)
 {
@@ -124,7 +122,7 @@ static void store_qdbm_close(StoreHandle **ptr)
 }
 
 /**
- * store_qdbm_version - Implements StoreOps::version() - @ingroup store_version
+ * store_qdbm_version - Get a Store version string - Implements StoreOps::version() - @ingroup store_version
  */
 static const char *store_qdbm_version(void)
 {

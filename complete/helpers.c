@@ -3,7 +3,9 @@
  * Auto-completion helpers
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,14 +37,14 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
+#include "lib.h"
 #include "editor/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "compapi.h"
 #include "data.h"
-#include "functions.h"
-#include "opcodes.h"
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion
@@ -56,7 +58,7 @@ void matches_ensure_morespace(struct CompletionData *cd, int new_size)
 
   new_size = ROUND_UP(new_size + 2, 512);
 
-  mutt_mem_realloc(&cd->match_list, new_size * sizeof(char *));
+  MUTT_MEM_REALLOC(&cd->match_list, new_size, const char *);
   memset(&cd->match_list[cd->match_list_len], 0, new_size - cd->match_list_len);
 
   cd->match_list_len = new_size;
@@ -194,7 +196,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
         he = he_list[i];
         const int type = DTYPE(he->type);
 
-        if ((type == DT_SYNONYM) || (type & DT_DEPRECATED))
+        if ((type == DT_SYNONYM) || (type & D_INTERNAL_DEPRECATED))
           continue;
 
         candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
@@ -400,28 +402,28 @@ int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int p
     if (!he)
       return 0; /* no such variable. */
 
-    struct Buffer value = buf_make(256);
-    struct Buffer pretty = buf_make(256);
-    int rc = cs_subset_he_string_get(NeoMutt->sub, he, &value);
+    struct Buffer *value = buf_pool_get();
+    struct Buffer *pretty = buf_pool_get();
+    int rc = cs_subset_he_string_get(NeoMutt->sub, he, value);
     if (CSR_RESULT(rc) == CSR_SUCCESS)
     {
-      pretty_var(value.data, &pretty);
-      snprintf(pt, buf->dsize - (pt - buf->data), "%s=%s", var, pretty.data);
-      buf_dealloc(&value);
-      buf_dealloc(&pretty);
+      pretty_var(value->data, pretty);
+      snprintf(pt, buf->dsize - (pt - buf->data), "%s=%s", var, pretty->data);
+      buf_pool_release(&value);
+      buf_pool_release(&pretty);
       return 0;
     }
-    buf_dealloc(&value);
-    buf_dealloc(&pretty);
+    buf_pool_release(&value);
+    buf_pool_release(&pretty);
     return 1;
   }
   return 0;
 }
 
 /**
- * complete_command - Complete a NeoMutt Command - Implements ::complete_function_t - @ingroup complete_api
+ * complete_command - Complete a NeoMutt Command - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_command(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_command(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;
@@ -444,9 +446,9 @@ int complete_command(struct EnterWindowData *wdata, int op)
 }
 
 /**
- * complete_label - Complete a label - Implements ::complete_function_t - @ingroup complete_api
+ * complete_label - Complete a label - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_label(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_label(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;

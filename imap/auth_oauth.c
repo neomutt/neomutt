@@ -5,6 +5,8 @@
  * @authors
  * Copyright (C) 1999-2001,2005 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 2018 Brandon Long <blong@fiction.net>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ryan Kavanagh <rak@rak.ac>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -104,7 +106,7 @@ static enum ImapAuthRes imap_auth_oauth_xoauth2(struct ImapAccountData *adata,
 }
 
 /**
- * imap_auth_oauth - Authenticate an IMAP connection using OAUTHBEARER - Implements ImapAuth::authenticate()
+ * imap_auth_oauth - Authenticate an IMAP connection using OAUTHBEARER - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *method)
 {
@@ -112,7 +114,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
 }
 
 /**
- * imap_auth_xoauth2 - Authenticate an IMAP connection using XOAUTH2 - Implements ImapAuth::authenticate()
+ * imap_auth_xoauth2 - Authenticate an IMAP connection using XOAUTH2 - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_xoauth2(struct ImapAccountData *adata, const char *method)
 {

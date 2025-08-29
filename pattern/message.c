@@ -3,7 +3,7 @@
  * Pattern handling for messages
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +34,6 @@
 #include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
-#include "email/lib.h" // IWYU pragma: keep
 #include "core/lib.h"
 #include "lib.h"
 #include "menu/lib.h"
@@ -134,7 +133,7 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group,
       struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
       if (!e)
         return num;
-      return num + EMSG(e);
+      return num + email_msgno(e);
     }
     case RANGE_K_LT:
       return num - 1;
@@ -182,7 +181,7 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp,
       struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
       if (!e)
         return 1;
-      return EMSG(e);
+      return email_msgno(e);
     }
     case RANGE_LT:
     case RANGE_GT:
@@ -219,7 +218,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
                               struct Buffer *err, struct MailboxView *mv)
 {
   int regerr;
-  regmatch_t pmatch[RANGE_RX_GROUPS];
+  regmatch_t pmatch[RANGE_RX_GROUPS] = { 0 };
   struct RangeRegex *pspec = &RangeRegexes[kind];
 
   /* First time through, compile the big regex */
@@ -259,7 +258,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
     if (!e)
       return RANGE_E_MVIEW;
 
-    pat->max = EMSG(e);
+    pat->max = email_msgno(e);
     pat->min = pat->max;
   }
 

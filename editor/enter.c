@@ -27,13 +27,13 @@
  */
 
 #include "config.h"
-#include <string.h>
+#include <stddef.h>
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "enter.h"
-#include "state.h" // IWYU pragma: keep
+#include "state.h"
 
 /// combining mark / non-spacing character
 #define COMB_CHAR(wc) (IsWPrint(wc) && (wcwidth(wc) == 0))
@@ -54,8 +54,7 @@ int editor_backspace(struct EnterState *es)
     i--;
   if (i > 0)
     i--;
-  memmove(es->wbuf + i, es->wbuf + es->curpos,
-          (es->lastchar - es->curpos) * sizeof(wchar_t));
+  wmemmove(es->wbuf + i, es->wbuf + es->curpos, es->lastchar - es->curpos);
   es->lastchar -= es->curpos - i;
   es->curpos = i;
 
@@ -164,7 +163,7 @@ int editor_delete_char(struct EnterState *es)
     i++;
   while ((i < es->lastchar) && COMB_CHAR(es->wbuf[i]))
     i++;
-  memmove(es->wbuf + es->curpos, es->wbuf + i, (es->lastchar - i) * sizeof(wchar_t));
+  wmemmove(es->wbuf + es->curpos, es->wbuf + i, es->lastchar - i);
   es->lastchar -= i - es->curpos;
 
   return FR_SUCCESS;
@@ -277,7 +276,7 @@ int editor_kill_eow(struct EnterState *es)
     }
   }
 
-  memmove(es->wbuf + es->curpos, es->wbuf + i, (es->lastchar - i) * sizeof(wchar_t));
+  wmemmove(es->wbuf + es->curpos, es->wbuf + i, es->lastchar - i);
   es->lastchar += es->curpos - i;
   return FR_SUCCESS;
 }
@@ -295,7 +294,7 @@ int editor_kill_line(struct EnterState *es)
 
   size_t len = es->lastchar - es->curpos;
 
-  memmove(es->wbuf, es->wbuf + es->curpos, len * sizeof(wchar_t));
+  wmemmove(es->wbuf, es->wbuf + es->curpos, len);
 
   es->lastchar = len;
   es->curpos = 0;
@@ -346,8 +345,7 @@ int editor_kill_word(struct EnterState *es)
       i--;
     }
   }
-  memmove(es->wbuf + i, es->wbuf + es->curpos,
-          (es->lastchar - es->curpos) * sizeof(wchar_t));
+  wmemmove(es->wbuf + i, es->wbuf + es->curpos, es->lastchar - es->curpos);
   es->lastchar += i - es->curpos;
   es->curpos = i;
 
@@ -390,69 +388,4 @@ bool editor_buffer_is_empty(struct EnterState *es)
     return true;
 
   return (es->lastchar == 0);
-}
-
-/**
- * editor_buffer_get_lastchar - Get the position of the last character
- * @param es State of the Enter buffer
- * @retval num Position of last character
- */
-size_t editor_buffer_get_lastchar(struct EnterState *es)
-{
-  if (!es)
-    return 0;
-
-  return es->lastchar;
-}
-
-/**
- * editor_buffer_get_cursor - Get the position of the cursor
- * @param es State of the Enter buffer
- * @retval num Position of cursor
- */
-size_t editor_buffer_get_cursor(struct EnterState *es)
-{
-  if (!es)
-    return 0;
-
-  return es->curpos;
-}
-
-/**
- * editor_buffer_set_cursor - Set the position of the cursor
- * @param es  State of the Enter buffer
- * @param pos New position for the cursor
- * @retval num Position of cursor
- *
- * @note If the cursor is positioned beyond the end of the buffer,
- *       it will be set to the last character
- */
-size_t editor_buffer_set_cursor(struct EnterState *es, size_t pos)
-{
-  if (!es)
-    return 0;
-
-  if (pos >= es->lastchar)
-    pos = es->lastchar;
-
-  es->curpos = pos;
-  return pos;
-}
-
-/**
- * editor_buffer_set - Set the string in the buffer
- * @param es  State of the Enter buffer
- * @param str String to set
- * @retval num Length of string
- */
-int editor_buffer_set(struct EnterState *es, const char *str)
-
-{
-  if (!es)
-    return 0;
-
-  es->wbuflen = 0;
-  es->lastchar = mutt_mb_mbstowcs(&es->wbuf, &es->wbuflen, 0, str);
-  es->curpos = es->lastchar;
-  return es->lastchar;
 }

@@ -3,7 +3,9 @@
  * Type representing a sort option
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -58,7 +60,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
   size_t plen = 0;
 
-  if (cdef->type & DT_SORT_REVERSE)
+  if (cdef->type & D_SORT_REVERSE)
   {
     plen = mutt_str_startswith(value, PREFIX_REVERSE);
     if (plen != 0)
@@ -68,7 +70,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     }
   }
 
-  if (cdef->type & DT_SORT_LAST)
+  if (cdef->type & D_SORT_LAST)
   {
     plen = mutt_str_startswith(value, PREFIX_LAST);
     if (plen != 0)
@@ -92,6 +94,9 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   {
     if (id == (*(short *) var))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
     if (cdef->validator)
     {
@@ -137,8 +142,7 @@ static int sort_string_get(const struct ConfigSet *cs, void *var,
 
   if (!str)
   {
-    mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d/%d\n",
-               cdef->type & DT_SUBTYPE_MASK, sort);
+    mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d/%d\n", cdef->type, sort);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
@@ -158,12 +162,15 @@ static int sort_native_set(const struct ConfigSet *cs, void *var,
 
   if (!str)
   {
-    buf_printf(err, _("Invalid sort type: %ld"), value);
+    buf_printf(err, _("Invalid sort type: %ld"), (long) value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if (value == (*(short *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -194,6 +201,9 @@ static int sort_reset(const struct ConfigSet *cs, void *var,
 {
   if (cdef->initial == (*(short *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {

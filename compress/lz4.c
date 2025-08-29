@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,9 +30,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
 #include <lz4.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "lib.h"
@@ -51,7 +53,7 @@ struct Lz4ComprData
  * lz4_cdata_free - Free Lz4 Compression Data
  * @param ptr Lz4 Compression Data to free
  */
-static void lz4_cdata_free(struct Lz4ComprData **ptr)
+void lz4_cdata_free(struct Lz4ComprData **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -68,17 +70,17 @@ static void lz4_cdata_free(struct Lz4ComprData **ptr)
  */
 static struct Lz4ComprData *lz4_cdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Lz4ComprData));
+  return MUTT_MEM_CALLOC(1, struct Lz4ComprData);
 }
 
 /**
- * compr_lz4_open - Implements ComprOps::open() - @ingroup compress_open
+ * compr_lz4_open - Open a compression context - Implements ComprOps::open() - @ingroup compress_open
  */
 static ComprHandle *compr_lz4_open(short level)
 {
   struct Lz4ComprData *cdata = lz4_cdata_new();
 
-  cdata->buf = mutt_mem_calloc(1, LZ4_compressBound(1024 * 32));
+  cdata->buf = mutt_mem_calloc(LZ4_compressBound(1024 * 32), 1);
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
@@ -94,7 +96,7 @@ static ComprHandle *compr_lz4_open(short level)
 }
 
 /**
- * compr_lz4_compress - Implements ComprOps::compress() - @ingroup compress_compress
+ * compr_lz4_compress - Compress header cache data - Implements ComprOps::compress() - @ingroup compress_compress
  */
 static void *compr_lz4_compress(ComprHandle *handle, const char *data,
                                 size_t dlen, size_t *clen)
@@ -131,7 +133,7 @@ static void *compr_lz4_compress(ComprHandle *handle, const char *data,
 }
 
 /**
- * compr_lz4_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
+ * compr_lz4_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
 static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
@@ -162,7 +164,7 @@ static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t 
 }
 
 /**
- * compr_lz4_close - Implements ComprOps::close() - @ingroup compress_close
+ * compr_lz4_close - Close a compression context - Implements ComprOps::close() - @ingroup compress_close
  */
 static void compr_lz4_close(ComprHandle **ptr)
 {

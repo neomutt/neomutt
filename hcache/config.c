@@ -3,7 +3,9 @@
  * Config used by libhcache
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Louis Brauer <louis@openbooking.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +29,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -143,7 +145,7 @@ static struct ConfigDef HcacheVarsComp[] = {
   { "header_cache_compress_method", DT_STRING, 0, 0, compress_method_validator,
     "(hcache) Enable generic hcache database compression"
   },
-  { "header_cache_compress_level", DT_NUMBER|DT_NOT_NEGATIVE, 1, 0, compress_level_validator,
+  { "header_cache_compress_level", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 1, 0, compress_level_validator,
     "(hcache) Level of compression for method"
   },
   { NULL },
@@ -157,7 +159,7 @@ static struct ConfigDef HcacheVarsComp[] = {
  */
 static struct ConfigDef HcacheVarsComp2[] = {
   // clang-format off
-  { "header_cache_compress", DT_DEPRECATED|DT_BOOL, 0, IP "2020-03-25" },
+  { "header_cache_compress", D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2020-03-25" },
   { NULL },
   // clang-format on
 };
@@ -169,7 +171,7 @@ static struct ConfigDef HcacheVarsComp2[] = {
  */
 static struct ConfigDef HcacheVarsPage[] = {
   // clang-format off
-  { "header_cache_pagesize", DT_DEPRECATED|DT_LONG, 0, IP "2020-03-25" },
+  { "header_cache_pagesize", D_INTERNAL_DEPRECATED|DT_LONG, 0, IP "2020-03-25" },
   { NULL },
   // clang-format on
 };
@@ -183,19 +185,19 @@ bool config_init_hcache(struct ConfigSet *cs)
   bool rc = false;
 
 #if defined(USE_HCACHE)
-  rc |= cs_register_variables(cs, HcacheVars, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, HcacheVars);
 #endif
 
 #if defined(USE_HCACHE_COMPRESSION)
-  rc |= cs_register_variables(cs, HcacheVarsComp, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, HcacheVarsComp);
 #endif
 
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  rc |= cs_register_variables(cs, HcacheVarsComp2, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, HcacheVarsComp2);
 #endif
 
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  rc |= cs_register_variables(cs, HcacheVarsPage, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, HcacheVarsPage);
 #endif
 
   return rc;

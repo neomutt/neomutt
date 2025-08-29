@@ -3,7 +3,10 @@
  * Test code for mutt_ch_convert_string()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Michal Siedlaczek <michal@siedlaczek.me>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,23 +24,22 @@
  */
 
 #define TEST_NO_MAIN
-
 #include "config.h"
 #include "acutest.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "convert/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 static struct ConfigDef CharsetVars[] = {
   // clang-format off
   { "config_charset", DT_STRING, 0, 0, charset_validator, },
-  { "send_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY|DT_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_slist_validator, },
+  { "send_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY|D_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_slist_validator, },
   { NULL },
   // clang-format on
 };
@@ -53,6 +55,9 @@ void test_mutt_get_content_info(void)
 
   FILE *fp = fopen(buf_string(fname), "w");
   TEST_CHECK(fp != NULL);
+  if (!fp)
+    exit(1);
+
   TEST_MSG("unable to open temp file for writing");
 
   TEST_CHECK(fwrite(text, strlen(text), 1, fp) > 0);
@@ -61,7 +66,7 @@ void test_mutt_get_content_info(void)
 
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
-  TEST_CHECK(cs_register_variables(cs, CharsetVars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(cs, CharsetVars));
 
   struct Body *body = mutt_body_new();
   struct Content *content = mutt_get_content_info(buf_string(fname), body, sub);

@@ -3,8 +3,10 @@
  * String manipulation functions
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2022 Claes Nästén <pekdon@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,7 +31,8 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <stdarg.h>
+#include <errno.h>
+#include <stdarg.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,7 +41,6 @@
 #include "exit.h"
 #include "logging2.h"
 #include "memory.h"
-#include "message.h"
 #include "string2.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
@@ -253,61 +255,12 @@ char *mutt_str_dup(const char *str)
   if (!str || (*str == '\0'))
     return NULL;
 
-  return strdup(str);
-}
-
-/**
- * mutt_str_cat - Concatenate two strings
- * @param buf    Buffer containing source string
- * @param buflen Length of buffer
- * @param s      String to add
- * @retval ptr Start of the buffer
- */
-char *mutt_str_cat(char *buf, size_t buflen, const char *s)
-{
-  if (!buf || (buflen == 0) || !s)
-    return buf;
-
-  char *p = buf;
-
-  buflen--; /* Space for the trailing '\0'. */
-
-  for (; (*buf != '\0') && buflen; buflen--)
-    buf++;
-  for (; *s && buflen; buflen--)
-    *buf++ = *s++;
-
-  *buf = '\0';
-
-  return p;
-}
-
-/**
- * mutt_strn_cat - Concatenate two strings
- * @param d  Buffer containing source string
- * @param l  Length of buffer
- * @param s  String to add
- * @param sl Maximum amount of string to add
- * @retval ptr Start of joined string
- *
- * Add a string to a maximum of @a sl bytes.
- */
-char *mutt_strn_cat(char *d, size_t l, const char *s, size_t sl)
-{
-  if (!d || (l == 0) || !s)
-    return d;
-
-  char *p = d;
-
-  l--; /* Space for the trailing '\0'. */
-
-  for (; *d && l; l--)
-    d++;
-  for (; *s && l && sl; l--, sl--)
-    *d++ = *s++;
-
-  *d = '\0';
-
+  char *p = strdup(str);
+  if (!p)
+  {
+    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
+    mutt_exit(1);                      // LCOV_EXCL_LINE
+  }
   return p;
 }
 
@@ -335,31 +288,6 @@ char *mutt_str_replace(char **p, const char *s)
 }
 
 /**
- * mutt_str_append_item - Add string to another separated by sep
- * @param[out] str  String appended
- * @param[in]  item String to append
- * @param[in]  sep separator between string item
- *
- * Append a string to another, separating them by sep if needed.
- *
- * This function alters the pointer of the caller.
- */
-void mutt_str_append_item(char **str, const char *item, char sep)
-{
-  if (!str || !item)
-    return;
-
-  size_t sz = mutt_str_len(item);
-  size_t ssz = mutt_str_len(*str);
-
-  mutt_mem_realloc(str, ssz + (((ssz > 0) && (sep != '\0')) ? 1 : 0) + sz + 1);
-  char *p = *str + ssz;
-  if ((ssz > 0) && (sep != '\0'))
-    *p++ = sep;
-  memcpy(p, item, sz + 1);
-}
-
-/**
  * mutt_str_adjust - Shrink-to-fit a string
  * @param[out] ptr String to alter
  *
@@ -372,7 +300,7 @@ void mutt_str_adjust(char **ptr)
 {
   if (!ptr || !*ptr)
     return;
-  mutt_mem_realloc(ptr, strlen(*ptr) + 1);
+  MUTT_MEM_REALLOC(ptr, strlen(*ptr) + 1, char);
 }
 
 /**
@@ -454,7 +382,7 @@ char *mutt_strn_dup(const char *begin, size_t len)
   if (!begin)
     return NULL;
 
-  char *p = mutt_mem_malloc(len + 1);
+  char *p = MUTT_MEM_MALLOC(len + 1, char);
   memcpy(p, begin, len);
   p[len] = '\0';
   return p;
@@ -723,72 +651,6 @@ size_t mutt_str_lws_len(const char *s, size_t n)
 }
 
 /**
- * mutt_str_lws_rlen - Measure the linear-white-space at the end of a string
- * @param s String to check
- * @param n Maximum number of characters to check
- * @retval num Count of whitespace characters
- *
- * Count the number of whitespace characters at the end of a string.
- * They can be `<space>`, `<tab>`, `<cr>` or `<lf>`.
- */
-size_t mutt_str_lws_rlen(const char *s, size_t n)
-{
-  if (!s)
-    return 0;
-
-  const char *p = s + n - 1;
-  size_t len = n;
-
-  if (n == 0)
-    return 0;
-
-  if (strchr("\r\n", *p)) /* LWS doesn't end with CRLF */
-    return 0;
-
-  for (; p >= s; p--)
-  {
-    if (!strchr(" \t\r\n", *p))
-    {
-      len = s + n - 1 - p;
-      break;
-    }
-  }
-
-  return len;
-}
-
-/**
- * mutt_str_dequote_comment - Un-escape characters in an email address comment
- * @param str String to be un-escaped
- *
- * @note The string is changed in-place
- */
-void mutt_str_dequote_comment(char *str)
-{
-  if (!str)
-    return;
-
-  char *w = str;
-
-  for (; *str; str++)
-  {
-    if (*str == '\\')
-    {
-      if (!*++str)
-        break; /* error? */
-      *w++ = *str;
-    }
-    else if (*str != '\"')
-    {
-      if (w != str)
-        *w = *str;
-      w++;
-    }
-  }
-  *w = '\0';
-}
-
-/**
  * mutt_str_equal - Compare two strings
  * @param a First string
  * @param b Second string
@@ -810,60 +672,6 @@ bool mutt_str_equal(const char *a, const char *b)
 bool mutt_istr_equal(const char *a, const char *b)
 {
   return (a == b) || (mutt_istr_cmp(a, b) == 0);
-}
-
-/**
- * mutt_str_next_word - Find the next word in a string
- * @param s String to examine
- * @retval ptr Next word
- *
- * If the s is pointing to a word (non-space) is is skipped over.
- * Then, any whitespace is skipped over.
- *
- * @note What is/isn't a word is determined by isspace()
- */
-const char *mutt_str_next_word(const char *s)
-{
-  if (!s)
-    return NULL;
-
-  while (*s && !isspace(*s))
-    s++;
-  SKIPWS(s);
-  return s;
-}
-
-/**
- * mutt_strn_rfind - Find last instance of a substring
- * @param haystack        String to search through
- * @param haystack_length Length of the string
- * @param needle          String to find
- * @retval NULL String not found
- * @retval ptr  Location of string
- *
- * Return the last instance of needle in the haystack, or NULL.
- * Like strstr(), only backwards, and for a limited haystack length.
- */
-const char *mutt_strn_rfind(const char *haystack, size_t haystack_length, const char *needle)
-{
-  if (!haystack || (haystack_length == 0) || !needle)
-    return NULL;
-
-  int needle_length = strlen(needle);
-  const char *haystack_end = haystack + haystack_length - needle_length;
-
-  for (const char *p = haystack_end; p >= haystack; --p)
-  {
-    for (size_t i = 0; i < needle_length; i++)
-    {
-      if (p[i] != needle[i])
-        goto next;
-    }
-    return p;
-
-  next:;
-  }
-  return NULL;
 }
 
 /**
@@ -928,33 +736,6 @@ const char *mutt_str_getenv(const char *name)
 }
 
 /**
- * mutt_str_inline_replace - Replace the beginning of a string
- * @param buf    Buffer to modify
- * @param buflen Length of buffer
- * @param xlen   Length of string to overwrite
- * @param rstr   Replacement string
- * @retval true Success
- *
- * String (`XX<OOOOOO>......`, 16, 2, `RRRR`) becomes `RRRR<OOOOOO>....`
- */
-bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr)
-{
-  if (!buf || !rstr || (xlen >= buflen))
-    return false;
-
-  size_t slen = mutt_str_len(buf + xlen);
-  size_t rlen = mutt_str_len(rstr);
-
-  if ((slen + rlen) >= buflen)
-    return false;
-
-  memmove(buf + rlen, buf + xlen, slen + 1);
-  memmove(buf, rstr, rlen);
-
-  return true;
-}
-
-/**
  * mutt_istr_remall - Remove all occurrences of substring, ignoring case
  * @param str     String containing the substring
  * @param target  Target substring for removal
@@ -1003,8 +784,8 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
    * is undefined when the return code is -1.  */
   if (n < 0)
   {
-    mutt_error(_("Out of memory")); /* LCOV_EXCL_LINE */
-    mutt_exit(1);                   /* LCOV_EXCL_LINE */
+    mutt_error("%s", strerror(errno)); /* LCOV_EXCL_LINE */
+    mutt_exit(1);                      /* LCOV_EXCL_LINE */
   }
 
   if (n == 0)
@@ -1026,7 +807,7 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
 
   int rlen = 256;
 
-  *strp = mutt_mem_malloc(rlen);
+  *strp = MUTT_MEM_MALLOC(rlen, char);
   while (true)
   {
     va_list ap;
@@ -1046,12 +827,12 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
       if (n == 0) /* convention is to use NULL for zero-length strings. */
         FREE(strp);
       else if (n != rlen - 1)
-        mutt_mem_realloc(strp, n + 1);
+        MUTT_MEM_REALLOC(strp, n + 1, char);
       return n;
     }
     /* increase size and try again */
     rlen = n + 1;
-    mutt_mem_realloc(strp, rlen);
+    MUTT_MEM_REALLOC(strp, rlen, char);
   }
   /* not reached */
 }
@@ -1076,4 +857,67 @@ void mutt_str_hyphenate(char *buf, size_t buflen, const char *str)
     if (*buf == '_')
       *buf = '-';
   }
+}
+
+/**
+ * mutt_str_inbox_cmp - Do two folders share the same path and one is an inbox - @ingroup sort_api
+ * @param a First path
+ * @param b Second path
+ * @retval -1 a is INBOX of b
+ * @retval  0 None is INBOX
+ * @retval  1 b is INBOX for a
+ *
+ * This function compares two folder paths. It first looks for the position of
+ * the last common '/' character. If a valid position is found and it's not the
+ * last character in any of the two paths, the remaining parts of the paths are
+ * compared (case insensitively) with the string "INBOX" followed by a non
+ * alpha character, e.g., '.' or '/'. If only one of the two paths matches,
+ * it's reported as being less than the other and the function returns -1 (a <
+ * b) or 1 (a > b).  If both or no paths match the requirements, the two paths
+ * are considered equivalent and this function returns 0.
+ *
+ * Examples:
+ * * mutt_str_inbox_cmp("/foo/bar",      "/foo/baz") --> 0
+ * * mutt_str_inbox_cmp("/foo/bar/",     "/foo/bar/inbox") --> 0
+ * * mutt_str_inbox_cmp("/foo/bar/sent", "/foo/bar/inbox") --> 1
+ * * mutt_str_inbox_cmp("=INBOX",        "=Drafts") --> -1
+ * * mutt_str_inbox_cmp("=INBOX",        "=INBOX.Foo") --> 0
+ * * mutt_str_inbox_cmp("=INBOX.Foo",    "=Drafts") --> -1
+ */
+int mutt_str_inbox_cmp(const char *a, const char *b)
+{
+#define IS_INBOX(s) (mutt_istrn_equal(s, "inbox", 5) && !isalnum((s)[5]))
+#define CMP_INBOX(a, b) (IS_INBOX(b) - IS_INBOX(a))
+
+  /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
+  if ((a[0] == '+') && (b[0] == '+'))
+  {
+    return CMP_INBOX(a + 1, b + 1);
+  }
+
+  const char *a_end = strrchr(a, '/');
+  const char *b_end = strrchr(b, '/');
+
+  /* If one path contains a '/', but not the other */
+  if ((!a_end) ^ (!b_end))
+    return 0;
+
+  /* If neither path contains a '/' */
+  if (!a_end)
+    return 0;
+
+  /* Compare the subpaths */
+  size_t a_len = a_end - a;
+  size_t b_len = b_end - b;
+  size_t min = MIN(a_len, b_len);
+  int same = (a[min] == '/') && (b[min] == '/') && (a[min + 1] != '\0') &&
+             (b[min + 1] != '\0') && mutt_istrn_equal(a, b, min);
+
+  if (!same)
+    return 0;
+
+  return CMP_INBOX(a + 1 + min, b + 1 + min);
+
+#undef CMP_INBOX
+#undef IS_INBOX
 }

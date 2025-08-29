@@ -3,7 +3,8 @@
  * Store attributes associated with a MIME part
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "parameter.h"
 
@@ -38,7 +39,7 @@
  */
 struct Parameter *mutt_param_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Parameter));
+  return MUTT_MEM_CALLOC(1, struct Parameter);
 }
 
 /**

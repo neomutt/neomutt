@@ -3,7 +3,8 @@
  * Shared test code for compression
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -118,7 +119,7 @@ static void one_test(const struct ComprOps *compr_ops, short level, size_t size)
   if (!TEST_CHECK(clen != 0))
     return;
 
-  void *copy = mutt_mem_malloc(clen);
+  void *copy = MUTT_MEM_MALLOC(clen, char);
   memcpy(copy, cdata, clen);
 
   void *ddata = compr_ops->decompress(compr_handle, copy, clen);

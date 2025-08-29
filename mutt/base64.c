@@ -3,9 +3,8 @@
  * Conversion to/from base64 encoding
  *
  * @authors
- * Copyright (C) 1993,1995 Carl Harris
- * Copyright (C) 1997 Eric S. Raymond
- * Copyright (C) 1999 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

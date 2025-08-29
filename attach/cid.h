@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,9 +43,7 @@ STAILQ_HEAD(CidMapList, CidMap);
 void           cid_map_free        (struct CidMap **ptr);
 struct CidMap *cid_map_new         (const char *cid, const char *filename);
 void           cid_map_list_clear  (struct CidMapList *cid_map_list);
-void           cid_save_attachments(struct Body *body,
-                                    struct CidMapList *cid_map_list);
-void           cid_to_filename     (struct Buffer *filename,
-                                    const struct CidMapList *cid_map_list);
+void           cid_save_attachments(struct Body *body, struct CidMapList *cid_map_list);
+void           cid_to_filename     (struct Buffer *filename, const struct CidMapList *cid_map_list);
 
 #endif /* MUTT_ATTACH_CID_H */

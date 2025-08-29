@@ -3,7 +3,7 @@
  * Enter Window Data
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,7 +30,7 @@
 #include "history/lib.h"
 
 /**
- * enum EnterRedrawFlags - Redraw flags for mutt_enter_string_full()
+ * enum EnterRedrawFlags - Redraw flags for mw_get_field()
  */
 enum EnterRedrawFlags
 {
@@ -48,7 +48,7 @@ struct EnterWindowData
   struct Buffer *buffer;          ///< struct Buffer for the result
   CompletionFlags flags;          ///< Flags, see #CompletionFlags
   struct EnterState *state;       ///< Current state of text entry
-  enum HistoryClass hclass;       ///< History to use, e.g. #HC_COMMAND
+  enum HistoryClass hclass;       ///< History to use, e.g. #HC_NEO_COMMAND
   const struct CompleteOps *comp_api; ///< Auto-Completion API
   void *cdata;                    ///< Auto-Completion private data
 

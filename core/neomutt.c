@@ -3,7 +3,8 @@
  * Container for Accounts, Notifications
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +28,12 @@
  */
 
 #include "config.h"
+#include <errno.h>
+#include <locale.h>
 #include <stddef.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "neomutt.h"
@@ -46,7 +52,7 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   if (!cs)
     return NULL;
 
-  struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
+  struct NeoMutt *n = MUTT_MEM_CALLOC(1, struct NeoMutt);
 
   TAILQ_INIT(&n->accounts);
   n->notify = notify_new();
@@ -60,8 +66,8 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
 
   if (!n->time_c_locale)
   {
-    mutt_error(_("Out of memory")); // LCOV_EXCL_LINE
-    mutt_exit(1);                   // LCOV_EXCL_LINE
+    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
+    mutt_exit(1);                      // LCOV_EXCL_LINE
   }
 
   n->notify_timeout = notify_new();
@@ -199,7 +205,7 @@ size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n,
 
     STAILQ_FOREACH(mn, &a->mailboxes, entries)
     {
-      struct MailboxNode *mn2 = mutt_mem_calloc(1, sizeof(*mn2));
+      struct MailboxNode *mn2 = MUTT_MEM_CALLOC(1, struct MailboxNode);
       mn2->mailbox = mn->mailbox;
       STAILQ_INSERT_TAIL(head, mn2, entries);
       count++;
@@ -207,4 +213,32 @@ size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n,
   }
 
   return count;
+}
+
+/**
+ * mutt_file_fopen_masked_full - Wrapper around mutt_file_fopen_full()
+ * @param path  Filename
+ * @param mode  Mode e.g. "r" readonly; "w" read-write
+ * @param file  Source file
+ * @param line  Source line number
+ * @param func  Source function
+ * @retval ptr  FILE handle
+ * @retval NULL Error, see errno
+ *
+ * Apply the user's umask, then call mutt_file_fopen_full().
+ */
+FILE *mutt_file_fopen_masked_full(const char *path, const char *mode,
+                                  const char *file, int line, const char *func)
+{
+  // Set the user's umask (saved on startup)
+  mode_t old_umask = umask(NeoMutt->user_default_umask);
+  mutt_debug(LL_DEBUG3, "umask set to %03o\n", NeoMutt->user_default_umask);
+
+  // The permissions will be limited by the umask
+  FILE *fp = mutt_file_fopen_full(path, mode, 0666, file, line, func);
+
+  umask(old_umask); // Immediately restore the umask
+  mutt_debug(LL_DEBUG3, "umask set to %03o\n", old_umask);
+
+  return fp;
 }

@@ -6,7 +6,15 @@
  * Copyright (C) 1996-1998,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2012,2017 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2018-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2019 Sergey Alirzaev <zl29ah@gmail.com>
+ * Copyright (C) 2020 Reto Brunner <reto@slightlybroken.com>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2023-2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -175,14 +183,13 @@ static char *get_flags(struct ListHead *hflags, char *s)
  * @param[in]  flag    Does the email have the flag set?
  * @param[in]  str     Server flag name
  * @param[out] flags   Buffer for server command
- * @param[in]  flsize  Length of buffer
  */
 static void set_flag(struct Mailbox *m, AclFlags aclflag, bool flag,
-                     const char *str, char *flags, size_t flsize)
+                     const char *str, struct Buffer *flags)
 {
   if (m->rights & aclflag)
     if (flag && imap_has_flag(&imap_mdata_get(m)->flags, str))
-      mutt_str_cat(flags, flsize, str);
+      buf_addstr(flags, str);
 }
 
 /**
@@ -428,7 +435,8 @@ static int complete_hosts(struct Buffer *buf)
  */
 int imap_create_mailbox(struct ImapAccountData *adata, const char *mailbox)
 {
-  char buf[2048], mbox[1024];
+  char buf[2048] = { 0 };
+  char mbox[1024] = { 0 };
 
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), mailbox);
   snprintf(buf, sizeof(buf), "CREATE %s", mbox);
@@ -668,7 +676,7 @@ void imap_expunge_mailbox(struct Mailbox *m, bool resort)
   struct Email *e = NULL;
 
 #ifdef USE_HCACHE
-  imap_hcache_open(adata, mdata);
+  imap_hcache_open(adata, mdata, false);
 #endif
 
   for (int i = 0; i < m->msg_count; i++)
@@ -919,66 +927,61 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
                                struct Buffer *cmd, enum QuadOption *err_continue)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || (adata->mailbox != m))
-    return -1;
+  struct ImapEmailData *edata = imap_edata_get(e);
 
-  char flags[1024] = { 0 };
-  char *tags = NULL;
-  char uid[11] = { 0 };
+  if (!adata || (adata->mailbox != m) || !e)
+    return -1;
 
   if (!compare_flags_for_copy(e))
   {
-    if (e->deleted == imap_edata_get(e)->deleted)
+    if (e->deleted == edata->deleted)
       e->changed = false;
     return 0;
   }
 
-  snprintf(uid, sizeof(uid), "%u", imap_edata_get(e)->uid);
-  buf_reset(cmd);
-  buf_addstr(cmd, "UID STORE ");
-  buf_addstr(cmd, uid);
+  buf_printf(cmd, "UID STORE %u", edata->uid);
 
-  flags[0] = '\0';
+  struct Buffer *flags = buf_pool_get();
 
-  set_flag(m, MUTT_ACL_SEEN, e->read, "\\Seen ", flags, sizeof(flags));
-  set_flag(m, MUTT_ACL_WRITE, e->old, "Old ", flags, sizeof(flags));
-  set_flag(m, MUTT_ACL_WRITE, e->flagged, "\\Flagged ", flags, sizeof(flags));
-  set_flag(m, MUTT_ACL_WRITE, e->replied, "\\Answered ", flags, sizeof(flags));
-  set_flag(m, MUTT_ACL_DELETE, imap_edata_get(e)->deleted, "\\Deleted ", flags,
-           sizeof(flags));
+  set_flag(m, MUTT_ACL_SEEN, e->read, "\\Seen ", flags);
+  set_flag(m, MUTT_ACL_WRITE, e->old, "Old ", flags);
+  set_flag(m, MUTT_ACL_WRITE, e->flagged, "\\Flagged ", flags);
+  set_flag(m, MUTT_ACL_WRITE, e->replied, "\\Answered ", flags);
+  set_flag(m, MUTT_ACL_DELETE, edata->deleted, "\\Deleted ", flags);
 
   if (m->rights & MUTT_ACL_WRITE)
   {
     /* restore system flags */
-    if (imap_edata_get(e)->flags_system)
-      mutt_str_cat(flags, sizeof(flags), imap_edata_get(e)->flags_system);
+    if (edata->flags_system)
+      buf_addstr(flags, edata->flags_system);
+
     /* set custom flags */
-    tags = driver_tags_get_with_hidden(&e->tags);
-    if (tags)
-    {
-      mutt_str_cat(flags, sizeof(flags), tags);
-      FREE(&tags);
-    }
+    struct Buffer *tags = buf_pool_get();
+    driver_tags_get_with_hidden(&e->tags, tags);
+    if (!buf_is_empty(tags))
+      buf_addstr(flags, buf_string(tags));
+    buf_pool_release(&tags);
   }
 
-  mutt_str_remove_trailing_ws(flags);
+  mutt_str_remove_trailing_ws(flags->data);
+  buf_fix_dptr(flags);
 
   /* UW-IMAP is OK with null flags, Cyrus isn't. The only solution is to
    * explicitly revoke all system flags (if we have permission) */
-  if (*flags == '\0')
+  if (buf_is_empty(flags))
   {
-    set_flag(m, MUTT_ACL_SEEN, true, "\\Seen ", flags, sizeof(flags));
-    set_flag(m, MUTT_ACL_WRITE, true, "Old ", flags, sizeof(flags));
-    set_flag(m, MUTT_ACL_WRITE, true, "\\Flagged ", flags, sizeof(flags));
-    set_flag(m, MUTT_ACL_WRITE, true, "\\Answered ", flags, sizeof(flags));
-    set_flag(m, MUTT_ACL_DELETE, !imap_edata_get(e)->deleted, "\\Deleted ",
-             flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_SEEN, true, "\\Seen ", flags);
+    set_flag(m, MUTT_ACL_WRITE, true, "Old ", flags);
+    set_flag(m, MUTT_ACL_WRITE, true, "\\Flagged ", flags);
+    set_flag(m, MUTT_ACL_WRITE, true, "\\Answered ", flags);
+    set_flag(m, MUTT_ACL_DELETE, !edata->deleted, "\\Deleted ", flags);
 
     /* erase custom flags */
-    if ((m->rights & MUTT_ACL_WRITE) && imap_edata_get(e)->flags_remote)
-      mutt_str_cat(flags, sizeof(flags), imap_edata_get(e)->flags_remote);
+    if ((m->rights & MUTT_ACL_WRITE) && edata->flags_remote)
+      buf_addstr(flags, edata->flags_remote);
 
-    mutt_str_remove_trailing_ws(flags);
+    mutt_str_remove_trailing_ws(flags->data);
+    buf_fix_dptr(flags);
 
     buf_addstr(cmd, " -FLAGS.SILENT (");
   }
@@ -987,27 +990,37 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
     buf_addstr(cmd, " FLAGS.SILENT (");
   }
 
-  buf_addstr(cmd, flags);
+  buf_addstr(cmd, buf_string(flags));
   buf_addstr(cmd, ")");
+
+  int rc = -1;
 
   /* after all this it's still possible to have no flags, if you
    * have no ACL rights */
-  if (*flags && (imap_exec(adata, cmd->data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS) &&
+  if (!buf_is_empty(flags) &&
+      (imap_exec(adata, cmd->data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS) &&
       err_continue && (*err_continue != MUTT_YES))
   {
     *err_continue = imap_continue("imap_sync_message: STORE failed", adata->buf);
     if (*err_continue != MUTT_YES)
-      return -1;
+      goto done;
   }
 
   /* server have now the updated flags */
-  FREE(&imap_edata_get(e)->flags_remote);
-  imap_edata_get(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
+  FREE(&edata->flags_remote);
+  struct Buffer *flags_remote = buf_pool_get();
+  driver_tags_get_with_hidden(&e->tags, flags_remote);
+  edata->flags_remote = buf_strdup(flags_remote);
+  buf_pool_release(&flags_remote);
 
-  if (e->deleted == imap_edata_get(e)->deleted)
+  if (e->deleted == edata->deleted)
     e->changed = false;
 
-  return 0;
+  rc = 0;
+
+done:
+  buf_pool_release(&flags);
+  return rc;
 }
 
 /**
@@ -1077,6 +1090,8 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
 
   mdata->check_status = IMAP_OPEN_NO_FLAGS;
 
+  if (force)
+    m->last_checked = 0; // force a check on the next mx_mbox_check() call
   return check;
 }
 
@@ -1205,11 +1220,10 @@ int imap_mailbox_status(struct Mailbox *m, bool queue)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_subscribe(char *path, bool subscribe)
+int imap_subscribe(const char *path, bool subscribe)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  struct Buffer err;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
     return -1;
@@ -1232,14 +1246,12 @@ int imap_subscribe(char *path, bool subscribe)
   if (c_imap_check_subscribed)
   {
     char mbox[1024] = { 0 };
-    buf_init(&err);
-    err.dsize = 256;
-    err.data = mutt_mem_malloc(err.dsize);
     size_t len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
     imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
-    if (parse_rc_line(mbox, &err))
-      mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", err.data);
-    FREE(&err.data);
+    struct Buffer *err = buf_pool_get();
+    if (parse_rc_line(mbox, err))
+      mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", buf_string(err));
+    buf_pool_release(&err);
   }
 
   if (subscribe)
@@ -1355,7 +1367,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
   if (imap_adata_find(dest, &dest_adata, &dest_mdata) < 0)
     return -1;
 
-  struct Buffer sync_cmd = buf_make(0);
+  struct Buffer *sync_cmd = buf_pool_get();
 
   /* check that the save-to folder is in the same account */
   if (!imap_account_match(&(adata->conn->account), &(dest_adata->conn->account)))
@@ -1371,7 +1383,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
       break;
     if (e->active && e->changed && e->deleted && !e->purge)
     {
-      rc = imap_sync_message_for_copy(m, e, &sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(m, e, sync_cmd, &err_continue);
       if (rc < 0)
       {
         mutt_debug(LL_DEBUG1, "could not sync\n");
@@ -1441,7 +1453,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
   rc = IMAP_EXEC_SUCCESS;
 
 out:
-  buf_dealloc(&sync_cmd);
+  buf_pool_release(&sync_cmd);
   imap_mdata_free((void *) &dest_mdata);
 
   return ((rc == IMAP_EXEC_SUCCESS) ? 0 : -1);
@@ -1517,7 +1529,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   }
 
 #ifdef USE_HCACHE
-  imap_hcache_open(adata, mdata);
+  imap_hcache_open(adata, mdata, true);
 #endif
 
   /* save messages with real (non-flag) changes */
@@ -1566,7 +1578,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 #endif
 
   /* presort here to avoid doing 10 resorts in imap_exec_msg_set */
-  emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
+  emails = MUTT_MEM_MALLOC(m->msg_count, struct Email *);
   memcpy(emails, m->emails, m->msg_count * sizeof(struct Email *));
   mutt_qsort_r(emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid, NULL);
 
@@ -1914,7 +1926,9 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
     if (rc != IMAP_RES_CONTINUE)
       break;
 
-    pc = adata->buf + 2;
+    if (!mutt_strn_equal(adata->buf, "* ", 2))
+      continue;
+    pc = imap_next_word(adata->buf);
 
     /* Obtain list of available flags here, may be overridden by a
      * PERMANENTFLAGS tag in the OK response */
@@ -2012,15 +2026,14 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
     else
     {
       struct ListNode *np = NULL;
-      struct Buffer flag_buffer;
-      buf_init(&flag_buffer);
-      buf_printf(&flag_buffer, "Mailbox flags: ");
+      struct Buffer *flag_buffer = buf_pool_get();
+      buf_printf(flag_buffer, "Mailbox flags: ");
       STAILQ_FOREACH(np, &mdata->flags, entries)
       {
-        buf_add_printf(&flag_buffer, "[%s] ", np->data);
+        buf_add_printf(flag_buffer, "[%s] ", np->data);
       }
-      mutt_debug(LL_DEBUG3, "%s\n", flag_buffer.data);
-      FREE(&flag_buffer.data);
+      mutt_debug(LL_DEBUG3, "%s\n", buf_string(flag_buffer));
+      buf_pool_release(&flag_buffer);
     }
   }
 
@@ -2278,17 +2291,17 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   /* Remove old custom flags */
   if (imap_edata_get(e)->flags_remote)
   {
-    struct Buffer cmd = buf_make(128); // just a guess
-    buf_addstr(&cmd, "UID STORE ");
-    buf_addstr(&cmd, uid);
-    buf_addstr(&cmd, " -FLAGS.SILENT (");
-    buf_addstr(&cmd, imap_edata_get(e)->flags_remote);
-    buf_addstr(&cmd, ")");
+    struct Buffer *cmd = buf_pool_get();
+    buf_addstr(cmd, "UID STORE ");
+    buf_addstr(cmd, uid);
+    buf_addstr(cmd, " -FLAGS.SILENT (");
+    buf_addstr(cmd, imap_edata_get(e)->flags_remote);
+    buf_addstr(cmd, ")");
 
     /* Should we return here, or we are fine and we could
      * continue to add new flags */
-    int rc = imap_exec(adata, cmd.data, IMAP_CMD_NO_FLAGS);
-    buf_dealloc(&cmd);
+    int rc = imap_exec(adata, buf_string(cmd), IMAP_CMD_NO_FLAGS);
+    buf_pool_release(&cmd);
     if (rc != IMAP_EXEC_SUCCESS)
     {
       return -1;
@@ -2298,15 +2311,15 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   /* Add new custom flags */
   if (buf)
   {
-    struct Buffer cmd = buf_make(128); // just a guess
-    buf_addstr(&cmd, "UID STORE ");
-    buf_addstr(&cmd, uid);
-    buf_addstr(&cmd, " +FLAGS.SILENT (");
-    buf_addstr(&cmd, buf);
-    buf_addstr(&cmd, ")");
+    struct Buffer *cmd = buf_pool_get();
+    buf_addstr(cmd, "UID STORE ");
+    buf_addstr(cmd, uid);
+    buf_addstr(cmd, " +FLAGS.SILENT (");
+    buf_addstr(cmd, buf);
+    buf_addstr(cmd, ")");
 
-    int rc = imap_exec(adata, cmd.data, IMAP_CMD_NO_FLAGS);
-    buf_dealloc(&cmd);
+    int rc = imap_exec(adata, buf_string(cmd), IMAP_CMD_NO_FLAGS);
+    buf_pool_release(&cmd);
     if (rc != IMAP_EXEC_SUCCESS)
     {
       mutt_debug(LL_DEBUG1, "fail to add new flags\n");
@@ -2318,7 +2331,10 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   mutt_debug(LL_DEBUG1, "NEW TAGS: %s\n", buf);
   driver_tags_replace(&e->tags, buf);
   FREE(&imap_edata_get(e)->flags_remote);
-  imap_edata_get(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
+  struct Buffer *flags_remote = buf_pool_get();
+  driver_tags_get_with_hidden(&e->tags, flags_remote);
+  imap_edata_get(e)->flags_remote = buf_strdup(flags_remote);
+  buf_pool_release(&flags_remote);
   imap_msg_save_hcache(m, e);
   return 0;
 }
@@ -2347,52 +2363,24 @@ int imap_path_canon(struct Buffer *path)
     return 0;
 
   char tmp[PATH_MAX] = { 0 };
-  char tmp2[PATH_MAX];
-
-  imap_fix_path('\0', url->path, tmp, sizeof(tmp));
-  url->path = tmp;
+  char tmp2[PATH_MAX] = { 0 };
+  if (url->path)
+  {
+    struct ImapAccountData *adata = NULL;
+    if (imap_adata_find(buf_string(path), &adata, NULL) == 0)
+    {
+      imap_fix_path_with_delim(adata->delim, url->path, tmp, sizeof(tmp));
+    }
+    else
+    {
+      imap_fix_path(url->path, tmp, sizeof(tmp));
+    }
+    url->path = tmp;
+  }
   url_tostring(url, tmp2, sizeof(tmp2), U_NO_FLAGS);
   buf_strcpy(path, tmp2);
   url_free(&url);
 
-  return 0;
-}
-
-/**
- * imap_expand_path - Buffer wrapper around imap_path_canon()
- * @param path Path to expand
- * @retval  0 Success
- * @retval -1 Failure
- *
- * @note The path is expanded in place
- */
-int imap_expand_path(struct Buffer *path)
-{
-  buf_alloc(path, PATH_MAX);
-  return imap_path_canon(path);
-}
-
-/**
- * imap_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
- */
-static int imap_path_pretty(struct Buffer *path, const char *folder)
-{
-  if (!folder)
-    return -1;
-
-  imap_pretty_mailbox(path->data, path->dsize, folder);
-  return 0;
-}
-
-/**
- * imap_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
- */
-static int imap_path_parent(struct Buffer *path)
-{
-  char tmp[PATH_MAX] = { 0 };
-
-  imap_get_parent_path(buf_string(path), tmp, sizeof(tmp));
-  buf_strcpy(path, tmp);
   return 0;
 }
 
@@ -2435,8 +2423,6 @@ const struct MxOps MxImapOps = {
   .tags_commit      = imap_tags_commit,
   .path_probe       = imap_path_probe,
   .path_canon       = imap_path_canon,
-  .path_pretty      = imap_path_pretty,
-  .path_parent      = imap_path_parent,
   .path_is_empty    = imap_path_is_empty,
   // clang-format on
 };

@@ -3,7 +3,7 @@
  * Compose Attach Data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -53,7 +53,7 @@ void attach_data_free(struct Menu *menu, void **ptr)
  */
 struct ComposeAttachData *attach_data_new(struct Email *e)
 {
-  struct ComposeAttachData *attach_data = mutt_mem_calloc(1, sizeof(struct ComposeAttachData));
+  struct ComposeAttachData *attach_data = MUTT_MEM_CALLOC(1, struct ComposeAttachData);
 
   attach_data->actx = mutt_actx_new();
   attach_data->actx->email = e;

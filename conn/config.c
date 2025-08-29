@@ -3,7 +3,9 @@
  * Connection Global Variables
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +29,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "config/lib.h"
 
 /**
@@ -36,7 +38,7 @@
  */
 static struct ConfigDef ConnVars[] = {
   // clang-format off
-  { "account_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
+  { "account_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "Shell command to retrieve account credentials"
   },
   { "preconnect", DT_STRING, 0, 0, NULL,
@@ -45,7 +47,7 @@ static struct ConfigDef ConnVars[] = {
   { "socket_timeout", DT_NUMBER, 30, 0, NULL,
     "Timeout for socket connect/read/write operations (-1 to wait indefinitely)"
   },
-  { "tunnel", DT_STRING|DT_COMMAND, 0, 0, NULL,
+  { "tunnel", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "Shell command to establish a tunnel"
   },
   { "tunnel_is_secure", DT_BOOL, true, 0, NULL,
@@ -63,13 +65,13 @@ static struct ConfigDef ConnVars[] = {
  */
 static struct ConfigDef ConnVarsSsl[] = {
   // clang-format off
-  { "certificate_file", DT_PATH|DT_PATH_FILE, IP "~/.mutt_certificates", 0, NULL,
+  { "certificate_file", DT_PATH|D_PATH_FILE, IP "~/.mutt_certificates", 0, NULL,
     "File containing trusted certificates"
   },
   { "ssl_ciphers", DT_STRING, 0, 0, NULL,
     "Ciphers to use when using SSL"
   },
-  { "ssl_client_cert", DT_PATH|DT_PATH_FILE, 0, 0, NULL,
+  { "ssl_client_cert", DT_PATH|D_PATH_FILE, 0, 0, NULL,
     "File containing client certificates"
   },
   { "ssl_force_tls", DT_BOOL, true, 0, NULL,
@@ -110,10 +112,10 @@ static struct ConfigDef ConnVarsSsl[] = {
  */
 static struct ConfigDef ConnVarsGnutls[] = {
   // clang-format off
-  { "ssl_ca_certificates_file", DT_PATH|DT_PATH_FILE, 0, 0, NULL,
+  { "ssl_ca_certificates_file", DT_PATH|D_PATH_FILE, 0, 0, NULL,
     "File containing trusted CA certificates"
   },
-  { "ssl_min_dh_prime_bits", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "ssl_min_dh_prime_bits", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Minimum keysize for Diffie-Hellman key exchange"
   },
   { NULL },
@@ -127,7 +129,7 @@ static struct ConfigDef ConnVarsGnutls[] = {
  */
 static struct ConfigDef ConnVarsOpenssl[] = {
   // clang-format off
-  { "entropy_file", DT_PATH|DT_PATH_FILE, 0, 0, NULL,
+  { "entropy_file", DT_PATH|D_PATH_FILE, 0, 0, NULL,
     "(ssl) File/device containing random data to initialise SSL"
   },
   { "ssl_use_sslv2", DT_BOOL, false, 0, NULL,
@@ -175,26 +177,26 @@ static struct ConfigDef ConnVarsGetaddr[] = {
  */
 bool config_init_conn(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, ConnVars, DT_NO_FLAGS);
+  bool rc = cs_register_variables(cs, ConnVars);
 
 #if defined(USE_SSL)
-  rc |= cs_register_variables(cs, ConnVarsSsl, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsSsl);
 #endif
 
 #if defined(USE_SSL_GNUTLS)
-  rc |= cs_register_variables(cs, ConnVarsGnutls, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsGnutls);
 #endif
 
 #if defined(USE_SSL_OPENSSL)
-  rc |= cs_register_variables(cs, ConnVarsOpenssl, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsOpenssl);
 #endif
 
 #if defined(HAVE_SSL_PARTIAL_CHAIN)
-  rc |= cs_register_variables(cs, ConnVarsPartial, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsPartial);
 #endif
 
 #if defined(HAVE_GETADDRINFO)
-  rc |= cs_register_variables(cs, ConnVarsGetaddr, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsGetaddr);
 #endif
 
   return rc;

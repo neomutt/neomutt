@@ -3,7 +3,7 @@
  * Wrappers for calls to CLI SMIME
  *
  * @authors
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,7 +35,7 @@
 #endif
 
 /**
- * smime_class_init - Initialise smime
+ * smime_class_init - Initialise smime - Implements CryptModuleSpecs::init() - @ingroup crypto_init
  */
 static void smime_class_init(void)
 {
@@ -43,7 +43,7 @@ static void smime_class_init(void)
 }
 
 /**
- * smime_class_cleanup - Clean up smime
+ * smime_class_cleanup - Clean up smime - Implements ::CryptModuleSpecs::cleanup() - @ingroup crypto_cleanup
  */
 static void smime_class_cleanup(void)
 {
@@ -51,7 +51,7 @@ static void smime_class_cleanup(void)
 }
 
 /**
- * CryptModSmimeClassic - CLI SMIME - Implements ::CryptModuleSpecs
+ * CryptModSmimeClassic - CLI SMIME - Implements ::CryptModuleSpecs - @ingroup crypto_api
  */
 const struct CryptModuleSpecs CryptModSmimeClassic = {
   // clang-format off

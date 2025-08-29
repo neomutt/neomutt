@@ -3,7 +3,7 @@
  * Convenience wrapper for the config headers
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -58,6 +58,7 @@
 #include "helpers.h"
 #include "inheritance.h"
 #include "mbtable.h"
+#include "number.h"
 #include "quad.h"
 #include "regex2.h"
 #include "set.h"

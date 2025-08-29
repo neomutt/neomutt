@@ -3,7 +3,7 @@
  * Notification API
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "notify.h"
 #include "logging2.h"
 #include "memory.h"
@@ -61,7 +61,7 @@ struct Notify
  */
 struct Notify *notify_new(void)
 {
-  struct Notify *notify = mutt_mem_calloc(1, sizeof(*notify));
+  struct Notify *notify = MUTT_MEM_CALLOC(1, struct Notify);
 
   STAILQ_INIT(&notify->observers);
 
@@ -198,18 +198,18 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
   STAILQ_FOREACH(np, &notify->observers, entries)
   {
     if (!np->observer)
-      continue;
+      continue; // LCOV_EXCL_LINE
 
     if ((np->observer->callback == callback) && (np->observer->global_data == global_data))
       return true;
   }
 
-  struct Observer *o = mutt_mem_calloc(1, sizeof(*o));
+  struct Observer *o = MUTT_MEM_CALLOC(1, struct Observer);
   o->type = type;
   o->callback = callback;
   o->global_data = global_data;
 
-  np = mutt_mem_calloc(1, sizeof(*np));
+  np = MUTT_MEM_CALLOC(1, struct ObserverNode);
   np->observer = o;
   STAILQ_INSERT_HEAD(&notify->observers, np, entries);
 
@@ -237,7 +237,7 @@ bool notify_observer_remove(struct Notify *notify, const observer_t callback,
   STAILQ_FOREACH(np, &notify->observers, entries)
   {
     if (!np->observer)
-      continue;
+      continue; // LCOV_EXCL_LINE
 
     if ((np->observer->callback == callback) && (np->observer->global_data == global_data))
     {

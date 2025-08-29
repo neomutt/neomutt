@@ -3,7 +3,8 @@
  * RocksDB backend for the key/value Store
  *
  * @authors
- * Copyright (C) 2020 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2020 Tino Reichardt <github@mcmilk.de>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,8 +29,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <rocksdb/c.h>
+#include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
@@ -66,13 +68,13 @@ static void rocksdb_sdata_free(struct RocksDbStoreData **ptr)
  */
 static struct RocksDbStoreData *rocksdb_sdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct RocksDbStoreData));
+  return MUTT_MEM_CALLOC(1, struct RocksDbStoreData);
 }
 
 /**
- * store_rocksdb_open - Implements StoreOps::open() - @ingroup store_open
+ * store_rocksdb_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_rocksdb_open(const char *path)
+static StoreHandle *store_rocksdb_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
@@ -84,7 +86,10 @@ static StoreHandle *store_rocksdb_open(const char *path)
 
   /* setup generic options, create new db and limit log to one file */
   sdata->options = rocksdb_options_create();
-  rocksdb_options_set_create_if_missing(sdata->options, 1);
+  if (create)
+  {
+    rocksdb_options_set_create_if_missing(sdata->options, 1);
+  }
   rocksdb_options_set_keep_log_file_num(sdata->options, 1);
 
   /* setup read options, we verify with checksums */
@@ -102,8 +107,10 @@ static StoreHandle *store_rocksdb_open(const char *path)
   sdata->db = rocksdb_open(sdata->options, path, &sdata->err);
   if (sdata->err)
   {
-    rocksdb_free(sdata->err);
-    FREE(&sdata);
+    rocksdb_options_destroy(sdata->options);
+    rocksdb_readoptions_destroy(sdata->read_options);
+    rocksdb_writeoptions_destroy(sdata->write_options);
+    rocksdb_sdata_free(&sdata);
     return NULL;
   }
 
@@ -112,7 +119,7 @@ static StoreHandle *store_rocksdb_open(const char *path)
 }
 
 /**
- * store_rocksdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
+ * store_rocksdb_fetch - Fetch a Value from the Store - Implements StoreOps::fetch() - @ingroup store_fetch
  */
 static void *store_rocksdb_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
@@ -134,7 +141,7 @@ static void *store_rocksdb_fetch(StoreHandle *store, const char *key, size_t kle
 }
 
 /**
- * store_rocksdb_free - Implements StoreOps::free() - @ingroup store_free
+ * store_rocksdb_free - Free a Value returned by fetch() - Implements StoreOps::free() - @ingroup store_free
  */
 static void store_rocksdb_free(StoreHandle *store, void **ptr)
 {
@@ -142,7 +149,7 @@ static void store_rocksdb_free(StoreHandle *store, void **ptr)
 }
 
 /**
- * store_rocksdb_store - Implements StoreOps::store() - @ingroup store_store
+ * store_rocksdb_store - Write a Value to the Store - Implements StoreOps::store() - @ingroup store_store
  */
 static int store_rocksdb_store(StoreHandle *store, const char *key, size_t klen,
                                void *value, size_t vlen)
@@ -165,7 +172,7 @@ static int store_rocksdb_store(StoreHandle *store, const char *key, size_t klen,
 }
 
 /**
- * store_rocksdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
+ * store_rocksdb_delete_record - Delete a record from the Store - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
 static int store_rocksdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
@@ -187,7 +194,7 @@ static int store_rocksdb_delete_record(StoreHandle *store, const char *key, size
 }
 
 /**
- * store_rocksdb_close - Implements StoreOps::close() - @ingroup store_close
+ * store_rocksdb_close - Close a Store connection - Implements StoreOps::close() - @ingroup store_close
  */
 static void store_rocksdb_close(StoreHandle **ptr)
 {
@@ -207,7 +214,7 @@ static void store_rocksdb_close(StoreHandle **ptr)
 }
 
 /**
- * store_rocksdb_version - Implements StoreOps::version() - @ingroup store_version
+ * store_rocksdb_version - Get a Store version string - Implements StoreOps::version() - @ingroup store_version
  */
 static const char *store_rocksdb_version(void)
 {

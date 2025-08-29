@@ -3,10 +3,9 @@
  * Low-level socket handling
  *
  * @authors
- * Copyright (C) 1998,2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2006,2008 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * Copyright (C) 2017 Damien Riegel <damien.riegel@gmail.com>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -40,6 +39,8 @@
 #include <string.h>
 #include <sys/select.h>
 #include <sys/socket.h>
+#include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -69,6 +70,8 @@ static int socket_connect(int fd, struct sockaddr *sa)
   int sa_size;
   int save_errno;
   sigset_t set;
+  struct sigaction oldalrm = { 0 };
+  struct sigaction act = { 0 };
 
   if (sa->sa_family == AF_INET)
     sa_size = sizeof(struct sockaddr_in);
@@ -82,9 +85,21 @@ static int socket_connect(int fd, struct sockaddr *sa)
     return -1;
   }
 
+  /* Batch mode does not call mutt_signal_init(), so ensure the alarm
+   * interrupts the connect call */
   const short c_socket_timeout = cs_subset_number(NeoMutt->sub, "socket_timeout");
   if (c_socket_timeout > 0)
+  {
+    sigemptyset(&act.sa_mask);
+    act.sa_handler = mutt_sig_empty_handler;
+#ifdef SA_INTERRUPT
+    act.sa_flags = SA_INTERRUPT;
+#else
+    act.sa_flags = 0;
+#endif
+    sigaction(SIGALRM, &act, &oldalrm);
     alarm(c_socket_timeout);
+  }
 
   mutt_sig_allow_interrupt(true);
 
@@ -117,7 +132,10 @@ static int socket_connect(int fd, struct sockaddr *sa)
   }
 
   if (c_socket_timeout > 0)
+  {
     alarm(0);
+    sigaction(SIGALRM, &oldalrm, NULL);
+  }
   mutt_sig_allow_interrupt(false);
   sigprocmask(SIG_UNBLOCK, &set, NULL);
 
@@ -138,13 +156,11 @@ int raw_socket_open(struct Connection *conn)
 
   /* "65536\0" */
   char port[6] = { 0 };
-  struct addrinfo hints;
+  struct addrinfo hints = { 0 };
   struct addrinfo *res = NULL;
   struct addrinfo *cur = NULL;
 
   /* we accept v4 or v6 STREAM sockets */
-  memset(&hints, 0, sizeof(hints));
-
   const bool c_use_ipv6 = cs_subset_bool(NeoMutt->sub, "use_ipv6");
   if (c_use_ipv6)
     hints.ai_family = AF_UNSPEC;
@@ -207,10 +223,8 @@ int raw_socket_open(struct Connection *conn)
 #else
   /* --- IPv4 only --- */
 
-  struct sockaddr_in sin;
   struct hostent *he = NULL;
-
-  memset(&sin, 0, sizeof(sin));
+  struct sockaddr_in sin = { 0 };
   sin.sin_port = htons(conn->account.port);
   sin.sin_family = AF_INET;
 
@@ -336,15 +350,15 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 }
 
 /**
- * raw_socket_poll - Checks whether reads would block - Implements Connection::poll() - @ingroup connection_poll
+ * raw_socket_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   if (conn->fd < 0)
     return -1;
 
-  fd_set rfds;
-  struct timeval tv;
+  fd_set rfds = { 0 };
+  struct timeval tv = { 0 };
 
   uint64_t wait_millis = wait_secs * 1000UL;
 

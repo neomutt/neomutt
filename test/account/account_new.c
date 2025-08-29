@@ -3,7 +3,7 @@
  * Test code for account_new()
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,7 +26,7 @@
 #include <stddef.h>
 #include "config/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 static struct ConfigDef Vars[] = {
   // clang-format off
@@ -45,7 +45,7 @@ void test_account_new(void)
   }
 
   {
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
     struct ConfigSubset *sub = cs_subset_new("account", NULL, NULL);
     struct Account *a = account_new("dummy", sub);

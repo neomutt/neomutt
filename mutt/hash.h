@@ -3,8 +3,7 @@
  * Hash Table data structure
  *
  * @authors
- * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

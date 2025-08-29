@@ -3,7 +3,8 @@
  * Config used by libnntp
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,9 +28,30 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "config/lib.h"
+#include "conn/lib.h"
+#include "expando/lib.h"
+
+/**
+ * NntpFormatDef - Expando definitions
+ *
+ * Config:
+ * - $inews
+ * - $newsrc
+ */
+const struct ExpandoDefinition NntpFormatDef[] = {
+  // clang-format off
+  { "a", "account",  ED_NNTP, ED_NTP_ACCOUNT,  NULL },
+  { "p", "port",     ED_NNTP, ED_NTP_PORT,     NULL },
+  { "P", "port-if",  ED_NNTP, ED_NTP_PORT_IF,  NULL },
+  { "s", "server",   ED_NNTP, ED_NTP_SERVER,   NULL },
+  { "S", "schema",   ED_NNTP, ED_NTP_SCHEMA,   NULL },
+  { "u", "username", ED_NNTP, ED_NTP_USERNAME, NULL },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
 
 /**
  * NntpVars - Config definitions for the NNTP library
@@ -45,10 +67,10 @@ static struct ConfigDef NntpVars[] = {
   { "newsgroups_charset", DT_STRING, IP "utf-8", 0, charset_validator,
     "(nntp) Character set of newsgroups' descriptions"
   },
-  { "newsrc", DT_PATH|DT_PATH_FILE, IP "~/.newsrc", 0, NULL,
+  { "newsrc", DT_EXPANDO|D_PATH_FILE, IP "~/.newsrc", IP &NntpFormatDef, NULL,
     "(nntp) File containing list of subscribed newsgroups"
   },
-  { "news_cache_dir", DT_PATH|DT_PATH_DIR, IP "~/.neomutt", 0, NULL,
+  { "news_cache_dir", DT_PATH|D_PATH_DIR, IP "~/.neomutt", 0, NULL,
     "(nntp) Directory for cached news articles"
   },
   { "news_server", DT_STRING, 0, 0, NULL,
@@ -57,7 +79,7 @@ static struct ConfigDef NntpVars[] = {
   { "nntp_authenticators", DT_STRING, 0, 0, NULL,
     "(nntp) Allowed authentication methods"
   },
-  { "nntp_context", DT_LONG|DT_NOT_NEGATIVE, 1000, 0, NULL,
+  { "nntp_context", DT_LONG|D_INTEGER_NOT_NEGATIVE, 1000, 0, NULL,
     "(nntp) Maximum number of articles to list (0 for all articles)"
   },
   { "nntp_listgroup", DT_BOOL, true, 0, NULL,
@@ -66,13 +88,13 @@ static struct ConfigDef NntpVars[] = {
   { "nntp_load_description", DT_BOOL, true, 0, NULL,
     "(nntp) Load descriptions for newsgroups when adding to the list"
   },
-  { "nntp_pass", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "nntp_pass", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(nntp) Password for the news server"
   },
-  { "nntp_poll", DT_NUMBER|DT_NOT_NEGATIVE, 60, 0, NULL,
+  { "nntp_poll", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 60, 0, NULL,
     "(nntp) Interval between checks for new posts"
   },
-  { "nntp_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "nntp_user", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(nntp) Username for the news server"
   },
   { "post_moderated", DT_QUAD, MUTT_ASKYES, 0, NULL,
@@ -96,5 +118,5 @@ static struct ConfigDef NntpVars[] = {
  */
 bool config_init_nntp(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, NntpVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, NntpVars);
 }

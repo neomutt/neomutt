@@ -3,7 +3,7 @@
  * Shared constants/structs that are private to libpattern
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "email/lib.h"
 #include "lib.h"
 
 struct MailboxView;
@@ -38,6 +39,18 @@ struct PatternEntry
   const char *tag;  ///< Copied to buffer if selected
   const char *expr; ///< Displayed in the menu
   const char *desc; ///< Description of pattern
+};
+
+/**
+ * ExpandoDataPattern - Expando UIDs for Patterns
+ *
+ * @sa ED_PATTERN, ExpandoDomain
+ */
+enum ExpandoDataPattern
+{
+  ED_PAT_DESCRIPTION = 1,      ///< PatternEntry.desc
+  ED_PAT_EXPRESION,            ///< PatternEntry.expr
+  ED_PAT_NUMBER,               ///< PatternEntry.num
 };
 
 /**
@@ -60,7 +73,7 @@ enum PatternEat
  */
 struct PatternFlags
 {
-  int tag;                 ///< Character used to represent this operation, e.g. 'A' for '~A'
+  char tag;                ///< Character used to represent this operation, e.g. 'A' for '~A'
   int op;                  ///< Operation to perform, e.g. #MUTT_PAT_SCORE
   PatternCompFlags flags;  ///< Pattern flags, e.g. #MUTT_PC_FULL_MSG
 
@@ -126,7 +139,15 @@ enum RangeSide
   RANGE_S_RIGHT, ///< Right side of range
 };
 
-#define EMSG(e) (((e)->msgno) + 1)
+/**
+ * email_msgno - Helper to get the Email's message number
+ * @param e Email
+ * @retval num Message number
+ */
+static inline int email_msgno(struct Email *e)
+{
+  return e->msgno + 1;
+}
 
 #define MUTT_MAXRANGE -1
 

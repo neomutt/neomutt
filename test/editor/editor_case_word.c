@@ -3,7 +3,7 @@
  * Test code for editor_case_word()
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,10 +24,10 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include <stdbool.h>
-#include "email/lib.h"
+#include "mutt/lib.h"
 #include "core/lib.h"
 #include "editor/lib.h"
+#include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
 void test_editor_case_word(void)

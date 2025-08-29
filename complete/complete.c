@@ -3,7 +3,9 @@
  * String auto-completion routines
  *
  * @authors
- * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,14 +36,11 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "lib.h"
+#include "imap/lib.h"
+#include "nntp/lib.h"
 #include "globals.h"
 #include "muttlib.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#endif
 
 struct CompletionData;
 
@@ -66,21 +65,17 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
   struct Buffer *exp_dirpart = NULL;
   struct Buffer *filepart = NULL;
   struct Buffer *tmp = NULL;
-#ifdef USE_IMAP
   struct Buffer *imap_path = NULL;
   int rc;
-#endif
 
   mutt_debug(LL_DEBUG2, "completing %s\n", buf_string(buf));
 
-#ifdef USE_NNTP
   if (OptNews)
     return nntp_complete(buf);
-#endif
 
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
-#ifdef USE_IMAP
+
   imap_path = buf_pool_get();
   /* we can use '/' as a delimiter, imap_complete rewrites it */
   char ch = buf_at(buf, 0);
@@ -106,7 +101,6 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
   }
 
   buf_pool_release(&imap_path);
-#endif
 
   dirpart = buf_pool_get();
   exp_dirpart = buf_pool_get();
@@ -118,9 +112,9 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
   {
     buf_addch(dirpart, ch);
     if (ch == '!')
-      buf_strcpy(exp_dirpart, NONULL(c_spool_file));
+      buf_strcpy(exp_dirpart, c_spool_file);
     else
-      buf_strcpy(exp_dirpart, NONULL(c_folder));
+      buf_strcpy(exp_dirpart, c_folder);
     p = strrchr(buf_string(buf), '/');
     if (p)
     {

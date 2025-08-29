@@ -3,7 +3,7 @@
  * Test code for parsing the 'set' command
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,10 +24,11 @@
 #include "config.h"
 #include "acutest.h"
 #include <string.h>
-#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+
+struct Buffer;
 
 enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 {

@@ -3,7 +3,7 @@
  * Imap-specific Account data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -64,7 +64,7 @@ static int imap_timeout_observer(struct NotifyCallback *nc)
 }
 
 /**
- * imap_adata_free - Free the private Account data - Implements Account::adata_free()
+ * imap_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  */
 void imap_adata_free(void **ptr)
 {
@@ -97,7 +97,7 @@ void imap_adata_free(void **ptr)
  */
 struct ImapAccountData *imap_adata_new(struct Account *a)
 {
-  struct ImapAccountData *adata = mutt_mem_calloc(1, sizeof(struct ImapAccountData));
+  struct ImapAccountData *adata = MUTT_MEM_CALLOC(1, struct ImapAccountData);
   adata->account = a;
 
   static unsigned char new_seqid = 'a';
@@ -105,7 +105,7 @@ struct ImapAccountData *imap_adata_new(struct Account *a)
   adata->seqid = new_seqid;
   const short c_imap_pipeline_depth = cs_subset_number(NeoMutt->sub, "imap_pipeline_depth");
   adata->cmdslots = c_imap_pipeline_depth + 2;
-  adata->cmds = mutt_mem_calloc(adata->cmdslots, sizeof(*adata->cmds));
+  adata->cmds = MUTT_MEM_CALLOC(adata->cmdslots, struct ImapCommand);
 
   if (++new_seqid > 'z')
     new_seqid = 'a';

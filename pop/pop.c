@@ -3,9 +3,9 @@
  * POP network mailbox
  *
  * @authors
- * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
- * Copyright (C) 2006-2007,2009 Rocco Rutte <pdmef@gmx.net>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -88,11 +88,13 @@ static const char *cache_id(const char *id)
 }
 
 /**
- * fetch_message - Write line to file - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * fetch_message - Parse a Message response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line String to write
  * @param data FILE pointer to write to
  * @retval  0 Success
  * @retval -1 Failure
+ *
+ * Save a Message to a file.
  */
 static int fetch_message(const char *line, void *data)
 {
@@ -191,7 +193,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 }
 
 /**
- * fetch_uidl - Parse UIDL - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * fetch_uidl - Parse UIDL response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line String to parse
  * @param data Mailbox
  * @retval  0 Success
@@ -249,9 +251,9 @@ static int fetch_uidl(const char *line, void *data)
 }
 
 /**
- * msg_cache_check - Check the Body Cache for an ID - Implements ::bcache_list_t - @ingroup bcache_list_api
+ * pop_bcache_delete - Delete an entry from the message cache - Implements ::bcache_list_t - @ingroup bcache_list_api
  */
-static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
+static int pop_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
 {
   struct Mailbox *m = data;
   if (!m)
@@ -299,7 +301,7 @@ static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const c
 {
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   if (!adata || !adata->conn)
-    return hcache_open(c_header_cache, path, NULL);
+    return hcache_open(c_header_cache, path, NULL, true);
 
   struct Url url = { 0 };
   char p[1024] = { 0 };
@@ -307,7 +309,7 @@ static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const c
   mutt_account_tourl(&adata->conn->account, &url);
   url.path = HC_FNAME;
   url_tostring(&url, p, sizeof(p), U_PATH);
-  return hcache_open(c_header_cache, p, pop_hcache_namer);
+  return hcache_open(c_header_cache, p, pop_hcache_namer, true);
 }
 #endif
 
@@ -366,8 +368,8 @@ static int pop_fetch_headers(struct Mailbox *m)
 
   if (m->verbose)
   {
-    progress = progress_new(_("Fetching message headers..."),
-                            MUTT_PROGRESS_READ, new_count - old_count);
+    progress = progress_new(MUTT_PROGRESS_READ, new_count - old_count);
+    progress_set_message(progress, _("Fetching message headers..."));
   }
 
   if (rc == 0)
@@ -395,7 +397,7 @@ static int pop_fetch_headers(struct Mailbox *m)
       progress_update(progress, i + 1 - old_count, -1);
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);
 #ifdef USE_HCACHE
-      struct HCacheEntry hce = hcache_fetch(hc, edata->uid, strlen(edata->uid), 0);
+      struct HCacheEntry hce = hcache_fetch_email(hc, edata->uid, strlen(edata->uid), 0);
       if (hce.email)
       {
         /* Detach the private data */
@@ -426,7 +428,7 @@ static int pop_fetch_headers(struct Mailbox *m)
 #ifdef USE_HCACHE
       else
       {
-        hcache_store(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
+        hcache_store_email(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
       }
 #endif
 
@@ -478,7 +480,7 @@ static int pop_fetch_headers(struct Mailbox *m)
    * the availability of our cache */
   const bool c_message_cache_clean = cs_subset_bool(NeoMutt->sub, "message_cache_clean");
   if (c_message_cache_clean)
-    mutt_bcache_list(adata->bcache, msg_cache_check, m);
+    mutt_bcache_list(adata->bcache, pop_bcache_delete, m);
 
   mutt_clear_error();
   return new_count - old_count;
@@ -519,10 +521,10 @@ void pop_fetch_mail(void)
 
   char buf[1024] = { 0 };
   char msgbuf[128] = { 0 };
-  int last = 0, msgs, bytes, rset = 0, rc;
+  int last = 0, msgs = 0, bytes = 0, rset = 0, rc;
   struct ConnAccount cac = { { 0 } };
 
-  char *p = mutt_mem_calloc(strlen(c_pop_host) + 7, sizeof(char));
+  char *p = MUTT_MEM_CALLOC(strlen(c_pop_host) + 7, char);
   char *url = p;
   if (url_check_scheme(c_pop_host) == U_UNKNOWN)
   {
@@ -885,8 +887,8 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
     struct Progress *progress = NULL;
     if (m->verbose)
     {
-      progress = progress_new(_("Marking messages deleted..."),
-                              MUTT_PROGRESS_WRITE, num_deleted);
+      progress = progress_new(MUTT_PROGRESS_WRITE, num_deleted);
+      progress_set_message(progress, _("Marking messages deleted..."));
     }
 
     for (i = 0, j = 0, rc = 0; (rc == 0) && (i < m->msg_count); i++)
@@ -902,7 +904,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
         {
           mutt_bcache_del(adata->bcache, cache_id(edata->uid));
 #ifdef USE_HCACHE
-          hcache_delete_record(hc, edata->uid, strlen(edata->uid));
+          hcache_delete_email(hc, edata->uid, strlen(edata->uid));
 #endif
         }
       }
@@ -910,7 +912,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
 #ifdef USE_HCACHE
       if (m->emails[i]->changed)
       {
-        hcache_store(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
+        hcache_store_email(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
       }
 #endif
     }
@@ -994,7 +996,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e
     if (cache->index == e->index)
     {
       /* yes, so just return a pointer to the message */
-      msg->fp = fopen(cache->path, "r");
+      msg->fp = mutt_file_fopen(cache->path, "r");
       if (msg->fp)
         return true;
 
@@ -1040,8 +1042,9 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e
 
     snprintf(buf, sizeof(buf), "RETR %d\r\n", edata->refno);
 
-    struct Progress *progress = progress_new(_("Fetching message..."), MUTT_PROGRESS_NET,
+    struct Progress *progress = progress_new(MUTT_PROGRESS_NET,
                                              e->body->length + e->body->offset - 1);
+    progress_set_message(progress, _("Fetching message..."));
     const int rc = pop_fetch_data(adata, buf, progress, fetch_message, msg->fp);
     progress_free(&progress);
 
@@ -1141,7 +1144,7 @@ static int pop_msg_save_hcache(struct Mailbox *m, struct Email *e)
   struct PopAccountData *adata = pop_adata_get(m);
   struct PopEmailData *edata = e->edata;
   struct HeaderCache *hc = pop_hcache_open(adata, mailbox_path(m));
-  rc = hcache_store(hc, edata->uid, strlen(edata->uid), e, 0);
+  rc = hcache_store_email(hc, edata->uid, strlen(edata->uid), e, 0);
   hcache_close(&hc);
 #endif
 
@@ -1171,24 +1174,6 @@ static int pop_path_canon(struct Buffer *path)
 }
 
 /**
- * pop_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
- */
-static int pop_path_pretty(struct Buffer *path, const char *folder)
-{
-  /* Succeed, but don't do anything, for now */
-  return 0;
-}
-
-/**
- * pop_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
- */
-static int pop_path_parent(struct Buffer *path)
-{
-  /* Succeed, but don't do anything, for now */
-  return 0;
-}
-
-/**
  * MxPopOps - POP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 const struct MxOps MxPopOps = {
@@ -1214,8 +1199,6 @@ const struct MxOps MxPopOps = {
   .tags_commit      = NULL,
   .path_probe       = pop_path_probe,
   .path_canon       = pop_path_canon,
-  .path_pretty      = pop_path_pretty,
-  .path_parent      = pop_path_parent,
   .path_is_empty    = NULL,
   // clang-format on
 };

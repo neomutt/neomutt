@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
@@ -35,18 +35,18 @@
 #include "core/lib.h"
 #include "accountcmd.h"
 #include "connaccount.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_account.h"
 
 /**
- * make_cmd - Build the command line for the external account command.
+ * make_cmd - Build the command line for the external account command
  * @param buf Buffer to fill with a command line
  * @param cac ConnAccount to read params from
  * @param cmd Account command from the user config
  */
 static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const char *cmd)
 {
-  assert(buf && cac);
+  ASSERT(buf && cac);
 
   buf_addstr(buf, cmd);
   buf_add_printf(buf, " --hostname %s", cac->host);
@@ -56,7 +56,7 @@ static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const ch
   }
 
   static const char *types[] = { "", "imap", "pop", "smtp", "nntp" };
-  assert(sizeof(types) / sizeof(*types) == MUTT_ACCT_TYPE_MAX);
+  ASSERT(sizeof(types) / sizeof(*types) == MUTT_ACCT_TYPE_MAX);
   if (cac->type != MUTT_ACCT_TYPE_NONE)
   {
     buf_add_printf(buf, " --type %s%c", types[cac->type],
@@ -73,7 +73,7 @@ static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const ch
  */
 static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
 {
-  assert(cac && line);
+  ASSERT(cac && line);
 
   const regmatch_t *match = mutt_prex_capture(PREX_ACCOUNT_CMD, line);
   if (!match)
@@ -131,7 +131,7 @@ static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
  */
 static MuttAccountFlags call_cmd(struct ConnAccount *cac, const struct Buffer *cmd)
 {
-  assert(cac && cmd);
+  ASSERT(cac && cmd);
 
   MuttAccountFlags rc = MUTT_ACCT_NO_FLAGS;
 

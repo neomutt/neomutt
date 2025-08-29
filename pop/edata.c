@@ -3,7 +3,7 @@
  * Pop-specific Email data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,7 +33,7 @@
 #include "edata.h"
 
 /**
- * pop_edata_free - Free the private Email data - Implements Email::edata_free()
+ * pop_edata_free - Free the private Email data - Implements Email::edata_free() - @ingroup email_edata_free
  *
  * Each email has an attached PopEmailData, which contains things like the tags
  * (labels).
@@ -55,7 +55,7 @@ void pop_edata_free(void **ptr)
  */
 struct PopEmailData *pop_edata_new(const char *uid)
 {
-  struct PopEmailData *edata = mutt_mem_calloc(1, sizeof(struct PopEmailData));
+  struct PopEmailData *edata = MUTT_MEM_CALLOC(1, struct PopEmailData);
   edata->uid = mutt_str_dup(uid);
   return edata;
 }

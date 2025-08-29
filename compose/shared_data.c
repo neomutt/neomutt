@@ -3,7 +3,7 @@
  * Compose Shared Data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,7 +31,7 @@
 #include "shared_data.h"
 
 /**
- * compose_shared_data_free - Create the compose shared data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * compose_shared_data_free - Free the compose shared data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 void compose_shared_data_free(struct MuttWindow *win, void **ptr)
 {
@@ -47,7 +47,5 @@ void compose_shared_data_free(struct MuttWindow *win, void **ptr)
  */
 struct ComposeSharedData *compose_shared_data_new(void)
 {
-  struct ComposeSharedData *shared = mutt_mem_calloc(1, sizeof(struct ComposeSharedData));
-
-  return shared;
+  return MUTT_MEM_CALLOC(1, struct ComposeSharedData);
 }

@@ -3,8 +3,8 @@
  * Singly-linked list type
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2017 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,6 +30,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include "list.h"
+#include "buffer.h"
 #include "memory.h"
 #include "queue.h"
 #include "string2.h"
@@ -47,7 +48,7 @@ struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s)
   if (!h)
     return NULL;
 
-  struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
+  struct ListNode *np = MUTT_MEM_CALLOC(1, struct ListNode);
   np->data = s;
   STAILQ_INSERT_HEAD(h, np, entries);
   return np;
@@ -66,7 +67,7 @@ struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
   if (!h)
     return NULL;
 
-  struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
+  struct ListNode *np = MUTT_MEM_CALLOC(1, struct ListNode);
   np->data = s;
   STAILQ_INSERT_TAIL(h, np, entries);
   return np;
@@ -86,7 +87,7 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
   if (!h || !n)
     return NULL;
 
-  struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
+  struct ListNode *np = MUTT_MEM_CALLOC(1, struct ListNode);
   np->data = s;
   STAILQ_INSERT_AFTER(h, n, np, entries);
   return np;
@@ -124,15 +125,14 @@ void mutt_list_free(struct ListHead *h)
   if (!h)
     return;
 
-  struct ListNode *np = STAILQ_FIRST(h);
-  struct ListNode *next = NULL;
-  while (np)
+  struct ListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, h, entries, tmp)
   {
-    next = STAILQ_NEXT(np, entries);
+    STAILQ_REMOVE(h, np, ListNode, entries);
     FREE(&np->data);
     FREE(&np);
-    np = next;
   }
+
   STAILQ_INIT(h);
 }
 
@@ -146,15 +146,14 @@ void mutt_list_free_type(struct ListHead *h, list_free_t fn)
   if (!h || !fn)
     return;
 
-  struct ListNode *np = STAILQ_FIRST(h);
-  struct ListNode *next = NULL;
-  while (np)
+  struct ListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, h, entries, tmp)
   {
-    next = STAILQ_NEXT(np, entries);
+    STAILQ_REMOVE(h, np, ListNode, entries);
     fn((void **) &np->data);
     FREE(&np);
-    np = next;
   }
+
   STAILQ_INIT(h);
 }
 
@@ -207,7 +206,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
 }
 
 /**
- * mutt_list_compare - Compare two string lists
+ * mutt_list_equal - Compare two string lists
  * @param ah First string list
  * @param bh Second string list
  * @retval true Lists are identical
@@ -215,7 +214,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
  * To be identical, the lists must both be the same length and contain the same
  * strings.  Two empty lists are identical.
  */
-bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
+bool mutt_list_equal(const struct ListHead *ah, const struct ListHead *bh)
 {
   if (!ah || !bh)
     return false;
@@ -266,4 +265,43 @@ size_t mutt_list_str_split(struct ListHead *head, const char *src, char sep)
   }
 
   return count;
+}
+
+/**
+ * mutt_list_copy_tail - Copy a list into another list
+ * @param dst   Destination list
+ * @param src   Source list
+ */
+void mutt_list_copy_tail(struct ListHead *dst, const struct ListHead *src)
+{
+  const struct ListNode *np = NULL;
+
+  STAILQ_FOREACH(np, src, entries)
+  {
+    mutt_list_insert_tail(dst, mutt_str_dup(np->data));
+  }
+}
+
+/**
+ * mutt_list_write - Write a list to a buffer
+ * @param h    List to write
+ * @param buf  Buffer for the list
+ *
+ * Elements separated by a space.  References, and In-Reply-To, use this
+ * format.
+ */
+size_t mutt_list_write(const struct ListHead *h, struct Buffer *buf)
+{
+  if (!buf || !h)
+    return 0;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, h, entries)
+  {
+    buf_addstr(buf, np->data);
+    if (STAILQ_NEXT(np, entries))
+      buf_addstr(buf, " ");
+  }
+
+  return buf_len(buf);
 }

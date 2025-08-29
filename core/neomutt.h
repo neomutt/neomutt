@@ -3,7 +3,7 @@
  * Container for Accounts, Notifications
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,9 +23,10 @@
 #ifndef MUTT_CORE_NEOMUTT_H
 #define MUTT_CORE_NEOMUTT_H
 
-#include <stddef.h>
 #include <locale.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <sys/types.h>
 #include "account.h"
 #include "mailbox.h"
 #ifdef __APPLE__
@@ -45,6 +46,7 @@ struct NeoMutt
   struct ConfigSubset *sub;      ///< Inherited config items
   struct AccountList accounts;   ///< List of all Accounts
   locale_t time_c_locale;        ///< Current locale but LC_TIME=C
+  mode_t user_default_umask;     ///< User's default file writing permissions (inferred from umask)
 };
 
 extern struct NeoMutt *NeoMutt;
@@ -68,5 +70,8 @@ struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
 
 void   neomutt_mailboxlist_clear  (struct MailboxList *ml);
 size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n, enum MailboxType type);
+
+// Similar to mutt_file_fopen, but with the proper permissions inferred from
+#define mutt_file_fopen_masked(PATH, MODE) mutt_file_fopen_masked_full(PATH, MODE, __FILE__, __LINE__, __func__)
 
 #endif /* MUTT_CORE_NEOMUTT_H */

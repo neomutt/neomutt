@@ -3,7 +3,7 @@
  * Test code for mutt_str_sysexit()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -66,7 +66,7 @@ void test_mutt_str_sysexit(void)
 
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    TEST_MSG("Testing %d, expecting '%s'\n", tests[i].err_num, NONULL(tests[i].result));
+    TEST_MSG("Testing %d, expecting '%s'", tests[i].err_num, NONULL(tests[i].result));
     result = mutt_str_sysexit(tests[i].err_num);
 
     TEST_CHECK_STR_EQ(result, tests[i].result);

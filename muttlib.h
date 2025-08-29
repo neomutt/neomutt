@@ -3,7 +3,7 @@
  * Some miscellaneous functions
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -26,10 +26,9 @@
 
 #include <signal.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
+#include <sys/types.h>
 #include "attach/lib.h"
-#include "format_flags.h"
 
 struct Address;
 struct Body;
@@ -46,15 +45,11 @@ void        buf_sanitize_filename (struct Buffer *buf, const char *path, short s
 void        buf_save_path(struct Buffer *dest, const struct Address *a);
 int         mutt_check_overwrite(const char *attname, const char *path, struct Buffer *fname, enum SaveAttach *opt, char **directory);
 void        mutt_encode_path(struct Buffer *buf, const char *src);
-void        mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src, format_t callback, intptr_t data, MuttFormatFlags flags);
-char *      mutt_expand_path(char *s, size_t slen);
-char *      mutt_expand_path_regex(char *buf, size_t buflen, bool regex);
 char *      mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 void        mutt_get_parent_path(const char *path, char *buf, size_t buflen);
-int         mutt_inbox_cmp(const char *a, const char *b);
-bool        mutt_is_text_part(struct Body *b);
+bool        mutt_is_text_part(const struct Body *b);
 const char *mutt_make_version(void);
-bool        mutt_needs_mailcap(struct Body *m);
+bool        mutt_needs_mailcap(struct Body *b);
 FILE *      mutt_open_read(const char *path, pid_t *thepid);
 void        mutt_pretty_mailbox(char *buf, size_t buflen);
 void        mutt_safe_path(struct Buffer *dest, const struct Address *a);

@@ -3,8 +3,8 @@
  * Handling of email attachments
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2004,2006 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,7 +39,7 @@
  */
 struct AttachPtr *mutt_aptr_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AttachPtr));
+  return MUTT_MEM_CALLOC(1, struct AttachPtr);
 }
 
 /**
@@ -72,8 +72,8 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
   if (actx->idxlen == actx->idxmax)
   {
     actx->idxmax += grow;
-    mutt_mem_realloc(&actx->idx, actx->idxmax * sizeof(struct AttachPtr *));
-    mutt_mem_realloc(&actx->v2r, actx->idxmax * sizeof(short));
+    MUTT_MEM_REALLOC(&actx->idx, actx->idxmax, struct AttachPtr *);
+    MUTT_MEM_REALLOC(&actx->v2r, actx->idxmax, short);
 
     memset(&actx->idx[actx->idxlen], 0, grow * sizeof(struct AttachPtr *));
     memset(&actx->v2r[actx->idxlen], 0, grow * sizeof(short));
@@ -99,8 +99,8 @@ void mutt_actx_ins_attach(struct AttachCtx *actx, struct AttachPtr *attach, int 
   if (actx->idxlen == actx->idxmax)
   {
     actx->idxmax += 5;
-    mutt_mem_realloc(&actx->idx, sizeof(struct AttachPtr *) * actx->idxmax);
-    mutt_mem_realloc(&actx->v2r, sizeof(short) * actx->idxmax);
+    MUTT_MEM_REALLOC(&actx->idx, actx->idxmax, struct AttachPtr *);
+    MUTT_MEM_REALLOC(&actx->v2r, actx->idxmax, short);
     for (int i = actx->idxlen; i < actx->idxmax; i++)
       actx->idx[i] = NULL;
   }
@@ -126,7 +126,7 @@ void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
   if (actx->fp_len == actx->fp_max)
   {
     actx->fp_max += 5;
-    mutt_mem_realloc(&actx->fp_idx, sizeof(FILE *) * actx->fp_max);
+    MUTT_MEM_REALLOC(&actx->fp_idx, actx->fp_max, FILE *);
     for (int i = actx->fp_len; i < actx->fp_max; i++)
       actx->fp_idx[i] = NULL;
   }
@@ -136,23 +136,23 @@ void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
 
 /**
  * mutt_actx_add_body - Add an email body to an Attachment Context
- * @param actx     Attachment context
- * @param new_body Email Body to add
+ * @param actx Attachment context
+ * @param b    Email Body to add
  */
-void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body)
+void mutt_actx_add_body(struct AttachCtx *actx, struct Body *b)
 {
-  if (!actx || !new_body)
+  if (!actx || !b)
     return;
 
   if (actx->body_len == actx->body_max)
   {
     actx->body_max += 5;
-    mutt_mem_realloc(&actx->body_idx, sizeof(struct Body *) * actx->body_max);
+    MUTT_MEM_REALLOC(&actx->body_idx, actx->body_max, struct Body *);
     for (int i = actx->body_len; i < actx->body_max; i++)
       actx->body_idx[i] = NULL;
   }
 
-  actx->body_idx[actx->body_len++] = new_body;
+  actx->body_idx[actx->body_len++] = b;
 }
 
 /**
@@ -188,7 +188,7 @@ void mutt_actx_entries_free(struct AttachCtx *actx)
  */
 struct AttachCtx *mutt_actx_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AttachCtx));
+  return MUTT_MEM_CALLOC(1, struct AttachCtx);
 }
 
 /**

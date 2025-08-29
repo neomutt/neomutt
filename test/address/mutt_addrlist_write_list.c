@@ -3,7 +3,8 @@
  * Test code for mutt_addrlist_write_list()
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,6 +24,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdio.h>
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -38,7 +41,7 @@ static struct ConfigDef Vars[] = {
 void test_mutt_addrlist_write_list(void)
 {
   {
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     const char in[] = "some-group: first@example.com,second@example.com; John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
     mutt_addrlist_parse(&al, in);

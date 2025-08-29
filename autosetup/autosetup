@@ -6,7 +6,7 @@
 dir=`dirname "$0"`; exec "`$dir/autosetup-find-tclsh`" "$0" "$@"
 
 # Note that the version has a trailing + on unreleased versions
-set autosetup(version) 0.7.1+
+set autosetup(version) 0.7.2
 
 # Can be set to 1 to debug early-init problems
 set autosetup(debug) [expr {"--debug" in $argv}]

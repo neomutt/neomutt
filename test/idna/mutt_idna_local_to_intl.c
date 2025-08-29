@@ -3,7 +3,7 @@
  * Test code for mutt_idna_local_to_intl()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,12 +23,13 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 #ifdef HAVE_LIBIDN
 static struct ConfigDef Vars[] = {
@@ -45,7 +46,7 @@ void test_mutt_idna_local_to_intl(void)
   // char * mutt_idna_local_to_intl(const char *user, const char *domain);
 
 #ifdef HAVE_LIBIDN
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   {
     const char *addr = mutt_idna_local_to_intl(NULL, "banana");

@@ -3,7 +3,12 @@
  * Config used by libsend
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 raf <raf@raf.org>
+ * Copyright (C) 2023 Whitney Cumber
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,16 +32,25 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
+#include "expando/lib.h"
 #include "smtp.h"
 #ifdef USE_SASL_CYRUS
 #include "conn/lib.h"
 #endif
+
+extern const struct ExpandoDefinition IndexFormatDef[];
+
+/// IndexFormatDefNoPadding - Index format definitions, without padding or arrow
+static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[3]);
+
+extern const struct ExpandoDefinition NntpFormatDef[];
 
 /**
  * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
@@ -83,7 +97,7 @@ static int smtp_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
 }
 
 /**
- * simple_command_validator - Validate the "sendmail" and "inews" config variables - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * simple_command_validator - Validate the "sendmail" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int simple_command_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                                     intptr_t value, struct Buffer *err)
@@ -101,6 +115,21 @@ static int simple_command_validator(const struct ConfigSet *cs, const struct Con
   buf_printf(err, _("Option %s must not contain shell metacharacters: %c"), cdef->name, c);
   return CSR_ERR_INVALID;
 }
+
+/**
+ * GreetingFormatDef - Expando definitions
+ *
+ * Config:
+ * - $greeting
+ */
+static const struct ExpandoDefinition GreetingFormatDef[] = {
+  // clang-format off
+  { "n", "real-name",  ED_ENVELOPE, ED_ENV_REAL_NAME,  NULL },
+  { "u", "user-name",  ED_ENVELOPE, ED_ENV_USER_NAME,  NULL },
+  { "v", "first-name", ED_ENVELOPE, ED_ENV_FIRST_NAME, NULL },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
 
 /**
  * SendVars - Config definitions for the send library
@@ -128,16 +157,23 @@ static struct ConfigDef SendVars[] = {
   { "ask_cc", DT_BOOL, false, 0, NULL,
     "Ask the user for the carbon-copy recipients"
   },
-  { "attach_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
+  { "ask_followup_to", DT_BOOL, false, 0, NULL,
+    "(nntp) Ask the user for follow-up groups before editing"
+  },
+  { "ask_x_comment_to", DT_BOOL, false, 0, NULL,
+    "(nntp) Ask the user for the 'X-Comment-To' field before editing"
+  },
+  { "attach_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "When attaching files, use one of these character sets"
   },
-  { "attribution_intro", DT_STRING, IP "On %d, %n wrote:", 0, NULL,
+  // L10N: $attribution_intro default format
+  { "attribution_intro", DT_EXPANDO|D_L10N_STRING, IP N_("On %d, %n wrote:"), IP IndexFormatDefNoPadding, NULL,
     "Message to start a reply, 'On DATE, PERSON wrote:'"
   },
   { "attribution_locale", DT_STRING, 0, 0, NULL,
     "Locale for dates in the attribution message"
   },
-  { "attribution_trailer", DT_STRING, 0, 0, NULL,
+  { "attribution_trailer", DT_EXPANDO, 0, IP IndexFormatDefNoPadding, NULL,
     "Suffix message to add after reply text"
   },
   { "bounce_delivered", DT_BOOL, true, 0, NULL,
@@ -197,10 +233,12 @@ static struct ConfigDef SendVars[] = {
   { "forward_attachments", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Forward attachments when forwarding a message"
   },
-  { "forward_attribution_intro", DT_STRING, IP "----- Forwarded message from %f -----", 0, NULL,
+  // L10N: $forward_attribution_intro default format
+  { "forward_attribution_intro", DT_EXPANDO|D_L10N_STRING, IP N_("----- Forwarded message from %f -----"), IP IndexFormatDefNoPadding, NULL,
     "Prefix message for forwarded messages"
   },
-  { "forward_attribution_trailer", DT_STRING, IP "----- End forwarded message -----", 0, NULL,
+  // L10N: $forward_attribution_trailer default format
+  { "forward_attribution_trailer", DT_EXPANDO|D_L10N_STRING, IP N_("----- End forwarded message -----"), IP IndexFormatDefNoPadding, NULL,
     "Suffix message for forwarded messages"
   },
   { "forward_decrypt", DT_BOOL, true, 0, NULL,
@@ -209,13 +247,13 @@ static struct ConfigDef SendVars[] = {
   { "forward_edit", DT_QUAD, MUTT_YES, 0, NULL,
     "Automatically start the editor when forwarding a message"
   },
-  { "forward_format", DT_STRING|DT_NOT_EMPTY, IP "[%a: %s]", 0, NULL,
+  { "forward_format", DT_EXPANDO|D_NOT_EMPTY, IP "[%a: %s]", IP IndexFormatDefNoPadding, NULL,
     "printf-like format string to control the subject when forwarding a message"
   },
   { "forward_references", DT_BOOL, false, 0, NULL,
     "Set the 'In-Reply-To' and 'References' headers when forwarding a message"
   },
-  { "greeting", DT_STRING, 0, 0, NULL,
+  { "greeting", DT_EXPANDO, 0, IP &GreetingFormatDef, NULL,
     "Greeting string added to the top of all messages"
   },
   { "hdrs", DT_BOOL, true, 0, NULL,
@@ -233,13 +271,16 @@ static struct ConfigDef SendVars[] = {
   { "include", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Include a copy of the email that's being replied to"
   },
+  { "inews", DT_EXPANDO|D_STRING_COMMAND, 0, 0, NULL,
+    "(nntp) External command to post news articles"
+  },
   { "me_too", DT_BOOL, false, 0, NULL,
     "Remove the user's address from the list of recipients"
   },
   { "mime_forward_decode", DT_BOOL, false, 0, NULL,
     "Decode the forwarded message before attaching it"
   },
-  { "mime_type_query_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
+  { "mime_type_query_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External command to determine the MIME type of an attachment"
   },
   { "mime_type_query_first", DT_BOOL, false, 0, NULL,
@@ -272,13 +313,13 @@ static struct ConfigDef SendVars[] = {
   { "resume_draft_files", DT_BOOL, false, 0, NULL,
     "Process draft files like postponed messages"
   },
-  { "reverse_name", DT_BOOL|R_INDEX, false, 0, NULL,
+  { "reverse_name", DT_BOOL, false, 0, NULL,
     "Set the 'From' from the address the email was sent to"
   },
-  { "reverse_real_name", DT_BOOL|R_INDEX, true, 0, NULL,
+  { "reverse_real_name", DT_BOOL, true, 0, NULL,
     "Set the 'From' from the full 'To' address the email was sent to"
   },
-  { "sendmail", DT_STRING|DT_COMMAND, IP SENDMAIL " -oem -oi", 0, simple_command_validator,
+  { "sendmail", DT_STRING|D_STRING_COMMAND, IP SENDMAIL " -oem -oi", 0, simple_command_validator,
     "External command to send email"
   },
   { "sendmail_wait", DT_NUMBER, 0, 0, NULL,
@@ -290,8 +331,23 @@ static struct ConfigDef SendVars[] = {
   { "sig_on_top", DT_BOOL, false, 0, NULL,
     "Insert the signature before the quoted text"
   },
-  { "signature", DT_PATH|DT_PATH_FILE, IP "~/.signature", 0, NULL,
+  { "signature", DT_PATH|D_PATH_FILE, IP "~/.signature", 0, NULL,
     "File containing a signature to append to all mail"
+  },
+  { "smtp_authenticators", DT_SLIST|D_SLIST_SEP_COLON, 0, 0, smtp_auth_validator,
+    "(smtp) List of allowed authentication methods (colon-separated)"
+  },
+  { "smtp_oauth_refresh_command", DT_STRING|D_STRING_COMMAND|D_SENSITIVE, 0, 0, NULL,
+    "(smtp) External command to generate OAUTH refresh token"
+  },
+  { "smtp_pass", DT_STRING|D_SENSITIVE, 0, 0, NULL,
+    "(smtp) Password for the SMTP server"
+  },
+  { "smtp_url", DT_STRING|D_SENSITIVE, 0, 0, NULL,
+    "(smtp) Url of the SMTP server"
+  },
+  { "smtp_user", DT_STRING|D_SENSITIVE, 0, 0, NULL,
+    "(smtp) Username for the SMTP server"
   },
   { "use_8bit_mime", DT_BOOL, false, 0, NULL,
     "Use 8-bit messages and ESMTP to send messages"
@@ -305,7 +361,7 @@ static struct ConfigDef SendVars[] = {
   { "user_agent", DT_BOOL, false, 0, NULL,
     "Add a 'User-Agent' header to outgoing mail"
   },
-  { "wrap_headers", DT_NUMBER|DT_NOT_NEGATIVE, 78, 0, wrapheaders_validator,
+  { "wrap_headers", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 78, 0, wrapheaders_validator,
     "Width to wrap headers in outgoing messages"
   },
   { "write_bcc", DT_BOOL, false, 0, NULL,
@@ -315,6 +371,7 @@ static struct ConfigDef SendVars[] = {
   { "abort_noattach_regexp",    DT_SYNONYM, IP "abort_noattach_regex",       IP "2021-03-21" },
   { "askbcc",                   DT_SYNONYM, IP "ask_bcc",                    IP "2021-03-21" },
   { "askcc",                    DT_SYNONYM, IP "ask_cc",                     IP "2021-03-21" },
+  { "ask_follow_up",            DT_SYNONYM, IP "ask_followup_to",            IP "2023-01-20" },
   { "attach_keyword",           DT_SYNONYM, IP "abort_noattach_regex",       IP "2021-03-21" },
   { "attribution",              DT_SYNONYM, IP "attribution_intro",          IP "2023-02-20" },
   { "crypt_autoencrypt",        DT_SYNONYM, IP "crypt_auto_encrypt",         IP "2021-03-21" },
@@ -328,9 +385,9 @@ static struct ConfigDef SendVars[] = {
   { "forw_decrypt",             DT_SYNONYM, IP "forward_decrypt",            IP "2021-03-21" },
   { "forw_format",              DT_SYNONYM, IP "forward_format",             IP "2021-03-21" },
   { "metoo",                    DT_SYNONYM, IP "me_too",                     IP "2021-03-21" },
-  { "pgp_auto_traditional",     DT_SYNONYM, IP "pgp_reply_inline",           IP "2021-03-21" },
   { "pgp_autoencrypt",          DT_SYNONYM, IP "crypt_auto_encrypt",         IP "2021-03-21" },
   { "pgp_autosign",             DT_SYNONYM, IP "crypt_auto_sign",            IP "2021-03-21" },
+  { "pgp_auto_traditional",     DT_SYNONYM, IP "pgp_reply_inline",           IP "2021-03-21" },
   { "pgp_replyencrypt",         DT_SYNONYM, IP "crypt_reply_encrypt",        IP "2021-03-21" },
   { "pgp_replyinline",          DT_SYNONYM, IP "pgp_reply_inline",           IP "2021-03-21" },
   { "pgp_replysign",            DT_SYNONYM, IP "crypt_reply_sign",           IP "2021-03-21" },
@@ -340,73 +397,15 @@ static struct ConfigDef SendVars[] = {
   { "reverse_realname",         DT_SYNONYM, IP "reverse_real_name",          IP "2021-03-21" },
   { "use_8bitmime",             DT_SYNONYM, IP "use_8bit_mime",              IP "2021-03-21" },
 
+  { "mime_subject", D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2021-03-24" },
   { NULL },
   // clang-format on
 };
-
-#if defined(USE_NNTP)
-/**
- * SendVarsNntp - NNTP Config definitions for the send library
- */
-static struct ConfigDef SendVarsNntp[] = {
-  // clang-format off
-  { "ask_followup_to", DT_BOOL, false, 0, NULL,
-    "(nntp) Ask the user for follow-up groups before editing"
-  },
-  { "ask_x_comment_to", DT_BOOL, false, 0, NULL,
-    "(nntp) Ask the user for the 'X-Comment-To' field before editing"
-  },
-  { "inews", DT_STRING|DT_COMMAND, 0, 0, simple_command_validator,
-    "(nntp) External command to post news articles"
-  },
-  { "mime_subject", DT_DEPRECATED|DT_BOOL, 0, IP "2021-03-24" },
-
-  { "ask_follow_up", DT_SYNONYM, IP "ask_followup_to", IP "2023-01-20" },
-  { NULL },
-  // clang-format on
-};
-#endif
-
-#if defined(USE_SMTP)
-/**
- * SendVarsSmtp - SMTP Config definitions for the send library
- */
-static struct ConfigDef SendVarsSmtp[] = {
-  // clang-format off
-  { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, smtp_auth_validator,
-    "(smtp) List of allowed authentication methods (colon-separated)"
-  },
-  { "smtp_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, 0, 0, NULL,
-    "(smtp) External command to generate OAUTH refresh token"
-  },
-  { "smtp_pass", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
-    "(smtp) Password for the SMTP server"
-  },
-  { "smtp_url", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
-    "(smtp) Url of the SMTP server"
-  },
-  { "smtp_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
-    "(smtp) Username for the SMTP server"
-  },
-  { NULL },
-  // clang-format on
-};
-#endif
 
 /**
  * config_init_send - Register send config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_send(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, SendVars, DT_NO_FLAGS);
-
-#if defined(USE_NNTP)
-  rc |= cs_register_variables(cs, SendVarsNntp, DT_NO_FLAGS);
-#endif
-
-#if defined(USE_SMTP)
-  rc |= cs_register_variables(cs, SendVarsSmtp, DT_NO_FLAGS);
-#endif
-
-  return rc;
+  return cs_register_variables(cs, SendVars);
 }

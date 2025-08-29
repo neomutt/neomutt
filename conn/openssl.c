@@ -3,7 +3,10 @@
  * Handling of OpenSSL encryption
  *
  * @authors
- * Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>
+ * Copyright (C) 2017 Damien Riegel <damien.riegel@gmail.com>
+ * Copyright (C) 2017-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -54,6 +57,7 @@
 #include "core/lib.h"
 #include "connaccount.h"
 #include "connection.h"
+#include "globals.h"
 #include "mutt_logging.h"
 #include "ssl.h"
 #ifdef HAVE_RAND_EGD
@@ -312,7 +316,7 @@ static void ssl_dprint_err_stack(void)
   long buflen = BIO_get_mem_data(bio, &buf);
   if (buflen > 0)
   {
-    char *output = mutt_mem_malloc(buflen + 1);
+    char *output = MUTT_MEM_MALLOC(buflen + 1, char);
     memcpy(output, buf, buflen);
     output[buflen] = '\0';
     mutt_debug(LL_DEBUG1, "SSL error stack: %s\n", output);
@@ -375,28 +379,28 @@ static char *x509_get_part(X509_NAME *name, int nid)
 
 /**
  * x509_fingerprint - Generate a fingerprint for an X509 certificate
- * @param s        Buffer for fingerprint
- * @param l        Length of buffer
+ * @param buf      Buffer for fingerprint
  * @param cert     Certificate
  * @param hashfunc Hashing function
  */
-static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfunc)(void) )
+static void x509_fingerprint(struct Buffer *buf, X509 *cert, const EVP_MD *(*hashfunc)(void) )
 {
   unsigned char md[EVP_MAX_MD_SIZE];
-  unsigned int n;
+  unsigned int n = 0;
 
   if (X509_digest(cert, hashfunc(), md, &n) == 0) // Failure
   {
-    snprintf(s, l, "%s", _("[unable to calculate]"));
+    buf_strcpy(buf, _("[unable to calculate]"));
+    return;
   }
-  else
+
+  for (unsigned int i = 0; i < n; i++)
   {
-    for (unsigned int i = 0; i < n; i++)
-    {
-      char ch[8] = { 0 };
-      snprintf(ch, sizeof(ch), "%02X%s", md[i], ((i % 2) ? " " : ""));
-      mutt_str_cat(s, l, ch);
-    }
+    buf_add_printf(buf, "%02X", md[i]);
+
+    // Put a space after a pair of bytes (except for the last one)
+    if (((i % 2) == 1) && (i < (n - 1)))
+      buf_addch(buf, ' ');
   }
 }
 
@@ -426,7 +430,7 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
 }
 
 /**
- * compare_certificates - Compare two X509 certificated
+ * certificates_equal - Compare two X509 certificated
  * @param cert      Certificate
  * @param peercert  Peer certificate
  * @param peermd    Peer certificate message digest
@@ -434,8 +438,8 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
  * @retval true  Certificates match
  * @retval false Certificates differ
  */
-static bool compare_certificates(X509 *cert, X509 *peercert,
-                                 unsigned char *peermd, unsigned int peermdlen)
+static bool certificates_equal(X509 *cert, X509 *peercert,
+                               unsigned char *peermd, unsigned int peermdlen)
 {
   unsigned char md[EVP_MAX_MD_SIZE];
   unsigned int mdlen;
@@ -609,10 +613,6 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
   SSL_CTX_set_default_passwd_cb(ssldata->sctx, ssl_passwd_cb);
   SSL_CTX_use_certificate_file(ssldata->sctx, c_ssl_client_cert, SSL_FILETYPE_PEM);
   SSL_CTX_use_PrivateKey_file(ssldata->sctx, c_ssl_client_cert, SSL_FILETYPE_PEM);
-
-  /* if we are using a client cert, SASL may expect an external auth name */
-  if (mutt_account_getuser(&conn->account) < 0)
-    mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
 }
 
 /**
@@ -648,7 +648,7 @@ static bool check_certificate_cache(X509 *peercert)
   for (int i = sk_X509_num(SslSessionCerts); i-- > 0;)
   {
     cert = sk_X509_value(SslSessionCerts, i);
-    if (compare_certificates(cert, peercert, peermd, peermdlen))
+    if (certificates_equal(cert, peercert, peermd, peermdlen))
     {
       return true;
     }
@@ -684,7 +684,7 @@ static bool check_certificate_file(X509 *peercert)
 
   while (PEM_read_X509(fp, &cert, NULL, NULL))
   {
-    if (compare_certificates(cert, peercert, peermd, peermdlen) &&
+    if (certificates_equal(cert, peercert, peermd, peermdlen) &&
         check_certificate_expiration(cert, true))
     {
       pass = true;
@@ -781,7 +781,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
-    buf = mutt_mem_malloc((size_t) bufsize);
+    buf = MUTT_MEM_MALLOC(bufsize, char);
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName, buf, bufsize) == -1)
     {
       if (err && errlen)
@@ -890,8 +890,15 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct CertArra
  */
 static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
 {
-  char buf[256] = { 0 };
+  if (OptNoCurses)
+  {
+    mutt_debug(LL_DEBUG1, "unable to prompt for certificate in batch mode\n");
+    mutt_error(_("Untrusted server certificate"));
+    return 0;
+  }
+
   struct CertArray carr = ARRAY_HEAD_INITIALIZER;
+  struct Buffer *buf = buf_pool_get();
 
   add_cert(_("This certificate belongs to:"), cert, false, &carr);
   ARRAY_ADD(&carr, NULL);
@@ -906,18 +913,15 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   ARRAY_ADD(&carr, line);
 
   ARRAY_ADD(&carr, NULL);
-  buf[0] = '\0';
-  x509_fingerprint(buf, sizeof(buf), cert, EVP_sha1);
-  mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf);
+  x509_fingerprint(buf, cert, EVP_sha1);
+  mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf_string(buf));
   ARRAY_ADD(&carr, line);
-  buf[0] = '\0';
-  buf[40] = '\0'; /* Ensure the second printed line is null terminated */
-  x509_fingerprint(buf, sizeof(buf), cert, EVP_sha256);
-  buf[39] = '\0'; /* Divide into two lines of output */
-  mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf);
+  x509_fingerprint(buf, cert, EVP_sha256);
+  buf->data[39] = '\0'; /* Divide into two lines of output */
+  mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf_string(buf));
   ARRAY_ADD(&carr, line);
-  mutt_str_asprintf(&line, "%*s%s",
-                    (int) mutt_str_len(_("SHA256 Fingerprint: ")), "", buf + 40);
+  mutt_str_asprintf(&line, "%*s%s", (int) mutt_str_len(_("SHA256 Fingerprint: ")),
+                    "", buf->data + 40);
   ARRAY_ADD(&carr, line);
 
   bool allow_skip = false;
@@ -978,6 +982,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   }
 
   cert_array_clear(&carr);
+  buf_pool_release(&buf);
+
   return (rc > 1);
 }
 
@@ -1038,7 +1044,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
       unsigned char last_cert_md[EVP_MAX_MD_SIZE];
       unsigned int last_cert_mdlen;
       if (X509_digest(last_cert, EVP_sha256(), last_cert_md, &last_cert_mdlen) &&
-          compare_certificates(cert, last_cert, last_cert_md, last_cert_mdlen))
+          certificates_equal(cert, last_cert, last_cert_md, last_cert_mdlen))
       {
         mutt_debug(LL_DEBUG2, "ignoring duplicate skipped certificate\n");
         return true;
@@ -1152,9 +1158,14 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
 
   ERR_clear_error();
 
+retry:
   err = SSL_connect(ssldata->ssl);
   if (err != 1)
   {
+    // Temporary failure, e.g. signal received
+    if (BIO_should_retry(SSL_get_rbio(ssldata->ssl)))
+      goto retry;
+
     switch (SSL_get_error(ssldata->ssl, err))
     {
       case SSL_ERROR_SYSCALL:
@@ -1195,7 +1206,7 @@ static int ssl_setup(struct Connection *conn)
 {
   int maxbits = 0;
 
-  conn->sockdata = mutt_mem_calloc(1, sizeof(struct SslSockData));
+  conn->sockdata = MUTT_MEM_CALLOC(1, struct SslSockData);
 
   sockdata(conn)->sctx = SSL_CTX_new(SSLv23_client_method());
   if (!sockdata(conn)->sctx)
@@ -1292,7 +1303,7 @@ free_ssldata:
 }
 
 /**
- * ssl_socket_poll - Check whether a socket read would block - Implements Connection::poll() - @ingroup connection_poll
+ * ssl_socket_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 static int ssl_socket_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -1328,17 +1339,24 @@ static int ssl_socket_read(struct Connection *conn, char *buf, size_t count)
   struct SslSockData *data = sockdata(conn);
   int rc;
 
+retry:
   rc = SSL_read(data->ssl, buf, count);
-  if ((rc <= 0) || (errno == EINTR))
+  if (rc > 0)
+    return rc;
+
+  // User hit Ctrl-C
+  if (SigInt && (errno == EINTR))
   {
-    if (errno == EINTR)
-    {
-      rc = -1;
-    }
-    data->isopen = 0;
-    ssl_err(data, rc);
+    rc = -1;
+  }
+  else if (BIO_should_retry(SSL_get_rbio(data->ssl)))
+  {
+    // Temporary failure, e.g. signal received
+    goto retry;
   }
 
+  data->isopen = 0;
+  ssl_err(data, rc);
   return rc;
 }
 
@@ -1350,16 +1368,26 @@ static int ssl_socket_write(struct Connection *conn, const char *buf, size_t cou
   if (!conn || !conn->sockdata || !buf || (count == 0))
     return -1;
 
-  int rc = SSL_write(sockdata(conn)->ssl, buf, count);
-  if ((rc <= 0) || (errno == EINTR))
+  struct SslSockData *data = sockdata(conn);
+  int rc;
+
+retry:
+  rc = SSL_write(data->ssl, buf, count);
+  if (rc > 0)
+    return rc;
+
+  // User hit Ctrl-C
+  if (SigInt && (errno == EINTR))
   {
-    if (errno == EINTR)
-    {
-      rc = -1;
-    }
-    ssl_err(sockdata(conn), rc);
+    rc = -1;
+  }
+  else if (BIO_should_retry(SSL_get_wbio(data->ssl)))
+  {
+    // Temporary failure, e.g. signal received
+    goto retry;
   }
 
+  ssl_err(data, rc);
   return rc;
 }
 

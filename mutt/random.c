@@ -3,7 +3,7 @@
  * Random number/string functions
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,13 +27,15 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <errno.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include "random.h"
 #include "exit.h"
+#include "file.h"
 #include "logging2.h"
 #include "message.h"
 #ifdef HAVE_SYS_RANDOM_H
@@ -79,7 +81,7 @@ static int mutt_randbuf(void *buf, size_t buflen)
    * configured selinux, seccomp or something to not allow getrandom */
   if (!FpRandom)
   {
-    FpRandom = fopen("/dev/urandom", "rb");
+    FpRandom = mutt_file_fopen("/dev/urandom", "rb");
     if (!FpRandom)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
@@ -112,19 +114,6 @@ void mutt_rand_base32(char *buf, size_t buflen)
     mutt_exit(1); // LCOV_EXCL_LINE
   for (size_t pos = 0; pos < buflen; pos++)
     p[pos] = Base32[p[pos] % 32];
-}
-
-/**
- * mutt_rand32 - Create a 32-bit random number
- * @retval num Random number
- */
-uint32_t mutt_rand32(void)
-{
-  uint32_t num = 0;
-
-  if (mutt_randbuf(&num, sizeof(num)) < 0)
-    mutt_exit(1); // LCOV_EXCL_LINE
-  return num;
 }
 
 /**

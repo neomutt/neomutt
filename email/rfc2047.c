@@ -3,9 +3,11 @@
  * RFC2047 MIME extensions encoding / decoding routines
  *
  * @authors
- * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>
- * Copyright (C) 2018-2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,7 +31,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <errno.h>
 #include <iconv.h>
@@ -48,7 +49,7 @@
 
 #define HSPACE(ch) (((ch) == '\0') || ((ch) == ' ') || ((ch) == '\t'))
 
-#define CONTINUATION_BYTE(ch) (((ch) &0xc0) == 0x80)
+#define CONTINUATION_BYTE(ch) (((ch) & 0xc0) == 0x80)
 
 /**
  * @defgroup encoder_api Mime Encoder API
@@ -199,7 +200,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   if (fromcode)
   {
     iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NO_FLAGS);
-    assert(iconv_t_valid(cd));
+    ASSERT(iconv_t_valid(cd));
     ib = d;
     ibl = dlen;
     ob = buf;
@@ -207,8 +208,8 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
     if ((iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == ICONV_ILLEGAL_SEQ) ||
         (iconv(cd, NULL, NULL, &ob, &obl) == ICONV_ILLEGAL_SEQ))
     {
-      assert(errno == E2BIG);
-      assert(ib > d);
+      ASSERT(errno == E2BIG);
+      ASSERT(ib > d);
       return ((ib - d) == dlen) ? dlen : ib - d + 1;
     }
   }
@@ -224,7 +225,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   for (char *p = buf; p < ob; p++)
   {
     unsigned char c = *p;
-    assert(strchr(MimeSpecials, '?'));
+    ASSERT(strchr(MimeSpecials, '?'));
     if ((c >= 0x7f) || (c < 0x20) || (*p == '_') ||
         ((c != ' ') && strchr(MimeSpecials, *p)))
     {
@@ -279,7 +280,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
   }
 
   const iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NO_FLAGS);
-  assert(iconv_t_valid(cd));
+  ASSERT(iconv_t_valid(cd));
   const char *ib = buf;
   size_t ibl = buflen;
   char tmp[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
@@ -287,7 +288,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
   size_t obl = sizeof(tmp) - strlen(tocode);
   const size_t n1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
   const size_t n2 = iconv(cd, NULL, NULL, &ob, &obl);
-  assert((n1 != ICONV_ILLEGAL_SEQ) && (n2 != ICONV_ILLEGAL_SEQ));
+  ASSERT((n1 != ICONV_ILLEGAL_SEQ) && (n2 != ICONV_ILLEGAL_SEQ));
   return (*encoder)(str, tmp, ob - tmp, tocode);
 }
 
@@ -315,12 +316,12 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
   size_t n = dlen;
   while (true)
   {
-    assert(n > 0);
+    ASSERT(n > 0);
     const size_t nn = try_block(d, n, fromcode, tocode, encoder, wlen);
     if ((nn == 0) && (((col + *wlen) <= (ENCWORD_LEN_MAX + 1)) || (n <= 1)))
       break;
     n = ((nn != 0) ? nn : n) - 1;
-    assert(n > 0);
+    ASSERT(n > 0);
     if (utf8)
       while ((n > 1) && CONTINUATION_BYTE(d[n]))
         n--;
@@ -366,35 +367,36 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
   const char *it = s;
   const char *end = s + len;
 
-  assert(*end == '\0');
+  ASSERT(*end == '\0');
 
   if (enc == ENC_QUOTED_PRINTABLE)
   {
-    struct Buffer buf = buf_make(0);
+    struct Buffer *buf = buf_pool_get();
     for (; it < end; it++)
     {
       if (*it == '_')
       {
-        buf_addch(&buf, ' ');
+        buf_addch(buf, ' ');
       }
       else if ((it[0] == '=') && (!(it[1] & ~127) && (hexval(it[1]) != -1)) &&
                (!(it[2] & ~127) && (hexval(it[2]) != -1)))
       {
-        buf_addch(&buf, (hexval(it[1]) << 4) | hexval(it[2]));
+        buf_addch(buf, (hexval(it[1]) << 4) | hexval(it[2]));
         it += 2;
       }
       else
       {
-        buf_addch(&buf, *it);
+        buf_addch(buf, *it);
       }
     }
-    buf_addch(&buf, '\0');
-    return buf.data;
+    char *str = buf_strdup(buf);
+    buf_pool_release(&buf);
+    return str;
   }
   else if (enc == ENC_BASE64)
   {
     const int olen = 3 * len / 4 + 1;
-    char *out = mutt_mem_malloc(olen);
+    char *out = MUTT_MEM_MALLOC(olen, char);
     int dlen = mutt_b64_decode(it, out, olen);
     if (dlen == -1)
     {
@@ -405,7 +407,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
     return out;
   }
 
-  assert(0); /* The enc parameter has an invalid value */
+  ASSERT(0); /* The enc parameter has an invalid value */
   return NULL;
 }
 
@@ -542,7 +544,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
 
   /* Initialise the output buffer with the us-ascii prefix. */
   buflen = 2 * ulen;
-  buf = mutt_mem_malloc(buflen);
+  buf = MUTT_MEM_MALLOC(buflen, char);
   bufpos = t0 - u;
   memcpy(buf, u, t0 - u);
 
@@ -569,7 +571,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
          * there is too much us-ascii stuff after it to use a single
          * encoded word. We add the next word to the encoded region
          * and try again. */
-        assert(t1 < (u + ulen));
+        ASSERT(t1 < (u + ulen));
         for (t1++; (t1 < (u + ulen)) && !HSPACE(*t1); t1++)
           ; // do nothing
 
@@ -585,10 +587,10 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
     if ((bufpos + wlen + lb_len) > buflen)
     {
       buflen = bufpos + wlen + lb_len;
-      mutt_mem_realloc(&buf, buflen);
+      MUTT_MEM_REALLOC(&buf, buflen, char);
     }
     r = encode_block(buf + bufpos, t, n, icode, tocode, encoder);
-    assert(r == wlen);
+    ASSERT(r == wlen);
     bufpos += wlen;
     memcpy(buf + bufpos, line_break, lb_len);
     bufpos += lb_len;
@@ -600,9 +602,9 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
 
   /* Add last encoded word and us-ascii suffix to buffer. */
   buflen = bufpos + wlen + (u + ulen - t1);
-  mutt_mem_realloc(&buf, buflen + 1);
+  MUTT_MEM_REALLOC(&buf, buflen + 1, char);
   r = encode_block(buf + bufpos, t, t1 - t, icode, tocode, encoder);
-  assert(r == wlen);
+  ASSERT(r == wlen);
   bufpos += wlen;
   memcpy(buf + bufpos, t1, u + ulen - t1);
 
@@ -635,7 +637,7 @@ void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist
   struct Slist *fallback = NULL;
   if (!charsets)
   {
-    fallback = slist_parse("utf-8", SLIST_SEP_COLON);
+    fallback = slist_parse("utf-8", D_SLIST_SEP_COLON);
     charsets = fallback;
   }
 
@@ -661,7 +663,7 @@ void rfc2047_decode(char **pd)
   if (!pd || !*pd)
     return;
 
-  struct Buffer buf = buf_make(0);      // Output buffer
+  struct Buffer *buf = buf_pool_get();  // Output buffer
   char *s = *pd;                        // Read pointer
   char *beg = NULL;                     // Begin of encoded word
   enum ContentEncoding enc = ENC_OTHER; // ENC_BASE64 or ENC_QUOTED_PRINTABLE
@@ -673,9 +675,9 @@ void rfc2047_decode(char **pd)
   /* Keep some state in case the next decoded word is using the same charset
    * and it happens to be split in the middle of a multibyte character.
    * See https://github.com/neomutt/neomutt/issues/1015 */
-  struct Buffer prev = buf_make(0); /* Previously decoded word  */
-  char *prev_charset = NULL;        /* Previously used charset                */
-  size_t prev_charsetlen = 0;       /* Length of the previously used charset  */
+  struct Buffer *prev = buf_pool_get(); /* Previously decoded word  */
+  char *prev_charset = NULL;  /* Previously used charset                */
+  size_t prev_charsetlen = 0; /* Length of the previously used charset  */
 
   const struct Slist *c_assumed_charset = cc_assumed_charset();
   const char *c_charset = cc_charset();
@@ -695,21 +697,21 @@ void rfc2047_decode(char **pd)
       }
 
       /* If we have some previously decoded text, add it now */
-      if (!buf_is_empty(&prev))
+      if (!buf_is_empty(prev))
       {
-        finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
+        finalize_chunk(buf, prev, prev_charset, prev_charsetlen);
       }
 
       /* Add non-encoded part */
       if (slist_is_empty(c_assumed_charset))
       {
-        buf_addstr_n(&buf, s, holelen);
+        buf_addstr_n(buf, s, holelen);
       }
       else
       {
         char *conv = mutt_strn_dup(s, holelen);
         mutt_ch_convert_nonmime_string(c_assumed_charset, c_charset, &conv);
-        buf_addstr(&buf, conv);
+        buf_addstr(buf, conv);
         FREE(&conv);
       }
       s += holelen;
@@ -721,18 +723,17 @@ void rfc2047_decode(char **pd)
       char *decoded = decode_word(text, textlen, enc);
       if (!decoded)
       {
-        buf_dealloc(&buf);
-        return;
+        goto done;
       }
-      if (prev.data && ((prev_charsetlen != charsetlen) ||
-                        !mutt_strn_equal(prev_charset, charset, charsetlen)))
+      if (!buf_is_empty(prev) && ((prev_charsetlen != charsetlen) ||
+                                  !mutt_strn_equal(prev_charset, charset, charsetlen)))
       {
         /* Different charset, convert the previous chunk and add it to the
          * final result */
-        finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
+        finalize_chunk(buf, prev, prev_charset, prev_charsetlen);
       }
 
-      buf_addstr(&prev, decoded);
+      buf_addstr(prev, decoded);
       FREE(&decoded);
       prev_charset = charset;
       prev_charsetlen = charsetlen;
@@ -741,14 +742,17 @@ void rfc2047_decode(char **pd)
   }
 
   /* Save the last chunk */
-  if (prev.data)
+  if (!buf_is_empty(prev))
   {
-    finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
+    finalize_chunk(buf, prev, prev_charset, prev_charsetlen);
   }
 
-  buf_addch(&buf, '\0');
   FREE(pd);
-  *pd = buf.data;
+  *pd = buf_strdup(buf);
+
+done:
+  buf_pool_release(&buf);
+  buf_pool_release(&prev);
 }
 
 /**
@@ -838,7 +842,12 @@ void rfc2047_decode_envelope(struct Envelope *env)
   rfc2047_decode_addrlist(&env->return_path);
   rfc2047_decode_addrlist(&env->sender);
   rfc2047_decode(&env->x_label);
-  rfc2047_decode(&env->subject);
+
+  char *subj = env->subject;
+  *(char **) &env->subject = NULL;
+  rfc2047_decode(&subj);
+  mutt_env_set_subject(env, subj);
+  FREE(&subj);
 }
 
 /**
@@ -858,5 +867,10 @@ void rfc2047_encode_envelope(struct Envelope *env)
   rfc2047_encode_addrlist(&env->sender, "Sender");
   const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
   rfc2047_encode(&env->x_label, NULL, sizeof("X-Label:"), c_send_charset);
-  rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), c_send_charset);
+
+  char *subj = env->subject;
+  *(char **) &env->subject = NULL;
+  rfc2047_encode(&subj, NULL, sizeof("Subject:"), c_send_charset);
+  mutt_env_set_subject(env, subj);
+  FREE(&subj);
 }

@@ -3,7 +3,8 @@
  * Test code for buf_strcpy()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -37,48 +38,49 @@ void test_buf_strcpy(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_strcpy(&buf, NULL);
+    struct Buffer *buf = buf_pool_get();
+    buf_strcpy(buf, NULL);
     TEST_CHECK_(1, "buf_strcpy(&buf, NULL)");
+    buf_pool_release(&buf);
   }
 
   TEST_CASE("Copy to an empty Buffer");
 
   {
     TEST_CASE("Empty");
-    struct Buffer buf = buf_make(0);
-    buf_strcpy(&buf, "");
-    TEST_CHECK_STR_EQ(buf_string(&buf), "");
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_strcpy(buf, "");
+    TEST_CHECK_STR_EQ(buf_string(buf), "");
+    buf_pool_release(&buf);
   }
 
   {
     TEST_CASE("String");
     const char *str = "test";
-    struct Buffer buf = buf_make(0);
-    buf_strcpy(&buf, str);
-    TEST_CHECK_STR_EQ(buf_string(&buf), str);
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_strcpy(buf, str);
+    TEST_CHECK_STR_EQ(buf_string(buf), str);
+    buf_pool_release(&buf);
   }
 
   TEST_CASE("Overwrite a non-empty Buffer");
 
   {
     TEST_CASE("Empty");
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, "test");
-    buf_strcpy(&buf, "");
-    TEST_CHECK_STR_EQ(buf_string(&buf), "");
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, "test");
+    buf_strcpy(buf, "");
+    TEST_CHECK_STR_EQ(buf_string(buf), "");
+    buf_pool_release(&buf);
   }
 
   {
     TEST_CASE("String");
     const char *str = "apple";
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, "test");
-    buf_strcpy(&buf, str);
-    TEST_CHECK_STR_EQ(buf_string(&buf), str);
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, "test");
+    buf_strcpy(buf, str);
+    TEST_CHECK_STR_EQ(buf_string(buf), str);
+    buf_pool_release(&buf);
   }
 }

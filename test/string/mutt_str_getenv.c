@@ -3,7 +3,7 @@
  * Test code for mutt_str_getenv()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,7 +24,6 @@
 #include "config.h"
 #include "acutest.h"
 #include <stdlib.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "test_common.h"
 

@@ -3,7 +3,10 @@
  * Type representing a path
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,8 +36,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "set.h"
@@ -91,7 +94,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   if (value && (value[0] == '\0'))
     value = NULL;
 
-  if (!value && (cdef->type & DT_NOT_EMPTY))
+  if (!value && (cdef->type & D_NOT_EMPTY))
   {
     buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -104,6 +107,9 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     if (mutt_str_equal(value, (*(char **) var)))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     if (cdef->validator)
     {
       rc = cdef->validator(cs, cdef, (intptr_t) value, err);
@@ -114,7 +120,7 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
     path_destroy(cs, var, cdef);
 
-    const char *str = path_tidy(value, cdef->type & DT_PATH_DIR);
+    const char *str = path_tidy(value, cdef->type & D_PATH_DIR);
     if (!str)
       rc |= CSR_SUC_EMPTY;
 
@@ -122,10 +128,10 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   }
   else
   {
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
 
-    cdef->type |= DT_INITIAL_SET;
+    cdef->type |= D_INTERNAL_INITIAL_SET;
     cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
@@ -164,7 +170,7 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
   if (str && (str[0] == '\0'))
     value = 0;
 
-  if ((value == 0) && (cdef->type & DT_NOT_EMPTY))
+  if ((value == 0) && (cdef->type & D_NOT_EMPTY))
   {
     buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -174,6 +180,9 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   int rc;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -185,7 +194,7 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
 
   path_destroy(cs, var, cdef);
 
-  str = path_tidy(str, cdef->type & DT_PATH_DIR);
+  str = path_tidy(str, cdef->type & D_PATH_DIR);
   rc = CSR_SUCCESS;
   if (!str)
     rc |= CSR_SUC_EMPTY;
@@ -213,7 +222,7 @@ static int path_reset(const struct ConfigSet *cs, void *var,
 {
   int rc = CSR_SUCCESS;
 
-  const char *str = path_tidy((const char *) cdef->initial, cdef->type & DT_PATH_DIR);
+  const char *str = path_tidy((const char *) cdef->initial, cdef->type & D_PATH_DIR);
   if (!str)
     rc |= CSR_SUC_EMPTY;
 
@@ -221,6 +230,12 @@ static int path_reset(const struct ConfigSet *cs, void *var,
   {
     FREE(&str);
     return rc | CSR_SUC_NO_CHANGE;
+  }
+
+  if (startup_only(cdef, err))
+  {
+    FREE(&str);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
   if (cdef->validator)

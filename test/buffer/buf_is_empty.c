@@ -3,7 +3,8 @@
  * Test code for buf_is_empty()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,14 +36,15 @@ void test_buf_is_empty(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(buf_is_empty(&buf));
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(buf_is_empty(buf));
+    buf_pool_release(&buf);
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, "test");
-    TEST_CHECK(!buf_is_empty(&buf));
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, "test");
+    TEST_CHECK(!buf_is_empty(buf));
+    buf_pool_release(&buf);
   }
 }

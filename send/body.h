@@ -3,7 +3,7 @@
  * Convenience wrapper for the send headers
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,6 +28,6 @@
 struct Body;
 struct ConfigSubset;
 
-int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub);
+int mutt_write_mime_body(struct Body *b, FILE *fp, struct ConfigSubset *sub);
 
 #endif /* MUTT_SEND_BODY_H */

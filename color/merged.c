@@ -3,7 +3,7 @@
  * Merged colours
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,14 +29,12 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "attr.h"
 #include "color.h"
 #include "curses2.h"
-#include "debug.h"
 
 struct AttrColorList MergedColors; ///< Array of user colours
 
@@ -71,7 +69,7 @@ void merged_colors_cleanup(void)
  * @param attrs Attributes, e.g. A_UNDERLINE
  * @retval ptr Matching Merged colour
  */
-static struct AttrColor *merged_colors_find(int fg, int bg, int attrs)
+static struct AttrColor *merged_colors_find(color_t fg, color_t bg, int attrs)
 {
   struct AttrColor *ac = NULL;
   TAILQ_FOREACH(ac, &MergedColors, entries)
@@ -117,8 +115,8 @@ const struct AttrColor *merged_color_overlay(const struct AttrColor *base,
   struct CursesColor *cc_base = base->curses_color;
   struct CursesColor *cc_over = over->curses_color;
 
-  uint32_t fg = COLOR_DEFAULT;
-  uint32_t bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
 
   if (cc_over)
   {
@@ -143,8 +141,9 @@ const struct AttrColor *merged_color_overlay(const struct AttrColor *base,
   ac = attr_color_new();
   ac->curses_color = curses_color_new(fg, bg);
   ac->attrs = attrs;
+  ac->fg = (base->fg.color == COLOR_DEFAULT) ? over->fg : base->fg;
+  ac->bg = (base->bg.color == COLOR_DEFAULT) ? over->bg : base->bg;
   TAILQ_INSERT_TAIL(&MergedColors, ac, entries);
-  merged_colors_dump();
 
   return ac;
 }

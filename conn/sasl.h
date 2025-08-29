@@ -3,7 +3,7 @@
  * SASL authentication support
  *
  * @authors
- * Copyright (C) 2000-2005,2008 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,5 +34,6 @@ int  mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn);
 void mutt_sasl_cleanup   (void);
 int  mutt_sasl_interact  (sasl_interact_t *interaction);
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn);
+int  mutt_sasl_start     (void);
 
 #endif /* MUTT_CONN_SASL_H */

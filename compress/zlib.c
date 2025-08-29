@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -51,7 +53,7 @@ struct ZlibComprData
  * zlib_cdata_free - Free Zlib Compression Data
  * @param ptr Zlib Compression Data to free
  */
-static void zlib_cdata_free(struct ZlibComprData **ptr)
+void zlib_cdata_free(struct ZlibComprData **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -68,17 +70,17 @@ static void zlib_cdata_free(struct ZlibComprData **ptr)
  */
 static struct ZlibComprData *zlib_cdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct ZlibComprData));
+  return MUTT_MEM_CALLOC(1, struct ZlibComprData);
 }
 
 /**
- * compr_zlib_open - Implements ComprOps::open() - @ingroup compress_open
+ * compr_zlib_open - Open a compression context - Implements ComprOps::open() - @ingroup compress_open
  */
 static ComprHandle *compr_zlib_open(short level)
 {
   struct ZlibComprData *cdata = zlib_cdata_new();
 
-  cdata->buf = mutt_mem_calloc(1, compressBound(1024 * 32));
+  cdata->buf = mutt_mem_calloc(compressBound(1024 * 32), 1);
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
@@ -94,7 +96,7 @@ static ComprHandle *compr_zlib_open(short level)
 }
 
 /**
- * compr_zlib_compress - Implements ComprOps::compress() - @ingroup compress_compress
+ * compr_zlib_compress - Compress header cache data - Implements ComprOps::compress() - @ingroup compress_compress
  */
 static void *compr_zlib_compress(ComprHandle *handle, const char *data,
                                  size_t dlen, size_t *clen)
@@ -128,7 +130,7 @@ static void *compr_zlib_compress(ComprHandle *handle, const char *data,
 }
 
 /**
- * compr_zlib_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
+ * compr_zlib_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
 static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
@@ -157,7 +159,7 @@ static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t
 }
 
 /**
- * compr_zlib_close - Implements ComprOps::close() - @ingroup compress_close
+ * compr_zlib_close - Close a compression context - Implements ComprOps::close() - @ingroup compress_close
  */
 static void compr_zlib_close(ComprHandle **ptr)
 {

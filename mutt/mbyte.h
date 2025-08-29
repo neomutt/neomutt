@@ -3,7 +3,7 @@
  * Multi-byte String manipulation functions
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,7 +26,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <stdbool.h>
-#include <wchar.h>  // IWYU pragma: keep
+#include <stddef.h>
 #include <wctype.h> // IWYU pragma: keep
 
 struct Buffer;

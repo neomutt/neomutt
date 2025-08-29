@@ -3,7 +3,7 @@
  * Signal handling
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,13 +27,16 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "message.h"
+#include <string.h>
+#include <unistd.h>
 #include "signal2.h"
+
+int endwin(void);
 
 /// A set of signals used by mutt_sig_block(), mutt_sig_unblock()
 static sigset_t Sigset;
@@ -60,6 +63,50 @@ static sig_handler_t ExitHandler = mutt_sig_exit_handler;
 /// Function to handle SIGSEGV (11) signals
 static sig_handler_t SegvHandler = mutt_sig_exit_handler;
 
+volatile sig_atomic_t SigInt;   ///< true after SIGINT is received
+volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
+
+/**
+ * exit_print_uint - AS-safe version of printf("%u", n)
+ * @param n Number to be printed
+ */
+static void exit_print_uint(unsigned int n)
+{
+  char digit;
+
+  if (n > 9)
+    exit_print_uint(n / 10);
+
+  digit = '0' + (n % 10);
+  write(STDOUT_FILENO, &digit, 1);
+}
+
+/**
+ * exit_print_int - AS-safe version of printf("%d", n)
+ * @param n Number to be printed
+ */
+static void exit_print_int(int n)
+{
+  if (n < 0)
+  {
+    write(STDOUT_FILENO, "-", 1);
+    n = -n;
+  }
+  exit_print_uint(n);
+}
+
+/**
+ * exit_print_string - AS-safe version of printf("%s", str)
+ * @param str String to be printed
+ */
+static void exit_print_string(const char *str)
+{
+  if (!str)
+    return;
+
+  write(STDOUT_FILENO, str, strlen(str));
+}
+
 /**
  * mutt_sig_empty_handler - Dummy signal handler
  * @param sig Signal number, e.g. SIGINT
@@ -77,15 +124,17 @@ void mutt_sig_empty_handler(int sig)
  */
 void mutt_sig_exit_handler(int sig)
 {
+  exit_print_string("Caught signal ");
+  exit_print_int(sig);
+  exit_print_string(" ");
 #ifdef HAVE_DECL_SYS_SIGLIST
-  printf(_("Caught signal %d (%s) ...  Exiting\n"), sig, sys_siglist[sig]);
+  exit_print_string(sys_siglist[sig]);
 #elif (defined(__sun__) && defined(__svr4__))
-  printf(_("Caught signal %d (%s) ...  Exiting\n"), sig, _sys_siglist[sig]);
+  exit_print_string(_sys_siglist[sig]);
 #elif (defined(__alpha) && defined(__osf__))
-  printf(_("Caught signal %d (%s) ...  Exiting\n"), sig, __sys_siglist[sig]);
-#else
-  printf(_("Caught signal %d ...  Exiting\n"), sig);
+  exit_print_string(__sys_siglist[sig]);
 #endif
+  exit_print_string("...  Exiting\n");
   exit(0);
 }
 
@@ -258,4 +307,45 @@ void mutt_sig_allow_interrupt(bool allow)
     sa.sa_flags |= SA_RESTART;
 #endif
   sigaction(SIGINT, &sa, NULL);
+}
+
+/**
+ * mutt_sig_reset_child_signals - Reset ignored signals back to the default
+ *
+ * See sigaction(2):
+ *   A child created via fork(2) inherits a copy of its parent's
+ *   signal dispositions.  During an execve(2), the dispositions of
+ *   handled signals are reset to the default; the dispositions of
+ *   ignored signals are left unchanged.
+ */
+void mutt_sig_reset_child_signals(void)
+{
+  struct sigaction sa = { 0 };
+
+  sa.sa_handler = SIG_DFL;
+  sa.sa_flags = 0;
+  sigemptyset(&sa.sa_mask);
+
+  /* These signals are set to SIG_IGN and must be reset */
+  sigaction(SIGPIPE, &sa, NULL);
+
+  /* These technically don't need to be reset, but the code has been
+   * doing so for a long time. */
+  sigaction(SIGTERM, &sa, NULL);
+  sigaction(SIGTSTP, &sa, NULL);
+  sigaction(SIGCONT, &sa, NULL);
+}
+
+/**
+ * assertion_dump - Dump some debugging info before we stop the program
+ * @param file Source file
+ * @param line Line of source
+ * @param func Function
+ * @param cond Assertion condition
+ */
+void assertion_dump(const char *file, int line, const char *func, const char *cond)
+{
+  endwin();
+  show_backtrace();
+  printf("%s:%d:%s() -- assertion failed (%s)\n", file, line, func, cond);
 }

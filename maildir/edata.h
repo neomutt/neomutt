@@ -3,7 +3,7 @@
  * Maildir-specific Email data
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,12 +27,10 @@ struct Email;
 
 /**
  * struct MaildirEmailData - Maildir-specific Email data - @extends Email
- *
- * @note Also used by MH Mailboxes
  */
 struct MaildirEmailData
 {
-  char *maildir_flags; ///< Unknown Maildir flags
+  char        *custom_flags;   ///< Custom Maildir flags (e.g Dovecot labels)
 };
 
 void                     maildir_edata_free(void **ptr);

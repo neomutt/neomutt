@@ -3,6 +3,8 @@
  * Pass files through external commands (filters)
  *
  * @authors
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -22,7 +24,7 @@
 #define MUTT_MUTT_FILTER_H
 
 #include <stdio.h>
-#include <unistd.h>
+#include <sys/types.h>
 
 #define EXEC_SHELL "/bin/sh"
 

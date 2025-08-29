@@ -3,7 +3,8 @@
  * Multi-byte String manipulation functions
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,7 +31,6 @@
 #include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
-#include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
@@ -38,6 +38,7 @@
 #include "buffer.h"
 #include "charset.h"
 #include "memory.h"
+#include "pool.h"
 #include "string2.h"
 
 bool OptLocales; ///< (pseudo) set if user has valid locale definition
@@ -308,7 +309,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
       if (i >= wbuflen)
       {
         wbuflen = i + 20;
-        mutt_mem_realloc(&wbuf, wbuflen * sizeof(*wbuf));
+        MUTT_MEM_REALLOC(&wbuf, wbuflen, wchar_t);
       }
       wbuf[i++] = wc;
     }
@@ -317,7 +318,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
       if (i >= wbuflen)
       {
         wbuflen = i + 20;
-        mutt_mem_realloc(&wbuf, wbuflen * sizeof(*wbuf));
+        MUTT_MEM_REALLOC(&wbuf, wbuflen, wchar_t);
       }
       wbuf[i++] = ReplacementChar;
       buf++;
@@ -360,18 +361,17 @@ bool mutt_mb_is_lower(const char *s)
   size_t l;
 
   memset(&mbstate, 0, sizeof(mbstate));
+  size_t n = mutt_str_len(s);
 
-  for (; (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0; s += l)
+  for (; (n > 0) && (*s != '\0') && (l = mbrtowc(&wc, s, n, &mbstate)) != 0; s += l, n -= l)
   {
-    if (l == ICONV_BUF_TOO_SMALL)
-      continue; /* shift sequences */
-    if (l == ICONV_ILLEGAL_SEQ)
-      return false;
+    if ((l == ICONV_BUF_TOO_SMALL) || (l == ICONV_ILLEGAL_SEQ))
+      return false; // error; assume upper-case
     if (iswalpha((wint_t) wc) && iswupper((wint_t) wc))
-      return false;
+      return false; // upper-case
   }
 
-  return true;
+  return true; // lower-case
 }
 
 /**
@@ -402,6 +402,10 @@ bool mutt_mb_is_display_corrupting_utf8(wchar_t wc)
   if ((wc >= (wchar_t) 0x202a) && (wc <= (wchar_t) 0x202e))
     return true;
 
+  /* arabic letter mark */
+  if (wc == (wchar_t) 0x061c)
+    return true;
+
   return false;
 }
 
@@ -428,7 +432,7 @@ int mutt_mb_filter_unprintable(char **s)
   mbstate_t mbstate1 = { 0 };
   mbstate_t mbstate2 = { 0 };
 
-  struct Buffer buf = buf_make(0);
+  struct Buffer *buf = buf_pool_get();
   for (; (k = mbrtowc(&wc, p, MB_LEN_MAX, &mbstate1)); p += k)
   {
     if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
@@ -443,9 +447,15 @@ int mutt_mb_filter_unprintable(char **s)
       continue;
     k2 = wcrtomb(scratch, wc, &mbstate2);
     scratch[k2] = '\0';
-    buf_addstr(&buf, scratch);
+    buf_addstr(buf, scratch);
   }
   FREE(s);
-  *s = buf.data ? buf.data : mutt_mem_calloc(1, 1);
+
+  if (buf_is_empty(buf))
+    *s = MUTT_MEM_CALLOC(1, char); // Fake empty string
+  else
+    *s = buf_strdup(buf);
+
+  buf_pool_release(&buf);
   return 0;
 }

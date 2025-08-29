@@ -5,7 +5,9 @@
  * @authors
  * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2008 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017 Aleksa Sarai <cyphar@cyphar.com>
+ * Copyright (C) 2017-2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +36,6 @@
 #include <limits.h>
 #include <pwd.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,17 +53,13 @@
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
 #include "ncrypt/lib.h"
-#include "parse/lib.h"
 #include "question/lib.h"
-#include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hook.h"
 #include "mx.h"
 #include "protos.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
 
 /// Accepted XDG environment variables
 static const char *XdgEnvVars[] = {
@@ -113,19 +110,6 @@ void mutt_adv_mktemp(struct Buffer *buf)
   out:
     buf_pool_release(&prefix);
   }
-}
-
-/**
- * mutt_expand_path - Create the canonical path
- * @param buf    Buffer with path
- * @param buflen Length of buffer
- * @retval ptr The expanded string
- *
- * @note The path is expanded in-place
- */
-char *mutt_expand_path(char *buf, size_t buflen)
-{
-  return mutt_expand_path_regex(buf, buflen, false);
 }
 
 /**
@@ -202,15 +186,15 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
         if ((mb_type == MUTT_IMAP) && ((c_folder[strlen(c_folder) - 1] == '}') ||
                                        (c_folder[strlen(c_folder) - 1] == '/')))
         {
-          buf_strcpy(p, NONULL(c_folder));
+          buf_strcpy(p, c_folder);
         }
         else if (mb_type == MUTT_NOTMUCH)
         {
-          buf_strcpy(p, NONULL(c_folder));
+          buf_strcpy(p, c_folder);
         }
         else if (c_folder && (c_folder[strlen(c_folder) - 1] == '/'))
         {
-          buf_strcpy(p, NONULL(c_folder));
+          buf_strcpy(p, c_folder);
         }
         else
         {
@@ -233,10 +217,8 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
           mutt_addrlist_copy(&e->env->from, al, false);
           mutt_addrlist_copy(&e->env->to, al, false);
 
-          /* TODO: fix mutt_default_save() to use Buffer */
           buf_alloc(p, PATH_MAX);
-          mutt_default_save(p->data, p->dsize, e);
-          buf_fix_dptr(p);
+          mutt_default_save(p, e);
 
           email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
@@ -318,12 +300,10 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
   buf_pool_release(&q);
   buf_pool_release(&tmp);
 
-#ifdef USE_IMAP
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
   if (imap_path_probe(buf_string(buf), NULL) == MUTT_IMAP)
-    imap_expand_path(buf);
-#endif
+    imap_path_canon(buf);
 }
 
 /**
@@ -335,28 +315,6 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
 void buf_expand_path(struct Buffer *buf)
 {
   buf_expand_path_regex(buf, false);
-}
-
-/**
- * mutt_expand_path_regex - Create the canonical path (with regex char escaping)
- * @param buf     Buffer with path
- * @param buflen  Length of buffer
- * @param regex If true, escape any regex characters
- * @retval ptr The expanded string
- *
- * @note The path is expanded in-place
- */
-char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
-{
-  struct Buffer *tmp = buf_pool_get();
-
-  buf_addstr(tmp, NONULL(buf));
-  buf_expand_path_regex(tmp, regex);
-  mutt_str_copy(buf, buf_string(tmp), buflen);
-
-  buf_pool_release(&tmp);
-
-  return buf;
 }
 
 /**
@@ -373,8 +331,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
  */
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 {
-  regmatch_t pat_match[1];
-  size_t pwnl;
+  regmatch_t pat_match[1] = { 0 };
   char *p = NULL;
 
   if (!pw || !pw->pw_gecos)
@@ -397,7 +354,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
     mutt_str_copy(dest, pw->pw_gecos, destlen);
   }
 
-  pwnl = strlen(pw->pw_name);
+  size_t pwnl = strlen(pw->pw_name);
 
   for (int idx = 0; dest[idx]; idx++)
   {
@@ -415,22 +372,22 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display
- * @param m Attachment body to be displayed
+ * @param b Attachment body to be displayed
  * @retval true  NeoMutt requires a mailcap entry to display
  * @retval false otherwise
  */
-bool mutt_needs_mailcap(struct Body *m)
+bool mutt_needs_mailcap(struct Body *b)
 {
-  switch (m->type)
+  switch (b->type)
   {
     case TYPE_TEXT:
-      if (mutt_istr_equal("plain", m->subtype))
+      if (mutt_istr_equal("plain", b->subtype))
         return false;
       break;
     case TYPE_APPLICATION:
-      if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(m))
+      if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
         return false;
-      if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(b))
         return false;
       break;
 
@@ -447,7 +404,7 @@ bool mutt_needs_mailcap(struct Body *m)
  * @param b Part of an email
  * @retval true Part is in plain text
  */
-bool mutt_is_text_part(struct Body *b)
+bool mutt_is_text_part(const struct Body *b)
 {
   int t = b->type;
   char *s = b->subtype;
@@ -625,7 +582,7 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
     buf_strcpy(tmp, mutt_path_basename(NONULL(attname)));
     struct FileCompletionData cdata = { false, NULL, NULL, NULL };
     if ((mw_get_field(_("File under directory: "), tmp, MUTT_COMP_CLEAR,
-                      HC_FILE, &CompleteMailboxOps, &cdata) != 0) ||
+                      HC_FILE, &CompleteFileOps, &cdata) != 0) ||
         buf_is_empty(tmp))
     {
       buf_pool_release(&tmp);
@@ -732,544 +689,6 @@ void mutt_safe_path(struct Buffer *dest, const struct Address *a)
 }
 
 /**
- * mutt_expando_format - Expand expandos (%x) in a string - @ingroup expando_api
- * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
- * @param[in]  col      Starting column
- * @param[in]  cols     Number of screen columns
- * @param[in]  src      Printf-like format string
- * @param[in]  callback Callback - Implements ::format_t
- * @param[in]  data     Callback data
- * @param[in]  flags    Callback flags
- */
-void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
-                         format_t callback, intptr_t data, MuttFormatFlags flags)
-{
-  char prefix[128], tmp[1024];
-  char *cp = NULL, *wptr = buf;
-  char ch;
-  char if_str[128], else_str[128];
-  size_t wlen, count, len, wid;
-  FILE *fp_filter = NULL;
-  char *recycler = NULL;
-
-  char src2[1024];
-  mutt_str_copy(src2, src, mutt_str_len(src) + 1);
-  src = src2;
-
-  const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
-  const char *const c_arrow_string = cs_subset_string(NeoMutt->sub, "arrow_string");
-  const int arrow_width = mutt_strwidth(c_arrow_string);
-
-  prefix[0] = '\0';
-  buflen--; /* save room for the terminal \0 */
-  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && c_arrow_cursor) ? arrow_width + 1 : 0;
-  col += wlen;
-
-  if ((flags & MUTT_FORMAT_NOFILTER) == 0)
-  {
-    int off = -1;
-
-    /* Do not consider filters if no pipe at end */
-    int n = mutt_str_len(src);
-    if ((n > 1) && (src[n - 1] == '|'))
-    {
-      /* Scan backwards for backslashes */
-      off = n;
-      while ((off > 0) && (src[off - 2] == '\\'))
-        off--;
-    }
-
-    /* If number of backslashes is even, the pipe is real. */
-    /* n-off is the number of backslashes. */
-    if ((off > 0) && (((n - off) % 2) == 0))
-    {
-      char srccopy[1024] = { 0 };
-      int i = 0;
-
-      mutt_debug(LL_DEBUG3, "fmtpipe = %s\n", src);
-
-      strncpy(srccopy, src, n);
-      srccopy[n - 1] = '\0';
-
-      /* prepare Buffers */
-      struct Buffer srcbuf = buf_make(0);
-      buf_addstr(&srcbuf, srccopy);
-      /* note: we are resetting dptr and *reading* from the buffer, so we don't
-       * want to use buf_reset(). */
-      buf_seek(&srcbuf, 0);
-      struct Buffer word = buf_make(0);
-      struct Buffer cmd = buf_make(0);
-
-      /* Iterate expansions across successive arguments */
-      do
-      {
-        /* Extract the command name and copy to command line */
-        mutt_debug(LL_DEBUG3, "fmtpipe +++: %s\n", srcbuf.dptr);
-        if (word.data)
-          *word.data = '\0';
-        parse_extract_token(&word, &srcbuf, TOKEN_NO_FLAGS);
-        mutt_debug(LL_DEBUG3, "fmtpipe %2d: %s\n", i++, word.data);
-        buf_addch(&cmd, '\'');
-        mutt_expando_format(tmp, sizeof(tmp), 0, cols, word.data, callback,
-                            data, flags | MUTT_FORMAT_NOFILTER);
-        for (char *p = tmp; p && (*p != '\0'); p++)
-        {
-          if (*p == '\'')
-          {
-            /* shell quoting doesn't permit escaping a single quote within
-             * single-quoted material.  double-quoting instead will lead
-             * shell variable expansions, so break out of the single-quoted
-             * span, insert a double-quoted single quote, and resume. */
-            buf_addstr(&cmd, "'\"'\"'");
-          }
-          else
-          {
-            buf_addch(&cmd, *p);
-          }
-        }
-        buf_addch(&cmd, '\'');
-        buf_addch(&cmd, ' ');
-      } while (MoreArgs(&srcbuf));
-
-      mutt_debug(LL_DEBUG3, "fmtpipe > %s\n", cmd.data);
-
-      col -= wlen; /* reset to passed in value */
-      wptr = buf;  /* reset write ptr */
-      pid_t pid = filter_create(cmd.data, NULL, &fp_filter, NULL, EnvList);
-      if (pid != -1)
-      {
-        int rc;
-
-        n = fread(buf, 1, buflen /* already decremented */, fp_filter);
-        mutt_file_fclose(&fp_filter);
-        rc = filter_wait(pid);
-        if (rc != 0)
-          mutt_debug(LL_DEBUG1, "format pipe cmd exited code %d\n", rc);
-        if (n > 0)
-        {
-          buf[n] = '\0';
-          while ((n > 0) && ((buf[n - 1] == '\n') || (buf[n - 1] == '\r')))
-            buf[--n] = '\0';
-          mutt_debug(LL_DEBUG5, "fmtpipe < %s\n", buf);
-
-          /* If the result ends with '%', this indicates that the filter
-           * generated %-tokens that neomutt can expand.  Eliminate the '%'
-           * marker and recycle the string through mutt_expando_format().
-           * To literally end with "%", use "%%". */
-          if ((n > 0) && (buf[n - 1] == '%'))
-          {
-            n--;
-            buf[n] = '\0'; /* remove '%' */
-            if ((n > 0) && (buf[n - 1] != '%'))
-            {
-              recycler = mutt_str_dup(buf);
-              if (recycler)
-              {
-                /* buflen is decremented at the start of this function
-                 * to save space for the terminal nul char.  We can add
-                 * it back for the recursive call since the expansion of
-                 * format pipes does not try to append a nul itself.  */
-                mutt_expando_format(buf, buflen + 1, col, cols, recycler,
-                                    callback, data, flags);
-                FREE(&recycler);
-              }
-            }
-          }
-        }
-        else
-        {
-          /* read error */
-          mutt_debug(LL_DEBUG1, "error reading from fmtpipe: %s (errno=%d)\n",
-                     strerror(errno), errno);
-          *wptr = '\0';
-        }
-      }
-      else
-      {
-        /* Filter failed; erase write buffer */
-        *wptr = '\0';
-      }
-
-      buf_dealloc(&cmd);
-      buf_dealloc(&srcbuf);
-      buf_dealloc(&word);
-      return;
-    }
-  }
-
-  while (*src && (wlen < buflen))
-  {
-    if (*src == '%')
-    {
-      if (*++src == '%')
-      {
-        *wptr++ = '%';
-        wlen++;
-        col++;
-        src++;
-        continue;
-      }
-
-      if (*src == '?')
-      {
-        /* change original %? to new %< notation */
-        /* %?x?y&z? to %<x?y&z> where y and z are nestable */
-        char *p = (char *) src;
-        *p = '<';
-        /* skip over "x" */
-        for (; *p && (*p != '?'); p++)
-          ; // do nothing
-
-        /* nothing */
-        if (*p == '?')
-          p++;
-        /* fix up the "y&z" section */
-        for (; *p && (*p != '?'); p++)
-        {
-          /* escape '<' and '>' to work inside nested-if */
-          if ((*p == '<') || (*p == '>'))
-          {
-            memmove(p + 2, p, mutt_str_len(p) + 1);
-            *p++ = '\\';
-            *p++ = '\\';
-          }
-        }
-        if (*p == '?')
-          *p = '>';
-      }
-
-      if (*src == '<')
-      {
-        flags |= MUTT_FORMAT_OPTIONAL;
-        ch = *(++src); /* save the character to switch on */
-        src++;
-        cp = prefix;
-        count = 0;
-        while ((count < (sizeof(prefix) - 1)) && (*src != '\0') && (*src != '?'))
-        {
-          *cp++ = *src++;
-          count++;
-        }
-        *cp = '\0';
-      }
-      else
-      {
-        flags &= ~MUTT_FORMAT_OPTIONAL;
-
-        /* eat the format string */
-        cp = prefix;
-        count = 0;
-        while ((count < (sizeof(prefix) - 1)) && strchr("0123456789.-=", *src))
-        {
-          *cp++ = *src++;
-          count++;
-        }
-        *cp = '\0';
-
-        if (*src == '\0')
-          break; /* bad format */
-
-        ch = *src++; /* save the character to switch on */
-      }
-
-      if (flags & MUTT_FORMAT_OPTIONAL)
-      {
-        int lrbalance;
-
-        if (*src != '?')
-          break; /* bad format */
-        src++;
-
-        /* eat the 'if' part of the string */
-        cp = if_str;
-        count = 0;
-        lrbalance = 1;
-        while ((lrbalance > 0) && (count < sizeof(if_str)) && *src)
-        {
-          if ((src[0] == '%') && (src[1] == '>'))
-          {
-            /* This is a padding expando; copy two chars and carry on */
-            *cp++ = *src++;
-            *cp++ = *src++;
-            count += 2;
-            continue;
-          }
-
-          if (*src == '\\')
-          {
-            src++;
-            *cp++ = *src++;
-          }
-          else if ((src[0] == '%') && (src[1] == '<'))
-          {
-            lrbalance++;
-          }
-          else if (src[0] == '>')
-          {
-            lrbalance--;
-          }
-          if (lrbalance == 0)
-            break;
-          if ((lrbalance == 1) && (src[0] == '&'))
-            break;
-          *cp++ = *src++;
-          count++;
-        }
-        *cp = '\0';
-
-        /* eat the 'else' part of the string (optional) */
-        if (*src == '&')
-          src++; /* skip the & */
-        cp = else_str;
-        count = 0;
-        while ((lrbalance > 0) && (count < sizeof(else_str)) && (*src != '\0'))
-        {
-          if ((src[0] == '%') && (src[1] == '>'))
-          {
-            /* This is a padding expando; copy two chars and carry on */
-            *cp++ = *src++;
-            *cp++ = *src++;
-            count += 2;
-            continue;
-          }
-
-          if (*src == '\\')
-          {
-            src++;
-            *cp++ = *src++;
-          }
-          else if ((src[0] == '%') && (src[1] == '<'))
-          {
-            lrbalance++;
-          }
-          else if (src[0] == '>')
-          {
-            lrbalance--;
-          }
-          if (lrbalance == 0)
-            break;
-          if ((lrbalance == 1) && (src[0] == '&'))
-            break;
-          *cp++ = *src++;
-          count++;
-        }
-        *cp = '\0';
-
-        if ((*src == '\0'))
-          break; /* bad format */
-
-        src++; /* move past the trailing '>' (formerly '?') */
-      }
-
-      /* handle generic cases first */
-      if ((ch == '>') || (ch == '*'))
-      {
-        /* %>X: right justify to EOL, left takes precedence
-         * %*X: right justify to EOL, right takes precedence */
-        int soft = ch == '*';
-        int pl, pw;
-        pl = mutt_mb_charlen(src, &pw);
-        if (pl <= 0)
-        {
-          pl = 1;
-          pw = 1;
-        }
-
-        /* see if there's room to add content, else ignore */
-        if (((col < cols) && (wlen < buflen)) || soft)
-        {
-          int pad;
-
-          /* get contents after padding */
-          mutt_expando_format(tmp, sizeof(tmp), 0, cols, src + pl, callback, data, flags);
-          len = mutt_str_len(tmp);
-          wid = mutt_strwidth(tmp);
-
-          pad = (cols - col - wid) / pw;
-          if (pad >= 0)
-          {
-            /* try to consume as many columns as we can, if we don't have
-             * memory for that, use as much memory as possible */
-            if (wlen + (pad * pl) + len > buflen)
-            {
-              pad = (buflen > (wlen + len)) ? ((buflen - wlen - len) / pl) : 0;
-            }
-            else
-            {
-              /* Add pre-spacing to make multi-column pad characters and
-               * the contents after padding line up */
-              while (((col + (pad * pw) + wid) < cols) && ((wlen + (pad * pl) + len) < buflen))
-              {
-                *wptr++ = ' ';
-                wlen++;
-                col++;
-              }
-            }
-            while (pad-- > 0)
-            {
-              memcpy(wptr, src, pl);
-              wptr += pl;
-              wlen += pl;
-              col += pw;
-            }
-          }
-          else if (soft)
-          {
-            int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && c_arrow_cursor) ?
-                             arrow_width + 1 :
-                             0;
-            int avail_cols = (cols > offset) ? (cols - offset) : 0;
-            /* \0-terminate buf for length computation in mutt_wstr_trunc() */
-            *wptr = '\0';
-            /* make sure right part is at most as wide as display */
-            len = mutt_wstr_trunc(tmp, buflen, avail_cols, &wid);
-            /* truncate left so that right part fits completely in */
-            wlen = mutt_wstr_trunc(buf, buflen - len, avail_cols - wid, &col);
-            wptr = buf + wlen;
-            /* Multi-column characters may be truncated in the middle.
-             * Add spacing so the right hand side lines up. */
-            while (((col + wid) < avail_cols) && ((wlen + len) < buflen))
-            {
-              *wptr++ = ' ';
-              wlen++;
-              col++;
-            }
-          }
-          if ((len + wlen) > buflen)
-            len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
-          memcpy(wptr, tmp, len);
-          wptr += len;
-        }
-        break; /* skip rest of input */
-      }
-      else if (ch == '|')
-      {
-        /* pad to EOL */
-        int pl, pw;
-        pl = mutt_mb_charlen(src, &pw);
-        if (pl <= 0)
-        {
-          pl = 1;
-          pw = 1;
-        }
-
-        /* see if there's room to add content, else ignore */
-        if ((col < cols) && (wlen < buflen))
-        {
-          int c = (cols - col) / pw;
-          if ((c > 0) && ((wlen + (c * pl)) > buflen))
-            c = ((signed) (buflen - wlen)) / pl;
-          while (c > 0)
-          {
-            memcpy(wptr, src, pl);
-            wptr += pl;
-            wlen += pl;
-            col += pw;
-            c--;
-          }
-        }
-        break; /* skip rest of input */
-      }
-      else
-      {
-        bool to_lower = false;
-        bool no_dots = false;
-
-        while ((ch == '_') || (ch == ':'))
-        {
-          if (ch == '_')
-            to_lower = true;
-          else if (ch == ':')
-            no_dots = true;
-
-          ch = *src++;
-        }
-
-        /* use callback function to handle this case */
-        *tmp = '\0';
-        src = callback(tmp, sizeof(tmp), col, cols, ch, src, prefix, if_str,
-                       else_str, data, flags);
-
-        if (to_lower)
-          mutt_str_lower(tmp);
-        if (no_dots)
-        {
-          char *p = tmp;
-          for (; *p; p++)
-            if (*p == '.')
-              *p = '_';
-        }
-
-        len = mutt_str_len(tmp);
-        if ((len + wlen) > buflen)
-          len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
-
-        memcpy(wptr, tmp, len);
-        wptr += len;
-        wlen += len;
-        col += mutt_strwidth(tmp);
-      }
-    }
-    else if (*src == '\\')
-    {
-      if (!*++src)
-        break;
-      switch (*src)
-      {
-        case 'f':
-          *wptr = '\f';
-          break;
-        case 'n':
-          *wptr = '\n';
-          break;
-        case 'r':
-          *wptr = '\r';
-          break;
-        case 't':
-          *wptr = '\t';
-          break;
-        case 'v':
-          *wptr = '\v';
-          break;
-        default:
-          *wptr = *src;
-          break;
-      }
-      src++;
-      wptr++;
-      wlen++;
-      col++;
-    }
-    else
-    {
-      int bytes, width;
-      /* in case of error, simply copy byte */
-      bytes = mutt_mb_charlen(src, &width);
-      if (bytes < 0)
-      {
-        bytes = 1;
-        width = 1;
-      }
-      if ((bytes > 0) && ((wlen + bytes) < buflen))
-      {
-        memcpy(wptr, src, bytes);
-        wptr += bytes;
-        src += bytes;
-        wlen += bytes;
-        col += width;
-      }
-      else
-      {
-        src += buflen - wlen;
-        wlen = buflen;
-      }
-    }
-  }
-  *wptr = '\0';
-}
-
-/**
  * mutt_open_read - Run a command to read from
  * @param[in]  path   Path to command
  * @param[out] thepid PID of the command
@@ -1310,7 +729,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
       errno = EINVAL;
       return NULL;
     }
-    fp = fopen(path, "r");
+    fp = mutt_file_fopen(path, "r");
     *thepid = -1;
   }
   return fp;
@@ -1330,13 +749,11 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   enum MailboxType type = mx_path_probe(s);
 
-#ifdef USE_POP
   if (type == MUTT_POP)
   {
     mutt_error(_("Can't save message to POP mailbox"));
     return 1;
   }
-#endif
 
   if ((type != MUTT_MAILBOX_ERROR) && (type != MUTT_UNKNOWN) && (mx_access(s, W_OK) == 0))
   {
@@ -1355,13 +772,11 @@ int mutt_save_confirm(const char *s, struct stat *st)
     }
   }
 
-#ifdef USE_NNTP
   if (type == MUTT_NNTP)
   {
     mutt_error(_("Can't save message to news server"));
     return 0;
   }
-#endif
 
   if (stat(s, st) != -1)
   {
@@ -1556,68 +971,6 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
       buf[1] = '\0';
     }
   }
-}
-
-/**
- * mutt_inbox_cmp - Do two folders share the same path and one is an inbox - @ingroup sort_api
- * @param a First path
- * @param b Second path
- * @retval -1 a is INBOX of b
- * @retval  0 None is INBOX
- * @retval  1 b is INBOX for a
- *
- * This function compares two folder paths. It first looks for the position of
- * the last common '/' character. If a valid position is found and it's not the
- * last character in any of the two paths, the remaining parts of the paths are
- * compared (case insensitively) with the string "INBOX". If one of the two
- * paths matches, it's reported as being less than the other and the function
- * returns -1 (a < b) or 1 (a > b). If no paths match the requirements, the two
- * paths are considered equivalent and this function returns 0.
- *
- * Examples:
- * * mutt_inbox_cmp("/foo/bar",      "/foo/baz") --> 0
- * * mutt_inbox_cmp("/foo/bar/",     "/foo/bar/inbox") --> 0
- * * mutt_inbox_cmp("/foo/bar/sent", "/foo/bar/inbox") --> 1
- * * mutt_inbox_cmp("=INBOX",        "=Drafts") --> -1
- */
-int mutt_inbox_cmp(const char *a, const char *b)
-{
-  /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
-  if ((a[0] == '+') && (b[0] == '+'))
-  {
-    return mutt_istr_equal(a + 1, "inbox") ? -1 :
-           mutt_istr_equal(b + 1, "inbox") ? 1 :
-                                             0;
-  }
-
-  const char *a_end = strrchr(a, '/');
-  const char *b_end = strrchr(b, '/');
-
-  /* If one path contains a '/', but not the other */
-  if ((!a_end) ^ (!b_end))
-    return 0;
-
-  /* If neither path contains a '/' */
-  if (!a_end)
-    return 0;
-
-  /* Compare the subpaths */
-  size_t a_len = a_end - a;
-  size_t b_len = b_end - b;
-  size_t min = MIN(a_len, b_len);
-  int same = (a[min] == '/') && (b[min] == '/') && (a[min + 1] != '\0') &&
-             (b[min + 1] != '\0') && mutt_istrn_equal(a, b, min);
-
-  if (!same)
-    return 0;
-
-  if (mutt_istr_equal(&a[min + 1], "inbox"))
-    return -1;
-
-  if (mutt_istr_equal(&b[min + 1], "inbox"))
-    return 1;
-
-  return 0;
 }
 
 /**

@@ -16,7 +16,7 @@ use system cc cc-lib mutt-gettext mutt-iconv pkg-config
 ###############################################################################
 # Names and versions
 define PACKAGE          "neomutt"
-define PACKAGE_VERSION  "20230517"
+define PACKAGE_VERSION  "20241114"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
@@ -38,8 +38,6 @@ set valid_options {
   locales-fix=0             => "Enable locales fix"
   pgp=1                     => "Disable PGP support"
   smime=1                   => "Disable SMIME support"
-  mixmaster=0               => "Enable Mixmaster support"
-  with-mixmaster:=mixmaster => "Location of the mixmaster executable"
   homespool=0               => "Enable new mail spooling in the user's HOME"
   with-homespool:mailbox    => "File in the user's HOME where new mail is spooled"
   with-mailpath:/var/mail   => "Directory where spool mailboxes are located"
@@ -72,7 +70,7 @@ set valid_options {
   nls=1                     => "Disable Native Language Support"
   with-nls:path             => "Location of libintl"
 # IDN
-  idn2=1                    => "Enable GNU libidn2 for internationalized domain names"
+  idn2=1                    => "Disable GNU libidn2 for internationalized domain names"
   with-idn2:path            => "Location of GNU libidn2"
 # PCRE2
   pcre2=0                   => "Enable PCRE2 regular expressions"
@@ -103,11 +101,13 @@ set valid_options {
   zlib=0                    => "Enable zlib support"
   with-zlib:path            => "Location of zlib"
   zstd=0                    => "Enable Zstandard header cache compression support"
+# iconv
+  with-iconv:path           => "Location of IConv"
 # System
   with-sysroot:path         => "Target system root"
   with-tmpdir:=/tmp         => "location of the tmp directory"
 # Misc
-  include-path-in-cflags=1  => "Remove include paths from CFLAGS in the output of neomutt -v"
+  paths-in-cflags=1         => "Remove paths from CFLAGS in the output of neomutt -v"
 # Testing
   asan=0                    => "Enable the Address Sanitizer"
   ubsan=0                   => "Enable the Undefined Behaviour Sanitizer"
@@ -123,10 +123,11 @@ set valid_options {
   debug-email=0             => "DEBUG: Enable Email dump"
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
   debug-keymap=0            => "DEBUG: Enable Key mappings dump"
+  debug-logging=0           => "DEBUG: Enable Debug logging"
   debug-names=0             => "DEBUG: Enable Name lookup tables"
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-queue=0             => "DEBUG: Enable TAILQ debugging"
-  debug-window=0            => "DEBUG: Enable windows dump"
+  debug-window=0            => "DEBUG: Enable Windows dump"
 }
 
 set deprecated_options  {
@@ -139,6 +140,9 @@ set deprecated_options  {
   with-gpgme:
   with-lz4:
   with-zstd:
+  include-path-in-cflags:=
+  mixmaster:=
+  with-mixmaster:=
 }
 
 foreach dep $deprecated_options {
@@ -170,11 +174,12 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color
-    debug-email debug-graphviz debug-keymap debug-names debug-notify debug-queue
-    debug-window doc everything fmemopen full-doc fuzzing gdbm gnutls gpgme
-    gsasl gss homespool idn2 include-path-in-cflags inotify kyotocabinet lmdb
-    locales-fix lua lz4 mixmaster nls notmuch pcre2 pgp qdbm rocksdb sasl
-    smime sqlite ssl tdb tokyocabinet ubsan zlib zstd
+    debug-email debug-graphviz debug-keymap debug-logging debug-names
+    debug-notify debug-queue debug-window doc everything fmemopen full-doc
+    fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 inotify kyotocabinet
+    lmdb locales-fix lua lz4 nls notmuch paths-in-cflags pcre2 pgp
+    qdbm rocksdb sasl smime sqlite ssl tdb
+    tokyocabinet ubsan zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -184,7 +189,7 @@ if {1} {
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
     bdb gdbm gnutls gpgme gsasl gss homespool idn2 kyotocabinet lmdb lua lz4
-    mixmaster nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb tokyocabinet
+    nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb tokyocabinet
     zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
@@ -308,11 +313,12 @@ if {1} {
 # C compiler definitions and related tools
 if {1} {
 
-  # First off, require c99
-  if {[cc-check-standards c99] eq {}} {
-    user-error "C99 is required"
+  # First off, require c11
+  if {[cc-check-standards c11] eq {}} {
+    user-error "C11 is required"
   }
-  define-append CFLAGS_FOR_BUILD -std=c99
+  define-append CFLAGS_FOR_BUILD -std=c11
+  define-append CFLAGS -std=c11
   define LDFLAGS_FOR_BUILD {}
 
   # Check for tools and programs
@@ -370,9 +376,7 @@ if {1} {
 
 ###############################################################################
 # signal-related checks
-# Let's always use volatile for sig_atomic_t
 cc-check-includes signal.h
-define SIG_ATOMIC_VOLATILE_T "volatile sig_atomic_t"
 
 cc-with {-includes "signal.h unistd.h"} {
   cc-check-decls sys_siglist
@@ -422,10 +426,6 @@ if {1} {
   cc-check-function-in-lib getaddrinfo_a anl
   cc-check-function-in-lib nanosleep rt
 
-  cc-with {-includes time.h} {
-    cc-check-types "struct timespec"
-  }
-
   cc-with {-includes sys/stat.h} {
     cc-check-members "struct stat.st_atim.tv_nsec"
   }
@@ -434,14 +434,6 @@ if {1} {
 
 ###############################################################################
 # Various unconditional defines
-define USE_COMP_MBOX
-define USE_IMAP
-define USE_NNTP
-define USE_POP
-define USE_SIDEBAR
-define USE_SOCKET
-define USE_SMTP
-define SUN_ATTACHMENT
 define TEST_CASE_MAXSIZE 1024
 ###############################################################################
 
@@ -675,6 +667,9 @@ cc-with [list -libs -L$ncurses_prefix/$::libdir_tail] {
   foreach f {bkgrndset setcchar use_extended_names} {
     cc-check-function-in-lib $f $ncurses_lib
   }
+
+  define-append CFLAGS -I$ncurses_prefix/include
+  define-append LDFLAGS -L$ncurses_prefix/$::libdir_tail
 }
 
 # Locate the directory containing ncurses.h
@@ -693,7 +688,7 @@ apply {{ncurses_prefix} {
 
 ###############################################################################
 # Iconv - try to mimic AM_ICONV by preferring an installed libiconv
-if {![check-iconv $prefix]} {
+if {![check-iconv [opt-val with-iconv $prefix]]} {
   user-error "Unable to find iconv()"
 }
 
@@ -704,12 +699,6 @@ if {[get-define want-homespool]} {
   define HOMESPOOL 1
 } else {
   define MAILPATH [opt-val with-mailpath /var/mail]
-}
-
-###############################################################################
-# Mixmaster
-if {[get-define want-mixmaster]} {
-  define MIXMASTER [opt-val with-mixmaster mixmaster]
 }
 
 ###############################################################################
@@ -840,7 +829,7 @@ if {[get-define want-bdb]} {
     return 0
   }
 
-  set bdb_versions [opt-val with-bdb-version { 5.3 6.2 4.8 }] ;# Will be checked in order
+  set bdb_versions [opt-val with-bdb-version { 18.1 5.3 6.2 4.8 }] ;# Will be checked in order
   set bdb_prefix [opt-val with-bdb $prefix]
 
   foreach ver $bdb_versions {
@@ -1054,6 +1043,12 @@ if {[get-define want-debug-keymap]} {
   define debug_build 1
 }
 
+# Logging
+if {[get-define want-debug-logging]} {
+  define USE_DEBUG_LOGGING 1
+  define debug_build 1
+}
+
 # Name lookup tables
 if {[get-define want-debug-names]} {
   define USE_DEBUG_NAMES 1
@@ -1148,11 +1143,22 @@ if {[get-define debug_build]} {
 
 ###############################################################################
 # Generate conststrings.c
+proc remove-paths-from-cflags {} {
+  lkill [get-define CFLAGS] {{x} {
+    foreach cflag {{-I} {-ffile-prefix-map=}} {
+      if {[string equal -length [string length $cflag] $x $cflag]} {
+        return 1
+      }
+    }
+    return 0
+  }}
+}
+
 set conststrings "\
   unsigned char cc_cflags\[\] = {[text2c [expr {
-    [get-define want-include-path-in-cflags]
+    [get-define want-paths-in-cflags]
     ? [get-define CFLAGS]
-    : [lkill [get-define CFLAGS] {{x} {string equal -length 2 $x {-I}}}]
+    : [remove-paths-from-cflags]
   }]]};\n\
   unsigned char configure_options\[\] = {[text2c $conf_options]};\n"
 if {[catch {set fd [open conststrings.c w]
@@ -1168,7 +1174,7 @@ set auto_rep {
   *_TARGETS
   BINDIR
   BUILD_DOC
-  COMPILE_COMMANDS
+  COMPILE*
   CRYPT_*
   DOMAIN
   ENABLE_*
@@ -1177,7 +1183,6 @@ set auto_rep {
   LOCALES_HACK
   MAILPATH
   MAKEDOC_FULL
-  MIXMASTER
   MUTTLOCALEDIR
   NOTMUCH_API_3
   PACKAGE
@@ -1185,7 +1190,6 @@ set auto_rep {
   PKGDOCDIR
   QUEUE_*
   SENDMAIL
-  SUN_ATTACHMENT
   SYSCONFDIR
   TEST_CASE_MAXSIZE
   TMPDIR
@@ -1197,7 +1201,6 @@ set bare_rep {
   ICONV_CONST
   LOFF_T
   OFF_T_FMT
-  SIG_ATOMIC_VOLATILE_T
 }
 set str_rep {
   PACKAGE_VERSION

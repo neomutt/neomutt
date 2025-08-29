@@ -3,7 +3,8 @@
  * Parse and identify different URL schemes
  *
  * @authors
- * Copyright (C) 2000-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -76,7 +77,7 @@ static bool parse_query_string(struct UrlQueryList *list, char *src)
     if ((url_pct_decode(key) < 0) || (url_pct_decode(val) < 0))
       return false;
 
-    struct UrlQuery *qs = mutt_mem_calloc(1, sizeof(struct UrlQuery));
+    struct UrlQuery *qs = MUTT_MEM_CALLOC(1, struct UrlQuery);
     qs->name = key;
     qs->value = val;
     STAILQ_INSERT_TAIL(list, qs, entries);
@@ -111,7 +112,7 @@ static enum UrlScheme get_scheme(const char *src, const regmatch_t *match)
  */
 static struct Url *url_new(void)
 {
-  struct Url *url = mutt_mem_calloc(1, sizeof(struct Url));
+  struct Url *url = MUTT_MEM_CALLOC(1, struct Url);
   STAILQ_INIT(&url->query_strings);
   return url;
 }
@@ -354,7 +355,7 @@ err:
  * @retval  0 Success
  * @retval -1 Error
  */
-int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags)
+int url_tobuffer(const struct Url *url, struct Buffer *buf, uint8_t flags)
 {
   if (!url || !buf)
     return -1;
@@ -419,7 +420,7 @@ int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags)
  * @retval  0 Success
  * @retval -1 Error
  */
-int url_tostring(struct Url *url, char *dest, size_t len, uint8_t flags)
+int url_tostring(const struct Url *url, char *dest, size_t len, uint8_t flags)
 {
   if (!url || !dest)
     return -1;

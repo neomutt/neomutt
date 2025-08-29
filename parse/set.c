@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023 Rayford Shireman
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +29,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -57,10 +58,10 @@
  */
 static void command_set_expand_value(uint32_t type, struct Buffer *value)
 {
-  assert(value);
+  ASSERT(value);
   if (DTYPE(type) == DT_PATH)
   {
-    if (type & (DT_PATH_DIR | DT_PATH_FILE))
+    if (type & (D_PATH_DIR | D_PATH_FILE))
       buf_expand_path(value);
     else
       mutt_path_tilde(value, HomeDir);
@@ -71,16 +72,16 @@ static void command_set_expand_value(uint32_t type, struct Buffer *value)
   }
   else if (IS_COMMAND(type))
   {
-    struct Buffer scratch = buf_make(1024);
-    buf_copy(&scratch, value);
+    struct Buffer *scratch = buf_pool_get();
+    buf_copy(scratch, value);
 
     if (!mutt_str_equal(value->data, "builtin"))
     {
-      buf_expand_path(&scratch);
+      buf_expand_path(scratch);
     }
     buf_reset(value);
-    buf_addstr(value, buf_string(&scratch));
-    buf_dealloc(&scratch);
+    buf_addstr(value, buf_string(scratch));
+    buf_pool_release(&scratch);
   }
 }
 
@@ -99,8 +100,8 @@ static void command_set_expand_value(uint32_t type, struct Buffer *value)
 static enum CommandResult command_set_set(struct Buffer *name,
                                           struct Buffer *value, struct Buffer *err)
 {
-  assert(name);
-  assert(value);
+  ASSERT(name);
+  ASSERT(value);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
@@ -116,11 +117,16 @@ static enum CommandResult command_set_set(struct Buffer *name,
     }
     else
     {
-      buf_printf(err, _("%s: unknown variable"), name->data);
+      buf_printf(err, _("Unknown option %s"), name->data);
       return MUTT_CMD_ERROR;
     }
   }
 
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
+  }
   int rc = CSR_ERR_CODE;
 
   if (DTYPE(he->type) == DT_MYVAR)
@@ -154,8 +160,8 @@ static enum CommandResult command_set_set(struct Buffer *name,
 static enum CommandResult command_set_increment(struct Buffer *name,
                                                 struct Buffer *value, struct Buffer *err)
 {
-  assert(name);
-  assert(value);
+  ASSERT(name);
+  ASSERT(value);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
@@ -171,9 +177,15 @@ static enum CommandResult command_set_increment(struct Buffer *name,
     }
     else
     {
-      buf_printf(err, _("%s: unknown variable"), name->data);
+      buf_printf(err, _("Unknown option %s"), name->data);
       return MUTT_CMD_ERROR;
     }
+  }
+
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
   }
 
   int rc = CSR_ERR_CODE;
@@ -209,13 +221,19 @@ static enum CommandResult command_set_increment(struct Buffer *name,
 static enum CommandResult command_set_decrement(struct Buffer *name,
                                                 struct Buffer *value, struct Buffer *err)
 {
-  assert(name);
-  assert(value);
+  ASSERT(name);
+  ASSERT(value);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
+  }
+
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
   }
 
   command_set_expand_value(he->type, value);
@@ -238,12 +256,18 @@ static enum CommandResult command_set_decrement(struct Buffer *name,
  */
 static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *err)
 {
-  assert(name);
+  ASSERT(name);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
+  }
+
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
   }
 
   int rc = CSR_ERR_CODE;
@@ -277,7 +301,7 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
  */
 static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
 {
-  assert(name);
+  ASSERT(name);
   // Handle special "reset all" syntax
   if (mutt_str_equal(name->data, "all"))
   {
@@ -300,8 +324,14 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
+  }
+
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
   }
 
   int rc = CSR_ERR_CODE;
@@ -320,7 +350,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
 }
 
 /**
- * command_set_toggle - Toggle a boolean or quad variable
+ * command_set_toggle - Toggle a boolean, quad, or number variable
  * @param[in]  name Name of the config variable to be toggled
  * @param[out] err  Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
@@ -331,12 +361,18 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
  */
 static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer *err)
 {
-  assert(name);
+  ASSERT(name);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
+  }
+
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
   }
 
   if (DTYPE(he->type) == DT_BOOL)
@@ -346,6 +382,10 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
   else if (DTYPE(he->type) == DT_QUAD)
   {
     quad_he_toggle(NeoMutt->sub, he, err);
+  }
+  else if (DTYPE(he->type) == DT_NUMBER)
+  {
+    number_he_toggle(NeoMutt->sub, he, err);
   }
   else
   {
@@ -367,7 +407,7 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
  */
 static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
 {
-  assert(name);
+  ASSERT(name);
   // In the interactive case (outside of the initial parsing of neomuttrc) we
   // support additional syntax: "set" (no arguments) and "set all".
   // If not in interactive mode, we recognise them but do nothing.
@@ -392,8 +432,14 @@ static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
+  }
+
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
   }
 
   buf_addstr(err, name->data);
@@ -476,6 +522,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
 
     bool bool_or_quad = false;
+    bool invertible = false;
     bool equals = false;
     bool increment = false;
     bool decrement = false;
@@ -486,6 +533,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       // Use the correct name if a synonym is used
       buf_strcpy(buf, he->key.strkey);
       bool_or_quad = ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD));
+      invertible = (bool_or_quad || (DTYPE(he->type) == DT_NUMBER));
     }
 
     if (*s->dptr == '?')
@@ -498,8 +546,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't query a variable with the '%s' command"),
-                   set_commands[data]);
+        buf_printf(err, _("Can't query option with the '%s' command"), set_commands[data]);
         return MUTT_CMD_WARNING;
       }
 
@@ -516,8 +563,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't set a variable with the '%s' command"),
-                   set_commands[data]);
+        buf_printf(err, _("Can't set option with the '%s' command"), set_commands[data]);
         return MUTT_CMD_WARNING;
       }
       if (*s->dptr == '+')
@@ -547,8 +593,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't set a variable with the '%s' command"),
-                   set_commands[data]);
+        buf_printf(err, _("Can't set option with the '%s' command"), set_commands[data]);
         return MUTT_CMD_WARNING;
       }
 
@@ -556,15 +601,15 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       s->dptr++;
     }
 
-    if (!bool_or_quad && (inv || (unset && prefix)))
+    if (!invertible && (inv || (unset && prefix)))
     {
       if (data == MUTT_SET_SET)
       {
-        buf_printf(err, _("Prefixes 'no' and 'inv' may only be used with bool/quad variables"));
+        buf_printf(err, _("Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"));
       }
       else
       {
-        buf_printf(err, _("Command '%s' can only be used with bool/quad variables"),
+        buf_printf(err, _("Command '%s' can only be used with bool/quad/number variables"),
                    set_commands[data]);
       }
       return MUTT_CMD_WARNING;
@@ -574,15 +619,15 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     // Each of inv, unset reset, query, equals implies that the others are not set.
     // If none of them are set, then we are dealing with a "set foo" command.
     // clang-format off
-    assert(!inv    || !(       unset || reset || query || equals          ));
-    assert(!unset  || !(inv ||          reset || query || equals          ));
-    assert(!reset  || !(inv || unset ||          query || equals          ));
-    assert(!query  || !(inv || unset || reset ||          equals          ));
-    assert(!equals || !(inv || unset || reset || query ||           prefix));
+    ASSERT(!inv    || !(       unset || reset || query || equals          ));
+    ASSERT(!unset  || !(inv ||          reset || query || equals          ));
+    ASSERT(!reset  || !(inv || unset ||          query || equals          ));
+    ASSERT(!query  || !(inv || unset || reset ||          equals          ));
+    ASSERT(!equals || !(inv || unset || reset || query ||           prefix));
     // clang-format on
-    assert(!(increment && decrement)); // only one of increment or decrement is set
-    assert(!(increment || decrement) || equals); // increment/decrement implies equals
-    assert(!inv || bool_or_quad); // inv (aka toggle) implies bool or quad
+    ASSERT(!(increment && decrement)); // only one of increment or decrement is set
+    ASSERT(!(increment || decrement) || equals); // increment/decrement implies equals
+    ASSERT(!inv || invertible); // inv (aka toggle) implies bool or quad
 
     enum CommandResult rc = MUTT_CMD_ERROR;
     if (query)

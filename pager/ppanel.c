@@ -3,7 +3,7 @@
  * Pager Panel
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -55,7 +55,6 @@
  */
 
 #include "config.h"
-#include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -98,10 +97,22 @@ static int ppanel_window_observer(struct NotifyCallback *nc)
     return 0;
   if (!nc->global_data || !nc->event_data)
     return -1;
+
+  struct MuttWindow *panel_pager = nc->global_data;
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    panel_pager->actions |= WA_RECALC | WA_REPAINT;
+
+    struct PagerPrivateData *priv = panel_pager->wdata;
+    if (priv->pview)
+      pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
+
+    mutt_debug(LL_NOTIFY, "window state done, request WA_RECALC\n");
+  }
+
   if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;
 
-  struct MuttWindow *panel_pager = nc->global_data;
   struct EventWindow *ev_w = nc->event_data;
   if (ev_w->win != panel_pager)
     return 0;

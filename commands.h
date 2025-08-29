@@ -3,8 +3,7 @@
  * Functions to parse commands in a config file
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,6 +24,7 @@
 #define MUTT_COMMANDS_H
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include "config/lib.h"
 #include "core/lib.h"
@@ -38,18 +38,15 @@ struct GroupList;
 enum CommandResult parse_mailboxes       (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_my_hdr          (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_subjectrx_list  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-#ifdef USE_IMAP
 enum CommandResult parse_subscribe_to    (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-#endif
 enum CommandResult parse_unalternates    (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unmailboxes     (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-#ifdef USE_IMAP
 enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-#endif
 
 enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err);
 char *mutt_get_sourced_cwd(void);
+bool mailbox_add_simple(const char *mailbox, struct Buffer *err);
 
 int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err);
 void source_stack_cleanup(void);

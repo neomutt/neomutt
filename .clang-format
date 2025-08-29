@@ -13,8 +13,6 @@ IncludeCategories:
     Priority:   -130
   - Regex:      '"acutest\.h"'
     Priority:   -120
-  - Regex:      '<stddef\.h>'
-    Priority:   -110
   - Regex:      '<.*>'
     Priority:   -100
 

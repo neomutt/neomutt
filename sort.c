@@ -4,8 +4,10 @@
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -38,15 +40,13 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "sort.h"
-#include "globals.h" // IWYU pragma: keep
+#include "nntp/lib.h"
+#include "globals.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mview.h"
 #include "mx.h"
 #include "score.h"
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#endif
 
 /**
  * struct EmailCompare - Context for compare_email_shim()
@@ -287,11 +287,9 @@ static sort_mail_t get_sort_func(enum SortType method, enum MailboxType type)
     case SORT_LABEL:
       return compare_label;
     case SORT_ORDER:
-#ifdef USE_NNTP
       if (type == MUTT_NNTP)
         return nntp_compare_order;
       else
-#endif
         return compare_order;
     case SORT_RECEIVED:
       return compare_date_received;
@@ -437,6 +435,20 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
 
   if (m->verbose)
     mutt_clear_error();
+}
 
-  return;
+/**
+ * mutt_sort_order - Sort emails by their disk order
+ * @param m Mailbox
+ */
+void mutt_sort_order(struct Mailbox *m)
+{
+  if (!m)
+    return;
+
+  struct EmailCompare cmp = { 0 };
+  cmp.type = mx_type(m);
+  cmp.sort = SORT_ORDER;
+  mutt_qsort_r((void *) m->emails, m->msg_count, sizeof(struct Email *),
+               compare_email_shim, &cmp);
 }

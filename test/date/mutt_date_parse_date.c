@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -60,6 +61,9 @@ void test_mutt_date_parse_date(void)
      /* Skip unknown week days */
      { "Sunday, 21 Apr 2002 21:51:04 +0000",         1019425864 },
      { "Tuesday, 12 Feb 2002 13:08:10 -0500",        1013537290 },
+
+     /* Accept full month names */
+     { "Thursday, 02 January 2025 16:15:00 +0000",   1735834500 },
 
      /* A partial TZ, assume UTC */
      { "Sun, 21 Apr 2002 21:51:04 +000",             1019425864 },

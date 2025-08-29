@@ -3,7 +3,7 @@
  * Type representing an enumeration
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,8 +31,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "enum.h"
@@ -63,6 +63,9 @@ static int enum_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   {
     if (num == (*(unsigned char *) var))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
     if (cdef->validator)
     {
@@ -129,12 +132,15 @@ static int enum_native_set(const struct ConfigSet *cs, void *var,
   const char *name = mutt_map_get_name(value, ed->lookup);
   if (!name)
   {
-    buf_printf(err, _("Invalid enum value: %ld"), value);
+    buf_printf(err, _("Invalid enum value: %ld"), (long) value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if (value == (*(unsigned char *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -171,6 +177,9 @@ static int enum_reset(const struct ConfigSet *cs, void *var,
 
   if (cdef->initial == (*(unsigned char *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {

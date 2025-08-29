@@ -3,8 +3,7 @@
  * Postponed Email Selection Dialog
  *
  * @authors
- * Copyright (C) 1996-2002,2012-2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -75,16 +74,15 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
-#include "format_flags.h"
 #include "functions.h"
 #include "hdrline.h"
 #include "mutt_logging.h"
 #include "mview.h"
-#include "opcodes.h"
 
 /// Help Bar for the Postponed email selection dialog
 static const struct Mapping PostponedHelp[] = {
@@ -98,16 +96,25 @@ static const struct Mapping PostponedHelp[] = {
 };
 
 /**
- * post_make_entry - Format a menu item for the email list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * post_make_entry - Format an Email for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $index_format
  */
-static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static int post_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct MailboxView *mv = menu->mdata;
   struct Mailbox *m = mv->mailbox;
 
-  const char *const c_index_format = cs_subset_string(NeoMutt->sub, "index_format");
-  mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format), m, -1,
-                   m->emails[line], MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_index_format = cs_subset_expando(NeoMutt->sub, "index_format");
+  return mutt_make_string(buf, max_cols, c_index_format, m, -1, m->emails[line],
+                          MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
 /**

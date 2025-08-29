@@ -3,8 +3,9 @@
  * Test code for mutt_addrlist_to_intl()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,8 +25,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -64,7 +65,7 @@ void test_mutt_addrlist_to_intl(void)
                          .intl = "test@xn--nixierhre-57a.nixieclock-tube.com" },
                        { .local = "test@வலைப்பூ.com", .intl = "test@xn--xlcawl2e7azb.com" } };
 
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
     cs_subset_str_string_set(NeoMutt->sub, "charset", "utf-8", NULL);
 #ifdef HAVE_LIBIDN

@@ -39,13 +39,13 @@ import shlex
 import socket
 import http.server
 import subprocess
+import readline
 
 # The token file must be encrypted because it contains multi-use bearer tokens
 # whose usage does not require additional verification. Specify whichever
 # encryption and decryption pipes you prefer. They should read from standard
-# input and write to standard output. The example values here invoke GPG,
-# although won't work until an appropriate identity appears in the first line.
-ENCRYPTION_PIPE = ['gpg', '--encrypt', '--recipient', 'YOUR_GPG_IDENTITY']
+# input and write to standard output. The example values here invoke GPG.
+ENCRYPTION_PIPE = ['gpg', '--encrypt', '--default-recipient-self']
 DECRYPTION_PIPE = ['gpg', '--decrypt']
 
 registrations = {
@@ -93,7 +93,7 @@ ap.add_argument('--decryption-pipe', type=shlex.split, default=DECRYPTION_PIPE,
                 help='decryption command (string), reads from stdin and writes '
                 'to stdout, default: "{}"'.format(
                     " ".join(DECRYPTION_PIPE)))
-ap.add_argument('--encryption-pipe', type=shlex.split,
+ap.add_argument('--encryption-pipe', type=shlex.split, default=ENCRYPTION_PIPE,
                 help='encryption command (string), reads from stdin and writes '
                 'to stdout, suggested: "{}"'.format(
                     " ".join(ENCRYPTION_PIPE)))
@@ -140,6 +140,8 @@ if args.debug:
 if not token:
     if not args.authorize:
         sys.exit('You must run script with "--authorize" at least once.')
+    if not ENCRYPTION_PIPE:
+        sys.exit("You need to provide a suitable --encryption-pipe setting")
     print('', )
     token['registration'] = args.provider or input(
         'Available app and endpoint registrations: {regs}\nOAuth2 registration: '.format(
@@ -241,7 +243,7 @@ if args.authorize:
                     if 'code' in querydict:
                         authcode = querydict['code'][0]
                     self.do_HEAD()
-                    self.wfile.write(b'<html><head><title>Authorizaton result</title></head>')
+                    self.wfile.write(b'<html><head><title>Authorization result</title></head>')
                     self.wfile.write(b'<body><p>Authorization redirect completed. You may '
                                      b'close this window.</p></body></html>')
             with http.server.HTTPServer(('127.0.0.1', listen_port), MyHandler) as httpd:
@@ -259,6 +261,7 @@ if args.authorize:
                   'code': authcode,
                   'client_secret': token['client_secret'],
                   'code_verifier': verifier})
+        print('Exchanging the authorization code for an access token')
         try:
             response = urllib.request.urlopen(registration['token_endpoint'],
                                               urllib.parse.urlencode(p).encode())
@@ -294,7 +297,7 @@ if args.authorize:
         print(response['message'])
         del p['scope']
         p.update({'grant_type': 'urn:ietf:params:oauth:grant-type:device_code',
-                  'client_secret': registration['client_secret'],
+                  'client_secret': token['client_secret'],
                   'device_code': response['device_code']})
         interval = int(response['interval'])
         print('Polling...', end='', flush=True)

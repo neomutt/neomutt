@@ -3,7 +3,7 @@
  * Test code for neomutt_new()
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -47,7 +47,7 @@ void test_neomutt_new(void)
   {
     struct ConfigSet *cs = cs_new(30);
     cs_register_type(cs, &CstNumber);
-    TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS));
+    TEST_CHECK(cs_register_variables(cs, Vars));
 
     struct NeoMutt *n = neomutt_new(cs);
     TEST_CHECK(n != NULL);

@@ -3,8 +3,7 @@
  * Routines for managing attachments
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2007,2010 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2006 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,11 +23,8 @@
 #ifndef MUTT_ATTACH_RECVATTACH_H
 #define MUTT_ATTACH_RECVATTACH_H
 
-#include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
-#include "format_flags.h"
 
 struct AttachCtx;
 struct Body;
@@ -41,8 +37,7 @@ struct Menu;
 void mutt_attach_init(struct AttachCtx *actx);
 void mutt_update_tree(struct AttachCtx *actx);
 
-const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, intptr_t data, MuttFormatFlags flags);
-void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv, struct Email *e, FILE *fp);
+void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv, struct Email *e, FILE *fp, bool attach_msg);
 
 void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e, struct Body *parts, FILE *fp, int parent_type, int level, bool decrypted);
 struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu);

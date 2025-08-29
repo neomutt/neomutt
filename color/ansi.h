@@ -3,7 +3,7 @@
  * ANSI Colours
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,21 +24,21 @@
 #define MUTT_COLOR_ANSI_H
 
 #include <stdbool.h>
-
-struct AttrColorList;
+#include "attr.h"
 
 /**
  * struct AnsiColor - An ANSI escape sequence
+ *
+ * @note AnsiColor doesn't own the AttrColor
  */
 struct AnsiColor
 {
+  struct ColorElement fg;              ///< Foreground colour
+  struct ColorElement bg;              ///< Background colour
+  int attrs;                           ///< Text attributes, e.g. A_BOLD
   const struct AttrColor *attr_color;  ///< Curses colour of text
-  int attrs;                           ///< Attributes, e.g. A_BOLD
-  int fg;                              ///< Foreground colour
-  int bg;                              ///< Background colour
 };
 
-int ansi_color_parse     (const char *str, struct AnsiColor *ansi, struct AttrColorList *acl, bool dry_run);
-int ansi_color_seq_length(const char *str);
+int ansi_color_parse(const char *str, struct AnsiColor *ansi, struct AttrColorList *acl, bool dry_run);
 
 #endif /* MUTT_COLOR_ANSI_H */

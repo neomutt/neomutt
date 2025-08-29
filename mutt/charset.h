@@ -3,7 +3,8 @@
  * Conversion between different character encodings
  *
  * @authors
- * Copyright (C) 1999-2002,2007 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,6 +26,7 @@
 
 #include <iconv.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <wchar.h>
 
@@ -48,15 +50,6 @@ struct FgetConv
   char *ib;
   size_t ibl;
   const char **inrepls;
-};
-
-/**
- * struct FgetConvNot - A dummy converter
- */
-struct FgetConvNot
-{
-  FILE *fp;
-  iconv_t cd; ///< iconv conversion descriptor
 };
 
 /**

@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,17 +24,14 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_date_localtime_format(void)
 {
   // size_t mutt_date_localtime_format(char *buf, size_t buflen, char *format, time_t t);
-
-  putenv("TZ=UTC0");
 
   {
     TEST_CHECK(mutt_date_localtime_format(NULL, 10, "apple", 0) == 0);
@@ -50,6 +48,6 @@ void test_mutt_date_localtime_format(void)
     const char *format = "%Y-%m-%d %H:%M:%S %z";
     TEST_CHECK(mutt_date_localtime_format(buf, sizeof(buf), format, t) > 0);
     TEST_MSG(buf);
-    TEST_CHECK(mutt_str_equal(buf, "2000-06-25 11:00:00 +0000"));
+    TEST_CHECK_STR_EQ(buf, "2000-06-25 11:00:00 +0000");
   }
 }

@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2011 Karel Zak <kzak@redhat.com>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -41,10 +42,9 @@
 #ifndef MUTT_NOTMUCH_LIB_H
 #define MUTT_NOTMUCH_LIB_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "core/lib.h"
-#include "complete/lib.h"
 
 struct Email;
 struct stat;

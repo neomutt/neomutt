@@ -3,7 +3,8 @@
  * Test code for Config Synonyms
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -65,17 +66,17 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   int rc = cs_str_string_set(cs, name, value, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
   const char *VarApple = cs_subset_string(sub, "Apple");
   if (!TEST_CHECK_STR_EQ(VarApple, value))
   {
-    TEST_MSG("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed", name);
     return false;
   }
-  TEST_MSG("%s = %s, set by '%s'\n", name, NONULL(VarApple), value);
+  TEST_MSG("%s = %s, set by '%s'", name, NONULL(VarApple), value);
 
   return true;
 }
@@ -90,11 +91,11 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   int rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   const char *VarCherry = cs_subset_string(sub, "Cherry");
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(VarCherry), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'", name, NONULL(VarCherry), buf_string(err));
 
   return true;
 }
@@ -111,17 +112,17 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   int rc = cs_str_native_set(cs, name, (intptr_t) value, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
   const char *VarElderberry = cs_subset_string(sub, "Elderberry");
   if (!TEST_CHECK_STR_EQ(VarElderberry, value))
   {
-    TEST_MSG("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed", name);
     return false;
   }
-  TEST_MSG("%s = %s, set by '%s'\n", name, NONULL(VarElderberry), value);
+  TEST_MSG("%s = %s, set by '%s'", name, NONULL(VarElderberry), value);
 
   return true;
 }
@@ -141,10 +142,10 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarGuava = cs_subset_string(sub, "Guava");
   if (!TEST_CHECK_STR_EQ(VarGuava, (const char *) value))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
-  TEST_MSG("%s = '%s', '%s'\n", name, VarGuava, (const char *) value);
+  TEST_MSG("%s = '%s', '%s'", name, VarGuava, (const char *) value);
 
   return true;
 }
@@ -158,28 +159,28 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   buf_reset(err);
 
   const char *VarIlama = cs_subset_string(sub, "Ilama");
-  TEST_MSG("Initial: %s = '%s'\n", name, NONULL(VarIlama));
+  TEST_MSG("Initial: %s = '%s'", name, NONULL(VarIlama));
   int rc = cs_str_string_set(cs, name, "hello", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
-  TEST_MSG("Set: %s = '%s'\n", name, VarIlama);
+  TEST_MSG("Set: %s = '%s'", name, VarIlama);
 
   buf_reset(err);
   rc = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
   VarIlama = cs_subset_string(sub, "Ilama");
   if (!TEST_CHECK_STR_EQ(VarIlama, "iguana"))
   {
-    TEST_MSG("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed", name);
     return false;
   }
 
-  TEST_MSG("Reset: %s = '%s'\n", name, VarIlama);
+  TEST_MSG("Reset: %s = '%s'", name, VarIlama);
 
   return true;
 }
@@ -191,16 +192,16 @@ void test_config_synonym(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars)))
     return;
 
-  if (cs_register_variables(cs, Vars2, DT_NO_FLAGS))
+  if (cs_register_variables(cs, Vars2))
   {
-    TEST_MSG("Test should have failed\n");
+    TEST_MSG("Test should have failed");
     return;
   }
 
-  TEST_MSG("Expected error\n");
+  TEST_MSG("Expected error");
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 

@@ -3,7 +3,7 @@
  * Shared code for the Alias and Query Dialogs
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -49,8 +49,11 @@ int alias_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ev_c = nc->event_data;
 
-  if (!mutt_str_equal(ev_c->name, "sort_alias"))
+  if (!mutt_str_equal(ev_c->name, "sort_alias") && !mutt_str_equal(ev_c->name, "alias_format") &&
+      !mutt_str_equal(ev_c->name, "query_format"))
+  {
     return 0;
+  }
 
   struct Menu *menu = nc->global_data;
 

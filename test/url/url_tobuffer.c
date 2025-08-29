@@ -3,7 +3,8 @@
  * Test code for url_tobuffer()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,8 +33,9 @@ void test_url_tobuffer(void)
   // int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags);
 
   {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(url_tobuffer(NULL, &buf, U_NO_FLAGS) != 0);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(url_tobuffer(NULL, buf, U_NO_FLAGS) != 0);
+    buf_pool_release(&buf);
   }
 
   {

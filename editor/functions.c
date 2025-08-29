@@ -1,9 +1,9 @@
 /**
  * @file
- * Enter functions
+ * Editor functions
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,27 +21,107 @@
  */
 
 /**
- * @page editor_functions Enter functions
+ * @page editor_functions Editor functions
  *
- * Enter functions
+ * Editor functions
  */
 
 #include "config.h"
-#include <string.h>
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
+#include <wchar.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "functions.h"
 #include "complete/lib.h"
 #include "history/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "enter.h"
-#include "opcodes.h"
+#include "functions.h"
 #include "protos.h"
-#include "state.h" // IWYU pragma: keep
+#include "state.h"
 #include "wdata.h"
+#endif
+
+// clang-format off
+/**
+ * OpEditor - Functions for the Editor Menu
+ */
+const struct MenuFuncOp OpEditor[] = { /* map: editor */
+  { "backspace",                     OP_EDITOR_BACKSPACE },
+  { "backward-char",                 OP_EDITOR_BACKWARD_CHAR },
+  { "backward-word",                 OP_EDITOR_BACKWARD_WORD },
+  { "bol",                           OP_EDITOR_BOL },
+  { "capitalize-word",               OP_EDITOR_CAPITALIZE_WORD },
+  { "complete",                      OP_EDITOR_COMPLETE },
+  { "complete-query",                OP_EDITOR_COMPLETE_QUERY },
+  { "delete-char",                   OP_EDITOR_DELETE_CHAR },
+  { "downcase-word",                 OP_EDITOR_DOWNCASE_WORD },
+  { "eol",                           OP_EDITOR_EOL },
+  { "forward-char",                  OP_EDITOR_FORWARD_CHAR },
+  { "forward-word",                  OP_EDITOR_FORWARD_WORD },
+  { "help",                          OP_HELP },
+  { "history-down",                  OP_EDITOR_HISTORY_DOWN },
+  { "history-search",                OP_EDITOR_HISTORY_SEARCH },
+  { "history-up",                    OP_EDITOR_HISTORY_UP },
+  { "kill-eol",                      OP_EDITOR_KILL_EOL },
+  { "kill-eow",                      OP_EDITOR_KILL_EOW },
+  { "kill-line",                     OP_EDITOR_KILL_LINE },
+  { "kill-whole-line",               OP_EDITOR_KILL_WHOLE_LINE },
+  { "kill-word",                     OP_EDITOR_KILL_WORD },
+  { "mailbox-cycle",                 OP_EDITOR_MAILBOX_CYCLE },
+  { "quote-char",                    OP_EDITOR_QUOTE_CHAR },
+  { "redraw-screen",                 OP_REDRAW },
+  { "transpose-chars",               OP_EDITOR_TRANSPOSE_CHARS },
+  { "upcase-word",                   OP_EDITOR_UPCASE_WORD },
+  // Deprecated
+  { "buffy-cycle",                   OP_EDITOR_MAILBOX_CYCLE },
+  { NULL, 0 },
+};
+
+/**
+ * EditorDefaultBindings - Key bindings for the Editor Menu
+ */
+const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
+  { OP_EDITOR_BACKSPACE,                   "<backspace>" },
+  { OP_EDITOR_BACKSPACE,                   "\010" },           // <Ctrl-H>
+  { OP_EDITOR_BACKSPACE,                   "\177" },           // <Backspace>
+  { OP_EDITOR_BACKWARD_CHAR,               "<left>" },
+  { OP_EDITOR_BACKWARD_CHAR,               "\002" },           // <Ctrl-B>
+  { OP_EDITOR_BACKWARD_WORD,               "\033b" },          // <Alt-b>
+  { OP_EDITOR_BOL,                         "<home>" },
+  { OP_EDITOR_BOL,                         "\001" },           // <Ctrl-A>
+  { OP_EDITOR_CAPITALIZE_WORD,             "\033c" },          // <Alt-c>
+  { OP_EDITOR_COMPLETE,                    "\t" },             // <Tab>
+  { OP_EDITOR_COMPLETE_QUERY,              "\024" },           // <Ctrl-T>
+  { OP_EDITOR_DELETE_CHAR,                 "<delete>" },
+  { OP_EDITOR_DELETE_CHAR,                 "\004" },           // <Ctrl-D>
+  { OP_EDITOR_DOWNCASE_WORD,               "\033l" },          // <Alt-l>
+  { OP_EDITOR_EOL,                         "<end>" },
+  { OP_EDITOR_EOL,                         "\005" },           // <Ctrl-E>
+  { OP_EDITOR_FORWARD_CHAR,                "<right>" },
+  { OP_EDITOR_FORWARD_CHAR,                "\006" },           // <Ctrl-F>
+  { OP_EDITOR_FORWARD_WORD,                "\033f" },          // <Alt-f>
+  { OP_EDITOR_HISTORY_DOWN,                "<down>" },
+  { OP_EDITOR_HISTORY_DOWN,                "\016" },           // <Ctrl-N>
+  { OP_EDITOR_HISTORY_SEARCH,              "\022" },           // <Ctrl-R>
+  { OP_EDITOR_HISTORY_UP,                  "<up>" },
+  { OP_EDITOR_HISTORY_UP,                  "\020" },           // <Ctrl-P>
+  { OP_EDITOR_KILL_EOL,                    "\013" },           // <Ctrl-K>
+  { OP_EDITOR_KILL_EOW,                    "\033d" },          // <Alt-d>
+  { OP_EDITOR_KILL_LINE,                   "\025" },           // <Ctrl-U>
+  { OP_EDITOR_KILL_WORD,                   "\027" },           // <Ctrl-W>
+  { OP_EDITOR_MAILBOX_CYCLE,               " " },              // <Space>
+  { OP_EDITOR_QUOTE_CHAR,                  "\026" },           // <Ctrl-V>
+  { OP_EDITOR_UPCASE_WORD,                 "\033u" },          // <Alt-u>
+  { OP_HELP,                               "\033?" },          // <Alt-?>
+  { OP_REDRAW,                             "\014" },           // <Ctrl-L>
+  { 0, NULL },
+};
+// clang-format on
 
 /**
  * replace_part - Search and replace on a buffer
@@ -57,8 +137,8 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
 
   if (savelen)
   {
-    savebuf = mutt_mem_calloc(savelen, sizeof(wchar_t));
-    memcpy(savebuf, es->wbuf + es->curpos, savelen * sizeof(wchar_t));
+    savebuf = MUTT_MEM_CALLOC(savelen, wchar_t);
+    wmemcpy(savebuf, es->wbuf + es->curpos, savelen);
   }
 
   /* Convert to wide characters */
@@ -70,11 +150,11 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
     if (es->curpos + savelen > es->wbuflen)
     {
       es->wbuflen = es->curpos + savelen;
-      mutt_mem_realloc(&es->wbuf, es->wbuflen * sizeof(wchar_t));
+      MUTT_MEM_REALLOC(&es->wbuf, es->wbuflen, wchar_t);
     }
 
     /* Restore suffix */
-    memcpy(es->wbuf + es->curpos, savebuf, savelen * sizeof(wchar_t));
+    wmemcpy(es->wbuf + es->curpos, savebuf, savelen);
     FREE(&savebuf);
   }
 

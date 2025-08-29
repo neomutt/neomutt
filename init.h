@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,7 +31,7 @@ struct ConfigSet;
 struct ListHead;
 
 void init_config         (struct ConfigSet *cs);
-int  mutt_init           (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
+int  mutt_init           (struct ConfigSet *cs, const char *dlevel, const char *dfile, bool skip_sys_rc, struct ListHead *commands);
 void mutt_opts_cleanup   (void);
 int  mutt_query_variables(struct ListHead *queries, bool show_docs);
 

@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2021 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -52,9 +53,9 @@ enum NmQueryType nm_parse_type_from_query(char *buf, enum NmQueryType fallback)
   if (!buf)
     return query_type;
 
-  size_t buf_len = mutt_str_len(buf);
-  const char *message_ptr = mutt_istrn_rfind(buf, buf_len, "type=messages");
-  const char *thread_ptr = mutt_istrn_rfind(buf, buf_len, "type=threads");
+  size_t buflen = mutt_str_len(buf);
+  const char *message_ptr = mutt_istrn_rfind(buf, buflen, "type=messages");
+  const char *thread_ptr = mutt_istrn_rfind(buf, buflen, "type=threads");
 
   // No valid type statement found.
   if (!message_ptr && !thread_ptr)

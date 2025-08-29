@@ -3,7 +3,8 @@
  * Type representing a multibyte character table
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,6 +43,22 @@
 #include "types.h"
 
 /**
+ * mbtable_equal - Compare two MbTables
+ * @param a First MbTable
+ * @param b Second MbTable
+ * @retval true They are identical
+ */
+bool mbtable_equal(const struct MbTable *a, const struct MbTable *b)
+{
+  if (!a && !b) /* both empty */
+    return true;
+  if (!a ^ !b) /* one is empty, but not the other */
+    return false;
+
+  return mutt_str_equal(a->orig_str, b->orig_str);
+}
+
+/**
  * mbtable_parse - Parse a multibyte string into a table
  * @param s String of multibyte characters
  * @retval ptr New MbTable object
@@ -57,13 +74,13 @@ struct MbTable *mbtable_parse(const char *s)
   if (!slen)
     return NULL;
 
-  t = mutt_mem_calloc(1, sizeof(struct MbTable));
+  t = MUTT_MEM_CALLOC(1, struct MbTable);
 
   t->orig_str = mutt_str_dup(s);
   /* This could be more space efficient.  However, being used on tiny
    * strings (`$to_chars` and `$status_chars`), the overhead is not great. */
-  t->chars = mutt_mem_calloc(slen, sizeof(char *));
-  t->segmented_str = mutt_mem_calloc(slen * 2, sizeof(char));
+  t->chars = MUTT_MEM_CALLOC(slen, char *);
+  t->segmented_str = MUTT_MEM_CALLOC(slen * 2, char);
   d = t->segmented_str;
 
   while (slen && (k = mbrtowc(NULL, s, slen, &mbstate)))
@@ -119,6 +136,9 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
     if (curval && mutt_str_equal(value, curval->orig_str))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     table = mbtable_parse(value);
 
     if (cdef->validator)
@@ -141,10 +161,10 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
   }
   else
   {
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
 
-    cdef->type |= DT_INITIAL_SET;
+    cdef->type |= D_INTERNAL_INITIAL_SET;
     cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
@@ -185,7 +205,7 @@ static struct MbTable *mbtable_dup(struct MbTable *table)
   if (!table)
     return NULL; /* LCOV_EXCL_LINE */
 
-  struct MbTable *m = mutt_mem_calloc(1, sizeof(*m));
+  struct MbTable *m = MUTT_MEM_CALLOC(1, struct MbTable);
   m->orig_str = mutt_str_dup(table->orig_str);
   return m;
 }
@@ -198,6 +218,12 @@ static int mbtable_native_set(const struct ConfigSet *cs, void *var,
                               struct Buffer *err)
 {
   int rc;
+
+  if (mbtable_equal(*(struct MbTable **) var, (struct MbTable *) value))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -248,6 +274,9 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
 
   if (mutt_str_equal(initial, curval))
     return rc | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (initial)
     table = mbtable_parse(initial);

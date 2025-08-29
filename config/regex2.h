@@ -3,7 +3,7 @@
  * Type representing a regular expression
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,12 +23,14 @@
 #ifndef MUTT_CONFIG_REGEX2_H
 #define MUTT_CONFIG_REGEX2_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 struct Buffer;
 struct Regex;
 
-void          regex_free(struct Regex **ptr);
-struct Regex *regex_new (const char *str, uint32_t flags, struct Buffer *err);
+bool          regex_equal(const struct Regex *a, const struct Regex *b);
+void          regex_free (struct Regex **ptr);
+struct Regex *regex_new  (const char *str, uint32_t flags, struct Buffer *err);
 
 #endif /* MUTT_CONFIG_REGEX2_H */

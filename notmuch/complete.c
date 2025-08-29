@@ -32,11 +32,11 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "complete/lib.h"
 #include "editor/lib.h"
 #include "index/lib.h"
 #include "notmuch/lib.h"
-#include "opcodes.h"
 
 /**
  * complete_all_nm_tags - Pass a list of Notmuch tags to the completion code
@@ -64,7 +64,7 @@ int complete_all_nm_tags(struct CompletionData *cd, const char *pt)
     goto done;
 
   /* Get all the tags. */
-  const char **nm_tags = mutt_mem_calloc(tag_count_1, sizeof(char *));
+  const char **nm_tags = MUTT_MEM_CALLOC(tag_count_1, const char *);
   if ((nm_get_all_tags(m_cur, nm_tags, &tag_count_2) != 0) || (tag_count_1 != tag_count_2))
   {
     completion_data_free_match_strings(cd);
@@ -92,14 +92,13 @@ done:
  * mutt_nm_query_complete - Complete to the nearest notmuch tag
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param pos     Cursor position in the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval true  Success, a match
  * @retval false Error, no match
  *
- * Complete the nearest "tag:"-prefixed string previous to pos.
+ * Complete the last "tag:"-prefixed string.
  */
-bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs)
+bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int numtabs)
 {
   char *pt = buf->data;
   int spaces;
@@ -107,7 +106,7 @@ bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int p
   SKIPWS(pt);
   spaces = pt - buf->data;
 
-  pt = (char *) mutt_strn_rfind((char *) buf, pos, "tag:");
+  pt = (char *) buf_rfind(buf, "tag:");
   if (pt)
   {
     pt += 4;
@@ -209,17 +208,16 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, struct Buffer *buf, int num
 }
 
 /**
- * complete_nm_query - Complete a Notmuch Query - Implements ::complete_function_t - @ingroup complete_api
+ * complete_nm_query - Complete a Notmuch Query - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_nm_query(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_nm_query(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;
 
   int rc = FR_SUCCESS;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-  size_t len = buf_len(wdata->buffer);
-  if (!mutt_nm_query_complete(wdata->cd, wdata->buffer, len, wdata->tabs))
+  if (!mutt_nm_query_complete(wdata->cd, wdata->buffer, wdata->tabs))
     rc = FR_ERROR;
 
   replace_part(wdata->state, 0, buf_string(wdata->buffer));
@@ -227,9 +225,9 @@ int complete_nm_query(struct EnterWindowData *wdata, int op)
 }
 
 /**
- * complete_nm_tag - Complete a Notmuch Tag - Implements ::complete_function_t - @ingroup complete_api
+ * complete_nm_tag - Complete a Notmuch Tag - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_nm_tag(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_nm_tag(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;

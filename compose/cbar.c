@@ -3,7 +3,8 @@
  * Compose Bar (status)
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -59,9 +60,7 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -70,21 +69,23 @@
 #include "gui/lib.h"
 #include "cbar.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "attach_data.h"
 #include "cbar_data.h"
-#include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "muttlib.h"
 #include "shared_data.h"
+
+const struct ExpandoRenderData ComposeRenderData[];
 
 /**
  * num_attachments - Count the number of attachments
  * @param adata Attachment data
  * @retval num Number of attachments
  */
-int num_attachments(struct ComposeAttachData *adata)
+static int num_attachments(const struct ComposeAttachData *adata)
 {
   if (!adata || !adata->menu)
     return 0;
@@ -92,88 +93,80 @@ int num_attachments(struct ComposeAttachData *adata)
 }
 
 /**
- * compose_format_str - Create the status bar string for compose mode - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | Total number of attachments
- * | \%h     | Local hostname
- * | \%l     | Approximate size (in bytes) of the current message
- * | \%v     | NeoMutt version string
+ * compose_a_num - Compose: Number of attachments - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static const char *compose_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
-                                      const char *if_str, const char *else_str,
-                                      intptr_t data, MuttFormatFlags flags)
+long compose_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  char fmt[128], tmp[128];
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-  struct ComposeSharedData *shared = (struct ComposeSharedData *) data;
+  const struct ComposeSharedData *shared = data;
 
-  *buf = '\0';
-  switch (op)
-  {
-    case 'a': /* total number of attachments */
-      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, num_attachments(shared->adata));
-      break;
+  return num_attachments(shared->adata);
+}
 
-    case 'h': /* hostname */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, NONULL(ShortHostname));
-      break;
+/**
+ * compose_h - Compose: Hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void compose_h(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const char *s = ShortHostname;
+  buf_strcpy(buf, s);
+}
 
-    case 'l': /* approx length of current message in bytes */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      mutt_str_pretty_size(tmp, sizeof(tmp),
-                           cum_attachs_size(shared->sub, shared->adata));
-      snprintf(buf, buflen, fmt, tmp);
-      break;
+/**
+ * compose_l_num - Compose: Size in bytes - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long compose_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct ComposeSharedData *shared = data;
+  return cum_attachs_size(shared->sub, shared->adata);
+}
 
-    case 'v':
-      snprintf(buf, buflen, "%s", mutt_make_version());
-      break;
+/**
+ * compose_l - Compose: Size in bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void compose_l(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct ComposeSharedData *shared = data;
 
-    case 0:
-      *buf = '\0';
-      return src;
+  char tmp[128] = { 0 };
 
-    default:
-      snprintf(buf, buflen, "%%%s%c", prec, op);
-      break;
-  }
+  mutt_str_pretty_size(tmp, sizeof(tmp), cum_attachs_size(shared->sub, shared->adata));
+  buf_strcpy(buf, tmp);
+}
 
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, compose_format_str, data, flags);
-  }
-  // This format function doesn't have any optional expandos,
-  // so there's no `else if (flags & MUTT_FORMAT_OPTIONAL)` clause
-
-  return src;
+/**
+ * compose_v - Compose: Version - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void compose_v(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const char *s = mutt_make_version();
+  buf_strcpy(buf, s);
 }
 
 /**
  * cbar_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  *
- * @sa $compose_format, compose_format_str()
+ * @sa $compose_format
  */
 static int cbar_recalc(struct MuttWindow *win)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   struct ComposeSharedData *shared = win->parent->wdata;
 
-  const char *const c_compose_format = cs_subset_string(shared->sub, "compose_format");
-  mutt_expando_format(buf, sizeof(buf), 0, win->state.cols, NONULL(c_compose_format),
-                      compose_format_str, (intptr_t) shared, MUTT_FORMAT_NO_FLAGS);
+  const struct Expando *c_compose_format = cs_subset_expando(shared->sub, "compose_format");
+  expando_filter(c_compose_format, ComposeRenderData, shared,
+                 MUTT_FORMAT_NO_FLAGS, win->state.cols, buf);
 
   struct ComposeBarData *cbar_data = win->wdata;
-  if (!mutt_str_equal(buf, cbar_data->compose_format))
+  if (!mutt_str_equal(buf_string(buf), cbar_data->compose_format))
   {
-    mutt_str_replace(&cbar_data->compose_format, buf);
+    mutt_str_replace(&cbar_data->compose_format, buf_string(buf));
     win->actions |= WA_REPAINT;
     mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   }
+  buf_pool_release(&buf);
 
   return 0;
 }
@@ -252,7 +245,7 @@ static int cbar_email_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_EMAIL)
     return 0;
-  if (!nc->global_data || !nc->event_data)
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win_cbar = nc->global_data;
@@ -279,7 +272,7 @@ static int cbar_window_observer(struct NotifyCallback *nc)
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    win_cbar->actions |= WA_RECALC;
+    win_cbar->actions |= WA_RECALC | WA_REPAINT;
     mutt_debug(LL_DEBUG5, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
@@ -320,3 +313,18 @@ struct MuttWindow *cbar_new(struct ComposeSharedData *shared)
 
   return win_cbar;
 }
+
+/**
+ * ComposeRenderData - Callbacks for Compose Expandos
+ *
+ * @sa ComposeFormatDef, ExpandoDataCompose, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData ComposeRenderData[] = {
+  // clang-format off
+  { ED_COMPOSE, ED_COM_ATTACH_COUNT, NULL,      compose_a_num },
+  { ED_GLOBAL,  ED_GLO_HOSTNAME,     compose_h, NULL },
+  { ED_COMPOSE, ED_COM_ATTACH_SIZE,  compose_l, compose_l_num },
+  { ED_GLOBAL,  ED_GLO_VERSION,      compose_v, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

@@ -3,7 +3,8 @@
  * Manage precompiled / predefined regular expressions
  *
  * @authors
- * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,12 +28,13 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "prex.h"
 #include "logging2.h"
 #include "memory.h"
+#include "signal2.h"
 
 #ifdef HAVE_PCRE2
 #define PCRE2_CODE_UNIT_WIDTH 8
@@ -79,6 +81,8 @@ struct PrexStorage
 };
 
 #define PREX_MONTH "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
+#define PREX_MONTH_LAX                                                         \
+  "(Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|September|Oct|October|Nov|November|Dec|December)"
 #define PREX_DOW "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"
 #define PREX_DOW_NOCASE                                                        \
   "([Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt]|[Ss][Uu][Nn])"
@@ -169,7 +173,7 @@ static struct PrexStorage *prex(enum Prex which)
         CFWS
         "(([[:alpha:]]+)" CFWS ", *)?"   // Day of week (or whatever)
         CFWS "([[:digit:]]{1,2}) "       // Day
-        CFWS PREX_MONTH                  // Month
+        CFWS PREX_MONTH_LAX              // Month
         CFWS "([[:digit:]]{2,4}) "       // Year
         CFWS "([[:digit:]]{1,2})"        // Hour
         ":" CFWS "([[:digit:]]{1,2})"    // Minute
@@ -249,12 +253,17 @@ static struct PrexStorage *prex(enum Prex which)
       PREX_ACCOUNT_CMD_MATCH_MAX,
       "^([[:alpha:]]+): (.*)$"
     },
+    {
+      PREX_ALIAS_TAGS,
+      PREX_ALIAS_TAGS_MATCH_MAX,
+      "^(.*)(tags:)([[:alnum:],]*) ?(.*)$"
+    },
     // clang-format on
   };
 
-  assert((which < PREX_MAX) && "Invalid 'which' argument");
+  ASSERT((which < PREX_MAX) && "Invalid 'which' argument");
   struct PrexStorage *h = &storage[which];
-  assert((which == h->which) && "Fix 'storage' array");
+  ASSERT((which == h->which) && "Fix 'storage' array");
   if (!h->re)
   {
 #ifdef HAVE_PCRE2
@@ -263,17 +272,17 @@ static struct PrexStorage *prex(enum Prex which)
     PCRE2_SIZE eoff = 0;
     h->re = pcre2_compile((PCRE2_SPTR8) h->str, PCRE2_ZERO_TERMINATED, opt,
                           &eno, &eoff, NULL);
-    assert(h->re && "Fix your RE");
+    ASSERT(h->re && "Fix your RE");
     h->mdata = pcre2_match_data_create_from_pattern(h->re, NULL);
     uint32_t ccount = 0;
     pcre2_pattern_info(h->re, PCRE2_INFO_CAPTURECOUNT, &ccount);
-    assert(((ccount + 1) == h->nmatches) && "Number of matches do not match (...)");
-    h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
+    ASSERT(((ccount + 1) == h->nmatches) && "Number of matches do not match (...)");
+    h->matches = MUTT_MEM_CALLOC(h->nmatches, regmatch_t);
 #else
-    h->re = mutt_mem_calloc(1, sizeof(*h->re));
+    h->re = MUTT_MEM_CALLOC(1, regex_t);
     const int rc = regcomp(h->re, h->str, REG_EXTENDED);
-    assert(rc == 0 && "Fix your RE");
-    h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
+    ASSERT(rc == 0 && "Fix your RE");
+    h->matches = MUTT_MEM_CALLOC(h->nmatches, regmatch_t);
 #endif
   }
   return h;
@@ -318,7 +327,7 @@ regmatch_t *mutt_prex_capture(enum Prex which, const char *str)
   if (regexec(h->re, str, h->nmatches, h->matches, 0))
     return NULL;
 
-  assert((h->re->re_nsub == (h->nmatches - 1)) &&
+  ASSERT((h->re->re_nsub == (h->nmatches - 1)) &&
          "Regular expression and matches enum are out of sync");
 #endif
   return h->matches;

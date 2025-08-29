@@ -30,15 +30,15 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
 #include "complete/lib.h"
 #include "editor/lib.h"
-#include "opcodes.h"
 
 /**
- * complete_pattern - Complete a NeoMutt Pattern - Implements ::complete_function_t - @ingroup complete_api
+ * complete_pattern - Complete a NeoMutt Pattern - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_pattern(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_pattern(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;

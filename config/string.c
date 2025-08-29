@@ -3,7 +3,9 @@
  * Type representing a string
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -61,7 +63,7 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
   if (value && (value[0] == '\0'))
     value = NULL;
 
-  if (!value && (cdef->type & DT_NOT_EMPTY))
+  if (!value && (cdef->type & D_NOT_EMPTY))
   {
     buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -73,6 +75,9 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
   {
     if (mutt_str_equal(value, (*(char **) var)))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
     if (cdef->validator)
     {
@@ -92,10 +97,10 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
   }
   else
   {
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
 
-    cdef->type |= DT_INITIAL_SET;
+    cdef->type |= D_INTERNAL_INITIAL_SET;
     cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
@@ -135,7 +140,7 @@ static int string_native_set(const struct ConfigSet *cs, void *var,
   if (str && (str[0] == '\0'))
     value = 0;
 
-  if ((value == 0) && (cdef->type & DT_NOT_EMPTY))
+  if ((value == 0) && (cdef->type & D_NOT_EMPTY))
   {
     buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -145,6 +150,9 @@ static int string_native_set(const struct ConfigSet *cs, void *var,
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   int rc;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -177,7 +185,7 @@ static intptr_t string_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * string_string_plus_equals - Concat String to a string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
+ * string_string_plus_equals - Add to a String by string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
  */
 static int string_string_plus_equals(const struct ConfigSet *cs, void *var,
                                      const struct ConfigDef *cdef,
@@ -186,6 +194,9 @@ static int string_string_plus_equals(const struct ConfigSet *cs, void *var,
   /* Skip if the value is missing or empty string*/
   if (!value || (value[0] == '\0'))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (value && startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   int rc = CSR_SUCCESS;
 
@@ -230,6 +241,12 @@ static int string_reset(const struct ConfigSet *cs, void *var,
   {
     FREE(&str);
     return rc | CSR_SUC_NO_CHANGE;
+  }
+
+  if (startup_only(cdef, err))
+  {
+    FREE(&str);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
   if (cdef->validator)

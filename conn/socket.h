@@ -3,8 +3,7 @@
  * Low-level socket handling
  *
  * @authors
- * Copyright (C) 1998 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -47,7 +46,6 @@ int                mutt_socket_poll    (struct Connection *conn, time_t wait_sec
 int                mutt_socket_read    (struct Connection *conn, char *buf, size_t len);
 int                mutt_socket_readchar(struct Connection *conn, char *c);
 int                mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int dbg);
-int                mutt_socket_write   (struct Connection *conn, const char *buf, size_t len);
 int                mutt_socket_write_d (struct Connection *conn, const char *buf, int len, int dbg);
 
 /* logging levels */

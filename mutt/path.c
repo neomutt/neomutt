@@ -3,7 +3,10 @@
  * Path manipulation functions
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -41,6 +44,7 @@
 #include "logging2.h"
 #include "memory.h"
 #include "message.h"
+#include "pool.h"
 #include "string2.h"
 
 /**
@@ -177,42 +181,6 @@ bool mutt_path_tidy(struct Buffer *path, bool is_dir)
 }
 
 /**
- * mutt_path_pretty - Tidy a filesystem path
- * @param path    Path to modify
- * @param homedir Home directory for '~' substitution
- * @param is_dir  Is the path a directory?
- * @retval true Success
- *
- * Tidy a path and replace a home directory with '~'
- */
-bool mutt_path_pretty(struct Buffer *path, const char *homedir, bool is_dir)
-{
-  if (buf_is_empty(path))
-    return false;
-
-  mutt_path_tidy(path, is_dir);
-
-  size_t len = mutt_str_startswith(path->data, homedir);
-  if (len == 0)
-    return false;
-
-  if ((buf_at(path, len) != '/') && (buf_at(path, len) != '\0'))
-    return false;
-
-  path->data[0] = '~';
-  if (buf_len(path) == len)
-  {
-    path->data[1] = '\0';
-    buf_fix_dptr(path);
-    return true;
-  }
-
-  mutt_str_copy(path->data + 1, path->data + len, buf_len(path) + 1 - len);
-  buf_fix_dptr(path);
-  return true;
-}
-
-/**
  * mutt_path_tilde - Expand '~' in a path
  * @param path    Path to modify
  * @param homedir Home directory for '~' substitution
@@ -329,43 +297,6 @@ const char *mutt_path_basename(const char *path)
 }
 
 /**
- * mutt_path_concat - Join a directory name and a filename
- * @param dest Buffer for the result
- * @param dir  Directory name
- * @param file File name
- * @param dlen Length of buffer
- * @retval ptr Destination buffer
- *
- * If both dir and file are supplied, they are separated with '/'.
- * If either is missing, then the other will be copied exactly.
- */
-char *mutt_path_concat(char *dest, const char *dir, const char *file, size_t dlen)
-{
-  if (!dest || (!dir && !file))
-    return NULL;
-
-  if (dir && (!file || (file[0] == '\0')))
-  {
-    strncpy(dest, dir, dlen);
-    return dest;
-  }
-
-  if (file && (!dir || (dir[0] == '\0')))
-  {
-    strncpy(dest, file, dlen);
-    return dest;
-  }
-
-  const char *fmt = "%s/%s";
-
-  if (dir[strlen(dir) - 1] == '/')
-    fmt = "%s%s";
-
-  snprintf(dest, dlen, fmt, dir, file);
-  return dest;
-}
-
-/**
  * mutt_path_dirname - Return a path up to, but not including, the final '/'
  * @param  path Path
  * @retval ptr  The directory containing p
@@ -389,23 +320,20 @@ char *mutt_path_dirname(const char *path)
 }
 
 /**
- * mutt_path_to_absolute - Convert relative filepath to an absolute path
- * @param path      Relative path
- * @param reference Absolute path that \a path is relative to
- * @retval true  Success
- * @retval false Failure
+ * mutt_path_to_absolute - Convert a relative path to its absolute form
+ * @param[in,out] path      Relative path
+ * @param[in]     reference Absolute path that \a path is relative to
+ * @retval true  Success, path was changed into its absolute form
+ * @retval false Failure, path is untouched
  *
  * Use POSIX functions to convert a path to absolute, relatively to another path
  *
- * @note \a path should be at least of PATH_MAX length
+ * @note \a path should be able to store PATH_MAX characters + the terminator.
  */
 bool mutt_path_to_absolute(char *path, const char *reference)
 {
   if (!path || !reference)
     return false;
-
-  char abs_path[PATH_MAX] = { 0 };
-  int path_len;
 
   /* if path is already absolute, don't do anything */
   if ((strlen(path) > 1) && (path[0] == '/'))
@@ -413,20 +341,26 @@ bool mutt_path_to_absolute(char *path, const char *reference)
     return true;
   }
 
+  struct Buffer *abs_path = buf_pool_get();
+
   char *dirpath = mutt_path_dirname(reference);
-  mutt_str_copy(abs_path, dirpath, sizeof(abs_path));
+  buf_printf(abs_path, "%s/%s", dirpath, path);
   FREE(&dirpath);
-  mutt_strn_cat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
-  path_len = sizeof(abs_path) - strlen(path);
-
-  mutt_strn_cat(abs_path, sizeof(abs_path), path, (path_len > 0) ? path_len : 0);
-
-  path = realpath(abs_path, path);
-  if (!path && (errno != ENOENT))
+  char rpath[PATH_MAX + 1] = { 0 };
+  const char *result = realpath(buf_string(abs_path), rpath);
+  buf_pool_release(&abs_path);
+  if (!result)
   {
-    mutt_perror(_("Error: converting path to absolute"));
+    if (errno != ENOENT)
+    {
+      mutt_perror(_("Error: converting path to absolute"));
+    }
     return false;
+  }
+  else
+  {
+    mutt_str_copy(path, rpath, PATH_MAX);
   }
 
   return true;
@@ -451,35 +385,6 @@ size_t mutt_path_realpath(struct Buffer *path)
     return 0;
 
   return buf_strcpy(path, s);
-}
-
-/**
- * mutt_path_parent - Find the parent of a path
- * @param  path  Buffer for the result
- * @retval true  Success
- */
-bool mutt_path_parent(struct Buffer *path)
-{
-  if (buf_is_empty(path))
-    return false;
-
-  int n = buf_len(path);
-  if (n < 2)
-    return false;
-
-  if (buf_at(path, n - 1) == '/')
-    n--;
-
-  // Find the previous '/'
-  for (n--; ((n >= 0) && (buf_at(path, n) != '/')); n--)
-    ; // do nothing
-
-  if (n == 0) // Always keep at least one '/'
-    n++;
-
-  path->data[n] = '\0';
-  buf_fix_dptr(path);
-  return true;
 }
 
 /**

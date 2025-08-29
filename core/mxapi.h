@@ -3,8 +3,8 @@
  * API for mx backends
  *
  * @authors
- * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -49,15 +49,15 @@ typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MU
 #define MUTT_APPENDNEW     (1 << 6) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
                                     ///< Used by maildir/mh to create the mailbox.
 
-typedef uint8_t CheckStatsFlags;                ///< Flags for mutt_mailbox_check
-#define MUTT_MAILBOX_CHECK_NO_FLAGS          0  ///< No flags are set
-#define MUTT_MAILBOX_CHECK_FORCE       (1 << 0) ///< Ignore MailboxTime and check for new mail
-#define MUTT_MAILBOX_CHECK_FORCE_STATS (1 << 1) ///< Ignore MailboxType and calculate statistics
-#define MUTT_MAILBOX_CHECK_IMMEDIATE   (1 << 2) ///< Don't postpone the actual checking
+typedef uint8_t CheckStatsFlags;     ///< Flags for mutt_mailbox_check
+#define MUTT_MAILBOX_CHECK_NO_FLAGS  0  ///< No flags are set
+#define MUTT_MAILBOX_CHECK_POSTPONED (1 << 0) ///< Make sure the number of postponed messages is updated
+#define MUTT_MAILBOX_CHECK_STATS     (1 << 1) ///< Ignore mail_check_stats and calculate statistics (used by <check-stats>)
+#define MUTT_MAILBOX_CHECK_IMMEDIATE (1 << 2) ///< Don't postpone the actual checking
 
 /**
  * enum MxStatus - Return values from mbox_check(), mbox_check_stats(),
- * mbox_snc(), and mbox_close()
+ * mbox_sync(), and mbox_close()
  */
 enum MxStatus
 {
@@ -347,33 +347,6 @@ struct MxOps
    * @pre path is not NULL
    */
   int (*path_canon)(struct Buffer *path);
-
-  /**
-   * @defgroup mx_path_pretty path_pretty()
-   * @ingroup mx_api
-   *
-   * path_pretty - Abbreviate a Mailbox path
-   * @param path   Path to modify
-   * @param folder Base path for '=' substitution
-   * @retval  0 Success
-   * @retval -1 Failure
-   *
-   * @pre path is not NULL
-   */
-  int (*path_pretty)(struct Buffer *path, const char *folder);
-
-  /**
-   * @defgroup mx_path_parent path_parent()
-   * @ingroup mx_api
-   *
-   * path_parent - Find the parent of a Mailbox path
-   * @param path Path to modify
-   * @retval  0 Success
-   * @retval -1 Failure
-   *
-   * @pre path is not NULL
-   */
-  int (*path_parent)(struct Buffer *path);
 
   /**
    * @defgroup mx_path_is_empty path_is_empty()

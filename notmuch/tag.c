@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2021 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "tag.h"
 

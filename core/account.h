@@ -3,8 +3,7 @@
  * A group of associated Mailboxes
  *
  * @authors
- * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -43,6 +42,8 @@ struct Account
   void *adata;                    ///< Private data (for Mailbox backends)
 
   /**
+   * @defgroup account_adata_free Account Private Data API
+   *
    * adata_free - Free the private data attached to the Account
    * @param ptr Private data to be freed
    *

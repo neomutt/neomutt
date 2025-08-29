@@ -3,7 +3,7 @@
  * Test code for mutt_file_mkstemp_full()
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,10 +24,8 @@
 #include "config.h"
 #include "acutest.h"
 #include <stdio.h>
-#include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 void test_mutt_file_mkstemp_full(void)
 {
@@ -36,12 +34,14 @@ void test_mutt_file_mkstemp_full(void)
   {
     FILE *fp = NULL;
     TEST_CHECK((fp = mutt_file_mkstemp_full(NULL, 0, "apple")) != NULL);
-    fclose(fp);
+    if (fp)
+      fclose(fp);
   }
 
   {
     FILE *fp = NULL;
     TEST_CHECK((fp = mutt_file_mkstemp_full("apple", 0, NULL)) != NULL);
-    fclose(fp);
+    if (fp)
+      fclose(fp);
   }
 }

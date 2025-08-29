@@ -3,7 +3,9 @@
  * Config used by libsidebar
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,10 +29,12 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "expando/lib.h"
 
 /**
  * SortSidebarMethods - Sort methods for the sidebar
@@ -52,6 +56,36 @@ static const struct Mapping SortSidebarMethods[] = {
 };
 
 /**
+ * SidebarFormatDef - Expando definitions
+ *
+ * Config:
+ * - $sidebar_format
+ */
+static const struct ExpandoDefinition SidebarFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft",  ED_GLOBAL,  ED_GLO_PADDING_SOFT,  node_padding_parse },
+  { ">", "padding-hard",  ED_GLOBAL,  ED_GLO_PADDING_HARD,  node_padding_parse },
+  { "|", "padding-eol",   ED_GLOBAL,  ED_GLO_PADDING_EOL,   node_padding_parse },
+  { "!", "flagged",       ED_SIDEBAR, ED_SID_FLAGGED,       NULL },
+  { "a", "notify",        ED_SIDEBAR, ED_SID_NOTIFY,        NULL },
+  { "B", "name",          ED_SIDEBAR, ED_SID_NAME,          NULL },
+  { "d", "deleted-count", ED_SIDEBAR, ED_SID_DELETED_COUNT, NULL },
+  { "D", "description",   ED_SIDEBAR, ED_SID_DESCRIPTION,   NULL },
+  { "F", "flagged-count", ED_SIDEBAR, ED_SID_FLAGGED_COUNT, NULL },
+  { "L", "limited-count", ED_SIDEBAR, ED_SID_LIMITED_COUNT, NULL },
+  { "n", "new-mail",      ED_SIDEBAR, ED_SID_NEW_MAIL,      NULL },
+  { "N", "unread-count",  ED_SIDEBAR, ED_SID_UNREAD_COUNT,  NULL },
+  { "o", "old-count",     ED_SIDEBAR, ED_SID_OLD_COUNT,     NULL },
+  { "p", "poll",          ED_SIDEBAR, ED_SID_POLL,          NULL },
+  { "r", "read-count",    ED_SIDEBAR, ED_SID_READ_COUNT,    NULL },
+  { "S", "message-count", ED_SIDEBAR, ED_SID_MESSAGE_COUNT, NULL },
+  { "t", "tagged-count",  ED_SIDEBAR, ED_SID_TAGGED_COUNT,  NULL },
+  { "Z", "unseen-count",  ED_SIDEBAR, ED_SID_UNSEEN_COUNT,  NULL },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
+
+/**
  * SidebarVars - Config definitions for the sidebar
  */
 static struct ConfigDef SidebarVars[] = {
@@ -68,7 +102,7 @@ static struct ConfigDef SidebarVars[] = {
   { "sidebar_folder_indent", DT_BOOL, false, 0, NULL,
     "(sidebar) Indent nested folders"
   },
-  { "sidebar_format", DT_STRING|DT_NOT_EMPTY, IP "%D%*  %n", 0, NULL,
+  { "sidebar_format", DT_EXPANDO|D_NOT_EMPTY, IP "%D%*  %n", IP &SidebarFormatDef, NULL,
     "(sidebar) printf-like format string for the sidebar panel"
   },
   { "sidebar_indent_string", DT_STRING, IP "  ", 0, NULL,
@@ -95,7 +129,7 @@ static struct ConfigDef SidebarVars[] = {
   { "sidebar_visible", DT_BOOL, false, 0, NULL,
     "(sidebar) Show the sidebar"
   },
-  { "sidebar_width", DT_NUMBER|DT_NOT_NEGATIVE, 30, 0, NULL,
+  { "sidebar_width", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 30, 0, NULL,
     "(sidebar) Width of the sidebar"
   },
   { NULL },
@@ -107,5 +141,5 @@ static struct ConfigDef SidebarVars[] = {
  */
 bool config_init_sidebar(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, SidebarVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, SidebarVars);
 }

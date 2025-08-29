@@ -3,9 +3,10 @@
  * Handling for email address groups
  *
  * @authors
- * Copyright (C) 2006 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2009 Rocco Rutte <pdmef@gmx.net>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Bo Yu <tsu.yubo@gmail.com>
+ * Copyright (C) 2018-2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,7 +30,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include "group.h"
@@ -69,7 +69,7 @@ static void group_free(struct Group **ptr)
  */
 static struct Group *group_new(const char *pat)
 {
-  struct Group *g = mutt_mem_calloc(1, sizeof(struct Group));
+  struct Group *g = MUTT_MEM_CALLOC(1, struct Group);
 
   g->name = mutt_str_dup(pat);
   STAILQ_INIT(&g->rs);
@@ -190,7 +190,7 @@ void mutt_grouplist_add(struct GroupList *gl, struct Group *group)
     if (np->group == group)
       return;
   }
-  np = mutt_mem_calloc(1, sizeof(struct GroupNode));
+  np = MUTT_MEM_CALLOC(1, struct GroupNode);
   np->group = group;
   STAILQ_INSERT_TAIL(gl, np, entries);
 }
@@ -234,7 +234,7 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
     TAILQ_REMOVE(&al_new, a, entries);
     mutt_addrlist_append(&g->al, a);
   }
-  assert(TAILQ_EMPTY(&al_new));
+  ASSERT(TAILQ_EMPTY(&al_new));
 }
 
 /**

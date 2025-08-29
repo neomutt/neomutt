@@ -27,11 +27,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
-#include <signal.h> // IWYU pragma: keep
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
-#include "menu/lib.h"
 
 bool ErrorBufMessage; ///< true if the last message was an error
 char ErrorBuf[1024];  ///< Copy of the last error message
@@ -55,15 +53,8 @@ struct ListHead TempAttachmentsList  = STAILQ_HEAD_INITIALIZER(TempAttachmentsLi
 struct ListHead UserHeader           = STAILQ_HEAD_INITIALIZER(UserHeader);           ///< List of custom headers to add to outgoing emails
 // clang-format on
 
-/* flags for received signals */
-SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
-SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
-
-enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
-
 /* pseudo options */
 // clang-format off
-bool OptAttachMsg;          ///< (pseudo) used by attach-message
 #ifdef USE_AUTOCRYPT
 bool OptAutocryptGpgme;     ///< (pseudo) use Autocrypt context inside ncrypt/crypt_gpgme.c
 #endif
@@ -73,10 +64,8 @@ bool OptKeepQuiet;          ///< (pseudo) shut up the message and refresh functi
 bool OptMsgErr;             ///< (pseudo) used by mutt_error/mutt_message
 bool OptNeedRescore;        ///< (pseudo) set when the 'score' command is used
 bool OptNeedResort;         ///< (pseudo) used to force a re-sort
-#ifdef USE_NNTP
 bool OptNews;               ///< (pseudo) used to change reader mode
 bool OptNewsSend;           ///< (pseudo) used to change behavior when posting
-#endif
 bool OptNoCurses;           ///< (pseudo) when sending in batch mode
 bool OptPgpCheckTrust;      ///< (pseudo) used by dlg_pgp()
 bool OptResortInit;         ///< (pseudo) used to force the next resort to be from scratch

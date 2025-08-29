@@ -3,8 +3,8 @@
  * Compressed mbox local mailbox type
  *
  * @authors
- * Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
- * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,7 +36,19 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "core/lib.h"
+
+struct Mailbox;
+
+/**
+ * ExpandoDataCompress - Expando UIDs for Compression
+ *
+ * @sa ED_COMPRESS, ExpandoDomain
+ */
+enum ExpandoDataCompress
+{
+  ED_CMP_FROM = 1,  ///< 'from' path
+  ED_CMP_TO,        ///< 'to'   path
+};
 
 /**
  * struct CompressInfo - Private data for compress
@@ -45,9 +57,9 @@
  */
 struct CompressInfo
 {
-  const char *cmd_append;        ///< append-hook command
-  const char *cmd_close;         ///< close-hook  command
-  const char *cmd_open;          ///< open-hook   command
+  struct Expando *cmd_append;    ///< append-hook command
+  struct Expando *cmd_close;     ///< close-hook  command
+  struct Expando *cmd_open;      ///< open-hook   command
   long size;                     ///< size of the compressed file
   const struct MxOps *child_ops; ///< callbacks of de-compressed file
   bool locked;                   ///< if realpath is locked

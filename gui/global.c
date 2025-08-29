@@ -3,7 +3,9 @@
  * Global functions
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +29,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
@@ -49,7 +51,7 @@
 static int op_check_stats(int op)
 {
   mutt_mailbox_check(get_current_mailbox(),
-                     MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
+                     MUTT_MAILBOX_CHECK_POSTPONED | MUTT_MAILBOX_CHECK_STATS);
   return FR_SUCCESS;
 }
 
@@ -83,7 +85,11 @@ static int op_shell_escape(int op)
   if (mutt_shell_escape())
   {
     struct Mailbox *m_cur = get_current_mailbox();
-    mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE);
+    if (m_cur)
+    {
+      m_cur->last_checked = 0; // force a check on the next mx_mbox_check() call
+      mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_POSTPONED);
+    }
   }
   return FR_SUCCESS;
 }

@@ -3,7 +3,7 @@
  * Parse and identify different URL schemes
  *
  * @authors
- * Copyright (C) 2000-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -82,7 +82,7 @@ void           url_free        (struct Url **ptr);
 struct Url    *url_parse       (const char *src);
 int            url_pct_decode  (char *s);
 void           url_pct_encode  (char *buf, size_t buflen, const char *src);
-int            url_tobuffer    (struct Url *url, struct Buffer *dest, uint8_t flags);
-int            url_tostring    (struct Url *url, char *buf, size_t buflen, uint8_t flags);
+int            url_tobuffer    (const struct Url *url, struct Buffer *dest, uint8_t flags);
+int            url_tostring    (const struct Url *url, char *buf, size_t buflen, uint8_t flags);
 
 #endif /* MUTT_EMAIL_URL_H */

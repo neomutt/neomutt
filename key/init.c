@@ -38,8 +38,21 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
-#include "functions.h"
-#include "opcodes.h"
+
+extern const struct MenuOpSeq AliasDefaultBindings[];
+extern const struct MenuOpSeq AttachmentDefaultBindings[];
+#ifdef USE_AUTOCRYPT
+extern const struct MenuOpSeq AutocryptDefaultBindings[];
+#endif
+extern const struct MenuOpSeq BrowserDefaultBindings[];
+extern const struct MenuOpSeq ComposeDefaultBindings[];
+extern const struct MenuOpSeq EditorDefaultBindings[];
+extern const struct MenuOpSeq IndexDefaultBindings[];
+extern const struct MenuOpSeq PagerDefaultBindings[];
+extern const struct MenuOpSeq PgpDefaultBindings[];
+extern const struct MenuOpSeq PostponedDefaultBindings[];
+extern const struct MenuOpSeq QueryDefaultBindings[];
+extern const struct MenuOpSeq SmimeDefaultBindings[];
 
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style
@@ -113,7 +126,7 @@ static const char *find_ext_name(const char *key)
  *
  * Determine the keycodes for ncurses extended keys and fill in the KeyNames array.
  *
- * This function must be called *after* initscr(), or tigetstr() returns -1.
+ * This function must be called *after* initscr(), or mutt_tigetstr() fails.
  * This creates a bit of a chicken-and-egg problem because km_init() is called
  * prior to start_curses().  This means that the default keybindings can't
  * include any of the extended keys because they won't be defined until later.
@@ -131,7 +144,7 @@ void init_extended_keys(void)
 
       if (keyname)
       {
-        char *s = tigetstr((char *) keyname);
+        const char *s = mutt_tigetstr((char *) keyname);
         if (s && ((long) (s) != -1))
         {
           int code = key_defined(s);
@@ -176,9 +189,6 @@ void km_init(void)
   create_bindings(EditorDefaultBindings, MENU_EDITOR);
   create_bindings(GenericDefaultBindings, MENU_GENERIC);
   create_bindings(IndexDefaultBindings, MENU_INDEX);
-#ifdef MIXMASTER
-  create_bindings(MixmasterDefaultBindings, MENU_MIXMASTER);
-#endif
   create_bindings(PagerDefaultBindings, MENU_PAGER);
   create_bindings(PostponedDefaultBindings, MENU_POSTPONED);
   create_bindings(QueryDefaultBindings, MENU_QUERY);

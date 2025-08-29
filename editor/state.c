@@ -3,7 +3,7 @@
  * State of text entry
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +27,7 @@
  */
 
 #include "config.h"
-#include <string.h>
+#include <wchar.h>
 #include "mutt/lib.h"
 #include "state.h"
 
@@ -60,9 +60,9 @@ void enter_state_resize(struct EnterState *es, size_t num)
     return;
 
   num = ROUND_UP(num + 4, 128);
-  mutt_mem_realloc(&es->wbuf, num * sizeof(wchar_t));
+  MUTT_MEM_REALLOC(&es->wbuf, num, wchar_t);
 
-  memset(es->wbuf + es->wbuflen, 0, (num - es->wbuflen) * sizeof(wchar_t));
+  wmemset(es->wbuf + es->wbuflen, 0, num - es->wbuflen);
 
   es->wbuflen = num;
 }
@@ -73,7 +73,7 @@ void enter_state_resize(struct EnterState *es, size_t num)
  */
 struct EnterState *enter_state_new(void)
 {
-  struct EnterState *es = mutt_mem_calloc(1, sizeof(struct EnterState));
+  struct EnterState *es = MUTT_MEM_CALLOC(1, struct EnterState);
 
   enter_state_resize(es, 1);
 

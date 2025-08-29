@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,8 +32,9 @@ void test_mutt_regex_new(void)
   // struct Regex *mutt_regex_new(const char *str, uint32_t flags, struct Buffer *err);
 
   {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(!mutt_regex_new(NULL, 0, &buf));
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(!mutt_regex_new(NULL, 0, buf));
+    buf_pool_release(&buf);
   }
 
   {

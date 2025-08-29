@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2000,2003 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -105,7 +107,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
 {
   int b, ch, k;
 
-  char *buf = mutt_mem_malloc(u7len + u7len / 8 + 1);
+  char *buf = MUTT_MEM_MALLOC(u7len + u7len / 8 + 1, char);
   char *p = buf;
   int pair1 = 0;
 
@@ -223,7 +225,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
   if (u8len)
     *u8len = p - buf;
 
-  mutt_mem_realloc(&buf, p - buf);
+  MUTT_MEM_REALLOC(&buf, p - buf, char);
   if (u8)
     *u8 = buf;
   return buf;
@@ -255,7 +257,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
 
   /* In the worst case we convert 2 chars to 7 chars. For example:
    * "\x10&\x10&..." -> "&ABA-&-&ABA-&-...".  */
-  char *buf = mutt_mem_malloc((u8len / 2) * 7 + 6);
+  char *buf = MUTT_MEM_MALLOC((u8len / 2) * 7 + 6, char);
   char *p = buf;
 
   while (u8len)
@@ -377,7 +379,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
   *p++ = '\0';
   if (u7len)
     *u7len = p - buf;
-  mutt_mem_realloc(&buf, p - buf);
+  MUTT_MEM_REALLOC(&buf, p - buf, char);
   if (u7)
     *u7 = buf;
   return buf;

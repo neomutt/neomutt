@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2000-2006,2012 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,10 +29,10 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include "private.h"
@@ -40,7 +42,7 @@
 #include "auth.h"
 
 /**
- * imap_auth_sasl - SASL authenticator - Implements ImapAuth::authenticate()
+ * imap_auth_sasl - SASL authenticator - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *method)
 {
@@ -124,7 +126,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
   mutt_message(_("Authenticating (%s)..."), mech);
 
   bufsize = MAX((olen * 2), 1024);
-  buf = mutt_mem_malloc(bufsize);
+  buf = MUTT_MEM_MALLOC(bufsize, char);
 
   snprintf(buf, bufsize, "AUTHENTICATE %s", mech);
   if ((adata->capabilities & IMAP_CAP_SASL_IR) && client_start)
@@ -167,7 +169,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
         if (len > bufsize)
         {
           bufsize = len;
-          mutt_mem_realloc(&buf, bufsize);
+          MUTT_MEM_REALLOC(&buf, bufsize, char);
         }
         /* For sasl_decode64, the fourth parameter, outmax, doesn't
          * include space for the trailing null */
@@ -202,7 +204,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
       if ((olen * 2) > bufsize)
       {
         bufsize = olen * 2;
-        mutt_mem_realloc(&buf, bufsize);
+        MUTT_MEM_REALLOC(&buf, bufsize, char);
       }
       if (sasl_encode64(pc, olen, buf, bufsize, &olen) != SASL_OK)
       {

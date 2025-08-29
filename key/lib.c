@@ -3,7 +3,6 @@
  * Key helper functions
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2010-2011 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
@@ -39,8 +38,21 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
-#include "functions.h"
-#include "opcodes.h"
+
+extern const struct MenuFuncOp OpAlias[];
+extern const struct MenuFuncOp OpAttachment[];
+#ifdef USE_AUTOCRYPT
+extern const struct MenuFuncOp OpAutocrypt[];
+#endif
+extern const struct MenuFuncOp OpBrowser[];
+extern const struct MenuFuncOp OpCompose[];
+extern const struct MenuFuncOp OpEditor[];
+extern const struct MenuFuncOp OpIndex[];
+extern const struct MenuFuncOp OpPager[];
+extern const struct MenuFuncOp OpPgp[];
+extern const struct MenuFuncOp OpPostponed[];
+extern const struct MenuFuncOp OpQuery[];
+extern const struct MenuFuncOp OpSmime[];
 
 /**
  * KeyNames - Key name lookup table
@@ -137,9 +149,9 @@ void mutt_keymap_free(struct Keymap **ptr)
  */
 struct Keymap *alloc_keys(size_t len, keycode_t *keys)
 {
-  struct Keymap *p = mutt_mem_calloc(1, sizeof(struct Keymap));
+  struct Keymap *p = MUTT_MEM_CALLOC(1, struct Keymap);
   p->len = len;
-  p->keys = mutt_mem_calloc(len, sizeof(keycode_t));
+  p->keys = MUTT_MEM_CALLOC(len, keycode_t);
   memcpy(p->keys, keys, len * sizeof(keycode_t));
   return p;
 }
@@ -319,14 +331,11 @@ const char *mutt_get_func(const struct MenuFuncOp *funcs, int op)
 
 /**
  * generic_tokenize_push_string - Parse and queue a 'push' command
- * @param s            String to push into the key queue
- * @param generic_push Callback function to add events to macro queue
+ * @param s String to push into the key queue
  *
- * Parses s for `<function>` syntax and adds the whole sequence to either the
- * macro or unget buffer.  This function is invoked by the next two defines
- * below.
+ * Parses s for `<function>` syntax and adds the whole sequence the macro buffer.
  */
-void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
+void generic_tokenize_push_string(char *s)
 {
   char *pp = NULL;
   char *p = s + mutt_str_len(s) - 1;
@@ -347,7 +356,7 @@ void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
         i = parse_fkey(pp);
         if (i > 0)
         {
-          generic_push(KEY_F(i), 0);
+          mutt_push_macro_event(KEY_F(i), 0);
           p = pp - 1;
           continue;
         }
@@ -361,7 +370,7 @@ void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
         if (KeyNames[i].name)
         {
           /* found a match */
-          generic_push(KeyNames[i].value, 0);
+          mutt_push_macro_event(KeyNames[i].value, 0);
           p = pp - 1;
           continue;
         }
@@ -381,13 +390,13 @@ void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
 
         if (op != OP_NULL)
         {
-          generic_push(0, op);
+          mutt_push_macro_event(0, op);
           p = pp - 1;
           continue;
         }
       }
     }
-    generic_push((unsigned char) *p--, 0); /* independent 8 bits chars */
+    mutt_push_macro_event((unsigned char) *p--, 0); /* independent 8 bits chars */
   }
 }
 
@@ -426,13 +435,13 @@ const char *km_keyname(int c)
   {
     snprintf(buf, sizeof(buf), "<F%d>", c - KEY_F0);
   }
-  else if (IsPrint(c))
+  else if ((c < 256) && (c >= -128) && IsPrint(c))
   {
     snprintf(buf, sizeof(buf), "%c", (unsigned char) c);
   }
   else
   {
-    snprintf(buf, sizeof(buf), "\\x%hx", (unsigned short) c);
+    snprintf(buf, sizeof(buf), "<%ho>", (unsigned short) c);
   }
   return buf;
 }
@@ -542,10 +551,6 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
       return OpPgp;
     case MENU_KEY_SELECT_SMIME:
       return OpSmime;
-#endif
-#ifdef MIXMASTER
-    case MENU_MIXMASTER:
-      return OpMixmaster;
 #endif
     case MENU_PAGER:
       return OpPager;

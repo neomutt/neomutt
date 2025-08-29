@@ -3,7 +3,8 @@
  * Process a message for display in the pager
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,6 +31,7 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -39,14 +41,14 @@
 #include "mutt.h"
 #include "lib.h"
 #include "attach/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "copy.h"
-#include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "mview.h"
@@ -67,7 +69,6 @@ static const char *ExtPagerProgress = N_("all");
 static void process_protected_headers(struct Mailbox *m, struct Email *e)
 {
   struct Envelope *prot_headers = NULL;
-  regmatch_t pmatch[1];
 
   const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
 #ifdef USE_AUTOCRYPT
@@ -121,19 +122,8 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
     if (m->subj_hash && e->env->real_subj)
       mutt_hash_delete(m->subj_hash, e->env->real_subj, e);
 
-    mutt_str_replace(&e->env->subject, prot_headers->subject);
+    mutt_env_set_subject(e->env, prot_headers->subject);
     FREE(&e->env->disp_subj);
-    const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
-    if (mutt_regex_capture(c_reply_regex, e->env->subject, 1, pmatch))
-    {
-      e->env->real_subj = e->env->subject + pmatch[0].rm_eo;
-      if (e->env->real_subj[0] == '\0')
-        e->env->real_subj = NULL;
-    }
-    else
-    {
-      e->env->real_subj = e->env->subject;
-    }
 
     if (m->subj_hash)
       mutt_hash_insert(m->subj_hash, e->env->real_subj, e);
@@ -318,16 +308,16 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
   if (!msg)
     return -1;
 
-  char buf[1024] = { 0 };
-  const char *const c_pager_format = cs_subset_string(NeoMutt->sub, "pager_format");
+  struct Buffer *buf = buf_pool_get();
+  const struct Expando *c_pager_format = cs_subset_expando(NeoMutt->sub, "pager_format");
   const int screen_width = RootWindow->state.cols;
-  mutt_make_string(buf, sizeof(buf), screen_width, NONULL(c_pager_format), m,
-                   -1, e, MUTT_FORMAT_NO_FLAGS, _(ExtPagerProgress));
+  mutt_make_string(buf, screen_width, c_pager_format, m, -1, e,
+                   MUTT_FORMAT_NO_FLAGS, _(ExtPagerProgress));
 
   struct Buffer *tempfile = buf_pool_get();
 
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
-  int rc = email_to_file(msg, tempfile, m, e, buf, screen_width, &cmflags);
+  int rc = email_to_file(msg, tempfile, m, e, buf_string(buf), screen_width, &cmflags);
   if (rc < 0)
     goto cleanup;
 
@@ -357,6 +347,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
   }
 
 cleanup:
+  buf_pool_release(&buf);
   mx_msg_close(m, &msg);
   buf_pool_release(&tempfile);
   return rc;
@@ -482,7 +473,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
 
     notify_crypto(shared->email, msg, cmflags);
 
-    /* Invoke the builtin pager */
+    /* Invoke the built-in pager */
     struct PagerData pdata = { 0 };
     struct PagerView pview = { &pdata };
 

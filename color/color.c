@@ -3,8 +3,9 @@
  * Color and attribute parsing
  *
  * @authors
- * Copyright (C) 1996-2002,2012 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2021-2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,22 +43,6 @@
 #include "regex4.h"
 #include "simple2.h"
 
-/// Mapping between a colour name and an ncurses colour
-const struct Mapping ColorNames[] = {
-  // clang-format off
-  { "black",   COLOR_BLACK },
-  { "blue",    COLOR_BLUE },
-  { "cyan",    COLOR_CYAN },
-  { "green",   COLOR_GREEN },
-  { "magenta", COLOR_MAGENTA },
-  { "red",     COLOR_RED },
-  { "white",   COLOR_WHITE },
-  { "yellow",  COLOR_YELLOW },
-  { "default", COLOR_DEFAULT },
-  { 0, 0 },
-  // clang-format on
-};
-
 /**
  * colors_cleanup - Reset all the simple, quoted and regex colours
  */
@@ -90,10 +75,12 @@ void mutt_colors_init(void)
 {
   color_debug(LL_DEBUG5, "init\n");
   color_notify_init();
-  simple_colors_init();
-  regex_colors_init();
+
   curses_colors_init();
   merged_colors_init();
+  quoted_colors_init();
+  regex_colors_init();
+  simple_colors_init();
 
   start_color();
   use_default_colors();

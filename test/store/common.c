@@ -3,7 +3,7 @@
  * Common code for store tests
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,18 +26,19 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h> // IWYU pragma: keep
 #include "mutt/lib.h"
 #include "store/lib.h"
 #include "test_common.h"
 
-bool test_store_setup(char *buf, size_t buflen)
+bool test_store_setup(struct Buffer *path)
 {
-  if (!buf)
+  if (!path)
     return false;
 
-  test_gen_path(buf, buflen, "%s/tmp/XXXXXX");
+  test_gen_path(path, "%s/tmp/XXXXXX");
 
-  if (!mkdtemp(buf))
+  if (!mkdtemp(path->data))
     return false;
 
   return true;
@@ -51,7 +52,7 @@ bool test_store_degenerate(const struct StoreOps *store_ops, const char *name)
   if (!TEST_CHECK_STR_EQ(store_ops->name, name))
     return false;
 
-  if (!TEST_CHECK(store_ops->open(NULL) == NULL))
+  if (!TEST_CHECK(store_ops->open(NULL, false) == NULL))
     return false;
 
   if (!TEST_CHECK(store_ops->fetch(NULL, NULL, 0, NULL) == NULL))

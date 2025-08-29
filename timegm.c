@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2022 Claes Nästén <pekdon@gmail.com>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -37,7 +38,7 @@
  */
 static bool is_leap_year(int year)
 {
-  return ((year % 400) == 0) || ((year % 4) == 0) && ((year % 100) != 0);
+  return ((year % 400) == 0) || (((year % 4) == 0) && ((year % 100) != 0));
 }
 
 /**

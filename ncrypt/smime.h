@@ -3,9 +3,8 @@
  * SMIME helper routines
  *
  * @authors
- * Copyright (C) 2001-2002 Oliver Ehli <elmy@acm.org>
- * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -51,19 +50,49 @@ struct SmimeKey
   struct SmimeKey *next;
 };
 
+/**
+ * struct SmimeCommandContext - Data for a SIME command
+ */
+struct SmimeCommandContext
+{
+  const char *key;           ///< %k
+  const char *cryptalg;      ///< %a
+  const char *digestalg;     ///< %d
+  const char *fname;         ///< %f
+  const char *sig_fname;     ///< %s
+  const char *certificates;  ///< %c
+  const char *intermediates; ///< %i
+};
+
+/**
+ * ExpandoDataSmimeCmd - Expando UIDs for Smime Commands
+ *
+ * @sa ED_SMIME_CMD, ExpandoDomain
+ */
+enum ExpandoDataSmimeCmd
+{
+  ED_SMI_ALGORITHM = 1,        ///< SmimeCommandContext.cryptalg
+  ED_SMI_CERTIFICATE_IDS,      ///< SmimeCommandContext.certificates
+  ED_SMI_DIGEST_ALGORITHM,     ///< SmimeCommandContext.digestalg
+  ED_SMI_INTERMEDIATE_IDS,     ///< SmimeCommandContext.intermediates
+  ED_SMI_KEY,                  ///< SmimeCommandContext.key
+  ED_SMI_MESSAGE_FILE,         ///< SmimeCommandContext.fname
+  ED_SMI_SIGNATURE_FILE,       ///< SmimeCommandContext.sig_fname
+};
+
 void smime_init(void);
 void smime_cleanup(void);
 
-int           smime_class_application_handler(struct Body *m, struct State *s);
-struct Body * smime_class_build_smime_entity (struct Body *a, char *certlist);
-int           smime_class_decrypt_mime       (FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
+int           smime_class_application_handler(struct Body *b, struct State *s);
+struct Body * smime_class_build_smime_entity (struct Body *b, char *certlist);
+int           smime_class_decrypt_mime       (FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **b_dec);
 char *        smime_class_find_keys          (const struct AddressList *addrlist, bool oppenc_mode);
 void          smime_class_getkeys            (struct Envelope *env);
 void          smime_class_invoke_import      (const char *infile, const char *mailbox);
 SecurityFlags smime_class_send_menu          (struct Email *e);
-struct Body * smime_class_sign_message       (struct Body *a, const struct AddressList *from);
+struct Body * smime_class_sign_message       (struct Body *b, const struct AddressList *from);
 bool          smime_class_valid_passphrase   (void);
-int           smime_class_verify_one         (struct Body *sigbdy, struct State *s, const char *tempfile);
+int           smime_class_verify_one         (struct Body *b, struct State *s, const char *tempfile);
 int           smime_class_verify_sender      (struct Email *e, struct Message *msg);
 void          smime_class_void_passphrase    (void);
 

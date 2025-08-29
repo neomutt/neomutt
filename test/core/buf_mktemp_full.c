@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,17 +26,16 @@
 #include "acutest.h"
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 void test_buf_mktemp_full(void)
 {
   // void buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 
   {
-    struct Buffer buf = buf_make(1024);
-    buf_mktemp_full(&buf, NULL, NULL, __FILE__, __LINE__);
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_mktemp_full(buf, NULL, NULL, __FILE__, __LINE__);
+    buf_pool_release(&buf);
   }
 }

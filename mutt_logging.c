@@ -3,7 +3,8 @@
  * NeoMutt Logging
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -271,7 +272,7 @@ int level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 {
   if ((value < 0) || (value >= LL_MAX))
   {
-    buf_printf(err, _("Invalid value for option %s: %ld"), cdef->name, value);
+    buf_printf(err, _("Invalid value for option %s: %ld"), cdef->name, (long) value);
     return CSR_ERR_INVALID;
   }
 

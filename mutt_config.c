@@ -3,8 +3,13 @@
  * Definitions of config variables
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
+ * Copyright (C) 2020 Louis Brauer <louis@openbooking.ch>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,17 +33,25 @@
  */
 
 #include "config.h"
-#include <stddef.h>
+#include <ctype.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
-#include "globals.h"
+#include "attach/lib.h"
+#include "expando/lib.h"
+#include "index/lib.h"
+#include "menu/lib.h"
 #include "init.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"
+
+extern const struct ExpandoDefinition IndexFormatDef[];
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType Cst##NAME;                                 \
@@ -111,17 +124,298 @@ static int multipart_validator(const struct ConfigSet *cs, const struct ConfigDe
 }
 
 /**
- * reply_validator - Validate the "reply_regex" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * AttachFormatDef - Expando definitions
+ *
+ * Config:
+ * - $attach_format
  */
-static int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                           intptr_t value, struct Buffer *err)
-{
-  if (!OptAttachMsg)
-    return CSR_SUCCESS;
+static const struct ExpandoDefinition AttachFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft",     ED_GLOBAL, ED_GLO_PADDING_SOFT,     node_padding_parse },
+  { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     node_padding_parse },
+  { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      node_padding_parse },
+  { "c", "charset-convert",  ED_BODY,   ED_BOD_CHARSET_CONVERT,  NULL },
+  { "C", "charset",          ED_ATTACH, ED_ATT_CHARSET,          NULL },
+  { "d", "description",      ED_BODY,   ED_BOD_DESCRIPTION,      NULL },
+  { "D", "deleted",          ED_BODY,   ED_BOD_DELETED,          NULL },
+  { "e", "mime-encoding",    ED_BODY,   ED_BOD_MIME_ENCODING,    NULL },
+  { "f", "file",             ED_BODY,   ED_BOD_FILE,             NULL },
+  { "F", "file-disposition", ED_BODY,   ED_BOD_FILE_DISPOSITION, NULL },
+  { "I", "disposition",      ED_BODY,   ED_BOD_DISPOSITION,      NULL },
+  { "m", "mime-major",       ED_BODY,   ED_BOD_MIME_MAJOR,       NULL },
+  { "M", "mime-minor",       ED_BODY,   ED_BOD_MIME_MINOR,       NULL },
+  { "n", "number",           ED_ATTACH, ED_ATT_NUMBER,           NULL },
+  { "Q", "attach-qualifies", ED_BODY,   ED_BOD_ATTACH_QUALIFIES, NULL },
+  { "s", "file-size",        ED_BODY,   ED_BOD_FILE_SIZE,        NULL },
+  { "t", "tagged",           ED_BODY,   ED_BOD_TAGGED,           NULL },
+  { "T", "tree",             ED_ATTACH, ED_ATT_TREE,             NULL },
+  { "u", "unlink",           ED_BODY,   ED_BOD_UNLINK,           NULL },
+  { "X", "attach-count",     ED_BODY,   ED_BOD_ATTACH_COUNT,     NULL },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
 
-  buf_printf(err, _("Option %s may not be set when in attach-message mode"), cdef->name);
-  return CSR_ERR_INVALID;
+/**
+ * parse_index_date_recv_local - Parse a Date Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
+ *
+ * Parse a custom Expando of the form, "%(string)".
+ * The "string" will be passed to strftime().
+ */
+struct ExpandoNode *parse_index_date_recv_local(const char *str,
+                                                struct ExpandoFormat *fmt, int did,
+                                                int uid, ExpandoParserFlags flags,
+                                                const char **parsed_until,
+                                                struct ExpandoParseError *err)
+{
+  if (flags & EP_CONDITIONAL)
+  {
+    return node_conddate_parse(str, did, uid, parsed_until, err);
+  }
+
+  return node_expando_parse_enclosure(str, did, uid, ')', fmt, parsed_until, err);
 }
+
+/**
+ * parse_index_date_local - Parse a Date Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
+ *
+ * Parse a custom expando of the form, "%[string]".
+ * The "string" will be passed to strftime().
+ */
+struct ExpandoNode *parse_index_date_local(const char *str, struct ExpandoFormat *fmt,
+                                           int did, int uid, ExpandoParserFlags flags,
+                                           const char **parsed_until,
+                                           struct ExpandoParseError *err)
+{
+  if (flags & EP_CONDITIONAL)
+  {
+    return node_conddate_parse(str, did, uid, parsed_until, err);
+  }
+
+  return node_expando_parse_enclosure(str, did, uid, ']', fmt, parsed_until, err);
+}
+
+/**
+ * parse_index_date - Parse a Date Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
+ *
+ * Parse a custom Expando of the form, "%{string}".
+ * The "string" will be passed to strftime().
+ */
+struct ExpandoNode *parse_index_date(const char *str, struct ExpandoFormat *fmt,
+                                     int did, int uid, ExpandoParserFlags flags,
+                                     const char **parsed_until,
+                                     struct ExpandoParseError *err)
+{
+  if (flags & EP_CONDITIONAL)
+  {
+    return node_conddate_parse(str, did, uid, parsed_until, err);
+  }
+
+  return node_expando_parse_enclosure(str, did, uid, '}', fmt, parsed_until, err);
+}
+
+/**
+ * parse_index_hook - Parse an index-hook - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
+ *
+ * Parse a custom Expando of the form, "%@name@".
+ * The "name" will be looked up as an index-hook, then the result parsed as an
+ * Expando.
+ */
+struct ExpandoNode *parse_index_hook(const char *str, struct ExpandoFormat *fmt,
+                                     int did, int uid, ExpandoParserFlags flags,
+                                     const char **parsed_until,
+                                     struct ExpandoParseError *err)
+{
+  if (flags & EP_CONDITIONAL)
+  {
+    snprintf(err->message, sizeof(err->message),
+             _("index-hook cannot be used as a condition"));
+    err->position = str;
+    return NULL;
+  }
+
+  return node_expando_parse_enclosure(str, did, uid, '@', fmt, parsed_until, err);
+}
+
+/**
+ * parse_tags_transformed - Parse a Tags-Transformed Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
+ *
+ * Parse a custom expando of the form, "%G?" where '?' is an alpha-numeric character.
+ */
+struct ExpandoNode *parse_tags_transformed(const char *str, struct ExpandoFormat *fmt,
+                                           int did, int uid, ExpandoParserFlags flags,
+                                           const char **parsed_until,
+                                           struct ExpandoParseError *err)
+{
+  // Tag expando %G must use an suffix from [A-Za-z0-9], e.g. %Ga, %GL
+  if (!isalnum(str[1]))
+    return NULL;
+
+  // Let the basic expando parser do the work
+  flags |= EP_NO_CUSTOM_PARSE;
+  struct ExpandoNode *node = parse_short_name(str, IndexFormatDef, flags, fmt,
+                                              parsed_until, err);
+
+  // but adjust the node to take one more character
+  node->text = mutt_strn_dup((*parsed_until) - 1, 2);
+  (*parsed_until)++;
+
+  if (flags & EP_CONDITIONAL)
+  {
+    node->type = ENT_CONDBOOL;
+    node->render = node_condbool_render;
+  }
+
+  return node;
+}
+
+/**
+ * parse_subject - Parse a Subject Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
+ *
+ * Parse a Subject Expando, "%s", into two separate Nodes.
+ * One for the tree, one for the subject.
+ */
+struct ExpandoNode *parse_subject(const char *str, struct ExpandoFormat *fmt,
+                                  int did, int uid, ExpandoParserFlags flags,
+                                  const char **parsed_until, struct ExpandoParseError *err)
+{
+  // Let the basic expando parser do the work
+  flags |= EP_NO_CUSTOM_PARSE;
+  struct ExpandoNode *node_subj = parse_short_name(str, IndexFormatDef, flags,
+                                                   NULL, parsed_until, err);
+
+  struct ExpandoNode *node_tree = node_expando_new(NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
+  struct ExpandoNode *node_cont = node_container_new();
+
+  // Apply the formatting info to the container
+  node_cont->format = fmt;
+
+  node_add_child(node_cont, node_tree);
+  node_add_child(node_cont, node_subj);
+
+  return node_cont;
+}
+
+/**
+ * IndexFormatDef - Expando definitions
+ *
+ * Config:
+ * - $attribution_intro
+ * - $attribution_trailer
+ * - $forward_attribution_intro
+ * - $forward_attribution_trailer
+ * - $forward_format
+ * - $index_format
+ * - $message_format
+ * - $pager_format
+ *
+ * @note Longer Expandos must precede any similar, but shorter Expandos
+ */
+const struct ExpandoDefinition IndexFormatDef[] = {
+  // clang-format off
+  { "*",  "padding-soft",        ED_GLOBAL,   ED_GLO_PADDING_SOFT,        node_padding_parse },
+  { ">",  "padding-hard",        ED_GLOBAL,   ED_GLO_PADDING_HARD,        node_padding_parse },
+  { "|",  "padding-eol",         ED_GLOBAL,   ED_GLO_PADDING_EOL,         node_padding_parse },
+  { "(",  NULL,                  ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL,     parse_index_date_recv_local },
+  { "@",  NULL,                  ED_EMAIL,    ED_EMA_INDEX_HOOK,          parse_index_hook },
+  { "a",  "from",                ED_ENVELOPE, ED_ENV_FROM,                NULL },
+  { "A",  "reply-to",            ED_ENVELOPE, ED_ENV_REPLY_TO,            NULL },
+  { "b",  "mailbox-name",        ED_MAILBOX,  ED_MBX_MAILBOX_NAME,        NULL },
+  { "B",  "list-address",        ED_ENVELOPE, ED_ENV_LIST_ADDRESS,        NULL },
+  { "cr", "body-characters",     ED_EMAIL,    ED_EMA_BODY_CHARACTERS,     NULL },
+  { "c",  "size",                ED_EMAIL,    ED_EMA_SIZE,                NULL },
+  { "C",  "number",              ED_EMAIL,    ED_EMA_NUMBER,              NULL },
+  { "d",  "date-format",         ED_EMAIL,    ED_EMA_DATE_FORMAT,         NULL },
+  { "D",  "date-format-local",   ED_EMAIL,    ED_EMA_DATE_FORMAT_LOCAL,   NULL },
+  { "e",  "thread-number",       ED_EMAIL,    ED_EMA_THREAD_NUMBER,       NULL },
+  { "E",  "thread-count",        ED_EMAIL,    ED_EMA_THREAD_COUNT,        NULL },
+  { "f",  "from-full",           ED_ENVELOPE, ED_ENV_FROM_FULL,           NULL },
+  { "Fp", "sender-plain",        ED_ENVELOPE, ED_ENV_SENDER_PLAIN,        NULL },
+  { "F",  "sender",              ED_ENVELOPE, ED_ENV_SENDER,              NULL },
+  { "g",  "tags",                ED_EMAIL,    ED_EMA_TAGS,                NULL },
+  { "G",  "tags-transformed",    ED_EMAIL,    ED_EMA_TAGS_TRANSFORMED,    parse_tags_transformed },
+  { "H",  "spam",                ED_ENVELOPE, ED_ENV_SPAM,                NULL },
+  { "i",  "message-id",          ED_ENVELOPE, ED_ENV_MESSAGE_ID,          NULL },
+  { "I",  "initials",            ED_ENVELOPE, ED_ENV_INITIALS,            NULL },
+  { "J",  "thread-tags",         ED_EMAIL,    ED_EMA_THREAD_TAGS,         NULL },
+  { "K",  "list-empty",          ED_ENVELOPE, ED_ENV_LIST_EMPTY,          NULL },
+  { "l",  "lines",               ED_EMAIL,    ED_EMA_LINES,               NULL },
+  { "L",  "from-list",           ED_EMAIL,    ED_EMA_FROM_LIST,           NULL },
+  { "m",  "message-count",       ED_MAILBOX,  ED_MBX_MESSAGE_COUNT,       NULL },
+  { "M",  "thread-hidden-count", ED_EMAIL,    ED_EMA_THREAD_HIDDEN_COUNT, NULL },
+  { "n",  "name",                ED_ENVELOPE, ED_ENV_NAME,                NULL },
+  { "N",  "score",               ED_EMAIL,    ED_EMA_SCORE,               NULL },
+  { "O",  "save-folder",         ED_EMAIL,    ED_EMA_LIST_OR_SAVE_FOLDER, NULL },
+  { "P",  "percentage",          ED_MAILBOX,  ED_MBX_PERCENTAGE,          NULL },
+  { "q",  "newsgroup",           ED_ENVELOPE, ED_ENV_NEWSGROUP,           NULL },
+  { "r",  "to-all",              ED_ENVELOPE, ED_ENV_TO_ALL,              NULL },
+  { "R",  "cc-all",              ED_ENVELOPE, ED_ENV_CC_ALL,              NULL },
+  { "s",  "subject",             ED_ENVELOPE, ED_ENV_SUBJECT,             parse_subject },
+  { "S",  "flag-chars",          ED_EMAIL,    ED_EMA_FLAG_CHARS,          NULL },
+  { "t",  "to",                  ED_ENVELOPE, ED_ENV_TO,                  NULL },
+  { "T",  "to-chars",            ED_EMAIL,    ED_EMA_TO_CHARS,            NULL },
+  { "u",  "username",            ED_ENVELOPE, ED_ENV_USERNAME,            NULL },
+  { "v",  "first-name",          ED_ENVELOPE, ED_ENV_FIRST_NAME,          NULL },
+  { "W",  "organization",        ED_ENVELOPE, ED_ENV_ORGANIZATION,        NULL },
+  { "x",  "x-comment-to",        ED_ENVELOPE, ED_ENV_X_COMMENT_TO,        NULL },
+  { "X",  "attachment-count",    ED_EMAIL,    ED_EMA_ATTACHMENT_COUNT,    NULL },
+  { "y",  "x-label",             ED_ENVELOPE, ED_ENV_X_LABEL,             NULL },
+  { "Y",  "thread-x-label",      ED_ENVELOPE, ED_ENV_THREAD_X_LABEL,      NULL },
+  { "Z",  "combined-flags",      ED_EMAIL,    ED_EMA_COMBINED_FLAGS,      NULL },
+  { "zc", "crypto-flags",        ED_EMAIL,    ED_EMA_CRYPTO_FLAGS,        NULL },
+  { "zs", "status-flags",        ED_EMAIL,    ED_EMA_STATUS_FLAGS,        NULL },
+  { "zt", "message-flags",       ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       NULL },
+  { "[",  NULL,                  ED_EMAIL,    ED_EMA_STRF_LOCAL,          parse_index_date_local },
+  { "{",  NULL,                  ED_EMAIL,    ED_EMA_STRF,                parse_index_date },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
+
+/// IndexFormatDefNoPadding - Index format definitions, without padding
+static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[3]);
+
+/**
+ * StatusFormatDef - Expando definitions
+ *
+ * Config:
+ * - $new_mail_command
+ * - $status_format
+ * - $ts_icon_format
+ * - $ts_status_format
+ */
+static const struct ExpandoDefinition StatusFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft",     ED_GLOBAL, ED_GLO_PADDING_SOFT,     node_padding_parse },
+  { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     node_padding_parse },
+  { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      node_padding_parse },
+  { "b", "unread-mailboxes", ED_INDEX,  ED_IND_UNREAD_MAILBOXES, NULL },
+  { "d", "deleted-count",    ED_INDEX,  ED_IND_DELETED_COUNT,    NULL },
+  { "D", "description",      ED_INDEX,  ED_IND_DESCRIPTION,      NULL },
+  { "f", "mailbox-path",     ED_INDEX,  ED_IND_MAILBOX_PATH,     NULL },
+  { "F", "flagged-count",    ED_INDEX,  ED_IND_FLAGGED_COUNT,    NULL },
+  { "h", "hostname",         ED_GLOBAL, ED_GLO_HOSTNAME,         NULL },
+  { "l", "mailbox-size",     ED_INDEX,  ED_IND_MAILBOX_SIZE,     NULL },
+  { "L", "limit-size",       ED_INDEX,  ED_IND_LIMIT_SIZE,       NULL },
+  { "m", "message-count",    ED_INDEX,  ED_IND_MESSAGE_COUNT,    NULL },
+  { "M", "limit-count",      ED_INDEX,  ED_IND_LIMIT_COUNT,      NULL },
+  { "n", "new-count",        ED_INDEX,  ED_IND_NEW_COUNT,        NULL },
+  { "o", "old-count",        ED_INDEX,  ED_IND_OLD_COUNT,        NULL },
+  { "p", "postponed-count",  ED_INDEX,  ED_IND_POSTPONED_COUNT,  NULL },
+  { "P", "percentage",       ED_MENU,   ED_MEN_PERCENTAGE,       NULL },
+  { "r", "readonly",         ED_INDEX,  ED_IND_READONLY,         NULL },
+  { "R", "read-count",       ED_INDEX,  ED_IND_READ_COUNT,       NULL },
+  { "s", "sort",             ED_GLOBAL, ED_GLO_SORT,             NULL },
+  { "S", "sort-aux",         ED_GLOBAL, ED_GLO_SORT_AUX,         NULL },
+  { "t", "tagged-count",     ED_INDEX,  ED_IND_TAGGED_COUNT,     NULL },
+  { "T", "use-threads",      ED_GLOBAL, ED_GLO_USE_THREADS,      NULL },
+  { "u", "unread-count",     ED_INDEX,  ED_IND_UNREAD_COUNT,     NULL },
+  { "v", "version",          ED_GLOBAL, ED_GLO_VERSION,          NULL },
+  { "V", "limit-pattern",    ED_INDEX,  ED_IND_LIMIT_PATTERN,    NULL },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
+
+/// StatusFormatDefNoPadding - Status format definitions, without padding
+const struct ExpandoDefinition *const StatusFormatDefNoPadding = &(StatusFormatDef[3]);
 
 /**
  * MainVars - General Config definitions for NeoMutt
@@ -131,25 +425,25 @@ static struct ConfigDef MainVars[] = {
   { "abort_backspace", DT_BOOL, true, 0, NULL,
     "Hitting backspace against an empty prompt aborts the prompt"
   },
-  { "abort_key", DT_STRING|DT_NOT_EMPTY, IP "\007", 0, NULL,
+  { "abort_key", DT_STRING|D_NOT_EMPTY|D_ON_STARTUP, IP "\007", 0, NULL,
     "String representation of key to abort prompts"
   },
   { "arrow_cursor", DT_BOOL, false, 0, NULL,
     "Use an arrow '->' instead of highlighting in the index"
   },
-  { "arrow_string", DT_STRING|DT_NOT_EMPTY, IP "->", 0, NULL,
-    "Use an custom string for arrow_cursor"
+  { "arrow_string", DT_STRING|D_NOT_EMPTY, IP "->", 0, NULL,
+    "Use a custom string for arrow_cursor"
   },
-  { "ascii_chars", DT_BOOL|R_INDEX, false, 0, NULL,
+  { "ascii_chars", DT_BOOL, false, 0, NULL,
     "Use plain ASCII characters, when drawing email threads"
   },
-  { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
+  { "assumed_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "If a message is missing a character set, assume this character set"
   },
-  { "attach_format", DT_STRING|DT_NOT_EMPTY, IP "%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%<C?, %C>, %s] ", 0, NULL,
+  { "attach_format", DT_EXPANDO|D_NOT_EMPTY, IP "%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%<C?, %C>, %s] ", IP &AttachFormatDef, NULL,
     "printf-like format string for the attachment menu"
   },
-  { "attach_save_dir", DT_PATH|DT_PATH_DIR, IP "./", 0, NULL,
+  { "attach_save_dir", DT_PATH|D_PATH_DIR, IP "./", 0, NULL,
     "Default directory where attachments are saved"
   },
   { "attach_save_without_prompting", DT_BOOL, false, 0, NULL,
@@ -182,7 +476,7 @@ static struct ConfigDef MainVars[] = {
   { "braille_friendly", DT_BOOL, false, 0, NULL,
     "Move the cursor to the beginning of the line"
   },
-  { "charset", DT_STRING|DT_NOT_EMPTY|DT_CHARSET_SINGLE, 0, 0, charset_validator,
+  { "charset", DT_STRING|D_NOT_EMPTY|D_CHARSET_SINGLE, 0, 0, charset_validator,
     "Default character set for displaying text on screen"
   },
   { "collapse_flagged", DT_BOOL, true, 0, NULL,
@@ -191,7 +485,7 @@ static struct ConfigDef MainVars[] = {
   { "collapse_unread", DT_BOOL, true, 0, NULL,
     "Prevent the collapse of threads with unread emails"
   },
-  { "color_directcolor", DT_BOOL, false, 0, NULL,
+  { "color_directcolor", DT_BOOL|D_ON_STARTUP, false, 0, NULL,
     "Use 24bit colors (aka truecolor aka directcolor)"
   },
   { "config_charset", DT_STRING, 0, 0, charset_validator,
@@ -209,13 +503,13 @@ static struct ConfigDef MainVars[] = {
   { "count_alternatives", DT_BOOL, false, 0, NULL,
     "Recurse inside multipart/alternatives while counting attachments"
   },
-  { "crypt_chars", DT_MBTABLE|R_INDEX, IP "SPsK ", 0, NULL,
+  { "crypt_chars", DT_MBTABLE, IP "SPsK ", 0, NULL,
     "User-configurable crypto flags: signed, encrypted etc."
   },
-  { "date_format", DT_STRING|DT_NOT_EMPTY, IP "!%a, %b %d, %Y at %I:%M:%S%p %Z", 0, NULL,
+  { "date_format", DT_STRING|D_NOT_EMPTY, IP "!%a, %b %d, %Y at %I:%M:%S%p %Z", 0, NULL,
     "strftime format string for the `%d` expando"
   },
-  { "debug_file", DT_PATH|DT_PATH_FILE, IP "~/.neomuttdebug", 0, NULL,
+  { "debug_file", DT_PATH|D_PATH_FILE, IP "~/.neomuttdebug", 0, NULL,
     "File to save debug logs"
   },
   { "debug_level", DT_NUMBER, 0, 0, level_validator,
@@ -233,19 +527,19 @@ static struct ConfigDef MainVars[] = {
   { "digest_collapse", DT_BOOL, true, 0, NULL,
     "Hide the subparts of a multipart/digest"
   },
-  { "duplicate_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, true, 0, NULL,
+  { "duplicate_threads", DT_BOOL, true, 0, NULL,
     "Highlight messages with duplicated message IDs"
   },
-  { "editor", DT_STRING|DT_NOT_EMPTY|DT_COMMAND, 0, 0, NULL,
+  { "editor", DT_STRING|D_NOT_EMPTY|D_STRING_COMMAND, 0, 0, NULL,
     "External command to use as an email editor"
   },
-  { "flag_chars", DT_MBTABLE|R_INDEX, IP "*!DdrONon- ", 0, NULL,
+  { "flag_chars", DT_MBTABLE, IP "*!DdrONon- ", 0, NULL,
     "User-configurable index flags: tagged, new, etc"
   },
   { "flag_safe", DT_BOOL, false, 0, NULL,
     "Protect flagged messages from deletion"
   },
-  { "folder", DT_STRING|DT_MAILBOX, IP "~/Mail", 0, NULL,
+  { "folder", DT_STRING|D_STRING_MAILBOX, IP "~/Mail", 0, NULL,
     "Base folder for a set of mailboxes"
   },
   { "force_name", DT_BOOL, false, 0, NULL,
@@ -260,7 +554,7 @@ static struct ConfigDef MainVars[] = {
   { "from", DT_ADDRESS, 0, 0, NULL,
     "Default 'From' address to use, if isn't otherwise set"
   },
-  { "from_chars", DT_MBTABLE|R_INDEX, 0, 0, NULL,
+  { "from_chars", DT_MBTABLE, 0, 0, NULL,
     "User-configurable index flags: to address, cc address, etc"
   },
   { "gecos_mask", DT_REGEX, IP "^[^,]*", 0, NULL,
@@ -269,22 +563,22 @@ static struct ConfigDef MainVars[] = {
   { "header", DT_BOOL, false, 0, NULL,
     "Include the message headers in the reply email (Weed applies)"
   },
-  { "hidden_tags", DT_SLIST|SLIST_SEP_COMMA, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
+  { "hidden_tags", DT_SLIST|D_SLIST_SEP_COMMA, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
     "List of tags that shouldn't be displayed on screen (comma-separated)"
   },
-  { "hide_limited", DT_BOOL|R_INDEX, false, 0, NULL,
+  { "hide_limited", DT_BOOL, false, 0, NULL,
     "Don't indicate hidden messages, in the thread tree"
   },
-  { "hide_missing", DT_BOOL|R_INDEX, true, 0, NULL,
+  { "hide_missing", DT_BOOL, true, 0, NULL,
     "Don't indicate missing messages, in the thread tree"
   },
-  { "hide_thread_subject", DT_BOOL|R_INDEX, true, 0, NULL,
+  { "hide_thread_subject", DT_BOOL, true, 0, NULL,
     "Hide subjects that are similar to that of the parent message"
   },
-  { "hide_top_limited", DT_BOOL|R_INDEX, false, 0, NULL,
+  { "hide_top_limited", DT_BOOL, false, 0, NULL,
     "Don't indicate hidden top message, in the thread tree"
   },
-  { "hide_top_missing", DT_BOOL|R_INDEX, true, 0, NULL,
+  { "hide_top_missing", DT_BOOL, true, 0, NULL,
     "Don't indicate missing top message, in the thread tree"
   },
   { "honor_disposition", DT_BOOL, false, 0, NULL,
@@ -302,10 +596,10 @@ static struct ConfigDef MainVars[] = {
   { "include_only_first", DT_BOOL, false, 0, NULL,
     "Only include the first attachment when replying"
   },
-  { "indent_string", DT_STRING, IP "> ", 0, NULL,
+  { "indent_string", DT_EXPANDO, IP "> ", IP IndexFormatDefNoPadding, NULL,
     "String used to indent 'reply' text"
   },
-  { "index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX, IP "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s", 0, NULL,
+  { "index_format", DT_EXPANDO|D_NOT_EMPTY, IP "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s", IP &IndexFormatDef, NULL,
     "printf-like format string for the index menu (emails)"
   },
   { "keep_flagged", DT_BOOL, false, 0, NULL,
@@ -314,7 +608,7 @@ static struct ConfigDef MainVars[] = {
   { "local_date_header", DT_BOOL, true, 0, NULL,
     "Convert the date in the Date header of sent emails into local timezone, UTC otherwise"
   },
-  { "mail_check", DT_NUMBER|DT_NOT_NEGATIVE, 5, 0, NULL,
+  { "mail_check", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 5, 0, NULL,
     "Number of seconds before NeoMutt checks for new mail"
   },
   { "mail_check_recent", DT_BOOL, true, 0, NULL,
@@ -323,22 +617,22 @@ static struct ConfigDef MainVars[] = {
   { "mail_check_stats", DT_BOOL, false, 0, NULL,
     "Periodically check for new mail"
   },
-  { "mail_check_stats_interval", DT_NUMBER|DT_NOT_NEGATIVE, 60, 0, NULL,
+  { "mail_check_stats_interval", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 60, 0, NULL,
     "How often to check for new mail"
   },
-  { "mailcap_path", DT_SLIST|SLIST_SEP_COLON, IP "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap", 0, NULL,
+  { "mailcap_path", DT_SLIST|D_SLIST_SEP_COLON, IP "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap", 0, NULL,
     "List of mailcap files (colon-separated)"
   },
   { "mailcap_sanitize", DT_BOOL, true, 0, NULL,
     "Restrict the possible characters in mailcap expandos"
   },
-  { "mark_old", DT_BOOL|R_INDEX, true, 0, NULL,
+  { "mark_old", DT_BOOL, true, 0, NULL,
     "Mark new emails as old when leaving the mailbox"
   },
   { "markers", DT_BOOL, true, 0, NULL,
     "Display a '+' at the beginning of wrapped lines in the pager"
   },
-  { "mbox", DT_STRING|DT_MAILBOX|R_INDEX, IP "~/mbox", 0, NULL,
+  { "mbox", DT_STRING|D_STRING_MAILBOX, IP "~/mbox", 0, NULL,
     "Folder that receives read emails (see Move)"
   },
   { "mbox_type", DT_ENUM, MUTT_MBOX, IP &MboxTypeDef, NULL,
@@ -347,10 +641,10 @@ static struct ConfigDef MainVars[] = {
   { "message_cache_clean", DT_BOOL, false, 0, NULL,
     "(imap/pop) Clean out obsolete entries from the message cache"
   },
-  { "message_cache_dir", DT_PATH|DT_PATH_DIR, 0, 0, NULL,
+  { "message_cache_dir", DT_PATH|D_PATH_DIR, 0, 0, NULL,
     "(imap/pop) Directory for the message cache"
   },
-  { "message_format", DT_STRING|DT_NOT_EMPTY, IP "%s", 0, NULL,
+  { "message_format", DT_EXPANDO|D_NOT_EMPTY, IP "%s", IP &IndexFormatDef, NULL,
     "printf-like format string for listing attached messages"
   },
   { "meta_key", DT_BOOL, false, 0, NULL,
@@ -365,13 +659,13 @@ static struct ConfigDef MainVars[] = {
   { "move", DT_QUAD, MUTT_NO, 0, NULL,
     "Move emails from `$spool_file` to `$mbox` when read"
   },
-  { "narrow_tree", DT_BOOL|R_INDEX, false, 0, NULL,
+  { "narrow_tree", DT_BOOL, false, 0, NULL,
     "Draw a narrower thread tree in the index"
   },
-  { "net_inc", DT_NUMBER|DT_NOT_NEGATIVE, 10, 0, NULL,
+  { "net_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
     "(socket) Update the progress bar after this many KB sent/received (0 to disable)"
   },
-  { "new_mail_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
+  { "new_mail_command", DT_EXPANDO|D_STRING_COMMAND, 0, IP StatusFormatDefNoPadding, NULL,
     "External command to run when new mail arrives"
   },
   { "pipe_decode", DT_BOOL, false, 0, NULL,
@@ -386,16 +680,16 @@ static struct ConfigDef MainVars[] = {
   { "pipe_split", DT_BOOL, false, 0, NULL,
     "Run the pipe command on each message separately"
   },
-  { "postponed", DT_STRING|DT_MAILBOX|R_INDEX, IP "~/postponed", 0, NULL,
+  { "postponed", DT_STRING|D_STRING_MAILBOX, IP "~/postponed", 0, NULL,
     "Folder to store postponed messages"
   },
-  { "preferred_languages", DT_SLIST|SLIST_SEP_COMMA, 0, 0, NULL,
+  { "preferred_languages", DT_SLIST|D_SLIST_SEP_COMMA, 0, 0, NULL,
     "List of Preferred Languages for multilingual MIME (comma-separated)"
   },
   { "print", DT_QUAD, MUTT_ASKNO, 0, NULL,
     "Confirm before printing a message"
   },
-  { "print_command", DT_STRING|DT_COMMAND, IP "lpr", 0, NULL,
+  { "print_command", DT_STRING|D_STRING_COMMAND, IP "lpr", 0, NULL,
     "External command to print a message"
   },
   { "print_decode", DT_BOOL, true, 0, NULL,
@@ -413,16 +707,16 @@ static struct ConfigDef MainVars[] = {
   { "quote_regex", DT_REGEX, IP "^([ \t]*[|>:}#])+", 0, NULL,
     "Regex to match quoted text in a reply"
   },
-  { "read_inc", DT_NUMBER|DT_NOT_NEGATIVE, 10, 0, NULL,
+  { "read_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
     "Update the progress bar after this many records read (0 to disable)"
   },
   { "read_only", DT_BOOL, false, 0, NULL,
     "Open folders in read-only mode"
   },
-  { "real_name", DT_STRING|R_INDEX, 0, 0, NULL,
+  { "real_name", DT_STRING, 0, 0, NULL,
     "Real name of the user"
   },
-  { "record", DT_STRING|DT_MAILBOX, IP "~/sent", 0, NULL,
+  { "record", DT_STRING|D_STRING_MAILBOX, IP "~/sent", 0, NULL,
     "Folder to save 'sent' messages"
   },
   { "reflow_space_quotes", DT_BOOL, true, 0, NULL,
@@ -434,7 +728,26 @@ static struct ConfigDef MainVars[] = {
   { "reflow_wrap", DT_NUMBER, 78, 0, NULL,
     "Maximum paragraph width for reformatting 'format=flowed' text"
   },
-  { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
+  // L10N: $reply_regex default format
+  //
+  // This is a regular expression that matches reply subject lines.
+  // By default, it only matches an initial "Re: ", which is the
+  // standardized Latin prefix.
+  //
+  // However, many locales have other prefixes that are commonly used
+  // too, such as Aw in Germany.  To add other prefixes, modify the first
+  // parenthesized expression, such as:
+  //    "^(re|aw)
+  // you can add multiple values, for example:
+  //    "^(re|aw|sv)
+  //
+  // Important:
+  // - Use all lower case letters.
+  // - Don't remove the 're' prefix from the list of choices.
+  // - Please test the value you use inside Mutt.  A mistake here will break
+  //   NeoMutt's threading behavior.  Note: the header cache can interfere with
+  //   testing, so be sure to test with $header_cache unset.
+  { "reply_regex", DT_REGEX|D_L10N_STRING, IP N_("^((re)(\\[[0-9]+\\])*:[ \t]*)*"), 0, NULL,
     "Regex to match message reply subjects like 're: '"
   },
   { "resolve", DT_BOOL, true, 0, NULL,
@@ -443,7 +756,7 @@ static struct ConfigDef MainVars[] = {
   { "resume_edited_draft_files", DT_BOOL, true, 0, NULL,
     "Resume editing previously saved draft files"
   },
-  { "reverse_alias", DT_BOOL|R_INDEX, false, 0, NULL,
+  { "reverse_alias", DT_BOOL, false, 0, NULL,
     "Display the alias in the index, rather than the message's sender"
   },
   { "rfc2047_parameters", DT_BOOL, true, 0, NULL,
@@ -470,10 +783,10 @@ static struct ConfigDef MainVars[] = {
   { "score_threshold_read", DT_NUMBER, -1, 0, NULL,
     "Messages with a lower score will be automatically marked read"
   },
-  { "send_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY|DT_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_slist_validator,
+  { "send_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY|D_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, charset_slist_validator,
     "Character sets for outgoing mail"
   },
-  { "shell", DT_STRING|DT_COMMAND, IP "/bin/sh", 0, NULL,
+  { "shell", DT_STRING|D_STRING_COMMAND, IP "/bin/sh", 0, NULL,
     "External command to run subshells in"
   },
   { "show_multipart_alternative", DT_STRING, 0, 0, multipart_validator,
@@ -494,34 +807,35 @@ static struct ConfigDef MainVars[] = {
   { "size_units_on_left", DT_BOOL, false, 0, NULL,
     "Show the units as a prefix to the size"
   },
-  { "sleep_time", DT_NUMBER|DT_NOT_NEGATIVE, 1, 0, NULL,
+  { "sleep_time", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 1, 0, NULL,
     "Time to pause after certain info messages"
   },
-  { "sort", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT, SORT_DATE, IP SortMethods, sort_validator,
+  { "sort", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, SORT_DATE, IP SortMethods, sort_validator,
     "Sort method for the index"
   },
-  { "sort_aux", DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST|R_INDEX|R_RESORT|R_RESORT_SUB, SORT_DATE, IP SortAuxMethods, NULL,
+  { "sort_aux", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, SORT_DATE, IP SortAuxMethods, NULL,
     "Secondary sort method for the index"
   },
-  { "sort_re", DT_BOOL|R_INDEX|R_RESORT|R_RESORT_INIT, true, 0, NULL,
+  { "sort_re", DT_BOOL, true, 0, NULL,
     "Whether $reply_regex must be matched when not $strict_threads"
   },
   { "spam_separator", DT_STRING, IP ",", 0, NULL,
     "Separator for multiple spam headers"
   },
-  { "spool_file", DT_STRING|DT_MAILBOX, 0, 0, NULL,
+  { "spool_file", DT_STRING|D_STRING_MAILBOX, 0, 0, NULL,
     "Inbox"
   },
-  { "status_chars", DT_MBTABLE|R_INDEX, IP "-*%A", 0, NULL,
+  { "status_chars", DT_MBTABLE, IP "-*%A", 0, NULL,
     "Indicator characters for the status bar"
   },
-  { "status_format", DT_STRING|R_INDEX, IP "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---", 0, NULL,
+  // L10N: $status_format default format
+  { "status_format", DT_EXPANDO|D_L10N_STRING, IP N_("-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"), IP &StatusFormatDef, NULL,
     "printf-like format string for the index's status line"
   },
   { "status_on_top", DT_BOOL, false, 0, NULL,
     "Display the status bar at the top"
   },
-  { "strict_threads", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, false, 0, NULL,
+  { "strict_threads", DT_BOOL, false, 0, NULL,
     "Thread messages using 'In-Reply-To' and 'References' headers"
   },
   { "suspend", DT_BOOL, true, 0, NULL,
@@ -530,37 +844,39 @@ static struct ConfigDef MainVars[] = {
   { "text_flowed", DT_BOOL, false, 0, NULL,
     "Generate 'format=flowed' messages"
   },
-  { "thread_received", DT_BOOL|R_RESORT|R_RESORT_INIT|R_INDEX, false, 0, NULL,
+  { "thread_received", DT_BOOL, false, 0, NULL,
     "Sort threaded messages by their received date"
   },
-  { "time_inc", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "time_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Frequency of progress bar updates (milliseconds)"
   },
-  { "timeout", DT_NUMBER|DT_NOT_NEGATIVE, 600, 0, NULL,
+  { "timeout", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 600, 0, NULL,
     "Time to wait for user input in menus"
   },
-  { "tmp_dir", DT_PATH|DT_PATH_DIR|DT_NOT_EMPTY, IP TMPDIR, 0, NULL,
+  { "tmp_dir", DT_PATH|D_PATH_DIR|D_NOT_EMPTY, IP TMPDIR, 0, NULL,
     "Directory for temporary files"
   },
-  { "to_chars", DT_MBTABLE|R_INDEX, IP " +TCFLR", 0, NULL,
+  { "to_chars", DT_MBTABLE, IP " +TCFLR", 0, NULL,
     "Indicator characters for the 'To' field in the index"
   },
-  { "trash", DT_STRING|DT_MAILBOX, 0, 0, NULL,
+  { "trash", DT_STRING|D_STRING_MAILBOX, 0, 0, NULL,
     "Folder to put deleted emails"
   },
-  { "ts_enabled", DT_BOOL|R_INDEX, false, 0, NULL,
+  { "ts_enabled", DT_BOOL, false, 0, NULL,
     "Allow NeoMutt to set the terminal status line and icon"
   },
-  { "ts_icon_format", DT_STRING|R_INDEX, IP "M%<n?AIL&ail>", 0, NULL,
+  // L10N: $ts_icon_format default format
+  { "ts_icon_format", DT_EXPANDO|D_L10N_STRING, IP N_("M%<n?AIL&ail>"), IP StatusFormatDefNoPadding, NULL,
     "printf-like format string for the terminal's icon title"
   },
-  { "ts_status_format", DT_STRING|R_INDEX, IP "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>", 0, NULL,
+  // L10N: $ts_status_format default format
+  { "ts_status_format", DT_EXPANDO|D_L10N_STRING, IP N_("NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"), IP StatusFormatDefNoPadding, NULL,
     "printf-like format string for the terminal's status (window title)"
   },
   { "use_domain", DT_BOOL, true, 0, NULL,
     "Qualify local addresses using this domain"
   },
-  { "use_threads", DT_ENUM|R_INDEX|R_RESORT, UT_UNSET, IP &UseThreadsTypeDef, NULL,
+  { "use_threads", DT_ENUM, UT_UNSET, IP &UseThreadsTypeDef, NULL,
     "Whether to use threads for the index"
   },
   { "wait_key", DT_BOOL, true, 0, NULL,
@@ -575,13 +891,16 @@ static struct ConfigDef MainVars[] = {
   { "wrap_search", DT_BOOL, true, 0, NULL,
     "Wrap around when the search hits the end"
   },
-  { "write_inc", DT_NUMBER|DT_NOT_NEGATIVE, 10, 0, NULL,
+  { "write_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
     "Update the progress bar after this many records written (0 to disable)"
   },
 
-  { "escape",                    DT_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
-  { "ignore_linear_white_space", DT_DEPRECATED|DT_BOOL,   0, IP "2021-03-18" },
-  { "visual",                    DT_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
+  { "cursor_overlay",            D_INTERNAL_DEPRECATED|DT_BOOL,   0, IP "2020-07-20" },
+  { "escape",                    D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
+  { "ignore_linear_white_space", D_INTERNAL_DEPRECATED|DT_BOOL,   0, IP "2021-03-18" },
+  { "mixmaster",                 D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2024-05-30" },
+  { "mix_entry_format",          D_INTERNAL_DEPRECATED|DT_EXPANDO,0, IP "2024-05-30" },
+  { "visual",                    D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
 
   { "autoedit",                  DT_SYNONYM, IP "auto_edit",                  IP "2021-03-21" },
   { "confirmappend",             DT_SYNONYM, IP "confirm_append",             IP "2021-03-21" },
@@ -606,35 +925,17 @@ static struct ConfigDef MainVars[] = {
   { "xterm_set_titles",          DT_SYNONYM, IP "ts_enabled",                 IP "2021-03-21" },
   { "xterm_title",               DT_SYNONYM, IP "ts_status_format",           IP "2021-03-21" },
 
-  { NULL },
-  // clang-format on
-};
+  { "devel_security", DT_BOOL, false, 0, NULL,
+    "Devel feature: Security -- https://github.com/neomutt/neomutt/discussions/4251"
+  },
 
-#if defined(MIXMASTER)
-#ifdef MIXMASTER
-#define MIXMASTER_DEFAULT MIXMASTER
-#else
-#define MIXMASTER_DEFAULT ""
-#endif
-/**
- * MainVarsMixmaster - Config definitions for the Mixmaster library
- */
-static struct ConfigDef MainVarsMixmaster[] = {
-  // clang-format off
-  { "mix_entry_format", DT_STRING|DT_NOT_EMPTY, IP "%4n %c %-16s %a", 0, NULL,
-    "(mixmaster) printf-like format string for the mixmaster chain"
-  },
-  { "mixmaster", DT_STRING|DT_COMMAND, IP MIXMASTER_DEFAULT, 0, NULL,
-    "(mixmaster) External command to route a mixmaster message"
-  },
   { NULL },
   // clang-format on
 };
-#endif
 
 #if defined(HAVE_LIBIDN)
 /**
- * MainVarsIdn - IDN Config definitions for the Mixmaster library
+ * MainVarsIdn - IDN Config definitions
  */
 static struct ConfigDef MainVarsIdn[] = {
   // clang-format off
@@ -654,14 +955,10 @@ static struct ConfigDef MainVarsIdn[] = {
  */
 static bool config_init_main(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, MainVars, DT_NO_FLAGS);
-
-#if defined(MIXMASTER)
-  rc |= cs_register_variables(cs, MainVarsMixmaster, DT_NO_FLAGS);
-#endif
+  bool rc = cs_register_variables(cs, MainVars);
 
 #if defined(HAVE_LIBIDN)
-  rc |= cs_register_variables(cs, MainVarsIdn, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, MainVarsIdn);
 #endif
 
   return rc;
@@ -678,6 +975,7 @@ static void init_types(struct ConfigSet *cs)
   CONFIG_INIT_TYPE(cs, Address);
   CONFIG_INIT_TYPE(cs, Bool);
   CONFIG_INIT_TYPE(cs, Enum);
+  CONFIG_INIT_TYPE(cs, Expando);
   CONFIG_INIT_TYPE(cs, Long);
   CONFIG_INIT_TYPE(cs, Mbtable);
   CONFIG_INIT_TYPE(cs, MyVar);
@@ -710,29 +1008,22 @@ static void init_variables(struct ConfigSet *cs)
 #endif
   CONFIG_INIT_VARS(cs, helpbar);
   CONFIG_INIT_VARS(cs, history);
-#if defined(USE_IMAP)
   CONFIG_INIT_VARS(cs, imap);
-#endif
   CONFIG_INIT_VARS(cs, index);
   CONFIG_INIT_VARS(cs, maildir);
+  CONFIG_INIT_VARS(cs, mh);
   CONFIG_INIT_VARS(cs, mbox);
   CONFIG_INIT_VARS(cs, menu);
   CONFIG_INIT_VARS(cs, ncrypt);
-#if defined(USE_NNTP)
   CONFIG_INIT_VARS(cs, nntp);
-#endif
 #if defined(USE_NOTMUCH)
   CONFIG_INIT_VARS(cs, notmuch);
 #endif
   CONFIG_INIT_VARS(cs, pager);
   CONFIG_INIT_VARS(cs, pattern);
-#if defined(USE_POP)
   CONFIG_INIT_VARS(cs, pop);
-#endif
   CONFIG_INIT_VARS(cs, send);
-#if defined(USE_SIDEBAR)
   CONFIG_INIT_VARS(cs, sidebar);
-#endif
 }
 
 /**

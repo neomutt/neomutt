@@ -3,8 +3,7 @@
  * GUI ask the user to enter a string
  *
  * @authors
- * Copyright (C) 1996-2000,2007,2011,2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <string.h>
 #include <wchar.h>
 #include "mutt/lib.h"
@@ -43,13 +42,13 @@
 #include "menu/lib.h"
 #include "functions.h"
 #include "muttlib.h"
-#include "opcodes.h"
-#include "state.h" // IWYU pragma: keep
+#include "state.h"
 #include "wdata.h"
 
 /// Help Bar for the Command Line Editor
 static const struct Mapping EditorHelp[] = {
   // clang-format off
+  { N_("Help"),        OP_HELP },
   { N_("Complete"),    OP_EDITOR_COMPLETE },
   { N_("Hist Up"),     OP_EDITOR_HISTORY_UP },
   { N_("Hist Down"),   OP_EDITOR_HISTORY_DOWN },
@@ -138,7 +137,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
       {
         char **tfiles = NULL;
         *cdata->numfiles = 1;
-        tfiles = mutt_mem_calloc(*cdata->numfiles, sizeof(char *));
+        tfiles = MUTT_MEM_CALLOC(*cdata->numfiles, char *);
         buf_expand_path_regex(wdata->buffer, false);
         tfiles[0] = buf_strdup(wdata->buffer);
         *cdata->files = tfiles;
@@ -151,7 +150,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
     if (wdata->state->lastchar >= wdata->state->wbuflen)
     {
       wdata->state->wbuflen = wdata->state->lastchar + 20;
-      mutt_mem_realloc(&wdata->state->wbuf, wdata->state->wbuflen * sizeof(wchar_t));
+      MUTT_MEM_REALLOC(&wdata->state->wbuf, wdata->state->wbuflen, wchar_t);
     }
     memmove(wdata->state->wbuf + wdata->state->curpos + 1,
             wdata->state->wbuf + wdata->state->curpos,
@@ -171,12 +170,12 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
 /**
  * enter_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  *
- * @sa $compose_format, compose_format_str()
+ * @sa $compose_format
  */
 static int enter_recalc(struct MuttWindow *win)
 {
   win->actions |= WA_REPAINT;
-  mutt_debug(LL_DEBUG1, "recalc done, request WA_REPAINT\n");
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
 
   return 0;
 }
@@ -237,7 +236,7 @@ static int enter_repaint(struct MuttWindow *win)
   }
 
   mutt_window_get_coords(win, &wdata->col, &wdata->row);
-  mutt_debug(LL_DEBUG1, "repaint done\n");
+  mutt_debug(LL_DEBUG5, "repaint done\n");
 
   return 0;
 }
@@ -384,6 +383,7 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
           goto bye;
 
         case FR_SUCCESS:
+          rc = 0;
           break;
 
         case FR_UNKNOWN:

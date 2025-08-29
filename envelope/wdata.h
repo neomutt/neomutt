@@ -3,7 +3,7 @@
  * Envelope Window Data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -45,9 +45,7 @@ struct EnvelopeWindowData
   short bcc_rows;                  ///< Number of rows used by the 'Bcc:' field
   short sec_rows;                  ///< Number of rows used by the security fields
 
-#ifdef USE_NNTP
   bool is_news;                    ///< Email is a news article
-#endif
 #ifdef USE_AUTOCRYPT
   enum AutocryptRec autocrypt_rec; ///< Autocrypt recommendation
 #endif

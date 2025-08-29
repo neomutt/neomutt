@@ -3,10 +3,8 @@
  * Berkeley DB backend for the key/value Store
  *
  * @authors
- * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
- * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
- * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,6 +33,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -73,9 +72,9 @@ static void bdb_sdata_free(struct BdbStoreData **ptr)
  */
 static struct BdbStoreData *bdb_sdata_new(void)
 {
-  struct BdbStoreData *sdata = mutt_mem_calloc(1, sizeof(struct BdbStoreData));
+  struct BdbStoreData *sdata = MUTT_MEM_CALLOC(1, struct BdbStoreData);
 
-  sdata->lockfile = buf_make(128);
+  buf_alloc(&sdata->lockfile, 128);
 
   return sdata;
 }
@@ -111,9 +110,9 @@ static void dbt_empty_init(DBT *dbt)
 }
 
 /**
- * store_bdb_open - Implements StoreOps::open() - @ingroup store_open
+ * store_bdb_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_bdb_open(const char *path)
+static StoreHandle *store_bdb_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
@@ -124,10 +123,11 @@ static StoreHandle *store_bdb_open(const char *path)
 
   buf_printf(&sdata->lockfile, "%s-lock-hack", path);
 
-  sdata->fd = open(buf_string(&sdata->lockfile), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+  sdata->fd = open(buf_string(&sdata->lockfile),
+                   O_WRONLY | (create ? O_CREAT : 0), S_IRUSR | S_IWUSR);
   if (sdata->fd < 0)
   {
-    FREE(&sdata);
+    bdb_sdata_free(&sdata);
     return NULL;
   }
 
@@ -178,7 +178,7 @@ fail_close:
 }
 
 /**
- * store_bdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
+ * store_bdb_fetch - Fetch a Value from the Store - Implements StoreOps::fetch() - @ingroup store_fetch
  */
 static void *store_bdb_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
@@ -202,7 +202,7 @@ static void *store_bdb_fetch(StoreHandle *store, const char *key, size_t klen, s
 }
 
 /**
- * store_bdb_free - Implements StoreOps::free() - @ingroup store_free
+ * store_bdb_free - Free a Value returned by fetch() - Implements StoreOps::free() - @ingroup store_free
  */
 static void store_bdb_free(StoreHandle *store, void **ptr)
 {
@@ -210,7 +210,7 @@ static void store_bdb_free(StoreHandle *store, void **ptr)
 }
 
 /**
- * store_bdb_store - Implements StoreOps::store() - @ingroup store_store
+ * store_bdb_store - Write a Value to the Store - Implements StoreOps::store() - @ingroup store_store
  */
 static int store_bdb_store(StoreHandle *store, const char *key, size_t klen,
                            void *value, size_t vlen)
@@ -235,7 +235,7 @@ static int store_bdb_store(StoreHandle *store, const char *key, size_t klen,
 }
 
 /**
- * store_bdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
+ * store_bdb_delete_record - Delete a record from the Store - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
 static int store_bdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
@@ -251,7 +251,7 @@ static int store_bdb_delete_record(StoreHandle *store, const char *key, size_t k
 }
 
 /**
- * store_bdb_close - Implements StoreOps::close() - @ingroup store_close
+ * store_bdb_close - Close a Store connection - Implements StoreOps::close() - @ingroup store_close
  */
 static void store_bdb_close(StoreHandle **ptr)
 {
@@ -271,7 +271,7 @@ static void store_bdb_close(StoreHandle **ptr)
 }
 
 /**
- * store_bdb_version - Implements StoreOps::version() - @ingroup store_version
+ * store_bdb_version - Get a Store version string - Implements StoreOps::version() - @ingroup store_version
  */
 static const char *store_bdb_version(void)
 {

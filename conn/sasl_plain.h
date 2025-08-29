@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,7 +26,9 @@
 
 #include <stdlib.h>
 
-size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
+struct Buffer;
+
+size_t mutt_sasl_plain_msg(struct Buffer *buf, const char *cmd,
                            const char *authz, const char *user, const char *pass);
 
 #endif /* MUTT_CONN_SASL_PLAIN_H */

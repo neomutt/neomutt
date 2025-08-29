@@ -3,7 +3,8 @@
  * Test code for mutt_extract_message_id()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,9 +27,7 @@
 #include <search.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
-#include "core/lib.h"
 #include "test_common.h"
 
 int cmp(const void *a, const void *b)

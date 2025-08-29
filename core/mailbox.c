@@ -3,9 +3,9 @@
  * Representation of a mailbox
  *
  * @authors
- * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
- * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <sys/stat.h>
 #include "config/lib.h"
 #include "email/lib.h"
@@ -68,14 +67,14 @@ int mailbox_gen(void)
  */
 struct Mailbox *mailbox_new(void)
 {
-  struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
+  struct Mailbox *m = MUTT_MEM_CALLOC(1, struct Mailbox);
 
   buf_init(&m->pathbuf);
   m->notify = notify_new();
 
   m->email_max = 25;
-  m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
-  m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
+  m->emails = MUTT_MEM_CALLOC(m->email_max, struct Email *);
+  m->v2r = MUTT_MEM_CALLOC(m->email_max, int);
   m->gen = mailbox_gen();
   m->notify_user = true;
   m->poll_new_mail = true;
@@ -116,6 +115,14 @@ void mailbox_free(struct Mailbox **ptr)
 
   for (size_t i = 0; i < m->email_max; i++)
     email_free(&m->emails[i]);
+
+  m->email_max = 0;
+  m->msg_count = 0;
+  m->msg_deleted = 0;
+  m->msg_flagged = 0;
+  m->msg_new = 0;
+  m->msg_tagged = 0;
+  m->msg_unread = 0;
 
   if (m->mdata_free && m->mdata)
     m->mdata_free(&m->mdata);
@@ -290,7 +297,7 @@ static struct EmailGarbageCollector GC = { 0 };
  */
 void mailbox_gc_add(struct Email *e)
 {
-  assert(e);
+  ASSERT(e);
   if (GC.idx == mutt_array_size(GC.arr))
   {
     mailbox_gc_run();

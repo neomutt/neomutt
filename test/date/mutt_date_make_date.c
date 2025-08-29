@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Reto Brunner <reto@slightlybroken.com>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,8 +25,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 
 void test_mutt_date_make_date(void)
@@ -40,11 +42,11 @@ void test_mutt_date_make_date(void)
     }
 
     {
-      struct Buffer buf = buf_make(32);
-      mutt_date_make_date(&buf, local);
-      TEST_CHECK(buf_len(&buf) != 0);
+      struct Buffer *buf = buf_pool_get();
+      mutt_date_make_date(buf, local);
+      TEST_CHECK(buf_len(buf) != 0);
       TEST_MSG("%s", buf);
-      buf_dealloc(&buf);
+      buf_pool_release(&buf);
     }
     local = !local;
   } while (!local); // test the same with local == false

@@ -21,7 +21,6 @@ __print_map(postpone)
 __print_map(browser)
 __print_map(pgp)
 __print_map(smime)
-__print_map(mixmaster)
 __print_map(editor)
 __print_map(autocrypt account)
 

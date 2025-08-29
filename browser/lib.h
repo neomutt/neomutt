@@ -3,7 +3,7 @@
  * Select a Mailbox from a list
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -43,7 +43,6 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
-#include "complete/lib.h"
 
 struct Mailbox;
 struct Menu;
@@ -90,21 +89,17 @@ struct FolderFile
   int msg_count;           ///< total number of messages
   int msg_unread;          ///< number of unread messages
 
-#ifdef USE_IMAP
   char delim;              ///< Path delimiter
 
   bool imap          : 1;  ///< This is an IMAP folder
   bool selectable    : 1;  ///< Folder can be selected
   bool inferiors     : 1;  ///< Folder has children
-#endif
   bool has_mailbox   : 1;  ///< This is a mailbox
   bool local         : 1;  ///< Folder is on local filesystem
   bool notify_user   : 1;  ///< User will be notified of new mail
   bool poll_new_mail : 1;  ///< Check mailbox for new mail
   bool tagged        : 1;  ///< Folder is tagged
-#ifdef USE_NNTP
   struct NntpMboxData *nd; ///< Extra NNTP data
-#endif
 
   int gen;                 ///< Unique id, used for (un)sorting
 };
@@ -112,15 +107,43 @@ struct FolderFile
 ARRAY_HEAD(BrowserEntryArray, struct FolderFile);
 
 /**
+ * ExpandoDataFolder - Expando UIDs for the File Browser
+ *
+ * @sa ED_FOLDER, ExpandoDomain
+ */
+enum ExpandoDataFolder
+{
+  ED_FOL_DATE = 1,             ///< FolderFile.mtime
+  ED_FOL_DATE_FORMAT,          ///< FolderFile.mtime
+  ED_FOL_DESCRIPTION,          ///< FolderFile.desc, FolderFile.name
+  ED_FOL_FILENAME,             ///< FolderFile.name
+  ED_FOL_FILE_GROUP,           ///< FolderFile.gid
+  ED_FOL_FILE_MODE,            ///< FolderFile.move
+  ED_FOL_FILE_OWNER,           ///< FolderFile.uid
+  ED_FOL_FILE_SIZE,            ///< FolderFile.size
+  ED_FOL_FLAGS,                ///< FolderFile.nd (NntpMboxData)
+  ED_FOL_FLAGS2,               ///< FolderFile.nd (NntpMboxData)
+  ED_FOL_HARD_LINKS,           ///< FolderFile.nlink
+  ED_FOL_MESSAGE_COUNT,        ///< FolderFile.msg_count
+  ED_FOL_NEWSGROUP,            ///< FolderFile.name
+  ED_FOL_NEW_COUNT,            ///< FolderFile.nd (NntpMboxData)
+  ED_FOL_NEW_MAIL,             ///< FolderFile.has_new_mail
+  ED_FOL_NOTIFY,               ///< FolderFile.notify_user
+  ED_FOL_NUMBER,               ///< Folder.num
+  ED_FOL_POLL,                 ///< FolderFile.poll_new_mail
+  ED_FOL_STRF,                 ///< FolderFile.mtime
+  ED_FOL_TAGGED,               ///< FolderFile.tagged
+  ED_FOL_UNREAD_COUNT,         ///< FolderFile.msg_unread
+};
+
+/**
  * struct BrowserState - State of the file/mailbox browser
  */
 struct BrowserState
 {
   struct BrowserEntryArray entry; ///< Array of files / dirs / mailboxes
-#ifdef USE_IMAP
   bool imap_browse; ///< IMAP folder
   char *folder;     ///< Folder name
-#endif
   bool is_mailbox_list; ///< Viewing mailboxes
 };
 

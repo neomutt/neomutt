@@ -3,9 +3,11 @@
  * Representation of an email address
  *
  * @authors
- * Copyright (C) 1996-2000,2011-2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018 Simon Symeonidis <lethaljellybean@gmail.com>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2023 Steinar H Gunderson <steinar+neomutt@gunderson.no>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -63,7 +65,7 @@ const char AddressSpecials[] = "\"(),.:;<>@[\\]";
  * 32 to bring the values down to 2 to 61.
  */
 #define is_special(ch, mask)                                                   \
-  ((ch) >= 32 && (ch) < 96 && ((mask >> ((ch) -32)) & 1))
+  ((ch) >= 32 && (ch) < 96 && ((mask >> ((ch) - 32)) & 1))
 
 /** #AddressSpecials, for is_special() */
 #define ADDRESS_SPECIAL_MASK 0x380000015c005304ULL
@@ -398,7 +400,7 @@ static bool add_addrspec(struct AddressList *al, const char *phrase,
  */
 struct Address *mutt_addr_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Address));
+  return MUTT_MEM_CALLOC(1, struct Address);
 }
 
 /**
@@ -481,7 +483,8 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
     return 0;
 
   int parsed = 0;
-  char comment[1024], phrase[1024];
+  char comment[1024] = { 0 };
+  char phrase[1024] = { 0 };
   size_t phraselen = 0, commentlen = 0;
 
   bool ws_pending = mutt_str_is_email_wsp(*s);
@@ -1146,7 +1149,7 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
     // wrap if needed
     const size_t cur_len = buf_len(buf);
     cur_col += mutt_addr_write(buf, a, display);
-    if (cur_col > cols)
+    if ((cols > 0) && (cur_col > cols) && (a != TAILQ_FIRST(al)))
     {
       buf_insert(buf, cur_len, "\n\t");
       cur_col = 8;
@@ -1158,7 +1161,7 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
       if (in_group && !a->mailbox && !a->personal)
       {
         buf_addch(buf, ';');
-        ++cur_col;
+        cur_col++;
         in_group = false;
       }
       if (next && (next->mailbox || next->personal))
@@ -1182,10 +1185,6 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
  * @param buf       Buffer for the Address
  * @param header    Header name; if present, addresses we be written after ": "
  * @retval num      Length of the string written to buf
- *
- * If 'display' is set, then it doesn't matter if the transformation isn't
- * reversible.
- *
  */
 size_t mutt_addrlist_write_wrap(const struct AddressList *al,
                                 struct Buffer *buf, const char *header)

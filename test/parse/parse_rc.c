@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,13 +25,13 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <string.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
-#include "common.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 extern const struct Mapping MboxTypeMap[];
 extern struct EnumDef MboxTypeDef;
@@ -52,17 +54,17 @@ const struct Mapping SortMethods[] = {
 
 static struct ConfigDef Vars[] = {
   // clang-format off
-  { "from",              DT_ADDRESS,                 0,                     0,               NULL, },
-  { "beep",              DT_BOOL,                    true,                  0,               NULL, },
-  { "ispell",            DT_STRING|DT_COMMAND,       IP "ispell",           0,               NULL, },
-  { "mbox_type",         DT_ENUM,                    MUTT_MBOX,             IP &MboxTypeDef, NULL, },
-  { "to_chars",          DT_MBTABLE|R_INDEX,         IP " +TCFLR",          0,               NULL, },
-  { "net_inc",           DT_NUMBER|DT_NOT_NEGATIVE,  10,                    0,               NULL, },
-  { "signature",         DT_PATH|DT_PATH_FILE,       IP "~/.signature",     0,               NULL, },
-  { "print",             DT_QUAD,                    MUTT_ASKNO,            0,               NULL, },
-  { "mask",              DT_REGEX|DT_REGEX_NOSUB,    IP "!^\\.[^.]",        0,               NULL, },
-  { "sort",              DT_SORT|DT_SORT_LAST,       SORT_DATE,             IP SortMethods,  NULL, },
-  { "attribution_intro", DT_STRING,                  IP "On %d, %n wrote:", 0,               NULL, },
+  { "from",              DT_ADDRESS,                       0,                     0,               NULL, },
+  { "beep",              DT_BOOL,                          true,                  0,               NULL, },
+  { "ispell",            DT_STRING|D_STRING_COMMAND,       IP "ispell",           0,               NULL, },
+  { "mbox_type",         DT_ENUM,                          MUTT_MBOX,             IP &MboxTypeDef, NULL, },
+  { "to_chars",          DT_MBTABLE,                       IP " +TCFLR",          0,               NULL, },
+  { "net_inc",           DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10,                    0,               NULL, },
+  { "signature",         DT_PATH|D_PATH_FILE,              IP "~/.signature",     0,               NULL, },
+  { "print",             DT_QUAD,                          MUTT_ASKNO,            0,               NULL, },
+  { "mask",              DT_REGEX|D_REGEX_NOSUB,           IP "!^\\.[^.]",        0,               NULL, },
+  { "sort",              DT_SORT|D_SORT_LAST,              SORT_DATE,             IP SortMethods,  NULL, },
+  { "attribution_intro", DT_STRING,                        IP "On %d, %n wrote:", 0,               NULL, },
   { NULL },
   // clang-format on
 };
@@ -97,7 +99,7 @@ static void test_parse_set(void)
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
   };
 
-  struct Buffer err = buf_make(256);
+  struct Buffer *err = buf_pool_get();
   char line[64];
 
   for (size_t v = 0; v < mutt_array_size(vars); v++)
@@ -107,16 +109,16 @@ static void test_parse_set(void)
       TEST_CASE_("%s %s", commands[c], vars[v]);
       for (size_t t = 0; t < mutt_array_size(tests); t++)
       {
-        buf_reset(&err);
+        buf_reset(err);
 
         snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
         // enum CommandResult rc =
-        parse_rc_line(line, &err);
+        parse_rc_line(line, err);
       }
     }
   }
 
-  buf_dealloc(&err);
+  buf_pool_release(&err);
 }
 
 void test_parse_rc(void)
@@ -131,7 +133,7 @@ void test_parse_rc(void)
   rc = parse_rc_buffer(NULL, NULL, NULL);
   TEST_CHECK(rc == MUTT_CMD_SUCCESS);
 
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
   cs_str_initial_set(NeoMutt->sub->cs, "from", "rich@flatcap.org", NULL);
   cs_str_reset(NeoMutt->sub->cs, "from", NULL);
   test_parse_set();

@@ -3,7 +3,7 @@
  * Pgp functions
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stdio.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -40,7 +41,6 @@
 #include "question/lib.h"
 #include "globals.h"
 #include "mutt_logging.h"
-#include "opcodes.h"
 #include "pgp.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
@@ -76,7 +76,7 @@ static int op_generic_select_entry(struct PgpData *pd, int op)
   if (OptPgpCheckTrust && (!pgp_id_is_valid(cur_key) || !pgp_id_is_strong(cur_key)))
   {
     const char *str = "";
-    char buf2[1024];
+    char buf2[1024] = { 0 };
 
     if (cur_key->flags & KEYFLAG_CANTUSE)
     {
@@ -117,7 +117,7 @@ static int op_generic_select_entry(struct PgpData *pd, int op)
  */
 static int op_verify_key(struct PgpData *pd, int op)
 {
-  FILE *fp_null = fopen("/dev/null", "w");
+  FILE *fp_null = mutt_file_fopen("/dev/null", "w");
   if (!fp_null)
   {
     mutt_perror(_("Can't open /dev/null"));

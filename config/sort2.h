@@ -3,7 +3,7 @@
  * Type representing a sort option
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,10 +26,6 @@
 #include "mutt/lib.h"
 
 extern const struct Mapping SortMethods[];
-
-/* ... DT_SORT */
-#define DT_SORT_LAST    (1 << 11) ///< Sort flag for -last prefix
-#define DT_SORT_REVERSE (1 << 12) ///< Sort flag for -reverse prefix
 
 /**
  * enum SortType - Methods for sorting

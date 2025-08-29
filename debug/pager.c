@@ -49,7 +49,7 @@ void dump_text_syntax(struct TextSyntax *ts, int num)
     if (cc)
     {
       index = cc->index;
-      swatch = color_debug_log_color(cc->fg, cc->bg);
+      swatch = color_log_color(cc->fg, cc->bg);
     }
     mutt_debug(LL_DEBUG1, "\t\t%3d %4d %4d %s\n", index, ts[i].first, ts[i].last, swatch);
   }
@@ -69,7 +69,7 @@ void dump_line(int i, struct Line *line)
     if (ac && ac->curses_color)
     {
       struct CursesColor *cc = ac->curses_color;
-      swatch = color_debug_log_color(cc->fg, cc->bg);
+      swatch = color_log_color(cc->fg, cc->bg);
     }
 
     mutt_debug(LL_DEBUG1, "\tcolor: %d %s (%s)\n", line->cid, swatch, buf_string(buf));

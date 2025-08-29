@@ -3,7 +3,9 @@
  * RFC2231 MIME Charset routines
  *
  * @authors
- * Copyright (C) 1999-2001 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2018-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -131,7 +133,7 @@ static void decode_one(char *dest, char *src)
  */
 static struct Rfc2231Parameter *parameter_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Rfc2231Parameter));
+  return MUTT_MEM_CALLOC(1, struct Rfc2231Parameter);
 }
 
 /**
@@ -209,7 +211,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
 
       const size_t vl = strlen(par->value);
 
-      mutt_mem_realloc(&value, l + vl + 1);
+      MUTT_MEM_REALLOC(&value, l + vl + 1, char);
       strcpy(value + l, par->value);
       l += vl;
 

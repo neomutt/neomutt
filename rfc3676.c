@@ -7,6 +7,9 @@
  * Copyright (C) 2005 Peter J. Holzer <hjp@hjp.net>
  * Copyright (C) 2005-2009 Rocco Rutte <pdmef@gmx.net>
  * Copyright (C) 2010 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -241,12 +244,12 @@ static void print_flowed_line(char *line, struct State *state, int ql,
   width = quote_width(state, ql);
   last = line[mutt_str_len(line) - 1];
 
-  mutt_debug(LL_DEBUG5, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
+  mutt_debug(LL_DEBUG5, "f=f: line [%s], width = %ld, spaces = %zu\n", line,
              (long) width, fst->spaces);
 
   for (words = 0; (p = mutt_str_sep(&line, " "));)
   {
-    mutt_debug(LL_DEBUG5, "f=f: word [%s], width: %lu, remaining = [%s]\n", p,
+    mutt_debug(LL_DEBUG5, "f=f: word [%s], width: %zu, remaining = [%s]\n", p,
                fst->width, line);
 
     /* remember number of spaces */
@@ -268,7 +271,7 @@ static void print_flowed_line(char *line, struct State *state, int ql,
     if (!(!fst->spaces && fst->delsp && (last != ' ')) && (w < width) &&
         (w + fst->width + fst->spaces > width))
     {
-      mutt_debug(LL_DEBUG3, "f=f: break line at %lu, %lu spaces left\n",
+      mutt_debug(LL_DEBUG3, "f=f: break line at %zu, %zu spaces left\n",
                  fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
       const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
@@ -314,10 +317,10 @@ static void print_fixed_line(const char *line, struct State *state, int ql,
 }
 
 /**
- * rfc3676_handler - Body handler implementing RFC3676 for format=flowed - Implements ::handler_t - @ingroup handler_api
+ * rfc3676_handler - Handler for format=flowed - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  */
-int rfc3676_handler(struct Body *a, struct State *state)
+int rfc3676_handler(struct Body *b_email, struct State *state)
 {
   char *buf = NULL;
   unsigned int quotelevel = 0;
@@ -326,7 +329,7 @@ int rfc3676_handler(struct Body *a, struct State *state)
   struct FlowedState fst = { 0 };
 
   /* respect DelSp of RFC3676 only with f=f parts */
-  char *t = mutt_param_get(&a->parameter, "delsp");
+  char *t = mutt_param_get(&b_email->parameter, "delsp");
   if (t)
   {
     delsp = mutt_istr_equal(t, "yes");
@@ -338,7 +341,7 @@ int rfc3676_handler(struct Body *a, struct State *state)
 
   while ((buf = mutt_file_read_line(buf, &sz, state->fp_in, NULL, MUTT_RL_NO_FLAGS)))
   {
-    const size_t buf_len = mutt_str_len(buf);
+    const size_t buflen = mutt_str_len(buf);
     const unsigned int newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
@@ -358,11 +361,11 @@ int rfc3676_handler(struct Body *a, struct State *state)
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
-    const bool fixed = (buf_len == buf_off) || (buf[buf_len - 1] != ' ') || sigsep;
+    const bool fixed = (buflen == buf_off) || (buf[buflen - 1] != ' ') || sigsep;
 
     /* print fixed-and-standalone, fixed-and-empty and sigsep lines as
      * fixed lines */
-    if ((fixed && ((fst.width == 0) || (buf_len == 0))) || sigsep)
+    if ((fixed && ((fst.width == 0) || (buflen == 0))) || sigsep)
     {
       /* if we're within a flowed paragraph, terminate it */
       flush_par(state, &fst);
@@ -372,7 +375,7 @@ int rfc3676_handler(struct Body *a, struct State *state)
 
     /* for DelSp=yes, we need to strip one SP prior to CRLF on flowed lines */
     if (delsp && !fixed)
-      buf[buf_len - 1] = '\0';
+      buf[buflen - 1] = '\0';
 
     print_flowed_line(buf + buf_off, state, quotelevel, &fst, fixed);
   }

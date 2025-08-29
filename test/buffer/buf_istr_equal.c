@@ -23,9 +23,10 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 void test_buf_istr_equal(void)
 {

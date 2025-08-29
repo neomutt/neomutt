@@ -3,8 +3,9 @@
  * Representation of an email header (envelope)
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,11 +29,13 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "envelope.h"
 #include "email.h"
 
@@ -42,7 +45,7 @@
  */
 struct Envelope *mutt_env_new(void)
 {
-  struct Envelope *env = mutt_mem_calloc(1, sizeof(struct Envelope));
+  struct Envelope *env = MUTT_MEM_CALLOC(1, struct Envelope);
   TAILQ_INIT(&env->return_path);
   TAILQ_INIT(&env->from);
   TAILQ_INIT(&env->to);
@@ -58,6 +61,32 @@ struct Envelope *mutt_env_new(void)
   return env;
 }
 
+/**
+ * mutt_env_set_subject - Set both subject and real_subj to subj
+ * @param env  Envelope
+ * @param subj Subject
+ */
+void mutt_env_set_subject(struct Envelope *env, const char *subj)
+{
+  mutt_str_replace((char **) &env->subject, subj);
+  *(char **) &env->real_subj = NULL;
+
+  if (env->subject)
+  {
+    regmatch_t match;
+    const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
+    if (mutt_regex_capture(c_reply_regex, env->subject, 1, &match))
+    {
+      if (env->subject[match.rm_eo] != '\0')
+        *(char **) &env->real_subj = env->subject + match.rm_eo;
+    }
+    else
+    {
+      *(char **) &env->real_subj = env->subject;
+    }
+  }
+}
+
 #ifdef USE_AUTOCRYPT
 /**
  * mutt_autocrypthdr_new - Create a new AutocryptHeader
@@ -65,7 +94,7 @@ struct Envelope *mutt_env_new(void)
  */
 struct AutocryptHeader *mutt_autocrypthdr_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptHeader));
+  return MUTT_MEM_CALLOC(1, struct AutocryptHeader);
 }
 
 /**
@@ -114,7 +143,7 @@ void mutt_env_free(struct Envelope **ptr)
   FREE(&env->list_post);
   FREE(&env->list_subscribe);
   FREE(&env->list_unsubscribe);
-  FREE(&env->subject);
+  FREE((char **) &env->subject);
   /* real_subj is just an offset to subject and shouldn't be freed */
   FREE(&env->disp_subj);
   FREE(&env->message_id);
@@ -122,12 +151,10 @@ void mutt_env_free(struct Envelope **ptr)
   FREE(&env->date);
   FREE(&env->x_label);
   FREE(&env->organization);
-#ifdef USE_NNTP
   FREE(&env->newsgroups);
   FREE(&env->xref);
   FREE(&env->followup_to);
   FREE(&env->x_comment_to);
-#endif
 
   buf_dealloc(&env->spam);
 
@@ -228,11 +255,11 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
   /* real_subj is subordinate to subject */
   if (!base->subject)
   {
-    base->subject = (*extra)->subject;
-    base->real_subj = (*extra)->real_subj;
+    *(char **) &base->subject = (*extra)->subject;
+    *(char **) &base->real_subj = (*extra)->real_subj;
     base->disp_subj = (*extra)->disp_subj;
-    (*extra)->subject = NULL;
-    (*extra)->real_subj = NULL;
+    *(char **) &(*extra)->subject = NULL;
+    *(char **) &(*extra)->real_subj = NULL;
     (*extra)->disp_subj = NULL;
   }
   /* spam and user headers should never be hashed, and the new envelope may
@@ -261,7 +288,7 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
   {
     if (!mutt_str_equal(e1->message_id, e2->message_id) ||
         !mutt_str_equal(e1->subject, e2->subject) ||
-        !mutt_list_compare(&e1->references, &e2->references) ||
+        !mutt_list_equal(&e1->references, &e2->references) ||
         !mutt_addrlist_equal(&e1->from, &e2->from) ||
         !mutt_addrlist_equal(&e1->sender, &e2->sender) ||
         !mutt_addrlist_equal(&e1->reply_to, &e2->reply_to) ||

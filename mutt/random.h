@@ -26,7 +26,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 void     mutt_rand_base32(char *buf, size_t buflen);
 

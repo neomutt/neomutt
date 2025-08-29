@@ -3,7 +3,7 @@
  * Private state data for the Browser
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,24 +33,24 @@
 struct BrowserPrivateData
 {
   // Parameters passed to dlg_browser()
-  struct Buffer *file;            ///< Buffer for the result
-  struct Mailbox *mailbox;        ///< Mailbox
-  char ***files;                  ///< Array of selected files
-  int *numfiles;                  ///< Number of selected files
+  struct Buffer       *file;                    ///< Buffer for the result
+  struct Mailbox      *mailbox;                 ///< Mailbox
+  char              ***files;                   ///< Array of selected files
+  int                 *numfiles;                ///< Number of selected files
 
   // State of the browser
-  struct BrowserState state;      ///< State containing list of files/dir/mailboxes
-  struct Menu *menu;              ///< Menu
-  bool kill_prefix;               ///< Prefix is in use
-  bool multiple;                  ///< Allow multiple selections
-  bool folder;                    ///< Select folders
-  char goto_swapper[PATH_MAX];    ///< Saved path after `<goto-folder>`
-  struct Buffer *OldLastDir;      ///< Previous to last dir
-  struct Buffer *prefix;          ///< Folder prefix string
-  int last_selected_mailbox;      ///< Index of last selected Mailbox
-  struct MuttWindow *sbar;        ///< Status Bar
-  struct MuttWindow *win_browser; ///< Browser Window
-  bool done;                      ///< Should we close the Dialog?
+  struct BrowserState  state;                   ///< State containing list of files/dir/mailboxes
+  struct Menu         *menu;                    ///< Menu
+  bool                 kill_prefix;             ///< Prefix is in use
+  bool                 multiple;                ///< Allow multiple selections
+  bool                 folder;                  ///< Select folders
+  char                 goto_swapper[PATH_MAX];  ///< Saved path after `<goto-folder>`
+  struct Buffer       *old_last_dir;            ///< Previous to last dir
+  struct Buffer       *prefix;                  ///< Folder prefix string
+  int                  last_selected_mailbox;   ///< Index of last selected Mailbox
+  struct MuttWindow   *sbar;                    ///< Status Bar
+  struct MuttWindow   *win_browser;             ///< Browser Window
+  bool                 done;                    ///< Should we close the Dialog?
 };
 
 void                       browser_private_data_free(struct BrowserPrivateData **ptr);

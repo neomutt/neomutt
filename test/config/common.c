@@ -3,7 +3,11 @@
  * Shared Testing Code
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,6 +27,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -32,7 +37,7 @@
 #include "config/lib.h"
 #include "common.h"
 
-const char *line = "--------------------------------------------------------------------------------";
+const char *divider_line = "--------------------------------------------------------------------------------";
 
 bool dont_fail = false;
 
@@ -45,7 +50,7 @@ int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   if (value > 1000000)
     buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
   else
-    buf_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
+    buf_printf(result, "%s: %s, %zd", __func__, cdef->name, value);
   return CSR_ERR_INVALID;
 }
 
@@ -55,7 +60,7 @@ int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   if (value > 1000000)
     buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
   else
-    buf_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
+    buf_printf(result, "%s: %s, %zd", __func__, cdef->name, value);
   return CSR_SUCCESS | CSR_SUC_WARNING;
 }
 
@@ -65,19 +70,19 @@ int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   if (value > 1000000)
     buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
   else
-    buf_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
+    buf_printf(result, "%s: %s, %zd", __func__, cdef->name, value);
   return CSR_SUCCESS;
 }
 
 void log_line(const char *fn)
 {
   int len = 44 - mutt_str_len(fn);
-  TEST_MSG("\033[36m---- %s %.*s\033[m\n", fn, len, line);
+  TEST_MSG("\033[36m---- %s %.*s\033[m", fn, len, divider_line);
 }
 
 void short_line(void)
 {
-  TEST_MSG("%s\n", line + 40);
+  TEST_MSG("%s", divider_line + 40);
 }
 
 int log_observer(struct NotifyCallback *nc)
@@ -95,7 +100,7 @@ int log_observer(struct NotifyCallback *nc)
 
   cs_he_string_get(ec->sub->cs, ec->he, result);
 
-  TEST_MSG("Event: %s has been %s to '%s'\n", ec->name,
+  TEST_MSG("Event: %s has been %s to '%s'", ec->name,
            events[nc->event_subtype - 1], buf_string(result));
 
   buf_pool_release(&result);
@@ -139,7 +144,7 @@ void cs_dump_set(const struct ConfigSet *cs)
 
     const char *name = NULL;
 
-    if (he->type & DT_INHERITED)
+    if (he->type & D_INTERNAL_INHERITED)
     {
       struct Inheritance *inh = he->data;
       he = inh->parent;
@@ -174,9 +179,118 @@ void cs_dump_set(const struct ConfigSet *cs)
   qsort(list, index, sizeof(list[0]), sort_list_cb);
   for (i = 0; list[i]; i++)
   {
-    TEST_MSG("%s\n", list[i]);
+    TEST_MSG("%s", list[i]);
     FREE(&list[i]);
   }
 
   buf_pool_release(&result);
+}
+
+/**
+ * cs_str_delete - Delete config item from a config set
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_delete(const struct ConfigSet *cs, const char *name, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    buf_printf(err, _("Unknown option %s"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_delete(cs, he, err);
+}
+
+/**
+ * cs_str_native_get - Natively get the value of a string config item
+ * @param cs   Config items
+ * @param name Name of config item
+ * @param err  Buffer for error messages
+ * @retval intptr_t Native pointer/value
+ * @retval INT_MIN  Error
+ */
+intptr_t cs_str_native_get(const struct ConfigSet *cs, const char *name, struct Buffer *err)
+{
+  if (!cs || !name)
+    return INT_MIN;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  return cs_he_native_get(cs, he, err);
+}
+
+/**
+ * cs_str_string_get - Get a config item as a string
+ * @param cs     Config items
+ * @param name   Name of config item
+ * @param result Buffer for results or error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffer *result)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    buf_printf(result, _("Unknown option %s"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_string_get(cs, he, result);
+}
+
+/**
+ * cs_str_string_minus_equals - Remove from a config item by string
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,
+                               const char *value, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    buf_printf(err, _("Unknown option %s"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_string_minus_equals(cs, he, value, err);
+}
+
+/**
+ * cs_str_string_plus_equals - Add to a config item by string
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_string_plus_equals(const struct ConfigSet *cs, const char *name,
+                              const char *value, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    buf_printf(err, _("Unknown option %s"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_string_plus_equals(cs, he, value, err);
 }

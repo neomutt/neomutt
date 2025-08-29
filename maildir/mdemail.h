@@ -3,7 +3,7 @@
  * Maildir Email helper
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,10 +32,10 @@
  */
 struct MdEmail
 {
-  struct Email *email;
-  char *canon_fname;
-  bool header_parsed : 1;
-  ino_t inode;
+  struct Email *email;           ///< Temporary Email
+  char *        canon_fname;     ///< Canonical filename for hashing
+  bool          header_parsed;   ///< Has the Email header been parsed?
+  ino_t         inode;           ///< Inode number of the file
 };
 ARRAY_HEAD(MdEmailArray, struct MdEmail *);
 

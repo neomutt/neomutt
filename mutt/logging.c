@@ -3,7 +3,8 @@
  * Logging Dispatcher
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,7 +29,7 @@
 
 #include "config.h"
 #include <errno.h>
-#include <stdarg.h>
+#include <stdarg.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -42,7 +43,7 @@
 #include "queue.h"
 #include "string2.h"
 
-static const char *LevelAbbr = "PEWM12345N"; ///< Abbreviations of logging level names
+const char *LevelAbbr = "PEWM12345N"; ///< Abbreviations of logging level names
 
 /**
  * MuttLogger - The log dispatcher - @ingroup logging_api
@@ -412,7 +413,7 @@ int log_disp_queue(time_t stamp, const char *file, int line, const char *functio
     level = LL_ERROR;
   }
 
-  struct LogLine *ll = mutt_mem_calloc(1, sizeof(*ll));
+  struct LogLine *ll = MUTT_MEM_CALLOC(1, struct LogLine);
   ll->time = (stamp != 0) ? stamp : mutt_date_now();
   ll->file = file;
   ll->line = line;
@@ -454,7 +455,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
 
   FILE *fp = (level < LL_MESSAGE) ? stderr : stdout;
   int err = errno;
-  int colour = 0;
+  int color = 0;
   bool tty = (isatty(fileno(fp)) == 1);
 
   if (tty)
@@ -463,10 +464,10 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
     {
       case LL_PERROR:
       case LL_ERROR:
-        colour = 31;
+        color = 31;
         break;
       case LL_WARNING:
-        colour = 33;
+        color = 33;
         break;
       case LL_MESSAGE:
       default:
@@ -474,15 +475,15 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
     }
   }
 
-  if (colour > 0)
-    rc += fprintf(fp, "\033[1;%dm", colour); // Escape
+  if (color > 0)
+    rc += fprintf(fp, "\033[1;%dm", color); // Escape
 
   fputs(buf, fp);
 
   if (level == LL_PERROR)
     rc += fprintf(fp, ": %s", strerror(err));
 
-  if (colour > 0)
+  if (color > 0)
     rc += fprintf(fp, "\033[0m"); // Escape
 
   rc += fprintf(fp, "\n");
@@ -491,10 +492,29 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
 }
 
 /**
- * log_disp_null - Discard log lines - Implements ::log_dispatcher_t - @ingroup logging_api
+ * log_multiline_full - Helper to dump multiline text to the log
+ * @param level Logging level, e.g. LL_DEBUG1
+ * @param str   Text to save
+ * @param file  Source file
+ * @param line  Source line number
+ * @param func  Source function
  */
-int log_disp_null(time_t stamp, const char *file, int line, const char *function,
-                  enum LogLevel level, const char *format, ...)
+void log_multiline_full(enum LogLevel level, const char *str, const char *file,
+                        int line, const char *func)
 {
-  return 0;
+  while (str && (str[0] != '\0'))
+  {
+    const char *end = strchr(str, '\n');
+    if (end)
+    {
+      int len = end - str;
+      MuttLogger(0, file, line, func, level, "%.*s\n", len, str);
+      str = end + 1;
+    }
+    else
+    {
+      MuttLogger(0, file, line, func, level, "%s\n", str);
+      break;
+    }
+  }
 }

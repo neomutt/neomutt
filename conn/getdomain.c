@@ -3,7 +3,10 @@
  * DNS lookups
  *
  * @authors
- * Copyright (C) 2009,2013,2016 Derek Martin <code@pizzashack.org>
+ * Copyright (C) 2017 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +30,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <netdb.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -48,8 +50,8 @@
  */
 static struct addrinfo *mutt_getaddrinfo_a(const char *node, const struct addrinfo *hints)
 {
-  assert(node);
-  assert(hints);
+  ASSERT(node);
+  ASSERT(hints);
   struct addrinfo *result = NULL;
 
   /* Allow 0.1 seconds to get the FQDN (fully-qualified domain name).
@@ -99,8 +101,8 @@ static struct addrinfo *mutt_getaddrinfo_a(const char *node, const struct addrin
  */
 static struct addrinfo *mutt_getaddrinfo(const char *node, const struct addrinfo *hints)
 {
-  assert(node);
-  assert(hints);
+  ASSERT(node);
+  ASSERT(hints);
   struct addrinfo *result = NULL;
   mutt_debug(LL_DEBUG3, "before getaddrinfo\n");
   int rc = getaddrinfo(node, NULL, hints, &result);
@@ -121,7 +123,7 @@ static struct addrinfo *mutt_getaddrinfo(const char *node, const struct addrinfo
  */
 int getdnsdomainname(struct Buffer *result)
 {
-  assert(result);
+  ASSERT(result);
   int rc = -1;
 
 #if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)
@@ -130,10 +132,9 @@ int getdnsdomainname(struct Buffer *result)
     return rc;
 
   struct addrinfo *lookup_result = NULL;
-  struct addrinfo hints;
+  struct addrinfo hints = { 0 };
 
   buf_reset(result);
-  memset(&hints, 0, sizeof(struct addrinfo));
   hints.ai_flags = AI_CANONNAME;
   hints.ai_family = AF_UNSPEC;
 

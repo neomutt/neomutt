@@ -6,6 +6,9 @@
  * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,6 +45,8 @@
 struct ImapAuth
 {
   /**
+   * @defgroup imap_authenticate IMAP Authentication API
+   *
    * authenticate - Authenticate an IMAP connection
    * @param adata Imap Account data
    * @param method Use this named method, or any available method if NULL

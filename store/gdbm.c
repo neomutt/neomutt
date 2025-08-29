@@ -3,10 +3,8 @@
  * GNU dbm backend for the key/value Store
  *
  * @authors
- * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
- * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
- * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,23 +29,25 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <gdbm.h>
 #include <limits.h>
+#include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
 /**
- * store_gdbm_open - Implements StoreOps::open() - @ingroup store_open
+ * store_gdbm_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_gdbm_open(const char *path)
+static StoreHandle *store_gdbm_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
 
   const int pagesize = 4096;
 
-  GDBM_FILE db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
+  GDBM_FILE db = gdbm_open((char *) path, pagesize,
+                           create ? GDBM_WRCREAT : GDBM_WRITER, 00600, NULL);
   if (!db)
   {
     /* if rw failed try ro */
@@ -59,7 +59,7 @@ static StoreHandle *store_gdbm_open(const char *path)
 }
 
 /**
- * store_gdbm_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
+ * store_gdbm_fetch - Fetch a Value from the Store - Implements StoreOps::fetch() - @ingroup store_fetch
  */
 static void *store_gdbm_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
@@ -81,7 +81,7 @@ static void *store_gdbm_fetch(StoreHandle *store, const char *key, size_t klen, 
 }
 
 /**
- * store_gdbm_free - Implements StoreOps::free() - @ingroup store_free
+ * store_gdbm_free - Free a Value returned by fetch() - Implements StoreOps::free() - @ingroup store_free
  */
 static void store_gdbm_free(StoreHandle *store, void **ptr)
 {
@@ -89,7 +89,7 @@ static void store_gdbm_free(StoreHandle *store, void **ptr)
 }
 
 /**
- * store_gdbm_store - Implements StoreOps::store() - @ingroup store_store
+ * store_gdbm_store - Write a Value to the Store - Implements StoreOps::store() - @ingroup store_store
  */
 static int store_gdbm_store(StoreHandle *store, const char *key, size_t klen,
                             void *value, size_t vlen)
@@ -113,7 +113,7 @@ static int store_gdbm_store(StoreHandle *store, const char *key, size_t klen,
 }
 
 /**
- * store_gdbm_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
+ * store_gdbm_delete_record - Delete a record from the Store - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
 static int store_gdbm_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
@@ -132,7 +132,7 @@ static int store_gdbm_delete_record(StoreHandle *store, const char *key, size_t 
 }
 
 /**
- * store_gdbm_close - Implements StoreOps::close() - @ingroup store_close
+ * store_gdbm_close - Close a Store connection - Implements StoreOps::close() - @ingroup store_close
  */
 static void store_gdbm_close(StoreHandle **ptr)
 {
@@ -146,7 +146,7 @@ static void store_gdbm_close(StoreHandle **ptr)
 }
 
 /**
- * store_gdbm_version - Implements StoreOps::version() - @ingroup store_version
+ * store_gdbm_version - Get a Store version string - Implements StoreOps::version() - @ingroup store_version
  */
 static const char *store_gdbm_version(void)
 {

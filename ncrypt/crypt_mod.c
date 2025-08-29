@@ -3,7 +3,8 @@
  * Register crypto modules
  *
  * @authors
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2017-2018 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -52,7 +53,7 @@ static struct CryptModuleList CryptModules = STAILQ_HEAD_INITIALIZER(CryptModule
  */
 void crypto_module_register(const struct CryptModuleSpecs *specs)
 {
-  struct CryptModule *module = mutt_mem_calloc(1, sizeof(struct CryptModule));
+  struct CryptModule *module = MUTT_MEM_CALLOC(1, struct CryptModule);
   module->specs = specs;
   STAILQ_INSERT_HEAD(&CryptModules, module, entries);
 }

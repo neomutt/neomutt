@@ -3,7 +3,7 @@
  * Nntp-specific Account data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +34,7 @@
 struct Connection;
 
 /**
- * nntp_adata_free - Free the private Account data - Implements Account::adata_free()
+ * nntp_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  *
  * The NntpAccountData struct stores global NNTP data, such as the connection to
  * the database.  This function will close the database, free the resources and
@@ -64,11 +64,11 @@ void nntp_adata_free(void **ptr)
  */
 struct NntpAccountData *nntp_adata_new(struct Connection *conn)
 {
-  struct NntpAccountData *adata = mutt_mem_calloc(1, sizeof(struct NntpAccountData));
+  struct NntpAccountData *adata = MUTT_MEM_CALLOC(1, struct NntpAccountData);
   adata->conn = conn;
   adata->groups_hash = mutt_hash_new(1009, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(adata->groups_hash, nntp_hashelem_free, 0);
   adata->groups_max = 16;
-  adata->groups_list = mutt_mem_malloc(adata->groups_max * sizeof(struct NntpMboxData *));
+  adata->groups_list = MUTT_MEM_MALLOC(adata->groups_max, struct NntpMboxData *);
   return adata;
 }

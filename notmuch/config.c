@@ -3,7 +3,9 @@
  * Config used by libnotmuch
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2022 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +29,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -37,7 +39,7 @@
 
 #ifdef USE_NOTMUCH
 /**
- * is_valid_notmuch_url - Checks that a URL is in required form.
+ * is_valid_notmuch_url - Checks that a URL is in required form
  * @param url URL to test
  * @retval true  url in form notmuch://[absolute path]
  * @retval false url is not in required form
@@ -49,7 +51,9 @@ static bool is_valid_notmuch_url(const char *url)
 #endif
 
 /**
- * nm_default_url_validator - Ensure nm_default_url is of the form notmuch://[absolute path] - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * nm_default_url_validator - Validate the "nm_default_url" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ *
+ * Ensure nm_default_url is of the form notmuch://[absolute path]
  */
 static int nm_default_url_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                                     intptr_t value, struct Buffer *err)
@@ -66,7 +70,7 @@ static int nm_default_url_validator(const struct ConfigSet *cs, const struct Con
 }
 
 /**
- * nm_query_window_timebase_validator - Validate $nm_query_window_timebase - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * nm_query_window_timebase_validator - Validate the "nm_query_window_timebase" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  *
  * Ensure $nm_query_window_timebase matches allowed values.
  *
@@ -101,13 +105,13 @@ static int nm_query_window_timebase_validator(const struct ConfigSet *cs,
  */
 static struct ConfigDef NotmuchVars[] = {
   // clang-format off
-  { "nm_config_file", DT_PATH|DT_PATH_FILE, IP "auto", 0, NULL,
+  { "nm_config_file", DT_PATH|D_PATH_FILE, IP "auto", 0, NULL,
     "(notmuch) Configuration file for notmuch. Use 'auto' to detect configuration."
   },
   { "nm_config_profile", DT_STRING, 0, 0, NULL,
     "(notmuch) Configuration profile for notmuch."
   },
-  { "nm_db_limit", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "nm_db_limit", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "(notmuch) Default limit for Notmuch queries"
   },
   { "nm_default_url", DT_STRING, 0, 0, nm_default_url_validator,
@@ -119,7 +123,7 @@ static struct ConfigDef NotmuchVars[] = {
   { "nm_flagged_tag", DT_STRING, IP "flagged", 0, NULL,
     "(notmuch) Tag to use for flagged messages"
   },
-  { "nm_open_timeout", DT_NUMBER|DT_NOT_NEGATIVE, 5, 0, NULL,
+  { "nm_open_timeout", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 5, 0, NULL,
     "(notmuch) Database timeout"
   },
   { "nm_query_type", DT_STRING, IP "messages", 0, NULL,
@@ -131,7 +135,7 @@ static struct ConfigDef NotmuchVars[] = {
   { "nm_query_window_current_search", DT_STRING, 0, 0, NULL,
     "(notmuch) Current search parameters"
   },
-  { "nm_query_window_duration", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "nm_query_window_duration", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "(notmuch) Time duration of the current search window"
   },
   { "nm_query_window_enable", DT_BOOL, false, 0, NULL,
@@ -156,7 +160,7 @@ static struct ConfigDef NotmuchVars[] = {
     "(notmuch) Use the first virtual mailbox as a spool file"
   },
 
-  { "vfolder_format",    DT_DEPRECATED|DT_STRING, 0, IP "2018-11-01" },
+  { "vfolder_format",    D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2018-11-01" },
 
   { "nm_default_uri",    DT_SYNONYM, IP "nm_default_url",     IP "2021-02-11" },
   { "virtual_spoolfile", DT_SYNONYM, IP "virtual_spool_file", IP "2021-02-11" },
@@ -172,7 +176,7 @@ bool config_init_notmuch(struct ConfigSet *cs)
   bool rc = false;
 
 #if defined(USE_NOTMUCH)
-  rc |= cs_register_variables(cs, NotmuchVars, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, NotmuchVars);
 #endif
 
   return rc;

@@ -3,7 +3,9 @@
  * Compose functions
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,6 +29,9 @@
  */
 
 #include "config.h"
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -42,46 +47,166 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
+#include "nntp/lib.h"
+#include "pop/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach_data.h"
 #include "external.h"
-#include "globals.h" // IWYU pragma: keep
+#include "functions.h"
+#include "globals.h"
 #include "hook.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mview.h"
 #include "mx.h"
-#include "opcodes.h"
+#include "nntp/adata.h" // IWYU pragma: keep
 #include "protos.h"
 #include "rfc3676.h"
 #include "shared_data.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-#ifdef MIXMASTER
-#include "mixmaster/lib.h"
 #endif
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#include "nntp/adata.h" // IWYU pragma: keep
+
+// clang-format off
+/**
+ * OpCompose - Functions for the Compose Menu
+ */
+const struct MenuFuncOp OpCompose[] = { /* map: compose */
+  { "attach-file",                   OP_ATTACHMENT_ATTACH_FILE },
+  { "attach-key",                    OP_ATTACHMENT_ATTACH_KEY },
+  { "attach-message",                OP_ATTACHMENT_ATTACH_MESSAGE },
+  { "attach-news-message",           OP_ATTACHMENT_ATTACH_NEWS_MESSAGE },
+#ifdef USE_AUTOCRYPT
+  { "autocrypt-menu",                OP_COMPOSE_AUTOCRYPT_MENU },
 #endif
-#ifdef USE_POP
-#include "pop/lib.h"
+  { "copy-file",                     OP_ATTACHMENT_SAVE },
+  { "detach-file",                   OP_ATTACHMENT_DETACH },
+  { "display-toggle-weed",           OP_DISPLAY_HEADERS },
+  { "edit-bcc",                      OP_ENVELOPE_EDIT_BCC },
+  { "edit-cc",                       OP_ENVELOPE_EDIT_CC },
+  { "edit-content-id",               OP_ATTACHMENT_EDIT_CONTENT_ID },
+  { "edit-description",              OP_ATTACHMENT_EDIT_DESCRIPTION },
+  { "edit-encoding",                 OP_ATTACHMENT_EDIT_ENCODING },
+  { "edit-fcc",                      OP_ENVELOPE_EDIT_FCC },
+  { "edit-file",                     OP_COMPOSE_EDIT_FILE },
+  { "edit-followup-to",              OP_ENVELOPE_EDIT_FOLLOWUP_TO },
+  { "edit-from",                     OP_ENVELOPE_EDIT_FROM },
+  { "edit-headers",                  OP_ENVELOPE_EDIT_HEADERS },
+  { "edit-language",                 OP_ATTACHMENT_EDIT_LANGUAGE },
+  { "edit-message",                  OP_COMPOSE_EDIT_MESSAGE },
+  { "edit-mime",                     OP_ATTACHMENT_EDIT_MIME },
+  { "edit-newsgroups",               OP_ENVELOPE_EDIT_NEWSGROUPS },
+  { "edit-reply-to",                 OP_ENVELOPE_EDIT_REPLY_TO },
+  { "edit-subject",                  OP_ENVELOPE_EDIT_SUBJECT },
+  { "edit-to",                       OP_ENVELOPE_EDIT_TO },
+  { "edit-type",                     OP_ATTACHMENT_EDIT_TYPE },
+  { "edit-x-comment-to",             OP_ENVELOPE_EDIT_X_COMMENT_TO },
+  { "exit",                          OP_EXIT },
+  { "filter-entry",                  OP_ATTACHMENT_FILTER },
+  { "forget-passphrase",             OP_FORGET_PASSPHRASE },
+  { "get-attachment",                OP_ATTACHMENT_GET_ATTACHMENT },
+  { "group-alternatives",            OP_ATTACHMENT_GROUP_ALTS },
+  { "group-multilingual",            OP_ATTACHMENT_GROUP_LINGUAL },
+  { "group-related",                 OP_ATTACHMENT_GROUP_RELATED },
+  { "ispell",                        OP_COMPOSE_ISPELL },
+  { "move-down",                     OP_ATTACHMENT_MOVE_DOWN },
+  { "move-up",                       OP_ATTACHMENT_MOVE_UP },
+  { "new-mime",                      OP_ATTACHMENT_NEW_MIME },
+  { "pgp-menu",                      OP_COMPOSE_PGP_MENU },
+  { "pipe-entry",                    OP_PIPE },
+  { "pipe-message",                  OP_PIPE },
+  { "postpone-message",              OP_COMPOSE_POSTPONE_MESSAGE },
+  { "print-entry",                   OP_ATTACHMENT_PRINT },
+  { "rename-attachment",             OP_ATTACHMENT_RENAME_ATTACHMENT },
+  { "rename-file",                   OP_COMPOSE_RENAME_FILE },
+  { "send-message",                  OP_COMPOSE_SEND_MESSAGE },
+  { "smime-menu",                    OP_COMPOSE_SMIME_MENU },
+  { "toggle-disposition",            OP_ATTACHMENT_TOGGLE_DISPOSITION },
+  { "toggle-recode",                 OP_ATTACHMENT_TOGGLE_RECODE },
+  { "toggle-unlink",                 OP_ATTACHMENT_TOGGLE_UNLINK },
+  { "ungroup-attachment",            OP_ATTACHMENT_UNGROUP },
+  { "update-encoding",               OP_ATTACHMENT_UPDATE_ENCODING },
+  { "view-attach",                   OP_ATTACHMENT_VIEW },
+  { "view-mailcap",                  OP_ATTACHMENT_VIEW_MAILCAP },
+  { "view-pager",                    OP_ATTACHMENT_VIEW_PAGER },
+  { "view-text",                     OP_ATTACHMENT_VIEW_TEXT },
+  { "write-fcc",                     OP_COMPOSE_WRITE_MESSAGE },
+  { NULL, 0 },
+};
+
+/**
+ * ComposeDefaultBindings - Key bindings for the Compose Menu
+ */
+const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
+  { OP_ATTACHMENT_ATTACH_FILE,             "a" },
+  { OP_ATTACHMENT_ATTACH_KEY,              "\033k" },          // <Alt-k>
+  { OP_ATTACHMENT_ATTACH_MESSAGE,          "A" },
+  { OP_ATTACHMENT_DETACH,                  "D" },
+  { OP_ATTACHMENT_EDIT_CONTENT_ID,         "\033i" },          // <Alt-i>
+  { OP_ATTACHMENT_EDIT_DESCRIPTION,        "d" },
+  { OP_ATTACHMENT_EDIT_ENCODING,           "\005" },           // <Ctrl-E>
+  { OP_ATTACHMENT_EDIT_LANGUAGE,           "\014" },           // <Ctrl-L>
+  { OP_ATTACHMENT_EDIT_MIME,               "m" },
+  { OP_ATTACHMENT_EDIT_TYPE,               "\024" },           // <Ctrl-T>
+  { OP_ATTACHMENT_FILTER,                  "F" },
+  { OP_ATTACHMENT_GET_ATTACHMENT,          "G" },
+  { OP_ATTACHMENT_GROUP_ALTS,              "&" },
+  { OP_ATTACHMENT_GROUP_LINGUAL,           "^" },
+  { OP_ATTACHMENT_GROUP_RELATED,           "%" },
+  { OP_ATTACHMENT_MOVE_DOWN,               "+" },
+  { OP_ATTACHMENT_MOVE_UP,                 "-" },
+  { OP_ATTACHMENT_NEW_MIME,                "n" },
+  { OP_EXIT,                               "q" },
+  { OP_PIPE,                               "|" },
+  { OP_ATTACHMENT_PRINT,                   "l" },
+  { OP_ATTACHMENT_RENAME_ATTACHMENT,       "\017" },           // <Ctrl-O>
+  { OP_ATTACHMENT_SAVE,                    "C" },
+  { OP_ATTACHMENT_TOGGLE_DISPOSITION,      "\004" },           // <Ctrl-D>
+  { OP_ATTACHMENT_TOGGLE_UNLINK,           "u" },
+  { OP_ATTACHMENT_UNGROUP,                 "#" },
+  { OP_ATTACHMENT_UPDATE_ENCODING,         "U" },
+  { OP_ATTACHMENT_VIEW,                    "<keypadenter>" },
+  { OP_ATTACHMENT_VIEW,                    "\n" },             // <Enter>
+  { OP_ATTACHMENT_VIEW,                    "\r" },             // <Return>
+#ifdef USE_AUTOCRYPT
+  { OP_COMPOSE_AUTOCRYPT_MENU,             "o" },
 #endif
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
+  { OP_COMPOSE_EDIT_FILE,                  "\033e" },          // <Alt-e>
+  { OP_COMPOSE_EDIT_MESSAGE,               "e" },
+  { OP_COMPOSE_ISPELL,                     "i" },
+  { OP_COMPOSE_PGP_MENU,                   "p" },
+  { OP_COMPOSE_POSTPONE_MESSAGE,           "P" },
+  { OP_COMPOSE_RENAME_FILE,                "R" },
+  { OP_COMPOSE_SEND_MESSAGE,               "y" },
+  { OP_COMPOSE_SMIME_MENU,                 "S" },
+  { OP_COMPOSE_WRITE_MESSAGE,              "w" },
+  { OP_DISPLAY_HEADERS,                    "h" },
+  { OP_ENVELOPE_EDIT_BCC,                  "b" },
+  { OP_ENVELOPE_EDIT_CC,                   "c" },
+  { OP_ENVELOPE_EDIT_FCC,                  "f" },
+  { OP_ENVELOPE_EDIT_FROM,                 "\033f" },          // <Alt-f>
+  { OP_ENVELOPE_EDIT_HEADERS,              "E" },
+  { OP_ENVELOPE_EDIT_REPLY_TO,             "r" },
+  { OP_ENVELOPE_EDIT_SUBJECT,              "s" },
+  { OP_ENVELOPE_EDIT_TO,                   "t" },
+  { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
+  { OP_TAG,                                "T" },
+  { 0, NULL },
+};
+// clang-format on
 
 /**
  * check_count - Check if there are any attachments
@@ -210,8 +335,8 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
     return -1;
 
   struct AttachPtr **idx = actx->idx;
-  struct Body *bptr_previous = NULL;
-  struct Body *bptr_parent = NULL;
+  struct Body *b_previous = NULL;
+  struct Body *b_parent = NULL;
 
   if (aidx == 0)
   {
@@ -221,13 +346,29 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
       mutt_error(_("You may not delete the only attachment"));
       return -1;
     }
+
+    if (cs_subset_bool(NeoMutt->sub, "compose_confirm_detach_first"))
+    {
+      /* L10N: Prompt when trying to hit <detach-file> on the first entry in
+         the compose menu.  This entry is most likely the message they just
+         typed.  Hitting yes will remove the entry and unlink the file, so
+         it's worth confirming they really meant to do it. */
+      enum QuadOption ans = query_yesorno_help(_("Really delete the main message?"),
+                                               MUTT_NO, NeoMutt->sub,
+                                               "compose_confirm_detach_first");
+      if (ans == MUTT_NO)
+      {
+        idx[aidx]->body->tagged = false;
+        return -1;
+      }
+    }
   }
 
   if (idx[aidx]->level > 0)
   {
-    if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
+    if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &b_parent))
     {
-      if (attach_body_count(bptr_parent->parts, false) < 3)
+      if (attach_body_count(b_parent->parts, false) < 3)
       {
         mutt_error(_("Can't leave group with only one attachment"));
         return -1;
@@ -238,10 +379,10 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
   // reorder body pointers
   if (aidx > 0)
   {
-    if (attach_body_previous(idx[0]->body, idx[aidx]->body, &bptr_previous))
-      bptr_previous->next = idx[aidx]->body->next;
-    else if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
-      bptr_parent->parts = idx[aidx]->body->next;
+    if (attach_body_previous(idx[0]->body, idx[aidx]->body, &b_previous))
+      b_previous->next = idx[aidx]->body->next;
+    else if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &b_parent))
+      b_parent->parts = idx[aidx]->body->next;
   }
 
   // free memory
@@ -322,19 +463,19 @@ static void compose_attach_swap(struct Email *e, struct AttachCtx *actx, int fir
   else
   {
     // find previous attachment
-    struct Body *bptr_previous = NULL;
-    struct Body *bptr_parent = NULL;
-    if (attach_body_previous(e->body, idx[first]->body, &bptr_previous))
+    struct Body *b_previous = NULL;
+    struct Body *b_parent = NULL;
+    if (attach_body_previous(e->body, idx[first]->body, &b_previous))
     {
       idx[first]->body->next = idx[second]->body->next;
       idx[second]->body->next = idx[first]->body;
-      bptr_previous->next = idx[second]->body;
+      b_previous->next = idx[second]->body;
     }
-    else if (attach_body_parent(e->body, NULL, idx[first]->body, &bptr_parent))
+    else if (attach_body_parent(e->body, NULL, idx[first]->body, &b_parent))
     {
       idx[first]->body->next = idx[second]->body->next;
       idx[second]->body->next = idx[first]->body;
-      bptr_parent->parts = idx[second]->body;
+      b_parent->parts = idx[second]->body;
     }
   }
 
@@ -684,7 +825,6 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
 {
   char *prompt = _("Open mailbox to attach message from");
 
-#ifdef USE_NNTP
   OptNews = false;
   if (shared->mailbox && (op == OP_ATTACHMENT_ATTACH_NEWS_MESSAGE))
   {
@@ -696,14 +836,11 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
     prompt = _("Open newsgroup to attach message from");
     OptNews = true;
   }
-#endif
 
   struct Buffer *fname = buf_pool_get();
   if (shared->mailbox)
   {
-#ifdef USE_NNTP
     if ((op == OP_ATTACHMENT_ATTACH_MESSAGE) ^ (shared->mailbox->type == MUTT_NNTP))
-#endif
     {
       buf_strcpy(fname, mailbox_path(shared->mailbox));
       buf_pretty_mailbox(fname);
@@ -718,21 +855,17 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
     return FR_NO_ACTION;
   }
 
-#ifdef USE_NNTP
   if (OptNews)
     nntp_expand_path(fname->data, fname->dsize, &CurrentNewsSrv->conn->account);
   else
-#endif
     buf_expand_path(fname);
-#ifdef USE_IMAP
+
   if (imap_path_probe(buf_string(fname), NULL) != MUTT_IMAP)
-#endif
-#ifdef USE_POP
+  {
     if (pop_path_probe(buf_string(fname), NULL) != MUTT_POP)
-#endif
-#ifdef USE_NNTP
+    {
       if (!OptNews && (nntp_path_probe(buf_string(fname), NULL) != MUTT_NNTP))
-#endif
+      {
         if (mx_path_probe(buf_string(fname)) != MUTT_NOTMUCH)
         {
           /* check to make sure the file exists and is readable */
@@ -743,6 +876,9 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
             return FR_ERROR;
           }
         }
+      }
+    }
+  }
 
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
 
@@ -770,14 +906,14 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
   const enum SortType old_sort_aux = cs_subset_sort(shared->sub, "sort_aux");
   const unsigned char old_use_threads = cs_subset_enum(shared->sub, "use_threads");
 
-  OptAttachMsg = true;
   mutt_message(_("Tag the messages you want to attach"));
   struct MuttWindow *dlg = index_pager_init();
+  struct IndexSharedData *index_shared = dlg->wdata;
+  index_shared->attach_msg = true;
   dialog_push(dlg);
   struct Mailbox *m_attach_new = dlg_index(dlg, m_attach);
   dialog_pop();
   mutt_window_free(&dlg);
-  OptAttachMsg = false;
 
   if (!shared->mailbox)
   {
@@ -879,7 +1015,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
 
-  char *id = mutt_param_get(&cur_att->body->parameter, "content-id");
+  char *id = cur_att->body->content_id;
   if (id)
   {
     buf_strcpy(buf, id);
@@ -897,7 +1033,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
     {
       if (check_cid(buf_string(buf)))
       {
-        mutt_param_set(&cur_att->body->parameter, "content-id", buf_string(buf));
+        mutt_str_replace(&cur_att->body->content_id, buf_string(buf));
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -1195,15 +1331,9 @@ static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
     if (!b->tagged || (b->type == TYPE_MULTIPART))
       continue;
 
-    char *id = mutt_param_get(&b->parameter, "content-id");
-    if (id)
-      continue;
-
-    id = gen_cid();
-    if (id)
+    if (!b->content_id)
     {
-      mutt_param_set(&b->parameter, "content-id", id);
-      FREE(&id);
+      b->content_id = gen_cid();
     }
   }
 
@@ -1311,7 +1441,7 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
 
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL };
   if ((mw_get_field(_("New file: "), fname, MUTT_COMP_NO_FLAGS, HC_FILE,
-                    &CompleteMailboxOps, &cdata) != 0) ||
+                    &CompleteFileOps, &cdata) != 0) ||
       buf_is_empty(fname))
   {
     goto done;
@@ -1423,7 +1553,7 @@ static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int
   buf_strcpy(fname, mutt_path_basename(NONULL(src)));
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL };
   int rc = mw_get_field(_("Send attachment with name: "), fname,
-                        MUTT_COMP_NO_FLAGS, HC_FILE, &CompleteMailboxOps, &cdata);
+                        MUTT_COMP_NO_FLAGS, HC_FILE, &CompleteFileOps, &cdata);
   if (rc == 0)
   {
     // It's valid to set an empty string here, to erase what was set
@@ -1524,20 +1654,20 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
 
   int aidx = shared->adata->menu->current;
   struct AttachCtx *actx = shared->adata->actx;
-  struct Body *bptr = actx->idx[aidx]->body;
-  struct Body *bptr_next = bptr->next;
-  struct Body *bptr_previous = NULL;
-  struct Body *bptr_parent = NULL;
+  struct Body *b = actx->idx[aidx]->body;
+  struct Body *b_next = b->next;
+  struct Body *b_previous = NULL;
+  struct Body *b_parent = NULL;
   int parent_type = actx->idx[aidx]->parent_type;
   int level = actx->idx[aidx]->level;
 
   // reorder body pointers
-  if (attach_body_previous(shared->email->body, bptr, &bptr_previous))
-    bptr_previous->next = bptr->parts;
-  else if (attach_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
-    bptr_parent->parts = bptr->parts;
+  if (attach_body_previous(shared->email->body, b, &b_previous))
+    b_previous->next = b->parts;
+  else if (attach_body_parent(shared->email->body, NULL, b, &b_parent))
+    b_parent->parts = b->parts;
   else
-    shared->email->body = bptr->parts;
+    shared->email->body = b->parts;
 
   // update attachment list
   int i = aidx + 1;
@@ -1549,7 +1679,7 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
       actx->idx[i]->parent_type = parent_type;
       // set body->next for final attachment in group
       if (!actx->idx[i]->body->next)
-        actx->idx[i]->body->next = bptr_next;
+        actx->idx[i]->body->next = b_next;
     }
     i++;
     if (i == actx->idxlen)
@@ -1756,7 +1886,7 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
   buf_pretty_mailbox(fname);
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL };
   if ((mw_get_field(_("Rename to: "), fname, MUTT_COMP_NO_FLAGS, HC_FILE,
-                    &CompleteMailboxOps, &cdata) == 0) &&
+                    &CompleteFileOps, &cdata) == 0) &&
       !buf_is_empty(fname))
   {
     struct stat st = { 0 };
@@ -1798,11 +1928,6 @@ static int op_compose_send_message(struct ComposeSharedData *shared, int op)
     menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
     return FR_NO_ACTION;
   }
-
-#ifdef MIXMASTER
-  if (!STAILQ_EMPTY(&shared->email->chain) && (mix_check_message(shared->email) != 0))
-    return FR_NO_ACTION;
-#endif
 
   if (!shared->fcc_set && !buf_is_empty(shared->fcc))
   {
@@ -1858,14 +1983,50 @@ static int op_compose_write_message(struct ComposeSharedData *shared, int op)
  *
  * This function handles:
  * - OP_ATTACHMENT_VIEW
+ * - OP_ATTACHMENT_VIEW_MAILCAP
+ * - OP_ATTACHMENT_VIEW_PAGER
+ * - OP_ATTACHMENT_VIEW_TEXT
  * - OP_DISPLAY_HEADERS
  */
 static int op_display_headers(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
-  mutt_attach_display_loop(shared->sub, shared->adata->menu, op, shared->email,
-                           shared->adata->actx, false);
+
+  enum ViewAttachMode mode = MUTT_VA_REGULAR;
+
+  switch (op)
+  {
+    case OP_ATTACHMENT_VIEW:
+    case OP_DISPLAY_HEADERS:
+      break;
+
+    case OP_ATTACHMENT_VIEW_MAILCAP:
+      mode = MUTT_VA_MAILCAP;
+      break;
+
+    case OP_ATTACHMENT_VIEW_PAGER:
+      mode = MUTT_VA_PAGER;
+      break;
+
+    case OP_ATTACHMENT_VIEW_TEXT:
+      mode = MUTT_VA_AS_TEXT;
+      break;
+  }
+
+  if (mode == MUTT_VA_REGULAR)
+  {
+    mutt_attach_display_loop(shared->sub, shared->adata->menu, op,
+                             shared->email, shared->adata->actx, false);
+  }
+  else
+  {
+    struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                   shared->adata->menu);
+    mutt_view_attachment(NULL, cur_att->body, mode, shared->email,
+                         shared->adata->actx, shared->adata->menu->win);
+  }
+
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
   /* no send2hook, since this doesn't modify the message */
   return FR_SUCCESS;
@@ -1951,6 +2112,9 @@ static const struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACHMENT_UNGROUP,                op_attachment_ungroup },
   { OP_ATTACHMENT_UPDATE_ENCODING,        op_attachment_update_encoding },
   { OP_ATTACHMENT_VIEW,                   op_display_headers },
+  { OP_ATTACHMENT_VIEW_MAILCAP,           op_display_headers },
+  { OP_ATTACHMENT_VIEW_PAGER,             op_display_headers },
+  { OP_ATTACHMENT_VIEW_TEXT,              op_display_headers },
   { OP_COMPOSE_EDIT_FILE,                 op_compose_edit_file },
   { OP_COMPOSE_EDIT_MESSAGE,              op_compose_edit_message },
   { OP_COMPOSE_ISPELL,                    op_compose_ispell },

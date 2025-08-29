@@ -4,7 +4,9 @@
  *
  * @authors
  * Copyright (C) 1996-2002,2010,2013,2016 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Rayford Shireman
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -45,30 +47,25 @@
 #include "gui/lib.h"
 #include "init.h"
 #include "color/lib.h"
+#include "compmbox/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
 #include "key/lib.h"
+#include "menu/lib.h"
 #include "notmuch/lib.h"
 #include "parse/lib.h"
+#include "sidebar/lib.h"
 #include "commands.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hook.h"
+#include "mutt_logging.h"
+#include "muttlib.h"
+#include "protos.h"
 #ifndef DOMAIN
 #include "conn/lib.h"
 #endif
 #ifdef USE_LUA
 #include "mutt_lua.h"
-#endif
-#include "menu/lib.h"
-#include "muttlib.h"
-#include "protos.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
-#ifdef USE_COMP_MBOX
-#include "compmbox/lib.h"
-#endif
-#ifdef USE_IMAP
-#include "imap/lib.h"
 #endif
 
 /**
@@ -267,9 +264,7 @@ void mutt_opts_cleanup(void)
   source_stack_cleanup();
 
   alias_cleanup();
-#ifdef USE_SIDEBAR
   sb_cleanup();
-#endif
 
   mutt_regexlist_free(&MailLists);
   mutt_regexlist_free(&NoSpamList);
@@ -313,37 +308,34 @@ void mutt_opts_cleanup(void)
 /**
  * mutt_init - Initialise NeoMutt
  * @param cs          Config Set
+ * @param dlevel      Command line debug level
+ * @param dfile       Command line debug file
  * @param skip_sys_rc If true, don't read the system config file
  * @param commands    List of config commands to execute
  * @retval 0 Success
  * @retval 1 Error
  */
-int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
+int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
+              bool skip_sys_rc, struct ListHead *commands)
 {
-  int need_pause = 0;
+  bool need_pause = false;
   int rc = 1;
-  struct Buffer err = buf_make(256);
-  struct Buffer buf = buf_make(256);
+  struct Buffer *err = buf_pool_get();
+  struct Buffer *buf = buf_pool_get();
 
   mutt_grouplist_init();
   alias_init();
   commands_init();
   hooks_init();
-#ifdef USE_COMP_MBOX
   mutt_comp_init();
-#endif
-#ifdef USE_IMAP
   imap_init();
-#endif
 #ifdef USE_LUA
   mutt_lua_init();
 #endif
   driver_tags_init();
 
   menu_init();
-#ifdef USE_SIDEBAR
   sb_init();
-#endif
 #ifdef USE_NOTMUCH
   nm_init();
 #endif
@@ -367,7 +359,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     if (env_colorterm && (mutt_str_equal(env_colorterm, "truecolor") ||
                           mutt_str_equal(env_colorterm, "24bit")))
     {
-      cs_subset_str_native_set(NeoMutt->sub, "color_directcolor", true, NULL);
+      cs_str_initial_set(cs, "color_directcolor", "yes", NULL);
+      cs_str_reset(cs, "color_directcolor", NULL);
     }
   }
 #endif
@@ -379,11 +372,11 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   if (!p)
   {
 #ifdef HOMESPOOL
-    buf_concat_path(&buf, NONULL(HomeDir), MAILPATH);
+    buf_concat_path(buf, NONULL(HomeDir), MAILPATH);
 #else
-    buf_concat_path(&buf, MAILPATH, NONULL(Username));
+    buf_concat_path(buf, MAILPATH, NONULL(Username));
 #endif
-    p = buf_string(&buf);
+    p = buf_string(buf);
   }
   cs_str_initial_set(cs, "spool_file", p, NULL);
   cs_str_reset(cs, "spool_file", NULL);
@@ -391,12 +384,12 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   p = mutt_str_getenv("REPLYTO");
   if (p)
   {
-    struct Buffer token;
+    struct Buffer *token = buf_pool_get();
 
-    buf_printf(&buf, "Reply-To: %s", p);
-    buf_init(&token);
-    parse_my_hdr(&token, &buf, 0, &err); /* adds to UserHeader */
-    FREE(&token.data);
+    buf_printf(buf, "Reply-To: %s", p);
+    buf_seek(buf, 0);
+    parse_my_hdr(token, buf, 0, err); /* adds to UserHeader */
+    buf_pool_release(&token);
   }
 
   p = mutt_str_getenv("EMAIL");
@@ -469,8 +462,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
 
     if (!xdg_cfg_home && HomeDir)
     {
-      buf_printf(&buf, "%s/.config", HomeDir);
-      xdg_cfg_home = buf_string(&buf);
+      buf_printf(buf, "%s/.config", HomeDir);
+      xdg_cfg_home = buf_string(buf);
     }
 
     char *config = find_cfg(HomeDir, xdg_cfg_home);
@@ -484,10 +477,10 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &Muttrc, entries)
     {
-      buf_strcpy(&buf, np->data);
+      buf_strcpy(buf, np->data);
       FREE(&np->data);
-      buf_expand_path(&buf);
-      np->data = buf_strdup(&buf);
+      buf_expand_path(buf);
+      np->data = buf_strdup(buf);
       if (access(np->data, F_OK))
       {
         mutt_perror("%s", np->data);
@@ -507,30 +500,30 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   {
     do
     {
-      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, &buf))
+      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, buf))
         break;
 
-      buf_printf(&buf, "%s/neomuttrc", SYSCONFDIR);
-      if (access(buf_string(&buf), F_OK) == 0)
+      buf_printf(buf, "%s/neomuttrc", SYSCONFDIR);
+      if (access(buf_string(buf), F_OK) == 0)
         break;
 
-      buf_printf(&buf, "%s/Muttrc", SYSCONFDIR);
-      if (access(buf_string(&buf), F_OK) == 0)
+      buf_printf(buf, "%s/Muttrc", SYSCONFDIR);
+      if (access(buf_string(buf), F_OK) == 0)
         break;
 
-      buf_printf(&buf, "%s/neomuttrc", PKGDATADIR);
-      if (access(buf_string(&buf), F_OK) == 0)
+      buf_printf(buf, "%s/neomuttrc", PKGDATADIR);
+      if (access(buf_string(buf), F_OK) == 0)
         break;
 
-      buf_printf(&buf, "%s/Muttrc", PKGDATADIR);
+      buf_printf(buf, "%s/Muttrc", PKGDATADIR);
     } while (false);
 
-    if (access(buf_string(&buf), F_OK) == 0)
+    if (access(buf_string(buf), F_OK) == 0)
     {
-      if (source_rc(buf_string(&buf), &err) != 0)
+      if (source_rc(buf_string(buf), err) != 0)
       {
-        mutt_error("%s", err.data);
-        need_pause = 1; // TEST11: neomutt (error in /etc/neomuttrc)
+        mutt_error("%s", buf_string(err));
+        need_pause = true; // TEST11: neomutt (error in /etc/neomuttrc)
       }
     }
   }
@@ -541,16 +534,16 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   {
     if (np->data)
     {
-      if (source_rc(np->data, &err) != 0)
+      if (source_rc(np->data, err) != 0)
       {
-        mutt_error("%s", err.data);
-        need_pause = 1; // TEST12: neomutt (error in ~/.neomuttrc)
+        mutt_error("%s", buf_string(err));
+        need_pause = true; // TEST12: neomutt (error in ~/.neomuttrc)
       }
     }
   }
 
   if (execute_commands(commands) != 0)
-    need_pause = 1; // TEST13: neomutt -e broken
+    need_pause = true; // TEST13: neomutt -e broken
 
   if (!get_hostname(cs))
     goto done;
@@ -567,6 +560,18 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   }
   cs_str_initial_set(cs, "real_name", c_real_name, NULL);
   cs_str_reset(cs, "real_name", NULL);
+
+  /* The command line overrides the config */
+  if (dlevel)
+    cs_str_reset(cs, "debug_level", NULL);
+  if (dfile)
+    cs_str_reset(cs, "debug_file", NULL);
+
+  if (mutt_log_start() < 0)
+  {
+    mutt_perror("log file");
+    goto done;
+  }
 
   if (need_pause && !OptNoCurses)
   {
@@ -601,8 +606,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   rc = 0;
 
 done:
-  buf_dealloc(&err);
-  buf_dealloc(&buf);
+  buf_pool_release(&err);
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -615,26 +620,26 @@ done:
  */
 int mutt_query_variables(struct ListHead *queries, bool show_docs)
 {
-  struct Buffer value = buf_make(256);
-  struct Buffer tmp = buf_make(256);
+  struct Buffer *value = buf_pool_get();
+  struct Buffer *tmp = buf_pool_get();
   int rc = 0;
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, queries, entries)
   {
-    buf_reset(&value);
+    buf_reset(value);
 
     struct HashElem *he = cs_subset_lookup(NeoMutt->sub, np->data);
     if (he)
     {
-      if (he->type & DT_DEPRECATED)
+      if (he->type & D_INTERNAL_DEPRECATED)
       {
-        mutt_warning(_("Config variable '%s' is deprecated"), np->data);
+        mutt_warning(_("Option %s is deprecated"), np->data);
         rc = 1;
         continue;
       }
 
-      int rv = cs_subset_he_string_get(NeoMutt->sub, he, &value);
+      int rv = cs_subset_he_string_get(NeoMutt->sub, he, value);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
       {
         rc = 1;
@@ -643,26 +648,26 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
 
       int type = DTYPE(he->type);
       if (type == DT_PATH)
-        mutt_pretty_mailbox(value.data, value.dsize);
+        mutt_pretty_mailbox(value->data, value->dsize);
 
       if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
       {
-        buf_reset(&tmp);
-        pretty_var(value.data, &tmp);
-        buf_strcpy(&value, tmp.data);
+        buf_reset(tmp);
+        pretty_var(buf_string(value), tmp);
+        buf_copy(value, tmp);
       }
 
-      dump_config_neo(NeoMutt->sub->cs, he, &value, NULL,
+      dump_config_neo(NeoMutt->sub->cs, he, value, NULL,
                       show_docs ? CS_DUMP_SHOW_DOCS : CS_DUMP_NO_FLAGS, stdout);
       continue;
     }
 
-    mutt_warning(_("No such variable: %s"), np->data);
+    mutt_warning(_("Unknown option %s"), np->data);
     rc = 1;
   }
 
-  buf_dealloc(&value);
-  buf_dealloc(&tmp);
+  buf_pool_release(&value);
+  buf_pool_release(&tmp);
 
   return rc; // TEST16: neomutt -Q charset
 }

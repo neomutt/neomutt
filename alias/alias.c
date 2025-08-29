@@ -3,9 +3,11 @@
  * Representation of a single alias to an email address
  *
  * @authors
- * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,9 +31,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <pwd.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,7 +54,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "maillist.h"
 #include "muttlib.h"
 #include "reverse.h"
@@ -205,28 +207,25 @@ static void recode_buf(struct Buffer *buf)
  * check_alias_name - Sanity-check an alias name
  * @param s       Alias to check
  * @param dest    Buffer for the result
- * @param destlen Length of buffer
  * @retval  0 Success
  * @retval -1 Error
  *
  * Only characters which are non-special to both the RFC822 and the neomutt
  * configuration parser are permitted.
  */
-static int check_alias_name(const char *s, char *dest, size_t destlen)
+static int check_alias_name(const char *s, struct Buffer *dest)
 {
   wchar_t wc = 0;
   mbstate_t mbstate = { 0 };
   size_t l;
   int rc = 0;
-  bool dry = !dest || !destlen;
+  bool dry = !dest; // Dry run
 
   if (!dry)
-    destlen--;
-  for (; s && *s && (dry || destlen) && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0;
-       s += l, destlen -= l)
+    buf_reset(dest);
+  for (; s && *s && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0; s += l)
   {
     bool bad = (l == ICONV_ILLEGAL_SEQ) || (l == ICONV_BUF_TOO_SMALL); /* conversion error */
-    bad = bad || (!dry && l > destlen); /* too few room for mb char */
     if (l == 1)
       bad = bad || (!strchr("-_+=.", *s) && !iswalnum(wc));
     else
@@ -237,17 +236,15 @@ static int check_alias_name(const char *s, char *dest, size_t destlen)
         return -1;
       if (l == ICONV_ILLEGAL_SEQ)
         memset(&mbstate, 0, sizeof(mbstate_t));
-      *dest++ = '_';
+      buf_addch(dest, '_');
       rc = -1;
     }
     else if (!dry)
     {
-      memcpy(dest, s, l);
-      dest += l;
+      buf_addstr_n(dest, s, l);
     }
   }
-  if (!dry)
-    *dest = '\0';
+
   return rc;
 }
 
@@ -297,9 +294,9 @@ struct AddressList *alias_lookup(const char *name)
  */
 void mutt_expand_aliases(struct AddressList *al)
 {
-  struct ListHead expn; /* previously expanded aliases to avoid loops */
+  // previously expanded aliases to avoid loops
+  struct ListHead expn = STAILQ_HEAD_INITIALIZER(expn);
 
-  STAILQ_INIT(&expn);
   expand_aliases_r(al, &expn);
   mutt_list_free(&expn);
   mutt_addrlist_dedupe(al);
@@ -392,7 +389,7 @@ void alias_create(struct AddressList *al, const struct ConfigSubset *sub)
   }
 
   /* Don't suggest a bad alias name in the event of a strange local part. */
-  check_alias_name(buf_string(tmp), buf->data, buf->dsize);
+  check_alias_name(buf_string(tmp), buf);
 
 retry_name:
   /* L10N: prompt to add a new alias */
@@ -409,7 +406,7 @@ retry_name:
     goto done;
   }
 
-  if (check_alias_name(buf_string(buf), fixed->data, fixed->dsize))
+  if (check_alias_name(buf_string(buf), fixed))
   {
     switch (query_yesorno(_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
     {
@@ -464,7 +461,8 @@ retry_name:
     alias_free(&alias);
     goto done;
   }
-  buf_copy(TAILQ_FIRST(&alias->addr)->personal, buf);
+
+  TAILQ_FIRST(&alias->addr)->personal = buf_new(buf_string(buf));
 
   buf_reset(buf);
   if (mw_get_field(_("Comment: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
@@ -473,17 +471,37 @@ retry_name:
   }
 
   buf_reset(buf);
+  if (mw_get_field(_("Tags (comma-separated): "), buf, MUTT_COMP_NO_FLAGS,
+                   HC_OTHER, NULL, NULL) == 0)
+  {
+    parse_alias_tags(buf_string(buf), &alias->tags);
+  }
+
+  buf_reset(buf);
   mutt_addrlist_write(&alias->addr, buf, true);
   prompt = buf_pool_get();
+
+  buf_printf(prompt, "alias %s %s", alias->name, buf_string(buf));
+
+  bool has_tags = STAILQ_FIRST(&alias->tags);
+
+  if (alias->comment || has_tags)
+    buf_addstr(prompt, " #");
+
   if (alias->comment)
+    buf_add_printf(prompt, " %s", alias->comment);
+
+  if (has_tags)
   {
-    buf_printf(prompt, "[%s = %s # %s] %s", alias->name, buf_string(buf),
-               alias->comment, _("Accept?"));
+    if (STAILQ_FIRST(&alias->tags))
+    {
+      buf_addstr(prompt, " tags:");
+      alias_tags_to_buffer(&alias->tags, prompt);
+    }
   }
-  else
-  {
-    buf_printf(prompt, "[%s = %s] %s", alias->name, buf_string(buf), _("Accept?"));
-  }
+
+  buf_add_printf(prompt, "\n%s", _("Accept?"));
+
   if (query_yesorno(buf_string(prompt), MUTT_YES) != MUTT_YES)
   {
     alias_free(&alias);
@@ -498,12 +516,12 @@ retry_name:
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL };
   if (mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,
-                   &CompleteMailboxOps, &cdata) != 0)
+                   &CompleteFileOps, &cdata) != 0)
   {
     goto done;
   }
-  mutt_expand_path(buf->data, buf->dsize);
-  fp_alias = fopen(buf_string(buf), "a+");
+  buf_expand_path(buf);
+  fp_alias = mutt_file_fopen(buf_string(buf), "a+");
   if (!fp_alias)
   {
     mutt_perror("%s", buf_string(buf));
@@ -534,8 +552,8 @@ retry_name:
       fputc('\n', fp_alias);
   }
 
-  if (check_alias_name(alias->name, NULL, 0))
-    mutt_file_quote_filename(alias->name, buf->data, buf->dsize);
+  if (check_alias_name(alias->name, NULL))
+    buf_quote_filename(buf, alias->name, true);
   else
     buf_strcpy(buf, alias->name);
 
@@ -548,6 +566,18 @@ retry_name:
   write_safe_address(fp_alias, buf_string(buf));
   if (alias->comment)
     fprintf(fp_alias, " # %s", alias->comment);
+  if (STAILQ_FIRST(&alias->tags))
+  {
+    fprintf(fp_alias, " tags:");
+
+    struct Tag *tag = NULL;
+    STAILQ_FOREACH(tag, &alias->tags, entries)
+    {
+      fprintf(fp_alias, "%s", tag->name);
+      if (STAILQ_NEXT(tag, entries))
+        fprintf(fp_alias, ",");
+    }
+  }
   fputc('\n', fp_alias);
   if (mutt_file_fsync_close(&fp_alias) != 0)
     mutt_perror(_("Trouble adding alias"));
@@ -629,8 +659,9 @@ bool mutt_addr_is_user(const struct Address *addr)
  */
 struct Alias *alias_new(void)
 {
-  struct Alias *a = mutt_mem_calloc(1, sizeof(struct Alias));
+  struct Alias *a = MUTT_MEM_CALLOC(1, struct Alias);
   TAILQ_INIT(&a->addr);
+  STAILQ_INIT(&a->tags);
   return a;
 }
 
@@ -651,15 +682,19 @@ void alias_free(struct Alias **ptr)
 
   FREE(&alias->name);
   FREE(&alias->comment);
+  driver_tags_free(&alias->tags);
   mutt_addrlist_clear(&(alias->addr));
+
   FREE(ptr);
 }
 
 /**
- * aliaslist_free - Free a List of Aliases
- * @param al AliasList to free
+ * aliaslist_clear - Empty a List of Aliases
+ * @param al AliasList to empty
+ *
+ * Each Alias will be freed and the AliasList will be left empty.
  */
-void aliaslist_free(struct AliasList *al)
+void aliaslist_clear(struct AliasList *al)
 {
   if (!al)
     return;
@@ -691,6 +726,6 @@ void alias_cleanup(void)
   {
     alias_reverse_delete(np);
   }
-  aliaslist_free(&Aliases);
+  aliaslist_clear(&Aliases);
   alias_reverse_shutdown();
 }

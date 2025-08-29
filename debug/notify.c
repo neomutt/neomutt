@@ -92,11 +92,11 @@ static void notify_dump_config(struct NotifyCallback *nc)
 {
   struct EventConfig *ev_c = nc->event_data;
 
-  struct Buffer value = buf_make(128);
-  cs_he_string_get(ev_c->sub->cs, ev_c->he, &value);
+  struct Buffer *value = buf_pool_get();
+  cs_he_string_get(ev_c->sub->cs, ev_c->he, value);
   mutt_debug(LL_DEBUG1, "    Config: %s %s = %s\n",
-             name_notify_config(nc->event_subtype), ev_c->name, buf_string(&value));
-  buf_dealloc(&value);
+             name_notify_config(nc->event_subtype), ev_c->name, buf_string(value));
+  buf_pool_release(&value);
 }
 
 static void notify_dump_mview(struct NotifyCallback *nc)
@@ -143,33 +143,33 @@ static void notify_dump_window_state(struct NotifyCallback *nc)
   const struct MuttWindow *win = ev_w->win;
   WindowNotifyFlags flags = ev_w->flags;
 
-  struct Buffer buf = buf_make(128);
+  struct Buffer *buf = buf_pool_get();
 
-  buf_add_printf(&buf, "[%s] ", mutt_window_win_name(win));
+  buf_add_printf(buf, "[%s] ", mutt_window_win_name(win));
 
   if (flags & WN_VISIBLE)
-    buf_addstr(&buf, "visible ");
+    buf_addstr(buf, "visible ");
   if (flags & WN_HIDDEN)
-    buf_addstr(&buf, "hidden ");
+    buf_addstr(buf, "hidden ");
 
   if (flags & WN_MOVED)
   {
-    buf_add_printf(&buf, "moved (C%d,R%d)->(C%d,R%d) ", win->old.col_offset,
+    buf_add_printf(buf, "moved (C%d,R%d)->(C%d,R%d) ", win->old.col_offset,
                    win->old.row_offset, win->state.col_offset, win->state.row_offset);
   }
 
   if (flags & WN_TALLER)
-    buf_add_printf(&buf, "taller [%d->%d] ", win->old.rows, win->state.rows);
+    buf_add_printf(buf, "taller [%d->%d] ", win->old.rows, win->state.rows);
   if (flags & WN_SHORTER)
-    buf_add_printf(&buf, "shorter [%d->%d] ", win->old.rows, win->state.rows);
+    buf_add_printf(buf, "shorter [%d->%d] ", win->old.rows, win->state.rows);
   if (flags & WN_WIDER)
-    buf_add_printf(&buf, "wider [%d->%d] ", win->old.cols, win->state.cols);
+    buf_add_printf(buf, "wider [%d->%d] ", win->old.cols, win->state.cols);
   if (flags & WN_NARROWER)
-    buf_add_printf(&buf, "narrower [%d->%d] ", win->old.cols, win->state.cols);
+    buf_add_printf(buf, "narrower [%d->%d] ", win->old.cols, win->state.cols);
 
-  mutt_debug(LL_DEBUG1, "    Window: %s\n", buf_string(&buf));
+  mutt_debug(LL_DEBUG1, "    Window: %s\n", buf_string(buf));
 
-  buf_dealloc(&buf);
+  buf_pool_release(&buf);
 }
 
 static void notify_dump_window_focus(struct NotifyCallback *nc)
@@ -177,29 +177,29 @@ static void notify_dump_window_focus(struct NotifyCallback *nc)
   struct EventWindow *ev_w = nc->event_data;
   struct MuttWindow *win = ev_w->win;
 
-  struct Buffer buf = buf_make(128);
+  struct Buffer *buf = buf_pool_get();
 
-  buf_addstr(&buf, "Focus: ");
+  buf_addstr(buf, "Focus: ");
 
   if (win)
   {
     struct MuttWindow *dlg = dialog_find(win);
     if (dlg && (dlg != win))
-      buf_add_printf(&buf, "%s:", mutt_window_win_name(dlg));
+      buf_add_printf(buf, "%s:", mutt_window_win_name(dlg));
 
-    buf_add_printf(&buf, "%s ", mutt_window_win_name(win));
+    buf_add_printf(buf, "%s ", mutt_window_win_name(win));
 
-    buf_add_printf(&buf, "(C%d,R%d) [%dx%d]", win->state.col_offset,
+    buf_add_printf(buf, "(C%d,R%d) [%dx%d]", win->state.col_offset,
                    win->state.row_offset, win->state.cols, win->state.rows);
   }
   else
   {
-    buf_addstr(&buf, "NONE");
+    buf_addstr(buf, "NONE");
   }
 
-  mutt_debug(LL_DEBUG1, "    Window: %s\n", buf_string(&buf));
+  mutt_debug(LL_DEBUG1, "    Window: %s\n", buf_string(buf));
 
-  buf_dealloc(&buf);
+  buf_pool_release(&buf);
 }
 
 int debug_all_observer(struct NotifyCallback *nc)

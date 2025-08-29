@@ -3,7 +3,8 @@
  * Ask the user a question
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Gerrit Rüsing <gerrit@macclub-os.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <langinfo.h>
 #include <limits.h>
@@ -37,11 +37,12 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
 #include "key/lib.h"
-#include "opcodes.h"
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h> // IWYU pragma: keep
+#endif
 
 /**
  * mw_multi_choice - Offer the user a multiple choice question - @ingroup gui_mw
@@ -67,21 +68,14 @@ int mw_multi_choice(const char *prompt, const char *letters)
 
   int choice = 0;
 
-  const struct AttrColor *ac_opts = NULL;
+  const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
+  const struct AttrColor *ac_prompt = merged_color_overlay(ac_normal,
+                                                           simple_color_get(MT_COLOR_PROMPT));
+
   if (simple_color_is_set(MT_COLOR_OPTIONS))
   {
-    const struct AttrColor *ac_base = simple_color_get(MT_COLOR_NORMAL);
-    ac_base = merged_color_overlay(ac_base, simple_color_get(MT_COLOR_PROMPT));
-
-    ac_opts = simple_color_get(MT_COLOR_OPTIONS);
-    ac_opts = merged_color_overlay(ac_base, ac_opts);
-  }
-
-  const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
-  const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
-
-  if (ac_opts)
-  {
+    const struct AttrColor *ac_opts = merged_color_overlay(ac_prompt,
+                                                           simple_color_get(MT_COLOR_OPTIONS));
     char *cur = NULL;
 
     while ((cur = strchr(prompt, '(')))
@@ -159,6 +153,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
  * @param prompt Prompt
  * @param def    Default answer, e.g. #MUTT_YES
  * @param cdef   Config definition for help
+ * @param flags  mutt_getch Flags, e.g. #GETCH_IGNORE_MACRO
  * @retval enum #QuadOption, Selection made
  *
  * This function uses a message window.
@@ -177,7 +172,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
  * Additionally, if `$help` is set, a link to the config's documentation is shown.
  */
 static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
-                                  struct ConfigDef *cdef)
+                                  struct ConfigDef *cdef, GetChFlags flags)
 {
   struct MuttWindow *win = msgwin_new(true);
   if (!win)
@@ -255,7 +250,7 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
   window_redraw(NULL);
   while (true)
   {
-    event = mutt_getch(GETCH_NO_FLAGS);
+    event = mutt_getch(flags);
     if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
     {
       window_redraw(NULL);
@@ -331,7 +326,20 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
  */
 enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
 {
-  return mw_yesorno(prompt, def, NULL);
+  return mw_yesorno(prompt, def, NULL, GETCH_NO_FLAGS);
+}
+
+/**
+ * query_yesorno_ignore_macro - Ask the user a Yes/No question ignoring the macro buffer
+ * @param prompt Prompt
+ * @param def Default answer, e.g. #MUTT_YES
+ * @retval enum #QuadOption, Selection made
+ *
+ * Like query_yesorno but don't read from the macro events buffer.
+ */
+enum QuadOption query_yesorno_ignore_macro(const char *prompt, enum QuadOption def)
+{
+  return mw_yesorno(prompt, def, NULL, GETCH_IGNORE_MACRO);
 }
 
 /**
@@ -349,13 +357,13 @@ enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   struct HashElem *he_base = cs_get_base(he);
-  assert(DTYPE(he_base->type) == DT_BOOL);
+  ASSERT(DTYPE(he_base->type) == DT_BOOL);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
-  assert(value != INT_MIN);
+  ASSERT(value != INT_MIN);
 
   struct ConfigDef *cdef = he_base->data;
-  return mw_yesorno(prompt, def, cdef);
+  return mw_yesorno(prompt, def, cdef, GETCH_NO_FLAGS);
 }
 
 /**
@@ -372,15 +380,15 @@ enum QuadOption query_quadoption(const char *prompt, struct ConfigSubset *sub, c
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   struct HashElem *he_base = cs_get_base(he);
-  assert(DTYPE(he_base->type) == DT_QUAD);
+  ASSERT(DTYPE(he_base->type) == DT_QUAD);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
-  assert(value != INT_MIN);
+  ASSERT(value != INT_MIN);
 
   if ((value == MUTT_YES) || (value == MUTT_NO))
     return value;
 
   struct ConfigDef *cdef = he_base->data;
   enum QuadOption def = (value == MUTT_ASKYES) ? MUTT_YES : MUTT_NO;
-  return mw_yesorno(prompt, def, cdef);
+  return mw_yesorno(prompt, def, cdef, GETCH_NO_FLAGS);
 }

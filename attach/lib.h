@@ -3,7 +3,7 @@
  * GUI display the mailboxes in a side panel
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -44,6 +44,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "core/lib.h"
+#include "expando/lib.h"
 // IWYU pragma: begin_keep
 #include "attach.h"
 #include "attachments.h"
@@ -54,13 +55,12 @@
 struct Body;
 struct Buffer;
 
-int          attach_body_count   (struct Body *body, bool recurse);
-bool         attach_body_parent  (struct Body *start, struct Body *start_parent,
-                                  struct Body *body, struct Body **body_parent);
-struct Body *attach_body_ancestor(struct Body *start, struct Body *body,
-                                  const char *subtype);
-bool         attach_body_previous(struct Body *start, struct Body *body,
-                                  struct Body **previous);
+extern const struct ExpandoRenderData AttachRenderData[];
+
+int          attach_body_count   (struct Body *b, bool recurse);
+bool         attach_body_parent  (struct Body *start, struct Body *start_parent, struct Body *body, struct Body **body_parent);
+struct Body *attach_body_ancestor(struct Body *start, struct Body *body, const char *subtype);
+bool         attach_body_previous(struct Body *start, struct Body *body, struct Body **previous);
 
 enum CommandResult parse_attachments  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unattachments(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);

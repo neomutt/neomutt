@@ -3,7 +3,8 @@
  * Test code for pre-setting initial values
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,8 +29,8 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "common.h" // IWYU pragma: keep
-#include "test_common.h"
+#include "common.h"      // IWYU pragma: keep
+#include "test_common.h" // IWYU pragma: keep
 
 // clang-format off
 static struct ConfigDef Vars[] = {
@@ -54,7 +55,7 @@ static bool test_set_initial(struct ConfigSubset *sub, struct Buffer *err)
   const char *aval = "pie";
   int rc = cs_he_initial_set(cs, he_a, aval, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
 
   name = "Banana";
   struct HashElem *he_b = cs_get_elem(cs, name);
@@ -80,9 +81,9 @@ static bool test_set_initial(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarBanana = cs_subset_string(sub, "Banana");
   const char *VarCherry = cs_subset_string(sub, "Cherry");
 
-  TEST_MSG("Apple = %s\n", VarApple);
-  TEST_MSG("Banana = %s\n", VarBanana);
-  TEST_MSG("Cherry = %s\n", VarCherry);
+  TEST_MSG("Apple = %s", VarApple);
+  TEST_MSG("Banana = %s", VarBanana);
+  TEST_MSG("Cherry = %s", VarCherry);
 
   log_line(__func__);
   return (!mutt_str_equal(VarApple, aval) && !mutt_str_equal(VarBanana, bval) &&
@@ -96,7 +97,7 @@ void test_config_initial(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars)))
     return;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);

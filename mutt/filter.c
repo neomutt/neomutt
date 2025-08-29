@@ -3,7 +3,8 @@
  * Pass files through external commands (filters)
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins.
+ * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -40,9 +41,9 @@
  * @param[out] fp_in   File stream pointing to stdin for the command process, can be NULL
  * @param[out] fp_out  File stream pointing to stdout for the command process, can be NULL
  * @param[out] fp_err  File stream pointing to stderr for the command process, can be NULL
- * @param[in]  fdin    If `in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
- * @param[in]  fdout   If `out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
- * @param[in]  fderr   If `error` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
+ * @param[in]  fdin    If `fp_in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
+ * @param[in]  fdout   If `fp_out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
+ * @param[in]  fderr   If `fp_err` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
  * @param[in]  envlist Environment variables
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
@@ -109,6 +110,7 @@ pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_e
   if (pid == 0)
   {
     mutt_sig_unblock_system(false);
+    mutt_sig_reset_child_signals();
 
     if (fp_in)
     {

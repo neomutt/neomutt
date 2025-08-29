@@ -3,8 +3,9 @@
  * Test code for mutt_parse_mailto()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2022 Claes Nästén <pekdon@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,9 +30,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
-#include "core/lib.h"
 #include "test_common.h"
 
 static void check_addrlist(struct AddressList *list, const char *const exp[], size_t num)

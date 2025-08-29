@@ -3,7 +3,9 @@
  * Test code for rfc2047_encode()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,7 +30,6 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "core/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -37,7 +38,7 @@ void test_rfc2047_encode(void)
   // void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist *charsets);
 
   {
-    struct Slist *charsets = slist_parse("apple", SLIST_SEP_COLON);
+    struct Slist *charsets = slist_parse("apple", D_SLIST_SEP_COLON);
     rfc2047_encode(NULL, AddressSpecials, 0, charsets);
     TEST_CHECK_(1, "rfc2047_encode(NULL, AddressSpecials, 0, \"apple\")");
     slist_free(&charsets);
@@ -45,7 +46,7 @@ void test_rfc2047_encode(void)
 
   {
     char *pd = NULL;
-    struct Slist *charsets = slist_parse("apple", SLIST_SEP_COLON);
+    struct Slist *charsets = slist_parse("apple", D_SLIST_SEP_COLON);
     rfc2047_encode(&pd, NULL, 0, charsets);
     TEST_CHECK_(1, "rfc2047_encode(&pd, NULL, 0, \"apple\")");
     slist_free(&charsets);
@@ -58,7 +59,7 @@ void test_rfc2047_encode(void)
   }
 
   {
-    struct Slist *charsets = slist_parse("utf-8", SLIST_SEP_COLON);
+    struct Slist *charsets = slist_parse("utf-8", D_SLIST_SEP_COLON);
     for (size_t i = 0; rfc2047_test_data[i].decoded; i++)
     {
       /* encode the expected result */

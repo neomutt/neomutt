@@ -3,7 +3,7 @@
  * GUI present the user with a selectable list
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,7 +42,6 @@
 #define MUTT_MENU_LIB_H
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -58,6 +57,16 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_MOTION    (1 << 1) ///< Redraw after moving the menu list
 #define MENU_REDRAW_CURRENT   (1 << 2) ///< Redraw the current line of the menu
 #define MENU_REDRAW_FULL      (1 << 3) ///< Redraw everything
+
+/**
+ * ExpandoDataMenu - Expando UIDs for Menus
+ *
+ * @sa ED_MENU, ExpandoDomain
+ */
+enum ExpandoDataMenu
+{
+  ED_MEN_PERCENTAGE,           ///< Menu.top, ...
+};
 
 /**
  * @defgroup menu_api Menu API
@@ -88,12 +97,13 @@ struct Menu
    * @ingroup menu_api
    *
    * make_entry - Format a item for a menu
-   * @param[in]  menu   Menu containing items
-   * @param[out] buf    Buffer in which to save string
-   * @param[in]  buflen Buffer length
-   * @param[in]  line   Menu line number
+   * @param[in]  menu     Menu containing items
+   * @param[in]  line     Menu line number
+   * @param[in]  max_cols Maximum number of screen columns to use
+   * @param[out] buf      Buffer for the result
+   * @retval num Number of screen columns used
    */
-  void (*make_entry)(struct Menu *menu, char *buf, size_t buflen, int line);
+  int (*make_entry)(struct Menu *menu, int line, int max_cols, struct Buffer *buf);
 
   /**
    * @defgroup menu_search search()

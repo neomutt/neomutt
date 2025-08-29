@@ -3,10 +3,8 @@
  * IMAP search routines
  *
  * @authors
- * Copyright (C) 1996-1998,2012 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2009,2012,2017 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -239,15 +237,14 @@ bool imap_search(struct Mailbox *m, const struct PatternList *pat)
   if (check_pattern_list(pat) == 0)
     return true;
 
-  struct Buffer buf;
-  buf_init(&buf);
-  buf_addstr(&buf, "UID SEARCH ");
+  struct Buffer *buf = buf_pool_get();
+  buf_addstr(buf, "UID SEARCH ");
 
   struct ImapAccountData *adata = imap_adata_get(m);
-  const bool ok = compile_search(adata, SLIST_FIRST(pat), &buf) &&
-                  (imap_exec(adata, buf.data, IMAP_CMD_NO_FLAGS) == IMAP_EXEC_SUCCESS);
+  const bool ok = compile_search(adata, SLIST_FIRST(pat), buf) &&
+                  (imap_exec(adata, buf_string(buf), IMAP_CMD_NO_FLAGS) == IMAP_EXEC_SUCCESS);
 
-  FREE(&buf.data);
+  buf_pool_release(&buf);
   return ok;
 }
 

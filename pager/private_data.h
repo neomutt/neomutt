@@ -3,7 +3,7 @@
  * Private state data for the Pager
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,11 +24,11 @@
 #define MUTT_PAGER_PRIVATE_DATA_H
 
 #include "config.h"
+#include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include "mutt/lib.h"
 #include "lib.h"
 #include "color/lib.h"
 

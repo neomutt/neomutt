@@ -27,9 +27,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
-#include <string.h>
+#include <stddef.h>
+#include <wchar.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
@@ -39,12 +39,11 @@
 #include "history/lib.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
-#include "opcodes.h"
 
 /**
- * complete_file_mbox - Complete a Mailbox - Implements ::complete_function_t - @ingroup complete_api
+ * complete_file_mbox - Complete a Mailbox - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_file_mbox(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_file_mbox(struct EnterWindowData *wdata, int op)
 {
   if (!wdata)
     return FR_NO_ACTION;
@@ -71,11 +70,10 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
   /* see if the path has changed from the last time */
   if ((!wdata->tempbuf && !wdata->state->lastchar) ||
       (wdata->tempbuf && (wdata->templen == wdata->state->lastchar) &&
-       (memcmp(wdata->tempbuf, wdata->state->wbuf,
-               wdata->state->lastchar * sizeof(wchar_t)) == 0)))
+       (wmemcmp(wdata->tempbuf, wdata->state->wbuf, wdata->state->lastchar) == 0)))
   {
     SelectFileFlags flags = MUTT_SEL_NO_FLAGS;
-    if (wdata->hclass == HC_MBOX)
+    if (wdata->hclass == HC_MAILBOX)
       flags |= MUTT_SEL_FOLDER;
     if (cdata->multiple)
       flags |= MUTT_SEL_MULTI;
@@ -97,8 +95,9 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
   if (mutt_complete(wdata->cd, wdata->buffer) == 0)
   {
     wdata->templen = wdata->state->lastchar;
-    mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
-    memcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen * sizeof(wchar_t));
+    MUTT_MEM_REALLOC(&wdata->tempbuf, wdata->templen, wchar_t);
+    if (wdata->tempbuf)
+      wmemcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen);
   }
   else
   {
@@ -109,9 +108,9 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
 }
 
 /**
- * complete_file_simple - Complete a filename - Implements ::complete_function_t - @ingroup complete_api
+ * complete_file_simple - Complete a filename - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_file_simple(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_file_simple(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;
@@ -124,11 +123,10 @@ int complete_file_simple(struct EnterWindowData *wdata, int op)
   }
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
   if (wdata->tempbuf && (wdata->templen == (wdata->state->lastchar - i)) &&
-      (memcmp(wdata->tempbuf, wdata->state->wbuf + i,
-              (wdata->state->lastchar - i) * sizeof(wchar_t)) == 0))
+      (wmemcmp(wdata->tempbuf, wdata->state->wbuf + i, wdata->state->lastchar - i) == 0))
   {
     dlg_browser(wdata->buffer, MUTT_SEL_NO_FLAGS, NULL, NULL, NULL);
-    if (buf_is_empty(wdata->buffer))
+    if (!buf_is_empty(wdata->buffer))
       replace_part(wdata->state, i, buf_string(wdata->buffer));
     return FR_CONTINUE;
   }
@@ -136,8 +134,9 @@ int complete_file_simple(struct EnterWindowData *wdata, int op)
   if (mutt_complete(wdata->cd, wdata->buffer) == 0)
   {
     wdata->templen = wdata->state->lastchar - i;
-    mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
-    memcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen * sizeof(wchar_t));
+    MUTT_MEM_REALLOC(&wdata->tempbuf, wdata->templen, wchar_t);
+    if (wdata->tempbuf)
+      wmemcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen);
   }
   else
   {

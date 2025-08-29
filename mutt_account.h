@@ -3,7 +3,8 @@
  * ConnAccount object used by POP and IMAP
  *
  * @authors
- * Copyright (C) 2000-2007,2012 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

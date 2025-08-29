@@ -3,7 +3,7 @@
  * Test code for mutt_list_str_split()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -93,13 +93,13 @@ void test_mutt_list_str_split(void)
 
     struct ListHead expectedval1 = STAILQ_HEAD_INITIALIZER(expectedval1);
     mutt_list_insert_tail(&expectedval1, "hello");
-    if (!TEST_CHECK(mutt_list_compare(&expectedval1, &retval1)) || (count1 != 1))
+    if (!TEST_CHECK(mutt_list_equal(&expectedval1, &retval1)) || (count1 != 1))
       print_compared_list(expectedval1, retval1);
 
     struct ListHead expectedval2 = STAILQ_HEAD_INITIALIZER(expectedval2);
     mutt_list_insert_tail(&expectedval2, "hello");
     mutt_list_insert_tail(&expectedval2, "world");
-    if (!TEST_CHECK(mutt_list_compare(&expectedval2, &retval2)) || (count2 != 2))
+    if (!TEST_CHECK(mutt_list_equal(&expectedval2, &retval2)) || (count2 != 2))
       print_compared_list(expectedval2, retval2);
 
     struct ListHead expectedval3 = STAILQ_HEAD_INITIALIZER(expectedval3);
@@ -108,27 +108,27 @@ void test_mutt_list_str_split(void)
     mutt_list_insert_tail(&expectedval3, "world!");
     mutt_list_insert_tail(&expectedval3, "what's");
     mutt_list_insert_tail(&expectedval3, "up?");
-    if (!TEST_CHECK(mutt_list_compare(&expectedval3, &retval3)) || (count3 != 5))
+    if (!TEST_CHECK(mutt_list_equal(&expectedval3, &retval3)) || (count3 != 5))
       print_compared_list(expectedval3, retval3);
 
     struct ListHead expectedval4 = STAILQ_HEAD_INITIALIZER(expectedval4);
     mutt_list_insert_tail(&expectedval4, "hello");
     mutt_list_insert_tail(&expectedval4, "world");
     mutt_list_insert_tail(&expectedval4, "");
-    if (!TEST_CHECK(mutt_list_compare(&expectedval4, &retval4)) || (count4 != 3))
+    if (!TEST_CHECK(mutt_list_equal(&expectedval4, &retval4)) || (count4 != 3))
       print_compared_list(expectedval4, retval4);
 
     struct ListHead expectedval5 = STAILQ_HEAD_INITIALIZER(expectedval5);
     mutt_list_insert_tail(&expectedval5, "");
     mutt_list_insert_tail(&expectedval5, "hello");
     mutt_list_insert_tail(&expectedval5, "world");
-    if (!TEST_CHECK(mutt_list_compare(&expectedval5, &retval5)) || (count5 != 3))
+    if (!TEST_CHECK(mutt_list_equal(&expectedval5, &retval5)) || (count5 != 3))
       print_compared_list(expectedval5, retval5);
 
     struct ListHead expectedval6 = STAILQ_HEAD_INITIALIZER(expectedval6);
     mutt_list_insert_tail(&expectedval6, "hello");
     mutt_list_insert_tail(&expectedval6, "world");
-    if (!TEST_CHECK(mutt_list_compare(&expectedval6, &retval6)) || (count6 != 2))
+    if (!TEST_CHECK(mutt_list_equal(&expectedval6, &retval6)) || (count6 != 2))
       print_compared_list(expectedval6, retval6);
 
     mutt_list_free(&retval1);

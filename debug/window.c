@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
@@ -59,6 +59,24 @@ static void win_dump(struct MuttWindow *win, int indent)
 }
 
 #ifdef DEBUG_SHOW_SERIALISE
+static const char *win_size(struct MuttWindow *win)
+{
+  if (!win)
+    return "???";
+
+  switch (win->size)
+  {
+    case MUTT_WIN_SIZE_FIXED:
+      return "FIX";
+    case MUTT_WIN_SIZE_MAXIMISE:
+      return "MAX";
+    case MUTT_WIN_SIZE_MINIMISE:
+      return "MIN";
+  }
+
+  return "???";
+}
+
 static void win_serialise(struct MuttWindow *win, struct Buffer *buf)
 {
   if (!mutt_window_is_visible(win))
@@ -82,10 +100,10 @@ void debug_win_dump(void)
   win_dump(RootWindow, 0);
   mutt_debug(LL_DEBUG1, "\n");
 #ifdef DEBUG_SHOW_SERIALISE
-  struct Buffer buf = buf_make(1024);
-  win_serialise(RootWindow, &buf);
-  mutt_debug(LL_DEBUG1, "%s\n", buf_string(&buf));
-  buf_dealloc(&buf);
+  struct Buffer buf = buf_pool_get();
+  win_serialise(RootWindow, buf);
+  mutt_debug(LL_DEBUG1, "%s\n", buf_string(buf));
+  buf_pool_release(&buf);
 #endif
   WinFocus = NULL;
 }

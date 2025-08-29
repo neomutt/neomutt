@@ -3,7 +3,7 @@
  * Private state data for the Browser
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -41,7 +41,7 @@ void browser_private_data_free(struct BrowserPrivateData **ptr)
 
   struct BrowserPrivateData *priv = *ptr;
 
-  buf_pool_release(&priv->OldLastDir);
+  buf_pool_release(&priv->old_last_dir);
   buf_pool_release(&priv->prefix);
   destroy_state(&priv->state);
 
@@ -54,9 +54,9 @@ void browser_private_data_free(struct BrowserPrivateData **ptr)
  */
 struct BrowserPrivateData *browser_private_data_new(void)
 {
-  struct BrowserPrivateData *priv = mutt_mem_calloc(1, sizeof(struct BrowserPrivateData));
+  struct BrowserPrivateData *priv = MUTT_MEM_CALLOC(1, struct BrowserPrivateData);
 
-  priv->OldLastDir = buf_pool_get();
+  priv->old_last_dir = buf_pool_get();
   priv->prefix = buf_pool_get();
 
   return priv;

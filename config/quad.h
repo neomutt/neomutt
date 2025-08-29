@@ -3,7 +3,7 @@
  * Type representing a quad-option
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,6 +42,5 @@ enum QuadOption
 };
 
 int quad_he_toggle (struct ConfigSubset *sub, struct HashElem *he, struct Buffer *err);
-int quad_str_toggle(struct ConfigSubset *sub, const char *name,    struct Buffer *err);
 
 #endif /* MUTT_CONFIG_QUAD_H */

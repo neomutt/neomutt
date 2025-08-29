@@ -3,7 +3,7 @@
  * Test code for mutt_hash_insert()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -43,6 +43,12 @@ void test_mutt_hash_insert(void)
   {
     struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
     TEST_CHECK(mutt_hash_insert(table, "apple", NULL) != NULL);
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_STRDUP_KEYS);
+    TEST_CHECK(mutt_hash_insert(table, "", NULL) != NULL);
     mutt_hash_free(&table);
   }
 }

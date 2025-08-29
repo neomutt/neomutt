@@ -3,8 +3,10 @@
  * Postponed Email Selection Dialog
  *
  * @authors
- * Copyright (C) 1996-2002,2012-2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
+ * Copyright (C) 2023 Rayford Shireman
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,8 +32,8 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -40,6 +42,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #include "globals.h"
@@ -50,9 +53,6 @@
 #include "mx.h"
 #include "protos.h"
 #include "rfc3676.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
 
 /// Number of postponed (draft) emails
 short PostCount = 0;
@@ -99,7 +99,6 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     return PostCount;
   }
 
-#ifdef USE_IMAP
   /* LastModify is useless for IMAP */
   if (imap_path_probe(c_postponed, NULL) == MUTT_IMAP)
   {
@@ -120,7 +119,6 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     }
     return PostCount;
   }
-#endif
 
   if (stat(c_postponed, &st) == -1)
   {
@@ -147,17 +145,13 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 
   if (LastModify < st.st_mtime)
   {
-#ifdef USE_NNTP
     int optnews = OptNews;
-#endif
     LastModify = st.st_mtime;
 
     if (access(c_postponed, R_OK | F_OK) != 0)
       return PostCount = 0;
-#ifdef USE_NNTP
     if (optnews)
       OptNews = false;
-#endif
     struct Mailbox *m_post = mx_path_resolve(c_postponed);
     if (mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET))
     {
@@ -170,10 +164,8 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     }
     mailbox_free(&m_post);
 
-#ifdef USE_NNTP
     if (optnews)
       OptNews = true;
-#endif
   }
 
   return PostCount;
@@ -326,14 +318,14 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
   /* the cryptalg field must not be empty */
   if (((WithCrypto & APPLICATION_SMIME) != 0) && *smime_cryptalg)
   {
-    struct Buffer errmsg = buf_make(0);
+    struct Buffer *errmsg = buf_pool_get();
     int rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                      smime_cryptalg, &errmsg);
+                                      smime_cryptalg, errmsg);
 
-    if ((CSR_RESULT(rc) != CSR_SUCCESS) && !buf_is_empty(&errmsg))
-      mutt_error("%s", buf_string(&errmsg));
+    if ((CSR_RESULT(rc) != CSR_SUCCESS) && !buf_is_empty(errmsg))
+      mutt_error("%s", buf_string(errmsg));
 
-    buf_dealloc(&errmsg);
+    buf_pool_release(&errmsg);
   }
 
   /* Set {Smime,Pgp}SignAs, if desired. */
@@ -607,7 +599,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   if (c_crypt_protected_headers_read && protected_headers && protected_headers->subject &&
       !mutt_str_equal(e_new->env->subject, protected_headers->subject))
   {
-    mutt_str_replace(&e_new->env->subject, protected_headers->subject);
+    mutt_env_set_subject(e_new->env, protected_headers->subject);
   }
   mutt_env_free(&protected_headers);
 
@@ -778,21 +770,6 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
       hdr->security = mutt_parse_crypt_hdr(np->data + plen, true, APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
     }
-#ifdef MIXMASTER
-    // Check for header names: most specific first
-    else if ((plen = mutt_istr_startswith(np->data, "X-Mutt-Mix:")) ||
-             (plen = mutt_istr_startswith(np->data, "Mutt-Mix:")))
-    {
-      mutt_list_free(&hdr->chain);
-
-      char *t = strtok(np->data + plen, " \t\n");
-      while (t)
-      {
-        mutt_list_insert_tail(&hdr->chain, mutt_str_dup(t));
-        t = strtok(NULL, " \t\n");
-      }
-    }
-#endif
     else
     {
       // skip header removal

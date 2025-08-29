@@ -3,7 +3,7 @@
  * Write a MIME Email Body to a file
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,7 +32,6 @@
 #include "email/lib.h"
 #include "body.h"
 #include "ncrypt/lib.h"
-#include "globals.h"
 #include "header.h"
 #include "muttlib.h"
 
@@ -150,7 +149,7 @@ static void encode_8bit(struct FgetConv *fc, FILE *fp_out)
 static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
 {
   int c, linelen = 0;
-  char line[77], savechar;
+  char line[77] = { 0 };
 
   while ((c = mutt_ch_fgetconv(fc)) != EOF)
   {
@@ -173,7 +172,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
       }
       else
       {
-        savechar = line[linelen - 1];
+        char savechar = line[linelen - 1];
         line[linelen - 1] = '=';
         line[linelen] = 0;
         fputs(line, fp_out);
@@ -263,7 +262,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
       }
       else
       {
-        savechar = line[linelen - 1];
+        char savechar = line[linelen - 1];
         line[linelen - 1] = '=';
         line[linelen] = 0;
         fputs(line, fp_out);
@@ -292,21 +291,21 @@ static bool write_as_text_part(struct Body *b)
 
 /**
  * mutt_write_mime_body - Write a MIME part
- * @param a   Body to use
+ * @param b   Body to use
  * @param fp  File to write to
  * @param sub Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub)
+int mutt_write_mime_body(struct Body *b, FILE *fp, struct ConfigSubset *sub)
 {
   FILE *fp_in = NULL;
   struct FgetConv *fc = NULL;
 
-  if (a->type == TYPE_MULTIPART)
+  if (b->type == TYPE_MULTIPART)
   {
     /* First, find the boundary to use */
-    const char *p = mutt_param_get(&a->parameter, "boundary");
+    const char *p = mutt_param_get(&b->parameter, "boundary");
     if (!p)
     {
       mutt_debug(LL_DEBUG1, "no boundary parameter found\n");
@@ -316,7 +315,7 @@ int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub)
     char boundary[128] = { 0 };
     mutt_str_copy(boundary, p, sizeof(boundary));
 
-    for (struct Body *t = a->parts; t; t = t->next)
+    for (struct Body *t = b->parts; t; t = t->next)
     {
       fprintf(fp, "\n--%s\n", boundary);
       if (mutt_write_mime_header(t, fp, sub) == -1)
@@ -330,26 +329,26 @@ int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   }
 
   /* This is pretty gross, but it's the best solution for now... */
-  if (((WithCrypto & APPLICATION_PGP) != 0) && (a->type == TYPE_APPLICATION) &&
-      mutt_str_equal(a->subtype, "pgp-encrypted") && !a->filename)
+  if (((WithCrypto & APPLICATION_PGP) != 0) && (b->type == TYPE_APPLICATION) &&
+      mutt_str_equal(b->subtype, "pgp-encrypted") && !b->filename)
   {
     fputs("Version: 1\n", fp);
     return 0;
   }
 
-  fp_in = fopen(a->filename, "r");
+  fp_in = mutt_file_fopen(b->filename, "r");
   if (!fp_in)
   {
-    mutt_debug(LL_DEBUG1, "%s no longer exists\n", a->filename);
-    mutt_error(_("%s no longer exists"), a->filename);
+    mutt_debug(LL_DEBUG1, "%s no longer exists\n", b->filename);
+    mutt_error(_("%s no longer exists"), b->filename);
     return -1;
   }
 
-  if ((a->type == TYPE_TEXT) && (!a->noconv))
+  if ((b->type == TYPE_TEXT) && (!b->noconv))
   {
     char send_charset[128] = { 0 };
-    fc = mutt_ch_fgetconv_open(fp_in, a->charset,
-                               mutt_body_get_charset(a, send_charset, sizeof(send_charset)),
+    fc = mutt_ch_fgetconv_open(fp_in, b->charset,
+                               mutt_body_get_charset(b, send_charset, sizeof(send_charset)),
                                MUTT_ICONV_NO_FLAGS);
   }
   else
@@ -358,11 +357,11 @@ int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   }
 
   mutt_sig_allow_interrupt(true);
-  if (a->encoding == ENC_QUOTED_PRINTABLE)
-    encode_quoted(fc, fp, write_as_text_part(a));
-  else if (a->encoding == ENC_BASE64)
-    encode_base64(fc, fp, write_as_text_part(a));
-  else if ((a->type == TYPE_TEXT) && (!a->noconv))
+  if (b->encoding == ENC_QUOTED_PRINTABLE)
+    encode_quoted(fc, fp, write_as_text_part(b));
+  else if (b->encoding == ENC_BASE64)
+    encode_base64(fc, fp, write_as_text_part(b));
+  else if ((b->type == TYPE_TEXT) && (!b->noconv))
     encode_8bit(fc, fp);
   else
     mutt_file_copy_stream(fp_in, fp);

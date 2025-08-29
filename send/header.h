@@ -3,7 +3,7 @@
  * Convenience wrapper for the send headers
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -44,9 +44,9 @@ enum MuttWriteHeaderMode
   MUTT_WRITE_HEADER_MIME,     ///< Write protected headers
 };
 
-int  mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach, enum MuttWriteHeaderMode mode, bool privacy, bool hide_protected_subject, struct ConfigSubset *sub);
-int  mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub);
-int  mutt_write_one_header(FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen, CopyHeaderFlags chflags, struct ConfigSubset *sub);
-void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim);
+int  mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b, enum MuttWriteHeaderMode mode, bool privacy, bool hide_protected_subject, struct ConfigSubset *sub);
+int  mutt_write_mime_header  (struct Body *b, FILE *fp, struct ConfigSubset *sub);
+int  mutt_write_one_header   (FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen, CopyHeaderFlags chflags, struct ConfigSubset *sub);
+void mutt_write_references   (const struct ListHead *r, FILE *fp, size_t trim);
 
 #endif /* MUTT_SEND_HEADER_H */

@@ -3,7 +3,7 @@
  * Email Aliases
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -43,18 +43,17 @@
 #ifndef MUTT_ALIAS_LIB_H
 #define MUTT_ALIAS_LIB_H
 
-#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "core/lib.h"
-#include "complete/lib.h"
 
 struct Address;
 struct AddressList;
+struct Alias;
 struct Buffer;
 struct ConfigSubset;
-struct EnterWindowData;
 struct Envelope;
+struct TagList;
 
 extern const struct CompleteOps CompleteAliasOps;
 
@@ -72,13 +71,15 @@ struct AddressList *mutt_get_address       (struct Envelope *env, const char **p
 enum CommandResult parse_alias  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
+void alias_tags_to_buffer(struct TagList *tl, struct Buffer *buf);
+void parse_alias_comments(struct Alias *alias, const char *com);
+void parse_alias_tags    (const char *tags, struct TagList *tl);
+
 int  alias_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void alias_dialog  (struct Mailbox *m, struct ConfigSubset *sub);
 
 int  query_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void query_index   (struct Mailbox *m, struct ConfigSubset *sub);
-
-int complete_alias(struct EnterWindowData *wdata, int op);
 
 struct Address *alias_reverse_lookup(const struct Address *addr);
 

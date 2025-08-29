@@ -3,7 +3,10 @@
  * Conversion between different character encodings
  *
  * @authors
- * Copyright (C) 1999-2002,2007 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017 Tobias Angele <toogley@mailbox.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Steinar H Gunderson <steinar+neomutt@gunderson.no>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +30,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <iconv.h>
 #include <langinfo.h>
@@ -40,6 +42,7 @@
 #include "list.h"
 #include "logging2.h"
 #include "memory.h"
+#include "pool.h"
 #include "queue.h"
 #include "regex3.h"
 #include "slist.h"
@@ -265,7 +268,7 @@ static const struct MimeNames PreferredMimeNames[] = {
  */
 static struct Lookup *lookup_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Lookup));
+  return MUTT_MEM_CALLOC(1, struct Lookup);
 }
 
 /**
@@ -341,7 +344,7 @@ int mutt_ch_convert_nonmime_string(const struct Slist *const assumed_charset,
   {
     char const *c = np->data;
     size_t n = mutt_str_len(c);
-    char *fromcode = mutt_mem_malloc(n + 1);
+    char *fromcode = MUTT_MEM_MALLOC(n + 1, char);
     mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_strn_dup(u, ulen);
     int m = mutt_ch_convert_string(&s, fromcode, charset, MUTT_ICONV_NO_FLAGS);
@@ -373,7 +376,9 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   if (!buf || !name)
     return;
 
-  char in[1024], scratch[1024 + 10];
+  char in[1024] = { 0 };
+  char scratch[1024 + 10] = { 0 };
+  struct Buffer *canon = buf_pool_get();
 
   mutt_str_copy(in, name, sizeof(in));
   char *ext = strchr(in, '/');
@@ -382,7 +387,7 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 
   if (mutt_istr_equal(in, "utf-8") || mutt_istr_equal(in, "utf8"))
   {
-    mutt_str_copy(buf, "utf-8", buflen);
+    buf_strcpy(canon, "utf-8");
     goto out;
   }
 
@@ -403,23 +408,23 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   {
     if (mutt_istr_equal(scratch, PreferredMimeNames[i].key))
     {
-      mutt_str_copy(buf, PreferredMimeNames[i].pref, buflen);
+      buf_strcpy(canon, PreferredMimeNames[i].pref);
       goto out;
     }
   }
 
-  mutt_str_copy(buf, scratch, buflen);
-
-  /* for cosmetics' sake, transform to lowercase. */
-  for (char *p = buf; *p; p++)
-    *p = tolower(*p);
+  buf_strcpy(canon, scratch);
+  buf_lower(canon); // for cosmetics' sake
 
 out:
-  if (ext && *ext)
+  if (ext && (*ext != '\0'))
   {
-    mutt_str_cat(buf, buflen, "/");
-    mutt_str_cat(buf, buflen, ext);
+    buf_addch(canon, '/');
+    buf_addstr(canon, ext);
   }
+
+  mutt_str_copy(buf, buf_string(canon), buflen);
+  buf_pool_release(&canon);
 }
 
 /**
@@ -507,7 +512,7 @@ bool mutt_ch_lookup_add(enum LookupType type, const char *pat,
   if (!pat || !replace)
     return false;
 
-  regex_t *rx = mutt_mem_calloc(1, sizeof(regex_t));
+  regex_t *rx = MUTT_MEM_CALLOC(1, regex_t);
   int rc = REG_COMP(rx, pat, REG_ICASE);
   if (rc != 0)
   {
@@ -588,8 +593,8 @@ const char *mutt_ch_charset_lookup(const char *chs)
  */
 iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t flags)
 {
-  char tocode1[128];
-  char fromcode1[128];
+  char tocode1[128] = { 0 };
+  char fromcode1[128] = { 0 };
   const char *tocode2 = NULL, *fromcode2 = NULL;
   const char *tmp = NULL;
 
@@ -654,7 +659,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
     {
       iconv_close(IconvCache[IconvCacheUsed - 1].cd);
     }
-    --IconvCacheUsed;
+    IconvCacheUsed--;
   }
 
   /* make room for this one at the top */
@@ -663,7 +668,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
     IconvCache[j + 1] = IconvCache[j];
   }
 
-  ++IconvCacheUsed;
+  IconvCacheUsed++;
 
   mutt_debug(LL_DEBUG2, "iconv: adding %s -> %s to the cache\n", fromcode1, tocode1);
   IconvCache[0].fromcode1 = strdup(fromcode1);
@@ -799,7 +804,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
     return -1;
 
   size_t outlen = MB_LEN_MAX * slen;
-  char *out = mutt_mem_malloc(outlen + 1);
+  char *out = MUTT_MEM_MALLOC(outlen + 1, char);
   char *saved_out = out;
 
   const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, &outlen);
@@ -860,7 +865,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t 
     return -1;
   }
   size_t obl = MB_LEN_MAX * ibl;
-  char *buf = mutt_mem_malloc(obl + 1);
+  char *buf = MUTT_MEM_MALLOC(obl + 1, char);
   char *ob = buf;
 
   mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl, &rc);
@@ -927,29 +932,26 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
  */
 struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, uint8_t flags)
 {
-  struct FgetConv *fc = NULL;
   iconv_t cd = ICONV_T_INVALID;
 
   if (from && to)
     cd = mutt_ch_iconv_open(to, from, flags);
 
+  struct FgetConv *fc = MUTT_MEM_CALLOC(1, struct FgetConv);
+  fc->fp = fp;
+  fc->cd = cd;
+
   if (iconv_t_valid(cd))
   {
     static const char *repls[] = { "\357\277\275", "?", 0 };
 
-    fc = mutt_mem_malloc(sizeof(struct FgetConv));
     fc->p = fc->bufo;
     fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
     fc->inrepls = mutt_ch_is_utf8(to) ? repls : repls + 1;
   }
-  else
-  {
-    fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
-  }
-  fc->fp = fp;
-  fc->cd = cd;
+
   return fc;
 }
 

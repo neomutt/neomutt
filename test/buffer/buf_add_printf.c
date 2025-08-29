@@ -3,7 +3,8 @@
  * Test code for buf_add_printf()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,8 +37,9 @@ void test_buf_add_printf(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(buf_add_printf(&buf, NULL) != 0);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(buf_add_printf(buf, NULL) != 0);
+    buf_pool_release(&buf);
   }
 
   TEST_CASE("printf to an empty Buffer");
@@ -46,10 +48,10 @@ void test_buf_add_printf(void)
     TEST_CASE("Varargs");
     const char *str = "apple";
     const char *result = "app 1234567 3.1416";
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(buf_add_printf(&buf, "%.3s %d %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK_STR_EQ(buf_string(&buf), result);
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(buf_add_printf(buf, "%.3s %d %3.4f", str, 1234567, 3.141592654) == 18);
+    TEST_CHECK_STR_EQ(buf_string(buf), result);
+    buf_pool_release(&buf);
   }
 
   TEST_CASE("printf to a non-empty Buffer");
@@ -57,23 +59,23 @@ void test_buf_add_printf(void)
   {
     TEST_CASE("Static very big");
     const char *str = "%d apple banana cherry damson elderberry fig guava hawthorn ilama jackfruit kumquat lemon mango nectarine olive papaya quince raspberry strawberry tangerine ugli vanilla wolfberry xigua yew ziziphus";
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, "test");
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, "test");
 
     for (int i = 0; i < 50; i++)
-      TEST_CHECK(buf_add_printf(&buf, str, 1) != -1);
+      TEST_CHECK(buf_add_printf(buf, str, 1) != -1);
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
   }
 
   {
     TEST_CASE("Varargs");
     const char *str = "apple";
     const char *result = "testapp 1234567 3.1416";
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, "test");
-    TEST_CHECK(buf_add_printf(&buf, "%.3s %d %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK_STR_EQ(buf_string(&buf), result);
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, "test");
+    TEST_CHECK(buf_add_printf(buf, "%.3s %d %3.4f", str, 1234567, 3.141592654) == 18);
+    TEST_CHECK_STR_EQ(buf_string(buf), result);
+    buf_pool_release(&buf);
   }
 }

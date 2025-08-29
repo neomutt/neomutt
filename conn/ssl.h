@@ -3,7 +3,7 @@
  * Handling of SSL encryption
  *
  * @authors
- * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,7 +36,7 @@ ARRAY_HEAD(CertArray, const char *);
 void cert_array_clear(struct CertArray *carr);
 
 /**
- * CertMenuData - Certificate data to use in the Menu
+ * struct CertMenuData - Certificate data to use in the Menu
  */
 struct CertMenuData
 {

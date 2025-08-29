@@ -3,7 +3,8 @@
  * View of a Mailbox
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -58,7 +59,19 @@ void mview_free(struct MailboxView **ptr)
   notify_send(mv->notify, NT_MVIEW, NT_MVIEW_DELETE, &ev_m);
 
   if (mv->mailbox)
+  {
     notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
+
+    // Disconnect the Emails before freeing the Threads
+    for (int i = 0; i < mv->mailbox->msg_count; i++)
+    {
+      struct Email *e = mv->mailbox->emails[i];
+      if (!e)
+        continue;
+      e->thread = NULL;
+      e->threaded = false;
+    }
+  }
 
   mutt_thread_ctx_free(&mv->threads);
   notify_free(&mv->notify);
@@ -80,7 +93,7 @@ struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
   if (!m)
     return NULL;
 
-  struct MailboxView *mv = mutt_mem_calloc(1, sizeof(struct MailboxView));
+  struct MailboxView *mv = MUTT_MEM_CALLOC(1, struct MailboxView);
 
   mv->notify = notify_new();
   notify_set_parent(mv->notify, parent);
@@ -296,10 +309,8 @@ static void update_tables(struct MailboxView *mv)
         mutt_hash_delete(m->id_hash, m->emails[i]->env->message_id, m->emails[i]);
       mutt_label_hash_remove(m, m->emails[i]);
 
-#ifdef USE_IMAP
       if (m->type == MUTT_IMAP)
         imap_notify_delete_email(m, m->emails[i]);
-#endif
 
       mailbox_gc_add(m->emails[i]);
       m->emails[i] = NULL;

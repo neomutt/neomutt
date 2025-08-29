@@ -3,8 +3,13 @@
  * Index Dialog
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2010,2012-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2016-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
+ * Copyright (C) 2022 Igor Serebryany <igor47@moomers.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -53,9 +58,9 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -65,13 +70,15 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "nntp/lib.h"
 #include "pager/lib.h"
 #include "pattern/lib.h"
-#include "format_flags.h"
+#include "sidebar/lib.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "mutt_logging.h"
@@ -79,7 +86,7 @@
 #include "mutt_thread.h"
 #include "mview.h"
 #include "mx.h"
-#include "opcodes.h"
+#include "nntp/adata.h"
 #include "private_data.h"
 #include "protos.h"
 #include "shared_data.h"
@@ -88,15 +95,8 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#include "nntp/adata.h"
-#endif
 #ifdef USE_INOTIFY
 #include "monitor.h"
-#endif
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
 #endif
 
 /// Help Bar for the Index dialog
@@ -114,7 +114,6 @@ static const struct Mapping IndexHelp[] = {
   // clang-format on
 };
 
-#ifdef USE_NNTP
 /// Help Bar for the News Index dialog
 const struct Mapping IndexNewsHelp[] = {
   // clang-format off
@@ -129,7 +128,6 @@ const struct Mapping IndexNewsHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
-#endif
 
 /**
  * check_acl - Check the ACLs for a function
@@ -355,7 +353,7 @@ int find_first_message(struct MailboxView *mv)
       reverse = !(c_sort & SORT_REVERSE);
       break;
     default:
-      assert(false);
+      ASSERT(false);
   }
 
   if (reverse || (m->vcount == 0))
@@ -424,7 +422,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
   if ((check != MX_STATUS_REOPENED) && (oldcount > 0) &&
       (lmt || c_uncollapse_new) && (num_new > 0))
   {
-    save_new = mutt_mem_malloc(num_new * sizeof(struct Email *));
+    save_new = MUTT_MEM_MALLOC(num_new, struct Email *);
     for (int i = oldcount; i < m->msg_count; i++)
       save_new[i - oldcount] = m->emails[i];
   }
@@ -512,7 +510,7 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
           mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
                             MUTT_MATCH_FULL_ADDRESS, mv->mailbox, e, NULL))
       {
-        assert(mv->mailbox->vcount < mv->mailbox->msg_count);
+        ASSERT(mv->mailbox->vcount < mv->mailbox->msg_count);
         e->vnum = mv->mailbox->vcount;
         mv->mailbox->v2r[mv->mailbox->vcount] = i;
         e->visible = true;
@@ -554,6 +552,7 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
   else
     update_index_unthreaded(mv, check);
 
+  menu->max = m->vcount;
   const int old_index = menu_get_index(menu);
   int index = -1;
   if (oldcount)
@@ -629,11 +628,9 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
 #ifdef USE_INOTIFY
     int monitor_remove_rc = mutt_monitor_remove(NULL);
 #endif
-#ifdef USE_COMP_MBOX
     if (shared->mailbox->compress_info && (shared->mailbox->realpath[0] != '\0'))
       new_last_folder = mutt_str_dup(shared->mailbox->realpath);
     else
-#endif
       new_last_folder = mutt_str_dup(mailbox_path(shared->mailbox));
     *oldcount = shared->mailbox->msg_count;
 
@@ -717,7 +714,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
   struct EventMailbox ev_m = { shared->mailbox };
-  mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_FORCE);
+  mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_POSTPONED);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   mutt_pattern_free(&shared->search_state->pattern);
 }
@@ -744,6 +741,8 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
 
   struct Mailbox *m_query = mx_path_resolve(buf);
   change_folder_mailbox(menu, m_query, oldcount, shared, read_only);
+  if (!shared->mailbox_view)
+    mailbox_free(&m_query);
   return m_query;
 }
 #endif
@@ -759,14 +758,12 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
 void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
                           struct IndexSharedData *shared, bool read_only)
 {
-#ifdef USE_NNTP
   if (OptNews)
   {
     OptNews = false;
     nntp_expand_path(buf->data, buf->dsize, &CurrentNewsSrv->conn->account);
   }
   else
-#endif
   {
     const char *const c_folder = cs_subset_string(shared->sub, "folder");
     mx_path_canon(buf, c_folder, NULL);
@@ -793,14 +790,14 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
 }
 
 /**
- * index_make_entry - Format a menu item for the index list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * index_make_entry - Format an Email for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $index_format
  */
-void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  buf[0] = '\0';
-
   if (!menu || !menu->mdata)
-    return;
+    return 0;
 
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
@@ -809,11 +806,11 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
     menu->current = -1;
 
   if (!m || (line < 0) || (line >= m->email_max))
-    return;
+    return 0;
 
   struct Email *e = mutt_get_virt_email(m, line);
   if (!e)
-    return;
+    return 0;
 
   MuttFormatFlags flags = MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   struct MuttThread *tmp = NULL;
@@ -881,10 +878,17 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
     }
   }
 
-  const char *const c_index_format = cs_subset_string(shared->sub, "index_format");
+  const struct Expando *c_index_format = cs_subset_expando(shared->sub, "index_format");
   int msg_in_pager = shared->mailbox_view ? shared->mailbox_view->msg_in_pager : 0;
-  mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
-                   m, msg_in_pager, e, flags, NULL);
+
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  return mutt_make_string(buf, max_cols, c_index_format, m, msg_in_pager, e, flags, NULL);
 }
 
 /**
@@ -911,10 +915,10 @@ const struct AttrColor *index_color(struct Menu *menu, int line)
 
 /**
  * mutt_draw_statusline - Draw a highlighted status bar
- * @param win    Window
- * @param cols   Maximum number of screen columns
- * @param buf    Message to be displayed
- * @param buflen Length of the buffer
+ * @param win      Window
+ * @param max_cols Maximum number of screen columns
+ * @param buf      Message to be displayed
+ * @param buflen   Length of the buffer
  *
  * Users configure the highlighting of the status bar, e.g.
  *     color status red default "[0-9][0-9]:[0-9][0-9]"
@@ -922,7 +926,7 @@ const struct AttrColor *index_color(struct Menu *menu, int line)
  * Where regexes overlap, the one nearest the start will be used.
  * If two regexes start at the same place, the longer match will be used.
  */
-void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, size_t buflen)
+void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf, size_t buflen)
 {
   if (!buf || !stdscr)
     return;
@@ -957,6 +961,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
     STAILQ_FOREACH(cl, regex_colors_get_list(MT_COLOR_STATUS), entries)
     {
       regmatch_t pmatch[cl->match + 1];
+      memset(pmatch, 0, (cl->match + 1) * sizeof(regmatch_t));
 
       if (regexec(&cl->regex, buf + offset, cl->match + 1, pmatch, 0) != 0)
         continue; /* regex doesn't match the status bar */
@@ -970,7 +975,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
       if (!found)
       {
         chunks++;
-        mutt_mem_realloc(&syntax, chunks * sizeof(struct StatusSyntax));
+        MUTT_MEM_REALLOC(&syntax, chunks, struct StatusSyntax);
       }
 
       i = chunks - 1;
@@ -992,8 +997,8 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
     }
   } while (found);
 
-  /* Only 'len' bytes will fit into 'cols' screen columns */
-  len = mutt_wstr_trunc(buf, buflen, cols, NULL);
+  /* Only 'len' bytes will fit into 'max_cols' screen columns */
+  len = mutt_wstr_trunc(buf, buflen, max_cols, NULL);
 
   offset = 0;
 
@@ -1043,10 +1048,10 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
   }
 
   int width = mutt_strwidth(buf);
-  if (width < cols)
+  if (width < max_cols)
   {
     /* Pad the rest of the line with whitespace */
-    mutt_paddstr(win, cols - width, "");
+    mutt_paddstr(win, max_cols - width, "");
   }
 dsl_finish:
   FREE(&syntax);
@@ -1073,16 +1078,13 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
 
   struct IndexPrivateData *priv = panel_index->wdata;
-  priv->attach_msg = OptAttachMsg;
   priv->win_index = window_find_child(panel_index, WT_MENU);
 
   int op = OP_NULL;
 
-#ifdef USE_NNTP
   if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP))
     dlg->help_data = IndexNewsHelp;
   else
-#endif
     dlg->help_data = IndexHelp;
   dlg->help_menu = MENU_INDEX;
 
@@ -1095,10 +1097,10 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   struct MuttWindow *old_focus = window_set_focus(priv->menu->win);
   mutt_window_reflow(NULL);
 
-  if (!priv->attach_msg)
+  if (!shared->attach_msg)
   {
     /* force the mailbox check after we enter the folder */
-    mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_FORCE);
+    mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_POSTPONED);
   }
 #ifdef USE_INOTIFY
   mutt_monitor_add(NULL);
@@ -1174,14 +1176,15 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
               const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
               if (c_beep_new)
                 mutt_beep(true);
-              const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
+              const struct Expando *c_new_mail_command =
+                  cs_subset_expando(shared->sub, "new_mail_command");
               if (c_new_mail_command)
               {
-                char cmd[1024] = { 0 };
-                menu_status_line(cmd, sizeof(cmd), shared, NULL, sizeof(cmd),
-                                 NONULL(c_new_mail_command));
-                if (mutt_system(cmd) != 0)
-                  mutt_error(_("Error running \"%s\""), cmd);
+                struct Buffer *cmd = buf_pool_get();
+                menu_status_line(cmd, shared, NULL, -1, c_new_mail_command);
+                if (mutt_system(buf_string(cmd)) != 0)
+                  mutt_error(_("Error running \"%s\""), buf_string(cmd));
+                buf_pool_release(&cmd);
               }
               break;
             }
@@ -1208,11 +1211,10 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
                                                               menu_get_index(priv->menu)));
     }
 
-    if (!priv->attach_msg)
+    if (!shared->attach_msg)
     {
       /* check for new mail in the incoming folders */
-      priv->oldcount = priv->newcount;
-      priv->newcount = mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NO_FLAGS);
+      mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NO_FLAGS);
       if (priv->do_mailbox_notify)
       {
         if (mutt_mailbox_notify(shared->mailbox))
@@ -1220,14 +1222,14 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
           const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
           if (c_beep_new)
             mutt_beep(true);
-          const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
+          const struct Expando *c_new_mail_command = cs_subset_expando(shared->sub, "new_mail_command");
           if (c_new_mail_command)
           {
-            char cmd[1024] = { 0 };
-            menu_status_line(cmd, sizeof(cmd), shared, priv->menu, sizeof(cmd),
-                             NONULL(c_new_mail_command));
-            if (mutt_system(cmd) != 0)
-              mutt_error(_("Error running \"%s\""), cmd);
+            struct Buffer *cmd = buf_pool_get();
+            menu_status_line(cmd, shared, priv->menu, -1, c_new_mail_command);
+            if (mutt_system(buf_string(cmd)) != 0)
+              mutt_error(_("Error running \"%s\""), buf_string(cmd));
+            buf_pool_release(&cmd);
           }
         }
       }
@@ -1270,7 +1272,6 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     if (op == OP_REPAINT)
     {
-      priv->menu->top = 0; /* so we scroll the right amount */
       /* force a real complete redraw.  clrtobot() doesn't seem to be able
        * to handle every case without this.  */
       msgwin_clear_text(NULL);
@@ -1331,9 +1332,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     mutt_clear_error();
 
-#ifdef USE_NNTP
     OptNews = false; /* for any case */
-#endif
 
 #ifdef USE_NOTMUCH
     nm_db_debug_check(shared->mailbox);
@@ -1344,13 +1343,11 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(priv->win_index, op);
 
-#ifdef USE_SIDEBAR
     if (rc == FR_UNKNOWN)
     {
       struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
       rc = sb_function_dispatcher(win_sidebar, op);
     }
-#endif
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
 

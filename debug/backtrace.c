@@ -38,10 +38,11 @@
  */
 void show_backtrace(void)
 {
-  unw_cursor_t cursor;
-  unw_context_t uc;
-  unw_word_t ip, sp;
-  char buf[256];
+  unw_cursor_t cursor = { 0 };
+  unw_context_t uc = { 0 };
+  unw_word_t ip = 0;
+  unw_word_t sp = 0;
+  char buf[256] = { 0 };
 
   printf("\n%s\n", mutt_make_version());
   printf("Backtrace\n");

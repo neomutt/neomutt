@@ -23,7 +23,6 @@
 #ifndef MUTT_EDITOR_ENTER_H
 #define MUTT_EDITOR_ENTER_H
 
-#include <stddef.h>
 #include <stdbool.h>
 
 struct EnterState;
@@ -54,10 +53,6 @@ int editor_kill_whole_line(struct EnterState *es);
 int editor_kill_word      (struct EnterState *es);
 int editor_transpose_chars(struct EnterState *es);
 
-size_t editor_buffer_get_cursor  (struct EnterState *es);
-size_t editor_buffer_get_lastchar(struct EnterState *es);
 bool   editor_buffer_is_empty    (struct EnterState *es);
-int    editor_buffer_set         (struct EnterState *es, const char *str);
-size_t editor_buffer_set_cursor  (struct EnterState *es, size_t pos);
 
 #endif /* MUTT_EDITOR_ENTER_H */

@@ -3,8 +3,7 @@
  * Manage keymappings
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2010 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -40,7 +39,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
@@ -162,7 +160,6 @@ const char *             km_keyname                 (int c);
 void                     init_extended_keys         (void);
 int                      main_config_observer       (struct NotifyCallback *nc);
 void                     mutt_flush_macro_to_endcond(void);
-void                     mutt_flush_unget_to_endcond(void);
 void                     mutt_init_abort_key        (void);
 void                     mutt_keys_cleanup          (void);
 void                     mw_what_key                (void);
@@ -170,7 +167,7 @@ void                     mw_what_key                (void);
 // Private to libkey
 struct Keymap *    alloc_keys                  (size_t len, keycode_t *keys);
 enum CommandResult dump_bind_macro             (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-void               generic_tokenize_push_string(char *s, void (*generic_push)(int, int));
+void               generic_tokenize_push_string(char *s);
 int                get_op                      (const struct MenuFuncOp *funcs, const char *start, size_t len);
 enum CommandResult km_bindkey                  (const char *s, enum MenuType mtype, int op);
 struct Keymap *    km_compare_keys             (struct Keymap *k1, struct Keymap *k2, size_t *pos);

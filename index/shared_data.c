@@ -3,7 +3,8 @@
  * Data shared between Index, Pager and Sidebar
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -305,7 +306,7 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
  */
 struct IndexSharedData *index_shared_data_new(void)
 {
-  struct IndexSharedData *shared = mutt_mem_calloc(1, sizeof(struct IndexSharedData));
+  struct IndexSharedData *shared = MUTT_MEM_CALLOC(1, struct IndexSharedData);
 
   shared->notify = notify_new();
   shared->sub = NeoMutt->sub;

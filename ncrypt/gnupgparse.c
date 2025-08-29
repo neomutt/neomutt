@@ -3,8 +3,9 @@
  * Parse the output of CLI PGP program
  *
  * @authors
- * Copyright (C) 1998-2000,2003 Werner Koch <werner.koch@guug.de>
- * Copyright (C) 1999-2003 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,6 +40,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -101,7 +103,7 @@ static void fix_uid(char *uid)
   {
     int n = s - uid + 1; /* chars available in original buffer */
 
-    char *buf = mutt_mem_malloc(n + 1);
+    char *buf = MUTT_MEM_MALLOC(n + 1, char);
     const char *ib = uid;
     size_t ibl = d - uid + 1;
     char *ob = buf;
@@ -334,7 +336,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
         mutt_debug(LL_DEBUG2, "user ID: %s\n", NONULL(p));
 
-        uid = mutt_mem_calloc(1, sizeof(struct PgpUid));
+        uid = MUTT_MEM_CALLOC(1, struct PgpUid);
         fix_uid(p);
         uid->addr = mutt_str_dup(p);
         uid->trust = trust;
@@ -388,7 +390,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
   /* merge temp key back into real key */
   if (!(is_uid || is_fpr || (*is_subkey && c_pgp_ignore_subkeys)))
-    k = mutt_mem_malloc(sizeof(*k));
+    k = MUTT_MEM_MALLOC(1, struct PgpKeyInfo);
   if (!k)
     return NULL;
   memcpy(k, &tmp, sizeof(*k));

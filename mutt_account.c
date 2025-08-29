@@ -3,7 +3,8 @@
  * ConnAccount object used by POP and IMAP
  *
  * @authors
- * Copyright (C) 2000-2007 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2016-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -84,7 +85,6 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
   url->port = 0;
   url->path = NULL;
 
-#ifdef USE_IMAP
   if (cac->type == MUTT_ACCT_TYPE_IMAP)
   {
     if (cac->flags & MUTT_ACCT_SSL)
@@ -92,9 +92,7 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
     else
       url->scheme = U_IMAP;
   }
-#endif
 
-#ifdef USE_POP
   if (cac->type == MUTT_ACCT_TYPE_POP)
   {
     if (cac->flags & MUTT_ACCT_SSL)
@@ -102,9 +100,7 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
     else
       url->scheme = U_POP;
   }
-#endif
 
-#ifdef USE_SMTP
   if (cac->type == MUTT_ACCT_TYPE_SMTP)
   {
     if (cac->flags & MUTT_ACCT_SSL)
@@ -112,9 +108,7 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
     else
       url->scheme = U_SMTP;
   }
-#endif
 
-#ifdef USE_NNTP
   if (cac->type == MUTT_ACCT_TYPE_NNTP)
   {
     if (cac->flags & MUTT_ACCT_SSL)
@@ -122,7 +116,6 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
     else
       url->scheme = U_NNTP;
   }
-#endif
 
   url->host = cac->host;
   if (cac->flags & MUTT_ACCT_PORT)

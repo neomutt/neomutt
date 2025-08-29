@@ -31,4 +31,6 @@ bool mutt_ts_capability(void);
 void mutt_ts_status(char *str);
 void mutt_ts_icon(char *str);
 
+const char *mutt_tigetstr(const char *name);
+
 #endif /* MUTT_GUI_TERMINAL_H */

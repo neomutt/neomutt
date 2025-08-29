@@ -3,7 +3,8 @@
  * SASL plain authentication support
  *
  * @authors
- * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2018 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,14 +28,12 @@
  */
 
 #include "config.h"
-#include <stdio.h>
 #include "mutt/lib.h"
 #include "sasl_plain.h"
 
 /**
  * mutt_sasl_plain_msg - Construct a base64 encoded SASL PLAIN message
  * @param buf    Destination buffer
- * @param buflen Available space in the destination buffer
  * @param cmd    Protocol-specific string the prepend to the PLAIN message
  * @param authz  Authorization identity
  * @param user   Authentication identity (username)
@@ -47,27 +46,25 @@
  * parameter. The function appends a space, encodes the string derived from
  * authz\0user\0pass using base64 encoding, and stores the result in buf. If
  * cmd is either NULL or the empty string, the initial space is skipped.
- *
- * authz, user, and pass can each be up to 255 bytes, making up for a 765 bytes
- * string. Add the two NULL bytes in between plus one at the end and we get
- * 768.
  */
-size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
+size_t mutt_sasl_plain_msg(struct Buffer *buf, const char *cmd,
                            const char *authz, const char *user, const char *pass)
 {
-  char tmp[768] = { 0 };
-  size_t len = 0;
-  size_t tmplen;
-
   if (!user || (*user == '\0') || !pass || (*pass == '\0'))
     return 0;
 
-  tmplen = snprintf(tmp, sizeof(tmp), "%s%c%s%c%s", NONULL(authz), '\0', user, '\0', pass);
+  if (cmd && (*cmd != '\0'))
+    buf_printf(buf, "%s ", cmd);
 
-  if (cmd && *cmd)
-  {
-    len = snprintf(buf, buflen, "%s ", cmd);
-  }
-  len += mutt_b64_encode(tmp, tmplen, buf + len, buflen - len);
-  return len;
+  struct Buffer *user_pass = buf_pool_get();
+  struct Buffer *encoded = buf_pool_get();
+
+  buf_printf(user_pass, "%s%c%s%c%s", NONULL(authz), '\0', user, '\0', pass);
+  mutt_b64_buffer_encode(encoded, buf_string(user_pass), buf_len(user_pass));
+  buf_addstr(buf, buf_string(encoded));
+
+  buf_pool_release(&user_pass);
+  buf_pool_release(&encoded);
+
+  return buf_len(buf);
 }

@@ -3,7 +3,9 @@
  * Index Window
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -66,8 +68,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -78,7 +80,7 @@
 #include "menu/lib.h"
 #include "postpone/lib.h"
 #include "alternates.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mview.h"
@@ -198,9 +200,6 @@ static int config_reply_regex(struct MailboxView *mv)
 
   struct Mailbox *m = mv->mailbox;
 
-  regmatch_t pmatch[1];
-
-  const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
@@ -210,15 +209,7 @@ static int config_reply_regex(struct MailboxView *mv)
     if (!env || !env->subject)
       continue;
 
-    if (mutt_regex_capture(c_reply_regex, env->subject, 1, pmatch))
-    {
-      env->real_subj = env->subject + pmatch[0].rm_eo;
-      if (env->real_subj[0] == '\0')
-        env->real_subj = NULL;
-      continue;
-    }
-
-    env->real_subj = env->subject;
+    mutt_env_set_subject(env, env->subject);
   }
 
   OptResortInit = true; /* trigger a redraw of the index */
@@ -318,6 +309,77 @@ static int index_color_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * config_check_sort - Does this config option affect the Index sorting?
+ * @param option Config option
+ * @retval true Index may need resorting
+ */
+static bool config_check_sort(const char *option)
+{
+  const int R_RESORT = (1 << 0);      ///< Resort the mailbox
+  const int R_RESORT_INIT = (1 << 1); ///< Resort from scratch
+  const int R_RESORT_SUB = (1 << 2);  ///< Resort subthreads
+
+  static const struct Mapping sort_options[] = {
+    // clang-format off
+    { "duplicate_threads", R_RESORT | R_RESORT_INIT },
+    { "reply_regex",       R_RESORT                 },
+    { "sort",              R_RESORT                 },
+    { "sort_aux",          R_RESORT | R_RESORT_SUB  },
+    { "sort_re",           R_RESORT | R_RESORT_INIT },
+    { "strict_threads",    R_RESORT | R_RESORT_INIT },
+    { "thread_received",   R_RESORT | R_RESORT_INIT },
+    { "use_threads",       R_RESORT                 },
+    { NULL, 0 },
+    // clang-format on
+  };
+
+  int flags = mutt_map_get_value(option, sort_options);
+  if (flags < 0)
+    return false;
+
+  if (flags & R_RESORT)
+    OptNeedResort = true;
+  if (flags & R_RESORT_INIT)
+    OptResortInit = true;
+  if (flags & R_RESORT_SUB)
+    OptSortSubthreads = true;
+
+  return true;
+}
+
+/**
+ * config_check_index - Does this config option affect the Index?
+ * @param option Config option
+ * @retval true Index may need redrawing
+ */
+bool config_check_index(const char *option)
+{
+  static const char *index_options[] = {
+    "ascii_chars",        "crypt_chars",
+    "flag_chars",         "from_chars",
+    "group_index_format", "hide_limited",
+    "hide_missing",       "hide_thread_subject",
+    "hide_top_limited",   "hide_top_missing",
+    "imap_headers",       "index_format",
+    "mark_old",           "mbox",
+    "narrow_tree",        "postponed",
+    "real_name",          "reverse_alias",
+    "reverse_name",       "reverse_real_name",
+    "status_chars",       "status_format",
+    "to_chars",           "ts_enabled",
+    "ts_icon_format",     "ts_status_format"
+  };
+
+  for (size_t i = 0; i < mutt_array_size(index_options); i++)
+  {
+    if (mutt_str_equal(option, index_options[i]))
+      return true;
+  }
+
+  return false;
+}
+
+/**
  * index_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int index_config_observer(struct NotifyCallback *nc)
@@ -333,16 +395,7 @@ static int index_config_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *win = nc->global_data;
 
-  const struct ConfigDef *cdef = ev_c->he->data;
-  ConfigRedrawFlags flags = cdef->type & R_REDRAW_MASK;
-
-  if (flags & R_RESORT_SUB)
-    OptSortSubthreads = true;
-  if (flags & R_RESORT)
-    OptNeedResort = true;
-  if (flags & R_RESORT_INIT)
-    OptResortInit = true;
-  if (!(flags & R_INDEX))
+  if (!config_check_sort(ev_c->name) && !config_check_index(ev_c->name))
     return 0;
 
   if (mutt_str_equal(ev_c->name, "reply_regex"))

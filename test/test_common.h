@@ -3,7 +3,9 @@
  * Common code for file tests
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,15 +25,17 @@
 #ifndef TEST_TEST_COMMON_H
 #define TEST_TEST_COMMON_H
 
+#include "config.h"
+#include "acutest.h"
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "config.h"
+#include <time.h>
 #include "mutt/lib.h"
 
-void test_gen_path(char *buf, size_t buflen, const char *fmt);
+void test_gen_path(struct Buffer *buf, const char *fmt);
 
-bool test_neomutt_create (void);
+bool test_neomutt_create(void);
 void test_neomutt_destroy(void);
 const char *get_test_dir(void);
 
@@ -62,6 +66,9 @@ static inline FILE *test_make_file_with_contents(char *contents, size_t len)
 #endif
   return fp;
 }
+
+int log_disp_null (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
+                   __attribute__((__format__(__printf__, 6, 7)));
 
 #define TEST_CHECK_STR_EQ(actual, expected) test_check_str_eq(actual, expected, __FILE__, __LINE__)
 

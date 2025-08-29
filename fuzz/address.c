@@ -2,12 +2,22 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "init.h"
+
+/**
+ * log_disp_null - Discard log lines - Implements ::log_dispatcher_t - @ingroup logging_api
+ */
+static int log_disp_null(time_t stamp, const char *file, int line, const char *function,
+                         enum LogLevel level, const char *format, ...)
+{
+  return 0;
+}
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {

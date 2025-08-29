@@ -3,7 +3,7 @@
  * Handling of international domain names
  *
  * @authors
- * Copyright (C) 2003,2005 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2018-2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

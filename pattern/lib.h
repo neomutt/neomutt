@@ -3,8 +3,8 @@
  * Match patterns to emails
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -44,13 +44,12 @@
 #define MUTT_PATTERN_LIB_H
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "mutt.h"
-#include "complete/lib.h"
-#include "search_state.h" // IWYU pragma: keep
+#include "search_state.h"
 
 struct AliasMenuData;
 struct AliasView;
@@ -176,10 +175,18 @@ enum PatternType
   MUTT_PAT_DRIVER_TAGS,       ///< Pattern matches message tags
   MUTT_PAT_MIMEATTACH,        ///< Pattern matches number of attachments
   MUTT_PAT_MIMETYPE,          ///< Pattern matches MIME type
-#ifdef USE_NNTP
   MUTT_PAT_NEWSGROUPS,        ///< Pattern matches newsgroup
-#endif
   MUTT_PAT_MAX,
+};
+
+/**
+ * enum PatternAliasAction - What to do with the matching Aliases
+ */
+enum PatternAlias
+{
+  PAA_TAG,        ///< Set   AliasView.is_tagged, but don't touch the others
+  PAA_UNTAG,      ///< Unset AliasView.is_tagged, but don't touch the others
+  PAA_VISIBLE,    ///< Set   AliasView.is_visible and hide the rest
 };
 
 bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailbox *m,
@@ -192,11 +199,10 @@ void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternList **pat);
 bool dlg_pattern(char *buf, size_t buflen);
 
-int mutt_which_case(const char *s);
 bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
-int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
+int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, enum PatternAlias action, struct Menu *menu);
 int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
                         struct SearchState *state, SearchFlags flags);
 int mutt_search_alias_command(struct Menu *menu, int cur,

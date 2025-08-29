@@ -10,17 +10,17 @@ jobs:
   build:
     name: Coverity
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/docker-build
+    container: ghcr.io/neomutt/ubuntu
 
     env:
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
-      OPTIONS: --autocrypt --bdb --disable-doc --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+      OPTIONS: --autocrypt --bdb --disable-doc --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
       COV_TOOLS: cov-tools
       COV_RESULTS: cov-int
 
     steps:
     - name: Get number of CPU cores
-      uses: SimenB/github-actions-cpu-cores@v1
+      uses: SimenB/github-actions-cpu-cores@v2
       id: cpu-cores
 
     - name: Check Secret
@@ -48,7 +48,7 @@ jobs:
         sed -i '/TOKEN=/d' cov-int/build-log.txt
 
     - name: Upload build log
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-log
         path: cov-int/build-log.txt

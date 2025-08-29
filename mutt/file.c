@@ -3,7 +3,12 @@
  * File management functions
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017 Reis Radomil
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2018-2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,6 +29,10 @@
  * @page mutt_file File management functions
  *
  * Commonly used file/dir management routines.
+ *
+ * The following unused functions were removed:
+ * - mutt_file_chmod()
+ * - mutt_file_chmod_rm()
  */
 
 #include "config.h"
@@ -37,6 +46,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 #include <utime.h>
 #include <wchar.h>
@@ -68,7 +78,7 @@ const char FilenameSafeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
 #endif
 
 /**
- * compare_stat - Compare the struct stat's of two files/dirs
+ * stat_equal - Compare the struct stat's of two files/dirs
  * @param st_old struct stat of the first file/dir
  * @param st_new struct stat of the second file/dir
  * @retval true They match
@@ -76,7 +86,7 @@ const char FilenameSafeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
  * This compares the device id (st_dev), inode number (st_ino) and special id
  * (st_rdev) of the files/dirs.
  */
-static bool compare_stat(struct stat *st_old, struct stat *st_new)
+static bool stat_equal(struct stat *st_old, struct stat *st_new)
 {
   return (st_old->st_dev == st_new->st_dev) && (st_old->st_ino == st_new->st_ino) &&
          (st_old->st_rdev == st_new->st_rdev);
@@ -95,10 +105,10 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
   const char *basename = NULL;
   int rc = 0;
 
-  struct Buffer parent = buf_make(PATH_MAX);
-  buf_strcpy(&parent, NONULL(path));
+  struct Buffer *parent = buf_pool_get();
+  buf_strcpy(parent, path);
 
-  char *p = strrchr(parent.data, '/');
+  char *p = strrchr(buf_string(parent), '/');
   if (p)
   {
     *p = '\0';
@@ -106,11 +116,11 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
   }
   else
   {
-    buf_strcpy(&parent, ".");
+    buf_strcpy(parent, ".");
     basename = path;
   }
 
-  buf_printf(newdir, "%s/%s", buf_string(&parent), ".muttXXXXXX");
+  buf_printf(newdir, "%s/%s", buf_string(parent), ".muttXXXXXX");
   if (!mkdtemp(newdir->data))
   {
     mutt_debug(LL_DEBUG1, "mkdtemp() failed\n");
@@ -118,10 +128,10 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
     goto cleanup;
   }
 
-  buf_printf(newfile, "%s/%s", newdir->data, NONULL(basename));
+  buf_printf(newfile, "%s/%s", buf_string(newdir), NONULL(basename));
 
 cleanup:
-  buf_dealloc(&parent);
+  buf_pool_release(&parent);
   return rc;
 }
 
@@ -144,17 +154,32 @@ static int put_file_in_place(const char *path, const char *safe_file, const char
 }
 
 /**
- * mutt_file_fclose - Close a FILE handle (and NULL the pointer)
- * @param[out] fp FILE handle to close
+ * mutt_file_fclose_full - Close a FILE handle (and NULL the pointer)
+ * @param[out] fp    FILE handle to close
+ * @param[in]  file  Source file
+ * @param[in]  line  Source line number
+ * @param[in]  func  Source function
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
-int mutt_file_fclose(FILE **fp)
+int mutt_file_fclose_full(FILE **fp, const char *file, int line, const char *func)
 {
   if (!fp || !*fp)
     return 0;
 
+  int fd = fileno(*fp);
   int rc = fclose(*fp);
+
+  if (rc == 0)
+  {
+    MuttLogger(0, file, line, func, LL_DEBUG2, "File closed (fd=%d)\n", fd);
+  }
+  else
+  {
+    MuttLogger(0, file, line, func, LL_DEBUG2, "File close failed (fd=%d), errno=%d, %s\n",
+               fd, errno, strerror(errno));
+  }
+
   *fp = NULL;
   return rc;
 }
@@ -305,27 +330,27 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
   }
   else
   {
-    struct Buffer abs_oldpath = buf_make(PATH_MAX);
+    struct Buffer *abs_oldpath = buf_pool_get();
 
-    if (!mutt_path_getcwd(&abs_oldpath))
+    if (!mutt_path_getcwd(abs_oldpath))
     {
-      buf_dealloc(&abs_oldpath);
+      buf_pool_release(&abs_oldpath);
       return -1;
     }
 
-    buf_addch(&abs_oldpath, '/');
-    buf_addstr(&abs_oldpath, oldpath);
-    if (symlink(buf_string(&abs_oldpath), newpath) == -1)
+    buf_addch(abs_oldpath, '/');
+    buf_addstr(abs_oldpath, oldpath);
+    if (symlink(buf_string(abs_oldpath), newpath) == -1)
     {
-      buf_dealloc(&abs_oldpath);
+      buf_pool_release(&abs_oldpath);
       return -1;
     }
 
-    buf_dealloc(&abs_oldpath);
+    buf_pool_release(&abs_oldpath);
   }
 
   if ((stat(oldpath, &st_old) == -1) || (stat(newpath, &st_new) == -1) ||
-      !compare_stat(&st_old, &st_new))
+      !stat_equal(&st_old, &st_new))
   {
     unlink(newpath);
     return -1;
@@ -366,7 +391,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
      * used lstat() further below for 20 years without issue, and I
      * believe was never intended to be used on a src symlink.  */
     if ((lstat(src, &st_src) == 0) && (lstat(target, &st_target) == 0) &&
-        (compare_stat(&st_src, &st_target) == 0))
+        (stat_equal(&st_src, &st_target) == 0))
     {
       mutt_debug(LL_DEBUG1, "link (%s, %s) reported failure: %s (%d) but actually succeeded\n",
                  src, target, strerror(errno), errno);
@@ -412,7 +437,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
     return -1;
   }
 
-  /* Remove the compare_stat() check, because it causes problems with maildir
+  /* Remove the stat_equal() check, because it causes problems with maildir
    * on filesystems that don't properly support hard links, such as sshfs.  The
    * filesystem creates the link, but the resulting file is given a different
    * inode number by the sshfs layer.  This results in an infinite loop
@@ -433,7 +458,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
 
   /* pretend that the link failed because the target file did already exist. */
 
-  if (!compare_stat(&st_src, &st_target))
+  if (!stat_equal(&st_src, &st_target))
   {
     mutt_debug(LL_DEBUG1, "stat blocks for %s and %s diverge; pretending EEXIST\n", src, target);
     errno = EEXIST;
@@ -476,32 +501,32 @@ int mutt_file_rmtree(const char *path)
 
   /* We avoid using the buffer pool for this function, because it
    * invokes recursively to an unknown depth. */
-  struct Buffer cur = buf_make(PATH_MAX);
+  struct Buffer *cur = buf_pool_get();
 
   while ((de = readdir(dir)))
   {
     if ((mutt_str_equal(".", de->d_name)) || (mutt_str_equal("..", de->d_name)))
       continue;
 
-    buf_printf(&cur, "%s/%s", path, de->d_name);
+    buf_printf(cur, "%s/%s", path, de->d_name);
     /* XXX make nonrecursive version */
 
-    if (stat(buf_string(&cur), &st) == -1)
+    if (stat(buf_string(cur), &st) == -1)
     {
       rc = 1;
       continue;
     }
 
     if (S_ISDIR(st.st_mode))
-      rc |= mutt_file_rmtree(buf_string(&cur));
+      rc |= mutt_file_rmtree(buf_string(cur));
     else
-      rc |= unlink(buf_string(&cur));
+      rc |= unlink(buf_string(cur));
   }
   closedir(dir);
 
   rc |= rmdir(path);
 
-  buf_dealloc(&cur);
+  buf_pool_release(&cur);
   return rc;
 }
 
@@ -545,39 +570,40 @@ const char *mutt_file_rotate(const char *path, int count)
  * mutt_file_open - Open a file
  * @param path  Pathname to open
  * @param flags Flags, e.g. O_EXCL
+ * @param mode  Permissions of the file (Relevant only when writing or appending)
  * @retval >0 Success, file handle
  * @retval -1 Error
  */
-int mutt_file_open(const char *path, uint32_t flags)
+int mutt_file_open(const char *path, uint32_t flags, mode_t mode)
 {
   if (!path)
     return -1;
 
   int fd;
-  struct Buffer safe_file = buf_make(0);
-  struct Buffer safe_dir = buf_make(0);
+  struct Buffer *safe_file = buf_pool_get();
+  struct Buffer *safe_dir = buf_pool_get();
 
   if (flags & O_EXCL)
   {
-    buf_alloc(&safe_file, PATH_MAX);
-    buf_alloc(&safe_dir, PATH_MAX);
+    buf_alloc(safe_file, PATH_MAX);
+    buf_alloc(safe_dir, PATH_MAX);
 
-    if (mkwrapdir(path, &safe_file, &safe_dir) == -1)
+    if (mkwrapdir(path, safe_file, safe_dir) == -1)
     {
       fd = -1;
       goto cleanup;
     }
 
-    fd = open(buf_string(&safe_file), flags, 0600);
+    fd = open(buf_string(safe_file), flags, mode);
     if (fd < 0)
     {
-      rmdir(buf_string(&safe_dir));
+      rmdir(buf_string(safe_dir));
       goto cleanup;
     }
 
     /* NFS and I believe cygwin do not handle movement of open files well */
     close(fd);
-    if (put_file_in_place(path, buf_string(&safe_file), buf_string(&safe_dir)) == -1)
+    if (put_file_in_place(path, buf_string(safe_file), buf_string(safe_dir)) == -1)
     {
       fd = -1;
       goto cleanup;
@@ -592,7 +618,7 @@ int mutt_file_open(const char *path, uint32_t flags)
   struct stat st_old = { 0 };
   struct stat st_new = { 0 };
   if (((lstat(path, &st_old) < 0) || (fstat(fd, &st_new) < 0)) ||
-      !compare_stat(&st_old, &st_new))
+      !stat_equal(&st_old, &st_new))
   {
     close(fd);
     fd = -1;
@@ -600,8 +626,8 @@ int mutt_file_open(const char *path, uint32_t flags)
   }
 
 cleanup:
-  buf_dealloc(&safe_file);
-  buf_dealloc(&safe_dir);
+  buf_pool_release(&safe_file);
+  buf_pool_release(&safe_dir);
 
   return fd;
 }
@@ -624,20 +650,26 @@ DIR *mutt_file_opendir(const char *path, enum MuttOpenDirMode mode)
 }
 
 /**
- * mutt_file_fopen - Call fopen() safely
- * @param path Filename
- * @param mode Mode e.g. "r" readonly; "w" read-write
+ * mutt_file_fopen_full - Call fopen() safely
+ * @param path  Filename
+ * @param mode  Mode e.g. "r" readonly; "w" read-write
+ * @param perms Permissions of the file (Relevant only when writing or appending)
+ * @param file  Source file
+ * @param line  Source line number
+ * @param func  Source function
  * @retval ptr  FILE handle
  * @retval NULL Error, see errno
  *
  * When opening files for writing, make sure the file doesn't already exist to
  * avoid race conditions.
  */
-FILE *mutt_file_fopen(const char *path, const char *mode)
+FILE *mutt_file_fopen_full(const char *path, const char *mode, const mode_t perms,
+                           const char *file, int line, const char *func)
 {
   if (!path || !mode)
     return NULL;
 
+  FILE *fp = NULL;
   if (mode[0] == 'w')
   {
     uint32_t flags = O_CREAT | O_EXCL | O_NOFOLLOW;
@@ -647,16 +679,29 @@ FILE *mutt_file_fopen(const char *path, const char *mode)
     else
       flags |= O_WRONLY;
 
-    int fd = mutt_file_open(path, flags);
-    if (fd < 0)
-      return NULL;
-
-    return fdopen(fd, mode);
+    int fd = mutt_file_open(path, flags, perms);
+    if (fd >= 0)
+    {
+      fp = fdopen(fd, mode);
+    }
   }
   else
   {
-    return fopen(path, mode);
+    fp = fopen(path, mode);
   }
+
+  if (fp)
+  {
+    MuttLogger(0, file, line, func, LL_DEBUG2, "File opened (fd=%d): %s\n",
+               fileno(fp), path);
+  }
+  else
+  {
+    MuttLogger(0, file, line, func, LL_DEBUG2, "File open failed (errno=%d, %s): %s\n",
+               errno, strerror(errno), path);
+  }
+
+  return fp;
 }
 
 /**
@@ -679,7 +724,7 @@ void mutt_file_sanitize_filename(char *path, bool slash)
     switch (consumed)
     {
       case ICONV_ILLEGAL_SEQ:
-        mbstate = (mbstate_t){ 0 };
+        mbstate = (mbstate_t) { 0 };
         consumed = 1;
         memset(path, '_', consumed);
         break;
@@ -771,7 +816,7 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, Rea
   if (!line)
   {
     *size = 256;
-    line = mutt_mem_malloc(*size);
+    line = MUTT_MEM_MALLOC(*size, char);
   }
 
   while (true)
@@ -816,7 +861,7 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, Rea
         /* There wasn't room for the line -- increase "line" */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += 256;
-        mutt_mem_realloc(&line, *size);
+        MUTT_MEM_REALLOC(&line, *size, char);
       }
     }
   }
@@ -877,54 +922,6 @@ bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, ReadLi
     }
   }
   return true;
-}
-
-/**
- * mutt_file_quote_filename - Quote a filename to survive the shell's quoting rules
- * @param filename String to convert
- * @param buf      Buffer for the result
- * @param buflen   Length of buffer
- * @retval num Bytes written to the buffer
- *
- * From the Unix programming FAQ by way of Liviu.
- */
-size_t mutt_file_quote_filename(const char *filename, char *buf, size_t buflen)
-{
-  if (!buf)
-    return 0;
-
-  if (!filename)
-  {
-    *buf = '\0';
-    return 0;
-  }
-
-  size_t j = 0;
-
-  /* leave some space for the trailing characters. */
-  buflen -= 6;
-
-  buf[j++] = '\'';
-
-  for (size_t i = 0; (j < buflen) && filename[i]; i++)
-  {
-    if ((filename[i] == '\'') || (filename[i] == '`'))
-    {
-      buf[j++] = '\'';
-      buf[j++] = '\\';
-      buf[j++] = filename[i];
-      buf[j++] = '\'';
-    }
-    else
-    {
-      buf[j++] = filename[i];
-    }
-  }
-
-  buf[j++] = '\'';
-  buf[j] = '\0';
-
-  return j;
 }
 
 /**
@@ -1100,22 +1097,6 @@ void mutt_file_touch_atime(int fd)
 }
 
 /**
- * mutt_file_chmod - Set permissions of a file
- * @param path Filename
- * @param mode the permissions to set
- * @retval num Same as chmod(2)
- *
- * This is essentially chmod(path, mode), see chmod(2).
- */
-int mutt_file_chmod(const char *path, mode_t mode)
-{
-  if (!path)
-    return -1;
-
-  return chmod(path, mode);
-}
-
-/**
  * mutt_file_chmod_add - Add permissions to a file
  * @param path Filename
  * @param mode the permissions to add
@@ -1169,28 +1150,6 @@ int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
     st = &st2;
   }
   return chmod(path, st->st_mode | mode);
-}
-
-/**
- * mutt_file_chmod_rm - Remove permissions from a file
- * @param path Filename
- * @param mode the permissions to remove
- * @retval num Same as chmod(2)
- *
- * Removes the given permissions from the file. Permissions not mentioned in
- * mode will stay as they are. This function resembles the `chmod ugoa-rwxXst`
- * command family. Example:
- *
- *     mutt_file_chmod_rm(path, S_IWUSR | S_IWGRP | S_IWOTH);
- *
- * will remove write permissions from path but does not alter read and other
- * permissions.
- *
- * @sa mutt_file_chmod_rm_stat()
- */
-int mutt_file_chmod_rm(const char *path, mode_t mode)
-{
-  return mutt_file_chmod_rm_stat(path, mode, NULL);
 }
 
 /**
@@ -1418,7 +1377,7 @@ int mutt_file_rename(const char *oldfile, const char *newfile)
   if (access(newfile, F_OK) == 0)
     return 2;
 
-  FILE *fp_old = fopen(oldfile, "r");
+  FILE *fp_old = mutt_file_fopen(oldfile, "r");
   if (!fp_old)
     return 3;
   FILE *fp_new = mutt_file_fopen(newfile, "w");
@@ -1496,11 +1455,11 @@ int mutt_file_check_empty(const char *path)
  */
 void buf_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src)
 {
-  struct Buffer tmp = buf_make(PATH_MAX);
+  struct Buffer *tmp = buf_pool_get();
 
-  buf_quote_filename(&tmp, src, true);
-  mutt_file_expand_fmt(dest, fmt, buf_string(&tmp));
-  buf_dealloc(&tmp);
+  buf_quote_filename(tmp, src, true);
+  mutt_file_expand_fmt(dest, fmt, buf_string(tmp));
+  buf_pool_release(&tmp);
 }
 
 /**
@@ -1709,4 +1668,22 @@ void mutt_file_resolve_symlink(struct Buffer *buf)
       buf_strcpy(buf, path);
     }
   }
+}
+
+/**
+ * mutt_file_save_str - Save a string to a file
+ * @param fp  Open file to save to
+ * @param str String to save
+ * @retval num Bytes written to file
+ */
+size_t mutt_file_save_str(FILE *fp, const char *str)
+{
+  if (!fp)
+    return 0;
+
+  size_t len = mutt_str_len(str);
+  if (len == 0)
+    return 0;
+
+  return fwrite(str, 1, len, fp);
 }

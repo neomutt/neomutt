@@ -3,7 +3,8 @@
  * Shared Testing Code
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,12 +26,13 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "config/lib.h"
 
 struct Buffer;
+struct ConfigDef;
+struct ConfigSet;
 struct NotifyCallback;
 
-extern const char *line;
+extern const char *divider_line;
 extern bool dont_fail;
 
 extern const struct ConfigSetType CstAddress;
@@ -55,5 +57,11 @@ void short_line(void);
 int log_observer(struct NotifyCallback *nc);
 void set_list(const struct ConfigSet *cs);
 void cs_dump_set(const struct ConfigSet *cs);
+
+int      cs_str_delete             (const struct ConfigSet *cs, const char *name, struct Buffer *err);
+intptr_t cs_str_native_get         (const struct ConfigSet *cs, const char *name, struct Buffer *err);
+int      cs_str_string_get         (const struct ConfigSet *cs, const char *name, struct Buffer *result);
+int      cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name, const char *value, struct Buffer *err);
+int      cs_str_string_plus_equals (const struct ConfigSet *cs, const char *name, const char *value, struct Buffer *err);
 
 #endif /* TEST_CONFIG_COMMON_H */

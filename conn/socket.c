@@ -3,9 +3,8 @@
  * Low-level socket handling
  *
  * @authors
- * Copyright (C) 1998,2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2006,2008 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
+ * Copyright (C) 2017 Damien Riegel <damien.riegel@gmail.com>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -129,19 +128,6 @@ int mutt_socket_close(struct Connection *conn)
 int mutt_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   return conn->read(conn, buf, len);
-}
-
-/**
- * mutt_socket_write - Write to a Connection
- * @param conn Connection to a server
- * @param buf Buffer with data to write
- * @param len Length of data to write
- * @retval >0 Number of bytes written
- * @retval -1 Error
- */
-int mutt_socket_write(struct Connection *conn, const char *buf, size_t len)
-{
-  return conn->write(conn, buf, len);
 }
 
 /**
@@ -285,7 +271,7 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
  */
 struct Connection *mutt_socket_new(enum ConnectionType type)
 {
-  struct Connection *conn = mutt_mem_calloc(1, sizeof(struct Connection));
+  struct Connection *conn = MUTT_MEM_CALLOC(1, struct Connection);
   conn->fd = -1;
 
   if (type == MUTT_CONNECTION_TUNNEL)

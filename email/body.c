@@ -3,7 +3,8 @@
  * Representation of the body of an email
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,7 +43,7 @@
  */
 struct Body *mutt_body_new(void)
 {
-  struct Body *p = mutt_mem_calloc(1, sizeof(struct Body));
+  struct Body *p = MUTT_MEM_CALLOC(1, struct Body);
 
   p->disposition = DISP_ATTACH;
   p->use_disp = true;
@@ -74,6 +75,7 @@ void mutt_body_free(struct Body **ptr)
       mutt_debug(LL_DEBUG1, "%sunlinking %s\n", b->unlink ? "" : "not ", b->filename);
     }
 
+    FREE(&b->content_id);
     FREE(&b->filename);
     FREE(&b->d_filename);
     FREE(&b->charset);

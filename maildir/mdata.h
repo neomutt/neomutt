@@ -3,7 +3,7 @@
  * Maildir-specific Mailbox data
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,7 +35,7 @@ struct MaildirMboxData
 {
   struct timespec mtime;     ///< Time Mailbox was last changed
   struct timespec mtime_cur; ///< Timestamp of the 'cur' dir
-  mode_t mh_umask;           ///< umask to use when creating files
+  mode_t umask;              ///< umask to use when creating files
 };
 
 void                    maildir_mdata_free(void **ptr);

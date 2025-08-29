@@ -3,10 +3,8 @@
  * Email-object serialiser
  *
  * @authors
- * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
- * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
- * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
- * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,6 +25,7 @@
 #define MUTT_HCACHE_SERIALIZE_H
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <sys/types.h>
 
@@ -39,8 +38,8 @@ struct ParameterList;
 struct TagList;
 
 unsigned char *serial_dump_address  (const struct AddressList *al,   unsigned char *d, int *off, bool convert);
-unsigned char *serial_dump_body     (const struct Body *c,           unsigned char *d, int *off, bool convert);
-unsigned char *serial_dump_tags     (const struct TagList *tags,     unsigned char *d, int *off);
+unsigned char *serial_dump_body     (const struct Body *b,           unsigned char *d, int *off, bool convert);
+unsigned char *serial_dump_tags     (const struct TagList *tl,       unsigned char *d, int *off);
 unsigned char *serial_dump_buffer   (const struct Buffer *buf,       unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_char     (const char *c,                  unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_char_size(const char *c, ssize_t size,    unsigned char *d, int *off, bool convert);
@@ -52,8 +51,8 @@ unsigned char *serial_dump_parameter(const struct ParameterList *pl, unsigned ch
 unsigned char *serial_dump_stailq   (const struct ListHead *l,       unsigned char *d, int *off, bool convert);
 
 void serial_restore_address  (struct AddressList *al,   const unsigned char *d, int *off, bool convert);
-void serial_restore_body     (struct Body *c,           const unsigned char *d, int *off, bool convert);
-void serial_restore_tags     (struct TagList *tags,     const unsigned char *d, int *off);
+void serial_restore_body     (struct Body *b,           const unsigned char *d, int *off, bool convert);
+void serial_restore_tags     (struct TagList *tl,       const unsigned char *d, int *off);
 void serial_restore_buffer   (struct Buffer *buf,       const unsigned char *d, int *off, bool convert);
 void serial_restore_char     (char **c,                 const unsigned char *d, int *off, bool convert);
 void serial_restore_envelope (struct Envelope *env,     const unsigned char *d, int *off, bool convert);

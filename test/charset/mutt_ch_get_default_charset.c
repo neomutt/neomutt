@@ -3,7 +3,7 @@
  * Test code for mutt_ch_get_default_charset()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,9 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 void test_mutt_ch_get_default_charset(void)
 {

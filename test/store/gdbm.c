@@ -3,7 +3,8 @@
  * Test code for the gdbm store
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,9 +24,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
-#include <limits.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "store/lib.h"
 #include "common.h" // IWYU pragma: keep
@@ -34,22 +34,24 @@
 
 void test_store_gdbm(void)
 {
-  char path[PATH_MAX] = { 0 };
+  struct Buffer *path = buf_pool_get();
 
   const struct StoreOps *store_ops = store_get_backend_ops(DB_NAME);
   TEST_CHECK(store_ops != NULL);
 
   TEST_CHECK(test_store_degenerate(store_ops, DB_NAME) == true);
 
-  TEST_CHECK(test_store_setup(path, sizeof(path)) == true);
+  TEST_CHECK(test_store_setup(path) == true);
 
-  mutt_str_cat(path, sizeof(path), "/");
-  mutt_str_cat(path, sizeof(path), DB_NAME);
+  buf_addch(path, '/');
+  buf_addstr(path, DB_NAME);
 
-  StoreHandle *store_handle = store_ops->open(path);
+  StoreHandle *store_handle = store_ops->open(buf_string(path), true);
   TEST_CHECK(store_handle != NULL);
 
   TEST_CHECK(test_store_db(store_ops, store_handle) == true);
 
   store_ops->close(&store_handle);
+
+  buf_pool_release(&path);
 }

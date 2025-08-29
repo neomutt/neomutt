@@ -3,7 +3,7 @@
  * Parse PGP data packets
  *
  * @authors
- * Copyright (C) 2001 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

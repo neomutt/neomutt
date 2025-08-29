@@ -3,7 +3,8 @@
  * Constants for all the config types
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,58 +26,100 @@
 
 #include <stdint.h>
 
-/* Data Types */
-#define DT_ADDRESS   1  ///< e-mail address
-#define DT_BOOL      2  ///< boolean option
-#define DT_ENUM      3  ///< an enumeration
-#define DT_HCACHE    4  ///< header cache backend
-#define DT_LONG      5  ///< a number (long)
-#define DT_MBTABLE   6  ///< multibyte char table
-#define DT_NUMBER    7  ///< a number
-#define DT_PATH      8  ///< a path to a file/directory
-#define DT_QUAD      9  ///< quad-option (no/yes/ask-no/ask-yes)
-#define DT_REGEX    10  ///< regular expressions
-#define DT_SLIST    11  ///< a list of strings
-#define DT_SORT     12  ///< sorting methods
-#define DT_STRING   13  ///< a string
-#define DT_SYNONYM  14  ///< synonym for another variable
-#define DT_MYVAR    15  ///< a user-defined variable (my_foo)
+enum ConfigType
+{
+  DT_ADDRESS,     ///< e-mail address
+  DT_BOOL,        ///< boolean option
+  DT_ENUM,        ///< an enumeration
+  DT_EXPANDO,     ///< an expando
+  DT_HCACHE,      ///< header cache backend
+  DT_LONG,        ///< a number (long)
+  DT_MBTABLE,     ///< multibyte char table
+  DT_MYVAR,       ///< a user-defined variable (my_foo)
+  DT_NUMBER,      ///< a number
+  DT_PATH,        ///< a path to a file/directory
+  DT_QUAD,        ///< quad-option (no/yes/ask-no/ask-yes)
+  DT_REGEX,       ///< regular expressions
+  DT_SLIST,       ///< a list of strings
+  DT_SORT,        ///< sorting methods
+  DT_STRING,      ///< a string
+  DT_SYNONYM,     ///< synonym for another variable
+  DT_END,
+};
 
-#define DTYPE(x) ((x) & 0x1F)  ///< Mask for the Data Type
+#define DTYPE(t) ((enum ConfigType)((t) & 0x1F))
 
-#define DT_NO_FLAGS            0   ///< No flags are set
+enum ConfigTypeField
+{
+  D_B_ON_STARTUP = 5,              ///< May only be set at startup
+  D_B_NOT_EMPTY,                   ///< Empty strings are not allowed
+  D_B_SENSITIVE,                   ///< Contains sensitive value, e.g. password
+  D_B_L10N_STRING,                 ///< String can be localised
 
-#define DT_NOT_EMPTY     (1 << 6)  ///< Empty strings are not allowed
-#define DT_NOT_NEGATIVE  (1 << 7)  ///< Negative numbers are not allowed
-#define DT_MAILBOX       (1 << 8)  ///< Don't perform path expansions
-#define DT_SENSITIVE     (1 << 9)  ///< Contains sensitive value, e.g. password
-#define DT_COMMAND       (1 << 10) ///< A command
-#define DT_INHERIT_ACC   (1 << 11) ///< Config item can be Account-specific
-#define DT_INHERIT_MBOX  (1 << 12) ///< Config item can be Mailbox-specific
-#define DT_PATH_DIR      (1 << 13) ///< Path is a directory
-#define DT_PATH_FILE     (1 << 14) ///< Path is a file
+  D_B_CHARSET_SINGLE,              ///< Flag for charset_validator to allow only one charset
+  D_B_CHARSET_STRICT,              ///< Flag for charset_validator to use strict char check
 
-#define IS_SENSITIVE(type) (((type) & DT_SENSITIVE) == DT_SENSITIVE)
-#define IS_MAILBOX(type)   (((type) & (DT_STRING | DT_MAILBOX)) == (DT_STRING | DT_MAILBOX))
-#define IS_COMMAND(type)   (((type) & (DT_STRING | DT_COMMAND)) == (DT_STRING | DT_COMMAND))
+  D_B_INTERNAL_FREE_CONFIGDEF,     ///< Config item must have its ConfigDef freed
+  D_B_INTERNAL_DEPRECATED,         ///< Config item shouldn't be used any more
+  D_B_INTERNAL_INHERITED,          ///< Config item is inherited
+  D_B_INTERNAL_INITIAL_SET,        ///< Config item must have its initial value freed
 
-/* subtypes for... */
-#define DT_SUBTYPE_MASK  0x7FC0  ///< Mask for the Data Subtype
+  D_B_CUSTOM_BIT_0,                ///< 1st flag available for customising config types
+  D_B_CUSTOM_BIT_1,                ///< 2nd flag available for customising config types
+  D_B_CUSTOM_BIT_2,                ///< 3rd flag available for customising config types
+  D_B_CUSTOM_BIT_3,                ///< 4th flag available for customising config types
+  D_B_CUSTOM_BIT_4,                ///< 5th flag available for customising config types
+  D_B_CUSTOM_BIT_5,                ///< 6th flag available for customising config types
+  D_B_CUSTOM_BIT_6,                ///< 7th flag available for customising config types
+  D_B_CUSTOM_BIT_7,                ///< 8th flag available for customising config types
 
-typedef uint32_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
-#define R_REDRAW_NO_FLAGS        0  ///< No refresh/resort flags
-#define R_INDEX           (1 << 17) ///< Redraw the index menu (MENU_INDEX)
-#define R_RESORT          (1 << 18) ///< Resort the mailbox
-#define R_RESORT_SUB      (1 << 19) ///< Resort subthreads
-#define R_RESORT_INIT     (1 << 20) ///< Resort from scratch
+  D_B_END,
+};
 
-#define R_REDRAW_MASK  0x01E0000    ///< Mask for the Redraw Flags
+#define D_ON_STARTUP               (1 << D_B_ON_STARTUP)               ///< May only be set at startup
+#define D_NOT_EMPTY                (1 << D_B_NOT_EMPTY)                ///< Empty strings are not allowed
+#define D_SENSITIVE                (1 << D_B_SENSITIVE)                ///< Contains sensitive value, e.g. password
+#define D_L10N_STRING              (1 << D_B_L10N_STRING)              ///< String can be localised
 
-/* Private config item flags */
-#define DT_FREE_CONFIGDEF (1 << 26)  ///< Config item must have its ConfigDef freed
-#define DT_DEPRECATED     (1 << 27)  ///< Config item shouldn't be used any more
-#define DT_INHERITED      (1 << 28)  ///< Config item is inherited
-#define DT_INITIAL_SET    (1 << 29)  ///< Config item must have its initial value freed
-#define DT_DISABLED       (1 << 30)  ///< Config item is disabled
+#define D_CHARSET_SINGLE           (1 << D_B_CHARSET_SINGLE)           ///< Flag for charset_validator to allow only one charset
+#define D_CHARSET_STRICT           (1 << D_B_CHARSET_STRICT)           ///< Flag for charset_validator to use strict char check
+
+#define D_INTERNAL_FREE_CONFIGDEF  (1 << D_B_INTERNAL_FREE_CONFIGDEF)  ///< Config item must have its ConfigDef freed
+#define D_INTERNAL_DEPRECATED      (1 << D_B_INTERNAL_DEPRECATED)      ///< Config item shouldn't be used any more
+#define D_INTERNAL_INHERITED       (1 << D_B_INTERNAL_INHERITED)       ///< Config item is inherited
+#define D_INTERNAL_INITIAL_SET     (1 << D_B_INTERNAL_INITIAL_SET)     ///< Config item must have its initial value freed
+
+#define D_CUSTOM_BIT_0             (1 << D_B_CUSTOM_BIT_0)
+#define D_CUSTOM_BIT_1             (1 << D_B_CUSTOM_BIT_1)
+#define D_CUSTOM_BIT_2             (1 << D_B_CUSTOM_BIT_2)
+#define D_CUSTOM_BIT_3             (1 << D_B_CUSTOM_BIT_3)
+#define D_CUSTOM_BIT_4             (1 << D_B_CUSTOM_BIT_4)
+
+#define D_STRING_MAILBOX           D_CUSTOM_BIT_0                      ///< Don't perform path expansions
+#define D_STRING_COMMAND           D_CUSTOM_BIT_1                      ///< A command
+
+#define D_INTEGER_NOT_NEGATIVE     D_CUSTOM_BIT_0                      ///< Negative numbers are not allowed
+
+#define D_PATH_DIR                 D_CUSTOM_BIT_0                      ///< Path is a directory
+#define D_PATH_FILE                D_CUSTOM_BIT_1                      ///< Path is a file
+
+#define D_REGEX_MATCH_CASE         D_CUSTOM_BIT_0                      ///< Case-sensitive matching
+#define D_REGEX_ALLOW_NOT          D_CUSTOM_BIT_1                      ///< Regex can begin with '!'
+#define D_REGEX_NOSUB              D_CUSTOM_BIT_2                      ///< Do not report what was matched (REG_NOSUB)
+
+#define D_SLIST_SEP_SPACE          (0 << D_B_CUSTOM_BIT_0)             ///< Slist items are space-separated
+#define D_SLIST_SEP_COMMA          (1 << D_B_CUSTOM_BIT_0)             ///< Slist items are comma-separated
+#define D_SLIST_SEP_COLON          (2 << D_B_CUSTOM_BIT_0)             ///< Slist items are colon-separated
+#define D_SLIST_SEP_MASK           (D_CUSTOM_BIT_0 | D_CUSTOM_BIT_1)
+
+#define D_SLIST_ALLOW_DUPES        D_CUSTOM_BIT_2                      ///< Slist may contain duplicates
+#define D_SLIST_ALLOW_EMPTY        D_CUSTOM_BIT_3                      ///< Slist may be empty
+#define D_SLIST_CASE_SENSITIVE     D_CUSTOM_BIT_4                      ///< Slist is case-sensitive
+
+#define D_SORT_LAST                D_CUSTOM_BIT_0                      ///< Sort flag for -last prefix
+#define D_SORT_REVERSE             D_CUSTOM_BIT_1                      ///< Sort flag for -reverse prefix
+
+#define IS_MAILBOX(flags)   ((DTYPE(flags) == DT_STRING) && (flags & D_STRING_MAILBOX))
+#define IS_COMMAND(flags)   ((DTYPE(flags) == DT_STRING) && (flags & D_STRING_COMMAND))
 
 #endif /* MUTT_CONFIG_TYPES_H */

@@ -3,7 +3,8 @@
  * Test code for IMAP Message Sets
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,10 +24,15 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
-#include "imap/msg_set.h"
-#include "imap/private.h"
+#include "imap/msg_set.h" // IWYU pragma: keep
+#include "imap/lib.h"
+#include "imap/private.h" // IWYU pragma: keep
 #include "test_common.h"
+
+struct ImapAccountData;
 
 extern int ImapMaxCmdlen;
 

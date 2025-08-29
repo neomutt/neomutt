@@ -3,7 +3,7 @@
  * Test code for envlist_set()
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "test_common.h"
 
@@ -48,7 +48,7 @@ void test_envlist_set(void)
     envlist_free(&env);
   }
 
-  // insert non-existant key
+  // insert non-existent key
   {
     char **env = envlist_init(test_env_empty);
     TEST_CHECK(envlist_set(&env, "fig", "value", false));

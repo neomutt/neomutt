@@ -3,7 +3,7 @@
  * Nntp-specific Email data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,7 +33,7 @@
 #include "edata.h"
 
 /**
- * nntp_edata_free - Free the private Email data - Implements Email::edata_free()
+ * nntp_edata_free - Free the private Email data - Implements Email::edata_free() - @ingroup email_edata_free
  */
 void nntp_edata_free(void **ptr)
 {
@@ -49,7 +49,7 @@ void nntp_edata_free(void **ptr)
  */
 struct NntpEmailData *nntp_edata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct NntpEmailData));
+  return MUTT_MEM_CALLOC(1, struct NntpEmailData);
 }
 
 /**

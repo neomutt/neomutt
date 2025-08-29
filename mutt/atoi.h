@@ -3,6 +3,7 @@
  * Parse a number in a string
  *
  * @authors
+ * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright

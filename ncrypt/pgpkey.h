@@ -3,7 +3,7 @@
  * PGP key management routines
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -42,12 +42,13 @@ enum PgpRing
 
 struct Body *pgp_class_make_key_attachment(void);
 
-struct PgpKeyInfo *pgp_ask_for_key(char *tag, const char *whatfor, KeyFlags abilities, enum PgpRing keyring);
-struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities, enum PgpRing keyring, bool oppenc_mode);
-struct PgpKeyInfo *pgp_getkeybystr(const char *p, KeyFlags abilities, enum PgpRing keyring);
-struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key);
-bool               pgp_key_is_valid(struct PgpKeyInfo *k);
-bool               pgp_id_is_valid(struct PgpUid *uid);
-bool               pgp_id_is_strong(struct PgpUid *uid);
+struct PgpKeyInfo *pgp_ask_for_key   (char *tag, const char *whatfor, KeyFlags abilities, enum PgpRing keyring);
+struct PgpKeyInfo *pgp_getkeybyaddr  (struct Address *a, KeyFlags abilities, enum PgpRing keyring, bool oppenc_mode);
+struct PgpKeyInfo *pgp_getkeybystr   (const char *p, KeyFlags abilities, enum PgpRing keyring);
+bool               pgp_id_is_strong  (struct PgpUid *uid);
+bool               pgp_id_is_valid   (struct PgpUid *uid);
+bool               pgp_keys_are_valid(struct PgpKeyInfo *keys);
+bool               pgp_key_is_valid  (struct PgpKeyInfo *k);
+struct PgpKeyInfo *pgp_principal_key (struct PgpKeyInfo *key);
 
 #endif /* MUTT_NCRYPT_PGPKEY_H */

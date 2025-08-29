@@ -3,7 +3,8 @@
  * Manage precompiled / predefined regular expressions
  *
  * @authors
- * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,7 +24,7 @@
 #ifndef MUTT_MUTT_PREX_H
 #define MUTT_MUTT_PREX_H
 
-#include "regex3.h"
+#include <regex.h>
 
 /**
  * enum Prex - Predefined list of regular expressions
@@ -39,6 +40,7 @@ enum Prex
   PREX_MBOX_FROM,             ///< `[From god@heaven.af.mil Sat Jan  3 01:05:34 1996]`
   PREX_MBOX_FROM_LAX,         ///< `[From god@heaven.af.mil Sat Jan  3 01:05:34 1996]`
   PREX_ACCOUNT_CMD,           ///< `key: value`
+  PREX_ALIAS_TAGS,            ///< `tags:a,b,c`
   PREX_MAX
 };
 
@@ -223,6 +225,20 @@ enum PrexAccountCmd
   PREX_ACCOUNT_CMD_MATCH_KEY,   ///< `[key]: value`
   PREX_ACCOUNT_CMD_MATCH_VALUE, ///< `key: [value]`
   PREX_ACCOUNT_CMD_MATCH_MAX
+};
+
+
+/**
+ * enum PrexAliasTags - Regex matches for the tags: field of an alias command
+ */
+enum PrexAliasTags
+{
+  PREX_ALIAS_TAGS_MATCH_FULL,  ///< `[... tags:a,b,c ...]`
+  PREX_ALIAS_TAGS_MATCH_PRE,   ///< `[... ]tags:a,b,c ...`
+  PREX_ALIAS_TAGS_MATCH_KEY,   ///< `... [tags:]a,b,c ...`
+  PREX_ALIAS_TAGS_MATCH_TAGS,  ///< `... tags:[a,b,c] ...`
+  PREX_ALIAS_TAGS_MATCH_POST,  ///< `... tags:a,b,c[ ...]`
+  PREX_ALIAS_TAGS_MATCH_MAX,
 };
 
 regmatch_t *mutt_prex_capture(enum Prex which, const char *str);

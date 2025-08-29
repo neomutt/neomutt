@@ -3,9 +3,9 @@
  * Shared constants/structs that are private to IMAP
  *
  * @authors
- * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -216,7 +216,7 @@ int imap_msg_save_hcache(struct Mailbox *m, struct Email *e);
 
 /* util.c */
 #ifdef USE_HCACHE
-void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata);
+void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool create);
 void imap_hcache_close(struct ImapMboxData *mdata);
 struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid);
 int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e);
@@ -229,7 +229,8 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata);
 enum QuadOption imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
 void imap_mdata_cache_reset(struct ImapMboxData *mdata);
-char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen);
+char *imap_fix_path(const char *mailbox, char *path, size_t plen);
+char *imap_fix_path_with_delim(char delim, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest);
 int imap_get_literal_count(const char *buf, unsigned int *bytes);
 char *imap_get_qualifier(char *buf);

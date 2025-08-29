@@ -3,7 +3,7 @@
  * Tagging support
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -36,7 +36,6 @@
 #include "lib.h"
 #include "color/lib.h"
 #include "key/lib.h"
-#include "opcodes.h"
 
 /**
  * menu_set_prefix - Set tag_prefix on $auto_tag

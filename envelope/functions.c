@@ -3,7 +3,8 @@
  * Envelope functions
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -48,11 +49,7 @@
 #include "hook.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 #include "wdata.h"
-#ifdef MIXMASTER
-#include "mixmaster/lib.h"
-#endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
@@ -118,6 +115,9 @@ static bool edit_address_list(enum HeaderField field, struct AddressList *al)
   mutt_addrlist_to_local(al);
   mutt_addrlist_write(al, new_list, false);
   buf_fix_dptr(new_list);
+  if (!buf_is_empty(new_list))
+    buf_addstr(new_list, ", ");
+
   buf_copy(old_list, new_list);
   if (mw_get_field(_(Prompts[field]), new_list, MUTT_COMP_NO_FLAGS, HC_ALIAS,
                    &CompleteAliasOps, NULL) == 0)
@@ -192,10 +192,8 @@ void update_crypt_info(struct EnvelopeWindowData *wdata)
  */
 static int op_envelope_edit_bcc(struct EnvelopeWindowData *wdata, int op)
 {
-#ifdef USE_NNTP
   if (wdata->is_news)
     return FR_NO_ACTION;
-#endif
   if (!edit_address_list(HDR_BCC, &wdata->email->env->bcc))
     return FR_NO_ACTION;
 
@@ -209,10 +207,8 @@ static int op_envelope_edit_bcc(struct EnvelopeWindowData *wdata, int op)
  */
 static int op_envelope_edit_cc(struct EnvelopeWindowData *wdata, int op)
 {
-#ifdef USE_NNTP
   if (wdata->is_news)
     return FR_NO_ACTION;
-#endif
   if (!edit_address_list(HDR_CC, &wdata->email->env->cc))
     return FR_NO_ACTION;
 
@@ -231,7 +227,7 @@ static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
   buf_copy(fname, wdata->fcc);
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL };
-  if (mw_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_CLEAR, HC_FILE,
+  if (mw_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_CLEAR, HC_MAILBOX,
                    &CompleteMailboxOps, &cdata) != 0)
   {
     goto done; // aborted
@@ -292,7 +288,7 @@ static int op_envelope_edit_subject(struct EnvelopeWindowData *wdata, int op)
   if (mutt_str_equal(wdata->email->env->subject, buf_string(buf)))
     goto done; // no change
 
-  mutt_str_replace(&wdata->email->env->subject, buf_string(buf));
+  mutt_env_set_subject(wdata->email->env, buf_string(buf));
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_SUBJECT);
   rc = FR_SUCCESS;
 
@@ -306,10 +302,8 @@ done:
  */
 static int op_envelope_edit_to(struct EnvelopeWindowData *wdata, int op)
 {
-#ifdef USE_NNTP
   if (wdata->is_news)
     return FR_NO_ACTION;
-#endif
   if (!edit_address_list(HDR_TO, &wdata->email->env->to))
     return FR_NO_ACTION;
 
@@ -434,7 +428,6 @@ static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata, int op)
 
 // -----------------------------------------------------------------------------
 
-#ifdef USE_NNTP
 /**
  * op_envelope_edit_followup_to - Edit the Followup-To field - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
@@ -504,20 +497,6 @@ static int op_envelope_edit_x_comment_to(struct EnvelopeWindowData *wdata, int o
   buf_pool_release(&buf);
   return rc;
 }
-#endif
-
-#ifdef MIXMASTER
-/**
- * op_compose_mix - Send the message through a mixmaster remailer chain - Implements ::envelope_function_t - @ingroup envelope_function_api
- */
-static int op_compose_mix(struct EnvelopeWindowData *wdata, int op)
-{
-  dlg_mixmaster(&wdata->email->chain);
-  mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
-  mutt_env_notify_send(wdata->email, NT_ENVELOPE_MIXMASTER);
-  return FR_SUCCESS;
-}
-#endif
 
 // -----------------------------------------------------------------------------
 
@@ -529,27 +508,18 @@ static const struct EnvelopeFunction EnvelopeFunctions[] = {
 #ifdef USE_AUTOCRYPT
   { OP_COMPOSE_AUTOCRYPT_MENU,            op_compose_autocrypt_menu },
 #endif
-#ifdef MIXMASTER
-  { OP_COMPOSE_MIX,                       op_compose_mix },
-#endif
   { OP_COMPOSE_PGP_MENU,                  op_compose_pgp_menu },
   { OP_COMPOSE_SMIME_MENU,                op_compose_smime_menu },
   { OP_ENVELOPE_EDIT_BCC,                 op_envelope_edit_bcc },
   { OP_ENVELOPE_EDIT_CC,                  op_envelope_edit_cc },
   { OP_ENVELOPE_EDIT_FCC,                 op_envelope_edit_fcc },
-#ifdef USE_NNTP
   { OP_ENVELOPE_EDIT_FOLLOWUP_TO,         op_envelope_edit_followup_to },
-#endif
   { OP_ENVELOPE_EDIT_FROM,                op_envelope_edit_from },
-#ifdef USE_NNTP
   { OP_ENVELOPE_EDIT_NEWSGROUPS,          op_envelope_edit_newsgroups },
-#endif
   { OP_ENVELOPE_EDIT_REPLY_TO,            op_envelope_edit_reply_to },
   { OP_ENVELOPE_EDIT_SUBJECT,             op_envelope_edit_subject },
   { OP_ENVELOPE_EDIT_TO,                  op_envelope_edit_to },
-#ifdef USE_NNTP
   { OP_ENVELOPE_EDIT_X_COMMENT_TO,        op_envelope_edit_x_comment_to },
-#endif
   { 0, NULL },
   // clang-format on
 };

@@ -3,11 +3,12 @@
  * Sidebar Window
  *
  * @authors
- * Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
- * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
- * Copyright (C) 2015-2020 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -67,7 +68,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "private.h"
@@ -77,14 +77,15 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
-#include "format_flags.h"
-#include "muttlib.h"
+
+const struct ExpandoRenderData SidebarRenderData[];
 
 /**
- * struct SidebarFormatData - Data passed to sidebar_format_str()
+ * struct SidebarData - Data passed to sidebar_format_str()
  */
-struct SidebarFormatData
+struct SidebarData
 {
   struct SbEntry *entry;          ///< Info about a folder
   struct IndexSharedData *shared; ///< Shared Index Data
@@ -327,243 +328,246 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
 }
 
 /**
- * sidebar_format_str - Format a string for the sidebar - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%!     | 'n!' Flagged messages
- * | \%a     | Alert: 1 if user is notified of new mail
- * | \%B     | Name of the mailbox
- * | \%D     | Description of the mailbox
- * | \%d     | Number of deleted messages
- * | \%F     | Number of Flagged messages in the mailbox
- * | \%L     | Number of messages after limiting
- * | \%n     | "N" if mailbox has new mail, " " (space) otherwise
- * | \%N     | Number of unread messages in the mailbox
- * | \%o     | Number of old unread messages in the mailbox
- * | \%p     | Poll: 1 if Mailbox is checked for new mail
- * | \%r     | Number of read messages in the mailbox
- * | \%S     | Size of mailbox (total number of messages)
- * | \%t     | Number of tagged messages
- * | \%Z     | Number of new unseen messages in the mailbox
+ * sidebar_bang - Sidebar: Flagged flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
-                                      const char *if_str, const char *else_str,
-                                      intptr_t data, MuttFormatFlags flags)
+void sidebar_bang(const struct ExpandoNode *node, void *data,
+                  MuttFormatFlags flags, struct Buffer *buf)
 {
-  struct SidebarFormatData *sfdata = (struct SidebarFormatData *) data;
-  struct SbEntry *sbe = sfdata->entry;
-  struct IndexSharedData *shared = sfdata->shared;
-  char fmt[256] = { 0 };
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
 
-  if (!sbe || !shared || !buf)
-    return src;
-
-  buf[0] = '\0'; /* Just in case there's nothing to do */
-
-  struct Mailbox *m = sbe->mailbox;
-  if (!m)
-    return src;
-
-  struct Mailbox *m_cur = shared->mailbox;
-
-  bool c = m_cur && mutt_str_equal(m_cur->realpath, m->realpath);
-
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-
-  switch (op)
+  if (m->msg_flagged == 0)
   {
-    case 'a':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, m->notify_user);
-      }
-      else
-      {
-        if (m->notify_user == 0)
-          optional = false;
-      }
-      break;
+    buf_strcpy(buf, "");
+  }
+  else if (m->msg_flagged == 1)
+  {
+    buf_strcpy(buf, "!");
+  }
+  else if (m->msg_flagged == 2)
+  {
+    buf_strcpy(buf, "!!");
+  }
+  else
+  {
+    buf_printf(buf, "%d!", m->msg_flagged);
+  }
+}
 
-    case 'B':
-    case 'D':
-    {
-      char indented[256] = { 0 };
-      size_t ilen = sizeof(indented);
-      size_t off = add_indent(indented, ilen, sbe);
-      snprintf(indented + off, ilen - off, "%s",
-               ((op == 'D') && sbe->mailbox->name) ? sbe->mailbox->name : sbe->box);
-      mutt_format_s(buf, buflen, prec, indented);
-      break;
-    }
+/**
+ * sidebar_a_num - Sidebar: Alert for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
 
-    case 'd':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, c ? m_cur->msg_deleted : 0);
-      }
-      else if ((c && (m_cur->msg_deleted == 0)) || !c)
-      {
-        optional = false;
-      }
-      break;
+  return m->notify_user;
+}
 
-    case 'F':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, m->msg_flagged);
-      }
-      else if (m->msg_flagged == 0)
-      {
-        optional = false;
-      }
-      break;
+/**
+ * sidebar_B - Sidebar: Name of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void sidebar_B(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
 
-    case 'L':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, c ? m_cur->vcount : m->msg_count);
-      }
-      else if ((c && (m_cur->vcount == m->msg_count)) || !c)
-      {
-        optional = false;
-      }
-      break;
+  char tmp[256] = { 0 };
 
-    case 'N':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, m->msg_unread);
-      }
-      else if (m->msg_unread == 0)
-      {
-        optional = false;
-      }
-      break;
+  const size_t ilen = sizeof(tmp);
+  const size_t off = add_indent(tmp, ilen, sbe);
+  snprintf(tmp + off, ilen - off, "%s", sbe->box);
 
-    case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        snprintf(buf, buflen, fmt, m->has_new ? 'N' : ' ');
-      }
-      else if (m->has_new == false)
-      {
-        optional = false;
-      }
-      break;
+  buf_strcpy(buf, tmp);
+}
 
-    case 'o':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, m->msg_unread - m->msg_new);
-      }
-      else if ((c && (m_cur->msg_unread - m_cur->msg_new) == 0) || !c)
-      {
-        optional = false;
-      }
-      break;
+/**
+ * sidebar_d_num - Sidebar: Number of deleted messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct IndexSharedData *shared = sdata->shared;
+  const struct Mailbox *m = sbe->mailbox;
+  const struct Mailbox *m_cur = shared->mailbox;
 
-    case 'p':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, m->poll_new_mail);
-      }
-      else
-      {
-        if (m->poll_new_mail == 0)
-          optional = false;
-      }
-      break;
+  const bool c = m_cur && mutt_str_equal(m_cur->realpath, m->realpath);
 
-    case 'r':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, m->msg_count - m->msg_unread);
-      }
-      else if ((c && (m_cur->msg_count - m_cur->msg_unread) == 0) || !c)
-      {
-        optional = false;
-      }
-      break;
+  return c ? m_cur->msg_deleted : 0;
+}
 
-    case 'S':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, m->msg_count);
-      }
-      else if (m->msg_count == 0)
-      {
-        optional = false;
-      }
-      break;
+/**
+ * sidebar_D - Sidebar: Descriptive name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void sidebar_D(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
 
-    case 't':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, c ? m_cur->msg_tagged : 0);
-      }
-      else if ((c && (m_cur->msg_tagged == 0)) || !c)
-      {
-        optional = false;
-      }
-      break;
+  char tmp[256] = { 0 };
 
-    case 'Z':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, m->msg_new);
-      }
-      else if ((c && (m_cur->msg_new) == 0) || !c)
-      {
-        optional = false;
-      }
-      break;
+  const size_t ilen = sizeof(tmp);
+  const size_t off = add_indent(tmp, ilen, sbe);
 
-    case '!':
-      if (m->msg_flagged == 0)
-      {
-        mutt_format_s(buf, buflen, prec, "");
-      }
-      else if (m->msg_flagged == 1)
-      {
-        mutt_format_s(buf, buflen, prec, "!");
-      }
-      else if (m->msg_flagged == 2)
-      {
-        mutt_format_s(buf, buflen, prec, "!!");
-      }
-      else
-      {
-        snprintf(fmt, sizeof(fmt), "%d!", m->msg_flagged);
-        mutt_format_s(buf, buflen, prec, fmt);
-      }
-      break;
+  if (sbe->mailbox->name)
+  {
+    snprintf(tmp + off, ilen - off, "%s", sbe->mailbox->name);
+  }
+  else
+  {
+    snprintf(tmp + off, ilen - off, "%s", sbe->box);
   }
 
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, sidebar_format_str, data, flags);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str, sidebar_format_str, data, flags);
-  }
+  buf_strcpy(buf, tmp);
+}
 
-  /* We return the format string, unchanged */
-  return src;
+/**
+ * sidebar_F_num - Sidebar: Number of flagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_F_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
+
+  return m->msg_flagged;
+}
+
+/**
+ * sidebar_L_num - Sidebar: Number of limited messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct IndexSharedData *shared = sdata->shared;
+  const struct Mailbox *m = sbe->mailbox;
+  const struct Mailbox *m_cur = shared->mailbox;
+
+  const bool c = m_cur && mutt_str_equal(m_cur->realpath, m->realpath);
+
+  return c ? m_cur->vcount : m->msg_count;
+}
+
+/**
+ * sidebar_n_num - Sidebar: New mail flag - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
+
+  return m->has_new;
+}
+
+/**
+ * sidebar_n - Sidebar: New mail flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void sidebar_n(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
+
+  // NOTE(g0mb4): use $flag_chars?
+  const char *s = m->has_new ? "N" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * sidebar_N_num - Sidebar: Number of unread messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_N_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
+
+  return m->msg_unread;
+}
+
+/**
+ * sidebar_o_num - Sidebar: Number of old messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_o_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
+
+  return m->msg_unread - m->msg_new;
+}
+
+/**
+ * sidebar_p_num - Sidebar: Poll for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
+
+  return m->poll_new_mail;
+}
+
+/**
+ * sidebar_r_num - Sidebar: Number of read messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_r_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
+
+  return m->msg_count - m->msg_unread;
+}
+
+/**
+ * sidebar_S_num - Sidebar: number of messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_S_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
+
+  return m->msg_count;
+}
+
+/**
+ * sidebar_t_num - Sidebar: Number of tagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct IndexSharedData *shared = sdata->shared;
+  const struct Mailbox *m = sbe->mailbox;
+  const struct Mailbox *m_cur = shared->mailbox;
+
+  const bool c = m_cur && mutt_str_equal(m_cur->realpath, m->realpath);
+
+  return c ? m_cur->msg_tagged : 0;
+}
+
+/**
+ * sidebar_Z_num - Sidebar: Number of new messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long sidebar_Z_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+  const struct Mailbox *m = sbe->mailbox;
+
+  return m->msg_new;
 }
 
 /**
@@ -575,18 +579,21 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
  * @param[in]  shared  Shared Index Data
  *
  * Take all the relevant mailbox data and the desired screen width and then get
- * mutt_expando_format to do the actual work.
+ * expando_render() to do the actual work.
  *
- * @sa $sidebar_format, sidebar_format_str()
+ * @sa $sidebar_format
  */
 static void make_sidebar_entry(char *buf, size_t buflen, int width,
                                struct SbEntry *sbe, struct IndexSharedData *shared)
 {
-  struct SidebarFormatData data = { sbe, shared };
+  struct SidebarData sdata = { sbe, shared };
 
-  const char *const c_sidebar_format = cs_subset_string(NeoMutt->sub, "sidebar_format");
-  mutt_expando_format(buf, buflen, 0, width, NONULL(c_sidebar_format),
-                      sidebar_format_str, (intptr_t) &data, MUTT_FORMAT_NO_FLAGS);
+  struct Buffer *tmp = buf_pool_get();
+  const struct Expando *c_sidebar_format = cs_subset_expando(NeoMutt->sub, "sidebar_format");
+  expando_filter(c_sidebar_format, SidebarRenderData, &sdata,
+                 MUTT_FORMAT_NO_FLAGS, width, tmp);
+  mutt_str_copy(buf, buf_string(tmp), buflen);
+  buf_pool_release(&tmp);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);
@@ -996,3 +1003,29 @@ int sb_repaint(struct MuttWindow *win)
   mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
+
+/**
+ * SidebarRenderData - Callbacks for Sidebar Expandos
+ *
+ * @sa SidebarFormatDef, ExpandoDataSidebar
+ */
+const struct ExpandoRenderData SidebarRenderData[] = {
+  // clang-format off
+  { ED_SIDEBAR, ED_SID_FLAGGED,       sidebar_bang, NULL },
+  { ED_SIDEBAR, ED_SID_NOTIFY,        NULL,         sidebar_a_num },
+  { ED_SIDEBAR, ED_SID_NAME,          sidebar_B,    NULL },
+  { ED_SIDEBAR, ED_SID_DELETED_COUNT, NULL,         sidebar_d_num },
+  { ED_SIDEBAR, ED_SID_DESCRIPTION,   sidebar_D,    NULL },
+  { ED_SIDEBAR, ED_SID_FLAGGED_COUNT, NULL,         sidebar_F_num },
+  { ED_SIDEBAR, ED_SID_LIMITED_COUNT, NULL,         sidebar_L_num },
+  { ED_SIDEBAR, ED_SID_NEW_MAIL,      sidebar_n,    sidebar_n_num },
+  { ED_SIDEBAR, ED_SID_UNREAD_COUNT,  NULL,         sidebar_N_num },
+  { ED_SIDEBAR, ED_SID_OLD_COUNT,     NULL,         sidebar_o_num },
+  { ED_SIDEBAR, ED_SID_POLL,          NULL,         sidebar_p_num },
+  { ED_SIDEBAR, ED_SID_READ_COUNT,    NULL,         sidebar_r_num },
+  { ED_SIDEBAR, ED_SID_MESSAGE_COUNT, NULL,         sidebar_S_num },
+  { ED_SIDEBAR, ED_SID_TAGGED_COUNT,  NULL,         sidebar_t_num },
+  { ED_SIDEBAR, ED_SID_UNSEEN_COUNT,  NULL,         sidebar_Z_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

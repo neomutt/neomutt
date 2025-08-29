@@ -4,7 +4,9 @@
  *
  * @authors
  * Copyright (C) 2000-2001 Vsevolod Volkov <vvv@mutt.org.ua>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -48,7 +50,7 @@
 
 #ifdef USE_SASL_GNU
 /**
- * pop_auth_gsasl - POP GNU SASL authenticator - Implements PopAuth::authenticate()
+ * pop_auth_gsasl - POP GNU SASL authenticator - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *method)
 {
@@ -69,7 +71,7 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
 
   if (mutt_gsasl_client_new(adata->conn, chosen_mech, &gsasl_session) < 0)
   {
-    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection.\n");
+    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection\n");
     return POP_A_UNAVAIL;
   }
 
@@ -140,7 +142,7 @@ fail:
 
 #ifdef USE_SASL_CYRUS
 /**
- * pop_auth_sasl - POP SASL authenticator - Implements PopAuth::authenticate()
+ * pop_auth_sasl - POP SASL authenticator - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *method)
 {
@@ -190,7 +192,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   mutt_message(_("Authenticating (%s)..."), "SASL");
 
   size_t bufsize = MAX((olen * 2), 1024);
-  char *buf = mutt_mem_malloc(bufsize);
+  char *buf = MUTT_MEM_MALLOC(bufsize, char);
 
   snprintf(buf, bufsize, "AUTH %s", mech);
   olen = strlen(buf);
@@ -249,7 +251,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
       if ((olen * 2) > bufsize)
       {
         bufsize = olen * 2;
-        mutt_mem_realloc(&buf, bufsize);
+        MUTT_MEM_REALLOC(&buf, bufsize, char);
       }
       if (sasl_encode64(pc, olen, buf, bufsize, &olen) != SASL_OK)
       {
@@ -310,7 +312,7 @@ void pop_apop_timestamp(struct PopAccountData *adata, char *buf)
 }
 
 /**
- * pop_auth_apop - APOP authenticator - Implements PopAuth::authenticate()
+ * pop_auth_apop - APOP authenticator - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *method)
 {
@@ -359,7 +361,7 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
 }
 
 /**
- * pop_auth_user - USER authenticator - Implements PopAuth::authenticate()
+ * pop_auth_user - USER authenticator - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *method)
 {
@@ -417,7 +419,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 }
 
 /**
- * pop_auth_oauth - Authenticate a POP connection using OAUTHBEARER - Implements PopAuth::authenticate()
+ * pop_auth_oauth - Authenticate a POP connection using OAUTHBEARER - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *method)
 {

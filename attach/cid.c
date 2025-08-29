@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include "email/lib.h"
@@ -66,7 +67,7 @@ struct CidMap *cid_map_new(const char *cid, const char *filename)
   if (!cid || !filename)
     return NULL;
 
-  struct CidMap *cid_map = mutt_mem_calloc(1, sizeof(struct CidMap));
+  struct CidMap *cid_map = MUTT_MEM_CALLOC(1, struct CidMap);
 
   cid_map->cid = mutt_str_dup(cid);
   cid_map->fname = mutt_str_dup(filename);
@@ -93,18 +94,18 @@ void cid_map_list_clear(struct CidMapList *cid_map_list)
 
 /**
  * cid_save_attachment - Save attachment if it has a Content-ID
- * @param[in]  body         Body to check and save
+ * @param[in]  b            Body to check and save
  * @param[out] cid_map_list List of Content-ID to filename mappings
  *
  * If body has a Content-ID, it is saved to disk and a new Content-ID to filename
  * mapping is added to cid_map_list.
  */
-static void cid_save_attachment(struct Body *body, struct CidMapList *cid_map_list)
+static void cid_save_attachment(struct Body *b, struct CidMapList *cid_map_list)
 {
-  if (!body || !cid_map_list)
+  if (!b || !cid_map_list)
     return;
 
-  char *id = mutt_param_get(&body->parameter, "content-id");
+  char *id = b->content_id;
   if (!id)
     return;
 
@@ -115,15 +116,15 @@ static void cid_save_attachment(struct Body *body, struct CidMapList *cid_map_li
 
   mutt_debug(LL_DEBUG2, "attachment found with \"Content-ID: %s\"\n", id);
   /* get filename */
-  char *fname = mutt_str_dup(body->filename);
-  if (body->aptr)
-    fp = body->aptr->fp;
+  char *fname = mutt_str_dup(b->filename);
+  if (b->aptr)
+    fp = b->aptr->fp;
   mutt_file_sanitize_filename(fname, fp ? true : false);
   mailcap_expand_filename("%s", fname, tmpfile);
   FREE(&fname);
 
   /* save attachment */
-  if (mutt_save_attachment(fp, body, buf_string(tmpfile), 0, NULL) == -1)
+  if (mutt_save_attachment(fp, b, buf_string(tmpfile), 0, NULL) == -1)
     goto bail;
   has_tempfile = true;
   mutt_debug(LL_DEBUG2, "attachment with \"Content-ID: %s\" saved to file \"%s\"\n",
@@ -188,7 +189,7 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
 
   /* ensure tmpfile has the same file extension as filename otherwise an
    * HTML file may be opened as plain text by the viewer */
-  const char *suffix = mutt_strn_rfind(buf_string(filename), buf_len(filename), ".");
+  const char *suffix = buf_rfind(filename, ".");
   if (suffix && *(suffix++))
     buf_mktemp_pfx_sfx(tmpfile, "neomutt", suffix);
   else

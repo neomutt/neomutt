@@ -3,7 +3,9 @@
  * Pager Display
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,6 +44,7 @@
 #include "display.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "private_data.h"
 
 /**
  * check_sig - Check for an email signature
@@ -126,7 +129,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   if (cnt == 0)
   {
     last_color.curses_color = NULL;
-    last_color.attrs = 0;
+    last_color.attrs = A_NORMAL;
   }
 
   if (lines[line_num].cont_line)
@@ -321,7 +324,7 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
   bool is_quote = false;
   const struct Regex *c_smileys = cs_subset_regex(NeoMutt->sub, "smileys");
-  regmatch_t pmatch_internal[1];
+  regmatch_t pmatch_internal[1] = { 0 };
 
   if (!pmatch)
     pmatch = pmatch_internal;
@@ -329,7 +332,7 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
   const struct Regex *c_quote_regex = cs_subset_regex(NeoMutt->sub, "quote_regex");
   if (mutt_regex_capture(c_quote_regex, line, 1, pmatch))
   {
-    regmatch_t smatch[1];
+    regmatch_t smatch[1] = { 0 };
     if (mutt_regex_capture(c_smileys, line, 1, smatch))
     {
       if (smatch[0].rm_so > 0)
@@ -353,6 +356,130 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
 }
 
 /**
+ * match_body_patterns - Match body patterns, e.g. color quoted
+ * @param pat      Pattern to match
+ * @param lines    Lines of text in the pager
+ * @param line_num Current line number
+ */
+static void match_body_patterns(char *pat, struct Line *lines, int line_num)
+{
+  // don't consider line endings part of the buffer for regex matching
+  bool has_nl = false;
+  size_t buflen = mutt_str_len(pat);
+  if ((buflen > 0) && (pat[buflen - 1] == '\n'))
+  {
+    has_nl = true;
+    pat[buflen - 1] = '\0';
+  }
+
+  int i = 0;
+  int offset = 0;
+  struct RegexColor *color_line = NULL;
+  struct RegexColorList *head = NULL;
+  bool found = false;
+  bool null_rx = false;
+  regmatch_t pmatch[1] = { 0 };
+
+  lines[line_num].syntax_arr_size = 0;
+  if (lines[line_num].cid == MT_COLOR_HDRDEFAULT)
+  {
+    head = regex_colors_get_list(MT_COLOR_HEADER);
+  }
+  else
+  {
+    head = regex_colors_get_list(MT_COLOR_BODY);
+  }
+  STAILQ_FOREACH(color_line, head, entries)
+  {
+    color_line->stop_matching = false;
+  }
+
+  do
+  {
+    /* if has_nl, we've stripped off a trailing newline */
+    if (offset >= (buflen - has_nl))
+      break;
+
+    if (!pat[offset])
+      break;
+
+    found = false;
+    null_rx = false;
+    STAILQ_FOREACH(color_line, head, entries)
+    {
+      if (color_line->stop_matching)
+        continue;
+
+      if ((regexec(&color_line->regex, pat + offset, 1, pmatch,
+                   ((offset != 0) ? REG_NOTBOL : 0)) != 0))
+      {
+        /* Once a regex fails to match, don't try matching it again.
+         * On very long lines this can cause a performance issue if there
+         * are other regexes that have many matches. */
+        color_line->stop_matching = true;
+        continue;
+      }
+
+      if (pmatch[0].rm_eo == pmatch[0].rm_so)
+      {
+        null_rx = true; // empty regex; don't add it, but keep looking
+        continue;
+      }
+
+      if (!found)
+      {
+        // Abort if we fill up chunks. Yes, this really happened.
+        if (lines[line_num].syntax_arr_size == SHRT_MAX)
+        {
+          null_rx = false;
+          break;
+        }
+        if (++(lines[line_num].syntax_arr_size) > 1)
+        {
+          MUTT_MEM_REALLOC(&(lines[line_num].syntax),
+                           lines[line_num].syntax_arr_size, struct TextSyntax);
+          // Zero the new entry
+          const int index = lines[line_num].syntax_arr_size - 1;
+          struct TextSyntax *ts = &lines[line_num].syntax[index];
+          memset(ts, 0, sizeof(*ts));
+        }
+      }
+      i = lines[line_num].syntax_arr_size - 1;
+      pmatch[0].rm_so += offset;
+      pmatch[0].rm_eo += offset;
+
+      if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
+          ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
+           (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
+      {
+        (lines[line_num].syntax)[i].attr_color = &color_line->attr_color;
+        (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
+        (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
+      }
+      else if ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
+               (pmatch[0].rm_eo == (lines[line_num].syntax)[i].last))
+      {
+        (lines[line_num].syntax)[i].attr_color = merged_color_overlay(
+            (lines[line_num].syntax)[i].attr_color, &color_line->attr_color);
+        (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
+        (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
+      }
+
+      found = true;
+      null_rx = false;
+    }
+
+    if (null_rx)
+      offset++; /* avoid degenerate cases */
+    else
+      offset = (lines[line_num].syntax)[i].last;
+  } while (found || null_rx);
+
+  if (has_nl)
+    pat[buflen - 1] = '\n';
+}
+
+/**
  * resolve_types - Determine the style for a line of text
  * @param[in]  win          Window
  * @param[in]  buf          Formatted text
@@ -371,10 +498,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
                           bool *force_redraw, bool q_classify)
 {
   struct RegexColor *color_line = NULL;
-  struct RegexColorList *head = NULL;
-  regmatch_t pmatch[1];
-  bool found;
-  bool null_rx;
+  regmatch_t pmatch[1] = { 0 };
   const bool c_header_color_partial = cs_subset_bool(NeoMutt->sub, "header_color_partial");
   int offset, i = 0;
 
@@ -463,7 +587,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
       if (lines[i].syntax_arr_size)
       {
         lines[i].syntax_arr_size = 0;
-        mutt_mem_realloc(&(lines[line_num].syntax), sizeof(struct TextSyntax));
+        MUTT_MEM_REALLOC(&(lines[line_num].syntax), 1, struct TextSyntax);
       }
       lines[i++].cid = MT_COLOR_SIGNATURE;
     }
@@ -491,108 +615,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   if ((lines[line_num].cid == MT_COLOR_NORMAL) || (lines[line_num].cid == MT_COLOR_QUOTED) ||
       ((lines[line_num].cid == MT_COLOR_HDRDEFAULT) && c_header_color_partial))
   {
-    size_t nl;
-
-    /* don't consider line endings part of the buffer
-     * for regex matching */
-    nl = mutt_str_len(buf);
-    if ((nl > 0) && (buf[nl - 1] == '\n'))
-      buf[nl - 1] = '\0';
-
-    i = 0;
-    offset = 0;
-    lines[line_num].syntax_arr_size = 0;
-    if (lines[line_num].cid == MT_COLOR_HDRDEFAULT)
-    {
-      head = regex_colors_get_list(MT_COLOR_HEADER);
-    }
-    else
-    {
-      head = regex_colors_get_list(MT_COLOR_BODY);
-    }
-    STAILQ_FOREACH(color_line, head, entries)
-    {
-      color_line->stop_matching = false;
-    }
-
-    do
-    {
-      if (!buf[offset])
-        break;
-
-      found = false;
-      null_rx = false;
-      STAILQ_FOREACH(color_line, head, entries)
-      {
-        if (color_line->stop_matching)
-          continue;
-
-        if ((regexec(&color_line->regex, buf + offset, 1, pmatch,
-                     ((offset != 0) ? REG_NOTBOL : 0)) != 0))
-        {
-          /* Once a regex fails to match, don't try matching it again.
-           * On very long lines this can cause a performance issue if there
-           * are other regexes that have many matches. */
-          color_line->stop_matching = true;
-          continue;
-        }
-
-        if (pmatch[0].rm_eo == pmatch[0].rm_so)
-        {
-          null_rx = true; /* empty regex; don't add it, but keep looking */
-          continue;
-        }
-
-        if (!found)
-        {
-          // Abort if we fill up chunks. Yes, this really happened.
-          if (lines[line_num].syntax_arr_size == SHRT_MAX)
-          {
-            null_rx = false;
-            break;
-          }
-          if (++(lines[line_num].syntax_arr_size) > 1)
-          {
-            mutt_mem_realloc(&(lines[line_num].syntax),
-                             (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
-            // Zero the new entry
-            const int index = lines[line_num].syntax_arr_size - 1;
-            struct TextSyntax *ts = &lines[line_num].syntax[index];
-            memset(ts, 0, sizeof(*ts));
-          }
-        }
-        i = lines[line_num].syntax_arr_size - 1;
-        pmatch[0].rm_so += offset;
-        pmatch[0].rm_eo += offset;
-
-        if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
-            ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
-             (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
-        {
-          (lines[line_num].syntax)[i].attr_color = &color_line->attr_color;
-          (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
-          (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
-        }
-        else if ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
-                 (pmatch[0].rm_eo == (lines[line_num].syntax)[i].last))
-        {
-          (lines[line_num].syntax)[i].attr_color = merged_color_overlay(
-              (lines[line_num].syntax)[i].attr_color, &color_line->attr_color);
-          (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
-          (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
-        }
-
-        found = true;
-        null_rx = false;
-      }
-
-      if (null_rx)
-        offset++; /* avoid degenerate cases */
-      else
-        offset = (lines[line_num].syntax)[i].last;
-    } while (found || null_rx);
-    if (nl > 0)
-      buf[nl] = '\n';
+    match_body_patterns(buf, lines, line_num);
   }
 
   /* attachment patterns */
@@ -609,6 +632,8 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
     offset = 0;
     lines[line_num].syntax_arr_size = 0;
     struct AttrColor *ac_attach = simple_color_get(MT_COLOR_ATTACHMENT);
+    bool found = false;
+    bool null_rx = false;
     do
     {
       if (!buf[offset])
@@ -630,8 +655,8 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
           {
             if (++(lines[line_num].syntax_arr_size) > 1)
             {
-              mutt_mem_realloc(&(lines[line_num].syntax),
-                               (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
+              MUTT_MEM_REALLOC(&(lines[line_num].syntax),
+                               lines[line_num].syntax_arr_size, struct TextSyntax);
               // Zero the new entry
               const int index = lines[line_num].syntax_arr_size - 1;
               struct TextSyntax *ts = &lines[line_num].syntax[index];
@@ -758,7 +783,6 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
                        unsigned char **fmt, size_t *blen, int *buf_ready)
 {
   static int b_read = 0;
-  struct Buffer stripped;
 
   if (*buf_ready == 0)
   {
@@ -781,12 +805,13 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
     b_read = (int) (*bytes_read - offset);
     *buf_ready = 1;
 
-    buf_init(&stripped);
-    buf_alloc(&stripped, *blen);
-    buf_strip_formatting(&stripped, (const char *) *buf, 1);
+    struct Buffer *stripped = buf_pool_get();
+    buf_alloc(stripped, *blen);
+    buf_strip_formatting(stripped, (const char *) *buf, 1);
     /* This should be a noop, because *fmt should be NULL */
     FREE(fmt);
-    *fmt = (unsigned char *) stripped.data;
+    *fmt = (unsigned char *) buf_strdup(stripped);
+    buf_pool_release(&stripped);
   }
 
   return b_read;
@@ -827,7 +852,11 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
   if (check_attachment_marker((char *) buf) == 0)
     wrap_cols = width;
 
-  const bool c_allow_ansi = cs_subset_bool(NeoMutt->sub, "allow_ansi");
+  struct PagerPrivateData *priv = win->parent->wdata;
+  enum PagerMode mode = priv->pview->mode;
+  const bool c_allow_ansi = (mode == PAGER_MODE_OTHER) ||
+                            cs_subset_bool(NeoMutt->sub, "allow_ansi");
+
   for (ch = 0, vch = 0; ch < cnt; ch += k, vch += k)
   {
     /* Handle ANSI sequences */
@@ -855,7 +884,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     {
       if (k == ICONV_ILLEGAL_SEQ)
         memset(&mbstate, 0, sizeof(mbstate));
-      mutt_debug(LL_DEBUG1, "mbrtowc returned %lu; errno = %d\n", k, errno);
+      mutt_debug(LL_DEBUG1, "mbrtowc returned %zu; errno = %d\n", k, errno);
       if ((col + 4) > wrap_cols)
         break;
       col += 4;
@@ -923,7 +952,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     }
 
     if (ansi && ((flags & (MUTT_SHOWCOLOR | MUTT_SEARCH | MUTT_PAGER_MARKER)) ||
-                 special || last_special || ansi->attrs))
+                 special || last_special || (ansi->attrs != A_NORMAL)))
     {
       resolve_color(win, *lines, line_num, vch, flags, special, ansi);
       last_special = special;
@@ -965,7 +994,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
         break;
       col += 2;
       if (ansi)
-        mutt_window_printf(win, "^%c", ('@' + wc) & 0x7f);
+        mutt_window_printf(win, "^%c", (char) (('@' + wc) & 0x7f));
     }
     else if (wc < 0x100)
     {
@@ -973,7 +1002,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
         break;
       col += 4;
       if (ansi)
-        mutt_window_printf(win, "\\%03o", wc);
+        mutt_window_printf(win, "\\%03lo", (long) wc);
     }
     else
     {
@@ -1027,8 +1056,11 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   const struct AttrColor *def_color = NULL;
   int m;
   int rc = -1;
-  struct AnsiColor ansi = { NULL, 0, COLOR_DEFAULT, COLOR_DEFAULT };
-  regmatch_t pmatch[1];
+  struct AnsiColor ansi = { { COLOR_DEFAULT, 0, 0 }, { COLOR_DEFAULT, 0, 0 }, 0, NULL };
+  regmatch_t pmatch[1] = { 0 };
+
+  struct PagerPrivateData *priv = win_pager->parent->wdata;
+  enum PagerMode mode = priv->pview->mode;
 
   if (line_num == *lines_used)
   {
@@ -1038,13 +1070,14 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
 
   if (*lines_used == *lines_max)
   {
-    mutt_mem_realloc(lines, sizeof(struct Line) * (*lines_max += LINES));
+    *lines_max += LINES;
+    MUTT_MEM_REALLOC(lines, *lines_max, struct Line);
     for (ch = *lines_used; ch < *lines_max; ch++)
     {
       memset(&((*lines)[ch]), 0, sizeof(struct Line));
       (*lines)[ch].cid = -1;
       (*lines)[ch].search_arr_size = -1;
-      (*lines)[ch].syntax = mutt_mem_calloc(1, sizeof(struct TextSyntax));
+      (*lines)[ch].syntax = MUTT_MEM_CALLOC(1, struct TextSyntax);
       ((*lines)[ch].syntax)[0].first = -1;
       ((*lines)[ch].syntax)[0].last = -1;
     }
@@ -1062,15 +1095,24 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       goto out;
     }
 
-    cur_line->cid = MT_COLOR_MESSAGE_LOG;
-    if (buf[11] == 'M')
-      cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_MESSAGE);
-    else if (buf[11] == 'W')
-      cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_WARNING);
-    else if (buf[11] == 'E')
-      cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_ERROR);
+    if ((cur_line->cont_line) && (line_num > 0))
+    {
+      struct Line *const old_line = &(*lines)[line_num - 1];
+      cur_line->cid = old_line->cid;
+      cur_line->syntax[0].attr_color = old_line->syntax[0].attr_color;
+    }
     else
-      cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_NORMAL);
+    {
+      cur_line->cid = MT_COLOR_MESSAGE_LOG;
+      if (buf[11] == 'M')
+        cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_MESSAGE);
+      else if (buf[11] == 'W')
+        cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_WARNING);
+      else if (buf[11] == 'E')
+        cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_ERROR);
+      else
+        cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_NORMAL);
+    }
   }
 
   /* only do color highlighting if we are viewing a message */
@@ -1086,8 +1128,15 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
         goto out;
       }
 
-      resolve_types(win_pager, (char *) fmt, (char *) buf, *lines, line_num, *lines_used,
-                    quote_list, q_level, force_redraw, flags & MUTT_SHOWCOLOR);
+      if (mode == PAGER_MODE_EMAIL)
+      {
+        resolve_types(win_pager, (char *) fmt, (char *) buf, *lines, line_num, *lines_used,
+                      quote_list, q_level, force_redraw, flags & MUTT_SHOWCOLOR);
+      }
+      else
+      {
+        (*lines)[line_num].cid = MT_COLOR_NORMAL;
+      }
 
       /* avoid race condition for continuation lines when scrolling up */
       for (m = line_num + 1;
@@ -1150,8 +1199,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     {
       if (++(cur_line->search_arr_size) > 1)
       {
-        mutt_mem_realloc(&(cur_line->search),
-                         (cur_line->search_arr_size) * sizeof(struct TextSyntax));
+        MUTT_MEM_REALLOC(&(cur_line->search), cur_line->search_arr_size, struct TextSyntax);
         // Zero the new entry
         const int index = cur_line->search_arr_size - 1;
         struct TextSyntax *ts = &cur_line->search[index];
@@ -1159,7 +1207,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       }
       else
       {
-        cur_line->search = mutt_mem_calloc(1, sizeof(struct TextSyntax));
+        cur_line->search = MUTT_MEM_CALLOC(1, struct TextSyntax);
       }
       pmatch[0].rm_so += offset;
       pmatch[0].rm_eo += offset;
@@ -1300,11 +1348,10 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     if (flags & MUTT_PAGER_STRIPES)
     {
       const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
-      mutt_curses_set_color_by_id(cid);
-    }
-    else
-    {
-      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+      const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
+      const struct AttrColor *stripe_color = simple_color_get(cid);
+      const struct AttrColor *ac_eol = merged_color_overlay(ac_normal, stripe_color);
+      mutt_curses_set_color(ac_eol);
     }
     mutt_window_clrtoeol(win_pager);
   }

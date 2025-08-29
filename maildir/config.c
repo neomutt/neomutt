@@ -3,7 +3,8 @@
  * Config used by libmaildir
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,9 +28,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -60,19 +61,6 @@ static int maildir_field_delimiter_validator(const struct ConfigSet *cs,
     return CSR_ERR_INVALID;
   }
 
-  static bool maildir_field_delimiter_changed = false;
-  if (maildir_field_delimiter_changed)
-  {
-    // L10N: maildir_field_delimiter is a config variable and shouldn't be translated
-    buf_printf(err, _("maildir_field_delimiter can only be set once"));
-    return CSR_ERR_INVALID;
-  }
-
-  if (*delim != *(const char *) cdef->initial)
-  {
-    maildir_field_delimiter_changed = true;
-  }
-
   return CSR_SUCCESS;
 }
 
@@ -87,23 +75,11 @@ static struct ConfigDef MaildirVars[] = {
   { "maildir_check_cur", DT_BOOL, false, 0, NULL,
     "Check both 'new' and 'cur' directories for new mail"
   },
-  { "maildir_field_delimiter", DT_STRING|DT_NOT_EMPTY, IP ":", 0, maildir_field_delimiter_validator,
+  { "maildir_field_delimiter", DT_STRING|D_NOT_EMPTY|D_ON_STARTUP, IP ":", 0, maildir_field_delimiter_validator,
     "Field delimiter to be used for maildir email files (default is colon, recommended alternative is semi-colon)"
   },
   { "maildir_trash", DT_BOOL, false, 0, NULL,
     "Use the maildir 'trashed' flag, rather than deleting"
-  },
-  { "mh_purge", DT_BOOL, false, 0, NULL,
-    "Really delete files in MH mailboxes"
-  },
-  { "mh_seq_flagged", DT_STRING, IP "flagged", 0, NULL,
-    "MH sequence for flagged message"
-  },
-  { "mh_seq_replied", DT_STRING, IP "replied", 0, NULL,
-    "MH sequence to tag replied messages"
-  },
-  { "mh_seq_unseen", DT_STRING, IP "unseen", 0, NULL,
-    "MH sequence for unseen messages"
   },
   { NULL },
   // clang-format on
@@ -128,10 +104,10 @@ static struct ConfigDef MaildirVarsHcache[] = {
  */
 bool config_init_maildir(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, MaildirVars, DT_NO_FLAGS);
+  bool rc = cs_register_variables(cs, MaildirVars);
 
 #if defined(USE_HCACHE)
-  rc |= cs_register_variables(cs, MaildirVarsHcache, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, MaildirVarsHcache);
 #endif
 
   return rc;

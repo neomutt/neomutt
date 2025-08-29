@@ -4,6 +4,9 @@
  *
  * @authors
  * Copyright (C) 2017 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +30,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -39,156 +42,168 @@ struct HashTable *TagTransforms = NULL; ///< Hash Table: "inbox" -> "i" - Altern
 struct HashTable *TagFormats = NULL; ///< Hash Table: "inbox" -> "GI" - Tag format strings
 
 /**
- * driver_tags_getter - Get transformed tags
- * @param head             List of tags
- * @param show_hidden      Show hidden tags
- * @param show_transformed Show transformed tags
- * @param filter           Match tags to this string
- * @retval ptr String list of tags
- *
- * Return a new allocated string containing tags separated by space
+ * tag_free - Free a Tag
+ * @param ptr Tag to free
  */
-static char *driver_tags_getter(struct TagList *head, bool show_hidden,
-                                bool show_transformed, const char *filter)
+void tag_free(struct Tag **ptr)
 {
-  if (!head)
-    return NULL;
+  if (!ptr || !*ptr)
+    return;
 
-  char *tags = NULL;
-  struct Tag *np = NULL;
-  STAILQ_FOREACH(np, head, entries)
+  struct Tag *tag = *ptr;
+  FREE(&tag->name);
+  FREE(&tag->transformed);
+
+  FREE(ptr);
+}
+
+/**
+ * tag_new - Create a new Tag
+ * @retval ptr New Tag
+ */
+struct Tag *tag_new(void)
+{
+  return MUTT_MEM_CALLOC(1, struct Tag);
+}
+
+/**
+ * driver_tags_getter - Get transformed tags separated by space
+ * @param[in]  tl               List of tags
+ * @param[in]  show_hidden      Show hidden tags
+ * @param[in]  show_transformed Show transformed tags
+ * @param[in]  filter           Match tags to this string
+ * @param[out] tags             String list of tags
+ */
+void driver_tags_getter(struct TagList *tl, bool show_hidden, bool show_transformed,
+                        const char *filter, struct Buffer *tags)
+{
+  if (!tl)
+    return;
+
+  struct Tag *tag = NULL;
+  STAILQ_FOREACH(tag, tl, entries)
   {
-    if (filter && !mutt_str_equal(np->name, filter))
+    if (filter && !mutt_str_equal(tag->name, filter))
       continue;
-    if (show_hidden || !np->hidden)
+    if (show_hidden || !tag->hidden)
     {
-      if (show_transformed && np->transformed)
-        mutt_str_append_item(&tags, np->transformed, ' ');
+      if (show_transformed && tag->transformed)
+        buf_join_str(tags, tag->transformed, ' ');
       else
-        mutt_str_append_item(&tags, np->name, ' ');
+        buf_join_str(tags, tag->name, ' ');
     }
   }
-  return tags;
 }
 
 /**
  * driver_tags_add - Add a tag to header
- * @param[in] list    List of tags
+ * @param[in] tl      List of tags
  * @param[in] new_tag String representing the new tag
  *
  * Add a tag to the header tags
  *
  * @note The ownership of the string is passed to the TagList structure
  */
-void driver_tags_add(struct TagList *list, char *new_tag)
+void driver_tags_add(struct TagList *tl, char *new_tag)
 {
   char *new_tag_transformed = mutt_hash_find(TagTransforms, new_tag);
 
-  struct Tag *tn = mutt_mem_calloc(1, sizeof(struct Tag));
-  tn->name = new_tag;
-  tn->hidden = false;
-  tn->transformed = mutt_str_dup(new_tag_transformed);
+  struct Tag *tag = tag_new();
+  tag->name = new_tag;
+  tag->hidden = false;
+  tag->transformed = mutt_str_dup(new_tag_transformed);
 
   /* filter out hidden tags */
   const struct Slist *c_hidden_tags = cs_subset_slist(NeoMutt->sub, "hidden_tags");
   if (c_hidden_tags)
     if (mutt_list_find(&c_hidden_tags->head, new_tag))
-      tn->hidden = true;
+      tag->hidden = true;
 
-  STAILQ_INSERT_TAIL(list, tn, entries);
+  STAILQ_INSERT_TAIL(tl, tag, entries);
 }
 
 /**
  * driver_tags_free - Free tags from a header
- * @param[in] list List of tags
+ * @param[in] tl List of tags
  *
  * Free the whole tags structure
  */
-void driver_tags_free(struct TagList *list)
+void driver_tags_free(struct TagList *tl)
 {
-  if (!list)
+  if (!tl)
     return;
 
-  struct Tag *np = STAILQ_FIRST(list);
+  struct Tag *tag = STAILQ_FIRST(tl);
   struct Tag *next = NULL;
-  while (np)
+  while (tag)
   {
-    next = STAILQ_NEXT(np, entries);
-    FREE(&np->name);
-    FREE(&np->transformed);
-    FREE(&np);
-    np = next;
+    next = STAILQ_NEXT(tag, entries);
+    tag_free(&tag);
+    tag = next;
   }
-  STAILQ_INIT(list);
+  STAILQ_INIT(tl);
 }
 
 /**
- * driver_tags_get_transformed - Get transformed tags
- * @param[in] list List of tags
- * @retval ptr String list of tags
- *
- * Return a new allocated string containing all tags separated by space with
- * transformation
+ * driver_tags_get_transformed - Get transformed tags separated by space
+ * @param[in]  tl List of tags
+ * @param[out] tags String list of tags
  */
-char *driver_tags_get_transformed(struct TagList *list)
+void driver_tags_get_transformed(struct TagList *tl, struct Buffer *tags)
 {
-  return driver_tags_getter(list, false, true, NULL);
+  driver_tags_getter(tl, false, true, NULL, tags);
 }
 
 /**
- * driver_tags_get - Get tags
- * @param[in] list List of tags
- * @retval ptr String list of tags
+ * driver_tags_get - Get tags all tags separated by space
+ * @param[in]  tl   List of tags
+ * @param[out] tags String list of tags
  *
- * Return a new allocated string containing all tags separated by space
+ * @note Hidden tags are not returned. Use driver_tags_get_with_hidden() for that.
  */
-char *driver_tags_get(struct TagList *list)
+void driver_tags_get(struct TagList *tl, struct Buffer *tags)
 {
-  return driver_tags_getter(list, false, false, NULL);
+  driver_tags_getter(tl, false, false, NULL, tags);
 }
 
 /**
- * driver_tags_get_with_hidden - Get tags with hiddens
- * @param[in] list List of tags
- * @retval ptr String list of tags
- *
- * Return a new allocated string containing all tags separated by space even
- * the hiddens.
+ * driver_tags_get_with_hidden - Get all tags, also hidden ones, separated by space
+ * @param[in]  tl List of tags
+ * @param[out] tags String list of tags
  */
-char *driver_tags_get_with_hidden(struct TagList *list)
+void driver_tags_get_with_hidden(struct TagList *tl, struct Buffer *tags)
 {
-  return driver_tags_getter(list, true, false, NULL);
+  driver_tags_getter(tl, true, false, NULL, tags);
 }
 
 /**
- * driver_tags_get_transformed_for - Get transformed tag for a tag name from a header
- * @param[in] head List of tags
+ * driver_tags_get_transformed_for - Get transformed tags for a tag name separated by space
+ * @param[in] tl   List of tags
  * @param[in] name Tag to transform
- * @retval ptr String tag
+ * @param[out] tags String list of tags
  *
- * Return a new allocated string containing all tags separated by space even
- * the hiddens.
+ * @note Will also return hidden tags.
  */
-char *driver_tags_get_transformed_for(struct TagList *head, const char *name)
+void driver_tags_get_transformed_for(struct TagList *tl, const char *name, struct Buffer *tags)
 {
-  return driver_tags_getter(head, true, true, name);
+  driver_tags_getter(tl, true, true, name, tags);
 }
 
 /**
  * driver_tags_replace - Replace all tags
- * @param[in] head List of tags
+ * @param[in] tl    List of tags
  * @param[in] tags string of all tags separated by space
  * @retval false No changes are made
  * @retval true  Tags are updated
  *
  * Free current tags structures and replace it by new tags
  */
-bool driver_tags_replace(struct TagList *head, const char *tags)
+bool driver_tags_replace(struct TagList *tl, const char *tags)
 {
-  if (!head)
+  if (!tl)
     return false;
 
-  driver_tags_free(head);
+  driver_tags_free(tl);
 
   if (tags)
   {
@@ -197,7 +212,7 @@ bool driver_tags_replace(struct TagList *head, const char *tags)
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &hsplit, entries)
     {
-      driver_tags_add(head, np->data);
+      driver_tags_add(tl, np->data);
     }
     mutt_list_clear(&hsplit);
   }
@@ -205,7 +220,7 @@ bool driver_tags_replace(struct TagList *head, const char *tags)
 }
 
 /**
- * tags_deleter - Delete a tag - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
+ * tags_deleter - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  */
 static void tags_deleter(int type, void *obj, intptr_t data)
 {

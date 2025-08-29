@@ -21,6 +21,7 @@ ADDRESS_OBJS	= test/address/config_type.o \
 		  test/address/mutt_addrlist_to_local.o \
 		  test/address/mutt_addrlist_write.o \
 		  test/address/mutt_addrlist_write_list.o \
+		  test/address/mutt_addrlist_write_wrap.o \
 		  test/address/mutt_addr_cat.o \
 		  test/address/mutt_addr_cmp.o \
 		  test/address/mutt_addr_copy.o \
@@ -40,7 +41,8 @@ ATOI_OBJS	= test/atoi/mutt_str_atoi.o \
 		  test/atoi/mutt_str_atos.o \
 		  test/atoi/mutt_str_atoui.o \
 		  test/atoi/mutt_str_atoul.o \
-		  test/atoi/mutt_str_atoull.o
+		  test/atoi/mutt_str_atoull.o \
+		  test/atoi/mutt_str_atous.o
 
 ATTACH_OBJS	= test/attach/mutt_actx_add_attach.o \
 		  test/attach/mutt_actx_add_body.o \
@@ -76,22 +78,24 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_fix_dptr.o \
 		  test/buffer/buf_free.o \
 		  test/buffer/buf_init.o \
+		  test/buffer/buf_inline_replace.o \
 		  test/buffer/buf_insert.o \
 		  test/buffer/buf_istr_equal.o \
 		  test/buffer/buf_is_empty.o \
+		  test/buffer/buf_join_str.o \
 		  test/buffer/buf_len.o \
 		  test/buffer/buf_lower.o \
-		  test/buffer/buf_make.o \
 		  test/buffer/buf_new.o \
 		  test/buffer/buf_printf.o \
 		  test/buffer/buf_reset.o \
+		  test/buffer/buf_rfind.o \
+		  test/buffer/buf_seek.o \
 		  test/buffer/buf_startswith.o \
 		  test/buffer/buf_strcpy.o \
 		  test/buffer/buf_strcpy_n.o \
 		  test/buffer/buf_strdup.o \
 		  test/buffer/buf_str_equal.o \
-		  test/buffer/buf_substrcpy.o \
-		  test/buffer/buf_upper.o
+		  test/buffer/buf_substrcpy.o
 
 CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_charset_lookup.o \
@@ -113,6 +117,23 @@ CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_lookup_add.o \
 		  test/charset/mutt_ch_lookup_remove.o \
 		  test/charset/mutt_ch_set_charset.o
+
+COLOR_OBJS	= test/color/ansi.o \
+		  test/color/ansi_color_parse_single.o \
+		  test/color/attr.o \
+		  test/color/color_dump.o \
+		  test/color/curses.o \
+		  test/color/merged.o \
+		  test/color/notify.o \
+		  test/color/parse_attr_spec.o \
+		  test/color/quoted.o \
+		  test/color/simple.o \
+		  test/color/parse_color_colornnn.o \
+		  test/color/parse_color_name.o \
+		  test/color/parse_color_namedcolor.o \
+		  test/color/parse_color_pair.o \
+		  test/color/parse_color_prefix.o \
+		  test/color/parse_color_rrggbb.o
 
 @if USE_LZ4 || USE_ZLIB || USE_ZSTD
 COMPRESS_OBJS	+= test/compress/common.o
@@ -164,6 +185,7 @@ DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_gmtime.o \
 		  test/date/mutt_date_localtime.o \
 		  test/date/mutt_date_localtime_format.o \
+		  test/date/mutt_date_localtime_format_locale.o \
 		  test/date/mutt_date_local_tz.o \
 		  test/date/mutt_date_make_date.o \
 		  test/date/mutt_date_make_imap.o \
@@ -176,15 +198,12 @@ DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_parse_imap.o \
 		  test/date/mutt_date_sleep_ms.o
 
-EDITOR_OBJS	= test/editor/editor_backspace.o \
+EDITOR_OBJS	= test/editor/common.o \
+		  test/editor/editor_backspace.o \
 		  test/editor/editor_backward_char.o \
 		  test/editor/editor_backward_word.o \
 		  test/editor/editor_bol.o \
-		  test/editor/editor_buffer_get_cursor.o \
-		  test/editor/editor_buffer_get_lastchar.o \
 		  test/editor/editor_buffer_is_empty.o \
-		  test/editor/editor_buffer_set.o \
-		  test/editor/editor_buffer_set_cursor.o \
 		  test/editor/editor_case_word.o \
 		  test/editor/editor_delete_char.o \
 		  test/editor/editor_eol.o \
@@ -225,14 +244,58 @@ ENVLIST_OBJS	= test/envlist/envlist_free.o \
 
 EQI_OBJS	= test/eqi/eqi.o
 
+EXPANDO_OBJS	= test/expando/colors_render.o \
+		  test/expando/common.o \
+		  test/expando/complex_if_else.o \
+		  test/expando/conditional_date.o \
+		  test/expando/conditional_date_render.o \
+		  test/expando/conditional_date_render2.o \
+		  test/expando/config.o \
+		  test/expando/date_render.o \
+		  test/expando/emoji_text.o \
+		  test/expando/empty_if_else.o \
+		  test/expando/empty_if_else_render.o \
+		  test/expando/expando.o \
+		  test/expando/filter.o \
+		  test/expando/format.o \
+		  test/expando/format_number.o \
+		  test/expando/formatted_expando.o \
+		  test/expando/helpers.o \
+		  test/expando/if_else_false_render.o \
+		  test/expando/if_else_true_render.o \
+		  test/expando/justify.o \
+		  test/expando/nested_if_else.o \
+		  test/expando/nested_if_else_render.o \
+		  test/expando/new_if_else.o \
+		  test/expando/node.o \
+		  test/expando/node_condbool.o \
+		  test/expando/node_conddate.o \
+		  test/expando/node_condition_parse.o \
+		  test/expando/node_container.o \
+		  test/expando/node_expando.o \
+		  test/expando/node_padding.o \
+		  test/expando/node_text_parse.o \
+		  test/expando/old_if_else.o \
+		  test/expando/padding.o \
+		  test/expando/padding_render.o \
+		  test/expando/parse.o \
+		  test/expando/parse_short_name.o \
+		  test/expando/percent_sign_text.o \
+		  test/expando/serial.o \
+		  test/expando/simple_expando.o \
+		  test/expando/simple_expando_render.o \
+		  test/expando/simple_text.o \
+		  test/expando/two_char_expando.o \
+		  test/expando/two_char_expando_render.o \
+		  test/expando/unicode_padding.o  \
+		  test/expando/validation.o
+
 FILE_OBJS	= test/file/common.o \
 		  test/file/buf_file_expand_fmt_quote.o \
 		  test/file/buf_quote_filename.o \
 		  test/file/mutt_file_check_empty.o \
-		  test/file/mutt_file_chmod.o \
 		  test/file/mutt_file_chmod_add.o \
 		  test/file/mutt_file_chmod_add_stat.o \
-		  test/file/mutt_file_chmod_rm.o \
 		  test/file/mutt_file_chmod_rm_stat.o \
 		  test/file/mutt_file_copy_bytes.o \
 		  test/file/mutt_file_copy_stream.o \
@@ -248,7 +311,6 @@ FILE_OBJS	= test/file/common.o \
 		  test/file/mutt_file_map_lines.o \
 		  test/file/mutt_file_mkdir.o \
 		  test/file/mutt_file_open.o \
-		  test/file/mutt_file_quote_filename.o \
 		  test/file/mutt_file_read_keyword.o \
 		  test/file/mutt_file_read_line.o \
 		  test/file/mutt_file_rename.o \
@@ -323,7 +385,8 @@ IMAP_OBJS	= test/imap/msg_set.o
 
 LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_clear.o \
-		  test/list/mutt_list_compare.o \
+		  test/list/mutt_list_copy_tail.o \
+		  test/list/mutt_list_equal.o \
 		  test/list/mutt_list_find.o \
 		  test/list/mutt_list_free.o \
 		  test/list/mutt_list_free_type.o \
@@ -331,10 +394,10 @@ LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_insert_head.o \
 		  test/list/mutt_list_insert_tail.o \
 		  test/list/mutt_list_match.o \
-		  test/list/mutt_list_str_split.o
+		  test/list/mutt_list_str_split.o \
+		  test/list/mutt_list_write.o
 
 LOGGING_OBJS	= test/logging/log_disp_file.o \
-		  test/logging/log_disp_null.o \
 		  test/logging/log_disp_queue.o \
 		  test/logging/log_disp_terminal.o \
 		  test/logging/log_file_close.o \
@@ -442,12 +505,9 @@ PARSE_OBJS	= test/parse/common.o \
 PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
 		  test/path/mutt_path_canon.o \
-		  test/path/mutt_path_concat.o \
 		  test/path/mutt_path_dirname.o \
 		  test/path/mutt_path_escape.o \
 		  test/path/mutt_path_getcwd.o \
-		  test/path/mutt_path_parent.o \
-		  test/path/mutt_path_pretty.o \
 		  test/path/mutt_path_realpath.o \
 		  test/path/mutt_path_tidy.o \
 		  test/path/mutt_path_tidy_dotdot.o \
@@ -506,11 +566,9 @@ SIGNAL_OBJS	= test/signal/mutt_sig_allow_interrupt.o \
 		  test/signal/mutt_sig_unblock.o \
 		  test/signal/mutt_sig_unblock_system.o
 
-SLIST_OBJS	= test/slist/slist_add_list.o \
-		  test/slist/slist_add_string.o \
-		  test/slist/slist_compare.o \
+SLIST_OBJS	= test/slist/slist_add_string.o \
 		  test/slist/slist_dup.o \
-		  test/slist/slist_empty.o \
+		  test/slist/slist_equal.o \
 		  test/slist/slist_free.o \
 		  test/slist/slist_is_empty.o \
 		  test/slist/slist_is_member.o \
@@ -554,31 +612,24 @@ STRING_OBJS	= test/string/mutt_istrn_cmp.o \
 		  test/string/mutt_istr_equal.o \
 		  test/string/mutt_istr_find.o \
 		  test/string/mutt_istr_remall.o \
-		  test/string/mutt_strn_cat.o \
 		  test/string/mutt_strn_copy.o \
 		  test/string/mutt_strn_dup.o \
 		  test/string/mutt_strn_equal.o \
-		  test/string/mutt_strn_rfind.o \
 		  test/string/mutt_str_adjust.o \
-		  test/string/mutt_str_append_item.o \
 		  test/string/mutt_str_asprintf.o \
-		  test/string/mutt_str_cat.o \
 		  test/string/mutt_str_coll.o \
 		  test/string/mutt_str_copy.o \
-		  test/string/mutt_str_dequote_comment.o \
 		  test/string/mutt_str_dup.o \
 		  test/string/mutt_str_equal.o \
 		  test/string/mutt_str_find_word.o \
 		  test/string/mutt_str_getenv.o \
 		  test/string/mutt_str_hyphenate.o \
-		  test/string/mutt_str_inline_replace.o \
+		  test/string/mutt_str_inbox_cmp.o \
 		  test/string/mutt_str_is_ascii.o \
 		  test/string/mutt_str_is_email_wsp.o \
 		  test/string/mutt_str_len.o \
 		  test/string/mutt_str_lower.o \
 		  test/string/mutt_str_lws_len.o \
-		  test/string/mutt_str_lws_rlen.o \
-		  test/string/mutt_str_next_word.o \
 		  test/string/mutt_str_remove_trailing_ws.o \
 		  test/string/mutt_str_replace.o \
 		  test/string/mutt_str_sep.o \
@@ -613,22 +664,22 @@ URL_OBJS	= test/url/url_check_scheme.o \
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
-		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/convert \
-		  $(PWD)/test/core $(PWD)/test/date $(PWD)/test/editor \
-		  $(PWD)/test/email $(PWD)/test/envelope $(PWD)/test/envlist \
-		  $(PWD)/test/eqi $(PWD)/test/file $(PWD)/test/filter \
-		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui \
-		  $(PWD)/test/hash $(PWD)/test/history $(PWD)/test/idna \
-		  $(PWD)/test/imap $(PWD)/test/list $(PWD)/test/logging \
-		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
-		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
-		  $(PWD)/test/notify $(PWD)/test/notmuch $(PWD)/test/parameter \
-		  $(PWD)/test/parse $(PWD)/test/path $(PWD)/test/pattern \
-		  $(PWD)/test/pool $(PWD)/test/prex $(PWD)/test/random \
-		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
-		  $(PWD)/test/signal $(PWD)/test/slist $(PWD)/test/sort \
-		  $(PWD)/test/store $(PWD)/test/string $(PWD)/test/tags \
-		  $(PWD)/test/thread $(PWD)/test/url
+		  $(PWD)/test/color $(PWD)/test/compress $(PWD)/test/config \
+		  $(PWD)/test/convert $(PWD)/test/core $(PWD)/test/date \
+		  $(PWD)/test/editor $(PWD)/test/email $(PWD)/test/envelope \
+		  $(PWD)/test/envlist $(PWD)/test/eqi $(PWD)/test/expando $(PWD)/test/file \
+		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/group \
+		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
+		  $(PWD)/test/idna $(PWD)/test/imap $(PWD)/test/list \
+		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
+		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
+		  $(PWD)/test/neo $(PWD)/test/notify $(PWD)/test/notmuch \
+		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
+		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
+		  $(PWD)/test/random $(PWD)/test/regex $(PWD)/test/rfc2047 \
+		  $(PWD)/test/rfc2231 $(PWD)/test/signal $(PWD)/test/slist \
+		  $(PWD)/test/sort $(PWD)/test/store $(PWD)/test/string \
+		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
 
 TEST_OBJS	= test/common.o test/main.o \
 		  $(ACCOUNT_OBJS) \
@@ -640,6 +691,7 @@ TEST_OBJS	= test/common.o test/main.o \
 		  $(BODY_OBJS) \
 		  $(BUFFER_OBJS) \
 		  $(CHARSET_OBJS) \
+		  $(COLOR_OBJS) \
 		  $(COMPRESS_OBJS) \
 		  $(CONFIG_OBJS) \
 		  $(CONVERT_OBJS) \
@@ -650,6 +702,7 @@ TEST_OBJS	= test/common.o test/main.o \
 		  $(ENVELOPE_OBJS) \
 		  $(ENVLIST_OBJS) \
 		  $(EQI_OBJS) \
+		  $(EXPANDO_OBJS) \
 		  $(FILE_OBJS) \
 		  $(FILTER_OBJS) \
 		  $(FROM_OBJS) \

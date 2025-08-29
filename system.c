@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,14 +31,13 @@
 #include <signal.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <sys/types.h>
 #include <sys/wait.h> // IWYU pragma: keep
 #include <unistd.h>
 #include "mutt/lib.h"
+#include "imap/lib.h"
 #include "globals.h"
 #include "protos.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
 
 /**
  * mutt_system - Run an external command
@@ -78,23 +78,15 @@ int mutt_system(const char *cmd)
   {
     act.sa_flags = 0;
 
-    /* reset signals for the child; not really needed, but... */
     mutt_sig_unblock_system(false);
-    act.sa_handler = SIG_DFL;
-    act.sa_flags = 0;
-    sigemptyset(&act.sa_mask);
-    sigaction(SIGTERM, &act, NULL);
-    sigaction(SIGTSTP, &act, NULL);
-    sigaction(SIGCONT, &act, NULL);
+    mutt_sig_reset_child_signals();
 
     execle(EXEC_SHELL, "sh", "-c", cmd, NULL, EnvList);
     _exit(127); /* execl error */
   }
   else if (pid != -1)
   {
-#ifdef USE_IMAP
     rc = imap_wait_keep_alive(pid);
-#endif
   }
 
   sigaction(SIGCONT, &oldcont, NULL);

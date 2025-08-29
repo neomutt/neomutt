@@ -3,7 +3,7 @@
  * Test code for mutt_ch_convert_string()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Michal Siedlaczek <michal@siedlaczek.me>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "email/lib.h"
 #include "convert/lib.h"
 #include "convert_common.h"

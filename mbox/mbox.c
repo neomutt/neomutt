@@ -3,9 +3,10 @@
  * Mbox local mailbox type
  *
  * @authors
- * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2019-2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -37,11 +38,12 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 #include <utime.h>
 #include "mutt/lib.h"
@@ -53,12 +55,12 @@
 #include "lib.h"
 #include "progress/lib.h"
 #include "copy.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_header.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
+#include "sort.h"
 
 /**
  * struct MUpdate - Store of new offsets, used by mutt_sync_mailbox()
@@ -73,7 +75,7 @@ struct MUpdate
 };
 
 /**
- * mbox_adata_free - Free the private Account data - Implements Account::adata_free()
+ * mbox_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  */
 static void mbox_adata_free(void **ptr)
 {
@@ -92,7 +94,7 @@ static void mbox_adata_free(void **ptr)
  */
 static struct MboxAccountData *mbox_adata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct MboxAccountData));
+  return MUTT_MEM_CALLOC(1, struct MboxAccountData);
 }
 
 /**
@@ -212,9 +214,8 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
+    progress = progress_new(MUTT_PROGRESS_READ, 0);
+    progress_set_message(progress, _("Reading %s..."), mailbox_path(m));
   }
 
   while (true)
@@ -358,7 +359,8 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
     return MX_OPEN_ERROR;
 
   struct stat st = { 0 };
-  char buf[8192], return_path[256];
+  char buf[8192] = { 0 };
+  char return_path[256] = { 0 };
   struct Email *e_cur = NULL;
   time_t t = 0;
   int count = 0, lines = 0;
@@ -382,9 +384,8 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
+    progress = progress_new(MUTT_PROGRESS_READ, 0);
+    progress_set_message(progress, _("Reading %s..."), mailbox_path(m));
   }
 
   loc = ftello(adata->fp);
@@ -801,7 +802,7 @@ static bool mbox_ac_add(struct Account *a, struct Mailbox *m)
  */
 static FILE *mbox_open_readwrite(struct Mailbox *m)
 {
-  FILE *fp = fopen(mailbox_path(m), "r+");
+  FILE *fp = mutt_file_fopen(mailbox_path(m), "r+");
   if (fp)
     m->readonly = false;
   return fp;
@@ -816,7 +817,7 @@ static FILE *mbox_open_readwrite(struct Mailbox *m)
  */
 static FILE *mbox_open_readonly(struct Mailbox *m)
 {
-  FILE *fp = fopen(mailbox_path(m), "r");
+  FILE *fp = mutt_file_fopen(mailbox_path(m), "r");
   if (fp)
     m->readonly = true;
   return fp;
@@ -1082,14 +1083,9 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
   /* sort message by their position in the mailbox on disk */
   const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
   if (c_sort != SORT_ORDER)
   {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-    cs_subset_str_native_set(NeoMutt->sub, "use_threads", UT_FLAT, NULL);
-    mailbox_changed(m, NT_MAILBOX_RESORT);
-    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-    cs_subset_str_native_set(NeoMutt->sub, "use_threads", c_use_threads, NULL);
+    mutt_sort_order(m);
     need_sort = true;
   }
 
@@ -1170,14 +1166,13 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
     offset -= (sizeof(MMDF_SEP) - 1);
 
   /* allocate space for the new offsets */
-  new_offset = mutt_mem_calloc(m->msg_count - first, sizeof(struct MUpdate));
-  old_offset = mutt_mem_calloc(m->msg_count - first, sizeof(struct MUpdate));
+  new_offset = MUTT_MEM_CALLOC(m->msg_count - first, struct MUpdate);
+  old_offset = MUTT_MEM_CALLOC(m->msg_count - first, struct MUpdate);
 
   if (m->verbose)
   {
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
+    progress = progress_new(MUTT_PROGRESS_WRITE, m->msg_count);
+    progress_set_message(progress, _("Writing %s..."), mailbox_path(m));
   }
 
   for (i = first, j = 0; i < m->msg_count; i++)
@@ -1263,7 +1258,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
   unlink_tempfile = false;
 
-  fp = fopen(buf_string(tempfile), "r");
+  fp = mutt_file_fopen(buf_string(tempfile), "r");
   if (!fp)
   {
     mutt_sig_unblock();
@@ -1314,7 +1309,6 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   }
 
   mutt_file_fclose(&fp);
-  fp = NULL;
   mbox_unlock_mailbox(m);
 
   if ((mutt_file_fclose(&adata->fp) != 0) || (i == -1))
@@ -1557,7 +1551,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   if (st->st_size == 0)
     return MUTT_MBOX;
 
-  FILE *fp = fopen(path, "r");
+  FILE *fp = mutt_file_fopen(path, "r");
   if (!fp)
     return MUTT_UNKNOWN;
 
@@ -1614,37 +1608,6 @@ static int mbox_path_canon(struct Buffer *path)
 {
   mutt_path_canon(path, HomeDir, false);
   return 0;
-}
-
-/**
- * mbox_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
- */
-static int mbox_path_pretty(struct Buffer *path, const char *folder)
-{
-  if (mutt_path_abbr_folder(path, folder))
-    return 0;
-
-  if (mutt_path_pretty(path, HomeDir, false))
-    return 0;
-
-  return -1;
-}
-
-/**
- * mbox_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
- */
-static int mbox_path_parent(struct Buffer *path)
-{
-  if (mutt_path_parent(path))
-    return 0;
-
-  if (buf_at(path, 0) == '~')
-    mutt_path_canon(path, HomeDir, false);
-
-  if (mutt_path_parent(path))
-    return 0;
-
-  return -1;
 }
 
 /**
@@ -1725,7 +1688,7 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (m->newly_created && ((st.st_ctime != st.st_mtime) || (st.st_ctime != st.st_atime)))
     m->newly_created = false;
 
-  if (flags & (MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS))
+  if (flags & MUTT_MAILBOX_CHECK_STATS)
   {
     struct MboxAccountData *adata = mbox_adata_get(m);
     if (adata && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME,
@@ -1735,7 +1698,7 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
       mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
       mx_mbox_close(m);
       m->peekonly = old_peek;
-      adata->stats_last_checked.tv_sec = mutt_date_now();
+      mutt_time_now(&adata->stats_last_checked);
     }
   }
 
@@ -1770,8 +1733,6 @@ const struct MxOps MxMboxOps = {
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
   .path_canon       = mbox_path_canon,
-  .path_pretty      = mbox_path_pretty,
-  .path_parent      = mbox_path_parent,
   .path_is_empty    = mbox_path_is_empty,
   // clang-format on
 };
@@ -1802,8 +1763,6 @@ const struct MxOps MxMmdfOps = {
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
   .path_canon       = mbox_path_canon,
-  .path_pretty      = mbox_path_pretty,
-  .path_parent      = mbox_path_parent,
   .path_is_empty    = mbox_path_is_empty,
   // clang-format on
 };

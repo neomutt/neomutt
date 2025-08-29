@@ -3,7 +3,7 @@
  * Parse colour commands
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,8 +26,9 @@
 #include "config.h"
 #include <stdint.h>
 #include "core/lib.h"
+#include "mutt/lib.h"
 
-struct Buffer;
+struct AttrColor;
 
 /**
  * @defgroup parser_callback_api Colour Parsing API
@@ -36,15 +37,12 @@ struct Buffer;
  *
  * @param[in]  buf   Temporary Buffer space
  * @param[in]  s     Buffer containing string to be parsed
- * @param[out] fg    Foreground colour (set to -1)
- * @param[out] bg    Background colour (set to -1)
- * @param[out] attrs Attributes, e.g. A_UNDERLINE
+ * @param[out] ac    Colour
  * @param[out] err   Buffer for error messages
  * @retval  0 Success
  * @retval -1 Error
  */
-typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
-                                 uint32_t *bg, int *attrs, struct Buffer *err);
+typedef enum CommandResult (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
 
 enum CommandResult mutt_parse_color  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_mono   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);

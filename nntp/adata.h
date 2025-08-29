@@ -3,7 +3,7 @@
  * Nntp-specific Account data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -57,7 +57,7 @@ struct NntpAccountData
   time_t check_time;
   unsigned int groups_num;
   unsigned int groups_max;
-  void **groups_list;
+  struct NntpMboxData **groups_list;
   struct HashTable *groups_hash; ///< Hash Table: "newsgroup" -> NntpMboxData
   struct Connection *conn;       ///< Connection to NNTP Server
 };

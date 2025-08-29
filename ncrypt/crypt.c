@@ -3,13 +3,9 @@
  * Signing/encryption multiplexor
  *
  * @authors
- * Copyright (C) 1996-1997 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2000,2002-2004,2006 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2001 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
- * Copyright (C) 2003 Werner Koch <wk@gnupg.org>
- * Copyright (C) 2004 g10code GmbH
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -52,7 +48,7 @@
 #include "send/lib.h"
 #include "copy.h"
 #include "cryptglue.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "mx.h"
 #ifdef USE_AUTOCRYPT
@@ -68,7 +64,8 @@
  */
 void crypt_current_time(struct State *state, const char *app_name)
 {
-  char p[256], tmp[256];
+  char p[256] = { 0 };
+  char tmp[512] = { 0 };
 
   if (!WithCrypto)
     return;
@@ -272,10 +269,24 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   const bool c_crypt_protected_headers_write = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_write");
   if (c_crypt_protected_headers_write)
   {
+    const bool c_devel_security = cs_subset_bool(NeoMutt->sub, "devel_security");
     struct Envelope *protected_headers = mutt_env_new();
-    mutt_str_replace(&protected_headers->subject, e->env->subject);
-    /* Note: if other headers get added, such as to, cc, then a call to
-     * mutt_env_to_intl() will need to be added here too. */
+    mutt_env_set_subject(protected_headers, e->env->subject);
+    if (c_devel_security)
+    {
+      mutt_addrlist_copy(&protected_headers->return_path, &e->env->return_path, false);
+      mutt_addrlist_copy(&protected_headers->from, &e->env->from, false);
+      mutt_addrlist_copy(&protected_headers->to, &e->env->to, false);
+      mutt_addrlist_copy(&protected_headers->cc, &e->env->cc, false);
+      mutt_addrlist_copy(&protected_headers->sender, &e->env->sender, false);
+      mutt_addrlist_copy(&protected_headers->reply_to, &e->env->reply_to, false);
+      mutt_addrlist_copy(&protected_headers->mail_followup_to,
+                         &e->env->mail_followup_to, false);
+      mutt_addrlist_copy(&protected_headers->x_original_to, &e->env->x_original_to, false);
+      mutt_list_copy_tail(&protected_headers->references, &e->env->references);
+      mutt_list_copy_tail(&protected_headers->in_reply_to, &e->env->in_reply_to);
+      mutt_env_to_intl(protected_headers, NULL, NULL);
+    }
     mutt_prepare_envelope(protected_headers, 0, NeoMutt->sub);
 
     mutt_env_free(&e->body->mime_headers);
@@ -292,7 +303,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
    *
    * This is important to note because the user could toggle
    * $crypt_protected_headers_write or $autocrypt off back in the
-   * compose menu.  We don't want mutt_write_rfc822_header() to write
+   * compose menu.  We don't want mutt_rfc822_write_header() to write
    * stale data from one option if the other is set.
    */
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
@@ -534,7 +545,7 @@ SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
  * @retval >0 Message uses PGP, e.g. #PGP_ENCRYPT
  * @retval  0 Message doesn't use PGP, (#SEC_NO_FLAGS)
  */
-SecurityFlags mutt_is_application_pgp(struct Body *b)
+SecurityFlags mutt_is_application_pgp(const struct Body *b)
 {
   SecurityFlags t = SEC_NO_FLAGS;
   char *p = NULL;
@@ -737,7 +748,7 @@ SecurityFlags crypt_query(struct Body *b)
 
 /**
  * crypt_write_signed - Write the message body/part
- * @param a        Body to write
+ * @param b        Body to write
  * @param state    State to use
  * @param tempfile File to write to
  * @retval  0 Success
@@ -745,7 +756,7 @@ SecurityFlags crypt_query(struct Body *b)
  *
  * Body/part A described by state state to the given TEMPFILE.
  */
-int crypt_write_signed(struct Body *a, struct State *state, const char *tempfile)
+int crypt_write_signed(struct Body *b, struct State *state, const char *tempfile)
 {
   if (!WithCrypto)
     return -1;
@@ -757,12 +768,12 @@ int crypt_write_signed(struct Body *a, struct State *state, const char *tempfile
     return -1;
   }
 
-  if (!mutt_file_seek(state->fp_in, a->hdr_offset, SEEK_SET))
+  if (!mutt_file_seek(state->fp_in, b->hdr_offset, SEEK_SET))
   {
     mutt_file_fclose(&fp);
     return -1;
   }
-  size_t bytes = a->length + a->offset - a->hdr_offset;
+  size_t bytes = b->length + b->offset - b->hdr_offset;
   bool hadcr = false;
   while (bytes > 0)
   {
@@ -793,47 +804,47 @@ int crypt_write_signed(struct Body *a, struct State *state, const char *tempfile
 
 /**
  * crypt_convert_to_7bit - Convert an email to 7bit encoding
- * @param a Body of email to convert
+ * @param b Body of email to convert
  */
-void crypt_convert_to_7bit(struct Body *a)
+void crypt_convert_to_7bit(struct Body *b)
 {
   if (!WithCrypto)
     return;
 
   const bool c_pgp_strict_enc = cs_subset_bool(NeoMutt->sub, "pgp_strict_enc");
-  while (a)
+  while (b)
   {
-    if (a->type == TYPE_MULTIPART)
+    if (b->type == TYPE_MULTIPART)
     {
-      if (a->encoding != ENC_7BIT)
+      if (b->encoding != ENC_7BIT)
       {
-        a->encoding = ENC_7BIT;
-        crypt_convert_to_7bit(a->parts);
+        b->encoding = ENC_7BIT;
+        crypt_convert_to_7bit(b->parts);
       }
       else if (((WithCrypto & APPLICATION_PGP) != 0) && c_pgp_strict_enc)
       {
-        crypt_convert_to_7bit(a->parts);
+        crypt_convert_to_7bit(b->parts);
       }
     }
-    else if ((a->type == TYPE_MESSAGE) && !mutt_istr_equal(a->subtype, "delivery-status"))
+    else if ((b->type == TYPE_MESSAGE) && !mutt_istr_equal(b->subtype, "delivery-status"))
     {
-      if (a->encoding != ENC_7BIT)
-        mutt_message_to_7bit(a, NULL, NeoMutt->sub);
+      if (b->encoding != ENC_7BIT)
+        mutt_message_to_7bit(b, NULL, NeoMutt->sub);
     }
-    else if (a->encoding == ENC_8BIT)
+    else if (b->encoding == ENC_8BIT)
     {
-      a->encoding = ENC_QUOTED_PRINTABLE;
+      b->encoding = ENC_QUOTED_PRINTABLE;
     }
-    else if (a->encoding == ENC_BINARY)
+    else if (b->encoding == ENC_BINARY)
     {
-      a->encoding = ENC_BASE64;
+      b->encoding = ENC_BASE64;
     }
-    else if (a->content && (a->encoding != ENC_BASE64) &&
-             (a->content->from || (a->content->space && c_pgp_strict_enc)))
+    else if (b->content && (b->encoding != ENC_BASE64) &&
+             (b->content->from || (b->content->space && c_pgp_strict_enc)))
     {
-      a->encoding = ENC_QUOTED_PRINTABLE;
+      b->encoding = ENC_QUOTED_PRINTABLE;
     }
-    a = a->next;
+    b = b->next;
   }
 }
 
@@ -1015,7 +1026,7 @@ int crypt_get_keys(struct Email *e, char **keylist, bool oppenc_mode)
   if (!oppenc_mode && self_encrypt)
   {
     const size_t keylist_size = mutt_str_len(*keylist);
-    mutt_mem_realloc(keylist, keylist_size + mutt_str_len(self_encrypt) + 2);
+    MUTT_MEM_REALLOC(keylist, keylist_size + mutt_str_len(self_encrypt) + 2, char);
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
@@ -1042,7 +1053,7 @@ void crypt_opportunistic_encrypt(struct Email *e)
 
   char *pgpkeylist = NULL;
 
-  crypt_get_keys(e, &pgpkeylist, 1);
+  crypt_get_keys(e, &pgpkeylist, true);
   if (pgpkeylist)
   {
     e->security |= SEC_ENCRYPT;
@@ -1056,27 +1067,27 @@ void crypt_opportunistic_encrypt(struct Email *e)
 
 /**
  * crypt_fetch_signatures - Create an array of an emails parts
- * @param[out] signatures Array of Body parts
- * @param[in]  a          Body part to examine
- * @param[out] n          Cumulative count of parts
+ * @param[out] b_sigs Array of Body parts
+ * @param[in]  b      Body part to examine
+ * @param[out] n      Cumulative count of parts
  */
-static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, int *n)
+static void crypt_fetch_signatures(struct Body ***b_sigs, struct Body *b, int *n)
 {
   if (!WithCrypto)
     return;
 
-  for (; a; a = a->next)
+  for (; b; b = b->next)
   {
-    if (a->type == TYPE_MULTIPART)
+    if (b->type == TYPE_MULTIPART)
     {
-      crypt_fetch_signatures(signatures, a->parts, n);
+      crypt_fetch_signatures(b_sigs, b->parts, n);
     }
     else
     {
       if ((*n % 5) == 0)
-        mutt_mem_realloc(signatures, (*n + 6) * sizeof(struct Body **));
+        MUTT_MEM_REALLOC(b_sigs, *n + 6, struct Body *);
 
-      (*signatures)[(*n)++] = a;
+      (*b_sigs)[(*n)++] = b;
     }
   }
 }
@@ -1101,61 +1112,157 @@ bool mutt_should_hide_protected_subject(struct Email *e)
 }
 
 /**
- * mutt_protected_headers_handler - Process a protected header - Implements ::handler_t - @ingroup handler_api
+ * mutt_protected_headers_handler - Handler for protected headers - Implements ::handler_t - @ingroup handler_api
  */
-int mutt_protected_headers_handler(struct Body *b, struct State *state)
+int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
 {
-  const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
-  if (c_crypt_protected_headers_read && b->mime_headers)
+  if (!cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read"))
+    return 0;
+
+  state_mark_protected_header(state);
+
+  if (!b_email->mime_headers)
+    goto blank;
+
+  const bool c_devel_security = cs_subset_bool(NeoMutt->sub, "devel_security");
+  const bool display = (state->flags & STATE_DISPLAY);
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  const bool c_crypt_protected_headers_weed = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_weed");
+  const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+  const int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
+  const CopyHeaderFlags chflags = display ? CH_DISPLAY : CH_NO_FLAGS;
+  struct Buffer *buf = buf_pool_get();
+  bool weed = (display && c_weed);
+  if (c_devel_security)
+    weed &= c_crypt_protected_headers_weed;
+
+  if (c_devel_security)
   {
-    if (b->mime_headers->subject)
+    if (b_email->mime_headers->date && (!display || !c_weed || !mutt_matches_ignore("date")))
     {
-      const bool display = (state->flags & STATE_DISPLAY);
+      mutt_write_one_header(state->fp_out, "Date", b_email->mime_headers->date,
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
 
-      const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-      if (display && c_weed && mutt_matches_ignore("subject"))
-        return 0;
-
-      state_mark_protected_header(state);
-      const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
-      int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
-
-      mutt_write_one_header(state->fp_out, "Subject", b->mime_headers->subject,
-                            state->prefix, wraplen,
-                            display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
-      state_puts(state, "\n");
+    if (!weed || !mutt_matches_ignore("return-path"))
+    {
+      mutt_addrlist_write(&b_email->mime_headers->return_path, buf, display);
+      mutt_write_one_header(state->fp_out, "Return-Path", buf_string(buf),
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
+    if (!weed || !mutt_matches_ignore("from"))
+    {
+      buf_reset(buf);
+      mutt_addrlist_write(&b_email->mime_headers->from, buf, display);
+      mutt_write_one_header(state->fp_out, "From", buf_string(buf),
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
+    if (!weed || !mutt_matches_ignore("to"))
+    {
+      buf_reset(buf);
+      mutt_addrlist_write(&b_email->mime_headers->to, buf, display);
+      mutt_write_one_header(state->fp_out, "To", buf_string(buf), state->prefix,
+                            wraplen, chflags, NeoMutt->sub);
+    }
+    if (!weed || !mutt_matches_ignore("cc"))
+    {
+      buf_reset(buf);
+      mutt_addrlist_write(&b_email->mime_headers->cc, buf, display);
+      mutt_write_one_header(state->fp_out, "Cc", buf_string(buf), state->prefix,
+                            wraplen, chflags, NeoMutt->sub);
+    }
+    if (!weed || !mutt_matches_ignore("sender"))
+    {
+      buf_reset(buf);
+      mutt_addrlist_write(&b_email->mime_headers->sender, buf, display);
+      mutt_write_one_header(state->fp_out, "Sender", buf_string(buf),
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
+    if (!weed || !mutt_matches_ignore("reply-to"))
+    {
+      buf_reset(buf);
+      mutt_addrlist_write(&b_email->mime_headers->reply_to, buf, display);
+      mutt_write_one_header(state->fp_out, "Reply-To", buf_string(buf),
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
+    if (!weed || !mutt_matches_ignore("mail-followup-to"))
+    {
+      buf_reset(buf);
+      mutt_addrlist_write(&b_email->mime_headers->mail_followup_to, buf, display);
+      mutt_write_one_header(state->fp_out, "Mail-Followup-To", buf_string(buf),
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
+    if (!weed || !mutt_matches_ignore("x-original-to"))
+    {
+      buf_reset(buf);
+      mutt_addrlist_write(&b_email->mime_headers->x_original_to, buf, display);
+      mutt_write_one_header(state->fp_out, "X-Original-To", buf_string(buf),
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
     }
   }
 
+  if (b_email->mime_headers->subject && (!weed || !mutt_matches_ignore("subject")))
+  {
+    mutt_write_one_header(state->fp_out, "Subject", b_email->mime_headers->subject,
+                          state->prefix, wraplen, chflags, NeoMutt->sub);
+  }
+
+  if (c_devel_security)
+  {
+    if (b_email->mime_headers->message_id && (!weed || !mutt_matches_ignore("message-id")))
+    {
+      mutt_write_one_header(state->fp_out, "Message-ID", b_email->mime_headers->message_id,
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
+    if (!weed || !mutt_matches_ignore("references"))
+    {
+      buf_reset(buf);
+      mutt_list_write(&b_email->mime_headers->references, buf);
+      mutt_write_one_header(state->fp_out, "References", buf_string(buf),
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
+    if (!weed || !mutt_matches_ignore("in-reply-to"))
+    {
+      buf_reset(buf);
+      mutt_list_write(&b_email->mime_headers->in_reply_to, buf);
+      mutt_write_one_header(state->fp_out, "In-Reply-To", buf_string(buf),
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
+  }
+
+  buf_pool_release(&buf);
+
+blank:
+  state_puts(state, "\n");
   return 0;
 }
 
 /**
- * mutt_signed_handler - Verify a "multipart/signed" body - Implements ::handler_t - @ingroup handler_api
+ * mutt_signed_handler - Handler for "multipart/signed" - Implements ::handler_t - @ingroup handler_api
  */
-int mutt_signed_handler(struct Body *b, struct State *state)
+int mutt_signed_handler(struct Body *b_email, struct State *state)
 {
   if (!WithCrypto)
     return -1;
 
   bool inconsistent = false;
-  struct Body *top = b;
+  struct Body *top = b_email;
   struct Body **signatures = NULL;
   int sigcnt = 0;
   int rc = 0;
   struct Buffer *tempfile = NULL;
 
-  b = b->parts;
+  b_email = b_email->parts;
   SecurityFlags signed_type = mutt_is_multipart_signed(top);
   if (signed_type == SEC_NO_FLAGS)
   {
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf(state, _("[-- Error: Unknown multipart/signed protocol %s --]\n\n"),
                  mutt_param_get(&top->parameter, "protocol"));
-    return mutt_body_handler(b, state);
+    return mutt_body_handler(b_email, state);
   }
 
-  if (!(b && b->next))
+  if (!(b_email && b_email->next))
   {
     inconsistent = true;
   }
@@ -1164,22 +1271,23 @@ int mutt_signed_handler(struct Body *b, struct State *state)
     switch (signed_type)
     {
       case SEC_SIGN:
-        if ((b->next->type != TYPE_MULTIPART) || !mutt_istr_equal(b->next->subtype, "mixed"))
+        if ((b_email->next->type != TYPE_MULTIPART) ||
+            !mutt_istr_equal(b_email->next->subtype, "mixed"))
         {
           inconsistent = true;
         }
         break;
       case PGP_SIGN:
-        if ((b->next->type != TYPE_APPLICATION) ||
-            !mutt_istr_equal(b->next->subtype, "pgp-signature"))
+        if ((b_email->next->type != TYPE_APPLICATION) ||
+            !mutt_istr_equal(b_email->next->subtype, "pgp-signature"))
         {
           inconsistent = true;
         }
         break;
       case SMIME_SIGN:
-        if ((b->next->type != TYPE_APPLICATION) ||
-            (!mutt_istr_equal(b->next->subtype, "x-pkcs7-signature") &&
-             !mutt_istr_equal(b->next->subtype, "pkcs7-signature")))
+        if ((b_email->next->type != TYPE_APPLICATION) ||
+            (!mutt_istr_equal(b_email->next->subtype, "x-pkcs7-signature") &&
+             !mutt_istr_equal(b_email->next->subtype, "pkcs7-signature")))
         {
           inconsistent = true;
         }
@@ -1191,19 +1299,19 @@ int mutt_signed_handler(struct Body *b, struct State *state)
   if (inconsistent)
   {
     state_attach_puts(state, _("[-- Error: Missing or bad-format multipart/signed signature --]\n\n"));
-    return mutt_body_handler(b, state);
+    return mutt_body_handler(b_email, state);
   }
 
   if (state->flags & STATE_DISPLAY)
   {
-    crypt_fetch_signatures(&signatures, b->next, &sigcnt);
+    crypt_fetch_signatures(&signatures, b_email->next, &sigcnt);
 
     if (sigcnt != 0)
     {
       tempfile = buf_pool_get();
       buf_mktemp(tempfile);
       bool goodsig = true;
-      if (crypt_write_signed(b, state, buf_string(tempfile)) == 0)
+      if (crypt_write_signed(b_email, state, buf_string(tempfile)) == 0)
       {
         for (int i = 0; i < sigcnt; i++)
         {
@@ -1228,7 +1336,7 @@ int mutt_signed_handler(struct Body *b, struct State *state)
             continue;
           }
 
-          state_printf(state, _("[-- Warning: We can't verify %s/%s signatures. --]\n\n"),
+          state_printf(state, _("[-- Warning: We can't verify %s/%s signatures --]\n\n"),
                        TYPE(signatures[i]), signatures[i]->subtype);
         }
       }
@@ -1240,22 +1348,22 @@ int mutt_signed_handler(struct Body *b, struct State *state)
       top->badsig = !goodsig;
 
       /* Now display the signed body */
-      state_attach_puts(state, _("[-- The following data is signed --]\n\n"));
+      state_attach_puts(state, _("[-- The following data is signed --]\n"));
 
-      mutt_protected_headers_handler(b, state);
+      mutt_protected_headers_handler(b_email, state);
 
       FREE(&signatures);
     }
     else
     {
-      state_attach_puts(state, _("[-- Warning: Can't find any signatures. --]\n\n"));
+      state_attach_puts(state, _("[-- Warning: Can't find any signatures --]\n\n"));
     }
   }
 
-  rc = mutt_body_handler(b, state);
+  rc = mutt_body_handler(b_email, state);
 
   if ((state->flags & STATE_DISPLAY) && (sigcnt != 0))
-    state_attach_puts(state, _("\n[-- End of signed data --]\n"));
+    state_attach_puts(state, _("[-- End of signed data --]\n"));
 
   return rc;
 }

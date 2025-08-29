@@ -3,7 +3,7 @@
  * Config used by libhistory
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,25 +27,47 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "config/lib.h"
+#include "lib.h"
+#include "expando/lib.h"
+
+/**
+ * HistoryFormatDef - Expando definitions
+ *
+ * Config:
+ * - $history_format
+ */
+static const struct ExpandoDefinition HistoryFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  node_padding_parse },
+  { "C", "number",       ED_HISTORY, ED_HIS_NUMBER,       NULL },
+  { "s", "match",        ED_HISTORY, ED_HIS_MATCH,        NULL },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
 
 /**
  * HistoryVars - Config definitions for the command history
  */
 static struct ConfigDef HistoryVars[] = {
   // clang-format off
-  { "history", DT_NUMBER|DT_NOT_NEGATIVE, 10, 0, NULL,
+  { "history", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
     "Number of history entries to keep in memory per category"
   },
-  { "history_file", DT_PATH|DT_PATH_FILE, IP "~/.mutthistory", 0, NULL,
+  { "history_file", DT_PATH|D_PATH_FILE, IP "~/.mutthistory", 0, NULL,
     "File to save history in"
+  },
+  { "history_format", DT_EXPANDO, IP "%s", IP &HistoryFormatDef, NULL,
+    "printf-like format string for the history menu"
   },
   { "history_remove_dups", DT_BOOL, false, 0, NULL,
     "Remove duplicate entries from the history"
   },
-  { "save_history", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "save_history", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of history entries to save per category"
   },
   { NULL },
@@ -57,5 +79,5 @@ static struct ConfigDef HistoryVars[] = {
  */
 bool config_init_history(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, HistoryVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, HistoryVars);
 }

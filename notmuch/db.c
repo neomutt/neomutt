@@ -3,7 +3,10 @@
  * Notmuch database handling
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2022 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2019 Karel Zak <kzak@redhat.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,6 +35,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <time.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -129,18 +133,23 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
     const char *config_file = get_nm_config_file();
     const char *const c_nm_config_profile = cs_subset_string(NeoMutt->sub, "nm_config_profile");
 
+    FREE(&msg);
     st = notmuch_database_open_with_config(filename, mode, config_file,
                                            c_nm_config_profile, &db, &msg);
 
     // Attempt opening database without configuration file. Don't if the user specified no config.
-    if (st == NOTMUCH_STATUS_NO_CONFIG && !mutt_str_equal(config_file, ""))
+    if ((st == NOTMUCH_STATUS_NO_CONFIG) && !mutt_str_equal(config_file, ""))
     {
       mutt_debug(LL_DEBUG1, "nm: Could not find notmuch configuration file: %s\n", config_file);
-      mutt_debug(LL_DEBUG1, "nm: Attempting to open notmuch db without configuration file.\n");
+      mutt_debug(LL_DEBUG1, "nm: Attempting to open notmuch db without configuration file\n");
 
       FREE(&msg);
 
       st = notmuch_database_open_with_config(filename, mode, "", NULL, &db, &msg);
+    }
+    else if ((st == NOTMUCH_STATUS_NO_CONFIG) && !config_file)
+    {
+      FREE(&msg);
     }
 #elif LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
     st = notmuch_database_open_verbose(filename, mode, &db, &msg);

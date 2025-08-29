@@ -1,4 +1,3 @@
-'\" t
 .\" -*-nroff-*-
 .\"
 .\"     Copyright (C) 2000 Thomas Roessler <roessler@does-not-exist.org>
@@ -6,82 +5,97 @@
 .\"     This document is in the public domain and may be distributed and
 .\"     changed arbitrarily.
 .\"
-.TH mbox 5 "February 19th, 2002" Unix "User Manuals"
+.TH mbox 5 "2002-02-19" Unix "User Manuals"
 .\"
 .SH NAME
-mbox \- Format for mail message storage.
+mbox
+\-
+Format for mail message storage.
 .\"
 .SH DESCRIPTION
 This document describes the format traditionally used by Unix hosts
 to store mail messages locally.
 .B mbox
-files typically reside in the system's mail spool, under various
-names in users' Mail directories, and under the name
+files typically reside in the system's mail spool,
+under various names in users' Mail directories,
+and under the name
 .B mbox
 in users' home directories.
 .PP
 An
 .B mbox
 is a text file containing an arbitrary number of e-mail messages.
-Each message consists of a postmark, followed by an e-mail message
-formatted according to \fBRFC822\fP, \fBRFC2822\fP. The file format
-is line-oriented. Lines are separated by line feed characters (ASCII 10).
+Each message consists of a postmark,
+followed by an e-mail message
+formatted according to \fBRFC822\fP, \fBRFC2822\fP.
+The file format is line-oriented.
+Lines are separated by line feed characters (ASCII 10).
 .PP
-A postmark line consists of the four characters "From", followed by
-a space character, followed by the message's envelope sender
-address, followed by whitespace, and followed by a time stamp. This
-line is often called From_ line.
+A postmark line consists of the four characters "From",
+followed by a space character,
+followed by the message's envelope sender address,
+followed by whitespace,
+and followed by a time stamp.
+This line is often called From_ line.
 .PP
 The sender address is expected to be
 .B addr-spec
-as defined in \fBRFC2822\fP 3.4.1. The date is expected to be
+as defined in \fBRFC2822\fP 3.4.1.
+The date is expected to be
 .B date-time
 as output by
 .BR asctime (3).
-For compatibility reasons with legacy software, two-digit years
-greater than or equal to 70 should be interpreted as the years
-1970+, while two-digit years less than 70 should be interpreted as
-the years 2000-2069. Software reading files in this format should
-also be prepared to accept non-numeric timezone information such as
-"CET DST" for Central European Time, daylight saving time.
+For compatibility reasons with legacy software,
+two-digit years greater than or equal to 70
+should be interpreted as the years 1970+,
+while two-digit years less than 70
+should be interpreted as the years 2000-2069.
+Software reading files in this format
+should also be prepared to accept non-numeric timezone information
+such as "CET DST" for Central European Time, daylight saving time.
 .PP
 Example:
 .IP "" 1
 >From example@example.com Fri Jun 23 02:56:55 2000
 .PP
-In order to avoid misinterpretation of lines in message bodies
-which begin with the four characters "From", followed by a space
-character, the mail delivery agent must quote any occurrence
-of "From " at the start of a body line.
+In order to avoid misinterpretation of lines in
+message bodies which begin with the four characters "From",
+followed by a space character,
+the mail delivery agent must quote any occurrence of
+"From " at the start of a body line.
 .sp
-There are two different quoting schemes, the first (\fBMBOXO\fP) only
-quotes plain "From " lines in the body by prepending a '>' to the
-line; the second (\fBMBOXRD\fP) also quotes already quoted "From "
-lines by prepending a '>' (i.e. ">From ", ">>From ", ...). The later
-has the advantage that lines like
+There are two different quoting schemes,
+the first (\fBMBOXO\fP) only quotes plain "From " lines in the body
+by prepending a '>' to the line;
+the second (\fBMBOXRD\fP) also quotes already quoted "From " lines
+by prepending a '>' (i.e. ">From ", ">>From ", ...).
+The later has the advantage that lines like
 .IP "" 1
 >From the command line you can use the '\-p' option
 .PP
-aren't dequoted wrongly as a \fBMBOXRD\fP-MDA would turn the line
-into
+aren't dequoted wrongly as a \fBMBOXRD\fP-MDA would turn the line into
 .IP "" 1
 >>From the command line you can use the '\-p' option
 .PP
-before storing it. Besides \fBMBOXO\fP and \fBMBOXRD\fP there is also
-\fBMBOXCL\fP which is \fBMBOXO\fP with a "Content-Length:"\-field with the
-number of bytes in the message body; some MUAs (like
+before storing it.
+Besides \fBMBOXO\fP and \fBMBOXRD\fP there is also \fBMBOXCL\fP
+which is \fBMBOXO\fP with a "Content-Length:" field
+with the number of bytes in the message body;
+some MUAs (like
 .BR neomutt (1))
-do automatically transform \fBMBOXO\fP mailboxes into \fBMBOXCL\fP ones when
-ever they write them back as \fBMBOXCL\fP can be read by any \fBMBOXO\fP-MUA
+do automatically transform \fBMBOXO\fP mailboxes into \fBMBOXCL\fP ones
+when ever they write them back as \fBMBOXCL\fP
+can be read by any \fBMBOXO\fP-MUA
 without any problems.
 .PP
-If the modification-time (usually determined via
+If the modification-time
+(usually determined via
 .BR stat (2))
 of a nonempty
 .B mbox
-file is greater than the access-time the file has new mail. Many MUAs
-place a Status: header in each message to indicate which messages have
-already been read.
+file is greater than the access-time the file has new mail.
+Many MUAs place a Status: header in each message
+to indicate which messages have already been read.
 .\"
 .SH LOCKING
 Since
@@ -90,61 +104,66 @@ files are frequently accessed by multiple programs in parallel,
 .B mbox
 files should generally not be accessed without locking.
 .PP
-Three different locking mechanisms (and combinations thereof) are in
-general use:
+Three different locking mechanisms (and combinations thereof)
+are in general use:
 .IP "\(bu"
 .BR fcntl (2)
-locking is mostly used on recent, POSIX-compliant systems. Use of
-this locking method is, in particular, advisable if
+locking is mostly used on recent,
+POSIX-compliant systems.
+Use of this locking method is, in particular, advisable if
 .B mbox
-files are accessed through the Network File System (NFS), since it
-seems the only way to reliably invalidate NFS clients' caches.
+files are accessed through the Network File System (NFS),
+since it seems the only way to reliably invalidate NFS clients' caches.
 .IP "\(bu"
 .BR flock (2)
 locking is mostly used on BSD-based systems.
 .PP
-If multiple methods are combined, implementors should make sure to
+If multiple methods are combined,
+implementers should make sure to
 use the non-blocking variants of the
 .BR fcntl (2)
 and
 .BR flock (2)
 system calls in order to avoid deadlocks.
 .PP
-If multiple methods are combined, an
+If multiple methods are combined,
+an
 .B mbox
-file must not be considered to have been successfully locked before
-all individual locks were obtained. When one of the individual
-locking methods fails, an application should release all locks it
-acquired successfully, and restart the entire locking procedure from
-the beginning, after a suitable delay.
+file must not be considered to have been successfully locked
+before all individual locks were obtained.
+When one of the individual locking methods fails,
+an application should release all locks it acquired successfully,
+and restart the entire locking procedure from the beginning,
+after a suitable delay.
 .PP
-The locking mechanism used on a particular system is a matter of
-local policy, and should be consistently used by all applications
+The locking mechanism used on a particular system is a matter of local policy,
+and should be consistently used by all applications
 installed on the system which access
 .B mbox
-files. Failure to do so may result in loss of e-mail data, and in
-corrupted
+files.
+Failure to do so may result in loss of e-mail data,
+and in corrupted
 .B mbox
 files.
 .\"
 .SH FILES
-.IR /var/spool/mail/$LOGNAME
+.IR /var/spool/mail/ $LOGNAME
 .RS
 \fB$LOGNAME\fP's incoming mail folder.
 .RE
 .PP
-.IR $HOME/mbox
+.RI $HOME /mbox
 .RS
-user's archived mail messages, in his \fB$HOME\fP directory.
+user's archived mail messages,
+in his \fB$HOME\fP directory.
 .RE
 .PP
-.IR $HOME/Mail/
+.RI $HOME /Mail/
 .RS
 A directory in user's \fB$HOME\fP directory which is commonly used to hold
 .B mbox
 format folders.
 .RE
-.PP
 .\"
 .SH "SEE ALSO"
 .BR neomutt (1),
@@ -157,7 +176,7 @@ format folders.
 .BR mmdf (5),
 .BR RFC822 ,
 .BR RFC976 ,
-.BR RFC2822
+.B RFC2822
 .\"
 .SH AUTHOR
 Thomas Roessler <roessler@does-not-exist.org>, Urs Janssen <urs@tin.org>

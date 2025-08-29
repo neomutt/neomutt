@@ -31,7 +31,7 @@
 #include "private_data.h"
 
 /**
- * attach_private_data_free - Free Attach Data - Implements Menu::mdata_free() - @ingroup menu_mdata_free
+ * attach_private_data_free - Free the Attach Data - Implements Menu::mdata_free() - @ingroup menu_mdata_free
  * @param menu Menu
  * @param ptr  Attach Data to free
  */
@@ -49,7 +49,5 @@ void attach_private_data_free(struct Menu *menu, void **ptr)
  */
 struct AttachPrivateData *attach_private_data_new(void)
 {
-  struct AttachPrivateData *priv = mutt_mem_calloc(1, sizeof(struct AttachPrivateData));
-
-  return priv;
+  return MUTT_MEM_CALLOC(1, struct AttachPrivateData);
 }

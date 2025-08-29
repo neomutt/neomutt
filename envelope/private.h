@@ -39,19 +39,14 @@ enum HeaderField
   HDR_SUBJECT, ///< "Subject:" field
   HDR_REPLYTO, ///< "Reply-To:" field
   HDR_FCC,     ///< "Fcc:" (save folder) field
-#ifdef MIXMASTER
-  HDR_MIX, ///< "Mix:" field (Mixmaster chain)
-#endif
   HDR_CRYPT,     ///< "Security:" field (encryption/signing info)
   HDR_CRYPTINFO, ///< "Sign as:" field (encryption/signing info)
 #ifdef USE_AUTOCRYPT
   HDR_AUTOCRYPT, ///< "Autocrypt:" and "Recommendation:" fields
 #endif
-#ifdef USE_NNTP
   HDR_NEWSGROUPS, ///< "Newsgroups:" field
   HDR_FOLLOWUPTO, ///< "Followup-To:" field
   HDR_XCOMMENTTO, ///< "X-Comment-To:" field
-#endif
   HDR_CUSTOM_HEADERS, ///< "Headers:" field
   HDR_ATTACH_TITLE,   ///< The "-- Attachments" line
 };

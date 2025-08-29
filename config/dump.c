@@ -3,7 +3,9 @@
  * Dump all the config
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -175,24 +177,21 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
 
   bool result = true;
 
-  struct Buffer value = buf_make(256);
-  struct Buffer initial = buf_make(256);
-  struct Buffer tmp = buf_make(256);
+  struct Buffer *value = buf_pool_get();
+  struct Buffer *initial = buf_pool_get();
+  struct Buffer *tmp = buf_pool_get();
 
   for (size_t i = 0; he_list[i]; i++)
   {
-    buf_reset(&value);
-    buf_reset(&initial);
+    buf_reset(value);
+    buf_reset(initial);
     he = he_list[i];
     const int type = DTYPE(he->type);
 
     if ((type == DT_SYNONYM) && !(flags & CS_DUMP_SHOW_SYNONYMS))
       continue;
 
-    if ((he->type & DT_DEPRECATED) && !(flags & CS_DUMP_SHOW_DEPRECATED))
-      continue;
-
-    if ((he->type & DT_DISABLED) && !(flags & CS_DUMP_SHOW_DISABLED))
+    if ((he->type & D_INTERNAL_DEPRECATED) && !(flags & CS_DUMP_SHOW_DEPRECATED))
       continue;
 
     if (type != DT_SYNONYM)
@@ -201,7 +200,7 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
       if ((flags & CS_DUMP_ONLY_CHANGED) || !(flags & CS_DUMP_HIDE_VALUE) ||
           (flags & CS_DUMP_SHOW_DEFAULTS))
       {
-        int rc = cs_he_string_get(cs, he, &value);
+        int rc = cs_he_string_get(cs, he, value);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           result = false; /* LCOV_EXCL_LINE */
@@ -209,55 +208,55 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         }
 
         const struct ConfigDef *cdef = he->data;
-        if ((type == DT_STRING) && IS_SENSITIVE(cdef->type) &&
-            (flags & CS_DUMP_HIDE_SENSITIVE) && !buf_is_empty(&value))
+        if ((type == DT_STRING) && (cdef->type & D_SENSITIVE) &&
+            (flags & CS_DUMP_HIDE_SENSITIVE) && !buf_is_empty(value))
         {
-          buf_reset(&value);
-          buf_addstr(&value, "***");
+          buf_reset(value);
+          buf_addstr(value, "***");
         }
 
-        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (value.data[0] == '/'))
-          mutt_pretty_mailbox(value.data, value.dsize);
+        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (value->data[0] == '/'))
+          mutt_pretty_mailbox(value->data, value->dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
         {
-          buf_reset(&tmp);
-          pretty_var(value.data, &tmp);
-          buf_strcpy(&value, tmp.data);
+          buf_reset(tmp);
+          pretty_var(value->data, tmp);
+          buf_strcpy(value, tmp->data);
         }
       }
 
       /* If necessary, get the default value */
       if (flags & (CS_DUMP_ONLY_CHANGED | CS_DUMP_SHOW_DEFAULTS))
       {
-        int rc = cs_he_initial_get(cs, he, &initial);
+        int rc = cs_he_initial_get(cs, he, initial);
         if (CSR_RESULT(rc) != CSR_SUCCESS)
         {
           result = false; /* LCOV_EXCL_LINE */
           break;          /* LCOV_EXCL_LINE */
         }
 
-        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && !(he->type & DT_MAILBOX))
-          mutt_pretty_mailbox(initial.data, initial.dsize);
+        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && !(he->type & D_STRING_MAILBOX))
+          mutt_pretty_mailbox(initial->data, initial->dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
             (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
         {
-          buf_reset(&tmp);
-          pretty_var(initial.data, &tmp);
-          buf_strcpy(&initial, tmp.data);
+          buf_reset(tmp);
+          pretty_var(initial->data, tmp);
+          buf_strcpy(initial, tmp->data);
         }
       }
     }
 
-    dump_config_neo(cs, he, &value, &initial, flags, fp);
+    dump_config_neo(cs, he, value, initial, flags, fp);
   }
 
   FREE(&he_list);
-  buf_dealloc(&value);
-  buf_dealloc(&initial);
-  buf_dealloc(&tmp);
+  buf_pool_release(&value);
+  buf_pool_release(&initial);
+  buf_pool_release(&tmp);
 
   return result;
 }

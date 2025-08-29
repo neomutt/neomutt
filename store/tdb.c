@@ -3,7 +3,8 @@
  * Trivial DataBase (TDB) backend for the key/value Store
  *
  * @authors
- * Copyright (C) 2020 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2020 Tino Reichardt <github@mcmilk.de>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,16 +29,17 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <fcntl.h>
+#include <stdbool.h>
+#include <stddef.h>
 #include <tdb.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
 /**
- * store_tdb_open - Implements StoreOps::open() - @ingroup store_open
+ * store_tdb_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_tdb_open(const char *path)
+static StoreHandle *store_tdb_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
@@ -49,14 +51,15 @@ static StoreHandle *store_tdb_open(const char *path)
   const int flags = TDB_NOLOCK | TDB_INCOMPATIBLE_HASH | TDB_NOSYNC;
   const int hash_size = 33533; // Based on test timings for 100K emails
 
-  struct tdb_context *db = tdb_open(path, hash_size, flags, O_CREAT | O_RDWR, 00600);
+  struct tdb_context *db = tdb_open(path, hash_size, flags,
+                                    (create ? O_CREAT : 0) | O_RDWR, 00600);
 
   // Return an opaque pointer
   return (StoreHandle *) db;
 }
 
 /**
- * store_tdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
+ * store_tdb_fetch - Fetch a Value from the Store - Implements StoreOps::fetch() - @ingroup store_fetch
  */
 static void *store_tdb_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
@@ -77,7 +80,7 @@ static void *store_tdb_fetch(StoreHandle *store, const char *key, size_t klen, s
 }
 
 /**
- * store_tdb_free - Implements StoreOps::free() - @ingroup store_free
+ * store_tdb_free - Free a Value returned by fetch() - Implements StoreOps::free() - @ingroup store_free
  */
 static void store_tdb_free(StoreHandle *store, void **ptr)
 {
@@ -85,7 +88,7 @@ static void store_tdb_free(StoreHandle *store, void **ptr)
 }
 
 /**
- * store_tdb_store - Implements StoreOps::store() - @ingroup store_store
+ * store_tdb_store - Write a Value to the Store - Implements StoreOps::store() - @ingroup store_store
  */
 static int store_tdb_store(StoreHandle *store, const char *key, size_t klen,
                            void *value, size_t vlen)
@@ -108,7 +111,7 @@ static int store_tdb_store(StoreHandle *store, const char *key, size_t klen,
 }
 
 /**
- * store_tdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
+ * store_tdb_delete_record - Delete a record from the Store - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
 static int store_tdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
@@ -126,7 +129,7 @@ static int store_tdb_delete_record(StoreHandle *store, const char *key, size_t k
 }
 
 /**
- * store_tdb_close - Implements StoreOps::close() - @ingroup store_close
+ * store_tdb_close - Close a Store connection - Implements StoreOps::close() - @ingroup store_close
  */
 static void store_tdb_close(StoreHandle **ptr)
 {
@@ -140,7 +143,7 @@ static void store_tdb_close(StoreHandle **ptr)
 }
 
 /**
- * store_tdb_version - Implements StoreOps::version() - @ingroup store_version
+ * store_tdb_version - Get a Store version string - Implements StoreOps::version() - @ingroup store_version
  */
 static const char *store_tdb_version(void)
 {

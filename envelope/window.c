@@ -3,7 +3,8 @@
  * Envelope Window
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -71,7 +72,7 @@
 #include "color/lib.h"
 #include "ncrypt/lib.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "wdata.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -104,10 +105,6 @@ const char *const Prompts[] = {
   N_("Reply-To: "),
   /* L10N: Compose menu field.  May not want to translate. */
   N_("Fcc: "),
-#ifdef MIXMASTER
-  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
-  N_("Mix: "),
-#endif
   /* L10N: Compose menu field.  Holds "Encrypt", "Sign" related information */
   N_("Security: "),
   /* L10N: This string is used by the compose menu.
@@ -120,14 +117,12 @@ const char *const Prompts[] = {
   // L10N: The compose menu autocrypt line
   N_("Autocrypt: "),
 #endif
-#ifdef USE_NNTP
   /* L10N: Compose menu field.  May not want to translate. */
   N_("Newsgroups: "),
   /* L10N: Compose menu field.  May not want to translate. */
   N_("Followup-To: "),
   /* L10N: Compose menu field.  May not want to translate. */
   N_("X-Comment-To: "),
-#endif
   N_("Headers: "),
 };
 
@@ -309,15 +304,11 @@ static int calc_user_hdrs(const struct ListHead *hdrs)
 static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdata)
 {
   int rows = 4; // 'From:', 'Subject:', 'Reply-To:', 'Fcc:'
-#ifdef MIXMASTER
-  rows++;
-#endif
-
   struct Email *e = wdata->email;
+
   struct Envelope *env = e->env;
   const int cols = win->state.cols - MaxHeaderWidth;
 
-#ifdef USE_NNTP
   if (wdata->is_news)
   {
     rows += 2; // 'Newsgroups:' and 'Followup-To:'
@@ -326,7 +317,6 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
       rows++;
   }
   else
-#endif
   {
     rows += calc_address(&env->to, cols, &wdata->to_rows);
     rows += calc_address(&env->cc, cols, &wdata->cc_rows);
@@ -498,46 +488,6 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
   return used;
 }
 
-#ifdef MIXMASTER
-/**
- * draw_mix_line - Redraw the Mixmaster chain
- * @param chain List of chain links
- * @param win   Window to draw on
- * @param row   Window row to start drawing
- */
-static void draw_mix_line(struct ListHead *chain, struct MuttWindow *win, int row)
-{
-  char *t = NULL;
-
-  draw_header(win, row, HDR_MIX);
-
-  if (STAILQ_EMPTY(chain))
-  {
-    mutt_window_addstr(win, _("<no chain defined>"));
-    mutt_window_clrtoeol(win);
-    return;
-  }
-
-  int c = 12;
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, chain, entries)
-  {
-    t = np->data;
-    if (t && (t[0] == '0') && (t[1] == '\0'))
-      t = "<random>";
-
-    if ((c + mutt_str_len(t) + 2) >= win->state.cols)
-      break;
-
-    mutt_window_addstr(win, NONULL(t));
-    if (STAILQ_NEXT(np, entries))
-      mutt_window_addstr(win, ", ");
-
-    c += mutt_str_len(t) + 2;
-  }
-}
-#endif
-
 /**
  * draw_envelope_addr - Write addresses to the compose window
  * @param field     Field to display, e.g. #HDR_FROM
@@ -638,7 +588,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
       width_left -= addr_len;
     }
     mutt_debug(LL_DEBUG3, "%d addresses remaining\n", count);
-    mutt_debug(LL_DEBUG3, "%ld lines remaining\n", max_lines - lines_used);
+    mutt_debug(LL_DEBUG3, "%zd lines remaining\n", max_lines - lines_used);
   }
   mutt_list_free(&list);
   buf_pool_release(&buf);
@@ -724,7 +674,6 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
   mutt_window_clear(win);
   int row = draw_envelope_addr(HDR_FROM, &e->env->from, win, 0, 1);
 
-#ifdef USE_NNTP
   if (wdata->is_news)
   {
     draw_header(win, row++, HDR_NEWSGROUPS);
@@ -741,7 +690,6 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
     }
   }
   else
-#endif
   {
     row += draw_envelope_addr(HDR_TO, &e->env->to, win, row, wdata->to_rows);
     row += draw_envelope_addr(HDR_CC, &e->env->cc, win, row, wdata->cc_rows);
@@ -759,9 +707,6 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
   if (WithCrypto)
     row += draw_crypt_lines(win, wdata, row);
 
-#ifdef MIXMASTER
-  draw_mix_line(&e->chain, win, row++);
-#endif
   const bool c_compose_show_user_headers = cs_subset_bool(wdata->sub, "compose_show_user_headers");
   if (c_compose_show_user_headers)
     row += draw_envelope_user_hdrs(win, wdata, row);

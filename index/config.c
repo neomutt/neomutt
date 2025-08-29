@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "config/lib.h"
 
 /**
@@ -60,5 +60,5 @@ static struct ConfigDef IndexVars[] = {
  */
 bool config_init_index(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, IndexVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, IndexVars);
 }

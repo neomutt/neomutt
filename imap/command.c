@@ -6,7 +6,12 @@
  * Copyright (C) 1996-1998,2010,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2011 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2018-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Fabian Groffen <grobian@gentoo.org>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -44,8 +49,8 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
-#include "parse/lib.h"
 #include "adata.h"
+#include "commands.h"
 #include "edata.h"
 #include "mdata.h"
 #include "msn.h"
@@ -557,7 +562,7 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
       if (len != 0 && ((s[len] == '\0') || isspace(s[len])))
       {
         adata->capabilities |= (1 << i);
-        mutt_debug(LL_DEBUG3, " Found capability \"%s\": %lu\n", Capabilities[i], i);
+        mutt_debug(LL_DEBUG3, " Found capability \"%s\": %zu\n", Capabilities[i], i);
         break;
       }
     }
@@ -574,7 +579,6 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
 {
   struct ImapList *list = NULL;
   struct ImapList lb = { 0 };
-  char delimbuf[5] = { 0 }; /* worst case: "\\"\0 */
   unsigned int litlen;
 
   if (adata->cmdresult)
@@ -611,8 +615,8 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
   /* Delimiter */
   if (!mutt_istr_startswith(s, "NIL"))
   {
-    delimbuf[0] = '\0';
-    mutt_str_cat(delimbuf, 5, s);
+    char delimbuf[5] = { 0 }; // worst case: "\\"\0
+    snprintf(delimbuf, sizeof(delimbuf), "%s", s);
     imap_unquote_string(delimbuf);
     list->delim = delimbuf[0];
   }
@@ -667,12 +671,6 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
  */
 static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
 {
-  char buf[256] = { 0 };
-  char quoted_name[256] = { 0 };
-  struct Buffer err;
-  struct Url url = { 0 };
-  struct ImapList list = { 0 };
-
   if (adata->cmdresult)
   {
     /* caller will handle response itself */
@@ -684,6 +682,8 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   if (!c_imap_check_subscribed)
     return;
 
+  struct ImapList list = { 0 };
+
   adata->cmdresult = &list;
   cmd_parse_list(adata, s);
   adata->cmdresult = NULL;
@@ -693,23 +693,23 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
 
   mutt_debug(LL_DEBUG3, "Subscribing to %s\n", list.name);
 
-  mutt_str_copy(buf, "mailboxes \"", sizeof(buf));
+  struct Buffer *buf = buf_pool_get();
+  struct Buffer *err = buf_pool_get();
+  struct Url url = { 0 };
+
   mutt_account_tourl(&adata->conn->account, &url);
-  /* escape \ and " */
-  imap_quote_string(quoted_name, sizeof(quoted_name), list.name, true);
-  url.path = quoted_name + 1;
-  url.path[strlen(url.path) - 1] = '\0';
+  url.path = list.name;
+
   const char *const c_imap_user = cs_subset_string(NeoMutt->sub, "imap_user");
   if (mutt_str_equal(url.user, c_imap_user))
     url.user = NULL;
-  url_tostring(&url, buf + 11, sizeof(buf) - 11, U_NO_FLAGS);
-  mutt_str_cat(buf, sizeof(buf), "\"");
-  buf_init(&err);
-  err.dsize = 256;
-  err.data = mutt_mem_malloc(err.dsize);
-  if (parse_rc_line(buf, &err))
-    mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", err.data);
-  FREE(&err.data);
+  url_tobuffer(&url, buf, U_NO_FLAGS);
+
+  if (!mailbox_add_simple(buf_string(buf), err))
+    mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", buf_string(err));
+
+  buf_pool_release(&buf);
+  buf_pool_release(&err);
 }
 
 /**
@@ -1149,9 +1149,9 @@ int imap_cmd_step(struct ImapAccountData *adata)
   {
     if (len == adata->blen)
     {
-      mutt_mem_realloc(&adata->buf, adata->blen + IMAP_CMD_BUFSIZE);
+      MUTT_MEM_REALLOC(&adata->buf, adata->blen + IMAP_CMD_BUFSIZE, char);
       adata->blen = adata->blen + IMAP_CMD_BUFSIZE;
-      mutt_debug(LL_DEBUG3, "grew buffer to %lu bytes\n", adata->blen);
+      mutt_debug(LL_DEBUG3, "grew buffer to %zu bytes\n", adata->blen);
     }
 
     /* back up over '\0' */
@@ -1175,9 +1175,9 @@ int imap_cmd_step(struct ImapAccountData *adata)
   /* don't let one large string make cmd->buf hog memory forever */
   if ((adata->blen > IMAP_CMD_BUFSIZE) && (len <= IMAP_CMD_BUFSIZE))
   {
-    mutt_mem_realloc(&adata->buf, IMAP_CMD_BUFSIZE);
+    MUTT_MEM_REALLOC(&adata->buf, IMAP_CMD_BUFSIZE, char);
     adata->blen = IMAP_CMD_BUFSIZE;
-    mutt_debug(LL_DEBUG3, "shrank buffer to %lu bytes\n", adata->blen);
+    mutt_debug(LL_DEBUG3, "shrank buffer to %zu bytes\n", adata->blen);
   }
 
   adata->lastread = mutt_date_now();
@@ -1410,7 +1410,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
         if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
           mdata->check_status |= IMAP_NEWMAIL_PENDING;
 
-        mutt_debug(LL_DEBUG2, "Fetching new mails from %ld to %u\n",
+        mutt_debug(LL_DEBUG2, "Fetching new mails from %zd to %u\n",
                    max_msn + 1, mdata->new_mail_count);
         imap_read_headers(adata->mailbox, max_msn + 1, mdata->new_mail_count, false);
       }

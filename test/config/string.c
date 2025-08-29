@@ -3,7 +3,10 @@
  * Test code for the String object
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,13 +42,13 @@ static struct ConfigDef Vars[] = {
   { "Cherry",     DT_STRING,              IP "cherry",     0, NULL,              },
   { "Damson",     DT_STRING,              0,               0, NULL,              }, /* test_string_set */
   { "Elderberry", DT_STRING,              IP "elderberry", 0, NULL,              },
-  { "Fig",        DT_STRING|DT_NOT_EMPTY, IP "fig",        0, NULL,              },
+  { "Fig",        DT_STRING|D_NOT_EMPTY,  IP "fig",        0, NULL,              },
   { "Guava",      DT_STRING,              0,               0, NULL,              }, /* test_string_get */
   { "Hawthorn",   DT_STRING,              IP "hawthorn",   0, NULL,              },
   { "Ilama",      DT_STRING,              0,               0, NULL,              },
   { "Jackfruit",  DT_STRING,              0,               0, NULL,              }, /* test_native_set */
   { "Kumquat",    DT_STRING,              IP "kumquat",    0, NULL,              },
-  { "Lemon",      DT_STRING|DT_NOT_EMPTY, IP "lemon",      0, NULL,              },
+  { "Lemon",      DT_STRING|D_NOT_EMPTY,  IP "lemon",      0, NULL,              },
   { "Mango",      DT_STRING,              0,               0, NULL,              }, /* test_native_get */
   { "Nectarine",  DT_STRING,              IP "nectarine",  0, NULL,              }, /* test_reset */
   { "Olive",      DT_STRING,              IP "olive",      0, validator_fail,    },
@@ -54,8 +57,9 @@ static struct ConfigDef Vars[] = {
   { "Raspberry",  DT_STRING,              IP "raspberry",  0, validator_fail,    },
   { "Strawberry", DT_STRING,              0,               0, NULL,              }, /* test_inherit */
   { "Tangerine",  DT_STRING,              0,               0, NULL,              }, /* test_plus_equals */
-  { "Ugli",       DT_STRING|DT_CHARSET_SINGLE, 0,          0, charset_validator, },
-  { "Vanilla",    DT_STRING|DT_CHARSET_STRICT, 0,          0, charset_validator, },
+  { "Ugli",       DT_STRING|D_CHARSET_SINGLE, 0,           0, charset_validator, },
+  { "Vanilla",    DT_STRING|D_CHARSET_STRICT, 0,           0, charset_validator, },
+  { "Wolfberry",  DT_STRING|D_ON_STARTUP, IP "wolfberry",  0, NULL,              }, /* startup */
   { NULL },
 };
 // clang-format on
@@ -68,18 +72,18 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarApple = cs_subset_string(sub, "Apple");
   const char *VarBanana = cs_subset_string(sub, "Banana");
 
-  TEST_MSG("Apple = %s\n", VarApple);
-  TEST_MSG("Banana = %s\n", VarBanana);
+  TEST_MSG("Apple = %s", VarApple);
+  TEST_MSG("Banana = %s", VarBanana);
 
   if (!TEST_CHECK_STR_EQ(VarApple, "apple"))
   {
-    TEST_MSG("Error: initial values were wrong\n");
+    TEST_MSG("Error: initial values were wrong");
     return false;
   }
 
   if (!TEST_CHECK_STR_EQ(VarBanana, "banana"))
   {
-    TEST_MSG("Error: initial values were wrong\n");
+    TEST_MSG("Error: initial values were wrong");
     return false;
   }
 
@@ -97,41 +101,41 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_initial_get(cs, "Apple", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
   VarApple = cs_subset_string(sub, "Apple");
   if (!TEST_CHECK_STR_EQ(buf_string(value), "apple"))
   {
-    TEST_MSG("Apple's initial value is wrong: '%s'\n", buf_string(value));
+    TEST_MSG("Apple's initial value is wrong: '%s'", buf_string(value));
     return false;
   }
-  TEST_MSG("Apple = '%s'\n", VarApple);
-  TEST_MSG("Apple's initial value is '%s'\n", buf_string(value));
+  TEST_MSG("Apple = '%s'", VarApple);
+  TEST_MSG("Apple's initial value is '%s'", buf_string(value));
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Banana", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
   VarBanana = cs_subset_string(sub, "Banana");
   if (!TEST_CHECK_STR_EQ(buf_string(value), "banana"))
   {
-    TEST_MSG("Banana's initial value is wrong: '%s'\n", buf_string(value));
+    TEST_MSG("Banana's initial value is wrong: '%s'", buf_string(value));
     return false;
   }
-  TEST_MSG("Banana = '%s'\n", VarBanana);
-  TEST_MSG("Banana's initial value is '%s'\n", NONULL(buf_string(value)));
+  TEST_MSG("Banana = '%s'", VarBanana);
+  TEST_MSG("Banana's initial value is '%s'", NONULL(buf_string(value)));
 
   buf_reset(value);
   rc = cs_str_initial_set(cs, "Cherry", "train", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
@@ -139,7 +143,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_initial_set(cs, "Cherry", "plane", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
@@ -147,13 +151,13 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_initial_get(cs, "Cherry", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
   const char *VarCherry = cs_subset_string(sub, "Cherry");
-  TEST_MSG("Cherry = '%s'\n", VarCherry);
-  TEST_MSG("Cherry's initial value is '%s'\n", NONULL(buf_string(value)));
+  TEST_MSG("Cherry = '%s'", VarCherry);
+  TEST_MSG("Cherry's initial value is '%s'", NONULL(buf_string(value)));
 
   buf_pool_release(&value);
   log_line(__func__);
@@ -175,23 +179,23 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     rc = cs_str_string_set(cs, name, valid[i], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("%s\n", buf_string(err));
+      TEST_MSG("%s", buf_string(err));
       return false;
     }
 
     if (rc & CSR_SUC_NO_CHANGE)
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       continue;
     }
 
     const char *VarDamson = cs_subset_string(sub, "Damson");
     if (!TEST_CHECK_STR_EQ(VarDamson, valid[i]))
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       return false;
     }
-    TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(VarDamson), NONULL(valid[i]));
+    TEST_MSG("%s = '%s', set by '%s'", name, NONULL(VarDamson), NONULL(valid[i]));
     short_line();
   }
 
@@ -200,11 +204,11 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_string_set(cs, name, "", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
@@ -216,24 +220,31 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     rc = cs_str_string_set(cs, name, valid[i], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("%s\n", buf_string(err));
+      TEST_MSG("%s", buf_string(err));
       return false;
     }
 
     if (rc & CSR_SUC_NO_CHANGE)
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       continue;
     }
 
     const char *VarElderberry = cs_subset_string(sub, "Elderberry");
     if (!TEST_CHECK_STR_EQ(VarElderberry, valid[i]))
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       return false;
     }
-    TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(VarElderberry), NONULL(valid[i]));
+    TEST_MSG("%s = '%s', set by '%s'", name, NONULL(VarElderberry), NONULL(valid[i]));
   }
+
+  name = "Wolfberry";
+  rc = cs_str_string_set(cs, name, "wolfberry", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_string_set(cs, name, "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -249,22 +260,22 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   int rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   const char *VarGuava = cs_subset_string(sub, "Guava");
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(VarGuava), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'", name, NONULL(VarGuava), buf_string(err));
 
   name = "Hawthorn";
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   const char *VarHawthorn = cs_subset_string(sub, "Hawthorn");
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(VarHawthorn), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'", name, NONULL(VarHawthorn), buf_string(err));
 
   name = "Ilama";
   rc = cs_str_string_set(cs, name, "ilama", err);
@@ -275,11 +286,11 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   const char *VarIlama = cs_subset_string(sub, "Ilama");
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(VarIlama), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'", name, NONULL(VarIlama), buf_string(err));
 
   log_line(__func__);
   return true;
@@ -300,23 +311,23 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     rc = cs_str_native_set(cs, name, (intptr_t) valid[i], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("%s\n", buf_string(err));
+      TEST_MSG("%s", buf_string(err));
       return false;
     }
 
     if (rc & CSR_SUC_NO_CHANGE)
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       continue;
     }
 
     const char *VarJackfruit = cs_subset_string(sub, "Jackfruit");
     if (!TEST_CHECK_STR_EQ(VarJackfruit, valid[i]))
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       return false;
     }
-    TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(VarJackfruit), NONULL(valid[i]));
+    TEST_MSG("%s = '%s', set by '%s'", name, NONULL(VarJackfruit), NONULL(valid[i]));
     short_line();
   }
 
@@ -325,11 +336,11 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_native_set(cs, name, (intptr_t) "", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
@@ -341,24 +352,31 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     rc = cs_str_native_set(cs, name, (intptr_t) valid[i], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("%s\n", buf_string(err));
+      TEST_MSG("%s", buf_string(err));
       return false;
     }
 
     if (rc & CSR_SUC_NO_CHANGE)
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       continue;
     }
 
     const char *VarKumquat = cs_subset_string(sub, "Kumquat");
     if (!TEST_CHECK_STR_EQ(VarKumquat, valid[i]))
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       return false;
     }
-    TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(VarKumquat), NONULL(valid[i]));
+    TEST_MSG("%s = '%s', set by '%s'", name, NONULL(VarKumquat), NONULL(valid[i]));
   }
+
+  name = "Wolfberry";
+  rc = cs_str_native_set(cs, name, (intptr_t) "wolfberry", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_native_set(cs, name, (intptr_t) "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -379,10 +397,10 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   intptr_t value = cs_str_native_get(cs, name, err);
   if (!TEST_CHECK_STR_EQ((char *) value, VarMango))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
-  TEST_MSG("%s = '%s', '%s'\n", name, VarMango, (char *) value);
+  TEST_MSG("%s = '%s', '%s'", name, VarMango, (char *) value);
 
   log_line(__func__);
   return true;
@@ -397,12 +415,12 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
   static char *PlusTests[][3] = {
     // clang-format off
     // Initial,        Plus,     Result
-    { "",              "",       ""                   }, // Add nothing to various lists
+    { "",              "",       ""                   }, // Add nothing to various strings
     { "one",           "",       "one"                },
     { "one two",       "",       "one two"            },
     { "one two three", "",       "one two three"      },
 
-    { "",              "nine",   "nine"               }, // Add an item to various lists
+    { "",              "nine",   "nine"               }, // Add an item to various strings
     { "one",           " nine",   "one nine"           },
     { "one two",       " nine",   "one two nine"       },
     { "one two three", " nine",   "one two three nine" },
@@ -416,27 +434,31 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
     rc = cs_str_string_set(cs, name, PlusTests[i][0], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("Set failed: %s\n", buf_string(err));
+      TEST_MSG("Set failed: %s", buf_string(err));
       return false;
     }
 
     rc = cs_str_string_plus_equals(cs, name, PlusTests[i][1], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("PlusEquals failed: %s\n", buf_string(err));
+      TEST_MSG("PlusEquals failed: %s", buf_string(err));
       return false;
     }
 
     rc = cs_str_string_get(cs, name, err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("Get failed: %s\n", buf_string(err));
+      TEST_MSG("Get failed: %s", buf_string(err));
       return false;
     }
 
     if (!TEST_CHECK_STR_EQ(buf_string(err), PlusTests[i][2]))
       return false;
   }
+
+  name = "Wolfberry";
+  rc = cs_str_string_plus_equals(cs, name, "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -451,33 +473,33 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   buf_reset(err);
 
   const char *VarNectarine = cs_subset_string(sub, "Nectarine");
-  TEST_MSG("Initial: %s = '%s'\n", name, VarNectarine);
+  TEST_MSG("Initial: %s = '%s'", name, VarNectarine);
   int rc = cs_str_string_set(cs, name, "hello", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
   VarNectarine = cs_subset_string(sub, "Nectarine");
-  TEST_MSG("Set: %s = '%s'\n", name, VarNectarine);
+  TEST_MSG("Set: %s = '%s'", name, VarNectarine);
 
   rc = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
   VarNectarine = cs_subset_string(sub, "Nectarine");
   if (!TEST_CHECK_STR_EQ(VarNectarine, "nectarine"))
   {
-    TEST_MSG("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed", name);
     return false;
   }
 
-  TEST_MSG("Reset: %s = '%s'\n", name, VarNectarine);
+  TEST_MSG("Reset: %s = '%s'", name, VarNectarine);
 
   rc = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
@@ -485,34 +507,46 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   buf_reset(err);
 
   const char *VarOlive = cs_subset_string(sub, "Olive");
-  TEST_MSG("Initial: %s = '%s'\n", name, VarOlive);
+  TEST_MSG("Initial: %s = '%s'", name, VarOlive);
   dont_fail = true;
   rc = cs_str_string_set(cs, name, "hello", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
   VarOlive = cs_subset_string(sub, "Olive");
-  TEST_MSG("Set: %s = '%s'\n", name, VarOlive);
+  TEST_MSG("Set: %s = '%s'", name, VarOlive);
   dont_fail = false;
 
   rc = cs_str_reset(cs, name, err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
   VarOlive = cs_subset_string(sub, "Olive");
   if (!TEST_CHECK_STR_EQ(VarOlive, "hello"))
   {
-    TEST_MSG("Value of %s changed\n", name);
+    TEST_MSG("Value of %s changed", name);
     return false;
   }
 
-  TEST_MSG("Reset: %s = '%s'\n", name, VarOlive);
+  TEST_MSG("Reset: %s = '%s'", name, VarOlive);
+
+  name = "Wolfberry";
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  StartupComplete = false;
+  rc = cs_str_native_set(cs, name, (intptr_t) "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  StartupComplete = true;
+
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -528,113 +562,113 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   int rc = cs_str_string_set(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
   const char *VarPapaya = cs_subset_string(sub, "Papaya");
-  TEST_MSG("String: %s = %s\n", name, VarPapaya);
+  TEST_MSG("String: %s = %s", name, VarPapaya);
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP "world", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
   VarPapaya = cs_subset_string(sub, "Papaya");
-  TEST_MSG("Native: %s = %s\n", name, VarPapaya);
+  TEST_MSG("Native: %s = %s", name, VarPapaya);
 
   name = "Quince";
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
   const char *VarQuince = cs_subset_string(sub, "Quince");
-  TEST_MSG("String: %s = %s\n", name, VarQuince);
+  TEST_MSG("String: %s = %s", name, VarQuince);
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP "world", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
   VarQuince = cs_subset_string(sub, "Quince");
-  TEST_MSG("Native: %s = %s\n", name, VarQuince);
+  TEST_MSG("Native: %s = %s", name, VarQuince);
 
   name = "Raspberry";
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
   const char *VarRaspberry = cs_subset_string(sub, "Raspberry");
-  TEST_MSG("String: %s = %s\n", name, VarRaspberry);
+  TEST_MSG("String: %s = %s", name, VarRaspberry);
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP "world", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
   VarRaspberry = cs_subset_string(sub, "Raspberry");
-  TEST_MSG("Native: %s = %s\n", name, VarRaspberry);
+  TEST_MSG("Native: %s = %s", name, VarRaspberry);
 
   name = "Olive";
   buf_reset(err);
   rc = cs_str_string_plus_equals(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
   const char *VarOlive = cs_subset_string(sub, "Olive");
-  TEST_MSG("String: %s = %s\n", name, VarOlive);
+  TEST_MSG("String: %s = %s", name, VarOlive);
 
   name = "Ugli";
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "utf-8", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
@@ -642,11 +676,11 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_string_set(cs, name, NULL, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
@@ -654,11 +688,11 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_string_set(cs, name, "utf-8:us-ascii", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
@@ -667,11 +701,11 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_string_set(cs, name, "apple", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
@@ -684,8 +718,8 @@ static void dump_native(struct ConfigSet *cs, const char *parent, const char *ch
   intptr_t pval = cs_str_native_get(cs, parent, NULL);
   intptr_t cval = cs_str_native_get(cs, child, NULL);
 
-  TEST_MSG("%15s = %s\n", parent, (char *) pval);
-  TEST_MSG("%15s = %s\n", child, (char *) cval);
+  TEST_MSG("%15s = %s", parent, (char *) pval);
+  TEST_MSG("%15s = %s", child, (char *) cval);
 }
 
 static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
@@ -705,7 +739,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   struct HashElem *he = cs_subset_create_inheritance(a->sub, parent);
   if (!he)
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
 
@@ -714,7 +748,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_string_set(cs, parent, "hello", err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -724,7 +758,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_string_set(cs, child, "world", err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -734,7 +768,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_reset(cs, child, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -744,7 +778,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_reset(cs, parent, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -762,10 +796,12 @@ void test_config_string(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
+  StartupComplete = false;
   dont_fail = true;
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars)))
     return;
   dont_fail = false;
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 

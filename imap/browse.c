@@ -5,6 +5,11 @@
  * @authors
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2019 Naveen Nathan <naveen@lastninja.net>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -200,8 +205,8 @@ int imap_browse(const char *path, struct BrowserState *state)
   const char *list_cmd = NULL;
   int len;
   int n;
-  char ctmp;
   bool showparents = false;
+  int rc = -1;
 
   if (imap_parse_path(path, &cac, buf, sizeof(buf)))
   {
@@ -253,13 +258,13 @@ int imap_browse(const char *path, struct BrowserState *state)
   }
   else
   {
-    imap_fix_path(adata->delim, buf, mbox, sizeof(mbox));
+    imap_fix_path_with_delim(adata->delim, buf, mbox, sizeof(mbox));
     n = mutt_str_len(mbox);
   }
 
-  if (n)
+  if (n > 0)
   {
-    int rc;
+    int rc_step;
     mutt_debug(LL_DEBUG3, "mbox: %s\n", mbox);
 
     /* if our target exists and has inferiors, enter it if we
@@ -273,8 +278,8 @@ int imap_browse(const char *path, struct BrowserState *state)
     do
     {
       list.name = 0;
-      rc = imap_cmd_step(adata);
-      if ((rc == IMAP_RES_CONTINUE) && list.name)
+      rc_step = imap_cmd_step(adata);
+      if ((rc_step == IMAP_RES_CONTINUE) && list.name)
       {
         if (!list.noinferiors && list.name[0] &&
             (imap_mxcmp(list.name, mbox) == 0) && (n < sizeof(mbox) - 1))
@@ -283,7 +288,7 @@ int imap_browse(const char *path, struct BrowserState *state)
           mbox[n] = '\0';
         }
       }
-    } while (rc == IMAP_RES_CONTINUE);
+    } while (rc_step == IMAP_RES_CONTINUE);
     adata->cmdresult = NULL;
 
     /* if we're descending a folder, mark it as current in browser_state */
@@ -308,7 +313,7 @@ int imap_browse(const char *path, struct BrowserState *state)
     {
       /* forget the check, it is too delicate (see above). Have we ever
        * had the parent not exist? */
-      ctmp = mbox[n];
+      char ctmp = mbox[n];
       mbox[n] = '\0';
 
       if (showparents)
@@ -370,15 +375,12 @@ int imap_browse(const char *path, struct BrowserState *state)
   }
 
   mutt_clear_error();
-
-  cs_subset_str_native_set(NeoMutt->sub, "imap_check_subscribed",
-                           c_imap_check_subscribed, NULL);
-  return 0;
+  rc = 0;
 
 fail:
   cs_subset_str_native_set(NeoMutt->sub, "imap_check_subscribed",
                            c_imap_check_subscribed, NULL);
-  return -1;
+  return rc;
 }
 
 /**
@@ -410,7 +412,7 @@ int imap_mailbox_create(const char *path)
   }
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL };
-  if (mw_get_field(_("Create mailbox: "), name, MUTT_COMP_NO_FLAGS, HC_FILE,
+  if (mw_get_field(_("Create mailbox: "), name, MUTT_COMP_NO_FLAGS, HC_MAILBOX,
                    &CompleteMailboxOps, &cdata) != 0)
   {
     goto done;
@@ -471,7 +473,7 @@ int imap_mailbox_rename(const char *path)
   buf_strcpy(newname, mdata->name);
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL };
-  if (mw_get_field(buf_string(buf), newname, MUTT_COMP_NO_FLAGS, HC_FILE,
+  if (mw_get_field(buf_string(buf), newname, MUTT_COMP_NO_FLAGS, HC_MAILBOX,
                    &CompleteMailboxOps, &cdata) != 0)
   {
     goto done;
@@ -483,7 +485,7 @@ int imap_mailbox_rename(const char *path)
     goto done;
   }
 
-  imap_fix_path(adata->delim, buf_string(newname), buf->data, buf->dsize);
+  imap_fix_path_with_delim(adata->delim, buf_string(newname), buf->data, buf->dsize);
 
   if (imap_rename_mailbox(adata, mdata->name, buf_string(buf)) < 0)
   {

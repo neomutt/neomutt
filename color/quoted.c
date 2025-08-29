@@ -3,7 +3,7 @@
  * Quoted-Email colours
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,9 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "quoted.h"
@@ -43,6 +42,20 @@
 
 struct AttrColor QuotedColors[COLOR_QUOTES_MAX]; ///< Array of colours for quoted email text
 int NumQuotedColors; ///< Number of colours for quoted email text
+
+/**
+ * quoted_colors_init - Initialise the Quoted colours
+ */
+void quoted_colors_init(void)
+{
+  for (size_t i = 0; i < COLOR_QUOTES_MAX; i++)
+  {
+    struct AttrColor *ac = &QuotedColors[i];
+    ac->fg.color = COLOR_DEFAULT;
+    ac->bg.color = COLOR_DEFAULT;
+  }
+  NumQuotedColors = 0;
+}
 
 /**
  * find_highest_used - Find the highest-numbered quotedN in use
@@ -95,16 +108,14 @@ int quoted_colors_num_used(void)
 /**
  * quoted_colors_parse_color - Parse the 'color quoted' command
  * @param cid     Colour Id, should be #MT_COLOR_QUOTED
- * @param fg      Foreground colour
- * @param bg      Background colour
- * @param attrs   Attributes, e.g. A_UNDERLINE
+ * @param ac_val  Colour value to use
  * @param q_level Quoting depth level
  * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
  * @param err     Buffer for error messages
  * @retval true Colour was parsed
  */
-bool quoted_colors_parse_color(enum ColorId cid, uint32_t fg, uint32_t bg,
-                               int attrs, int q_level, int *rc, struct Buffer *err)
+bool quoted_colors_parse_color(enum ColorId cid, struct AttrColor *ac_val,
+                               int q_level, int *rc, struct Buffer *err)
 {
   if (cid != MT_COLOR_QUOTED)
     return false;
@@ -120,20 +131,12 @@ bool quoted_colors_parse_color(enum ColorId cid, uint32_t fg, uint32_t bg,
     NumQuotedColors = q_level + 1;
 
   struct AttrColor *ac = &QuotedColors[q_level];
-  const bool was_set = ((ac->attrs != 0) || ac->curses_color);
-  ac->attrs = attrs;
 
-  struct CursesColor *cc = curses_color_new(fg, bg);
-  curses_color_free(&ac->curses_color);
-  ac->curses_color = cc;
+  attr_color_overwrite(ac, ac_val);
 
+  struct CursesColor *cc = ac->curses_color;
   if (!cc)
     NumQuotedColors = find_highest_used();
-
-  if (was_set)
-    quoted_color_dump(ac, q_level, "QuotedColors changed: ");
-  else
-    quoted_color_dump(ac, q_level, "QuotedColors new: ");
 
   struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
@@ -144,17 +147,20 @@ bool quoted_colors_parse_color(enum ColorId cid, uint32_t fg, uint32_t bg,
   {
     // Copy the colour into the SimpleColors
     struct AttrColor *ac_quoted = simple_color_get(MT_COLOR_QUOTED);
+    curses_color_free(&ac_quoted->curses_color);
     *ac_quoted = *ac;
     ac_quoted->ref_count = 1;
     if (ac_quoted->curses_color)
+    {
       ac_quoted->curses_color->ref_count++;
+      curses_color_dump(cc, "curses rc++");
+    }
   }
 
   struct EventColor ev_c = { cid, ac };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
-  curses_colors_dump();
-  quoted_color_list_dump();
+  curses_colors_dump(buf);
 
   *rc = MUTT_CMD_SUCCESS;
   return true;
@@ -174,10 +180,6 @@ enum CommandResult quoted_colors_parse_uncolor(enum ColorId cid, int q_level,
 
   struct AttrColor *ac = &QuotedColors[q_level];
   attr_color_clear(ac);
-  quoted_color_dump(ac, q_level, "QuotedColors clear: ");
-
-  curses_colors_dump();
-  quoted_color_list_dump();
 
   NumQuotedColors = find_highest_used();
 
@@ -230,7 +232,7 @@ void qstyle_free_tree(struct QuoteStyle **quote_list)
  */
 static struct QuoteStyle *qstyle_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct QuoteStyle));
+  return MUTT_MEM_CALLOC(1, struct QuoteStyle);
 }
 
 /**
@@ -613,10 +615,10 @@ static void qstyle_recurse(struct QuoteStyle *quote_list, int num_qlevel, int *c
 }
 
 /**
- * qstyle_recolour - Recolour quotes after colour changes
+ * qstyle_recolor - Recolour quotes after colour changes
  * @param quote_list List of quote colours
  */
-void qstyle_recolour(struct QuoteStyle *quote_list)
+void qstyle_recolor(struct QuoteStyle *quote_list)
 {
   if (!quote_list)
     return;
@@ -624,7 +626,5 @@ void qstyle_recolour(struct QuoteStyle *quote_list)
   int num = quoted_colors_num_used();
   int cur = 0;
 
-  quoted_color_list_dump();
   qstyle_recurse(quote_list, num, &cur);
-  quoted_color_list_dump();
 }

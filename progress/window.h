@@ -3,7 +3,7 @@
  * Progress Bar Window
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,12 +23,15 @@
 #ifndef MUTT_PROGRESS_WINDOW_H
 #define MUTT_PROGRESS_WINDOW_H
 
-#include <stddef.h>
+#include <stdarg.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 struct MuttWindow;
 
-struct MuttWindow *progress_window_new(const char *msg, size_t size, size_t size_inc, size_t time_inc, bool is_bytes);
-bool               progress_window_update(struct MuttWindow *win, size_t pos, int percent);
+struct MuttWindow *progress_window_new        (size_t size, size_t size_inc, size_t time_inc, bool is_bytes);
+void               progress_window_set_message(struct MuttWindow *win, const char *fmt, va_list ap);
+void               progress_window_set_size   (struct MuttWindow *win, size_t size);
+bool               progress_window_update     (struct MuttWindow *win, size_t pos, int percent);
 
 #endif /* MUTT_PROGRESS_WINDOW_H */

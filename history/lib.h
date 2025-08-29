@@ -3,7 +3,7 @@
  * Read/write command history from/to a file
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,6 +39,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+struct NotifyCallback;
+
 /**
  * enum HistoryClass - Type to differentiate different histories
  *
@@ -46,17 +48,35 @@
  */
 enum HistoryClass
 {
-  HC_CMD,     ///< External commands
-  HC_ALIAS,   ///< Aliases
-  HC_COMMAND, ///< NeoMutt commands
-  HC_FILE,    ///< Files
-  HC_PATTERN, ///< Patterns
-  HC_OTHER,   ///< Miscellaneous strings
-  HC_MBOX,    ///< Mailboxes
+  HC_EXT_COMMAND, ///< External commands
+  HC_ALIAS,       ///< Aliases
+  HC_NEO_COMMAND, ///< NeoMutt commands
+  HC_FILE,        ///< Files
+  HC_PATTERN,     ///< Patterns
+  HC_OTHER,       ///< Miscellaneous strings
+  HC_MAILBOX,     ///< Mailboxes
   HC_MAX,
 };
 
-struct NotifyCallback;
+/**
+ * struct HistoryEntry - A line in the History menu
+ */
+struct HistoryEntry
+{
+  int num;             ///< Index number
+  const char *history; ///< Description of history
+};
+
+/**
+ * ExpandoDataHistory - Expando UIDs for History
+ *
+ * @sa ED_HISTORY, ExpandoDomain
+ */
+enum ExpandoDataHistory
+{
+  ED_HIS_MATCH = 1,            ///< HistoryEntry.history
+  ED_HIS_NUMBER,               ///< HistoryEntry.num
+};
 
 void  mutt_hist_add         (enum HistoryClass hclass, const char *str, bool save);
 bool  mutt_hist_at_scratch  (enum HistoryClass hclass);

@@ -3,7 +3,8 @@
  * Postponed Emails Functions
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,18 +28,44 @@
  */
 
 #include "config.h"
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "functions.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
+#include "functions.h"
 #include "mview.h"
-#include "opcodes.h"
 #include "protos.h"
+#endif
+
+// clang-format off
+/**
+ * OpPostponed - Functions for the Postpone Menu
+ */
+const struct MenuFuncOp OpPostponed[] = { /* map: postpone */
+  { "exit",                          OP_EXIT },
+  { "delete-entry",                  OP_DELETE },
+  { "undelete-entry",                OP_UNDELETE },
+  { NULL, 0 },
+};
+
+/**
+ * PostponedDefaultBindings - Key bindings for the Postpone Menu
+ */
+const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
+  { OP_DELETE,                             "d" },
+  { OP_EXIT,                               "q" },
+  { OP_UNDELETE,                           "u" },
+  { 0, NULL },
+};
+// clang-format on
 
 /**
  * op_delete - Delete the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api

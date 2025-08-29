@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1999-2001,2005,2009 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,11 +40,12 @@
 #include "mutt_logging.h"
 
 /**
- * imap_auth_login - Plain LOGIN support - Implements ImapAuth::authenticate()
+ * imap_auth_login - Plain LOGIN support - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *method)
 {
-  char q_user[256], q_pass[256];
+  char q_user[256] = { 0 };
+  char q_pass[256] = { 0 };
   char buf[1024] = { 0 };
 
   if ((adata->capabilities & IMAP_CAP_LOGINDISABLED))

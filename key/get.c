@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -35,9 +36,7 @@
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "functions.h"
 #include "globals.h"
-#include "opcodes.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
@@ -169,18 +168,6 @@ void mutt_flush_macro_to_endcond(void)
   array_to_endcond(&MacroEvents);
 }
 
-/**
- * mutt_flush_unget_to_endcond - Clear entries from UngetKeyEvents
- *
- * Normally, OP_END_COND should only be in the MacroEvent buffer.
- * km_error_key() (ab)uses OP_END_COND as a barrier in the unget buffer, and
- * calls this function to flush.
- */
-void mutt_flush_unget_to_endcond(void)
-{
-  array_to_endcond(&UngetKeyEvents);
-}
-
 #ifdef USE_INOTIFY
 /**
  * mutt_monitor_getch - Get a character and poll the filesystem monitor
@@ -293,11 +280,11 @@ struct KeyEvent mutt_getch(GetChFlags flags)
       /* send ALT-x as ESC-x */
       ch &= ~0x80;
       mutt_unget_ch(ch);
-      return (struct KeyEvent){ '\033', OP_NULL }; // Escape
+      return (struct KeyEvent) { '\033', OP_NULL }; // Escape
     }
   }
 
-  return (struct KeyEvent){ ch, OP_NULL };
+  return (struct KeyEvent) { ch, OP_NULL };
 }
 
 /**
@@ -347,7 +334,7 @@ static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
     mutt_flushinp();
   }
 
-  return (struct KeyEvent){ mutt_getch(flags).ch, OP_NULL };
+  return (struct KeyEvent) { mutt_getch(flags).ch, OP_NULL };
 }
 
 /**
@@ -432,7 +419,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
     if (++pos == map->len)
     {
       if (map->op != OP_MACRO)
-        return (struct KeyEvent){ event.ch, map->op };
+        return (struct KeyEvent) { event.ch, map->op };
 
       /* #GETCH_IGNORE_MACRO turns off processing the MacroEvents buffer
        * in mutt_getch().  Generating new macro events during that time would
@@ -440,23 +427,23 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
        *
        * Originally this returned -1, however that results in an unbuffered
        * username or password prompt being aborted.  Returning OP_NULL allows
-       * mutt_enter_string_full() to display the keybinding pressed instead.
+       * mw_get_field() to display the keybinding pressed instead.
        *
        * It may be unexpected for a macro's keybinding to be returned,
        * but less so than aborting the prompt.  */
       if (flags & GETCH_IGNORE_MACRO)
       {
-        return (struct KeyEvent){ event.ch, OP_NULL };
+        return (struct KeyEvent) { event.ch, OP_NULL };
       }
 
       if (n++ == 10)
       {
         mutt_flushinp();
         mutt_error(_("Macro loop detected"));
-        return (struct KeyEvent){ '\0', OP_ABORT };
+        return (struct KeyEvent) { '\0', OP_ABORT };
       }
 
-      generic_tokenize_push_string(map->macro, mutt_push_macro_event);
+      generic_tokenize_push_string(map->macro);
       map = STAILQ_FIRST(&Keymaps[mtype]);
       pos = 0;
     }

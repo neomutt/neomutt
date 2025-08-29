@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,13 +32,15 @@ void test_mutt_ch_lookup_add(void)
   // bool mutt_ch_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
 
   {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(!mutt_ch_lookup_add(0, NULL, "banana", &buf));
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(!mutt_ch_lookup_add(0, NULL, "banana", buf));
+    buf_pool_release(&buf);
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(!mutt_ch_lookup_add(0, "apple", NULL, &buf));
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(!mutt_ch_lookup_add(0, "apple", NULL, buf));
+    buf_pool_release(&buf);
   }
 
   {

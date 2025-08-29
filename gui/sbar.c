@@ -3,7 +3,7 @@
  * Simple Bar (status)
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -173,7 +173,7 @@ static int sbar_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * sbar_wdata_free - Free the private data of the Simple Bar attached to the MuttWindow - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * sbar_wdata_free - Free the private data of the Simple Bar - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 static void sbar_wdata_free(struct MuttWindow *win, void **ptr)
 {
@@ -193,7 +193,7 @@ static void sbar_wdata_free(struct MuttWindow *win, void **ptr)
  */
 static struct SBarPrivateData *sbar_data_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct SBarPrivateData));
+  return MUTT_MEM_CALLOC(1, struct SBarPrivateData);
 }
 
 /**

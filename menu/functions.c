@@ -3,7 +3,8 @@
  * Menu functions
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -39,7 +40,6 @@
 #include "lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
-#include "opcodes.h"
 #include "protos.h"
 #include "type.h"
 

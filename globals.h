@@ -24,10 +24,7 @@
 #define MUTT_GLOBALS_H
 
 #include "config.h"
-#include <signal.h> // IWYU pragma: keep
 #include <stdbool.h>
-#include "mutt/lib.h"
-#include "menu/lib.h"
 
 extern bool ErrorBufMessage; ///< true if the last message was an error
 extern char ErrorBuf[1024];  ///< Copy of the last error message
@@ -51,14 +48,7 @@ extern struct ListHead Muttrc;               ///< List of config files to read
 extern struct ListHead TempAttachmentsList;  ///< List of temporary files for displaying attachments
 extern struct ListHead UserHeader;           ///< List of custom headers to add to outgoing emails
 
-/* flags for received signals */
-extern SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
-extern SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
-
-extern enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
-
 /* pseudo options */
-extern bool OptAttachMsg;           ///< (pseudo) used by attach-message
 #ifdef USE_AUTOCRYPT
 extern bool OptAutocryptGpgme;      ///< (pseudo) use Autocrypt context inside ncrypt/crypt_gpgme.c
 #endif
@@ -68,10 +58,8 @@ extern bool OptKeepQuiet;           ///< (pseudo) shut up the message and refres
 extern bool OptMsgErr;              ///< (pseudo) used by mutt_error/mutt_message
 extern bool OptNeedRescore;         ///< (pseudo) set when the 'score' command is used
 extern bool OptNeedResort;          ///< (pseudo) used to force a re-sort
-#ifdef USE_NNTP
 extern bool OptNews;                ///< (pseudo) used to change reader mode
 extern bool OptNewsSend;            ///< (pseudo) used to change behavior when posting
-#endif
 extern bool OptNoCurses;            ///< (pseudo) when sending in batch mode
 extern bool OptPgpCheckTrust;       ///< (pseudo) used by dlg_pgp()
 extern bool OptResortInit;          ///< (pseudo) used to force the next resort to be from scratch

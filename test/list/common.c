@@ -3,7 +3,8 @@
  * Shared Testing Code
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,9 +21,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define TEST_NO_MAIN
 #include "config.h"
-#include <stddef.h>
+#include "acutest.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 
 struct ListHead test_list_create(const char *items[], bool copy)
@@ -31,7 +34,7 @@ struct ListHead test_list_create(const char *items[], bool copy)
 
   for (size_t i = 0; items[i]; i++)
   {
-    struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
+    struct ListNode *np = MUTT_MEM_CALLOC(1, struct ListNode);
     if (copy)
       np->data = mutt_str_dup(items[i]);
     else

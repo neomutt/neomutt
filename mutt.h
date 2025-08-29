@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -51,7 +52,7 @@
 
 extern bool StartupComplete;
 
-typedef uint8_t CompletionFlags;       ///< Flags for mutt_enter_string_full(), e.g. #MUTT_COMP_NO_FLAGS
+typedef uint8_t CompletionFlags;       ///< Flags for mw_get_field(), e.g. #MUTT_COMP_NO_FLAGS
 #define MUTT_COMP_NO_FLAGS          0  ///< No flags are set
 #define MUTT_COMP_CLEAR       (1 << 0) ///< Clear input if printable character is pressed
 #define MUTT_COMP_PASS        (1 << 1) ///< Password mode (no echo)

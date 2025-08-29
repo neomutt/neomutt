@@ -3,7 +3,8 @@
  * Type representing a list of strings
  *
  * @authors
- * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,8 +34,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "set.h"
@@ -76,6 +77,18 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
   {
     list = slist_parse(value, cdef->type);
 
+    if (slist_equal(list, *(struct Slist **) var))
+    {
+      slist_free(&list);
+      return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+    }
+
+    if (startup_only(cdef, err))
+    {
+      slist_free(&list);
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+    }
+
     if (cdef->validator)
     {
       rc = cdef->validator(cs, cdef, (intptr_t) list, err);
@@ -96,10 +109,10 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
   }
   else
   {
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
 
-    cdef->type |= DT_INITIAL_SET;
+    cdef->type |= D_INTERNAL_INITIAL_SET;
     cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
@@ -145,6 +158,12 @@ static int slist_native_set(const struct ConfigSet *cs, void *var,
     return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
 
   int rc;
+
+  if (slist_equal((struct Slist *) value, *(struct Slist **) var))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -194,7 +213,13 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
 
   /* Store empty strings as NULL */
   if (value && (value[0] == '\0'))
+    value = NULL;
+
+  if (!value)
     return rc | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   struct Slist *orig = *(struct Slist **) var;
   if (slist_is_member(orig, value))
@@ -202,7 +227,7 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
 
   struct Slist *copy = slist_dup(orig);
   if (!copy)
-    copy = slist_new(cdef->type & SLIST_SEP_MASK);
+    copy = slist_new(cdef->type & D_SLIST_SEP_MASK);
 
   slist_add_string(copy, value);
 
@@ -223,7 +248,7 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * slist_string_minus_equals - Remove from a Slist by string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
+ * slist_string_minus_equals - Remove from a Slist by string - Implements ConfigSetType::string_minus_equals() - @ingroup cfg_type_string_minus_equals
  */
 static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
                                      const struct ConfigDef *cdef,
@@ -236,7 +261,13 @@ static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
 
   /* Store empty strings as NULL */
   if (value && (value[0] == '\0'))
+    value = NULL;
+
+  if (!value)
     return rc | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   struct Slist *orig = *(struct Slist **) var;
   if (!slist_is_member(orig, value))
@@ -275,6 +306,18 @@ static int slist_reset(const struct ConfigSet *cs, void *var,
 
   if (initial)
     list = slist_parse(initial, cdef->type);
+
+  if (slist_equal(list, *(struct Slist **) var))
+  {
+    slist_free(&list);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+  }
+
+  if (startup_only(cdef, err))
+  {
+    slist_free(&list);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+  }
 
   int rc = CSR_SUCCESS;
 

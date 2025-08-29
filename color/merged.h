@@ -3,7 +3,7 @@
  * Merged colours
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,10 +26,6 @@
 #include "config.h"
 
 struct AttrColor;
-
-#ifdef USE_DEBUG_COLOR
-extern struct AttrColorList MergedColors;
-#endif
 
 const struct AttrColor * merged_color_overlay(const struct AttrColor *base, const struct AttrColor *over);
 

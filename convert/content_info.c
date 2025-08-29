@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2022 Michal Siedlaczek <michal@siedlaczek.me>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -214,27 +215,27 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
     return NULL;
   }
 
-  fp = fopen(fname, "r");
+  fp = mutt_file_fopen(fname, "r");
   if (!fp)
   {
     mutt_debug(LL_DEBUG1, "%s: %s (errno %d)\n", fname, strerror(errno), errno);
     return NULL;
   }
 
-  info = mutt_mem_calloc(1, sizeof(struct Content));
+  info = MUTT_MEM_CALLOC(1, struct Content);
 
   const char *const c_charset = cc_charset();
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))
   {
     const struct Slist *const c_attach_charset = cs_subset_slist(sub, "attach_charset");
     const struct Slist *const c_send_charset = cs_subset_slist(sub, "send_charset");
-    struct Slist *c_charset_slist = slist_parse(c_charset, SLIST_SEP_COLON);
+    struct Slist *c_charset_slist = slist_parse(c_charset, D_SLIST_SEP_COLON);
 
     const struct Slist *fchs = b->use_disp ?
                                    (c_attach_charset ? c_attach_charset : c_charset_slist) :
                                    c_charset_slist;
 
-    struct Slist *chs = slist_parse(mutt_param_get(&b->parameter, "charset"), SLIST_SEP_COLON);
+    struct Slist *chs = slist_parse(mutt_param_get(&b->parameter, "charset"), D_SLIST_SEP_COLON);
 
     if (c_charset && (chs || c_send_charset) &&
         (mutt_convert_file_from_to(fp, fchs, chs ? chs : c_send_charset, &fromcode,

@@ -3,7 +3,8 @@
  * Test code for the Mbtable object
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,24 +35,25 @@
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_MBTABLE, IP "apple",      0, NULL,              }, /* test_initial_values */
-  { "Banana",     DT_MBTABLE, IP "banana",     0, NULL,              },
-  { "Cherry",     DT_MBTABLE, IP "cherry",     0, NULL,              },
-  { "Damson",     DT_MBTABLE, 0,               0, NULL,              }, /* test_mbtable_set */
-  { "Elderberry", DT_MBTABLE, IP "elderberry", 0, NULL,              },
-  { "Fig",        DT_MBTABLE, 0,               0, NULL,              }, /* test_mbtable_get */
-  { "Guava",      DT_MBTABLE, IP "guava",      0, NULL,              },
-  { "Hawthorn",   DT_MBTABLE, 0,               0, NULL,              },
-  { "Ilama",      DT_MBTABLE, 0,               0, NULL,              }, /* test_native_set */
-  { "Jackfruit",  DT_MBTABLE, IP "jackfruit",  0, NULL,              },
-  { "Kumquat",    DT_MBTABLE, 0,               0, NULL,              }, /* test_native_get */
-  { "Lemon",      DT_MBTABLE, IP "lemon",      0, NULL,              }, /* test_reset */
-  { "Mango",      DT_MBTABLE, IP "mango",      0, validator_fail,    },
-  { "Nectarine",  DT_MBTABLE, IP "nectarine",  0, validator_succeed, }, /* test_validator */
-  { "Olive",      DT_MBTABLE, IP "olive",      0, validator_warn,    },
-  { "Papaya",     DT_MBTABLE, IP "papaya",     0, validator_fail,    },
-  { "Quince",     DT_MBTABLE, 0,               0, NULL,              }, /* test_inherit */
-  { NULL },
+{ "Apple",      DT_MBTABLE, IP "apple",      0, NULL,              }, /* test_initial_values */
+{ "Banana",     DT_MBTABLE, IP "banana",     0, NULL,              },
+{ "Cherry",     DT_MBTABLE, IP "cherry",     0, NULL,              },
+{ "Damson",     DT_MBTABLE, 0,               0, NULL,              }, /* test_mbtable_set */
+{ "Elderberry", DT_MBTABLE, IP "elderberry", 0, NULL,              },
+{ "Fig",        DT_MBTABLE, 0,               0, NULL,              }, /* test_mbtable_get */
+{ "Guava",      DT_MBTABLE, IP "guava",      0, NULL,              },
+{ "Hawthorn",   DT_MBTABLE, 0,               0, NULL,              },
+{ "Ilama",      DT_MBTABLE, 0,               0, NULL,              }, /* test_native_set */
+{ "Jackfruit",  DT_MBTABLE, IP "jackfruit",  0, NULL,              },
+{ "Kumquat",    DT_MBTABLE, 0,               0, NULL,              }, /* test_native_get */
+{ "Lemon",      DT_MBTABLE, IP "lemon",      0, NULL,              }, /* test_reset */
+{ "Mango",      DT_MBTABLE, IP "mango",      0, validator_fail,    },
+{ "Nectarine",  DT_MBTABLE, IP "nectarine",  0, validator_succeed, }, /* test_validator */
+{ "Olive",      DT_MBTABLE, IP "olive",      0, validator_warn,    },
+{ "Papaya",     DT_MBTABLE, IP "papaya",     0, validator_fail,    },
+{ "Quince",     DT_MBTABLE, 0,               0, NULL,              }, /* test_inherit */
+{ "Raspberry",  DT_MBTABLE|D_ON_STARTUP, IP "raspberry", 0, NULL,  }, /* startup */
+{ NULL },
 };
 // clang-format on
 
@@ -63,18 +65,18 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   struct MbTable *VarApple = cs_subset_mbtable(sub, "Apple");
   struct MbTable *VarBanana = cs_subset_mbtable(sub, "Banana");
 
-  TEST_MSG("Apple = %s\n", VarApple->orig_str);
-  TEST_MSG("Banana = %s\n", VarBanana->orig_str);
+  TEST_MSG("Apple = %s", VarApple->orig_str);
+  TEST_MSG("Banana = %s", VarBanana->orig_str);
 
   if (!TEST_CHECK_STR_EQ(VarApple->orig_str, "apple"))
   {
-    TEST_MSG("Error: initial values were wrong\n");
+    TEST_MSG("Error: initial values were wrong");
     return false;
   }
 
   if (!TEST_CHECK_STR_EQ(VarBanana->orig_str, "banana"))
   {
-    TEST_MSG("Error: initial values were wrong\n");
+    TEST_MSG("Error: initial values were wrong");
     return false;
   }
 
@@ -92,41 +94,41 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_initial_get(cs, "Apple", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
   if (!TEST_CHECK_STR_EQ(buf_string(value), "apple"))
   {
-    TEST_MSG("Apple's initial value is wrong: '%s'\n", buf_string(value));
+    TEST_MSG("Apple's initial value is wrong: '%s'", buf_string(value));
     return false;
   }
   VarApple = cs_subset_mbtable(sub, "Apple");
-  TEST_MSG("Apple = '%s'\n", VarApple ? VarApple->orig_str : "");
-  TEST_MSG("Apple's initial value is %s\n", buf_string(value));
+  TEST_MSG("Apple = '%s'", VarApple ? VarApple->orig_str : "");
+  TEST_MSG("Apple's initial value is %s", buf_string(value));
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Banana", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
   if (!TEST_CHECK_STR_EQ(buf_string(value), "banana"))
   {
-    TEST_MSG("Banana's initial value is wrong: %s\n", buf_string(value));
+    TEST_MSG("Banana's initial value is wrong: %s", buf_string(value));
     return false;
   }
   VarBanana = cs_subset_mbtable(sub, "Banana");
-  TEST_MSG("Banana = '%s'\n", VarBanana ? VarBanana->orig_str : "");
-  TEST_MSG("Banana's initial value is %s\n", NONULL(buf_string(value)));
+  TEST_MSG("Banana = '%s'", VarBanana ? VarBanana->orig_str : "");
+  TEST_MSG("Banana's initial value is %s", NONULL(buf_string(value)));
 
   buf_reset(value);
   rc = cs_str_initial_set(cs, "Cherry", "config.*", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
@@ -134,7 +136,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_initial_set(cs, "Cherry", "file.*", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
@@ -142,13 +144,13 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_initial_get(cs, "Cherry", value);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(value));
+    TEST_MSG("%s", buf_string(value));
     return false;
   }
 
   struct MbTable *VarCherry = cs_subset_mbtable(sub, "Cherry");
-  TEST_MSG("Cherry = '%s'\n", VarCherry->orig_str);
-  TEST_MSG("Cherry's initial value is '%s'\n", NONULL(buf_string(value)));
+  TEST_MSG("Cherry = '%s'", VarCherry->orig_str);
+  TEST_MSG("Cherry's initial value is '%s'", NONULL(buf_string(value)));
 
   buf_pool_release(&value);
   log_line(__func__);
@@ -171,13 +173,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     rc = cs_str_string_set(cs, name, valid[i], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("%s\n", buf_string(err));
+      TEST_MSG("%s", buf_string(err));
       return false;
     }
 
     if (rc & CSR_SUC_NO_CHANGE)
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       continue;
     }
 
@@ -185,10 +187,10 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     mb = VarDamson ? VarDamson->orig_str : NULL;
     if (!TEST_CHECK_STR_EQ(mb, valid[i]))
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       return false;
     }
-    TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(mb), NONULL(valid[i]));
+    TEST_MSG("%s = '%s', set by '%s'", name, NONULL(mb), NONULL(valid[i]));
   }
 
   name = "Elderberry";
@@ -198,13 +200,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     rc = cs_str_string_set(cs, name, valid[i], err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("%s\n", buf_string(err));
+      TEST_MSG("%s", buf_string(err));
       return false;
     }
 
     if (rc & CSR_SUC_NO_CHANGE)
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       continue;
     }
 
@@ -212,19 +214,26 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     const char *orig_str = VarElderberry ? VarElderberry->orig_str : NULL;
     if (!TEST_CHECK_STR_EQ(orig_str, valid[i]))
     {
-      TEST_MSG("Value of %s wasn't changed\n", name);
+      TEST_MSG("Value of %s wasn't changed", name);
       return false;
     }
-    TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(orig_str), NONULL(valid[i]));
+    TEST_MSG("%s = '%s', set by '%s'", name, NONULL(orig_str), NONULL(valid[i]));
   }
 
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "\377", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
+
+  name = "Raspberry";
+  rc = cs_str_string_set(cs, name, "raspberry", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_string_set(cs, name, "banana", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -241,24 +250,24 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   int rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   struct MbTable *VarFig = cs_subset_mbtable(sub, "Fig");
   mb = VarFig ? VarFig->orig_str : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(mb), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'", name, NONULL(mb), buf_string(err));
 
   name = "Guava";
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   struct MbTable *VarGuava = cs_subset_mbtable(sub, "Guava");
   mb = VarGuava ? VarGuava->orig_str : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(mb), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'", name, NONULL(mb), buf_string(err));
 
   name = "Hawthorn";
   rc = cs_str_string_set(cs, name, "hawthorn", err);
@@ -269,12 +278,12 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   rc = cs_str_string_get(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   struct MbTable *VarHawthorn = cs_subset_mbtable(sub, "Hawthorn");
   mb = VarHawthorn ? VarHawthorn->orig_str : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(mb), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'", name, NONULL(mb), buf_string(err));
 
   log_line(__func__);
   return true;
@@ -294,7 +303,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   int rc = cs_str_native_set(cs, name, (intptr_t) t, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     goto tns_out;
   }
 
@@ -302,28 +311,41 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   mb = VarIlama ? VarIlama->orig_str : NULL;
   if (!TEST_CHECK_STR_EQ(mb, t->orig_str))
   {
-    TEST_MSG("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed", name);
     goto tns_out;
   }
-  TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(mb), t->orig_str);
+  TEST_MSG("%s = '%s', set by '%s'", name, NONULL(mb), t->orig_str);
 
   name = "Jackfruit";
   buf_reset(err);
   rc = cs_str_native_set(cs, name, 0, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     goto tns_out;
   }
 
   struct MbTable *VarJackfruit = cs_subset_mbtable(sub, "Jackfruit");
   if (!TEST_CHECK(VarJackfruit == NULL))
   {
-    TEST_MSG("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed", name);
     goto tns_out;
   }
   mb = VarJackfruit ? VarJackfruit->orig_str : NULL;
-  TEST_MSG("%s = '%s', set by NULL\n", name, NONULL(mb));
+  TEST_MSG("%s = '%s', set by NULL", name, NONULL(mb));
+
+  mbtable_free(&t);
+  t = mbtable_parse("raspberry");
+
+  name = "Raspberry";
+  rc = cs_str_native_set(cs, name, (intptr_t) t, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  mbtable_free(&t);
+  t = mbtable_parse("apple");
+
+  rc = cs_str_native_set(cs, name, (intptr_t) t, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   result = true;
 tns_out:
@@ -349,12 +371,12 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   struct MbTable *VarKumquat = cs_subset_mbtable(sub, "Kumquat");
   if (!TEST_CHECK(VarKumquat == t))
   {
-    TEST_MSG("Get failed: %s\n", buf_string(err));
+    TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   char *mb1 = VarKumquat ? VarKumquat->orig_str : NULL;
   char *mb2 = t ? t->orig_str : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(mb1), NONULL(mb2));
+  TEST_MSG("%s = '%s', '%s'", name, NONULL(mb1), NONULL(mb2));
 
   log_line(__func__);
   return true;
@@ -371,18 +393,18 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   struct MbTable *VarLemon = cs_subset_mbtable(sub, "Lemon");
   char *mb = VarLemon ? VarLemon->orig_str : NULL;
-  TEST_MSG("Initial: %s = '%s'\n", name, NONULL(mb));
+  TEST_MSG("Initial: %s = '%s'", name, NONULL(mb));
   int rc = cs_str_string_set(cs, name, "hello", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
   VarLemon = cs_subset_mbtable(sub, "Lemon");
   mb = VarLemon ? VarLemon->orig_str : NULL;
-  TEST_MSG("Set: %s = '%s'\n", name, NONULL(mb));
+  TEST_MSG("Set: %s = '%s'", name, NONULL(mb));
 
   rc = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
@@ -390,44 +412,56 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   mb = VarLemon ? VarLemon->orig_str : NULL;
   if (!TEST_CHECK_STR_EQ(mb, "lemon"))
   {
-    TEST_MSG("Value of %s wasn't changed\n", name);
+    TEST_MSG("Value of %s wasn't changed", name);
     return false;
   }
 
-  TEST_MSG("Reset: %s = '%s'\n", name, NONULL(mb));
+  TEST_MSG("Reset: %s = '%s'", name, NONULL(mb));
 
   name = "Mango";
   buf_reset(err);
 
   struct MbTable *VarMango = cs_subset_mbtable(sub, "Mango");
-  TEST_MSG("Initial: %s = '%s'\n", name, VarMango->orig_str);
+  TEST_MSG("Initial: %s = '%s'", name, VarMango->orig_str);
   dont_fail = true;
   rc = cs_str_string_set(cs, name, "hello", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
   VarMango = cs_subset_mbtable(sub, "Mango");
-  TEST_MSG("Set: %s = '%s'\n", name, VarMango->orig_str);
+  TEST_MSG("Set: %s = '%s'", name, VarMango->orig_str);
   dont_fail = false;
 
   rc = cs_str_reset(cs, name, err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return false;
   }
 
   VarMango = cs_subset_mbtable(sub, "Mango");
   if (!TEST_CHECK_STR_EQ(VarMango->orig_str, "hello"))
   {
-    TEST_MSG("Value of %s changed\n", name);
+    TEST_MSG("Value of %s changed", name);
     return false;
   }
 
-  TEST_MSG("Reset: %s = '%s'\n", name, VarMango->orig_str);
+  TEST_MSG("Reset: %s = '%s'", name, VarMango->orig_str);
+
+  name = "Raspberry";
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  StartupComplete = false;
+  rc = cs_str_string_set(cs, name, "banana", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  StartupComplete = true;
+
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -447,93 +481,93 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   int rc = cs_str_string_set(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     goto tv_out;
   }
   struct MbTable *VarNectarine = cs_subset_mbtable(sub, "Nectarine");
   mb = VarNectarine ? VarNectarine->orig_str : NULL;
-  TEST_MSG("MbTable: %s = %s\n", name, NONULL(mb));
+  TEST_MSG("MbTable: %s = %s", name, NONULL(mb));
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP t, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     goto tv_out;
   }
   VarNectarine = cs_subset_mbtable(sub, "Nectarine");
   mb = VarNectarine ? VarNectarine->orig_str : NULL;
-  TEST_MSG("Native: %s = %s\n", name, NONULL(mb));
+  TEST_MSG("Native: %s = %s", name, NONULL(mb));
 
   name = "Olive";
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     goto tv_out;
   }
   struct MbTable *VarOlive = cs_subset_mbtable(sub, "Olive");
   mb = VarOlive ? VarOlive->orig_str : NULL;
-  TEST_MSG("MbTable: %s = %s\n", name, NONULL(mb));
+  TEST_MSG("MbTable: %s = %s", name, NONULL(mb));
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP t, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     goto tv_out;
   }
   VarOlive = cs_subset_mbtable(sub, "Olive");
   mb = VarOlive ? VarOlive->orig_str : NULL;
-  TEST_MSG("Native: %s = %s\n", name, NONULL(mb));
+  TEST_MSG("Native: %s = %s", name, NONULL(mb));
 
   name = "Papaya";
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     goto tv_out;
   }
   struct MbTable *VarPapaya = cs_subset_mbtable(sub, "Papaya");
   mb = VarPapaya ? VarPapaya->orig_str : NULL;
-  TEST_MSG("MbTable: %s = %s\n", name, NONULL(mb));
+  TEST_MSG("MbTable: %s = %s", name, NONULL(mb));
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP t, err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     goto tv_out;
   }
   VarPapaya = cs_subset_mbtable(sub, "Papaya");
   mb = VarPapaya ? VarPapaya->orig_str : NULL;
-  TEST_MSG("Native: %s = %s\n", name, NONULL(mb));
+  TEST_MSG("Native: %s = %s", name, NONULL(mb));
 
   log_line(__func__);
   result = true;
@@ -553,8 +587,8 @@ static void dump_native(struct ConfigSet *cs, const char *parent, const char *ch
   char *pstr = pa ? pa->orig_str : NULL;
   char *cstr = ca ? ca->orig_str : NULL;
 
-  TEST_MSG("%15s = %s\n", parent, NONULL(pstr));
-  TEST_MSG("%15s = %s\n", child, NONULL(cstr));
+  TEST_MSG("%15s = %s", parent, NONULL(pstr));
+  TEST_MSG("%15s = %s", child, NONULL(cstr));
 }
 
 static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
@@ -574,7 +608,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   struct HashElem *he = cs_subset_create_inheritance(a->sub, parent);
   if (!he)
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
 
@@ -583,7 +617,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   int rc = cs_str_string_set(cs, parent, "hello", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -593,7 +627,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_string_set(cs, child, "world", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -603,7 +637,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_reset(cs, child, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -613,7 +647,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   rc = cs_str_reset(cs, parent, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
   }
   dump_native(cs, parent, child);
@@ -674,14 +708,18 @@ void test_config_mbtable(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
+  StartupComplete = false;
   dont_fail = true;
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars)))
     return;
   dont_fail = false;
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
+
+  mbtable_equal(NULL, NULL);
 
   struct Buffer *err = buf_pool_get();
   TEST_CHECK(test_initial_values(sub, err));

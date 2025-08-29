@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,12 +34,11 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
-#include "functions.h"
-#include "opcodes.h"
 
 /**
  * dump_bind - Dumps all the binds maps of a menu into a buffer
@@ -130,20 +130,20 @@ static bool dump_macro(struct Buffer *buf, enum MenuType menu, const char *name)
     char key_binding[128] = { 0 };
     km_expand_key(key_binding, sizeof(key_binding), map);
 
-    struct Buffer tmp = buf_make(0);
-    escape_string(&tmp, map->macro);
+    struct Buffer *tmp = buf_pool_get();
+    escape_string(tmp, map->macro);
 
     if (map->desc)
     {
       buf_add_printf(buf, "macro %s %s \"%s\" \"%s\"\n", name, key_binding,
-                     tmp.data, map->desc);
+                     tmp->data, map->desc);
     }
     else
     {
-      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, key_binding, tmp.data);
+      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, key_binding, tmp->data);
     }
 
-    buf_dealloc(&tmp);
+    buf_pool_release(&tmp);
     empty = false;
   }
 
@@ -167,7 +167,7 @@ static void dump_all_macros(struct Buffer *buf)
 }
 
 /**
- * dump_bind_macro - Parse 'bind' and 'macro' commands - Implements ICommand::parse()
+ * dump_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
@@ -187,13 +187,13 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  struct Buffer filebuf = buf_make(4096);
+  struct Buffer *filebuf = buf_pool_get();
   if (dump_all || mutt_istr_equal(buf_string(buf), "all"))
   {
     if (bind)
-      dump_all_binds(&filebuf);
+      dump_all_binds(filebuf);
     else
-      dump_all_macros(&filebuf);
+      dump_all_macros(filebuf);
   }
   else
   {
@@ -202,23 +202,23 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
     {
       // L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
       buf_printf(err, _("%s: no such menu"), buf_string(buf));
-      buf_dealloc(&filebuf);
+      buf_pool_release(&filebuf);
       return MUTT_CMD_ERROR;
     }
 
     if (bind)
-      dump_bind(&filebuf, menu_index, buf_string(buf));
+      dump_bind(filebuf, menu_index, buf_string(buf));
     else
-      dump_macro(&filebuf, menu_index, buf_string(buf));
+      dump_macro(filebuf, menu_index, buf_string(buf));
   }
 
-  if (buf_is_empty(&filebuf))
+  if (buf_is_empty(filebuf))
   {
     // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
     //       it might also be 'all' when all menus are affected.
     buf_printf(err, bind ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
                dump_all ? "all" : buf_string(buf));
-    buf_dealloc(&filebuf);
+    buf_pool_release(&filebuf);
     return MUTT_CMD_ERROR;
   }
 
@@ -229,14 +229,14 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   {
     // L10N: '%s' is the file name of the temporary file
     buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
-    buf_dealloc(&filebuf);
+    buf_pool_release(&filebuf);
     buf_pool_release(&tempfile);
     return MUTT_CMD_ERROR;
   }
-  fputs(filebuf.data, fp_out);
+  fputs(buf_string(filebuf), fp_out);
 
   mutt_file_fclose(&fp_out);
-  buf_dealloc(&filebuf);
+  buf_pool_release(&filebuf);
 
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };

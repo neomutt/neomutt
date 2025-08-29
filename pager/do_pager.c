@@ -3,8 +3,8 @@
  * Simple Pager Dialog
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -56,9 +56,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
-#include <assert.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -122,10 +121,10 @@ static int dopager_window_observer(struct NotifyCallback *nc)
  */
 int mutt_do_pager(struct PagerView *pview, struct Email *e)
 {
-  assert(pview);
-  assert(pview->pdata);
-  assert(pview->pdata->fname);
-  assert((pview->mode == PAGER_MODE_ATTACH) ||
+  ASSERT(pview);
+  ASSERT(pview->pdata);
+  ASSERT(pview->pdata->fname);
+  ASSERT((pview->mode == PAGER_MODE_ATTACH) ||
          (pview->mode == PAGER_MODE_HELP) || (pview->mode == PAGER_MODE_OTHER));
 
   struct MuttWindow *dlg = mutt_window_new(WT_DLG_PAGER, MUTT_WIN_ORIENT_VERTICAL,

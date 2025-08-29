@@ -23,8 +23,8 @@
 #ifndef MUTT_NOTMUCH_QUERY_H
 #define MUTT_NOTMUCH_QUERY_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 /**
  * enum NmQueryType - Notmuch Query Types

@@ -3,7 +3,7 @@
  * Shared constants/structs that are private to libconn
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,11 +25,33 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdio.h>
 
 struct Address;
 struct CryptKeyInfo;
 struct PgpKeyInfo;
 struct SmimeKey;
+
+/**
+ * struct PgpEntry - An entry in a PGP key menu
+ */
+struct PgpEntry
+{
+  size_t num;               ///< Index number
+  struct PgpUid *uid;       ///< PGP Key info
+};
+
+/**
+ * ExpandoDataPgp - Expando UIDs for PGP Keys
+ *
+ * @sa ED_PGP, ExpandoDomain
+ */
+enum ExpandoDataPgp
+{
+  ED_PGP_NUMBER = 1,           ///< PgpEntry.num
+  ED_PGP_TRUST,                ///< PgpUid, TrustFlags
+  ED_PGP_USER_ID,              ///< PgpUid.addr
+};
 
 struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p, const char *s, unsigned int app, bool *forced_valid);
 struct PgpKeyInfo *  dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const char *s);

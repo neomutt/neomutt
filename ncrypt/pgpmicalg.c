@@ -3,7 +3,8 @@
  * Identify the hash algorithm from a PGP signature
  *
  * @authors
- * Copyright (C) 2001 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -184,6 +185,7 @@ static short pgp_find_hash(const char *fname)
   size_t l;
   short rc = -1;
 
+  FILE *fp_in = NULL;
   FILE *fp_out = mutt_file_mkstemp();
   if (!fp_out)
   {
@@ -191,7 +193,7 @@ static short pgp_find_hash(const char *fname)
     goto bye;
   }
 
-  FILE *fp_in = fopen(fname, "r");
+  fp_in = mutt_file_fopen(fname, "r");
   if (!fp_in)
   {
     mutt_perror("%s", fname);
@@ -212,7 +214,6 @@ static short pgp_find_hash(const char *fname)
   }
 
 bye:
-
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
   pgp_release_packet();

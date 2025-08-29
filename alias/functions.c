@@ -3,7 +3,8 @@
  * Alias functions
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +28,11 @@
  */
 
 #include "config.h"
-#include <stddef.h>
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -36,16 +40,87 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "functions.h"
 #include "lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "question/lib.h"
 #include "alias.h"
+#include "functions.h"
 #include "gui.h"
-#include "opcodes.h"
+#endif
+
+// clang-format off
+/**
+ * OpAlias - Functions for the Alias Menu
+ */
+const struct MenuFuncOp OpAlias[] = { /* map: alias */
+  { "delete-entry",                  OP_DELETE },
+  { "exit",                          OP_EXIT },
+  { "limit",                         OP_MAIN_LIMIT },
+  { "mail",                          OP_MAIL },
+  { "sort-alias",                    OP_SORT },
+  { "sort-alias-reverse",            OP_SORT_REVERSE },
+  { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
+  { "undelete-entry",                OP_UNDELETE },
+  { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
+  { NULL, 0 },
+};
+
+/**
+ * OpQuery - Functions for the external Query Menu
+ */
+const struct MenuFuncOp OpQuery[] = { /* map: query */
+  { "create-alias",                  OP_CREATE_ALIAS },
+  { "exit",                          OP_EXIT },
+  { "limit",                         OP_MAIN_LIMIT },
+  { "mail",                          OP_MAIL },
+  { "query",                         OP_QUERY },
+  { "query-append",                  OP_QUERY_APPEND },
+  { "sort",                          OP_SORT },
+  { "sort-reverse",                  OP_SORT_REVERSE },
+  { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
+  { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
+  { NULL, 0 },
+};
+
+/**
+ * AliasDefaultBindings - Key bindings for the Alias Menu
+ */
+const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
+  { OP_DELETE,                             "d" },
+  { OP_EXIT,                               "q" },
+  { OP_MAIL,                               "m" },
+  { OP_MAIN_LIMIT,                         "l" },
+  { OP_MAIN_TAG_PATTERN,                   "T" },
+  { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
+  { OP_SORT,                               "o" },
+  { OP_SORT_REVERSE,                       "O" },
+  { OP_TAG,                                "<space>" },
+  { OP_UNDELETE,                           "u" },
+  { 0, NULL },
+};
+
+/**
+ * QueryDefaultBindings - Key bindings for the external Query Menu
+ */
+const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
+  { OP_CREATE_ALIAS,                       "a" },
+  { OP_EXIT,                               "q" },
+  { OP_MAIL,                               "m" },
+  { OP_MAIN_LIMIT,                         "l" },
+  { OP_MAIN_TAG_PATTERN,                   "T" },
+  { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
+  { OP_QUERY,                              "Q" },
+  { OP_QUERY_APPEND,                       "A" },
+  { OP_SORT,                               "o" },
+  { OP_SORT_REVERSE,                       "O" },
+  { OP_TAG,                                "<space>" },
+  { 0, NULL },
+};
+// clang-format on
 
 /**
  * op_create_alias - create an alias from a message sender - Implements ::alias_function_t - @ingroup alias_function_api
@@ -169,12 +244,45 @@ static int op_generic_select_entry(struct AliasMenuData *mdata, int op)
 static int op_main_limit(struct AliasMenuData *mdata, int op)
 {
   struct Menu *menu = mdata->menu;
-  int rc = mutt_pattern_alias_func(_("Limit to addresses matching: "), mdata, menu);
+  int rc = mutt_pattern_alias_func(_("Limit to addresses matching: "), mdata,
+                                   PAA_VISIBLE, menu);
   if (rc != 0)
     return FR_NO_ACTION;
 
   alias_array_sort(&mdata->ava, mdata->sub);
   alias_set_title(mdata->sbar, mdata->title, mdata->limit);
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  window_redraw(NULL);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * op_main_tag_pattern - Tag messages matching a pattern - Implements ::alias_function_t - @ingroup alias_function_api
+ */
+static int op_main_tag_pattern(struct AliasMenuData *mdata, int op)
+{
+  struct Menu *menu = mdata->menu;
+  int rc = mutt_pattern_alias_func(_("Tag addresses matching: "), mdata, PAA_TAG, menu);
+  if (rc != 0)
+    return FR_NO_ACTION;
+
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  window_redraw(NULL);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * op_main_untag_pattern - Untag messages matching a pattern - Implements ::alias_function_t - @ingroup alias_function_api
+ */
+static int op_main_untag_pattern(struct AliasMenuData *mdata, int op)
+{
+  struct Menu *menu = mdata->menu;
+  int rc = mutt_pattern_alias_func(_("Untag addresses matching: "), mdata, PAA_UNTAG, menu);
+  if (rc != 0)
+    return FR_NO_ACTION;
+
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   window_redraw(NULL);
 
@@ -200,7 +308,7 @@ static int op_query(struct AliasMenuData *mdata, int op)
   if (op == OP_QUERY)
   {
     ARRAY_FREE(&mdata->ava);
-    aliaslist_free(mdata->al);
+    aliaslist_clear(mdata->al);
   }
 
   struct Menu *menu = mdata->menu;
@@ -333,6 +441,8 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
   { OP_MAIL,                   op_generic_select_entry },
   { OP_MAIN_LIMIT,             op_main_limit },
+  { OP_MAIN_TAG_PATTERN,       op_main_tag_pattern },
+  { OP_MAIN_UNTAG_PATTERN,     op_main_untag_pattern },
   { OP_QUERY,                  op_query },
   { OP_QUERY_APPEND,           op_query },
   { OP_SEARCH,                 op_search },

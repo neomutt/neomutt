@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +35,7 @@
 #include "edata.h"
 
 /**
- * imap_edata_free - Free the private Email data - Implements Email::edata_free()
+ * imap_edata_free - Free the private Email data - Implements Email::edata_free() - @ingroup email_edata_free
  */
 void imap_edata_free(void **ptr)
 {
@@ -55,7 +56,7 @@ void imap_edata_free(void **ptr)
  */
 struct ImapEmailData *imap_edata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct ImapEmailData));
+  return MUTT_MEM_CALLOC(1, struct ImapEmailData);
 }
 
 /**

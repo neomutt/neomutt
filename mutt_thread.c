@@ -3,7 +3,11 @@
  * Create/manipulate threading in emails
  *
  * @authors
- * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017 Peter Lewis <pete@muddygoat.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +31,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -38,7 +41,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "mutt_thread.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mview.h"
 #include "mx.h"
 #include "protos.h"
@@ -100,7 +103,7 @@ const char *get_use_threads_str(enum UseThreads value)
 }
 
 /**
- * sort_validator - Validate values of "sort" - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * sort_validator - Validate the "sort" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 int sort_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                    intptr_t value, struct Buffer *err)
@@ -353,7 +356,7 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
  */
 struct ThreadsContext *mutt_thread_ctx_init(struct MailboxView *mv)
 {
-  struct ThreadsContext *tctx = mutt_mem_calloc(1, sizeof(struct ThreadsContext));
+  struct ThreadsContext *tctx = MUTT_MEM_CALLOC(1, struct ThreadsContext);
   tctx->mailbox_view = mv;
   return tctx;
 }
@@ -403,8 +406,8 @@ void mutt_draw_tree(struct ThreadsContext *tctx)
   /* Do the visibility calculations and free the old thread chars.
    * From now on we can simply ignore invisible subtrees */
   calculate_visibility(tree, &max_depth);
-  pfx = mutt_mem_malloc((width * max_depth) + 2);
-  arrow = mutt_mem_malloc((width * max_depth) + 2);
+  pfx = MUTT_MEM_MALLOC((width * max_depth) + 2, char);
+  arrow = MUTT_MEM_MALLOC((width * max_depth) + 2, char);
   const bool c_hide_limited = cs_subset_bool(NeoMutt->sub, "hide_limited");
   const bool c_hide_missing = cs_subset_bool(NeoMutt->sub, "hide_missing");
   while (tree)
@@ -429,7 +432,7 @@ void mutt_draw_tree(struct ThreadsContext *tctx)
       {
         myarrow[width] = MUTT_TREE_RARROW;
         myarrow[width + 1] = 0;
-        new_tree = mutt_mem_malloc(((size_t) depth * width) + 2);
+        new_tree = MUTT_MEM_MALLOC(((size_t) depth * width) + 2, char);
         if (start_depth > 1)
         {
           strncpy(new_tree, pfx, (size_t) width * (start_depth - 1));
@@ -749,7 +752,7 @@ static int compare_threads(const void *a, const void *b, void *sdata)
   const struct MuttThread *ta = *(struct MuttThread const *const *) a;
   const struct MuttThread *tb = *(struct MuttThread const *const *) b;
   const struct ThreadsContext *tctx = sdata;
-  assert(ta->parent == tb->parent);
+  ASSERT(ta->parent == tb->parent);
 
   /* If c_sort ties, remember we are building the thread array in
    * reverse from the index the mails had in the mailbox.  */
@@ -793,8 +796,8 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   enum SortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
   if ((c_sort & SORT_MASK) == SORT_THREADS)
   {
-    assert(!(c_sort & SORT_REVERSE) != reverse);
-    assert(cs_subset_enum(NeoMutt->sub, "use_threads") == UT_UNSET);
+    ASSERT(!(c_sort & SORT_REVERSE) != reverse);
+    ASSERT(cs_subset_enum(NeoMutt->sub, "use_threads") == UT_UNSET);
     c_sort = c_sort_aux;
   }
   c_sort ^= SORT_REVERSE;
@@ -809,7 +812,7 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   top = thread;
 
   array_size = 256;
-  array = mutt_mem_calloc(array_size, sizeof(struct MuttThread *));
+  array = MUTT_MEM_CALLOC(array_size, struct MuttThread *);
   while (true)
   {
     if (init || !thread->sort_thread_key || !thread->sort_aux_key)
@@ -852,7 +855,10 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
         for (i = 0; thread; i++, thread = thread->prev)
         {
           if (i >= array_size)
-            mutt_mem_realloc(&array, (array_size *= 2) * sizeof(struct MuttThread *));
+          {
+            array_size *= 2;
+            MUTT_MEM_REALLOC(&array, array_size, struct MuttThread *);
+          }
 
           array[i] = thread;
         }
@@ -1013,7 +1019,7 @@ static void check_subjects(struct MailboxView *mv, bool init)
 }
 
 /**
- * thread_hash_destructor - Hash Destructor callback - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
+ * thread_hash_destructor - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  */
 static void thread_hash_destructor(int type, void *obj, intptr_t data)
 {
@@ -1039,7 +1045,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   struct MuttThread top = { 0 };
   struct ListNode *ref = NULL;
 
-  assert(m->msg_count > 0);
+  ASSERT(m->msg_count > 0);
   if (!tctx->hash)
     init = true;
 
@@ -1137,7 +1143,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
       {
         tnew = (c_duplicate_threads ? thread : NULL);
 
-        thread = mutt_mem_calloc(1, sizeof(struct MuttThread));
+        thread = MUTT_MEM_CALLOC(1, struct MuttThread);
         thread->message = e;
         thread->check_subject = true;
         e->thread = thread;
@@ -1229,7 +1235,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
       }
       else
       {
-        tnew = mutt_mem_calloc(1, sizeof(struct MuttThread));
+        tnew = MUTT_MEM_CALLOC(1, struct MuttThread);
         mutt_hash_insert(tctx->hash, ref->data, tnew);
       }
 

@@ -68,6 +68,7 @@
 #ifndef MUTT_MUTT_LIB_H
 #define MUTT_MUTT_LIB_H
 
+#include "config.h"
 // IWYU pragma: begin_keep
 #include "array.h"
 #include "atoi.h"
@@ -103,5 +104,11 @@
 #include "state.h"
 #include "string2.h"
 // IWYU pragma: end_keep
+
+#if defined(COMPILER_IS_CLANG) || defined(COMPILER_IS_GCC)
+#define FALLTHROUGH __attribute__((fallthrough))
+#else
+#define FALLTHROUGH
+#endif
 
 #endif /* MUTT_MUTT_LIB_H */

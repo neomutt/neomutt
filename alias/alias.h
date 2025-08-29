@@ -3,7 +3,7 @@
  * Representation of a single alias to an email address
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -26,16 +26,18 @@
 
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "email/lib.h"
 
 /**
  * struct Alias - A shortcut for an email address or addresses
  */
 struct Alias
 {
-  char *name;                 ///< Short name
-  struct AddressList addr;    ///< List of Addresses the Alias expands to
-  char *comment;              ///< Free-form comment string
-  TAILQ_ENTRY(Alias) entries; ///< Linked list
+  char              *name;        ///< Short name
+  struct AddressList addr;        ///< List of Addresses the Alias expands to
+  char              *comment;     ///< Free-form comment string
+  struct TagList     tags;        ///< Tags
+  TAILQ_ENTRY(Alias) entries;     ///< Linked list
 };
 TAILQ_HEAD(AliasList, Alias);
 
@@ -65,8 +67,9 @@ struct EventAlias
   struct Alias *alias;  ///< Alias that changed
 };
 
-void          alias_free    (struct Alias **ptr);
-void          aliaslist_free(struct AliasList *al);
-struct Alias *alias_new     (void);
+void          alias_free(struct Alias **ptr);
+struct Alias *alias_new (void);
+
+void          aliaslist_clear(struct AliasList *al);
 
 #endif /* MUTT_ALIAS_ALIAS_H */

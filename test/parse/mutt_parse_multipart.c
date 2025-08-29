@@ -3,7 +3,7 @@
  * Test code for mutt_parse_multipart()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "test_common.h"
 
 void test_mutt_parse_multipart(void)
 {

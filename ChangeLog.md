@@ -1,3 +1,394 @@
+2024-11-14  Richard Russon  \<rich@flatcap.org\>
+* Security
+  - Fixed: CVE-2024-49393
+  - Fixed: CVE-2024-49394
+  - #4300 Read the protected Message-ID
+* Features
+  - #4336 Allow toggling numeric configs, e.g. `:toggle pager_index_lines`
+  - #4427 alias: tag/untag pattern
+  - query: tag with `<space>`
+* Contrib
+  - #4400 `mutt_oauth2.py`: Fix reference to `client_secret`
+* Bug Fixes
+  - #4399 fix duplicate save-hook
+  - #4403 expando: fix escaping
+  - #4404 browser: fix enter-quit-enter
+  - #4405 pager: fix repaint
+  - #4407 config: warn about deprecated variables
+  - #4425 Refresh alias/query dialog on alias/query format change
+  - #4433 compose: fix redraw on attachment
+  - #4436 compose: fix search with `arrow_cursor`
+  - #4438 autocrypt: fix `copy_normalize_addr()`
+  - alias: fix cli crash
+  - expando: fix relative dates
+  - expando: padding default to space
+* Translations
+  - 100% German
+  - 100% Turkish
+  - 99% Czech
+  - 99% Slovak
+  - 82% French
+* Docs
+  - drop refs to always-enabled features
+  - fix typo in unmacro
+  - fix broken link
+  - ncrypt: fix typo in `config.c`
+
+2024-10-02  Richard Russon  \<rich@flatcap.org\>
+* Security
+  - #4243 - security: kill unnecessary blank lines
+  - #4251 - more security improvements
+  - #4282 - improve NeoMutt bailout handling
+* Features
+  - #4329 - remove mixmaster
+  - #4149 - honour umask in attach save
+* Bug Fixes
+  - #3945 - do not force username in addition to client certificate
+  - #4341 - Fix '%z' and '%Z in '%{...}' expando
+  - #4356 - Allow longer maildir filename suffixes
+  - #4357 - Don't force mbox stats calculations on startup
+  - #4365 - Fix sorting INBOX and its subfolders
+  - #4367 - Let `~Y` match each tag individually
+  - #4371 - ignore macro events during autocrypt initialization
+  - #4383 - Generate the Message-ID earlier
+  - compose: fix `$compose_confirm_detach_first`
+* Changed Config
+  - `set crypt_encryption_info = yes`
+    Add an informative block with details about the encryption
+  - `set crypt_protected_headers_weed = no`
+    Controls whether NeoMutt will weed protected header fields
+  - `set devel_security = no`
+    Devel feature: Security -- https://github.com/neomutt/neomutt/discussions/4251
+  - `$mixmaster` is deprecated
+  - `$mix_entry_format` is deprecated
+* Translations
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Spanish
+  - 81% French
+* Docs
+  - #4350 - Fix configure script name in INSTALL.md
+  - fix para ordering
+* Build
+  - #4280 - Update autosetup
+  - #4281 - Update acutest to the latest upstream commit
+  - #4289 - don't treat stddef.h specially
+  - #4306 - Add -std to CFLAGS too
+  - #4307 - require C11
+  - #4347 - Support BerkeleyDB 18.1
+  - #4362 - Assume 'struct timespec' exists
+  - fix idn2 typo
+* Code
+  - #4113 - Close the hcache handle on failure to open the store
+  - #4214 - upgrade `assert()`
+  - #4283 - mutt/list.c: Use `STAILQ_FOREACH_SAFE()` in stailq deallocators
+  - #4296 - Use `wmem*()` functions with wide-character strings
+  - #4297 - ncrypt/crypt.c: Fix allocation size calculation
+  - #4305 - remove `mutt_expand_path()`
+  - #4308 - fix `-Wdouble-promotion` warnings
+  - #4310 - scanf: initialise out-vars
+  - #4312 - Allow opening the header cache in non-`O_CREAT` mode
+  - #4337 - Fix function pointer types
+  - #4348 - Check `mutt_date_parse_date()`s return value
+  - #4366 - Fix up slashes in `imap_fix_path()`
+  - #4378 - Fix padding with an empty string
+  - tidy expando library
+
+2024-04-25  Richard Russon  \<rich@flatcap.org\>
+- Bug Fixes
+  - #4263 fix: cache naming
+  - #4261 expando: fix conditional padding
+  - #4261 expando: fix container
+  - #4261 expando: add lower-case operator
+  - #4261 expando: add external filter
+  - imap: add mailboxes more directly
+- Translations
+  - trans: tidy messages
+- Docs
+  - doxy: add missing params
+- Build
+  - #4268 Filter out CFLAGS with paths from the output of '-v'
+  - #4273 guard truecolor functions in tests
+  - #4275 use homebrew in macOS build
+- Code
+  - use Buffer rather than strcat()
+  - ncrypt: use gpgme types consistently
+
+2024-04-16  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #4216 Compose: Hide MixMaster chain if chain is empty
+  - Expando upgrade
+  - version: bold labels
+* Contrib
+  - mutt_oauth2.py: Detect recipient for oauth automatically
+  - mutt_oauth2.py: imap_oauth_refresh_command does not need options
+* Bug Fixes
+  - #4210 mbox: fix sorting for `mbox_resync()`
+  - #4241 only wrap after first address in header lines
+  - status: reset Buffer before reuse
+  - history: truncate file before writing over it
+  - notmuch: strip leading / from short path
+  - Fix smtp client `$envelope_from_address` possible dangling pointer
+  - Fix non-printable keyname printing to use `<octal>` syntax
+  - Filter Arabic Letter Mark due to display corruption
+  - Loosen `imap_open_mailbox()` SELECT response data parsing
+  - Change `mailto_allow` to be exact match only
+  - Fix `mutt_read_rfc822_line()` to use `is_email_wsp()`
+  - Improve pattern compiler whitespace skipping
+  - Fix gpgme crash when listing keys in a public key block
+  - Add SigInt handler for pattern functions
+  - Fix some mailbox prompts to use mailbox history ring
+  - Improve GPGME inline processing
+  - Reset SIGPIPE signal handler in child process before `exec()`
+  - Filter headers passed via the command line
+  - Remove trailing slashes when opening maildir/mh mailboxes
+  - Fix `mutt_paddstr()` to properly filter unprintable chars
+  - Minor fixes to `match_body_patterns()`
+  - Fix `mutt_ts_capability()` fallback list loop
+  - Ensure SIGALRM interrupts connect() in batch mode
+  - Tighten `$query_command` parsing to allow empty name field
+* Changed Config
+  - #4224 config: add L10N support
+  - New: `set compose_confirm_detach_first = yes`
+    Prevent the accidental deletion of the composed message
+  - Changed: `set reply_regex = "^((re)(\\[[0-9]+\\])*:[ \t]*)*"`
+    Regex to match message reply subjects like 're: '
+  - Changed: `set pager = ""`
+    External command for viewing messages, or empty to use NeoMutt's
+* Translations
+  - 100% Czech
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Slovak
+  - 99% Turkish
+  - l10n: document functions
+  - config: add L10N support
+* Docs
+  - Clarify the manual section on POP3 support
+  - Document the `<1234>` key syntax for bind
+  - Document `$sendmail` invocation behavior
+  - Clarify -H usage in batch mode is not a "pass through" option
+
+2024-03-29  Richard Russon  \<rich@flatcap.org\>
+* Bug Fixes
+  - #4185 c441f5957 Fix memory leak in trash_append()
+  - #4189 Fix off-by-one error in %b with notmuch
+  - #4190 Zero-out mailbox counters on delete
+  - #4204 colour: honour the normal colour
+  - #4205 match folder-hook also against mailbox name (fixes #4201)
+  - wrap colour in <show-log-messages>
+  - history: fix saving file
+  - history: improve error message format
+* Docs
+  - #4182 docs: -C: Fix some accidents
+  - #4188 Update oauth2 README
+  - #4193 Update oauth2 README
+  - fix typos, lots of tidying
+  - tidy license info
+* Build
+  - #4196 use FreeBSD 14.0 in Cirrus CI
+  - actions: update cpu count
+  - actions: use codeql v3
+* Code
+  - #4186 Buffer refactoring: make_entry()
+  - address: tidy config handling
+  - coverage: buf, slist
+  - graphviz: link labels
+  - tidy buf_strcpy() calls
+  - tidy char buffers
+  - test: default timezone to UTC
+
+2024-03-23  Richard Russon  \<rich@flatcap.org\>
+* Do NOT use this release
+
+2024-02-01  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #4134 Command-line Crypto (neomutt -C)
+* Bug Fixes
+  - #4065 track new-mail check time per mailbox
+  - #4141 fix(change-folder): don't exclude notmuch
+  - #4147 envelope: manage subject/real_subj together
+  - #4155 fix parsing of $REPLYTO
+  - #4158 status: fix refresh after sync-mailbox
+  - #4166 Fix two memory leaks in notmuch support
+  - progress: fix percentages
+* Translations
+  - 100% Czech
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Slovak
+  - 100% Turkish
+* Docs
+  - #4172 Several fixes for the manual pages
+* Build
+  - build: openbsd workarounds
+* Code
+  - #4142 add mutt_time_now()
+  - #4146 config: factor out R_ flags
+  - #4154 file: upgrade mutt_file_fopen/fclose()
+  - #4159 upgrade mutt_str_append_item() to use struct Buffer
+  - #4161 maildir: encapsulate the header cache
+  - #4162 remove mutt_str_dequote_comment()
+  - #4165 bufferize mutt_str_inline_replace() as buf_inline_replace()
+  - #4167 bufferize mutt_strn_rfind() as buf_rfind()
+  - #4168 replace buf_len() checks with buf_is_empty()
+  - config: drop unused flags
+  - use message_new()/message_free()
+  - Reconsider the config type bitmap entirely
+
+2023-12-21  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #4126 - add alias 'tags:'
+* Bug Fixes
+  - #4115 - create HelpBar after colours
+  - #4116 - Fix Batch Sending of Emails
+  - #4119 - Fix Header Cache Key Handling
+  - #4121 - mutt_oauth2.py: error out if ENCRYPTION_PIPE was not supplied
+  - #4124 - config: fix flag overlaps
+  - #4125 - compose: restore view-text/pager/mailcap
+  - color: fix attr_color_copy()
+  - fix :color dump
+  - fix leak in completion
+  - force mail check on current mailbox after `<imap-fetch-mail>`
+  - Allow sending an empty mail
+  - mutt_oauth2.py: Use readline to overcome macOS input() restrictions
+* Changed Config
+  - add $history_format: '%s'
+* Translations
+  - 100% Czech
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Slovak
+  - 100% Turkish
+  - 99% Spanish
+  - 99% Hungarian
+* Coverity defects
+  - #4111 Educate Coverity about ARRAYs
+  - fix defects
+* Build
+  - #4098 - build: use fallthrough attribute
+  - #4100 - build: split maildir and mh types
+  - #4101 - version: drop default features
+  - #4108 - strip non-conditionals
+  - #4122 - add github action to check for unused functions (xunused)
+  - update fedora action
+  - coverage: fix build for lcov v2
+  - tests: fix error cases
+* Code
+  - #4097 - config: add DT_ON_STARTUP
+  - #4104 - Change mutt_default_save() and addr_hook() to take a buffer
+  - #4105 - Use buffer pool in tests
+  - #4106 - Switch some buffers to use the buffer pool
+  - #4109 - Improve the Progress Bar
+  - #4117 - remove MxOps::path_parent() and mutt_path_parent()
+  - #4120 - remove unused functions
+  - #4131 - move editor test code
+  - #4133 - move log_disp_null() into test folder
+  - #4137 - move config string name functions into tests
+  - add: hook_new()/hook_free()
+  - fix more printf-style params
+  - rename compare to equal
+  - hcache: renaming for clarity
+
+2023-11-03  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #4080 - info screen: enable \<save-message\>
+  - #4075 - add color command
+  - color: add ANSI RGB support
+  - color: Support ANSI 2x clear sequences
+* Bug Fixes
+  - #4074 - color: fix palette conversion
+  - #4081 - fix logging on error
+  - #4081 - log: vim-style
+  - #4082 - fix file auto-completion
+  - #4090 - improve logic for growing mailbox memory
+* Translations
+  - 100% Czech
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Slovak
+  - 100% Turkish
+* Build
+  - #4085 - fix CFLAGS/LDFLAGS for ncurses
+  - #4085 - configure --with-iconv
+* Code
+  - #4067 - remove unused count of new mails from index private data
+  - #4086 - smtp: Simplify the API of `smtp_code()`
+  - #4091 - simplify CLAMP by expressing it with MIN/MAX
+  - color: introduce ColorElement
+  - color: log gui info on startup
+  - color: move business logic out of parsers
+  - color: tidy OptNoCurses cases
+  - log: add `log_multiline()`
+  - test: increase coverage
+
+2023-10-23  Richard Russon  \<rich@flatcap.org\>
+* Bug Fixes
+  - #4060 - fix crash on exit
+  - #4061 - fix header colour
+  - #4064 - fix 32-bit date overflow
+  - #4078 - fix new mail in limited view
+  - nntp: fix use-after-free
+  - color: fix ansi colours
+  - color: add +truecolor to version string
+
+2023-10-06  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #3870 - color: allow 'alert', 'bright', 'light' prefix for colorNNN
+  - #3871 - color: refactor parsing code
+  - #3895 - imap: truncate large UIDVALIDITYs to support non-conforming IMAP servers
+  - #3898 - hcache: shrink Email and Body caches
+  - #3900 - prompt: treat complete-query as complete where it makes sense
+  - #3925 - help: add message flags to help screen
+  - #3932 - help: add alternating colors
+  - #3982 - mailboxes: add `-label`, `-notify` and `-poll` options
+  - #4046 - color_directcolor: Also set the default/initial value on startup
+* Bug Fixes
+  - #3897 - maildir: fix sync when a deleted file disappears
+  - #3878 - gnutls: fix "certificate saved" message
+  - #3895 - imap: truncate large UIDVALIDITYs to support non-conforming servers
+  - #3897 - maildir: fix fix error with `<sync-mailbox>` on mbsync
+  - #3901 - address: parse comments after address
+  - #3915 - bind: fix truncated binding strings
+  - #3956 - fix 'from' address when real name isn't set
+  - #3962 - Fix crash on `<next-thread>` when the `<limit>`ed view is empty
+  - #3985 - browser: fix autocompletion
+  - #3988 - pager: fix search crash
+  - #3999 - help: fix search highlight
+  - #4049 - force mail check on current mailbox after `<shell-escape>`
+  - #4051 - openssl: continue if a signal interrupts an SSL read/write
+* Config
+  - #3881 - Rename `$imap_keepalive` to `$imap_keep_alive`
+  - #3889 - Change defaults to use `%<...>` conditional syntax
+    `$attach_format`, `$index_format`, `$mailbox_folder_format`,
+    `$status_format`, `$ts_icon_format`, `$ts_status_format`
+  - #3949 - Add `browser_sort_dirs_first` to always list directories first
+* Code
+  - #3877 - imap: factor out tagged emails
+  - #3799 - address: use struct Buffer instead of plain char pointers
+  - #3868 - drop notifications relay
+  - #3869 - move `$delete_untag` out of the backend
+  - #3873 - respect `--[disable-]fmemopen` in tests
+  - hcache: optimize storage requirements, reduce config
+  - logging: catch format string errors
+  - colour:  refactor colour parsing
+  - refactoring, cleanup
+  - fixed coverity defects
+  - convert many functions to use a `Buffer`
+* Translations
+  - 100% :tr: Turkish
+  - 100% :serbia: Serbian
+  - 100% :lithuania: Lithuanian
+  - 100% :de: German
+  - 99% :czech_republic: Czech
+  - 99% :poland: Polish
+  - 98% :slovakia: Slovak
+
 2023-05-17  Richard Russon  \<rich@flatcap.org\>
 * Features
   - #3699 - Support 24bit colors, aka truecolor
@@ -627,7 +1018,7 @@
   - Address book has a comment field
   - Query menu has a comment field
 * Contrib
-  - sample.neomuttrc-starter: Do not echo promted password
+  - sample.neomuttrc-starter: Do not echo prompted password
 * Bug Fixes
   - make "news://" and "nntp://" schemes interchangeable
   - Fix CRLF to LF conversion in base64 decoding
@@ -809,7 +1200,7 @@
   - `$crypt_use_gpgme`                         - Now defaults to 'yes' (enabled)
   - `$abort_backspace`                         - Hitting backspace against an empty prompt aborts the prompt
   - `$abort_key`                               - String representation of key to abort prompts
-  - `$arrow_string`                            - Use an custom string for `$arrow_cursor`
+  - `$arrow_string`                            - Use a custom string for `$arrow_cursor`
   - `$crypt_opportunistic_encrypt_strong_keys` - Enable encryption only when strong a key is available
   - `$header_cache_compress_dictionary`        - Filepath to dictionary for zstd compression
   - `$header_cache_compress_level`             - Level of compression for method
@@ -1617,7 +2008,7 @@
   - config: drop unused paginate command
   - script: split tests up into several
   - convert credits page to markdown
-  - simpify 404 page
+  - simplify 404 page
   - improve newbie tutorial
   - remove help.html and integrate its content elsewhere
   - make: "graphviz" program is needed for generating diagram

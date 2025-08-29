@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,6 +25,7 @@
 #define MUTT_ATTACH_PRIVATE_DATA_H
 
 #include "config.h"
+#include <stdbool.h>
 
 struct Menu;
 
@@ -32,11 +34,12 @@ struct Menu;
  */
 struct AttachPrivateData
 {
-  struct Menu *menu;        ///< Current Menu
-  struct AttachCtx *actx;   ///< List of all Attachments
-  struct ConfigSubset *sub; ///< Config subset
-  struct Mailbox *mailbox;  ///< Current Mailbox
-  int op;                   ///< Op returned from the Pager, e.g. OP_NEXT_ENTRY
+  struct Menu         *menu;        ///< Current Menu
+  struct AttachCtx    *actx;        ///< List of all Attachments
+  struct ConfigSubset *sub;         ///< Config subset
+  struct Mailbox      *mailbox;     ///< Current Mailbox
+  int                  op;          ///< Op returned from the Pager, e.g. OP_NEXT_ENTRY
+  bool                 attach_msg;  ///< Are we in "attach message" mode?
 };
 
 void                      attach_private_data_free(struct Menu *menu, void **ptr);

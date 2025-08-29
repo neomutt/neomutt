@@ -3,7 +3,7 @@
  * Rich text handler
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,6 +26,6 @@
 struct Body;
 struct State;
 
-int text_enriched_handler(struct Body *a, struct State *state);
+int text_enriched_handler(struct Body *b_email, struct State *state);
 
 #endif /* MUTT_ENRICHED_H */

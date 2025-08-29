@@ -3,7 +3,8 @@
  * Test code for buf_strcpy_n()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,9 +37,10 @@ void test_buf_strcpy_n(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_strcpy_n(&buf, NULL, 3);
+    struct Buffer *buf = buf_pool_get();
+    buf_strcpy_n(buf, NULL, 3);
     TEST_CHECK_(1, "buf_strcpy_n(&buf, NULL, 3)");
+    buf_pool_release(&buf);
   }
 
   TEST_CASE("Copy to an empty Buffer");
@@ -51,11 +53,11 @@ void test_buf_strcpy_n(void)
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
       TEST_CASE_("%ld", sizes[i]);
-      struct Buffer buf = buf_make(0);
-      buf_strcpy_n(&buf, str, sizes[i]);
-      TEST_CHECK(strlen(buf_string(&buf)) == MIN(len, sizes[i]));
-      TEST_CHECK(mutt_strn_equal(buf_string(&buf), str, sizes[i]));
-      buf_dealloc(&buf);
+      struct Buffer *buf = buf_pool_get();
+      buf_strcpy_n(buf, str, sizes[i]);
+      TEST_CHECK(strlen(buf_string(buf)) == MIN(len, sizes[i]));
+      TEST_CHECK(mutt_strn_equal(buf_string(buf), str, sizes[i]));
+      buf_pool_release(&buf);
     }
   }
 
@@ -70,12 +72,12 @@ void test_buf_strcpy_n(void)
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
       TEST_CASE_("%ld", sizes[i]);
-      struct Buffer buf = buf_make(0);
-      buf_addstr(&buf, base);
-      buf_strcpy_n(&buf, str, sizes[i]);
-      TEST_CHECK(strlen(buf_string(&buf)) == MIN(len, sizes[i]));
-      TEST_CHECK(mutt_strn_equal(buf_string(&buf), str, sizes[i]));
-      buf_dealloc(&buf);
+      struct Buffer *buf = buf_pool_get();
+      buf_addstr(buf, base);
+      buf_strcpy_n(buf, str, sizes[i]);
+      TEST_CHECK(strlen(buf_string(buf)) == MIN(len, sizes[i]));
+      TEST_CHECK(mutt_strn_equal(buf_string(buf), str, sizes[i]));
+      buf_pool_release(&buf);
     }
   }
 }

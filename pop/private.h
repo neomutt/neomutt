@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2000-2003 Vsevolod Volkov <vvv@mutt.org.ua>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -77,6 +77,8 @@ struct PopCache
 struct PopAuth
 {
   /**
+   * @defgroup pop_authenticate POP Authentication API
+   *
    * authenticate - Authenticate a POP connection
    * @param adata  POP Account data
    * @param method Name of this authentication method (UNUSED)

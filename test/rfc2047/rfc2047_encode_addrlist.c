@@ -3,8 +3,9 @@
  * Test code for rfc2047_encode_addrlist()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,11 +31,11 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 static struct ConfigDef Vars[] = {
   // clang-format off
-  { "send_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY|DT_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, NULL, },
+  { "send_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY|D_CHARSET_STRICT, IP "us-ascii:iso-8859-1:utf-8", 0, NULL, },
   { NULL },
   // clang-format on
 };
@@ -43,7 +44,7 @@ void test_rfc2047_encode_addrlist(void)
 {
   // void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
 
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   {
     rfc2047_encode_addrlist(NULL, "apple");

@@ -3,7 +3,9 @@
  * Validator for the "charset" config variables
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Louis Brauer <louis@openbooking.ch>
+ * Copyright (C) 2022 Michal Siedlaczek <michal@siedlaczek.me>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,9 +35,12 @@
 #include "mutt/lib.h"
 #include "charset.h"
 #include "set.h"
+#include "types.h"
 
 /**
- * charset_validator - Validate the "charset" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * charset_validator - Validate the "charset" config variables - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ *
+ * Validate the config variables that contain a single charset.
  */
 int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                       intptr_t value, struct Buffer *err)
@@ -45,14 +50,14 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   const char *str = (const char *) value;
 
-  if ((cdef->type & DT_CHARSET_SINGLE) && strchr(str, ':'))
+  if ((cdef->type & D_CHARSET_SINGLE) && strchr(str, ':'))
   {
     buf_printf(err, _("'charset' must contain exactly one character set name"));
     return CSR_ERR_INVALID;
   }
 
   int rc = CSR_SUCCESS;
-  bool strict = (cdef->type & DT_CHARSET_STRICT);
+  bool strict = (cdef->type & D_CHARSET_STRICT);
   char *q = NULL;
   char *s = mutt_str_dup(str);
 
@@ -73,8 +78,9 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * charset_slist_validator - Validate the "charset" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
- * This is a version for charset options is Slist.
+ * charset_slist_validator - Validate the multiple "charset" config variables - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ *
+ * Validate the config variables that can contain a multiple charsets.
  */
 int charset_slist_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                             intptr_t value, struct Buffer *err)
@@ -85,7 +91,7 @@ int charset_slist_validator(const struct ConfigSet *cs, const struct ConfigDef *
   const struct Slist *list = (const struct Slist *) value;
 
   int rc = CSR_SUCCESS;
-  bool strict = (cdef->type & DT_CHARSET_STRICT);
+  bool strict = (cdef->type & D_CHARSET_STRICT);
 
   const struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &list->head, entries)

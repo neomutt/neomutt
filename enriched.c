@@ -3,7 +3,7 @@
  * Rich text handler
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,8 +31,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <wchar.h>
 #include <wctype.h>
@@ -255,7 +255,7 @@ static void enriched_flush(struct EnrichedState *enriched, bool wrap)
     if (enriched->line_used > enriched->line_max)
     {
       enriched->line_max = enriched->line_used;
-      mutt_mem_realloc(&enriched->line, (enriched->line_max + 1) * sizeof(wchar_t));
+      MUTT_MEM_REALLOC(&enriched->line, enriched->line_max + 1, wchar_t);
     }
     wcscat(enriched->line, enriched->buffer);
     enriched->line_len += enriched->word_len;
@@ -282,7 +282,10 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
     if (enriched->tag_level[RICH_COLOR])
     {
       if ((enriched->param_used + 1) >= enriched->param_len)
-        mutt_mem_realloc(&enriched->param, (enriched->param_len += 256) * sizeof(wchar_t));
+      {
+        enriched->param_len += 256;
+        MUTT_MEM_REALLOC(&enriched->param, enriched->param_len, wchar_t);
+      }
 
       enriched->param[enriched->param_used++] = c;
     }
@@ -293,7 +296,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
   if ((enriched->buf_len < (enriched->buf_used + 3)) || !enriched->buffer)
   {
     enriched->buf_len += 1024;
-    mutt_mem_realloc(&enriched->buffer, (enriched->buf_len + 1) * sizeof(wchar_t));
+    MUTT_MEM_REALLOC(&enriched->buffer, enriched->buf_len + 1, wchar_t);
   }
 
   if ((!enriched->tag_level[RICH_NOFILL] && iswspace(c)) || (c == (wchar_t) '\0'))
@@ -356,7 +359,7 @@ static void enriched_puts(const char *s, struct EnrichedState *enriched)
   if ((enriched->buf_len < (enriched->buf_used + mutt_str_len(s))) || !enriched->buffer)
   {
     enriched->buf_len += 1024;
-    mutt_mem_realloc(&enriched->buffer, (enriched->buf_len + 1) * sizeof(wchar_t));
+    MUTT_MEM_REALLOC(&enriched->buffer, enriched->buf_len + 1, wchar_t);
   }
   c = s;
   while (*c)
@@ -463,7 +466,7 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *enriche
  * text_enriched_handler - Handler for enriched text - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  */
-int text_enriched_handler(struct Body *a, struct State *state)
+int text_enriched_handler(struct Body *b_email, struct State *state)
 {
   enum
   {
@@ -476,7 +479,7 @@ int text_enriched_handler(struct Body *a, struct State *state)
     DONE
   } text_state = TEXT;
 
-  long bytes = a->length;
+  long bytes = b_email->length;
   struct EnrichedState enriched = { 0 };
   wint_t wc = 0;
   int tag_len = 0;
@@ -488,8 +491,8 @@ int text_enriched_handler(struct Body *a, struct State *state)
                              state->wraplen - 4 :
                              72;
   enriched.line_max = enriched.wrap_margin * 4;
-  enriched.line = mutt_mem_calloc((enriched.line_max + 1), sizeof(wchar_t));
-  enriched.param = mutt_mem_calloc(256, sizeof(wchar_t));
+  enriched.line = MUTT_MEM_CALLOC(enriched.line_max + 1, wchar_t);
+  enriched.param = MUTT_MEM_CALLOC(256, wchar_t);
 
   enriched.param_len = 256;
   enriched.param_used = 0;
@@ -548,8 +551,9 @@ int text_enriched_handler(struct Body *a, struct State *state)
           tag_len = 0;
           text_state = TAG;
         }
-      /* Yes, (it wasn't a <<, so this char is first in TAG) */
-      /* fallthrough */
+        /* Yes, (it wasn't a <<, so this char is first in TAG) */
+        FALLTHROUGH;
+
       case TAG:
         if (wc == (wchar_t) '>')
         {

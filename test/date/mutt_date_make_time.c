@@ -3,7 +3,8 @@
  * Test code for mutt_date_make_time()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -37,8 +38,6 @@ struct MakeTimeTest
 void test_mutt_date_make_time(void)
 {
   // time_t mutt_date_make_time(struct tm *t, bool local);
-
-  setenv("TZ", "UTC", 1);
 
   {
     TEST_CHECK(mutt_date_make_time(NULL, false) != 0);

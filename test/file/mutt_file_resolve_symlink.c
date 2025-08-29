@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -43,20 +44,22 @@ void test_mutt_file_resolve_symlink(void)
   };
   // clang-format on
 
-  char first[256] = { 0 };
-  char second[256] = { 0 };
+  struct Buffer *first = buf_pool_get();
+  struct Buffer *second = buf_pool_get();
 
-  struct Buffer result = buf_make(256);
+  struct Buffer *result = buf_pool_get();
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    test_gen_path(first, sizeof(first), tests[i].first);
-    test_gen_path(second, sizeof(second), tests[i].second);
-    buf_strcpy(&result, first);
+    test_gen_path(first, tests[i].first);
+    test_gen_path(second, tests[i].second);
+    buf_strcpy(result, buf_string(first));
 
-    TEST_CASE(first);
-    mutt_file_resolve_symlink(&result);
-    TEST_CHECK_STR_EQ(buf_string(&result), second);
+    TEST_CASE(buf_string(first));
+    mutt_file_resolve_symlink(result);
+    TEST_CHECK_STR_EQ(buf_string(result), buf_string(second));
   }
 
-  buf_dealloc(&result);
+  buf_pool_release(&first);
+  buf_pool_release(&second);
+  buf_pool_release(&result);
 }

@@ -3,7 +3,7 @@
  * Imap-specific Mailbox data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include "private.h"
 #include "core/lib.h"
 #include "mdata.h"
@@ -34,7 +35,7 @@
 #include "adata.h"
 
 /**
- * imap_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
+ * imap_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free() - @ingroup mailbox_mdata_free
  */
 void imap_mdata_free(void **ptr)
 {
@@ -73,13 +74,18 @@ struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
 struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
 {
   char buf[1024] = { 0 };
-  struct ImapMboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMboxData));
+  struct ImapMboxData *mdata = MUTT_MEM_CALLOC(1, struct ImapMboxData);
 
-  mdata->real_name = mutt_str_dup(name);
-
-  imap_fix_path(adata->delim, name, buf, sizeof(buf));
+  imap_fix_path_with_delim(adata->delim, name, buf, sizeof(buf));
   if (buf[0] == '\0')
+  {
     mutt_str_copy(buf, "INBOX", sizeof(buf));
+    mdata->real_name = mutt_str_dup(name);
+  }
+  else
+  {
+    mdata->real_name = mutt_str_dup(buf);
+  }
   mdata->name = mutt_str_dup(buf);
 
   imap_munge_mbox_name(adata->unicode, buf, sizeof(buf), mdata->name);
@@ -90,13 +96,13 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
   STAILQ_INIT(&mdata->flags);
 
 #ifdef USE_HCACHE
-  imap_hcache_open(adata, mdata);
+  imap_hcache_open(adata, mdata, false);
   if (mdata->hcache)
   {
-    if (hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uidvalidity))
+    if (hcache_fetch_raw_obj(mdata->hcache, "UIDVALIDITY", 11, &mdata->uidvalidity))
     {
-      hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, &mdata->uid_next);
-      hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, &mdata->modseq);
+      hcache_fetch_raw_obj(mdata->hcache, "UIDNEXT", 7, &mdata->uid_next);
+      hcache_fetch_raw_obj(mdata->hcache, "MODSEQ", 6, &mdata->modseq);
       mutt_debug(LL_DEBUG3, "hcache uidvalidity %u, uidnext %u, modseq %llu\n",
                  mdata->uidvalidity, mdata->uid_next, mdata->modseq);
     }

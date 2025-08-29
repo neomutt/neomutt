@@ -3,7 +3,7 @@
  * Logging Dispatcher
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -61,7 +61,7 @@ enum LogLevel
  * @param function Source function
  * @param level    Logging level, e.g. #LL_WARNING
  * @param format   printf()-style formatting string
- * @param ...      Format string and parameters, like printf()
+ * @param ...      Parameters, like printf()
  * @retval -1 Error
  * @retval  0 Success, filtered
  * @retval >0 Success, number of characters written
@@ -92,9 +92,10 @@ STAILQ_HEAD(LogLineList, LogLine);
 #define mutt_error(...)        MuttLogger(0, __FILE__, __LINE__, __func__, LL_ERROR,   __VA_ARGS__) ///< @ingroup logging_api
 #define mutt_perror(...)       MuttLogger(0, __FILE__, __LINE__, __func__, LL_PERROR,  __VA_ARGS__) ///< @ingroup logging_api
 
+void log_multiline_full(enum LogLevel level, const char *str, const char *file, int line, const char *func);
+#define log_multiline(LEVEL, STRING) log_multiline_full(LEVEL, STRING, __FILE__, __LINE__, __func__)
+
 int  log_disp_file    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
-                       __attribute__((__format__(__printf__, 6, 7)));
-int  log_disp_null    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
                        __attribute__((__format__(__printf__, 6, 7)));
 int  log_disp_queue   (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
                        __attribute__((__format__(__printf__, 6, 7)));

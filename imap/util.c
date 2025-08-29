@@ -6,7 +6,9 @@
  * Copyright (C) 1996-1998,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2012 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2018-2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -38,8 +40,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include <sys/wait.h>
-#include <time.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -52,7 +54,7 @@
 #include "question/lib.h"
 #include "adata.h"
 #include "edata.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mdata.h"
 #include "msn.h"
 #include "mutt_account.h"
@@ -89,7 +91,10 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
       continue;
     if (imap_account_match(&tmp_adata->conn->account, &cac))
     {
-      *mdata = imap_mdata_new(tmp_adata, tmp);
+      if (mdata)
+      {
+        *mdata = imap_mdata_new(tmp_adata, tmp);
+      }
       *adata = tmp_adata;
       return 0;
     }
@@ -198,7 +203,7 @@ void imap_clean_path(char *path, size_t plen)
 }
 
 /**
- * imap_get_field - Get connection login credentials - Implements ConnAccount::get_field()
+ * imap_get_field - Get connection login credentials - Implements ConnAccount::get_field() - @ingroup conn_account_get_field
  */
 static const char *imap_get_field(enum ConnAccountField field, void *gf_data)
 {
@@ -252,7 +257,8 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData
       {
         case 1: /* single: convert to a range */
           state = 2;
-          /* fall through */
+          FALLTHROUGH;
+
         case 2: /* extend range ending */
           range_end = cur_uid;
           break;
@@ -290,10 +296,11 @@ static void imap_hcache_namer(const char *path, struct Buffer *dest)
 
 /**
  * imap_hcache_open - Open a header cache
- * @param adata Imap Account data
- * @param mdata Imap Mailbox data
+ * @param adata  Imap Account data
+ * @param mdata  Imap Mailbox data
+ * @param create Create a new header cache if missing?
  */
-void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
+void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool create)
 {
   if (!adata || !mdata)
     return;
@@ -322,7 +329,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
   url_tobuffer(&url, cachepath, U_PATH);
 
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  hc = hcache_open(c_header_cache, buf_string(cachepath), imap_hcache_namer);
+  hc = hcache_open(c_header_cache, buf_string(cachepath), imap_hcache_namer, create);
 
 cleanup:
   buf_pool_release(&mbox);
@@ -356,9 +363,9 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
 
   char key[16] = { 0 };
 
-  snprintf(key, sizeof(key), "/%u", uid);
-  struct HCacheEntry hce = hcache_fetch(mdata->hcache, key, mutt_str_len(key),
-                                        mdata->uidvalidity);
+  snprintf(key, sizeof(key), "%u", uid);
+  struct HCacheEntry hce = hcache_fetch_email(mdata->hcache, key, mutt_str_len(key),
+                                              mdata->uidvalidity);
   if (!hce.email && hce.uidvalidity)
   {
     mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %u\n", hce.uidvalidity);
@@ -381,8 +388,8 @@ int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
 
   char key[16] = { 0 };
 
-  snprintf(key, sizeof(key), "/%u", imap_edata_get(e)->uid);
-  return hcache_store(mdata->hcache, key, mutt_str_len(key), e, mdata->uidvalidity);
+  snprintf(key, sizeof(key), "%u", imap_edata_get(e)->uid);
+  return hcache_store_email(mdata->hcache, key, mutt_str_len(key), e, mdata->uidvalidity);
 }
 
 /**
@@ -399,8 +406,8 @@ int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
 
   char key[16] = { 0 };
 
-  snprintf(key, sizeof(key), "/%u", uid);
-  return hcache_delete_record(mdata->hcache, key, mutt_str_len(key));
+  snprintf(key, sizeof(key), "%u", uid);
+  return hcache_delete_email(mdata->hcache, key, mutt_str_len(key));
 }
 
 /**
@@ -414,13 +421,13 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return -1;
 
-  /* The seqset is likely large.  Preallocate to reduce reallocs */
-  struct Buffer buf = buf_make(8192);
-  imap_msn_index_to_uid_seqset(&buf, mdata);
+  struct Buffer *buf = buf_pool_get();
+  buf_alloc(buf, 8192); // The seqset is likely large.  Preallocate to reduce reallocs
+  imap_msn_index_to_uid_seqset(buf, mdata);
 
-  int rc = hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, buf.data, buf_len(&buf) + 1);
-  mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", buf.data);
-  buf_dealloc(&buf);
+  int rc = hcache_store_raw(mdata->hcache, "UIDSEQSET", 9, buf->data, buf_len(buf) + 1);
+  mutt_debug(LL_DEBUG3, "Stored UIDSEQSET %s\n", buf_string(buf));
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -435,7 +442,7 @@ int imap_hcache_clear_uid_seqset(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return -1;
 
-  return hcache_delete_record(mdata->hcache, "/UIDSEQSET", 10);
+  return hcache_delete_raw(mdata->hcache, "UIDSEQSET", 9);
 }
 
 /**
@@ -449,8 +456,8 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return NULL;
 
-  char *seqset = hcache_fetch_str(mdata->hcache, "/UIDSEQSET", 10);
-  mutt_debug(LL_DEBUG3, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
+  char *seqset = hcache_fetch_raw_str(mdata->hcache, "UIDSEQSET", 9);
+  mutt_debug(LL_DEBUG3, "Retrieved UIDSEQSET %s\n", NONULL(seqset));
 
   return seqset;
 }
@@ -554,11 +561,11 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     return 0;
   }
 
-  b1 = mutt_mem_malloc(strlen(mx1) + 1);
-  b2 = mutt_mem_malloc(strlen(mx2) + 1);
+  b1 = MUTT_MEM_MALLOC(strlen(mx1) + 1, char);
+  b2 = MUTT_MEM_MALLOC(strlen(mx2) + 1, char);
 
-  imap_fix_path('\0', mx1, b1, strlen(mx1) + 1);
-  imap_fix_path('\0', mx2, b2, strlen(mx2) + 1);
+  imap_fix_path(mx1, b1, strlen(mx1) + 1);
+  imap_fix_path(mx2, b2, strlen(mx2) + 1);
 
   rc = mutt_str_cmp(b1, b2);
   FREE(&b1);
@@ -622,7 +629,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
     *path++ = '+';
     /* copy remaining path, skipping delimiter */
     if (hlen != 0)
-      ++hlen;
+      hlen++;
     memcpy(path, target_mailbox + hlen, tlen - hlen);
     path[tlen - hlen] = '\0';
     return;
@@ -658,14 +665,13 @@ void imap_error(const char *where, const char *msg)
 
 /**
  * imap_fix_path - Fix up the imap path
- * @param delim     Delimiter specified by the server, '\0' for `$imap_delim_chars`
  * @param mailbox   Mailbox path
  * @param path      Buffer for the result
  * @param plen      Length of buffer
  * @retval ptr      Fixed-up path
  *
- * @note if delim is '\0', the first character in mailbox matching any of the
- * characters in `$imap_delim_chars` is used as a delimiter.
+ * @note the first character in mailbox matching any of the characters in
+ * `$imap_delim_chars` is used as a delimiter.
  *
  * This is necessary because the rest of neomutt assumes a hierarchy delimiter of
  * '/', which is not necessarily true in IMAP.  Additionally, the filesystem
@@ -673,28 +679,65 @@ void imap_error(const char *where, const char *msg)
  * to "/".  IMAP servers are not required to do this.
  * Moreover, IMAP servers may dislike the path ending with the delimiter.
  */
-char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen)
+char *imap_fix_path(const char *mailbox, char *path, size_t plen)
 {
-  int i = 0;
   const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
-  for (; mailbox && *mailbox && (i < (plen - 1)); i++)
+
+  char *out = path;
+  size_t space_left = plen - 1;
+
+  if (mailbox)
   {
-    if ((*mailbox == delim) || (!delim && strchr(NONULL(c_imap_delim_chars), *mailbox)))
+    for (const char *c = mailbox; *c && space_left; ++c, --space_left)
     {
-      delim = *mailbox;
-      /* Skip multiple occurrences of delim */
-      while (*mailbox && *(mailbox + 1) == delim)
-        mailbox++;
+      if (strchr(NONULL(c_imap_delim_chars), *c))
+      {
+        return imap_fix_path_with_delim(*c, mailbox, path, plen);
+      }
+      *out++ = *c;
     }
-    path[i] = *mailbox++;
   }
 
-  /* Do not terminate with a delimiter */
-  if ((i != 0) && (path[i - 1] == delim))
-    i--;
+  *out = '\0';
+  return path;
+}
 
-  /* Ensure null termination */
-  path[i] = '\0';
+/**
+ * imap_fix_path_with_delim - Fix up the imap path
+ * @param delim     Delimiter specified by the server
+ * @param mailbox   Mailbox path
+ * @param path      Buffer for the result
+ * @param plen      Length of buffer
+ * @retval ptr      Fixed-up path
+ *
+ */
+char *imap_fix_path_with_delim(const char delim, const char *mailbox, char *path, size_t plen)
+{
+  char *out = path;
+  size_t space_left = plen - 1;
+
+  if (mailbox)
+  {
+    for (const char *c = mailbox; *c && space_left; ++c, --space_left)
+    {
+      if (*c == delim || *c == '/')
+      {
+        while (*c && *(c + 1) == *c)
+          c++;
+        *out++ = delim;
+      }
+      else
+      {
+        *out++ = *c;
+      }
+    }
+  }
+
+  if (out != path && *(out - 1) == delim)
+  {
+    --out;
+  }
+  *out = '\0';
   return path;
 }
 
@@ -1085,7 +1128,7 @@ struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset)
   if (!seqset || (*seqset == '\0'))
     return NULL;
 
-  struct SeqsetIterator *iter = mutt_mem_calloc(1, sizeof(struct SeqsetIterator));
+  struct SeqsetIterator *iter = MUTT_MEM_CALLOC(1, struct SeqsetIterator);
   iter->full_seqset = mutt_str_dup(seqset);
   iter->eostr = strchr(iter->full_seqset, '\0');
   iter->substr_cur = iter->substr_end = iter->full_seqset;

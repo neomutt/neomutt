@@ -3,8 +3,8 @@
  * Progress bar
  *
  * @authors
- * Copyright (C) 2018-2022 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -49,11 +50,17 @@ struct Progress;
  */
 static size_t choose_increment(enum ProgressType type)
 {
-  const short c_read_inc = cs_subset_number(NeoMutt->sub, "read_inc");
-  const short c_write_inc = cs_subset_number(NeoMutt->sub, "write_inc");
-  const short c_net_inc = cs_subset_number(NeoMutt->sub, "net_inc");
-  const short *incs[] = { &c_read_inc, &c_write_inc, &c_net_inc };
-  return (type >= mutt_array_size(incs)) ? 0 : *incs[type];
+  switch (type)
+  {
+    case MUTT_PROGRESS_NET:
+      return cs_subset_number(NeoMutt->sub, "net_inc");
+    case MUTT_PROGRESS_READ:
+      return cs_subset_number(NeoMutt->sub, "read_inc");
+    case MUTT_PROGRESS_WRITE:
+      return cs_subset_number(NeoMutt->sub, "write_inc");
+    default:
+      return 0;
+  }
 }
 
 /**
@@ -78,10 +85,21 @@ bool progress_update(struct Progress *progress, size_t pos, int percent)
   // Decloak an opaque pointer
   struct MuttWindow *win = (struct MuttWindow *) progress;
   const bool updated = progress_window_update(win, pos, percent);
-  if (updated)
+
+  if (SigWinch)
   {
-    window_redraw(win);
+    SigWinch = false;
+    notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
+    window_redraw(NULL);
   }
+  else
+  {
+    if (updated)
+    {
+      window_redraw(win);
+    }
+  }
+
   return updated;
 }
 
@@ -111,35 +129,68 @@ void progress_free(struct Progress **ptr)
 
 /**
  * progress_new - Create a new Progress Bar
- * @param msg  Message to display
  * @param type Type, e.g. #MUTT_PROGRESS_READ
  * @param size Total size of expected file / traffic
  * @retval ptr New Progress Bar
  *
  * If the user has disabled the progress bar, e.g. `set read_inc = 0` then a
  * simple message will be displayed instead.
- *
- * @note msg will be copied
  */
-struct Progress *progress_new(const char *msg, enum ProgressType type, size_t size)
+struct Progress *progress_new(enum ProgressType type, size_t size)
 {
   if (OptNoCurses)
     return NULL;
 
   const size_t size_inc = choose_increment(type);
   if (size_inc == 0) // The user has disabled the progress bar
-  {
-    mutt_message("%s", msg);
     return NULL;
-  }
 
   const short c_time_inc = cs_subset_number(NeoMutt->sub, "time_inc");
   const bool is_bytes = (type == MUTT_PROGRESS_NET);
 
-  struct MuttWindow *win = progress_window_new(msg, size, size_inc, c_time_inc, is_bytes);
+  struct MuttWindow *win = progress_window_new(size, size_inc, c_time_inc, is_bytes);
 
   msgcont_push_window(win);
 
   // Return an opaque pointer
   return (struct Progress *) win;
+}
+
+/**
+ * progress_set_message - Set the progress message
+ * @param progress Progress bar
+ * @param fmt      Format string
+ * @param ...      Format parameters
+ */
+void progress_set_message(struct Progress *progress, const char *fmt, ...)
+{
+  // Decloak an opaque pointer
+  struct MuttWindow *win = (struct MuttWindow *) progress;
+
+  va_list ap;
+  va_start(ap, fmt);
+
+  if (win)
+  {
+    progress_window_set_message(win, fmt, ap);
+  }
+  else
+  {
+    char msg[1024] = { 0 };
+    vsnprintf(msg, sizeof(msg), fmt, ap);
+    mutt_message("%s", msg);
+  }
+
+  va_end(ap);
+}
+
+/**
+ * progress_set_size - Set the progress size
+ */
+void progress_set_size(struct Progress *progress, size_t size)
+{
+  // Decloak an opaque pointer
+  struct MuttWindow *win = (struct MuttWindow *) progress;
+
+  progress_window_set_size(win, size);
 }

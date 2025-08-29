@@ -3,7 +3,7 @@
  * Menu types
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,7 +32,7 @@
 #include "type.h"
 
 /**
- * Menus - Menu name lookup table
+ * MenuNames - Menu name lookup table
  */
 const struct Mapping MenuNames[] = {
   // clang-format off
@@ -53,9 +53,6 @@ const struct Mapping MenuNames[] = {
 #ifdef CRYPT_BACKEND_GPGME
   { "key_select_pgp",   MENU_KEY_SELECT_PGP },
   { "key_select_smime", MENU_KEY_SELECT_SMIME },
-#endif
-#ifdef MIXMASTER
-  { "mix",              MENU_MIXMASTER },
 #endif
   { "query",            MENU_QUERY },
   { "generic",          MENU_GENERIC },

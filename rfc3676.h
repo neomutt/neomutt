@@ -6,6 +6,7 @@
  * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
  * Copyright (C) 2005 Peter J. Holzer <hjp@hjp.net>
  * Copyright (C) 2005,2007 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,7 +32,7 @@ struct Body;
 struct Email;
 struct State;
 
-int  rfc3676_handler                      (struct Body *a, struct State *state);
+int  rfc3676_handler                      (struct Body *b_email, struct State *state);
 bool mutt_rfc3676_is_format_flowed        (struct Body *b);
 void mutt_rfc3676_space_stuff             (struct Email *e);
 void mutt_rfc3676_space_unstuff           (struct Email *e);

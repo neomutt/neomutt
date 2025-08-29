@@ -24,6 +24,7 @@
 #define TEST_PARSE_COMMON_H
 
 #include "config.h"
+#include <stddef.h>
 #include "core/lib.h"
 
 extern struct Command mutt_commands[];

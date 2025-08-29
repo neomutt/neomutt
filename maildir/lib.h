@@ -3,7 +3,7 @@
  * Maildir local mailbox type
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,41 +27,24 @@
  *
  * | File               | Description               |
  * | :----------------- | :------------------------ |
+ * | maildir/account.c  | @subpage maildir_account  |
  * | maildir/config.c   | @subpage maildir_config   |
  * | maildir/edata.c    | @subpage maildir_edata    |
+ * | maildir/hcache.c   | @subpage maildir_hcache   |
+ * | maildir/mailbox.c  | @subpage maildir_mailbox  |
  * | maildir/maildir.c  | @subpage maildir_maildir  |
  * | maildir/mdata.c    | @subpage maildir_mdata    |
  * | maildir/mdemail.c  | @subpage maildir_mdemail  |
- * | maildir/mh.c       | @subpage maildir_mh       |
- * | maildir/sequence.c | @subpage maildir_sequence |
+ * | maildir/message.c  | @subpage maildir_message  |
+ * | maildir/path.c     | @subpage maildir_path     |
  * | maildir/shared.c   | @subpage maildir_shared   |
  */
 
 #ifndef MUTT_MAILDIR_LIB_H
 #define MUTT_MAILDIR_LIB_H
 
-#include <stdbool.h>
-#include <stdio.h>
 #include "core/lib.h"
 
-struct Buffer;
-struct Email;
-struct HeaderCache;
-
 extern const struct MxOps MxMaildirOps;
-extern const struct MxOps MxMhOps;
-
-int           maildir_check_empty      (struct Buffer *path);
-struct Email *maildir_email_new        (void);
-void          maildir_gen_flags        (char *dest, size_t destlen, struct Email *e);
-bool          maildir_msg_open_new     (struct Mailbox *m, struct Message *msg, const struct Email *e);
-FILE *        maildir_open_find_message(const char *folder, const char *msg, char **newname);
-void          maildir_parse_flags      (struct Email *e, const char *path);
-bool          maildir_parse_message    (enum MailboxType type, const char *fname, bool is_old, struct Email *e);
-bool          maildir_parse_stream     (enum MailboxType type, FILE *fp, const char *fname, bool is_old, struct Email *e);
-bool          maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct HeaderCache *hc);
-bool          maildir_update_flags     (struct Mailbox *m, struct Email *e_old, struct Email *e_new);
-int           mh_check_empty           (struct Buffer *path);
-int           mh_sync_mailbox_message  (struct Mailbox *m, struct Email *e, struct HeaderCache *hc);
 
 #endif /* MUTT_MAILDIR_LIB_H */

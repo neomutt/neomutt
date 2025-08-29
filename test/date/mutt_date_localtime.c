@@ -4,6 +4,9 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Kevin Decherf <kevin@kdecherf.com>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Rayford Shireman
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,15 +26,12 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdlib.h>
 #include <time.h>
 #include "mutt/lib.h"
 
 void test_mutt_date_localtime(void)
 {
   // struct tm mutt_date_localtime(time_t t);
-
-  setenv("TZ", "UTC", 1);
 
   {
     TEST_CASE("December, 2000");

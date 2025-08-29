@@ -3,7 +3,7 @@
  * Test code for account_mailbox_add()
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,11 +23,11 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "config/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 static struct ConfigDef Vars[] = {
   // clang-format off
@@ -44,7 +44,7 @@ void test_account_mailbox_add(void)
     TEST_CHECK(account_mailbox_add(NULL, NULL) == false);
   }
 
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   {
     struct ConfigSubset *sub = cs_subset_new("account", NULL, NULL);

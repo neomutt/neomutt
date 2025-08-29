@@ -3,8 +3,9 @@
  * Attachment Selection Dialog
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2007,2010 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2006 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -68,27 +69,30 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "lib.h"
+#include "color/lib.h"
+#include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "attach.h"
 #include "attachments.h"
-#include "format_flags.h"
 #include "functions.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mview.h"
-#include "opcodes.h"
 #include "private_data.h"
 #include "recvattach.h"
+
+void attach_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf);
 
 /// Help Bar for the Attachment selection dialog
 static const struct Mapping AttachmentHelp[] = {
@@ -127,289 +131,352 @@ static int attach_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * attach_format_str - Format a string for the attachment menu - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%C     | Character set
- * | \%c     | Character set: convert?
- * | \%D     | Deleted flag
- * | \%d     | Description
- * | \%e     | MIME content-transfer-encoding
- * | \%f     | Filename
- * | \%F     | Filename for content-disposition header
- * | \%I     | Content-disposition, either I (inline) or A (attachment)
- * | \%m     | Major MIME type
- * | \%M     | MIME subtype
- * | \%n     | Attachment number
- * | \%Q     | 'Q', if MIME part qualifies for attachment counting
- * | \%s     | Size
- * | \%t     | Tagged flag
- * | \%T     | Tree chars
- * | \%u     | Unlink
- * | \%X     | Number of qualifying MIME parts in this part and its children
+ * attach_c - Attachment: Requires conversion flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
-                              const char *src, const char *prec, const char *if_str,
-                              const char *else_str, intptr_t data, MuttFormatFlags flags)
+void attach_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
 {
-  char fmt[128] = { 0 };
-  char charset[128] = { 0 };
-  struct AttachPtr *aptr = (struct AttachPtr *) data;
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
+  const struct AttachPtr *aptr = data;
 
-  switch (op)
-  {
-    case 'C':
-      if (!optional)
-      {
-        if (mutt_is_text_part(aptr->body) &&
-            mutt_body_get_charset(aptr->body, charset, sizeof(charset)))
-        {
-          mutt_format_s(buf, buflen, prec, charset);
-        }
-        else
-        {
-          mutt_format_s(buf, buflen, prec, "");
-        }
-      }
-      else if (!mutt_is_text_part(aptr->body) ||
-               !mutt_body_get_charset(aptr->body, charset, sizeof(charset)))
-      {
-        optional = false;
-      }
-      break;
-    case 'c':
-      /* XXX */
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        snprintf(buf, buflen, fmt,
-                 ((aptr->body->type != TYPE_TEXT) || aptr->body->noconv) ? 'n' : 'c');
-      }
-      else if ((aptr->body->type != TYPE_TEXT) || aptr->body->noconv)
-      {
-        optional = false;
-      }
-      break;
-    case 'd':
-    {
-      const char *const c_message_format = cs_subset_string(NeoMutt->sub, "message_format");
-      if (!optional)
-      {
-        if (aptr->body->description)
-        {
-          mutt_format_s(buf, buflen, prec, aptr->body->description);
-          break;
-        }
-        if (mutt_is_message_type(aptr->body->type, aptr->body->subtype) &&
-            c_message_format && aptr->body->email)
-        {
-          char s[128] = { 0 };
-          mutt_make_string(s, sizeof(s), cols, c_message_format, NULL, -1,
-                           aptr->body->email,
-                           MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR, NULL);
-          if (*s)
-          {
-            mutt_format_s(buf, buflen, prec, s);
-            break;
-          }
-        }
-        if (!aptr->body->d_filename && !aptr->body->filename)
-        {
-          mutt_format_s(buf, buflen, prec, "<no description>");
-          break;
-        }
-      }
-      else if (aptr->body->description ||
-               (mutt_is_message_type(aptr->body->type, aptr->body->subtype) &&
-                c_message_format && aptr->body->email))
-      {
-        break;
-      }
-    }
-    /* fallthrough */
-    case 'F':
-      if (!optional)
-      {
-        if (aptr->body->d_filename)
-        {
-          mutt_format_s(buf, buflen, prec, aptr->body->d_filename);
-          break;
-        }
-      }
-      else if (!aptr->body->d_filename && !aptr->body->filename)
-      {
-        optional = false;
-        break;
-      }
-    /* fallthrough */
-    case 'f':
-      if (!optional)
-      {
-        if (aptr->body->filename && (*aptr->body->filename == '/'))
-        {
-          struct Buffer *path = buf_pool_get();
-
-          buf_strcpy(path, aptr->body->filename);
-          buf_pretty_mailbox(path);
-          mutt_format_s(buf, buflen, prec, buf_string(path));
-          buf_pool_release(&path);
-        }
-        else
-        {
-          mutt_format_s(buf, buflen, prec, NONULL(aptr->body->filename));
-        }
-      }
-      else if (!aptr->body->filename)
-      {
-        optional = false;
-      }
-      break;
-    case 'D':
-      if (!optional)
-        snprintf(buf, buflen, "%c", aptr->body->deleted ? 'D' : ' ');
-      else if (!aptr->body->deleted)
-        optional = false;
-      break;
-    case 'e':
-      if (!optional)
-        mutt_format_s(buf, buflen, prec, ENCODING(aptr->body->encoding));
-      break;
-    case 'I':
-      if (optional)
-        break;
-
-      const char dispchar[] = { 'I', 'A', 'F', '-' };
-      char ch;
-
-      if (aptr->body->disposition < sizeof(dispchar))
-      {
-        ch = dispchar[aptr->body->disposition];
-      }
-      else
-      {
-        mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n",
-                   aptr->body->disposition);
-        ch = '!';
-      }
-      snprintf(buf, buflen, "%c", ch);
-      break;
-    case 'm':
-      if (!optional)
-        mutt_format_s(buf, buflen, prec, TYPE(aptr->body));
-      break;
-    case 'M':
-      if (!optional)
-        mutt_format_s(buf, buflen, prec, aptr->body->subtype);
-      else if (!aptr->body->subtype)
-        optional = false;
-      break;
-    case 'n':
-      if (optional)
-        break;
-
-      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, aptr->num + 1);
-      break;
-    case 'Q':
-      if (optional)
-      {
-        optional = aptr->body->attach_qualifies;
-      }
-      else
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        mutt_format_s(buf, buflen, fmt, "Q");
-      }
-      break;
-    case 's':
-    {
-      size_t l = 0;
-      if (aptr->body->filename && (flags & MUTT_FORMAT_STAT_FILE))
-      {
-        l = mutt_file_get_size(aptr->body->filename);
-      }
-      else
-      {
-        l = aptr->body->length;
-      }
-
-      if (!optional)
-      {
-        char tmp[128] = { 0 };
-        mutt_str_pretty_size(tmp, sizeof(tmp), l);
-        mutt_format_s(buf, buflen, prec, tmp);
-      }
-      else if (l == 0)
-      {
-        optional = false;
-      }
-
-      break;
-    }
-    case 't':
-      if (!optional)
-        snprintf(buf, buflen, "%c", aptr->body->tagged ? '*' : ' ');
-      else if (!aptr->body->tagged)
-        optional = false;
-      break;
-    case 'T':
-      if (!optional)
-        mutt_format_s_tree(buf, buflen, prec, NONULL(aptr->tree));
-      else if (!aptr->tree)
-        optional = false;
-      break;
-    case 'u':
-      if (!optional)
-        snprintf(buf, buflen, "%c", aptr->body->unlink ? '-' : ' ');
-      else if (!aptr->body->unlink)
-        optional = false;
-      break;
-    case 'X':
-      if (optional)
-      {
-        optional = ((aptr->body->attach_count + aptr->body->attach_qualifies) != 0);
-      }
-      else
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, aptr->body->attach_count + aptr->body->attach_qualifies);
-      }
-      break;
-    default:
-      *buf = '\0';
-  }
-
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data,
-                        MUTT_FORMAT_NO_FLAGS);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str,
-                        data, MUTT_FORMAT_NO_FLAGS);
-  }
-
-  /* We return the format string, unchanged */
-  return src;
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = ((aptr->body->type != TYPE_TEXT) || aptr->body->noconv) ? "n" : "c";
+  buf_strcpy(buf, s);
 }
 
 /**
- * attach_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry() - @ingroup menu_make_entry
- *
- * @sa $attach_format, attach_format_str()
+ * attach_C - Attachment: Charset - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+void attach_C(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  char tmp[128] = { 0 };
+
+  if (mutt_is_text_part(aptr->body) && mutt_body_get_charset(aptr->body, tmp, sizeof(tmp)))
+  {
+    buf_strcpy(buf, tmp);
+  }
+}
+
+/**
+ * attach_d - Attachment: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  const struct Expando *c_message_format = cs_subset_expando(NeoMutt->sub, "message_format");
+  if (aptr->body->description)
+  {
+    const char *s = aptr->body->description;
+    buf_strcpy(buf, s);
+    return;
+  }
+
+  if (mutt_is_message_type(aptr->body->type, aptr->body->subtype) &&
+      c_message_format && aptr->body->email)
+  {
+    mutt_make_string(buf, -1, c_message_format, NULL, -1, aptr->body->email,
+                     MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR, NULL);
+
+    return;
+  }
+
+  if (!aptr->body->d_filename && !aptr->body->filename)
+  {
+    const char *s = "<no description>";
+    buf_strcpy(buf, s);
+    return;
+  }
+
+  attach_F(node, data, flags, buf);
+}
+
+/**
+ * attach_D_num - Attachment: Deleted - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long attach_D_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+  return aptr->body->deleted;
+}
+
+/**
+ * attach_D - Attachment: Deleted - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = aptr->body->deleted ? "D" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * attach_e - Attachment: MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  const char *s = ENCODING(aptr->body->encoding);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * attach_f - Attachment: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  if (aptr->body->filename && (*aptr->body->filename == '/'))
+  {
+    struct Buffer *path = buf_pool_get();
+
+    buf_strcpy(path, aptr->body->filename);
+    buf_pretty_mailbox(path);
+    buf_copy(buf, path);
+    buf_pool_release(&path);
+  }
+  else
+  {
+    const char *s = aptr->body->filename;
+    buf_strcpy(buf, s);
+  }
+}
+
+/**
+ * attach_F - Attachment: Filename in header - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  if (aptr->body->d_filename)
+  {
+    const char *s = aptr->body->d_filename;
+    buf_strcpy(buf, s);
+    return;
+  }
+
+  attach_f(node, data, flags, buf);
+}
+
+/**
+ * attach_I - Attachment: Disposition flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_I(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  static const char dispchar[] = { 'I', 'A', 'F', '-' };
+  char ch;
+
+  if (aptr->body->disposition < sizeof(dispchar))
+  {
+    ch = dispchar[aptr->body->disposition];
+  }
+  else
+  {
+    mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n", aptr->body->disposition);
+    ch = '!';
+  }
+
+  buf_printf(buf, "%c", ch);
+}
+
+/**
+ * attach_m - Attachment: Major MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_m(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  const char *s = TYPE(aptr->body);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * attach_M - Attachment: MIME subtype - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_M(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  const char *s = aptr->body->subtype;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * attach_n_num - Attachment: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long attach_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+
+  return aptr->num + 1;
+}
+
+/**
+ * attach_Q_num - Attachment: Attachment counting - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long attach_Q_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+  return aptr->body->attach_qualifies;
+}
+
+/**
+ * attach_Q - Attachment: Attachment counting - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_Q(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = aptr->body->attach_qualifies ? "Q" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * attach_s_num - Attachment: Size - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long attach_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+
+  if (aptr->body->filename && (flags & MUTT_FORMAT_STAT_FILE))
+    return mutt_file_get_size(aptr->body->filename);
+
+  return aptr->body->length;
+}
+
+/**
+ * attach_s - Attachment: Size - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  char tmp[128] = { 0 };
+
+  size_t l = 0;
+  if (aptr->body->filename && (flags & MUTT_FORMAT_STAT_FILE))
+  {
+    l = mutt_file_get_size(aptr->body->filename);
+  }
+  else
+  {
+    l = aptr->body->length;
+  }
+
+  mutt_str_pretty_size(tmp, sizeof(tmp), l);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * attach_t_num - Attachment: Is Tagged - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long attach_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+  return aptr->body->tagged;
+}
+
+/**
+ * attach_t - Attachment: Is Tagged - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = aptr->body->tagged ? "*" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * attach_T - Attachment: Tree characters - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  node_expando_set_color(node, MT_COLOR_TREE);
+  node_expando_set_has_tree(node, true);
+  const char *s = aptr->tree;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * attach_u_num - Attachment: Unlink flag - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long attach_u_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+  return aptr->body->unlink;
+}
+
+/**
+ * attach_u - Attachment: Unlink flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void attach_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = aptr->body->unlink ? "-" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * attach_X_num - Attachment: Number of MIME parts - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long attach_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+  const struct Body *body = aptr->body;
+
+  return body->attach_count + body->attach_qualifies;
+}
+
+/**
+ * attach_make_entry - Format an Attachment for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $attach_format
+ */
+static int attach_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct AttachPrivateData *priv = menu->mdata;
   struct AttachCtx *actx = priv->actx;
 
-  const char *const c_attach_format = cs_subset_string(NeoMutt->sub, "attach_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_attach_format),
-                      attach_format_str, (intptr_t) (actx->idx[actx->v2r[line]]),
-                      MUTT_FORMAT_ARROWCURSOR);
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_attach_format = cs_subset_expando(NeoMutt->sub, "attach_format");
+  return expando_filter(c_attach_format, AttachRenderData, (actx->idx[actx->v2r[line]]),
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
@@ -459,17 +526,18 @@ static int attach_window_observer(struct NotifyCallback *nc)
 
 /**
  * dlg_attachment - Show the attachments in a Menu - @ingroup gui_dlg
- * @param sub Config Subset
- * @param mv  Mailbox view
- * @param e   Email
- * @param fp File with the content of the email, or NULL
+ * @param sub        Config Subset
+ * @param mv         Mailbox view
+ * @param e          Email
+ * @param fp         File with the content of the email, or NULL
+ * @param attach_msg Are we in "attach message" mode?
  *
  * The Select Attachment dialog shows an Email's attachments.
  * They can be viewed using the Pager or Mailcap programs.
  * They can also be saved, printed, deleted, etc.
  */
 void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
-                    struct Email *e, FILE *fp)
+                    struct Email *e, FILE *fp, bool attach_msg)
 {
   if (!mv || !mv->mailbox || !e || !fp)
     return;
@@ -495,6 +563,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   priv->actx = actx;
   priv->sub = sub;
   priv->mailbox = m;
+  priv->attach_msg = attach_msg;
   menu->mdata = priv;
   menu->mdata_free = attach_private_data_free;
 
@@ -543,3 +612,31 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   window_set_focus(old_focus);
   simple_dialog_free(&dlg);
 }
+
+/**
+ * AttachRenderData - Callbacks for Attachment Expandos
+ *
+ * @sa AttachFormatDef, ExpandoDataAttach, ExpandoDataBody, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData AttachRenderData[] = {
+  // clang-format off
+  { ED_ATTACH, ED_ATT_CHARSET,          attach_C,     NULL },
+  { ED_BODY,   ED_BOD_CHARSET_CONVERT,  attach_c,     NULL },
+  { ED_BODY,   ED_BOD_DELETED,          attach_D,     attach_D_num },
+  { ED_BODY,   ED_BOD_DESCRIPTION,      attach_d,     NULL },
+  { ED_BODY,   ED_BOD_MIME_ENCODING,    attach_e,     NULL },
+  { ED_BODY,   ED_BOD_FILE,             attach_f,     NULL },
+  { ED_BODY,   ED_BOD_FILE_DISPOSITION, attach_F,     NULL },
+  { ED_BODY,   ED_BOD_DISPOSITION,      attach_I,     NULL },
+  { ED_BODY,   ED_BOD_MIME_MAJOR,       attach_m,     NULL },
+  { ED_BODY,   ED_BOD_MIME_MINOR,       attach_M,     NULL },
+  { ED_ATTACH, ED_ATT_NUMBER,           NULL,         attach_n_num },
+  { ED_BODY,   ED_BOD_ATTACH_QUALIFIES, attach_Q,     attach_Q_num },
+  { ED_BODY,   ED_BOD_FILE_SIZE,        attach_s,     attach_s_num },
+  { ED_BODY,   ED_BOD_TAGGED,           attach_t,     attach_t_num },
+  { ED_ATTACH, ED_ATT_TREE,             attach_T,     NULL },
+  { ED_BODY,   ED_BOD_UNLINK,           attach_u,     attach_u_num },
+  { ED_BODY,   ED_BOD_ATTACH_COUNT,     NULL,         attach_X_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

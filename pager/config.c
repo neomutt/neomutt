@@ -3,7 +3,9 @@
  * Config used by libpager
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,10 +29,13 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "expando/lib.h"
+
+extern const struct ExpandoDefinition IndexFormatDef[];
 
 /**
  * PagerVars - Config definitions for the Pager
@@ -38,30 +43,30 @@
 static struct ConfigDef PagerVars[] = {
   // clang-format off
   { "allow_ansi", DT_BOOL, false, 0, NULL,
-    "Allow ANSI colour codes in rich text messages"
+    "Allow ANSI color codes in rich text messages"
   },
-  { "display_filter", DT_STRING|DT_COMMAND, 0, 0, NULL,
+  { "display_filter", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External command to pre-process an email before display"
   },
   { "header_color_partial", DT_BOOL, false, 0, NULL,
-    "Only colour the part of the header matching the regex"
+    "Only color the part of the header matching the regex"
   },
-  { "pager", DT_STRING|DT_COMMAND, IP "builtin", 0, NULL,
-    "External command for viewing messages, or 'builtin' to use NeoMutt's"
+  { "pager", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
+    "External command for viewing messages, or empty to use NeoMutt's"
   },
-  { "pager_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "pager_context", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of lines of overlap when changing pages in the pager"
   },
-  { "pager_format", DT_STRING, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)", 0, NULL,
+  { "pager_format", DT_EXPANDO, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)", IP &IndexFormatDef, NULL,
     "printf-like format string for the pager's status bar"
   },
-  { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "pager_index_lines", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of index lines to display above the pager"
   },
-  { "pager_read_delay", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "pager_read_delay", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of seconds to wait before marking a message read"
   },
-  { "pager_skip_quoted_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "pager_skip_quoted_context", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Lines of context to show when skipping quoted text"
   },
   { "pager_stop", DT_BOOL, false, 0, NULL,
@@ -70,7 +75,7 @@ static struct ConfigDef PagerVars[] = {
   { "prompt_after", DT_BOOL, true, 0, NULL,
     "Pause after running an external pager"
   },
-  { "search_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "search_context", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Context to display around search matches"
   },
   { "smart_wrap", DT_BOOL, true, 0, NULL,
@@ -82,7 +87,7 @@ static struct ConfigDef PagerVars[] = {
   { "tilde", DT_BOOL, false, 0, NULL,
     "Display '~' in the pager after the end of the email"
   },
-  { "toggle_quoted_show_levels", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "toggle_quoted_show_levels", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of quote levels to show with toggle-quoted"
   },
 
@@ -114,5 +119,5 @@ const char *pager_get_pager(struct ConfigSubset *sub)
  */
 bool config_init_pager(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, PagerVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, PagerVars);
 }

@@ -3,7 +3,7 @@
  * Window management
  *
  * @authors
- * Copyright (C) 2018-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -61,7 +61,6 @@ static const struct Mapping WindowNames[] = {
   { "WT_DLG_PGP",         WT_DLG_PGP },
   { "WT_DLG_POSTPONED",   WT_DLG_POSTPONED },
   { "WT_DLG_QUERY",       WT_DLG_QUERY },
-  { "WT_DLG_MIXMASTER",   WT_DLG_MIXMASTER },
   { "WT_DLG_SMIME",       WT_DLG_SMIME },
   { "WT_HELP_BAR",        WT_HELP_BAR },
   { "WT_INDEX",           WT_INDEX },
@@ -182,7 +181,7 @@ void window_set_visible(struct MuttWindow *win, bool visible)
 struct MuttWindow *mutt_window_new(enum WindowType type, enum MuttWindowOrientation orient,
                                    enum MuttWindowSize size, int cols, int rows)
 {
-  struct MuttWindow *win = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  struct MuttWindow *win = MUTT_MEM_CALLOC(1, struct MuttWindow);
 
   win->type = type;
   win->orient = orient;

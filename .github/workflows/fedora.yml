@@ -13,9 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         distro:
-          - version: 37
-          - version: 38
           - version: 39
+          - version: 40
+          - version: 41
         config:
           - name: Default
             options:
@@ -30,7 +30,7 @@ jobs:
 
     steps:
     - name: Get number of CPU cores
-      uses: SimenB/github-actions-cpu-cores@v1
+      uses: SimenB/github-actions-cpu-cores@v2
       id: cpu-cores
 
     - name: Checkout Code

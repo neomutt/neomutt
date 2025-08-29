@@ -3,7 +3,7 @@
  * Representation of the body of an email
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,6 +27,6 @@
 
 struct Body;
 
-int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src);
+int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src);
 
 #endif /* MUTT_MUTT_BODY_H */

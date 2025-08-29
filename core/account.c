@@ -3,7 +3,8 @@
  * A group of associated Mailboxes
  *
  * @authors
- * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -45,7 +46,7 @@ struct Account *account_new(const char *name, struct ConfigSubset *sub)
   if (!sub)
     return NULL;
 
-  struct Account *a = mutt_mem_calloc(1, sizeof(struct Account));
+  struct Account *a = MUTT_MEM_CALLOC(1, struct Account);
 
   STAILQ_INIT(&a->mailboxes);
   a->notify = notify_new();
@@ -72,7 +73,7 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
     a->type = m->type;
 
   m->account = a;
-  struct MailboxNode *np = mutt_mem_calloc(1, sizeof(*np));
+  struct MailboxNode *np = MUTT_MEM_CALLOC(1, struct MailboxNode);
   np->mailbox = m;
   STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
   mailbox_set_subset(m, a->sub);

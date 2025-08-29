@@ -3,7 +3,8 @@
  * Type representing a quad-option
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,11 +30,14 @@
  * - Validator is passed `unsigned char`
  * - Valid user entry: #QuadValues
  * - Implementation: #CstQuad
+ *
+ * The following unused functions were removed:
+ * - quad_str_toggle()
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "quad.h"
@@ -79,6 +83,9 @@ static int quad_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
   {
     if (num == (*(char *) var))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
     if (cdef->validator)
     {
@@ -129,12 +136,15 @@ static int quad_native_set(const struct ConfigSet *cs, void *var,
 {
   if ((value < 0) || (value >= (mutt_array_size(QuadValues) - 1)))
   {
-    buf_printf(err, _("Invalid quad value: %ld"), value);
+    buf_printf(err, _("Invalid quad value: %ld"), (long) value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
   if (value == (*(char *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -165,6 +175,9 @@ static int quad_reset(const struct ConfigSet *cs, void *var,
 {
   if (cdef->initial == (*(char *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
@@ -221,22 +234,6 @@ int quad_he_toggle(struct ConfigSubset *sub, struct HashElem *he, struct Buffer 
     cs_subset_notify_observers(sub, he, NT_CONFIG_SET);
 
   return rc;
-}
-
-/**
- * quad_str_toggle - Toggle the value of a quad
- * @param sub  Config subset
- * @param name HashElem representing config item
- * @param err  Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- *
- * @sa quad_toggle()
- */
-int quad_str_toggle(struct ConfigSubset *sub, const char *name, struct Buffer *err)
-{
-  struct HashElem *he = cs_subset_create_inheritance(sub, name);
-
-  return quad_he_toggle(sub, he, err);
 }
 
 /**

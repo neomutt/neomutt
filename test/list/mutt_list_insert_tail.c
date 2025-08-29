@@ -3,7 +3,7 @@
  * Test code for mutt_list_insert_tail()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "common.h"
 
@@ -49,7 +49,7 @@ void test_mutt_list_insert_tail(void)
     struct ListHead start = STAILQ_HEAD_INITIALIZER(start);
     struct ListHead expected = test_list_create(expected_names, false);
     TEST_CHECK(mutt_list_insert_tail(&start, insert) != NULL);
-    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    TEST_CHECK(mutt_list_equal(&start, &expected) == true);
     mutt_list_clear(&start);
     mutt_list_clear(&expected);
   }
@@ -61,7 +61,7 @@ void test_mutt_list_insert_tail(void)
     struct ListHead start = test_list_create(start_names, false);
     struct ListHead expected = test_list_create(expected_names, false);
     TEST_CHECK(mutt_list_insert_tail(&start, insert) != NULL);
-    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    TEST_CHECK(mutt_list_equal(&start, &expected) == true);
     mutt_list_clear(&start);
     mutt_list_clear(&expected);
   }

@@ -3,9 +3,8 @@
  * IMAP network mailbox
  *
  * @authors
- * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-2007,2017 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -57,8 +56,8 @@
 #define MUTT_IMAP_LIB_H
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <sys/types.h>
 #include "core/lib.h"
 #include "external.h"
@@ -79,7 +78,7 @@ int imap_delete_mailbox(struct Mailbox *m, char *path);
 enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close);
 int imap_path_status(const char *path, bool queue);
 int imap_mailbox_status(struct Mailbox *m, bool queue);
-int imap_subscribe(char *path, bool subscribe);
+int imap_subscribe(const char *path, bool subscribe);
 int imap_complete(struct Buffer *buf, const char *path);
 int imap_fast_trash(struct Mailbox *m, const char *dest);
 enum MailboxType imap_path_probe(const char *path, const struct stat *st);
@@ -100,7 +99,6 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea, const char *des
 void imap_logout_all(void);
 
 /* util.c */
-int imap_expand_path(struct Buffer *buf);
 int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, size_t mailboxlen);
 void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder);
 int imap_mxcmp(const char *mx1, const char *mx2);

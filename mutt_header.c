@@ -3,7 +3,9 @@
  * Manipulate an email's header
  *
  * @authors
- * Copyright (C) 1996-2009,2012 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Rayford Shireman
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,12 +29,12 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -47,7 +49,7 @@
 #include "ncrypt/lib.h"
 #include "postpone/lib.h"
 #include "send/lib.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "muttlib.h"
 #include "mview.h"
 
@@ -194,7 +196,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   fputc('\n', fp_out); /* tie off the header. */
 
   /* now copy the body of the message. */
-  FILE *fp_in = fopen(body, "r");
+  FILE *fp_in = mutt_file_fopen(body, "r");
   if (!fp_in)
   {
     mutt_perror("%s", body);
@@ -234,7 +236,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   mutt_list_free(&e->env->userhdrs);
 
   /* Read the temp file back in */
-  fp_in = fopen(buf_string(path), "r");
+  fp_in = mutt_file_fopen(buf_string(path), "r");
   if (!fp_in)
   {
     mutt_perror("%s", buf_string(path));
@@ -264,9 +266,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
    * $edit_headers set, we remove References: as they're likely invalid;
    * we can simply compare strings as we don't generate References for
    * multiple Message-Ids in IRT anyways */
-#ifdef USE_NNTP
   if (!OptNewsSend)
-#endif
   {
     if (!STAILQ_EMPTY(&e->env->in_reply_to) &&
         (STAILQ_EMPTY(&env_new->in_reply_to) ||
@@ -383,22 +383,6 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       }
       keep = false;
     }
-#ifdef MIXMASTER
-    // Check for header names: most specific first
-    else if ((plen = mutt_istr_startswith(np->data, "X-Mutt-Mix:")) ||
-             (plen = mutt_istr_startswith(np->data, "Mutt-Mix:")))
-    {
-      mutt_list_free(&e->chain);
-
-      char *t = strtok(np->data + plen, ", \t\n");
-      while (t)
-      {
-        mutt_list_insert_tail(&e->chain, mutt_str_dup(t));
-        t = strtok(NULL, ", \t\n");
-      }
-      keep = false;
-    }
-#endif
 
     if (!keep)
     {

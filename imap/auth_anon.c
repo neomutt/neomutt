@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1999-2001,2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +35,7 @@
 #include "auth.h"
 
 /**
- * imap_auth_anon - Authenticate anonymously - Implements ImapAuth::authenticate()
+ * imap_auth_anon - Authenticate anonymously - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  *
  * This is basically a stripped-down version of the cram-md5 method.
  */

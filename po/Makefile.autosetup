@@ -55,7 +55,7 @@ update-po: clean-po
 	$(MAKE) all-po
 
 po/POTFILES: po
-	@echo opcodes.h > $@
+	@echo gui/opcodes.h > $@
 	@(cd $(SRCDIR); find . -type f -name '*.c') | grep -v -e test/ -e jimsh0 -e docs/ -e conststrings -e git_ver >> $@
 
 $(PACKAGE).pot-update: po po/POTFILES

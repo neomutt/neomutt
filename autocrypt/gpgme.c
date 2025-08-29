@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,9 +29,10 @@
  */
 
 #include "config.h"
-#include <stddef.h>
+#include <gpg-error.h>
 #include <gpgme.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -49,9 +52,9 @@ static int create_gpgme_context(gpgme_ctx_t *ctx)
 {
   const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
   gpgme_error_t err = gpgme_new(ctx);
-  if (!err)
+  if (err == GPG_ERR_NO_ERROR)
     err = gpgme_ctx_set_engine_info(*ctx, GPGME_PROTOCOL_OpenPGP, NULL, c_autocrypt_dir);
-  if (err)
+  if (err != GPG_ERR_NO_ERROR)
   {
     mutt_error(_("error creating GPGME context: %s"), gpgme_strerror(err));
     return -1;
@@ -88,7 +91,7 @@ static int export_keydata(gpgme_ctx_t ctx, gpgme_key_t key, struct Buffer *keyda
   if (gpgme_data_new(&dh))
     goto cleanup;
 
-    /* This doesn't seem to work */
+  /* This doesn't seem to work */
 #if 0
   if (gpgme_data_set_encoding (dh, GPGME_DATA_ENCODING_BASE64))
     goto cleanup;
@@ -178,7 +181,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   gpgme_error_t err = gpgme_op_createkey(ctx, buf_string(buf), "ed25519", 0, 0, NULL,
                                          GPGME_CREATE_NOPASSWD | GPGME_CREATE_FORCE |
                                              GPGME_CREATE_NOEXPIRE);
-  if (err)
+  if (err != GPG_ERR_NO_ERROR)
   {
     /* L10N: GPGME was unable to generate a key for some reason.
        %s is the error message returned by GPGME.  */
@@ -199,7 +202,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   /* Secondary key */
   err = gpgme_op_createsubkey(ctx, primary_key, "cv25519", 0, 0,
                               GPGME_CREATE_NOPASSWD | GPGME_CREATE_NOEXPIRE);
-  if (err)
+  if (err != GPG_ERR_NO_ERROR)
   {
     mutt_error(_("Error creating autocrypt key: %s"), gpgme_strerror(err));
     goto cleanup;
@@ -298,7 +301,7 @@ int mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffe
          for some reason, we prompt to see if they want to create a key instead.  */
       if (query_yesorno(_("Create a new GPG key for this account, instead?"), MUTT_YES) != MUTT_YES)
         break;
-      /* fallthrough */
+      FALLTHROUGH;
 
     case 1: /* create new */
       rc = mutt_autocrypt_gpgme_create_key(addr, keyid, keydata);
@@ -319,11 +322,12 @@ int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
   int rc = -1;
   gpgme_ctx_t ctx = NULL;
   gpgme_data_t dh = NULL;
+  struct Buffer *raw_keydata = NULL;
 
   if (create_gpgme_context(&ctx))
     goto cleanup;
 
-  struct Buffer *raw_keydata = buf_pool_get();
+  raw_keydata = buf_pool_get();
   if (!mutt_b64_buffer_decode(raw_keydata, keydata))
     goto cleanup;
 

@@ -3,7 +3,8 @@
  * SASL authentication support
  *
  * @authors
- * Copyright (C) 2000-2008,2012,2014 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -38,11 +39,11 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <errno.h>
 #include <netdb.h>
 #include <sasl/sasl.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -89,7 +90,7 @@ struct SaslSockData
   int (*write)(struct Connection *conn, const char *buf, size_t count);
 
   /**
-   * poll - Check whether a socket read would block - Implements Connection::poll() - @ingroup connection_poll
+   * poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
    */
   int (*poll)(struct Connection *conn, time_t wait_secs);
 
@@ -100,7 +101,7 @@ struct SaslSockData
 };
 
 /**
- * SaslAuthenticators - Authenticaion methods supported by Cyrus SASL
+ * SaslAuthenticators - Authentication methods supported by Cyrus SASL
  */
 static const char *const SaslAuthenticators[] = {
   "ANONYMOUS",     "CRAM-MD5",       "DIGEST-MD5",    "EXTERNAL",
@@ -273,7 +274,7 @@ static int mutt_sasl_cb_log(void *context, int priority, const char *message)
  *
  * Call before doing an SASL exchange (initialises library if necessary).
  */
-static int mutt_sasl_start(void)
+int mutt_sasl_start(void)
 {
   static bool sasl_init = false;
 
@@ -578,7 +579,7 @@ fail:
 }
 
 /**
- * mutt_sasl_conn_poll - Check an SASL connection for data - Implements Connection::poll() - @ingroup connection_poll
+ * mutt_sasl_conn_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -739,7 +740,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
  */
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 {
-  struct SaslSockData *sasldata = mutt_mem_malloc(sizeof(struct SaslSockData));
+  struct SaslSockData *sasldata = MUTT_MEM_MALLOC(1, struct SaslSockData);
   /* work around sasl_getprop aliasing issues */
   const void *tmp = NULL;
 

@@ -3,7 +3,7 @@
  * GNU SASL authentication support
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,6 +29,7 @@
 #include "config.h"
 #include <gsasl.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "connaccount.h"
 #include "connection.h"
@@ -133,7 +134,7 @@ static bool mutt_gsasl_init(void)
   if (rc != GSASL_OK)
   {
     MuttGsaslCtx = NULL;
-    mutt_debug(LL_DEBUG1, "libgsasl initialisation failed (%d): %s.\n", rc,
+    mutt_debug(LL_DEBUG1, "libgsasl initialisation failed (%d): %s\n", rc,
                gsasl_strerror(rc));
     return false;
   }
@@ -204,7 +205,7 @@ int mutt_gsasl_client_new(struct Connection *conn, const char *mech, Gsasl_sessi
   if (rc != GSASL_OK)
   {
     *sctx = NULL;
-    mutt_debug(LL_DEBUG1, "gsasl_client_start failed (%d): %s.\n", rc, gsasl_strerror(rc));
+    mutt_debug(LL_DEBUG1, "gsasl_client_start failed (%d): %s\n", rc, gsasl_strerror(rc));
     return -1;
   }
 

@@ -60,18 +60,18 @@ void dump_list_head(const struct ListHead *list, const char *name)
   if (STAILQ_EMPTY(list))
     return;
 
-  struct Buffer buf = buf_make(256);
+  struct Buffer *buf = buf_pool_get();
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, list, entries)
   {
-    if (!buf_is_empty(&buf))
-      buf_addch(&buf, ',');
-    buf_addstr(&buf, np->data);
+    if (!buf_is_empty(buf))
+      buf_addch(buf, ',');
+    buf_addstr(buf, np->data);
   }
 
-  mutt_debug(LL_DEBUG1, "\t%s: %s\n", name, buf_string(&buf));
-  buf_dealloc(&buf);
+  mutt_debug(LL_DEBUG1, "\t%s: %s\n", name, buf_string(buf));
+  buf_pool_release(&buf);
 }
 
 void dump_envelope(const struct Envelope *env)
@@ -84,17 +84,16 @@ void dump_envelope(const struct Envelope *env)
     return;
   }
 
-  struct Buffer buf = buf_make(256);
+  struct Buffer *buf = buf_pool_get();
   char arr[1024];
 
-#define ADD_FLAG(F) add_flag(&buf, (env->changed & F), #F)
+#define ADD_FLAG(F) add_flag(buf, (env->changed & F), #F)
   ADD_FLAG(MUTT_ENV_CHANGED_IRT);
   ADD_FLAG(MUTT_ENV_CHANGED_REFS);
   ADD_FLAG(MUTT_ENV_CHANGED_XLABEL);
   ADD_FLAG(MUTT_ENV_CHANGED_SUBJECT);
 #undef ADD_FLAG
-  mutt_debug(LL_DEBUG1, "\tchanged: %s\n",
-             buf_is_empty(&buf) ? "[NONE]" : buf_string(&buf));
+  mutt_debug(LL_DEBUG1, "\tchanged: %s\n", buf_is_empty(buf) ? "[NONE]" : buf_string(buf));
 
 #define ADDR_LIST(AL) dump_addr_list(arr, sizeof(arr), &env->AL, #AL)
   ADDR_LIST(return_path);
@@ -122,12 +121,10 @@ void dump_envelope(const struct Envelope *env)
   OPT_STRING(date);
   OPT_STRING(x_label);
   OPT_STRING(organization);
-#ifdef USE_NNTP
   OPT_STRING(newsgroups);
   OPT_STRING(xref);
   OPT_STRING(followup_to);
   OPT_STRING(x_comment_to);
-#endif
 #undef OPT_STRING
 
   dump_list_head(&env->references, "references");
@@ -144,7 +141,7 @@ void dump_envelope(const struct Envelope *env)
     mutt_debug(LL_DEBUG1, "\tautocrypt_gossip: %p\n", (void *) env->autocrypt_gossip);
 #endif
 
-  buf_dealloc(&buf);
+  buf_pool_release(&buf);
 }
 
 void dump_email(const struct Email *e)
@@ -157,12 +154,12 @@ void dump_email(const struct Email *e)
     return;
   }
 
-  struct Buffer buf = buf_make(256);
+  struct Buffer *buf = buf_pool_get();
   char arr[256];
 
   mutt_debug(LL_DEBUG1, "\tpath: %s\n", e->path);
 
-#define ADD_FLAG(F) add_flag(&buf, e->F, #F)
+#define ADD_FLAG(F) add_flag(buf, e->F, #F)
   ADD_FLAG(active);
   ADD_FLAG(attach_del);
   ADD_FLAG(attach_valid);
@@ -188,10 +185,10 @@ void dump_email(const struct Email *e)
   ADD_FLAG(trash);
   ADD_FLAG(visible);
 #undef ADD_FLAG
-  mutt_debug(LL_DEBUG1, "\tFlags: %s\n", buf_is_empty(&buf) ? "[NONE]" : buf_string(&buf));
+  mutt_debug(LL_DEBUG1, "\tFlags: %s\n", buf_is_empty(buf) ? "[NONE]" : buf_string(buf));
 
-#define ADD_FLAG(F) add_flag(&buf, (e->security & F), #F)
-  buf_reset(&buf);
+#define ADD_FLAG(F) add_flag(buf, (e->security & F), #F)
+  buf_reset(buf);
   ADD_FLAG(SEC_ENCRYPT);
   ADD_FLAG(SEC_SIGN);
   ADD_FLAG(SEC_GOODSIGN);
@@ -207,8 +204,7 @@ void dump_email(const struct Email *e)
   ADD_FLAG(APPLICATION_SMIME);
   ADD_FLAG(PGP_TRADITIONAL_CHECKED);
 #undef ADD_FLAG
-  mutt_debug(LL_DEBUG1, "\tSecurity: %s\n",
-             buf_is_empty(&buf) ? "[NONE]" : buf_string(&buf));
+  mutt_debug(LL_DEBUG1, "\tSecurity: %s\n", buf_is_empty(buf) ? "[NONE]" : buf_string(buf));
 
   mutt_date_make_tls(arr, sizeof(arr), e->date_sent);
   mutt_debug(LL_DEBUG1, "\tSent: %s (%c%02u%02u)\n", arr,
@@ -217,7 +213,7 @@ void dump_email(const struct Email *e)
   mutt_date_make_tls(arr, sizeof(arr), e->received);
   mutt_debug(LL_DEBUG1, "\tRecv: %s\n", arr);
 
-  buf_dealloc(&buf);
+  buf_pool_release(&buf);
 
   mutt_debug(LL_DEBUG1, "\tnum_hidden: %ld\n", e->num_hidden);
   mutt_debug(LL_DEBUG1, "\trecipient: %d\n", e->recipient);
@@ -237,7 +233,6 @@ void dump_email(const struct Email *e)
   // struct TagList tags
 
   // void *edata
-  buf_dealloc(&buf);
 }
 
 void dump_param_list(const struct ParameterList *pl)
@@ -273,10 +268,10 @@ void dump_body(const struct Body *body)
     return;
   }
 
-  struct Buffer buf = buf_make(256);
+  struct Buffer *buf = buf_pool_get();
   char arr[256];
 
-#define ADD_FLAG(F) add_flag(&buf, body->F, #F)
+#define ADD_FLAG(F) add_flag(buf, body->F, #F)
   ADD_FLAG(attach_qualifies);
   ADD_FLAG(badsig);
   ADD_FLAG(deleted);
@@ -291,7 +286,7 @@ void dump_body(const struct Body *body)
   ADD_FLAG(use_disp);
   ADD_FLAG(warnsig);
 #undef ADD_FLAG
-  mutt_debug(LL_DEBUG1, "\tFlags: %s\n", buf_is_empty(&buf) ? "[NONE]" : buf_string(&buf));
+  mutt_debug(LL_DEBUG1, "\tFlags: %s\n", buf_is_empty(buf) ? "[NONE]" : buf_string(buf));
 
 #define OPT_STRING(S)                                                          \
   if (body->S)                                                                 \
@@ -343,7 +338,7 @@ void dump_body(const struct Body *body)
   }
   if (body->next || body->parts)
     mutt_debug(LL_DEBUG1, "--------------------------\n");
-  buf_dealloc(&buf);
+  buf_pool_release(&buf);
 }
 
 void dump_attach(const struct AttachPtr *att)
@@ -356,9 +351,9 @@ void dump_attach(const struct AttachPtr *att)
     return;
   }
 
-  struct Buffer buf = buf_make(256);
+  struct Buffer *buf = buf_pool_get();
 
-#define ADD_FLAG(F) add_flag(&buf, att->F, #F)
+#define ADD_FLAG(F) add_flag(buf, att->F, #F)
   ADD_FLAG(unowned);
   ADD_FLAG(decrypted);
   ADD_FLAG(collapsed);
@@ -371,7 +366,7 @@ void dump_attach(const struct AttachPtr *att)
   mutt_debug(LL_DEBUG1, "\tnum: %d\n", att->num);
 
   // struct Body *content; ///< Attachment
-  buf_dealloc(&buf);
+  buf_pool_release(&buf);
 }
 
 char body_name(const struct Body *b)

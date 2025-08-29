@@ -3,7 +3,10 @@
  * A collection of config items
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Rayford Shireman
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,7 +38,7 @@
 #include "types.h"
 
 /**
- * cs_hashelem_free - Callback function for the Hash Table - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
+ * cs_hashelem_free - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  * @param type Object type, e.g. #DT_STRING
  * @param obj  Object to destroy
  * @param data ConfigSet associated with the object
@@ -49,7 +52,7 @@ static void cs_hashelem_free(int type, void *obj, intptr_t data)
 
   const struct ConfigSetType *cst = NULL;
 
-  if (type & DT_INHERITED)
+  if (type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = obj;
 
@@ -75,9 +78,9 @@ static void cs_hashelem_free(int type, void *obj, intptr_t data)
       cst->destroy(cs, &cdef->var, cdef);
 
     /* If we allocated the initial value, clean it up */
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
-    if (cdef->type & DT_FREE_CONFIGDEF)
+    if (cdef->type & D_INTERNAL_FREE_CONFIGDEF)
     {
       FREE(&cdef->name);
       FREE(&cdef->docs);
@@ -103,7 +106,7 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
   struct HashElem *he_parent = cs_get_elem(cs, name);
   if (!he_parent)
   {
-    buf_printf(err, _("No such variable: %s"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return NULL;
   }
 
@@ -123,7 +126,7 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
  */
 struct ConfigSet *cs_new(size_t size)
 {
-  struct ConfigSet *cs = mutt_mem_calloc(1, sizeof(*cs));
+  struct ConfigSet *cs = MUTT_MEM_CALLOC(1, struct ConfigSet);
 
   cs->hash = mutt_hash_new(size, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(cs->hash, cs_hashelem_free, (intptr_t) cs);
@@ -156,7 +159,7 @@ void cs_free(struct ConfigSet **ptr)
  */
 struct HashElem *cs_get_base(struct HashElem *he)
 {
-  if (!(he->type & DT_INHERITED))
+  if (!(he->type & D_INTERNAL_INHERITED))
     return he;
 
   struct Inheritance *i = he->data;
@@ -199,7 +202,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
 
   type = DTYPE(type);
   if (type >= mutt_array_size(cs->types))
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
 
   if (!cs->types[type].name)
     return NULL;
@@ -255,7 +258,7 @@ struct HashElem *cs_register_variable(const struct ConfigSet *cs,
   const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
   if (!cst)
   {
-    buf_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, cdef->type);
+    buf_printf(err, _("Option %s has an invalid type %d"), cdef->name, cdef->type);
     return NULL;
   }
 
@@ -273,29 +276,27 @@ struct HashElem *cs_register_variable(const struct ConfigSet *cs,
  * cs_register_variables - Register a set of config items
  * @param cs    Config items
  * @param vars  Variable definition
- * @param flags Flags, e.g. #DT_DEPRECATED
  * @retval true All variables were registered successfully
  */
-bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], uint32_t flags)
+bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[])
 {
   if (!cs || !vars)
     return false;
 
-  struct Buffer err = buf_make(0);
+  struct Buffer *err = buf_pool_get();
 
   bool rc = true;
 
   for (size_t i = 0; vars[i].name; i++)
   {
-    vars[i].type |= flags;
-    if (!cs_register_variable(cs, &vars[i], &err))
+    if (!cs_register_variable(cs, &vars[i], err))
     {
-      mutt_debug(LL_DEBUG1, "%s\n", buf_string(&err));
+      mutt_debug(LL_DEBUG1, "%s\n", buf_string(err));
       rc = false;
     }
   }
 
-  buf_dealloc(&err);
+  buf_pool_release(&err);
   return rc;
 }
 
@@ -317,9 +318,9 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
 struct HashElem *cs_create_variable(const struct ConfigSet *cs,
                                     struct ConfigDef *cdef, struct Buffer *err)
 {
-  struct ConfigDef *cdef_copy = mutt_mem_calloc(1, sizeof(struct ConfigDef));
+  struct ConfigDef *cdef_copy = MUTT_MEM_CALLOC(1, struct ConfigDef);
   cdef_copy->name = mutt_str_dup(cdef->name);
-  cdef_copy->type = cdef->type | DT_FREE_CONFIGDEF;
+  cdef_copy->type = cdef->type | D_INTERNAL_FREE_CONFIGDEF;
   cdef_copy->initial = cdef->initial;
   cdef_copy->data = cdef->data;
   cdef_copy->validator = cdef->validator;
@@ -353,11 +354,11 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
   if (DTYPE(he_parent->type) == DT_MYVAR)
     return NULL;
 
-  struct Inheritance *i = mutt_mem_calloc(1, sizeof(*i));
+  struct Inheritance *i = MUTT_MEM_CALLOC(1, struct Inheritance);
   i->parent = he_parent;
   i->name = mutt_str_dup(name);
 
-  struct HashElem *he = mutt_hash_typed_insert(cs->hash, i->name, DT_INHERITED, i);
+  struct HashElem *he = mutt_hash_typed_insert(cs->hash, i->name, D_INTERNAL_INHERITED, i);
   if (!he)
   {
     FREE(&i->name);
@@ -394,12 +395,12 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
 
   /* An inherited var that's already pointing to its parent.
    * Return 'success', but don't send a notification. */
-  if ((he->type & DT_INHERITED) && (DTYPE(he->type) == 0))
+  if ((he->type & D_INTERNAL_INHERITED) && (DTYPE(he->type) == 0))
     return CSR_SUCCESS;
 
   int rc = CSR_SUCCESS;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -411,7 +412,7 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
     if (cst && cst->destroy)
       cst->destroy(cs, (void **) &i->var, cdef);
 
-    he->type = DT_INHERITED;
+    he->type = D_INTERNAL_INHERITED;
   }
   else
   {
@@ -442,7 +443,7 @@ int cs_str_reset(const struct ConfigSet *cs, const char *name, struct Buffer *er
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -465,7 +466,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
 
   struct ConfigDef *cdef = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
@@ -508,7 +509,7 @@ int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -533,7 +534,7 @@ int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Bu
   const struct ConfigDef *cdef = NULL;
   const struct ConfigSetType *cst = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
@@ -569,7 +570,7 @@ int cs_str_initial_get(const struct ConfigSet *cs, const char *name, struct Buff
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(result, _("Unknown variable '%s'"), name);
+    buf_printf(result, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -594,7 +595,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -622,8 +623,8 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
 }
@@ -645,7 +646,7 @@ int cs_str_string_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -668,7 +669,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
 
@@ -697,28 +698,6 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
 }
 
 /**
- * cs_str_string_get - Get a config item as a string
- * @param cs     Config items
- * @param name   Name of config item
- * @param result Buffer for results or error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffer *result)
-{
-  if (!cs || !name)
-    return CSR_ERR_CODE;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    buf_printf(result, _("Unknown variable '%s'"), name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return cs_he_string_get(cs, he, result);
-}
-
-/**
  * cs_he_native_set - Natively set the value of a HashElem config item
  * @param cs    Config items
  * @param he    HashElem representing config item
@@ -736,7 +715,7 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -764,8 +743,8 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
 }
@@ -787,7 +766,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -795,7 +774,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -817,8 +796,8 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
 }
@@ -840,7 +819,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
 
@@ -867,28 +846,11 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
 
   if (!cst)
   {
-    buf_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, he->type);
+    buf_printf(err, _("Option %s has an invalid type %d"), cdef->name, he->type);
     return INT_MIN;
   }
 
   return cst->native_get(cs, var, cdef, err);
-}
-
-/**
- * cs_str_native_get - Natively get the value of a string config item
- * @param cs   Config items
- * @param name Name of config item
- * @param err  Buffer for error messages
- * @retval intptr_t Native pointer/value
- * @retval INT_MIN  Error
- */
-intptr_t cs_str_native_get(const struct ConfigSet *cs, const char *name, struct Buffer *err)
-{
-  if (!cs || !name)
-    return INT_MIN;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  return cs_he_native_get(cs, he, err);
 }
 
 /**
@@ -909,7 +871,7 @@ int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -944,34 +906,10 @@ int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
-}
-
-/**
- * cs_str_string_plus_equals - Add to a config item by string
- * @param cs    Config items
- * @param name  Name of config item
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_str_string_plus_equals(const struct ConfigSet *cs, const char *name,
-                              const char *value, struct Buffer *err)
-{
-  if (!cs || !name)
-    return CSR_ERR_CODE;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    buf_printf(err, _("Unknown variable '%s'"), name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return cs_he_string_plus_equals(cs, he, value, err);
 }
 
 /**
@@ -992,7 +930,7 @@ int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -1027,34 +965,10 @@ int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
-}
-
-/**
- * cs_str_string_minus_equals - Remove from a config item by string
- * @param cs    Config items
- * @param name  Name of config item
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,
-                               const char *value, struct Buffer *err)
-{
-  if (!cs || !name)
-    return CSR_ERR_CODE;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    buf_printf(err, _("Unknown variable '%s'"), name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return cs_he_string_minus_equals(cs, he, value, err);
 }
 
 /**
@@ -1071,26 +985,4 @@ int cs_he_delete(const struct ConfigSet *cs, struct HashElem *he, struct Buffer 
 
   mutt_hash_delete(cs->hash, he->key.strkey, he->data);
   return CSR_SUCCESS;
-}
-
-/**
- * cs_str_delete - Delete config item from a config set
- * @param cs    Config items
- * @param name  Name of config item
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_str_delete(const struct ConfigSet *cs, const char *name, struct Buffer *err)
-{
-  if (!cs || !name)
-    return CSR_ERR_CODE;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    buf_printf(err, _("Unknown variable '%s'"), name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return cs_he_delete(cs, he, err);
 }

@@ -3,7 +3,7 @@
  * Curses Colour
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "color.h"
@@ -54,13 +54,14 @@ void curses_colors_init(void)
  * @param bg Background colour
  * @retval ptr Curses colour
  */
-struct CursesColor *curses_colors_find(int fg, int bg)
+struct CursesColor *curses_colors_find(color_t fg, color_t bg)
 {
   struct CursesColor *cc = NULL;
   TAILQ_FOREACH(cc, &CursesColors, entries)
   {
     if ((cc->fg == fg) && (cc->bg == bg))
     {
+      curses_color_dump(cc, "find");
       return cc;
     }
   }
@@ -74,7 +75,7 @@ struct CursesColor *curses_colors_find(int fg, int bg)
  * @param bg Background colour
  * @retval num Index of Curses colour
  */
-static int curses_color_init(int fg, int bg)
+static int curses_color_init(color_t fg, color_t bg)
 {
   color_debug(LL_DEBUG5, "find lowest index\n");
   int index = 16;
@@ -89,19 +90,17 @@ static int curses_color_init(int fg, int bg)
   color_debug(LL_DEBUG5, "lowest index = %d\n", index);
   if (index >= COLOR_PAIRS)
   {
-    static bool warned = false;
-    if (!warned)
+    if (COLOR_PAIRS > 0)
     {
-      mutt_error(_("Too many colors: %d / %d"), index, COLOR_PAIRS);
-      warned = true;
+      static bool warned = false;
+      if (!warned)
+      {
+        mutt_error(_("Too many colors: %d / %d"), index, COLOR_PAIRS);
+        warned = true;
+      }
     }
     return 0;
   }
-
-  if (fg == COLOR_DEFAULT)
-    fg = COLOR_UNSET;
-  if (bg == COLOR_DEFAULT)
-    bg = COLOR_UNSET;
 
 #ifdef NEOMUTT_DIRECT_COLORS
   int rc = init_extended_pair(index, fg, bg);
@@ -124,15 +123,16 @@ void curses_color_free(struct CursesColor **ptr)
     return;
 
   struct CursesColor *cc = *ptr;
-  if (cc->ref_count > 1)
+
+  cc->ref_count--;
+  if (cc->ref_count > 0)
   {
-    cc->ref_count--;
-    curses_color_dump(cc, "CursesColor rc--: ");
+    curses_color_dump(cc, "curses rc--");
     *ptr = NULL;
     return;
   }
 
-  curses_color_dump(cc, "free: ");
+  curses_color_dump(cc, "curses free");
   TAILQ_REMOVE(&CursesColors, cc, entries);
   NumCursesColors--;
   color_debug(LL_DEBUG5, "CursesColors: %d\n", NumCursesColors);
@@ -148,11 +148,10 @@ void curses_color_free(struct CursesColor **ptr)
  * If the colour already exists, this function will return a pointer to the
  * object (and increase its ref-count).
  */
-struct CursesColor *curses_color_new(int fg, int bg)
+struct CursesColor *curses_color_new(color_t fg, color_t bg)
 {
   color_debug(LL_DEBUG5, "fg %d, bg %d\n", fg, bg);
-  if (((fg == COLOR_UNSET) && (bg == COLOR_UNSET)) ||
-      ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT)))
+  if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
   {
     color_debug(LL_DEBUG5, "both unset\n");
     return NULL;
@@ -162,16 +161,16 @@ struct CursesColor *curses_color_new(int fg, int bg)
   if (cc)
   {
     cc->ref_count++;
-    curses_color_dump(cc, "rc++: ");
+    curses_color_dump(cc, "curses rc++");
     return cc;
   }
 
   color_debug(LL_DEBUG5, "new curses\n");
   int index = curses_color_init(fg, bg);
-  if (index < 0)
+  if (index == 0)
     return NULL;
 
-  struct CursesColor *cc_new = mutt_mem_calloc(1, sizeof(*cc_new));
+  struct CursesColor *cc_new = MUTT_MEM_CALLOC(1, struct CursesColor);
   NumCursesColors++;
   color_debug(LL_DEBUG5, "CursesColor %p\n", (void *) cc_new);
   cc_new->fg = fg;
@@ -194,7 +193,7 @@ struct CursesColor *curses_color_new(int fg, int bg)
   color_debug(LL_DEBUG5, "tail\n");
 
 done:
-  curses_color_dump(cc_new, "CursesColor new: ");
+  curses_color_dump(cc_new, "curses new");
   color_debug(LL_DEBUG5, "CursesColors: %d\n", NumCursesColors);
   return cc_new;
 }

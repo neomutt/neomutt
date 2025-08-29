@@ -3,7 +3,10 @@
  * A separated list of strings
  *
  * @authors
- * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,10 +27,15 @@
  * @page mutt_slist A separated list of strings
  *
  * A separated list of strings
+ *
+ * The following unused functions were removed:
+ * - slist_add_list()
+ * - slist_empty()
  */
 
 #include "config.h"
 #include <stddef.h>
+#include "config/types.h"
 #include "slist.h"
 #include "buffer.h"
 #include "list.h"
@@ -37,37 +45,15 @@
 
 /**
  * slist_new - Create a new string list
- * @param flags Flag to set, e.g. #SLIST_SEP_COMMA
+ * @param flags Flag to set, e.g. #D_SLIST_SEP_COMMA
  * @retval ptr New string list
  */
 struct Slist *slist_new(uint32_t flags)
 {
-  struct Slist *list = mutt_mem_calloc(1, sizeof(*list));
+  struct Slist *list = MUTT_MEM_CALLOC(1, struct Slist);
   list->flags = flags;
   STAILQ_INIT(&list->head);
 
-  return list;
-}
-
-/**
- * slist_add_list - Add a list to another list
- * @param list String list to add to
- * @param add  String list to add
- * @retval ptr Modified list
- */
-struct Slist *slist_add_list(struct Slist *list, const struct Slist *add)
-{
-  if (!add)
-    return list;
-  if (!list)
-    return slist_dup(add);
-
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &add->head, entries)
-  {
-    mutt_list_insert_tail(&list->head, mutt_str_dup((char *) np->data));
-    list->count++;
-  }
   return list;
 }
 
@@ -85,7 +71,7 @@ struct Slist *slist_add_string(struct Slist *list, const char *str)
   if (str && (str[0] == '\0'))
     str = NULL;
 
-  if (!str && !(list->flags & SLIST_ALLOW_EMPTY))
+  if (!str && !(list->flags & D_SLIST_ALLOW_EMPTY))
     return list;
 
   mutt_list_insert_tail(&list->head, mutt_str_dup(str));
@@ -95,12 +81,12 @@ struct Slist *slist_add_string(struct Slist *list, const char *str)
 }
 
 /**
- * slist_compare - Compare two string lists
+ * slist_equal - Compare two string lists
  * @param a First list
  * @param b Second list
  * @retval true They are identical
  */
-bool slist_compare(const struct Slist *a, const struct Slist *b)
+bool slist_equal(const struct Slist *a, const struct Slist *b)
 {
   if (!a && !b) /* both empty */
     return true;
@@ -109,7 +95,7 @@ bool slist_compare(const struct Slist *a, const struct Slist *b)
   if (a->count != b->count)
     return false;
 
-  return mutt_list_compare(&a->head, &b->head);
+  return mutt_list_equal(&a->head, &b->head);
 }
 
 /**
@@ -124,35 +110,9 @@ struct Slist *slist_dup(const struct Slist *list)
 
   struct Slist *list_new = slist_new(list->flags);
 
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &list->head, entries)
-  {
-    mutt_list_insert_tail(&list_new->head, mutt_str_dup(np->data));
-  }
+  mutt_list_copy_tail(&list_new->head, &list->head);
   list_new->count = list->count;
   return list_new;
-}
-
-/**
- * slist_empty - Empty out an Slist object
- * @param list Slist to empty
- * @retval ptr New Slist object
- */
-struct Slist *slist_empty(struct Slist **list)
-{
-  if (!list || !*list)
-    return NULL;
-
-  mutt_list_free(&(*list)->head);
-
-  if ((*list)->flags & SLIST_ALLOW_EMPTY)
-  {
-    (*list)->count = 0;
-    return *list;
-  }
-
-  FREE(list);
-  return NULL;
 }
 
 /**
@@ -194,7 +154,7 @@ bool slist_is_member(const struct Slist *list, const char *str)
   if (!list)
     return false;
 
-  if (!str && !(list->flags & SLIST_ALLOW_EMPTY))
+  if (!str && !(list->flags & D_SLIST_ALLOW_EMPTY))
     return false;
 
   struct ListNode *np = NULL;
@@ -209,22 +169,22 @@ bool slist_is_member(const struct Slist *list, const char *str)
 /**
  * slist_parse - Parse a list of strings into a list
  * @param str   String of strings
- * @param flags Flags, e.g. #SLIST_ALLOW_EMPTY
+ * @param flags Flags, e.g. #D_SLIST_ALLOW_EMPTY
  * @retval ptr New Slist object
  */
 struct Slist *slist_parse(const char *str, uint32_t flags)
 {
   char *src = mutt_str_dup(str);
-  if (!src && !(flags & SLIST_ALLOW_EMPTY))
+  if (!src && !(flags & D_SLIST_ALLOW_EMPTY))
     return NULL;
 
   char sep = ' ';
-  if ((flags & SLIST_SEP_MASK) == SLIST_SEP_COMMA)
+  if ((flags & D_SLIST_SEP_MASK) == D_SLIST_SEP_COMMA)
     sep = ',';
-  else if ((flags & SLIST_SEP_MASK) == SLIST_SEP_COLON)
+  else if ((flags & D_SLIST_SEP_MASK) == D_SLIST_SEP_COLON)
     sep = ':';
 
-  struct Slist *list = mutt_mem_calloc(1, sizeof(struct Slist));
+  struct Slist *list = MUTT_MEM_CALLOC(1, struct Slist);
   list->flags = flags;
   STAILQ_INIT(&list->head);
 
@@ -274,7 +234,7 @@ struct Slist *slist_remove_string(struct Slist *list, const char *str)
 {
   if (!list)
     return NULL;
-  if (!str && !(list->flags & SLIST_ALLOW_EMPTY))
+  if (!str && !(list->flags & D_SLIST_ALLOW_EMPTY))
     return list;
 
   struct ListNode *prev = NULL;
@@ -315,10 +275,10 @@ int slist_to_buffer(const struct Slist *list, struct Buffer *buf)
     buf_addstr(buf, np->data);
     if (STAILQ_NEXT(np, entries))
     {
-      const int sep = (list->flags & SLIST_SEP_MASK);
-      if (sep == SLIST_SEP_COMMA)
+      const int sep = (list->flags & D_SLIST_SEP_MASK);
+      if (sep == D_SLIST_SEP_COMMA)
         buf_addch(buf, ',');
-      else if (sep == SLIST_SEP_COLON)
+      else if (sep == D_SLIST_SEP_COLON)
         buf_addch(buf, ':');
       else
         buf_addch(buf, ' ');

@@ -3,7 +3,7 @@
  * Data shared between Index, Pager and Sidebar
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -43,6 +43,33 @@ struct IndexSharedData
   size_t               email_seq;      ///< Sequence number of the current email
   struct Notify       *notify;         ///< Notifications: #NotifyIndex, #IndexSharedData
   struct SearchState  *search_state;   ///< State of the current search
+  bool                 attach_msg;     ///< Are we in "attach message" mode?
+};
+
+/**
+ * ExpandoDataIndex - Expando UIDs for the Index
+ *
+ * @sa ED_INDEX, ExpandoDomain
+ */
+enum ExpandoDataIndex
+{
+  ED_IND_DELETED_COUNT = 1,    ///< Mailbox.msg_deleted
+  ED_IND_DESCRIPTION,          ///< Mailbox.name
+  ED_IND_FLAGGED_COUNT,        ///< Mailbox.msg_flagged
+  ED_IND_LIMIT_COUNT,          ///< Mailbox.vcount
+  ED_IND_LIMIT_PATTERN,        ///< MailboxView.pattern
+  ED_IND_LIMIT_SIZE,           ///< MailboxView.vsize
+  ED_IND_MAILBOX_PATH,         ///< Mailbox.pathbuf, Mailbox.name
+  ED_IND_MAILBOX_SIZE,         ///< Mailbox.size
+  ED_IND_MESSAGE_COUNT,        ///< Mailbox.msg_count
+  ED_IND_NEW_COUNT,            ///< Mailbox.msg_new
+  ED_IND_OLD_COUNT,            ///< Mailbox.msg_unread, Mailbox.msg_new
+  ED_IND_POSTPONED_COUNT,      ///< mutt_num_postponed()
+  ED_IND_READONLY,             ///< Mailbox.readonly, Mailbox.dontwrite
+  ED_IND_READ_COUNT,           ///< Mailbox.msg_count, Mailbox.msg_unread
+  ED_IND_TAGGED_COUNT,         ///< Mailbox.msg_tagged
+  ED_IND_UNREAD_COUNT,         ///< Mailbox.msg_unread
+  ED_IND_UNREAD_MAILBOXES,     ///< Mailbox, mutt_mailbox_check()
 };
 
 void                    index_shared_data_free(struct MuttWindow *win, void **ptr);

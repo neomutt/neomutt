@@ -3,7 +3,7 @@
  * A collection of config items
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,10 +26,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "mutt/lib.h"
+#include "types.h"
 
-struct Buffer;
 struct ConfigSet;
-struct HashElem;
 
 /* Config Set Results */
 #define CSR_SUCCESS       0 ///< Action completed successfully
@@ -263,7 +263,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
 
 bool             cs_register_type     (struct ConfigSet *cs, const struct ConfigSetType *cst);
 struct HashElem *cs_register_variable (const struct ConfigSet *cs, struct ConfigDef *cdef, struct Buffer *err);
-bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], uint32_t flags);
+bool             cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[]);
 struct HashElem *cs_create_variable   (const struct ConfigSet *cs, struct ConfigDef *cdef, struct Buffer *err);
 struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *he_parent, const char *name);
 void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
@@ -281,13 +281,27 @@ int      cs_he_delete              (const struct ConfigSet *cs, struct HashElem 
 
 int      cs_str_initial_get        (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
 int      cs_str_initial_set        (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
-intptr_t cs_str_native_get         (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
 int      cs_str_native_set         (const struct ConfigSet *cs, const char *name,    intptr_t value,    struct Buffer *err);
 int      cs_str_reset              (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
-int      cs_str_string_get         (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
-int      cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
-int      cs_str_string_plus_equals (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 int      cs_str_string_set         (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
-int      cs_str_delete             (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
+
+extern bool StartupComplete;
+
+/**
+ * startup_only - Validator function for D_ON_STARTUP
+ * @param cdef Variable definition
+ * @param err  Buffer for error messages
+ * @retval true Variable may only be set at startup
+ */
+static inline bool startup_only(const struct ConfigDef *cdef, struct Buffer *err)
+{
+  if ((cdef->type & D_ON_STARTUP) && StartupComplete)
+  {
+    buf_printf(err, _("Option %s may only be set at startup"), cdef->name);
+    return true;
+  }
+
+  return false;
+}
 
 #endif /* MUTT_CONFIG_SET_H */

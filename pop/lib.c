@@ -4,7 +4,8 @@
  *
  * @authors
  * Copyright (C) 2000-2003 Vsevolod Volkov <vvv@mutt.org.ua>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -51,7 +52,7 @@
 struct Progress;
 
 /**
- * pop_get_field - Get connection login credentials - Implements ConnAccount::get_field()
+ * pop_get_field - Get connection login credentials - Implements ConnAccount::get_field() - @ingroup conn_account_get_field
  */
 const char *pop_get_field(enum ConnAccountField field, void *gf_data)
 {
@@ -138,7 +139,7 @@ static void pop_error(struct PopAccountData *adata, char *msg)
 }
 
 /**
- * fetch_capa - Parse CAPA output - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * fetch_capa - Parse CAPA response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line List of capabilities
  * @param data POP data
  * @retval 0 (always)
@@ -173,7 +174,7 @@ static int fetch_capa(const char *line, void *data)
 }
 
 /**
- * fetch_auth - Fetch list of the authentication mechanisms - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * fetch_auth - Parse AUTH response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line List of authentication methods
  * @param data POP data
  * @retval 0 (always)
@@ -519,7 +520,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
   if (rc < 0)
     return rc;
 
-  char *inbuf = mutt_mem_malloc(sizeof(buf));
+  char *inbuf = MUTT_MEM_MALLOC(sizeof(buf), char);
 
   while (true)
   {
@@ -555,7 +556,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
       lenbuf = 0;
     }
 
-    mutt_mem_realloc(&inbuf, lenbuf + sizeof(buf));
+    MUTT_MEM_REALLOC(&inbuf, lenbuf + sizeof(buf), char);
   }
 
   FREE(&inbuf);
@@ -563,11 +564,13 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
 }
 
 /**
- * check_uidl - Find message with this UIDL and set refno - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * check_uidl - Parse UIDL response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line String containing UIDL
  * @param data POP data
  * @retval  0 Success
  * @retval -1 Error
+ *
+ * Find message with this UIDL and set refno.
  */
 static int check_uidl(const char *line, void *data)
 {
@@ -617,8 +620,8 @@ int pop_reconnect(struct Mailbox *m)
     int rc = pop_open_connection(adata);
     if (rc == 0)
     {
-      struct Progress *progress = progress_new(_("Verifying message indexes..."),
-                                               MUTT_PROGRESS_NET, 0);
+      struct Progress *progress = progress_new(MUTT_PROGRESS_NET, 0);
+      progress_set_message(progress, _("Verifying message indexes..."));
 
       for (int i = 0; i < m->msg_count; i++)
       {

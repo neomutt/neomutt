@@ -2,7 +2,7 @@
 
 [![Stars](https://img.shields.io/github/stars/neomutt/neomutt.svg?style=social&label=Stars)](https://github.com/neomutt/neomutt "Give us a Star")
 [![Twitter](https://img.shields.io/twitter/follow/NeoMutt_Org.svg?style=social&label=Follow)](https://twitter.com/NeoMutt_Org "Follow us on Twitter")
-[![Contributors](https://img.shields.io/badge/Contributors-267-orange.svg)](https://github.com/neomutt/neomutt/blob/main/AUTHORS.md "All of NeoMutt's Contributors")
+[![Contributors](https://img.shields.io/badge/Contributors-284-orange.svg)](https://github.com/neomutt/neomutt/blob/main/AUTHORS.md "All of NeoMutt's Contributors")
 [![Release](https://img.shields.io/github/release/neomutt/neomutt.svg)](https://github.com/neomutt/neomutt/releases/latest "Latest Release Notes")
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/main/LICENSE.md "Copyright Statement")
 [![Code build](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml/badge.svg?branch=main&event=push)](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml "Latest Automatic Code Build")
@@ -26,6 +26,7 @@ sorted through them, fixed them up and documented them.
 | ------------------------ | ------------------------------------------------------
 | Account Command          | Populate account credentials via an external command
 | Attach Headers Color     | Color attachment headers using regex, just like mail bodies
+| Command-line Crypto (-C) | Enable message security in modes that by default don't enable it
 | Compose to Sender        | Send new mail to the sender of the current mail
 | Compressed Folders       | Read from/write to compressed mailboxes
 | Conditional Dates        | Use rules to choose date format
@@ -82,27 +83,26 @@ instructions on the [distro page](https://neomutt.org/distro.html).
 - Website:         https://neomutt.org
 - IRC:             [irc://irc.libera.chat/neomutt](https://web.libera.chat/#neomutt "IRC Web Client") - please be patient.
   We're a small group, so our answer might take some time.
-- Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
+- Mailing Lists:   [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
   and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 - Development:     https://neomutt.org/dev.html
 - Contributors:    [Everyone who has helped NeoMutt](AUTHORS.md)
 
 ## Copyright
 
-NeoMutt is released under version 2 of the GPL, the GNU General Public License.
+NeoMutt is released under the GPL v2+ (GNU General Public License).
 See [LICENSE.md](LICENSE.md).
 
 The principal authors of NeoMutt are:
 
-- Copyright (C) 1996-2016 Michael R. Elkins `<me@.s.hmc.edu>`
-- Copyright (C) 1996-2002 Brandon Long `<blong@fiction.net>`
-- Copyright (C) 1997-2009 Thomas Roessler `<roessler@does-not-exist.org>`
-- Copyright (C) 1998-2005 Werner Koch `<wk@isil.d.shuttle.de>`
-- Copyright (C) 1999-2017 Brendan Cully `<brendan@kublai.com>`
-- Copyright (C) 1999-2002 Tommi Komulainen `<Tommi.Komulainen@iki.fi>`
-- Copyright (C) 2000-2004 Edmund Grimley Evans `<edmundo@rano.org>`
-- Copyright (C) 2000-2019 David Champion `<dgc.mutt@c13.us>`
-- Copyright (C) 2006-2009 Rocco Rutte `<pdmef@gmx.net>`
-- Copyright (C) 2014-2020 Kevin J. McCarthy `<kevin@8t8.us>`
-- Copyright (C) 2015-2023 Richard Russon `<rich@flatcap.org>`
+- Copyright (C) 2015-2024 Richard Russon `<rich@flatcap.org>`
+- Copyright (C) 2016-2023 Pietro Cerutti `<gahr@gahr.ch>`
+- Copyright (C) 2017-2019 Mehdi Abaakouk `<sileht@sileht.net>`
+- Copyright (C) 2018-2020 Federico Kircheis `<federico.kircheis@gmail.com>`
+- Copyright (C) 2017-2022 Austin Ray `<austin@austinray.io>`
+- Copyright (C) 2023-2024 Dennis Schön `<mail@dennis-schoen.de>`
+- Copyright (C) 2016-2017 Damien Riegel `<damien.riegel@gmail.com>`
+- Copyright (C) 2023      Rayford Shireman
+- Copyright (C) 2021-2023 David Purton `<dcpurton@marshwiggle.net>`
+- Copyright (C) 2020-2023 наб `<nabijaczleweli@nabijaczleweli.xyz>`
 

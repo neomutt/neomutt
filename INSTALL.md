@@ -35,7 +35,7 @@ See [Signing Releases](https://neomutt.org/dev/signing#source-example) for detai
 
 To build NeoMutt, you will need, at the very minimum:
 
-- A C99 compiler such as gcc or clang
+- A C11 compiler such as gcc or clang
 - SysV-compatible curses library: ncurses
 - Some common libraries, such as iconv and regex
 - DocBook XSL stylesheets and DTDs (for building the docs)
@@ -46,12 +46,12 @@ If they aren't available, Autosetup will use a version bundled with NeoMutt.
 
 ### Configure
 
-Autosetup's  `configure.autosetup` performs two tasks.  It allows the user to
+The Autosetup `configure` script performs two tasks.  It allows the user to
 enable/disable certain features of NeoMutt and it checks that all the build
 dependencies are present.
 
 For a list of the currently supported options and a brief help text, run:
-`./configure.autosetup --help`
+`./configure --help`
 
 | Configure option        | Path | Notes                                        |
 | :---------------------- | :--- | :------------------------------------------- |
@@ -66,7 +66,6 @@ For a list of the currently supported options and a brief help text, run:
 | `--fmemopen`            |      | Optional Feature (Dangerous)                 |
 | `--lua`                 | Path | Optional Feature                             |
 | `--notmuch`             | Path | Optional Feature                             |
-| `--mixmaster`           |      | Optional Feature                             |
 |                         |      |                                              |
 | `--bdb`                 | Path | Header cache backend                         |
 | `--gdbm`                | Path | Header cache backend                         |

@@ -3,7 +3,8 @@
  * Config used by libcompose
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,20 +28,46 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
+#include "expando/lib.h"
+#include "shared_data.h"
 
 #ifndef ISPELL
 #define ISPELL "ispell"
 #endif
 
 /**
+ * ComposeFormatDef - Expando definitions
+ *
+ * Config:
+ * - $compose_format
+ */
+static const struct ExpandoDefinition ComposeFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  node_padding_parse },
+  { "a", "attach-count", ED_COMPOSE, ED_COM_ATTACH_COUNT, NULL },
+  { "h", "hostname",     ED_GLOBAL,  ED_GLO_HOSTNAME,     NULL },
+  { "l", "attach-size",  ED_COMPOSE, ED_COM_ATTACH_SIZE,  NULL },
+  { "v", "version",      ED_GLOBAL,  ED_GLO_VERSION,      NULL },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
+
+/**
  * ComposeVars - Config definitions for compose
  */
 static struct ConfigDef ComposeVars[] = {
   // clang-format off
-  { "compose_format", DT_STRING, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", 0, NULL,
+  { "compose_confirm_detach_first", DT_BOOL, true, 0, NULL,
+    "Prevent the accidental deletion of the composed message"
+  },
+  // L10N: $compose_format default format
+  { "compose_format", DT_EXPANDO|D_L10N_STRING, IP N_("-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"), IP &ComposeFormatDef, NULL,
     "printf-like format string for the Compose panel's status bar"
   },
   { "compose_show_user_headers", DT_BOOL, true, 0, NULL,
@@ -52,7 +79,7 @@ static struct ConfigDef ComposeVars[] = {
   { "edit_headers", DT_BOOL, false, 0, NULL,
     "Let the user edit the email headers whilst editing an email"
   },
-  { "ispell", DT_STRING|DT_COMMAND, IP ISPELL, 0, NULL,
+  { "ispell", DT_STRING|D_STRING_COMMAND, IP ISPELL, 0, NULL,
     "External command to perform spell-checking"
   },
   { "postpone", DT_QUAD, MUTT_ASKYES, 0, NULL,
@@ -67,5 +94,5 @@ static struct ConfigDef ComposeVars[] = {
  */
 bool config_init_compose(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, ComposeVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, ComposeVars);
 }

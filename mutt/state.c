@@ -3,7 +3,8 @@
  * Keep track when processing files
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,7 +30,7 @@
 #include "config.h"
 #include <inttypes.h>
 #include <limits.h>
-#include <stdarg.h>
+#include <stdarg.h> // IWYU pragma: keep
 #include <stdio.h>
 #include <wchar.h>
 #include "state.h"

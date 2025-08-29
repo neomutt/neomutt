@@ -4,6 +4,9 @@
  *
  * @authors
  * Copyright (C) 2018 Gero Treuer <gero@70t.de>
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright
@@ -36,6 +39,7 @@
 #include <string.h>
 #include <sys/inotify.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
@@ -48,7 +52,7 @@
 /// Set to true when a monitored file has changed
 bool MonitorFilesChanged = false;
 /// Set to true when the current mailbox has changed
-bool MonitorContextChanged = false;
+bool MonitorCurMboxChanged = false;
 
 /// Inotify file descriptor
 static int INotifyFd = -1;
@@ -61,7 +65,7 @@ static size_t PollFdsLen = 0;
 /// Array of monitored file descriptors
 static struct pollfd *PollFds = NULL;
 /// Monitor file descriptor of the current mailbox
-static int MonitorContextDescriptor = -1;
+static int MonitorCurMboxDescriptor = -1;
 
 #define INOTIFY_MASK_DIR (IN_MOVED_TO | IN_ATTRIB | IN_CLOSE_WRITE | IN_ISDIR)
 #define INOTIFY_MASK_FILE IN_CLOSE_WRITE
@@ -123,7 +127,7 @@ static void mutt_poll_fd_add(int fd, short events)
     if (PollFdsCount == PollFdsLen)
     {
       PollFdsLen += 2;
-      mutt_mem_realloc(&PollFds, PollFdsLen * sizeof(struct pollfd));
+      MUTT_MEM_REALLOC(&PollFds, PollFdsLen, struct pollfd);
     }
     PollFdsCount++;
     PollFds[i].fd = fd;
@@ -212,7 +216,7 @@ static void monitor_check_cleanup(void)
  */
 static struct Monitor *monitor_new(struct MonitorInfo *info, int descriptor)
 {
-  struct Monitor *monitor = mutt_mem_calloc(1, sizeof(struct Monitor));
+  struct Monitor *monitor = MUTT_MEM_CALLOC(1, struct Monitor);
   monitor->type = info->type;
   monitor->st_dev = info->st_dev;
   monitor->st_ino = info->st_ino;
@@ -300,8 +304,8 @@ static int monitor_handle_ignore(int desc)
       mutt_debug(LL_DEBUG3, "cleanup watch (implicitly removed) - descriptor=%d\n", desc);
     }
 
-    if (MonitorContextDescriptor == desc)
-      MonitorContextDescriptor = new_desc;
+    if (MonitorCurMboxDescriptor == desc)
+      MonitorCurMboxDescriptor = new_desc;
 
     if (new_desc == -1)
     {
@@ -453,8 +457,8 @@ int mutt_monitor_poll(void)
                            event->wd, event->mask);
                 if (event->mask & IN_IGNORED)
                   monitor_handle_ignore(event->wd);
-                else if (event->wd == MonitorContextDescriptor)
-                  MonitorContextChanged = true;
+                else if (event->wd == MonitorCurMboxDescriptor)
+                  MonitorCurMboxChanged = true;
                 ptr += sizeof(struct inotify_event) + event->len;
               }
             }
@@ -486,7 +490,7 @@ int mutt_monitor_add(struct Mailbox *m)
   if (desc != RESOLVE_RES_OK_NOTEXISTING)
   {
     if (!m && (desc == RESOLVE_RES_OK_EXISTING))
-      MonitorContextDescriptor = info.monitor->desc;
+      MonitorCurMboxDescriptor = info.monitor->desc;
     rc = (desc == RESOLVE_RES_OK_EXISTING) ? 0 : -1;
     goto cleanup;
   }
@@ -503,7 +507,7 @@ int mutt_monitor_add(struct Mailbox *m)
 
   mutt_debug(LL_DEBUG3, "inotify_add_watch descriptor=%d for '%s'\n", desc, info.path);
   if (!m)
-    MonitorContextDescriptor = desc;
+    MonitorCurMboxDescriptor = desc;
 
   monitor_new(&info, desc);
 
@@ -529,8 +533,8 @@ int mutt_monitor_remove(struct Mailbox *m)
 
   if (!m)
   {
-    MonitorContextDescriptor = -1;
-    MonitorContextChanged = false;
+    MonitorCurMboxDescriptor = -1;
+    MonitorCurMboxChanged = false;
   }
 
   if (monitor_resolve(&info, m) != RESOLVE_RES_OK_EXISTING)

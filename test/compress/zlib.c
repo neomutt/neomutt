@@ -3,7 +3,7 @@
  * Test code for zlib compression
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,9 +27,13 @@
 #include "mutt/lib.h"
 #include "compress/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 #define MIN_COMP_LEVEL 1 ///< Minimum compression level for zlib
 #define MAX_COMP_LEVEL 9 ///< Maximum compression level for zlib
+
+struct ZlibComprData;
+void zlib_cdata_free(struct ZlibComprData **ptr);
 
 void test_compress_zlib(void)
 {
@@ -51,6 +55,10 @@ void test_compress_zlib(void)
     TEST_CHECK_(1, "compr_ops->close(NULL)");
     compr_ops->close(&compr_handle);
     TEST_CHECK_(1, "compr_ops->close(&compr_handle)");
+
+    struct ZlibComprData *ptr = NULL;
+    zlib_cdata_free(NULL);
+    zlib_cdata_free(&ptr);
   }
 
   {

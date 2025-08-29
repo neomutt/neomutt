@@ -3,7 +3,9 @@
  * Connection Credentials
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ryan Kavanagh <rak@rak.ac>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +29,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -151,7 +152,7 @@ int mutt_account_getpass(struct ConnAccount *cac)
   }
   else
   {
-    char prompt[256] = { 0 };
+    char prompt[512] = { 0 };
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
              (cac->flags & MUTT_ACCT_LOGIN) ? cac->login : cac->user, cac->host);
     cac->pass[0] = '\0';
@@ -237,7 +238,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
 
   if ((!xoauth2 && (token_size > 512)) || (xoauth2 && (token_size > 4096)))
   {
-    mutt_error(_("OAUTH token is too big: %ld"), token_size);
+    mutt_error(_("OAUTH token is too big: %ld"), (long) token_size);
     FREE(&token);
     return NULL;
   }
@@ -260,9 +261,9 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   FREE(&token);
 
   size_t encoded_len = oalen * 4 / 3 + 10;
-  assert(encoded_len < 6010); // Assure LGTM that we won't overflow
+  ASSERT(encoded_len < 6010); // Assure LGTM that we won't overflow
 
-  char *encoded_token = mutt_mem_malloc(encoded_len);
+  char *encoded_token = MUTT_MEM_MALLOC(encoded_len, char);
   mutt_b64_encode(oauthbearer, oalen, encoded_token, encoded_len);
 
   return encoded_token;

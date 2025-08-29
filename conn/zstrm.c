@@ -2,7 +2,10 @@
  * @file
  * Zlib compression of network traffic
  *
+ * @authors
  * Copyright (C) 2019 Fabian Groffen <grobian@gentoo.org>
+ * Copyright (C) 2020-2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -102,9 +105,9 @@ static int zstrm_close(struct Connection *conn)
 
   mutt_debug(LL_DEBUG5, "read %lu->%lu (%.1fx) wrote %lu<-%lu (%.1fx)\n",
              zctx->read.z.total_in, zctx->read.z.total_out,
-             (float) zctx->read.z.total_out / (float) zctx->read.z.total_in,
+             (double) zctx->read.z.total_out / (double) zctx->read.z.total_in,
              zctx->write.z.total_in, zctx->write.z.total_out,
-             (float) zctx->write.z.total_in / (float) zctx->write.z.total_out);
+             (double) zctx->write.z.total_in / (double) zctx->write.z.total_out);
 
   // Restore the Connection's original functions
   conn->sockdata = zctx->next_conn.sockdata;
@@ -137,7 +140,7 @@ retry:
     return 0;
 
   /* when avail_out was 0 on last call, we need to call inflate again, because
-   * more data might be available using the current input, so avoid callling
+   * more data might be available using the current input, so avoid calling
    * read on the underlying stream in that case (for it might block) */
   if ((zctx->read.pos == 0) && !zctx->read.conn_eof)
   {
@@ -157,7 +160,7 @@ retry:
   zctx->read.z.next_out = (Bytef *) buf;
 
   zrc = inflate(&zctx->read.z, Z_SYNC_FLUSH);
-  mutt_debug(LL_DEBUG5, "rc=%d, consumed %u/%u bytes, produced %lu/%lu bytes\n",
+  mutt_debug(LL_DEBUG5, "rc=%d, consumed %u/%u bytes, produced %zu/%zu bytes\n",
              zrc, zctx->read.pos - zctx->read.z.avail_in, zctx->read.pos,
              len - zctx->read.z.avail_out, len);
 
@@ -181,7 +184,7 @@ retry:
       break;
 
     case Z_STREAM_END: /* everything flushed, nothing remaining */
-      mutt_debug(LL_DEBUG5, "inflate returned Z_STREAM_END.\n");
+      mutt_debug(LL_DEBUG5, "inflate returned Z_STREAM_END\n");
       zrc = len - zctx->read.z.avail_out; /* "returned" bytes */
       zctx->read.stream_eof = true;
       break;
@@ -189,7 +192,7 @@ retry:
     case Z_BUF_ERROR: /* no progress was possible */
       if (!zctx->read.conn_eof)
       {
-        mutt_debug(LL_DEBUG5, "inflate returned Z_BUF_ERROR. retrying.\n");
+        mutt_debug(LL_DEBUG5, "inflate returned Z_BUF_ERROR. retrying\n");
         goto retry;
       }
       zrc = 0;
@@ -197,7 +200,7 @@ retry:
 
     default:
       /* bail on other rcs, such as Z_DATA_ERROR, or Z_MEM_ERROR */
-      mutt_debug(LL_DEBUG5, "inflate returned %d. aborting.\n", zrc);
+      mutt_debug(LL_DEBUG5, "inflate returned %d. aborting\n", zrc);
       zrc = -1;
       break;
   }
@@ -206,7 +209,7 @@ retry:
 }
 
 /**
- * zstrm_poll - Checks whether reads would block - Implements Connection::poll() - @ingroup connection_poll
+ * zstrm_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 static int zstrm_poll(struct Connection *conn, time_t wait_secs)
 {
@@ -243,7 +246,7 @@ static int zstrm_write(struct Connection *conn, const char *buf, size_t count)
       /* push out produced data to the underlying stream */
       zctx->write.pos = zctx->write.len - zctx->write.z.avail_out;
       char *wbufp = zctx->write.buf;
-      mutt_debug(LL_DEBUG5, "deflate consumed %lu/%lu bytes\n",
+      mutt_debug(LL_DEBUG5, "deflate consumed %zu/%zu bytes\n",
                  count - zctx->write.z.avail_in, count);
       while (zctx->write.pos > 0)
       {
@@ -287,7 +290,7 @@ static int zstrm_write(struct Connection *conn, const char *buf, size_t count)
  */
 void mutt_zstrm_wrap_conn(struct Connection *conn)
 {
-  struct ZstrmContext *zctx = mutt_mem_calloc(1, sizeof(struct ZstrmContext));
+  struct ZstrmContext *zctx = MUTT_MEM_CALLOC(1, struct ZstrmContext);
 
   /* store wrapped stream as next stream */
   zctx->next_conn.fd = conn->fd;
@@ -308,10 +311,10 @@ void mutt_zstrm_wrap_conn(struct Connection *conn)
 
   /* allocate/setup (de)compression buffers */
   zctx->read.len = 8192;
-  zctx->read.buf = mutt_mem_malloc(zctx->read.len);
+  zctx->read.buf = MUTT_MEM_MALLOC(zctx->read.len, char);
   zctx->read.pos = 0;
   zctx->write.len = 8192;
-  zctx->write.buf = mutt_mem_malloc(zctx->write.len);
+  zctx->write.buf = MUTT_MEM_MALLOC(zctx->write.len, char);
   zctx->write.pos = 0;
 
   /* initialise zlib for inflate and deflate for RFC4978 */

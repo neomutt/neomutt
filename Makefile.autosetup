@@ -65,13 +65,13 @@ default:	all
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
-		enriched.o external.o flags.o functions.o git_ver.o globals.o \
+		enriched.o external.o flags.o git_ver.o globals.o \
 		handler.o hdrline.o help.o hook.o init.o mailcap.o \
 		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
 		mutt_config.o mutt_header.o mutt_logging.o mutt_mailbox.o \
 		mutt_signal.o mutt_socket.o mutt_thread.o mview.o mx.o \
-		opcodes.o recvcmd.o rfc3676.o score.o sort.o status.o \
-		subjectrx.o system.o version.o
+		recvcmd.o rfc3676.o score.o sort.o status.o subjectrx.o \
+		system.o version.o
 
 @if USE_INOTIFY
 NEOMUTTOBJS+=	monitor.o
@@ -181,7 +181,8 @@ $(PWD)/browser:
 # libcolor
 LIBCOLOR=	libcolor.a
 LIBCOLOROBJS=	color/ansi.o color/attr.o color/color.o color/command.o \
-		color/curses.o color/merged.o color/notify.o color/quoted.o \
+		color/curses.o color/dump.o color/merged.o color/notify.o \
+		color/parse_ansi.o color/parse_color.o color/quoted.o \
 		color/regex.o color/simple.o
 @if USE_DEBUG_COLOR
 LIBCOLOROBJS+=	color/debug.o
@@ -282,8 +283,10 @@ $(PWD)/config:
 # libconn
 LIBCONN=	libconn.a
 LIBCONNOBJS=	conn/accountcmd.o conn/config.o conn/connaccount.o \
-		conn/getdomain.o conn/raw.o conn/sasl_plain.o conn/socket.o \
-		conn/tunnel.o
+		conn/raw.o conn/sasl_plain.o conn/socket.o conn/tunnel.o
+@if !DOMAIN
+LIBCONNOBJS+=	conn/getdomain.o
+@endif
 @if USE_SASL_GNU
 LIBCONNOBJS+=	conn/gsasl.o
 @endif
@@ -356,14 +359,22 @@ LIBDEBUGOBJS+=	debug/graphviz.o
 @if USE_DEBUG_KEYMAP
 LIBDEBUGOBJS+=	debug/keymap.o
 @endif
+@if USE_DEBUG_LOGGING
+LIBDEBUGOBJS+=	debug/logging.o
+@endif
 @if USE_DEBUG_NOTIFY
 LIBDEBUGOBJS+=	debug/notify.o
 @endif
 @if USE_DEBUG_WINDOW
 LIBDEBUGOBJS+=	debug/window.o
 @endif
-@if USE_DEBUG_BACKTRACE || USE_DEBUG_COLOR || USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ || USE_DEBUG_KEYMAP || USE_DEBUG_NAMES || USE_DEBUG_NOTIFY || USE_DEBUG_WINDOW
-LIBDEBUGOBJS+=	debug/common.o debug/names.o
+@if USE_DEBUG_BACKTRACE || USE_DEBUG_COLOR || USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ || USE_DEBUG_KEYMAP || USE_DEBUG_LOGGING || USE_DEBUG_NAMES || USE_DEBUG_NOTIFY || USE_DEBUG_WINDOW
+LIBDEBUGOBJS+=	debug/names.o
+@endif
+@if USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ
+LIBDEBUGOBJS+=	debug/common.o
+@endif
+LIBDEBUGOBJS+=	debug/names_expando.o
 LIBDEBUG=	libdebug.a
 CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
 ALLOBJS+=	$(LIBDEBUGOBJS)
@@ -373,7 +384,6 @@ $(LIBDEBUG): $(PWD)/debug $(LIBDEBUGOBJS)
 	$(RANLIB) $@
 $(PWD)/debug:
 	$(MKDIR_P) $(PWD)/debug
-@endif
 
 ###############################################################################
 # libeditor
@@ -418,12 +428,31 @@ $(PWD)/envelope:
 	$(MKDIR_P) $(PWD)/envelope
 
 ###############################################################################
+# libexpando
+LIBEXPANDO=	libexpando.a
+LIBEXPANDOOBJS=	expando/config_type.o expando/expando.o expando/filter.o \
+		expando/format.o expando/helpers.o expando/node.o \
+		expando/node_condbool.o expando/node_conddate.o \
+		expando/node_condition.o expando/node_container.o \
+		expando/node_expando.o expando/node_padding.o \
+		expando/node_text.o expando/parse.o expando/render.o
+CLEANFILES+=	$(LIBEXPANDO) $(LIBEXPANDOOBJS)
+ALLOBJS+=	$(LIBEXPANDOOBJS)
+
+$(LIBEXPANDO): $(PWD)/expando $(LIBEXPANDOOBJS)
+	$(AR) cr $@ $(LIBEXPANDOOBJS)
+	$(RANLIB) $@
+$(PWD)/expando:
+	$(MKDIR_P) $(PWD)/expando
+
+###############################################################################
 # libgui
 LIBGUI=		libgui.a
-LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/global.o gui/msgcont.o \
-		gui/msgwin.o gui/msgwin_wdata.o gui/mutt_curses.o \
-		gui/mutt_window.o gui/reflow.o gui/resize.o gui/rootwin.o \
-		gui/sbar.o gui/simple.o gui/terminal.o
+LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/functions.o gui/global.o \
+		gui/msgcont.o gui/msgwin.o gui/msgwin_wdata.o \
+		gui/mutt_curses.o gui/mutt_window.o gui/opcodes.o gui/reflow.o \
+		gui/resize.o gui/rootwin.o gui/sbar.o gui/simple.o \
+		gui/terminal.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
 
@@ -535,9 +564,13 @@ $(PWD)/key:
 ###############################################################################
 # libmaildir
 LIBMAILDIR=	libmaildir.a
-LIBMAILDIROBJS=	maildir/config.o maildir/edata.o maildir/maildir.o \
-		maildir/mdata.o maildir/mdemail.o maildir/mh.o \
-		maildir/sequence.o maildir/shared.o
+LIBMAILDIROBJS= maildir/account.o maildir/config.o maildir/edata.o \
+		maildir/mailbox.o maildir/maildir.o maildir/mdata.o \
+		maildir/mdemail.o maildir/message.o maildir/path.o \
+		maildir/shared.o
+@if USE_HCACHE
+LIBMAILDIROBJS+=maildir/hcache.o
+@endif
 CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
 ALLOBJS+=	$(LIBMAILDIROBJS)
 
@@ -576,21 +609,18 @@ $(PWD)/menu:
 	$(MKDIR_P) $(PWD)/menu
 
 ###############################################################################
-# libmixmaster
-@if MIXMASTER
-LIBMIXMASTER=	libmixmaster.a
-LIBMIXMASTEROBJS=mixmaster/chain_data.o mixmaster/dlg_mixmaster.o \
-		mixmaster/functions.o mixmaster/mixmaster.o \
-		mixmaster/remailer.o mixmaster/win_chain.o mixmaster/win_hosts.o
-CLEANFILES+=	$(LIBMIXMASTER) $(LIBMIXMASTEROBJS)
-ALLOBJS+=	$(LIBMIXMASTEROBJS)
+# libmh
+LIBMH=		libmh.a
+LIBMHOBJS=	mh/config.o mh/mh.o mh/mdata.o mh/mhemail.o mh/mh.o \
+		mh/sequence.o mh/shared.o
+CLEANFILES+=	$(LIBMH) $(LIBMHOBJS)
+ALLOBJS+=	$(LIBMHOBJS)
 
-$(LIBMIXMASTER): $(PWD)/mixmaster $(LIBMIXMASTEROBJS)
-	$(AR) cr $@ $(LIBMIXMASTEROBJS)
+$(LIBMH): $(PWD)/mh $(LIBMHOBJS)
+	$(AR) cr $@ $(LIBMHOBJS)
 	$(RANLIB) $@
-$(PWD)/mixmaster:
-	$(MKDIR_P) $(PWD)/mixmaster
-@endif
+$(PWD)/mh:
+	$(MKDIR_P) $(PWD)/mh
 
 ###############################################################################
 # libmutt
@@ -616,7 +646,7 @@ $(PWD)/mutt:
 # libncrypt
 LIBNCRYPT=	libncrypt.a
 LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/crypt_mod.o \
-		ncrypt/cryptglue.o
+		ncrypt/cryptglue.o ncrypt/functions.o
 @if HAVE_PKG_GPGME
 LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o \
 		ncrypt/gpgme_functions.o ncrypt/crypt_mod_pgp_gpgme.o \
@@ -785,7 +815,6 @@ $(PWD)/send:
 
 ###############################################################################
 # libsidebar
-@if USE_SIDEBAR
 LIBSIDEBAR=	libsidebar.a
 LIBSIDEBAROBJS=	sidebar/commands.o sidebar/config.o sidebar/functions.o \
 		sidebar/observer.o sidebar/sidebar.o sidebar/sort.o \
@@ -798,7 +827,6 @@ $(LIBSIDEBAR): $(PWD)/sidebar $(LIBSIDEBAROBJS)
 	$(RANLIB) $@
 $(PWD)/sidebar:
 	$(MKDIR_P) $(PWD)/sidebar
-@endif
 
 ###############################################################################
 # libstore
@@ -866,11 +894,11 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIB
 		$(LIBEDITOR) $(LIBCOMPLETE) $(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) \
 		$(LIBPROGRESS) $(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) $(LIBNNTP) \
-		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) $(LIBMIXMASTER) \
-		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) \
+		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) \
+		$(LIBHELPBAR) $(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
-		$(LIBCORE) $(LIBPARSE) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
+		$(LIBCORE) $(LIBPARSE) $(LIBEXPANDO) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
 		$(LIBDEBUG) $(LIBMUTT)
 
 # neomutt
@@ -907,7 +935,7 @@ uninstall: $(UNINSTALL_TARGETS)
 distclean: clean
 	$(RM) $(DEPFILES) jimsh0 config.h config.log conststrings.c \
 		contrib/Makefile docs/Makefile docs/neomutt.1 html Makefile po/Makefile \
-		test/Makefile .clang_complete
+		test/Makefile .clang_complete compile_commands.json
 	$(RM) *.gc?? */*.gc?? test/*/*.gc??
 	$(RM) *.expand */*.expand test/*/*.expand
 	$(RM) coverage.info coverage
@@ -947,11 +975,13 @@ coverage: all test
 	$(RM) mutt/exit.gc??
 	lcov --test-name "test" --output-file coverage.info --capture \
 	  --directory address \
+	  --directory color \
 	  --directory compress \
 	  --directory config \
 	  --directory core \
 	  --directory editor \
 	  --directory email \
+	  --directory expando \
 	  --directory imap \
 	  --directory mutt \
 	  --directory notmuch \
@@ -959,7 +989,7 @@ coverage: all test
 	  --directory pattern \
 	  --directory store \
 	  --directory test/eqi \
-	  --exclude '*/include/*'
+	  --exclude '*/atoi.h'
 	-genhtml --output-directory coverage --frames coverage.info
 	lcov --list coverage.info
 @endif

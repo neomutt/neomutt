@@ -3,7 +3,8 @@
  * Compose Attachments
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -56,9 +57,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -67,10 +67,9 @@
 #include "gui/lib.h"
 #include "attach/lib.h"
 #include "convert/lib.h"
+#include "expando/lib.h"
 #include "menu/lib.h"
 #include "attach_data.h"
-#include "format_flags.h"
-#include "muttlib.h"
 #include "shared_data.h"
 
 /**
@@ -211,21 +210,28 @@ static int compose_attach_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * compose_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * compose_make_entry - Format an Attachment for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $attach_format, attach_format_str()
+ * @sa $attach_format
  */
-static void compose_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static int compose_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct ComposeAttachData *adata = menu->mdata;
   struct AttachCtx *actx = adata->actx;
   struct ComposeSharedData *shared = menu->win->parent->wdata;
   struct ConfigSubset *sub = shared->sub;
 
-  const char *const c_attach_format = cs_subset_string(sub, "attach_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_attach_format),
-                      attach_format_str, (intptr_t) (actx->idx[actx->v2r[line]]),
-                      MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    if (max_cols > 0)
+      max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_attach_format = cs_subset_expando(sub, "attach_format");
+  return expando_filter(c_attach_format, AttachRenderData, (actx->idx[actx->v2r[line]]),
+                        MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

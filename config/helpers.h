@@ -3,7 +3,7 @@
  * Helper functions to get config values
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,5 +39,6 @@ const struct Regex *  cs_subset_regex  (const struct ConfigSubset *sub, const ch
 const struct Slist *  cs_subset_slist  (const struct ConfigSubset *sub, const char *name);
 short                 cs_subset_sort   (const struct ConfigSubset *sub, const char *name);
 const char *          cs_subset_string (const struct ConfigSubset *sub, const char *name);
+const struct Expando * cs_subset_expando(const struct ConfigSubset *sub, const char *name);
 
 #endif /* MUTT_CONFIG_HELPERS_H */

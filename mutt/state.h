@@ -3,7 +3,8 @@
  * Keep track when processing files
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,9 +24,9 @@
 #ifndef MUTT_MUTT_STATE_H
 #define MUTT_MUTT_STATE_H
 
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <wchar.h>
 
 typedef uint16_t StateFlags;          ///< Flags for State->flags, e.g. #STATE_DISPLAY
 #define STATE_NO_FLAGS             0  ///< No flags are set
@@ -45,11 +46,11 @@ typedef uint16_t StateFlags;          ///< Flags for State->flags, e.g. #STATE_D
  */
 struct State
 {
-  FILE      *fp_in;   ///< File to read from
-  FILE      *fp_out;  ///< File to write to
-  char      *prefix;  ///< String to add to the beginning of each output line
-  StateFlags flags;   ///< Flags, e.g. #STATE_DISPLAY
-  int        wraplen; ///< Width to wrap lines to (when flags & #STATE_DISPLAY)
+  FILE       *fp_in;   ///< File to read from
+  FILE       *fp_out;  ///< File to write to
+  const char *prefix;  ///< String to add to the beginning of each output line
+  StateFlags  flags;   ///< Flags, e.g. #STATE_DISPLAY
+  int         wraplen; ///< Width to wrap lines to (when flags & #STATE_DISPLAY)
 };
 
 #define state_set_prefix(state)   ((state)->flags |= STATE_PENDINGPREFIX)

@@ -3,9 +3,11 @@
  * PGP key management routines
  *
  * @authors
- * Copyright (C) 1996-1997,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (c) 1998-2003 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2024 Alejandro Colomar <alx@kernel.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,6 +36,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -48,7 +51,7 @@
 #include "history/lib.h"
 #include "send/lib.h"
 #include "crypt.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "gnupgparse.h"
 #include "mutt_logging.h"
 #include "pgpinvoke.h"
@@ -105,6 +108,22 @@ bool pgp_key_is_valid(struct PgpKeyInfo *k)
     return false;
   if (pk->flags & KEYFLAG_CANTUSE)
     return false;
+
+  return true;
+}
+
+/**
+ * pgp_keys_are_valid - Are all these PGP keys valid?
+ * @param keys Set of keys to examine
+ * @retval true All keys are valid
+ */
+bool pgp_keys_are_valid(struct PgpKeyInfo *keys)
+{
+  for (struct PgpKeyInfo *k = keys; k != NULL; k = k->next)
+  {
+    if (!pgp_key_is_valid(k))
+      return false;
+  }
 
   return true;
 }
@@ -214,7 +233,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, const char *whatfor,
       }
       else
       {
-        l = mutt_mem_malloc(sizeof(struct PgpCache));
+        l = MUTT_MEM_MALLOC(1, struct PgpCache);
         l->next = IdDefaults;
         IdDefaults = l;
         l->what = mutt_str_dup(whatfor);
@@ -235,7 +254,7 @@ done:
 }
 
 /**
- * pgp_class_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment() - @ingroup crypto_pgp_make_key_attachment
+ * pgp_class_make_key_attachment - Generate a public key attachment - Implements CryptModuleSpecs::pgp_make_key_attachment() - @ingroup crypto_pgp_make_key_attachment
  */
 struct Body *pgp_class_make_key_attachment(void)
 {
@@ -265,7 +284,7 @@ struct Body *pgp_class_make_key_attachment(void)
     goto cleanup;
   }
 
-  FILE *fp_null = fopen("/dev/null", "w");
+  FILE *fp_null = mutt_file_fopen("/dev/null", "w");
   if (!fp_null)
   {
     mutt_perror(_("Can't open /dev/null"));
@@ -444,7 +463,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
 
   if (matches)
   {
-    if (oppenc_mode)
+    if (oppenc_mode || !isatty(STDIN_FILENO))
     {
       const bool c_crypt_opportunistic_encrypt_strong_keys =
           cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
@@ -563,16 +582,24 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
 
   pgp_key_free(&keys);
 
+  k = NULL;
   if (matches)
   {
-    k = dlg_pgp(matches, NULL, p);
-    if (k)
-      pgp_remove_key(&matches, k);
-    pgp_key_free(&matches);
-  }
-  else
-  {
-    k = NULL;
+    if (isatty(STDIN_FILENO))
+    {
+      k = dlg_pgp(matches, NULL, p);
+      if (k)
+        pgp_remove_key(&matches, k);
+      pgp_key_free(&matches);
+    }
+    else if (pgp_keys_are_valid(matches))
+    {
+      k = matches;
+    }
+    else
+    {
+      mutt_error(_("A key can't be used: expired/disabled/revoked"));
+    }
   }
 
   FREE(&pfcopy);

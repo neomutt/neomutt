@@ -3,9 +3,10 @@
  * Miscellaneous functions for sending an email
  *
  * @authors
- * Copyright (C) 1996-2002,2009-2012 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Rayford Shireman
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,6 +37,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -49,7 +51,7 @@
 #include "ncrypt/lib.h"
 #include "body.h"
 #include "copy.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "header.h"
 #include "mutt_mailbox.h"
@@ -61,7 +63,7 @@
 
 /**
  * mutt_lookup_mime_type - Find the MIME type for an attachment
- * @param att  Email with attachment
+ * @param b    Email with attachment
  * @param path Path to attachment
  * @retval enum #ContentType, e.g. #TYPE_IMAGE
  *
@@ -71,7 +73,7 @@
  * The longest match is used so that we can match 'ps.gz' when 'gz' also
  * exists.
  */
-enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
+enum ContentType mutt_lookup_mime_type(struct Body *b, const char *path)
 {
   FILE *fp = NULL;
   char *p = NULL, *q = NULL, *ct = NULL;
@@ -109,7 +111,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *att, const char *path)
         goto bye; /* shouldn't happen */
     }
 
-    fp = fopen(buf, "r");
+    fp = mutt_file_fopen(buf, "r");
     if (fp)
     {
       found_mimetypes = true;
@@ -177,9 +179,9 @@ bye:
 
   if ((type != TYPE_OTHER) || (*xtype != '\0'))
   {
-    att->type = type;
-    mutt_str_replace(&att->subtype, subtype);
-    mutt_str_replace(&att->xtype, xtype);
+    b->type = type;
+    mutt_str_replace(&b->subtype, subtype);
+    mutt_str_replace(&b->xtype, xtype);
   }
 
   return type;
@@ -187,31 +189,31 @@ bye:
 
 /**
  * transform_to_7bit - Convert MIME parts to 7-bit
- * @param a     Body of the email
+ * @param b     Body of the email
  * @param fp_in File to read
  * @param sub   Config Subset
  */
-static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *sub)
+static void transform_to_7bit(struct Body *b, FILE *fp_in, struct ConfigSubset *sub)
 {
   struct Buffer *buf = NULL;
   struct State state = { 0 };
   struct stat st = { 0 };
 
-  for (; a; a = a->next)
+  for (; b; b = b->next)
   {
-    if (a->type == TYPE_MULTIPART)
+    if (b->type == TYPE_MULTIPART)
     {
-      a->encoding = ENC_7BIT;
-      transform_to_7bit(a->parts, fp_in, sub);
+      b->encoding = ENC_7BIT;
+      transform_to_7bit(b->parts, fp_in, sub);
     }
-    else if (mutt_is_message_type(a->type, a->subtype))
+    else if (mutt_is_message_type(b->type, b->subtype))
     {
-      mutt_message_to_7bit(a, fp_in, sub);
+      mutt_message_to_7bit(b, fp_in, sub);
     }
     else
     {
-      a->noconv = true;
-      a->force_charset = true;
+      b->noconv = true;
+      b->force_charset = true;
 
       /* Because of the potential recursion in message types, we
        * restrict the lifetime of the buffer tightly */
@@ -225,107 +227,107 @@ static void transform_to_7bit(struct Body *a, FILE *fp_in, struct ConfigSubset *
         return;
       }
       state.fp_in = fp_in;
-      mutt_decode_attachment(a, &state);
+      mutt_decode_attachment(b, &state);
       mutt_file_fclose(&state.fp_out);
-      FREE(&a->d_filename);
-      a->d_filename = a->filename;
-      a->filename = buf_strdup(buf);
+      FREE(&b->d_filename);
+      b->d_filename = b->filename;
+      b->filename = buf_strdup(buf);
       buf_pool_release(&buf);
-      a->unlink = true;
-      if (stat(a->filename, &st) == -1)
+      b->unlink = true;
+      if (stat(b->filename, &st) == -1)
       {
         mutt_perror("stat");
         return;
       }
-      a->length = st.st_size;
+      b->length = st.st_size;
 
-      mutt_update_encoding(a, sub);
-      if (a->encoding == ENC_8BIT)
-        a->encoding = ENC_QUOTED_PRINTABLE;
-      else if (a->encoding == ENC_BINARY)
-        a->encoding = ENC_BASE64;
+      mutt_update_encoding(b, sub);
+      if (b->encoding == ENC_8BIT)
+        b->encoding = ENC_QUOTED_PRINTABLE;
+      else if (b->encoding == ENC_BINARY)
+        b->encoding = ENC_BASE64;
     }
   }
 }
 
 /**
  * mutt_message_to_7bit - Convert an email's MIME parts to 7-bit
- * @param a   Body of the email
+ * @param b   Body of the email
  * @param fp  File to read (OPTIONAL)
  * @param sub Config Subset
  */
-void mutt_message_to_7bit(struct Body *a, FILE *fp, struct ConfigSubset *sub)
+void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
 {
-  struct Buffer temp = buf_make(0);
+  struct Buffer *temp = buf_pool_get();
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
   struct stat st = { 0 };
 
-  if (!a->filename && fp)
+  if (!b->filename && fp)
   {
     fp_in = fp;
   }
-  else if (!a->filename || !(fp_in = fopen(a->filename, "r")))
+  else if (!b->filename || !(fp_in = mutt_file_fopen(b->filename, "r")))
   {
-    mutt_error(_("Could not open %s"), a->filename ? a->filename : "(null)");
+    mutt_error(_("Could not open %s"), b->filename ? b->filename : "(null)");
     return;
   }
   else
   {
-    a->offset = 0;
-    if (stat(a->filename, &st) == -1)
+    b->offset = 0;
+    if (stat(b->filename, &st) == -1)
     {
       mutt_perror("stat");
       mutt_file_fclose(&fp_in);
       goto cleanup;
     }
-    a->length = st.st_size;
+    b->length = st.st_size;
   }
 
   /* Avoid buffer pool due to recursion */
-  buf_mktemp(&temp);
-  fp_out = mutt_file_fopen(buf_string(&temp), "w+");
+  buf_mktemp(temp);
+  fp_out = mutt_file_fopen(buf_string(temp), "w+");
   if (!fp_out)
   {
     mutt_perror("fopen");
     goto cleanup;
   }
 
-  if (!mutt_file_seek(fp_in, a->offset, SEEK_SET))
+  if (!mutt_file_seek(fp_in, b->offset, SEEK_SET))
   {
     goto cleanup;
   }
-  a->parts = mutt_rfc822_parse_message(fp_in, a);
+  b->parts = mutt_rfc822_parse_message(fp_in, b);
 
-  transform_to_7bit(a->parts, fp_in, sub);
+  transform_to_7bit(b->parts, fp_in, sub);
 
-  mutt_copy_hdr(fp_in, fp_out, a->offset, a->offset + a->length,
+  mutt_copy_hdr(fp_in, fp_out, b->offset, b->offset + b->length,
                 CH_MIME | CH_NONEWLINE | CH_XMIT, NULL, 0);
 
   fputs("MIME-Version: 1.0\n", fp_out);
-  mutt_write_mime_header(a->parts, fp_out, sub);
+  mutt_write_mime_header(b->parts, fp_out, sub);
   fputc('\n', fp_out);
-  mutt_write_mime_body(a->parts, fp_out, sub);
+  mutt_write_mime_body(b->parts, fp_out, sub);
 
   if (fp_in != fp)
     mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
 
-  a->encoding = ENC_7BIT;
-  FREE(&a->d_filename);
-  a->d_filename = a->filename;
-  if (a->filename && a->unlink)
-    unlink(a->filename);
-  a->filename = buf_strdup(&temp);
-  a->unlink = true;
-  if (stat(a->filename, &st) == -1)
+  b->encoding = ENC_7BIT;
+  FREE(&b->d_filename);
+  b->d_filename = b->filename;
+  if (b->filename && b->unlink)
+    unlink(b->filename);
+  b->filename = buf_strdup(temp);
+  b->unlink = true;
+  if (stat(b->filename, &st) == -1)
   {
     mutt_perror("stat");
     goto cleanup;
   }
-  a->length = st.st_size;
-  mutt_body_free(&a->parts);
-  a->email->body = NULL;
+  b->length = st.st_size;
+  mutt_body_free(&b->parts);
+  b->email->body = NULL;
 
 cleanup:
   if (fp_in && (fp_in != fp))
@@ -334,10 +336,10 @@ cleanup:
   if (fp_out)
   {
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(buf_string(&temp));
+    mutt_file_unlink(buf_string(temp));
   }
 
-  buf_dealloc(&temp);
+  buf_pool_release(&temp);
 }
 
 /**
@@ -389,8 +391,8 @@ static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubs
   else
   {
     /* Determine which encoding is smaller  */
-    if (1.33 * (float) (info->lobin + info->hibin + info->ascii) <
-        3.0 * (float) (info->lobin + info->hibin) + (float) info->ascii)
+    if (1.33f * (float) (info->lobin + info->hibin + info->ascii) <
+        3.0f * (float) (info->lobin + info->hibin) + (float) info->ascii)
     {
       b->encoding = ENC_BASE64;
     }
@@ -403,41 +405,41 @@ static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubs
 
 /**
  * mutt_stamp_attachment - Timestamp an Attachment
- * @param a Attachment
+ * @param b Attachment
  */
-void mutt_stamp_attachment(struct Body *a)
+void mutt_stamp_attachment(struct Body *b)
 {
-  a->stamp = mutt_date_now();
+  b->stamp = mutt_date_now();
 }
 
 /**
  * mutt_update_encoding - Update the encoding type
- * @param a   Body to update
+ * @param b   Body to update
  * @param sub Config Subset
  *
  * Assumes called from send mode where Body->filename points to actual file
  */
-void mutt_update_encoding(struct Body *a, struct ConfigSubset *sub)
+void mutt_update_encoding(struct Body *b, struct ConfigSubset *sub)
 {
   struct Content *info = NULL;
   char chsbuf[256] = { 0 };
 
   /* override noconv when it's us-ascii */
-  if (mutt_ch_is_us_ascii(mutt_body_get_charset(a, chsbuf, sizeof(chsbuf))))
-    a->noconv = false;
+  if (mutt_ch_is_us_ascii(mutt_body_get_charset(b, chsbuf, sizeof(chsbuf))))
+    b->noconv = false;
 
-  if (!a->force_charset && !a->noconv)
-    mutt_param_delete(&a->parameter, "charset");
+  if (!b->force_charset && !b->noconv)
+    mutt_param_delete(&b->parameter, "charset");
 
-  info = mutt_get_content_info(a->filename, a, sub);
+  info = mutt_get_content_info(b->filename, b, sub);
   if (!info)
     return;
 
-  set_encoding(a, info, sub);
-  mutt_stamp_attachment(a);
+  set_encoding(b, info, sub);
+  mutt_stamp_attachment(b);
 
-  FREE(&a->content);
-  a->content = info;
+  FREE(&b->content);
+  b->content = info;
 }
 
 /**
@@ -470,7 +472,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
 
   struct Buffer *buf = buf_pool_get();
   buf_mktemp(buf);
-  fp = mutt_file_fopen(buf_string(buf), "w+");
+  fp = mutt_file_fopen_masked(buf_string(buf), "w+");
   if (!fp)
   {
     buf_pool_release(&buf);
@@ -528,8 +530,8 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
              ((mutt_is_application_smime(e->body) & SMIME_ENCRYPT) == SMIME_ENCRYPT))
     {
-      chflags |= CH_MIME | CH_TXTPLAIN;
-      cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
+      chflags |= CH_MIME | CH_NONEWLINE;
+      cmflags = MUTT_CM_DECODE_SMIME;
       pgp &= ~SMIME_ENCRYPT;
     }
   }
@@ -556,12 +558,12 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
 
 /**
  * run_mime_type_query - Run an external command to determine the MIME type
- * @param att Attachment
+ * @param b   Attachment
  * @param sub Config Subset
  *
  * The command in $mime_type_query_command is run.
  */
-static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
+static void run_mime_type_query(struct Body *b, struct ConfigSubset *sub)
 {
   FILE *fp = NULL, *fp_err = NULL;
   char *buf = NULL;
@@ -571,7 +573,7 @@ static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
 
   const char *const c_mime_type_query_command = cs_subset_string(sub, "mime_type_query_command");
 
-  buf_file_expand_fmt_quote(cmd, c_mime_type_query_command, att->filename);
+  buf_file_expand_fmt_quote(cmd, c_mime_type_query_command, b->filename);
 
   pid = filter_create(buf_string(cmd), NULL, &fp, &fp_err, EnvList);
   if (pid < 0)
@@ -586,7 +588,7 @@ static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
   if (buf)
   {
     if (strchr(buf, '/'))
-      mutt_parse_content_type(buf, att);
+      mutt_parse_content_type(buf, b);
     FREE(&buf);
   }
 
@@ -607,52 +609,52 @@ struct Body *mutt_make_file_attach(const char *path, struct ConfigSubset *sub)
   if (!path || (path[0] == '\0'))
     return NULL;
 
-  struct Body *att = mutt_body_new();
-  att->filename = mutt_str_dup(path);
+  struct Body *b = mutt_body_new();
+  b->filename = mutt_str_dup(path);
 
   const char *const c_mime_type_query_command = cs_subset_string(sub, "mime_type_query_command");
   const bool c_mime_type_query_first = cs_subset_bool(sub, "mime_type_query_first");
 
   if (c_mime_type_query_command && c_mime_type_query_first)
-    run_mime_type_query(att, sub);
+    run_mime_type_query(b, sub);
 
   /* Attempt to determine the appropriate content-type based on the filename
    * suffix.  */
-  if (!att->subtype)
-    mutt_lookup_mime_type(att, path);
+  if (!b->subtype)
+    mutt_lookup_mime_type(b, path);
 
-  if (!att->subtype && c_mime_type_query_command && !c_mime_type_query_first)
+  if (!b->subtype && c_mime_type_query_command && !c_mime_type_query_first)
   {
-    run_mime_type_query(att, sub);
+    run_mime_type_query(b, sub);
   }
 
-  struct Content *info = mutt_get_content_info(path, att, sub);
+  struct Content *info = mutt_get_content_info(path, b, sub);
   if (!info)
   {
-    mutt_body_free(&att);
+    mutt_body_free(&b);
     return NULL;
   }
 
-  if (!att->subtype)
+  if (!b->subtype)
   {
     if ((info->nulbin == 0) &&
         ((info->lobin == 0) || ((info->lobin + info->hibin + info->ascii) / info->lobin >= 10)))
     {
       /* Statistically speaking, there should be more than 10% "lobin"
        * chars if this is really a binary file...  */
-      att->type = TYPE_TEXT;
-      att->subtype = mutt_str_dup("plain");
+      b->type = TYPE_TEXT;
+      b->subtype = mutt_str_dup("plain");
     }
     else
     {
-      att->type = TYPE_APPLICATION;
-      att->subtype = mutt_str_dup("octet-stream");
+      b->type = TYPE_APPLICATION;
+      b->subtype = mutt_str_dup("octet-stream");
     }
   }
 
   FREE(&info);
-  mutt_update_encoding(att, sub);
-  return att;
+  mutt_update_encoding(b, sub);
+  return b;
 }
 
 /**
@@ -685,7 +687,7 @@ static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
       continue;
 
     rfc2047_encode(&tmp, NULL, i + 2, c_send_charset);
-    mutt_mem_realloc(&np->data, i + 2 + mutt_str_len(tmp) + 1);
+    MUTT_MEM_REALLOC(&np->data, i + 2 + mutt_str_len(tmp) + 1, char);
 
     sprintf(np->data + i + 2, "%s", tmp);
 
@@ -726,7 +728,7 @@ const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
 }
 
 /**
- * gen_msgid - Generate a random Message ID
+ * mutt_gen_msgid - Generate a random Message ID
  * @retval ptr Message ID
  *
  * The length of the message id is chosen such that it is maximal and fits in
@@ -748,7 +750,7 @@ const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
  *
  * @note The caller should free the string
  */
-static char *gen_msgid(void)
+char *mutt_gen_msgid(void)
 {
   const int ID_LEFT_LEN = 50;
   const int ID_RIGHT_LEN = 12;
@@ -799,7 +801,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final, struct ConfigSubset
     mutt_set_followup_to(env, sub);
 
     if (!env->message_id)
-      env->message_id = gen_msgid();
+      env->message_id = mutt_gen_msgid();
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
@@ -872,7 +874,7 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     fprintf(fp_tmp, "Resent-Date: %s\n", buf_string(date));
     buf_pool_release(&date);
 
-    char *msgid_str = gen_msgid();
+    char *msgid_str = mutt_gen_msgid();
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
     mutt_addrlist_write_file(to, fp_tmp, "Resent-To");
@@ -885,7 +887,6 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
       unlink(buf_string(tempfile));
       return -1;
     }
-#ifdef USE_SMTP
     const char *const c_smtp_url = cs_subset_string(sub, "smtp_url");
     if (c_smtp_url)
     {
@@ -893,7 +894,6 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
                           (e->body->encoding == ENC_8BIT), sub);
     }
     else
-#endif
     {
       rc = mutt_invoke_sendmail(m, env_from, to, NULL, NULL, buf_string(tempfile),
                                 (e->body->encoding == ENC_8BIT), sub);
@@ -952,9 +952,7 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
   struct Buffer *resent_from = buf_pool_get();
   mutt_addrlist_write(&from_list, resent_from, false);
 
-#ifdef USE_NNTP
   OptNewsSend = false;
-#endif
 
   /* prepare recipient list. idna conversion appears to happen before this
    * function is called, since the user receives confirmation of the address
@@ -1008,7 +1006,6 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
                             char *fcc, char **finalpath, struct ConfigSubset *sub)
 {
   char fcc_tok[PATH_MAX] = { 0 };
-  char fcc_expanded[PATH_MAX] = { 0 };
 
   mutt_str_copy(fcc_tok, path, sizeof(fcc_tok));
 
@@ -1017,26 +1014,32 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
     return -1;
 
   mutt_debug(LL_DEBUG1, "Fcc: initial mailbox = '%s'\n", tok);
-  /* mutt_expand_path already called above for the first token */
+  /* buf_expand_path already called above for the first token */
   int status = mutt_write_fcc(tok, e, msgid, post, fcc, finalpath, sub);
   if (status != 0)
     return status;
 
+  struct Buffer *fcc_expanded = buf_pool_get();
   while ((tok = strtok(NULL, ",")))
   {
     if (*tok == '\0')
       continue;
 
-    /* Only call mutt_expand_path if tok has some data */
+    /* Only call buf_expand_path if tok has some data */
     mutt_debug(LL_DEBUG1, "Fcc: additional mailbox token = '%s'\n", tok);
-    mutt_str_copy(fcc_expanded, tok, sizeof(fcc_expanded));
-    mutt_expand_path(fcc_expanded, sizeof(fcc_expanded));
-    mutt_debug(LL_DEBUG1, "     Additional mailbox expanded = '%s'\n", fcc_expanded);
-    status = mutt_write_fcc(fcc_expanded, e, msgid, post, fcc, finalpath, sub);
+    buf_strcpy(fcc_expanded, tok);
+    buf_expand_path(fcc_expanded);
+    mutt_debug(LL_DEBUG1, "     Additional mailbox expanded = '%s'\n",
+               buf_string(fcc_expanded));
+    status = mutt_write_fcc(buf_string(fcc_expanded), e, msgid, post, fcc, finalpath, sub);
     if (status != 0)
+    {
+      buf_pool_release(&fcc_expanded);
       return status;
+    }
   }
 
+  buf_pool_release(&fcc_expanded);
   return 0;
 }
 
@@ -1186,23 +1189,6 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
       fputc('I', msg->fp);
     fputc('\n', msg->fp);
   }
-
-#ifdef MIXMASTER
-  /* (postponement) if the mail is to be sent through a mixmaster
-   * chain, save that information */
-
-  if (post && !STAILQ_EMPTY(&e->chain))
-  {
-    fputs("Mutt-Mix:", msg->fp);
-    struct ListNode *p = NULL;
-    STAILQ_FOREACH(p, &e->chain, entries)
-    {
-      fprintf(msg->fp, " %s", (char *) p->data);
-    }
-
-    fputc('\n', msg->fp);
-  }
-#endif
 
   if (fp_tmp)
   {

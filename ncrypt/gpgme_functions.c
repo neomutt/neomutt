@@ -3,7 +3,8 @@
  * Gpgme functions
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Alejandro Colomar <alx@kernel.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,9 +29,9 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <gpg-error.h>
 #include <gpgme.h>
 #include <langinfo.h>
-#include <limits.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -46,7 +47,6 @@
 #include "crypt_gpgme.h"
 #include "globals.h"
 #include "mutt_logging.h"
-#include "opcodes.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -83,7 +83,7 @@ struct DnArray
  */
 static void print_utf8(FILE *fp, const char *buf, size_t len)
 {
-  char *tstr = mutt_mem_malloc(len + 1);
+  char *tstr = MUTT_MEM_MALLOC(len + 1, char);
   memcpy(tstr, buf, len);
   tstr[len] = 0;
 
@@ -186,7 +186,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
   n = s - str;
   if (n == 0)
     return NULL; /* empty key */
-  array->key = mutt_mem_malloc(n + 1);
+  array->key = MUTT_MEM_MALLOC(n + 1, char);
   p = array->key;
   memcpy(p, str, n); /* fixme: trim trailing spaces */
   p[n] = 0;
@@ -201,7 +201,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
     if ((n == 0) || (n & 1))
       return NULL; /* empty or odd number of digits */
     n /= 2;
-    p = mutt_mem_malloc(n + 1);
+    p = MUTT_MEM_MALLOC(n + 1, char);
     array->value = (char *) p;
     for (s1 = str; n; s1 += 2, n--)
       sscanf(s1, "%2hhx", (unsigned char *) p++);
@@ -244,7 +244,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
       }
     }
 
-    p = mutt_mem_malloc(n + 1);
+    p = MUTT_MEM_MALLOC(n + 1, char);
     array->value = (char *) p;
     for (s = str; n; s++, n--)
     {
@@ -285,7 +285,7 @@ static struct DnArray *parse_dn(const char *str)
   size_t arrayidx, arraysize;
 
   arraysize = 7; /* C,ST,L,O,OU,CN,email */
-  array = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
+  array = MUTT_MEM_MALLOC(arraysize + 1, struct DnArray);
   arrayidx = 0;
   while (*str)
   {
@@ -297,7 +297,7 @@ static struct DnArray *parse_dn(const char *str)
     {
       /* neomutt lacks a real mutt_mem_realloc - so we need to copy */
       arraysize += 5;
-      struct DnArray *a2 = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
+      struct DnArray *a2 = MUTT_MEM_MALLOC(arraysize + 1, struct DnArray);
       for (int i = 0; i < arrayidx; i++)
       {
         a2[i].key = array[i].key;
@@ -633,13 +633,13 @@ static void verify_key(struct CryptKeyInfo *key)
 {
   const char *s = NULL;
   gpgme_ctx_t listctx = NULL;
-  gpgme_error_t err;
+  gpgme_error_t err = GPG_ERR_NO_ERROR;
   gpgme_key_t k = NULL;
   int maxdepth = 100;
 
-  struct Buffer tempfile = buf_make(PATH_MAX);
-  buf_mktemp(&tempfile);
-  FILE *fp = mutt_file_fopen(buf_string(&tempfile), "w");
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -659,9 +659,9 @@ static void verify_key(struct CryptKeyInfo *key)
     err = gpgme_op_keylist_start(listctx, s, 0);
     gpgme_key_unref(k);
     k = NULL;
-    if (err == 0)
+    if (err == GPG_ERR_NO_ERROR)
       err = gpgme_op_keylist_next(listctx, &k);
-    if (err != 0)
+    if (err != GPG_ERR_NO_ERROR)
     {
       fprintf(fp, _("Error finding issuer key: %s\n"), gpgme_strerror(err));
       goto leave;
@@ -688,7 +688,7 @@ leave:
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = buf_string(&tempfile);
+  pdata.fname = buf_string(tempfile);
 
   pview.banner = title;
   pview.flags = MUTT_PAGER_NO_FLAGS;
@@ -697,7 +697,7 @@ leave:
   mutt_do_pager(&pview, NULL);
 
 cleanup:
-  buf_dealloc(&tempfile);
+  buf_pool_release(&tempfile);
 }
 
 /**
@@ -709,6 +709,22 @@ static bool crypt_key_is_valid(struct CryptKeyInfo *k)
 {
   if (k->flags & KEYFLAG_CANTUSE)
     return false;
+  return true;
+}
+
+/**
+ * crypt_keys_are_valid - Are all these keys valid?
+ * @param keys Set of keys to test
+ * @retval true All keys are valid
+ */
+bool crypt_keys_are_valid(struct CryptKeyInfo *keys)
+{
+  for (struct CryptKeyInfo *k = keys; k != NULL; k = k->next)
+  {
+    if (!crypt_key_is_valid(k))
+      return false;
+  }
+
   return true;
 }
 
@@ -744,7 +760,7 @@ static int op_generic_select_entry(struct GpgmeData *gd, int op)
   if (OptPgpCheckTrust && (!crypt_id_is_valid(cur_key) || !crypt_id_is_strong(cur_key)))
   {
     const char *warn_s = NULL;
-    char buf2[1024];
+    char buf2[1024] = { 0 };
 
     if (cur_key->flags & KEYFLAG_CANTUSE)
     {

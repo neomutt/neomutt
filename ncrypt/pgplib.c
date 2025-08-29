@@ -3,7 +3,8 @@
  * Misc PGP helper routines
  *
  * @authors
- * Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -130,7 +131,7 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
 
   for (; up; up = up->next)
   {
-    *lp = mutt_mem_calloc(1, sizeof(struct PgpUid));
+    *lp = MUTT_MEM_CALLOC(1, struct PgpUid);
     (*lp)->trust = up->trust;
     (*lp)->flags = up->flags;
     (*lp)->addr = mutt_str_dup(up->addr);

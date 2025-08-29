@@ -3,8 +3,8 @@
  * Support for network tunnelling
  *
  * @authors
- * Copyright (C) 2000 Manoj Kasichainula <manoj@io.com>
- * Copyright (C) 2001,2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,8 +32,8 @@
 #include <fcntl.h>
 #include <stdbool.h>
 #include <string.h>
+#include <sys/types.h>
 #include <sys/wait.h>
-#include <time.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -60,7 +60,7 @@ static int tunnel_socket_open(struct Connection *conn)
 {
   int pin[2], pout[2];
 
-  struct TunnelSockData *tunnel = mutt_mem_malloc(sizeof(struct TunnelSockData));
+  struct TunnelSockData *tunnel = MUTT_MEM_MALLOC(1, struct TunnelSockData);
   conn->sockdata = tunnel;
 
   const char *const c_tunnel = cs_subset_string(NeoMutt->sub, "tunnel");
@@ -88,6 +88,7 @@ static int tunnel_socket_open(struct Connection *conn)
   if (pid == 0)
   {
     mutt_sig_unblock_system(false);
+    mutt_sig_reset_child_signals();
     const int fd_null = open("/dev/null", O_RDWR);
     if ((fd_null < 0) || (dup2(pout[0], STDIN_FILENO) < 0) ||
         (dup2(pin[1], STDOUT_FILENO) < 0) || (dup2(fd_null, STDERR_FILENO) < 0))
@@ -190,7 +191,7 @@ static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t 
 }
 
 /**
- * tunnel_socket_poll - Checks whether tunnel reads would block - Implements Connection::poll() - @ingroup connection_poll
+ * tunnel_socket_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 {

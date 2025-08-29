@@ -5,7 +5,13 @@
  * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
+ * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2022 Marco Sirabella <marco@sirabella.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,11 +36,11 @@
 
 #include "config.h"
 #include <errno.h>
-#include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -54,7 +60,7 @@
 #include "parse/lib.h"
 #include "store/lib.h"
 #include "alternates.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "score.h"
@@ -204,7 +210,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   struct Buffer *token = NULL, *linebuf = NULL;
   char *line = NULL;
   char *currentline = NULL;
-  char rcfile[PATH_MAX] = { 0 };
+  char rcfile[PATH_MAX + 1] = { 0 };
   size_t linelen = 0;
   pid_t pid;
 
@@ -276,7 +282,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     line_rc = parse_rc_buffer(linebuf, token, err);
     if (line_rc == MUTT_CMD_ERROR)
     {
-      mutt_error(_("Error in %s, line %d: %s"), rcfile, lineno, buf_string(err));
+      mutt_error("%s:%d: %s", rcfile, lineno, buf_string(err));
       if (--rc < -MAX_ERRS)
       {
         if (conv)
@@ -287,7 +293,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     else if (line_rc == MUTT_CMD_WARNING)
     {
       /* Warning */
-      mutt_warning(_("Warning in %s, line %d: %s"), rcfile, lineno, buf_string(err));
+      mutt_warning("%s:%d: %s", rcfile, lineno, buf_string(err));
       warnings++;
     }
     else if (line_rc == MUTT_CMD_FINISH)
@@ -350,7 +356,7 @@ static enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s,
 {
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   buf_expand_path(buf);
-  if (buf_len(buf) == 0)
+  if (buf_is_empty(buf))
   {
     if (HomeDir)
     {
@@ -606,6 +612,13 @@ bail:
 
 /**
  * mailbox_add - Add a new Mailbox
+ * @param folder  Path to use for '+' abbreviations
+ * @param mailbox Mailbox to add
+ * @param label   Descriptive label
+ * @param poll    Enable mailbox polling?
+ * @param notify  Enable mailbox notification?
+ * @param err     Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult mailbox_add(const char *folder, const char *mailbox,
                                       const char *label, enum TriBool poll,
@@ -703,6 +716,19 @@ static enum CommandResult mailbox_add(const char *folder, const char *mailbox,
 #endif
 
   return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * mailbox_add_simple - Add a new Mailbox
+ * @param mailbox Mailbox to add
+ * @param err     Buffer for error messages
+ * @retval true Success
+ */
+bool mailbox_add_simple(const char *mailbox, struct Buffer *err)
+{
+  enum CommandResult rc = mailbox_add("", mailbox, NULL, TB_UNSET, TB_UNSET, err);
+
+  return (rc == MUTT_CMD_SUCCESS);
 }
 
 /**
@@ -837,7 +863,7 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * set_dump - Dump list of config variables into a file/pager.
+ * set_dump - Dump list of config variables into a file/pager
  * @param flags what configs to dump: see #ConfigDumpFlags
  * @param err buffer for error message
  * @return num See #CommandResult
@@ -951,7 +977,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
     if (unset)
     {
-      buf_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
+      buf_printf(err, _("Can't query option with the '%s' command"), "unsetenv");
       return MUTT_CMD_WARNING;
     }
 
@@ -965,7 +991,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   {
     if (unset)
     {
-      buf_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
+      buf_printf(err, _("Can't query option with the '%s' command"), "unsetenv");
       return MUTT_CMD_WARNING;
     }
 
@@ -1045,25 +1071,29 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
                                        intptr_t data, struct Buffer *err)
 {
-  char path[PATH_MAX] = { 0 };
+  struct Buffer *path = buf_pool_get();
 
   do
   {
     if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
     {
       buf_printf(err, _("source: error at %s"), s->dptr);
+      buf_pool_release(&path);
       return MUTT_CMD_ERROR;
     }
-    mutt_str_copy(path, buf->data, sizeof(path));
-    mutt_expand_path(path, sizeof(path));
+    buf_copy(path, buf);
+    buf_expand_path(path);
 
-    if (source_rc(path, err) < 0)
+    if (source_rc(buf_string(path), err) < 0)
     {
-      buf_printf(err, _("source: file %s could not be sourced"), path);
+      buf_printf(err, _("source: file %s could not be sourced"), buf_string(path));
+      buf_pool_release(&path);
       return MUTT_CMD_ERROR;
     }
 
   } while (MoreArgs(s));
+
+  buf_pool_release(&path);
 
   return MUTT_CMD_SUCCESS;
 }
@@ -1195,7 +1225,6 @@ bail:
   return MUTT_CMD_ERROR;
 }
 
-#ifdef USE_IMAP
 /**
  * parse_subscribe_to - Parse the 'subscribe-to' command - Implements Command::parse() - @ingroup command_parse
  *
@@ -1224,7 +1253,8 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
     if (!buf_is_empty(buf))
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) == 0)
+      buf_expand_path(buf);
+      if (imap_subscribe(buf_string(buf), true) == 0)
       {
         mutt_message(_("Subscribed to %s"), buf->data);
         return MUTT_CMD_SUCCESS;
@@ -1241,7 +1271,6 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
   buf_addstr(err, _("No folder specified"));
   return MUTT_CMD_WARNING;
 }
-#endif
 
 /**
  * parse_tag_formats - Parse the 'tag-formats' command - Implements Command::parse() - @ingroup command_parse
@@ -1534,7 +1563,6 @@ static enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s
   return MUTT_CMD_SUCCESS;
 }
 
-#ifdef USE_IMAP
 /**
  * parse_unsubscribe_from - Parse the 'unsubscribe-from' command - Implements Command::parse() - @ingroup command_parse
  *
@@ -1561,7 +1589,8 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
     if (buf->data && (*buf->data != '\0'))
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) == 0)
+      buf_expand_path(buf);
+      if (imap_subscribe(buf_string(buf), false) == 0)
       {
         mutt_message(_("Unsubscribed from %s"), buf->data);
         return MUTT_CMD_SUCCESS;
@@ -1578,7 +1607,6 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
   buf_addstr(err, _("No folder specified"));
   return MUTT_CMD_WARNING;
 }
-#endif
 
 /**
  * parse_version - Parse the 'version' command - Implements Command::parse() - @ingroup command_parse

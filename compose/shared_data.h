@@ -3,7 +3,7 @@
  * Compose Shared Data
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,6 +26,8 @@
 #include "config.h"
 #include <stdbool.h>
 
+struct MuttWindow;
+
 /**
  * struct ComposeSharedData - Shared Compose Data
  */
@@ -41,12 +43,19 @@ struct ComposeSharedData
   int flags;                         ///< Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
   bool fcc_set;                      ///< User has edited the Fcc: field
   int rc;                            ///< Return code to leave compose
-#ifdef USE_NNTP
   bool news;                         ///< Email is a news article
-#endif
 };
 
-struct MuttWindow;
+/**
+ * ExpandoDataCompose - Expando UIDs for Compose
+ *
+ * @sa ED_COMPOSE, ExpandoDomain
+ */
+enum ExpandoDataCompose
+{
+  ED_COM_ATTACH_COUNT = 1,     ///< ComposeAttachData, num_attachments()
+  ED_COM_ATTACH_SIZE,          ///< ComposeAttachData, cum_attachs_size()
+};
 
 void compose_shared_data_free(struct MuttWindow *win, void **ptr);
 struct ComposeSharedData *compose_shared_data_new(void);

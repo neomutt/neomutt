@@ -3,7 +3,8 @@
  * Decide how to display email content
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,13 +26,14 @@
 
 #include <iconv.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 struct Body;
 struct State;
 
 int  mutt_body_handler        (struct Body *b, struct State *state);
 bool mutt_can_decode          (struct Body *b);
-void mutt_decode_attachment   (struct Body *b, struct State *state);
+void mutt_decode_attachment   (const struct Body *b, struct State *state);
 void mutt_decode_base64       (struct State *state, size_t len, bool istext, iconv_t cd);
 bool mutt_prefer_as_attachment(struct Body *b);
 

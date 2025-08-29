@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -48,7 +49,7 @@ static void test_one_leak(const char *pattern)
 void test_mutt_pattern_leak(void)
 {
   MuttLogger = log_disp_null;
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   test_one_leak("~E ~F | ~D");
   test_one_leak("~D | ~E ~F");

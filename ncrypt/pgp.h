@@ -3,9 +3,7 @@
  * PGP sign, encrypt, check routines
  *
  * @authors
- * Copyright (C) 1996-1997 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2003 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -36,6 +34,34 @@ struct Email;
 struct PgpKeyInfo;
 struct State;
 
+/**
+ * struct PgpCommandContext - Data for a PGP command
+ *
+ * The actual command line formatter.
+ */
+struct PgpCommandContext
+{
+  bool need_passphrase;  ///< %p
+  const char *fname;     ///< %f
+  const char *sig_fname; ///< %s
+  const char *signas;    ///< %a
+  const char *ids;       ///< %r
+};
+
+/**
+ * ExpandoDataPgpCmd - Expando UIDs for PGP Commands
+ *
+ * @sa ED_PGP_CMD, ExpandoDomain
+ */
+enum ExpandoDataPgpCmd
+{
+  ED_PGC_FILE_MESSAGE = 1,     ///< PgpCommandContext.fname
+  ED_PGC_FILE_SIGNATURE,       ///< PgpCommandContext.sig_fname
+  ED_PGC_KEY_IDS,              ///< PgpCommandContext.ids
+  ED_PGC_NEED_PASS,            ///< PgpCommandContext.need_passphrase
+  ED_PGC_SIGN_AS,              ///< PgpCommandContext.signas
+};
+
 char *        pgp_fpr_or_lkeyid                    (struct PgpKeyInfo *k);
 char *        pgp_keyid                            (struct PgpKeyInfo *k);
 char *        pgp_long_keyid                       (struct PgpKeyInfo *k);
@@ -43,18 +69,18 @@ char *        pgp_short_keyid                      (struct PgpKeyInfo *k);
 char *        pgp_this_keyid                       (struct PgpKeyInfo *k);
 bool          pgp_use_gpg_agent                    (void);
 
-int           pgp_class_application_handler        (struct Body *m, struct State *state);
+int           pgp_class_application_handler        (struct Body *b, struct State *state);
 bool          pgp_class_check_traditional          (FILE *fp, struct Body *b, bool just_one);
-int           pgp_class_decrypt_mime               (FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
-int           pgp_class_encrypted_handler          (struct Body *a, struct State *state);
-struct Body * pgp_class_encrypt_message            (struct Body *a, char *keylist, bool sign, const struct AddressList *from);
-void          pgp_class_extract_key_from_attachment(FILE *fp, struct Body *top);
+int           pgp_class_decrypt_mime               (FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **b_dec);
+int           pgp_class_encrypted_handler          (struct Body *b, struct State *state);
+struct Body * pgp_class_encrypt_message            (struct Body *b, char *keylist, bool sign, const struct AddressList *from);
+void          pgp_class_extract_key_from_attachment(FILE *fp, struct Body *b);
 char *        pgp_class_find_keys                  (const struct AddressList *addrlist, bool oppenc_mode);
 SecurityFlags pgp_class_send_menu                  (struct Email *e);
-struct Body * pgp_class_sign_message               (struct Body *a, const struct AddressList *from);
-struct Body * pgp_class_traditional_encryptsign    (struct Body *a, SecurityFlags flags, char *keylist);
+struct Body * pgp_class_sign_message               (struct Body *b, const struct AddressList *from);
+struct Body * pgp_class_traditional_encryptsign    (struct Body *b, SecurityFlags flags, char *keylist);
 bool          pgp_class_valid_passphrase           (void);
-int           pgp_class_verify_one                 (struct Body *sigbdy, struct State *state, const char *tempfile);
+int           pgp_class_verify_one                 (struct Body *b, struct State *state, const char *tempfile);
 void          pgp_class_void_passphrase            (void);
 
 #endif /* MUTT_NCRYPT_PGP_H */

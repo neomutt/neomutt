@@ -36,9 +36,6 @@
 #define MUTT_ENVELOPE_LIB_H
 
 #include "config.h"
-#ifdef USE_AUTOCRYPT
-#include "autocrypt/lib.h"
-#endif
 
 struct Buffer;
 struct ConfigSubset;

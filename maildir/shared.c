@@ -1,12 +1,9 @@
 /**
  * @file
- * Maildir/MH local mailbox type
+ * Maildir shared functions
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2009 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2005 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2010,2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,36 +21,34 @@
  */
 
 /**
- * @page maildir_shared Maildir/MH local mailbox type
+ * @page maildir_shared Maildir shared functions
  *
- * Maildir/MH local mailbox type
+ * Maildir shared functions
  */
 
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
-#include "private.h"
+#include <sys/types.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "lib.h"
 #include "mdata.h"
-#include "mdemail.h"
-#include "mx.h"
 #include "protos.h"
 
 /**
- * mh_umask - Create a umask from the mailbox directory
+ * maildir_umask - Create a umask from the mailbox directory
  * @param  m   Mailbox
  * @retval num Umask
  */
-mode_t mh_umask(struct Mailbox *m)
+mode_t maildir_umask(struct Mailbox *m)
 {
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
-  if (mdata && mdata->mh_umask)
-    return mdata->mh_umask;
+  if (mdata && mdata->umask)
+    return mdata->umask;
 
   struct stat st = { 0 };
   if (stat(mailbox_path(m), &st) != 0)
@@ -66,47 +61,37 @@ mode_t mh_umask(struct Mailbox *m)
 }
 
 /**
- * maildir_move_to_mailbox - Copy the Maildir list to the Mailbox
- * @param[in]  m   Mailbox
- * @param[out] mda Maildir array to copy, then free
- * @retval num Number of new emails
- * @retval 0   Error
+ * maildir_canon_filename - Generate the canonical filename for a Maildir folder
+ * @param dest   Buffer for the result
+ * @param src    Buffer containing source filename
+ *
+ * @note         maildir filename is defined as: \<base filename\>:2,\<flags\>
+ *               but \<base filename\> may contain additional comma separated
+ *               fields. Additionally, `:` may be replaced as the field
+ *               delimiter by a user defined alternative.
  */
-int maildir_move_to_mailbox(struct Mailbox *m, const struct MdEmailArray *mda)
+void maildir_canon_filename(struct Buffer *dest, const char *src)
 {
-  if (!m)
-    return 0;
+  if (!dest || !src)
+    return;
 
-  int oldmsgcount = m->msg_count;
+  char *t = strrchr(src, '/');
+  if (t)
+    src = t + 1;
 
-  struct MdEmail *md = NULL;
-  struct MdEmail **mdp = NULL;
-  ARRAY_FOREACH(mdp, mda)
+  buf_strcpy(dest, src);
+
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
+
+  char searchable_bytes[8] = { 0 };
+  snprintf(searchable_bytes, sizeof(searchable_bytes), ",%c", c_maildir_field_delimiter);
+  char *u = strpbrk(dest->data, searchable_bytes);
+
+  if (u)
   {
-    md = *mdp;
-    mutt_debug(LL_DEBUG2, "Considering %s\n", NONULL(md->canon_fname));
-    if (!md->email)
-      continue;
-
-    mutt_debug(LL_DEBUG2, "Adding header structure. Flags: %s%s%s%s%s\n",
-               md->email->flagged ? "f" : "", md->email->deleted ? "D" : "",
-               md->email->replied ? "r" : "", md->email->old ? "O" : "",
-               md->email->read ? "R" : "");
-    mx_alloc_memory(m, m->msg_count);
-
-    m->emails[m->msg_count] = md->email;
-    m->emails[m->msg_count]->index = m->msg_count;
-    mailbox_size_add(m, md->email);
-
-    md->email = NULL;
-    m->msg_count++;
+    *u = '\0';
+    dest->dptr = u;
   }
-
-  int num = 0;
-  if (m->msg_count > oldmsgcount)
-    num = m->msg_count - oldmsgcount;
-
-  return num;
 }
 
 /**

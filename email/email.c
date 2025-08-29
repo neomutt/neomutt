@@ -3,7 +3,9 @@
  * Representation of an email
  *
  * @authors
- * Copyright (C) 1996-2009,2012 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -59,9 +61,6 @@ void email_free(struct Email **ptr)
   mutt_body_free(&e->body);
   FREE(&e->tree);
   FREE(&e->path);
-#ifdef MIXMASTER
-  mutt_list_free(&e->chain);
-#endif
 #ifdef USE_NOTMUCH
   nm_edata_free(&e->nm_edata);
 #endif
@@ -79,10 +78,7 @@ struct Email *email_new(void)
 {
   static size_t sequence = 0;
 
-  struct Email *e = mutt_mem_calloc(1, sizeof(struct Email));
-#ifdef MIXMASTER
-  STAILQ_INIT(&e->chain);
-#endif
+  struct Email *e = MUTT_MEM_CALLOC(1, struct Email);
   STAILQ_INIT(&e->tags);
   e->visible = true;
   e->sequence = sequence++;

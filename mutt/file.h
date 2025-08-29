@@ -3,7 +3,8 @@
  * File management functions
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -40,18 +41,7 @@ typedef uint8_t ReadLineFlags;             ///< Flags for mutt_file_read_line(),
 #define MUTT_RL_CONT      (1 << 0) ///< \-continuation
 #define MUTT_RL_EOL       (1 << 1) ///< don't strip `\n` / `\r\n`
 
-#ifdef HAVE_STRUCT_TIMESPEC
 struct timespec;
-#else
-/**
- * struct timespec - Time value with nanosecond precision
- */
-struct timespec
-{
-  time_t tv_sec; ///< Number of seconds since the epoch
-  long tv_nsec;  ///< Number of nanosecond, on top
-};
-#endif
 
 /**
  * enum MuttStatType - Flags for mutt_file_get_stat_timespec
@@ -98,18 +88,17 @@ struct MuttFileIter
 typedef bool (*mutt_file_map_t)(char *line, int line_num, void *user_data);
 
 int         mutt_file_check_empty(const char *path);
-int         mutt_file_chmod(const char *path, mode_t mode);
 int         mutt_file_chmod_add(const char *path, mode_t mode);
 int         mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st);
-int         mutt_file_chmod_rm(const char *path, mode_t mode);
 int         mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st);
 int         mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size);
 int         mutt_file_copy_stream(FILE *fp_in, FILE *fp_out);
 time_t      mutt_file_decrease_mtime(const char *fp, struct stat *st);
 void        mutt_file_expand_fmt(struct Buffer *dest, const char *fmt, const char *src);
 void        mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, const char *src);
-int         mutt_file_fclose(FILE **fp);
-FILE *      mutt_file_fopen(const char *path, const char *mode);
+int         mutt_file_fclose_full(FILE **fp, const char *file, int line, const char *func);
+FILE *      mutt_file_fopen_full(const char *path, const char *mode, const mode_t perms, const char *file, int line, const char *func);
+FILE *      mutt_file_fopen_masked_full(const char *path, const char *mode, const char *file, int line, const char *func);
 int         mutt_file_fsync_close(FILE **fp);
 long        mutt_file_get_size(const char *path);
 long        mutt_file_get_size_fp(FILE* fp);
@@ -118,9 +107,8 @@ bool        mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, ReadLineFla
 int         mutt_file_lock(int fd, bool excl, bool timeout);
 bool        mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, ReadLineFlags flags);
 int         mutt_file_mkdir(const char *path, mode_t mode);
-int         mutt_file_open(const char *path, uint32_t flags);
+int         mutt_file_open(const char *path, uint32_t flags, mode_t mode);
 DIR *       mutt_file_opendir(const char *path, enum MuttOpenDirMode mode);
-size_t      mutt_file_quote_filename(const char *filename, char *buf, size_t buflen);
 char *      mutt_file_read_keyword(const char *file, char *buf, size_t buflen);
 char *      mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, ReadLineFlags flags);
 int         mutt_file_rename(const char *oldfile, const char *newfile);
@@ -129,6 +117,7 @@ const char *mutt_file_rotate(const char *path, int num);
 int         mutt_file_safe_rename(const char *src, const char *target);
 void        mutt_file_sanitize_filename(char *path, bool slash);
 int         mutt_file_sanitize_regex(struct Buffer *dest, const char *src);
+size_t      mutt_file_save_str(FILE *fp, const char *str);
 bool        mutt_file_seek(FILE *fp, LOFF_T offset, int whence);
 void        mutt_file_set_mtime(const char *from, const char *to);
 int         mutt_file_stat_compare(struct stat *st1, enum MuttStatType st1_type, struct stat *st2, enum MuttStatType st2_type);
@@ -143,5 +132,9 @@ void        mutt_file_resolve_symlink(struct Buffer *buf);
 
 void        buf_quote_filename(struct Buffer *buf, const char *filename, bool add_outer);
 void        buf_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src);
+
+// Safest default permissions should be 0600
+#define mutt_file_fopen(PATH, MODE) mutt_file_fopen_full(PATH, MODE, 0600, __FILE__, __LINE__, __func__)
+#define mutt_file_fclose(FP)        mutt_file_fclose_full(FP, __FILE__, __LINE__, __func__)
 
 #endif /* MUTT_MUTT_FILE_H */

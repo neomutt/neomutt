@@ -3,7 +3,8 @@
  * History Selection Dialog
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -57,19 +58,19 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "format_flags.h"
 #include "functions.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
-#include "opcodes.h"
+
+const struct ExpandoRenderData HistoryRenderData[];
 
 /// Help Bar for the History Selection dialog
 static const struct Mapping HistoryHelp[] = {
@@ -83,38 +84,46 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /**
- * history_format_str - Format a string for the history list - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------
- * | \%s     | History match
+ * history_C_num - History: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static const char *history_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
-                                      const char *if_str, const char *else_str,
-                                      intptr_t data, MuttFormatFlags flags)
+long history_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  char *match = (char *) data;
+  const struct HistoryEntry *entry = data;
 
-  if (op == 's')
-  {
-    mutt_format_s(buf, buflen, prec, match);
-  }
-
-  return src;
+  return entry->num + 1;
 }
 
 /**
- * history_make_entry - Format a menu item for the history list - Implements Menu::make_entry() - @ingroup menu_make_entry
- *
- * @sa history_format_str()
+ * history_s - History: History match - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void history_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+void history_s(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HistoryEntry *entry = data;
+
+  const char *s = entry->history;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * history_make_entry - Format a History Item for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ */
+static int history_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   char *entry = ((char **) menu->mdata)[line];
 
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, "%s", history_format_str,
-                      (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
+  struct HistoryEntry h = { line, entry };
+
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_history_format = cs_subset_expando(NeoMutt->sub, "history_format");
+  return expando_filter(c_history_format, HistoryRenderData, &h,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
@@ -177,3 +186,16 @@ void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
   window_set_focus(old_focus);
   simple_dialog_free(&dlg);
 }
+
+/**
+ * HistoryRenderData - Callbacks for History Expandos
+ *
+ * @sa HistoryFormatDef, ExpandoDataGlobal, ExpandoDataHistory
+ */
+const struct ExpandoRenderData HistoryRenderData[] = {
+  // clang-format off
+  { ED_HISTORY, ED_HIS_NUMBER, NULL,          history_C_num },
+  { ED_HISTORY, ED_HIS_MATCH,  history_s,     NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

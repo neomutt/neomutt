@@ -3,7 +3,8 @@
  * Representation of the body of an email
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,25 +40,25 @@
 
 /**
  * mutt_body_copy - Create a send-mode duplicate from a receive-mode body
- * @param[in]  fp  FILE pointer to attachments
- * @param[out] tgt New Body will be saved here
- * @param[in]  src Source Body to copy
+ * @param[in]  fp    FILE pointer to attachments
+ * @param[out] b_dst New Body will be saved here
+ * @param[in]  b_src Source Body to copy
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
+int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src)
 {
-  if (!tgt || !src)
+  if (!b_dst || !b_src)
     return -1;
 
   struct Body *b = NULL;
   bool use_disp;
   struct Buffer *tmp = buf_pool_get();
 
-  if (src->filename)
+  if (b_src->filename)
   {
     use_disp = true;
-    buf_strcpy(tmp, src->filename);
+    buf_strcpy(tmp, b_src->filename);
   }
   else
   {
@@ -65,20 +66,21 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   }
 
   mutt_adv_mktemp(tmp);
-  if (mutt_save_attachment(fp, src, buf_string(tmp), MUTT_SAVE_NO_FLAGS, NULL) == -1)
+  if (mutt_save_attachment(fp, b_src, buf_string(tmp), MUTT_SAVE_NO_FLAGS, NULL) == -1)
   {
     buf_pool_release(&tmp);
     return -1;
   }
 
-  *tgt = mutt_body_new();
-  b = *tgt;
+  *b_dst = mutt_body_new();
+  b = *b_dst;
 
-  memcpy(b, src, sizeof(struct Body));
+  memcpy(b, b_src, sizeof(struct Body));
   TAILQ_INIT(&b->parameter);
   b->parts = NULL;
   b->next = NULL;
 
+  b->content_id = mutt_str_dup(b->content_id);
   b->filename = buf_strdup(tmp);
   b->use_disp = use_disp;
   b->unlink = true;
@@ -93,7 +95,7 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
   /* mutt_adv_mktemp() will mangle the filename in tmp,
    * so preserve it in d_filename */
   if (!b->d_filename && use_disp)
-    b->d_filename = mutt_str_dup(src->filename);
+    b->d_filename = mutt_str_dup(b_src->filename);
   b->description = mutt_str_dup(b->description);
 
   b->language = mutt_str_dup(b->language);
@@ -109,7 +111,7 @@ int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
 
   /* copy parameters */
   struct Parameter *np = NULL, *new_param = NULL;
-  TAILQ_FOREACH(np, &src->parameter, entries)
+  TAILQ_FOREACH(np, &b_src->parameter, entries)
   {
     new_param = mutt_param_new();
     new_param->attribute = mutt_str_dup(np->attribute);

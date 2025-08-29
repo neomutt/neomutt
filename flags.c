@@ -4,6 +4,10 @@
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017 Fabrice Bellet <fabrice@bellet.info>
+ * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +31,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -40,7 +44,6 @@
 #include "index/lib.h"
 #include "key/lib.h"
 #include "mutt_thread.h"
-#include "opcodes.h"
 #include "protos.h"
 
 /**
@@ -82,7 +85,6 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
           update = true;
           if (upd_mbox)
             m->msg_deleted++;
-#ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
            * purge-on-sync option works correctly. This isn't applicable here */
           if (m->type == MUTT_IMAP)
@@ -91,7 +93,6 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
             if (upd_mbox)
               m->changed = true;
           }
-#endif
         }
       }
       else if (e->deleted)
@@ -100,7 +101,6 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
         update = true;
         if (upd_mbox)
           m->msg_deleted--;
-#ifdef USE_IMAP
         /* see my comment above */
         if (m->type == MUTT_IMAP)
         {
@@ -108,7 +108,6 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
           if (upd_mbox)
             m->changed = true;
         }
-#endif
         /* If the user undeletes a message which is marked as
          * "trash" in the maildir folder on disk, the folder has
          * been changed, and is marked accordingly.  However, we do

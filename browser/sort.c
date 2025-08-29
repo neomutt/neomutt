@@ -3,7 +3,8 @@
  * Browser sorting
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -36,7 +37,6 @@
 #include "sort.h"
 #include "lib.h"
 #include "globals.h"
-#include "muttlib.h"
 
 /**
  * struct CompareData - Private data for browser_sort_helper()
@@ -57,7 +57,7 @@ static int browser_sort_subject(const void *a, const void *b, void *sdata)
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
   /* inbox should be sorted ahead of its siblings */
-  int rc = mutt_inbox_cmp(pa->name, pb->name);
+  int rc = mutt_str_inbox_cmp(pa->name, pb->name);
   if (rc == 0)
     rc = mutt_str_coll(pa->name, pb->name);
 
@@ -187,12 +187,11 @@ void browser_sort(struct BrowserState *state)
   const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   switch (c_sort_browser & SORT_MASK)
   {
-#ifdef USE_NNTP
     case SORT_SIZE:
     case SORT_DATE:
       if (OptNews)
         return;
-#endif
+      FALLTHROUGH;
     default:
       break;
   }

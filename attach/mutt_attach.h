@@ -3,7 +3,7 @@
  * Handling of email attachments
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -60,26 +60,22 @@ enum SaveAttach
   MUTT_SAVE_OVERWRITE,    ///< Overwrite existing file
 };
 
-int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op,
-                             struct Email *e, struct AttachCtx *actx, bool recv);
+int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op, struct Email *e, struct AttachCtx *actx, bool recv);
 
-void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
-                               struct Body *top, struct Email *e, struct Menu *menu);
-void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
-                               struct Body *top, bool filter);
-void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
-                                struct Body *top);
+void mutt_save_attachment_list (struct AttachCtx *actx, FILE *fp, bool tag, struct Body *b, struct Email *e, struct Menu *menu);
+void mutt_pipe_attachment_list (struct AttachCtx *actx, FILE *fp, bool tag, struct Body *b, bool filter);
+void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, struct Body *b);
 
-int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode, struct Email *e, struct AttachCtx *actx, struct MuttWindow *win);
+int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode, struct Email *e, struct AttachCtx *actx, struct MuttWindow *win);
 
-void mutt_check_lookup_list(struct Body *b, char *type, size_t len);
-int mutt_compose_attachment(struct Body *a);
-int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path, StateFlags flags, enum SaveAttach opt);
-bool mutt_edit_attachment(struct Body *a);
-int mutt_get_tmp_attachment(struct Body *a);
-int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char *outfile);
-int mutt_print_attachment(FILE *fp, struct Body *a);
-int mutt_save_attachment(FILE *fp, struct Body *m, const char *path, enum SaveAttach opt, struct Email *e);
+void mutt_check_lookup_list     (struct Body *b, char *type, size_t len);
+int  mutt_compose_attachment    (struct Body *b);
+int  mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path, StateFlags flags, enum SaveAttach opt);
+bool mutt_edit_attachment       (struct Body *b);
+int  mutt_get_tmp_attachment    (struct Body *b);
+int  mutt_pipe_attachment       (FILE *fp, struct Body *b, const char *path, const char *outfile);
+int  mutt_print_attachment      (FILE *fp, struct Body *b);
+int  mutt_save_attachment       (FILE *fp, struct Body *b, const char *path, enum SaveAttach opt, struct Email *e);
 
 /* small helper functions to handle temporary attachment files */
 void mutt_add_temp_attachment(const char *filename);

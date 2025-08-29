@@ -3,7 +3,7 @@
  * Pager Bar
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -60,7 +60,6 @@
  */
 
 #include "config.h"
-#include <inttypes.h> // IWYU pragma: keep
 #include <stdio.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
@@ -70,9 +69,9 @@
 #include "pbar.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "display.h"
-#include "format_flags.h"
 #include "hdrline.h"
 #include "mview.h"
 #include "private_data.h"
@@ -92,14 +91,13 @@ struct PBarPrivateData
  */
 static int pbar_recalc(struct MuttWindow *win)
 {
-  char buf[1024] = { 0 };
-
   struct PBarPrivateData *pbar_data = win->wdata;
   struct IndexSharedData *shared = pbar_data->shared;
   struct PagerPrivateData *priv = pbar_data->priv;
   if (!priv || !priv->pview)
     return 0;
 
+  struct Buffer *buf = buf_pool_get();
   char pager_progress_str[65] = { 0 }; /* Lots of space for translations */
 
   long offset;
@@ -130,22 +128,22 @@ static int pbar_recalc(struct MuttWindow *win)
   {
     int msg_in_pager = shared->mailbox_view ? shared->mailbox_view->msg_in_pager : -1;
 
-    const char *c_pager_format = cs_subset_string(shared->sub, "pager_format");
-    mutt_make_string(buf, sizeof(buf), win->state.cols, NONULL(c_pager_format),
-                     shared->mailbox, msg_in_pager, shared->email,
-                     MUTT_FORMAT_NO_FLAGS, pager_progress_str);
+    const struct Expando *c_pager_format = cs_subset_expando(shared->sub, "pager_format");
+    mutt_make_string(buf, win->state.cols, c_pager_format, shared->mailbox, msg_in_pager,
+                     shared->email, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
   }
   else
   {
-    snprintf(buf, sizeof(buf), "%s (%s)", priv->pview->banner, pager_progress_str);
+    buf_printf(buf, "%s (%s)", priv->pview->banner, pager_progress_str);
   }
 
-  if (!mutt_str_equal(buf, pbar_data->pager_format))
+  if (!mutt_str_equal(buf_string(buf), pbar_data->pager_format))
   {
-    mutt_str_replace(&pbar_data->pager_format, buf);
+    mutt_str_replace(&pbar_data->pager_format, buf_string(buf));
     win->actions |= WA_REPAINT;
   }
 
+  buf_pool_release(&buf);
   return 0;
 }
 
@@ -293,7 +291,7 @@ static int pbar_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * pbar_data_free - Free the private data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 static void pbar_data_free(struct MuttWindow *win, void **ptr)
 {
@@ -308,7 +306,7 @@ static void pbar_data_free(struct MuttWindow *win, void **ptr)
 }
 
 /**
- * pbar_data_new - Free the private data attached to the MuttWindow
+ * pbar_data_new - Create new private data
  * @param shared Shared Index data
  * @param priv   Private Index data
  * @retval ptr New PBar
@@ -316,7 +314,7 @@ static void pbar_data_free(struct MuttWindow *win, void **ptr)
 static struct PBarPrivateData *pbar_data_new(struct IndexSharedData *shared,
                                              struct PagerPrivateData *priv)
 {
-  struct PBarPrivateData *pbar_data = mutt_mem_calloc(1, sizeof(struct PBarPrivateData));
+  struct PBarPrivateData *pbar_data = MUTT_MEM_CALLOC(1, struct PBarPrivateData);
 
   pbar_data->shared = shared;
   pbar_data->priv = priv;

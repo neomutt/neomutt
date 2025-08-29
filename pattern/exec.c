@@ -3,8 +3,11 @@
  * Execute a Pattern
  *
  * @authors
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Romeu Vieira <romeu.bizz@gmail.com>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Leon Philman
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,8 +31,7 @@
  */
 
 #include "config.h"
-#include <assert.h>
-#include <stdarg.h>
+#include <stdarg.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -110,7 +112,7 @@ static void print_crypt_pattern_op_error(int op)
  */
 static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg)
 {
-  assert(msg);
+  ASSERT(msg);
 
   bool match = false;
 
@@ -387,14 +389,31 @@ static int perform_alias_or(struct PatternList *pat, PatternExecFlags flags,
 }
 
 /**
- * match_addrlist - Match a Pattern against an Address list
- * @param pat            Pattern to find
- * @param match_personal If true, also match the pattern against the real name
- * @param n              Number of Addresses supplied
- * @param ...            Variable number of Addresses
+ * match_tags - match a pattern against a tags list
+ * @param pat  pattern to find
+ * @param tags tags list
+ * @retval true if any tag match
+ */
+static bool match_tags(struct Pattern *pat, struct TagList *tags)
+{
+  struct Tag *tag = NULL;
+  bool matched = false;
+  STAILQ_FOREACH(tag, tags, entries)
+  {
+    matched |= patmatch(pat, tag->name);
+  }
+  return pat->pat_not ^ matched;
+}
+
+/**
+ * match_addrlist - match a pattern against an address list
+ * @param pat            pattern to find
+ * @param match_personal if true, also match the pattern against the real name
+ * @param n              number of addresses supplied
+ * @param ...            variable number of addresses
  * @retval true
- * - One Address matches (all_addr is false)
- * - All the Addresses match (all_addr is true)
+ * - one address matches (all_addr is false)
+ * - all the addresses match (all_addr is true)
  */
 static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
 {
@@ -777,6 +796,11 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
  */
 static bool pattern_needs_msg(const struct Mailbox *m, const struct Pattern *pat)
 {
+  if (!m)
+  {
+    return false;
+  }
+
   if ((pat->op == MUTT_PAT_MIMETYPE) || (pat->op == MUTT_PAT_MIMEATTACH))
   {
     return true;
@@ -784,11 +808,7 @@ static bool pattern_needs_msg(const struct Mailbox *m, const struct Pattern *pat
 
   if ((pat->op == MUTT_PAT_WHOLE_MSG) || (pat->op == MUTT_PAT_BODY) || (pat->op == MUTT_PAT_HEADER))
   {
-#ifdef USE_IMAP
     return !((m->type == MUTT_IMAP) && pat->string_match);
-#else
-    return true;
-#endif
   }
 
   if ((pat->op == MUTT_PAT_AND) || (pat->op == MUTT_PAT_OR))
@@ -861,7 +881,8 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_DELETED:
       return pat->pat_not ^ e->deleted;
     case MUTT_PAT_MESSAGE:
-      return pat->pat_not ^ ((EMSG(e) >= pat->min) && (EMSG(e) <= pat->max));
+      return pat->pat_not ^
+             ((email_msgno(e) >= pat->min) && (email_msgno(e) <= pat->max));
     case MUTT_PAT_DATE:
       if (pat->dynamic)
         match_update_dynamic_date(pat);
@@ -884,21 +905,17 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
        * This is also the case when message scoring.  */
       if (!m)
         return false;
-#ifdef USE_IMAP
       /* IMAP search sets e->matched at search compile time */
       if ((m->type == MUTT_IMAP) && pat->string_match)
         return e->matched;
-#endif
       return pat->pat_not ^ msg_search(pat, e, msg);
     case MUTT_PAT_SERVERSEARCH:
-#ifdef USE_IMAP
       if (!m)
         return false;
       if (m->type == MUTT_IMAP)
       {
         return (pat->string_match) ? e->matched : false;
       }
-#endif
       mutt_error(_("error: server custom search only supported with IMAP"));
       return false;
     case MUTT_PAT_SENDER:
@@ -1082,10 +1099,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->env->x_label && patmatch(pat, e->env->x_label));
     case MUTT_PAT_DRIVER_TAGS:
     {
-      char *tags = driver_tags_get_with_hidden(&e->tags);
-      const bool rc = (pat->pat_not ^ (tags && patmatch(pat, tags)));
-      FREE(&tags);
-      return rc;
+      return match_tags(pat, &e->tags);
     }
     case MUTT_PAT_HORMEL:
       if (!e->env)
@@ -1094,13 +1108,11 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_DUPLICATED:
       return pat->pat_not ^ (e->thread && e->thread->duplicate_thread);
     case MUTT_PAT_MIMEATTACH:
-      if (!m)
-        return false;
-      {
-        int count = mutt_count_body_parts(m, e, msg->fp);
-        return pat->pat_not ^ (count >= pat->min &&
-                               (pat->max == MUTT_MAXRANGE || count <= pat->max));
-      }
+    {
+      int count = mutt_count_body_parts(e, msg->fp);
+      return pat->pat_not ^
+             (count >= pat->min && (pat->max == MUTT_MAXRANGE || count <= pat->max));
+    }
     case MUTT_PAT_MIMETYPE:
       if (!m)
         return false;
@@ -1109,12 +1121,10 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->thread && !e->thread->child);
     case MUTT_PAT_BROKEN:
       return pat->pat_not ^ (e->thread && e->thread->fake_thread);
-#ifdef USE_NNTP
     case MUTT_PAT_NEWSGROUPS:
       if (!e->env)
         return false;
       return pat->pat_not ^ (e->env->newsgroups && patmatch(pat, e->env->newsgroups));
-#endif
   }
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);
   return false;
@@ -1179,6 +1189,10 @@ bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
         return false;
       return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
                                            1, &av->alias->addr);
+    case MUTT_PAT_DRIVER_TAGS:
+      if (!av->alias)
+        return false;
+      return match_tags(pat, &av->alias->tags);
     case MUTT_PAT_AND:
       return pat->pat_not ^ (perform_alias_and(pat->child, flags, av, cache) > 0);
     case MUTT_PAT_OR:

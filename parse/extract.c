@@ -3,7 +3,9 @@
  * Text parser
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Naveen Nathan <naveen@lastninja.net>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,7 +37,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "extract.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 
 /**
  * parse_extract_token - Extract one token from a string
@@ -53,12 +55,6 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
   char ch;
   char qc = '\0'; /* quote char */
   char *pc = NULL;
-
-  /* Some callers used to rely on the (bad) assumption that dest->data would be
-   * non-NULL after calling this function.  Perhaps I've missed a few cases, or
-   * a future caller might make the same mistake.  */
-  if (!dest->data)
-    buf_alloc(dest, 256);
 
   buf_reset(dest);
 
@@ -172,7 +168,12 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         {
           /* skip any quoted chars */
           if (*pc == '\\')
-            pc += 2;
+          {
+            if (*(pc + 1))
+              pc += 2;
+            else
+              pc = NULL;
+          }
         }
       } while (pc && (pc[0] != '`'));
       if (!pc)
@@ -180,62 +181,63 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         mutt_debug(LL_DEBUG1, "mismatched backticks\n");
         return -1;
       }
-      struct Buffer cmd;
-      buf_init(&cmd);
+      struct Buffer *cmd = buf_pool_get();
       *pc = '\0';
       if (flags & TOKEN_BACKTICK_VARS)
       {
         /* recursively extract tokens to interpolate variables */
-        parse_extract_token(&cmd, tok,
+        parse_extract_token(cmd, tok,
                             TOKEN_QUOTE | TOKEN_SPACE | TOKEN_COMMENT |
                                 TOKEN_SEMICOLON | TOKEN_NOSHELL);
       }
       else
       {
-        cmd.data = mutt_str_dup(tok->dptr);
+        buf_strcpy(cmd, tok->dptr);
       }
       *pc = '`';
-      pid = filter_create(cmd.data, NULL, &fp, NULL, EnvList);
+      pid = filter_create(buf_string(cmd), NULL, &fp, NULL, EnvList);
       if (pid < 0)
       {
-        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd.data);
-        FREE(&cmd.data);
+        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", buf_string(cmd));
+        buf_pool_release(&cmd);
         return -1;
       }
 
       tok->dptr = pc + 1;
 
       /* read line */
-      struct Buffer expn = buf_make(0);
-      expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, NULL, MUTT_RL_NO_FLAGS);
+      char *expn = NULL;
+      size_t expn_len = 0;
+      expn = mutt_file_read_line(expn, &expn_len, fp, NULL, MUTT_RL_NO_FLAGS);
       mutt_file_fclose(&fp);
       int rc = filter_wait(pid);
       if (rc != 0)
+      {
         mutt_debug(LL_DEBUG1, "backticks exited code %d for command: %s\n", rc,
-                   buf_string(&cmd));
-      FREE(&cmd.data);
+                   buf_string(cmd));
+      }
+      buf_pool_release(&cmd);
 
       /* if we got output, make a new string consisting of the shell output
        * plus whatever else was left on the original line */
       /* BUT: If this is inside a quoted string, directly add output to
        * the token */
-      if (expn.data)
+      if (expn)
       {
         if (qc)
         {
-          buf_addstr(dest, expn.data);
+          buf_addstr(dest, expn);
         }
         else
         {
           struct Buffer *copy = buf_pool_get();
-          buf_fix_dptr(&expn);
-          buf_copy(copy, &expn);
+          buf_strcpy(copy, expn);
           buf_addstr(copy, tok->dptr);
           buf_copy(tok, copy);
           buf_seek(tok, 0);
           buf_pool_release(&copy);
         }
-        FREE(&expn.data);
+        FREE(&expn);
       }
     }
     else if ((ch == '$') && (!qc || (qc == '"')) &&
@@ -272,14 +274,12 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       }
       if (var)
       {
-        struct Buffer result;
-        buf_init(&result);
-        int rc = cs_subset_str_string_get(NeoMutt->sub, var, &result);
+        struct Buffer *result = buf_pool_get();
+        int rc = cs_subset_str_string_get(NeoMutt->sub, var, result);
 
         if (CSR_RESULT(rc) == CSR_SUCCESS)
         {
-          buf_addstr(dest, result.data);
-          FREE(&result.data);
+          buf_addstr(dest, buf_string(result));
         }
         else if (!(flags & TOKEN_NOSHELL) && (env = mutt_str_getenv(var)))
         {
@@ -291,6 +291,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
           buf_addstr(dest, var);
         }
         FREE(&var);
+        buf_pool_release(&result);
       }
     }
     else

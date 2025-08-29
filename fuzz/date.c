@@ -1,7 +1,7 @@
 #include "config.h"
 #include <signal.h>
 #include <stdint.h>
-#include <sys/stat.h>
+#include <time.h>
 #include "mutt/lib.h"
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)

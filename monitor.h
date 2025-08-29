@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018 Gero Treuner <gero@70t.de>
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,7 +29,7 @@
 struct Mailbox;
 
 extern bool MonitorFilesChanged;   ///< true after a monitored file has changed
-extern bool MonitorContextChanged; ///< true after the current mailbox has changed
+extern bool MonitorCurMboxChanged; ///< true after the current mailbox has changed
 
 int mutt_monitor_add(struct Mailbox *m);
 int mutt_monitor_remove(struct Mailbox *m);

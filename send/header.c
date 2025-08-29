@@ -3,7 +3,9 @@
  * Write a MIME Email Header to a file
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,7 +38,7 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "header.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
@@ -525,7 +527,7 @@ void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
       break;
   }
 
-  struct ListNode **ref = mutt_mem_calloc(length, sizeof(struct ListNode *));
+  struct ListNode **ref = MUTT_MEM_CALLOC(length, struct ListNode *);
 
   // store in reverse order
   size_t tmp = length;
@@ -551,7 +553,7 @@ void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
  * mutt_rfc822_write_header - Write out one RFC822 header line
  * @param fp      File to write to
  * @param env     Envelope of email
- * @param attach  Attachment
+ * @param b       Attachment
  * @param mode    Mode, see #MuttWriteHeaderMode
  * @param privacy If true, remove headers that might identify the user
  * @param hide_protected_subject If true, replace subject header
@@ -572,7 +574,7 @@ void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
  * hide_protected_subject: replaces the Subject header with
  * $crypt_protected_headers_subject in NORMAL or POSTPONE mode.
  */
-int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach,
+int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b,
                              enum MuttWriteHeaderMode mode, bool privacy,
                              bool hide_protected_subject, struct ConfigSubset *sub)
 {
@@ -603,20 +605,20 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
     mutt_addrlist_write_file(&env->to, fp, "To");
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
-#ifdef USE_NNTP
+  {
     if (!OptNewsSend)
-#endif
       fputs("To:\n", fp);
+  }
 
   if (!TAILQ_EMPTY(&env->cc))
   {
     mutt_addrlist_write_file(&env->cc, fp, "Cc");
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
-#ifdef USE_NNTP
+  {
     if (!OptNewsSend)
-#endif
       fputs("Cc:\n", fp);
+  }
 
   if (!TAILQ_EMPTY(&env->bcc))
   {
@@ -630,12 +632,11 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
     }
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
-#ifdef USE_NNTP
+  {
     if (!OptNewsSend)
-#endif
       fputs("Bcc:\n", fp);
+  }
 
-#ifdef USE_NNTP
   if (env->newsgroups)
     fprintf(fp, "Newsgroups: %s\n", env->newsgroups);
   else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend)
@@ -651,7 +652,6 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
   else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend && c_x_comment_to)
     fputs("X-Comment-To:\n", fp);
-#endif
 
   if (env->subject)
   {
@@ -688,9 +688,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
 
   if (!TAILQ_EMPTY(&env->mail_followup_to))
   {
-#ifdef USE_NNTP
     if (!OptNewsSend)
-#endif
     {
       mutt_addrlist_write_file(&env->mail_followup_to, fp, "Mail-Followup-To");
     }
@@ -714,7 +712,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
     if (!userhdrs_overrides.is_overridden[USERHDRS_OVERRIDE_CONTENT_TYPE])
     {
       fputs("MIME-Version: 1.0\n", fp);
-      mutt_write_mime_header(attach, fp, sub);
+      mutt_write_mime_header(b, fp, sub);
     }
   }
 
@@ -749,31 +747,29 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
 
 /**
  * mutt_write_mime_header - Create a MIME header
- * @param a   Body part
+ * @param b   Body part
  * @param fp  File to write to
  * @param sub Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
+int mutt_write_mime_header(struct Body *b, FILE *fp, struct ConfigSubset *sub)
 {
-  if (!a || !fp)
+  if (!b || !fp)
     return -1;
 
   int len;
   int tmplen;
   char buf[256] = { 0 };
 
-  char *id = NULL;
+  fprintf(fp, "Content-Type: %s/%s", TYPE(b), b->subtype);
 
-  fprintf(fp, "Content-Type: %s/%s", TYPE(a), a->subtype);
-
-  if (!TAILQ_EMPTY(&a->parameter))
+  if (!TAILQ_EMPTY(&b->parameter))
   {
-    len = 25 + mutt_str_len(a->subtype); /* approximate len. of content-type */
+    len = 25 + mutt_str_len(b->subtype); /* approximate len. of content-type */
 
     struct Parameter *np = NULL;
-    TAILQ_FOREACH(np, &a->parameter, entries)
+    TAILQ_FOREACH(np, &b->parameter, entries)
     {
       if (!np->attribute || !np->value)
         continue;
@@ -783,13 +779,6 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
       struct Parameter *cont = NULL;
       TAILQ_FOREACH(cont, &pl_conts, entries)
       {
-        if (mutt_istr_equal(cont->attribute, "content-id"))
-        {
-          // Content-ID: gets its own header
-          mutt_str_replace(&id, cont->value);
-          break;
-        }
-
         fputc(';', fp);
 
         buf[0] = 0;
@@ -822,32 +811,29 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
 
   fputc('\n', fp);
 
-  if (id)
-  {
-    fprintf(fp, "Content-ID: <%s>\n", id);
-    mutt_mem_free(&id);
-  }
+  if (b->content_id)
+    fprintf(fp, "Content-ID: <%s>\n", b->content_id);
 
-  if (a->language)
-    fprintf(fp, "Content-Language: %s\n", a->language);
+  if (b->language)
+    fprintf(fp, "Content-Language: %s\n", b->language);
 
-  if (a->description)
-    fprintf(fp, "Content-Description: %s\n", a->description);
+  if (b->description)
+    fprintf(fp, "Content-Description: %s\n", b->description);
 
-  if (a->disposition != DISP_NONE)
+  if (b->disposition != DISP_NONE)
   {
     const char *dispstr[] = { "inline", "attachment", "form-data" };
 
-    if (a->disposition < sizeof(dispstr) / sizeof(char *))
+    if (b->disposition < sizeof(dispstr) / sizeof(char *))
     {
-      fprintf(fp, "Content-Disposition: %s", dispstr[a->disposition]);
-      len = 21 + mutt_str_len(dispstr[a->disposition]);
+      fprintf(fp, "Content-Disposition: %s", dispstr[b->disposition]);
+      len = 21 + mutt_str_len(dispstr[b->disposition]);
 
-      if (a->use_disp && ((a->disposition != DISP_INLINE) || a->d_filename))
+      if (b->use_disp && ((b->disposition != DISP_INLINE) || b->d_filename))
       {
-        char *fn = a->d_filename;
+        char *fn = b->d_filename;
         if (!fn)
-          fn = a->filename;
+          fn = b->filename;
 
         if (fn)
         {
@@ -890,12 +876,12 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
     }
     else
     {
-      mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n", a->disposition);
+      mutt_debug(LL_DEBUG1, "ERROR: invalid content-disposition %d\n", b->disposition);
     }
   }
 
-  if (a->encoding != ENC_7BIT)
-    fprintf(fp, "Content-Transfer-Encoding: %s\n", ENCODING(a->encoding));
+  if (b->encoding != ENC_7BIT)
+    fprintf(fp, "Content-Transfer-Encoding: %s\n", ENCODING(b->encoding));
 
   const bool c_crypt_protected_headers_write = cs_subset_bool(sub, "crypt_protected_headers_write");
   bool c_autocrypt = false;
@@ -903,9 +889,9 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
   c_autocrypt = cs_subset_bool(sub, "autocrypt");
 #endif
 
-  if ((c_crypt_protected_headers_write || c_autocrypt) && a->mime_headers)
+  if ((c_crypt_protected_headers_write || c_autocrypt) && b->mime_headers)
   {
-    mutt_rfc822_write_header(fp, a->mime_headers, NULL, MUTT_WRITE_HEADER_MIME,
+    mutt_rfc822_write_header(fp, b->mime_headers, NULL, MUTT_WRITE_HEADER_MIME,
                              false, false, sub);
   }
 

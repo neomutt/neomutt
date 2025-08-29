@@ -3,7 +3,7 @@
  * Test code for mutt_file_lock()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_file_lock(void)
 {

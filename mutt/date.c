@@ -3,7 +3,14 @@
  * Time and date handling routines
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Victor Fernandes <criw@pm.me>
+ * Copyright (C) 2021 Reto Brunner <reto@slightlybroken.com>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023 Rayford Shireman
+ * Copyright (C) 2023 Steinar H Gunderson <steinar+neomutt@gunderson.no>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,6 +35,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <locale.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -43,6 +51,8 @@
 #include "prex.h"
 #include "regex3.h"
 #include "string2.h"
+
+struct timespec;
 
 /**
  * Weekdays - Day of the week (abbreviated)
@@ -458,7 +468,27 @@ uint64_t mutt_date_now_ms(void)
   gettimeofday(&tv, NULL);
   /* We assume that gettimeofday doesn't modify its first argument on failure.
    * We also kind of assume that gettimeofday does not fail. */
-  return (uint64_t) (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+  return ((uint64_t) tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+}
+
+/**
+ * mutt_time_now - Set the provided time field to the current time
+ * @param[out] tp Field to set
+ *
+ * Uses nanosecond precision if available, if not we fallback to microseconds.
+ */
+void mutt_time_now(struct timespec *tp)
+{
+#ifdef HAVE_CLOCK_GETTIME
+  if (clock_gettime(CLOCK_REALTIME, tp) != 0)
+    mutt_perror("clock_gettime");
+#else
+  struct timeval tv = { 0, 0 };
+  if (gettimeofday(&tv, NULL) != 0)
+    mutt_perror("gettimeofday");
+  tp->tv_sec = tv.tv_sec;
+  tp->tv_nsec = tv.tv_usec * 1000;
+#endif
 }
 
 /**
@@ -481,7 +511,7 @@ static int parse_small_uint(const char *str, const char *end, int *val)
   while ((ptr < end) && (ptr < (str + 5)) && (*ptr >= '0') && (*ptr <= '9'))
   {
     v = (v * 10) + (*ptr - '0');
-    ++ptr;
+    ptr++;
   }
   *val = v;
   return ptr - str;
@@ -519,8 +549,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   while ((len > 0) && (*s == ' '))
   {
-    ++s;
-    --len;
+    s++;
+    len--;
   }
 
   if ((len == 0) || (*s < '0') || (*s > '9'))
@@ -537,8 +567,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   if ((len == 0) || (*s != ' '))
     return -1;
-  ++s;
-  --len;
+  s++;
+  len--;
 
   /* Month */
   if (len < 3)
@@ -551,8 +581,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   if ((len == 0) || (*s != ' '))
     return -1;
-  ++s;
-  --len;
+  s++;
+  len--;
 
   /* Year */
   int year_len = parse_small_uint(s, s + len, &tm.tm_year);
@@ -567,8 +597,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   if ((len == 0) || (*s != ' '))
     return -1;
-  ++s;
-  --len;
+  s++;
+  len--;
 
   /* Hour */
   if ((len < 3) || (s[0] < '0') || (s[0] > '2') || (s[1] < '0') ||
@@ -594,8 +624,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
   /* Second (optional) */
   if ((len > 0) && (s[0] == ':'))
   {
-    ++s;
-    --len;
+    s++;
+    len--;
     if ((len < 2) || (s[0] < '0') || (s[0] > '5') || (s[1] < '0') || (s[1] > '9'))
       return -1;
     tm.tm_sec = ((s[0] - '0') * 10) + (s[1] - '0');
@@ -607,14 +637,14 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   while ((len > 0) && (*s == ' '))
   {
-    ++s;
-    --len;
+    s++;
+    len--;
   }
 
   /* Strip optional time zone comment and white space from the end
    * (this is the only one that is very common) */
   while ((len > 0) && (s[len - 1] == ' '))
-    --len;
+    len--;
   if ((len >= 2) && (s[len - 1] == ')'))
   {
     for (int i = len - 1; i-- > 0;)
@@ -629,7 +659,7 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
     }
   }
   while ((len > 0) && (s[len - 1] == ' '))
-    --len;
+    len--;
 
   /* Time zone (optional) */
   int zhours = 0;
@@ -676,7 +706,7 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
  * mutt_date_parse_date - Parse a date string in RFC822 format
  * @param[in]  s      String to parse
  * @param[out] tz_out Pointer to timezone (optional)
- * @retval num Unix time in seconds
+ * @retval num Unix time in seconds, or -1 on failure
  *
  * Parse a date of the form:
  * `[ weekday , ] day-of-month month year hour:minute:second [ timezone ]`
@@ -729,7 +759,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
     tm.tm_year -= 1900;
 
   /* Time */
-  int hour, min, sec = 0;
+  int hour = 0, min = 0, sec = 0;
   sscanf(s + mutt_regmatch_start(mhour), "%d", &hour);
   sscanf(s + mutt_regmatch_start(mminute), "%d", &min);
   if (mutt_regmatch_start(msecond) != -1)
@@ -746,7 +776,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   bool zoccident = false;
   if (mutt_regmatch_start(mtz) != -1)
   {
-    char direction;
+    char direction = '\0';
     sscanf(s + mutt_regmatch_start(mtz), "%c%02d%02d", &direction, &zhours, &zminutes);
     zoccident = (direction == '-');
   }
@@ -775,13 +805,10 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 /**
  * mutt_date_make_imap - Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
  * @param buf       Buffer to store the results
- * @param buflen    Length of buffer
  * @param timestamp Time to format
  * @retval num Characters written to buf
- *
- * Caller should provide a buffer of at least 27 bytes.
  */
-int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
+int mutt_date_make_imap(struct Buffer *buf, time_t timestamp)
 {
   if (!buf)
     return -1;
@@ -791,9 +818,9 @@ int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
 
   tz /= 60;
 
-  return snprintf(buf, buflen, "%02d-%s-%d %02d:%02d:%02d %+03d%02d",
-                  tm.tm_mday, Months[tm.tm_mon], tm.tm_year + 1900, tm.tm_hour,
-                  tm.tm_min, tm.tm_sec, tz / 60, abs(tz) % 60);
+  return buf_printf(buf, "%02d-%s-%d %02d:%02d:%02d %+03d%02d", tm.tm_mday,
+                    Months[tm.tm_mon], tm.tm_year + 1900, tm.tm_hour, tm.tm_min,
+                    tm.tm_sec, tz / 60, abs(tz) % 60);
 }
 
 /**
@@ -844,8 +871,8 @@ time_t mutt_date_parse_imap(const char *s)
   tm.tm_year -= 1900;
   sscanf(s + mutt_regmatch_start(mtime), "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
 
-  char direction;
-  int zhours, zminutes;
+  char direction = '\0';
+  int zhours = 0, zminutes = 0;
   sscanf(s + mutt_regmatch_start(mtz), "%c%02d%02d", &direction, &zhours, &zminutes);
   bool zoccident = (direction == '-');
 

@@ -3,8 +3,8 @@
  * Register crypto modules
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -92,35 +92,35 @@ struct CryptModuleSpecs
    * @param[in]  fp_in  File containing the encrypted part
    * @param[out] fp_out File containing the decrypted part
    * @param[in]  b      Body of the email
-   * @param[out] cur    Body containing the decrypted part
+   * @param[out] b_dec  Body containing the decrypted part
    * @retval  0 Success
    * @retval -1 Failure
    */
-  int (*decrypt_mime)(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur);
+  int (*decrypt_mime)(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **b_dec);
 
   /**
    * @defgroup crypto_application_handler application_handler()
    * @ingroup crypto_api
    *
    * application_handler - Manage the MIME type "application/pgp" or "application/smime"
-   * @param m     Body of the email
+   * @param b     Body of the email
    * @param state State of text being processed
    * @retval 0 Success
    * @retval -1 Error
    */
-  int (*application_handler)(struct Body *m, struct State *state);
+  int (*application_handler)(struct Body *b, struct State *state);
 
   /**
    * @defgroup crypto_encrypted_handler encrypted_handler()
    * @ingroup crypto_api
    *
    * encrypted_handler - Manage a PGP or S/MIME encrypted MIME part
-   * @param m     Body of the email
+   * @param b     Body of the email
    * @param state State of text being processed
    * @retval 0 Success
    * @retval -1 Error
    */
-  int (*encrypted_handler)(struct Body *m, struct State *state);
+  int (*encrypted_handler)(struct Body *b, struct State *state);
 
   /**
    * @defgroup crypto_find_keys find_keys()
@@ -142,25 +142,25 @@ struct CryptModuleSpecs
    * @ingroup crypto_api
    *
    * sign_message - Cryptographically sign the Body of a message
-   * @param a Body of the message
+   * @param b    Body of the message
    * @param from From line
    * @retval ptr  New encrypted Body
    * @retval NULL Error
    */
-  struct Body *(*sign_message)(struct Body *a, const struct AddressList *from);
+  struct Body *(*sign_message)(struct Body *b, const struct AddressList *from);
 
   /**
    * @defgroup crypto_verify_one verify_one()
    * @ingroup crypto_api
    *
    * verify_one - Check a signed MIME part against a signature
-   * @param sigbdy Body of the signed mail
-   * @param state  State of text being processed
-   * @param tempf  File containing the key
+   * @param b     Body of the signed mail
+   * @param state State of text being processed
+   * @param tempf File containing the key
    * @retval  0 Success
    * @retval -1 Error
    */
-  int (*verify_one)(struct Body *sigbdy, struct State *state, const char *tempf);
+  int (*verify_one)(struct Body *b, struct State *state, const char *tempf);
 
   /**
    * @defgroup crypto_send_menu send_menu()
@@ -186,7 +186,7 @@ struct CryptModuleSpecs
    * @ingroup crypto_api
    *
    * pgp_encrypt_message - PGP encrypt an email
-   * @param a       Body of email to encrypt
+   * @param b       Body of email to encrypt
    * @param keylist List of keys, or fingerprints (space separated)
    * @param sign    If true, sign the message too
    * @param from    From line, to choose the key to sign
@@ -195,7 +195,7 @@ struct CryptModuleSpecs
    *
    * Encrypt the mail body to all the given keys.
    */
-  struct Body *(*pgp_encrypt_message)(struct Body *a, char *keylist, bool sign, const struct AddressList *from);
+  struct Body *(*pgp_encrypt_message)(struct Body *b, char *keylist, bool sign, const struct AddressList *from);
 
   /**
    * @defgroup crypto_pgp_make_key_attachment pgp_make_key_attachment()
@@ -225,13 +225,13 @@ struct CryptModuleSpecs
    * @ingroup crypto_api
    *
    * pgp_traditional_encryptsign - Create an inline PGP encrypted, signed email
-   * @param a       Body of the email
+   * @param b       Body of the email
    * @param flags   Flags, see #SecurityFlags
    * @param keylist List of keys to encrypt to (space-separated)
-   * @retval ptr  New encrypted/siged Body
+   * @retval ptr  New encrypted/signed Body
    * @retval NULL Error
    */
-  struct Body *(*pgp_traditional_encryptsign)(struct Body *a, SecurityFlags flags, char *keylist);
+  struct Body *(*pgp_traditional_encryptsign)(struct Body *b, SecurityFlags flags, char *keylist);
 
   /**
    * @defgroup crypto_pgp_invoke_getkeys pgp_invoke_getkeys()
@@ -256,10 +256,10 @@ struct CryptModuleSpecs
    * @ingroup crypto_api
    *
    * pgp_extract_key_from_attachment - Extract PGP key from an attachment
-   * @param fp  File containing email
-   * @param top Body of the email
+   * @param fp File containing email
+   * @param b  Body of the email
    */
-  void (*pgp_extract_key_from_attachment)(FILE *fp, struct Body *top);
+  void (*pgp_extract_key_from_attachment)(FILE *fp, struct Body *b);
 
   /**
    * @defgroup crypto_smime_getkeys smime_getkeys()
@@ -287,12 +287,12 @@ struct CryptModuleSpecs
    * @ingroup crypto_api
    *
    * smime_build_smime_entity - Encrypt the email body to all recipients
-   * @param a        Body of email
+   * @param b        Body of email
    * @param certlist List of key fingerprints (space separated)
    * @retval ptr  New S/MIME encrypted Body
    * @retval NULL Error
    */
-  struct Body *(*smime_build_smime_entity)(struct Body *a, char *certlist);
+  struct Body *(*smime_build_smime_entity)(struct Body *b, char *certlist);
 
   /**
    * @defgroup crypto_smime_invoke_import smime_invoke_import()

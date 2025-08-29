@@ -1,10 +1,10 @@
 /**
  * @file
- * Progress bar
+ * Progress Bar
  *
  * @authors
- * Copyright (C) 2018-2021 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,9 +22,41 @@
  */
 
 /**
- * @page lib_progress Progress
+ * @page lib_progress Progress Bar
  *
- * Progress Bar
+ * Display a colourful Progress Bar with text.
+ *
+ * The Progress Bar can be used to display the progress of a Read, Write or Net
+ * operation.  It may look like this:
+ *
+ * ```
+ * Reading from cache 34/125 (27%)
+ * ```
+ *
+ * The Progress Bar can be used in three ways, depending on what's expected.
+ *
+ * - Unknown amount of data
+ *   - Call `progress_new(0)`
+ *   - Call `progress_update(n,-1)` -- records/bytes so far
+ *
+ * - Fixed number of records/bytes
+ *   - Call `progress_new(n)` -- number of records/bytes
+ *   - Call `progress_update(n,-1)` -- records/bytes so far
+ *
+ * - Percentage
+ *   - Call `progress_new(0)`
+ *   - Call `progress_update(n,pc)` -- records/bytes so far, percentage
+ *
+ * The frequency of screen updates can be configured.
+ * For each variable, a value of 0 means show **every** update.
+ *
+ * - `$net_inc`   -- Update after this many KB sent/received
+ * - `$read_inc`  -- Update after this many records read
+ * - `$write_inc` -- Update after this many records written
+ *
+ * Additionally,
+ *
+ * - `$time_inc` - Frequency of progress bar updates (milliseconds)
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
@@ -46,13 +78,16 @@ struct Progress;
  */
 enum ProgressType
 {
+  MUTT_PROGRESS_NET,   ///< Progress tracks bytes,    according to `$net_inc`
   MUTT_PROGRESS_READ,  ///< Progress tracks elements, according to `$read_inc`
   MUTT_PROGRESS_WRITE, ///< Progress tracks elements, according to `$write_inc`
-  MUTT_PROGRESS_NET    ///< Progress tracks bytes, according to `$net_inc`
 };
 
-void             progress_free  (struct Progress **ptr);
-struct Progress *progress_new   (const char *msg, enum ProgressType type, size_t size);
-bool             progress_update(struct Progress *progress, size_t pos, int percent);
+void             progress_free       (struct Progress **ptr);
+struct Progress *progress_new        (enum ProgressType type, size_t size);
+bool             progress_update     (struct Progress *progress, size_t pos, int percent);
+void             progress_set_message(struct Progress *progress, const char *fmt, ...)
+                                      __attribute__((__format__(__printf__, 2, 3)));
+void             progress_set_size   (struct Progress *progress, size_t size);
 
 #endif /* MUTT_PROGRESS_LIB_H */

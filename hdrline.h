@@ -3,8 +3,9 @@
  * String processing routines to generate the mail index
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2021 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,9 +25,10 @@
 #ifndef MUTT_HDRLINE_H
 #define MUTT_HDRLINE_H
 
-#include <stdio.h>
-#include "format_flags.h"
+#include <stddef.h>
+#include "expando/lib.h"
 
+struct Buffer;
 struct Email;
 struct Mailbox;
 
@@ -74,8 +76,8 @@ enum ToChars
   FLAG_CHAR_TO_REPLY_TO,          ///< Character denoting that the user is in the Reply-To list
 };
 
-void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
-                      struct Mailbox *m, int inpgr, struct Email *e,
-                      MuttFormatFlags flags, const char *progress);
+int mutt_make_string(struct Buffer *buf, size_t max_cols, const struct Expando *exp,
+                     struct Mailbox *m, int inpgr, struct Email *e,
+                     MuttFormatFlags flags, const char *progress);
 
 #endif /* MUTT_HDRLINE_H */

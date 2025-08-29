@@ -3,7 +3,7 @@
  * Memory management wrappers
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,11 +30,12 @@
  */
 
 #include "config.h"
+#include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 #include "memory.h"
 #include "exit.h"
 #include "logging2.h"
-#include "message.h"
 
 /**
  * mutt_mem_calloc - Allocate zeroed memory on the heap
@@ -55,8 +56,8 @@ void *mutt_mem_calloc(size_t nmemb, size_t size)
   void *p = calloc(nmemb, size);
   if (!p)
   {
-    mutt_error(_("Out of memory")); // LCOV_EXCL_LINE
-    mutt_exit(1);                   // LCOV_EXCL_LINE
+    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
+    mutt_exit(1);                      // LCOV_EXCL_LINE
   }
   return p;
 }
@@ -70,11 +71,8 @@ void mutt_mem_free(void *ptr)
   if (!ptr)
     return;
   void **p = (void **) ptr;
-  if (*p)
-  {
-    free(*p);
-    *p = NULL;
-  }
+  free(*p);
+  *p = NULL;
 }
 
 /**
@@ -89,21 +87,30 @@ void mutt_mem_free(void *ptr)
  */
 void *mutt_mem_malloc(size_t size)
 {
-  if (size == 0)
-    return NULL;
+  return mutt_mem_mallocarray(size, 1);
+}
 
-  void *p = malloc(size);
-  if (!p)
-  {
-    mutt_error(_("Out of memory")); // LCOV_EXCL_LINE
-    mutt_exit(1);                   // LCOV_EXCL_LINE
-  }
+/**
+ * mutt_mem_mallocarray - Allocate memory on the heap (array version)
+ * @param nmemb Number of blocks
+ * @param size  Size of blocks
+ * @retval ptr  Memory on the heap
+ *
+ * @note On error, this function will never return NULL.
+ *       It will print an error and exit the program.
+ *
+ * The caller should call mutt_mem_free() to release the memory
+ */
+void *mutt_mem_mallocarray(size_t nmemb, size_t size)
+{
+  void *p = NULL;
+  mutt_mem_reallocarray(&p, nmemb, size);
   return p;
 }
 
 /**
  * mutt_mem_realloc - Resize a block of memory on the heap
- * @param ptr Memory block to resize
+ * @param pptr Address of pointer to memory block to resize
  * @param size New size
  *
  * @note On error, this function will never return NULL.
@@ -111,29 +118,42 @@ void *mutt_mem_malloc(size_t size)
  *
  * If the new size is zero, the block will be freed.
  */
-void mutt_mem_realloc(void *ptr, size_t size)
+void mutt_mem_realloc(void *pptr, size_t size)
 {
-  if (!ptr)
+  mutt_mem_reallocarray(pptr, size, 1);
+}
+
+/**
+ * mutt_mem_reallocarray - Resize a block of memory on the heap (array version)
+ * @param pptr  Address of pointer to memory block to resize
+ * @param nmemb Number of blocks
+ * @param size  Size of blocks
+ *
+ * @note On error, this function will never return NULL.
+ *       It will print an error and exit the program.
+ *
+ * If the new size is zero, the block will be freed.
+ */
+void mutt_mem_reallocarray(void *pptr, size_t nmemb, size_t size)
+{
+  if (!pptr)
     return;
 
-  void **p = (void **) ptr;
+  void **pp = (void **) pptr;
 
-  if (size == 0)
+  if ((nmemb == 0) || (size == 0))
   {
-    if (*p)
-    {
-      free(*p);
-      *p = NULL;
-    }
+    free(*pp);
+    *pp = NULL;
     return;
   }
 
-  void *r = realloc(*p, size);
+  void *r = reallocarray(*pp, nmemb, size);
   if (!r)
   {
-    mutt_error(_("Out of memory")); // LCOV_EXCL_LINE
-    mutt_exit(1);                   // LCOV_EXCL_LINE
+    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
+    mutt_exit(1);                      // LCOV_EXCL_LINE
   }
 
-  *p = r;
+  *pp = r;
 }

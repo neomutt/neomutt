@@ -3,7 +3,8 @@
  * Certificate Verification Dialog
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -59,7 +60,6 @@
 #include "color/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "opcodes.h"
 #include "ssl.h"
 
 /// Help Bar for the Certificate Verification dialog
@@ -128,22 +128,24 @@ static int menu_dialog_translate_op(int op)
 }
 
 /**
- * cert_make_entry - Create a string to display in a Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * cert_make_entry - Create a Certificate for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
-static void cert_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static int cert_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct CertMenuData *mdata = menu->mdata;
 
   menu->current = -1; /* hide menubar */
 
+  int total_cols = 0;
+
   const char **line_ptr = ARRAY_GET(mdata->carr, line);
-  if (!line_ptr)
+  if (line_ptr)
   {
-    buf[0] = '\0';
-    return;
+    const int bytes = buf_addstr(buf, *line_ptr);
+    total_cols = mutt_strnwidth(buf_string(buf), bytes);
   }
 
-  mutt_str_copy(buf, *line_ptr, buflen);
+  return total_cols;
 }
 
 /**

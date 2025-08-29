@@ -3,7 +3,9 @@
  * Test code for the Config helper functions
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,8 +25,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -73,15 +75,15 @@ static struct ConfigDef Vars[] = {
   { "Banana",     DT_BOOL,                           true,                        0,                   NULL, },
   { "Cherry",     DT_NUMBER,                         0,                           0,                   NULL, },
   { "Damson",     DT_SYNONYM,                        IP "Cherry",                 0,                   NULL, },
-  { "Fig",        DT_STRING|DT_COMMAND|DT_NOT_EMPTY, IP "fig",                    0,                   NULL, },
+  { "Fig",        DT_STRING|D_STRING_COMMAND|D_NOT_EMPTY, IP "fig",               0,                   NULL, },
   { "Guava",      DT_LONG,                           0,                           0,                   NULL, },
   { "Hawthorn",   DT_ENUM,                           2,                           IP &MboxTypeDef,     NULL, },
   { "Ilama",      DT_MBTABLE,                        IP "abcdef",                 0,                   NULL, },
-  { "Jackfruit",  DT_PATH|DT_PATH_FILE,              IP "/etc/passwd",            0,                   NULL, },
+  { "Jackfruit",  DT_PATH|D_PATH_FILE,               IP "/etc/passwd",            0,                   NULL, },
   { "Kumquat",    DT_QUAD,                           0,                           0,                   NULL, },
   { "Lemon",      DT_REGEX,                          0,                           0,                   NULL, },
   { "Mango",      DT_SORT,                           1,                           IP SortMangoMethods, NULL, },
-  { "Nectarine",  DT_STRING|DT_SENSITIVE,            IP "nectarine",              0,                   NULL, },
+  { "Nectarine",  DT_STRING|D_SENSITIVE,             IP "nectarine",              0,                   NULL, },
   { "Olive",      DT_SLIST,                          IP "olive",                  IP "olive",          NULL, },
   { NULL },
 };
@@ -89,7 +91,7 @@ static struct ConfigDef Vars[] = {
 
 void test_config_helpers(void)
 {
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   struct ConfigSubset *sub = NeoMutt->sub;
 

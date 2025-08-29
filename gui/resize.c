@@ -3,8 +3,9 @@
  * GUI handle the resizing of the screen
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2018      Ivan J. <parazyd@dyne.org>
+ * Copyright (C) 2017-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Ivan J. <parazyd@dyne.org>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,13 +30,14 @@
 
 #include "config.h"
 #include <fcntl.h>
+#include <stddef.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
 #include "rootwin.h"
 #ifdef HAVE_TERMIOS_H
-#include <termios.h> // IWYU pragma: keep
+#include <termios.h>
 #endif
 #ifndef HAVE_TCGETWINSIZE
 #ifdef HAVE_SYS_IOCTL_H

@@ -24,8 +24,6 @@
 #include "config.h"
 #include "acutest.h"
 #include <string.h>
-#include "mutt/lib.h"
-#include "core/lib.h"
 #include "parse/lib.h"
 
 void test_parse_extract_token(void)

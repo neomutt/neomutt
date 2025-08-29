@@ -3,7 +3,7 @@
  * Simple colour
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,14 +28,13 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "attr.h"
 #include "color.h"
 #include "command2.h"
-#include "curses2.h"
 #include "debug.h"
 #include "notify2.h"
 #include "simple2.h"
@@ -47,16 +46,23 @@ struct AttrColor SimpleColors[MT_COLOR_MAX]; ///< Array of Simple colours
  */
 void simple_colors_init(void)
 {
+  for (int i = 0; i < MT_COLOR_MAX; i++)
+  {
+    SimpleColors[i].fg.color = COLOR_DEFAULT;
+    SimpleColors[i].bg.color = COLOR_DEFAULT;
+  }
+
   // Set some defaults
   color_debug(LL_DEBUG5, "init indicator, markers, etc\n");
+  SimpleColors[MT_COLOR_BOLD].attrs = A_BOLD;
   SimpleColors[MT_COLOR_INDICATOR].attrs = A_REVERSE;
+  SimpleColors[MT_COLOR_ITALIC].attrs = A_ITALIC;
   SimpleColors[MT_COLOR_MARKERS].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_SEARCH].attrs = A_REVERSE;
-#ifdef USE_SIDEBAR
   SimpleColors[MT_COLOR_SIDEBAR_HIGHLIGHT].attrs = A_UNDERLINE;
-#endif
   SimpleColors[MT_COLOR_STATUS].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_STRIPE_EVEN].attrs = A_BOLD;
+  SimpleColors[MT_COLOR_UNDERLINE].attrs = A_UNDERLINE;
 }
 
 /**
@@ -69,6 +75,7 @@ void simple_colors_cleanup(void)
   {
     attr_color_clear(&SimpleColors[i]);
   }
+  simple_colors_init();
 }
 
 /**
@@ -82,12 +89,12 @@ struct AttrColor *simple_color_get(enum ColorId cid)
 {
   if (cid >= MT_COLOR_MAX)
   {
-    mutt_error("colour overflow %d", cid);
+    mutt_debug(LL_DEBUG1, "color overflow %d/%d", cid, MT_COLOR_MAX);
     return NULL;
   }
   if (cid <= MT_COLOR_NONE)
   {
-    mutt_error("colour underflow %d", cid);
+    mutt_debug(LL_DEBUG1, "color underflow %d/%d", cid, MT_COLOR_NONE);
     return NULL;
   }
 
@@ -116,22 +123,17 @@ bool simple_color_is_header(enum ColorId cid)
 
 /**
  * simple_color_set - Set the colour of a simple object
- * @param cid   Colour Id, e.g. #MT_COLOR_SEARCH
- * @param fg    Foreground colour
- * @param bg    Background colour
- * @param attrs Attributes, e.g. A_UNDERLINE
+ * @param cid    Colour Id, e.g. #MT_COLOR_SEARCH
+ * @param ac_val Colour value to use
  * @retval ptr Colour
  */
-struct AttrColor *simple_color_set(enum ColorId cid, int fg, int bg, int attrs)
+struct AttrColor *simple_color_set(enum ColorId cid, struct AttrColor *ac_val)
 {
   struct AttrColor *ac = simple_color_get(cid);
   if (!ac)
     return NULL;
 
-  struct CursesColor *cc = curses_color_new(fg, bg);
-  curses_color_free(&ac->curses_color);
-  ac->curses_color = cc;
-  ac->attrs = attrs;
+  attr_color_overwrite(ac, ac_val);
 
   struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);

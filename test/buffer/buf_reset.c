@@ -3,7 +3,8 @@
  * Test code for buf_reset()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,16 +37,17 @@ void test_buf_reset(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_reset(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_reset(buf);
     TEST_CHECK_(1, "buf_reset(buf)");
+    buf_pool_release(&buf);
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, "test");
-    buf_reset(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, "test");
+    buf_reset(buf);
     TEST_CHECK_(1, "buf_reset(buf)");
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
   }
 }

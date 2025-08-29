@@ -32,7 +32,7 @@
 #include "adata.h"
 
 /**
- * pop_adata_free - Free the private Account data - Implements Account::adata_free()
+ * pop_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  *
  * The PopAccountData struct stores global POP data, such as the connection to
  * the database.  This function will close the database, free the resources and
@@ -62,7 +62,7 @@ void pop_adata_free(void **ptr)
  */
 struct PopAccountData *pop_adata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct PopAccountData));
+  return MUTT_MEM_CALLOC(1, struct PopAccountData);
 }
 
 /**

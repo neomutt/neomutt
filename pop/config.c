@@ -3,7 +3,9 @@
  * Config used by libpop
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,13 +29,15 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
+#ifdef USE_SASL_CYRUS
 #include "conn/lib.h"
+#endif
 
 /**
  * pop_auth_validator - Validate the "pop_authenticators" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
@@ -69,10 +73,10 @@ static struct ConfigDef PopVars[] = {
   { "pop_auth_try_all", DT_BOOL, true, 0, NULL,
     "(pop) Try all available authentication methods"
   },
-  { "pop_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, pop_auth_validator,
+  { "pop_authenticators", DT_SLIST|D_SLIST_SEP_COLON, 0, 0, pop_auth_validator,
     "(pop) List of allowed authentication methods (colon-separated)"
   },
-  { "pop_check_interval", DT_NUMBER|DT_NOT_NEGATIVE, 60, 0, NULL,
+  { "pop_check_interval", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 60, 0, NULL,
     "(pop) Interval between checks for new mail"
   },
   { "pop_delete", DT_QUAD, MUTT_ASKNO, 0, NULL,
@@ -84,16 +88,16 @@ static struct ConfigDef PopVars[] = {
   { "pop_last", DT_BOOL, false, 0, NULL,
     "(pop) Use the 'LAST' command to fetch new mail"
   },
-  { "pop_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, 0, 0, NULL,
+  { "pop_oauth_refresh_command", DT_STRING|D_STRING_COMMAND|D_SENSITIVE, 0, 0, NULL,
     "(pop) External command to generate OAUTH refresh token"
   },
-  { "pop_pass", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "pop_pass", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(pop) Password of the POP server"
   },
   { "pop_reconnect", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "(pop) Reconnect to the server is the connection is lost"
   },
-  { "pop_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "pop_user", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(pop) Username of the POP server"
   },
 
@@ -107,5 +111,5 @@ static struct ConfigDef PopVars[] = {
  */
 bool config_init_pop(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, PopVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, PopVars);
 }

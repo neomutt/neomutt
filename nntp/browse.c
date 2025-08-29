@@ -3,7 +3,9 @@
  * Browse NNTP groups
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,153 +30,152 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
 #include "browser/lib.h"
-#include "format_flags.h"
+#include "expando/lib.h"
 #include "mdata.h"
-#include "muttlib.h"
 
 /**
- * group_index_format_str - Format a string for the newsgroup menu - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | Alert: 1 if user is notified of new mail
- * | \%C     | Current newsgroup number
- * | \%d     | Description of newsgroup (becomes from server)
- * | \%f     | Newsgroup name
- * | \%M     | - if newsgroup not allowed for direct post (moderated for example)
- * | \%N     | N if newsgroup is new, u if unsubscribed, blank otherwise
- * | \%n     | Number of new articles in newsgroup
- * | \%p     | Poll: 1 if Mailbox is checked for new mail
- * | \%s     | Number of unread articles in newsgroup
+ * group_index_a_num - NNTP: Alert for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                   char op, const char *src, const char *prec,
-                                   const char *if_str, const char *else_str,
-                                   intptr_t data, MuttFormatFlags flags)
+long group_index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  char fn[128], fmt[128];
-  struct Folder *folder = (struct Folder *) data;
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
+  const struct Folder *folder = data;
 
-  switch (op)
+  return folder->ff->notify_user;
+}
+
+/**
+ * group_index_C_num - NNTP: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long group_index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  return folder->num + 1;
+}
+
+/**
+ * group_index_d - NNTP: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void group_index_d(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  char tmp[128] = { 0 };
+
+  if (!folder->ff->nd->desc)
+    return;
+
+  char *desc = mutt_str_dup(folder->ff->nd->desc);
+  const char *const c_newsgroups_charset = cs_subset_string(NeoMutt->sub, "newsgroups_charset");
+  if (c_newsgroups_charset)
   {
-    case 'a':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->notify_user);
-      }
-      else
-      {
-        if (folder->ff->notify_user == 0)
-          optional = false;
-      }
-      break;
-
-    case 'C':
-      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, folder->num + 1);
-      break;
-
-    case 'd':
-      if (folder->ff->nd->desc)
-      {
-        char *desc = mutt_str_dup(folder->ff->nd->desc);
-        const char *const c_newsgroups_charset = cs_subset_string(NeoMutt->sub, "newsgroups_charset");
-        if (c_newsgroups_charset)
-          mutt_ch_convert_string(&desc, c_newsgroups_charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
-        mutt_mb_filter_unprintable(&desc);
-
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, desc);
-        FREE(&desc);
-      }
-      else
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, "");
-      }
-      break;
-
-    case 'f':
-      mutt_str_copy(fn, folder->ff->name, sizeof(fn));
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, fn);
-      break;
-
-    case 'M':
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      if (folder->ff->nd->deleted)
-        snprintf(buf, buflen, fmt, 'D');
-      else
-        snprintf(buf, buflen, fmt, folder->ff->nd->allowed ? ' ' : '-');
-      break;
-
-    case 'N':
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      if (folder->ff->nd->subscribed)
-        snprintf(buf, buflen, fmt, ' ');
-      else
-        snprintf(buf, buflen, fmt, folder->ff->has_new_mail ? 'N' : 'u');
-      break;
-
-    case 'n':
-    {
-      const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
-      if (c_mark_old && (folder->ff->nd->last_cached >= folder->ff->nd->first_message) &&
-          (folder->ff->nd->last_cached <= folder->ff->nd->last_message))
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->nd->last_message - folder->ff->nd->last_cached);
-      }
-      else
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->nd->unread);
-      }
-      break;
-    }
-
-    case 'p':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->poll_new_mail);
-      }
-      else
-      {
-        if (folder->ff->poll_new_mail == 0)
-          optional = false;
-      }
-      break;
-
-    case 's':
-      if (optional)
-      {
-        if (folder->ff->nd->unread != 0)
-        {
-          mutt_expando_format(buf, buflen, col, cols, if_str,
-                              group_index_format_str, data, flags);
-        }
-        else
-        {
-          mutt_expando_format(buf, buflen, col, cols, else_str,
-                              group_index_format_str, data, flags);
-        }
-      }
-      else
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->nd->unread);
-      }
-      break;
+    mutt_ch_convert_string(&desc, c_newsgroups_charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
   }
-  return src;
+  mutt_mb_filter_unprintable(&desc);
+  mutt_str_copy(tmp, desc, sizeof(tmp));
+  FREE(&desc);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * group_index_f - NNTP: Newsgroup name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void group_index_f(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  const char *s = folder->ff->name;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * group_index_M - NNTP: Moderated flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void group_index_M(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  const char *s = NULL;
+  // NOTE(g0mb4): use $flag_chars?
+  if (folder->ff->nd->deleted)
+  {
+    s = "D";
+  }
+  else
+  {
+    s = folder->ff->nd->allowed ? " " : "-";
+  }
+
+  buf_strcpy(buf, s);
+}
+
+/**
+ * group_index_n_num - NNTP: Number of new articles - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long group_index_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+  const struct NntpMboxData *nd = folder->ff->nd;
+
+  const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
+
+  if (c_mark_old && (nd->last_cached >= nd->first_message) &&
+      (nd->last_cached <= nd->last_message))
+  {
+    return nd->last_message - nd->last_cached;
+  }
+
+  return nd->unread;
+}
+
+/**
+ * group_index_N - NNTP: New flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void group_index_N(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  const char *s = NULL;
+  // NOTE(g0mb4): use $flag_chars?
+  if (folder->ff->nd->subscribed)
+  {
+    s = " ";
+  }
+  else
+  {
+    s = folder->ff->has_new_mail ? "N" : "u";
+  }
+
+  buf_strcpy(buf, s);
+}
+
+/**
+ * group_index_p_num - NNTP: Poll for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long group_index_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  return folder->ff->poll_new_mail;
+}
+
+/**
+ * group_index_s_num - NNTP: Number of unread articles - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+long group_index_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  return folder->ff->nd->unread;
 }

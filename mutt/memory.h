@@ -30,17 +30,27 @@
 #undef CLAMP
 #define MAX(a, b) (((a) < (b)) ? (b) : (a))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
-#define CLAMP(val, lo, hi) ((val) > (hi) ? (hi) : ((val) < (lo) ? (lo) : (val)))
+#define CLAMP(val, lo, hi) MIN(hi, MAX(lo, val))
 
 #undef ROUND_UP
 #define ROUND_UP(NUM, STEP) ((((NUM) + (STEP) -1) / (STEP)) * (STEP))
 
 #define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
 
+#define MUTT_MEM_CALLOC(n, type)  ((type *) mutt_mem_calloc(n, sizeof(type)))
+#define MUTT_MEM_MALLOC(n, type)  ((type *) mutt_mem_mallocarray(n, sizeof(type)))
+
+#define MUTT_MEM_REALLOC(pptr, n, type)                                       \
+(                                                                             \
+  _Generic(*(pptr), type *: mutt_mem_reallocarray(pptr, n, sizeof(type)))     \
+)
+
 void *mutt_mem_calloc(size_t nmemb, size_t size);
 void  mutt_mem_free(void *ptr);
 void *mutt_mem_malloc(size_t size);
-void  mutt_mem_realloc(void *ptr, size_t size);
+void *mutt_mem_mallocarray(size_t nmemb, size_t size);
+void  mutt_mem_realloc(void *pptr, size_t size);
+void  mutt_mem_reallocarray(void *pptr, size_t nmemb, size_t size);
 
 #define FREE(x) mutt_mem_free(x)
 

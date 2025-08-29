@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,6 +25,7 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "test_common.h"
 

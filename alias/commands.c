@@ -3,7 +3,8 @@
  * Alias commands
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,12 +33,99 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "commands.h"
 #include "lib.h"
 #include "parse/lib.h"
 #include "alias.h"
 #include "reverse.h"
+
+/**
+ * alias_tags_to_buffer - Write a comma-separated list of tags to a Buffer
+ * @param tl  Tags
+ * @param buf Buffer for the result
+ */
+void alias_tags_to_buffer(struct TagList *tl, struct Buffer *buf)
+{
+  struct Tag *tag = NULL;
+  STAILQ_FOREACH(tag, tl, entries)
+  {
+    buf_addstr(buf, tag->name);
+    if (STAILQ_NEXT(tag, entries))
+      buf_addch(buf, ',');
+  }
+}
+
+/**
+ * parse_alias_tags - Parse a comma-separated list of tags
+ * @param tags Comma-separated string
+ * @param tl   TagList for the results
+ */
+void parse_alias_tags(const char *tags, struct TagList *tl)
+{
+  if (!tags || !tl)
+    return;
+
+  struct Slist *sl = slist_parse(tags, D_SLIST_SEP_COMMA);
+  if (slist_is_empty(sl))
+  {
+    slist_free(&sl);
+    return;
+  }
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &sl->head, entries)
+  {
+    struct Tag *tag = tag_new();
+    tag->name = np->data; // Transfer string
+    np->data = NULL;
+    STAILQ_INSERT_TAIL(tl, tag, entries);
+  }
+  slist_free(&sl);
+}
+
+/**
+ * parse_alias_comments - Parse the alias/query comment field
+ * @param alias Alias for the result
+ * @param com   Comment string
+ *
+ * If the comment contains a 'tags:' field, the result will be put in alias.tags
+ */
+void parse_alias_comments(struct Alias *alias, const char *com)
+{
+  if (!com || (com[0] == '\0'))
+    return;
+
+  const regmatch_t *match = mutt_prex_capture(PREX_ALIAS_TAGS, com);
+  if (match)
+  {
+    const regmatch_t *pre = &match[PREX_ALIAS_TAGS_MATCH_PRE];
+    const regmatch_t *tags = &match[PREX_ALIAS_TAGS_MATCH_TAGS];
+    const regmatch_t *post = &match[PREX_ALIAS_TAGS_MATCH_POST];
+
+    struct Buffer *tmp = buf_pool_get();
+
+    // Extract the tags
+    buf_addstr_n(tmp, com + mutt_regmatch_start(tags),
+                 mutt_regmatch_end(tags) - mutt_regmatch_start(tags));
+    parse_alias_tags(buf_string(tmp), &alias->tags);
+    buf_reset(tmp);
+
+    // Collect all the other text as "comments"
+    buf_addstr_n(tmp, com + mutt_regmatch_start(pre),
+                 mutt_regmatch_end(pre) - mutt_regmatch_start(pre));
+    buf_addstr_n(tmp, com + mutt_regmatch_start(post),
+                 mutt_regmatch_end(post) - mutt_regmatch_start(post));
+    alias->comment = buf_strdup(tmp);
+
+    buf_pool_release(&tmp);
+  }
+  else
+  {
+    alias->comment = mutt_str_dup(com);
+  }
+}
 
 /**
  * parse_alias - Parse the 'alias' command - Implements Command::parse() - @ingroup command_parse
@@ -135,9 +223,12 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   mutt_grouplist_destroy(&gl);
   if (!MoreArgs(s) && (s->dptr[0] == '#'))
   {
-    char *comment = s->dptr + 1;
-    SKIPWS(comment);
-    tmp->comment = mutt_str_dup(comment);
+    s->dptr++; // skip over the "# "
+    if (*s->dptr == ' ')
+      s->dptr++;
+
+    parse_alias_comments(tmp, s->dptr);
+    *s->dptr = '\0'; // We're done parsing
   }
 
   alias_reverse_add(tmp);
@@ -172,7 +263,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
         alias_reverse_delete(np);
       }
 
-      aliaslist_free(&Aliases);
+      aliaslist_clear(&Aliases);
       return MUTT_CMD_SUCCESS;
     }
 

@@ -1,0 +1,53 @@
+# Check for unused functions (xunused)
+name: Unused Functions
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'
+      # Mondays at 04:00
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Check for unused functions
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/ubuntu
+
+    env:
+      CONFIGURE_OPTIONS: --autocrypt --bdb --compile-commands --disable-doc --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+      CC: clang
+
+    steps:
+    - name: Get number of CPU cores
+      uses: SimenB/github-actions-cpu-cores@v2
+      id: cpu-cores
+
+    - name: Compilation Cache
+      uses: hendrikmuhs/ccache-action@v1
+
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        path: main
+
+    - name: Configure Neomutt
+      run: ./configure $CONFIGURE_OPTIONS
+      working-directory: main
+
+    - name: Build compilation database
+      run: make -j ${{steps.cpu-cores.outputs.count}} compile_commands.json
+      working-directory: main
+
+    - name: Checkout xunused
+      uses: actions/checkout@v4
+      with:
+        repository: mgehre/xunused
+        path: xunused
+
+    - name: Build xunused
+      run: mkdir build && cd build && cmake .. && make
+      working-directory: xunused
+
+    - name: Run xunused
+      run: (../xunused/build/xunused compile_commands.json 2>&1) | .github/unused.sh
+      working-directory: main

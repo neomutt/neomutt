@@ -3,7 +3,8 @@
  * Test code for window_reflow()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -110,13 +111,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -137,13 +138,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -170,13 +171,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -209,13 +210,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -249,13 +250,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -285,13 +286,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -319,13 +320,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -365,13 +366,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -399,13 +400,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -430,13 +431,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -469,13 +470,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -505,13 +506,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -541,13 +542,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -580,13 +581,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -619,13 +620,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -658,13 +659,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -697,13 +698,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -729,13 +730,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -756,13 +757,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -789,13 +790,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -828,13 +829,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -868,13 +869,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -904,13 +905,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -938,13 +939,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -984,13 +985,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1018,13 +1019,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1049,13 +1050,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1088,13 +1089,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1124,13 +1125,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1160,13 +1161,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1199,13 +1200,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1238,13 +1239,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1277,13 +1278,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1316,13 +1317,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 
@@ -1396,13 +1397,13 @@ void test_window_reflow(void)
 
     window_reflow(root);
 
-    struct Buffer buf = buf_make(1024);
-    win_serialise(root, &buf);
-    TEST_CHECK_STR_EQ(buf_string(&buf), expected);
-    TEST_MSG("Expected %s\n", expected);
-    TEST_MSG("Got      %s\n", buf_string(&buf));
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_MSG("Expected %s", expected);
+    TEST_MSG("Got      %s", buf_string(buf));
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
     mutt_window_free(&root);
   }
 }

@@ -4,6 +4,9 @@
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,9 +30,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <sqlite3.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <sys/stat.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -63,8 +66,8 @@ static int autocrypt_db_create(const char *db_path)
   if (sqlite3_open_v2(db_path, &AutocryptDB,
                       SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL) != SQLITE_OK)
   {
-    /* L10N: s is the path to the database.
-       For some reason sqlite3 failed to open that database file.  */
+    /* L10N: autocrypt couldn't open the SQLite database.
+             The %s is the full path of the database file.  */
     mutt_error(_("Unable to open autocrypt database %s"), db_path);
     return -1;
   }
@@ -97,8 +100,8 @@ int mutt_autocrypt_db_init(bool can_create)
   {
     if (sqlite3_open_v2(buf_string(db_path), &AutocryptDB, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
-      /* L10N: Error message if autocrypt couldn't open the SQLite database
-         for some reason.  The %s is the full path of the database file.  */
+      /* L10N: autocrypt couldn't open the SQLite database.
+               The %s is the full path of the database file.  */
       mutt_error(_("Unable to open autocrypt database %s"), buf_string(db_path));
       goto cleanup;
     }
@@ -207,8 +210,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
    * The normalize_addrlist above is extended to work on a list
    * because of requirements in autocrypt.c */
 
-  struct Address *norm_addr = mutt_addr_new();
-  buf_copy(norm_addr->mailbox, addr->mailbox);
+  struct Address *norm_addr = mutt_addr_create(NULL, buf_string(addr->mailbox));
   norm_addr->is_intl = addr->is_intl;
   norm_addr->intl_checked = addr->intl_checked;
 
@@ -234,7 +236,7 @@ static char *strdup_column_text(sqlite3_stmt *stmt, int index)
  */
 struct AutocryptAccount *mutt_autocrypt_db_account_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptAccount));
+  return MUTT_MEM_CALLOC(1, struct AutocryptAccount);
 }
 
 /**
@@ -488,7 +490,7 @@ int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *
     if (results_count == results_len)
     {
       results_len += 5;
-      mutt_mem_realloc(&results, results_len * sizeof(struct AutocryptAccount *));
+      MUTT_MEM_REALLOC(&results, results_len, struct AutocryptAccount *);
     }
 
     struct AutocryptAccount *account = mutt_autocrypt_db_account_new();
@@ -524,7 +526,7 @@ cleanup:
  */
 struct AutocryptPeer *mutt_autocrypt_db_peer_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptPeer));
+  return MUTT_MEM_CALLOC(1, struct AutocryptPeer);
 }
 
 /**
@@ -745,7 +747,7 @@ cleanup:
  */
 struct AutocryptPeerHistory *mutt_autocrypt_db_peer_history_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptPeerHistory));
+  return MUTT_MEM_CALLOC(1, struct AutocryptPeerHistory);
 }
 
 /**
@@ -826,7 +828,7 @@ cleanup:
  */
 struct AutocryptGossipHistory *mutt_autocrypt_db_gossip_history_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptGossipHistory));
+  return MUTT_MEM_CALLOC(1, struct AutocryptGossipHistory);
 }
 
 /**

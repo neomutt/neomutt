@@ -3,7 +3,8 @@
  * Auto-completion
  *
  * @authors
- * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,8 +36,8 @@
 #ifndef MUTT_COMPLETE_LIB_H
 #define MUTT_COMPLETE_LIB_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 // IWYU pragma: begin_keep
 #include "compapi.h"
 #include "data.h"
@@ -50,7 +51,7 @@ extern const struct CompleteOps CompleteLabelOps;
 int  mutt_command_complete  (struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs);
 int  mutt_complete          (struct CompletionData *cd, struct Buffer *buf);
 int  mutt_label_complete    (struct CompletionData *cd, struct Buffer *buf, int numtabs);
-bool mutt_nm_query_complete (struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs);
+bool mutt_nm_query_complete (struct CompletionData *cd, struct Buffer *buf, int numtabs);
 bool mutt_nm_tag_complete   (struct CompletionData *cd, struct Buffer *buf, int numtabs);
 int  mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int pos);
 void matches_ensure_morespace(struct CompletionData *cd, int new_size);

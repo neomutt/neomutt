@@ -1,5 +1,5 @@
 freebsd_instance:
-  image_family: freebsd-13-2
+  image_family: freebsd-14-1
 
 task:
   only_if: $CIRRUS_BRANCH == "main" || $CIRRUS_PR != ""
@@ -15,7 +15,7 @@ task:
     CONFIGURE_COMMON:
       --autocrypt --bdb --disable-idn --disable-inotify --fmemopen --full-doc
       --gdbm --gpgme --gss --homespool --idn2 --kyotocabinet --lmdb --locales-fix
-      --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --sasl --tdb
+      --lua --lz4 --notmuch --pcre2 --qdbm --sasl --tdb
       --tokyocabinet --with-domain=example.com --with-lock=flock --zlib --zstd
   matrix:
     - name: FreeBSD / Test

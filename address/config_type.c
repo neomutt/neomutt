@@ -3,8 +3,9 @@
  * Config type representing an email address
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,10 +34,10 @@
  * - Implementation: #CstAddress
  */
 
-#include <stddef.h>
-#include <assert.h>
+#include "config.h"
 #include <limits.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -50,7 +51,7 @@
  */
 struct Address *address_new(const char *addr)
 {
-  struct Address *a = mutt_mem_calloc(1, sizeof(*a));
+  struct Address *a = MUTT_MEM_CALLOC(1, struct Address);
   a->mailbox = buf_new(addr);
   return a;
 }
@@ -73,10 +74,21 @@ static void address_destroy(const struct ConfigSet *cs, void *var, const struct 
 static int address_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                               const char *value, struct Buffer *err)
 {
+  /* Store empty address as NULL */
+  if (value && (value[0] == '\0'))
+    value = NULL;
+
   struct Address *addr = NULL;
 
-  /* An empty address "" will be stored as NULL */
-  if (var && value && (value[0] != '\0'))
+  int rc = CSR_SUCCESS;
+
+  if (!value && (cdef->type & D_NOT_EMPTY))
+  {
+    buf_printf(err, _("Option %s may not be empty"), cdef->name);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+  }
+
+  if (var && value)
   {
     // TODO - config can only store one
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
@@ -84,8 +96,6 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
     addr = mutt_addr_copy(TAILQ_FIRST(&al));
     mutt_addrlist_clear(&al);
   }
-
-  int rc = CSR_SUCCESS;
 
   if (var)
   {
@@ -111,10 +121,10 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
   else
   {
     /* set the default/initial value */
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
 
-    cdef->type |= DT_INITIAL_SET;
+    cdef->type |= D_INTERNAL_INITIAL_SET;
     cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
@@ -156,7 +166,7 @@ static struct Address *address_dup(struct Address *addr)
   if (!addr)
     return NULL; /* LCOV_EXCL_LINE */
 
-  struct Address *a = mutt_mem_calloc(1, sizeof(*a));
+  struct Address *a = MUTT_MEM_CALLOC(1, struct Address);
   a->personal = buf_dup(addr->personal);
   a->mailbox = buf_dup(addr->mailbox);
   return a;
@@ -261,18 +271,18 @@ const struct ConfigSetType CstAddress = {
  */
 const struct Address *cs_subset_address(const struct ConfigSubset *sub, const char *name)
 {
-  assert(sub && name);
+  ASSERT(sub && name);
 
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
-  assert(he);
+  ASSERT(he);
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  assert(DTYPE(he_base->type) == DT_ADDRESS);
+  ASSERT(DTYPE(he_base->type) == DT_ADDRESS);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
-  assert(value != INT_MIN);
+  ASSERT(value != INT_MIN);
 
   return (const struct Address *) value;
 }

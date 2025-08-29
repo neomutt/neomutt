@@ -3,7 +3,8 @@
  * Test code for buf_printf()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,8 +37,9 @@ void test_buf_printf(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(buf_printf(&buf, NULL) != 0);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(buf_printf(buf, NULL) != 0);
+    buf_pool_release(&buf);
   }
 
   TEST_CASE("printf to an empty Buffer");
@@ -46,10 +48,10 @@ void test_buf_printf(void)
     TEST_CASE("Varargs");
     const char *str = "apple";
     const char *result = "app 1234567 3.1416";
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(buf_printf(&buf, "%.3s %d %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK_STR_EQ(buf_string(&buf), result);
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(buf_printf(buf, "%.3s %d %3.4f", str, 1234567, 3.141592654) == 18);
+    TEST_CHECK_STR_EQ(buf_string(buf), result);
+    buf_pool_release(&buf);
   }
 
   TEST_CASE("printf to a non-empty Buffer");
@@ -58,10 +60,10 @@ void test_buf_printf(void)
     TEST_CASE("Varargs");
     const char *str = "apple";
     const char *result = "app 1234567 3.1416";
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, "test");
-    TEST_CHECK(buf_printf(&buf, "%.3s %d %3.4f", str, 1234567, 3.141592654) == 18);
-    TEST_CHECK_STR_EQ(buf_string(&buf), result);
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, "test");
+    TEST_CHECK(buf_printf(buf, "%.3s %d %3.4f", str, 1234567, 3.141592654) == 18);
+    TEST_CHECK_STR_EQ(buf_string(buf), result);
+    buf_pool_release(&buf);
   }
 }

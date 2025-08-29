@@ -3,7 +3,8 @@
  * Sidebar Window data
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,7 +43,7 @@ struct IndexSharedData;
  */
 struct SidebarWindowData *sb_wdata_new(struct MuttWindow *win, struct IndexSharedData *shared)
 {
-  struct SidebarWindowData *wdata = mutt_mem_calloc(1, sizeof(struct SidebarWindowData));
+  struct SidebarWindowData *wdata = MUTT_MEM_CALLOC(1, struct SidebarWindowData);
   wdata->win = win;
   wdata->shared = shared;
   ARRAY_INIT(&wdata->entries);

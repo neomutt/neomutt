@@ -12,7 +12,7 @@ jobs:
   build:
     name: ASAN Build
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/docker-build
+    container: ghcr.io/neomutt/ubuntu
 
     env:
       ASAN_OPTIONS: detect_leaks=1:color=never:log_path=asan:print_legend=false:print_summary=false
@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - name: Get number of CPU cores
-      uses: SimenB/github-actions-cpu-cores@v1
+      uses: SimenB/github-actions-cpu-cores@v2
       id: cpu-cores
 
     - name: Checkout Code
@@ -53,7 +53,7 @@ jobs:
         make test
 
     - name: Upload ASAN Log
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: asan-log

@@ -24,10 +24,8 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include <stdbool.h>
-#include "email/lib.h"
-#include "core/lib.h"
 #include "editor/lib.h"
+#include "common.h" // IWYU pragma: keep
 
 void test_editor_buffer_is_empty(void)
 {

@@ -3,7 +3,9 @@
  * Type representing a regular expression
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,13 +35,31 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "regex2.h"
 #include "set.h"
 #include "types.h"
+
+/**
+ * regex_equal - Compare two regexes
+ * @param a First regex
+ * @param b Second regex
+ * @retval true They are identical
+ */
+bool regex_equal(const struct Regex *a, const struct Regex *b)
+{
+  if (!a && !b) /* both empty */
+    return true;
+  if (!a ^ !b) /* one is empty, but not the other */
+    return false;
+  if (a->pat_not != b->pat_not)
+    return false;
+
+  return mutt_str_equal(a->pattern, b->pattern);
+}
 
 /**
  * regex_free - Free a Regex object
@@ -74,7 +94,7 @@ static void regex_destroy(const struct ConfigSet *cs, void *var, const struct Co
 /**
  * regex_new - Create an Regex from a string
  * @param str   Regular expression
- * @param flags Type flags, e.g. #DT_REGEX_MATCH_CASE
+ * @param flags Type flags, e.g. #D_REGEX_MATCH_CASE
  * @param err   Buffer for error messages
  * @retval ptr New Regex object
  * @retval NULL Error
@@ -85,20 +105,20 @@ struct Regex *regex_new(const char *str, uint32_t flags, struct Buffer *err)
     return NULL;
 
   int rflags = 0;
-  struct Regex *reg = mutt_mem_calloc(1, sizeof(struct Regex));
+  struct Regex *reg = MUTT_MEM_CALLOC(1, struct Regex);
 
-  reg->regex = mutt_mem_calloc(1, sizeof(regex_t));
+  reg->regex = MUTT_MEM_CALLOC(1, regex_t);
   reg->pattern = mutt_str_dup(str);
 
   /* Should we use smart case matching? */
-  if (((flags & DT_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(str))
+  if (((flags & D_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(str))
     rflags |= REG_ICASE;
 
-  if ((flags & DT_REGEX_NOSUB))
+  if ((flags & D_REGEX_NOSUB))
     rflags |= REG_NOSUB;
 
   /* Is a prefix of '!' allowed? */
-  if (((flags & DT_REGEX_ALLOW_NOT) != 0) && (str[0] == '!'))
+  if (((flags & D_REGEX_ALLOW_NOT) != 0) && (str[0] == '!'))
   {
     reg->pat_not = true;
     str++;
@@ -136,6 +156,9 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
     if (curval && mutt_str_equal(value, curval->pattern))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     if (value)
     {
       r = regex_new(value, cdef->type, err);
@@ -163,10 +186,10 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
   }
   else
   {
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
 
-    cdef->type |= DT_INITIAL_SET;
+    cdef->type |= D_INTERNAL_INITIAL_SET;
     cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
@@ -207,6 +230,12 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 {
   int rc;
 
+  if (regex_equal(*(struct Regex **) var, (struct Regex *) value))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, value, err);
@@ -221,7 +250,7 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 
   if (orig && orig->pattern)
   {
-    const uint32_t flags = orig->pat_not ? DT_REGEX_ALLOW_NOT : 0;
+    const uint32_t flags = orig->pat_not ? D_REGEX_ALLOW_NOT : 0;
     r = regex_new(orig->pattern, flags, err);
     if (!r)
       rc = CSR_ERR_INVALID;
@@ -269,6 +298,9 @@ static int regex_reset(const struct ConfigSet *cs, void *var,
 
   if (mutt_str_equal(initial, curval))
     return rc | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (initial)
   {

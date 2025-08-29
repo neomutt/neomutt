@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,9 +37,9 @@ void test_mutt_path_getcwd(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    mutt_path_getcwd(&buf);
-    TEST_CHECK(buf.data[0] == '/');
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    mutt_path_getcwd(buf);
+    TEST_CHECK(buf->data[0] == '/');
+    buf_pool_release(&buf);
   }
 }

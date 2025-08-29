@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,14 +33,16 @@ void test_mutt_grouplist_add_regex(void)
   // int mutt_grouplist_add_regex(struct GroupList *gl, const char *s, uint16_t flags, struct Buffer *err);
 
   {
-    struct Buffer err = buf_make(0);
-    TEST_CHECK(mutt_grouplist_add_regex(NULL, "apple", 0, &err) == -1);
+    struct Buffer *err = buf_pool_get();
+    TEST_CHECK(mutt_grouplist_add_regex(NULL, "apple", 0, err) == -1);
+    buf_pool_release(&err);
   }
 
   {
     struct GroupList head = { 0 };
-    struct Buffer err = buf_make(0);
-    TEST_CHECK(mutt_grouplist_add_regex(&head, NULL, 0, &err) == -1);
+    struct Buffer *err = buf_pool_get();
+    TEST_CHECK(mutt_grouplist_add_regex(&head, NULL, 0, err) == -1);
+    buf_pool_release(&err);
   }
 
   {

@@ -28,15 +28,15 @@
  */
 
 #include "config.h"
-#include <stddef.h> // IWYU pragma: keep
 #include <stdbool.h>
+#include <stddef.h> // IWYU pragma: keep
 #include <stdio.h>
 #include <string.h>
 #include "md5.h"
 
 #ifdef WORDS_BIGENDIAN
 #define SWAP(n)                                                                \
-  (((n) << 24) | (((n) &0xff00) << 8) | (((n) >> 8) & 0xff00) | ((n) >> 24))
+  (((n) << 24) | (((n) & 0xff00) << 8) | (((n) >> 8) & 0xff00) | ((n) >> 24))
 #else
 #define SWAP(n) (n)
 #endif

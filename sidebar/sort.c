@@ -3,7 +3,9 @@
  * Sidebar sort functions
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,7 +35,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "sort.h"
-#include "muttlib.h"
 
 /**
  * sb_sort_count - Compare two Sidebar entries by count - Implements ::sort_t - @ingroup sort_api
@@ -102,7 +103,7 @@ static int sb_sort_path(const void *a, const void *b, void *sdata)
   const bool sort_reverse = *(bool *) sdata;
 
   int rc = 0;
-  rc = mutt_inbox_cmp(mailbox_path(m1), mailbox_path(m2));
+  rc = mutt_str_inbox_cmp(mailbox_path(m1), mailbox_path(m2));
   if (rc == 0)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
 
@@ -190,6 +191,7 @@ void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort)
       break;
     case SORT_ORDER:
       fn = sb_sort_order;
+      FALLTHROUGH;
     default:
       break;
   }

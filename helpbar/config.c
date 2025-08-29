@@ -3,7 +3,7 @@
  * Config used by Help Bar
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "config/lib.h"
 
 /**
@@ -48,5 +48,5 @@ static struct ConfigDef HelpbarVars[] = {
  */
 bool config_init_helpbar(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, HelpbarVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, HelpbarVars);
 }

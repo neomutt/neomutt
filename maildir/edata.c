@@ -3,7 +3,7 @@
  * Maildir-specific Email data
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,7 +33,7 @@
 #include "edata.h"
 
 /**
- * maildir_edata_free - Free the private Email data - Implements Email::edata_free()
+ * maildir_edata_free - Free the private Email data - Implements Email::edata_free() - @ingroup email_edata_free
  */
 void maildir_edata_free(void **ptr)
 {
@@ -41,7 +41,7 @@ void maildir_edata_free(void **ptr)
     return;
 
   struct MaildirEmailData *edata = *ptr;
-  FREE(&edata->maildir_flags);
+  FREE(&edata->custom_flags);
 
   FREE(ptr);
 }
@@ -52,8 +52,7 @@ void maildir_edata_free(void **ptr)
  */
 struct MaildirEmailData *maildir_edata_new(void)
 {
-  struct MaildirEmailData *edata = mutt_mem_calloc(1, sizeof(struct MaildirEmailData));
-  return edata;
+  return MUTT_MEM_CALLOC(1, struct MaildirEmailData);
 }
 
 /**

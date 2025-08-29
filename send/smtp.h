@@ -3,8 +3,8 @@
  * Send email to an SMTP server
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +27,6 @@
 #include "config.h"
 #include <stdbool.h>
 
-#ifdef USE_SMTP
 struct AddressList;
 struct ConfigSubset;
 
@@ -35,6 +34,5 @@ bool smtp_auth_is_valid(const char *authenticator);
 int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
                    const struct AddressList *cc, const struct AddressList *bcc,
                    const char *msgfile, bool eightbit, struct ConfigSubset *sub);
-#endif
 
 #endif /* MUTT_SEND_SMTP_H */
