@@ -36,6 +36,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
@@ -245,7 +246,8 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
 
   struct Buffer *text = buf_pool_get();
   const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
-  const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
+  const struct AttrColor *ac_prompt = merged_color_overlay(ac_normal,
+                                                           simple_color_get(MT_COLOR_PROMPT));
 
   msgwin_add_text(win, prompt, ac_prompt);
   msgwin_add_text(win, _(" ('?' for list): "), ac_prompt);
@@ -502,15 +504,19 @@ void mw_what_key(void)
   if (!win)
     return;
 
-  char prompt[256] = { 0 };
-  snprintf(prompt, sizeof(prompt), _("Enter keys (%s to abort): "), km_keyname(AbortKey));
-  msgwin_set_text(win, prompt, MT_COLOR_PROMPT);
+  struct Buffer *key = buf_pool_get();
+  struct Buffer *prompt = buf_pool_get();
+  struct Buffer *text = buf_pool_get();
+
+  km_keyname(AbortKey, key);
+
+  buf_printf(prompt, _("Enter keys (%s to abort): "), buf_string(key));
+  msgwin_set_text(win, buf_string(prompt), MT_COLOR_PROMPT);
 
   msgcont_push_window(win);
   struct MuttWindow *old_focus = window_set_focus(win);
   window_redraw(win);
 
-  char keys[256] = { 0 };
   const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
   const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
 
@@ -534,7 +540,7 @@ void mw_what_key(void)
 
     if (ch == ERR)
     {
-      if (!isatty(0)) // terminal was lost
+      if (!isatty(STDIN_FILENO)) // terminal was lost
         mutt_exit(1);
 
       if (SigWinch)
@@ -552,16 +558,70 @@ void mw_what_key(void)
     }
 
     msgwin_clear_text(win);
-    snprintf(keys, sizeof(keys), _("Char = %s, Octal = %o, Decimal = %d\n"),
-             km_keyname(ch), ch, ch);
-    msgwin_add_text(win, keys, ac_normal);
-    msgwin_add_text(win, prompt, ac_prompt);
+
+    buf_reset(key);
+    km_keyname(ch, key);
+
+    buf_printf(text, _("Char = %s, Octal = %o, Decimal = %d\n"), buf_string(key), ch, ch);
+
+    msgwin_add_text(win, buf_string(text), ac_normal);
+    msgwin_add_text(win, buf_string(prompt), ac_prompt);
     msgwin_add_text(win, NULL, NULL);
     window_redraw(NULL);
   }
   // ---------------------------------------------------------------------------
 
+  buf_pool_release(&key);
+  buf_pool_release(&prompt);
+  buf_pool_release(&text);
+
   win = msgcont_pop_window();
   window_set_focus(old_focus);
   mutt_window_free(&win);
+}
+
+/**
+ * mutt_str_expand_tabs - Convert tabs to spaces in a string
+ * @param str       Input string
+ * @param len       Length of the string
+ * @param tabwidth  The number of spaces per indentation-level
+ *
+ * Replace tab characters (`\t`) with spaces in the string. The string will be
+ * resized to fit the expanded version if necessary.
+ */
+char *mutt_str_expand_tabs(char *str, size_t *len, int tabwidth)
+{
+  if (!str || !len || (tabwidth < 1))
+    return NULL;
+
+  // calculate how much space we need
+  size_t required_len = 0;
+  for (int i = 0; (i < *len) && (str[i] != '\0'); i++)
+  {
+    if (str[i] == '\t')
+      required_len += tabwidth; // cheat, just assume full tab width
+    else
+      required_len++;
+  }
+
+  // resize the string if there isn't enough space
+  while (required_len > *len)
+  {
+    *len += 256;
+    MUTT_MEM_REALLOC(&str, *len, char);
+  }
+
+  // expand tabs
+  for (int i = 0; i < *len; i++)
+  {
+    if (str[i] == '\t')
+    {
+      int num_cells = mutt_strnwidth(str, i);
+      int indent = abs((num_cells % tabwidth) - tabwidth);
+      memmove(str + i + indent, str + i + 1, *len - (i + indent) - indent);
+      memset(str + i, ' ', indent);
+    }
+  }
+
+  return str;
 }

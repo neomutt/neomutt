@@ -42,7 +42,7 @@ void test_buf_copy(void)
 
     size_t len = buf_copy(buf1, NULL);
 
-    TEST_CHECK(len == 0);
+    TEST_CHECK_NUM_EQ(len, 0);
     TEST_CHECK(buf_is_empty(buf1) == true);
 
     buf_pool_release(&buf1);
@@ -54,7 +54,7 @@ void test_buf_copy(void)
 
     size_t len = buf_copy(buf2, buf1);
 
-    TEST_CHECK(len == 0);
+    TEST_CHECK_NUM_EQ(len, 0);
     TEST_CHECK(buf_is_empty(buf2) == true);
 
     buf_pool_release(&buf1);
@@ -71,7 +71,7 @@ void test_buf_copy(void)
 
     size_t len = buf_copy(buf2, buf1);
 
-    TEST_CHECK(len == 10);
+    TEST_CHECK_NUM_EQ(len, 10);
     TEST_CHECK_STR_EQ(buf_string(buf2), buf_string(buf1));
 
     buf_pool_release(&buf1);

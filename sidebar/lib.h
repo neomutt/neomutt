@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | sidebar/commands.c  | @subpage sidebar_commands  |
  * | sidebar/config.c    | @subpage sidebar_config    |
+ * | sidebar/expando.c   | @subpage sidebar_expando   |
  * | sidebar/functions.c | @subpage sidebar_functions |
  * | sidebar/observer.c  | @subpage sidebar_observers |
  * | sidebar/sidebar.c   | @subpage sidebar_sidebar   |

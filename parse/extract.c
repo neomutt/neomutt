@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -37,7 +36,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "extract.h"
-#include "globals.h"
 
 /**
  * parse_extract_token - Extract one token from a string
@@ -63,7 +61,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
   {
     if (qc == '\0')
     {
-      if (isspace(ch) && !(flags & TOKEN_SPACE))
+      if (mutt_isspace(ch) && !(flags & TOKEN_SPACE))
         break;
       if ((ch == '#') && !(flags & TOKEN_COMMENT))
         break;
@@ -101,7 +99,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         case 'C':
           if (tok->dptr[0] == '\0')
             return -1; /* premature end of token */
-          buf_addch(dest, (toupper((unsigned char) tok->dptr[0]) - '@') & 0x7f);
+          buf_addch(dest, (mutt_toupper(tok->dptr[0]) - '@') & 0x7f);
           tok->dptr++;
           break;
         case 'e':
@@ -120,8 +118,8 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
           buf_addch(dest, '\t');
           break;
         default:
-          if (isdigit((unsigned char) ch) && isdigit((unsigned char) tok->dptr[0]) &&
-              isdigit((unsigned char) tok->dptr[1]))
+          if (mutt_isdigit(ch) && mutt_isdigit(tok->dptr[0]) &&
+              mutt_isdigit(tok->dptr[1]))
           {
             buf_addch(dest, (ch << 6) + (tok->dptr[0] << 3) + tok->dptr[1] - 3504);
             tok->dptr += 2;
@@ -145,9 +143,9 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       {
         buf_addch(dest, '\033'); // Escape
       }
-      else if (isalpha((unsigned char) ch))
+      else if (mutt_isalpha(ch))
       {
-        buf_addch(dest, toupper((unsigned char) ch) - '@');
+        buf_addch(dest, mutt_toupper(ch) - '@');
       }
       else
       {
@@ -195,7 +193,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         buf_strcpy(cmd, tok->dptr);
       }
       *pc = '`';
-      pid = filter_create(buf_string(cmd), NULL, &fp, NULL, EnvList);
+      pid = filter_create(buf_string(cmd), NULL, &fp, NULL, NeoMutt->env);
       if (pid < 0)
       {
         mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", buf_string(cmd));
@@ -241,7 +239,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       }
     }
     else if ((ch == '$') && (!qc || (qc == '"')) &&
-             ((tok->dptr[0] == '{') || isalpha((unsigned char) tok->dptr[0])))
+             ((tok->dptr[0] == '{') || mutt_isalpha(tok->dptr[0])))
     {
       const char *env = NULL;
       char *var = NULL;
@@ -266,7 +264,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       }
       else
       {
-        for (pc = tok->dptr; isalnum((unsigned char) *pc) || (pc[0] == '_'); pc++)
+        for (pc = tok->dptr; mutt_isalnum(*pc) || (pc[0] == '_'); pc++)
           ; // do nothing
 
         var = mutt_strn_dup(tok->dptr, pc - tok->dptr);
@@ -299,7 +297,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       buf_addch(dest, ch);
     }
   }
-  buf_addch(dest, 0); /* terminate the string */
+
   SKIPWS(tok->dptr);
   return 0;
 }

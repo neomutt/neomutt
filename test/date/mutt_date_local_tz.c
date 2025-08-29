@@ -25,13 +25,14 @@
 #include "acutest.h"
 #include <time.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_date_local_tz(void)
 {
   // time_t mutt_date_local_tz(time_t t);
 
-  TEST_CHECK(mutt_date_local_tz(TIME_T_MIN) == 0);
-  TEST_CHECK(mutt_date_local_tz(TIME_T_MAX) == 0);
+  TEST_CHECK_NUM_EQ(mutt_date_local_tz(TIME_T_MIN), 0);
+  TEST_CHECK_NUM_EQ(mutt_date_local_tz(TIME_T_MAX), 0);
 
   {
     time_t seconds = mutt_date_local_tz(0);

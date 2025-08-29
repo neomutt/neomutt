@@ -90,12 +90,10 @@
 #include "pattern/lib.h"
 #include "send/lib.h"
 #include "alias.h"
+#include "expando.h"
 #include "functions.h"
-#include "globals.h"
 #include "gui.h"
 #include "mutt_logging.h"
-
-const struct ExpandoRenderData QueryRenderData[];
 
 /// Help Bar for the Address Query dialog
 static const struct Mapping QueryHelp[] = {
@@ -140,90 +138,6 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 }
 
 /**
- * query_a - Query: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  struct Buffer *addrs = buf_pool_get();
-  mutt_addrlist_write(&alias->addr, addrs, true);
-
-  buf_printf(buf, "<%s>", buf_string(addrs));
-}
-
-/**
- * query_c_num - Query: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long query_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AliasView *av = data;
-
-  return av->num + 1;
-}
-
-/**
- * query_e - Query: Extra information - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  const char *s = alias->comment;
-  buf_strcpy(buf, s);
-}
-
-/**
- * query_n - Query: Name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  const char *s = alias->name;
-  buf_strcpy(buf, s);
-}
-
-/**
- * query_t_num - Query: Tagged char - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long query_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AliasView *av = data;
-  return av->is_tagged;
-}
-
-/**
- * query_t - Query: Tagged char - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-
-  // NOTE(g0mb4): use $flag_chars?
-  const char *s = av->is_tagged ? "*" : " ";
-  buf_strcpy(buf, s);
-}
-
-/**
- * query_Y - Query: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-
-  alias_tags_to_buffer(&av->alias->tags, buf);
-}
-
-/**
  * query_make_entry - Format an Alias for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $query_format
@@ -238,12 +152,13 @@ static int query_make_entry(struct Menu *menu, int line, int max_cols, struct Bu
   if (c_arrow_cursor)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
-    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+    if (max_cols > 0)
+      max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
   const struct Expando *c_query_format = cs_subset_expando(mdata->sub, "query_format");
-  return expando_filter(c_query_format, QueryRenderData, av,
-                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_filter(c_query_format, QueryRenderCallbacks, av,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, NeoMutt->env, buf);
 }
 
 /**
@@ -284,7 +199,7 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
   const char *const c_query_command = cs_subset_string(sub, "query_command");
   buf_file_expand_fmt_quote(cmd, c_query_command, s);
 
-  pid_t pid = filter_create(buf_string(cmd), NULL, &fp, NULL, EnvList);
+  pid_t pid = filter_create(buf_string(cmd), NULL, &fp, NULL, NeoMutt->env);
   if (pid < 0)
   {
     mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", buf_string(cmd));
@@ -296,6 +211,7 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
   if (verbose)
     mutt_message(_("Waiting for response..."));
 
+  struct Buffer *addr = buf_pool_get();
   /* The query protocol first reads one NL-terminated line. If an error
    * occurs, this is assumed to be an error message. Otherwise it's ignored. */
   msg = mutt_file_read_line(msg, &msglen, fp, NULL, MUTT_RL_NO_FLAGS);
@@ -311,8 +227,6 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
 
     struct Alias *alias = alias_new();
 
-    mutt_addrlist_parse(&alias->addr, tok);
-
     if (next_tok)
     {
       tok = next_tok;
@@ -320,12 +234,24 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
       if (next_tok)
         *next_tok++ = '\0';
 
-      alias->name = mutt_str_dup(tok);
+      // The address shouldn't be wrapped with <>s, but historically, this was suppported
+      if (buf[0] == '<')
+        buf_printf(addr, "\"%s\" %s", tok, buf);
+      else
+        buf_printf(addr, "\"%s\" <%s>", tok, buf);
+
+      mutt_addrlist_parse(&alias->addr, buf_string(addr));
+
       parse_alias_comments(alias, next_tok);
+    }
+    else
+    {
+      mutt_addrlist_parse(&alias->addr, buf); // Email address
     }
 
     TAILQ_INSERT_TAIL(al, alias, entries);
   }
+  buf_pool_release(&addr);
 
   FREE(&buf);
   mutt_file_fclose(&fp);
@@ -375,13 +301,14 @@ static int query_window_observer(struct NotifyCallback *nc)
  * query_dialog_new - Create an Query Selection Dialog
  * @param mdata Menu data holding Aliases
  * @param query Initial query string
- * @retval ptr New Dialog
+ * @retval obj SimpleDialogWindows Tuple containing Dialog, SimpleBar and Menu pointers
  */
-static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const char *query)
+static struct SimpleDialogWindows query_dialog_new(struct AliasMenuData *mdata,
+                                                   const char *query)
 {
-  struct MuttWindow *dlg = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
 
   menu->make_entry = query_make_entry;
   menu->tag = query_tag;
@@ -397,14 +324,13 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
 
   char title[256] = { 0 };
   snprintf(title, sizeof(title), "%s: %s", mdata->title, query);
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  sbar_set_title(sbar, title);
+  sbar_set_title(sdw.sbar, title);
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, alias_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, query_window_observer, win_menu);
 
-  return dlg;
+  return sdw;
 }
 
 /**
@@ -420,12 +346,10 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
  */
 static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
 {
-  struct MuttWindow *dlg = query_dialog_new(mdata, buf_string(buf));
-  struct Menu *menu = dlg->wdata;
-  struct MuttWindow *win_sbar = window_find_child(dlg, WT_STATUS_BAR);
-  struct MuttWindow *win_menu = window_find_child(dlg, WT_MENU);
+  struct SimpleDialogWindows sdw = query_dialog_new(mdata, buf_string(buf));
+  struct Menu *menu = sdw.menu;
   mdata->menu = menu;
-  mdata->sbar = win_sbar;
+  mdata->sbar = sdw.sbar;
   mdata->query = buf;
 
   alias_array_sort(&mdata->ava, mdata->sub);
@@ -433,7 +357,7 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata->ava)
   {
-    avp->num = ARRAY_FOREACH_IDX;
+    avp->num = ARRAY_FOREACH_IDX_avp;
   }
 
   struct MuttWindow *old_focus = window_set_focus(menu->win);
@@ -457,16 +381,16 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
     }
     mutt_clear_error();
 
-    rc = alias_function_dispatcher(dlg, op);
+    rc = alias_function_dispatcher(sdw.dlg, op);
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(win_menu, op);
+      rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
   } while ((rc != FR_DONE) && (rc != FR_CONTINUE));
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
   window_redraw(NULL);
   return (rc == FR_CONTINUE); // Was a selection made?
 }
@@ -507,6 +431,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
       mutt_addrlist_write(&addr, buf, false);
       mutt_addrlist_clear(&addr);
       mutt_clear_error();
+      buf_addstr(buf, ", ");
     }
     goto done;
   }
@@ -615,20 +540,3 @@ done:
   aliaslist_clear(&al);
   buf_pool_release(&buf);
 }
-
-/**
- * QueryRenderData - Callbacks for Query Expandos
- *
- * @sa QueryFormatDef, ExpandoDataAlias, ExpandoDataGlobal
- */
-const struct ExpandoRenderData QueryRenderData[] = {
-  // clang-format off
-  { ED_ALIAS,  ED_ALI_ADDRESS, query_a,     NULL },
-  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        query_c_num },
-  { ED_ALIAS,  ED_ALI_COMMENT, query_e,     NULL },
-  { ED_ALIAS,  ED_ALI_NAME,    query_n,     NULL },
-  { ED_ALIAS,  ED_ALI_TAGGED,  query_t,     query_t_num },
-  { ED_ALIAS,  ED_ALI_TAGS,    query_Y,     NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};

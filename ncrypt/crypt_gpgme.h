@@ -27,13 +27,13 @@
 #include <gpgme.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/lib.h"
 #include "lib.h"
 
 struct AddressList;
 struct Body;
 struct Email;
 struct Message;
-struct State;
 
 /* We work based on user IDs, getting from a user ID to the key is
  * check and does not need any memory (GPGME uses reference counting). */
@@ -49,6 +49,7 @@ struct CryptKeyInfo
   KeyFlags flags;            ///< global and per uid flags (for convenience)
   gpgme_validity_t validity; ///< uid validity (cached for convenience)
 };
+ARRAY_HEAD(CryptKeyInfoArray, struct CryptKeyInfo *);
 
 /**
  * enum KeyInfo - PGP Key info

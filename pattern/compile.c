@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -44,7 +43,6 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
-#include "globals.h"
 #include "mview.h"
 
 struct Menu;
@@ -190,7 +188,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   mutt_message(_("Running search command: %s ..."), cmd_buf->data);
   pat->is_multi = true;
   mutt_list_clear(&pat->p.multi_cases);
-  pid_t pid = filter_create(cmd_buf->data, NULL, &fp, NULL, EnvList);
+  pid_t pid = filter_create(cmd_buf->data, NULL, &fp, NULL, NeoMutt->env);
   if (pid < 0)
   {
     buf_printf(err, "unable to fork command: %s\n", cmd_buf->data);
@@ -564,7 +562,7 @@ bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
 
     bool have_min = false;
     bool until_now = false;
-    if (isdigit((unsigned char) *pc))
+    if (mutt_isdigit(*pc))
     {
       /* minimum date specified */
       pc = get_date(pc, &min, err);
@@ -649,12 +647,12 @@ static bool eat_range(struct Pattern *pat, PatternCompFlags flags,
     {
       pat->min = strtol(s->dptr, &tmp, 0);
     }
-    if (toupper((unsigned char) *tmp) == 'K') /* is there a prefix? */
+    if (mutt_toupper(*tmp) == 'K') /* is there a prefix? */
     {
       pat->min *= 1024;
       tmp++;
     }
-    else if (toupper((unsigned char) *tmp) == 'M')
+    else if (mutt_toupper(*tmp) == 'M')
     {
       pat->min *= 1048576;
       tmp++;
@@ -679,16 +677,16 @@ static bool eat_range(struct Pattern *pat, PatternCompFlags flags,
     tmp = s->dptr;
   }
 
-  if (isdigit((unsigned char) *tmp))
+  if (mutt_isdigit(*tmp))
   {
     /* range maximum */
     pat->max = strtol(tmp, &tmp, 0);
-    if (toupper((unsigned char) *tmp) == 'K')
+    if (mutt_toupper(*tmp) == 'K')
     {
       pat->max *= 1024;
       tmp++;
     }
-    else if (toupper((unsigned char) *tmp) == 'M')
+    else if (mutt_toupper(*tmp) == 'M')
     {
       pat->max *= 1048576;
       tmp++;
@@ -780,7 +778,8 @@ void mutt_pattern_free(struct PatternList **pat)
   if (!pat || !*pat)
     return;
 
-  struct Pattern *np = SLIST_FIRST(*pat), *next = NULL;
+  struct Pattern *np = SLIST_FIRST(*pat);
+  struct Pattern *next = NULL;
 
   while (np)
   {

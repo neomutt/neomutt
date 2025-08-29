@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <gpg-error.h>
 #include <gpgme.h>
 #include <langinfo.h>
@@ -174,7 +173,7 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
 static const char *parse_dn_part(struct DnArray *array, const char *str)
 {
   const char *s = NULL, *s1 = NULL;
-  size_t n;
+  int n;
   char *p = NULL;
 
   /* parse attribute type */
@@ -195,7 +194,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
   if (*str == '#')
   { /* hexstring */
     str++;
-    for (s = str; isxdigit(*s); s++)
+    for (s = str; mutt_isxdigit(*s); s++)
       s++;
     n = s - str;
     if ((n == 0) || (n & 1))
@@ -203,7 +202,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
     n /= 2;
     p = MUTT_MEM_MALLOC(n + 1, char);
     array->value = (char *) p;
-    for (s1 = str; n; s1 += 2, n--)
+    for (s1 = str; n > 0; s1 += 2, n--)
       sscanf(s1, "%2hhx", (unsigned char *) p++);
     *p = '\0';
   }
@@ -219,7 +218,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
         {
           n++;
         }
-        else if (isxdigit(s[0]) && isxdigit(s[1]))
+        else if (mutt_isxdigit(s[0]) && mutt_isxdigit(s[1]))
         {
           s++;
           n++;
@@ -246,12 +245,12 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
 
     p = MUTT_MEM_MALLOC(n + 1, char);
     array->value = (char *) p;
-    for (s = str; n; s++, n--)
+    for (s = str; n > 0; s++, n--)
     {
       if (*s == '\\')
       {
         s++;
-        if (isxdigit(*s))
+        if (mutt_isxdigit(*s))
         {
           sscanf(s, "%2hhx", (unsigned char *) p++);
           s++;
@@ -355,7 +354,7 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
   {
     fputs(_("[Can't display this user ID (unknown encoding)]"), fp);
   }
-  else if (!isalnum(userid[0]))
+  else if (!mutt_isalnum(userid[0]))
   {
     fputs(_("[Can't display this user ID (invalid encoding)]"), fp);
   }
@@ -745,7 +744,12 @@ static int op_exit(struct GpgmeData *gd, int op)
 static int op_generic_select_entry(struct GpgmeData *gd, int op)
 {
   const int index = menu_get_index(gd->menu);
-  struct CryptKeyInfo *cur_key = gd->key_table[index];
+  struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
+  if (!pkey)
+    return FR_ERROR;
+
+  struct CryptKeyInfo *cur_key = *pkey;
+
   /* FIXME make error reporting more verbose - this should be
    * easy because GPGME provides more information */
   if (OptPgpCheckTrust)
@@ -807,8 +811,11 @@ static int op_generic_select_entry(struct GpgmeData *gd, int op)
 static int op_verify_key(struct GpgmeData *gd, int op)
 {
   const int index = menu_get_index(gd->menu);
-  struct CryptKeyInfo *cur_key = gd->key_table[index];
-  verify_key(cur_key);
+  struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
+  if (!pkey)
+    return FR_ERROR;
+
+  verify_key(*pkey);
   menu_queue_redraw(gd->menu, MENU_REDRAW_FULL);
   return FR_SUCCESS;
 }
@@ -819,8 +826,11 @@ static int op_verify_key(struct GpgmeData *gd, int op)
 static int op_view_id(struct GpgmeData *gd, int op)
 {
   const int index = menu_get_index(gd->menu);
-  struct CryptKeyInfo *cur_key = gd->key_table[index];
-  mutt_message("%s", cur_key->uid);
+  struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
+  if (!pkey)
+    return FR_ERROR;
+
+  mutt_message("%s", (*pkey)->uid);
   return FR_SUCCESS;
 }
 
@@ -844,14 +854,13 @@ static const struct GpgmeFunction GpgmeFunctions[] = {
  */
 int gpgme_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg)
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
-  struct GpgmeData *gd = dlg->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct GpgmeData *gd = menu->mdata;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; GpgmeFunctions[i].op != OP_NULL; i++)

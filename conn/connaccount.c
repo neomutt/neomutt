@@ -34,6 +34,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
 #include "connaccount.h"
@@ -77,7 +78,7 @@ int mutt_account_getuser(struct ConnAccount *cac)
     char prompt[256] = { 0 };
     /* L10N: Example: Username at myhost.com */
     snprintf(prompt, sizeof(prompt), _("Username at %s: "), cac->host);
-    mutt_str_copy(cac->user, Username, sizeof(cac->user));
+    mutt_str_copy(cac->user, NeoMutt->username, sizeof(cac->user));
 
     struct Buffer *buf = buf_pool_get();
     const int rc = mw_get_field(prompt, buf, MUTT_COMP_UNBUFFERED, HC_OTHER, NULL, NULL);
@@ -213,7 +214,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   }
 
   FILE *fp = NULL;
-  pid_t pid = filter_create(cmd, NULL, &fp, NULL, EnvList);
+  pid_t pid = filter_create(cmd, NULL, &fp, NULL, NeoMutt->env);
   if (pid < 0)
   {
     mutt_perror(_("Unable to run refresh command"));

@@ -30,7 +30,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
@@ -104,7 +103,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *b, const char *path)
         mutt_str_copy(buf, PKGDATADIR "/mime.types", sizeof(buf));
         break;
       case 3:
-        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
+        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(NeoMutt->home_dir));
         break;
       default:
         mutt_debug(LL_DEBUG1, "Internal error, count = %d\n", count);
@@ -151,7 +150,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *b, const char *path)
             }
             *p++ = 0;
 
-            for (q = p; *q && !isspace(*q); q++)
+            for (q = p; *q && !mutt_isspace(*q); q++)
               ; // do nothing
 
             mutt_strn_copy(subtype, p, q - p, sizeof(subtype));
@@ -258,7 +257,7 @@ static void transform_to_7bit(struct Body *b, FILE *fp_in, struct ConfigSubset *
  */
 void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
 {
-  struct Buffer *temp = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
   struct stat st = { 0 };
@@ -285,8 +284,8 @@ void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
   }
 
   /* Avoid buffer pool due to recursion */
-  buf_mktemp(temp);
-  fp_out = mutt_file_fopen(buf_string(temp), "w+");
+  buf_mktemp(tempfile);
+  fp_out = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp_out)
   {
     mutt_perror("fopen");
@@ -318,7 +317,7 @@ void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
   b->d_filename = b->filename;
   if (b->filename && b->unlink)
     unlink(b->filename);
-  b->filename = buf_strdup(temp);
+  b->filename = buf_strdup(tempfile);
   b->unlink = true;
   if (stat(b->filename, &st) == -1)
   {
@@ -336,10 +335,10 @@ cleanup:
   if (fp_out)
   {
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(buf_string(temp));
+    mutt_file_unlink(buf_string(tempfile));
   }
 
-  buf_pool_release(&temp);
+  buf_pool_release(&tempfile);
 }
 
 /**
@@ -470,25 +469,25 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
     }
   }
 
-  struct Buffer *buf = buf_pool_get();
-  buf_mktemp(buf);
-  fp = mutt_file_fopen_masked(buf_string(buf), "w+");
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  fp = mutt_file_fopen_masked(buf_string(tempfile), "w+");
   if (!fp)
   {
-    buf_pool_release(&buf);
+    buf_pool_release(&tempfile);
     return NULL;
   }
 
   body = mutt_body_new();
   body->type = TYPE_MESSAGE;
   body->subtype = mutt_str_dup("rfc822");
-  body->filename = mutt_str_dup(buf_string(buf));
+  body->filename = mutt_str_dup(buf_string(tempfile));
   body->unlink = true;
   body->use_disp = false;
   body->disposition = DISP_INLINE;
   body->noconv = true;
 
-  buf_pool_release(&buf);
+  buf_pool_release(&tempfile);
 
   struct Message *msg = mx_msg_open(m, e);
   if (!msg)
@@ -575,7 +574,7 @@ static void run_mime_type_query(struct Body *b, struct ConfigSubset *sub)
 
   buf_file_expand_fmt_quote(cmd, c_mime_type_query_command, b->filename);
 
-  pid = filter_create(buf_string(cmd), NULL, &fp, &fp_err, EnvList);
+  pid = filter_create(buf_string(cmd), NULL, &fp, &fp_err, NeoMutt->env);
   if (pid < 0)
   {
     mutt_error(_("Error running \"%s\""), buf_string(cmd));

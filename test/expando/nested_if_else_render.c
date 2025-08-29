@@ -102,7 +102,7 @@ void test_expando_nested_if_else_render(void)
   check_node_text(node_true, "Y");
   check_node_text(node_false, "NONE");
 
-  const struct ExpandoRenderData render[] = {
+  const struct ExpandoRenderCallback render[] = {
     { 1, 0, nested_x },
     { 1, 1, nested_y },
     { -1, -1, NULL },

@@ -1,3 +1,174 @@
+2025-05-10  Richard Russon  \<rich@flatcap.org\>
+* Contrib
+  - #4616 Fix gpg-json output
+* Bug Fixes
+  - #4600 main: don't stop if /var/spool/mail is missing
+  - #4602 color: fix quoted maths
+  - #4604 Don't consider "weed" when writing an email to file
+  - #4605 help: fix leaks
+  - #4612 imap: check for incomplete Mailboxes on sync
+  - #4622 fix label completion crash
+* Translations
+  - #4622 update Esperanto translation
+  - Update lt_LT translations
+* Docs
+  -  docs: fix broken functions
+* Build
+  - #4607 Check for DocBook XSL
+  - #4618 Build and test on FreeBSD
+
+2025-04-04  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #4493 config: don't quote enums
+  - #4493 link config dump to docs
+  - #4494 refactor the Help Page for clarity
+  - #4554 CLI: `neomutt -DD` -- Dump Different
+  - #4593 browser: tag select rather than descend
+* Bug Fixes
+  - #3469 source: fix variable interpretation
+  - #4370 `mutt_oauth2`: refactor `sasl_string` computation
+  - #4536 expand tabs to spaces in compose preview
+  - #4537 fix dumping of initial values
+  - #4538 move `real_name` init
+  - #4542 Remove `MUTT_NEWFOLDER`, fix appending to mbox
+  - #4546 Respect Ignore when modifying an email's headers
+  - #4549 fix refresh on toggle `hide_thread_subject`
+  - #4550 buffer: fix seek
+  - #4551 add comma to single `<complete-query>` match
+  - #4595 notmuch: check for parse failure
+  - #4596 query: allow `<>`s around email addresses
+  - pager: fix normal/stripe colour
+  - fix colour leaks in pager
+  - fix array leak in the verify certificate dialog
+* Translations
+  - 100% German
+  - 100% Turkish
+  - 96% Lithuanian
+  - 86% French
+  - 49% Chinese (Traditional)
+* Build
+  - #4552 Deprecate some configure options that aren't used anymore
+  - build: workaround for unused-result warning
+* Code
+  - #4492 colour refactoring
+  - #4543 debug: Chain old SEGV Handler
+  - #4545 Allow nested `ARRAY_FOREACH()`
+  - #4553 config: API `has_been_set()`
+  - #4557 config: drop ConfigSet from API functions
+  - #4558 drop obsolete pgp/smime menus
+  - #4559 array: `foreach_reverse()`
+  - #4560 Change description of verify-key to be crypto-scheme agnostic
+  - #4561 expando: move EnvList out of library
+  - #4570 Simplify the management of NeoMutt Commands
+  - #4571 libcli - parse the command line
+  - #4580 Split CLI Usage into sections
+  - #4582 pager: fix lost `NT_PAGER` notifications
+  - #4591 pager: fix refresh on config/colour changes
+  - array: upgrade `get_elem_list()`
+  - Buffer refactoring
+  - coverity: fix defects
+  - improve `localise_config()`
+  - main: drop -B (batch mode) option
+  - merge init.[ch] into main.c
+  - refactor version code
+  - neomutt: `home_dir`, `username`, `env`
+  - query: unify NeoMutt `-D` and `-Q`
+  - refactor `main.c`/`init.c`
+  - sidebar: streamline expando callbacks
+  - test: lots of parse coverage
+  - window refactoring
+  - window: force recalc|repaint on new windows
+* Upstream
+  - Update mutt/queue.h
+  - Fix NULL pointer dereference when calling `imap_logout_all()`
+
+2025-01-13  Richard Russon  \<rich@flatcap.org\>
+* Bug Fixes
+  - #4477 fix crash in folder-hook
+  - #4480 fix memory leak in compose message preview (fixes #4478)
+  - #4483 query: fix comma-separated names
+  - #4485 lua: fix `lua_mutt_call()`
+  - #4490 notmuch: refresh the Email if the filename changes
+  - fix: no new mail message
+  - fix display of certificate fingerprints
+  - fix prompt colour
+* Translations
+  - 100% Czech
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Slovakian
+  - 100% Turkish
+  - 91% French
+  - 41% Chinese (Traditional)
+* Build
+  - #4479 Fix DT_NUMBER entries on 32-bit endian platforms
+* Code
+  - #4481 Simplify `mutt_file_fopen()`
+  - colour refactoring
+  - standardise variable names for temporary files
+
+2025-01-09  Richard Russon  \<rich@flatcap.org\>
+* BROKEN - Please use 2025-01-13 instead
+
+2024-12-12  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #4437 show message preview in compose view
+  - #4439 add trailing commas when editing addresses
+* Bug Fixes
+  - #4444 expando: fix overflow
+  - #4461 Spaces can be wide
+  - #4464 Remove BOM from UTF-8 text
+  - #4467 Bug with wrong fingerprints in certificate_file
+  - #4470 fix postponed sorting assertion failure
+  - #4472 fix: `save_attachment_open()` when overwriting
+  - #4473 add text-wrapping to compose message preview pager
+  - #4475 edit_headers: cleanup temporary file on error
+  - expando: fix crash on empty `%[]` date
+  - expando: fix container formatting
+  - browser: fix 'tag-' display
+  - query: fix memory leak
+  - fix more arrow_cursor + search
+* Changed Config
+  - Config Renames:
+    - `$pgp_sort_keys`       -> `$pgp_key_sort`
+    - `$sidebar_sort_method` -> `$sidebar_sort`
+    - `$sort_alias`          -> `$alias_sort`
+    - `$sort_browser`        -> `$browser_sort`
+  - Changed Defaults:
+    - `set alias_format = "%3i %f%t %-15a %-56A | %C%> %Y"`
+    - `set query_format = "%3i %t %-25N %-25E | %C%> %Y"`
+* Translations
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Turkish
+  - 89% French
+  - 39% Chinese (Traditional)
+* Coverity Defects
+  - Explicit null dereferenced
+  - Overflowed constant
+  - Overflowed return value
+  - Resource leak
+* Docs
+  - alias tags
+* Build
+  - #4452 only use `struct tm.tm_gmtoff` if available
+* Code
+  - #4294 refactor memory allocation
+  - #4442 remove unused fields from ComposeSharedData
+  - #4447 refactor 'sort' constants
+  - #4449 add `mutt_window_swap()`
+  - unify Menu data
+  - move config to libraries
+  - unify Alias/Query
+  - expando factor out callbacks
+  - refactor `simple_dialog_new()`
+  - test: add `TEST_CHECK_NUM_EQ()`
+  - fopen: tidy read-only
+* Upstream
+  - #4448 Update queue.h
+
 2024-11-14  Richard Russon  \<rich@flatcap.org\>
 * Security
   - Fixed: CVE-2024-49393
@@ -861,7 +1032,7 @@
   - 100% Czech
   - 70% Turkish
 * Docs
-  - Document that `$sort_alias` affects the query menu
+  - Document that `$alias_sort` affects the query menu
 * Build
   - improve ASAN flags
   - add SASL and S/MIME to `--everything`
@@ -1522,7 +1693,7 @@
   - pager specific "show incoming mailboxes list" macro
   - Improve gss debug printing of status_string
   - Remove trailing null count from gss_buffer_desc.length field
-  - Add a comment in auth_gss about RFCs and null-termination
+  - Add a comment in auth_gss about RFCs and NUL-termination
   - Change prompt string for `$crypt_verify_sig`
 
 2018-03-23  Richard Russon  \<rich@flatcap.org\>
@@ -2549,7 +2720,7 @@
   - More openssl1.1 fixes: remove uses of `X509->name` in debugging. (closes #3870)
   - Don't close stderr when opening a tunnel. (closes #3726)
   - Minor resource and error logic cleanup in tunnel_socket_open()
-  - Make sure that the output of X509_NAME_oneline is null-terminated
+  - Make sure that the output of X509_NAME_oneline is NUL-terminated
 
 2016-11-04  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes

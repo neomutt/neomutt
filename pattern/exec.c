@@ -177,6 +177,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
 #ifdef USE_FMEMOPEN
         FREE(&temp);
 #endif
+        mutt_file_fclose(&state.fp_out);
         return false;
       }
       mutt_body_handler(e->body, &state);
@@ -471,7 +472,7 @@ static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 static bool mutt_is_predicate_recipient(bool all_addr, struct Envelope *env, addr_predicate_t p)
 {
   struct AddressList *als[] = { &env->to, &env->cc };
-  for (size_t i = 0; i < mutt_array_size(als); ++i)
+  for (size_t i = 0; i < countof(als); i++)
   {
     struct AddressList *al = als[i];
     struct Address *a = NULL;
@@ -637,7 +638,7 @@ static bool match_content_type(const struct Pattern *pat, struct Body *b)
     return false;
 
   char buf[256] = { 0 };
-  snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
+  snprintf(buf, sizeof(buf), "%s/%s", BODY_TYPE(b), b->subtype);
 
   if (patmatch(pat, buf))
     return true;
@@ -1109,12 +1110,12 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->thread && e->thread->duplicate_thread);
     case MUTT_PAT_MIMEATTACH:
     {
-      int count = mutt_count_body_parts(e, msg->fp);
+      int count = msg ? mutt_count_body_parts(e, msg->fp) : 0;
       return pat->pat_not ^
              (count >= pat->min && (pat->max == MUTT_MAXRANGE || count <= pat->max));
     }
     case MUTT_PAT_MIMETYPE:
-      if (!m)
+      if (!m || !msg)
         return false;
       return pat->pat_not ^ match_mime_content_type(pat, e, msg->fp);
     case MUTT_PAT_UNREFERENCED:

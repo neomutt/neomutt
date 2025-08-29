@@ -84,7 +84,8 @@ static void init_tmp_dir(struct NeoMutt *n)
 
   snprintf(buf, sizeof(buf), "%s/tmp", mutt_str_getenv(TEST_DIR));
 
-  cs_str_initial_set(n->sub->cs, "tmp_dir", buf, NULL);
+  struct HashElem *he = cs_get_elem(n->sub->cs, "tmp_dir");
+  cs_he_initial_set(n->sub->cs, he, buf, NULL);
   cs_str_reset(n->sub->cs, "tmp_dir", NULL);
 }
 

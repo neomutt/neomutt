@@ -3,7 +3,7 @@
  * Type representing a long
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
@@ -33,6 +33,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -42,8 +43,8 @@
 /**
  * long_string_set - Set a Long by string - Implements ConfigSetType::string_set() - @ingroup cfg_type_string_set
  */
-static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
-                           const char *value, struct Buffer *err)
+static int long_string_set(void *var, struct ConfigDef *cdef, const char *value,
+                           struct Buffer *err)
 {
   if (!value || (value[0] == '\0'))
   {
@@ -74,7 +75,7 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
     if (cdef->validator)
     {
-      int rc = cdef->validator(cs, cdef, (intptr_t) num, err);
+      int rc = cdef->validator(cdef, (intptr_t) num, err);
 
       if (CSR_RESULT(rc) != CSR_SUCCESS)
         return rc | CSR_INV_VALIDATOR;
@@ -93,8 +94,7 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 /**
  * long_string_get - Get a Long as a string - Implements ConfigSetType::string_get() - @ingroup cfg_type_string_get
  */
-static int long_string_get(const struct ConfigSet *cs, void *var,
-                           const struct ConfigDef *cdef, struct Buffer *result)
+static int long_string_get(void *var, const struct ConfigDef *cdef, struct Buffer *result)
 {
   int value;
 
@@ -110,8 +110,8 @@ static int long_string_get(const struct ConfigSet *cs, void *var,
 /**
  * long_native_set - Set a Long config item by long - Implements ConfigSetType::native_set() - @ingroup cfg_type_native_set
  */
-static int long_native_set(const struct ConfigSet *cs, void *var,
-                           const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
+static int long_native_set(void *var, const struct ConfigDef *cdef,
+                           intptr_t value, struct Buffer *err)
 {
   if ((value < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
@@ -127,7 +127,7 @@ static int long_native_set(const struct ConfigSet *cs, void *var,
 
   if (cdef->validator)
   {
-    int rc = cdef->validator(cs, cdef, value, err);
+    int rc = cdef->validator(cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
       return rc | CSR_INV_VALIDATOR;
@@ -140,8 +140,7 @@ static int long_native_set(const struct ConfigSet *cs, void *var,
 /**
  * long_native_get - Get a long from a Long config item - Implements ConfigSetType::native_get() - @ingroup cfg_type_native_get
  */
-static intptr_t long_native_get(const struct ConfigSet *cs, void *var,
-                                const struct ConfigDef *cdef, struct Buffer *err)
+static intptr_t long_native_get(void *var, const struct ConfigDef *cdef, struct Buffer *err)
 {
   return *(long *) var;
 }
@@ -149,8 +148,7 @@ static intptr_t long_native_get(const struct ConfigSet *cs, void *var,
 /**
  * long_string_plus_equals - Add to a Long by string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
  */
-static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
-                                   const struct ConfigDef *cdef,
+static int long_string_plus_equals(void *var, const struct ConfigDef *cdef,
                                    const char *value, struct Buffer *err)
 {
   long num = 0;
@@ -175,7 +173,7 @@ static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
 
   if (cdef->validator)
   {
-    int rc = cdef->validator(cs, cdef, (intptr_t) result, err);
+    int rc = cdef->validator(cdef, (intptr_t) result, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
       return rc | CSR_INV_VALIDATOR;
@@ -188,8 +186,7 @@ static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
 /**
  * long_string_minus_equals - Subtract from a Long by string - Implements ConfigSetType::string_minus_equals() - @ingroup cfg_type_string_minus_equals
  */
-static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
-                                    const struct ConfigDef *cdef,
+static int long_string_minus_equals(void *var, const struct ConfigDef *cdef,
                                     const char *value, struct Buffer *err)
 {
   long num = 0;
@@ -214,7 +211,7 @@ static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
 
   if (cdef->validator)
   {
-    int rc = cdef->validator(cs, cdef, (intptr_t) result, err);
+    int rc = cdef->validator(cdef, (intptr_t) result, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
       return rc | CSR_INV_VALIDATOR;
@@ -225,10 +222,17 @@ static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * long_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool long_has_been_set(void *var, const struct ConfigDef *cdef)
+{
+  return (cdef->initial != (*(long *) var));
+}
+
+/**
  * long_reset - Reset a Long to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
-static int long_reset(const struct ConfigSet *cs, void *var,
-                      const struct ConfigDef *cdef, struct Buffer *err)
+static int long_reset(void *var, const struct ConfigDef *cdef, struct Buffer *err)
 {
   if (cdef->initial == (*(long *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
@@ -238,7 +242,7 @@ static int long_reset(const struct ConfigSet *cs, void *var,
 
   if (cdef->validator)
   {
-    int rc = cdef->validator(cs, cdef, cdef->initial, err);
+    int rc = cdef->validator(cdef, cdef->initial, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
       return rc | CSR_INV_VALIDATOR;
@@ -260,6 +264,7 @@ const struct ConfigSetType CstLong = {
   long_native_get,
   long_string_plus_equals,
   long_string_minus_equals,
+  long_has_been_set,
   long_reset,
   NULL, // destroy
 };

@@ -564,11 +564,11 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
 {
   ssize_t nread = 0;
   char *rv = NULL;
-  struct Buffer *tempf = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
 
-  buf_mktemp(tempf);
+  buf_mktemp(tempfile);
 
-  FILE *fp = mutt_file_fopen(buf_string(tempf), "w+");
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -586,9 +586,9 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
     {
       if (fwrite(buf, nread, 1, fp) != 1)
       {
-        mutt_perror("%s", buf_string(tempf));
+        mutt_perror("%s", buf_string(tempfile));
         mutt_file_fclose(&fp);
-        unlink(buf_string(tempf));
+        unlink(buf_string(tempfile));
         goto cleanup;
       }
     }
@@ -600,16 +600,16 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
   if (nread == -1)
   {
     mutt_error(_("error reading data object: %s"), gpgme_strerror(err));
-    unlink(buf_string(tempf));
+    unlink(buf_string(tempfile));
     mutt_file_fclose(&fp);
     goto cleanup;
   }
   if (fp_ret)
     *fp_ret = fp;
-  rv = buf_strdup(tempf);
+  rv = buf_strdup(tempfile);
 
 cleanup:
-  buf_pool_release(&tempf);
+  buf_pool_release(&tempfile);
   return rv;
 }
 
@@ -1787,10 +1787,8 @@ restart:
     goto cleanup;
 #endif
 
-  const bool c_devel_security = cs_subset_bool(NeoMutt->sub, "devel_security");
-
   result = gpgme_op_decrypt_result(ctx);
-  if (c_devel_security && result && (state->flags & STATE_DISPLAY))
+  if (result && (state->flags & STATE_DISPLAY))
     show_encryption_info(state, result);
 
   if (err != GPG_ERR_NO_ERROR)
@@ -2035,6 +2033,7 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   if (!*fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
+    mutt_file_fclose(&fp_tmp);
     return -1;
   }
 
@@ -2623,9 +2622,8 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
         }
         redraw_if_needed(ctx);
 
-        const bool c_devel_security = cs_subset_bool(NeoMutt->sub, "devel_security");
         gpgme_decrypt_result_t result = gpgme_op_decrypt_result(ctx);
-        if (c_devel_security && result && (state->flags & STATE_DISPLAY))
+        if (result && (state->flags & STATE_DISPLAY))
           show_encryption_info(state, result);
 
         if (err != GPG_ERR_NO_ERROR)

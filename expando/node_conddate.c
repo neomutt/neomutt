@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
@@ -167,15 +166,15 @@ time_t cutoff_this(char period)
  * node_conddate_render - Render a CondDate Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_conddate_render(const struct ExpandoNode *node,
-                         const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                         const struct ExpandoRenderCallback *erc, struct Buffer *buf,
                          int max_cols, void *data, MuttFormatFlags flags)
 {
   ASSERT(node->type == ENT_CONDDATE);
 
-  const struct ExpandoRenderData *rd_match = find_get_number(rdata, node->did, node->uid);
-  ASSERT(rd_match && "Unknown UID");
+  const struct ExpandoRenderCallback *erc_match = find_get_number(erc, node->did, node->uid);
+  ASSERT(erc_match && "Unknown UID");
 
-  const long t_test = rd_match->get_number(node, data, flags);
+  const long t_test = erc_match->get_number(node, data, flags);
 
   const struct NodeCondDatePrivate *priv = node->ndata;
 
@@ -230,12 +229,12 @@ struct ExpandoNode *node_conddate_parse(const char *str, int did, int uid,
 
   str++;
 
-  if (isdigit(*str))
+  if (mutt_isdigit(*str))
   {
     unsigned short number = 0;
     const char *end_ptr = mutt_str_atous(str, &number);
 
-    // NOTE(g0mb4): str is NOT null-terminated
+    // NOTE(g0mb4): str is NOT NUL-terminated
     if (!end_ptr || (number == USHRT_MAX))
     {
       err->position = str;

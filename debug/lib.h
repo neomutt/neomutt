@@ -33,6 +33,7 @@
  * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/keymap.c      | @subpage debug_keymap      |
  * | debug/logging.c     | @subpage debug_logging     |
+ * | debug/names.c       | @subpage debug_names       |
  * | debug/notify.c      | @subpage debug_notify      |
  * | debug/pager.c       | @subpage debug_pager       |
  * | debug/window.c      | @subpage debug_window      |
@@ -123,6 +124,7 @@ extern bool DebugLogTimestamp;
 extern int log_disp_debug           (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...);
 
 // Names
+const char *name_color_id           (int cid);
 const char *name_content_disposition(enum ContentDisposition disp);
 const char *name_content_encoding   (enum ContentEncoding enc);
 const char *name_content_type       (enum ContentType type);
@@ -140,7 +142,11 @@ const char *name_window_type        (const struct MuttWindow *win);
 int debug_all_observer(struct NotifyCallback *nc);
 
 // Pager
+#ifdef USE_DEBUG_COLOR
 void dump_pager(struct PagerPrivateData *priv);
+#else
+static inline void dump_pager(struct PagerPrivateData *priv) {}
+#endif
 
 // Window
 void debug_win_dump(void);

@@ -28,6 +28,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 struct AttrTest
 {
@@ -51,13 +52,13 @@ void test_parse_attr_spec(void)
     buf_seek(s, 0);
 
     rc = parse_attr_spec(NULL, s, ac, err);
-    TEST_CHECK(rc == MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     rc = parse_attr_spec(buf, NULL, ac, err);
-    TEST_CHECK(rc == MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     rc = parse_attr_spec(buf, s, NULL, err);
-    TEST_CHECK(rc == MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     attr_color_free(&ac);
 
@@ -92,8 +93,7 @@ void test_parse_attr_spec(void)
       buf_seek(s, 0);
 
       enum CommandResult rc = parse_attr_spec(buf, s, ac, err);
-      TEST_CHECK(rc == MUTT_CMD_SUCCESS);
-      TEST_MSG("rc: Expected %d, Got %d", MUTT_CMD_SUCCESS, rc);
+      TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
       TEST_MSG("err: %s", buf_string(err));
     }
 
@@ -119,7 +119,7 @@ void test_parse_attr_spec(void)
       buf_seek(s, 0);
 
       enum CommandResult rc = parse_attr_spec(buf, s, ac, err);
-      TEST_CHECK(rc == MUTT_CMD_WARNING);
+      TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
     }
 
     attr_color_free(&ac);

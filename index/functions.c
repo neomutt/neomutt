@@ -72,7 +72,6 @@
 #include "private_data.h"
 #include "protos.h"
 #include "shared_data.h"
-#include "sort.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
@@ -83,9 +82,6 @@
 #include <libintl.h>
 #endif
 #endif
-
-/// Error message for unavailable functions
-static const char *Not_available_in_this_menu = N_("Not available in this menu");
 
 // clang-format off
 /**
@@ -2904,6 +2900,7 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
     buf_addstr(buf, shared->email->env->message_id + msg_id_offset);
 
     size_t len = buf_len(buf);
+    ASSERT(len > 0);
     if (buf->data[len - 1] == '>')
       buf->data[len - 1] = '\0';
 
@@ -3261,12 +3258,7 @@ static const struct IndexFunction IndexFunctions[] = {
  */
 int index_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win)
-  {
-    mutt_error("%s", _(Not_available_in_this_menu));
-    return FR_ERROR;
-  }
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata || !win->parent || !win->parent->wdata)
     return FR_ERROR;

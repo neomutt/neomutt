@@ -65,14 +65,14 @@ void test_sort(void)
     };
 
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
-    for (int i = 0; i < mutt_array_size(data); i++)
+    for (int i = 0; i < countof(data); i++)
     {
       ARRAY_ADD(&uida, data[i]);
     }
 
     ARRAY_SORT(&uida, imap_sort_uid, NULL);
 
-    for (int i = 0; i < mutt_array_size(data); i++)
+    for (int i = 0; i < countof(data); i++)
     {
       unsigned int u = *ARRAY_GET(&uida, i);
       TEST_CHECK(u == i);
@@ -91,7 +91,7 @@ void test_make_degenerate(void)
     int pos = 0;
     struct Buffer *msg_set = buf_pool_get();
     int rc = imap_make_msg_set(NULL, msg_set, &pos);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     buf_pool_release(&msg_set);
   }
 
@@ -100,7 +100,7 @@ void test_make_degenerate(void)
     int pos = 0;
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
     int rc = imap_make_msg_set(&uida, NULL, &pos);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     ARRAY_FREE(&uida);
   }
 
@@ -109,7 +109,7 @@ void test_make_degenerate(void)
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
     struct Buffer *msg_set = buf_pool_get();
     int rc = imap_make_msg_set(&uida, msg_set, NULL);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     buf_pool_release(&msg_set);
     ARRAY_FREE(&uida);
   }
@@ -120,7 +120,7 @@ void test_make_degenerate(void)
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
     struct Buffer *msg_set = buf_pool_get();
     int rc = imap_make_msg_set(&uida, msg_set, &pos);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     buf_pool_release(&msg_set);
     ARRAY_FREE(&uida);
   }
@@ -134,7 +134,7 @@ void test_make_degenerate(void)
     ARRAY_ADD(&uida, 3);
     struct Buffer *msg_set = buf_pool_get();
     int rc = imap_make_msg_set(&uida, msg_set, &pos);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     buf_pool_release(&msg_set);
     ARRAY_FREE(&uida);
   }
@@ -163,7 +163,7 @@ void test_make_simple(void)
     // clang-format on
   };
 
-  for (int i = 0; i < mutt_array_size(tests); i++)
+  for (int i = 0; i < countof(tests); i++)
   {
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
     const struct TestCase *test = &tests[i];
@@ -393,7 +393,7 @@ void test_make_curated(void)
     // clang-format on
   };
 
-  for (int i = 0; i < mutt_array_size(tests); i++)
+  for (int i = 0; i < countof(tests); i++)
   {
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
     const struct TestCase *test = &tests[i];
@@ -451,7 +451,7 @@ void test_exec(void)
     ARRAY_ADD(&uida, 1);
 
     int rc = imap_exec_msg_set(NULL, "PRE", "POST", &uida);
-    TEST_CHECK(rc == -1);
+    TEST_CHECK_NUM_EQ(rc, -1);
 
     ARRAY_FREE(&uida);
     imap_exec_fail = false;
@@ -461,7 +461,7 @@ void test_exec(void)
   ImapMaxCmdlen = 50;
   imap_exec_results = buf_pool_get();
 
-  for (int i = 0; i < mutt_array_size(tests); i++)
+  for (int i = 0; i < countof(tests); i++)
   {
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
     const struct TestCase *test = &tests[i];

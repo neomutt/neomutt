@@ -57,11 +57,13 @@ void         mutt_paddstr(struct MuttWindow *win, int n, const char *s);
 void         mutt_push_macro_event(int ch, int op);
 void         mutt_query_exit(void);
 void         mutt_refresh(void);
+char *       mutt_str_expand_tabs(char *str, size_t *len, int tabwidth);
 size_t       mutt_strwidth(const char *s);
 size_t       mutt_strnwidth(const char *s, size_t len);
 void         mutt_unget_ch(int ch);
 void         mutt_unget_op(int op);
 void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
+void         mw_what_key(void);
 
 #endif /* MUTT_GUI_CURS_LIB_H */

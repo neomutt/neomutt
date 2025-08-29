@@ -41,8 +41,7 @@ const char *divider_line = "----------------------------------------------------
 
 bool dont_fail = false;
 
-int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                   intptr_t value, struct Buffer *result)
+int validator_fail(const struct ConfigDef *cdef, intptr_t value, struct Buffer *result)
 {
   if (dont_fail)
     return CSR_SUCCESS;
@@ -54,8 +53,7 @@ int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   return CSR_ERR_INVALID;
 }
 
-int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                   intptr_t value, struct Buffer *result)
+int validator_warn(const struct ConfigDef *cdef, intptr_t value, struct Buffer *result)
 {
   if (value > 1000000)
     buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
@@ -64,8 +62,7 @@ int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   return CSR_SUCCESS | CSR_SUC_WARNING;
 }
 
-int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                      intptr_t value, struct Buffer *result)
+int validator_succeed(const struct ConfigDef *cdef, intptr_t value, struct Buffer *result)
 {
   if (value > 1000000)
     buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
@@ -167,7 +164,7 @@ void cs_dump_set(const struct ConfigSet *cs)
     buf_reset(result);
     struct ConfigDef *cdef = he->data;
 
-    int rc = cst->string_get(cs, &cdef->var, cdef, result);
+    int rc = cst->string_get(&cdef->var, cdef, result);
     if (CSR_RESULT(rc) == CSR_SUCCESS)
       snprintf(tmp, sizeof(tmp), "%s %s = %s", cst->name, name, buf_string(result));
     else
@@ -293,4 +290,28 @@ int cs_str_string_plus_equals(const struct ConfigSet *cs, const char *name,
   }
 
   return cs_he_string_plus_equals(cs, he, value, err);
+}
+
+/**
+ * cs_str_initial_set - Set the initial value of a config item
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
+                       const char *value, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    buf_printf(err, _("Unknown option %s"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_initial_set(cs, he, value, err);
 }

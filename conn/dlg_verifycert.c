@@ -161,6 +161,8 @@ void cert_array_clear(struct CertArray *carr)
   {
     FREE(line);
   }
+
+  ARRAY_FREE(carr);
 }
 
 /**
@@ -183,18 +185,17 @@ void cert_array_clear(struct CertArray *carr)
  */
 int dlg_certificate(const char *title, struct CertArray *carr, bool allow_always, bool allow_skip)
 {
-  struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
 
   struct CertMenuData mdata = { carr };
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
   menu->mdata = &mdata;
   menu->mdata_free = NULL; // Menu doesn't own the data
   menu->make_entry = cert_make_entry;
   menu->max = ARRAY_SIZE(carr);
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  sbar_set_title(sbar, title);
+  sbar_set_title(sdw.sbar, title);
 
   if (allow_always)
   {
@@ -306,7 +307,7 @@ int dlg_certificate(const char *title, struct CertArray *carr, bool allow_always
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
 
   return choice;
 }

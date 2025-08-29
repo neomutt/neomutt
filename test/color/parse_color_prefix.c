@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "color/lib.h"
+#include "test_common.h"
 
 int parse_color_prefix(const char *s, enum ColorPrefix *prefix);
 
@@ -45,10 +46,10 @@ void test_parse_color_prefix(void)
     int len;
 
     len = parse_color_prefix(test, NULL);
-    TEST_CHECK(len == 0);
+    TEST_CHECK_NUM_EQ(len, 0);
 
     len = parse_color_prefix(NULL, &prefix);
-    TEST_CHECK(len == 0);
+    TEST_CHECK_NUM_EQ(len, 0);
   }
 
   {

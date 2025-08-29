@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct Test
 {
@@ -51,9 +52,7 @@ void test_mutt_mb_width(void)
     const char *str = "\377\377\377\377";
 
     int len = mutt_mb_width(str, 0, false);
-    TEST_CHECK(len == 4);
-    TEST_MSG("Expected: %d", 4);
-    TEST_MSG("Actual:   %d", len);
+    TEST_CHECK_NUM_EQ(len, 4);
   }
 
   {
@@ -71,7 +70,7 @@ void test_mutt_mb_width(void)
       // clang-format on
     };
 
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE(test_name(tests[i].str));
       int len = mutt_mb_width(tests[i].str, tests[i].col, false);
@@ -97,7 +96,7 @@ void test_mutt_mb_width(void)
       // clang-format on
     };
 
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE(test_name(tests[i].str));
       int len = mutt_mb_width(tests[i].str, tests[i].col, false);
@@ -116,7 +115,7 @@ void test_mutt_mb_width(void)
       // clang-format on
     };
 
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE(test_name(tests[i].str));
       int len = mutt_mb_width(tests[i].str, tests[i].col, true);

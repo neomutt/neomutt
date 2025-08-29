@@ -57,7 +57,7 @@ void test_buf_concat_path(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(concat_test); i++)
+    for (size_t i = 0; i < countof(concat_test); i++)
     {
       TEST_CASE_("DIR: '%s'  FILE: '%s'", NONULL(concat_test[i][0]),
                  NONULL(concat_test[i][1]));
@@ -70,7 +70,7 @@ void test_buf_concat_path(void)
         }
         else
         {
-          if (!TEST_CHECK(strlen(buf_string(buf)) == 0))
+          if (!TEST_CHECK_NUM_EQ(strlen(buf_string(buf)), 0))
           {
             TEST_MSG("len = %ld", strlen(buf_string(buf)));
           }

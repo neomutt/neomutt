@@ -26,6 +26,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct TestValue
 {
@@ -95,11 +96,11 @@ void test_mutt_str_atos(void)
 
   // Degenerate tests
   TEST_CHECK(mutt_str_atos(NULL, &result) == NULL);
-  TEST_CHECK(result == 0);
+  TEST_CHECK_NUM_EQ(result, 0);
   TEST_CHECK(mutt_str_atos("42", NULL) != 0);
 
   // Normal tests
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     TEST_CASE(tests[i].str);
 

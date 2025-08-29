@@ -26,6 +26,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "array.h"
 
 /**
  * union HashKey - The data item stored in a HashElem
@@ -46,6 +47,7 @@ struct HashElem
   void *data;            ///< User-supplied data
   struct HashElem *next; ///< Linked List
 };
+ARRAY_HEAD(HashElemArray, struct HashElem *);
 
 /**
  * @defgroup hash_hdata_free_api Hash Data Free API

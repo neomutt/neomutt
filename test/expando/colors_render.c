@@ -93,7 +93,7 @@ void test_expando_colors_render(void)
     check_node_text(node_get_child(exp->node, 1), " - ");
     check_node_expando(node_get_child(exp->node, 2), NULL, NULL);
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_s },
       { 1, 1, simple_C },
       { -1, -1, NULL },
@@ -157,7 +157,7 @@ void test_expando_colors_render(void)
     check_node_text(node_get_child(left, 1), " ");
     check_node_expando(right, NULL, NULL);
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_s },
       { 1, 1, simple_C },
       { -1, -1, NULL },
@@ -239,7 +239,7 @@ void test_expando_colors_render(void)
     check_node_text(node_get_child(left, 1), " ");
     check_node_expando(right, NULL, NULL);
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_s },
       { 1, 1, simple_C },
       { -1, -1, NULL },
@@ -266,8 +266,6 @@ void test_expando_colors_render(void)
     const int expected_width = mutt_str_len(expected) - 8;
     TEST_CHECK(mutt_strwidth(expected) == expected_width);
     // TEST_CHECK_STR_EQ(buf_string(buf), expected);
-    // TEST_MSG("Expected: %s", expected);
-    // TEST_MSG("Actual:   %s", buf_string(buf));
 
     expando_free(&exp);
     buf_pool_release(&buf);
@@ -306,7 +304,7 @@ void test_expando_colors_render(void)
     check_node_text(node_get_child(left, 1), " ");
     check_node_expando(right, NULL, NULL);
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_s },
       { 1, 1, simple_C },
       { -1, -1, NULL },
@@ -321,10 +319,8 @@ void test_expando_colors_render(void)
     struct Buffer *buf = buf_pool_get();
     expando_render(exp, render, &data, MUTT_FORMAT_INDEX, 7, buf);
 
-    TEST_CHECK(mutt_strwidth(expected) == 7);
+    TEST_CHECK_NUM_EQ(mutt_strwidth(expected), 7);
     // TEST_CHECK_STR_EQ(buf_string(buf), expected);
-    // TEST_MSG("Expected: %s", expected);
-    // TEST_MSG("Actual:   %s", buf_string(buf));
 
     expando_free(&exp);
     buf_pool_release(&buf);

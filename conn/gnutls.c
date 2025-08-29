@@ -229,10 +229,10 @@ static bool tls_check_stored_hostname(const gnutls_datum_t *cert, const char *ho
 /**
  * tls_compare_certificates - Compare certificates against `$certificate_file`
  * @param peercert Certificate
- * @retval 1 Certificate matches file
- * @retval 0 Error, or no match
+ * @retval true  Certificate matches file
+ * @retval false Error, or no match
  */
-static int tls_compare_certificates(const gnutls_datum_t *peercert)
+static bool tls_compare_certificates(const gnutls_datum_t *peercert)
 {
   gnutls_datum_t cert = { 0 };
   unsigned char *ptr = NULL;
@@ -242,7 +242,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
 
   const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
   if (stat(c_certificate_file, &st) == -1)
-    return 0;
+    return false;
 
   b64_data.size = st.st_size;
   b64_data_data = MUTT_MEM_CALLOC(b64_data.size + 1, unsigned char);
@@ -250,7 +250,10 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
 
   FILE *fp = mutt_file_fopen(c_certificate_file, "r");
   if (!fp)
-    return 0;
+  {
+    FREE(&b64_data_data);
+    return false;
+  }
 
   b64_data.size = fread(b64_data.data, 1, b64_data.size, fp);
   b64_data.data[b64_data.size] = '\0';
@@ -262,7 +265,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
     if (rc != 0)
     {
       FREE(&b64_data_data);
-      return 0;
+      return false;
     }
 
     /* find start of cert, skipping junk */
@@ -271,7 +274,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
     {
       gnutls_free(cert.data);
       FREE(&b64_data_data);
-      return 0;
+      return false;
     }
     /* find start of next cert */
     ptr = (unsigned char *) strstr((char *) ptr + 1, CERT_SEP);
@@ -286,7 +289,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
         /* match found */
         gnutls_free(cert.data);
         FREE(&b64_data_data);
-        return 1;
+        return true;
       }
     }
 
@@ -295,7 +298,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
 
   /* no match found */
   FREE(&b64_data_data);
-  return 0;
+  return false;
 }
 
 /**
@@ -440,7 +443,7 @@ static void add_cert(const char *title, gnutls_x509_crt_t cert, bool issuer,
   // Allocate formatted strings and let the array take ownership
   ARRAY_ADD(carr, mutt_str_dup(title));
 
-  for (size_t i = 0; i < mutt_array_size(part); i++)
+  for (size_t i = 0; i < countof(part); i++)
   {
     size_t buflen = sizeof(buf);
     if (issuer)
@@ -527,6 +530,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf_string(fpbuf));
   ARRAY_ADD(&carr, line);
 
+  buf_reset(fpbuf);
   tls_fingerprint(GNUTLS_DIG_SHA256, fpbuf, certdata);
   fpbuf->data[39] = '\0'; // Divide into two lines of output
   mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf_string(fpbuf));
@@ -578,6 +582,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     {
       if (certerr & CERTERR_HOSTNAME) // Save hostname if necessary
       {
+        buf_reset(fpbuf);
         tls_fingerprint(GNUTLS_DIG_MD5, fpbuf, certdata);
         fprintf(fp, "#H %s %s\n", hostname, buf_string(fpbuf));
         saved = true;
@@ -604,7 +609,6 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 
   buf_pool_release(&fpbuf);
   cert_array_clear(&carr);
-  ARRAY_FREE(&carr);
   gnutls_x509_crt_deinit(cert);
   return (rc > 1);
 }
@@ -635,7 +639,7 @@ static int tls_check_certificate(struct Connection *conn)
     return 0;
 
   cert_list = gnutls_certificate_get_peers(session, &cert_list_size);
-  if (!cert_list)
+  if (!cert_list || (cert_list_size == 0))
   {
     mutt_error(_("Unable to get certificate from peer"));
     return 0;

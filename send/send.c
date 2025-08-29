@@ -64,6 +64,7 @@
 #include "expando/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
+#include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
@@ -72,9 +73,9 @@
 #include "question/lib.h"
 #include "body.h"
 #include "copy.h"
+#include "expando.h"
 #include "globals.h"
 #include "handler.h"
-#include "hdrline.h"
 #include "header.h"
 #include "hook.h"
 #include "maillist.h"
@@ -90,15 +91,12 @@
 #include "sendlib.h"
 #include "sendmail.h"
 #include "smtp.h"
-#include "sort.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-
-const struct ExpandoRenderData GreetingRenderData[];
 
 /**
  * append_signature - Append a signature to an email
@@ -114,7 +112,7 @@ static void append_signature(FILE *fp, struct ConfigSubset *sub)
   // If the user hasn't set $signature, don't warn them if it doesn't exist
   struct Buffer *def_sig = buf_pool_get();
   cs_str_initial_get(sub->cs, "signature", def_sig);
-  mutt_path_canon(def_sig, HomeDir, false);
+  mutt_path_canon(def_sig, NeoMutt->home_dir, false);
   bool notify_missing = !mutt_str_equal(c_signature, buf_string(def_sig));
   buf_pool_release(&def_sig);
 
@@ -166,7 +164,7 @@ static void add_mailing_lists(struct AddressList *out, const struct AddressList 
 {
   const struct AddressList *const als[] = { t, c };
 
-  for (size_t i = 0; i < mutt_array_size(als); ++i)
+  for (size_t i = 0; i < countof(als); i++)
   {
     const struct AddressList *al = als[i];
     struct Address *a = NULL;
@@ -677,73 +675,6 @@ void mutt_make_attribution_trailer(struct Email *e, FILE *fp_out, struct ConfigS
 }
 
 /**
- * greeting_n - Greeting: Real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void greeting_n(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Email *e = data;
-  const struct Address *to = TAILQ_FIRST(&e->env->to);
-
-  const char *s = mutt_get_name(to);
-  buf_strcpy(buf, s);
-}
-
-/**
- * greeting_u - Greeting: Login name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void greeting_u(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Email *e = data;
-  const struct Address *to = TAILQ_FIRST(&e->env->to);
-
-  char tmp[128] = { 0 };
-  char *p = NULL;
-
-  if (to)
-  {
-    mutt_str_copy(tmp, mutt_addr_for_display(to), sizeof(tmp));
-    if ((p = strpbrk(tmp, "%@")))
-    {
-      *p = '\0';
-    }
-  }
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * greeting_v - Greeting: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void greeting_v(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Email *e = data;
-  const struct Address *to = TAILQ_FIRST(&e->env->to);
-  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
-
-  char tmp[128] = { 0 };
-  char *p = NULL;
-
-  if (to)
-  {
-    const char *s = mutt_get_name(to);
-    mutt_str_copy(tmp, s, sizeof(tmp));
-  }
-  else if (cc)
-  {
-    const char *s = mutt_get_name(cc);
-    mutt_str_copy(tmp, s, sizeof(tmp));
-  }
-
-  if ((p = strpbrk(tmp, " %@")))
-    *p = '\0';
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
  * mutt_make_greeting - Add greetings string
  * @param e      Email
  * @param fp_out File to write to
@@ -759,7 +690,8 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
 
   struct Buffer *buf = buf_pool_get();
 
-  expando_filter(c_greeting, GreetingRenderData, e, TOKEN_NO_FLAGS, buf->dsize, buf);
+  expando_filter(c_greeting, GreetingRenderCallbacks, e, TOKEN_NO_FLAGS,
+                 buf->dsize, NeoMutt->env, buf);
 
   fputs(buf_string(buf), fp_out);
   fputc('\n', fp_out);
@@ -1245,7 +1177,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
           mutt_error(_("Could not include all requested messages"));
           return -1;
         }
-        if (ARRAY_FOREACH_IDX < count)
+        if (ARRAY_FOREACH_IDX_ep < count)
         {
           fputc('\n', fp_tmp);
         }
@@ -1471,11 +1403,11 @@ struct Address *mutt_default_from(struct ConfigSubset *sub)
   }
 
   char domain[1024] = { 0 };
-  const char *mailbox = Username;
+  const char *mailbox = NeoMutt->username;
   const bool c_use_domain = cs_subset_bool(sub, "use_domain");
   if (c_use_domain)
   {
-    snprintf(domain, sizeof(domain), "%s@%s", NONULL(Username),
+    snprintf(domain, sizeof(domain), "%s@%s", NONULL(NeoMutt->username),
              NONULL(mutt_fqdn(true, sub)));
     mailbox = domain;
   }
@@ -2774,6 +2706,13 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     goto main_loop;
   }
 
+  const bool c_confirm_empty_to = cs_subset_bool(sub, "confirm_empty_to");
+  if (c_confirm_empty_to && TAILQ_EMPTY(&e_templ->env->to) &&
+      (query_yesorno(_("No recipients specified in To. Send anyway?"), MUTT_NO) == MUTT_NO))
+  {
+    goto main_loop;
+  }
+
   if (e_templ->body->next)
     e_templ->body = mutt_make_multipart(e_templ->body);
 
@@ -3060,17 +2999,3 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, struct Email *e)
 
   return rc;
 }
-
-/**
- * GreetingRenderData - Callbacks for Greeting Expandos
- *
- * @sa GreetingFormatDef, ExpandoDataEnvelope
- */
-const struct ExpandoRenderData GreetingRenderData[] = {
-  // clang-format off
-  { ED_ENVELOPE, ED_ENV_REAL_NAME,  greeting_n, NULL },
-  { ED_ENVELOPE, ED_ENV_USER_NAME,  greeting_u, NULL },
-  { ED_ENVELOPE, ED_ENV_FIRST_NAME, greeting_v, NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};

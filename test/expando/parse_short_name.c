@@ -54,8 +54,8 @@ void test_expando_parse_short_name(void)
     { "a",  NULL, ED_EMAIL, ED_EMA_STRF_RECV_LOCAL, NULL },
     { "ab", NULL, ED_EMAIL, ED_EMA_THREAD_COUNT,    NULL },
     { "b",  NULL, ED_EMAIL, ED_EMA_INDEX_HOOK,      NULL },
-    { "c",  NULL, ED_EMAIL, ED_EMA_STRF_LOCAL,      parse_test1 },
-    { "dd", NULL, ED_EMAIL, ED_EMA_STRF,            parse_test1 },
+    { "c",  NULL, ED_EMAIL, ED_EMA_DATE_STRF_LOCAL, parse_test1 },
+    { "dd", NULL, ED_EMAIL, ED_EMA_DATE_STRF,       parse_test1 },
     { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
@@ -65,10 +65,10 @@ void test_expando_parse_short_name(void)
     { "a",   0,                  ED_EMAIL, ED_EMA_STRF_RECV_LOCAL },
     { "b",   0,                  ED_EMAIL, ED_EMA_INDEX_HOOK      },
     { "bb",  0,                  ED_EMAIL, ED_EMA_INDEX_HOOK      },
-    { "c",   EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_STRF_LOCAL      },
-    { "cc",  EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_STRF_LOCAL      },
-    { "dd",  EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_STRF            },
-    { "dde", EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_STRF            },
+    { "c",   EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_DATE_STRF_LOCAL },
+    { "cc",  EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_DATE_STRF_LOCAL },
+    { "dd",  EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_DATE_STRF       },
+    { "dde", EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_DATE_STRF       },
     { NULL, 0, 0, 0 },
     // clang-format on
   };

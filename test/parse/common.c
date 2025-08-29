@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
@@ -33,22 +34,11 @@ struct Command mutt_commands[] = {
   { "set",    parse_set, MUTT_SET_SET },
   { "toggle", parse_set, MUTT_SET_INV },
   { "unset",  parse_set, MUTT_SET_UNSET },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
 void buf_expand_path(struct Buffer *buf)
 {
-  buf_insert(buf, 0, "expanded");
-}
-
-void myvar_append(const char *var, const char *val)
-{
-}
-
-void myvar_del(const char *var)
-{
-}
-
-void myvar_set(const char *var, const char *val)
-{
+  buf_insert(buf, 0, "expanded/");
 }

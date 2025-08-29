@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void print_compared_list(struct ListHead expected, struct ListHead actual)
 {
@@ -50,7 +51,7 @@ void test_mutt_list_str_split(void)
   {
     struct ListHead head = STAILQ_HEAD_INITIALIZER(head);
     size_t count = mutt_list_str_split(&head, NULL, ',');
-    TEST_CHECK(count == 0);
+    TEST_CHECK_NUM_EQ(count, 0);
     TEST_CHECK(STAILQ_EMPTY(&head));
   }
 

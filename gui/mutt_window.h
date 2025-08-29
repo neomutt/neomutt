@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -243,7 +244,7 @@ struct EventWindow
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
 void               mutt_window_free               (struct MuttWindow **ptr);
-void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);
+void               mutt_window_get_coords         (struct MuttWindow *win, int *row, int *col);
 struct MuttWindow *mutt_window_new                (enum WindowType type, enum MuttWindowOrientation orient, enum MuttWindowSize size, int cols, int rows);
 void               mutt_window_reflow             (struct MuttWindow *win);
 struct MuttWindow *mutt_window_remove_child       (struct MuttWindow *parent, struct MuttWindow *child);
@@ -256,10 +257,7 @@ int  mutt_window_addstr   (struct MuttWindow *win, const char *str);
 void mutt_window_clearline(struct MuttWindow *win, int row);
 void mutt_window_clear    (struct MuttWindow *win);
 void mutt_window_clrtoeol (struct MuttWindow *win);
-int  mutt_window_move     (struct MuttWindow *win, int col, int row);
-int  mutt_window_mvaddstr (struct MuttWindow *win, int col, int row, const char *str);
-int  mutt_window_mvprintw (struct MuttWindow *win, int col, int row, const char *fmt, ...)
-                            __attribute__((__format__(__printf__, 4, 5)));
+int  mutt_window_move     (struct MuttWindow *win, int row, int col);
 int  mutt_window_printf   (struct MuttWindow *win, const char *format, ...)
                             __attribute__((__format__(__printf__, 2, 3)));
 bool mutt_window_is_visible(struct MuttWindow *win);
@@ -276,6 +274,7 @@ bool               window_is_focused (const struct MuttWindow *win);
 void window_redraw(struct MuttWindow *win);
 void window_invalidate_all(void);
 const char *mutt_window_win_name(const struct MuttWindow *win);
-bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub);
+bool window_status_on_top(struct MuttWindow *panel, const struct ConfigSubset *sub);
+bool mutt_window_swap(struct MuttWindow *parent, struct MuttWindow *win1, struct MuttWindow *win2);
 
 #endif /* MUTT_GUI_MUTT_WINDOW_H */

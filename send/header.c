@@ -68,7 +68,7 @@ enum UserHdrsOverrideIdx
 struct UserHdrsOverride
 {
   /// Which email headers have been overridden
-  bool is_overridden[mutt_array_size(UserhdrsOverrideHeaders)];
+  bool is_overridden[countof(UserhdrsOverrideHeaders)];
 };
 
 /**
@@ -384,7 +384,7 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
     /* check whether the current user-header is an override */
     size_t cur_override = ICONV_ILLEGAL_SEQ;
     const char *const *idx = bsearch(tmp->data, UserhdrsOverrideHeaders,
-                                     mutt_array_size(UserhdrsOverrideHeaders),
+                                     countof(UserhdrsOverrideHeaders),
                                      sizeof(char *), userhdrs_override_cmp);
     if (idx)
     {
@@ -762,7 +762,7 @@ int mutt_write_mime_header(struct Body *b, FILE *fp, struct ConfigSubset *sub)
   int tmplen;
   char buf[256] = { 0 };
 
-  fprintf(fp, "Content-Type: %s/%s", TYPE(b), b->subtype);
+  fprintf(fp, "Content-Type: %s/%s", BODY_TYPE(b), b->subtype);
 
   if (!TAILQ_EMPTY(&b->parameter))
   {

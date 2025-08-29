@@ -47,12 +47,12 @@
 #include "editor/lib.h"
 #include "expando/lib.h"
 #include "history/lib.h"
+#include "index/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "copy.h"
 #include "globals.h"
 #include "handler.h"
-#include "hdrline.h"
 #include "mutt_body.h"
 #include "mutt_logging.h"
 #include "protos.h"
@@ -483,7 +483,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   struct Email *e_parent = NULL;
   FILE *fp_parent = NULL;
   enum QuadOption ans = MUTT_NO;
-  struct Buffer *tmpbody = NULL;
+  struct Buffer *tempfile = NULL;
   struct Buffer *prefix = buf_pool_get();
 
   /* First, find the parent message.
@@ -505,12 +505,12 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   e_tmp->env = mutt_env_new();
   mutt_make_forward_subject(e_tmp->env, e_parent, NeoMutt->sub);
 
-  tmpbody = buf_pool_get();
-  buf_mktemp(tmpbody);
-  FILE *fp_tmp = mutt_file_fopen(buf_string(tmpbody), "w");
+  tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_tmp)
   {
-    mutt_error(_("Can't open temporary file %s"), buf_string(tmpbody));
+    mutt_error(_("Can't open temporary file %s"), buf_string(tempfile));
     email_free(&e_tmp);
     goto bail;
   }
@@ -626,10 +626,10 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   /* now that we have the template, send it. */
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ARRAY_ADD(&ea, e_parent);
-  mutt_send_message(SEND_NO_FLAGS, e_tmp, buf_string(tmpbody), NULL, &ea,
+  mutt_send_message(SEND_NO_FLAGS, e_tmp, buf_string(tempfile), NULL, &ea,
                     NeoMutt->sub);
   ARRAY_FREE(&ea);
-  buf_pool_release(&tmpbody);
+  buf_pool_release(&tempfile);
   buf_pool_release(&prefix);
   return;
 
@@ -637,9 +637,9 @@ bail:
   if (fp_tmp)
   {
     mutt_file_fclose(&fp_tmp);
-    mutt_file_unlink(buf_string(tmpbody));
+    mutt_file_unlink(buf_string(tempfile));
   }
-  buf_pool_release(&tmpbody);
+  buf_pool_release(&tempfile);
   buf_pool_release(&prefix);
 
   email_free(&e_tmp);
@@ -665,7 +665,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *b
   struct Email *e_tmp = NULL;
   enum QuadOption ans;
   struct Body **last = NULL;
-  struct Buffer *tmpbody = NULL;
+  struct Buffer *tempfile = NULL;
   FILE *fp_tmp = NULL;
 
   CopyHeaderFlags chflags = CH_DECODE;
@@ -690,18 +690,18 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *b
   e_tmp->env = mutt_env_new();
   mutt_make_forward_subject(e_tmp->env, e_cur, NeoMutt->sub);
 
-  tmpbody = buf_pool_get();
+  tempfile = buf_pool_get();
 
   ans = query_quadoption(_("Forward MIME encapsulated?"), NeoMutt->sub, "mime_forward");
   if (ans == MUTT_NO)
   {
     /* no MIME encapsulation */
 
-    buf_mktemp(tmpbody);
-    fp_tmp = mutt_file_fopen(buf_string(tmpbody), "w");
+    buf_mktemp(tempfile);
+    fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
     if (!fp_tmp)
     {
-      mutt_error(_("Can't create %s"), buf_string(tmpbody));
+      mutt_error(_("Can't create %s"), buf_string(tempfile));
       goto cleanup;
     }
 
@@ -772,14 +772,14 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *b
 
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ARRAY_ADD(&ea, e_cur);
-  mutt_send_message(flags, e_tmp, buf_is_empty(tmpbody) ? NULL : buf_string(tmpbody),
+  mutt_send_message(flags, e_tmp, buf_is_empty(tempfile) ? NULL : buf_string(tempfile),
                     NULL, &ea, NeoMutt->sub);
   ARRAY_FREE(&ea);
   e_tmp = NULL; /* mutt_send_message frees this */
 
 cleanup:
   email_free(&e_tmp);
-  buf_pool_release(&tmpbody);
+  buf_pool_release(&tempfile);
 }
 
 /**
@@ -957,7 +957,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   FILE *fp_parent = NULL;
   struct Email *e_tmp = NULL;
   FILE *fp_tmp = NULL;
-  struct Buffer *tmpbody = NULL;
+  struct Buffer *tempfile = NULL;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
 
   struct Buffer *prefix = buf_pool_get();
@@ -1007,12 +1007,12 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     goto cleanup;
   }
 
-  tmpbody = buf_pool_get();
-  buf_mktemp(tmpbody);
-  fp_tmp = mutt_file_fopen(buf_string(tmpbody), "w");
+  tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_tmp)
   {
-    mutt_error(_("Can't create %s"), buf_string(tmpbody));
+    mutt_error(_("Can't create %s"), buf_string(tempfile));
     goto cleanup;
   }
 
@@ -1101,7 +1101,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   mutt_file_fclose(&fp_tmp);
 
   ARRAY_ADD(&ea, e_parent ? e_parent : (b ? b->email : NULL));
-  if (mutt_send_message(flags, e_tmp, buf_string(tmpbody), NULL, &ea, NeoMutt->sub) == 0)
+  if (mutt_send_message(flags, e_tmp, buf_string(tempfile), NULL, &ea, NeoMutt->sub) == 0)
   {
     mutt_set_flag(m, e, MUTT_REPLIED, true, true);
   }
@@ -1111,9 +1111,9 @@ cleanup:
   if (fp_tmp)
   {
     mutt_file_fclose(&fp_tmp);
-    mutt_file_unlink(buf_string(tmpbody));
+    mutt_file_unlink(buf_string(tempfile));
   }
-  buf_pool_release(&tmpbody);
+  buf_pool_release(&tempfile);
   buf_pool_release(&prefix);
   email_free(&e_tmp);
   ARRAY_FREE(&ea);

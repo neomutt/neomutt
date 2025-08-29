@@ -32,7 +32,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -51,7 +50,6 @@
 #include "progress/lib.h"
 #include "copy.h"
 #include "errno.h"
-#include "globals.h"
 #include "mdata.h"
 #include "mhemail.h"
 #include "mx.h"
@@ -103,7 +101,7 @@ static bool mh_valid_message(const char *s)
 {
   for (; *s; s++)
   {
-    if (!isdigit((unsigned char) *s))
+    if (!mutt_isdigit(*s))
       return false;
   }
   return true;
@@ -273,7 +271,7 @@ static int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e
     cp = dep;
     while (*cp)
     {
-      if (!isdigit((unsigned char) *cp))
+      if (!mutt_isdigit(*cp))
         break;
       cp++;
     }
@@ -564,7 +562,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MhEmailArray *mha,
     if (!md || !md->email || md->header_parsed)
       continue;
 
-    progress_update(progress, ARRAY_FOREACH_IDX, -1);
+    progress_update(progress, ARRAY_FOREACH_IDX_mdp, -1);
 
 #ifdef USE_HCACHE
     const char *key = md->email->path;
@@ -602,8 +600,8 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MhEmailArray *mha,
   hcache_close(&hc);
 #endif
 
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (m && mha && (ARRAY_SIZE(mha) > 0) && (c_sort == SORT_ORDER))
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (m && mha && (ARRAY_SIZE(mha) > 0) && (c_sort == EMAIL_SORT_UNSORTED))
   {
     mutt_debug(LL_DEBUG3, "mh: sorting %s into natural order\n", mailbox_path(m));
     ARRAY_SORT(mha, mh_sort_path, NULL);
@@ -824,7 +822,7 @@ static enum MxOpenReturns mh_mbox_open(struct Mailbox *m)
  */
 static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
-  if (!(flags & (MUTT_APPENDNEW | MUTT_NEWFOLDER)))
+  if (!(flags & MUTT_APPENDNEW))
     return true;
 
   if (mutt_file_mkdir(mailbox_path(m), S_IRWXU))
@@ -1189,7 +1187,7 @@ static int mh_msg_close(struct Mailbox *m, struct Message *msg)
  */
 static int mh_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(path, HomeDir, true);
+  mutt_path_canon(path, NeoMutt->home_dir, true);
   return 0;
 }
 

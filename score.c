@@ -69,9 +69,10 @@ void mutt_check_rescore(struct Mailbox *m)
   const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
   if (OptNeedRescore && c_score)
   {
-    const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-    const enum SortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
-    if (((c_sort & SORT_MASK) == SORT_SCORE) || ((c_sort_aux & SORT_MASK) == SORT_SCORE))
+    const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+    const enum EmailSortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+    if (((c_sort & SORT_MASK) == EMAIL_SORT_SCORE) ||
+        ((c_sort_aux & SORT_MASK) == EMAIL_SORT_SCORE))
     {
       OptNeedResort = true;
       if (mutt_using_threads())
@@ -85,10 +86,10 @@ void mutt_check_rescore(struct Mailbox *m)
 }
 
 /**
- * mutt_parse_score - Parse the 'score' command - Implements Command::parse() - @ingroup command_parse
+ * parse_score - Parse the 'score' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
-                                    intptr_t data, struct Buffer *err)
+enum CommandResult parse_score(struct Buffer *buf, struct Buffer *s,
+                               intptr_t data, struct Buffer *err)
 {
   struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
@@ -195,10 +196,10 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 }
 
 /**
- * mutt_parse_unscore - Parse the 'unscore' command - Implements Command::parse() - @ingroup command_parse
+ * parse_unscore - Parse the 'unscore' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_unscore(struct Buffer *buf, struct Buffer *s,
-                                      intptr_t data, struct Buffer *err)
+enum CommandResult parse_unscore(struct Buffer *buf, struct Buffer *s,
+                                 intptr_t data, struct Buffer *err)
 {
   struct Score *tmp = NULL, *last = NULL;
 

@@ -27,17 +27,15 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "ncrypt/lib.h"
 
 extern const struct MenuFuncOp OpAlias[];
 extern const struct MenuFuncOp OpAttachment[];
@@ -163,15 +161,15 @@ struct Keymap *alloc_keys(size_t len, keycode_t *keys)
  *
  * Given "<f8>", it will return 8.
  */
-static int parse_fkey(char *s)
+int parse_fkey(char *s)
 {
   char *t = NULL;
   int n = 0;
 
-  if ((s[0] != '<') || (tolower(s[1]) != 'f'))
+  if ((s[0] != '<') || (mutt_tolower(s[1]) != 'f'))
     return -1;
 
-  for (t = s + 2; *t && isdigit((unsigned char) *t); t++)
+  for (t = s + 2; *t && mutt_isdigit(*t); t++)
   {
     n *= 10;
     n += *t - '0';
@@ -195,7 +193,7 @@ static int parse_keycode(const char *s)
   char *end_char = NULL;
   long int result = strtol(s + 1, &end_char, 8);
   /* allow trailing whitespace, eg.  < 1001 > */
-  while (isspace(*end_char))
+  while (mutt_isspace(*end_char))
     end_char++;
   /* negative keycodes don't make sense, also detect overflow */
   if ((*end_char != '>') || (result < 0) || (result == LONG_MAX))
@@ -320,6 +318,9 @@ int get_op(const struct MenuFuncOp *funcs, const char *start, size_t len)
  */
 const char *mutt_get_func(const struct MenuFuncOp *funcs, int op)
 {
+  if (!funcs)
+    return NULL;
+
   for (int i = 0; funcs[i].name; i++)
   {
     if (funcs[i].op == op)
@@ -330,90 +331,153 @@ const char *mutt_get_func(const struct MenuFuncOp *funcs, int op)
 }
 
 /**
- * generic_tokenize_push_string - Parse and queue a 'push' command
- * @param s String to push into the key queue
+ * escape_macro - Escape any special characters in a macro
+ * @param[in]  macro Macro string
+ * @param[out] buf   Buffer for the result
  *
- * Parses s for `<function>` syntax and adds the whole sequence the macro buffer.
+ * Replace characters, such as `<Enter>` with the literal "\n"
  */
-void generic_tokenize_push_string(char *s)
+void escape_macro(const char *macro, struct Buffer *buf)
 {
-  char *pp = NULL;
-  char *p = s + mutt_str_len(s) - 1;
-  size_t l;
-  int i, op = OP_NULL;
+  wchar_t wc = 0;
+  size_t k;
+  size_t len = mutt_str_len(macro);
+  mbstate_t mbstate1 = { 0 };
+  mbstate_t mbstate2 = { 0 };
 
-  while (p >= s)
+  for (; (len > 0) && (k = mbrtowc(&wc, macro, MB_LEN_MAX, &mbstate1)); macro += k, len -= k)
   {
-    /* if we see something like "<PageUp>", look to see if it is a real
-     * function name and return the corresponding value */
-    if (*p == '>')
+    if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
     {
-      for (pp = p - 1; pp >= s && *pp != '<'; pp--)
-        ; // do nothing
+      if (k == ICONV_ILLEGAL_SEQ)
+        memset(&mbstate1, 0, sizeof(mbstate1));
+      k = (k == ICONV_ILLEGAL_SEQ) ? 1 : len;
+      wc = ReplacementChar;
+    }
 
-      if (pp >= s)
+    const int w = wcwidth(wc);
+    if (IsWPrint(wc) && (w >= 0))
+    {
+      char tmp[MB_LEN_MAX * 2] = { 0 };
+      if (wcrtomb(tmp, wc, &mbstate2) != ICONV_ILLEGAL_SEQ)
       {
-        i = parse_fkey(pp);
-        if (i > 0)
-        {
-          mutt_push_macro_event(KEY_F(i), 0);
-          p = pp - 1;
-          continue;
-        }
-
-        l = p - pp + 1;
-        for (i = 0; KeyNames[i].name; i++)
-        {
-          if (mutt_istrn_equal(pp, KeyNames[i].name, l))
-            break;
-        }
-        if (KeyNames[i].name)
-        {
-          /* found a match */
-          mutt_push_macro_event(KeyNames[i].value, 0);
-          p = pp - 1;
-          continue;
-        }
-
-        /* See if it is a valid command
-         * skip the '<' and the '>' when comparing */
-        for (enum MenuType j = 0; MenuNames[j].name; j++)
-        {
-          const struct MenuFuncOp *funcs = km_get_table(MenuNames[j].value);
-          if (funcs)
-          {
-            op = get_op(funcs, pp + 1, l - 2);
-            if (op != OP_NULL)
-              break;
-          }
-        }
-
-        if (op != OP_NULL)
-        {
-          mutt_push_macro_event(0, op);
-          p = pp - 1;
-          continue;
-        }
+        buf_addstr(buf, tmp);
       }
     }
-    mutt_push_macro_event((unsigned char) *p--, 0); /* independent 8 bits chars */
+    else if ((wc < 0x20) || (wc == 0x7f))
+    {
+      if (wc == '\033') // Escape
+        buf_addstr(buf, "\\e");
+      else if (wc == '\n')
+        buf_addstr(buf, "\\n");
+      else if (wc == '\r')
+        buf_addstr(buf, "\\r");
+      else if (wc == '\t')
+        buf_addstr(buf, "\\t");
+      else
+        buf_add_printf(buf, "^%c", (char) ((wc + '@') & 0x7f));
+    }
+    else
+    {
+      buf_addch(buf, '?');
+    }
   }
 }
 
 /**
- * km_keyname - Get the human name for a key
- * @param c Key code
- * @retval ptr Name of the key
- *
- * @note This returns a pointer to a static buffer.
+ * is_bound - Does a function have a keybinding?
+ * @param km_list Keymap to examine
+ * @param op      Operation, e.g. OP_DELETE
+ * @retval true A key is bound to that operation
  */
-const char *km_keyname(int c)
+bool is_bound(const struct KeymapList *km_list, int op)
 {
-  static char buf[35];
+  if (!km_list)
+    return false;
 
-  const char *p = mutt_map_get_name(c, KeyNames);
-  if (p)
-    return p;
+  struct Keymap *map = NULL;
+  STAILQ_FOREACH(map, km_list, entries)
+  {
+    if (map->op == op)
+      return true;
+  }
+  return false;
+}
+
+/**
+ * binding_sort - Compare two BindingInfo by their keybinding - Implements ::sort_t - @ingroup sort_api
+ */
+int binding_sort(const void *a, const void *b, void *sdata)
+{
+  const struct BindingInfo *x = (const struct BindingInfo *) a;
+  const struct BindingInfo *y = (const struct BindingInfo *) b;
+
+  return mutt_str_cmp(x->a[0], y->a[0]);
+}
+
+/**
+ * measure_column - Measure one column of a table
+ * @param bia Array of binding info
+ * @param col Column to measure
+ * @retval num Width of widest column
+ */
+int measure_column(struct BindingInfoArray *bia, int col)
+{
+  int max_width = 0;
+
+  struct BindingInfo *bi = NULL;
+  ARRAY_FOREACH(bi, bia)
+  {
+    const int col_width = mutt_strwidth(bi->a[col]);
+    max_width = MAX(max_width, col_width);
+  }
+
+  return max_width;
+}
+
+/**
+ * gather_unbound - Gather info about unbound functions for one menu
+ * @param funcs       List of functions
+ * @param km_menu     Keymaps for the menu
+ * @param km_aux      Keymaps for generic
+ * @param bia_unbound Unbound functions
+ * @retval num Number of unbound functions
+ */
+int gather_unbound(const struct MenuFuncOp *funcs, const struct KeymapList *km_menu,
+                   const struct KeymapList *km_aux, struct BindingInfoArray *bia_unbound)
+{
+  if (!funcs)
+    return 0;
+
+  for (int i = 0; funcs[i].name; i++)
+  {
+    if (!is_bound(km_menu, funcs[i].op) &&
+        (!km_aux || !is_bound(km_aux, funcs[i].op)))
+    {
+      struct BindingInfo bi = { 0 };
+      bi.a[0] = NULL;
+      bi.a[1] = funcs[i].name;
+      bi.a[2] = _(opcodes_get_description(funcs[i].op));
+      ARRAY_ADD(bia_unbound, bi);
+    }
+  }
+
+  return ARRAY_SIZE(bia_unbound);
+}
+
+/**
+ * km_keyname - Get the human name for a key
+ * @param[in]  c   Key code
+ * @param[out] buf Buffer for the result
+ */
+void km_keyname(int c, struct Buffer *buf)
+{
+  const char *name = mutt_map_get_name(c, KeyNames);
+  if (name)
+  {
+    buf_addstr(buf, name);
+    return;
+  }
 
   if ((c < 256) && (c > -128) && iscntrl((unsigned char) c))
   {
@@ -422,82 +486,58 @@ const char *km_keyname(int c)
 
     if (c < 128)
     {
-      buf[0] = '^';
-      buf[1] = (c + '@') & 0x7f;
-      buf[2] = '\0';
+      buf_addch(buf, '^');
+      buf_addch(buf, (c + '@') & 0x7f);
     }
     else
     {
-      snprintf(buf, sizeof(buf), "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
+      buf_add_printf(buf, "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
     }
   }
   else if ((c >= KEY_F0) && (c < KEY_F(256))) /* this maximum is just a guess */
   {
-    snprintf(buf, sizeof(buf), "<F%d>", c - KEY_F0);
+    buf_add_printf(buf, "<F%d>", c - KEY_F0);
   }
   else if ((c < 256) && (c >= -128) && IsPrint(c))
   {
-    snprintf(buf, sizeof(buf), "%c", (unsigned char) c);
+    buf_add_printf(buf, "%c", (unsigned char) c);
   }
   else
   {
-    snprintf(buf, sizeof(buf), "<%ho>", (unsigned short) c);
+    buf_add_printf(buf, "<%ho>", (unsigned short) c);
   }
-  return buf;
 }
 
 /**
  * km_expand_key - Get the key string bound to a Keymap
- * @param s   Buffer for the key string
- * @param len Length of buffer
- * @param map Keybinding map
- * @retval 1 Success
- * @retval 0 Error
+ * @param[in]  map Keybinding map
+ * @param[out] buf Buffer for the result
+ * @retval true Success
  */
-int km_expand_key(char *s, size_t len, struct Keymap *map)
+bool km_expand_key(struct Keymap *map, struct Buffer *buf)
 {
-  if (!map)
-    return 0;
+  if (!map || !buf)
+    return false;
 
-  int p = 0;
-
-  while (true)
+  for (int i = 0; i < map->len; i++)
   {
-    mutt_str_copy(s, km_keyname(map->keys[p]), len);
-    const size_t l = mutt_str_len(s);
-    len -= l;
-
-    if ((++p >= map->len) || !len)
-      return 1;
-
-    s += l;
+    km_keyname(map->keys[i], buf);
   }
 
-  /* not reached */
+  return true;
 }
 
 /**
  * km_expand_key_string - Get a human-readable key string
- * @param str    Raw key string
- * @param buf    Buffer for the key string
- * @param buflen Length of buffer
- * @retval num Length of string
+ * @param[in]  str Raw key string
+ * @param[out] buf Buffer for the key string
  */
-int km_expand_key_string(char *str, char *buf, size_t buflen)
+void km_expand_key_string(char *str, struct Buffer *buf)
 {
-  size_t len = 0;
   for (; *str; str++)
   {
-    const char *key = km_keyname(*str);
-    size_t keylen = mutt_str_len(key);
-
-    mutt_str_copy(buf, key, buflen);
-    buf += keylen;
-    buflen -= keylen;
-    len += keylen;
+    km_keyname(*str, buf);
   }
-
-  return len;
 }
 
 /**
@@ -546,21 +586,95 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
       return OpGeneric;
     case MENU_INDEX:
       return OpIndex;
-#ifdef CRYPT_BACKEND_GPGME
-    case MENU_KEY_SELECT_PGP:
-      return OpPgp;
-    case MENU_KEY_SELECT_SMIME:
-      return OpSmime;
-#endif
     case MENU_PAGER:
       return OpPager;
     case MENU_PGP:
-      return (WithCrypto & APPLICATION_PGP) ? OpPgp : NULL;
+      return OpPgp;
     case MENU_POSTPONED:
       return OpPostponed;
     case MENU_QUERY:
       return OpQuery;
+    case MENU_SMIME:
+      return OpSmime;
     default:
       return NULL;
   }
+}
+
+/**
+ * help_lookup_function - Find a keybinding for an operation
+ * @param op   Operation, e.g. OP_DELETE
+ * @param menu Current Menu, e.g. #MENU_PAGER
+ * @retval str  Key binding
+ * @retval NULL No key binding found
+ */
+static const char *help_lookup_function(int op, enum MenuType menu)
+{
+  if ((menu != MENU_PAGER) && (menu != MENU_EDITOR) && (menu != MENU_GENERIC))
+  {
+    /* first look in the generic map for the function */
+    const char *fn_name = mutt_get_func(OpGeneric, op);
+    if (fn_name)
+      return fn_name;
+  }
+
+  const struct MenuFuncOp *funcs = km_get_table(menu);
+
+  return mutt_get_func(funcs, op);
+}
+
+/**
+ * gather_menu - Gather info about one menu
+ * @param menu      Menu type
+ * @param bia_bind  Array for bind  results (may be NULL)
+ * @param bia_macro Array for macro results (may be NULL)
+ */
+void gather_menu(enum MenuType menu, struct BindingInfoArray *bia_bind,
+                 struct BindingInfoArray *bia_macro)
+{
+  struct Buffer *key_binding = buf_pool_get();
+  struct Buffer *macro = buf_pool_get();
+
+  struct Keymap *map = NULL;
+  STAILQ_FOREACH(map, &Keymaps[menu], entries)
+  {
+    struct BindingInfo bi = { 0 };
+
+    buf_reset(key_binding);
+    km_expand_key(map, key_binding);
+
+    if (map->op == OP_MACRO)
+    {
+      if (!bia_macro || (map->op == OP_NULL))
+        continue;
+
+      buf_reset(macro);
+      escape_macro(map->macro, macro);
+      bi.a[0] = buf_strdup(key_binding);
+      bi.a[1] = buf_strdup(macro);
+      bi.a[2] = map->desc;
+      ARRAY_ADD(bia_macro, bi);
+    }
+    else
+    {
+      if (!bia_bind)
+        continue;
+
+      if (map->op == OP_NULL)
+      {
+        bi.a[0] = buf_strdup(key_binding);
+        bi.a[1] = "noop";
+        ARRAY_ADD(bia_bind, bi);
+        continue;
+      }
+
+      bi.a[0] = buf_strdup(key_binding);
+      bi.a[1] = help_lookup_function(map->op, menu);
+      bi.a[2] = _(opcodes_get_description(map->op));
+      ARRAY_ADD(bia_bind, bi);
+    }
+  }
+
+  buf_pool_release(&key_binding);
+  buf_pool_release(&macro);
 }

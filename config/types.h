@@ -32,7 +32,6 @@ enum ConfigType
   DT_BOOL,        ///< boolean option
   DT_ENUM,        ///< an enumeration
   DT_EXPANDO,     ///< an expando
-  DT_HCACHE,      ///< header cache backend
   DT_LONG,        ///< a number (long)
   DT_MBTABLE,     ///< multibyte char table
   DT_MYVAR,       ///< a user-defined variable (my_foo)
@@ -47,7 +46,7 @@ enum ConfigType
   DT_END,
 };
 
-#define DTYPE(t) ((enum ConfigType)((t) & 0x1F))
+#define CONFIG_TYPE(t) ((enum ConfigType)((t) & 0x1F))
 
 enum ConfigTypeField
 {
@@ -119,7 +118,7 @@ enum ConfigTypeField
 #define D_SORT_LAST                D_CUSTOM_BIT_0                      ///< Sort flag for -last prefix
 #define D_SORT_REVERSE             D_CUSTOM_BIT_1                      ///< Sort flag for -reverse prefix
 
-#define IS_MAILBOX(flags)   ((DTYPE(flags) == DT_STRING) && (flags & D_STRING_MAILBOX))
-#define IS_COMMAND(flags)   ((DTYPE(flags) == DT_STRING) && (flags & D_STRING_COMMAND))
+#define IS_MAILBOX(flags)   ((CONFIG_TYPE(flags) == DT_STRING) && (flags & D_STRING_MAILBOX))
+#define IS_COMMAND(flags)   ((CONFIG_TYPE(flags) == DT_STRING) && (flags & D_STRING_COMMAND))
 
 #endif /* MUTT_CONFIG_TYPES_H */

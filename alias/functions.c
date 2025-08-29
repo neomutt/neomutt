@@ -50,6 +50,7 @@
 #include "alias.h"
 #include "functions.h"
 #include "gui.h"
+#include "sort.h"
 #endif
 
 // clang-format off
@@ -231,7 +232,7 @@ static int op_generic_select_entry(struct AliasMenuData *mdata, int op)
     const int idx = menu_get_index(menu);
     ARRAY_FOREACH(avp, &mdata->ava)
     {
-      avp->is_tagged = (ARRAY_FOREACH_IDX == idx);
+      avp->is_tagged = (ARRAY_FOREACH_IDX_avp == idx);
     }
   }
 
@@ -388,32 +389,36 @@ static int op_search(struct AliasMenuData *mdata, int op)
  */
 static int op_sort(struct AliasMenuData *mdata, int op)
 {
-  int sort = cs_subset_sort(mdata->sub, "sort_alias");
+  int sort = cs_subset_sort(mdata->sub, "alias_sort");
   bool resort = true;
   bool reverse = (op == OP_SORT_REVERSE);
 
   switch (mw_multi_choice(reverse ?
                               /* L10N: The highlighted letters must match the "Sort" options */
-                              _("Rev-Sort (a)lias, a(d)dress or (u)nsorted?") :
+                              _("Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?") :
                               /* L10N: The highlighted letters must match the "Rev-Sort" options */
-                              _("Sort (a)lias, a(d)dress or (u)nsorted?"),
+                              _("Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"),
                           /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
-                          _("adu")))
+                          _("aneu")))
   {
     case -1: /* abort */
       resort = false;
       break;
 
     case 1: /* (a)lias */
-      sort = SORT_ALIAS;
+      sort = ALIAS_SORT_ALIAS;
       break;
 
-    case 2: /* a(d)dress */
-      sort = SORT_ADDRESS;
+    case 2: /* (n)ame */
+      sort = ALIAS_SORT_NAME;
       break;
 
-    case 3: /* (u)nsorted */
-      sort = SORT_ORDER;
+    case 3: /* (e)mail */
+      sort = ALIAS_SORT_EMAIL;
+      break;
+
+    case 4: /* (u)nsorted */
+      sort = ALIAS_SORT_UNSORTED;
       break;
   }
 
@@ -422,7 +427,7 @@ static int op_sort(struct AliasMenuData *mdata, int op)
     sort |= reverse ? SORT_REVERSE : 0;
 
     // This will trigger a WA_RECALC
-    cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
+    cs_subset_str_native_set(mdata->sub, "alias_sort", sort, NULL);
   }
 
   return FR_SUCCESS;
@@ -461,11 +466,14 @@ static const struct AliasFunction AliasFunctions[] = {
  */
 int alias_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
+  // The Dispatcher may be called on any Window in the Dialog
+  struct MuttWindow *dlg = dialog_find(win);
+  if (!dlg || !dlg->wdata)
+    return FR_ERROR;
 
-  struct Menu *menu = win->wdata;
+  struct Menu *menu = dlg->wdata;
   struct AliasMenuData *mdata = menu->mdata;
+
   int rc = FR_UNKNOWN;
   for (size_t i = 0; AliasFunctions[i].op != OP_NULL; i++)
   {

@@ -133,14 +133,14 @@ void test_config_account(void)
   }
 
   rc = cs_subset_he_native_set(a->sub, he, 33, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
 
   buf_reset(err);
   rc = cs_subset_he_string_get(a->sub, he, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s = %s", he->key.strkey, buf_string(err));
   }
@@ -152,7 +152,7 @@ void test_config_account(void)
   he = cs_subset_lookup(a->sub, "Cherry");
   buf_reset(err);
   rc = cs_subset_he_string_get(a->sub, he, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s = %s", he->key.strkey, buf_string(err));
   }
@@ -164,7 +164,7 @@ void test_config_account(void)
   const char *name = "fruit:Apple";
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s = '%s'", name, buf_string(err));
   }
@@ -176,7 +176,7 @@ void test_config_account(void)
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, 42, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Set %s", name);
   }
@@ -204,7 +204,7 @@ void test_config_account(void)
 
   buf_reset(err);
   rc = cs_str_initial_get(cs, name, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Initial %s", buf_string(err));
   }
@@ -221,7 +221,7 @@ void test_config_account(void)
 
   buf_reset(err);
   rc = cs_he_native_set(cs, he, 42, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Set %s", name);
   }

@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <iconv.h>
 #include <stdbool.h>
@@ -162,7 +161,7 @@ static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **cha
   *charsetlen = mutt_regmatch_len(mcharset);
 
   /* Encoding: either Q or B */
-  *enc = (tolower(str[mutt_regmatch_start(mencoding)]) == 'q') ? ENC_QUOTED_PRINTABLE : ENC_BASE64;
+  *enc = (mutt_tolower(str[mutt_regmatch_start(mencoding)]) == 'q') ? ENC_QUOTED_PRINTABLE : ENC_BASE64;
 
   *text = str + mutt_regmatch_start(mtext);
   *textlen = mutt_regmatch_len(mtext);
@@ -359,7 +358,7 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
  * @param enc Encoding type
  * @retval ptr Decoded string
  *
- * @note The input string must be null-terminated; the len parameter is
+ * @note The input string must be NUL-terminated; the len parameter is
  *       an optimization. The caller must free the returned string.
  */
 static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)

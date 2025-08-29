@@ -28,12 +28,13 @@
 #include "mutt/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 struct NodeCondDatePrivate *node_conddate_private_new(int count, char period);
 void node_conddate_private_free(void **ptr);
 struct ExpandoNode *node_conddate_new(int count, char period, int did, int uid);
 int node_conddate_render(const struct ExpandoNode *node,
-                         const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                         const struct ExpandoRenderCallback *rdata, struct Buffer *buf,
                          int max_cols, void *data, MuttFormatFlags flags);
 
 struct TestDates
@@ -111,9 +112,9 @@ void test_expando_node_conddate(void)
     TEST_CHECK(node == NULL);
   }
 
-  // int node_conddate_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+  // int node_conddate_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
   {
-    static const struct ExpandoRenderData TestRenderData[] = {
+    static const struct ExpandoRenderCallback TestRenderCallback[] = {
       // clang-format off
       { 1, 2, NULL, test_d_num },
       { -1, -1, NULL, NULL },
@@ -142,7 +143,7 @@ void test_expando_node_conddate(void)
     const char *parsed_until = NULL;
     struct ExpandoParseError err = { 0 };
 
-    for (size_t i = 0; i < mutt_array_size(test_dates); i++)
+    for (size_t i = 0; i < countof(test_dates); i++)
     {
       TEST_CASE(test_dates[i].str);
       struct ExpandoNode *node = node_conddate_parse(test_dates[i].str + 2, 1, 2, &parsed_until, &err);
@@ -150,18 +151,14 @@ void test_expando_node_conddate(void)
 
       int test_date = now - ((test_dates[i].time * 9) / 10); // 10% newer
 
-      int rc = node_conddate_render(node, TestRenderData, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
-      TEST_CHECK(rc == 1);
-      TEST_MSG("Expected: %d", 1);
-      TEST_MSG("Actual:   %d", rc);
+      int rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
+      TEST_CHECK_NUM_EQ(rc, 1);
       TEST_CHECK(buf_is_empty(buf));
 
       test_date = now - ((test_dates[i].time * 11) / 10); // 10% older
 
-      rc = node_conddate_render(node, TestRenderData, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
-      TEST_CHECK(rc == 0);
-      TEST_MSG("Expected: %d", 0);
-      TEST_MSG("Actual:   %d", rc);
+      rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
+      TEST_CHECK_NUM_EQ(rc, 0);
       TEST_CHECK(buf_is_empty(buf));
 
       node_free(&node);
@@ -170,9 +167,9 @@ void test_expando_node_conddate(void)
     buf_pool_release(&buf);
   }
 
-  // int node_conddate_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+  // int node_conddate_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
   {
-    static const struct ExpandoRenderData TestRenderData[] = {
+    static const struct ExpandoRenderCallback TestRenderCallback[] = {
       // clang-format off
       { 1, 2, NULL, test_d_num },
       { -1, -1, NULL, NULL },
@@ -195,7 +192,7 @@ void test_expando_node_conddate(void)
     const char *parsed_until = NULL;
     struct ExpandoParseError err = { 0 };
 
-    for (size_t i = 0; i < mutt_array_size(test_dates); i++)
+    for (size_t i = 0; i < countof(test_dates); i++)
     {
       TEST_CASE(test_dates[i].str);
       struct ExpandoNode *node = node_conddate_parse(test_dates[i].str + 2, 1, 2, &parsed_until, &err);
@@ -203,10 +200,8 @@ void test_expando_node_conddate(void)
 
       int test_date = now - ((test_dates[i].time * 11) / 10); // 10% older
 
-      int rc = node_conddate_render(node, TestRenderData, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
-      TEST_CHECK(rc == 0);
-      TEST_MSG("Expected: %d", 0);
-      TEST_MSG("Actual:   %d", rc);
+      int rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
+      TEST_CHECK_NUM_EQ(rc, 0);
       TEST_CHECK(buf_is_empty(buf));
 
       node_free(&node);

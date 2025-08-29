@@ -86,11 +86,11 @@ void regex_colors_init(void)
 }
 
 /**
- * regex_colors_cleanup - Clear the Regex colours
+ * regex_colors_reset - Reset the Regex colours
  */
-void regex_colors_cleanup(void)
+void regex_colors_reset(void)
 {
-  color_debug(LL_DEBUG5, "clean up regex\n");
+  color_debug(LL_DEBUG5, "reset regex\n");
   regex_color_list_clear(&AttachList);
   regex_color_list_clear(&BodyList);
   regex_color_list_clear(&HeaderList);
@@ -106,6 +106,14 @@ void regex_colors_cleanup(void)
   regex_color_list_clear(&IndexSubjectList);
   regex_color_list_clear(&IndexTagList);
   regex_color_list_clear(&StatusList);
+}
+
+/**
+ * regex_colors_cleanup - Cleanup the Regex colours
+ */
+void regex_colors_cleanup(void)
+{
+  regex_colors_reset();
 }
 
 /**
@@ -175,8 +183,8 @@ void regex_color_list_clear(struct RegexColorList *rcl)
 }
 
 /**
- * regex_colors_get_list - Return the RegexColorList for a colour id
- * @param cid Colour Id, e.g. #MT_COLOR_BODY
+ * regex_colors_get_list - Return the RegexColorList for a Colour ID
+ * @param cid Colour ID, e.g. #MT_COLOR_BODY
  * @retval ptr RegexColorList
  */
 struct RegexColorList *regex_colors_get_list(enum ColorId cid)
@@ -222,7 +230,6 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
  * add_pattern - Associate a colour to a pattern
  * @param rcl       List of existing colours
  * @param s         String to match
- * @param sensitive true if the pattern case-sensitive
  * @param ac_val    Colour value to use
  * @param err       Buffer for error messages
  * @param is_index  true of this is for the index
@@ -230,21 +237,18 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * is_index used to store compiled pattern only for 'index' color object when
- * called from mutt_parse_color()
+ * called from parse_color()
  */
 static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
-                                      bool sensitive, struct AttrColor *ac_val,
+                                      struct AttrColor *ac_val,
                                       struct Buffer *err, bool is_index, int match)
 {
   struct RegexColor *rcol = NULL;
 
   STAILQ_FOREACH(rcol, rcl, entries)
   {
-    if ((sensitive && mutt_str_equal(s, rcol->pattern)) ||
-        (!sensitive && mutt_istr_equal(s, rcol->pattern)))
-    {
+    if (mutt_str_equal(s, rcol->pattern))
       break;
-    }
   }
 
   if (rcol) // found a matching regex
@@ -273,11 +277,8 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     }
     else
     {
-      uint16_t flags = 0;
-      if (sensitive)
-        flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
-      else
-        flags = REG_ICASE;
+      // Smart case matching
+      uint16_t flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
 
       const int r = REG_COMP(&rcol->regex, s, flags);
       if (r != 0)
@@ -309,7 +310,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
 
 /**
  * regex_colors_parse_color_list - Parse a Regex 'color' command
- * @param cid     Colour Id, should be #MT_COLOR_QUOTED
+ * @param cid     Colour ID, should be #MT_COLOR_STATUS
  * @param pat     Regex pattern
  * @param ac      Colour value to use
  * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
@@ -329,18 +330,13 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
   if (!rcl)
     return false;
 
-  bool sensitive = false;
   bool is_index = false;
   switch (cid)
   {
     case MT_COLOR_ATTACH_HEADERS:
     case MT_COLOR_BODY:
-      sensitive = true;
-      is_index = false;
       break;
     case MT_COLOR_HEADER:
-      sensitive = false;
-      is_index = false;
       break;
     case MT_COLOR_INDEX:
     case MT_COLOR_INDEX_AUTHOR:
@@ -353,14 +349,13 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
     case MT_COLOR_INDEX_SUBJECT:
     case MT_COLOR_INDEX_TAG:
     case MT_COLOR_INDEX_TAGS:
-      sensitive = true;
       is_index = true;
       break;
     default:
       return false;
   }
 
-  *rc = add_pattern(rcl, pat, sensitive, ac, err, is_index, 0);
+  *rc = add_pattern(rcl, pat, ac, err, is_index, 0);
 
   struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
@@ -378,7 +373,7 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
 
 /**
  * regex_colors_parse_status_list - Parse a Regex 'color status' command
- * @param cid     Colour ID, should be #MT_COLOR_QUOTED
+ * @param cid     Colour ID, should be #MT_COLOR_STATUS
  * @param pat     Regex pattern
  * @param ac      Colour value to use
  * @param match   Use the nth regex submatch
@@ -391,7 +386,7 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
   if (cid != MT_COLOR_STATUS)
     return MUTT_CMD_ERROR;
 
-  int rc = add_pattern(&StatusList, pat, true, ac, err, false, match);
+  int rc = add_pattern(&StatusList, pat, ac, err, false, match);
   if (rc != MUTT_CMD_SUCCESS)
     return rc;
 
@@ -408,7 +403,7 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
 
 /**
  * regex_colors_parse_uncolor - Parse a Regex 'uncolor' command
- * @param cid     Colour Id, e.g. #MT_COLOR_STATUS
+ * @param cid     Colour ID, e.g. #MT_COLOR_STATUS
  * @param pat     Pattern to remove (NULL to remove all)
  * @param uncolor true if 'uncolor', false if 'unmono'
  * @retval true If colours were unset

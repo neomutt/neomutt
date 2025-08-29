@@ -42,7 +42,7 @@ void test_mutt_addrlist_dedupe(void)
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     int parsed = mutt_addrlist_parse(&al, "Name 1 <test@example.com>, john@doe.org, toast@example.com, Another <test@example.com>, toast@bar.org, foo@bar.baz, john@doe.org");
-    TEST_CHECK(parsed == 7);
+    TEST_CHECK_NUM_EQ(parsed, 7);
     mutt_addrlist_dedupe(&al);
     struct Address *a = TAILQ_FIRST(&al);
     TEST_CHECK_STR_EQ(buf_string(a->mailbox), "test@example.com");

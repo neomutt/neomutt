@@ -23,15 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
-
-struct ConfigSet;
-
-bool config_init_history(struct ConfigSet *cs);
 
 void test_mutt_hist_at_scratch(void)
 {
   // bool mutt_hist_at_scratch(enum HistoryClass hclass);
-
-  // config_init_history(NeoMutt->sub->cs);
 }

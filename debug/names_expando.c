@@ -25,6 +25,7 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/expando.h"
 #include "alias/gui.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
@@ -44,7 +45,6 @@
 #include "ncrypt/smime.h"
 #include "pattern/private.h"
 #include "sidebar/private.h"
-#include "status.h"
 #ifdef CRYPT_BACKEND_GPGME
 #include "ncrypt/crypt_gpgme.h"
 #endif
@@ -209,6 +209,8 @@ const char *name_expando_uid_email(int uid)
     DEBUG_NAME(ED_EMA_CRYPTO_FLAGS);
     DEBUG_NAME(ED_EMA_DATE_FORMAT);
     DEBUG_NAME(ED_EMA_DATE_FORMAT_LOCAL);
+    DEBUG_NAME(ED_EMA_DATE_STRF);
+    DEBUG_NAME(ED_EMA_DATE_STRF_LOCAL);
     DEBUG_NAME(ED_EMA_FROM_LIST);
     DEBUG_NAME(ED_EMA_INDEX_HOOK);
     DEBUG_NAME(ED_EMA_LINES);
@@ -218,8 +220,6 @@ const char *name_expando_uid_email(int uid)
     DEBUG_NAME(ED_EMA_SCORE);
     DEBUG_NAME(ED_EMA_SIZE);
     DEBUG_NAME(ED_EMA_STATUS_FLAGS);
-    DEBUG_NAME(ED_EMA_STRF);
-    DEBUG_NAME(ED_EMA_STRF_LOCAL);
     DEBUG_NAME(ED_EMA_STRF_RECV_LOCAL);
     DEBUG_NAME(ED_EMA_TAGS);
     DEBUG_NAME(ED_EMA_TAGS_TRANSFORMED);
@@ -271,6 +271,7 @@ const char *name_expando_uid_folder(int uid)
   {
     DEBUG_NAME(ED_FOL_DATE);
     DEBUG_NAME(ED_FOL_DATE_FORMAT);
+    DEBUG_NAME(ED_FOL_DATE_STRF);
     DEBUG_NAME(ED_FOL_DESCRIPTION);
     DEBUG_NAME(ED_FOL_FILENAME);
     DEBUG_NAME(ED_FOL_FILE_GROUP);
@@ -287,7 +288,6 @@ const char *name_expando_uid_folder(int uid)
     DEBUG_NAME(ED_FOL_NOTIFY);
     DEBUG_NAME(ED_FOL_NUMBER);
     DEBUG_NAME(ED_FOL_POLL);
-    DEBUG_NAME(ED_FOL_STRF);
     DEBUG_NAME(ED_FOL_TAGGED);
     DEBUG_NAME(ED_FOL_UNREAD_COUNT);
     DEBUG_DEFAULT;
@@ -298,11 +298,10 @@ const char *name_expando_uid_global(int uid)
 {
   switch (uid)
   {
-    DEBUG_NAME(ED_GLO_CERTIFICATE_PATH);
+    DEBUG_NAME(ED_GLO_CONFIG_SORT);
+    DEBUG_NAME(ED_GLO_CONFIG_SORT_AUX);
+    DEBUG_NAME(ED_GLO_CONFIG_USE_THREADS);
     DEBUG_NAME(ED_GLO_HOSTNAME);
-    DEBUG_NAME(ED_GLO_SORT);
-    DEBUG_NAME(ED_GLO_SORT_AUX);
-    DEBUG_NAME(ED_GLO_USE_THREADS);
     DEBUG_NAME(ED_GLO_VERSION);
     DEBUG_DEFAULT;
   }
@@ -355,11 +354,10 @@ const char *name_expando_uid_mailbox(int uid)
 
 const char *name_expando_uid_menu(int uid)
 {
-  switch (uid)
-  {
-    DEBUG_NAME(ED_MEN_PERCENTAGE);
-    DEBUG_DEFAULT;
-  }
+  if (uid == ED_MEN_PERCENTAGE)
+    return "ED_MEN_PERCENTAGE";
+
+  return "UNKNOWN";
 }
 
 const char *name_expando_uid_nntp(int uid)
@@ -381,7 +379,7 @@ const char *name_expando_uid_pattern(int uid)
   switch (uid)
   {
     DEBUG_NAME(ED_PAT_DESCRIPTION);
-    DEBUG_NAME(ED_PAT_EXPRESION);
+    DEBUG_NAME(ED_PAT_EXPRESSION);
     DEBUG_NAME(ED_PAT_NUMBER);
     DEBUG_DEFAULT;
   }
@@ -459,6 +457,7 @@ const char *name_expando_uid_smime_cmd(int uid)
   {
     DEBUG_NAME(ED_SMI_ALGORITHM);
     DEBUG_NAME(ED_SMI_CERTIFICATE_IDS);
+    DEBUG_NAME(ED_SMI_CERTIFICATE_PATH);
     DEBUG_NAME(ED_SMI_DIGEST_ALGORITHM);
     DEBUG_NAME(ED_SMI_INTERMEDIATE_IDS);
     DEBUG_NAME(ED_SMI_KEY);

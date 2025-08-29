@@ -28,6 +28,7 @@
  * | File                   | Description              |
  * | :--------------------- | :----------------------- |
  * | email/body.c           | @subpage email_body      |
+ * | email/config.c         | @subpage email_config    |
  * | email/email.c          | @subpage email_email     |
  * | email/envelope.c       | @subpage email_envelope  |
  * | email/from.c           | @subpage email_from      |
@@ -37,6 +38,7 @@
  * | email/parse.c          | @subpage email_parse     |
  * | email/rfc2047.c        | @subpage email_rfc2047   |
  * | email/rfc2231.c        | @subpage email_rfc2231   |
+ * | email/sort.c           | @subpage email_sort      |
  * | email/tags.c           | @subpage email_tags      |
  * | email/thread.c         | @subpage email_thread    |
  * | email/url.c            | @subpage email_url       |
@@ -59,6 +61,7 @@
 #include "parse.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
+#include "sort.h"
 #include "tags.h"
 #include "thread.h"
 #include "url.h"

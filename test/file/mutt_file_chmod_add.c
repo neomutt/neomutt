@@ -45,13 +45,13 @@ void test_mutt_file_chmod_add(void)
   struct Buffer *first = buf_pool_get();
   int rc;
 
-  for (size_t i = 0; i < mutt_array_size(tests_fail); i++)
+  for (size_t i = 0; i < countof(tests_fail); i++)
   {
     test_gen_path(first, tests_fail[i].first);
 
     TEST_CASE(buf_string(first));
     rc = mutt_file_chmod_add(buf_string(first), S_IRUSR | S_IWUSR);
-    TEST_CHECK(rc == -1);
+    TEST_CHECK_NUM_EQ(rc, -1);
   }
 
   // clang-format off
@@ -62,7 +62,7 @@ void test_mutt_file_chmod_add(void)
   // clang-format on
 
   struct stat st;
-  for (size_t i = 0; i < mutt_array_size(tests_succeed); i++)
+  for (size_t i = 0; i < countof(tests_succeed); i++)
   {
     test_gen_path(first, tests_succeed[i].first);
 
@@ -70,7 +70,7 @@ void test_mutt_file_chmod_add(void)
 
     TEST_CHECK(chmod(buf_string(first), 0444) == 0);
     rc = mutt_file_chmod_add(buf_string(first), 0222);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     TEST_CHECK(stat(buf_string(first), &st) == 0);
     if (!TEST_CHECK((st.st_mode & 0777) == tests_succeed[i].retval))
     {
@@ -80,7 +80,7 @@ void test_mutt_file_chmod_add(void)
 
     TEST_CHECK(chmod(buf_string(first), 0666) == 0);
     rc = mutt_file_chmod_add(buf_string(first), 0222);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     TEST_CHECK(stat(buf_string(first), &st) == 0);
     if (!TEST_CHECK((st.st_mode & 0777) == tests_succeed[i].retval))
     {

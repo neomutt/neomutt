@@ -25,7 +25,9 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 int color_observer(struct NotifyCallback *nc)
 {
@@ -33,14 +35,14 @@ int color_observer(struct NotifyCallback *nc)
     return -1;
 
   struct EventColor *ev_c = nc->event_data;
-  TEST_CHECK(ev_c->cid == MT_COLOR_INDICATOR);
+  TEST_CHECK_NUM_EQ(ev_c->cid, MT_COLOR_INDICATOR);
 
   return 0;
 }
 
 void test_color_notify(void)
 {
-  color_notify_init();
+  color_notify_init(NeoMutt->notify);
 
   mutt_color_observer_add(color_observer, NULL);
 

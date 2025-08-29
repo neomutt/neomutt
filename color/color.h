@@ -30,15 +30,11 @@
 #include <stdbool.h>
 
 /**
- * enum ColorId - List of all colored objects
- *
- * This enumeration starts at 50 to avoid any of the values being 37 (ASCII %).
- * Inserting colour codes into expando strings, when one of the colour codes
- * was '%', was causing formatting problems.
+ * enum ColorId - List of all coloured objects
  */
 enum ColorId
 {
-  MT_COLOR_NONE = 50,
+  MT_COLOR_NONE,                     ///< No colour
   MT_COLOR_ATTACHMENT,               ///< MIME attachments text (entire line)
   MT_COLOR_ATTACH_HEADERS,           ///< MIME attachment test (takes a pattern)
   MT_COLOR_BODY,                     ///< Pager: highlight body of message (takes a pattern)
@@ -55,12 +51,20 @@ enum ColorId
   MT_COLOR_ITALIC,                   ///< Italic text
   MT_COLOR_MARKERS,                  ///< Pager: markers, line continuation
   MT_COLOR_MESSAGE,                  ///< Informational message
-  MT_COLOR_MESSAGE_LOG,              ///< Menu showing log messages
   MT_COLOR_NORMAL,                   ///< Plain text
   MT_COLOR_OPTIONS,                  ///< Options in prompt
   MT_COLOR_PROGRESS,                 ///< Progress bar
   MT_COLOR_PROMPT,                   ///< Question/user input
-  MT_COLOR_QUOTED,                   ///< Pager: quoted text
+  MT_COLOR_QUOTED0,                  ///< Pager: quoted text, level 0
+  MT_COLOR_QUOTED1,                  ///< Pager: quoted text, level 1
+  MT_COLOR_QUOTED2,                  ///< Pager: quoted text, level 2
+  MT_COLOR_QUOTED3,                  ///< Pager: quoted text, level 3
+  MT_COLOR_QUOTED4,                  ///< Pager: quoted text, level 4
+  MT_COLOR_QUOTED5,                  ///< Pager: quoted text, level 5
+  MT_COLOR_QUOTED6,                  ///< Pager: quoted text, level 6
+  MT_COLOR_QUOTED7,                  ///< Pager: quoted text, level 7
+  MT_COLOR_QUOTED8,                  ///< Pager: quoted text, level 8
+  MT_COLOR_QUOTED9,                  ///< Pager: quoted text, level 9
   MT_COLOR_SEARCH,                   ///< Pager: search matches
   MT_COLOR_SIDEBAR_BACKGROUND,       ///< Background colour for the Sidebar
   MT_COLOR_SIDEBAR_DIVIDER,          ///< Line dividing sidebar from the index/pager
@@ -95,14 +99,13 @@ enum ColorId
 };
 
 extern const struct Mapping ColorFields[];
-extern const struct Mapping ComposeColorFields[];
 
 #define COLOR_DEFAULT -1
 
-void mutt_colors_init(void);
-void mutt_colors_cleanup(void);
-bool mutt_color_has_pattern(enum ColorId cid);
-
+void colors_init   (void);
+void colors_reset  (void);
 void colors_cleanup(void);
+
+bool mutt_color_has_pattern(enum ColorId cid);
 
 #endif /* MUTT_COLOR_COLOR_H */

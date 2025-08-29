@@ -35,9 +35,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "key/lib.h"
+#include "lib.h"
 #include "menu/lib.h"
-#include "ncrypt/lib.h"
 
 extern const struct MenuOpSeq AliasDefaultBindings[];
 extern const struct MenuOpSeq AttachmentDefaultBindings[];
@@ -54,6 +53,7 @@ extern const struct MenuOpSeq PostponedDefaultBindings[];
 extern const struct MenuOpSeq QueryDefaultBindings[];
 extern const struct MenuOpSeq SmimeDefaultBindings[];
 
+#ifdef HAVE_USE_EXTENDED_NAMES
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style
  */
@@ -120,6 +120,7 @@ static const char *find_ext_name(const char *key)
   }
   return 0;
 }
+#endif
 
 /**
  * init_extended_keys - Initialise map of ncurses extended keys
@@ -184,24 +185,16 @@ void km_init(void)
   create_bindings(AutocryptDefaultBindings, MENU_AUTOCRYPT);
 #endif
   create_bindings(BrowserDefaultBindings, MENU_FOLDER);
-  create_bindings(DialogDefaultBindings, MENU_DIALOG);
   create_bindings(ComposeDefaultBindings, MENU_COMPOSE);
+  create_bindings(DialogDefaultBindings, MENU_DIALOG);
   create_bindings(EditorDefaultBindings, MENU_EDITOR);
   create_bindings(GenericDefaultBindings, MENU_GENERIC);
   create_bindings(IndexDefaultBindings, MENU_INDEX);
   create_bindings(PagerDefaultBindings, MENU_PAGER);
+  create_bindings(PgpDefaultBindings, MENU_PGP);
   create_bindings(PostponedDefaultBindings, MENU_POSTPONED);
   create_bindings(QueryDefaultBindings, MENU_QUERY);
-
-  if (WithCrypto & APPLICATION_PGP)
-    create_bindings(PgpDefaultBindings, MENU_PGP);
-  if (WithCrypto & APPLICATION_SMIME)
-    create_bindings(SmimeDefaultBindings, MENU_SMIME);
-
-#ifdef CRYPT_BACKEND_GPGME
-  create_bindings(PgpDefaultBindings, MENU_KEY_SELECT_PGP);
-  create_bindings(SmimeDefaultBindings, MENU_KEY_SELECT_SMIME);
-#endif
+  create_bindings(SmimeDefaultBindings, MENU_SMIME);
 }
 
 /**
@@ -238,7 +231,7 @@ void mutt_init_abort_key(void)
 {
   keycode_t buf[2];
   const char *const c_abort_key = cs_subset_string(NeoMutt->sub, "abort_key");
-  size_t len = parsekeys(c_abort_key, buf, mutt_array_size(buf));
+  size_t len = parsekeys(c_abort_key, buf, countof(buf));
   if (len == 0)
   {
     mutt_error(_("Abort key is not set, defaulting to Ctrl-G"));

@@ -3,7 +3,7 @@
  * Test code for the ConfigSet object
  *
  * @authors
- * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
@@ -42,49 +42,51 @@ static struct ConfigDef Vars[] = {
 };
 // clang-format on
 
-static int dummy_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
+static int dummy_string_set(void *var, struct ConfigDef *cdef,
                             const char *value, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
 
-static int dummy_string_get(const struct ConfigSet *cs, void *var,
-                            const struct ConfigDef *cdef, struct Buffer *result)
+static int dummy_string_get(void *var, const struct ConfigDef *cdef, struct Buffer *result)
 {
   return CSR_ERR_CODE;
 }
 
-static int dummy_native_set(const struct ConfigSet *cs, void *var,
-                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
+static int dummy_native_set(void *var, const struct ConfigDef *cdef,
+                            intptr_t value, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
 
-static intptr_t dummy_native_get(const struct ConfigSet *cs, void *var,
-                                 const struct ConfigDef *cdef, struct Buffer *err)
+static intptr_t dummy_native_get(void *var, const struct ConfigDef *cdef, struct Buffer *err)
 {
   return INT_MIN;
 }
 
-int dummy_plus_equals(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef,
+int dummy_plus_equals(void *var, const struct ConfigDef *cdef,
                       const char *value, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
 
-int dummy_minus_equals(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef,
+int dummy_minus_equals(void *var, const struct ConfigDef *cdef,
                        const char *value, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
 
-static int dummy_reset(const struct ConfigSet *cs, void *var,
-                       const struct ConfigDef *cdef, struct Buffer *err)
+static bool dummy_has_been_set(void *var, const struct ConfigDef *cdef)
+{
+  return false;
+}
+
+static int dummy_reset(void *var, const struct ConfigDef *cdef, struct Buffer *err)
 {
   return CSR_ERR_CODE;
 }
 
-void dummy_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
+void dummy_destroy(void *var, const struct ConfigDef *cdef)
 {
 }
 
@@ -143,6 +145,16 @@ bool degenerate_tests(struct ConfigSet *cs)
   if (!TEST_CHECK(cs_str_reset(NULL, "apple", NULL) != CSR_SUCCESS))
     return false;
   if (!TEST_CHECK(cs_str_reset(cs, NULL, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(!cs_he_has_been_set(NULL, he)))
+    return false;
+  if (!TEST_CHECK(!cs_he_has_been_set(cs, NULL)))
+    return false;
+  if (!TEST_CHECK(!cs_str_has_been_set(NULL, "apple")))
+    return false;
+  if (!TEST_CHECK(!cs_str_has_been_set(cs, NULL)))
+    return false;
+  if (!TEST_CHECK(!cs_str_has_been_set(cs, "apple")))
     return false;
   if (!TEST_CHECK(cs_he_initial_set(NULL, he, "42", NULL) != CSR_SUCCESS))
     return false;
@@ -377,6 +389,7 @@ void test_config_set(void)
     dummy_native_get,
     dummy_plus_equals,
     dummy_minus_equals,
+    dummy_has_been_set,
     dummy_reset,
     dummy_destroy,
   };
@@ -412,7 +425,7 @@ void test_config_set(void)
 
   const char *name = "Unknown";
   int result = cs_str_string_set(cs, name, "hello", err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -423,7 +436,7 @@ void test_config_set(void)
   }
 
   result = cs_str_string_plus_equals(cs, name, "42", err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -434,7 +447,7 @@ void test_config_set(void)
   }
 
   result = cs_str_string_minus_equals(cs, name, "42", err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -445,7 +458,7 @@ void test_config_set(void)
   }
 
   result = cs_str_string_get(cs, name, err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -456,7 +469,7 @@ void test_config_set(void)
   }
 
   result = cs_str_native_set(cs, name, IP "hello", err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -467,7 +480,7 @@ void test_config_set(void)
   }
 
   intptr_t native = cs_str_native_get(cs, name, err);
-  if (TEST_CHECK(native == INT_MIN))
+  if (TEST_CHECK_NUM_EQ(native, INT_MIN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }

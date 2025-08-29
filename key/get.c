@@ -34,7 +34,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "key/lib.h"
+#include "lib.h"
 #include "menu/lib.h"
 #include "globals.h"
 #ifdef USE_INOTIFY
@@ -255,7 +255,7 @@ struct KeyEvent mutt_getch(GetChFlags flags)
 
   if (ch == ERR)
   {
-    if (!isatty(0)) // terminal was lost
+    if (!isatty(STDIN_FILENO)) // terminal was lost
       mutt_exit(1);
 
     if (SigWinch)
@@ -296,15 +296,17 @@ void km_error_key(enum MenuType mtype)
   struct Keymap *key = km_find_func(mtype, OP_HELP);
   if (!key && (mtype != MENU_EDITOR) && (mtype != MENU_PAGER))
     key = km_find_func(MENU_GENERIC, OP_HELP);
+
   if (!key)
   {
     mutt_error(_("Key is not bound"));
     return;
   }
 
-  char buf[128] = { 0 };
-  km_expand_key(buf, sizeof(buf), key);
-  mutt_error(_("Key is not bound.  Press '%s' for help."), buf);
+  struct Buffer *buf = buf_pool_get();
+  km_expand_key(key, buf);
+  mutt_error(_("Key is not bound.  Press '%s' for help."), buf_string(buf));
+  buf_pool_release(&buf);
 }
 
 /**
@@ -335,6 +337,77 @@ static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
   }
 
   return (struct KeyEvent) { mutt_getch(flags).ch, OP_NULL };
+}
+
+/**
+ * generic_tokenize_push_string - Parse and queue a 'push' command
+ * @param s String to push into the key queue
+ *
+ * Parses s for `<function>` syntax and adds the whole sequence the macro buffer.
+ */
+void generic_tokenize_push_string(char *s)
+{
+  char *pp = NULL;
+  char *p = s + mutt_str_len(s) - 1;
+  size_t l;
+  int i, op = OP_NULL;
+
+  while (p >= s)
+  {
+    /* if we see something like "<PageUp>", look to see if it is a real
+     * function name and return the corresponding value */
+    if (*p == '>')
+    {
+      for (pp = p - 1; pp >= s && *pp != '<'; pp--)
+        ; // do nothing
+
+      if (pp >= s)
+      {
+        i = parse_fkey(pp);
+        if (i > 0)
+        {
+          mutt_push_macro_event(KEY_F(i), 0);
+          p = pp - 1;
+          continue;
+        }
+
+        l = p - pp + 1;
+        for (i = 0; KeyNames[i].name; i++)
+        {
+          if (mutt_istrn_equal(pp, KeyNames[i].name, l))
+            break;
+        }
+        if (KeyNames[i].name)
+        {
+          /* found a match */
+          mutt_push_macro_event(KeyNames[i].value, 0);
+          p = pp - 1;
+          continue;
+        }
+
+        /* See if it is a valid command
+         * skip the '<' and the '>' when comparing */
+        for (enum MenuType j = 0; MenuNames[j].name; j++)
+        {
+          const struct MenuFuncOp *funcs = km_get_table(MenuNames[j].value);
+          if (funcs)
+          {
+            op = get_op(funcs, pp + 1, l - 2);
+            if (op != OP_NULL)
+              break;
+          }
+        }
+
+        if (op != OP_NULL)
+        {
+          mutt_push_macro_event(0, op);
+          p = pp - 1;
+          continue;
+        }
+      }
+    }
+    mutt_push_macro_event((unsigned char) *p--, 0); /* independent 8 bits chars */
+  }
 }
 
 /**

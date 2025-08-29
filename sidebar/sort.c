@@ -30,9 +30,11 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "sort.h"
 
@@ -131,9 +133,9 @@ static int sb_sort_unread(const void *a, const void *b, void *sdata)
 }
 
 /**
- * sb_sort_order - Compare two Sidebar entries by order of creation - Implements ::sort_t - @ingroup sort_api
+ * sb_sort_unsorted - Compare two Sidebar entries by order of creation - Implements ::sort_t - @ingroup sort_api
  */
-static int sb_sort_order(const void *a, const void *b, void *sdata)
+static int sb_sort_unsorted(const void *a, const void *b, void *sdata)
 {
   const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
@@ -146,53 +148,40 @@ static int sb_sort_order(const void *a, const void *b, void *sdata)
 }
 
 /**
- * sb_sort_unsorted - Compare two Sidebar entries into their original order - Implements ::sort_t - @ingroup sort_api
- */
-static int sb_sort_unsorted(const void *a, const void *b, void *sdata)
-{
-  const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
-  const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
-
-  // This sort method isn't affected by the reverse flag
-  return (sbe1->mailbox->gen - sbe2->mailbox->gen);
-}
-
-/**
  * sb_sort_entries - Sort the Sidebar entries
  * @param wdata Sidebar data
- * @param sort  Sort order, e.g. #SORT_PATH
+ * @param sort  Sort order, e.g. #SB_SORT_PATH
  *
  * Sort the `wdata->entries` array according to the current sort config option
- * `$sidebar_sort_method`. This calls qsort to do the work which calls our
+ * `$sidebar_sort`. This calls qsort to do the work which calls our
  * callback function "cb_qsort_sbe".
  *
  * Once sorted, the prev/next links will be reconstructed.
  */
-void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort)
+void sb_sort_entries(struct SidebarWindowData *wdata, enum EmailSortType sort)
 {
-  sort_t fn = sb_sort_unsorted;
+  sort_t fn = NULL;
 
   switch (sort & SORT_MASK)
   {
-    case SORT_COUNT:
+    case SB_SORT_COUNT:
       fn = sb_sort_count;
       break;
-    case SORT_DESC:
+    case SB_SORT_DESC:
       fn = sb_sort_desc;
       break;
-    case SORT_FLAGGED:
+    case SB_SORT_FLAGGED:
       fn = sb_sort_flagged;
       break;
-    case SORT_PATH:
+    case SB_SORT_PATH:
       fn = sb_sort_path;
       break;
-    case SORT_UNREAD:
+    case SB_SORT_UNREAD:
       fn = sb_sort_unread;
       break;
-    case SORT_ORDER:
-      fn = sb_sort_order;
-      FALLTHROUGH;
+    case SB_SORT_UNSORTED:
     default:
+      fn = sb_sort_unsorted;
       break;
   }
 

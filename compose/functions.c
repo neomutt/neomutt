@@ -129,6 +129,8 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
   { "postpone-message",              OP_COMPOSE_POSTPONE_MESSAGE },
+  { "preview-page-down",             OP_PREVIEW_PAGE_DOWN },
+  { "preview-page-up",               OP_PREVIEW_PAGE_UP },
   { "print-entry",                   OP_ATTACHMENT_PRINT },
   { "rename-attachment",             OP_ATTACHMENT_RENAME_ATTACHMENT },
   { "rename-file",                   OP_COMPOSE_RENAME_FILE },
@@ -202,6 +204,8 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ENVELOPE_EDIT_REPLY_TO,             "r" },
   { OP_ENVELOPE_EDIT_SUBJECT,              "s" },
   { OP_ENVELOPE_EDIT_TO,                   "t" },
+  { OP_PREVIEW_PAGE_DOWN,                  "<pagedown>" },
+  { OP_PREVIEW_PAGE_UP,                    "<pageup>" },
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_TAG,                                "T" },
   { 0, NULL },
@@ -902,8 +906,8 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
   }
 
   /* `$sort`, `$sort_aux`, `$use_threads` could be changed in dlg_index() */
-  const enum SortType old_sort = cs_subset_sort(shared->sub, "sort");
-  const enum SortType old_sort_aux = cs_subset_sort(shared->sub, "sort_aux");
+  const enum EmailSortType old_sort = cs_subset_sort(shared->sub, "sort");
+  const enum EmailSortType old_sort_aux = cs_subset_sort(shared->sub, "sort_aux");
   const unsigned char old_use_threads = cs_subset_enum(shared->sub, "use_threads");
 
   mutt_message(_("Tag the messages you want to attach"));
@@ -1391,6 +1395,7 @@ static int op_attachment_move_down(struct ComposeSharedData *shared, int op)
   compose_attach_swap(shared->email, shared->adata->actx, index, nextidx);
   mutt_update_tree(shared->adata->actx);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   menu_set_index(shared->adata->menu, finalidx);
   return FR_SUCCESS;
 }
@@ -1425,6 +1430,7 @@ static int op_attachment_move_up(struct ComposeSharedData *shared, int op)
   compose_attach_swap(shared->email, actx, previdx, index);
   mutt_update_tree(actx);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   menu_set_index(shared->adata->menu, previdx);
   return FR_SUCCESS;
 }
@@ -1473,13 +1479,11 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
 
   ap = mutt_aptr_new();
   /* Touch the file */
-  FILE *fp = mutt_file_fopen(buf_string(fname), "w");
-  if (!fp)
+  if (!mutt_file_touch(buf_string(fname)))
   {
     mutt_error(_("Can't create file %s"), buf_string(fname));
     goto done;
   }
-  mutt_file_fclose(&fp);
 
   ap->body = mutt_make_file_attach(buf_string(fname), shared->sub);
   if (!ap->body)
@@ -1598,6 +1602,7 @@ static int op_attachment_toggle_disposition(struct ComposeSharedData *shared, in
                                    DISP_ATTACH :
                                    DISP_INLINE;
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   return FR_SUCCESS;
 }
 
@@ -2135,12 +2140,10 @@ static const struct ComposeFunction ComposeFunctions[] = {
  */
 int compose_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win)
-    return FR_UNKNOWN;
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
-    return FR_UNKNOWN;
+    return FR_ERROR;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; ComposeFunctions[i].op != OP_NULL; i++)

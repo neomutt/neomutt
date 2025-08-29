@@ -1,9 +1,9 @@
 /**
  * @file
- * Helper functions to get config values
+ * Helper functions to get/set config values
  *
  * @authors
- * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -53,7 +53,7 @@ bool cs_subset_bool(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_BOOL);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_BOOL);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -77,7 +77,7 @@ unsigned char cs_subset_enum(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_ENUM);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_ENUM);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -101,7 +101,7 @@ long cs_subset_long(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_LONG);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_LONG);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -125,7 +125,7 @@ struct MbTable *cs_subset_mbtable(const struct ConfigSubset *sub, const char *na
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_MBTABLE);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_MBTABLE);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -149,7 +149,7 @@ short cs_subset_number(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_NUMBER);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_NUMBER);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -174,7 +174,7 @@ const char *cs_subset_path(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_PATH);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_PATH);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -198,7 +198,7 @@ enum QuadOption cs_subset_quad(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_QUAD);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_QUAD);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -223,7 +223,7 @@ const struct Regex *cs_subset_regex(const struct ConfigSubset *sub, const char *
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_REGEX);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_REGEX);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -248,7 +248,7 @@ const struct Slist *cs_subset_slist(const struct ConfigSubset *sub, const char *
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_SLIST);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_SLIST);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -272,7 +272,7 @@ short cs_subset_sort(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_SORT);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_SORT);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -297,11 +297,49 @@ const char *cs_subset_string(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_STRING);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_STRING);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   ASSERT(value != INT_MIN);
 
   return (const char *) value;
+}
+
+/**
+ * config_he_set_initial - Set the initial value of a Config Option
+ */
+bool config_he_set_initial(struct ConfigSet *cs, struct HashElem *he, const char *value)
+{
+  if (!cs || !he)
+    return false;
+
+  struct Buffer *err = buf_pool_get();
+
+  int rc = cs_he_initial_set(cs, he, value, err);
+  if (!buf_is_empty(err))
+    mutt_error("%s", buf_string(err)); // LCOV_EXCL_LINE
+
+  buf_pool_release(&err);
+  cs_he_reset(cs, he, NULL);
+
+  return (CSR_RESULT(rc) == CSR_SUCCESS);
+}
+
+/**
+ * config_str_set_initial - Set the initial value of a Config Option
+ */
+bool config_str_set_initial(struct ConfigSet *cs, const char *name, const char *value)
+{
+  if (!cs || !name)
+    return false;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    mutt_error(_("Unknown option %s"), name);
+    return false;
+  }
+
+  return config_he_set_initial(cs, he, value);
 }

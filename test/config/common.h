@@ -40,6 +40,7 @@ extern const struct ConfigSetType CstBool;
 extern const struct ConfigSetType CstEnum;
 extern const struct ConfigSetType CstLong;
 extern const struct ConfigSetType CstMbtable;
+extern const struct ConfigSetType CstMyVar;
 extern const struct ConfigSetType CstNumber;
 extern const struct ConfigSetType CstPath;
 extern const struct ConfigSetType CstQuad;
@@ -48,9 +49,9 @@ extern const struct ConfigSetType CstSlist;
 extern const struct ConfigSetType CstSort;
 extern const struct ConfigSetType CstString;
 
-int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result);
-int validator_warn   (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result);
-int validator_fail   (const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *result);
+int validator_succeed(const struct ConfigDef *cdef, intptr_t value, struct Buffer *result);
+int validator_warn   (const struct ConfigDef *cdef, intptr_t value, struct Buffer *result);
+int validator_fail   (const struct ConfigDef *cdef, intptr_t value, struct Buffer *result);
 
 void log_line(const char *fn);
 void short_line(void);
@@ -59,6 +60,7 @@ void set_list(const struct ConfigSet *cs);
 void cs_dump_set(const struct ConfigSet *cs);
 
 int      cs_str_delete             (const struct ConfigSet *cs, const char *name, struct Buffer *err);
+int      cs_str_initial_set        (const struct ConfigSet *cs, const char *name, const char *value, struct Buffer *err);
 intptr_t cs_str_native_get         (const struct ConfigSet *cs, const char *name, struct Buffer *err);
 int      cs_str_string_get         (const struct ConfigSet *cs, const char *name, struct Buffer *result);
 int      cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name, const char *value, struct Buffer *err);

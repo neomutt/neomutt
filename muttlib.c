@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <pwd.h>
@@ -141,7 +140,7 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
       {
         if ((s[1] == '/') || (s[1] == '\0'))
         {
-          buf_strcpy(p, HomeDir);
+          buf_strcpy(p, NeoMutt->home_dir);
           tail = s + 1;
         }
         else
@@ -363,7 +362,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
       memmove(&dest[idx + pwnl], &dest[idx + 1],
               MAX((ssize_t) (destlen - idx - pwnl - 1), 0));
       memcpy(&dest[idx], pw->pw_name, MIN(destlen - idx - 1, pwnl));
-      dest[idx] = toupper((unsigned char) dest[idx]);
+      dest[idx] = mutt_toupper(dest[idx]);
     }
   }
 
@@ -505,7 +504,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
     *buf++ = '=';
     memmove(buf, buf + len, mutt_str_len(buf + len) + 1);
   }
-  else if ((len = mutt_str_startswith(buf, HomeDir)) && (buf[len] == '/'))
+  else if ((len = mutt_str_startswith(buf, NeoMutt->home_dir)) && (buf[len] == '/'))
   {
     *buf++ = '~';
     memmove(buf, buf + len - 1, mutt_str_len(buf + len - 1) + 1);
@@ -609,7 +608,6 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
         *opt = MUTT_SAVE_APPEND;
         break;
       case 1: /* overwrite */
-        *opt = MUTT_SAVE_OVERWRITE;
         break;
     }
   }
@@ -684,7 +682,7 @@ void mutt_safe_path(struct Buffer *dest, const struct Address *a)
 {
   buf_save_path(dest, a);
   for (char *p = dest->data; *p; p++)
-    if ((*p == '/') || isspace(*p) || !IsPrint((unsigned char) *p))
+    if ((*p == '/') || mutt_isspace(*p) || !IsPrint((unsigned char) *p))
       *p = '_';
 }
 
@@ -717,7 +715,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
 
     p[len - 1] = 0;
     mutt_endwin();
-    *thepid = filter_create(p, NULL, &fp, NULL, EnvList);
+    *thepid = filter_create(p, NULL, &fp, NULL, NeoMutt->env);
     FREE(&p);
   }
   else
@@ -850,19 +848,6 @@ void mutt_sleep(short s)
 }
 
 /**
- * mutt_make_version - Generate the NeoMutt version string
- * @retval ptr Version string
- *
- * @note This returns a pointer to a static buffer
- */
-const char *mutt_make_version(void)
-{
-  static char vstring[256];
-  snprintf(vstring, sizeof(vstring), "NeoMutt %s%s", PACKAGE_VERSION, GitVer);
-  return vstring;
-}
-
-/**
  * mutt_encode_path - Convert a path to 'us-ascii'
  * @param buf Buffer for the result
  * @param src Path to convert (OPTIONAL)
@@ -878,7 +863,7 @@ void mutt_encode_path(struct Buffer *buf, const char *src)
   /* convert the path to POSIX "Portable Filename Character Set" */
   for (size_t i = 0; i < len; i++)
   {
-    if (!isalnum(buf->data[i]) && !strchr("/.-_", buf->data[i]))
+    if (!mutt_isalnum(buf->data[i]) && !strchr("/.-_", buf->data[i]))
     {
       buf->data[i] = '_';
     }
@@ -997,14 +982,14 @@ void buf_sanitize_filename(struct Buffer *buf, const char *path, short slash)
 
 /**
  * mutt_str_pretty_size - Display an abbreviated size, like 3.4K
- * @param buf    Buffer for the result
- * @param buflen Length of the buffer
- * @param num    Number to abbreviate
+ * @param[out] buf Buffer for the result
+ * @param[in]  num Number to abbreviate
+ * @retval num Bytes written to buf
  */
-void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
+int mutt_str_pretty_size(struct Buffer *buf, size_t num)
 {
-  if (!buf || (buflen == 0))
-    return;
+  if (!buf)
+    return 0;
 
   const bool c_size_show_bytes = cs_subset_bool(NeoMutt->sub, "size_show_bytes");
   const bool c_size_show_fractions = cs_subset_bool(NeoMutt->sub, "size_show_fractions");
@@ -1013,31 +998,34 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
 
   if (c_size_show_bytes && (num < 1024))
   {
-    snprintf(buf, buflen, "%d", (int) num);
+    return buf_add_printf(buf, "%d", (int) num);
   }
-  else if (num == 0)
+
+  if (num == 0)
   {
-    mutt_str_copy(buf, c_size_units_on_left ? "K0" : "0K", buflen);
+    return buf_addstr(buf, c_size_units_on_left ? "K0" : "0K");
   }
-  else if (c_size_show_fractions && (num < 10189)) /* 0.1K - 9.9K */
+
+  if (c_size_show_fractions && (num < 10189)) /* 0.1K - 9.9K */
   {
-    snprintf(buf, buflen, c_size_units_on_left ? "K%3.1f" : "%3.1fK",
-             (num < 103) ? 0.1 : (num / 1024.0));
+    return buf_add_printf(buf, c_size_units_on_left ? "K%3.1f" : "%3.1fK",
+                          (num < 103) ? 0.1 : (num / 1024.0));
   }
-  else if (!c_size_show_mb || (num < 1023949)) /* 10K - 999K */
+
+  if (!c_size_show_mb || (num < 1023949)) /* 10K - 999K */
   {
     /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
-    snprintf(buf, buflen, c_size_units_on_left ? ("K%zu") : ("%zuK"), (num + 51) / 1024);
+    return buf_add_printf(buf, c_size_units_on_left ? ("K%zu") : ("%zuK"), (num + 51) / 1024);
   }
-  else if (c_size_show_fractions && (num < 10433332)) /* 1.0M - 9.9M */
+
+  if (c_size_show_fractions && (num < 10433332)) /* 1.0M - 9.9M */
   {
-    snprintf(buf, buflen, c_size_units_on_left ? "M%3.1f" : "%3.1fM", num / 1048576.0);
+    return buf_add_printf(buf, c_size_units_on_left ? "M%3.1f" : "%3.1fM", num / 1048576.0);
   }
-  else /* 10M+ */
-  {
-    /* (10433332 + 52428) / 1048576 = 10 */
-    snprintf(buf, buflen, c_size_units_on_left ? ("M%zu") : ("%zuM"), (num + 52428) / 1048576);
-  }
+
+  /* 10M+ -- (10433332 + 52428) / 1048576 = 10 */
+  return buf_add_printf(buf, c_size_units_on_left ? ("M%zu") : ("%zuM"),
+                        (num + 52428) / 1048576);
 }
 
 /**
@@ -1092,4 +1080,18 @@ void remove_from_stailq(struct ListHead *head, const char *str)
       }
     }
   }
+}
+
+/**
+ * mutt_exit - Leave NeoMutt NOW
+ * @param code Value to return to the calling environment
+ */
+void mutt_exit(int code)
+{
+  mutt_endwin();
+#ifdef USE_DEBUG_BACKTRACE
+  if (code != 0)
+    show_backtrace();
+#endif
+  exit(code);
 }

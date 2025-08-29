@@ -3,7 +3,7 @@
  * Create a GraphViz dot file from the NeoMutt objects
  *
  * @authors
- * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -371,10 +371,11 @@ void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
     char scope[256];
     snprintf(scope, sizeof(scope), "%s:", sub->name);
 
-    struct HashElem **list = get_elem_list(sub->cs);
-    for (size_t i = 0; list[i]; i++)
+    struct HashElemArray hea = get_elem_list(sub->cs, GEL_ALL_CONFIG);
+    struct HashElem **hep = NULL;
+    ARRAY_FOREACH(hep, &hea)
     {
-      struct HashElem *item = list[i];
+      struct HashElem *item = *hep;
       if ((item->type & type) == 0)
         continue;
 
@@ -384,7 +385,7 @@ void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
       {
         if (strchr(iname + slen, ':'))
           continue;
-        if ((DTYPE(item->type) == DT_STRING) && (item->type & D_SENSITIVE))
+        if ((CONFIG_TYPE(item->type) == DT_STRING) && (item->type & D_SENSITIVE))
         {
           dot_type_string(fp, iname + slen, "***", true);
         }
@@ -396,17 +397,13 @@ void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
         }
       }
     }
-    FREE(&list);
+    ARRAY_FREE(&hea);
   }
   else
   {
-    struct HashElem **list = get_elem_list(sub->cs);
-    int i = 0;
-    for (; list[i]; i++)
-      ; // do nothing
-
-    dot_type_number(fp, "count", i);
-    FREE(&list);
+    struct HashElemArray hea = get_elem_list(sub->cs, GEL_ALL_CONFIG);
+    dot_type_number(fp, "count", ARRAY_SIZE(&hea));
+    ARRAY_FREE(&hea);
   }
 
   dot_object_footer(fp);

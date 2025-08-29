@@ -65,7 +65,7 @@ void test_buf_substrcpy(void)
 
     size_t len = buf_substrcpy(buf, src + 9, src + 18);
 
-    TEST_CHECK(len == 9);
+    TEST_CHECK_NUM_EQ(len, 9);
     TEST_CHECK_STR_EQ(buf_string(buf), result);
 
     buf_pool_release(&buf);

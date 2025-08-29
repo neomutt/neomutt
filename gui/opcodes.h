@@ -147,6 +147,12 @@ const char *opcodes_get_name       (int op);
   /*       Attach Dialog: <op_attachment_view_text> */ \
   /*       Compose Dialog: <op_display_headers> */ \
   _fmt(OP_ATTACHMENT_VIEW_TEXT,               N_("view attachment as text")) \
+  /* L10N: Help screen description for OP_PREVIEW_PAGE_DOWN */ \
+  /*       Compose Dialog: <op_preview_page_down> */ \
+  _fmt(OP_PREVIEW_PAGE_DOWN,                  N_("show the next page of the message")) \
+  /* L10N: Help screen description for OP_PREVIEW_PAGE_UP */ \
+  /*       Compose Dialog: <op_preview_page_up> */ \
+  _fmt(OP_PREVIEW_PAGE_UP,                    N_("show the previous page of the message")) \
 
 #ifdef USE_AUTOCRYPT
 #define OPS_AUTOCRYPT(_fmt) \
@@ -708,8 +714,6 @@ const char *opcodes_get_name       (int op);
   /*       Text Entry: <op_redraw> */ \
   /*       Global: <op_redraw> */ \
   _fmt(OP_REDRAW,                             N_("clear and redraw the screen")) \
-  /* L10N: Help screen description for OP_REFORMAT_WINCH */ \
-  _fmt(OP_REFORMAT_WINCH,                     N_("{internal}")) \
   /* L10N: Help screen description for OP_RENAME_MAILBOX */ \
   /*       Browser: <op_rename_mailbox> */ \
   _fmt(OP_RENAME_MAILBOX,                     N_("rename the current mailbox (IMAP only)")) \
@@ -930,7 +934,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help screen description for OP_VERIFY_KEY */ \
   /*       GPGME Key Selection Dialog: <op_verify_key> */ \
   /*       PGP Key Selection Dialog: <op_verify_key> */ \
-  _fmt(OP_VERIFY_KEY,                         N_("verify a PGP public key")) \
+  _fmt(OP_VERIFY_KEY,                         N_("verify a public key")) \
   /* L10N: Help screen description for OP_VIEW_ID */ \
   /*       GPGME Key Selection Dialog: <op_view_id> */ \
   /*       PGP Key Selection Dialog: <op_view_id> */ \

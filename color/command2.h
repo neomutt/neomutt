@@ -44,10 +44,10 @@ struct AttrColor;
  */
 typedef enum CommandResult (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
 
-enum CommandResult mutt_parse_color  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult mutt_parse_mono   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult mutt_parse_unmono (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_color  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_mono   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_unmono (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 void get_colorid_name(unsigned int color_id, struct Buffer *buf);
 

@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
+#include "mutt/lib.h"
 #include "lib.h"
 
 /**
@@ -39,6 +40,7 @@ struct PgpUid
   struct PgpKeyInfo *parent; ///< Parent key
   struct PgpUid *next;       ///< Linked list
 };
+ARRAY_HEAD(PgpUidArray, struct PgpUid *);
 
 /**
  * struct PgpKeyInfo - Information about a PGP key

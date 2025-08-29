@@ -33,7 +33,6 @@
 
 #include "config.h"
 #include <arpa/inet.h>
-#include <ctype.h>
 #include <errno.h>
 #include <netdb.h>
 #include <signal.h>
@@ -57,7 +56,6 @@
 #include "globals.h"
 #include "mdata.h"
 #include "msn.h"
-#include "mutt_account.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif
@@ -324,7 +322,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata,
     goto cleanup;
 
   struct Url url = { 0 };
-  mutt_account_tourl(&adata->conn->account, &url);
+  account_to_url(&adata->conn->account, &url);
   url.path = mbox->data;
   url_tobuffer(&url, cachepath, U_PATH);
 
@@ -516,7 +514,7 @@ int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, si
     return -1;
   }
 
-  if ((mutt_account_fromurl(cac, url) < 0) || (cac->host[0] == '\0'))
+  if ((account_from_url(cac, url) < 0) || (cac->host[0] == '\0'))
   {
     url_free(&url);
     return -1;
@@ -636,7 +634,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   }
 
 fallback:
-  mutt_account_tourl(&cac_target, &url);
+  account_to_url(&cac_target, &url);
   url.path = target_mailbox;
   url_tostring(&url, path, pathlen, U_NO_FLAGS);
 }
@@ -688,7 +686,7 @@ char *imap_fix_path(const char *mailbox, char *path, size_t plen)
 
   if (mailbox)
   {
-    for (const char *c = mailbox; *c && space_left; ++c, --space_left)
+    for (const char *c = mailbox; *c && space_left; c++, space_left--)
     {
       if (strchr(NONULL(c_imap_delim_chars), *c))
       {
@@ -718,7 +716,7 @@ char *imap_fix_path_with_delim(const char delim, const char *mailbox, char *path
 
   if (mailbox)
   {
-    for (const char *c = mailbox; *c && space_left; ++c, --space_left)
+    for (const char *c = mailbox; *c && space_left; c++, space_left--)
     {
       if (*c == delim || *c == '/')
       {
@@ -735,7 +733,7 @@ char *imap_fix_path_with_delim(const char delim, const char *mailbox, char *path
 
   if (out != path && *(out - 1) == delim)
   {
-    --out;
+    out--;
   }
   *out = '\0';
   return path;
@@ -788,7 +786,7 @@ int imap_get_literal_count(const char *buf, unsigned int *bytes)
 
   pc++;
   pn = pc;
-  while (isdigit((unsigned char) *pc))
+  while (mutt_isdigit(*pc))
     pc++;
   *pc = '\0';
   if (!mutt_str_atoui(pn, bytes))
@@ -837,7 +835,7 @@ char *imap_next_word(char *s)
     }
     if (*s == '\"')
       quoted = !quoted;
-    if (!quoted && isspace(*s))
+    if (!quoted && mutt_isspace(*s))
       break;
     s++;
   }
@@ -856,7 +854,7 @@ char *imap_next_word(char *s)
 void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *cac, char *path)
 {
   struct Url url = { 0 };
-  mutt_account_tourl(cac, &url);
+  account_to_url(cac, &url);
   url.path = path;
   url_tostring(&url, buf, buflen, U_NO_FLAGS);
 }
@@ -870,7 +868,7 @@ void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *cac, char *
 void imap_buf_qualify_path(struct Buffer *buf, struct ConnAccount *cac, char *path)
 {
   struct Url url = { 0 };
-  mutt_account_tourl(cac, &url);
+  account_to_url(cac, &url);
   url.path = path;
   url_tobuffer(&url, buf, U_NO_FLAGS);
 }
@@ -1104,7 +1102,7 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
   if (a1->flags & a2->flags & MUTT_ACCT_USER)
     return mutt_str_equal(a1->user, a2->user);
 
-  const char *user = NONULL(Username);
+  const char *user = NONULL(NeoMutt->username);
 
   const char *const c_imap_user = cs_subset_string(NeoMutt->sub, "imap_user");
   if ((a1->type == MUTT_ACCT_TYPE_IMAP) && c_imap_user)

@@ -40,6 +40,10 @@
  * | ncrypt/dlg_gpgme.c               | @subpage crypt_dlg_gpgme             |
  * | ncrypt/dlg_pgp.c                 | @subpage crypt_dlg_pgp               |
  * | ncrypt/dlg_smime.c               | @subpage crypt_dlg_smime             |
+ * | ncrypt/expando_command.c         | @subpage ncrypt_expando_command      |
+ * | ncrypt/expando_gpgme.c           | @subpage ncrypt_expando_gpgme        |
+ * | ncrypt/expando_pgp.c             | @subpage ncrypt_expando_pgp          |
+ * | ncrypt/expando_smime.c           | @subpage ncrypt_expando_smime        |
  * | ncrypt/functions.c               | @subpage crypt_functions             |
  * | ncrypt/gnupgparse.c              | @subpage crypt_gnupg                 |
  * | ncrypt/gpgme_functions.c         | @subpage crypt_gpgme_functions       |
@@ -52,6 +56,8 @@
  * | ncrypt/pgppacket.c               | @subpage crypt_pgppacket             |
  * | ncrypt/smime.c                   | @subpage crypt_smime                 |
  * | ncrypt/smime_functions.c         | @subpage smime_functions             |
+ * | ncrypt/sort_gpgme.c              | @subpage crypt_sort_gpgme            |
+ * | ncrypt/sort_pgp.c                | @subpage crypt_sort_pgp              |
  */
 
 #ifndef MUTT_NCRYPT_LIB_H

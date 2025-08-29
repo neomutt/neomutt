@@ -49,7 +49,6 @@
 #include "hcache.h"
 #include "mx.h"
 #include "shared.h"
-#include "sort.h"
 
 struct HeaderCache;
 
@@ -279,7 +278,7 @@ static int maildir_sync_message(struct Mailbox *m, struct Email *e)
     struct stat st = { 0 };
     if (stat(buf_string(oldpath), &st) == -1)
     {
-      mutt_debug(LL_DEBUG1, "File already removed (just continuing)");
+      mutt_debug(LL_DEBUG1, "File already removed (just continuing)\n");
       goto cleanup;
     }
 

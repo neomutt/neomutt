@@ -169,7 +169,7 @@ void test_attr_colors(void)
       // clang-format on
     };
 
-    for (int i = 0; i < mutt_array_size(Tests); i++)
+    for (int i = 0; i < countof(Tests); i++)
     {
       color_t col = Tests[i].col_before;
       int attrs = Tests[i].attrs_before;
@@ -197,7 +197,7 @@ void test_attr_colors(void)
       // clang-format on
     };
 
-    for (int i = 0; i < mutt_array_size(Tests); i++)
+    for (int i = 0; i < countof(Tests); i++)
     {
       color_t col = Tests[i].col_before;
       int attrs = Tests[i].attrs_before;
@@ -232,7 +232,7 @@ void test_attr_colors(void)
       // clang-format on
     };
 
-    for (int i = 0; i < mutt_array_size(Colors); i++)
+    for (int i = 0; i < countof(Colors); i++)
     {
       color_t col = color_xterm256_to_24bit(Colors[i][0]);
       TEST_CHECK(col == Colors[i][1]);
@@ -244,7 +244,7 @@ void test_attr_colors(void)
   {
     cs_str_native_set(NeoMutt->sub->cs, "color_directcolor", false, NULL);
     color_t col = color_xterm256_to_24bit(123);
-    TEST_CHECK(col == 123);
+    TEST_CHECK_NUM_EQ(col, 123);
   }
 #endif
 

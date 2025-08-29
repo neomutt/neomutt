@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -41,8 +40,7 @@
  *
  * Ensure maildir_field_delimiter is a single non-alphanumeric non-(-.\/) character.
  */
-static int maildir_field_delimiter_validator(const struct ConfigSet *cs,
-                                             const struct ConfigDef *cdef,
+static int maildir_field_delimiter_validator(const struct ConfigDef *cdef,
                                              intptr_t value, struct Buffer *err)
 {
   const char *delim = (const char *) value;
@@ -54,7 +52,7 @@ static int maildir_field_delimiter_validator(const struct ConfigSet *cs,
     return CSR_ERR_INVALID;
   }
 
-  if (isalnum(*delim) || strchr("-.\\/", *delim))
+  if (mutt_isalnum(*delim) || strchr("-.\\/", *delim))
   {
     // L10N: maildir_field_delimiter is a config variable and shouldn't be translated
     buf_printf(err, _("maildir_field_delimiter cannot be alphanumeric or '-.\\/'"));

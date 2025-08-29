@@ -56,7 +56,6 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "external.h"
-#include "globals.h"
 #include "handler.h"
 #include "hook.h"
 #include "mailcap.h"
@@ -241,7 +240,6 @@ static int save_attachment_flowed_helper(FILE *fp, struct Body *b, const char *p
     struct Buffer *tempfile = buf_pool_get();
     buf_mktemp(tempfile);
 
-    /* Pass MUTT_SAVE_NO_FLAGS to force mutt_file_fopen("w") */
     rc = mutt_save_attachment(fp, b, buf_string(tempfile), MUTT_SAVE_NO_FLAGS, e);
     if (rc != 0)
       goto cleanup;
@@ -750,7 +748,8 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   if (!filter && !c_attach_split)
   {
     mutt_endwin();
-    pid_t pid = filter_create(buf_string(buf), &state.fp_out, NULL, NULL, EnvList);
+    pid_t pid = filter_create(buf_string(buf), &state.fp_out, NULL, NULL,
+                              NeoMutt->env);
     pipe_attachment_list(buf_string(buf), actx, fp, tag, b, filter, &state);
     mutt_file_fclose(&state.fp_out);
     const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
@@ -781,7 +780,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *b, bool tag)
   {
     if (tag)
       b = actx->idx[i]->body;
-    snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+    snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
     if (!tag || b->tagged)
     {
       if (!mailcap_lookup(b, type, sizeof(type), NULL, MUTT_MC_PRINT))
@@ -830,7 +829,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     }
     if (!tag || b->tagged)
     {
-      snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+      snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
       if (!c_attach_split && !mailcap_lookup(b, type, sizeof(type), NULL, MUTT_MC_PRINT))
       {
         if (mutt_istr_equal("text/plain", b->subtype) ||
@@ -914,7 +913,8 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
       return;
     mutt_endwin();
     const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
-    pid_t pid = filter_create(NONULL(c_print_command), &state.fp_out, NULL, NULL, EnvList);
+    pid_t pid = filter_create(NONULL(c_print_command), &state.fp_out, NULL,
+                              NULL, NeoMutt->env);
     print_attachment_list(actx, fp, tag, b, &state);
     mutt_file_fclose(&state.fp_out);
     const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");

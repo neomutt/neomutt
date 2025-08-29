@@ -31,6 +31,8 @@
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
+extern char **EnvList;
+
 bool check_for_pipe(struct ExpandoNode *root);
 void filter_text(struct Buffer *buf);
 
@@ -77,7 +79,7 @@ void test_expando_filter(void)
     last->text = "hello";
     TEST_CHECK(!check_for_pipe(root));
 
-    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    for (size_t i = 0; i < countof(tests); i++)
     {
       TEST_CASE(tests[i].name);
       last->text = tests[i].name;
@@ -107,7 +109,7 @@ void test_expando_filter(void)
     buf_pool_release(&buf);
   }
 
-  // int expando_filter(const struct Expando *exp, const struct ExpandoRenderData *rdata, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+  // int expando_filter(const struct Expando *exp, const struct ExpandoRenderCallback *rdata, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
   {
     const struct ExpandoDefinition TestFormatDef[] = {
       // clang-format off
@@ -116,14 +118,14 @@ void test_expando_filter(void)
       // clang-format on
     };
 
-    const struct ExpandoRenderData TestRenderData[] = {
+    const struct ExpandoRenderCallback TestRenderCallback[] = {
       // clang-format off
       { ED_ENVELOPE, ED_ENV_FROM, test_a, NULL },
       { -1, -1, NULL, NULL },
       // clang-format on
     };
 
-    TEST_CHECK(expando_filter(NULL, NULL, NULL, MUTT_FORMAT_NO_FLAGS, 0, NULL) == 0);
+    TEST_CHECK(expando_filter(NULL, NULL, NULL, MUTT_FORMAT_NO_FLAGS, 0, EnvList, NULL) == 0);
 
     struct Buffer *err = buf_pool_get();
     struct Buffer *buf = buf_pool_get();
@@ -133,8 +135,9 @@ void test_expando_filter(void)
     const char *str = ">%a<";
     exp = expando_parse(str, TestFormatDef, err);
     TEST_CHECK(exp != NULL);
-    rc = expando_filter(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-    TEST_CHECK(rc == 7);
+    rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1,
+                        EnvList, buf);
+    TEST_CHECK_NUM_EQ(rc, 7);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), ">apple<");
     expando_free(&exp);
@@ -143,8 +146,9 @@ void test_expando_filter(void)
     buf_reset(buf);
     exp = expando_parse(str, TestFormatDef, err);
     TEST_CHECK(exp != NULL);
-    rc = expando_filter(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-    TEST_CHECK(rc == 7);
+    rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1,
+                        EnvList, buf);
+    TEST_CHECK_NUM_EQ(rc, 7);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), ">apple<");
     expando_free(&exp);

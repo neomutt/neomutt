@@ -91,9 +91,9 @@ static const char *compress_test_data =
 
 void test_compress_common(void)
 {
-  const char *list = compress_list();
+  struct Slist *list = compress_list();
   TEST_CHECK(list != NULL);
-  FREE(&list);
+  slist_free(&list);
 
   const struct ComprOps *compr_ops = compress_get_ops(NULL);
   TEST_CHECK(compr_ops != NULL);
@@ -151,7 +151,7 @@ void compress_data_tests(const struct ComprOps *compr_ops, short min_level, shor
       one_test(compr_ops, level, size);
     }
 
-    for (size_t i = 0; i < mutt_array_size(sizes); i++)
+    for (size_t i = 0; i < countof(sizes); i++)
     {
       snprintf(case_name, sizeof(case_name), "    size %zu", sizes[i]);
       TEST_CASE(case_name);

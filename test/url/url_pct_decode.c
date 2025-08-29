@@ -38,7 +38,7 @@ void test_url_pct_decode(void)
 
   {
     char s[] = "Hello%20world";
-    TEST_CHECK(url_pct_decode(s) == 0);
+    TEST_CHECK_NUM_EQ(url_pct_decode(s), 0);
     TEST_CHECK_STR_EQ(s, "Hello world");
   }
 }

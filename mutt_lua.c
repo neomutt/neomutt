@@ -51,6 +51,7 @@
 #include "mutt_lua.h"
 #include "parse/lib.h"
 #include "muttlib.h"
+#include "version.h"
 
 /// Global Lua State
 static lua_State *LuaState = NULL;
@@ -62,6 +63,7 @@ static const struct Command LuaCommands[] = {
   // clang-format off
   { "lua",        mutt_lua_parse,       0 },
   { "lua-source", mutt_lua_source_file, 0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -112,7 +114,7 @@ static int lua_mutt_call(lua_State *l)
     return -1;
   }
 
-  cmd = command_get(lua_tostring(l, 1));
+  cmd = commands_get(&NeoMutt->commands, lua_tostring(l, 1));
   if (!cmd)
   {
     luaL_error(l, "Error command %s not found.", lua_tostring(l, 1));
@@ -124,6 +126,7 @@ static int lua_mutt_call(lua_State *l)
     buf_addstr(buf, lua_tostring(l, i));
     buf_addch(buf, ' ');
   }
+  buf_seek(buf, 0);
 
   if (cmd->parse(token, buf, cmd->data, err))
   {
@@ -180,7 +183,7 @@ static int lua_mutt_set(lua_State *l)
 
   int rc = 0;
 
-  switch (DTYPE(cdef->type))
+  switch (CONFIG_TYPE(cdef->type))
   {
     case DT_ADDRESS:
     case DT_ENUM:
@@ -196,7 +199,7 @@ static int lua_mutt_set(lua_State *l)
       size_t val_size = lua_rawlen(l, -1);
       struct Buffer *value_buf = buf_pool_get();
       buf_strcpy_n(value_buf, value, val_size);
-      if (DTYPE(he->type) == DT_PATH)
+      if (CONFIG_TYPE(he->type) == DT_PATH)
         buf_expand_path(value_buf);
 
       int rv = cs_subset_he_string_set(NeoMutt->sub, he, buf_string(value_buf), err);
@@ -223,7 +226,8 @@ static int lua_mutt_set(lua_State *l)
       break;
     }
     default:
-      luaL_error(l, "Unsupported NeoMutt parameter type %d for %s", DTYPE(cdef->type), param);
+      luaL_error(l, "Unsupported NeoMutt parameter type %d for %s",
+                 CONFIG_TYPE(cdef->type), param);
       rc = -1;
       break;
   }
@@ -253,7 +257,7 @@ static int lua_mutt_get(lua_State *l)
 
   struct ConfigDef *cdef = he->data;
 
-  switch (DTYPE(cdef->type))
+  switch (CONFIG_TYPE(cdef->type))
   {
     case DT_ADDRESS:
     case DT_ENUM:
@@ -420,10 +424,12 @@ static void luaopen_mutt(lua_State *l)
   luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
   (void) luaL_dostring(l, "mutt.command = {}");
 
-  struct Command *c = NULL;
-  for (size_t i = 0, size = commands_array(&c); i < size; i++)
+  const struct Command **cp = NULL;
+  ARRAY_FOREACH(cp, &NeoMutt->commands)
   {
-    lua_expose_command(l, &c[i]);
+    const struct Command *cmd = *cp;
+
+    lua_expose_command(l, cmd);
   }
 }
 
@@ -462,7 +468,7 @@ static bool lua_init(lua_State **l)
  */
 void mutt_lua_init(void)
 {
-  commands_register(LuaCommands, mutt_array_size(LuaCommands));
+  commands_register(&NeoMutt->commands, LuaCommands);
 }
 
 /**

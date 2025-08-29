@@ -1,0 +1,46 @@
+/**
+ * @file
+ * ConnAccount object used by POP and IMAP
+ *
+ * @authors
+ * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef MUTT_CONN_MUTT_ACCOUNT_H
+#define MUTT_CONN_MUTT_ACCOUNT_H
+
+struct ConnAccount;
+struct Url;
+
+/**
+ * enum AccountType - Account types
+ */
+enum AccountType
+{
+  MUTT_ACCT_TYPE_NONE = 0, ///< Account type is unknown
+  MUTT_ACCT_TYPE_IMAP,     ///< Imap Account
+  MUTT_ACCT_TYPE_POP,      ///< Pop Account
+  MUTT_ACCT_TYPE_SMTP,     ///< Smtp Account
+  MUTT_ACCT_TYPE_NNTP,     ///< Nntp (Usenet) Account
+  MUTT_ACCT_TYPE_MAX
+};
+
+int   account_from_url(struct ConnAccount *account, const struct Url *url);
+void  account_to_url  (struct ConnAccount *account, struct Url *url);
+
+#endif /* MUTT_CONN_MUTT_ACCOUNT_H */

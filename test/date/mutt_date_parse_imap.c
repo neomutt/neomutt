@@ -27,6 +27,7 @@
 #include "acutest.h"
 #include <time.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct ParseImapTest
 {
@@ -39,7 +40,7 @@ void test_mutt_date_parse_imap(void)
   // time_t mutt_date_parse_imap(const char *s);
 
   {
-    TEST_CHECK(mutt_date_parse_imap(NULL) == 0);
+    TEST_CHECK_NUM_EQ(mutt_date_parse_imap(NULL), 0);
   }
 
   // clang-format off
@@ -58,7 +59,7 @@ void test_mutt_date_parse_imap(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(imap_tests); i++)
+    for (size_t i = 0; i < countof(imap_tests); i++)
     {
       TEST_CASE(imap_tests[i].str);
       time_t result = mutt_date_parse_imap(imap_tests[i].str);

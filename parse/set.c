@@ -3,7 +3,7 @@
  * Parse the 'set' command
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2023 Rayford Shireman
  *
@@ -38,7 +38,6 @@
 #include "set.h"
 #include "commands.h"
 #include "extract.h"
-#include "globals.h"
 #include "muttlib.h"
 
 /**
@@ -53,18 +52,18 @@
  *
  * The type influences which expansions are done.
  *
- * @note The type must be the full HashElem.type, not the sanitized DTYPE(HashElem.type)
+ * @note The type must be the full HashElem.type, not the sanitized CONFIG_TYPE(HashElem.type)
  * @note The value is expanded in-place
  */
-static void command_set_expand_value(uint32_t type, struct Buffer *value)
+void command_set_expand_value(int type, struct Buffer *value)
 {
   ASSERT(value);
-  if (DTYPE(type) == DT_PATH)
+  if (CONFIG_TYPE(type) == DT_PATH)
   {
     if (type & (D_PATH_DIR | D_PATH_FILE))
       buf_expand_path(value);
     else
-      mutt_path_tilde(value, HomeDir);
+      mutt_path_tilde(value, NeoMutt->home_dir);
   }
   else if (IS_MAILBOX(type))
   {
@@ -97,8 +96,8 @@ static void command_set_expand_value(uint32_t type, struct Buffer *value)
  *
  * This implements "set foo = bar" command where "bar" is present.
  */
-static enum CommandResult command_set_set(struct Buffer *name,
-                                          struct Buffer *value, struct Buffer *err)
+enum CommandResult command_set_set(struct Buffer *name, struct Buffer *value,
+                                   struct Buffer *err)
 {
   ASSERT(name);
   ASSERT(value);
@@ -113,7 +112,7 @@ static enum CommandResult command_set_set(struct Buffer *name,
       my_cdef.type = DT_MYVAR;
       he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, err);
       if (!he)
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
     }
     else
     {
@@ -129,7 +128,7 @@ static enum CommandResult command_set_set(struct Buffer *name,
   }
   int rc = CSR_ERR_CODE;
 
-  if (DTYPE(he->type) == DT_MYVAR)
+  if (CONFIG_TYPE(he->type) == DT_MYVAR)
   {
     // my variables do not expand their value
     rc = cs_subset_he_string_set(NeoMutt->sub, he, value->data, err);
@@ -140,7 +139,7 @@ static enum CommandResult command_set_set(struct Buffer *name,
     rc = cs_subset_he_string_set(NeoMutt->sub, he, value->data, err);
   }
   if (CSR_RESULT(rc) != CSR_SUCCESS)
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
 
   return MUTT_CMD_SUCCESS;
 }
@@ -157,8 +156,8 @@ static enum CommandResult command_set_set(struct Buffer *name,
  *
  * This implements "set foo += bar" command where "bar" is present.
  */
-static enum CommandResult command_set_increment(struct Buffer *name,
-                                                struct Buffer *value, struct Buffer *err)
+enum CommandResult command_set_increment(struct Buffer *name,
+                                         struct Buffer *value, struct Buffer *err)
 {
   ASSERT(name);
   ASSERT(value);
@@ -173,7 +172,7 @@ static enum CommandResult command_set_increment(struct Buffer *name,
       my_cdef.type = DT_MYVAR;
       he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, err);
       if (!he)
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
     }
     else
     {
@@ -190,7 +189,7 @@ static enum CommandResult command_set_increment(struct Buffer *name,
 
   int rc = CSR_ERR_CODE;
 
-  if (DTYPE(he->type) == DT_MYVAR)
+  if (CONFIG_TYPE(he->type) == DT_MYVAR)
   {
     // my variables do not expand their value
     rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, value->data, err);
@@ -218,8 +217,8 @@ static enum CommandResult command_set_increment(struct Buffer *name,
  *
  * This implements "set foo -= bar" command where "bar" is present.
  */
-static enum CommandResult command_set_decrement(struct Buffer *name,
-                                                struct Buffer *value, struct Buffer *err)
+enum CommandResult command_set_decrement(struct Buffer *name,
+                                         struct Buffer *value, struct Buffer *err)
 {
   ASSERT(name);
   ASSERT(value);
@@ -254,7 +253,7 @@ static enum CommandResult command_set_decrement(struct Buffer *name,
  *
  * This implements "unset foo"
  */
-static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *err)
+enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *err)
 {
   ASSERT(name);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
@@ -271,11 +270,11 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
   }
 
   int rc = CSR_ERR_CODE;
-  if (DTYPE(he->type) == DT_MYVAR)
+  if (CONFIG_TYPE(he->type) == DT_MYVAR)
   {
     rc = cs_subset_he_delete(NeoMutt->sub, he, err);
   }
-  else if ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD))
+  else if ((CONFIG_TYPE(he->type) == DT_BOOL) || (CONFIG_TYPE(he->type) == DT_QUAD))
   {
     rc = cs_subset_he_native_set(NeoMutt->sub, he, false, err);
   }
@@ -284,7 +283,7 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
     rc = cs_subset_he_string_set(NeoMutt->sub, he, NULL, err);
   }
   if (CSR_RESULT(rc) != CSR_SUCCESS)
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
 
   return MUTT_CMD_SUCCESS;
 }
@@ -299,25 +298,24 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
  *
  * This implements "reset foo" (foo being any config variable) and "reset all".
  */
-static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
+enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
 {
   ASSERT(name);
   // Handle special "reset all" syntax
   if (mutt_str_equal(name->data, "all"))
   {
-    struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
-    if (!he_list)
-      return MUTT_CMD_ERROR;
-
-    for (size_t i = 0; he_list[i]; i++)
+    struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, GEL_ALL_CONFIG);
+    struct HashElem **hep = NULL;
+    ARRAY_FOREACH(hep, &hea)
     {
-      if (DTYPE(he_list[i]->type) == DT_MYVAR)
-        cs_subset_he_delete(NeoMutt->sub, he_list[i], err);
+      struct HashElem *he = *hep;
+      if (CONFIG_TYPE(he->type) == DT_MYVAR)
+        cs_subset_he_delete(NeoMutt->sub, he, err);
       else
-        cs_subset_he_reset(NeoMutt->sub, he_list[i], NULL);
+        cs_subset_he_reset(NeoMutt->sub, he, NULL);
     }
 
-    FREE(&he_list);
+    ARRAY_FREE(&hea);
     return MUTT_CMD_SUCCESS;
   }
 
@@ -335,7 +333,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
   }
 
   int rc = CSR_ERR_CODE;
-  if (DTYPE(he->type) == DT_MYVAR)
+  if (CONFIG_TYPE(he->type) == DT_MYVAR)
   {
     rc = cs_subset_he_delete(NeoMutt->sub, he, err);
   }
@@ -344,7 +342,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
     rc = cs_subset_he_reset(NeoMutt->sub, he, err);
   }
   if (CSR_RESULT(rc) != CSR_SUCCESS)
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
 
   return MUTT_CMD_SUCCESS;
 }
@@ -359,7 +357,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
  *
  * This implements "toggle foo".
  */
-static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer *err)
+enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer *err)
 {
   ASSERT(name);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
@@ -375,15 +373,15 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
     return MUTT_CMD_SUCCESS;
   }
 
-  if (DTYPE(he->type) == DT_BOOL)
+  if (CONFIG_TYPE(he->type) == DT_BOOL)
   {
     bool_he_toggle(NeoMutt->sub, he, err);
   }
-  else if (DTYPE(he->type) == DT_QUAD)
+  else if (CONFIG_TYPE(he->type) == DT_QUAD)
   {
     quad_he_toggle(NeoMutt->sub, he, err);
   }
-  else if (DTYPE(he->type) == DT_NUMBER)
+  else if (CONFIG_TYPE(he->type) == DT_NUMBER)
   {
     number_he_toggle(NeoMutt->sub, he, err);
   }
@@ -405,7 +403,7 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
  *
  * This implements "set foo?".  The buffer err will contain something like "set foo = bar".
  */
-static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
+enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
 {
   ASSERT(name);
   // In the interactive case (outside of the initial parsing of neomuttrc) we
@@ -416,7 +414,7 @@ static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *
   if (buf_is_empty(name))
   {
     if (StartupComplete)
-      return set_dump(CS_DUMP_ONLY_CHANGED, err);
+      return set_dump(GEL_CHANGED_CONFIG, err);
     else
       return MUTT_CMD_SUCCESS;
   }
@@ -424,7 +422,7 @@ static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *
   if (mutt_str_equal(name->data, "all"))
   {
     if (StartupComplete)
-      return set_dump(CS_DUMP_NO_FLAGS, err);
+      return set_dump(GEL_ALL_CONFIG, err);
     else
       return MUTT_CMD_SUCCESS;
   }
@@ -448,12 +446,14 @@ static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *
   int rc = cs_subset_he_string_get(NeoMutt->sub, he, value);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
+    // LCOV_EXCL_START
     buf_reset(err);
     buf_addstr(err, value->data);
     buf_pool_release(&value);
     return MUTT_CMD_ERROR;
+    // LCOV_EXCL_STOP
   }
-  if (DTYPE(he->type) == DT_PATH)
+  if (CONFIG_TYPE(he->type) == DT_PATH)
     mutt_pretty_mailbox(value->data, value->dsize);
   pretty_var(value->data, err);
   buf_pool_release(&value);
@@ -532,8 +532,9 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       // Use the correct name if a synonym is used
       buf_strcpy(buf, he->key.strkey);
-      bool_or_quad = ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD));
-      invertible = (bool_or_quad || (DTYPE(he->type) == DT_NUMBER));
+      bool_or_quad = ((CONFIG_TYPE(he->type) == DT_BOOL) ||
+                      (CONFIG_TYPE(he->type) == DT_QUAD));
+      invertible = (bool_or_quad || (CONFIG_TYPE(he->type) == DT_NUMBER));
     }
 
     if (*s->dptr == '?')

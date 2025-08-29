@@ -68,6 +68,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "debug/lib.h"
 #include "lib.h"
 #include "color/lib.h"
 #include "index/lib.h"
@@ -140,32 +141,30 @@ static int pager_repaint(struct MuttWindow *win)
   const bool repopulate = (priv->cur_line > priv->lines_used);
   if ((priv->redraw & PAGER_REDRAW_FLOW) || repopulate)
   {
-    if (!(priv->pview->flags & MUTT_PAGER_RETWINCH))
+    priv->win_height = -1;
+    for (int i = 0; i <= priv->top_line; i++)
+      if (!priv->lines[i].cont_line)
+        priv->win_height++;
+    for (int i = 0; i < priv->lines_max; i++)
     {
-      priv->win_height = -1;
-      for (int i = 0; i <= priv->top_line; i++)
-        if (!priv->lines[i].cont_line)
-          priv->win_height++;
-      for (int i = 0; i < priv->lines_max; i++)
-      {
-        priv->lines[i].offset = 0;
-        priv->lines[i].cid = -1;
-        priv->lines[i].cont_line = false;
-        priv->lines[i].syntax_arr_size = 0;
-        priv->lines[i].search_arr_size = -1;
-        priv->lines[i].quote = NULL;
+      priv->lines[i].offset = 0;
+      priv->lines[i].cid = -1;
+      priv->lines[i].cont_line = false;
+      priv->lines[i].syntax_arr_size = 0;
+      priv->lines[i].search_arr_size = -1;
+      priv->lines[i].quote = NULL;
 
-        MUTT_MEM_REALLOC(&(priv->lines[i].syntax), 1, struct TextSyntax);
-        if (priv->search_compiled && priv->lines[i].search)
-          FREE(&(priv->lines[i].search));
-      }
-
-      if (!repopulate)
-      {
-        priv->lines_used = 0;
-        priv->top_line = 0;
-      }
+      MUTT_MEM_REALLOC(&(priv->lines[i].syntax), 1, struct TextSyntax);
+      if (priv->search_compiled && priv->lines[i].search)
+        FREE(&(priv->lines[i].search));
     }
+
+    if (!repopulate)
+    {
+      priv->lines_used = 0;
+      priv->top_line = 0;
+    }
+
     int i = -1;
     int j = -1;
     const PagerFlags flags = priv->has_types | priv->search_flag |
@@ -213,7 +212,7 @@ static int pager_repaint(struct MuttWindow *win)
           priv->win_height++;
         }
         priv->cur_line++;
-        mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
+        mutt_window_move(priv->pview->win_pager, priv->win_height, 0);
       }
     } while (priv->force_redraw);
 
@@ -225,7 +224,7 @@ static int pager_repaint(struct MuttWindow *win)
       if (c_tilde)
         mutt_window_addch(priv->pview->win_pager, '~');
       priv->win_height++;
-      mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
+      mutt_window_move(priv->pview->win_pager, priv->win_height, 0);
     }
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   }
@@ -252,7 +251,7 @@ static int pager_color_observer(struct NotifyCallback *nc)
     return 0;
 
   // MT_COLOR_MAX is sent on `uncolor *`
-  if ((ev_c->cid == MT_COLOR_QUOTED) || (ev_c->cid == MT_COLOR_MAX))
+  if (COLOR_QUOTED(ev_c->cid) || (ev_c->cid == MT_COLOR_MAX))
   {
     // rework quoted colours
     qstyle_recolor(priv->quote_list);
@@ -265,6 +264,18 @@ static int pager_color_observer(struct NotifyCallback *nc)
       FREE(&(priv->lines[i].syntax));
     }
     priv->lines_used = 0;
+  }
+  else if ((ev_c->cid == MT_COLOR_ATTACHMENT) || (ev_c->cid == MT_COLOR_ATTACH_HEADERS) ||
+           (ev_c->cid == MT_COLOR_BODY) || (ev_c->cid == MT_COLOR_BOLD) ||
+           (ev_c->cid == MT_COLOR_ERROR) || (ev_c->cid == MT_COLOR_HDRDEFAULT) ||
+           (ev_c->cid == MT_COLOR_HEADER) || (ev_c->cid == MT_COLOR_ITALIC) ||
+           (ev_c->cid == MT_COLOR_MARKERS) || (ev_c->cid == MT_COLOR_MESSAGE) ||
+           (ev_c->cid == MT_COLOR_NORMAL) || (ev_c->cid == MT_COLOR_SEARCH) ||
+           (ev_c->cid == MT_COLOR_SIGNATURE) || (ev_c->cid == MT_COLOR_STRIPE_EVEN) ||
+           (ev_c->cid == MT_COLOR_STRIPE_ODD) || (ev_c->cid == MT_COLOR_TILDE) ||
+           (ev_c->cid == MT_COLOR_UNDERLINE) || (ev_c->cid == MT_COLOR_WARNING))
+  {
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
 
   mutt_debug(LL_DEBUG5, "color done\n");
@@ -289,29 +300,19 @@ static int pager_config_observer(struct NotifyCallback *nc)
     config_pager_index_lines(win_pager);
     mutt_debug(LL_DEBUG5, "config done\n");
   }
-
-  return 0;
-}
-
-/**
- * pager_global_observer - Notification that a Global Event occurred - Implements ::observer_t - @ingroup observer_api
- */
-static int pager_global_observer(struct NotifyCallback *nc)
-{
-  if (nc->event_type != NT_GLOBAL)
-    return 0;
-  if (!nc->global_data)
-    return -1;
-  if (nc->event_subtype != NT_GLOBAL_COMMAND)
-    return 0;
-
-  struct MuttWindow *win_pager = nc->global_data;
-
-  struct PagerPrivateData *priv = win_pager->wdata;
-  const struct PagerView *pview = priv ? priv->pview : NULL;
-  if (priv && pview && (priv->redraw & PAGER_REDRAW_FLOW) && (pview->flags & MUTT_PAGER_RETWINCH))
+  else if ((mutt_str_equal(ev_c->name, "allow_ansi")) ||
+           (mutt_str_equal(ev_c->name, "markers")) ||
+           (mutt_str_equal(ev_c->name, "smart_wrap")) ||
+           (mutt_str_equal(ev_c->name, "smileys")) ||
+           (mutt_str_equal(ev_c->name, "tilde")) ||
+           (mutt_str_equal(ev_c->name, "toggle_quoted_show_levels")) ||
+           (mutt_str_equal(ev_c->name, "wrap")))
   {
-    priv->rc = OP_REFORMAT_WINCH;
+    struct PagerPrivateData *priv = win_pager->parent->wdata;
+    if (!priv)
+      return -1;
+
+    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
 
   return 0;
@@ -370,6 +371,13 @@ static int pager_pager_observer(struct NotifyCallback *nc)
   if (!nc->global_data || !nc->event_data)
     return -1;
 
+  struct MuttWindow *win_pager = nc->global_data;
+
+  struct PagerPrivateData *priv = win_pager->wdata;
+  if (!priv)
+    return 0;
+
+  pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   mutt_debug(LL_DEBUG5, "pager done\n");
   return 0;
 }
@@ -391,6 +399,10 @@ static int pager_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != win_pager)
     return 0;
 
+  struct PagerPrivateData *priv = win_pager->wdata;
+  if (!priv)
+    return 0;
+
   struct MuttWindow *dlg = window_find_parent(win_pager, WT_DLG_INDEX);
   if (!dlg)
     dlg = window_find_parent(win_pager, WT_DLG_PAGER);
@@ -399,9 +411,8 @@ static int pager_window_observer(struct NotifyCallback *nc)
 
   mutt_color_observer_remove(pager_color_observer, win_pager);
   notify_observer_remove(NeoMutt->sub->notify, pager_config_observer, win_pager);
-  notify_observer_remove(NeoMutt->notify, pager_global_observer, win_pager);
   notify_observer_remove(shared->notify, pager_index_observer, win_pager);
-  notify_observer_remove(shared->notify, pager_pager_observer, win_pager);
+  notify_observer_remove(priv->notify, pager_pager_observer, win_pager);
   notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -428,7 +439,7 @@ struct MuttWindow *pager_window_new(struct IndexSharedData *shared,
   mutt_color_observer_add(pager_color_observer, win);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pager_config_observer, win);
   notify_observer_add(NeoMutt->notify, NT_GLOBAL, pager_global_observer, win);
-  notify_observer_add(shared->notify, NT_INDEX, pager_index_observer, win);
+  notify_observer_add(shared->notify, NT_ALL, pager_index_observer, win);
   notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);
 

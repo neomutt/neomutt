@@ -111,10 +111,10 @@ static void sort_use_threads_warn(void)
  */
 static int config_sort(const struct ConfigSubset *sub)
 {
-  const enum SortType c_sort = cs_subset_sort(sub, "sort");
+  const enum EmailSortType c_sort = cs_subset_sort(sub, "sort");
   const unsigned char c_use_threads = cs_subset_enum(sub, "use_threads");
 
-  if (((c_sort & SORT_MASK) != SORT_THREADS) || (c_use_threads == UT_UNSET))
+  if (((c_sort & SORT_MASK) != EMAIL_SORT_THREADS) || (c_use_threads == UT_UNSET))
     return 0;
 
   sort_use_threads_warn();
@@ -123,7 +123,7 @@ static int config_sort(const struct ConfigSubset *sub)
    * observers before the first round has completed. Be careful that
    * changes made here do not cause an infinite loop of toggling
    * adjustments - the early exit above when $sort no longer uses
-   * SORT_THREADS ends the recursion.
+   * EMAIL_SORT_THREADS ends the recursion.
    */
   int rc;
   if ((c_use_threads == UT_FLAT) ||
@@ -144,7 +144,7 @@ static int config_sort(const struct ConfigSubset *sub)
      * direction. Adjust $sort based on $sort_aux, and the 2nd-level
      * observer for $sort will be a no-op.
      */
-    enum SortType c_sort_aux = cs_subset_sort(sub, "sort_aux");
+    enum EmailSortType c_sort_aux = cs_subset_sort(sub, "sort_aux");
     c_sort_aux ^= (c_sort & SORT_REVERSE);
     rc = cs_subset_str_native_set(sub, "sort", c_sort_aux, NULL);
   }
@@ -159,10 +159,10 @@ static int config_sort(const struct ConfigSubset *sub)
  */
 static int config_use_threads(const struct ConfigSubset *sub)
 {
-  const enum SortType c_sort = cs_subset_sort(sub, "sort");
+  const enum EmailSortType c_sort = cs_subset_sort(sub, "sort");
   const unsigned char c_use_threads = cs_subset_enum(sub, "use_threads");
 
-  if (((c_sort & SORT_MASK) != SORT_THREADS) || (c_use_threads == UT_UNSET))
+  if (((c_sort & SORT_MASK) != EMAIL_SORT_THREADS) || (c_use_threads == UT_UNSET))
     return 0;
 
   sort_use_threads_warn();
@@ -172,7 +172,7 @@ static int config_use_threads(const struct ConfigSubset *sub)
    * aren't setting $sort to threads, the 2nd-level observer will be a
    * no-op.
    */
-  const enum SortType c_sort_aux = cs_subset_sort(sub, "sort_aux");
+  const enum EmailSortType c_sort_aux = cs_subset_sort(sub, "sort_aux");
   int rc = cs_subset_str_native_set(sub, "sort", c_sort_aux, NULL);
   return (CSR_RESULT(rc) == CSR_SUCCESS) ? 0 : -1;
 }
@@ -370,7 +370,7 @@ bool config_check_index(const char *option)
     "ts_icon_format",     "ts_status_format"
   };
 
-  for (size_t i = 0; i < mutt_array_size(index_options); i++)
+  for (size_t i = 0; i < countof(index_options); i++)
   {
     if (mutt_str_equal(option, index_options[i]))
       return true;
@@ -414,6 +414,12 @@ static int index_config_observer(struct NotifyCallback *nc)
   {
     config_use_threads(ev_c->sub);
     mutt_debug(LL_DEBUG5, "config done\n");
+  }
+  else if (mutt_str_equal(ev_c->name, "hide_thread_subject"))
+  {
+    struct MuttWindow *dlg = dialog_find(win);
+    struct IndexSharedData *shared = dlg->wdata;
+    mutt_sort_headers(shared->mailbox_view, false);
   }
 
   menu_queue_redraw(win->wdata, MENU_REDRAW_INDEX);

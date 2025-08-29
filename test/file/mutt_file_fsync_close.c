@@ -25,17 +25,18 @@
 #include "acutest.h"
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_file_fsync_close(void)
 {
   // int mutt_file_fsync_close(FILE **fp);
 
   {
-    TEST_CHECK(mutt_file_fsync_close(NULL) == 0);
+    TEST_CHECK_NUM_EQ(mutt_file_fsync_close(NULL), 0);
   }
 
   {
     FILE *fp = NULL;
-    TEST_CHECK(mutt_file_fsync_close(&fp) == 0);
+    TEST_CHECK_NUM_EQ(mutt_file_fsync_close(&fp), 0);
   }
 }

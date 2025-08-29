@@ -66,17 +66,15 @@ typedef uint16_t PagerFlags;              ///< Flags for dlg_pager(), e.g. #MUTT
 #define MUTT_SHOW             (MUTT_SHOWCOLOR | MUTT_SHOWFLAT)
 
 /* exported flags for mutt_(do_)?pager */
-#define MUTT_PAGER_NSKIP      (1 << 5)    ///< Preserve whitespace with smartwrap
-#define MUTT_PAGER_MARKER     (1 << 6)    ///< Use markers if option is set
-#define MUTT_PAGER_RETWINCH   (1 << 7)    ///< Need reformatting on SIGWINCH
-#define MUTT_PAGER_ATTACHMENT (1 << 8)    ///< Attachments may exist
-#define MUTT_PAGER_NOWRAP     (1 << 9)    ///< Format for term width, ignore $wrap
-#define MUTT_PAGER_LOGS       (1 << 10)   ///< Logview mode
-#define MUTT_PAGER_BOTTOM     (1 << 11)   ///< Start at the bottom
-#define MUTT_PAGER_STRIPES    (1 << 12)   ///< Striped highlighting
+#define MUTT_PAGER_MARKER     (1 << 5)    ///< Use markers if option is set
+#define MUTT_PAGER_ATTACHMENT (1 << 6)    ///< Attachments may exist
+#define MUTT_PAGER_NOWRAP     (1 << 7)    ///< Format for term width, ignore $wrap
+#define MUTT_PAGER_LOGS       (1 << 8)    ///< Logview mode
+#define MUTT_PAGER_BOTTOM     (1 << 9)    ///< Start at the bottom
+#define MUTT_PAGER_STRIPES    (1 << 10)   ///< Striped highlighting
 #define MUTT_PAGER_MESSAGE    (MUTT_SHOWCOLOR | MUTT_PAGER_MARKER)
 
-#define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER | MUTT_PAGER_LOGS)
+#define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_MARKER | MUTT_PAGER_LOGS)
 
 // Pager mode.
 // There are 10 code paths that lead to dlg_pager() invocation:
@@ -211,11 +209,5 @@ struct TextSyntax;
 struct Line;
 void dump_text_syntax(struct TextSyntax *ts, int num);
 void dump_line(int i, struct Line *line);
-
-#ifdef USE_DEBUG_COLOR
-void dump_pager(struct PagerPrivateData *priv);
-#else
-static inline void dump_pager(struct PagerPrivateData *priv) {}
-#endif
 
 #endif /* MUTT_PAGER_LIB_H */

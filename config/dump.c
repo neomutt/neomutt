@@ -31,10 +31,10 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "dump.h"
 #include "set.h"
-#include "subset.h"
 #include "types.h"
 
 void mutt_pretty_mailbox(char *buf, size_t buflen);
@@ -139,7 +139,35 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
   if (show_name && show_value)
     fprintf(fp, "set ");
   if (show_name)
-    fprintf(fp, "%s", name);
+  {
+    if (flags & CS_DUMP_LINK_DOCS)
+    {
+      // Used to generate unique ids for the urls
+      static int seq_num = 1;
+
+      if (CONFIG_TYPE(he->type) == DT_MYVAR)
+      {
+        static const char *url = "https://neomutt.org/guide/configuration#set-myvar";
+        fprintf(fp, "\033]8;id=%d;%s\a%s\033]8;;\a", seq_num++, url, name);
+      }
+      else
+      {
+        char *fragment = mutt_str_dup(name);
+        for (char *underscore = fragment; (underscore = strchr(underscore, '_')); underscore++)
+        {
+          *underscore = '-';
+        }
+
+        static const char *url = "https://neomutt.org/guide/reference";
+        fprintf(fp, "\033]8;id=%d;%s#%s\a%s\033]8;;\a", seq_num++, url, fragment, name);
+        FREE(&fragment);
+      }
+    }
+    else
+    {
+      fprintf(fp, "%s", name);
+    }
+  }
   if (show_name && show_value)
     fprintf(fp, " = ");
   if (show_value)
@@ -161,19 +189,15 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
 /**
  * dump_config - Write all the config to a file
  * @param cs    ConfigSet to dump
+ * @param hea   Array of Config HashElem to dump
  * @param flags Flags, see #ConfigDumpFlags
  * @param fp    File to write config to
  */
-bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
+bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea,
+                 ConfigDumpFlags flags, FILE *fp)
 {
-  if (!cs)
+  if (!cs || !hea || !fp)
     return false;
-
-  struct HashElem *he = NULL;
-
-  struct HashElem **he_list = get_elem_list(cs);
-  if (!he_list)
-    return false; /* LCOV_EXCL_LINE */
 
   bool result = true;
 
@@ -181,12 +205,13 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
   struct Buffer *initial = buf_pool_get();
   struct Buffer *tmp = buf_pool_get();
 
-  for (size_t i = 0; he_list[i]; i++)
+  struct HashElem **hep = NULL;
+  ARRAY_FOREACH(hep, hea)
   {
+    struct HashElem *he = *hep;
     buf_reset(value);
     buf_reset(initial);
-    he = he_list[i];
-    const int type = DTYPE(he->type);
+    const int type = CONFIG_TYPE(he->type);
 
     if ((type == DT_SYNONYM) && !(flags & CS_DUMP_SHOW_SYNONYMS))
       continue;
@@ -218,8 +243,10 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (value->data[0] == '/'))
           mutt_pretty_mailbox(value->data, value->dsize);
 
+        // Quote/escape the values of config options NOT of these types
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
-            (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
+            (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT) &&
+            !(flags & CS_DUMP_NO_ESCAPING))
         {
           buf_reset(tmp);
           pretty_var(value->data, tmp);
@@ -237,11 +264,13 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
           break;          /* LCOV_EXCL_LINE */
         }
 
-        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && !(he->type & D_STRING_MAILBOX))
+        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (initial->data[0] == '/'))
           mutt_pretty_mailbox(initial->data, initial->dsize);
 
+        // Quote/escape the values of config options NOT of these types
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
-            (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
+            (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT) &&
+            !(flags & CS_DUMP_NO_ESCAPING))
         {
           buf_reset(tmp);
           pretty_var(initial->data, tmp);
@@ -253,7 +282,6 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
     dump_config_neo(cs, he, value, initial, flags, fp);
   }
 
-  FREE(&he_list);
   buf_pool_release(&value);
   buf_pool_release(&initial);
   buf_pool_release(&tmp);

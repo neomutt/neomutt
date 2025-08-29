@@ -25,18 +25,19 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "attr.h"
 #include "color.h"
 
-extern struct AttrColor SimpleColors[];
+struct AttrColor;
+
+#define COLOR_COMPOSE(cid) (((cid) >= MT_COLOR_COMPOSE_HEADER) && ((cid) <= MT_COLOR_COMPOSE_SECURITY_SIGN))
+
+void simple_colors_init   (void);
+void simple_colors_reset  (void);
+void simple_colors_cleanup(void);
 
 struct AttrColor *simple_color_get      (enum ColorId cid);
-bool              simple_color_is_header(enum ColorId cid);
 bool              simple_color_is_set   (enum ColorId cid);
 void              simple_color_reset    (enum ColorId cid);
 struct AttrColor *simple_color_set      (enum ColorId cid, struct AttrColor *ac_val);
-
-void              simple_colors_cleanup(void);
-void              simple_colors_init(void);
 
 #endif /* MUTT_COLOR_SIMPLE2_H */

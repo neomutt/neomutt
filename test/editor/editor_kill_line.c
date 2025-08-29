@@ -27,6 +27,7 @@
 #include "core/lib.h"
 #include "editor/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 void test_editor_kill_line(void)
 {
@@ -45,37 +46,37 @@ void test_editor_kill_line(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_buffer_set_cursor(es, 0);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 0);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 0);
     TEST_CHECK(editor_kill_line(es) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 0);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 0);
     enter_state_free(&es);
   }
 
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_buffer_set_cursor(es, 4);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 4);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 4);
     TEST_CHECK(editor_kill_line(es) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 7);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 0);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 7);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 0);
     enter_state_free(&es);
   }
 
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     TEST_CHECK(editor_kill_line(es) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 0);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 0);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 0);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 0);
     enter_state_free(&es);
   }
 }

@@ -33,7 +33,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -45,8 +44,6 @@
 #include "attach/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
-#include "menu/lib.h"
-#include "init.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"
@@ -66,19 +63,20 @@ extern const struct ExpandoDefinition IndexFormatDef[];
  */
 static const struct Mapping SortAuxMethods[] = {
   // clang-format off
-  { "date",          SORT_DATE },
-  { "date-sent",     SORT_DATE },
-  { "threads",       SORT_DATE },
-  { "date-received", SORT_RECEIVED },
-  { "from",          SORT_FROM },
-  { "label",         SORT_LABEL },
-  { "unsorted",      SORT_ORDER },
-  { "mailbox-order", SORT_ORDER },
-  { "score",         SORT_SCORE },
-  { "size",          SORT_SIZE },
-  { "spam",          SORT_SPAM },
-  { "subject",       SORT_SUBJECT },
-  { "to",            SORT_TO },
+  { "date",          EMAIL_SORT_DATE },
+  { "date-received", EMAIL_SORT_DATE_RECEIVED },
+  { "from",          EMAIL_SORT_FROM },
+  { "label",         EMAIL_SORT_LABEL },
+  { "score",         EMAIL_SORT_SCORE },
+  { "size",          EMAIL_SORT_SIZE },
+  { "spam",          EMAIL_SORT_SPAM },
+  { "subject",       EMAIL_SORT_SUBJECT },
+  { "to",            EMAIL_SORT_TO },
+  { "unsorted",      EMAIL_SORT_UNSORTED },
+  // Compatibility
+  { "date-sent",     EMAIL_SORT_DATE },
+  { "mailbox-order", EMAIL_SORT_UNSORTED },
+  { "threads",       EMAIL_SORT_DATE },
   { NULL, 0 },
   // clang-format on
 };
@@ -88,19 +86,20 @@ static const struct Mapping SortAuxMethods[] = {
  */
 const struct Mapping SortMethods[] = {
   // clang-format off
-  { "date",          SORT_DATE },
-  { "date-sent",     SORT_DATE },
-  { "date-received", SORT_RECEIVED },
-  { "from",          SORT_FROM },
-  { "label",         SORT_LABEL },
-  { "unsorted",      SORT_ORDER },
-  { "mailbox-order", SORT_ORDER },
-  { "score",         SORT_SCORE },
-  { "size",          SORT_SIZE },
-  { "spam",          SORT_SPAM },
-  { "subject",       SORT_SUBJECT },
-  { "threads",       SORT_THREADS },
-  { "to",            SORT_TO },
+  { "date",          EMAIL_SORT_DATE },
+  { "date-received", EMAIL_SORT_DATE_RECEIVED },
+  { "from",          EMAIL_SORT_FROM },
+  { "label",         EMAIL_SORT_LABEL },
+  { "score",         EMAIL_SORT_SCORE },
+  { "size",          EMAIL_SORT_SIZE },
+  { "spam",          EMAIL_SORT_SPAM },
+  { "subject",       EMAIL_SORT_SUBJECT },
+  { "threads",       EMAIL_SORT_THREADS },
+  { "to",            EMAIL_SORT_TO },
+  { "unsorted",      EMAIL_SORT_UNSORTED },
+  // Compatibility
+  { "date-sent",     EMAIL_SORT_DATE },
+  { "mailbox-order", EMAIL_SORT_UNSORTED },
   { NULL, 0 },
   // clang-format on
 };
@@ -108,8 +107,7 @@ const struct Mapping SortMethods[] = {
 /**
  * multipart_validator - Validate the "show_multipart_alternative" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
-static int multipart_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                               intptr_t value, struct Buffer *err)
+static int multipart_validator(const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
   if (value == 0)
     return CSR_SUCCESS;
@@ -247,7 +245,7 @@ struct ExpandoNode *parse_tags_transformed(const char *str, struct ExpandoFormat
                                            struct ExpandoParseError *err)
 {
   // Tag expando %G must use an suffix from [A-Za-z0-9], e.g. %Ga, %GL
-  if (!isalnum(str[1]))
+  if (!mutt_isalnum(str[1]))
     return NULL;
 
   // Let the basic expando parser do the work
@@ -364,55 +362,14 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   { "zc", "crypto-flags",        ED_EMAIL,    ED_EMA_CRYPTO_FLAGS,        NULL },
   { "zs", "status-flags",        ED_EMAIL,    ED_EMA_STATUS_FLAGS,        NULL },
   { "zt", "message-flags",       ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       NULL },
-  { "[",  NULL,                  ED_EMAIL,    ED_EMA_STRF_LOCAL,          parse_index_date_local },
-  { "{",  NULL,                  ED_EMAIL,    ED_EMA_STRF,                parse_index_date },
+  { "[",  NULL,                  ED_EMAIL,    ED_EMA_DATE_STRF_LOCAL,     parse_index_date_local },
+  { "{",  NULL,                  ED_EMAIL,    ED_EMA_DATE_STRF,           parse_index_date },
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 
 /// IndexFormatDefNoPadding - Index format definitions, without padding
 static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[3]);
-
-/**
- * StatusFormatDef - Expando definitions
- *
- * Config:
- * - $new_mail_command
- * - $status_format
- * - $ts_icon_format
- * - $ts_status_format
- */
-static const struct ExpandoDefinition StatusFormatDef[] = {
-  // clang-format off
-  { "*", "padding-soft",     ED_GLOBAL, ED_GLO_PADDING_SOFT,     node_padding_parse },
-  { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     node_padding_parse },
-  { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      node_padding_parse },
-  { "b", "unread-mailboxes", ED_INDEX,  ED_IND_UNREAD_MAILBOXES, NULL },
-  { "d", "deleted-count",    ED_INDEX,  ED_IND_DELETED_COUNT,    NULL },
-  { "D", "description",      ED_INDEX,  ED_IND_DESCRIPTION,      NULL },
-  { "f", "mailbox-path",     ED_INDEX,  ED_IND_MAILBOX_PATH,     NULL },
-  { "F", "flagged-count",    ED_INDEX,  ED_IND_FLAGGED_COUNT,    NULL },
-  { "h", "hostname",         ED_GLOBAL, ED_GLO_HOSTNAME,         NULL },
-  { "l", "mailbox-size",     ED_INDEX,  ED_IND_MAILBOX_SIZE,     NULL },
-  { "L", "limit-size",       ED_INDEX,  ED_IND_LIMIT_SIZE,       NULL },
-  { "m", "message-count",    ED_INDEX,  ED_IND_MESSAGE_COUNT,    NULL },
-  { "M", "limit-count",      ED_INDEX,  ED_IND_LIMIT_COUNT,      NULL },
-  { "n", "new-count",        ED_INDEX,  ED_IND_NEW_COUNT,        NULL },
-  { "o", "old-count",        ED_INDEX,  ED_IND_OLD_COUNT,        NULL },
-  { "p", "postponed-count",  ED_INDEX,  ED_IND_POSTPONED_COUNT,  NULL },
-  { "P", "percentage",       ED_MENU,   ED_MEN_PERCENTAGE,       NULL },
-  { "r", "readonly",         ED_INDEX,  ED_IND_READONLY,         NULL },
-  { "R", "read-count",       ED_INDEX,  ED_IND_READ_COUNT,       NULL },
-  { "s", "sort",             ED_GLOBAL, ED_GLO_SORT,             NULL },
-  { "S", "sort-aux",         ED_GLOBAL, ED_GLO_SORT_AUX,         NULL },
-  { "t", "tagged-count",     ED_INDEX,  ED_IND_TAGGED_COUNT,     NULL },
-  { "T", "use-threads",      ED_GLOBAL, ED_GLO_USE_THREADS,      NULL },
-  { "u", "unread-count",     ED_INDEX,  ED_IND_UNREAD_COUNT,     NULL },
-  { "v", "version",          ED_GLOBAL, ED_GLO_VERSION,          NULL },
-  { "V", "limit-pattern",    ED_INDEX,  ED_IND_LIMIT_PATTERN,    NULL },
-  { NULL, NULL, 0, -1, NULL }
-  // clang-format on
-};
 
 /// StatusFormatDefNoPadding - Status format definitions, without padding
 const struct ExpandoDefinition *const StatusFormatDefNoPadding = &(StatusFormatDef[3]);
@@ -427,12 +384,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "abort_key", DT_STRING|D_NOT_EMPTY|D_ON_STARTUP, IP "\007", 0, NULL,
     "String representation of key to abort prompts"
-  },
-  { "arrow_cursor", DT_BOOL, false, 0, NULL,
-    "Use an arrow '->' instead of highlighting in the index"
-  },
-  { "arrow_string", DT_STRING|D_NOT_EMPTY, IP "->", 0, NULL,
-    "Use a custom string for arrow_cursor"
   },
   { "ascii_chars", DT_BOOL, false, 0, NULL,
     "Use plain ASCII characters, when drawing email threads"
@@ -457,9 +408,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "auto_edit", DT_BOOL, false, 0, NULL,
     "Skip the initial compose menu and edit the email"
-  },
-  { "auto_subscribe", DT_BOOL, false, 0, NULL,
-    "Automatically check if the user is subscribed to a mailing list"
   },
   { "auto_tag", DT_BOOL, false, 0, NULL,
     "Automatically apply actions to all tagged messages"
@@ -563,9 +511,6 @@ static struct ConfigDef MainVars[] = {
   { "header", DT_BOOL, false, 0, NULL,
     "Include the message headers in the reply email (Weed applies)"
   },
-  { "hidden_tags", DT_SLIST|D_SLIST_SEP_COMMA, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
-    "List of tags that shouldn't be displayed on screen (comma-separated)"
-  },
   { "hide_limited", DT_BOOL, false, 0, NULL,
     "Don't indicate hidden messages, in the thread tree"
   },
@@ -629,9 +574,6 @@ static struct ConfigDef MainVars[] = {
   { "mark_old", DT_BOOL, true, 0, NULL,
     "Mark new emails as old when leaving the mailbox"
   },
-  { "markers", DT_BOOL, true, 0, NULL,
-    "Display a '+' at the beginning of wrapped lines in the pager"
-  },
   { "mbox", DT_STRING|D_STRING_MAILBOX, IP "~/mbox", 0, NULL,
     "Folder that receives read emails (see Move)"
   },
@@ -661,9 +603,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "narrow_tree", DT_BOOL, false, 0, NULL,
     "Draw a narrower thread tree in the index"
-  },
-  { "net_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
-    "(socket) Update the progress bar after this many KB sent/received (0 to disable)"
   },
   { "new_mail_command", DT_EXPANDO|D_STRING_COMMAND, 0, IP StatusFormatDefNoPadding, NULL,
     "External command to run when new mail arrives"
@@ -707,9 +646,6 @@ static struct ConfigDef MainVars[] = {
   { "quote_regex", DT_REGEX, IP "^([ \t]*[|>:}#])+", 0, NULL,
     "Regex to match quoted text in a reply"
   },
-  { "read_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
-    "Update the progress bar after this many records read (0 to disable)"
-  },
   { "read_only", DT_BOOL, false, 0, NULL,
     "Open folders in read-only mode"
   },
@@ -728,39 +664,11 @@ static struct ConfigDef MainVars[] = {
   { "reflow_wrap", DT_NUMBER, 78, 0, NULL,
     "Maximum paragraph width for reformatting 'format=flowed' text"
   },
-  // L10N: $reply_regex default format
-  //
-  // This is a regular expression that matches reply subject lines.
-  // By default, it only matches an initial "Re: ", which is the
-  // standardized Latin prefix.
-  //
-  // However, many locales have other prefixes that are commonly used
-  // too, such as Aw in Germany.  To add other prefixes, modify the first
-  // parenthesized expression, such as:
-  //    "^(re|aw)
-  // you can add multiple values, for example:
-  //    "^(re|aw|sv)
-  //
-  // Important:
-  // - Use all lower case letters.
-  // - Don't remove the 're' prefix from the list of choices.
-  // - Please test the value you use inside Mutt.  A mistake here will break
-  //   NeoMutt's threading behavior.  Note: the header cache can interfere with
-  //   testing, so be sure to test with $header_cache unset.
-  { "reply_regex", DT_REGEX|D_L10N_STRING, IP N_("^((re)(\\[[0-9]+\\])*:[ \t]*)*"), 0, NULL,
-    "Regex to match message reply subjects like 're: '"
-  },
   { "resolve", DT_BOOL, true, 0, NULL,
     "Move to the next email whenever a command modifies an email"
   },
   { "resume_edited_draft_files", DT_BOOL, true, 0, NULL,
     "Resume editing previously saved draft files"
-  },
-  { "reverse_alias", DT_BOOL, false, 0, NULL,
-    "Display the alias in the index, rather than the message's sender"
-  },
-  { "rfc2047_parameters", DT_BOOL, true, 0, NULL,
-    "Decode RFC2047-encoded MIME parameters"
   },
   { "save_address", DT_BOOL, false, 0, NULL,
     "Use sender's full address as a default save folder"
@@ -810,27 +718,20 @@ static struct ConfigDef MainVars[] = {
   { "sleep_time", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 1, 0, NULL,
     "Time to pause after certain info messages"
   },
-  { "sort", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, SORT_DATE, IP SortMethods, sort_validator,
+  { "sort", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, EMAIL_SORT_DATE, IP SortMethods, sort_validator,
     "Sort method for the index"
   },
-  { "sort_aux", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, SORT_DATE, IP SortAuxMethods, NULL,
+  { "sort_aux", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, EMAIL_SORT_DATE, IP SortAuxMethods, NULL,
     "Secondary sort method for the index"
   },
   { "sort_re", DT_BOOL, true, 0, NULL,
     "Whether $reply_regex must be matched when not $strict_threads"
-  },
-  { "spam_separator", DT_STRING, IP ",", 0, NULL,
-    "Separator for multiple spam headers"
   },
   { "spool_file", DT_STRING|D_STRING_MAILBOX, 0, 0, NULL,
     "Inbox"
   },
   { "status_chars", DT_MBTABLE, IP "-*%A", 0, NULL,
     "Indicator characters for the status bar"
-  },
-  // L10N: $status_format default format
-  { "status_format", DT_EXPANDO|D_L10N_STRING, IP N_("-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"), IP &StatusFormatDef, NULL,
-    "printf-like format string for the index's status line"
   },
   { "status_on_top", DT_BOOL, false, 0, NULL,
     "Display the status bar at the top"
@@ -846,9 +747,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "thread_received", DT_BOOL, false, 0, NULL,
     "Sort threaded messages by their received date"
-  },
-  { "time_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
-    "Frequency of progress bar updates (milliseconds)"
   },
   { "timeout", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 600, 0, NULL,
     "Time to wait for user input in menus"
@@ -891,9 +789,6 @@ static struct ConfigDef MainVars[] = {
   { "wrap_search", DT_BOOL, true, 0, NULL,
     "Wrap around when the search hits the end"
   },
-  { "write_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
-    "Update the progress bar after this many records written (0 to disable)"
-  },
 
   { "cursor_overlay",            D_INTERNAL_DEPRECATED|DT_BOOL,   0, IP "2020-07-20" },
   { "escape",                    D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
@@ -918,7 +813,6 @@ static struct ConfigDef MainVars[] = {
   { "print_cmd",                 DT_SYNONYM, IP "print_command",              IP "2021-03-21" },
   { "quote_regexp",              DT_SYNONYM, IP "quote_regex",                IP "2021-03-21" },
   { "realname",                  DT_SYNONYM, IP "real_name",                  IP "2021-03-21" },
-  { "reply_regexp",              DT_SYNONYM, IP "reply_regex",                IP "2021-03-21" },
   { "spoolfile",                 DT_SYNONYM, IP "spool_file",                 IP "2021-03-21" },
   { "tmpdir",                    DT_SYNONYM, IP "tmp_dir",                    IP "2023-01-25" },
   { "xterm_icon",                DT_SYNONYM, IP "ts_icon_format",             IP "2021-03-21" },
@@ -1003,6 +897,7 @@ static void init_variables(struct ConfigSet *cs)
   CONFIG_INIT_VARS(cs, browser);
   CONFIG_INIT_VARS(cs, compose);
   CONFIG_INIT_VARS(cs, conn);
+  CONFIG_INIT_VARS(cs, email);
 #if defined(USE_HCACHE)
   CONFIG_INIT_VARS(cs, hcache);
 #endif
@@ -1011,9 +906,9 @@ static void init_variables(struct ConfigSet *cs)
   CONFIG_INIT_VARS(cs, imap);
   CONFIG_INIT_VARS(cs, index);
   CONFIG_INIT_VARS(cs, maildir);
-  CONFIG_INIT_VARS(cs, mh);
   CONFIG_INIT_VARS(cs, mbox);
   CONFIG_INIT_VARS(cs, menu);
+  CONFIG_INIT_VARS(cs, mh);
   CONFIG_INIT_VARS(cs, ncrypt);
   CONFIG_INIT_VARS(cs, nntp);
 #if defined(USE_NOTMUCH)
@@ -1022,6 +917,7 @@ static void init_variables(struct ConfigSet *cs)
   CONFIG_INIT_VARS(cs, pager);
   CONFIG_INIT_VARS(cs, pattern);
   CONFIG_INIT_VARS(cs, pop);
+  CONFIG_INIT_VARS(cs, progress);
   CONFIG_INIT_VARS(cs, send);
   CONFIG_INIT_VARS(cs, sidebar);
 }

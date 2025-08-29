@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
@@ -117,6 +117,19 @@ static bool is_function(const char *name)
         return true;
   }
   return false;
+}
+
+/**
+ * is_color_object - Is the argument a neomutt colour?
+ * @param name  Colour name to be searched for
+ * @retval true  Function found
+ * @retval false Function not found
+ */
+static bool is_color_object(const char *name)
+{
+  int cid = mutt_map_get_value(name, ColorFields);
+
+  return (cid > 0);
 }
 
 /**
@@ -358,9 +371,9 @@ static enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s,
   buf_expand_path(buf);
   if (buf_is_empty(buf))
   {
-    if (HomeDir)
+    if (NeoMutt->home_dir)
     {
-      buf_strcpy(buf, HomeDir);
+      buf_strcpy(buf, NeoMutt->home_dir);
     }
     else
     {
@@ -535,7 +548,8 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
   bool res = cs_subset_lookup(NeoMutt->sub, buf->data) // a variable?
              || feature_enabled(buf->data)             // a compiled-in feature?
              || is_function(buf->data)                 // a function?
-             || command_get(buf->data)                 // a command?
+             || commands_get(&NeoMutt->commands, buf->data) // a command?
+             || is_color_object(buf->data)                  // a color?
 #ifdef USE_HCACHE
              || store_is_valid_backend(buf->data) // a store? (database)
 #endif
@@ -864,14 +878,14 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 
 /**
  * set_dump - Dump list of config variables into a file/pager
- * @param flags what configs to dump: see #ConfigDumpFlags
- * @param err buffer for error message
+ * @param flags Which config to dump, e.g. #GEL_CHANGED_CONFIG
+ * @param err   Buffer for error message
  * @return num See #CommandResult
  *
  * FIXME: Move me into parse/set.c.  Note: this function currently depends on
  * pager, which is the reason it is not included in the parse library.
  */
-enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
+enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err)
 {
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
@@ -885,7 +899,10 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
     return MUTT_CMD_ERROR;
   }
 
-  dump_config(NeoMutt->sub->cs, flags, fp_out);
+  struct ConfigSet *cs = NeoMutt->sub->cs;
+  struct HashElemArray hea = get_elem_list(cs, flags);
+  dump_config(cs, &hea, CS_DUMP_NO_FLAGS, fp_out);
+  ARRAY_FREE(&hea);
 
   mutt_file_fclose(&fp_out);
 
@@ -918,7 +935,7 @@ static int envlist_sort(const void *a, const void *b, void *sdata)
 static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
                                        intptr_t data, struct Buffer *err)
 {
-  char **envp = EnvList;
+  char **envp = NeoMutt->env;
 
   bool query = false;
   bool prefix = false;
@@ -945,12 +962,12 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
     }
 
     int count = 0;
-    for (char **env = EnvList; *env; env++)
+    for (char **env = NeoMutt->env; *env; env++)
       count++;
 
-    mutt_qsort_r(EnvList, count, sizeof(char *), envlist_sort, NULL);
+    mutt_qsort_r(NeoMutt->env, count, sizeof(char *), envlist_sort, NULL);
 
-    for (char **env = EnvList; *env; env++)
+    for (char **env = NeoMutt->env; *env; env++)
       fprintf(fp_out, "%s\n", *env);
 
     mutt_file_fclose(&fp_out);
@@ -1035,7 +1052,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   if (unset)
   {
-    if (!envlist_unset(&EnvList, buf->data))
+    if (!envlist_unset(&NeoMutt->env, buf->data))
     {
       buf_printf(err, _("%s is unset"), buf->data);
       return MUTT_CMD_WARNING;
@@ -1059,7 +1076,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
   char *name = mutt_str_dup(buf->data);
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  envlist_set(&EnvList, name, buf->data, true);
+  envlist_set(&NeoMutt->env, name, buf->data, true);
   FREE(&name);
 
   return MUTT_CMD_SUCCESS;
@@ -1075,7 +1092,7 @@ static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
+    if (parse_extract_token(buf, s, TOKEN_BACKTICK_VARS) != 0)
     {
       buf_printf(err, _("source: error at %s"), s->dptr);
       buf_pool_release(&path);
@@ -1264,7 +1281,7 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
     }
 
-    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    mutt_debug(LL_DEBUG1, "Corrupted buffer\n");
     return MUTT_CMD_ERROR;
   }
 
@@ -1600,7 +1617,7 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
     }
 
-    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    mutt_debug(LL_DEBUG1, "Corrupted buffer\n");
     return MUTT_CMD_ERROR;
   }
 
@@ -1630,7 +1647,7 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  print_version(fp_out);
+  print_version(fp_out, false);
   mutt_file_fclose(&fp_out);
 
   struct PagerData pdata = { 0 };
@@ -1666,11 +1683,11 @@ static const struct Command MuttCommands[] = {
   { "alternative_order",   parse_stailq,           IP &AlternativeOrderList },
   { "attachments",         parse_attachments,      0 },
   { "auto_view",           parse_stailq,           IP &AutoViewList },
-  { "bind",                mutt_parse_bind,        0 },
+  { "bind",                parse_bind,             0 },
   { "cd",                  parse_cd,               0 },
-  { "color",               mutt_parse_color,       0 },
+  { "color",               parse_color,            0 },
   { "echo",                parse_echo,             0 },
-  { "exec",                mutt_parse_exec,        0 },
+  { "exec",                parse_exec,             0 },
   { "finish",              parse_finish,           0 },
   { "group",               parse_group,            MUTT_GROUP },
   { "hdr_order",           parse_stailq,           IP &HeaderOrderList },
@@ -1678,17 +1695,17 @@ static const struct Command MuttCommands[] = {
   { "ifndef",              parse_ifdef,            1 },
   { "ignore",              parse_ignore,           0 },
   { "lists",               parse_lists,            0 },
-  { "macro",               mutt_parse_macro,       1 },
+  { "macro",               parse_macro,            1 },
   { "mailboxes",           parse_mailboxes,        0 },
   { "mailto_allow",        parse_stailq,           IP &MailToAllow },
   { "mime_lookup",         parse_stailq,           IP &MimeLookupList },
-  { "mono",                mutt_parse_mono,        0 },
+  { "mono",                parse_mono,             0 },
   { "my_hdr",              parse_my_hdr,           0 },
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
   { "nospam",              parse_nospam,           0 },
-  { "push",                mutt_parse_push,        0 },
+  { "push",                parse_push,             0 },
   { "reset",               parse_set,              MUTT_SET_RESET },
-  { "score",               mutt_parse_score,       0 },
+  { "score",               parse_score,            0 },
   { "set",                 parse_set,              MUTT_SET_SET },
   { "setenv",              parse_setenv,           MUTT_SET_SET },
   { "source",              parse_source,           0 },
@@ -1703,31 +1720,32 @@ static const struct Command MuttCommands[] = {
   { "unalternative_order", parse_unstailq,         IP &AlternativeOrderList },
   { "unattachments",       parse_unattachments,    0 },
   { "unauto_view",         parse_unstailq,         IP &AutoViewList },
-  { "unbind",              mutt_parse_unbind,      MUTT_UNBIND },
-  { "uncolor",             mutt_parse_uncolor,     0 },
+  { "unbind",              parse_unbind,           MUTT_UNBIND },
+  { "uncolor",             parse_uncolor,          0 },
   { "ungroup",             parse_group,            MUTT_UNGROUP },
   { "unhdr_order",         parse_unstailq,         IP &HeaderOrderList },
   { "unignore",            parse_unignore,         0 },
   { "unlists",             parse_unlists,          0 },
-  { "unmacro",             mutt_parse_unbind,      MUTT_UNMACRO },
+  { "unmacro",             parse_unbind,           MUTT_UNMACRO },
   { "unmailboxes",         parse_unmailboxes,      0 },
   { "unmailto_allow",      parse_unstailq,         IP &MailToAllow },
   { "unmime_lookup",       parse_unstailq,         IP &MimeLookupList },
-  { "unmono",              mutt_parse_unmono,      0 },
+  { "unmono",              parse_unmono,           0 },
   { "unmy_hdr",            parse_unmy_hdr,         0 },
-  { "unscore",             mutt_parse_unscore,     0 },
+  { "unscore",             parse_unscore,          0 },
   { "unset",               parse_set,              MUTT_SET_UNSET },
   { "unsetenv",            parse_setenv,           MUTT_SET_UNSET },
   { "unsubjectrx",         parse_unsubjectrx_list, 0 },
   { "unsubscribe",         parse_unsubscribe,      0 },
   { "version",             parse_version,          0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
 /**
  * commands_init - Initialize commands array and register default commands
  */
-void commands_init(void)
+bool commands_init(void)
 {
-  commands_register(MuttCommands, mutt_array_size(MuttCommands));
+  return commands_register(&NeoMutt->commands, MuttCommands);
 }

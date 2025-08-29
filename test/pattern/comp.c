@@ -126,48 +126,39 @@ static int cmp_pattern(struct PatternList *p1, struct PatternList *p2)
   if (!p1 || !p2)
     return !(!p1 && !p2);
 
-  struct PatternList p1_tmp = *p1;
-  struct PatternList p2_tmp = *p2;
+  struct Pattern *l = SLIST_FIRST(p1);
+  struct Pattern *r = SLIST_FIRST(p2);
 
-  while (!SLIST_EMPTY(&p1_tmp))
-  {
-    struct Pattern *l = SLIST_FIRST(&p1_tmp);
-    struct Pattern *r = SLIST_FIRST(&p2_tmp);
+  /* if l is NULL then r must be NULL (and vice-versa) */
+  if ((!l || !r) && !(!l && !r))
+    return 1;
 
-    /* if l is NULL then r must be NULL (and vice-versa) */
-    if ((!l || !r) && !(!l && !r))
-      return 1;
+  if (l->op != r->op)
+    return 1;
+  if (l->pat_not != r->pat_not)
+    return 1;
+  if (l->all_addr != r->all_addr)
+    return 1;
+  if (l->string_match != r->string_match)
+    return 1;
+  if (l->group_match != r->group_match)
+    return 1;
+  if (l->ign_case != r->ign_case)
+    return 1;
+  if (l->is_alias != r->is_alias)
+    return 1;
+  if (l->is_multi != r->is_multi)
+    return 1;
+  if (l->min != r->min)
+    return 1;
+  if (l->max != r->max)
+    return 1;
 
-    SLIST_REMOVE_HEAD(&p1_tmp, entries);
-    SLIST_REMOVE_HEAD(&p2_tmp, entries);
+  if (l->string_match && !mutt_str_equal(l->p.str, r->p.str))
+    return 1;
 
-    if (l->op != r->op)
-      return 1;
-    if (l->pat_not != r->pat_not)
-      return 1;
-    if (l->all_addr != r->all_addr)
-      return 1;
-    if (l->string_match != r->string_match)
-      return 1;
-    if (l->group_match != r->group_match)
-      return 1;
-    if (l->ign_case != r->ign_case)
-      return 1;
-    if (l->is_alias != r->is_alias)
-      return 1;
-    if (l->is_multi != r->is_multi)
-      return 1;
-    if (l->min != r->min)
-      return 1;
-    if (l->max != r->max)
-      return 1;
-
-    if (l->string_match && !mutt_str_equal(l->p.str, r->p.str))
-      return 1;
-
-    if (cmp_pattern(l->child, r->child))
-      return 1;
-  }
+  if (cmp_pattern(l->child, r->child))
+    return 1;
 
   return 0;
 }

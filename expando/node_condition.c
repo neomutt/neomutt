@@ -47,8 +47,9 @@
  * node_condition_render - Render a Conditional Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 static int node_condition_render(const struct ExpandoNode *node,
-                                 const struct ExpandoRenderData *rdata, struct Buffer *buf,
-                                 int max_cols, void *data, MuttFormatFlags flags)
+                                 const struct ExpandoRenderCallback *erc,
+                                 struct Buffer *buf, int max_cols, void *data,
+                                 MuttFormatFlags flags)
 {
   ASSERT(node->type == ENT_CONDITION);
 
@@ -56,7 +57,7 @@ static int node_condition_render(const struct ExpandoNode *node,
 
   // Discard any text returned, just use the return value as a bool
   struct Buffer *buf_cond = buf_pool_get();
-  int rc_cond = node_cond->render(node_cond, rdata, buf_cond, max_cols, data, flags);
+  int rc_cond = node_cond->render(node_cond, erc, buf_cond, max_cols, data, flags);
 
   int rc = 0;
   buf_reset(buf_cond);
@@ -64,12 +65,12 @@ static int node_condition_render(const struct ExpandoNode *node,
   if (rc_cond == true)
   {
     const struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
-    rc = node_render(node_true, rdata, buf_cond, max_cols, data, flags);
+    rc = node_render(node_true, erc, buf_cond, max_cols, data, flags);
   }
   else
   {
     const struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
-    rc = node_render(node_false, rdata, buf_cond, max_cols, data, flags);
+    rc = node_render(node_false, erc, buf_cond, max_cols, data, flags);
   }
 
   const struct ExpandoFormat *fmt = node->format;

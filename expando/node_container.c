@@ -41,13 +41,13 @@
  * node_container_render - Callback for a Container Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_container_render(const struct ExpandoNode *node,
-                          const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                          const struct ExpandoRenderCallback *erc, struct Buffer *buf,
                           int max_cols, void *data, MuttFormatFlags flags)
 {
   ASSERT(node->type == ENT_CONTAINER);
 
   const struct ExpandoFormat *fmt = node->format;
-  if (fmt)
+  if (fmt && (fmt->max_cols != -1))
     max_cols = MIN(max_cols, fmt->max_cols);
 
   int total_cols = 0;
@@ -58,13 +58,12 @@ int node_container_render(const struct ExpandoNode *node,
   {
     if (total_cols >= max_cols)
       break;
-    total_cols += node_render(*enp, rdata, tmp, max_cols - total_cols, data, flags);
+    total_cols += node_render(*enp, erc, tmp, max_cols - total_cols, data, flags);
   }
 
+  struct Buffer *tmp2 = buf_pool_get();
   if (fmt)
   {
-    struct Buffer *tmp2 = buf_pool_get();
-
     int max = max_cols;
     if (fmt->max_cols >= 0)
       max = MIN(max_cols, fmt->max_cols);
@@ -75,14 +74,14 @@ int node_container_render(const struct ExpandoNode *node,
 
     if (fmt->lower)
       buf_lower_special(tmp2);
-
-    buf_addstr(buf, buf_string(tmp2));
-    buf_pool_release(&tmp2);
   }
   else
   {
-    buf_addstr(buf, buf_string(tmp));
+    total_cols = format_string(tmp2, 0, max_cols, JUSTIFY_LEFT, ' ',
+                               buf_string(tmp), buf_len(tmp), true);
   }
+  buf_addstr(buf, buf_string(tmp2));
+  buf_pool_release(&tmp2);
 
   buf_pool_release(&tmp);
   return total_cols;

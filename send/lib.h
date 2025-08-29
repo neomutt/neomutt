@@ -29,6 +29,7 @@
  * | :--------------- | :---------------------- |
  * | send/body.c      | @subpage send_body      |
  * | send/config.c    | @subpage send_config    |
+ * | send/expando.c   | @subpage send_expando   |
  * | send/header.c    | @subpage send_header    |
  * | send/multipart.c | @subpage send_multipart |
  * | send/send.c      | @subpage send_send      |

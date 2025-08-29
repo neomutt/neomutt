@@ -81,9 +81,9 @@
 static const struct Mapping MboxTypeMap[] = {
   // clang-format off
   { "mbox",    MUTT_MBOX,    },
-  { "MMDF",    MUTT_MMDF,    },
-  { "MH",      MUTT_MH,      },
-  { "Maildir", MUTT_MAILDIR, },
+  { "mmdf",    MUTT_MMDF,    },
+  { "mh",      MUTT_MH,      },
+  { "maildir", MUTT_MAILDIR, },
   { NULL, 0, },
   // clang-format on
 };
@@ -196,7 +196,7 @@ static bool mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
 
     if (m->type == MUTT_UNKNOWN)
     {
-      if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
+      if (flags & MUTT_APPEND)
       {
         m->type = MUTT_MAILBOX_ERROR;
       }
@@ -290,7 +290,7 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return false;
 
-  if ((m->type == MUTT_UNKNOWN) && (flags & (MUTT_NEWFOLDER | MUTT_APPEND)))
+  if ((m->type == MUTT_UNKNOWN) && (flags & MUTT_APPEND))
   {
     m->type = cs_subset_enum(NeoMutt->sub, "mbox_type");
     m->mx_ops = mx_get_ops(m->type);
@@ -309,7 +309,7 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   m->readonly = (flags & MUTT_READONLY);
   m->peekonly = (flags & MUTT_PEEK);
 
-  if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
+  if (flags & MUTT_APPEND)
   {
     if (!mx_open_mailbox_append(m, flags))
     {
@@ -914,14 +914,18 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
 
   if (m->dontwrite)
   {
-    char buf[512] = { 0 };
-    char tmp[768] = { 0 };
-    if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_INDEX, OP_TOGGLE_WRITE)))
-      snprintf(tmp, sizeof(tmp), _(" Press '%s' to toggle write"), buf);
-    else
-      mutt_str_copy(tmp, _("Use 'toggle-write' to re-enable write"), sizeof(tmp));
+    struct Buffer *buf = buf_pool_get();
+    struct Buffer *tmp = buf_pool_get();
 
-    mutt_error(_("Mailbox is marked unwritable. %s"), tmp);
+    if (km_expand_key(km_find_func(MENU_INDEX, OP_TOGGLE_WRITE), buf))
+      buf_printf(tmp, _(" Press '%s' to toggle write"), buf_string(buf));
+    else
+      buf_addstr(tmp, _("Use 'toggle-write' to re-enable write"));
+
+    mutt_error(_("Mailbox is marked unwritable. %s"), buf_string(tmp));
+
+    buf_pool_release(&buf);
+    buf_pool_release(&tmp);
     return MX_STATUS_ERROR;
   }
   else if (m->readonly)
@@ -1086,7 +1090,8 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
       char buf[64] = { 0 };
       mutt_date_localtime_format_locale(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y",
                                         msg->received, NeoMutt->time_c_locale);
-      fprintf(msg->fp, "From %s %s\n", p ? buf_string(p->mailbox) : NONULL(Username), buf);
+      fprintf(msg->fp, "From %s %s\n",
+              p ? buf_string(p->mailbox) : NONULL(NeoMutt->username), buf);
     }
   }
   else
@@ -1419,7 +1424,7 @@ int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *typ
       }
       else if (buf_at(path, 0) == '~')
       {
-        buf_inline_replace(path, 0, 1, HomeDir);
+        buf_inline_replace(path, 0, 1, NeoMutt->home_dir);
       }
     }
     else if (buf_at(path, 0) == '@')
@@ -1455,7 +1460,7 @@ int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *typ
 
   if (ops->path_canon(path) < 0)
   {
-    mutt_path_canon(path, HomeDir, true);
+    mutt_path_canon(path, NeoMutt->home_dir, true);
   }
 
   return 0;

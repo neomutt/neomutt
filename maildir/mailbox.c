@@ -45,7 +45,6 @@
 #include "mdemail.h"
 #include "mx.h"
 #include "shared.h"
-#include "sort.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
@@ -88,6 +87,11 @@ void maildir_parse_flags(struct Email *e, const char *path)
   e->replied = false;
 
   struct MaildirEmailData *edata = maildir_edata_get(e);
+  if (!edata)
+  {
+    e->edata = maildir_edata_new();
+    edata = e->edata;
+  }
 
   const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
   char *p = strrchr(path, c_maildir_field_delimiter);
@@ -346,7 +350,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
     if (!md || !md->email || md->header_parsed)
       continue;
 
-    progress_update(progress, ARRAY_FOREACH_IDX, -1);
+    progress_update(progress, ARRAY_FOREACH_IDX_mdp, -1);
 
     snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), md->email->path);
 
@@ -746,7 +750,7 @@ enum MxOpenReturns maildir_mbox_open(struct Mailbox *m)
  */
 bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
-  if (!(flags & (MUTT_APPEND | MUTT_APPENDNEW | MUTT_NEWFOLDER)))
+  if (!(flags & (MUTT_APPEND | MUTT_APPENDNEW)))
   {
     return true;
   }

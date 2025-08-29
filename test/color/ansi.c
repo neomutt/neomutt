@@ -31,6 +31,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 static struct ConfigDef Vars[] = {
   // clang-format off
@@ -58,28 +59,28 @@ void test_ansi_color(void)
 
   str = "\033[1;31m";
   rc = ansi_color_parse(str, &ansi, NULL, false);
-  TEST_CHECK(rc == 7);
+  TEST_CHECK_NUM_EQ(rc, 7);
 
   str = "\033[4;31m";
   rc = ansi_color_parse(str, &ansi, &acl, false);
-  TEST_CHECK(rc == 7);
+  TEST_CHECK_NUM_EQ(rc, 7);
 
   str = "\033[7;38;5;207m";
   rc = ansi_color_parse(str, &ansi, &acl, false);
-  TEST_CHECK(rc == 13);
+  TEST_CHECK_NUM_EQ(rc, 13);
 
   str = "\033[3;38;2;0;0;6m";
   ansi.attrs = A_NORMAL;
   rc = ansi_color_parse(str, &ansi, &acl, false);
-  TEST_CHECK(rc == 15);
+  TEST_CHECK_NUM_EQ(rc, 15);
 
   str = "\033[3;38;2;0;0;6m";
   rc = ansi_color_parse(str, &ansi, &acl, false);
-  TEST_CHECK(rc == 15);
+  TEST_CHECK_NUM_EQ(rc, 15);
 
   str = "\033[48;2;0;0;6m";
   rc = ansi_color_parse(str, &ansi, &acl, false);
-  TEST_CHECK(rc == 13);
+  TEST_CHECK_NUM_EQ(rc, 13);
 
   memset(&ansi, 0, sizeof(ansi));
   ansi.fg.color = COLOR_DEFAULT;
@@ -87,22 +88,22 @@ void test_ansi_color(void)
 
   str = "";
   rc = ansi_color_parse(str, &ansi, &acl, false);
-  TEST_CHECK(rc == 0);
+  TEST_CHECK_NUM_EQ(rc, 0);
 
   str = "\033[1m";
   ansi.attrs = A_NORMAL;
   rc = ansi_color_parse(str, &ansi, &acl, false);
-  TEST_CHECK(rc == 4);
+  TEST_CHECK_NUM_EQ(rc, 4);
 
   str = "\033[3m";
   ansi.attrs = A_NORMAL;
   rc = ansi_color_parse(str, &ansi, &acl, false);
-  TEST_CHECK(rc == 4);
+  TEST_CHECK_NUM_EQ(rc, 4);
 
   str = "\033[4m";
   ansi.attrs = A_NORMAL;
   rc = ansi_color_parse(str, &ansi, &acl, false);
-  TEST_CHECK(rc == 4);
+  TEST_CHECK_NUM_EQ(rc, 4);
 
   attr_color_list_clear(&acl);
 }

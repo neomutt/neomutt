@@ -82,13 +82,14 @@ struct ExpandoNode
    *
    * render - Render an Expando
    * @param[in]  node     Node to render
+   * @param[in]  erc      Expando Render Callback functions
    * @param[out] buf      Buffer in which to save string
    * @param[in]  max_cols Maximum number of screen columns to use
    * @param[in]  data     Private data
    * @param[in]  flags    Flags, see #MuttFormatFlags
    * @retval num Number of screen columns used
    */
-  int (*render)(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+  int (*render)(const struct ExpandoNode *node, const struct ExpandoRenderCallback *erc, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
 };
 
 struct ExpandoNode *node_new(void);

@@ -30,6 +30,7 @@
  * | browser/complete.c     | @subpage browser_complete     |
  * | browser/config.c       | @subpage browser_config       |
  * | browser/dlg_browser.c  | @subpage browser_dlg_browser  |
+ * | browser/expando.c      | @subpage browser_expando      |
  * | browser/functions.c    | @subpage browser_functions    |
  * | browser/private_data.c | @subpage browser_private_data |
  * | browser/sort.c         | @subpage browser_sorting      |
@@ -115,6 +116,7 @@ enum ExpandoDataFolder
 {
   ED_FOL_DATE = 1,             ///< FolderFile.mtime
   ED_FOL_DATE_FORMAT,          ///< FolderFile.mtime
+  ED_FOL_DATE_STRF,            ///< FolderFile.mtime
   ED_FOL_DESCRIPTION,          ///< FolderFile.desc, FolderFile.name
   ED_FOL_FILENAME,             ///< FolderFile.name
   ED_FOL_FILE_GROUP,           ///< FolderFile.gid
@@ -131,7 +133,6 @@ enum ExpandoDataFolder
   ED_FOL_NOTIFY,               ///< FolderFile.notify_user
   ED_FOL_NUMBER,               ///< Folder.num
   ED_FOL_POLL,                 ///< FolderFile.poll_new_mail
-  ED_FOL_STRF,                 ///< FolderFile.mtime
   ED_FOL_TAGGED,               ///< FolderFile.tagged
   ED_FOL_UNREAD_COUNT,         ///< FolderFile.msg_unread
 };
@@ -157,7 +158,7 @@ void browser_highlight_default(struct BrowserState *state, struct Menu *menu);
 int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState *state, const char *d, const char *prefix);
 int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState *state);
 void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m, struct MuttWindow *sbar);
-void init_state(struct BrowserState *state, struct Menu *menu);
+void init_state(struct BrowserState *state);
 bool link_is_dir(const char *folder, const char *path);
 void destroy_state(struct BrowserState *state);
 void dump_state(struct BrowserState *state);

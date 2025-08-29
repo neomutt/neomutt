@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 
 struct IndexSharedData;
@@ -95,7 +95,7 @@ struct SidebarWindowData
   int hil_index;             ///< Highlighted mailbox
   int bot_index;             ///< Last mailbox visible in sidebar
 
-  short previous_sort;       ///< Old `$sidebar_sort_method`
+  short previous_sort;       ///< Old `$sidebar_sort`
   enum DivType divider_type; ///< Type of divider to use, e.g. #SB_DIV_ASCII
   short divider_width;       ///< Width of the divider in screen columns
 };
@@ -119,7 +119,7 @@ int sb_insertion_window_observer(struct NotifyCallback *nc);
 void sb_win_add_observers(struct MuttWindow *win);
 
 // sort.c
-void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort);
+void sb_sort_entries(struct SidebarWindowData *wdata, enum EmailSortType sort);
 
 // wdata.c
 void                      sb_wdata_free(struct MuttWindow *win, void **ptr);

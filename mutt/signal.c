@@ -63,6 +63,9 @@ static sig_handler_t ExitHandler = mutt_sig_exit_handler;
 /// Function to handle SIGSEGV (11) signals
 static sig_handler_t SegvHandler = mutt_sig_exit_handler;
 
+/// Keep the old SEGV handler, it could have been set by ASAN
+sig_handler_t OldSegvHandler = NULL;
+
 volatile sig_atomic_t SigInt;   ///< true after SIGINT is received
 volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
 
@@ -78,7 +81,11 @@ static void exit_print_uint(unsigned int n)
     exit_print_uint(n / 10);
 
   digit = '0' + (n % 10);
-  write(STDOUT_FILENO, &digit, 1);
+
+  if (write(STDOUT_FILENO, &digit, 1) == -1)
+  {
+    // do nothing
+  }
 }
 
 /**
@@ -89,7 +96,11 @@ static void exit_print_int(int n)
 {
   if (n < 0)
   {
-    write(STDOUT_FILENO, "-", 1);
+    if (write(STDOUT_FILENO, "-", 1) == -1)
+    {
+      // do nothing
+    }
+
     n = -n;
   }
   exit_print_uint(n);
@@ -104,7 +115,10 @@ static void exit_print_string(const char *str)
   if (!str)
     return;
 
-  write(STDOUT_FILENO, str, strlen(str));
+  if (write(STDOUT_FILENO, str, strlen(str)) == -1)
+  {
+    // do nothing
+  }
 }
 
 /**
@@ -159,6 +173,7 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn, sig_handler_t se
     SegvHandler = segv_fn;
 
   struct sigaction act = { 0 };
+  struct sigaction old_act = { 0 };
 
   sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
@@ -166,7 +181,8 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn, sig_handler_t se
   sigaction(SIGPIPE, &act, NULL);
 
   act.sa_handler = SegvHandler;
-  sigaction(SIGSEGV, &act, NULL);
+  sigaction(SIGSEGV, &act, &old_act);
+  OldSegvHandler = old_act.sa_handler;
 
   act.sa_handler = ExitHandler;
   sigaction(SIGTERM, &act, NULL);

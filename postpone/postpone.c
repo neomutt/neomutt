@@ -421,7 +421,10 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
         if (sec_type & SEC_ENCRYPT)
         {
           if (!crypt_valid_passphrase(sec_type))
+          {
+            mutt_file_fclose(&state.fp_out);
             return -1;
+          }
           if (sec_type & APPLICATION_SMIME)
             crypt_smime_getkeys(e_new->env);
           mutt_message(_("Decrypting message..."));
@@ -430,6 +433,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
         if (mutt_body_handler(b, &state) < 0)
         {
           mutt_error(_("Decryption failed"));
+          mutt_file_fclose(&state.fp_out);
           return -1;
         }
 

@@ -51,7 +51,7 @@ static void menu_set_prefix(struct Menu *menu)
 
   // Don't overwrite error messages
   const char *msg_text = msgwin_get_text(NULL);
-  if (msg_text && !mutt_str_equal(msg_text, "tag-"))
+  if (msg_text && (msg_text[0] != '\0') && !mutt_str_equal(msg_text, "tag-"))
     return;
 
   if (menu->tag_prefix)

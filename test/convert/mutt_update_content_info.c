@@ -28,6 +28,7 @@
 #include "email/lib.h"
 #include "convert/lib.h"
 #include "convert_common.h"
+#include "test_common.h"
 
 bool content_equal(struct Content const *lhs, struct Content const *rhs)
 {
@@ -70,7 +71,7 @@ void test_mutt_update_content_info(void)
 
     state.linelen = 1;
     mutt_update_content_info(&info, &state, NULL, 0);
-    TEST_CHECK(info.linemax == 1);
+    TEST_CHECK_NUM_EQ(info.linemax, 1);
     TEST_MSG("Check failed: %d == 1", info.linemax);
     /* Everything else is the same. */
     info.linemax = 0;
@@ -107,17 +108,17 @@ void test_mutt_update_content_info(void)
     info.linemax = 7;
 
     mutt_update_content_info(&info, &state, "abc\nabc\nx\nqwerty", 16);
-    TEST_CHECK(info.linemax == 7);
+    TEST_CHECK_NUM_EQ(info.linemax, 7);
     TEST_MSG("Check failed: %d == 7", info.linemax);
 
     state = initial_state;
     mutt_update_content_info(&info, &state, "abc\nasdfghjkl\nx\nqwerty", 22);
-    TEST_CHECK(info.linemax == 10);
+    TEST_CHECK_NUM_EQ(info.linemax, 10);
     TEST_MSG("Check failed: %d == 10", info.linemax);
 
     /* Check that the character count carries over to the next call. */
     mutt_update_content_info(&info, &state, "abcdef\na", 8);
-    TEST_CHECK(info.linemax == 13);
+    TEST_CHECK_NUM_EQ(info.linemax, 13);
     TEST_MSG("Check failed: %d == 13", info.linemax);
   }
 
@@ -172,19 +173,19 @@ void test_mutt_update_content_info(void)
     struct ContentState state = initial_state;
 
     mutt_update_content_info(&info, &state, "abc\r\nabc", 8);
-    TEST_CHECK(info.crlf == 1);
+    TEST_CHECK_NUM_EQ(info.crlf, 1);
     TEST_MSG("Check failed: %d == 1", info.crlf);
 
     info = initial_info;
     state = initial_state;
     mutt_update_content_info(&info, &state, "abc\nabc", 7);
-    TEST_CHECK(info.crlf == 1);
+    TEST_CHECK_NUM_EQ(info.crlf, 1);
     TEST_MSG("Check failed: %d == 1", info.crlf);
 
     info = initial_info;
     state = initial_state;
     mutt_update_content_info(&info, &state, "abcabc", 6);
-    TEST_CHECK(info.crlf == 0);
+    TEST_CHECK_NUM_EQ(info.crlf, 0);
     TEST_MSG("Check failed: %d == 0", info.crlf);
 
     // TODO
@@ -192,7 +193,7 @@ void test_mutt_update_content_info(void)
     // state = initial_state;
     // state.was_cr = true;
     // mutt_update_content_info(&info, &state, "\nabc", 4);
-    // TEST_CHECK(info.crlf == 1);
+    // TEST_CHECK_NUM_EQ(info.crlf, 1);
   }
 
   {
@@ -266,7 +267,7 @@ void test_mutt_update_content_info(void)
     struct ContentState state = initial_state;
     info.ascii = 2;
     mutt_update_content_info(&info, &state, "qwertyżółw", 13);
-    TEST_CHECK(info.ascii == 9);
+    TEST_CHECK_NUM_EQ(info.ascii, 9);
     TEST_MSG("Check failed: %d == 9", info.ascii);
   }
 
@@ -276,7 +277,7 @@ void test_mutt_update_content_info(void)
     struct ContentState state = initial_state;
     info.nulbin = 2;
     mutt_update_content_info(&info, &state, "\0qwerty\0\0w\0", 11);
-    TEST_CHECK(info.nulbin == 6);
+    TEST_CHECK_NUM_EQ(info.nulbin, 6);
     TEST_MSG("Check failed: %d == 6", info.nulbin);
   }
 
@@ -287,9 +288,9 @@ void test_mutt_update_content_info(void)
     info.hibin = 2;
     info.lobin = 3;
     mutt_update_content_info(&info, &state, "\0żółw\0\0w\0\r\n", 14);
-    TEST_CHECK(info.hibin == 8);
+    TEST_CHECK_NUM_EQ(info.hibin, 8);
     TEST_MSG("Check failed: %d == 9", info.hibin);
-    TEST_CHECK(info.lobin == 7);
+    TEST_CHECK_NUM_EQ(info.lobin, 7);
     TEST_MSG("Check failed: %d == 10", info.lobin);
   }
 }

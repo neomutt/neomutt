@@ -76,20 +76,20 @@ int mutt_get_tmp_attachment(struct Body *b)
   if (b->unlink)
     return 0;
 
-  struct Buffer *tmpfile = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
   struct MailcapEntry *entry = mailcap_entry_new();
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
   mailcap_lookup(b, type, sizeof(type), entry, MUTT_MC_NO_FLAGS);
-  mailcap_expand_filename(entry->nametemplate, b->filename, tmpfile);
+  mailcap_expand_filename(entry->nametemplate, b->filename, tempfile);
 
   mailcap_entry_free(&entry);
 
   FILE *fp_in = NULL, *fp_out = NULL;
   if ((fp_in = mutt_file_fopen(b->filename, "r")) &&
-      (fp_out = mutt_file_fopen(buf_string(tmpfile), "w")))
+      (fp_out = mutt_file_fopen(buf_string(tempfile), "w")))
   {
     mutt_file_copy_stream(fp_in, fp_out);
-    mutt_str_replace(&b->filename, buf_string(tmpfile));
+    mutt_str_replace(&b->filename, buf_string(tempfile));
     b->unlink = true;
 
     struct stat st = { 0 };
@@ -100,13 +100,13 @@ int mutt_get_tmp_attachment(struct Body *b)
   }
   else
   {
-    mutt_perror("%s", fp_in ? buf_string(tmpfile) : b->filename);
+    mutt_perror("%s", fp_in ? buf_string(tempfile) : b->filename);
   }
 
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
 
-  buf_pool_release(&tmpfile);
+  buf_pool_release(&tempfile);
 
   return b->unlink ? 0 : -1;
 }
@@ -125,9 +125,9 @@ int mutt_compose_attachment(struct Body *b)
   int rc = 0;
   struct Buffer *cmd = buf_pool_get();
   struct Buffer *newfile = buf_pool_get();
-  struct Buffer *tmpfile = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
 
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
   if (mailcap_lookup(b, type, sizeof(type), entry, MUTT_MC_COMPOSE))
   {
     if (entry->composecommand || entry->composetypecommand)
@@ -205,8 +205,8 @@ int mutt_compose_attachment(struct Body *b)
               goto bailout;
             }
 
-            buf_mktemp(tmpfile);
-            FILE *fp_tmp = mutt_file_fopen(buf_string(tmpfile), "w");
+            buf_mktemp(tempfile);
+            FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
             if (!fp_tmp)
             {
               mutt_perror(_("Failure to open file to strip headers"));
@@ -217,7 +217,7 @@ int mutt_compose_attachment(struct Body *b)
             mutt_file_fclose(&fp);
             mutt_file_fclose(&fp_tmp);
             mutt_file_unlink(b->filename);
-            if (mutt_file_rename(buf_string(tmpfile), b->filename) != 0)
+            if (mutt_file_rename(buf_string(tempfile), b->filename) != 0)
             {
               mutt_perror(_("Failure to rename file"));
               goto bailout;
@@ -243,7 +243,7 @@ bailout:
 
   buf_pool_release(&cmd);
   buf_pool_release(&newfile);
-  buf_pool_release(&tmpfile);
+  buf_pool_release(&tempfile);
 
   mailcap_entry_free(&entry);
   return rc;
@@ -271,7 +271,7 @@ bool mutt_edit_attachment(struct Body *b)
   struct Buffer *cmd = buf_pool_get();
   struct Buffer *newfile = buf_pool_get();
 
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
   if (mailcap_lookup(b, type, sizeof(type), entry, MUTT_MC_EDIT))
   {
     if (entry->editcommand)
@@ -345,7 +345,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &MimeLookupList, entries)
   {
-    const int i = mutt_str_len(np->data) - 1;
+    const int i = (int) mutt_str_len(np->data) - 1;
     if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
          mutt_istrn_equal(type, np->data, i)) ||
         mutt_istr_equal(type, np->data))
@@ -437,18 +437,18 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
     return rc;
   }
 
-  struct Buffer *tmpfile = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
   struct Buffer *pagerfile = buf_pool_get();
   struct Buffer *cmd = buf_pool_get();
 
   use_mailcap = ((mode == MUTT_VA_MAILCAP) ||
                  ((mode == MUTT_VA_REGULAR) && mutt_needs_mailcap(b)) ||
                  (mode == MUTT_VA_PAGER));
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
 
   char columns[16] = { 0 };
   snprintf(columns, sizeof(columns), "%d", win->state.cols);
-  envlist_set(&EnvList, "COLUMNS", columns, true);
+  envlist_set(&NeoMutt->env, "COLUMNS", columns, true);
 
   if (use_mailcap)
   {
@@ -482,16 +482,16 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
 
     fname = mutt_str_dup(b->filename);
     /* In send mode(!fp), we allow slashes because those are part of
-     * the tmpfile.  The path will be removed in expand_filename */
+     * the tempfile.  The path will be removed in expand_filename */
     mutt_file_sanitize_filename(fname, fp ? true : false);
-    mailcap_expand_filename(entry->nametemplate, fname, tmpfile);
+    mailcap_expand_filename(entry->nametemplate, fname, tempfile);
     FREE(&fname);
 
-    if (mutt_save_attachment(fp, b, buf_string(tmpfile), 0, NULL) == -1)
+    if (mutt_save_attachment(fp, b, buf_string(tempfile), 0, NULL) == -1)
       goto return_error;
     has_tempfile = true;
 
-    mutt_rfc3676_space_unstuff_attachment(b, buf_string(tmpfile));
+    mutt_rfc3676_space_unstuff_attachment(b, buf_string(tempfile));
 
     /* check for multipart/related and save attachments with b Content-ID */
     if (mutt_str_equal(type, "text/html"))
@@ -508,13 +508,13 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
         /* save attachments and build cid_map_list Content-ID to filename mapping list */
         cid_save_attachments(related_ancestor->parts, &cid_map_list);
         /* replace Content-IDs with filenames */
-        cid_to_filename(tmpfile, &cid_map_list);
+        cid_to_filename(tempfile, &cid_map_list);
         /* empty Content-ID to filename mapping list */
         cid_map_list_clear(&cid_map_list);
       }
     }
 
-    use_pipe = mailcap_expand_command(b, buf_string(tmpfile), type, cmd);
+    use_pipe = mailcap_expand_command(b, buf_string(tempfile), type, cmd);
     use_pager = entry->copiousoutput;
   }
 
@@ -552,7 +552,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
       }
       unlink_pagerfile = true;
 
-      if (use_pipe && ((fd_temp = open(buf_string(tmpfile), 0)) == -1))
+      if (use_pipe && ((fd_temp = open(buf_string(tempfile), 0)) == -1))
       {
         if (fd_pager != -1)
           close(fd_pager);
@@ -562,7 +562,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
       unlink_pagerfile = true;
 
       pid = filter_create_fd(buf_string(cmd), NULL, NULL, NULL, use_pipe ? fd_temp : -1,
-                             use_pager ? fd_pager : -1, -1, EnvList);
+                             use_pager ? fd_pager : -1, -1, NeoMutt->env);
 
       if (pid == -1)
       {
@@ -707,10 +707,10 @@ return_error:
 
   if (!entry || !entry->xneomuttkeep)
   {
-    if ((fp && !buf_is_empty(tmpfile)) || has_tempfile)
+    if ((fp && !buf_is_empty(tempfile)) || has_tempfile)
     {
       /* add temporary file to TempAttachmentsList to be deleted on timeout hook */
-      mutt_add_temp_attachment(buf_string(tmpfile));
+      mutt_add_temp_attachment(buf_string(tempfile));
     }
   }
 
@@ -719,10 +719,10 @@ return_error:
   if (unlink_pagerfile)
     mutt_file_unlink(buf_string(pagerfile));
 
-  buf_pool_release(&tmpfile);
+  buf_pool_release(&tempfile);
   buf_pool_release(&pagerfile);
   buf_pool_release(&cmd);
-  envlist_unset(&EnvList, "COLUMNS");
+  envlist_unset(&NeoMutt->env, "COLUMNS");
 
   return rc;
 }
@@ -765,9 +765,9 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char 
   mutt_endwin();
 
   if (outfile && *outfile)
-    pid = filter_create_fd(path, &fp_filter, NULL, NULL, -1, out, -1, EnvList);
+    pid = filter_create_fd(path, &fp_filter, NULL, NULL, -1, out, -1, NeoMutt->env);
   else
-    pid = filter_create(path, &fp_filter, NULL, NULL, EnvList);
+    pid = filter_create(path, &fp_filter, NULL, NULL, NeoMutt->env);
   if (pid < 0)
   {
     mutt_perror(_("Can't create filter"));
@@ -888,10 +888,8 @@ static FILE *save_attachment_open(const char *path, enum SaveAttach opt)
 {
   if (opt == MUTT_SAVE_APPEND)
     return mutt_file_fopen_masked(path, "a");
-  if (opt == MUTT_SAVE_OVERWRITE)
+  else
     return mutt_file_fopen_masked(path, "w");
-
-  return mutt_file_fopen_masked(path, "w");
 }
 
 /**
@@ -1051,8 +1049,6 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path,
 
   if (opt == MUTT_SAVE_APPEND)
     state.fp_out = mutt_file_fopen_masked(path, "a");
-  else if (opt == MUTT_SAVE_OVERWRITE)
-    state.fp_out = mutt_file_fopen_masked(path, "w");
   else
     state.fp_out = mutt_file_fopen_masked(path, "w");
 
@@ -1149,7 +1145,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
 
   int rc = 0;
 
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
 
   if (mailcap_lookup(b, type, sizeof(type), NULL, MUTT_MC_PRINT))
   {
@@ -1191,7 +1187,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
         goto mailcap_cleanup;
       }
 
-      pid = filter_create(buf_string(cmd), &fp_out, NULL, NULL, EnvList);
+      pid = filter_create(buf_string(cmd), &fp_out, NULL, NULL, NeoMutt->env);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
@@ -1256,7 +1252,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
       mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", buf_string(newfile));
 
       mutt_endwin();
-      pid = filter_create(NONULL(c_print_command), &fp_out, NULL, NULL, EnvList);
+      pid = filter_create(NONULL(c_print_command), &fp_out, NULL, NULL, NeoMutt->env);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));

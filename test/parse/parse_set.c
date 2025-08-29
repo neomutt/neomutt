@@ -24,20 +24,21 @@
 #include "config.h"
 #include "acutest.h"
 #include <string.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
-
-struct Buffer;
+#include "test_common.h"
 
 enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 {
-  return MUTT_CMD_ERROR;
+  buf_strcpy(err, "config");
+  return MUTT_CMD_SUCCESS;
 }
 
 void test_parse_set(void)
 {
   TEST_CASE("parse_set");
   enum CommandResult rc = parse_set(NULL, NULL, 0, NULL);
-  TEST_CHECK(rc == MUTT_CMD_ERROR);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 }

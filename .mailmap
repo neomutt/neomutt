@@ -1,5 +1,6 @@
 ## NeoMutt Contributors - auto-generated: https://github.com/neomutt/authors/tree/main/git
-Страхиња Радић (@strahinja) <contact@strahinja.org>	Страхиња Радић <contact@strahinja.org>
+Страхиња Радић (@strahinja) <sr@strahinja.org>	Страхиња Радић <contact@strahinja.org>
+Страхиња Радић (@strahinja) <sr@strahinja.org>	Страхиња Радић <sr@strahinja.org>
 李经纬 (@ljw20180420) <ljw2017@sjtu.edu.cn>	李经纬 <ljw2017@sjtu.edu.cn>
 наб (@nabijaczleweli) <nabijaczleweli@nabijaczleweli.xyz>	наб <nabijaczleweli@gmail.com>
 наб (@nabijaczleweli) <nabijaczleweli@nabijaczleweli.xyz>	наб <nabijaczleweli@nabijaczleweli.xyz>
@@ -69,6 +70,7 @@ Carlos Henrique Lima Melara (@charles2910) <charlesmelara@riseup.net>	Carlos Hen
 Carlos Henrique Lima Melara (@charles2910) <charlesmelara@riseup.net>	Carlos Henrique Lima Melara <charlesmelara@riseup.net>
 Casper Ti Vector (@caspervector) <CasperVector@gmail.com>	Casper Ti Vector <CasperVector@gmail.com>
 Casper Ti Vector (@caspervector) <CasperVector@gmail.com>	Casper Ti. Vector <CasperVector@gmail.com>
+Chao-Kuei Hung (@ckhung) <ckhung@cyut.edu.tw>	Chao-Kuei Hung <ckhung@cyut.edu.tw>
 Charalampos Kardaris (@ckardaris) <ckardaris@outlook.com>	Charalampos Kardaris <ckardaris@outlook.com>
 Charlie Drage (@cdrage) <charlie@charliedrage.com>	Charlie Drage <charlie@charliedrage.com>
 Chris Czettel (@christopher-john-czettel) <chris@christopher-czettel.net>	Chris Czettel <chris@christopher-czettel.net>
@@ -117,6 +119,8 @@ David Sterba (@kdave) <dsterba@suse.cz>	David Sterba <dsterba@suse.cz>
 Deng Xiyue (@manphiz) <manphiz@gmail.com>	Deng Xiyue <manphiz@gmail.com>
 Dennis Schön (@roccoblues) <mail@dennis-schoen.de>	Dennis Schön <mail@dennis-schoen.de>
 Dimitrios Semitsoglou-Tsiapos (@dset0x) <kmhzsem@gmx.com>	Dimitrios Semitsoglou-Tsiapos <kmhzsem@gmx.com>
+Dmitry Polunin (@frei-0xff) <frei-0xff@users.noreply.github.com>	Dmitry Polunin <frei-0xff@users.noreply.github.com>
+Dmitry Polunin (@frei-0xff) <frei-0xff@users.noreply.github.com>	frei-0xff <frei-0xff@users.noreply.github.com>
 Doron Behar (@doronbehar) <doron.behar@gmail.com>	Doron Behar <doron.behar@gmail.com>
 Doug Stone-Weaver (@doweaver) <doug@stone-weaver.com>	Doug Stone-Weaver <doug@stone-weaver.com>
 Eduardo Habkost (@ehabkost) <ehabkost@redhat.com>	Eduardo Habkost <ehabkost@redhat.com>
@@ -154,6 +158,7 @@ Guillaume Brogi (@guiniol) <gui-gui@netcourrier.com>	guiniol <gui-gui@netcourrie
 H N Caldwell <unknown>	H N Caldwell <unknown>
 H N Caldwell <unknown>	hncaldwell <unknown>
 Haoyu Qiu (@timothyqiu) <timothyqiu32@gmail.com>	Haoyu Qiu <timothyqiu32@gmail.com>
+Helge Deller (@hdeller) <deller@gmx.de>	Helge Deller <deller@gmx.de>
 Herbert J Skuhra <herbert@gojira.at>	Herbert J Skuhra <herbert@gojira.at>
 Hugo Barrera (@whynothugo) <hugo@barrera.io>	Hugo Barrera <hugo@barrera.io>
 Hugo Barrera (@whynothugo) <hugo@barrera.io>	Hugo Osvaldo Barrera <hugo@barrera.io>
@@ -204,8 +209,10 @@ Joshua Jordi (@jakkinstewart) <dracogoyle@gmail.com>	Jakkin <dracogoyle@gmail.co
 Joshua Jordi (@jakkinstewart) <dracogoyle@gmail.com>	Joshua Jordi <dracogoyle@gmail.com>
 Joshua Jordi (@jakkinstewart) <dracogoyle@gmail.com>	Joshua Jordi <JakkinStewart@users.noreply.github.com>
 Julian Andres Klode (@julian-klode) <jak@jak-linux.org>	Julian Andres Klode <jak@jak-linux.org>
+Juris Lambda (@jxlambda) <jxlambda@pm.me>	Juris Lambda <jxlambda@pm.me>
 Justin Vasel (@justinvasel) <justin.vasel@gmail.com>	Justin Vasel <justin.vasel@gmail.com>
 Karel Zak (@karelzak) <kzak@redhat.com>	Karel Zak <kzak@redhat.com>
+Keith Bowes (@keithbowes) <keithbowes@users.noreply.github.com>	Keith Bowes <keithbowes@users.noreply.github.com>
 Kevin Decherf (@kdecherf) <kevin@kdecherf.com>	Kevin Decherf <kevin@kdecherf.com>
 Kevin Velghe (@paretje) <kevin@paretje.be>	Kevin Velghe <kevin@paretje.be>
 Larry Rosenman (@lrosenman) <larryrtx@gmail.com>	Larry Rosenman <larryrtx@gmail.com>
@@ -237,6 +244,7 @@ Marco Hinz (@mhinz) <mh.codebro@gmail.com>	Marco Hinz <mh.codebro@gmail.com>
 Marco Sirabella (@mjsir911) <marco@sirabella.org>	Marco Sirabella <marco@sirabella.org>
 Marius Gedminas (@mgedmin) <marius@gedmin.as>	Marius Gedminas <marius@gedmin.as>
 Mark Stenglein (@ocelotsloth) <mark@stengle.in>	Mark Stenglein <mark@stengle.in>
+Mateus Etto (@yutsuten) <mateus.etto@proton.me>	Mateus Eto <mateus.etto@gmail.com>
 Mateus Etto (@yutsuten) <mateus.etto@proton.me>	Mateus Etto <mateus.etto@proton.me>
 Mateusz Okulus (@mokulus) <mmokulus@gmail.com>	Mateusz Okulus <mmokulus@gmail.com>
 Mateusz Piotrowski (@0mp) <mpp302@gmail.com>	Mateusz Piotrowski <mpp302@gmail.com>
@@ -250,6 +258,7 @@ Michael Bazzinotti <mbazzinotti@gmail.com>	Michael Bazzinotti <mbazzinotti@gmail
 Michael Bazzinotti <mbazzinotti@gmail.com>	Michael J. Bazzinotti <mbazzinotti@gmail.com>
 Michael Constantine Dimopoulos (@michaeldim02) <mk@mcdim.xyz>	Michael Constantine Dimopoulos <31562759+MichaelDim02@users.noreply.github.com>
 Michael Constantine Dimopoulos (@michaeldim02) <mk@mcdim.xyz>	Michael Constantine Dimopoulos <mk@mcdim.xyz>
+Michael J Gruber (@mjg) <git@grubix.eu>	Michael J Gruber <git@grubix.eu>
 Michal Siedlaczek (@elshize) <michal@siedlaczek.me>	Michal Siedlaczek <michal@siedlaczek.me>
 Mingcong Bai (@MingcongBai) <jeffbai@aosc.xyz>	Mingcong Bai <jeffbai@aosc.xyz>
 Mohammad AlSaleh (@MoSal) <CE.Mohammad.Alsaleh@gmail.com>	Mohammad AlSaleh <CE.Mohammad.Alsaleh@gmail.com>

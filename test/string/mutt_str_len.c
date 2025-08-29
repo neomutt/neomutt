@@ -25,12 +25,13 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_str_len(void)
 {
   // size_t mutt_str_len(const char *a);
 
-  TEST_CHECK(mutt_str_len(NULL) == 0);
-  TEST_CHECK(mutt_str_len("") == 0);
-  TEST_CHECK(mutt_str_len("hello") == 5);
+  TEST_CHECK_NUM_EQ(mutt_str_len(NULL), 0);
+  TEST_CHECK_NUM_EQ(mutt_str_len(""), 0);
+  TEST_CHECK_NUM_EQ(mutt_str_len("hello"), 5);
 }

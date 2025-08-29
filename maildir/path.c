@@ -34,7 +34,6 @@
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "path.h"
-#include "globals.h"
 
 // Mailbox API -----------------------------------------------------------------
 
@@ -43,7 +42,7 @@
  */
 int maildir_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(path, HomeDir, true);
+  mutt_path_canon(path, NeoMutt->home_dir, true);
   return 0;
 }
 
@@ -99,7 +98,7 @@ enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
   char sub[PATH_MAX] = { 0 };
   struct stat stsub = { 0 };
   char *subs[] = { "cur", "new" };
-  for (size_t i = 0; i < mutt_array_size(subs); ++i)
+  for (size_t i = 0; i < countof(subs); i++)
   {
     snprintf(sub, sizeof(sub), "%s/%s", path, subs[i]);
     if ((stat(sub, &stsub) == 0) && S_ISDIR(stsub.st_mode))

@@ -51,6 +51,9 @@ static struct ConfigDef PagerVars[] = {
   { "header_color_partial", DT_BOOL, false, 0, NULL,
     "Only color the part of the header matching the regex"
   },
+  { "markers", DT_BOOL, true, 0, NULL,
+    "Display a '+' at the beginning of wrapped lines in the pager"
+  },
   { "pager", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External command for viewing messages, or empty to use NeoMutt's"
   },

@@ -24,12 +24,13 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_filter_wait(void)
 {
   // int filter_wait(pid_t pid);
 
   {
-    TEST_CHECK(filter_wait(-1) == 0);
+    TEST_CHECK_NUM_EQ(filter_wait(-1), 0);
   }
 }

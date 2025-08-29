@@ -87,7 +87,7 @@ void test_config_subset(void)
   struct Buffer *err = buf_pool_get();
   buf_reset(err);
   rc = cs_subset_he_native_get(NULL, NULL, err);
-  if (!TEST_CHECK(rc == INT_MIN))
+  if (!TEST_CHECK_NUM_EQ(rc, INT_MIN))
   {
     TEST_MSG("This test should have failed");
     return;
@@ -128,7 +128,7 @@ void test_config_subset(void)
   buf_reset(err);
   expected = "142";
   rc = cs_subset_he_string_get(n->sub, he, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS) ||
       !TEST_CHECK_STR_EQ(buf_string(err), expected))
   {
     return;
@@ -145,7 +145,7 @@ void test_config_subset(void)
   buf_reset(err);
   expected = "142";
   rc = cs_subset_str_string_get(n->sub, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS) ||
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS) ||
       !TEST_CHECK_STR_EQ(buf_string(err), expected))
   {
     return;
@@ -163,7 +163,7 @@ void test_config_subset(void)
   buf_reset(err);
   expected = "678";
   rc = cs_subset_he_string_set(n->sub, he, expected, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_string_set failed");
     return;
@@ -172,7 +172,7 @@ void test_config_subset(void)
   buf_reset(err);
   expected = "678";
   rc = cs_subset_str_string_set(n->sub, name, expected, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_str_string_set failed");
     return;
@@ -190,7 +190,7 @@ void test_config_subset(void)
   buf_reset(err);
   expected = "678";
   rc = cs_subset_he_string_plus_equals(n->sub, he, expected, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_string_plus_equals failed");
     return;
@@ -208,7 +208,7 @@ void test_config_subset(void)
   buf_reset(err);
   expected = "678";
   rc = cs_subset_he_string_minus_equals(n->sub, he, expected, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_string_minus_equals failed");
     return;
@@ -224,7 +224,7 @@ void test_config_subset(void)
 
   buf_reset(err);
   rc = cs_subset_he_reset(n->sub, he, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("cs_subset_he_reset failed");
     return;

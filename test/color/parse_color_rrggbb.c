@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 enum CommandResult parse_color_rrggbb(const char *s, struct ColorElement *elem,
                                       struct Buffer *err);
@@ -48,10 +49,10 @@ void test_parse_color_rrggbb(void)
     struct ColorElement elem = { 0 };
 
     rc = parse_color_rrggbb(NULL, &elem, err);
-    TEST_CHECK(rc == MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     rc = parse_color_rrggbb(str, NULL, err);
-    TEST_CHECK(rc == MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     buf_pool_release(&err);
   }
@@ -82,14 +83,13 @@ void test_parse_color_rrggbb(void)
       struct ColorElement elem = { 0 };
 
       rc = parse_color_rrggbb(tests[i].str, &elem, err);
-      TEST_CHECK(rc == MUTT_CMD_SUCCESS);
-      TEST_MSG("rc: Expected %d, Got %d", MUTT_CMD_SUCCESS, rc);
+      TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
       TEST_CHECK(elem.color == tests[i].color);
       TEST_MSG("color: Expected %d, Got %d", tests[i].color, elem.color);
 
-      TEST_CHECK(elem.type == CT_RGB);
-      TEST_CHECK(elem.prefix == COLOR_PREFIX_NONE);
+      TEST_CHECK_NUM_EQ(elem.type, CT_RGB);
+      TEST_CHECK_NUM_EQ(elem.prefix, COLOR_PREFIX_NONE);
     }
 
     buf_pool_release(&err);

@@ -38,13 +38,13 @@ struct ExpandoNode *node_padding_new(enum ExpandoPadType pad_type,
 int pad_string(const struct ExpandoNode *node, struct Buffer *buf, int max_cols);
 void expando_serialise(const struct Expando *exp, struct Buffer *buf);
 int node_padding_render_eol(const struct ExpandoNode *node,
-                            const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                            const struct ExpandoRenderCallback *rdata, struct Buffer *buf,
                             int max_cols, void *data, MuttFormatFlags flags);
 int node_padding_render_hard(const struct ExpandoNode *node,
-                             const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                             const struct ExpandoRenderCallback *rdata, struct Buffer *buf,
                              int max_cols, void *data, MuttFormatFlags flags);
 int node_padding_render_soft(const struct ExpandoNode *node,
-                             const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                             const struct ExpandoRenderCallback *rdata, struct Buffer *buf,
                              int max_cols, void *data, MuttFormatFlags flags);
 
 void test_expando_node_padding(void)
@@ -62,7 +62,7 @@ void test_expando_node_padding(void)
     // clang-format on
   };
 
-  static const struct ExpandoRenderData TestRenderData[] = {
+  static const struct ExpandoRenderCallback TestRenderCallback[] = {
     // clang-format off
     { -1, -1, NULL, NULL },
     // clang-format on
@@ -107,22 +107,22 @@ void test_expando_node_padding(void)
     node.text = "a"; // Padding character
     buf_strcpy(buf, "apple");
     rc = pad_string(&node, buf, 15);
-    TEST_CHECK(rc == 15);
+    TEST_CHECK_NUM_EQ(rc, 15);
 
     node.text = "é"; // Padding character
     buf_strcpy(buf, "apple");
     rc = pad_string(&node, buf, 15);
-    TEST_CHECK(rc == 15);
+    TEST_CHECK_NUM_EQ(rc, 15);
 
     node.text = "本"; // Padding character
     buf_strcpy(buf, "apple");
     rc = pad_string(&node, buf, 15);
-    TEST_CHECK(rc == 15);
+    TEST_CHECK_NUM_EQ(rc, 15);
 
     node.text = "🍓"; // Padding character
     buf_strcpy(buf, "apple");
     rc = pad_string(&node, buf, 15);
-    TEST_CHECK(rc == 15);
+    TEST_CHECK_NUM_EQ(rc, 15);
 
     buf_pool_release(&buf);
   }
@@ -201,7 +201,7 @@ void test_expando_node_padding(void)
     struct Buffer *err = buf_pool_get();
     struct Expando *exp = NULL;
 
-    for (int i = 0; i < mutt_array_size(TestStrings); i++)
+    for (int i = 0; i < countof(TestStrings); i++)
     {
       buf_reset(buf);
       buf_reset(err);
@@ -223,7 +223,7 @@ void test_expando_node_padding(void)
     buf_pool_release(&err);
   }
 
-  // int node_padding_render_eol(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+  // int node_padding_render_eol(const struct ExpandoNode *node, const struct ExpandoRenderCallback *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
   {
     char *EolTests[][2] = {
       // clang-format off
@@ -243,7 +243,7 @@ void test_expando_node_padding(void)
     struct Expando *exp = NULL;
     int rc;
 
-    for (int i = 0; i < mutt_array_size(EolTests); i++)
+    for (int i = 0; i < countof(EolTests); i++)
     {
       buf_reset(buf);
       buf_reset(err);
@@ -255,8 +255,8 @@ void test_expando_node_padding(void)
       exp = expando_parse(format, TestFormatDef, err);
       TEST_CHECK(buf_is_empty(err));
       TEST_MSG(buf_string(err));
-      rc = node_padding_render_eol(exp->node, TestRenderData, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
-      TEST_CHECK(rc == 19);
+      rc = node_padding_render_eol(exp->node, TestRenderCallback, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
+      TEST_CHECK_NUM_EQ(rc, 19);
       TEST_CHECK_STR_EQ(buf_string(buf), expected);
       expando_free(&exp);
     }
@@ -265,7 +265,7 @@ void test_expando_node_padding(void)
     buf_pool_release(&err);
   }
 
-  // int node_padding_render_hard(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+  // int node_padding_render_hard(const struct ExpandoNode *node, const struct ExpandoRenderCallback *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
   {
     char *HardTests[][2] = {
       // clang-format off
@@ -336,7 +336,7 @@ void test_expando_node_padding(void)
     struct Expando *exp = NULL;
     int rc;
 
-    for (int i = 0; i < mutt_array_size(HardTests); i++)
+    for (int i = 0; i < countof(HardTests); i++)
     {
       buf_reset(buf);
       buf_reset(err);
@@ -348,8 +348,8 @@ void test_expando_node_padding(void)
       exp = expando_parse(format, TestFormatDef, err);
       TEST_CHECK(buf_is_empty(err));
       TEST_MSG(buf_string(err));
-      rc = node_padding_render_hard(exp->node, TestRenderData, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
-      TEST_CHECK(rc == 19);
+      rc = node_padding_render_hard(exp->node, TestRenderCallback, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
+      TEST_CHECK_NUM_EQ(rc, 19);
       TEST_CHECK_STR_EQ(buf_string(buf), expected);
       expando_free(&exp);
     }
@@ -358,7 +358,7 @@ void test_expando_node_padding(void)
     buf_pool_release(&err);
   }
 
-  // int node_padding_render_soft(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+  // int node_padding_render_soft(const struct ExpandoNode *node, const struct ExpandoRenderCallback *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
   {
     char *SoftTests[][2] = {
       // clang-format off
@@ -429,7 +429,7 @@ void test_expando_node_padding(void)
     struct Expando *exp = NULL;
     int rc;
 
-    for (int i = 0; i < mutt_array_size(SoftTests); i++)
+    for (int i = 0; i < countof(SoftTests); i++)
     {
       buf_reset(buf);
       buf_reset(err);
@@ -441,8 +441,8 @@ void test_expando_node_padding(void)
       exp = expando_parse(format, TestFormatDef, err);
       TEST_CHECK(buf_is_empty(err));
       TEST_MSG(buf_string(err));
-      rc = node_padding_render_soft(exp->node, TestRenderData, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
-      TEST_CHECK(rc == 19);
+      rc = node_padding_render_soft(exp->node, TestRenderCallback, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
+      TEST_CHECK_NUM_EQ(rc, 19);
       TEST_CHECK_STR_EQ(buf_string(buf), expected);
       expando_free(&exp);
     }

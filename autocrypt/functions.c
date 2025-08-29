@@ -30,6 +30,7 @@
 #ifdef _MAKEDOC
 #include "docs/makedoc_defs.h"
 #else
+#include <stdbool.h>
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -41,6 +42,7 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
+#include "autocrypt_data.h"
 #include "functions.h"
 #endif
 
@@ -126,15 +128,18 @@ static int op_autocrypt_delete_acct(struct AutocryptData *ad, int op)
     return FR_ERROR;
 
   const int index = menu_get_index(ad->menu);
-  struct AccountEntry *entry = ((struct AccountEntry *) ad->menu->mdata) + index;
+  struct AccountEntry **pentry = ARRAY_GET(&ad->entries, index);
+  if (!pentry)
+    return 0;
+
   char msg[128] = { 0 };
   snprintf(msg, sizeof(msg),
            // L10N: Confirmation message when deleting an autocrypt account
-           _("Really delete account \"%s\"?"), buf_string(entry->addr->mailbox));
+           _("Really delete account \"%s\"?"), buf_string((*pentry)->addr->mailbox));
   if (query_yesorno(msg, MUTT_NO) != MUTT_YES)
     return FR_NO_ACTION;
 
-  if (mutt_autocrypt_db_account_delete(entry->account) == 0)
+  if (mutt_autocrypt_db_account_delete((*pentry)->account) == 0)
     populate_menu(ad->menu);
 
   return FR_SUCCESS;
@@ -149,8 +154,11 @@ static int op_autocrypt_toggle_active(struct AutocryptData *ad, int op)
     return FR_ERROR;
 
   const int index = menu_get_index(ad->menu);
-  struct AccountEntry *entry = ((struct AccountEntry *) ad->menu->mdata) + index;
-  toggle_active(entry);
+  struct AccountEntry **pentry = ARRAY_GET(&ad->entries, index);
+  if (!pentry)
+    return 0;
+
+  toggle_active((*pentry));
   menu_queue_redraw(ad->menu, MENU_REDRAW_FULL);
 
   return FR_SUCCESS;
@@ -165,8 +173,11 @@ static int op_autocrypt_toggle_prefer(struct AutocryptData *ad, int op)
     return FR_ERROR;
 
   const int index = menu_get_index(ad->menu);
-  struct AccountEntry *entry = (struct AccountEntry *) (ad->menu->mdata) + index;
-  toggle_prefer_encrypt(entry);
+  struct AccountEntry **pentry = ARRAY_GET(&ad->entries, index);
+  if (!pentry)
+    return 0;
+
+  toggle_prefer_encrypt((*pentry));
   menu_queue_redraw(ad->menu, MENU_REDRAW_FULL);
 
   return FR_SUCCESS;
@@ -202,14 +213,13 @@ static const struct AutocryptFunction AutocryptFunctions[] = {
  */
 int autocrypt_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg)
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
-  struct AutocryptData *ad = dlg->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct AutocryptData *ad = menu->mdata;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; AutocryptFunctions[i].op != OP_NULL; i++)

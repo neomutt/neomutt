@@ -72,7 +72,7 @@ void test_color_dump(void)
   ac.attrs = A_ITALIC;
   ac.fg.prefix = COLOR_PREFIX_NONE;
   ac.fg.color = COLOR_DEFAULT;
-  simple_color_set(MT_COLOR_MESSAGE_LOG, &ac);
+  simple_color_set(MT_COLOR_BOLD, &ac);
 
   ac.fg.color = 123;
   ac.fg.type = CT_PALETTE;
@@ -91,9 +91,6 @@ void test_color_dump(void)
   simple_color_set(MT_COLOR_PROMPT, &ac);
 
   int rc = 0;
-  quoted_colors_parse_color(MT_COLOR_QUOTED, &ac, 0, &rc, NULL);
-  quoted_colors_parse_color(MT_COLOR_QUOTED, &ac, 2, &rc, NULL);
-
   regex_colors_parse_color_list(MT_COLOR_BODY, "apple", &ac, &rc, NULL);
   regex_colors_parse_color_list(MT_COLOR_BODY, "banana", &ac, &rc, NULL);
 

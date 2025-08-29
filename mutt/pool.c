@@ -32,6 +32,7 @@
 #include "buffer.h"
 #include "logging2.h"
 #include "memory.h"
+#include "signal2.h"
 
 /// Number of buffers in the pool
 static size_t BufferPoolCount = 0;
@@ -82,6 +83,7 @@ struct Buffer *buf_pool_get(void)
 {
   if (BufferPoolCount == 0)
     pool_increase_size();
+  ASSERT(BufferPoolCount > 0);
   return BufferPool[--BufferPoolCount];
 }
 

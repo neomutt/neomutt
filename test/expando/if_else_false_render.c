@@ -113,7 +113,7 @@ void test_expando_if_else_false_render(void)
 
   const char *expected = "3";
 
-  const struct ExpandoRenderData render[] = {
+  const struct ExpandoRenderCallback render[] = {
     { 1, 0, simple_c },
     { 1, 1, simple_t },
     { 1, 2, simple_f },

@@ -35,7 +35,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -54,7 +53,6 @@
 #include "edata.h"
 #include "mdata.h"
 #include "msn.h"
-#include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mx.h"
 
@@ -276,7 +274,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
   if (e)
   {
     /* imap_expunge_mailbox() will rewrite e->index.
-     * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
+     * It needs to resort using EMAIL_SORT_UNSORTED anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
     imap_edata_get(e)->msn = 0;
@@ -347,7 +345,7 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
     unsigned int exp_msn = imap_edata_get(e)->msn;
 
     /* imap_expunge_mailbox() will rewrite e->index.
-     * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
+     * It needs to resort using EMAIL_SORT_UNSORTED anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
     imap_edata_get(e)->msn = 0;
@@ -559,7 +557,7 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
     for (size_t i = 0; Capabilities[i]; i++)
     {
       size_t len = mutt_istr_startswith(s, Capabilities[i]);
-      if (len != 0 && ((s[len] == '\0') || isspace(s[len])))
+      if (len != 0 && ((s[len] == '\0') || mutt_isspace(s[len])))
       {
         adata->capabilities |= (1 << i);
         mutt_debug(LL_DEBUG3, " Found capability \"%s\": %zu\n", Capabilities[i], i);
@@ -697,7 +695,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   struct Buffer *err = buf_pool_get();
   struct Url url = { 0 };
 
-  mutt_account_tourl(&adata->conn->account, &url);
+  account_to_url(&adata->conn->account, &url);
   url.path = list.name;
 
   const char *const c_imap_user = cs_subset_string(NeoMutt->sub, "imap_user");
@@ -727,7 +725,7 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
   /* zero out current rights set */
   adata->mailbox->rights = 0;
 
-  while (*s && !isspace((unsigned char) *s))
+  while (*s && !mutt_isspace(*s))
   {
     switch (*s)
     {
@@ -1022,7 +1020,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
   char *pn = imap_next_word(s);
 
   const bool c_imap_server_noise = cs_subset_bool(NeoMutt->sub, "imap_server_noise");
-  if ((adata->state >= IMAP_SELECTED) && isdigit((unsigned char) *s))
+  if ((adata->state >= IMAP_SELECTED) && mutt_isdigit(*s))
   {
     /* pn vs. s: need initial seqno */
     pn = s;

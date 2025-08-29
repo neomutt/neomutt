@@ -36,14 +36,14 @@
 #include "core/lib.h"
 #include "global.h"
 #include "index/lib.h"
-#include "key/lib.h"
 #include "pager/lib.h"
+#include "curs_lib.h"
 #include "external.h"
 #include "mutt_curses.h"
 #include "mutt_mailbox.h"
 #include "mutt_window.h"
-#include "muttlib.h"
 #include "opcodes.h"
+#include "version.h"
 
 /**
  * op_check_stats - Calculate message statistics for all mailboxes - Implements ::global_function_t - @ingroup global_function_api
@@ -110,7 +110,17 @@ static int op_show_log_messages(int op)
     return FR_ERROR;
   }
 
-  log_queue_save(fp);
+  char buf[32] = { 0 };
+  struct LogLine *ll = NULL;
+  const struct LogLineList lll = log_queue_get();
+  STAILQ_FOREACH(ll, &lll, entries)
+  {
+    mutt_date_localtime_format(buf, sizeof(buf), "%H:%M:%S", ll->time);
+    fprintf(fp, "[%s]<%c> %s", buf, LogLevelAbbr[ll->level + 3], ll->message);
+    if (ll->level <= LL_MESSAGE)
+      fputs("\n", fp);
+  }
+
   mutt_file_fclose(&fp);
 
   struct PagerData pdata = { 0 };

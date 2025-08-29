@@ -67,10 +67,9 @@
 #include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "expando.h"
 #include "functions.h"
 #include "mutt_logging.h"
-
-const struct ExpandoRenderData HistoryRenderData[];
 
 /// Help Bar for the History Selection dialog
 static const struct Mapping HistoryHelp[] = {
@@ -84,76 +83,54 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /**
- * history_C_num - History: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long history_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HistoryEntry *entry = data;
-
-  return entry->num + 1;
-}
-
-/**
- * history_s - History: History match - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void history_s(const struct ExpandoNode *node, void *data,
-               MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HistoryEntry *entry = data;
-
-  const char *s = entry->history;
-  buf_strcpy(buf, s);
-}
-
-/**
  * history_make_entry - Format a History Item for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
 static int history_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  char *entry = ((char **) menu->mdata)[line];
+  struct HistoryData *hd = menu->mdata;
 
-  struct HistoryEntry h = { line, entry };
+  const char **pentry = ARRAY_GET(hd->matches, line);
+  if (!pentry)
+    return 0;
+
+  struct HistoryEntry h = { line, *pentry };
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
-    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+    if (max_cols > 0)
+      max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
   const struct Expando *c_history_format = cs_subset_expando(NeoMutt->sub, "history_format");
-  return expando_filter(c_history_format, HistoryRenderData, &h,
-                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_filter(c_history_format, HistoryRenderCallbacks, &h,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, NeoMutt->env, buf);
 }
 
 /**
  * dlg_history - Select an item from a history list - @ingroup gui_dlg
- * @param[in]  buf         Buffer in which to save string
- * @param[in]  buflen      Buffer length
- * @param[out] matches     Items to choose from
- * @param[in]  match_count Number of items
+ * @param[in]  buf     Buffer in which to save string
+ * @param[out] matches Items to choose from
  *
  * The History Dialog lets the user select from the history of commands,
  * functions or files.
  */
-void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
+void dlg_history(struct Buffer *buf, struct HistoryArray *matches)
 {
-  struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
+  struct Menu *menu = sdw.menu;
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
+  struct HistoryData hd = { false, false, buf, menu, matches };
+
   char title[256] = { 0 };
-  snprintf(title, sizeof(title), _("History '%s'"), buf);
-  sbar_set_title(sbar, title);
+  snprintf(title, sizeof(title), _("History '%s'"), buf_string(buf));
+  sbar_set_title(sdw.sbar, title);
 
-  struct Menu *menu = dlg->wdata;
   menu->make_entry = history_make_entry;
-  menu->max = match_count;
-  menu->mdata = matches;
+  menu->max = ARRAY_SIZE(matches);
+  menu->mdata = &hd;
   menu->mdata_free = NULL; // Menu doesn't own the data
-
-  struct HistoryData hd = { false, false,   buf,        buflen,
-                            menu,  matches, match_count };
-  dlg->wdata = &hd;
 
   struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
@@ -175,7 +152,7 @@ void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
     }
     mutt_clear_error();
 
-    int rc = history_function_dispatcher(dlg, op);
+    int rc = history_function_dispatcher(sdw.dlg, op);
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
@@ -184,18 +161,5 @@ void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
 }
-
-/**
- * HistoryRenderData - Callbacks for History Expandos
- *
- * @sa HistoryFormatDef, ExpandoDataGlobal, ExpandoDataHistory
- */
-const struct ExpandoRenderData HistoryRenderData[] = {
-  // clang-format off
-  { ED_HISTORY, ED_HIS_NUMBER, NULL,          history_C_num },
-  { ED_HISTORY, ED_HIS_MATCH,  history_s,     NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};

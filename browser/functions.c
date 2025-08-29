@@ -57,13 +57,11 @@
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "nntp/adata.h"
-#include "nntp/mdata.h"
+#include "nntp/adata.h" // IWYU pragma: keep
+#include "nntp/mdata.h" // IWYU pragma: keep
 #include "private_data.h"
+#include "sort.h"
 #endif
-
-/// Error message for unavailable functions
-static const char *Not_available_in_this_menu = N_("Not available in this menu");
 
 static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op);
 
@@ -379,12 +377,10 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
     {
       buf_copy(&LastDir, buf);
       destroy_state(&priv->state);
-      init_state(&priv->state, NULL);
+      init_state(&priv->state);
       priv->state.imap_browse = true;
       imap_browse(buf_string(&LastDir), &priv->state);
       browser_sort(&priv->state);
-      priv->menu->mdata = &priv->state.entry;
-      priv->menu->mdata_free = NULL; // Menu doesn't own the data
       browser_highlight_default(&priv->state, priv->menu);
       init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
     }
@@ -464,12 +460,10 @@ static int op_create_mailbox(struct BrowserPrivateData *priv, int op)
   /* TODO: find a way to detect if the new folder would appear in
    *   this window, and insert it without starting over. */
   destroy_state(&priv->state);
-  init_state(&priv->state, NULL);
+  init_state(&priv->state);
   priv->state.imap_browse = true;
   imap_browse(buf_string(&LastDir), &priv->state);
   browser_sort(&priv->state);
-  priv->menu->mdata = &priv->state.entry;
-  priv->menu->mdata_free = NULL; // Menu doesn't own the data
   browser_highlight_default(&priv->state, priv->menu);
   init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
 
@@ -562,12 +556,10 @@ static int op_enter_mask(struct BrowserPrivateData *priv, int op)
   destroy_state(&priv->state);
   if (priv->state.imap_browse)
   {
-    init_state(&priv->state, NULL);
+    init_state(&priv->state);
     priv->state.imap_browse = true;
     imap_browse(buf_string(&LastDir), &priv->state);
     browser_sort(&priv->state);
-    priv->menu->mdata = &priv->state.entry;
-    priv->menu->mdata_free = NULL; // Menu doesn't own the data
     init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
   }
   else if (examine_directory(priv->mailbox, priv->menu, &priv->state,
@@ -649,8 +641,12 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
 
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-  if (S_ISDIR(ff->mode) ||
-      (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)) || ff->inferiors)
+  if ((priv->menu->tag_prefix) && (op == OP_GENERIC_SELECT_ENTRY))
+  {
+    // Do nothing
+  }
+  else if (S_ISDIR(ff->mode) ||
+           (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)) || ff->inferiors)
   {
     /* make sure this isn't a MH or maildir mailbox */
     struct Buffer *buf = buf_pool_get();
@@ -739,12 +735,10 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
       priv->state.is_mailbox_list = false;
       if (priv->state.imap_browse)
       {
-        init_state(&priv->state, NULL);
+        init_state(&priv->state);
         priv->state.imap_browse = true;
         imap_browse(buf_string(&LastDir), &priv->state);
         browser_sort(&priv->state);
-        priv->menu->mdata = &priv->state.entry;
-        priv->menu->mdata_free = NULL; // Menu doesn't own the data
       }
       else
       {
@@ -756,7 +750,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
           if (examine_directory(priv->mailbox, priv->menu, &priv->state,
                                 buf_string(&LastDir), buf_string(priv->prefix)) == -1)
           {
-            buf_strcpy(&LastDir, HomeDir);
+            buf_strcpy(&LastDir, NeoMutt->home_dir);
             priv->done = true;
             return FR_DONE;
           }
@@ -858,12 +852,10 @@ static int op_rename_mailbox(struct BrowserPrivateData *priv, int op)
     return FR_ERROR;
 
   destroy_state(&priv->state);
-  init_state(&priv->state, NULL);
+  init_state(&priv->state);
   priv->state.imap_browse = true;
   imap_browse(buf_string(&LastDir), &priv->state);
   browser_sort(&priv->state);
-  priv->menu->mdata = &priv->state.entry;
-  priv->menu->mdata_free = NULL; // Menu doesn't own the data
   browser_highlight_default(&priv->state, priv->menu);
   init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
 
@@ -896,31 +888,31 @@ static int op_sort(struct BrowserPrivateData *priv, int op)
       break;
 
     case 1: /* (d)ate */
-      sort = SORT_DATE;
+      sort = BROWSER_SORT_DATE;
       break;
 
     case 2: /* (a)lpha */
-      sort = SORT_SUBJECT;
+      sort = BROWSER_SORT_ALPHA;
       break;
 
     case 3: /* si(z)e */
-      sort = SORT_SIZE;
+      sort = BROWSER_SORT_SIZE;
       break;
 
     case 4: /* d(e)scription */
-      sort = SORT_DESC;
+      sort = BROWSER_SORT_DESC;
       break;
 
     case 5: /* (c)ount */
-      sort = SORT_COUNT;
+      sort = BROWSER_SORT_COUNT;
       break;
 
     case 6: /* ne(w) count */
-      sort = SORT_UNREAD;
+      sort = BROWSER_SORT_NEW;
       break;
 
     case 7: /* do(n)'t sort */
-      sort = SORT_ORDER;
+      sort = BROWSER_SORT_UNSORTED;
       break;
   }
 
@@ -928,7 +920,7 @@ static int op_sort(struct BrowserPrivateData *priv, int op)
     return FR_NO_ACTION;
 
   sort |= reverse ? SORT_REVERSE : 0;
-  cs_subset_str_native_set(NeoMutt->sub, "sort_browser", sort, NULL);
+  cs_subset_str_native_set(NeoMutt->sub, "browser_sort", sort, NULL);
   browser_sort(&priv->state);
   browser_highlight_default(&priv->state, priv->menu);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -1075,12 +1067,10 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, int op)
   }
   else if (imap_path_probe(buf_string(&LastDir), NULL) == MUTT_IMAP)
   {
-    init_state(&priv->state, NULL);
+    init_state(&priv->state);
     priv->state.imap_browse = true;
     imap_browse(buf_string(&LastDir), &priv->state);
     browser_sort(&priv->state);
-    priv->menu->mdata = &priv->state.entry;
-    priv->menu->mdata_free = NULL; // Menu doesn't own the data
   }
   else if (examine_directory(priv->mailbox, priv->menu, &priv->state,
                              buf_string(&LastDir), buf_string(priv->prefix)) == -1)
@@ -1139,13 +1129,13 @@ static const struct BrowserFunction BrowserFunctions[] = {
  */
 int browser_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win)
-  {
-    mutt_error("%s", _(Not_available_in_this_menu));
+  // The Dispatcher may be called on any Window in the Dialog
+  struct MuttWindow *dlg = dialog_find(win);
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
-  }
 
-  struct BrowserPrivateData *priv = win->parent->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct BrowserPrivateData *priv = menu->mdata;
   if (!priv)
     return FR_ERROR;
 

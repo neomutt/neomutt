@@ -860,12 +860,12 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
   if (!WithCrypto)
     return;
 
-  struct Buffer *tempfname = buf_pool_get();
-  buf_mktemp(tempfname);
-  FILE *fp_out = mutt_file_fopen(buf_string(tempfname), "w");
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_out)
   {
-    mutt_perror("%s", buf_string(tempfname));
+    mutt_perror("%s", buf_string(tempfile));
     goto cleanup;
   }
 
@@ -896,7 +896,7 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
 
       mutt_endwin();
       puts(_("Trying to extract PGP keys...\n"));
-      crypt_pgp_invoke_import(buf_string(tempfname));
+      crypt_pgp_invoke_import(buf_string(tempfile));
     }
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
@@ -923,7 +923,7 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
       {
         mutt_endwin();
         puts(_("Trying to extract S/MIME certificates..."));
-        crypt_smime_invoke_import(buf_string(tempfname), mbox);
+        crypt_smime_invoke_import(buf_string(tempfile), mbox);
       }
     }
     mx_msg_close(m, &msg);
@@ -935,13 +935,13 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
   if (isendwin())
     mutt_any_key_to_continue(NULL);
 
-  mutt_file_unlink(buf_string(tempfname));
+  mutt_file_unlink(buf_string(tempfile));
 
   if (WithCrypto & APPLICATION_PGP)
     OptDontHandlePgpKeys = false;
 
 cleanup:
-  buf_pool_release(&tempfname);
+  buf_pool_release(&tempfile);
 }
 
 /**
@@ -1132,9 +1132,7 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   const int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
   const CopyHeaderFlags chflags = display ? CH_DISPLAY : CH_NO_FLAGS;
   struct Buffer *buf = buf_pool_get();
-  bool weed = (display && c_weed);
-  if (c_devel_security)
-    weed &= c_crypt_protected_headers_weed;
+  bool weed = (display && c_weed && c_crypt_protected_headers_weed);
 
   if (c_devel_security)
   {
@@ -1337,7 +1335,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
           }
 
           state_printf(state, _("[-- Warning: We can't verify %s/%s signatures --]\n\n"),
-                       TYPE(signatures[i]), signatures[i]->subtype);
+                       BODY_TYPE(signatures[i]), signatures[i]->subtype);
         }
       }
 

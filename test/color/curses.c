@@ -61,7 +61,7 @@ void test_curses_colors(void)
       ARRAY_ADD(&cca, cc);
     }
 
-    TEST_CHECK(ARRAY_SIZE(&cca) == 16);
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&cca), 16);
 
     struct CursesColor **ccp = NULL;
     ARRAY_FOREACH(ccp, &cca)

@@ -248,7 +248,7 @@ void mailbox_changed(struct Mailbox *m, enum NotifyMailbox action)
  */
 void mailbox_size_add(struct Mailbox *m, const struct Email *e)
 {
-  m->size += email_size(e);
+  m->size += email_get_size(e);
 }
 
 /**
@@ -258,7 +258,7 @@ void mailbox_size_add(struct Mailbox *m, const struct Email *e)
  */
 void mailbox_size_sub(struct Mailbox *m, const struct Email *e)
 {
-  m->size -= email_size(e);
+  m->size -= email_get_size(e);
 }
 
 /**
@@ -298,7 +298,7 @@ static struct EmailGarbageCollector GC = { 0 };
 void mailbox_gc_add(struct Email *e)
 {
   ASSERT(e);
-  if (GC.idx == mutt_array_size(GC.arr))
+  if (GC.idx == countof(GC.arr))
   {
     mailbox_gc_run();
   }

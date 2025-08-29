@@ -88,7 +88,7 @@ void test_expando_justify(void)
   {
     struct Buffer *buf = buf_pool_get();
 
-    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    for (size_t i = 0; i < countof(tests); i++)
     {
       const struct TestCase *test = &tests[i];
       buf_reset(buf);

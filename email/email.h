@@ -139,6 +139,8 @@ enum ExpandoDataEmail
   ED_EMA_CRYPTO_FLAGS,         ///< Email.security, #SecurityFlags
   ED_EMA_DATE_FORMAT,          ///< Email.date_sent
   ED_EMA_DATE_FORMAT_LOCAL,    ///< Email.date_sent
+  ED_EMA_DATE_STRF,            ///< Email.date_sent, Email.zhours, Email.zminutes, Email.zoccident
+  ED_EMA_DATE_STRF_LOCAL,      ///< Email.date_sent
   ED_EMA_FLAG_CHARS,           ///< Email.deleted, Email.attach_del, ...
   ED_EMA_FROM_LIST,            ///< Envelope.to, Envelope.cc
   ED_EMA_INDEX_HOOK,           ///< Mailbox, Email, mutt_idxfmt_hook()
@@ -149,8 +151,6 @@ enum ExpandoDataEmail
   ED_EMA_SCORE,                ///< Email.score
   ED_EMA_SIZE,                 ///< Body.length
   ED_EMA_STATUS_FLAGS,         ///< Email.deleted, Email.attach_del, ...
-  ED_EMA_STRF,                 ///< Email.date_sent, Email.zhours, Email.zminutes, Email.zoccident
-  ED_EMA_STRF_LOCAL,           ///< Email.date_sent
   ED_EMA_STRF_RECV_LOCAL,      ///< Email.received
   ED_EMA_TAGS,                 ///< Email.tags
   ED_EMA_TAGS_TRANSFORMED,     ///< Email.tags, driver_tags_get_transformed()
@@ -221,7 +221,7 @@ struct EventHeader
 bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);
 void          email_free      (struct Email **ptr);
 struct Email *email_new       (void);
-size_t        email_size      (const struct Email *e);
+size_t        email_get_size  (const struct Email *e);
 
 struct ListNode *header_add   (struct ListHead *hdrlist, const char *header);
 struct ListNode *header_find  (const struct ListHead *hdrlist, const char *header);

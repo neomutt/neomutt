@@ -162,6 +162,9 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_ch_lookup_remove)                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_set_charset)                                  \
                                                                                \
+  /* cli */                                                                    \
+  NEOMUTT_TEST_ITEM(test_cli_parse)                                            \
+                                                                               \
   /* color */                                                                  \
   NEOMUTT_TEST_ITEM(test_ansi_color)                                           \
   NEOMUTT_TEST_ITEM(test_ansi_color_parse_single)                              \
@@ -255,15 +258,30 @@ void test_fini(void);
   /* email */                                                                  \
   NEOMUTT_TEST_ITEM(test_email_cmp_strict)                                     \
   NEOMUTT_TEST_ITEM(test_email_free)                                           \
+  NEOMUTT_TEST_ITEM(test_email_get_size)                                       \
+  NEOMUTT_TEST_ITEM(test_email_header_add)                                     \
+  NEOMUTT_TEST_ITEM(test_email_header_find)                                    \
+  NEOMUTT_TEST_ITEM(test_email_header_free)                                    \
+  NEOMUTT_TEST_ITEM(test_email_header_set)                                     \
+  NEOMUTT_TEST_ITEM(test_email_header_update)                                  \
   NEOMUTT_TEST_ITEM(test_email_new)                                            \
-  NEOMUTT_TEST_ITEM(test_email_size)                                           \
   NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_free)                               \
   NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_new)                                \
-  NEOMUTT_TEST_ITEM(test_email_header_find)                                    \
-  NEOMUTT_TEST_ITEM(test_email_header_add)                                     \
-  NEOMUTT_TEST_ITEM(test_email_header_update)                                  \
-  NEOMUTT_TEST_ITEM(test_email_header_set)                                     \
-  NEOMUTT_TEST_ITEM(test_email_header_free)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_auto_subscribe)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_check_encoding)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_check_mime_type)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_extract_message_id)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_is_message_type)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_matches_ignore)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_parse_content_type)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_parse_mailto)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_parse_multipart)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_parse_part)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_read_mime_header)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_line)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_message)                            \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_header)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_line)                                \
                                                                                \
   /* envelope */                                                               \
   NEOMUTT_TEST_ITEM(test_mutt_env_cmp_strict)                                  \
@@ -388,7 +406,9 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_pattern_group)                                   \
                                                                                \
   /* gui */                                                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_str_expand_tabs)                                 \
   NEOMUTT_TEST_ITEM(test_window_reflow)                                        \
+  NEOMUTT_TEST_ITEM(test_window_swap)                                          \
   NEOMUTT_TEST_ITEM(test_window_visible)                                       \
                                                                                \
   /* hash */                                                                   \
@@ -455,7 +475,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_log_queue_add)                                        \
   NEOMUTT_TEST_ITEM(test_log_queue_empty)                                      \
   NEOMUTT_TEST_ITEM(test_log_queue_flush)                                      \
-  NEOMUTT_TEST_ITEM(test_log_queue_save)                                       \
+  NEOMUTT_TEST_ITEM(test_log_queue_get)                                        \
   NEOMUTT_TEST_ITEM(test_log_queue_set_max_size)                               \
                                                                                \
   /* mailbox */                                                                \
@@ -530,21 +550,6 @@ void test_fini(void);
                                                                                \
   /* parse */                                                                  \
   NEOMUTT_TEST_ITEM(test_command_set)                                          \
-  NEOMUTT_TEST_ITEM(test_mutt_auto_subscribe)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_check_encoding)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_check_mime_type)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_extract_message_id)                              \
-  NEOMUTT_TEST_ITEM(test_mutt_is_message_type)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_matches_ignore)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_parse_content_type)                              \
-  NEOMUTT_TEST_ITEM(test_mutt_parse_mailto)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_parse_multipart)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_parse_part)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_read_mime_header)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_line)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_message)                            \
-  NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_header)                              \
-  NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_line)                                \
   NEOMUTT_TEST_ITEM(test_parse_extract_token)                                  \
   NEOMUTT_TEST_ITEM(test_parse_rc)                                             \
   NEOMUTT_TEST_ITEM(test_parse_set)                                            \

@@ -51,7 +51,7 @@ void test_mutt_file_check_empty(void)
   struct Buffer *first = buf_pool_get();
 
   int rc;
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     test_gen_path(first, tests[i].first);
 

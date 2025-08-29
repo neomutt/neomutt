@@ -55,7 +55,6 @@
 #include "pattern/lib.h"
 #include "commands.h"
 #include "globals.h"
-#include "hdrline.h"
 #include "muttlib.h"
 #include "mx.h"
 
@@ -562,13 +561,15 @@ out:
  */
 static HookFlags mutt_get_hook_type(const char *name)
 {
-  struct Command *c = NULL;
-  for (size_t i = 0, size = commands_array(&c); i < size; i++)
+  const struct Command **cp = NULL;
+  ARRAY_FOREACH(cp, &NeoMutt->commands)
   {
-    if (((c[i].parse == mutt_parse_hook) || (c[i].parse == mutt_parse_idxfmt_hook)) &&
-        mutt_istr_equal(c[i].name, name))
+    const struct Command *cmd = *cp;
+
+    if (((cmd->parse == mutt_parse_hook) || (cmd->parse == mutt_parse_idxfmt_hook)) &&
+        mutt_istr_equal(cmd->name, name))
     {
-      return c[i].data;
+      return cmd->data;
     }
   }
   return MUTT_HOOK_NO_FLAGS;
@@ -1042,6 +1043,7 @@ static const struct Command HookCommands[] = {
   { "startup-hook",      mutt_parse_hook,               MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
   { "timeout-hook",      mutt_parse_hook,               MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
   { "unhook",            mutt_parse_unhook,             0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -1050,5 +1052,5 @@ static const struct Command HookCommands[] = {
  */
 void hooks_init(void)
 {
-  commands_register(HookCommands, mutt_array_size(HookCommands));
+  commands_register(&NeoMutt->commands, HookCommands);
 }

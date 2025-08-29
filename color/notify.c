@@ -29,18 +29,20 @@
 #include "config.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "core/lib.h"
 #include "notify2.h"
+
+struct Notify;
 
 struct Notify *ColorsNotify = NULL; ///< Notifications: #ColorId, #EventColor
 
 /**
  * color_notify_init - Initialise the Colour notification
+ * @param parent Parent notification object
  */
-void color_notify_init(void)
+void color_notify_init(struct Notify *parent)
 {
   ColorsNotify = notify_new();
-  notify_set_parent(ColorsNotify, NeoMutt->notify);
+  notify_set_parent(ColorsNotify, parent);
 }
 
 /**

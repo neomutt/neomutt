@@ -142,7 +142,12 @@ static int progress_window_recalc(struct MuttWindow *win)
   wdata->display_time = wdata->update_time;
 
   if (wdata->is_bytes)
-    mutt_str_pretty_size(wdata->pretty_pos, sizeof(wdata->pretty_pos), wdata->display_pos);
+  {
+    struct Buffer *pretty = buf_pool_get();
+    mutt_str_pretty_size(pretty, wdata->display_pos);
+    mutt_str_copy(wdata->pretty_pos, buf_string(pretty), sizeof(wdata->pretty_pos));
+    buf_pool_release(&pretty);
+  }
 
   if ((wdata->update_percent < 0) && (wdata->size != 0))
     wdata->display_percent = 100 * wdata->display_pos / wdata->size;
@@ -319,7 +324,6 @@ struct MuttWindow *progress_window_new(size_t size, size_t size_inc,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
   win->recalc = progress_window_recalc;
   win->repaint = progress_window_repaint;
-  win->actions |= WA_RECALC;
 
   struct ProgressWindowData *wdata = progress_wdata_new();
   wdata->win = win;
@@ -329,7 +333,12 @@ struct MuttWindow *progress_window_new(size_t size, size_t size_inc,
   wdata->is_bytes = is_bytes;
 
   if (is_bytes)
-    mutt_str_pretty_size(wdata->pretty_size, sizeof(wdata->pretty_size), size);
+  {
+    struct Buffer *pretty = buf_pool_get();
+    mutt_str_pretty_size(pretty, size);
+    mutt_str_copy(wdata->pretty_size, buf_string(pretty), sizeof(wdata->pretty_size));
+    buf_pool_release(&pretty);
+  }
 
   win->wdata = wdata;
   win->wdata_free = progress_wdata_free;

@@ -82,7 +82,7 @@ void test_expando_empty_if_else_render(void)
   TEST_CHECK(node_true == NULL);
   check_node_expando(node_false, NULL, NULL);
 
-  const struct ExpandoRenderData render[] = {
+  const struct ExpandoRenderCallback render[] = {
     { 1, 0, simple_c },
     { 1, 1, simple_f },
     { -1, -1, NULL },

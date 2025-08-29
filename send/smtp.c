@@ -51,7 +51,6 @@
 #include "progress/lib.h"
 #include "question/lib.h"
 #include "globals.h"
-#include "mutt_account.h"
 #include "mutt_socket.h"
 #include "sendlib.h"
 #ifdef USE_SASL_GNU
@@ -369,7 +368,7 @@ static int smtp_fill_account(struct SmtpAccountData *adata, struct ConnAccount *
 
   struct Url *url = url_parse(c_smtp_url);
   if (!url || ((url->scheme != U_SMTP) && (url->scheme != U_SMTPS)) ||
-      !url->host || (mutt_account_fromurl(cac, url) < 0))
+      !url->host || (account_from_url(cac, url) < 0))
   {
     url_free(&url);
     mutt_error(_("Invalid SMTP URL: %s"), c_smtp_url);
@@ -926,7 +925,7 @@ static const struct SmtpAuth SmtpAuthenticators[] = {
  */
 bool smtp_auth_is_valid(const char *authenticator)
 {
-  for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
+  for (size_t i = 0; i < countof(SmtpAuthenticators); i++)
   {
     const struct SmtpAuth *auth = &SmtpAuthenticators[i];
     if (auth->method && mutt_istr_equal(auth->method, authenticator))
@@ -957,7 +956,7 @@ static int smtp_authenticate(struct SmtpAccountData *adata)
     {
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
 
-      for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
+      for (size_t i = 0; i < countof(SmtpAuthenticators); i++)
       {
         const struct SmtpAuth *auth = &SmtpAuthenticators[i];
         if (!auth->method || mutt_istr_equal(auth->method, np->data))
@@ -981,7 +980,7 @@ static int smtp_authenticate(struct SmtpAccountData *adata)
 #else
     mutt_debug(LL_DEBUG2, "Falling back to using any authenticator available\n");
     /* Try all available authentication methods */
-    for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
+    for (size_t i = 0; i < countof(SmtpAuthenticators); i++)
     {
       const struct SmtpAuth *auth = &SmtpAuthenticators[i];
       mutt_debug(LL_DEBUG2, "Trying method %s\n", auth->method ? auth->method : "<variable>");
@@ -1191,6 +1190,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
 
   mutt_socket_close(adata.conn);
   FREE(&adata.conn);
+  FREE(&adata.auth_mechs);
 
   if (rc == SMTP_ERR_READ)
     mutt_error(_("SMTP session failed: read error"));

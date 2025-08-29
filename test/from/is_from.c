@@ -116,7 +116,7 @@ void test_is_from(void)
   char path[128];
   time_t epoch;
 
-  for (size_t i = 0; i < mutt_array_size(test); i++)
+  for (size_t i = 0; i < countof(test); i++)
   {
     const struct IsFromTest *t = &test[i];
     TEST_CASE(t->source);

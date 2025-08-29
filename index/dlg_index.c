@@ -77,9 +77,9 @@
 #include "pager/lib.h"
 #include "pattern/lib.h"
 #include "sidebar/lib.h"
+#include "expando_index.h"
 #include "functions.h"
 #include "globals.h"
-#include "hdrline.h"
 #include "hook.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
@@ -90,7 +90,6 @@
 #include "private_data.h"
 #include "protos.h"
 #include "shared_data.h"
-#include "sort.h"
 #include "status.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
@@ -337,8 +336,8 @@ int find_first_message(struct MailboxView *mv)
    * message is first.  Otherwise, the latest message is first if exactly
    * one of `$use_threads` and `$sort` are reverse.
    */
-  enum SortType c_sort = cs_subset_sort(m->sub, "sort");
-  if ((c_sort & SORT_MASK) == SORT_THREADS)
+  enum EmailSortType c_sort = cs_subset_sort(m->sub, "sort");
+  if ((c_sort & SORT_MASK) == EMAIL_SORT_THREADS)
     c_sort = cs_subset_sort(m->sub, "sort_aux");
   bool reverse = false;
   switch (mutt_thread_style())
@@ -790,6 +789,36 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
 }
 
 /**
+ * mutt_make_string - Create formatted strings using mailbox expandos
+ * @param buf      Buffer for the result
+ * @param max_cols Number of screen columns (-1 means unlimited)
+ * @param exp      Expando containing expando tree
+ * @param m        Mailbox
+ * @param inpgr    Message shown in the pager
+ * @param e        Email
+ * @param flags    Flags, see #MuttFormatFlags
+ * @param progress Pager progress string
+ * @retval num Number of screen columns used
+ */
+int mutt_make_string(struct Buffer *buf, size_t max_cols,
+                     const struct Expando *exp, struct Mailbox *m, int inpgr,
+                     struct Email *e, MuttFormatFlags flags, const char *progress)
+{
+  if (!exp)
+    return 0;
+
+  struct EmailFormatInfo efi = { 0 };
+
+  efi.email = e;
+  efi.mailbox = m;
+  efi.msg_in_pager = inpgr;
+  efi.pager_progress = progress;
+
+  return expando_filter(exp, IndexRenderCallbacks, &efi, flags, max_cols,
+                        NeoMutt->env, buf);
+}
+
+/**
  * index_make_entry - Format an Email for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $index_format
@@ -885,7 +914,8 @@ int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *b
   if (c_arrow_cursor)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
-    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+    if (max_cols > 0)
+      max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
   return mutt_make_string(buf, max_cols, c_index_format, m, msg_in_pager, e, flags, NULL);
@@ -909,7 +939,7 @@ const struct AttrColor *index_color(struct Menu *menu, int line)
   if (e->attr_color)
     return e->attr_color;
 
-  mutt_set_header_color(m, e);
+  email_set_color(m, e);
   return e->attr_color;
 }
 
@@ -1254,16 +1284,16 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     {
       const char *const c_arrow_string = cs_subset_string(shared->sub, "arrow_string");
       const int arrow_width = mutt_strwidth(c_arrow_string);
-      mutt_window_move(priv->menu->win, arrow_width, index - priv->menu->top);
+      mutt_window_move(priv->menu->win, index - priv->menu->top, arrow_width);
     }
     else if (c_braille_friendly)
     {
-      mutt_window_move(priv->menu->win, 0, index - priv->menu->top);
+      mutt_window_move(priv->menu->win, index - priv->menu->top, 0);
     }
     else
     {
-      mutt_window_move(priv->menu->win, priv->menu->win->state.cols - 1,
-                       index - priv->menu->top);
+      mutt_window_move(priv->menu->win, index - priv->menu->top,
+                       priv->menu->win->state.cols - 1);
     }
     mutt_refresh();
 
@@ -1366,11 +1396,14 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 }
 
 /**
- * mutt_set_header_color - Select a colour for a message
+ * email_set_color - Select an Index colour for an Email
  * @param m Mailbox
  * @param e Current Email
+ *
+ * Calculate the colour for an Email in the Index.
+ * Cache the colour in the Email.
  */
-void mutt_set_header_color(struct Mailbox *m, struct Email *e)
+void email_set_color(struct Mailbox *m, struct Email *e)
 {
   if (!e)
     return;

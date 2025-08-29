@@ -36,7 +36,6 @@
 #include "conn/lib.h"
 #include "mutt_socket.h"
 #include "hook.h"
-#include "mutt_account.h"
 #ifndef USE_SSL
 #include "mutt/lib.h"
 #endif
@@ -93,7 +92,7 @@ struct Connection *mutt_conn_find(const struct ConnAccount *cac)
   char hook[1024] = { 0 };
 
   /* cac isn't actually modified, since url isn't either */
-  mutt_account_tourl((struct ConnAccount *) cac, &url);
+  account_to_url((struct ConnAccount *) cac, &url);
   url.path = NULL;
   url_tostring(&url, hook, sizeof(hook), U_NO_FLAGS);
   mutt_account_hook(hook);

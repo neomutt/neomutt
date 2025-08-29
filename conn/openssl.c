@@ -129,7 +129,7 @@ static bool ssl_load_certificates(SSL_CTX *ctx)
   }
 
   const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
-  FILE *fp = mutt_file_fopen(c_certificate_file, "rt");
+  FILE *fp = mutt_file_fopen(c_certificate_file, "r");
   if (!fp)
     return 0;
 
@@ -567,7 +567,7 @@ static int ssl_init(void)
 /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
     add_entropy(mutt_str_getenv("EGDSOCKET"));
-    buf_printf(path, "%s/.entropy", NONULL(HomeDir));
+    buf_printf(path, "%s/.entropy", NONULL(NeoMutt->home_dir));
     add_entropy(buf_string(path));
     add_entropy(TMPDIR "/entropy");
 #endif
@@ -645,7 +645,7 @@ static bool check_certificate_cache(X509 *peercert)
     return false;
   }
 
-  for (int i = sk_X509_num(SslSessionCerts); i-- > 0;)
+  for (int i = sk_X509_num(SslSessionCerts) - 1; i >= 0; i--)
   {
     cert = sk_X509_value(SslSessionCerts, i);
     if (certificates_equal(cert, peercert, peermd, peermdlen))
@@ -672,7 +672,7 @@ static bool check_certificate_file(X509 *peercert)
   FILE *fp = NULL;
 
   const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
-  fp = mutt_file_fopen(c_certificate_file, "rt");
+  fp = mutt_file_fopen(c_certificate_file, "r");
   if (!fp)
     return false;
 
@@ -867,7 +867,7 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct CertArra
 
   char *line = NULL;
   char *text = NULL;
-  for (size_t i = 0; i < mutt_array_size(part); i++)
+  for (size_t i = 0; i < countof(part); i++)
   {
     text = x509_get_part(x509, part[i]);
     if (text)
@@ -916,6 +916,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   x509_fingerprint(buf, cert, EVP_sha1);
   mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf_string(buf));
   ARRAY_ADD(&carr, line);
+
+  buf_reset(buf);
   x509_fingerprint(buf, cert, EVP_sha256);
   buf->data[39] = '\0'; /* Divide into two lines of output */
   mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf_string(buf));

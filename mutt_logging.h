@@ -29,7 +29,6 @@
 #include "mutt/lib.h"
 
 struct ConfigDef;
-struct ConfigSet;
 
 int log_disp_curses(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
                     __attribute__((__format__(__printf__, 6, 7)));
@@ -41,7 +40,7 @@ int  mutt_log_set_level(enum LogLevel level, bool verbose);
 int  mutt_log_set_file(const char *file);
 
 int  main_log_observer(struct NotifyCallback *nc);
-int  level_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
+int  level_validator(const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 
 void mutt_clear_error(void);
 

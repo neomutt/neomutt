@@ -47,7 +47,7 @@ void test_mutt_path_escape(void)
   }
 
   {
-    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    for (size_t i = 0; i < countof(tests); i++)
     {
       TEST_CASE(tests[i][0]);
 

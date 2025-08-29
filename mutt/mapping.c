@@ -35,7 +35,7 @@
 /**
  * mutt_map_get_name - Lookup a string for a constant
  * @param val ID to locate in map
- * @param map NULL-terminated map of strings and constants
+ * @param map NUL-terminated map of strings and constants
  * @retval ptr  String matching ID
  * @retval NULL Error, or ID not found
  */
@@ -54,8 +54,8 @@ const char *mutt_map_get_name(int val, const struct Mapping *map)
 /**
  * mutt_map_get_value_n - Lookup the constant for a string
  * @param name String to locate in map
- * @param len  Length of the name string (need not be null terminated)
- * @param map  NULL-terminated map of strings and constants
+ * @param len  Length of the name string (need not be NUL-terminated)
+ * @param map  NUL-terminated map of strings and constants
  * @retval num  ID matching string
  * @retval -1   Error, or string not found
  */
@@ -78,7 +78,7 @@ int mutt_map_get_value_n(const char *name, size_t len, const struct Mapping *map
 /**
  * mutt_map_get_value - Lookup the constant for a string
  * @param name String to locate in map
- * @param map  NULL-terminated map of strings and constants
+ * @param map  NUL-terminated map of strings and constants
  * @retval num  ID matching string
  * @retval -1   Error, or string not found
  */

@@ -303,7 +303,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
     }
     mutt_endwin();
 
-    pid = filter_create(cmd, &fp_out, NULL, NULL, EnvList);
+    pid = filter_create(cmd, &fp_out, NULL, NULL, NeoMutt->env);
     if (pid < 0)
     {
       mutt_perror(_("Can't create filter process"));
@@ -349,7 +349,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
         struct Email *e = *ep;
         mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
         mutt_endwin();
-        pid = filter_create(cmd, &fp_out, NULL, NULL, EnvList);
+        pid = filter_create(cmd, &fp_out, NULL, NULL, NeoMutt->env);
         if (pid < 0)
         {
           mutt_perror(_("Can't create filter process"));
@@ -369,7 +369,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
     else
     {
       mutt_endwin();
-      pid = filter_create(cmd, &fp_out, NULL, NULL, EnvList);
+      pid = filter_create(cmd, &fp_out, NULL, NULL, NeoMutt->env);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter process"));
@@ -475,7 +475,7 @@ void mutt_print_message(struct Mailbox *m, struct EmailArray *ea)
  */
 bool mutt_select_sort(bool reverse)
 {
-  enum SortType sort = SORT_DATE;
+  enum EmailSortType sort = EMAIL_SORT_DATE;
 
   switch (mw_multi_choice(reverse ?
                               /* L10N: The highlighted letters must match the "Sort" options */
@@ -489,56 +489,56 @@ bool mutt_select_sort(bool reverse)
       return false;
 
     case 1: /* (d)ate */
-      sort = SORT_DATE;
+      sort = EMAIL_SORT_DATE;
       break;
 
     case 2: /* (f)rm */
-      sort = SORT_FROM;
+      sort = EMAIL_SORT_FROM;
       break;
 
     case 3: /* (r)ecv */
-      sort = SORT_RECEIVED;
+      sort = EMAIL_SORT_DATE_RECEIVED;
       break;
 
     case 4: /* (s)ubj */
-      sort = SORT_SUBJECT;
+      sort = EMAIL_SORT_SUBJECT;
       break;
 
     case 5: /* t(o) */
-      sort = SORT_TO;
+      sort = EMAIL_SORT_TO;
       break;
 
     case 6: /* (t)hread */
-      sort = SORT_THREADS;
+      sort = EMAIL_SORT_THREADS;
       break;
 
     case 7: /* (u)nsort */
-      sort = SORT_ORDER;
+      sort = EMAIL_SORT_UNSORTED;
       break;
 
     case 8: /* si(z)e */
-      sort = SORT_SIZE;
+      sort = EMAIL_SORT_SIZE;
       break;
 
     case 9: /* s(c)ore */
-      sort = SORT_SCORE;
+      sort = EMAIL_SORT_SCORE;
       break;
 
     case 10: /* s(p)am */
-      sort = SORT_SPAM;
+      sort = EMAIL_SORT_SPAM;
       break;
 
     case 11: /* (l)abel */
-      sort = SORT_LABEL;
+      sort = EMAIL_SORT_LABEL;
       break;
   }
 
   const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   int rc = CSR_ERR_CODE;
-  if ((sort != SORT_THREADS) || (c_use_threads == UT_UNSET))
+  if ((sort != EMAIL_SORT_THREADS) || (c_use_threads == UT_UNSET))
   {
-    if ((sort != SORT_THREADS) && (c_sort & SORT_LAST))
+    if ((sort != EMAIL_SORT_THREADS) && (c_sort & SORT_LAST))
       sort |= SORT_LAST;
     if (reverse)
       sort |= SORT_REVERSE;
@@ -547,7 +547,7 @@ bool mutt_select_sort(bool reverse)
   }
   else
   {
-    ASSERT((c_sort & SORT_MASK) != SORT_THREADS); /* See index_config_observer() */
+    ASSERT((c_sort & SORT_MASK) != EMAIL_SORT_THREADS); /* See index_config_observer() */
     /* Preserve the value of $sort, and toggle whether we are threaded. */
     switch (c_use_threads)
     {
@@ -912,7 +912,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
   mutt_file_resolve_symlink(buf);
   m_save = mx_path_resolve(buf_string(buf));
   bool old_append = m_save->append;
-  OpenMailboxFlags mbox_flags = MUTT_NEWFOLDER;
+  OpenMailboxFlags mbox_flags = MUTT_APPEND;
   /* Display a tagged message progress counter, rather than (for
    * IMAP) a per-message progress counter */
   if (msg_count > 1)
@@ -1082,7 +1082,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   char *cp = mutt_param_get(&b->parameter, "charset");
   buf_strcpy(charset, cp);
 
-  buf_printf(buf, "%s/%s", TYPE(b), b->subtype);
+  buf_printf(buf, "%s/%s", BODY_TYPE(b), b->subtype);
   buf_copy(obuf, buf);
   if (!TAILQ_EMPTY(&b->parameter))
   {
@@ -1106,7 +1106,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 
   mutt_parse_content_type(buf_string(buf), b);
 
-  buf_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
+  buf_printf(tmp, "%s/%s", BODY_TYPE(b), NONULL(b->subtype));
   type_changed = !mutt_istr_equal(buf_string(tmp), buf_string(obuf));
   charset_changed = !mutt_istr_equal(buf_string(charset),
                                      mutt_param_get(&b->parameter, "charset"));
@@ -1124,7 +1124,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 
   /* inform the user */
 
-  buf_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
+  buf_printf(tmp, "%s/%s", BODY_TYPE(b), NONULL(b->subtype));
   if (type_changed)
     mutt_message(_("Content-Type changed to %s"), buf_string(tmp));
   if ((b->type == TYPE_TEXT) && charset_changed)

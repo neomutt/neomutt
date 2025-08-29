@@ -30,7 +30,7 @@ struct Buffer;
 struct ExpandoNode;
 
 int node_condbool_render(const struct ExpandoNode *node,
-                         const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                         const struct ExpandoRenderCallback *erc, struct Buffer *buf,
                          int max_cols, void *data, MuttFormatFlags flags);
 
 #endif /* MUTT_EXPANDO_NODE_CONDBOOL_H */

@@ -3,7 +3,7 @@
  * Subset of config items
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Rayford Shireman
  *
@@ -73,30 +73,30 @@ int elem_list_sort(const void *a, const void *b, void *sdata)
 
 /**
  * get_elem_list - Create a sorted list of all config items
- * @param cs ConfigSet to read
- * @retval ptr Null-terminated array of HashElem
+ * @param cs    ConfigSet to read
+ * @param flags Flags, e.g. #GEL_ALL_CONFIG
+ * @retval ptr Array of HashElem
  */
-struct HashElem **get_elem_list(struct ConfigSet *cs)
+struct HashElemArray get_elem_list(struct ConfigSet *cs, enum GetElemListFlags flags)
 {
-  if (!cs)
-    return NULL;
+  struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
 
-  struct HashElem **he_list = MUTT_MEM_CALLOC(1024, struct HashElem *);
-  size_t index = 0;
+  if (!cs)
+    return hea;
 
   struct HashWalkState walk = { 0 };
   struct HashElem *he = NULL;
-
   while ((he = mutt_hash_walk(cs->hash, &walk)))
   {
-    he_list[index++] = he;
-    if (index == 1022)
-      break; /* LCOV_EXCL_LINE */
+    if ((flags == GEL_CHANGED_CONFIG) && !cs_he_has_been_set(cs, he))
+      continue;
+
+    ARRAY_ADD(&hea, he);
   }
 
-  mutt_qsort_r(he_list, index, sizeof(struct HashElem *), elem_list_sort, NULL);
+  ARRAY_SORT(&hea, elem_list_sort, NULL);
 
-  return he_list;
+  return hea;
 }
 
 /**
@@ -123,16 +123,18 @@ void cs_subset_free(struct ConfigSubset **ptr)
 
     // We don't know if any config items have been set,
     // so search for anything with a matching scope.
-    struct HashElem **he_list = get_elem_list(sub->cs);
-    for (size_t i = 0; he_list[i]; i++)
+    struct HashElemArray hea = get_elem_list(sub->cs, GEL_ALL_CONFIG);
+    struct HashElem **hep = NULL;
+    ARRAY_FOREACH(hep, &hea)
     {
-      const char *item = he_list[i]->key.strkey;
+      struct HashElem *he = *hep;
+      const char *item = he->key.strkey;
       if (mutt_str_startswith(item, scope) != 0)
       {
         cs_uninherit_variable(sub->cs, item);
       }
     }
-    FREE(&he_list);
+    ARRAY_FREE(&hea);
   }
 
   notify_free(&sub->notify);

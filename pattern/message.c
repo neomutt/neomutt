@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -120,9 +119,9 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group,
 {
   int num = (int) strtol(&s->dptr[pmatch[group].rm_so], NULL, 0);
   unsigned char c = (unsigned char) (s->dptr[pmatch[group].rm_eo - 1]);
-  if (toupper(c) == 'K')
+  if (mutt_toupper(c) == 'K')
     num *= KILO;
-  else if (toupper(c) == 'M')
+  else if (mutt_toupper(c) == 'M')
     num *= MEGA;
   switch (kind)
   {

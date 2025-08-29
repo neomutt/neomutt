@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -191,6 +192,9 @@ struct MuttWindow *mutt_window_new(enum WindowType type, enum MuttWindowOrientat
   win->state.visible = true;
   win->notify = notify_new();
   TAILQ_INIT(&win->children);
+
+  win->actions |= WA_RECALC | WA_REPAINT;
+
   return win;
 }
 
@@ -230,7 +234,7 @@ void mutt_window_free(struct MuttWindow **ptr)
  */
 void mutt_window_clearline(struct MuttWindow *win, int row)
 {
-  mutt_window_move(win, 0, row);
+  mutt_window_move(win, row, 0);
   mutt_window_clrtoeol(win);
 }
 
@@ -267,13 +271,13 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 /**
  * mutt_window_get_coords - Get the cursor position in the Window
  * @param[in]  win Window
- * @param[out] col Column in Window
  * @param[out] row Row in Window
+ * @param[out] col Column in Window
  *
  * Assumes the current position is inside the window.  Otherwise it will
  * happily return negative or values outside the window boundaries
  */
-void mutt_window_get_coords(struct MuttWindow *win, int *col, int *row)
+void mutt_window_get_coords(struct MuttWindow *win, int *row, int *col)
 {
   int x = 0;
   int y = 0;
@@ -288,52 +292,14 @@ void mutt_window_get_coords(struct MuttWindow *win, int *col, int *row)
 /**
  * mutt_window_move - Move the cursor in a Window
  * @param win Window
- * @param col Column to move to
  * @param row Row to move to
+ * @param col Column to move to
  * @retval OK  Success
  * @retval ERR Error
  */
-int mutt_window_move(struct MuttWindow *win, int col, int row)
+int mutt_window_move(struct MuttWindow *win, int row, int col)
 {
   return move(win->state.row_offset + row, win->state.col_offset + col);
-}
-
-/**
- * mutt_window_mvaddstr - Move the cursor and write a fixed string to a Window
- * @param win Window to write to
- * @param col Column to move to
- * @param row Row to move to
- * @param str String to write
- * @retval OK  Success
- * @retval ERR Error
- */
-int mutt_window_mvaddstr(struct MuttWindow *win, int col, int row, const char *str)
-{
-  return mvaddstr(win->state.row_offset + row, win->state.col_offset + col, str);
-}
-
-/**
- * mutt_window_mvprintw - Move the cursor and write a formatted string to a Window
- * @param win Window to write to
- * @param col Column to move to
- * @param row Row to move to
- * @param fmt printf format string
- * @param ... printf arguments
- * @retval num Success, characters written
- * @retval ERR Error, move failed
- */
-int mutt_window_mvprintw(struct MuttWindow *win, int col, int row, const char *fmt, ...)
-{
-  int rc = mutt_window_move(win, col, row);
-  if (rc == ERR)
-    return rc;
-
-  va_list ap;
-  va_start(ap, fmt);
-  rc = vw_printw(stdscr, fmt, ap);
-  va_end(ap);
-
-  return rc;
 }
 
 /**
@@ -780,7 +746,7 @@ void window_invalidate_all(void)
  *
  * @note The children are expected to have types: #WT_MENU, #WT_STATUS_BAR
  */
-bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub)
+bool window_status_on_top(struct MuttWindow *panel, const struct ConfigSubset *sub)
 {
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
 
@@ -806,5 +772,56 @@ bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub)
 
   mutt_window_reflow(panel);
   window_invalidate_all();
+  return true;
+}
+
+/**
+ * mutt_window_swap - Swap the position of two windows
+ * @param parent Parent Window
+ * @param win1   Window
+ * @param win2   Window
+ * @retval true Windows were switched
+ */
+bool mutt_window_swap(struct MuttWindow *parent, struct MuttWindow *win1,
+                      struct MuttWindow *win2)
+{
+  if (!parent || !win1 || !win2)
+    return false;
+
+  // ensure both windows are children of the parent
+  if (win1->parent != parent || win2->parent != parent)
+    return false;
+
+  struct MuttWindow *win1_next = TAILQ_NEXT(win1, entries);
+  if (win1_next == win2)
+  {
+    // win1 is directly in front of win2, move it behind
+    TAILQ_REMOVE(&parent->children, win1, entries);
+    TAILQ_INSERT_AFTER(&parent->children, win2, win1, entries);
+    return true;
+  }
+
+  struct MuttWindow *win2_next = TAILQ_NEXT(win2, entries);
+  if (win2_next == win1)
+  {
+    // win2 is directly in front of win1, move it behind
+    TAILQ_REMOVE(&parent->children, win2, entries);
+    TAILQ_INSERT_AFTER(&parent->children, win1, win2, entries);
+    return true;
+  }
+
+  TAILQ_REMOVE(&parent->children, win1, entries);
+  TAILQ_REMOVE(&parent->children, win2, entries);
+
+  if (win1_next)
+    TAILQ_INSERT_BEFORE(win1_next, win2, entries);
+  else
+    TAILQ_INSERT_TAIL(&parent->children, win2, entries);
+
+  if (win2_next)
+    TAILQ_INSERT_BEFORE(win2_next, win1, entries);
+  else
+    TAILQ_INSERT_TAIL(&parent->children, win1, entries);
+
   return true;
 }

@@ -33,7 +33,9 @@
  * | compose/cbar_data.c    | @subpage compose_cbar_data     |
  * | compose/config.c       | @subpage compose_config        |
  * | compose/dlg_compose.c  | @subpage compose_dlg_compose   |
+ * | compose/expando.c      | @subpage compose_expando       |
  * | compose/functions.c    | @subpage compose_functions     |
+ * | compose/preview.c      | @subpage compose_preview       |
  * | compose/shared_data.c  | @subpage compose_shared_data   |
  */
 

@@ -26,6 +26,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "test_common.h"
 
 void test_rfc2231_encode_string(void)
 {
@@ -34,14 +35,14 @@ void test_rfc2231_encode_string(void)
   {
     struct ParameterList apple = TAILQ_HEAD_INITIALIZER(apple);
     size_t count = rfc2231_encode_string(&apple, NULL, "apple");
-    TEST_CHECK(count == 0);
+    TEST_CHECK_NUM_EQ(count, 0);
     TEST_CHECK(TAILQ_EMPTY(&apple));
   }
 
   {
     struct ParameterList banana = TAILQ_HEAD_INITIALIZER(banana);
     size_t count = rfc2231_encode_string(&banana, "banana", NULL);
-    TEST_CHECK(count == 0);
+    TEST_CHECK_NUM_EQ(count, 0);
     TEST_CHECK(TAILQ_EMPTY(&banana));
   }
 }

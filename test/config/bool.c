@@ -3,7 +3,7 @@
  * Test code for the Bool object
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
@@ -89,7 +89,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Apple", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -125,7 +125,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_set(cs, "Cherry", "yes", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -133,7 +133,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Cherry", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -167,14 +167,14 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   bool VarDamson;
 
   int rc;
-  for (unsigned int i = 0; i < mutt_array_size(valid); i++)
+  for (unsigned int i = 0; i < countof(valid); i++)
   {
     cs_str_native_set(cs, name, ((i + 1) % 2), NULL);
 
     TEST_MSG("Setting %s to %s", name, valid[i]);
     buf_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("%s", buf_string(err));
       return false;
@@ -203,7 +203,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   short_line();
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, invalid[i], err);
@@ -223,10 +223,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Papaya";
   rc = cs_str_string_set(cs, name, "1", err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   rc = cs_str_string_set(cs, name, "0", err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+  name = "Damson";
+  TEST_CHECK(cs_str_has_been_set(cs, name));
 
   log_line(__func__);
   return true;
@@ -243,7 +246,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, false, NULL);
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -254,7 +257,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, true, NULL);
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -287,7 +290,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, false, NULL);
   buf_reset(err);
   int rc = cs_str_native_set(cs, name, value, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -318,7 +321,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   int invalid[] = { -1, 2 };
-  for (unsigned int i = 0; i < mutt_array_size(invalid); i++)
+  for (unsigned int i = 0; i < countof(invalid); i++)
   {
     short_line();
     cs_str_native_set(cs, name, false, NULL);
@@ -340,7 +343,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Papaya";
   rc = cs_str_native_set(cs, name, 1, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   rc = cs_str_native_set(cs, name, 0, err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
@@ -382,7 +385,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   bool VarHawthorn = cs_subset_bool(sub, "Hawthorn");
   TEST_MSG("%s = %d", name, VarHawthorn);
   int rc = cs_str_reset(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -405,7 +408,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Initial: %s = %d", name, VarIlama);
   dont_fail = true;
   rc = cs_str_string_set(cs, name, "yes", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
   VarIlama = cs_subset_bool(sub, "Ilama");
   TEST_MSG("Set: %s = %d", name, VarIlama);
@@ -444,11 +447,11 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Papaya";
   rc = cs_str_reset(cs, name, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   StartupComplete = false;
   rc = cs_str_native_set(cs, name, 0, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
   StartupComplete = true;
 
   rc = cs_str_reset(cs, name, err);
@@ -467,7 +470,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, false, NULL);
   buf_reset(err);
   int rc = cs_str_string_set(cs, name, "yes", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -483,7 +486,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, false, NULL);
   buf_reset(err);
   rc = cs_str_native_set(cs, name, 1, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -500,7 +503,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, false, NULL);
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "yes", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -516,7 +519,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, false, NULL);
   buf_reset(err);
   rc = cs_str_native_set(cs, name, 1, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -599,7 +602,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   cs_str_native_set(cs, parent, false, NULL);
   buf_reset(err);
   int rc = cs_str_string_set(cs, parent, "1", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -610,7 +613,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // set child
   buf_reset(err);
   rc = cs_str_string_set(cs, child, "0", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -625,7 +628,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset child
   buf_reset(err);
   rc = cs_str_reset(cs, child, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -639,7 +642,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset parent
   buf_reset(err);
   rc = cs_str_reset(cs, parent, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -675,34 +678,34 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
     return false;
 
   rc = bool_he_toggle(NULL, he, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have");
     return false;
   }
 
   rc = bool_he_toggle(NeoMutt->sub, NULL, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have");
     return false;
   }
 
   rc = bool_str_toggle(NULL, "Apple", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have");
     return false;
   }
 
   rc = bool_str_toggle(NeoMutt->sub, NULL, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have");
     return false;
   }
 
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     bool before = tests[i].before;
     bool after = tests[i].after;
@@ -725,7 +728,7 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     rc = bool_he_toggle(NeoMutt->sub, he, err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("Toggle failed: %s", buf_string(err));
       return false;
@@ -740,7 +743,7 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
     short_line();
   }
 
-  for (size_t i = 0; i < mutt_array_size(tests); i++)
+  for (size_t i = 0; i < countof(tests); i++)
   {
     bool before = tests[i].before;
     bool after = tests[i].after;
@@ -763,7 +766,7 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     rc = bool_str_toggle(NeoMutt->sub, "Nectarine", err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("Toggle failed: %s", buf_string(err));
       return false;

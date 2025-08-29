@@ -30,9 +30,11 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
+#include "send/lib.h"
 #include "mview.h"
 
 struct Address;
@@ -48,41 +50,6 @@ struct Pattern;
 struct State;
 struct TagList;
 
-enum WindowType
-{
-  // Structural Windows
-  WT_ROOT,        ///< Parent of All Windows
-  WT_CONTAINER,   ///< Invisible shaping container Window
-  WT_ALL_DIALOGS, ///< Container for All Dialogs (nested Windows)
-
-  // Dialogs (nested Windows) displayed to the user
-  WT_DLG_ALIAS,       ///< Alias Dialog,       dlg_alias()
-  WT_DLG_ATTACHMENT,  ///< Attachment Dialog,  dlg_attachment()
-  WT_DLG_AUTOCRYPT,   ///< Autocrypt Dialog,   dlg_autocrypt()
-  WT_DLG_BROWSER,     ///< Browser Dialog,     dlg_browser()
-  WT_DLG_CERTIFICATE, ///< Certificate Dialog, dlg_certificate()
-  WT_DLG_COMPOSE,     ///< Compose Dialog,     dlg_compose()
-  WT_DLG_GPGME,       ///< GPGME Dialog,       dlg_gpgme()
-  WT_DLG_PAGER,       ///< Pager Dialog,       dlg_pager()
-  WT_DLG_HISTORY,     ///< History Dialog,     dlg_history()
-  WT_DLG_INDEX,       ///< Index Dialog,       dlg_index()
-  WT_DLG_PATTERN,     ///< Pattern Dialog,     dlg_pattern()
-  WT_DLG_PGP,         ///< Pgp Dialog,         dlg_pgp()
-  WT_DLG_POSTPONED,   ///< Postponed Dialog,   dlg_postponed()
-  WT_DLG_QUERY,       ///< Query Dialog,       dlg_query()
-  WT_DLG_SMIME,       ///< Smime Dialog,       dlg_smime()
-
-  // Common Windows
-  WT_CUSTOM,     ///< Window with a custom drawing function
-  WT_HELP_BAR,   ///< Help Bar containing list of useful key bindings
-  WT_INDEX,      ///< A panel containing the Index Window
-  WT_MENU,       ///< An Window containing a Menu
-  WT_MESSAGE,    ///< Window for messages/errors and command entry
-  WT_PAGER,      ///< A panel containing the Pager Window
-  WT_SIDEBAR,    ///< Side panel containing Accounts or groups of data
-  WT_STATUS_BAR, ///< Status Bar containing extra info about the Index/Pager/etc
-};
-
 bool g_addr_is_user = false;
 int g_body_parts = 1;
 bool g_is_mail_list = false;
@@ -96,8 +63,6 @@ const struct MenuFuncOp OpAttachment = { 0 };
 const struct MenuFuncOp OpAutocrypt = { 0 };
 const struct MenuFuncOp OpBrowser = { 0 };
 const struct MenuFuncOp OpCompose = { 0 };
-const struct MenuFuncOp OpDialog = { 0 };
-const struct MenuFuncOp OpGeneric[] = { 0 };
 const struct MenuFuncOp OpIndex = { 0 };
 const struct MenuFuncOp OpPager = { 0 };
 const struct MenuFuncOp OpPgp = { 0 };
@@ -149,7 +114,7 @@ void mutt_clear_error(void)
 {
 }
 
-int mutt_copy_header(FILE *in, struct Email *e, FILE *out, int flags, const char *prefix)
+int mutt_copy_header(FILE *in, struct Email *e, FILE *out, CopyHeaderFlags chflags, const char *prefix, int wraplen)
 {
   return -1;
 }
@@ -169,12 +134,13 @@ bool mutt_is_subscribed_list(struct Address *addr)
   return g_is_subscribed_list;
 }
 
-void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, FILE *msg)
+void mutt_parse_mime_message(struct Email *e, FILE *msg)
 {
 }
 
-void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
+int mutt_str_pretty_size(struct Buffer *buf, size_t num)
 {
+  return 0;
 }
 
 void mutt_set_flag(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox)
@@ -216,8 +182,9 @@ struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
   return m->emails[inum];
 }
 
-int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach,
-                             int mode, bool privacy, bool hide_protected_subject)
+int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b,
+                             enum MuttWriteHeaderMode mode, bool privacy,
+                             bool hide_protected_subject, struct ConfigSubset *sub)
 {
   return 0;
 }
@@ -263,7 +230,7 @@ int mutt_system(const char *cmd)
   return 0;
 }
 
-void dlg_browser(struct Buffer *file, SelectFileFlags flags, char ***files, int *numfiles)
+void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles)
 {
 }
 
@@ -301,11 +268,6 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 {
 }
 
-const char *opcodes_get_name(int op)
-{
-  return NULL;
-}
-
 int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
 {
   return 0;
@@ -319,10 +281,11 @@ void simple_dialog_free(struct MuttWindow **ptr)
 {
 }
 
-struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
-                                     const struct Mapping *help_data)
+struct SimpleDialogWindows simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
+                                             const struct Mapping *help_data)
 {
-  return NULL;
+  struct SimpleDialogWindows ret = { 0 };
+  return ret;
 }
 
 void alias_tags_to_buffer(struct TagList *tl, struct Buffer *buf)

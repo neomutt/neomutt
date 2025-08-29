@@ -454,20 +454,17 @@ cleanup:
 
 /**
  * mutt_autocrypt_db_account_get_all - Get all accounts from an Autocrypt database
- * @param[out] accounts     List of accounts
- * @param[out] num_accounts Number of accounts
- * @retval  0 Success
+ * @param aaa Account array
+ * @retval  n Success, number of Accounts
  * @retval -1 Error
  */
-int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *num_accounts)
+int mutt_autocrypt_db_account_get_all(struct AutocryptAccountArray *aaa)
 {
-  int rc = -1, result;
-  sqlite3_stmt *stmt = NULL;
-  struct AutocryptAccount **results = NULL;
-  int results_len = 0, results_count = 0;
+  if (!aaa)
+    return -1;
 
-  *accounts = NULL;
-  *num_accounts = 0;
+  int rc = -1;
+  sqlite3_stmt *stmt = NULL;
 
   /* Note, speed is not of the essence for the account management screen,
    * so we don't bother with a persistent prepared statement */
@@ -485,34 +482,32 @@ int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *
     goto cleanup;
   }
 
+  int result = SQLITE_ERROR;
   while ((result = sqlite3_step(stmt)) == SQLITE_ROW)
   {
-    if (results_count == results_len)
-    {
-      results_len += 5;
-      MUTT_MEM_REALLOC(&results, results_len, struct AutocryptAccount *);
-    }
+    struct AutocryptAccount *ac = mutt_autocrypt_db_account_new();
 
-    struct AutocryptAccount *account = mutt_autocrypt_db_account_new();
-    results[results_count++] = account;
+    ac->email_addr = strdup_column_text(stmt, 0);
+    ac->keyid = strdup_column_text(stmt, 1);
+    ac->keydata = strdup_column_text(stmt, 2);
+    ac->prefer_encrypt = sqlite3_column_int(stmt, 3);
+    ac->enabled = sqlite3_column_int(stmt, 4);
 
-    account->email_addr = strdup_column_text(stmt, 0);
-    account->keyid = strdup_column_text(stmt, 1);
-    account->keydata = strdup_column_text(stmt, 2);
-    account->prefer_encrypt = sqlite3_column_int(stmt, 3);
-    account->enabled = sqlite3_column_int(stmt, 4);
+    ARRAY_ADD(aaa, ac);
   }
 
   if (result == SQLITE_DONE)
   {
-    *accounts = results;
-    rc = *num_accounts = results_count;
+    rc = ARRAY_SIZE(aaa);
   }
   else
   {
-    while (results_count > 0)
-      mutt_autocrypt_db_account_free(&results[--results_count]);
-    FREE(&results);
+    struct AutocryptAccount **pac = NULL;
+    ARRAY_FOREACH(pac, aaa)
+    {
+      mutt_autocrypt_db_account_free(pac);
+    }
+    ARRAY_FREE(aaa);
   }
 
 cleanup:

@@ -35,8 +35,8 @@
 #include <sys/wait.h> // IWYU pragma: keep
 #include <unistd.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "imap/lib.h"
-#include "globals.h"
 #include "protos.h"
 
 /**
@@ -81,7 +81,7 @@ int mutt_system(const char *cmd)
     mutt_sig_unblock_system(false);
     mutt_sig_reset_child_signals();
 
-    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, EnvList);
+    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, NeoMutt->env);
     _exit(127); /* execl error */
   }
   else if (pid != -1)

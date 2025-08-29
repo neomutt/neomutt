@@ -45,6 +45,8 @@ extern volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
  */
 typedef void (*sig_handler_t)(int sig);
 
+extern sig_handler_t OldSegvHandler; ///< Old SEGV handler, it could have been set by ASAN
+
 void assertion_dump(const char *file, int line, const char *func, const char *cond);
 
 #ifndef NDEBUG

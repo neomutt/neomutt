@@ -90,11 +90,10 @@
 #include "pattern/lib.h"
 #include "send/lib.h"
 #include "alias.h"
+#include "expando.h"
 #include "functions.h"
 #include "gui.h"
 #include "mutt_logging.h"
-
-const struct ExpandoRenderData AliasRenderData[];
 
 /// Help Bar for the Alias dialog (address book)
 static const struct Mapping AliasHelp[] = {
@@ -111,109 +110,6 @@ static const struct Mapping AliasHelp[] = {
 };
 
 /**
- * alias_a - Alias: Alias name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void alias_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  const char *s = alias->name;
-  buf_strcpy(buf, s);
-}
-
-/**
- * alias_c - Alias: Comment - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void alias_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  const char *s = alias->comment;
-  buf_strcpy(buf, s);
-}
-
-/**
- * alias_f_num - Alias: Flags - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long alias_f_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AliasView *av = data;
-  return av->is_deleted;
-}
-
-/**
- * alias_f - Alias: Flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void alias_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-
-  // NOTE(g0mb4): use $flag_chars?
-  const char *s = av->is_deleted ? "D" : " ";
-  buf_strcpy(buf, s);
-}
-
-/**
- * alias_n_num - Alias: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long alias_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AliasView *av = data;
-
-  return av->num + 1;
-}
-
-/**
- * alias_r - Alias: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void alias_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  mutt_addrlist_write(&alias->addr, buf, true);
-}
-
-/**
- * alias_t_num - Alias: Tagged char - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long alias_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AliasView *av = data;
-  return av->is_tagged;
-}
-
-/**
- * alias_t - Alias: Tagged char - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void alias_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-
-  // NOTE(g0mb4): use $flag_chars?
-  const char *s = av->is_tagged ? "*" : " ";
-  buf_strcpy(buf, s);
-}
-
-/**
- * alias_Y - Alias: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void alias_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-
-  alias_tags_to_buffer(&av->alias->tags, buf);
-}
-
-/**
  * alias_make_entry - Format an Alias for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $alias_format
@@ -228,12 +124,13 @@ static int alias_make_entry(struct Menu *menu, int line, int max_cols, struct Bu
   if (c_arrow_cursor)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
-    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+    if (max_cols > 0)
+      max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
   const struct Expando *c_alias_format = cs_subset_expando(mdata->sub, "alias_format");
-  return expando_filter(c_alias_format, AliasRenderData, av,
-                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_filter(c_alias_format, AliasRenderCallbacks, av,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, NeoMutt->env, buf);
 }
 
 /**
@@ -329,13 +226,13 @@ static int alias_window_observer(struct NotifyCallback *nc)
 /**
  * alias_dialog_new - Create an Alias Selection Dialog
  * @param mdata Menu data holding Aliases
- * @retval ptr New Dialog
+ * @retval obj SimpleDialogWindows Tuple containing Dialog, SimpleBar and Menu pointers
  */
-static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
+static struct SimpleDialogWindows alias_dialog_new(struct AliasMenuData *mdata)
 {
-  struct MuttWindow *dlg = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
 
   menu->make_entry = alias_make_entry;
   menu->tag = alias_tag;
@@ -348,27 +245,25 @@ static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   // Override the Simple Dialog's recalc()
   win_menu->recalc = alias_recalc;
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  alias_set_title(sbar, mdata->title, mdata->limit);
+  alias_set_title(sdw.sbar, mdata->title, mdata->limit);
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, alias_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, alias_window_observer, win_menu);
 
-  return dlg;
+  return sdw;
 }
 
 /**
  * dlg_alias - Display a menu of Aliases - @ingroup gui_dlg
- * @param buf   Buffer for expanded aliases
  * @param mdata Menu data holding Aliases
  * @retval true Selection was made
  *
  * The Alias Dialog is an Address Book.
  * The user can select addresses to add to an Email.
  */
-static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
+static bool dlg_alias(struct AliasMenuData *mdata)
 {
   if (ARRAY_EMPTY(&mdata->ava))
   {
@@ -376,21 +271,19 @@ static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     return false;
   }
 
-  mdata->query = buf;
   mdata->title = mutt_str_dup(_("Aliases"));
 
-  struct MuttWindow *dlg = alias_dialog_new(mdata);
-  struct Menu *menu = dlg->wdata;
-  struct MuttWindow *win_sbar = window_find_child(dlg, WT_STATUS_BAR);
+  struct SimpleDialogWindows sdw = alias_dialog_new(mdata);
+  struct Menu *menu = sdw.menu;
   mdata->menu = menu;
-  mdata->sbar = win_sbar;
+  mdata->sbar = sdw.sbar;
 
   alias_array_sort(&mdata->ava, mdata->sub);
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata->ava)
   {
-    avp->num = ARRAY_FOREACH_IDX;
+    avp->num = ARRAY_FOREACH_IDX_avp;
   }
 
   struct MuttWindow *old_focus = window_set_focus(menu->win);
@@ -414,7 +307,7 @@ static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     }
     mutt_clear_error();
 
-    rc = alias_function_dispatcher(dlg, op);
+    rc = alias_function_dispatcher(sdw.dlg, op);
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
@@ -423,7 +316,7 @@ static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
   window_redraw(NULL);
   return (rc == FR_CONTINUE); // Was a selection made?
 }
@@ -521,7 +414,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     mutt_pattern_alias_func(NULL, &mdata, PAA_VISIBLE, NULL);
   }
 
-  if (!dlg_alias(NULL, &mdata))
+  if (!dlg_alias(&mdata))
     goto done;
 
   buf_reset(buf);
@@ -577,7 +470,7 @@ void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
     alias_array_alias_add(&mdata.ava, np);
   }
 
-  if (!dlg_alias(NULL, &mdata))
+  if (!dlg_alias(&mdata))
     goto done;
 
   // Prepare the "To:" field of a new email
@@ -616,21 +509,3 @@ done:
   FREE(&mdata.title);
   search_state_free(&mdata.search_state);
 }
-
-/**
- * AliasRenderData - Callbacks for Alias Expandos
- *
- * @sa AliasFormatDef, ExpandoDataAlias, ExpandoDataGlobal
- */
-const struct ExpandoRenderData AliasRenderData[] = {
-  // clang-format off
-  { ED_ALIAS,  ED_ALI_NAME,    alias_a,     NULL },
-  { ED_ALIAS,  ED_ALI_COMMENT, alias_c,     NULL },
-  { ED_ALIAS,  ED_ALI_FLAGS,   alias_f,     alias_f_num },
-  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        alias_n_num },
-  { ED_ALIAS,  ED_ALI_ADDRESS, alias_r,     NULL },
-  { ED_ALIAS,  ED_ALI_TAGGED,  alias_t,     alias_t_num },
-  { ED_ALIAS,  ED_ALI_TAGS,    alias_Y,     NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};

@@ -24,22 +24,22 @@
 #define MUTT_HISTORY_FUNCTIONS_H
 
 #include <stdbool.h>
-#include <stdio.h>
+#include "mutt/lib.h"
 
 struct MuttWindow;
+
+ARRAY_HEAD(HistoryArray, const char *);
 
 /**
  * struct HistoryData - Data to pass to the History Functions
  */
 struct HistoryData
 {
-  bool done;           ///< Should we close the Dialog?
-  bool selection;      ///< Was a selection made?
-  char *buf;           ///< Buffer for the results
-  size_t buflen;       ///< Length of the results buffer
-  struct Menu *menu;   ///< History Menu
-  char **matches;      ///< History entries
-  int match_count;     ///< Number of history entries
+  bool done;                     ///< Should we close the Dialog?
+  bool selection;                ///< Was a selection made?
+  struct Buffer *buf;            ///< Buffer for the results
+  struct Menu *menu;             ///< History Menu
+  struct HistoryArray *matches;  ///< History entries
 };
 
 /**

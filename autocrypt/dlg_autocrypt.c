@@ -79,10 +79,10 @@
 #include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "autocrypt_data.h"
+#include "expando.h"
 #include "functions.h"
 #include "mutt_logging.h"
-
-const struct ExpandoRenderData AutocryptRenderData[];
 
 /// Help Bar for the Autocrypt Account selection dialog
 static const struct Mapping AutocryptHelp[] = {
@@ -112,118 +112,28 @@ static const struct Mapping AutocryptHelp[] = {
 };
 
 /**
- * autocrypt_a - Autocrypt: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void autocrypt_a(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AccountEntry *entry = data;
-
-  buf_copy(buf, entry->addr->mailbox);
-}
-
-/**
- * autocrypt_k - Autocrypt: GPG Key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void autocrypt_k(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AccountEntry *entry = data;
-
-  const char *s = entry->account->keyid;
-  buf_strcpy(buf, s);
-}
-
-/**
- * autocrypt_n_num - Autocrypt: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long autocrypt_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AccountEntry *entry = data;
-
-  return entry->num;
-}
-
-/**
- * autocrypt_p - Autocrypt: Prefer-encrypt flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void autocrypt_p(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AccountEntry *entry = data;
-
-  if (entry->account->prefer_encrypt)
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account has prefer-encrypt set */
-    buf_addstr(buf, _("prefer encrypt"));
-  }
-  else
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account has prefer-encrypt unset;
-           thus encryption will need to be manually enabled.  */
-    buf_addstr(buf, _("manual encrypt"));
-  }
-}
-
-/**
- * autocrypt_s - Autocrypt: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void autocrypt_s(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AccountEntry *entry = data;
-
-  if (entry->account->enabled)
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account is enabled/active */
-    buf_addstr(buf, _("active"));
-  }
-  else
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account is disabled/inactive */
-    buf_addstr(buf, _("inactive"));
-  }
-}
-
-/**
  * autocrypt_make_entry - Format an Autocrypt Account for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $autocrypt_acct_format
  */
 static int autocrypt_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[line];
+  struct AutocryptData *ad = menu->mdata;
+  struct AccountEntry **pentry = ARRAY_GET(&ad->entries, line);
+  if (!pentry)
+    return 0;
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
-    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+    if (max_cols > 0)
+      max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
   const struct Expando *c_autocrypt_acct_format = cs_subset_expando(NeoMutt->sub, "autocrypt_acct_format");
-  return expando_filter(c_autocrypt_acct_format, AutocryptRenderData, entry,
-                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
-}
-
-/**
- * autocrypt_menu_free - Free the Autocrypt account Menu - Implements Menu::mdata_free() - @ingroup menu_mdata_free
- */
-static void autocrypt_menu_free(struct Menu *menu, void **ptr)
-{
-  struct AccountEntry *entries = *ptr;
-
-  for (size_t i = 0; i < menu->max; i++)
-  {
-    mutt_autocrypt_db_account_free(&entries[i].account);
-    mutt_addr_free(&entries[i].addr);
-  }
-
-  FREE(ptr);
+  return expando_filter(c_autocrypt_acct_format, AutocryptRenderCallbacks, *pentry,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, NeoMutt->env, buf);
 }
 
 /**
@@ -233,34 +143,36 @@ static void autocrypt_menu_free(struct Menu *menu, void **ptr)
  */
 bool populate_menu(struct Menu *menu)
 {
+  struct AutocryptData *ad = menu->mdata;
+
   // Clear out any existing data
-  autocrypt_menu_free(menu, &menu->mdata);
+  account_entry_array_clear(&ad->entries);
   menu->max = 0;
 
-  struct AutocryptAccount **accounts = NULL;
-  int num_accounts = 0;
+  struct AutocryptAccountArray accounts = ARRAY_HEAD_INITIALIZER;
 
-  if (mutt_autocrypt_db_account_get_all(&accounts, &num_accounts) < 0)
+  if (mutt_autocrypt_db_account_get_all(&accounts) < 0)
     return false;
 
-  struct AccountEntry *entries = MUTT_MEM_CALLOC(num_accounts, struct AccountEntry);
-  menu->mdata = entries;
-  menu->mdata_free = autocrypt_menu_free;
-  menu->max = num_accounts;
+  menu->max = ARRAY_SIZE(&accounts);
 
-  for (int i = 0; i < num_accounts; i++)
+  struct AutocryptAccount **pac = NULL;
+  ARRAY_FOREACH(pac, &accounts)
   {
-    entries[i].num = i + 1;
+    struct AccountEntry *entry = MUTT_MEM_CALLOC(1, struct AccountEntry);
+
+    entry->num = ARRAY_FOREACH_IDX_pac + 1;
     /* note: we are transferring the account pointer to the entries
      * array, and freeing the accounts array below.  the account
      * will be freed in autocrypt_menu_free().  */
-    entries[i].account = accounts[i];
+    entry->account = *pac;
 
-    entries[i].addr = mutt_addr_new();
-    entries[i].addr->mailbox = buf_new(accounts[i]->email_addr);
-    mutt_addr_to_local(entries[i].addr);
+    entry->addr = mutt_addr_new();
+    entry->addr->mailbox = buf_new((*pac)->email_addr);
+    mutt_addr_to_local(entry->addr);
+    ARRAY_ADD(&ad->entries, entry);
   }
-  FREE(&accounts);
+  ARRAY_FREE(&accounts);
 
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   return true;
@@ -334,19 +246,22 @@ void dlg_autocrypt(void)
   if (mutt_autocrypt_init(false))
     return;
 
-  struct MuttWindow *dlg = simple_dialog_new(MENU_AUTOCRYPT, WT_DLG_AUTOCRYPT, AutocryptHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_AUTOCRYPT, WT_DLG_AUTOCRYPT,
+                                                     AutocryptHelp);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
+
+  struct AutocryptData *ad = autocrypt_data_new();
+  ad->menu = menu;
+
   menu->make_entry = autocrypt_make_entry;
+  menu->mdata = ad;
+  menu->mdata_free = autocrypt_data_free;
 
   populate_menu(menu);
 
-  struct AutocryptData ad = { false, menu };
-  dlg->wdata = &ad;
-
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   // L10N: Autocrypt Account Management Menu title
-  sbar_set_title(sbar, _("Autocrypt Accounts"));
+  sbar_set_title(sdw.sbar, _("Autocrypt Accounts"));
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, autocrypt_config_observer, menu);
@@ -372,31 +287,15 @@ void dlg_autocrypt(void)
     }
     mutt_clear_error();
 
-    int rc = autocrypt_function_dispatcher(dlg, op);
+    int rc = autocrypt_function_dispatcher(sdw.dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
-  } while (!ad.done);
+  } while (!ad->done);
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
 }
-
-/**
- * AutocryptRenderData - Callbacks for Autocrypt Expandos
- *
- * @sa AutocryptFormatDef, ExpandoDataAutocrypt, ExpandoDataGlobal
- */
-const struct ExpandoRenderData AutocryptRenderData[] = {
-  // clang-format off
-  { ED_AUTOCRYPT, ED_AUT_ADDRESS,        autocrypt_a,     NULL },
-  { ED_AUTOCRYPT, ED_AUT_KEYID,          autocrypt_k,     NULL },
-  { ED_AUTOCRYPT, ED_AUT_NUMBER,         NULL,            autocrypt_n_num },
-  { ED_AUTOCRYPT, ED_AUT_PREFER_ENCRYPT, autocrypt_p,     NULL },
-  { ED_AUTOCRYPT, ED_AUT_ENABLED,        autocrypt_s,     NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};

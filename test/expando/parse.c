@@ -43,7 +43,7 @@ void test_expando_parser(void)
     { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     node_padding_parse },
     { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      node_padding_parse },
     { "X", "attachment-count", ED_EMAIL,  ED_EMA_ATTACHMENT_COUNT, NULL },
-    { "[", NULL,               ED_EMAIL,  ED_EMA_STRF_LOCAL,       parse_date },
+    { "[", NULL,               ED_EMAIL,  ED_EMA_DATE_STRF_LOCAL,  parse_date },
     { "a", "apple",            ED_ALIAS,  ED_ALI_ADDRESS,          NULL },
     { "b", "banana",           ED_ALIAS,  ED_ALI_COMMENT,          NULL },
     { "c", "cherry",           ED_ALIAS,  ED_ALI_FLAGS,            NULL },
@@ -84,22 +84,22 @@ void test_expando_parser(void)
     { "%=30<X?AAA&BBB>", "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>:{30,-1,CENTER,' '}>" },
 
     // Dates
-    { "%[%Y-%m-%d]",    "<EXP:'%Y-%m-%d'(EMAIL,STRF_LOCAL)>" },
-    { "%-5[%Y-%m-%d]",  "<EXP:'%Y-%m-%d'(EMAIL,STRF_LOCAL):{5,-1,LEFT,' '}>" },
+    { "%[%Y-%m-%d]",    "<EXP:'%Y-%m-%d'(EMAIL,DATE_STRF_LOCAL)>" },
+    { "%-5[%Y-%m-%d]",  "<EXP:'%Y-%m-%d'(EMAIL,DATE_STRF_LOCAL):{5,-1,LEFT,' '}>" },
 
     // Conditional dates
-    { "%<[1M?AAA&BBB>",  "<COND:<DATE:(EMAIL,STRF_LOCAL):1:M>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[10M?AAA&BBB>", "<COND:<DATE:(EMAIL,STRF_LOCAL):10:M>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[1H?AAA&BBB>",  "<COND:<DATE:(EMAIL,STRF_LOCAL):1:H>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[10H?AAA&BBB>", "<COND:<DATE:(EMAIL,STRF_LOCAL):10:H>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[1d?AAA&BBB>",  "<COND:<DATE:(EMAIL,STRF_LOCAL):1:d>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[10d?AAA&BBB>", "<COND:<DATE:(EMAIL,STRF_LOCAL):10:d>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[1w?AAA&BBB>",  "<COND:<DATE:(EMAIL,STRF_LOCAL):1:w>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[10w?AAA&BBB>", "<COND:<DATE:(EMAIL,STRF_LOCAL):10:w>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[1m?AAA&BBB>",  "<COND:<DATE:(EMAIL,STRF_LOCAL):1:m>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[10m?AAA&BBB>", "<COND:<DATE:(EMAIL,STRF_LOCAL):10:m>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[1y?AAA&BBB>",  "<COND:<DATE:(EMAIL,STRF_LOCAL):1:y>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
-    { "%<[10y?AAA&BBB>", "<COND:<DATE:(EMAIL,STRF_LOCAL):10:y>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[1M?AAA&BBB>",  "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):1:M>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[10M?AAA&BBB>", "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):10:M>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[1H?AAA&BBB>",  "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):1:H>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[10H?AAA&BBB>", "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):10:H>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[1d?AAA&BBB>",  "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):1:d>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[10d?AAA&BBB>", "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):10:d>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[1w?AAA&BBB>",  "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):1:w>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[10w?AAA&BBB>", "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):10:w>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[1m?AAA&BBB>",  "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):1:m>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[10m?AAA&BBB>", "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):10:m>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[1y?AAA&BBB>",  "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):1:y>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<[10y?AAA&BBB>", "<COND:<DATE:(EMAIL,DATE_STRF_LOCAL):10:y>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
 
     // Padding
     { "AAA%>XBBB", "<PAD:HARD_FILL:'X':<TEXT:'AAA'>|<TEXT:'BBB'>>" },
@@ -113,7 +113,7 @@ void test_expando_parser(void)
     struct Buffer *err = buf_pool_get();
     struct Expando *exp = NULL;
 
-    for (int i = 0; i < mutt_array_size(TestStrings); i++)
+    for (int i = 0; i < countof(TestStrings); i++)
     {
       buf_reset(buf);
       buf_reset(err);
@@ -157,7 +157,7 @@ void test_expando_parser(void)
     struct Buffer *err = buf_pool_get();
     struct Expando *exp = NULL;
 
-    for (int i = 0; i < mutt_array_size(TestsBad); i++)
+    for (int i = 0; i < countof(TestsBad); i++)
     {
       buf_reset(buf);
       buf_reset(err);

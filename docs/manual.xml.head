@@ -532,7 +532,7 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
           </itemizedlist>
           <itemizedlist>
             <title>
-              <link linkend="sidebar-sort">The order in which mailboxes are displayed</link>
+              <link linkend="sidebar-sorting">The order in which mailboxes are displayed</link>
             </title>
             <listitem>
               <para>
@@ -639,7 +639,7 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
             </listitem>
             <listitem>
               <para>
-                <link linkend="sidebar-sort">Sidebar sort methods</link>
+                <link linkend="sidebar-sorting">Sidebar sort methods</link>
               </para>
             </listitem>
           </itemizedlist>
@@ -1223,12 +1223,12 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
             </row>
             <row>
               <entry>z or &lt;PageDn&gt;</entry>
-              <entry><literal>&lt;page-down&gt;</literal></entry>
+              <entry><literal>&lt;next-page&gt;</literal></entry>
               <entry>go to the next page</entry>
             </row>
             <row>
               <entry>Z or &lt;PageUp&gt;</entry>
-              <entry><literal>&lt;page-up&gt;</literal></entry>
+              <entry><literal>&lt;previous-page&gt;</literal></entry>
               <entry>go to the previous page</entry>
             </row>
             <row>
@@ -2636,12 +2636,12 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
               </row>
               <row>
                 <entry>f</entry>
-                <entry><literal>&lt;forward&gt;</literal></entry>
+                <entry><literal>&lt;forward-message&gt;</literal></entry>
                 <entry>forward message</entry>
               </row>
               <row>
                 <entry>b</entry>
-                <entry><literal>&lt;bounce&gt;</literal></entry>
+                <entry><literal>&lt;bounce-message&gt;</literal></entry>
                 <entry>bounce (remail) message</entry>
               </row>
               <row>
@@ -3295,8 +3295,8 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
         recipients specified in the Bcc header. Forwarding a message, on the
         other hand, allows you to modify the message before it is resent (for
         example, by adding your own comments). Bouncing is done using the
-        <literal>&lt;bounce&gt;</literal> function and forwarding using the
-        <literal>&lt;forward&gt;</literal> function bound to <quote>b</quote>
+        <literal>&lt;bounce-message&gt;</literal> function and forwarding using the
+        <literal>&lt;forward-message&gt;</literal> function bound to <quote>b</quote>
         and <quote>f</quote> respectively.
       </para>
       <para>
@@ -4100,9 +4100,21 @@ alternates -group me -group work address3
         <arg choice="opt" rep="repeat">
           <replaceable class="parameter">, address</replaceable>
         </arg>
-        <arg choice="opt">
-          <replaceable class="parameter"># comment</replaceable>
-        </arg>
+        <group choice="opt">
+          <arg choice="plain">
+            <replaceable class="parameter"># </replaceable>
+          </arg>
+          <group choice="opt">
+            <arg choice="plain">
+              <replaceable class="parameter">comments</replaceable>
+            </arg>
+          </group>
+          <group choice="opt">
+            <arg choice="plain">
+              <replaceable class="parameter">tags:...</replaceable>
+            </arg>
+          </group>
+        </group>
         <command>unalias</command>
         <arg choice="opt" rep="repeat">
           <option>-group</option>
@@ -4139,14 +4151,21 @@ alternates -group me -group work address3
       </para>
 
 <screen>
-<emphasis role="comment"># Some aliases, one with a comment</emphasis>
-alias alan   Alan Jones &lt;alan@example.com&gt;
-alias briony Briony Williams &lt;bw@example.com&gt;
-alias jim    James Smith &lt;js@example.com&gt; <emphasis role="comment"># Pointy-haired boss</emphasis>
+<emphasis role="comment"># Some aliases, with comments and tags</emphasis>
+alias alan   Alan Jones &lt;alan@example.com&gt;      # Al tags:friends
+alias briony Briony Williams &lt;bw@example.com&gt;   # tags:friends
+alias jim    James Smith &lt;js@example.com&gt;       # Pointy-haired boss
 
 <emphasis role="comment"># An alias that references two other aliases</emphasis>
 alias friends alan, briony
 </screen>
+
+      <para>
+        Aliases can given tags (labels) which can be used for searching or
+        limiting. Tags consist of comma-separated strings after a comment of
+        <literal>tags:</literal>.  In the Address Book, you can search for a
+        tag with <literal>~Y friends</literal> or limit the view to friends.
+      </para>
 
       <para>
       To remove an alias or aliases (<quote>*</quote> means all aliases):
@@ -5176,9 +5195,6 @@ folder-hook work "set sort=threads"
       </para>
       <cmdsynopsis>
         <command>color</command>
-        <arg choice="opt">
-          <option>compose</option>
-        </arg>
         <arg choice="plain">
           <replaceable class="parameter">object</replaceable>
         </arg>
@@ -5247,9 +5263,6 @@ folder-hook work "set sort=threads"
           </group>
         </group>
         <command>uncolor</command>
-        <arg choice="opt">
-          <option>compose</option>
-        </arg>
         <arg choice="plain">
           <replaceable class="parameter">object</replaceable>
         </arg>
@@ -5643,12 +5656,6 @@ uncolor sidebar_divider
         <para>
           These are compose objects.
         </para>
-        <note>
-          <para>
-            The compose objects use a slightly different format of command.
-            They prefix the style with the word <literal>compose</literal>.
-          </para>
-        </note>
         <table id="color-simple-compose">
           <title>Simple Compose Colours</title>
           <tgroup cols="2">
@@ -5660,33 +5667,33 @@ uncolor sidebar_divider
             </thead>
             <tbody>
               <row>
-                <entry>header</entry>
+                <entry>compose_header</entry>
                 <entry>Header labels, e.g. From:</entry>
               </row>
               <row>
-                <entry>security_encrypt</entry>
+                <entry>compose_security_encrypt</entry>
                 <entry>Mail will be encrypted</entry>
               </row>
               <row>
-                <entry>security_sign</entry>
+                <entry>compose_security_sign</entry>
                 <entry>Mail will be signed</entry>
               </row>
               <row>
-                <entry>security_both</entry>
+                <entry>compose_security_both</entry>
                 <entry>Mail will be encrypted and signed</entry>
               </row>
               <row>
-                <entry>security_none</entry>
+                <entry>compose_security_none</entry>
                 <entry>Mail will not be encrypted or signed</entry>
               </row>
             </tbody>
           </tgroup>
         </table>
 <screen>
-color compose header bold white default
+color compose_header bold white default
 </screen>
 <screen>
-uncolor compose header
+uncolor compose_header
 </screen>
         <para>
           The quoted objects refer to quoted lines in an email reply.
@@ -5983,8 +5990,8 @@ uncolor status *
           </group>
         </cmdsynopsis>
         <para>
-          For <emphasis>object</emphasis>, <emphasis>composeobject</emphasis>, and
-          <emphasis>attribute</emphasis>, see the <command>color</command> command.
+          For <emphasis>object</emphasis> and <emphasis>attribute</emphasis>,
+          see the <command>color</command> command.
         </para>
       </sect2>
     </sect1>
@@ -10020,7 +10027,7 @@ ma@yew.com      Murray Abraham  Oscar
       </para>
       <note>
         <para>
-          The query menu is affected by <link linkend="sort-alias">$sort_alias</link>,
+          The query menu is affected by <link linkend="alias-sort">$alias_sort</link>,
           thus overruling the order of entries as generated by
           <link linkend="query-command">$query_command</link>.
         </para>
@@ -10446,7 +10453,7 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           command, and indicate which contain new messages. NeoMutt will
           automatically enter this mode when invoked from the command line with
           the <literal>-y</literal> option, or from the index/pager via the
-          <literal>&lt;browse-mailboxes&gt;</literal> function.
+          <literal>&lt;change-folder&gt;</literal> function.
         </para>
         <para>
           For the pager, index and directory browser menus, NeoMutt contains
@@ -10912,7 +10919,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
           <link linkend="resend-message"><literal>&lt;resend-message&gt;</literal></link>,
           and the
           <literal>&lt;reply&gt;</literal> and
-          <literal>&lt;forward&gt;</literal> functions) to attachments of type
+          <literal>&lt;forward-message&gt;</literal> functions) to attachments of type
           <literal>message/rfc822</literal>.
         </para>
         <para>
@@ -13449,6 +13456,125 @@ sendmailcmd = neomutt -C -H - &amp;&amp; true
       </sect2>
     </sect1>
 
+    <sect1 id="compose-message-preview">
+      <title>Compose Message Preview Feature</title>
+      <subtitle>Show a preview of the message in the Compose Dialog</subtitle>
+
+      <sect2 id="compose-message-preview-support">
+        <title>Support</title>
+        <para><emphasis role="bold">Since:</emphasis> NeoMutt 2024-12-12</para>
+        <para><emphasis role="bold">Dependencies:</emphasis> None</para>
+      </sect2>
+
+      <sect2 id="compose-message-preview-intro">
+        <title>Introduction</title>
+        <para>
+          NeoMutt shows you a preview of the message you are about to send in
+          the compose dialog.
+        </para>
+      </sect2>
+
+      <sect2 id="compose-message-preview-variables">
+        <title>Variables</title>
+
+        <table id="table-compose-message-preview-variables">
+          <title>Message Preview Variables</title>
+          <tgroup cols="4">
+            <thead>
+              <row>
+                <entry>Name</entry>
+                <entry>Type</entry>
+                <entry>Default</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>compose_preview_above_attachments</literal></entry>
+                <entry>boolean</entry>
+                <entry><literal>no</literal></entry>
+                <entry>Show the message preview above the attachments list.</entry>
+              </row>
+              <row>
+                <entry><literal>compose_preview_min_rows</literal></entry>
+                <entry>number</entry>
+                <entry><literal>5</literal></entry>
+                <entry>Hide the preview if it has fewer than this number of rows</entry>
+              </row>
+              <row>
+                <entry><literal>compose_show_preview</literal></entry>
+                <entry>boolean</entry>
+                <entry><literal>no</literal></entry>
+                <entry>Enable or disable the message preview feature</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+
+      <sect2 id="compose-message-preview-functions">
+        <title>Functions</title>
+        <para>
+          The message preview is controller by the following functions.
+        </para>
+
+        <table id="compose-message-preview-functions-table">
+          <title>Message Preview Functions</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Menus</entry>
+                <entry>Function</entry>
+                <entry>Description</entry>
+                <entry>Default</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-page-down&gt;</literal></entry>
+                <entry>show the next page of the message</entry>
+                <entry><literal>&lt;PageDown&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-page-up&gt;</literal></entry>
+                <entry>show the previous page of the message</entry>
+                <entry><literal>&lt;PageUp&gt;</literal></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+
+      <sect2 id="compose-message-preview-limitations">
+        <title>Limitations</title>
+        <para>
+          This is a new feature and it's still under development. If you find
+          any problems, or you'd like to help improve it, please let us know.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              Pager displays simple text, no colour or attributes
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Smart text wrapping is not supported
+            </para>
+          </listitem>
+        </itemizedlist>
+      </sect2>
+
+      <sect2 id="compose-message-preview-credits">
+        <title>Credits</title>
+        <para>
+          Dennis Schön
+        </para>
+      </sect2>
+    </sect1>
+
     <sect1 id="compose-to-sender">
       <title>Compose to Sender Feature</title>
       <subtitle>Send new mail to the sender of the current mail</subtitle>
@@ -15016,7 +15142,7 @@ set header_cache_compress_method = ""
           Tino Reichardt
         </para>
       </sect2>
-  </sect1>
+    </sect1>
 
     <sect1 id="ifdef">
       <title>Ifdef Feature</title>
@@ -15080,6 +15206,12 @@ finish                                    <emphasis role="comment"># Finish read
                 <literal>index-format-hook</literal>,
                 <literal>tag-transforms</literal></entry>
                 <entry>Command</entry>
+              </row>
+              <row>
+                <entry>
+                <literal>indicator</literal>,
+                <literal>sidebar_new</literal></entry>
+                <entry>Colour</entry>
               </row>
               <row>
                 <entry>
@@ -17685,8 +17817,8 @@ set reply_with_xorig = "yes"
 
 <screen>
 <emphasis role="comment"># Fixed order</emphasis>
-set sort_browser="alpha"
-set sort_browser="unsorted"
+set browser_sort = "alpha"
+set browser_sort = "unsorted"
 </screen>
 
           <para>
@@ -17713,8 +17845,8 @@ set sort_browser="unsorted"
 
 <screen>
 <emphasis role="comment"># Variable order</emphasis>
-set sort_browser="reverse-count"
-set sort_browser="reverse-size"
+set browser_sort = "reverse-count"
+set browser_sort = "reverse-size"
 </screen>
 
           <para>
@@ -17859,7 +17991,7 @@ set sort_browser="reverse-size"
                 <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry><literal>sidebar_sort_method</literal></entry>
+                <entry><literal>sidebar_sort</literal></entry>
                 <entry>enum</entry>
                 <entry><literal>unsorted</literal></entry>
               </row>
@@ -18069,7 +18201,7 @@ set sort_browser="reverse-size"
         </para>
       </sect2>
 
-      <sect2 id="sidebar-sort">
+      <sect2 id="sidebar-sorting">
         <title>Sort</title>
 
         <table id="table-sidebar-sort">
@@ -18178,7 +18310,7 @@ set sidebar_format = '%B%&lt;F? [%F]&gt;%* %&lt;N?%N/&gt;%S'
 <emphasis role="comment">#       unread   – number of unread messages</emphasis>
 <emphasis role="comment">#       path     – mailbox path</emphasis>
 <emphasis role="comment">#       unsorted – do not sort the mailboxes</emphasis>
-set sidebar_sort_method = 'unsorted'
+set sidebar_sort = 'unsorted'
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
@@ -19655,12 +19787,6 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-B</entry>
-              <entry>
-                Run in batch mode (do not start the ncurses UI)
-              </entry>
-            </row>
-            <row>
               <entry>-b <literal>address</literal></entry>
               <entry>
                 Specify a blind carbon copy (Bcc) recipient
@@ -19686,6 +19812,13 @@ neomutt -a image.jpg *.png -- address1 address2
                 Dump all config variables as
                 &apos;<emphasis role="bold">name=value</emphasis>&apos; pairs
                 to stdout
+              </entry>
+            </row>
+            <row>
+              <entry>-D -D (or -DD)</entry>
+              <entry>
+                Like <emphasis role="bold">-D</emphasis>, but only show the
+                config that has changed
               </entry>
             </row>
             <row>
@@ -20561,9 +20694,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="lists">lists</link>
             </command>
-            <arg>
+            <arg choice="opt" rep="repeat">
               <option>-group</option>
-              <replaceable class="parameter">name</replaceable>
+              <replaceable>name</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">regex</replaceable>

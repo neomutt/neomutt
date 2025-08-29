@@ -49,7 +49,6 @@
 #include "question/lib.h"
 #include "copy.h"
 #include "globals.h"
-#include "hdrline.h"
 #include "hook.h"
 #include "mview.h"
 #include "mx.h"
@@ -175,7 +174,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
   char columns[16] = { 0 };
   // win_pager might not be visible and have a size yet, so use win_index
   snprintf(columns, sizeof(columns), "%d", wrap_len);
-  envlist_set(&EnvList, "COLUMNS", columns, true);
+  envlist_set(&NeoMutt->env, "COLUMNS", columns, true);
 
   /* see if crypto is needed for this message.  if so, we should exit curses */
   if ((WithCrypto != 0) && e->security)
@@ -229,7 +228,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
     fp_filter_out = fp_out;
     fp_out = NULL;
     filterpid = filter_create_fd(c_display_filter, &fp_out, NULL, NULL, -1,
-                                 fileno(fp_filter_out), -1, EnvList);
+                                 fileno(fp_filter_out), -1, NeoMutt->env);
     if (filterpid < 0)
     {
       mutt_error(_("Can't create display filter"));
@@ -286,7 +285,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
   }
 
 cleanup:
-  envlist_unset(&EnvList, "COLUMNS");
+  envlist_unset(&NeoMutt->env, "COLUMNS");
   return rc;
 }
 

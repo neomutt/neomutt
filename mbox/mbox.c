@@ -60,7 +60,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
-#include "sort.h"
 
 /**
  * struct MUpdate - Store of new offsets, used by mutt_sync_mailbox()
@@ -565,10 +564,10 @@ static int reopen_mailbox(struct Mailbox *m)
   m->verbose = false;
 
   /* our heuristics require the old mailbox to be unsorted */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_sort != EMAIL_SORT_UNSORTED)
   {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
+    cs_subset_str_native_set(NeoMutt->sub, "sort", EMAIL_SORT_UNSORTED, NULL);
     mailbox_changed(m, NT_MAILBOX_RESORT);
     cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   }
@@ -896,7 +895,7 @@ static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     }
     FREE(&tmp_path);
 
-    adata->fp = mutt_file_fopen(mailbox_path(m), (flags & MUTT_NEWFOLDER) ? "w+" : "a+");
+    adata->fp = mutt_file_fopen(mailbox_path(m), "a+");
     if (!adata->fp)
     {
       mutt_perror("%s", mailbox_path(m));
@@ -1082,10 +1081,10 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   enum MxStatus rc = MX_STATUS_ERROR;
 
   /* sort message by their position in the mailbox on disk */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_sort != EMAIL_SORT_UNSORTED)
   {
-    mutt_sort_order(m);
+    mutt_sort_unsorted(m);
     need_sort = true;
   }
 
@@ -1319,7 +1318,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
     const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
     buf_printf(savefile, "%s/neomutt.%s-%s-%u", NONULL(c_tmp_dir),
-               NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());
+               NONULL(NeoMutt->username), NONULL(ShortHostname), (unsigned int) getpid());
     rename(buf_string(tempfile), buf_string(savefile));
     mutt_sig_unblock();
     mx_fastclose_mailbox(m, false);
@@ -1606,7 +1605,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
  */
 static int mbox_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(path, HomeDir, false);
+  mutt_path_canon(path, NeoMutt->home_dir, false);
   return 0;
 }
 

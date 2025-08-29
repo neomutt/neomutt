@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -168,7 +167,7 @@ struct ExpandoFormat *parse_format(const char *str, const char **parsed_until,
   }
 
   // Parse the width (min_cols)
-  if (isdigit(*str))
+  if (mutt_isdigit(*str))
   {
     unsigned short number = 0;
     const char *end_ptr = mutt_str_atous(str, &number);
@@ -192,7 +191,7 @@ struct ExpandoFormat *parse_format(const char *str, const char **parsed_until,
 
     unsigned short number = 1;
 
-    if (isdigit(*str))
+    if (mutt_isdigit(*str))
     {
       const char *end_ptr = mutt_str_atous(str, &number);
 
@@ -402,7 +401,7 @@ void add_color(struct Buffer *buf, enum ColorId cid)
  * node_expando_render - Render an Expando Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_expando_render(const struct ExpandoNode *node,
-                        const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                        const struct ExpandoRenderCallback *erc, struct Buffer *buf,
                         int max_cols, void *data, MuttFormatFlags flags)
 {
   ASSERT(node->type == ENT_EXPANDO);
@@ -417,20 +416,20 @@ int node_expando_render(const struct ExpandoNode *node,
   // Numbers and strings get treated slightly differently. We prefer strings.
   // This allows dates to be stored as 1729850182, but displayed as "2024-10-25".
 
-  const struct ExpandoRenderData *rd_match = find_get_string(rdata, node->did, node->uid);
-  if (rd_match)
+  const struct ExpandoRenderCallback *erc_match = find_get_string(erc, node->did, node->uid);
+  if (erc_match)
   {
-    rd_match->get_string(node, data, flags, buf_expando);
+    erc_match->get_string(node, data, flags, buf_expando);
 
     if (fmt && fmt->lower)
       buf_lower_special(buf_expando);
   }
   else
   {
-    rd_match = find_get_number(rdata, node->did, node->uid);
-    ASSERT(rd_match && "Unknown UID");
+    erc_match = find_get_number(erc, node->did, node->uid);
+    ASSERT(erc_match && "Unknown UID");
 
-    const long num = rd_match->get_number(node, data, flags);
+    const long num = erc_match->get_number(node, data, flags);
 
     int precision = 1;
 

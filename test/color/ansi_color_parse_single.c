@@ -29,6 +29,7 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 void ansi_color_reset(struct AnsiColor *ansi);
 
@@ -50,16 +51,16 @@ void test_ansi_color_parse_single(void)
     int len;
 
     len = ansi_color_parse_single(NULL, &ansi, false);
-    TEST_CHECK(len == 0);
+    TEST_CHECK_NUM_EQ(len, 0);
 
     len = ansi_color_parse_single(str, NULL, false);
-    TEST_CHECK(len == 5);
+    TEST_CHECK_NUM_EQ(len, 5);
 
     len = ansi_color_parse_single("", &ansi, false);
-    TEST_CHECK(len == 0);
+    TEST_CHECK_NUM_EQ(len, 0);
 
     len = ansi_color_parse_single(str, &ansi, true);
-    TEST_CHECK(len == 5);
+    TEST_CHECK_NUM_EQ(len, 5);
 
     ansi_color_reset(NULL);
   }
@@ -80,7 +81,7 @@ void test_ansi_color_parse_single(void)
     };
 
     int len;
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE_("Length %d", i);
 
@@ -135,7 +136,7 @@ void test_ansi_color_parse_single(void)
     };
 
     int len;
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE_("Cancel %d", i);
 
@@ -143,8 +144,7 @@ void test_ansi_color_parse_single(void)
       len = ansi_color_parse_single(tests[i].name, &ansi, false);
       TEST_CHECK(len == tests[i].value);
       TEST_MSG("len: Expected %d, Got %d", tests[i].value, len);
-      TEST_CHECK(ansi.attrs == A_NORMAL);
-      TEST_MSG("attrs: Expected %d, Got %d", A_NORMAL, ansi.attrs);
+      TEST_CHECK_NUM_EQ(ansi.attrs, A_NORMAL);
     }
   }
 
@@ -161,8 +161,7 @@ void test_ansi_color_parse_single(void)
 
         struct AnsiColor ansi = { 0 };
         len = ansi_color_parse_single(str, &ansi, false);
-        TEST_CHECK(len == 5);
-        TEST_MSG("len: Expected 5, Got %d", len);
+        TEST_CHECK_NUM_EQ(len, 5);
       }
     }
   }
@@ -197,11 +196,11 @@ void test_ansi_color_parse_single(void)
     char str[32];
     for (int i = 38; i < 49; i += 10)
     {
-      for (int r = 0; r < mutt_array_size(red); r++)
+      for (int r = 0; r < countof(red); r++)
       {
-        for (int g = 0; g < mutt_array_size(green); g++)
+        for (int g = 0; g < countof(green); g++)
         {
-          for (int b = 0; b < mutt_array_size(blue); b++)
+          for (int b = 0; b < countof(blue); b++)
           {
             int val_r = red[r];
             int val_g = green[g];
@@ -270,14 +269,13 @@ void test_ansi_color_parse_single(void)
     };
 
     int len;
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       TEST_CASE_("Bad %d", i);
 
       struct AnsiColor ansi = { 0 };
       len = ansi_color_parse_single(tests[i], &ansi, false);
-      TEST_CHECK(len == 0);
-      TEST_MSG("len: Expected 0, Got %d", len);
+      TEST_CHECK_NUM_EQ(len, 0);
     }
   }
 }

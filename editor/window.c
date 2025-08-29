@@ -196,7 +196,7 @@ static int enter_repaint(struct MuttWindow *win)
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
   int prompt_length = 0;
-  mutt_window_get_coords(win, &prompt_length, NULL);
+  mutt_window_get_coords(win, NULL, &prompt_length);
 
   int width = win->state.cols - prompt_length - 1;
 
@@ -218,7 +218,7 @@ static int enter_repaint(struct MuttWindow *win)
           wdata->state->wbuf, wdata->state->lastchar,
           mutt_mb_wcswidth(wdata->state->wbuf, wdata->state->curpos) - (width / 2));
     }
-    mutt_window_move(win, prompt_length, 0);
+    mutt_window_move(win, 0, prompt_length);
     int w = 0;
     for (size_t i = wdata->state->begin; i < wdata->state->lastchar; i++)
     {
@@ -228,14 +228,13 @@ static int enter_repaint(struct MuttWindow *win)
       my_addwch(win, wdata->state->wbuf[i]);
     }
     mutt_window_clrtoeol(win);
-    mutt_window_move(win,
+    mutt_window_move(win, 0,
                      prompt_length +
                          mutt_mb_wcswidth(wdata->state->wbuf + wdata->state->begin,
-                                          wdata->state->curpos - wdata->state->begin),
-                     0);
+                                          wdata->state->curpos - wdata->state->begin));
   }
 
-  mutt_window_get_coords(win, &wdata->col, &wdata->row);
+  mutt_window_get_coords(win, &wdata->row, &wdata->col);
   mutt_debug(LL_DEBUG5, "repaint done\n");
 
   return 0;
@@ -247,7 +246,7 @@ static int enter_repaint(struct MuttWindow *win)
 static bool enter_recursor(struct MuttWindow *win)
 {
   struct EnterWindowData *wdata = win->wdata;
-  mutt_window_move(win, wdata->col, wdata->row);
+  mutt_window_move(win, wdata->row, wdata->col);
   mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   return true;
 }
@@ -298,7 +297,6 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
 
   win->wdata = &wdata;
   win->wdata_free = NULL; // No need, we hold the data
-  win->actions |= WA_RECALC;
   win->recalc = enter_recalc;
   win->repaint = enter_repaint;
   win->recursor = enter_recursor;
@@ -396,9 +394,9 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
   bye:
     mutt_hist_reset_state(wdata.hclass);
     FREE(&wdata.tempbuf);
-    completion_data_free(&wdata.cd);
   } while (rc == 1);
 
+  completion_data_free(&wdata.cd);
   msgcont_pop_window();
   window_set_focus(old_focus);
   mutt_window_free(&win);

@@ -49,14 +49,12 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "expando/lib.h"
-#include "globals.h"
+#include "expando.h"
 #include "hook.h"
 #include "mx.h"
 #include "protos.h"
 
 struct Email;
-
-const struct ExpandoRenderData CompressRenderData[];
 
 /**
  * CompCommands - Compression Commands
@@ -66,6 +64,7 @@ static const struct Command CompCommands[] = {
   { "append-hook", mutt_parse_hook, MUTT_APPEND_HOOK },
   { "close-hook",  mutt_parse_hook, MUTT_CLOSE_HOOK },
   { "open-hook",   mutt_parse_hook, MUTT_OPEN_HOOK },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -86,11 +85,11 @@ const struct ExpandoDefinition CompressFormatDef[] = {
 };
 
 /**
- * mutt_comp_init - Setup feature commands
+ * mutt_comp_init - Setup Compressed Mailbox commands
  */
 void mutt_comp_init(void)
 {
-  commands_register(CompCommands, mutt_array_size(CompCommands));
+  commands_register(&NeoMutt->commands, CompCommands);
 }
 
 /**
@@ -185,12 +184,7 @@ static int setup_paths(struct Mailbox *m)
   buf_copy(&m->pathbuf, buf);
   buf_pool_release(&buf);
 
-  FILE *fp = mutt_file_fopen(mailbox_path(m), "w");
-  if (!fp)
-    return -1;
-
-  mutt_file_fclose(&fp);
-  return 0;
+  return mutt_file_touch(mailbox_path(m)) ? 0 : -1;
 }
 
 /**
@@ -282,34 +276,6 @@ static void compress_info_free(struct Mailbox *m)
 }
 
 /**
- * compress_f - Compress: From filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void compress_f(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Mailbox *m = data;
-
-  struct Buffer *quoted = buf_pool_get();
-  buf_quote_filename(quoted, m->realpath, false);
-  buf_copy(buf, quoted);
-  buf_pool_release(&quoted);
-}
-
-/**
- * compress_t - Compress: To filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void compress_t(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Mailbox *m = data;
-
-  struct Buffer *quoted = buf_pool_get();
-  buf_quote_filename(quoted, mailbox_path(m), false);
-  buf_copy(buf, quoted);
-  buf_pool_release(&quoted);
-}
-
-/**
  * execute_command - Run a system command
  * @param m        Mailbox to work with
  * @param exp      Command expando to execute
@@ -336,7 +302,8 @@ static bool execute_command(struct Mailbox *m, const struct Expando *exp, const 
   mutt_endwin();
   fflush(stdout);
 
-  expando_render(exp, CompressRenderData, m, MUTT_FORMAT_NO_FLAGS, sys_cmd->dsize, sys_cmd);
+  expando_render(exp, CompressRenderCallbacks, m, MUTT_FORMAT_NO_FLAGS,
+                 sys_cmd->dsize, sys_cmd);
 
   if (mutt_system(buf_string(sys_cmd)) != 0)
   {
@@ -494,8 +461,6 @@ cmo_fail:
 
 /**
  * comp_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append() - @ingroup mx_mbox_open_append
- *
- * flags may also contain #MUTT_NEWFOLDER
  *
  * To append to a compressed mailbox we need an append-hook (or both open- and
  * close-hooks).
@@ -906,22 +871,9 @@ static enum MailboxType comp_path_probe(const char *path, const struct stat *st)
  */
 static int comp_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(path, HomeDir, false);
+  mutt_path_canon(path, NeoMutt->home_dir, false);
   return 0;
 }
-
-/**
- * CompressRenderData - Callbacks for Compression Hook Expandos
- *
- * @sa CompressFormatDef, ExpandoDataCompress
- */
-const struct ExpandoRenderData CompressRenderData[] = {
-  // clang-format off
-  { ED_COMPRESS, ED_CMP_FROM, compress_f, NULL },
-  { ED_COMPRESS, ED_CMP_TO,   compress_t, NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};
 
 /**
  * MxCompOps - Compressed Mailbox - Implements ::MxOps - @ingroup mx_api

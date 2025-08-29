@@ -114,11 +114,11 @@ bool email_cmp_strict(const struct Email *e1, const struct Email *e2)
 }
 
 /**
- * email_size - Compute the size of an email
+ * email_get_size - Compute the size of an email
  * @param e Email
  * @retval num Size of the email, in bytes
  */
-size_t email_size(const struct Email *e)
+size_t email_get_size(const struct Email *e)
 {
   if (!e || !e->body)
     return 0;

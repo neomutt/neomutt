@@ -127,10 +127,10 @@ static int simple_window_observer(struct NotifyCallback *nc)
  * @param mtype     Menu type, e.g. #MENU_ALIAS
  * @param wtype     Dialog type, e.g. #WT_DLG_ALIAS
  * @param help_data Data for the Help Bar
- * @retval ptr New Dialog Window
+ * @retval obj SimpleDialogWindows Tuple containing Dialog, SimpleBar and Menu pointers
  */
-struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
-                                     const struct Mapping *help_data)
+struct SimpleDialogWindows simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
+                                             const struct Mapping *help_data)
 {
   struct MuttWindow *dlg = mutt_window_new(wtype, MUTT_WIN_ORIENT_VERTICAL,
                                            MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
@@ -158,7 +158,7 @@ struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
   notify_observer_add(dlg->notify, NT_WINDOW, simple_window_observer, dlg);
   dialog_push(dlg);
 
-  return dlg;
+  return (struct SimpleDialogWindows) { dlg, win_sbar, win_menu->wdata };
 }
 
 /**

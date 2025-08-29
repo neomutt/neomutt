@@ -36,7 +36,6 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "expando.h"
-#include "globals.h"
 #include "node.h"
 #include "render.h"
 
@@ -81,24 +80,25 @@ bool check_for_pipe(struct ExpandoNode *root)
 
 /**
  * filter_text - Filter the text through an external command
- * @param[in,out] buf Text
+ * @param[in,out] buf      Text
+ * @param[in]     env_list Environment
  *
  * The text is passed unchanged to the shell.
  * The first line of any output (minus the newline) is stored back in buf.
  */
-void filter_text(struct Buffer *buf)
+void filter_text(struct Buffer *buf, char **env_list)
 {
-  if (buf_is_empty(buf))
-    return;
-
   // Trim the | (pipe) character
   size_t len = buf_len(buf);
+  if (len == 0)
+    return;
+
   if (buf->data[len - 1] == '|')
     buf->data[len - 1] = '\0';
 
   mutt_debug(LL_DEBUG3, "execute: %s\n", buf_string(buf));
   FILE *fp_filter = NULL;
-  pid_t pid = filter_create(buf_string(buf), NULL, &fp_filter, NULL, EnvList);
+  pid_t pid = filter_create(buf_string(buf), NULL, &fp_filter, NULL, env_list);
   if (pid < 0)
     return; // LCOV_EXCL_LINE
 
@@ -128,15 +128,17 @@ void filter_text(struct Buffer *buf)
 /**
  * expando_filter - Render an Expando and run the result through a filter
  * @param[in]  exp      Expando containing the expando tree
- * @param[in]  rdata    Expando render data
+ * @param[in]  erc      Expando Render Callback functions
  * @param[in]  data     Callback data
  * @param[in]  flags    Callback flags
  * @param[in]  max_cols Number of screen columns (-1 means unlimited)
+ * @param[in]  env_list Environment to pass to filter
  * @param[out] buf      Buffer in which to save string
  * @retval obj Number of bytes written to buf and screen columns used
  */
-int expando_filter(const struct Expando *exp, const struct ExpandoRenderData *rdata,
-                   void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+int expando_filter(const struct Expando *exp, const struct ExpandoRenderCallback *erc,
+                   void *data, MuttFormatFlags flags, int max_cols,
+                   char **env_list, struct Buffer *buf)
 {
   if (!exp || !exp->node)
     return 0;
@@ -148,12 +150,12 @@ int expando_filter(const struct Expando *exp, const struct ExpandoRenderData *rd
   if (is_pipe)
     max_cols = -1;
 
-  int rc = expando_render(exp, rdata, data, flags, max_cols, buf);
+  int rc = expando_render(exp, erc, data, flags, max_cols, buf);
 
   if (!is_pipe)
     return rc;
 
-  filter_text(buf);
+  filter_text(buf, env_list);
 
   // Strictly truncate to size
   size_t width = 0;

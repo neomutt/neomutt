@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct MakeTimeTest
 {
@@ -60,7 +61,7 @@ void test_mutt_date_make_time(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(time_tests); i++)
+    for (size_t i = 0; i < countof(time_tests); i++)
     {
       struct tm *tm = &time_tests[i].tm;
 
@@ -76,6 +77,6 @@ void test_mutt_date_make_time(void)
   {
     struct tm tm = { 0, 0, 0, 1, 0, 100, 0 };
     time_t result = mutt_date_make_time(&tm, true);
-    TEST_CHECK(result == 946684800);
+    TEST_CHECK_NUM_EQ(result, 946684800);
   }
 }

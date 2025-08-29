@@ -7,6 +7,7 @@
  * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2021 Austin Ray <austin@austinray.io>
  * Copyright (C) 2022 Claes Nästén <pekdon@gmail.com>
+ * Copyright (C) 2025 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,7 +31,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <stdarg.h> // IWYU pragma: keep
 #include <stdbool.h>
@@ -41,6 +41,7 @@
 #include "exit.h"
 #include "logging2.h"
 #include "memory.h"
+#include "mutt/ctype2.h"
 #include "string2.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
@@ -168,7 +169,7 @@ static const struct SysExits SysExits[] = {
  */
 const char *mutt_str_sysexit(int err_num)
 {
-  for (size_t i = 0; i < mutt_array_size(SysExits); i++)
+  for (size_t i = 0; i < countof(SysExits); i++)
   {
     if (err_num == SysExits[i].err_num)
       return SysExits[i].err_str;
@@ -211,7 +212,7 @@ static size_t startswith(const char *str, const char *prefix, bool match_case)
     if (*str == *prefix)
       continue;
 
-    if (!match_case && tolower(*str) == tolower(*prefix))
+    if (!match_case && mutt_tolower(*str) == mutt_tolower(*prefix))
       continue;
 
     return 0;
@@ -319,7 +320,7 @@ char *mutt_str_lower(char *str)
 
   while (*p)
   {
-    *p = tolower((unsigned char) *p);
+    *p = mutt_tolower(*p);
     p++;
   }
 
@@ -342,7 +343,7 @@ char *mutt_str_upper(char *str)
 
   while (*p)
   {
-    *p = toupper((unsigned char) *p);
+    *p = mutt_toupper(*p);
     p++;
   }
 
@@ -474,11 +475,11 @@ const char *mutt_istrn_rfind(const char *haystack, size_t haystack_length, const
   int needle_length = strlen(needle);
   const char *haystack_end = haystack + haystack_length - needle_length;
 
-  for (const char *p = haystack_end; p >= haystack; --p)
+  for (const char *p = haystack_end; p >= haystack; p--)
   {
     for (size_t i = 0; i < needle_length; i++)
     {
-      if ((tolower((unsigned char) p[i]) != tolower((unsigned char) needle[i])))
+      if ((mutt_tolower(p[i]) != mutt_tolower(needle[i])))
         goto next;
     }
     return p;
@@ -530,7 +531,7 @@ const char *mutt_istr_find(const char *haystack, const char *needle)
   while (*(p = haystack))
   {
     for (q = needle;
-         *p && *q && (tolower((unsigned char) *p) == tolower((unsigned char) *q));
+         *p && *q && (mutt_tolower(*p) == mutt_tolower(*q));
          p++, q++)
     {
     }
@@ -567,7 +568,7 @@ void mutt_str_remove_trailing_ws(char *s)
   if (!s)
     return;
 
-  for (char *p = s + mutt_str_len(s) - 1; (p >= s) && isspace(*p); p--)
+  for (char *p = s + mutt_str_len(s) - 1; (p >= s) && mutt_isspace(*p); p--)
     *p = '\0';
 }
 
@@ -886,7 +887,7 @@ void mutt_str_hyphenate(char *buf, size_t buflen, const char *str)
  */
 int mutt_str_inbox_cmp(const char *a, const char *b)
 {
-#define IS_INBOX(s) (mutt_istrn_equal(s, "inbox", 5) && !isalnum((s)[5]))
+#define IS_INBOX(s) (mutt_istrn_equal(s, "inbox", 5) && !mutt_isalnum((s)[5]))
 #define CMP_INBOX(a, b) (IS_INBOX(b) - IS_INBOX(a))
 
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */

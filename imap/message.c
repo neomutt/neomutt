@@ -34,7 +34,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -256,7 +255,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
       char *flag_word = s;
       bool is_system_keyword = mutt_istr_startswith(s, "\\");
 
-      while (*s && !isspace(*s) && (*s != ')'))
+      while (*s && !mutt_isspace(*s) && (*s != ')'))
         s++;
 
       ctmp = *s;
@@ -358,7 +357,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       s += plen;
       SKIPWS(s);
       ptmp = tmp;
-      while (isdigit((unsigned char) *s) && (ptmp != (tmp + sizeof(tmp) - 1)))
+      while (mutt_isdigit(*s) && (ptmp != (tmp + sizeof(tmp) - 1)))
         *ptmp++ = *s++;
       *ptmp = '\0';
       if (!mutt_str_atol(tmp, &h->content_length))
@@ -954,7 +953,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
       continue;
 
     fetch_buf = imap_next_word(fetch_buf);
-    if (!isdigit((unsigned char) *fetch_buf) || !mutt_str_atoui(fetch_buf, &header_msn))
+    if (!mutt_isdigit(*fetch_buf) || !mutt_str_atoui(fetch_buf, &header_msn))
       continue;
 
     if ((header_msn < 1) || (header_msn > msn_end) ||
@@ -2011,11 +2010,11 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
   msg->fp = msg_cache_put(m, e);
   if (!msg->fp)
   {
-    struct Buffer *path = buf_pool_get();
-    buf_mktemp(path);
-    msg->fp = mutt_file_fopen(buf_string(path), "w+");
-    unlink(buf_string(path));
-    buf_pool_release(&path);
+    struct Buffer *tempfile = buf_pool_get();
+    buf_mktemp(tempfile);
+    msg->fp = mutt_file_fopen(buf_string(tempfile), "w+");
+    unlink(buf_string(tempfile));
+    buf_pool_release(&tempfile);
 
     if (!msg->fp)
       return false;

@@ -27,6 +27,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/lib.h"
 #include "lib.h"
 
 struct AddressList;
@@ -34,7 +35,6 @@ struct Body;
 struct Email;
 struct Envelope;
 struct Message;
-struct State;
 
 /**
  * struct SmimeKey - An SIME key
@@ -49,6 +49,7 @@ struct SmimeKey
   KeyFlags flags;
   struct SmimeKey *next;
 };
+ARRAY_HEAD(SmimeKeyArray, struct SmimeKey *);
 
 /**
  * struct SmimeCommandContext - Data for a SIME command
@@ -73,6 +74,7 @@ enum ExpandoDataSmimeCmd
 {
   ED_SMI_ALGORITHM = 1,        ///< SmimeCommandContext.cryptalg
   ED_SMI_CERTIFICATE_IDS,      ///< SmimeCommandContext.certificates
+  ED_SMI_CERTIFICATE_PATH,     ///< Path of Smime certificates
   ED_SMI_DIGEST_ALGORITHM,     ///< SmimeCommandContext.digestalg
   ED_SMI_INTERMEDIATE_IDS,     ///< SmimeCommandContext.intermediates
   ED_SMI_KEY,                  ///< SmimeCommandContext.key

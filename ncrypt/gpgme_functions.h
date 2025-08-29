@@ -33,11 +33,11 @@ struct MuttWindow;
  */
 struct GpgmeData
 {
-  bool done;                         ///< Should we close the Dialog?
-  struct Menu *menu;                 ///< Gpgme Menu
-  struct CryptKeyInfo **key_table;   ///< Array of Keys
-  struct CryptKeyInfo *key;          ///< Selected Key
-  bool *forced_valid;                ///< User insists on out-of-date key
+  bool done;                             ///< Should we close the Dialog?
+  struct Menu *menu;                     ///< Gpgme Menu
+  struct CryptKeyInfoArray *key_table;   ///< Array of Keys
+  struct CryptKeyInfo *key;              ///< Selected Key
+  bool *forced_valid;                    ///< User insists on out-of-date key
 };
 
 /**

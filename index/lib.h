@@ -25,16 +25,19 @@
  *
  * Display a list of Emails
  *
- * | File                 | Description                 |
- * | :------------------- | :-------------------------- |
- * | index/config.c       | @subpage index_config       |
- * | index/dlg_index.c    | @subpage index_dlg_index    |
- * | index/functions.c    | @subpage index_functions    |
- * | index/ibar.c         | @subpage index_ibar         |
- * | index/index.c        | @subpage index_index        |
- * | index/ipanel.c       | @subpage index_ipanel       |
- * | index/private_data.c | @subpage index_private_data |
- * | index/shared_data.c  | @subpage index_shared_data  |
+ * | File                   | Description                   |
+ * | :--------------------- | :---------------------------- |
+ * | index/config.c         | @subpage index_config         |
+ * | index/dlg_index.c      | @subpage index_dlg_index      |
+ * | index/expando_index.c  | @subpage index_expando_index  |
+ * | index/expando_status.c | @subpage index_expando_status |
+ * | index/functions.c      | @subpage index_functions      |
+ * | index/ibar.c           | @subpage index_ibar           |
+ * | index/index.c          | @subpage index_index          |
+ * | index/ipanel.c         | @subpage index_ipanel         |
+ * | index/private_data.c   | @subpage index_private_data   |
+ * | index/shared_data.c    | @subpage index_shared_data    |
+ * | index/status.c         | @subpage index_status         |
  */
 
 #ifndef MUTT_INDEX_LIB_H
@@ -45,8 +48,11 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "functions.h"   // IWYU pragma: keep
-#include "shared_data.h" // IWYU pragma: keep
+#include "expando/lib.h"   // IWYU pragma: keep
+#include "expando_index.h" // IWYU pragma: keep
+#include "functions.h"     // IWYU pragma: keep
+#include "shared_data.h"   // IWYU pragma: keep
+#include "status.h"        // IWYU pragma: keep
 
 struct Email;
 struct MailboxView;
@@ -74,6 +80,8 @@ typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
 
 extern const struct Mapping IndexNewsHelp[];
 
+extern const struct ExpandoDefinition StatusFormatDef[];
+
 void                    change_folder_mailbox   (struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
 struct Mailbox *        change_folder_notmuch   (struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
 void                    change_folder_string    (struct Menu *menu, struct Buffer *buf, int *oldcount, struct IndexSharedData *shared, bool read_only);
@@ -92,8 +100,12 @@ int                     index_make_entry        (struct Menu *menu, int line, in
 struct MuttWindow *     index_pager_init        (void);
 int                     mutt_dlgindex_observer  (struct NotifyCallback *nc);
 void                    mutt_draw_statusline    (struct MuttWindow *win, int max_cols, const char *buf, size_t buflen);
-void                    mutt_set_header_color   (struct Mailbox *m, struct Email *e);
+void                    email_set_color         (struct Mailbox *m, struct Email *e);
 void                    resort_index            (struct MailboxView *mv, struct Menu *menu);
 void                    update_index            (struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
+
+int mutt_make_string(struct Buffer *buf, size_t max_cols, const struct Expando *exp,
+                     struct Mailbox *m, int inpgr, struct Email *e,
+                     MuttFormatFlags flags, const char *progress);
 
 #endif /* MUTT_INDEX_LIB_H */

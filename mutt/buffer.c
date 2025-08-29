@@ -90,7 +90,7 @@ void buf_reset(struct Buffer *buf)
  * @retval 0   Error
  *
  * Dynamically grow a Buffer to accommodate s, in increments of 128 bytes.
- * Always one byte bigger than necessary for the null terminator, and the
+ * Always one byte bigger than necessary for the NUL-terminator, and the
  * buffer is always NUL-terminated
  */
 size_t buf_addstr_n(struct Buffer *buf, const char *s, size_t len)
@@ -266,7 +266,7 @@ size_t buf_insert(struct Buffer *buf, size_t offset, const char *s)
 
   if (offset > curlen)
   {
-    for (size_t i = curlen; i < offset; ++i)
+    for (size_t i = curlen; i < offset; i++)
     {
       buf_addch(buf, ' ');
     }
@@ -621,13 +621,11 @@ size_t buf_copy(struct Buffer *dst, const struct Buffer *src)
  */
 void buf_seek(struct Buffer *buf, size_t offset)
 {
-  if (!buf)
+  if (!buf || !buf->data)
     return;
 
-  if ((offset < buf_len(buf)))
-  {
-    buf->dptr = buf->data ? buf->data + offset : NULL;
-  }
+  if (offset < buf->dsize)
+    buf->dptr = buf->data + offset;
 }
 
 /**
@@ -802,7 +800,7 @@ const char *buf_rfind(const struct Buffer *buf, const char *str)
   int len = strlen(str);
   const char *end = buf->data + buf->dsize - len;
 
-  for (const char *p = end; p >= buf->data; --p)
+  for (const char *p = end; p >= buf->data; p--)
   {
     for (size_t i = 0; i < len; i++)
     {

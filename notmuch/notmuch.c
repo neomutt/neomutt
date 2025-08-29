@@ -94,6 +94,7 @@ static const struct Command NmCommands[] = {
   // clang-format off
   { "unvirtual-mailboxes", parse_unmailboxes, 0 },
   { "virtual-mailboxes",   parse_mailboxes,   MUTT_NAMED },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -107,7 +108,7 @@ const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
  */
 void nm_init(void)
 {
-  commands_register(NmCommands, mutt_array_size(NmCommands));
+  commands_register(&NeoMutt->commands, NmCommands);
 }
 
 /**
@@ -559,6 +560,27 @@ static int update_message_path(struct Email *e, const char *path)
     edata->folder = mutt_strn_dup(path, p - path);
 
     mutt_debug(LL_DEBUG2, "nm: folder='%s', file='%s'\n", edata->folder, e->path);
+
+    // We _might_ be looking at a different file (with the same message-id)
+    // so reparse it from scratch.
+
+    // Preserve the message-id as it's used in the Email HashTable
+    mutt_debug(LL_DEBUG1, "nm: reparse the message\n");
+    char *message_id = e->env->message_id;
+    e->env->message_id = NULL;
+
+    mutt_body_free(&e->body);
+    mutt_env_free(&e->env);
+    if (!maildir_parse_message(path, e->old, e))
+      return 1;
+
+    ASSERT(e->body);
+    ASSERT(e->env);
+
+    FREE(&e->env->message_id);
+    e->env->message_id = message_id;
+    message_id = NULL;
+
     return 0;
   }
 
@@ -1911,7 +1933,7 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
   //    It saves NeoMutt from allocating/deallocating repeatedly.
   if (!mdata)
   {
-    mutt_debug(LL_DEBUG1, "nm: non-nm mailbox. trying the default nm mailbox.");
+    mutt_debug(LL_DEBUG1, "nm: non-nm mailbox. trying the default nm mailbox.\n");
     m = get_default_mailbox();
     mdata = nm_mdata_get(m);
   }
@@ -2436,7 +2458,7 @@ static int nm_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   update_tags(msg, buf);
   update_email_flags(m, e, buf);
   update_email_tags(e, msg);
-  mutt_set_header_color(m, e);
+  email_set_color(m, e);
 
   rc = 0;
   e->changed = true;

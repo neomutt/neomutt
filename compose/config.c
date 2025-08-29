@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -70,8 +71,17 @@ static struct ConfigDef ComposeVars[] = {
   { "compose_format", DT_EXPANDO|D_L10N_STRING, IP N_("-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"), IP &ComposeFormatDef, NULL,
     "printf-like format string for the Compose panel's status bar"
   },
+  { "compose_show_preview", DT_BOOL, false, 0, NULL,
+    "Display a preview of the message body in the Compose window"
+  },
   { "compose_show_user_headers", DT_BOOL, true, 0, NULL,
     "Controls whether or not custom headers are shown in the compose envelope"
+  },
+  { "compose_preview_min_rows", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 5, 0, NULL,
+    "Hide the preview if it has fewer than this number of rows"
+  },
+  { "compose_preview_above_attachments", DT_BOOL, false, 0, NULL,
+    "Show the message preview above the attachments list. By default it is shown below it."
   },
   { "copy", DT_QUAD, MUTT_YES, 0, NULL,
     "Save outgoing emails to $record"

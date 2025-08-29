@@ -39,7 +39,6 @@ import shlex
 import socket
 import http.server
 import subprocess
-import readline
 
 # The token file must be encrypted because it contains multi-use bearer tokens
 # whose usage does not require additional verification. Specify whichever
@@ -88,6 +87,13 @@ ap.add_argument('-d', '--debug', action='store_true', help='enable debug output'
 ap.add_argument('tokenfile', help='persistent token storage')
 ap.add_argument('-a', '--authorize', action='store_true', help='manually authorize new tokens')
 ap.add_argument('--authflow', help='authcode | localhostauthcode | devicecode')
+ap.add_argument('--format', type=str, choices=['token', 'sasl', 'msasl'], default='token',
+                help='''output format:
+    token - plain access token (default);
+    sasl - base64 encoded SASL token string for the specified protocol [--protocol] and user [--email];
+    msasl - like sasl, preceeded with the SASL method''')
+ap.add_argument('--protocol', type=str, choices=['imap', 'pop', 'smtp'], default='imap',
+                help='protocol used for SASL output (default: imap)')
 ap.add_argument('-t', '--test', action='store_true', help='test IMAP/POP/SMTP endpoints')
 ap.add_argument('--decryption-pipe', type=shlex.split, default=DECRYPTION_PIPE,
                 help='decryption command (string), reads from stdin and writes '
@@ -370,13 +376,20 @@ if not access_token_valid():
     sys.exit('ERROR: No valid access token. This should not be able to happen.')
 
 
-if args.verbose:
-    print('Access Token: ', end='')
-print(token['access_token'])
+def build_sasl_string(protocol, user=None):
+    '''Build appropriate SASL string, which depends on cloud server's supported SASL method and used protocol.'''
+    user = user or token['email']
+    bearer_token = token['access_token']
+    if protocol == 'imap':
+        host, port = registration['imap_endpoint'], 993
+    elif protocol == 'pop':
+        host, port = registration['pop_endpoint'], 995
+    elif protocol == 'smtp':
+        # SMTP_SSL would be simpler but Microsoft does not answer on port 465.
+        host, port = registration['smtp_endpoint'], 587
+    else:
+        sys.exit(f'Unknown protocol {protocol}')
 
-
-def build_sasl_string(user, host, port, bearer_token):
-    '''Build appropriate SASL string, which depends on cloud server's supported SASL method.'''
     if registration['sasl_method'] == 'OAUTHBEARER':
         return f'n,a={user},\1host={host}\1port={port}\1auth=Bearer {bearer_token}\1\1'
     if registration['sasl_method'] == 'XOAUTH2':
@@ -384,12 +397,25 @@ def build_sasl_string(user, host, port, bearer_token):
     sys.exit(f'Unknown SASL method {registration["sasl_method"]}.')
 
 
+if args.format == 'msasl':
+    if args.verbose:
+        print('SASL Method and String: ', end='')
+    print(registration['sasl_method'], base64.standard_b64encode(build_sasl_string(args.protocol, args.email).encode()).decode())
+elif args.format == 'sasl':
+    if args.verbose:
+        print('SASL String: ', end='')
+    print(base64.standard_b64encode(build_sasl_string(args.protocol, args.email).encode()).decode())
+else:
+    if args.verbose:
+        print('Access Token: ', end='')
+    print(token['access_token'])
+
+
 if args.test:
     errors = False
 
     imap_conn = imaplib.IMAP4_SSL(registration['imap_endpoint'])
-    sasl_string = build_sasl_string(token['email'], registration['imap_endpoint'], 993,
-                                    token['access_token'])
+    sasl_string = build_sasl_string('imap')
     if args.debug:
         imap_conn.debug = 4
     try:
@@ -406,8 +432,7 @@ if args.test:
         errors = True
 
     pop_conn = poplib.POP3_SSL(registration['pop_endpoint'])
-    sasl_string = build_sasl_string(token['email'], registration['pop_endpoint'], 995,
-                                    token['access_token'])
+    sasl_string = build_sasl_string('pop')
     if args.debug:
         pop_conn.set_debuglevel(2)
     try:
@@ -422,10 +447,8 @@ if args.test:
         print('POP authentication FAILED (does your account allow POP?):', e.args[0].decode())
         errors = True
 
-    # SMTP_SSL would be simpler but Microsoft does not answer on port 465.
     smtp_conn = smtplib.SMTP(registration['smtp_endpoint'], 587)
-    sasl_string = build_sasl_string(token['email'], registration['smtp_endpoint'], 587,
-                                    token['access_token'])
+    sasl_string = build_sasl_string('smtp')
     smtp_conn.ehlo('test')
     smtp_conn.starttls()
     smtp_conn.ehlo('test')

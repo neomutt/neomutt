@@ -78,7 +78,7 @@ void test_expando_simple_expando_render(void)
 
   const char *expected = "Test - 1";
 
-  const struct ExpandoRenderData render[] = {
+  const struct ExpandoRenderCallback render[] = {
     { 1, 0, simple_s },
     { 1, 1, simple_d },
     { -1, -1, NULL },

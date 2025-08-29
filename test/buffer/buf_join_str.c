@@ -58,7 +58,7 @@ void test_buf_join_str(void)
   // clang-format on
 
   {
-    for (size_t i = 0; i < mutt_array_size(append_tests); i++)
+    for (size_t i = 0; i < countof(append_tests); i++)
     {
       const struct AppendTest *t = &append_tests[i];
       struct Buffer *buf = NULL;

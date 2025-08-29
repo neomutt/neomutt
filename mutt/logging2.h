@@ -24,12 +24,13 @@
 #define MUTT_MUTT_LOGGING2_H
 
 #include <stdbool.h>
-#include <stdio.h>
 #include <time.h>
 #include "queue.h"
 
 /// Log lines longer than this will be truncated
 #define LOG_LINE_MAX_LEN 10240
+
+extern const char *LogLevelAbbr;
 
 /**
  * enum LogLevel - Names for the Logging Levels
@@ -102,11 +103,11 @@ int  log_disp_queue   (time_t stamp, const char *file, int line, const char *fun
 int  log_disp_terminal(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
                        __attribute__((__format__(__printf__, 6, 7)));
 
-int  log_queue_add(struct LogLine *ll);
-void log_queue_empty(void);
-void log_queue_flush(log_dispatcher_t disp);
-int  log_queue_save(FILE *fp);
-void log_queue_set_max_size(int size);
+int                log_queue_add(struct LogLine *ll);
+void               log_queue_empty(void);
+void               log_queue_flush(log_dispatcher_t disp);
+struct LogLineList log_queue_get(void);
+void               log_queue_set_max_size(int size);
 
 void log_file_close(bool verbose);
 int  log_file_open(bool verbose);

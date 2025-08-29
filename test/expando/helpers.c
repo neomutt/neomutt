@@ -42,38 +42,38 @@ static long index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFl
 
 void test_expando_helpers(void)
 {
-  static const struct ExpandoRenderData TestRenderData[] = {
+  static const struct ExpandoRenderCallback TestRenderCallback[] = {
     // clang-format off
     { 1, 2, index_a, index_a_num },
     { -1, -1, NULL, NULL },
     // clang-format on
   };
 
-  // const struct ExpandoRenderData *find_get_number(const struct ExpandoRenderData *rdata, int did, int uid);
+  // const struct ExpandoRenderCallback *find_get_number(const struct ExpandoRenderCallback *rdata, int did, int uid);
   {
-    const struct ExpandoRenderData *rdata = NULL;
+    const struct ExpandoRenderCallback *rdata = NULL;
 
     rdata = find_get_number(NULL, 1, 2);
     TEST_CHECK(rdata == NULL);
 
-    rdata = find_get_number(TestRenderData, 1, 2);
+    rdata = find_get_number(TestRenderCallback, 1, 2);
     TEST_CHECK(rdata != NULL);
 
-    rdata = find_get_number(TestRenderData, 10, 20);
+    rdata = find_get_number(TestRenderCallback, 10, 20);
     TEST_CHECK(rdata == NULL);
   }
 
-  // const struct ExpandoRenderData *find_get_string(const struct ExpandoRenderData *rdata, int did, int uid);
+  // const struct ExpandoRenderCallback *find_get_string(const struct ExpandoRenderCallback *rdata, int did, int uid);
   {
-    const struct ExpandoRenderData *rdata = NULL;
+    const struct ExpandoRenderCallback *rdata = NULL;
 
     rdata = find_get_string(NULL, 1, 2);
     TEST_CHECK(rdata == NULL);
 
-    rdata = find_get_string(TestRenderData, 1, 2);
+    rdata = find_get_string(TestRenderCallback, 1, 2);
     TEST_CHECK(rdata != NULL);
 
-    rdata = find_get_string(TestRenderData, 10, 20);
+    rdata = find_get_string(TestRenderCallback, 10, 20);
     TEST_CHECK(rdata == NULL);
   }
 
@@ -118,7 +118,7 @@ void test_expando_helpers(void)
       // clang-format on
     };
 
-    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    for (size_t i = 0; i < countof(tests); i++)
     {
       TEST_CASE_("%lu", i);
       buf_reset(buf);

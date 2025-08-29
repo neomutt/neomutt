@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -40,6 +41,7 @@
  * - @ref envelope_window
  * - @ref gui_sbar
  * - @ref compose_attach
+ * - @ref compose_preview
  * - @ref compose_cbar
  *
  * ## Data
@@ -120,6 +122,43 @@ static const struct Mapping ComposeNewsHelp[] = {
 };
 
 /**
+ * compose_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
+ */
+static int compose_recalc(struct MuttWindow *dlg)
+{
+  if (!dlg)
+    return -1;
+
+  struct ComposeSharedData *shared = dlg->wdata;
+  struct MuttWindow *win_env = window_find_child(dlg, WT_CUSTOM);
+  struct MuttWindow *win_preview = shared->win_preview;
+  struct MuttWindow *win_preview_bar = shared->win_preview_bar;
+
+  const bool c_show_preview = cs_subset_bool(shared->sub, "compose_show_preview");
+  const short c_preview_min_rows = cs_subset_number(shared->sub, "compose_preview_min_rows");
+
+  // How many rows are available for the preview window?
+  // Total rows - (envelope window + attachments + number of status bars)
+  int rows_available = dlg->state.rows -
+                       (win_env->state.rows + shared->adata->actx->idxlen + 3);
+
+  if (c_show_preview && rows_available >= c_preview_min_rows)
+  {
+    window_set_visible(win_preview, true);
+    window_set_visible(win_preview_bar, true);
+    attachment_size_fixed(shared->adata->menu->win);
+  }
+  else
+  {
+    window_set_visible(win_preview, false);
+    window_set_visible(win_preview_bar, false);
+    attachment_size_max(shared->adata->menu->win);
+  }
+
+  return 0;
+}
+
+/**
  * compose_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int compose_config_observer(struct NotifyCallback *nc)
@@ -132,11 +171,28 @@ static int compose_config_observer(struct NotifyCallback *nc)
   struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *dlg = nc->global_data;
 
-  if (!mutt_str_equal(ev_c->name, "status_on_top"))
-    return 0;
+  if (mutt_str_equal(ev_c->name, "status_on_top"))
+  {
+    window_status_on_top(dlg, NeoMutt->sub);
+    mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
+  }
+  else if (mutt_str_equal(ev_c->name, "compose_show_preview") ||
+           mutt_str_equal(ev_c->name, "compose_preview_min_rows"))
+  {
+    dlg->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "config done, request WA_RECALC\n");
+  }
+  else if (mutt_str_equal(ev_c->name, "compose_preview_above_attachments"))
+  {
+    struct ComposeSharedData *shared = dlg->wdata;
 
-  window_status_on_top(dlg, NeoMutt->sub);
-  mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
+    mutt_window_swap(dlg, shared->win_preview_bar, shared->win_attach_bar);
+    mutt_window_swap(dlg, shared->win_preview, shared->adata->menu->win);
+
+    dlg->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5, "config done, request WA_REPAINT\n");
+  }
+
   return 0;
 }
 
@@ -168,8 +224,6 @@ static int compose_window_observer(struct NotifyCallback *nc)
     return 0;
   if (!nc->global_data || !nc->event_data)
     return -1;
-  if (nc->event_subtype != NT_WINDOW_DELETE)
-    return 0;
 
   struct MuttWindow *dlg = nc->global_data;
   struct EventWindow *ev_w = nc->event_data;
@@ -178,10 +232,18 @@ static int compose_window_observer(struct NotifyCallback *nc)
 
   struct ComposeSharedData *shared = dlg->wdata;
 
-  notify_observer_remove(NeoMutt->sub->notify, compose_config_observer, dlg);
-  notify_observer_remove(shared->email->notify, compose_email_observer, shared);
-  notify_observer_remove(dlg->notify, compose_window_observer, dlg);
-  mutt_debug(LL_DEBUG5, "window delete done\n");
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    dlg->actions |= WA_RECALC;
+    mutt_debug(LL_DEBUG5, "window state done, request WA_RECALC\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    notify_observer_remove(NeoMutt->sub->notify, compose_config_observer, dlg);
+    notify_observer_remove(shared->email->notify, compose_email_observer, shared);
+    notify_observer_remove(dlg->notify, compose_window_observer, dlg);
+    mutt_debug(LL_DEBUG5, "window delete done\n");
+  }
 
   return 0;
 }
@@ -264,28 +326,61 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
                                            MUTT_WIN_SIZE_UNLIMITED);
   dlg->wdata = shared;
   dlg->wdata_free = compose_shared_data_free;
+  dlg->recalc = compose_recalc;
 
   struct MuttWindow *win_env = env_window_new(e, fcc, sub);
   struct MuttWindow *win_attach = attach_new(dlg, shared);
   struct MuttWindow *win_cbar = cbar_new(shared);
   struct MuttWindow *win_abar = sbar_new();
   sbar_set_title(win_abar, _("-- Attachments"));
+  struct MuttWindow *win_preview_bar = sbar_new();
+  sbar_set_title(win_preview_bar, _("-- Preview"));
+  struct MuttWindow *win_preview = preview_window_new(e, win_preview_bar);
 
+  const bool c_preview_above_attachments = cs_subset_bool(shared->sub, "compose_preview_above_attachments");
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
   if (c_status_on_top)
   {
     mutt_window_add_child(dlg, win_cbar);
     mutt_window_add_child(dlg, win_env);
-    mutt_window_add_child(dlg, win_abar);
-    mutt_window_add_child(dlg, win_attach);
+    if (c_preview_above_attachments)
+    {
+      mutt_window_add_child(dlg, win_preview_bar);
+      mutt_window_add_child(dlg, win_preview);
+      mutt_window_add_child(dlg, win_abar);
+      mutt_window_add_child(dlg, win_attach);
+    }
+    else
+    {
+      mutt_window_add_child(dlg, win_abar);
+      mutt_window_add_child(dlg, win_attach);
+      mutt_window_add_child(dlg, win_preview_bar);
+      mutt_window_add_child(dlg, win_preview);
+    }
   }
   else
   {
     mutt_window_add_child(dlg, win_env);
-    mutt_window_add_child(dlg, win_abar);
-    mutt_window_add_child(dlg, win_attach);
+    if (c_preview_above_attachments)
+    {
+      mutt_window_add_child(dlg, win_preview_bar);
+      mutt_window_add_child(dlg, win_preview);
+      mutt_window_add_child(dlg, win_abar);
+      mutt_window_add_child(dlg, win_attach);
+    }
+    else
+    {
+      mutt_window_add_child(dlg, win_abar);
+      mutt_window_add_child(dlg, win_attach);
+      mutt_window_add_child(dlg, win_preview_bar);
+      mutt_window_add_child(dlg, win_preview);
+    }
     mutt_window_add_child(dlg, win_cbar);
   }
+
+  shared->win_preview_bar = win_preview_bar;
+  shared->win_preview = win_preview;
+  shared->win_attach_bar = win_abar;
 
   dlg->help_data = ComposeHelp;
   dlg->help_menu = MENU_COMPOSE;
@@ -359,6 +454,8 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
     rc = compose_function_dispatcher(dlg, op);
     if (rc == FR_UNKNOWN)
       rc = env_function_dispatcher(win_env, op);
+    if (rc == FR_UNKNOWN)
+      rc = preview_function_dispatcher(shared->win_preview, op);
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)

@@ -240,7 +240,7 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata,
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata->ava)
   {
-    progress_update(progress, ARRAY_FOREACH_IDX, -1);
+    progress_update(progress, ARRAY_FOREACH_IDX_avp, -1);
 
     if (match_all ||
         mutt_pattern_alias_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, avp, NULL))

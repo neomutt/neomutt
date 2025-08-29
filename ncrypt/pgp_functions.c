@@ -63,28 +63,31 @@ static int op_generic_select_entry(struct PgpData *pd, int op)
   /* XXX make error reporting more verbose */
 
   const int index = menu_get_index(pd->menu);
-  struct PgpUid *cur_key = pd->key_table[index];
+  struct PgpUid **pkey = ARRAY_GET(pd->key_table, index);
+  if (!pkey)
+    return FR_ERROR;
+
   if (OptPgpCheckTrust)
   {
-    if (!pgp_key_is_valid(cur_key->parent))
+    if (!pgp_key_is_valid((*pkey)->parent))
     {
       mutt_error(_("This key can't be used: expired/disabled/revoked"));
       return FR_ERROR;
     }
   }
 
-  if (OptPgpCheckTrust && (!pgp_id_is_valid(cur_key) || !pgp_id_is_strong(cur_key)))
+  if (OptPgpCheckTrust && (!pgp_id_is_valid((*pkey)) || !pgp_id_is_strong((*pkey))))
   {
     const char *str = "";
     char buf2[1024] = { 0 };
 
-    if (cur_key->flags & KEYFLAG_CANTUSE)
+    if ((*pkey)->flags & KEYFLAG_CANTUSE)
     {
       str = _("ID is expired/disabled/revoked. Do you really want to use the key?");
     }
     else
     {
-      switch (cur_key->trust & 0x03)
+      switch ((*pkey)->trust & 0x03)
       {
         case 0:
           str = _("ID has undefined validity. Do you really want to use the key?");
@@ -107,7 +110,7 @@ static int op_generic_select_entry(struct PgpData *pd, int op)
     }
   }
 
-  pd->key = cur_key->parent;
+  pd->key = (*pkey)->parent;
   pd->done = true;
   return FR_SUCCESS;
 }
@@ -138,10 +141,17 @@ static int op_verify_key(struct PgpData *pd, int op)
   mutt_message(_("Invoking PGP..."));
 
   const int index = menu_get_index(pd->menu);
-  struct PgpUid *cur_key = pd->key_table[index];
+  struct PgpUid **pkey = ARRAY_GET(pd->key_table, index);
+  if (!pkey)
+  {
+    mutt_file_fclose(&fp_tmp);
+    mutt_file_fclose(&fp_null);
+    return FR_ERROR;
+  }
+
   char tmpbuf[256] = { 0 };
   snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",
-           pgp_fpr_or_lkeyid(pgp_principal_key(cur_key->parent)));
+           pgp_fpr_or_lkeyid(pgp_principal_key((*pkey)->parent)));
 
   pid_t pid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp_tmp),
                                     fileno(fp_null), tmpbuf);
@@ -159,7 +169,7 @@ static int op_verify_key(struct PgpData *pd, int op)
   mutt_clear_error();
   char title[1024] = { 0 };
   snprintf(title, sizeof(title), _("Key ID: 0x%s"),
-           pgp_keyid(pgp_principal_key(cur_key->parent)));
+           pgp_keyid(pgp_principal_key((*pkey)->parent)));
 
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
@@ -182,8 +192,11 @@ static int op_verify_key(struct PgpData *pd, int op)
 static int op_view_id(struct PgpData *pd, int op)
 {
   const int index = menu_get_index(pd->menu);
-  struct PgpUid *cur_key = pd->key_table[index];
-  mutt_message("%s", NONULL(cur_key->addr));
+  struct PgpUid **pkey = ARRAY_GET(pd->key_table, index);
+  if (!pkey)
+    return FR_ERROR;
+
+  mutt_message("%s", NONULL((*pkey)->addr));
   return FR_SUCCESS;
 }
 
@@ -207,14 +220,13 @@ static const struct PgpFunction PgpFunctions[] = {
  */
 int pgp_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg)
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
-  struct PgpData *pd = dlg->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct PgpData *pd = menu->mdata;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PgpFunctions[i].op != OP_NULL; i++)

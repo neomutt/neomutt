@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <langinfo.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -83,7 +82,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
       // write the part between prompt and cur using MT_COLOR_PROMPT
       msgwin_add_text_n(win, prompt, cur - prompt, ac_prompt);
 
-      if (isalnum(cur[1]) && (cur[2] == ')'))
+      if (mutt_isalnum(cur[1]) && (cur[2] == ')'))
       {
         // we have a single letter within parentheses - MT_COLOR_OPTIONS
         msgwin_add_text_n(win, cur + 1, 1, ac_opts);
@@ -194,12 +193,12 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
    * so there is no suitable base system's locale identification
    * Remove this code immediately if this situation changes! */
   char rexyes[16] = "^[+1YyYy]";
-  rexyes[6] = toupper(trans_yes[0]);
-  rexyes[7] = tolower(trans_yes[0]);
+  rexyes[6] = mutt_toupper(trans_yes[0]);
+  rexyes[7] = mutt_tolower(trans_yes[0]);
 
   char rexno[16] = "^[-0NnNn]";
-  rexno[6] = toupper(trans_no[0]);
-  rexno[7] = tolower(trans_no[0]);
+  rexno[6] = mutt_toupper(trans_no[0]);
+  rexno[7] = mutt_tolower(trans_no[0]);
 
   if (REG_COMP(&reyes, rexyes, REG_NOSUB) == 0)
     reyes_ok = true;
@@ -269,12 +268,12 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
 
     char answer[4] = { 0 };
     answer[0] = event.ch;
-    if (reyes_ok ? (regexec(&reyes, answer, 0, 0, 0) == 0) : (tolower(event.ch) == 'y'))
+    if (reyes_ok ? (regexec(&reyes, answer, 0, 0, 0) == 0) : (mutt_tolower(event.ch) == 'y'))
     {
       def = MUTT_YES;
       break;
     }
-    if (reno_ok ? (regexec(&reno, answer, 0, 0, 0) == 0) : (tolower(event.ch) == 'n'))
+    if (reno_ok ? (regexec(&reno, answer, 0, 0, 0) == 0) : (mutt_tolower(event.ch) == 'n'))
     {
       def = MUTT_NO;
       break;
@@ -357,7 +356,7 @@ enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_BOOL);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_BOOL);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   ASSERT(value != INT_MIN);
@@ -380,7 +379,7 @@ enum QuadOption query_quadoption(const char *prompt, struct ConfigSubset *sub, c
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_QUAD);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_QUAD);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   ASSERT(value != INT_MIN);

@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 static void *exparg;
 
@@ -47,16 +48,16 @@ void test_mutt_qsort_r(void)
   array[2] = 3;
   exparg = NULL;
   mutt_qsort_r(array, 3, sizeof(int), compare_ints, exparg);
-  TEST_CHECK(array[0] == 1);
-  TEST_CHECK(array[1] == 2);
-  TEST_CHECK(array[2] == 3);
+  TEST_CHECK_NUM_EQ(array[0], 1);
+  TEST_CHECK_NUM_EQ(array[1], 2);
+  TEST_CHECK_NUM_EQ(array[2], 3);
 
   array[0] = 2;
   array[1] = 1;
   array[2] = 3;
   exparg = array;
   mutt_qsort_r(array, 3, sizeof(int), compare_ints, exparg);
-  TEST_CHECK(array[0] == 3);
-  TEST_CHECK(array[1] == 2);
-  TEST_CHECK(array[2] == 1);
+  TEST_CHECK_NUM_EQ(array[0], 3);
+  TEST_CHECK_NUM_EQ(array[1], 2);
+  TEST_CHECK_NUM_EQ(array[2], 1);
 }

@@ -37,14 +37,14 @@ void test_mutt_addrlist_parse(void)
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse(&alist, NULL);
-    TEST_CHECK(parsed == 0);
+    TEST_CHECK_NUM_EQ(parsed, 0);
     TEST_CHECK(TAILQ_EMPTY(&alist));
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse(&alist, "apple");
-    TEST_CHECK(parsed == 1);
+    TEST_CHECK_NUM_EQ(parsed, 1);
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     TEST_CHECK_STR_EQ(buf_string(TAILQ_FIRST(&alist)->mailbox), "apple");
     mutt_addrlist_clear(&alist);
@@ -53,27 +53,27 @@ void test_mutt_addrlist_parse(void)
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse(&alist, "Incomplete <address");
-    TEST_CHECK(parsed == 0);
+    TEST_CHECK_NUM_EQ(parsed, 0);
     TEST_CHECK(TAILQ_EMPTY(&alist));
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse(&alist, "Complete <address@example.com>, Incomplete <address");
-    TEST_CHECK(parsed == 0);
+    TEST_CHECK_NUM_EQ(parsed, 0);
     TEST_CHECK(TAILQ_EMPTY(&alist));
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse(&alist, "Simple Address <test@example.com>, My Group: member1@group.org, member2@group.org, \"John M. Doe\" <john@doe.org>;, Another One <foo@bar.baz>, Elvis (The Pelvis) Presley <elvis@king.com>");
-    TEST_CHECK(parsed == 6);
+    TEST_CHECK_NUM_EQ(parsed, 6);
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK_STR_EQ(buf_string(a->mailbox), "test@example.com");
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK_STR_EQ(buf_string(a->mailbox), "My Group");
-    TEST_CHECK(a->group == 1);
+    TEST_CHECK_NUM_EQ(a->group, 1);
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK_STR_EQ(buf_string(a->mailbox), "member1@group.org");
     a = TAILQ_NEXT(a, entries);
@@ -82,7 +82,7 @@ void test_mutt_addrlist_parse(void)
     TEST_CHECK_STR_EQ(buf_string(a->mailbox), "john@doe.org");
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a->mailbox == NULL);
-    TEST_CHECK(a->group == 0);
+    TEST_CHECK_NUM_EQ(a->group, 0);
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK_STR_EQ(buf_string(a->mailbox), "foo@bar.baz");
     a = TAILQ_NEXT(a, entries);
@@ -96,7 +96,7 @@ void test_mutt_addrlist_parse(void)
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse(&alist, "Foo \\(Bar\\) <foo@bar.baz>");
-    TEST_CHECK(parsed == 1);
+    TEST_CHECK_NUM_EQ(parsed, 1);
     const struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK_STR_EQ(buf_string(a->personal), "Foo (Bar)");
     TEST_CHECK_STR_EQ(buf_string(a->mailbox), "foo@bar.baz");
@@ -106,13 +106,13 @@ void test_mutt_addrlist_parse(void)
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse(&alist, "\\");
-    TEST_CHECK(parsed == 0);
+    TEST_CHECK_NUM_EQ(parsed, 0);
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse(&alist, "empty-group:; (some comment)");
-    TEST_CHECK(parsed == 0);
+    TEST_CHECK_NUM_EQ(parsed, 0);
     const struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK(a->personal == NULL);
     TEST_CHECK_STR_EQ(buf_string(a->mailbox), "empty-group");
@@ -137,7 +137,7 @@ void test_mutt_addrlist_parse(void)
                                              "                  <foo@bar.baz> (comment 1),"
                                              "\"I have a name\" <bar@baz.com> (comment 2);");
 
-    TEST_CHECK(parsed == 2);
+    TEST_CHECK_NUM_EQ(parsed, 2);
 
     const struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK(a->personal == NULL);

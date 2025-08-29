@@ -48,7 +48,6 @@ void        mutt_encode_path(struct Buffer *buf, const char *src);
 char *      mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 void        mutt_get_parent_path(const char *path, char *buf, size_t buflen);
 bool        mutt_is_text_part(const struct Body *b);
-const char *mutt_make_version(void);
 bool        mutt_needs_mailcap(struct Body *b);
 FILE *      mutt_open_read(const char *path, pid_t *thepid);
 void        mutt_pretty_mailbox(char *buf, size_t buflen);
@@ -56,7 +55,7 @@ void        mutt_safe_path(struct Buffer *dest, const struct Address *a);
 int         mutt_save_confirm(const char *s, struct stat *st);
 void        mutt_save_path(char *d, size_t dsize, const struct Address *a);
 void        mutt_sleep(short s);
-void        mutt_str_pretty_size(char *buf, size_t buflen, size_t num);
+int         mutt_str_pretty_size(struct Buffer *buf, size_t num);
 
 void add_to_stailq     (struct ListHead *head, const char *str);
 void remove_from_stailq(struct ListHead *head, const char *str);

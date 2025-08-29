@@ -46,8 +46,10 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "debug/lib.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
@@ -61,7 +63,6 @@
 #include "mx.h"
 #include "private_data.h"
 #include "protos.h"
-#include "status.h"
 
 /// Braille display: row to leave the cursor
 int BrailleRow = -1;
@@ -127,7 +128,9 @@ static const struct Mapping PagerNewsHelp[] = {
 void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw)
 {
   priv->redraw |= redraw;
-  priv->pview->win_pager->actions |= WA_RECALC;
+
+  if (priv->pview && priv->pview->win_pager)
+    priv->pview->win_pager->actions |= WA_RECALC;
 }
 
 /**
@@ -374,8 +377,6 @@ int dlg_pager(struct PagerView *pview)
   priv->loop = PAGER_LOOP_CONTINUE;
   do
   {
-    pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
-    notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
     window_redraw(NULL);
 
     const bool c_braille_friendly = cs_subset_bool(NeoMutt->sub, "braille_friendly");
@@ -383,13 +384,13 @@ int dlg_pager(struct PagerView *pview)
     {
       if (BrailleRow != -1)
       {
-        mutt_window_move(priv->pview->win_pager, BrailleCol, BrailleRow + 1);
+        mutt_window_move(priv->pview->win_pager, BrailleRow + 1, BrailleCol);
         BrailleRow = -1;
       }
     }
     else
     {
-      mutt_window_move(priv->pview->win_pbar, priv->pview->win_pager->state.cols - 1, 0);
+      mutt_window_move(priv->pview->win_pbar, 0, priv->pview->win_pager->state.cols - 1);
     }
 
     // force redraw of the screen at every iteration of the event loop
@@ -467,24 +468,9 @@ int dlg_pager(struct PagerView *pview)
       msgwin_clear_text(NULL);
 
       pager_queue_redraw(priv, PAGER_REDRAW_FLOW);
-      if (pview->flags & MUTT_PAGER_RETWINCH)
-      {
-        /* Store current position. */
-        priv->win_height = -1;
-        for (size_t i = 0; i <= priv->top_line; i++)
-          if (!priv->lines[i].cont_line)
-            priv->win_height++;
 
-        op = OP_ABORT;
-        priv->rc = OP_REFORMAT_WINCH;
-        break;
-      }
-      else
-      {
-        /* note: mutt_resize_screen() -> mutt_window_reflow() sets
-         * PAGER_REDRAW_PAGER and PAGER_REDRAW_FLOW */
-        op = OP_NULL;
-      }
+      /* note: mutt_resize_screen() -> mutt_window_reflow() sets
+       * PAGER_REDRAW_PAGER and PAGER_REDRAW_FLOW */
       continue;
     }
 
@@ -520,10 +506,7 @@ int dlg_pager(struct PagerView *pview)
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
 
     if (op < OP_NULL)
-    {
-      op = OP_NULL;
       continue;
-    }
 
     if (op == OP_NULL)
     {

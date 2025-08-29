@@ -48,7 +48,7 @@ void test_nm_windowed_query_from_query(void)
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc = nm_windowed_query_from_query(buf, 1024, false, 0, 0,
                                                            "tag:inbox", "month", "");
-    TEST_CHECK(rc == NM_WINDOW_QUERY_INVALID_DURATION);
+    TEST_CHECK_NUM_EQ(rc, NM_WINDOW_QUERY_INVALID_DURATION);
   }
 
   // Check invalid timebase
@@ -56,7 +56,7 @@ void test_nm_windowed_query_from_query(void)
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc = nm_windowed_query_from_query(buf, 1024, false, 3, 3,
                                                            "tag:inbox", "months", "");
-    TEST_CHECK(rc == NM_WINDOW_QUERY_INVALID_TIMEBASE);
+    TEST_CHECK_NUM_EQ(rc, NM_WINDOW_QUERY_INVALID_TIMEBASE);
   }
 
   static const struct TestCase tests[] = {
@@ -77,7 +77,7 @@ void test_nm_windowed_query_from_query(void)
       "(date:3month..3month or (tag:unread and tag:flagged)) and tag:inbox" },
   };
 
-  for (int i = 0; i < mutt_array_size(tests); i++)
+  for (int i = 0; i < countof(tests); i++)
   {
     const struct TestCase *t = &tests[i];
     char buf[1024] = "\0";
@@ -87,7 +87,7 @@ void test_nm_windowed_query_from_query(void)
                                                            t->curr_search,
                                                            t->timebase, t->or_terms);
 
-    TEST_CHECK(rc == NM_WINDOW_QUERY_SUCCESS);
+    TEST_CHECK_NUM_EQ(rc, NM_WINDOW_QUERY_SUCCESS);
     TEST_CHECK_STR_EQ(buf, t->expected);
   }
 }

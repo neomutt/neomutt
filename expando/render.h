@@ -39,47 +39,49 @@ typedef uint8_t MuttFormatFlags;         ///< Flags for expando_render(), e.g. #
 #define MUTT_FORMAT_PLAIN       (1 << 5) ///< Do not prepend DISP_TO, DISP_CC ...
 
 /**
+ * @defgroup expando_get_string_api Expando Get String API
+ * @ingroup expando_get_data_api
+ *
+ * get_string_t - Get some string data
+ * @param[in]  node      ExpandoNode containing the callback
+ * @param[in]  data      Private data
+ * @param[in]  flags     Flags, see #MuttFormatFlags
+ * @param[out] buf       Buffer in which to save string
+ *
+ * Get some string data to be formatted.
+ */
+typedef void (*get_string_t)(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
+
+/**
+ * @defgroup expando_get_number_api Expando Get Number API
+ * @ingroup expando_get_data_api
+ *
+ * get_number_t - Get some numeric data
+ * @param[in]  node      ExpandoNode containing the callback
+ * @param[in]  data      Private data
+ * @param[in]  flags     Flags, see #MuttFormatFlags
+ * @retval num Data as a number
+ *
+ * Get some numeric data to be formatted.
+ */
+typedef long (*get_number_t)(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
+
+/**
  * @defgroup expando_get_data_api Expando Get Data API
  *
- * Define callbacks functions to get data to be formatted.
+ * Define callback functions to get data to be formatted.
  * Each function is associated with a Domain+UID pair.
  */
-struct ExpandoRenderData
+struct ExpandoRenderCallback
 {
-  int did;                           ///< Domain ID
-  int uid;                           ///< Unique ID
+  int did;                  ///< Domain ID, #ExpandoDomain
+  int uid;                  ///< Unique ID, e.g. #ExpandoDataAlias
 
-  /**
-   * @defgroup expando_get_string_api Expando Get String API
-   * @ingroup expando_get_data_api
-   *
-   * get_string - Get some string data
-   * @param[in]  node      ExpandoNode containing the callback
-   * @param[in]  data      Private data
-   * @param[in]  flags     Flags, see #MuttFormatFlags
-   * @param[out] buf       Buffer in which to save string
-   *
-   * Get some string data to be formatted.
-   */
-  void (*get_string)(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-
-  /**
-   * @defgroup expando_get_number_api Expando Get Number API
-   * @ingroup expando_get_data_api
-   *
-   * get_number - Get some numeric data
-   * @param[in]  node      ExpandoNode containing the callback
-   * @param[in]  data      Private data
-   * @param[in]  flags     Flags, see #MuttFormatFlags
-   * @retval num Data as a number
-   *
-   * Get some numeric data to be formatted.
-   */
-  long (*get_number)(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
+  get_string_t get_string;  // Callback function to get a string
+  get_number_t get_number;  // Callback function to get a number
 };
 
-int node_render(const struct ExpandoNode *node,
-                     const struct ExpandoRenderData *rdata, struct Buffer *buf,
-                     int max_cols, void *data, MuttFormatFlags flags);
+int node_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *erc,
+                struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
 
 #endif /* MUTT_EXPANDO_RENDER_H */

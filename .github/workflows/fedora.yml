@@ -57,7 +57,9 @@ jobs:
       run: make -j ${{steps.cpu-cores.outputs.count}} neomutt
 
     - name: Neomutt Version
-      run: ./neomutt -v
+      run: |
+        ./neomutt -v
+        ./neomutt -h all
 
     - name: Build Tests
       run: make -j ${{steps.cpu-cores.outputs.count}} test/neomutt-test

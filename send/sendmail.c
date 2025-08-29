@@ -170,7 +170,7 @@ static int send_msg(const char *path, struct SendmailArgArray *args,
       mutt_sig_reset_child_signals();
 
       /* execvpe is a glibc extension, so just manually set environ */
-      environ = EnvList;
+      environ = NeoMutt->env;
       execvp(path, (char **) args->entries);
       _exit(S_ERR);
     }
@@ -312,7 +312,8 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
     struct Buffer *cmd = buf_pool_get();
 
     const struct Expando *c_inews = cs_subset_expando(sub, "inews");
-    expando_filter(c_inews, NntpRenderData, 0, MUTT_FORMAT_NO_FLAGS, cmd->dsize, cmd);
+    expando_filter(c_inews, NntpRenderCallbacks, 0, MUTT_FORMAT_NO_FLAGS,
+                   cmd->dsize, NeoMutt->env, cmd);
     if (buf_is_empty(cmd))
     {
       i = nntp_post(m, msg);

@@ -81,7 +81,7 @@ static int mutt_randbuf(void *buf, size_t buflen)
    * configured selinux, seccomp or something to not allow getrandom */
   if (!FpRandom)
   {
-    FpRandom = mutt_file_fopen("/dev/urandom", "rb");
+    FpRandom = mutt_file_fopen("/dev/urandom", "r");
     if (!FpRandom)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));

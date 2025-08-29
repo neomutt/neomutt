@@ -227,10 +227,6 @@ Add any addresses after the \(aq\fB\-\-\fP\(aq argument, e.g.:
 .RE
 .
 .TP
-.B \-B
-Run in batch mode (do not start the ncurses UI)
-.
-.TP
 .BI \-b " address"
 Specify a blind carbon copy (Bcc) recipient
 .
@@ -259,6 +255,11 @@ Specify a carbon copy (Cc) recipient
 Dump all configuration variables as
 .RB \(aq name = value \(aq
 pairs to stdout
+.
+.TP
+.B \-D\ \-D
+.B \-DD
+Like \fB\-D\fP, but only show the config that has changed
 .
 .TP
 .B \-D\ \-O

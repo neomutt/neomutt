@@ -291,7 +291,8 @@ static void menu_pad_string(struct Menu *menu, struct Buffer *buf)
   if (c_arrow_cursor)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
-    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+    if (max_cols > 0)
+      max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
   int buf_cols = mutt_strwidth(buf_string(buf));
@@ -339,7 +340,7 @@ void menu_redraw_index(struct Menu *menu)
       menu_pad_string(menu, buf);
 
       mutt_curses_set_color(ac);
-      mutt_window_move(menu->win, 0, i - menu->top);
+      mutt_window_move(menu->win, i - menu->top, 0);
 
       if (i == menu->current)
         mutt_curses_set_color(ac_ind);
@@ -392,7 +393,7 @@ void menu_redraw_motion(struct Menu *menu)
    * generate status messages.  So we want to call it *before* we
    * position the cursor for drawing. */
   const struct AttrColor *old_color = menu->color(menu, menu->old_current);
-  mutt_window_move(menu->win, 0, menu->old_current - menu->top);
+  mutt_window_move(menu->win, menu->old_current - menu->top, 0);
   mutt_curses_set_color(old_color);
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
@@ -408,12 +409,13 @@ void menu_redraw_motion(struct Menu *menu)
 
     menu->make_entry(menu, menu->old_current, menu->win->state.cols, buf);
     menu_pad_string(menu, buf);
-    mutt_window_move(menu->win, arrow_width + 1, menu->old_current - menu->top);
+    mutt_window_move(menu->win, menu->old_current - menu->top, arrow_width + 1);
     print_enriched_string(menu->win, menu->old_current, old_color, NULL, buf, menu->sub);
 
     /* now draw it in the new location */
     mutt_curses_set_color(ac_ind);
-    mutt_window_mvaddstr(menu->win, 0, menu->current - menu->top, c_arrow_string);
+    mutt_window_move(menu->win, menu->current - menu->top, 0);
+    mutt_window_addstr(menu->win, c_arrow_string);
   }
   else
   {
@@ -429,7 +431,7 @@ void menu_redraw_motion(struct Menu *menu)
     buf_reset(buf);
     menu->make_entry(menu, menu->current, menu->win->state.cols, buf);
     menu_pad_string(menu, buf);
-    mutt_window_move(menu->win, 0, menu->current - menu->top);
+    mutt_window_move(menu->win, menu->current - menu->top, 0);
     mutt_curses_set_color(cur_color);
     print_enriched_string(menu->win, menu->current, cur_color, ac_ind, buf, menu->sub);
   }
@@ -446,7 +448,7 @@ void menu_redraw_current(struct Menu *menu)
   struct Buffer *buf = buf_pool_get();
   const struct AttrColor *ac = menu->color(menu, menu->current);
 
-  mutt_window_move(menu->win, 0, menu->current - menu->top);
+  mutt_window_move(menu->win, menu->current - menu->top, 0);
   menu->make_entry(menu, menu->current, menu->win->state.cols, buf);
   menu_pad_string(menu, buf);
 

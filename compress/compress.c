@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 2019 Tino Reichardt <milky-neomutt@mcmilk.de>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,6 +31,7 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "lib.h"
 
 /**
@@ -51,26 +52,22 @@ static const struct ComprOps *CompressOps[] = {
 
 /**
  * compress_list - Get a list of compression backend names
- * @retval ptr Comma-space-separated list of names
+ * @retval ptr List of names
  *
- * @note The caller should free the string
+ * @note Caller should free the Slist
  */
-const char *compress_list(void)
+struct Slist *compress_list(void)
 {
-  char tmp[256] = { 0 };
+  struct Slist *sl = slist_new(D_SLIST_SEP_SPACE);
+
   const struct ComprOps **compr_ops = CompressOps;
-  size_t len = 0;
 
   for (; *compr_ops; compr_ops++)
   {
-    if (len != 0)
-    {
-      len += snprintf(tmp + len, sizeof(tmp) - len, ", ");
-    }
-    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*compr_ops)->name);
+    slist_add_string(sl, (*compr_ops)->name);
   }
 
-  return mutt_str_dup(tmp);
+  return sl;
 }
 
 /**

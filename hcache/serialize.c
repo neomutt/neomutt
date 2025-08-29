@@ -273,7 +273,7 @@ void serial_restore_address(struct AddressList *al, const unsigned char *d,
 
   serial_restore_int(&counter, d, off);
 
-  while (counter)
+  while (counter > 0)
   {
     struct Address *a = mutt_addr_new();
 
@@ -340,7 +340,7 @@ void serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
   serial_restore_int(&counter, d, off);
 
   struct ListNode *np = NULL;
-  while (counter)
+  while (counter > 0)
   {
     np = mutt_list_insert_tail(l, NULL);
     serial_restore_char(&np->data, d, off, convert);
@@ -439,7 +439,7 @@ void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d,
   serial_restore_int(&counter, d, off);
 
   struct Parameter *np = NULL;
-  while (counter)
+  while (counter > 0)
   {
     np = mutt_param_new();
     serial_restore_char(&np->attribute, d, off, false);
@@ -716,7 +716,7 @@ void serial_restore_tags(struct TagList *tl, const unsigned char *d, int *off)
 
   serial_restore_int(&counter, d, off);
 
-  while (counter)
+  while (counter > 0)
   {
     char *name = NULL;
     serial_restore_char(&name, d, off, false);

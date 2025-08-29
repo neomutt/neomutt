@@ -64,12 +64,11 @@ jobs:
       run: |
         cd build-${{ matrix.cfg.name }}
         ./neomutt -v
+        ./neomutt -h all
 
     - name: Test Docs
       run: |
         cd build-${{ matrix.cfg.name }}
-        pwd
-        ls -C
         make validate-docs
 
     - name: Build Tests

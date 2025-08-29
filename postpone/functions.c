@@ -176,14 +176,13 @@ static const struct PostponeFunction PostponeFunctions[] = {
  */
 int postpone_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg)
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
-  struct PostponeData *pd = dlg->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct PostponeData *pd = menu->mdata;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PostponeFunctions[i].op != OP_NULL; i++)
@@ -215,7 +214,8 @@ struct MailboxView *postponed_get_mailbox_view(struct MuttWindow *dlg)
   if (!dlg)
     return NULL;
 
-  struct PostponeData *pd = dlg->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct PostponeData *pd = menu->mdata;
   if (!pd)
     return NULL;
 

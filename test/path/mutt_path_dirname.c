@@ -47,7 +47,7 @@ void test_mutt_path_dirname(void)
   };
 
   {
-    for (int i = 0; i < mutt_array_size(tests); i++)
+    for (int i = 0; i < countof(tests); i++)
     {
       const char *source = tests[i][0];
       const char *expected = tests[i][1];

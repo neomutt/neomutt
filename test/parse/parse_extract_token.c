@@ -25,10 +25,13 @@
 #include "acutest.h"
 #include <string.h>
 #include "parse/lib.h"
+#include "test_common.h"
 
 void test_parse_extract_token(void)
 {
+  // int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
+
   TEST_CASE("parse_extract_token");
   int rc = parse_extract_token(NULL, NULL, TOKEN_NO_FLAGS);
-  TEST_CHECK(rc == -1);
+  TEST_CHECK_NUM_EQ(rc, -1);
 }

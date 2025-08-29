@@ -28,6 +28,7 @@
 #include "acutest.h"
 #include <time.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_date_localtime(void)
 {
@@ -36,27 +37,27 @@ void test_mutt_date_localtime(void)
   {
     TEST_CASE("December, 2000");
     struct tm tm = mutt_date_localtime(977745600);
-    TEST_CHECK(tm.tm_sec == 0);
-    TEST_CHECK(tm.tm_hour == 12);
-    TEST_CHECK(tm.tm_mday == 25);
-    TEST_CHECK(tm.tm_mon == 11);
-    TEST_CHECK(tm.tm_year == 100);
-    TEST_CHECK(tm.tm_wday == 1);
-    TEST_CHECK(tm.tm_yday == 359);
+    TEST_CHECK_NUM_EQ(tm.tm_sec, 0);
+    TEST_CHECK_NUM_EQ(tm.tm_hour, 12);
+    TEST_CHECK_NUM_EQ(tm.tm_mday, 25);
+    TEST_CHECK_NUM_EQ(tm.tm_mon, 11);
+    TEST_CHECK_NUM_EQ(tm.tm_year, 100);
+    TEST_CHECK_NUM_EQ(tm.tm_wday, 1);
+    TEST_CHECK_NUM_EQ(tm.tm_yday, 359);
   }
 
   {
     TEST_CASE("June, 2000");
     struct tm tm = mutt_date_localtime(961930800);
-    TEST_CHECK(tm.tm_sec == 0);
+    TEST_CHECK_NUM_EQ(tm.tm_sec, 0);
     TEST_CHECK((tm.tm_hour == 12) || // Expected result...
                (tm.tm_hour == 11));  // but Travis seems to have locale problems
     TEST_MSG("hour = %d", tm.tm_hour);
-    TEST_CHECK(tm.tm_mday == 25);
-    TEST_CHECK(tm.tm_mon == 5);
-    TEST_CHECK(tm.tm_year == 100);
-    TEST_CHECK(tm.tm_wday == 0);
-    TEST_CHECK(tm.tm_yday == 176);
+    TEST_CHECK_NUM_EQ(tm.tm_mday, 25);
+    TEST_CHECK_NUM_EQ(tm.tm_mon, 5);
+    TEST_CHECK_NUM_EQ(tm.tm_year, 100);
+    TEST_CHECK_NUM_EQ(tm.tm_wday, 0);
+    TEST_CHECK_NUM_EQ(tm.tm_yday, 176);
   }
 
   {

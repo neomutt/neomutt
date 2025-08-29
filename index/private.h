@@ -30,6 +30,17 @@ struct IndexPrivateData;
 struct IndexSharedData;
 struct ConfigSubset;
 
+/**
+ * struct EmailFormatInfo - Data passed to index_format_str()
+ */
+struct EmailFormatInfo
+{
+  struct Mailbox *mailbox;    ///< Current Mailbox
+  int msg_in_pager;           ///< Index of Email displayed in the Pager
+  struct Email *email;        ///< Current Email
+  const char *pager_progress; ///< String representing Pager position through Email
+};
+
 struct MuttWindow *index_window_new(struct IndexPrivateData *priv);
 struct MuttWindow *ipanel_new(bool status_on_top, struct IndexSharedData *shared);
 int index_adjust_sort_threads(const struct ConfigSubset *sub);

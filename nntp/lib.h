@@ -26,16 +26,17 @@
  *
  * Usenet network mailbox type; talk to an NNTP server
  *
- * | File            | Description            |
- * | :-------------- | :--------------------- |
- * | nntp/adata.c    | @subpage nntp_adata    |
- * | nntp/browse.c   | @subpage nntp_browse   |
- * | nntp/complete.c | @subpage nntp_complete |
- * | nntp/config.c   | @subpage nntp_config   |
- * | nntp/edata.c    | @subpage nntp_edata    |
- * | nntp/mdata.c    | @subpage nntp_mdata    |
- * | nntp/newsrc.c   | @subpage nntp_newsrc   |
- * | nntp/nntp.c     | @subpage nntp_nntp     |
+ * | File                      | Description                   |
+ * | :------------------------ | :---------------------------- |
+ * | nntp/adata.c              | @subpage nntp_adata           |
+ * | nntp/complete.c           | @subpage nntp_complete        |
+ * | nntp/config.c             | @subpage nntp_config          |
+ * | nntp/edata.c              | @subpage nntp_edata           |
+ * | nntp/expando_browser.c    | @subpage nntp_expando_browser |
+ * | nntp/expando_newsrc.c     | @subpage nntp_expando_newsrc  |
+ * | nntp/mdata.c              | @subpage nntp_mdata           |
+ * | nntp/newsrc.c             | @subpage nntp_newsrc          |
+ * | nntp/nntp.c               | @subpage nntp_nntp            |
  */
 
 #ifndef MUTT_NNTP_LIB_H
@@ -45,6 +46,7 @@
 #include <stdio.h>
 #include "core/lib.h"
 #include "expando/lib.h"
+#include "expando_browser.h" // IWYU pragma: keep
 
 struct Buffer;
 struct ConnAccount;
@@ -54,7 +56,7 @@ struct stat;
 
 extern struct NntpAccountData *CurrentNewsSrv; ///< Current NNTP news server
 extern const struct MxOps MxNntpOps;
-extern const struct ExpandoRenderData NntpRenderData[];
+extern const struct ExpandoRenderCallback NntpRenderCallbacks[];
 
 /* article number type and format */
 #define anum_t long
@@ -96,28 +98,8 @@ void nntp_newsrc_close(struct NntpAccountData *adata);
 void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen);
 void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct);
 void nntp_clear_cache(struct NntpAccountData *adata);
-int nntp_compare_order(const struct Email *a, const struct Email *b, bool reverse);
+int nntp_sort_unsorted(const struct Email *a, const struct Email *b, bool reverse);
 enum MailboxType nntp_path_probe(const char *path, const struct stat *st);
 int nntp_complete(struct Buffer *buf);
-
-void group_index_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void group_index_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void group_index_M(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void group_index_N(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-
-long group_index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
-long group_index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
-long group_index_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
-long group_index_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
-long group_index_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
-
-void nntp_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void nntp_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void nntp_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void nntp_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void nntp_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-
-long nntp_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
-long nntp_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
 
 #endif /* MUTT_NNTP_LIB_H */

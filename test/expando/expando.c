@@ -102,7 +102,7 @@ void test_expando_expando(void)
     expando_free(&exp);
   }
 
-  // int expando_render(const struct Expando *exp, const struct ExpandoRenderData *rdata, void *data, MuttFormatFlags flags, int cols, struct Buffer *buf);
+  // int expando_render(const struct Expando *exp, const struct ExpandoRenderCallback *rdata, void *data, MuttFormatFlags flags, int cols, struct Buffer *buf);
   {
     const struct ExpandoDefinition TestFormatDef[] = {
       // clang-format off
@@ -111,7 +111,7 @@ void test_expando_expando(void)
       // clang-format on
     };
 
-    const struct ExpandoRenderData TestRenderData[] = {
+    const struct ExpandoRenderCallback TestRenderCallback[] = {
       // clang-format off
       { ED_ENVELOPE, ED_ENV_FROM, index_a, NULL },
       { -1, -1, NULL, NULL },
@@ -131,14 +131,14 @@ void test_expando_expando(void)
 
       struct Buffer *buf = buf_pool_get();
 
-      rc = expando_render(NULL, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, 80, buf);
-      TEST_CHECK(rc == 0);
+      rc = expando_render(NULL, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, 80, buf);
+      TEST_CHECK_NUM_EQ(rc, 0);
 
       rc = expando_render(exp, NULL, NULL, MUTT_FORMAT_NO_FLAGS, 80, buf);
-      TEST_CHECK(rc == 0);
+      TEST_CHECK_NUM_EQ(rc, 0);
 
-      rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-      TEST_CHECK(rc == 5);
+      rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+      TEST_CHECK_NUM_EQ(rc, 5);
 
       buf_pool_release(&buf);
       buf_pool_release(&err);
@@ -158,8 +158,8 @@ void test_expando_expando(void)
 
       struct Buffer *buf = buf_pool_get();
 
-      rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-      TEST_CHECK(rc == 30);
+      rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+      TEST_CHECK_NUM_EQ(rc, 30);
       TEST_CHECK_STR_EQ(buf_string(buf), "             bbb              ");
 
       buf_pool_release(&buf);
@@ -180,8 +180,8 @@ void test_expando_expando(void)
 
       struct Buffer *buf = buf_pool_get();
 
-      rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-      TEST_CHECK(rc == 30);
+      rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+      TEST_CHECK_NUM_EQ(rc, 30);
       TEST_CHECK_STR_EQ(buf_string(buf), "             BBB              ");
 
       buf_pool_release(&buf);
@@ -202,13 +202,43 @@ void test_expando_expando(void)
 
       struct Buffer *buf = buf_pool_get();
 
-      rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-      TEST_CHECK(rc == 10);
+      rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+      TEST_CHECK_NUM_EQ(rc, 10);
       TEST_CHECK_STR_EQ(buf_string(buf), "       BBB");
 
       buf_pool_release(&buf);
       buf_pool_release(&err);
       expando_free(&exp);
+    }
+
+    {
+      const char *str = "%a %a %a %a %-10.10a";
+
+      struct Buffer *err = buf_pool_get();
+      struct Expando *exp = NULL;
+
+      exp = expando_parse(str, TestFormatDef, err);
+      TEST_CHECK(exp != NULL);
+
+      struct Buffer *buf = buf_pool_get();
+
+      for (int width = 40; width >= 0; width--)
+      {
+        TEST_CASE_("%d", width);
+        buf_reset(buf);
+        int expected = MIN(34, width);
+
+        int rc = expando_render(exp, TestRenderCallback, NULL,
+                                MUTT_FORMAT_NO_FLAGS, width, buf);
+        TEST_CHECK(rc == expected);
+        TEST_MSG("Actual:   %d", rc);
+        TEST_MSG("Expected: %d", expected);
+        TEST_MSG(">>%s<<", buf_string(buf));
+      }
+
+      expando_free(&exp);
+      buf_pool_release(&buf);
+      buf_pool_release(&err);
     }
   }
 }

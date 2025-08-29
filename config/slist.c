@@ -3,7 +3,7 @@
  * Type representing a list of strings
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  *
  * @copyright
@@ -34,7 +34,7 @@
  */
 
 #include "config.h"
-#include <limits.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -44,11 +44,8 @@
 /**
  * slist_destroy - Destroy an Slist object - Implements ConfigSetType::destroy() - @ingroup cfg_type_destroy
  */
-static void slist_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
+static void slist_destroy(void *var, const struct ConfigDef *cdef)
 {
-  if (!cs || !var || !cdef)
-    return; /* LCOV_EXCL_LINE */
-
   struct Slist **l = (struct Slist **) var;
   if (!*l)
     return;
@@ -59,12 +56,9 @@ static void slist_destroy(const struct ConfigSet *cs, void *var, const struct Co
 /**
  * slist_string_set - Set a Slist by string - Implements ConfigSetType::string_set() - @ingroup cfg_type_string_set
  */
-static int slist_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
+static int slist_string_set(void *var, struct ConfigDef *cdef,
                             const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   /* Store empty string list as NULL */
   if (value && (value[0] == '\0'))
     value = NULL;
@@ -91,7 +85,7 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
 
     if (cdef->validator)
     {
-      rc = cdef->validator(cs, cdef, (intptr_t) list, err);
+      rc = cdef->validator(cdef, (intptr_t) list, err);
 
       if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
@@ -100,7 +94,7 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
       }
     }
 
-    slist_destroy(cs, var, cdef);
+    slist_destroy(var, cdef);
 
     *(struct Slist **) var = list;
 
@@ -122,12 +116,8 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
 /**
  * slist_string_get - Get a Slist as a string - Implements ConfigSetType::string_get() - @ingroup cfg_type_string_get
  */
-static int slist_string_get(const struct ConfigSet *cs, void *var,
-                            const struct ConfigDef *cdef, struct Buffer *result)
+static int slist_string_get(void *var, const struct ConfigDef *cdef, struct Buffer *result)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   if (var)
   {
     struct Slist *list = *(struct Slist **) var;
@@ -151,12 +141,9 @@ static int slist_string_get(const struct ConfigSet *cs, void *var,
 /**
  * slist_native_set - Set a Slist config item by Slist - Implements ConfigSetType::native_set() - @ingroup cfg_type_native_set
  */
-static int slist_native_set(const struct ConfigSet *cs, void *var,
-                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
+static int slist_native_set(void *var, const struct ConfigDef *cdef,
+                            intptr_t value, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int rc;
 
   if (slist_equal((struct Slist *) value, *(struct Slist **) var))
@@ -167,7 +154,7 @@ static int slist_native_set(const struct ConfigSet *cs, void *var,
 
   if (cdef->validator)
   {
-    rc = cdef->validator(cs, cdef, value, err);
+    rc = cdef->validator(cdef, value, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
       return rc | CSR_INV_VALIDATOR;
@@ -188,12 +175,8 @@ static int slist_native_set(const struct ConfigSet *cs, void *var,
 /**
  * slist_native_get - Get a Slist from a Slist config item - Implements ConfigSetType::native_get() - @ingroup cfg_type_native_get
  */
-static intptr_t slist_native_get(const struct ConfigSet *cs, void *var,
-                                 const struct ConfigDef *cdef, struct Buffer *err)
+static intptr_t slist_native_get(void *var, const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return INT_MIN; /* LCOV_EXCL_LINE */
-
   struct Slist *list = *(struct Slist **) var;
 
   return (intptr_t) list;
@@ -202,13 +185,9 @@ static intptr_t slist_native_get(const struct ConfigSet *cs, void *var,
 /**
  * slist_string_plus_equals - Add to a Slist by string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
  */
-static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
-                                    const struct ConfigDef *cdef,
+static int slist_string_plus_equals(void *var, const struct ConfigDef *cdef,
                                     const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int rc = CSR_SUCCESS;
 
   /* Store empty strings as NULL */
@@ -233,7 +212,7 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
 
   if (cdef->validator)
   {
-    rc = cdef->validator(cs, cdef, (intptr_t) copy, err);
+    rc = cdef->validator(cdef, (intptr_t) copy, err);
     if (CSR_RESULT(rc) != CSR_SUCCESS)
     {
       slist_free(&copy);
@@ -250,13 +229,9 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
 /**
  * slist_string_minus_equals - Remove from a Slist by string - Implements ConfigSetType::string_minus_equals() - @ingroup cfg_type_string_minus_equals
  */
-static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
-                                     const struct ConfigDef *cdef,
+static int slist_string_minus_equals(void *var, const struct ConfigDef *cdef,
                                      const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int rc = CSR_SUCCESS;
 
   /* Store empty strings as NULL */
@@ -278,7 +253,7 @@ static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
 
   if (cdef->validator)
   {
-    rc = cdef->validator(cs, cdef, (intptr_t) copy, err);
+    rc = cdef->validator(cdef, (intptr_t) copy, err);
     if (CSR_RESULT(rc) != CSR_SUCCESS)
     {
       slist_free(&copy);
@@ -293,14 +268,26 @@ static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * slist_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool slist_has_been_set(void *var, const struct ConfigDef *cdef)
+{
+  struct Slist *list = NULL;
+  const char *initial = (const char *) cdef->initial;
+
+  if (initial)
+    list = slist_parse(initial, cdef->type);
+
+  bool rc = !slist_equal(list, *(struct Slist **) var);
+  slist_free(&list);
+  return rc;
+}
+
+/**
  * slist_reset - Reset a Slist to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
-static int slist_reset(const struct ConfigSet *cs, void *var,
-                       const struct ConfigDef *cdef, struct Buffer *err)
+static int slist_reset(void *var, const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   struct Slist *list = NULL;
   const char *initial = (const char *) cdef->initial;
 
@@ -323,11 +310,11 @@ static int slist_reset(const struct ConfigSet *cs, void *var,
 
   if (cdef->validator)
   {
-    rc = cdef->validator(cs, cdef, (intptr_t) list, err);
+    rc = cdef->validator(cdef, (intptr_t) list, err);
 
     if (CSR_RESULT(rc) != CSR_SUCCESS)
     {
-      slist_destroy(cs, &list, cdef);
+      slist_destroy(&list, cdef);
       return rc | CSR_INV_VALIDATOR;
     }
   }
@@ -335,7 +322,7 @@ static int slist_reset(const struct ConfigSet *cs, void *var,
   if (!list)
     rc |= CSR_SUC_EMPTY;
 
-  slist_destroy(cs, var, cdef);
+  slist_destroy(var, cdef);
 
   *(struct Slist **) var = list;
   return rc;
@@ -353,6 +340,7 @@ const struct ConfigSetType CstSlist = {
   slist_native_get,
   slist_string_plus_equals,
   slist_string_minus_equals,
+  slist_has_been_set,
   slist_reset,
   slist_destroy,
 };

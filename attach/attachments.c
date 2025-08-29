@@ -244,7 +244,6 @@ static int count_body_parts(struct Body *b)
 
 /**
  * mutt_count_body_parts - Count the MIME Body parts
- * @param m Mailbox
  * @param e Email
  * @param fp File to parse
  * @retval num Number of MIME Body parts

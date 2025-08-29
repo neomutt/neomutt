@@ -35,7 +35,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <string.h>
@@ -112,8 +111,8 @@ static void decode_one(char *dest, char *src)
 
   for (d = dest; *src; src++)
   {
-    if ((src[0] == '%') && isxdigit((unsigned char) src[1]) &&
-        isxdigit((unsigned char) src[2]))
+    if ((src[0] == '%') && mutt_isxdigit(src[1]) &&
+        mutt_isxdigit(src[2]))
     {
       *d++ = (hexval(src[1]) << 4) | hexval(src[2]);
       src += 2;
@@ -305,7 +304,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
        */
       s[0] = '\0';
       s++; /* let s point to the first character of index. */
-      for (t = s; (t[0] != '\0') && isdigit((unsigned char) t[0]); t++)
+      for (t = s; (t[0] != '\0') && mutt_isdigit(t[0]); t++)
         ; // do nothing
 
       encoded = (t[0] == '*');

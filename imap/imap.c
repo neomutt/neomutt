@@ -40,7 +40,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -72,7 +71,6 @@
 #include "mutt_socket.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "sort.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -87,6 +85,7 @@ static const struct Command ImapCommands[] = {
   // clang-format off
   { "subscribe-to",     parse_subscribe_to,     0 },
   { "unsubscribe-from", parse_unsubscribe_from, 0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -95,7 +94,7 @@ static const struct Command ImapCommands[] = {
  */
 void imap_init(void)
 {
-  commands_register(ImapCommands, mutt_array_size(ImapCommands));
+  commands_register(&NeoMutt->commands, ImapCommands);
 }
 
 /**
@@ -153,7 +152,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
     s++;
     SKIPWS(s);
     const char *flag_word = s;
-    while (*s && (*s != ')') && !isspace(*s))
+    while (*s && (*s != ')') && !mutt_isspace(*s))
       s++;
     const char ctmp = *s;
     *s = '\0';
@@ -403,7 +402,7 @@ static int complete_hosts(struct Buffer *buf)
     if (conn->account.type != MUTT_ACCT_TYPE_IMAP)
       continue;
 
-    mutt_account_tourl(&conn->account, &url);
+    account_to_url(&conn->account, &url);
     /* FIXME: how to handle multiple users on the same host? */
     url.user = NULL;
     url.path = NULL;
@@ -526,21 +525,24 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
  */
 static void imap_logout(struct ImapAccountData *adata)
 {
-  /* we set status here to let imap_handle_untagged know we _expect_ to
-   * receive a bye response (so it doesn't freak out and close the conn) */
-  if (adata->state == IMAP_DISCONNECTED)
+  if (adata->status != IMAP_FATAL)
   {
-    return;
-  }
+    /* we set status here to let imap_handle_untagged know we _expect_ to
+     * receive a bye response (so it doesn't freak out and close the conn) */
+    if (adata->state == IMAP_DISCONNECTED)
+    {
+      return;
+    }
 
-  adata->status = IMAP_BYE;
-  imap_cmd_start(adata, "LOGOUT");
-  const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
-  if ((c_imap_poll_timeout <= 0) ||
-      (mutt_socket_poll(adata->conn, c_imap_poll_timeout) != 0))
-  {
-    while (imap_cmd_step(adata) == IMAP_RES_CONTINUE)
-      ; // do nothing
+    adata->status = IMAP_BYE;
+    imap_cmd_start(adata, "LOGOUT");
+    const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+    if ((c_imap_poll_timeout <= 0) ||
+        (mutt_socket_poll(adata->conn, c_imap_poll_timeout) != 0))
+    {
+      while (imap_cmd_step(adata) == IMAP_RES_CONTINUE)
+        ; // do nothing
+    }
   }
   mutt_socket_close(adata->conn);
   adata->state = IMAP_DISCONNECTED;
@@ -1478,6 +1480,8 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
+    return MX_STATUS_ERROR;
 
   if (adata->state < IMAP_SELECTED)
   {
@@ -2166,21 +2170,21 @@ static bool imap_msg_open_new(struct Mailbox *m, struct Message *msg, const stru
 {
   bool success = false;
 
-  struct Buffer *tmp = buf_pool_get();
-  buf_mktemp(tmp);
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
 
-  msg->fp = mutt_file_fopen(buf_string(tmp), "w");
+  msg->fp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!msg->fp)
   {
-    mutt_perror("%s", buf_string(tmp));
+    mutt_perror("%s", buf_string(tempfile));
     goto cleanup;
   }
 
-  msg->path = buf_strdup(tmp);
+  msg->path = buf_strdup(tempfile);
   success = true;
 
 cleanup:
-  buf_pool_release(&tmp);
+  buf_pool_release(&tempfile);
   return success;
 }
 

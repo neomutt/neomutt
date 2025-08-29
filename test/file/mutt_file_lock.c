@@ -35,6 +35,6 @@ void test_mutt_file_lock(void)
 
   {
     int rc = mutt_file_lock(-1, false, false);
-    TEST_CHECK(rc == -1);
+    TEST_CHECK_NUM_EQ(rc, -1);
   }
 }

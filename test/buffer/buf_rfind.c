@@ -59,7 +59,7 @@ void test_buf_rfind(void)
   {
     const char *find = "apple";
 
-    for (size_t i = 0; i < mutt_array_size(rstrn_tests); i++)
+    for (size_t i = 0; i < countof(rstrn_tests); i++)
     {
       struct Buffer *buf = NULL;
 

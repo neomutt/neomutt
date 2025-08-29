@@ -63,22 +63,6 @@ struct AliasMenuData
   struct SearchState    *search_state;  ///< State of the current search
 };
 
-/**
- * ExpandoDataAlias - Expando UIDs for Aliases
- *
- * @sa ED_ALIAS, ExpandoDomain
- */
-enum ExpandoDataAlias
-{
-  ED_ALI_ADDRESS = 1,          ///< Alias.addr
-  ED_ALI_COMMENT,              ///< Alias.comment
-  ED_ALI_FLAGS,                ///< Alias.flags
-  ED_ALI_NAME,                 ///< Alias.name
-  ED_ALI_NUMBER,               ///< AliasView.num
-  ED_ALI_TAGGED,               ///< AliasView.tagged
-  ED_ALI_TAGS,                 ///< Alias.tags
-};
-
 int alias_config_observer(struct NotifyCallback *nc);
 
 int  alias_array_alias_add    (struct AliasViewArray *ava, struct Alias *alias);

@@ -32,7 +32,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -486,7 +485,7 @@ static int nntp_auth(struct NntpAccountData *adata)
     p = authenticators;
     while (*p)
     {
-      *p = toupper(*p);
+      *p = mutt_toupper(*p);
       p++;
     }
 
@@ -2351,9 +2350,9 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
 }
 
 /**
- * nntp_compare_order - Restore the 'unsorted' order of emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * nntp_sort_unsorted - Restore the 'unsorted' order of emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
-int nntp_compare_order(const struct Email *a, const struct Email *b, bool reverse)
+int nntp_sort_unsorted(const struct Email *a, const struct Email *b, bool reverse)
 {
   anum_t na = nntp_edata_get((struct Email *) a)->article_num;
   anum_t nb = nntp_edata_get((struct Email *) b)->article_num;

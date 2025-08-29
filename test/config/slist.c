@@ -3,7 +3,7 @@
  * Test code for the Slist object
  *
  * @authors
- * Copyright (C) 2019-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2022 Michal Siedlaczek <michal@siedlaczek.me>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
@@ -168,7 +168,7 @@ static bool test_slist_parse(struct Buffer *err)
   buf_reset(err);
 
   struct Slist *list = NULL;
-  for (size_t i = 0; i < mutt_array_size(init); i++)
+  for (size_t i = 0; i < countof(init); i++)
   {
     TEST_CASE_(">>%s<<", init[i] ? init[i] : "NULL");
     list = slist_parse(init[i], flags);
@@ -266,7 +266,7 @@ static bool test_slist_is_member(struct Buffer *err)
 
     static const char *values[] = { "apple", "", "damson", NULL };
 
-    for (size_t i = 0; i < mutt_array_size(values); i++)
+    for (size_t i = 0; i < countof(values); i++)
     {
       TEST_MSG("member '%s' : %s", values[i], slist_is_member(list, values[i]) ? "yes" : "no");
     }
@@ -458,10 +458,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Ilama";
   rc = cs_str_string_set(cs, name, "apple", err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   rc = cs_str_string_set(cs, name, "banana", err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+  name = "Damson";
+  TEST_CHECK(cs_str_has_been_set(cs, name));
 
   return true;
 }
@@ -563,7 +566,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   int rc = cs_str_native_set(cs, name, (intptr_t) list, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -571,7 +574,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -593,7 +596,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Xigua";
   rc = cs_str_native_set(cs, name, (intptr_t) list, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   slist_free(&list);
   list = slist_parse("banana", D_SLIST_SEP_COLON);
@@ -652,25 +655,25 @@ static bool test_plus_equals(struct ConfigSubset *sub, struct Buffer *err)
   };
 
   int rc;
-  for (size_t i = 0; i < mutt_array_size(PlusTests); i++)
+  for (size_t i = 0; i < countof(PlusTests); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, PlusTests[i][0], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("Set failed: %s", buf_string(err));
       return false;
     }
 
     rc = cs_str_string_plus_equals(cs, name, PlusTests[i][1], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("PlusEquals failed: %s", buf_string(err));
       return false;
     }
 
     rc = cs_str_string_get(cs, name, err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("Get failed: %s", buf_string(err));
       return false;
@@ -731,25 +734,25 @@ static bool test_minus_equals(struct ConfigSubset *sub, struct Buffer *err)
   };
 
   int rc;
-  for (size_t i = 0; i < mutt_array_size(MinusTests); i++)
+  for (size_t i = 0; i < countof(MinusTests); i++)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, MinusTests[i][0], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("Set failed: %s", buf_string(err));
       return false;
     }
 
     rc = cs_str_string_minus_equals(cs, name, MinusTests[i][1], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("MinusEquals failed: %s", buf_string(err));
       return false;
     }
 
     rc = cs_str_string_get(cs, name, err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("Get failed: %s", buf_string(err));
       return false;
@@ -793,14 +796,14 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   char *item = STAILQ_FIRST(&VarLemon->head)->data;
   TEST_MSG("Initial: %s = '%s'", name, item);
   int rc = cs_str_string_set(cs, name, "apple", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
   VarLemon = cs_subset_slist(sub, "Lemon");
   item = STAILQ_FIRST(&VarLemon->head)->data;
   TEST_MSG("Set: %s = '%s'", name, item);
 
   rc = cs_str_reset(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -824,7 +827,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Initial: %s = '%s'", name, item);
   dont_fail = true;
   rc = cs_str_string_set(cs, name, "banana", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
   VarMango = cs_subset_slist(sub, "Mango");
   item = STAILQ_FIRST(&VarMango->head)->data;
@@ -855,11 +858,11 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Xigua";
   rc = cs_str_reset(cs, name, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   StartupComplete = false;
   rc = cs_str_string_set(cs, name, "banana", err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
   StartupComplete = true;
 
   rc = cs_str_reset(cs, name, err);
@@ -881,7 +884,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   const char *name = "Nectarine";
   buf_reset(err);
   int rc = cs_str_string_set(cs, name, "banana", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -896,7 +899,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP list, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -912,7 +915,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   name = "Olive";
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "cherry", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -927,7 +930,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP list, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -990,7 +993,7 @@ static bool test_charset_validator(struct ConfigSubset *sub, struct Buffer *err)
   const char *name = "Wolfberry";
   buf_reset(err);
   int rc = cs_str_string_set(cs, name, "", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -1002,7 +1005,7 @@ static bool test_charset_validator(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "utf-8", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -1017,7 +1020,7 @@ static bool test_charset_validator(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP list, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -1089,7 +1092,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // set parent
   buf_reset(err);
   int rc = cs_str_string_set(cs, parent, "apple", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -1099,7 +1102,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // set child
   buf_reset(err);
   rc = cs_str_string_set(cs, child, "banana", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -1109,7 +1112,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset child
   buf_reset(err);
   rc = cs_str_reset(cs, child, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -1119,7 +1122,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset parent
   buf_reset(err);
   rc = cs_str_reset(cs, parent, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;

@@ -3,7 +3,7 @@
  * Auto-completion helpers
  *
  * @authors
- * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -118,7 +117,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
   spaces = pt - buf->data;
 
   pt = buf->data + pos - spaces;
-  while ((pt > buf->data) && !isspace((unsigned char) *pt))
+  while ((pt > buf->data) && !mutt_isspace(*pt))
     pt--;
 
   if (pt == buf->data) /* complete cmd */
@@ -131,9 +130,14 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
       memset(cd->match_list, 0, cd->match_list_len);
       memset(cd->completed, 0, sizeof(cd->completed));
 
-      struct Command *c = NULL;
-      for (size_t num = 0, size = commands_array(&c); num < size; num++)
-        candidate(cd, cd->user_typed, c[num].name, cd->completed, sizeof(cd->completed));
+      const struct Command **cp = NULL;
+      ARRAY_FOREACH(cp, &NeoMutt->commands)
+      {
+        const struct Command *cmd = *cp;
+
+        candidate(cd, cd->user_typed, cmd->name, cd->completed, sizeof(cd->completed));
+      }
+
       matches_ensure_morespace(cd, cd->num_matched);
       cd->match_list[cd->num_matched++] = cd->user_typed;
 
@@ -189,19 +193,19 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
       memset(cd->match_list, 0, cd->match_list_len);
       memset(cd->completed, 0, sizeof(cd->completed));
 
-      struct HashElem *he = NULL;
-      struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
-      for (size_t i = 0; he_list[i]; i++)
+      struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, GEL_ALL_CONFIG);
+      struct HashElem **hep = NULL;
+      ARRAY_FOREACH(hep, &hea)
       {
-        he = he_list[i];
-        const int type = DTYPE(he->type);
+        struct HashElem *he = *hep;
+        const int type = CONFIG_TYPE(he->type);
 
         if ((type == DT_SYNONYM) || (type & D_INTERNAL_DEPRECATED))
           continue;
 
         candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
       }
-      FREE(&he_list);
+      ARRAY_FREE(&hea);
 
       matches_ensure_morespace(cd, cd->num_matched);
       cd->match_list[cd->num_matched++] = cd->user_typed;
@@ -381,7 +385,7 @@ int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int p
   const int spaces = pt - buf->data;
 
   pt = buf->data + pos - spaces;
-  while ((pt > buf->data) && !isspace((unsigned char) *pt))
+  while ((pt > buf->data) && !mutt_isspace(*pt))
     pt--;
   pt++;           /* move past the space */
   if (*pt == '=') /* abort if no var before the '=' */

@@ -118,6 +118,8 @@ CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_lookup_remove.o \
 		  test/charset/mutt_ch_set_charset.o
 
+CLI_OBJS	= test/cli/cli_parse.o
+
 COLOR_OBJS	= test/color/ansi.o \
 		  test/color/ansi_color_parse_single.o \
 		  test/color/attr.o \
@@ -220,15 +222,30 @@ EDITOR_OBJS	= test/editor/common.o \
 EMAIL_OBJS	= test/email/common.o \
 		  test/email/email_cmp_strict.o \
 		  test/email/email_free.o \
+		  test/email/email_get_size.o \
 		  test/email/email_header_add.o \
 		  test/email/email_header_find.o \
 		  test/email/email_header_free.o \
 		  test/email/email_header_set.o \
 		  test/email/email_header_update.o \
 		  test/email/email_new.o \
-		  test/email/email_size.o \
 		  test/email/mutt_autocrypthdr_free.o \
-		  test/email/mutt_autocrypthdr_new.o
+		  test/email/mutt_autocrypthdr_new.o \
+		  test/email/mutt_auto_subscribe.o \
+		  test/email/mutt_check_encoding.o \
+		  test/email/mutt_check_mime_type.o \
+		  test/email/mutt_extract_message_id.o \
+		  test/email/mutt_is_message_type.o \
+		  test/email/mutt_matches_ignore.o \
+		  test/email/mutt_parse_content_type.o \
+		  test/email/mutt_parse_mailto.o \
+		  test/email/mutt_parse_multipart.o \
+		  test/email/mutt_parse_part.o \
+		  test/email/mutt_read_mime_header.o \
+		  test/email/mutt_rfc822_parse_line.o \
+		  test/email/mutt_rfc822_parse_message.o \
+		  test/email/mutt_rfc822_read_header.o \
+		  test/email/mutt_rfc822_read_line.o
 
 ENVELOPE_OBJS	= test/envelope/mutt_env_cmp_strict.o \
 		  test/envelope/mutt_env_free.o \
@@ -347,7 +364,9 @@ GROUP_OBJS	= test/group/mutt_group_match.o \
 		  test/group/mutt_grouplist_remove_regex.o \
 		  test/group/mutt_pattern_group.o
 
-GUI_OBJS	= test/gui/reflow.o \
+GUI_OBJS	= test/gui/mutt_str_expand_tabs.o \
+		  test/gui/reflow.o \
+		  test/gui/swap.o \
 		  test/gui/visible.o
 
 HASH_OBJS	= test/hash/mutt_hash_delete.o \
@@ -409,7 +428,7 @@ LOGGING_OBJS	= test/logging/log_disp_file.o \
 		  test/logging/log_queue_add.o \
 		  test/logging/log_queue_empty.o \
 		  test/logging/log_queue_flush.o \
-		  test/logging/log_queue_save.o \
+		  test/logging/log_queue_get.o \
 		  test/logging/log_queue_set_max_size.o
 
 MAILBOX_OBJS	= test/mailbox/mailbox_changed.o \
@@ -482,21 +501,6 @@ PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_set.o
 
 PARSE_OBJS	= test/parse/common.o \
-		  test/parse/mutt_auto_subscribe.o \
-		  test/parse/mutt_check_encoding.o \
-		  test/parse/mutt_check_mime_type.o \
-		  test/parse/mutt_extract_message_id.o \
-		  test/parse/mutt_is_message_type.o \
-		  test/parse/mutt_matches_ignore.o \
-		  test/parse/mutt_parse_content_type.o \
-		  test/parse/mutt_parse_mailto.o \
-		  test/parse/mutt_parse_multipart.o \
-		  test/parse/mutt_parse_part.o \
-		  test/parse/mutt_read_mime_header.o \
-		  test/parse/mutt_rfc822_parse_line.o \
-		  test/parse/mutt_rfc822_parse_message.o \
-		  test/parse/mutt_rfc822_read_header.o \
-		  test/parse/mutt_rfc822_read_line.o \
 		  test/parse/parse_extract_token.o \
 		  test/parse/parse_rc.o \
 		  test/parse/parse_rc_line.o \
@@ -664,16 +668,17 @@ URL_OBJS	= test/url/url_check_scheme.o \
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
-		  $(PWD)/test/color $(PWD)/test/compress $(PWD)/test/config \
-		  $(PWD)/test/convert $(PWD)/test/core $(PWD)/test/date \
-		  $(PWD)/test/editor $(PWD)/test/email $(PWD)/test/envelope \
-		  $(PWD)/test/envlist $(PWD)/test/eqi $(PWD)/test/expando $(PWD)/test/file \
-		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/group \
-		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
-		  $(PWD)/test/idna $(PWD)/test/imap $(PWD)/test/list \
-		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
-		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
-		  $(PWD)/test/neo $(PWD)/test/notify $(PWD)/test/notmuch \
+		  $(PWD)/test/cli $(PWD)/test/color $(PWD)/test/compress \
+		  $(PWD)/test/config $(PWD)/test/convert $(PWD)/test/core \
+		  $(PWD)/test/date $(PWD)/test/editor $(PWD)/test/email \
+		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/eqi \
+		  $(PWD)/test/expando $(PWD)/test/file $(PWD)/test/filter \
+		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui \
+		  $(PWD)/test/hash $(PWD)/test/history $(PWD)/test/idna \
+		  $(PWD)/test/imap $(PWD)/test/list $(PWD)/test/logging \
+		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
+		  $(PWD)/test/notify $(PWD)/test/notmuch \
 		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
 		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
 		  $(PWD)/test/random $(PWD)/test/regex $(PWD)/test/rfc2047 \
@@ -691,6 +696,7 @@ TEST_OBJS	= test/common.o test/main.o \
 		  $(BODY_OBJS) \
 		  $(BUFFER_OBJS) \
 		  $(CHARSET_OBJS) \
+		  $(CLI_OBJS) \
 		  $(COLOR_OBJS) \
 		  $(COMPRESS_OBJS) \
 		  $(CONFIG_OBJS) \
