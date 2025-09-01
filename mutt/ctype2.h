@@ -2,12 +2,8 @@
  * @file
  * ctype(3) wrapper functions
  *
- * The arguments to ctype(3) functions need to be EOF or representable
- * as an unsigned char. These replacement functions avoid replicating
- * the checks for valid arguments.
- *
  * @authors
- * Copyright (C) 2025 Thomas Klausne <wiz@gatalith.at>
+ * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

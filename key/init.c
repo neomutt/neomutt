@@ -64,7 +64,7 @@ struct Extkey
 };
 
 /**
- * ExtKeys - Mapping between NeoMutt and Curses key names
+ * struct ExtKeys - Mapping between NeoMutt and Curses key names
  */
 static const struct Extkey ExtKeys[] = {
   { "<c-up>", "kUP5" },
