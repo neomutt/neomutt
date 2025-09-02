@@ -23,13 +23,15 @@
 #ifndef MUTT_MUTT_CTYPE_H
 #define MUTT_MUTT_CTYPE_H
 
-int mutt_isalnum(int arg);
-int mutt_isalpha(int arg);
-int mutt_isdigit(int arg);
-int mutt_ispunct(int arg);
-int mutt_isspace(int arg);
-int mutt_isxdigit(int arg);
-int mutt_tolower(int arg);
-int mutt_toupper(int arg);
+#include <stdbool.h>
+
+bool mutt_isalnum (int arg);
+bool mutt_isalpha (int arg);
+bool mutt_isdigit (int arg);
+bool mutt_ispunct (int arg);
+bool mutt_isspace (int arg);
+bool mutt_isxdigit(int arg);
+int  mutt_tolower (int arg);
+int  mutt_toupper (int arg);
 
 #endif /* MUTT_MUTT_CTYPE_H */

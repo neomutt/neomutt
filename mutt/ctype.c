@@ -29,89 +29,90 @@
  */
 
 #include <ctype.h>
+#include <stdbool.h>
 
 /**
  * mutt_isalnum - Wrapper for isalnum(3)
  * @param arg Character to test
- * @retval 1 Character is alphanumeric
+ * @retval true Character is alphanumeric
  */
-int mutt_isalnum(int arg)
+bool mutt_isalnum(int arg)
 {
   if (isascii(arg))
     return isalnum(arg);
 
-  return 0;
+  return false;
 }
 
 /**
  * mutt_isalpha - Wrapper for isalpha(3)
  * @param arg Character to test
- * @retval 1 Character is alphabetic
+ * @retval true Character is alphabetic
  */
-int mutt_isalpha(int arg)
+bool mutt_isalpha(int arg)
 {
   if (isascii(arg))
     return isalpha(arg);
 
-  return 0;
+  return false;
 }
 
 /**
  * mutt_isdigit - Wrapper for isdigit(3)
  * @param arg Character to test
- * @retval 1 Character is a digit (0 through 9)
+ * @retval true Character is a digit (0 through 9)
  */
-int mutt_isdigit(int arg)
+bool mutt_isdigit(int arg)
 {
   if (isascii(arg))
     return isdigit(arg);
 
-  return 0;
+  return false;
 }
 
 /**
  * mutt_ispunct - Wrapper for ispunct(3)
  * @param arg Character to test
- * @retval 1 Character is printable but is not a space or alphanumeric
+ * @retval true Character is printable but is not a space or alphanumeric
  */
-int mutt_ispunct(int arg)
+bool mutt_ispunct(int arg)
 {
   if (isascii(arg))
     return ispunct(arg);
 
-  return 0;
+  return false;
 }
 
 /**
  * mutt_isspace - Wrapper for isspace(3)
  * @param arg Character to test
- * @retval 1 Character is white-space
+ * @retval true Character is white-space
  *
  * In the "C" and "POSIX" locales, these are: space, form-feed ('\\f'),
  * newline ('\\n'), carriage return ('\\r'), horizontal tab ('\\t'),
  * and vertical tab ('\\v').
  */
-int mutt_isspace(int arg)
+bool mutt_isspace(int arg)
 {
   if (isascii(arg))
     return isspace(arg);
 
-  return 0;
+  return false;
 }
 
 /**
  * mutt_isxdigit - Wrapper for isxdigit(3)
  * @param arg Character to test
- * @retval 1 Character is a hexadecimal digits
+ * @retval true Character is a hexadecimal digits
  *
  * That is, one of 0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F.
  */
-int mutt_isxdigit(int arg)
+bool mutt_isxdigit(int arg)
 {
   if (isascii(arg))
     return isxdigit(arg);
 
-  return 0;
+  return false;
 }
 
 /**
