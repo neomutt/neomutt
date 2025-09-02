@@ -28,7 +28,7 @@ jobs:
         id: cpu-cores
 
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configure Neomutt
         run: ./configure --disable-doc $CONFIGURE_OPTIONS

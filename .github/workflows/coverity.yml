@@ -28,7 +28,7 @@ jobs:
         [ -n "${{ secrets.COVERITY_SCAN_TOKEN }}" ]
 
     - name: Checkout Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Configure NeoMutt
       run: ./configure $OPTIONS
