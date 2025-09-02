@@ -114,7 +114,8 @@ void mutt_clear_error(void)
 {
 }
 
-int mutt_copy_header(FILE *in, struct Email *e, FILE *out, CopyHeaderFlags chflags, const char *prefix, int wraplen)
+int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
+                     CopyHeaderFlags chflags, const char *prefix, int wraplen)
 {
   return -1;
 }
@@ -230,7 +231,8 @@ int mutt_system(const char *cmd)
   return 0;
 }
 
-void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles)
+void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
+                 char ***files, int *numfiles)
 {
 }
 

@@ -208,7 +208,7 @@
  * ARRAY_FOREACH - Iterate over all elements of the array
  * @param elem Variable to be used as pointer to the element at each iteration
  * @param head Pointer to a struct defined using ARRAY_HEAD()
- * 
+ *
  * @note Range: 0 .. (ARRAY_SIZE(head)-1)
  */
 #define ARRAY_FOREACH(elem, head)                                              \
@@ -259,7 +259,7 @@
  * ARRAY_FOREACH_REVERSE - Iterate backwards over all elements of the array
  * @param elem Variable to be used as pointer to the element at each iteration
  * @param head Pointer to a struct defined using ARRAY_HEAD()
- * 
+ *
  * @note Range: (ARRAY_SIZE(head)-1) .. 0
  */
 #define ARRAY_FOREACH_REVERSE(elem, head)                                      \

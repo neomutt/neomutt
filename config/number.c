@@ -50,7 +50,7 @@
  */
 static intptr_t native_get(void *var)
 {
-  // take care of endianess and always read intptr_t value
+  // take care of endianness and always read intptr_t value
   intptr_t v = *(intptr_t *) var;
   return (v & TOGGLE_BIT) ? 0 : (short) v;
 }

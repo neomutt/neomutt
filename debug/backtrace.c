@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "lib.h"
 #include "muttlib.h"
+#include "version.h"
 
 /**
  * show_backtrace - Log the program's call stack

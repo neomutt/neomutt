@@ -118,8 +118,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
           buf_addch(dest, '\t');
           break;
         default:
-          if (mutt_isdigit(ch) && mutt_isdigit(tok->dptr[0]) &&
-              mutt_isdigit(tok->dptr[1]))
+          if (mutt_isdigit(ch) && mutt_isdigit(tok->dptr[0]) && mutt_isdigit(tok->dptr[1]))
           {
             buf_addch(dest, (ch << 6) + (tok->dptr[0] << 3) + tok->dptr[1] - 3504);
             tok->dptr += 2;

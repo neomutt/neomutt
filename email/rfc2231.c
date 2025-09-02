@@ -111,8 +111,7 @@ static void decode_one(char *dest, char *src)
 
   for (d = dest; *src; src++)
   {
-    if ((src[0] == '%') && mutt_isxdigit(src[1]) &&
-        mutt_isxdigit(src[2]))
+    if ((src[0] == '%') && mutt_isxdigit(src[1]) && mutt_isxdigit(src[2]))
     {
       *d++ = (hexval(src[1]) << 4) | hexval(src[2]);
       src += 2;

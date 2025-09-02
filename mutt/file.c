@@ -48,13 +48,13 @@
 #include <unistd.h>
 #include <utime.h>
 #include <wchar.h>
+#include "mutt/ctype2.h"
 #include "file.h"
 #include "buffer.h"
 #include "charset.h"
 #include "date.h"
 #include "logging2.h"
 #include "memory.h"
-#include "mutt/ctype2.h"
 #include "message.h"
 #include "path.h"
 #include "pool.h"

@@ -969,7 +969,7 @@ static bool show_help(struct CliHelp *help)
  * init_logging - Initialise the Logging
  * @param shared Shared Command line Options
  * @param cs     Config Set
- * @retval true Succes
+ * @retval true Success
  */
 static bool init_logging(struct CliShared *shared, struct ConfigSet *cs)
 {

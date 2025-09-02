@@ -237,7 +237,7 @@ struct ExpandoNode *parse_index_hook(const char *str, struct ExpandoFormat *fmt,
 /**
  * parse_tags_transformed - Parse a Tags-Transformed Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
- * Parse a custom expando of the form, "%G?" where '?' is an alpha-numeric character.
+ * Parse a custom expando of the form, "%G?" where '?' is an alphanumeric character.
  */
 struct ExpandoNode *parse_tags_transformed(const char *str, struct ExpandoFormat *fmt,
                                            int did, int uid, ExpandoParserFlags flags,

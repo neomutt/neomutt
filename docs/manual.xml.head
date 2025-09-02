@@ -13150,7 +13150,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
           NeoMutt does not (yet) support maintenance features for header cache
           database files so that files have to be removed in case they grow too
           big. It depends on the database library used for header caching
-          whether disk space freed by removing messages is re-used.
+          whether disk space freed by removing messages is reused.
         </para>
         <para>
           For body caches, NeoMutt can keep the local cache in sync with the

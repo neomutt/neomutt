@@ -295,7 +295,7 @@ the plain access token:
                         output format: token - plain access token (default);
                         sasl - base64 encoded SASL token string for the
                         specified protocol [--protocol] and user [--email];
-                        msasl - like sasl, preceeded with the SASL method
+                        msasl - like sasl, preceded with the SASL method
 ```
 
 With `--format msasl`, the string is prefixed with the method (XOAUTH2 or

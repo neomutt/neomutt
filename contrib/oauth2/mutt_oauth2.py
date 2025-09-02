@@ -91,7 +91,7 @@ ap.add_argument('--format', type=str, choices=['token', 'sasl', 'msasl'], defaul
                 help='''output format:
     token - plain access token (default);
     sasl - base64 encoded SASL token string for the specified protocol [--protocol] and user [--email];
-    msasl - like sasl, preceeded with the SASL method''')
+    msasl - like sasl, preceded with the SASL method''')
 ap.add_argument('--protocol', type=str, choices=['imap', 'pop', 'smtp'], default='imap',
                 help='protocol used for SASL output (default: imap)')
 ap.add_argument('-t', '--test', action='store_true', help='test IMAP/POP/SMTP endpoints')

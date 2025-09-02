@@ -33,11 +33,11 @@
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
+#include "mutt/ctype2.h"
 #include "mbyte.h"
 #include "buffer.h"
 #include "charset.h"
 #include "memory.h"
-#include "mutt/ctype2.h"
 #include "pool.h"
 #include "string2.h"
 

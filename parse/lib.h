@@ -23,6 +23,8 @@
 /**
  * @page lib_parse Text parsing functions
  *
+ * Text parsing functions
+ *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | parse/extract.c     | @subpage parse_extract     |

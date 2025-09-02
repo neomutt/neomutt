@@ -29,9 +29,9 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include "mutt/ctype2.h"
 #include "hash.h"
 #include "memory.h"
-#include "mutt/ctype2.h"
 #include "string2.h"
 
 #define SOME_PRIME 149711

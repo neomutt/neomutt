@@ -23,6 +23,8 @@
 /**
  * @page lib_cli Parse the Command Line
  *
+ * Parse the Command Line
+ *
  * | File             | Description             |
  * | :--------------- | :---------------------- |
  * | cli/parse.h      | @subpage cli_parse      |

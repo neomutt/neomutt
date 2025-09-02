@@ -112,7 +112,7 @@ time_t cutoff_number(char period, int count)
 }
 
 /**
- * cutoff_this - Calculcate the cutoff time of this unit
+ * cutoff_this - Calculate the cutoff time of this unit
  * @param period Time period, from [ymwdHM]
  * @retval num Cutoff time
  *

@@ -234,7 +234,7 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
       if (next_tok)
         *next_tok++ = '\0';
 
-      // The address shouldn't be wrapped with <>s, but historically, this was suppported
+      // The address shouldn't be wrapped with <>s, but historically, this was supported
       if (buf[0] == '<')
         buf_printf(addr, "\"%s\" %s", tok, buf);
       else

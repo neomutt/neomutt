@@ -55,7 +55,7 @@ struct ImapAuth
   enum ImapAuthRes (*authenticate)(struct ImapAccountData *adata, const char *method);
 
   const char *method; ///< Name of authentication method supported, NULL means variable.
-      ///< If this is not null, authenticate may ignore the second parameter.
+  ///< If this is not null, authenticate may ignore the second parameter.
 };
 
 /**

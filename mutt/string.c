@@ -38,10 +38,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include "mutt/ctype2.h"
 #include "exit.h"
 #include "logging2.h"
 #include "memory.h"
-#include "mutt/ctype2.h"
 #include "string2.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
@@ -530,9 +530,7 @@ const char *mutt_istr_find(const char *haystack, const char *needle)
 
   while (*(p = haystack))
   {
-    for (q = needle;
-         *p && *q && (mutt_tolower(*p) == mutt_tolower(*q));
-         p++, q++)
+    for (q = needle; *p && *q && (mutt_tolower(*p) == mutt_tolower(*q)); p++, q++)
     {
     }
     if ((*q == '\0'))

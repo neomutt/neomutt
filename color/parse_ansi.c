@@ -132,7 +132,8 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
       ansi->attrs |= A_BOLD;
       pos += 2;
     }
-    else if ((buf[pos] == '2') && mutt_isdigit(buf[pos + 1]) && ansi_is_end_char(buf[pos + 2]))
+    else if ((buf[pos] == '2') && mutt_isdigit(buf[pos + 1]) &&
+             ansi_is_end_char(buf[pos + 2]))
     {
       char digit = buf[pos + 1];
       pos += 3;
