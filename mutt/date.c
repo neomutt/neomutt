@@ -44,6 +44,7 @@
 #include <time.h>
 #include "date.h"
 #include "buffer.h"
+#include "ctype2.h"
 #include "eqi.h"
 #include "logging2.h"
 #include "memory.h"

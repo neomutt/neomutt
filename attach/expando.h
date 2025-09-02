@@ -23,7 +23,7 @@
 #ifndef MUTT_ATTACH_EXPANDO_H
 #define MUTT_ATTACH_EXPANDO_H
 
-#include "expando/lib.h"
+#include "expando/lib.h" // IWYU pragma: keep
 
 extern const struct ExpandoRenderCallback AttachRenderCallbacks[];
 

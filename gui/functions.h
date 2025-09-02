@@ -23,7 +23,6 @@
 #ifndef MUTT_FUNCTIONS_H
 #define MUTT_FUNCTIONS_H
 
-#include "config.h"
 #include "key/lib.h"
 
 extern const struct MenuFuncOp OpDialog[];

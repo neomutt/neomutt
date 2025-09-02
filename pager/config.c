@@ -29,11 +29,11 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
+#include <stdbool.h> // IWYU pragma: keep
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "expando/lib.h"
+#include "expando/lib.h" // IWYU pragma: keep
 
 extern const struct ExpandoDefinition IndexFormatDef[];
 

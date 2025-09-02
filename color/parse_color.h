@@ -24,9 +24,9 @@
 #define MUTT_COLOR_PARSE_COLOR_H
 
 #include "core/lib.h"
-#include "mutt/lib.h"
 
 struct AttrColor;
+struct Buffer;
 
 extern const struct Mapping ColorNames[];
 

@@ -24,7 +24,7 @@
 #define MUTT_MENU_TYPE_H
 
 #include "config.h"
-#include "mutt/lib.h"
+#include "mutt/lib.h" // IWYU pragma: keep
 
 extern const struct Mapping MenuNames[];
 extern const int MenuNamesLen;

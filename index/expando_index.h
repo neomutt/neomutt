@@ -25,7 +25,7 @@
 #ifndef MUTT_INDEX_EXPANDO_INDEX_H
 #define MUTT_INDEX_EXPANDO_INDEX_H
 
-#include "expando/lib.h"
+#include "expando/lib.h" // IWYU pragma: keep
 
 extern const struct ExpandoRenderCallback IndexRenderCallbacks[];
 

@@ -23,7 +23,7 @@
 #ifndef MUTT_INDEX_EXPANDO_STATUS_H
 #define MUTT_INDEX_EXPANDO_STATUS_H
 
-#include "expando/lib.h"
+#include "expando/lib.h" // IWYU pragma: keep
 
 /**
  * struct MenuStatusLineData - Data for creating a Menu line

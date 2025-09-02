@@ -38,7 +38,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include "mutt/ctype2.h"
+#include "ctype2.h"
 #include "exit.h"
 #include "logging2.h"
 #include "memory.h"

@@ -23,7 +23,7 @@
 #ifndef MUTT_NCRYPT_EXPANDO_PGP_H
 #define MUTT_NCRYPT_EXPANDO_PGP_H
 
-#include "expando/lib.h"
+#include "expando/lib.h" // IWYU pragma: keep
 
 extern const struct ExpandoRenderCallback PgpEntryRenderCallbacks[];
 

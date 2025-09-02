@@ -29,8 +29,8 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "mutt/ctype2.h"
 #include "hash.h"
+#include "ctype2.h"
 #include "memory.h"
 #include "string2.h"
 

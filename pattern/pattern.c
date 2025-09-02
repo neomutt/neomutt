@@ -53,9 +53,6 @@
 #include "mx.h"
 #include "protos.h"
 #include "search_state.h"
-#ifndef USE_FMEMOPEN
-#include <sys/stat.h>
-#endif
 
 /**
  * RangeRegexes - Set of Regexes for various range types

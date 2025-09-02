@@ -45,10 +45,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "core/lib.h"
-#include "expando/lib.h"
 // IWYU pragma: begin_keep
 #include "attach.h"
 #include "attachments.h"
+#include "expando/lib.h"
 #include "mutt_attach.h"
 #include "recvattach.h"
 // IWYU pragma: end_keep

@@ -46,7 +46,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/lib.h"
 #include "core/lib.h"
 #include "expando/lib.h"   // IWYU pragma: keep
 #include "expando_index.h" // IWYU pragma: keep
@@ -54,10 +53,12 @@
 #include "shared_data.h"   // IWYU pragma: keep
 #include "status.h"        // IWYU pragma: keep
 
+struct Buffer;
 struct Email;
 struct MailboxView;
 struct Menu;
 struct MuttWindow;
+struct NotifyCallback;
 
 // Observers of #NT_INDEX will be passed an #IndexSharedData.
 typedef uint8_t NotifyIndex;         ///< Flags, e.g. #NT_INDEX_ACCOUNT

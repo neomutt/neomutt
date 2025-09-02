@@ -39,6 +39,7 @@
 #include "config/types.h"
 #include "atoi.h"
 #include "buffer.h"
+#include "ctype2.h"
 #include "logging2.h"
 #include "mbyte.h"
 #include "memory.h"

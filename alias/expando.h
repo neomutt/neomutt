@@ -23,7 +23,7 @@
 #ifndef MUTT_ALIAS_EXPANDO_H
 #define MUTT_ALIAS_EXPANDO_H
 
-#include "expando/lib.h"
+#include "expando/lib.h" // IWYU pragma: keep
 
 /**
  * ExpandoDataAlias - Expando UIDs for Aliases
