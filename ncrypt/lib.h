@@ -47,6 +47,7 @@
  * | ncrypt/functions.c               | @subpage crypt_functions             |
  * | ncrypt/gnupgparse.c              | @subpage crypt_gnupg                 |
  * | ncrypt/gpgme_functions.c         | @subpage crypt_gpgme_functions       |
+ * | ncrypt/module.c                  | @subpage ncrypt_module               |
  * | ncrypt/pgp.c                     | @subpage crypt_pgp                   |
  * | ncrypt/pgp_functions.c           | @subpage pgp_functions               |
  * | ncrypt/pgpinvoke.c               | @subpage crypt_pgpinvoke             |

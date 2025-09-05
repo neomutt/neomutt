@@ -34,7 +34,7 @@
 /**
  * MhVars - Config definitions for the Mh library
  */
-static struct ConfigDef MhVars[] = {
+struct ConfigDef MhVars[] = {
   // clang-format off
   { "mh_purge", DT_BOOL, false, 0, NULL,
     "Really delete files in MH mailboxes"
@@ -51,11 +51,3 @@ static struct ConfigDef MhVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_mh - Register mh config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_mh(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, MhVars);
-}

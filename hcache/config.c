@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -121,7 +120,7 @@ static int compress_level_validator(const struct ConfigDef *cdef,
 /**
  * HcacheVars - Config definitions for the Header Cache
  */
-static struct ConfigDef HcacheVars[] = {
+struct ConfigDef HcacheVars[] = {
   // clang-format off
   { "header_cache", DT_PATH, 0, 0, NULL,
     "(hcache) Directory/file for the header cache database"
@@ -137,7 +136,7 @@ static struct ConfigDef HcacheVars[] = {
 /**
  * HcacheVarsComp - Config definitions for the Header Cache Compression
  */
-static struct ConfigDef HcacheVarsComp[] = {
+struct ConfigDef HcacheVarsComp[] = {
   // clang-format off
   // These two are not in alphabetical order because `level`s validator depends on `method`
   { "header_cache_compress_method", DT_STRING, 0, 0, compress_method_validator,
@@ -155,7 +154,7 @@ static struct ConfigDef HcacheVarsComp[] = {
 /**
  * HcacheVarsComp2 - Deprecated Config definitions for the Header Cache Compression
  */
-static struct ConfigDef HcacheVarsComp2[] = {
+struct ConfigDef HcacheVarsComp2[] = {
   // clang-format off
   { "header_cache_compress", D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2020-03-25" },
   { NULL },
@@ -167,36 +166,10 @@ static struct ConfigDef HcacheVarsComp2[] = {
 /**
  * HcacheVarsPage - Deprecated Config definitions for the Header Cache
  */
-static struct ConfigDef HcacheVarsPage[] = {
+struct ConfigDef HcacheVarsPage[] = {
   // clang-format off
   { "header_cache_pagesize", D_INTERNAL_DEPRECATED|DT_LONG, 0, IP "2020-03-25" },
   { NULL },
   // clang-format on
 };
 #endif
-
-/**
- * config_init_hcache - Register hcache config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_hcache(struct ConfigSet *cs)
-{
-  bool rc = false;
-
-#if defined(USE_HCACHE)
-  rc |= cs_register_variables(cs, HcacheVars);
-#endif
-
-#if defined(USE_HCACHE_COMPRESSION)
-  rc |= cs_register_variables(cs, HcacheVarsComp);
-#endif
-
-#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  rc |= cs_register_variables(cs, HcacheVarsComp2);
-#endif
-
-#if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  rc |= cs_register_variables(cs, HcacheVarsPage);
-#endif
-
-  return rc;
-}
