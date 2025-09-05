@@ -31,7 +31,7 @@ CHUNKED_DOCFILES = docs/advancedusage.html docs/configuration.html \
 
 HTML_DOCFILES = docs/index.html docs/manual.html $(CHUNKED_DOCFILES)
 
-srcdir_DOCFILES = $(SRCDIR)/docs/smime-notes.txt $(SRCDIR)/ChangeLog.md \
+srcdir_DOCFILES = $(SRCDIR)/ChangeLog.md \
 		  $(SRCDIR)/AUTHORS.md $(SRCDIR)/docs/CODE_OF_CONDUCT.md \
 		  $(SRCDIR)/docs/CONTRIBUTING.md $(SRCDIR)/SECURITY.md \
 		  $(SRCDIR)/INSTALL.md $(SRCDIR)/LICENSE.md $(SRCDIR)/README.md
@@ -91,7 +91,6 @@ install-docs: all-docs
 	$(INSTALL_DIR) $(DESTDIR)$(sysconfdir)
 	$(INSTALL_DATA) docs/neomutt.1 $(DESTDIR)$(mandir)/man1/neomutt.1
 	$(INSTALL_DATA) docs/neomuttrc.5 $(DESTDIR)$(mandir)/man5/neomuttrc.5
-	$(INSTALL_DATA) $(SRCDIR)/docs/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys_$(PACKAGE).1
 	$(INSTALL_DATA) $(SRCDIR)/docs/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap_$(PACKAGE).1
 	$(INSTALL_DATA) $(SRCDIR)/docs/mbox.5 $(DESTDIR)$(mandir)/man5/mbox_$(PACKAGE).5
 	$(INSTALL_DATA) $(SRCDIR)/docs/mmdf.5 $(DESTDIR)$(mandir)/man5/mmdf_$(PACKAGE).5
@@ -106,7 +105,7 @@ install-docs: all-docs
 	$(INSTALL_DATA) docs/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
 
 uninstall-docs:
-	for f in neomutt.1 smime_keys_$(PACKAGE).1 pgpewrap_$(PACKAGE).1; do \
+	for f in neomutt.1 pgpewrap_$(PACKAGE).1; do \
 		$(RM) $(DESTDIR)$(mandir)/man1/$$f; \
 	done
 	for f in neomuttrc.5 mbox_$(PACKAGE).5 mmdf_$(PACKAGE).5; do \

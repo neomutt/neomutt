@@ -1,0 +1,24 @@
+all-smime:
+
+clean-smime:
+
+@if HAVE_SMIME
+install-smime:
+	$(INSTALL_DIR) $(DESTDIR)$(docdir)
+	$(INSTALL_DIR) $(DESTDIR)$(mandir)/man1
+	$(INSTALL_DIR) $(DESTDIR)$(datadir)
+	$(INSTALL_DIR) $(DESTDIR)$(libexecdir)/$(PACKAGE)
+	$(INSTALL_DATA) $(SRCDIR)/smime/smime-notes.txt $(DESTDIR)$(docdir)/smime-notes.txt
+	$(INSTALL_DATA) $(SRCDIR)/smime/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys_$(PACKAGE).1
+	$(INSTALL_DATA) $(SRCDIR)/smime/smime.rc $(DESTDIR)$(datadir)/smime.rc
+	$(INSTALL) $(SRCDIR)/smime/smime_keys $(DESTDIR)$(libexecdir)/$(PACKAGE)/smime_keys
+
+uninstall-smime:
+	$(RM) $(DESTDIR)$(docdir)/smime-notes.txt
+	$(RM) $(DESTDIR)$(mandir)/man1/smime_keys_$(PACKAGE).1
+	$(RM) $(DESTDIR)$(datadir)/smime.rc
+	$(RM) $(DESTDIR)$(libexecdir)/$(PACKAGE)/smime_keys
+@else
+install-smine:
+uninstall-smine:
+@endif
