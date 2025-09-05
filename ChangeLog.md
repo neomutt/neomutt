@@ -1,3 +1,5 @@
+2025-09-05  Richard Russon  \<rich@flatcap.org\>
+
 2025-05-10  Richard Russon  \<rich@flatcap.org\>
 * Contrib
   - #4616 Fix gpg-json output
