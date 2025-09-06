@@ -1272,6 +1272,7 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
         collapse_all(shared->mailbox_view, priv->menu, 0);
       mutt_draw_tree(shared->mailbox_view->threads);
     }
+    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   }
   if (lmt)
