@@ -20,7 +20,7 @@ define PACKAGE_VERSION  "20250905"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
-set subdirs {po data docs contrib test}
+set subdirs {po data docs contrib test smime}
 ###############################################################################
 
 ###############################################################################

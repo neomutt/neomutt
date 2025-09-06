@@ -1,50 +1,25 @@
 How to use neomutt's S/MIME capabilities
 
-- Add the contents of contrib/smime.rc to your .muttrc. Don't worry about
-  changing the smime_default_key line at this point -- you'll change it later.
+- Add the contents of smime.rc to your .neomuttrc. Don't worry about changing
+  the smime_default_key line at this point -- you'll change it later.
 
-- Run 'smime_keys init'.
+- Run './smime_keys init'.
 
-- Download and install OpenSSL.
+- Generate a Certificate Signing Request (CSR) and a private key using OpenSSL:
+  `openssl req -new -newkey rsa:2048 -out <csr-file> -keyout <key-file>`.
 
-- Get yourself a certificate. (You can get one for free from Comodo, or
-  pay for one from VeriSign or one of its competitors) The way the process
-  generally works, the certificate will be installed "into" your web
-  browser.
+- Pick a Certificate Authority and use the CSR to get a certificate. They will
+  need to provide you with your certificate and the certificate chain, in PEM
+  or DER format.
 
-- Assuming you are using Firefox, follow the instructions at
-  https://www.sslsupportdesk.com/2016/04/15/export-certificate-firefox/
-  to export the certificate into a file called cert.p12. If you don't use
-  Firefox, you're on your own.
+- Add your certificate to the store. You will be asked to assign a label to
+  this key. If you do, you'll be able to use the mnemonic label instead of the
+  key id in .neomuttrc. In any case, smime_keys will confirm with both the key
+  id and the label.
+  `./smime_keys add_chain <key-file> <cert-file> <cert-chain-file>
 
-- Run "smime_keys add_p12 cert.p12"
-
-    * When the script asks for the "Import password", enter the one you
-      provided when you exported the certificate.
-
-    * When it asks for a "PEM pass phrase", make up a new password. Every
-      time you sign or decrypt a message, neomutt will ask for the PEM pass
-      phrase.
-
-    * Finally, when the script asks for a label, enter an easy-to-remember
-      name for the certificate, such as "me". The script output will include
-      a line like:
-
-      added private key: /home/raldi/.smime/keys/12345678.0 for raldi@verisignlabs.com
-
-      The number (including the ".0" at the end) is your keyid. You will
-      need this number in the next step.
-
-- Edit the smime_default_key line in your muttrc, replacing the keyid with your
-  own.
-
-- There is no more ca-bundle.crt file with the trusted roots to import shipped
-  in neomutt. The upstream file is out-dated and user is encouraged to use
-  ca-bundle.crt from ca-certificate package.  This makes you trust anything
-  that was ultimately signed by one of them. You can use "smime_keys add_root"
-  to do so, or just copy ca-bundle.crt into the place you point neomutt's
-  smime_ca_location variable to.
-
+- Set the key id or the label as the value for `smime_default_key` in your
+  .neomuttrc.
 
 Other notes
 
@@ -83,10 +58,10 @@ Key retrieval is done obviously by searching the index file for a given
 mailbox. If none is found, the user is presented a list of available keys
 and asked to select one of those.
 
-The certificate and key directories specified in muttrc have to exist. NeoMutt
-will not create them. If you wish to sign messages yourself, note that this
-neomutt does not address any PKCS10 or PKCS12 issues (yet?); that is, you have
-to get a valid certificate outside of neomutt. (See above)
+The certificate and key directories specified in .neomuttrc have to exist.
+NeoMutt will not create them. If you wish to sign messages yourself, note that
+this neomutt does not address any PKCS10 or PKCS12 issues (yet?); that is, you
+have to get a valid certificate outside of neomutt. (See above)
 
 A certificate can be viewed by adding the following to your ~/.mailcap:
 

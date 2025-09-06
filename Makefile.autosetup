@@ -36,9 +36,6 @@ BINFILES=	$(NEOMUTT)
 @if HAVE_PGP
 LIBBINFILES+=	$(PGPEWRAP)
 @endif
-@if HAVE_SMIME
-LIBBINFILES+=	$(SRCDIR)/contrib/smime_keys
-@endif
 
 # paths
 bindir=		@BINDIR@
@@ -1033,6 +1030,7 @@ coverage: all test
 @include @srcdir@/data/Makefile.autosetup
 @include @srcdir@/docs/Makefile.autosetup
 @include @srcdir@/test/Makefile.autosetup
+@include @srcdir@/smime/Makefile.autosetup
 @if ENABLE_FUZZ_TESTS
 @include @srcdir@/fuzz/Makefile.autosetup
 @endif
