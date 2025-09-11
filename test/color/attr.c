@@ -56,7 +56,12 @@ struct ModifyTest
 
 void test_attr_colors(void)
 {
+#if NCURSES_REENTRANT == 1
+  return;
+#else
   COLOR_PAIRS = 32;
+#endif
+
   curses_colors_init();
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
@@ -155,7 +160,9 @@ void test_attr_colors(void)
   }
 
   {
+#if NCURSES_REENTRANT == 0
     COLORS = 256;
+#endif
 
     struct ModifyTest Tests[] = {
       // clang-format off
@@ -185,7 +192,9 @@ void test_attr_colors(void)
   }
 
   {
+#if NCURSES_REENTRANT == 0
     COLORS = 8;
+#endif
 
     struct ModifyTest Tests[] = {
       // clang-format off
