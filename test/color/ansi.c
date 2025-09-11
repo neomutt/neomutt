@@ -47,7 +47,6 @@ void test_ansi_color(void)
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   curses_colors_init();
-  COLOR_PAIRS = 256;
 
   const char *str = NULL;
   int rc;

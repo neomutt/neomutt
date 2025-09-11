@@ -34,9 +34,14 @@ ARRAY_HEAD(CursesColorArray, struct CursesColor *);
 
 void test_curses_colors(void)
 {
+#if NCURSES_REENTRANT == 1
+  return;
+#else
+  COLOR_PAIRS = 32;
+#endif
+
   MuttLogger = log_disp_null;
 
-  COLOR_PAIRS = 32;
   curses_colors_init();
 
   {
