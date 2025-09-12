@@ -30,7 +30,7 @@
 #include "parse/lib.h"
 #include "test_common.h"
 
-enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
+enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err)
 {
   buf_strcpy(err, "config");
   return MUTT_CMD_SUCCESS;

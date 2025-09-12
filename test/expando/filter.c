@@ -34,7 +34,7 @@
 extern char **EnvList;
 
 bool check_for_pipe(struct ExpandoNode *root);
-void filter_text(struct Buffer *buf);
+void filter_text(struct Buffer *buf, char **env_list);
 
 static void test_a(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, struct Buffer *buf)
@@ -90,21 +90,21 @@ void test_expando_filter(void)
     node_free(&root);
   }
 
-  // void filter_text(struct Buffer *buf);
+  // void filter_text(struct Buffer *buf, char **env_list)
   {
     struct Buffer *buf = buf_pool_get();
 
-    filter_text(NULL);
-    filter_text(buf);
+    filter_text(NULL, NULL);
+    filter_text(buf, NULL);
 
     // buf_strcpy(buf, "xyz-rst apple|"); // doesn't exist
-    // filter_text(buf);
+    // filter_text(buf, NULL);
 
     buf_strcpy(buf, "false|");
-    filter_text(buf);
+    filter_text(buf, NULL);
 
     buf_strcpy(buf, "echo apple|");
-    filter_text(buf);
+    filter_text(buf, NULL);
 
     buf_pool_release(&buf);
   }

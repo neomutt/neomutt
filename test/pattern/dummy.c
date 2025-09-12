@@ -120,7 +120,7 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
   return -1;
 }
 
-int mutt_count_body_parts(struct Mailbox *m, struct Email *e, struct Message *msg)
+int mutt_count_body_parts(struct Email *e, FILE *fp)
 {
   return g_body_parts;
 }
