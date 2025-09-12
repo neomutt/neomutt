@@ -36,7 +36,7 @@
 /**
  * ConnVars - Config definitions for the connection library
  */
-static struct ConfigDef ConnVars[] = {
+struct ConfigDef ConnVars[] = {
   // clang-format off
   { "account_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "Shell command to retrieve account credentials"
@@ -63,7 +63,7 @@ static struct ConfigDef ConnVars[] = {
 /**
  * ConnVarsSsl - General SSL Config definitions for the conn library
  */
-static struct ConfigDef ConnVarsSsl[] = {
+struct ConfigDef ConnVarsSsl[] = {
   // clang-format off
   { "certificate_file", DT_PATH|D_PATH_FILE, IP "~/.mutt_certificates", 0, NULL,
     "File containing trusted certificates"
@@ -110,7 +110,7 @@ static struct ConfigDef ConnVarsSsl[] = {
 /**
  * ConnVarsGnutls - GnuTLS Config definitions for the connection library
  */
-static struct ConfigDef ConnVarsGnutls[] = {
+struct ConfigDef ConnVarsGnutls[] = {
   // clang-format off
   { "ssl_ca_certificates_file", DT_PATH|D_PATH_FILE, 0, 0, NULL,
     "File containing trusted CA certificates"
@@ -127,7 +127,7 @@ static struct ConfigDef ConnVarsGnutls[] = {
 /**
  * ConnVarsOpenssl - OpenSSL Config definitions for the connection library
  */
-static struct ConfigDef ConnVarsOpenssl[] = {
+struct ConfigDef ConnVarsOpenssl[] = {
   // clang-format off
   { "entropy_file", DT_PATH|D_PATH_FILE, 0, 0, NULL,
     "(ssl) File/device containing random data to initialise SSL"
@@ -148,7 +148,7 @@ static struct ConfigDef ConnVarsOpenssl[] = {
 /**
  * ConnVarsPartial - SSL partial chains Config definitions for the connection library
  */
-static struct ConfigDef ConnVarsPartial[] = {
+struct ConfigDef ConnVarsPartial[] = {
   // clang-format off
   { "ssl_verify_partial_chains", DT_BOOL, false, 0, NULL,
     "(ssl) Allow verification using partial certificate chains"
@@ -162,7 +162,7 @@ static struct ConfigDef ConnVarsPartial[] = {
 /**
  * ConnVarsGetaddr - GetAddrInfo Config definitions for the connection library
  */
-static struct ConfigDef ConnVarsGetaddr[] = {
+struct ConfigDef ConnVarsGetaddr[] = {
   // clang-format off
   { "use_ipv6", DT_BOOL, true, 0, NULL,
     "Lookup IPv6 addresses when making connections"
@@ -171,33 +171,3 @@ static struct ConfigDef ConnVarsGetaddr[] = {
   // clang-format on
 };
 #endif
-
-/**
- * config_init_conn - Register conn config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_conn(struct ConfigSet *cs)
-{
-  bool rc = cs_register_variables(cs, ConnVars);
-
-#if defined(USE_SSL)
-  rc |= cs_register_variables(cs, ConnVarsSsl);
-#endif
-
-#if defined(USE_SSL_GNUTLS)
-  rc |= cs_register_variables(cs, ConnVarsGnutls);
-#endif
-
-#if defined(USE_SSL_OPENSSL)
-  rc |= cs_register_variables(cs, ConnVarsOpenssl);
-#endif
-
-#if defined(HAVE_SSL_PARTIAL_CHAIN)
-  rc |= cs_register_variables(cs, ConnVarsPartial);
-#endif
-
-#if defined(HAVE_GETADDRINFO)
-  rc |= cs_register_variables(cs, ConnVarsGetaddr);
-#endif
-
-  return rc;
-}

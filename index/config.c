@@ -79,7 +79,7 @@ const struct ExpandoDefinition StatusFormatDef[] = {
 /**
  * IndexVars - Config definitions for the Index
  */
-static struct ConfigDef IndexVars[] = {
+struct ConfigDef IndexVars[] = {
   // clang-format off
   { "change_folder_next", DT_BOOL, false, 0, NULL,
     "Suggest the next folder, rather than the first when using '<change-folder>'"
@@ -103,11 +103,3 @@ static struct ConfigDef IndexVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_index - Register index config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_index(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, IndexVars);
-}

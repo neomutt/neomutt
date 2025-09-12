@@ -154,15 +154,6 @@ static void init_lastdir(void)
 }
 
 /**
- * mutt_browser_cleanup - Clean up working Buffers
- */
-void mutt_browser_cleanup(void)
-{
-  buf_dealloc(&LastDir);
-  buf_dealloc(&LastDirBackup);
-}
-
-/**
  * link_is_dir - Does this symlink point to a directory?
  * @param folder Folder
  * @param path   Link name

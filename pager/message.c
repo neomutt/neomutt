@@ -330,7 +330,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
   unlink(buf_string(tempfile));
   buf_pool_release(&cmd);
 
-  if (!OptNoCurses)
+  if (OptGui)
     keypad(stdscr, true);
   if (r != -1)
     mutt_set_flag(m, e, MUTT_READ, true, true);

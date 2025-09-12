@@ -107,7 +107,7 @@ static const struct ExpandoDefinition PgpEntryFormatDef[] = {
 /**
  * NcryptVars - Config definitions for the encryption library
  */
-static struct ConfigDef NcryptVars[] = {
+struct ConfigDef NcryptVars[] = {
   // clang-format off
   { "crypt_confirm_hook", DT_BOOL, true, 0, NULL,
     "Prompt the user to confirm keys before use"
@@ -219,7 +219,7 @@ static struct ConfigDef NcryptVars[] = {
 /**
  * NcryptVarsGpgme - GPGME Config definitions for the encryption library
  */
-static struct ConfigDef NcryptVarsGpgme[] = {
+struct ConfigDef NcryptVarsGpgme[] = {
   // clang-format off
   { "crypt_use_gpgme", DT_BOOL|D_ON_STARTUP, true, 0, NULL,
     "Use GPGME crypto backend"
@@ -298,7 +298,7 @@ static const struct ExpandoDefinition SmimeCommandFormatDef[] = {
 /**
  * NcryptVarsPgp - PGP Config definitions for the encryption library
  */
-static struct ConfigDef NcryptVarsPgp[] = {
+struct ConfigDef NcryptVarsPgp[] = {
   // clang-format off
   { "pgp_check_exit", DT_BOOL, true, 0, NULL,
     "Check the exit code of PGP subprocess"
@@ -368,7 +368,7 @@ static struct ConfigDef NcryptVarsPgp[] = {
 /**
  * NcryptVarsSmime - SMIME Config definitions for the encryption library
  */
-static struct ConfigDef NcryptVarsSmime[] = {
+struct ConfigDef NcryptVarsSmime[] = {
   // clang-format off
   { "smime_ask_cert_label", DT_BOOL, true, 0, NULL,
     "Prompt the user for a label for SMIME certificates"
@@ -425,25 +425,3 @@ static struct ConfigDef NcryptVarsSmime[] = {
   // clang-format on
 };
 #endif
-
-/**
- * config_init_ncrypt - Register ncrypt config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_ncrypt(struct ConfigSet *cs)
-{
-  bool rc = cs_register_variables(cs, NcryptVars);
-
-#if defined(CRYPT_BACKEND_GPGME)
-  rc |= cs_register_variables(cs, NcryptVarsGpgme);
-#endif
-
-#if defined(CRYPT_BACKEND_CLASSIC_PGP)
-  rc |= cs_register_variables(cs, NcryptVarsPgp);
-#endif
-
-#if defined(CRYPT_BACKEND_CLASSIC_SMIME)
-  rc |= cs_register_variables(cs, NcryptVarsSmime);
-#endif
-
-  return rc;
-}

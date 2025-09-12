@@ -31,6 +31,7 @@
  * | key/get.c           | @subpage key_get      |
  * | key/init.c          | @subpage key_init     |
  * | key/lib.c           | @subpage key_lib      |
+ * | key/module.c        | @subpage key_module   |
  * | key/parse.c         | @subpage key_parse    |
  */
 
