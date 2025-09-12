@@ -1148,6 +1148,7 @@ static int op_main_collapse_all(struct IndexSharedData *shared,
     return FR_ERROR;
   }
   collapse_all(shared->mailbox_view, priv->menu, 1);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
 
   return FR_SUCCESS;
 }
@@ -1188,6 +1189,7 @@ static int op_main_collapse_thread(struct IndexSharedData *shared,
   }
 
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
 
   return FR_SUCCESS;
 }
