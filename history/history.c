@@ -317,8 +317,6 @@ cleanup:
  */
 static void save_history(enum HistoryClass hclass, const char *str)
 {
-  static int n = 0;
-
   if (!str || (*str == '\0')) // This shouldn't happen, but it's safer
     return;
 
@@ -342,12 +340,7 @@ static void save_history(enum HistoryClass hclass, const char *str)
   mutt_file_fclose(&fp);
   FREE(&tmp);
 
-  if (--n < 0)
-  {
-    const short c_save_history = cs_subset_number(NeoMutt->sub, "save_history");
-    n = c_save_history;
-    shrink_histfile();
-  }
+  shrink_histfile();
 }
 
 /**
