@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-09-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-09-21 12:25+0200\n"
-"PO-Revision-Date: 2025-09-21 13:18+0200\n"
+"PO-Revision-Date: 2025-09-21 13:34+0200\n"
 "Last-Translator: Страхиња Радић <sr@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -8218,7 +8218,7 @@ msgstr ""
 #: usage.c:75
 msgid "        -d <level>                   Set logging level (1..5)"
 msgstr ""
-"        -d <ниво>                    Задаје миво бележења у дневник"
+"        -d <ниво>                    Задаје ниво бележења у дневник"
 " (1..5)"
 
 #: usage.c:76
