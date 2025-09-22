@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-09-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-09-21 13:39+0200\n"
-"PO-Revision-Date: 2025-09-21 13:38+0200\n"
+"POT-Creation-Date: 2025-09-22 08:51+0200\n"
+"PO-Revision-Date: 2025-09-22 08:50+0200\n"
 "Last-Translator: Страхиња Радић <sr@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.8.5\n"
+"X-Generator: poe 1.8.4\n"
 
 #: address/config_type.c:87 config/long.c:51 config/path.c:98 config/path.c:173
 #: config/sort.c:58 config/string.c:69 config/string.c:144
@@ -209,7 +209,7 @@ msgid "aneu"
 msgstr "aidn"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:84 index/functions.c:1831
+#: alias/gui.c:84 index/functions.c:1834
 #, c-format
 msgid "Limit: %s"
 msgstr "Лимит: %s"
@@ -250,11 +250,11 @@ msgstr "Штампај"
 msgid "Attachments"
 msgstr "Прилози"
 
-#: attach/functions.c:56 index/functions.c:3101
+#: attach/functions.c:56 index/functions.c:3104
 msgid "Function not permitted in attach-message mode"
 msgstr "Функција није дозвољена у режиму додавања поруке"
 
-#: attach/functions.c:188 index/functions.c:3095 mx.c:933
+#: attach/functions.c:188 index/functions.c:3098 mx.c:933
 msgid "Mailbox is read-only"
 msgstr "Сандуче је само за читање"
 
@@ -282,7 +282,7 @@ msgstr "Брисање прилога из потписаних порука м�
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Само је подржано брисање multipart прилога"
 
-#: attach/functions.c:643 index/functions.c:2847
+#: attach/functions.c:643 index/functions.c:2850
 msgid "Reply by mail as poster prefers?"
 msgstr "Одговорити мејлом, као што постављач преферира?"
 
@@ -2401,7 +2401,7 @@ msgid "Character set changed to %s; converting"
 msgstr "Скуп знакова промењен у %s; конвертоваће се"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1298
+#: index/functions.c:1164 index/functions.c:1305 mutt_thread.c:1298
 #: mutt_thread.c:1364 mutt_thread.c:1450
 msgid "Threading is not enabled"
 msgstr "Нити нису омогућене"
@@ -4752,7 +4752,7 @@ msgstr "QRESYNC је неуспешан.  Поново се отвара сан�
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Не могу се доставити заглавља са ове верзије IMAP сервера"
 
-#: imap/message.c:1162 index/functions.c:2604 nntp/nntp.c:1284 pop/pop.c:371
+#: imap/message.c:1162 index/functions.c:2607 nntp/nntp.c:1284 pop/pop.c:371
 msgid "Fetching message headers..."
 msgstr "Достављање заглавља порука..."
 
@@ -4839,7 +4839,7 @@ msgstr "Нови мејлови у овом сандучету"
 msgid "Mailbox was externally modified"
 msgstr "Сандуче је измењено споља"
 
-#: index/dlg_index.c:1336 index/functions.c:3075 pattern/message.c:287
+#: index/dlg_index.c:1336 index/functions.c:3078 pattern/message.c:287
 msgid "No mailbox is open"
 msgstr "Ниједно сандуче није отворено"
 
@@ -4884,7 +4884,7 @@ msgstr "Не може се обрисати порука"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:560 index/functions.c:1205
+#: index/functions.c:560 index/functions.c:1207
 msgid "Can't delete messages"
 msgstr "Не могу се обрисати поруке"
 
@@ -4952,102 +4952,102 @@ msgstr "Отвори сандуче у режиму само за читање"
 msgid "Open mailbox"
 msgstr "Отвори сандуче"
 
-#: index/functions.c:1186
+#: index/functions.c:1187
 msgid "Thread contains unread or flagged messages"
 msgstr "Нит садржи непрочитане или поруке са заставицом"
 
-#: index/functions.c:1208
+#: index/functions.c:1210
 msgid "Delete messages matching: "
 msgstr "Обриши поруке које одговарају: "
 
-#: index/functions.c:1248
+#: index/functions.c:1250
 msgid "Limit to messages matching: "
 msgstr "Ограничи на поруке које одговарају: "
 
-#: index/functions.c:1278
+#: index/functions.c:1281
 msgid "To view all messages, limit to \"all\""
 msgstr "Да бисте приказали све поруке, ограничите на „all“"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1291
+#: index/functions.c:1294
 msgid "Can't link threads"
 msgstr "Не могу се повезати нити"
 
-#: index/functions.c:1306
+#: index/functions.c:1309
 msgid "No Message-ID: header available to link thread"
 msgstr "Ниједно Message-ID: заглавље није доступно за повезивање нити"
 
-#: index/functions.c:1320
+#: index/functions.c:1323
 msgid "Threads linked"
 msgstr "Нити су повезане"
 
-#: index/functions.c:1325
+#: index/functions.c:1328
 msgid "No thread linked"
 msgstr "Ниједна нит није повезана"
 
-#: index/functions.c:1354 mx.c:1287 mx.c:1307
+#: index/functions.c:1357 mx.c:1287 mx.c:1307
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Фасцикла не подржава означавање, прекида се"
 
-#: index/functions.c:1375
+#: index/functions.c:1378
 msgid "No tag specified, aborting"
 msgstr "Ниједна ознака није задата, прекида се"
 
-#: index/functions.c:1386
+#: index/functions.c:1389
 msgid "Update tags..."
 msgstr "Ажурирање ознака..."
 
-#: index/functions.c:1426
+#: index/functions.c:1429
 msgid "Failed to modify tags, aborting"
 msgstr "Неуспешна измена ознака, прекида се"
 
-#: index/functions.c:1540
+#: index/functions.c:1543
 msgid "No new messages in this limited view"
 msgstr "Нема нових порука у овом ограниченом погледу"
 
-#: index/functions.c:1542
+#: index/functions.c:1545
 msgid "No new messages"
 msgstr "Нема нових порука"
 
-#: index/functions.c:1547
+#: index/functions.c:1550
 msgid "No unread messages in this limited view"
 msgstr "Нема непрочитаних порука у овом ограниченом погледу"
 
-#: index/functions.c:1549
+#: index/functions.c:1552
 msgid "No unread messages"
 msgstr "Нема непрочитаних порука"
 
-#: index/functions.c:1565 menu/functions.c:108 pager/functions.c:765
+#: index/functions.c:1568 menu/functions.c:108 pager/functions.c:765
 #: pattern/pattern.c:554 pattern/pattern.c:710
 msgid "Search wrapped to top"
 msgstr "Претрага се вратила на почетак"
 
-#: index/functions.c:1570 pager/functions.c:796 pattern/pattern.c:567
+#: index/functions.c:1573 pager/functions.c:796 pattern/pattern.c:567
 #: pattern/pattern.c:723
 msgid "Search wrapped to bottom"
 msgstr "Претрага се вратила на дно"
 
-#: index/functions.c:1614
+#: index/functions.c:1617
 msgid "No more threads"
 msgstr "Нема више нити"
 
-#: index/functions.c:1616
+#: index/functions.c:1619
 msgid "You are on the first thread"
 msgstr "Налазите се на првој нити"
 
-#: index/functions.c:1634 index/functions.c:2026
+#: index/functions.c:1637 index/functions.c:2029
 msgid "You are on the last message"
 msgstr "Налазите се на последњој поруци"
 
-#: index/functions.c:1651 index/functions.c:1706
+#: index/functions.c:1654 index/functions.c:1709
 msgid "No undeleted messages"
 msgstr "Нема од-обрисаних порука"
 
-#: index/functions.c:1672
+#: index/functions.c:1675
 msgid "No mailboxes have new mail"
 msgstr "Ниједно сандуче нема нове поште"
 
-#: index/functions.c:1690 index/functions.c:2064
+#: index/functions.c:1693 index/functions.c:2067
 msgid "You are on the first message"
 msgstr "Налазите се на првој поруци"
 
@@ -5055,15 +5055,15 @@ msgstr "Налазите се на првој поруци"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1759
+#: index/functions.c:1762
 msgid "Can't mark messages as read"
 msgstr "Поруке се не могу означити прочитаним"
 
-#: index/functions.c:1836
+#: index/functions.c:1839
 msgid "No limit pattern is in effect"
 msgstr "Нема активне шеме за ограничавање"
 
-#: index/functions.c:1923
+#: index/functions.c:1926
 msgid "Tag messages matching: "
 msgstr "Означи поруке: "
 
@@ -5071,134 +5071,134 @@ msgstr "Означи поруке: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1939 index/functions.c:2453
+#: index/functions.c:1942 index/functions.c:2456
 msgid "Can't undelete messages"
 msgstr "Не могу се од-обрисати поруке"
 
-#: index/functions.c:1943
+#: index/functions.c:1946
 msgid "Undelete messages matching: "
 msgstr "Од-обриши поруке: "
 
-#: index/functions.c:1957
+#: index/functions.c:1960
 msgid "Untag messages matching: "
 msgstr "Одозначи поруке: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1980
+#: index/functions.c:1983
 msgid "Enter macro stroke: "
 msgstr "Унесите тастер за макро: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1996
+#: index/functions.c:1999
 msgid "message hotkey"
 msgstr "тастер за макро"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:2001
+#: index/functions.c:2004
 #, c-format
 msgid "Message bound to %s"
 msgstr "Порука је додељена тастеру %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:2011
+#: index/functions.c:2014
 msgid "No message ID to macro"
 msgstr "Нема Message-ID-а за макро"
 
-#: index/functions.c:2109
+#: index/functions.c:2112
 msgid "Quit NeoMutt?"
 msgstr "Излаз из NeoMutt-а?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2365
+#: index/functions.c:2368
 msgid "Can't toggle new"
 msgstr "Не може се сменити статус нове"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2417
+#: index/functions.c:2420
 msgid "Can't undelete message"
 msgstr "Не може се од-обрисати порука"
 
-#: index/functions.c:2552
+#: index/functions.c:2555
 msgid "Logged out of IMAP servers"
 msgstr "Одјављен са IMAP сервера"
 
-#: index/functions.c:2600
+#: index/functions.c:2603
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Нема Message-Id-а: Не може се обавити операција."
 
-#: index/functions.c:2670
+#: index/functions.c:2673
 msgid "No deleted messages found in the thread"
 msgstr "Нема обрисаних порука у овој нити"
 
-#: index/functions.c:2695
+#: index/functions.c:2698
 msgid "Enter Message-Id: "
 msgstr "Унесите Message-Id: "
 
-#: index/functions.c:2707
+#: index/functions.c:2710
 msgid "Article has no parent reference"
 msgstr "Чланак нема надређену референцу"
 
-#: index/functions.c:2730
+#: index/functions.c:2733
 msgid "Message is not visible in limited view"
 msgstr "Порука није видљива у ограниченом погледу"
 
-#: index/functions.c:2735
+#: index/functions.c:2738
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Добављање %s са сервера..."
 
-#: index/functions.c:2748 nntp/nntp.c:2718
+#: index/functions.c:2751 nntp/nntp.c:2718
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Чланак %s није пронађен на серверу"
 
-#: index/functions.c:2776
+#: index/functions.c:2779
 msgid "Open newsgroup in read-only mode"
 msgstr "Отвори њузгрупу у режиму само за читање"
 
-#: index/functions.c:2781
+#: index/functions.c:2784
 msgid "Open newsgroup"
 msgstr "Отвори њузгрупу"
 
-#: index/functions.c:2852
+#: index/functions.c:2855
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Постављање у ову групу није дозвољено, можда је модерисана. Наставити?"
 
-#: index/functions.c:2888
+#: index/functions.c:2891
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Нема виртуалног фолдера и Message-Id-а, прекида се"
 
-#: index/functions.c:2917
+#: index/functions.c:2920
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "неуспешна претрага порука у notmuch-овој бази. покушајте да покренете „notmuch new“."
 
-#: index/functions.c:2929
+#: index/functions.c:2932
 msgid "Failed to read thread, aborting"
 msgstr "Неуспешно читање нити, прекида се"
 
-#: index/functions.c:2969
+#: index/functions.c:2972
 msgid "No query, aborting"
 msgstr "Нема упита, прекида се"
 
-#: index/functions.c:3012
+#: index/functions.c:3015
 msgid "Windowed queries disabled"
 msgstr "Прозорски упити нису подржани"
 
-#: index/functions.c:3018
+#: index/functions.c:3021
 msgid "No notmuch vfolder currently loaded"
 msgstr "Тренутно ниједан notmuch-ов vfolder није учитан"
 
-#: index/functions.c:3081
+#: index/functions.c:3084
 msgid "There are no messages"
 msgstr "Нема порука"
 
-#: index/functions.c:3089
+#: index/functions.c:3092
 msgid "No visible messages"
 msgstr "Нема видљивих порука"
 
@@ -5822,19 +5822,19 @@ msgstr "Порука се не може послати као убачена. В
 msgid "Mail not sent"
 msgstr "Порука није послата"
 
-#: ncrypt/crypt.c:653
+#: ncrypt/crypt.c:654
 msgid "S/MIME messages with no hints on content are unsupported"
 msgstr "S/MIME поруке без назнака садржаја нису подржане"
 
-#: ncrypt/crypt.c:898
+#: ncrypt/crypt.c:899
 msgid "Trying to extract PGP keys...\n"
 msgstr "Покушај извлачења PGP кључева...\n"
 
-#: ncrypt/crypt.c:925
+#: ncrypt/crypt.c:926
 msgid "Trying to extract S/MIME certificates..."
 msgstr "Покушај извлачења S/MIME сертификата..."
 
-#: ncrypt/crypt.c:1258
+#: ncrypt/crypt.c:1259
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
@@ -5843,7 +5843,7 @@ msgstr ""
 "[-- Грешка: Непознати multipart/signed протокол %s --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1299
+#: ncrypt/crypt.c:1300
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
@@ -5851,7 +5851,7 @@ msgstr ""
 "[-- Грешка: multipart/signed потпис је непостојећи или лошег формата --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1337
+#: ncrypt/crypt.c:1338
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures --]\n"
@@ -5860,11 +5860,11 @@ msgstr ""
 "[-- Упозорење: Потписи %s/%s се не могу верификовати. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1349
+#: ncrypt/crypt.c:1350
 msgid "[-- The following data is signed --]\n"
 msgstr "[-- Следећи подаци су потписани --]\n"
 
-#: ncrypt/crypt.c:1357
+#: ncrypt/crypt.c:1358
 msgid ""
 "[-- Warning: Can't find any signatures --]\n"
 "\n"
@@ -5872,7 +5872,7 @@ msgstr ""
 "[-- Упозорење: Није пронађен ниједан потпис. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1364
+#: ncrypt/crypt.c:1365
 msgid "[-- End of signed data --]\n"
 msgstr "[-- Крај потписаних података --]\n"
 
@@ -8413,7 +8413,7 @@ msgstr "  -D                Истоварује све конфигурацио
 
 #: usage.c:219
 msgid "  -D -D             (or -DD) Like -D, but only show changed config"
-msgstr "  -D -D             (или -DD) Као -D, али приказије само измењену конфигурацију"
+msgstr "  -D -D             (или -DD) Као -D, али приказује само измењену конфигурацију"
 
 #: usage.c:222
 msgid "  -Q <option> [...] Query config options"
