@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-09-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-08-28 08:41+0100\n"
-"PO-Revision-Date: 2025-01-04 12:26+0100\n"
+"POT-Creation-Date: 2025-09-22 08:51+0200\n"
+"PO-Revision-Date: 2025-09-22 08:50+0200\n"
 "Last-Translator: Страхиња Радић <sr@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.8.5\n"
+"X-Generator: poe 1.8.4\n"
 
 #: address/config_type.c:87 config/long.c:51 config/path.c:98 config/path.c:173
 #: config/sort.c:58 config/string.c:69 config/string.c:144
@@ -209,7 +209,7 @@ msgid "aneu"
 msgstr "aidn"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:84 index/functions.c:1831
+#: alias/gui.c:84 index/functions.c:1834
 #, c-format
 msgid "Limit: %s"
 msgstr "Лимит: %s"
@@ -250,11 +250,11 @@ msgstr "Штампај"
 msgid "Attachments"
 msgstr "Прилози"
 
-#: attach/functions.c:56 index/functions.c:3101
+#: attach/functions.c:56 index/functions.c:3104
 msgid "Function not permitted in attach-message mode"
 msgstr "Функција није дозвољена у режиму додавања поруке"
 
-#: attach/functions.c:188 index/functions.c:3095 mx.c:933
+#: attach/functions.c:188 index/functions.c:3098 mx.c:933
 msgid "Mailbox is read-only"
 msgstr "Сандуче је само за читање"
 
@@ -282,7 +282,7 @@ msgstr "Брисање прилога из потписаних порука м�
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Само је подржано брисање multipart прилога"
 
-#: attach/functions.c:643 index/functions.c:2847
+#: attach/functions.c:643 index/functions.c:2850
 msgid "Reply by mail as poster prefers?"
 msgstr "Одговорити мејлом, као што постављач преферира?"
 
@@ -2401,7 +2401,7 @@ msgid "Character set changed to %s; converting"
 msgstr "Скуп знакова промењен у %s; конвертоваће се"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1298
+#: index/functions.c:1164 index/functions.c:1305 mutt_thread.c:1298
 #: mutt_thread.c:1364 mutt_thread.c:1450
 msgid "Threading is not enabled"
 msgstr "Нити нису омогућене"
@@ -4059,7 +4059,6 @@ msgstr "слање јавног PGP кључа мејлом"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-#, fuzzy
 msgid "verify a public key"
 msgstr "верификација јавног кључа"
 
@@ -4753,7 +4752,7 @@ msgstr "QRESYNC је неуспешан.  Поново се отвара сан�
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Не могу се доставити заглавља са ове верзије IMAP сервера"
 
-#: imap/message.c:1162 index/functions.c:2604 nntp/nntp.c:1284 pop/pop.c:371
+#: imap/message.c:1162 index/functions.c:2607 nntp/nntp.c:1284 pop/pop.c:371
 msgid "Fetching message headers..."
 msgstr "Достављање заглавља порука..."
 
@@ -4840,7 +4839,7 @@ msgstr "Нови мејлови у овом сандучету"
 msgid "Mailbox was externally modified"
 msgstr "Сандуче је измењено споља"
 
-#: index/dlg_index.c:1336 index/functions.c:3075 pattern/message.c:287
+#: index/dlg_index.c:1336 index/functions.c:3078 pattern/message.c:287
 msgid "No mailbox is open"
 msgstr "Ниједно сандуче није отворено"
 
@@ -4885,7 +4884,7 @@ msgstr "Не може се обрисати порука"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:560 index/functions.c:1205
+#: index/functions.c:560 index/functions.c:1207
 msgid "Can't delete messages"
 msgstr "Не могу се обрисати поруке"
 
@@ -4953,102 +4952,102 @@ msgstr "Отвори сандуче у режиму само за читање"
 msgid "Open mailbox"
 msgstr "Отвори сандуче"
 
-#: index/functions.c:1186
+#: index/functions.c:1187
 msgid "Thread contains unread or flagged messages"
 msgstr "Нит садржи непрочитане или поруке са заставицом"
 
-#: index/functions.c:1208
+#: index/functions.c:1210
 msgid "Delete messages matching: "
 msgstr "Обриши поруке које одговарају: "
 
-#: index/functions.c:1248
+#: index/functions.c:1250
 msgid "Limit to messages matching: "
 msgstr "Ограничи на поруке које одговарају: "
 
-#: index/functions.c:1278
+#: index/functions.c:1281
 msgid "To view all messages, limit to \"all\""
 msgstr "Да бисте приказали све поруке, ограничите на „all“"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1291
+#: index/functions.c:1294
 msgid "Can't link threads"
 msgstr "Не могу се повезати нити"
 
-#: index/functions.c:1306
+#: index/functions.c:1309
 msgid "No Message-ID: header available to link thread"
 msgstr "Ниједно Message-ID: заглавље није доступно за повезивање нити"
 
-#: index/functions.c:1320
+#: index/functions.c:1323
 msgid "Threads linked"
 msgstr "Нити су повезане"
 
-#: index/functions.c:1325
+#: index/functions.c:1328
 msgid "No thread linked"
 msgstr "Ниједна нит није повезана"
 
-#: index/functions.c:1354 mx.c:1287 mx.c:1307
+#: index/functions.c:1357 mx.c:1287 mx.c:1307
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Фасцикла не подржава означавање, прекида се"
 
-#: index/functions.c:1375
+#: index/functions.c:1378
 msgid "No tag specified, aborting"
 msgstr "Ниједна ознака није задата, прекида се"
 
-#: index/functions.c:1386
+#: index/functions.c:1389
 msgid "Update tags..."
 msgstr "Ажурирање ознака..."
 
-#: index/functions.c:1426
+#: index/functions.c:1429
 msgid "Failed to modify tags, aborting"
 msgstr "Неуспешна измена ознака, прекида се"
 
-#: index/functions.c:1540
+#: index/functions.c:1543
 msgid "No new messages in this limited view"
 msgstr "Нема нових порука у овом ограниченом погледу"
 
-#: index/functions.c:1542
+#: index/functions.c:1545
 msgid "No new messages"
 msgstr "Нема нових порука"
 
-#: index/functions.c:1547
+#: index/functions.c:1550
 msgid "No unread messages in this limited view"
 msgstr "Нема непрочитаних порука у овом ограниченом погледу"
 
-#: index/functions.c:1549
+#: index/functions.c:1552
 msgid "No unread messages"
 msgstr "Нема непрочитаних порука"
 
-#: index/functions.c:1565 menu/functions.c:108 pager/functions.c:765
-#: pattern/pattern.c:557 pattern/pattern.c:713
+#: index/functions.c:1568 menu/functions.c:108 pager/functions.c:765
+#: pattern/pattern.c:554 pattern/pattern.c:710
 msgid "Search wrapped to top"
 msgstr "Претрага се вратила на почетак"
 
-#: index/functions.c:1570 pager/functions.c:796 pattern/pattern.c:570
-#: pattern/pattern.c:726
+#: index/functions.c:1573 pager/functions.c:796 pattern/pattern.c:567
+#: pattern/pattern.c:723
 msgid "Search wrapped to bottom"
 msgstr "Претрага се вратила на дно"
 
-#: index/functions.c:1614
+#: index/functions.c:1617
 msgid "No more threads"
 msgstr "Нема више нити"
 
-#: index/functions.c:1616
+#: index/functions.c:1619
 msgid "You are on the first thread"
 msgstr "Налазите се на првој нити"
 
-#: index/functions.c:1634 index/functions.c:2026
+#: index/functions.c:1637 index/functions.c:2029
 msgid "You are on the last message"
 msgstr "Налазите се на последњој поруци"
 
-#: index/functions.c:1651 index/functions.c:1706
+#: index/functions.c:1654 index/functions.c:1709
 msgid "No undeleted messages"
 msgstr "Нема од-обрисаних порука"
 
-#: index/functions.c:1672
+#: index/functions.c:1675
 msgid "No mailboxes have new mail"
 msgstr "Ниједно сандуче нема нове поште"
 
-#: index/functions.c:1690 index/functions.c:2064
+#: index/functions.c:1693 index/functions.c:2067
 msgid "You are on the first message"
 msgstr "Налазите се на првој поруци"
 
@@ -5056,15 +5055,15 @@ msgstr "Налазите се на првој поруци"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1759
+#: index/functions.c:1762
 msgid "Can't mark messages as read"
 msgstr "Поруке се не могу означити прочитаним"
 
-#: index/functions.c:1836
+#: index/functions.c:1839
 msgid "No limit pattern is in effect"
 msgstr "Нема активне шеме за ограничавање"
 
-#: index/functions.c:1923
+#: index/functions.c:1926
 msgid "Tag messages matching: "
 msgstr "Означи поруке: "
 
@@ -5072,134 +5071,134 @@ msgstr "Означи поруке: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1939 index/functions.c:2453
+#: index/functions.c:1942 index/functions.c:2456
 msgid "Can't undelete messages"
 msgstr "Не могу се од-обрисати поруке"
 
-#: index/functions.c:1943
+#: index/functions.c:1946
 msgid "Undelete messages matching: "
 msgstr "Од-обриши поруке: "
 
-#: index/functions.c:1957
+#: index/functions.c:1960
 msgid "Untag messages matching: "
 msgstr "Одозначи поруке: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1980
+#: index/functions.c:1983
 msgid "Enter macro stroke: "
 msgstr "Унесите тастер за макро: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1996
+#: index/functions.c:1999
 msgid "message hotkey"
 msgstr "тастер за макро"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:2001
+#: index/functions.c:2004
 #, c-format
 msgid "Message bound to %s"
 msgstr "Порука је додељена тастеру %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:2011
+#: index/functions.c:2014
 msgid "No message ID to macro"
 msgstr "Нема Message-ID-а за макро"
 
-#: index/functions.c:2109
+#: index/functions.c:2112
 msgid "Quit NeoMutt?"
 msgstr "Излаз из NeoMutt-а?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2365
+#: index/functions.c:2368
 msgid "Can't toggle new"
 msgstr "Не може се сменити статус нове"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2417
+#: index/functions.c:2420
 msgid "Can't undelete message"
 msgstr "Не може се од-обрисати порука"
 
-#: index/functions.c:2552
+#: index/functions.c:2555
 msgid "Logged out of IMAP servers"
 msgstr "Одјављен са IMAP сервера"
 
-#: index/functions.c:2600
+#: index/functions.c:2603
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Нема Message-Id-а: Не може се обавити операција."
 
-#: index/functions.c:2670
+#: index/functions.c:2673
 msgid "No deleted messages found in the thread"
 msgstr "Нема обрисаних порука у овој нити"
 
-#: index/functions.c:2695
+#: index/functions.c:2698
 msgid "Enter Message-Id: "
 msgstr "Унесите Message-Id: "
 
-#: index/functions.c:2707
+#: index/functions.c:2710
 msgid "Article has no parent reference"
 msgstr "Чланак нема надређену референцу"
 
-#: index/functions.c:2730
+#: index/functions.c:2733
 msgid "Message is not visible in limited view"
 msgstr "Порука није видљива у ограниченом погледу"
 
-#: index/functions.c:2735
+#: index/functions.c:2738
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Добављање %s са сервера..."
 
-#: index/functions.c:2748 nntp/nntp.c:2718
+#: index/functions.c:2751 nntp/nntp.c:2718
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Чланак %s није пронађен на серверу"
 
-#: index/functions.c:2776
+#: index/functions.c:2779
 msgid "Open newsgroup in read-only mode"
 msgstr "Отвори њузгрупу у режиму само за читање"
 
-#: index/functions.c:2781
+#: index/functions.c:2784
 msgid "Open newsgroup"
 msgstr "Отвори њузгрупу"
 
-#: index/functions.c:2852
+#: index/functions.c:2855
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Постављање у ову групу није дозвољено, можда је модерисана. Наставити?"
 
-#: index/functions.c:2888
+#: index/functions.c:2891
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Нема виртуалног фолдера и Message-Id-а, прекида се"
 
-#: index/functions.c:2917
+#: index/functions.c:2920
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "неуспешна претрага порука у notmuch-овој бази. покушајте да покренете „notmuch new“."
 
-#: index/functions.c:2929
+#: index/functions.c:2932
 msgid "Failed to read thread, aborting"
 msgstr "Неуспешно читање нити, прекида се"
 
-#: index/functions.c:2969
+#: index/functions.c:2972
 msgid "No query, aborting"
 msgstr "Нема упита, прекида се"
 
-#: index/functions.c:3012
+#: index/functions.c:3015
 msgid "Windowed queries disabled"
 msgstr "Прозорски упити нису подржани"
 
-#: index/functions.c:3018
+#: index/functions.c:3021
 msgid "No notmuch vfolder currently loaded"
 msgstr "Тренутно ниједан notmuch-ов vfolder није учитан"
 
-#: index/functions.c:3081
+#: index/functions.c:3084
 msgid "There are no messages"
 msgstr "Нема порука"
 
-#: index/functions.c:3089
+#: index/functions.c:3092
 msgid "No visible messages"
 msgstr "Нема видљивих порука"
 
@@ -5450,18 +5449,18 @@ msgstr "Не може се поново отворити сандуче"
 msgid "Can't write message"
 msgstr "Не може се исписати порука"
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:490
-#: pattern/pattern.c:647
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:487
+#: pattern/pattern.c:644
 msgid "Reverse search for: "
 msgstr "Тражи уназад: "
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:490
-#: pattern/pattern.c:647
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:487
+#: pattern/pattern.c:644
 msgid "Search for: "
 msgstr "Тражи: "
 
 #: menu/functions.c:127 pager/functions.c:694 pager/functions.c:761
-#: pager/functions.c:792 pattern/pattern.c:621 pattern/pattern.c:774
+#: pager/functions.c:792 pattern/pattern.c:618 pattern/pattern.c:771
 msgid "Not found"
 msgstr "Није пронађено"
 
@@ -5564,12 +5563,12 @@ msgstr "отварање /dev/urandom: %s"
 msgid "read /dev/urandom: %s"
 msgstr "читање /dev/urandom: %s"
 
-#: mutt/regex.c:279
+#: mutt/regex.c:280
 #, c-format
 msgid "Bad regex: %s"
 msgstr "Лош регизраз: %s"
 
-#: mutt/regex.c:351
+#: mutt/regex.c:352
 msgid "Not enough subexpressions for template"
 msgstr "Нема довољно подизраза за шаблон"
 
@@ -5823,19 +5822,19 @@ msgstr "Порука се не може послати као убачена. В
 msgid "Mail not sent"
 msgstr "Порука није послата"
 
-#: ncrypt/crypt.c:653
+#: ncrypt/crypt.c:654
 msgid "S/MIME messages with no hints on content are unsupported"
 msgstr "S/MIME поруке без назнака садржаја нису подржане"
 
-#: ncrypt/crypt.c:898
+#: ncrypt/crypt.c:899
 msgid "Trying to extract PGP keys...\n"
 msgstr "Покушај извлачења PGP кључева...\n"
 
-#: ncrypt/crypt.c:925
+#: ncrypt/crypt.c:926
 msgid "Trying to extract S/MIME certificates..."
 msgstr "Покушај извлачења S/MIME сертификата..."
 
-#: ncrypt/crypt.c:1258
+#: ncrypt/crypt.c:1259
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
@@ -5844,7 +5843,7 @@ msgstr ""
 "[-- Грешка: Непознати multipart/signed протокол %s --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1299
+#: ncrypt/crypt.c:1300
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
@@ -5852,7 +5851,7 @@ msgstr ""
 "[-- Грешка: multipart/signed потпис је непостојећи или лошег формата --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1337
+#: ncrypt/crypt.c:1338
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures --]\n"
@@ -5861,11 +5860,11 @@ msgstr ""
 "[-- Упозорење: Потписи %s/%s се не могу верификовати. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1349
+#: ncrypt/crypt.c:1350
 msgid "[-- The following data is signed --]\n"
 msgstr "[-- Следећи подаци су потписани --]\n"
 
-#: ncrypt/crypt.c:1357
+#: ncrypt/crypt.c:1358
 msgid ""
 "[-- Warning: Can't find any signatures --]\n"
 "\n"
@@ -5873,7 +5872,7 @@ msgstr ""
 "[-- Упозорење: Није пронађен ниједан потпис. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1364
+#: ncrypt/crypt.c:1365
 msgid "[-- End of signed data --]\n"
 msgstr "[-- Крај потписаних података --]\n"
 
@@ -7564,32 +7563,32 @@ msgstr "Прилагођена IMAP претрага сервера за нис�
 msgid "No current message"
 msgstr "Нема текуће поруке"
 
-#: pattern/pattern.c:209 pattern/pattern.c:335 pattern/pattern.c:514
-#: pattern/pattern.c:670
+#: pattern/pattern.c:206 pattern/pattern.c:332 pattern/pattern.c:511
+#: pattern/pattern.c:667
 msgid "Compiling search pattern..."
 msgstr "Компајлирање шеме за претрагу..."
 
-#: pattern/pattern.c:237 pattern/pattern.c:357
+#: pattern/pattern.c:234 pattern/pattern.c:354
 msgid "Executing command on matching messages..."
 msgstr "Извршавање наредбе на порукама које одговарају..."
 
-#: pattern/pattern.c:443
+#: pattern/pattern.c:440
 msgid "No messages matched criteria"
 msgstr "Ниједна порука не одговара критеријумима"
 
-#: pattern/pattern.c:455 pattern/pattern.c:613 pattern/pattern.c:766
+#: pattern/pattern.c:452 pattern/pattern.c:610 pattern/pattern.c:763
 msgid "Search interrupted"
 msgstr "Претрага је прекинута"
 
-#: pattern/pattern.c:545 pattern/pattern.c:701
+#: pattern/pattern.c:542 pattern/pattern.c:698
 msgid "Searching..."
 msgstr "Претрага..."
 
-#: pattern/pattern.c:561 pattern/pattern.c:717
+#: pattern/pattern.c:558 pattern/pattern.c:714
 msgid "Search hit bottom without finding match"
 msgstr "Претрага је досегла дно без пронађеног подударања"
 
-#: pattern/pattern.c:574 pattern/pattern.c:730
+#: pattern/pattern.c:571 pattern/pattern.c:727
 msgid "Search hit top without finding match"
 msgstr "Претрага је досегла врх без пронађеног подударања"
 
@@ -8015,9 +8014,8 @@ msgid "No newsgroup specified"
 msgstr "Није задата њузгрупа"
 
 #: send/send.c:2711
-#, fuzzy
 msgid "No recipients specified in To. Send anyway?"
-msgstr "Није задат ниједан прималац"
+msgstr "Није задат ниједан прималац у заглављу Коме. Ипак послати?"
 
 #: send/send.c:2752
 msgid "Missing encryption key; mail not sent"
@@ -8122,604 +8120,487 @@ msgstr "Погрешан одговор сервера"
 #. Plus two helper modes: shared, all
 #. These should not be translated.
 #: usage.c:60
-#, fuzzy
 msgid "NeoMutt has four modes of operation:"
-msgstr "NeoMutt has four modes of operation:"
+msgstr "NeoMutt има четири режима:"
 
 #: usage.c:66
-#, fuzzy
 msgid "The default mode, if no command line arguments are specified, is tui."
-msgstr "The default mode, if no command line arguments are specified, is tui."
+msgstr "Подразумевани режим, ако нису задати аргументи командне линије, је tui."
 
 #. L10N: Parameters in <>s may be translated
 #. L10N: Shared Help -- `neomutt -h shared`
 #: usage.c:70 usage.c:127
-#, fuzzy
 msgid "Options that apply to all modes"
-msgstr "Options that apply to all modes"
+msgstr "Опције које се односе на све режиме"
 
 #: usage.c:71
-#, fuzzy
 msgid "neomutt -n                           Don't read system config file"
-msgstr "neomutt -n                           Don't read system config file"
+msgstr "neomutt -n                           Не читати системску конфигурациону датотеку"
 
 #: usage.c:72
-#, fuzzy
 msgid "        -F <config>                  Use this user config file"
-msgstr "        -F <config>                  Use this user config file"
+msgstr "        -F <конфиг>                  Користи ову корисничку конфигурациону датотеку"
 
 #: usage.c:73
-#, fuzzy
 msgid "        -e <command>                 Run extra commands"
-msgstr "        -e <command>                 Run extra commands"
+msgstr "        -e <наредба>                 Покреће додатне наредбе"
 
 #: usage.c:74
-#, fuzzy
 msgid "        -m <type>                    Set default mailbox type"
-msgstr "        -m <type>                    Set default mailbox type"
+msgstr "        -m <врста>                   Задаје подразумевану врсту сандучета"
 
 #: usage.c:75
-#, fuzzy
 msgid "        -d <level>                   Set logging level (1..5)"
-msgstr "        -d <level>                   Set logging level (1..5)"
+msgstr "        -d <ниво>                    Задаје ниво бележења у дневник (1..5)"
 
 #: usage.c:76
-#, fuzzy
 msgid "        -l <file>                    Set logging file"
-msgstr "        -l <file>                    Set logging file"
+msgstr "        -l <датотека>                Задаје дневничку датотеку"
 
 #. L10N: Help Help -- `neomutt -h help`
 #: usage.c:79 usage.c:183
-#, fuzzy
 msgid "Get command line help for NeoMutt"
-msgstr "Get command line help for NeoMutt"
+msgstr "Приказивање помоћи у вези са командном линијом NeoMutt-а"
 
 #: usage.c:80
-#, fuzzy
 msgid "neomutt -h <mode>                    Detailed help for a mode"
-msgstr "neomutt -h <mode>                    Detailed help for a mode"
+msgstr "neomutt -h <режим>                   Детаљна помоћ у вези са режимом"
 
 #: usage.c:81
-#, fuzzy
 msgid "        -v[v]                        Version or license"
-msgstr "        -v[v]                        Version or license"
+msgstr "        -v[v]                        Верзија или лиценца"
 
 #. L10N: Info Help -- `neomutt -h info`
 #: usage.c:84 usage.c:210
-#, fuzzy
 msgid "Ask NeoMutt for config information"
-msgstr "Ask NeoMutt for config information"
+msgstr "Тражење конфигурационих података од NeoMutt-а"
 
 #: usage.c:85
-#, fuzzy
 msgid "neomutt -A <alias> [...]             Lookup email aliases"
-msgstr "neomutt -A <alias> [...]             Lookup email aliases"
+msgstr "neomutt -A <алијас> [...]            Тражи мејл алијасе"
 
 #: usage.c:86
-#, fuzzy
 msgid "        -D [-D] [-O] [-S]            Dump the config"
-msgstr "        -D [-D] [-O] [-S]            Dump the config"
+msgstr "        -D [-D] [-O] [-S]            Истоварује конфигурацију"
 
 #: usage.c:87
-#, fuzzy
 msgid "        -Q <option> [...] [-O] [-S]  Query config options"
-msgstr "        -Q <option> [...] [-O] [-S]  Query config options"
+msgstr "        -Q <опција> [...] [-O] [-S]  Испитује конфигурационе опције"
 
 #. L10N: Sending Help -- `neomutt -h send`
 #: usage.c:90 usage.c:249
-#, fuzzy
 msgid "Send an email from the command line"
-msgstr "Send an email from the command line"
+msgstr "Слање мејла из командне линије"
 
 #: usage.c:91
-#, fuzzy
 msgid "neomutt -a <file> [...]              Attach files"
-msgstr "neomutt -a <file> [...]              Attach files"
+msgstr "neomutt -a <датотека> [...]          Додаје датотеке"
 
 #: usage.c:92
-#, fuzzy
 msgid "        -b <address>                 Add Bcc: address"
-msgstr "        -b <address>                 Add Bcc: address"
+msgstr "        -b <адреса>                  Додаје Bcc: адресу"
 
 #: usage.c:93
-#, fuzzy
 msgid "        -C                           Use crypto (signing/encryption)"
-msgstr "        -C                           Use crypto (signing/encryption)"
+msgstr "        -C                           Користи крипто (потписивање/шифровање)"
 
 #: usage.c:94
-#, fuzzy
 msgid "        -c <address>                 Add Cc: address"
-msgstr "        -c <address>                 Add Cc: address"
+msgstr "        -c <адреса>                  Додаје Cc: адресу"
 
 #: usage.c:95
-#, fuzzy
 msgid "        -E                           Edit message"
-msgstr "        -E                           Edit message"
+msgstr "        -E                           Уређује поруку"
 
 #: usage.c:96
-#, fuzzy
 msgid "        -H <draft>                   Use draft email"
-msgstr "        -H <draft>                   Use draft email"
+msgstr "        -H <скица>                   Користи скицу мејла"
 
 #: usage.c:97
-#, fuzzy
 msgid "        -i <include>                 Include body file"
-msgstr "        -i <include>                 Include body file"
+msgstr "        -i <укључивање>              Укључује датотеку тела"
 
 #: usage.c:98
-#, fuzzy
 msgid "        -s <subject>                 Set Subject:"
-msgstr "        -s <subject>                 Set Subject:"
+msgstr "        -s <тема>                    Поставља поље Subject:"
 
 #: usage.c:99
-#, fuzzy
 msgid "        -- <address> [...]           Add To: addresses"
-msgstr "        -- <address> [...]           Add To: addresses"
+msgstr "        -- <адреса> [...]            Додаје To: адресе"
 
 #. L10N: TUI Help -- `neomutt -h tui`
 #: usage.c:102 usage.c:293
-#, fuzzy
 msgid "Start NeoMutt's TUI (Terminal User Interface)"
-msgstr "Start NeoMutt's TUI (Terminal User Interface)"
+msgstr "Покретање NeoMutt-овог TUI (терминалског корисничког интерфејса)"
 
 #: usage.c:103
-#, fuzzy
 msgid "neomutt                              Start NeoMutt's TUI"
-msgstr "neomutt                              Start NeoMutt's TUI"
+msgstr "neomutt                              Покреће NeoMutt-ов TUI"
 
 #: usage.c:104
-#, fuzzy
 msgid "        -f <mailbox>                 Open this mailbox"
-msgstr "        -f <mailbox>                 Open this mailbox"
+msgstr "        -f <сандуче>                 Отвара дато сандуче"
 
 #: usage.c:105
-#, fuzzy
 msgid "        -G                           Open NNTP browser"
-msgstr "        -G                           Open NNTP browser"
+msgstr "        -G                           Отвара NNTP прегледач"
 
 #: usage.c:106
-#, fuzzy
 msgid "        -g <server>                  Use this NNTP server"
-msgstr "        -g <server>                  Use this NNTP server"
+msgstr "        -g <сервер>                  Користи дати NNTP сервер"
 
 #: usage.c:107
-#, fuzzy
 msgid "        -p                           Resume postponed email"
-msgstr "        -p                           Resume postponed email"
+msgstr "        -p                           Наставља одложени мејл"
 
 #: usage.c:108
-#, fuzzy
 msgid "        -R                           Open mailbox read-only"
-msgstr "        -R                           Open mailbox read-only"
+msgstr "        -R                           Отвара сандуче само за читање"
 
 #: usage.c:109
-#, fuzzy
 msgid "        -y                           Open mailbox browser"
-msgstr "        -y                           Open mailbox browser"
+msgstr "        -y                           Отвара прегледач сандучића"
 
 #: usage.c:110
-#, fuzzy
 msgid "        -Z                           Check for new mail"
-msgstr "        -Z                           Check for new mail"
+msgstr "        -Z                           Проверава нову пошту"
 
 #: usage.c:111
-#, fuzzy
 msgid "        -z                           Check for any mail"
-msgstr "        -z                           Check for any mail"
+msgstr "        -z                           Проверава било какву пошту"
 
 #: usage.c:115 usage.c:117
-#, fuzzy
 msgid "For detailed help, run:"
-msgstr "For detailed help, run:"
+msgstr "За детаљнију помоћ, покрените:"
 
 #: usage.c:130
-#, fuzzy
 msgid "By default NeoMutt loads one system and one user config file,"
-msgstr "By default NeoMutt loads one system and one user config file,"
+msgstr "Подразумевано, NeoMutt учитава системску и корисничку конфигурацију,"
 
 #: usage.c:131
-#, fuzzy
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
-msgstr "e.g. /etc/neomuttrc and ~/.neomuttrc"
+msgstr "нпр. /etc/neomuttrc и ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
-#, fuzzy
 msgid "  -n            Don't read system config file"
-msgstr "  -n            Don't read system config file"
+msgstr "  -n            Не учитава системску конфигурацију"
 
 #: usage.c:135
-#, fuzzy
 msgid "  -F <config>   Use this user config file"
-msgstr "  -F <config>   Use this user config file"
+msgstr "  -F <конфиг>   Користи дату корисничку конфигурацију"
 
 #: usage.c:136 usage.c:143
-#, fuzzy
 msgid "                May be used multiple times"
-msgstr "                May be used multiple times"
+msgstr "                Може се користити више пута"
 
 #: usage.c:139
-#, fuzzy
 msgid "These options override the config:"
-msgstr "These options override the config:"
+msgstr "Ове опције заобилазе конфигурацију:"
 
 #: usage.c:140
-#, fuzzy
 msgid "  -m <type>     Set default mailbox type"
-msgstr "  -m <type>     Set default mailbox type"
+msgstr "  -m <врста>    Поставља подразумевану врсту сандучета"
 
 #: usage.c:141
-#, fuzzy
 msgid "                May be: maildir, mbox, mh, mmdf"
-msgstr "                May be: maildir, mbox, mh, mmdf"
+msgstr "                Може бити: maildir, mbox, mh, mmdf"
 
 #: usage.c:142
-#, fuzzy
 msgid "  -e <command>  Run extra commands"
-msgstr "  -e <command>  Run extra commands"
+msgstr "  -e <наредба>  Покреће додатне наредбе"
 
 #: usage.c:146
-#, fuzzy
 msgid "These logging options override the config:"
-msgstr "These logging options override the config:"
+msgstr "Ове опције бележења у дневник заобилазе конфигурацију:"
 
 #: usage.c:147
-#, fuzzy
 msgid "  -d <level>    Set logging level"
-msgstr "  -d <level>    Set logging level"
+msgstr "  -d <ниво>     Поставља ниво бележења у дневник"
 
 #: usage.c:148
-#, fuzzy
 msgid "                0 (off), 1 (low) .. 5 (high)"
-msgstr "                0 (off), 1 (low) .. 5 (high)"
+msgstr "                0 (искључено), 1 (низак) .. 5 (висок)"
 
 #: usage.c:149
-#, fuzzy
 msgid "  -l <file>     Set logging file"
-msgstr "  -l <file>     Set logging file"
+msgstr "  -l <дато>     Поставља датотеку дневника"
 
 #: usage.c:150
-#, fuzzy
 msgid "                Default file '~/.neomuttdebug0'"
-msgstr "                Default file '~/.neomuttdebug0'"
+msgstr "                Подразумевана датотека је „~/.neomuttdebug0“"
 
 #: usage.c:154 usage.c:156 usage.c:194 usage.c:196 usage.c:231 usage.c:233
 #: usage.c:275 usage.c:277 usage.c:317 usage.c:319
-#, fuzzy
 msgid "Examples:"
-msgstr "Examples:"
+msgstr "Примери:"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:159
-#, fuzzy
 msgid "  neomutt -n"
 msgstr "  neomutt -n"
 
 #: usage.c:160
-#, fuzzy
 msgid "  neomutt -F work.rc"
-msgstr "  neomutt -F work.rc"
+msgstr "  neomutt -F posao.rc"
 
 #: usage.c:161
-#, fuzzy
 msgid "  neomutt -F work.rc -F colours.rc"
-msgstr "  neomutt -F work.rc -F colours.rc"
+msgstr "  neomutt -F posao.rc -F boje.rc"
 
 #: usage.c:164
-#, fuzzy
 msgid "  neomutt -m maildir"
 msgstr "  neomutt -m maildir"
 
 #: usage.c:165
-#, fuzzy
 msgid "  neomutt -e 'set ask_cc = yes'"
 msgstr "  neomutt -e 'set ask_cc = yes'"
 
 #: usage.c:168
-#, fuzzy
 msgid "  neomutt -d 2"
 msgstr "  neomutt -d 2"
 
 #: usage.c:169
-#, fuzzy
 msgid "  neomutt -d 5 -l neolog"
 msgstr "  neomutt -d 5 -l neolog"
 
 #: usage.c:172
-#, fuzzy
 msgid "See also:"
-msgstr "See also:"
+msgstr "Видети и:"
 
 #: usage.c:173
-#, fuzzy
 msgid "- Config files: https://neomutt.org/guide/configuration"
-msgstr "- Config files: https://neomutt.org/guide/configuration"
+msgstr "- Конфигурационе датотеке: https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:187
-#, fuzzy
 msgid "  -h         Overview of command line options"
-msgstr "  -h         Overview of command line options"
+msgstr "  -h         Преглед опција командне линије"
 
 #: usage.c:188
-#, fuzzy
 msgid "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
-msgstr "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
+msgstr "  -h <режим> Детаљна помоћ за: shared, help, info, send, tui, all"
 
 #: usage.c:189
-#, fuzzy
 msgid "  -v         NeoMutt version and build parameters"
-msgstr "  -v         NeoMutt version and build parameters"
+msgstr "  -v         Верзија и параметри изградње NeoMutt-а"
 
 #: usage.c:190
-#, fuzzy
 msgid "  -vv        NeoMutt Copyright and license"
-msgstr "  -vv        NeoMutt Copyright and license"
+msgstr "  -vv        Ауторска права и лиценца NeoMutt-а"
 
 #. L10N: Examples
 #: usage.c:199
-#, fuzzy
 msgid "  neomutt -h info"
 msgstr "  neomutt -h info"
 
 #: usage.c:200
-#, fuzzy
 msgid "  neomutt -vv"
 msgstr "  neomutt -vv"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:214
-#, fuzzy
 msgid "  -A <alias> [...]  Lookup email aliases"
-msgstr "  -A <alias> [...]  Lookup email aliases"
+msgstr "  -A <алијас> [...] Тражи мејл алијасе"
 
 #: usage.c:215
-#, fuzzy
 msgid "                    Multiple aliases can be looked up (space-separated)"
-msgstr "                    Multiple aliases can be looked up (space-separated)"
+msgstr "                    Може се тражити више алијаса (раздвојених размацима)"
 
 #: usage.c:218
-#, fuzzy
 msgid "  -D                Dump all the config options"
-msgstr "  -D                Dump all the config options"
+msgstr "  -D                Истоварује све конфигурационе опције"
 
 #: usage.c:219
-#, fuzzy
 msgid "  -D -D             (or -DD) Like -D, but only show changed config"
-msgstr "  -D -D             (or -DD) Like -D, but only show changed config"
+msgstr "  -D -D             (или -DD) Као -D, али приказује само измењену конфигурацију"
 
 #: usage.c:222
-#, fuzzy
 msgid "  -Q <option> [...] Query config options"
-msgstr "  -Q <option> [...] Query config options"
+msgstr "  -Q <опција> [...] Испитује конфигурационе опције"
 
 #: usage.c:223
-#, fuzzy
 msgid "                    Multiple options can be looked up (space-separated)"
-msgstr "                    Multiple options can be looked up (space-separated)"
+msgstr "                    Може се тражити више опција (раздвојених размацима)"
 
 #: usage.c:225
-#, fuzzy
 msgid "Modify the -D and -Q options:"
-msgstr "Modify the -D and -Q options:"
+msgstr "Измена опција -D и -Q:"
 
 #: usage.c:226
-#, fuzzy
 msgid "  -O                Add one-liner documentation"
-msgstr "  -O                Add one-liner documentation"
+msgstr "  -O                Додаје кратак опис"
 
 #: usage.c:227
-#, fuzzy
 msgid "  -S                Hide the value of sensitive options"
-msgstr "  -S                Hide the value of sensitive options"
+msgstr "  -S                Сакрива вредност осетљивих опција"
 
 #. L10N: Examples
 #: usage.c:236
-#, fuzzy
 msgid "  neomutt -A flatcap gahr"
 msgstr "  neomutt -A flatcap gahr"
 
 #: usage.c:237
-#, fuzzy
 msgid "  neomutt -D -O"
 msgstr "  neomutt -D -O"
 
 #: usage.c:238
-#, fuzzy
 msgid "  neomutt -DD -S"
 msgstr "  neomutt -DD -S"
 
 #: usage.c:239
-#, fuzzy
 msgid "  neomutt -O -Q alias_format index_format"
 msgstr "  neomutt -O -Q alias_format index_format"
 
 #: usage.c:252
-#, fuzzy
 msgid "These options can supply everything NeoMutt needs to send an email."
-msgstr "These options can supply everything NeoMutt needs to send an email."
+msgstr "Ове опције могу обезедити све што NeoMutt-у треба за слање мејла."
 
 #: usage.c:253
-#, fuzzy
 msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
-msgstr "If any parts are missing, NeoMutt will start the TUI to ask for them."
+msgstr "Ако било шта недостаје, NeoMutt ће покренути TUI да за то пита."
 
 #: usage.c:254
-#, fuzzy
 msgid "Addresses may be used before the options, or after a -- marker."
-msgstr "Addresses may be used before the options, or after a -- marker."
+msgstr "Адресе се могу користити пре опција, или после ознаке „--“."
 
 #: usage.c:255
-#, fuzzy
 msgid "Aliases may be used in place of addresses."
-msgstr "Aliases may be used in place of addresses."
+msgstr "Уместо адреса, могу се користити и алијаси."
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:259
-#, fuzzy
 msgid "  -a <file> [...]     Attach files"
-msgstr "  -a <file> [...]     Attach files"
+msgstr "  -a <дато> [...]     Прилаже датотеке"
 
 #: usage.c:260
-#, fuzzy
 msgid "                      Terminated by -- or another option"
-msgstr "                      Terminated by -- or another option"
+msgstr "                      Завршава се „--“ или другом опцијом"
 
 #: usage.c:261
-#, fuzzy
 msgid "  -b <address>        Add Bcc: address"
-msgstr "  -b <address>        Add Bcc: address"
+msgstr "  -b <адреса>         Додаје Bcc: адресу"
 
 #: usage.c:262
-#, fuzzy
 msgid "  -C                  Use crypto (signing/encryption)"
-msgstr "  -C                  Use crypto (signing/encryption)"
+msgstr "  -C                  Користи крипто (потписивање/шифровање)"
 
 #: usage.c:263
-#, fuzzy
 msgid "                      Must be set up in the config file"
-msgstr "                      Must be set up in the config file"
+msgstr "                      Мора бити подешен у конфигурацији"
 
 #: usage.c:264
-#, fuzzy
 msgid "  -c <address>        Add Cc: address"
-msgstr "  -c <address>        Add Cc: address"
+msgstr "  -c <адреса>         Додаје Cc: адресу"
 
 #: usage.c:265
-#, fuzzy
 msgid "  -E                  Edit message"
-msgstr "  -E                  Edit message"
+msgstr "  -E                  Уређује поруку"
 
 #: usage.c:266
-#, fuzzy
 msgid "                      (supplied by -H or -i)"
-msgstr "                      (supplied by -H or -i)"
+msgstr "                      (задату преко -H или -i)"
 
 #: usage.c:267
-#, fuzzy
 msgid "  -H <draft>          Use draft email"
-msgstr "  -H <draft>          Use draft email"
+msgstr "  -H <скица>          Користи скицу мејла"
 
 #: usage.c:268
-#, fuzzy
 msgid "                      Full email with headers and body"
-msgstr "                      Full email with headers and body"
+msgstr "                      Потпуни мејл са заглављима и телом"
 
 #: usage.c:269
-#, fuzzy
 msgid "  -i <include>        Include body file"
-msgstr "  -i <include>        Include body file"
+msgstr "  -i <укључивање>     Укључује датотеку тела"
 
 #: usage.c:270
-#, fuzzy
 msgid "  -s <subject>        Set Subject:"
-msgstr "  -s <subject>        Set Subject:"
+msgstr "  -s <тема>           Поставља Subject:"
 
 #: usage.c:271
-#, fuzzy
 msgid "  -- <address> [...]  Add To: addresses"
-msgstr "  -- <address> [...]  Add To: addresses"
+msgstr "  -- <адреса> [...]   Додаје To: адресе"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:280
-#, fuzzy
 msgid "  neomutt flatcap -s 'Meeting' < meeting.txt"
-msgstr "  neomutt flatcap -s 'Meeting' < meeting.txt"
+msgstr "  neomutt flatcap -s 'Састанак' < sastanak.txt"
 
 #: usage.c:281
-#, fuzzy
 msgid "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
-msgstr "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
+msgstr "  neomutt pera@primer.com -c zika@primer.com -s 'Журка' -i zurka.txt"
 
 #: usage.c:282
-#, fuzzy
 msgid "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
-msgstr "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
+msgstr "  neomutt -s 'Рачуни' -a racun1.pdf racun2.pdf -- rocco"
 
 #: usage.c:283
-#, fuzzy
 msgid "  cat secret.txt | neomutt gahr -s 'Secret' -C"
-msgstr "  cat secret.txt | neomutt gahr -s 'Secret' -C"
+msgstr "  cat tajna.txt | neomutt gahr -s 'Тајна' -C"
 
 #: usage.c:296
-#, fuzzy
 msgid "Running NeoMutt with no options will read the config and start the TUI."
-msgstr "Running NeoMutt with no options will read the config and start the TUI."
+msgstr "Покретање NeoMutt-а без опција ће учитати конфигурацију и покренути TUI."
 
 #: usage.c:297
-#, fuzzy
 msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
-msgstr "By default, it will open the Index Dialog with the $spool_file Mailbox."
+msgstr "Подразумевано, отвориће се дијалог индекса са сандучетом $spool_file."
 
 #: usage.c:300
-#, fuzzy
 msgid "These options cause NeoMutt to check a mailbox for mail."
-msgstr "These options cause NeoMutt to check a mailbox for mail."
+msgstr "Ове опције чине да MeoMutt провери сандуче."
 
 #: usage.c:301
-#, fuzzy
 msgid "If the condition isn't matched, NeoMutt exits."
-msgstr "If the condition isn't matched, NeoMutt exits."
+msgstr "Ако услов није испуњен, NeoMutt излази."
 
 #: usage.c:302
-#, fuzzy
 msgid "  -p            Resume postponed email"
-msgstr "  -p            Resume postponed email"
+msgstr "  -p            Наставља одложени мејл"
 
 #: usage.c:303
-#, fuzzy
 msgid "  -Z            Check for new mail"
-msgstr "  -Z            Check for new mail"
+msgstr "  -Z            Проверава нову пошту"
 
 #: usage.c:304
-#, fuzzy
 msgid "  -z            Check for any mail"
-msgstr "  -z            Check for any mail"
+msgstr "  -z            Проверава било какву пошту"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:308
-#, fuzzy
 msgid "These options change the starting behavior:"
-msgstr "These options change the starting behavior:"
+msgstr "Ове опције мењају понашање при покретању:"
 
 #: usage.c:309
-#, fuzzy
 msgid "  -f <mailbox>  Open this mailbox"
-msgstr "  -f <mailbox>  Open this mailbox"
+msgstr "  -f <сандуче>  Отвара дато сандуче"
 
 #: usage.c:310
-#, fuzzy
 msgid "  -G            Open NNTP browser"
-msgstr "  -G            Open NNTP browser"
+msgstr "  -G            Отвара NNTP прегледач"
 
 #: usage.c:311
-#, fuzzy
 msgid "  -g <server>   Use this NNTP server"
-msgstr "  -g <server>   Use this NNTP server"
+msgstr "  -g <сервер>   Користи дати NNTP сервер"
 
 #: usage.c:312
-#, fuzzy
 msgid "  -R            Open mailbox read-only"
-msgstr "  -R            Open mailbox read-only"
+msgstr "  -R            Отвара сандуче само за читање"
 
 #: usage.c:313
-#, fuzzy
 msgid "  -y            Open mailbox browser"
-msgstr "  -y            Open mailbox browser"
+msgstr "  -y            Отвара прегледач сандучића"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
-#, fuzzy
 msgid "  neomutt -f ~/mail -Z"
 msgstr "  neomutt -f ~/mail -Z"
 
 #: usage.c:323
-#, fuzzy
 msgid "  neomutt -p"
 msgstr "  neomutt -p"
 
 #: usage.c:324
-#, fuzzy
 msgid "  neomutt -y"
 msgstr "  neomutt -y"
 
@@ -8779,7 +8660,7 @@ msgid ""
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 2015-2025 Рицхард Руссон и пријатељи\n"
+"Copyright (C) 2015-2025 Ричард Расон и пријатељи\n"
 "NeoMutt се испоручује БЕЗ ИКАКВЕ ГАРАНЦИЈЕ; за детаље откуцајте „neomutt -vv“.\n"
 "NeoMutt је слободни софтвер, и ви га слободно можете расподељивати\n"
 "под извесним условима; откуцајте „neomutt -vv“ за детаље.\n"
