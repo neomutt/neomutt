@@ -49,6 +49,8 @@ struct Envelope;
 struct MuttWindow;
 struct PagerView;
 
+struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
+
 bool StartupComplete = true;
 
 char *HomeDir = NULL;
@@ -96,7 +98,13 @@ void test_gen_path(struct Buffer *buf, const char *fmt)
 
 bool test_neomutt_create(void)
 {
-  struct ConfigSet *cs = cs_new(50);
+  NeoMutt = neomutt_new();
+  TEST_CHECK(NeoMutt != NULL);
+
+  TEST_CHECK(neomutt_init(NeoMutt, NULL));
+
+  struct ConfigSet *cs = NeoMutt->sub->cs;
+
   CONFIG_INIT_TYPE(cs, Address);
   CONFIG_INIT_TYPE(cs, Bool);
   CONFIG_INIT_TYPE(cs, Enum);
@@ -112,9 +120,6 @@ bool test_neomutt_create(void)
   CONFIG_INIT_TYPE(cs, Sort);
   CONFIG_INIT_TYPE(cs, String);
 
-  NeoMutt = neomutt_new(cs);
-  TEST_CHECK(NeoMutt != NULL);
-
   TEST_CHECK(cs_register_variables(cs, Vars));
 
   init_tmp_dir(NeoMutt);
@@ -122,19 +127,11 @@ bool test_neomutt_create(void)
   return NeoMutt;
 }
 
-void test_neomutt_destroy(void)
-{
-  if (!NeoMutt)
-    return;
-
-  struct ConfigSet *cs = NeoMutt->sub->cs;
-  neomutt_free(&NeoMutt);
-  cs_free(&cs);
-}
-
 void test_init(void)
 {
-  setenv("TZ", "UTC", 1); // Default to UTC
+  test_neomutt_create();
+
+  setenv("TZ", "UTC", 1); // Default to UTC for testing
 
   const char *path = get_test_dir();
   bool success = false;
@@ -174,7 +171,6 @@ void test_init(void)
     goto done;
   }
 
-  test_neomutt_create();
   success = true;
 done:
   if (!success)
@@ -187,7 +183,7 @@ done:
 void test_fini(void)
 {
   config_cache_cleanup();
-  test_neomutt_destroy();
+  neomutt_free(&NeoMutt);
   buf_pool_cleanup();
 }
 

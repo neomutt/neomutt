@@ -8,8 +8,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "globals.h"
-#include "protos.h"
 
 bool StartupComplete = true;
 
@@ -26,9 +24,8 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {
   MuttLogger = log_disp_null;
   struct ConfigSet *cs = cs_new(16);
-  NeoMutt = neomutt_new(cs);
-  init_config(cs);
-  OptNoCurses = true;
+  NeoMutt = neomutt_new();
+  // init_config(cs);
   char file[] = "/tmp/mutt-fuzz";
   FILE *fp = fopen(file, "wb");
   if (!fp)

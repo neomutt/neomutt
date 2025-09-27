@@ -213,7 +213,7 @@ struct KeyEvent mutt_getch(GetChFlags flags)
   static const struct KeyEvent event_repaint = { 0, OP_REPAINT };
   static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT };
 
-  if (OptNoCurses)
+  if (!OptGui)
     return event_abort;
 
   struct KeyEvent *event_key = array_pop(&UngetKeyEvents);
