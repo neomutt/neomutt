@@ -211,7 +211,7 @@ static int execute_commands(struct StringArray *sa)
   int rc = 0;
   struct Buffer *err = buf_pool_get();
 
-  char **cp = NULL;
+  const char **cp = NULL;
   ARRAY_FOREACH(cp, sa)
   {
     enum CommandResult rc2 = parse_rc_line(*cp, err);
@@ -412,7 +412,7 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
   int rc = 1;
   struct Buffer *err = buf_pool_get();
   struct Buffer *buf = buf_pool_get();
-  char **cp = NULL;
+  const char **cp = NULL;
 
 #ifdef NEOMUTT_DIRECT_COLORS
   /* Test if we run in a terminal which supports direct colours.
@@ -675,7 +675,7 @@ done:
 static int get_elem_queries(struct StringArray *queries, struct HashElemArray *hea)
 {
   int rc = 0;
-  char **cp = NULL;
+  const char **cp = NULL;
   ARRAY_FOREACH(cp, queries)
   {
     struct HashElem *he = cs_subset_lookup(NeoMutt->sub, *cp);
@@ -1062,7 +1062,7 @@ static bool dump_info(struct CliInfo *ci, struct ConfigSet *cs)
   }
   else if (!ARRAY_EMPTY(&ci->alias_queries))
   {
-    char **cp = NULL;
+    const char **cp = NULL;
     ARRAY_FOREACH(cp, &ci->alias_queries)
     {
       struct AddressList *al = alias_lookup(*cp);
@@ -1329,7 +1329,7 @@ int main(int argc, char *argv[], char *envp[])
     e = email_new();
     e->env = mutt_env_new();
 
-    char **cp = NULL;
+    const char **cp = NULL;
     ARRAY_FOREACH(cp, &cli->send.bcc_list)
     {
       mutt_addrlist_parse(&e->env->bcc, *cp);

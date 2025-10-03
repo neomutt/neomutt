@@ -26,7 +26,7 @@
 
 #include "mutt/lib.h"
 
-ARRAY_HEAD(TagArray, char *);
+ARRAY_HEAD(TagArray, const char *);
 
 /**
  * struct NmTags - Array of Notmuch tags

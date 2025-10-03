@@ -39,7 +39,7 @@
  */
 static void sa_clear(struct StringArray *sa)
 {
-  char **cp = NULL;
+  const char **cp = NULL;
   ARRAY_FOREACH(cp, sa)
   {
     FREE(cp);

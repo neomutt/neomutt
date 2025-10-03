@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 
-ARRAY_HEAD(StringArray, char *);
+ARRAY_HEAD(StringArray, const char *);
 
 /**
  * enum HelpMode - Show detailed help

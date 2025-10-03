@@ -39,7 +39,7 @@
 #include "objects.h"
 // IWYU pragma: end_keep
 
-bool cli_parse(int argc, char **argv, struct CommandLine *cli);
+bool cli_parse(int argc, char *const *argv, struct CommandLine *cli);
 
 void command_line_clear(struct CommandLine *cl);
 

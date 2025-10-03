@@ -68,7 +68,7 @@ int check_help_mode(const char *mode)
  *
  * Copy the arguments into an array.
  */
-static int mop_up(int argc, char **argv, int index, struct StringArray *sa)
+static int mop_up(int argc, char *const *argv, int index, struct StringArray *sa)
 {
   int count = 0;
   for (int i = index; i < argc; i++, count++)
@@ -90,7 +90,7 @@ static int mop_up(int argc, char **argv, int index, struct StringArray *sa)
  * @param[out] cli  Results
  * @retval true Success
  */
-bool cli_parse(int argc, char **argv, struct CommandLine *cli)
+bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
 {
   if ((argc < 1) || !argv || !cli)
     return false;

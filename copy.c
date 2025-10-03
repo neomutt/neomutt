@@ -62,7 +62,7 @@ static int address_header_decode(char **h);
 static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out,
                               const char *quoted_date);
 
-ARRAY_HEAD(HeaderArray, char *);
+ARRAY_HEAD(HeaderArray, const char *);
 
 /**
  * add_one_header - Add a header to a Headers array
@@ -75,7 +75,7 @@ ARRAY_HEAD(HeaderArray, char *);
  */
 static void add_one_header(struct HeaderArray *headers, int pos, char *value)
 {
-  char **old = ARRAY_GET(headers, pos);
+  const char **old = ARRAY_GET(headers, pos);
   if (old && *old)
   {
     char *new_value = NULL;
@@ -372,7 +372,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
 
   /* Now output the headers in order */
   bool error = false;
-  char **hp = NULL;
+  const char **hp = NULL;
   const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
 
   ARRAY_FOREACH(hp, &headers)

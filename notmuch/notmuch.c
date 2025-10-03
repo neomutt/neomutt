@@ -429,7 +429,7 @@ static void apply_exclude_tags(notmuch_query_t *query)
 
   struct NmTags tags = nm_tag_str_to_tags(c_nm_exclude_tags);
 
-  char **tag = NULL;
+  const char **tag = NULL;
   ARRAY_FOREACH(tag, &tags.tags)
   {
     mutt_debug(LL_DEBUG2, "nm: query exclude tag '%s'\n", *tag);
@@ -1085,7 +1085,7 @@ static notmuch_message_t *get_nm_message(notmuch_database_t *db, struct Email *e
  * @param tag Tag
  * @retval true It does
  */
-static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
+static bool nm_message_has_tag(notmuch_message_t *msg, const char *tag)
 {
   const char *possible_match_tag = NULL;
   notmuch_tags_t *tags = NULL;
@@ -1132,10 +1132,10 @@ static int update_tags(notmuch_message_t *msg, const char *tag_str)
   notmuch_message_freeze(msg);
 
   struct NmTags tags = nm_tag_str_to_tags(tag_str);
-  char **tag_elem = NULL;
+  const char **tag_elem = NULL;
   ARRAY_FOREACH(tag_elem, &tags.tags)
   {
-    char *tag = *tag_elem;
+    const char *tag = *tag_elem;
 
     if (tag[0] == '-')
     {
@@ -1188,10 +1188,10 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
   const char *const c_nm_flagged_tag = cs_subset_string(NeoMutt->sub, "nm_flagged_tag");
 
   struct NmTags tags = nm_tag_str_to_tags(tag_str);
-  char **tag_elem = NULL;
+  const char **tag_elem = NULL;
   ARRAY_FOREACH(tag_elem, &tags.tags)
   {
-    char *tag = *tag_elem;
+    const char *tag = *tag_elem;
 
     if (tag[0] == '-')
     {

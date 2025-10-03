@@ -50,7 +50,7 @@ static void serialise_array(const struct StringArray *sa, struct Buffer *res)
 {
   buf_addstr(res, ":{");
 
-  char **cp = NULL;
+  const char **cp = NULL;
   ARRAY_FOREACH(cp, sa)
   {
     buf_addstr(res, *cp);
@@ -194,7 +194,7 @@ static void args_split(const char *args, struct StringArray *sa)
 
 static void args_clear(struct StringArray *sa)
 {
-  char **cp = NULL;
+  const char **cp = NULL;
   ARRAY_FOREACH(cp, sa)
   {
     FREE(cp);
@@ -205,7 +205,7 @@ static void args_clear(struct StringArray *sa)
 
 void test_cli_parse(void)
 {
-  // bool cli_parse(int argc, char **argv, struct CommandLine *cli);
+  // bool cli_parse(int argc, char *const *argv, struct CommandLine *cli);
 
   MuttLogger = log_disp_null;
 
@@ -218,13 +218,13 @@ void test_cli_parse(void)
     struct StringArray sa = ARRAY_HEAD_INITIALIZER;
     args_split(args, &sa);
 
-    rc = cli_parse(0, sa.entries, cli);
+    rc = cli_parse(0, (char *const *) sa.entries, cli);
     TEST_CHECK(rc == false);
 
     rc = cli_parse(2, NULL, cli);
     TEST_CHECK(rc == false);
 
-    rc = cli_parse(2, sa.entries, NULL);
+    rc = cli_parse(2, (char *const *) sa.entries, NULL);
     TEST_CHECK(rc == false);
 
     args_clear(&sa);
@@ -343,7 +343,7 @@ void test_cli_parse(void)
       TEST_CASE(Tests[i][0]);
       args_split(Tests[i][0], &sa);
 
-      rc = cli_parse(ARRAY_SIZE(&sa), sa.entries, cli);
+      rc = cli_parse(ARRAY_SIZE(&sa), (char *const *) sa.entries, cli);
       TEST_CHECK(rc == true);
 
       serialise_cli(cli, res);
@@ -376,7 +376,7 @@ void test_cli_parse(void)
       TEST_CASE(Tests[i]);
       args_split(Tests[i], &sa);
 
-      rc = cli_parse(ARRAY_SIZE(&sa), sa.entries, cli);
+      rc = cli_parse(ARRAY_SIZE(&sa), (char *const *) sa.entries, cli);
       TEST_CHECK(rc == false);
 
       serialise_cli(cli, res);
