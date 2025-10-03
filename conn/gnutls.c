@@ -425,7 +425,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
  * @param carr   Array to save info to
  */
 static void add_cert(const char *title, gnutls_x509_crt_t cert, bool issuer,
-                     struct CertArray *carr)
+                     struct StringArray *carr)
 {
   static const char *part[] = {
     GNUTLS_OID_X520_COMMON_NAME,              // CN
@@ -473,7 +473,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
                                      gnutls_certificate_status_t certstat,
                                      const char *hostname, int idx, size_t len)
 {
-  struct CertArray carr = ARRAY_HEAD_INITIALIZER;
+  struct StringArray carr = ARRAY_HEAD_INITIALIZER;
   int certerr, savedcert;
   gnutls_x509_crt_t cert;
   struct Buffer *fpbuf = NULL;
@@ -608,7 +608,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   }
 
   buf_pool_release(&fpbuf);
-  cert_array_clear(&carr);
+  string_array_clear(&carr);
   gnutls_x509_crt_deinit(cert);
   return (rc > 1);
 }

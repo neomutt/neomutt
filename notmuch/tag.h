@@ -26,8 +26,6 @@
 
 #include "mutt/lib.h"
 
-ARRAY_HEAD(TagArray, const char *);
-
 /**
  * struct NmTags - Array of Notmuch tags
  *
@@ -36,7 +34,7 @@ ARRAY_HEAD(TagArray, const char *);
  */
 struct NmTags
 {
-  struct TagArray tags;      ///< Tags
+  struct StringArray tags;   ///< Tags
   char *tag_str;             ///< Source string
 };
 

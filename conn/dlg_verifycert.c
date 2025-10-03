@@ -149,23 +149,6 @@ static int cert_make_entry(struct Menu *menu, int line, int max_cols, struct Buf
 }
 
 /**
- * cert_array_clear - Free all memory of a CertArray
- * @param carr Array of text to clear
- *
- * @note Array is emptied, but not freed
- */
-void cert_array_clear(struct CertArray *carr)
-{
-  const char **line = NULL;
-  ARRAY_FOREACH(line, carr)
-  {
-    FREE(line);
-  }
-
-  ARRAY_FREE(carr);
-}
-
-/**
  * dlg_certificate - Ask the user to validate the certificate - @ingroup gui_dlg
  * @param title        Menu title
  * @param carr         Certificate text to display
@@ -183,7 +166,7 @@ void cert_array_clear(struct CertArray *carr)
  * The options are given in the order: Reject, Once, Always, Skip.
  * The retval represents the chosen option.
  */
-int dlg_certificate(const char *title, struct CertArray *carr, bool allow_always, bool allow_skip)
+int dlg_certificate(const char *title, struct StringArray *carr, bool allow_always, bool allow_skip)
 {
   struct SimpleDialogWindows sdw = simple_dialog_new(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
 

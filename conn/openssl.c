@@ -844,7 +844,7 @@ static int ssl_cache_trusted_cert(X509 *c)
  * @param issuer If true, look up the issuer rather than owner details
  * @param carr   Array to save info to
  */
-static void add_cert(const char *title, X509 *cert, bool issuer, struct CertArray *carr)
+static void add_cert(const char *title, X509 *cert, bool issuer, struct StringArray *carr)
 {
   static const int part[] = {
     NID_commonName,             // CN
@@ -897,7 +897,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
     return 0;
   }
 
-  struct CertArray carr = ARRAY_HEAD_INITIALIZER;
+  struct StringArray carr = ARRAY_HEAD_INITIALIZER;
   struct Buffer *buf = buf_pool_get();
 
   add_cert(_("This certificate belongs to:"), cert, false, &carr);
@@ -983,7 +983,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
       break;
   }
 
-  cert_array_clear(&carr);
+  string_array_clear(&carr);
   buf_pool_release(&buf);
 
   return (rc > 1);

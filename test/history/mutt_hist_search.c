@@ -35,12 +35,12 @@ bool config_init_history(struct ConfigSet *cs);
 
 void test_mutt_hist_search(void)
 {
-  // int mutt_hist_search(const char *find, enum HistoryClass hclass, struct HistoryArray *matches);
+  // int mutt_hist_search(const char *find, enum HistoryClass hclass, struct StringArray *matches);
 
   config_init_history(NeoMutt->sub->cs);
 
   {
-    struct HistoryArray ha = ARRAY_HEAD_INITIALIZER;
+    struct StringArray ha = ARRAY_HEAD_INITIALIZER;
     TEST_CHECK(mutt_hist_search(NULL, 0, &ha) == 0);
   }
 

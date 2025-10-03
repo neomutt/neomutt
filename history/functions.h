@@ -24,11 +24,8 @@
 #define MUTT_HISTORY_FUNCTIONS_H
 
 #include <stdbool.h>
-#include "mutt/lib.h"
 
 struct MuttWindow;
-
-ARRAY_HEAD(HistoryArray, const char *);
 
 /**
  * struct HistoryData - Data to pass to the History Functions
@@ -39,7 +36,7 @@ struct HistoryData
   bool selection;                ///< Was a selection made?
   struct Buffer *buf;            ///< Buffer for the results
   struct Menu *menu;             ///< History Menu
-  struct HistoryArray *matches;  ///< History entries
+  struct StringArray *matches;   ///< History entries
 };
 
 /**

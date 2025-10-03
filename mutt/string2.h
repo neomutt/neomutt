@@ -30,6 +30,13 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include "array.h"
+#include "memory.h"
+
+/// Useful ARRAY of strings
+ARRAY_HEAD(StringArray, const char *);
+
+void string_array_clear(struct StringArray *arr);
 
 #define STR_COMMAND 8192  ///< Enough space for a long command line
 

@@ -64,8 +64,6 @@ extern char **environ;
 
 static volatile sig_atomic_t SigAlrm; ///< true after SIGALRM is received
 
-ARRAY_HEAD(SendmailArgArray, const char *);
-
 /**
  * alarm_handler - Async notification of an alarm signal
  * @param sig Signal, (SIGALRM)
@@ -88,8 +86,8 @@ static void alarm_handler(int sig)
  * @retval  0 Success
  * @retval >0 Failure, return code from sendmail
  */
-static int send_msg(const char *path, struct SendmailArgArray *args,
-                    const char *msg, char **tempfile, int wait_time)
+static int send_msg(const char *path, struct StringArray *args, const char *msg,
+                    char **tempfile, int wait_time)
 {
   sigset_t set;
   int st;
@@ -256,7 +254,7 @@ static int send_msg(const char *path, struct SendmailArgArray *args,
  * @param[in, out] args    Array to add to
  * @param[in]  addr    Address to add
  */
-static void add_args_one(struct SendmailArgArray *args, const struct Address *addr)
+static void add_args_one(struct StringArray *args, const struct Address *addr)
 {
   /* weed out group mailboxes, since those are for display only */
   if (addr->mailbox && !addr->group)
@@ -270,7 +268,7 @@ static void add_args_one(struct SendmailArgArray *args, const struct Address *ad
  * @param[in, out] args    Array to add to
  * @param[in]  al      Addresses to add
  */
-static void add_args(struct SendmailArgArray *args, struct AddressList *al)
+static void add_args(struct StringArray *args, struct AddressList *al)
 {
   if (!al)
     return;
@@ -303,8 +301,8 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
                          bool eightbit, struct ConfigSubset *sub)
 {
   char *ps = NULL, *path = NULL, *s = NULL, *childout = NULL;
-  struct SendmailArgArray args = ARRAY_HEAD_INITIALIZER;
-  struct SendmailArgArray extra_args = ARRAY_HEAD_INITIALIZER;
+  struct StringArray args = ARRAY_HEAD_INITIALIZER;
+  struct StringArray extra_args = ARRAY_HEAD_INITIALIZER;
   int i;
 
   if (OptNewsSend)

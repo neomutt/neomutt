@@ -116,7 +116,7 @@ static int history_make_entry(struct Menu *menu, int line, int max_cols, struct 
  * The History Dialog lets the user select from the history of commands,
  * functions or files.
  */
-void dlg_history(struct Buffer *buf, struct HistoryArray *matches)
+void dlg_history(struct Buffer *buf, struct StringArray *matches)
 {
   struct SimpleDialogWindows sdw = simple_dialog_new(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
   struct Menu *menu = sdw.menu;

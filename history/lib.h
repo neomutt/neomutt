@@ -42,6 +42,7 @@
 
 struct Buffer;
 struct NotifyCallback;
+struct StringArray;
 
 /**
  * enum HistoryClass - Type to differentiate different histories
@@ -89,10 +90,10 @@ char *mutt_hist_prev        (enum HistoryClass hclass);
 void  mutt_hist_read_file   (void);
 void  mutt_hist_reset_state (enum HistoryClass hclass);
 void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
-int   mutt_hist_search      (const char *find, enum HistoryClass hclass, struct HistoryArray *matches);
+int   mutt_hist_search      (const char *find, enum HistoryClass hclass, struct StringArray *matches);
 void  mutt_hist_complete    (struct Buffer *buf, enum HistoryClass hclass);
 int   main_hist_observer    (struct NotifyCallback *nc);
 
-void dlg_history(struct Buffer *buf, struct HistoryArray *matches);
+void dlg_history(struct Buffer *buf, struct StringArray *matches);
 
 #endif /* MUTT_HISTORY_LIB_H */

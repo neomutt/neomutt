@@ -79,7 +79,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
-#include "functions.h"
 
 #define HC_FIRST HC_EXT_COMMAND
 
@@ -403,7 +402,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
  * @param[out] matches All the matching lines
  * @retval num Matches found
  */
-int mutt_hist_search(const char *find, enum HistoryClass hclass, struct HistoryArray *matches)
+int mutt_hist_search(const char *find, enum HistoryClass hclass, struct StringArray *matches)
 {
   if (!find || !matches)
     return 0;
@@ -677,7 +676,7 @@ void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str)
  */
 void mutt_hist_complete(struct Buffer *buf, enum HistoryClass hclass)
 {
-  struct HistoryArray matches = ARRAY_HEAD_INITIALIZER;
+  struct StringArray matches = ARRAY_HEAD_INITIALIZER;
 
   int match_count = mutt_hist_search(buf_string(buf), hclass, &matches);
   if (match_count != 0)

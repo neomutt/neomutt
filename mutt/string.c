@@ -38,6 +38,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include "array.h"
 #include "ctype2.h"
 #include "exit.h"
 #include "logging2.h"
@@ -919,4 +920,21 @@ int mutt_str_inbox_cmp(const char *a, const char *b)
 
 #undef CMP_INBOX
 #undef IS_INBOX
+}
+
+/**
+ * string_array_clear - Free all memory of a StringArray
+ * @param carr Array of text to clear
+ *
+ * @note Array is emptied, but not freed
+ */
+void string_array_clear(struct StringArray *arr)
+{
+  const char **str = NULL;
+  ARRAY_FOREACH(str, arr)
+  {
+    FREE(str);
+  }
+
+  ARRAY_FREE(arr);
 }
