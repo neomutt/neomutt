@@ -38,7 +38,7 @@
 #include "test_common.h"
 
 // clang-format off
-struct ConfigDef Vars[] = {
+static struct ConfigDef Vars[] = {
   { "Apple",      DT_ADDRESS, IP "apple@example.com",      0, NULL,              }, /* test_initial_values */
   { "Banana",     DT_ADDRESS, IP "banana@example.com",     0, NULL,              },
   { "Cherry",     DT_ADDRESS, IP "cherry@example.com",     0, NULL,              },

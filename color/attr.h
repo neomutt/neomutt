@@ -83,6 +83,6 @@ struct AttrColor *attr_color_new   (void);
 void              attr_color_list_clear(struct AttrColorList *acl);
 struct AttrColor *attr_color_list_find (struct AttrColorList *acl, color_t fg, color_t bg, int attrs);
 
-void attr_color_overwrite(struct AttrColor *ac_old, struct AttrColor *ac_new);
+void attr_color_overwrite(struct AttrColor *ac_old, const struct AttrColor *ac_new);
 
 #endif /* MUTT_COLOR_ATTR_H */

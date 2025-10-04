@@ -36,7 +36,7 @@
 #include "test_common.h"
 
 // clang-format off
-struct ConfigDef VarsColon[] = {
+static struct ConfigDef VarsColon[] = {
   { "Apple",      DT_SLIST|D_SLIST_SEP_COLON, IP "apple",               0, NULL, }, /* test_initial_values */
   { "Banana",     DT_SLIST|D_SLIST_SEP_COLON, IP "apple:banana",        0, NULL, },
   { "Cherry",     DT_SLIST|D_SLIST_SEP_COLON, IP "apple:banana:cherry", 0, NULL, },
@@ -49,7 +49,7 @@ struct ConfigDef VarsColon[] = {
   { NULL },
 };
 
-struct ConfigDef VarsComma[] = {
+static struct ConfigDef VarsComma[] = {
   { "Apple",      DT_SLIST|D_SLIST_SEP_COMMA, IP "apple",               0, NULL, }, /* test_initial_values */
   { "Banana",     DT_SLIST|D_SLIST_SEP_COMMA, IP "apple,banana",        0, NULL, },
   { "Cherry",     DT_SLIST|D_SLIST_SEP_COMMA, IP "apple,banana,cherry", 0, NULL, },
@@ -62,7 +62,7 @@ struct ConfigDef VarsComma[] = {
   { NULL },
 };
 
-struct ConfigDef VarsSpace[] = {
+static struct ConfigDef VarsSpace[] = {
   { "Apple",      DT_SLIST|D_SLIST_SEP_SPACE, IP "apple",               0, NULL, }, /* test_initial_values */
   { "Banana",     DT_SLIST|D_SLIST_SEP_SPACE, IP "apple banana",        0, NULL, },
   { "Cherry",     DT_SLIST|D_SLIST_SEP_SPACE, IP "apple banana cherry", 0, NULL, },
@@ -75,7 +75,7 @@ struct ConfigDef VarsSpace[] = {
   { NULL },
 };
 
-struct ConfigDef VarsOther[] = {
+static struct ConfigDef VarsOther[] = {
   { "Ilama",      DT_SLIST|D_SLIST_SEP_COLON, 0,                        0, NULL,                    }, /* test_native_set */
   { "Jackfruit",  DT_SLIST|D_SLIST_SEP_COLON, IP "apple:banana:cherry", 0, NULL,                    }, /* test_native_get */
   { "Lemon",      DT_SLIST|D_SLIST_SEP_COLON, IP "lemon",               0, NULL,                    }, /* test_reset */

@@ -392,7 +392,7 @@ color_t color_xterm256_to_24bit(const color_t color)
  * @param ac_old AttrColor to overwrite
  * @param ac_new AttrColor to copy
  */
-void attr_color_overwrite(struct AttrColor *ac_old, struct AttrColor *ac_new)
+void attr_color_overwrite(struct AttrColor *ac_old, const struct AttrColor *ac_new)
 {
   if (!ac_old || !ac_new)
     return;
