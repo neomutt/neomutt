@@ -1,5 +1,22 @@
 How to use neomutt's S/MIME capabilities
 
+
+The simplest way to use S/MIME with NeoMutt is to rely on GPGMe.
+
+- Make sure you have a PKCS#12 file bundling your private key and the X.509
+  certificate. Both key and certificate need to be in PEM format:
+  `openssl pkcs12 -export -out bundle.p12 -inkey my-key.pem -in my-cert.pem
+
+- Import your bundle into the GNUPG keyring:
+  `gpgsm --import bundle.p12`
+
+- Add `set crypt_use_gpgme` and `set smime_is_default` to your NeoMutt
+  configuration file.
+
+
+The rest of this document describes how to use S/MIME in NeoMutt without using
+GPGMe, i.e., by having NeoMutt call out to the `openssl` executable.
+
 - Add the contents of smime.rc to your .neomuttrc. Don't worry about changing
   the smime_default_key line at this point -- you'll change it later.
 
