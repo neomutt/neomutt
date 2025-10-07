@@ -1448,7 +1448,10 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
   mutt_file_unlink(buf_string(filetosign));
 
   if (err)
+  {
+    smime_class_void_passphrase();
     mutt_any_key_to_continue(NULL);
+  }
 
   if (empty)
   {
