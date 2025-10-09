@@ -2537,7 +2537,7 @@
   - Add `hash_find_elem()` to get the hash element
   - Minor fixes to the x-label patch from David
   - Adds capability to edit x-labels inside mutt, and to sort by label
-  - Allow "unsubjectrc *" to remove all patterns
+  - Allow "unsubjectrx *" to remove all patterns
   - Add subjectrx command to replace matching subjects with something else
   - Abstract the SPAM_LIST as a generic REPLACE_LIST
   - Improve Reply-to vs From comparison when replying
