@@ -108,5 +108,6 @@ void colors_reset  (struct ColorModuleData *mod_data);
 void colors_cleanup(struct ColorModuleData *mod_data);
 
 bool mutt_color_has_pattern(enum ColorId cid);
+bool mutt_color_has_regex  (enum ColorId cid);
 
 #endif /* MUTT_COLOR_COLOR_H */

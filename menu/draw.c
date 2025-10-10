@@ -53,15 +53,15 @@
 static const struct AttrColor *get_color(int index, unsigned char *s)
 {
   const int type = *s;
-  struct RegexColorList *rcl = regex_colors_get_list(type);
+  struct PatternColorList *pcl = pattern_colors_get_list(type);
   struct Mailbox *m_cur = get_current_mailbox();
   struct Email *e = mutt_get_virt_email(m_cur, index);
-  if (!rcl || !e)
+  if (!pcl || !e)
   {
     return simple_color_get(type);
   }
 
-  struct RegexColor *np = NULL;
+  struct PatternColor *np = NULL;
   const struct AttrColor *ac_merge = NULL;
 
   struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
@@ -76,7 +76,7 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
   // %Gx %{tags-transformed} - Transformed message tags
   if (type == MT_COLOR_INDEX_TAG)
   {
-    STAILQ_FOREACH(np, rcl, entries)
+    STAILQ_FOREACH(np, pcl, entries)
     {
       const char *transform = mutt_hash_find(mod_data->tag_transforms, np->pattern);
       if (transform && strstr(buf_string(buf), transform))
@@ -88,7 +88,7 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
     goto done;
   }
 
-  STAILQ_FOREACH(np, rcl, entries)
+  STAILQ_FOREACH(np, pcl, entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
                           MUTT_MATCH_FULL_ADDRESS, m_cur, e, NULL))

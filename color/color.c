@@ -40,6 +40,7 @@
 #include "merged.h"
 #include "module_data.h"
 #include "notify2.h"
+#include "pattern.h"
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
@@ -56,6 +57,7 @@ void colors_init(struct ColorModuleData *mod_data)
   curses_colors_init(&mod_data->curses_colors, &mod_data->num_curses_colors);
   merged_colors_init(&mod_data->merged_colors);
   quoted_colors_init();
+  pattern_colors_init();
   regex_colors_init(mod_data);
   simple_colors_init(mod_data->simple_colors);
 
@@ -75,6 +77,7 @@ void colors_reset(struct ColorModuleData *mod_data)
 
   simple_colors_reset(mod_data->simple_colors);
   quoted_colors_reset(&mod_data->num_quoted_colors);
+  pattern_colors_reset();
   regex_colors_reset(mod_data);
 
   struct EventColor ev_c = { MT_COLOR_MAX, NULL };
@@ -89,24 +92,34 @@ void colors_cleanup(struct ColorModuleData *mod_data)
 {
   simple_colors_cleanup(mod_data->simple_colors);
   quoted_colors_cleanup(&mod_data->num_quoted_colors);
+  pattern_colors_cleanup();
   regex_colors_cleanup(mod_data);
   merged_colors_cleanup(&mod_data->merged_colors);
   color_notify_cleanup(&mod_data->colors_notify);
 }
 
 /**
- * mutt_color_has_pattern - Check if a color object supports a regex pattern
- * @param cid   Object type, e.g. #MT_COLOR_TILDE
+ * mutt_color_has_pattern - Check if a color object supports a NeoMutt pattern
+ * @param cid   Object type, e.g. #MT_COLOR_INDEX
  * @retval true The color object supports patterns
  */
 bool mutt_color_has_pattern(enum ColorId cid)
 {
+  return (cid == MT_COLOR_INDEX) || (cid == MT_COLOR_INDEX_AUTHOR) ||
+         (cid == MT_COLOR_INDEX_COLLAPSED) || (cid == MT_COLOR_INDEX_DATE) ||
+         (cid == MT_COLOR_INDEX_FLAGS) || (cid == MT_COLOR_INDEX_LABEL) ||
+         (cid == MT_COLOR_INDEX_NUMBER) || (cid == MT_COLOR_INDEX_SIZE) ||
+         (cid == MT_COLOR_INDEX_SUBJECT) || (cid == MT_COLOR_INDEX_TAG) ||
+         (cid == MT_COLOR_INDEX_TAGS);
+}
+
+/**
+ * mutt_color_has_regex - Check if a color object supports a regex
+ * @param cid   Object type, e.g. #MT_COLOR_BODY
+ * @retval true The color object supports regexes
+ */
+bool mutt_color_has_regex(enum ColorId cid)
+{
   return (cid == MT_COLOR_ATTACH_HEADERS) || (cid == MT_COLOR_BODY) ||
-         (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_INDEX) ||
-         (cid == MT_COLOR_INDEX_AUTHOR) || (cid == MT_COLOR_INDEX_COLLAPSED) ||
-         (cid == MT_COLOR_INDEX_DATE) || (cid == MT_COLOR_INDEX_FLAGS) ||
-         (cid == MT_COLOR_INDEX_LABEL) || (cid == MT_COLOR_INDEX_NUMBER) ||
-         (cid == MT_COLOR_INDEX_SIZE) || (cid == MT_COLOR_INDEX_SUBJECT) ||
-         (cid == MT_COLOR_INDEX_TAG) || (cid == MT_COLOR_INDEX_TAGS) ||
-         (cid == MT_COLOR_STATUS);
+         (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_STATUS);
 }
