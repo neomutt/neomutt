@@ -171,7 +171,7 @@ void test_mutt_pattern_comp(void)
     char *s = "";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -187,7 +187,7 @@ void test_mutt_pattern_comp(void)
     char *s = "x";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -203,7 +203,7 @@ void test_mutt_pattern_comp(void)
     char *s = "=s";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -219,7 +219,7 @@ void test_mutt_pattern_comp(void)
     char *s = "| =s foo";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(!pat))
     {
@@ -235,7 +235,7 @@ void test_mutt_pattern_comp(void)
     char *s = "=s foobar";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -276,7 +276,7 @@ void test_mutt_pattern_comp(void)
     char *s = "! =s foobar";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -318,7 +318,7 @@ void test_mutt_pattern_comp(void)
     char *s = "=s foo =s bar";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -391,7 +391,7 @@ void test_mutt_pattern_comp(void)
     char *s = "(=s foo =s bar)";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -464,7 +464,7 @@ void test_mutt_pattern_comp(void)
     char *s = "! (=s foo =s bar)";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -537,7 +537,7 @@ void test_mutt_pattern_comp(void)
     char *s = "=s foo =s bar =s quux";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {
@@ -623,7 +623,7 @@ void test_mutt_pattern_comp(void)
     char *s = "!(=s foo|=s bar) =s quux";
 
     buf_reset(err);
-    struct PatternList *pat = mutt_pattern_comp(NULL, NULL, s, 0, err);
+    struct PatternList *pat = mutt_pattern_comp(NULL, s, 0, err);
 
     if (!TEST_CHECK(pat != NULL))
     {

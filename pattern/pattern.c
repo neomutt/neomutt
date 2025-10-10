@@ -217,7 +217,7 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata,
     match_all = mutt_str_equal(pbuf, "~A");
 
     struct Buffer *err = buf_pool_get();
-    pat = mutt_pattern_comp(NULL, menu, buf->data, MUTT_PC_FULL_MSG, err);
+    pat = mutt_pattern_comp(NULL, buf->data, MUTT_PC_FULL_MSG, err);
     if (!pat)
     {
       mutt_error("%s", buf_string(err));
@@ -340,7 +340,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   const bool match_all = mutt_str_equal(pbuf, "~A");
 
   err = buf_pool_get();
-  struct PatternList *pat = mutt_pattern_comp(mv, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
+  struct PatternList *pat = mutt_pattern_comp(mv, buf->data, MUTT_PC_FULL_MSG, err);
   if (!pat)
   {
     mutt_error("%s", buf_string(err));
@@ -444,7 +444,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
     {
       mv->pattern = simple;
       simple = NULL; /* don't clobber it */
-      mv->limit_pattern = mutt_pattern_comp(mv, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
+      mv->limit_pattern = mutt_pattern_comp(mv, buf->data, MUTT_PC_FULL_MSG, err);
     }
   }
 
@@ -511,8 +511,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
     mutt_message(_("Compiling search pattern..."));
     mutt_pattern_free(&state->pattern);
     struct Buffer *err = buf_pool_get();
-    state->pattern = mutt_pattern_comp(mv, menu, state->string_expn->data,
-                                       MUTT_PC_FULL_MSG, err);
+    state->pattern = mutt_pattern_comp(mv, state->string_expn->data, MUTT_PC_FULL_MSG, err);
     pattern_changed = true;
     if (!state->pattern)
     {
@@ -666,8 +665,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur,
   {
     mutt_message(_("Compiling search pattern..."));
     struct Buffer *err = buf_pool_get();
-    state->pattern = mutt_pattern_comp(NULL, menu, state->string_expn->data,
-                                       MUTT_PC_FULL_MSG, err);
+    state->pattern = mutt_pattern_comp(NULL, state->string_expn->data, MUTT_PC_FULL_MSG, err);
     pattern_changed = true;
     if (!state->pattern)
     {

@@ -45,8 +45,6 @@
 #include "parse/lib.h"
 #include "mview.h"
 
-struct Menu;
-
 // clang-format off
 typedef uint16_t ParseDateRangeFlags; ///< Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS
 #define MUTT_PDR_NO_FLAGS       0  ///< No flags are set
@@ -896,15 +894,13 @@ static struct Pattern *attach_new_leaf(struct PatternList **curlist)
 /**
  * mutt_pattern_comp - Create a Pattern
  * @param mv    Mailbox view
- * @param menu  Current Menu
  * @param s     Pattern string
  * @param flags Flags, e.g. #MUTT_PC_FULL_MSG
  * @param err   Buffer for error messages
  * @retval ptr Newly allocated Pattern
  */
-struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
-                                      const char *s, PatternCompFlags flags,
-                                      struct Buffer *err)
+struct PatternList *mutt_pattern_comp(struct MailboxView *mv, const char *s,
+                                      PatternCompFlags flags, struct Buffer *err)
 {
   /* curlist when assigned will always point to a list containing at least one node
    * with a Pattern value.  */
@@ -1009,7 +1005,7 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
           is_alias = false;
           /* compile the sub-expression */
           buf = mutt_strn_dup(ps->dptr + 1, p - (ps->dptr + 1));
-          leaf->child = mutt_pattern_comp(mv, menu, buf, flags, err);
+          leaf->child = mutt_pattern_comp(mv, buf, flags, err);
           if (!leaf->child)
           {
             FREE(&buf);
@@ -1101,7 +1097,7 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
         }
         /* compile the sub-expression */
         buf = mutt_strn_dup(ps->dptr + 1, p - (ps->dptr + 1));
-        struct PatternList *sub = mutt_pattern_comp(mv, menu, buf, flags, err);
+        struct PatternList *sub = mutt_pattern_comp(mv, buf, flags, err);
         FREE(&buf);
         if (!sub)
           goto cleanup;
