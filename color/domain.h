@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include "color.h"
+#include "domain.h"
 
 /**
  * enum ColorDomain - Colour Domains

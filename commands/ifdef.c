@@ -68,15 +68,7 @@ static bool is_function(const char *name)
  */
 static bool is_color_object(const char *name)
 {
-  for (size_t i = 0; ColorDefs[i].name; i++)
-  {
-    if (mutt_istr_equal(ColorDefs[i].name, name))
-    {
-      return true;
-    }
-  }
-
-  return false;
+  return color_find_by_name(name);
 }
 
 /**

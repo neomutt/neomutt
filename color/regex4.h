@@ -30,6 +30,8 @@
 
 struct ColorModuleData;
 
+struct UserColor;
+
 /**
  * struct RegexColor - A regular expression and a color to highlight a line
  */
@@ -59,8 +61,8 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid);
 void                   regex_color_list_clear(struct RegexColorList *rcl);
 struct RegexColorList *regex_color_list_new(void);
 
-bool regex_colors_parse_color_list (enum ColorId cid, const char *pat, struct AttrColor *ac, int *rc, struct Buffer *err);
-int  regex_colors_parse_status_list(enum ColorId cid, const char *pat, struct AttrColor *ac, int match, struct Buffer *err);
+bool regex_colors_parse_color_list(struct UserColor *uc, const char *pat, const struct AttrColor *ac, struct Buffer *err);
+bool regex_colors_parse_status_list(struct UserColor *uc, const char *pat, const struct AttrColor *ac, int match, struct Buffer *err);
 bool regex_colors_parse_uncolor    (enum ColorId cid, const char *pat);
 
 #endif /* MUTT_COLOR_REGEX4_H */

@@ -29,6 +29,8 @@
 #include "attr.h"
 #include "color.h"
 
+struct UserColor;
+
 /**
  * struct PatternColor - A pattern and a color to highlight an object
  */
@@ -55,7 +57,7 @@ struct PatternColorList *pattern_colors_get_list(enum ColorId cid);
 void                     pattern_color_list_clear(struct PatternColorList *pcl);
 struct PatternColorList *pattern_color_list_new(void);
 
-bool pattern_colors_parse_color_list(enum ColorId cid, const char *pat, struct AttrColor *ac, struct Buffer *err);
+bool pattern_colors_parse_color_list(struct UserColor *uc, const char *pat, struct AttrColor *ac, struct Buffer *err);
 bool pattern_colors_parse_uncolor   (enum ColorId cid, const char *pat);
 
 #endif /* MUTT_COLOR_PATTERN_H */
