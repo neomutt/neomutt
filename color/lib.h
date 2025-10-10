@@ -38,6 +38,7 @@
  * | color/notify.c      | @subpage color_notify      |
  * | color/parse_ansi.c  | @subpage color_parse_ansi  |
  * | color/parse_color.c | @subpage color_parse_color |
+ * | color/pattern.c     | @subpage color_pattern     |
  * | color/qstyle.c      | @subpage color_qstyle      |
  * | color/quoted.c      | @subpage color_quote       |
  * | color/regex.c       | @subpage color_regex       |
@@ -59,6 +60,7 @@
 #include "notify2.h"
 #include "parse_ansi.h"
 #include "parse_color.h"
+#include "pattern.h"
 #include "qstyle.h"
 #include "quoted.h"
 #include "regex4.h"

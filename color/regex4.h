@@ -38,7 +38,6 @@ struct RegexColor
   char *pattern;                     ///< Pattern to match
   regex_t regex;                     ///< Compiled regex
   int match;                         ///< Substring to match, 0 for old behaviour
-  struct PatternList *color_pattern; ///< Compiled pattern to speed up index color calculation
 
   bool stop_matching : 1;            ///< Used by the pager for body patterns, to prevent the color from being retried once it fails
 

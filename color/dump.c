@@ -38,6 +38,7 @@
 #include "attr.h"
 #include "color.h"
 #include "parse_color.h"
+#include "pattern.h"
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
@@ -219,6 +220,56 @@ const char *color_log_name(char *buf, int buflen, struct ColorElement *elem)
 }
 
 /**
+ * pattern_colors_dump - Dump all the Pattern colours
+ * @param buf   Buffer for result
+ */
+void pattern_colors_dump(struct Buffer *buf)
+{
+  struct Buffer *swatch = buf_pool_get();
+  struct Buffer *pattern = buf_pool_get();
+  char color_fg[64] = { 0 };
+  char color_bg[64] = { 0 };
+
+  for (enum ColorId cid = MT_COLOR_NONE; cid != MT_COLOR_MAX; cid++)
+  {
+    if (cid == MT_COLOR_STATUS)
+      continue;
+
+    if (!mutt_color_has_pattern(cid))
+      continue;
+
+    struct PatternColorList *rcl = pattern_colors_get_list(cid);
+    if (STAILQ_EMPTY(rcl))
+      continue;
+
+    const char *name = mutt_map_get_name(cid, ColorFields);
+    if (!name)
+      continue; // LCOV_EXCL_LINE
+
+    buf_add_printf(buf, _("# Pattern Color %s\n"), name);
+
+    struct PatternColor *pc = NULL;
+    STAILQ_FOREACH(pc, rcl, entries)
+    {
+      struct AttrColor *ac = &pc->attr_color;
+
+      buf_reset(pattern);
+      pretty_var(pc->pattern, pattern);
+      color_log_color_attrs(ac, swatch);
+      buf_add_printf(buf, "color %-16s %-20s %-16s %-16s %-30s # %s\n", name,
+                     color_log_attrs_list(ac->attrs),
+                     color_log_name(color_fg, sizeof(color_fg), &ac->fg),
+                     color_log_name(color_bg, sizeof(color_bg), &ac->bg),
+                     buf_string(pattern), buf_string(swatch));
+    }
+    buf_addstr(buf, "\n");
+  }
+
+  buf_pool_release(&swatch);
+  buf_pool_release(&pattern);
+}
+
+/**
  * quoted_colors_dump - Dump all the Quoted colours
  * @param buf Buffer for result
  */
@@ -263,7 +314,7 @@ void regex_colors_dump(struct Buffer *buf)
     if (cid == MT_COLOR_STATUS)
       continue;
 
-    if (!mutt_color_has_pattern(cid))
+    if (!mutt_color_has_regex(cid))
       continue;
 
     struct RegexColorList *rcl = regex_colors_get_list(cid);
@@ -466,6 +517,7 @@ void color_dump(void)
   struct Buffer *buf = buf_pool_get();
 
   simple_colors_dump(buf);
+  pattern_colors_dump(buf);
   quoted_colors_dump(buf);
   status_colors_dump(buf);
   regex_colors_dump(buf);

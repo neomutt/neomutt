@@ -45,6 +45,7 @@
 #include "globals.h"
 #include "notify2.h"
 #include "parse_color.h"
+#include "pattern.h"
 #include "regex4.h"
 #include "simple2.h"
 
@@ -251,6 +252,8 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd,
   {
     if (regex_colors_parse_uncolor(cid, NULL))
       rc = MUTT_CMD_SUCCESS;
+    else if (pattern_colors_parse_uncolor(cid, NULL))
+      rc = MUTT_CMD_SUCCESS;
     else
       rc = MUTT_CMD_ERROR;
     goto done;
@@ -263,12 +266,15 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd,
     {
       if (regex_colors_parse_uncolor(cid, NULL))
         rc = MUTT_CMD_SUCCESS;
+      else if (pattern_colors_parse_uncolor(cid, NULL))
+        rc = MUTT_CMD_SUCCESS;
       else
         rc = MUTT_CMD_ERROR;
       goto done;
     }
 
     regex_colors_parse_uncolor(cid, buf_string(token));
+    pattern_colors_parse_uncolor(cid, buf_string(token));
 
   } while (MoreArgs(line));
 
@@ -356,9 +362,9 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
 
   //------------------------------------------------------------------
 
-  /* extract a regular expression if needed */
+  /* extract a regex/pattern if needed */
 
-  if (mutt_color_has_pattern(cid) && (cid != MT_COLOR_STATUS))
+  if ((mutt_color_has_regex(cid) || mutt_color_has_pattern(cid)) && (cid != MT_COLOR_STATUS))
   {
     color_debug(LL_DEBUG5, "regex needed\n");
     if (MoreArgs(line))
@@ -381,6 +387,12 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
   if (regex_colors_parse_color_list(cid, buf_string(token), ac, &rc, err))
   {
     color_debug(LL_DEBUG5, "regex_colors_parse_color_list done\n");
+    goto done;
+    // do nothing
+  }
+  else if (pattern_colors_parse_color_list(cid, buf_string(token), ac, err))
+  {
+    color_debug(LL_DEBUG5, "pattern_colors_parse_color_list done\n");
     goto done;
     // do nothing
   }

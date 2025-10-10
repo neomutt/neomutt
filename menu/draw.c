@@ -54,20 +54,20 @@
 static const struct AttrColor *get_color(int index, unsigned char *s)
 {
   const int type = *s;
-  struct RegexColorList *rcl = regex_colors_get_list(type);
+  struct PatternColorList *pcl = pattern_colors_get_list(type);
   struct Mailbox *m_cur = get_current_mailbox();
   struct Email *e = mutt_get_virt_email(m_cur, index);
-  if (!rcl || !e)
+  if (!pcl || !e)
   {
     return simple_color_get(type);
   }
 
-  struct RegexColor *np = NULL;
+  struct PatternColor *np = NULL;
 
   if (type == MT_COLOR_INDEX_TAG)
   {
     const struct AttrColor *ac_merge = NULL;
-    STAILQ_FOREACH(np, rcl, entries)
+    STAILQ_FOREACH(np, pcl, entries)
     {
       if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
       {
@@ -84,7 +84,7 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
   }
 
   const struct AttrColor *ac_merge = NULL;
-  STAILQ_FOREACH(np, rcl, entries)
+  STAILQ_FOREACH(np, pcl, entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
                           MUTT_MATCH_FULL_ADDRESS, m_cur, e, NULL))

@@ -1407,11 +1407,11 @@ void email_set_color(struct Mailbox *m, struct Email *e)
   if (!e)
     return;
 
-  struct RegexColor *color = NULL;
+  struct PatternColor *color = NULL;
   struct PatternCache cache = { 0 };
 
   const struct AttrColor *ac_merge = NULL;
-  STAILQ_FOREACH(color, regex_colors_get_list(MT_COLOR_INDEX), entries)
+  STAILQ_FOREACH(color, pattern_colors_get_list(MT_COLOR_INDEX), entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(color->color_pattern),
                           MUTT_MATCH_FULL_ADDRESS, m, e, &cache))

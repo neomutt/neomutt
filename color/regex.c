@@ -33,10 +33,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
-#include "index/lib.h"
-#include "pattern/lib.h"
 #include "attr.h"
 #include "color.h"
 #include "commands.h"
@@ -48,17 +45,6 @@
 struct RegexColorList AttachList;         ///< List of colours applied to the attachment headers
 struct RegexColorList BodyList;           ///< List of colours applied to the email body
 struct RegexColorList HeaderList;         ///< List of colours applied to the email headers
-struct RegexColorList IndexAuthorList;    ///< List of colours applied to the author in the index
-struct RegexColorList IndexCollapsedList; ///< List of colours applied to a collapsed thread in the index
-struct RegexColorList IndexDateList;      ///< List of colours applied to the date in the index
-struct RegexColorList IndexFlagsList;     ///< List of colours applied to the flags in the index
-struct RegexColorList IndexLabelList;     ///< List of colours applied to the label in the index
-struct RegexColorList IndexList;          ///< List of default colours applied to the index
-struct RegexColorList IndexNumberList;    ///< List of colours applied to the message number in the index
-struct RegexColorList IndexSizeList;      ///< List of colours applied to the size in the index
-struct RegexColorList IndexSubjectList;   ///< List of colours applied to the subject in the index
-struct RegexColorList IndexTagList;       ///< List of colours applied to tags in the index
-struct RegexColorList IndexTagsList;      ///< List of colours applied to the tags in the index
 struct RegexColorList StatusList;         ///< List of colours applied to the status bar
 // clang-format on
 
@@ -71,17 +57,6 @@ void regex_colors_init(void)
   STAILQ_INIT(&AttachList);
   STAILQ_INIT(&BodyList);
   STAILQ_INIT(&HeaderList);
-  STAILQ_INIT(&IndexAuthorList);
-  STAILQ_INIT(&IndexCollapsedList);
-  STAILQ_INIT(&IndexDateList);
-  STAILQ_INIT(&IndexLabelList);
-  STAILQ_INIT(&IndexNumberList);
-  STAILQ_INIT(&IndexSizeList);
-  STAILQ_INIT(&IndexTagsList);
-  STAILQ_INIT(&IndexFlagsList);
-  STAILQ_INIT(&IndexList);
-  STAILQ_INIT(&IndexSubjectList);
-  STAILQ_INIT(&IndexTagList);
   STAILQ_INIT(&StatusList);
 }
 
@@ -94,17 +69,6 @@ void regex_colors_reset(void)
   regex_color_list_clear(&AttachList);
   regex_color_list_clear(&BodyList);
   regex_color_list_clear(&HeaderList);
-  regex_color_list_clear(&IndexList);
-  regex_color_list_clear(&IndexAuthorList);
-  regex_color_list_clear(&IndexCollapsedList);
-  regex_color_list_clear(&IndexDateList);
-  regex_color_list_clear(&IndexLabelList);
-  regex_color_list_clear(&IndexNumberList);
-  regex_color_list_clear(&IndexSizeList);
-  regex_color_list_clear(&IndexTagsList);
-  regex_color_list_clear(&IndexFlagsList);
-  regex_color_list_clear(&IndexSubjectList);
-  regex_color_list_clear(&IndexTagList);
   regex_color_list_clear(&StatusList);
 }
 
@@ -133,7 +97,6 @@ void regex_color_clear(struct RegexColor *rcol)
   attr_color_clear(&rcol->attr_color);
   FREE(&rcol->pattern);
   regfree(&rcol->regex);
-  mutt_pattern_free(&rcol->color_pattern);
 }
 
 /**
@@ -212,28 +175,6 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
       return &BodyList;
     case MT_COLOR_HEADER:
       return &HeaderList;
-    case MT_COLOR_INDEX:
-      return &IndexList;
-    case MT_COLOR_INDEX_AUTHOR:
-      return &IndexAuthorList;
-    case MT_COLOR_INDEX_COLLAPSED:
-      return &IndexCollapsedList;
-    case MT_COLOR_INDEX_DATE:
-      return &IndexDateList;
-    case MT_COLOR_INDEX_FLAGS:
-      return &IndexFlagsList;
-    case MT_COLOR_INDEX_LABEL:
-      return &IndexLabelList;
-    case MT_COLOR_INDEX_NUMBER:
-      return &IndexNumberList;
-    case MT_COLOR_INDEX_SIZE:
-      return &IndexSizeList;
-    case MT_COLOR_INDEX_SUBJECT:
-      return &IndexSubjectList;
-    case MT_COLOR_INDEX_TAG:
-      return &IndexTagList;
-    case MT_COLOR_INDEX_TAGS:
-      return &IndexTagsList;
     case MT_COLOR_STATUS:
       return &StatusList;
     default:
@@ -247,16 +188,11 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
  * @param s         String to match
  * @param ac_val    Colour value to use
  * @param err       Buffer for error messages
- * @param is_index  true of this is for the index
  * @param match     Number of regex subexpression to match (0 for entire pattern)
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- *
- * is_index used to store compiled pattern only for 'index' color object when
- * called from parse_color()
  */
 static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
-                                      struct AttrColor *ac_val,
-                                      struct Buffer *err, bool is_index, int match)
+                                      struct AttrColor *ac_val, struct Buffer *err, int match)
 {
   struct RegexColor *rcol = NULL;
 
@@ -274,34 +210,17 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
   else
   {
     rcol = regex_color_new();
-    if (is_index)
-    {
-      struct Buffer *buf = buf_pool_get();
-      buf_strcpy(buf, s);
-      const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
-      mutt_check_simple(buf, NONULL(c_simple_search));
-      struct MailboxView *mv_cur = get_current_mailbox_view();
-      rcol->color_pattern = mutt_pattern_comp(mv_cur, buf_string(buf), MUTT_PC_FULL_MSG, err);
-      buf_pool_release(&buf);
-      if (!rcol->color_pattern)
-      {
-        regex_color_free(&rcol);
-        return MUTT_CMD_ERROR;
-      }
-    }
-    else
-    {
-      // Smart case matching
-      uint16_t flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
+    // Smart case matching
+    uint16_t flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
 
-      const int r = REG_COMP(&rcol->regex, s, flags);
-      if (r != 0)
-      {
-        regerror(r, &rcol->regex, err->data, err->dsize);
-        regex_color_free(&rcol);
-        return MUTT_CMD_ERROR;
-      }
+    const int r = REG_COMP(&rcol->regex, s, flags);
+    if (r != 0)
+    {
+      regerror(r, &rcol->regex, err->data, err->dsize);
+      regex_color_free(&rcol);
+      return MUTT_CMD_ERROR;
     }
+
     rcol->pattern = mutt_str_dup(s);
     rcol->match = match;
 
@@ -310,13 +229,6 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     attr_color_overwrite(ac, ac_val);
 
     STAILQ_INSERT_TAIL(rcl, rcol, entries);
-  }
-
-  if (is_index)
-  {
-    /* force re-caching of index colors */
-    struct EventColor ev_c = { MT_COLOR_INDEX, NULL };
-    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -331,7 +243,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
  * @param err     Buffer for error messages
  * @retval true Colour was parsed
  *
- * Parse a Regex 'color' command, e.g. "color index green default pattern"
+ * Parse a Regex 'color' command, e.g. "color status green default pattern"
  */
 bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
                                    struct AttrColor *ac, int *rc, struct Buffer *err)
@@ -344,43 +256,25 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
   if (!rcl)
     return false;
 
-  bool is_index = false;
   switch (cid)
   {
     case MT_COLOR_ATTACH_HEADERS:
     case MT_COLOR_BODY:
-      break;
     case MT_COLOR_HEADER:
-      break;
-    case MT_COLOR_INDEX:
-    case MT_COLOR_INDEX_AUTHOR:
-    case MT_COLOR_INDEX_COLLAPSED:
-    case MT_COLOR_INDEX_DATE:
-    case MT_COLOR_INDEX_FLAGS:
-    case MT_COLOR_INDEX_LABEL:
-    case MT_COLOR_INDEX_NUMBER:
-    case MT_COLOR_INDEX_SIZE:
-    case MT_COLOR_INDEX_SUBJECT:
-    case MT_COLOR_INDEX_TAG:
-    case MT_COLOR_INDEX_TAGS:
-      is_index = true;
       break;
     default:
       return false;
   }
 
-  *rc = add_pattern(rcl, pat, ac, err, is_index, 0);
+  *rc = add_pattern(rcl, pat, ac, err, 0);
 
   struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
   buf_pool_release(&buf);
 
-  if (!is_index) // else it will be logged in add_pattern()
-  {
-    struct EventColor ev_c = { cid, NULL };
-    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
-  }
+  struct EventColor ev_c = { cid, NULL };
+  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
   return true;
 }
@@ -400,7 +294,7 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
   if (cid != MT_COLOR_STATUS)
     return MUTT_CMD_ERROR;
 
-  int rc = add_pattern(&StatusList, pat, ac, err, false, match);
+  int rc = add_pattern(&StatusList, pat, ac, err, match);
   if (rc != MUTT_CMD_SUCCESS)
     return rc;
 

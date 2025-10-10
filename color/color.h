@@ -107,5 +107,6 @@ void colors_reset  (void);
 void colors_cleanup(void);
 
 bool mutt_color_has_pattern(enum ColorId cid);
+bool mutt_color_has_regex  (enum ColorId cid);
 
 #endif /* MUTT_COLOR_COLOR_H */
