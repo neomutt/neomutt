@@ -34,6 +34,7 @@
  * | notmuch/db.c       | @subpage nm_db       |
  * | notmuch/edata.c    | @subpage nm_edata    |
  * | notmuch/mdata.c    | @subpage nm_mdata    |
+ * | notmuch/module.c   | @subpage nm_module   |
  * | notmuch/notmuch.c  | @subpage nm_notmuch  |
  * | notmuch/query.c    | @subpage nm_query    |
  * | notmuch/tag.c      | @subpage nm_tag      |
@@ -54,7 +55,6 @@ extern const struct CompleteOps CompleteNmTagOps;
 
 extern const struct MxOps MxNotmuchOps;
 
-void  nm_init                    (void);
 void  nm_db_debug_check          (struct Mailbox *m);
 void  nm_db_longrun_done         (struct Mailbox *m);
 void  nm_db_longrun_init         (struct Mailbox *m, bool writable);

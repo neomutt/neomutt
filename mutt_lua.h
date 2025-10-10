@@ -31,6 +31,4 @@ struct Buffer;
 enum CommandResult mutt_lua_parse      (struct Buffer *tmp, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s, intptr_t data, struct Buffer *err);
 
-void mutt_lua_init(void);
-
 #endif /* MUTT_MUTT_LUA_H */
