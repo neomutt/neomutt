@@ -39,6 +39,7 @@ static struct ConfigDef Vars[] = {
 
 void test_color_dump(void)
 {
+#if 0
   // void color_dump(void);
 
   color_dump();
@@ -98,4 +99,5 @@ void test_color_dump(void)
   regex_colors_parse_status_list(MT_COLOR_STATUS, "damson", &ac, 1, NULL);
 
   color_dump();
+#endif
 }

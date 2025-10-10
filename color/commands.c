@@ -41,9 +41,9 @@
 #include "attr.h"
 #include "color.h"
 #include "debug.h"
+#include "domain.h"
 #include "dump.h"
 #include "globals.h"
-#include "notify2.h"
 #include "parse_color.h"
 #include "pattern.h"
 #include "regex4.h"
@@ -160,14 +160,14 @@ int color_get_cid(const char *name)
  * parse_object - Identify a colour object
  * @param[in]  cmd  Command being parsed
  * @param[in]  line Buffer containing string to be parsed
- * @param[out] cid  Object type, e.g. #MT_COLOR_TILDE
+ * @param[out] uc   Matched Colour
  * @param[out] err  Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * Identify a colour object, e.g. "message", "compose header"
  */
 static enum CommandResult parse_object(const struct Command *cmd, struct Buffer *line,
-                                       enum ColorId *cid, struct Buffer *err)
+                                       struct UserColor **uc, struct Buffer *err)
 {
   if (!MoreArgsF(line, TOKEN_COMMENT))
   {
@@ -196,19 +196,17 @@ static enum CommandResult parse_object(const struct Command *cmd, struct Buffer 
     buf_pool_release(&suffix);
   }
 
-  int rc = 0; // mutt_map_get_value(buf_string(token), ColorFields);
-  if (rc == -1)
+  struct UserColor *match = color_find_by_name(buf_string(token));
+  if (!match)
   {
     buf_printf(err, _("%s: no such object"), buf_string(token));
     buf_pool_release(&token);
     return MUTT_CMD_WARNING;
   }
-  else
-  {
-    color_debug(LL_DEBUG5, "object: %s\n", buf_string(token));
-  }
 
-  *cid = rc;
+  color_debug(LL_DEBUG5, "object: %s\n", buf_string(token));
+
+  *uc = match;
   buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
 }
@@ -243,9 +241,10 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd,
     }
   }
 
-  unsigned int cid = MT_COLOR_NONE;
+  int cid = 0;
+  struct UserColor *uc = NULL;
   color_debug(LL_DEBUG5, "uncolor: %s\n", buf_string(token));
-  rc = parse_object(cmd, line, &cid, err);
+  rc = parse_object(cmd, line, &uc, err);
   if (rc != MUTT_CMD_SUCCESS)
     goto done;
 
@@ -327,9 +326,9 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
     return MUTT_CMD_ERROR;
 
   unsigned int match = 0;
-  enum ColorId cid = MT_COLOR_NONE;
   enum CommandResult rc = MUTT_CMD_ERROR;
   struct AttrColor *ac = NULL;
+  struct UserColor *uc = NULL;
   struct Buffer *token = buf_pool_get();
 
   if (!MoreArgs(line))
@@ -348,7 +347,7 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
     goto done;
   }
 
-  rc = parse_object(cmd, line, &cid, err);
+  rc = parse_object(cmd, line, &uc, err);
   if (rc != MUTT_CMD_SUCCESS)
     goto done;
 
@@ -384,88 +383,88 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
 
   //------------------------------------------------------------------
 
-  /* extract a regex/pattern if needed */
+  const struct ColorDefinition *cdef = uc->cdef;
 
-  if ((mutt_color_has_regex(cid) || mutt_color_has_pattern(cid)) && (cid != MT_COLOR_STATUS))
+  // Look for an optional regex/pattern
+  buf_reset(token);
+  if (MoreArgs(line))
   {
-    color_debug(LL_DEBUG5, "regex needed\n");
-    if (MoreArgs(line))
-    {
-      parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    }
-    else
-    {
-      buf_strcpy(token, ".*");
-    }
-  }
-
-  if (MoreArgs(line) && (cid != MT_COLOR_STATUS))
-  {
-    buf_printf(err, _("%s: too many arguments"), cmd->name);
-    rc = MUTT_CMD_WARNING;
-    goto done;
-  }
-
-  if (regex_colors_parse_color_list(cid, buf_string(token), ac, &rc, err))
-  {
-    color_debug(LL_DEBUG5, "regex_colors_parse_color_list done\n");
-    goto done;
-    // do nothing
-  }
-  else if (pattern_colors_parse_color_list(cid, buf_string(token), ac, err))
-  {
-    color_debug(LL_DEBUG5, "pattern_colors_parse_color_list done\n");
-    goto done;
-    // do nothing
-  }
-  else if ((cid == MT_COLOR_STATUS) && MoreArgs(line))
-  {
-    color_debug(LL_DEBUG5, "status\n");
-    /* 'color status fg bg' can have up to 2 arguments:
-     * 0 arguments: sets the default status color (handled below by else part)
-     * 1 argument : colorize pattern on match
-     * 2 arguments: colorize nth submatch of pattern */
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
-
-    if (MoreArgs(line))
-    {
-      struct Buffer *tmp = buf_pool_get();
-      parse_extract_token(tmp, line, TOKEN_NO_FLAGS);
-      if (!mutt_str_atoui_full(buf_string(tmp), &match))
-      {
-        buf_printf(err, _("%s: invalid number: %s"), cmd->name, buf_string(tmp));
-        buf_pool_release(&tmp);
-        rc = MUTT_CMD_WARNING;
-        goto done;
-      }
-      buf_pool_release(&tmp);
-    }
-
-    if (MoreArgs(line))
+    if (cdef->type == CDT_SIMPLE)
     {
       buf_printf(err, _("%s: too many arguments"), cmd->name);
       rc = MUTT_CMD_WARNING;
       goto done;
     }
 
-    rc = regex_colors_parse_status_list(cid, buf_string(token), ac, match, err);
-    goto done;
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+
+    if (MoreArgs(line))
+    {
+      if (cdef->flags & CDF_BACK_REF)
+      {
+        struct Buffer *tmp = buf_pool_get();
+        parse_extract_token(tmp, line, TOKEN_NO_FLAGS);
+        if (!mutt_str_atoui_full(buf_string(tmp), &match))
+        {
+          buf_printf(err, _("%s: invalid number: %s"), cmd->name, buf_string(tmp));
+          buf_pool_release(&tmp);
+          rc = MUTT_CMD_WARNING;
+          goto done;
+        }
+        buf_pool_release(&tmp);
+      }
+      else
+      {
+        buf_printf(err, _("%s: too many arguments"), cmd->name);
+        rc = MUTT_CMD_WARNING;
+        goto done;
+      }
+    }
   }
-  else // Remaining simple colours
+
+  rc = MUTT_CMD_ERROR;
+  switch (cdef->type)
   {
-    color_debug(LL_DEBUG5, "simple\n");
-    if (simple_color_set(cid, ac))
-      rc = MUTT_CMD_SUCCESS;
-    else
-      rc = MUTT_CMD_ERROR;
+    case CDT_SIMPLE:
+    {
+      if (simple_color_set(uc, ac))
+        rc = MUTT_CMD_SUCCESS;
+
+      break;
+    }
+
+    case CDT_PATTERN:
+    {
+      if (pattern_colors_parse_color_list(uc, buf_string(token), ac, err))
+        rc = MUTT_CMD_SUCCESS;
+
+      break;
+    }
+
+    case CDT_REGEX:
+    {
+      if (match > 0)
+      {
+        if (regex_colors_parse_status_list(uc, buf_string(token), ac, match, err))
+          rc = MUTT_CMD_SUCCESS;
+      }
+      else
+      {
+        if (regex_colors_parse_color_list(uc, buf_string(token), ac, err))
+          rc = MUTT_CMD_SUCCESS;
+      }
+      break;
+    }
   }
 
   if (rc == MUTT_CMD_SUCCESS)
   {
+#ifdef RAR
     color_get_name(cid, token);
     color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(token));
     struct EventColor ev_c = { cid, NULL };
     notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+#endif
   }
 
 done:

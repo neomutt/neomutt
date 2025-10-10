@@ -28,6 +28,7 @@
 #include "color.h"
 
 struct AttrColor;
+struct UserColor;
 
 #define COLOR_COMPOSE(cid) (((cid) >= MT_COLOR_COMPOSE_HEADER) && ((cid) <= MT_COLOR_COMPOSE_SECURITY_SIGN))
 
@@ -35,9 +36,9 @@ void simple_colors_init   (void);
 void simple_colors_reset  (void);
 void simple_colors_cleanup(void);
 
-struct AttrColor *simple_color_get      (enum ColorId cid);
-bool              simple_color_is_set   (enum ColorId cid);
-void              simple_color_reset    (enum ColorId cid);
-struct AttrColor *simple_color_set      (enum ColorId cid, struct AttrColor *ac_val);
+struct AttrColor *simple_color_get   (enum ColorId cid);
+bool              simple_color_is_set(enum ColorId cid);
+void              simple_color_reset (enum ColorId cid);
+bool              simple_color_set   (struct UserColor *uc, const struct AttrColor *ac_val);
 
 #endif /* MUTT_COLOR_SIMPLE2_H */

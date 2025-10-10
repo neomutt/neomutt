@@ -38,8 +38,8 @@
 #include "pattern/lib.h"
 #include "attr.h"
 #include "color.h"
-#include "commands.h"
 #include "debug.h"
+#include "domain.h"
 #include "notify2.h"
 
 // clang-format off
@@ -275,31 +275,25 @@ static bool add_pattern(struct PatternColorList *pcl, const char *s,
 
 /**
  * pattern_colors_parse_color_list - Parse a Pattern 'color' command
- * @param cid     Colour ID, should be #MT_COLOR_STATUS
- * @param pat     Pattern
- * @param ac      Colour value to use
- * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
- * @param err     Buffer for error messages
- * @retval true Colour was parsed
+ * @param uc  Colour to modify
+ * @param pat Pattern
+ * @param ac  Colour value to use
+ * @param err Buffer for error messages
+ * @retval true Success
  *
  * Parse a Pattern 'color' command, e.g. "color index green default pattern"
  */
-bool pattern_colors_parse_color_list(enum ColorId cid, const char *pat,
+bool pattern_colors_parse_color_list(struct UserColor *uc, const char *pat,
                                      struct AttrColor *ac, struct Buffer *err)
 {
-  if (cid == MT_COLOR_STATUS)
+  if (!uc || !uc->cdef || (uc->cdef->type != CDT_PATTERN) || !pat || !ac)
     return false;
 
-  struct PatternColorList *pcl = pattern_colors_get_list(cid);
-  if (!pcl)
-    return false;
+  struct PatternColorList *pcl = uc->cdata;
 
   bool rc = add_pattern(pcl, pat, ac, err);
 
-  struct Buffer *buf = buf_pool_get();
-  color_get_name(cid, buf);
-  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
-  buf_pool_release(&buf);
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", uc->cdef->name);
 
   return rc;
 }

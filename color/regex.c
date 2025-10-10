@@ -33,11 +33,10 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "core/lib.h"
 #include "attr.h"
 #include "color.h"
-#include "commands.h"
 #include "debug.h"
+#include "domain.h"
 #include "notify2.h"
 #include "regex4.h"
 
@@ -189,10 +188,10 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
  * @param ac_val    Colour value to use
  * @param err       Buffer for error messages
  * @param match     Number of regex subexpression to match (0 for entire pattern)
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ * @retval true Success
  */
-static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
-                                      struct AttrColor *ac_val, struct Buffer *err, int match)
+static bool add_pattern(struct RegexColorList *rcl, const char *s,
+                        const struct AttrColor *ac_val, struct Buffer *err, int match)
 {
   struct RegexColor *rcol = NULL;
 
@@ -217,8 +216,8 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     if (r != 0)
     {
       regerror(r, &rcol->regex, err->data, err->dsize);
-      regex_color_free(&rcol);
-      return MUTT_CMD_ERROR;
+      regex_color_free(&rcol); //QWQ free? really?
+      return false;
     }
 
     rcol->pattern = mutt_str_dup(s);
@@ -231,80 +230,70 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     STAILQ_INSERT_TAIL(rcl, rcol, entries);
   }
 
-  return MUTT_CMD_SUCCESS;
+  return true;
 }
 
 /**
  * regex_colors_parse_color_list - Parse a Regex 'color' command
- * @param cid     Colour ID, should be #MT_COLOR_STATUS
+ * @param uc      Colour to alter
  * @param pat     Regex pattern
  * @param ac      Colour value to use
- * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
  * @param err     Buffer for error messages
  * @retval true Colour was parsed
  *
  * Parse a Regex 'color' command, e.g. "color status green default pattern"
  */
-bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
-                                   struct AttrColor *ac, int *rc, struct Buffer *err)
+bool regex_colors_parse_color_list(struct UserColor *uc, const char *pat,
+                                   const struct AttrColor *ac, struct Buffer *err)
 
 {
-  if (cid == MT_COLOR_STATUS)
+  if (!uc || !uc->cdef || (uc->cdef->type != CDT_REGEX) || !pat || !ac)
     return false;
 
-  struct RegexColorList *rcl = regex_colors_get_list(cid);
-  if (!rcl)
+  struct RegexColorList *rcl = uc->cdata;
+
+  bool rc = add_pattern(rcl, pat, ac, err, 0);
+  if (!rc)
     return false;
 
-  switch (cid)
-  {
-    case MT_COLOR_ATTACH_HEADERS:
-    case MT_COLOR_BODY:
-    case MT_COLOR_HEADER:
-      break;
-    default:
-      return false;
-  }
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", uc->cdef->name);
 
-  *rc = add_pattern(rcl, pat, ac, err, 0);
-
-  struct Buffer *buf = buf_pool_get();
-  color_get_name(cid, buf);
-  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
-  buf_pool_release(&buf);
-
+#ifdef RAR
   struct EventColor ev_c = { cid, NULL };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+#endif
 
-  return true;
+  return rc;
 }
 
 /**
  * regex_colors_parse_status_list - Parse a Regex 'color status' command
- * @param cid     Colour ID, should be #MT_COLOR_STATUS
+ * @param uc      Colour to alter
  * @param pat     Regex pattern
  * @param ac      Colour value to use
  * @param match   Use the nth regex submatch
  * @param err     Buffer for error messages
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ * @retval true Colour was parsed
  */
-int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
-                                   struct AttrColor *ac, int match, struct Buffer *err)
+bool regex_colors_parse_status_list(struct UserColor *uc, const char *pat,
+                                    const struct AttrColor *ac, int match,
+                                    struct Buffer *err)
 {
-  if (cid != MT_COLOR_STATUS)
-    return MUTT_CMD_ERROR;
+  if (!uc || !uc->cdef || (uc->cdef->type != CDT_REGEX) || !pat || !ac)
+    return false;
 
-  int rc = add_pattern(&StatusList, pat, ac, err, match);
-  if (rc != MUTT_CMD_SUCCESS)
-    return rc;
+  struct RegexColorList *rcl = uc->cdata;
 
-  struct Buffer *buf = buf_pool_get();
-  color_get_name(cid, buf);
-  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
-  buf_pool_release(&buf);
+  bool rc = add_pattern(rcl, pat, ac, err, match);
+  if (!rc)
+    return false;
 
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", uc->cdef->name);
+
+#ifdef RAR
   struct EventColor ev_c = { cid, NULL };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+#endif
 
   return rc;
 }

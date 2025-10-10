@@ -36,6 +36,7 @@
 #include "color.h"
 #include "commands.h"
 #include "debug.h"
+#include "domain.h"
 #include "notify2.h"
 #include "simple2.h"
 
@@ -120,27 +121,26 @@ bool simple_color_is_set(enum ColorId cid)
 
 /**
  * simple_color_set - Set the colour of a simple object
- * @param cid    Colour ID, e.g. #MT_COLOR_SEARCH
+ * @param uc     Colour to update
  * @param ac_val Colour value to use
- * @retval ptr Colour
+ * @retval true Success
  */
-struct AttrColor *simple_color_set(enum ColorId cid, struct AttrColor *ac_val)
+bool simple_color_set(struct UserColor *uc, const struct AttrColor *ac_val)
 {
-  struct AttrColor *ac = simple_color_get(cid);
-  if (!ac)
-    return NULL;
+  if (!uc || !uc->cdef || (uc->cdef->type != CDT_SIMPLE) || !ac_val)
+    return false;
 
+  struct AttrColor *ac = uc->cdata;
   attr_color_overwrite(ac, ac_val);
 
-  struct Buffer *buf = buf_pool_get();
-  color_get_name(cid, buf);
-  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
-  buf_pool_release(&buf);
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", uc->cdef->name);
 
-  struct EventColor ev_c = { cid, NULL };
+#ifdef RAR
+  struct EventColor ev_c = { uc, ac };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+#endif
 
-  return ac;
+  return true;
 }
 
 /**
