@@ -178,6 +178,7 @@ void                     km_expand_key_string(char *str, struct Buffer *buf);
 struct Keymap *          km_find_func        (enum MenuType menu, int func);
 const struct MenuFuncOp *km_get_table        (enum MenuType mtype);
 void                     km_keyname          (int c, struct Buffer *buf);
+struct KeyEvent *        get_event           (void);
 
 // Private to libkey
 struct Keymap *    alloc_keys                  (size_t len, keycode_t *keys);
