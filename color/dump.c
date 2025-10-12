@@ -36,12 +36,36 @@
 #include "pager/lib.h"
 #include "attr.h"
 #include "color.h"
+#include "domain.h"
 #include "parse_color.h"
 #include "pattern.h"
 #include "regex4.h"
 #ifdef USE_DEBUG_COLOR
 #include "debug.h"
 #endif
+
+/**
+ * enum ColorInfoColumn - Name the columns
+ */
+enum ColorInfoColumn
+{
+  CIN_NAME = 0, ///< Colour name, e.g. 'body'
+  CIN_ATTRS,    ///< Attribute, e.g. 'underline'
+  CIN_FG,       ///< Foreground colour
+  CIN_BG,       ///< Background colour
+  CIN_REGEX,    ///< Regex / Pattern
+  CIN_SWATCH,   ///< Colour swatch
+};
+
+/**
+ * struct ColorInfo - Info about one colour
+ */
+struct ColorInfo
+{
+  const char *info[6]; ///< Indexed by ColorInfoColumn
+  int match;           ///< Regex match number
+};
+ARRAY_HEAD(ColorInfoArray, struct ColorInfo);
 
 /**
  * color_log_color_attrs - Get a colourful string to represent a colour in the log
@@ -217,6 +241,105 @@ const char *color_log_name(char *buf, int buflen, struct ColorElement *elem)
 }
 
 /**
+ * color_info_sort - Compare two ColorInfo by their names - Implements ::sort_t - @ingroup sort_api
+ */
+static int color_info_sort(const void *a, const void *b, void *sdata)
+{
+  const struct ColorInfo *x = (const struct ColorInfo *) a;
+  const struct ColorInfo *y = (const struct ColorInfo *) b;
+
+  return mutt_str_cmp(x->info[CIN_NAME], y->info[CIN_NAME]);
+}
+
+/**
+ * cia_measure_column - Measure the width of the nth column of a ColorInfoArray
+ * @param cia ColorInfoArray
+ * @param col Column to measure
+ * @retval num Width
+ */
+static int cia_measure_column(const struct ColorInfoArray *cia, enum ColorInfoColumn col)
+{
+  if (!cia)
+    return 0;
+
+  struct ColorInfo *ci = NULL;
+  int width = 0;
+
+  ARRAY_FOREACH(ci, cia)
+  {
+    width = MAX(width, mutt_str_len(ci->info[col]));
+  }
+
+  return width;
+}
+
+/**
+ * cia_clear - Clear the contents of a ColorInfoArray
+ * @param cia Array to clear
+ */
+static void cia_clear(struct ColorInfoArray *cia)
+{
+  if (!cia)
+    return;
+
+  struct ColorInfo *ci = NULL;
+  ARRAY_FOREACH(ci, cia)
+  {
+    // Don't free `ci->info[CIN_NAME]`
+    FREE(&ci->info[CIN_ATTRS]);
+    FREE(&ci->info[CIN_FG]);
+    FREE(&ci->info[CIN_BG]);
+    FREE(&ci->info[CIN_REGEX]);
+    FREE(&ci->info[CIN_SWATCH]);
+  }
+
+  ARRAY_FREE(cia);
+}
+
+/**
+ * dump_color - Dump one set of colours
+ * @param cia Array of colour info
+ * @param buf Buffer for the result
+ */
+static void dump_color(const struct ColorInfoArray *cia, struct Buffer *buf)
+{
+  if (ARRAY_EMPTY(cia))
+    return;
+
+  int lengths[5] = { 0 };
+
+  for (enum ColorInfoColumn col = CIN_NAME; col <= CIN_SWATCH; col++)
+    lengths[col] = cia_measure_column(cia, col);
+
+  ARRAY_SORT(cia, color_info_sort, NULL);
+
+  struct ColorInfo *ci = NULL;
+  ARRAY_FOREACH(ci, cia)
+  {
+    buf_addstr(buf, "color ");
+    buf_add_printf(buf, "%*s ", -lengths[CIN_NAME], ci->info[CIN_NAME]);
+    if (lengths[CIN_ATTRS] > 0)
+      buf_add_printf(buf, "%*s ", -lengths[CIN_ATTRS], NONULL(ci->info[CIN_ATTRS]));
+    buf_add_printf(buf, "%*s ", -lengths[CIN_FG], ci->info[CIN_FG]);
+    buf_add_printf(buf, "%*s ", -lengths[CIN_BG], ci->info[CIN_BG]);
+
+    if (lengths[CIN_REGEX] > 0)
+    {
+      buf_add_printf(buf, "%*s ", -lengths[CIN_REGEX], NONULL(ci->info[CIN_REGEX]));
+
+      if (ci->match > 0)
+        buf_add_printf(buf, "%d ", ci->match);
+      else
+        buf_addstr(buf, "  ");
+    }
+
+    buf_add_printf(buf, "# %s", ci->info[CIN_SWATCH]);
+    buf_addstr(buf, "\n");
+  }
+  buf_addstr(buf, "\n");
+}
+
+/**
  * color_dump - Display all the colours in the Pager
  */
 void color_dump(void)
@@ -236,6 +359,133 @@ void color_dump(void)
   }
 
   struct Buffer *buf = buf_pool_get();
+
+  struct ColorInfoArray cia_simple = ARRAY_HEAD_INITIALIZER;
+  struct ColorInfoArray cia_regex = ARRAY_HEAD_INITIALIZER;
+
+  struct UserColor *uc = NULL;
+  enum ColorDomainId did = 0;
+  struct Buffer *swatch = buf_pool_get();
+  struct Buffer *pattern = buf_pool_get();
+
+  ARRAY_FOREACH(uc, &UserColors)
+  {
+    const struct ColorDefinition *cdef = uc->cdef;
+
+    if (did != uc->did)
+    {
+      if (!ARRAY_EMPTY(&cia_simple) || !ARRAY_EMPTY(&cia_regex))
+      {
+        buf_add_printf(buf, "# %s colours\n", domain_get_name(did));
+        dump_color(&cia_simple, buf);
+        dump_color(&cia_regex, buf);
+
+        cia_clear(&cia_simple);
+        cia_clear(&cia_regex);
+      }
+      did = uc->did;
+    }
+
+    switch (uc->type)
+    {
+      case CDT_SIMPLE:
+      {
+        char name[64];
+        struct AttrColor *ac = uc->cdata;
+        if (!attr_color_is_set(ac))
+          break;
+
+        color_log_color_attrs(ac, swatch);
+
+        struct ColorInfo ci = { 0 };
+        ci.info[CIN_NAME] = cdef->name;
+        ci.info[CIN_ATTRS] = mutt_str_dup(color_log_attrs_list(ac->attrs));
+        ci.info[CIN_FG] = mutt_str_dup(color_log_name(name, sizeof(name), &ac->fg));
+        ci.info[CIN_BG] = mutt_str_dup(color_log_name(name, sizeof(name), &ac->bg));
+        // Ignore ci.info[CIN_REGEX]
+        ci.info[CIN_SWATCH] = buf_strdup(swatch);
+
+        ARRAY_ADD(&cia_simple, ci);
+        break;
+      }
+
+      case CDT_PATTERN:
+      {
+        char name[64];
+        struct PatternColorList *pcl = uc->cdata;
+
+        struct PatternColor *pc = NULL;
+        STAILQ_FOREACH(pc, pcl, entries)
+        {
+          struct AttrColor *ac = &pc->attr_color;
+          if (!attr_color_is_set(ac))
+            continue;
+
+          color_log_color_attrs(ac, swatch);
+
+          buf_reset(pattern);
+          pretty_var(pc->pattern, pattern);
+
+          struct ColorInfo ci = { 0 };
+          ci.info[CIN_NAME] = cdef->name;
+          ci.info[CIN_ATTRS] = mutt_str_dup(color_log_attrs_list(ac->attrs));
+          ci.info[CIN_FG] = mutt_str_dup(color_log_name(name, sizeof(name), &ac->fg));
+          ci.info[CIN_BG] = mutt_str_dup(color_log_name(name, sizeof(name), &ac->bg));
+          ci.info[CIN_REGEX] = buf_strdup(pattern);
+          ci.info[CIN_SWATCH] = buf_strdup(swatch);
+
+          ARRAY_ADD(&cia_regex, ci);
+        }
+
+        break;
+      }
+
+      case CDT_REGEX:
+      {
+        char name[64];
+        struct RegexColorList *rcl = uc->cdata;
+
+        struct RegexColor *rc = NULL;
+        STAILQ_FOREACH(rc, rcl, entries)
+        {
+          struct AttrColor *ac = &rc->attr_color;
+          if (!attr_color_is_set(ac))
+            continue;
+
+          color_log_color_attrs(ac, swatch);
+
+          buf_reset(pattern);
+          pretty_var(rc->pattern, pattern);
+
+          struct ColorInfo ci = { 0 };
+          ci.info[CIN_NAME] = cdef->name;
+          ci.info[CIN_ATTRS] = mutt_str_dup(color_log_attrs_list(ac->attrs));
+          ci.info[CIN_FG] = mutt_str_dup(color_log_name(name, sizeof(name), &ac->fg));
+          ci.info[CIN_BG] = mutt_str_dup(color_log_name(name, sizeof(name), &ac->bg));
+          ci.info[CIN_REGEX] = buf_strdup(pattern);
+          ci.info[CIN_SWATCH] = buf_strdup(swatch);
+          ci.match = rc->match;
+
+          ARRAY_ADD(&cia_regex, ci);
+        }
+
+        break;
+      }
+    }
+  }
+
+  if (!ARRAY_EMPTY(&cia_simple) || !ARRAY_EMPTY(&cia_regex))
+  {
+    buf_add_printf(buf, "# %s colours\n", domain_get_name(did));
+    dump_color(&cia_simple, buf);
+    dump_color(&cia_regex, buf);
+  }
+
+  cia_clear(&cia_simple);
+  cia_clear(&cia_regex);
+
+  buf_pool_release(&swatch);
+  buf_pool_release(&pattern);
 
 #ifdef USE_DEBUG_COLOR
   merged_colors_dump(buf);
