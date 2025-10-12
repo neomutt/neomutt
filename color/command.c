@@ -147,7 +147,7 @@ void get_colorid_name(unsigned int cid, struct Buffer *buf)
 static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
                                        enum ColorId *cid, struct Buffer *err)
 {
-  if (mutt_istr_equal(buf->data, "compose"))
+  if (mutt_istr_equal(buf_string(buf), "compose"))
   {
     if (!MoreArgs(s))
     {
@@ -162,10 +162,10 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
     buf_pool_release(&tmp);
   }
 
-  int rc = mutt_map_get_value(buf->data, ColorFields);
+  int rc = mutt_map_get_value(buf_string(buf), ColorFields);
   if (rc == -1)
   {
-    buf_printf(err, _("%s: no such object"), buf->data);
+    buf_printf(err, _("%s: no such object"), buf_string(buf));
     return MUTT_CMD_WARNING;
   }
   else
@@ -203,7 +203,7 @@ static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffe
 
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-  if (mutt_str_equal(buf->data, "*"))
+  if (mutt_str_equal(buf_string(buf), "*"))
   {
     colors_reset();
     return MUTT_CMD_SUCCESS;
@@ -217,7 +217,7 @@ static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffe
 
   if (cid == -1)
   {
-    buf_printf(err, _("%s: no such object"), buf->data);
+    buf_printf(err, _("%s: no such object"), buf_string(buf));
     return MUTT_CMD_ERROR;
   }
 
@@ -246,7 +246,7 @@ static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffe
   do
   {
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-    if (mutt_str_equal("*", buf->data))
+    if (mutt_str_equal("*", buf_string(buf)))
     {
       if (regex_colors_parse_uncolor(cid, NULL, uncolor))
         return MUTT_CMD_SUCCESS;
@@ -254,7 +254,7 @@ static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffe
         return MUTT_CMD_ERROR;
     }
 
-    regex_colors_parse_uncolor(cid, buf->data, uncolor);
+    regex_colors_parse_uncolor(cid, buf_string(buf), uncolor);
 
   } while (MoreArgs(s));
 
@@ -359,7 +359,7 @@ static enum CommandResult parse_color_command(struct Buffer *buf,
     goto done;
   }
 
-  if (regex_colors_parse_color_list(cid, buf->data, ac, &rc, err))
+  if (regex_colors_parse_color_list(cid, buf_string(buf), ac, &rc, err))
   {
     color_debug(LL_DEBUG5, "regex_colors_parse_color_list done\n");
     goto done;
@@ -378,9 +378,10 @@ static enum CommandResult parse_color_command(struct Buffer *buf,
     {
       struct Buffer *tmp = buf_pool_get();
       parse_extract_token(tmp, s, TOKEN_NO_FLAGS);
-      if (!mutt_str_atoui_full(tmp->data, &match))
+      if (!mutt_str_atoui_full(buf_string(tmp), &match))
       {
-        buf_printf(err, _("%s: invalid number: %s"), color ? "color" : "mono", tmp->data);
+        buf_printf(err, _("%s: invalid number: %s"), color ? "color" : "mono",
+                   buf_string(tmp));
         buf_pool_release(&tmp);
         rc = MUTT_CMD_WARNING;
         goto done;
@@ -395,7 +396,7 @@ static enum CommandResult parse_color_command(struct Buffer *buf,
       goto done;
     }
 
-    rc = regex_colors_parse_status_list(cid, buf->data, ac, match, err);
+    rc = regex_colors_parse_status_list(cid, buf_string(buf), ac, match, err);
     goto done;
   }
   else // Remaining simple colours
@@ -410,7 +411,7 @@ static enum CommandResult parse_color_command(struct Buffer *buf,
   if (rc == MUTT_CMD_SUCCESS)
   {
     get_colorid_name(cid, buf);
-    color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
+    color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
     struct EventColor ev_c = { cid, NULL };
     notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }

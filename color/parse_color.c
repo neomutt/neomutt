@@ -293,10 +293,10 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
     if (buf_is_empty(buf))
       continue;
 
-    int attr = mutt_map_get_value(buf->data, AttributeNames);
+    int attr = mutt_map_get_value(buf_string(buf), AttributeNames);
     if (attr == -1)
     {
-      enum CommandResult rc = parse_color_name(buf->data, &ac->fg, err);
+      enum CommandResult rc = parse_color_name(buf_string(buf), &ac->fg, err);
       if (rc != MUTT_CMD_SUCCESS)
         return rc;
       break;
@@ -316,7 +316,7 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 
   parse_extract_token(buf, s, TOKEN_COMMENT);
 
-  return parse_color_name(buf->data, &ac->bg, err);
+  return parse_color_name(buf_string(buf), &ac->bg, err);
 }
 
 /**
@@ -336,10 +336,10 @@ enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
 
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-  int attr = mutt_map_get_value(buf->data, AttributeNames);
+  int attr = mutt_map_get_value(buf_string(buf), AttributeNames);
   if (attr == -1)
   {
-    buf_printf(err, _("%s: no such attribute"), buf->data);
+    buf_printf(err, _("%s: no such attribute"), buf_string(buf));
     return MUTT_CMD_WARNING;
   }
 

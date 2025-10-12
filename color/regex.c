@@ -282,7 +282,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
       const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
       mutt_check_simple(buf, NONULL(c_simple_search));
       struct MailboxView *mv_cur = get_current_mailbox_view();
-      rcol->color_pattern = mutt_pattern_comp(mv_cur, buf->data, MUTT_PC_FULL_MSG, err);
+      rcol->color_pattern = mutt_pattern_comp(mv_cur, buf_string(buf), MUTT_PC_FULL_MSG, err);
       buf_pool_release(&buf);
       if (!rcol->color_pattern)
       {
@@ -374,7 +374,7 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
 
   struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
-  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
   buf_pool_release(&buf);
 
   if (!is_index) // else it will be logged in add_pattern()
@@ -407,7 +407,7 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
 
   struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
-  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
+  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
   buf_pool_release(&buf);
 
   struct EventColor ev_c = { cid, NULL };
