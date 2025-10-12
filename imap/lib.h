@@ -45,6 +45,7 @@
  * | imap/imap.c       | @subpage imap_imap       |
  * | imap/mdata.c      | @subpage imap_mdata      |
  * | imap/message.c    | @subpage imap_message    |
+ * | imap/module.c     | @subpage imap_module     |
  * | imap/msg_set.c    | @subpage imap_msg_set    |
  * | imap/msn.c        | @subpage imap_msn        |
  * | imap/search.c     | @subpage imap_search     |
@@ -71,7 +72,6 @@ struct PatternList;
 struct stat;
 
 /* imap.c */
-void imap_init(void);
 int imap_access(const char *path);
 enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force);
 int imap_delete_mailbox(struct Mailbox *m, char *path);
