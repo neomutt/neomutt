@@ -162,6 +162,22 @@ struct RegexColor *regex_color_new(void)
 }
 
 /**
+ * regex_color_list_new - Create a new RegexColorList
+ * @retval ptr New RegexColorList
+ */
+struct RegexColorList *regex_color_list_new(void)
+{
+  struct RegexColorList *rcl = MUTT_MEM_CALLOC(1, struct RegexColorList);
+
+  STAILQ_INIT(rcl);
+
+  struct RegexColor *rcol = regex_color_new();
+  STAILQ_INSERT_TAIL(rcl, rcol, entries);
+
+  return rcl;
+}
+
+/**
  * regex_color_list_clear - Free the contents of a RegexColorList
  * @param rcl List to clear
  *

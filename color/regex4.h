@@ -51,12 +51,13 @@ void regex_colors_reset  (void);
 void regex_colors_cleanup(void);
 
 void                   regex_color_clear(struct RegexColor *rcol);
-void                   regex_color_free(struct RegexColorList *list, struct RegexColor **ptr);
-struct RegexColor *    regex_color_new (void);
+void                   regex_color_free (struct RegexColorList *list, struct RegexColor **ptr);
+struct RegexColor *    regex_color_new  (void);
 
 struct RegexColorList *regex_colors_get_list(enum ColorId cid);
 
 void                   regex_color_list_clear(struct RegexColorList *rcl);
+struct RegexColorList *regex_color_list_new(void);
 
 bool regex_colors_parse_color_list (enum ColorId cid, const char *pat, struct AttrColor *ac, int *rc, struct Buffer *err);
 int  regex_colors_parse_status_list(enum ColorId cid, const char *pat, struct AttrColor *ac, int match, struct Buffer *err);
