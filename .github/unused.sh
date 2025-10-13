@@ -19,6 +19,7 @@ IGNORELIST=(
 
     # Will be used by future code
     "progress_set_size"
+    "regex_color_list_new"
 )
 
 while IFS= read -r line; do

@@ -94,7 +94,6 @@ int                     find_next_undeleted     (struct MailboxView *mv, int msg
 int                     find_previous_undeleted (struct MailboxView *mv, int msgno, bool uncollapse);
 struct Mailbox *        get_current_mailbox     (void);
 struct MailboxView *    get_current_mailbox_view(void);
-struct Menu *           get_current_menu        (void);
 void                    index_change_folder     (struct MuttWindow *dlg, struct Mailbox *m);
 const struct AttrColor *index_color             (struct Menu *menu, int line);
 int                     index_make_entry        (struct Menu *menu, int line, int max_cols, struct Buffer *buf);

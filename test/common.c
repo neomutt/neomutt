@@ -216,11 +216,6 @@ struct MailboxView *get_current_mailbox_view(void)
   return NULL;
 }
 
-struct Menu *get_current_menu(void)
-{
-  return NULL;
-}
-
 int mutt_do_pager(struct PagerView *pview, struct Email *e)
 {
   return 0;

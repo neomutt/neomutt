@@ -924,7 +924,7 @@ int mutt_str_inbox_cmp(const char *a, const char *b)
 
 /**
  * string_array_clear - Free all memory of a StringArray
- * @param carr Array of text to clear
+ * @param arr Array of text to clear
  *
  * @note Array is emptied, but not freed
  */
