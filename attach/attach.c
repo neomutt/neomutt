@@ -33,6 +33,9 @@
 #include "email/lib.h"
 #include "attach.h"
 
+/// Step to grow attachment arrays
+const int AttachArrayGrow = 5;
+
 /**
  * mutt_aptr_new - Create a new Attachment Pointer
  * @retval ptr New Attachment Pointer
@@ -64,19 +67,14 @@ void mutt_aptr_free(struct AttachPtr **ptr)
  */
 void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
 {
-  const int grow = 5;
-
   if (!actx || !attach)
     return;
 
   if (actx->idxlen == actx->idxmax)
   {
-    actx->idxmax += grow;
-    MUTT_MEM_REALLOC(&actx->idx, actx->idxmax, struct AttachPtr *);
-    MUTT_MEM_REALLOC(&actx->v2r, actx->idxmax, short);
-
-    memset(&actx->idx[actx->idxlen], 0, grow * sizeof(struct AttachPtr *));
-    memset(&actx->v2r[actx->idxlen], 0, grow * sizeof(short));
+    mutt_mem_recallocarray(&actx->idx, actx->idxmax, actx->idxmax + AttachArrayGrow, sizeof(struct AttachPtr *));
+    mutt_mem_recallocarray(&actx->v2r, actx->idxmax, actx->idxmax + AttachArrayGrow, sizeof(short));
+    actx->idxmax += AttachArrayGrow;
   }
 
   actx->idx[actx->idxlen++] = attach;
@@ -98,11 +96,9 @@ void mutt_actx_ins_attach(struct AttachCtx *actx, struct AttachPtr *attach, int 
 
   if (actx->idxlen == actx->idxmax)
   {
-    actx->idxmax += 5;
-    MUTT_MEM_REALLOC(&actx->idx, actx->idxmax, struct AttachPtr *);
-    MUTT_MEM_REALLOC(&actx->v2r, actx->idxmax, short);
-    for (int i = actx->idxlen; i < actx->idxmax; i++)
-      actx->idx[i] = NULL;
+    mutt_mem_recallocarray(&actx->idx, actx->idxmax, actx->idxmax + AttachArrayGrow, sizeof(struct AttachPtr *));
+    mutt_mem_recallocarray(&actx->v2r, actx->idxmax, actx->idxmax + AttachArrayGrow, sizeof(short));
+    actx->idxmax += AttachArrayGrow;
   }
 
   actx->idxlen++;
@@ -125,10 +121,8 @@ void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
 
   if (actx->fp_len == actx->fp_max)
   {
-    actx->fp_max += 5;
-    MUTT_MEM_REALLOC(&actx->fp_idx, actx->fp_max, FILE *);
-    for (int i = actx->fp_len; i < actx->fp_max; i++)
-      actx->fp_idx[i] = NULL;
+    mutt_mem_recallocarray(&actx->fp_idx, actx->fp_max, actx->fp_max + AttachArrayGrow, sizeof(FILE *));
+    actx->fp_max += AttachArrayGrow;
   }
 
   actx->fp_idx[actx->fp_len++] = fp_new;
@@ -146,10 +140,8 @@ void mutt_actx_add_body(struct AttachCtx *actx, struct Body *b)
 
   if (actx->body_len == actx->body_max)
   {
-    actx->body_max += 5;
-    MUTT_MEM_REALLOC(&actx->body_idx, actx->body_max, struct Body *);
-    for (int i = actx->body_len; i < actx->body_max; i++)
-      actx->body_idx[i] = NULL;
+    mutt_mem_recallocarray(&actx->body_idx, actx->body_max, actx->body_max + AttachArrayGrow, sizeof(struct Body *));
+    actx->body_max += AttachArrayGrow;
   }
 
   actx->body_idx[actx->body_len++] = b;
