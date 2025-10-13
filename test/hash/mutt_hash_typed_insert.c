@@ -29,6 +29,7 @@
 void test_mutt_hash_typed_insert(void)
 {
   // struct HashElem *mutt_hash_typed_insert(struct HashTable *table, const char *strkey, int type, void *data);
+  // struct HashElem *mutt_hash_typed_insert_n(struct HashTable *table, const char *strkey, int keylen, int type, void *data);
 
   {
     TEST_CHECK(!mutt_hash_typed_insert(NULL, "apple", 0, "banana"));
@@ -40,14 +41,37 @@ void test_mutt_hash_typed_insert(void)
   }
 
   {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
+    TEST_CHECK(!mutt_hash_typed_insert(table, "", 0, NULL));
+    mutt_hash_free(&table);
+  }
+
+  {
     struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
     TEST_CHECK(mutt_hash_typed_insert(table, "apple", 0, NULL) != NULL);
     mutt_hash_free(&table);
   }
 
   {
+    struct HashTable table = { 0 };
+    TEST_CHECK(!mutt_hash_typed_insert_n(&table, NULL, 0, 0, "banana"));
+  }
+
+  {
     struct HashTable *table = mutt_hash_new(10, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
-    TEST_CHECK(mutt_hash_typed_insert(table, "", 0, NULL) != NULL);
+    TEST_CHECK(!mutt_hash_typed_insert_n(table, "", 0, 0, NULL));
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    TEST_CHECK(mutt_hash_typed_insert_n(table, "apple", 5, 0, NULL) != NULL);
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
+    TEST_CHECK(mutt_hash_typed_insert_n(table, "apple", 5, 0, NULL) != NULL);
     mutt_hash_free(&table);
   }
 }

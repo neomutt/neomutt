@@ -1,9 +1,9 @@
 /**
  * @file
- * Maildir Mailbox
+ * Maildir-specific data
  *
  * @authors
- * Copyright (C) 2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,18 +20,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAILDIR_MAILBOX_H
-#define MUTT_MAILDIR_MAILBOX_H
+#ifndef MUTT_MAILDIR_PRIVATE_H
+#define MUTT_MAILDIR_PRIVATE_H
 
 #include <stdbool.h>
-#include <stdint.h>
-#include "core/lib.h"
+#include "mutt/lib.h"
 
-enum MxStatus      maildir_mbox_check      (struct Mailbox *m);
-enum MxStatus      maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags);
-enum MxStatus      maildir_mbox_close      (struct Mailbox *m);
-enum MxOpenReturns maildir_mbox_open       (struct Mailbox *m);
-bool               maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags);
-enum MxStatus      maildir_mbox_sync       (struct Mailbox *m);
+/**
+ * struct Filename - Name of a Maildir Email file
+ */
+struct Filename
+{
+  char *sub_name;     ///< Sub-directory/filename
+  short uid_start;    ///< Start  of unique part of filename
+  short uid_length;   ///< Length of unique part of filename
+  bool  is_cur;       ///< File is in the 'cur' directory
+};
+ARRAY_HEAD(FilenameArray, struct Filename);
 
-#endif /* MUTT_MAILDIR_MAILBOX_H */
+#endif /* MUTT_MAILDIR_PRIVATE_H */
