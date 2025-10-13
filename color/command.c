@@ -182,23 +182,18 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
  * @param buf     Temporary Buffer space
  * @param s       Buffer containing string to be parsed
  * @param err     Buffer for error messages
- * @param uncolor If true, 'uncolor', else 'unmono'
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * Usage:
- * * uncolor index pattern [pattern...]
- * * unmono  index pattern [pattern...]
+ * * uncolor OBJECT [ PATTERN | REGEX | * ]
  */
 static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffer *s,
-                                                struct Buffer *err, bool uncolor)
+                                                struct Buffer *err)
 {
-  if (!OptGui) // No GUI, so quietly discard the command
+  if (!MoreArgs(s))
   {
-    while (MoreArgs(s))
-    {
-      parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-    }
-    return MUTT_CMD_SUCCESS;
+    buf_printf(err, _("%s: too few arguments"), "uncolor");
+    return MUTT_CMD_WARNING;
   }
 
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
@@ -237,7 +232,7 @@ static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffe
 
   if (!MoreArgs(s))
   {
-    if (regex_colors_parse_uncolor(cid, NULL, uncolor))
+    if (regex_colors_parse_uncolor(cid, NULL))
       return MUTT_CMD_SUCCESS;
     else
       return MUTT_CMD_ERROR;
@@ -248,13 +243,13 @@ static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffe
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf_string(buf)))
     {
-      if (regex_colors_parse_uncolor(cid, NULL, uncolor))
+      if (regex_colors_parse_uncolor(cid, NULL))
         return MUTT_CMD_SUCCESS;
       else
         return MUTT_CMD_ERROR;
     }
 
-    regex_colors_parse_uncolor(cid, buf_string(buf), uncolor);
+    regex_colors_parse_uncolor(cid, buf_string(buf));
 
   } while (MoreArgs(s));
 
@@ -271,8 +266,8 @@ static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffe
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * Usage:
- * * color OBJECT [ ATTRS ] FG BG [ REGEX ]
- * * mono  OBJECT   ATTRS         [ REGEX ]
+ * * color OBJECT [ ATTRS ] FG BG [ PATTERN | REGEX ] [ NUM ]
+ * * mono  OBJECT   ATTRS         [ PATTERN | REGEX ] [ NUM ]
  */
 static enum CommandResult parse_color_command(struct Buffer *buf,
                                               struct Buffer *s, struct Buffer *err,
@@ -437,7 +432,7 @@ enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   }
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
-  enum CommandResult rc = parse_uncolor_command(buf, s, err, true);
+  enum CommandResult rc = parse_uncolor_command(buf, s, err);
   curses_colors_dump(buf);
   return rc;
 }

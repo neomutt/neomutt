@@ -420,10 +420,9 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
  * regex_colors_parse_uncolor - Parse a Regex 'uncolor' command
  * @param cid     Colour ID, e.g. #MT_COLOR_STATUS
  * @param pat     Pattern to remove (NULL to remove all)
- * @param uncolor true if 'uncolor', false if 'unmono'
  * @retval true If colours were unset
  */
-bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat, bool uncolor)
+bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat)
 {
   struct RegexColorList *cl = regex_colors_get_list(cid);
   if (!cl)
