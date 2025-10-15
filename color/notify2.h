@@ -55,6 +55,13 @@ struct EventColor
 {
   enum ColorId cid;             ///< Colour ID that has changed
   struct AttrColor *attr_color; ///< Colour object that has changed
+
+  struct UserColor *user_color;    ///< Colour that has changed
+  // struct AttrColor *attr_color;    ///< New Colour
+  const char       *pattern;       ///< Pattern / Regex
+  int               match;         ///< Regex backref
+  bool              all;           ///< All colours?
+
 };
 
 void color_notify_init(struct Notify *parent);

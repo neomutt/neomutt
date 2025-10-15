@@ -117,12 +117,15 @@ void colors_reset(void)
   color_debug(LL_DEBUG5, "reset\n");
   mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
 
-  simple_colors_reset();
-  quoted_colors_reset();
-  pattern_colors_reset();
-  regex_colors_reset();
+  color_clear_colors();
 
-  struct EventColor ev_c = { MT_COLOR_MAX, NULL };
+  struct EventColor ev_c = {
+    .user_color = NULL,
+    .attr_color = NULL,
+    .pattern = NULL,
+    .match = 0,
+    .all = true,
+  };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 }
 

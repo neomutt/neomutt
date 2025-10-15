@@ -248,18 +248,30 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd,
   if (rc != MUTT_CMD_SUCCESS)
     goto done;
 
-  if (cid == -1)
+  if (!uc)
   {
     buf_printf(err, _("%s: no such object"), buf_string(token));
     rc = MUTT_CMD_ERROR;
     goto done;
   }
 
+  const struct ColorDefinition *cdef = uc->cdef;
+
+  if (cdef->type == CDT_SIMPLE)
+  {
+    if (MoreArgs(line))
+    {
+      buf_printf(err, _("%s: too many arguments"), "uncolor");
+      return MUTT_CMD_WARNING;
+    }
+
+    simple_color_reset(cid); // default colour for the status bar
+    return MUTT_CMD_SUCCESS;
+  }
+
   if ((cid == MT_COLOR_STATUS) && !MoreArgs(line))
   {
     color_debug(LL_DEBUG5, "simple\n");
-    simple_color_reset(cid); // default colour for the status bar
-    goto done;
   }
 
   if (!mutt_color_has_pattern(cid))
@@ -267,6 +279,25 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd,
     color_debug(LL_DEBUG5, "simple\n");
     simple_color_reset(cid);
     goto done;
+  }
+
+  // Look for an optional regex/pattern
+  buf_reset(token);
+  if (MoreArgs(line))
+  {
+    //QWQ if (cdef->type == CDT_SIMPLE)
+    {
+      buf_printf(err, _("%s: too many arguments"), "uncolor");
+      return MUTT_CMD_WARNING;
+    }
+
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+
+    if (MoreArgs(line))
+    {
+      buf_printf(err, _("%s: too many arguments"), "uncolor");
+      return MUTT_CMD_WARNING;
+    }
   }
 
   if (!MoreArgs(line))

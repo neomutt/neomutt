@@ -191,7 +191,7 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
  * @retval true Success
  */
 static bool add_pattern(struct RegexColorList *rcl, const char *s,
-                        const struct AttrColor *ac_val, struct Buffer *err, int match)
+                        const struct AttrColor *ac, struct Buffer *err, int match)
 {
   struct RegexColor *rcol = NULL;
 
@@ -201,35 +201,32 @@ static bool add_pattern(struct RegexColorList *rcl, const char *s,
       break;
   }
 
+  //QWQ this also matches the "" (empty) regex
   if (rcol) // found a matching regex
   {
-    struct AttrColor *ac = &rcol->attr_color;
-    attr_color_overwrite(ac, ac_val);
+    attr_color_overwrite(&rcol->attr_color, ac);
+    return true;
   }
-  else
+
+  rcol = regex_color_new();
+
+  // Smart case matching
+  uint16_t flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
+
+  const int r = REG_COMP(&rcol->regex, s, flags);
+  if (r != 0)
   {
-    rcol = regex_color_new();
-    // Smart case matching
-    uint16_t flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
-
-    const int r = REG_COMP(&rcol->regex, s, flags);
-    if (r != 0)
-    {
-      regerror(r, &rcol->regex, err->data, err->dsize);
-      regex_color_free(&rcol); //QWQ free? really?
-      return false;
-    }
-
-    rcol->pattern = mutt_str_dup(s);
-    rcol->match = match;
-
-    struct AttrColor *ac = &rcol->attr_color;
-
-    attr_color_overwrite(ac, ac_val);
-
-    STAILQ_INSERT_TAIL(rcl, rcol, entries);
+    regerror(r, &rcol->regex, err->data, err->dsize);
+    regex_color_free(&rcol); //QWQ free? really?
+    return false;
   }
 
+  rcol->pattern = mutt_str_dup(s);
+  rcol->match = match;
+
+  attr_color_overwrite(&rcol->attr_color, ac);
+
+  STAILQ_INSERT_TAIL(rcl, rcol, entries);
   return true;
 }
 

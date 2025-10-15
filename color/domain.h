@@ -61,7 +61,7 @@ enum ColorCore
   CD_COR_STATUS,                   ///< Status bar (takes a pattern)
   CD_COR_STRIPE_EVEN,              ///< Stripes: even lines of the Help Page
   CD_COR_STRIPE_ODD,               ///< Stripes: odd lines of the Help Page
-  CD_COR_TREE,                     ///< Index: tree-drawing characters
+  CD_COR_TREE,                     ///< Tree-drawing characters (Index, Attach)
   CD_COR_UNDERLINE,                ///< Underlined text
   CD_COR_WARNING,                  ///< Warning messages
 };
