@@ -142,6 +142,7 @@ bool simple_color_set(struct UserColor *uc, const struct AttrColor *ac_val)
 #ifdef RAR
   struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct EventColor ev_c = { uc, ac };
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_SET, &ev_c);
 #endif
 

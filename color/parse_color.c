@@ -59,6 +59,7 @@ const struct Mapping ColorNames[] = {
  */
 static const struct Mapping AttributeNames[] = {
   // clang-format off
+  { "blink",     A_BLINK     },
   { "bold",      A_BOLD      },
   { "italic",    A_ITALIC    },
   { "none",      A_NORMAL    },
