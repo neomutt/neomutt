@@ -249,7 +249,7 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
 
     switch (op)
     {
-      case -1:         // Abort: Ctrl-G
+      case OP_ABORT:   // Abort: Ctrl-G
       case OP_QUIT:    // Q)uit
       case OP_MAX + 1: // R)eject
         choice = 1;
