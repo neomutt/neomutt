@@ -607,6 +607,9 @@ static int op_display_message(struct IndexSharedData *shared,
 {
   if (!shared->email)
     return FR_NO_ACTION;
+
+  mutt_message_hook(shared->mailbox, shared->email, MUTT_MESSAGE_HOOK);
+
   /* toggle the weeding of headers so that a user can press the key
    * again while reading the message.  */
   if (op == OP_DISPLAY_HEADERS)
