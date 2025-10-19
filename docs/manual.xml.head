@@ -6801,7 +6801,7 @@ save-hook aol\\.com$ +spam
       </para>
 
 <screen>
-message-hook ~A 'set pager=builtin'
+message-hook ~A 'set pager=""'
 message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 </screen>
 
