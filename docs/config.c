@@ -2983,9 +2983,9 @@
 /*
 ** .pp
 ** This variable specifies which pager you would like to use to view
-** messages. When empty, NeoMutt will use the built-in pager, otherwise this
-** variable should specify the pathname of the external pager you would
-** like to use.
+** messages. When empty or set to the magic value \fbuiltin\fP, NeoMutt will use
+** the built-in pager, otherwise this variable should specify the pathname of
+** the external pager you would like to use.
 ** .pp
 ** Using an external pager may have some disadvantages: Additional
 ** keystrokes are necessary because you can't call NeoMutt functions
