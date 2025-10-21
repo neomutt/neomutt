@@ -160,7 +160,7 @@ static inline void init_extended_keys(void) {}
 #endif
 
 // key/commands.c
-enum CommandResult km_bind     (char *s, enum MenuType menu, int op, char *macro, char *desc);
+enum CommandResult km_bind     (const char *s, enum MenuType mtype, int op, char *macro, char *desc, struct Buffer *err);
 enum CommandResult parse_bind  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_exec  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_macro (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
@@ -190,7 +190,6 @@ struct Keymap *    alloc_keys                  (size_t len, keycode_t *keys);
 enum CommandResult dump_bind_macro             (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 void               generic_tokenize_push_string(char *s);
 int                get_op                      (const struct MenuFuncOp *funcs, const char *start, size_t len);
-enum CommandResult km_bindkey                  (const char *s, enum MenuType mtype, int op);
 struct Keymap *    km_compare_keys             (struct Keymap *k1, struct Keymap *k2, size_t *pos);
 const char *       mutt_get_func               (const struct MenuFuncOp *bindings, int op);
 void               mutt_keymap_free            (struct Keymap **ptr);

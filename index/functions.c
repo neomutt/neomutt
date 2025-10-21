@@ -1999,7 +1999,7 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
 
       /* L10N: "message hotkey" is the key bindings menu description of a
          macro created by <mark-message>. */
-      km_bind(str, MENU_INDEX, OP_MACRO, macro, _("message hotkey"));
+      km_bind(str, MENU_INDEX, OP_MACRO, macro, _("message hotkey"), NULL);
 
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed

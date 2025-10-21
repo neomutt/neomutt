@@ -39,11 +39,11 @@
 #include "menu/lib.h"
 #include "parse/lib.h"
 
-/// Maximum length of a key binding sequence used for buffer in km_bindkey
+/// Maximum length of a key binding sequence used for buffer in km_bind
 #define MAX_SEQ 8
 
 /**
- * km_bind_err - Set up a key binding
+ * km_bind - Set up a key binding
  * @param s     Key string
  * @param mtype Menu type, e.g. #MENU_EDITOR
  * @param op    Operation, e.g. OP_DELETE
@@ -55,8 +55,8 @@
  * Insert a key sequence into the specified map.
  * The map is sorted by ASCII value (lowest to highest)
  */
-static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op,
-                                      char *macro, char *desc, struct Buffer *err)
+enum CommandResult km_bind(const char *s, enum MenuType mtype, int op,
+                           char *macro, char *desc, struct Buffer *err)
 {
   enum CommandResult rc = MUTT_CMD_SUCCESS;
   struct Keymap *last = NULL, *np = NULL, *compare = NULL;
@@ -151,46 +151,6 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op
   }
 
   return rc;
-}
-
-/**
- * km_bind - Bind a key to a macro
- * @param s     Key string
- * @param mtype Menu type, e.g. #MENU_EDITOR
- * @param op    Operation, e.g. OP_DELETE
- * @param macro Macro string
- * @param desc Description of macro (OPTIONAL)
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- */
-enum CommandResult km_bind(char *s, enum MenuType mtype, int op, char *macro, char *desc)
-{
-  return km_bind_err(s, mtype, op, macro, desc, NULL);
-}
-
-/**
- * km_bindkey_err - Bind a key in a Menu to an operation (with error message)
- * @param s     Key string
- * @param mtype Menu type, e.g. #MENU_PAGER
- * @param op    Operation, e.g. OP_DELETE
- * @param err   Buffer for error message
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- */
-static enum CommandResult km_bindkey_err(const char *s, enum MenuType mtype,
-                                         int op, struct Buffer *err)
-{
-  return km_bind_err(s, mtype, op, NULL, NULL, err);
-}
-
-/**
- * km_bindkey - Bind a key in a Menu to an operation
- * @param s     Key string
- * @param mtype Menu type, e.g. #MENU_PAGER
- * @param op    Operation, e.g. OP_DELETE
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- */
-enum CommandResult km_bindkey(const char *s, enum MenuType mtype, int op)
-{
-  return km_bindkey_err(s, mtype, op, NULL);
 }
 
 /**
@@ -332,7 +292,7 @@ static enum CommandResult try_bind(char *key, enum MenuType mtype, char *func,
   {
     if (mutt_str_equal(func, funcs[i].name))
     {
-      return km_bindkey_err(key, mtype, funcs[i].op, err);
+      return km_bind(key, mtype, funcs[i].op, NULL, NULL, err);
     }
   }
   if (err)
@@ -400,7 +360,7 @@ enum CommandResult parse_bind(struct Buffer *buf, struct Buffer *s,
     struct Buffer *keystr = buf_pool_get();
     for (int i = 0; i < num_menus; i++)
     {
-      km_bindkey(key, mtypes[i], OP_NULL); /* the 'unbind' command */
+      km_bind(key, mtypes[i], OP_NULL, NULL, NULL, NULL); /* the 'unbind' command */
       funcs = km_get_table(mtypes[i]);
       if (funcs)
       {
@@ -521,18 +481,18 @@ enum CommandResult parse_unbind(struct Buffer *buf, struct Buffer *s,
     if (all_keys)
     {
       km_unbind_all(&Keymaps[i], data);
-      km_bindkey("<enter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
-      km_bindkey("<return>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
-      km_bindkey("<enter>", MENU_INDEX, OP_DISPLAY_MESSAGE);
-      km_bindkey("<return>", MENU_INDEX, OP_DISPLAY_MESSAGE);
-      km_bindkey("<backspace>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
-      km_bindkey("\177", MENU_EDITOR, OP_EDITOR_BACKSPACE);
-      km_bindkey(":", MENU_GENERIC, OP_ENTER_COMMAND);
-      km_bindkey(":", MENU_PAGER, OP_ENTER_COMMAND);
+      km_bind("<enter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
+      km_bind("<return>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
+      km_bind("<enter>", MENU_INDEX, OP_DISPLAY_MESSAGE, NULL, NULL, NULL);
+      km_bind("<return>", MENU_INDEX, OP_DISPLAY_MESSAGE, NULL, NULL, NULL);
+      km_bind("<backspace>", MENU_EDITOR, OP_EDITOR_BACKSPACE, NULL, NULL, NULL);
+      km_bind("\177", MENU_EDITOR, OP_EDITOR_BACKSPACE, NULL, NULL, NULL);
+      km_bind(":", MENU_GENERIC, OP_ENTER_COMMAND, NULL, NULL, NULL);
+      km_bind(":", MENU_PAGER, OP_ENTER_COMMAND, NULL, NULL, NULL);
       if (i != MENU_EDITOR)
       {
-        km_bindkey("?", i, OP_HELP);
-        km_bindkey("q", i, OP_EXIT);
+        km_bind("?", i, OP_HELP, NULL, NULL, NULL);
+        km_bind("q", i, OP_EXIT, NULL, NULL, NULL);
       }
 
       const char *mname = mutt_map_get_name(i, MenuNames);
@@ -551,7 +511,7 @@ enum CommandResult parse_unbind(struct Buffer *buf, struct Buffer *s,
       mutt_debug(LL_NOTIFY, "NT_MACRO_DELETE: %s %s\n", mname, buf_string(keystr));
       buf_pool_release(&keystr);
 
-      km_bindkey(key, i, OP_NULL);
+      km_bind(key, i, OP_NULL, NULL, NULL, NULL);
       struct EventBinding ev_b = { i, key, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
                   (data & MUTT_UNMACRO) ? NT_MACRO_DELETE : NT_BINDING_DELETE, &ev_b);
@@ -610,7 +570,7 @@ enum CommandResult parse_macro(struct Buffer *buf, struct Buffer *s,
         struct Buffer *keystr = buf_pool_get();
         for (int i = 0; i < num_menus; i++)
         {
-          rc = km_bind(key, mtypes[i], OP_MACRO, seq, buf->data);
+          rc = km_bind(key, mtypes[i], OP_MACRO, seq, buf->data, NULL);
           if (rc == MUTT_CMD_SUCCESS)
           {
             buf_reset(keystr);
@@ -633,7 +593,7 @@ enum CommandResult parse_macro(struct Buffer *buf, struct Buffer *s,
       struct Buffer *keystr = buf_pool_get();
       for (int i = 0; i < num_menus; i++)
       {
-        rc = km_bind(key, mtypes[i], OP_MACRO, buf->data, NULL);
+        rc = km_bind(key, mtypes[i], OP_MACRO, buf->data, NULL, NULL);
         if (rc == MUTT_CMD_SUCCESS)
         {
           buf_reset(keystr);
