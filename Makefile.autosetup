@@ -571,6 +571,9 @@ $(PWD)/index:
 # libkey
 LIBKEY=		libkey.a
 LIBKEYOBJS=	key/commands.o key/dump.o key/get.o key/init.o key/lib.o
+@if HAVE_USE_EXTENDED_NAMES
+LIBKEYOBJS+=	key/extended.o 
+@endif
 CLEANFILES+=	$(LIBKEY) $(LIBKEYOBJS)
 ALLOBJS+=	$(LIBKEYOBJS)
 

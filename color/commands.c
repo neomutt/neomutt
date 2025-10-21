@@ -187,8 +187,8 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
  * Usage:
  * * uncolor OBJECT [ PATTERN | REGEX | * ]
  */
-static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffer *s,
-                                                struct Buffer *err)
+static enum CommandResult parse_uncolor_command(struct Buffer *buf,
+                                                struct Buffer *s, struct Buffer *err)
 {
   if (!MoreArgs(s))
   {

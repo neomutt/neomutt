@@ -48,7 +48,7 @@
  * @param mtype Menu type, e.g. #MENU_EDITOR
  * @param op    Operation, e.g. OP_DELETE
  * @param macro Macro string
- * @param desc Description of macro (OPTIONAL)
+ * @param desc  Description of macro (OPTIONAL)
  * @param err   Buffer for error message
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *

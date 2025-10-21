@@ -29,6 +29,7 @@
  * | :------------------ | :-------------------- |
  * | key/commands.c      | @subpage key_commands |
  * | key/dump.c          | @subpage key_dump     |
+ * | key/extended.c      | @subpage key_extended |
  * | key/get.c           | @subpage key_get      |
  * | key/init.c          | @subpage key_init     |
  * | key/lib.c           | @subpage key_lib      |
@@ -151,6 +152,13 @@ enum NotifyBinding
   NT_MACRO_DELETE_ALL,   ///< All key macros have been deleted
 };
 
+// key/extended
+#ifdef HAVE_USE_EXTENDED_NAMES
+void init_extended_keys(void);
+#else
+static inline void init_extended_keys(void) {}
+#endif
+
 // key/commands.c
 enum CommandResult km_bind     (char *s, enum MenuType menu, int op, char *macro, char *desc);
 enum CommandResult parse_bind  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
@@ -161,7 +169,6 @@ enum CommandResult parse_unbind(struct Buffer *buf, struct Buffer *s, intptr_t d
 
 // key/init.c
 void km_init             (void);
-void init_extended_keys  (void);
 int  main_config_observer(struct NotifyCallback *nc);
 void mutt_init_abort_key (void);
 void mutt_keys_cleanup   (void);
@@ -174,7 +181,6 @@ void            mutt_flush_macro_to_endcond(void);
 
 // key/lib.c
 bool                     km_expand_key       (struct Keymap *map, struct Buffer *buf);
-void                     km_expand_key_string(char *str, struct Buffer *buf);
 struct Keymap *          km_find_func        (enum MenuType menu, int func);
 const struct MenuFuncOp *km_get_table        (enum MenuType mtype);
 void                     km_keyname          (int c, struct Buffer *buf);
@@ -190,6 +196,7 @@ const char *       mutt_get_func               (const struct MenuFuncOp *binding
 void               mutt_keymap_free            (struct Keymap **ptr);
 int                parse_fkey                  (char *s);
 size_t             parsekeys                   (const char *str, keycode_t *d, size_t max);
+void               km_expand_key_string        (char *str, struct Buffer *buf);
 
 int  measure_column(struct BindingInfoArray *bia, int col);
 void gather_menu(enum MenuType menu, struct BindingInfoArray *bia_bind, struct BindingInfoArray *bia_macro);
