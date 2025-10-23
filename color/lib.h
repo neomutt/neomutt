@@ -30,7 +30,7 @@
  * | color/ansi.c        | @subpage color_ansi        |
  * | color/attr.c        | @subpage color_attr        |
  * | color/color.c       | @subpage color_color       |
- * | color/command.c     | @subpage color_command     |
+ * | color/commands.c    | @subpage color_commands    |
  * | color/curses.c      | @subpage color_curses      |
  * | color/debug.c       | @subpage color_debug       |
  * | color/dump.c        | @subpage color_dump        |
@@ -51,7 +51,7 @@
 #include "ansi.h"
 #include "attr.h"
 #include "color.h"
-#include "command2.h"
+#include "commands.h"
 #include "curses2.h"
 #include "debug.h"
 #include "dump.h"

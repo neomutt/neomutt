@@ -196,7 +196,7 @@ $(PWD)/cli:
 ###############################################################################
 # libcolor
 LIBCOLOR=	libcolor.a
-LIBCOLOROBJS=	color/ansi.o color/attr.o color/color.o color/command.o \
+LIBCOLOROBJS=	color/ansi.o color/attr.o color/color.o color/commands.o \
 		color/curses.o color/dump.o color/merged.o color/notify.o \
 		color/parse_ansi.o color/parse_color.o color/qstyle.o \
 		color/quoted.o color/regex.o color/simple.o

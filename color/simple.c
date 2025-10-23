@@ -34,7 +34,7 @@
 #include "gui/lib.h"
 #include "attr.h"
 #include "color.h"
-#include "command2.h"
+#include "commands.h"
 #include "debug.h"
 #include "notify2.h"
 #include "simple2.h"

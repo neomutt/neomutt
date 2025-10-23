@@ -23,7 +23,7 @@
  */
 
 /**
- * @page color_command Parse colour commands
+ * @page color_commands Parse colour commands
  *
  * Parse NeoMutt 'color', 'uncolor', 'mono' and 'unmono' commands.
  */
@@ -40,7 +40,7 @@
 #include "parse/lib.h"
 #include "attr.h"
 #include "color.h"
-#include "command2.h"
+#include "commands.h"
 #include "debug.h"
 #include "dump.h"
 #include "globals.h"

@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_COMMAND2_H
-#define MUTT_COLOR_COMMAND2_H
+#ifndef MUTT_COLOR_COMMANDS_H
+#define MUTT_COLOR_COMMANDS_H
 
 #include "config.h"
 #include <stdint.h>
@@ -51,4 +51,4 @@ enum CommandResult parse_unmono (struct Buffer *buf, struct Buffer *s, intptr_t 
 
 void get_colorid_name(unsigned int color_id, struct Buffer *buf);
 
-#endif /* MUTT_COLOR_COMMAND2_H */
+#endif /* MUTT_COLOR_COMMANDS_H */
