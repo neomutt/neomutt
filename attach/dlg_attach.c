@@ -80,7 +80,7 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "attach.h"
-#include "attachments.h"
+#include "commands.h"
 #include "functions.h"
 #include "hook.h"
 #include "mutt_logging.h"

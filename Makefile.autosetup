@@ -121,7 +121,7 @@ $(PWD)/alias:
 ###############################################################################
 # libattach
 LIBATTACH=	libattach.a
-LIBATTACHOBJS=	attach/attach.o attach/attachments.o attach/cid.o \
+LIBATTACHOBJS=	attach/attach.o attach/cid.o attach/commands.o \
 		attach/dlg_attach.o attach/expando.o attach/functions.o \
 		attach/lib.o attach/mutt_attach.o attach/private_data.o \
 		attach/recvattach.o

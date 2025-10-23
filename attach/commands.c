@@ -22,7 +22,7 @@
  */
 
 /**
- * @page attach_attachments Attachment commands
+ * @page attach_commands Attachment commands
  *
  * Handle the attachments command
  */
@@ -37,7 +37,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "attachments.h"
+#include "commands.h"
 #include "ncrypt/lib.h"
 #include "parse/lib.h"
 #include "mview.h"

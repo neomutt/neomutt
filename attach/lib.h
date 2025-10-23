@@ -28,8 +28,8 @@
  * | File                  | Description                  |
  * | :-------------------- | :--------------------------- |
  * | attach/attach.c       | @subpage attach_attach       |
- * | attach/attachments.c  | @subpage attach_attachments  |
  * | attach/cid.c          | @subpage attach_cid          |
+ * | attach/commands.c     | @subpage attach_commands     |
  * | attach/dlg_attach.c   | @subpage attach_dlg_attach   |
  * | attach/expando.c      | @subpage attach_expando      |
  * | attach/functions.c    | @subpage attach_functions    |
@@ -47,7 +47,7 @@
 #include "core/lib.h"
 // IWYU pragma: begin_keep
 #include "attach.h"
-#include "attachments.h"
+#include "commands.h"
 #include "expando/lib.h"
 #include "mutt_attach.h"
 #include "recvattach.h"
