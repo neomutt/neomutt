@@ -27,11 +27,11 @@
  *
  * | File                | Description           |
  * | :------------------ | :-------------------- |
+ * | key/commands.c      | @subpage key_commands |
  * | key/dump.c          | @subpage key_dump     |
  * | key/get.c           | @subpage key_get      |
  * | key/init.c          | @subpage key_init     |
  * | key/lib.c           | @subpage key_lib      |
- * | key/parse.c         | @subpage key_parse    |
  */
 
 #ifndef MUTT_KEY_LIB_H
@@ -151,20 +151,20 @@ enum NotifyBinding
   NT_MACRO_DELETE_ALL,   ///< All key macros have been deleted
 };
 
-// key/init.c
-void km_init             (void);
-void init_extended_keys  (void);
-int  main_config_observer(struct NotifyCallback *nc);
-void mutt_init_abort_key (void);
-void mutt_keys_cleanup   (void);
-
-// key/parse.c
+// key/commands.c
 enum CommandResult km_bind     (char *s, enum MenuType menu, int op, char *macro, char *desc);
 enum CommandResult parse_bind  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_exec  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_macro (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_push  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unbind(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+
+// key/init.c
+void km_init             (void);
+void init_extended_keys  (void);
+int  main_config_observer(struct NotifyCallback *nc);
+void mutt_init_abort_key (void);
+void mutt_keys_cleanup   (void);
 
 // key/get.c
 int             km_dokey                   (enum MenuType menu, GetChFlags flags);

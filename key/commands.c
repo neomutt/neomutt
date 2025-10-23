@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse key bindings
+ * Parse key binding commands
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page key_parse Parse key bindings
+ * @page key_commands Parse key binding commands
  *
- * Parse key bindings
+ * Parse key binding commands
  */
 
 #include "config.h"
