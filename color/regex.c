@@ -138,10 +138,9 @@ void regex_color_clear(struct RegexColor *rcol)
 
 /**
  * regex_color_free - Free a Regex colour
- * @param list RegexColorList holding the colour
- * @param ptr  RegexColor to free
+ * @param ptr RegexColor to free
  */
-void regex_color_free(struct RegexColorList *list, struct RegexColor **ptr)
+void regex_color_free(struct RegexColor **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -194,7 +193,7 @@ void regex_color_list_clear(struct RegexColorList *rcl)
   STAILQ_FOREACH_SAFE(np, rcl, entries, tmp)
   {
     STAILQ_REMOVE(rcl, np, RegexColor, entries);
-    regex_color_free(rcl, &np);
+    regex_color_free(&np);
   }
 }
 
@@ -286,7 +285,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
       buf_pool_release(&buf);
       if (!rcol->color_pattern)
       {
-        regex_color_free(rcl, &rcol);
+        regex_color_free(&rcol);
         return MUTT_CMD_ERROR;
       }
     }
@@ -299,7 +298,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
       if (r != 0)
       {
         regerror(r, &rcol->regex, err->data, err->dsize);
-        regex_color_free(rcl, &rcol);
+        regex_color_free(&rcol);
         return MUTT_CMD_ERROR;
       }
     }
@@ -460,7 +459,7 @@ bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat)
       struct EventColor ev_c = { cid, &np->attr_color };
       notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 
-      regex_color_free(cl, &np);
+      regex_color_free(&np);
       break;
     }
     prev = np;

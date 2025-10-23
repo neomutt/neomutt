@@ -51,7 +51,7 @@ void regex_colors_reset  (void);
 void regex_colors_cleanup(void);
 
 void                   regex_color_clear(struct RegexColor *rcol);
-void                   regex_color_free (struct RegexColorList *list, struct RegexColor **ptr);
+void                   regex_color_free (struct RegexColor **ptr);
 struct RegexColor *    regex_color_new  (void);
 
 struct RegexColorList *regex_colors_get_list(enum ColorId cid);
