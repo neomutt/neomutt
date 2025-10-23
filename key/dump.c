@@ -87,10 +87,8 @@ static void colon_bind(enum MenuType menu, FILE *fp)
   {
     for (enum MenuType i = 1; i < MENU_MAX; i++)
     {
-      print_bind(i, fp);
-
-      //XXX need to elide last blank line
-      fprintf(fp, "\n");
+      if (print_bind(i, fp) > 0)
+        fprintf(fp, "\n");
     }
   }
   else
