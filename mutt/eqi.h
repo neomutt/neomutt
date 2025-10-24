@@ -23,6 +23,8 @@
 /**
  * @page mutt_eqi Case-insensitive fixed-chunk comparisons
  *
+ * Case-insensitive fixed-chunk comparisons
+ *
  * These functions are much faster for short strings than calling
  * mutt_istr_equal(), and are not affected by locale in any way. But you will
  * need to do length checking yourself, and the right-hand side (b) is assumed

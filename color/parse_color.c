@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse colours
+ * Parse colour commands
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -21,7 +21,9 @@
  */
 
 /**
- * @page color_parse_color Parse colours
+ * @page color_parse_color Parse colour commands
+ *
+ * Parse colour commands
  */
 
 #include "config.h"

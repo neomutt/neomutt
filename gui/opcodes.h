@@ -31,8 +31,7 @@
 const char *opcodes_get_description(int op);
 const char *opcodes_get_name       (int op);
 
-#define OP_REPAINT     -4 ///< Repaint is needed
-#define OP_PARTIAL_KEY -3 ///< Incomplete keybinding
+#define OP_REPAINT     -3 ///< Repaint is needed
 #define OP_TIMEOUT     -2 ///< 1 second with no events
 #define OP_ABORT       -1 ///< $abort_key pressed (Ctrl-G)
 

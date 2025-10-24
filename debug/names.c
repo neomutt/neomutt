@@ -150,6 +150,7 @@ const char *name_menu_type(enum MenuType mt)
     DEBUG_NAME(MENU_AUTOCRYPT);
 #endif
     DEBUG_NAME(MENU_COMPOSE);
+    DEBUG_NAME(MENU_DIALOG);
     DEBUG_NAME(MENU_EDITOR);
     DEBUG_NAME(MENU_FOLDER);
     DEBUG_NAME(MENU_GENERIC);

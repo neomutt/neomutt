@@ -54,8 +54,6 @@ const char *opcodes_get_name(int op)
     return "OP_ABORT";
   if (op == OP_TIMEOUT)
     return "OP_TIMEOUT";
-  if (op == OP_PARTIAL_KEY)
-    return "OP_PARTIAL_KEY";
   if (op == OP_REPAINT)
     return "OP_REPAINT";
 
@@ -76,8 +74,6 @@ const char *opcodes_get_description(int op)
     return "abort the current action";
   if (op == OP_TIMEOUT)
     return "timeout occurred";
-  if (op == OP_PARTIAL_KEY)
-    return "partial keybinding";
   if (op == OP_REPAINT)
     return "repaint required";
 
