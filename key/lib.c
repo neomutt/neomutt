@@ -413,7 +413,12 @@ int binding_sort(const void *a, const void *b, void *sdata)
   const struct BindingInfo *x = (const struct BindingInfo *) a;
   const struct BindingInfo *y = (const struct BindingInfo *) b;
 
-  return mutt_str_cmp(x->a[0], y->a[0]);
+  int rc = mutt_str_cmp(x->a[0], y->a[0]);
+  if (rc != 0)
+    return rc;
+
+  // No binding, sort by function instead
+  return mutt_str_cmp(x->a[1], y->a[1]);
 }
 
 /**
