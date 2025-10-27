@@ -457,7 +457,7 @@ int gather_unbound(const struct MenuFuncOp *funcs, const struct KeymapList *km_m
 
   for (int i = 0; funcs[i].name; i++)
   {
-    if (!is_bound(km_menu, funcs[i].op) &&
+    if (!funcs[i].deprecated && !is_bound(km_menu, funcs[i].op) &&
         (!km_aux || !is_bound(km_aux, funcs[i].op)))
     {
       struct BindingInfo bi = { 0 };

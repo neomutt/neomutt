@@ -120,8 +120,8 @@ const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "top-page",                      OP_TOP_PAGE },
   { "what-key",                      OP_WHAT_KEY },
   // Deprecated
-  { "error-history",                 OP_SHOW_LOG_MESSAGES },
-  { "refresh",                       OP_REDRAW },
+  { "error-history",                 OP_SHOW_LOG_MESSAGES, OP_DEPRECATED },
+  { "refresh",                       OP_REDRAW,            OP_DEPRECATED },
   { NULL, 0 },
 };
 

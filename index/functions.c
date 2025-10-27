@@ -225,7 +225,7 @@ const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "view-attachments",              OP_VIEW_ATTACHMENTS },
   { "view-raw-message",              OP_VIEW_RAW_MESSAGE },
   // Deprecated
-  { "buffy-list",                    OP_MAILBOX_LIST },
+  { "buffy-list",                    OP_MAILBOX_LIST, OP_DEPRECATED },
   { NULL, 0 },
 };
 

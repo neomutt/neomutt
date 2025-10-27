@@ -106,6 +106,8 @@ extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
 
 extern const struct Mapping Menus[];
 
+#define OP_DEPRECATED true    ///< Convenience symbol
+
 /**
  * struct MenuFuncOp - Mapping between a function and an operation
  */
@@ -113,6 +115,7 @@ struct MenuFuncOp
 {
   const char *name; ///< Name of the function
   int op;           ///< Operation, e.g. OP_DELETE
+  bool deprecated;  ///< Deprecated function
 };
 
 /**

@@ -78,7 +78,7 @@ const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "transpose-chars",               OP_EDITOR_TRANSPOSE_CHARS },
   { "upcase-word",                   OP_EDITOR_UPCASE_WORD },
   // Deprecated
-  { "buffy-cycle",                   OP_EDITOR_MAILBOX_CYCLE },
+  { "buffy-cycle",                   OP_EDITOR_MAILBOX_CYCLE, OP_DEPRECATED },
   { NULL, 0 },
 };
 
