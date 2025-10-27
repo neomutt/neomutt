@@ -10,7 +10,7 @@ jobs:
   doxygen:
     name: Update Code Docs
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/fedora:38
+    container: ghcr.io/neomutt/fedora:42
 
     steps:
     - name: Check Secret
