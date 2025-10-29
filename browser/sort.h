@@ -28,7 +28,7 @@
  */
 enum BrowserSortType
 {
-  BROWSER_SORT_ALPHA,      ///< Sort alphabetically by name
+  BROWSER_SORT_ALPHA,      ///< Sort by name
   BROWSER_SORT_COUNT,      ///< Sort by total message count
   BROWSER_SORT_DATE,       ///< Sort by date
   BROWSER_SORT_DESC,       ///< Sort by description

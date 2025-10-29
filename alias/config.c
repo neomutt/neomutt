@@ -46,6 +46,8 @@ static const struct Mapping AliasSortMethods[] = {
   { "email",    ALIAS_SORT_EMAIL },
   { "name",     ALIAS_SORT_NAME },
   { "unsorted", ALIAS_SORT_UNSORTED },
+  // Compatibility
+  { "address",  ALIAS_SORT_EMAIL },
   { NULL, 0 },
   // clang-format on
 };

@@ -52,7 +52,7 @@ typedef int (*sort_email_t)(const struct Email *a, const struct Email *b, bool r
 enum EmailSortType
 {
   EMAIL_SORT_DATE,             ///< Sort by the date the email was sent
-  EMAIL_SORT_DATE_RECEIVED,    ///< Sort by when the message were delivered locally
+  EMAIL_SORT_DATE_RECEIVED,    ///< Sort by when the message was delivered locally
   EMAIL_SORT_FROM,             ///< Sort by the email's From field
   EMAIL_SORT_LABEL,            ///< Sort by the emails label
   EMAIL_SORT_SCORE,            ///< Sort by the email's score
