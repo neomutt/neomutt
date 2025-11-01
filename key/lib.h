@@ -70,7 +70,7 @@ struct Keymap
   short op;                     ///< Operation to perform
   short eq;                     ///< Number of leading keys equal to next entry
   short len;                    ///< Length of key sequence (unit: sizeof (keycode_t))
-  keycode_t *keys;              ///< key sequence
+  keycode_t *keys;              ///< Key sequence
   STAILQ_ENTRY(Keymap) entries; ///< Linked list
 };
 STAILQ_HEAD(KeymapList, Keymap);
@@ -199,6 +199,13 @@ void               mutt_keymap_free            (struct Keymap **ptr);
 int                parse_fkey                  (char *s);
 size_t             parsekeys                   (const char *str, keycode_t *d, size_t max);
 void               km_expand_key_string        (char *str, struct Buffer *buf);
+
+struct KeyEvent mutt_getch(GetChFlags flags);
+void mutt_flushinp(void);
+void mutt_push_macro_event(int ch, int op);
+void mutt_unget_ch(int ch);
+void mutt_unget_op(int op);
+void mutt_unget_string(const char *s);
 
 int  measure_column(struct BindingInfoArray *bia, int col);
 void gather_menu(enum MenuType menu, struct BindingInfoArray *bia_bind, struct BindingInfoArray *bia_macro);

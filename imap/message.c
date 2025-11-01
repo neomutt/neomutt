@@ -51,6 +51,7 @@
 #include "message.h"
 #include "lib.h"
 #include "bcache/lib.h"
+#include "key/lib.h"
 #include "progress/lib.h"
 #include "question/lib.h"
 #include "adata.h"

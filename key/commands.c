@@ -340,7 +340,7 @@ enum CommandResult parse_bind(struct Buffer *buf, struct Buffer *s,
   }
 
   const struct MenuFuncOp *funcs = NULL;
-  enum MenuType mtypes[MenuNamesLen];
+  enum MenuType mtypes[MENU_MAX];
   int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
@@ -540,7 +540,7 @@ enum CommandResult parse_macro(struct Buffer *buf, struct Buffer *s,
     s->dptr = dptr;
   }
 
-  enum MenuType mtypes[MenuNamesLen];
+  enum MenuType mtypes[MENU_MAX];
   int num_menus = 0;
   enum CommandResult rc = MUTT_CMD_ERROR;
 

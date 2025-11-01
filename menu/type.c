@@ -55,6 +55,3 @@ const struct Mapping MenuNames[] = {
   { NULL, 0 },
   // clang-format on
 };
-
-/// Number of entries in the #MenuNames array
-const int MenuNamesLen = countof(MenuNames) - 1;
