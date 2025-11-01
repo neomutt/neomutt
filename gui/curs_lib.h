@@ -27,7 +27,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "browser/lib.h"
-#include "key/lib.h"
 
 struct Buffer;
 struct Mailbox;
@@ -50,19 +49,13 @@ void         mutt_beep(bool force);
 int          mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox, struct Mailbox *m, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
 void         mutt_edit_file(const char *editor, const char *file);
 void         mutt_endwin(void);
-void         mutt_flushinp(void);
-struct KeyEvent mutt_getch(GetChFlags flags);
 void         mutt_need_hard_redraw(void);
 void         mutt_paddstr(struct MuttWindow *win, int n, const char *s);
-void         mutt_push_macro_event(int ch, int op);
 void         mutt_query_exit(void);
 void         mutt_refresh(void);
 char *       mutt_str_expand_tabs(char *str, size_t *len, int tabwidth);
 size_t       mutt_strwidth(const char *s);
 size_t       mutt_strnwidth(const char *s, size_t len);
-void         mutt_unget_ch(int ch);
-void         mutt_unget_op(int op);
-void         mutt_unget_string(const char *s);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
 void         mw_what_key(void);
 

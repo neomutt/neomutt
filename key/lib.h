@@ -200,6 +200,13 @@ int                parse_fkey                  (char *s);
 size_t             parsekeys                   (const char *str, keycode_t *d, size_t max);
 void               km_expand_key_string        (char *str, struct Buffer *buf);
 
+struct KeyEvent mutt_getch(GetChFlags flags);
+void mutt_flushinp(void);
+void mutt_push_macro_event(int ch, int op);
+void mutt_unget_ch(int ch);
+void mutt_unget_op(int op);
+void mutt_unget_string(const char *s);
+
 int  measure_column(struct BindingInfoArray *bia, int col);
 void gather_menu(enum MenuType menu, struct BindingInfoArray *bia_bind, struct BindingInfoArray *bia_macro);
 int  gather_unbound(const struct MenuFuncOp *funcs, const struct KeymapList *km_menu, const struct KeymapList *km_aux, struct BindingInfoArray *bia_unbound);
