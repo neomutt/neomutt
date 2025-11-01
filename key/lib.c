@@ -57,65 +57,67 @@ extern const struct MenuFuncOp OpSmime[];
  * KeyNames - Key name lookup table
  */
 struct Mapping KeyNames[] = {
-  { "<PageUp>", KEY_PPAGE },
-  { "<PageDown>", KEY_NPAGE },
-  { "<Up>", KEY_UP },
-  { "<Down>", KEY_DOWN },
-  { "<Right>", KEY_RIGHT },
-  { "<Left>", KEY_LEFT },
-  { "<Delete>", KEY_DC },
-  { "<BackSpace>", KEY_BACKSPACE },
-  { "<Insert>", KEY_IC },
-  { "<Home>", KEY_HOME },
-  { "<End>", KEY_END },
-  { "<Enter>", '\n' },
-  { "<Return>", '\r' },
+  // clang-format off
+  { "<PageUp>",      KEY_PPAGE },
+  { "<PageDown>",    KEY_NPAGE },
+  { "<Up>",          KEY_UP },
+  { "<Down>",        KEY_DOWN },
+  { "<Right>",       KEY_RIGHT },
+  { "<Left>",        KEY_LEFT },
+  { "<Delete>",      KEY_DC },
+  { "<BackSpace>",   KEY_BACKSPACE },
+  { "<Insert>",      KEY_IC },
+  { "<Home>",        KEY_HOME },
+  { "<End>",         KEY_END },
+  { "<Enter>",       '\n' },
+  { "<Return>",      '\r' },
 #ifdef KEY_ENTER
   { "<KeypadEnter>", KEY_ENTER },
 #else
   { "<KeypadEnter>", '\n' },
 #endif
-  { "<Esc>", '\033' }, // Escape
-  { "<Tab>", '\t' },
-  { "<Space>", ' ' },
+  { "<Esc>",         '\033' }, // Escape
+  { "<Tab>",         '\t' },
+  { "<Space>",       ' ' },
 #ifdef KEY_BTAB
-  { "<BackTab>", KEY_BTAB },
+  { "<BackTab>",     KEY_BTAB },
 #endif
 #ifdef KEY_NEXT
-  { "<Next>", KEY_NEXT },
+  { "<Next>",        KEY_NEXT },
 #endif
   /* extensions supported by ncurses.  values are filled in during initialization */
 
   /* CTRL+key */
-  { "<C-Up>", -1 },
-  { "<C-Down>", -1 },
-  { "<C-Left>", -1 },
+  { "<C-Up>",    -1 },
+  { "<C-Down>",  -1 },
+  { "<C-Left>",  -1 },
   { "<C-Right>", -1 },
-  { "<C-Home>", -1 },
-  { "<C-End>", -1 },
-  { "<C-Next>", -1 },
-  { "<C-Prev>", -1 },
+  { "<C-Home>",  -1 },
+  { "<C-End>",   -1 },
+  { "<C-Next>",  -1 },
+  { "<C-Prev>",  -1 },
 
   /* SHIFT+key */
-  { "<S-Up>", -1 },
-  { "<S-Down>", -1 },
-  { "<S-Left>", -1 },
+  { "<S-Up>",    -1 },
+  { "<S-Down>",  -1 },
+  { "<S-Left>",  -1 },
   { "<S-Right>", -1 },
-  { "<S-Home>", -1 },
-  { "<S-End>", -1 },
-  { "<S-Next>", -1 },
-  { "<S-Prev>", -1 },
+  { "<S-Home>",  -1 },
+  { "<S-End>",   -1 },
+  { "<S-Next>",  -1 },
+  { "<S-Prev>",  -1 },
 
   /* ALT+key */
-  { "<A-Up>", -1 },
-  { "<A-Down>", -1 },
-  { "<A-Left>", -1 },
+  { "<A-Up>",    -1 },
+  { "<A-Down>",  -1 },
+  { "<A-Left>",  -1 },
   { "<A-Right>", -1 },
-  { "<A-Home>", -1 },
-  { "<A-End>", -1 },
-  { "<A-Next>", -1 },
-  { "<A-Prev>", -1 },
+  { "<A-Home>",  -1 },
+  { "<A-End>",   -1 },
+  { "<A-Next>",  -1 },
+  { "<A-Prev>",  -1 },
   { NULL, 0 },
+  // clang-format off
 };
 
 keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G

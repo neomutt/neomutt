@@ -70,7 +70,7 @@ struct Keymap
   short op;                     ///< Operation to perform
   short eq;                     ///< Number of leading keys equal to next entry
   short len;                    ///< Length of key sequence (unit: sizeof (keycode_t))
-  keycode_t *keys;              ///< key sequence
+  keycode_t *keys;              ///< Key sequence
   STAILQ_ENTRY(Keymap) entries; ///< Linked list
 };
 STAILQ_HEAD(KeymapList, Keymap);
