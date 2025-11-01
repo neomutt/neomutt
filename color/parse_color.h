@@ -23,10 +23,10 @@
 #ifndef MUTT_COLOR_PARSE_COLOR_H
 #define MUTT_COLOR_PARSE_COLOR_H
 
+#include "mutt/lib.h"
 #include "core/lib.h"
 
 struct AttrColor;
-struct Buffer;
 
 extern const struct Mapping ColorNames[];
 

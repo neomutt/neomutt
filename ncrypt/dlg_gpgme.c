@@ -69,7 +69,6 @@
  */
 
 #include "config.h"
-#include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "private.h"

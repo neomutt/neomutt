@@ -32,7 +32,6 @@
 #include "docs/makedoc_defs.h"
 #else
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"

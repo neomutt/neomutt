@@ -32,7 +32,6 @@
 #else
 #include <inttypes.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"

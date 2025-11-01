@@ -45,6 +45,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "core/lib.h"
+#include "expando/lib.h"
 #include "expando_browser.h" // IWYU pragma: keep
 
 struct Buffer;

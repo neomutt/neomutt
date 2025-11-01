@@ -47,7 +47,6 @@
 #include "ctype2.h"
 #include "eqi.h"
 #include "logging2.h"
-#include "memory.h"
 #include "prex.h"
 #include "regex3.h"
 #include "string2.h"

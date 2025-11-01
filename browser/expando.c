@@ -30,7 +30,6 @@
 #include <grp.h>
 #include <pwd.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <sys/stat.h>
 #include <time.h>
 #include "mutt/lib.h"

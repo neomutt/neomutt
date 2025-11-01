@@ -37,7 +37,6 @@
 
 #include "config.h"
 #include <arpa/inet.h>
-#include <stdio.h>
 #include <string.h>
 #include "private.h"
 #include "mutt/lib.h"

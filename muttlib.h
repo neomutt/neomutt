@@ -24,7 +24,6 @@
 #ifndef MUTT_MUTTLIB_H
 #define MUTT_MUTTLIB_H
 
-#include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/types.h>

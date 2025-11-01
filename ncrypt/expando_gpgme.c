@@ -28,7 +28,6 @@
 
 #include <gpgme.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <time.h>
 #include "private.h"
 #include "mutt/lib.h"

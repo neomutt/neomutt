@@ -33,7 +33,6 @@
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
-#include <stdlib.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"

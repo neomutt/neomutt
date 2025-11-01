@@ -25,7 +25,6 @@
 #define MUTT_ADDRESS_ADDRESS_H
 
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 
