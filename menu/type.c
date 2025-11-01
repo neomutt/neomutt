@@ -41,7 +41,7 @@ const struct Mapping MenuNames[] = {
 #ifdef USE_AUTOCRYPT
   { "autocrypt",        MENU_AUTOCRYPT },
 #endif
-  { "browser",          MENU_FOLDER },
+  { "browser",          MENU_BROWSER },
   { "compose",          MENU_COMPOSE },
   { "dialog",           MENU_DIALOG },
   { "editor",           MENU_EDITOR },

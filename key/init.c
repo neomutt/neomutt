@@ -76,7 +76,7 @@ void km_init(void)
 #ifdef USE_AUTOCRYPT
   create_bindings(AutocryptDefaultBindings, MENU_AUTOCRYPT);
 #endif
-  create_bindings(BrowserDefaultBindings, MENU_FOLDER);
+  create_bindings(BrowserDefaultBindings, MENU_BROWSER);
   create_bindings(ComposeDefaultBindings, MENU_COMPOSE);
   create_bindings(DialogDefaultBindings, MENU_DIALOG);
   create_bindings(EditorDefaultBindings, MENU_EDITOR);

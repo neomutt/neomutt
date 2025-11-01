@@ -580,14 +580,14 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
     case MENU_AUTOCRYPT:
       return OpAutocrypt;
 #endif
+    case MENU_BROWSER:
+      return OpBrowser;
     case MENU_COMPOSE:
       return OpCompose;
     case MENU_DIALOG:
       return OpDialog;
     case MENU_EDITOR:
       return OpEditor;
-    case MENU_FOLDER:
-      return OpBrowser;
     case MENU_GENERIC:
       return OpGeneric;
     case MENU_INDEX:

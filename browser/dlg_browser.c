@@ -1040,7 +1040,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   else
     help_data = FolderHelp;
 
-  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_FOLDER, WT_DLG_BROWSER, help_data);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_BROWSER, WT_DLG_BROWSER, help_data);
 
   struct Menu *menu = sdw.menu;
   menu->make_entry = folder_make_entry;
@@ -1086,13 +1086,13 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     menu_tagging_dispatcher(priv->menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_FOLDER, GETCH_NO_FLAGS);
+    op = km_dokey(MENU_BROWSER, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MENU_FOLDER);
+      km_error_key(MENU_BROWSER);
       continue;
     }
     mutt_clear_error();

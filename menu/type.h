@@ -39,10 +39,10 @@ enum MenuType
 #ifdef USE_AUTOCRYPT
   MENU_AUTOCRYPT,        ///< Autocrypt Account menu
 #endif
+  MENU_BROWSER,          ///< General file/mailbox browser
   MENU_COMPOSE,          ///< Compose an email
   MENU_DIALOG,           ///< Simple Dialog
   MENU_EDITOR,           ///< Text entry area
-  MENU_FOLDER,           ///< General file/mailbox browser
   MENU_GENERIC,          ///< Generic selection list
   MENU_INDEX,            ///< Index panel (list of emails)
   MENU_PAGER,            ///< Pager pager (email viewer)
