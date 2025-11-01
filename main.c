@@ -1300,7 +1300,6 @@ int main(int argc, char *argv[], char *envp[])
 
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_hist_observer, NULL);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_log_observer, NULL);
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_config_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_TIMEOUT, main_timeout_observer, NULL);
 
   if (cli->tui.start_postponed)
@@ -1792,7 +1791,6 @@ main_exit:
   {
     notify_observer_remove(NeoMutt->sub->notify, main_hist_observer, NULL);
     notify_observer_remove(NeoMutt->sub->notify, main_log_observer, NULL);
-    notify_observer_remove(NeoMutt->sub->notify, main_config_observer, NULL);
     notify_observer_remove(NeoMutt->notify, main_timeout_observer, NULL);
   }
   MuttLogger = log_disp_queue;

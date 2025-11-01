@@ -121,6 +121,26 @@ static void mutt_keymaplist_free(struct KeymapList *km_list)
 }
 
 /**
+ * key_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
+ */
+int key_config_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->event_data)
+    return -1;
+
+  struct EventConfig *ev_c = nc->event_data;
+
+  if (!mutt_str_equal(ev_c->name, "abort_key"))
+    return 0;
+
+  mutt_init_abort_key();
+  mutt_debug(LL_DEBUG5, "config done\n");
+  return 0;
+}
+
+/**
  * mutt_keys_cleanup - Free the key maps
  */
 void mutt_keys_cleanup(void)
@@ -129,6 +149,9 @@ void mutt_keys_cleanup(void)
   {
     mutt_keymaplist_free(&Keymaps[i]);
   }
+
+  if (NeoMutt && NeoMutt->sub)
+    notify_observer_remove(NeoMutt->sub->notify, key_config_observer, NULL);
 }
 
 /**
@@ -153,24 +176,7 @@ void mutt_init_abort_key(void)
                  c_abort_key);
   }
   AbortKey = buf[0];
+
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, key_config_observer, NULL);
 }
 
-/**
- * main_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
- */
-int main_config_observer(struct NotifyCallback *nc)
-{
-  if (nc->event_type != NT_CONFIG)
-    return 0;
-  if (!nc->event_data)
-    return -1;
-
-  struct EventConfig *ev_c = nc->event_data;
-
-  if (!mutt_str_equal(ev_c->name, "abort_key"))
-    return 0;
-
-  mutt_init_abort_key();
-  mutt_debug(LL_DEBUG5, "config done\n");
-  return 0;
-}
