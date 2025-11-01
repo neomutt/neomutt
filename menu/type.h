@@ -27,7 +27,6 @@
 #include "mutt/lib.h" // IWYU pragma: keep
 
 extern const struct Mapping MenuNames[];
-extern const int MenuNamesLen;
 
 /**
  * enum MenuType - Types of GUI selections
