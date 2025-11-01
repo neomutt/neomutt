@@ -179,4 +179,3 @@ void mutt_init_abort_key(void)
 
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, key_config_observer, NULL);
 }
-
