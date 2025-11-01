@@ -65,6 +65,21 @@ static void create_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
 }
 
 /**
+ * KeyCommands - Key Binding Commands
+ */
+static const struct Command KeyCommands[] = {
+  // clang-format off
+  { "bind",    parse_bind,   0 },
+  { "exec",    parse_exec,   0 },
+  { "macro",   parse_macro,  1 },
+  { "push",    parse_push,   0 },
+  { "unbind",  parse_unbind, MUTT_UNBIND },
+  { "unmacro", parse_unbind, MUTT_UNMACRO },
+  { NULL, NULL, 0 },
+  // clang-format on
+};
+
+/**
  * km_init - Initialise all the menu keybindings
  */
 void km_init(void)
@@ -87,6 +102,8 @@ void km_init(void)
   create_bindings(PostponedDefaultBindings, MENU_POSTPONED);
   create_bindings(QueryDefaultBindings, MENU_QUERY);
   create_bindings(SmimeDefaultBindings, MENU_SMIME);
+
+  commands_register(&NeoMutt->commands, KeyCommands);
 }
 
 /**
