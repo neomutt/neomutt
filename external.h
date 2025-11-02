@@ -33,6 +33,7 @@ struct Email;
 struct EmailArray;
 struct Envelope;
 struct Mailbox;
+struct MuttWindow;
 
 /**
  * enum MessageTransformOpt - Message transformation option

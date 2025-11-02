@@ -105,10 +105,12 @@ bool candidate(struct CompletionData *cd, char *user, const char *src, char *des
  * @param buf     Buffer for the result
  * @param pos     Cursor position in the buffer
  * @param numtabs Number of times the user has hit 'tab'
+ * @param cdata   Completion private data
  * @retval 1 Success, a match
  * @retval 0 Error, no match
  */
-int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs, void *cdata)
+int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
+                          int pos, int numtabs, void *cdata)
 {
   char *pt = buf->data;
   int spaces; /* keep track of the number of leading spaces on the line */

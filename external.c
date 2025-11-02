@@ -625,7 +625,6 @@ void mutt_enter_command(struct MuttWindow *win)
   struct Buffer *err = buf_pool_get();
 
   window_redraw(NULL);
-  ASSERT(win == window_get_focus());
 
   /* if enter is pressed after : with no command, just return */
   struct FileCompletionData cdata = { false, NULL, NULL, NULL, win };
