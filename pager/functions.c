@@ -1019,7 +1019,7 @@ static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv
   long pos = ftell(priv->fp);
   rewind(priv->fp);
 
-  struct FileCompletionData cdata = { false, NULL, NULL, NULL };
+  struct FileCompletionData cdata = { false, NULL, NULL, NULL, NULL };
   if ((mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,
                     &CompleteFileOps, &cdata) != 0) ||
       buf_is_empty(buf))

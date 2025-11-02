@@ -411,7 +411,7 @@ int imap_mailbox_create(const char *path)
     buf_addch(name, adata->delim);
   }
 
-  struct FileCompletionData cdata = { false, NULL, NULL, NULL };
+  struct FileCompletionData cdata = { false, NULL, NULL, NULL, NULL };
   if (mw_get_field(_("Create mailbox: "), name, MUTT_COMP_NO_FLAGS, HC_MAILBOX,
                    &CompleteMailboxOps, &cdata) != 0)
   {
@@ -472,7 +472,7 @@ int imap_mailbox_rename(const char *path)
   buf_printf(buf, _("Rename mailbox %s to: "), mdata->name);
   buf_strcpy(newname, mdata->name);
 
-  struct FileCompletionData cdata = { false, NULL, NULL, NULL };
+  struct FileCompletionData cdata = { false, NULL, NULL, NULL, NULL };
   if (mw_get_field(buf_string(buf), newname, MUTT_COMP_NO_FLAGS, HC_MAILBOX,
                    &CompleteMailboxOps, &cdata) != 0)
   {

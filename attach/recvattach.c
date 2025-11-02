@@ -304,7 +304,7 @@ static int query_save_attachment(FILE *fp, struct Body *b, struct Email *e, char
   prompt = _("Save to file: ");
   while (prompt)
   {
-    struct FileCompletionData cdata = { false, NULL, NULL, NULL };
+    struct FileCompletionData cdata = { false, NULL, NULL, NULL, NULL };
     if ((mw_get_field(prompt, buf, MUTT_COMP_CLEAR, HC_FILE, &CompleteFileOps, &cdata) != 0) ||
         buf_is_empty(buf))
     {
@@ -485,7 +485,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           buf_strcpy(buf, mutt_path_basename(NONULL(b->filename)));
           prepend_savedir(buf);
 
-          struct FileCompletionData cdata = { false, NULL, NULL, NULL };
+          struct FileCompletionData cdata = { false, NULL, NULL, NULL, NULL };
           if ((mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,
                             &CompleteFileOps, &cdata) != 0) ||
               buf_is_empty(buf))
