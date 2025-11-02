@@ -294,7 +294,7 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
       mutt_unget_op(event.op);
 
     buf_alloc(fname, 1024);
-    struct FileCompletionData cdata = { multiple, m, files, numfiles };
+    struct FileCompletionData cdata = { multiple, m, files, numfiles, NULL };
     enum HistoryClass hclass = mailbox ? HC_MAILBOX : HC_FILE;
     if (mw_get_field(pc, fname, MUTT_COMP_CLEAR, hclass, &CompleteMailboxOps, &cdata) != 0)
     {

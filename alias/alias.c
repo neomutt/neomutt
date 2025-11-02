@@ -513,7 +513,7 @@ retry_name:
   const char *const c_alias_file = cs_subset_path(sub, "alias_file");
   buf_strcpy(buf, c_alias_file);
 
-  struct FileCompletionData cdata = { false, NULL, NULL, NULL };
+  struct FileCompletionData cdata = { false, NULL, NULL, NULL, NULL };
   if (mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,
                    &CompleteFileOps, &cdata) != 0)
   {

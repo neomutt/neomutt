@@ -108,7 +108,7 @@ bool candidate(struct CompletionData *cd, char *user, const char *src, char *des
  * @retval 1 Success, a match
  * @retval 0 Error, no match
  */
-int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs)
+int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs, void *cdata)
 {
   char *pt = buf->data;
   int spaces; /* keep track of the number of leading spaces on the line */
@@ -232,7 +232,21 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
   }
   else if (buf_startswith(buf, "exec"))
   {
-    const enum MenuType mtype = menu_get_current_type();
+    enum MenuType mtype = MENU_GENERIC;
+    if (cdata)
+    {
+      struct FileCompletionData *fcd = cdata;
+      struct MuttWindow *win = fcd->win;
+      if (win && win->wdata)
+      {
+        struct Menu *menu = win->wdata;
+        mtype = menu->type;
+      }
+    }
+    else
+    {
+      mtype = menu_get_current_type();
+    }
     const struct MenuFuncOp *funcs = km_get_table(mtype);
     if (!funcs && (mtype != MENU_PAGER))
       funcs = OpGeneric;
@@ -435,7 +449,7 @@ enum FunctionRetval complete_command(struct EnterWindowData *wdata, int op)
   {
     wdata->tabs = 0;
   }
-  else if (mutt_command_complete(wdata->cd, wdata->buffer, i, wdata->tabs) == 0)
+  else if (mutt_command_complete(wdata->cd, wdata->buffer, i, wdata->tabs, wdata->cdata) == 0)
   {
     rc = FR_ERROR;
   }
