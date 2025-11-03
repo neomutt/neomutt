@@ -865,6 +865,28 @@ static int tls_set_priority(struct TlsSockData *data)
 #endif
 
 /**
+ * tls_socket_poll_with_timeout - Poll a socket with configured timeout
+ * @param conn Connection to poll
+ * @retval true  Socket is ready
+ * @retval false Timeout or error occurred
+ */
+static bool tls_socket_poll_with_timeout(struct Connection *conn)
+{
+  const short c_socket_timeout = cs_subset_number(NeoMutt->sub, "socket_timeout");
+  const int poll_rc = raw_socket_poll(conn, c_socket_timeout);
+  if (poll_rc <= 0)
+  {
+    // Timeout or error
+    if (poll_rc == 0)
+      mutt_error(_("Connection to %s timed out"), conn->account.host);
+
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * tls_negotiate - Negotiate TLS connection
  * @param conn Connection to a server
  * @retval  0 Success
@@ -942,6 +964,12 @@ static int tls_negotiate(struct Connection *conn)
   do
   {
     err = gnutls_handshake(data->session);
+    if (err == GNUTLS_E_AGAIN)
+    {
+      // Socket would block, wait for data to become available
+      if (!tls_socket_poll_with_timeout(conn))
+        goto fail;
+    }
   } while ((err == GNUTLS_E_AGAIN) || (err == GNUTLS_E_INTERRUPTED));
 
   if (err < 0)
@@ -1059,6 +1087,12 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t count)
   do
   {
     rc = gnutls_record_recv(data->session, buf, count);
+    if (rc == GNUTLS_E_AGAIN)
+    {
+      // Socket would block, wait for data to become available
+      if (!tls_socket_poll_with_timeout(conn))
+        return -1;
+    }
   } while ((rc == GNUTLS_E_AGAIN) || (rc == GNUTLS_E_INTERRUPTED));
 
   if (rc < 0)
@@ -1090,6 +1124,12 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t cou
     do
     {
       rc = gnutls_record_send(data->session, buf + sent, count - sent);
+      if (rc == GNUTLS_E_AGAIN)
+      {
+        // Socket would block, wait for data to become available
+        if (!tls_socket_poll_with_timeout(conn))
+          return -1;
+      }
     } while ((rc == GNUTLS_E_AGAIN) || (rc == GNUTLS_E_INTERRUPTED));
 
     if (rc < 0)
