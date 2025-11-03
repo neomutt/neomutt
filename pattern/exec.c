@@ -1152,9 +1152,7 @@ bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
   const bool needs_msg = pattern_needs_msg(m, pat);
   MsgOpenFlags open_flags = MUTT_MSG_NO_FLAGS;
   if (pat->op == MUTT_PAT_HEADER)
-    open_flags = MUTT_MSG_HEADER_ONLY;
-  else if (pat->op == MUTT_PAT_BODY)
-    open_flags = MUTT_MSG_BODY_ONLY;
+  open_flags = MUTT_MSG_HEADER_ONLY;
   struct Message *msg = needs_msg ? mx_msg_open(m, e, open_flags) : NULL;
   if (needs_msg && !msg)
   {

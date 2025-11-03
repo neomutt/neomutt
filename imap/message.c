@@ -2049,12 +2049,10 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e, MsgO
   const char *body_spec = NULL;
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
   {
-    if (flags & MUTT_MSG_HEADER_ONLY)
-        body_spec = "BODY.PEEK[HEADER]";
-      else if (flags & MUTT_MSG_BODY_ONLY)
-        body_spec = "BODY.PEEK[TEXT]";
-      else
-        body_spec = c_imap_peek ? "BODY.PEEK[]" : "BODY[]";
+  if (flags & MUTT_MSG_HEADER_ONLY)
+  body_spec = "BODY.PEEK[HEADER]";
+  else
+  body_spec = c_imap_peek ? "BODY.PEEK[]" : "BODY[]";
   }
   else
   {
