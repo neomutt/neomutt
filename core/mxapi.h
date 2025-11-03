@@ -54,7 +54,6 @@ typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open(), e.g. #MUTT_MSG_
 #define MUTT_ADD_FROM     (1 << 0) ///< add a From_ line
 #define MUTT_SET_DRAFT    (1 << 1) ///< set the message draft flag
 #define MUTT_MSG_HEADER_ONLY (1 << 2) ///< fetch only headers for IMAP
-#define MUTT_MSG_BODY_ONLY   (1 << 3) ///< fetch only body for IMAP
 #define MUTT_MAILBOX_CHECK_POSTPONED (1 << 0) ///< Make sure the number of postponed messages is updated
 #define MUTT_MAILBOX_CHECK_STATS     (1 << 1) ///< Ignore mail_check_stats and calculate statistics (used by <check-stats>)
 #define MUTT_MAILBOX_CHECK_IMMEDIATE (1 << 2) ///< Don't postpone the actual checking
