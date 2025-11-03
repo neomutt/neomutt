@@ -1136,7 +1136,7 @@ enum MxStatus mx_mbox_check(struct Mailbox *m)
  * @retval ptr  Message
  * @retval NULL Error
  */
-struct Message *mx_msg_open(struct Mailbox *m, struct Email *e)
+struct Message *mx_msg_open(struct Mailbox *m, struct Email *e, MsgOpenFlags flags)
 {
   if (!m || !e)
     return NULL;
@@ -1148,7 +1148,7 @@ struct Message *mx_msg_open(struct Mailbox *m, struct Email *e)
   }
 
   struct Message *msg = message_new();
-  if (!m->mx_ops->msg_open(m, msg, e))
+  if (!m->mx_ops->msg_open(m, msg, e, flags))
     message_free(&msg);
 
   return msg;

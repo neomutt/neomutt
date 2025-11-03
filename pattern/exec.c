@@ -40,6 +40,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "mx.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/alias.h" // IWYU pragma: keep
@@ -1149,7 +1150,12 @@ bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                        struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   const bool needs_msg = pattern_needs_msg(m, pat);
-  struct Message *msg = needs_msg ? mx_msg_open(m, e) : NULL;
+  MsgOpenFlags open_flags = MUTT_MSG_NO_FLAGS;
+  if (pat->op == MUTT_PAT_HEADER)
+    open_flags = MUTT_MSG_HEADER_ONLY;
+  else if (pat->op == MUTT_PAT_BODY)
+    open_flags = MUTT_MSG_BODY_ONLY;
+  struct Message *msg = needs_msg ? mx_msg_open(m, e, open_flags) : NULL;
   if (needs_msg && !msg)
   {
     return false;

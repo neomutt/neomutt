@@ -988,7 +988,7 @@ int mutt_append_message(struct Mailbox *m_dst, struct Mailbox *m_src,
     return -1;
 
   const bool own_msg = !msg;
-  if (own_msg && !(msg = mx_msg_open(m_src, e)))
+  if (own_msg && !(msg = mx_msg_open(m_src, e, MUTT_MSG_NO_FLAGS)))
   {
     return -1;
   }

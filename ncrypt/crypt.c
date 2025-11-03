@@ -876,7 +876,7 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
   ARRAY_FOREACH(ep, ea)
   {
     struct Email *e = *ep;
-    struct Message *msg = mx_msg_open(m, e);
+    struct Message *msg = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
     if (!msg)
     {
       continue;

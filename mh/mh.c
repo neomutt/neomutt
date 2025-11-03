@@ -332,7 +332,7 @@ static int mh_rewrite_message(struct Mailbox *m, struct Email *e)
   long old_body_length = e->body->length;
   long old_hdr_lines = e->lines;
 
-  struct Message *src = mx_msg_open(m, e);
+  struct Message *src = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
   struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NO_FLAGS);
   if (!src || !dest)
     return -1;
@@ -1138,7 +1138,7 @@ static enum MxStatus mh_mbox_close(struct Mailbox *m)
 /**
  * mh_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
-static bool mh_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
+static bool mh_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e, MsgOpenFlags flags)
 {
   char path[PATH_MAX] = { 0 };
 

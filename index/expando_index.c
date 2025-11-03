@@ -385,7 +385,7 @@ static long email_attachment_count(const struct ExpandoNode *node, void *data, M
 
   struct Mailbox *m = efi->mailbox;
 
-  struct Message *msg = mx_msg_open(m, e);
+  struct Message *msg = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
   if (!msg)
     return 0;
 

@@ -715,7 +715,7 @@ static enum MxStatus comp_mbox_close(struct Mailbox *m)
 /**
  * comp_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
-static bool comp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
+static bool comp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e, MsgOpenFlags flags)
 {
   if (!m->compress_info)
     return false;
@@ -727,7 +727,7 @@ static bool comp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
     return false;
 
   /* Delegate */
-  return ops->msg_open(m, msg, e);
+  return ops->msg_open(m, msg, e, flags);
 }
 
 /**

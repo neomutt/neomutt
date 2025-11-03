@@ -1993,7 +1993,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 /**
  * imap_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
-bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
+bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e, MsgOpenFlags flags)
 {
   struct Envelope *newenv = NULL;
   char buf[1024] = { 0 };
@@ -2046,10 +2046,21 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
   e->active = false;
 
   const bool c_imap_peek = cs_subset_bool(NeoMutt->sub, "imap_peek");
-  snprintf(buf, sizeof(buf), "UID FETCH %u %s", imap_edata_get(e)->uid,
-           ((adata->capabilities & IMAP_CAP_IMAP4REV1) ?
-                (c_imap_peek ? "BODY.PEEK[]" : "BODY[]") :
-                "RFC822"));
+  const char *body_spec = NULL;
+  if (adata->capabilities & IMAP_CAP_IMAP4REV1)
+  {
+    if (flags & MUTT_MSG_HEADER_ONLY)
+        body_spec = "BODY.PEEK[HEADER]";
+      else if (flags & MUTT_MSG_BODY_ONLY)
+        body_spec = "BODY.PEEK[TEXT]";
+      else
+        body_spec = c_imap_peek ? "BODY.PEEK[]" : "BODY[]";
+  }
+  else
+  {
+    body_spec = "RFC822";
+  }
+  snprintf(buf, sizeof(buf), "UID FETCH %u %s", imap_edata_get(e)->uid, body_spec);
 
   imap_cmd_start(adata, buf);
   do
