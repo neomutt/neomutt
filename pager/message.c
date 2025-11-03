@@ -301,7 +301,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
     return -1;
 
   struct Mailbox *m = mv->mailbox;
-  struct Message *msg = mx_msg_open(m, e);
+  struct Message *msg = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
   if (!msg)
     return -1;
 
@@ -455,7 +455,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
   int rc = PAGER_LOOP_QUIT;
   do
   {
-    msg = mx_msg_open(shared->mailbox, shared->email);
+    msg = mx_msg_open(shared->mailbox, shared->email, MUTT_MSG_NO_FLAGS);
     if (!msg)
       break;
 
