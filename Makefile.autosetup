@@ -75,9 +75,6 @@ NEOMUTTOBJS+=	main.o
 @if USE_INOTIFY
 NEOMUTTOBJS+=	monitor.o
 @endif
-@if USE_LUA
-NEOMUTTOBJS+=	mutt_lua.o
-@endif
 @if !HAVE_TIMEGM
 NEOMUTTOBJS+=	timegm.o
 @endif
@@ -584,6 +581,21 @@ $(PWD)/key:
 	$(MKDIR_P) $(PWD)/key
 
 ###############################################################################
+# liblua
+@if USE_LUA
+LIBLUA=		liblua.a
+LIBLUAOBJS=	lua/commands.o lua/lua.o
+CLEANFILES+=	$(LIBLUA) $(LIBLUAOBJS)
+ALLOBJS+=	$(LIBLUAOBJS)
+
+$(LIBLUA): $(PWD)/lua $(LIBLUAOBJS)
+	$(AR) cr $@ $(LIBLUAOBJS)
+	$(RANLIB) $@
+$(PWD)/lua:
+	$(MKDIR_P) $(PWD)/lua
+@endif
+
+###############################################################################
 # libmaildir
 LIBMAILDIR=	libmaildir.a
 LIBMAILDIROBJS= maildir/account.o maildir/config.o maildir/edata.o \
@@ -916,15 +928,17 @@ $(ALLOBJS):
 
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
-MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
-		$(LIBEDITOR) $(LIBCOMPLETE) $(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) \
-		$(LIBPROGRESS) $(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
-		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) $(LIBNNTP) \
-		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) \
-		$(LIBHELPBAR) $(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) \
-		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
-		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
-		$(LIBCORE) $(LIBPARSE) $(LIBEXPANDO) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
+MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBLUA) \
+		$(LIBAUTOCRYPT) $(LIBPOP) $(LIBEDITOR) $(LIBCOMPLETE) \
+		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) $(LIBPROGRESS) \
+		$(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
+		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) \
+		$(LIBNNTP) $(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) \
+		$(LIBHELPBAR) $(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) \
+		$(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) $(LIBNCRYPT) $(LIBIMAP) \
+		$(LIBCONN) $(LIBHCACHE) $(LIBCOMPRESS) $(LIBSIDEBAR) \
+		$(LIBBCACHE) $(LIBHISTORY) $(LIBCORE) $(LIBPARSE) \
+		$(LIBEXPANDO) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
 		$(LIBDEBUG) $(LIBCLI) $(LIBMUTT)
 
 # neomutt

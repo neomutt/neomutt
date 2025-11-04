@@ -3,7 +3,7 @@
  * Integrated Lua scripting
  *
  * @authors
- * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,17 +20,32 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_LUA_H
-#define MUTT_MUTT_LUA_H
+/**
+ * @page lib_lua Integrated Lua scripting
+ *
+ * Integrated Lua scripting
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | lua/commands.c      | @subpage lua_commands      |
+ * | lua/lua.c           | @subpage lua_lua           |
+ */
 
-#include <stdint.h>
-#include "core/lib.h"
+#ifndef MUTT_LUA_LIB_H
+#define MUTT_LUA_LIB_H
 
-struct Buffer;
+#include "config.h"
 
-enum CommandResult mutt_lua_parse      (struct Buffer *tmp, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s, intptr_t data, struct Buffer *err);
+#ifdef USE_LUA
 
-void mutt_lua_init(void);
+void lua_init   (void);
+void lua_cleanup(void);
 
-#endif /* MUTT_MUTT_LUA_H */
+#else
+
+static inline void lua_init   (void) {}
+static inline void lua_cleanup(void) {}
+
+#endif
+
+#endif /* MUTT_LUA_LIB_H */

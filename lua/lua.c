@@ -26,7 +26,7 @@
  */
 
 /**
- * @page neo_mutt_lua Integrated Lua scripting
+ * @page lua_lua Integrated Lua scripting
  *
  * Integrated Lua scripting
  */
@@ -48,31 +48,20 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "mutt_lua.h"
+#include "lib.h"
 #include "parse/lib.h"
 #include "muttlib.h"
 #include "version.h"
 
 /// Global Lua State
-static lua_State *LuaState = NULL;
+lua_State *LuaState = NULL;
 
 /**
- * LuaCommands - List of NeoMutt commands to register
- */
-static const struct Command LuaCommands[] = {
-  // clang-format off
-  { "lua",        mutt_lua_parse,       0 },
-  { "lua-source", mutt_lua_source_file, 0 },
-  { NULL, NULL, 0 },
-  // clang-format on
-};
-
-/**
- * handle_panic - Handle a panic in the Lua interpreter
+ * lua_handle_panic - Handle a panic in the Lua interpreter
  * @param l Lua State
  * @retval -1 Always
  */
-static int handle_panic(lua_State *l)
+static int lua_handle_panic(lua_State *l)
 {
   mutt_debug(LL_DEBUG1, "lua runtime panic: %s\n", lua_tostring(l, -1));
   mutt_error("Lua runtime panic: %s", lua_tostring(l, -1));
@@ -81,11 +70,11 @@ static int handle_panic(lua_State *l)
 }
 
 /**
- * handle_error - Handle an error in the Lua interpreter
+ * lua_handle_error - Handle an error in the Lua interpreter
  * @param l Lua State
  * @retval -1 Always
  */
-static int handle_error(lua_State *l)
+static int lua_handle_error(lua_State *l)
 {
   mutt_debug(LL_DEBUG1, "lua runtime error: %s\n", lua_tostring(l, -1));
   mutt_error("Lua runtime error: %s", lua_tostring(l, -1));
@@ -94,14 +83,14 @@ static int handle_error(lua_State *l)
 }
 
 /**
- * lua_mutt_call - Call a NeoMutt command by name
+ * lua_cb_global_call - Call a NeoMutt command by name
  * @param l Lua State
  * @retval >=0 Success
  * @retval -1 Error
  */
-static int lua_mutt_call(lua_State *l)
+static int lua_cb_global_call(lua_State *l)
 {
-  mutt_debug(LL_DEBUG2, " * lua_mutt_call()\n");
+  mutt_debug(LL_DEBUG2, "enter\n");
   struct Buffer *err = buf_pool_get();
   struct Buffer *token = buf_pool_get();
   struct Buffer *buf = buf_pool_get();
@@ -110,14 +99,14 @@ static int lua_mutt_call(lua_State *l)
 
   if (lua_gettop(l) == 0)
   {
-    luaL_error(l, "Error command argument required.");
+    luaL_error(l, "Error command argument required");
     return -1;
   }
 
   cmd = commands_get(&NeoMutt->commands, lua_tostring(l, 1));
   if (!cmd)
   {
-    luaL_error(l, "Error command %s not found.", lua_tostring(l, 1));
+    luaL_error(l, "Error command %s not found", lua_tostring(l, 1));
     return -1;
   }
 
@@ -136,7 +125,7 @@ static int lua_mutt_call(lua_State *l)
   else
   {
     if (!lua_pushstring(l, buf_string(err)))
-      handle_error(l);
+      lua_handle_error(l);
     else
       rc++;
   }
@@ -148,15 +137,15 @@ static int lua_mutt_call(lua_State *l)
 }
 
 /**
- * lua_mutt_set - Set a NeoMutt variable
+ * lua_cb_global_set - Set a NeoMutt variable
  * @param l Lua State
  * @retval  0 Success
  * @retval -1 Error
  */
-static int lua_mutt_set(lua_State *l)
+static int lua_cb_global_set(lua_State *l)
 {
   const char *param = lua_tostring(l, -2);
-  mutt_debug(LL_DEBUG2, " * lua_mutt_set(%s)\n", param);
+  mutt_debug(LL_DEBUG2, "%s\n", param);
 
   struct Buffer *err = buf_pool_get();
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, param);
@@ -187,6 +176,7 @@ static int lua_mutt_set(lua_State *l)
   {
     case DT_ADDRESS:
     case DT_ENUM:
+    case DT_EXPANDO:
     case DT_MBTABLE:
     case DT_MYVAR:
     case DT_PATH:
@@ -208,6 +198,7 @@ static int lua_mutt_set(lua_State *l)
         rc = -1;
       break;
     }
+    case DT_LONG:
     case DT_NUMBER:
     case DT_QUAD:
     {
@@ -237,20 +228,20 @@ static int lua_mutt_set(lua_State *l)
 }
 
 /**
- * lua_mutt_get - Get a NeoMutt variable
+ * lua_cb_global_get - Get a NeoMutt variable
  * @param l Lua State
  * @retval  1 Success
  * @retval -1 Error
  */
-static int lua_mutt_get(lua_State *l)
+static int lua_cb_global_get(lua_State *l)
 {
   const char *param = lua_tostring(l, -1);
-  mutt_debug(LL_DEBUG2, " * lua_mutt_get(%s)\n", param);
+  mutt_debug(LL_DEBUG2, "%s\n", param);
 
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, param);
   if (!he)
   {
-    mutt_debug(LL_DEBUG2, " * error\n");
+    mutt_debug(LL_DEBUG2, "error\n");
     luaL_error(l, "NeoMutt parameter not found %s", param);
     return -1;
   }
@@ -261,8 +252,10 @@ static int lua_mutt_get(lua_State *l)
   {
     case DT_ADDRESS:
     case DT_ENUM:
+    case DT_EXPANDO:
     case DT_MBTABLE:
     case DT_MYVAR:
+    case DT_PATH:
     case DT_REGEX:
     case DT_SLIST:
     case DT_SORT:
@@ -286,6 +279,9 @@ static int lua_mutt_get(lua_State *l)
     case DT_QUAD:
       lua_pushinteger(l, (unsigned char) cdef->var);
       return 1;
+    case DT_LONG:
+      lua_pushinteger(l, (signed long) cdef->var);
+      return 1;
     case DT_NUMBER:
       lua_pushinteger(l, (signed short) cdef->var);
       return 1;
@@ -299,14 +295,14 @@ static int lua_mutt_get(lua_State *l)
 }
 
 /**
- * lua_mutt_enter - Execute NeoMutt config from Lua
+ * lua_cb_global_enter - Execute NeoMutt config from Lua
  * @param l Lua State
  * @retval >=0 Success
  * @retval -1  Error
  */
-static int lua_mutt_enter(lua_State *l)
+static int lua_cb_global_enter(lua_State *l)
 {
-  mutt_debug(LL_DEBUG2, " * lua_mutt_enter()\n");
+  mutt_debug(LL_DEBUG2, "enter\n");
   struct Buffer *err = buf_pool_get();
   char *buf = mutt_str_dup(lua_tostring(l, -1));
   int rc = 0;
@@ -319,7 +315,7 @@ static int lua_mutt_enter(lua_State *l)
   else
   {
     if (!lua_pushstring(l, buf_string(err)))
-      handle_error(l);
+      lua_handle_error(l);
     else
       rc++;
   }
@@ -331,13 +327,13 @@ static int lua_mutt_enter(lua_State *l)
 }
 
 /**
- * lua_mutt_message - Display a message in NeoMutt
+ * lua_cb_global_message - Display a message in NeoMutt
  * @param l Lua State
  * @retval 0 Always
  */
-static int lua_mutt_message(lua_State *l)
+static int lua_cb_global_message(lua_State *l)
 {
-  mutt_debug(LL_DEBUG2, " * lua_mutt_message()\n");
+  mutt_debug(LL_DEBUG2, "enter\n");
   const char *msg = lua_tostring(l, -1);
   if (msg)
     mutt_message("%s", msg);
@@ -345,13 +341,13 @@ static int lua_mutt_message(lua_State *l)
 }
 
 /**
- * lua_mutt_error - Display an error in NeoMutt
+ * lua_cb_global_error - Display an error in NeoMutt
  * @param l Lua State
  * @retval 0 Always
  */
-static int lua_mutt_error(lua_State *l)
+static int lua_cb_global_error(lua_State *l)
 {
-  mutt_debug(LL_DEBUG2, " * lua_mutt_error()\n");
+  mutt_debug(LL_DEBUG2, "enter\n");
   const char *msg = lua_tostring(l, -1);
   if (msg)
     mutt_error("%s", msg);
@@ -378,50 +374,50 @@ static void lua_expose_command(lua_State *l, const struct Command *cmd)
  *
  * `:lua mutt.message('hello')`
  *
- * and it will call lua_mutt_message()
+ * and it will call lua_cb_global_message()
  */
 static const luaL_Reg LuaMuttCommands[] = {
   // clang-format off
-  { "set",     lua_mutt_set },
-  { "get",     lua_mutt_get },
-  { "call",    lua_mutt_call },
-  { "enter",   lua_mutt_enter },
-  { "print",   lua_mutt_message },
-  { "message", lua_mutt_message },
-  { "error",   lua_mutt_error },
+  { "set",     lua_cb_global_set },
+  { "get",     lua_cb_global_get },
+  { "call",    lua_cb_global_call },
+  { "enter",   lua_cb_global_enter },
+  { "print",   lua_cb_global_message },
+  { "message", lua_cb_global_message },
+  { "error",   lua_cb_global_error },
   { NULL, NULL },
   // clang-format on
 };
 
 /**
- * luaopen_mutt_decl - Declare some NeoMutt types to the Lua interpreter
+ * lua_expose_commands - Declare some NeoMutt types to the Lua interpreter
  * @param l Lua State
  * @retval 1 Always
  */
-static int luaopen_mutt_decl(lua_State *l)
+static int lua_expose_commands(lua_State *l)
 {
-  mutt_debug(LL_DEBUG2, " * luaopen_mutt()\n");
+  mutt_debug(LL_DEBUG2, "enter\n");
   luaL_newlib(l, LuaMuttCommands);
   int lib_idx = lua_gettop(l);
 
   // clang-format off
-  lua_pushstring(l, "VERSION");     lua_pushstring(l, mutt_make_version()); lua_settable(l, lib_idx);;
-  lua_pushstring(l, "QUAD_YES");    lua_pushinteger(l, MUTT_YES);           lua_settable(l, lib_idx);;
-  lua_pushstring(l, "QUAD_NO");     lua_pushinteger(l, MUTT_NO);            lua_settable(l, lib_idx);;
-  lua_pushstring(l, "QUAD_ASKYES"); lua_pushinteger(l, MUTT_ASKYES);        lua_settable(l, lib_idx);;
-  lua_pushstring(l, "QUAD_ASKNO");  lua_pushinteger(l, MUTT_ASKNO);         lua_settable(l, lib_idx);;
+  lua_pushstring(l, "VERSION");     lua_pushstring(l, mutt_make_version()); lua_settable(l, lib_idx);
+  lua_pushstring(l, "QUAD_YES");    lua_pushinteger(l, MUTT_YES);           lua_settable(l, lib_idx);
+  lua_pushstring(l, "QUAD_NO");     lua_pushinteger(l, MUTT_NO);            lua_settable(l, lib_idx);
+  lua_pushstring(l, "QUAD_ASKYES"); lua_pushinteger(l, MUTT_ASKYES);        lua_settable(l, lib_idx);
+  lua_pushstring(l, "QUAD_ASKNO");  lua_pushinteger(l, MUTT_ASKNO);         lua_settable(l, lib_idx);
   // clang-format on
 
   return 1;
 }
 
 /**
- * luaopen_mutt - Expose a 'Mutt' object to the Lua interpreter
+ * lua_expose_mutt - Expose a 'Mutt' object to the Lua interpreter
  * @param l Lua State
  */
-static void luaopen_mutt(lua_State *l)
+static void lua_expose_mutt(lua_State *l)
 {
-  luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
+  luaL_requiref(l, "mutt", lua_expose_commands, 1);
   (void) luaL_dostring(l, "mutt.command = {}");
 
   const struct Command **cp = NULL;
@@ -434,18 +430,18 @@ static void luaopen_mutt(lua_State *l)
 }
 
 /**
- * lua_init - Initialise a Lua State
+ * lua_init_state - Initialise a Lua State
  * @param[out] l Lua State
  * @retval true Successful
  */
-static bool lua_init(lua_State **l)
+bool lua_init_state(lua_State **l)
 {
   if (!l)
     return false;
   if (*l)
     return true;
 
-  mutt_debug(LL_DEBUG2, " * lua_init()\n");
+  mutt_debug(LL_DEBUG2, "enter\n");
   *l = luaL_newstate();
 
   if (!*l)
@@ -454,78 +450,11 @@ static bool lua_init(lua_State **l)
     return false;
   }
 
-  lua_atpanic(*l, handle_panic);
+  lua_atpanic(*l, lua_handle_panic);
 
   /* load various Lua libraries */
   luaL_openlibs(*l);
-  luaopen_mutt(*l);
+  lua_expose_mutt(*l);
 
   return true;
-}
-
-/**
- * mutt_lua_init - Setup feature commands
- */
-void mutt_lua_init(void)
-{
-  commands_register(&NeoMutt->commands, LuaCommands);
-}
-
-/**
- * mutt_lua_parse - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
- */
-enum CommandResult mutt_lua_parse(struct Buffer *buf, struct Buffer *s,
-                                  intptr_t data, struct Buffer *err)
-{
-  lua_init(&LuaState);
-  mutt_debug(LL_DEBUG2, " * mutt_lua_parse(%s)\n", buf->data);
-
-  if (luaL_dostring(LuaState, s->dptr))
-  {
-    mutt_debug(LL_DEBUG2, " * %s -> failure\n", s->dptr);
-    buf_printf(err, "%s: %s", s->dptr, lua_tostring(LuaState, -1));
-    /* pop error message from the stack */
-    lua_pop(LuaState, 1);
-    return MUTT_CMD_ERROR;
-  }
-  mutt_debug(LL_DEBUG2, " * %s -> success\n", s->dptr);
-  buf_reset(s); // Clear the rest of the line
-  return MUTT_CMD_SUCCESS;
-}
-
-/**
- * mutt_lua_source_file - Parse the 'lua-source' command - Implements Command::parse() - @ingroup command_parse
- */
-enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
-                                        intptr_t data, struct Buffer *err)
-{
-  mutt_debug(LL_DEBUG2, " * mutt_lua_source()\n");
-
-  lua_init(&LuaState);
-
-  if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
-  {
-    buf_printf(err, _("source: error at %s"), s->dptr);
-    return MUTT_CMD_ERROR;
-  }
-  if (MoreArgs(s))
-  {
-    buf_printf(err, _("%s: too many arguments"), "source");
-    return MUTT_CMD_WARNING;
-  }
-
-  struct Buffer *path = buf_pool_get();
-  buf_copy(path, buf);
-  buf_expand_path(path);
-
-  if (luaL_dofile(LuaState, buf_string(path)))
-  {
-    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(LuaState, -1));
-    lua_pop(LuaState, 1);
-    buf_pool_release(&path);
-    return MUTT_CMD_ERROR;
-  }
-
-  buf_pool_release(&path);
-  return MUTT_CMD_SUCCESS;
 }

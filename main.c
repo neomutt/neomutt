@@ -57,7 +57,7 @@
  * @ref lib_config, @ref lib_conn, @ref lib_convert, @ref lib_core,
  * @ref lib_editor, @ref lib_email, @ref lib_envelope, @ref lib_expando,
  * @ref lib_gui, @ref lib_hcache, @ref lib_helpbar, @ref lib_history,
- * @ref lib_imap, @ref lib_index, @ref lib_key, @ref lib_maildir,
+ * @ref lib_imap, @ref lib_index, @ref lib_key, @ref lib_lua, @ref lib_maildir,
  * @ref lib_mh, @ref lib_mbox, @ref lib_menu, @ref lib_mutt, @ref lib_ncrypt,
  * @ref lib_nntp, @ref lib_notmuch, @ref lib_pager, @ref lib_parse,
  * @ref lib_pattern, @ref lib_pop, @ref lib_postpone, @ref lib_progress,
@@ -89,7 +89,6 @@
  * | mutt_config.c   | @subpage neo_mutt_config   |
  * | mutt_header.c   | @subpage neo_mutt_header   |
  * | mutt_logging.c  | @subpage neo_mutt_logging  |
- * | mutt_lua.c      | @subpage neo_mutt_lua      |
  * | mutt_mailbox.c  | @subpage neo_mutt_mailbox  |
  * | mutt_signal.c   | @subpage neo_mutt_signal   |
  * | mutt_socket.c   | @subpage neo_mutt_socket   |
@@ -157,6 +156,7 @@
 #include "imap/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
+#include "lua/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
@@ -191,9 +191,6 @@
 #endif
 #ifndef DOMAIN
 #include "conn/lib.h"
-#endif
-#ifdef USE_LUA
-#include "mutt_lua.h"
 #endif
 
 bool StartupComplete = false; ///< When the config has been read
@@ -1201,9 +1198,7 @@ int main(int argc, char *argv[], char *envp[])
   hooks_init();
   mutt_comp_init();
   imap_init();
-#ifdef USE_LUA
-  mutt_lua_init();
-#endif
+  lua_init();
   driver_tags_init();
 
   menu_init();
@@ -1849,6 +1844,7 @@ main_exit:
   if (NeoMutt)
     commands_clear(&NeoMutt->commands);
 
+  lua_cleanup();
   subjrx_cleanup();
   attach_cleanup();
   alternates_cleanup();

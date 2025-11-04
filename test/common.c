@@ -319,3 +319,8 @@ void show_backtrace(void)
 {
 }
 #endif
+
+const char *mutt_make_version(void)
+{
+  return "VERSION";
+}
