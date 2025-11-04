@@ -1,4 +1,4 @@
-# This is the NeoMutt Project
+# NeoMutt
 
 [![Stars](https://img.shields.io/github/stars/neomutt/neomutt.svg?style=social&label=Stars)](https://github.com/neomutt/neomutt "Give us a Star")
 [![Twitter](https://img.shields.io/twitter/follow/NeoMutt_Org.svg?style=social&label=Follow)](https://twitter.com/NeoMutt_Org "Follow us on Twitter")
@@ -9,18 +9,14 @@
 [![Coverity Scan](https://img.shields.io/coverity/scan/8495.svg)](https://scan.coverity.com/projects/neomutt-neomutt "Latest Code Static Analysis")
 [![Website build](https://github.com/neomutt/neomutt.github.io/actions/workflows/pages/pages-build-deployment/badge.svg)](https://neomutt.org/ "Website Build")
 
-## What is NeoMutt?
+A modern command-line email client, fork of Mutt with enhanced features
 
-* NeoMutt is a project of projects.
-* A place to gather all the patches against Mutt.
-* A place for all the developers to gather.
+NeoMutt was started by Richard Russon (@FlatCap),
+who took all the old patches and painstakingly sorted through them,
+fixed them up and documented them.
+He remains the lead developer and has done the bulk of the work to make NeoMutt what it is today.
 
-Hopefully this will build the community and reduce duplicated effort.
-
-NeoMutt was created when Richard Russon (@FlatCap) took all the old Mutt patches,
-sorted through them, fixed them up and documented them.
-
-## What Features does NeoMutt have?
+## Features
 
 | Name                     | Description
 | ------------------------ | ------------------------------------------------------
@@ -60,23 +56,13 @@ sorted through them, fixed them up and documented them.
 | Trash Folder             | Automatically move deleted emails to a trash bin
 | Use Threads              | Improve the experience with viewing threads in the index
 
-## Contributed Scripts and Config
-
-| Name                   | Description
-| ---------------------- | ---------------------------------------------
-| Header Cache Benchmark | Script to test the speed of the header cache
-| Keybase                | Keybase Integration
-| Useful programs        | List of useful programs interacting with NeoMutt
-| Vi Keys                | Easy and clean Vi-keys for NeoMutt
-| Vim Syntax             | Vim Syntax File
-
-## How to Install NeoMutt?
+## Install
 
 NeoMutt may be packaged for your distribution, and otherwise it can be
 [built from source](https://neomutt.org/dev/build/build). Please refer to the
 instructions on the [distro page](https://neomutt.org/distro.html).
 
-## Where is NeoMutt?
+## More
 
 - Source Code:     https://github.com/neomutt/neomutt
 - Releases:        https://github.com/neomutt/neomutt/releases/latest
@@ -96,12 +82,12 @@ See [LICENSE.md](LICENSE.md).
 
 The principal authors of NeoMutt are:
 
-- Copyright (C) 2015-2024 Richard Russon `<rich@flatcap.org>`
-- Copyright (C) 2016-2023 Pietro Cerutti `<gahr@gahr.ch>`
+- Copyright (C) 2015-2025 Richard Russon `<rich@flatcap.org>`
+- Copyright (C) 2016-2025 Pietro Cerutti `<gahr@gahr.ch>`
 - Copyright (C) 2017-2019 Mehdi Abaakouk `<sileht@sileht.net>`
 - Copyright (C) 2018-2020 Federico Kircheis `<federico.kircheis@gmail.com>`
 - Copyright (C) 2017-2022 Austin Ray `<austin@austinray.io>`
-- Copyright (C) 2023-2024 Dennis Schön `<mail@dennis-schoen.de>`
+- Copyright (C) 2023-2025 Dennis Schön `<mail@dennis-schoen.de>`
 - Copyright (C) 2016-2017 Damien Riegel `<damien.riegel@gmail.com>`
 - Copyright (C) 2023      Rayford Shireman
 - Copyright (C) 2021-2023 David Purton `<dcpurton@marshwiggle.net>`
