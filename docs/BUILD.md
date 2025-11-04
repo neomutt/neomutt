@@ -2,7 +2,7 @@
 
 ## Install dependencies
 
-See [Downloads](distro.md).
+**Prerequisites**: Requires a C compiler, ncurses, and optional libraries like GPGME for encryption.
 
 ## Obtain the source
 

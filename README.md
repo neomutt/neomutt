@@ -29,7 +29,7 @@ He remains the lead developer and has done the bulk of the work to make NeoMutt 
 
 NeoMutt is available in the package repositories of most Linux and BSD distributions. Refer to your distribution's packaging instructions for how to install NeoMutt.
 
-If NeoMutt is not available in your distribution's repositories, you can [build from source](docs/build.md):
+If NeoMutt is not available in your distribution's repositories, you can [build from source](docs/BUILD.md):
 
 - Clone the repo: `git clone https://github.com/neomutt/neomutt`
 - Build: `./configure && make && make install`
@@ -41,7 +41,7 @@ If NeoMutt is not available in your distribution's repositories, you can [build 
 
 ## Features
 
-See [docs/features/readme.md](docs/features/readme.md) for a detailed list of NeoMutt's features, including sidebar navigation, encryption support, Notmuch integration, and compose preview.
+See [docs/features/README.md](docs/features/README.md) for a detailed list of NeoMutt's features, including sidebar navigation, encryption support, Notmuch integration, and compose preview.
 
 ## Contributing
 
@@ -65,5 +65,5 @@ NeoMutt is licensed under GPL-2.0-or-later. See [LICENSE.md](LICENSE.md) for ful
 - [Releases](https://github.com/neomutt/neomutt/releases/latest)
 - [Website](https://neomutt.org)
 - [Development](https://neomutt.org/dev.html)
-- [Features](docs/features/readme.md)
+- [Features](docs/features/README.md)
 - [Contributors](AUTHORS.md)
