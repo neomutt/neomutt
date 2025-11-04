@@ -1103,8 +1103,8 @@ static bool nm_message_has_tag(notmuch_message_t *msg, const char *tag)
 }
 
 /**
- * sync_email_path_with_nm - Synchronize Neomutt's Email path with notmuch
- * @param e Email in Neomutt
+ * sync_email_path_with_nm - Synchronize NeoMutt's Email path with notmuch
+ * @param e Email in NeoMutt
  * @param msg Email from notmuch
  */
 static void sync_email_path_with_nm(struct Email *e, notmuch_message_t *msg)

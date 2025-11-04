@@ -12006,7 +12006,7 @@ alternative_order text/enriched text/plain text application/postscript image/*
         <para>
           Be aware that when sending a <literal>multipart/alternative</literal> email,
           you have to manually prepare the alternative parts and attach them. However,
-          you can use Neomutt's macro to perform all the operations needed, such that
+          you can use NeoMutt's macro to perform all the operations needed, such that
           you can compose a plain text email as usual and turn that into a
           <literal>multipart/alternative</literal> email in one single command, with
           one part being <literal>text/plain</literal> and the other
@@ -12030,7 +12030,7 @@ macro compose Y "&lt;first-entry&gt;&lt;enter-command&gt;set wait_key=no&lt;ente
       <title>MIME Multipart/Multilingual</title>
 
       <para>
-        Neomutt includes supports for reading and writing <literal>multipart/multilingual</literal>
+        NeoMutt includes supports for reading and writing <literal>multipart/multilingual</literal>
         emails. A <literal>multipart/multilingual</literal> email is like a
         <literal>multipart/alternative</literal> email, except that it comes with parts of
         different versions of languages instead of appearances. Its format is described by
@@ -12040,13 +12040,13 @@ macro compose Y "&lt;first-entry&gt;&lt;enter-command&gt;set wait_key=no&lt;ente
       <sect2 id="read-multipart-multilingual">
         <title>Reading Multipart/Multilingual Emails</title>
         <para>
-          Neomutt uses the <literal>$preferred_languages</literal> variable to determine which
+          NeoMutt uses the <literal>$preferred_languages</literal> variable to determine which
           languages to display when displaying a <literal>multipart/multilingual</literal> email.
           You can have several preferred languages, separated by <literal>,</literal>
 <screen>
 set preferred_languages="fr,en,de"
 </screen>
-          Neomutt will try to match these strings again the multilingual header in the received
+          NeoMutt will try to match these strings again the multilingual header in the received
           emails "by prefix", e.g., <literal>en</literal> will match both <literal>en</literal>
           and <literal>en_US</literal>.
         </para>
@@ -12111,7 +12111,7 @@ set preferred_languages="fr,en,de"
 
         <para>
           As in <link linkend="compose-alternative-order">Composing Multipart/Alternative</link>, you can
-          also use Neomutt's macro and some external scripts to combine this procedure into one.
+          also use NeoMutt's macro and some external scripts to combine this procedure into one.
         </para>
 
         <para>
@@ -12128,7 +12128,7 @@ set preferred_languages="fr,en,de"
       <title>MIME Multipart/Related</title>
 
       <para>
-        Neomutt doesn't include any special support for reading <literal>multipart/related</literal>
+        NeoMutt doesn't include any special support for reading <literal>multipart/related</literal>
         emails, but it is possible to write a <literal>multipart/related</literal> email.
         A <literal>multipart/related</literal> attachment is intended for compound objects
         consisting of several inter-related body parts which are linked together using the

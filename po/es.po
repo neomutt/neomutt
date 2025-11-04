@@ -3488,7 +3488,7 @@ msgstr "saltar al anterior mensaje no leído"
 #. Index: <op_main_quasi_delete>
 #: gui/opcodes.h:605
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr "borrar de Neomutt, no escribir en disco"
+msgstr "borrar de NeoMutt, no escribir en disco"
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
@@ -8773,7 +8773,7 @@ msgstr "Opciones de desarrollo:"
 #~ "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 #~ "                remaining arguments as addresses even if they start with a dash"
 #~ msgstr ""
-#~ "  --            Argumento especial que fuerza a Neomutt a detener la\n"
+#~ "  --            Argumento especial que fuerza a NeoMutt a detener la\n"
 #~ "                interpretación de opciones y tratar los parámetros restantes\n"
 #~ "                como direcciones, incluso si empiezan con un guión"
 

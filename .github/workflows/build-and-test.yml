@@ -49,18 +49,18 @@ jobs:
     - name: Compilation Cache
       uses: hendrikmuhs/ccache-action@v1
 
-    - name: Configure Neomutt
+    - name: Configure NeoMutt
       run: |
         mkdir build-${{ matrix.cfg.name }}
         cd build-${{ matrix.cfg.name }}
         ../configure --full-doc ${{ matrix.cfg.options }}
 
-    - name: Build Neomutt
+    - name: Build NeoMutt
       run: |
         cd build-${{ matrix.cfg.name }}
         make -j ${{steps.cpu-cores.outputs.count}} neomutt
 
-    - name: Neomutt Version
+    - name: NeoMutt Version
       run: |
         cd build-${{ matrix.cfg.name }}
         ./neomutt -v

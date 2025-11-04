@@ -331,7 +331,7 @@ static int lua_mutt_enter(lua_State *l)
 }
 
 /**
- * lua_mutt_message - Display a message in Neomutt
+ * lua_mutt_message - Display a message in NeoMutt
  * @param l Lua State
  * @retval 0 Always
  */
@@ -345,7 +345,7 @@ static int lua_mutt_message(lua_State *l)
 }
 
 /**
- * lua_mutt_error - Display an error in Neomutt
+ * lua_mutt_error - Display an error in NeoMutt
  * @param l Lua State
  * @retval 0 Always
  */

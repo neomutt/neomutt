@@ -30,7 +30,7 @@ jobs:
       with:
         path: main
 
-    - name: Configure Neomutt
+    - name: Configure NeoMutt
       run: ./configure $CONFIGURE_OPTIONS
       working-directory: main
 

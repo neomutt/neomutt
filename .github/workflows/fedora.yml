@@ -50,13 +50,13 @@ jobs:
     - name: Compilation Cache
       uses: hendrikmuhs/ccache-action@v1
 
-    - name: Configure Neomutt
+    - name: Configure NeoMutt
       run: ./configure ${{ matrix.config.options }}
 
-    - name: Build Neomutt
+    - name: Build NeoMutt
       run: make -j ${{steps.cpu-cores.outputs.count}} neomutt
 
-    - name: Neomutt Version
+    - name: NeoMutt Version
       run: |
         ./neomutt -v
         ./neomutt -h all

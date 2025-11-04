@@ -71,15 +71,15 @@ jobs:
     - name: Compilation Cache
       uses: hendrikmuhs/ccache-action@v1
 
-    - name: Configure Neomutt
+    - name: Configure NeoMutt
       run: ./configure --disable-doc ${{ matrix.cfg.options }}
 
-    - name: Build Neomutt
+    - name: Build NeoMutt
       run: |
         export PATH="$PATH:/usr/lib/llvm-10/bin"
         make -j ${{steps.cpu-cores.outputs.count}} ${{ matrix.cfg.extras }}
 
-    - name: Neomutt Version
+    - name: NeoMutt Version
       run: |
         test -f neomutt && ./neomutt -v || :
         test -f neomutt && ./neomutt -h all || :

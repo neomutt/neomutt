@@ -30,7 +30,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v5
 
-      - name: Configure Neomutt
+      - name: Configure NeoMutt
         run: ./configure --disable-doc $CONFIGURE_OPTIONS
 
       - name: Initialize CodeQL
@@ -40,7 +40,7 @@ jobs:
           config-file: ./.github/codeql.yml
           queries: +security-and-quality
 
-      - name: Build Neomutt
+      - name: Build NeoMutt
         run: make -j ${{steps.cpu-cores.outputs.count}} -s
 
       - name: Perform C CodeQL Analysis

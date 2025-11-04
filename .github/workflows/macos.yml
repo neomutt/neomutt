@@ -43,13 +43,13 @@ jobs:
     - name: Compilation Cache
       uses: hendrikmuhs/ccache-action@v1
 
-    - name: Configure Neomutt
+    - name: Configure NeoMutt
       run: ./configure --disable-doc --disable-nls --notmuch --with-notmuch=/opt/homebrew/opt/notmuch --lmdb --zlib --idn2 --with-idn=/opt/homebrew/opt/libidn2 --with-iconv=/opt/homebrew/opt/libiconv --with-ncurses=/opt/homebrew/opt/ncurses
 
-    - name: Build Neomutt
+    - name: Build NeoMutt
       run: make -j ${{steps.cpu-cores.outputs.count}} neomutt
 
-    - name: Neomutt Version
+    - name: NeoMutt Version
       run: |
         ./neomutt -v
         ./neomutt -h all

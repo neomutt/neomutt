@@ -717,13 +717,13 @@
 { "compose_show_preview", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, Neomutt will display a preview of message in the compose view.
+** When \fIset\fP, NeoMutt will display a preview of message in the compose view.
 */
 
 { "compose_show_user_headers", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, Neomutt will display user-defined headers (set via $my_hdr
+** When \fIset\fP, NeoMutt will display user-defined headers (set via $my_hdr
 ** or from editing with edit-headers).
 */
 
@@ -2470,7 +2470,7 @@
 ** Use the value as maildir field delimiter. This is a single-character used to
 ** accommodate maildir mailboxes on platforms where `:` is not allowed
 ** in a filename. The recommended alternative on such platforms is `;`.
-** Neomutt supports all non-alphanumeric values except for `-`, `.`, `\`, `/`.
+** NeoMutt supports all non-alphanumeric values except for `-`, `.`, `\`, `/`.
 ** \fBNote:\fP this only applies to maildir-style mailboxes. Setting
 ** it will have no effect on other mailbox types.
 */
@@ -2901,7 +2901,7 @@
 /*
 ** .pp
 ** This variable specifies the notmuch tag modifications (addition, removal,
-** toggling) applied to messages added to the Neomutt record when $$nm_record is
+** toggling) applied to messages added to the NeoMutt record when $$nm_record is
 ** true. See the description of the \fC<modify-labels>\fP function for the
 ** syntax.
 */
@@ -5427,7 +5427,7 @@
 ** grouping by subject does not imply a parent-child relation between two
 ** messages.
 ** .pp
-** To determine the ancestry between messages grouped by subject, Neomutt uses
+** To determine the ancestry between messages grouped by subject, NeoMutt uses
 ** their date: only newer messages can be descendants of older ones.
 ** .pp
 ** When $$thread_received is \fIset\fP, NeoMutt uses the date received rather

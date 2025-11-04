@@ -8519,7 +8519,7 @@ msgstr "  cat sekreto.txt | neomutt gahr -s 'Sekreto' -C"
 
 #: usage.c:296
 msgid "Running NeoMutt with no options will read the config and start the TUI."
-msgstr "Plenumigo de Neomutt kun neniuj opcioj analizos la agordodosieron kaj startigos la terminalan fasadon."
+msgstr "Plenumigo de NeoMutt kun neniuj opcioj analizos la agordodosieron kaj startigos la terminalan fasadon."
 
 #: usage.c:297
 msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
