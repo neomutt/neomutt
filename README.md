@@ -18,43 +18,7 @@ He remains the lead developer and has done the bulk of the work to make NeoMutt 
 
 ## Features
 
-| Name                     | Description
-| ------------------------ | ------------------------------------------------------
-| Account Command          | Populate account credentials via an external command
-| Attach Headers Color     | Color attachment headers using regex, just like mail bodies
-| Command-line Crypto (-C) | Enable message security in modes that by default don't enable it
-| Compose Message Preview  | Show a preview of the message in the Compose Dialog
-| Compose to Sender        | Send new mail to the sender of the current mail
-| Compressed Folders       | Read from/write to compressed mailboxes
-| Conditional Dates        | Use rules to choose date format
-| Custom Mailbox Tags      | Implements Notmuch tags and Imap keywords
-| Encrypt-to-Self          | Save a self-encrypted copy of emails
-| Fmemopen                 | Replace some temporary files with memory buffers
-| Forgotten Attachment     | Alert user when (s)he forgets to attach a file to an outgoing email.
-| Global Hooks             | Define actions to run globally within NeoMutt
-| Header Cache Compression | Options for compressing the header cache files
-| Ifdef                    | Conditional config options
-| Index Color              | Custom rules for theming the email index
-| Initials Expando         | Expando for author's initials
-| Kyoto Cabinet            | Kyoto Cabinet backend for the header cache
-| Limit Current Thread     | Focus on one Email Thread
-| LMDB                     | LMDB backend for the header cache
-| Multiple FCC             | Save multiple copies of outgoing mail
-| Nested If                | Allow complex nested conditions in format strings
-| New Mail                 | Execute a command upon the receipt of new mail.
-| NNTP                     | Talk to a Usenet news server
-| Notmuch                  | Email search engine
-| Pager Read Delay         | Delay when the pager marks a previewed message as read
-| Progress Bar             | Show a visual progress bar on slow operations
-| Quasi-Delete             | Mark emails that should be hidden, but not deleted
-| Reply With X-Original-To | Direct reply to email using X-Original-To header
-| Sensible Browser         | Make the file browser behave
-| Sidebar                  | Panel containing list of Mailboxes
-| Skip Quoted              | Leave some context visible
-| Status Color             | Custom rules for theming the status bar
-| TLS-SNI                  | Negotiate with a server for a TLS/SSL certificate
-| Trash Folder             | Automatically move deleted emails to a trash bin
-| Use Threads              | Improve the experience with viewing threads in the index
+See [docs/features/readme.md](docs/features/readme.md) for a detailed list of all NeoMutt features.
 
 ## Install
 
@@ -73,6 +37,7 @@ instructions on the [distro page](https://neomutt.org/distro.html).
 - Mailing Lists:   [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
   and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 - Development:     https://neomutt.org/dev.html
+- Features:        [Detailed feature documentation](docs/features/readme.md)
 - Contributors:    [Everyone who has helped NeoMutt](AUTHORS.md)
 
 ## Copyright
