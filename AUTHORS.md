@@ -307,3 +307,9 @@ Luke Macken, Mantas Mikulenas, Patrick Brisbin, Paul Miller, Philippe Le
 Brouster, Rocco Rutte, Roland Rosenfeld, Sami Farin, Stefan Kuhn, Steve Kemp,
 Terry Chan, Thomas Glanzmann, Thomer Gil, Tim Stoakes, Tyler Earnest, Victor
 Manuel Jaquez Leal, Vincent Lefevre, Vladimir Marek, Vsevolod Volkov.
+
+### Original Mutt Authors
+
+And of course, we should thank the original Mutt authors,
+including the original author Michael Elkins and all the people that have contributed to Mutt during its long history,
+see the Acknowledgements section of the user guide for a detailed list.
