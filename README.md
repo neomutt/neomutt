@@ -23,7 +23,7 @@ See [docs/features/readme.md](docs/features/readme.md) for a detailed list of al
 ## Install
 
 NeoMutt is included in many distributions. Please refer to [docs/distro.md](docs/distro.md). Otherwise, it can be
-[built from source](https://neomutt.org/dev/build/build).
+[built from source](docs/build.md).
 
 ## More
 
