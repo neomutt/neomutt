@@ -22,9 +22,9 @@ See [docs/features/readme.md](docs/features/readme.md) for a detailed list of al
 
 ## Install
 
-NeoMutt may be packaged for your distribution, and otherwise it can be
-[built from source](https://neomutt.org/dev/build/build). Please refer to the
-instructions on the [distro page](https://neomutt.org/distro.html).
+NeoMutt is included in many distributions. Please refer to the
+instructions on the [distro page](https://neomutt.org/distro.html). Otherwise, it can be
+[built from source](https://neomutt.org/dev/build/build).
 
 ## More
 
