@@ -9,19 +9,14 @@
 [![Coverity Scan](https://img.shields.io/coverity/scan/8495.svg)](https://scan.coverity.com/projects/neomutt-neomutt "Latest Code Static Analysis")
 [![Website build](https://github.com/neomutt/neomutt.github.io/actions/workflows/pages/pages-build-deployment/badge.svg)](https://neomutt.org/ "Website Build")
 
-## Table of Contents
-
-- [NeoMutt](#neomutt)
-  - [Table of Contents](#table-of-contents)
-  - [Quick Start](#quick-start)
-  - [Features](#features)
-  - [Install](#install)
-  - [Contributing](#contributing)
-  - [License](#license)
-  - [Screenshots](#screenshots)
-  - [More](#more)
-    - [Community](#community)
-    - [Resources](#resources)
+- [About](#table-of-contents)
+- [Install](#install)
+- [Features](#features)
+- [Contributing](#contributing)
+- [Screenshots](#screenshots)
+- [License](#license)
+- [Community](#community)
+- [Resources](#resources)
 
 Welcome to NeoMutt—a modern, feature-rich email client forked from Mutt, with enhancements like sidebar navigation, Notmuch integration, and compose preview.
 
@@ -30,25 +25,23 @@ who took all the old patches and painstakingly sorted through them,
 fixed them up and documented them.
 He remains the lead developer and has done the bulk of the work to make NeoMutt what it is today.
 
-## Quick Start
+## Install
 
-NeoMutt is included in most Linux distributions, making installation easy. Check [docs/distro.md](docs/distro.md) for your package manager commands.
+NeoMutt is available in the package repositories of most Linux and BSD distributions. Refer to your distribution's packaging instructions for how to install NeoMutt.
 
-If your distro doesn't have it, build from source:
+If NeoMutt is not available in your distribution's repositories, you can [build from source](docs/build.md):
 
 - Clone the repo: `git clone https://github.com/neomutt/neomutt`
-- Install dependencies (see [docs/distro.md](docs/distro.md))
 - Build: `./configure && make && make install`
 - Launch: `neomutt`
+
+**Prerequisites**: Requires a C compiler, ncurses, and optional libraries like GPGME for encryption.
+
+[![](https://repology.org/badge/vertical-allrepos/neomutt.svg?columns=3)](https://repology.org/project/neomutt/versions)
 
 ## Features
 
 See [docs/features/readme.md](docs/features/readme.md) for a detailed list of NeoMutt's features, including sidebar navigation, encryption support, Notmuch integration, and compose preview.
-
-## Install
-
-NeoMutt is included in many distributions. Please refer to [docs/distro.md](docs/distro.md) for package details. Otherwise, it can be
-[built from source](docs/build.md).
 
 ## Contributing
 
@@ -62,16 +55,15 @@ We welcome contributions! See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for g
 
 NeoMutt is licensed under GPL-2.0-or-later. See [LICENSE.md](LICENSE.md) for full details.
 
-## More
-
-### Community
+## Community
 - [Issues & Bugs](https://github.com/neomutt/neomutt/issues)
 - IRC: [irc://irc.libera.chat/neomutt](https://web.libera.chat/#neomutt) (be patient, we're a small team!)
 - Mailing Lists: [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe) and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 
-### Resources
+## Resources
 - [Source Code](https://github.com/neomutt/neomutt)
 - [Releases](https://github.com/neomutt/neomutt/releases/latest)
 - [Website](https://neomutt.org)
 - [Development](https://neomutt.org/dev.html)
+- [Features](docs/features/readme.md)
 - [Contributors](AUTHORS.md)
