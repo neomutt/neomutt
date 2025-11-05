@@ -136,6 +136,14 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       if (!fgets(buf, sizeof(buf), fp_in))
         break;
 
+      /* Convert CRLF line endings to LF */
+      const size_t line_len = strlen(buf);
+      if ((line_len > 2) && (buf[line_len - 2] == '\r') && (buf[line_len - 1] == '\n'))
+      {
+        buf[line_len - 2] = '\n';
+        buf[line_len - 1] = '\0';
+      }
+
       /* Is it the beginning of a header? */
       if (nl && (buf[0] != ' ') && (buf[0] != '\t'))
       {
@@ -230,14 +238,6 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
           if (address_header_decode(&this_one) == 0)
             rfc2047_decode(&this_one);
           this_one_len = mutt_str_len(this_one);
-
-          /* Convert CRLF line endings to LF */
-          if ((this_one_len > 2) && (this_one[this_one_len - 2] == '\r') &&
-              (this_one[this_one_len - 1] == '\n'))
-          {
-            this_one[this_one_len - 2] = '\n';
-            this_one[this_one_len - 1] = '\0';
-          }
         }
 
         add_one_header(&headers, x, this_one);
