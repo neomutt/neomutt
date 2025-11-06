@@ -1378,7 +1378,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       rc = sb_function_dispatcher(win_sidebar, op);
     }
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(NULL, op);
+      rc = global_function_dispatcher(priv->menu->win, op);
 
     if (rc == FR_UNKNOWN)
       km_error_key(MENU_INDEX);

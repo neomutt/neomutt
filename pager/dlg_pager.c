@@ -524,7 +524,7 @@ int dlg_pager(struct PagerView *pview)
         rc = sb_function_dispatcher(win_sidebar, op);
     }
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(NULL, op);
+      rc = global_function_dispatcher(priv->pview->win_pager, op);
 
     if ((rc == FR_UNKNOWN) &&
         ((pview->mode == PAGER_MODE_ATTACH) || (pview->mode == PAGER_MODE_ATTACH_E)))

@@ -292,7 +292,7 @@ void dlg_autocrypt(void)
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(NULL, op);
+      rc = global_function_dispatcher(menu->win, op);
   } while (!ad->done);
   // ---------------------------------------------------------------------------
 

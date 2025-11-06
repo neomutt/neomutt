@@ -58,7 +58,7 @@ bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailArray *ea);
 void external_cleanup(void);
 void mutt_display_address(struct Envelope *env);
 bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp);
-void mutt_enter_command(void);
+void mutt_enter_command(struct MuttWindow *win);
 void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea);
 void mutt_print_message(struct Mailbox *m, struct EmailArray *ea);
 int  mutt_save_message(struct Mailbox *m, struct EmailArray *ea, enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt);
