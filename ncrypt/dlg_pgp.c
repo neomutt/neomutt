@@ -271,7 +271,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(NULL, op);
+      rc = global_function_dispatcher(menu->win, op);
   } while (!pd.done);
   // ---------------------------------------------------------------------------
 

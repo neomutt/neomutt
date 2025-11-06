@@ -291,7 +291,7 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(NULL, op);
+      rc = global_function_dispatcher(menu->win, op);
   } while (!gd.done);
   // ---------------------------------------------------------------------------
 

@@ -326,7 +326,7 @@ bool dlg_pattern(struct Buffer *buf)
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(NULL, op);
+      rc = global_function_dispatcher(menu->win, op);
   } while (!pd->done);
   // ---------------------------------------------------------------------------
 
