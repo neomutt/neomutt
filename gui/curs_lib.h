@@ -41,6 +41,7 @@ struct FileCompletionData
   struct Mailbox *mailbox;  ///< Mailbox
   char         ***files;    ///< List of files selected
   int            *numfiles; ///< Number of files selected
+  struct MuttWindow *win;   ///< Current Focused Window
 };
 
 int          mutt_addwch(struct MuttWindow *win, wchar_t wc);

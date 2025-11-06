@@ -59,7 +59,7 @@ static int op_check_stats(struct MuttWindow *win, int op)
  */
 static int op_enter_command(struct MuttWindow *win, int op)
 {
-  mutt_enter_command();
+  mutt_enter_command(win);
   window_redraw(NULL);
   return FR_SUCCESS;
 }
