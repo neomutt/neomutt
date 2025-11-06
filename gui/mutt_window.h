@@ -196,10 +196,10 @@ struct MuttWindow
    *
    * @pre win is not NULL
    *
-   * After all the repainting is done, the focussed window will be given an
+   * After all the repainting is done, the focused window will be given an
    * opportunity to set the position and visibility of the cursor.
    *
-   * If the focussed window doesn't implement recursor(), then the cursor will
+   * If the focused window doesn't implement recursor(), then the cursor will
    * be hidden.
    */
   bool (*recursor)(struct MuttWindow *win);

@@ -572,14 +572,14 @@ static void window_repaint(struct MuttWindow *win)
 }
 
 /**
- * window_recursor - Recursor the focussed Window
+ * window_recursor - Recursor the focused Window
  *
- * Give the focussed Window an opportunity to set the position and
+ * Give the focused Window an opportunity to set the position and
  * visibility of its cursor.
  */
 static void window_recursor(void)
 {
-  // Give the focussed window an opportunity to set the cursor position
+  // Give the focused window an opportunity to set the cursor position
   struct MuttWindow *win = window_get_focus();
   if (!win)
     return;

@@ -35,7 +35,7 @@
 
 // #define DEBUG_SHOW_SERIALISE
 
-/// The Window that is currently focussed.
+/// The Window that is currently focused.
 /// The focus spans from #RootWindow through MuttWindow.focus
 static struct MuttWindow *WinFocus = NULL;
 

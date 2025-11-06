@@ -1,4 +1,4 @@
-# vim: filetype=muttrc
+# vim: filetype=neomuttrc
 
 # custom body highlights -----------------------------------------------
 # highlight my name and other personally relevant strings
