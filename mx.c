@@ -1526,14 +1526,15 @@ struct Account *mx_ac_find(struct Mailbox *m)
   if (!m || !m->mx_ops || !m->realpath)
     return NULL;
 
-  struct Account *np = NULL;
-  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  struct Account **ap = NULL;
+  ARRAY_FOREACH(ap, &NeoMutt->accounts)
   {
-    if (np->type != m->type)
+    struct Account *a = *ap;
+    if (a->type != m->type)
       continue;
 
-    if (m->mx_ops->ac_owns_path(np, m->realpath))
-      return np;
+    if (m->mx_ops->ac_owns_path(a, m->realpath))
+      return a;
   }
 
   return NULL;
@@ -1616,10 +1617,11 @@ struct Mailbox *mx_mbox_find2(const char *path)
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   mx_path_canon(buf, c_folder, NULL);
 
-  struct Account *np = NULL;
-  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  struct Account **ap = NULL;
+  ARRAY_FOREACH(ap, &NeoMutt->accounts)
   {
-    struct Mailbox *m = mx_mbox_find(np, buf_string(buf));
+    struct Account *a = *ap;
+    struct Mailbox *m = mx_mbox_find(a, buf_string(buf));
     if (m)
     {
       buf_free(&buf);
@@ -1687,10 +1689,11 @@ static struct Mailbox *mx_mbox_find_by_name(const char *name)
   if (!name)
     return NULL;
 
-  struct Account *np = NULL;
-  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  struct Account **ap = NULL;
+  ARRAY_FOREACH(ap, &NeoMutt->accounts)
   {
-    struct Mailbox *m = mx_mbox_find_by_name_ac(np, name);
+    struct Account *a = *ap;
+    struct Mailbox *m = mx_mbox_find_by_name_ac(a, name);
     if (m)
       return m;
   }

@@ -415,8 +415,9 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
   {
     init_state(state);
 
-    if (TAILQ_EMPTY(&NeoMutt->accounts))
+    if (ARRAY_EMPTY(&NeoMutt->accounts))
       return -1;
+
     mailbox = buf_pool_get();
     md = buf_pool_get();
 

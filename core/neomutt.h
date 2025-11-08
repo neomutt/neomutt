@@ -45,7 +45,7 @@ struct NeoMutt
   struct Notify *notify_resize;  ///< Window resize notifications handler
   struct Notify *notify_timeout; ///< Timeout notifications handler
   struct ConfigSubset *sub;      ///< Inherited config items
-  struct AccountList accounts;   ///< List of all Accounts
+  struct AccountArray accounts;  ///< All Accounts
   locale_t time_c_locale;        ///< Current locale but LC_TIME=C
   mode_t user_default_umask;     ///< User's default file writing permissions (inferred from umask)
   struct CommandArray commands;  ///< NeoMutt commands

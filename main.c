@@ -1660,7 +1660,7 @@ int main(int argc, char *argv[], char *envp[])
         if (!CurrentNewsSrv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
-      else if (TAILQ_EMPTY(&NeoMutt->accounts))
+      else if (ARRAY_EMPTY(&NeoMutt->accounts))
       {
         mutt_error(_("No incoming mailboxes defined"));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y

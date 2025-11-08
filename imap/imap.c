@@ -555,13 +555,14 @@ static void imap_logout(struct ImapAccountData *adata)
  */
 void imap_logout_all(void)
 {
-  struct Account *np = NULL;
-  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  struct Account **ap = NULL;
+  ARRAY_FOREACH(ap, &NeoMutt->accounts)
   {
-    if (np->type != MUTT_IMAP)
+    struct Account *a = *ap;
+    if (a->type != MUTT_IMAP)
       continue;
 
-    struct ImapAccountData *adata = np->adata;
+    struct ImapAccountData *adata = a->adata;
     if (!adata)
       continue;
 
@@ -570,7 +571,7 @@ void imap_logout_all(void)
       continue;
 
     mutt_message(_("Closing connection to %s..."), conn->account.host);
-    imap_logout(np->adata);
+    imap_logout(a->adata);
     mutt_clear_error();
   }
 }

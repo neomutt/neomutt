@@ -51,10 +51,8 @@ struct Account
    * @pre *ptr is not NULL
    */
   void (*adata_free)(void **ptr);
-
-  TAILQ_ENTRY(Account) entries;   ///< Linked list
 };
-TAILQ_HEAD(AccountList, Account);
+ARRAY_HEAD(AccountArray, struct Account *);
 
 /**
  * enum NotifyAccount - Types of Account Event

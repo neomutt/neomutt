@@ -1477,10 +1477,10 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
 
     buf_expand_path(buf);
 
-    struct Account *a = NULL;
-    TAILQ_FOREACH(a, &NeoMutt->accounts, entries)
+    struct Account **ap = NULL;
+    ARRAY_FOREACH(ap, &NeoMutt->accounts)
     {
-      struct Mailbox *m = mx_mbox_find(a, buf_string(buf));
+      struct Mailbox *m = mx_mbox_find(*ap, buf_string(buf));
       if (m)
       {
         do_unmailboxes(m);

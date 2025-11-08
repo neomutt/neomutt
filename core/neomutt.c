@@ -54,7 +54,7 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
 
   struct NeoMutt *n = MUTT_MEM_CALLOC(1, struct NeoMutt);
 
-  TAILQ_INIT(&n->accounts);
+  ARRAY_INIT(&n->accounts);
   n->notify = notify_new();
   n->sub = cs_subset_new(NULL, NULL, n->notify);
   n->sub->cs = cs;
@@ -117,7 +117,7 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
   if (!n || !a)
     return false;
 
-  TAILQ_INSERT_TAIL(&n->accounts, a, entries);
+  ARRAY_ADD(&n->accounts, a);
   notify_set_parent(a->notify, n->notify);
 
   mutt_debug(LL_NOTIFY, "NT_ACCOUNT_ADD: %s %p\n",
@@ -134,18 +134,17 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
  */
 void neomutt_account_remove(struct NeoMutt *n, const struct Account *a)
 {
-  if (!n || !a || TAILQ_EMPTY(&n->accounts))
+  if (!n || !a || ARRAY_EMPTY(&n->accounts))
     return;
 
-  struct Account *np = NULL;
-  struct Account *tmp = NULL;
-  TAILQ_FOREACH_SAFE(np, &n->accounts, entries, tmp)
+  struct Account **ap = NULL;
+  ARRAY_FOREACH(ap, &n->accounts)
   {
-    if (np != a)
+    if ((*ap) != a)
       continue;
 
-    TAILQ_REMOVE(&n->accounts, np, entries);
-    account_free(&np);
+    ARRAY_REMOVE(&n->accounts, ap);
+    account_free(ap);
     break;
   }
 }
@@ -159,20 +158,20 @@ void neomutt_accounts_free(struct NeoMutt *n)
   if (!n)
     return;
 
-  if (!TAILQ_EMPTY(&n->accounts))
+  if (!ARRAY_EMPTY(&n->accounts))
   {
     mutt_debug(LL_NOTIFY, "NT_ACCOUNT_DELETE_ALL\n");
     struct EventAccount ev_a = { NULL };
     notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_DELETE_ALL, &ev_a);
 
-    struct Account *np = NULL;
-    struct Account *tmp = NULL;
-    TAILQ_FOREACH_SAFE(np, &n->accounts, entries, tmp)
+    struct Account **ap = NULL;
+    ARRAY_FOREACH(ap, &n->accounts)
     {
-      TAILQ_REMOVE(&n->accounts, np, entries);
-      account_free(&np);
+      account_free(ap);
     }
   }
+
+  ARRAY_FREE(&n->accounts);
 }
 
 /**
@@ -211,11 +210,12 @@ size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n,
     return 0;
 
   size_t count = 0;
-  struct Account *a = NULL;
+  struct Account **ap = NULL;
   struct MailboxNode *mn = NULL;
 
-  TAILQ_FOREACH(a, &n->accounts, entries)
+  ARRAY_FOREACH(ap, &n->accounts)
   {
+    struct Account *a = *ap;
     if ((type > MUTT_UNKNOWN) && (a->type != type))
       continue;
 

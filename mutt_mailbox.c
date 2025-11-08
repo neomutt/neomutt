@@ -168,7 +168,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
  */
 int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
 {
-  if (TAILQ_EMPTY(&NeoMutt->accounts)) // fast return if there are no mailboxes
+  if (ARRAY_EMPTY(&NeoMutt->accounts)) // fast return if there are no mailboxes
     return 0;
 
   if (flags & MUTT_MAILBOX_CHECK_POSTPONED)
