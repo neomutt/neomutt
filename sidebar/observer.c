@@ -156,15 +156,16 @@ static void sb_init_data(struct MuttWindow *win)
   if (!ARRAY_EMPTY(&wdata->entries))
     return;
 
-  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &ml, entries)
+  struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
+  struct Mailbox **mp = NULL;
+  ARRAY_FOREACH(mp, &ma)
   {
-    if (np->mailbox->visible)
-      sb_add_mailbox(wdata, np->mailbox);
+    struct Mailbox *m = *mp;
+
+    if (m->visible)
+      sb_add_mailbox(wdata, m);
   }
-  neomutt_mailboxlist_clear(&ml);
+  ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
 }
 
 /**
@@ -183,10 +184,10 @@ static int sb_account_observer(struct NotifyCallback *nc)
   struct SidebarWindowData *wdata = sb_wdata_get(win);
   struct EventAccount *ev_a = nc->event_data;
 
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &ev_a->account->mailboxes, entries)
+  struct Mailbox **mp = NULL;
+  ARRAY_FOREACH(mp, &ev_a->account->mailboxes)
   {
-    sb_add_mailbox(wdata, np->mailbox);
+    sb_add_mailbox(wdata, *mp);
   }
 
   win->actions |= WA_RECALC;

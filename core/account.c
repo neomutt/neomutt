@@ -48,7 +48,7 @@ struct Account *account_new(const char *name, struct ConfigSubset *sub)
 
   struct Account *a = MUTT_MEM_CALLOC(1, struct Account);
 
-  STAILQ_INIT(&a->mailboxes);
+  ARRAY_INIT(&a->mailboxes);
   a->notify = notify_new();
   a->name = mutt_str_dup(name);
   a->sub = cs_subset_new(name, sub, a->notify);
@@ -73,9 +73,7 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
     a->type = m->type;
 
   m->account = a;
-  struct MailboxNode *np = MUTT_MEM_CALLOC(1, struct MailboxNode);
-  np->mailbox = m;
-  STAILQ_INSERT_TAIL(&a->mailboxes, np, entries);
+  ARRAY_ADD(&a->mailboxes, m);
   mailbox_set_subset(m, a->sub);
   notify_set_parent(m->notify, a->notify);
 
@@ -95,25 +93,20 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
  */
 void account_mailbox_remove(struct Account *a, struct Mailbox *m)
 {
-  if (!a)
+  if (!a || !m || ARRAY_EMPTY(&a->mailboxes))
     return;
 
-  if (!STAILQ_EMPTY(&a->mailboxes))
+  struct Mailbox **mp = NULL;
+  ARRAY_FOREACH(mp, &a->mailboxes)
   {
-    struct MailboxNode *np = NULL;
-    struct MailboxNode *tmp = NULL;
-    STAILQ_FOREACH_SAFE(np, &a->mailboxes, entries, tmp)
-    {
-      if (m && (np->mailbox != m))
-        continue;
+    if (*mp != m)
+      continue;
 
-      STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
+    ARRAY_REMOVE(&a->mailboxes, mp);
 
-      m->account = NULL;
-      notify_set_parent(m->notify, NeoMutt->notify);
-      FREE(&np);
-      break;
-    }
+    m->account = NULL;
+    notify_set_parent(m->notify, NeoMutt->notify);
+    break;
   }
 }
 
@@ -128,24 +121,24 @@ void account_mailboxes_free(struct Account *a)
   if (!a)
     return;
 
-  if (!STAILQ_EMPTY(&a->mailboxes))
+  if (!ARRAY_EMPTY(&a->mailboxes))
   {
     mutt_debug(LL_NOTIFY, "NT_MAILBOX_DELETE_ALL\n");
     struct EventMailbox ev_m = { NULL };
     notify_send(a->notify, NT_MAILBOX, NT_MAILBOX_DELETE_ALL, &ev_m);
 
-    struct MailboxNode *np = NULL;
-    struct MailboxNode *tmp = NULL;
-    STAILQ_FOREACH_SAFE(np, &a->mailboxes, entries, tmp)
+    struct Mailbox **mp = NULL;
+    ARRAY_FOREACH(mp, &a->mailboxes)
     {
-      STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
-      // we make it invisible here to force the deletion of the mailbox
-      np->mailbox->visible = false;
-      mailbox_free(&np->mailbox);
+      struct Mailbox *m = *mp;
 
-      FREE(&np);
+      // we make it invisible here to force the deletion of the mailbox
+      m->visible = false;
+      mailbox_free(&m);
     }
   }
+
+  ARRAY_FREE(&a->mailboxes);
 }
 
 /**

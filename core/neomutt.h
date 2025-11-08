@@ -25,7 +25,6 @@
 
 #include <locale.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <sys/types.h>
 #include "account.h"
 #include "command.h"
@@ -75,8 +74,7 @@ void            neomutt_accounts_free (struct NeoMutt *n);
 void            neomutt_free          (struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
 
-void   neomutt_mailboxlist_clear  (struct MailboxList *ml);
-size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n, enum MailboxType type);
+struct MailboxArray neomutt_mailboxes_get(struct NeoMutt *n, enum MailboxType type);
 
 // Similar to mutt_file_fopen, but with the proper permissions inferred from
 #define mutt_file_fopen_masked(PATH, MODE) mutt_file_fopen_masked_full(PATH, MODE, __FILE__, __LINE__, __func__)

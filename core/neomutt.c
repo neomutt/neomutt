@@ -30,7 +30,6 @@
 #include "config.h"
 #include <errno.h>
 #include <locale.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -175,43 +174,22 @@ void neomutt_accounts_free(struct NeoMutt *n)
 }
 
 /**
- * neomutt_mailboxlist_clear - Free a Mailbox List
- * @param ml Mailbox List to free
- *
- * @note The Mailboxes aren't freed
- */
-void neomutt_mailboxlist_clear(struct MailboxList *ml)
-{
-  if (!ml)
-    return;
-
-  struct MailboxNode *mn = NULL;
-  struct MailboxNode *tmp = NULL;
-  STAILQ_FOREACH_SAFE(mn, ml, entries, tmp)
-  {
-    STAILQ_REMOVE(ml, mn, MailboxNode, entries);
-    FREE(&mn);
-  }
-}
-
-/**
- * neomutt_mailboxlist_get_all - Get a List of all Mailboxes
- * @param head List to store the Mailboxes
+ * neomutt_mailboxes_get - Get an Array of matching Mailboxes
  * @param n    NeoMutt
  * @param type Type of Account to match, see #MailboxType
- * @retval num Number of Mailboxes in the List
+ * @retval obj Array of Mailboxes
  *
  * @note If type is #MUTT_MAILBOX_ANY then all Mailbox types will be matched
  */
-size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n,
-                                   enum MailboxType type)
+struct MailboxArray neomutt_mailboxes_get(struct NeoMutt *n, enum MailboxType type)
 {
-  if (!n)
-    return 0;
+  struct MailboxArray ma = ARRAY_HEAD_INITIALIZER;
 
-  size_t count = 0;
+  if (!n)
+    return ma;
+
   struct Account **ap = NULL;
-  struct MailboxNode *mn = NULL;
+  struct Mailbox **mp = NULL;
 
   ARRAY_FOREACH(ap, &n->accounts)
   {
@@ -219,16 +197,13 @@ size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n,
     if ((type > MUTT_UNKNOWN) && (a->type != type))
       continue;
 
-    STAILQ_FOREACH(mn, &a->mailboxes, entries)
+    ARRAY_FOREACH(mp, &a->mailboxes)
     {
-      struct MailboxNode *mn2 = MUTT_MEM_CALLOC(1, struct MailboxNode);
-      mn2->mailbox = mn->mailbox;
-      STAILQ_INSERT_TAIL(head, mn2, entries);
-      count++;
+      ARRAY_ADD(&ma, *mp);
     }
   }
 
-  return count;
+  return ma;
 }
 
 /**

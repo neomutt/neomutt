@@ -146,6 +146,7 @@ struct Mailbox
 
   int gen;                            ///< Generation number, for sorting
 };
+ARRAY_HEAD(MailboxArray, struct Mailbox *);
 
 /**
  * ExpandoDataMailbox - Expando UIDs for Mailboxes
@@ -158,16 +159,6 @@ enum ExpandoDataMailbox
   ED_MBX_MESSAGE_COUNT,        ///< Mailbox.msg_count
   ED_MBX_PERCENTAGE,           ///< EmailFormatInfo.pager_progress
 };
-
-/**
- * struct MailboxNode - List of Mailboxes
- */
-struct MailboxNode
-{
-  struct Mailbox *mailbox;           ///< Mailbox in the list
-  STAILQ_ENTRY(MailboxNode) entries; ///< Linked list
-};
-STAILQ_HEAD(MailboxList, MailboxNode);
 
 /**
  * enum NotifyMailbox - Types of Mailbox Event

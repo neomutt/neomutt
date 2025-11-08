@@ -788,12 +788,14 @@ static struct Mailbox *find_mailbox(struct ImapAccountData *adata, const char *n
   if (!adata || !adata->account || !name)
     return NULL;
 
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &adata->account->mailboxes, entries)
+  struct Mailbox **mp = NULL;
+  ARRAY_FOREACH(mp, &adata->account->mailboxes)
   {
-    struct ImapMboxData *mdata = imap_mdata_get(np->mailbox);
+    struct Mailbox *m = *mp;
+
+    struct ImapMboxData *mdata = imap_mdata_get(m);
     if (mutt_str_equal(name, mdata->name))
-      return np->mailbox;
+      return m;
   }
 
   return NULL;

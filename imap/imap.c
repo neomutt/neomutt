@@ -373,25 +373,26 @@ static int complete_hosts(struct Buffer *buf)
   size_t matchlen;
 
   matchlen = buf_len(buf);
-  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &ml, entries)
+  struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
+  struct Mailbox **mp = NULL;
+  ARRAY_FOREACH(mp, &ma)
   {
-    if (!mutt_str_startswith(mailbox_path(np->mailbox), buf_string(buf)))
+    struct Mailbox *m = *mp;
+
+    if (!mutt_str_startswith(mailbox_path(m), buf_string(buf)))
       continue;
 
     if (rc)
     {
-      buf_strcpy(buf, mailbox_path(np->mailbox));
+      buf_strcpy(buf, mailbox_path(m));
       rc = 0;
     }
     else
     {
-      longest_common_prefix(buf, mailbox_path(np->mailbox), matchlen);
+      longest_common_prefix(buf, mailbox_path(m), matchlen);
     }
   }
-  neomutt_mailboxlist_clear(&ml);
+  ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
 
 #if 0
   TAILQ_FOREACH(conn, mutt_socket_head(), entries)

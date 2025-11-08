@@ -509,15 +509,16 @@ int sb_recalc(struct MuttWindow *win)
 
   if (ARRAY_EMPTY(&wdata->entries))
   {
-    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-    struct MailboxNode *np = NULL;
-    STAILQ_FOREACH(np, &ml, entries)
+    struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
+    struct Mailbox **mp = NULL;
+    ARRAY_FOREACH(mp, &ma)
     {
-      if (np->mailbox->visible)
-        sb_add_mailbox(wdata, np->mailbox);
+      struct Mailbox *m = *mp;
+
+      if (m->visible)
+        sb_add_mailbox(wdata, m);
     }
-    neomutt_mailboxlist_clear(&ml);
+    ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
   }
 
   if (!prepare_sidebar(wdata, win->state.rows))

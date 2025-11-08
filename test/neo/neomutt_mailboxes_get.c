@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for neomutt_mailboxlist_get_all()
+ * Test code for neomutt_mailboxes_get()
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -29,14 +29,12 @@
 #include "core/lib.h"
 #include "test_common.h"
 
-void test_neomutt_mailboxlist_get_all(void)
+void test_neomutt_mailboxes_get(void)
 {
-  // size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n, enum MailboxType magic);
+  // struct MailboxArray neomutt_mailboxes_get(struct NeoMutt *n, enum MailboxType type);
 
   {
-    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    size_t count = neomutt_mailboxlist_get_all(&ml, NULL, MUTT_MAILDIR);
-    TEST_CHECK_NUM_EQ(count, 0);
-    TEST_CHECK(STAILQ_EMPTY(&ml) == true);
+    struct MailboxArray ma = neomutt_mailboxes_get(NULL, MUTT_MAILDIR);
+    TEST_CHECK(ARRAY_EMPTY(&ma) == true);
   }
 }
