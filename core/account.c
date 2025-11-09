@@ -90,50 +90,62 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
  * account_mailbox_remove - Remove a Mailbox from an Account
  * @param a Account
  * @param m Mailbox to remove
- * @retval true On success
  *
- * @note If m is NULL, all the mailboxes will be removed and FREE'd. Otherwise,
- * the specified mailbox is removed from the Account but not FREE'd.
+ * @note The mailbox is removed from the Account but not FREE'd
  */
-bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
+void account_mailbox_remove(struct Account *a, struct Mailbox *m)
 {
-  if (!a || STAILQ_EMPTY(&a->mailboxes))
-    return false;
+  if (!a)
+    return;
 
-  if (!m)
+  if (!STAILQ_EMPTY(&a->mailboxes))
+  {
+    struct MailboxNode *np = NULL;
+    struct MailboxNode *tmp = NULL;
+    STAILQ_FOREACH_SAFE(np, &a->mailboxes, entries, tmp)
+    {
+      if (m && (np->mailbox != m))
+        continue;
+
+      STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
+
+      m->account = NULL;
+      notify_set_parent(m->notify, NeoMutt->notify);
+      FREE(&np);
+      break;
+    }
+  }
+}
+
+/**
+ * account_mailboxes_free - Free all the Mailboxes on an Account
+ * @param a Account
+ *
+ * All the Mailboxes will be removed and FREE'd.
+ */
+void account_mailboxes_free(struct Account *a)
+{
+  if (!a)
+    return;
+
+  if (!STAILQ_EMPTY(&a->mailboxes))
   {
     mutt_debug(LL_NOTIFY, "NT_MAILBOX_DELETE_ALL\n");
     struct EventMailbox ev_m = { NULL };
     notify_send(a->notify, NT_MAILBOX, NT_MAILBOX_DELETE_ALL, &ev_m);
-  }
 
-  bool result = false;
-  struct MailboxNode *np = NULL;
-  struct MailboxNode *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, &a->mailboxes, entries, tmp)
-  {
-    if (m && (np->mailbox != m))
-      continue;
-
-    STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
-    if (m)
+    struct MailboxNode *np = NULL;
+    struct MailboxNode *tmp = NULL;
+    STAILQ_FOREACH_SAFE(np, &a->mailboxes, entries, tmp)
     {
-      m->account = NULL;
-      notify_set_parent(m->notify, NeoMutt->notify);
-    }
-    else
-    {
+      STAILQ_REMOVE(&a->mailboxes, np, MailboxNode, entries);
       // we make it invisible here to force the deletion of the mailbox
       np->mailbox->visible = false;
       mailbox_free(&np->mailbox);
-    }
-    FREE(&np);
-    result = true;
-    if (m)
-      break;
-  }
 
-  return result;
+      FREE(&np);
+    }
+  }
 }
 
 /**
@@ -152,7 +164,7 @@ void account_free(struct Account **ptr)
   struct EventAccount ev_a = { a };
   notify_send(a->notify, NT_ACCOUNT, NT_ACCOUNT_DELETE, &ev_a);
 
-  account_mailbox_remove(a, NULL);
+  account_mailboxes_free(a);
 
   if (a->adata && a->adata_free)
     a->adata_free(&a->adata);

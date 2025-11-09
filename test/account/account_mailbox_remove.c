@@ -38,11 +38,7 @@ static struct ConfigDef Vars[] = {
 
 void test_account_mailbox_remove(void)
 {
-  // bool account_mailbox_remove(struct Account *a, struct Mailbox *m);
-
-  {
-    TEST_CHECK(account_mailbox_remove(NULL, NULL) == false);
-  }
+  // void account_mailbox_remove(struct Account *a, struct Mailbox *m);
 
   {
     TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
@@ -59,9 +55,9 @@ void test_account_mailbox_remove(void)
     TEST_CHECK(account_mailbox_add(a, m2) == true);
     TEST_CHECK(account_mailbox_add(a, m3) == true);
 
-    TEST_CHECK(account_mailbox_remove(a, m2) == true);
-    TEST_CHECK(account_mailbox_remove(a, m1) == true);
-    TEST_CHECK(account_mailbox_remove(a, m3) == true);
+    account_mailbox_remove(a, m2);
+    account_mailbox_remove(a, m1);
+    account_mailbox_remove(a, m3);
 
     mailbox_free(&m1);
     mailbox_free(&m2);

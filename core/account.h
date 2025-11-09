@@ -80,7 +80,8 @@ struct EventAccount
 
 void            account_free          (struct Account **ptr);
 bool            account_mailbox_add   (struct Account *a, struct Mailbox *m);
-bool            account_mailbox_remove(struct Account *a, struct Mailbox *m);
+void            account_mailbox_remove(struct Account *a, struct Mailbox *m);
+void            account_mailboxes_free(struct Account *a);
 struct Account *account_new           (const char *name, struct ConfigSubset *sub);
 
 #endif /* MUTT_CORE_ACCOUNT_H */
