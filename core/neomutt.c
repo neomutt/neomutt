@@ -90,7 +90,7 @@ void neomutt_free(struct NeoMutt **ptr)
 
   struct NeoMutt *n = *ptr;
 
-  neomutt_account_remove(n, NULL);
+  neomutt_accounts_free(n);
   cs_subset_free(&n->sub);
   notify_free(&n->notify_resize);
   notify_free(&n->notify_timeout);
@@ -131,37 +131,48 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
  * neomutt_account_remove - Remove an Account from the global list
  * @param n NeoMutt
  * @param a Account to remove
- * @retval true Account was removed
- *
- * @note If a is NULL, all the Accounts will be removed
  */
-bool neomutt_account_remove(struct NeoMutt *n, const struct Account *a)
+void neomutt_account_remove(struct NeoMutt *n, const struct Account *a)
 {
-  if (!n || TAILQ_EMPTY(&n->accounts))
-    return false;
+  if (!n || !a || TAILQ_EMPTY(&n->accounts))
+    return;
 
-  if (!a)
-  {
-    mutt_debug(LL_NOTIFY, "NT_ACCOUNT_DELETE_ALL\n");
-    struct EventAccount ev_a = { NULL };
-    notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_DELETE_ALL, &ev_a);
-  }
-
-  bool result = false;
   struct Account *np = NULL;
   struct Account *tmp = NULL;
   TAILQ_FOREACH_SAFE(np, &n->accounts, entries, tmp)
   {
-    if (a && (np != a))
+    if (np != a)
       continue;
 
     TAILQ_REMOVE(&n->accounts, np, entries);
     account_free(&np);
-    result = true;
-    if (a)
-      break;
+    break;
   }
-  return result;
+}
+
+/**
+ * neomutt_accounts_free - - Free all the Accounts
+ * @param n NeoMutt
+ */
+void neomutt_accounts_free(struct NeoMutt *n)
+{
+  if (!n)
+    return;
+
+  if (!TAILQ_EMPTY(&n->accounts))
+  {
+    mutt_debug(LL_NOTIFY, "NT_ACCOUNT_DELETE_ALL\n");
+    struct EventAccount ev_a = { NULL };
+    notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_DELETE_ALL, &ev_a);
+
+    struct Account *np = NULL;
+    struct Account *tmp = NULL;
+    TAILQ_FOREACH_SAFE(np, &n->accounts, entries, tmp)
+    {
+      TAILQ_REMOVE(&n->accounts, np, entries);
+      account_free(&np);
+    }
+  }
 }
 
 /**
