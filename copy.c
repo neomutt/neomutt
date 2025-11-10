@@ -138,7 +138,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
 
       /* Convert CRLF line endings to LF */
       const size_t line_len = strlen(buf);
-      if (line_len > 2 && buf[line_len - 2] == '\r' && buf[line_len - 1] == '\n')
+      if ((line_len > 2) && (buf[line_len - 2] == '\r') && (buf[line_len - 1] == '\n'))
       {
         buf[line_len - 2] = '\n';
         buf[line_len - 1] = '\0';
