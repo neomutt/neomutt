@@ -168,7 +168,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
  */
 int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
 {
-  if (TAILQ_EMPTY(&NeoMutt->accounts)) // fast return if there are no mailboxes
+  if (ARRAY_EMPTY(&NeoMutt->accounts)) // fast return if there are no mailboxes
     return 0;
 
   if (flags & MUTT_MAILBOX_CHECK_POSTPONED)
@@ -202,12 +202,11 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
     st_cur.st_ino = 0;
   }
 
-  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, &ml, entries)
+  struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
+  struct Mailbox **mp = NULL;
+  ARRAY_FOREACH(mp, &ma)
   {
-    struct Mailbox *m = np->mailbox;
+    struct Mailbox *m = *mp;
 
     if (!m->visible || !m->poll_new_mail)
       continue;
@@ -222,7 +221,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
       MailboxCount++;
     m->first_check_stats_done = true;
   }
-  neomutt_mailboxlist_clear(&ml);
+  ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
 
   return MailboxCount;
 }
@@ -253,17 +252,18 @@ bool mutt_mailbox_list(void)
   struct Buffer *mailboxlist = buf_pool_get();
 
   buf_addstr(mailboxlist, _("New mail in "));
-  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-  struct MailboxNode *np = NULL;
+  struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
+  struct Mailbox **mp = NULL;
   bool any_new = false;
-  STAILQ_FOREACH(np, &ml, entries)
+  ARRAY_FOREACH(mp, &ma)
   {
+    struct Mailbox *m = *mp;
+
     /* Is there new mail in this mailbox? */
-    if (!np->mailbox->has_new || (have_unnotified && np->mailbox->notified))
+    if (!m->has_new || (have_unnotified && m->notified))
       continue;
 
-    buf_strcpy(path, mailbox_path(np->mailbox));
+    buf_strcpy(path, mailbox_path(m));
     buf_pretty_mailbox(path);
 
     if (any_new)
@@ -271,15 +271,15 @@ bool mutt_mailbox_list(void)
       buf_addstr(mailboxlist, ", ");
     }
 
-    if (!np->mailbox->notified)
+    if (!m->notified)
     {
-      np->mailbox->notified = true;
+      m->notified = true;
       MailboxNotify--;
     }
     buf_addstr(mailboxlist, buf_string(path));
     any_new = true;
   }
-  neomutt_mailboxlist_clear(&ml);
+  ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
 
   buf_pool_release(&path);
 
@@ -324,26 +324,27 @@ static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
   bool found = false;
   for (int pass = 0; pass < 2; pass++)
   {
-    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-    struct MailboxNode *np = NULL;
-    STAILQ_FOREACH(np, &ml, entries)
+    struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
+    struct Mailbox **mp = NULL;
+    ARRAY_FOREACH(mp, &ma)
     {
-      buf_expand_path(&np->mailbox->pathbuf);
-      struct Mailbox *m_cur = np->mailbox;
+      struct Mailbox *m = *mp;
+
+      buf_expand_path(&m->pathbuf);
+      struct Mailbox *m_cur = m;
 
       if ((found || (pass > 0)) && (find_new ? m_cur->has_new : m_cur->msg_unread > 0))
       {
-        buf_strcpy(s, mailbox_path(np->mailbox));
+        buf_strcpy(s, mailbox_path(m));
         buf_pretty_mailbox(s);
-        struct Mailbox *m_result = np->mailbox;
-        neomutt_mailboxlist_clear(&ml);
+        struct Mailbox *m_result = m;
+        ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
         return m_result;
       }
-      if (mutt_str_equal(buf_string(s), mailbox_path(np->mailbox)))
+      if (mutt_str_equal(buf_string(s), mailbox_path(m)))
         found = true;
     }
-    neomutt_mailboxlist_clear(&ml);
+    ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
   }
 
   return NULL;

@@ -37,7 +37,7 @@ struct Account
   enum MailboxType type;          ///< Type of Mailboxes this Account contains
   char *name;                     ///< Name of Account
   struct ConfigSubset *sub;       ///< Inherited config items
-  struct MailboxList mailboxes;   ///< List of Mailboxes
+  struct MailboxArray mailboxes;  ///< All Mailboxes
   struct Notify *notify;          ///< Notifications: #NotifyAccount, #EventAccount
   void *adata;                    ///< Private data (for Mailbox backends)
 
@@ -51,10 +51,8 @@ struct Account
    * @pre *ptr is not NULL
    */
   void (*adata_free)(void **ptr);
-
-  TAILQ_ENTRY(Account) entries;   ///< Linked list
 };
-TAILQ_HEAD(AccountList, Account);
+ARRAY_HEAD(AccountArray, struct Account *);
 
 /**
  * enum NotifyAccount - Types of Account Event
@@ -82,7 +80,8 @@ struct EventAccount
 
 void            account_free          (struct Account **ptr);
 bool            account_mailbox_add   (struct Account *a, struct Mailbox *m);
-bool            account_mailbox_remove(struct Account *a, struct Mailbox *m);
+void            account_mailbox_remove(struct Account *a, struct Mailbox *m);
+void            account_mailboxes_free(struct Account *a);
 struct Account *account_new           (const char *name, struct ConfigSubset *sub);
 
 #endif /* MUTT_CORE_ACCOUNT_H */

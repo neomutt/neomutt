@@ -25,7 +25,6 @@
 
 #include <locale.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <sys/types.h>
 #include "account.h"
 #include "command.h"
@@ -45,7 +44,7 @@ struct NeoMutt
   struct Notify *notify_resize;  ///< Window resize notifications handler
   struct Notify *notify_timeout; ///< Timeout notifications handler
   struct ConfigSubset *sub;      ///< Inherited config items
-  struct AccountList accounts;   ///< List of all Accounts
+  struct AccountArray accounts;  ///< All Accounts
   locale_t time_c_locale;        ///< Current locale but LC_TIME=C
   mode_t user_default_umask;     ///< User's default file writing permissions (inferred from umask)
   struct CommandArray commands;  ///< NeoMutt commands
@@ -70,12 +69,12 @@ enum NotifyGlobal
 };
 
 bool            neomutt_account_add   (struct NeoMutt *n, struct Account *a);
-bool            neomutt_account_remove(struct NeoMutt *n, const struct Account *a);
+void            neomutt_account_remove(struct NeoMutt *n, const struct Account *a);
+void            neomutt_accounts_free (struct NeoMutt *n);
 void            neomutt_free          (struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
 
-void   neomutt_mailboxlist_clear  (struct MailboxList *ml);
-size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n, enum MailboxType type);
+struct MailboxArray neomutt_mailboxes_get(struct NeoMutt *n, enum MailboxType type);
 
 // Similar to mutt_file_fopen, but with the proper permissions inferred from
 #define mutt_file_fopen_masked(PATH, MODE) mutt_file_fopen_masked_full(PATH, MODE, __FILE__, __LINE__, __func__)

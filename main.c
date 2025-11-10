@@ -1222,12 +1222,11 @@ int main(int argc, char *argv[], char *envp[])
   if (c_virtual_spool_file)
   {
     /* Find the first virtual folder and open it */
-    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_NOTMUCH);
-    struct MailboxNode *mp = STAILQ_FIRST(&ml);
+    struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_NOTMUCH);
+    struct Mailbox **mp = ARRAY_FIRST(&ma);
     if (mp)
-      cs_str_string_set(cs, "spool_file", mailbox_path(mp->mailbox), NULL);
-    neomutt_mailboxlist_clear(&ml);
+      cs_str_string_set(cs, "spool_file", mailbox_path(*mp), NULL);
+    ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
   }
 #endif
 
@@ -1660,7 +1659,7 @@ int main(int argc, char *argv[], char *envp[])
         if (!CurrentNewsSrv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
-      else if (TAILQ_EMPTY(&NeoMutt->accounts))
+      else if (ARRAY_EMPTY(&NeoMutt->accounts))
       {
         mutt_error(_("No incoming mailboxes defined"));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y

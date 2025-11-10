@@ -1446,15 +1446,14 @@ static void do_unmailboxes(struct Mailbox *m)
  */
 static void do_unmailboxes_star(void)
 {
-  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
-  struct MailboxNode *np = NULL;
-  struct MailboxNode *nptmp = NULL;
-  STAILQ_FOREACH_SAFE(np, &ml, entries, nptmp)
+  struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
+
+  struct Mailbox **mp = NULL;
+  ARRAY_FOREACH(mp, &ma)
   {
-    do_unmailboxes(np->mailbox);
+    do_unmailboxes(*mp);
   }
-  neomutt_mailboxlist_clear(&ml);
+  ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
 }
 
 /**
@@ -1477,10 +1476,10 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
 
     buf_expand_path(buf);
 
-    struct Account *a = NULL;
-    TAILQ_FOREACH(a, &NeoMutt->accounts, entries)
+    struct Account **ap = NULL;
+    ARRAY_FOREACH(ap, &NeoMutt->accounts)
     {
-      struct Mailbox *m = mx_mbox_find(a, buf_string(buf));
+      struct Mailbox *m = mx_mbox_find(*ap, buf_string(buf));
       if (m)
       {
         do_unmailboxes(m);
