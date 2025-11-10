@@ -115,18 +115,19 @@
 ** Specifies the format of the data displayed for the "$alias" menu.  The
 ** following \fCprintf(3)\fP-style sequences are available:
 ** .dl
-** .dt %a  .dd Alias name
-** .dt %A  .dd Full Address (Name and Email)
-** .dt %C  .dd Comment
-** .dt %E  .dd Email Address
-** .dt %f  .dd Flags - currently, a "d" for an alias marked for deletion
-** .dt %i  .dd Index number
-** .dt %N  .dd Real name
-** .dt %t  .dd Alias is tagged (selected)
-** .dt %Y  .dd User-defined tags (labels)
-** .dt %>X .dd right justify the rest of the string and pad with character "X"
-** .dt %|X .dd pad to the end of the line with character "X"
-** .dt %*X .dd soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong\fP .dd \fBDescription\fP
+** .dt %a  .dd %{alias}   .dd Alias name
+** .dt %A  .dd %{address} .dd Full Address (Name and Email)
+** .dt %C  .dd %{comment} .dd Comment
+** .dt %E  .dd %{email}   .dd Email Address
+** .dt %f  .dd %{flags}   .dd Flags - currently, a "d" for an alias marked for deletion
+** .dt %i  .dd %{number}  .dd Index number
+** .dt %N  .dd %{name}    .dd Real name
+** .dt %t  .dd %{tagged}  .dd Alias is tagged (selected)
+** .dt %Y  .dd %{tags}    .dd User-defined tags (labels)
+** .dt %>X .dd            .dd right justify the rest of the string and pad with character "X"
+** .dt %|X .dd            .dd pad to the end of the line with character "X"
+** .dt %*X .dd            .dd soft-fill with character "X" as pad
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
