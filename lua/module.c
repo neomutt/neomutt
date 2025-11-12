@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "module.h"
+#include "logging.h"
 
 void lua_commands_init(void);
 
@@ -72,6 +73,8 @@ void lua_cleanup(struct LuaModule **pptr)
     lm->lua_state = NULL;
   }
 
+  lua_log_close(&lm->log_file);
+
   FREE(pptr);
 }
 
@@ -82,8 +85,8 @@ void lua_cleanup(struct LuaModule **pptr)
  */
 static int lua_handle_panic(lua_State *l)
 {
-  mutt_debug(LL_DEBUG1, "lua runtime panic: %s\n", lua_tostring(l, -1));
-  mutt_error("Lua runtime panic: %s", lua_tostring(l, -1));
+  lua_debug(LL_DEBUG1, "lua runtime panic: %s\n", lua_tostring(l, -1));
+  lua_error("Lua runtime panic: %s", lua_tostring(l, -1));
   lua_pop(l, 1);
   return -1;
 }
@@ -103,10 +106,14 @@ lua_State *lua_init_state(void)
   if (lm->lua_state)
     return lm->lua_state;
 
+  if (!lm->log_file)
+    lm->log_file = lua_log_open();
+
   lm->lua_state = luaL_newstate();
   if (!lm->lua_state)
   {
-    mutt_error(_("Error: Couldn't load the lua interpreter"));
+    lua_error(_("Error: Couldn't load the lua interpreter"));
+    lua_log_close(&lm->log_file);
     return NULL;
   }
 
@@ -117,6 +124,8 @@ lua_State *lua_init_state(void)
   // Load Standard Libraries - https://www.lua.org/manual/5.4/manual.html#6
   luaL_openlibs(l);
 
-  mutt_debug(LL_DEBUG1, "init: stack %d\n", lua_gettop(l));
+  lua_log_init(l);
+
+  lua_debug(LL_DEBUG1, "init: stack %d\n", lua_gettop(l));
   return l;
 }
