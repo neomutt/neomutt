@@ -27,13 +27,17 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | lua/account.c       | @subpage lua_account       |
  * | lua/commands.c      | @subpage lua_commands      |
  * | lua/config.c        | @subpage lua_config        |
+ * | lua/email.c         | @subpage lua_email         |
  * | lua/global.c        | @subpage lua_global        |
  * | lua/helpers.c       | @subpage lua_helpers       |
  * | lua/iterator.c      | @subpage lua_email_array   |
  * | lua/logging.c       | @subpage lua_logging       |
+ * | lua/mailbox.c       | @subpage lua_mailbox       |
  * | lua/module.c        | @subpage lua_module        |
+ * | lua/neomutt.c       | @subpage lua_neomutt       |
  */
 
 #ifndef MUTT_LUA_LIB_H
