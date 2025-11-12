@@ -23,4 +23,8 @@
 #ifndef MUTT_LUA_CONFIG_H
 #define MUTT_LUA_CONFIG_H
 
+#include <lua.h>
+
+void lua_config_init(lua_State *l);
+
 #endif /* MUTT_LUA_CONFIG_H */

@@ -110,3 +110,29 @@ void lua_dump_stack(lua_State *l)
     }
   }
 }
+
+/**
+ * lua_index_lookup - Find a Function in Lua Table
+ * @param l  Lua State
+ * @param fn Function name to find
+ * @retval true Function was found
+ *
+ * Lua 'Classes' are tables of functions.
+ * `__index` is a metamethod that looks up the function.
+ */
+bool lua_index_lookup(lua_State *l, const char *fn)
+{
+  // Try actual metatable methods first
+  luaL_getmetatable(l, fn); // mt
+  lua_pushvalue(l, 2);              // key
+  lua_rawget(l, -2); // mt[key] - Get value without using __index redirection
+
+  if (!lua_isnil(l, -1))
+  {
+    lua_debug(LL_DEBUG1, "Found: %s.%s\n", fn, luaL_checkstring(l, 2));
+    return true;
+  }
+
+  lua_pop(l, 2); // remove nil + metatable
+  return false;
+}
