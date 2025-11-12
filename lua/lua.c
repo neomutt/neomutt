@@ -31,13 +31,6 @@
  * Integrated Lua scripting
  */
 
-#ifndef LUA_COMPAT_ALL
-#define LUA_COMPAT_ALL
-#endif
-#ifndef LUA_COMPAT_5_1
-#define LUA_COMPAT_5_1
-#endif
-
 #include "config.h"
 #include <lauxlib.h>
 #include <lua.h>
