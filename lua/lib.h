@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | lua/commands.c      | @subpage lua_commands      |
  * | lua/config.c        | @subpage lua_config        |
+ * | lua/global.c        | @subpage lua_global        |
  * | lua/helpers.c       | @subpage lua_helpers       |
  * | lua/logging.c       | @subpage lua_logging       |
  * | lua/module.c        | @subpage lua_module        |

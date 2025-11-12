@@ -616,7 +616,7 @@ $(PWD)/key:
 # liblua
 @if USE_LUA
 LIBLUA=		liblua.a
-LIBLUAOBJS=	lua/commands.o lua/config.o \
+LIBLUAOBJS=	lua/commands.o lua/config.o lua/global.o \
 		lua/helpers.o lua/logging.o \
 		lua/module.o
 CLEANFILES+=	$(LIBLUA) $(LIBLUAOBJS)
