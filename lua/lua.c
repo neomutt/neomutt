@@ -436,6 +436,7 @@ static void lua_expose_mutt(lua_State *l)
 void lua_account_class(lua_State *l);
 void lua_email_class(lua_State *l);
 void lua_emailarray_class(lua_State *l);
+void lua_index_class(lua_State *l);
 void lua_mailbox_class(lua_State *l);
 void lua_neomutt_class(lua_State *l);
 
@@ -478,6 +479,7 @@ bool lua_init_state(lua_State **l)
   lua_emailarray_class(*l);
   lua_account_class(*l);
   lua_email_class(*l);
+  lua_index_class(*l);
   lua_mailbox_class(*l);
   lua_neomutt_class(*l);
   lua_neomutt_init(*l);
