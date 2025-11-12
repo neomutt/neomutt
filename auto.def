@@ -570,7 +570,10 @@ if {[get-define want-lua]} {
                            && ![pkgconf false lua5.4]  && ![pkgconf false lua5.3]  && ![pkgconf false lua5.2]} {
     user-error "Unable to find LUA"
   }
+
   define USE_LUA
+  define-append CFLAGS -DLUA_COMPAT_ALL
+  define-append CFLAGS -DLUA_COMPAT_5_1
 }
 
 ###############################################################################
