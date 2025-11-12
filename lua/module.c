@@ -31,9 +31,12 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
+#include "logging.h"
 #include "module_data.h"
 
+extern struct ConfigDef LuaVars[];
 extern const struct Command LuaCommands[];
 
 /**
@@ -48,6 +51,14 @@ static bool lua_init(struct NeoMutt *n)
   notify_set_parent(mod_data->notify, n->notify);
 
   return true;
+}
+
+/**
+ * lua_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool lua_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, LuaVars);
 }
 
 /**
@@ -74,6 +85,8 @@ static bool lua_cleanup(struct NeoMutt *n, void *data)
     mod_data->lua_state = NULL;
   }
 
+  lua_log_close(&mod_data->log_file);
+
   FREE(&mod_data);
   return true;
 }
@@ -86,7 +99,7 @@ const struct Module ModuleLua = {
   "lua",
   lua_init,
   NULL, // config_define_types
-  NULL, // config_define_variables
+  lua_config_define_variables,
   lua_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
