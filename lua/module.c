@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "module.h"
+#include "global.h"
 #include "logging.h"
 
 void lua_commands_init(void);
@@ -125,6 +126,7 @@ lua_State *lua_init_state(void)
   luaL_openlibs(l);
 
   lua_log_init(l);
+  lua_global_init(l);
 
   lua_debug(LL_DEBUG1, "init: stack %d\n", lua_gettop(l));
   return l;
