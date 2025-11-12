@@ -103,6 +103,7 @@ static void lua_classes(lua_State *l)
   LUA_CLASS(config);
   LUA_CLASS(email);
   LUA_CLASS(emailarray);
+  LUA_CLASS(index);
   LUA_CLASS(mailbox);
   LUA_CLASS(neomutt);
 }
