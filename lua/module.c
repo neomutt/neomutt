@@ -37,6 +37,7 @@
 #include "config2.h"
 #include "global.h"
 #include "logging.h"
+#include "neomutt.h"
 
 void lua_commands_init(void);
 
@@ -98,8 +99,12 @@ static int lua_handle_panic(lua_State *l)
  */
 static void lua_classes(lua_State *l)
 {
+  LUA_CLASS(account);
   LUA_CLASS(config);
+  LUA_CLASS(email);
   LUA_CLASS(emailarray);
+  LUA_CLASS(mailbox);
+  LUA_CLASS(neomutt);
 }
 /**
  * lua_init_state - Initialise a Lua State
@@ -139,6 +144,7 @@ lua_State *lua_init_state(void)
   lua_log_init(l);
   lua_global_init(l);
   lua_config_init(l);
+  lua_neomutt_init(l);
 
   lua_debug(LL_DEBUG1, "init: stack %d\n", lua_gettop(l));
   return l;
