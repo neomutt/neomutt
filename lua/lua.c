@@ -47,6 +47,7 @@
 #include "logging.h"
 #include "module_data.h"
 #include "muttlib.h"
+#include "neomutt.h"
 #include "version.h"
 
 /**
@@ -432,7 +433,11 @@ static void lua_expose_mutt(lua_State *l)
   }
 }
 
+void lua_account_class(lua_State *l);
+void lua_email_class(lua_State *l);
 void lua_emailarray_class(lua_State *l);
+void lua_mailbox_class(lua_State *l);
+void lua_neomutt_class(lua_State *l);
 
 /**
  * lua_init_state - Initialise a Lua State
@@ -471,6 +476,11 @@ bool lua_init_state(lua_State **l)
   lua_global_init(*l);
   lua_config_init(*l);
   lua_emailarray_class(*l);
+  lua_account_class(*l);
+  lua_email_class(*l);
+  lua_mailbox_class(*l);
+  lua_neomutt_class(*l);
+  lua_neomutt_init(*l);
   lua_expose_mutt(*l);
 
   return true;
