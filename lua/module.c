@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "module.h"
+#include "config2.h"
 #include "global.h"
 #include "logging.h"
 
@@ -93,6 +94,13 @@ static int lua_handle_panic(lua_State *l)
 }
 
 /**
+ * lua_classes - Set up all the Lua Classes
+ */
+static void lua_classes(lua_State *l)
+{
+  LUA_CLASS(config);
+}
+/**
  * lua_init_state - Initialise a Lua State
  * @param[out] l Lua State
  * @retval true Successful
@@ -125,8 +133,11 @@ lua_State *lua_init_state(void)
   // Load Standard Libraries - https://www.lua.org/manual/5.4/manual.html#6
   luaL_openlibs(l);
 
+  lua_classes(l);
+
   lua_log_init(l);
   lua_global_init(l);
+  lua_config_init(l);
 
   lua_debug(LL_DEBUG1, "init: stack %d\n", lua_gettop(l));
   return l;
