@@ -33,6 +33,7 @@
  * | lua/email.c         | @subpage lua_email         |
  * | lua/global.c        | @subpage lua_global        |
  * | lua/helpers.c       | @subpage lua_helpers       |
+ * | lua/index.c         | @subpage lua_index         |
  * | lua/iterator.c      | @subpage lua_email_array   |
  * | lua/logging.c       | @subpage lua_logging       |
  * | lua/mailbox.c       | @subpage lua_mailbox       |
