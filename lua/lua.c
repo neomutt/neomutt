@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2016-2017 Bernard Pratz <z+mutt+pub@m0g.net>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Victor Fernandes <criw@pm.me>
  * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  * Copyright (C) 2019-2020 Pietro Cerutti <gahr@gahr.ch>
@@ -31,13 +31,6 @@
  * Integrated Lua scripting
  */
 
-#ifndef LUA_COMPAT_ALL
-#define LUA_COMPAT_ALL
-#endif
-#ifndef LUA_COMPAT_5_1
-#define LUA_COMPAT_5_1
-#endif
-
 #include "config.h"
 #include <lauxlib.h>
 #include <lua.h>
@@ -48,7 +41,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "lib.h"
 #include "parse/lib.h"
 #include "muttlib.h"
 #include "version.h"
