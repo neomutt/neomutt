@@ -42,6 +42,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+#include "config2.h"
 #include "global.h"
 #include "logging.h"
 #include "module_data.h"
@@ -466,6 +467,7 @@ bool lua_init_state(lua_State **l)
   luaL_openlibs(*l);
   lua_log_init(*l);
   lua_global_init(*l);
+  lua_config_init(*l);
   lua_expose_mutt(*l);
 
   return true;
