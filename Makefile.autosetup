@@ -618,7 +618,7 @@ $(PWD)/key:
 LIBLUA=		liblua.a
 LIBLUAOBJS=	lua/account.o lua/commands.o lua/config.o lua/email.o lua/global.o \
 		lua/helpers.o lua/iterator.o lua/logging.o \
-		lua/mailbox.o lua/module.o lua/neomutt.o
+		lua/index.o lua/mailbox.o lua/module.o lua/neomutt.o
 CLEANFILES+=	$(LIBLUA) $(LIBLUAOBJS)
 ALLOBJS+=	$(LIBLUAOBJS)
 
