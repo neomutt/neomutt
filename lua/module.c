@@ -33,6 +33,8 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "config2.h"
+#include "global.h"
 #include "logging.h"
 #include "module_data.h"
 
