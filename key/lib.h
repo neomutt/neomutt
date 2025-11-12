@@ -109,6 +109,7 @@ extern const struct Mapping Menus[];
 typedef uint8_t MenuFuncFlags;          ///< Flags, e.g. #MFF_DEPRECATED
 #define MFF_NO_FLAGS               0    ///< No flags are set
 #define MFF_DEPRECATED       (1 << 1)   ///< Redraw the pager
+#define MFF_LUA              (1 << 2)   ///< Lua is permitted to use this function
 
 /**
  * struct MenuFuncOp - Mapping between a function and an operation
