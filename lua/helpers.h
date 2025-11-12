@@ -26,8 +26,9 @@
 #include <stdbool.h>
 #include <lua.h>
 
-void        lua_dump_stack(lua_State *l);
-const char *lua_type_name (int type);
+void        lua_dump_stack  (lua_State *l);
+bool        lua_index_lookup(lua_State *l, const char *class_name);
+const char *lua_type_name   (int type);
 
 #define LUA_PUSH_OBJECT(L, TYPENAME, OBJ)                                      \
   do                                                                           \
