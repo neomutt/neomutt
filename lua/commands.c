@@ -26,27 +26,17 @@
  * Lua Commands
  */
 
-#ifndef LUA_COMPAT_ALL
-#define LUA_COMPAT_ALL
-#endif
-#ifndef LUA_COMPAT_5_1
-#define LUA_COMPAT_5_1
-#endif
-
 #include "config.h"
 #include <lauxlib.h>
 #include <lua.h>
-#include <lualib.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
 #include "muttlib.h"
-#include "version.h"
 
 extern lua_State *LuaState;
 
