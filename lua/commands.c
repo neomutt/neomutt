@@ -35,6 +35,7 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
+#include "logging.h"
 #include "module.h"
 #include "muttlib.h"
 
@@ -61,18 +62,24 @@ enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, str
   if (!l)
     return MUTT_CMD_ERROR;
 
-  mutt_debug(LL_DEBUG2, "%s\n", buf_string(token));
+  lua_debug(LL_DEBUG2, "%s\n", buf_string(token));
 
   if (luaL_dostring(l, buf_string(token)) != LUA_OK)
   {
-    mutt_debug(LL_DEBUG2, "%s -> failure\n", buf_string(token));
-    buf_printf(err, "%s: %s", buf_string(token), lua_tostring(l, -1));
+    lua_debug(LL_DEBUG2, "%s -> failure\n", buf_string(token));
+    // buf_printf(err, "%s: %s", buf_string(token), lua_tostring(l, -1));
+    buf_strcpy(err, lua_tostring(l, -1));
     /* pop error message from the stack */
+    // lua_debug(LL_DEBUG1, "parse_lua1: stack: %d\n", lua_gettop(l));
     lua_pop(l, 1);
+    // lua_debug(LL_DEBUG1, "parse_lua2: stack: %d\n", lua_gettop(l));
     goto done;
   }
-  mutt_debug(LL_DEBUG2, "%s -> success\n", buf_string(token));
+
+  // lua_debug(LL_DEBUG1, "parse_lua3: stack: %d\n", lua_gettop(l));
+  lua_debug(LL_DEBUG2, "%s -> success\n", buf_string(token));
   buf_reset(line); // Clear the rest of the line
+  // mutt_refresh();
 
   rc = MUTT_CMD_SUCCESS;
 
@@ -119,7 +126,7 @@ enum CommandResult parse_lua_source(const struct Command *cmd,
 
   if (luaL_dofile(l, buf_string(token)) != LUA_OK)
   {
-    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(l, -1));
+    lua_error(_("Couldn't source lua source: %s"), lua_tostring(l, -1));
     lua_pop(l, 1);
     goto done;
   }

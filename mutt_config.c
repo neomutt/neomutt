@@ -914,6 +914,7 @@ static void init_variables(struct ConfigSet *cs)
   CONFIG_INIT_VARS(cs, history);
   CONFIG_INIT_VARS(cs, imap);
   CONFIG_INIT_VARS(cs, index);
+  CONFIG_INIT_VARS(cs, lua);
   CONFIG_INIT_VARS(cs, maildir);
   CONFIG_INIT_VARS(cs, mbox);
   CONFIG_INIT_VARS(cs, menu);
