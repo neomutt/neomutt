@@ -42,6 +42,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+#include "logging.h"
+#include "module_data.h"
 #include "muttlib.h"
 #include "version.h"
 
@@ -440,12 +442,20 @@ bool lua_init_state(lua_State **l)
   if (*l)
     return true;
 
-  mutt_debug(LL_DEBUG2, "enter\n");
+  struct LuaModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_LUA);
+  if (!mod_data)
+    return false;
+
+  if (!mod_data->log_file)
+    mod_data->log_file = lua_log_open();
+
+  lua_debug(LL_DEBUG2, "enter\n");
   *l = luaL_newstate();
 
   if (!*l)
   {
-    mutt_error(_("Error: Couldn't load the lua interpreter"));
+    lua_error(_("Error: Couldn't load the lua interpreter"));
+    lua_log_close(&mod_data->log_file);
     return false;
   }
 
@@ -453,6 +463,7 @@ bool lua_init_state(lua_State **l)
 
   /* load various Lua libraries */
   luaL_openlibs(*l);
+  lua_log_init(*l);
   lua_expose_mutt(*l);
 
   return true;
