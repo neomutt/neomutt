@@ -36,6 +36,7 @@
 #include "module.h"
 #include "config2.h"
 #include "global.h"
+#include "gui.h"
 #include "logging.h"
 #include "neomutt.h"
 
@@ -146,6 +147,7 @@ lua_State *lua_init_state(void)
   lua_global_init(l);
   lua_config_init(l);
   lua_neomutt_init(l);
+  lua_gui_init(l);
 
   lua_debug(LL_DEBUG1, "init: stack %d\n", lua_gettop(l));
   return l;
