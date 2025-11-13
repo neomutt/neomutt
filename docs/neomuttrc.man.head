@@ -553,7 +553,9 @@ Missing key sequence in \fBunmacro\fP command means unmacro all macros in menus 
            [\fB-poll\fP | \fB-nopoll\fP]
            \fImailbox\fP] [ ... ]
 \fBnamed-mailboxes\fP \fIlabel\fP \fImailbox\fP [\fIlabel\fP \fImailbox\fP ... ]
+\fBvirtual-mailboxes\fP \fIdescription\fP \fInotmuch-URL\fP { \fIdescription\fP \fInotmuch-URL\fP ... }
 \fBunmailboxes\fP { \fB*\fP | \fImailbox\fP ... }
+\fBunvirtual-mailboxes\fP { \fB*\fP | \fImailbox\fP ... }
 .fi
 .IP
 The \fBmailboxes\fP specifies folders which can receive mail and which will be
@@ -564,9 +566,15 @@ The \fBnamed-mailboxes\fP is an alternative to \fBmailboxes\fP \fB-label\fP
 \fIlabel\fP.  NeoMutt can be configured to display the label instead of the
 mailbox path.
 .IP
+\fBvirtual-mailboxes\fP is like the \fBmailboxes\fP command except that it takes
+a description. The mailbox will be watched for new mail and will appear in the
+sidebar.
+.IP
 The \fBunmailboxes\fP command is used to remove a file name from the list of
 folders which can receive mail. If \(lq\fB*\fP\(rq is specified as the file
 name, the list is emptied.
+.IP
+\fBunvirtual-mailboxes\fP is identical to the \fBunmailboxes\fP command.
 .
 .PP
 .nf
