@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
 #include "logging.h"
