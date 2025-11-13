@@ -427,7 +427,12 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
     return;
   }
 
-  mutt_debug(LL_DEBUG2, "Message UID %u updated\n", imap_edata_get(e)->uid);
+  struct ImapEmailData *edata = imap_edata_get(e);
+  if (edata)
+  {
+    mutt_debug(LL_DEBUG2, "Message UID %u updated\n", edata->uid);
+    return;
+  }
   /* skip FETCH */
   s = imap_next_word(s);
   s = imap_next_word(s);
