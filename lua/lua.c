@@ -44,6 +44,7 @@
 #include "parse/lib.h"
 #include "config2.h"
 #include "global.h"
+#include "gui.h"
 #include "logging.h"
 #include "module_data.h"
 #include "muttlib.h"
@@ -483,6 +484,7 @@ bool lua_init_state(lua_State **l)
   lua_mailbox_class(*l);
   lua_neomutt_class(*l);
   lua_neomutt_init(*l);
+  lua_gui_init(*l);
   lua_expose_mutt(*l);
 
   return true;
