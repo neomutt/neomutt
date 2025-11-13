@@ -755,8 +755,6 @@ static void localise_config(struct ConfigSet *cs)
  */
 static int start_curses(void)
 {
-  km_init(); /* must come before mutt_init */
-
   /* should come before initscr() so that ncurses 4.2 doesn't try to install
    * its own SIGWINCH handler */
   mutt_signal_init();
@@ -1200,6 +1198,7 @@ int main(int argc, char *argv[], char *envp[])
   imap_init();
   lua_init();
   driver_tags_init();
+  km_init();
 
   menu_init();
   sb_init();
