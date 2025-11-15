@@ -42,6 +42,7 @@ enum MenuType
   MENU_EDITOR,           ///< Text entry area
   MENU_GENERIC,          ///< Generic selection list
   MENU_INDEX,            ///< Index panel (list of emails)
+  MENU_LUA,              ///< Lua Console
   MENU_PAGER,            ///< Pager pager (email viewer)
   MENU_PGP,              ///< PGP encryption menu
   MENU_POSTPONED,        ///< Select a postponed email

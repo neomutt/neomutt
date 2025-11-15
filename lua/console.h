@@ -1,6 +1,6 @@
 /**
  * @file
- * Lua Module
+ * Lua Console
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -20,44 +20,28 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LUA_MODULE_H
-#define MUTT_LUA_MODULE_H
-
-#include <lua.h>
-#include "core/lib.h"
+#ifndef MUTT_LUA_CONSOLE_H
+#define MUTT_LUA_CONSOLE_H
 
 /**
- * struct LuaModule - Wrapper for the Lua Variables
+ * struct LuaConsoleInfo - Private data for the Lua Console
  */
-struct LuaModule
+struct LuaConsoleInfo
 {
-  lua_State             *lua_state;      ///< Lua State
-  struct LuaLogFile     *log_file;       ///< Log File
-  struct LuaConsoleInfo *console;        ///< Lua Console
+  struct Menu *menu;    ///< Menu
 };
 
-lua_State *lua_init_state(void);
-
 /**
- * lua_get_state - XXX
+ * enum LuaConsoleVisibilty - XXX
  */
-static inline lua_State *lua_get_state(void)
+enum LuaConsoleVisibilty
 {
-  if (NeoMutt && NeoMutt->lua_module)
-    return NeoMutt->lua_module->lua_state;
+  LCV_SHOW,             ///< Make the Lua Console visible
+  LCV_HIDE,             ///< Hide the Lua Console
+  LCV_TOGGLE,           ///< Toggle the visibility of the Lua Console
+};
 
-  return NULL;
-}
+void lua_console_set_visibility(enum LuaConsoleVisibilty vis);
+void lua_console_update(void);
 
-/**
- * lua_get_log_file - XXX
- */
-static inline struct LuaLogFile *lua_get_log_file(void)
-{
-  if (NeoMutt && NeoMutt->lua_module)
-    return NeoMutt->lua_module->log_file;
-
-  return NULL;
-}
-
-#endif /* MUTT_LUA_MODULE_H */
+#endif /* MUTT_LUA_CONSOLE_H */

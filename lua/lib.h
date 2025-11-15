@@ -30,6 +30,7 @@
  * | lua/account.c       | @subpage lua_account       |
  * | lua/commands.c      | @subpage lua_commands      |
  * | lua/config.c        | @subpage lua_config        |
+ * | lua/console.c       | @subpage lua_console       |
  * | lua/email.c         | @subpage lua_email         |
  * | lua/global.c        | @subpage lua_global        |
  * | lua/gui.c           | @subpage lua_gui           |
