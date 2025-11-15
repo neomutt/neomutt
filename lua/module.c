@@ -35,6 +35,7 @@
 #include "mutt/lib.h"
 #include "module.h"
 #include "config2.h"
+#include "console.h"
 #include "global.h"
 #include "gui.h"
 #include "logging.h"
@@ -57,6 +58,7 @@ struct LuaModule *lua_init(void)
 
   // Lua State and Log file will be initialised lazily
   // on a lua-* command from the user
+  // XXX and console
 
   return lm;
 }
@@ -70,6 +72,9 @@ void lua_cleanup(struct LuaModule **pptr)
     return;
 
   struct LuaModule *lm = *pptr;
+
+  // Disable the Console, XXX Menu manages the object
+  lm->console = NULL;
 
   if (lm->lua_state)
   {
@@ -110,7 +115,6 @@ static void lua_classes(lua_State *l)
 }
 /**
  * lua_init_state - Initialise a Lua State
- * @param[out] l Lua State
  * @retval true Successful
  * XXX
  */

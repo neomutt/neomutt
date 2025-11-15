@@ -37,6 +37,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
+#include "console.h"
 #include "logging.h"
 #include "module.h"
 #include "muttlib.h"
@@ -70,6 +71,65 @@ static enum CommandResult parse_lua(struct Buffer *buf, struct Buffer *s,
   buf_reset(s); // Clear the rest of the line
   // mutt_refresh();
   return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_lua_console - Parse the 'lua-console' command - Implements Command::parse() - @ingroup command_parse
+ */
+static enum CommandResult parse_lua_console(struct Buffer *buf, struct Buffer *s,
+                                            intptr_t data, struct Buffer *err)
+{
+  lua_debug(LL_DEBUG2, "enter\n");
+
+  if (!MoreArgs(s))
+  {
+    buf_printf(err, _("%s: too few arguments"), "lua-console");
+    return MUTT_CMD_WARNING;
+  }
+
+  if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
+  {
+    buf_printf(err, _("source: error at %s"), s->dptr);
+    return MUTT_CMD_ERROR;
+  }
+
+  if (MoreArgs(s))
+  {
+    buf_printf(err, _("%s: too many arguments"), "lua-console");
+    return MUTT_CMD_WARNING;
+  }
+
+  if (mutt_str_equal(buf_string(buf), "show"))
+  {
+    lua_console_set_visibility(LCV_SHOW);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  if (mutt_str_equal(buf_string(buf), "hide"))
+  {
+    lua_console_set_visibility(LCV_HIDE);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  if (mutt_str_equal(buf_string(buf), "toggle"))
+  {
+    lua_console_set_visibility(LCV_TOGGLE);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  if (mutt_str_equal(buf_string(buf), "reset"))
+  {
+    if (NeoMutt && NeoMutt->lua_module)
+    {
+      lua_log_reset(NeoMutt->lua_module->log_file);
+      lua_console_update();
+    }
+
+    return MUTT_CMD_SUCCESS;
+  }
+
+  buf_printf(err, _("%s: unknown command '%s'"), "lua-console", buf_string(buf));
+  return MUTT_CMD_WARNING;
 }
 
 /**
@@ -115,6 +175,7 @@ static enum CommandResult parse_lua_source(struct Buffer *buf, struct Buffer *s,
 static const struct Command LuaCommands[] = {
   // clang-format off
   { "lua",         parse_lua,         0 },
+  { "lua-console", parse_lua_console, 0 },
   { "lua-source",  parse_lua_source,  0 },
   { NULL, NULL, 0 },
   // clang-format on
