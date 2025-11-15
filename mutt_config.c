@@ -459,7 +459,7 @@ static struct ConfigDef MainVars[] = {
   { "debug_file", DT_PATH|D_PATH_FILE, IP "~/.neomuttdebug", 0, NULL,
     "File to save debug logs"
   },
-  { "debug_level", DT_NUMBER, 0, 0, level_validator,
+  { "debug_level", DT_NUMBER, 0, 0, debug_level_validator,
     "Logging level for debug logs"
   },
   { "default_hook", DT_STRING, IP "~f %s !~P | (~P ~C %s)", 0, NULL,
