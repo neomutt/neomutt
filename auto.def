@@ -116,6 +116,7 @@ set valid_options {
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
   debug-keymap=0            => "DEBUG: Enable Key mappings dump"
   debug-logging=0           => "DEBUG: Enable Debug logging"
+  debug-lua=0               => "DEBUG: Enable Lua debugging"
   debug-names=0             => "DEBUG: Enable Name lookup tables"
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-queue=0             => "DEBUG: Enable TAILQ debugging"
@@ -174,7 +175,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color
-    debug-email debug-graphviz debug-keymap debug-logging debug-names
+    debug-email debug-graphviz debug-keymap debug-logging debug-lua debug-names
     debug-notify debug-queue debug-window doc everything fmemopen full-doc
     fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 inotify kyotocabinet
     lmdb locales-fix lua lz4 nls notmuch paths-in-cflags pcre2 pgp
@@ -1058,6 +1059,12 @@ if {[get-define want-debug-keymap]} {
 # Logging
 if {[get-define want-debug-logging]} {
   define USE_DEBUG_LOGGING 1
+  define debug_build 1
+}
+
+# Lua debugging
+if {[get-define want-debug-lua]} {
+  define USE_DEBUG_LUA 1
   define debug_build 1
 }
 
