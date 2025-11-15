@@ -33,9 +33,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "config2.h"
-#include "global.h"
-#include "gui.h"
 #include "logging.h"
 #include "module_data.h"
 
@@ -78,6 +75,9 @@ static bool lua_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 static bool lua_cleanup(struct NeoMutt *n, void *data)
 {
   struct LuaModuleData *mod_data = data;
+
+  // Disable the Console
+  mod_data->console = NULL;
 
   notify_free(&mod_data->notify);
 

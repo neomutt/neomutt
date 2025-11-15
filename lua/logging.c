@@ -31,10 +31,12 @@
 #include <lua.h>
 #include <stdarg.h>
 #include <string.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "logging.h"
+#include "console.h"
 #include "helpers.h"
 #include "module.h"
 
@@ -129,6 +131,7 @@ void lua_log_close(struct LuaLogFile **pptr)
   struct LuaLogFile *llf = *pptr;
 
   mutt_file_fclose(&llf->fp);
+  ARRAY_FREE(&llf->line_offsets);
   FREE(pptr);
 }
 
@@ -239,6 +242,8 @@ int log_disp_lua(time_t stamp, const char *file, int line, const char *function,
   offset = ftell(llf->fp);
   ARRAY_ADD(&llf->line_offsets, offset);
   // dump_lines(&llf->line_offsets);
+
+  lua_console_update();
 
   return bytes;
 }

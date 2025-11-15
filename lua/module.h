@@ -28,6 +28,8 @@
 #include "core/lib.h"
 #include "module_data.h"
 
+struct LuaConsoleInfo;
+
 /**
  * lua_get_state - Get the Lua State
  * @retval ptr  Lua State
@@ -48,6 +50,28 @@ static inline struct LuaLogFile *lua_get_log_file(void)
 {
   struct LuaModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_LUA);
   return mod_data ? mod_data->log_file : NULL;
+}
+
+/**
+ * lua_get_console - Get the Lua Console
+ * @retval ptr  Lua Console Info
+ * @retval NULL No console available
+ */
+static inline struct LuaConsoleInfo *lua_get_console(void)
+{
+  struct LuaModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_LUA);
+  return mod_data ? mod_data->console : NULL;
+}
+
+/**
+ * lua_set_console - Set the Lua Console
+ * @param console Lua Console Info
+ */
+static inline void lua_set_console(struct LuaConsoleInfo *console)
+{
+  struct LuaModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_LUA);
+  if (mod_data)
+    mod_data->console = console;
 }
 
 #endif /* MUTT_LUA_MODULE_H */
