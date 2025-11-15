@@ -24,6 +24,7 @@
 #define MUTT_LUA_LOGGING_H
 
 #include <lua.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
 #include "mutt/lib.h"

@@ -1,9 +1,9 @@
 /**
  * @file
- * Lua private Module data
+ * Lua Console
  *
  * @authors
- * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,20 +20,28 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_LUA_MODULE_DATA_H
-#define MUTT_LUA_MODULE_DATA_H
-
-#include <lua.h>
+#ifndef MUTT_LUA_CONSOLE_H
+#define MUTT_LUA_CONSOLE_H
 
 /**
- * struct LuaModuleData - Lua private Module data
+ * struct LuaConsoleInfo - Private data for the Lua Console
  */
-struct LuaModuleData
+struct LuaConsoleInfo
 {
-  struct Notify         *notify;      ///< Notifications
-  lua_State             *lua_state;   ///< Lua State
-  struct LuaLogFile     *log_file;    ///< Log File
-  struct LuaConsoleInfo *console;     ///< Lua Console
+  struct Menu *menu;    ///< Menu
 };
 
-#endif /* MUTT_LUA_MODULE_DATA_H */
+/**
+ * enum LuaConsoleVisibilty - XXX
+ */
+enum LuaConsoleVisibilty
+{
+  LCV_SHOW,             ///< Make the Lua Console visible
+  LCV_HIDE,             ///< Hide the Lua Console
+  LCV_TOGGLE,           ///< Toggle the visibility of the Lua Console
+};
+
+void lua_console_set_visibility(enum LuaConsoleVisibilty vis);
+void lua_console_update(void);
+
+#endif /* MUTT_LUA_CONSOLE_H */
