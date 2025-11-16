@@ -28,13 +28,12 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | lua/commands.c      | @subpage lua_commands      |
- * | lua/module.c        | @subpage lua_module        |
  * | lua/lua.c           | @subpage lua_lua           |
+ * | lua/module.c        | @subpage lua_module        |
  */
 
 #ifndef MUTT_LUA_LIB_H
 #define MUTT_LUA_LIB_H
-
 
 #ifdef USE_LUA
 
