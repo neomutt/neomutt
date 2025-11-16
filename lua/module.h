@@ -1,6 +1,6 @@
 /**
  * @file
- * Integrated Lua scripting
+ * Lua Module
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -20,35 +20,43 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MUTT_LUA_MODULE_H
+#define MUTT_LUA_MODULE_H
+
+#include <lua.h>
+#include "core/lib.h"
+
 /**
- * @page lib_lua Integrated Lua scripting
- *
- * Integrated Lua scripting
- *
- * | File                | Description                |
- * | :------------------ | :------------------------- |
- * | lua/commands.c      | @subpage lua_commands      |
- * | lua/lua.c           | @subpage lua_lua           |
- * | lua/module.c        | @subpage lua_module        |
+ * struct LuaModule - Wrapper for the Lua Variables
  */
+struct LuaModule
+{
+  lua_State             *lua_state;      ///< Lua State
+  struct LuaLogFile     *log_file;       ///< Log File
+};
 
-#ifndef MUTT_LUA_LIB_H
-#define MUTT_LUA_LIB_H
+lua_State *lua_init_state(void);
 
-#include "config.h"
+/**
+ * lua_get_state - XXX
+ */
+static inline lua_State *lua_get_state(void)
+{
+  if (NeoMutt && NeoMutt->lua_module)
+    return NeoMutt->lua_module->lua_state;
 
-struct LuaModule;
+  return NULL;
+}
 
-#ifdef USE_LUA
+/**
+ * lua_get_log_file - XXX
+ */
+static inline struct LuaLogFile *lua_get_log_file(void)
+{
+  if (NeoMutt && NeoMutt->lua_module)
+    return NeoMutt->lua_module->log_file;
 
-struct LuaModule *lua_init   (void);
-void              lua_cleanup(struct LuaModule **pptr);
+  return NULL;
+}
 
-#else
-
-static inline struct LuaModule *lua_init(void) { return NULL; }
-static inline void lua_cleanup(struct LuaModule **pptr) {}
-
-#endif
-
-#endif /* MUTT_LUA_LIB_H */
+#endif /* MUTT_LUA_MODULE_H */
