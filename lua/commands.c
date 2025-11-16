@@ -35,11 +35,8 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
+#include "module.h"
 #include "muttlib.h"
-
-extern lua_State *LuaState;
-
-bool lua_init_state(lua_State **l);
 
 /**
  * parse_lua - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
@@ -60,15 +57,18 @@ enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, str
 
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-  lua_init_state(&LuaState);
+  lua_State *l = lua_init_state();
+  if (!l)
+    return MUTT_CMD_ERROR;
+
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(token));
 
-  if (luaL_dostring(LuaState, buf_string(token)) != LUA_OK)
+  if (luaL_dostring(l, buf_string(token)) != LUA_OK)
   {
     mutt_debug(LL_DEBUG2, "%s -> failure\n", buf_string(token));
-    buf_printf(err, "%s: %s", buf_string(token), lua_tostring(LuaState, -1));
+    buf_printf(err, "%s: %s", buf_string(token), lua_tostring(l, -1));
     /* pop error message from the stack */
-    lua_pop(LuaState, 1);
+    lua_pop(l, 1);
     goto done;
   }
   mutt_debug(LL_DEBUG2, "%s -> success\n", buf_string(token));
@@ -99,9 +99,9 @@ enum CommandResult parse_lua_source(const struct Command *cmd,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  mutt_debug(LL_DEBUG2, "enter\n");
-
-  lua_init_state(&LuaState);
+  lua_State *l = lua_init_state();
+  if (!l)
+    return MUTT_CMD_ERROR;
 
   if (parse_extract_token(token, line, TOKEN_NO_FLAGS) != 0)
   {
@@ -117,10 +117,10 @@ enum CommandResult parse_lua_source(const struct Command *cmd,
 
   buf_expand_path(token);
 
-  if (luaL_dofile(LuaState, buf_string(token)) != LUA_OK)
+  if (luaL_dofile(l, buf_string(token)) != LUA_OK)
   {
-    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(LuaState, -1));
-    lua_pop(LuaState, 1);
+    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(l, -1));
+    lua_pop(l, 1);
     goto done;
   }
 
@@ -150,21 +150,9 @@ static const struct Command LuaCommands[] = {
 };
 
 /**
- * lua_init - Setup feature commands
+ * lua_commands_init - Setup Lua commands
  */
-void lua_init(void)
+void lua_commands_init(void)
 {
   commands_register(&NeoMutt->commands, LuaCommands);
-}
-
-/**
- * lua_cleanup - Clean up Lua
- */
-void lua_cleanup(void)
-{
-  if (LuaState)
-  {
-    lua_close(LuaState);
-    LuaState = NULL;
-  }
 }

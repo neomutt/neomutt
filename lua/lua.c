@@ -45,9 +45,6 @@
 #include "muttlib.h"
 #include "version.h"
 
-/// Global Lua State
-lua_State *LuaState = NULL;
-
 /**
  * lua_handle_panic - Handle a panic in the Lua interpreter
  * @param l Lua State

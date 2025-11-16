@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | lua/commands.c      | @subpage lua_commands      |
  * | lua/lua.c           | @subpage lua_lua           |
+ * | lua/module.c        | @subpage lua_module        |
  */
 
 #ifndef MUTT_LUA_LIB_H
@@ -36,21 +37,23 @@
 
 #include "config.h"
 
+struct LuaModule;
+
 #ifdef USE_LUA
 
 struct Buffer;
 struct Command;
 
-void lua_init   (void);
-void lua_cleanup(void);
+struct LuaModule *lua_init   (void);
+void              lua_cleanup(struct LuaModule **pptr);
 
 enum CommandResult parse_lua       (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 #else
 
-static inline void lua_init   (void) {}
-static inline void lua_cleanup(void) {}
+static inline struct LuaModule *lua_init(void) { return NULL; }
+static inline void lua_cleanup(struct LuaModule **pptr) {}
 
 #endif
 

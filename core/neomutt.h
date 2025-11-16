@@ -35,6 +35,7 @@
 
 struct ConfigSet;
 struct HashTable;
+struct LuaModule;
 
 /**
  * struct NeoMutt - Container for Accounts, Notifications
@@ -54,6 +55,8 @@ struct NeoMutt
   char *home_dir;                ///< User's home directory
   char *username;                ///< User's login name
   char **env;                    ///< Private copy of the environment variables
+
+  struct LuaModule *lua_module;  ///< Lua State Info
 };
 
 extern struct NeoMutt *NeoMutt;
