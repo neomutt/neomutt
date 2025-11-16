@@ -28,13 +28,11 @@
 /**
  * struct LuaModuleData - Lua private Module data
  */
-/**
- * struct LuaModuleData - Lua private Module data
- */
 struct LuaModuleData
 {
-  struct Notify *notify;      ///< Notifications
-  lua_State     *lua_state;   ///< Lua State
+  struct Notify     *notify;      ///< Notifications
+  lua_State         *lua_state;   ///< Lua State
+  struct LuaLogFile *log_file;    ///< Log File
 };
 
 #endif /* MUTT_LUA_MODULE_DATA_H */
