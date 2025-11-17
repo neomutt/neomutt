@@ -217,8 +217,8 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "view-raw-message",              OP_VIEW_RAW_MESSAGE },
   { "what-key",                      OP_WHAT_KEY },
   // Deprecated
-  { "buffy-list",                    OP_MAILBOX_LIST,      OP_DEPRECATED },
-  { "error-history",                 OP_SHOW_LOG_MESSAGES, OP_DEPRECATED },
+  { "buffy-list",                    OP_MAILBOX_LIST,      MFF_DEPRECATED },
+  { "error-history",                 OP_SHOW_LOG_MESSAGES, MFF_DEPRECATED },
   { NULL, 0 },
 };
 

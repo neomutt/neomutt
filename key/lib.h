@@ -106,16 +106,18 @@ extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
 
 extern const struct Mapping Menus[];
 
-#define OP_DEPRECATED true    ///< Convenience symbol
+typedef uint8_t MenuFuncFlags;          ///< Flags, e.g. #MFF_DEPRECATED
+#define MFF_NO_FLAGS               0    ///< No flags are set
+#define MFF_DEPRECATED       (1 << 1)   ///< Redraw the pager
 
 /**
  * struct MenuFuncOp - Mapping between a function and an operation
  */
 struct MenuFuncOp
 {
-  const char *name; ///< Name of the function
-  int op;           ///< Operation, e.g. OP_DELETE
-  bool deprecated;  ///< Deprecated function
+  const char   *name;    ///< Name of the function
+  int           op;      ///< Operation, e.g. OP_DELETE
+  MenuFuncFlags flags;   ///< Flags, e.g. MFF_DEPRECATED
 };
 
 /**
