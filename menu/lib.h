@@ -82,7 +82,8 @@ struct Menu
   MenuRedrawFlags redraw;   ///< When to redraw the screen
   enum MenuType type;       ///< Menu definition for keymap entries
   int page_len;             ///< Number of entries per screen
-  bool tag_prefix : 1;      ///< User has pressed <tag-prefix>
+  bool tag_prefix     : 1;  ///< User has pressed <tag-prefix>
+  bool show_indicator : 1;  ///< Show the Indicator colour
   struct MuttWindow *win;   ///< Window holding the Menu
   struct ConfigSubset *sub; ///< Inherited config items
 

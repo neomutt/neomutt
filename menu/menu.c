@@ -145,6 +145,7 @@ struct Menu *menu_new(enum MenuType type, struct MuttWindow *win, struct ConfigS
   menu->win = win;
   menu->page_len = win->state.rows;
   menu->sub = sub;
+  menu->show_indicator = true;
 
   notify_set_parent(menu->notify, win->notify);
   menu_add_observers(menu);

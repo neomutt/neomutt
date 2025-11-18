@@ -327,7 +327,7 @@ void menu_redraw_index(struct Menu *menu)
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
   const int arrow_width = mutt_strwidth(c_arrow_string);
-  struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
+  struct AttrColor *ac_ind = menu->show_indicator ? simple_color_get(MT_COLOR_INDICATOR) : NULL;
   for (int i = menu->top; i < (menu->top + menu->page_len); i++)
   {
     if (i < menu->max)
@@ -396,7 +396,7 @@ void menu_redraw_motion(struct Menu *menu)
   mutt_curses_set_color(old_color);
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
-  struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
+  struct AttrColor *ac_ind = menu->show_indicator ? simple_color_get(MT_COLOR_INDICATOR) : NULL;
   if (c_arrow_cursor)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
@@ -451,7 +451,7 @@ void menu_redraw_current(struct Menu *menu)
   menu->make_entry(menu, menu->current, menu->win->state.cols, buf);
   menu_pad_string(menu, buf);
 
-  struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
+  struct AttrColor *ac_ind = menu->show_indicator ? simple_color_get(MT_COLOR_INDICATOR) : NULL;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {
