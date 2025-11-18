@@ -567,6 +567,10 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     ARRAY_ADD(&carr, mutt_str_dup(_("Warning: Server certificate was signed using an insecure algorithm")));
   }
 
+  const char **line_ptr = ARRAY_LAST(&carr);
+  if (line_ptr && !*line_ptr)
+    ARRAY_SHRINK(&carr, 1);
+
   snprintf(title, sizeof(title),
            _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
 
