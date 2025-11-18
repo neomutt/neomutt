@@ -133,8 +133,6 @@ static int cert_make_entry(struct Menu *menu, int line, int max_cols, struct Buf
 {
   struct CertMenuData *mdata = menu->mdata;
 
-  menu->current = -1; /* hide menubar */
-
   int total_cols = 0;
 
   const char **line_ptr = ARRAY_GET(mdata->carr, line);
@@ -176,6 +174,7 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
   menu->mdata_free = NULL; // Menu doesn't own the data
   menu->make_entry = cert_make_entry;
   menu->max = ARRAY_SIZE(carr);
+  menu->show_indicator = false;
 
   sbar_set_title(sdw.sbar, title);
 
