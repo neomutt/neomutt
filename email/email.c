@@ -67,6 +67,12 @@ void email_free(struct Email **ptr)
   driver_tags_free(&e->tags);
   notify_free(&e->notify);
 
+#ifdef USE_LUA
+  FREE(&e->lua_custom[0]);
+  FREE(&e->lua_custom[1]);
+  FREE(&e->lua_custom[2]);
+#endif
+
   FREE(ptr);
 }
 
