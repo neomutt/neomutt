@@ -123,6 +123,9 @@ struct Email
   size_t num_hidden;           ///< Number of hidden messages in this view
                                ///< (only valid when collapsed is set)
   char *tree;                  ///< Character string to print thread tree
+#ifdef USE_LUA
+  char *lua_custom[3];         ///< Lua-generated expando fields
+#endif
 };
 ARRAY_HEAD(EmailArray, struct Email *);
 
@@ -146,6 +149,11 @@ enum ExpandoDataEmail
   ED_EMA_INDEX_HOOK,           ///< Mailbox, Email, mutt_idxfmt_hook()
   ED_EMA_LINES,                ///< Email.lines
   ED_EMA_LIST_OR_SAVE_FOLDER,  ///< Envelope.to, Envelope.cc, check_for_mailing_list()
+#ifdef USE_LUA
+  ED_EMA_LUA_CUSTOM1,          ///< Lua-generated field 1
+  ED_EMA_LUA_CUSTOM2,          ///< Lua-generated field 2
+  ED_EMA_LUA_CUSTOM3,          ///< Lua-generated field 3
+#endif
   ED_EMA_MESSAGE_FLAGS,        ///< Email.tagged, Email.flagged
   ED_EMA_NUMBER,               ///< Email.msgno
   ED_EMA_SCORE,                ///< Email.score

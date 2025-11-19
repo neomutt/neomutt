@@ -769,6 +769,40 @@ static void email_list_or_save_folder(const struct ExpandoNode *node, void *data
 }
 
 /**
+ * email_lua_custom - Index: Lua-Generated fields - Implements ::get_string_t - @ingroup expando_get_string_api
+ */
+static void email_lua_custom(const struct ExpandoNode *node, void *data,
+                             MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
+  if (!e)
+    return;
+
+  switch (node->uid)
+  {
+    case ED_EMA_LUA_CUSTOM1:
+    {
+      buf_strcpy(buf, e->lua_custom[0]);
+      break;
+    }
+    case ED_EMA_LUA_CUSTOM2:
+    {
+      buf_strcpy(buf, e->lua_custom[1]);
+      break;
+    }
+    case ED_EMA_LUA_CUSTOM3:
+    {
+      buf_strcpy(buf, e->lua_custom[2]);
+      break;
+    }
+    default:
+    {
+    }
+  }
+}
+
+/**
  * email_message_flags - Index: Message tag flags - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_message_flags(const struct ExpandoNode *node, void *data,
@@ -1719,6 +1753,11 @@ const struct ExpandoRenderCallback IndexRenderCallbacks[] = {
   { ED_EMAIL,    ED_EMA_INDEX_HOOK,          email_index_hook,          NULL },
   { ED_EMAIL,    ED_EMA_LINES,               NULL,                      email_lines },
   { ED_EMAIL,    ED_EMA_LIST_OR_SAVE_FOLDER, email_list_or_save_folder, NULL },
+#ifdef USE_LUA
+  { ED_EMAIL,    ED_EMA_LUA_CUSTOM1,         email_lua_custom,          NULL },
+  { ED_EMAIL,    ED_EMA_LUA_CUSTOM2,         email_lua_custom,          NULL },
+  { ED_EMAIL,    ED_EMA_LUA_CUSTOM3,         email_lua_custom,          NULL },
+#endif
   { ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       email_message_flags,       NULL },
   { ED_EMAIL,    ED_EMA_NUMBER,              NULL,                      email_number },
   { ED_EMAIL,    ED_EMA_SCORE,               NULL,                      email_score },
