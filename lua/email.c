@@ -408,6 +408,28 @@ static int lua_email_cb_set_subject(lua_State *l)
 }
 
 /**
+ * lua_email_cb_set_expando - XXX - Implements ::lua_callback_t
+ */
+static int lua_email_cb_set_expando(lua_State *l)
+{
+  lua_debug(LL_DEBUG1, "set_expando\n");
+
+  struct Email *e = *(struct Email **) luaL_checkudata(l, 1, "Email");
+  lua_debug(LL_DEBUG1, "email = %p\n", e);
+
+  int num = luaL_checkinteger(l, 2);
+  // const char *str = luaL_checkstring(l, 3);
+  const char *str = lua_tolstring(l, 3, NULL); // This could fail if value can't be coerced to a string
+
+  if ((num < 1) || (num > 3)) //XXX error msg
+    return 0;
+
+  mutt_str_replace(&e->lua_custom[num - 1], str);
+
+  return 0;
+}
+
+/**
  * EmailMethods - Email Class Methods
  */
 static const struct luaL_Reg EmailMethods[] = {
@@ -416,6 +438,7 @@ static const struct luaL_Reg EmailMethods[] = {
   { "__tostring",    lua_email_cb_tostring      },
   { "get_functions", lua_email_cb_get_functions },
   { "get_subject",   lua_email_cb_get_subject   },
+  { "set_expando",   lua_email_cb_set_expando   },
   { "set_subject",   lua_email_cb_set_subject   },
   { NULL, NULL },
   // clang-format on
