@@ -114,6 +114,7 @@ struct Email
   int vnum;                    ///< Virtual message number
   short attach_total;          ///< Number of qualifying attachments in message, if attach_valid
   short recipient;             ///< User_is_recipient()'s return value, cached
+  int custom_priority;         ///< Custom priority field (demonstration)
 
   // The following are used to support collapsing threads
   struct MuttThread *thread;   ///< Thread of Emails
@@ -159,6 +160,7 @@ enum ExpandoDataEmail
   ED_EMA_THREAD_NUMBER,        ///< Email, mutt_messages_in_thread()
   ED_EMA_THREAD_TAGS,          ///< Email.tags
   ED_EMA_TO_CHARS,             ///< Email, User_is_recipient()
+  ED_EMA_CUSTOM_PRIORITY,      ///< Email.custom_priority
 };
 
 /**
