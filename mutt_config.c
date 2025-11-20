@@ -342,6 +342,7 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   { "n",  "name",                ED_ENVELOPE, ED_ENV_NAME,                NULL },
   { "N",  "score",               ED_EMAIL,    ED_EMA_SCORE,               NULL },
   { "O",  "save-folder",         ED_EMAIL,    ED_EMA_LIST_OR_SAVE_FOLDER, NULL },
+  { "p",  "custom-priority",     ED_EMAIL,    ED_EMA_CUSTOM_PRIORITY,     NULL },
   { "P",  "percentage",          ED_MAILBOX,  ED_MBX_PERCENTAGE,          NULL },
   { "q",  "newsgroup",           ED_ENVELOPE, ED_ENV_NEWSGROUP,           NULL },
   { "r",  "to-all",              ED_ENVELOPE, ED_ENV_TO_ALL,              NULL },
