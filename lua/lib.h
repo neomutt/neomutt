@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | lua/commands.c      | @subpage lua_commands      |
  * | lua/lua.c           | @subpage lua_lua           |
+ * | lua/helpers.c       | @subpage lua_helpers       |
  * | lua/module.c        | @subpage lua_module        |
  */
 
