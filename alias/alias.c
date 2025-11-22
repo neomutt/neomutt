@@ -686,21 +686,21 @@ void alias_free(struct Alias **ptr)
 
 /**
  * aliaslist_clear - Empty a List of Aliases
- * @param al AliasArray to empty
+ * @param aa AliasArray to empty
  *
  * Each Alias will be freed and the AliasArray will be left empty.
  */
-void aliaslist_clear(struct AliasArray *al)
+void aliaslist_clear(struct AliasArray *aa)
 {
-  if (!al)
+  if (!aa)
     return;
 
   struct Alias **np = NULL;
-  ARRAY_FOREACH(np, al)
+  ARRAY_FOREACH(np, aa)
   {
     alias_free(np);
   }
-  ARRAY_FREE(al);
+  ARRAY_FREE(aa);
 }
 
 /**

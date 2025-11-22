@@ -69,6 +69,6 @@ struct EventAlias
 void          alias_free(struct Alias **ptr);
 struct Alias *alias_new (void);
 
-void          aliaslist_clear(struct AliasArray *al);
+void          aliaslist_clear(struct AliasArray *aa);
 
 #endif /* MUTT_ALIAS_ALIAS_H */

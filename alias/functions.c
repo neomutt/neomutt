@@ -308,19 +308,19 @@ static int op_query(struct AliasMenuData *mdata, int op)
   if (op == OP_QUERY)
   {
     ARRAY_FREE(&mdata->ava);
-    aliaslist_clear(mdata->al);
+    aliaslist_clear(mdata->aa);
   }
 
   struct Menu *menu = mdata->menu;
-  struct AliasArray al = ARRAY_HEAD_INITIALIZER;
+  struct AliasArray aa = ARRAY_HEAD_INITIALIZER;
 
-  query_run(buf_string(buf), true, &al, mdata->sub);
+  query_run(buf_string(buf), true, &aa, mdata->sub);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   char title[256] = { 0 };
   snprintf(title, sizeof(title), "%s%s", _("Query: "), buf_string(buf));
   sbar_set_title(mdata->sbar, title);
 
-  if (ARRAY_EMPTY(&al))
+  if (ARRAY_EMPTY(&aa))
   {
     if (op == OP_QUERY)
       menu->max = 0;
@@ -328,12 +328,12 @@ static int op_query(struct AliasMenuData *mdata, int op)
   }
 
   struct Alias **np = NULL;
-  ARRAY_FOREACH(np, &al)
+  ARRAY_FOREACH(np, &aa)
   {
     alias_array_alias_add(&mdata->ava, *np);
-    ARRAY_ADD(mdata->al, *np); // Transfer
+    ARRAY_ADD(mdata->aa, *np); // Transfer
   }
-  ARRAY_FREE(&al); // Free the array structure but not the aliases
+  ARRAY_FREE(&aa); // Free the array structure but not the aliases
   alias_array_sort(&mdata->ava, mdata->sub);
   menu->max = ARRAY_SIZE(&mdata->ava);
   return FR_SUCCESS;

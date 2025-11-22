@@ -185,7 +185,7 @@ static int query_tag(struct Menu *menu, int sel, int act)
  * @retval  0 Success
  * @retval -1 Error
  */
-int query_run(const char *s, bool verbose, struct AliasArray *al, const struct ConfigSubset *sub)
+int query_run(const char *s, bool verbose, struct AliasArray *aa, const struct ConfigSubset *sub)
 {
   FILE *fp = NULL;
   char *buf = NULL;
@@ -249,7 +249,7 @@ int query_run(const char *s, bool verbose, struct AliasArray *al, const struct C
       mutt_addrlist_parse(&alias->addr, buf); // Email address
     }
 
-    ARRAY_ADD(al, alias);
+    ARRAY_ADD(aa, alias);
   }
   buf_pool_release(&addr);
 
@@ -406,7 +406,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.search_state = search_state_new();
 
-  struct AliasArray al = ARRAY_HEAD_INITIALIZER;
+  struct AliasArray aa = ARRAY_HEAD_INITIALIZER;
   const char *const c_query_command = cs_subset_string(sub, "query_command");
   if (!c_query_command)
   {
@@ -414,14 +414,14 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
     goto done;
   }
 
-  query_run(buf_string(buf), true, &al, sub);
-  if (ARRAY_EMPTY(&al))
+  query_run(buf_string(buf), true, &aa, sub);
+  if (ARRAY_EMPTY(&aa))
     goto done;
 
-  mdata.al = &al;
+  mdata.aa = &aa;
 
-  struct Alias **a_first = ARRAY_FIRST(&al);
-  if (ARRAY_SIZE(&al) == 1) // only one response?
+  struct Alias **a_first = ARRAY_FIRST(&aa);
+  if (ARRAY_SIZE(&aa) == 1) // only one response?
   {
     struct AddressList addr = TAILQ_HEAD_INITIALIZER(addr);
     if (alias_to_addrlist(&addr, *a_first))
@@ -437,7 +437,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
   }
 
   struct Alias **np = NULL;
-  ARRAY_FOREACH(np, mdata.al)
+  ARRAY_FOREACH(np, mdata.aa)
   {
     alias_array_alias_add(&mdata.ava, *np);
   }
@@ -469,7 +469,7 @@ done:
   FREE(&mdata.title);
   FREE(&mdata.limit);
   search_state_free(&mdata.search_state);
-  aliaslist_clear(&al);
+  aliaslist_clear(&aa);
   return 0;
 }
 
@@ -487,9 +487,9 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
     return;
   }
 
-  struct AliasArray al = ARRAY_HEAD_INITIALIZER;
+  struct AliasArray aa = ARRAY_HEAD_INITIALIZER;
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
-  mdata.al = &al;
+  mdata.aa = &aa;
   mdata.search_state = search_state_new();
 
   struct Buffer *buf = buf_pool_get();
@@ -499,12 +499,12 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
     goto done;
   }
 
-  query_run(buf_string(buf), false, &al, sub);
-  if (ARRAY_EMPTY(&al))
+  query_run(buf_string(buf), false, &aa, sub);
+  if (ARRAY_EMPTY(&aa))
     goto done;
 
   struct Alias **np = NULL;
-  ARRAY_FOREACH(np, mdata.al)
+  ARRAY_FOREACH(np, mdata.aa)
   {
     alias_array_alias_add(&mdata.ava, *np);
   }
@@ -537,6 +537,6 @@ done:
   FREE(&mdata.title);
   FREE(&mdata.limit);
   search_state_free(&mdata.search_state);
-  aliaslist_clear(&al);
+  aliaslist_clear(&aa);
   buf_pool_release(&buf);
 }
