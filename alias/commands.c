@@ -177,10 +177,14 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
   }
 
   /* check to see if an alias with this name already exists */
-  TAILQ_FOREACH(tmp, &Aliases, entries)
+  struct Alias **tmp_ptr = NULL;
+  ARRAY_FOREACH(tmp_ptr, &Aliases)
   {
-    if (mutt_istr_equal(tmp->name, name))
+    if (mutt_istr_equal((*tmp_ptr)->name, name))
+    {
+      tmp = *tmp_ptr;
       break;
+    }
   }
 
   if (tmp)
@@ -197,7 +201,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
     /* create a new alias */
     tmp = alias_new();
     tmp->name = name;
-    TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
+    ARRAY_ADD(&Aliases, tmp);
     event = NT_ALIAS_ADD;
   }
   tmp->addr = al;
@@ -261,24 +265,25 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    struct Alias *np = NULL;
+    struct Alias **np_ptr = NULL;
     if (mutt_str_equal("*", buf_string(token)))
     {
-      TAILQ_FOREACH(np, &Aliases, entries)
+      ARRAY_FOREACH(np_ptr, &Aliases)
       {
-        alias_reverse_delete(np);
+        alias_reverse_delete(*np_ptr);
       }
 
       aliaslist_clear(&Aliases);
       return MUTT_CMD_SUCCESS;
     }
 
-    TAILQ_FOREACH(np, &Aliases, entries)
+    ARRAY_FOREACH(np_ptr, &Aliases)
     {
-      if (!mutt_istr_equal(buf_string(token), np->name))
+      if (!mutt_istr_equal(buf_string(token), (*np_ptr)->name))
         continue;
 
-      TAILQ_REMOVE(&Aliases, np, entries);
+      struct Alias *np = *np_ptr;
+      ARRAY_REMOVE(&Aliases, np_ptr);
       alias_reverse_delete(np);
       alias_free(&np);
       break;
