@@ -830,6 +830,8 @@ bool mutt_window_swap(struct MuttWindow *parent, struct MuttWindow *win1,
       idx1 = idx;
     if (*np == win2)
       idx2 = idx;
+    if ((idx1 != -1) && (idx2 != -1))
+      break; // Early exit when both windows found
     idx++;
   }
 
