@@ -467,8 +467,9 @@ void mutt_winlist_free(struct MuttWindowArray *head)
   struct MuttWindow **np = NULL;
   ARRAY_FOREACH(np, head)
   {
-    mutt_winlist_free(&(*np)->children);
-    mutt_window_free(np);
+    struct MuttWindow *win = *np;
+    mutt_winlist_free(&win->children);
+    mutt_window_free(&win);
   }
   ARRAY_FREE(head);
 }

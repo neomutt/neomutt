@@ -143,7 +143,7 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
 
     struct MuttWindow *next = *next_ptr;
     ARRAY_REMOVE(&win_root->children, next_ptr);
-    
+
     // Insert at beginning by creating a new array with this element first
     struct MuttWindowArray new_children = ARRAY_HEAD_INITIALIZER;
     ARRAY_ADD(&new_children, next);
