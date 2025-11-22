@@ -327,28 +327,6 @@
    ARRAY_SHRINK((head), 1))
 
 /**
- * ARRAY_INSERT - Insert an element at the given index, shifting up subsequent entries
- * @param head  Pointer to a struct defined using ARRAY_HEAD()
- * @param elem  Element to insert
- * @param index Index at which to insert the element
- * @retval true  Element was inserted
- * @retval false Element was not inserted
- *
- * @note If the array needs to grow, memory will be reallocated
- */
-#define ARRAY_INSERT(head, elem, index)                                        \
-  ((((head)->capacity > (head)->size                                           \
-     ? true                                                                    \
-     : ARRAY_RESERVE((head), (head)->size + 1)),                               \
-    ((index) < (head)->size)                                                   \
-     ? (memmove(&(head)->entries[(index) + 1], &(head)->entries[(index)],     \
-                ARRAY_ELEM_SIZE((head)) * ((head)->size - (index))), true)    \
-     : true),                                                                  \
-   ((head)->entries[(index)] = (elem)),                                        \
-   ((head)->size++),                                                           \
-   true)
-
-/**
  * ARRAY_SORT - Sort an array
  * @param head  Pointer to a struct defined using ARRAY_HEAD()
  * @param fn    Sort function, see ::sort_t

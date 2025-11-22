@@ -143,7 +143,17 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
 
     struct MuttWindow *next = *next_ptr;
     ARRAY_REMOVE(&win_root->children, next_ptr);
-    ARRAY_INSERT(&win_root->children, next, 0);
+
+    // Insert at beginning by creating a new array with this element first
+    struct MuttWindowArray new_children = ARRAY_HEAD_INITIALIZER;
+    ARRAY_ADD(&new_children, next);
+    struct MuttWindow **np = NULL;
+    ARRAY_FOREACH(np, &win_root->children)
+    {
+      ARRAY_ADD(&new_children, *np);
+    }
+    ARRAY_FREE(&win_root->children);
+    win_root->children = new_children;
 
     mutt_window_reflow(win_root);
     mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
