@@ -778,16 +778,7 @@ bool window_status_on_top(struct MuttWindow *panel, const struct ConfigSubset *s
     {
       win = *last;
       ARRAY_REMOVE(&panel->children, last);
-      // Insert at beginning by creating a new array with this element first
-      struct MuttWindowArray new_children = ARRAY_HEAD_INITIALIZER;
-      ARRAY_ADD(&new_children, win);
-      struct MuttWindow **np = NULL;
-      ARRAY_FOREACH(np, &panel->children)
-      {
-        ARRAY_ADD(&new_children, *np);
-      }
-      ARRAY_FREE(&panel->children);
-      panel->children = new_children;
+      ARRAY_INSERT(&panel->children, win, 0);
     }
   }
   else
