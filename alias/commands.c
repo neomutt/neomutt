@@ -143,7 +143,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
     return MUTT_CMD_WARNING;
   }
 
-  struct Alias *tmp = NULL;
+  struct Alias *a = NULL;
   enum NotifyAlias event;
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   struct Buffer *token = buf_pool_get();
@@ -180,47 +180,51 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
   }
 
   /* check to see if an alias with this name already exists */
-  TAILQ_FOREACH(tmp, &Aliases, entries)
+  struct Alias **ap = NULL;
+  ARRAY_FOREACH(ap, &Aliases)
   {
-    if (mutt_istr_equal(tmp->name, name))
+    if (mutt_istr_equal((*ap)->name, name))
+    {
+      a = *ap;
       break;
+    }
   }
 
-  if (tmp)
+  if (a)
   {
     FREE(&name);
-    alias_reverse_delete(tmp);
+    alias_reverse_delete(a);
     /* override the previous value */
-    mutt_addrlist_clear(&tmp->addr);
-    FREE(&tmp->comment);
+    mutt_addrlist_clear(&a->addr);
+    FREE(&a->comment);
     event = NT_ALIAS_CHANGE;
   }
   else
   {
     /* create a new alias */
-    tmp = alias_new();
-    tmp->name = name;
-    TAILQ_INSERT_TAIL(&Aliases, tmp, entries);
+    a = alias_new();
+    a->name = name;
+    ARRAY_ADD(&Aliases, a);
     event = NT_ALIAS_ADD;
   }
-  tmp->addr = al;
+  a->addr = al;
 
-  grouplist_add_addrlist(&gl, &tmp->addr);
+  grouplist_add_addrlist(&gl, &a->addr);
 
   const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
   if (c_debug_level > LL_DEBUG4)
   {
-    /* A group is terminated with an empty address, so check a->mailbox */
-    struct Address *a = NULL;
-    TAILQ_FOREACH(a, &tmp->addr, entries)
+    /* A group is terminated with an empty address, so check addr->mailbox */
+    struct Address *addr = NULL;
+    TAILQ_FOREACH(addr, &a->addr, entries)
     {
-      if (!a->mailbox)
+      if (!addr->mailbox)
         break;
 
-      if (a->group)
-        mutt_debug(LL_DEBUG5, "  Group %s\n", buf_string(a->mailbox));
+      if (addr->group)
+        mutt_debug(LL_DEBUG5, "  Group %s\n", buf_string(addr->mailbox));
       else
-        mutt_debug(LL_DEBUG5, "  %s\n", buf_string(a->mailbox));
+        mutt_debug(LL_DEBUG5, "  %s\n", buf_string(addr->mailbox));
     }
   }
 
@@ -230,15 +234,15 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
     if (*line->dptr == ' ')
       line->dptr++;
 
-    parse_alias_comments(tmp, line->dptr);
+    parse_alias_comments(a, line->dptr);
     *line->dptr = '\0'; // We're done parsing
   }
 
-  alias_reverse_add(tmp);
+  alias_reverse_add(a);
 
   mutt_debug(LL_NOTIFY, "%s: %s\n",
-             (event == NT_ALIAS_ADD) ? "NT_ALIAS_ADD" : "NT_ALIAS_CHANGE", tmp->name);
-  struct EventAlias ev_a = { tmp };
+             (event == NT_ALIAS_ADD) ? "NT_ALIAS_ADD" : "NT_ALIAS_CHANGE", a->name);
+  struct EventAlias ev_a = { a };
   notify_send(NeoMutt->notify, NT_ALIAS, event, &ev_a);
 
   rc = MUTT_CMD_SUCCESS;
@@ -270,26 +274,27 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    struct Alias *np = NULL;
+    struct Alias **ap = NULL;
     if (mutt_str_equal("*", buf_string(token)))
     {
-      TAILQ_FOREACH(np, &Aliases, entries)
+      ARRAY_FOREACH(ap, &Aliases)
       {
-        alias_reverse_delete(np);
+        alias_reverse_delete(*ap);
       }
 
       aliaslist_clear(&Aliases);
       goto done;
     }
 
-    TAILQ_FOREACH(np, &Aliases, entries)
+    ARRAY_FOREACH(ap, &Aliases)
     {
-      if (!mutt_istr_equal(buf_string(token), np->name))
+      if (!mutt_istr_equal(buf_string(token), (*ap)->name))
         continue;
 
-      TAILQ_REMOVE(&Aliases, np, entries);
-      alias_reverse_delete(np);
-      alias_free(&np);
+      struct Alias *a = *ap;
+      ARRAY_REMOVE(&Aliases, ap);
+      alias_reverse_delete(a);
+      alias_free(&a);
       break;
     }
   } while (MoreArgs(line));

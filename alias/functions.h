@@ -27,7 +27,7 @@
 
 struct AddressList;
 struct Alias;
-struct AliasList;
+struct AliasArray;
 struct AliasMenuData;
 struct AliasViewArray;
 struct ConfigSubset;
@@ -61,6 +61,6 @@ struct AliasFunction
 void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub);
 int alias_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool alias_to_addrlist(struct AddressList *al, struct Alias *alias);
-int query_run(const char *s, bool verbose, struct AliasList *al, const struct ConfigSubset *sub);
+int query_run(const char *s, bool verbose, struct AliasArray *aa, const struct ConfigSubset *sub);
 
 #endif /* MUTT_ALIAS_FUNCTIONS_H */

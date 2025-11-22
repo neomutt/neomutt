@@ -336,7 +336,6 @@ static bool dlg_alias(struct AliasMenuData *mdata)
  */
 int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
 {
-  struct Alias *np = NULL;
   char bestname[8192] = { 0 };
   struct Alias *a_best = NULL;
   int count = 0;
@@ -347,22 +346,24 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
 
   if (buf_at(buf, 0) != '\0')
   {
-    TAILQ_FOREACH(np, &Aliases, entries)
+    struct Alias **ap = NULL;
+    ARRAY_FOREACH(ap, &Aliases)
     {
-      if (np->name && mutt_strn_equal(np->name, buf_string(buf), buf_len(buf)))
+      struct Alias *a = *ap;
+      if (a->name && mutt_strn_equal(a->name, buf_string(buf), buf_len(buf)))
       {
-        a_best = np;
+        a_best = a;
         count++;
 
         if (bestname[0] == '\0') /* init */
         {
-          mutt_str_copy(bestname, np->name,
-                        MIN(mutt_str_len(np->name) + 1, sizeof(bestname)));
+          mutt_str_copy(bestname, a->name,
+                        MIN(mutt_str_len(a->name) + 1, sizeof(bestname)));
         }
         else
         {
           int i;
-          for (i = 0; np->name[i] && (np->name[i] == bestname[i]); i++)
+          for (i = 0; a->name[i] && (a->name[i] == bestname[i]); i++)
             ; // do nothing
 
           bestname[i] = '\0';
@@ -385,9 +386,9 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     {
       // Create a View Array of all the Aliases
       FREE(&mdata.limit);
-      TAILQ_FOREACH(np, &Aliases, entries)
+      ARRAY_FOREACH(ap, &Aliases)
       {
-        alias_array_alias_add(&mdata.ava, np);
+        alias_array_alias_add(&mdata.ava, *ap);
       }
     }
     else
@@ -408,13 +409,14 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
       }
 
       /* build alias list and show it */
-      TAILQ_FOREACH(np, &Aliases, entries)
+      ARRAY_FOREACH(ap, &Aliases)
       {
-        int aasize = alias_array_alias_add(&mdata.ava, np);
+        struct Alias *a = *ap;
+        int aasize = alias_array_alias_add(&mdata.ava, a);
 
         struct AliasView *av = ARRAY_GET(&mdata.ava, aasize - 1);
 
-        if (np->name && !mutt_strn_equal(np->name, buf_string(buf), buf_len(buf)))
+        if (a->name && !mutt_strn_equal(a->name, buf_string(buf), buf_len(buf)))
         {
           av->is_visible = false;
         }
@@ -424,9 +426,10 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
 
   if (ARRAY_EMPTY(&mdata.ava))
   {
-    TAILQ_FOREACH(np, &Aliases, entries)
+    struct Alias **ap = NULL;
+    ARRAY_FOREACH(ap, &Aliases)
     {
-      alias_array_alias_add(&mdata.ava, np);
+      alias_array_alias_add(&mdata.ava, *ap);
     }
 
     mutt_pattern_alias_func(NULL, &mdata, PAA_VISIBLE, NULL);
@@ -458,7 +461,16 @@ done:
     if (!avp->is_deleted)
       continue;
 
-    TAILQ_REMOVE(&Aliases, avp->alias, entries);
+    // Find and remove the alias from the Aliases array
+    struct Alias **ap = NULL;
+    ARRAY_FOREACH(ap, &Aliases)
+    {
+      if (*ap == avp->alias)
+      {
+        ARRAY_REMOVE(&Aliases, ap);
+        break;
+      }
+    }
     alias_free(&avp->alias);
   }
 
@@ -477,15 +489,15 @@ done:
  */
 void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
 {
-  struct Alias *np = NULL;
+  struct Alias **ap = NULL;
 
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.search_state = search_state_new();
 
   // Create a View Array of all the Aliases
-  TAILQ_FOREACH(np, &Aliases, entries)
+  ARRAY_FOREACH(ap, &Aliases)
   {
-    alias_array_alias_add(&mdata.ava, np);
+    alias_array_alias_add(&mdata.ava, *ap);
   }
 
   if (!dlg_alias(&mdata))
@@ -517,7 +529,15 @@ done:
   {
     if (avp->is_deleted)
     {
-      TAILQ_REMOVE(&Aliases, avp->alias, entries);
+      // Find and remove the alias from the Aliases array
+      ARRAY_FOREACH(ap, &Aliases)
+      {
+        if (*ap == avp->alias)
+        {
+          ARRAY_REMOVE(&Aliases, ap);
+          break;
+        }
+      }
       alias_free(&avp->alias);
     }
   }

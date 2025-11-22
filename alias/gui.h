@@ -53,7 +53,7 @@ ARRAY_HEAD(AliasViewArray, struct AliasView);
 struct AliasMenuData
 {
   struct AliasViewArray  ava;           ///< All Aliases/Queries
-  struct AliasList      *al;            ///< Alias data
+  struct AliasArray     *aa;            ///< Alias data
   struct ConfigSubset   *sub;           ///< Config items
   struct Menu           *menu;          ///< Menu
   struct Buffer         *query;         ///< Query string

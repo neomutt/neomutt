@@ -57,7 +57,7 @@
 #include "muttlib.h"
 #include "reverse.h"
 
-struct AliasList Aliases = TAILQ_HEAD_INITIALIZER(Aliases); ///< List of all the user's email aliases
+struct AliasArray Aliases = ARRAY_HEAD_INITIALIZER; ///< List of all the user's email aliases
 
 /**
  * write_safe_address - Defang malicious email addresses
@@ -274,10 +274,12 @@ static bool string_is_address(const char *str, const char *user, const char *dom
  */
 struct AddressList *alias_lookup(const char *name)
 {
-  struct Alias *a = NULL;
+  struct Alias **ap = NULL;
 
-  TAILQ_FOREACH(a, &Aliases, entries)
+  ARRAY_FOREACH(ap, &Aliases)
   {
+    struct Alias *a = *ap;
+
     if (mutt_istr_equal(name, a->name))
       return &a->addr;
   }
@@ -507,7 +509,7 @@ retry_name:
   }
 
   alias_reverse_add(alias);
-  TAILQ_INSERT_TAIL(&Aliases, alias, entries);
+  ARRAY_ADD(&Aliases, alias);
 
   const char *const c_alias_file = cs_subset_path(sub, "alias_file");
   buf_strcpy(buf, c_alias_file);
@@ -685,22 +687,21 @@ void alias_free(struct Alias **ptr)
 
 /**
  * aliaslist_clear - Empty a List of Aliases
- * @param al AliasList to empty
+ * @param aa AliasArray to empty
  *
- * Each Alias will be freed and the AliasList will be left empty.
+ * Each Alias will be freed and the AliasArray will be left empty.
  */
-void aliaslist_clear(struct AliasList *al)
+void aliaslist_clear(struct AliasArray *aa)
 {
-  if (!al)
+  if (!aa)
     return;
 
-  struct Alias *np = NULL, *tmp = NULL;
-  TAILQ_FOREACH_SAFE(np, al, entries, tmp)
+  struct Alias **ap = NULL;
+  ARRAY_FOREACH(ap, aa)
   {
-    TAILQ_REMOVE(al, np, entries);
-    alias_free(&np);
+    alias_free(ap);
   }
-  TAILQ_INIT(al);
+  ARRAY_FREE(aa);
 }
 
 /**
@@ -716,10 +717,10 @@ void alias_init(void)
  */
 void alias_cleanup(void)
 {
-  struct Alias *np = NULL;
-  TAILQ_FOREACH(np, &Aliases, entries)
+  struct Alias **ap = NULL;
+  ARRAY_FOREACH(ap, &Aliases)
   {
-    alias_reverse_delete(np);
+    alias_reverse_delete(*ap);
   }
   aliaslist_clear(&Aliases);
   alias_reverse_shutdown();

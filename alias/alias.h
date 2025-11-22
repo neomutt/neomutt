@@ -37,11 +37,10 @@ struct Alias
   struct AddressList addr;        ///< List of Addresses the Alias expands to
   char              *comment;     ///< Free-form comment string
   struct TagList     tags;        ///< Tags
-  TAILQ_ENTRY(Alias) entries;     ///< Linked list
 };
-TAILQ_HEAD(AliasList, Alias);
+ARRAY_HEAD(AliasArray, struct Alias *);
 
-extern struct AliasList Aliases;
+extern struct AliasArray Aliases;
 
 /**
  * enum NotifyAlias - Alias notification types
@@ -70,6 +69,6 @@ struct EventAlias
 void          alias_free(struct Alias **ptr);
 struct Alias *alias_new (void);
 
-void          aliaslist_clear(struct AliasList *al);
+void          aliaslist_clear(struct AliasArray *aa);
 
 #endif /* MUTT_ALIAS_ALIAS_H */
