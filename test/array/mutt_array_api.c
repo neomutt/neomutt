@@ -547,4 +547,124 @@ void test_mutt_array_api(void)
     }
     ARRAY_FREE(&head);
   }
+
+  /* Insertion at beginning */
+  {
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
+    for (size_t i = 1; i <= 5; i++)
+    {
+      ARRAY_ADD(&head, i);
+    }
+
+    ARRAY_INSERT(&head, 0, 0);
+
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), 6);
+    for (size_t i = 0; i < 6; i++)
+    {
+      if (!TEST_CHECK(*ARRAY_GET(&head, i) == i))
+      {
+        TEST_MSG("Expected: %zu", i);
+        TEST_MSG("Actual  : %zu", *ARRAY_GET(&head, i));
+      }
+    }
+    ARRAY_FREE(&head);
+  }
+
+  /* Insertion in middle */
+  {
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
+    ARRAY_ADD(&head, 0);
+    ARRAY_ADD(&head, 1);
+    ARRAY_ADD(&head, 3);
+    ARRAY_ADD(&head, 4);
+
+    ARRAY_INSERT(&head, 2, 2);
+
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), 5);
+    for (size_t i = 0; i < 5; i++)
+    {
+      if (!TEST_CHECK(*ARRAY_GET(&head, i) == i))
+      {
+        TEST_MSG("Expected: %zu", i);
+        TEST_MSG("Actual  : %zu", *ARRAY_GET(&head, i));
+      }
+    }
+    ARRAY_FREE(&head);
+  }
+
+  /* Insertion at end (equivalent to ARRAY_ADD) */
+  {
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
+    for (size_t i = 0; i < 5; i++)
+    {
+      ARRAY_ADD(&head, i);
+    }
+
+    ARRAY_INSERT(&head, 5, 5);
+
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), 6);
+    for (size_t i = 0; i < 6; i++)
+    {
+      if (!TEST_CHECK(*ARRAY_GET(&head, i) == i))
+      {
+        TEST_MSG("Expected: %zu", i);
+        TEST_MSG("Actual  : %zu", *ARRAY_GET(&head, i));
+      }
+    }
+    ARRAY_FREE(&head);
+  }
+
+  /* Multiple insertions */
+  {
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
+    ARRAY_ADD(&head, 10);
+    ARRAY_ADD(&head, 20);
+    ARRAY_ADD(&head, 30);
+
+    ARRAY_INSERT(&head, 0, 5);  // [5, 10, 20, 30]
+    ARRAY_INSERT(&head, 2, 15); // [5, 10, 15, 20, 30]
+    ARRAY_INSERT(&head, 4, 25); // [5, 10, 15, 20, 25, 30]
+
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), 6);
+    size_t expected[] = { 5, 10, 15, 20, 25, 30 };
+    for (size_t i = 0; i < 6; i++)
+    {
+      if (!TEST_CHECK(*ARRAY_GET(&head, i) == expected[i]))
+      {
+        TEST_MSG("Expected: %zu", expected[i]);
+        TEST_MSG("Actual  : %zu", *ARRAY_GET(&head, i));
+      }
+    }
+    ARRAY_FREE(&head);
+  }
+
+  /* Insertion with automatic resizing */
+  {
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
+
+    // Add elements and track capacity
+    for (size_t i = 0; i < 10; i++)
+    {
+      ARRAY_ADD(&head, i);
+    }
+
+    size_t initial_capacity = ARRAY_CAPACITY(&head);
+
+    // Fill to capacity
+    for (size_t i = 10; i < initial_capacity; i++)
+    {
+      ARRAY_ADD(&head, i);
+    }
+
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), initial_capacity);
+
+    // Insert should trigger resize
+    ARRAY_INSERT(&head, 5, 99);
+
+    TEST_CHECK(ARRAY_CAPACITY(&head) > initial_capacity);
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), initial_capacity + 1);
+    TEST_CHECK_NUM_EQ(*ARRAY_GET(&head, 5), 99);
+
+    ARRAY_FREE(&head);
+  }
 }
