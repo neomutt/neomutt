@@ -59,18 +59,25 @@ struct MuttWindow *msgcont_pop_window(void)
   if (!MessageContainer)
     return NULL;
 
-  struct MuttWindow *win_pop = TAILQ_LAST(&MessageContainer->children, MuttWindowList);
-  // Don't pop the last entry
-  if (!TAILQ_PREV(win_pop, MuttWindowList, entries))
+  struct MuttWindow **wp_pop = ARRAY_LAST(&MessageContainer->children);
+  if (!wp_pop)
+    return NULL;
+
+  struct MuttWindow *win_pop = *wp_pop;
+
+  // Don't pop the last entry (check if there's a previous one)
+  if (ARRAY_SIZE(&MessageContainer->children) <= 1)
     return NULL;
 
   // Hide the old window
   window_set_visible(win_pop, false);
 
-  // Make the top of the stack visible
-  struct MuttWindow *win_top = TAILQ_PREV(win_pop, MuttWindowList, entries);
+  // Get the window that will become top of stack
+  struct MuttWindow **wp_top = ARRAY_GET(&MessageContainer->children, 
+                                              ARRAY_SIZE(&MessageContainer->children) - 2);
+  struct MuttWindow *win_top = wp_top ? *wp_top : NULL;
 
-  TAILQ_REMOVE(&MessageContainer->children, win_pop, entries);
+  ARRAY_REMOVE(&MessageContainer->children, wp_pop);
 
   if (win_top)
   {
@@ -96,8 +103,9 @@ void msgcont_push_window(struct MuttWindow *win)
     return;
 
   // Hide the current top window
-  struct MuttWindow *win_top = TAILQ_LAST(&MessageContainer->children, MuttWindowList);
-  window_set_visible(win_top, false);
+  struct MuttWindow **wp_top = ARRAY_LAST(&MessageContainer->children);
+  if (wp_top)
+    window_set_visible(*wp_top, false);
 
   mutt_window_add_child(MessageContainer, win);
   mutt_window_reflow(NULL);
@@ -119,10 +127,11 @@ struct MuttWindow *msgcont_get_msgwin(void)
   if (!MessageContainer)
     return NULL;
 
-  struct MuttWindow *win = TAILQ_FIRST(&MessageContainer->children);
-  if (!win)
+  struct MuttWindow **wp = ARRAY_FIRST(&MessageContainer->children);
+  if (!wp)
     return NULL;
 
+  struct MuttWindow *win = *wp;
   if (win->type != WT_MESSAGE)
     return NULL;
 

@@ -102,7 +102,7 @@ enum WindowType
   WT_STATUS_BAR,      ///< Status Bar containing extra info about the Index/Pager/etc
 };
 
-TAILQ_HEAD(MuttWindowList, MuttWindow);
+ARRAY_HEAD(MuttWindowArray, struct MuttWindow *);
 
 typedef uint8_t WindowActionFlags; ///< Flags for Actions waiting to be performed on a MuttWindow, e.g. #WA_REFLOW
 #define WA_NO_FLAGS        0       ///< No flags are set
@@ -131,9 +131,8 @@ struct MuttWindow
   enum MuttWindowSize size;          ///< Type of Window, e.g. #MUTT_WIN_SIZE_FIXED
   WindowActionFlags actions;         ///< Actions to be performed, e.g. #WA_RECALC
 
-  TAILQ_ENTRY(MuttWindow) entries;   ///< Linked list
   struct MuttWindow *parent;         ///< Parent Window
-  struct MuttWindowList children;    ///< Children Windows
+  struct MuttWindowArray children;   ///< Children Windows
 
   struct Notify *notify;             ///< Notifications: #NotifyWindow, #EventWindow
 
@@ -262,7 +261,7 @@ int  mutt_window_printf   (struct MuttWindow *win, const char *format, ...)
                             __attribute__((__format__(__printf__, 2, 3)));
 bool mutt_window_is_visible(struct MuttWindow *win);
 
-void               mutt_winlist_free (struct MuttWindowList *head);
+void               mutt_winlist_free (struct MuttWindowArray *wa);
 struct MuttWindow *window_find_child (struct MuttWindow *win, enum WindowType type);
 struct MuttWindow *window_find_parent(struct MuttWindow *win, enum WindowType type);
 void               window_notify_all (struct MuttWindow *win);

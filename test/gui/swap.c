@@ -75,11 +75,11 @@ static struct MuttWindow *new_parent(void)
 
 static struct MuttWindow *find_child(struct MuttWindow *parent, const char *name)
 {
-  struct MuttWindow *win = NULL;
-  TAILQ_FOREACH(win, &parent->children, entries)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &parent->children)
   {
-    if (mutt_str_equal(win->wdata, name))
-      return win;
+    if (mutt_str_equal((*wp)->wdata, name))
+      return *wp;
   }
 
   ASSERT(false);
@@ -88,10 +88,10 @@ static struct MuttWindow *find_child(struct MuttWindow *parent, const char *name
 static void check_order(struct MuttWindow *parent, const char **expected)
 {
   int i = 0;
-  struct MuttWindow *win = NULL;
-  TAILQ_FOREACH(win, &parent->children, entries)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &parent->children)
   {
-    TEST_CHECK_STR_EQ(win->wdata, expected[i]);
+    TEST_CHECK_STR_EQ((*wp)->wdata, expected[i]);
     i++;
   }
 

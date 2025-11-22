@@ -149,10 +149,10 @@ void window_notify_all(struct MuttWindow *win)
 
   window_notify(win);
 
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &win->children)
   {
-    window_notify_all(np);
+    window_notify_all(*wp);
   }
   win->old = win->state;
 }
@@ -191,7 +191,7 @@ struct MuttWindow *mutt_window_new(enum WindowType type, enum MuttWindowOrientat
   win->req_cols = cols;
   win->state.visible = true;
   win->notify = notify_new();
-  TAILQ_INIT(&win->children);
+  ARRAY_INIT(&win->children);
 
   win->actions |= WA_RECALC | WA_REPAINT;
 
@@ -413,7 +413,7 @@ void mutt_window_add_child(struct MuttWindow *parent, struct MuttWindow *child)
   if (!parent || !child)
     return;
 
-  TAILQ_INSERT_TAIL(&parent->children, child, entries);
+  ARRAY_ADD(&parent->children, child);
   child->parent = parent;
 
   notify_set_parent(child->notify, parent->notify);
@@ -436,7 +436,15 @@ struct MuttWindow *mutt_window_remove_child(struct MuttWindow *parent, struct Mu
     return NULL;
 
   // A notification will be sent when the Window is freed
-  TAILQ_REMOVE(&parent->children, child, entries);
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &parent->children)
+  {
+    if (*wp == child)
+    {
+      ARRAY_REMOVE(&parent->children, wp);
+      break;
+    }
+  }
   child->parent = NULL;
 
   if (parent->focus == child)
@@ -449,21 +457,21 @@ struct MuttWindow *mutt_window_remove_child(struct MuttWindow *parent, struct Mu
 
 /**
  * mutt_winlist_free - Free a tree of Windows
- * @param head WindowList to free
+ * @param wa WindowArray to free
  */
-void mutt_winlist_free(struct MuttWindowList *head)
+void mutt_winlist_free(struct MuttWindowArray *wa)
 {
-  if (!head)
+  if (!wa)
     return;
 
-  struct MuttWindow *np = NULL;
-  struct MuttWindow *tmp = NULL;
-  TAILQ_FOREACH_SAFE(np, head, entries, tmp)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, wa)
   {
-    TAILQ_REMOVE(head, np, entries);
-    mutt_winlist_free(&np->children);
-    mutt_window_free(&np);
+    struct MuttWindow *win = *wp;
+    mutt_winlist_free(&win->children);
+    mutt_window_free(&win);
   }
+  ARRAY_FREE(wa);
 }
 
 /**
@@ -502,11 +510,11 @@ struct MuttWindow *window_find_child(struct MuttWindow *win, enum WindowType typ
   if (win->type == type)
     return win;
 
-  struct MuttWindow *np = NULL;
+  struct MuttWindow **wp = NULL;
   struct MuttWindow *match = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
+  ARRAY_FOREACH(wp, &win->children)
   {
-    match = window_find_child(np, type);
+    match = window_find_child(*wp, type);
     if (match)
       return match;
   }
@@ -544,10 +552,10 @@ static void window_recalc(struct MuttWindow *win)
     win->recalc(win);
   win->actions &= ~WA_RECALC;
 
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &win->children)
   {
-    window_recalc(np);
+    window_recalc(*wp);
   }
 }
 
@@ -564,10 +572,10 @@ static void window_repaint(struct MuttWindow *win)
     win->repaint(win);
   win->actions &= ~WA_REPAINT;
 
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &win->children)
   {
-    window_repaint(np);
+    window_repaint(*wp);
   }
 }
 
@@ -719,10 +727,10 @@ static void window_invalidate(struct MuttWindow *win)
 
   win->actions |= WA_RECALC | WA_REPAINT;
 
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &win->children)
   {
-    window_invalidate(np);
+    window_invalidate(*wp);
   }
 }
 
@@ -750,7 +758,11 @@ bool window_status_on_top(struct MuttWindow *panel, const struct ConfigSubset *s
 {
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
 
-  struct MuttWindow *win = TAILQ_FIRST(&panel->children);
+  struct MuttWindow **wp_first = ARRAY_FIRST(&panel->children);
+  if (!wp_first)
+    return false;
+
+  struct MuttWindow *win = *wp_first;
 
   if ((c_status_on_top && (win->type == WT_STATUS_BAR)) ||
       (!c_status_on_top && (win->type != WT_STATUS_BAR)))
@@ -760,14 +772,20 @@ bool window_status_on_top(struct MuttWindow *panel, const struct ConfigSubset *s
 
   if (c_status_on_top)
   {
-    win = TAILQ_LAST(&panel->children, MuttWindowList);
-    TAILQ_REMOVE(&panel->children, win, entries);
-    TAILQ_INSERT_HEAD(&panel->children, win, entries);
+    // Move last window to front
+    struct MuttWindow **wp_last = ARRAY_LAST(&panel->children);
+    if (wp_last)
+    {
+      win = *wp_last;
+      ARRAY_REMOVE(&panel->children, wp_last);
+      ARRAY_INSERT(&panel->children, 0, win);
+    }
   }
   else
   {
-    TAILQ_REMOVE(&panel->children, win, entries);
-    TAILQ_INSERT_TAIL(&panel->children, win, entries);
+    // Move first window to end
+    ARRAY_REMOVE(&panel->children, wp_first);
+    ARRAY_ADD(&panel->children, win);
   }
 
   mutt_window_reflow(panel);
@@ -792,36 +810,34 @@ bool mutt_window_swap(struct MuttWindow *parent, struct MuttWindow *win1,
   if (win1->parent != parent || win2->parent != parent)
     return false;
 
-  struct MuttWindow *win1_next = TAILQ_NEXT(win1, entries);
-  if (win1_next == win2)
+  // Find indices of both windows
+  int idx1 = -1;
+  int idx2 = -1;
+  struct MuttWindow **wp = NULL;
+  int idx = 0;
+  ARRAY_FOREACH(wp, &parent->children)
   {
-    // win1 is directly in front of win2, move it behind
-    TAILQ_REMOVE(&parent->children, win1, entries);
-    TAILQ_INSERT_AFTER(&parent->children, win2, win1, entries);
-    return true;
+    if (*wp == win1)
+      idx1 = idx;
+    if (*wp == win2)
+      idx2 = idx;
+    if ((idx1 != -1) && (idx2 != -1))
+      break; // Early exit when both windows found
+    idx++;
   }
 
-  struct MuttWindow *win2_next = TAILQ_NEXT(win2, entries);
-  if (win2_next == win1)
+  if (idx1 == -1 || idx2 == -1)
+    return false;
+
+  // Swap the pointers in the array
+  struct MuttWindow **ptr1 = ARRAY_GET(&parent->children, idx1);
+  struct MuttWindow **ptr2 = ARRAY_GET(&parent->children, idx2);
+  if (ptr1 && ptr2)
   {
-    // win2 is directly in front of win1, move it behind
-    TAILQ_REMOVE(&parent->children, win2, entries);
-    TAILQ_INSERT_AFTER(&parent->children, win1, win2, entries);
-    return true;
+    struct MuttWindow *tmp = *ptr1;
+    *ptr1 = *ptr2;
+    *ptr2 = tmp;
   }
-
-  TAILQ_REMOVE(&parent->children, win1, entries);
-  TAILQ_REMOVE(&parent->children, win2, entries);
-
-  if (win1_next)
-    TAILQ_INSERT_BEFORE(win1_next, win2, entries);
-  else
-    TAILQ_INSERT_TAIL(&parent->children, win2, entries);
-
-  if (win2_next)
-    TAILQ_INSERT_BEFORE(win2_next, win1, entries);
-  else
-    TAILQ_INSERT_TAIL(&parent->children, win1, entries);
 
   return true;
 }

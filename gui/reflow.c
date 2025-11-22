@@ -45,38 +45,38 @@ static void window_reflow_horiz(struct MuttWindow *win)
   int space = win->state.cols;
 
   // Pass one - minimal allocation
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &win->children)
   {
-    if (!np->state.visible)
+    if (!(*wp)->state.visible)
       continue;
 
-    switch (np->size)
+    switch ((*wp)->size)
     {
       case MUTT_WIN_SIZE_FIXED:
       {
-        const int avail = MIN(space, np->req_cols);
-        np->state.cols = avail;
-        np->state.rows = win->state.rows;
+        const int avail = MIN(space, (*wp)->req_cols);
+        (*wp)->state.cols = avail;
+        (*wp)->state.rows = win->state.rows;
         space -= avail;
         break;
       }
       case MUTT_WIN_SIZE_MAXIMISE:
       {
-        np->state.cols = 1;
-        np->state.rows = win->state.rows;
+        (*wp)->state.cols = 1;
+        (*wp)->state.rows = win->state.rows;
         max_count++;
         space -= 1;
         break;
       }
       case MUTT_WIN_SIZE_MINIMISE:
       {
-        np->state.rows = win->state.rows;
-        np->state.cols = win->state.cols;
-        np->state.row_offset = win->state.row_offset;
-        np->state.col_offset = win->state.col_offset;
-        window_reflow(np);
-        space -= np->state.cols;
+        (*wp)->state.rows = win->state.rows;
+        (*wp)->state.cols = win->state.cols;
+        (*wp)->state.row_offset = win->state.row_offset;
+        (*wp)->state.col_offset = win->state.col_offset;
+        window_reflow(*wp);
+        space -= (*wp)->state.cols;
         break;
       }
     }
@@ -86,33 +86,33 @@ static void window_reflow_horiz(struct MuttWindow *win)
   if ((max_count > 0) && (space > 0))
   {
     int alloc = (space + max_count - 1) / max_count;
-    TAILQ_FOREACH(np, &win->children, entries)
+    ARRAY_FOREACH(wp, &win->children)
     {
       if (space == 0)
         break;
-      if (!np->state.visible)
+      if (!(*wp)->state.visible)
         continue;
-      if (np->size != MUTT_WIN_SIZE_MAXIMISE)
+      if ((*wp)->size != MUTT_WIN_SIZE_MAXIMISE)
         continue;
 
       alloc = MIN(space, alloc);
-      np->state.cols += alloc;
+      (*wp)->state.cols += alloc;
       space -= alloc;
     }
   }
 
   // Pass three - position and recursion
   int col = win->state.col_offset;
-  TAILQ_FOREACH(np, &win->children, entries)
+  ARRAY_FOREACH(wp, &win->children)
   {
-    if (!np->state.visible)
+    if (!(*wp)->state.visible)
       continue;
 
-    np->state.col_offset = col;
-    np->state.row_offset = win->state.row_offset;
-    col += np->state.cols;
+    (*wp)->state.col_offset = col;
+    (*wp)->state.row_offset = win->state.row_offset;
+    col += (*wp)->state.cols;
 
-    window_reflow(np);
+    window_reflow(*wp);
   }
 
   if ((space > 0) && (win->size == MUTT_WIN_SIZE_MINIMISE))
@@ -134,38 +134,38 @@ static void window_reflow_vert(struct MuttWindow *win)
   int space = win->state.rows;
 
   // Pass one - minimal allocation
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &win->children)
   {
-    if (!np->state.visible)
+    if (!(*wp)->state.visible)
       continue;
 
-    switch (np->size)
+    switch ((*wp)->size)
     {
       case MUTT_WIN_SIZE_FIXED:
       {
-        const int avail = MIN(space, np->req_rows);
-        np->state.rows = avail;
-        np->state.cols = win->state.cols;
+        const int avail = MIN(space, (*wp)->req_rows);
+        (*wp)->state.rows = avail;
+        (*wp)->state.cols = win->state.cols;
         space -= avail;
         break;
       }
       case MUTT_WIN_SIZE_MAXIMISE:
       {
-        np->state.rows = 1;
-        np->state.cols = win->state.cols;
+        (*wp)->state.rows = 1;
+        (*wp)->state.cols = win->state.cols;
         max_count++;
         space -= 1;
         break;
       }
       case MUTT_WIN_SIZE_MINIMISE:
       {
-        np->state.rows = win->state.rows;
-        np->state.cols = win->state.cols;
-        np->state.row_offset = win->state.row_offset;
-        np->state.col_offset = win->state.col_offset;
-        window_reflow(np);
-        space -= np->state.rows;
+        (*wp)->state.rows = win->state.rows;
+        (*wp)->state.cols = win->state.cols;
+        (*wp)->state.row_offset = win->state.row_offset;
+        (*wp)->state.col_offset = win->state.col_offset;
+        window_reflow(*wp);
+        space -= (*wp)->state.rows;
         break;
       }
     }
@@ -175,33 +175,33 @@ static void window_reflow_vert(struct MuttWindow *win)
   if ((max_count > 0) && (space > 0))
   {
     int alloc = (space + max_count - 1) / max_count;
-    TAILQ_FOREACH(np, &win->children, entries)
+    ARRAY_FOREACH(wp, &win->children)
     {
       if (space == 0)
         break;
-      if (!np->state.visible)
+      if (!(*wp)->state.visible)
         continue;
-      if (np->size != MUTT_WIN_SIZE_MAXIMISE)
+      if ((*wp)->size != MUTT_WIN_SIZE_MAXIMISE)
         continue;
 
       alloc = MIN(space, alloc);
-      np->state.rows += alloc;
+      (*wp)->state.rows += alloc;
       space -= alloc;
     }
   }
 
   // Pass three - position and recursion
   int row = win->state.row_offset;
-  TAILQ_FOREACH(np, &win->children, entries)
+  ARRAY_FOREACH(wp, &win->children)
   {
-    if (!np->state.visible)
+    if (!(*wp)->state.visible)
       continue;
 
-    np->state.row_offset = row;
-    np->state.col_offset = win->state.col_offset;
-    row += np->state.rows;
+    (*wp)->state.row_offset = row;
+    (*wp)->state.col_offset = win->state.col_offset;
+    row += (*wp)->state.rows;
 
-    window_reflow(np);
+    window_reflow(*wp);
   }
 
   if ((space > 0) && (win->size == MUTT_WIN_SIZE_MINIMISE))

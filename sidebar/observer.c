@@ -96,10 +96,12 @@ static struct MuttWindow *sb_win_init(struct MuttWindow *dlg)
 {
   dlg->orient = MUTT_WIN_ORIENT_HORIZONTAL;
 
-  struct MuttWindow *index_panel = TAILQ_FIRST(&dlg->children);
+  struct MuttWindow **pw_index_panel = ARRAY_FIRST(&dlg->children);
+  struct MuttWindow *index_panel = pw_index_panel ? *pw_index_panel : NULL;
   mutt_window_remove_child(dlg, index_panel);
 
-  struct MuttWindow *pager_panel = TAILQ_FIRST(&dlg->children);
+  struct MuttWindow **wp_pager_panel = ARRAY_FIRST(&dlg->children);
+  struct MuttWindow *pager_panel = wp_pager_panel ? *wp_pager_panel : NULL;
   mutt_window_remove_child(dlg, pager_panel);
 
   struct MuttWindow *cont_right = mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL,
@@ -317,14 +319,18 @@ static int sb_config_observer(struct NotifyCallback *nc)
   if (mutt_str_equal(ev_c->name, "sidebar_on_right"))
   {
     struct MuttWindow *parent = win->parent;
-    struct MuttWindow *first = TAILQ_FIRST(&parent->children);
+    struct MuttWindow **wp_first = ARRAY_FIRST(&parent->children);
+    if (!wp_first)
+      return 0;
+
+    struct MuttWindow *first = *wp_first;
     const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
 
     if ((c_sidebar_on_right && (first == win)) || (!c_sidebar_on_right && (first != win)))
     {
-      // Swap the Sidebar and the Container of the Index/Pager
-      TAILQ_REMOVE(&parent->children, first, entries);
-      TAILQ_INSERT_TAIL(&parent->children, first, entries);
+      // Swap the Sidebar and the Container of the Index/Pager - move first to end
+      ARRAY_REMOVE(&parent->children, wp_first);
+      ARRAY_ADD(&parent->children, first);
     }
 
     window_reflow(win->parent);
