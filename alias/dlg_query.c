@@ -185,7 +185,7 @@ static int query_tag(struct Menu *menu, int sel, int act)
  * @retval  0 Success
  * @retval -1 Error
  */
-int query_run(const char *s, bool verbose, struct AliasList *al, const struct ConfigSubset *sub)
+int query_run(const char *s, bool verbose, struct AliasArray *al, const struct ConfigSubset *sub)
 {
   FILE *fp = NULL;
   char *buf = NULL;
@@ -249,7 +249,7 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
       mutt_addrlist_parse(&alias->addr, buf); // Email address
     }
 
-    TAILQ_INSERT_TAIL(al, alias, entries);
+    ARRAY_ADD(al, alias);
   }
   buf_pool_release(&addr);
 
@@ -406,7 +406,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.search_state = search_state_new();
 
-  struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
+  struct AliasArray al = ARRAY_HEAD_INITIALIZER;
   const char *const c_query_command = cs_subset_string(sub, "query_command");
   if (!c_query_command)
   {
@@ -415,16 +415,16 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
   }
 
   query_run(buf_string(buf), true, &al, sub);
-  if (TAILQ_EMPTY(&al))
+  if (ARRAY_EMPTY(&al))
     goto done;
 
   mdata.al = &al;
 
-  struct Alias *a_first = TAILQ_FIRST(&al);
-  if (!TAILQ_NEXT(a_first, entries)) // only one response?
+  struct Alias **a_first = ARRAY_FIRST(&al);
+  if (ARRAY_SIZE(&al) == 1) // only one response?
   {
     struct AddressList addr = TAILQ_HEAD_INITIALIZER(addr);
-    if (alias_to_addrlist(&addr, a_first))
+    if (alias_to_addrlist(&addr, *a_first))
     {
       mutt_addrlist_to_local(&addr);
       buf_reset(buf);
@@ -436,10 +436,10 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
     goto done;
   }
 
-  struct Alias *np = NULL;
-  TAILQ_FOREACH(np, mdata.al, entries)
+  struct Alias **np = NULL;
+  ARRAY_FOREACH(np, mdata.al)
   {
-    alias_array_alias_add(&mdata.ava, np);
+    alias_array_alias_add(&mdata.ava, *np);
   }
 
   /* multiple results, choose from query menu */
@@ -487,7 +487,7 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
     return;
   }
 
-  struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
+  struct AliasArray al = ARRAY_HEAD_INITIALIZER;
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.al = &al;
   mdata.search_state = search_state_new();
@@ -500,13 +500,13 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
   }
 
   query_run(buf_string(buf), false, &al, sub);
-  if (TAILQ_EMPTY(&al))
+  if (ARRAY_EMPTY(&al))
     goto done;
 
-  struct Alias *np = NULL;
-  TAILQ_FOREACH(np, mdata.al, entries)
+  struct Alias **np = NULL;
+  ARRAY_FOREACH(np, mdata.al)
   {
-    alias_array_alias_add(&mdata.ava, np);
+    alias_array_alias_add(&mdata.ava, *np);
   }
 
   if (!dlg_query(buf, &mdata))

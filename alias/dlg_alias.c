@@ -343,8 +343,10 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
 
   if (buf_at(buf, 0) != '\0')
   {
-    TAILQ_FOREACH(np, &Aliases, entries)
+    struct Alias **np_ptr = NULL;
+    ARRAY_FOREACH(np_ptr, &Aliases)
     {
+      np = *np_ptr;
       if (np->name && mutt_strn_equal(np->name, buf_string(buf), buf_len(buf)))
       {
         if (bestname[0] == '\0') /* init */
@@ -367,9 +369,9 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     {
       // Create a View Array of all the Aliases
       FREE(&mdata.limit);
-      TAILQ_FOREACH(np, &Aliases, entries)
+      ARRAY_FOREACH(np_ptr, &Aliases)
       {
-        alias_array_alias_add(&mdata.ava, np);
+        alias_array_alias_add(&mdata.ava, *np_ptr);
       }
     }
     else
@@ -390,8 +392,9 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
       }
 
       /* build alias list and show it */
-      TAILQ_FOREACH(np, &Aliases, entries)
+      ARRAY_FOREACH(np_ptr, &Aliases)
       {
+        np = *np_ptr;
         int aasize = alias_array_alias_add(&mdata.ava, np);
 
         struct AliasView *av = ARRAY_GET(&mdata.ava, aasize - 1);
@@ -406,9 +409,10 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
 
   if (ARRAY_EMPTY(&mdata.ava))
   {
-    TAILQ_FOREACH(np, &Aliases, entries)
+    struct Alias **np_ptr = NULL;
+    ARRAY_FOREACH(np_ptr, &Aliases)
     {
-      alias_array_alias_add(&mdata.ava, np);
+      alias_array_alias_add(&mdata.ava, *np_ptr);
     }
 
     mutt_pattern_alias_func(NULL, &mdata, PAA_VISIBLE, NULL);
@@ -440,7 +444,16 @@ done:
     if (!avp->is_deleted)
       continue;
 
-    TAILQ_REMOVE(&Aliases, avp->alias, entries);
+    // Find and remove the alias from the Aliases array
+    struct Alias **alias_ptr = NULL;
+    ARRAY_FOREACH(alias_ptr, &Aliases)
+    {
+      if (*alias_ptr == avp->alias)
+      {
+        ARRAY_REMOVE(&Aliases, alias_ptr);
+        break;
+      }
+    }
     alias_free(&avp->alias);
   }
 
@@ -459,15 +472,15 @@ done:
  */
 void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
 {
-  struct Alias *np = NULL;
+  struct Alias **np_ptr = NULL;
 
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.search_state = search_state_new();
 
   // Create a View Array of all the Aliases
-  TAILQ_FOREACH(np, &Aliases, entries)
+  ARRAY_FOREACH(np_ptr, &Aliases)
   {
-    alias_array_alias_add(&mdata.ava, np);
+    alias_array_alias_add(&mdata.ava, *np_ptr);
   }
 
   if (!dlg_alias(&mdata))
@@ -499,7 +512,16 @@ done:
   {
     if (avp->is_deleted)
     {
-      TAILQ_REMOVE(&Aliases, avp->alias, entries);
+      // Find and remove the alias from the Aliases array
+      struct Alias **alias_ptr = NULL;
+      ARRAY_FOREACH(alias_ptr, &Aliases)
+      {
+        if (*alias_ptr == avp->alias)
+        {
+          ARRAY_REMOVE(&Aliases, alias_ptr);
+          break;
+        }
+      }
       alias_free(&avp->alias);
     }
   }
