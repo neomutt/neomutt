@@ -123,20 +123,27 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
   if (!mutt_str_equal(ev_c->name, "status_on_top"))
     return 0;
 
-  struct MuttWindow *first = TAILQ_FIRST(&win_root->children);
-  if (!first)
+  struct MuttWindow **first_ptr = ARRAY_FIRST(&win_root->children);
+  if (!first_ptr)
     return 0;
+
+  struct MuttWindow *first = *first_ptr;
 
   const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
   if ((c_status_on_top && (first->type == WT_HELP_BAR)) ||
       (!c_status_on_top && (first->type != WT_HELP_BAR)))
   {
     // Swap the HelpBar and the AllDialogsWindow
-    struct MuttWindow *next = TAILQ_NEXT(first, entries);
-    if (!next)
+    if (ARRAY_SIZE(&win_root->children) < 2)
       return 0;
-    TAILQ_REMOVE(&win_root->children, next, entries);
-    TAILQ_INSERT_HEAD(&win_root->children, next, entries);
+
+    struct MuttWindow **next_ptr = ARRAY_GET(&win_root->children, 1);
+    if (!next_ptr)
+      return 0;
+
+    struct MuttWindow *next = *next_ptr;
+    ARRAY_REMOVE(&win_root->children, next_ptr);
+    ARRAY_INSERT(&win_root->children, 0, next);
 
     mutt_window_reflow(win_root);
     mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
