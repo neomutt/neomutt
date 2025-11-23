@@ -36,6 +36,15 @@
 
 /**
  * Flags - Lookup table for all patterns
+ *
+ * Patterns in use:
+ * - `~` `.bcdefghi.klmn.p.rstuvwxyz`
+ * - `~` `ABCDEFGHI..LMNOPQRSTUV.XY.`
+ * - `~#` `~$` `~()` `~<()` `~=` `~>()`
+ *
+ * Misc in use:
+ * - Group matches - `%C` `%L` `%c` `%e` `%f`
+ * - IMAP matches  - `=/` `=B` `=b` `=h`
  */
 const struct PatternFlags Flags[] = {
   // clang-format off
