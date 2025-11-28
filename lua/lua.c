@@ -432,6 +432,8 @@ static void lua_expose_mutt(lua_State *l)
   }
 }
 
+void lua_emailarray_class(lua_State *l);
+
 /**
  * lua_init_state - Initialise a Lua State
  * @param[out] l Lua State
@@ -468,6 +470,7 @@ bool lua_init_state(lua_State **l)
   lua_log_init(*l);
   lua_global_init(*l);
   lua_config_init(*l);
+  lua_emailarray_class(*l);
   lua_expose_mutt(*l);
 
   return true;
