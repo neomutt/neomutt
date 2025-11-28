@@ -31,6 +31,7 @@
  * | lua/config.c        | @subpage lua_config        |
  * | lua/global.c        | @subpage lua_global        |
  * | lua/helpers.c       | @subpage lua_helpers       |
+ * | lua/iterator.c      | @subpage lua_email_array   |
  * | lua/logging.c       | @subpage lua_logging       |
  * | lua/module.c        | @subpage lua_module        |
  */

@@ -99,6 +99,7 @@ static int lua_handle_panic(lua_State *l)
 static void lua_classes(lua_State *l)
 {
   LUA_CLASS(config);
+  LUA_CLASS(emailarray);
 }
 /**
  * lua_init_state - Initialise a Lua State
