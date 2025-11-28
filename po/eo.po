@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-09-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-08-28 08:41+0100\n"
-"PO-Revision-Date: 2025-04-17 00:29-0400\n"
+"PO-Revision-Date: 2025-11-27 11:23-0500\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -7992,9 +7992,8 @@ msgid "No newsgroup specified"
 msgstr "Neniu novaĵgrupo specifita"
 
 #: send/send.c:2711
-#, fuzzy
 msgid "No recipients specified in To. Send anyway?"
-msgstr "Nenia ricevonto specifita"
+msgstr "Neniuj ricevontoj specifitaj en To:. Ĉu senkonsidere sendi?"
 
 #: send/send.c:2752
 msgid "Missing encryption key; mail not sent"
@@ -8218,7 +8217,7 @@ msgstr "neomutt                              Startigi la fasadon terminalan de N
 
 #: usage.c:104
 msgid "        -f <mailbox>                 Open this mailbox"
-msgstr "        -f <leterkesto>                 Malfermi leterkeston"
+msgstr "        -f <leterkesto>              Malfermi leterkeston"
 
 #: usage.c:105
 msgid "        -G                           Open NNTP browser"
