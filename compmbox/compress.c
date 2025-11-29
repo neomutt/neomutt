@@ -61,10 +61,10 @@ struct Email;
  */
 static const struct Command CompCommands[] = {
   // clang-format off
-  { "append-hook", mutt_parse_hook, MUTT_APPEND_HOOK },
-  { "close-hook",  mutt_parse_hook, MUTT_CLOSE_HOOK },
-  { "open-hook",   mutt_parse_hook, MUTT_OPEN_HOOK },
-  { NULL, NULL, 0 },
+  { "append-hook", "Define command to append to a compressed mailbox", mutt_parse_hook, MUTT_APPEND_HOOK },
+  { "close-hook",  "Define command to close a compressed mailbox",     mutt_parse_hook, MUTT_CLOSE_HOOK  },
+  { "open-hook",   "Define command to open a compressed mailbox",      mutt_parse_hook, MUTT_OPEN_HOOK   },
+  { NULL, NULL, NULL, 0 },
   // clang-format on
 };
 

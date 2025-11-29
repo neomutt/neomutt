@@ -69,13 +69,13 @@ static void create_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
  */
 static const struct Command KeyCommands[] = {
   // clang-format off
-  { "bind",    parse_bind,   0 },
-  { "exec",    parse_exec,   0 },
-  { "macro",   parse_macro,  1 },
-  { "push",    parse_push,   0 },
-  { "unbind",  parse_unbind, MUTT_UNBIND },
-  { "unmacro", parse_unbind, MUTT_UNMACRO },
-  { NULL, NULL, 0 },
+  { "bind",    "Bind a key to a function",                                   parse_bind,   0            },
+  { "exec",    "Execute a function",                                         parse_exec,   0            },
+  { "macro",   "Define a keyboard macro",                                    parse_macro,  1            },
+  { "push",    "Push a string into NeoMutt's input queue (simulate typing)", parse_push,   0            },
+  { "unbind",  "Remove a key binding",                                       parse_unbind, MUTT_UNBIND  },
+  { "unmacro", "Remove a keyboard macro",                                    parse_unbind, MUTT_UNMACRO },
+  { NULL, NULL, NULL, 0 },
   // clang-format on
 };
 

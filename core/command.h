@@ -49,6 +49,7 @@ enum CommandResult
 struct Command
 {
   const char *name; ///< Name of the command
+  const char *help; ///< One-line description of the command
 
   /**
    * @defgroup command_parse parse()
