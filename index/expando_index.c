@@ -768,6 +768,7 @@ static void email_list_or_save_folder(const struct ExpandoNode *node, void *data
   buf_strcpy(buf, tmp);
 }
 
+#ifdef USE_LUA
 /**
  * email_lua_custom - Index: Lua-Generated fields - Implements ::get_string_t - @ingroup expando_get_string_api
  */
@@ -801,6 +802,7 @@ static void email_lua_custom(const struct ExpandoNode *node, void *data,
     }
   }
 }
+#endif
 
 /**
  * email_message_flags - Index: Message tag flags - Implements ::get_string_t - @ingroup expando_get_string_api
