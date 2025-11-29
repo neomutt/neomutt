@@ -116,8 +116,8 @@ static enum CommandResult parse_lua_source(struct Buffer *buf, struct Buffer *s,
  */
 static const struct Command LuaCommands[] = {
   // clang-format off
-  { "lua", "Execute Lua code", parse_lua, 0 },
-  { "lua-source", "Execute a Lua script file", parse_lua_source, 0 },
+  { "lua",        "Execute Lua code",           parse_lua,        0 },
+  { "lua-source", "Execute a Lua script file",  parse_lua_source, 0 },
   { NULL, NULL, NULL, 0 },
   // clang-format on
 };

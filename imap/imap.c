@@ -83,8 +83,8 @@ struct stat;
  */
 static const struct Command ImapCommands[] = {
   // clang-format off
-  { "subscribe-to", "Subscribe to an IMAP mailbox", parse_subscribe_to, 0 },
-  { "unsubscribe-from", "Unsubscribe from an IMAP mailbox", parse_unsubscribe_from, 0 },
+  { "subscribe-to",     "Subscribe to an IMAP mailbox",       parse_subscribe_to,     0 },
+  { "unsubscribe-from", "Unsubscribe from an IMAP mailbox",   parse_unsubscribe_from, 0 },
   { NULL, NULL, NULL, 0 },
   // clang-format on
 };
