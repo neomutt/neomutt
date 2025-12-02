@@ -32,7 +32,10 @@
  * | key/extended.c      | @subpage key_extended |
  * | key/get.c           | @subpage key_get      |
  * | key/init.c          | @subpage key_init     |
+ * | key/keymap.c        | @subpage key_keymap   |
  * | key/lib.c           | @subpage key_lib      |
+ * | key/lib.h           | @subpage lib_key      |
+ * | key/menu.c          | @subpage key_menu     |
  */
 
 #ifndef MUTT_KEY_LIB_H
