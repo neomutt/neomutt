@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-09-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-08-28 08:41+0100\n"
+"POT-Creation-Date: 2025-12-02 10:41+0000\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -27,65 +27,65 @@ msgstr ""
 
 #: address/config_type.c:87 config/long.c:51 config/path.c:98 config/path.c:173
 #: config/sort.c:58 config/string.c:69 config/string.c:144
-#: expando/config_type.c:70 expando/config_type.c:168
+#: expando/config_type.c:69 expando/config_type.c:167
 #, c-format
 msgid "Option %s may not be empty"
 msgstr "Voľba %s nemůže byť prázdna"
 
 #. L10N: prompt to add a new alias
-#: alias/alias.c:396
+#: alias/alias.c:395
 msgid "Alias as: "
 msgstr "Alias ako: "
 
-#: alias/alias.c:405
+#: alias/alias.c:404
 msgid "You already have an alias defined with that name"
 msgstr "Alias s týmto menom je už zadefinovaný"
 
-#: alias/alias.c:411
+#: alias/alias.c:410
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Pozor: Tento názov aliasu nemusí fungovať. Opraviť?"
 
-#: alias/alias.c:436
+#: alias/alias.c:435
 msgid "Address: "
 msgstr "Adresa: "
 
-#: alias/alias.c:448 conn/raw.c:177 conn/raw.c:234 envelope/functions.c:133
+#: alias/alias.c:447 conn/raw.c:177 conn/raw.c:234 envelope/functions.c:133
 #: external.c:135 recvcmd.c:231 send/send.c:217
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Chybné IDN: „%s“"
 
-#: alias/alias.c:459
+#: alias/alias.c:458
 msgid "Personal name: "
 msgstr "Vlastné meno: "
 
-#: alias/alias.c:468
+#: alias/alias.c:467
 msgid "Comment: "
 msgstr "Komentár: "
 
-#: alias/alias.c:474
+#: alias/alias.c:473
 msgid "Tags (comma-separated): "
 msgstr "Tagy (oddelené čiarkou): "
 
-#: alias/alias.c:503
+#: alias/alias.c:502
 msgid "Accept?"
 msgstr "Akceptovať?"
 
-#: alias/alias.c:518 attach/recvattach.c:304 attach/recvattach.c:327
+#: alias/alias.c:517 attach/recvattach.c:304 attach/recvattach.c:327
 #: attach/recvattach.c:345 attach/recvattach.c:362 attach/recvattach.c:489
-#: pager/functions.c:1024
+#: pager/functions.c:1023
 msgid "Save to file: "
 msgstr "Uložiť do súboru: "
 
-#: alias/alias.c:540
+#: alias/alias.c:539
 msgid "Error reading alias file"
 msgstr "Chyba pri čítaní súboru aliasov"
 
-#: alias/alias.c:579
+#: alias/alias.c:578
 msgid "Trouble adding alias"
 msgstr "Chyba pri pridávaní aliasu"
 
-#: alias/alias.c:581
+#: alias/alias.c:580
 msgid "Alias added"
 msgstr "Alias pridaný"
 
@@ -104,20 +104,20 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Pozor: Neplatné IDN „%s“ v aliase „%s“"
 
 #: alias/dlg_alias.c:101 alias/dlg_query.c:101 attach/dlg_attach.c:94
-#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:112
-#: browser/dlg_browser.c:124 conn/dlg_verifycert.c:68 history/dlg_history.c:77
-#: ncrypt/dlg_gpgme.c:94 ncrypt/dlg_pgp.c:93 ncrypt/dlg_smime.c:74
+#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:111
+#: browser/dlg_browser.c:123 conn/dlg_verifycert.c:67 history/dlg_history.c:77
+#: ncrypt/dlg_gpgme.c:93 ncrypt/dlg_pgp.c:92 ncrypt/dlg_smime.c:74
 #: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
 #: pager/dlg_pager.c:111 pattern/dlg_pattern.c:90 postpone/dlg_postpone.c:89
 msgid "Exit"
 msgstr "Koniec"
 
-#: alias/dlg_alias.c:102 index/dlg_index.c:105 index/dlg_index.c:120
+#: alias/dlg_alias.c:102 index/dlg_index.c:104 index/dlg_index.c:119
 #: pager/dlg_pager.c:100 pager/dlg_pager.c:116 postpone/dlg_postpone.c:90
 msgid "Del"
 msgstr "Zmaž"
 
-#: alias/dlg_alias.c:103 index/dlg_index.c:106 index/dlg_index.c:121
+#: alias/dlg_alias.c:103 index/dlg_index.c:105 index/dlg_index.c:120
 #: postpone/dlg_postpone.c:91
 msgid "Undel"
 msgstr "Obnov"
@@ -130,17 +130,17 @@ msgstr "Zoradiť"
 msgid "Rev-Sort"
 msgstr "Spätne Zoradiť"
 
-#: alias/dlg_alias.c:106 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:95
-#: ncrypt/dlg_pgp.c:94 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
+#: alias/dlg_alias.c:106 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:94
+#: ncrypt/dlg_pgp.c:93 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
 msgid "Select"
 msgstr "Označiť"
 
 #: alias/dlg_alias.c:107 alias/dlg_query.c:108 attach/dlg_attach.c:98
-#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:116
-#: browser/dlg_browser.c:130 compose/dlg_compose.c:105
-#: compose/dlg_compose.c:119 conn/dlg_verifycert.c:69 editor/window.c:51
-#: history/dlg_history.c:80 index/dlg_index.c:111 index/dlg_index.c:126
-#: ncrypt/dlg_gpgme.c:97 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:76
+#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:115
+#: browser/dlg_browser.c:129 compose/dlg_compose.c:105
+#: compose/dlg_compose.c:119 conn/dlg_verifycert.c:68 editor/window.c:50
+#: history/dlg_history.c:80 index/dlg_index.c:110 index/dlg_index.c:125
+#: ncrypt/dlg_gpgme.c:96 ncrypt/dlg_pgp.c:95 ncrypt/dlg_smime.c:76
 #: pager/dlg_pager.c:78 pager/dlg_pager.c:103 pager/dlg_pager.c:118
 #: pattern/dlg_pattern.c:92 postpone/dlg_postpone.c:92
 msgid "Help"
@@ -154,7 +154,7 @@ msgstr "Nemáte žiadne aliasy"
 msgid "Aliases"
 msgstr "Aliasy"
 
-#: alias/dlg_query.c:102 index/dlg_index.c:108
+#: alias/dlg_query.c:102 index/dlg_index.c:107
 msgid "Mail"
 msgstr "Napíš"
 
@@ -182,64 +182,64 @@ msgstr "Otázka"
 msgid "Query command not defined"
 msgstr "Príkaz dotazu nie je definovaný"
 
-#: alias/dlg_query.c:496 alias/functions.c:303 alias/functions.c:321
+#: alias/dlg_query.c:496 alias/functions.c:302 alias/functions.c:320
 msgid "Query: "
 msgstr "Otázka: "
 
-#: alias/functions.c:248
+#: alias/functions.c:247
 msgid "Limit to addresses matching: "
 msgstr "Obmedz na adresy zodpovedajúce: "
 
-#: alias/functions.c:267
+#: alias/functions.c:266
 msgid "Tag addresses matching: "
 msgstr "Označiť adresy zodpovedajúce: "
 
-#: alias/functions.c:283
+#: alias/functions.c:282
 msgid "Untag addresses matching: "
 msgstr "Odznačiť adresy zodpovedajúce: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/functions.c:398
+#: alias/functions.c:397
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
 msgstr "Spätne Zoradiť podľa (a)liasu, (m)ena, a(d)resy alebo (n)eradiť"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/functions.c:400
+#: alias/functions.c:399
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
 msgstr "Zoradiť podľa (a)liasu, (m)ena, a(d)resy alebo (n)eradiť"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/functions.c:402
+#: alias/functions.c:401
 msgid "aneu"
 msgstr "amdn"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:84 index/functions.c:1831
+#: alias/gui.c:84 index/functions.c:1837
 #, c-format
 msgid "Limit: %s"
 msgstr "Limit: %s"
 
-#: attach/attachments.c:481
+#: attach/commands.c:481
 msgid "attachments: no disposition"
 msgstr "prílohy: žiadne dispozície"
 
-#: attach/attachments.c:492
+#: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Súčasné nastavení príloh:"
 
-#: attach/attachments.c:524
+#: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: neplatná dispozícia"
 
-#: attach/attachments.c:544
+#: attach/commands.c:544
 msgid "unattachments: no disposition"
 msgstr "unattachments: žiadna dispozícia"
 
-#: attach/attachments.c:584
+#: attach/commands.c:584
 msgid "unattachments: invalid disposition"
 msgstr "unattachmanets: neplatná dispozícia"
 
-#: attach/dlg_attach.c:95 index/dlg_index.c:107 index/dlg_index.c:122
+#: attach/dlg_attach.c:95 index/dlg_index.c:106 index/dlg_index.c:121
 msgid "Save"
 msgstr "Uložiť"
 
@@ -255,11 +255,11 @@ msgstr "Tlačiť"
 msgid "Attachments"
 msgstr "Prílohy"
 
-#: attach/functions.c:56 index/functions.c:3101
+#: attach/functions.c:56 index/functions.c:3107
 msgid "Function not permitted in attach-message mode"
 msgstr "V režime prikladania správ nie je táto funkcia povolena"
 
-#: attach/functions.c:188 index/functions.c:3095 mx.c:933
+#: attach/functions.c:188 index/functions.c:3101 mx.c:933
 msgid "Mailbox is read-only"
 msgstr "Schránka je v režime iba na čítanie"
 
@@ -287,7 +287,7 @@ msgstr "Mazanie príloh z podpísaných správ môže zneplatniť podpís"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Len mazanie multipart (víceúčelových) príloh je podporované"
 
-#: attach/functions.c:643 index/functions.c:2847
+#: attach/functions.c:643 index/functions.c:2853
 msgid "Reply by mail as poster prefers?"
 msgstr "Odpovedať e-mailom podľa návrhu autora?"
 
@@ -301,9 +301,9 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Zostavovacia položka mailcap-u vyžaduje %%s"
 
 #: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:312
-#: compose/functions.c:1851 gui/curs_lib.c:125 index/dlg_index.c:1216
-#: index/dlg_index.c:1261 pager/dlg_pager.c:456 pager/do_pager.c:166
-#: pager/message.c:329 send/sendlib.c:580
+#: compose/functions.c:1851 gui/curs_lib.c:125 index/dlg_index.c:1215
+#: index/dlg_index.c:1260 pager/dlg_pager.c:456 pager/do_pager.c:166
+#: pager/message.c:327 send/sendlib.c:580
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Chyba behu „%s“"
@@ -437,15 +437,15 @@ msgstr "Nemožno dešifrovať zašifrovanú správu"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:1288
+#: autocrypt/autocrypt.c:77 main.c:1282
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s neexistuje. Vytvoriť?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:656
-#: main.c:1292 nntp/newsrc.c:1020
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:331 main.c:653
+#: main.c:1286 nntp/newsrc.c:1020
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Nemožno vytvoriť %s: %s"
@@ -688,65 +688,65 @@ msgstr "Cache vypnutá, $message_cache_dir nie je adresár: %s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Cache zo správami %s nie je adresár"
 
-#: browser/dlg_browser.c:113
+#: browser/dlg_browser.c:112
 msgid "Chdir"
 msgstr "Zmena adresára"
 
-#: browser/dlg_browser.c:114
+#: browser/dlg_browser.c:113
 msgid "Goto"
 msgstr "Otvor"
 
-#: browser/dlg_browser.c:115 browser/dlg_browser.c:129
+#: browser/dlg_browser.c:114 browser/dlg_browser.c:128
 msgid "Mask"
 msgstr "Maska"
 
-#: browser/dlg_browser.c:125
+#: browser/dlg_browser.c:124
 msgid "List"
 msgstr "Zoznam"
 
-#: browser/dlg_browser.c:126
+#: browser/dlg_browser.c:125
 msgid "Subscribe"
 msgstr "Prihlásiť odber"
 
-#: browser/dlg_browser.c:127
+#: browser/dlg_browser.c:126
 msgid "Unsubscribe"
 msgstr "Odhlásiť odber"
 
-#: browser/dlg_browser.c:128 index/dlg_index.c:125
+#: browser/dlg_browser.c:127 index/dlg_index.c:124
 msgid "Catchup"
 msgstr "Zachytiť"
 
-#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:771
+#: browser/dlg_browser.c:315 browser/functions.c:433 browser/functions.c:771
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s nie je adresár"
 
-#: browser/dlg_browser.c:605
+#: browser/dlg_browser.c:602
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "Prihlásené diskusné skupiny"
 
-#: browser/dlg_browser.c:609
+#: browser/dlg_browser.c:606
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "Diskusné skupiny na servri [%s]"
 
-#: browser/dlg_browser.c:617
+#: browser/dlg_browser.c:614
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Schránky [%d]"
 
-#: browser/dlg_browser.c:629
+#: browser/dlg_browser.c:626
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Prihlasené [%s], Maska súboru: %s"
 
-#: browser/dlg_browser.c:634
+#: browser/dlg_browser.c:631
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Adresár [%s], Maska súboru: %s"
 
-#: browser/dlg_browser.c:698
+#: browser/dlg_browser.c:695
 msgid "Can't attach a directory"
 msgstr "Nemožno priložiť adresár"
 
@@ -844,46 +844,46 @@ msgstr "Prihlásiť podľa vzoru: "
 msgid "Unsubscribe pattern: "
 msgstr "Odhlásiť podľa vzoru: "
 
-#: color/command.c:154 color/command.c:295 color/parse_color.c:288
-#: color/parse_color.c:313 color/parse_color.c:333 commands.c:380
-#: commands.c:402 commands.c:543 commands.c:560 commands.c:777 commands.c:809
-#: commands.c:825 commands.c:948 commands.c:1073 commands.c:1126
-#: commands.c:1166 hook.c:140 hook.c:195 hook.c:204 hook.c:218 hook.c:461
-#: hook.c:477 key/parse.c:279 score.c:100 subjectrx.c:73 subjectrx.c:102
+#: color/commands.c:154 color/commands.c:195 color/commands.c:290
+#: color/parse_color.c:289 color/parse_color.c:314 color/parse_color.c:334
+#: commands.c:380 commands.c:402 commands.c:543 commands.c:560 commands.c:777
+#: commands.c:809 commands.c:825 commands.c:948 commands.c:1073 commands.c:1126
+#: commands.c:1166 hook.c:140 hook.c:195 hook.c:204 hook.c:218 hook.c:460
+#: hook.c:476 key/commands.c:239 score.c:100 subjectrx.c:73 subjectrx.c:102
 #: subjectrx.c:110
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: príliš málo argumentov"
 
-#: color/command.c:168 color/command.c:220
+#: color/commands.c:168 color/commands.c:215
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: nenájdený objekt"
 
-#: color/command.c:320
+#: color/commands.c:315
 #, c-format
 msgid "Direct colors support not compiled in: %s"
 msgstr "Podpora Direct colors nebola zapnutá pri kompilacii: %s"
 
-#: color/command.c:327
+#: color/commands.c:322
 #, c-format
 msgid "Direct colors support disabled: %s"
 msgstr "Podpora Direct colors vypnutá: %s"
 
-#: color/command.c:334 color/parse_color.c:188 color/parse_color.c:227
+#: color/commands.c:329 color/parse_color.c:189 color/parse_color.c:228
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: terminál túto farbu nepodporuje"
 
-#: color/command.c:357 color/command.c:393 commands.c:426 commands.c:1135
-#: commands.c:1266 commands.c:1602 hook.c:145 hook.c:225 hook.c:488
-#: key/parse.c:355 key/parse.c:395 key/parse.c:513 key/parse.c:606
-#: mutt_lua.c:513 score.c:108
+#: color/commands.c:352 color/commands.c:389 commands.c:426 commands.c:1135
+#: commands.c:1266 commands.c:1601 hook.c:145 hook.c:225 hook.c:487
+#: key/commands.c:315 key/commands.c:355 key/commands.c:473 key/commands.c:566
+#: lua/commands.c:94 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: príliš veľa argumentov"
 
-#: color/command.c:383
+#: color/commands.c:378
 #, c-format
 msgid "%s: invalid number: %s"
 msgstr "%s: neplatné číslo: %s"
@@ -915,18 +915,18 @@ msgid "# Status Colors\n"
 msgstr "# Farby stavového riadku\n"
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/dump.c:460 commands.c:897 commands.c:959 commands.c:1645
-#: imap/message.c:1153 key/dump.c:201
+#: color/dump.c:460 commands.c:897 commands.c:959 commands.c:1644
+#: imap/message.c:1154 key/dump.c:203
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Nemožno vytvoriť dočasný súbor %s"
 
-#: color/parse_color.c:272
+#: color/parse_color.c:273
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: nenájdená farba"
 
-#: color/parse_color.c:342
+#: color/parse_color.c:343
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: vlastnosť nenájdená"
@@ -1000,7 +1000,7 @@ msgstr "Nelze použiť prefix pri dotazovanie premenné"
 msgid "%s is unset"
 msgstr "%s je nenastavené"
 
-#: commands.c:1097 mutt_lua.c:508
+#: commands.c:1097 lua/commands.c:89
 #, c-format
 msgid "source: error at %s"
 msgstr "source: chyba na %s"
@@ -1010,7 +1010,7 @@ msgstr "source: chyba na %s"
 msgid "source: file %s could not be sourced"
 msgstr "source: súbor %s nie je možné začleniť"
 
-#: commands.c:1276 imap/imap.c:1260
+#: commands.c:1276 imap/imap.c:1262
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Prihlásené k odberu %s"
@@ -1020,7 +1020,7 @@ msgstr "Prihlásené k odberu %s"
 msgid "Could not subscribe to %s"
 msgstr "Nemožno prihlásiť k odberu %s"
 
-#: commands.c:1288 commands.c:1624
+#: commands.c:1288 commands.c:1623
 msgid "No folder specified"
 msgstr "Nezadán žiadny adresár"
 
@@ -1034,12 +1034,12 @@ msgstr "formát tagu '%s' je už zapísaný ako '%s'"
 msgid "tag transform '%s' already registered as '%s'"
 msgstr "preklad tagu '%s' je už zapísaný ako '%s'"
 
-#: commands.c:1612 imap/imap.c:1262
+#: commands.c:1611 imap/imap.c:1264
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Odhlásený odber z %s"
 
-#: commands.c:1616
+#: commands.c:1615
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Nemožno odhlásiť odber z %s"
@@ -1145,7 +1145,7 @@ msgstr "Diskusné skupiny"
 msgid "-- Attachments"
 msgstr "-- Prílohy"
 
-#: compose/dlg_compose.c:337 compose/preview.c:140
+#: compose/dlg_compose.c:337 compose/preview.c:139
 msgid "-- Preview"
 msgstr "-- Náhľad"
 
@@ -1211,7 +1211,7 @@ msgstr "Otvor schránku, z ktorej sa bude pridávať správa"
 msgid "Open newsgroup to attach message from"
 msgstr "Otvor diskusnú skupinu, z ktorej sa bude pridávať správa"
 
-#: compose/functions.c:893 main.c:1749
+#: compose/functions.c:893 main.c:1742
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Nemožno otvoriť schránku %s"
@@ -1375,19 +1375,19 @@ msgstr "Správa bola zapísaná"
 msgid "Save (postpone) draft message?"
 msgstr "Uložiť správu do odložených?"
 
-#: compose/preview.c:145
+#: compose/preview.c:144
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr "Iba vložené prílohy typu text/* môžu byť zobrazené v náhľade"
 
-#: compose/preview.c:153
+#: compose/preview.c:152
 msgid "Email too large to preview"
 msgstr "Email príliš veľký pre náhľad"
 
-#: compose/preview.c:199
+#: compose/preview.c:198
 msgid "Failed to move cursor!"
 msgstr "Email je príliš veľký pre náhľad"
 
-#: compose/preview.c:223
+#: compose/preview.c:222
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr "-- Náhľad (%.0f%%)"
@@ -1407,7 +1407,7 @@ msgid "'charset' must contain exactly one character set name"
 msgstr "„charset“ musí obsahovať presne jedno meno znakove sady"
 
 #: config/charset.c:70 config/charset.c:101 hcache/config.c:55
-#: hcache/config.c:78 hcache/config.c:103 mutt_config.c:120
+#: hcache/config.c:78 hcache/config.c:103 mutt_config.c:119
 #, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Neplatná hodnota vobľy %s: %s"
@@ -1423,7 +1423,7 @@ msgid "Invalid enum value: %ld"
 msgstr "Neplatná hodnota vymenovanie: %ld"
 
 #: config/helpers.c:340 config/set.c:109 config/set.c:454 config/set.c:601
-#: config/set.c:677 config/set.c:797 main.c:684 parse/set.c:119 parse/set.c:179
+#: config/set.c:677 config/set.c:797 main.c:681 parse/set.c:119 parse/set.c:179
 #: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
 #: parse/set.c:433
 #, c-format
@@ -1536,59 +1536,59 @@ msgstr "Príkaz vrátil prázdný reťazec"
 msgid "OAUTH token is too big: %ld"
 msgstr "OAUTH token je príliš dlhý: %ld"
 
-#: conn/dlg_verifycert.c:204
+#: conn/dlg_verifycert.c:185
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(o)dmietnúť, prijať (r)az, prij(a)ť vždy, pre(s)kočiť"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:208
+#: conn/dlg_verifycert.c:189
 msgid "roas"
 msgstr "oras"
 
-#: conn/dlg_verifycert.c:212
+#: conn/dlg_verifycert.c:193
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(o)dmietnúť, prijať (r)az, prij(a)ť vždy"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:216
+#: conn/dlg_verifycert.c:197
 msgid "roa"
 msgstr "ora"
 
-#: conn/dlg_verifycert.c:223
+#: conn/dlg_verifycert.c:204
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(o)dmietnúť, prijať (r)az, pre(s)kočiť"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:227
+#: conn/dlg_verifycert.c:208
 msgid "ros"
 msgstr "ors"
 
-#: conn/dlg_verifycert.c:231
+#: conn/dlg_verifycert.c:212
 msgid "(r)eject, accept (o)nce"
 msgstr "(o)dmietnúť, prijať (r)az"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:235
+#: conn/dlg_verifycert.c:216
 msgid "ro"
 msgstr "or"
 
-#: conn/dlg_verifycert.c:294
+#: conn/dlg_verifycert.c:275
 msgid "Jumping is not implemented for dialogs"
 msgstr "V dialógoch nie je preskakovanie implementované"
 
-#: conn/dlg_verifycert.c:301
+#: conn/dlg_verifycert.c:282
 msgid "Search is not implemented for this menu"
 msgstr "Hľadanie nie je implementované pre toto menu"
 
-#: conn/gnutls.c:146 conn/gnutls.c:644
+#: conn/gnutls.c:146 conn/gnutls.c:648
 msgid "Unable to get certificate from peer"
 msgstr "Certifikát od serveru nejde získať"
 
@@ -1668,40 +1668,45 @@ msgstr "POZOR: Certifikát serveru nebol podpísaný CA"
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "POZOR: Certifikát serveru bol podpísaný pomocou nebezpečného algoritmu"
 
-#: conn/gnutls.c:571 conn/openssl.c:939
+#: conn/gnutls.c:575 conn/openssl.c:939
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "Kontrola SSL certifikátu (certifikát %zu z %zu v reťazi)"
 
-#: conn/gnutls.c:605 conn/openssl.c:973
+#: conn/gnutls.c:609 conn/openssl.c:973
 msgid "Certificate saved"
 msgstr "Certifikát uložený"
 
-#: conn/gnutls.c:607 conn/openssl.c:975
+#: conn/gnutls.c:611 conn/openssl.c:975
 msgid "Warning: Couldn't save certificate"
 msgstr "Pozor: Neporadilo sa uložiť certifikát"
 
-#: conn/gnutls.c:803 conn/gnutls.c:849
+#: conn/gnutls.c:807 conn/gnutls.c:853
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Všetky dostupné protokoly pre TLS/SSL boli zakázané"
 
-#: conn/gnutls.c:856
+#: conn/gnutls.c:860
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr "Výslovný výber šifrovacích algoritmov pomocí $ssl_ciphers nie je podporavaný"
+
+#: conn/gnutls.c:885 imap/command.c:1329 imap/command.c:1450
+#, c-format
+msgid "Connection to %s timed out"
+msgstr "Vypršal časový limit spojenia k %s"
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:926 conn/openssl.c:1158
+#: conn/gnutls.c:952 conn/openssl.c:1158
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Pozor: napodarilo sa nastaviť TLS SNI meno stroja"
 
-#: conn/gnutls.c:972
+#: conn/gnutls.c:1004
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL/TLS spojenie pomocou %s (%s/%s/%s)"
 
-#: conn/gnutls.c:1054 conn/gnutls.c:1083
+#: conn/gnutls.c:1086 conn/gnutls.c:1121
 msgid "Error: no TLS socket open"
 msgstr "Chyba: žiadny TLS socker nie je otvorený"
 
@@ -1807,23 +1812,23 @@ msgstr "Chyba pri komunikácii s %s (%s)"
 msgid "Connection to %s has been aborted"
 msgstr "Spojenie s %s bolo přerušené"
 
-#: conn/sasl.c:613
+#: conn/sasl.c:612
 msgid "Unknown SASL profile"
 msgstr "Neznámy SASL profil"
 
-#: conn/sasl.c:657
+#: conn/sasl.c:656
 msgid "Error allocating SASL connection"
 msgstr "Chyba pri alokácii SASL spojenia"
 
-#: conn/sasl.c:667
+#: conn/sasl.c:666
 msgid "Error setting SASL security properties"
 msgstr "Chyba pri nastavovanie SASL bezpečnostných vlastností"
 
-#: conn/sasl.c:678
+#: conn/sasl.c:677
 msgid "Error setting SASL external security strength"
 msgstr "Chyba pri nastavovanie úrovne zabezpečenia vonkajšieho SASL mechanizmu"
 
-#: conn/sasl.c:688
+#: conn/sasl.c:687
 msgid "Error setting SASL external user name"
 msgstr "Chyba pri nastavovanie mena uživateľa vonkajšieho SASL mechanismu"
 
@@ -1856,7 +1861,7 @@ msgstr "Tunel do %s vratil chybu %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s nie je bežný súbor"
 
-#: copy.c:737
+#: copy.c:735
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
@@ -1864,7 +1869,7 @@ msgstr[0] "Vypočítaná dľžka nebola správná o %ld bajt"
 msgstr[1] "Vypočítaná dľžka nebola správná o %ld bajty"
 msgstr[2] "Vypočítaná dľžka nebola správná o %ld bajtov"
 
-#: copy.c:830
+#: copy.c:828
 msgid "No decryption engine available for message"
 msgstr "Pre správu nebol nájdený dešifrovací program"
 
@@ -1906,35 +1911,35 @@ msgstr "Súbor so správou nemožno otvoriť: %s"
 msgid "Can't append to folder: %s"
 msgstr "Nemožno pridať do adresára: %s"
 
-#: editor/window.c:52
+#: editor/window.c:51
 msgid "Complete"
 msgstr "Doplniť"
 
-#: editor/window.c:53
+#: editor/window.c:52
 msgid "Hist Up"
 msgstr "Předchádzajúca položka historie"
 
-#: editor/window.c:54
+#: editor/window.c:53
 msgid "Hist Down"
 msgstr "Následujúca položka historie"
 
-#: editor/window.c:55
+#: editor/window.c:54
 msgid "Hist Search"
 msgstr "Hľadať v histórii"
 
-#: editor/window.c:56
+#: editor/window.c:55
 msgid "Begin Line"
 msgstr "Začiatok Riadky"
 
-#: editor/window.c:57
+#: editor/window.c:56
 msgid "End Line"
 msgstr "Koniec Riadky"
 
-#: editor/window.c:58
+#: editor/window.c:57
 msgid "Kill Line"
 msgstr "Odstraniť riadku"
 
-#: editor/window.c:59
+#: editor/window.c:58
 msgid "Kill Word"
 msgstr "Odstaniť Slovo"
 
@@ -2049,7 +2054,7 @@ msgstr "Zabezpečenie: "
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
 #: envelope/window.c:115 ncrypt/crypt_gpgme.c:3968 ncrypt/pgp.c:2016
-#: ncrypt/smime.c:2050
+#: ncrypt/smime.c:2053
 msgid "Sign as: "
 msgstr "Podpíš ako: "
 
@@ -2168,7 +2173,7 @@ msgstr[1] "(+%d ďalšie)"
 msgstr[2] "(+%d ďalších)"
 
 #. L10N: e.g. "Option index_format:" plus an error message
-#: expando/config_type.c:85 expando/config_type.c:247
+#: expando/config_type.c:84 expando/config_type.c:246
 #, c-format
 msgid "Option %s: "
 msgstr "Voľba %s: "
@@ -2200,14 +2205,14 @@ msgid "Expando is missing terminator: '%c'"
 msgstr "Formátu chýba ukončenie: „%c“"
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
-#: expando/node_padding.c:242
+#: expando/node_padding.c:241
 #, fuzzy, c-format
 msgid "Padding cannot be formatted"
 msgstr "Vyplnenie nie je možné formatovať"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
-#: expando/node_padding.c:252
+#: expando/node_padding.c:251
 #, c-format
 msgid "Padding cannot be used as a condition"
 msgstr "Vyplnenie nie je možné použiť v podmienke"
@@ -2303,123 +2308,123 @@ msgid "Shell command: "
 msgstr "Príkaz pre shell: "
 
 #. L10N: Progress meter message when copying tagged messages
-#: external.c:804
+#: external.c:807
 msgid "Copying tagged messages..."
 msgstr "Kopírujem označené správy…"
 
-#: external.c:808
+#: external.c:811
 msgid "Copy tagged to mailbox"
 msgstr "Skopírovať označené do schránky"
 
-#: external.c:808
+#: external.c:811
 msgid "Copy to mailbox"
 msgstr "Skopírovať do schránky"
 
-#: external.c:811
+#: external.c:814
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Dešifrovať-skopírovať označené do schránky"
 
-#: external.c:812
+#: external.c:815
 msgid "Decrypt-copy to mailbox"
 msgstr "Dešifrovať-skopírovať do schránky"
 
-#: external.c:815
+#: external.c:818
 msgid "Decode-copy tagged to mailbox"
 msgstr "Dekódovať-skopírovať označené do schránky"
 
-#: external.c:816
+#: external.c:819
 msgid "Decode-copy to mailbox"
 msgstr "Dekódovať-skopírovať do schránky"
 
 #. L10N: Progress meter message when saving tagged messages
-#: external.c:823
+#: external.c:826
 msgid "Saving tagged messages..."
 msgstr "Ukládám označené správy…"
 
-#: external.c:827
+#: external.c:830
 msgid "Save tagged to mailbox"
 msgstr "Uložiť označené do schránky"
 
-#: external.c:827
+#: external.c:830
 msgid "Save to mailbox"
 msgstr "Uložiť do schránky"
 
-#: external.c:830
+#: external.c:833
 msgid "Decrypt-save tagged to mailbox"
 msgstr "Dešifrovať-uložiť označené do schránky"
 
-#: external.c:831
+#: external.c:834
 msgid "Decrypt-save to mailbox"
 msgstr "Dešifrovať-uložiť do schránky"
 
-#: external.c:834
+#: external.c:837
 msgid "Decode-save tagged to mailbox"
 msgstr "Dekódovať-uložiť označené do schránky"
 
-#: external.c:835
+#: external.c:838
 msgid "Decode-save to mailbox"
 msgstr "Dekódovať-uložiť do schránky"
 
-#: external.c:878
+#: external.c:881
 #, c-format
 msgid "Copying to %s..."
 msgstr "Kopírujem do %s…"
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: external.c:1031
+#: external.c:1034
 msgid "Error saving tagged messages"
 msgstr "Chýba počas ukladania označených správ"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: external.c:1036
+#: external.c:1039
 msgid "Error saving message"
 msgstr "Chýba počas ukladania správy"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: external.c:1043
+#: external.c:1046
 msgid "Error copying tagged messages"
 msgstr "Chýba počas kopírovanie označených správ"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: external.c:1048
+#: external.c:1051
 msgid "Error copying message"
 msgstr "Chýba počas kopírovanie správy"
 
-#: external.c:1118
+#: external.c:1121
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Previesť pri odoslaním na %s?"
 
-#: external.c:1129
+#: external.c:1132
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "Položka „Content-Type“ zmenená na %s"
 
-#: external.c:1134
+#: external.c:1137
 #, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Znaková sada zmenená na %s; neprevádzam"
 
-#: external.c:1135
+#: external.c:1138
 #, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Znaková sada zmenená na %s; prevádzam"
 
-#: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1298
-#: mutt_thread.c:1364 mutt_thread.c:1450
+#: flags.c:392 index/functions.c:1047 index/functions.c:1150
+#: index/functions.c:1167 index/functions.c:1308 mutt_thread.c:1297
+#: mutt_thread.c:1363 mutt_thread.c:1449
 msgid "Threading is not enabled"
 msgstr "Vláknenie nie je povolené"
 
-#: flags.c:466
+#: flags.c:465
 msgid "Clear flag"
 msgstr "Vymazať príznak"
 
-#: flags.c:466
+#: flags.c:465
 msgid "Set flag"
 msgstr "Nastaviť príznak"
 
-#: gui/curs_lib.c:141 index/functions.c:766
+#: gui/curs_lib.c:141 index/functions.c:769
 msgid "Exit NeoMutt without saving?"
 msgstr "Ukončiť NeoMutt bez uloženia?"
 
@@ -2443,25 +2448,25 @@ msgstr "Znak = %s, Oktálne = %o, Dekadicky = %d\n"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_FILE
 #. Compose Dialog: <op_attachment_attach_file>
-#: gui/opcodes.h:43
+#: gui/opcodes.h:42
 msgid "attach files to this message"
 msgstr "priložiť súbory k tejto správe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE
 #. Compose Dialog: <op_attachment_attach_message>
-#: gui/opcodes.h:46
+#: gui/opcodes.h:45
 msgid "attach messages to this message"
 msgstr "priložiť správy k tejto správe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
 #. Compose Dialog: <op_attachment_attach_message>
-#: gui/opcodes.h:49
+#: gui/opcodes.h:48
 msgid "attach news articles to this message"
 msgstr "priložiť články k této správě"
 
 #. L10N: Help screen description for OP_ATTACHMENT_COLLAPSE
 #. Attach Dialog: <op_attachment_collapse>
-#: gui/opcodes.h:52
+#: gui/opcodes.h:51
 msgid "toggle display of subparts"
 msgstr "prepnúť zobrazovanie podčastí"
 
@@ -2473,37 +2478,37 @@ msgstr "prepnúť zobrazovanie podčastí"
 #. Alias Dialog: <op_delete>
 #. Index: <op_delete>
 #. Postponed Dialog: <op_delete>
-#: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:280
+#: gui/opcodes.h:54 gui/opcodes.h:57 gui/opcodes.h:279
 msgid "delete the current entry"
 msgstr "zmazať aktuálnu položku"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attachment_edit_content_id>
-#: gui/opcodes.h:61
+#: gui/opcodes.h:60
 msgid "edit the 'Content-ID' of the attachment"
 msgstr "upraviť „Content-ID“ prílohy"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attachment_edit_description>
-#: gui/opcodes.h:64
+#: gui/opcodes.h:63
 msgid "edit attachment description"
 msgstr "upraviť popis prílohy"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
 #. Compose Dialog: <op_attachment_edit_encoding>
-#: gui/opcodes.h:67
+#: gui/opcodes.h:66
 msgid "edit attachment transfer-encoding"
 msgstr "upraviť „transfer-encoding“ prílohy"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
 #. Compose Dialog: <op_attachment_edit_language>
-#: gui/opcodes.h:70
+#: gui/opcodes.h:69
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "upraviť „Content-Language“ prílohy"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_MIME
 #. Compose Dialog: <op_attachment_edit_mime>
-#: gui/opcodes.h:73
+#: gui/opcodes.h:72
 msgid "edit attachment using mailcap entry"
 msgstr "upraviť prílohu s použitím položky mailcap-u"
 
@@ -2511,55 +2516,55 @@ msgstr "upraviť prílohu s použitím položky mailcap-u"
 #. Attach Dialog: <op_attachment_edit_type>
 #. Compose Dialog: <op_attachment_edit_type>
 #. Index: <op_attachment_edit_type>
-#: gui/opcodes.h:78
+#: gui/opcodes.h:77
 msgid "edit attachment content type"
 msgstr "upraviť „content-type“ prílohy"
 
 #. L10N: Help screen description for OP_ATTACHMENT_FILTER
 #. Compose Dialog: <op_attachment_filter>
-#: gui/opcodes.h:81
+#: gui/opcodes.h:80
 msgid "filter attachment through a shell command"
 msgstr "filtrovať prílohy príkazom shell-u"
 
 #. L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT
 #. Compose Dialog: <op_attachment_get_attachment>
-#: gui/opcodes.h:84
+#: gui/opcodes.h:83
 msgid "get a temporary copy of an attachment"
 msgstr "získať dočasnú kópiu prílohy"
 
 #. L10N: Help screen description for OP_ATTACHMENT_GROUP_ALTS
 #. Compose Dialog: <op_attachment_group_alts>
-#: gui/opcodes.h:87
+#: gui/opcodes.h:86
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "seskupiť označené prílohy ako „multipart/alternative“ (viacúčelové)"
 
 #. L10N: Help screen description for OP_ATTACHMENT_GROUP_LINGUAL
 #. Compose Dialog: <op_attachment_group_lingual>
-#: gui/opcodes.h:90
+#: gui/opcodes.h:89
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "seskupiť označené prílohy ako „multipart/multilingual“ (viacjazyčné)"
 
 #. L10N: Help screen description for OP_ATTACHMENT_GROUP_RELATED
 #. Compose Dialog: <op_attachment_group_related>
-#: gui/opcodes.h:93
+#: gui/opcodes.h:92
 msgid "group tagged attachments as 'multipart/related'"
 msgstr "seskupiť označené prílohy ako „multipart/related“ (súvisiace)"
 
 #. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
 #. Compose Dialog: <op_attachment_move_down>
-#: gui/opcodes.h:96
+#: gui/opcodes.h:95
 msgid "move an attachment down in the attachment list"
 msgstr "presuň prílohu dole v zozname príloh"
 
 #. L10N: Help screen description for OP_ATTACHMENT_MOVE_UP
 #. Compose Dialog: <op_attachment_move_up>
-#: gui/opcodes.h:99
+#: gui/opcodes.h:98
 msgid "move an attachment up in the attachment list"
 msgstr "presuň prílohu hore v zozname príloh"
 
 #. L10N: Help screen description for OP_ATTACHMENT_NEW_MIME
 #. Compose Dialog: <op_attachment_new_mime>
-#: gui/opcodes.h:102
+#: gui/opcodes.h:101
 msgid "compose new attachment using mailcap entry"
 msgstr "zostaviť novú prílohu pomocou položky mailcap-u"
 
@@ -2568,7 +2573,7 @@ msgstr "zostaviť novú prílohu pomocou položky mailcap-u"
 #. Compose Dialog: <op_attachment_filter>
 #. Attach Dialog: <op_attachment_pipe>
 #. Index: <op_pipe>
-#: gui/opcodes.h:104 gui/opcodes.h:670
+#: gui/opcodes.h:103 gui/opcodes.h:669
 msgid "pipe message/attachment to a shell command"
 msgstr "poslať správu/prílohu rourou do príkazu shell-u"
 
@@ -2577,13 +2582,13 @@ msgstr "poslať správu/prílohu rourou do príkazu shell-u"
 #. Compose Dialog: <op_attachment_print>
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
-#: gui/opcodes.h:108 gui/opcodes.h:688
+#: gui/opcodes.h:107 gui/opcodes.h:687
 msgid "print the current entry"
 msgstr "tlačiť aktuálnu položku"
 
 #. L10N: Help screen description for OP_ATTACHMENT_RENAME_ATTACHMENT
 #. Compose Dialog: <op_attachment_rename_attachment>
-#: gui/opcodes.h:111
+#: gui/opcodes.h:110
 msgid "send attachment with a different name"
 msgstr "poslať prílohu pod iným názvom"
 
@@ -2593,25 +2598,25 @@ msgstr "poslať prílohu pod iným názvom"
 #. L10N: Help screen description for OP_SAVE
 #. Index: <op_save>
 #. Pager: <op_save>
-#: gui/opcodes.h:115 gui/opcodes.h:731
+#: gui/opcodes.h:114 gui/opcodes.h:730
 msgid "save message/attachment to a mailbox/file"
 msgstr "uložiť správu/prílohu do mailboxu/súboru"
 
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attachment_toggle_disposition>
-#: gui/opcodes.h:118
+#: gui/opcodes.h:117
 msgid "toggle disposition between inline/attachment"
 msgstr "prepnúť metódu priloženie medzi vloženie a prílohou"
 
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
 #. Compose Dialog: <op_attachment_toggle_recode>
-#: gui/opcodes.h:121
+#: gui/opcodes.h:120
 msgid "toggle recoding of this attachment"
 msgstr "prepnúť automatické ukládánie této prílohy"
 
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK
 #. Compose Dialog: <op_attachment_toggle_unlink>
-#: gui/opcodes.h:124
+#: gui/opcodes.h:123
 msgid "toggle whether to delete file after sending it"
 msgstr "prepnúť príznak, či zmazať správu po odoslaní"
 
@@ -2621,309 +2626,309 @@ msgstr "prepnúť príznak, či zmazať správu po odoslaní"
 #. Alias Dialog: <op_delete>
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
-#: gui/opcodes.h:127 gui/opcodes.h:817
+#: gui/opcodes.h:126 gui/opcodes.h:816
 msgid "undelete the current entry"
 msgstr "obnoviť aktuálnu položku"
 
 #. L10N: Help screen description for OP_ATTACHMENT_UNGROUP
 #. Compose Dialog: <op_attachment_ungroup>
-#: gui/opcodes.h:130
+#: gui/opcodes.h:129
 msgid "ungroup 'multipart' attachment"
 msgstr "rozdeliť skupinu „príloh viacerých častí“"
 
 #. L10N: Help screen description for OP_ATTACHMENT_UPDATE_ENCODING
 #. Compose Dialog: <op_attachment_update_encoding>
-#: gui/opcodes.h:133
+#: gui/opcodes.h:132
 msgid "update an attachment's encoding info"
 msgstr "upraviť informáciu o kódovaní prílohy"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW
 #. Attach Dialog: <op_attachment_view>
 #. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:137
+#: gui/opcodes.h:136
 msgid "view attachment using mailcap entry if necessary"
 msgstr "zobraziť prílohu použijúc položku mailcap-u, ak je to nevyhnutné"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP
 #. Attach Dialog: <op_attachment_view_mailcap>
 #. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:141
+#: gui/opcodes.h:140
 msgid "force viewing of attachment using mailcap"
 msgstr "vynútiť zobrazovanie príloh používať mailcap-u"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER
 #. Attach Dialog: <op_attachment_view_pager>
 #. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:145
+#: gui/opcodes.h:144
 msgid "view attachment in pager using copiousoutput mailcap"
 msgstr "zobraziť prílohu v pageri pomocou copiousoutput mailcap-u"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
 #. Attach Dialog: <op_attachment_view_text>
 #. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:149
+#: gui/opcodes.h:148
 msgid "view attachment as text"
 msgstr "zobraziť prílohu ako text"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
-#: gui/opcodes.h:152
+#: gui/opcodes.h:151
 msgid "show the next page of the message"
 msgstr "zobraziť ďalšiu stránku správy"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
-#: gui/opcodes.h:155
+#: gui/opcodes.h:154
 msgid "show the previous page of the message"
 msgstr "zobraziť predchádzajúcu stránku správy"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
-#: gui/opcodes.h:161
+#: gui/opcodes.h:160
 msgid "manage autocrypt accounts"
 msgstr "spravovať autocrypt účty"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_create_acct>
-#: gui/opcodes.h:164
+#: gui/opcodes.h:163
 msgid "create a new autocrypt account"
 msgstr "vytvoriť nový autocrypt účot"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
-#: gui/opcodes.h:167
+#: gui/opcodes.h:166
 msgid "delete the current account"
 msgstr "zmazať aktuálny účot"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
-#: gui/opcodes.h:170
+#: gui/opcodes.h:169
 msgid "toggle the current account active/inactive"
 msgstr "prepnúť aktuálny účot medzi aktívny/neaktívny"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
-#: gui/opcodes.h:173
+#: gui/opcodes.h:172
 msgid "toggle the current account prefer-encrypt flag"
 msgstr "prepnúť príznak „preferovat-šifrovanie (prefer-encrypt) pre aktuálny účot"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
-#: gui/opcodes.h:176
+#: gui/opcodes.h:175
 msgid "show autocrypt compose menu options"
 msgstr "zobraziť možnosti autocrypt pri písaní správy"
 
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
-#: gui/opcodes.h:184
+#: gui/opcodes.h:183
 msgid "open the aliases dialog"
 msgstr "otvoriť dialog s prezývkami"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:187
+#: gui/opcodes.h:186
 msgid "move to the bottom of the page"
 msgstr "presunúť na spodok stránky"
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
-#: gui/opcodes.h:191
+#: gui/opcodes.h:190
 msgid "remail a message to another user"
 msgstr "znovu pošli správu inému používateľovi"
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:194
+#: gui/opcodes.h:193
 msgid "swap the current folder position with $folder if it exists"
 msgstr "prehodiť pozíciu súčasné zložky s $folder, ak existuje"
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
-#: gui/opcodes.h:197
+#: gui/opcodes.h:196
 msgid "select a new file in this directory"
 msgstr "vyber nový súbor v tomto adresári"
 
 #. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
 #. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:200
+#: gui/opcodes.h:199
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "prihlásiť aktuálnú schránku (len IMAP/NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
-#: gui/opcodes.h:203
+#: gui/opcodes.h:202
 msgid "display the currently selected file's name"
 msgstr "zobraz meno aktuálne označeného súboru"
 
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
-#: gui/opcodes.h:206
+#: gui/opcodes.h:205
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "prepnúť zobrazenie všech/prihlásených schránok (len IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:209
+#: gui/opcodes.h:208
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "ohlásiť aktuálnú schránku (len IMAP/NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
-#: gui/opcodes.h:212
+#: gui/opcodes.h:211
 msgid "view file"
 msgstr "prezrieť súbor"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
-#: gui/opcodes.h:216
+#: gui/opcodes.h:215
 msgid "mark all articles in newsgroup as read"
 msgstr "označiť všetky články v diskusnej skupine ako prečítané"
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
-#: gui/opcodes.h:219
+#: gui/opcodes.h:218
 msgid "change directories"
 msgstr "zmeniť adresáre"
 
 #. L10N: Help screen description for OP_CHECK_NEW
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:222
+#: gui/opcodes.h:221
 msgid "check mailboxes for new mail"
 msgstr "skontroluj nové správy v schránkach"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
-#: gui/opcodes.h:225
+#: gui/opcodes.h:224
 msgid "calculate message statistics for all mailboxes"
 msgstr "spočítaj štatistiky správ pre všetky schránky"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
-#: gui/opcodes.h:228
+#: gui/opcodes.h:227
 msgid "edit the file to be attached"
 msgstr "upraviť prikladaný súbor"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
-#: gui/opcodes.h:231
+#: gui/opcodes.h:230
 msgid "edit the message"
 msgstr "upraviť správu"
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
-#: gui/opcodes.h:234
+#: gui/opcodes.h:233
 msgid "run ispell on the message"
 msgstr "skontrolovať pravopis správy programom ispell"
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
-#: gui/opcodes.h:237
+#: gui/opcodes.h:236
 msgid "save this message to send later"
 msgstr "uložiť túto správu a poslať neskôr"
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
-#: gui/opcodes.h:240
+#: gui/opcodes.h:239
 msgid "rename/move an attached file"
 msgstr "premenovať/presunúť priložený súbor"
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
-#: gui/opcodes.h:243
+#: gui/opcodes.h:242
 msgid "send the message"
 msgstr "poslať správu"
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
-#: gui/opcodes.h:247
+#: gui/opcodes.h:246
 msgid "compose new message to the current message sender"
 msgstr "zostaviť novú správu tomuto odosielateľovi"
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
-#: gui/opcodes.h:250
+#: gui/opcodes.h:249
 msgid "write the message to a folder"
 msgstr "zapísať správu do zložky"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
-#: gui/opcodes.h:253
+#: gui/opcodes.h:252
 msgid "copy a message to a file/mailbox"
 msgstr "skopírovať správu do súboru/schránky"
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
 #. Index: <op_create_alias>
-#: gui/opcodes.h:257
+#: gui/opcodes.h:256
 msgid "create an alias from a message sender"
 msgstr "vytvoriť alias z odosielateľa správy"
 
 #. L10N: Help screen description for OP_CREATE_MAILBOX
 #. Browser: <op_create_mailbox>
-#: gui/opcodes.h:260
+#: gui/opcodes.h:259
 msgid "create a new mailbox (IMAP only)"
 msgstr "vytvoriť novú schránku (len IMAP)"
 
 #. L10N: Help screen description for OP_CURRENT_BOTTOM
 #. Menu: <menu_movement>
-#: gui/opcodes.h:263
+#: gui/opcodes.h:262
 msgid "move entry to bottom of screen"
 msgstr "presunúť položku na spodok obrazovky"
 
 #. L10N: Help screen description for OP_CURRENT_MIDDLE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:266
+#: gui/opcodes.h:265
 msgid "move entry to middle of screen"
 msgstr "presunúť položku do stredu obrazovky"
 
 #. L10N: Help screen description for OP_CURRENT_TOP
 #. Menu: <menu_movement>
-#: gui/opcodes.h:269
+#: gui/opcodes.h:268
 msgid "move entry to top of screen"
 msgstr "preunúť položku na vrch obrazovky"
 
 #. L10N: Help screen description for OP_DECODE_COPY
 #. Index: <op_save>
-#: gui/opcodes.h:272
+#: gui/opcodes.h:271
 msgid "make decoded (text/plain) copy"
 msgstr "urobiť dekódovanú (text/plain) kópiu"
 
 #. L10N: Help screen description for OP_DECODE_SAVE
 #. Index: <op_save>
-#: gui/opcodes.h:275
+#: gui/opcodes.h:274
 msgid "make decoded copy (text/plain) and delete"
 msgstr "urobiť dekódovanú (text/plain) kópiu a zmazať"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
-#: gui/opcodes.h:283
+#: gui/opcodes.h:282
 msgid "delete the current mailbox (IMAP only)"
 msgstr "zmazať aktuálny schránku (len IMAP)"
 
 #. L10N: Help screen description for OP_DELETE_SUBTHREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:286
+#: gui/opcodes.h:285
 msgid "delete all messages in subthread"
 msgstr "zmazať všetky položky v podvlákne"
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:289
+#: gui/opcodes.h:288
 msgid "delete all messages in thread"
 msgstr "zmazať všetky položky vo vlákne"
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
-#: gui/opcodes.h:292
+#: gui/opcodes.h:291
 msgid "descend into a directory"
 msgstr "vstúpiť do adresára"
 
 #. L10N: Help screen description for OP_DISPLAY_ADDRESS
 #. Index: <op_display_address>
-#: gui/opcodes.h:295
+#: gui/opcodes.h:294
 msgid "display full address of sender"
 msgstr "zobraziť plnú adresu odosielateľa"
 
@@ -2931,193 +2936,193 @@ msgstr "zobraziť plnú adresu odosielateľa"
 #. Attach Dialog: <op_attachment_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
-#: gui/opcodes.h:300
+#: gui/opcodes.h:299
 msgid "display message and toggle header weeding"
 msgstr "zobraziť správu a prepnúť zobrazovanie hlaviček"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
-#: gui/opcodes.h:303
+#: gui/opcodes.h:302
 msgid "display a message"
 msgstr "zobraziť správu"
 
 #. L10N: Help screen description for OP_EDITOR_BACKSPACE
 #. Text Entry: <op_editor_backspace>
-#: gui/opcodes.h:306
+#: gui/opcodes.h:305
 msgid "delete the char in front of the cursor"
 msgstr "zmazať znak pred kurzorom"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
-#: gui/opcodes.h:309
+#: gui/opcodes.h:308
 msgid "move the cursor one character to the left"
 msgstr "posunúť kurzor jeden znak vľavo"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
-#: gui/opcodes.h:312
+#: gui/opcodes.h:311
 msgid "move the cursor to the beginning of the word"
 msgstr "skočiť na začiatok slova"
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
-#: gui/opcodes.h:315
+#: gui/opcodes.h:314
 msgid "jump to the beginning of the line"
 msgstr "skočiť na začiatok riadku"
 
 #. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:318
+#: gui/opcodes.h:317
 msgid "capitalize the word"
 msgstr "v slove zmeň prvé písmeno za veľké"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:321
+#: gui/opcodes.h:320
 msgid "complete filename or alias"
 msgstr "doplň názov súboru alebo aliasu"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:324
+#: gui/opcodes.h:323
 msgid "complete address with query"
 msgstr "doplň adresu s výsledkom dotazu"
 
 #. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
 #. Text Entry: <op_editor_delete_char>
-#: gui/opcodes.h:327
+#: gui/opcodes.h:326
 msgid "delete the char under the cursor"
 msgstr "zmazať znak pod kurzorom"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:330
+#: gui/opcodes.h:329
 msgid "convert the word to lower case"
 msgstr "zmeň písmo v slove na malé"
 
 #. L10N: Help screen description for OP_EDITOR_EOL
 #. Text Entry: <op_editor_eol>
-#: gui/opcodes.h:333
+#: gui/opcodes.h:332
 msgid "jump to the end of the line"
 msgstr "skočiť na koniec riadku"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
 #. Text Entry: <op_editor_forward_char>
-#: gui/opcodes.h:336
+#: gui/opcodes.h:335
 msgid "move the cursor one character to the right"
 msgstr "presunúť kurzor o jeden znak vpravo"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
-#: gui/opcodes.h:339
+#: gui/opcodes.h:338
 msgid "move the cursor to the end of the word"
 msgstr "presunúť kurzor na koniec slova"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
-#: gui/opcodes.h:342
+#: gui/opcodes.h:341
 msgid "scroll down through the history list"
 msgstr "rolovať dole po zozname histórie"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
-#: gui/opcodes.h:345
+#: gui/opcodes.h:344
 msgid "search through the history list"
 msgstr "hľadať v zozname histórie"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_UP
 #. Text Entry: <op_editor_history_up>
-#: gui/opcodes.h:348
+#: gui/opcodes.h:347
 msgid "scroll up through the history list"
 msgstr "rolovať hore po zozname histórie"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOL
 #. Text Entry: <op_editor_kill_eol>
-#: gui/opcodes.h:351
+#: gui/opcodes.h:350
 msgid "delete chars from cursor to end of line"
 msgstr "zmazať znaky od kurzora do konca riadku"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
-#: gui/opcodes.h:354
+#: gui/opcodes.h:353
 msgid "delete chars from the cursor to the end of the word"
 msgstr "zmazať znaky od kurzora do konca slova"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
-#: gui/opcodes.h:357
+#: gui/opcodes.h:356
 msgid "delete chars from cursor to beginning the line"
 msgstr "zmazať znaky od kurzora k začiatku riadku"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
-#: gui/opcodes.h:360
+#: gui/opcodes.h:359
 msgid "delete all chars on the line"
 msgstr "zmazať všetky znaky v riadku"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
-#: gui/opcodes.h:363
+#: gui/opcodes.h:362
 msgid "delete the word in front of the cursor"
 msgstr "zmazať slovo pred kurzorom"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:366
+#: gui/opcodes.h:365
 msgid "cycle among incoming mailboxes"
 msgstr "cykluj medzi schránkami s príchodzími správami"
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
-#: gui/opcodes.h:369
+#: gui/opcodes.h:368
 msgid "quote the next typed key"
 msgstr "budúci napísaný znak uzavrieť do úvodzoviek"
 
 #. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
 #. Text Entry: <op_editor_transpose_chars>
-#: gui/opcodes.h:372
+#: gui/opcodes.h:371
 msgid "transpose character under cursor with previous"
 msgstr "prehoď znak pod kurzorom s predchádzajúcim"
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:375
+#: gui/opcodes.h:374
 msgid "convert the word to upper case"
 msgstr "zmeň písmo v slove na veľké"
 
 #. L10N: Help screen description for OP_EDIT_LABEL
 #. Index: <op_edit_label>
-#: gui/opcodes.h:378
+#: gui/opcodes.h:377
 msgid "add, change, or delete a message's label"
 msgstr "pridať, zmeniť alebo zmazať štítok správy"
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:381
+#: gui/opcodes.h:380
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr "upraviť celú správu ak nie je schránka v rezime iba na čitanie, inak len zobraziť"
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:384
+#: gui/opcodes.h:383
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr "upraviť celú správu (edit a edit-raw-message sú synonymá)"
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
-#: gui/opcodes.h:387
+#: gui/opcodes.h:386
 msgid "end of conditional execution (noop)"
 msgstr "koniec podmienečného vykonania (noop)"
 
 #. L10N: Help screen description for OP_ENTER_COMMAND
 #. Global: <op_enter_command>
-#: gui/opcodes.h:390
+#: gui/opcodes.h:389
 msgid "enter a neomuttrc command"
 msgstr "zadajte príkaz neomuttrc"
 
 #. L10N: Help screen description for OP_ENTER_MASK
 #. Browser: <op_enter_mask>
-#: gui/opcodes.h:393
+#: gui/opcodes.h:392
 msgid "enter a file mask"
 msgstr "zadajte masku súborov"
 
@@ -3133,40 +3138,40 @@ msgstr "zadajte masku súborov"
 #. PGP Key Selection Dialog: <op_exit>
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
-#: gui/opcodes.h:406
+#: gui/opcodes.h:405
 msgid "exit this menu"
 msgstr "opustiť toto menu"
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:409
+#: gui/opcodes.h:408
 msgid "move to the first entry"
 msgstr "presunúť sa na prvú položku"
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
-#: gui/opcodes.h:412
+#: gui/opcodes.h:411
 msgid "toggle a message's 'important' flag"
 msgstr "prepnúť príznak dôležitosti správy"
 
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
-#: gui/opcodes.h:416
+#: gui/opcodes.h:415
 msgid "followup to newsgroup"
 msgstr "odpísať do diskusnej skupiny"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
-#: gui/opcodes.h:420
+#: gui/opcodes.h:419
 msgid "forward a message with comments"
 msgstr "preposlať správu s poznámkami"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
-#: gui/opcodes.h:424
+#: gui/opcodes.h:423
 msgid "forward to newsgroup"
 msgstr "preposlať do diskusnej skupiny"
 
@@ -3179,59 +3184,59 @@ msgstr "preposlať do diskusnej skupiny"
 #. PGP Key Selection Dialog: <op_generic_select_entry>
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
-#: gui/opcodes.h:434
+#: gui/opcodes.h:433
 msgid "select the current entry"
 msgstr "zvoliť aktuálnu položku"
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
-#: gui/opcodes.h:437
+#: gui/opcodes.h:436
 msgid "get all children of the current message"
 msgstr "zobraz všetky správy podradené aktuálnej"
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
-#: gui/opcodes.h:440
+#: gui/opcodes.h:439
 msgid "get message with Message-Id"
 msgstr "získať správu s Message-Id"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
-#: gui/opcodes.h:443
+#: gui/opcodes.h:442
 msgid "get parent of the current message"
 msgstr "získat rodičovskú správu aktuálnej správy"
 
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
-#: gui/opcodes.h:446
+#: gui/opcodes.h:445
 msgid "go to parent directory"
 msgstr "ísť do nadradeného adresára"
 
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:450
+#: gui/opcodes.h:449
 msgid "reply to all recipients preserving To/Cc"
 msgstr "odpovedať všetkým príjemcom so zachováním Komu/Kópie"
 
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:454
+#: gui/opcodes.h:453
 msgid "reply to all recipients"
 msgstr "odpovedať všetkým príjemcom"
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
-#: gui/opcodes.h:458
+#: gui/opcodes.h:457
 msgid "scroll down 1/2 page"
 msgstr "rolovať dole o 1/2 stránky"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
-#: gui/opcodes.h:462
+#: gui/opcodes.h:461
 msgid "scroll up 1/2 page"
 msgstr "rolovať hore o 1/2 stránky"
 
@@ -3239,430 +3244,430 @@ msgstr "rolovať hore o 1/2 stránky"
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
-#: gui/opcodes.h:467
+#: gui/opcodes.h:466
 msgid "this screen"
 msgstr "táto obrazovka"
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
 #. Menu: <op_jump>
-#: gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473 gui/opcodes.h:474
-#: gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477 gui/opcodes.h:478
-#: gui/opcodes.h:479 gui/opcodes.h:480
+#: gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473
+#: gui/opcodes.h:474 gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477
+#: gui/opcodes.h:478 gui/opcodes.h:479
 msgid "jump to an index number"
 msgstr "skočiť na index číslo"
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:483
+#: gui/opcodes.h:482
 msgid "move to the last entry"
 msgstr "presunúť sa na poslednú položku"
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
-#: gui/opcodes.h:486
+#: gui/opcodes.h:485
 msgid "limit view to current thread"
 msgstr "obmedzit zobrazenie na súčasné vlákno"
 
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:490
+#: gui/opcodes.h:489
 msgid "reply to specified mailing list"
 msgstr "odpovedať do špecifikovaného poštového zoznamu"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
-#: gui/opcodes.h:494
+#: gui/opcodes.h:493
 msgid "subscribe to a mailing list"
 msgstr "prihlásiť sa na odber správ z poštového zoznamu"
 
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
-#: gui/opcodes.h:498
+#: gui/opcodes.h:497
 msgid "unsubscribe from a mailing list"
 msgstr "odhlásiť sa z odberu správ poštového zoznamu"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
-#: gui/opcodes.h:501
+#: gui/opcodes.h:500
 msgid "load list of all newsgroups from NNTP server"
 msgstr "načítaj zoznam všetkých diskusných skupín z NNTP servera"
 
 #. L10N: Help screen description for OP_MACRO
-#: gui/opcodes.h:503
+#: gui/opcodes.h:502
 msgid "execute a macro"
 msgstr "vykonať makro"
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
-#: gui/opcodes.h:507
+#: gui/opcodes.h:506
 msgid "compose a new mail message"
 msgstr "zostaviť novú poštovú správu"
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
-#: gui/opcodes.h:511
+#: gui/opcodes.h:510
 msgid "list mailboxes with new mail"
 msgstr "zobraziť schránky obsahujúce nové správy"
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
-#: gui/opcodes.h:514
+#: gui/opcodes.h:513
 msgid "break the thread in two"
 msgstr "rozdeľ vlákno na dve"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:517
+#: gui/opcodes.h:516
 msgid "open a different folder"
 msgstr "otvoriť odlišnú zložku"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:520
+#: gui/opcodes.h:519
 msgid "open a different folder in read only mode"
 msgstr "otvoriť odlišnú zložku v režime iba na čítanie"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:523
+#: gui/opcodes.h:522
 msgid "open a different newsgroup"
 msgstr "otvoriť odlišnú diskusnú skupinu"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:526
+#: gui/opcodes.h:525
 msgid "open a different newsgroup in read only mode"
 msgstr "otvoriť odlišnú diskusnú skupinu v režime iba na čítanie"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:529
+#: gui/opcodes.h:528
 msgid "clear a status flag from a message"
 msgstr "vymazať stavový príznak zo správy"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
-#: gui/opcodes.h:532
+#: gui/opcodes.h:531
 msgid "collapse/uncollapse all threads"
 msgstr "zabaľ/rozbaľ všetky vlákna"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
-#: gui/opcodes.h:535
+#: gui/opcodes.h:534
 msgid "collapse/uncollapse current thread"
 msgstr "zabaľ/rozbaľ aktuálne vlákno"
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
-#: gui/opcodes.h:538
+#: gui/opcodes.h:537
 msgid "delete non-hidden messages matching a pattern"
 msgstr "zmazať neskryté správy zodpovedajúce vzoru"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
-#: gui/opcodes.h:541
+#: gui/opcodes.h:540
 msgid "retrieve mail from POP server"
 msgstr "vybrať poštu z POP serveru"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
-#: gui/opcodes.h:544
+#: gui/opcodes.h:543
 msgid "force retrieval of mail from IMAP server"
 msgstr "vnúť získanie pošty z IMAP serveru"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
-#: gui/opcodes.h:547
+#: gui/opcodes.h:546
 msgid "logout from all IMAP servers"
 msgstr "odhlásiť sa zo všetkých IMAP serverov"
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
-#: gui/opcodes.h:551
+#: gui/opcodes.h:550
 msgid "show only messages matching a pattern"
 msgstr "ukázať iba správy zodpovedajúce vzoru"
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
-#: gui/opcodes.h:554
+#: gui/opcodes.h:553
 msgid "link tagged message to the current one"
 msgstr "k aktuálnej správe pripojiť označené správy"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:557
+#: gui/opcodes.h:556
 msgid "modify (notmuch/imap) tags"
 msgstr "upraviť (notmuch/imap) značky"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:560
+#: gui/opcodes.h:559
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "upraviť (notmuch/imap) značky a schovť správu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:563
+#: gui/opcodes.h:562
 msgid "jump to the next new message"
 msgstr "skoč na ďalšiu novú správu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:566
+#: gui/opcodes.h:565
 msgid "jump to the next new or unread message"
 msgstr "skoč na ďalšiu novú alebo nečítanú správu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:569
+#: gui/opcodes.h:568
 msgid "jump to the next subthread"
 msgstr "skočiť na ďaľšie podvlákno"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:572
+#: gui/opcodes.h:571
 msgid "jump to the next thread"
 msgstr "skočiť na nasledujúce vlákno"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
-#: gui/opcodes.h:575
+#: gui/opcodes.h:574
 msgid "move to the next undeleted message"
 msgstr "presunúť sa na nasledujúcu neodstránenú správu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:578
+#: gui/opcodes.h:577
 msgid "jump to the next unread message"
 msgstr "skočiť na nasledujúcu nečítanú správu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
-#: gui/opcodes.h:581
+#: gui/opcodes.h:580
 msgid "open next mailbox with new mail"
 msgstr "otvor ďalšiu schránka s novými správami"
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:584
+#: gui/opcodes.h:583
 msgid "jump to parent message in thread"
 msgstr "skoč na rodičovskú správu vo vlákne"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:587
+#: gui/opcodes.h:586
 msgid "jump to the previous new message"
 msgstr "skočiť na predchádzajúcu novú správu"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:590
+#: gui/opcodes.h:589
 msgid "jump to the previous new or unread message"
 msgstr "skočiť na predchádzajúcu novú alebo nečítanú správu"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:593
+#: gui/opcodes.h:592
 msgid "jump to previous subthread"
 msgstr "skočiť na predchádzajúce podvlákno"
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:596
+#: gui/opcodes.h:595
 msgid "jump to previous thread"
 msgstr "skočiť na predchádzajúce vlákno"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
-#: gui/opcodes.h:599
+#: gui/opcodes.h:598
 msgid "move to the previous undeleted message"
 msgstr "presunúť sa na predchádzajúcu neodstránenú správu"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:602
+#: gui/opcodes.h:601
 msgid "jump to the previous unread message"
 msgstr "skočiť na predchádzajúcu nečítanú správu"
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
-#: gui/opcodes.h:605
+#: gui/opcodes.h:604
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr "schovať z NeoMuttu, nezapisovať na disk"
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:608
+#: gui/opcodes.h:607
 msgid "mark the current subthread as read"
 msgstr "označiť aktuálne podvlákno ako čítané"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:611
+#: gui/opcodes.h:610
 msgid "mark the current thread as read"
 msgstr "označiť aktuálne vlákno ako čítané"
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:614
+#: gui/opcodes.h:613
 msgid "jump to root message in thread"
 msgstr "preskoč na koreňovú správu vlákna"
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:617
+#: gui/opcodes.h:616
 msgid "set a status flag on a message"
 msgstr "nastaviť stavový príznak na správe"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
-#: gui/opcodes.h:620
+#: gui/opcodes.h:619
 msgid "show currently active limit pattern"
 msgstr "zobraziť práve aktívny limitovací vzor"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
-#: gui/opcodes.h:623
+#: gui/opcodes.h:622
 msgid "save changes to mailbox"
 msgstr "uložiť zmeny do schránky"
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
-#: gui/opcodes.h:626
+#: gui/opcodes.h:625
 msgid "tag non-hidden messages matching a pattern"
 msgstr "označiť neskryté správy zodpovedajúce vzoru"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
-#: gui/opcodes.h:629
+#: gui/opcodes.h:628
 msgid "undelete non-hidden messages matching a pattern"
 msgstr "obnoviť neskryté správy zodpovedajúce vzoru"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
-#: gui/opcodes.h:632
+#: gui/opcodes.h:631
 msgid "untag non-hidden messages matching a pattern"
 msgstr "odznačiť neskryté správy zodpovedajúce vzoru"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
-#: gui/opcodes.h:635
+#: gui/opcodes.h:634
 msgid "create a hotkey macro for the current message"
 msgstr "vytvoriť horúcu klávesu pre súčasnú správu"
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:638
+#: gui/opcodes.h:637
 msgid "move to the middle of the page"
 msgstr "presunúť do stredu stránky"
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
-#: gui/opcodes.h:642
+#: gui/opcodes.h:641
 msgid "move to the next entry"
 msgstr "presunúť sa na ďaľšiu položku"
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
-#: gui/opcodes.h:646
+#: gui/opcodes.h:645
 msgid "scroll down one line"
 msgstr "rolovať o riadok dole"
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
-#: gui/opcodes.h:650
+#: gui/opcodes.h:649
 msgid "move to the next page"
 msgstr "presunúť sa na ďaľšiu stránku"
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
-#: gui/opcodes.h:653
+#: gui/opcodes.h:652
 msgid "jump to the bottom of the message"
 msgstr "prejsť na koniec správy"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
-#: gui/opcodes.h:656
+#: gui/opcodes.h:655
 msgid "toggle display of quoted text"
 msgstr "prepnúť zobrazovanie citovaného textu"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
-#: gui/opcodes.h:659
+#: gui/opcodes.h:658
 msgid "jump to first line after headers"
 msgstr "prejsť na prvú riadok pod hlavičkami"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
-#: gui/opcodes.h:662
+#: gui/opcodes.h:661
 msgid "skip beyond quoted text"
 msgstr "preskočiť za citovaný text"
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
-#: gui/opcodes.h:665
+#: gui/opcodes.h:664
 msgid "jump to the top of the message"
 msgstr "skočiť na začiatok správy"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
-#: gui/opcodes.h:673
+#: gui/opcodes.h:672
 msgid "post message to newsgroup"
 msgstr "odoslať správu do diskusnej skupiny"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
-#: gui/opcodes.h:677
+#: gui/opcodes.h:676
 msgid "move to the previous entry"
 msgstr "presunúť sa na predchádzajúcu položku"
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
-#: gui/opcodes.h:681
+#: gui/opcodes.h:680
 msgid "scroll up one line"
 msgstr "rolovať o riadok hore"
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
-#: gui/opcodes.h:685
+#: gui/opcodes.h:684
 msgid "move to the previous page"
 msgstr "presunúť sa na predchádzajúcu stránku"
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
-#: gui/opcodes.h:691
+#: gui/opcodes.h:690
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "odstraniť aktuálnu položku a vynechať zložku koša"
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:694
+#: gui/opcodes.h:693
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "odstraniť aktuálne vlákno a vynechať zložku koša"
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
-#: gui/opcodes.h:698
+#: gui/opcodes.h:697
 msgid "query external program for addresses"
 msgstr "opýtať sa externého programu na adresy"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
-#: gui/opcodes.h:701
+#: gui/opcodes.h:700
 msgid "append new query results to current results"
 msgstr "pridať nové výsledky opýtania k terajším"
 
@@ -3670,46 +3675,46 @@ msgstr "pridať nové výsledky opýtania k terajším"
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
-#: gui/opcodes.h:706
+#: gui/opcodes.h:705
 msgid "save changes to mailbox and quit"
 msgstr "uložiť zmeny v schránke a ukončiť"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
-#: gui/opcodes.h:709
+#: gui/opcodes.h:708
 msgid "recall a postponed message"
 msgstr "vrátiť sa k odloženej správe"
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
-#: gui/opcodes.h:712
+#: gui/opcodes.h:711
 msgid "reconstruct thread containing current message"
 msgstr "obnov vlákno obsahujúce aktuálnu správu"
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
-#: gui/opcodes.h:716
+#: gui/opcodes.h:715
 msgid "clear and redraw the screen"
 msgstr "vymazať a prekresliť obrazovku"
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
-#: gui/opcodes.h:719
+#: gui/opcodes.h:718
 msgid "rename the current mailbox (IMAP only)"
 msgstr "premenovať aktuálny mailbox (len IMAP)"
 
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
-#: gui/opcodes.h:723
+#: gui/opcodes.h:722
 msgid "reply to a message"
 msgstr "odpovedať na správu"
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
-#: gui/opcodes.h:727
+#: gui/opcodes.h:726
 msgid "use the current message as a template for a new one"
 msgstr "použiť aktuálnu správu ako šablónu pre novú správu"
 
@@ -3719,7 +3724,7 @@ msgstr "použiť aktuálnu správu ako šablónu pre novú správu"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:738
+#: gui/opcodes.h:737
 msgid "search for a regular expression"
 msgstr "hľadať podľa regulérneho výrazu"
 
@@ -3729,7 +3734,7 @@ msgstr "hľadať podľa regulérneho výrazu"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:745
+#: gui/opcodes.h:744
 msgid "search for next match"
 msgstr "hľadať ďaľší výskyt"
 
@@ -3739,7 +3744,7 @@ msgstr "hľadať ďaľší výskyt"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:752
+#: gui/opcodes.h:751
 msgid "search for next match in opposite direction"
 msgstr "hľadať ďaľší výskyt v opačnom smere"
 
@@ -3749,25 +3754,25 @@ msgstr "hľadať ďaľší výskyt v opačnom smere"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:759
+#: gui/opcodes.h:758
 msgid "search backwards for a regular expression"
 msgstr "hľadať podľa regulérneho výrazu dozadu"
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
-#: gui/opcodes.h:762
+#: gui/opcodes.h:761
 msgid "toggle search pattern coloring"
 msgstr "prepnúť farby hľadaného výrazu"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
-#: gui/opcodes.h:765
+#: gui/opcodes.h:764
 msgid "invoke a command in a subshell"
 msgstr "vyvolať príkaz v podriadenom shell-e"
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
-#: gui/opcodes.h:768
+#: gui/opcodes.h:767
 msgid "show log (and debug) messages"
 msgstr "zobraziť zaznamenané (a ladiací) správy"
 
@@ -3775,7 +3780,7 @@ msgstr "zobraziť zaznamenané (a ladiací) správy"
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:773
+#: gui/opcodes.h:772
 msgid "sort messages"
 msgstr "triediť správy"
 
@@ -3783,139 +3788,139 @@ msgstr "triediť správy"
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:778
+#: gui/opcodes.h:777
 msgid "sort messages in reverse order"
 msgstr "triediť správy v opačnom poradí"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:781
+#: gui/opcodes.h:780
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "odebírať diskusné skupíny zodpovedajúce vzoru"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
-#: gui/opcodes.h:784
+#: gui/opcodes.h:783
 msgid "tag the current entry"
 msgstr "označiť aktuálnu položku"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
-#: gui/opcodes.h:786
+#: gui/opcodes.h:785
 msgid "apply next function to tagged messages"
 msgstr "použiť ďaľšiu funkciu na označené správy"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
-#: gui/opcodes.h:788
+#: gui/opcodes.h:787
 msgid "apply next function ONLY to tagged messages"
 msgstr "použiť ďaľšiu funkciu IBA na označené správy"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:791
+#: gui/opcodes.h:790
 msgid "tag the current subthread"
 msgstr "označiť aktuálne podvlákno"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:794
+#: gui/opcodes.h:793
 msgid "tag the current thread"
 msgstr "označiť akuálne vlákno"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:797
+#: gui/opcodes.h:796
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "prepnúť, či prechádzať schránky alebo všetky súbory"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
-#: gui/opcodes.h:800
+#: gui/opcodes.h:799
 msgid "toggle a message's 'new' flag"
 msgstr "prepnúť príznak „nová“ na správe"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
-#: gui/opcodes.h:803
+#: gui/opcodes.h:802
 msgid "toggle view of read messages"
 msgstr "prepnúť zobrazovanie prečítaných správ"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
-#: gui/opcodes.h:806
+#: gui/opcodes.h:805
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "prepnúť, či bude schránka zapísaná"
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:809
+#: gui/opcodes.h:808
 msgid "move to the top of the page"
 msgstr "presunúť sa na začiatok stránky"
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
-#: gui/opcodes.h:812
+#: gui/opcodes.h:811
 msgid "mark all articles in newsgroup as unread"
 msgstr "označiť všetky články v diskusnej skupine ako nečítané"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:820
+#: gui/opcodes.h:819
 msgid "undelete all messages in subthread"
 msgstr "obnoviť všetky správy v podvlákne"
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:823
+#: gui/opcodes.h:822
 msgid "undelete all messages in thread"
 msgstr "obnoviť všetky správy vo vlákne"
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:826
+#: gui/opcodes.h:825
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "odhlásiť z diskusných skupín zodpovedajúcich vzoru"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
-#: gui/opcodes.h:829
+#: gui/opcodes.h:828
 msgid "show the NeoMutt version number and date"
 msgstr "zobraziť verziu a dátum vytvorenia NeoMutt"
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
-#: gui/opcodes.h:833
+#: gui/opcodes.h:832
 msgid "show MIME attachments"
 msgstr "zobraziť prílohy MIME"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:836
+#: gui/opcodes.h:835
 msgid "show the raw message"
 msgstr "zobraziť úplnú správu"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
-#: gui/opcodes.h:839
+#: gui/opcodes.h:838
 msgid "display the keycode for a key press"
 msgstr "zobraziť kód stlačené klávesy"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
-#: gui/opcodes.h:844
+#: gui/opcodes.h:843
 msgid "make decrypted copy"
 msgstr "urobiť dešifrovanú kópiu"
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
-#: gui/opcodes.h:847
+#: gui/opcodes.h:846
 msgid "make decrypted copy and delete"
 msgstr "urobiť dešifrovanú kópiu a vymazať"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
-#: gui/opcodes.h:851
+#: gui/opcodes.h:850
 msgid "extract supported public keys"
 msgstr "extrahuj podporované verejné kľúče PGP"
 
@@ -3923,147 +3928,147 @@ msgstr "extrahuj podporované verejné kľúče PGP"
 #. Attach Dialog: <op_forget_passphrase>
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
-#: gui/opcodes.h:856
+#: gui/opcodes.h:855
 msgid "wipe passphrases from memory"
 msgstr "vymaž frázu hesla z pamäte"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
-#: gui/opcodes.h:861
+#: gui/opcodes.h:860
 msgid "edit the BCC list"
 msgstr "upraviť zoznam BCC"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
-#: gui/opcodes.h:864
+#: gui/opcodes.h:863
 msgid "edit the CC list"
 msgstr "upraviť zoznam CC"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
-#: gui/opcodes.h:867
+#: gui/opcodes.h:866
 msgid "enter a file to save a copy of this message in"
 msgstr "zadajte súbor na uloženie kópie tejto správy"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
-#: gui/opcodes.h:870
+#: gui/opcodes.h:869
 msgid "edit the Followup-To field"
 msgstr "upraviť pole Followup-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
-#: gui/opcodes.h:873
+#: gui/opcodes.h:872
 msgid "edit the from field"
 msgstr "upraviť pole „from“"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
-#: gui/opcodes.h:876
+#: gui/opcodes.h:875
 msgid "edit the message with headers"
 msgstr "upraviť správu s hlavičkami"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
-#: gui/opcodes.h:879
+#: gui/opcodes.h:878
 msgid "edit the newsgroups list"
 msgstr "upraviť zoznam diskusných skupín"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
-#: gui/opcodes.h:882
+#: gui/opcodes.h:881
 msgid "edit the Reply-To field"
 msgstr "upraviť pole Reply-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
-#: gui/opcodes.h:885
+#: gui/opcodes.h:884
 msgid "edit the subject of this message"
 msgstr "upraviť predmet tejto správy"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
-#: gui/opcodes.h:888
+#: gui/opcodes.h:887
 msgid "edit the TO list"
 msgstr "upraviť zoznam TO"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
-#: gui/opcodes.h:891
+#: gui/opcodes.h:890
 msgid "edit the X-Comment-To field"
 msgstr "upraviť pole X-Comment-To"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:897
+#: gui/opcodes.h:896
 msgid "open a different virtual folder"
 msgstr "otvoriť odlišnú virtuálnu zložku"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
-#: gui/opcodes.h:900
+#: gui/opcodes.h:899
 msgid "read entire thread of the current message"
 msgstr "načítát celé vlákno aktuálnej správy"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:903
+#: gui/opcodes.h:902
 msgid "generate virtual folder from query"
 msgstr "vytvor vituálnou zložku z dotazu"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:906
+#: gui/opcodes.h:905
 msgid "generate a read-only virtual folder from query"
 msgstr "vytvor vituálnou zložku z dotazu v režimu iba na čítanie"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:909
+#: gui/opcodes.h:908
 msgid "shifts virtual folder time window backwards"
 msgstr "posunie dozadu časový rozsah virtuálne zložky"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:912
+#: gui/opcodes.h:911
 msgid "shifts virtual folder time window forwards"
 msgstr "posunie dopredu časový rozsah virtuálne zložky"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:915
+#: gui/opcodes.h:914
 msgid "resets virtual folder time window to the present"
 msgstr "vráti nastavenie časového rozsahu virtuálnej zložky na prítomnosť"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
 #. Compose Dialog: <op_attachment_attach_key>
-#: gui/opcodes.h:923
+#: gui/opcodes.h:922
 msgid "attach a PGP public key"
 msgstr "pridať verejný kľúč PGP"
 
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
-#: gui/opcodes.h:927
+#: gui/opcodes.h:926
 msgid "check for classic PGP"
 msgstr "hľadať klasické PGP"
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
-#: gui/opcodes.h:930
+#: gui/opcodes.h:929
 msgid "show PGP options"
 msgstr "zobraziť možnosti PGP"
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
-#: gui/opcodes.h:933
+#: gui/opcodes.h:932
 msgid "mail a PGP public key"
 msgstr "poslať verejný kľúč PGP poštou"
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
-#: gui/opcodes.h:937
+#: gui/opcodes.h:936
 #, fuzzy
 msgid "verify a public key"
 msgstr "overiť verejný kľúč "
@@ -4071,83 +4076,83 @@ msgstr "overiť verejný kľúč "
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
-#: gui/opcodes.h:941
+#: gui/opcodes.h:940
 msgid "view the key's user id"
 msgstr "zobraziť ID používateľa tohoto kľúču"
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
-#: gui/opcodes.h:946
+#: gui/opcodes.h:945
 msgid "move the highlight to the first mailbox"
 msgstr "presunúť zvýraznenie na prvú schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
-#: gui/opcodes.h:949
+#: gui/opcodes.h:948
 msgid "move the highlight to the last mailbox"
 msgstr "presunúť zvýraznenie na poslednú schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
-#: gui/opcodes.h:952
+#: gui/opcodes.h:951
 msgid "move the highlight to next mailbox"
 msgstr "presunúť zvýraznenie na nasledujúcu schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
-#: gui/opcodes.h:955
+#: gui/opcodes.h:954
 msgid "move the highlight to next mailbox with new mail"
 msgstr "presunúť zvýraznenie na nasledujúcu schránku s novou správou"
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
-#: gui/opcodes.h:958
+#: gui/opcodes.h:957
 msgid "open highlighted mailbox"
 msgstr "otvor zvýraznenú schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
-#: gui/opcodes.h:961
+#: gui/opcodes.h:960
 msgid "scroll the sidebar down 1 page"
 msgstr "rolovať bočný panel o 1/2 stránky dole"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
-#: gui/opcodes.h:964
+#: gui/opcodes.h:963
 msgid "scroll the sidebar up 1 page"
 msgstr "rolovať bočný panel o 1/2 stránky hore"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
-#: gui/opcodes.h:967
+#: gui/opcodes.h:966
 msgid "move the highlight to previous mailbox"
 msgstr "presunúť zvýraznenie na predchádzajúcu schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
-#: gui/opcodes.h:970
+#: gui/opcodes.h:969
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "presunúť zvýraznenie na predchádzajúcu schránku s novou správou"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
-#: gui/opcodes.h:973
+#: gui/opcodes.h:972
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "prepnúť medzi schránkami a virtuálnými schránkami"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
-#: gui/opcodes.h:976
+#: gui/opcodes.h:975
 msgid "make the sidebar (in)visible"
 msgstr "zobraziť/skryť bočný panel"
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
-#: gui/opcodes.h:981
+#: gui/opcodes.h:980
 msgid "show S/MIME options"
 msgstr "zobraziť S/MIME voľby"
 
-#: gui/opcodes.h:984
+#: gui/opcodes.h:983
 msgid "null operation"
 msgstr "prázdna operácia"
 
@@ -4370,109 +4375,109 @@ msgstr "Nastaviť voľbu %s pred nastavením %s"
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: hcache/config.c:112 send/config.c:68
+#: hcache/config.c:112 send/config.c:67
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "Voľba %s musí byť v rozmedzí %d a %d včetne"
 
-#: help.c:54
+#: help.c:53
 msgid "message is tagged"
 msgstr "správa je označená"
 
-#: help.c:55
+#: help.c:54
 msgid "message is flagged"
 msgstr "správa s príznakom"
 
-#: help.c:56
+#: help.c:55
 msgid "message is deleted"
 msgstr "správa je zmazaná"
 
-#: help.c:57
+#: help.c:56
 msgid "attachment is deleted"
 msgstr "príloha je zmazaná"
 
-#: help.c:58
+#: help.c:57
 msgid "message has been replied to"
 msgstr "na správu bolo odpovedané"
 
-#: help.c:59
+#: help.c:58
 msgid "message has been read"
 msgstr "správa bola prečítaná"
 
-#: help.c:60
+#: help.c:59
 msgid "message is new"
 msgstr "správa je nová"
 
-#: help.c:61
+#: help.c:60
 msgid "thread has been read"
 msgstr "vlákno bolo prečítané"
 
-#: help.c:62
+#: help.c:61
 msgid "thread has at least one new message"
 msgstr "vlákno má alespoň jednu novú správu"
 
-#: help.c:63
+#: help.c:62
 #, c-format
 msgid "message has been read (%S expando)"
 msgstr "správa bola prečítaná (formát %S)"
 
-#: help.c:64
+#: help.c:63
 msgid "message has been read (%Z expando)"
 msgstr "správa bola prečítaná (formát %Z)"
 
-#: help.c:73
+#: help.c:72
 msgid "message signed with a verified key"
 msgstr "správa podpísaná overeným kľúčom"
 
-#: help.c:74
+#: help.c:73
 msgid "message is PGP-encrypted"
 msgstr "správa je zašifrovaná PGP"
 
-#: help.c:75
+#: help.c:74
 msgid "message is signed"
 msgstr "správa je podpísaná"
 
-#: help.c:76
+#: help.c:75
 msgid "message contains a PGP key"
 msgstr "správa obsahuje PGP kľúč"
 
-#: help.c:77
+#: help.c:76
 msgid "message has no cryptography information"
 msgstr "správa nemá žiadné krýptografické informace"
 
-#: help.c:86
+#: help.c:85
 msgid "message is not To: you"
 msgstr "správa nie je pre vás (Komu:)"
 
-#: help.c:87
+#: help.c:86
 msgid "message is To: you and only you"
 msgstr "správa je adresovaná iba pre vás (Komu:)"
 
-#: help.c:88
+#: help.c:87
 msgid "message is To: you"
 msgstr "správa je pre vás (Komu:)"
 
-#: help.c:89
+#: help.c:88
 msgid "message is Cc: to you"
 msgstr "správa je v kópii pre vás (Komu:)"
 
-#: help.c:90
+#: help.c:89
 msgid "message is From: you"
 msgstr "správa je od vás (Od:)"
 
-#: help.c:91
+#: help.c:90
 msgid "message is sent to a subscribed mailing list"
 msgstr "správa je poslaná do prihlásené poštové konferencie"
 
-#: help.c:92
+#: help.c:91
 msgid "you are in the Reply-To: list"
 msgstr "ste v zozname pre odpoveď Odpovedz:"
 
-#: help.c:113
+#: help.c:112
 msgid "Message flags:"
 msgstr "Príznaky správy:"
 
-#: help.c:267
+#: help.c:266
 #, c-format
 msgid "Help for %s"
 msgstr "Nápoveda pre %s"
@@ -4482,12 +4487,12 @@ msgstr "Nápoveda pre %s"
 msgid "History '%s'"
 msgstr "História „%s“"
 
-#: history/history.c:233 history/history.c:621
+#: history/history.c:232 history/history.c:613
 #, c-format
 msgid "%s:%d: Bad history file format"
 msgstr "%s:%d: Zlý formát súboru s históriou"
 
-#: history/history.c:266 ncrypt/crypt_gpgme.c:574 ncrypt/crypt_gpgme.c:1935
+#: history/history.c:265 ncrypt/crypt_gpgme.c:574 ncrypt/crypt_gpgme.c:1935
 #: ncrypt/crypt_gpgme.c:1959 ncrypt/crypt_gpgme.c:2018
 #: ncrypt/crypt_gpgme.c:2035 ncrypt/crypt_gpgme.c:2069
 #: ncrypt/crypt_gpgme.c:2087 ncrypt/crypt_gpgme.c:2127
@@ -4497,9 +4502,9 @@ msgstr "%s:%d: Zlý formát súboru s históriou"
 #: ncrypt/pgp.c:1256 ncrypt/pgp.c:1610 ncrypt/pgp_functions.c:135
 #: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:714
 #: ncrypt/smime.c:722 ncrypt/smime.c:821 ncrypt/smime.c:931 ncrypt/smime.c:998
-#: ncrypt/smime.c:1005 ncrypt/smime.c:1216 ncrypt/smime.c:1616
-#: ncrypt/smime.c:1695 ncrypt/smime.c:1702 ncrypt/smime.c:1809
-#: ncrypt/smime.c:1939 ncrypt/smime.c:1955 nntp/nntp.c:1347 nntp/nntp.c:2225
+#: ncrypt/smime.c:1005 ncrypt/smime.c:1216 ncrypt/smime.c:1619
+#: ncrypt/smime.c:1698 ncrypt/smime.c:1705 ncrypt/smime.c:1812
+#: ncrypt/smime.c:1942 ncrypt/smime.c:1958 nntp/nntp.c:1347 nntp/nntp.c:2225
 #: pattern/exec.c:148 pop/pop.c:123
 msgid "Can't create temporary file"
 msgstr "Nemožno vytvoriť dočasný súbor"
@@ -4516,16 +4521,16 @@ msgstr "skratka pre schránku expandovala na prázdny regulárný výraz"
 msgid "badly formatted command string"
 msgstr "zle naformátovaný reťazec príkazu"
 
-#: hook.c:591
+#: hook.c:589
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Nemožno vykonať unhook * z jiného hooku"
 
-#: hook.c:604
+#: hook.c:602
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: neznámy typ hooku: %s"
 
-#: hook.c:614
+#: hook.c:612
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: %s nie je možné zmazať z %s"
@@ -4535,8 +4540,8 @@ msgid "No authenticators available or wrong credentials"
 msgstr "Nie sú dostupné žiadné overovacie metódy alebo boli zadané neplatné prihlasovacie údaje"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:56 imap/auth_cram.c:103 imap/auth_gsasl.c:65
-#: imap/auth_gss.c:169 imap/auth_oauth.c:73 imap/auth_sasl.c:126
+#: imap/auth_anon.c:56 imap/auth_cram.c:102 imap/auth_gsasl.c:65
+#: imap/auth_gss.c:168 imap/auth_oauth.c:73 imap/auth_sasl.c:126
 #: nntp/nntp.c:527 nntp/nntp.c:598 pop/auth.c:78 pop/auth.c:192 pop/auth.c:337
 #: pop/auth.c:432 send/smtp.c:537 send/smtp.c:656 send/smtp.c:742
 #, c-format
@@ -4544,7 +4549,7 @@ msgid "Authenticating (%s)..."
 msgstr "Prihlasujem (%s)…"
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:89 imap/auth_cram.c:183 imap/auth_gss.c:350
+#: imap/auth_anon.c:89 imap/auth_cram.c:182 imap/auth_gss.c:349
 #: imap/auth_oauth.c:104 imap/auth_sasl.c:260 nntp/nntp.c:699 pop/auth.c:290
 #: pop/auth.c:358 send/smtp.c:820 send/smtp.c:896 send/smtp.c:1000
 #, c-format
@@ -4617,17 +4622,12 @@ msgstr "Schránka premenovaná"
 msgid "Mailbox %s@%s closed"
 msgstr "Schránka %s@%s uzavretá"
 
-#: imap/command.c:1223
+#: imap/command.c:1225
 #, c-format
 msgid "IMAP command failed: %s"
 msgstr "IMAP prikaz zlyhal: %s"
 
-#: imap/command.c:1327 imap/command.c:1448
-#, c-format
-msgid "Connection to %s timed out"
-msgstr "Vypršal časový limit spojenia k %s"
-
-#: imap/config.c:60 pop/config.c:60 send/config.c:91
+#: imap/config.c:60 pop/config.c:60 send/config.c:90
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "Voľba %s: %s nie je platný autentifikátor"
@@ -4636,39 +4636,39 @@ msgstr "Voľba %s: %s nie je platný autentifikátor"
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Tento IMAP server je starý. NeoMutt s ním nevie pracovať."
 
-#: imap/imap.c:445
+#: imap/imap.c:446
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "Príkaz CREATE zlyhal: %s"
 
-#: imap/imap.c:572
+#: imap/imap.c:574
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Zatváram spojenie k %s…"
 
-#: imap/imap.c:774 nntp/nntp.c:1852 pop/lib.c:339 send/smtp.c:1044
+#: imap/imap.c:776 nntp/nntp.c:1852 pop/lib.c:339 send/smtp.c:1044
 msgid "Secure connection with TLS?"
 msgstr "Bezpčné spojenie cez TLS?"
 
-#: imap/imap.c:791 nntp/nntp.c:1877 pop/lib.c:361 send/smtp.c:1062
+#: imap/imap.c:793 nntp/nntp.c:1877 pop/lib.c:361 send/smtp.c:1062
 msgid "Could not negotiate TLS connection"
 msgstr "Nemožno vyjednať TLS spojenie"
 
-#: imap/imap.c:806 imap/imap.c:823 pop/lib.c:378
+#: imap/imap.c:808 imap/imap.c:825 pop/lib.c:378
 msgid "Encrypted connection unavailable"
 msgstr "Šifrované spojenie nie je k dispozícii"
 
-#: imap/imap.c:1234
+#: imap/imap.c:1236
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Přihlašuji %s…"
 
-#: imap/imap.c:1236
+#: imap/imap.c:1238
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Odhlašuji %s…"
 
-#: imap/imap.c:1417 imap/message.c:1802
+#: imap/imap.c:1419 imap/message.c:1803
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
@@ -4676,16 +4676,16 @@ msgstr[0] "Kopírujem %d správu do %s…"
 msgstr[1] "Kopírujem %d správy do %s…"
 msgstr[2] "Kopírujem %d správ do %s…"
 
-#: imap/imap.c:1435 imap/imap.c:2095 imap/message.c:1820 muttlib.c:799
+#: imap/imap.c:1437 imap/imap.c:2097 imap/message.c:1821 muttlib.c:799
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvoriť %s?"
 
-#: imap/imap.c:1510
+#: imap/imap.c:1512
 msgid "Expunge failed"
 msgstr "Príkaz EXPUNGE zlyhal"
 
-#: imap/imap.c:1528
+#: imap/imap.c:1530
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
@@ -4693,7 +4693,7 @@ msgstr[0] "Označujem %d správu na zmazanie…"
 msgstr[1] "Označujem %d správy na zmazanie…"
 msgstr[2] "Označujem %d správ na zmazanie…"
 
-#: imap/imap.c:1567
+#: imap/imap.c:1569
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
@@ -4701,81 +4701,81 @@ msgstr[0] "Ukládám zmenenú správu [%d/%d]"
 msgstr[1] "Ukládám zmenené správy [%d/%d]"
 msgstr[2] "Ukládám zmenené správy [%d/%d]"
 
-#: imap/imap.c:1610
+#: imap/imap.c:1612
 msgid "Error saving flags. Close anyway?"
 msgstr "Chuba pri ukladanie príznakov. Napriek tomu uzavrieť?"
 
-#: imap/imap.c:1618
+#: imap/imap.c:1620
 msgid "Error saving flags"
 msgstr "Chyba pri ukladanie príznakov"
 
-#: imap/imap.c:1645
+#: imap/imap.c:1647
 msgid "Expunging messages from server..."
 msgstr "Vymazávam správy zo serveru…"
 
-#: imap/imap.c:1651
+#: imap/imap.c:1653
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE zlyhal"
 
-#: imap/imap.c:1894 nntp/nntp.c:2451
+#: imap/imap.c:1896 nntp/nntp.c:2451
 #, c-format
 msgid "Selecting %s..."
 msgstr "Vyberám %s…"
 
-#: imap/imap.c:2062
+#: imap/imap.c:2064
 msgid "Error opening mailbox"
 msgstr "Chyba pri otváraní schránky"
 
-#: imap/imap.c:2206
+#: imap/imap.c:2208
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP server nepodporuje vlasné príznaky"
 
-#: imap/imap.c:2250
+#: imap/imap.c:2252
 msgid "Invalid IMAP flags"
 msgstr "Neplatné IMAP príznaky"
 
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
-#: imap/message.c:508
+#: imap/message.c:509
 msgid "Abort download and close mailbox?"
 msgstr "Prerušiť sťahovanie a uzavrieť schránku?"
 
-#: imap/message.c:698 imap/message.c:838
+#: imap/message.c:699 imap/message.c:839
 msgid "Evaluating cache..."
 msgstr "Vyhodnocujem cache…"
 
-#: imap/message.c:928
+#: imap/message.c:929
 msgid "Fetching flag updates..."
 msgstr "Sťahujem príznaky správ…"
 
 #. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
-#: imap/message.c:1071
+#: imap/message.c:1072
 msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "QRESYNC zlyhal.  Znovu otváram schránku"
 
-#: imap/message.c:1140
+#: imap/message.c:1141
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Nemožno získať hlavičky z tejto verzie IMAP serveru"
 
-#: imap/message.c:1162 index/functions.c:2604 nntp/nntp.c:1284 pop/pop.c:371
+#: imap/message.c:1163 index/functions.c:2610 nntp/nntp.c:1284 pop/pop.c:371
 msgid "Fetching message headers..."
 msgstr "Sťahujem hlavičky správ…"
 
-#: imap/message.c:1571
+#: imap/message.c:1572
 msgid "Uploading message..."
 msgstr "Nahrávam správu na server…"
 
-#: imap/message.c:1738
+#: imap/message.c:1739
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopírujem správu %d do %s…"
 
-#: imap/message.c:2008 nntp/nntp.c:2681 pop/pop.c:1046
+#: imap/message.c:2009 nntp/nntp.c:2681 pop/pop.c:1046
 msgid "Fetching message..."
 msgstr "Stahujem správu…"
 
-#: imap/message.c:2059 pop/pop.c:1023
+#: imap/message.c:2060 pop/pop.c:1023
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Index správ je chybný. Skúste schránku otvoriť znova."
 
@@ -4789,7 +4789,7 @@ msgstr "Hľadám v hlavičkách bez udania mena: %s"
 msgid "Server-side custom search not supported: %s"
 msgstr "Vyhľadávanie na strane serveru nie je podporované: %s"
 
-#: imap/util.c:651
+#: imap/util.c:652
 msgid "Continue?"
 msgstr "Pokračovať?"
 
@@ -4798,62 +4798,62 @@ msgstr "Pokračovať?"
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 msgstr "-%r-NeoMutt: %D [Správ:%<M?%M/>%m%<n? Nové:%n>%<o? Neprečítané:%o>%<d? Zmazané:%d>%<F? S príznakom:%F>%<t? Označené:%t>%<p? Odložené:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
-#: index/dlg_index.c:104 index/dlg_index.c:119
+#: index/dlg_index.c:103 index/dlg_index.c:118
 msgid "Quit"
 msgstr "Koniec"
 
-#: index/dlg_index.c:109 pager/dlg_pager.c:101
+#: index/dlg_index.c:108 pager/dlg_pager.c:101
 msgid "Reply"
 msgstr "Odpovedz"
 
-#: index/dlg_index.c:110
+#: index/dlg_index.c:109
 msgid "Group"
 msgstr "Skupina"
 
-#: index/dlg_index.c:123 pager/dlg_pager.c:114
+#: index/dlg_index.c:122 pager/dlg_pager.c:114
 msgid "Post"
 msgstr "Odoslať"
 
-#: index/dlg_index.c:124 pager/dlg_pager.c:115
+#: index/dlg_index.c:123 pager/dlg_pager.c:115
 msgid "Followup"
 msgstr "Followup"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: index/dlg_index.c:146
+#: index/dlg_index.c:145
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Operácia je v rozpore s ACL"
 
-#: index/dlg_index.c:737
+#: index/dlg_index.c:736
 msgid "Failed to create query, aborting"
 msgstr "Zlyhalo vytvorenie dotazu, prerušujem"
 
-#: index/dlg_index.c:782 muttlib.c:783 mx.c:205 mx.c:343
+#: index/dlg_index.c:781 muttlib.c:783 mx.c:205 mx.c:343
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s nie je schránka"
 
-#: index/dlg_index.c:1196
+#: index/dlg_index.c:1195
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Schránka bola zmenená zvonku.  Príznaky môžu byť nesprávne."
 
-#: index/dlg_index.c:1205 pager/dlg_pager.c:431
+#: index/dlg_index.c:1204 pager/dlg_pager.c:431
 msgid "New mail in this mailbox"
 msgstr "Nová pošta v tejto schránke"
 
-#: index/dlg_index.c:1225
+#: index/dlg_index.c:1224
 msgid "Mailbox was externally modified"
 msgstr "Schránka bola zmenená zvonku"
 
-#: index/dlg_index.c:1336 index/functions.c:3075 pattern/message.c:287
+#: index/dlg_index.c:1335 index/functions.c:3081 pattern/message.c:286
 msgid "No mailbox is open"
 msgstr "Žiadna schránka nie je otvorená"
 
-#: index/dlg_index.c:1344
+#: index/dlg_index.c:1343
 msgid "No tagged messages"
 msgstr "Žiadne označené správy"
 
-#: index/dlg_index.c:1349 index/functions.c:919
+#: index/dlg_index.c:1348 index/functions.c:922
 msgid "Nothing to do"
 msgstr "Nič na práci"
 
@@ -4869,7 +4869,7 @@ msgstr "celé"
 
 #. L10N: Status bar message: all the emails are visible in the index
 #. L10N: Status bar message: the entire email is visible in the pager
-#: index/expando_status.c:448 pager/message.c:61 pager/pbar.c:120
+#: index/expando_status.c:448 pager/message.c:60 pager/pbar.c:120
 msgid "all"
 msgstr "všetko"
 
@@ -4890,13 +4890,13 @@ msgstr "Správu nemožno zmazať"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:560 index/functions.c:1205
+#: index/functions.c:560 index/functions.c:1210
 msgid "Can't delete messages"
 msgstr "Nemožno zmazať správy"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index/functions.c:686
+#: index/functions.c:689
 #, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -4907,153 +4907,153 @@ msgstr[2] "%d štítkov bolo zmenených"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index/functions.c:696
+#: index/functions.c:699
 msgid "No labels changed"
 msgstr "Žiadne štítky neboli zmenené"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:716
+#: index/functions.c:719
 msgid "Can't edit message"
 msgstr "Správu nemožno upravovať"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:803
+#: index/functions.c:806
 msgid "Can't flag message"
 msgstr "Nemožno nastavit príznak správe"
 
-#: index/functions.c:916
+#: index/functions.c:919
 msgid "Jump to message: "
 msgstr "Skočiť na správu: "
 
-#: index/functions.c:924
+#: index/functions.c:927
 msgid "Argument must be a message number"
 msgstr "Parameter musí byť číslo správy"
 
-#: index/functions.c:928
+#: index/functions.c:931
 msgid "Invalid message number"
 msgstr "Neplatné číslo správy"
 
-#: index/functions.c:932
+#: index/functions.c:935
 msgid "That message is not visible"
 msgstr "Táto správa nie je viditeľná"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1035
+#: index/functions.c:1038
 msgid "Can't break thread"
 msgstr "Nemožno rozdeliť vlákno"
 
-#: index/functions.c:1058
+#: index/functions.c:1061
 msgid "Thread broken"
 msgstr "Vlákno je rozdelené"
 
-#: index/functions.c:1064
+#: index/functions.c:1067
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Vlákno nemožno rozdeliť, správa nie je súčasťou vlákna"
 
-#: index/functions.c:1089
+#: index/functions.c:1092
 msgid "Open mailbox in read-only mode"
 msgstr "Otvor schránku v režime iba na čítanie."
 
-#: index/functions.c:1094
+#: index/functions.c:1097
 msgid "Open mailbox"
 msgstr "Otvor schránku."
 
-#: index/functions.c:1186
+#: index/functions.c:1190
 msgid "Thread contains unread or flagged messages"
 msgstr "Vlákno obsahuje neprečítané správy alebo správy s príznakmi"
 
-#: index/functions.c:1208
+#: index/functions.c:1213
 msgid "Delete messages matching: "
 msgstr "Zmazať správy zodpovedajúce: "
 
-#: index/functions.c:1248
+#: index/functions.c:1253
 msgid "Limit to messages matching: "
 msgstr "Limituj správy zodpovedajúce: "
 
-#: index/functions.c:1278
+#: index/functions.c:1284
 msgid "To view all messages, limit to \"all\""
 msgstr "Pre zobrazenie všetkých správ, obmedzte na „all“"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1291
+#: index/functions.c:1297
 msgid "Can't link threads"
 msgstr "Vlákna sa nedajú prepojiť"
 
-#: index/functions.c:1306
+#: index/functions.c:1312
 msgid "No Message-ID: header available to link thread"
 msgstr "Na spojenie vlákien chýba hlavička Message-ID"
 
-#: index/functions.c:1320
+#: index/functions.c:1326
 msgid "Threads linked"
 msgstr "Vlákna prepojené"
 
-#: index/functions.c:1325
+#: index/functions.c:1331
 msgid "No thread linked"
 msgstr "Žiadna pripojené vlákno"
 
-#: index/functions.c:1354 mx.c:1287 mx.c:1307
+#: index/functions.c:1360 mx.c:1287 mx.c:1307
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Zložka nepodporuje štítkovanie, ukončujem"
 
-#: index/functions.c:1375
+#: index/functions.c:1381
 msgid "No tag specified, aborting"
 msgstr "Žiadny štítok nebol zadaný, ukončujem"
 
-#: index/functions.c:1386
+#: index/functions.c:1392
 msgid "Update tags..."
 msgstr "Aktualizovať štítky…"
 
-#: index/functions.c:1426
+#: index/functions.c:1432
 msgid "Failed to modify tags, aborting"
 msgstr "Zlyhala modifikácia štítkov, prerušujem"
 
-#: index/functions.c:1540
+#: index/functions.c:1546
 msgid "No new messages in this limited view"
 msgstr "Žiadne nové správy v tomto obmedzenom zobrazení"
 
-#: index/functions.c:1542
+#: index/functions.c:1548
 msgid "No new messages"
 msgstr "Žiadne nové správy"
 
-#: index/functions.c:1547
+#: index/functions.c:1553
 msgid "No unread messages in this limited view"
 msgstr "Žiadne neprečítané spray v tomto obmedzenom zobrazení"
 
-#: index/functions.c:1549
+#: index/functions.c:1555
 msgid "No unread messages"
 msgstr "Žiadne neprečítané správy"
 
-#: index/functions.c:1565 menu/functions.c:108 pager/functions.c:765
-#: pattern/pattern.c:557 pattern/pattern.c:713
+#: index/functions.c:1571 menu/functions.c:109 pager/functions.c:764
+#: pattern/pattern.c:553 pattern/pattern.c:708
 msgid "Search wrapped to top"
 msgstr "Vyhľadávanie pokračuje z vrchu"
 
-#: index/functions.c:1570 pager/functions.c:796 pattern/pattern.c:570
-#: pattern/pattern.c:726
+#: index/functions.c:1576 pager/functions.c:795 pattern/pattern.c:566
+#: pattern/pattern.c:721
 msgid "Search wrapped to bottom"
 msgstr "Vyhľadávanie pokračuje zo spodu"
 
-#: index/functions.c:1614
+#: index/functions.c:1620
 msgid "No more threads"
 msgstr "Žiadne ďaľšie vlákna"
 
-#: index/functions.c:1616
+#: index/functions.c:1622
 msgid "You are on the first thread"
 msgstr "Ste na prvom vlákne"
 
-#: index/functions.c:1634 index/functions.c:2026
+#: index/functions.c:1640 index/functions.c:2032
 msgid "You are on the last message"
 msgstr "Ste na poslednej správe"
 
-#: index/functions.c:1651 index/functions.c:1706
+#: index/functions.c:1657 index/functions.c:1712
 msgid "No undeleted messages"
 msgstr "Žiadne obnovené správy"
 
-#: index/functions.c:1672
+#: index/functions.c:1678
 msgid "No mailboxes have new mail"
 msgstr "Žiadna schránka s novými správami."
 
-#: index/functions.c:1690 index/functions.c:2064
+#: index/functions.c:1696 index/functions.c:2070
 msgid "You are on the first message"
 msgstr "Ste na prvej správe"
 
@@ -5061,15 +5061,15 @@ msgstr "Ste na prvej správe"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1759
+#: index/functions.c:1765
 msgid "Can't mark messages as read"
 msgstr "Nemožno označiť správy za prečítané"
 
-#: index/functions.c:1836
+#: index/functions.c:1842
 msgid "No limit pattern is in effect"
 msgstr "Žiadny obmedzovací vzor nie je aktívny"
 
-#: index/functions.c:1923
+#: index/functions.c:1929
 msgid "Tag messages matching: "
 msgstr "Označiť správy zodpovedajúce: "
 
@@ -5077,134 +5077,134 @@ msgstr "Označiť správy zodpovedajúce: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1939 index/functions.c:2453
+#: index/functions.c:1945 index/functions.c:2459
 msgid "Can't undelete messages"
 msgstr "Žiadne obnovené správy"
 
-#: index/functions.c:1943
+#: index/functions.c:1949
 msgid "Undelete messages matching: "
 msgstr "Obnoviť správy zodpovedajúce: "
 
-#: index/functions.c:1957
+#: index/functions.c:1963
 msgid "Untag messages matching: "
 msgstr "Odznačiť správy zodpovedajúce: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1980
+#: index/functions.c:1986
 msgid "Enter macro stroke: "
 msgstr "Zadajte značku: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1996
+#: index/functions.c:2002
 msgid "message hotkey"
 msgstr "horúca klávesa pre značku správy"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:2001
+#: index/functions.c:2007
 #, c-format
 msgid "Message bound to %s"
 msgstr "Správa zviazaná so značkou %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:2011
+#: index/functions.c:2017
 msgid "No message ID to macro"
 msgstr "ID správy zo značky neexistuje"
 
-#: index/functions.c:2109
+#: index/functions.c:2115
 msgid "Quit NeoMutt?"
 msgstr "Ukončiť NeoMutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2365
+#: index/functions.c:2371
 msgid "Can't toggle new"
 msgstr "Nemožno prepnúť medzi nová/stará"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2417
+#: index/functions.c:2423
 msgid "Can't undelete message"
 msgstr "Nemožno obnoviť správu"
 
-#: index/functions.c:2552
+#: index/functions.c:2558
 msgid "Logged out of IMAP servers"
 msgstr "Odhlásený z IMAP serverov"
 
-#: index/functions.c:2600
+#: index/functions.c:2606
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Žiadne Message-ID. Nemožno vykonať operáciu."
 
-#: index/functions.c:2670
+#: index/functions.c:2676
 msgid "No deleted messages found in the thread"
 msgstr "Vo vlákne neboli nájdené žiadne zmazané spávy"
 
-#: index/functions.c:2695
+#: index/functions.c:2701
 msgid "Enter Message-Id: "
 msgstr "Zadajte ID správy: "
 
-#: index/functions.c:2707
+#: index/functions.c:2713
 msgid "Article has no parent reference"
 msgstr "Článok nemá rodičovskú referenciu"
 
-#: index/functions.c:2730
+#: index/functions.c:2736
 msgid "Message is not visible in limited view"
 msgstr "Táto správa nie je viditeľná vo obmedzenem zobrazenie"
 
-#: index/functions.c:2735
+#: index/functions.c:2741
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Sťahujem %s zo servera…"
 
-#: index/functions.c:2748 nntp/nntp.c:2718
+#: index/functions.c:2754 nntp/nntp.c:2718
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Článok %s sa na serveri nenašiel"
 
-#: index/functions.c:2776
+#: index/functions.c:2782
 msgid "Open newsgroup in read-only mode"
 msgstr "Otvor newsgroup v režime iba na čítanie"
 
-#: index/functions.c:2781
+#: index/functions.c:2787
 msgid "Open newsgroup"
 msgstr "Otvor newsgroup."
 
-#: index/functions.c:2852
+#: index/functions.c:2858
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Publikovanie do tejto skupiny nie je povolené, môže byť moderovaná. Pokračovať?"
 
-#: index/functions.c:2888
+#: index/functions.c:2894
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Žiadna virtuálna zložka a žiadne Message-Id, ukončujem"
 
-#: index/functions.c:2917
+#: index/functions.c:2923
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "zlyhalo hľadanie správy v databázi notmuch. skúste spustiť „notmuch new“."
 
-#: index/functions.c:2929
+#: index/functions.c:2935
 msgid "Failed to read thread, aborting"
 msgstr "Zlyhalo načítanie vlákna, ukončujem"
 
-#: index/functions.c:2969
+#: index/functions.c:2975
 msgid "No query, aborting"
 msgstr "Bez dotazov, ukončujem"
 
-#: index/functions.c:3012
+#: index/functions.c:3018
 msgid "Windowed queries disabled"
 msgstr "Dotazy časového sú zakázané"
 
-#: index/functions.c:3018
+#: index/functions.c:3024
 msgid "No notmuch vfolder currently loaded"
 msgstr "Nie je načtena žiadna virtuálna zložka (notmuch)"
 
-#: index/functions.c:3081
+#: index/functions.c:3087
 msgid "There are no messages"
 msgstr "Žiadne správy"
 
-#: index/functions.c:3089
+#: index/functions.c:3095
 msgid "No visible messages"
 msgstr "Žiadne viditeľné správy"
 
@@ -5212,20 +5212,48 @@ msgstr "Žiadne viditeľné správy"
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr "Zmena nastavenia zobrazenia vláken by mala uprednostniť $use_threads pred $sort"
 
+#: key/commands.c:103
+#, c-format
+msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
+msgstr "Skratka „%s“ překryje „%s“. Najskôr skúste: 'bind %s %s noop'"
+
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-#: key/dump.c:218 key/parse.c:253 key/parse.c:306
+#: key/commands.c:213 key/commands.c:266 key/dump.c:220
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: také menu neexistuje"
 
+#: key/commands.c:229
+#, c-format
+msgid "%s: null key sequence"
+msgstr "%s: prázdna postupnosť kláves"
+
+#: key/commands.c:300
+#, c-format
+msgid "Function '%s' not available for menu '%s'"
+msgstr "Funkcia '%s' nie je k dispozícii pre menu '%s'"
+
+#: key/commands.c:555
+msgid "macro: empty key sequence"
+msgstr "macro: prázdna postupnosť kláves"
+
+#: key/commands.c:629
+msgid "exec: no arguments"
+msgstr "exec: žiadne argumenty"
+
+#: key/commands.c:652
+#, c-format
+msgid "%s: no such function"
+msgstr "%s: žiadna takáto funkcia"
+
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
 #. it might also be 'all' when all menus are affected.
-#: key/dump.c:232
+#: key/dump.c:234
 #, c-format
 msgid "%s: no binds for this menu"
 msgstr "%s: žiadne väzby pre toto menu"
 
-#: key/dump.c:232
+#: key/dump.c:234
 #, c-format
 msgid "%s: no macros for this menu"
 msgstr "%s: žiadna makra pre toto menu"
@@ -5243,42 +5271,23 @@ msgstr "Klávesa nie je viazaná.  Stlačte '%s' pre nápovedu."
 msgid "Macro loop detected"
 msgstr "Bola zistená slučka v makre"
 
-#: key/init.c:237
+#: key/init.c:169
 msgid "Abort key is not set, defaulting to Ctrl-G"
 msgstr "Klávesová skratka pre prerušenie nie je nastavená, pokračujem s predvolenú Ctrl-G"
 
-#: key/init.c:243
+#: key/init.c:175
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
 msgstr "Zadaná klávesová skratka pre prerušenie (%s) bude skrátená na prvú klávesu"
 
-#: key/parse.c:103
+#: lua/commands.c:104
 #, c-format
-msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
-msgstr "Skratka „%s“ překryje „%s“. Najskôr skúste: 'bind %s %s noop'"
+msgid "Couldn't source lua source: %s"
+msgstr "Nemôžem vložiť lua zdroj: %s"
 
-#: key/parse.c:269
-#, c-format
-msgid "%s: null key sequence"
-msgstr "%s: prázdna postupnosť kláves"
-
-#: key/parse.c:340
-#, c-format
-msgid "Function '%s' not available for menu '%s'"
-msgstr "Funkcia '%s' nie je k dispozícii pre menu '%s'"
-
-#: key/parse.c:595
-msgid "macro: empty key sequence"
-msgstr "macro: prázdna postupnosť kláves"
-
-#: key/parse.c:669
-msgid "exec: no arguments"
-msgstr "exec: žiadne argumenty"
-
-#: key/parse.c:692
-#, c-format
-msgid "%s: no such function"
-msgstr "%s: žiadna takáto funkcia"
+#: lua/lua.c:449
+msgid "Error: Couldn't load the lua interpreter"
+msgstr "Chyba: nie je možné zaviesť interpret jazyka lua"
 
 #: mailcap.c:218
 #, c-format
@@ -5308,12 +5317,12 @@ msgid "mailcap entry for type %s not found"
 msgstr "položka mailcap-u pre typ %s nenájdená"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
-#: maildir/config.c:51
+#: maildir/config.c:50
 msgid "maildir_field_delimiter must be exactly one character long"
 msgstr "maildir_field_delimiter musí mať dĺžku presne jeden znak"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
-#: maildir/config.c:58
+#: maildir/config.c:57
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
 msgstr "maildir_field_delimiter nemôže byť alphanumerický alebo '-.\\/'"
 
@@ -5342,74 +5351,74 @@ msgstr "Správu nebolo možné bezpečne uložiť (flush) na disk"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): nemožno nastaviť čas pre súbor"
 
-#: main.c:219
+#: main.c:216
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Chyba v príkazovom riadku: %s"
 
-#: main.c:221
+#: main.c:218
 #, c-format
 msgid "Warning in command line: %s"
 msgstr "Pozor %s na príkazovom riadku"
 
-#: main.c:338
+#: main.c:335
 msgid "unable to determine nodename via uname()"
 msgstr "meno stroje nie je možné určiť pomocou volanie uname()"
 
-#: main.c:691 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
+#: main.c:688 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
 #: parse/set.c:331 parse/set.c:372 parse/set.c:439
 #, c-format
 msgid "Option %s is deprecated"
 msgstr "Voľba „%s“ je zastaraná"
 
-#: main.c:769
+#: main.c:764
 msgid "Error initializing terminal"
 msgstr "Chyba pri inicializácii terminálu"
 
-#: main.c:837
+#: main.c:832
 msgid "unable to determine username"
 msgstr "nemožno určiť meno používateľa"
 
-#: main.c:843
+#: main.c:838
 msgid "unable to determine home directory"
 msgstr "nemožno určiť domáci adresár"
 
-#: main.c:988
+#: main.c:983
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Chyba: hodnota „%s“ nie je platná pre -d"
 
-#: main.c:1349
+#: main.c:1342
 msgid "Failed to parse mailto: link"
 msgstr "Zlyhalo rozebrání mailto: odkazu"
 
-#: main.c:1364 main.c:1635 send/send.c:306 send/send.c:2663 send/send.c:2667
+#: main.c:1357 main.c:1628 send/send.c:306 send/send.c:2663 send/send.c:2667
 msgid "No recipients specified"
 msgstr "Neboli uvedení žiadni príjemcovia"
 
-#: main.c:1398
+#: main.c:1391
 msgid "Can't use -E flag with stdin"
 msgstr "Prepínač -E nemožno použiť so štandardným vstupom"
 
-#: main.c:1488
+#: main.c:1481
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "Nemožné rozebrať súbor se šablónou správy: %s"
 
-#: main.c:1559 mutt_header.c:351
+#: main.c:1552 mutt_header.c:350
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: súbor nemožno pripojiť"
 
-#: main.c:1650
+#: main.c:1643
 msgid "No mailbox with new mail"
 msgstr "Žiadna schránka s novými správami"
 
-#: main.c:1670
+#: main.c:1663
 msgid "No incoming mailboxes defined"
 msgstr "Nie je definovaná žiadna schránka prijímajúca novú poštu"
 
-#: main.c:1723
+#: main.c:1716
 msgid "Mailbox is empty"
 msgstr "Schránka je prázdna"
 
@@ -5430,7 +5439,7 @@ msgstr "Schránka bola porušená"
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fatálna chyba! Nemožno znovu otvoriť schránku!"
 
-#: mbox/mbox.c:1134 pager/message.c:221
+#: mbox/mbox.c:1134 pager/message.c:219
 msgid "Could not create temporary file"
 msgstr "Nemožno vytvoriť dočasný súbor"
 
@@ -5455,32 +5464,32 @@ msgstr "Nemožno znovu otvoriť schránku"
 msgid "Can't write message"
 msgstr "Správu nemožno uložiť"
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:490
-#: pattern/pattern.c:647
+#: menu/functions.c:72 pager/functions.c:586 pattern/pattern.c:487
+#: pattern/pattern.c:643
 msgid "Reverse search for: "
 msgstr "Hľadať spätne: "
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:490
-#: pattern/pattern.c:647
+#: menu/functions.c:72 pager/functions.c:586 pattern/pattern.c:487
+#: pattern/pattern.c:643
 msgid "Search for: "
 msgstr "Hľadať: "
 
-#: menu/functions.c:127 pager/functions.c:694 pager/functions.c:761
-#: pager/functions.c:792 pattern/pattern.c:621 pattern/pattern.c:774
+#: menu/functions.c:128 pager/functions.c:693 pager/functions.c:760
+#: pager/functions.c:791 pattern/pattern.c:617 pattern/pattern.c:769
 msgid "Not found"
 msgstr "Nenájdené"
 
-#: menu/functions.c:244 menu/move.c:347 menu/move.c:367 menu/move.c:414
+#: menu/functions.c:245 menu/move.c:347 menu/move.c:367 menu/move.c:414
 #: menu/move.c:430 menu/move.c:447 menu/move.c:468 menu/move.c:488
 #: menu/tagging.c:124
 msgid "No entries"
 msgstr "Žiadne položky"
 
-#: menu/functions.c:255
+#: menu/functions.c:256
 msgid "Jump to: "
 msgstr "Preskoč na: "
 
-#: menu/functions.c:265
+#: menu/functions.c:266
 msgid "Invalid index number"
 msgstr "Neplatné číslo indexu"
 
@@ -5578,18 +5587,18 @@ msgstr "Chybný regulárný výraz: %s"
 msgid "Not enough subexpressions for template"
 msgstr "Nedostatok podvýrazov pre šablónu"
 
-#: mutt_config.c:229
+#: mutt_config.c:228
 #, fuzzy, c-format
 msgid "index-hook cannot be used as a condition"
 msgstr "index-hook nemožno použiť ako podmienku"
 
 #. L10N: $ts_icon_format default format
-#: mutt_config.c:767
+#: mutt_config.c:766
 msgid "M%<n?AIL&ail>"
 msgstr "S%<n?PRÁVA&práva>"
 
 #. L10N: $ts_status_format default format
-#: mutt_config.c:771
+#: mutt_config.c:770
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
 msgstr "NeoMutt %<m?s %m správami&bez správ>%<n? [%n NOVÉ]>"
 
@@ -5598,38 +5607,29 @@ msgstr "NeoMutt %<m?s %m správami&bez správ>%<n? [%n NOVÉ]>"
 msgid "Invalid value for option %s: %ld"
 msgstr "Neplatná hodnota pre voľbu %s: %ld"
 
-#: mutt_lua.c:453
-msgid "Error: Couldn't load the lua interpreter"
-msgstr "Chyba: nie je možné zaviesť interpret jazyka lua"
-
-#: mutt_lua.c:523
-#, c-format
-msgid "Couldn't source lua source: %s"
-msgstr "Nemôžem vložiť lua zdroj: %s"
-
-#: mutt_mailbox.c:255
+#: mutt_mailbox.c:254
 msgid "New mail in "
 msgstr "Nová pošta v "
 
-#: mutt_socket.c:71
+#: mutt_socket.c:70
 #, c-format
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL nie je dostupné, nedá sa připojiť k %s"
 
-#: mutt_thread.c:111
+#: mutt_thread.c:110
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "Nie je možné použiť 'last-' prefix s 'threads' pre %s"
 
-#: mutt_thread.c:1385
+#: mutt_thread.c:1384
 msgid "Parent message is not available"
 msgstr "Rodičovská správa nie je dostupná"
 
-#: mutt_thread.c:1391
+#: mutt_thread.c:1390
 msgid "Root message is not visible in this limited view"
 msgstr "Koreňová správa nie je viditeľná v obmedzeném pohľadu"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 msgid "Parent message is not visible in this limited view"
 msgstr "Rodičovská správe nie je viditeľná v obmedzeném pohľadu"
 
@@ -5769,24 +5769,24 @@ msgstr "Do schránky bola vložená kontrolná značka"
 msgid "Can't open %s: it is a pipe"
 msgstr "Nemožno otvoriť %s: súbor je typu pipe"
 
-#: mx.c:1819
+#: mx.c:1831
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Nemožno prepnúť zápis na schránke v režime iba na čítanie"
 
-#: mx.c:1826
+#: mx.c:1838
 msgid "Changes to folder will be written on folder exit"
 msgstr "Zmeny v zložke budú zapísané, keď ju opustíte"
 
-#: mx.c:1831
+#: mx.c:1843
 msgid "Changes to folder will not be written"
 msgstr "Zmeny v zložke nebudú zapísané"
 
-#: ncrypt/crypt.c:76
+#: ncrypt/crypt.c:75
 #, c-format
 msgid " (current time: %c)"
 msgstr "(aktuálny čas: %c)"
 
-#: ncrypt/crypt.c:83
+#: ncrypt/crypt.c:82
 #, c-format
 msgid "[-- %s output follows%s --]\n"
 msgstr "[-- Nasleduje výstup %s %s --]\n"
@@ -5795,36 +5795,36 @@ msgstr "[-- Nasleduje výstup %s %s --]\n"
 #. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
-#: ncrypt/crypt.c:104
+#: ncrypt/crypt.c:103
 msgid "Passphrases forgotten"
 msgstr "Šifrovacie hesla bola zabudnutá"
 
-#: ncrypt/crypt.c:186
+#: ncrypt/crypt.c:185
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr "PGP v texte sa s prílohami nedá použiť.  Použiť PGP/MIME?"
 
-#: ncrypt/crypt.c:189
+#: ncrypt/crypt.c:188
 msgid "Mail not sent: inline PGP can't be used with attachments"
 msgstr "Správa nebola odoslaná: PGP v texte sa s prílohami nedá použiť"
 
-#: ncrypt/crypt.c:195
+#: ncrypt/crypt.c:194
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "PGP v textu nie je možno použiť s format=flowed.  Použiť PGP/MIME?"
 
-#: ncrypt/crypt.c:198
+#: ncrypt/crypt.c:197
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "Správa nebola odoslaná: PGP v texte nie je možno použiť s format=flowed."
 
-#: ncrypt/crypt.c:208 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:141
+#: ncrypt/crypt.c:207 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:141
 #: ncrypt/pgpkey.c:295
 msgid "Invoking PGP..."
 msgstr "Spúšťam PGP…"
 
-#: ncrypt/crypt.c:218
+#: ncrypt/crypt.c:217
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Správa nemožno poslať vloženú do textu. Použiť PGP/MIME?"
 
-#: ncrypt/crypt.c:221 send/send.c:2642
+#: ncrypt/crypt.c:220 send/send.c:2642
 msgid "Mail not sent"
 msgstr "Správa nebola odoslaná"
 
@@ -6188,19 +6188,19 @@ msgstr "[-- Koniec dát šifrovaných pomocou PGP/MIME --]\n"
 msgid "Could not decrypt PGP message"
 msgstr "Nemožno dešifrovať PGP správu"
 
-#: ncrypt/crypt_gpgme.c:2883 ncrypt/smime.c:1782
+#: ncrypt/crypt_gpgme.c:2883 ncrypt/smime.c:1785
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Nasledujúce dáta sú podpísané pomocou S/MIME --]\n"
 
-#: ncrypt/crypt_gpgme.c:2884 ncrypt/smime.c:1778
+#: ncrypt/crypt_gpgme.c:2884 ncrypt/smime.c:1781
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Nasledujúce dáta sú šifrované pomocou S/MIME --]\n"
 
-#: ncrypt/crypt_gpgme.c:2927 ncrypt/smime.c:1884
+#: ncrypt/crypt_gpgme.c:2927 ncrypt/smime.c:1887
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Koniec dát podpísaných pomocou S/MIME --]\n"
 
-#: ncrypt/crypt_gpgme.c:2928 ncrypt/smime.c:1882
+#: ncrypt/crypt_gpgme.c:2928 ncrypt/smime.c:1885
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Koniec dát šifrovaných pomocou S/MIME --]\n"
 
@@ -6340,54 +6340,54 @@ msgstr "Nepodarilo sa zistiť odosielateľa"
 msgid "Invoking S/MIME..."
 msgstr "Spúšťam S/MIME…"
 
-#: ncrypt/dlg_gpgme.c:96 ncrypt/dlg_pgp.c:95
+#: ncrypt/dlg_gpgme.c:95 ncrypt/dlg_pgp.c:94
 msgid "Check key"
 msgstr "Skontrolovať kľúč"
 
-#: ncrypt/dlg_gpgme.c:215
+#: ncrypt/dlg_gpgme.c:214
 msgid "All matching keys are marked expired/revoked"
 msgstr "Všetky vyhovujúce kľúče sú buď expirované alebo zneplatnené"
 
-#: ncrypt/dlg_gpgme.c:244
+#: ncrypt/dlg_gpgme.c:243
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP a S/MIME kľúče vyhovojúce"
 
-#: ncrypt/dlg_gpgme.c:246
+#: ncrypt/dlg_gpgme.c:245
 msgid "PGP keys matching"
 msgstr "Kľúče PGP vyhovojúce"
 
-#: ncrypt/dlg_gpgme.c:248
+#: ncrypt/dlg_gpgme.c:247
 msgid "S/MIME keys matching"
 msgstr "Kľúče S/MIME vyhovojúce"
 
-#: ncrypt/dlg_gpgme.c:250
+#: ncrypt/dlg_gpgme.c:249
 msgid "keys matching"
 msgstr "Kľúče vyhovojúce"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <john.doe@example.com>"
-#: ncrypt/dlg_gpgme.c:258
+#: ncrypt/dlg_gpgme.c:257
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 #. L10N: e.g. 'S/MIME keys matching "John Doe".'
-#: ncrypt/dlg_gpgme.c:263
+#: ncrypt/dlg_gpgme.c:262
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
 
-#: ncrypt/dlg_pgp.c:222
+#: ncrypt/dlg_pgp.c:221
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Všetkým vyhovujúcom kľúčom buď vypršala platnosť, boli odvolané alebo zakázané"
 
-#: ncrypt/dlg_pgp.c:242
+#: ncrypt/dlg_pgp.c:241
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP kľúče vyhovujúce <%s>"
 
-#: ncrypt/dlg_pgp.c:244
+#: ncrypt/dlg_pgp.c:243
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP kľúče vyhovujúce „%s“"
@@ -6632,7 +6632,7 @@ msgstr ""
 "[-- Chyba: nemožno vytvoriť podproces PGP --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1794
+#: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1797
 #: postpone/postpone.c:435
 msgid "Decryption failed"
 msgstr "Dešifrovanie zlyhalo"
@@ -6766,7 +6766,7 @@ msgstr "chýba súbor s certifikáty"
 msgid "no mbox"
 msgstr "žiadna schránka"
 
-#: ncrypt/smime.c:1286 ncrypt/smime.c:1455
+#: ncrypt/smime.c:1286 ncrypt/smime.c:1458
 msgid "No output from OpenSSL..."
 msgstr "OpenSSL nevygeneroval žiadny výstup…"
 
@@ -6778,7 +6778,7 @@ msgstr "Nemožno podpísať: Nie je zadaný žiadny kľúč. Použiť Podpísať
 msgid "Can't open OpenSSL subprocess"
 msgstr "Nemožno otvoriť podproces OpenSSL"
 
-#: ncrypt/smime.c:1654 ncrypt/smime.c:1773
+#: ncrypt/smime.c:1657 ncrypt/smime.c:1776
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -6786,69 +6786,69 @@ msgstr ""
 "[-- Koniec výstupu OpenSSL --]\n"
 "\n"
 
-#: ncrypt/smime.c:1731 ncrypt/smime.c:1743
+#: ncrypt/smime.c:1734 ncrypt/smime.c:1746
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Chyba: nemožno vytvoriť podproces OpenSSL --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2019
+#: ncrypt/smime.c:2022
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME podpí(s)ať, šifrovať po(m)ocou, podpísať (a)ko, (n)ič, or prí(l). šifr.?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2021
+#: ncrypt/smime.c:2024
 msgid "swaco"
 msgstr "smanl"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2029
+#: ncrypt/smime.c:2032
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME šif(r)ovať, podpí(s)ať, šifrovať po(m)ocou, podpísať (a)ko, o(b)e, (n)ič, or prí(l). šifr.?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2031
+#: ncrypt/smime.c:2034
 msgid "eswabco"
 msgstr "rsmabnl"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2038
+#: ncrypt/smime.c:2041
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME šif(r)ovať, podpí(s)ať, šifrovať po(m)ocou, podpísať (a)ko, o(b)e, (n)ič?"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2040
+#: ncrypt/smime.c:2043
 msgid "eswabc"
 msgstr "rsmabn"
 
-#: ncrypt/smime.c:2106
+#: ncrypt/smime.c:2109
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "Vyberte rodinu algoritmov: (1) DES, (2) RC2, (3) AES, alebo (n)ič?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2108
+#: ncrypt/smime.c:2111
 msgid "123c"
 msgstr "123n"
 
-#: ncrypt/smime.c:2111
+#: ncrypt/smime.c:2114
 msgid "(1) DES, (2) Triple-DES?"
 msgstr "(1) DES, (2) Triple-DES?"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2113
+#: ncrypt/smime.c:2116
 msgid "12"
 msgstr "12"
 
-#: ncrypt/smime.c:2127
+#: ncrypt/smime.c:2130
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2129 ncrypt/smime.c:2149
+#: ncrypt/smime.c:2132 ncrypt/smime.c:2152
 msgid "123"
 msgstr "123"
 
-#: ncrypt/smime.c:2147
+#: ncrypt/smime.c:2150
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
@@ -7031,17 +7031,17 @@ msgstr "Pozri prílohu"
 msgid "Next"
 msgstr "Ďaľší"
 
-#: pager/functions.c:62
+#: pager/functions.c:61
 msgid "Not available in this menu"
 msgstr "V tomto menu nie je tato funkcia dostupná"
 
-#: pager/functions.c:408 pager/functions.c:429 pager/functions.c:502
-#: pager/functions.c:523
+#: pager/functions.c:407 pager/functions.c:428 pager/functions.c:501
+#: pager/functions.c:522
 msgid "Bottom of message is shown"
 msgstr "Spodok správy je zobrazený"
 
-#: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
-#: pager/functions.c:964
+#: pager/functions.c:453 pager/functions.c:545 pager/functions.c:558
+#: pager/functions.c:963
 msgid "Top of message is shown"
 msgstr "Vrch správy je zobrazený"
 
@@ -7049,65 +7049,65 @@ msgstr "Vrch správy je zobrazený"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:849
+#: pager/functions.c:848
 msgid "No text past headers"
 msgstr "Pod hlavičkami nie je žiadny text"
 
-#: pager/functions.c:908 pager/functions.c:948
+#: pager/functions.c:907 pager/functions.c:947
 msgid "No more unquoted text after quoted text"
 msgstr "Žiadny ďaľší necitovaný text za citovaným"
 
-#: pager/functions.c:930
+#: pager/functions.c:929
 msgid "No more quoted text"
 msgstr "Nie je ďaľší citovaný text"
 
-#: pager/functions.c:995
+#: pager/functions.c:994
 msgid "Help is currently being shown"
 msgstr "Nápoveda je práve zobrazena"
 
-#: pager/functions.c:1051
+#: pager/functions.c:1050
 #, c-format
 msgid "Saved to: %s"
 msgstr "Uložené do: %s"
 
 #. L10N: Used for the $crypt_verify_sig prompt
-#: pager/message.c:195
+#: pager/message.c:193
 msgid "Verify signature?"
 msgstr "Overiť podpis?"
 
-#: pager/message.c:234
+#: pager/message.c:232
 msgid "Can't create display filter"
 msgstr "Nemožno vytvoriť filter zobrazenia"
 
-#: pager/message.c:258
+#: pager/message.c:256
 msgid "Could not copy message"
 msgstr "Nemožno skopírovať správu"
 
-#: pager/message.c:340
+#: pager/message.c:338
 msgid "Command: "
 msgstr "Príkaz: "
 
-#: pager/message.c:368
+#: pager/message.c:366
 msgid "S/MIME signature successfully verified"
 msgstr "S/MIME podpis úspešne overený"
 
-#: pager/message.c:370
+#: pager/message.c:368
 msgid "S/MIME certificate owner does not match sender"
 msgstr "S/MIME certifikát vlastníka nezodpovedá odosielateľovi"
 
-#: pager/message.c:374 pager/message.c:387
+#: pager/message.c:372 pager/message.c:385
 msgid "Warning: Part of this message has not been signed"
 msgstr "Upozornenie: Časť z tejto správy nebola podpísaná"
 
-#: pager/message.c:378
+#: pager/message.c:376
 msgid "S/MIME signature could NOT be verified"
 msgstr "S/MIME podpis NEMOHOL BYŤ overený"
 
-#: pager/message.c:385
+#: pager/message.c:383
 msgid "PGP signature successfully verified"
 msgstr "PGP podpis úspešne overený"
 
-#: pager/message.c:389
+#: pager/message.c:387
 msgid "PGP signature could NOT be verified"
 msgstr "PGP podpis NEMOHOL BYŤ overený"
 
@@ -7160,69 +7160,69 @@ msgstr "Prefixy „no“ a „inv“ môžu byt použité iba s premennými typu
 msgid "Command '%s' can only be used with bool/quad/number variables"
 msgstr "Príkaz „%s“ možno použiť iba s premennými typu boolean/prepínač/číslo"
 
-#: pattern/compile.c:74 pattern/compile.c:161 pattern/compile.c:722
+#: pattern/compile.c:72 pattern/compile.c:159 pattern/compile.c:720
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Chyba vo výraze: %s"
 
-#: pattern/compile.c:79 pattern/compile.c:166 pattern/compile.c:728
+#: pattern/compile.c:77 pattern/compile.c:164 pattern/compile.c:726
 msgid "Empty expression"
 msgstr "Prázdny výraz"
 
-#: pattern/compile.c:153
+#: pattern/compile.c:151
 msgid "No search command defined"
 msgstr "Nie je definovaný príkaz pre hľadanie"
 
-#: pattern/compile.c:188
+#: pattern/compile.c:186
 #, c-format
 msgid "Running search command: %s ..."
 msgstr "Vykonávam príkaz pre hľadanie: %s …"
 
-#: pattern/compile.c:306 pattern/compile.c:321
+#: pattern/compile.c:304 pattern/compile.c:319
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Neplatný deň v mesiaci: %s"
 
-#: pattern/compile.c:311 pattern/compile.c:335
+#: pattern/compile.c:309 pattern/compile.c:333
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Neplatný mesiac: %s"
 
-#: pattern/compile.c:446
+#: pattern/compile.c:444
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Neplatné relatívne dátum: %s"
 
-#: pattern/compile.c:924 pattern/compile.c:1138
+#: pattern/compile.c:920 pattern/compile.c:1134
 msgid "empty pattern"
 msgstr "prázdny vzor"
 
-#: pattern/compile.c:954 pattern/compile.c:1129
+#: pattern/compile.c:950 pattern/compile.c:1125
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "chyba vo vzore na: %s"
 
-#: pattern/compile.c:981
+#: pattern/compile.c:977
 #, c-format
 msgid "missing pattern: %s"
 msgstr "chýbajúci vzor: %s"
 
-#: pattern/compile.c:999 pattern/compile.c:1099
+#: pattern/compile.c:995 pattern/compile.c:1095
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "nespárované zátvorky: %s"
 
-#: pattern/compile.c:1033
+#: pattern/compile.c:1029
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: neplatný modifikátor vzoru"
 
-#: pattern/compile.c:1038
+#: pattern/compile.c:1034
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: nepodporovaný v tomto móde"
 
-#: pattern/compile.c:1061
+#: pattern/compile.c:1057
 msgid "missing parameter"
 msgstr "chýbajúci parameter"
 
@@ -7565,36 +7565,36 @@ msgstr "rozbitá vlákna"
 msgid "IMAP custom server-side search for STRING"
 msgstr "Hľadanie REŤAZEC na strane serveru IMAP"
 
-#: pattern/message.c:104 pattern/message.c:253
+#: pattern/message.c:103 pattern/message.c:252
 msgid "No current message"
 msgstr "Žiadne vybraná správa"
 
-#: pattern/pattern.c:209 pattern/pattern.c:335 pattern/pattern.c:514
-#: pattern/pattern.c:670
+#: pattern/pattern.c:206 pattern/pattern.c:332 pattern/pattern.c:511
+#: pattern/pattern.c:666
 msgid "Compiling search pattern..."
 msgstr "Kompilujem vyhľadávací vzor…"
 
-#: pattern/pattern.c:237 pattern/pattern.c:357
+#: pattern/pattern.c:234 pattern/pattern.c:354
 msgid "Executing command on matching messages..."
 msgstr "Vykonávam príkaz na zodpovedajúcich správach…"
 
-#: pattern/pattern.c:443
+#: pattern/pattern.c:440
 msgid "No messages matched criteria"
 msgstr "Žiadne správy nezodpovedajúce kritériu"
 
-#: pattern/pattern.c:455 pattern/pattern.c:613 pattern/pattern.c:766
+#: pattern/pattern.c:452 pattern/pattern.c:609 pattern/pattern.c:761
 msgid "Search interrupted"
 msgstr "Hľadanie bolo prerušené"
 
-#: pattern/pattern.c:545 pattern/pattern.c:701
+#: pattern/pattern.c:541 pattern/pattern.c:696
 msgid "Searching..."
 msgstr "Vyhľadavanie…"
 
-#: pattern/pattern.c:561 pattern/pattern.c:717
+#: pattern/pattern.c:557 pattern/pattern.c:712
 msgid "Search hit bottom without finding match"
 msgstr "Hľadanie narazilo na spodok bez nájdenia zhody"
 
-#: pattern/pattern.c:574 pattern/pattern.c:730
+#: pattern/pattern.c:570 pattern/pattern.c:725
 msgid "Search hit top without finding match"
 msgstr "Hľadanie narazilo na vrchol bez nájdenia zhody"
 
@@ -7775,11 +7775,11 @@ msgstr "%s %s/%s (%d %%)"
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d %%)"
 
-#: question/question.c:180
+#: question/question.c:179
 msgid "yes"
 msgstr "áno"
 
-#: question/question.c:181
+#: question/question.c:180
 msgid "no"
 msgstr "nie"
 
@@ -7834,7 +7834,7 @@ msgstr "Nemožno dekódovať všetky označené prílohy.  Preposlať zvyšné v
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Môžete sestaviť správu odosielateľovi iba za použitia časti typu message/rfc822"
 
-#: score.c:152
+#: score.c:151
 msgid "Error: score: invalid number"
 msgstr "Chyba: skóre: neplatné číslo"
 
@@ -7848,25 +7848,25 @@ msgid "%s no longer exists"
 msgstr "%s už viac neexistuje"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
-#: send/config.c:114
+#: send/config.c:113
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "Voľba %s nesmie obsahovať metaznaky shellu: %c"
 
 #. L10N: $attribution_intro default format
-#: send/config.c:169
+#: send/config.c:168
 #, c-format
 msgid "On %d, %n wrote:"
 msgstr "Dňa %d, %n napísal:"
 
 #. L10N: $forward_attribution_intro default format
-#: send/config.c:239
+#: send/config.c:238
 #, c-format
 msgid "----- Forwarded message from %f -----"
 msgstr "----- Preposlaná správa od %f -----"
 
 #. L10N: $forward_attribution_trailer default format
-#: send/config.c:243
+#: send/config.c:242
 msgid "----- End forwarded message -----"
 msgstr "----- Koniec preposlané správy -----"
 
@@ -8074,16 +8074,16 @@ msgstr "Nemožno otvoriť %s"
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Chybné IDN %s pri generování „resent-from“ (odeslané z)"
 
-#: send/sendmail.c:336
+#: send/sendmail.c:334
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail musí byť nastavený pre odosielanie pošty"
 
-#: send/sendmail.c:441
+#: send/sendmail.c:439
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Chyba pri posielaní správy, dcérsky proces vrátil %d (%s)"
 
-#: send/sendmail.c:453
+#: send/sendmail.c:451
 msgid "Output of the delivery process"
 msgstr "Výstup doručovacieho procesu"
 

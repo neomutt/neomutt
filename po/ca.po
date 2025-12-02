@@ -55,7 +55,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-09-05\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-08-28 08:41+0100\n"
+"POT-Creation-Date: 2025-12-02 10:41+0000\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -67,67 +67,67 @@ msgstr ""
 
 #: address/config_type.c:87 config/long.c:51 config/path.c:98 config/path.c:173
 #: config/sort.c:58 config/string.c:69 config/string.c:144
-#: expando/config_type.c:70 expando/config_type.c:168
+#: expando/config_type.c:69 expando/config_type.c:167
 #, c-format
 msgid "Option %s may not be empty"
 msgstr ""
 
 #. L10N: prompt to add a new alias
-#: alias/alias.c:396
+#: alias/alias.c:395
 msgid "Alias as: "
 msgstr "Nou àlies: "
 
-#: alias/alias.c:405
+#: alias/alias.c:404
 msgid "You already have an alias defined with that name"
 msgstr "Ja heu definit un àlies amb aquest nom."
 
-#: alias/alias.c:411
+#: alias/alias.c:410
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Avís: Aquest àlies podria no funcionar.  Voleu reparar-lo?"
 
-#: alias/alias.c:436
+#: alias/alias.c:435
 msgid "Address: "
 msgstr "Adreça: "
 
-#: alias/alias.c:448 conn/raw.c:177 conn/raw.c:234 envelope/functions.c:133
+#: alias/alias.c:447 conn/raw.c:177 conn/raw.c:234 envelope/functions.c:133
 #: external.c:135 recvcmd.c:231 send/send.c:217
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "L’IDN no és vàlid: %s"
 
-#: alias/alias.c:459
+#: alias/alias.c:458
 msgid "Personal name: "
 msgstr "Nom personal: "
 
-#: alias/alias.c:468
+#: alias/alias.c:467
 #, fuzzy
 msgid "Comment: "
 msgstr "Edita el camp de resposta (Reply-To)."
 
-#: alias/alias.c:474
+#: alias/alias.c:473
 msgid "Tags (comma-separated): "
 msgstr ""
 
-#: alias/alias.c:503
+#: alias/alias.c:502
 msgid "Accept?"
 msgstr "Voleu acceptar?"
 
-#: alias/alias.c:518 attach/recvattach.c:304 attach/recvattach.c:327
+#: alias/alias.c:517 attach/recvattach.c:304 attach/recvattach.c:327
 #: attach/recvattach.c:345 attach/recvattach.c:362 attach/recvattach.c:489
-#: pager/functions.c:1024
+#: pager/functions.c:1023
 msgid "Save to file: "
 msgstr "Desa al fitxer: "
 
-#: alias/alias.c:540
+#: alias/alias.c:539
 msgid "Error reading alias file"
 msgstr "Error en llegir el fitxer d’àlies."
 
-#: alias/alias.c:579
+#: alias/alias.c:578
 #, fuzzy
 msgid "Trouble adding alias"
 msgstr "Error en llegir el fitxer d’àlies."
 
-#: alias/alias.c:581
+#: alias/alias.c:580
 msgid "Alias added"
 msgstr "S’ha afegit l’àlies"
 
@@ -146,20 +146,20 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s"
 
 #: alias/dlg_alias.c:101 alias/dlg_query.c:101 attach/dlg_attach.c:94
-#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:112
-#: browser/dlg_browser.c:124 conn/dlg_verifycert.c:68 history/dlg_history.c:77
-#: ncrypt/dlg_gpgme.c:94 ncrypt/dlg_pgp.c:93 ncrypt/dlg_smime.c:74
+#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:111
+#: browser/dlg_browser.c:123 conn/dlg_verifycert.c:67 history/dlg_history.c:77
+#: ncrypt/dlg_gpgme.c:93 ncrypt/dlg_pgp.c:92 ncrypt/dlg_smime.c:74
 #: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
 #: pager/dlg_pager.c:111 pattern/dlg_pattern.c:90 postpone/dlg_postpone.c:89
 msgid "Exit"
 msgstr "Ix"
 
-#: alias/dlg_alias.c:102 index/dlg_index.c:105 index/dlg_index.c:120
+#: alias/dlg_alias.c:102 index/dlg_index.c:104 index/dlg_index.c:119
 #: pager/dlg_pager.c:100 pager/dlg_pager.c:116 postpone/dlg_postpone.c:90
 msgid "Del"
 msgstr "Esborra"
 
-#: alias/dlg_alias.c:103 index/dlg_index.c:106 index/dlg_index.c:121
+#: alias/dlg_alias.c:103 index/dlg_index.c:105 index/dlg_index.c:120
 #: postpone/dlg_postpone.c:91
 msgid "Undel"
 msgstr "Recupera"
@@ -172,17 +172,17 @@ msgstr ""
 msgid "Rev-Sort"
 msgstr ""
 
-#: alias/dlg_alias.c:106 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:95
-#: ncrypt/dlg_pgp.c:94 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
+#: alias/dlg_alias.c:106 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:94
+#: ncrypt/dlg_pgp.c:93 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
 msgid "Select"
 msgstr "Selecciona"
 
 #: alias/dlg_alias.c:107 alias/dlg_query.c:108 attach/dlg_attach.c:98
-#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:116
-#: browser/dlg_browser.c:130 compose/dlg_compose.c:105
-#: compose/dlg_compose.c:119 conn/dlg_verifycert.c:69 editor/window.c:51
-#: history/dlg_history.c:80 index/dlg_index.c:111 index/dlg_index.c:126
-#: ncrypt/dlg_gpgme.c:97 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:76
+#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:115
+#: browser/dlg_browser.c:129 compose/dlg_compose.c:105
+#: compose/dlg_compose.c:119 conn/dlg_verifycert.c:68 editor/window.c:50
+#: history/dlg_history.c:80 index/dlg_index.c:110 index/dlg_index.c:125
+#: ncrypt/dlg_gpgme.c:96 ncrypt/dlg_pgp.c:95 ncrypt/dlg_smime.c:76
 #: pager/dlg_pager.c:78 pager/dlg_pager.c:103 pager/dlg_pager.c:118
 #: pattern/dlg_pattern.c:92 postpone/dlg_postpone.c:92
 msgid "Help"
@@ -196,7 +196,7 @@ msgstr "No teniu cap àlies."
 msgid "Aliases"
 msgstr "Àlies"
 
-#: alias/dlg_query.c:102 index/dlg_index.c:108
+#: alias/dlg_query.c:102 index/dlg_index.c:107
 msgid "Mail"
 msgstr "Nou correu"
 
@@ -225,72 +225,72 @@ msgstr "Consulta: "
 msgid "Query command not defined"
 msgstr "No s’ha definit cap ordre de consulta"
 
-#: alias/dlg_query.c:496 alias/functions.c:303 alias/functions.c:321
+#: alias/dlg_query.c:496 alias/functions.c:302 alias/functions.c:320
 msgid "Query: "
 msgstr "Consulta: "
 
-#: alias/functions.c:248
+#: alias/functions.c:247
 #, fuzzy
 msgid "Limit to addresses matching: "
 msgstr "Limita als missatges que concorden amb: "
 
-#: alias/functions.c:267
+#: alias/functions.c:266
 #, fuzzy
 msgid "Tag addresses matching: "
 msgstr "Marca els missatges que concorden amb: "
 
-#: alias/functions.c:283
+#: alias/functions.c:282
 #, fuzzy
 msgid "Untag addresses matching: "
 msgstr "Desmarca els missatges que concorden amb: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/functions.c:398
+#: alias/functions.c:397
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
 msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/functions.c:400
+#: alias/functions.c:399
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
 msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/functions.c:402
+#: alias/functions.c:401
 msgid "aneu"
 msgstr ""
 
 # ivb (2001/12/08)
 # ivb  Nooop!  Només mostra el límit actual.
 #. L10N: ask for a limit to apply
-#: alias/gui.c:84 index/functions.c:1831
+#: alias/gui.c:84 index/functions.c:1837
 #, c-format
 msgid "Limit: %s"
 msgstr "Límit: %s"
 
 # «attachments» és una ordre de configuració.  ivb
-#: attach/attachments.c:481
+#: attach/commands.c:481
 msgid "attachments: no disposition"
 msgstr "attachments: No s’ha indicat la disposició."
 
-#: attach/attachments.c:492
+#: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
 msgstr "Edita la descripció d’una adjunció."
 
-#: attach/attachments.c:524
+#: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: La disposició no és vàlida."
 
 # «unattachments» és una ordre de configuració.  ivb
-#: attach/attachments.c:544
+#: attach/commands.c:544
 msgid "unattachments: no disposition"
 msgstr "unattachments: No s’ha indicat la disposició."
 
-#: attach/attachments.c:584
+#: attach/commands.c:584
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: La disposició no és vàlida."
 
-#: attach/dlg_attach.c:95 index/dlg_index.c:107 index/dlg_index.c:122
+#: attach/dlg_attach.c:95 index/dlg_index.c:106 index/dlg_index.c:121
 msgid "Save"
 msgstr "Desa"
 
@@ -306,11 +306,11 @@ msgstr "Imprimeix"
 msgid "Attachments"
 msgstr "Adjuncions"
 
-#: attach/functions.c:56 index/functions.c:3101
+#: attach/functions.c:56 index/functions.c:3107
 msgid "Function not permitted in attach-message mode"
 msgstr "No es permet aquesta funció al mode d’adjuntar missatges"
 
-#: attach/functions.c:188 index/functions.c:3095 mx.c:933
+#: attach/functions.c:188 index/functions.c:3101 mx.c:933
 msgid "Mailbox is read-only"
 msgstr "La bústia és de només lectura"
 
@@ -339,7 +339,7 @@ msgstr "Esborrar les adjuncions d’un missatge xifrat pot invalidar-ne la signa
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Només es poden esborrar les adjuncions dels missatges «multipart»"
 
-#: attach/functions.c:643 index/functions.c:2847
+#: attach/functions.c:643 index/functions.c:2853
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
@@ -353,9 +353,9 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Cal que l’entrada «compose» de «mailcap» continga «%%s»."
 
 #: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:312
-#: compose/functions.c:1851 gui/curs_lib.c:125 index/dlg_index.c:1216
-#: index/dlg_index.c:1261 pager/dlg_pager.c:456 pager/do_pager.c:166
-#: pager/message.c:329 send/sendlib.c:580
+#: compose/functions.c:1851 gui/curs_lib.c:125 index/dlg_index.c:1215
+#: index/dlg_index.c:1260 pager/dlg_pager.c:456 pager/do_pager.c:166
+#: pager/message.c:327 send/sendlib.c:580
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Error en executar «%s»."
@@ -496,15 +496,15 @@ msgstr "No s’ha pogut desxifrar el missatge xifrat."
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:1288
+#: autocrypt/autocrypt.c:77 main.c:1282
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "«%s» no existeix.  Voleu crear-lo?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:656
-#: main.c:1292 nntp/newsrc.c:1020
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:331 main.c:653
+#: main.c:1286 nntp/newsrc.c:1020
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "No s’ha pogut crear «%s»: %s"
@@ -748,67 +748,67 @@ msgstr "«%s» no és un directori"
 msgid "Message cache isn't a directory: %s"
 msgstr "«%s» no és un directori"
 
-#: browser/dlg_browser.c:113
+#: browser/dlg_browser.c:112
 msgid "Chdir"
 msgstr "Canvia de directori"
 
-#: browser/dlg_browser.c:114
+#: browser/dlg_browser.c:113
 msgid "Goto"
 msgstr ""
 
-#: browser/dlg_browser.c:115 browser/dlg_browser.c:129
+#: browser/dlg_browser.c:114 browser/dlg_browser.c:128
 msgid "Mask"
 msgstr "Màscara"
 
-#: browser/dlg_browser.c:125
+#: browser/dlg_browser.c:124
 msgid "List"
 msgstr ""
 
-#: browser/dlg_browser.c:126
+#: browser/dlg_browser.c:125
 msgid "Subscribe"
 msgstr "Subscriure"
 
-#: browser/dlg_browser.c:127
+#: browser/dlg_browser.c:126
 msgid "Unsubscribe"
 msgstr "Dessubscriure"
 
-#: browser/dlg_browser.c:128 index/dlg_index.c:125
+#: browser/dlg_browser.c:127 index/dlg_index.c:124
 msgid "Catchup"
 msgstr ""
 
-#: browser/dlg_browser.c:316 browser/functions.c:433 browser/functions.c:771
+#: browser/dlg_browser.c:315 browser/functions.c:433 browser/functions.c:771
 #, c-format
 msgid "%s is not a directory"
 msgstr "«%s» no és un directori"
 
-#: browser/dlg_browser.c:605
+#: browser/dlg_browser.c:602
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "S’ha subscrit a «%s»."
 
-#: browser/dlg_browser.c:609
+#: browser/dlg_browser.c:606
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
 # ivb (2001/12/07)
 # ivb  Es refereix a les definides en «mailboxes».
-#: browser/dlg_browser.c:617
+#: browser/dlg_browser.c:614
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Bústies d’entrada [%d]"
 
-#: browser/dlg_browser.c:629
+#: browser/dlg_browser.c:626
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Subscrites [%s], màscara de fitxers: %s"
 
-#: browser/dlg_browser.c:634
+#: browser/dlg_browser.c:631
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Directori [%s], màscara de fitxers: %s"
 
-#: browser/dlg_browser.c:698
+#: browser/dlg_browser.c:695
 msgid "Can't attach a directory"
 msgstr "No es pot adjuntar un directori."
 
@@ -909,49 +909,49 @@ msgstr "S’ha subscrit a «%s»."
 msgid "Unsubscribe pattern: "
 msgstr "S’ha dessubscrit de «%s»."
 
-#: color/command.c:154 color/command.c:295 color/parse_color.c:288
-#: color/parse_color.c:313 color/parse_color.c:333 commands.c:380
-#: commands.c:402 commands.c:543 commands.c:560 commands.c:777 commands.c:809
-#: commands.c:825 commands.c:948 commands.c:1073 commands.c:1126
-#: commands.c:1166 hook.c:140 hook.c:195 hook.c:204 hook.c:218 hook.c:461
-#: hook.c:477 key/parse.c:279 score.c:100 subjectrx.c:73 subjectrx.c:102
+#: color/commands.c:154 color/commands.c:195 color/commands.c:290
+#: color/parse_color.c:289 color/parse_color.c:314 color/parse_color.c:334
+#: commands.c:380 commands.c:402 commands.c:543 commands.c:560 commands.c:777
+#: commands.c:809 commands.c:825 commands.c:948 commands.c:1073 commands.c:1126
+#: commands.c:1166 hook.c:140 hook.c:195 hook.c:204 hook.c:218 hook.c:460
+#: hook.c:476 key/commands.c:239 score.c:100 subjectrx.c:73 subjectrx.c:102
 #: subjectrx.c:110
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: Manquen arguments."
 
-#: color/command.c:168 color/command.c:220
+#: color/commands.c:168 color/commands.c:215
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: L’objecte no existeix."
 
-#: color/command.c:320
+#: color/commands.c:315
 #, c-format
 msgid "Direct colors support not compiled in: %s"
 msgstr ""
 
-#: color/command.c:327
+#: color/commands.c:322
 #, fuzzy, c-format
 msgid "Direct colors support disabled: %s"
 msgstr "No es permet l’ús de colors per defecte."
 
-#: color/command.c:334 color/parse_color.c:188 color/parse_color.c:227
+#: color/commands.c:329 color/parse_color.c:189 color/parse_color.c:228
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: El terminal no permet aquest color."
 
 # ivb (2001/12/08)
 # ivb  També apareix com a error aïllat.
-#: color/command.c:357 color/command.c:393 commands.c:426 commands.c:1135
-#: commands.c:1266 commands.c:1602 hook.c:145 hook.c:225 hook.c:488
-#: key/parse.c:355 key/parse.c:395 key/parse.c:513 key/parse.c:606
-#: mutt_lua.c:513 score.c:108
+#: color/commands.c:352 color/commands.c:389 commands.c:426 commands.c:1135
+#: commands.c:1266 commands.c:1601 hook.c:145 hook.c:225 hook.c:487
+#: key/commands.c:315 key/commands.c:355 key/commands.c:473 key/commands.c:566
+#: lua/commands.c:94 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: Sobren arguments."
 
 # És un error com els anteriors.  ivb
-#: color/command.c:383
+#: color/commands.c:378
 #, fuzzy, c-format
 msgid "%s: invalid number: %s"
 msgstr "score: El número no és vàlid."
@@ -983,18 +983,18 @@ msgid "# Status Colors\n"
 msgstr ""
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/dump.c:460 commands.c:897 commands.c:959 commands.c:1645
-#: imap/message.c:1153 key/dump.c:201
+#: color/dump.c:460 commands.c:897 commands.c:959 commands.c:1644
+#: imap/message.c:1154 key/dump.c:203
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "No s’ha pogut crear el fitxer temporal «%s»."
 
-#: color/parse_color.c:272
+#: color/parse_color.c:273
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: El color no existeix."
 
-#: color/parse_color.c:342
+#: color/parse_color.c:343
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: L’atribut no existeix."
@@ -1074,7 +1074,7 @@ msgstr ""
 msgid "%s is unset"
 msgstr "«%s» no està activada."
 
-#: commands.c:1097 mutt_lua.c:508
+#: commands.c:1097 lua/commands.c:89
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Error a «%s»."
@@ -1084,7 +1084,7 @@ msgstr "source: Error a «%s»."
 msgid "source: file %s could not be sourced"
 msgstr "No s’han pogut imprimir els missatges"
 
-#: commands.c:1276 imap/imap.c:1260
+#: commands.c:1276 imap/imap.c:1262
 #, c-format
 msgid "Subscribed to %s"
 msgstr "S’ha subscrit a «%s»."
@@ -1094,7 +1094,7 @@ msgstr "S’ha subscrit a «%s»."
 msgid "Could not subscribe to %s"
 msgstr "S’ha subscrit a «%s»."
 
-#: commands.c:1288 commands.c:1624
+#: commands.c:1288 commands.c:1623
 #, fuzzy
 msgid "No folder specified"
 msgstr "No s’ha indicat l’assumpte."
@@ -1109,12 +1109,12 @@ msgstr ""
 msgid "tag transform '%s' already registered as '%s'"
 msgstr ""
 
-#: commands.c:1612 imap/imap.c:1262
+#: commands.c:1611 imap/imap.c:1264
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "S’ha dessubscrit de «%s»."
 
-#: commands.c:1616
+#: commands.c:1615
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "S’ha dessubscrit de «%s»."
@@ -1224,7 +1224,7 @@ msgstr "No s’ha indicat l’assumpte."
 msgid "-- Attachments"
 msgstr "-- Adjuncions"
 
-#: compose/dlg_compose.c:337 compose/preview.c:140
+#: compose/dlg_compose.c:337 compose/preview.c:139
 msgid "-- Preview"
 msgstr ""
 
@@ -1296,7 +1296,7 @@ msgstr "Bústia a obrir per a adjuntar-ne missatges"
 msgid "Open newsgroup to attach message from"
 msgstr "Bústia a obrir per a adjuntar-ne missatges"
 
-#: compose/functions.c:893 main.c:1749
+#: compose/functions.c:893 main.c:1742
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "No s’ha pogut obrir la bústia «%s»."
@@ -1475,20 +1475,20 @@ msgstr "S’ha escrit el missatge"
 msgid "Save (postpone) draft message?"
 msgstr "Voleu recuperar un missatge posposat?"
 
-#: compose/preview.c:145
+#: compose/preview.c:144
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:153
+#: compose/preview.c:152
 msgid "Email too large to preview"
 msgstr ""
 
-#: compose/preview.c:199
+#: compose/preview.c:198
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "No s’ha pogut verificar el remitent."
 
-#: compose/preview.c:223
+#: compose/preview.c:222
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -1508,7 +1508,7 @@ msgid "'charset' must contain exactly one character set name"
 msgstr ""
 
 #: config/charset.c:70 config/charset.c:101 hcache/config.c:55
-#: hcache/config.c:78 hcache/config.c:103 mutt_config.c:120
+#: hcache/config.c:78 hcache/config.c:103 mutt_config.c:119
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
@@ -1525,7 +1525,7 @@ msgid "Invalid enum value: %ld"
 msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
 
 #: config/helpers.c:340 config/set.c:109 config/set.c:454 config/set.c:601
-#: config/set.c:677 config/set.c:797 main.c:684 parse/set.c:119 parse/set.c:179
+#: config/set.c:677 config/set.c:797 main.c:681 parse/set.c:119 parse/set.c:179
 #: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
 #: parse/set.c:433
 #, fuzzy, c-format
@@ -1641,59 +1641,59 @@ msgstr "L’ordre ha retornat la cadena buida."
 msgid "OAUTH token is too big: %ld"
 msgstr ""
 
-#: conn/dlg_verifycert.c:204
+#: conn/dlg_verifycert.c:185
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre, sal(t)a"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:208
+#: conn/dlg_verifycert.c:189
 msgid "roas"
 msgstr "rust"
 
-#: conn/dlg_verifycert.c:212
+#: conn/dlg_verifycert.c:193
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:216
+#: conn/dlg_verifycert.c:197
 msgid "roa"
 msgstr "rus"
 
-#: conn/dlg_verifycert.c:223
+#: conn/dlg_verifycert.c:204
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(r)ebutja, accepta (u)na sola volta, sal(t)a"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:227
+#: conn/dlg_verifycert.c:208
 msgid "ros"
 msgstr "rut"
 
-#: conn/dlg_verifycert.c:231
+#: conn/dlg_verifycert.c:212
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ebutja, accepta (u)na sola volta"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:235
+#: conn/dlg_verifycert.c:216
 msgid "ro"
 msgstr "ru"
 
-#: conn/dlg_verifycert.c:294
+#: conn/dlg_verifycert.c:275
 msgid "Jumping is not implemented for dialogs"
 msgstr "No es pot saltar en un diàleg"
 
-#: conn/dlg_verifycert.c:301
+#: conn/dlg_verifycert.c:282
 msgid "Search is not implemented for this menu"
 msgstr "No es pot cercar en aquest menú"
 
-#: conn/gnutls.c:146 conn/gnutls.c:644
+#: conn/gnutls.c:146 conn/gnutls.c:648
 msgid "Unable to get certificate from peer"
 msgstr "No s’ha pogut obtenir el certificat del servidor."
 
@@ -1776,40 +1776,45 @@ msgstr "Avís: El signatari del certificat del servidor no és una CA."
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "Avís: El certificat del servidor s’ha signat emprant un algorisme insegur."
 
-#: conn/gnutls.c:571 conn/openssl.c:939
+#: conn/gnutls.c:575 conn/openssl.c:939
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "Comprovació del certificat SSL (%zu de %zu en la cadena)"
 
-#: conn/gnutls.c:605 conn/openssl.c:973
+#: conn/gnutls.c:609 conn/openssl.c:973
 msgid "Certificate saved"
 msgstr "S’ha desat el certificat."
 
-#: conn/gnutls.c:607 conn/openssl.c:975
+#: conn/gnutls.c:611 conn/openssl.c:975
 msgid "Warning: Couldn't save certificate"
 msgstr "Avís: No s’ha pogut desar el certificat."
 
-#: conn/gnutls.c:803 conn/gnutls.c:849
+#: conn/gnutls.c:807 conn/gnutls.c:853
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Tots els protocols de connexió TLS/SSL disponibles estan inhabilitats."
 
-#: conn/gnutls.c:856
+#: conn/gnutls.c:860
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr "No es permet la selecció explícita de la suite de xifrat amb $ssl_ciphers."
+
+#: conn/gnutls.c:885 imap/command.c:1329 imap/command.c:1450
+#, c-format
+msgid "Connection to %s timed out"
+msgstr "La connexió amb «%s» ha expirat."
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:926 conn/openssl.c:1158
+#: conn/gnutls.c:952 conn/openssl.c:1158
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Avís: No s’ha pogut establir el nom d’estació per a SNI de TLS."
 
-#: conn/gnutls.c:972
+#: conn/gnutls.c:1004
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "La connexió SSL/TLS empra «%s» (%s/%s/%s)."
 
-#: conn/gnutls.c:1054 conn/gnutls.c:1083
+#: conn/gnutls.c:1086 conn/gnutls.c:1121
 msgid "Error: no TLS socket open"
 msgstr "Error: No hi ha un connector TLS obert."
 
@@ -1919,23 +1924,23 @@ msgstr "Error en parlar amb «%s» (%s)."
 msgid "Connection to %s has been aborted"
 msgstr "S’ha tancat la connexió amb «%s»."
 
-#: conn/sasl.c:613
+#: conn/sasl.c:612
 msgid "Unknown SASL profile"
 msgstr "El perfil SASL no és conegut."
 
-#: conn/sasl.c:657
+#: conn/sasl.c:656
 msgid "Error allocating SASL connection"
 msgstr "Error en reservar una connexió SASL."
 
-#: conn/sasl.c:667
+#: conn/sasl.c:666
 msgid "Error setting SASL security properties"
 msgstr "Error en establir les propietats de seguretat de SASL."
 
-#: conn/sasl.c:678
+#: conn/sasl.c:677
 msgid "Error setting SASL external security strength"
 msgstr "Error en establir el nivell de seguretat extern de SASL."
 
-#: conn/sasl.c:688
+#: conn/sasl.c:687
 msgid "Error setting SASL external user name"
 msgstr "Error en establir el nom d’usuari extern de SASL."
 
@@ -1969,14 +1974,14 @@ msgstr "El túnel a «%s» ha tornat l’error %d: %s"
 msgid "%s isn't a regular file"
 msgstr "«%s» no és un fitxer ordinari"
 
-#: copy.c:737
+#: copy.c:735
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: copy.c:830
+#: copy.c:828
 msgid "No decryption engine available for message"
 msgstr "No hi ha cap mecanisme disponible per a desxifrar el missatge"
 
@@ -2018,36 +2023,36 @@ msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 msgid "Can't append to folder: %s"
 msgstr "No s’ha pogut afegir a la carpeta: %s"
 
-#: editor/window.c:52
+#: editor/window.c:51
 msgid "Complete"
 msgstr ""
 
-#: editor/window.c:53
+#: editor/window.c:52
 msgid "Hist Up"
 msgstr ""
 
-#: editor/window.c:54
+#: editor/window.c:53
 msgid "Hist Down"
 msgstr ""
 
-#: editor/window.c:55
+#: editor/window.c:54
 #, fuzzy
 msgid "Hist Search"
 msgstr "Cerca"
 
-#: editor/window.c:56
+#: editor/window.c:55
 msgid "Begin Line"
 msgstr ""
 
-#: editor/window.c:57
+#: editor/window.c:56
 msgid "End Line"
 msgstr ""
 
-#: editor/window.c:58
+#: editor/window.c:57
 msgid "Kill Line"
 msgstr ""
 
-#: editor/window.c:59
+#: editor/window.c:58
 msgid "Kill Word"
 msgstr ""
 
@@ -2162,7 +2167,7 @@ msgstr "Seguretat: "
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
 #: envelope/window.c:115 ncrypt/crypt_gpgme.c:3968 ncrypt/pgp.c:2016
-#: ncrypt/smime.c:2050
+#: ncrypt/smime.c:2053
 msgid "Sign as: "
 msgstr "Signa com a: "
 
@@ -2285,7 +2290,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. L10N: e.g. "Option index_format:" plus an error message
-#: expando/config_type.c:85 expando/config_type.c:247
+#: expando/config_type.c:84 expando/config_type.c:246
 #, fuzzy, c-format
 msgid "Option %s: "
 msgstr "Opcions de compilació:"
@@ -2317,14 +2322,14 @@ msgid "Expando is missing terminator: '%c'"
 msgstr ""
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
-#: expando/node_padding.c:242
+#: expando/node_padding.c:241
 #, c-format
 msgid "Padding cannot be formatted"
 msgstr ""
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
-#: expando/node_padding.c:252
+#: expando/node_padding.c:251
 #, c-format
 msgid "Padding cannot be used as a condition"
 msgstr ""
@@ -2416,146 +2421,146 @@ msgid "Shell command: "
 msgstr "Ordre per a l’intèrpret: "
 
 #. L10N: Progress meter message when copying tagged messages
-#: external.c:804
+#: external.c:807
 msgid "Copying tagged messages..."
 msgstr "S’estan copiant els missatges marcats…"
 
-#: external.c:808
+#: external.c:811
 #, fuzzy
 msgid "Copy tagged to mailbox"
 msgstr "Copia els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: external.c:808
+#: external.c:811
 #, fuzzy
 msgid "Copy to mailbox"
 msgstr "Copia a la bústia"
 
-#: external.c:811
+#: external.c:814
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Desxifra i copia els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: external.c:812
+#: external.c:815
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgstr "Desxifra i copia a la bústia"
 
-#: external.c:815
+#: external.c:818
 #, fuzzy
 msgid "Decode-copy tagged to mailbox"
 msgstr "Descodifica i copia els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: external.c:816
+#: external.c:819
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgstr "Descodifica i copia a la bústia"
 
 #. L10N: Progress meter message when saving tagged messages
-#: external.c:823
+#: external.c:826
 msgid "Saving tagged messages..."
 msgstr "S’estan desant els missatges marcats…"
 
-#: external.c:827
+#: external.c:830
 #, fuzzy
 msgid "Save tagged to mailbox"
 msgstr "Desa els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: external.c:827
+#: external.c:830
 #, fuzzy
 msgid "Save to mailbox"
 msgstr "Desa a la bústia"
 
-#: external.c:830
+#: external.c:833
 #, fuzzy
 msgid "Decrypt-save tagged to mailbox"
 msgstr "Desxifra i desa els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: external.c:831
+#: external.c:834
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgstr "Desxifra i desa a la bústia"
 
-#: external.c:834
+#: external.c:837
 #, fuzzy
 msgid "Decode-save tagged to mailbox"
 msgstr "Descodifica i desa els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: external.c:835
+#: external.c:838
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgstr "Descodifica i desa a la bústia"
 
-#: external.c:878
+#: external.c:881
 #, c-format
 msgid "Copying to %s..."
 msgstr "S’està copiant a «%s»…"
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: external.c:1031
+#: external.c:1034
 msgid "Error saving tagged messages"
 msgstr "Error en desar els missatges marcats"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: external.c:1036
+#: external.c:1039
 msgid "Error saving message"
 msgstr "Error en desar el missatge"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: external.c:1043
+#: external.c:1046
 msgid "Error copying tagged messages"
 msgstr "Error en copiar els missatges marcats"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: external.c:1048
+#: external.c:1051
 msgid "Error copying message"
 msgstr "Error en copiar el missatge"
 
 # «%s» és un codi de caràcters.  ivb
-#: external.c:1118
+#: external.c:1121
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Voleu convertir en %s en enviar?"
 
-#: external.c:1129
+#: external.c:1132
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "S’ha canviat «Content-Type» a «%s»"
 
-#: external.c:1134
+#: external.c:1137
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "S’ha canviat el joc de caràcters a %s; es farà conversió"
 
-#: external.c:1135
+#: external.c:1138
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting"
 msgstr "S’ha canviat el joc de caràcters a %s; no es farà conversió"
 
-#: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1298
-#: mutt_thread.c:1364 mutt_thread.c:1450
+#: flags.c:392 index/functions.c:1047 index/functions.c:1150
+#: index/functions.c:1167 index/functions.c:1308 mutt_thread.c:1297
+#: mutt_thread.c:1363 mutt_thread.c:1449
 msgid "Threading is not enabled"
 msgstr "No s’ha habilitat l’ús de fils"
 
 # ivb (2001/12/08)
 # ivb  Així queda més clar.  El programa posa l’interrogant.
-#: flags.c:466
+#: flags.c:465
 msgid "Clear flag"
 msgstr "Quin senyalador voleu desactivar"
 
 # ivb (2001/12/08)
 # ivb  Així queda més clar.  El programa posa l’interrogant.
-#: flags.c:466
+#: flags.c:465
 msgid "Set flag"
 msgstr "Quin senyalador voleu activar"
 
-#: gui/curs_lib.c:141 index/functions.c:766
+#: gui/curs_lib.c:141 index/functions.c:769
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Voleu abandonar NeoMutt sense desar els canvis?"
@@ -2580,28 +2585,28 @@ msgstr "Caràcter = %s, Octal = %o, Decimal = %d\n"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_FILE
 #. Compose Dialog: <op_attachment_attach_file>
-#: gui/opcodes.h:43
+#: gui/opcodes.h:42
 #, fuzzy
 msgid "attach files to this message"
 msgstr "Adjunta fitxers a aquest missatge."
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE
 #. Compose Dialog: <op_attachment_attach_message>
-#: gui/opcodes.h:46
+#: gui/opcodes.h:45
 #, fuzzy
 msgid "attach messages to this message"
 msgstr "Adjunta missatges a aquest missatge."
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
 #. Compose Dialog: <op_attachment_attach_message>
-#: gui/opcodes.h:49
+#: gui/opcodes.h:48
 #, fuzzy
 msgid "attach news articles to this message"
 msgstr "Adjunta fitxers a aquest missatge."
 
 #. L10N: Help screen description for OP_ATTACHMENT_COLLAPSE
 #. Attach Dialog: <op_attachment_collapse>
-#: gui/opcodes.h:52
+#: gui/opcodes.h:51
 msgid "toggle display of subparts"
 msgstr "Activa o desactiva la visualització de les subparts."
 
@@ -2613,39 +2618,39 @@ msgstr "Activa o desactiva la visualització de les subparts."
 #. Alias Dialog: <op_delete>
 #. Index: <op_delete>
 #. Postponed Dialog: <op_delete>
-#: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:280
+#: gui/opcodes.h:54 gui/opcodes.h:57 gui/opcodes.h:279
 msgid "delete the current entry"
 msgstr "Esborra l’entrada actual."
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attachment_edit_content_id>
-#: gui/opcodes.h:61
+#: gui/opcodes.h:60
 #, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
 msgstr "Edita un fitxer a adjuntar."
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attachment_edit_description>
-#: gui/opcodes.h:64
+#: gui/opcodes.h:63
 msgid "edit attachment description"
 msgstr "Edita la descripció d’una adjunció."
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
 #. Compose Dialog: <op_attachment_edit_encoding>
-#: gui/opcodes.h:67
+#: gui/opcodes.h:66
 msgid "edit attachment transfer-encoding"
 msgstr "Edita la codificació de transferència d’una adjunció."
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
 #. Compose Dialog: <op_attachment_edit_language>
-#: gui/opcodes.h:70
+#: gui/opcodes.h:69
 #, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "Edita un fitxer a adjuntar."
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_MIME
 #. Compose Dialog: <op_attachment_edit_mime>
-#: gui/opcodes.h:73
+#: gui/opcodes.h:72
 msgid "edit attachment using mailcap entry"
 msgstr "Edita l’adjunció emprant l’entrada de «mailcap»."
 
@@ -2653,58 +2658,58 @@ msgstr "Edita l’adjunció emprant l’entrada de «mailcap»."
 #. Attach Dialog: <op_attachment_edit_type>
 #. Compose Dialog: <op_attachment_edit_type>
 #. Index: <op_attachment_edit_type>
-#: gui/opcodes.h:78
+#: gui/opcodes.h:77
 msgid "edit attachment content type"
 msgstr "Edita el tipus de contingut d’una adjunció."
 
 #. L10N: Help screen description for OP_ATTACHMENT_FILTER
 #. Compose Dialog: <op_attachment_filter>
-#: gui/opcodes.h:81
+#: gui/opcodes.h:80
 msgid "filter attachment through a shell command"
 msgstr "Filtra una adjunció amb una ordre de l’intèrpret."
 
 #. L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT
 #. Compose Dialog: <op_attachment_get_attachment>
-#: gui/opcodes.h:84
+#: gui/opcodes.h:83
 msgid "get a temporary copy of an attachment"
 msgstr "Crea una còpia temporal d’una adjunció."
 
 #. L10N: Help screen description for OP_ATTACHMENT_GROUP_ALTS
 #. Compose Dialog: <op_attachment_group_alts>
-#: gui/opcodes.h:87
+#: gui/opcodes.h:86
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACHMENT_GROUP_LINGUAL
 #. Compose Dialog: <op_attachment_group_lingual>
-#: gui/opcodes.h:90
+#: gui/opcodes.h:89
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACHMENT_GROUP_RELATED
 #. Compose Dialog: <op_attachment_group_related>
-#: gui/opcodes.h:93
+#: gui/opcodes.h:92
 #, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
 msgstr "S’ha desat l’adjunció"
 
 #. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
 #. Compose Dialog: <op_attachment_move_down>
-#: gui/opcodes.h:96
+#: gui/opcodes.h:95
 #, fuzzy
 msgid "move an attachment down in the attachment list"
 msgstr "Envia l’adjunt amb el nom: "
 
 #. L10N: Help screen description for OP_ATTACHMENT_MOVE_UP
 #. Compose Dialog: <op_attachment_move_up>
-#: gui/opcodes.h:99
+#: gui/opcodes.h:98
 #, fuzzy
 msgid "move an attachment up in the attachment list"
 msgstr "Envia l’adjunt amb el nom: "
 
 #. L10N: Help screen description for OP_ATTACHMENT_NEW_MIME
 #. Compose Dialog: <op_attachment_new_mime>
-#: gui/opcodes.h:102
+#: gui/opcodes.h:101
 msgid "compose new attachment using mailcap entry"
 msgstr "Crea una nova adjunció emprant l’entrada de «mailcap»."
 
@@ -2713,7 +2718,7 @@ msgstr "Crea una nova adjunció emprant l’entrada de «mailcap»."
 #. Compose Dialog: <op_attachment_filter>
 #. Attach Dialog: <op_attachment_pipe>
 #. Index: <op_pipe>
-#: gui/opcodes.h:104 gui/opcodes.h:670
+#: gui/opcodes.h:103 gui/opcodes.h:669
 msgid "pipe message/attachment to a shell command"
 msgstr "Redirigeix un missatge o adjunció a una ordre de l’intèrpret."
 
@@ -2722,13 +2727,13 @@ msgstr "Redirigeix un missatge o adjunció a una ordre de l’intèrpret."
 #. Compose Dialog: <op_attachment_print>
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
-#: gui/opcodes.h:108 gui/opcodes.h:688
+#: gui/opcodes.h:107 gui/opcodes.h:687
 msgid "print the current entry"
 msgstr "Imprimeix l’entrada actual."
 
 #. L10N: Help screen description for OP_ATTACHMENT_RENAME_ATTACHMENT
 #. Compose Dialog: <op_attachment_rename_attachment>
-#: gui/opcodes.h:111
+#: gui/opcodes.h:110
 msgid "send attachment with a different name"
 msgstr "Canvia el nom amb què s’enviarà una adjunció."
 
@@ -2738,25 +2743,25 @@ msgstr "Canvia el nom amb què s’enviarà una adjunció."
 #. L10N: Help screen description for OP_SAVE
 #. Index: <op_save>
 #. Pager: <op_save>
-#: gui/opcodes.h:115 gui/opcodes.h:731
+#: gui/opcodes.h:114 gui/opcodes.h:730
 msgid "save message/attachment to a mailbox/file"
 msgstr "Desa un missatge o adjunció en una bústia o fitxer."
 
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attachment_toggle_disposition>
-#: gui/opcodes.h:118
+#: gui/opcodes.h:117
 msgid "toggle disposition between inline/attachment"
 msgstr "Canvia la disposició entre en línia o adjunt."
 
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
 #. Compose Dialog: <op_attachment_toggle_recode>
-#: gui/opcodes.h:121
+#: gui/opcodes.h:120
 msgid "toggle recoding of this attachment"
 msgstr "Estableix si una adjunció serà recodificada."
 
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK
 #. Compose Dialog: <op_attachment_toggle_unlink>
-#: gui/opcodes.h:124
+#: gui/opcodes.h:123
 msgid "toggle whether to delete file after sending it"
 msgstr "Estableix si cal esborrar un fitxer una volta enviat."
 
@@ -2766,40 +2771,40 @@ msgstr "Estableix si cal esborrar un fitxer una volta enviat."
 #. Alias Dialog: <op_delete>
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
-#: gui/opcodes.h:127 gui/opcodes.h:817
+#: gui/opcodes.h:126 gui/opcodes.h:816
 msgid "undelete the current entry"
 msgstr "Restaura l’entrada actual."
 
 #. L10N: Help screen description for OP_ATTACHMENT_UNGROUP
 #. Compose Dialog: <op_attachment_ungroup>
-#: gui/opcodes.h:130
+#: gui/opcodes.h:129
 msgid "ungroup 'multipart' attachment"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACHMENT_UPDATE_ENCODING
 #. Compose Dialog: <op_attachment_update_encoding>
-#: gui/opcodes.h:133
+#: gui/opcodes.h:132
 msgid "update an attachment's encoding info"
 msgstr "Edita la informació de codificació d’un missatge."
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW
 #. Attach Dialog: <op_attachment_view>
 #. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:137
+#: gui/opcodes.h:136
 msgid "view attachment using mailcap entry if necessary"
 msgstr "Mostra una adjunció emprant l’entrada de «mailcap» si és necessari."
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP
 #. Attach Dialog: <op_attachment_view_mailcap>
 #. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:141
+#: gui/opcodes.h:140
 msgid "force viewing of attachment using mailcap"
 msgstr "Força la visualització d’una adjunció emprant «mailcap»."
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER
 #. Attach Dialog: <op_attachment_view_pager>
 #. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:145
+#: gui/opcodes.h:144
 #, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
 msgstr "Força la visualització d’una adjunció emprant «mailcap»."
@@ -2807,274 +2812,274 @@ msgstr "Força la visualització d’una adjunció emprant «mailcap»."
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
 #. Attach Dialog: <op_attachment_view_text>
 #. Compose Dialog: <op_display_headers>
-#: gui/opcodes.h:149
+#: gui/opcodes.h:148
 msgid "view attachment as text"
 msgstr "Mostra una adjunció com a text."
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
-#: gui/opcodes.h:152
+#: gui/opcodes.h:151
 #, fuzzy
 msgid "show the next page of the message"
 msgstr "Salta a l’inici del missatge."
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
-#: gui/opcodes.h:155
+#: gui/opcodes.h:154
 #, fuzzy
 msgid "show the previous page of the message"
 msgstr "Salta a l’anterior missatge nou o no llegit."
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
-#: gui/opcodes.h:161
+#: gui/opcodes.h:160
 msgid "manage autocrypt accounts"
 msgstr "Gestiona els comptes d’Autocrypt"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_create_acct>
-#: gui/opcodes.h:164
+#: gui/opcodes.h:163
 msgid "create a new autocrypt account"
 msgstr "Crea un nou compte d’Autocrypt"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
-#: gui/opcodes.h:167
+#: gui/opcodes.h:166
 msgid "delete the current account"
 msgstr "Esborra el compte d’Autocrypt actual"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
-#: gui/opcodes.h:170
+#: gui/opcodes.h:169
 msgid "toggle the current account active/inactive"
 msgstr "Activa o desactiva el compte d’Autocrypt actual"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
-#: gui/opcodes.h:173
+#: gui/opcodes.h:172
 msgid "toggle the current account prefer-encrypt flag"
 msgstr "Canvia entre preferir xifrar o no amb el compte d’Autocrypt actual"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
-#: gui/opcodes.h:176
+#: gui/opcodes.h:175
 msgid "show autocrypt compose menu options"
 msgstr "Mostra les opcions d’Autocrypt"
 
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
-#: gui/opcodes.h:184
+#: gui/opcodes.h:183
 #, fuzzy
 msgid "open the aliases dialog"
 msgstr "Vos trobeu sobre el darrer missatge"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:187
+#: gui/opcodes.h:186
 msgid "move to the bottom of the page"
 msgstr "Va al final de la pàgina."
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
-#: gui/opcodes.h:191
+#: gui/opcodes.h:190
 msgid "remail a message to another user"
 msgstr "Redirigeix un missatge a un altre destinatari."
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:194
+#: gui/opcodes.h:193
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
-#: gui/opcodes.h:197
+#: gui/opcodes.h:196
 msgid "select a new file in this directory"
 msgstr "Selecciona un nou fitxer d’aquest directori."
 
 #. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
 #. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:200
+#: gui/opcodes.h:199
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "Se subscriu a la bústia actual (només a IMAP/NNTP)."
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
-#: gui/opcodes.h:203
+#: gui/opcodes.h:202
 msgid "display the currently selected file's name"
 msgstr "Mostra el nom del fitxer seleccionat actualment."
 
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
-#: gui/opcodes.h:206
+#: gui/opcodes.h:205
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "Canvia entre veure totes les bústies o tan sols les subscrites (només a IMAP)."
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:209
+#: gui/opcodes.h:208
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "Es dessubscriu de la bústia actual (només a IMAP/NNTP)."
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
-#: gui/opcodes.h:212
+#: gui/opcodes.h:211
 msgid "view file"
 msgstr "Mostra un fitxer."
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
-#: gui/opcodes.h:216
+#: gui/opcodes.h:215
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
-#: gui/opcodes.h:219
+#: gui/opcodes.h:218
 msgid "change directories"
 msgstr "Canvia de directori."
 
 #. L10N: Help screen description for OP_CHECK_NEW
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:222
+#: gui/opcodes.h:221
 msgid "check mailboxes for new mail"
 msgstr "Comprova si hi ha correu nou a les bústies."
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
-#: gui/opcodes.h:225
+#: gui/opcodes.h:224
 msgid "calculate message statistics for all mailboxes"
 msgstr "Calcula estadístiques dels missatges de totes les bústies."
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
-#: gui/opcodes.h:228
+#: gui/opcodes.h:227
 msgid "edit the file to be attached"
 msgstr "Edita un fitxer a adjuntar."
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
-#: gui/opcodes.h:231
+#: gui/opcodes.h:230
 msgid "edit the message"
 msgstr "Edita el missatge."
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
-#: gui/opcodes.h:234
+#: gui/opcodes.h:233
 msgid "run ispell on the message"
 msgstr "Executa «ispell» (comprovació ortogràfica) sobre el missatge."
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
-#: gui/opcodes.h:237
+#: gui/opcodes.h:236
 msgid "save this message to send later"
 msgstr "Desa aquest missatge per a enviar-lo més endavant."
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
-#: gui/opcodes.h:240
+#: gui/opcodes.h:239
 msgid "rename/move an attached file"
 msgstr "Reanomena (o mou) un fitxer adjunt."
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
-#: gui/opcodes.h:243
+#: gui/opcodes.h:242
 msgid "send the message"
 msgstr "Envia el missatge."
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
-#: gui/opcodes.h:247
+#: gui/opcodes.h:246
 msgid "compose new message to the current message sender"
 msgstr "Redacta un nou missatge adreçat al remitent de l’actual."
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
-#: gui/opcodes.h:250
+#: gui/opcodes.h:249
 msgid "write the message to a folder"
 msgstr "Escriu el missatge en una carpeta."
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
-#: gui/opcodes.h:253
+#: gui/opcodes.h:252
 msgid "copy a message to a file/mailbox"
 msgstr "Copia un missatge en un fitxer o bústia."
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
 #. Index: <op_create_alias>
-#: gui/opcodes.h:257
+#: gui/opcodes.h:256
 msgid "create an alias from a message sender"
 msgstr "Crea un àlies partint del remitent d’un missatge."
 
 #. L10N: Help screen description for OP_CREATE_MAILBOX
 #. Browser: <op_create_mailbox>
-#: gui/opcodes.h:260
+#: gui/opcodes.h:259
 msgid "create a new mailbox (IMAP only)"
 msgstr "Crea una nova bústia (només a IMAP)."
 
 #. L10N: Help screen description for OP_CURRENT_BOTTOM
 #. Menu: <menu_movement>
-#: gui/opcodes.h:263
+#: gui/opcodes.h:262
 msgid "move entry to bottom of screen"
 msgstr "Mou l’indicador al final de la pantalla."
 
 #. L10N: Help screen description for OP_CURRENT_MIDDLE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:266
+#: gui/opcodes.h:265
 msgid "move entry to middle of screen"
 msgstr "Mou l’indicador al centre de la pantalla."
 
 #. L10N: Help screen description for OP_CURRENT_TOP
 #. Menu: <menu_movement>
-#: gui/opcodes.h:269
+#: gui/opcodes.h:268
 msgid "move entry to top of screen"
 msgstr "Mou l’indicador al començament de la pantalla."
 
 #. L10N: Help screen description for OP_DECODE_COPY
 #. Index: <op_save>
-#: gui/opcodes.h:272
+#: gui/opcodes.h:271
 msgid "make decoded (text/plain) copy"
 msgstr "Crea una còpia descodificada (text/plain) del missatge."
 
 #. L10N: Help screen description for OP_DECODE_SAVE
 #. Index: <op_save>
-#: gui/opcodes.h:275
+#: gui/opcodes.h:274
 msgid "make decoded copy (text/plain) and delete"
 msgstr "Crea una còpia descodificada (text/plain) del missatge i l’esborra."
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
-#: gui/opcodes.h:283
+#: gui/opcodes.h:282
 msgid "delete the current mailbox (IMAP only)"
 msgstr "Esborra la bústia actual (només a IMAP)."
 
 #. L10N: Help screen description for OP_DELETE_SUBTHREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:286
+#: gui/opcodes.h:285
 msgid "delete all messages in subthread"
 msgstr "Esborra tots els missatges d’un subfil."
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:289
+#: gui/opcodes.h:288
 msgid "delete all messages in thread"
 msgstr "Esborra tots els missatges d’un fil."
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
-#: gui/opcodes.h:292
+#: gui/opcodes.h:291
 msgid "descend into a directory"
 msgstr "Entra en un directori."
 
 #. L10N: Help screen description for OP_DISPLAY_ADDRESS
 #. Index: <op_display_address>
-#: gui/opcodes.h:295
+#: gui/opcodes.h:294
 msgid "display full address of sender"
 msgstr "Mostra l’adreça completa del remitent."
 
@@ -3082,135 +3087,135 @@ msgstr "Mostra l’adreça completa del remitent."
 #. Attach Dialog: <op_attachment_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
-#: gui/opcodes.h:300
+#: gui/opcodes.h:299
 msgid "display message and toggle header weeding"
 msgstr "Mostra un missatge i oculta o mostra certs camps de la capçalera."
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
-#: gui/opcodes.h:303
+#: gui/opcodes.h:302
 msgid "display a message"
 msgstr "Mostra un missatge."
 
 #. L10N: Help screen description for OP_EDITOR_BACKSPACE
 #. Text Entry: <op_editor_backspace>
-#: gui/opcodes.h:306
+#: gui/opcodes.h:305
 msgid "delete the char in front of the cursor"
 msgstr "Esborra el caràcter anterior al cursor."
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
-#: gui/opcodes.h:309
+#: gui/opcodes.h:308
 msgid "move the cursor one character to the left"
 msgstr "Mou el cursor un caràcter a l’esquerra."
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
-#: gui/opcodes.h:312
+#: gui/opcodes.h:311
 msgid "move the cursor to the beginning of the word"
 msgstr "Mou el cursor al començament de la paraula."
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
-#: gui/opcodes.h:315
+#: gui/opcodes.h:314
 msgid "jump to the beginning of the line"
 msgstr "Salta al començament de la línia."
 
 #. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:318
+#: gui/opcodes.h:317
 msgid "capitalize the word"
 msgstr "Posa la primera lletra de la paraula en majúscula."
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:321
+#: gui/opcodes.h:320
 msgid "complete filename or alias"
 msgstr "Completa el nom de fitxer o l’àlies."
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:324
+#: gui/opcodes.h:323
 msgid "complete address with query"
 msgstr "Completa una adreça fent una consulta."
 
 #. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
 #. Text Entry: <op_editor_delete_char>
-#: gui/opcodes.h:327
+#: gui/opcodes.h:326
 msgid "delete the char under the cursor"
 msgstr "Esborra el caràcter sota el cursor."
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:330
+#: gui/opcodes.h:329
 msgid "convert the word to lower case"
 msgstr "Converteix la paraula a minúscules."
 
 #. L10N: Help screen description for OP_EDITOR_EOL
 #. Text Entry: <op_editor_eol>
-#: gui/opcodes.h:333
+#: gui/opcodes.h:332
 msgid "jump to the end of the line"
 msgstr "Salta al final de la línia."
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
 #. Text Entry: <op_editor_forward_char>
-#: gui/opcodes.h:336
+#: gui/opcodes.h:335
 msgid "move the cursor one character to the right"
 msgstr "Mou el cursor un caràcter a la dreta."
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
-#: gui/opcodes.h:339
+#: gui/opcodes.h:338
 msgid "move the cursor to the end of the word"
 msgstr "Mou el cursor al final de la paraula."
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
-#: gui/opcodes.h:342
+#: gui/opcodes.h:341
 msgid "scroll down through the history list"
 msgstr "Es desplaça cap avall a la llista d’historial."
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
-#: gui/opcodes.h:345
+#: gui/opcodes.h:344
 msgid "search through the history list"
 msgstr "Cerca a la llista d’historial"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_UP
 #. Text Entry: <op_editor_history_up>
-#: gui/opcodes.h:348
+#: gui/opcodes.h:347
 msgid "scroll up through the history list"
 msgstr "Es desplaça cap amunt a la llista d’historial."
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOL
 #. Text Entry: <op_editor_kill_eol>
-#: gui/opcodes.h:351
+#: gui/opcodes.h:350
 msgid "delete chars from cursor to end of line"
 msgstr "Esborra els caràcters des del cursor fins al final de la línia."
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
-#: gui/opcodes.h:354
+#: gui/opcodes.h:353
 msgid "delete chars from the cursor to the end of the word"
 msgstr "Esborra els caràcters des del cursor fins al final de la paraula."
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
-#: gui/opcodes.h:357
+#: gui/opcodes.h:356
 #, fuzzy
 msgid "delete chars from cursor to beginning the line"
 msgstr "Esborra els caràcters des del cursor fins al final de la línia."
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
-#: gui/opcodes.h:360
+#: gui/opcodes.h:359
 msgid "delete all chars on the line"
 msgstr "Esborra tots els caràcters de la línia."
 
 # Sí, enfront és a l’esquerra.  ivb
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
-#: gui/opcodes.h:363
+#: gui/opcodes.h:362
 msgid "delete the word in front of the cursor"
 msgstr "Esborra la paraula a l’esquerra del cursor."
 
@@ -3218,61 +3223,61 @@ msgstr "Esborra la paraula a l’esquerra del cursor."
 # ivb  Es refereix a les definides en «mailboxes».
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:366
+#: gui/opcodes.h:365
 msgid "cycle among incoming mailboxes"
 msgstr "Canvia entre les bústies d’entrada."
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
-#: gui/opcodes.h:369
+#: gui/opcodes.h:368
 msgid "quote the next typed key"
 msgstr "Escriu tal qual la tecla premuda a continuació."
 
 #. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
 #. Text Entry: <op_editor_transpose_chars>
-#: gui/opcodes.h:372
+#: gui/opcodes.h:371
 msgid "transpose character under cursor with previous"
 msgstr "Transposa el caràcter sota el cursor i l’anterior."
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:375
+#: gui/opcodes.h:374
 msgid "convert the word to upper case"
 msgstr "Converteix la paraula a majúscules."
 
 #. L10N: Help screen description for OP_EDIT_LABEL
 #. Index: <op_edit_label>
-#: gui/opcodes.h:378
+#: gui/opcodes.h:377
 msgid "add, change, or delete a message's label"
 msgstr "Afegeix, canvia o esborra etiquetes d’un missatge."
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:381
+#: gui/opcodes.h:380
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr ""
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:384
+#: gui/opcodes.h:383
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
-#: gui/opcodes.h:387
+#: gui/opcodes.h:386
 msgid "end of conditional execution (noop)"
 msgstr "Termina l’execució condicional (operació nul·la)."
 
 #. L10N: Help screen description for OP_ENTER_COMMAND
 #. Global: <op_enter_command>
-#: gui/opcodes.h:390
+#: gui/opcodes.h:389
 msgid "enter a neomuttrc command"
 msgstr "Executa una ordre de «neomuttrc»."
 
 #. L10N: Help screen description for OP_ENTER_MASK
 #. Browser: <op_enter_mask>
-#: gui/opcodes.h:393
+#: gui/opcodes.h:392
 msgid "enter a file mask"
 msgstr "Estableix una màscara de fitxers."
 
@@ -3288,19 +3293,19 @@ msgstr "Estableix una màscara de fitxers."
 #. PGP Key Selection Dialog: <op_exit>
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
-#: gui/opcodes.h:406
+#: gui/opcodes.h:405
 msgid "exit this menu"
 msgstr "Abandona aquest menú."
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:409
+#: gui/opcodes.h:408
 msgid "move to the first entry"
 msgstr "Va a la primera entrada."
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
-#: gui/opcodes.h:412
+#: gui/opcodes.h:411
 msgid "toggle a message's 'important' flag"
 msgstr "Canvia el senyalador «important» d’un missatge."
 
@@ -3309,7 +3314,7 @@ msgstr "Canvia el senyalador «important» d’un missatge."
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
-#: gui/opcodes.h:416
+#: gui/opcodes.h:415
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Voleu escriure un seguiment a %s%s?"
@@ -3317,14 +3322,14 @@ msgstr "Voleu escriure un seguiment a %s%s?"
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
-#: gui/opcodes.h:420
+#: gui/opcodes.h:419
 msgid "forward a message with comments"
 msgstr "Reenvia un missatge amb comentaris."
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
-#: gui/opcodes.h:424
+#: gui/opcodes.h:423
 msgid "forward to newsgroup"
 msgstr ""
 
@@ -3337,34 +3342,34 @@ msgstr ""
 #. PGP Key Selection Dialog: <op_generic_select_entry>
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
-#: gui/opcodes.h:434
+#: gui/opcodes.h:433
 msgid "select the current entry"
 msgstr "Selecciona l’entrada actual."
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
-#: gui/opcodes.h:437
+#: gui/opcodes.h:436
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "Vos trobeu sobre el primer missatge."
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
-#: gui/opcodes.h:440
+#: gui/opcodes.h:439
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "Edita el missatge amb capçaleres."
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
-#: gui/opcodes.h:443
+#: gui/opcodes.h:442
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "Vos trobeu sobre el primer missatge."
 
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
-#: gui/opcodes.h:446
+#: gui/opcodes.h:445
 #, fuzzy
 msgid "go to parent directory"
 msgstr "«%s» no és un directori."
@@ -3372,28 +3377,28 @@ msgstr "«%s» no és un directori."
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:450
+#: gui/opcodes.h:449
 msgid "reply to all recipients preserving To/Cc"
 msgstr "Respon a tots els destinataris, mantenint els camps «To» (destinatari) i «Cc» (en còpia)."
 
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:454
+#: gui/opcodes.h:453
 msgid "reply to all recipients"
 msgstr "Respon a tots els destinataris."
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
-#: gui/opcodes.h:458
+#: gui/opcodes.h:457
 msgid "scroll down 1/2 page"
 msgstr "Avança mitja pàgina."
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
-#: gui/opcodes.h:462
+#: gui/opcodes.h:461
 msgid "scroll up 1/2 page"
 msgstr "Endarrereix mitja pàgina."
 
@@ -3401,28 +3406,28 @@ msgstr "Endarrereix mitja pàgina."
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
-#: gui/opcodes.h:467
+#: gui/opcodes.h:466
 msgid "this screen"
 msgstr "Mostra aquesta pantalla."
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
 #. Menu: <op_jump>
-#: gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473 gui/opcodes.h:474
-#: gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477 gui/opcodes.h:478
-#: gui/opcodes.h:479 gui/opcodes.h:480
+#: gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473
+#: gui/opcodes.h:474 gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477
+#: gui/opcodes.h:478 gui/opcodes.h:479
 msgid "jump to an index number"
 msgstr "Salta a un número d’índex."
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:483
+#: gui/opcodes.h:482
 msgid "move to the last entry"
 msgstr "Va a la darrera entrada."
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
-#: gui/opcodes.h:486
+#: gui/opcodes.h:485
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "Marca el fil actual."
@@ -3430,14 +3435,14 @@ msgstr "Marca el fil actual."
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:490
+#: gui/opcodes.h:489
 msgid "reply to specified mailing list"
 msgstr "Respon a la llista de correu indicada."
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
-#: gui/opcodes.h:494
+#: gui/opcodes.h:493
 #, fuzzy
 msgid "subscribe to a mailing list"
 msgstr "Respon a la llista de correu indicada."
@@ -3445,345 +3450,345 @@ msgstr "Respon a la llista de correu indicada."
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
-#: gui/opcodes.h:498
+#: gui/opcodes.h:497
 #, fuzzy
 msgid "unsubscribe from a mailing list"
 msgstr "S’ha dessubscrit de «%s»."
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
-#: gui/opcodes.h:501
+#: gui/opcodes.h:500
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
 #. L10N: Help screen description for OP_MACRO
-#: gui/opcodes.h:503
+#: gui/opcodes.h:502
 msgid "execute a macro"
 msgstr "Executa una macro."
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
-#: gui/opcodes.h:507
+#: gui/opcodes.h:506
 msgid "compose a new mail message"
 msgstr "Redacta un nou missatge de correu."
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
-#: gui/opcodes.h:511
+#: gui/opcodes.h:510
 msgid "list mailboxes with new mail"
 msgstr "Llista les bústies amb correu nou."
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
-#: gui/opcodes.h:514
+#: gui/opcodes.h:513
 msgid "break the thread in two"
 msgstr "Parteix el fil en dos."
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:517
+#: gui/opcodes.h:516
 msgid "open a different folder"
 msgstr "Obri una carpeta diferent."
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:520
+#: gui/opcodes.h:519
 msgid "open a different folder in read only mode"
 msgstr "Obri una carpeta diferent en mode de només lectura."
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:523
+#: gui/opcodes.h:522
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "Obri una carpeta diferent."
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:526
+#: gui/opcodes.h:525
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "Obri una carpeta diferent en mode de només lectura."
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:529
+#: gui/opcodes.h:528
 msgid "clear a status flag from a message"
 msgstr "Elimina un senyalador d’estat d’un missatge."
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
-#: gui/opcodes.h:532
+#: gui/opcodes.h:531
 msgid "collapse/uncollapse all threads"
 msgstr "Plega o desplega tots els fils."
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
-#: gui/opcodes.h:535
+#: gui/opcodes.h:534
 msgid "collapse/uncollapse current thread"
 msgstr "Plega o desplega el fil actual."
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
-#: gui/opcodes.h:538
+#: gui/opcodes.h:537
 #, fuzzy
 msgid "delete non-hidden messages matching a pattern"
 msgstr "Esborra els missatges que concorden amb un patró."
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
-#: gui/opcodes.h:541
+#: gui/opcodes.h:540
 msgid "retrieve mail from POP server"
 msgstr "Obté el correu d’un servidor POP."
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
-#: gui/opcodes.h:544
+#: gui/opcodes.h:543
 msgid "force retrieval of mail from IMAP server"
 msgstr "Força l’obtenció del correu d’un servidor IMAP."
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
-#: gui/opcodes.h:547
+#: gui/opcodes.h:546
 msgid "logout from all IMAP servers"
 msgstr "Ix de tots els servidors IMAP."
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
-#: gui/opcodes.h:551
+#: gui/opcodes.h:550
 msgid "show only messages matching a pattern"
 msgstr "Mostra només els missatges que concorden amb un patró."
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
-#: gui/opcodes.h:554
+#: gui/opcodes.h:553
 msgid "link tagged message to the current one"
 msgstr "Enllaça el missatge marcat a l’actual."
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:557
+#: gui/opcodes.h:556
 msgid "modify (notmuch/imap) tags"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:560
+#: gui/opcodes.h:559
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "Vos trobeu sobre el primer missatge."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:563
+#: gui/opcodes.h:562
 msgid "jump to the next new message"
 msgstr "Salta al següent missatge nou."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:566
+#: gui/opcodes.h:565
 msgid "jump to the next new or unread message"
 msgstr "Salta al següent missatge nou o no llegit."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:569
+#: gui/opcodes.h:568
 msgid "jump to the next subthread"
 msgstr "Salta al subfil següent."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:572
+#: gui/opcodes.h:571
 msgid "jump to the next thread"
 msgstr "Salta al fil següent."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
-#: gui/opcodes.h:575
+#: gui/opcodes.h:574
 msgid "move to the next undeleted message"
 msgstr "Va al següent missatge no esborrat."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:578
+#: gui/opcodes.h:577
 msgid "jump to the next unread message"
 msgstr "Salta al següent missatge no llegit."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
-#: gui/opcodes.h:581
+#: gui/opcodes.h:580
 msgid "open next mailbox with new mail"
 msgstr "Obri la següent bústia amb correu nou."
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:584
+#: gui/opcodes.h:583
 msgid "jump to parent message in thread"
 msgstr "Salta al missatge pare del fil."
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:587
+#: gui/opcodes.h:586
 msgid "jump to the previous new message"
 msgstr "Salta a l’anterior missatge nou."
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:590
+#: gui/opcodes.h:589
 msgid "jump to the previous new or unread message"
 msgstr "Salta a l’anterior missatge nou o no llegit."
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:593
+#: gui/opcodes.h:592
 msgid "jump to previous subthread"
 msgstr "Salta al subfil anterior."
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:596
+#: gui/opcodes.h:595
 msgid "jump to previous thread"
 msgstr "Salta al fil anterior."
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
-#: gui/opcodes.h:599
+#: gui/opcodes.h:598
 msgid "move to the previous undeleted message"
 msgstr "Va a l’anterior missatge no llegit."
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:602
+#: gui/opcodes.h:601
 msgid "jump to the previous unread message"
 msgstr "Salta a l’anterior missatge no llegit."
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
-#: gui/opcodes.h:605
+#: gui/opcodes.h:604
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:608
+#: gui/opcodes.h:607
 msgid "mark the current subthread as read"
 msgstr "Marca el subfil actual com a llegit."
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:611
+#: gui/opcodes.h:610
 msgid "mark the current thread as read"
 msgstr "Marca el fil actual com a llegit."
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:614
+#: gui/opcodes.h:613
 msgid "jump to root message in thread"
 msgstr "Salta al missatge arrel del fil."
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:617
+#: gui/opcodes.h:616
 msgid "set a status flag on a message"
 msgstr "Estableix un senyalador d’estat d’un missatge."
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
-#: gui/opcodes.h:620
+#: gui/opcodes.h:619
 msgid "show currently active limit pattern"
 msgstr "Mostra el patró limitant actiu."
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
-#: gui/opcodes.h:623
+#: gui/opcodes.h:622
 msgid "save changes to mailbox"
 msgstr "Desa els canvis realitzats a la bústia."
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
-#: gui/opcodes.h:626
+#: gui/opcodes.h:625
 #, fuzzy
 msgid "tag non-hidden messages matching a pattern"
 msgstr "Marca els missatges que concorden amb un patró."
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
-#: gui/opcodes.h:629
+#: gui/opcodes.h:628
 #, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
 msgstr "Restaura els missatges que concorden amb un patró."
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
-#: gui/opcodes.h:632
+#: gui/opcodes.h:631
 #, fuzzy
 msgid "untag non-hidden messages matching a pattern"
 msgstr "Desmarca els missatges que concorden amb un patró."
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
-#: gui/opcodes.h:635
+#: gui/opcodes.h:634
 msgid "create a hotkey macro for the current message"
 msgstr "Crea una drecera de teclat per al missatge actual."
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:638
+#: gui/opcodes.h:637
 msgid "move to the middle of the page"
 msgstr "Va al centre de la pàgina."
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
-#: gui/opcodes.h:642
+#: gui/opcodes.h:641
 msgid "move to the next entry"
 msgstr "Va a l’entrada següent."
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
-#: gui/opcodes.h:646
+#: gui/opcodes.h:645
 msgid "scroll down one line"
 msgstr "Avança una línia."
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
-#: gui/opcodes.h:650
+#: gui/opcodes.h:649
 msgid "move to the next page"
 msgstr "Va a la pàgina següent."
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
-#: gui/opcodes.h:653
+#: gui/opcodes.h:652
 msgid "jump to the bottom of the message"
 msgstr "Salta al final del missatge."
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
-#: gui/opcodes.h:656
+#: gui/opcodes.h:655
 msgid "toggle display of quoted text"
 msgstr "Oculta o mostra el text citat."
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
-#: gui/opcodes.h:659
+#: gui/opcodes.h:658
 #, fuzzy
 msgid "jump to first line after headers"
 msgstr "Salta al fil següent."
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
-#: gui/opcodes.h:662
+#: gui/opcodes.h:661
 msgid "skip beyond quoted text"
 msgstr "Avança fins al final del text citat."
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
-#: gui/opcodes.h:665
+#: gui/opcodes.h:664
 msgid "jump to the top of the message"
 msgstr "Salta a l’inici del missatge."
 
@@ -3791,7 +3796,7 @@ msgstr "Salta a l’inici del missatge."
 # ivb  El programa posa l’interrogant.
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
-#: gui/opcodes.h:673
+#: gui/opcodes.h:672
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Voleu redirigir el missatge a «%s»"
@@ -3799,33 +3804,33 @@ msgstr "Voleu redirigir el missatge a «%s»"
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
-#: gui/opcodes.h:677
+#: gui/opcodes.h:676
 msgid "move to the previous entry"
 msgstr "Va a l’entrada anterior."
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
-#: gui/opcodes.h:681
+#: gui/opcodes.h:680
 msgid "scroll up one line"
 msgstr "Endarrereix una línia."
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
-#: gui/opcodes.h:685
+#: gui/opcodes.h:684
 msgid "move to the previous page"
 msgstr "Va a la pàgina anterior."
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
-#: gui/opcodes.h:691
+#: gui/opcodes.h:690
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "Esborra completament l’entrada actual, sense emprar la paperera."
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:694
+#: gui/opcodes.h:693
 #, fuzzy
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "Esborra completament l’entrada actual, sense emprar la paperera."
@@ -3833,13 +3838,13 @@ msgstr "Esborra completament l’entrada actual, sense emprar la paperera."
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
-#: gui/opcodes.h:698
+#: gui/opcodes.h:697
 msgid "query external program for addresses"
 msgstr "Pregunta a un programa extern per una adreça."
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
-#: gui/opcodes.h:701
+#: gui/opcodes.h:700
 msgid "append new query results to current results"
 msgstr "Afegeix els resultats d’una consulta nova als resultats actuals."
 
@@ -3847,19 +3852,19 @@ msgstr "Afegeix els resultats d’una consulta nova als resultats actuals."
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
-#: gui/opcodes.h:706
+#: gui/opcodes.h:705
 msgid "save changes to mailbox and quit"
 msgstr "Desa els canvis realitzats a la bústia i ix."
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
-#: gui/opcodes.h:709
+#: gui/opcodes.h:708
 msgid "recall a postponed message"
 msgstr "Recupera un missatge posposat."
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
-#: gui/opcodes.h:712
+#: gui/opcodes.h:711
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "El fil conté missatges no llegits."
@@ -3867,27 +3872,27 @@ msgstr "El fil conté missatges no llegits."
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
-#: gui/opcodes.h:716
+#: gui/opcodes.h:715
 msgid "clear and redraw the screen"
 msgstr "Neteja i redibuixa la pantalla."
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
-#: gui/opcodes.h:719
+#: gui/opcodes.h:718
 msgid "rename the current mailbox (IMAP only)"
 msgstr "Reanomena la bústia actual (només a IMAP)."
 
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
-#: gui/opcodes.h:723
+#: gui/opcodes.h:722
 msgid "reply to a message"
 msgstr "Respon a un missatge."
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
-#: gui/opcodes.h:727
+#: gui/opcodes.h:726
 msgid "use the current message as a template for a new one"
 msgstr "Empra el missatge actual com a plantilla per a un de nou."
 
@@ -3897,7 +3902,7 @@ msgstr "Empra el missatge actual com a plantilla per a un de nou."
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:738
+#: gui/opcodes.h:737
 msgid "search for a regular expression"
 msgstr "Cerca una expressió regular."
 
@@ -3907,7 +3912,7 @@ msgstr "Cerca una expressió regular."
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:745
+#: gui/opcodes.h:744
 msgid "search for next match"
 msgstr "Cerca la concordança següent."
 
@@ -3917,7 +3922,7 @@ msgstr "Cerca la concordança següent."
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:752
+#: gui/opcodes.h:751
 msgid "search for next match in opposite direction"
 msgstr "Cerca la concordança anterior."
 
@@ -3927,25 +3932,25 @@ msgstr "Cerca la concordança anterior."
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:759
+#: gui/opcodes.h:758
 msgid "search backwards for a regular expression"
 msgstr "Cerca cap enrere una expressió regular."
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
-#: gui/opcodes.h:762
+#: gui/opcodes.h:761
 msgid "toggle search pattern coloring"
 msgstr "Estableix si cal resaltar les concordances trobades."
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
-#: gui/opcodes.h:765
+#: gui/opcodes.h:764
 msgid "invoke a command in a subshell"
 msgstr "Invoca una ordre en un subintèrpret."
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
-#: gui/opcodes.h:768
+#: gui/opcodes.h:767
 #, fuzzy
 msgid "show log (and debug) messages"
 msgstr "Ordena els missatges."
@@ -3954,7 +3959,7 @@ msgstr "Ordena els missatges."
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:773
+#: gui/opcodes.h:772
 msgid "sort messages"
 msgstr "Ordena els missatges."
 
@@ -3962,42 +3967,42 @@ msgstr "Ordena els missatges."
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:778
+#: gui/opcodes.h:777
 msgid "sort messages in reverse order"
 msgstr "Ordena inversament els missatges."
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:781
+#: gui/opcodes.h:780
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "Desmarca els missatges que concorden amb un patró."
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
-#: gui/opcodes.h:784
+#: gui/opcodes.h:783
 msgid "tag the current entry"
 msgstr "Marca l’entrada actual."
 
 #. L10N: Help screen description for OP_TAG_PREFIX
-#: gui/opcodes.h:786
+#: gui/opcodes.h:785
 msgid "apply next function to tagged messages"
 msgstr "Aplica la funció següent als missatges marcats."
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
-#: gui/opcodes.h:788
+#: gui/opcodes.h:787
 msgid "apply next function ONLY to tagged messages"
 msgstr "Aplica la funció següent NOMÉS als missatges marcats."
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:791
+#: gui/opcodes.h:790
 msgid "tag the current subthread"
 msgstr "Marca el subfil actual."
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:794
+#: gui/opcodes.h:793
 msgid "tag the current thread"
 msgstr "Marca el fil actual."
 
@@ -4005,102 +4010,102 @@ msgstr "Marca el fil actual."
 # ivb  Es refereix a les definides en «mailboxes».
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:797
+#: gui/opcodes.h:796
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "Estableix si es navegarà només per les bústies d’entrada o per tots els fitxers."
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
-#: gui/opcodes.h:800
+#: gui/opcodes.h:799
 msgid "toggle a message's 'new' flag"
 msgstr "Canvia el senyalador «nou» d’un missatge."
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
-#: gui/opcodes.h:803
+#: gui/opcodes.h:802
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "Salta a l’anterior missatge nou o no llegit."
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
-#: gui/opcodes.h:806
+#: gui/opcodes.h:805
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "Estableix si s’escriuran els canvis a la bústia."
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:809
+#: gui/opcodes.h:808
 msgid "move to the top of the page"
 msgstr "Va a l’inici de la pàgina."
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
-#: gui/opcodes.h:812
+#: gui/opcodes.h:811
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:820
+#: gui/opcodes.h:819
 msgid "undelete all messages in subthread"
 msgstr "Restaura tots els missatges d’un subfil."
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:823
+#: gui/opcodes.h:822
 msgid "undelete all messages in thread"
 msgstr "Restaura tots els missatges d’un fil."
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:826
+#: gui/opcodes.h:825
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "Desmarca els missatges que concorden amb un patró."
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
-#: gui/opcodes.h:829
+#: gui/opcodes.h:828
 msgid "show the NeoMutt version number and date"
 msgstr "Mostra el número de versió i la data de NeoMutt."
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
-#: gui/opcodes.h:833
+#: gui/opcodes.h:832
 msgid "show MIME attachments"
 msgstr "Mostra les adjuncions MIME."
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:836
+#: gui/opcodes.h:835
 #, fuzzy
 msgid "show the raw message"
 msgstr "Edita un missatge en brut."
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
-#: gui/opcodes.h:839
+#: gui/opcodes.h:838
 msgid "display the keycode for a key press"
 msgstr "Mostra el codi d’una tecla premuda."
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
-#: gui/opcodes.h:844
+#: gui/opcodes.h:843
 msgid "make decrypted copy"
 msgstr "Fa una còpia desxifrada del missatge."
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
-#: gui/opcodes.h:847
+#: gui/opcodes.h:846
 msgid "make decrypted copy and delete"
 msgstr "Fa una còpia desxifrada del missatge i esborra aquest."
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
-#: gui/opcodes.h:851
+#: gui/opcodes.h:850
 msgid "extract supported public keys"
 msgstr "Extreu totes les claus públiques possibles."
 
@@ -4108,126 +4113,126 @@ msgstr "Extreu totes les claus públiques possibles."
 #. Attach Dialog: <op_forget_passphrase>
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
-#: gui/opcodes.h:856
+#: gui/opcodes.h:855
 #, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "Esborra de la memòria les frases clau."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
-#: gui/opcodes.h:861
+#: gui/opcodes.h:860
 msgid "edit the BCC list"
 msgstr "Edita la llista de còpia oculta (Bcc)."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
-#: gui/opcodes.h:864
+#: gui/opcodes.h:863
 msgid "edit the CC list"
 msgstr "Edita la llista de còpia (Cc)."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
-#: gui/opcodes.h:867
+#: gui/opcodes.h:866
 msgid "enter a file to save a copy of this message in"
 msgstr "Demana un fitxer on desar una còpia d’aquest missatge."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
-#: gui/opcodes.h:870
+#: gui/opcodes.h:869
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "Edita el camp de resposta (Reply-To)."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
-#: gui/opcodes.h:873
+#: gui/opcodes.h:872
 msgid "edit the from field"
 msgstr "Edita el camp de remitent (From)."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
-#: gui/opcodes.h:876
+#: gui/opcodes.h:875
 msgid "edit the message with headers"
 msgstr "Edita el missatge amb capçaleres."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
-#: gui/opcodes.h:879
+#: gui/opcodes.h:878
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "Edita la llista de còpia (Cc)."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
-#: gui/opcodes.h:882
+#: gui/opcodes.h:881
 msgid "edit the Reply-To field"
 msgstr "Edita el camp de resposta (Reply-To)."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
-#: gui/opcodes.h:885
+#: gui/opcodes.h:884
 msgid "edit the subject of this message"
 msgstr "Edita l’assumpte del missatge (Subject)."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
-#: gui/opcodes.h:888
+#: gui/opcodes.h:887
 msgid "edit the TO list"
 msgstr "Edita la llista de destinataris (To)."
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
-#: gui/opcodes.h:891
+#: gui/opcodes.h:890
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "Edita el camp de resposta (Reply-To)."
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:897
+#: gui/opcodes.h:896
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "Obri una carpeta diferent."
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
-#: gui/opcodes.h:900
+#: gui/opcodes.h:899
 msgid "read entire thread of the current message"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:903
+#: gui/opcodes.h:902
 msgid "generate virtual folder from query"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:906
+#: gui/opcodes.h:905
 msgid "generate a read-only virtual folder from query"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:909
+#: gui/opcodes.h:908
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:912
+#: gui/opcodes.h:911
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:915
+#: gui/opcodes.h:914
 msgid "resets virtual folder time window to the present"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
 #. Compose Dialog: <op_attachment_attach_key>
-#: gui/opcodes.h:923
+#: gui/opcodes.h:922
 msgid "attach a PGP public key"
 msgstr "Adjunta una clau pública PGP."
 
@@ -4236,26 +4241,26 @@ msgstr "Adjunta una clau pública PGP."
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
-#: gui/opcodes.h:927
+#: gui/opcodes.h:926
 msgid "check for classic PGP"
 msgstr "Comprova si s’ha emprat el PGP clàssic."
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
-#: gui/opcodes.h:930
+#: gui/opcodes.h:929
 msgid "show PGP options"
 msgstr "Mostra les opcions de PGP."
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
-#: gui/opcodes.h:933
+#: gui/opcodes.h:932
 msgid "mail a PGP public key"
 msgstr "Envia una clau pública PGP."
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
-#: gui/opcodes.h:937
+#: gui/opcodes.h:936
 #, fuzzy
 msgid "verify a public key"
 msgstr "Verifica una clau pública ."
@@ -4263,62 +4268,62 @@ msgstr "Verifica una clau pública ."
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
-#: gui/opcodes.h:941
+#: gui/opcodes.h:940
 msgid "view the key's user id"
 msgstr "Mostra l’identificador d’usuari d’una clau."
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
-#: gui/opcodes.h:946
+#: gui/opcodes.h:945
 msgid "move the highlight to the first mailbox"
 msgstr "Mou la selecció a la primera bústia"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
-#: gui/opcodes.h:949
+#: gui/opcodes.h:948
 msgid "move the highlight to the last mailbox"
 msgstr "Mou la selecció a la darrera bústia"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
-#: gui/opcodes.h:952
+#: gui/opcodes.h:951
 msgid "move the highlight to next mailbox"
 msgstr "Mou la selecció a la bústia següent."
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
-#: gui/opcodes.h:955
+#: gui/opcodes.h:954
 msgid "move the highlight to next mailbox with new mail"
 msgstr "Mou la selecció a la següent bústia amb correu nou."
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
-#: gui/opcodes.h:958
+#: gui/opcodes.h:957
 msgid "open highlighted mailbox"
 msgstr "Obri la bústia seleccionada."
 
 # Crec que «llista de bústies» s’entèn més que «barra lateral».  ivb
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
-#: gui/opcodes.h:961
+#: gui/opcodes.h:960
 msgid "scroll the sidebar down 1 page"
 msgstr "Avança una pàgina la llista de bústies."
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
-#: gui/opcodes.h:964
+#: gui/opcodes.h:963
 msgid "scroll the sidebar up 1 page"
 msgstr "Endarrereix una pàgina la llista de bústies."
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
-#: gui/opcodes.h:967
+#: gui/opcodes.h:966
 msgid "move the highlight to previous mailbox"
 msgstr "Mou la selecció a la bústia anterior."
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
-#: gui/opcodes.h:970
+#: gui/opcodes.h:969
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "Mou la selecció a l’anterior bústia amb correu nou."
 
@@ -4326,27 +4331,27 @@ msgstr "Mou la selecció a l’anterior bústia amb correu nou."
 # ivb  Es refereix a les definides en «mailboxes».
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
-#: gui/opcodes.h:973
+#: gui/opcodes.h:972
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "Estableix si es navegarà només per les bústies d’entrada o per tots els fitxers."
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
-#: gui/opcodes.h:976
+#: gui/opcodes.h:975
 msgid "make the sidebar (in)visible"
 msgstr "Mostra o amaga la llista de bústies."
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
-#: gui/opcodes.h:981
+#: gui/opcodes.h:980
 msgid "show S/MIME options"
 msgstr "Mostra les opcions de S/MIME."
 
 # ivb (2001/11/24)
 # ivb  Totes aquestes cadenes són missatges d’ajuda.  No sembla haver
 # ivb  restriccions de longitud.
-#: gui/opcodes.h:984
+#: gui/opcodes.h:983
 msgid "null operation"
 msgstr "L’operació nul·la."
 
@@ -4588,111 +4593,111 @@ msgstr ""
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: hcache/config.c:112 send/config.c:68
+#: hcache/config.c:112 send/config.c:67
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
 
-#: help.c:54
+#: help.c:53
 msgid "message is tagged"
 msgstr ""
 
-#: help.c:55
+#: help.c:54
 msgid "message is flagged"
 msgstr ""
 
-#: help.c:56
+#: help.c:55
 msgid "message is deleted"
 msgstr ""
 
-#: help.c:57
+#: help.c:56
 msgid "attachment is deleted"
 msgstr ""
 
-#: help.c:58
+#: help.c:57
 msgid "message has been replied to"
 msgstr ""
 
-#: help.c:59
+#: help.c:58
 msgid "message has been read"
 msgstr ""
 
-#: help.c:60
+#: help.c:59
 msgid "message is new"
 msgstr ""
 
-#: help.c:61
+#: help.c:60
 msgid "thread has been read"
 msgstr ""
 
-#: help.c:62
+#: help.c:61
 msgid "thread has at least one new message"
 msgstr ""
 
-#: help.c:63
+#: help.c:62
 #, c-format
 msgid "message has been read (%S expando)"
 msgstr ""
 
-#: help.c:64
+#: help.c:63
 msgid "message has been read (%Z expando)"
 msgstr ""
 
-#: help.c:73
+#: help.c:72
 msgid "message signed with a verified key"
 msgstr ""
 
-#: help.c:74
+#: help.c:73
 msgid "message is PGP-encrypted"
 msgstr ""
 
-#: help.c:75
+#: help.c:74
 msgid "message is signed"
 msgstr ""
 
-#: help.c:76
+#: help.c:75
 msgid "message contains a PGP key"
 msgstr ""
 
-#: help.c:77
+#: help.c:76
 msgid "message has no cryptography information"
 msgstr ""
 
-#: help.c:86
+#: help.c:85
 msgid "message is not To: you"
 msgstr ""
 
-#: help.c:87
+#: help.c:86
 msgid "message is To: you and only you"
 msgstr ""
 
-#: help.c:88
+#: help.c:87
 msgid "message is To: you"
 msgstr ""
 
-#: help.c:89
+#: help.c:88
 msgid "message is Cc: to you"
 msgstr ""
 
-#: help.c:90
+#: help.c:89
 msgid "message is From: you"
 msgstr ""
 
-#: help.c:91
+#: help.c:90
 msgid "message is sent to a subscribed mailing list"
 msgstr ""
 
-#: help.c:92
+#: help.c:91
 msgid "you are in the Reply-To: list"
 msgstr ""
 
-#: help.c:113
+#: help.c:112
 msgid "Message flags:"
 msgstr ""
 
 # ivb (2001/12/08)
 # ivb  El noms dels menús no estan traduïts.
-#: help.c:267
+#: help.c:266
 #, c-format
 msgid "Help for %s"
 msgstr "Ajuda de «%s»"
@@ -4702,12 +4707,12 @@ msgstr "Ajuda de «%s»"
 msgid "History '%s'"
 msgstr "Historial de «%s»"
 
-#: history/history.c:233 history/history.c:621
+#: history/history.c:232 history/history.c:613
 #, c-format
 msgid "%s:%d: Bad history file format"
 msgstr "%s:%d: El format del fitxer d’historial no és vàlid"
 
-#: history/history.c:266 ncrypt/crypt_gpgme.c:574 ncrypt/crypt_gpgme.c:1935
+#: history/history.c:265 ncrypt/crypt_gpgme.c:574 ncrypt/crypt_gpgme.c:1935
 #: ncrypt/crypt_gpgme.c:1959 ncrypt/crypt_gpgme.c:2018
 #: ncrypt/crypt_gpgme.c:2035 ncrypt/crypt_gpgme.c:2069
 #: ncrypt/crypt_gpgme.c:2087 ncrypt/crypt_gpgme.c:2127
@@ -4717,9 +4722,9 @@ msgstr "%s:%d: El format del fitxer d’historial no és vàlid"
 #: ncrypt/pgp.c:1256 ncrypt/pgp.c:1610 ncrypt/pgp_functions.c:135
 #: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:714
 #: ncrypt/smime.c:722 ncrypt/smime.c:821 ncrypt/smime.c:931 ncrypt/smime.c:998
-#: ncrypt/smime.c:1005 ncrypt/smime.c:1216 ncrypt/smime.c:1616
-#: ncrypt/smime.c:1695 ncrypt/smime.c:1702 ncrypt/smime.c:1809
-#: ncrypt/smime.c:1939 ncrypt/smime.c:1955 nntp/nntp.c:1347 nntp/nntp.c:2225
+#: ncrypt/smime.c:1005 ncrypt/smime.c:1216 ncrypt/smime.c:1619
+#: ncrypt/smime.c:1698 ncrypt/smime.c:1705 ncrypt/smime.c:1812
+#: ncrypt/smime.c:1942 ncrypt/smime.c:1958 nntp/nntp.c:1347 nntp/nntp.c:2225
 #: pattern/exec.c:148 pop/pop.c:123
 msgid "Can't create temporary file"
 msgstr "No s’ha pogut crear un fitxer temporal."
@@ -4736,16 +4741,16 @@ msgstr "La drecera a bústia s’ha expandit a l’expressió regular buida."
 msgid "badly formatted command string"
 msgstr "La cadena d’ordre no té un format vàlid."
 
-#: hook.c:591
+#: hook.c:589
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: No es pot fer «unhook *» des d’un «hook»"
 
-#: hook.c:604
+#: hook.c:602
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: El tipus de «hook» no és conegut: %s"
 
-#: hook.c:614
+#: hook.c:612
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: No es pot esborrar un «%s» des d’un «%s»"
@@ -4756,8 +4761,8 @@ msgid "No authenticators available or wrong credentials"
 msgstr "No hi ha cap autenticador disponible."
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:56 imap/auth_cram.c:103 imap/auth_gsasl.c:65
-#: imap/auth_gss.c:169 imap/auth_oauth.c:73 imap/auth_sasl.c:126
+#: imap/auth_anon.c:56 imap/auth_cram.c:102 imap/auth_gsasl.c:65
+#: imap/auth_gss.c:168 imap/auth_oauth.c:73 imap/auth_sasl.c:126
 #: nntp/nntp.c:527 nntp/nntp.c:598 pop/auth.c:78 pop/auth.c:192 pop/auth.c:337
 #: pop/auth.c:432 send/smtp.c:537 send/smtp.c:656 send/smtp.c:742
 #, c-format
@@ -4765,7 +4770,7 @@ msgid "Authenticating (%s)..."
 msgstr "S’està autenticant (%s)…"
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:89 imap/auth_cram.c:183 imap/auth_gss.c:350
+#: imap/auth_anon.c:89 imap/auth_cram.c:182 imap/auth_gss.c:349
 #: imap/auth_oauth.c:104 imap/auth_sasl.c:260 nntp/nntp.c:699 pop/auth.c:290
 #: pop/auth.c:358 send/smtp.c:820 send/smtp.c:896 send/smtp.c:1000
 #, c-format
@@ -4839,17 +4844,12 @@ msgstr "S’ha reanomenat la bústia"
 msgid "Mailbox %s@%s closed"
 msgstr "S’ha tancat la bústia «%s@%s»"
 
-#: imap/command.c:1223
+#: imap/command.c:1225
 #, fuzzy, c-format
 msgid "IMAP command failed: %s"
 msgstr "L’ordre de compressió ha fallat: %s"
 
-#: imap/command.c:1327 imap/command.c:1448
-#, c-format
-msgid "Connection to %s timed out"
-msgstr "La connexió amb «%s» ha expirat."
-
-#: imap/config.c:60 pop/config.c:60 send/config.c:91
+#: imap/config.c:60 pop/config.c:60 send/config.c:90
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr ""
@@ -4858,145 +4858,145 @@ msgstr ""
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Aquest servidor IMAP és antic. NeoMutt no pot funcionar amb ell."
 
-#: imap/imap.c:445
+#: imap/imap.c:446
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "L’ordre «CREATE» ha fallat: %s"
 
-#: imap/imap.c:572
+#: imap/imap.c:574
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "S’està tancant la connexió amb «%s»…"
 
-#: imap/imap.c:774 nntp/nntp.c:1852 pop/lib.c:339 send/smtp.c:1044
+#: imap/imap.c:776 nntp/nntp.c:1852 pop/lib.c:339 send/smtp.c:1044
 msgid "Secure connection with TLS?"
 msgstr "Voleu protegir la connexió emprant TLS?"
 
-#: imap/imap.c:791 nntp/nntp.c:1877 pop/lib.c:361 send/smtp.c:1062
+#: imap/imap.c:793 nntp/nntp.c:1877 pop/lib.c:361 send/smtp.c:1062
 msgid "Could not negotiate TLS connection"
 msgstr "No s’ha pogut negociar la connexió TLS."
 
-#: imap/imap.c:806 imap/imap.c:823 pop/lib.c:378
+#: imap/imap.c:808 imap/imap.c:825 pop/lib.c:378
 msgid "Encrypted connection unavailable"
 msgstr "No s’ha pogut establir una connexió xifrada."
 
-#: imap/imap.c:1234
+#: imap/imap.c:1236
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "S’està subscrivint a «%s»…"
 
-#: imap/imap.c:1236
+#: imap/imap.c:1238
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "S’està dessubscrivint de «%s»…"
 
-#: imap/imap.c:1417 imap/message.c:1802
+#: imap/imap.c:1419 imap/message.c:1803
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "S’estan copiant %d missatges a «%s»…"
 msgstr[1] "S’estan copiant %d missatges a «%s»…"
 
-#: imap/imap.c:1435 imap/imap.c:2095 imap/message.c:1820 muttlib.c:799
+#: imap/imap.c:1437 imap/imap.c:2097 imap/message.c:1821 muttlib.c:799
 #, c-format
 msgid "Create %s?"
 msgstr "Voleu crear «%s»?"
 
-#: imap/imap.c:1510
+#: imap/imap.c:1512
 msgid "Expunge failed"
 msgstr "No s’han pogut eliminar els missatges."
 
-#: imap/imap.c:1528
+#: imap/imap.c:1530
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "S’estan marcant %d missatges com a esborrats…"
 msgstr[1] "S’estan marcant %d missatges com a esborrats…"
 
-#: imap/imap.c:1567
+#: imap/imap.c:1569
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "S’estan desant els missatges canviats… [%d/%d]"
 msgstr[1] "S’estan desant els missatges canviats… [%d/%d]"
 
-#: imap/imap.c:1610
+#: imap/imap.c:1612
 msgid "Error saving flags. Close anyway?"
 msgstr "Error en desar els senyaladors.  Voleu tancar igualment?"
 
-#: imap/imap.c:1618
+#: imap/imap.c:1620
 msgid "Error saving flags"
 msgstr "Error en desar els senyaladors."
 
-#: imap/imap.c:1645
+#: imap/imap.c:1647
 msgid "Expunging messages from server..."
 msgstr "S’estan eliminant missatges del servidor…"
 
-#: imap/imap.c:1651
+#: imap/imap.c:1653
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: Ha fallat «EXPUNGE»."
 
-#: imap/imap.c:1894 nntp/nntp.c:2451
+#: imap/imap.c:1896 nntp/nntp.c:2451
 #, c-format
 msgid "Selecting %s..."
 msgstr "S’està seleccionant la bústia «%s»…"
 
-#: imap/imap.c:2062
+#: imap/imap.c:2064
 msgid "Error opening mailbox"
 msgstr "Error en obrir la bústia."
 
-#: imap/imap.c:2206
+#: imap/imap.c:2208
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "El servidor SMTP no admet autenticació."
 
-#: imap/imap.c:2250
+#: imap/imap.c:2252
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "No vàlid    "
 
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
-#: imap/message.c:508
+#: imap/message.c:509
 msgid "Abort download and close mailbox?"
 msgstr "Voleu avortar la descàrrega i tancar la bústia?"
 
-#: imap/message.c:698 imap/message.c:838
+#: imap/message.c:699 imap/message.c:839
 msgid "Evaluating cache..."
 msgstr "S’està avaluant la memòria cau…"
 
-#: imap/message.c:928
+#: imap/message.c:929
 msgid "Fetching flag updates..."
 msgstr "S’estan recollint els canvis als senyaladors…"
 
 #. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
-#: imap/message.c:1071
+#: imap/message.c:1072
 msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "L’ordre «QRESYNC» ha fallat.  Es reobrirà la bústia."
 
-#: imap/message.c:1140
+#: imap/message.c:1141
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "No s’han pogut recollir les capçaleres d’aquesta versió de servidor IMAP."
 
-#: imap/message.c:1162 index/functions.c:2604 nntp/nntp.c:1284 pop/pop.c:371
+#: imap/message.c:1163 index/functions.c:2610 nntp/nntp.c:1284 pop/pop.c:371
 msgid "Fetching message headers..."
 msgstr "S’estan recollint les capçaleres dels missatges…"
 
-#: imap/message.c:1571
+#: imap/message.c:1572
 msgid "Uploading message..."
 msgstr "S’està penjant el missatge…"
 
-#: imap/message.c:1738
+#: imap/message.c:1739
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "S’està copiant el missatge %d a «%s»…"
 
-#: imap/message.c:2008 nntp/nntp.c:2681 pop/pop.c:1046
+#: imap/message.c:2009 nntp/nntp.c:2681 pop/pop.c:1046
 msgid "Fetching message..."
 msgstr "S’està recollint el missatge…"
 
-#: imap/message.c:2059 pop/pop.c:1023
+#: imap/message.c:2060 pop/pop.c:1023
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "L’índex del missatge no és correcte.  Proveu de reobrir la bústia."
 
@@ -5011,7 +5011,7 @@ msgstr "Cal un nom de capçalera per a cercar les capçaleres: %s"
 msgid "Server-side custom search not supported: %s"
 msgstr ""
 
-#: imap/util.c:651
+#: imap/util.c:652
 msgid "Continue?"
 msgstr "Voleu continuar?"
 
@@ -5020,67 +5020,67 @@ msgstr "Voleu continuar?"
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 msgstr ""
 
-#: index/dlg_index.c:104 index/dlg_index.c:119
+#: index/dlg_index.c:103 index/dlg_index.c:118
 msgid "Quit"
 msgstr "Ix"
 
 # ivb (2001/12/08)
 # ivb  Menú superpoblat: mantenir _molt_ curt!
-#: index/dlg_index.c:109 pager/dlg_pager.c:101
+#: index/dlg_index.c:108 pager/dlg_pager.c:101
 msgid "Reply"
 msgstr "Respon"
 
-#: index/dlg_index.c:110
+#: index/dlg_index.c:109
 msgid "Group"
 msgstr "Grup"
 
-#: index/dlg_index.c:123 pager/dlg_pager.c:114
+#: index/dlg_index.c:122 pager/dlg_pager.c:114
 msgid "Post"
 msgstr "Enviar"
 
 # ivb (2001/12/07)
 # ivb  El primer «%s» és una adreça de correu i el segon potser «,...».
-#: index/dlg_index.c:124 pager/dlg_pager.c:115
+#: index/dlg_index.c:123 pager/dlg_pager.c:115
 #, fuzzy
 msgid "Followup"
 msgstr "Voleu escriure un seguiment a %s%s?"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: index/dlg_index.c:146
+#: index/dlg_index.c:145
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: l’ACL no permet l’operació."
 
-#: index/dlg_index.c:737
+#: index/dlg_index.c:736
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index/dlg_index.c:782 muttlib.c:783 mx.c:205 mx.c:343
+#: index/dlg_index.c:781 muttlib.c:783 mx.c:205 mx.c:343
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "«%s» no és una bústia."
 
-#: index/dlg_index.c:1196
+#: index/dlg_index.c:1195
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "S’ha modificat la bústia des de fora.  Els senyaladors poden ser incorrectes."
 
-#: index/dlg_index.c:1205 pager/dlg_pager.c:431
+#: index/dlg_index.c:1204 pager/dlg_pager.c:431
 msgid "New mail in this mailbox"
 msgstr "Hi ha correu nou en aquesta bústia"
 
-#: index/dlg_index.c:1225
+#: index/dlg_index.c:1224
 msgid "Mailbox was externally modified"
 msgstr "S’ha modificat la bústia des de fora"
 
-#: index/dlg_index.c:1336 index/functions.c:3075 pattern/message.c:287
+#: index/dlg_index.c:1335 index/functions.c:3081 pattern/message.c:286
 msgid "No mailbox is open"
 msgstr "No hi ha cap bústia oberta"
 
-#: index/dlg_index.c:1344
+#: index/dlg_index.c:1343
 msgid "No tagged messages"
 msgstr "No hi ha cap missatge marcat"
 
-#: index/dlg_index.c:1349 index/functions.c:919
+#: index/dlg_index.c:1348 index/functions.c:922
 msgid "Nothing to do"
 msgstr "No hi ha res per fer"
 
@@ -5096,7 +5096,7 @@ msgstr ""
 
 #. L10N: Status bar message: all the emails are visible in the index
 #. L10N: Status bar message: the entire email is visible in the pager
-#: index/expando_status.c:448 pager/message.c:61 pager/pbar.c:120
+#: index/expando_status.c:448 pager/message.c:60 pager/pbar.c:120
 msgid "all"
 msgstr ""
 
@@ -5119,14 +5119,14 @@ msgstr "No es pot esborrar el missatge"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:560 index/functions.c:1205
+#: index/functions.c:560 index/functions.c:1210
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "No es pot esborrar el missatge"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index/functions.c:686
+#: index/functions.c:689
 #, fuzzy, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -5136,163 +5136,163 @@ msgstr[1] "S’han canviat %d etiquetes"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index/functions.c:696
+#: index/functions.c:699
 msgid "No labels changed"
 msgstr "No s’ha canviat cap etiqueta"
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: index/functions.c:716
+#: index/functions.c:719
 msgid "Can't edit message"
 msgstr "No es pot editar el missatge."
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: index/functions.c:803
+#: index/functions.c:806
 msgid "Can't flag message"
 msgstr "No es pot senyalar el missatge"
 
-#: index/functions.c:916
+#: index/functions.c:919
 msgid "Jump to message: "
 msgstr "Salta al missatge: "
 
-#: index/functions.c:924
+#: index/functions.c:927
 msgid "Argument must be a message number"
 msgstr "L’argument ha de ser un número de missatge"
 
-#: index/functions.c:928
+#: index/functions.c:931
 msgid "Invalid message number"
 msgstr "El número de missatge no és vàlid"
 
-#: index/functions.c:932
+#: index/functions.c:935
 msgid "That message is not visible"
 msgstr "El missatge no és visible"
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: index/functions.c:1035
+#: index/functions.c:1038
 #, fuzzy
 msgid "Can't break thread"
 msgstr "No es poden enllaçar els fils"
 
-#: index/functions.c:1058
+#: index/functions.c:1061
 msgid "Thread broken"
 msgstr "S’ha trencat el fil."
 
-#: index/functions.c:1064
+#: index/functions.c:1067
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "No es pot trencar el fil, el missatge no n’és part de cap."
 
 # És una pregunta.  -- ivb
-#: index/functions.c:1089
+#: index/functions.c:1092
 msgid "Open mailbox in read-only mode"
 msgstr "Obri en mode de només lectura la bústia"
 
 # És una pregunta.  -- ivb
-#: index/functions.c:1094
+#: index/functions.c:1097
 msgid "Open mailbox"
 msgstr "Obri la bústia"
 
-#: index/functions.c:1186
+#: index/functions.c:1190
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "El fil conté missatges no llegits"
 
-#: index/functions.c:1208
+#: index/functions.c:1213
 msgid "Delete messages matching: "
 msgstr "Esborra els missatges que concorden amb: "
 
-#: index/functions.c:1248
+#: index/functions.c:1253
 msgid "Limit to messages matching: "
 msgstr "Limita als missatges que concorden amb: "
 
-#: index/functions.c:1278
+#: index/functions.c:1284
 msgid "To view all messages, limit to \"all\""
 msgstr "Per a veure tots els missatges, limiteu a «all»"
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: index/functions.c:1291
+#: index/functions.c:1297
 msgid "Can't link threads"
 msgstr "No es poden enllaçar els fils"
 
-#: index/functions.c:1306
+#: index/functions.c:1312
 msgid "No Message-ID: header available to link thread"
 msgstr "No hi ha capçalera «Message-ID:» amb què enllaçar el fil."
 
-#: index/functions.c:1320
+#: index/functions.c:1326
 msgid "Threads linked"
 msgstr "S’han enllaçat els fils."
 
-#: index/functions.c:1325
+#: index/functions.c:1331
 msgid "No thread linked"
 msgstr "No s’ha enllaçat cap fil."
 
-#: index/functions.c:1354 mx.c:1287 mx.c:1307
+#: index/functions.c:1360 mx.c:1287 mx.c:1307
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "El servidor SMTP no admet autenticació"
 
-#: index/functions.c:1375
+#: index/functions.c:1381
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "S’avorta el missatge sense assumpte"
 
-#: index/functions.c:1386
+#: index/functions.c:1392
 msgid "Update tags..."
 msgstr ""
 
-#: index/functions.c:1426
+#: index/functions.c:1432
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index/functions.c:1540
+#: index/functions.c:1546
 msgid "No new messages in this limited view"
 msgstr "No hi ha cap missatge nou en aquesta vista limitada"
 
-#: index/functions.c:1542
+#: index/functions.c:1548
 msgid "No new messages"
 msgstr "No hi ha cap missatge nou"
 
-#: index/functions.c:1547
+#: index/functions.c:1553
 msgid "No unread messages in this limited view"
 msgstr "No hi ha cap missatge no llegit en aquesta vista limitada"
 
-#: index/functions.c:1549
+#: index/functions.c:1555
 msgid "No unread messages"
 msgstr "No hi ha cap missatge no llegit"
 
-#: index/functions.c:1565 menu/functions.c:108 pager/functions.c:765
-#: pattern/pattern.c:557 pattern/pattern.c:713
+#: index/functions.c:1571 menu/functions.c:109 pager/functions.c:764
+#: pattern/pattern.c:553 pattern/pattern.c:708
 msgid "Search wrapped to top"
 msgstr "La cerca ha tornat al principi"
 
-#: index/functions.c:1570 pager/functions.c:796 pattern/pattern.c:570
-#: pattern/pattern.c:726
+#: index/functions.c:1576 pager/functions.c:795 pattern/pattern.c:566
+#: pattern/pattern.c:721
 msgid "Search wrapped to bottom"
 msgstr "La cerca ha tornat al final"
 
-#: index/functions.c:1614
+#: index/functions.c:1620
 msgid "No more threads"
 msgstr "No hi ha més fils"
 
-#: index/functions.c:1616
+#: index/functions.c:1622
 msgid "You are on the first thread"
 msgstr "Vos trobeu al primer fil"
 
-#: index/functions.c:1634 index/functions.c:2026
+#: index/functions.c:1640 index/functions.c:2032
 msgid "You are on the last message"
 msgstr "Vos trobeu sobre el darrer missatge"
 
-#: index/functions.c:1651 index/functions.c:1706
+#: index/functions.c:1657 index/functions.c:1712
 msgid "No undeleted messages"
 msgstr "No hi ha cap missatge no esborrat"
 
-#: index/functions.c:1672
+#: index/functions.c:1678
 msgid "No mailboxes have new mail"
 msgstr "No hi ha cap bústia amb correu nou."
 
-#: index/functions.c:1690 index/functions.c:2064
+#: index/functions.c:1696 index/functions.c:2070
 msgid "You are on the first message"
 msgstr "Vos trobeu sobre el primer missatge"
 
@@ -5301,16 +5301,16 @@ msgstr "Vos trobeu sobre el primer missatge"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1759
+#: index/functions.c:1765
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "No es poden marcar els missatges com a llegits"
 
-#: index/functions.c:1836
+#: index/functions.c:1842
 msgid "No limit pattern is in effect"
 msgstr "No hi ha cap patró limitant en efecte"
 
-#: index/functions.c:1923
+#: index/functions.c:1929
 msgid "Tag messages matching: "
 msgstr "Marca els missatges que concorden amb: "
 
@@ -5319,144 +5319,144 @@ msgstr "Marca els missatges que concorden amb: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1939 index/functions.c:2453
+#: index/functions.c:1945 index/functions.c:2459
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "No es pot restaurar el missatge"
 
-#: index/functions.c:1943
+#: index/functions.c:1949
 msgid "Undelete messages matching: "
 msgstr "Restaura els missatges que concorden amb: "
 
-#: index/functions.c:1957
+#: index/functions.c:1963
 msgid "Untag messages matching: "
 msgstr "Desmarca els missatges que concorden amb: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1980
+#: index/functions.c:1986
 msgid "Enter macro stroke: "
 msgstr "Entreu una pulsació per a la drecera: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1996
+#: index/functions.c:2002
 msgid "message hotkey"
 msgstr "Drecera de teclat per a un missatge."
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:2001
+#: index/functions.c:2007
 #, c-format
 msgid "Message bound to %s"
 msgstr "S’ha vinculat el missatge amb la drecera «%s»"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:2011
+#: index/functions.c:2017
 msgid "No message ID to macro"
 msgstr "El missatge no té identificador per a ser vinculat amb la drecera"
 
-#: index/functions.c:2109
+#: index/functions.c:2115
 msgid "Quit NeoMutt?"
 msgstr "Voleu abandonar NeoMutt?"
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: index/functions.c:2365
+#: index/functions.c:2371
 msgid "Can't toggle new"
 msgstr "No es pot canviar el senyalador «nou»"
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: index/functions.c:2417
+#: index/functions.c:2423
 msgid "Can't undelete message"
 msgstr "No es pot restaurar el missatge"
 
-#: index/functions.c:2552
+#: index/functions.c:2558
 msgid "Logged out of IMAP servers"
 msgstr "S’ha eixit dels servidors IMAP"
 
-#: index/functions.c:2600
+#: index/functions.c:2606
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index/functions.c:2670
+#: index/functions.c:2676
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "Esborra tots els missatges d’un fil"
 
-#: index/functions.c:2695
+#: index/functions.c:2701
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Entreu l’ID de clau: "
 
-#: index/functions.c:2707
+#: index/functions.c:2713
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index/functions.c:2730
+#: index/functions.c:2736
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "El missatge pare no és visible en aquesta vista limitada"
 
-#: index/functions.c:2735
+#: index/functions.c:2741
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "S’estan eliminant missatges del servidor…"
 
-#: index/functions.c:2748 nntp/nntp.c:2718
+#: index/functions.c:2754 nntp/nntp.c:2718
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
 # És una pregunta.  -- ivb
-#: index/functions.c:2776
+#: index/functions.c:2782
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Obri en mode de només lectura la bústia"
 
-#: index/functions.c:2781
+#: index/functions.c:2787
 msgid "Open newsgroup"
 msgstr ""
 
-#: index/functions.c:2852
+#: index/functions.c:2858
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
-#: index/functions.c:2888
+#: index/functions.c:2894
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "S’avorta el missatge sense assumpte"
 
-#: index/functions.c:2917
+#: index/functions.c:2923
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index/functions.c:2929
+#: index/functions.c:2935
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index/functions.c:2969
+#: index/functions.c:2975
 #, fuzzy
 msgid "No query, aborting"
 msgstr "S’avorta el missatge sense assumpte"
 
-#: index/functions.c:3012
+#: index/functions.c:3018
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index/functions.c:3018
+#: index/functions.c:3024
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index/functions.c:3081
+#: index/functions.c:3087
 msgid "There are no messages"
 msgstr "No hi ha cap missatge"
 
-#: index/functions.c:3089
+#: index/functions.c:3095
 msgid "No visible messages"
 msgstr "No hi ha cap missatge visible"
 
@@ -5464,20 +5464,48 @@ msgstr "No hi ha cap missatge visible"
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr ""
 
+#: key/commands.c:103
+#, c-format
+msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
+msgstr ""
+
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-#: key/dump.c:218 key/parse.c:253 key/parse.c:306
+#: key/commands.c:213 key/commands.c:266 key/dump.c:220
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: El menú no existeix."
 
+#: key/commands.c:229
+#, c-format
+msgid "%s: null key sequence"
+msgstr "%s: La seqüència de tecles és nul·la."
+
+#: key/commands.c:300
+#, c-format
+msgid "Function '%s' not available for menu '%s'"
+msgstr ""
+
+#: key/commands.c:555
+msgid "macro: empty key sequence"
+msgstr "macro: La seqüència de tecles és buida."
+
+#: key/commands.c:629
+msgid "exec: no arguments"
+msgstr "exec: Manquen arguments."
+
+#: key/commands.c:652
+#, c-format
+msgid "%s: no such function"
+msgstr "%s: La funció no existeix."
+
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
 #. it might also be 'all' when all menus are affected.
-#: key/dump.c:232
+#: key/dump.c:234
 #, fuzzy, c-format
 msgid "%s: no binds for this menu"
 msgstr "%s: El menú no existeix."
 
-#: key/dump.c:232
+#: key/dump.c:234
 #, fuzzy, c-format
 msgid "%s: no macros for this menu"
 msgstr "%s: El menú no existeix."
@@ -5495,42 +5523,23 @@ msgstr "La tecla no està vinculada.  Premeu «%s» per a obtenir ajuda."
 msgid "Macro loop detected"
 msgstr "S’ha detectat un bucle entre macros"
 
-#: key/init.c:237
+#: key/init.c:169
 msgid "Abort key is not set, defaulting to Ctrl-G"
 msgstr ""
 
-#: key/init.c:243
+#: key/init.c:175
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
 msgstr ""
 
-#: key/parse.c:103
-#, c-format
-msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
+#: lua/commands.c:104
+#, fuzzy, c-format
+msgid "Couldn't source lua source: %s"
+msgstr "No s’ha pogut blocar «%s».\n"
+
+#: lua/lua.c:449
+msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
-
-#: key/parse.c:269
-#, c-format
-msgid "%s: null key sequence"
-msgstr "%s: La seqüència de tecles és nul·la."
-
-#: key/parse.c:340
-#, c-format
-msgid "Function '%s' not available for menu '%s'"
-msgstr ""
-
-#: key/parse.c:595
-msgid "macro: empty key sequence"
-msgstr "macro: La seqüència de tecles és buida."
-
-#: key/parse.c:669
-msgid "exec: no arguments"
-msgstr "exec: Manquen arguments."
-
-#: key/parse.c:692
-#, c-format
-msgid "%s: no such function"
-msgstr "%s: La funció no existeix."
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
@@ -5563,12 +5572,12 @@ msgid "mailcap entry for type %s not found"
 msgstr "No s’ha trobat cap entrada pel tipus «%s» a «mailcap»"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
-#: maildir/config.c:51
+#: maildir/config.c:50
 msgid "maildir_field_delimiter must be exactly one character long"
 msgstr ""
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
-#: maildir/config.c:58
+#: maildir/config.c:57
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
 msgstr ""
 
@@ -5599,75 +5608,75 @@ msgstr "No s’ha pogut escriure el missatge a disc."
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): No s’ha pogut canviar la data del fitxer."
 
-#: main.c:219
+#: main.c:216
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Error a la línia d’ordres: %s"
 
-#: main.c:221
+#: main.c:218
 #, fuzzy, c-format
 msgid "Warning in command line: %s"
 msgstr "Error a la línia d’ordres: %s"
 
-#: main.c:338
+#: main.c:335
 msgid "unable to determine nodename via uname()"
 msgstr "No s’ha pogut determinar el nom de l’estació amb uname()."
 
-#: main.c:691 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
+#: main.c:688 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
 #: parse/set.c:331 parse/set.c:372 parse/set.c:439
 #, c-format
 msgid "Option %s is deprecated"
 msgstr ""
 
-#: main.c:769
+#: main.c:764
 msgid "Error initializing terminal"
 msgstr "Error en inicialitzar el terminal"
 
-#: main.c:837
+#: main.c:832
 msgid "unable to determine username"
 msgstr "No s’ha pogut determinar el nom de l’usuari."
 
-#: main.c:843
+#: main.c:838
 msgid "unable to determine home directory"
 msgstr "No s’ha pogut determinar el directori de l’usuari."
 
-#: main.c:988
+#: main.c:983
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Error: L’argument de l’opció «-d» no és vàlid: %s"
 
 # Es refereix a l’esquema d’URL.  ivb
-#: main.c:1349
+#: main.c:1342
 msgid "Failed to parse mailto: link"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:»."
 
-#: main.c:1364 main.c:1635 send/send.c:306 send/send.c:2663 send/send.c:2667
+#: main.c:1357 main.c:1628 send/send.c:306 send/send.c:2663 send/send.c:2667
 msgid "No recipients specified"
 msgstr "No s’ha indicat cap destinatari"
 
-#: main.c:1398
+#: main.c:1391
 msgid "Can't use -E flag with stdin"
 msgstr "No es pot emprar l’opció «-E» amb l’entrada estàndard."
 
-#: main.c:1488
+#: main.c:1481
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 
-#: main.c:1559 mutt_header.c:351
+#: main.c:1552 mutt_header.c:350
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: No s’ha pogut adjuntar el fitxer."
 
-#: main.c:1650
+#: main.c:1643
 msgid "No mailbox with new mail"
 msgstr "No hi ha cap bústia amb correu nou"
 
-#: main.c:1670
+#: main.c:1663
 msgid "No incoming mailboxes defined"
 msgstr "No s’ha definit cap bústia d’entrada"
 
-#: main.c:1723
+#: main.c:1716
 msgid "Mailbox is empty"
 msgstr "La bústia és buida"
 
@@ -5688,7 +5697,7 @@ msgstr "La bústia ha estat corrompuda."
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Error fatal.  No s’ha pogut reobrir la bústia."
 
-#: mbox/mbox.c:1134 pager/message.c:221
+#: mbox/mbox.c:1134 pager/message.c:219
 msgid "Could not create temporary file"
 msgstr "No s’ha pogut crear un fitxer temporal."
 
@@ -5719,32 +5728,32 @@ msgstr "No s’ha pogut reobrir la bústia."
 msgid "Can't write message"
 msgstr "No s’ha pogut escriure el missatge."
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:490
-#: pattern/pattern.c:647
+#: menu/functions.c:72 pager/functions.c:586 pattern/pattern.c:487
+#: pattern/pattern.c:643
 msgid "Reverse search for: "
 msgstr "Cerca cap enrere: "
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:490
-#: pattern/pattern.c:647
+#: menu/functions.c:72 pager/functions.c:586 pattern/pattern.c:487
+#: pattern/pattern.c:643
 msgid "Search for: "
 msgstr "Cerca: "
 
-#: menu/functions.c:127 pager/functions.c:694 pager/functions.c:761
-#: pager/functions.c:792 pattern/pattern.c:621 pattern/pattern.c:774
+#: menu/functions.c:128 pager/functions.c:693 pager/functions.c:760
+#: pager/functions.c:791 pattern/pattern.c:617 pattern/pattern.c:769
 msgid "Not found"
 msgstr "No s’ha trobat"
 
-#: menu/functions.c:244 menu/move.c:347 menu/move.c:367 menu/move.c:414
+#: menu/functions.c:245 menu/move.c:347 menu/move.c:367 menu/move.c:414
 #: menu/move.c:430 menu/move.c:447 menu/move.c:468 menu/move.c:488
 #: menu/tagging.c:124
 msgid "No entries"
 msgstr "No hi ha cap entrada"
 
-#: menu/functions.c:255
+#: menu/functions.c:256
 msgid "Jump to: "
 msgstr "Salta a: "
 
-#: menu/functions.c:265
+#: menu/functions.c:266
 msgid "Invalid index number"
 msgstr "El número d’índex no és vàlid"
 
@@ -5851,18 +5860,18 @@ msgstr "L’expressió regular no és vàlida: %s"
 msgid "Not enough subexpressions for template"
 msgstr "Hi ha més referències cap enrere que subexpressions definides"
 
-#: mutt_config.c:229
+#: mutt_config.c:228
 #, c-format
 msgid "index-hook cannot be used as a condition"
 msgstr ""
 
 #. L10N: $ts_icon_format default format
-#: mutt_config.c:767
+#: mutt_config.c:766
 msgid "M%<n?AIL&ail>"
 msgstr ""
 
 #. L10N: $ts_status_format default format
-#: mutt_config.c:771
+#: mutt_config.c:770
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
 msgstr ""
 
@@ -5871,39 +5880,30 @@ msgstr ""
 msgid "Invalid value for option %s: %ld"
 msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
 
-#: mutt_lua.c:453
-msgid "Error: Couldn't load the lua interpreter"
-msgstr ""
-
-#: mutt_lua.c:523
-#, fuzzy, c-format
-msgid "Couldn't source lua source: %s"
-msgstr "No s’ha pogut blocar «%s».\n"
-
 # Vaja, no hi ha com posar-li cometes…  ivb
-#: mutt_mailbox.c:255
+#: mutt_mailbox.c:254
 msgid "New mail in "
 msgstr "Hi ha correu nou a "
 
-#: mutt_socket.c:71
+#: mutt_socket.c:70
 #, fuzzy, c-format
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL no es troba disponible."
 
-#: mutt_thread.c:111
+#: mutt_thread.c:110
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr ""
 
-#: mutt_thread.c:1385
+#: mutt_thread.c:1384
 msgid "Parent message is not available"
 msgstr "El missatge pare no es troba disponible"
 
-#: mutt_thread.c:1391
+#: mutt_thread.c:1390
 msgid "Root message is not visible in this limited view"
 msgstr "El missatge arrel no és visible en aquesta vista limitada"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 msgid "Parent message is not visible in this limited view"
 msgstr "El missatge pare no és visible en aquesta vista limitada"
 
@@ -6051,19 +6051,19 @@ msgstr "S’ha establert un punt de control a la bústia"
 msgid "Can't open %s: it is a pipe"
 msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 
-#: mx.c:1819
+#: mx.c:1831
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "No es pot establir si una bústia de només lectura pot ser modificada."
 
-#: mx.c:1826
+#: mx.c:1838
 msgid "Changes to folder will be written on folder exit"
 msgstr "S’escriuran els canvis a la carpeta en abandonar-la"
 
-#: mx.c:1831
+#: mx.c:1843
 msgid "Changes to folder will not be written"
 msgstr "No s’escriuran els canvis a la carpeta"
 
-#: ncrypt/crypt.c:76
+#: ncrypt/crypt.c:75
 #, c-format
 msgid " (current time: %c)"
 msgstr " (data actual: %c)"
@@ -6073,7 +6073,7 @@ msgstr " (data actual: %c)"
 # Exemple:
 #   [-- Eixida de OpenSSL (data actual: dg 05 nov 2006 21:04:11 CET). --]
 # La primera: «OpenSSL» o «PGP» (meec, apòstrof); la segona l’anterior.  ivb
-#: ncrypt/crypt.c:83
+#: ncrypt/crypt.c:82
 #, c-format
 msgid "[-- %s output follows%s --]\n"
 msgstr "[-- Eixida de %s%s: --]\n"
@@ -6082,33 +6082,33 @@ msgstr "[-- Eixida de %s%s: --]\n"
 #. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
 #. passwords. So in English we use "Passphrases". Your language might
 #. have other means to express this.
-#: ncrypt/crypt.c:104
+#: ncrypt/crypt.c:103
 msgid "Passphrases forgotten"
 msgstr "S’han esborrat de la memòria les frases clau"
 
 # No es pot fer mai.  ivb
 # ABREUJAT!  ivb
 # No es pot emprar PGP en línia amb adjuncions.  Voleu recórrer a emprar PGP/MIME?
-#: ncrypt/crypt.c:186
+#: ncrypt/crypt.c:185
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr "No es pot emprar PGP en línia amb adjuncions.  Emprar PGP/MIME?"
 
-#: ncrypt/crypt.c:189
+#: ncrypt/crypt.c:188
 msgid "Mail not sent: inline PGP can't be used with attachments"
 msgstr "No s’ha enviat el missatge: no es pot emprar PGP en línia amb adjuncions"
 
 # No es pot fer mai.  ivb
 # ABREUJAT!  ivb
 # No es pot emprar PGP en línia amb adjuncions.  Voleu recórrer a emprar PGP/MIME?
-#: ncrypt/crypt.c:195
+#: ncrypt/crypt.c:194
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "No es pot emprar PGP en línia amb «format=flowed».  Emprar PGP/MIME?"
 
-#: ncrypt/crypt.c:198
+#: ncrypt/crypt.c:197
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "No s’ha enviat el missatge: no es pot emprar PGP en línia amb «format=flowed»"
 
-#: ncrypt/crypt.c:208 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:141
+#: ncrypt/crypt.c:207 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:141
 #: ncrypt/pgpkey.c:295
 msgid "Invoking PGP..."
 msgstr "S’està invocant PGP…"
@@ -6116,11 +6116,11 @@ msgstr "S’està invocant PGP…"
 # S’ha intentat però ha fallat.  ivb
 # ABREUJAT!  ivb
 # No s’ha pogut enviar el missatge en línia.  Voleu recórrer a emprar PGP/MIME?
-#: ncrypt/crypt.c:218
+#: ncrypt/crypt.c:217
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "No s’ha pogut enviar el missatge en línia.  Emprar PGP/MIME?"
 
-#: ncrypt/crypt.c:221 send/send.c:2642
+#: ncrypt/crypt.c:220 send/send.c:2642
 msgid "Mail not sent"
 msgstr "No s’ha enviat el missatge"
 
@@ -6496,19 +6496,19 @@ msgstr "[-- Final de les dades xifrades amb PGP/MIME. --]\n"
 msgid "Could not decrypt PGP message"
 msgstr "No s’ha pogut desxifrar el missatge PGP."
 
-#: ncrypt/crypt_gpgme.c:2883 ncrypt/smime.c:1782
+#: ncrypt/crypt_gpgme.c:2883 ncrypt/smime.c:1785
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Les dades següents es troben signades amb S/MIME: --]\n"
 
-#: ncrypt/crypt_gpgme.c:2884 ncrypt/smime.c:1778
+#: ncrypt/crypt_gpgme.c:2884 ncrypt/smime.c:1781
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Les dades següents es troben xifrades amb S/MIME: --]\n"
 
-#: ncrypt/crypt_gpgme.c:2927 ncrypt/smime.c:1884
+#: ncrypt/crypt_gpgme.c:2927 ncrypt/smime.c:1887
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Final de les dades signades amb S/MIME. --]\n"
 
-#: ncrypt/crypt_gpgme.c:2928 ncrypt/smime.c:1882
+#: ncrypt/crypt_gpgme.c:2928 ncrypt/smime.c:1885
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Final de les dades xifrades amb S/MIME. --]\n"
 
@@ -6656,31 +6656,31 @@ msgstr "No s’ha pogut endevinar el remitent."
 msgid "Invoking S/MIME..."
 msgstr "S’està invocant S/MIME…"
 
-#: ncrypt/dlg_gpgme.c:96 ncrypt/dlg_pgp.c:95
+#: ncrypt/dlg_gpgme.c:95 ncrypt/dlg_pgp.c:94
 msgid "Check key"
 msgstr "Comprova la clau"
 
-#: ncrypt/dlg_gpgme.c:215
+#: ncrypt/dlg_gpgme.c:214
 msgid "All matching keys are marked expired/revoked"
 msgstr "Totes les claus concordants estan marcades com a expirades o revocades"
 
 # Darrere va el patró corresponent.  ivb
-#: ncrypt/dlg_gpgme.c:244
+#: ncrypt/dlg_gpgme.c:243
 msgid "PGP and S/MIME keys matching"
 msgstr "Claus PGP i S/MIME que concordem amb"
 
 # Darrere va el patró corresponent.  ivb
-#: ncrypt/dlg_gpgme.c:246
+#: ncrypt/dlg_gpgme.c:245
 msgid "PGP keys matching"
 msgstr "Claus PGP que concordem amb"
 
 # Darrere va el patró corresponent.  ivb
-#: ncrypt/dlg_gpgme.c:248
+#: ncrypt/dlg_gpgme.c:247
 msgid "S/MIME keys matching"
 msgstr "Claus S/MIME que concorden amb"
 
 # Darrere va el patró corresponent.  ivb
-#: ncrypt/dlg_gpgme.c:250
+#: ncrypt/dlg_gpgme.c:249
 msgid "keys matching"
 msgstr "Claus que concordem amb"
 
@@ -6688,30 +6688,30 @@ msgstr "Claus que concordem amb"
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <john.doe@example.com>"
-#: ncrypt/dlg_gpgme.c:258
+#: ncrypt/dlg_gpgme.c:257
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 # Nom i àlies?  ivb
 #. L10N: e.g. 'S/MIME keys matching "John Doe".'
-#: ncrypt/dlg_gpgme.c:263
+#: ncrypt/dlg_gpgme.c:262
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s «%s»"
 
-#: ncrypt/dlg_pgp.c:222
+#: ncrypt/dlg_pgp.c:221
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Totes les claus concordants han expirat o estan revocades o inhabilitades"
 
 # Una adreça..  ivb
-#: ncrypt/dlg_pgp.c:242
+#: ncrypt/dlg_pgp.c:241
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "Claus PGP que concorden amb <%s>"
 
 # Un nom.  ivb
-#: ncrypt/dlg_pgp.c:244
+#: ncrypt/dlg_pgp.c:243
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "Claus PGP que concordem amb «%s»"
@@ -6986,7 +6986,7 @@ msgstr ""
 "[-- Error: No s’ha pogut crear el subprocés PGP. --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1794
+#: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1797
 #: postpone/postpone.c:435
 msgid "Decryption failed"
 msgstr "El desxifratge ha fallat"
@@ -7132,7 +7132,7 @@ msgstr "No hi ha fitxer de certificat."
 msgid "no mbox"
 msgstr "No hi ha bústia."
 
-#: ncrypt/smime.c:1286 ncrypt/smime.c:1455
+#: ncrypt/smime.c:1286 ncrypt/smime.c:1458
 msgid "No output from OpenSSL..."
 msgstr "OpenSSL no ha produit cap eixida…"
 
@@ -7145,7 +7145,7 @@ msgstr "No es pot signar: no s’ha indicat cap clau.  Empreu «signa com a»."
 msgid "Can't open OpenSSL subprocess"
 msgstr "No s’ha pogut obrir el subprocés OpenSSL."
 
-#: ncrypt/smime.c:1654 ncrypt/smime.c:1773
+#: ncrypt/smime.c:1657 ncrypt/smime.c:1776
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -7153,73 +7153,73 @@ msgstr ""
 "[-- Final de l’eixida d’OpenSSL. --]\n"
 "\n"
 
-#: ncrypt/smime.c:1731 ncrypt/smime.c:1743
+#: ncrypt/smime.c:1734 ncrypt/smime.c:1746
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Error: No s’ha pogut crear el subprocés OpenSSL. --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2019
+#: ncrypt/smime.c:2022
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME: (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2021
+#: ncrypt/smime.c:2024
 msgid "swaco"
 msgstr "sfgco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2029
+#: ncrypt/smime.c:2032
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, (o)portunista?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2031
+#: ncrypt/smime.c:2034
 #, fuzzy
 msgid "eswabco"
 msgstr "xsfgaco"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2038
+#: ncrypt/smime.c:2041
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar?"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2040
+#: ncrypt/smime.c:2043
 #, fuzzy
 msgid "eswabc"
 msgstr "xsfgac"
 
-#: ncrypt/smime.c:2106
+#: ncrypt/smime.c:2109
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "Trieu la família d’algorismes: (1) DES, (2) RC2, (3) AES, (c)lar?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2108
+#: ncrypt/smime.c:2111
 msgid "123c"
 msgstr "123c"
 
-#: ncrypt/smime.c:2111
+#: ncrypt/smime.c:2114
 msgid "(1) DES, (2) Triple-DES?"
 msgstr "(1) DES, (2) DES triple?"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2113
+#: ncrypt/smime.c:2116
 msgid "12"
 msgstr "12"
 
-#: ncrypt/smime.c:2127
+#: ncrypt/smime.c:2130
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2129 ncrypt/smime.c:2149
+#: ncrypt/smime.c:2132 ncrypt/smime.c:2152
 msgid "123"
 msgstr "123"
 
-#: ncrypt/smime.c:2147
+#: ncrypt/smime.c:2150
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
@@ -7430,17 +7430,17 @@ msgstr "Adjuncs."
 msgid "Next"
 msgstr "Segnt."
 
-#: pager/functions.c:62
+#: pager/functions.c:61
 msgid "Not available in this menu"
 msgstr "No es troba disponible en aquest menú"
 
-#: pager/functions.c:408 pager/functions.c:429 pager/functions.c:502
-#: pager/functions.c:523
+#: pager/functions.c:407 pager/functions.c:428 pager/functions.c:501
+#: pager/functions.c:522
 msgid "Bottom of message is shown"
 msgstr "El final del missatge ja és visible"
 
-#: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
-#: pager/functions.c:964
+#: pager/functions.c:453 pager/functions.c:545 pager/functions.c:558
+#: pager/functions.c:963
 msgid "Top of message is shown"
 msgstr "L’inici del missatge ja és visible"
 
@@ -7448,65 +7448,65 @@ msgstr "L’inici del missatge ja és visible"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:849
+#: pager/functions.c:848
 msgid "No text past headers"
 msgstr "No hi ha cap text després de les capçaleres"
 
-#: pager/functions.c:908 pager/functions.c:948
+#: pager/functions.c:907 pager/functions.c:947
 msgid "No more unquoted text after quoted text"
 msgstr "No hi ha més text sense citar després del text citat"
 
-#: pager/functions.c:930
+#: pager/functions.c:929
 msgid "No more quoted text"
 msgstr "No hi ha més text citat"
 
-#: pager/functions.c:995
+#: pager/functions.c:994
 msgid "Help is currently being shown"
 msgstr "Ja s’està mostrant l’ajuda"
 
-#: pager/functions.c:1051
+#: pager/functions.c:1050
 #, c-format
 msgid "Saved to: %s"
 msgstr ""
 
 #. L10N: Used for the $crypt_verify_sig prompt
-#: pager/message.c:195
+#: pager/message.c:193
 msgid "Verify signature?"
 msgstr "Voleu verificar la signatura?"
 
-#: pager/message.c:234
+#: pager/message.c:232
 msgid "Can't create display filter"
 msgstr "No s’ha pogut crear el filtre de visualització."
 
-#: pager/message.c:258
+#: pager/message.c:256
 msgid "Could not copy message"
 msgstr "No s’ha pogut copiar el missatge."
 
-#: pager/message.c:340
+#: pager/message.c:338
 msgid "Command: "
 msgstr "Ordre: "
 
-#: pager/message.c:368
+#: pager/message.c:366
 msgid "S/MIME signature successfully verified"
 msgstr "S’ha pogut verificar amb èxit la signatura S/MIME"
 
-#: pager/message.c:370
+#: pager/message.c:368
 msgid "S/MIME certificate owner does not match sender"
 msgstr "El propietari del certificat S/MIME no concorda amb el remitent"
 
-#: pager/message.c:374 pager/message.c:387
+#: pager/message.c:372 pager/message.c:385
 msgid "Warning: Part of this message has not been signed"
 msgstr "Avís: Part d’aquest missatge no ha estat signat"
 
-#: pager/message.c:378
+#: pager/message.c:376
 msgid "S/MIME signature could NOT be verified"
 msgstr "NO s’ha pogut verificar la signatura S/MIME"
 
-#: pager/message.c:385
+#: pager/message.c:383
 msgid "PGP signature successfully verified"
 msgstr "S’ha pogut verificar amb èxit la signatura PGP"
 
-#: pager/message.c:389
+#: pager/message.c:387
 msgid "PGP signature could NOT be verified"
 msgstr "NO s’ha pogut verificar la signatura PGP"
 
@@ -7559,16 +7559,16 @@ msgstr ""
 msgid "Command '%s' can only be used with bool/quad/number variables"
 msgstr ""
 
-#: pattern/compile.c:74 pattern/compile.c:161 pattern/compile.c:722
+#: pattern/compile.c:72 pattern/compile.c:159 pattern/compile.c:720
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Error a l’expressió: %s"
 
-#: pattern/compile.c:79 pattern/compile.c:166 pattern/compile.c:728
+#: pattern/compile.c:77 pattern/compile.c:164 pattern/compile.c:726
 msgid "Empty expression"
 msgstr "L’expressió és buida."
 
-#: pattern/compile.c:153
+#: pattern/compile.c:151
 #, fuzzy
 msgid "No search command defined"
 msgstr "No s’ha definit cap ordre de consulta"
@@ -7576,56 +7576,56 @@ msgstr "No s’ha definit cap ordre de consulta"
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  S’està invocant l’ordre de visualització automàtica: %s
-#: pattern/compile.c:188
+#: pattern/compile.c:186
 #, fuzzy, c-format
 msgid "Running search command: %s ..."
 msgstr "Ordre de visualització automàtica: %s"
 
-#: pattern/compile.c:306 pattern/compile.c:321
+#: pattern/compile.c:304 pattern/compile.c:319
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "El dia del mes no és vàlid: %s"
 
-#: pattern/compile.c:311 pattern/compile.c:335
+#: pattern/compile.c:309 pattern/compile.c:333
 #, c-format
 msgid "Invalid month: %s"
 msgstr "El mes no és vàlid: %s"
 
-#: pattern/compile.c:446
+#: pattern/compile.c:444
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "La data relativa no és vàlida: %s"
 
-#: pattern/compile.c:924 pattern/compile.c:1138
+#: pattern/compile.c:920 pattern/compile.c:1134
 msgid "empty pattern"
 msgstr "El patró és buit."
 
-#: pattern/compile.c:954 pattern/compile.c:1129
+#: pattern/compile.c:950 pattern/compile.c:1125
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "Error al patró a: %s"
 
-#: pattern/compile.c:981
+#: pattern/compile.c:977
 #, c-format
 msgid "missing pattern: %s"
 msgstr "Manca el patró: %s"
 
-#: pattern/compile.c:999 pattern/compile.c:1099
+#: pattern/compile.c:995 pattern/compile.c:1095
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "Els parèntesis no estan aparellats: %s"
 
-#: pattern/compile.c:1033
+#: pattern/compile.c:1029
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: El modificador de patró no és vàlid."
 
-#: pattern/compile.c:1038
+#: pattern/compile.c:1034
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: No es permet en aquest mode."
 
-#: pattern/compile.c:1061
+#: pattern/compile.c:1057
 msgid "missing parameter"
 msgstr "Manca un paràmetre."
 
@@ -7977,37 +7977,37 @@ msgstr "No hi ha més fils"
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
-#: pattern/message.c:104 pattern/message.c:253
+#: pattern/message.c:103 pattern/message.c:252
 #, fuzzy
 msgid "No current message"
 msgstr "No hi ha cap missatge no llegit."
 
-#: pattern/pattern.c:209 pattern/pattern.c:335 pattern/pattern.c:514
-#: pattern/pattern.c:670
+#: pattern/pattern.c:206 pattern/pattern.c:332 pattern/pattern.c:511
+#: pattern/pattern.c:666
 msgid "Compiling search pattern..."
 msgstr "S’està compilant el patró de cerca…"
 
-#: pattern/pattern.c:237 pattern/pattern.c:357
+#: pattern/pattern.c:234 pattern/pattern.c:354
 msgid "Executing command on matching messages..."
 msgstr "S’està executant l’ordre sobre els missatges concordants…"
 
-#: pattern/pattern.c:443
+#: pattern/pattern.c:440
 msgid "No messages matched criteria"
 msgstr "No hi ha cap missatge que concorde amb el criteri"
 
-#: pattern/pattern.c:455 pattern/pattern.c:613 pattern/pattern.c:766
+#: pattern/pattern.c:452 pattern/pattern.c:609 pattern/pattern.c:761
 msgid "Search interrupted"
 msgstr "S’ha interromput la cerca"
 
-#: pattern/pattern.c:545 pattern/pattern.c:701
+#: pattern/pattern.c:541 pattern/pattern.c:696
 msgid "Searching..."
 msgstr "S’està cercant…"
 
-#: pattern/pattern.c:561 pattern/pattern.c:717
+#: pattern/pattern.c:557 pattern/pattern.c:712
 msgid "Search hit bottom without finding match"
 msgstr "La cerca ha arribat al final sense trobar cap concordança."
 
-#: pattern/pattern.c:574 pattern/pattern.c:730
+#: pattern/pattern.c:570 pattern/pattern.c:725
 msgid "Search hit top without finding match"
 msgstr "La cerca ha arribat a l’inici sense trobar cap concordança."
 
@@ -8193,11 +8193,11 @@ msgstr "%s %s/%s (%d%%)"
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
 
-#: question/question.c:180
+#: question/question.c:179
 msgid "yes"
 msgstr "sí"
 
-#: question/question.c:181
+#: question/question.c:180
 msgid "no"
 msgstr "no"
 
@@ -8259,7 +8259,7 @@ msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Només es pot redactar al remitent d’una part de tipus «message/rfc822»."
 
 # És un error com els anteriors.  ivb
-#: score.c:152
+#: score.c:151
 msgid "Error: score: invalid number"
 msgstr "score: El número no és vàlid."
 
@@ -8273,25 +8273,25 @@ msgid "%s no longer exists"
 msgstr "«%s» ja no existeix."
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
-#: send/config.c:114
+#: send/config.c:113
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr ""
 
 #. L10N: $attribution_intro default format
-#: send/config.c:169
+#: send/config.c:168
 #, c-format
 msgid "On %d, %n wrote:"
 msgstr ""
 
 #. L10N: $forward_attribution_intro default format
-#: send/config.c:239
+#: send/config.c:238
 #, c-format
 msgid "----- Forwarded message from %f -----"
 msgstr ""
 
 #. L10N: $forward_attribution_trailer default format
-#: send/config.c:243
+#: send/config.c:242
 msgid "----- End forwarded message -----"
 msgstr ""
 
@@ -8513,19 +8513,19 @@ msgstr "No s’ha pogut obrir «%s»."
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "En preparar «Resent-From»: L’IDN no és vàlid: %s"
 
-#: send/sendmail.c:336
+#: send/sendmail.c:334
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail ha d’estar establerta per a poder enviar correu"
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  Error en enviar el missatge, el procés fill ha exit amb codi %d (%s).
-#: send/sendmail.c:441
+#: send/sendmail.c:439
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Error en enviament, el fill isqué amb codi %d (%s)"
 
-#: send/sendmail.c:453
+#: send/sendmail.c:451
 msgid "Output of the delivery process"
 msgstr "Eixida del procés de repartiment"
 
