@@ -3,7 +3,7 @@
  * Dump key bindings
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
@@ -34,12 +34,16 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
+#include "dump.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
-#include "parse/lib.h"
+#include "get.h"
+#include "init.h"
+#include "keymap.h"
+#include "menu.h"
 
 /**
  * print_bind - Display the bindings for one menu
@@ -51,7 +55,7 @@ int print_bind(enum MenuType menu, FILE *fp)
 {
   struct BindingInfoArray bia_bind = ARRAY_HEAD_INITIALIZER;
 
-  gather_menu(menu, &bia_bind, NULL);
+  gather_menu(menu, &bia_bind, NULL, true);
   if (ARRAY_EMPTY(&bia_bind))
     return 0;
 
@@ -59,12 +63,14 @@ int print_bind(enum MenuType menu, FILE *fp)
   const int wb0 = measure_column(&bia_bind, 0);
   const int wb1 = measure_column(&bia_bind, 1);
 
-  const char *menu_name = mutt_map_get_name(menu, MenuNames);
+  const char *menu_name = km_get_menu_name(menu);
 
   struct BindingInfo *bi = NULL;
   ARRAY_FOREACH(bi, &bia_bind)
   {
-    //XXX use description?
+    if (!bi->a[0])
+      continue;
+
     fprintf(fp, "bind %s %*s  %*s  # %s\n", menu_name, -wb0, bi->a[0], -wb1,
             bi->a[1], bi->a[2]);
   }
@@ -77,7 +83,7 @@ int print_bind(enum MenuType menu, FILE *fp)
   }
 
   ARRAY_FREE(&bia_bind);
-  return count;
+  return count - 1;
 }
 
 /**
@@ -111,18 +117,21 @@ int print_macro(enum MenuType menu, FILE *fp)
 {
   struct BindingInfoArray bia_macro = ARRAY_HEAD_INITIALIZER;
 
-  gather_menu(menu, NULL, &bia_macro);
+  gather_menu(menu, NULL, &bia_macro, true);
   if (ARRAY_EMPTY(&bia_macro))
     return 0;
 
   ARRAY_SORT(&bia_macro, binding_sort, NULL);
   const int wm0 = measure_column(&bia_macro, 0);
 
-  const char *menu_name = mutt_map_get_name(menu, MenuNames);
+  const char *menu_name = km_get_menu_name(menu);
 
   struct BindingInfo *bi = NULL;
   ARRAY_FOREACH(bi, &bia_macro)
   {
+    if (!bi->a[0])
+      continue;
+
     if (bi->a[2]) // description
     {
       fprintf(fp, "macro %s %*s  \"%s\"  \"%s\"\n", menu_name, -wm0, bi->a[0],
@@ -143,7 +152,7 @@ int print_macro(enum MenuType menu, FILE *fp)
   }
 
   ARRAY_FREE(&bia_macro);
-  return count;
+  return count - 1;
 }
 
 /**
@@ -159,7 +168,6 @@ void colon_macro(enum MenuType menu, FILE *fp)
     {
       if (print_macro(i, fp) > 0)
       {
-        //XXX need to elide last blank line
         fprintf(fp, "\n");
       }
     }
@@ -171,33 +179,20 @@ void colon_macro(enum MenuType menu, FILE *fp)
 }
 
 /**
- * parse_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
+ * dump_bind_macro - Dump a Menu's binds or macros to the Pager
+ * @param cmd   Command
+ * @param mtype Menu Type
+ * @param buf   Menu name, e.g. "index"
+ * @param err   Buffer for errors
  */
-enum CommandResult parse_bind_macro(const struct Command *cmd,
-                                    struct Buffer *line, struct Buffer *err)
+void dump_bind_macro(const struct Command *cmd, int mtype, struct Buffer *buf,
+                     struct Buffer *err)
 {
-  FILE *fp = NULL;
-  bool dump_all = false;
-  bool bind = (cmd->data == 0);
-  struct Buffer *token = buf_pool_get();
-  struct Buffer *tempfile = NULL;
-  enum CommandResult rc = MUTT_CMD_ERROR;
+  bool dump_all = (mtype == MENU_MAX);
 
-  if (!MoreArgs(line))
-    dump_all = true;
-  else
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
-
-  if (MoreArgs(line))
-  {
-    /* More arguments potentially means the user is using the
-     * ::command_t :bind command thus we delegate the task. */
-    goto done;
-  }
-
-  tempfile = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  fp = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp)
   {
     // L10N: '%s' is the file name of the temporary file
@@ -205,35 +200,17 @@ enum CommandResult parse_bind_macro(const struct Command *cmd,
     goto done;
   }
 
-  if (dump_all || mutt_istr_equal(buf_string(token), "all"))
-  {
-    if (bind)
-      colon_bind(MENU_MAX, fp);
-    else
-      colon_macro(MENU_MAX, fp);
-  }
+  if (cmd->id == CMD_BIND)
+    colon_bind(mtype, fp);
   else
-  {
-    const int menu = mutt_map_get_value(buf_string(token), MenuNames);
-    if (menu == -1)
-    {
-      // L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-      buf_printf(err, _("%s: no such menu"), buf_string(token));
-      goto done;
-    }
-
-    if (bind)
-      colon_bind(menu, fp);
-    else
-      colon_macro(menu, fp);
-  }
+    colon_macro(mtype, fp);
 
   if (ftello(fp) == 0)
   {
     // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
     //       it might also be 'all' when all menus are affected.
-    buf_printf(err, bind ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
-               dump_all ? "all" : buf_string(token));
+    buf_printf(err, (cmd->id == CMD_BIND) ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
+               dump_all ? "all" : buf_string(buf));
     goto done;
   }
   mutt_file_fclose(&fp);
@@ -248,14 +225,10 @@ enum CommandResult parse_bind_macro(const struct Command *cmd,
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
-  rc = MUTT_CMD_SUCCESS;
 
 done:
   mutt_file_fclose(&fp);
-  buf_pool_release(&token);
   buf_pool_release(&tempfile);
-
-  return rc;
 }
 
 /**
@@ -266,6 +239,11 @@ int binding_sort(const void *a, const void *b, void *sdata)
   const struct BindingInfo *x = (const struct BindingInfo *) a;
   const struct BindingInfo *y = (const struct BindingInfo *) b;
 
+  // Sort by SubMenu
+  if (x->order != y->order)
+    return mutt_numeric_cmp(x->order, y->order);
+
+  // Sort by Keybinding
   int rc = mutt_str_cmp(x->a[0], y->a[0]);
   if (rc != 0)
     return rc;
@@ -330,24 +308,28 @@ void escape_macro(const char *macro, struct Buffer *buf)
 
 /**
  * help_lookup_function - Find a keybinding for an operation
+ * @param md   Menu Definition
  * @param op   Operation, e.g. OP_DELETE
- * @param menu Current Menu, e.g. #MENU_PAGER
  * @retval str  Key binding
  * @retval NULL No key binding found
  */
-static const char *help_lookup_function(int op, enum MenuType menu)
+const char *help_lookup_function(const struct MenuDefinition *md, int op)
 {
-  if ((menu != MENU_PAGER) && (menu != MENU_EDITOR) && (menu != MENU_GENERIC))
+  struct SubMenu **smp = NULL;
+
+  ARRAY_FOREACH(smp, &md->submenus)
   {
-    /* first look in the generic map for the function */
-    const char *fn_name = mutt_get_func(OpGeneric, op);
-    if (fn_name)
-      return fn_name;
+    struct SubMenu *sm = *smp;
+
+    for (int i = 0; sm->functions[i].name; i++)
+    {
+      const struct MenuFuncOp *mfo = &sm->functions[i];
+      if (mfo->op == op)
+        return mfo->name;
+    }
   }
 
-  const struct MenuFuncOp *funcs = km_get_table(menu);
-
-  return mutt_get_func(funcs, op);
+  return "UNKNOWN";
 }
 
 /**
@@ -355,51 +337,77 @@ static const char *help_lookup_function(int op, enum MenuType menu)
  * @param[in]  menu      Menu type
  * @param[out] bia_bind  Array for bind  results (may be NULL)
  * @param[out] bia_macro Array for macro results (may be NULL)
+ * @param[in]  one_submenu Only parse the first SubMenu
  */
 void gather_menu(enum MenuType menu, struct BindingInfoArray *bia_bind,
-                 struct BindingInfoArray *bia_macro)
+                 struct BindingInfoArray *bia_macro, bool one_submenu)
 {
   struct Buffer *key_binding = buf_pool_get();
   struct Buffer *macro = buf_pool_get();
 
-  struct Keymap *map = NULL;
-  STAILQ_FOREACH(map, &Keymaps[menu], entries)
+  struct MenuDefinition *md = NULL;
+  ARRAY_FOREACH(md, &MenuDefs)
   {
-    struct BindingInfo bi = { 0 };
+    if (md->id == menu)
+      break;
+  }
 
-    buf_reset(key_binding);
-    keymap_expand_key(map, key_binding);
+  struct SubMenu **smp = NULL;
 
-    if (map->op == OP_MACRO)
+  ARRAY_FOREACH(smp, &md->submenus)
+  {
+    struct SubMenu *sm = *smp;
+    const char *name = sm->parent->name;
+
+    struct BindingInfo bi_label = { ARRAY_FOREACH_IDX_smp, { NULL, NULL, name } };
+
+    if (bia_bind)
+      ARRAY_ADD(bia_bind, bi_label);
+    if (bia_macro)
+      ARRAY_ADD(bia_macro, bi_label);
+
+    struct Keymap *map = NULL;
+    STAILQ_FOREACH(map, &sm->keymaps, entries)
     {
-      if (!bia_macro || (map->op == OP_NULL))
-        continue;
+      struct BindingInfo bi = { ARRAY_FOREACH_IDX_smp, { NULL, NULL, NULL } };
 
-      buf_reset(macro);
-      escape_macro(map->macro, macro);
-      bi.a[0] = buf_strdup(key_binding);
-      bi.a[1] = buf_strdup(macro);
-      bi.a[2] = map->desc;
-      ARRAY_ADD(bia_macro, bi);
-    }
-    else
-    {
-      if (!bia_bind)
-        continue;
+      buf_reset(key_binding);
+      keymap_expand_key(map, key_binding);
 
-      if (map->op == OP_NULL)
+      if (map->op == OP_MACRO)
       {
-        bi.a[0] = buf_strdup(key_binding);
-        bi.a[1] = "noop";
-        ARRAY_ADD(bia_bind, bi);
-        continue;
-      }
+        if (!bia_macro || (map->op == OP_NULL))
+          continue;
 
-      bi.a[0] = buf_strdup(key_binding);
-      bi.a[1] = help_lookup_function(map->op, menu);
-      bi.a[2] = _(opcodes_get_description(map->op));
-      ARRAY_ADD(bia_bind, bi);
+        buf_reset(macro);
+        escape_macro(map->macro, macro);
+        bi.a[0] = buf_strdup(key_binding);
+        bi.a[1] = buf_strdup(macro);
+        bi.a[2] = map->desc;
+        ARRAY_ADD(bia_macro, bi);
+      }
+      else
+      {
+        if (!bia_bind)
+          continue;
+
+        if (map->op == OP_NULL)
+        {
+          bi.a[0] = buf_strdup(key_binding);
+          bi.a[1] = "noop";
+          ARRAY_ADD(bia_bind, bi);
+          continue;
+        }
+
+        bi.a[0] = buf_strdup(key_binding);
+        bi.a[1] = help_lookup_function(md, map->op);
+        bi.a[2] = _(opcodes_get_description(map->op));
+        ARRAY_ADD(bia_bind, bi);
+      }
     }
+
+    if (one_submenu)
+      break;
   }
 
   buf_pool_release(&key_binding);
@@ -428,33 +436,76 @@ int measure_column(struct BindingInfoArray *bia, int col)
 
 /**
  * gather_unbound - Gather info about unbound functions for one menu
- * @param funcs       List of functions
- * @param km_menu     Keymaps for the menu
- * @param km_aux      Keymaps for generic
- * @param bia_unbound Unbound functions
+ * @param[in]  mtype       Menu Type, e.g. #MENU_INDEX
+ * @param[out] bia_unbound Unbound functions
  * @retval num Number of unbound functions
  */
-int gather_unbound(const struct MenuFuncOp *funcs, const struct KeymapList *km_menu,
-                   const struct KeymapList *km_aux, struct BindingInfoArray *bia_unbound)
+int gather_unbound(enum MenuType mtype, struct BindingInfoArray *bia_unbound)
 {
-  if (!funcs)
+  if (!bia_unbound)
     return 0;
 
-  for (int i = 0; funcs[i].name; i++)
+  struct MenuDefinition *md = NULL;
+  ARRAY_FOREACH(md, &MenuDefs)
   {
-    if (funcs[i].flags & MFF_DEPRECATED)
-      continue;
+    if (md->id == mtype)
+      break;
+  }
 
-    if (!is_bound(km_menu, funcs[i].op) &&
-        (!km_aux || !is_bound(km_aux, funcs[i].op)))
+  struct SubMenu **smp = NULL;
+
+  ARRAY_FOREACH(smp, &md->submenus)
+  {
+    struct SubMenu *sm = *smp;
+
+    for (int i = 0; sm->functions[i].name; i++)
     {
+      const struct MenuFuncOp *mfo = &sm->functions[i];
+
+      if (mfo->flags & MFF_DEPRECATED)
+        continue;
+
+      if (is_bound(md, mfo->op))
+        continue;
+
       struct BindingInfo bi = { 0 };
       bi.a[0] = NULL;
-      bi.a[1] = funcs[i].name;
-      bi.a[2] = _(opcodes_get_description(funcs[i].op));
+      bi.a[1] = mfo->name;
+      bi.a[2] = _(opcodes_get_description(mfo->op));
       ARRAY_ADD(bia_unbound, bi);
     }
   }
 
   return ARRAY_SIZE(bia_unbound);
+}
+
+/**
+ * km_get_func_array - Get array of function names for a Menu
+ * @param mtype Menu type
+ */
+struct StringArray km_get_func_array(enum MenuType mtype)
+{
+  struct StringArray fna = ARRAY_HEAD_INITIALIZER;
+
+  struct MenuDefinition *md = NULL;
+  ARRAY_FOREACH(md, &MenuDefs)
+  {
+    if (md->id != mtype)
+      continue;
+
+    struct SubMenu **smp = NULL;
+
+    ARRAY_FOREACH(smp, &md->submenus)
+    {
+      struct SubMenu *sm = *smp;
+
+      for (int i = 0; sm->functions[i].name; i++)
+      {
+        ARRAY_ADD(&fna, sm->functions[i].name);
+      }
+    }
+    break;
+  }
+
+  return fna;
 }

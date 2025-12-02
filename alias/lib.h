@@ -54,12 +54,13 @@ struct Alias;
 struct Buffer;
 struct ConfigSubset;
 struct Envelope;
+struct SubMenu;
 struct TagList;
 
 extern const struct CompleteOps CompleteAliasOps;
 
 void alias_init     (void);
-void alias_init_keys(void);
+void alias_init_keys(struct SubMenu *sm_generic);
 void alias_cleanup  (void);
 
 void                alias_create           (struct AddressList *al, const struct ConfigSubset *sub);

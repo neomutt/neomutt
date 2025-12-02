@@ -246,6 +246,9 @@ bool keymap_expand_key(struct Keymap *km, struct Buffer *buf)
  */
 void keymap_expand_string(const char *str, struct Buffer *buf)
 {
+  if (!str)
+    return;
+
   for (; *str; str++)
   {
     keymap_get_name(*str, buf);

@@ -3,7 +3,7 @@
  * Alias functions
  *
  * @authors
- * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
@@ -56,7 +56,7 @@
 /**
  * OpAlias - Functions for the Alias Menu
  */
-const struct MenuFuncOp OpAlias[] = { /* map: alias */
+static const struct MenuFuncOp OpAlias[] = { /* map: alias */
   { "delete-entry",                  OP_DELETE },
   { "exit",                          OP_EXIT },
   { "limit",                         OP_MAIN_LIMIT },
@@ -125,10 +125,22 @@ static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
 /**
  * alias_init_keys - Initialise the Alias Keybindings - Implements ::init_keys_api
  */
-void alias_init_keys(void)
+void alias_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(AliasDefaultBindings, MENU_ALIAS);
-  km_menu_add_bindings(QueryDefaultBindings, MENU_QUERY);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpAlias);
+  md = km_register_menu(MENU_ALIAS, "alias");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, AliasDefaultBindings);
+
+  sm = km_register_submenu(OpQuery);
+  md = km_register_menu(MENU_QUERY, "query");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, QueryDefaultBindings);
 }
 
 /**

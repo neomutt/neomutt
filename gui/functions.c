@@ -3,7 +3,7 @@
  * Definitions of user functions
  *
  * @authors
- * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -49,6 +49,7 @@
 #else
 #include <stddef.h>
 #include "key/lib.h"
+#include "menu/lib.h"
 #include "opcodes.h"
 #endif
 #endif
@@ -57,7 +58,7 @@
 /**
  * OpDialog - Functions for Simple Dialogs
  */
-const struct MenuFuncOp OpDialog[] = {
+static const struct MenuFuncOp OpDialog[] = {
   { "quit",                          OP_QUIT },
   { "exit",                          OP_EXIT },
   { NULL, 0 },
@@ -66,7 +67,7 @@ const struct MenuFuncOp OpDialog[] = {
 /**
  * OpGeneric - Functions for the Generic Menu
  */
-const struct MenuFuncOp OpGeneric[] = { /* map: generic */
+static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   /*
   ** <para>
   ** The <emphasis>generic</emphasis> menu is not a real menu, but specifies common functions
@@ -187,8 +188,22 @@ static const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
 /**
  * generic_init_keys - Initialise the Generic Keybindings
  */
-void generic_init_keys(void)
+struct SubMenu *generic_init_keys(void)
 {
-  km_menu_add_bindings(DialogDefaultBindings, MENU_DIALOG);
-  km_menu_add_bindings(GenericDefaultBindings, MENU_GENERIC);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+  struct SubMenu *sm_generic = NULL;
+
+  sm_generic = km_register_submenu(OpGeneric);
+  md = km_register_menu(MENU_GENERIC, "generic");
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, GenericDefaultBindings);
+
+  sm = km_register_submenu(OpDialog);
+  md = km_register_menu(MENU_DIALOG, "dialog");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, DialogDefaultBindings);
+
+  return sm_generic;
 }

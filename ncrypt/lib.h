@@ -78,6 +78,7 @@ struct Envelope;
 struct Mailbox;
 struct Message;
 struct State;
+struct SubMenu;
 
 typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
 #define SEC_NO_FLAGS                  0   ///< No flags are set
@@ -147,7 +148,7 @@ typedef uint16_t KeyFlags;                  ///< Flags describing PGP/SMIME keys
 
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
-void pgp_init_keys(void);
+void pgp_init_keys(struct SubMenu *sm_generic);
 
 /* crypt.c */
 void          crypt_extract_keys_from_messages         (struct Mailbox *m, struct EmailArray *ea);

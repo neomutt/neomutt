@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2021-2025 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
@@ -59,6 +59,7 @@
 #include "progress/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
+#include "sidebar/lib.h"
 #include "external.h"
 #include "functions.h"
 #include "globals.h"
@@ -87,7 +88,7 @@
 /**
  * OpIndex - Functions for the Index Menu
  */
-const struct MenuFuncOp OpIndex[] = { /* map: index */
+static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "alias-dialog",                  OP_ALIAS_DIALOG },
 #ifdef USE_AUTOCRYPT
   { "autocrypt-acct-menu",           OP_AUTOCRYPT_ACCT_MENU },
@@ -190,17 +191,6 @@ const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "save-message",                  OP_SAVE },
   { "set-flag",                      OP_MAIN_SET_FLAG },
   { "show-limit",                    OP_MAIN_SHOW_LIMIT },
-  { "sidebar-first",                 OP_SIDEBAR_FIRST },
-  { "sidebar-last",                  OP_SIDEBAR_LAST },
-  { "sidebar-next",                  OP_SIDEBAR_NEXT },
-  { "sidebar-next-new",              OP_SIDEBAR_NEXT_NEW },
-  { "sidebar-open",                  OP_SIDEBAR_OPEN },
-  { "sidebar-page-down",             OP_SIDEBAR_PAGE_DOWN },
-  { "sidebar-page-up",               OP_SIDEBAR_PAGE_UP },
-  { "sidebar-prev",                  OP_SIDEBAR_PREV },
-  { "sidebar-prev-new",              OP_SIDEBAR_PREV_NEW },
-  { "sidebar-toggle-virtual",        OP_SIDEBAR_TOGGLE_VIRTUAL },
-  { "sidebar-toggle-visible",        OP_SIDEBAR_TOGGLE_VISIBLE },
   { "sort-mailbox",                  OP_SORT },
   { "sort-reverse",                  OP_SORT_REVERSE },
   { "sync-mailbox",                  OP_MAIN_SYNC_FOLDER },
@@ -334,9 +324,18 @@ enum ResolveMethod
 /**
  * index_init_keys - Initialise the Index Keybindings - Implements ::init_keys_api
  */
-void index_init_keys(void)
+void index_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(IndexDefaultBindings, MENU_INDEX);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm_index = NULL;
+  struct SubMenu *sm_sidebar = sidebar_get_submenu();
+
+  sm_index = km_register_submenu(OpIndex);
+  md = km_register_menu(MENU_INDEX, "index");
+  km_menu_add_submenu(md, sm_index);
+  km_menu_add_submenu(md, sm_sidebar);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, IndexDefaultBindings);
 }
 
 /**
@@ -2005,9 +2004,10 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
       snprintf(macro, sizeof(macro), "<search>~i '%s'\n", buf_string(msg_id));
       buf_pool_release(&msg_id);
 
+      struct MenuDefinition *md = menu_find(MENU_INDEX);
       /* L10N: "message hotkey" is the key bindings menu description of a
          macro created by <mark-message>. */
-      km_bind(str, MENU_INDEX, OP_MACRO, macro, _("message hotkey"), NULL);
+      km_bind(md, str, OP_MACRO, macro, _("message hotkey"), NULL);
 
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed

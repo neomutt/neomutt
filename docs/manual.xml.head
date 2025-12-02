@@ -4640,6 +4640,7 @@ set alias_file=~/.mail_aliases
                 <entry>:</entry>
                 <entry><literal>&lt;enter-command&gt;</literal></entry>
               </row>
+
               <row>
                 <entry>generic</entry>
                 <entry>?</entry>
@@ -4647,36 +4648,6 @@ set alias_file=~/.mail_aliases
               </row>
               <row>
                 <entry>generic</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>alias</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>alias</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>attach</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>attach</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>browser</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>browser</entry>
                 <entry>q</entry>
                 <entry><literal>&lt;exit&gt;</literal></entry>
               </row>
@@ -4701,26 +4672,6 @@ set alias_file=~/.mail_aliases
                 <entry><literal>&lt;display-message&gt;</literal></entry>
               </row>
               <row>
-                <entry>index</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>index</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>compose</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>compose</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
-              </row>
-              <row>
                 <entry>pager</entry>
                 <entry>?</entry>
                 <entry><literal>&lt;help&gt;</literal></entry>
@@ -4734,56 +4685,6 @@ set alias_file=~/.mail_aliases
                 <entry>pager</entry>
                 <entry>:</entry>
                 <entry><literal>&lt;enter-command&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>pgp</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>pgp</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>smime</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>smime</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>postpone</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>postpone</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>query</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>query</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>mix</entry>
-                <entry>?</entry>
-                <entry><literal>&lt;help&gt;</literal></entry>
-              </row>
-              <row>
-                <entry>mix</entry>
-                <entry>q</entry>
-                <entry><literal>&lt;exit&gt;</literal></entry>
               </row>
             </tbody>
           </tgroup>

@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
@@ -36,14 +36,13 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "ifdef.h"
 #include "color/lib.h"
 #include "key/lib.h"
-#include "menu/lib.h"
 #include "parse/lib.h"
 #include "store/lib.h"
 #include "version.h"
@@ -56,17 +55,9 @@
  */
 static bool is_function(const char *name)
 {
-  for (size_t i = 0; MenuNames[i].name; i++)
-  {
-    const struct MenuFuncOp *fns = km_get_table(MenuNames[i].value);
-    if (!fns)
-      continue;
+  int op = km_get_op(name);
 
-    for (int j = 0; fns[j].name; j++)
-      if (mutt_str_equal(name, fns[j].name))
-        return true;
-  }
-  return false;
+  return (op != OP_NULL);
 }
 
 /**

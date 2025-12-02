@@ -3,7 +3,7 @@
  * Help Bar
  *
  * @authors
- * Copyright (C) 2020-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -88,8 +88,7 @@
  */
 static bool make_help(enum MenuType menu, int op, const char *txt, struct Buffer *buf)
 {
-  if (keymap_expand_key(km_find_func(menu, op), buf) ||
-      keymap_expand_key(km_find_func(MENU_GENERIC, op), buf))
+  if (keymap_expand_key(km_find_func(menu, op), buf))
   {
     buf_addch(buf, ':');
     buf_addstr(buf, txt);

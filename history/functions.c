@@ -69,6 +69,7 @@ static const struct HistoryFunction HistoryFunctions[] = {
   // clang-format off
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
   { OP_QUIT,                   op_quit },
+  { OP_EXIT,                   op_quit },
   { 0, NULL },
   // clang-format on
 };

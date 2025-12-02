@@ -3,7 +3,7 @@
  * Browser functions
  *
  * @authors
- * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
@@ -69,7 +69,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op);
 /**
  * OpBrowser - Functions for the file Browser Menu
  */
-const struct MenuFuncOp OpBrowser[] = { /* map: browser */
+static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "catchup",                       OP_CATCHUP },
   { "change-dir",                    OP_CHANGE_DIRECTORY },
   { "check-new",                     OP_CHECK_NEW },
@@ -129,9 +129,16 @@ static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
 /**
  * browser_init_keys - Initialise the Browser Keybindings - Implements ::init_keys_api
  */
-void browser_init_keys(void)
+void browser_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(BrowserDefaultBindings, MENU_BROWSER);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpBrowser);
+  md = km_register_menu(MENU_BROWSER, "browser");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, BrowserDefaultBindings);
 }
 
 /**

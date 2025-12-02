@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
  * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
@@ -149,7 +149,6 @@ void mutt_help(enum MenuType menu)
 {
   struct BindingInfoArray bia_bind = ARRAY_HEAD_INITIALIZER;
   struct BindingInfoArray bia_macro = ARRAY_HEAD_INITIALIZER;
-  struct BindingInfoArray bia_gen = ARRAY_HEAD_INITIALIZER;
   struct BindingInfoArray bia_unbound = ARRAY_HEAD_INITIALIZER;
   struct Buffer *banner = NULL;
   struct Buffer *tempfile = NULL;
@@ -158,7 +157,7 @@ void mutt_help(enum MenuType menu)
   // ---------------------------------------------------------------------------
   // Gather the data
 
-  gather_menu(menu, &bia_bind, &bia_macro);
+  gather_menu(menu, &bia_bind, &bia_macro, false);
 
   ARRAY_SORT(&bia_bind, binding_sort, NULL);
   ARRAY_SORT(&bia_macro, binding_sort, NULL);
@@ -166,24 +165,9 @@ void mutt_help(enum MenuType menu)
   int wb0 = measure_column(&bia_bind, 0);
   int wb1 = measure_column(&bia_bind, 1);
 
-  const bool need_generic = (menu != MENU_EDITOR) && (menu != MENU_PAGER) &&
-                            (menu != MENU_GENERIC);
-  if (need_generic)
-  {
-    gather_menu(MENU_GENERIC, &bia_gen, &bia_macro);
-
-    ARRAY_SORT(&bia_gen, binding_sort, NULL);
-    wb0 = MAX(wb0, measure_column(&bia_gen, 0));
-    wb1 = MAX(wb1, measure_column(&bia_gen, 1));
-  }
-
   const int wm0 = measure_column(&bia_macro, 0);
 
-  const struct MenuFuncOp *funcs = km_get_table(menu);
-  gather_unbound(funcs, &Keymaps[menu], NULL, &bia_unbound);
-
-  if (need_generic)
-    gather_unbound(OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu], &bia_unbound);
+  gather_unbound(menu, &bia_unbound);
 
   ARRAY_SORT(&bia_unbound, binding_sort, NULL);
   const int wu1 = measure_column(&bia_unbound, 1);
@@ -200,33 +184,47 @@ void mutt_help(enum MenuType menu)
     goto cleanup;
   }
 
-  const char *menu_name = mutt_map_get_name(menu, MenuNames);
-
-  fprintf(fp, "%s bindings\n", menu_name);
-  fprintf(fp, "\n");
+  const char *menu_name = NULL;
   ARRAY_FOREACH(bi, &bia_bind)
   {
+    if (!bi->a[0])
+    {
+      menu_name = bi->a[2];
+      continue;
+    }
+
+    if (menu_name)
+    {
+      if (ARRAY_FOREACH_IDX_bi > 0)
+        fprintf(fp, "\n");
+
+      fprintf(fp, "%s bindings\n", menu_name);
+      fprintf(fp, "\n");
+      menu_name = NULL;
+    }
+
     // key text description
     fprintf(fp, "%*s  %*s  %s\n", -wb0, bi->a[0], -wb1, bi->a[1], bi->a[2]);
   }
-  fprintf(fp, "\n");
 
-  if (need_generic)
-  {
-    fprintf(fp, "%s bindings\n", "generic");
-    fprintf(fp, "\n");
-    ARRAY_FOREACH(bi, &bia_gen)
-    {
-      // key function description
-      fprintf(fp, "%*s  %*s  %s\n", -wb0, bi->a[0], -wb1, bi->a[1], bi->a[2]);
-    }
-    fprintf(fp, "\n");
-  }
-
-  fprintf(fp, "macros\n");
-  fprintf(fp, "\n");
   ARRAY_FOREACH(bi, &bia_macro)
   {
+    if (!bi->a[0])
+    {
+      menu_name = bi->a[2];
+      continue;
+    }
+
+    if (menu_name)
+    {
+      if (ARRAY_FOREACH_IDX_bi > 0)
+        fprintf(fp, "\n");
+
+      fprintf(fp, "%s macros\n", menu_name);
+      fprintf(fp, "\n");
+      menu_name = NULL;
+    }
+
     if (bi->a[2]) // description
     {
       // key description, macro-text, blank line
@@ -263,6 +261,7 @@ void mutt_help(enum MenuType menu)
   pview.flags = MUTT_PAGER_MARKER | MUTT_PAGER_NOWRAP | MUTT_PAGER_STRIPES;
 
   banner = buf_pool_get();
+  menu_name = km_get_menu_name(menu);
   buf_printf(banner, _("Help for %s"), menu_name);
   pdata.fname = buf_string(tempfile);
   pview.banner = buf_string(banner);
@@ -281,15 +280,9 @@ cleanup:
     FREE(&bi->a[1]);
   }
 
-  ARRAY_FOREACH(bi, &bia_gen)
-  {
-    FREE(&bi->a[0]);
-  }
-
   buf_pool_release(&banner);
   buf_pool_release(&tempfile);
   ARRAY_FREE(&bia_bind);
   ARRAY_FREE(&bia_macro);
-  ARRAY_FREE(&bia_gen);
   ARRAY_FREE(&bia_unbound);
 }

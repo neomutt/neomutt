@@ -3,7 +3,7 @@
  * Attachment functions
  *
  * @authors
- * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
@@ -59,7 +59,7 @@ static const char *Function_not_permitted_in_attach_message_mode = N_(
 /**
  * OpAttachment - Functions for the Attachment Menu
  */
-const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
+static const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
   { "bounce-message",                OP_BOUNCE_MESSAGE },
   { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
   { "collapse-parts",                OP_ATTACHMENT_COLLAPSE },
@@ -126,9 +126,16 @@ static const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment
 /**
  * attach_init_keys - Initialise the Attach Keybindings - Implements ::init_keys_api
  */
-void attach_init_keys(void)
+void attach_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(AttachmentDefaultBindings, MENU_ATTACHMENT);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpAttachment);
+  md = km_register_menu(MENU_ATTACHMENT, "attach");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, AttachmentDefaultBindings);
 }
 
 /**

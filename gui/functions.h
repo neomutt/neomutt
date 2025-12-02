@@ -23,11 +23,6 @@
 #ifndef MUTT_FUNCTIONS_H
 #define MUTT_FUNCTIONS_H
 
-#include "key/lib.h"
-
-extern const struct MenuFuncOp OpDialog[];
-extern const struct MenuFuncOp OpGeneric[];
-
-void generic_init_keys(void);
+struct SubMenu *generic_init_keys(void);
 
 #endif /* MUTT_FUNCTIONS_H */

@@ -26,8 +26,6 @@
 #include "config.h"
 #include "mutt/lib.h" // IWYU pragma: keep
 
-extern const struct Mapping MenuNames[];
-
 /**
  * enum MenuType - Types of GUI selections
  */
@@ -48,6 +46,7 @@ enum MenuType
   MENU_PGP,              ///< PGP encryption menu
   MENU_POSTPONED,        ///< Select a postponed email
   MENU_QUERY,            ///< Select from results of external query
+  MENU_SIDEBAR,          ///< Sidebar menu
   MENU_SMIME,            ///< SMIME encryption menu
   MENU_MAX,
 };
