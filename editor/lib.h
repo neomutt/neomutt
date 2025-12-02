@@ -48,6 +48,8 @@
 struct Buffer;
 struct CompleteOps;
 
+void editor_init_keys(void);
+
 int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complete, enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata);
 void replace_part(struct EnterState *es, size_t from, const char *buf);
 

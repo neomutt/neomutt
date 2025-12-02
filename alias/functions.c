@@ -89,7 +89,7 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
 /**
  * AliasDefaultBindings - Key bindings for the Alias Menu
  */
-const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
+static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_DELETE,                             "d" },
   { OP_EXIT,                               "q" },
   { OP_MAIL,                               "m" },
@@ -106,7 +106,7 @@ const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
 /**
  * QueryDefaultBindings - Key bindings for the external Query Menu
  */
-const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
+static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_CREATE_ALIAS,                       "a" },
   { OP_EXIT,                               "q" },
   { OP_MAIL,                               "m" },
@@ -121,6 +121,15 @@ const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * alias_init_keys - Initialise the Alias Keybindings - Implements ::init_keys_api
+ */
+void alias_init_keys(void)
+{
+  km_menu_add_bindings(AliasDefaultBindings, MENU_ALIAS);
+  km_menu_add_bindings(QueryDefaultBindings, MENU_QUERY);
+}
 
 /**
  * op_create_alias - create an alias from a message sender - Implements ::alias_function_t - @ingroup alias_function_api

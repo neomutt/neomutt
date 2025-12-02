@@ -82,6 +82,8 @@ extern const struct Mapping IndexNewsHelp[];
 
 extern const struct ExpandoDefinition StatusFormatDef[];
 
+void index_init_keys(void);
+
 void                    change_folder_mailbox   (struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
 struct Mailbox *        change_folder_notmuch   (struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
 void                    change_folder_string    (struct Menu *menu, struct Buffer *buf, int *oldcount, struct IndexSharedData *shared, bool read_only);

@@ -61,7 +61,7 @@ const struct MenuFuncOp OpSmime[] = { /* map: smime */
 /**
  * PgpDefaultBindings - Key bindings for the Pgp Menu
  */
-const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
+static const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
   { OP_EXIT,                               "q" },
   { OP_VERIFY_KEY,                         "c" },
   { OP_VIEW_ID,                            "%" },
@@ -71,7 +71,7 @@ const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
 /**
  * SmimeDefaultBindings - Key bindings for the Smime Menu
  */
-const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
+static const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
   { OP_EXIT,                               "q" },
 #ifdef CRYPT_BACKEND_GPGME
   { OP_VERIFY_KEY,                         "c" },
@@ -80,3 +80,12 @@ const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * pgp_init_keys - Initialise the PGP Keybindings - Implements ::init_keys_api
+ */
+void pgp_init_keys(void)
+{
+  km_menu_add_bindings(PgpDefaultBindings, MENU_PGP);
+  km_menu_add_bindings(SmimeDefaultBindings, MENU_SMIME);
+}

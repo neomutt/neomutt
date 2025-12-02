@@ -29,6 +29,7 @@
 extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
 
 void                   km_init              (void);
+void                   km_menu_add_bindings (const struct MenuOpSeq *map, enum MenuType mtype);
 void                   km_set_abort_key     (void);
 void                   km_cleanup           (void);
 

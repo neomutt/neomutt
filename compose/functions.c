@@ -152,7 +152,7 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
 /**
  * ComposeDefaultBindings - Key bindings for the Compose Menu
  */
-const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
+static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACHMENT_ATTACH_FILE,             "a" },
   { OP_ATTACHMENT_ATTACH_KEY,              "\033k" },          // <Alt-k>
   { OP_ATTACHMENT_ATTACH_MESSAGE,          "A" },
@@ -211,6 +211,14 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * compose_init_keys - Initialise the Compose Keybindings - Implements ::init_keys_api
+ */
+void compose_init_keys(void)
+{
+  km_menu_add_bindings(ComposeDefaultBindings, MENU_COMPOSE);
+}
 
 /**
  * check_count - Check if there are any attachments
