@@ -8015,9 +8015,8 @@ msgid "No newsgroup specified"
 msgstr "Nenurodyta jokia naujienų grupė"
 
 #: send/send.c:2711
-#, fuzzy
 msgid "No recipients specified in To. Send anyway?"
-msgstr "Nenurodyti jokie gavėjai"
+msgstr "Nenurodyti jokie gavėjai To: lauke.  Vistiek išsiųsti?"
 
 #: send/send.c:2752
 msgid "Missing encryption key; mail not sent"
@@ -8179,7 +8178,7 @@ msgstr "Užklausti NeoMutt konfigūracijos informacijos"
 
 #: usage.c:85
 msgid "neomutt -A <alias> [...]             Lookup email aliases"
-msgstr "neomutt -A <aliasas> [...]           Rasti el. pašto aliasą"
+msgstr "neomutt -A <aliasas> [...]           Rasti el. pašto aliasus"
 
 #: usage.c:86
 msgid "        -D [-D] [-O] [-S]            Dump the config"
@@ -8232,14 +8231,12 @@ msgstr "        -- <adresas> [...]           Pridėti To: adresus"
 
 #. L10N: TUI Help -- `neomutt -h tui`
 #: usage.c:102 usage.c:293
-#, fuzzy
 msgid "Start NeoMutt's TUI (Terminal User Interface)"
-msgstr "Start NeoMutt's TUI (Terminal User Interface)"
+msgstr "Paleisti NeoMutt TUI (terminalo vartotojo sąsasją)"
 
 #: usage.c:103
-#, fuzzy
 msgid "neomutt                              Start NeoMutt's TUI"
-msgstr "neomutt                              Start NeoMutt's TUI"
+msgstr "neomutt                              Paleisti NeoMutt TUI"
 
 #: usage.c:104
 msgid "        -f <mailbox>                 Open this mailbox"
@@ -8274,18 +8271,16 @@ msgid "        -z                           Check for any mail"
 msgstr "        -z                           Ieškoti bet kokio pašto"
 
 #: usage.c:115 usage.c:117
-#, fuzzy
 msgid "For detailed help, run:"
-msgstr "For detailed help, run:"
+msgstr "Detalesnei pagalbai paleiskite:"
 
 #: usage.c:130
-#, fuzzy
 msgid "By default NeoMutt loads one system and one user config file,"
-msgstr "By default NeoMutt loads one system and one user config file,"
+msgstr "Pagal nutylėjimą NeoMutt perskaito vieną sistemos ir vieną naudotojo"
 
 #: usage.c:131
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
-msgstr "pvz. /etc/neomuttrc ir ~/.neomuttrc"
+msgstr "konfigūracijos failą, pvz. /etc/neomuttrc ir ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
@@ -8301,9 +8296,8 @@ msgid "                May be used multiple times"
 msgstr "                Galima naudoti daugiau nei vieną kartą"
 
 #: usage.c:139
-#, fuzzy
 msgid "These options override the config:"
-msgstr "These options override the config:"
+msgstr "Šie parametrai pakeičia konfigūraciją:"
 
 #: usage.c:140
 msgid "  -m <type>     Set default mailbox type"
@@ -8318,9 +8312,8 @@ msgid "  -e <command>  Run extra commands"
 msgstr "  -e <komanda>  Vykdyti papildomas komandas"
 
 #: usage.c:146
-#, fuzzy
 msgid "These logging options override the config:"
-msgstr "These logging options override the config:"
+msgstr "Šie žurnalo parametrai pakeičia konfigūraciją:"
 
 #: usage.c:147
 msgid "  -d <level>    Set logging level"
@@ -8408,37 +8401,32 @@ msgstr "  neomutt -vv"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:214
-#, fuzzy
 msgid "  -A <alias> [...]  Lookup email aliases"
-msgstr "  -A <aliasas> [...]  Lookup email aliases"
+msgstr "  -A <aliasas> [...] Rasti el. pašto aliasus"
 
 #: usage.c:215
-#, fuzzy
 msgid "                    Multiple aliases can be looked up (space-separated)"
-msgstr "                    Multiple aliases can be looked up (space-separated)"
+msgstr "                    Galima nurodyti kelis aliasus (atskirtus tarpais)"
 
 #: usage.c:218
 msgid "  -D                Dump all the config options"
-msgstr "  -D                Spausdinti visus konfigūracijos kintamuosius"
+msgstr "  -D                Spausdinti visus konfigūracijos parametrus"
 
 #: usage.c:219
 msgid "  -D -D             (or -DD) Like -D, but only show changed config"
-msgstr "  -D -D             (arba -DD) Kaip -D, bet rodyti tik pakeistus kintamuosius"
+msgstr "  -D -D             (arba -DD) Kaip -D, bet rodyti tik pakeistus parametrus"
 
 #: usage.c:222
-#, fuzzy
 msgid "  -Q <option> [...] Query config options"
-msgstr "  -Q <option> [...] Query config options"
+msgstr "  -Q <parametras> [...] Rodyti konfigūracijos parametrų reikšmes"
 
 #: usage.c:223
-#, fuzzy
 msgid "                    Multiple options can be looked up (space-separated)"
-msgstr "                    Multiple options can be looked up (space-separated)"
+msgstr "                    Galima nurodyti kelis parametrus (atskirtus tarpais)"
 
 #: usage.c:225
-#, fuzzy
 msgid "Modify the -D and -Q options:"
-msgstr "Modify the -D and -Q options:"
+msgstr "Įtakoti -D bei -Q parametrus:"
 
 #: usage.c:226
 msgid "  -O                Add one-liner documentation"
@@ -8466,18 +8454,16 @@ msgid "  neomutt -O -Q alias_format index_format"
 msgstr "  neomutt -O -Q alias_format index_format"
 
 #: usage.c:252
-#, fuzzy
 msgid "These options can supply everything NeoMutt needs to send an email."
-msgstr "These options can supply everything NeoMutt needs to send an email."
+msgstr "Šie parametrai nurodo viską, ko NeoMutt reikia laiškui išsiųsti."
 
 #: usage.c:253
-#, fuzzy
 msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
-msgstr "If any parts are missing, NeoMutt will start the TUI to ask for them."
+msgstr "Jei kurios nors dalies trūksta, NeoMutt paleis sąsają ir paklaus."
 
 #: usage.c:254
 msgid "Addresses may be used before the options, or after a -- marker."
-msgstr "Adresus galima nurodyti prieš parametrus arba po -- skirtuko."
+msgstr "Adresus galima nurodyti prieš parametrus arba po skirtuko '--'."
 
 #: usage.c:255
 msgid "Aliases may be used in place of addresses."
@@ -8489,9 +8475,8 @@ msgid "  -a <file> [...]     Attach files"
 msgstr "  -a <byla> [...]     Prikabinti bylas"
 
 #: usage.c:260
-#, fuzzy
 msgid "                      Terminated by -- or another option"
-msgstr "                      Terminated by -- or another option"
+msgstr "                      Bylų sąrašą baigia -- arba kitas parametras"
 
 #: usage.c:261
 msgid "  -b <address>        Add Bcc: address"
@@ -8503,7 +8488,7 @@ msgstr "  -C                  Naudoti kriptografiją (parašą/šifravimą)"
 
 #: usage.c:263
 msgid "                      Must be set up in the config file"
-msgstr "                      Tai turi būti sukonfigūruota konfigūracijos faile"
+msgstr "                      (tai turi būti sukonfigūruota konfigūracijos faile)"
 
 #: usage.c:264
 msgid "  -c <address>        Add Cc: address"
@@ -8523,20 +8508,19 @@ msgstr "  -H <juodraštis>     Naudoti laiško juodraštį"
 
 #: usage.c:268
 msgid "                      Full email with headers and body"
-msgstr "                      Pilnas laiškas su antraštėmis ir tekstu"
+msgstr "                      (pilnas laiškas su antraštėmis ir tekstu)"
 
 #: usage.c:269
 msgid "  -i <include>        Include body file"
 msgstr "  -i <įtraukti>       Įtraukti žinutės tekstą be antraščių"
 
 #: usage.c:270
-#, fuzzy
 msgid "  -s <subject>        Set Subject:"
 msgstr "  -s <tema>           Nurodyti laiško temą (Subject: antraštę)"
 
 #: usage.c:271
 msgid "  -- <address> [...]  Add To: addresses"
-msgstr "  -- <adressas> [...]  Pridėti adresus prie To: antraštės"
+msgstr "  -- <adressas> [...] Pridėti adresus prie To: antraštės"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:280
@@ -8556,70 +8540,57 @@ msgid "  cat secret.txt | neomutt gahr -s 'Secret' -C"
 msgstr "  cat secret.txt | neomutt gahr -s 'Paslaptis' -C"
 
 #: usage.c:296
-#, fuzzy
 msgid "Running NeoMutt with no options will read the config and start the TUI."
-msgstr "Running NeoMutt with no options will read the config and start the TUI."
+msgstr "Paleista be parametrų NeoMutt skaitys konfigūraciją ir paleis sąsają."
 
 #: usage.c:297
-#, fuzzy
 msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
-msgstr "By default, it will open the Index Dialog with the $spool_file Mailbox."
+msgstr "Pagal nutylėjimą atidarys laiškų indeksą $spool_file dėžutėje."
 
 #: usage.c:300
-#, fuzzy
 msgid "These options cause NeoMutt to check a mailbox for mail."
-msgstr "These options cause NeoMutt to check a mailbox for mail."
+msgstr "Šie parametrai liepia NeoMutt ieškoti dėžutės su laiškais."
 
 #: usage.c:301
-#, fuzzy
 msgid "If the condition isn't matched, NeoMutt exits."
-msgstr "If the condition isn't matched, NeoMutt exits."
+msgstr "Jei tokių nėra, NeoMutt baigia darbą."
 
 #: usage.c:302
-#, fuzzy
 msgid "  -p            Resume postponed email"
-msgstr "  -p            Resume postponed email"
+msgstr "  -p            Pabaigti atidėtą laišką"
 
 #: usage.c:303
-#, fuzzy
 msgid "  -Z            Check for new mail"
-msgstr "  -Z            Check for new mail"
+msgstr "  -Z            Ieškoti naujų laiškų"
 
 #: usage.c:304
-#, fuzzy
 msgid "  -z            Check for any mail"
-msgstr "  -z            Check for any mail"
+msgstr "  -z            Ieškoti bet kokių laiškų"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:308
-#, fuzzy
 msgid "These options change the starting behavior:"
-msgstr "These options change the starting behavior:"
+msgstr "Šie parametrai keičia pradžios elgesį:"
 
 #: usage.c:309
-#, fuzzy
 msgid "  -f <mailbox>  Open this mailbox"
-msgstr "  -f <mailbox>  Open this mailbox"
+msgstr "  -f <dėžutė>   Atidaryti nurodytą pašto dėžutę"
 
 #: usage.c:310
-#, fuzzy
 msgid "  -G            Open NNTP browser"
-msgstr "  -G            Open NNTP browser"
+msgstr "  -G            Atidaryti NNTP naršyklę"
 
 #: usage.c:311
-#, fuzzy
 msgid "  -g <server>   Use this NNTP server"
-msgstr "  -g <server>   Use this NNTP server"
+msgstr "  -g <serveris> Naudoti nurodytą NNTP serverį"
 
 #: usage.c:312
-#, fuzzy
 msgid "  -R            Open mailbox read-only"
-msgstr "  -R            Open mailbox read-only"
+msgstr "  -R            Atidaryti dėžutę tik skaitymui"
 
 #: usage.c:313
-#, fuzzy
 msgid "  -y            Open mailbox browser"
-msgstr "  -y            Open mailbox browser"
+msgstr "  -y            Atidaryti dėžučių naršyklę"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
