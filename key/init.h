@@ -23,4 +23,13 @@
 #ifndef MUTT_KEY_INIT_H
 #define MUTT_KEY_INIT_H
 
+#include "keymap.h"
+#include "menu.h"
+
+extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
+
+void                   km_init              (void);
+void                   km_set_abort_key     (void);
+void                   km_cleanup           (void);
+
 #endif /* MUTT_KEY_INIT_H */

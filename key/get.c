@@ -44,13 +44,13 @@
 // It's not possible to unget more than one char under some curses libs,
 // so roll our own input buffering routines.
 
-/** These are used for macros and exec/push commands.
- * They can be temporarily ignored by passing #GETCH_IGNORE_MACRO */
+/// These are used for macros and exec/push commands.
+/// They can be temporarily ignored by passing #GETCH_IGNORE_MACRO
 struct KeyEventArray MacroEvents = ARRAY_HEAD_INITIALIZER;
 
-/** These are used in all other "normal" situations,
- * and are not ignored when passing #GETCH_IGNORE_MACRO */
-static struct KeyEventArray UngetKeyEvents = ARRAY_HEAD_INITIALIZER;
+/// These are used in all other "normal" situations,
+/// and are not ignored when passing #GETCH_IGNORE_MACRO
+struct KeyEventArray UngetKeyEvents = ARRAY_HEAD_INITIALIZER;
 
 /**
  * mutt_flushinp - Empty all the keyboard buffers
@@ -67,7 +67,7 @@ void mutt_flushinp(void)
  * @param a Array
  * @retval ptr Event
  */
-static struct KeyEvent *array_pop(struct KeyEventArray *a)
+struct KeyEvent *array_pop(struct KeyEventArray *a)
 {
   if (ARRAY_EMPTY(a))
   {
@@ -85,7 +85,7 @@ static struct KeyEvent *array_pop(struct KeyEventArray *a)
  * @param ch Character
  * @param op Operation, e.g. OP_DELETE
  */
-static void array_add(struct KeyEventArray *a, int ch, int op)
+void array_add(struct KeyEventArray *a, int ch, int op)
 {
   struct KeyEvent event = { ch, op };
   ARRAY_ADD(a, event);
@@ -95,7 +95,7 @@ static void array_add(struct KeyEventArray *a, int ch, int op)
  * array_to_endcond - Clear the array until an OP_END_COND
  * @param a Array
  */
-static void array_to_endcond(struct KeyEventArray *a)
+void array_to_endcond(struct KeyEventArray *a)
 {
   while (!ARRAY_EMPTY(a))
   {
@@ -174,7 +174,7 @@ void mutt_flush_macro_to_endcond(void)
  * @retval num Character pressed
  * @retval ERR Timeout
  */
-static int mutt_monitor_getch(void)
+int mutt_monitor_getch(void)
 {
   /* ncurses has its own internal buffer, so before we perform a poll,
    * we need to make sure there isn't a character waiting */
@@ -304,7 +304,7 @@ void km_error_key(enum MenuType mtype)
   }
 
   struct Buffer *buf = buf_pool_get();
-  km_expand_key(key, buf);
+  keymap_expand_key(key, buf);
   mutt_error(_("Key is not bound.  Press '%s' for help."), buf_string(buf));
   buf_pool_release(&buf);
 }
@@ -392,7 +392,7 @@ void generic_tokenize_push_string(char *s)
           const struct MenuFuncOp *funcs = km_get_table(MenuNames[j].value);
           if (funcs)
           {
-            op = get_op(funcs, pp + 1, l - 2);
+            op = km_get_op(funcs, pp + 1, l - 2);
             if (op != OP_NULL)
               break;
           }
@@ -419,11 +419,11 @@ void generic_tokenize_push_string(char *s)
 struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
 {
   struct KeyEvent event = { 0, OP_NULL };
-  struct Keymap *map = STAILQ_FIRST(&Keymaps[mtype]);
+  struct Keymap *km = STAILQ_FIRST(&Keymaps[mtype]);
   int pos = 0;
   int n = 0;
 
-  if (!map && (mtype != MENU_EDITOR))
+  if (!km && (mtype != MENU_EDITOR))
     return retry_generic(mtype, NULL, 0, 0, flags);
 
   while (true)
@@ -475,24 +475,24 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
         continue;
     }
 
-    if (!map)
+    if (!km)
       return event;
 
     /* Nope. Business as usual */
-    while (event.ch > map->keys[pos])
+    while (event.ch > km->keys[pos])
     {
-      if ((pos > map->eq) || !STAILQ_NEXT(map, entries))
-        return retry_generic(mtype, map->keys, pos, event.ch, flags);
-      map = STAILQ_NEXT(map, entries);
+      if ((pos > km->eq) || !STAILQ_NEXT(km, entries))
+        return retry_generic(mtype, km->keys, pos, event.ch, flags);
+      km = STAILQ_NEXT(km, entries);
     }
 
-    if (event.ch != map->keys[pos])
-      return retry_generic(mtype, map->keys, pos, event.ch, flags);
+    if (event.ch != km->keys[pos])
+      return retry_generic(mtype, km->keys, pos, event.ch, flags);
 
-    if (++pos == map->len)
+    if (++pos == km->len)
     {
-      if (map->op != OP_MACRO)
-        return (struct KeyEvent) { event.ch, map->op };
+      if (km->op != OP_MACRO)
+        return (struct KeyEvent) { event.ch, km->op };
 
       /* #GETCH_IGNORE_MACRO turns off processing the MacroEvents buffer
        * in mutt_getch().  Generating new macro events during that time would
@@ -516,8 +516,8 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
         return (struct KeyEvent) { '\0', OP_ABORT };
       }
 
-      generic_tokenize_push_string(map->macro);
-      map = STAILQ_FIRST(&Keymaps[mtype]);
+      generic_tokenize_push_string(km->macro);
+      km = STAILQ_FIRST(&Keymaps[mtype]);
       pos = 0;
     }
   }
