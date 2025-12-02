@@ -49,6 +49,7 @@ struct Mailbox;
 struct Menu;
 struct MuttWindow;
 struct stat;
+struct SubMenu;
 
 extern struct Buffer LastDir;
 extern struct Buffer LastDirBackup;
@@ -148,7 +149,8 @@ struct BrowserState
   bool is_mailbox_list; ///< Viewing mailboxes
 };
 
-void browser_init_keys(void);
+
+void browser_init_keys(struct SubMenu *sm_generic);
 
 void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);

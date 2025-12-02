@@ -47,11 +47,12 @@
 struct Buffer;
 struct ConfigSubset;
 struct Email;
+struct SubMenu;
 
 /* flags for dlg_compose() */
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
-void compose_init_keys(void);
+void compose_init_keys(struct SubMenu *sm_generic);
 
 int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct ConfigSubset *sub);
 

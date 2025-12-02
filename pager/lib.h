@@ -55,6 +55,7 @@ struct ConfigSubset;
 struct MailboxView;
 struct MuttWindow;
 struct PagerPrivateData;
+struct SubMenu;
 
 typedef uint16_t PagerFlags;              ///< Flags for dlg_pager(), e.g. #MUTT_SHOWFLAT
 #define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set
@@ -192,7 +193,7 @@ typedef uint8_t PagerRedrawFlags;       ///< Flags, e.g. #PAGER_REDRAW_PAGER
 extern int BrailleRow;
 extern int BrailleCol;
 
-void pager_init_keys(void);
+void pager_init_keys(struct SubMenu *sm_generic);
 
 int dlg_pager(struct PagerView *pview);
 int mutt_do_pager(struct PagerView *pview, struct Email *e);

@@ -55,8 +55,9 @@
 
 struct Body;
 struct Buffer;
+struct SubMenu;
 
-void attach_init_keys(void);
+void attach_init_keys(struct SubMenu *sm_generic);
 
 extern const struct ExpandoRenderCallback AttachRenderCallbacks[];
 
