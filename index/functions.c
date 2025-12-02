@@ -2233,7 +2233,7 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
                                                              TRANSFORM_NONE;
 
   const int rc = mutt_save_message(shared->mailbox, &ea, save_opt, transform_opt);
-  if ((rc == 0) && (save_opt == SAVE_MOVE))
+  if ((rc == 0) && (save_opt == SAVE_MOVE) && !priv->tag_prefix)
   {
     resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED);
   }
