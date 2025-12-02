@@ -50,7 +50,7 @@
 /**
  * OpEditor - Functions for the Editor Menu
  */
-const struct MenuFuncOp OpEditor[] = { /* map: editor */
+static const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "backspace",                     OP_EDITOR_BACKSPACE },
   { "backward-char",                 OP_EDITOR_BACKWARD_CHAR },
   { "backward-word",                 OP_EDITOR_BACKWARD_WORD },
@@ -126,9 +126,15 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
 /**
  * editor_init_keys - Initialise the Editor Keybindings - Implements ::init_keys_api
  */
-void editor_init_keys(void)
+void editor_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(EditorDefaultBindings, MENU_EDITOR);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpEditor);
+  md = km_register_menu(MENU_EDITOR, "editor");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_bindings(md, EditorDefaultBindings);
 }
 
 /**

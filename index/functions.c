@@ -42,6 +42,7 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "debug/lib.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
@@ -87,7 +88,7 @@
 /**
  * OpIndex - Functions for the Index Menu
  */
-const struct MenuFuncOp OpIndex[] = { /* map: index */
+static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "alias-dialog",                  OP_ALIAS_DIALOG },
 #ifdef USE_AUTOCRYPT
   { "autocrypt-acct-menu",           OP_AUTOCRYPT_ACCT_MENU },
@@ -334,9 +335,16 @@ enum ResolveMethod
 /**
  * index_init_keys - Initialise the Index Keybindings - Implements ::init_keys_api
  */
-void index_init_keys(void)
+void index_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(IndexDefaultBindings, MENU_INDEX);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpIndex);
+  md = km_register_menu(MENU_INDEX, "index");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, IndexDefaultBindings);
 }
 
 /**
@@ -2005,9 +2013,10 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
       snprintf(macro, sizeof(macro), "<search>~i '%s'\n", buf_string(msg_id));
       buf_pool_release(&msg_id);
 
+      struct MenuDefinition *md = menu_find(MENU_INDEX);
       /* L10N: "message hotkey" is the key bindings menu description of a
          macro created by <mark-message>. */
-      km_bind(str, MENU_INDEX, OP_MACRO, macro, _("message hotkey"), NULL);
+      km_bind(md, str, OP_MACRO, macro, _("message hotkey"), NULL);
 
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed
@@ -2087,6 +2096,11 @@ static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData
  */
 static int op_print(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
+  // void dump_menu_funcs(bool brief);
+  // dump_menu_funcs(false);
+  // void dump_menu_binds(bool brief);
+  // dump_menu_binds(false);
+  // return FR_SUCCESS;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
   mutt_print_message(shared->mailbox, &ea);

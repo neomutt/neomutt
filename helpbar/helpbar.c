@@ -88,6 +88,7 @@
  */
 static bool make_help(enum MenuType menu, int op, const char *txt, struct Buffer *buf)
 {
+  //XXX GENERIC
   if (keymap_expand_key(km_find_func(menu, op), buf) ||
       keymap_expand_key(km_find_func(MENU_GENERIC, op), buf))
   {

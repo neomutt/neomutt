@@ -43,8 +43,9 @@ struct Buffer;
 struct Email;
 struct Mailbox;
 struct MuttWindow;
+struct SubMenu;
 
-void postponed_init_keys(void);
+void postponed_init_keys(struct SubMenu *sm_generic);
 
 struct Email *dlg_postponed             (struct Mailbox *m);
 int           mutt_get_postponed        (struct Mailbox *m_cur, struct Email *hdr, struct Email **cur, struct Buffer *fcc);

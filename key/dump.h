@@ -28,8 +28,7 @@
 #include "mutt/lib.h"
 #include "menu/lib.h"
 
-struct KeymapList;
-struct MenuFuncOp;
+struct MenuDefinition;
 
 /**
  * struct BindingInfo - Info about one keybinding
@@ -43,14 +42,17 @@ struct BindingInfo
 };
 ARRAY_HEAD(BindingInfoArray, struct BindingInfo);
 
-int                binding_sort        (const void *a, const void *b, void *sdata);
-void               colon_bind          (enum MenuType menu, FILE *fp);
-void               colon_macro         (enum MenuType menu, FILE *fp);
-void               gather_menu         (enum MenuType menu, struct BindingInfoArray *bia_bind, struct BindingInfoArray *bia_macro);
-enum CommandResult dump_bind_macro     (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-int                gather_unbound      (const struct MenuFuncOp *funcs, const struct KeymapList *km_menu, const struct KeymapList *km_aux, struct BindingInfoArray *bia_unbound);
-int                measure_column      (struct BindingInfoArray *bia, int col);
-int                print_bind          (enum MenuType menu, FILE *fp);
-int                print_macro         (enum MenuType menu, FILE *fp);
+int         binding_sort        (const void *a, const void *b, void *sdata);
+void        colon_bind          (enum MenuType menu, FILE *fp);
+void        colon_macro         (enum MenuType menu, FILE *fp);
+void        dump_bind_macro     (bool bind, int mtype, struct Buffer *buf, struct Buffer *err);
+void        escape_macro        (const char *macro, struct Buffer *buf);
+void        gather_menu         (enum MenuType menu, struct BindingInfoArray *bia_bind, struct BindingInfoArray *bia_macro, bool one_submenu);
+int         gather_unbound      (enum MenuType mtype, struct BindingInfoArray *bia_unbound);
+const char *help_lookup_function(const struct MenuDefinition *md, int op);
+struct StringArray km_get_func_array(enum MenuType mtype);
+int         measure_column      (struct BindingInfoArray *bia, int col);
+int         print_bind          (enum MenuType menu, FILE *fp);
+int         print_macro         (enum MenuType menu, FILE *fp);
 
 #endif /* MUTT_KEY_DUMP_H */

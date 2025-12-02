@@ -95,6 +95,7 @@
 #ifndef MUTT_AUTOCRYPT_LIB_H
 #define MUTT_AUTOCRYPT_LIB_H
 
+#include "config.h"
 #include <sqlite3.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -102,6 +103,7 @@
 
 struct Email;
 struct Envelope;
+struct SubMenu;
 
 /**
  * struct AutocryptAccount - Autocrypt account
@@ -170,7 +172,7 @@ enum AutocryptRec
 extern char *AutocryptSignAs;
 extern char *AutocryptDefaultKey;
 
-void autocrypt_init_keys(void);
+void autocrypt_init_keys(struct SubMenu *sm_generic);
 
 void              dlg_autocrypt                          (void);
 void              mutt_autocrypt_cleanup                 (void);
