@@ -325,39 +325,3 @@ const char *mutt_make_version(void)
 {
   return "VERSION";
 }
-
-const struct MenuOpSeq AliasDefaultBindings[] = {
-  { 0, NULL },
-};
-
-const struct MenuOpSeq AttachmentDefaultBindings[] = {
-  { 0, NULL },
-};
-
-const struct MenuOpSeq AutocryptDefaultBindings[] = {
-  { 0, NULL },
-};
-
-const struct MenuOpSeq BrowserDefaultBindings[] = {
-  { 0, NULL },
-};
-
-const struct MenuOpSeq ComposeDefaultBindings[] = {
-  { 0, NULL },
-};
-
-const struct MenuOpSeq IndexDefaultBindings[] = {
-  { 0, NULL },
-};
-
-const struct MenuOpSeq PagerDefaultBindings[] = {
-  { 0, NULL },
-};
-
-const struct MenuOpSeq PostponedDefaultBindings[] = {
-  { 0, NULL },
-};
-
-const struct MenuOpSeq QueryDefaultBindings[] = {
-  { 0, NULL },
-};

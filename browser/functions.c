@@ -103,7 +103,7 @@ const struct MenuFuncOp OpBrowser[] = { /* map: browser */
 /**
  * BrowserDefaultBindings - Key bindings for the file Browser Menu
  */
-const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
+static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_BROWSER_GOTO_FOLDER,                "=" },
   { OP_BROWSER_NEW_FILE,                   "N" },
   { OP_BROWSER_SUBSCRIBE,                  "s" },
@@ -125,6 +125,14 @@ const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * browser_init_keys - Initialise the Browser Keybindings - Implements ::init_keys_api
+ */
+void browser_init_keys(void)
+{
+  km_menu_add_bindings(BrowserDefaultBindings, MENU_BROWSER);
+}
 
 /**
  * destroy_state - Free the BrowserState

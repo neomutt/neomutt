@@ -225,7 +225,7 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
 /**
  * PagerDefaultBindings - Key bindings for the Pager Menu
  */
-const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
+static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
   { OP_BOUNCE_MESSAGE,                     "b" },
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
@@ -326,6 +326,14 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * pager_init_keys - Initialise the Pager Keybindings - Implements ::init_keys_api
+ */
+void pager_init_keys(void)
+{
+  km_menu_add_bindings(PagerDefaultBindings, MENU_PAGER);
+}
 
 /**
  * assert_pager_mode - Check that pager is in correct mode

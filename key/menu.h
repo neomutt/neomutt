@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "menu/lib.h"
+#include "get.h"
 #include "keymap.h"
 
 /**

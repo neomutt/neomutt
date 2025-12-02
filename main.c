@@ -139,6 +139,8 @@
 #include "cli/lib.h"
 #include "color/lib.h"
 #include "compmbox/lib.h"
+#include "compose/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "index/lib.h"
@@ -148,6 +150,7 @@
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
 #include "notmuch/lib.h"
+#include "pager/lib.h"
 #include "parse/lib.h"
 #include "pop/lib.h"
 #include "postpone/lib.h"
@@ -741,6 +744,21 @@ static void localise_config(struct ConfigSet *cs)
 static void init_keys(void)
 {
   km_init();
+
+  generic_init_keys();
+
+  alias_init_keys();
+  attach_init_keys();
+#ifdef USE_AUTOCRYPT
+  autocrypt_init_keys();
+#endif
+  browser_init_keys();
+  compose_init_keys();
+  editor_init_keys();
+  index_init_keys();
+  pager_init_keys();
+  pgp_init_keys();
+  postponed_init_keys();
 }
 
 /**

@@ -65,7 +65,7 @@ const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
 /**
  * AutocryptDefaultBindings - Key bindings for the Autocrypt Account
  */
-const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt account */
+static const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt account */
   { OP_AUTOCRYPT_CREATE_ACCT,              "c" },
   { OP_AUTOCRYPT_DELETE_ACCT,              "D" },
   { OP_AUTOCRYPT_TOGGLE_ACTIVE,            "a" },
@@ -75,6 +75,14 @@ const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt account 
 };
 #endif
 // clang-format on
+
+/**
+ * autocrypt_init_keys - Initialise the Autocrypt Keybindings - Implements ::init_keys_api
+ */
+void autocrypt_init_keys(void)
+{
+  km_menu_add_bindings(AutocryptDefaultBindings, MENU_AUTOCRYPT);
+}
 
 /**
  * toggle_active - Toggle whether an Autocrypt account is active

@@ -59,13 +59,21 @@ const struct MenuFuncOp OpPostponed[] = { /* map: postpone */
 /**
  * PostponedDefaultBindings - Key bindings for the Postpone Menu
  */
-const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
+static const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
   { OP_EXIT,                               "q" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * postponed_init_keys - Initialise the Postponed Keybindings - Implements ::init_keys_api
+ */
+void postponed_init_keys(void)
+{
+  km_menu_add_bindings(PostponedDefaultBindings, MENU_POSTPONED);
+}
 
 /**
  * op_delete - Delete the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
