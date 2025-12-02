@@ -128,7 +128,7 @@ const struct MenuFuncOp OpGeneric[] = { /* map: generic */
 /**
  * DialogDefaultBindings - Key bindings for Simple Dialogs
  */
-const struct MenuOpSeq DialogDefaultBindings[] = {
+static const struct MenuOpSeq DialogDefaultBindings[] = {
   { OP_QUIT,                               "q" },
   { 0, NULL },
 };
@@ -136,7 +136,7 @@ const struct MenuOpSeq DialogDefaultBindings[] = {
 /**
  * GenericDefaultBindings - Key bindings for the Generic Menu
  */
-const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
+static const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { OP_BOTTOM_PAGE,                        "L" },
   { OP_ENTER_COMMAND,                      ":" },
   { OP_FIRST_ENTRY,                        "<home>" },
@@ -183,3 +183,13 @@ const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * generic_init_keys - Initialise the Generic Keybindings
+ * @retval ptr SubMenu of Generic Keybindings
+ */
+void generic_init_keys(void)
+{
+  km_menu_add_bindings(DialogDefaultBindings, MENU_DIALOG);
+  km_menu_add_bindings(GenericDefaultBindings, MENU_GENERIC);
+}

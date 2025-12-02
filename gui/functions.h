@@ -28,7 +28,6 @@
 extern const struct MenuFuncOp OpDialog[];
 extern const struct MenuFuncOp OpGeneric[];
 
-extern const struct MenuOpSeq DialogDefaultBindings[];
-extern const struct MenuOpSeq GenericDefaultBindings[];
+void generic_init_keys(void);
 
 #endif /* MUTT_FUNCTIONS_H */

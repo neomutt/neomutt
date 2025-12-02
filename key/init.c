@@ -37,27 +37,12 @@
 
 keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
 
-extern const struct MenuOpSeq AliasDefaultBindings[];
-extern const struct MenuOpSeq AttachmentDefaultBindings[];
-#ifdef USE_AUTOCRYPT
-extern const struct MenuOpSeq AutocryptDefaultBindings[];
-#endif
-extern const struct MenuOpSeq BrowserDefaultBindings[];
-extern const struct MenuOpSeq ComposeDefaultBindings[];
-extern const struct MenuOpSeq EditorDefaultBindings[];
-extern const struct MenuOpSeq IndexDefaultBindings[];
-extern const struct MenuOpSeq PagerDefaultBindings[];
-extern const struct MenuOpSeq PgpDefaultBindings[];
-extern const struct MenuOpSeq PostponedDefaultBindings[];
-extern const struct MenuOpSeq QueryDefaultBindings[];
-extern const struct MenuOpSeq SmimeDefaultBindings[];
-
 /**
  * km_menu_add_bindings - Attach a set of keybindings to a Menu
  * @param map   Key bindings
  * @param mtype Menu type, e.g. #MENU_PAGER
  */
-static void km_menu_add_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
+void km_menu_add_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
 {
   STAILQ_INIT(&Keymaps[mtype]);
 
@@ -106,23 +91,6 @@ static const struct Command KeyCommands[] = {
 void km_init(void)
 {
   memset(Keymaps, 0, sizeof(struct KeymapList) * MENU_MAX);
-
-  km_menu_add_bindings(AliasDefaultBindings, MENU_ALIAS);
-  km_menu_add_bindings(AttachmentDefaultBindings, MENU_ATTACHMENT);
-#ifdef USE_AUTOCRYPT
-  km_menu_add_bindings(AutocryptDefaultBindings, MENU_AUTOCRYPT);
-#endif
-  km_menu_add_bindings(BrowserDefaultBindings, MENU_BROWSER);
-  km_menu_add_bindings(ComposeDefaultBindings, MENU_COMPOSE);
-  km_menu_add_bindings(DialogDefaultBindings, MENU_DIALOG);
-  km_menu_add_bindings(EditorDefaultBindings, MENU_EDITOR);
-  km_menu_add_bindings(GenericDefaultBindings, MENU_GENERIC);
-  km_menu_add_bindings(IndexDefaultBindings, MENU_INDEX);
-  km_menu_add_bindings(PagerDefaultBindings, MENU_PAGER);
-  km_menu_add_bindings(PgpDefaultBindings, MENU_PGP);
-  km_menu_add_bindings(PostponedDefaultBindings, MENU_POSTPONED);
-  km_menu_add_bindings(QueryDefaultBindings, MENU_QUERY);
-  km_menu_add_bindings(SmimeDefaultBindings, MENU_SMIME);
 
   commands_register(&NeoMutt->commands, KeyCommands);
 }

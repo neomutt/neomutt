@@ -44,6 +44,8 @@ struct Email;
 struct Mailbox;
 struct MuttWindow;
 
+void postponed_init_keys(void);
+
 struct Email *dlg_postponed             (struct Mailbox *m);
 int           mutt_get_postponed        (struct Mailbox *m_cur, struct Email *hdr, struct Email **cur, struct Buffer *fcc);
 int           mutt_num_postponed        (struct Mailbox *m, bool force);

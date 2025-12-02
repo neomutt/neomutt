@@ -232,7 +232,7 @@ const struct MenuFuncOp OpIndex[] = { /* map: index */
 /**
  * IndexDefaultBindings - Key bindings for the Index Menu
  */
-const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
+static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
 #ifdef USE_AUTOCRYPT
   { OP_AUTOCRYPT_ACCT_MENU,                "A" },
@@ -330,6 +330,14 @@ enum ResolveMethod
   RESOLVE_NEXT_THREAD,    ///< Next top-level thread
   RESOLVE_NEXT_SUBTHREAD, ///< Next sibling sub-thread
 };
+
+/**
+ * index_init_keys - Initialise the Index Keybindings - Implements ::init_keys_api
+ */
+void index_init_keys(void)
+{
+  km_menu_add_bindings(IndexDefaultBindings, MENU_INDEX);
+}
 
 /**
  * resolve_email - Pick the next Email to advance the cursor to

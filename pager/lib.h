@@ -192,6 +192,8 @@ typedef uint8_t PagerRedrawFlags;       ///< Flags, e.g. #PAGER_REDRAW_PAGER
 extern int BrailleRow;
 extern int BrailleCol;
 
+void pager_init_keys(void);
+
 int dlg_pager(struct PagerView *pview);
 int mutt_do_pager(struct PagerView *pview, struct Email *e);
 void buf_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);

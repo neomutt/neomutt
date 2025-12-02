@@ -51,6 +51,8 @@ struct Email;
 /* flags for dlg_compose() */
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
+void compose_init_keys(void);
+
 int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct ConfigSubset *sub);
 
 #endif /* MUTT_COMPOSE_LIB_H */

@@ -147,6 +147,8 @@ typedef uint16_t KeyFlags;                  ///< Flags describing PGP/SMIME keys
 
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
+void pgp_init_keys(void);
+
 /* crypt.c */
 void          crypt_extract_keys_from_messages         (struct Mailbox *m, struct EmailArray *ea);
 void          crypt_forget_passphrase                  (void);

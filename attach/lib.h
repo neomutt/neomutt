@@ -55,6 +55,8 @@
 struct Body;
 struct Buffer;
 
+void attach_init_keys(void);
+
 extern const struct ExpandoRenderCallback AttachRenderCallbacks[];
 
 int          attach_body_count   (struct Body *b, bool recurse);
