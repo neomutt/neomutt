@@ -23,4 +23,33 @@
 #ifndef MUTT_KEY_MENU_H
 #define MUTT_KEY_MENU_H
 
+#include <stdbool.h>
+#include "mutt/lib.h"
+#include "core/lib.h"
+#include "menu/lib.h"
+#include "keymap.h"
+
+/**
+ * struct MenuFuncOp - Mapping between a function and an operation
+ */
+struct MenuFuncOp
+{
+  const char   *name;    ///< Name of the function
+  int           op;      ///< Operation, e.g. OP_DELETE
+  MenuFuncFlags flags;   ///< Flags, e.g. MFF_DEPRECATED
+};
+
+/**
+ * struct MenuOpSeq - Mapping between an operation and a key sequence
+ */
+struct MenuOpSeq
+{
+  int op;           ///< Operation, e.g. OP_DELETE
+  const char *seq;  ///< Default key binding
+};
+
+bool                   is_bound           (const struct KeymapList *km_list, int op);
+struct Keymap *        km_find_func       (enum MenuType mtype, int func);
+int                    km_get_op          (const struct MenuFuncOp *funcs, const char *start, size_t len);
+
 #endif /* MUTT_KEY_MENU_H */

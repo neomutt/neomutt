@@ -23,4 +23,23 @@
 #ifndef MUTT_KEY_COMMANDS_H
 #define MUTT_KEY_COMMANDS_H
 
+#include <stdbool.h>
+#include <stdint.h>
+#include "core/lib.h"
+#include "menu/lib.h"
+
+struct Buffer;
+
+#define MUTT_UNBIND   (1 << 0)  ///< Parse 'unbind'  command
+#define MUTT_UNMACRO  (1 << 1)  ///< Parse 'unmacro' command
+
+enum CommandResult     km_bind            (const char *s, enum MenuType mtype, int op, char *macro, char *desc, struct Buffer *err);
+enum CommandResult     parse_bind         (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult     parse_exec         (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+char *                 parse_keymap       (enum MenuType *mtypes, struct Buffer *s, int max_menus, int *num_menus, struct Buffer *err, bool bind);
+enum CommandResult     parse_macro        (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+void *                 parse_menu         (bool *menus, const char *s, struct Buffer *err);
+enum CommandResult     parse_push         (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult     parse_unbind       (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+
 #endif /* MUTT_KEY_COMMANDS_H */
