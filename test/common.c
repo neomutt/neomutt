@@ -46,6 +46,7 @@
 #include "browser/lib.h"
 #include "color/lib.h"
 #include "complete/lib.h"
+#include "key/lib.h"
 #include "send/lib.h"
 #include "copy.h"
 #include "external.h"
@@ -584,3 +585,35 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path,
 {
   return 0;
 }
+
+const struct MenuOpSeq AliasDefaultBindings[] = {
+  { 0, NULL },
+};
+
+const struct MenuOpSeq AttachmentDefaultBindings[] = {
+  { 0, NULL },
+};
+
+const struct MenuOpSeq AutocryptDefaultBindings[] = {
+  { 0, NULL },
+};
+
+const struct MenuOpSeq BrowserDefaultBindings[] = {
+  { 0, NULL },
+};
+
+const struct MenuOpSeq ComposeDefaultBindings[] = {
+  { 0, NULL },
+};
+
+const struct MenuOpSeq IndexDefaultBindings[] = {
+  { 0, NULL },
+};
+
+const struct MenuOpSeq PagerDefaultBindings[] = {
+  { 0, NULL },
+};
+
+const struct MenuOpSeq QueryDefaultBindings[] = {
+  { 0, NULL },
+};

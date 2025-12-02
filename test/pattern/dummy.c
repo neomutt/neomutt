@@ -62,13 +62,7 @@ const struct MenuFuncOp OpAutocrypt[] = {
 const struct MenuFuncOp OpBrowser[] = {
   { NULL, OP_NULL },
 };
-const struct MenuFuncOp OpPgp[] = {
-  { NULL, OP_NULL },
-};
 const struct MenuFuncOp OpQuery[] = {
-  { NULL, OP_NULL },
-};
-const struct MenuFuncOp OpSmime[] = {
   { NULL, OP_NULL },
 };
 

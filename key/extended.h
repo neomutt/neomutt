@@ -23,4 +23,14 @@
 #ifndef MUTT_KEY_EXTENDED_H
 #define MUTT_KEY_EXTENDED_H
 
+#include "config.h"
+
+const char *ext_key_find(const char *key);
+
+#ifdef HAVE_USE_EXTENDED_NAMES
+void ext_keys_init(void);
+#else
+static inline void ext_keys_init(void) {}
+#endif
+
 #endif /* MUTT_KEY_EXTENDED_H */

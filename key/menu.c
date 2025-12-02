@@ -27,3 +27,68 @@
  */
 
 #include "config.h"
+#include <string.h>
+#include "mutt/lib.h"
+#include "core/lib.h"
+#include "gui/lib.h"
+#include "menu.h"
+#include "init.h"
+#include "keymap.h"
+
+/**
+ * km_find_func - Find a function's mapping in a Menu
+ * @param mtype Menu type, e.g. #MENU_PAGER
+ * @param func  Function, e.g. OP_DELETE
+ * @retval ptr Keymap for the function
+ */
+struct Keymap *km_find_func(enum MenuType mtype, int func)
+{
+  struct Keymap *np = NULL;
+  STAILQ_FOREACH(np, &Keymaps[mtype], entries)
+  {
+    if (np->op == func)
+      break;
+  }
+  return np;
+}
+
+/**
+ * km_get_op - Get the function by its name
+ * @param funcs Functions table
+ * @param start Name of function to find
+ * @param len   Length of string to match
+ * @retval num Operation, e.g. OP_DELETE
+ */
+int km_get_op(const struct MenuFuncOp *funcs, const char *start, size_t len)
+{
+  for (int i = 0; funcs[i].name; i++)
+  {
+    if (mutt_istrn_equal(start, funcs[i].name, len) && (mutt_str_len(funcs[i].name) == len))
+    {
+      return funcs[i].op;
+    }
+  }
+
+  return OP_NULL;
+}
+
+/**
+ * is_bound - Does a function have a keybinding?
+ * @param km_list Keymap to examine
+ * @param op      Operation, e.g. OP_DELETE
+ * @retval true A key is bound to that operation
+ */
+bool is_bound(const struct KeymapList *km_list, int op)
+{
+  if (!km_list)
+    return false;
+
+  struct Keymap *map = NULL;
+  STAILQ_FOREACH(map, km_list, entries)
+  {
+    if (map->op == op)
+      return true;
+  }
+
+  return false;
+}
