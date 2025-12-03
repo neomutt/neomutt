@@ -455,15 +455,11 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
   static bool dump = true;
   keycode_t keys[MAX_SEQ] = { 0 };
 
-  // mutt_debug(LL_DEBUG1, "KEY: %s (%d)\n", name_menu_type(mtype), mtype);
   ARRAY_FOREACH(md, &MenuDefs)
   {
     if (md->id == mtype)
       break;
   }
-
-  // mutt_debug(LL_DEBUG1, "KEY: MenuDef { %s (%d), '%s', %d submenus }\n",
-  //            name_menu_type(md->id), md->id, md->name, ARRAY_SIZE(&md->submenus));
 
   struct SubMenu **smp = NULL;
 
