@@ -20,11 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SEND_EXPANDO_H
-#define MUTT_SEND_EXPANDO_H
+#ifndef MUTT_SEND_EXPANDO_GREETING_H
+#define MUTT_SEND_EXPANDO_GREETING_H
 
 #include "expando/lib.h" // IWYU pragma: keep
 
 extern const struct ExpandoRenderCallback GreetingRenderCallbacks[];
 
-#endif /* MUTT_SEND_EXPANDO_H */
+#endif /* MUTT_SEND_EXPANDO_GREETING_H */

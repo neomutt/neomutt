@@ -73,7 +73,7 @@
 #include "question/lib.h"
 #include "body.h"
 #include "copy.h"
-#include "expando.h"
+#include "expando_greeting.h"
 #include "globals.h"
 #include "handler.h"
 #include "header.h"
