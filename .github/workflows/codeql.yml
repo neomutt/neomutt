@@ -44,11 +44,11 @@ jobs:
         run: make -j ${{steps.cpu-cores.outputs.count}} -s
 
       - name: Perform C CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           category: "/language:cpp"
 
       - name: Perform Python CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           category: "/language:python"
