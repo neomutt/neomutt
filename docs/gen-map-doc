@@ -16,7 +16,7 @@ while (<F>) {
 close F;
 
 while (<STDIN>) {
-  if (/^const struct MenuFuncOp Op.*{ \/\* map: (.*) \*\//) {
+  if (/^(?:static )*const struct MenuFuncOp Op.*{ \/\* map: (.*) \*\//) {
     $map = $1;
     $DOC{$map} = "";
     $MAP_FUNC_TO_OP{$map} = {};
@@ -39,7 +39,7 @@ while (<STDIN>) {
       }
     }
   }
-  elsif (/^const struct MenuOpSeq .*{ \/\* map: (.*) \*\//) {
+  elsif (/^(?:static )*const struct MenuOpSeq .*{ \/\* map: (.*) \*\//) {
     $map = $1;
     die "unknown map $map" unless $MAP_FUNC_TO_OP{$map};
     while (<STDIN>) {
