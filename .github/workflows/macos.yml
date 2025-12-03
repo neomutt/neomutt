@@ -27,10 +27,10 @@ jobs:
       run: brew install notmuch libidn2 libiconv ncurses lmdb
 
     - name: Checkout Code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Checkout Test Files
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: neomutt/neomutt-test-files
         path: test-files
