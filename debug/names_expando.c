@@ -44,6 +44,7 @@
 #include "ncrypt/private.h"
 #include "ncrypt/smime.h"
 #include "pattern/private.h"
+#include "send/expando_msgid.h"
 #include "sidebar/private.h"
 #ifdef CRYPT_BACKEND_GPGME
 #include "ncrypt/crypt_gpgme.h"
@@ -360,6 +361,26 @@ const char *name_expando_uid_menu(int uid)
   return "UNKNOWN";
 }
 
+const char *name_expando_uid_msg_id(int uid)
+{
+  switch (uid)
+  {
+    DEBUG_NAME(ED_MSG_COUNTER);
+    DEBUG_NAME(ED_MSG_DAY);
+    DEBUG_NAME(ED_MSG_HOSTNAME);
+    DEBUG_NAME(ED_MSG_HOUR);
+    DEBUG_NAME(ED_MSG_MINUTE);
+    DEBUG_NAME(ED_MSG_MONTH);
+    DEBUG_NAME(ED_MSG_PID);
+    DEBUG_NAME(ED_MSG_RANDOM_1);
+    DEBUG_NAME(ED_MSG_RANDOM_3);
+    DEBUG_NAME(ED_MSG_RANDOM_12);
+    DEBUG_NAME(ED_MSG_SECOND);
+    DEBUG_NAME(ED_MSG_YEAR);
+    DEBUG_DEFAULT;
+  }
+}
+
 const char *name_expando_uid_nntp(int uid)
 {
   switch (uid)
@@ -501,6 +522,8 @@ const char *name_expando_uid(enum ExpandoDomain did, int uid)
       return name_expando_uid_mailbox(uid);
     case ED_MENU:
       return name_expando_uid_menu(uid);
+    case ED_MSG_ID:
+      return name_expando_uid_msg_id(uid);
     case ED_NNTP:
       return name_expando_uid_nntp(uid);
     case ED_PATTERN:

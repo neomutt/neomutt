@@ -74,6 +74,7 @@
 #include "body.h"
 #include "copy.h"
 #include "expando_greeting.h"
+#include "expando_msgid.h"
 #include "globals.h"
 #include "handler.h"
 #include "header.h"
@@ -690,7 +691,7 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
 
   struct Buffer *buf = buf_pool_get();
 
-  expando_filter(c_greeting, GreetingRenderCallbacks, e, TOKEN_NO_FLAGS,
+  expando_filter(c_greeting, GreetingRenderCallbacks, e, MUTT_FORMAT_NO_FLAGS,
                  buf->dsize, NeoMutt->env, buf);
 
   fputs(buf_string(buf), fp_out);
@@ -2237,7 +2238,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   }
 
   if (!e_templ->env->message_id)
-    e_templ->env->message_id = mutt_gen_msgid();
+    e_templ->env->message_id = msgid_generate();
 
   const bool c_resume_draft_files = cs_subset_bool(sub, "resume_draft_files");
   if (!(flags & (SEND_POSTPONED | SEND_RESEND)) &&

@@ -55,7 +55,7 @@ static const unsigned char Base32[] = "abcdefghijklmnopqrstuvwxyz234567";
  * @retval  0 Success
  * @retval -1 Error
  */
-static int mutt_randbuf(void *buf, size_t buflen)
+int mutt_randbuf(void *buf, size_t buflen)
 {
   if (buflen > 1048576)
   {
