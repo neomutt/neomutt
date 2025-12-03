@@ -301,7 +301,6 @@ enum CommandResult parse_bind(struct Buffer *buf, struct Buffer *s,
         struct EventBinding ev_b = { mtypes[i], key, op };
         notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_ADD, &ev_b);
       }
-      // dump_menu_binds(false);
     }
     buf_pool_release(&keystr);
   }
@@ -333,7 +332,6 @@ enum CommandResult parse_unbind(struct Buffer *buf, struct Buffer *s,
   bool menu_matches[MENU_MAX] = { 0 };
   bool all_keys = false;
   const char *key = NULL;
-  // enum CommandResult rc = MUTT_CMD_SUCCESS;
 
   if (!MoreArgs(s))
   {
@@ -424,7 +422,6 @@ enum CommandResult parse_unbind(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  // done:
   return MUTT_CMD_SUCCESS;
 }
 

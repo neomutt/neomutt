@@ -773,9 +773,6 @@ static void init_keys(void)
   pager_init_keys(sm_generic);
   pgp_init_keys(sm_generic);
   postponed_init_keys(sm_generic);
-
-  // dump_menu_funcs(false);
-  // dump_menu_binds(false);
 }
 
 /**
