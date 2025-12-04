@@ -50,6 +50,19 @@ static const char B64Chars[64] = {
 };
 
 /**
+ * B64CharsUrlSafe - URL-Safe Characters of the Base64 encoding
+ *
+ * RFC4648 section 5 Base 64 Encoding with URL and Filename Safe Alphabet
+ */
+static const char B64CharsUrlSafe[64] = {
+  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_'
+};
+
+/**
  * Index64 - Lookup table for Base64 encoding characters
  *
  * @note This is very similar to the table in imap/utf7.c
@@ -72,11 +85,12 @@ const int Index64[128] = {
 };
 
 /**
- * mutt_b64_encode - Convert raw bytes to NUL-terminated base64 string
+ * b64_encode - Convert raw bytes to NUL-terminated base64 string
  * @param in     Input buffer for the raw bytes
  * @param inlen  Length of the input buffer
  * @param out    Output buffer for the base64 encoded string
  * @param outlen Length of the output buffer
+ * @param alpha  Alphabet to encode with
  * @retval num Length of the string written to the output buffer
  *
  * This function performs base64 encoding. The resulting string is guaranteed
@@ -84,7 +98,8 @@ const int Index64[128] = {
  * NUL-byte is returned (equivalent to calling strlen() on the output buffer
  * after this function returns).
  */
-size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
+static size_t b64_encode(const char *in, size_t inlen, char *out, size_t outlen,
+                         const char *alpha)
 {
   if (!in || !out)
     return 0;
@@ -94,10 +109,10 @@ size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
 
   while ((inlen >= 3) && (outlen > 4))
   {
-    *out++ = B64Chars[inu[0] >> 2];
-    *out++ = B64Chars[((inu[0] << 4) & 0x30) | (inu[1] >> 4)];
-    *out++ = B64Chars[((inu[1] << 2) & 0x3c) | (inu[2] >> 6)];
-    *out++ = B64Chars[inu[2] & 0x3f];
+    *out++ = alpha[inu[0] >> 2];
+    *out++ = alpha[((inu[0] << 4) & 0x30) | (inu[1] >> 4)];
+    *out++ = alpha[((inu[1] << 2) & 0x3c) | (inu[2] >> 6)];
+    *out++ = alpha[inu[2] & 0x3f];
     outlen -= 4;
     inlen -= 3;
     inu += 3;
@@ -108,16 +123,46 @@ size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
   {
     unsigned char fragment;
 
-    *out++ = B64Chars[inu[0] >> 2];
+    *out++ = alpha[inu[0] >> 2];
     fragment = (inu[0] << 4) & 0x30;
     if (inlen > 1)
       fragment |= inu[1] >> 4;
-    *out++ = B64Chars[fragment];
-    *out++ = (inlen < 2) ? '=' : B64Chars[(inu[1] << 2) & 0x3c];
+    *out++ = alpha[fragment];
+    *out++ = (inlen < 2) ? '=' : alpha[(inu[1] << 2) & 0x3c];
     *out++ = '=';
   }
   *out = '\0';
   return out - (char *) begin;
+}
+
+/**
+ * mutt_b64_encode - Convert raw bytes to a base64 string
+ * @param in     Input buffer for the raw bytes
+ * @param inlen  Length of the input buffer
+ * @param out    Output buffer for the base64 encoded string
+ * @param outlen Length of the output buffer
+ * @retval num Length of the string written to the output buffer
+ *
+ * @sa b64_encode()
+ */
+size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
+{
+  return b64_encode(in, inlen, out, outlen, B64Chars);
+}
+
+/**
+ * mutt_b64_encode_urlsafe - Convert raw bytes to a URL-safe base64 string
+ * @param in     Input buffer for the raw bytes
+ * @param inlen  Length of the input buffer
+ * @param out    Output buffer for the base64 encoded string
+ * @param outlen Length of the output buffer
+ * @retval num Length of the string written to the output buffer
+ *
+ * @sa b64_encode()
+ */
+size_t mutt_b64_encode_urlsafe(const char *in, size_t inlen, char *out, size_t outlen)
+{
+  return b64_encode(in, inlen, out, outlen, B64CharsUrlSafe);
 }
 
 /**
