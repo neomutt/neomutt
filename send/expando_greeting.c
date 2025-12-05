@@ -21,7 +21,7 @@
  */
 
 /**
- * @page send_expando Greeting Expando definitions
+ * @page send_expando_greeting Greeting Expando definitions
  *
  * Greeting Expando definitions
  */
@@ -31,7 +31,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
-#include "expando.h"
+#include "expando_greeting.h"
 #include "expando/lib.h"
 
 /**

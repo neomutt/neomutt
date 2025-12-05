@@ -25,17 +25,18 @@
  *
  * Shared code for sending Emails
  *
- * | File             | Description             |
- * | :--------------- | :---------------------- |
- * | send/body.c      | @subpage send_body      |
- * | send/config.c    | @subpage send_config    |
- * | send/expando.c   | @subpage send_expando   |
- * | send/header.c    | @subpage send_header    |
- * | send/multipart.c | @subpage send_multipart |
- * | send/send.c      | @subpage send_send      |
- * | send/sendlib.c   | @subpage send_sendlib   |
- * | send/sendmail.c  | @subpage send_sendmail  |
- * | send/smtp.c      | @subpage send_smtp      |
+ * | File                    | Description                    |
+ * | :---------------------- | :----------------------------- |
+ * | send/body.c             | @subpage send_body             |
+ * | send/config.c           | @subpage send_config           |
+ * | send/expando_greeting.c | @subpage send_expando_greeting |
+ * | send/expando_msgid.c    | @subpage send_expando_msgid    |
+ * | send/header.c           | @subpage send_header           |
+ * | send/multipart.c        | @subpage send_multipart        |
+ * | send/send.c             | @subpage send_send             |
+ * | send/sendlib.c          | @subpage send_sendlib          |
+ * | send/sendmail.c         | @subpage send_sendmail         |
+ * | send/smtp.c             | @subpage send_smtp             |
  */
 
 #ifndef MUTT_SEND_LIB_H

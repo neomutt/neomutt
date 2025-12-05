@@ -54,7 +54,8 @@ ATTACH_OBJS	= test/attach/mutt_actx_add_attach.o \
 BASE64_OBJS	= test/base64/mutt_b64_buffer_decode.o \
 		  test/base64/mutt_b64_buffer_encode.o \
 		  test/base64/mutt_b64_decode.o \
-		  test/base64/mutt_b64_encode.o
+		  test/base64/mutt_b64_encode.o \
+		  test/base64/mutt_b64_encode_urlsafe.o
 
 BODY_OBJS	= test/body/mutt_body_cmp_strict.o \
 		  test/body/mutt_body_free.o \
