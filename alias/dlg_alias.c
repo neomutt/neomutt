@@ -336,6 +336,8 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
 {
   struct Alias *np = NULL;
   char bestname[8192] = { 0 };
+  struct Alias *a_best = NULL;
+  int count = 0;
 
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.limit = buf_strdup(buf);
@@ -347,6 +349,9 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     {
       if (np->name && mutt_strn_equal(np->name, buf_string(buf), buf_len(buf)))
       {
+        a_best = np;
+        count++;
+
         if (bestname[0] == '\0') /* init */
         {
           mutt_str_copy(bestname, np->name,
@@ -361,6 +366,15 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
           bestname[i] = '\0';
         }
       }
+    }
+
+    // Exactly one match, so expand the Alias and return
+    if (count == 1)
+    {
+      buf_reset(buf);
+      mutt_addrlist_write(&a_best->addr, buf, true);
+      buf_addstr(buf, ", ");
+      return 1;
     }
 
     if (bestname[0] == '\0')
