@@ -96,7 +96,6 @@ static int menu_repaint(struct MuttWindow *win)
     return 0;
 
   struct Menu *menu = win->wdata;
-  menu->redraw |= MENU_REDRAW_FULL;
   menu_redraw(menu);
   menu->redraw = MENU_REDRAW_NO_FLAGS;
 

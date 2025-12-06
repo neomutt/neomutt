@@ -652,7 +652,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
 {
   if (ARRAY_EMPTY(&priv->state.entry))
   {
-    mutt_error(_("No files match the file mask"));
+    mutt_warning(_("No files match the file mask"));
     return FR_ERROR;
   }
 

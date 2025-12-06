@@ -144,10 +144,10 @@ enum ExpandoDataFolder
  */
 struct BrowserState
 {
-  struct BrowserEntryArray entry; ///< Array of files / dirs / mailboxes
-  bool imap_browse; ///< IMAP folder
-  char *folder;     ///< Folder name
-  bool is_mailbox_list; ///< Viewing mailboxes
+  struct BrowserEntryArray entry;   ///< Array of files / dirs / mailboxes
+  bool imap_browse;                 ///< IMAP folder
+  char *folder;                     ///< Folder name
+  bool is_mailbox_list;             ///< Viewing mailboxes
 };
 
 
