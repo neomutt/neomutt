@@ -37,6 +37,7 @@
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -51,6 +52,7 @@
 #include "expando/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
+#include "pager/lib.h"
 #include "parse/lib.h"
 #include "pattern/lib.h"
 #include "commands.h"
@@ -1018,6 +1020,204 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
 }
 
 /**
+ * get_hook_type_name - Get the name of a hook type
+ * @param type Hook type flags
+ * @retval ptr  Hook type name
+ */
+static const char *get_hook_type_name(HookFlags type)
+{
+  if (type == MUTT_ACCOUNT_HOOK)
+    return "account-hook";
+  if (type == MUTT_CHARSET_HOOK)
+    return "charset-hook";
+  if (type == MUTT_CRYPT_HOOK)
+    return "crypt-hook";
+  if ((type & MUTT_FCC_HOOK) && (type & MUTT_SAVE_HOOK))
+    return "fcc-save-hook";
+  if (type == MUTT_FCC_HOOK)
+    return "fcc-hook";
+  if (type == MUTT_FOLDER_HOOK)
+    return "folder-hook";
+  if (type == MUTT_ICONV_HOOK)
+    return "iconv-hook";
+  if (type == MUTT_IDXFMTHOOK)
+    return "index-format-hook";
+  if (type == MUTT_MBOX_HOOK)
+    return "mbox-hook";
+  if (type == MUTT_MESSAGE_HOOK)
+    return "message-hook";
+  if (type == MUTT_REPLY_HOOK)
+    return "reply-hook";
+  if (type == MUTT_SAVE_HOOK)
+    return "save-hook";
+  if (type == MUTT_SEND_HOOK)
+    return "send-hook";
+  if (type == MUTT_SEND2_HOOK)
+    return "send2-hook";
+  if ((type & MUTT_SHUTDOWN_HOOK) && (type & MUTT_GLOBAL_HOOK))
+    return "shutdown-hook";
+  if ((type & MUTT_STARTUP_HOOK) && (type & MUTT_GLOBAL_HOOK))
+    return "startup-hook";
+  if ((type & MUTT_TIMEOUT_HOOK) && (type & MUTT_GLOBAL_HOOK))
+    return "timeout-hook";
+  return "unknown-hook";
+}
+
+/**
+ * hooks_dump_one - Dump a single hook to the buffer
+ * @param buf  Buffer to write to
+ * @param hook Hook to dump
+ */
+static void hooks_dump_one(struct Buffer *buf, struct Hook *hook)
+{
+  const char *hook_name = get_hook_type_name(hook->type);
+
+  if (hook->type & MUTT_GLOBAL_HOOK)
+  {
+    // Global hooks don't have patterns, just commands
+    buf_add_printf(buf, "%s '%s'\n", hook_name, NONULL(hook->command));
+  }
+  else if (hook->regex.pattern)
+  {
+    // Regular hooks with patterns
+    buf_add_printf(buf, "%s %s'%s' '%s'\n", hook_name,
+                   hook->regex.pat_not ? "! " : "",
+                   hook->regex.pattern,
+                   NONULL(hook->command));
+  }
+}
+
+/**
+ * hooks_dump - Display all hooks in the Pager
+ */
+static void hooks_dump(void)
+{
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
+  if (!fp_out)
+  {
+    mutt_error(_("Could not create temporary file %s"), buf_string(tempfile));
+    buf_pool_release(&tempfile);
+    return;
+  }
+
+  struct Buffer *buf = buf_pool_get();
+
+  // Group hooks by type
+  HookFlags hook_types[] = {
+    MUTT_FOLDER_HOOK,
+    MUTT_MBOX_HOOK,
+    MUTT_SEND_HOOK,
+    MUTT_FCC_HOOK,
+    MUTT_SAVE_HOOK,
+    MUTT_FCC_HOOK | MUTT_SAVE_HOOK,
+    MUTT_MESSAGE_HOOK,
+    MUTT_REPLY_HOOK,
+    MUTT_SEND2_HOOK,
+    MUTT_CRYPT_HOOK,
+    MUTT_ACCOUNT_HOOK,
+    MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK,
+    MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK,
+    MUTT_SHUTDOWN_HOOK | MUTT_GLOBAL_HOOK,
+  };
+  const size_t num_hook_types = sizeof(hook_types) / sizeof(hook_types[0]);
+
+  for (size_t i = 0; i < num_hook_types; i++)
+  {
+    HookFlags type = hook_types[i];
+    bool found_header = false;
+    struct Hook *hook = NULL;
+
+    TAILQ_FOREACH(hook, &Hooks, entries)
+    {
+      if (hook->type != type)
+        continue;
+
+      if (!found_header)
+      {
+        const char *type_name = get_hook_type_name(type);
+        buf_add_printf(buf, "# %s\n", type_name);
+        found_header = true;
+      }
+
+      hooks_dump_one(buf, hook);
+    }
+
+    if (found_header)
+      buf_addstr(buf, "\n");
+  }
+
+  // Dump index-format-hooks separately
+  if (IdxFmtHooks)
+  {
+    struct HashWalkState hws = { 0 };
+    struct HashElem *he = NULL;
+    bool found_header = false;
+
+    while ((he = mutt_hash_walk(IdxFmtHooks, &hws)))
+    {
+      const char *name = he->key.strkey;
+      struct HookList *hl = he->data;
+      struct Hook *hook = NULL;
+
+      TAILQ_FOREACH(hook, hl, entries)
+      {
+        if (!found_header)
+        {
+          buf_addstr(buf, "# index-format-hook\n");
+          found_header = true;
+        }
+
+        buf_add_printf(buf, "index-format-hook '%s' %s'%s' '%s'\n",
+                       name,
+                       hook->regex.pat_not ? "! " : "",
+                       NONULL(hook->regex.pattern),
+                       NONULL(hook->command));
+      }
+    }
+    if (found_header)
+      buf_addstr(buf, "\n");
+  }
+
+  mutt_file_save_str(fp_out, buf_string(buf));
+  buf_pool_release(&buf);
+  mutt_file_fclose(&fp_out);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = buf_string(tempfile);
+
+  pview.banner = "hooks";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview, NULL);
+  buf_pool_release(&tempfile);
+}
+
+/**
+ * parse_hooks - Parse the 'hooks' command - Implements Command::parse() - @ingroup command_parse
+ */
+static enum CommandResult parse_hooks(struct Buffer *buf, struct Buffer *s,
+                                      intptr_t data, struct Buffer *err)
+{
+  if (MoreArgs(s))
+  {
+    buf_printf(err, _("%s: too many arguments"), "hooks");
+    return MUTT_CMD_WARNING;
+  }
+
+  if (!StartupComplete)
+    return MUTT_CMD_SUCCESS;
+
+  hooks_dump();
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * HookCommands - Hook Commands
  */
 static const struct Command HookCommands[] = {
@@ -1028,6 +1228,7 @@ static const struct Command HookCommands[] = {
   { "fcc-hook",          mutt_parse_hook,               MUTT_FCC_HOOK },
   { "fcc-save-hook",     mutt_parse_hook,               MUTT_FCC_HOOK | MUTT_SAVE_HOOK },
   { "folder-hook",       mutt_parse_hook,               MUTT_FOLDER_HOOK },
+  { "hooks",             parse_hooks,                   0 },
   { "iconv-hook",        mutt_parse_charset_iconv_hook, MUTT_ICONV_HOOK },
   { "index-format-hook", mutt_parse_idxfmt_hook,        MUTT_IDXFMTHOOK },
   { "mbox-hook",         mutt_parse_hook,               MUTT_MBOX_HOOK },
