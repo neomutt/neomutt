@@ -38,7 +38,7 @@ jobs:
         with:
           languages: cpp, python
           config-file: ./.github/codeql.yml
-          queries: +security-and-quality
+          queries: +security-and-quality,./.github/codeql/buf_reset.ql
 
       - name: Build NeoMutt
         run: make -j ${{steps.cpu-cores.outputs.count}} -s
