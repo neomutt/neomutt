@@ -831,6 +831,19 @@ static long email_score(const struct ExpandoNode *node, void *data, MuttFormatFl
 }
 
 /**
+ * email_custom_priority - Index: Custom priority - Implements ::get_number_t - @ingroup expando_get_number_api
+ */
+static long email_custom_priority(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
+  if (!e)
+    return 0;
+
+  return e->custom_priority;
+}
+
+/**
  * email_size - Index: Number of bytes - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_size(const struct ExpandoNode *node, void *data,
@@ -1710,6 +1723,7 @@ const struct ExpandoRenderCallback IndexRenderCallbacks[] = {
   { ED_EMAIL,    ED_EMA_BODY_CHARACTERS,     email_body_characters,     NULL },
   { ED_EMAIL,    ED_EMA_COMBINED_FLAGS,      email_combined_flags,      NULL },
   { ED_EMAIL,    ED_EMA_CRYPTO_FLAGS,        email_crypto_flags,        NULL },
+  { ED_EMAIL,    ED_EMA_CUSTOM_PRIORITY,     NULL,                      email_custom_priority },
   { ED_EMAIL,    ED_EMA_DATE_FORMAT,         email_date_format,         email_date_format_num },
   { ED_EMAIL,    ED_EMA_DATE_FORMAT_LOCAL,   email_date_format_local,   email_date_format_local_num },
   { ED_EMAIL,    ED_EMA_DATE_STRF,           email_date_strf,           email_date_strf_num },
