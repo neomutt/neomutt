@@ -65,10 +65,8 @@ const struct MenuFuncOp OpBrowser = { 0 };
 const struct MenuFuncOp OpCompose = { 0 };
 const struct MenuFuncOp OpIndex = { 0 };
 const struct MenuFuncOp OpPager = { 0 };
-const struct MenuFuncOp OpPgp = { 0 };
 const struct MenuFuncOp OpPostponed = { 0 };
 const struct MenuFuncOp OpQuery = { 0 };
-const struct MenuFuncOp OpSmime = { 0 };
 
 typedef uint8_t MuttFormatFlags;
 typedef uint16_t CompletionFlags;

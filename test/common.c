@@ -40,6 +40,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "complete/lib.h"
+#include "key/lib.h"
 #include "copy.h"
 #include "mx.h"
 

@@ -27,54 +27,41 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "gui/lib.h"
+#include "lib.h"
 #include "key/lib.h"
-#include "menu/lib.h"
 
-/**
- * log_bind - Dumps all the binds maps of a menu into a buffer
- * @param menu   Menu to dump
- * @param keystr Bound string
- * @param map    Keybinding
- */
-void log_bind(enum MenuType menu, const char *keystr, struct Keymap *map)
+struct SubMenuId
 {
-  if (map->op == OP_NULL)
-  {
-    mutt_debug(LL_DEBUG1, "    bind %s noop\n", keystr);
-    return;
-  }
+  int id;
+  struct SubMenu *sm;
+};
+ARRAY_HEAD(SubMenuIdArray, struct SubMenuId);
 
+void log_bind(const struct MenuDefinition *md, const char *keystr, struct Keymap *km)
+{
   const char *fn_name = NULL;
-  /* The pager and editor menus don't use the generic map,
-   * however for other menus try generic first. */
-  if ((menu != MENU_PAGER) && (menu != MENU_EDITOR) && (menu != MENU_GENERIC))
-  {
-    fn_name = mutt_get_func(OpGeneric, map->op);
-  }
 
-  /* if it's one of the menus above or generic doesn't find the function,
-   * try with its own menu. */
-  if (!fn_name)
+  struct SubMenu **smp = NULL;
+  ARRAY_FOREACH(smp, &md->submenus)
   {
-    const struct MenuFuncOp *funcs = km_get_table(menu);
-    if (!funcs)
-      return;
-
-    fn_name = mutt_get_func(funcs, map->op);
+    fn_name = help_lookup_function(md, km->op);
+    if (fn_name)
+      break;
   }
 
   mutt_debug(LL_DEBUG1, "    bind %-8s <%s>\n", keystr, fn_name);
-  mutt_debug(LL_DEBUG1, "        op = %d (%s)\n", map->op, opcodes_get_name(map->op));
-  mutt_debug(LL_DEBUG1, "        eq = %d\n", map->eq);
+  mutt_debug(LL_DEBUG1, "        op = %d (%s)\n", km->op, opcodes_get_name(km->op));
+  mutt_debug(LL_DEBUG1, "        eq = %d\n", km->eq);
 
   struct Buffer *keys = buf_pool_get();
-  for (int i = 0; i < map->len; i++)
+  for (int i = 0; i < km->len; i++)
   {
-    buf_add_printf(keys, "%d ", map->keys[i]);
+    buf_add_printf(keys, "%d ", km->keys[i]);
   }
   mutt_debug(LL_DEBUG1, "        keys: %s\n", buf_string(keys));
   buf_pool_release(&keys);
@@ -83,40 +70,49 @@ void log_bind(enum MenuType menu, const char *keystr, struct Keymap *map)
 /**
  * log_macro - Dumps all the macros maps of a menu into a buffer
  * @param keystr Bound string
- * @param map    Keybinding
+ * @param km     Keybinding
  */
-void log_macro(const char *keystr, struct Keymap *map)
+void log_macro(const char *keystr, struct Keymap *km)
 {
   struct Buffer *esc_macro = buf_pool_get();
-  escape_string(esc_macro, map->macro);
+  escape_string(esc_macro, km->macro);
 
   mutt_debug(LL_DEBUG1, "    macro %-8s \"%s\"\n", keystr, buf_string(esc_macro));
-  if (map->desc)
-    mutt_debug(LL_DEBUG1, "        %s\n", map->desc);
+  if (km->desc)
+    mutt_debug(LL_DEBUG1, "        %s\n", km->desc);
 
   buf_pool_release(&esc_macro);
 
-  mutt_debug(LL_DEBUG1, "        op = %d\n", map->op);
-  mutt_debug(LL_DEBUG1, "        eq = %d\n", map->eq);
+  mutt_debug(LL_DEBUG1, "        op = %d\n", km->op);
+  mutt_debug(LL_DEBUG1, "        eq = %d\n", km->eq);
   struct Buffer *keys = buf_pool_get();
-  for (int i = 0; i < map->len; i++)
+  for (int i = 0; i < km->len; i++)
   {
-    buf_add_printf(keys, "%d ", map->keys[i]);
+    buf_add_printf(keys, "%d ", km->keys[i]);
   }
   mutt_debug(LL_DEBUG1, "        keys: %s\n", buf_string(keys));
   buf_pool_release(&keys);
 }
 
-/**
- * log_menu - Dump a Menu's keybindings to the log
- * @param menu Menu to dump
- * @param kml  Map of keybindings
- */
-void log_menu(enum MenuType menu, struct KeymapList *kml)
+void dump_submenu_functions(const struct SubMenu *sm, bool brief)
 {
-  struct Keymap *map = NULL;
+  for (int i = 0; sm->functions[i].name; i++)
+  {
+    if (brief && (i > 2))
+    {
+      mutt_debug(LL_DEBUG1, "    ...\n");
+      break;
+    }
 
-  if (STAILQ_EMPTY(kml))
+    const struct MenuFuncOp *mfo = &sm->functions[i];
+    mutt_debug(LL_DEBUG1, "    \"%s\" -> %s (%d)\n", mfo->name,
+               opcodes_get_name(mfo->op), mfo->op);
+  }
+}
+
+void dump_submenu_bindings(const struct MenuDefinition *md, const struct SubMenu *sm, bool brief)
+{
+  if (STAILQ_EMPTY(&sm->keymaps))
   {
     mutt_debug(LL_DEBUG1, "    [NONE]\n");
     return;
@@ -125,33 +121,118 @@ void log_menu(enum MenuType menu, struct KeymapList *kml)
   struct Buffer *binding = buf_pool_get();
   struct Buffer *esc_key = buf_pool_get();
 
-  STAILQ_FOREACH(map, kml, entries)
+  int count = 0;
+  struct Keymap *km = NULL;
+  STAILQ_FOREACH(km, &sm->keymaps, entries)
   {
+    if (brief && (count++ > 2))
+    {
+      mutt_debug(LL_DEBUG1, "    ...\n");
+      break;
+    }
+
     buf_reset(binding);
-    km_expand_key(map, binding);
+    keymap_expand_key(km, binding);
 
     buf_reset(esc_key);
     escape_string(esc_key, buf_string(binding));
 
-    if (map->op == OP_MACRO)
-      log_macro(buf_string(esc_key), map);
+    if (km->op == OP_MACRO)
+      log_macro(buf_string(esc_key), km);
     else
-      log_bind(menu, buf_string(esc_key), map);
+      log_bind(md, buf_string(esc_key), km);
   }
 
   buf_pool_release(&binding);
   buf_pool_release(&esc_key);
 }
 
-/**
- * dump_keybindings - Dump all the keybindings to the log
- */
-void dump_keybindings(void)
+void dump_submenus(bool brief, struct SubMenuIdArray *smia)
 {
-  mutt_debug(LL_DEBUG1, "Keybindings:\n");
-  for (int i = 1; i < MENU_MAX; i++)
+  struct SubMenu *sm = NULL;
+  ARRAY_FOREACH(sm, &SubMenus)
   {
-    mutt_debug(LL_DEBUG1, "Menu: %s\n", mutt_map_get_name(i, MenuNames));
-    log_menu(i, &Keymaps[i]);
+    struct SubMenuId smi = { ARRAY_FOREACH_IDX_sm, sm };
+    ARRAY_ADD(smia, smi);
+
+    int i = 0;
+    for (; sm->functions[i].name; i++)
+      ; // Do nothing
+
+    mutt_debug(LL_DEBUG1, "SubMenu ID %d (%d functions):\n", ARRAY_FOREACH_IDX_sm, i);
+    dump_submenu_functions(sm, brief);
+    mutt_debug(LL_DEBUG1, "\n");
+  }
+}
+
+void dump_menus(struct SubMenuIdArray *smia)
+{
+  struct Buffer *buf = buf_pool_get();
+  struct MenuDefinition *md = NULL;
+
+  mutt_debug(LL_DEBUG1, "Menus:\n");
+  ARRAY_FOREACH(md, &MenuDefs)
+  {
+    buf_printf(buf, "    \"%s\" - %s (%d) - SubMenu IDs: ", md->name,
+               name_menu_type(md->id), md->id);
+
+    struct SubMenu **smp = NULL;
+    ARRAY_FOREACH(smp, &md->submenus)
+    {
+      struct SubMenuId *smi = NULL;
+      struct SubMenu *sm = *smp;
+      int id = -1;
+
+      ARRAY_FOREACH(smi, smia)
+      {
+        if (smi->sm == sm)
+        {
+          id = smi->id;
+          break;
+        }
+      }
+
+      buf_add_printf(buf, "%d", id);
+
+      if (ARRAY_FOREACH_IDX_smp < (ARRAY_SIZE(&md->submenus) - 1))
+      {
+        buf_add_printf(buf, ", ");
+      }
+    }
+    mutt_debug(LL_DEBUG1, "%s\n", buf_string(buf));
+    mutt_debug(LL_DEBUG1, "\n");
+  }
+
+  buf_pool_release(&buf);
+}
+
+void dump_menu_funcs(bool brief)
+{
+  struct SubMenuIdArray smia = ARRAY_HEAD_INITIALIZER;
+
+  dump_submenus(brief, &smia);
+  dump_menus(&smia);
+
+  ARRAY_FREE(&smia);
+}
+
+void dump_menu_binds(bool brief)
+{
+  struct MenuDefinition *md = NULL;
+  ARRAY_FOREACH(md, &MenuDefs)
+  {
+    struct SubMenu *sm = *ARRAY_FIRST(&md->submenus);
+
+    int count = 0;
+    struct Keymap *km = NULL;
+    STAILQ_FOREACH(km, &sm->keymaps, entries)
+    {
+      count++;
+    }
+
+    mutt_debug(LL_DEBUG1, "Menu %s (%s/%d) - (%d bindings):\n", md->name,
+               name_menu_type(md->id), md->id, count);
+    dump_submenu_bindings(md, sm, brief);
+    mutt_debug(LL_DEBUG1, "\n");
   }
 }

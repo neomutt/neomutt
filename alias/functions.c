@@ -56,7 +56,7 @@
 /**
  * OpAlias - Functions for the Alias Menu
  */
-const struct MenuFuncOp OpAlias[] = { /* map: alias */
+static const struct MenuFuncOp OpAlias[] = { /* map: alias */
   { "delete-entry",                  OP_DELETE },
   { "exit",                          OP_EXIT },
   { "limit",                         OP_MAIN_LIMIT },
@@ -89,7 +89,7 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
 /**
  * AliasDefaultBindings - Key bindings for the Alias Menu
  */
-const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
+static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_DELETE,                             "d" },
   { OP_EXIT,                               "q" },
   { OP_MAIL,                               "m" },
@@ -106,7 +106,7 @@ const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
 /**
  * QueryDefaultBindings - Key bindings for the external Query Menu
  */
-const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
+static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_CREATE_ALIAS,                       "a" },
   { OP_EXIT,                               "q" },
   { OP_MAIL,                               "m" },
@@ -121,6 +121,27 @@ const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * alias_init_keys - Initialise the Alias Keybindings - Implements ::init_keys_api
+ */
+void alias_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpAlias);
+  md = km_register_menu(MENU_ALIAS, "alias");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, AliasDefaultBindings);
+
+  sm = km_register_submenu(OpQuery);
+  md = km_register_menu(MENU_QUERY, "query");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, QueryDefaultBindings);
+}
 
 /**
  * op_create_alias - create an alias from a message sender - Implements ::alias_function_t - @ingroup alias_function_api

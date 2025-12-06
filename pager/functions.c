@@ -67,7 +67,7 @@ static int op_pager_search_next(struct IndexSharedData *shared,
 /**
  * OpPager - Functions for the Pager Menu
  */
-const struct MenuFuncOp OpPager[] = { /* map: pager */
+static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "bottom",                        OP_PAGER_BOTTOM },
   { "bounce-message",                OP_BOUNCE_MESSAGE },
   { "break-thread",                  OP_MAIN_BREAK_THREAD },
@@ -225,7 +225,7 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
 /**
  * PagerDefaultBindings - Key bindings for the Pager Menu
  */
-const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
+static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
   { OP_BOUNCE_MESSAGE,                     "b" },
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
@@ -326,6 +326,20 @@ const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * pager_init_keys - Initialise the Pager Keybindings - Implements ::init_keys_api
+ */
+void pager_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpPager);
+  md = km_register_menu(MENU_PAGER, "pager");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_bindings(md, PagerDefaultBindings);
+}
 
 /**
  * assert_pager_mode - Check that pager is in correct mode

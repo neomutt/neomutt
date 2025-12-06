@@ -39,7 +39,7 @@
 /**
  * OpPgp - Functions for the Pgp Menu
  */
-const struct MenuFuncOp OpPgp[] = { /* map: pgp */
+static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
   { "exit",                          OP_EXIT },
   { "verify-key",                    OP_VERIFY_KEY },
   { "view-name",                     OP_VIEW_ID },
@@ -49,7 +49,7 @@ const struct MenuFuncOp OpPgp[] = { /* map: pgp */
 /**
  * OpSmime - Functions for the Smime Menu
  */
-const struct MenuFuncOp OpSmime[] = { /* map: smime */
+static const struct MenuFuncOp OpSmime[] = { /* map: smime */
   { "exit",                          OP_EXIT },
 #ifdef CRYPT_BACKEND_GPGME
   { "verify-key",                    OP_VERIFY_KEY },
@@ -61,7 +61,7 @@ const struct MenuFuncOp OpSmime[] = { /* map: smime */
 /**
  * PgpDefaultBindings - Key bindings for the Pgp Menu
  */
-const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
+static const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
   { OP_EXIT,                               "q" },
   { OP_VERIFY_KEY,                         "c" },
   { OP_VIEW_ID,                            "%" },
@@ -71,7 +71,7 @@ const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
 /**
  * SmimeDefaultBindings - Key bindings for the Smime Menu
  */
-const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
+static const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
   { OP_EXIT,                               "q" },
 #ifdef CRYPT_BACKEND_GPGME
   { OP_VERIFY_KEY,                         "c" },
@@ -80,3 +80,24 @@ const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * pgp_init_keys - Initialise the PGP Keybindings - Implements ::init_keys_api
+ */
+void pgp_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpPgp);
+  md = km_register_menu(MENU_PGP, "pgp");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, PgpDefaultBindings);
+
+  sm = km_register_submenu(OpSmime);
+  md = km_register_menu(MENU_SMIME, "smime");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, SmimeDefaultBindings);
+}
