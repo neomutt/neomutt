@@ -76,6 +76,7 @@ enum CommandId
   CMD_FOLDER_HOOK,           ///< `:folder-hook`
   CMD_GROUP,                 ///< `:group`               @sa #CMD_UNGROUP
   CMD_HDR_ORDER,             ///< `:hdr_order`           @sa #CMD_UNHDR_ORDER, #HeaderOrderList
+  CMD_HOOKS,                 ///< `:hooks`
   CMD_ICONV_HOOK,            ///< `:iconv-hook`
   CMD_IFDEF,                 ///< `:ifdef`               @sa #CMD_FINISH, #CMD_IFNDEF
   CMD_IFNDEF,                ///< `:ifndef`              @sa #CMD_FINISH, #CMD_IFDEF
