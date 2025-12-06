@@ -30,11 +30,11 @@
 
 struct Command mutt_commands[] = {
   // clang-format off
-  { "reset",  parse_set, MUTT_SET_RESET },
-  { "set",    parse_set, MUTT_SET_SET },
-  { "toggle", parse_set, MUTT_SET_INV },
-  { "unset",  parse_set, MUTT_SET_UNSET },
-  { NULL, NULL, 0 },
+  { "reset",  "Reset a config variable to its initial value",       parse_set, MUTT_SET_RESET },
+  { "set",    "Set a config variable",                              parse_set, MUTT_SET_SET },
+  { "toggle", "Toggle the value of a boolean config variable",      parse_set, MUTT_SET_INV },
+  { "unset",  "Unset a config variable",                            parse_set, MUTT_SET_UNSET },
+  { NULL, NULL, NULL, 0 },
   // clang-format on
 };
 
