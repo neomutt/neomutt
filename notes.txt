@@ -1,0 +1,12 @@
+open/append/close hooks (compressed) missing
+
+
+once there are separate parsers:
+- eliminate MUTT_GLOBAL_HOOK
+- change `uint32_t HookFlags` an enum (linearly numbered)
+
+what about fcc-save-hook?
+	just a separate enum? prob
+
+add folder-hook-late (once mailbox is open and index populated)
+
