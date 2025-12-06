@@ -1032,10 +1032,10 @@ static const char *get_hook_type_name(HookFlags type)
     return "charset-hook";
   if (type == MUTT_CRYPT_HOOK)
     return "crypt-hook";
-  if (type == MUTT_FCC_HOOK)
-    return "fcc-hook";
   if ((type & MUTT_FCC_HOOK) && (type & MUTT_SAVE_HOOK))
     return "fcc-save-hook";
+  if (type == MUTT_FCC_HOOK)
+    return "fcc-hook";
   if (type == MUTT_FOLDER_HOOK)
     return "folder-hook";
   if (type == MUTT_ICONV_HOOK)
@@ -1071,7 +1071,7 @@ static const char *get_hook_type_name(HookFlags type)
 static void hooks_dump_one(struct Buffer *buf, struct Hook *hook)
 {
   const char *hook_name = get_hook_type_name(hook->type);
-  
+
   if (hook->type & MUTT_GLOBAL_HOOK)
   {
     // Global hooks don't have patterns, just commands
@@ -1211,10 +1211,7 @@ static enum CommandResult parse_hooks(struct Buffer *buf, struct Buffer *s,
   }
 
   if (!StartupComplete)
-  {
-    buf_printf(err, _("%s: too few arguments"), "hooks");
-    return MUTT_CMD_WARNING;
-  }
+    return MUTT_CMD_SUCCESS;
 
   hooks_dump();
   return MUTT_CMD_SUCCESS;
