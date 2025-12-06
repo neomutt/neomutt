@@ -12,7 +12,8 @@ class NeoMuttBufReset extends Taint::Sanitizer {
     exists(Function f |
       call.getTarget() = f and
       (
-        f.getName() = "buf_reset"
+        f.getName() = "buf_reset" or
+        f.getName() = "buf_pool_release"
       )
     )
   }
