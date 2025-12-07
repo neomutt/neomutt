@@ -57,6 +57,7 @@ typedef uint32_t HookFlags;          ///< Flags for mutt_parse_hook(), e.g. #MUT
 
 void hooks_init(void);
 enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult mutt_parse_hook_compress(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 void                  mutt_account_hook            (const char *url);
 void                  mutt_crypt_hook              (struct ListHead *list, struct Address *addr);
