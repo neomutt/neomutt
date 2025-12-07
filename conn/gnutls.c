@@ -760,7 +760,7 @@ err:
  */
 static int tls_set_priority(struct TlsSockData *data)
 {
-  size_t nproto = 5;
+  size_t nproto = 2;
   int rv = -1;
 
   struct Buffer *priority = buf_pool_get();
@@ -783,24 +783,11 @@ static int tls_set_priority(struct TlsSockData *data)
     nproto--;
     buf_addstr(priority, ":-VERS-TLS1.2");
   }
-  const bool c_ssl_use_tlsv1_1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
-  if (!c_ssl_use_tlsv1_1)
-  {
-    nproto--;
-    buf_addstr(priority, ":-VERS-TLS1.1");
-  }
-  const bool c_ssl_use_tlsv1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1");
-  if (!c_ssl_use_tlsv1)
-  {
-    nproto--;
-    buf_addstr(priority, ":-VERS-TLS1.0");
-  }
-  const bool c_ssl_use_sslv3 = cs_subset_bool(NeoMutt->sub, "ssl_use_sslv3");
-  if (!c_ssl_use_sslv3)
-  {
-    nproto--;
-    buf_addstr(priority, ":-VERS-SSL3.0");
-  }
+
+  // Deprecated protocols
+  buf_addstr(priority, ":-VERS-TLS1.1");
+  buf_addstr(priority, ":-VERS-TLS1.0");
+  buf_addstr(priority, ":-VERS-SSL3.0");
 
   if (nproto == 0)
   {
@@ -837,15 +824,6 @@ static int tls_set_priority(struct TlsSockData *data)
   const bool c_ssl_use_tlsv1_2 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_2");
   if (c_ssl_use_tlsv1_2)
     ProtocolPriority[nproto++] = GNUTLS_TLS1_2;
-  const bool c_ssl_use_tlsv1_1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
-  if (c_ssl_use_tlsv1_1)
-    ProtocolPriority[nproto++] = GNUTLS_TLS1_1;
-  const bool c_ssl_use_tlsv1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1");
-  if (c_ssl_use_tlsv1)
-    ProtocolPriority[nproto++] = GNUTLS_TLS1;
-  const bool c_ssl_use_sslv3 = cs_subset_bool(NeoMutt->sub, "ssl_use_sslv3");
-  if (c_ssl_use_sslv3)
-    ProtocolPriority[nproto++] = GNUTLS_SSL3;
   ProtocolPriority[nproto] = 0;
 
   if (nproto == 0)

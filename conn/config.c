@@ -80,15 +80,6 @@ static struct ConfigDef ConnVarsSsl[] = {
   { "ssl_starttls", DT_QUAD, MUTT_YES, 0, NULL,
     "(ssl) Use STARTTLS on servers advertising the capability"
   },
-  { "ssl_use_sslv3", DT_BOOL, false, 0, NULL,
-    "(ssl) INSECURE: Use SSLv3 for authentication"
-  },
-  { "ssl_use_tlsv1", DT_BOOL, false, 0, NULL,
-    "(ssl) Use TLSv1 for authentication"
-  },
-  { "ssl_use_tlsv1_1", DT_BOOL, false, 0, NULL,
-    "(ssl) Use TLSv1.1 for authentication"
-  },
   { "ssl_use_tlsv1_2", DT_BOOL, true, 0, NULL,
     "(ssl) Use TLSv1.2 for authentication"
   },
@@ -101,6 +92,10 @@ static struct ConfigDef ConnVarsSsl[] = {
   { "ssl_verify_host", DT_BOOL, true, 0, NULL,
     "(ssl) Verify the server's hostname against the certificate"
   },
+
+  { "ssl_use_sslv3",   D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2025-12-07" },
+  { "ssl_use_tlsv1",   D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2025-12-07" },
+  { "ssl_use_tlsv1_1", D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2025-12-07" },
   { NULL },
   // clang-format on
 };
@@ -132,13 +127,12 @@ static struct ConfigDef ConnVarsOpenssl[] = {
   { "entropy_file", DT_PATH|D_PATH_FILE, 0, 0, NULL,
     "(ssl) File/device containing random data to initialise SSL"
   },
-  { "ssl_use_sslv2", DT_BOOL, false, 0, NULL,
-    "(ssl) INSECURE: Use SSLv2 for authentication"
-  },
   { "ssl_use_system_certs", DT_BOOL, true, 0, NULL,
     "(ssl) Use CA certificates in the system-wide store"
   },
   { "ssl_usesystemcerts", DT_SYNONYM, IP "ssl_use_system_certs", IP "2021-02-11" },
+
+  { "ssl_use_sslv2", D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2025-12-07" },
   { NULL },
   // clang-format on
 };
