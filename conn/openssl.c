@@ -1234,25 +1234,15 @@ static int ssl_setup(struct Connection *conn)
     SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1_2);
 #endif
 
+  // Deprecated protocols
 #ifdef SSL_OP_NO_TLSv1_1
-  const bool c_ssl_use_tlsv1_1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_1");
-  if (!c_ssl_use_tlsv1_1)
-    SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1_1);
+  SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1_1);
 #endif
-
 #ifdef SSL_OP_NO_TLSv1
-  const bool c_ssl_use_tlsv1 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1");
-  if (!c_ssl_use_tlsv1)
-    SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1);
+  SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_TLSv1);
 #endif
-
-  const bool c_ssl_use_sslv3 = cs_subset_bool(NeoMutt->sub, "ssl_use_sslv3");
-  if (!c_ssl_use_sslv3)
-    SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_SSLv3);
-
-  const bool c_ssl_use_sslv2 = cs_subset_bool(NeoMutt->sub, "ssl_use_sslv2");
-  if (!c_ssl_use_sslv2)
-    SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_SSLv2);
+  SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_SSLv3);
+  SSL_CTX_set_options(sockdata(conn)->sctx, SSL_OP_NO_SSLv2);
 
   const bool c_ssl_use_system_certs = cs_subset_bool(NeoMutt->sub, "ssl_use_system_certs");
   if (c_ssl_use_system_certs)
