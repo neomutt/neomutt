@@ -56,7 +56,8 @@ typedef uint32_t HookFlags;          ///< Flags for parse_hook(), e.g. #MUTT_FOL
 #define MUTT_GLOBAL_HOOK   (1 << 19) ///< Hooks which don't take a regex
 
 void hooks_init(void);
-enum CommandResult parse_hook(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_hook_compress(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 void                  mutt_account_hook            (const char *url);
 void                  mutt_crypt_hook              (struct ListHead *list, struct Address *addr);
