@@ -131,7 +131,7 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
  * @param n NeoMutt
  * @param a Account to remove
  */
-void neomutt_account_remove(struct NeoMutt *n, const struct Account *a)
+void neomutt_account_remove(struct NeoMutt *n, struct Account *a)
 {
   if (!n || !a || ARRAY_EMPTY(&n->accounts))
     return;
@@ -143,7 +143,7 @@ void neomutt_account_remove(struct NeoMutt *n, const struct Account *a)
       continue;
 
     ARRAY_REMOVE(&n->accounts, ap);
-    account_free(ap);
+    account_free(&a);
     break;
   }
 }
