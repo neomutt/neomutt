@@ -5080,7 +5080,7 @@
 ** .pp
 ** If your spool mailbox is in a non-default place where NeoMutt can't find
 ** it, you can specify its location with this variable. The description from
-** "named-mailboxes" or "virtual-mailboxes" may be used for the spool_file.
+** "named-mailboxes" may be used for the spool_file.
 ** .pp
 ** If not specified, then the environment variables \fC$$$MAIL\fP and
 ** \fC$$$MAILDIR\fP will be checked.
@@ -5675,18 +5675,6 @@
 ** messages, indicating which version of NeoMutt was used for composing
 ** them.
 */
-
-#ifdef USE_NOTMUCH
-{ "virtual_spool_file", DT_BOOL, false },
-/*
-** .pp
-** This command is now unnecessary. $$spool_file has been extended to support
-** mailbox descriptions as a value.
-** .pp
-** When \fIset\fP, NeoMutt will use the first defined virtual mailbox (see
-** virtual-mailboxes) as a spool file.
-*/
-#endif
 
 { "wait_key", DT_BOOL, true },
 /*
