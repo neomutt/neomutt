@@ -374,6 +374,8 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
       buf_reset(buf);
       mutt_addrlist_write(&a_best->addr, buf, true);
       buf_addstr(buf, ", ");
+      FREE(&mdata.limit);
+      search_state_free(&mdata.search_state);
       return 1;
     }
 
