@@ -173,6 +173,8 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
     return;
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
+  if (!mdata)
+    return;
 
   if ((adata->state >= IMAP_SELECTED) && (mdata->reopen & IMAP_REOPEN_ALLOW))
   {
@@ -257,12 +259,14 @@ static int cmd_status(const char *s)
  */
 static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
 {
-  unsigned int exp_msn;
+  unsigned int exp_msn = 0;
   struct Email *e = NULL;
 
   mutt_debug(LL_DEBUG2, "Handling EXPUNGE\n");
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
+  if (!mdata)
+    return;
 
   if (!mutt_str_atoui(s, &exp_msn) || (exp_msn < 1) ||
       (exp_msn > imap_msn_highest(&mdata->msn)))
@@ -312,6 +316,8 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
   unsigned int uid = 0;
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
+  if (!mdata)
+    return;
 
   mutt_debug(LL_DEBUG2, "Handling VANISHED\n");
 
@@ -408,6 +414,8 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
   bool server_changes = false;
 
   struct ImapMboxData *mdata = imap_mdata_get(adata->mailbox);
+  if (!mdata)
+    return;
 
   mutt_debug(LL_DEBUG3, "Handling FETCH\n");
 
@@ -802,7 +810,7 @@ static struct Mailbox *find_mailbox(struct ImapAccountData *adata, const char *n
     struct Mailbox *m = *mp;
 
     struct ImapMboxData *mdata = imap_mdata_get(m);
-    if (mutt_str_equal(name, mdata->name))
+    if (mdata && mutt_str_equal(name, mdata->name))
       return m;
   }
 
@@ -996,6 +1004,8 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
   }
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
+  if (!mdata)
+    return;
 
   /* new mail arrived */
   if (count < imap_msn_highest(&mdata->msn))
@@ -1311,7 +1321,8 @@ const char *imap_cmd_trailer(struct ImapAccountData *adata)
  */
 int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags flags)
 {
-  int rc;
+  if (!adata)
+    return IMAP_EXEC_ERROR;
 
   if (flags & IMAP_CMD_SINGLE)
   {
@@ -1320,7 +1331,7 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
       imap_exec(adata, NULL, IMAP_CMD_POLL);
   }
 
-  rc = cmd_start(adata, cmdstr, flags);
+  int rc = cmd_start(adata, cmdstr, flags);
   if (rc < 0)
   {
     cmd_handle_fatal(adata);

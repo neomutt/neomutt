@@ -241,6 +241,9 @@ bool imap_search(struct Mailbox *m, const struct PatternList *pat)
   buf_addstr(buf, "UID SEARCH ");
 
   struct ImapAccountData *adata = imap_adata_get(m);
+  if(!adata)
+    return false;
+
   const bool ok = compile_search(adata, SLIST_FIRST(pat), buf) &&
                   (imap_exec(adata, buf_string(buf), IMAP_CMD_NO_FLAGS) == IMAP_EXEC_SUCCESS);
 
@@ -258,6 +261,8 @@ void cmd_parse_search(struct ImapAccountData *adata, const char *s)
   unsigned int uid;
   struct Email *e = NULL;
   struct ImapMboxData *mdata = adata->mailbox->mdata;
+  if (!mdata)
+    return;
 
   mutt_debug(LL_DEBUG2, "Handling SEARCH\n");
 
