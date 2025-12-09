@@ -155,12 +155,14 @@ static struct ConfigDef NotmuchVars[] = {
   { "nm_unread_tag", DT_STRING, IP "unread", 0, NULL,
     "(notmuch) Tag to use for unread messages"
   },
+  { "virtual_spool_file", DT_BOOL, false, 0, NULL,
+    "(notmuch) Use the first virtual mailbox as a spool file"
+  },
 
   { "vfolder_format",     D_INTERNAL_DEPRECATED|DT_STRING, 0,  IP "2018-11-01" },
 
   { "nm_default_uri",     DT_SYNONYM, IP "nm_default_url",     IP "2021-02-11" },
   { "virtual_spoolfile",  DT_SYNONYM, IP "spool_file",         IP "2025-12-08" },
-  { "virtual_spool_file", DT_SYNONYM, IP "spool_file",         IP "2025-12-08" },
   { NULL },
   // clang-format on
 };
