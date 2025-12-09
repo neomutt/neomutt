@@ -186,8 +186,12 @@ static char *get_flags(struct ListHead *hflags, char *s)
 static void set_flag(struct Mailbox *m, AclFlags aclflag, bool flag,
                      const char *str, struct Buffer *flags)
 {
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!mdata)
+    return;
+
   if (m->rights & aclflag)
-    if (flag && imap_has_flag(&imap_mdata_get(m)->flags, str))
+    if (flag && imap_has_flag(&mdata->flags, str))
       buf_addstr(flags, str);
 }
 
@@ -300,13 +304,14 @@ static int sync_helper(struct Mailbox *m, struct Email **emails, int num_emails,
                        AclFlags right, enum MessageType flag, const char *name)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata)
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
     return -1;
 
   if ((m->rights & right) == 0)
     return 0;
 
-  if ((right == MUTT_ACL_WRITE) && !imap_has_flag(&imap_mdata_get(m)->flags, name))
+  if ((right == MUTT_ACL_WRITE) && !imap_has_flag(&mdata->flags, name))
     return 0;
 
   int count = 0;
@@ -506,11 +511,15 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
 {
   char buf[PATH_MAX + 7];
   char mbox[PATH_MAX] = { 0 };
+
+  struct ImapAccountData *adata = imap_adata_get(m);
+  if (!adata)
+    return -1;
+
   struct Url *url = url_parse(path);
   if (!url)
     return -1;
 
-  struct ImapAccountData *adata = imap_adata_get(m);
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), url->path);
   url_free(&url);
   snprintf(buf, sizeof(buf), "DELETE %s", mbox);
@@ -1040,6 +1049,8 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
+    return MX_STATUS_ERROR;
 
   /* overload keyboard timeout to avoid many mailbox checks in a row.
    * Most users don't like having to wait exactly when they press a key. */
@@ -1365,6 +1376,9 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
   enum QuadOption err_continue = MUTT_NO;
 
   struct ImapAccountData *adata = imap_adata_get(m);
+  if (!adata)
+    return -1;
+
   struct ImapAccountData *dest_adata = NULL;
   struct ImapMboxData *dest_mdata = NULL;
 
@@ -1881,6 +1895,8 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
+    return MX_OPEN_ERROR;
 
   mutt_debug(LL_DEBUG3, "opening %s, saving %s\n", m->pathbuf.data,
              (adata->mailbox ? adata->mailbox->pathbuf.data : "(none)"));
@@ -2086,6 +2102,8 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
    * mailbox is brand new and mostly empty */
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
+    return false;
 
   int rc = imap_mailbox_status(m, false);
   if (rc >= 0)
@@ -2285,6 +2303,8 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   char uid[11] = { 0 };
 
   struct ImapAccountData *adata = imap_adata_get(m);
+  if (!adata)
+    return -1;
 
   if (*buf == '\0')
     buf = NULL;
