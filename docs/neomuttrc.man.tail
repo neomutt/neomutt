@@ -2,7 +2,6 @@
 .\" --------------------------------------------------------------------
 .SH SEE ALSO
 .\" --------------------------------------------------------------------
-.PP
 .\" sorted by category and name
 .BR iconv (1),
 .BR neomutt (1),
@@ -27,7 +26,6 @@ For further NeoMutt information:
 .\" --------------------------------------------------------------------
 .SH AUTHOR
 .\" --------------------------------------------------------------------
-.PP
 Richard Russon and friends.
 Use <neomutt-devel@\:neomutt.org> to contact the developers.
 .

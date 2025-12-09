@@ -19,13 +19,16 @@
 .\"
 .de EX
 .nf
-.ft CW
+.if t \{\
+.  ie \\n(.g .ft CR
+.  el .ft CW
+.\}
 ..
 .de EE
 .ft
 .fi
 ..
-.TH neomuttrc 5 "@MAN_DATE@" Unix "User Manuals"
+.TH neomuttrc 5 @MAN_DATE@ Unix "User Manuals"
 .\" --------------------------------------------------------------------
 .SH NAME
 .\" --------------------------------------------------------------------
@@ -34,7 +37,6 @@ neomuttrc \- Configuration file for the NeoMutt Mail User Agent (MUA)
 .\" --------------------------------------------------------------------
 .SH DESCRIPTION
 .\" --------------------------------------------------------------------
-.PP
 A NeoMutt configuration file consists of a series of \(lqcommands\(rq. Each
 line of the file may contain one or more commands. When multiple commands are
 used, they must be separated by a semicolon (\(lq\fB;\fP\(rq).
@@ -85,7 +87,6 @@ like sh and Bash: Prepend the name of the variable by a dollar
 .\" --------------------------------------------------------------------
 .SS "\s-1Configuration Commands\s0"
 .\" --------------------------------------------------------------------
-.PP
 The following are the commands understood by NeoMutt:
 .
 .PP
@@ -168,9 +169,9 @@ configure what kinds of attachments qualify for this feature with the
 \fBinline\fP or \fBattachment\fP. You can abbreviate this to \fBI\fP or
 \fBA\fP.
 .IP
-Disposition is prefixed by either a \fB+\fP symbol or a \fB-\fP symbol. If it's
+Disposition is prefixed by either a \fB+\fP symbol or a \fB\-\fP symbol. If it's
 a \fB+\fP, you're saying that you want to allow this disposition and MIME type
-to qualify. If it's a \fB-\fP, you're saying that this disposition and MIME
+to qualify. If it's a \fB\-\fP, you're saying that this disposition and MIME
 type is an exception to previous \fB+\fP rules.
 .IP
 \fImime-type\fP is the MIME type of the attachment you want the command to
@@ -216,10 +217,10 @@ This command allows you to change the default or define additional key bindings
 \fImap\fP specifies in which menu the binding belongs. Multiple \fImap\fPs may
 be specified by separating them with commas (no additional whitespace is
 allowed). The currently defined \fImap\fPs are:
-.BR alias ", " attach ", " browser ", " compose ", " editor ", " generic ", "
+.BR alias ", " attach ", " browser ", " compose ", " editor ", " generic ","
 .BR index ", " mix ", " pager ", " pgp ", " postpone ", " query " and " smime "."
 .IP
-\fIkey\fP is the key (or key sequence) you wish to bind, e.g.
+\fIkey\fP is the key (or key sequence) you wish to bind, e.g.\&
 \(lq\fB\(rsCa\fP\(rq for control-A. In addition, \fIkey\fP may be specified as
 a three digit octal number prefixed with a \(lq\fB\(rs\fP\(rq or as a symbolic
 name. The \fB<what-key>\fP function can be used to explore keycode and
@@ -265,49 +266,49 @@ configuration file.
 If your terminal supports color, these commands can be used to assign
 \fIforeground\fP/\:\fIbackground\fP combinations to certain \fIobject\fPs. The
 currently defined \fIobject\fPs are:
-.BR attach_\:headers ", "
-.BR attachment ", "
-.BR body ", "
-.BR bold ", "
-.BR error ", "
-.BR hdrdefault ", "
-.BR header ", "
-.BR index ", "
-.BR index_\:author ", "
-.BR index_\:collapsed ", "
-.BR index_\:date ", "
-.BR index_\:flags ", "
-.BR index_\:label ", "
-.BR index_\:number ", "
-.BR index_\:size ", "
-.BR index_\:subject ", "
-.BR index_\:tag ", "
-.BR index_\:tags ", "
-.BR indicator ", "
-.BR markers ", "
-.BR message ", "
-.BR normal ", "
-.BR progress ", "
-.BR prompt ", "
-.BR quoted ", "
-.BR quoted\fIN\fP ", "
-.BR search ", "
-.BR signature ", "
-.BR status ", "
-.BR stripe_even ", "
+.BR attach_\:headers ","
+.BR attachment ","
+.BR body ","
+.BR bold ","
+.BR error ","
+.BR hdrdefault ","
+.BR header ","
+.BR index ","
+.BR index_\:author ","
+.BR index_\:collapsed ","
+.BR index_\:date ","
+.BR index_\:flags ","
+.BR index_\:label ","
+.BR index_\:number ","
+.BR index_\:size ","
+.BR index_\:subject ","
+.BR index_\:tag ","
+.BR index_\:tags ","
+.BR indicator ","
+.BR markers ","
+.BR message ","
+.BR normal ","
+.BR progress ","
+.BR prompt ","
+.BR quoted ","
+.BR quoted\fIN\fP ","
+.BR search ","
+.BR signature ","
+.BR status ","
+.BR stripe_even ","
 .BR stripe_odd ","
-.BR tilde ", "
-.BR tree ", "
+.BR tilde ","
+.BR tree ","
 .BR underline "."
 .IP
 If the sidebar is enabled the following \fIobject\fPs are also valid:
-.BR sidebar_\:background ", "
-.BR sidebar_\:divider ", "
-.BR sidebar_\:flagged ", "
-.BR sidebar_\:highlight ", "
-.BR sidebar_\:indicator ", "
-.BR sidebar_\:new ", "
-.BR sidebar_\:ordinary ", "
+.BR sidebar_\:background ","
+.BR sidebar_\:divider ","
+.BR sidebar_\:flagged ","
+.BR sidebar_\:highlight ","
+.BR sidebar_\:indicator ","
+.BR sidebar_\:new ","
+.BR sidebar_\:ordinary ","
 .BR sidebar_\:spool_file "."
 .IP
 The \fBbody\fP and \fBheader\fP objects allow you to restrict the colorization
@@ -324,24 +325,24 @@ regex is given, only the matching parts are colored.  If additionally the match
 number is given, only that sub-match of the regex is colored.
 .IP
 Valid compose-objects include
-.BR compose_header ", " compose_security_encrypt ", " compose_security_sign ", "
+.BR compose_header ", " compose_security_encrypt ", " compose_security_sign ","
 .BR compose_security_both ", " compose_security_none .
 .IP
 Valid colors include:
-.BR default ", "
-.BR black ", "
-.BR red ", "
-.BR green ", "
-.BR yellow ", "
-.BR blue ", "
-.BR magenta ", "
-.BR cyan ", "
-.BR white ", "
-.BR #\fIRRGGBB\fP ", "
+.BR default ","
+.BR black ","
+.BR red ","
+.BR green ","
+.BR yellow ","
+.BR blue ","
+.BR magenta ","
+.BR cyan ","
+.BR white ","
+.BR #\fIRRGGBB\fP ","
 .BR color\fIN\fP "."
 .IP
 Valid attributes include:
-.BR none ", " bold ", " underline ", "
+.BR none ", " bold ", " underline ","
 .BR reverse ", and " standout .
 .IP
 The \fBuncolor\fP command can be applied to the index, header and body objects
@@ -410,12 +411,12 @@ NeoMutt manual for information on the exact format of \fIpattern\fP.
 .
 .PP
 .nf
-\fBfolder-hook\fP [\fI-noregex\fP] \fIregex\fP \fIcommand\fP
+\fBfolder-hook\fP [\fI\-noregex\fP] \fIregex\fP \fIcommand\fP
 .fi
 .IP
 When NeoMutt enters a folder which matches \fIregex\fP (or, when \fIregex\fP is
 preceded by an exclamation mark, does not match \fIregex\fP), the given
-\fIcommand\fP is executed. The \fI-noregex\fP switch controls whether \fIregex\fP
+\fIcommand\fP is executed. The \fI\-noregex\fP switch controls whether \fIregex\fP
 is matches as simple string equality or full regex match.
 .IP
 When several \fBfolder-hook\fPs match a given mail folder, they are executed in
@@ -476,13 +477,13 @@ lb|lb
 l|l .
 Example Symbol	Description
 _
-\fCsidebar_format\fP	Config variable
-\fCstatus-color\fP, \fCimap\fP	Compiled-in feature
-\fCpgp-menu\fP, \fCgroup-related\fP	Function
-\fCindex-format-hook\fP, \fCtag-transforms\fP	Command
-\fCmy_var\fP	My variable
-\fClmdb\fP, \fCtokyocabinet\fP	Store (database)
-\fCHOME\fP, \fCCOLUMNS\fP	Environment variable
+\f[CR]sidebar_format\fP	Config variable
+\f[CR]status-color\fP, \f[CR]imap\fP	Compiled-in feature
+\f[CR]pgp-menu\fP, \f[CR]group-related\fP	Function
+\f[CR]index-format-hook\fP, \f[CR]tag-transforms\fP	Command
+\f[CR]my_var\fP	My variable
+\f[CR]lmdb\fP, \f[CR]tokyocabinet\fP	Store (database)
+\f[CR]HOME\fP, \f[CR]COLUMNS\fP	Environment variable
 .TE
 .
 .IP
@@ -548,9 +549,9 @@ Missing key sequence in \fBunmacro\fP command means unmacro all macros in menus 
 .
 .PP
 .nf
-\fBmailboxes\fP [[\fB-label\fP \fIlabel\fP] | \fB-nolabel\fP]
-           [[\fB-notify\fP | \fB-nonotify\fP]
-           [\fB-poll\fP | \fB-nopoll\fP]
+\fBmailboxes\fP [[\fB\-label\fP \fIlabel\fP] | \fB\-nolabel\fP]
+           [[\fB\-notify\fP | \fB\-nonotify\fP]
+           [\fB\-poll\fP | \fB\-nopoll\fP]
            \fImailbox\fP] [ ... ]
 \fBnamed-mailboxes\fP \fIlabel\fP \fImailbox\fP [\fIlabel\fP \fImailbox\fP ... ]
 \fBunmailboxes\fP { \fB*\fP | \fImailbox\fP ... }
@@ -560,7 +561,7 @@ The \fBmailboxes\fP specifies folders which can receive mail and which will be
 checked for new messages. When changing folders, pressing space will cycle
 through folders with new mail.
 .IP
-The \fBnamed-mailboxes\fP is an alternative to \fBmailboxes\fP \fB-label\fP
+The \fBnamed-mailboxes\fP is an alternative to \fBmailboxes\fP \fB\-label\fP
 \fIlabel\fP.  NeoMutt can be configured to display the label instead of the
 mailbox path.
 .IP
@@ -595,12 +596,12 @@ Changes the current working directory.
 .
 .PP
 .nf
-\fBmbox-hook\fP [\fI-noregex\fP] \fIregex\fP \fImailbox\fP
+\fBmbox-hook\fP [\fI\-noregex\fP] \fIregex\fP \fImailbox\fP
 .fi
 .IP
 When NeoMutt changes to a mail folder which matches \fIregex\fP, \fImailbox\fP
 will be used as the \(lqmbox\(rq folder, i.e. read messages will be moved to
-that folder when the mail folder is left. The \fI-noregex\fP switch controls
+that folder when the mail folder is left. The \fI\-noregex\fP switch controls
 whether \fIregex\fP is matches as simple string equality or full regex match.
 
 .IP
@@ -666,7 +667,7 @@ you compose. \fBunmy_hdr\fP will remove the given user-defined headers.
 .fi
 .IP
 These commands provide a way to handle compressed folders. The given
-\fIregex\fP specifies which folders are taken as compressed (e.g.
+\fIregex\fP specifies which folders are taken as compressed (e.g.\&
 \(dq\fB\(rs.gz$\fP\(dq). The commands tell NeoMutt how to uncompress a folder
 (\fBopen-hook\fP), compress a folder (\fBclose-hook\fP) or append a compressed
 mail to a compressed folder (\fBappend-hook\fP). The \fIshell-command\fP is a
@@ -719,7 +720,7 @@ file.
 .IP
 \fBsend2-hook\fP is matched every time a message is changed, either by editing
 it, or by using the compose menu to change its recipients or subject.
-\fBsend2-hook\fP is executed after \fBsend-hook\fP, and can, e.g., be used to
+\fBsend2-hook\fP is executed after \fBsend-hook\fP, and can, e.g.\&, be used to
 set parameters such as the $sendmail variable depending on the message's sender
 address. \fBNote\fP, \fBsend-hook\fPs are only executed once after getting the
 initial list of recipients.
@@ -756,8 +757,8 @@ NeoMutt knows four basic types of \fIvariable\fPs: boolean, number, string, stri
 list and quadoption. Boolean \fIvariable\fPs can be \fBset\fP (true), \fBunset\fP
 (false), or \fBtoggle\fPd. Number \fIvariable\fPs can be assigned a positive
 integer \fIvalue\fP. Value of number \fIvariable\fPs can be incremented "\fB+=\fP"
-and decremented "\fB-=\fP". String list \fIvariable\fPs use "\fB+=\fP" for
-appending increment to the string list and "\fB-=\fP" for removal decrement from
+and decremented "\fB\-=\fP". String list \fIvariable\fPs use "\fB+=\fP" for
+appending increment to the string list and "\fB\-=\fP" for removal decrement from
 the string list.
 .IP
 String \fIvariable\fPs consist of any number of printable characters and must
@@ -827,13 +828,13 @@ If the \fIfilename\fP begins with a tilde (\(lq~\(rq), it will be expanded to
 the path of your home directory.
 .IP
 If the \fIfilename\fP ends with a vertical bar (\(lq|\(rq), then \fIfilename\fP
-is considered to be an executable program from which to read input, (e.g.
+is considered to be an executable program from which to read input, (e.g.\&
 \(lq\fBsource\fP\~\fI~/\:bin/\:myscript\fP|\(rq).
 .IP
 If the filename is relative and the command \fBsource\fP is executed from the
 context of a configuration file, then the filename is interpreted relative to
 the directory of that configuration file.  If the command is executed outside
-of a configuration file, e.g. from the prompt, then the filename is interpreted
+of a configuration file, e.g.\& from the prompt, then the filename is interpreted
 relative to the current working directory (see \fBcd\fP on how to change the
 current working directory at runtime).
 .IP
@@ -888,7 +889,7 @@ If \(lq\fB*\fP\(rq is used as the argument, all substitutions will be removed.
 .IP
 Tell the IMAP server to subscribe to or unsubscribe from the folder
 \fIimap-folder-uri\fP.  The argument must be an IMAP URI,
-e.g. \(lq\fBsubscribe-to\fP imaps://mail.example.org/inbox\(rq.
+e.g.\& \(lq\fBsubscribe-to\fP imaps://mail.example.org/inbox\(rq.
 .IP
 Subscription is an IMAP protocol feature where the server manages a list of
 subscribed folders.  This list can be queried by clients like NeoMutt.
@@ -932,7 +933,6 @@ like \(lq\fBunhook\fP\~\fIsend-hook\fP\(rq.
 .\" --------------------------------------------------------------------
 .SS "\s-1Pattern Modifier\s0"
 .\" --------------------------------------------------------------------
-.PP
 Many of NeoMutt's commands allow you to specify a pattern to match messages
 .RB ( limit ", " tag-pattern ", " delete-pattern ", the above mentioned " hook
 commands etc.). The table \(lq\fBPattern modifiers\fP\(rq shows several ways to
@@ -942,7 +942,7 @@ select messages.
 .TS
 box tab(|);
 lb s | lb
-l s | lx
+l  s | lx
 .
 \0Pattern|Description
 _
@@ -990,7 +990,7 @@ _
 deleted messages
 T}
 _
-\0~d \fIMIN\fP-\fIMAX\fP|T{
+\0~d \fIMIN\fP\(en\fIMAX\fP|T{
 messages with \(lqdate-sent\(rq in a date range
 T}
 _
@@ -1088,7 +1088,7 @@ messages with offsets (from selected message) in the range \fIMIN\fP to
 \fIMAX\fP \fB*\fP)
 T}
 _
-\0~m \fIMIN\fP-\fIMAX\fP|T{
+\0~m \fIMIN\fP\(en\fIMAX\fP|T{
 message in the range \fIMIN\fP to \fIMAX\fP \fB*\fP)
 T}
 _
@@ -1100,7 +1100,7 @@ _
 new messages
 T}
 _
-\0~n \fIMIN\fP-\fIMAX\fP|T{
+\0~n \fIMIN\fP\(en\fIMAX\fP|T{
 messages with a score in the range \fIMIN\fP to \fIMAX\fP \fB**\fP)
 T}
 _
@@ -1124,7 +1124,7 @@ _
 read messages
 T}
 _
-\0~r \fIMIN\fP-\fIMAX\fP|T{
+\0~r \fIMIN\fP\(en\fIMAX\fP|T{
 messages with \(lqdate-received\(rq in a date range
 T}
 _
@@ -1164,7 +1164,7 @@ _
 newsgroups matching \fIEXPR\fP
 T}
 _
-\0~X \fIMIN\fP-\fIMAX\fP|T{
+\0~X \fIMIN\fP\(en\fIMAX\fP|T{
 messages with \fIMIN\fP to \fIMAX\fP attachments \fB**\fP)
 T}
 _
@@ -1181,7 +1181,7 @@ _
 messages whose tags match \fIEXPR\fP
 T}
 _
-\0~z \fIMIN\fP-\fIMAX\fP|T{
+\0~z \fIMIN\fP\(en\fIMAX\fP|T{
 messages with a size in the range \fIMIN\fP to \fIMAX\fP \fB**\fP) \fB***\fP)
 T}
 _
@@ -1203,17 +1203,17 @@ unreferenced message (requires threaded view)
 T}
 _
 \0~(\fIPATTERN\fP)|T{
-messages in threads containing messages matching \fIPATTERN\fP, e.g. all
+messages in threads containing messages matching \fIPATTERN\fP, e.g.\& all
 threads containing messages from you: ~(~P)
 T}
 _
 \0~<(\fIPATTERN\fP)|T{
-messages whose immediate parent matches \fIPATTERN\fP, e.g. replies to your
+messages whose immediate parent matches \fIPATTERN\fP, e.g.\& replies to your
 messages: ~<(~P)
 T}
 _
 \0~>(\fIPATTERN\fP)|T{
-messages having an immediate child matching \fIPATTERN\fP, e.g. messages you
+messages having an immediate child matching \fIPATTERN\fP, e.g.\& messages you
 replied to: ~>(~P)
 T}
 _
@@ -1231,15 +1231,14 @@ more general and powerful than the other types of ranges. Read on and see
 section \(lq\fBMessage Ranges\fP\(rq in manual.
 T}
 \0\fB**\fP)|T{
-The forms \(lq<\fIMAX\fP\(rq, \(lq>\fIMIN\fP\(rq, \(lq\fIMIN\fP-\(rq and
-\(lq-\fIMAX\fP\(rq are allowed, too.
+The forms \(lq<\fIMAX\fP\(rq, \(lq>\fIMIN\fP\(rq, \(lq\fIMIN\fP\(en\(rq and
+\(lq\(en\fIMAX\fP\(rq are allowed, too.
 T}
 \0\fB***\fP)|T{
 The suffixes \(lqK\(rq and \(lqM\(rq are allowed to specify
 kilobyte and megabyte respectively.
 T}
 .TE
-.PP
 .ad
 .
 .PP
@@ -1294,7 +1293,6 @@ Matching any defined alias:
 .
 .SS "\s-1Nesting and Boolean Operators\s0"
 .\" --------------------------------------------------------------------
-.PP
 Logical AND is performed by specifying more than one criterion.
 .IP
 For example:
@@ -1358,7 +1356,6 @@ two OR'd patterns:
 .
 .SS "\s-1Searching by Date\s0"
 .\" --------------------------------------------------------------------
-.PP
 NeoMutt supports two types of dates, \fBabsolute\fP and \fBrelative\fP for
 the \(lq\fB~d\fP\(rq and \(lq\fB~r\fP\(rq pattern.
 .
@@ -1391,12 +1388,12 @@ all messages before the given date will be selected. If you omit the
 \fIMAX\fPimum (second) date, and specify
 .IR dd / mm / YY -,
 all messages after the given date will be selected. If you specify a single
-date with no dash (\(lq\fB-\fP\(rq), only messages sent/received on the given
+date with no dash (\(lq\fB\(en\fP\(rq), only messages sent/received on the given
 date will be selected.
 .
 .PP
 You can add error margins to absolute dates. An error margin is a sign
-(\(lq\fB+\fP\(rq or \(lq\fB-\fP\(rq), followed by a digit, followed by one of
+(\(lq\fB+\fP\(rq or \(lq\fB\-\fP\(rq), followed by a digit, followed by one of
 the units in table \(lq\fBDate units\fP\(rq below. As a special case, you can
 replace the sign by a \(lq\fB*\fP\(rq character, which is equivalent to giving
 identical plus and minus error margins.
@@ -1441,7 +1438,7 @@ It is possible to give multiple error margins:
 .
 .IP
 which cumulate:
-.IR \fB~d\fP\~1 / 1 / 2001 \fB-\fP 1 \fBw+\fP 2 \fBw*\fP 3 \fBd\fP
+.IR \fB~d\fP\~1 / 1 / 2001 \fB\-\fP 1 \fBw+\fP 2 \fBw*\fP 3 \fBd\fP
 .
 .PP
 .nf

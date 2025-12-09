@@ -15,8 +15,8 @@ docs/neomuttrc: docs docs/makedoc$(EXEEXT) $(SRCDIR)/docs/neomuttrc.head \
 		$(SRCDIR)/docs/config.c
 	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/docs/neomuttrc.head \
 	    > docs/neomuttrc
-	$(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -c \
-	    >> docs/neomuttrc
+	$(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -c | \
+	   sed 's/ \+$$//' >> docs/neomuttrc
 
 .PHONY: docs
 docs:
@@ -63,7 +63,7 @@ docs/neomuttrc.5:	docs docs/makedoc$(EXEEXT) $(SRCDIR)/docs/config.c \
 	    $(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -m && \
 	    sed -e "s|@MAN_DOCDIR@|$(docdir)|g" \
 	      $(SRCDIR)/docs/neomuttrc.man.tail \
-	) > $@
+	) | sed 's/ \+$$//' > $@
 
 docs/neomutt.1:
 	( sed -e "/^\.TH/s|@MAN_DATE@|$(PACKAGE_DATE)|" \
@@ -72,7 +72,7 @@ docs/neomutt.1:
 	      -e "s|@MAN_SYSCONFDIR@|$(sysconfdir)|g" \
 	      -e "s|@MAN_TEXTDOMAINDIR@|$(textdomaindir)|g" \
 	    $(SRCDIR)/docs/neomutt.man \
-	) > $@
+	) | sed 's/ \+$$//' > $@
 
 docs/manual.xml:	docs docs/makedoc$(EXEEXT) $(SRCDIR)/docs/gen-map-doc \
 		$(SRCDIR)/docs/manual.xml.head $(SRCDIR)/docs/manual.xml.tail \

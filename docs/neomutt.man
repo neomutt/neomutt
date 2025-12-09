@@ -18,7 +18,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 .\"
-.TH neomutt 1 "@MAN_DATE@" Unix "User Manuals"
+.TH neomutt 1 @MAN_DATE@ Unix "User Manuals"
 .\" --------------------------------------------------------------------
 .SH NAME
 .\" --------------------------------------------------------------------
@@ -221,8 +221,8 @@ Add any addresses after the \(aq\fB\-\-\fP\(aq argument, e.g.:
 .RS
 .IP
 .EX
-.BI "neomutt \-a " "image.jpg " "\-\- " "address1 "
-.BI "neomutt \-a " "image.jpg *.png " "\-\- " "address1 address2 "
+.BI "neomutt \-a " "image.jpg " "\-\- " "address1"
+.BI "neomutt \-a " "image.jpg *.png " "\-\- " "address1 address2"
 .EE
 .RE
 .
@@ -351,7 +351,7 @@ Resume a prior postponed message, if any
 .BI \-Q " variable"
 Query a configuration \fIvariable\fP and print its value to stdout
 (after the config has been read and any commands executed).
-Add -O for one-liner documentation.
+Add \-O for one-liner documentation.
 .
 .TP
 .B \-R
@@ -589,34 +589,34 @@ NeoMutt will process all grouped files in the order
 as they are specified in that listing.
 .
 .TP
-.I "~/.mailcap"
+.I ~/.mailcap
 .TQ
-.I "@MAN_SYSCONFDIR@/mailcap"
+.I @MAN_SYSCONFDIR@/mailcap
 User-specific and system-wide definitions for handling non-text MIME types,
 look at environment variable \fBMAILCAPS\fP above
 for additional search locations.
 .
 .TP
-.I "~/.neomuttdebug0"
+.I ~/.neomuttdebug0
 User's default debug log file.
 For further details or customising file path
 see command line options \fB\-d\fP and \fB\-l\fP above.
 .
 .TP
-.I "/etc/mime.types"
+.I /etc/mime.types
 .TQ
-.I "@MAN_SYSCONFDIR@/mime.types"
+.I @MAN_SYSCONFDIR@/mime.types
 .TQ
-.I "@MAN_DATADIR@/mime.types"
+.I @MAN_DATADIR@/mime.types
 .TQ
-.I "~/.mime.types"
+.I ~/.mime.types
 Description files for
 simple plain text mapping between MIME types and filename extensions.
 NeoMutt parses these files in the stated order
 while processing attachments to determine their MIME type.
 .
 .TP
-.IR "@MAN_DOCDIR@/manual." { html , pdf , txt }
+.IR @MAN_DOCDIR@/manual. { html , pdf , txt }
 The full NeoMutt manual in HTML, PDF or plain text format.
 .
 .TP
@@ -625,7 +625,7 @@ Temporary files created by NeoMutt.
 For custom locations
 look at description of the environment variable \fBTMPDIR\fP above.
 Notice that the suffix \fI-XXXX-XXXX-XXXX\fP is just a placeholder
-for, e.g. hostname, user name/ID, process ID and/or other random data.
+for, e.g.\& hostname, user name/ID, process ID and/or other random data.
 .
 .\" --------------------------------------------------------------------
 .SH BUGS

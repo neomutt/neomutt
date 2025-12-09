@@ -467,7 +467,7 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
         }
         case SP_START_TT:
         {
-          fputs("\\fC", fp_out);
+          fputs("\\f[CR]", fp_out);
           docstat |= D_TT;
           docstat &= ~(D_BF | D_EM);
           break;
@@ -560,11 +560,16 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
               }
               else if (*str == '\\')
               {
-                fputs("\\\\", fp_out);
+                fputs("\\e", fp_out);
               }
               else if (*str == '-')
               {
                 fputs("\\-", fp_out);
+              }
+              else if (strncmp(str, "e.g.", 4) == 0)
+              {
+                fputs("e.g.\\&", fp_out);
+                str += 3;
               }
               else if (strncmp(str, "``", 2) == 0)
               {
@@ -1135,6 +1140,28 @@ static void conf_char_to_escape(unsigned int c, FILE *fp_out)
   fputs(buf, fp_out);
 }
 
+static void man_char_to_escape(unsigned int c, FILE *fp)
+{
+  switch (c)
+  {
+    case '\r':
+      fputs("\\er", fp);
+      break;
+    case '\n':
+      fputs("\\en", fp);
+      break;
+    case '\t':
+      fputs("\\et", fp);
+      break;
+    case '\f':
+      fputs("\\ef", fp);
+      break;
+    default:
+      fprintf(fp, "\\%03o", c);
+      break;
+  }
+}
+
 static void conf_print_strval(const char *v, FILE *fp_out)
 {
   for (; *v; v++)
@@ -1169,15 +1196,14 @@ static void man_print_strval(const char *v, FILE *fp_out)
   {
     if ((*v < ' ') || (*v & 0x80))
     {
-      fputc('\\', fp_out);
-      conf_char_to_escape((unsigned int) *v, fp_out);
+      man_char_to_escape((unsigned int) *v, fp_out);
       continue;
     }
 
     if (*v == '"')
       fputs("\"", fp_out);
     else if (*v == '\\')
-      fputs("\\\\", fp_out);
+      fputs("\\e", fp_out);
     else if (*v == '-')
       fputs("\\-", fp_out);
     else

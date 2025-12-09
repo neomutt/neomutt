@@ -353,7 +353,7 @@
 /*
 ** .pp
 ** The locale used by \fCstrftime(3)\fP to format dates in the
-** attribution strings.  Legal values are the strings your system
+** attribution strings.  Valid values are the strings your system
 ** accepts for the locale environment variable \fC$$$LC_TIME\fP.
 ** .pp
 ** This variable is to allow the attribution date format to be
@@ -648,14 +648,14 @@
 { "color_directcolor", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will use and allow 24bit colours (aka truecolor aka
+** When \fIset\fP, NeoMutt will use and allow 24-bit colours (aka truecolor aka
 ** directcolor).  For colours to work properly support from the terminal is
 ** required as well as a properly set TERM environment variable advertising the
 ** terminals directcolor capability, e.g. "TERM=xterm-direct".
 ** .pp
-** NeoMutt tries to detect whether the terminal supports 24bit colours and
+** NeoMutt tries to detect whether the terminal supports 24-bit colours and
 ** enables this variable if it does.  If this fails for some reason, you can
-** force 24bit colours by setting this variable manually.  You may also try to
+** force 24-bit colours by setting this variable manually.  You may also try to
 ** force a certain TERM environment variable by starting NeoMutt from
 ** a terminal as follows (this results in wrong colours if the terminal does
 ** not implement directcolors):
@@ -909,7 +909,7 @@
 ** and will update the index and header cache with revised headers.
 ** .pp
 ** Protected headers are stored inside the encrypted or signed part of an
-** an email, to prevent disclosure or tampering.
+** email, to prevent disclosure or tampering.
 ** For more information see https://github.com/autocrypt/protected-headers
 ** Currently NeoMutt only supports the Subject header.
 ** .pp
@@ -973,7 +973,7 @@
 ** emails.
 ** .pp
 ** Protected headers are stored inside the encrypted or signed part of an
-** an email, to prevent disclosure or tampering.
+** email, to prevent disclosure or tampering.
 ** For more information see https://github.com/autocrypt/protected-headers
 ** .pp
 ** Currently NeoMutt only supports the Subject header.
@@ -3395,7 +3395,7 @@
 { "pgp_long_ids", DT_BOOL, true },
 /*
 ** .pp
-** If \fIset\fP, use 64 bit PGP key IDs, if \fIunset\fP use the normal 32 bit key IDs.
+** If \fIset\fP, use 64-bit PGP key IDs, if \fIunset\fP use the normal 32-bit key IDs.
 ** NOTE: Internally, NeoMutt has transitioned to using fingerprints (or long key IDs
 ** as a fallback).  This option now only controls the display of key IDs
 ** in the key selection menu and a few other places.
@@ -3808,7 +3808,7 @@
 ** all the messages are concatenated, with a form feed as the message
 ** separator.
 ** .pp
-** Those who use the \fCenscript\fP(1) program's mail-printing mode will
+** Those who use the \fCenscript(1)\fP program's mail-printing mode will
 ** most likely want to \fIset\fP this option.
 */
 
@@ -4565,7 +4565,7 @@
 /*
 ** .pp
 ** Specifies the filename of your signature, which is appended to all
-** outgoing messages.   If the filename ends with a pipe ("|"), it is
+** outgoing messages.  If the filename ends with a pipe ("|"), it is
 ** assumed that filename is a shell command and input should be read from
 ** its standard output.
 */
@@ -5106,10 +5106,10 @@
 /*
 ** .pp
 ** Contains a colon-separated list of ciphers to use when using SSL.
-** For OpenSSL, see ciphers(1) for the syntax of the string.
+** For OpenSSL, see \fCciphers(1)\fP for the syntax of the string.
 ** .pp
 ** For GnuTLS, this option will be used in place of "NORMAL" at the
-** start of the priority string.  See gnutls_priority_init(3) for the
+** start of the priority string.  See \fCgnutls_priority_init(3)\fP for the
 ** syntax and more details. (Note: GnuTLS version 2.1.7 or higher is
 ** required.)
 */
