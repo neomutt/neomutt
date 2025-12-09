@@ -714,7 +714,11 @@ if {[opt-val with-domain] ne {}} {
 
 ###############################################################################
 # TLS support
-if {[get-define want-ssl] && ![get-define want-gnutls]} {
+if {[get-define want-gnutls] && [get-define want-ssl]} {
+  user-error "Configuration error: options '--ssl' (OpenSSL) and '--gnutls' (GnuTLS) are mutually exclusive"
+}
+
+if {[get-define want-ssl]} {
   # OpenSSL
   if {[pkgconf false openssl]} {
     # cool - we do not make pkg-config mandatory for OpenSSL because BSDs still
