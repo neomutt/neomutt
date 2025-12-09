@@ -277,7 +277,10 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
      * It needs to resort using EMAIL_SORT_UNSORTED anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
-    imap_edata_get(e)->msn = 0;
+
+    struct ImapEmailData *edata = imap_edata_get(e);
+    if (edata)
+      edata->msn = 0;
   }
 
   /* decrement seqno of those above. */
