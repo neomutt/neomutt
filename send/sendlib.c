@@ -50,6 +50,7 @@
 #include "ncrypt/lib.h"
 #include "body.h"
 #include "copy.h"
+#include "expando_msgid.h"
 #include "globals.h"
 #include "handler.h"
 #include "header.h"
@@ -727,46 +728,6 @@ const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
 }
 
 /**
- * mutt_gen_msgid - Generate a random Message ID
- * @retval ptr Message ID
- *
- * The length of the message id is chosen such that it is maximal and fits in
- * the recommended 78 character line length for the headers Message-ID:,
- * References:, and In-Reply-To:, this leads to 62 available characters
- * (excluding `@` and `>`).  Since we choose from 32 letters, we have 32^62
- * = 2^310 different message ids.
- *
- * Examples:
- * ```
- * Message-ID: <12345678901111111111222222222233333333334444444444@123456789011>
- * In-Reply-To: <12345678901111111111222222222233333333334444444444@123456789011>
- * References: <12345678901111111111222222222233333333334444444444@123456789011>
- * ```
- *
- * The distribution of the characters to left-of-@ and right-of-@ was arbitrary.
- * The choice was made to put more into the left-id and shorten the right-id to
- * slightly mimic a common length domain name.
- *
- * @note The caller should free the string
- */
-char *mutt_gen_msgid(void)
-{
-  const int ID_LEFT_LEN = 50;
-  const int ID_RIGHT_LEN = 12;
-  char rnd_id_left[ID_LEFT_LEN + 1];
-  char rnd_id_right[ID_RIGHT_LEN + 1];
-  char buf[128] = { 0 };
-
-  mutt_rand_base32(rnd_id_left, sizeof(rnd_id_left) - 1);
-  mutt_rand_base32(rnd_id_right, sizeof(rnd_id_right) - 1);
-  rnd_id_left[ID_LEFT_LEN] = 0;
-  rnd_id_right[ID_RIGHT_LEN] = 0;
-
-  snprintf(buf, sizeof(buf), "<%s@%s>", rnd_id_left, rnd_id_right);
-  return mutt_str_dup(buf);
-}
-
-/**
  * mutt_prepare_envelope - Prepare an email header
  * @param env   Envelope to prepare
  * @param final true if this email is going to be sent (not postponed)
@@ -800,7 +761,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final, struct ConfigSubset
     mutt_set_followup_to(env, sub);
 
     if (!env->message_id)
-      env->message_id = mutt_gen_msgid();
+      env->message_id = msgid_generate();
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
@@ -873,7 +834,7 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     fprintf(fp_tmp, "Resent-Date: %s\n", buf_string(date));
     buf_pool_release(&date);
 
-    char *msgid_str = mutt_gen_msgid();
+    char *msgid_str = msgid_generate();
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
     mutt_addrlist_write_file(to, fp_tmp, "Resent-To");

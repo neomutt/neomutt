@@ -2555,6 +2555,43 @@
 ** command) from the list of recipients when replying to a message.
 */
 
+{ "message_id_format", DT_STRING, "<%z@%f>" },
+/*
+** .pp
+** This variable allows you to choose a custom format for the Message-Id when
+** sending messages. The value may end in ``|'' to invoke an external filter.
+** See $formatstrings-filters.
+** .pp
+** Please note that the Message-ID value follows a strict syntax, and you are
+** responsible for ensuring correctness if you change this from the default.
+** In particular, the value must follow the syntax in RFC 5322:
+** ``\fC"<" id-left "@" id-right ">"\fP''.  No spaces are allowed, and
+** \fCid-left\fP should follow the dot-atom-text syntax in the RFC.
+** The \fCid-right\fP should generally be left as ``\fC%f\fP''.
+** .pp
+** If unset, NeoMutt will use a long random format.
+** .pp
+** If the format doesn't begin/end with ``<'', ``>'' they will be added.
+** .pp
+** The old Message-ID format can be used by setting this to:
+** ``\fC<%Y%02m%02d%02H%02M%02S.G%c%p@%f>\fP''
+** .pp
+** The following \fCprintf(3)\fP-style sequences are understood:
+** .dl
+** .dt %c .dd Step counter looping from ``A'' to ``Z''
+** .dt %d .dd Current day of the month (GMT)
+** .dt %f .dd $$hostname
+** .dt %H .dd Current hour using a 24-hour clock (GMT)
+** .dt %m .dd Current month number (GMT)
+** .dt %M .dd Current minute of the hour (GMT)
+** .dt %p .dd Pid of the running mutt process
+** .dt %r .dd 3 bytes of pseudo-random data encoded in Base64
+** .dt %S .dd Current second of the minute (GMT)
+** .dt %x .dd 1 byte of pseudo-random data hex encoded (example: '1b')
+** .dt %Y .dd Current year using 4 digits (GMT)
+** .dt %z .dd 4 byte timestamp + 8 bytes of pseudo-random data encoded in Base64
+*/
+
 { "menu_context", DT_NUMBER, 0 },
 /*
 ** .pp

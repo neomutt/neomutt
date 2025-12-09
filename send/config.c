@@ -39,6 +39,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "expando/lib.h"
+#include "expando_msgid.h"
 #include "smtp.h"
 #ifdef USE_SASL_CYRUS
 #include "conn/lib.h"
@@ -125,6 +126,30 @@ static const struct ExpandoDefinition GreetingFormatDef[] = {
   { "n", "real-name",  ED_ENVELOPE, ED_ENV_REAL_NAME,  NULL },
   { "u", "user-name",  ED_ENVELOPE, ED_ENV_USER_NAME,  NULL },
   { "v", "first-name", ED_ENVELOPE, ED_ENV_FIRST_NAME, NULL },
+  { NULL, NULL, 0, -1, NULL }
+  // clang-format on
+};
+
+/**
+ * MsgIdFormatDef - Expando definitions
+ *
+ * Config:
+ * - $message_id_format
+ */
+static const struct ExpandoDefinition MsgIdFormatDef[] = {
+  // clang-format off
+  { "c", "counter",   ED_MSG_ID, ED_MSG_COUNTER,   NULL },
+  { "d", "day",       ED_MSG_ID, ED_MSG_DAY,       NULL },
+  { "f", "hostname",  ED_MSG_ID, ED_MSG_HOSTNAME,  NULL },
+  { "H", "hour",      ED_MSG_ID, ED_MSG_HOUR,      NULL },
+  { "M", "minute",    ED_MSG_ID, ED_MSG_MINUTE,    NULL },
+  { "m", "month",     ED_MSG_ID, ED_MSG_MONTH,     NULL },
+  { "p", "pid",       ED_MSG_ID, ED_MSG_PID,       NULL },
+  { "r", "random_3",  ED_MSG_ID, ED_MSG_RANDOM_3,  NULL },
+  { "S", "second",    ED_MSG_ID, ED_MSG_SECOND,    NULL },
+  { "x", "random_1",  ED_MSG_ID, ED_MSG_RANDOM_1,  NULL },
+  { "Y", "year",      ED_MSG_ID, ED_MSG_YEAR,      NULL },
+  { "z", "random_12", ED_MSG_ID, ED_MSG_RANDOM_12, NULL },
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
@@ -277,6 +302,9 @@ static struct ConfigDef SendVars[] = {
   },
   { "me_too", DT_BOOL, false, 0, NULL,
     "Remove the user's address from the list of recipients"
+  },
+  { "message_id_format", DT_EXPANDO, IP "<%z@%f>", IP &MsgIdFormatDef, NULL,
+    "Custom format for the Message-Id"
   },
   { "mime_forward_decode", DT_BOOL, false, 0, NULL,
     "Decode the forwarded message before attaching it"

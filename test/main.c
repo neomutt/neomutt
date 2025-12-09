@@ -94,6 +94,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_b64_buffer_encode)                               \
   NEOMUTT_TEST_ITEM(test_mutt_b64_decode)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_b64_encode)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_b64_encode_urlsafe)                              \
                                                                                \
   /* body */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_body_cmp_strict)                                 \

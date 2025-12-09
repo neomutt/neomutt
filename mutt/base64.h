@@ -34,6 +34,8 @@ extern const int Index64[];
 int    mutt_b64_decode(const char *in, char *out, size_t olen);
 size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen);
 
+size_t mutt_b64_encode_urlsafe(const char *in, size_t inlen, char *out, size_t outlen);
+
 int    mutt_b64_buffer_decode(struct Buffer *buf, const char *in);
 size_t mutt_b64_buffer_encode(struct Buffer *buf, const char *in, size_t len);
 
