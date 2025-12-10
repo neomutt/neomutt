@@ -193,7 +193,8 @@ int url_pct_decode(char *s)
 
   char *d = NULL;
 
-  for (d = s; *s; s++)
+  d = s;
+  while (*s)
   {
     if (*s == '%')
     {
@@ -201,7 +202,8 @@ int url_pct_decode(char *s)
           mutt_isxdigit(s[2]) && (hexval(s[1]) >= 0) && (hexval(s[2]) >= 0))
       {
         *d++ = (hexval(s[1]) << 4) | (hexval(s[2]));
-        s += 2;
+        s += 3;
+        continue;
       }
       else
       {
@@ -211,6 +213,7 @@ int url_pct_decode(char *s)
     else
     {
       *d++ = *s;
+      s++;
     }
   }
   *d = '\0';
