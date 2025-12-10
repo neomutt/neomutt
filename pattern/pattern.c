@@ -110,17 +110,20 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
 {
   bool do_simple = true;
 
-  for (const char *p = buf_string(buf); p && (p[0] != '\0'); p++)
+  const char *p = buf_string(buf);
+  while (p && (p[0] != '\0'))
   {
     if ((p[0] == '\\') && (p[1] != '\0'))
     {
-      p++;
+      p += 2;
+      continue;
     }
     else if ((p[0] == '~') || (p[0] == '=') || (p[0] == '%'))
     {
       do_simple = false;
       break;
     }
+    p++;
   }
 
   /* XXX - is mutt_istr_cmp() right here, or should we use locale's
