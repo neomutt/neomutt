@@ -275,6 +275,9 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
           strncpy(tstr, p, 11);
           tstr[4] = '\0';
           tstr[7] = '\0';
+
+          /* Use a while loop pattern instead of for, to allow p assignment in error cases */
+          /* Instead of for(;;), do the steps in sequence with error checks and bail if needed */
           if (!mutt_str_atoi_full(tstr, &time.tm_year))
           {
             p = tstr;
