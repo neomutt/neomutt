@@ -69,15 +69,18 @@ bool mutt_path_tidy_slash(char *buf, bool is_dir)
 
     if (r[-1] == '/') /* After a '/' ... */
     {
-      for (; (r[0] == '/') || (r[0] == '.'); r++)
+      while ((r[0] == '/') || (r[0] == '.'))
       {
-        if (r[0] == '/') /* skip multiple /s */
+        if (r[0] == '/')
+        {
+          r++; /* skip multiple /s */
           continue;
+        }
         if (r[0] == '.')
         {
           if (r[1] == '/') /* skip /./ */
           {
-            r++;
+            r += 2;
             continue;
           }
           else if (r[1] == '\0') /* skip /.$ */
