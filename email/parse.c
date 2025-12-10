@@ -634,7 +634,9 @@ cleanup:
  */
 static char *rfc2369_first_mailto(const char *body)
 {
-  for (const char *beg = body, *end = NULL; beg; beg = strchr(end, ','))
+  const char *beg = body;
+  const char *end = NULL;
+  while (beg)
   {
     beg = strchr(beg, '<');
     if (!beg)
@@ -654,6 +656,7 @@ static char *rfc2369_first_mailto(const char *body)
       return mlist;
     }
     FREE(&mlist);
+    beg = strchr(end, ',');
   }
   return NULL;
 }
