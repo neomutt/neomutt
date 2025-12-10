@@ -1371,20 +1371,23 @@ void mutt_file_expand_fmt(struct Buffer *dest, const char *fmt, const char *src)
 
   buf_reset(dest);
 
-  for (p = fmt; *p; p++)
+  p = fmt;
+  while (*p)
   {
     if (*p == '%')
     {
       switch (p[1])
       {
         case '%':
-          buf_addch(dest, *p++);
-          break;
+          buf_addch(dest, *p);
+          p += 2;
+          continue;
         case 's':
           found = true;
           buf_addstr(dest, src);
-          p++;
-          break;
+          p += 2;
+          continue;
+    p++;
         default:
           buf_addch(dest, *p);
           break;
