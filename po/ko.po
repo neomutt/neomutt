@@ -8119,7 +8119,7 @@ msgstr "한계 변수 없음 [오류 보고 바람]"
 msgid "%s no longer exists"
 msgstr "%s가 더 이상 존재치 않음"
 
-#. L10N: This applies to the "$sendmail" and "$inews" config variables.
+#. L10N: This applies to the "$sendmail" and "$inews_command" config variables.
 #: send/config.c:113
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"

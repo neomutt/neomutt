@@ -293,7 +293,7 @@ static void add_args(struct StringArray *args, struct AddressList *al)
  * @retval  0 Success
  * @retval -1 Failure
  *
- * @sa $inews
+ * @sa $inews_command
  */
 int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
                          struct AddressList *to, struct AddressList *cc,
@@ -309,9 +309,9 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
   {
     struct Buffer *cmd = buf_pool_get();
 
-    const struct Expando *c_inews = cs_subset_expando(sub, "inews");
-    expando_filter(c_inews, NntpRenderCallbacks, 0, MUTT_FORMAT_NO_FLAGS,
-                   cmd->dsize, NeoMutt->env, cmd);
+    const struct Expando *c_inews_command = cs_subset_expando(sub, "inews_command");
+    expando_filter(c_inews_command, NntpRenderCallbacks, 0,
+                   MUTT_FORMAT_NO_FLAGS, cmd->dsize, NeoMutt->env, cmd);
     if (buf_is_empty(cmd))
     {
       i = nntp_post(m, msg);

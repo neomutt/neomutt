@@ -16344,7 +16344,7 @@ set new_mail_command = ""
                 <entry><literal>%4C %M%N %5s %-45.45f %d</literal></entry>
               </row>
               <row>
-                <entry><literal>inews</literal></entry>
+                <entry><literal>inews_command</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
@@ -16565,7 +16565,7 @@ set ask_x_comment_to = no
 set catchup_newsgroup = ask-yes
 set followup_to_poster = ask-yes
 set group_index_format = '%4C %M%N %5s  %-45.45f %d'
-set inews = ''
+set inews_command = ''
 set newsgroups_charset = utf-8
 set newsrc = '~/.newsrc'
 set news_cache_dir = '~/.neomutt'

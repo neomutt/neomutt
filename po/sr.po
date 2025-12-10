@@ -7841,7 +7841,7 @@ msgstr "Није пронађен параметар boundary [пријавит�
 msgid "%s no longer exists"
 msgstr "%s више не постоји"
 
-#. L10N: This applies to the "$sendmail" and "$inews" config variables.
+#. L10N: This applies to the "$sendmail" and "$inews_command" config variables.
 #: send/config.c:113
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"

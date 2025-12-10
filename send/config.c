@@ -110,7 +110,7 @@ static int simple_command_validator(const struct ConfigDef *cdef,
   if (c == '\0')
     return CSR_SUCCESS;
 
-  // L10N: This applies to the "$sendmail" and "$inews" config variables.
+  // L10N: This applies to the "$sendmail" and "$inews_command" config variables.
   buf_printf(err, _("Option %s must not contain shell metacharacters: %c"), cdef->name, c);
   return CSR_ERR_INVALID;
 }
@@ -297,7 +297,7 @@ static struct ConfigDef SendVars[] = {
   { "include", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Include a copy of the email that's being replied to"
   },
-  { "inews", DT_EXPANDO|D_STRING_COMMAND, 0, 0, NULL,
+  { "inews_command", DT_EXPANDO|D_STRING_COMMAND, 0, IP &NntpFormatDef, NULL,
     "(nntp) External command to post news articles"
   },
   { "me_too", DT_BOOL, false, 0, NULL,
@@ -413,6 +413,7 @@ static struct ConfigDef SendVars[] = {
   { "envelope_from",            DT_SYNONYM, IP "use_envelope_from",          IP "2021-03-21" },
   { "forw_decrypt",             DT_SYNONYM, IP "forward_decrypt",            IP "2021-03-21" },
   { "forw_format",              DT_SYNONYM, IP "forward_format",             IP "2021-03-21" },
+  { "inews",                    DT_SYNONYM, IP "inews_command",              IP "2025-12-15" },
   { "metoo",                    DT_SYNONYM, IP "me_too",                     IP "2021-03-21" },
   { "pgp_autoencrypt",          DT_SYNONYM, IP "crypt_auto_encrypt",         IP "2021-03-21" },
   { "pgp_autosign",             DT_SYNONYM, IP "crypt_auto_sign",            IP "2021-03-21" },

@@ -7817,7 +7817,7 @@ msgstr "Fant ikke noe ytterkant-parameter [innrapporter denne feilen]"
 msgid "%s no longer exists"
 msgstr "%s finnes ikke lenger"
 
-#. L10N: This applies to the "$sendmail" and "$inews" config variables.
+#. L10N: This applies to the "$sendmail" and "$inews_command" config variables.
 #: send/config.c:113
 #, fuzzy, c-format
 msgid "Option %s must not contain shell metacharacters: %c"

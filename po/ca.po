@@ -8272,7 +8272,7 @@ msgstr "No s’ha trobat el paràmetre «boundary» (informeu d’aquest error).
 msgid "%s no longer exists"
 msgstr "«%s» ja no existeix."
 
-#. L10N: This applies to the "$sendmail" and "$inews" config variables.
+#. L10N: This applies to the "$sendmail" and "$inews_command" config variables.
 #: send/config.c:113
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"

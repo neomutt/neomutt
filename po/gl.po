@@ -8210,7 +8210,7 @@ msgstr "¡Non se atopout parámetro \"boundary\" [informe deste erro]"
 msgid "%s no longer exists"
 msgstr "¡Xa non existe %s"
 
-#. L10N: This applies to the "$sendmail" and "$inews" config variables.
+#. L10N: This applies to the "$sendmail" and "$inews_command" config variables.
 #: send/config.c:113
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"

@@ -38,7 +38,7 @@
  * NntpFormatDef - Expando definitions
  *
  * Config:
- * - $inews
+ * - $inews_command
  * - $newsrc
  */
 const struct ExpandoDefinition NntpFormatDef[] = {

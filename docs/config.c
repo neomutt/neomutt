@@ -2335,7 +2335,7 @@
 ** "$save-hook", "$fcc-hook" and "$fcc-save-hook", too.
 */
 
-{ "inews", D_STRING_COMMAND, 0 },
+{ "inews_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** If set, specifies the program and arguments used to deliver news posted
@@ -2352,7 +2352,7 @@
 ** .pp
 ** Example:
 ** .ts
-** set inews="/usr/local/bin/inews -hS"
+** set inews_command="/usr/local/bin/inews -hS"
 ** .te
 */
 

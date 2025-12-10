@@ -8130,7 +8130,7 @@ msgstr "沒有發現分界變數！[回報錯誤]"
 msgid "%s no longer exists"
 msgstr "%s 已經不存在"
 
-#. L10N: This applies to the "$sendmail" and "$inews" config variables.
+#. L10N: This applies to the "$sendmail" and "$inews_command" config variables.
 #: send/config.c:113
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
