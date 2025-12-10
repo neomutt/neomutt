@@ -585,7 +585,8 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
   int group_last_idx = 0; // index of last part of previous found group
   int group_parent_type = TYPE_OTHER;
 
-  for (int i = 0; i < actx->idxlen; i++)
+  int i = 0;
+  while (i < actx->idxlen)
   {
     bptr = actx->idx[i]->body;
     if (bptr->tagged)
