@@ -50,6 +50,7 @@ tags
 !tags/
 asan.*
 .env
+_codeql_detected_source_root
 
 # Clangd
 .cache/clangd
