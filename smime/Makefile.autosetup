@@ -19,6 +19,6 @@ uninstall-smime:
 	$(RM) $(DESTDIR)$(datadir)/smime.rc
 	$(RM) $(DESTDIR)$(libexecdir)/$(PACKAGE)/smime_keys
 @else
-install-smine:
-uninstall-smine:
+install-smime:
+uninstall-smime:
 @endif
