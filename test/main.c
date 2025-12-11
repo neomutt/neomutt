@@ -258,6 +258,7 @@ void test_fini(void);
                                                                                \
   /* email */                                                                  \
   NEOMUTT_TEST_ITEM(test_email_cmp_strict)                                     \
+  NEOMUTT_TEST_ITEM(test_email_custom_priority)                                \
   NEOMUTT_TEST_ITEM(test_email_free)                                           \
   NEOMUTT_TEST_ITEM(test_email_get_size)                                       \
   NEOMUTT_TEST_ITEM(test_email_header_add)                                     \
