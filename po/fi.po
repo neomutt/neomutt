@@ -15,7 +15,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2025-09-05\n"
+"Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-12-02 10:41+0000\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"

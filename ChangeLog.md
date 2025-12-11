@@ -1,4 +1,90 @@
+2025-12-11  Richard Russon  \<rich@flatcap.org\>
+* Security
+  - #4725	deprecate old ssl and tls options
+* Features
+  - #4718	add `$message_id_format`
+  - Notmuch: hide some old/deprecated features
+* Bug Fixes
+  - #4666	limit: force refresh of index bar
+  - #4671	Update the status bar on thread [un]collapse
+  - #4673	shrink history file on every new entry
+  - #4679	Flush S/MIME passkey on failure to sign
+  - #4684	execute message-hook sooner
+  - #4687	fix: exec auto-completion
+  - #4688	Fix infinite loop in GnuTLS socket I/O when socket blocks
+  - #4696	`cmd_parse_fetch()`: debug: avoid NULL dereference
+  - #4697	expunge: guard against segfault
+  - #4719	alias: complete when only one match
+  - #4721	browser: fix select/descend folder/mailbox
+  - #4726	imap: protect against crash on shutdown
+  - fix resolve for tagged save
+  - help: fix sorting of unbound functions
+  - help: hide deprecated functions
+* Changed Config
+  - New: `message_id_format = "<%z@%f>"`
+  - Deprecated `ssl_use_sslv2`
+  - Deprecated `ssl_use_sslv3`
+  - Deprecated `ssl_use_tlsv1`
+  - Deprecated `ssl_use_tlsv1_1`
+* Translations
+  - 100% Esperanto
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Turkish
+* Docs
+  - #4665	Revamp the S/MIME docs
+  - #4680	Document how to use S/MIME with GPGMe
+  - #4692	update the contribution guidelines
+  - fix deprecated $pager example
+  - lots man pages fixes
+  - update help for sort options
+* Build
+  - #4668	fix build for re-entrant ncurses
+  - #4727	make openssl/gnutls mutually exclusive
+  - libkey: light refactoring
+  - lua: create liblua
+* Code
+  - #4695	Replace some `TAILQ` uses with `ARRAY`
+  - convert the ctype wrappers to use `bool`
+  - global invert `OptNoCurses` to `OptGui`
+  - key: collapse redirector functions
+  - move `km_init()` earlier in startup
+  - opcodes: add flags to `MenuFuncOp`
+  - pass focused window to global functions
+  - Use `buf_at()` to get a char from a `Buffer`
+  - use `StringArray` everywhere
+
 2025-09-05  Richard Russon  \<rich@flatcap.org\>
+* Security
+  - #4623 ncrypt/crypt.c: Protect Message-ID
+* Features
+  - #4644 Provide an option to confirm on an empty To
+* Contrib
+  - #4645 Add ayu-dark-256 colorscheme
+* Bug Fixes
+  - #4635 Handle a non-existing message_cache_dir
+  - #4642 Decouple `$crypt_encryption_info` and `$crypt_protected_headers_weed` from `$devel_security`
+  - #4650 Return success after querying for config
+* Changed Config
+  - Add: `confirm_empty_to = no`
+  Confirm when sending an e-mail with an empty To:
+* Translations
+  - 100% German
+  - 100% Turkish
+  - 99% Hungarian
+  - 98% Lithuanian
+  - 89% French
+* Build
+  - #4636 Update FreeBSD CI and workaround `pkg` bug
+  - actions: use checkout v5
+* Code
+  - #4023 tweak observer event types
+  - #4628 Use the standard countof instead of our mutt_array_size()
+  - #4637 Update types in test dummy code
+  - #4638 remove useless const qualifier from log_queue_get()
+  - #4655 Make sure ctype(3) function arguments are valid
+  - #4657 Fix warning about unused function and data
+  - #4659 Include term.h and [n]curses.h consistently
 
 2025-05-10  Richard Russon  \<rich@flatcap.org\>
 * Contrib
