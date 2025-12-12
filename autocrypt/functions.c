@@ -51,7 +51,7 @@
 /**
  * OpAutocrypt - Functions for the Autocrypt Account
  */
-const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
+static const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
   { "create-account",                OP_AUTOCRYPT_CREATE_ACCT },
   { "delete-account",                OP_AUTOCRYPT_DELETE_ACCT },
   { "exit",                          OP_EXIT },
@@ -65,7 +65,7 @@ const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
 /**
  * AutocryptDefaultBindings - Key bindings for the Autocrypt Account
  */
-const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt account */
+static const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt account */
   { OP_AUTOCRYPT_CREATE_ACCT,              "c" },
   { OP_AUTOCRYPT_DELETE_ACCT,              "D" },
   { OP_AUTOCRYPT_TOGGLE_ACTIVE,            "a" },
@@ -75,6 +75,21 @@ const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt account 
 };
 #endif
 // clang-format on
+
+/**
+ * autocrypt_init_keys - Initialise the Autocrypt Keybindings - Implements ::init_keys_api
+ */
+void autocrypt_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpAutocrypt);
+  md = km_register_menu(MENU_AUTOCRYPT, "autocrypt");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, AutocryptDefaultBindings);
+}
 
 /**
  * toggle_active - Toggle whether an Autocrypt account is active

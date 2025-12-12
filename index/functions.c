@@ -42,6 +42,7 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "debug/lib.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
@@ -87,7 +88,7 @@
 /**
  * OpIndex - Functions for the Index Menu
  */
-const struct MenuFuncOp OpIndex[] = { /* map: index */
+static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "alias-dialog",                  OP_ALIAS_DIALOG },
 #ifdef USE_AUTOCRYPT
   { "autocrypt-acct-menu",           OP_AUTOCRYPT_ACCT_MENU },
@@ -232,7 +233,7 @@ const struct MenuFuncOp OpIndex[] = { /* map: index */
 /**
  * IndexDefaultBindings - Key bindings for the Index Menu
  */
-const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
+static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
 #ifdef USE_AUTOCRYPT
   { OP_AUTOCRYPT_ACCT_MENU,                "A" },
@@ -330,6 +331,21 @@ enum ResolveMethod
   RESOLVE_NEXT_THREAD,    ///< Next top-level thread
   RESOLVE_NEXT_SUBTHREAD, ///< Next sibling sub-thread
 };
+
+/**
+ * index_init_keys - Initialise the Index Keybindings - Implements ::init_keys_api
+ */
+void index_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpIndex);
+  md = km_register_menu(MENU_INDEX, "index");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, IndexDefaultBindings);
+}
 
 /**
  * resolve_email - Pick the next Email to advance the cursor to
@@ -1997,9 +2013,10 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
       snprintf(macro, sizeof(macro), "<search>~i '%s'\n", buf_string(msg_id));
       buf_pool_release(&msg_id);
 
+      struct MenuDefinition *md = menu_find(MENU_INDEX);
       /* L10N: "message hotkey" is the key bindings menu description of a
          macro created by <mark-message>. */
-      km_bind(str, MENU_INDEX, OP_MACRO, macro, _("message hotkey"), NULL);
+      km_bind(md, str, OP_MACRO, macro, _("message hotkey"), NULL);
 
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed

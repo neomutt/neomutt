@@ -50,7 +50,7 @@
 /**
  * OpEditor - Functions for the Editor Menu
  */
-const struct MenuFuncOp OpEditor[] = { /* map: editor */
+static const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "backspace",                     OP_EDITOR_BACKSPACE },
   { "backward-char",                 OP_EDITOR_BACKWARD_CHAR },
   { "backward-word",                 OP_EDITOR_BACKWARD_WORD },
@@ -85,7 +85,7 @@ const struct MenuFuncOp OpEditor[] = { /* map: editor */
 /**
  * EditorDefaultBindings - Key bindings for the Editor Menu
  */
-const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
+static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_EDITOR_BACKSPACE,                   "<backspace>" },
   { OP_EDITOR_BACKSPACE,                   "\010" },           // <Ctrl-H>
   { OP_EDITOR_BACKSPACE,                   "\177" },           // <Backspace>
@@ -122,6 +122,20 @@ const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * editor_init_keys - Initialise the Editor Keybindings - Implements ::init_keys_api
+ */
+void editor_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpEditor);
+  md = km_register_menu(MENU_EDITOR, "editor");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_bindings(md, EditorDefaultBindings);
+}
 
 /**
  * replace_part - Search and replace on a buffer

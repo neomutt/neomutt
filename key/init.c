@@ -32,37 +32,18 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
-#include "menu/lib.h"
+#include "init.h"
+#include "commands.h"
+#include "keymap.h"
+#include "menu.h"
 
-extern const struct MenuOpSeq AliasDefaultBindings[];
-extern const struct MenuOpSeq AttachmentDefaultBindings[];
-#ifdef USE_AUTOCRYPT
-extern const struct MenuOpSeq AutocryptDefaultBindings[];
-#endif
-extern const struct MenuOpSeq BrowserDefaultBindings[];
-extern const struct MenuOpSeq ComposeDefaultBindings[];
-extern const struct MenuOpSeq EditorDefaultBindings[];
-extern const struct MenuOpSeq IndexDefaultBindings[];
-extern const struct MenuOpSeq PagerDefaultBindings[];
-extern const struct MenuOpSeq PgpDefaultBindings[];
-extern const struct MenuOpSeq PostponedDefaultBindings[];
-extern const struct MenuOpSeq QueryDefaultBindings[];
-extern const struct MenuOpSeq SmimeDefaultBindings[];
+/// All the registered Menus
+struct MenuDefinitionArray MenuDefs;
 
-/**
- * create_bindings - Attach a set of keybindings to a Menu
- * @param map   Key bindings
- * @param mtype Menu type, e.g. #MENU_PAGER
- */
-static void create_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
-{
-  STAILQ_INIT(&Keymaps[mtype]);
+/// All the registered SubMenus
+struct SubMenuArray SubMenus;
 
-  for (int i = 0; map[i].op != OP_NULL; i++)
-    if (map[i].seq)
-      km_bind(map[i].seq, mtype, map[i].op, NULL, NULL, NULL);
-}
+keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
 
 /**
  * KeyCommands - Key Binding Commands
@@ -80,50 +61,70 @@ static const struct Command KeyCommands[] = {
 };
 
 /**
- * km_init - Initialise all the menu keybindings
+ * km_register_submenu - Register a submenu
+ * @param functions Function definitions
+ * @retval ptr SubMenu
+ *
+ * Register a set of functions.
+ * The result can be used in multiple Menus.
  */
-void km_init(void)
+struct SubMenu *km_register_submenu(const struct MenuFuncOp functions[])
 {
-  memset(Keymaps, 0, sizeof(struct KeymapList) * MENU_MAX);
+  struct SubMenu sm = { 0 };
+  sm.functions = functions;
+  ARRAY_INIT(&sm.keymaps);
 
-  create_bindings(AliasDefaultBindings, MENU_ALIAS);
-  create_bindings(AttachmentDefaultBindings, MENU_ATTACHMENT);
-#ifdef USE_AUTOCRYPT
-  create_bindings(AutocryptDefaultBindings, MENU_AUTOCRYPT);
-#endif
-  create_bindings(BrowserDefaultBindings, MENU_BROWSER);
-  create_bindings(ComposeDefaultBindings, MENU_COMPOSE);
-  create_bindings(DialogDefaultBindings, MENU_DIALOG);
-  create_bindings(EditorDefaultBindings, MENU_EDITOR);
-  create_bindings(GenericDefaultBindings, MENU_GENERIC);
-  create_bindings(IndexDefaultBindings, MENU_INDEX);
-  create_bindings(PagerDefaultBindings, MENU_PAGER);
-  create_bindings(PgpDefaultBindings, MENU_PGP);
-  create_bindings(PostponedDefaultBindings, MENU_POSTPONED);
-  create_bindings(QueryDefaultBindings, MENU_QUERY);
-  create_bindings(SmimeDefaultBindings, MENU_SMIME);
-
-  commands_register(&NeoMutt->commands, KeyCommands);
+  ARRAY_ADD(&SubMenus, sm);
+  return ARRAY_LAST(&SubMenus);
 }
 
 /**
- * mutt_keymaplist_free - Free a List of Keymaps
- * @param km_list List of Keymaps to free
+ * km_register_menu - Register a menu
+ * @param menu Menu Type, e.g. #MENU_INDEX
+ * @param name Menu name, e.g. "index"
+ * @retval ptr Menu Definition
  */
-static void mutt_keymaplist_free(struct KeymapList *km_list)
+struct MenuDefinition *km_register_menu(int menu, const char *name)
 {
-  struct Keymap *np = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, km_list, entries, tmp)
+  struct MenuDefinition md = { 0 };
+  md.id = menu;
+  md.name = mutt_str_dup(name);
+  ARRAY_INIT(&md.submenus);
+
+  ARRAY_ADD(&MenuDefs, md);
+  return ARRAY_LAST(&MenuDefs);
+}
+
+/**
+ * km_menu_add_submenu - Add a SubMenu to a Menu Definition
+ * @param md Menu Definition
+ * @param sm SubMenu to add
+ */
+void km_menu_add_submenu(struct MenuDefinition *md, struct SubMenu *sm)
+{
+  ARRAY_ADD(&md->submenus, sm);
+}
+
+/**
+ * km_menu_add_bindings - Add Keybindings to a Menu
+ * @param md       Menu Definition
+ * @param bindings Keybindings to add
+ */
+void km_menu_add_bindings(struct MenuDefinition *md, const struct MenuOpSeq bindings[])
+{
+  for (int i = 0; bindings[i].op != OP_NULL; i++)
   {
-    STAILQ_REMOVE(km_list, np, Keymap, entries);
-    mutt_keymap_free(&np);
+    if (bindings[i].seq)
+    {
+      km_bind(md, bindings[i].seq, bindings[i].op, NULL, NULL, NULL);
+    }
   }
 }
 
 /**
- * key_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
+ * km_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  */
-int key_config_observer(struct NotifyCallback *nc)
+int km_config_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_CONFIG)
     return 0;
@@ -135,47 +136,55 @@ int key_config_observer(struct NotifyCallback *nc)
   if (!mutt_str_equal(ev_c->name, "abort_key"))
     return 0;
 
-  mutt_init_abort_key();
+  km_set_abort_key();
   mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
 
 /**
- * mutt_keys_cleanup - Free the key maps
+ * km_init - Initialise all the menu keybindings
  */
-void mutt_keys_cleanup(void)
+void km_init(void)
 {
-  for (enum MenuType i = 1; i < MENU_MAX; i++)
-  {
-    mutt_keymaplist_free(&Keymaps[i]);
-  }
+  ARRAY_INIT(&MenuDefs);
+  ARRAY_INIT(&SubMenus);
 
-  if (NeoMutt && NeoMutt->sub)
-    notify_observer_remove(NeoMutt->sub->notify, key_config_observer, NULL);
+  commands_register(&NeoMutt->commands, KeyCommands);
+
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, km_config_observer, NULL);
 }
 
 /**
- * mutt_init_abort_key - Parse the abort_key config string
+ * km_cleanup - Free the key maps
+ */
+void km_cleanup(void)
+{
+  if (NeoMutt && NeoMutt->sub)
+    notify_observer_remove(NeoMutt->sub->notify, km_config_observer, NULL);
+}
+
+/**
+ * km_set_abort_key - Parse the abort_key config string
  *
  * Parse the string into `$abort_key` and put the keycode into AbortKey.
  */
-void mutt_init_abort_key(void)
+void km_set_abort_key(void)
 {
-  keycode_t buf[2];
+  keycode_t buf[4] = { 0 };
   const char *const c_abort_key = cs_subset_string(NeoMutt->sub, "abort_key");
-  size_t len = parsekeys(c_abort_key, buf, countof(buf));
+
+  size_t len = parse_keys(c_abort_key, buf, countof(buf));
   if (len == 0)
   {
     mutt_error(_("Abort key is not set, defaulting to Ctrl-G"));
     AbortKey = ctrl('G');
     return;
   }
+
   if (len > 1)
   {
     mutt_warning(_("Specified abort key sequence (%s) will be truncated to first key"),
                  c_abort_key);
   }
   AbortKey = buf[0];
-
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, key_config_observer, NULL);
 }
