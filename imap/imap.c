@@ -1519,7 +1519,10 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
     select_email_uids(m->emails, m->msg_count, MUTT_DELETED, true, false, &uida);
     ARRAY_SORT(&uida, imap_sort_uid, NULL);
-    rc = imap_exec_msg_set(adata, "UID STORE", "+FLAGS.SILENT (\\Deleted)", &uida);
+    if (m->rights & MUTT_ACL_SEEN)
+      rc = imap_exec_msg_set(adata, "UID STORE", "+FLAGS.SILENT (\\Deleted) (\\Seen)", &uida);
+    else
+      rc = imap_exec_msg_set(adata, "UID STORE", "+FLAGS.SILENT (\\Deleted)", &uida);
     ARRAY_FREE(&uida);
     if (rc < 0)
     {
