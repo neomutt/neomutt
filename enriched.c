@@ -113,6 +113,175 @@ struct EnrichedState
   struct State *state;
 };
 
+
+#define WL_BUFSIZE 1024
+
+/**
+ * struct WLgetwc - Wide layer/proxy for fgetwc and ungetwc
+ *
+ * If FILE-handle supports wide-orientation then just use fgetwc and ungetwc.
+ * If FILE-handle does not support wide-orientation (e.g. created with fmemopen)
+ * then use fread to read bytes of the FILE-handle to the buffer and
+ * use a mbrtowc-loop to generate wide-chars as needed.
+ * push_back with one level (one push-back in a row) is supported.
+ */
+struct WLgetwc
+{
+  FILE       *handle;
+  char       buffer[WL_BUFSIZE];  /* !is_wide: use buffer for mbrtowc loop  */
+  size_t     index;               /* current pos in buffer: what comes next */
+  size_t     buf_left;            /* how many bytes left in buffer          */
+  mbstate_t  mbstate;             /* state for mbrtowc                      */
+  wint_t     pushed_back_char;    /* pushed-back wide char or WEOF          */
+  bool       is_wide;             /* has handle wide orientation, see fwide */
+  bool       stop_read;           /* eof or error occured => no more fread  */
+};
+
+/**
+ * wl_init - initialize WLgetwc struct for FILE-handle file.
+ * @param wlgetwc WLgetwc struct to initialize
+ * @param file file-handle
+ *
+ * Checks if file is wide and tries to set it to wide orientation.
+ * If wide: possible uses (internally) wide functions (fgetwc, etc.).
+ * If not wide. uses (internally) fread functions and a mbrtowc loop to
+ * transform the bytes to wide chars.
+ */
+static void wl_init(struct WLgetwc *wlgetwc, FILE *file)
+{
+  int wide_ret;
+
+  wlgetwc->handle = file;
+  wide_ret = fwide(file, 0);
+  if (wide_ret == 0)
+    wide_ret = fwide(file, 1);
+
+  wlgetwc->is_wide = (wide_ret > 0);
+
+  if (!wlgetwc->is_wide)
+  {
+    wlgetwc->index = 0;
+    wlgetwc->buf_left = 0;
+    memset(&wlgetwc->mbstate, 0, sizeof(wlgetwc->mbstate));
+    wlgetwc->pushed_back_char = WEOF;
+    wlgetwc->stop_read = false;
+  }
+}
+
+/**
+ * wl_fill_buffer - fill buffer with data from file handle.
+ * @param wlgetwc WLgetwc struct
+ *
+ * If some bytes are left in the buffer, copy them to the front and
+ * fill the rest with bytes from file.
+ */
+static void wl_fill_buffer(struct WLgetwc *wlgetwc)
+{
+  char *buf;
+  size_t ret, bytes_to_read;
+  FILE *handle;
+
+  if (wlgetwc->stop_read) return; /* no more data available */
+
+  buf = &wlgetwc->buffer[0];
+  handle = wlgetwc->handle;
+
+  if (wlgetwc->buf_left > 0)  /* copy bytes in the buffer to front */
+    memmove(buf+0, buf+wlgetwc->index, wlgetwc->buf_left);
+  wlgetwc->index = 0;
+
+  bytes_to_read = WL_BUFSIZE - wlgetwc->buf_left;
+  ret = fread(buf + wlgetwc->buf_left, 1, bytes_to_read, handle);
+  if (ret < bytes_to_read)
+  {
+    if (ferror(handle) || feof(handle) || ret == 0)
+      wlgetwc->stop_read = true;  /* eof or error: just stop reading */
+  }
+  wlgetwc->buf_left += ret;
+}
+
+/**
+ * wl_ungetwc - push back one wide char.
+ * @param wlgetwc WLgetwc struct
+ * @param wide_char (wide) character to push back
+ *
+ * if file-handle has wide orientation, just call ungetwc.
+ * Otherweise save push back char.
+ *
+ * One and only one push-back operation in a row is supported.
+ */
+static void wl_ungetwc(struct WLgetwc *wlgetwc, wint_t wide_char)
+{
+  if (wlgetwc->is_wide)
+    ungetwc(wide_char, wlgetwc->handle);
+  else
+    wlgetwc->pushed_back_char = wide_char;
+}
+
+/**
+ * wl_getwc - get next wide_char or WEOF.
+ * @param wlgetwc WLgetwc struct
+ *
+ * If file-handle has wide orientation, just call fgetwc.
+ * Otherwise call mbrtowc with the data in the buffer. Fill the buffer
+ * if needed.
+ */
+static wint_t wl_getwc(struct WLgetwc *wlgetwc)
+{
+  wchar_t ret_char;
+  size_t ret;
+  char *buf;
+  bool fill_buffer;
+
+  if (wlgetwc->is_wide)
+    return fgetwc(wlgetwc->handle);
+
+  /* not wide orientation: use buffer and mbrtowc */
+
+  if (wlgetwc->pushed_back_char != WEOF)
+  { /* one wide char was pushed back; return this */
+    wint_t pchar = wlgetwc->pushed_back_char;
+    wlgetwc->pushed_back_char = WEOF;
+    return pchar;
+  }
+
+  buf = &wlgetwc->buffer[0];
+  fill_buffer = false;
+  while (true)
+  {
+    /* mbrtowc needs at least MB_CUR_MAX as bytes counter,
+     * otherwise it may return (size_t)-1 (instead of (size_t)-2)
+     * if only part of the multibyte-char is found!! */
+    if (wlgetwc->buf_left < MB_CUR_MAX)  fill_buffer = true;
+
+    if (fill_buffer)
+    {
+      wl_fill_buffer(wlgetwc);
+      if (wlgetwc->buf_left == 0) return WEOF;
+    }
+
+    ret = mbrtowc(&ret_char, buf + wlgetwc->index,
+                  wlgetwc->buf_left, &wlgetwc->mbstate);
+    if (ret == (size_t)-2)
+    { /* only part of multibyte char was in buffer; saved in mbstate now */
+      wlgetwc->index += wlgetwc->buf_left; /* all consumed               */
+      wlgetwc->buf_left = 0;               /* nothing left               */
+      fill_buffer = true;                  /* fill buffer and try again  */
+      continue;
+    }
+    if ((ret == (size_t)-1) || (ret == 0))
+    {  /* invalid multibyte-sequence or L'\0' => stop; treat like WEOF */
+      wlgetwc->buf_left = 0;
+      wlgetwc->stop_read = true;
+      return WEOF;
+    }
+
+    wlgetwc->index += ret;      /* update position in buffer */
+    wlgetwc->buf_left -= ret;   /* update bytes left in buffer */
+    return (wint_t)ret_char;
+  }
+}
+
 /**
  * enriched_wrap - Wrap enriched text
  * @param enriched State of enriched text
@@ -483,6 +652,9 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
   wint_t wc = 0;
   int tag_len = 0;
   wchar_t tag[1024 + 1];
+  struct WLgetwc wlgetwc;
+
+  wl_init(&wlgetwc, state->fp_in);
 
   enriched.state = state;
   enriched.wrap_margin = ((state->wraplen > 4) &&
@@ -506,7 +678,7 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
   {
     if (text_state != ST_EOF)
     {
-      if (!bytes || ((wc = fgetwc(state->fp_in)) == WEOF))
+      if (!bytes || ((wc = wl_getwc(&wlgetwc)) == WEOF))
         text_state = ST_EOF;
       else
         bytes--;
@@ -582,7 +754,7 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
         }
         else
         {
-          ungetwc(wc, state->fp_in);
+          wl_ungetwc(&wlgetwc, wc);
           bytes++;
           text_state = TEXT;
         }
