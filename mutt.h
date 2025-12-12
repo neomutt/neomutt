@@ -61,7 +61,7 @@ typedef uint8_t CompletionFlags;       ///< Flags for mw_get_field(), e.g. #MUTT
 /**
  * enum MessageType - To set flags or match patterns
  *
- * @sa mutt_set_flag(), mutt_pattern_func()
+ * @sa mutt_set_flag()
  */
 enum MessageType
 {
