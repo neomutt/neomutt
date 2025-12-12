@@ -2642,7 +2642,7 @@ static enum MxStatus nntp_mbox_close(struct Mailbox *m)
 /**
  * nntp_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
-static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
+static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e, MsgOpenFlags flags)
 {
   struct NntpMboxData *mdata = m->mdata;
   char article[16] = { 0 };

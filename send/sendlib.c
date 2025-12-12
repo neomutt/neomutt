@@ -490,7 +490,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
 
   buf_pool_release(&tempfile);
 
-  struct Message *msg = mx_msg_open(m, e);
+  struct Message *msg = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
   if (!msg)
   {
     mutt_body_free(&body);

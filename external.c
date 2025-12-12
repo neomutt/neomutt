@@ -156,7 +156,7 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
   ARRAY_FOREACH(ep, ea)
   {
     struct Email *e = *ep;
-    msg = mx_msg_open(m, e);
+    msg = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
     if (!msg)
     {
       rc = -1;
@@ -241,7 +241,7 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, struct Message *msg,
   const bool own_msg = !msg;
   if (own_msg)
   {
-    msg = mx_msg_open(m, e);
+    msg = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
     if (!msg)
     {
       return;
@@ -291,7 +291,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
     /* handle a single message */
     mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-    struct Message *msg = mx_msg_open(m, e);
+    struct Message *msg = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
     if (msg && (WithCrypto != 0) && decode)
     {
       mutt_parse_mime_message(e, msg->fp);
@@ -327,7 +327,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
       ARRAY_FOREACH(ep, ea)
       {
         struct Email *e = *ep;
-        struct Message *msg = mx_msg_open(m, e);
+        struct Message *msg = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
         if (msg)
         {
           mutt_parse_mime_message(e, msg->fp);
@@ -746,7 +746,7 @@ int mutt_save_message_mbox(struct Mailbox *m_src, struct Email *e, enum MessageS
 
   set_copy_flags(e, transform_opt, &cmflags, &chflags);
 
-  struct Message *msg = mx_msg_open(m_src, e);
+  struct Message *msg = mx_msg_open(m_src, e, MUTT_MSG_NO_FLAGS);
   if (msg && transform_opt != TRANSFORM_NONE)
   {
     mutt_parse_mime_message(e, msg->fp);
@@ -1189,7 +1189,7 @@ static bool check_traditional_pgp(struct Mailbox *m, struct Email *e)
 
   e->security |= PGP_TRADITIONAL_CHECKED;
 
-  struct Message *msg = mx_msg_open(m, e);
+  struct Message *msg = mx_msg_open(m, e, MUTT_MSG_NO_FLAGS);
   if (msg)
   {
     mutt_parse_mime_message(e, msg->fp);
