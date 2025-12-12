@@ -31,6 +31,7 @@
  * | mh/mdata.c         | @subpage mh_mdata         |
  * | mh/mh.c            | @subpage mh_mh            |
  * | mh/mhemail.c       | @subpage mh_mdemail       |
+ * | mh/module.c        | @subpage mh_module        |
  * | mh/sequence.c      | @subpage mh_sequence      |
  * | mh/shared.c        | @subpage mh_shared        |
  */

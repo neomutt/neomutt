@@ -54,7 +54,7 @@ static const struct ExpandoDefinition PatternFormatDef[] = {
 /**
  * PatternVars - Config definitions for the pattern library
  */
-static struct ConfigDef PatternVars[] = {
+struct ConfigDef PatternVars[] = {
   // clang-format off
   { "external_search_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External search command"
@@ -68,11 +68,3 @@ static struct ConfigDef PatternVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_pattern - Register pattern config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_pattern(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, PatternVars);
-}

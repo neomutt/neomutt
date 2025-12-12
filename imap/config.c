@@ -67,7 +67,7 @@ static int imap_auth_validator(const struct ConfigDef *cdef, intptr_t value, str
 /**
  * ImapVars - Config definitions for the IMAP library
  */
-static struct ConfigDef ImapVars[] = {
+struct ConfigDef ImapVars[] = {
   // clang-format off
   { "imap_check_subscribed", DT_BOOL, false, 0, NULL,
     "(imap) When opening a mailbox, ask the server for a list of subscribed folders"
@@ -143,7 +143,7 @@ static struct ConfigDef ImapVars[] = {
 /**
  * ImapVarsZlib - Config definitions for IMAP compression
  */
-static struct ConfigDef ImapVarsZlib[] = {
+struct ConfigDef ImapVarsZlib[] = {
   // clang-format off
   { "imap_deflate", DT_BOOL, true, 0, NULL,
     "(imap) Compress network traffic"
@@ -152,17 +152,3 @@ static struct ConfigDef ImapVarsZlib[] = {
   // clang-format on
 };
 #endif
-
-/**
- * config_init_imap - Register imap config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_imap(struct ConfigSet *cs)
-{
-  bool rc = cs_register_variables(cs, ImapVars);
-
-#if defined(USE_ZLIB)
-  rc |= cs_register_variables(cs, ImapVarsZlib);
-#endif
-
-  return rc;
-}

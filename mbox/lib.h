@@ -30,6 +30,7 @@
  * | :------------ | :------------------- |
  * | mbox/config.c | @subpage mbox_config |
  * | mbox/mbox.c   | @subpage mbox_mbox   |
+ * | mbox/module.c | @subpage mbox_module |
  */
 
 #ifndef MUTT_MBOX_LIB_H

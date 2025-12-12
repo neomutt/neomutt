@@ -62,7 +62,7 @@ static const struct ExpandoDefinition ComposeFormatDef[] = {
 /**
  * ComposeVars - Config definitions for compose
  */
-static struct ConfigDef ComposeVars[] = {
+struct ConfigDef ComposeVars[] = {
   // clang-format off
   { "compose_confirm_detach_first", DT_BOOL, true, 0, NULL,
     "Prevent the accidental deletion of the composed message"
@@ -95,14 +95,8 @@ static struct ConfigDef ComposeVars[] = {
   { "postpone", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Save messages to the `$postponed` folder"
   },
+
+  { "edit_hdrs", DT_SYNONYM, IP "edit_headers", IP "2021-03-21" },
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_compose - Register compose config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_compose(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, ComposeVars);
-}

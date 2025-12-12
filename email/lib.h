@@ -34,6 +34,7 @@
  * | email/from.c           | @subpage email_from      |
  * | email/globals.c        | @subpage email_globals   |
  * | email/mime.c           | @subpage email_mime      |
+ * | email/module.c         | @subpage email_module    |
  * | email/parameter.c      | @subpage email_parameter |
  * | email/parse.c          | @subpage email_parse     |
  * | email/rfc2047.c        | @subpage email_rfc2047   |

@@ -46,7 +46,7 @@ struct ListHead SidebarPinned = STAILQ_HEAD_INITIALIZER(SidebarPinned); ///< Lis
 /**
  * SbCommands - Sidebar Commands
  */
-static const struct Command SbCommands[] = {
+const struct Command SbCommands[] = {
   // clang-format off
   { "sidebar_pin",   sb_parse_sidebar_pin,     0 },
   { "sidebar_unpin", sb_parse_sidebar_unpin,   0 },
@@ -203,8 +203,6 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
  */
 void sb_init(void)
 {
-  commands_register(&NeoMutt->commands, SbCommands);
-
   // Set a default style
   struct AttrColor *ac = simple_color_get(MT_COLOR_SIDEBAR_HIGHLIGHT);
   ac->attrs = A_UNDERLINE;

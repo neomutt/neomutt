@@ -61,7 +61,7 @@ static const struct ExpandoDefinition AutocryptFormatDef[] = {
 /**
  * AutocryptVars - Config definitions for the autocrypt library
  */
-static struct ConfigDef AutocryptVars[] = {
+struct ConfigDef AutocryptVars[] = {
   // clang-format off
   { "autocrypt", DT_BOOL, false, 0, NULL,
     "Enables the Autocrypt feature"
@@ -78,17 +78,3 @@ static struct ConfigDef AutocryptVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_autocrypt - Register autocrypt config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_autocrypt(struct ConfigSet *cs)
-{
-  bool rc = false;
-
-#if defined(USE_AUTOCRYPT)
-  rc |= cs_register_variables(cs, AutocryptVars);
-#endif
-
-  return rc;
-}

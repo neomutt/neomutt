@@ -70,6 +70,7 @@
  * | mailcap.c       | @subpage neo_mailcap       |
  * | maillist.c      | @subpage neo_maillist      |
  * | main.c          | @subpage neo_main          |
+ * | module.c        | @subpage main_module       |
  * | monitor.c       | @subpage neo_monitor       |
  * | muttlib.c       | @subpage neo_muttlib       |
  * | mutt_body.c     | @subpage neo_mutt_body     |
@@ -138,23 +139,19 @@
 #include "browser/lib.h"
 #include "cli/lib.h"
 #include "color/lib.h"
-#include "compmbox/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
-#include "lua/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
-#include "notmuch/lib.h"
 #include "parse/lib.h"
 #include "pop/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "sidebar/lib.h"
-#include "alternates.h"
 #include "commands.h"
 #include "external.h"
 #include "globals.h"
@@ -165,7 +162,6 @@
 #include "mx.h"
 #include "nntp/adata.h" // IWYU pragma: keep
 #include "protos.h"
-#include "subjectrx.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -179,6 +175,8 @@
 #ifndef DOMAIN
 #include "conn/lib.h"
 #endif
+
+struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
 
 bool StartupComplete = false; ///< When the config has been read
 
@@ -214,6 +212,54 @@ static int execute_commands(struct StringArray *sa)
 
   return rc;
 }
+
+// clang-format off
+extern const struct Module ModuleMain;
+extern const struct Module ModuleAddress;  extern const struct Module ModuleAlias;    extern const struct Module ModuleAttach;   extern const struct Module ModuleAutocrypt;
+extern const struct Module ModuleBcache;   extern const struct Module ModuleBrowser;  extern const struct Module ModuleColor;    extern const struct Module ModuleComplete;
+extern const struct Module ModuleCompmbox; extern const struct Module ModuleCompose;  extern const struct Module ModuleCompress; extern const struct Module ModuleConfig;
+extern const struct Module ModuleConn;     extern const struct Module ModuleConvert;  extern const struct Module ModuleCore;     extern const struct Module ModuleEditor;
+extern const struct Module ModuleEmail;    extern const struct Module ModuleEnvelope; extern const struct Module ModuleExpando;  extern const struct Module ModuleGui;
+extern const struct Module ModuleHcache;   extern const struct Module ModuleHelpbar;  extern const struct Module ModuleHistory;  extern const struct Module ModuleImap;
+extern const struct Module ModuleIndex;    extern const struct Module ModuleKey;      extern const struct Module ModuleMaildir;  extern const struct Module ModuleMbox;
+extern const struct Module ModuleMenu;     extern const struct Module ModuleMh;       extern const struct Module ModuleMutt;     extern const struct Module ModuleNcrypt;
+extern const struct Module ModuleNntp;     extern const struct Module ModuleNotmuch;  extern const struct Module ModulePager;    extern const struct Module ModuleParse;
+extern const struct Module ModulePattern;  extern const struct Module ModulePop;      extern const struct Module ModulePostpone; extern const struct Module ModuleProgress;
+extern const struct Module ModuleQuestion; extern const struct Module ModuleSend;     extern const struct Module ModuleSidebar;  extern const struct Module ModuleStore;
+// clang-format on
+
+/**
+ * Modules - All the library Modules
+ */
+static const struct Module *Modules[] = {
+  // clang-format off
+  &ModuleMain,     &ModuleGui,      // These two have priority
+  &ModuleAddress,  &ModuleAlias,    &ModuleAttach,   &ModuleBcache,   &ModuleBrowser,
+  &ModuleColor,    &ModuleComplete, &ModuleCompmbox, &ModuleCompose,  &ModuleConfig,
+  &ModuleConn,     &ModuleConvert,  &ModuleCore,     &ModuleEditor,   &ModuleEmail,
+  &ModuleEnvelope, &ModuleExpando,  &ModuleHelpbar,  &ModuleHistory,  &ModuleImap,
+  &ModuleIndex,    &ModuleKey,      &ModuleMaildir,  &ModuleMbox,     &ModuleMenu,
+  &ModuleMh,       &ModuleMutt,     &ModuleNcrypt,   &ModuleNntp,     &ModulePager,
+  &ModuleParse,    &ModulePattern,  &ModulePop,      &ModulePostpone, &ModuleProgress,
+  &ModuleQuestion, &ModuleSend,     &ModuleSidebar,
+// clang-format on
+#ifdef USE_AUTOCRYPT
+  &ModuleAutocrypt,
+#endif
+#ifdef USE_HCACHE_COMPRESSION
+  &ModuleCompress,
+#endif
+#ifdef USE_HCACHE
+  &ModuleHcache,
+#endif
+#ifdef USE_NOTMUCH
+  &ModuleNotmuch,
+#endif
+#ifdef USE_HCACHE
+  &ModuleStore,
+#endif
+  NULL,
+};
 
 /**
  * find_cfg - Find a config file
@@ -768,30 +814,6 @@ static int start_curses(void)
 }
 
 /**
- * init_locale - Initialise the Locale/NLS settings
- */
-static void init_locale(void)
-{
-  setlocale(LC_ALL, "");
-
-#ifdef ENABLE_NLS
-  const char *domdir = mutt_str_getenv("TEXTDOMAINDIR");
-  if (domdir)
-    bindtextdomain(PACKAGE, domdir);
-  else
-    bindtextdomain(PACKAGE, MUTTLOCALEDIR);
-  textdomain(PACKAGE);
-#endif
-#ifndef LOCALES_HACK
-  /* Do we have a locale definition? */
-  if (mutt_str_getenv("LC_ALL") || mutt_str_getenv("LANG") || mutt_str_getenv("LC_CTYPE"))
-  {
-    OptLocales = true;
-  }
-#endif
-}
-
-/**
  * get_user_info - Find the user's name, home and shell
  * @param cs Config Set
  * @retval true Success
@@ -1086,6 +1108,14 @@ int main(int argc, char *argv[], char *envp[])
   struct ConfigSet *cs = NULL;
   struct CommandLine *cli = command_line_new();
 
+  // -------------------------------------------------------------------------------
+
+  NeoMutt = neomutt_new();
+  if (!neomutt_init(NeoMutt, Modules))
+    goto main_curses;
+
+  cs = NeoMutt->sub->cs;
+
   MuttLogger = log_disp_terminal;
 
   /* sanity check against stupid administrators */
@@ -1095,31 +1125,30 @@ int main(int argc, char *argv[], char *envp[])
     goto main_exit; // TEST01: neomutt (as root, chgrp mail neomutt; chmod +s neomutt)
   }
 
-  init_locale();
+#ifndef LOCALES_HACK
+  /* Do we have a locale definition? */
+  if (mutt_str_getenv("LC_ALL") || mutt_str_getenv("LANG") || mutt_str_getenv("LC_CTYPE"))
+  {
+    OptLocales = true;
+  }
+#endif
+
   OptGui = true;
 
   cs = cs_new(500);
   if (!cs)
     goto main_curses;
 
-  NeoMutt = neomutt_new(cs);
+  NeoMutt = neomutt_new();
 
   NeoMutt->env = envlist_init(envp);
   mutt_str_replace(&NeoMutt->username, mutt_str_getenv("USER"));
   mutt_str_replace(&NeoMutt->home_dir, mutt_str_getenv("HOME"));
 
-  init_config(cs);
-
   cli_parse(argc, argv, cli);
 
   if (!show_help(&cli->help))
     goto main_ok;
-
-  // Change the current umask, and save the original one
-  NeoMutt->user_default_umask = umask(077);
-  subjrx_init();
-  attach_init();
-  alternates_init();
 
 #ifdef USE_DEBUG_NOTIFY
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_all_observer, NULL);
@@ -1139,8 +1168,6 @@ int main(int argc, char *argv[], char *envp[])
   mutt_log_prep();
   MuttLogger = log_disp_queue;
   log_translation();
-  mutt_debug(LL_DEBUG1, "user's umask %03o\n", NeoMutt->user_default_umask);
-  mutt_debug(LL_DEBUG3, "umask set to 077\n");
 
   /* Check for a batch send. */
   if (!isatty(STDIN_FILENO) || !ARRAY_EMPTY(&cli->info.queries) ||
@@ -1177,21 +1204,8 @@ int main(int argc, char *argv[], char *envp[])
     log_gui();
   }
 
-  mutt_grouplist_init();
-  alias_init();
-  commands_init();
-  hooks_init();
-  mutt_comp_init();
-  imap_init();
-  lua_init();
-  driver_tags_init();
-  km_init();
-
   menu_init();
   sb_init();
-#ifdef USE_NOTMUCH
-  nm_init();
-#endif
 
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, &cli->shared.log_level, &cli->shared.log_file,
@@ -1758,6 +1772,8 @@ int main(int argc, char *argv[], char *envp[])
     // TEST44: neomutt (change mailbox)
   }
 
+  // -------------------------------------------------------------------------------
+
 main_ok:
   rc = 0;
 main_curses:
@@ -1776,68 +1792,12 @@ main_exit:
   MuttLogger = log_disp_queue;
   buf_pool_release(&expanded_infile);
   buf_pool_release(&tempfile);
-  crypto_module_cleanup();
-  rootwin_cleanup();
-  buf_pool_cleanup();
-  if (NeoMutt)
-    envlist_free(&NeoMutt->env);
-  mutt_browser_cleanup();
-  external_cleanup();
-  menu_cleanup();
-  crypt_cleanup();
-  mutt_ch_cache_cleanup();
-  command_line_free(&cli);
 
-  source_stack_cleanup();
-
-  alias_cleanup();
-  sb_cleanup();
-
-  mutt_regexlist_free(&MailLists);
-  mutt_regexlist_free(&NoSpamList);
-  mutt_regexlist_free(&SubscribedLists);
-  mutt_regexlist_free(&UnMailLists);
-  mutt_regexlist_free(&UnSubscribedLists);
-
-  mutt_grouplist_cleanup();
-  driver_tags_cleanup();
-
-  /* Lists of strings */
-  mutt_list_free(&AlternativeOrderList);
-  mutt_list_free(&AutoViewList);
-  mutt_list_free(&HeaderOrderList);
-  mutt_list_free(&Ignore);
-  mutt_list_free(&MailToAllow);
-  mutt_list_free(&MimeLookupList);
-  mutt_list_free(&UnIgnore);
-  mutt_list_free(&UserHeader);
-
-  colors_cleanup();
-
-  FREE(&CurrentFolder);
-  FREE(&LastFolder);
-  FREE(&ShortHostname);
-
-  mutt_replacelist_free(&SpamList);
-
-  mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
-
-  mutt_hist_cleanup();
-  mutt_keys_cleanup();
-
-  mutt_regexlist_free(&NoSpamList);
-  if (NeoMutt)
-    commands_clear(&NeoMutt->commands);
-
-  lua_cleanup();
-  subjrx_cleanup();
-  attach_cleanup();
-  alternates_cleanup();
-  mutt_keys_cleanup();
-  mutt_prex_cleanup();
-  config_cache_cleanup();
+  neomutt_gui_cleanup(NeoMutt);
+  neomutt_cleanup(NeoMutt);
   neomutt_free(&NeoMutt);
-  cs_free(&cs);
+
+  buf_pool_cleanup();
   log_queue_flush(log_disp_terminal);
   mutt_log_stop();
   return rc;

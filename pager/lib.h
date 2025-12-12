@@ -34,6 +34,7 @@
  * | pager/do_pager.c     | @subpage pager_dopager      |
  * | pager/functions.c    | @subpage pager_functions    |
  * | pager/message.c      | @subpage pager_message      |
+ * | pager/module.c       | @subpage pager_module       |
  * | pager/pager.c        | @subpage pager_pager        |
  * | pager/pbar.c         | @subpage pager_pbar         |
  * | pager/ppanel.c       | @subpage pager_ppanel       |

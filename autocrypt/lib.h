@@ -89,6 +89,7 @@
  * | autocrypt/expando.c        | @subpage autocrypt_expando        |
  * | autocrypt/functions.c      | @subpage autocrypt_functions      |
  * | autocrypt/gpgme.c          | @subpage autocrypt_gpgme          |
+ * | autocrypt/module.c         | @subpage autocrypt_module         |
  * | autocrypt/schema.c         | @subpage autocrypt_schema         |
  */
 

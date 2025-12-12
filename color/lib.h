@@ -35,6 +35,7 @@
  * | color/debug.c       | @subpage color_debug       |
  * | color/dump.c        | @subpage color_dump        |
  * | color/merged.c      | @subpage color_merge       |
+ * | color/module.c      | @subpage color_module      |
  * | color/notify.c      | @subpage color_notify      |
  * | color/parse_ansi.c  | @subpage color_parse_ansi  |
  * | color/parse_color.c | @subpage color_parse_color |

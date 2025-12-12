@@ -346,6 +346,9 @@ void log_queue_empty(void)
  */
 void log_queue_flush(log_dispatcher_t disp)
 {
+  if (!disp)
+    return;
+
   struct LogLine *ll = NULL;
   STAILQ_FOREACH(ll, &LogQueue, entries)
   {
