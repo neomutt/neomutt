@@ -260,7 +260,7 @@ msgstr "unattachments : disposition invalide"
 msgid "Save"
 msgstr "Enregistrer"
 
-# TODO: This should likely be "passer à une commande," but I need to look into 
+# TODO: This should likely be "passer à une commande," but I need to look into
 # the context
 #: attach/dlg_attach.c:96
 #, fuzzy
