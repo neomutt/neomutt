@@ -101,8 +101,10 @@ static void test_parse_set(void)
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
   };
 
+  struct Buffer *line = buf_pool_get();
+  struct Buffer *token = buf_pool_get();
   struct Buffer *err = buf_pool_get();
-  char line[64];
+  char linestr[64];
 
   for (size_t v = 0; v < countof(vars); v++)
   {
@@ -113,43 +115,49 @@ static void test_parse_set(void)
       {
         buf_reset(err);
 
-        snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
+        snprintf(linestr, sizeof(linestr), tests[t], commands[c], vars[v]);
+        buf_strcpy(line, linestr);
         // enum CommandResult rc =
-        parse_rc_line(line, err);
+        parse_rc_line(line, token, err);
       }
     }
   }
 
+  buf_pool_release(&line);
+  buf_pool_release(&token);
   buf_pool_release(&err);
 }
 
 void test_parse_rc(void)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
+  struct Buffer *line = buf_pool_get();
+  struct Buffer *token = buf_pool_get();
 
   commands_register(&NeoMutt->commands, mutt_commands);
 
-  // enum CommandResult parse_rc_line(const char *line, struct Buffer *err);
+  // enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *token, struct Buffer *err);
   TEST_CASE("parse_rc_line");
-  rc = parse_rc_line(NULL, NULL);
+  rc = parse_rc_line(NULL, NULL, NULL);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+
+  TEST_CASE("parse_rc_line");
+  buf_strcpy(line, "; set");
+  rc = parse_rc_line(line, token, NULL);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+
+  TEST_CASE("parse_rc_line");
+  buf_strcpy(line, "# set");
+  rc = parse_rc_line(line, token, NULL);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+
+  TEST_CASE("parse_rc_line");
+  buf_strcpy(line, "unknown");
+  rc = parse_rc_line(line, token, NULL);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
-  TEST_CASE("parse_rc_line");
-  rc = parse_rc_line("; set", NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
-
-  TEST_CASE("parse_rc_line");
-  rc = parse_rc_line("# set", NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
-
-  TEST_CASE("parse_rc_line");
-  rc = parse_rc_line("unknown", NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
-
-  // enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token, struct Buffer *err);
-  TEST_CASE("parse_rc_buffer");
-  rc = parse_rc_buffer(NULL, NULL, NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+  buf_pool_release(&line);
+  buf_pool_release(&token);
 
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
   struct HashElem *he = cs_get_elem(NeoMutt->sub->cs, "from");

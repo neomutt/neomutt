@@ -27,7 +27,6 @@
 
 struct Buffer;
 
-enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token, struct Buffer *err);
-enum CommandResult parse_rc_line  (const char *line, struct Buffer *err);
+enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *token, struct Buffer *err);
 
 #endif /* MUTT_PARSE_RC_H */

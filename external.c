@@ -622,6 +622,7 @@ done:
 void mutt_enter_command(struct MuttWindow *win)
 {
   struct Buffer *buf = buf_pool_get();
+  struct Buffer *token = buf_pool_get();
   struct Buffer *err = buf_pool_get();
 
   window_redraw(NULL);
@@ -635,7 +636,7 @@ void mutt_enter_command(struct MuttWindow *win)
     goto done;
   }
 
-  enum CommandResult rc = parse_rc_line(buf_string(buf), err);
+  enum CommandResult rc = parse_rc_line(buf, token, err);
   if (!buf_is_empty(err))
   {
     if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
@@ -654,6 +655,7 @@ void mutt_enter_command(struct MuttWindow *win)
 
 done:
   buf_pool_release(&buf);
+  buf_pool_release(&token);
   buf_pool_release(&err);
 }
 

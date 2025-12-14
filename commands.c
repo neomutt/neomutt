@@ -179,7 +179,15 @@ enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer 
 {
   mutt_list_insert_head(&MuttrcStack, mutt_str_dup(NONULL(cwd)));
 
-  enum CommandResult ret = parse_rc_line(line, err);
+  struct Buffer *line_buffer = buf_pool_get();
+  struct Buffer *token = buf_pool_get();
+
+  buf_strcpy(line_buffer, line);
+
+  enum CommandResult ret = parse_rc_line(line_buffer, token, err);
+
+  buf_pool_release(&line_buffer);
+  buf_pool_release(&token);
 
   struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
   STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
@@ -292,7 +300,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     buf_strcpy(linebuf, currentline);
 
     buf_reset(err);
-    line_rc = parse_rc_buffer(linebuf, token, err);
+    line_rc = parse_rc_line(linebuf, token, err);
     if (line_rc == MUTT_CMD_ERROR)
     {
       mutt_error("%s:%d: %s", rcfile, lineno, buf_string(err));
@@ -565,7 +573,9 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
   /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
   if ((res && (data == 0)) || (!res && (data == 1)))
   {
-    enum CommandResult rc = parse_rc_line(buf->data, err);
+    struct Buffer *token = buf_pool_get();
+    enum CommandResult rc = parse_rc_line(buf, token, err);
+    buf_pool_release(&token);
     if (rc == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error: %s"), buf_string(err));

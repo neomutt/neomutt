@@ -303,11 +303,14 @@ static int lua_cb_global_get(lua_State *l)
 static int lua_cb_global_enter(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, "enter\n");
+  struct Buffer *line = buf_pool_get();
+  struct Buffer *token = buf_pool_get();
   struct Buffer *err = buf_pool_get();
-  char *buf = mutt_str_dup(lua_tostring(l, -1));
   int rc = 0;
 
-  if (parse_rc_line(buf, err))
+  buf_strcpy(line, lua_tostring(l, -1));
+
+  if (parse_rc_line(line, token, err))
   {
     luaL_error(l, "NeoMutt error: %s", buf_string(err));
     rc = -1;
@@ -320,7 +323,8 @@ static int lua_cb_global_enter(lua_State *l)
       rc++;
   }
 
-  FREE(&buf);
+  buf_pool_release(&line);
+  buf_pool_release(&token);
   buf_pool_release(&err);
 
   return rc;

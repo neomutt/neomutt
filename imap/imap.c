@@ -1263,9 +1263,14 @@ int imap_subscribe(const char *path, bool subscribe)
     char mbox[1024] = { 0 };
     size_t len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
     imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
+    struct Buffer *line = buf_pool_get();
+    struct Buffer *token = buf_pool_get();
     struct Buffer *err = buf_pool_get();
-    if (parse_rc_line(mbox, err))
+    buf_strcpy(line, mbox);
+    if (parse_rc_line(line, token, err))
       mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", buf_string(err));
+    buf_pool_release(&line);
+    buf_pool_release(&token);
     buf_pool_release(&err);
   }
 
