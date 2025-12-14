@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page expando_serial Dump the details of an Expando Tree
+ *
+ * Dump the details of an Expando Tree
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
@@ -27,7 +33,12 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "debug/lib.h"
-#include "expando/lib.h"
+#include "serial.h"
+#include "expando.h"
+#include "node.h"
+#include "node_conddate.h"
+#include "node_condition.h"
+#include "node_padding.h"
 
 static void dump_node(const struct ExpandoNode *node, struct Buffer *buf);
 
@@ -35,7 +46,7 @@ static void dump_did_uid(const struct ExpandoNode *node, struct Buffer *buf)
 {
   const char *did = name_expando_domain(node->did);
   const char *uid = name_expando_uid(node->did, node->uid);
-  buf_add_printf(buf, "(%s,%s)", did + 3, uid + 7);
+  buf_add_printf(buf, "(%s,%s)", did, uid);
 }
 
 static void dump_node_condition(const struct ExpandoNode *node, struct Buffer *buf)

@@ -299,7 +299,6 @@ EXPANDO_OBJS	= test/expando/colors_render.o \
 		  test/expando/parse.o \
 		  test/expando/parse_short_name.o \
 		  test/expando/percent_sign_text.o \
-		  test/expando/serial.o \
 		  test/expando/simple_expando.o \
 		  test/expando/simple_expando_render.o \
 		  test/expando/simple_text.o \

@@ -40,6 +40,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "debug/lib.h"
 #include "attach/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
@@ -207,7 +208,20 @@ struct ExpandoNode *parse_index_date(const char *str, struct ExpandoFormat *fmt,
     return node_conddate_parse(str, did, uid, parsed_until, err);
   }
 
-  return node_expando_parse_enclosure(str, did, uid, '}', fmt, parsed_until, err);
+  struct ExpandoNode *node = node_expando_parse_enclosure(str, did, uid, '}',
+                                                          fmt, parsed_until, err);
+  if (!node)
+    return NULL;
+
+  const char *pc = strchr(NONULL(node->text), '%');
+  if (!pc)
+  {
+    snprintf(err->message, sizeof(err->message), _("Unknown expando: %%{%s}"), node->text);
+    err->position = str;
+    node_free(&node);
+  }
+
+  return node;
 }
 
 /**
@@ -243,24 +257,27 @@ struct ExpandoNode *parse_tags_transformed(const char *str, struct ExpandoFormat
                                            const char **parsed_until,
                                            struct ExpandoParseError *err)
 {
+  // Skip over the name
+  str = *parsed_until + 1;
+
   // Tag expando %G must use an suffix from [A-Za-z0-9], e.g. %Ga, %GL
-  if (!mutt_isalnum(str[1]))
+  if (!mutt_isalnum(str[0]))
     return NULL;
 
-  // Let the basic expando parser do the work
-  flags |= EP_NO_CUSTOM_PARSE;
-  struct ExpandoNode *node = parse_short_name(str, IndexFormatDef, flags, fmt,
-                                              parsed_until, err);
+  struct ExpandoNode *node = node_expando_new(fmt, did, uid);
 
-  // but adjust the node to take one more character
-  node->text = mutt_strn_dup((*parsed_until) - 1, 2);
-  (*parsed_until)++;
+  char tag[4] = { 0 };
+  tag[0] = 'G';
+  tag[1] = str[0];
+  node->text = mutt_str_dup(tag);
 
   if (flags & EP_CONDITIONAL)
   {
     node->type = ENT_CONDBOOL;
     node->render = node_condbool_render;
   }
+
+  (*parsed_until) += 2;
 
   return node;
 }
@@ -275,11 +292,7 @@ struct ExpandoNode *parse_subject(const char *str, struct ExpandoFormat *fmt,
                                   int did, int uid, ExpandoParserFlags flags,
                                   const char **parsed_until, struct ExpandoParseError *err)
 {
-  // Let the basic expando parser do the work
-  flags |= EP_NO_CUSTOM_PARSE;
-  struct ExpandoNode *node_subj = parse_short_name(str, IndexFormatDef, flags,
-                                                   NULL, parsed_until, err);
-
+  struct ExpandoNode *node_subj = node_expando_new(NULL, did, uid);
   struct ExpandoNode *node_tree = node_expando_new(NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
   struct ExpandoNode *node_cont = node_container_new();
 
@@ -288,6 +301,9 @@ struct ExpandoNode *parse_subject(const char *str, struct ExpandoFormat *fmt,
 
   node_add_child(node_cont, node_tree);
   node_add_child(node_cont, node_subj);
+
+  if (*parsed_until[0] != '}')
+    (*parsed_until)++;
 
   return node_cont;
 }

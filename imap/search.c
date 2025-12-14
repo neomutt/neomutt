@@ -241,7 +241,7 @@ bool imap_search(struct Mailbox *m, const struct PatternList *pat)
   buf_addstr(buf, "UID SEARCH ");
 
   struct ImapAccountData *adata = imap_adata_get(m);
-  if(!adata)
+  if (!adata)
     return false;
 
   const bool ok = compile_search(adata, SLIST_FIRST(pat), buf) &&

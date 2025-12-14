@@ -450,7 +450,8 @@ LIBEXPANDOOBJS=	expando/config_type.o expando/expando.o expando/filter.o \
 		expando/node_condbool.o expando/node_conddate.o \
 		expando/node_condition.o expando/node_container.o \
 		expando/node_expando.o expando/node_padding.o \
-		expando/node_text.o expando/parse.o expando/render.o
+		expando/node_text.o expando/parse.o expando/render.o \
+		expando/serial.o
 CLEANFILES+=	$(LIBEXPANDO) $(LIBEXPANDOOBJS)
 ALLOBJS+=	$(LIBEXPANDOOBJS)
 

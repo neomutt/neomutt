@@ -1254,7 +1254,7 @@ static void envelope_initials(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_list_address - Index: Email list - Implements ::get_string_t - @ingroup expando_get_string_api
+ * envelope_list_address - Index: Mailing List - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_list_address(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -1640,7 +1640,7 @@ static void envelope_x_label(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * mailbox_mailbox_name - Index: Filename - Implements ::get_string_t - @ingroup expando_get_string_api
+ * mailbox_mailbox_name - Index: Mailbox Name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void mailbox_mailbox_name(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)
