@@ -209,12 +209,12 @@ static int execute_commands(struct StringArray *sa)
 
     if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
     {
-      buf_pool_release(&line);
-      buf_pool_release(&token);
-      buf_pool_release(&err);
-      return -1;
+      rc = -1;
+      goto cleanup;
     }
   }
+
+cleanup:
   buf_pool_release(&line);
   buf_pool_release(&token);
   buf_pool_release(&err);
