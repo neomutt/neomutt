@@ -275,12 +275,14 @@ static bool string_is_address(const char *str, const char *user, const char *dom
  */
 struct AddressList *alias_lookup(const char *name)
 {
-  struct Alias **a = NULL;
+  struct Alias **ap = NULL;
 
-  ARRAY_FOREACH(a, &Aliases)
+  ARRAY_FOREACH(ap, &Aliases)
   {
-    if (mutt_istr_equal(name, (*a)->name))
-      return &(*a)->addr;
+    struct Alias *a = *ap;
+
+    if (mutt_istr_equal(name, a->name))
+      return &a->addr;
   }
   return NULL;
 }
@@ -695,10 +697,10 @@ void aliaslist_clear(struct AliasArray *aa)
   if (!aa)
     return;
 
-  struct Alias **np = NULL;
-  ARRAY_FOREACH(np, aa)
+  struct Alias **ap = NULL;
+  ARRAY_FOREACH(ap, aa)
   {
-    alias_free(np);
+    alias_free(ap);
   }
   ARRAY_FREE(aa);
 }
