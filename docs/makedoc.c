@@ -972,6 +972,19 @@ static int handle_docline(enum OutputFormats format, char *l, FILE *fp_out, int 
       docstat = print_it(format, SP_DD, NULL, fp_out, docstat);
       s += 3;
     }
+    else if ((format == F_SGML) && (strncmp(s, "http", 4) == 0))
+    {
+      docstat = commit_buf(format, buf, &d, fp_out, docstat);
+
+      fputs("<ulink url=\"", fp_out);
+      sgml_id_fputs(s, fp_out);
+      fputs("\">", fp_out);
+      sgml_fputs(s, fp_out);
+      fputs("</ulink>", fp_out);
+
+      while (*s && !isspace((unsigned char) *s))
+        s++;
+    }
     else if (*s == '$')
     {
       bool output_dollar = false;
@@ -1238,8 +1251,8 @@ static void print_confline(enum OutputFormats format, const char *varname,
     case F_CONF:
     {
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == D_STRING_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
-          (type == DT_PATH) || (type == D_STRING_COMMAND))
+          (type == D_STRING_MAILBOX) || (type == DT_MBTABLE) ||
+          (type == DT_SLIST) || (type == DT_PATH) || (type == D_STRING_COMMAND))
       {
         fprintf(fp_out, "\n# set %s=\"", varname);
         conf_print_strval(val, fp_out);
@@ -1253,8 +1266,8 @@ static void print_confline(enum OutputFormats format, const char *varname,
       fprintf(fp_out, "\n#\n# Name: %s", varname);
       fprintf(fp_out, "\n# Type: %s", type2human(type));
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == D_STRING_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
-          (type == DT_PATH) || (type == D_STRING_COMMAND))
+          (type == D_STRING_MAILBOX) || (type == DT_MBTABLE) ||
+          (type == DT_SLIST) || (type == DT_PATH) || (type == D_STRING_COMMAND))
       {
         fputs("\n# Default: \"", fp_out);
         conf_print_strval(val, fp_out);
@@ -1276,8 +1289,8 @@ static void print_confline(enum OutputFormats format, const char *varname,
       fputs(".nf\n", fp_out);
       fprintf(fp_out, "Type: %s\n", type2human(type));
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == D_STRING_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
-          (type == DT_PATH) || (type == D_STRING_COMMAND))
+          (type == D_STRING_MAILBOX) || (type == DT_MBTABLE) ||
+          (type == DT_SLIST) || (type == DT_PATH) || (type == D_STRING_COMMAND))
       {
         fputs("Default: \"", fp_out);
         man_print_strval(val, fp_out);
@@ -1305,8 +1318,8 @@ static void print_confline(enum OutputFormats format, const char *varname,
       fprintf(fp_out, "</title>\n<literallayout>Type: %s", type2human(type));
 
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
-          (type == D_STRING_MAILBOX) || (type == DT_MBTABLE) || (type == DT_SLIST) ||
-          (type == DT_PATH) || (type == D_STRING_COMMAND))
+          (type == D_STRING_MAILBOX) || (type == DT_MBTABLE) ||
+          (type == DT_SLIST) || (type == DT_PATH) || (type == D_STRING_COMMAND))
       {
         if (val && (*val != '\0'))
         {
