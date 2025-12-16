@@ -2585,11 +2585,13 @@
 ** .dt %m .dd Current month number (GMT)
 ** .dt %M .dd Current minute of the hour (GMT)
 ** .dt %p .dd Pid of the running mutt process
-** .dt %r .dd 3 bytes of pseudo-random data encoded in Base64
+** .dt %r .dd 3 bytes of pseudo-random data encoded in Base64Url
 ** .dt %S .dd Current second of the minute (GMT)
 ** .dt %x .dd 1 byte of pseudo-random data hex encoded (example: '1b')
 ** .dt %Y .dd Current year using 4 digits (GMT)
-** .dt %z .dd 4 byte timestamp + 8 bytes of pseudo-random data encoded in Base64
+** .dt %z .dd 4 byte timestamp + 8 bytes of pseudo-random data encoded in Base64Url
+** .pp
+** See also: Base64Url: https://datatracker.ietf.org/doc/html/rfc4648#section-5
 */
 
 { "menu_context", DT_NUMBER, 0 },
