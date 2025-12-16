@@ -43,6 +43,7 @@
  * | expando/node_text.c               | @subpage expando_node_text      |
  * | expando/parse.c                   | @subpage expando_parse          |
  * | expando/render.c                  | @subpage expando_render         |
+ * | expando/serial.c                  | @subpage expando_serial         |
  */
 
 #ifndef MUTT_EXPANDO_LIB_H
@@ -65,6 +66,7 @@
 #include "node_text.h"
 #include "parse.h"
 #include "render.h"
+#include "serial.h"
 #include "uid.h"
 // IWYU pragma: end_keep
 

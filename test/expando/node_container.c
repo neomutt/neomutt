@@ -217,7 +217,7 @@ void test_expando_node_container(void)
 
     exp.node = cont1;
     expando_serialise(&exp, buf);
-    TEST_CHECK_STR_EQ(buf_string(buf), "<EXP:(EMAIL,ATTACHMENT_COUNT)>");
+    TEST_CHECK_STR_EQ(buf_string(buf), "<EXP:(ED_EMAIL,ED_EMA_ATTACHMENT_COUNT)>");
     node_free(&cont1);
 
     buf_pool_release(&buf);
