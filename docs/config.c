@@ -1047,9 +1047,9 @@
 { "crypt_use_pka", DT_BOOL, false },
 /*
 ** .pp
-** Controls whether NeoMutt uses PKA
-** (see http://www.g10code.de/docs/pka-intro.de.pdf) during signature
-** verification (only supported by the GPGME backend).
+** Controls whether NeoMutt uses PKA during signature verification
+** (only supported by the GPGME backend).
+** See: http://www.g10code.de/docs/pka-intro.de.pdf
 */
 #endif
 
@@ -2645,6 +2645,7 @@
 ** .dt %x .dd 1 byte of pseudo-random data hex encoded (example: '1b')
 ** .dt %Y .dd Current year using 4 digits (GMT)
 ** .dt %z .dd 4 byte timestamp + 8 bytes of pseudo-random data encoded in Base64Url
+** .de
 ** .pp
 ** See also: Base64Url: https://datatracker.ietf.org/doc/html/rfc4648#section-5
 */
@@ -3855,8 +3856,7 @@
 ** string substituted for "%s" automatically according to shell quoting
 ** rules, so you should avoid adding your own.  If no "%s" is found in
 ** the string, NeoMutt will append the user's query to the end of the string.
-** See "$query" (https://neomutt.org/guide/advancedusage.html#query) for more
-** information.
+** See "$query": https://neomutt.org/guide/advancedusage.html#query
 */
 
 { "query_format", DT_STRING, "%3i %t %-25N %-25E | %C%> %Y" },
