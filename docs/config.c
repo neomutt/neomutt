@@ -3095,9 +3095,6 @@
 ** to a positive number at most that many lines of the previous quote
 ** are displayed. If the previous quote is shorter the whole quote is
 ** displayed.
-** .pp
-** The (now deprecated) \fIskip_quoted_offset\fP is an alias for this
-** variable, and should no longer be used.
 */
 
 { "pager_stop", DT_BOOL, false },
@@ -3259,8 +3256,6 @@
 ** .pp
 ** It will also be used for signing unless $$pgp_sign_as is set.
 ** .pp
-** The (now deprecated) \fIpgp_self_encrypt_as\fP is an alias for this
-** variable, and should no longer be used.
 ** (PGP only)
 */
 
@@ -3746,16 +3741,7 @@
 ** .pp
 ** When \fIset\fP, postponed messages that are marked for encryption will be
 ** self-encrypted.  NeoMutt will first try to encrypt using the value specified
-** in $$pgp_default_key or $$smime_default_key.  If those are not
-** set, it will try the deprecated $$postpone_encrypt_as.
-** (Crypto only)
-*/
-
-{ "postpone_encrypt_as", DT_STRING, 0 },
-/*
-** .pp
-** This is a deprecated fall-back variable for $$postpone_encrypt.
-** Please use $$pgp_default_key or $$smime_default_key.
+** in $$pgp_default_key or $$smime_default_key.
 ** (Crypto only)
 */
 
@@ -4763,8 +4749,6 @@
 ** .pp
 ** It will also be used for signing unless $$smime_sign_as is set.
 ** .pp
-** The (now deprecated) \fIsmime_self_encrypt_as\fP is an alias for this
-** variable, and should no longer be used.
 ** (S/MIME only)
 */
 

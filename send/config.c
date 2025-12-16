@@ -421,7 +421,7 @@ static struct ConfigDef SendVars[] = {
   { "pgp_replyinline",          DT_SYNONYM, IP "pgp_reply_inline",           IP "2021-03-21" },
   { "pgp_replysign",            DT_SYNONYM, IP "crypt_reply_sign",           IP "2021-03-21" },
   { "pgp_replysignencrypted",   DT_SYNONYM, IP "crypt_reply_sign_encrypted", IP "2021-03-21" },
-  { "post_indent_str",          DT_SYNONYM, IP "post_indent_string",         IP "2021-03-21" },
+  { "post_indent_str",          DT_SYNONYM, IP "attribution_trailer",        IP "2021-03-21" },
   { "post_indent_string",       DT_SYNONYM, IP "attribution_trailer",        IP "2023-02-20" },
   { "reverse_realname",         DT_SYNONYM, IP "reverse_real_name",          IP "2021-03-21" },
   { "use_8bitmime",             DT_SYNONYM, IP "use_8bit_mime",              IP "2021-03-21" },
