@@ -1344,7 +1344,10 @@ retry:
   else if (BIO_should_retry(SSL_get_rbio(data->ssl)))
   {
     // Temporary failure, e.g. signal received
-    goto retry;
+    if (raw_socket_poll(conn, 0) >= 0)
+    {
+      goto retry;
+    }
   }
 
   data->isopen = 0;
