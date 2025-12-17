@@ -1,3 +1,8 @@
 query-filters:
   - exclude:
       id: cpp/fixme-comment
+
+# Include custom queries for Buffer pool sanitizers
+packs:
+  - codeql/cpp-queries
+  - .github/codeql-custom-queries
