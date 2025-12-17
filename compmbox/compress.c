@@ -57,6 +57,115 @@
 struct Email;
 
 /**
+ * parse_hook_compress - Parse compress hooks (append, close, open)
+ * @param buf  Buffer for temporary storage
+ * @param s    Buffer containing the command
+ * @param data Hook type, e.g. #MUTT_APPEND_HOOK
+ * @param err  Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * Implements Command::parse() - @ingroup command_parse
+ */
+static enum CommandResult parse_hook_compress(struct Buffer *buf, struct Buffer *s,
+                                             intptr_t data, struct Buffer *err)
+{
+  struct Hook *hook = NULL;
+  enum CommandResult rc = MUTT_CMD_ERROR;
+  bool pat_not = false;
+  regex_t *rx = NULL;
+
+  struct Buffer *cmd = buf_pool_get();
+  struct Buffer *pattern = buf_pool_get();
+
+  if (*s->dptr == '!')
+  {
+    s->dptr++;
+    SKIPWS(s->dptr);
+    pat_not = true;
+  }
+
+  parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
+
+  if (!MoreArgs(s))
+  {
+    buf_printf(err, _("%s: too few arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  parse_extract_token(cmd, s, TOKEN_NO_FLAGS);
+
+  if (buf_is_empty(cmd))
+  {
+    buf_printf(err, _("%s: too few arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  if (MoreArgs(s))
+  {
+    buf_printf(err, _("%s: too many arguments"), buf->data);
+    rc = MUTT_CMD_WARNING;
+    goto cleanup;
+  }
+
+  if (mutt_comp_valid_command(buf_string(cmd)) == 0)
+  {
+    buf_strcpy(err, _("badly formatted command string"));
+    goto cleanup;
+  }
+
+  /* check to make sure that a matching hook doesn't already exist */
+  TAILQ_FOREACH(hook, &Hooks, entries)
+  {
+    if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
+        mutt_str_equal(buf_string(pattern), hook->regex.pattern))
+    {
+      /* other hooks only allow one command per pattern, so update the
+       * entry with the new command.  this currently does not change the
+       * order of execution of the hooks, which i think is desirable since
+       * a common action to perform is to change the default (.) entry
+       * based upon some other information. */
+      FREE(&hook->command);
+      hook->command = buf_strdup(cmd);
+      FREE(&hook->source_file);
+      hook->source_file = mutt_get_sourced_cwd();
+
+      rc = MUTT_CMD_SUCCESS;
+      goto cleanup;
+    }
+  }
+
+  /* Hooks not allowing full patterns: Check syntax of regex */
+  rx = MUTT_MEM_CALLOC(1, regex_t);
+  int rc2 = REG_COMP(rx, buf_string(pattern), 0);
+  if (rc2 != 0)
+  {
+    regerror(rc2, rx, err->data, err->dsize);
+    FREE(&rx);
+    goto cleanup;
+  }
+
+  hook = hook_new();
+  hook->type = data;
+  hook->command = buf_strdup(cmd);
+  hook->source_file = mutt_get_sourced_cwd();
+  hook->pattern = NULL;
+  hook->regex.pattern = buf_strdup(pattern);
+  hook->regex.regex = rx;
+  hook->regex.pat_not = pat_not;
+  hook->expando = NULL;
+
+  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  rc = MUTT_CMD_SUCCESS;
+
+cleanup:
+  buf_pool_release(&cmd);
+  buf_pool_release(&pattern);
+  return rc;
+}
+
+/**
  * CompCommands - Compression Commands
  */
 static const struct Command CompCommands[] = {
