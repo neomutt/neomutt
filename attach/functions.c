@@ -59,7 +59,7 @@ static const char *Function_not_permitted_in_attach_message_mode = N_(
 /**
  * OpAttachment - Functions for the Attachment Menu
  */
-const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
+static const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
   { "bounce-message",                OP_BOUNCE_MESSAGE },
   { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
   { "collapse-parts",                OP_ATTACHMENT_COLLAPSE },
@@ -95,7 +95,7 @@ const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
 /**
  * AttachmentDefaultBindings - Key bindings for the Attachment Menu
  */
-const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment */
+static const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment */
   { OP_ATTACHMENT_COLLAPSE,                "v" },
   { OP_ATTACHMENT_DELETE,                  "d" },
   { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
@@ -122,6 +122,21 @@ const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * attach_init_keys - Initialise the Attach Keybindings - Implements ::init_keys_api
+ */
+void attach_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpAttachment);
+  md = km_register_menu(MENU_ATTACHMENT, "attach");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, AttachmentDefaultBindings);
+}
 
 /**
  * attach_collapse - Close the tree of the current attachment

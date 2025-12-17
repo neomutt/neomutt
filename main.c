@@ -139,6 +139,8 @@
 #include "cli/lib.h"
 #include "color/lib.h"
 #include "compmbox/lib.h"
+#include "compose/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "index/lib.h"
@@ -148,6 +150,7 @@
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
 #include "notmuch/lib.h"
+#include "pager/lib.h"
 #include "parse/lib.h"
 #include "pop/lib.h"
 #include "postpone/lib.h"
@@ -179,6 +182,7 @@
 #ifndef DOMAIN
 #include "conn/lib.h"
 #endif
+#include "debug/lib.h"
 
 bool StartupComplete = false; ///< When the config has been read
 
@@ -736,6 +740,29 @@ static void localise_config(struct ConfigSet *cs)
 #endif
 
 /**
+ * init_keys - Initialise the Keybindings
+ */
+static void init_keys(void)
+{
+  km_init(); /* must come before mutt_init */
+
+  struct SubMenu *sm_generic = generic_init_keys();
+
+  alias_init_keys(sm_generic);
+  attach_init_keys(sm_generic);
+#ifdef USE_AUTOCRYPT
+  autocrypt_init_keys(sm_generic);
+#endif
+  browser_init_keys(sm_generic);
+  compose_init_keys(sm_generic);
+  editor_init_keys(sm_generic);
+  index_init_keys(sm_generic);
+  pager_init_keys(sm_generic);
+  pgp_init_keys(sm_generic);
+  postponed_init_keys(sm_generic);
+}
+
+/**
  * start_curses - Start the Curses UI
  * @retval 0 Success
  * @retval 1 Failure
@@ -759,7 +786,7 @@ static int start_curses(void)
   nonl();
   typeahead(-1); /* simulate smooth scrolling */
   meta(stdscr, true);
-  init_extended_keys();
+  ext_keys_init();
   /* Now that curses is set up, we drop back to normal screen mode.
    * This simplifies displaying error messages to the user.
    * The first call to refresh() will swap us back to curses screen mode. */
@@ -1120,6 +1147,7 @@ int main(int argc, char *argv[], char *envp[])
   subjrx_init();
   attach_init();
   alternates_init();
+  init_keys();
 
 #ifdef USE_DEBUG_NOTIFY
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_all_observer, NULL);
@@ -1185,7 +1213,6 @@ int main(int argc, char *argv[], char *envp[])
   imap_init();
   lua_init();
   driver_tags_init();
-  km_init();
 
   menu_init();
   sb_init();
@@ -1216,7 +1243,7 @@ int main(int argc, char *argv[], char *envp[])
   }
 #endif
 
-  mutt_init_abort_key();
+  km_set_abort_key();
 
   init_nntp(&cli->tui.nntp_server, cs);
 
@@ -1823,7 +1850,6 @@ main_exit:
   mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
 
   mutt_hist_cleanup();
-  mutt_keys_cleanup();
 
   mutt_regexlist_free(&NoSpamList);
   if (NeoMutt)
@@ -1833,7 +1859,7 @@ main_exit:
   subjrx_cleanup();
   attach_cleanup();
   alternates_cleanup();
-  mutt_keys_cleanup();
+  km_cleanup();
   mutt_prex_cleanup();
   config_cache_cleanup();
   neomutt_free(&NeoMutt);

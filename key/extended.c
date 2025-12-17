@@ -31,7 +31,8 @@
 #include <strings.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
+#include "extended.h"
+#include "keymap.h"
 
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style
@@ -82,7 +83,7 @@ static const struct Extkey ExtKeys[] = {
 };
 
 /**
- * find_ext_name - Find the curses name for a key
+ * ext_key_find - Find the curses name for a key
  * @param key Key name
  * @retval ptr Curses name
  *
@@ -90,18 +91,18 @@ static const struct Extkey ExtKeys[] = {
  *
  * @note This returns a static string.
  */
-static const char *find_ext_name(const char *key)
+const char *ext_key_find(const char *key)
 {
-  for (int j = 0; ExtKeys[j].name; j++)
+  for (int i = 0; ExtKeys[i].name; i++)
   {
-    if (strcasecmp(key, ExtKeys[j].name) == 0)
-      return ExtKeys[j].sym;
+    if (strcasecmp(key, ExtKeys[i].name) == 0)
+      return ExtKeys[i].sym;
   }
   return 0;
 }
 
 /**
- * init_extended_keys - Initialise map of ncurses extended keys
+ * ext_keys_init - Initialise map of ncurses extended keys
  *
  * Determine the keycodes for ncurses extended keys and fill in the KeyNames array.
  *
@@ -110,15 +111,15 @@ static const char *find_ext_name(const char *key)
  * prior to start_curses().  This means that the default keybindings can't
  * include any of the extended keys because they won't be defined until later.
  */
-void init_extended_keys(void)
+void ext_keys_init(void)
 {
   use_extended_names(true);
 
-  for (int j = 0; KeyNames[j].name; j++)
+  for (int i = 0; KeyNames[i].name; i++)
   {
-    if (KeyNames[j].value == -1)
+    if (KeyNames[i].value == -1)
     {
-      const char *keyname = find_ext_name(KeyNames[j].name);
+      const char *keyname = ext_key_find(KeyNames[i].name);
 
       if (keyname)
       {
@@ -127,7 +128,7 @@ void init_extended_keys(void)
         {
           int code = key_defined(s);
           if (code > 0)
-            KeyNames[j].value = code;
+            KeyNames[i].value = code;
         }
       }
     }

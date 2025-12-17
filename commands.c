@@ -55,7 +55,6 @@
 #include "color/lib.h"
 #include "imap/lib.h"
 #include "key/lib.h"
-#include "menu/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
 #include "store/lib.h"
@@ -106,17 +105,9 @@ enum GroupState
  */
 static bool is_function(const char *name)
 {
-  for (size_t i = 0; MenuNames[i].name; i++)
-  {
-    const struct MenuFuncOp *fns = km_get_table(MenuNames[i].value);
-    if (!fns)
-      continue;
+  int op = km_get_op(name);
 
-    for (int j = 0; fns[j].name; j++)
-      if (mutt_str_equal(name, fns[j].name))
-        return true;
-  }
-  return false;
+  return (op != OP_NULL);
 }
 
 /**

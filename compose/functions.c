@@ -84,7 +84,7 @@
 /**
  * OpCompose - Functions for the Compose Menu
  */
-const struct MenuFuncOp OpCompose[] = { /* map: compose */
+static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "attach-file",                   OP_ATTACHMENT_ATTACH_FILE },
   { "attach-key",                    OP_ATTACHMENT_ATTACH_KEY },
   { "attach-message",                OP_ATTACHMENT_ATTACH_MESSAGE },
@@ -152,7 +152,7 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
 /**
  * ComposeDefaultBindings - Key bindings for the Compose Menu
  */
-const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
+static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ATTACHMENT_ATTACH_FILE,             "a" },
   { OP_ATTACHMENT_ATTACH_KEY,              "\033k" },          // <Alt-k>
   { OP_ATTACHMENT_ATTACH_MESSAGE,          "A" },
@@ -211,6 +211,21 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * compose_init_keys - Initialise the Compose Keybindings - Implements ::init_keys_api
+ */
+void compose_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpCompose);
+  md = km_register_menu(MENU_COMPOSE, "compose");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, ComposeDefaultBindings);
+}
 
 /**
  * check_count - Check if there are any attachments

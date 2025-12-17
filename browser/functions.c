@@ -69,7 +69,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op);
 /**
  * OpBrowser - Functions for the file Browser Menu
  */
-const struct MenuFuncOp OpBrowser[] = { /* map: browser */
+static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "catchup",                       OP_CATCHUP },
   { "change-dir",                    OP_CHANGE_DIRECTORY },
   { "check-new",                     OP_CHECK_NEW },
@@ -103,7 +103,7 @@ const struct MenuFuncOp OpBrowser[] = { /* map: browser */
 /**
  * BrowserDefaultBindings - Key bindings for the file Browser Menu
  */
-const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
+static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { OP_BROWSER_GOTO_FOLDER,                "=" },
   { OP_BROWSER_NEW_FILE,                   "N" },
   { OP_BROWSER_SUBSCRIBE,                  "s" },
@@ -125,6 +125,21 @@ const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * browser_init_keys - Initialise the Browser Keybindings - Implements ::init_keys_api
+ */
+void browser_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpBrowser);
+  md = km_register_menu(MENU_BROWSER, "browser");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, BrowserDefaultBindings);
+}
 
 /**
  * destroy_state - Free the BrowserState

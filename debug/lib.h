@@ -114,7 +114,8 @@ void        dump_graphviz_email       (struct Email *e, const char *title);
 void        dump_graphviz_expando_node(struct ExpandoNode *node);
 
 // Keymap
-void        dump_keybindings        (void);
+void dump_menu_binds(bool brief);
+void dump_menu_funcs(bool brief);
 
 // Logging
 extern bool DebugLogColor;
