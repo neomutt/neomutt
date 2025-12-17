@@ -1,0 +1,6 @@
+name: neomutt/buffer-pool-sanitizers
+version: 1.0.0
+library: true
+dependencies:
+  codeql/cpp-all: "*"
+extractor: cpp
