@@ -1183,7 +1183,7 @@ int main(int argc, char *argv[], char *envp[])
   hooks_init();
   mutt_comp_init();
   imap_init();
-  lua_init();
+  NeoMutt->lua_module = lua_init();
   driver_tags_init();
   km_init();
 
@@ -1827,9 +1827,11 @@ main_exit:
 
   mutt_regexlist_free(&NoSpamList);
   if (NeoMutt)
+  {
     commands_clear(&NeoMutt->commands);
+    lua_cleanup(&NeoMutt->lua_module);
+  }
 
-  lua_cleanup();
   subjrx_cleanup();
   attach_cleanup();
   alternates_cleanup();

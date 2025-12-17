@@ -26,31 +26,21 @@
  * Lua Commands
  */
 
-#ifndef LUA_COMPAT_ALL
-#define LUA_COMPAT_ALL
-#endif
-#ifndef LUA_COMPAT_5_1
-#define LUA_COMPAT_5_1
-#endif
-
 #include "config.h"
 #include <lauxlib.h>
 #include <lua.h>
-#include <lualib.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
+#include "console.h"
+#include "logging.h"
+#include "module.h"
 #include "muttlib.h"
-#include "version.h"
-
-extern lua_State *LuaState;
-
-bool lua_init_state(lua_State **l);
 
 /**
  * parse_lua - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
@@ -58,20 +48,88 @@ bool lua_init_state(lua_State **l);
 static enum CommandResult parse_lua(struct Buffer *buf, struct Buffer *s,
                                     intptr_t data, struct Buffer *err)
 {
-  lua_init_state(&LuaState);
-  mutt_debug(LL_DEBUG2, "%s\n", buf->data);
+  lua_State *l = lua_init_state();
+  if (!l)
+    return MUTT_CMD_ERROR;
 
-  if (luaL_dostring(LuaState, s->dptr))
+  lua_debug(LL_DEBUG2, "%s\n", buf->data);
+
+  if (luaL_dostring(l, s->dptr) != LUA_OK)
   {
-    mutt_debug(LL_DEBUG2, "%s -> failure\n", s->dptr);
-    buf_printf(err, "%s: %s", s->dptr, lua_tostring(LuaState, -1));
+    lua_debug(LL_DEBUG2, "%s -> failure\n", s->dptr);
+    // buf_printf(err, "%s: %s", s->dptr, lua_tostring(l, -1));
+    buf_strcpy(err, lua_tostring(l, -1));
     /* pop error message from the stack */
-    lua_pop(LuaState, 1);
+    // lua_debug(LL_DEBUG1, "parse_lua1: stack: %d\n", lua_gettop(l));
+    lua_pop(l, 1);
+    // lua_debug(LL_DEBUG1, "parse_lua2: stack: %d\n", lua_gettop(l));
     return MUTT_CMD_ERROR;
   }
-  mutt_debug(LL_DEBUG2, "%s -> success\n", s->dptr);
+
+  // lua_debug(LL_DEBUG1, "parse_lua3: stack: %d\n", lua_gettop(l));
+  lua_debug(LL_DEBUG2, "%s -> success\n", s->dptr);
   buf_reset(s); // Clear the rest of the line
+  // mutt_refresh();
   return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_lua_console - Parse the 'lua-console' command - Implements Command::parse() - @ingroup command_parse
+ */
+static enum CommandResult parse_lua_console(struct Buffer *buf, struct Buffer *s,
+                                            intptr_t data, struct Buffer *err)
+{
+  lua_debug(LL_DEBUG2, "enter\n");
+
+  if (!MoreArgs(s))
+  {
+    buf_printf(err, _("%s: too few arguments"), "lua-console");
+    return MUTT_CMD_WARNING;
+  }
+
+  if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
+  {
+    buf_printf(err, _("source: error at %s"), s->dptr);
+    return MUTT_CMD_ERROR;
+  }
+
+  if (MoreArgs(s))
+  {
+    buf_printf(err, _("%s: too many arguments"), "lua-console");
+    return MUTT_CMD_WARNING;
+  }
+
+  if (mutt_str_equal(buf_string(buf), "show"))
+  {
+    lua_console_set_visibility(LCV_SHOW);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  if (mutt_str_equal(buf_string(buf), "hide"))
+  {
+    lua_console_set_visibility(LCV_HIDE);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  if (mutt_str_equal(buf_string(buf), "toggle"))
+  {
+    lua_console_set_visibility(LCV_TOGGLE);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  if (mutt_str_equal(buf_string(buf), "reset"))
+  {
+    if (NeoMutt && NeoMutt->lua_module)
+    {
+      lua_log_reset(NeoMutt->lua_module->log_file);
+      lua_console_update();
+    }
+
+    return MUTT_CMD_SUCCESS;
+  }
+
+  buf_printf(err, _("%s: unknown command '%s'"), "lua-console", buf_string(buf));
+  return MUTT_CMD_WARNING;
 }
 
 /**
@@ -80,9 +138,9 @@ static enum CommandResult parse_lua(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_lua_source(struct Buffer *buf, struct Buffer *s,
                                            intptr_t data, struct Buffer *err)
 {
-  mutt_debug(LL_DEBUG2, "enter\n");
-
-  lua_init_state(&LuaState);
+  lua_State *l = lua_init_state();
+  if (!l)
+    return MUTT_CMD_ERROR;
 
   if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
   {
@@ -99,10 +157,10 @@ static enum CommandResult parse_lua_source(struct Buffer *buf, struct Buffer *s,
   buf_copy(path, buf);
   buf_expand_path(path);
 
-  if (luaL_dofile(LuaState, buf_string(path)))
+  if (luaL_dofile(l, buf_string(path)))
   {
-    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(LuaState, -1));
-    lua_pop(LuaState, 1);
+    lua_error(_("Couldn't source lua source: %s"), lua_tostring(l, -1));
+    lua_pop(l, 1);
     buf_pool_release(&path);
     return MUTT_CMD_ERROR;
   }
@@ -116,28 +174,17 @@ static enum CommandResult parse_lua_source(struct Buffer *buf, struct Buffer *s,
  */
 static const struct Command LuaCommands[] = {
   // clang-format off
-  { "lua",        parse_lua,        0 },
-  { "lua-source", parse_lua_source, 0 },
+  { "lua",         parse_lua,         0 },
+  { "lua-console", parse_lua_console, 0 },
+  { "lua-source",  parse_lua_source,  0 },
   { NULL, NULL, 0 },
   // clang-format on
 };
 
 /**
- * lua_init - Setup feature commands
+ * lua_commands_init - Setup Lua commands
  */
-void lua_init(void)
+void lua_commands_init(void)
 {
   commands_register(&NeoMutt->commands, LuaCommands);
-}
-
-/**
- * lua_cleanup - Clean up Lua
- */
-void lua_cleanup(void)
-{
-  if (LuaState)
-  {
-    lua_close(LuaState);
-    LuaState = NULL;
-  }
 }
