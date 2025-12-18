@@ -174,7 +174,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
   struct PatternList *pat = NULL;
   const bool folder_or_mbox = (data & (MUTT_FOLDER_HOOK | MUTT_MBOX_HOOK));
 
-  struct Buffer *cmd = buf_pool_get();
+  struct Buffer *command = buf_pool_get();
   struct Buffer *pattern = buf_pool_get();
 
   if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
@@ -207,13 +207,13 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
     }
   }
 
-  parse_extract_token(cmd, line,
+  parse_extract_token(command, line,
                       (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
                                MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
                           TOKEN_SPACE :
                           TOKEN_NO_FLAGS);
 
-  if (buf_is_empty(cmd))
+  if (buf_is_empty(command))
   {
     buf_printf(err, _("%s: too few arguments"), buf_string(token));
     rc = MUTT_CMD_WARNING;
@@ -263,7 +263,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
   }
   else if (data & (MUTT_APPEND_HOOK | MUTT_OPEN_HOOK | MUTT_CLOSE_HOOK))
   {
-    if (mutt_comp_valid_command(buf_string(cmd)) == 0)
+    if (mutt_comp_valid_command(buf_string(command)) == 0)
     {
       buf_strcpy(err, _("badly formatted command string"));
       goto cleanup;
@@ -280,7 +280,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
 
   if (data & (MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
   {
-    buf_expand_path(cmd);
+    buf_expand_path(command);
   }
 
   /* check to make sure that a matching hook doesn't already exist */
@@ -289,7 +289,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
     if (data & MUTT_GLOBAL_HOOK)
     {
       /* Ignore duplicate global hooks */
-      if (mutt_str_equal(hook->command, buf_string(cmd)))
+      if (mutt_str_equal(hook->command, buf_string(command)))
       {
         rc = MUTT_CMD_SUCCESS;
         goto cleanup;
@@ -305,7 +305,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
         /* these hooks allow multiple commands with the same
          * pattern, so if we've already seen this pattern/command pair, just
          * ignore it instead of creating a duplicate */
-        if (mutt_str_equal(hook->command, buf_string(cmd)))
+        if (mutt_str_equal(hook->command, buf_string(command)))
         {
           rc = MUTT_CMD_SUCCESS;
           goto cleanup;
@@ -319,14 +319,14 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
          * a common action to perform is to change the default (.) entry
          * based upon some other information. */
         FREE(&hook->command);
-        hook->command = buf_strdup(cmd);
+        hook->command = buf_strdup(command);
         FREE(&hook->source_file);
         hook->source_file = mutt_get_sourced_cwd();
 
         if (data & (MUTT_IDXFMTHOOK | MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
         {
           expando_free(&hook->expando);
-          hook->expando = expando_parse(buf_string(cmd), IndexFormatDef, err);
+          hook->expando = expando_parse(buf_string(command), IndexFormatDef, err);
         }
 
         rc = MUTT_CMD_SUCCESS;
@@ -367,11 +367,11 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
 
   struct Expando *exp = NULL;
   if (data & (MUTT_IDXFMTHOOK | MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
-    exp = expando_parse(buf_string(cmd), IndexFormatDef, err);
+    exp = expando_parse(buf_string(command), IndexFormatDef, err);
 
   hook = hook_new();
   hook->type = data;
-  hook->command = buf_strdup(cmd);
+  hook->command = buf_strdup(command);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = pat;
   hook->regex.pattern = buf_strdup(pattern);
@@ -383,7 +383,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
-  buf_pool_release(&cmd);
+  buf_pool_release(&command);
   buf_pool_release(&pattern);
   return rc;
 }
