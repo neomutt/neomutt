@@ -99,15 +99,15 @@ enum CommandResult parse_alternates(struct Buffer *token, struct Buffer *line,
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
     if (parse_grouplist(&gl, token, line, err) == -1)
-      goto bail;
+      goto done;
 
     mutt_regexlist_remove(&UnAlternates, buf_string(token));
 
     if (mutt_regexlist_add(&Alternates, buf_string(token), REG_ICASE, err) != 0)
-      goto bail;
+      goto done;
 
     if (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
-      goto bail;
+      goto done;
   } while (MoreArgs(line));
 
   mutt_grouplist_destroy(&gl);
@@ -117,7 +117,7 @@ enum CommandResult parse_alternates(struct Buffer *token, struct Buffer *line,
 
   return MUTT_CMD_SUCCESS;
 
-bail:
+done:
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }

@@ -443,7 +443,7 @@ static enum CommandResult parse_group(struct Buffer *token, struct Buffer *line,
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
     if (parse_grouplist(&gl, token, line, err) == -1)
-      goto bail;
+      goto done;
 
     if ((data == MUTT_UNGROUP) && mutt_istr_equal(buf_string(token), "*"))
     {
@@ -472,12 +472,12 @@ static enum CommandResult parse_group(struct Buffer *token, struct Buffer *line,
           if ((data == MUTT_GROUP) &&
               (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0))
           {
-            goto bail;
+            goto done;
           }
           else if ((data == MUTT_UNGROUP) &&
                    (mutt_grouplist_remove_regex(&gl, buf_string(token)) < 0))
           {
-            goto bail;
+            goto done;
           }
           break;
 
@@ -487,14 +487,14 @@ static enum CommandResult parse_group(struct Buffer *token, struct Buffer *line,
           struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
           mutt_addrlist_parse2(&al, buf_string(token));
           if (TAILQ_EMPTY(&al))
-            goto bail;
+            goto done;
           if (mutt_addrlist_to_intl(&al, &estr))
           {
             buf_printf(err, _("%sgroup: warning: bad IDN '%s'"),
                        (data == 1) ? "un" : "", estr);
             mutt_addrlist_clear(&al);
             FREE(&estr);
-            goto bail;
+            goto done;
           }
           if (data == MUTT_GROUP)
             mutt_grouplist_add_addrlist(&gl, &al);
@@ -511,7 +511,7 @@ out:
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_SUCCESS;
 
-bail:
+done:
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 
@@ -605,21 +605,21 @@ static enum CommandResult parse_lists(struct Buffer *token, struct Buffer *line,
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
     if (parse_grouplist(&gl, token, line, err) == -1)
-      goto bail;
+      goto done;
 
     mutt_regexlist_remove(&UnMailLists, buf_string(token));
 
     if (mutt_regexlist_add(&MailLists, buf_string(token), REG_ICASE, err) != 0)
-      goto bail;
+      goto done;
 
     if (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
-      goto bail;
+      goto done;
   } while (MoreArgs(line));
 
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_SUCCESS;
 
-bail:
+done:
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }
@@ -1221,23 +1221,25 @@ static enum CommandResult parse_subscribe(struct Buffer *token, struct Buffer *l
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
     if (parse_grouplist(&gl, token, line, err) == -1)
-      goto bail;
+      goto done;
 
     mutt_regexlist_remove(&UnMailLists, buf_string(token));
     mutt_regexlist_remove(&UnSubscribedLists, buf_string(token));
 
     if (mutt_regexlist_add(&MailLists, buf_string(token), REG_ICASE, err) != 0)
-      goto bail;
+      goto done;
+
     if (mutt_regexlist_add(&SubscribedLists, buf_string(token), REG_ICASE, err) != 0)
-      goto bail;
+      goto done;
+
     if (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
-      goto bail;
+      goto done;
   } while (MoreArgs(line));
 
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_SUCCESS;
 
-bail:
+done:
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }

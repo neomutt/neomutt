@@ -163,7 +163,7 @@ enum CommandResult parse_alias(struct Buffer *token, struct Buffer *line,
   {
     buf_printf(err, _("Warning: Bad address '%s' in alias '%s'"), buf_string(token), name);
     FREE(&name);
-    goto bail;
+    goto done;
   }
 
   /* IDN */
@@ -173,7 +173,7 @@ enum CommandResult parse_alias(struct Buffer *token, struct Buffer *line,
     buf_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, name);
     FREE(&name);
     FREE(&estr);
-    goto bail;
+    goto done;
   }
 
   /* check to see if an alias with this name already exists */
@@ -240,7 +240,7 @@ enum CommandResult parse_alias(struct Buffer *token, struct Buffer *line,
 
   return MUTT_CMD_SUCCESS;
 
-bail:
+done:
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }
