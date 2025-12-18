@@ -173,7 +173,7 @@ static void colon_macro(enum MenuType menu, FILE *fp)
 /**
  * dump_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult dump_bind_macro(struct Buffer *token, struct Buffer *s,
+enum CommandResult dump_bind_macro(struct Buffer *token, struct Buffer *line,
                                    intptr_t data, struct Buffer *err)
 {
   FILE *fp = NULL;
@@ -182,12 +182,12 @@ enum CommandResult dump_bind_macro(struct Buffer *token, struct Buffer *s,
   bool bind = (data == 0);
   int rc = MUTT_CMD_ERROR;
 
-  if (!MoreArgs(s))
+  if (!MoreArgs(line))
     dump_all = true;
   else
-    parse_extract_token(token, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-  if (MoreArgs(s))
+  if (MoreArgs(line))
   {
     /* More arguments potentially means the user is using the
      * ::command_t :bind command thus we delegate the task. */

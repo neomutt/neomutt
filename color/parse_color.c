@@ -279,18 +279,18 @@ enum CommandResult parse_color_name(const char *s, struct ColorElement *elem,
  *
  * Parse a pair of colours, e.g. "red default"
  */
-enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *s,
+enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *line,
                                     struct AttrColor *ac, struct Buffer *err)
 {
   while (true)
   {
-    if (!MoreArgsF(s, TOKEN_COMMENT))
+    if (!MoreArgsF(line, TOKEN_COMMENT))
     {
       buf_printf(err, _("%s: too few arguments"), "color");
       return MUTT_CMD_WARNING;
     }
 
-    parse_extract_token(token, s, TOKEN_COMMENT);
+    parse_extract_token(token, line, TOKEN_COMMENT);
     if (buf_is_empty(token))
       continue;
 
@@ -309,13 +309,13 @@ enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *s,
       ac->attrs |= attr; // Merge with other attributes
   }
 
-  if (!MoreArgsF(s, TOKEN_COMMENT))
+  if (!MoreArgsF(line, TOKEN_COMMENT))
   {
     buf_printf(err, _("%s: too few arguments"), "color");
     return MUTT_CMD_WARNING;
   }
 
-  parse_extract_token(token, s, TOKEN_COMMENT);
+  parse_extract_token(token, line, TOKEN_COMMENT);
 
   return parse_color_name(buf_string(token), &ac->bg, err);
 }
@@ -323,19 +323,19 @@ enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *s,
 /**
  * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t - @ingroup parser_callback_api
  */
-enum CommandResult parse_attr_spec(struct Buffer *token, struct Buffer *s,
+enum CommandResult parse_attr_spec(struct Buffer *token, struct Buffer *line,
                                    struct AttrColor *ac, struct Buffer *err)
 {
-  if (!token || !s || !ac)
+  if (!token || !line || !ac)
     return MUTT_CMD_ERROR;
 
-  if (!MoreArgs(s))
+  if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), "mono");
     return MUTT_CMD_WARNING;
   }
 
-  parse_extract_token(token, s, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
   int attr = mutt_map_get_value(buf_string(token), AttributeNames);
   if (attr == -1)

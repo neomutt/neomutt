@@ -89,16 +89,16 @@ void mutt_alternates_reset(struct MailboxView *mv)
 /**
  * parse_alternates - Parse the 'alternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_alternates(struct Buffer *token, struct Buffer *s,
+enum CommandResult parse_alternates(struct Buffer *token, struct Buffer *line,
                                     intptr_t data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
   do
   {
-    parse_extract_token(token, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, s, err) == -1)
+    if (parse_grouplist(&gl, token, line, err) == -1)
       goto bail;
 
     mutt_regexlist_remove(&UnAlternates, token->data);
@@ -108,7 +108,7 @@ enum CommandResult parse_alternates(struct Buffer *token, struct Buffer *s,
 
     if (mutt_grouplist_add_regex(&gl, token->data, REG_ICASE, err) != 0)
       goto bail;
-  } while (MoreArgs(s));
+  } while (MoreArgs(line));
 
   mutt_grouplist_destroy(&gl);
 
@@ -125,12 +125,12 @@ bail:
 /**
  * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalternates(struct Buffer *token, struct Buffer *s,
+enum CommandResult parse_unalternates(struct Buffer *token, struct Buffer *line,
                                       intptr_t data, struct Buffer *err)
 {
   do
   {
-    parse_extract_token(token, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
     mutt_regexlist_remove(&Alternates, token->data);
 
     if (!mutt_str_equal(token->data, "*") &&
@@ -139,7 +139,7 @@ enum CommandResult parse_unalternates(struct Buffer *token, struct Buffer *s,
       return MUTT_CMD_ERROR;
     }
 
-  } while (MoreArgs(s));
+  } while (MoreArgs(line));
 
   mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", token->data);
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_DELETE, NULL);

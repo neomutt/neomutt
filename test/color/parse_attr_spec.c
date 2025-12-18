@@ -38,38 +38,38 @@ struct AttrTest
 
 void test_parse_attr_spec(void)
 {
-  // enum CommandResult parse_attr_spec (struct Buffer *token, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
+  // enum CommandResult parse_attr_spec (struct Buffer *token, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
 
   {
     struct Buffer *token = buf_pool_get();
-    struct Buffer *s = buf_pool_get();
+    struct Buffer *line = buf_pool_get();
     struct Buffer *err = buf_pool_get();
     enum CommandResult rc;
 
     struct AttrColor *ac = attr_color_new();
 
-    buf_addstr(s, "underline");
-    buf_seek(s, 0);
+    buf_addstr(line, "underline");
+    buf_seek(line, 0);
 
-    rc = parse_attr_spec(NULL, s, ac, err);
+    rc = parse_attr_spec(NULL, line, ac, err);
     TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     rc = parse_attr_spec(token, NULL, ac, err);
     TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
-    rc = parse_attr_spec(token, s, NULL, err);
+    rc = parse_attr_spec(token, line, NULL, err);
     TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     attr_color_free(&ac);
 
     buf_pool_release(&token);
-    buf_pool_release(&s);
+    buf_pool_release(&line);
     buf_pool_release(&err);
   }
 
   {
     struct Buffer *token = buf_pool_get();
-    struct Buffer *s = buf_pool_get();
+    struct Buffer *line = buf_pool_get();
     struct Buffer *err = buf_pool_get();
 
     struct AttrColor *ac = attr_color_new();
@@ -89,24 +89,24 @@ void test_parse_attr_spec(void)
 
     for (int i = 0; tests[i].str; i++)
     {
-      buf_strcpy(s, tests[i].str);
-      buf_seek(s, 0);
+      buf_strcpy(line, tests[i].str);
+      buf_seek(line, 0);
 
-      enum CommandResult rc = parse_attr_spec(token, s, ac, err);
+      enum CommandResult rc = parse_attr_spec(token, line, ac, err);
       TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
-      TEST_MSG("err: %s", buf_string(err));
+      TEST_MSG("err: %line", buf_string(err));
     }
 
     attr_color_free(&ac);
 
     buf_pool_release(&token);
-    buf_pool_release(&s);
+    buf_pool_release(&line);
     buf_pool_release(&err);
   }
 
   {
     struct Buffer *token = buf_pool_get();
-    struct Buffer *s = buf_pool_get();
+    struct Buffer *line = buf_pool_get();
     struct Buffer *err = buf_pool_get();
 
     struct AttrColor *ac = attr_color_new();
@@ -115,17 +115,17 @@ void test_parse_attr_spec(void)
 
     for (int i = 0; tests[i]; i++)
     {
-      buf_addstr(s, tests[i]);
-      buf_seek(s, 0);
+      buf_addstr(line, tests[i]);
+      buf_seek(line, 0);
 
-      enum CommandResult rc = parse_attr_spec(token, s, ac, err);
+      enum CommandResult rc = parse_attr_spec(token, line, ac, err);
       TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
     }
 
     attr_color_free(&ac);
 
     buf_pool_release(&token);
-    buf_pool_release(&s);
+    buf_pool_release(&line);
     buf_pool_release(&err);
   }
 }

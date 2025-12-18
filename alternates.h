@@ -47,8 +47,8 @@ enum NotifyAlternates
 void alternates_init(void);
 void alternates_cleanup(void);
 
-enum CommandResult parse_alternates  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_alternates  (struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
+enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
 
 bool mutt_alternates_match(const char *addr);
 void mutt_alternates_reset(struct MailboxView *mv);

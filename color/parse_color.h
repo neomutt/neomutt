@@ -30,7 +30,7 @@ struct AttrColor;
 
 extern const struct Mapping ColorNames[];
 
-enum CommandResult parse_attr_spec (struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
-enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
+enum CommandResult parse_attr_spec (struct Buffer *buf, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
+enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
 
 #endif /* MUTT_COLOR_PARSE_COLOR_H */

@@ -132,30 +132,30 @@ void parse_alias_comments(struct Alias *alias, const char *com)
  *
  * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
  */
-enum CommandResult parse_alias(struct Buffer *token, struct Buffer *s,
+enum CommandResult parse_alias(struct Buffer *token, struct Buffer *line,
                                intptr_t data, struct Buffer *err)
 {
   struct Alias *tmp = NULL;
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum NotifyAlias event;
 
-  if (!MoreArgs(s))
+  if (!MoreArgs(line))
   {
     buf_strcpy(err, _("alias: no address"));
     return MUTT_CMD_WARNING;
   }
 
   /* name */
-  parse_extract_token(token, s, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
   mutt_debug(LL_DEBUG5, "First token is '%s'\n", token->data);
-  if (parse_grouplist(&gl, token, s, err) == -1)
+  if (parse_grouplist(&gl, token, line, err) == -1)
   {
     return MUTT_CMD_ERROR;
   }
   char *name = mutt_str_dup(token->data);
 
   /* address list */
-  parse_extract_token(token, s, TOKEN_QUOTE | TOKEN_SPACE | TOKEN_SEMICOLON);
+  parse_extract_token(token, line, TOKEN_QUOTE | TOKEN_SPACE | TOKEN_SEMICOLON);
   mutt_debug(LL_DEBUG5, "Second token is '%s'\n", token->data);
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
   int parsed = mutt_addrlist_parse2(&al, token->data);
@@ -221,14 +221,14 @@ enum CommandResult parse_alias(struct Buffer *token, struct Buffer *s,
     }
   }
   mutt_grouplist_destroy(&gl);
-  if (!MoreArgs(s) && (s->dptr[0] == '#'))
+  if (!MoreArgs(line) && (line->dptr[0] == '#'))
   {
-    s->dptr++; // skip over the "# "
-    if (*s->dptr == ' ')
-      s->dptr++;
+    line->dptr++; // skip over the "# "
+    if (*line->dptr == ' ')
+      line->dptr++;
 
-    parse_alias_comments(tmp, s->dptr);
-    *s->dptr = '\0'; // We're done parsing
+    parse_alias_comments(tmp, line->dptr);
+    *line->dptr = '\0'; // We're done parsing
   }
 
   alias_reverse_add(tmp);
@@ -248,12 +248,12 @@ bail:
 /**
  * parse_unalias - Parse the 'unalias' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalias(struct Buffer *token, struct Buffer *s,
+enum CommandResult parse_unalias(struct Buffer *token, struct Buffer *line,
                                  intptr_t data, struct Buffer *err)
 {
   do
   {
-    parse_extract_token(token, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
     struct Alias *np = NULL;
     if (mutt_str_equal("*", token->data))
@@ -277,6 +277,6 @@ enum CommandResult parse_unalias(struct Buffer *token, struct Buffer *s,
       alias_free(&np);
       break;
     }
-  } while (MoreArgs(s));
+  } while (MoreArgs(line));
   return MUTT_CMD_SUCCESS;
 }

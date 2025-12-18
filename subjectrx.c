@@ -64,17 +64,17 @@ void subjrx_init(void)
 /**
  * parse_unreplace_list - Remove a string replacement rule - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_unreplace_list(struct Buffer *token, struct Buffer *s,
+static enum CommandResult parse_unreplace_list(struct Buffer *token, struct Buffer *line,
                                                struct ReplaceList *list, struct Buffer *err)
 {
   /* First token is a regex. */
-  if (!MoreArgs(s))
+  if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), "unsubjectrx");
     return MUTT_CMD_WARNING;
   }
 
-  parse_extract_token(token, s, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
   /* "*" is a special case. */
   if (mutt_str_equal(token->data, "*"))
@@ -90,27 +90,27 @@ static enum CommandResult parse_unreplace_list(struct Buffer *token, struct Buff
 /**
  * parse_replace_list - Parse a string replacement rule - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_replace_list(struct Buffer *token, struct Buffer *s,
+static enum CommandResult parse_replace_list(struct Buffer *token, struct Buffer *line,
                                              struct ReplaceList *list, struct Buffer *err)
 {
   struct Buffer *templ = buf_pool_get();
   int rc = MUTT_CMD_WARNING;
 
   /* First token is a regex. */
-  if (!MoreArgs(s))
+  if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), "subjectrx");
     goto done;
   }
-  parse_extract_token(token, s, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
   /* Second token is a replacement template */
-  if (!MoreArgs(s))
+  if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), "subjectrx");
     goto done;
   }
-  parse_extract_token(templ, s, TOKEN_NO_FLAGS);
+  parse_extract_token(templ, line, TOKEN_NO_FLAGS);
 
   if (mutt_replacelist_add(list, token->data, buf_string(templ), err) != 0)
   {
@@ -168,12 +168,12 @@ void subjrx_clear_mods(struct MailboxView *mv)
 /**
  * parse_subjectrx_list - Parse the 'subjectrx' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_subjectrx_list(struct Buffer *token, struct Buffer *s,
+enum CommandResult parse_subjectrx_list(struct Buffer *token, struct Buffer *line,
                                         intptr_t data, struct Buffer *err)
 {
   enum CommandResult rc;
 
-  rc = parse_replace_list(token, s, &SubjectRegexList, err);
+  rc = parse_replace_list(token, line, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
     mutt_debug(LL_NOTIFY, "NT_SUBJRX_ADD: %s\n", token->data);
@@ -185,12 +185,12 @@ enum CommandResult parse_subjectrx_list(struct Buffer *token, struct Buffer *s,
 /**
  * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unsubjectrx_list(struct Buffer *token, struct Buffer *s,
+enum CommandResult parse_unsubjectrx_list(struct Buffer *token, struct Buffer *line,
                                           intptr_t data, struct Buffer *err)
 {
   enum CommandResult rc;
 
-  rc = parse_unreplace_list(token, s, &SubjectRegexList, err);
+  rc = parse_unreplace_list(token, line, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
     mutt_debug(LL_NOTIFY, "NT_SUBJRX_DELETE: %s\n", token->data);

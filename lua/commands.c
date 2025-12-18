@@ -55,41 +55,41 @@ bool lua_init_state(lua_State **l);
 /**
  * parse_lua - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_lua(struct Buffer *token, struct Buffer *s,
+static enum CommandResult parse_lua(struct Buffer *token, struct Buffer *line,
                                     intptr_t data, struct Buffer *err)
 {
   lua_init_state(&LuaState);
   mutt_debug(LL_DEBUG2, "%s\n", token->data);
 
-  if (luaL_dostring(LuaState, s->dptr) != LUA_OK)
+  if (luaL_dostring(LuaState, line->dptr) != LUA_OK)
   {
-    mutt_debug(LL_DEBUG2, "%s -> failure\n", s->dptr);
-    buf_printf(err, "%s: %s", s->dptr, lua_tostring(LuaState, -1));
+    mutt_debug(LL_DEBUG2, "%s -> failure\n", line->dptr);
+    buf_printf(err, "%s: %s", line->dptr, lua_tostring(LuaState, -1));
     /* pop error message from the stack */
     lua_pop(LuaState, 1);
     return MUTT_CMD_ERROR;
   }
-  mutt_debug(LL_DEBUG2, "%s -> success\n", s->dptr);
-  buf_reset(s); // Clear the rest of the line
+  mutt_debug(LL_DEBUG2, "%s -> success\n", line->dptr);
+  buf_reset(line); // Clear the rest of the line
   return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_lua_source - Parse the 'lua-source' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_lua_source(struct Buffer *token, struct Buffer *s,
+static enum CommandResult parse_lua_source(struct Buffer *token, struct Buffer *line,
                                            intptr_t data, struct Buffer *err)
 {
   mutt_debug(LL_DEBUG2, "enter\n");
 
   lua_init_state(&LuaState);
 
-  if (parse_extract_token(token, s, TOKEN_NO_FLAGS) != 0)
+  if (parse_extract_token(token, line, TOKEN_NO_FLAGS) != 0)
   {
-    buf_printf(err, _("source: error at %s"), s->dptr);
+    buf_printf(err, _("source: error at %s"), line->dptr);
     return MUTT_CMD_ERROR;
   }
-  if (MoreArgs(s))
+  if (MoreArgs(line))
   {
     buf_printf(err, _("%s: too many arguments"), "source");
     return MUTT_CMD_WARNING;

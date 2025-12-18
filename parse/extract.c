@@ -40,14 +40,14 @@
 /**
  * parse_extract_token - Extract one token from a string
  * @param dest  Buffer for the result
- * @param tok   Buffer containing tokens
+ * @param line   Buffer containing tokens
  * @param flags Flags, see #TokenFlags
  * @retval  0 Success
  * @retval -1 Error
  */
-int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags)
+int parse_extract_token(struct Buffer *dest, struct Buffer *line, TokenFlags flags)
 {
-  if (!dest || !tok)
+  if (!dest || !line)
     return -1;
 
   char ch;
@@ -56,8 +56,8 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
 
   buf_reset(dest);
 
-  SKIPWS(tok->dptr);
-  while ((ch = *tok->dptr))
+  SKIPWS(line->dptr);
+  while ((ch = *line->dptr))
   {
     if (qc == '\0')
     {
@@ -79,7 +79,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         break;
     }
 
-    tok->dptr++;
+    line->dptr++;
 
     if (ch == qc)
     {
@@ -91,16 +91,16 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
     }
     else if ((ch == '\\') && (qc != '\''))
     {
-      if (tok->dptr[0] == '\0')
+      if (line->dptr[0] == '\0')
         return -1; /* premature end of token */
-      switch (ch = *tok->dptr++)
+      switch (ch = *line->dptr++)
       {
         case 'c':
         case 'C':
-          if (tok->dptr[0] == '\0')
+          if (line->dptr[0] == '\0')
             return -1; /* premature end of token */
-          buf_addch(dest, (mutt_toupper(tok->dptr[0]) - '@') & 0x7f);
-          tok->dptr++;
+          buf_addch(dest, (mutt_toupper(line->dptr[0]) - '@') & 0x7f);
+          line->dptr++;
           break;
         case 'e':
           buf_addch(dest, '\033'); // Escape
@@ -118,10 +118,11 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
           buf_addch(dest, '\t');
           break;
         default:
-          if (mutt_isdigit(ch) && mutt_isdigit(tok->dptr[0]) && mutt_isdigit(tok->dptr[1]))
+          if (mutt_isdigit(ch) && mutt_isdigit(line->dptr[0]) &&
+              mutt_isdigit(line->dptr[1]))
           {
-            buf_addch(dest, (ch << 6) + (tok->dptr[0] << 3) + tok->dptr[1] - 3504);
-            tok->dptr += 2;
+            buf_addch(dest, (ch << 6) + (line->dptr[0] << 3) + line->dptr[1] - 3504);
+            line->dptr += 2;
           }
           else
           {
@@ -131,9 +132,9 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
     }
     else if ((ch == '^') && (flags & TOKEN_CONDENSE))
     {
-      if (tok->dptr[0] == '\0')
+      if (line->dptr[0] == '\0')
         return -1; /* premature end of token */
-      ch = *tok->dptr++;
+      ch = *line->dptr++;
       if (ch == '^')
       {
         buf_addch(dest, ch);
@@ -157,7 +158,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       FILE *fp = NULL;
       pid_t pid;
 
-      pc = tok->dptr;
+      pc = line->dptr;
       do
       {
         pc = strpbrk(pc, "\\`");
@@ -183,13 +184,13 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       if (flags & TOKEN_BACKTICK_VARS)
       {
         /* recursively extract tokens to interpolate variables */
-        parse_extract_token(cmd, tok,
+        parse_extract_token(cmd, line,
                             TOKEN_QUOTE | TOKEN_SPACE | TOKEN_COMMENT |
                                 TOKEN_SEMICOLON | TOKEN_NOSHELL);
       }
       else
       {
-        buf_strcpy(cmd, tok->dptr);
+        buf_strcpy(cmd, line->dptr);
       }
       *pc = '`';
       pid = filter_create(buf_string(cmd), NULL, &fp, NULL, NeoMutt->env);
@@ -200,7 +201,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         return -1;
       }
 
-      tok->dptr = pc + 1;
+      line->dptr = pc + 1;
 
       /* read line */
       char *expn = NULL;
@@ -229,27 +230,27 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         {
           struct Buffer *copy = buf_pool_get();
           buf_strcpy(copy, expn);
-          buf_addstr(copy, tok->dptr);
-          buf_copy(tok, copy);
-          buf_seek(tok, 0);
+          buf_addstr(copy, line->dptr);
+          buf_copy(line, copy);
+          buf_seek(line, 0);
           buf_pool_release(&copy);
         }
         FREE(&expn);
       }
     }
     else if ((ch == '$') && (!qc || (qc == '"')) &&
-             ((tok->dptr[0] == '{') || mutt_isalpha(tok->dptr[0])))
+             ((line->dptr[0] == '{') || mutt_isalpha(line->dptr[0])))
     {
       const char *env = NULL;
       char *var = NULL;
 
-      if (tok->dptr[0] == '{')
+      if (line->dptr[0] == '{')
       {
-        pc = strchr(tok->dptr, '}');
+        pc = strchr(line->dptr, '}');
         if (pc)
         {
-          var = mutt_strn_dup(tok->dptr + 1, pc - (tok->dptr + 1));
-          tok->dptr = pc + 1;
+          var = mutt_strn_dup(line->dptr + 1, pc - (line->dptr + 1));
+          line->dptr = pc + 1;
 
           if ((flags & TOKEN_NOSHELL))
           {
@@ -263,11 +264,11 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       }
       else
       {
-        for (pc = tok->dptr; mutt_isalnum(*pc) || (pc[0] == '_'); pc++)
+        for (pc = line->dptr; mutt_isalnum(*pc) || (pc[0] == '_'); pc++)
           ; // do nothing
 
-        var = mutt_strn_dup(tok->dptr, pc - tok->dptr);
-        tok->dptr = pc;
+        var = mutt_strn_dup(line->dptr, pc - line->dptr);
+        line->dptr = pc;
       }
       if (var)
       {
@@ -297,6 +298,6 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
     }
   }
 
-  SKIPWS(tok->dptr);
+  SKIPWS(line->dptr);
   return 0;
 }

@@ -31,10 +31,10 @@
 
 void test_parse_color_pair(void)
 {
-  // enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
+  // enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
 
   struct Buffer *token = buf_pool_get();
-  struct Buffer *s = buf_pool_get();
+  struct Buffer *line = buf_pool_get();
   struct Buffer *err = buf_pool_get();
 
   struct AttrColor *ac = attr_color_new();
@@ -46,10 +46,10 @@ void test_parse_color_pair(void)
   {
     for (int j = 0; second[j]; j++)
     {
-      buf_printf(s, "%s %s", first[i], second[j]);
-      buf_seek(s, 0);
+      buf_printf(line, "%s %s", first[i], second[j]);
+      buf_seek(line, 0);
 
-      enum CommandResult rc = parse_color_pair(token, s, ac, err);
+      enum CommandResult rc = parse_color_pair(token, line, ac, err);
       TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
       TEST_MSG("%s\n", buf_string(err));
     }
@@ -61,10 +61,10 @@ void test_parse_color_pair(void)
 
   for (int i = 0; tests[i]; i++)
   {
-    buf_strcpy(s, tests[i]);
-    buf_seek(s, 0);
+    buf_strcpy(line, tests[i]);
+    buf_seek(line, 0);
 
-    enum CommandResult rc = parse_color_pair(token, s, ac, err);
+    enum CommandResult rc = parse_color_pair(token, line, ac, err);
     TEST_CHECK(rc < 0);
     TEST_MSG("%s\n", buf_string(err));
   }
@@ -72,6 +72,6 @@ void test_parse_color_pair(void)
   attr_color_free(&ac);
 
   buf_pool_release(&token);
-  buf_pool_release(&s);
+  buf_pool_release(&line);
   buf_pool_release(&err);
 }

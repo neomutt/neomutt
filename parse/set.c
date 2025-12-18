@@ -466,13 +466,13 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
  */
-enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
+enum CommandResult parse_set(struct Buffer *token, struct Buffer *line,
                              intptr_t data, struct Buffer *err)
 {
   /* The order must match `enum MuttSetCommand` */
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
 
-  if (!token || !s)
+  if (!token || !line)
     return MUTT_CMD_ERROR;
 
   do
@@ -483,29 +483,29 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
     bool reset = (data == MUTT_SET_RESET);
     bool unset = (data == MUTT_SET_UNSET);
 
-    if (*s->dptr == '?')
+    if (*line->dptr == '?')
     {
       prefix = true;
       query = true;
-      s->dptr++;
+      line->dptr++;
     }
-    else if (mutt_str_startswith(s->dptr, "no"))
+    else if (mutt_str_startswith(line->dptr, "no"))
     {
       prefix = true;
       unset = !unset;
-      s->dptr += 2;
+      line->dptr += 2;
     }
-    else if (mutt_str_startswith(s->dptr, "inv"))
+    else if (mutt_str_startswith(line->dptr, "inv"))
     {
       prefix = true;
       inv = !inv;
-      s->dptr += 3;
+      line->dptr += 3;
     }
-    else if (*s->dptr == '&')
+    else if (*line->dptr == '&')
     {
       prefix = true;
       reset = true;
-      s->dptr++;
+      line->dptr++;
     }
 
     if (prefix && (data != MUTT_SET_SET))
@@ -517,7 +517,8 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
 
     // get the variable name.  Note that token might be empty if no additional
     // argument was given.
-    int ret = parse_extract_token(token, s, TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
+    int ret = parse_extract_token(token, line,
+                                  TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
     if (ret == -1)
       return MUTT_CMD_ERROR;
 
@@ -537,7 +538,7 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
       invertible = (bool_or_quad || (CONFIG_TYPE(he->type) == DT_NUMBER));
     }
 
-    if (*s->dptr == '?')
+    if (*line->dptr == '?')
     {
       if (prefix)
       {
@@ -552,9 +553,9 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
       }
 
       query = true;
-      s->dptr++;
+      line->dptr++;
     }
-    else if ((*s->dptr == '+') || (*s->dptr == '-'))
+    else if ((*line->dptr == '+') || (*line->dptr == '-'))
     {
       if (prefix)
       {
@@ -567,16 +568,16 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
         buf_printf(err, _("Can't set option with the '%s' command"), set_commands[data]);
         return MUTT_CMD_WARNING;
       }
-      if (*s->dptr == '+')
+      if (*line->dptr == '+')
         increment = true;
       else
         decrement = true;
 
-      s->dptr++;
-      if (*s->dptr == '=')
+      line->dptr++;
+      if (*line->dptr == '=')
       {
         equals = true;
-        s->dptr++;
+        line->dptr++;
       }
       else
       {
@@ -584,7 +585,7 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
         return MUTT_CMD_WARNING;
       }
     }
-    else if (*s->dptr == '=')
+    else if (*line->dptr == '=')
     {
       if (prefix)
       {
@@ -599,7 +600,7 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
       }
 
       equals = true;
-      s->dptr++;
+      line->dptr++;
     }
 
     if (!invertible && (inv || (unset && prefix)))
@@ -654,7 +655,7 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
       // implies 'equals', we can group them in this single case guarded by
       // 'equals'.
       struct Buffer *value = buf_pool_get();
-      parse_extract_token(value, s, TOKEN_BACKTICK_VARS);
+      parse_extract_token(value, line, TOKEN_BACKTICK_VARS);
       if (increment)
         rc = command_set_increment(token, value, err);
       else if (decrement)
@@ -684,7 +685,7 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
     // the current variable failed.
     if (rc != MUTT_CMD_SUCCESS)
       return rc;
-  } while (MoreArgs(s));
+  } while (MoreArgs(line));
 
   return MUTT_CMD_SUCCESS;
 }
