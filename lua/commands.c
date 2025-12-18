@@ -61,7 +61,7 @@ static enum CommandResult parse_lua(struct Buffer *buf, struct Buffer *s,
   lua_init_state(&LuaState);
   mutt_debug(LL_DEBUG2, "%s\n", buf->data);
 
-  if (luaL_dostring(LuaState, s->dptr))
+  if (luaL_dostring(LuaState, s->dptr) != LUA_OK)
   {
     mutt_debug(LL_DEBUG2, "%s -> failure\n", s->dptr);
     buf_printf(err, "%s: %s", s->dptr, lua_tostring(LuaState, -1));
@@ -99,7 +99,7 @@ static enum CommandResult parse_lua_source(struct Buffer *buf, struct Buffer *s,
   buf_copy(path, buf);
   buf_expand_path(path);
 
-  if (luaL_dofile(LuaState, buf_string(path)))
+  if (luaL_dofile(LuaState, buf_string(path)) != LUA_OK)
   {
     mutt_error(_("Couldn't source lua source: %s"), lua_tostring(LuaState, -1));
     lua_pop(LuaState, 1);
