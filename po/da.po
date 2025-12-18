@@ -221,10 +221,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Afgrænsning: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "vedlæg bilag: ingen beskrivelse"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -233,10 +229,6 @@ msgstr "ret brevdelens beskrivelse"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "vedlæg bilag: ugyldig beskrivelse"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "fjern bilag: ingen beskrivelse"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -979,13 +971,13 @@ msgstr[1] "source: Fejl i %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: mangler -rx eller -addr"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: mangler -rx eller -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: advarsel: forkert IDN \"%s\""
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: advarsel: forkert IDN \"%s\""
 
 #: commands.c:571
 #, c-format
@@ -1029,11 +1021,6 @@ msgstr "Abonnerer på %s"
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Abonnerer på %s"
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "Intet emne er angivet."
 
 #: commands.c:1322
 #, c-format
@@ -5356,10 +5343,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: tom tastesekvens"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: ingen parametre"
 
 #: key/commands.c:652
 #, c-format

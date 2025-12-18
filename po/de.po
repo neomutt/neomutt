@@ -220,10 +220,6 @@ msgstr "aneu"
 msgid "Limit: %s"
 msgstr "Begrenze: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "attachments: keine Disposition"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Aktuelle Einstellung für Anhänge:"
@@ -231,10 +227,6 @@ msgstr "Aktuelle Einstellung für Anhänge:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: ungültige disposition"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "unattachments: keine Disposition"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -967,13 +959,13 @@ msgstr[1] "source: %d Warnungen in %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: Es fehlt -rx oder -addr"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: Es fehlt -rx oder -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: Warnung: Ungültige IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: Warnung: Ungültige IDN '%s'"
 
 #: commands.c:571
 #, c-format
@@ -1017,10 +1009,6 @@ msgstr "Abonniere %s"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Konnte %s nicht abonnieren"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "Kein Ordner angegeben"
 
 #: commands.c:1322
 #, c-format
@@ -5216,10 +5204,6 @@ msgstr "Funktion '%s' ist nicht verfügbar für Menü '%s'"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: Leere Tastenfolge"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: Keine Parameter"
 
 #: key/commands.c:652
 #, c-format

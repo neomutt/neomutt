@@ -226,10 +226,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Rajoite: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "liitteet: dispositio puuttuu"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Nykyiset liiteasetukset:"
@@ -237,10 +233,6 @@ msgstr "Nykyiset liiteasetukset:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "liitteet: dispositio on väärä"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "epäliitteet: dispositio puuttuu"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -974,12 +966,12 @@ msgstr[1] "source: %d virhettä kohteessa %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr "%sryhmä: -rx tai -addr puuttuu"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "%sryhmä: varoitus: huono IDN '%s'"
 
 #: commands.c:571
@@ -1024,10 +1016,6 @@ msgstr "%s tilattu"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Ryhmää %s ei voitu tilata"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "Ei kansiota"
 
 #: commands.c:1322
 #, c-format
@@ -5260,10 +5248,6 @@ msgstr "Funktio %s ei ole saatavilla valikossa %s"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: tyhjä näppäinsekvenssi"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: ei argumentteja"
 
 #: key/commands.c:652
 #, c-format

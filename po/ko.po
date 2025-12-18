@@ -221,11 +221,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "패턴: %s"
 
-#: attach/commands.c:481
-#, fuzzy
-msgid "attachments: no disposition"
-msgstr "첨부물 설명 편집"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -234,11 +229,6 @@ msgstr "첨부물 설명 편집"
 #: attach/commands.c:524
 #, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "첨부물 설명 편집"
-
-#: attach/commands.c:544
-#, fuzzy
-msgid "unattachments: no disposition"
 msgstr "첨부물 설명 편집"
 
 #: attach/commands.c:584
@@ -987,12 +977,12 @@ msgstr[0] "source: %s에 오류"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr ""
 
 #: commands.c:493
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'"
 
 #: commands.c:571
@@ -1037,11 +1027,6 @@ msgstr "%s에 가입 중..."
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "%s에 가입 중..."
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "제목이 지정되지 않음."
 
 #: commands.c:1322
 #, c-format
@@ -5393,10 +5378,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: 빈 글쇠 시퀀스"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: 인수가 없음"
 
 #: key/commands.c:652
 #, c-format

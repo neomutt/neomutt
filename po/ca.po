@@ -267,11 +267,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Límit: %s"
 
-# «attachments» és una ordre de configuració.  ivb
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "attachments: No s’ha indicat la disposició."
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -280,11 +275,6 @@ msgstr "Edita la descripció d’una adjunció."
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: La disposició no és vàlida."
-
-# «unattachments» és una ordre de configuració.  ivb
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "unattachments: No s’ha indicat la disposició."
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -1040,14 +1030,14 @@ msgstr[1] "source: Hi ha errors a «%s»."
 # L’indicador de format inicial altera l’ordre de configuració.  ivb
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: Manca «-rx» o «-addr»"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: Manca «-rx» o «-addr»"
 
 # L’indicador de format inicial altera l’ordre de configuració.  ivb
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: Avís: L’IDN no és vàlid: %s"
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: Avís: L’IDN no és vàlid: %s"
 
 #: commands.c:571
 #, c-format
@@ -1093,11 +1083,6 @@ msgstr "S’ha subscrit a «%s»."
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "S’ha subscrit a «%s»."
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "No s’ha indicat l’assumpte."
 
 #: commands.c:1322
 #, c-format
@@ -5488,10 +5473,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: La seqüència de tecles és buida."
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: Manquen arguments."
 
 #: key/commands.c:652
 #, c-format

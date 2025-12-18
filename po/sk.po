@@ -219,10 +219,6 @@ msgstr "amdn"
 msgid "Limit: %s"
 msgstr "Limit: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "prílohy: žiadne dispozície"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Súčasné nastavení príloh:"
@@ -230,10 +226,6 @@ msgstr "Súčasné nastavení príloh:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: neplatná dispozícia"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "unattachments: žiadna dispozícia"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -969,13 +961,13 @@ msgstr[2] "source: %d varování v %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: chýba -rx lebo -addr"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: chýba -rx lebo -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: pozor: chybné IDN „%s“"
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: pozor: chybné IDN „%s“"
 
 #: commands.c:571
 #, c-format
@@ -1019,10 +1011,6 @@ msgstr "Prihlásené k odberu %s"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Nemožno prihlásiť k odberu %s"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "Nezadán žiadny adresár"
 
 #: commands.c:1322
 #, c-format
@@ -5236,10 +5224,6 @@ msgstr "Funkcia '%s' nie je k dispozícii pre menu '%s'"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: prázdna postupnosť kláves"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: žiadne argumenty"
 
 #: key/commands.c:652
 #, c-format

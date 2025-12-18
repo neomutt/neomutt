@@ -221,10 +221,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Limita: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "allegati: nessuna disposizione"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -233,10 +229,6 @@ msgstr "modifica la descrizione dell'allegato"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "allegati: disposizione non valida"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr ""
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -985,13 +977,13 @@ msgstr[1] "source: errori in %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: -rx o -addr mancanti"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: -rx o -addr mancanti"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: attenzione: ID '%s' errato"
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: attenzione: ID '%s' errato"
 
 #: commands.c:571
 #, c-format
@@ -1035,11 +1027,6 @@ msgstr "Iscritto a %s"
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Iscritto a %s"
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "Non è stato specificato un oggetto."
 
 #: commands.c:1322
 #, c-format
@@ -5403,10 +5390,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: sequenza di tasti nulla"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: non ci sono argomenti"
 
 #: key/commands.c:652
 #, c-format

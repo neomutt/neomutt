@@ -216,10 +216,6 @@ msgstr "anrm"
 msgid "Limit: %s"
 msgstr "Ŝablono: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "attachments: mankas dispozicio"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Nuna agordo de kunsendaĵoj:"
@@ -227,10 +223,6 @@ msgstr "Nuna agordo de kunsendaĵoj:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: nevalida dispozicio"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "unattachments: mankas dispozicio"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -963,12 +955,12 @@ msgstr[1] "source: %d avertoj en %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr "%s-grupo: mankas -rx aŭ -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "%s-grupo: averto: malbona IDN '%s'"
 
 #: commands.c:571
@@ -1013,10 +1005,6 @@ msgstr "Abonas %s"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Ne eblas ekaboni al %s"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "Neniu dosiero specifita"
 
 #: commands.c:1322
 #, c-format
@@ -5221,10 +5209,6 @@ msgstr "Funkcio '%s' ne haveblas por menuo '%s'"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: malplena klavoserio"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: mankas argumentoj"
 
 #: key/commands.c:652
 #, c-format

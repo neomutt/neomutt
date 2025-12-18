@@ -220,10 +220,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Teorainn: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "iatáin: gan chóiriú"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -232,10 +228,6 @@ msgstr "cuir cur síos an iatáin in eagar"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "iatáin: cóiriú neamhbhailí"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "dí-iatáin: gan chóiriú"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -992,12 +984,12 @@ msgstr[4] "source: earráidí i %s"
 
 #: commands.c:467
 #, fuzzy, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr "-rx nó -addr ar iarraidh"
 
 #: commands.c:493
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "Rabhadh: DrochIDN '%s'"
 
 #: commands.c:571
@@ -1042,11 +1034,6 @@ msgstr "Liostáilte le %s"
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Liostáilte le %s"
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "Níor sonraíodh aon ábhar."
 
 #: commands.c:1322
 #, c-format
@@ -5467,10 +5454,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macra: seicheamh folamh eochrach"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: níl aon argóint"
 
 #: key/commands.c:652
 #, c-format

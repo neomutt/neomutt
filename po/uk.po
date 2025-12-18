@@ -220,10 +220,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Обмеження: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "прикріплення: без диспозиції"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Налаштування поточного прикріплення:"
@@ -231,10 +227,6 @@ msgstr "Налаштування поточного прикріплення:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "прикріплення: неправильна диспозиція"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "відкріплення: без диспозиції"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -971,13 +963,13 @@ msgstr[2] "source: %d попереджень у %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: відсутні -rx чи -addr"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: відсутні -rx чи -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: попередження: погане IDN: %s"
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: попередження: погане IDN: %s"
 
 #: commands.c:571
 #, c-format
@@ -1021,10 +1013,6 @@ msgstr "Підписано на %s..."
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Не можливо підписатися на %s"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "Не вказано теку"
 
 #: commands.c:1322
 #, c-format
@@ -5248,10 +5236,6 @@ msgstr "Функція '%s' не доступна для меню '%s'"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "макрос: порожня послідовність клавіш"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: без арґументів"
 
 #: key/commands.c:652
 #, c-format

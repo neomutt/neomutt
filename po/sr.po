@@ -214,10 +214,6 @@ msgstr "aidn"
 msgid "Limit: %s"
 msgstr "Лимит: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "attachments: нема disposition-а"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Текућа подешавања прилога:"
@@ -225,10 +221,6 @@ msgstr "Текућа подешавања прилога:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: неисправан disposition"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "unattachments: нема disposition-а"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -964,13 +956,13 @@ msgstr[2] "source: %d упозорења у %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: нема -rx или -addr"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: нема -rx или -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: упозорење: лош IDN „%s“"
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: упозорење: лош IDN „%s“"
 
 #: commands.c:571
 #, c-format
@@ -1014,10 +1006,6 @@ msgstr "Претплаћен на %s"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Неуспешна претплата на %s"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "Ниједна фасцикла није задата"
 
 #: commands.c:1322
 #, c-format
@@ -5230,10 +5218,6 @@ msgstr "Функција „%s“ није доступна за мени „%s�
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: празна секвенца тастера"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: нема аргумената"
 
 #: key/commands.c:652
 #, c-format

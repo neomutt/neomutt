@@ -220,11 +220,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Límite: %s"
 
-#: attach/commands.c:481
-#, fuzzy
-msgid "attachments: no disposition"
-msgstr "edita-la descripción do adxunto"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -233,11 +228,6 @@ msgstr "edita-la descripción do adxunto"
 #: attach/commands.c:524
 #, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "edita-la descripción do adxunto"
-
-#: attach/commands.c:544
-#, fuzzy
-msgid "unattachments: no disposition"
 msgstr "edita-la descripción do adxunto"
 
 #: attach/commands.c:584
@@ -996,12 +986,12 @@ msgstr[1] "source: erros en %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr ""
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr ""
 
 #: commands.c:571
@@ -1046,11 +1036,6 @@ msgstr "Subscribindo a %s..."
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Subscribindo a %s..."
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "Non se especificou tema."
 
 #: commands.c:1322
 #, c-format
@@ -5447,11 +5432,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: secuencia de teclas baleira"
-
-#: key/commands.c:629
-#, fuzzy
-msgid "exec: no arguments"
-msgstr "exec: parámetros insuficientes"
 
 #: key/commands.c:652
 #, fuzzy, c-format
