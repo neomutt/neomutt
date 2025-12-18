@@ -355,7 +355,7 @@ enum CommandResult parse_bind(struct Buffer *token, struct Buffer *line,
     buf_printf(err, _("%s: too many arguments"), "bind");
     rc = MUTT_CMD_ERROR;
   }
-  else if (mutt_istr_equal("noop", token->data))
+  else if (mutt_istr_equal("noop", buf_string(token)))
   {
     struct Buffer *keystr = buf_pool_get();
     for (int i = 0; i < num_menus; i++)
@@ -369,7 +369,7 @@ enum CommandResult parse_bind(struct Buffer *token, struct Buffer *line,
         const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
         mutt_debug(LL_NOTIFY, "NT_BINDING_DELETE: %s %s\n", mname, buf_string(keystr));
 
-        int op = get_op(OpGeneric, token->data, mutt_str_len(token->data));
+        int op = get_op(OpGeneric, buf_string(token), mutt_str_len(buf_string(token)));
         struct EventBinding ev_b = { mtypes[i], key, op };
         notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_DELETE, &ev_b);
       }
@@ -393,7 +393,7 @@ enum CommandResult parse_bind(struct Buffer *token, struct Buffer *line,
           const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
           mutt_debug(LL_NOTIFY, "NT_BINDING_NEW: %s %s\n", mname, buf_string(keystr));
 
-          int op = get_op(OpGeneric, token->data, mutt_str_len(token->data));
+          int op = get_op(OpGeneric, buf_string(token), mutt_str_len(buf_string(token)));
           struct EventBinding ev_b = { mtypes[i], key, op };
           notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_ADD, &ev_b);
           continue;
@@ -415,7 +415,7 @@ enum CommandResult parse_bind(struct Buffer *token, struct Buffer *line,
           const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
           mutt_debug(LL_NOTIFY, "NT_BINDING_NEW: %s %s\n", mname, buf_string(keystr));
 
-          int op = get_op(funcs, token->data, mutt_str_len(token->data));
+          int op = get_op(funcs, buf_string(token), mutt_str_len(buf_string(token)));
           struct EventBinding ev_b = { mtypes[i], key, op };
           notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_ADD, &ev_b);
           continue;
@@ -446,7 +446,7 @@ enum CommandResult parse_unbind(struct Buffer *token, struct Buffer *line,
   char *key = NULL;
 
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
-  if (mutt_str_equal(token->data, "*"))
+  if (mutt_str_equal(buf_string(token), "*"))
   {
     for (enum MenuType i = 1; i < MENU_MAX; i++)
       menu_matches[i] = true;
@@ -558,7 +558,7 @@ enum CommandResult parse_macro(struct Buffer *token, struct Buffer *line,
   {
     if (MoreArgs(line))
     {
-      char *seq = mutt_str_dup(token->data);
+      char *seq = mutt_str_dup(buf_string(token));
       parse_extract_token(token, line, TOKEN_CONDENSE);
 
       if (MoreArgs(line))

@@ -476,7 +476,7 @@ enum CommandResult parse_attachments(struct Buffer *token, struct Buffer *line,
                                      intptr_t data, struct Buffer *err)
 {
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
-  if (!token->data || (*token->data == '\0'))
+  if (!buf_string(token) || (*buf_string(token) == '\0'))
   {
     buf_strcpy(err, _("attachments: no disposition"));
     return MUTT_CMD_WARNING;
@@ -539,7 +539,7 @@ enum CommandResult parse_unattachments(struct Buffer *token, struct Buffer *line
   struct ListHead *head = NULL;
 
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
-  if (!token->data || (*token->data == '\0'))
+  if (!buf_string(token) || (*buf_string(token) == '\0'))
   {
     buf_strcpy(err, _("unattachments: no disposition"));
     return MUTT_CMD_WARNING;

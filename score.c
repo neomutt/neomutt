@@ -205,7 +205,7 @@ enum CommandResult parse_unscore(struct Buffer *token, struct Buffer *line,
   while (MoreArgs(line))
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    if (mutt_str_equal("*", token->data))
+    if (mutt_str_equal("*", buf_string(token)))
     {
       for (tmp = ScoreList; tmp;)
       {
@@ -220,7 +220,7 @@ enum CommandResult parse_unscore(struct Buffer *token, struct Buffer *line,
     {
       for (tmp = ScoreList; tmp; last = tmp, tmp = tmp->next)
       {
-        if (mutt_str_equal(token->data, tmp->str))
+        if (mutt_str_equal(buf_string(token), tmp->str))
         {
           if (last)
             last->next = tmp->next;

@@ -528,7 +528,7 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *line,
     bool increment = false;
     bool decrement = false;
 
-    struct HashElem *he = cs_subset_lookup(NeoMutt->sub, token->data);
+    struct HashElem *he = cs_subset_lookup(NeoMutt->sub, buf_string(token));
     if (he)
     {
       // Use the correct name if a synonym is used

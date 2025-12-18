@@ -77,13 +77,13 @@ static enum CommandResult parse_unreplace_list(struct Buffer *token, struct Buff
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
   /* "*" is a special case. */
-  if (mutt_str_equal(token->data, "*"))
+  if (mutt_str_equal(buf_string(token), "*"))
   {
     mutt_replacelist_free(list);
     return MUTT_CMD_SUCCESS;
   }
 
-  mutt_replacelist_remove(list, token->data);
+  mutt_replacelist_remove(list, buf_string(token));
   return MUTT_CMD_SUCCESS;
 }
 
@@ -112,7 +112,7 @@ static enum CommandResult parse_replace_list(struct Buffer *token, struct Buffer
   }
   parse_extract_token(templ, line, TOKEN_NO_FLAGS);
 
-  if (mutt_replacelist_add(list, token->data, buf_string(templ), err) != 0)
+  if (mutt_replacelist_add(list, buf_string(token), buf_string(templ), err) != 0)
   {
     rc = MUTT_CMD_ERROR;
     goto done;
@@ -176,7 +176,7 @@ enum CommandResult parse_subjectrx_list(struct Buffer *token, struct Buffer *lin
   rc = parse_replace_list(token, line, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
-    mutt_debug(LL_NOTIFY, "NT_SUBJRX_ADD: %s\n", token->data);
+    mutt_debug(LL_NOTIFY, "NT_SUBJRX_ADD: %s\n", buf_string(token));
     notify_send(SubjRxNotify, NT_SUBJRX, NT_SUBJRX_ADD, NULL);
   }
   return rc;
@@ -193,7 +193,7 @@ enum CommandResult parse_unsubjectrx_list(struct Buffer *token, struct Buffer *l
   rc = parse_unreplace_list(token, line, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
-    mutt_debug(LL_NOTIFY, "NT_SUBJRX_DELETE: %s\n", token->data);
+    mutt_debug(LL_NOTIFY, "NT_SUBJRX_DELETE: %s\n", buf_string(token));
     notify_send(SubjRxNotify, NT_SUBJRX, NT_SUBJRX_DELETE, NULL);
   }
   return rc;

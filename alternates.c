@@ -101,18 +101,18 @@ enum CommandResult parse_alternates(struct Buffer *token, struct Buffer *line,
     if (parse_grouplist(&gl, token, line, err) == -1)
       goto bail;
 
-    mutt_regexlist_remove(&UnAlternates, token->data);
+    mutt_regexlist_remove(&UnAlternates, buf_string(token));
 
-    if (mutt_regexlist_add(&Alternates, token->data, REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&Alternates, buf_string(token), REG_ICASE, err) != 0)
       goto bail;
 
-    if (mutt_grouplist_add_regex(&gl, token->data, REG_ICASE, err) != 0)
+    if (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
       goto bail;
   } while (MoreArgs(line));
 
   mutt_grouplist_destroy(&gl);
 
-  mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", token->data);
+  mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", buf_string(token));
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_ADD, NULL);
 
   return MUTT_CMD_SUCCESS;
@@ -131,17 +131,17 @@ enum CommandResult parse_unalternates(struct Buffer *token, struct Buffer *line,
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&Alternates, token->data);
+    mutt_regexlist_remove(&Alternates, buf_string(token));
 
-    if (!mutt_str_equal(token->data, "*") &&
-        (mutt_regexlist_add(&UnAlternates, token->data, REG_ICASE, err) != 0))
+    if (!mutt_str_equal(buf_string(token), "*") &&
+        (mutt_regexlist_add(&UnAlternates, buf_string(token), REG_ICASE, err) != 0))
     {
       return MUTT_CMD_ERROR;
     }
 
   } while (MoreArgs(line));
 
-  mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", token->data);
+  mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", buf_string(token));
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_DELETE, NULL);
 
   return MUTT_CMD_SUCCESS;

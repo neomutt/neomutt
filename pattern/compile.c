@@ -81,7 +81,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
 
   if (pat->string_match)
   {
-    pat->p.str = mutt_str_dup(token->data);
+    pat->p.str = buf_strdup(token);
     pat->ign_case = mutt_mb_is_lower(token->data);
   }
   else if (pat->group_match)
@@ -92,7 +92,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
   {
     pat->p.regex = MUTT_MEM_CALLOC(1, regex_t);
 #ifdef USE_DEBUG_GRAPHVIZ
-    pat->raw_pattern = mutt_str_dup(token->data);
+    pat->raw_pattern = buf_strdup(token);
 #endif
     uint16_t case_flags = mutt_mb_is_lower(token->data) ? REG_ICASE : 0;
     int rc2 = REG_COMP(pat->p.regex, token->data, REG_NEWLINE | REG_NOSUB | case_flags);
@@ -730,7 +730,7 @@ static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
   if (flags & MUTT_PC_PATTERN_DYNAMIC)
   {
     pat->dynamic = true;
-    pat->p.str = mutt_str_dup(tmp->data);
+    pat->p.str = buf_strdup(tmp);
   }
 
   rc = eval_date_minmax(pat, tmp->data, err);

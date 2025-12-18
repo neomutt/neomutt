@@ -137,12 +137,12 @@ enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *token, struct Bu
 
   if (buf_is_empty(alias) || buf_is_empty(charset))
   {
-    buf_printf(err, _("%s: too few arguments"), token->data);
+    buf_printf(err, _("%s: too few arguments"), buf_string(token));
     rc = MUTT_CMD_WARNING;
   }
   else if (MoreArgs(line))
   {
-    buf_printf(err, _("%s: too many arguments"), token->data);
+    buf_printf(err, _("%s: too many arguments"), buf_string(token));
     buf_reset(line); // clean up buffer to avoid a mess with further rcfile processing
     rc = MUTT_CMD_WARNING;
   }
@@ -192,7 +192,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *token, struct Buffer *line,
       use_regex = false;
       if (!MoreArgs(line))
       {
-        buf_printf(err, _("%s: too few arguments"), token->data);
+        buf_printf(err, _("%s: too few arguments"), buf_string(token));
         rc = MUTT_CMD_WARNING;
         goto cleanup;
       }
@@ -201,7 +201,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *token, struct Buffer *line,
 
     if (!MoreArgs(line))
     {
-      buf_printf(err, _("%s: too few arguments"), token->data);
+      buf_printf(err, _("%s: too few arguments"), buf_string(token));
       rc = MUTT_CMD_WARNING;
       goto cleanup;
     }
@@ -215,14 +215,14 @@ enum CommandResult mutt_parse_hook(struct Buffer *token, struct Buffer *line,
 
   if (buf_is_empty(cmd))
   {
-    buf_printf(err, _("%s: too few arguments"), token->data);
+    buf_printf(err, _("%s: too few arguments"), buf_string(token));
     rc = MUTT_CMD_WARNING;
     goto cleanup;
   }
 
   if (MoreArgs(line))
   {
-    buf_printf(err, _("%s: too many arguments"), token->data);
+    buf_printf(err, _("%s: too many arguments"), buf_string(token));
     rc = MUTT_CMD_WARNING;
     goto cleanup;
   }
@@ -457,7 +457,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *token, struct Bu
 
   if (!MoreArgs(line))
   {
-    buf_printf(err, _("%s: too few arguments"), token->data);
+    buf_printf(err, _("%s: too few arguments"), buf_string(token));
     goto out;
   }
   parse_extract_token(name, line, TOKEN_NO_FLAGS);
@@ -473,7 +473,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *token, struct Bu
 
   if (!MoreArgs(line))
   {
-    buf_printf(err, _("%s: too few arguments"), token->data);
+    buf_printf(err, _("%s: too few arguments"), buf_string(token));
     goto out;
   }
   parse_extract_token(fmtstring, line, TOKEN_NO_FLAGS);
@@ -484,7 +484,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *token, struct Bu
 
   if (MoreArgs(line))
   {
-    buf_printf(err, _("%s: too many arguments"), token->data);
+    buf_printf(err, _("%s: too many arguments"), buf_string(token));
     goto out;
   }
 
@@ -582,7 +582,7 @@ static enum CommandResult mutt_parse_unhook(struct Buffer *token, struct Buffer 
   while (MoreArgs(line))
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    if (mutt_str_equal("*", token->data))
+    if (mutt_str_equal("*", buf_string(token)))
     {
       if (CurrentHookType != TOKEN_NO_FLAGS)
       {
@@ -595,11 +595,11 @@ static enum CommandResult mutt_parse_unhook(struct Buffer *token, struct Buffer 
     }
     else
     {
-      HookFlags type = mutt_get_hook_type(token->data);
+      HookFlags type = mutt_get_hook_type(buf_string(token));
 
       if (type == MUTT_HOOK_NO_FLAGS)
       {
-        buf_printf(err, _("unhook: unknown hook type: %s"), token->data);
+        buf_printf(err, _("unhook: unknown hook type: %s"), buf_string(token));
         return MUTT_CMD_ERROR;
       }
       if (type & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK))
@@ -610,7 +610,7 @@ static enum CommandResult mutt_parse_unhook(struct Buffer *token, struct Buffer 
       if (CurrentHookType == type)
       {
         buf_printf(err, _("unhook: Can't delete a %s from within a %s"),
-                   token->data, token->data);
+                   buf_string(token), buf_string(token));
         return MUTT_CMD_WARNING;
       }
       if (type == MUTT_IDXFMTHOOK)

@@ -59,7 +59,7 @@ static enum CommandResult parse_lua(struct Buffer *token, struct Buffer *line,
                                     intptr_t data, struct Buffer *err)
 {
   lua_init_state(&LuaState);
-  mutt_debug(LL_DEBUG2, "%s\n", token->data);
+  mutt_debug(LL_DEBUG2, "%s\n", buf_string(token));
 
   if (luaL_dostring(LuaState, line->dptr) != LUA_OK)
   {
