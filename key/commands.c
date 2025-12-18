@@ -330,9 +330,9 @@ enum CommandResult parse_bind(struct Buffer *token, struct Buffer *line,
 {
   if (StartupComplete)
   {
-    // Save and restore the offset in `line` because dump_bind_macro() might change it
+    // Save and restore the offset in `line` because parse_bind_macro() might change it
     char *dptr = line->dptr;
-    if (dump_bind_macro(token, line, data, err) == MUTT_CMD_SUCCESS)
+    if (parse_bind_macro(token, line, data, err) == MUTT_CMD_SUCCESS)
       return MUTT_CMD_SUCCESS;
     if (!buf_is_empty(err))
       return MUTT_CMD_ERROR;
@@ -531,9 +531,9 @@ enum CommandResult parse_macro(struct Buffer *token, struct Buffer *line,
 {
   if (StartupComplete)
   {
-    // Save and restore the offset in `line` because dump_bind_macro() might change it
+    // Save and restore the offset in `line` because parse_bind_macro() might change it
     char *dptr = line->dptr;
-    if (dump_bind_macro(token, line, data, err) == MUTT_CMD_SUCCESS)
+    if (parse_bind_macro(token, line, data, err) == MUTT_CMD_SUCCESS)
       return MUTT_CMD_SUCCESS;
     if (!buf_is_empty(err))
       return MUTT_CMD_ERROR;

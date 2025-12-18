@@ -118,10 +118,10 @@ static struct Hook *hook_new(void)
 }
 
 /**
- * mutt_parse_charset_iconv_hook - Parse 'charset-hook' and 'iconv-hook' commands - Implements Command::parse() - @ingroup command_parse
+ * parse_charset_iconv_hook - Parse 'charset-hook' and 'iconv-hook' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *token, struct Buffer *line,
-                                                 intptr_t data, struct Buffer *err)
+enum CommandResult parse_charset_iconv_hook(struct Buffer *token, struct Buffer *line,
+                                            intptr_t data, struct Buffer *err)
 {
   struct Buffer *alias = buf_pool_get();
   struct Buffer *charset = buf_pool_get();
@@ -159,12 +159,12 @@ done:
 }
 
 /**
- * mutt_parse_hook - Parse the 'hook' family of commands - Implements Command::parse() - @ingroup command_parse
+ * parse_hook - Parse the 'hook' family of commands - Implements Command::parse() - @ingroup command_parse
  *
  * This is used by 'account-hook', 'append-hook' and many more.
  */
-enum CommandResult mutt_parse_hook(struct Buffer *token, struct Buffer *line,
-                                   intptr_t data, struct Buffer *err)
+enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
+                              intptr_t data, struct Buffer *err)
 {
   struct Hook *hook = NULL;
   int rc = MUTT_CMD_ERROR;
@@ -436,10 +436,10 @@ static void delete_idxfmt_hooks(void)
 }
 
 /**
- * mutt_parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements Command::parse() - @ingroup command_parse
+ * parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *token, struct Buffer *line,
-                                                 intptr_t data, struct Buffer *err)
+static enum CommandResult parse_idxfmt_hook(struct Buffer *token, struct Buffer *line,
+                                            intptr_t data, struct Buffer *err)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -564,7 +564,7 @@ static HookFlags mutt_get_hook_type(const char *name)
   {
     const struct Command *cmd = *cp;
 
-    if (((cmd->parse == mutt_parse_hook) || (cmd->parse == mutt_parse_idxfmt_hook)) &&
+    if (((cmd->parse == parse_hook) || (cmd->parse == parse_idxfmt_hook)) &&
         mutt_istr_equal(cmd->name, name))
     {
       return cmd->data;
@@ -574,10 +574,10 @@ static HookFlags mutt_get_hook_type(const char *name)
 }
 
 /**
- * mutt_parse_unhook - Parse the 'unhook' command - Implements Command::parse() - @ingroup command_parse
+ * parse_unhook - Parse the 'unhook' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult mutt_parse_unhook(struct Buffer *token, struct Buffer *line,
-                                            intptr_t data, struct Buffer *err)
+static enum CommandResult parse_unhook(struct Buffer *token, struct Buffer *line,
+                                       intptr_t data, struct Buffer *err)
 {
   while (MoreArgs(line))
   {
@@ -1022,25 +1022,25 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
  */
 static const struct Command HookCommands[] = {
   // clang-format off
-  { "account-hook",      mutt_parse_hook,               MUTT_ACCOUNT_HOOK },
-  { "charset-hook",      mutt_parse_charset_iconv_hook, MUTT_CHARSET_HOOK },
-  { "crypt-hook",        mutt_parse_hook,               MUTT_CRYPT_HOOK },
-  { "fcc-hook",          mutt_parse_hook,               MUTT_FCC_HOOK },
-  { "fcc-save-hook",     mutt_parse_hook,               MUTT_FCC_HOOK | MUTT_SAVE_HOOK },
-  { "folder-hook",       mutt_parse_hook,               MUTT_FOLDER_HOOK },
-  { "iconv-hook",        mutt_parse_charset_iconv_hook, MUTT_ICONV_HOOK },
-  { "index-format-hook", mutt_parse_idxfmt_hook,        MUTT_IDXFMTHOOK },
-  { "mbox-hook",         mutt_parse_hook,               MUTT_MBOX_HOOK },
-  { "message-hook",      mutt_parse_hook,               MUTT_MESSAGE_HOOK },
-  { "pgp-hook",          mutt_parse_hook,               MUTT_CRYPT_HOOK },
-  { "reply-hook",        mutt_parse_hook,               MUTT_REPLY_HOOK },
-  { "save-hook",         mutt_parse_hook,               MUTT_SAVE_HOOK },
-  { "send-hook",         mutt_parse_hook,               MUTT_SEND_HOOK },
-  { "send2-hook",        mutt_parse_hook,               MUTT_SEND2_HOOK },
-  { "shutdown-hook",     mutt_parse_hook,               MUTT_SHUTDOWN_HOOK | MUTT_GLOBAL_HOOK },
-  { "startup-hook",      mutt_parse_hook,               MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
-  { "timeout-hook",      mutt_parse_hook,               MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
-  { "unhook",            mutt_parse_unhook,             0 },
+  { "account-hook",      parse_hook,               MUTT_ACCOUNT_HOOK },
+  { "charset-hook",      parse_charset_iconv_hook, MUTT_CHARSET_HOOK },
+  { "crypt-hook",        parse_hook,               MUTT_CRYPT_HOOK },
+  { "fcc-hook",          parse_hook,               MUTT_FCC_HOOK },
+  { "fcc-save-hook",     parse_hook,               MUTT_FCC_HOOK | MUTT_SAVE_HOOK },
+  { "folder-hook",       parse_hook,               MUTT_FOLDER_HOOK },
+  { "iconv-hook",        parse_charset_iconv_hook, MUTT_ICONV_HOOK },
+  { "index-format-hook", parse_idxfmt_hook,        MUTT_IDXFMTHOOK },
+  { "mbox-hook",         parse_hook,               MUTT_MBOX_HOOK },
+  { "message-hook",      parse_hook,               MUTT_MESSAGE_HOOK },
+  { "pgp-hook",          parse_hook,               MUTT_CRYPT_HOOK },
+  { "reply-hook",        parse_hook,               MUTT_REPLY_HOOK },
+  { "save-hook",         parse_hook,               MUTT_SAVE_HOOK },
+  { "send-hook",         parse_hook,               MUTT_SEND_HOOK },
+  { "send2-hook",        parse_hook,               MUTT_SEND2_HOOK },
+  { "shutdown-hook",     parse_hook,               MUTT_SHUTDOWN_HOOK | MUTT_GLOBAL_HOOK },
+  { "startup-hook",      parse_hook,               MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
+  { "timeout-hook",      parse_hook,               MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
+  { "unhook",            parse_unhook,             0 },
   { NULL, NULL, 0 },
   // clang-format on
 };

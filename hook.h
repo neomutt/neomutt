@@ -32,7 +32,7 @@ struct Buffer;
 struct Email;
 struct ListHead;
 
-typedef uint32_t HookFlags;          ///< Flags for mutt_parse_hook(), e.g. #MUTT_FOLDER_HOOK
+typedef uint32_t HookFlags;          ///< Flags for parse_hook(), e.g. #MUTT_FOLDER_HOOK
 #define MUTT_HOOK_NO_FLAGS       0   ///< No flags are set
 #define MUTT_FOLDER_HOOK   (1 << 0)  ///< folder-hook: when entering a mailbox
 #define MUTT_MBOX_HOOK     (1 << 1)  ///< mbox-hook: move messages after reading them
@@ -56,7 +56,7 @@ typedef uint32_t HookFlags;          ///< Flags for mutt_parse_hook(), e.g. #MUT
 #define MUTT_GLOBAL_HOOK   (1 << 19) ///< Hooks which don't take a regex
 
 void hooks_init(void);
-enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
+enum CommandResult parse_hook(struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
 
 void                  mutt_account_hook            (const char *url);
 void                  mutt_crypt_hook              (struct ListHead *list, struct Address *addr);
@@ -66,7 +66,7 @@ char *                mutt_find_hook               (HookFlags type, const char *
 void                  mutt_folder_hook             (const char *path, const char *desc);
 const struct Expando *mutt_idxfmt_hook             (const char *name, struct Mailbox *m, struct Email *e);
 void                  mutt_message_hook            (struct Mailbox *m, struct Email *e, HookFlags type);
-enum CommandResult    mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
+enum CommandResult    parse_charset_iconv_hook     (struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
 void                  mutt_select_fcc              (struct Buffer *path, struct Email *e);
 void                  mutt_startup_shutdown_hook   (HookFlags type);
 void                  mutt_timeout_hook            (void);

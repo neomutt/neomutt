@@ -36,10 +36,10 @@
 #include "muttlib.h"
 
 /**
- * sb_parse_sidebar_pin - Parse the 'sidebar_pin' command - Implements Command::parse() - @ingroup command_parse
+ * parse_sidebar_pin - Parse the 'sidebar_pin' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult sb_parse_sidebar_pin(struct Buffer *token, struct Buffer *line,
-                                        intptr_t data, struct Buffer *err)
+enum CommandResult parse_sidebar_pin(struct Buffer *token, struct Buffer *line,
+                                     intptr_t data, struct Buffer *err)
 {
   struct Buffer *path = buf_pool_get();
 
@@ -55,10 +55,10 @@ enum CommandResult sb_parse_sidebar_pin(struct Buffer *token, struct Buffer *lin
 }
 
 /**
- * sb_parse_sidebar_unpin - Parse the 'sidebar_unpin' command - Implements Command::parse() - @ingroup command_parse
+ * parse_sidebar_unpin - Parse the 'sidebar_unpin' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult sb_parse_sidebar_unpin(struct Buffer *token, struct Buffer *line,
-                                          intptr_t data, struct Buffer *err)
+enum CommandResult parse_sidebar_unpin(struct Buffer *token, struct Buffer *line,
+                                       intptr_t data, struct Buffer *err)
 {
   struct Buffer *path = buf_pool_get();
 

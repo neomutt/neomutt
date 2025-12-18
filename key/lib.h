@@ -192,7 +192,7 @@ void                     km_keyname          (int c, struct Buffer *buf);
 
 // Private to libkey
 struct Keymap *    alloc_keys                  (size_t len, keycode_t *keys);
-enum CommandResult dump_bind_macro             (struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
+enum CommandResult parse_bind_macro            (struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
 void               generic_tokenize_push_string(char *s);
 int                get_op                      (const struct MenuFuncOp *funcs, const char *start, size_t len);
 struct Keymap *    km_compare_keys             (struct Keymap *k1, struct Keymap *k2, size_t *pos);

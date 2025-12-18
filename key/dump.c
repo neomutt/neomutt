@@ -171,10 +171,10 @@ static void colon_macro(enum MenuType menu, FILE *fp)
 }
 
 /**
- * dump_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
+ * parse_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult dump_bind_macro(struct Buffer *token, struct Buffer *line,
-                                   intptr_t data, struct Buffer *err)
+enum CommandResult parse_bind_macro(struct Buffer *token, struct Buffer *line,
+                                    intptr_t data, struct Buffer *err)
 {
   FILE *fp = NULL;
   struct Buffer *tempfile = NULL;
