@@ -102,7 +102,7 @@ static void test_parse_set(void)
   };
 
   struct Buffer *err = buf_pool_get();
-  char line[64];
+  struct Buffer *line = buf_pool_get();
 
   for (size_t v = 0; v < countof(vars); v++)
   {
@@ -113,7 +113,7 @@ static void test_parse_set(void)
       {
         buf_reset(err);
 
-        snprintf(line, sizeof(line), tests[t], commands[c], vars[v]);
+        buf_printf(line, tests[t], commands[c], vars[v]);
         // enum CommandResult rc =
         parse_rc_line(line, err);
       }
@@ -121,35 +121,36 @@ static void test_parse_set(void)
   }
 
   buf_pool_release(&err);
+  buf_pool_release(&line);
 }
 
 void test_parse_rc(void)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
+  struct Buffer *line = buf_pool_get();
 
   commands_register(&NeoMutt->commands, mutt_commands);
 
-  // enum CommandResult parse_rc_line(const char *line, struct Buffer *err);
+  // enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err);
   TEST_CASE("parse_rc_line");
-  rc = parse_rc_line(NULL, NULL);
+  buf_reset(line);
+  rc = parse_rc_line(line, NULL);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+
+  buf_strcpy(line, "; set");
+  TEST_CASE("parse_rc_line");
+  rc = parse_rc_line(line, NULL);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+
+  TEST_CASE("parse_rc_line");
+  buf_strcpy(line, "# set");
+  rc = parse_rc_line(line, NULL);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+
+  TEST_CASE("parse_rc_line");
+  buf_strcpy(line, "unknown");
+  rc = parse_rc_line(line, NULL);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
-
-  TEST_CASE("parse_rc_line");
-  rc = parse_rc_line("; set", NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
-
-  TEST_CASE("parse_rc_line");
-  rc = parse_rc_line("# set", NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
-
-  TEST_CASE("parse_rc_line");
-  rc = parse_rc_line("unknown", NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
-
-  // enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token, struct Buffer *err);
-  TEST_CASE("parse_rc_buffer");
-  rc = parse_rc_buffer(NULL, NULL, NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
   struct HashElem *he = cs_get_elem(NeoMutt->sub->cs, "from");
@@ -157,5 +158,6 @@ void test_parse_rc(void)
   cs_str_reset(NeoMutt->sub->cs, "from", NULL);
   test_parse_set();
 
+  buf_pool_release(&line);
   commands_clear(&NeoMutt->commands);
 }

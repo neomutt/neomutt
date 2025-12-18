@@ -179,7 +179,10 @@ enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer 
 {
   mutt_list_insert_head(&MuttrcStack, mutt_str_dup(NONULL(cwd)));
 
-  enum CommandResult ret = parse_rc_line(line, err);
+  struct Buffer *buf = buf_pool_get();
+  buf_strcpy(buf, line);
+  enum CommandResult ret = parse_rc_line(buf, err);
+  buf_pool_release(&buf);
 
   struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
   STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
@@ -220,7 +223,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 {
   int lineno = 0, rc = 0, warnings = 0;
   enum CommandResult line_rc;
-  struct Buffer *token = NULL, *linebuf = NULL;
+  struct Buffer *linebuf = NULL;
   char *line = NULL;
   char *currentline = NULL;
   char rcfile[PATH_MAX + 1] = { 0 };
@@ -269,7 +272,6 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     return -1;
   }
 
-  token = buf_pool_get();
   linebuf = buf_pool_get();
 
   const char *const c_config_charset = cs_subset_string(NeoMutt->sub, "config_charset");
@@ -292,7 +294,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     buf_strcpy(linebuf, currentline);
 
     buf_reset(err);
-    line_rc = parse_rc_buffer(linebuf, token, err);
+    line_rc = parse_rc_line(linebuf, err);
     if (line_rc == MUTT_CMD_ERROR)
     {
       mutt_error("%s:%d: %s", rcfile, lineno, buf_string(err));
@@ -356,7 +358,6 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     FREE(&np);
   }
 
-  buf_pool_release(&token);
   buf_pool_release(&linebuf);
   return rc;
 }
@@ -565,7 +566,7 @@ static enum CommandResult parse_ifdef(struct Buffer *token, struct Buffer *line,
   /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
   if ((res && (data == 0)) || (!res && (data == 1)))
   {
-    enum CommandResult rc = parse_rc_line(buf_string(token), err);
+    enum CommandResult rc = parse_rc_line(token, err);
     if (rc == MUTT_CMD_ERROR)
     {
       mutt_error(_("Error: %s"), buf_string(err));

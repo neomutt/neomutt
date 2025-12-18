@@ -194,11 +194,13 @@ static int execute_commands(struct StringArray *sa)
 {
   int rc = 0;
   struct Buffer *err = buf_pool_get();
+  struct Buffer *line = buf_pool_get();
 
   const char **cp = NULL;
   ARRAY_FOREACH(cp, sa)
   {
-    enum CommandResult rc2 = parse_rc_line(*cp, err);
+    buf_strcpy(line, *cp);
+    enum CommandResult rc2 = parse_rc_line(line, err);
     if (rc2 == MUTT_CMD_ERROR)
       mutt_error(_("Error in command line: %s"), buf_string(err));
     else if (rc2 == MUTT_CMD_WARNING)
@@ -210,6 +212,8 @@ static int execute_commands(struct StringArray *sa)
       return -1;
     }
   }
+
+  buf_pool_release(&line);
   buf_pool_release(&err);
 
   return rc;

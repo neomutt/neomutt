@@ -34,22 +34,17 @@
 #include "extract.h"
 
 /**
- * parse_rc_buffer - Parse a line of user config
+ * parse_rc_line - Parse a line of user config
  * @param line  config line to read
- * @param token scratch buffer to be used by parser
  * @param err   where to write error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- *
- * The reason for `token` is to avoid having to allocate and deallocate a lot
- * of memory if we are parsing many lines.  the caller can pass in the memory
- * to use, which avoids having to create new space for every call to this function.
  */
-enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token,
-                                   struct Buffer *err)
+enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
 {
   if (buf_is_empty(line))
     return 0;
 
+  struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
   buf_reset(err);
@@ -97,28 +92,6 @@ enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token,
   }
 
 finish:
-  return rc;
-}
-
-/**
- * parse_rc_line - Parse a line of user config
- * @param line Config line to read
- * @param err  Where to write error messages
- * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
- */
-enum CommandResult parse_rc_line(const char *line, struct Buffer *err)
-{
-  if (!line || (*line == '\0'))
-    return MUTT_CMD_ERROR;
-
-  struct Buffer *line_buffer = buf_pool_get();
-  struct Buffer *token = buf_pool_get();
-
-  buf_strcpy(line_buffer, line);
-
-  enum CommandResult rc = parse_rc_buffer(line_buffer, token, err);
-
-  buf_pool_release(&line_buffer);
   buf_pool_release(&token);
   return rc;
 }
