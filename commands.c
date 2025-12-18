@@ -1304,32 +1304,30 @@ static enum CommandResult parse_tag_formats(struct Buffer *token, struct Buffer 
   if (!line)
     return MUTT_CMD_ERROR;
 
-  struct Buffer *tagbuf = buf_pool_get();
-  struct Buffer *fmtbuf = buf_pool_get();
+  struct Buffer *tag = buf_pool_get();
+  struct Buffer *fmt = buf_pool_get();
 
   while (MoreArgs(line))
   {
-    parse_extract_token(tagbuf, line, TOKEN_NO_FLAGS);
-    const char *tag = buf_string(tagbuf);
-    if (*tag == '\0')
+    parse_extract_token(tag, line, TOKEN_NO_FLAGS);
+    if (buf_is_empty(tag))
       continue;
 
-    parse_extract_token(fmtbuf, line, TOKEN_NO_FLAGS);
-    const char *fmt = buf_string(fmtbuf);
+    parse_extract_token(fmt, line, TOKEN_NO_FLAGS);
 
     /* avoid duplicates */
-    const char *tmp = mutt_hash_find(TagFormats, fmt);
+    const char *tmp = mutt_hash_find(TagFormats, buf_string(fmt));
     if (tmp)
     {
-      mutt_warning(_("tag format '%s' already registered as '%s'"), fmt, tmp);
+      mutt_warning(_("tag format '%s' already registered as '%s'"), buf_string(fmt), tmp);
       continue;
     }
 
-    mutt_hash_insert(TagFormats, fmt, mutt_str_dup(tag));
+    mutt_hash_insert(TagFormats, buf_string(fmt), buf_strdup(tag));
   }
 
-  buf_pool_release(&tagbuf);
-  buf_pool_release(&fmtbuf);
+  buf_pool_release(&tag);
+  buf_pool_release(&fmt);
   return MUTT_CMD_SUCCESS;
 }
 
@@ -1346,31 +1344,31 @@ static enum CommandResult parse_tag_transforms(struct Buffer *token, struct Buff
   if (!line)
     return MUTT_CMD_ERROR;
 
-  struct Buffer *tagbuf = buf_pool_get();
+  struct Buffer *tag = buf_pool_get();
   struct Buffer *trnbuf = buf_pool_get();
 
   while (MoreArgs(line))
   {
-    parse_extract_token(tagbuf, line, TOKEN_NO_FLAGS);
-    const char *tag = buf_string(tagbuf);
-    if (*tag == '\0')
+    parse_extract_token(tag, line, TOKEN_NO_FLAGS);
+    if (buf_is_empty(tag))
       continue;
 
     parse_extract_token(trnbuf, line, TOKEN_NO_FLAGS);
     const char *trn = buf_string(trnbuf);
 
     /* avoid duplicates */
-    const char *tmp = mutt_hash_find(TagTransforms, tag);
+    const char *tmp = mutt_hash_find(TagTransforms, buf_string(tag));
     if (tmp)
     {
-      mutt_warning(_("tag transform '%s' already registered as '%s'"), tag, tmp);
+      mutt_warning(_("tag transform '%s' already registered as '%s'"),
+                   buf_string(tag), tmp);
       continue;
     }
 
-    mutt_hash_insert(TagTransforms, tag, mutt_str_dup(trn));
+    mutt_hash_insert(TagTransforms, buf_string(tag), mutt_str_dup(trn));
   }
 
-  buf_pool_release(&tagbuf);
+  buf_pool_release(&tag);
   buf_pool_release(&trnbuf);
   return MUTT_CMD_SUCCESS;
 }
