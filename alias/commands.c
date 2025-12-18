@@ -132,7 +132,7 @@ void parse_alias_comments(struct Alias *alias, const char *com)
  *
  * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
  */
-enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
+enum CommandResult parse_alias(struct Buffer *token, struct Buffer *s,
                                intptr_t data, struct Buffer *err)
 {
   struct Alias *tmp = NULL;
@@ -146,22 +146,22 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   }
 
   /* name */
-  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf->data);
-  if (parse_grouplist(&gl, buf, s, err) == -1)
+  parse_extract_token(token, s, TOKEN_NO_FLAGS);
+  mutt_debug(LL_DEBUG5, "First token is '%s'\n", token->data);
+  if (parse_grouplist(&gl, token, s, err) == -1)
   {
     return MUTT_CMD_ERROR;
   }
-  char *name = mutt_str_dup(buf->data);
+  char *name = mutt_str_dup(token->data);
 
   /* address list */
-  parse_extract_token(buf, s, TOKEN_QUOTE | TOKEN_SPACE | TOKEN_SEMICOLON);
-  mutt_debug(LL_DEBUG5, "Second token is '%s'\n", buf->data);
+  parse_extract_token(token, s, TOKEN_QUOTE | TOKEN_SPACE | TOKEN_SEMICOLON);
+  mutt_debug(LL_DEBUG5, "Second token is '%s'\n", token->data);
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-  int parsed = mutt_addrlist_parse2(&al, buf->data);
+  int parsed = mutt_addrlist_parse2(&al, token->data);
   if (parsed == 0)
   {
-    buf_printf(err, _("Warning: Bad address '%s' in alias '%s'"), buf->data, name);
+    buf_printf(err, _("Warning: Bad address '%s' in alias '%s'"), token->data, name);
     FREE(&name);
     goto bail;
   }
@@ -248,15 +248,15 @@ bail:
 /**
  * parse_unalias - Parse the 'unalias' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
+enum CommandResult parse_unalias(struct Buffer *token, struct Buffer *s,
                                  intptr_t data, struct Buffer *err)
 {
   do
   {
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, s, TOKEN_NO_FLAGS);
 
     struct Alias *np = NULL;
-    if (mutt_str_equal("*", buf->data))
+    if (mutt_str_equal("*", token->data))
     {
       TAILQ_FOREACH(np, &Aliases, entries)
       {
@@ -269,7 +269,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
 
     TAILQ_FOREACH(np, &Aliases, entries)
     {
-      if (!mutt_istr_equal(buf->data, np->name))
+      if (!mutt_istr_equal(token->data, np->name))
         continue;
 
       TAILQ_REMOVE(&Aliases, np, entries);

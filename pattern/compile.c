@@ -64,15 +64,16 @@ typedef uint16_t ParseDateRangeFlags; ///< Flags for parse_date_range(), e.g. #M
 static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err)
 {
-  struct Buffer *buf = buf_pool_get();
+  struct Buffer *token = buf_pool_get();
   bool rc = false;
   char *pexpr = s->dptr;
-  if ((parse_extract_token(buf, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) || !buf->data)
+  if ((parse_extract_token(token, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) ||
+      !token->data)
   {
     buf_printf(err, _("Error in expression: %s"), pexpr);
     goto out;
   }
-  if (buf_is_empty(buf))
+  if (buf_is_empty(token))
   {
     buf_addstr(err, _("Empty expression"));
     goto out;
@@ -80,26 +81,26 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
 
   if (pat->string_match)
   {
-    pat->p.str = mutt_str_dup(buf->data);
-    pat->ign_case = mutt_mb_is_lower(buf->data);
+    pat->p.str = mutt_str_dup(token->data);
+    pat->ign_case = mutt_mb_is_lower(token->data);
   }
   else if (pat->group_match)
   {
-    pat->p.group = mutt_pattern_group(buf->data);
+    pat->p.group = mutt_pattern_group(token->data);
   }
   else
   {
     pat->p.regex = MUTT_MEM_CALLOC(1, regex_t);
 #ifdef USE_DEBUG_GRAPHVIZ
-    pat->raw_pattern = mutt_str_dup(buf->data);
+    pat->raw_pattern = mutt_str_dup(token->data);
 #endif
-    uint16_t case_flags = mutt_mb_is_lower(buf->data) ? REG_ICASE : 0;
-    int rc2 = REG_COMP(pat->p.regex, buf->data, REG_NEWLINE | REG_NOSUB | case_flags);
+    uint16_t case_flags = mutt_mb_is_lower(token->data) ? REG_ICASE : 0;
+    int rc2 = REG_COMP(pat->p.regex, token->data, REG_NEWLINE | REG_NOSUB | case_flags);
     if (rc2 != 0)
     {
       char errmsg[256] = { 0 };
       regerror(rc2, pat->p.regex, errmsg, sizeof(errmsg));
-      buf_printf(err, "'%s': %s", buf->data, errmsg);
+      buf_printf(err, "'%s': %s", token->data, errmsg);
       FREE(&pat->p.regex);
       goto out;
     }
@@ -108,7 +109,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
   rc = true;
 
 out:
-  buf_pool_release(&buf);
+  buf_pool_release(&token);
   return rc;
 }
 
@@ -139,8 +140,8 @@ static bool add_query_msgid(char *line, int line_num, void *user_data)
 static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
                       struct Buffer *s, struct Buffer *err, struct Mailbox *m)
 {
-  struct Buffer *cmd_buf = buf_pool_get();
-  struct Buffer *tok_buf = buf_pool_get();
+  struct Buffer *cmd = buf_pool_get();
+  struct Buffer *tok = buf_pool_get();
   bool rc = false;
 
   FILE *fp = NULL;
@@ -153,43 +154,42 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   }
 
   char *pexpr = s->dptr;
-  if ((parse_extract_token(tok_buf, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) ||
-      !tok_buf->data)
+  if ((parse_extract_token(tok, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) || !tok->data)
   {
     buf_printf(err, _("Error in expression: %s"), pexpr);
     goto out;
   }
-  if (*tok_buf->data == '\0')
+  if (*tok->data == '\0')
   {
     buf_addstr(err, _("Empty expression"));
     goto out;
   }
 
-  buf_addstr(cmd_buf, c_external_search_command);
-  buf_addch(cmd_buf, ' ');
+  buf_addstr(cmd, c_external_search_command);
+  buf_addch(cmd, ' ');
 
   if (m)
   {
     char *escaped_folder = mutt_path_escape(mailbox_path(m));
     mutt_debug(LL_DEBUG2, "escaped folder path: %s\n", escaped_folder);
-    buf_addch(cmd_buf, '\'');
-    buf_addstr(cmd_buf, escaped_folder);
-    buf_addch(cmd_buf, '\'');
+    buf_addch(cmd, '\'');
+    buf_addstr(cmd, escaped_folder);
+    buf_addch(cmd, '\'');
   }
   else
   {
-    buf_addch(cmd_buf, '/');
+    buf_addch(cmd, '/');
   }
-  buf_addch(cmd_buf, ' ');
-  buf_addstr(cmd_buf, tok_buf->data);
+  buf_addch(cmd, ' ');
+  buf_addstr(cmd, tok->data);
 
-  mutt_message(_("Running search command: %s ..."), cmd_buf->data);
+  mutt_message(_("Running search command: %s ..."), cmd->data);
   pat->is_multi = true;
   mutt_list_clear(&pat->p.multi_cases);
-  pid_t pid = filter_create(cmd_buf->data, NULL, &fp, NULL, NeoMutt->env);
+  pid_t pid = filter_create(cmd->data, NULL, &fp, NULL, NeoMutt->env);
   if (pid < 0)
   {
-    buf_printf(err, "unable to fork command: %s\n", cmd_buf->data);
+    buf_printf(err, "unable to fork command: %s\n", cmd->data);
     goto out;
   }
 
@@ -200,8 +200,8 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   rc = true;
 
 out:
-  buf_pool_release(&cmd_buf);
-  buf_pool_release(&tok_buf);
+  buf_pool_release(&cmd);
+  buf_pool_release(&tok);
   return rc;
 }
 

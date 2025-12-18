@@ -173,7 +173,7 @@ static void colon_macro(enum MenuType menu, FILE *fp)
 /**
  * dump_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
+enum CommandResult dump_bind_macro(struct Buffer *token, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
   FILE *fp = NULL;
@@ -185,7 +185,7 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   if (!MoreArgs(s))
     dump_all = true;
   else
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, s, TOKEN_NO_FLAGS);
 
   if (MoreArgs(s))
   {
@@ -204,7 +204,7 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
     goto done;
   }
 
-  if (dump_all || mutt_istr_equal(buf_string(buf), "all"))
+  if (dump_all || mutt_istr_equal(buf_string(token), "all"))
   {
     if (bind)
       colon_bind(MENU_MAX, fp);
@@ -213,11 +213,11 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   }
   else
   {
-    const int menu = mutt_map_get_value(buf_string(buf), MenuNames);
+    const int menu = mutt_map_get_value(buf_string(token), MenuNames);
     if (menu == -1)
     {
       // L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-      buf_printf(err, _("%s: no such menu"), buf_string(buf));
+      buf_printf(err, _("%s: no such menu"), buf_string(token));
       goto done;
     }
 
@@ -232,7 +232,7 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
     // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
     //       it might also be 'all' when all menus are affected.
     buf_printf(err, bind ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
-               dump_all ? "all" : buf_string(buf));
+               dump_all ? "all" : buf_string(token));
     goto done;
   }
   mutt_file_fclose(&fp);

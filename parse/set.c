@@ -466,13 +466,13 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
  */
-enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
+enum CommandResult parse_set(struct Buffer *token, struct Buffer *s,
                              intptr_t data, struct Buffer *err)
 {
   /* The order must match `enum MuttSetCommand` */
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
 
-  if (!buf || !s)
+  if (!token || !s)
     return MUTT_CMD_ERROR;
 
   do
@@ -515,9 +515,9 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    // get the variable name.  Note that buf might be empty if no additional
+    // get the variable name.  Note that token might be empty if no additional
     // argument was given.
-    int ret = parse_extract_token(buf, s, TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
+    int ret = parse_extract_token(token, s, TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
     if (ret == -1)
       return MUTT_CMD_ERROR;
 
@@ -527,11 +527,11 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     bool increment = false;
     bool decrement = false;
 
-    struct HashElem *he = cs_subset_lookup(NeoMutt->sub, buf->data);
+    struct HashElem *he = cs_subset_lookup(NeoMutt->sub, token->data);
     if (he)
     {
       // Use the correct name if a synonym is used
-      buf_strcpy(buf, he->key.strkey);
+      buf_strcpy(token, he->key.strkey);
       bool_or_quad = ((CONFIG_TYPE(he->type) == DT_BOOL) ||
                       (CONFIG_TYPE(he->type) == DT_QUAD));
       invertible = (bool_or_quad || (CONFIG_TYPE(he->type) == DT_NUMBER));
@@ -633,20 +633,20 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     enum CommandResult rc = MUTT_CMD_ERROR;
     if (query)
     {
-      rc = command_set_query(buf, err);
+      rc = command_set_query(token, err);
       return rc; // We can only do one query even if multiple config names are given
     }
     else if (reset)
     {
-      rc = command_set_reset(buf, err);
+      rc = command_set_reset(token, err);
     }
     else if (unset)
     {
-      rc = command_set_unset(buf, err);
+      rc = command_set_unset(token, err);
     }
     else if (inv)
     {
-      rc = command_set_toggle(buf, err);
+      rc = command_set_toggle(token, err);
     }
     else if (equals)
     {
@@ -656,11 +656,11 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       struct Buffer *value = buf_pool_get();
       parse_extract_token(value, s, TOKEN_BACKTICK_VARS);
       if (increment)
-        rc = command_set_increment(buf, value, err);
+        rc = command_set_increment(token, value, err);
       else if (decrement)
-        rc = command_set_decrement(buf, value, err);
+        rc = command_set_decrement(token, value, err);
       else
-        rc = command_set_set(buf, value, err);
+        rc = command_set_set(token, value, err);
       buf_pool_release(&value);
     }
     else
@@ -671,12 +671,12 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       {
         struct Buffer *yes = buf_pool_get();
         buf_addstr(yes, "yes");
-        rc = command_set_set(buf, yes, err);
+        rc = command_set_set(token, yes, err);
         buf_pool_release(&yes);
       }
       else
       {
-        rc = command_set_query(buf, err);
+        rc = command_set_query(token, err);
         return rc; // We can only do one query even if multiple config names are given
       }
     }

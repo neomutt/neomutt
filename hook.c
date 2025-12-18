@@ -120,7 +120,7 @@ static struct Hook *hook_new(void)
 /**
  * mutt_parse_charset_iconv_hook - Parse 'charset-hook' and 'iconv-hook' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buffer *s,
+enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *token, struct Buffer *s,
                                                  intptr_t data, struct Buffer *err)
 {
   struct Buffer *alias = buf_pool_get();
@@ -137,12 +137,12 @@ enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buff
 
   if (buf_is_empty(alias) || buf_is_empty(charset))
   {
-    buf_printf(err, _("%s: too few arguments"), buf->data);
+    buf_printf(err, _("%s: too few arguments"), token->data);
     rc = MUTT_CMD_WARNING;
   }
   else if (MoreArgs(s))
   {
-    buf_printf(err, _("%s: too many arguments"), buf->data);
+    buf_printf(err, _("%s: too many arguments"), token->data);
     buf_reset(s); // clean up buffer to avoid a mess with further rcfile processing
     rc = MUTT_CMD_WARNING;
   }
@@ -163,7 +163,7 @@ done:
  *
  * This is used by 'account-hook', 'append-hook' and many more.
  */
-enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
+enum CommandResult mutt_parse_hook(struct Buffer *token, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
   struct Hook *hook = NULL;
@@ -192,7 +192,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       use_regex = false;
       if (!MoreArgs(s))
       {
-        buf_printf(err, _("%s: too few arguments"), buf->data);
+        buf_printf(err, _("%s: too few arguments"), token->data);
         rc = MUTT_CMD_WARNING;
         goto cleanup;
       }
@@ -201,7 +201,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
 
     if (!MoreArgs(s))
     {
-      buf_printf(err, _("%s: too few arguments"), buf->data);
+      buf_printf(err, _("%s: too few arguments"), token->data);
       rc = MUTT_CMD_WARNING;
       goto cleanup;
     }
@@ -215,14 +215,14 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
 
   if (buf_is_empty(cmd))
   {
-    buf_printf(err, _("%s: too few arguments"), buf->data);
+    buf_printf(err, _("%s: too few arguments"), token->data);
     rc = MUTT_CMD_WARNING;
     goto cleanup;
   }
 
   if (MoreArgs(s))
   {
-    buf_printf(err, _("%s: too many arguments"), buf->data);
+    buf_printf(err, _("%s: too many arguments"), token->data);
     rc = MUTT_CMD_WARNING;
     goto cleanup;
   }
@@ -438,7 +438,7 @@ static void delete_idxfmt_hooks(void)
 /**
  * mutt_parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buffer *s,
+static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *token, struct Buffer *s,
                                                  intptr_t data, struct Buffer *err)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
@@ -457,7 +457,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
 
   if (!MoreArgs(s))
   {
-    buf_printf(err, _("%s: too few arguments"), buf->data);
+    buf_printf(err, _("%s: too few arguments"), token->data);
     goto out;
   }
   parse_extract_token(name, s, TOKEN_NO_FLAGS);
@@ -473,7 +473,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
 
   if (!MoreArgs(s))
   {
-    buf_printf(err, _("%s: too few arguments"), buf->data);
+    buf_printf(err, _("%s: too few arguments"), token->data);
     goto out;
   }
   parse_extract_token(fmtstring, s, TOKEN_NO_FLAGS);
@@ -484,7 +484,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
 
   if (MoreArgs(s))
   {
-    buf_printf(err, _("%s: too many arguments"), buf->data);
+    buf_printf(err, _("%s: too many arguments"), token->data);
     goto out;
   }
 
@@ -576,13 +576,13 @@ static HookFlags mutt_get_hook_type(const char *name)
 /**
  * mutt_parse_unhook - Parse the 'unhook' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
+static enum CommandResult mutt_parse_unhook(struct Buffer *token, struct Buffer *s,
                                             intptr_t data, struct Buffer *err)
 {
   while (MoreArgs(s))
   {
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-    if (mutt_str_equal("*", buf->data))
+    parse_extract_token(token, s, TOKEN_NO_FLAGS);
+    if (mutt_str_equal("*", token->data))
     {
       if (CurrentHookType != TOKEN_NO_FLAGS)
       {
@@ -595,11 +595,11 @@ static enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s
     }
     else
     {
-      HookFlags type = mutt_get_hook_type(buf->data);
+      HookFlags type = mutt_get_hook_type(token->data);
 
       if (type == MUTT_HOOK_NO_FLAGS)
       {
-        buf_printf(err, _("unhook: unknown hook type: %s"), buf->data);
+        buf_printf(err, _("unhook: unknown hook type: %s"), token->data);
         return MUTT_CMD_ERROR;
       }
       if (type & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK))
@@ -610,7 +610,7 @@ static enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s
       if (CurrentHookType == type)
       {
         buf_printf(err, _("unhook: Can't delete a %s from within a %s"),
-                   buf->data, buf->data);
+                   token->data, token->data);
         return MUTT_CMD_WARNING;
       }
       if (type == MUTT_IDXFMTHOOK)

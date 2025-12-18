@@ -89,30 +89,30 @@ void mutt_alternates_reset(struct MailboxView *mv)
 /**
  * parse_alternates - Parse the 'alternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
+enum CommandResult parse_alternates(struct Buffer *token, struct Buffer *s,
                                     intptr_t data, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
   do
   {
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, s, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, buf, s, err) == -1)
+    if (parse_grouplist(&gl, token, s, err) == -1)
       goto bail;
 
-    mutt_regexlist_remove(&UnAlternates, buf->data);
+    mutt_regexlist_remove(&UnAlternates, token->data);
 
-    if (mutt_regexlist_add(&Alternates, buf->data, REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&Alternates, token->data, REG_ICASE, err) != 0)
       goto bail;
 
-    if (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0)
+    if (mutt_grouplist_add_regex(&gl, token->data, REG_ICASE, err) != 0)
       goto bail;
   } while (MoreArgs(s));
 
   mutt_grouplist_destroy(&gl);
 
-  mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", buf->data);
+  mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", token->data);
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_ADD, NULL);
 
   return MUTT_CMD_SUCCESS;
@@ -125,23 +125,23 @@ bail:
 /**
  * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
+enum CommandResult parse_unalternates(struct Buffer *token, struct Buffer *s,
                                       intptr_t data, struct Buffer *err)
 {
   do
   {
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&Alternates, buf->data);
+    parse_extract_token(token, s, TOKEN_NO_FLAGS);
+    mutt_regexlist_remove(&Alternates, token->data);
 
-    if (!mutt_str_equal(buf->data, "*") &&
-        (mutt_regexlist_add(&UnAlternates, buf->data, REG_ICASE, err) != 0))
+    if (!mutt_str_equal(token->data, "*") &&
+        (mutt_regexlist_add(&UnAlternates, token->data, REG_ICASE, err) != 0))
     {
       return MUTT_CMD_ERROR;
     }
 
   } while (MoreArgs(s));
 
-  mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", buf->data);
+  mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", token->data);
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_DELETE, NULL);
 
   return MUTT_CMD_SUCCESS;

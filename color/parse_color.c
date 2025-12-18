@@ -279,7 +279,7 @@ enum CommandResult parse_color_name(const char *s, struct ColorElement *elem,
  *
  * Parse a pair of colours, e.g. "red default"
  */
-enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
+enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *s,
                                     struct AttrColor *ac, struct Buffer *err)
 {
   while (true)
@@ -290,14 +290,14 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    parse_extract_token(buf, s, TOKEN_COMMENT);
-    if (buf_is_empty(buf))
+    parse_extract_token(token, s, TOKEN_COMMENT);
+    if (buf_is_empty(token))
       continue;
 
-    int attr = mutt_map_get_value(buf_string(buf), AttributeNames);
+    int attr = mutt_map_get_value(buf_string(token), AttributeNames);
     if (attr == -1)
     {
-      enum CommandResult rc = parse_color_name(buf_string(buf), &ac->fg, err);
+      enum CommandResult rc = parse_color_name(buf_string(token), &ac->fg, err);
       if (rc != MUTT_CMD_SUCCESS)
         return rc;
       break;
@@ -315,18 +315,18 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-  parse_extract_token(buf, s, TOKEN_COMMENT);
+  parse_extract_token(token, s, TOKEN_COMMENT);
 
-  return parse_color_name(buf_string(buf), &ac->bg, err);
+  return parse_color_name(buf_string(token), &ac->bg, err);
 }
 
 /**
  * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t - @ingroup parser_callback_api
  */
-enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
+enum CommandResult parse_attr_spec(struct Buffer *token, struct Buffer *s,
                                    struct AttrColor *ac, struct Buffer *err)
 {
-  if (!buf || !s || !ac)
+  if (!token || !s || !ac)
     return MUTT_CMD_ERROR;
 
   if (!MoreArgs(s))
@@ -335,12 +335,12 @@ enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_WARNING;
   }
 
-  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_token(token, s, TOKEN_NO_FLAGS);
 
-  int attr = mutt_map_get_value(buf_string(buf), AttributeNames);
+  int attr = mutt_map_get_value(buf_string(token), AttributeNames);
   if (attr == -1)
   {
-    buf_printf(err, _("%s: no such attribute"), buf_string(buf));
+    buf_printf(err, _("%s: no such attribute"), buf_string(token));
     return MUTT_CMD_WARNING;
   }
 
