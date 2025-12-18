@@ -858,11 +858,11 @@ enum CommandResult parse_my_hdr(struct Buffer *token, struct Buffer *line,
   }
 
   struct EventHeader ev_h = { token->data };
-  struct ListNode *n = header_find(&UserHeader, buf_string(token));
+  struct ListNode *node = header_find(&UserHeader, buf_string(token));
 
-  if (n)
+  if (node)
   {
-    header_update(n, buf_string(token));
+    header_update(node, buf_string(token));
     mutt_debug(LL_NOTIFY, "NT_HEADER_CHANGE: %s\n", buf_string(token));
     notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_CHANGE, &ev_h);
   }
