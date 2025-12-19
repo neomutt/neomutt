@@ -279,8 +279,7 @@ enum CommandResult parse_color_name(const char *s, struct ColorElement *elem,
  *
  * Parse a pair of colours, e.g. "red default"
  */
-enum CommandResult parse_color_pair(const struct Command *cmd,
-                                    struct Buffer *token_, struct Buffer *line,
+enum CommandResult parse_color_pair(const struct Command *cmd, struct Buffer *line,
                                     struct AttrColor *ac, struct Buffer *err)
 {
   if (!line || !ac)
@@ -335,8 +334,7 @@ done:
 /**
  * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t - @ingroup parser_callback_api
  */
-enum CommandResult parse_attr_spec(const struct Command *cmd,
-                                   struct Buffer *token_, struct Buffer *line,
+enum CommandResult parse_attr_spec(const struct Command *cmd, struct Buffer *line,
                                    struct AttrColor *ac, struct Buffer *err)
 {
   if (!line || !ac)

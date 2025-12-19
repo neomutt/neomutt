@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -304,14 +303,13 @@ void mutt_attachments_reset(struct MailboxView *mv)
 
 /**
  * parse_attach_list - Parse the "attachments" command
- * @param token  Buffer for temporary storage
- * @param line    Buffer containing the attachments command
+ * @param cmd  Command being parsed
+ * @param line Buffer containing the attachments command
  * @param head List of AttachMatch to add to
  * @param err  Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-static enum CommandResult parse_attach_list(const struct Command *cmd,
-                                            struct Buffer *token_, struct Buffer *line,
+static enum CommandResult parse_attach_list(const struct Command *cmd, struct Buffer *line,
                                             struct ListHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
@@ -390,14 +388,13 @@ done:
 
 /**
  * parse_unattach_list - Parse the "unattachments" command
- * @param token  Buffer for temporary storage
- * @param line    Buffer containing the unattachments command
+ * @param cmd  Command being parsed
+ * @param line Buffer containing the unattachments command
  * @param head List of AttachMatch to remove from
  * @param err  Buffer for error messages
  * @retval #MUTT_CMD_SUCCESS Always
  */
-static enum CommandResult parse_unattach_list(const struct Command *cmd,
-                                              struct Buffer *token_, struct Buffer *line,
+static enum CommandResult parse_unattach_list(const struct Command *cmd, struct Buffer *line,
                                               struct ListHead *head, struct Buffer *err)
 {
   struct Buffer *token = buf_pool_get();
@@ -482,7 +479,7 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
 /**
  * parse_attachments - Parse the 'attachments' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *token_,
+enum CommandResult parse_attachments(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -541,7 +538,7 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *t
     goto done;
   }
 
-  rc = parse_attach_list(cmd, token, line, head, err);
+  rc = parse_attach_list(cmd, line, head, err);
 
 done:
   buf_pool_release(&token);
@@ -551,7 +548,7 @@ done:
 /**
  * parse_unattachments - Parse the 'unattachments' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer *token_,
+enum CommandResult parse_unattachments(const struct Command *cmd,
                                        struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -611,7 +608,7 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
     goto done;
   }
 
-  rc = parse_unattach_list(cmd, token, line, head, err);
+  rc = parse_unattach_list(cmd, line, head, err);
 
 done:
   buf_pool_release(&token);

@@ -466,8 +466,7 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
  */
-enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token_,
-                             struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 {
   /* The order must match `enum MuttSetCommand` */
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };

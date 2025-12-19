@@ -73,7 +73,7 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
       if (mutt_str_equal(token->data, cmd->name))
       {
         mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
-        rc = cmd->parse(cmd, token, line, err);
+        rc = cmd->parse(cmd, line, err);
         if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
           goto finish; /* Propagate return code */
 

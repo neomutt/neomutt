@@ -25,7 +25,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include "config/lib.h"
 #include "core/lib.h"
 
@@ -35,14 +34,14 @@ struct GroupList;
 /* parameter to parse_mailboxes */
 #define MUTT_NAMED   (1 << 0)
 
-enum CommandResult parse_mailboxes       (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_my_hdr          (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_subjectrx_list  (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_subscribe_to    (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unalternates    (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unmailboxes     (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unsubscribe_from(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_mailboxes       (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_my_hdr          (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_subjectrx_list  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_subscribe_to    (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unalternates    (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unmailboxes     (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unsubscribe_from(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err);
 char *mutt_get_sourced_cwd(void);

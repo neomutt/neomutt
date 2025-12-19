@@ -24,7 +24,6 @@
 #define MUTT_ALTERNATES_H
 
 #include <stdbool.h>
-#include <stdint.h>
 #include "core/lib.h"
 
 struct Buffer;
@@ -47,8 +46,8 @@ enum NotifyAlternates
 void alternates_init(void);
 void alternates_cleanup(void);
 
-enum CommandResult parse_alternates  (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_alternates  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 bool mutt_alternates_match(const char *addr);
 void mutt_alternates_reset(struct MailboxView *mv);

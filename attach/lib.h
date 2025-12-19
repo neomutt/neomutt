@@ -43,7 +43,6 @@
 #define MUTT_ATTACH_LIB_H
 
 #include <stdbool.h>
-#include <stdint.h>
 #include "core/lib.h"
 // IWYU pragma: begin_keep
 #include "attach.h"
@@ -63,7 +62,7 @@ bool         attach_body_parent  (struct Body *start, struct Body *start_parent,
 struct Body *attach_body_ancestor(struct Body *start, struct Body *body, const char *subtype);
 bool         attach_body_previous(struct Body *start, struct Body *body, struct Body **previous);
 
-enum CommandResult parse_attachments  (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_attachments  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 #endif /* MUTT_ATTACH_LIB_H */

@@ -23,7 +23,6 @@
 #ifndef MUTT_PARSE_SET_H
 #define MUTT_PARSE_SET_H
 
-#include <stdint.h>
 #include "core/lib.h"
 
 struct Buffer;
@@ -39,6 +38,6 @@ enum MuttSetCommand
   MUTT_SET_RESET, ///< default is to reset all vars to default
 };
 
-enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 #endif /* MUTT_PARSE_SET_H */

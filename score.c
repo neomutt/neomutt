@@ -88,8 +88,8 @@ void mutt_check_rescore(struct Mailbox *m)
 /**
  * parse_score - Parse the 'score' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_score(const struct Command *cmd, struct Buffer *token_,
-                               struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
+                               struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -211,8 +211,8 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 /**
  * parse_unscore - Parse the 'unscore' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *token_,
-                                 struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line,
+                                 struct Buffer *err)
 {
   if (!MoreArgs(line))
   {

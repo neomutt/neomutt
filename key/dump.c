@@ -30,7 +30,6 @@
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -173,7 +172,7 @@ static void colon_macro(enum MenuType menu, FILE *fp)
 /**
  * parse_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_bind_macro(const struct Command *cmd, struct Buffer *token_,
+enum CommandResult parse_bind_macro(const struct Command *cmd,
                                     struct Buffer *line, struct Buffer *err)
 {
   FILE *fp = NULL;

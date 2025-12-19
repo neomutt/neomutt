@@ -28,8 +28,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
@@ -306,8 +304,8 @@ static enum CommandResult try_bind(char *key, enum MenuType mtype, char *func,
 /**
  * parse_push - Parse the 'push' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_push(const struct Command *cmd, struct Buffer *token_,
-                              struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_push(const struct Command *cmd, struct Buffer *line,
+                              struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -338,14 +336,14 @@ done:
  *
  * bind menu-name `<key_sequence>` function-name
  */
-enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *token_,
-                              struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line,
+                              struct Buffer *err)
 {
   if (StartupComplete)
   {
     // Save and restore the offset in `line` because parse_bind_macro() might change it
     char *dptr = line->dptr;
-    if (parse_bind_macro(cmd, token_, line, err) == MUTT_CMD_SUCCESS)
+    if (parse_bind_macro(cmd, line, err) == MUTT_CMD_SUCCESS)
     {
       return MUTT_CMD_SUCCESS;
     }
@@ -463,8 +461,8 @@ done:
  *
  * unbind `<menu-name[,...]|*>` [`<key_sequence>`]
  */
-enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *token_,
-                                struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
+                                struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -562,14 +560,14 @@ done:
  *
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
-enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *token_,
-                               struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *line,
+                               struct Buffer *err)
 {
   if (StartupComplete)
   {
     // Save and restore the offset in `line` because parse_bind_macro() might change it
     char *dptr = line->dptr;
-    if (parse_bind_macro(cmd, token_, line, err) == MUTT_CMD_SUCCESS)
+    if (parse_bind_macro(cmd, line, err) == MUTT_CMD_SUCCESS)
     {
       return MUTT_CMD_SUCCESS;
     }
@@ -660,8 +658,8 @@ done:
 /**
  * parse_exec - Parse the 'exec' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *token_,
-                              struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *line,
+                              struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
