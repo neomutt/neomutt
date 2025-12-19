@@ -38,8 +38,8 @@
 /**
  * parse_sidebar_pin - Parse the 'sidebar_pin' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_sidebar_pin(struct Buffer *token, struct Buffer *line,
-                                     intptr_t data, struct Buffer *err)
+enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *token,
+                                     struct Buffer *line, struct Buffer *err)
 {
   struct Buffer *path = buf_pool_get();
 
@@ -57,8 +57,8 @@ enum CommandResult parse_sidebar_pin(struct Buffer *token, struct Buffer *line,
 /**
  * parse_sidebar_unpin - Parse the 'sidebar_unpin' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_sidebar_unpin(struct Buffer *token, struct Buffer *line,
-                                       intptr_t data, struct Buffer *err)
+enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *token,
+                                       struct Buffer *line, struct Buffer *err)
 {
   struct Buffer *path = buf_pool_get();
 

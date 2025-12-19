@@ -117,7 +117,7 @@ static int lua_cb_global_call(lua_State *l)
   }
   buf_seek(buf, 0);
 
-  if (cmd->parse(token, buf, cmd->data, err))
+  if (cmd->parse(cmd, token, buf, err))
   {
     luaL_error(l, "NeoMutt error: %s", buf_string(err));
     rc = -1;

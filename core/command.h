@@ -55,13 +55,13 @@ struct Command
    * @ingroup command_api
    *
    * parse - Function to parse a command
+   * @param cmd  Command being parsed
    * @param buf  Temporary Buffer space
    * @param line Buffer containing string to be parsed
-   * @param data Flags associated with the command
    * @param err  Buffer for error messages
    * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
    */
-  enum CommandResult (*parse)(struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
+  enum CommandResult (*parse)(const struct Command *cmd, struct Buffer *buf, struct Buffer *line, struct Buffer *err);
 
   intptr_t data; ///< Data or flags to pass to the command
 };

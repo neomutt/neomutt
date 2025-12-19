@@ -177,7 +177,7 @@ static void km_unbind_all(struct KeymapList *km_list, unsigned long mode)
 /**
  * parse_keymap - Parse a user-config key binding
  * @param mtypes    Array for results
- * @param line         Buffer containing config string
+ * @param line      Buffer containing config string
  * @param max_menus Total number of menus
  * @param num_menus Number of menus this config applies to
  * @param err       Buffer for error messages
@@ -306,13 +306,13 @@ static enum CommandResult try_bind(char *key, enum MenuType mtype, char *func,
 /**
  * parse_push - Parse the 'push' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_push(struct Buffer *token, struct Buffer *line,
-                              intptr_t data, struct Buffer *err)
+enum CommandResult parse_push(const struct Command *cmd, struct Buffer *token,
+                              struct Buffer *line, struct Buffer *err)
 {
   parse_extract_token(token, line, TOKEN_CONDENSE);
   if (MoreArgs(line))
   {
-    buf_printf(err, _("%s: too many arguments"), "push");
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
     return MUTT_CMD_ERROR;
   }
 
@@ -325,14 +325,14 @@ enum CommandResult parse_push(struct Buffer *token, struct Buffer *line,
  *
  * bind menu-name `<key_sequence>` function-name
  */
-enum CommandResult parse_bind(struct Buffer *token, struct Buffer *line,
-                              intptr_t data, struct Buffer *err)
+enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *token,
+                              struct Buffer *line, struct Buffer *err)
 {
   if (StartupComplete)
   {
     // Save and restore the offset in `line` because parse_bind_macro() might change it
     char *dptr = line->dptr;
-    if (parse_bind_macro(token, line, data, err) == MUTT_CMD_SUCCESS)
+    if (parse_bind_macro(cmd, token, line, err) == MUTT_CMD_SUCCESS)
       return MUTT_CMD_SUCCESS;
     if (!buf_is_empty(err))
       return MUTT_CMD_ERROR;
@@ -352,7 +352,7 @@ enum CommandResult parse_bind(struct Buffer *token, struct Buffer *line,
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
   if (MoreArgs(line))
   {
-    buf_printf(err, _("%s: too many arguments"), "bind");
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
     rc = MUTT_CMD_ERROR;
   }
   else if (mutt_istr_equal("noop", buf_string(token)))
@@ -438,8 +438,8 @@ enum CommandResult parse_bind(struct Buffer *token, struct Buffer *line,
  *
  * unbind `<menu-name[,...]|*>` [`<key_sequence>`]
  */
-enum CommandResult parse_unbind(struct Buffer *token, struct Buffer *line,
-                                intptr_t data, struct Buffer *err)
+enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *token,
+                                struct Buffer *line, struct Buffer *err)
 {
   bool menu_matches[MENU_MAX] = { 0 };
   bool all_keys = false;
@@ -468,9 +468,7 @@ enum CommandResult parse_unbind(struct Buffer *token, struct Buffer *line,
 
   if (MoreArgs(line))
   {
-    const char *cmd = (data & MUTT_UNMACRO) ? "unmacro" : "unbind";
-
-    buf_printf(err, _("%s: too many arguments"), cmd);
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
     return MUTT_CMD_ERROR;
   }
 
@@ -480,7 +478,7 @@ enum CommandResult parse_unbind(struct Buffer *token, struct Buffer *line,
       continue;
     if (all_keys)
     {
-      km_unbind_all(&Keymaps[i], data);
+      km_unbind_all(&Keymaps[i], cmd->data);
       km_bind("<enter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
       km_bind("<return>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
       km_bind("<enter>", MENU_INDEX, OP_DISPLAY_MESSAGE, NULL, NULL, NULL);
@@ -500,7 +498,7 @@ enum CommandResult parse_unbind(struct Buffer *token, struct Buffer *line,
 
       struct EventBinding ev_b = { i, NULL, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
-                  (data & MUTT_UNMACRO) ? NT_MACRO_DELETE_ALL : NT_BINDING_DELETE_ALL,
+                  (cmd->data & MUTT_UNMACRO) ? NT_MACRO_DELETE_ALL : NT_BINDING_DELETE_ALL,
                   &ev_b);
     }
     else
@@ -514,7 +512,7 @@ enum CommandResult parse_unbind(struct Buffer *token, struct Buffer *line,
       km_bind(key, i, OP_NULL, NULL, NULL, NULL);
       struct EventBinding ev_b = { i, key, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
-                  (data & MUTT_UNMACRO) ? NT_MACRO_DELETE : NT_BINDING_DELETE, &ev_b);
+                  (cmd->data & MUTT_UNMACRO) ? NT_MACRO_DELETE : NT_BINDING_DELETE, &ev_b);
     }
   }
 
@@ -526,14 +524,14 @@ enum CommandResult parse_unbind(struct Buffer *token, struct Buffer *line,
  *
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
-enum CommandResult parse_macro(struct Buffer *token, struct Buffer *line,
-                               intptr_t data, struct Buffer *err)
+enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *token,
+                               struct Buffer *line, struct Buffer *err)
 {
   if (StartupComplete)
   {
     // Save and restore the offset in `line` because parse_bind_macro() might change it
     char *dptr = line->dptr;
-    if (parse_bind_macro(token, line, data, err) == MUTT_CMD_SUCCESS)
+    if (parse_bind_macro(cmd, token, line, err) == MUTT_CMD_SUCCESS)
       return MUTT_CMD_SUCCESS;
     if (!buf_is_empty(err))
       return MUTT_CMD_ERROR;
@@ -563,7 +561,7 @@ enum CommandResult parse_macro(struct Buffer *token, struct Buffer *line,
 
       if (MoreArgs(line))
       {
-        buf_printf(err, _("%s: too many arguments"), "macro");
+        buf_printf(err, _("%s: too many arguments"), cmd->name);
       }
       else
       {
@@ -616,8 +614,8 @@ enum CommandResult parse_macro(struct Buffer *token, struct Buffer *line,
 /**
  * parse_exec - Parse the 'exec' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_exec(struct Buffer *token, struct Buffer *line,
-                              intptr_t data, struct Buffer *err)
+enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *token,
+                              struct Buffer *line, struct Buffer *err)
 {
   int ops[128];
   int nops = 0;

@@ -448,7 +448,11 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
 
     buf_printf(buf, "Reply-To: %s", p);
     buf_seek(buf, 0);
-    parse_my_hdr(token, buf, 0, err); /* adds to UserHeader */
+
+    // Create a temporary Command struct for parse_my_hdr
+    const struct Command my_hdr_cmd = { .name = "my_hdr", .data = 0 };
+    parse_my_hdr(&my_hdr_cmd, token, buf, err); /* adds to UserHeader */
+
     buf_pool_release(&token);
   }
 

@@ -89,8 +89,8 @@ void mutt_alternates_reset(struct MailboxView *mv)
 /**
  * parse_alternates - Parse the 'alternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_alternates(struct Buffer *token, struct Buffer *line,
-                                    intptr_t data, struct Buffer *err)
+enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *token,
+                                    struct Buffer *line, struct Buffer *err)
 {
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
@@ -125,8 +125,8 @@ done:
 /**
  * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalternates(struct Buffer *token, struct Buffer *line,
-                                      intptr_t data, struct Buffer *err)
+enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *token,
+                                      struct Buffer *line, struct Buffer *err)
 {
   do
   {

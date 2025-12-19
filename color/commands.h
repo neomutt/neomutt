@@ -35,6 +35,7 @@ struct AttrColor;
  *
  * Prototype for a function to parse color config
  *
+ * @param[in]  cmd   Command being parsed
  * @param[in]  buf   Temporary Buffer space
  * @param[in]  line  Buffer containing string to be parsed
  * @param[out] ac    Colour
@@ -42,12 +43,12 @@ struct AttrColor;
  * @retval  0 Success
  * @retval -1 Error
  */
-typedef enum CommandResult (*parser_callback_t)(struct Buffer *buf, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
+typedef enum CommandResult (*parser_callback_t)(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
 
-enum CommandResult parse_color  (struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
-enum CommandResult parse_mono   (struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
-enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
-enum CommandResult parse_unmono (struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
+enum CommandResult parse_color  (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_mono   (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unmono (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
 
 void get_colorid_name(unsigned int color_id, struct Buffer *buf);
 

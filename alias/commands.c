@@ -132,8 +132,8 @@ void parse_alias_comments(struct Alias *alias, const char *com)
  *
  * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
  */
-enum CommandResult parse_alias(struct Buffer *token, struct Buffer *line,
-                               intptr_t data, struct Buffer *err)
+enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
+                               struct Buffer *line, struct Buffer *err)
 {
   struct Alias *tmp = NULL;
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
@@ -248,8 +248,8 @@ done:
 /**
  * parse_unalias - Parse the 'unalias' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalias(struct Buffer *token, struct Buffer *line,
-                                 intptr_t data, struct Buffer *err)
+enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token,
+                                 struct Buffer *line, struct Buffer *err)
 {
   do
   {

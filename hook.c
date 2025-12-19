@@ -120,8 +120,8 @@ static struct Hook *hook_new(void)
 /**
  * parse_charset_iconv_hook - Parse 'charset-hook' and 'iconv-hook' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_charset_iconv_hook(struct Buffer *token, struct Buffer *line,
-                                            intptr_t data, struct Buffer *err)
+enum CommandResult parse_charset_iconv_hook(const struct Command *cmd, struct Buffer *token,
+                                            struct Buffer *line, struct Buffer *err)
 {
   struct Buffer *alias = buf_pool_get();
   struct Buffer *charset = buf_pool_get();
@@ -133,16 +133,17 @@ enum CommandResult parse_charset_iconv_hook(struct Buffer *token, struct Buffer 
   if (parse_extract_token(charset, line, TOKEN_NO_FLAGS) < 0)
     goto done;
 
-  const enum LookupType type = (data & MUTT_ICONV_HOOK) ? MUTT_LOOKUP_ICONV : MUTT_LOOKUP_CHARSET;
+  const enum LookupType type = (cmd->data & MUTT_ICONV_HOOK) ? MUTT_LOOKUP_ICONV :
+                                                               MUTT_LOOKUP_CHARSET;
 
   if (buf_is_empty(alias) || buf_is_empty(charset))
   {
-    buf_printf(err, _("%s: too few arguments"), buf_string(token));
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
     rc = MUTT_CMD_WARNING;
   }
   else if (MoreArgs(line))
   {
-    buf_printf(err, _("%s: too many arguments"), buf_string(token));
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
     buf_reset(line); // clean up buffer to avoid a mess with further rcfile processing
     rc = MUTT_CMD_WARNING;
   }
@@ -163,8 +164,8 @@ done:
  *
  * This is used by 'account-hook', 'append-hook' and many more.
  */
-enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
-                              intptr_t data, struct Buffer *err)
+enum CommandResult parse_hook(const struct Command *cmd, struct Buffer *token,
+                              struct Buffer *line, struct Buffer *err)
 {
   struct Hook *hook = NULL;
   int rc = MUTT_CMD_ERROR;
@@ -172,12 +173,12 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
   bool use_regex = true;
   regex_t *rx = NULL;
   struct PatternList *pat = NULL;
-  const bool folder_or_mbox = (data & (MUTT_FOLDER_HOOK | MUTT_MBOX_HOOK));
+  const bool folder_or_mbox = (cmd->data & (MUTT_FOLDER_HOOK | MUTT_MBOX_HOOK));
 
   struct Buffer *command = buf_pool_get();
   struct Buffer *pattern = buf_pool_get();
 
-  if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
+  if (~cmd->data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
   {
     if (*line->dptr == '!')
     {
@@ -192,7 +193,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
       use_regex = false;
       if (!MoreArgs(line))
       {
-        buf_printf(err, _("%s: too few arguments"), buf_string(token));
+        buf_printf(err, _("%s: too few arguments"), cmd->name);
         rc = MUTT_CMD_WARNING;
         goto cleanup;
       }
@@ -201,28 +202,28 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
 
     if (!MoreArgs(line))
     {
-      buf_printf(err, _("%s: too few arguments"), buf_string(token));
+      buf_printf(err, _("%s: too few arguments"), cmd->name);
       rc = MUTT_CMD_WARNING;
       goto cleanup;
     }
   }
 
-  parse_extract_token(command, line,
-                      (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
-                               MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
-                          TOKEN_SPACE :
-                          TOKEN_NO_FLAGS);
+  TokenFlags flags = (cmd->data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK |
+                                   MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK)) ?
+                         TOKEN_SPACE :
+                         TOKEN_NO_FLAGS;
+  parse_extract_token(command, line, flags);
 
   if (buf_is_empty(command))
   {
-    buf_printf(err, _("%s: too few arguments"), buf_string(token));
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
     rc = MUTT_CMD_WARNING;
     goto cleanup;
   }
 
   if (MoreArgs(line))
   {
-    buf_printf(err, _("%s: too many arguments"), buf_string(token));
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
     rc = MUTT_CMD_WARNING;
     goto cleanup;
   }
@@ -261,7 +262,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
     }
     buf_pool_release(&tmp);
   }
-  else if (data & (MUTT_APPEND_HOOK | MUTT_OPEN_HOOK | MUTT_CLOSE_HOOK))
+  else if (cmd->data & (MUTT_APPEND_HOOK | MUTT_OPEN_HOOK | MUTT_CLOSE_HOOK))
   {
     if (mutt_comp_valid_command(buf_string(command)) == 0)
     {
@@ -269,8 +270,9 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
       goto cleanup;
     }
   }
-  else if (c_default_hook && (~data & MUTT_GLOBAL_HOOK) &&
-           !(data & (MUTT_ACCOUNT_HOOK)) && (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
+  else if (c_default_hook && (~cmd->data & MUTT_GLOBAL_HOOK) &&
+           !(cmd->data & (MUTT_ACCOUNT_HOOK)) &&
+           (!WithCrypto || !(cmd->data & MUTT_CRYPT_HOOK)))
   {
     /* At this stage only these hooks remain:
      * fcc-, fcc-save-, index-format-, message-, reply-, save-, send- and send2-hook
@@ -278,7 +280,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
     mutt_check_simple(pattern, c_default_hook);
   }
 
-  if (data & (MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
+  if (cmd->data & (MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
   {
     buf_expand_path(command);
   }
@@ -286,7 +288,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if (data & MUTT_GLOBAL_HOOK)
+    if (cmd->data & MUTT_GLOBAL_HOOK)
     {
       /* Ignore duplicate global hooks */
       if (mutt_str_equal(hook->command, buf_string(command)))
@@ -295,12 +297,12 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
         goto cleanup;
       }
     }
-    else if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
+    else if ((hook->type == cmd->data) && (hook->regex.pat_not == pat_not) &&
              mutt_str_equal(buf_string(pattern), hook->regex.pattern))
     {
-      if (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_MESSAGE_HOOK |
-                  MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK | MUTT_CRYPT_HOOK |
-                  MUTT_TIMEOUT_HOOK | MUTT_STARTUP_HOOK | MUTT_SHUTDOWN_HOOK))
+      if (cmd->data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_MESSAGE_HOOK |
+                       MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK | MUTT_CRYPT_HOOK |
+                       MUTT_TIMEOUT_HOOK | MUTT_STARTUP_HOOK | MUTT_SHUTDOWN_HOOK))
       {
         /* these hooks allow multiple commands with the same
          * pattern, so if we've already seen this pattern/command pair, just
@@ -323,7 +325,7 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
         FREE(&hook->source_file);
         hook->source_file = mutt_get_sourced_cwd();
 
-        if (data & (MUTT_IDXFMTHOOK | MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
+        if (cmd->data & (MUTT_IDXFMTHOOK | MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
         {
           expando_free(&hook->expando);
           hook->expando = expando_parse(buf_string(command), IndexFormatDef, err);
@@ -335,14 +337,14 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
     }
   }
 
-  if (data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
-              MUTT_FCC_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
+  if (cmd->data & (MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_SAVE_HOOK |
+                   MUTT_FCC_HOOK | MUTT_MESSAGE_HOOK | MUTT_REPLY_HOOK))
   {
     PatternCompFlags comp_flags;
 
-    if (data & (MUTT_SEND2_HOOK))
+    if (cmd->data & (MUTT_SEND2_HOOK))
       comp_flags = MUTT_PC_SEND_MODE_SEARCH;
-    else if (data & (MUTT_SEND_HOOK | MUTT_FCC_HOOK))
+    else if (cmd->data & (MUTT_SEND_HOOK | MUTT_FCC_HOOK))
       comp_flags = MUTT_PC_NO_FLAGS;
     else
       comp_flags = MUTT_PC_FULL_MSG;
@@ -352,11 +354,12 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
     if (!pat)
       goto cleanup;
   }
-  else if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
+  else if (~cmd->data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
     rx = MUTT_MEM_CALLOC(1, regex_t);
-    int rc2 = REG_COMP(rx, buf_string(pattern), ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
+    int rc2 = REG_COMP(rx, buf_string(pattern),
+                       ((cmd->data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
     if (rc2 != 0)
     {
       regerror(rc2, rx, err->data, err->dsize);
@@ -366,11 +369,11 @@ enum CommandResult parse_hook(struct Buffer *token, struct Buffer *line,
   }
 
   struct Expando *exp = NULL;
-  if (data & (MUTT_IDXFMTHOOK | MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
+  if (cmd->data & (MUTT_IDXFMTHOOK | MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
     exp = expando_parse(buf_string(command), IndexFormatDef, err);
 
   hook = hook_new();
-  hook->type = data;
+  hook->type = cmd->data;
   hook->command = buf_strdup(command);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = pat;
@@ -438,8 +441,8 @@ static void delete_idxfmt_hooks(void)
 /**
  * parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_idxfmt_hook(struct Buffer *token, struct Buffer *line,
-                                            intptr_t data, struct Buffer *err)
+static enum CommandResult parse_idxfmt_hook(const struct Command *cmd, struct Buffer *token,
+                                            struct Buffer *line, struct Buffer *err)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -473,7 +476,7 @@ static enum CommandResult parse_idxfmt_hook(struct Buffer *token, struct Buffer 
 
   if (!MoreArgs(line))
   {
-    buf_printf(err, _("%s: too few arguments"), buf_string(token));
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
     goto out;
   }
   parse_extract_token(fmtstring, line, TOKEN_NO_FLAGS);
@@ -484,7 +487,7 @@ static enum CommandResult parse_idxfmt_hook(struct Buffer *token, struct Buffer 
 
   if (MoreArgs(line))
   {
-    buf_printf(err, _("%s: too many arguments"), buf_string(token));
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
     goto out;
   }
 
@@ -576,8 +579,8 @@ static HookFlags mutt_get_hook_type(const char *name)
 /**
  * parse_unhook - Parse the 'unhook' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_unhook(struct Buffer *token, struct Buffer *line,
-                                       intptr_t data, struct Buffer *err)
+static enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *token,
+                                       struct Buffer *line, struct Buffer *err)
 {
   while (MoreArgs(line))
   {

@@ -29,9 +29,11 @@
 #include "color/lib.h"
 #include "test_common.h"
 
+static const struct Command Color = { "color", NULL, 0 };
+
 void test_parse_color_pair(void)
 {
-  // enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
+  // enum CommandResult parse_color_pair(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
 
   struct Buffer *token = buf_pool_get();
   struct Buffer *line = buf_pool_get();
@@ -49,7 +51,7 @@ void test_parse_color_pair(void)
       buf_printf(line, "%s %s", first[i], second[j]);
       buf_seek(line, 0);
 
-      enum CommandResult rc = parse_color_pair(token, line, ac, err);
+      enum CommandResult rc = parse_color_pair(&Color, token, line, ac, err);
       TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
       TEST_MSG("%s\n", buf_string(err));
     }
@@ -64,7 +66,7 @@ void test_parse_color_pair(void)
     buf_strcpy(line, tests[i]);
     buf_seek(line, 0);
 
-    enum CommandResult rc = parse_color_pair(token, line, ac, err);
+    enum CommandResult rc = parse_color_pair(&Color, token, line, ac, err);
     TEST_CHECK(rc < 0);
     TEST_MSG("%s\n", buf_string(err));
   }

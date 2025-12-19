@@ -279,14 +279,15 @@ enum CommandResult parse_color_name(const char *s, struct ColorElement *elem,
  *
  * Parse a pair of colours, e.g. "red default"
  */
-enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *line,
+enum CommandResult parse_color_pair(const struct Command *cmd,
+                                    struct Buffer *token, struct Buffer *line,
                                     struct AttrColor *ac, struct Buffer *err)
 {
   while (true)
   {
     if (!MoreArgsF(line, TOKEN_COMMENT))
     {
-      buf_printf(err, _("%s: too few arguments"), "color");
+      buf_printf(err, _("%s: too few arguments"), cmd->name);
       return MUTT_CMD_WARNING;
     }
 
@@ -323,7 +324,8 @@ enum CommandResult parse_color_pair(struct Buffer *token, struct Buffer *line,
 /**
  * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t - @ingroup parser_callback_api
  */
-enum CommandResult parse_attr_spec(struct Buffer *token, struct Buffer *line,
+enum CommandResult parse_attr_spec(const struct Command *cmd,
+                                   struct Buffer *token, struct Buffer *line,
                                    struct AttrColor *ac, struct Buffer *err)
 {
   if (!token || !line || !ac)
@@ -331,7 +333,7 @@ enum CommandResult parse_attr_spec(struct Buffer *token, struct Buffer *line,
 
   if (!MoreArgs(line))
   {
-    buf_printf(err, _("%s: too few arguments"), "mono");
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
 

@@ -438,63 +438,59 @@ static void test_command_set_unset(void)
 
 static void test_parse_set(void)
 {
-  enum CommandResult parse_set(struct Buffer * buf, struct Buffer * s,
-                               intptr_t data, struct Buffer *err);
+  // enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
 
   struct Buffer *err = buf_pool_get();
   struct Buffer *line = buf_pool_get();
   struct Buffer *tmp = buf_pool_get();
   enum CommandResult rc;
 
-  rc = parse_set(NULL, NULL, MUTT_SET_SET, NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
-
   buf_reset(err);
   buf_strcpy(line, "invwrap");
   buf_seek(line, 0);
-  rc = parse_set(tmp, line, MUTT_SET_RESET, err);
+  rc = parse_set(&mutt_commands[MUTT_SET_RESET], tmp, line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
   buf_reset(err);
   buf_strcpy(line, "wrap?");
   buf_seek(line, 0);
-  rc = parse_set(tmp, line, MUTT_SET_RESET, err);
+  rc = parse_set(&mutt_commands[MUTT_SET_RESET], tmp, line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
   buf_reset(err);
   buf_strcpy(line, "invwrap++");
   buf_seek(line, 0);
-  rc = parse_set(tmp, line, MUTT_SET_SET, err);
+  rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
   buf_reset(err);
   buf_strcpy(line, "invwrap = 42");
   buf_seek(line, 0);
-  rc = parse_set(tmp, line, MUTT_SET_SET, err);
+  rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
   buf_reset(err);
   buf_strcpy(line, "wrap = 42");
   buf_seek(line, 0);
-  rc = parse_set(tmp, line, MUTT_SET_RESET, err);
+  rc = parse_set(&mutt_commands[MUTT_SET_RESET], tmp, line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
   buf_reset(err);
   buf_strcpy(line, "wrap++");
   buf_seek(line, 0);
-  rc = parse_set(tmp, line, MUTT_SET_RESET, err);
+  rc = parse_set(&mutt_commands[MUTT_SET_RESET], tmp, line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
   buf_reset(err);
   buf_strcpy(line, "index_format");
   buf_seek(line, 0);
-  rc = parse_set(tmp, line, MUTT_SET_INV, err);
+  rc = parse_set(&mutt_commands[MUTT_SET_INV], tmp, line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
   buf_reset(err);
   buf_strcpy(line, "`missing");
   buf_seek(line, 0);
-  rc = parse_set(tmp, line, MUTT_SET_INV, err);
+  rc = parse_set(&mutt_commands[MUTT_SET_INV], tmp, line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
   buf_pool_release(&err);
@@ -624,7 +620,7 @@ static void test_set(void)
         buf_reset(err);
         buf_printf(line, template[t], boolish[v]);
         buf_seek(line, 0);
-        enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+        enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
         if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
         {
           TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
@@ -654,7 +650,7 @@ static void test_set(void)
     buf_reset(err);
     buf_strcpy(line, "Damson = newfoo");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+    enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -685,7 +681,7 @@ static void test_set(void)
     buf_reset(err);
     buf_strcpy(line, "my_var = newbar");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+    enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -713,7 +709,7 @@ static void test_set(void)
     buf_reset(err);
     buf_strcpy(line, "zzz = newbaz");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+    enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_ERROR, rc,
@@ -768,7 +764,7 @@ static void test_unset(void)
         buf_reset(err);
         buf_strcpy(line, boolish[v]);
         buf_seek(line, 0);
-        enum CommandResult rc = parse_set(tmp, line, MUTT_SET_UNSET, err);
+        enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_UNSET], tmp, line, err);
         if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
         {
           TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
@@ -798,7 +794,7 @@ static void test_unset(void)
     buf_reset(err);
     buf_strcpy(line, "Cherry");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(tmp, line, MUTT_SET_UNSET, err);
+    enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_UNSET], tmp, line, err);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -812,7 +808,7 @@ static void test_unset(void)
     buf_reset(err);
     buf_strcpy(line, "Damson");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(tmp, line, MUTT_SET_UNSET, err);
+    enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_UNSET], tmp, line, err);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -856,7 +852,7 @@ static void test_unset(void)
     buf_reset(err);
     buf_strcpy(line, "my_var");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(tmp, line, MUTT_SET_UNSET, err);
+    enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_UNSET], tmp, line, err);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -879,7 +875,7 @@ static void test_unset(void)
     buf_reset(err);
     buf_strcpy(line, "zzz");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(tmp, line, MUTT_SET_UNSET, err);
+    enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_UNSET], tmp, line, err);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_ERROR, rc,
@@ -928,7 +924,7 @@ static void test_reset(void)
         buf_reset(err);
         buf_printf(line, template[t].name, ConfigVars[v].name);
         buf_seek(line, 0);
-        enum CommandResult rc = parse_set(tmp, line, template[t].value, err);
+        enum CommandResult rc = parse_set(&mutt_commands[template[t].value], tmp, line, err);
         if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
         {
           TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
@@ -985,7 +981,7 @@ static void test_reset(void)
     buf_reset(err);
     buf_strcpy(line, "my_var");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(tmp, line, MUTT_SET_RESET, err);
+    enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_RESET], tmp, line, err);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -1029,7 +1025,7 @@ static void test_reset(void)
     buf_reset(err);
     buf_strcpy(line, "all");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(tmp, line, MUTT_SET_RESET, err);
+    enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_RESET], tmp, line, err);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -1131,7 +1127,8 @@ static void test_toggle(void)
           buf_reset(err);
           buf_printf(line, template[t].name, boolish[v]);
           buf_seek(line, 0);
-          enum CommandResult rc = parse_set(tmp, line, template[t].value, err);
+          enum CommandResult rc = parse_set(&mutt_commands[template[t].value],
+                                            tmp, line, err);
           if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
           {
             TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
@@ -1160,7 +1157,8 @@ static void test_toggle(void)
           buf_reset(err);
           buf_printf(line, template[t].name, boolish[v]);
           buf_seek(line, 0);
-          enum CommandResult rc = parse_set(tmp, line, template[t].value, err);
+          enum CommandResult rc = parse_set(&mutt_commands[template[t].value],
+                                            tmp, line, err);
           if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
           {
             TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
@@ -1246,7 +1244,7 @@ static void test_query(void)
         buf_reset(err);
         buf_printf(line, template[t], vars[v]);
         buf_seek(line, 0);
-        enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+        enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
         if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
         {
           TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
@@ -1295,7 +1293,7 @@ static void test_query(void)
       buf_reset(err);
       buf_strcpy(line, vars[v]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+      enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
       if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
       {
         TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -1367,7 +1365,7 @@ static void test_increment(void)
       buf_reset(err);
       buf_printf(line, "%s += %s", vars[v], increment[v]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+      enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
       if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
       {
         TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -1432,7 +1430,7 @@ static void test_decrement(void)
       buf_reset(err);
       buf_printf(line, "%s -= %s", vars[v], increment[v]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+      enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
       if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
       {
         TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
@@ -1490,7 +1488,7 @@ static void test_invalid_syntax(void)
       buf_reset(err);
       buf_strcpy(line, template[t]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+      enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
       if (!TEST_CHECK((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR)))
       {
         TEST_MSG("For command '%s': Expected %d or %d, but got %d; err is: '%s'",
@@ -1541,7 +1539,7 @@ static void test_path_expanding(void)
       buf_reset(err);
       buf_printf(line, "%s = %s", pathlike[v], newvalue[v]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(tmp, line, MUTT_SET_SET, err);
+      enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], tmp, line, err);
       if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
       {
         TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,

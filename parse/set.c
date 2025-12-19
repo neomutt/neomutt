@@ -466,8 +466,8 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
  */
-enum CommandResult parse_set(struct Buffer *token, struct Buffer *line,
-                             intptr_t data, struct Buffer *err)
+enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
+                             struct Buffer *line, struct Buffer *err)
 {
   /* The order must match `enum MuttSetCommand` */
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
@@ -479,9 +479,9 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *line,
   {
     bool prefix = false;
     bool query = false;
-    bool inv = (data == MUTT_SET_INV);
-    bool reset = (data == MUTT_SET_RESET);
-    bool unset = (data == MUTT_SET_UNSET);
+    bool inv = (cmd->data == MUTT_SET_INV);
+    bool reset = (cmd->data == MUTT_SET_RESET);
+    bool unset = (cmd->data == MUTT_SET_UNSET);
 
     if (*line->dptr == '?')
     {
@@ -508,10 +508,10 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *line,
       line->dptr++;
     }
 
-    if (prefix && (data != MUTT_SET_SET))
+    if (prefix && (cmd->data != MUTT_SET_SET))
     {
       buf_printf(err, _("Can't use 'inv', 'no', '&' or '?' with the '%s' command"),
-                 set_commands[data]);
+                 set_commands[cmd->data]);
       return MUTT_CMD_WARNING;
     }
 
@@ -548,7 +548,8 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *line,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't query option with the '%s' command"), set_commands[data]);
+        buf_printf(err, _("Can't query option with the '%s' command"),
+                   set_commands[cmd->data]);
         return MUTT_CMD_WARNING;
       }
 
@@ -565,7 +566,8 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *line,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't set option with the '%s' command"), set_commands[data]);
+        buf_printf(err, _("Can't set option with the '%s' command"),
+                   set_commands[cmd->data]);
         return MUTT_CMD_WARNING;
       }
       if (*line->dptr == '+')
@@ -595,7 +597,8 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *line,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't set option with the '%s' command"), set_commands[data]);
+        buf_printf(err, _("Can't set option with the '%s' command"),
+                   set_commands[cmd->data]);
         return MUTT_CMD_WARNING;
       }
 
@@ -605,14 +608,14 @@ enum CommandResult parse_set(struct Buffer *token, struct Buffer *line,
 
     if (!invertible && (inv || (unset && prefix)))
     {
-      if (data == MUTT_SET_SET)
+      if (cmd->data == MUTT_SET_SET)
       {
         buf_printf(err, _("Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"));
       }
       else
       {
         buf_printf(err, _("Command '%s' can only be used with bool/quad/number variables"),
-                   set_commands[data]);
+                   set_commands[cmd->data]);
       }
       return MUTT_CMD_WARNING;
     }

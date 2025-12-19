@@ -55,8 +55,8 @@ bool lua_init_state(lua_State **l);
 /**
  * parse_lua - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_lua(struct Buffer *token, struct Buffer *line,
-                                    intptr_t data, struct Buffer *err)
+static enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *token,
+                                    struct Buffer *line, struct Buffer *err)
 {
   lua_init_state(&LuaState);
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(token));
@@ -77,8 +77,8 @@ static enum CommandResult parse_lua(struct Buffer *token, struct Buffer *line,
 /**
  * parse_lua_source - Parse the 'lua-source' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_lua_source(struct Buffer *token, struct Buffer *line,
-                                           intptr_t data, struct Buffer *err)
+static enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *token,
+                                           struct Buffer *line, struct Buffer *err)
 {
   mutt_debug(LL_DEBUG2, "enter\n");
 
@@ -91,7 +91,7 @@ static enum CommandResult parse_lua_source(struct Buffer *token, struct Buffer *
   }
   if (MoreArgs(line))
   {
-    buf_printf(err, _("%s: too many arguments"), "source");
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
 

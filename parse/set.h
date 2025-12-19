@@ -39,6 +39,6 @@ enum MuttSetCommand
   MUTT_SET_RESET, ///< default is to reset all vars to default
 };
 
-enum CommandResult parse_set(struct Buffer *buf, struct Buffer *line, intptr_t data, struct Buffer *err);
+enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
 
 #endif /* MUTT_PARSE_SET_H */

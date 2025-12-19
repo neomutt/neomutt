@@ -472,8 +472,8 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
 /**
  * parse_attachments - Parse the 'attachments' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_attachments(struct Buffer *token, struct Buffer *line,
-                                     intptr_t data, struct Buffer *err)
+enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *token,
+                                     struct Buffer *line, struct Buffer *err)
 {
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
   if (!buf_string(token) || (*buf_string(token) == '\0'))
@@ -531,8 +531,8 @@ enum CommandResult parse_attachments(struct Buffer *token, struct Buffer *line,
 /**
  * parse_unattachments - Parse the 'unattachments' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unattachments(struct Buffer *token, struct Buffer *line,
-                                       intptr_t data, struct Buffer *err)
+enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer *token,
+                                       struct Buffer *line, struct Buffer *err)
 {
   char op;
   char *p = NULL;
