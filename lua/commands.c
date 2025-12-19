@@ -58,6 +58,12 @@ bool lua_init_state(lua_State **l);
 static enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *token,
                                     struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   lua_init_state(&LuaState);
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(token));
 
@@ -80,6 +86,12 @@ static enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *to
 static enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *token,
                                            struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   mutt_debug(LL_DEBUG2, "enter\n");
 
   lua_init_state(&LuaState);

@@ -135,15 +135,15 @@ void parse_alias_comments(struct Alias *alias, const char *com)
 enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
                                struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Alias *tmp = NULL;
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum NotifyAlias event;
-
-  if (!MoreArgs(line))
-  {
-    buf_strcpy(err, _("alias: no address"));
-    return MUTT_CMD_WARNING;
-  }
 
   /* name */
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -251,6 +251,12 @@ done:
 enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token,
                                  struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);

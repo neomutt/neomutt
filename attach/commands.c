@@ -475,12 +475,13 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
 enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *token,
                                      struct Buffer *line, struct Buffer *err)
 {
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
-  if (!buf_string(token) || (*buf_string(token) == '\0'))
+  if (!MoreArgs(line))
   {
-    buf_strcpy(err, _("attachments: no disposition"));
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
+
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
   char *category = token->data;
   char op = *category++;
@@ -534,16 +535,17 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *t
 enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer *token,
                                        struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   char op;
   char *p = NULL;
   struct ListHead *head = NULL;
 
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
-  if (!buf_string(token) || (*buf_string(token) == '\0'))
-  {
-    buf_strcpy(err, _("unattachments: no disposition"));
-    return MUTT_CMD_WARNING;
-  }
 
   p = token->data;
   op = *p++;

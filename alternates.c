@@ -92,6 +92,12 @@ void mutt_alternates_reset(struct MailboxView *mv)
 enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *token,
                                     struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
   do
@@ -128,6 +134,12 @@ done:
 enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *token,
                                       struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);

@@ -123,6 +123,12 @@ static struct Hook *hook_new(void)
 enum CommandResult parse_charset_iconv_hook(const struct Command *cmd, struct Buffer *token,
                                             struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Buffer *alias = buf_pool_get();
   struct Buffer *charset = buf_pool_get();
 
@@ -167,6 +173,12 @@ done:
 enum CommandResult parse_hook(const struct Command *cmd, struct Buffer *token,
                               struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Hook *hook = NULL;
   int rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -444,6 +456,12 @@ static void delete_idxfmt_hooks(void)
 static enum CommandResult parse_idxfmt_hook(const struct Command *cmd, struct Buffer *token,
                                             struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
 
@@ -582,6 +600,12 @@ static HookFlags mutt_get_hook_type(const char *name)
 static enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *token,
                                        struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   while (MoreArgs(line))
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);

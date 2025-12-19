@@ -134,10 +134,10 @@ static bool is_color_object(const char *name)
 
 /**
  * parse_grouplist - Parse a group context
- * @param gl   GroupList to add to
- * @param token  Temporary Buffer space
- * @param line    Buffer containing string to be parsed
- * @param err  Buffer for error messages
+ * @param gl    GroupList to add to
+ * @param token Temporary Buffer space
+ * @param line  Buffer containing string to be parsed
+ * @param err   Buffer for error messages
  * @retval  0 Success
  * @retval -1 Error
  */
@@ -437,6 +437,12 @@ static enum CommandResult parse_finish(const struct Command *cmd, struct Buffer 
 static enum CommandResult parse_group(const struct Command *cmd, struct Buffer *token,
                                       struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum GroupState gstate = GS_NONE;
 
@@ -535,13 +541,13 @@ warn:
 static enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *token,
                                       struct Buffer *line, struct Buffer *err)
 {
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
-
-  if (buf_is_empty(token))
+  if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
+
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
   // is the item defined as:
   bool res = cs_subset_lookup(NeoMutt->sub, buf_string(token)) // a variable?
@@ -581,6 +587,12 @@ static enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *
 static enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *token,
                                        struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -597,6 +609,12 @@ static enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer 
 static enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *token,
                                       struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
   do
@@ -752,6 +770,12 @@ bool mailbox_add_simple(const char *mailbox, struct Buffer *err)
 enum CommandResult parse_mailboxes(const struct Command *cmd, struct Buffer *token,
                                    struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   enum CommandResult rc = MUTT_CMD_WARNING;
 
   struct Buffer *label = buf_pool_get();
@@ -848,6 +872,12 @@ done:
 enum CommandResult parse_my_hdr(const struct Command *cmd, struct Buffer *token,
                                 struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   parse_extract_token(token, line, TOKEN_SPACE | TOKEN_QUOTE);
   char *p = strpbrk(buf_string(token), ": \t");
   if (!p || (*p != ':'))
@@ -1087,6 +1117,12 @@ static enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer 
 static enum CommandResult parse_source(const struct Command *cmd, struct Buffer *token,
                                        struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Buffer *path = buf_pool_get();
 
   do
@@ -1198,6 +1234,12 @@ static enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *t
 static enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *token,
                                        struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -1213,6 +1255,12 @@ static enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer 
 static enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *token,
                                           struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
   do
@@ -1253,8 +1301,11 @@ done:
 enum CommandResult parse_subscribe_to(const struct Command *cmd, struct Buffer *token,
                                       struct Buffer *line, struct Buffer *err)
 {
-  if (!token || !line || !err)
-    return MUTT_CMD_ERROR;
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
 
   buf_reset(err);
 
@@ -1300,8 +1351,11 @@ enum CommandResult parse_subscribe_to(const struct Command *cmd, struct Buffer *
 static enum CommandResult parse_tag_formats(const struct Command *cmd, struct Buffer *token,
                                             struct Buffer *line, struct Buffer *err)
 {
-  if (!line)
-    return MUTT_CMD_ERROR;
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
 
   struct Buffer *tag = buf_pool_get();
   struct Buffer *fmt = buf_pool_get();
@@ -1341,8 +1395,11 @@ static enum CommandResult parse_tag_transforms(const struct Command *cmd,
                                                struct Buffer *token,
                                                struct Buffer *line, struct Buffer *err)
 {
-  if (!line)
-    return MUTT_CMD_ERROR;
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
 
   struct Buffer *tag = buf_pool_get();
   struct Buffer *trnbuf = buf_pool_get();
@@ -1379,6 +1436,12 @@ static enum CommandResult parse_tag_transforms(const struct Command *cmd,
 static enum CommandResult parse_unignore(const struct Command *cmd, struct Buffer *token,
                                          struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -1399,6 +1462,12 @@ static enum CommandResult parse_unignore(const struct Command *cmd, struct Buffe
 static enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *token,
                                         struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   mutt_hash_free(&AutoSubscribeCache);
   do
   {
@@ -1464,6 +1533,12 @@ static void do_unmailboxes_star(void)
 enum CommandResult parse_unmailboxes(const struct Command *cmd, struct Buffer *token,
                                      struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   while (MoreArgs(line))
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -1496,6 +1571,12 @@ enum CommandResult parse_unmailboxes(const struct Command *cmd, struct Buffer *t
 static enum CommandResult parse_unmy_hdr(const struct Command *cmd, struct Buffer *token,
                                          struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct ListNode *np = NULL, *tmp = NULL;
   size_t l;
 
@@ -1542,6 +1623,12 @@ static enum CommandResult parse_unmy_hdr(const struct Command *cmd, struct Buffe
 static enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *token,
                                          struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -1563,6 +1650,12 @@ static enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffe
 static enum CommandResult parse_unsubscribe(const struct Command *cmd, struct Buffer *token,
                                             struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   mutt_hash_free(&AutoSubscribeCache);
   do
   {
@@ -1589,8 +1682,11 @@ static enum CommandResult parse_unsubscribe(const struct Command *cmd, struct Bu
 enum CommandResult parse_unsubscribe_from(const struct Command *cmd, struct Buffer *token,
                                           struct Buffer *line, struct Buffer *err)
 {
-  if (!token || !line || !err)
-    return MUTT_CMD_ERROR;
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
 
   if (MoreArgs(line))
   {
@@ -1633,6 +1729,12 @@ static enum CommandResult parse_version(const struct Command *cmd, struct Buffer
   // silently ignore 'version' if it's in a config file
   if (!StartupComplete)
     return MUTT_CMD_SUCCESS;
+
+  if (MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
 
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);

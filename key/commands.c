@@ -309,6 +309,12 @@ static enum CommandResult try_bind(char *key, enum MenuType mtype, char *func,
 enum CommandResult parse_push(const struct Command *cmd, struct Buffer *token,
                               struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   parse_extract_token(token, line, TOKEN_CONDENSE);
   if (MoreArgs(line))
   {
@@ -334,8 +340,10 @@ enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *token,
     char *dptr = line->dptr;
     if (parse_bind_macro(cmd, token, line, err) == MUTT_CMD_SUCCESS)
       return MUTT_CMD_SUCCESS;
+
     if (!buf_is_empty(err))
       return MUTT_CMD_ERROR;
+
     line->dptr = dptr;
   }
 
@@ -441,6 +449,12 @@ enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *token,
 enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *token,
                                 struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   bool menu_matches[MENU_MAX] = { 0 };
   bool all_keys = false;
   char *key = NULL;
@@ -533,8 +547,10 @@ enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *token,
     char *dptr = line->dptr;
     if (parse_bind_macro(cmd, token, line, err) == MUTT_CMD_SUCCESS)
       return MUTT_CMD_SUCCESS;
+
     if (!buf_is_empty(err))
       return MUTT_CMD_ERROR;
+
     line->dptr = dptr;
   }
 
@@ -617,6 +633,12 @@ enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *token,
 enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *token,
                               struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   int ops[128];
   int nops = 0;
   const struct MenuFuncOp *funcs = NULL;

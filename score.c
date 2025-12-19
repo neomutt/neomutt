@@ -91,6 +91,12 @@ void mutt_check_rescore(struct Mailbox *m)
 enum CommandResult parse_score(const struct Command *cmd, struct Buffer *token,
                                struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
 
@@ -200,6 +206,12 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *token,
                                  struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Score *tmp = NULL, *last = NULL;
 
   while (MoreArgs(line))
@@ -234,6 +246,7 @@ enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *token
       }
     }
   }
+
   OptNeedRescore = true;
   return MUTT_CMD_SUCCESS;
 }

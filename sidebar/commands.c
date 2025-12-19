@@ -41,6 +41,12 @@
 enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *token,
                                      struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Buffer *path = buf_pool_get();
 
   do
@@ -60,6 +66,12 @@ enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *t
 enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *token,
                                        struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Buffer *path = buf_pool_get();
 
   do

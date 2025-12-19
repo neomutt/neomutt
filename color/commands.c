@@ -149,6 +149,12 @@ static enum CommandResult parse_object(const struct Command *cmd,
                                        struct Buffer *token, struct Buffer *line,
                                        enum ColorId *cid, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   if (mutt_istr_equal(buf_string(token), "compose"))
   {
     if (!MoreArgs(line))
@@ -420,6 +426,12 @@ done:
 enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *token,
                                  struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   if (!OptGui) // No GUI, so quietly discard the command
   {
     while (MoreArgs(line))
