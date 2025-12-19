@@ -186,6 +186,7 @@ static enum CommandResult parse_object(const struct Command *cmd, struct Buffer 
   }
 
   *cid = rc;
+  buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
 }
 
@@ -214,6 +215,7 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd,
     if (mutt_str_equal(buf_string(token), "*"))
     {
       colors_reset();
+      rc = MUTT_CMD_SUCCESS;
       goto done;
     }
   }
@@ -327,25 +329,26 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
   //------------------------------------------------------------------
   // Business Logic
 
+  rc = MUTT_CMD_ERROR;
   if ((ac->fg.type == CT_RGB) || (ac->bg.type == CT_RGB))
   {
 #ifndef NEOMUTT_DIRECT_COLORS
     buf_printf(err, _("Direct colors support not compiled in: %s"), buf_string(line));
-    return MUTT_CMD_ERROR;
+    goto done;
 #endif
 
     const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
     if (!c_color_directcolor)
     {
       buf_printf(err, _("Direct colors support disabled: %s"), buf_string(line));
-      return MUTT_CMD_ERROR;
+      goto done;
     }
   }
 
   if ((ac->fg.color >= COLORS) || (ac->bg.color >= COLORS))
   {
     buf_printf(err, _("%s: color not supported by term"), buf_string(line));
-    return MUTT_CMD_ERROR;
+    goto done;
   }
 
   //------------------------------------------------------------------

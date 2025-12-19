@@ -37,26 +37,30 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <time.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "browser/lib.h"
+#include "color/lib.h"
 #include "complete/lib.h"
 #include "send/lib.h"
 #include "copy.h"
 #include "external.h"
-#include "mailcap.h"
 #include "mutt_thread.h"
 #include "mx.h"
 #include "protos.h"
 
 struct AddressList;
 struct AttachCtx;
-struct ConnAccount;
+struct Body;
 struct Email;
+struct EmailArray;
 struct Envelope;
+struct MailboxView;
 struct MuttWindow;
+struct Notify;
 struct PagerView;
 
 bool StartupComplete = true;
@@ -66,25 +70,7 @@ char *ShortHostname = "example";
 bool MonitorContextChanged = false;
 char *LastFolder = NULL;
 
-const struct CompleteOps CompleteAliasOps = { 0 };
-char *CurrentFolder = NULL;
-char *GitVer = NULL;
-
-bool MonitorCurMboxChanged = false;
-bool OptAutocryptGpgme = false;
-bool OptDontHandlePgpKeys = false;
-bool OptNeedRescore = false;
-bool OptNeedResort = false;
-bool OptNews = false;
-bool OptNewsSend = false;
-bool OptPgpCheckTrust = false;
 bool OptResortInit = false;
-bool OptSortSubthreads = false;
-
-struct ListHead TempAttachmentsList = STAILQ_HEAD_INITIALIZER(TempAttachmentsList);
-struct ListHead UserHeader = STAILQ_HEAD_INITIALIZER(UserHeader);
-
-const struct EnumDef UseThreadsTypeDef = { "use_threads_type", 4, NULL };
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
 
@@ -97,11 +83,14 @@ static struct ConfigDef Vars[] = {
   { "folder", DT_STRING|D_STRING_MAILBOX, IP "~/Mail", 0, NULL, },
   { "maildir_field_delimiter", DT_STRING, IP ":", 0, NULL, },
   { "record", DT_STRING|D_STRING_MAILBOX, IP "~/sent", 0, NULL, },
+  { "simple_search", DT_STRING, IP "~f %s | ~s %s", 0, NULL, },
   { "sleep_time", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL, },
   { "tmp_dir", DT_PATH|D_PATH_DIR|D_NOT_EMPTY, IP TMPDIR, 0, NULL, },
   { NULL },
   // clang-format on
 };
+
+const struct CompleteOps CompleteMailboxOps = {};
 
 struct ListHead AlternativeOrderList = STAILQ_HEAD_INITIALIZER(AlternativeOrderList);
 struct ListHead AutoViewList = STAILQ_HEAD_INITIALIZER(AutoViewList);
@@ -225,6 +214,7 @@ void test_init(void)
   }
 
   test_neomutt_create();
+  regex_colors_init();
   success = true;
 done:
   if (!success)
@@ -236,6 +226,7 @@ done:
 
 void test_fini(void)
 {
+  regex_colors_cleanup();
   config_cache_cleanup();
   test_neomutt_destroy();
   buf_pool_cleanup();
@@ -331,19 +322,9 @@ bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen)
   return true;
 }
 
-int debug_level_validator(const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
-{
-  return 0;
-}
-
 int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e, bool use_tagged)
 {
   return 0;
-}
-
-bool feature_enabled(const char *name)
-{
-  return true;
 }
 
 bool first_mailing_list(char *buf, size_t buflen, struct AddressList *al)
@@ -358,41 +339,6 @@ const char *get_use_threads_str(enum UseThreads value)
 
 void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
 {
-}
-
-void mailbox_restore_timestamp(const char *path, struct stat *st)
-{
-}
-
-void mailcap_entry_free(struct MailcapEntry **ptr)
-{
-}
-
-struct MailcapEntry *mailcap_entry_new(void)
-{
-  return NULL;
-}
-
-int mailcap_expand_command(struct Body *b, const char *filename,
-                           const char *type, struct Buffer *command)
-{
-  return 0;
-}
-
-void mailcap_expand_filename(const char *nametemplate, const char *oldfile,
-                             struct Buffer *newfile)
-{
-}
-
-bool mailcap_lookup(struct Body *b, char *type, size_t typelen,
-                    struct MailcapEntry *entry, enum MailcapLookup opt)
-{
-  return true;
-}
-
-bool message_is_tagged(struct Email *e)
-{
-  return true;
 }
 
 int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
@@ -418,16 +364,6 @@ void mutt_attach_resend(FILE *fp, struct Mailbox *m, struct AttachCtx *actx, str
 {
 }
 
-int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src)
-{
-  return 0;
-}
-
-bool mutt_can_decode(struct Body *b)
-{
-  return true;
-}
-
 bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailArray *ea)
 {
   return true;
@@ -437,51 +373,11 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
 {
 }
 
-struct Connection *mutt_conn_find(const struct ConnAccount *cac)
-{
-  return NULL;
-}
-
-struct Connection *mutt_conn_new(const struct ConnAccount *cac)
-{
-  return NULL;
-}
-
-int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
-                  CopyHeaderFlags chflags, const char *prefix, int wraplen)
-{
-  return 0;
-}
-
-int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
-                         CopyMessageFlags cmflags, CopyHeaderFlags chflags, int wraplen)
-{
-  return 0;
-}
-
-void mutt_decode_attachment(const struct Body *b, struct State *state)
-{
-}
-
-void mutt_decode_base64(struct State *state, size_t len, bool istext, iconv_t cd)
-{
-}
-
 void mutt_display_address(struct Envelope *env)
 {
 }
 
 void mutt_draw_tree(struct ThreadsContext *tctx)
-{
-}
-
-bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
-{
-  return true;
-}
-
-void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
-                       struct Buffer *fcc)
 {
 }
 
@@ -543,16 +439,6 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
   return 0;
 }
 
-int mutt_monitor_add(struct Mailbox *m)
-{
-  return 0;
-}
-
-int mutt_monitor_remove(struct Mailbox *m)
-{
-  return 0;
-}
-
 int mutt_parent_message(struct Email *e, bool find_root)
 {
   return 0;
@@ -562,44 +448,12 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
 {
 }
 
-bool mutt_prefer_as_attachment(struct Body *b)
-{
-  return true;
-}
-
 void mutt_print_message(struct Mailbox *m, struct EmailArray *ea)
-{
-}
-
-bool mutt_rfc3676_is_format_flowed(struct Body *b)
-{
-  return true;
-}
-
-void mutt_rfc3676_space_stuff(struct Email *e)
-{
-}
-
-void mutt_rfc3676_space_stuff_attachment(struct Body *b, const char *filename)
-{
-}
-
-void mutt_rfc3676_space_unstuff(struct Email *e)
-{
-}
-
-void mutt_rfc3676_space_unstuff_attachment(struct Body *b, const char *filename)
 {
 }
 
 int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
                       enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt)
-{
-  return 0;
-}
-
-int mutt_save_message_mbox(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt,
-                           enum MessageTransformOpt transform_opt, struct Mailbox *m_dst)
 {
   return 0;
 }
@@ -656,58 +510,9 @@ int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
   return 0;
 }
 
-int mx_access(const char *path, int flags)
-{
-  return 0;
-}
-
-bool mx_ac_add(struct Account *a, struct Mailbox *m)
-{
-  return true;
-}
-
-struct Account *mx_ac_find(struct Mailbox *m)
-{
-  return NULL;
-}
-
-int mx_ac_remove(struct Mailbox *m, bool keep_account)
-{
-  return 0;
-}
-
-void mx_fastclose_mailbox(struct Mailbox *m, bool keep_account)
-{
-}
-
-const struct MxOps *mx_get_ops(enum MailboxType type)
-{
-  return NULL;
-}
-
 enum MxStatus mx_mbox_check(struct Mailbox *m)
 {
   return MX_STATUS_OK;
-}
-
-enum MxStatus mx_mbox_close(struct Mailbox *m)
-{
-  return MX_STATUS_OK;
-}
-
-struct Mailbox *mx_mbox_find(struct Account *a, const char *path)
-{
-  return NULL;
-}
-
-struct Mailbox *mx_mbox_find2(const char *path)
-{
-  return NULL;
-}
-
-bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
-{
-  return true;
 }
 
 enum MxStatus mx_mbox_sync(struct Mailbox *m)
@@ -715,24 +520,9 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
   return MX_STATUS_OK;
 }
 
-int mx_msg_commit(struct Mailbox *m, struct Message *msg)
-{
-  return 0;
-}
-
 int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *type)
 {
   return 0;
-}
-
-int mx_path_canon2(struct Mailbox *m, const char *folder)
-{
-  return 0;
-}
-
-enum MailboxType mx_path_probe(const char *path)
-{
-  return MUTT_MAILDIR;
 }
 
 int mx_save_hcache(struct Mailbox *m, struct Email *e)
@@ -765,12 +555,17 @@ enum MailboxType mx_type(struct Mailbox *m)
   return MUTT_MAILDIR;
 }
 
-bool print_version(FILE *fp, bool use_ansi)
+void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
+                 char ***files, int *numfiles)
 {
-  return true;
 }
 
-int sort_validator(const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
+int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)
+{
+  return 0;
+}
+
+int nntp_sort_unsorted(const struct Email *a, const struct Email *b, bool reverse)
 {
   return 0;
 }

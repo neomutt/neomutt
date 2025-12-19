@@ -184,6 +184,62 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_quoted_colors)                                        \
   NEOMUTT_TEST_ITEM(test_simple_colors)                                        \
                                                                                \
+  /* command */                                                                \
+  NEOMUTT_TEST_ITEM(test_parse_alias)                                          \
+  NEOMUTT_TEST_ITEM(test_parse_alternates)                                     \
+  NEOMUTT_TEST_ITEM(test_parse_attachments)                                    \
+  NEOMUTT_TEST_ITEM(test_parse_bind)                                           \
+  NEOMUTT_TEST_ITEM(test_parse_cd)                                             \
+  NEOMUTT_TEST_ITEM(test_parse_charset_iconv_hook)                             \
+  NEOMUTT_TEST_ITEM(test_parse_color)                                          \
+  NEOMUTT_TEST_ITEM(test_parse_echo)                                           \
+  NEOMUTT_TEST_ITEM(test_parse_exec)                                           \
+  NEOMUTT_TEST_ITEM(test_parse_finish)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_group)                                          \
+  NEOMUTT_TEST_ITEM(test_parse_hook)                                           \
+  NEOMUTT_TEST_ITEM(test_parse_idxfmt_hook)                                    \
+  NEOMUTT_TEST_ITEM(test_parse_ifdef)                                          \
+  NEOMUTT_TEST_ITEM(test_parse_ignore)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_lists)                                          \
+  NEOMUTT_TEST_ITEM(test_parse_lua)                                            \
+  NEOMUTT_TEST_ITEM(test_parse_lua_source)                                     \
+  NEOMUTT_TEST_ITEM(test_parse_macro)                                          \
+  NEOMUTT_TEST_ITEM(test_parse_mailboxes)                                      \
+  NEOMUTT_TEST_ITEM(test_parse_mono)                                           \
+  NEOMUTT_TEST_ITEM(test_parse_my_hdr)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_nospam)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_push)                                           \
+  NEOMUTT_TEST_ITEM(test_parse_score)                                          \
+  NEOMUTT_TEST_ITEM(test_parse_setenv)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_sidebar_pin)                                    \
+  NEOMUTT_TEST_ITEM(test_parse_sidebar_unpin)                                  \
+  NEOMUTT_TEST_ITEM(test_parse_source)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_spam)                                           \
+  NEOMUTT_TEST_ITEM(test_parse_stailq)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_subjectrx_list)                                 \
+  NEOMUTT_TEST_ITEM(test_parse_subscribe)                                      \
+  NEOMUTT_TEST_ITEM(test_parse_subscribe_to)                                   \
+  NEOMUTT_TEST_ITEM(test_parse_tag_formats)                                    \
+  NEOMUTT_TEST_ITEM(test_parse_tag_transforms)                                 \
+  NEOMUTT_TEST_ITEM(test_parse_unalias)                                        \
+  NEOMUTT_TEST_ITEM(test_parse_unalternates)                                   \
+  NEOMUTT_TEST_ITEM(test_parse_unattachments)                                  \
+  NEOMUTT_TEST_ITEM(test_parse_unbind)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_uncolor)                                        \
+  NEOMUTT_TEST_ITEM(test_parse_uncolor_command)                                \
+  NEOMUTT_TEST_ITEM(test_parse_unhook)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_unignore)                                       \
+  NEOMUTT_TEST_ITEM(test_parse_unlists)                                        \
+  NEOMUTT_TEST_ITEM(test_parse_unmailboxes)                                    \
+  NEOMUTT_TEST_ITEM(test_parse_unmono)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_unmy_hdr)                                       \
+  NEOMUTT_TEST_ITEM(test_parse_unscore)                                        \
+  NEOMUTT_TEST_ITEM(test_parse_unstailq)                                       \
+  NEOMUTT_TEST_ITEM(test_parse_unsubjectrx_list)                               \
+  NEOMUTT_TEST_ITEM(test_parse_unsubscribe)                                    \
+  NEOMUTT_TEST_ITEM(test_parse_unsubscribe_from)                               \
+  NEOMUTT_TEST_ITEM(test_parse_version)                                        \
+                                                                               \
   /* config */                                                                 \
   NEOMUTT_TEST_ITEM(test_config_account)                                       \
   NEOMUTT_TEST_ITEM(test_config_bool)                                          \

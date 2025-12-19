@@ -1,0 +1,104 @@
+/**
+ * @file
+ * Test code for parse_charset_iconv_hook()
+ *
+ * @authors
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#define TEST_NO_MAIN
+#include "config.h"
+#include "acutest.h"
+#include <stddef.h>
+#include "mutt/lib.h"
+#include "core/lib.h"
+#include "common.h"
+#include "hook.h"
+#include "test_common.h"
+
+// clang-format off
+static const struct Command CharsetHook = { "charset-hook", NULL, MUTT_CHARSET_HOOK };
+static const struct Command IconvHook   = { "iconv-hook",   NULL, MUTT_ICONV_HOOK };
+// clang-format on
+
+// clang-format off
+static const struct CommandTest CharsetTests[] = {
+  // charset-hook alias charset
+  { MUTT_CMD_WARNING, "" },
+  { MUTT_CMD_SUCCESS, "u8 utf-8" },
+  { MUTT_CMD_ERROR,   NULL },
+};
+// clang-format on
+
+// clang-format off
+static const struct CommandTest IconvTests[] = {
+  // iconv-hook charset local-charset
+  { MUTT_CMD_WARNING, "" },
+  { MUTT_CMD_SUCCESS, "ascii utf-8" },
+  { MUTT_CMD_ERROR,   NULL },
+};
+// clang-format on
+
+void test_parse_charset_hook(void)
+{
+  // enum CommandResult parse_charset_iconv_hook(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+
+  struct Buffer *line = buf_pool_get();
+  struct Buffer *err = buf_pool_get();
+  enum CommandResult rc;
+
+  for (int i = 0; CharsetTests[i].line; i++)
+  {
+    TEST_CASE(CharsetTests[i].line);
+    buf_reset(err);
+    buf_strcpy(line, CharsetTests[i].line);
+    buf_seek(line, 0);
+    rc = parse_charset_iconv_hook(&CharsetHook, line, err);
+    TEST_CHECK_NUM_EQ(rc, CharsetTests[i].rc);
+  }
+
+  buf_pool_release(&err);
+  buf_pool_release(&line);
+}
+
+void test_parse_iconv_hook(void)
+{
+  // enum CommandResult parse_charset_iconv_hook(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+
+  struct Buffer *line = buf_pool_get();
+  struct Buffer *err = buf_pool_get();
+  enum CommandResult rc;
+
+  for (int i = 0; IconvTests[i].line; i++)
+  {
+    TEST_CASE(IconvTests[i].line);
+    buf_reset(err);
+    buf_strcpy(line, IconvTests[i].line);
+    buf_seek(line, 0);
+    rc = parse_charset_iconv_hook(&IconvHook, line, err);
+    TEST_CHECK_NUM_EQ(rc, IconvTests[i].rc);
+  }
+
+  buf_pool_release(&err);
+  buf_pool_release(&line);
+}
+
+void test_parse_charset_iconv_hook(void)
+{
+  test_parse_charset_hook();
+  test_parse_iconv_hook();
+}

@@ -1140,6 +1140,7 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
 
 done:
   buf_pool_release(&token);
+  buf_pool_release(&tempfile);
   return rc;
 }
 

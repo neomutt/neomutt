@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_mem_malloc()
+ * Common code for command tests
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,28 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define TEST_NO_MAIN
-#include "config.h"
-#include "acutest.h"
-#include <stddef.h>
-#include "mutt/lib.h"
-#include "test_common.h"
+#ifndef TEST_COMMMAND_COMMON_H
+#define TEST_COMMMAND_COMMON_H
 
-void test_mutt_mem_malloc(void)
+#include "core/lib.h"
+
+struct CommandTest
 {
-  // void *mutt_mem_malloc(size_t size);
+  enum CommandResult rc;
+  const char *line;
+};
 
-  MuttLogger = log_disp_null;
-
-  {
-    void *ptr = mutt_mem_malloc(0);
-    TEST_CHECK(ptr == NULL);
-  }
-
-  {
-    size_t big = 1024 * 1024; // ~0;
-    void *ptr = mutt_mem_malloc(big);
-    TEST_CHECK(ptr != NULL);
-    FREE(&ptr);
-  }
-}
+#endif /* TEST_COMMMAND_COMMON_H */

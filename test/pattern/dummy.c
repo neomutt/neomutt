@@ -33,34 +33,63 @@
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "ncrypt/lib.h"
-#include "send/lib.h"
+#include "copy.h"
 #include "mview.h"
 
 struct Address;
 struct Body;
 struct Buffer;
-struct ConfigSubset;
 struct Email;
-struct Envelope;
 struct Mapping;
-struct MuttWindow;
-struct Pager;
-struct Pattern;
 struct State;
-struct TagList;
 
-bool g_addr_is_user = false;
-bool g_is_mail_list = false;
-bool g_is_subscribed_list = false;
-bool OptForceRefresh;
-bool OptKeepQuiet;
-bool OptGui;
+bool g_addr_is_user = true;
+bool g_is_mail_list = true;
+bool g_is_subscribed_list = true;
+bool OptForceRefresh = true;
+bool OptKeepQuiet = true;
+bool OptGui = true;
 
+const struct MenuFuncOp OpAlias[] = {
+  { NULL, OP_NULL },
+};
+const struct MenuFuncOp OpAttachment[] = {
+  { NULL, OP_NULL },
+};
+const struct MenuFuncOp OpAutocrypt[] = {
+  { NULL, OP_NULL },
+};
+const struct MenuFuncOp OpBrowser[] = {
+  { NULL, OP_NULL },
+};
 const struct MenuFuncOp OpPgp[] = {
   { NULL, OP_NULL },
 };
+const struct MenuFuncOp OpQuery[] = {
+  { NULL, OP_NULL },
+};
 const struct MenuFuncOp OpSmime[] = {
+  { NULL, OP_NULL },
+};
+
+const struct MenuFuncOp OpIndex[] = {
+  { "help", OP_HELP },
+  { "next-line", OP_NEXT_LINE },
+  { "next-page", OP_NEXT_PAGE },
+  { "next-undeleted", OP_MAIN_NEXT_UNDELETED },
+  { "previous-line", OP_PREV_LINE },
+  { "previous-unread", OP_MAIN_PREV_UNREAD },
+  { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
+  { NULL, OP_NULL },
+};
+
+const struct MenuFuncOp OpPager[] = {
+  { "help", OP_HELP },
+  { "next-line", OP_NEXT_LINE },
+  { "next-page", OP_NEXT_PAGE },
+  { "next-undeleted", OP_MAIN_NEXT_UNDELETED },
+  { "previous-line", OP_PREV_LINE },
+  { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
   { NULL, OP_NULL },
 };
 
