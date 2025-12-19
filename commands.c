@@ -366,8 +366,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 /**
  * parse_cd - Parse the 'cd' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_cd(const struct Command *cmd,
-                                   struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_cd(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 {
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
@@ -398,8 +397,8 @@ done:
 /**
  * parse_echo - Parse the 'echo' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_echo(const struct Command *cmd,
-                                     struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_echo(const struct Command *cmd, struct Buffer *line,
+                              struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -426,8 +425,8 @@ static enum CommandResult parse_echo(const struct Command *cmd,
  *
  * If the 'finish' command is found, we should stop reading the current file.
  */
-static enum CommandResult parse_finish(const struct Command *cmd,
-                                       struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_finish(const struct Command *cmd, struct Buffer *line,
+                                struct Buffer *err)
 {
   if (MoreArgs(line))
   {
@@ -441,8 +440,8 @@ static enum CommandResult parse_finish(const struct Command *cmd,
 /**
  * parse_group - Parse the 'group' and 'ungroup' commands - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_group(const struct Command *cmd,
-                                      struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
+                               struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -544,8 +543,8 @@ done:
  * e.g.
  *      ifndef imap finish
  */
-static enum CommandResult parse_ifdef(const struct Command *cmd,
-                                      struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *line,
+                               struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -595,8 +594,8 @@ done:
 /**
  * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_ignore(const struct Command *cmd,
-                                       struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
+                                struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -620,8 +619,8 @@ static enum CommandResult parse_ignore(const struct Command *cmd,
 /**
  * parse_lists - Parse the 'lists' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_lists(const struct Command *cmd,
-                                      struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
+                               struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -985,8 +984,8 @@ static int envlist_sort(const void *a, const void *b, void *sdata)
 /**
  * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_setenv(const struct Command *cmd,
-                                       struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
+                                struct Buffer *err)
 {
   struct Buffer *token = buf_pool_get();
   struct Buffer *tempfile = NULL;
@@ -1147,8 +1146,8 @@ done:
 /**
  * parse_source - Parse the 'source' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_source(const struct Command *cmd,
-                                       struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
+                                struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1189,8 +1188,8 @@ done:
 /**
  * parse_nospam - Parse the 'nospam' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_nospam(const struct Command *cmd,
-                                       struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_nospam(const struct Command *cmd, struct Buffer *line,
+                                struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1243,8 +1242,8 @@ done:
 /**
  * parse_spam - Parse the 'spam' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_spam(const struct Command *cmd,
-                                     struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
+                              struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1288,8 +1287,8 @@ done:
  *
  * This is used by 'alternative_order', 'auto_view' and several others.
  */
-static enum CommandResult parse_stailq(const struct Command *cmd,
-                                       struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
+                                struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1312,8 +1311,8 @@ static enum CommandResult parse_stailq(const struct Command *cmd,
 /**
  * parse_subscribe - Parse the 'subscribe' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_subscribe(const struct Command *cmd,
-                                          struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_subscribe(const struct Command *cmd,
+                                   struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1406,8 +1405,8 @@ done:
  *
  * @note This maps format -> tag
  */
-static enum CommandResult parse_tag_formats(const struct Command *cmd,
-                                            struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_tag_formats(const struct Command *cmd,
+                                     struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1449,8 +1448,8 @@ static enum CommandResult parse_tag_formats(const struct Command *cmd,
  *
  * @note This maps tag -> transform
  */
-static enum CommandResult parse_tag_transforms(const struct Command *cmd,
-                                               struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_tag_transforms(const struct Command *cmd,
+                                        struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1490,8 +1489,8 @@ static enum CommandResult parse_tag_transforms(const struct Command *cmd,
 /**
  * parse_unignore - Parse the 'unignore' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_unignore(const struct Command *cmd,
-                                         struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unignore(const struct Command *cmd,
+                                  struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1519,8 +1518,8 @@ static enum CommandResult parse_unignore(const struct Command *cmd,
 /**
  * parse_unlists - Parse the 'unlists' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_unlists(const struct Command *cmd,
-                                        struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line,
+                                 struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1640,8 +1639,8 @@ done:
 /**
  * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_unmy_hdr(const struct Command *cmd,
-                                         struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unmy_hdr(const struct Command *cmd,
+                                  struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1695,8 +1694,8 @@ static enum CommandResult parse_unmy_hdr(const struct Command *cmd,
  *
  * This is used by 'unalternative_order', 'unauto_view' and several others.
  */
-static enum CommandResult parse_unstailq(const struct Command *cmd,
-                                         struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unstailq(const struct Command *cmd,
+                                  struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1725,8 +1724,8 @@ static enum CommandResult parse_unstailq(const struct Command *cmd,
 /**
  * parse_unsubscribe - Parse the 'unsubscribe' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_unsubscribe(const struct Command *cmd,
-                                            struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unsubscribe(const struct Command *cmd,
+                                     struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -1804,8 +1803,8 @@ done:
 /**
  * parse_version - Parse the 'version' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_version(const struct Command *cmd,
-                                        struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_version(const struct Command *cmd, struct Buffer *line,
+                                 struct Buffer *err)
 {
   // silently ignore 'version' if it's in a config file
   if (!StartupComplete)
