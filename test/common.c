@@ -63,11 +63,17 @@ static struct ConfigDef Vars[] = {
   // clang-format off
   { "assumed_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, NULL, },
   { "charset", DT_STRING|D_NOT_EMPTY|D_CHARSET_SINGLE, IP "utf-8", 0, NULL, },
+  { "debug_level", DT_NUMBER, 0, 0, NULL },
   { "maildir_field_delimiter", DT_STRING, IP ":", 0, NULL, },
   { "tmp_dir", DT_PATH|D_PATH_DIR|D_NOT_EMPTY, IP TMPDIR, 0, NULL, },
   { NULL },
   // clang-format on
 };
+
+struct ListHead AlternativeOrderList = STAILQ_HEAD_INITIALIZER(AlternativeOrderList);
+struct ListHead AutoViewList = STAILQ_HEAD_INITIALIZER(AutoViewList);
+struct ListHead HeaderOrderList = STAILQ_HEAD_INITIALIZER(HeaderOrderList);
+struct ListHead MimeLookupList = STAILQ_HEAD_INITIALIZER(MimeLookupList);
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType Cst##NAME;                                 \
@@ -114,6 +120,7 @@ bool test_neomutt_create(void)
 
   NeoMutt = neomutt_new(cs);
   TEST_CHECK(NeoMutt != NULL);
+  NeoMutt->env = MUTT_MEM_CALLOC(2, char *);
 
   TEST_CHECK(cs_register_variables(cs, Vars));
 
@@ -254,18 +261,6 @@ void mutt_encode_path(struct Buffer *buf, const char *src)
 
 void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 {
-}
-
-enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
-                                     intptr_t data, struct Buffer *err)
-{
-  return MUTT_CMD_SUCCESS;
-}
-
-enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
-                                   intptr_t data, struct Buffer *err)
-{
-  return MUTT_CMD_SUCCESS;
 }
 
 struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpenFlags flags)

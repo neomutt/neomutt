@@ -38,8 +38,14 @@
 
 #ifdef USE_LUA
 
+struct Buffer;
+struct Command;
+
 void lua_init   (void);
 void lua_cleanup(void);
+
+enum CommandResult parse_lua       (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 #else
 

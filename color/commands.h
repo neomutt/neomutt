@@ -43,10 +43,11 @@ struct AttrColor;
  */
 typedef enum CommandResult (*parser_callback_t)(const struct Command *cmd, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
 
-enum CommandResult parse_color  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_mono   (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unmono (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_color          (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_mono           (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_uncolor        (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_uncolor_command(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unmono         (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 void get_colorid_name(unsigned int color_id, struct Buffer *buf);
 

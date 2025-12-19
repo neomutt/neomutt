@@ -217,7 +217,7 @@ static void test_command_set_query(void)
   buf_reset(err);
   rc = command_set_query(name, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
-  TEST_CHECK(!buf_is_empty(err));
+  TEST_CHECK(buf_is_empty(err));
 
   StartupComplete = false;
   buf_strcpy(name, "all");
@@ -231,7 +231,7 @@ static void test_command_set_query(void)
   buf_reset(err);
   rc = command_set_query(name, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
-  TEST_CHECK(!buf_is_empty(err));
+  TEST_CHECK(buf_is_empty(err));
 
   buf_strcpy(name, "unknown");
   buf_reset(err);

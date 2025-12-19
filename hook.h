@@ -71,4 +71,7 @@ void                  mutt_select_fcc              (struct Buffer *path, struct 
 void                  mutt_startup_shutdown_hook   (HookFlags type);
 void                  mutt_timeout_hook            (void);
 
+enum CommandResult parse_idxfmt_hook(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unhook     (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+
 #endif /* MUTT_HOOK_H */

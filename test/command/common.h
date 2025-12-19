@@ -1,9 +1,9 @@
 /**
  * @file
- * Shared Testing Code
+ * Common code for command tests
  *
  * @authors
- * Copyright (C) 2019-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,13 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define TEST_NO_MAIN
-#include "config.h"
-#include "acutest.h"
-#include "email/lib.h"
-#include "common.h"
+#ifndef TEST_COMMMAND_COMMON_H
+#define TEST_COMMMAND_COMMON_H
 
-int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)
+#include "core/lib.h"
+
+struct CommandTest
 {
-  return -1;
-}
+  enum CommandResult rc;
+  const char *line;
+};
+
+#endif /* TEST_COMMMAND_COMMON_H */

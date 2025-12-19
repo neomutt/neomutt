@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for parsing the 'set' command
+ * Test code for parse_ignore()
  *
  * @authors
- * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,26 +22,41 @@
 
 #define TEST_NO_MAIN
 #include "config.h"
+#include "commands.h"
 #include "acutest.h"
-#include <string.h>
+#include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
-#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
-void test_parse_set(void)
+static const struct Command Ignore = { "ignore", NULL, 0 };
+
+// clang-format off
+static const struct CommandTest Tests[] = {
+  { MUTT_CMD_WARNING, "" },
+  { MUTT_CMD_ERROR,   NULL },
+};
+// clang-format on
+
+void test_parse_ignore(void)
 {
-  // enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+  // enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 
   struct Buffer *line = buf_pool_get();
   struct Buffer *err = buf_pool_get();
+  enum CommandResult rc;
 
-  TEST_CASE("parse_set");
-  enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], line, err);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+  for (int i = 0; Tests[i].line; i++)
+  {
+    TEST_CASE(Tests[i].line);
+    buf_reset(err);
+    buf_strcpy(line, Tests[i].line);
+    buf_seek(line, 0);
+    rc = parse_ignore(&Ignore, line, err);
+    TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
+  }
 
-  buf_pool_release(&line);
   buf_pool_release(&err);
+  buf_pool_release(&line);
 }

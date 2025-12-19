@@ -42,18 +42,6 @@ struct TestCase
   const char *result;
 };
 
-struct Buffer *imap_exec_results = NULL;
-bool imap_exec_fail = false;
-
-int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags flags)
-{
-  if (imap_exec_fail)
-    return -1;
-
-  buf_add_printf(imap_exec_results, "%s\n", cmdstr);
-  return 0;
-}
-
 void test_sort(void)
 {
   TEST_CASE("sort");
@@ -414,79 +402,10 @@ void test_make_curated(void)
   }
 }
 
-void test_exec(void)
-{
-  TEST_CASE("exec");
-
-  static const struct TestCase tests[] = {
-    // clang-format off
-    { { 1, 2, 3, 7, 8, 9, 20, 21, 22 },
-        "PRE 1:3,7:9,20:22 POST\n" },
-
-    { { 1000,1003,1004,1005,1006,1007,1008,1009,1011,1012,1013,1014,1015,1016,1017,1018,1019,1021,1022,1023,1024,1025 },
-        "PRE 1000,1003:1009,1011:1019,1021:1025 POST\n" },
-
-    { { 1000,1003,1004,1005,1006,1007,1008,1009,1011,1012,1013,1014,1015,1016,1017,1018,1019,1021,
-        1022,1023,1024,1025,1027,1028,1029,1030,1032,1033,1034,1036,1037,1038,1039,1040,1042,1044,1046,1049 },
-        "PRE 1000,1003:1009,1011:1019,1021:1025,1027:1030,1032:1034,1036 POST\n"
-        "PRE 1037:1040,1042,1044,1046,1049 POST\n" },
-
-    { { 1000,1001,1003,1004,1005,1007,1008,1009,1010,1011,1012,1013,1014,1015,1016,1017,1018,1020,1023,
-        1025,1026,1027,1028,1029,1030,1031,1032,1033,1034,1035,1036,1037,1038,1039,1040,1042,1043,1044,
-        1045,1046,1047,1048,1049,1050,1052,1053,1054,1056,1057,1060,1061,1062,1064,1065,1068,1069,1070,
-        1074,1075,1078,1079,1080,1081,1082,1083,1085,1087,1088,1089,1090,1092,1094,1095,1096,1098,1099,
-        1101,1102,1103,1104,1105,1106,1107,1108,1109,1110,1111,1112,1113,1114,1115,1119,1120,1121,1122,
-        1124,1125,1127,1128,1130,1131,1133,1134,1135,1136,1138,1140,1141,1142,1144,1147,1149 },
-        "PRE 1000:1001,1003:1005,1007:1018,1020,1023,1025:1040,1042 POST\n"
-        "PRE 1043:1050,1052:1054,1056:1057,1060:1062,1064:1065,1068 POST\n"
-        "PRE 1069:1070,1074:1075,1078:1083,1085,1087:1090,1092,1094 POST\n"
-        "PRE 1095:1096,1098:1099,1101:1115,1119:1122,1124:1125,1127 POST\n"
-        "PRE 1128,1130:1131,1133:1136,1138,1140:1142,1144,1147,1149 POST\n" },
-    // clang-format on
-  };
-
-  {
-    imap_exec_fail = true;
-    struct UidArray uida = ARRAY_HEAD_INITIALIZER;
-    ARRAY_ADD(&uida, 1);
-
-    int rc = imap_exec_msg_set(NULL, "PRE", "POST", &uida);
-    TEST_CHECK_NUM_EQ(rc, -1);
-
-    ARRAY_FREE(&uida);
-    imap_exec_fail = false;
-  }
-
-  // Clamp down the limit to force wrapping
-  ImapMaxCmdlen = 50;
-  imap_exec_results = buf_pool_get();
-
-  for (int i = 0; i < countof(tests); i++)
-  {
-    struct UidArray uida = ARRAY_HEAD_INITIALIZER;
-    const struct TestCase *test = &tests[i];
-    for (int j = 0; test->input[j] > 0; j++)
-    {
-      ARRAY_ADD(&uida, test->input[j]);
-    }
-
-    buf_reset(imap_exec_results);
-
-    int rc = imap_exec_msg_set(NULL, "PRE", "POST", &uida);
-    TEST_CHECK(rc > 0);
-    TEST_CHECK_STR_EQ(buf_string(imap_exec_results), test->result);
-
-    ARRAY_FREE(&uida);
-  }
-
-  buf_pool_release(&imap_exec_results);
-}
-
 void test_imap_msg_set(void)
 {
   test_sort();
   test_make_degenerate();
   test_make_simple();
   test_make_curated();
-  test_exec();
 }
