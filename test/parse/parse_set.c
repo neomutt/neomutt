@@ -44,7 +44,7 @@ void test_parse_set(void)
   struct Buffer *err = buf_pool_get();
 
   TEST_CASE("parse_set");
-  enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], NULL, line, err);
+  enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   buf_pool_release(&line);

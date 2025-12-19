@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -132,8 +131,8 @@ void parse_alias_comments(struct Alias *alias, const char *com)
  *
  * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
  */
-enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token_,
-                               struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
+                               struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -250,8 +249,8 @@ done:
 /**
  * parse_unalias - Parse the 'unalias' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token_,
-                                 struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
+                                 struct Buffer *err)
 {
   if (!MoreArgs(line))
   {

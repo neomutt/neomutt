@@ -120,7 +120,7 @@ static struct Hook *hook_new(void)
 /**
  * parse_charset_iconv_hook - Parse 'charset-hook' and 'iconv-hook' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_charset_iconv_hook(const struct Command *cmd, struct Buffer *token_,
+enum CommandResult parse_charset_iconv_hook(const struct Command *cmd,
                                             struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -169,8 +169,8 @@ done:
  *
  * This is used by 'account-hook', 'append-hook' and many more.
  */
-enum CommandResult parse_hook(const struct Command *cmd, struct Buffer *token_,
-                              struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook(const struct Command *cmd, struct Buffer *line,
+                              struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -452,7 +452,7 @@ static void delete_idxfmt_hooks(void)
 /**
  * parse_idxfmt_hook - Parse the 'index-format-hook' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_idxfmt_hook(const struct Command *cmd, struct Buffer *token_,
+static enum CommandResult parse_idxfmt_hook(const struct Command *cmd,
                                             struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -591,7 +591,7 @@ static HookFlags mutt_get_hook_type(const char *name)
 /**
  * parse_unhook - Parse the 'unhook' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *token_,
+static enum CommandResult parse_unhook(const struct Command *cmd,
                                        struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))

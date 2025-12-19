@@ -36,17 +36,13 @@
 #include "config.h"
 #include <lauxlib.h>
 #include <lua.h>
-#include <lualib.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
 #include "muttlib.h"
-#include "version.h"
 
 extern lua_State *LuaState;
 
@@ -55,7 +51,7 @@ bool lua_init_state(lua_State **l);
 /**
  * parse_lua - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *token_,
+static enum CommandResult parse_lua(const struct Command *cmd,
                                     struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -91,7 +87,7 @@ done:
 /**
  * parse_lua_source - Parse the 'lua-source' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *token_,
+static enum CommandResult parse_lua_source(const struct Command *cmd,
                                            struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))

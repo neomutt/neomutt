@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -89,7 +88,7 @@ void mutt_alternates_reset(struct MailboxView *mv)
 /**
  * parse_alternates - Parse the 'alternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *token_,
+enum CommandResult parse_alternates(const struct Command *cmd,
                                     struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -132,7 +131,7 @@ done:
 /**
  * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *token_,
+enum CommandResult parse_unalternates(const struct Command *cmd,
                                       struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))

@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <stdint.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -64,14 +63,13 @@ void subjrx_init(void)
 /**
  * parse_unreplace_list - Remove a string replacement rule
  * @param cmd  Command being parsed
- * @param token Temporary Buffer space
  * @param line Buffer containing string to be parsed
  * @param list ReplaceList to be updated
  * @param err  Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult parse_unreplace_list(const struct Command *cmd,
-                                               struct Buffer *token_, struct Buffer *line,
+                                               struct Buffer *line,
                                                struct ReplaceList *list, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -106,8 +104,7 @@ static enum CommandResult parse_unreplace_list(const struct Command *cmd,
  * @param err  Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-static enum CommandResult parse_replace_list(const struct Command *cmd,
-                                             struct Buffer *token_, struct Buffer *line,
+static enum CommandResult parse_replace_list(const struct Command *cmd, struct Buffer *line,
                                              struct ReplaceList *list, struct Buffer *err)
 {
   struct Buffer *templ = buf_pool_get();
@@ -189,7 +186,7 @@ void subjrx_clear_mods(struct MailboxView *mv)
 /**
  * parse_subjectrx_list - Parse the 'subjectrx' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_subjectrx_list(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_subjectrx_list(const struct Command *cmd,
                                         struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -200,7 +197,7 @@ enum CommandResult parse_subjectrx_list(const struct Command *cmd, struct Buffer
 
   enum CommandResult rc;
 
-  rc = parse_replace_list(cmd, token, line, &SubjectRegexList, err);
+  rc = parse_replace_list(cmd, line, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
     mutt_debug(LL_NOTIFY, "NT_SUBJRX_ADD: %s\n", cmd->name);
@@ -212,7 +209,7 @@ enum CommandResult parse_subjectrx_list(const struct Command *cmd, struct Buffer
 /**
  * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_unsubjectrx_list(const struct Command *cmd,
                                           struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -223,7 +220,7 @@ enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buff
 
   enum CommandResult rc;
 
-  rc = parse_unreplace_list(cmd, token, line, &SubjectRegexList, err);
+  rc = parse_unreplace_list(cmd, line, &SubjectRegexList, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
     mutt_debug(LL_NOTIFY, "NT_SUBJRX_DELETE: %s\n", cmd->name);

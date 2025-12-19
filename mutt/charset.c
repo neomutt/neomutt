@@ -1010,7 +1010,7 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
     return EOF;
   }
   if (fc->ibl)
-    memcpy(fc->bufi, fc->ib, fc->ibl);
+    memmove(fc->bufi, fc->ib, fc->ibl);
   fc->ib = fc->bufi;
   fc->ibl += fread(fc->ib + fc->ibl, 1, sizeof(fc->bufi) - fc->ibl, fc->fp);
 

@@ -24,7 +24,6 @@
 #define MUTT_SIDEBAR_PRIVATE_H
 
 #include <stdbool.h>
-#include <stdint.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -107,8 +106,8 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m);
 struct Mailbox *sb_get_highlight(struct MuttWindow *win);
 
 // commands.c
-enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_sidebar_pin  (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_sidebar_pin  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 // functions.c
 bool sb_next(struct SidebarWindowData *wdata);
