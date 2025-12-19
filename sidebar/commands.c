@@ -38,7 +38,7 @@
 /**
  * parse_sidebar_pin - Parse the 'sidebar_pin' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *token_,
                                      struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -63,7 +63,7 @@ enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *t
 /**
  * parse_sidebar_unpin - Parse the 'sidebar_unpin' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *token_,
                                        struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))

@@ -54,7 +54,7 @@ void test_parse_attr_spec(void)
     buf_seek(line, 0);
 
     rc = parse_attr_spec(&Mono, NULL, line, ac, err);
-    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
     rc = parse_attr_spec(&Mono, token, NULL, ac, err);
     TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);

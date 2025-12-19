@@ -28,11 +28,25 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+#include "common.h"
 #include "test_common.h"
 
 void test_parse_set(void)
 {
+  // enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+
+  // reset <variable> [ <variable> ... ]
+  // set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [... ]
+  // toggle <variable> [ <variable> ... ]
+  // unset <variable> [ <variable> ... ]
+
+  struct Buffer *line = buf_pool_get();
+  struct Buffer *err = buf_pool_get();
+
   TEST_CASE("parse_set");
-  enum CommandResult rc = parse_set(NULL, NULL, 0, NULL);
-  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
+  enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], NULL, line, err);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+
+  buf_pool_release(&line);
+  buf_pool_release(&err);
 }

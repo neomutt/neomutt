@@ -132,7 +132,7 @@ void parse_alias_comments(struct Alias *alias, const char *com)
  *
  * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
  */
-enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token_,
                                struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -142,16 +142,17 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
   }
 
   struct Alias *tmp = NULL;
-  struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum NotifyAlias event;
+  struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   /* name */
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
   mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf_string(token));
   if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
-  {
-    return MUTT_CMD_ERROR;
-  }
+    goto done;
+
   char *name = mutt_str_dup(buf_string(token));
 
   /* address list */
@@ -220,7 +221,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
         mutt_debug(LL_DEBUG5, "  %s\n", buf_string(a->mailbox));
     }
   }
-  grouplist_destroy(&gl);
+
   if (!MoreArgs(line) && (line->dptr[0] == '#'))
   {
     line->dptr++; // skip over the "# "
@@ -238,17 +239,18 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
   struct EventAlias ev_a = { tmp };
   notify_send(NeoMutt->notify, NT_ALIAS, event, &ev_a);
 
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
 
 done:
+  buf_pool_release(&token);
   grouplist_destroy(&gl);
-  return MUTT_CMD_ERROR;
+  return rc;
 }
 
 /**
  * parse_unalias - Parse the 'unalias' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token_,
                                  struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -256,6 +258,8 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
+
+  struct Buffer *token = buf_pool_get();
 
   do
   {
@@ -270,7 +274,7 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token
       }
 
       aliaslist_clear(&Aliases);
-      return MUTT_CMD_SUCCESS;
+      goto done;
     }
 
     TAILQ_FOREACH(np, &Aliases, entries)
@@ -284,5 +288,8 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token
       break;
     }
   } while (MoreArgs(line));
+
+done:
+  buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
 }
