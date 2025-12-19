@@ -146,7 +146,7 @@ void get_colorid_name(unsigned int cid, struct Buffer *buf)
  * Identify a colour object, e.g. "message", "compose header"
  */
 static enum CommandResult parse_object(const struct Command *cmd,
-                                       struct Buffer *token, struct Buffer *line,
+                                       struct Buffer *token_, struct Buffer *line,
                                        enum ColorId *cid, struct Buffer *err)
 {
   if (!MoreArgsF(line, TOKEN_COMMENT))
@@ -155,25 +155,32 @@ static enum CommandResult parse_object(const struct Command *cmd,
     return MUTT_CMD_WARNING;
   }
 
+  struct Buffer *token = buf_pool_get();
+
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  color_debug(LL_DEBUG5, "color: %s\n", buf_string(token));
+
   if (mutt_istr_equal(buf_string(token), "compose"))
   {
     if (!MoreArgs(line))
     {
       buf_printf(err, _("%s: too few arguments"), cmd->name);
+      buf_pool_release(&token);
       return MUTT_CMD_WARNING;
     }
 
-    struct Buffer *tmp = buf_pool_get();
-    parse_extract_token(tmp, line, TOKEN_NO_FLAGS);
+    struct Buffer *suffix = buf_pool_get();
+    parse_extract_token(suffix, line, TOKEN_NO_FLAGS);
     buf_fix_dptr(token);
-    buf_add_printf(token, "_%s", buf_string(tmp));
-    buf_pool_release(&tmp);
+    buf_add_printf(token, "_%s", buf_string(suffix));
+    buf_pool_release(&suffix);
   }
 
   int rc = mutt_map_get_value(buf_string(token), ColorFields);
   if (rc == -1)
   {
     buf_printf(err, _("%s: no such object"), buf_string(token));
+    buf_pool_release(&token);
     return MUTT_CMD_WARNING;
   }
   else
@@ -186,13 +193,13 @@ static enum CommandResult parse_object(const struct Command *cmd,
 }
 
 /**
- * parse_uncolor_command - Parse an 'uncolor' command
+ * parse_uncolor_command - Parse an 'uncolor' command - Implements Command::parse() - @ingroup command_parse
  *
  * Usage:
  * * uncolor OBJECT [ PATTERN | REGEX | * ]
  */
 static enum CommandResult parse_uncolor_command(const struct Command *cmd,
-                                                struct Buffer *token,
+                                                struct Buffer *token_,
                                                 struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -201,46 +208,54 @@ static enum CommandResult parse_uncolor_command(const struct Command *cmd,
     return MUTT_CMD_WARNING;
   }
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
-  if (mutt_str_equal(buf_string(token), "*"))
+  // Peek at the next token ('*' won't match a colour name)
+  if (line->dptr[0] == '*')
   {
-    colors_reset();
-    return MUTT_CMD_SUCCESS;
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    if (mutt_str_equal(buf_string(token), "*"))
+    {
+      colors_reset();
+      goto done;
+    }
   }
 
   unsigned int cid = MT_COLOR_NONE;
   color_debug(LL_DEBUG5, "uncolor: %s\n", buf_string(token));
-  enum CommandResult rc = parse_object(cmd, token, line, &cid, err);
+  rc = parse_object(cmd, token, line, &cid, err);
   if (rc != MUTT_CMD_SUCCESS)
-    return rc;
+    goto done;
 
   if (cid == -1)
   {
     buf_printf(err, _("%s: no such object"), buf_string(token));
-    return MUTT_CMD_ERROR;
+    rc = MUTT_CMD_ERROR;
+    goto done;
   }
 
   if ((cid == MT_COLOR_STATUS) && !MoreArgs(line))
   {
     color_debug(LL_DEBUG5, "simple\n");
     simple_color_reset(cid); // default colour for the status bar
-    return MUTT_CMD_SUCCESS;
+    goto done;
   }
 
   if (!mutt_color_has_pattern(cid))
   {
     color_debug(LL_DEBUG5, "simple\n");
     simple_color_reset(cid);
-    return MUTT_CMD_SUCCESS;
+    goto done;
   }
 
   if (!MoreArgs(line))
   {
     if (regex_colors_parse_uncolor(cid, NULL))
-      return MUTT_CMD_SUCCESS;
+      rc = MUTT_CMD_SUCCESS;
     else
-      return MUTT_CMD_ERROR;
+      rc = MUTT_CMD_ERROR;
+    goto done;
   }
 
   do
@@ -249,16 +264,21 @@ static enum CommandResult parse_uncolor_command(const struct Command *cmd,
     if (mutt_str_equal("*", buf_string(token)))
     {
       if (regex_colors_parse_uncolor(cid, NULL))
-        return MUTT_CMD_SUCCESS;
+        rc = MUTT_CMD_SUCCESS;
       else
-        return MUTT_CMD_ERROR;
+        rc = MUTT_CMD_ERROR;
+      goto done;
     }
 
     regex_colors_parse_uncolor(cid, buf_string(token));
 
   } while (MoreArgs(line));
 
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }
 
 /**
@@ -275,13 +295,14 @@ static enum CommandResult parse_uncolor_command(const struct Command *cmd,
  * * mono  OBJECT   ATTRS         [ PATTERN | REGEX ] [ NUM ]
  */
 static enum CommandResult parse_color_command(const struct Command *cmd,
-                                              struct Buffer *token, struct Buffer *line,
+                                              struct Buffer *token_, struct Buffer *line,
                                               struct Buffer *err, parser_callback_t callback)
 {
   unsigned int match = 0;
   enum ColorId cid = MT_COLOR_NONE;
   enum CommandResult rc = MUTT_CMD_ERROR;
   struct AttrColor *ac = NULL;
+  struct Buffer *token = buf_pool_get();
 
   if (!MoreArgs(line))
   {
@@ -298,9 +319,6 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
 
     goto done;
   }
-
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
-  color_debug(LL_DEBUG5, "color: %s\n", buf_string(token));
 
   rc = parse_object(cmd, token, line, &cid, err);
   if (rc != MUTT_CMD_SUCCESS)
@@ -417,13 +435,14 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
 
 done:
   attr_color_free(&ac);
+  buf_pool_release(&token);
   return rc;
 }
 
 /**
  * parse_uncolor - Parse the 'uncolor' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *token_,
                                  struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -432,37 +451,52 @@ enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *token
     return MUTT_CMD_WARNING;
   }
 
+  struct Buffer *token = buf_pool_get();
+
   if (!OptGui) // No GUI, so quietly discard the command
   {
     while (MoreArgs(line))
     {
       parse_extract_token(token, line, TOKEN_NO_FLAGS);
     }
-    return MUTT_CMD_SUCCESS;
+    goto done;
   }
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(token));
   enum CommandResult rc = parse_uncolor_command(cmd, token, line, err);
   curses_colors_dump(token);
+
+done:
+  buf_pool_release(&token);
   return rc;
 }
 
 /**
  * parse_unmono - Parse the 'unmono' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unmono(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_unmono(const struct Command *cmd, struct Buffer *token_,
                                 struct Buffer *line, struct Buffer *err)
 {
-  *line->dptr = '\0'; /* fake that we're done parsing */
+  // Quietly discard the command
+  struct Buffer *token = buf_pool_get();
+  while (MoreArgs(line))
+  {
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  }
+  buf_pool_release(&token);
+
   return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_color - Parse the 'color' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_color(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_color(const struct Command *cmd, struct Buffer *token_,
                                struct Buffer *line, struct Buffer *err)
 {
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
+
   // No GUI, or no colours, so quietly discard the command
   if (!OptGui || (COLORS == 0))
   {
@@ -470,21 +504,27 @@ enum CommandResult parse_color(const struct Command *cmd, struct Buffer *token,
     {
       parse_extract_token(token, line, TOKEN_NO_FLAGS);
     }
-    return MUTT_CMD_SUCCESS;
+    goto done;
   }
 
-  color_debug(LL_DEBUG5, "parse: %s\n", buf_string(token));
-  enum CommandResult rc = parse_color_command(cmd, token, line, err, parse_color_pair);
+  color_debug(LL_DEBUG5, "parse: color\n");
+  rc = parse_color_command(cmd, token, line, err, parse_color_pair);
   curses_colors_dump(token);
+
+done:
+  buf_pool_release(&token);
   return rc;
 }
 
 /**
  * parse_mono - Parse the 'mono' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_mono(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_mono(const struct Command *cmd, struct Buffer *token_,
                               struct Buffer *line, struct Buffer *err)
 {
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
+
   // No GUI, or colours available, so quietly discard the command
   if (!OptGui || (COLORS != 0))
   {
@@ -492,11 +532,14 @@ enum CommandResult parse_mono(const struct Command *cmd, struct Buffer *token,
     {
       parse_extract_token(token, line, TOKEN_NO_FLAGS);
     }
-    return MUTT_CMD_SUCCESS;
+    goto done;
   }
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(token));
-  enum CommandResult rc = parse_color_command(cmd, token, line, err, parse_attr_spec);
+  rc = parse_color_command(cmd, token, line, err, parse_attr_spec);
   curses_colors_dump(token);
+
+done:
+  buf_pool_release(&token);
   return rc;
 }
