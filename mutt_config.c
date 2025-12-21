@@ -257,19 +257,13 @@ struct ExpandoNode *parse_tags_transformed(const char *str, struct ExpandoFormat
                                            const char **parsed_until,
                                            struct ExpandoParseError *err)
 {
-  // Skip over the name
-  str = *parsed_until + 1;
-
-  // Tag expando %G must use an suffix from [A-Za-z0-9], e.g. %Ga, %GL
-  if (!mutt_isalnum(str[0]))
+  // Tag expando %G must use a suffix from [A-Za-z0-9], e.g. %Ga, %GL
+  if (!mutt_isalnum(str[1]))
     return NULL;
 
   struct ExpandoNode *node = node_expando_new(fmt, did, uid);
 
-  char tag[4] = { 0 };
-  tag[0] = 'G';
-  tag[1] = str[0];
-  node->text = mutt_str_dup(tag);
+  node->text = mutt_strn_dup(str, 2);
 
   if (flags & EP_CONDITIONAL)
   {
@@ -277,7 +271,7 @@ struct ExpandoNode *parse_tags_transformed(const char *str, struct ExpandoFormat
     node->render = node_condbool_render;
   }
 
-  (*parsed_until) += 2;
+  (*parsed_until) = str + 2;
 
   return node;
 }
