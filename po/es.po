@@ -221,10 +221,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Límite: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "Adjuntos: sin disposición"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Ajustes actuales de adjuntos:"
@@ -232,10 +228,6 @@ msgstr "Ajustes actuales de adjuntos:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "adjuntos: disposición errónea"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "Desadjuntar: sin disposición"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -968,13 +960,13 @@ msgstr[1] "fuente: %d errores en %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: falta -rx o -addr"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: falta -rx o -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: aviso: IDN inválido '%s'"
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: aviso: IDN inválido '%s'"
 
 #: commands.c:571
 #, c-format
@@ -1018,10 +1010,6 @@ msgstr "Inscrito a %s"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "No se pudo inscribir a %s"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "No se especificó directorio"
 
 #: commands.c:1322
 #, c-format
@@ -5221,10 +5209,6 @@ msgstr "La función '%s' no está disponible para el menú '%s'"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: sequencia de teclas vacía"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: faltan parámetros"
 
 #: key/commands.c:652
 #, c-format

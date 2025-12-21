@@ -221,10 +221,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr " Batas: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "lampiran: tidak ada disposisi"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -233,10 +229,6 @@ msgstr "edit keterangan lampiran"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "lampiran: disposisi tidak benar"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "bukan lampiran: tidak ada disposisi"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -981,12 +973,12 @@ msgstr[0] "source: errors di %s"
 
 #: commands.c:467
 #, fuzzy, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr "Tidak ada -rx atau -addr"
 
 #: commands.c:493
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "Perhatian: IDN '%s' tidak benar"
 
 #: commands.c:571
@@ -1031,11 +1023,6 @@ msgstr "Berlangganan ke %s..."
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Berlangganan ke %s..."
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "Tidak ada subjek."
 
 #: commands.c:1322
 #, c-format
@@ -5376,10 +5363,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: urutan tombol kosong"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: tidak ada parameter"
 
 #: key/commands.c:652
 #, c-format

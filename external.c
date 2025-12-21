@@ -635,7 +635,7 @@ void mutt_enter_command(struct MuttWindow *win)
     goto done;
   }
 
-  enum CommandResult rc = parse_rc_line(buf_string(buf), err);
+  enum CommandResult rc = parse_rc_line(buf, err);
   if (!buf_is_empty(err))
   {
     if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */

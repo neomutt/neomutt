@@ -219,10 +219,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "制限パターン: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "attachments: 引数 disposition の指定がない"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -231,10 +227,6 @@ msgstr "添付ファイルの内容説明文を編集"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: 引数 disposition が不正"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "unattachments: 引数 disposition の指定がない"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -969,13 +961,13 @@ msgstr[0] "source: %s 中でエラー"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: -rx か -addr が必要。"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: -rx か -addr が必要。"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: 警告: 不正な IDN '%s'。"
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: 警告: 不正な IDN '%s'。"
 
 #: commands.c:571
 #, c-format
@@ -1019,11 +1011,6 @@ msgstr "%s を購読を開始した"
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "%s を購読を開始した"
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "題名が指定されていない。"
 
 #: commands.c:1322
 #, c-format
@@ -5323,10 +5310,6 @@ msgstr "関数 '%s' は メニュー '%s' で利用できない"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: キーシーケンスがない"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: 引数がない"
 
 #: key/commands.c:652
 #, c-format

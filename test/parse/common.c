@@ -28,12 +28,13 @@
 #include "core/lib.h"
 #include "parse/lib.h"
 
-struct Command mutt_commands[] = {
+/// This is in the same order as enum MuttSetCommand
+const struct Command mutt_commands[] = {
   // clang-format off
-  { "reset",  parse_set, MUTT_SET_RESET },
   { "set",    parse_set, MUTT_SET_SET },
   { "toggle", parse_set, MUTT_SET_INV },
   { "unset",  parse_set, MUTT_SET_UNSET },
+  { "reset",  parse_set, MUTT_SET_RESET },
   { NULL, NULL, 0 },
   // clang-format on
 };

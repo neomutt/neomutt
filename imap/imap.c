@@ -1260,12 +1260,16 @@ int imap_subscribe(const char *path, bool subscribe)
   const bool c_imap_check_subscribed = cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
   if (c_imap_check_subscribed)
   {
-    char mbox[1024] = { 0 };
-    size_t len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
-    imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
     struct Buffer *err = buf_pool_get();
-    if (parse_rc_line(mbox, err))
+    struct Buffer *mbox = buf_pool_get();
+
+    size_t len = buf_printf(mbox, "%smailboxes ", subscribe ? "" : "un");
+    imap_quote_string(mbox->data + len, mbox->dsize - len, path, true);
+
+    if (parse_rc_line(mbox, err) != MUTT_CMD_SUCCESS)
       mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", buf_string(err));
+
+    buf_pool_release(&mbox);
     buf_pool_release(&err);
   }
 

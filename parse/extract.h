@@ -55,6 +55,6 @@ typedef uint16_t TokenFlags;          ///< Flags for parse_extract_token(), e.g.
 #define TOKEN_PLUS          (1 << 10) ///< Treat '+' as a special
 #define TOKEN_MINUS         (1 << 11) ///< Treat '-' as a special
 
-int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
+int parse_extract_token(struct Buffer *dest, struct Buffer *line, TokenFlags flags);
 
 #endif /* MUTT_PARSE_EXTRACT_H */

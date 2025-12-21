@@ -88,24 +88,30 @@ void mutt_check_rescore(struct Mailbox *m)
 /**
  * parse_score - Parse the 'score' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_score(struct Buffer *buf, struct Buffer *s,
-                               intptr_t data, struct Buffer *err)
+enum CommandResult parse_score(const struct Command *cmd, struct Buffer *token,
+                               struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
 
-  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  if (!MoreArgs(s))
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  if (!MoreArgs(line))
   {
-    buf_printf(err, _("%s: too few arguments"), "score");
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
-  pattern = buf_strdup(buf);
-  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  if (MoreArgs(s))
+  pattern = buf_strdup(token);
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  if (MoreArgs(line))
   {
     FREE(&pattern);
-    buf_printf(err, _("%s: too many arguments"), "score");
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
 
@@ -117,7 +123,7 @@ enum CommandResult parse_score(struct Buffer *buf, struct Buffer *s,
 
   if (ptr)
   {
-    /* 'buf' arg was cleared and 'pattern' holds the only reference;
+    /* 'token' arg was cleared and 'pattern' holds the only reference;
      * as here 'ptr' != NULL -> update the value only in which case
      * ptr->str already has the string, so pattern should be freed.  */
     FREE(&pattern);
@@ -139,7 +145,7 @@ enum CommandResult parse_score(struct Buffer *buf, struct Buffer *s,
     ptr->pat = pat;
     ptr->str = pattern;
   }
-  pc = buf->data;
+  pc = token->data;
   if (*pc == '=')
   {
     ptr->exact = true;
@@ -197,15 +203,21 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 /**
  * parse_unscore - Parse the 'unscore' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unscore(struct Buffer *buf, struct Buffer *s,
-                                 intptr_t data, struct Buffer *err)
+enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *token,
+                                 struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Score *tmp = NULL, *last = NULL;
 
-  while (MoreArgs(s))
+  while (MoreArgs(line))
   {
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-    if (mutt_str_equal("*", buf->data))
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    if (mutt_str_equal("*", buf_string(token)))
     {
       for (tmp = ScoreList; tmp;)
       {
@@ -220,7 +232,7 @@ enum CommandResult parse_unscore(struct Buffer *buf, struct Buffer *s,
     {
       for (tmp = ScoreList; tmp; last = tmp, tmp = tmp->next)
       {
-        if (mutt_str_equal(buf->data, tmp->str))
+        if (mutt_str_equal(buf_string(token), tmp->str))
         {
           if (last)
             last->next = tmp->next;
@@ -234,6 +246,7 @@ enum CommandResult parse_unscore(struct Buffer *buf, struct Buffer *s,
       }
     }
   }
+
   OptNeedRescore = true;
   return MUTT_CMD_SUCCESS;
 }

@@ -31,8 +31,8 @@ struct Buffer;
 struct Email;
 
 void mutt_check_rescore(struct Mailbox *m);
-enum CommandResult parse_score(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult parse_unscore(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_score  (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
 void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox);
 
 #endif /* MUTT_SCORE_H */

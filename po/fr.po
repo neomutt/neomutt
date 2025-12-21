@@ -232,10 +232,6 @@ msgstr "andp"
 msgid "Limit: %s"
 msgstr "Limite : %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "attachments : pas de disposition"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Les paramètres des pièces jointes :"
@@ -245,11 +241,6 @@ msgstr "Les paramètres des pièces jointes :"
 #, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "attachments : disposition invalide"
-
-#: attach/commands.c:544
-#, fuzzy
-msgid "unattachments: no disposition"
-msgstr "unattachments : pas de disposition"
 
 #: attach/commands.c:584
 #, fuzzy
@@ -1011,12 +1002,12 @@ msgstr[1] "source : %d erreurs dans %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr "%sgroup : il manque un -rx ou -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "%sgroup : attention : mauvais IDN '%s'"
 
 #: commands.c:571
@@ -1067,10 +1058,6 @@ msgstr "Abonné à %s"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Échec de l'abonnement à %s"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "Pas de répertoire spécifié"
 
 #: commands.c:1322
 #, c-format
@@ -5413,10 +5400,6 @@ msgstr "La fonction '%s' n'est pas disponible dans le menu '%s'"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro : séquence de touches vide"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec : pas d'arguments"
 
 # , c-format
 #: key/commands.c:652

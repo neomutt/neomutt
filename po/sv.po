@@ -220,10 +220,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Gräns: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "bilagor: ingen disposition"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -232,10 +228,6 @@ msgstr "redigera bilagebeskrivning"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "bilagor: ogiltig disposition"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "gamla bilagor: ingen disposition"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -983,12 +975,12 @@ msgstr[1] "source: fel i %s"
 
 #: commands.c:467
 #, fuzzy, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr "Saknar -rx eller -addr"
 
 #: commands.c:493
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "Varning: Felaktigtt IDN \"%s\""
 
 #: commands.c:571
@@ -1033,11 +1025,6 @@ msgstr "Prenumererar på %s..."
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Prenumererar på %s..."
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "Inget ärende angivet."
 
 #: commands.c:1322
 #, c-format
@@ -5404,10 +5391,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: tom tangentsekvens"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: inga parametrar"
 
 #: key/commands.c:652
 #, c-format

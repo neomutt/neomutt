@@ -220,10 +220,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Limiet: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "attachments: geen dispositie"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -232,10 +228,6 @@ msgstr "Huidige instellingen voor bijlagen:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: ongeldige dispositie"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "unattachments: geen dispositie"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -983,12 +975,12 @@ msgstr[1] "bron: fouten in %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr "%s-groep: Ontbrekende -rx of -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "%s-groep: waarschuwing: Ongeldige IDN '%s'"
 
 #: commands.c:571
@@ -1033,11 +1025,6 @@ msgstr "Geabonneerd op %s"
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Kan niet abonneren op %s"
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "Geen map gespecifieerd"
 
 #: commands.c:1322
 #, c-format
@@ -5370,10 +5357,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: lege toetsenvolgorde"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: geen argumenten"
 
 #: key/commands.c:652
 #, c-format

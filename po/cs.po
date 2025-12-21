@@ -226,10 +226,6 @@ msgstr "ajdn"
 msgid "Limit: %s"
 msgstr "Omezení: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "přílohy: chybí dispozice"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Současné nastavení příloh:"
@@ -237,10 +233,6 @@ msgstr "Současné nastavení příloh:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "přílohy: neplatná dispozice"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "nepřílohy: chybí dispozice"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -977,14 +969,14 @@ msgstr[2] "source: %d varování v %s"
 # "%sgroup" is literal
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: chybí -rx nebo -addr"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: chybí -rx nebo -addr"
 
 # "%sgroup" is literal
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: pozor: chybné IDN „%s“"
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: pozor: chybné IDN „%s“"
 
 #: commands.c:571
 #, c-format
@@ -1028,10 +1020,6 @@ msgstr "%s přihlášeno"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Nelze přihlásit do %s"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "Složka nebyla zadána"
 
 #: commands.c:1322
 #, c-format
@@ -5251,10 +5239,6 @@ msgstr "Funkce „%s“ není v menu „%s“ dostupná"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: sled kláves je prázdný"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: žádné argumenty"
 
 #: key/commands.c:652
 #, c-format

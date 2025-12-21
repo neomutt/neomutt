@@ -220,10 +220,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Muga: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "eranskinak: disposiziorik ez"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -232,10 +228,6 @@ msgstr "gehigarri deskribapena editatu"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "eranskinak: disposizio okerra"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "deseranskinak: disposiziorik ez"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -983,12 +975,12 @@ msgstr[1] "jatorria: erroreak %s-n"
 
 #: commands.c:467
 #, fuzzy, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr "-rx edo -helb falta da"
 
 #: commands.c:493
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "Kontuz: '%s' IDN okerra"
 
 #: commands.c:571
@@ -1033,11 +1025,6 @@ msgstr "%s-ra harpideturik"
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "%s-ra harpideturik"
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "Ez da gairik ezarri."
 
 #: commands.c:1322
 #, c-format
@@ -5405,10 +5392,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: sekuentzi gako hutsa"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: ez da argumenturik"
 
 #: key/commands.c:652
 #, c-format

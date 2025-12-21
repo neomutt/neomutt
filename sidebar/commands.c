@@ -36,35 +36,47 @@
 #include "muttlib.h"
 
 /**
- * sb_parse_sidebar_pin - Parse the 'sidebar_pin' command - Implements Command::parse() - @ingroup command_parse
+ * parse_sidebar_pin - Parse the 'sidebar_pin' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult sb_parse_sidebar_pin(struct Buffer *buf, struct Buffer *s,
-                                        intptr_t data, struct Buffer *err)
+enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *token,
+                                     struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Buffer *path = buf_pool_get();
 
   do
   {
-    parse_extract_token(path, s, TOKEN_BACKTICK_VARS);
+    parse_extract_token(path, line, TOKEN_BACKTICK_VARS);
     buf_expand_path(path);
     add_to_stailq(&SidebarPinned, buf_string(path));
-  } while (MoreArgs(s));
+  } while (MoreArgs(line));
   buf_pool_release(&path);
 
   return MUTT_CMD_SUCCESS;
 }
 
 /**
- * sb_parse_sidebar_unpin - Parse the 'sidebar_unpin' command - Implements Command::parse() - @ingroup command_parse
+ * parse_sidebar_unpin - Parse the 'sidebar_unpin' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult sb_parse_sidebar_unpin(struct Buffer *buf, struct Buffer *s,
-                                          intptr_t data, struct Buffer *err)
+enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *token,
+                                       struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Buffer *path = buf_pool_get();
 
   do
   {
-    parse_extract_token(path, s, TOKEN_BACKTICK_VARS);
+    parse_extract_token(path, line, TOKEN_BACKTICK_VARS);
     /* Check for deletion of entire list */
     if (mutt_str_equal(buf_string(path), "*"))
     {
@@ -73,7 +85,7 @@ enum CommandResult sb_parse_sidebar_unpin(struct Buffer *buf, struct Buffer *s,
     }
     buf_expand_path(path);
     remove_from_stailq(&SidebarPinned, buf_string(path));
-  } while (MoreArgs(s));
+  } while (MoreArgs(line));
   buf_pool_release(&path);
 
   return MUTT_CMD_SUCCESS;

@@ -132,38 +132,38 @@ void parse_alias_comments(struct Alias *alias, const char *com)
  *
  * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
  */
-enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
-                               intptr_t data, struct Buffer *err)
+enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
+                               struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct Alias *tmp = NULL;
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum NotifyAlias event;
 
-  if (!MoreArgs(s))
-  {
-    buf_strcpy(err, _("alias: no address"));
-    return MUTT_CMD_WARNING;
-  }
-
   /* name */
-  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf->data);
-  if (parse_grouplist(&gl, buf, s, err) == -1)
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf_string(token));
+  if (parse_grouplist(&gl, token, line, err) == -1)
   {
     return MUTT_CMD_ERROR;
   }
-  char *name = mutt_str_dup(buf->data);
+  char *name = mutt_str_dup(buf_string(token));
 
   /* address list */
-  parse_extract_token(buf, s, TOKEN_QUOTE | TOKEN_SPACE | TOKEN_SEMICOLON);
-  mutt_debug(LL_DEBUG5, "Second token is '%s'\n", buf->data);
+  parse_extract_token(token, line, TOKEN_QUOTE | TOKEN_SPACE | TOKEN_SEMICOLON);
+  mutt_debug(LL_DEBUG5, "Second token is '%s'\n", buf_string(token));
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-  int parsed = mutt_addrlist_parse2(&al, buf->data);
+  int parsed = mutt_addrlist_parse2(&al, buf_string(token));
   if (parsed == 0)
   {
-    buf_printf(err, _("Warning: Bad address '%s' in alias '%s'"), buf->data, name);
+    buf_printf(err, _("Warning: Bad address '%s' in alias '%s'"), buf_string(token), name);
     FREE(&name);
-    goto bail;
+    goto done;
   }
 
   /* IDN */
@@ -173,7 +173,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     buf_printf(err, _("Warning: Bad IDN '%s' in alias '%s'"), estr, name);
     FREE(&name);
     FREE(&estr);
-    goto bail;
+    goto done;
   }
 
   /* check to see if an alias with this name already exists */
@@ -221,14 +221,14 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     }
   }
   mutt_grouplist_destroy(&gl);
-  if (!MoreArgs(s) && (s->dptr[0] == '#'))
+  if (!MoreArgs(line) && (line->dptr[0] == '#'))
   {
-    s->dptr++; // skip over the "# "
-    if (*s->dptr == ' ')
-      s->dptr++;
+    line->dptr++; // skip over the "# "
+    if (*line->dptr == ' ')
+      line->dptr++;
 
-    parse_alias_comments(tmp, s->dptr);
-    *s->dptr = '\0'; // We're done parsing
+    parse_alias_comments(tmp, line->dptr);
+    *line->dptr = '\0'; // We're done parsing
   }
 
   alias_reverse_add(tmp);
@@ -240,7 +240,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
 
   return MUTT_CMD_SUCCESS;
 
-bail:
+done:
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }
@@ -248,15 +248,21 @@ bail:
 /**
  * parse_unalias - Parse the 'unalias' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
-                                 intptr_t data, struct Buffer *err)
+enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *token,
+                                 struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   do
   {
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
     struct Alias *np = NULL;
-    if (mutt_str_equal("*", buf->data))
+    if (mutt_str_equal("*", buf_string(token)))
     {
       TAILQ_FOREACH(np, &Aliases, entries)
       {
@@ -269,7 +275,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
 
     TAILQ_FOREACH(np, &Aliases, entries)
     {
-      if (!mutt_istr_equal(buf->data, np->name))
+      if (!mutt_istr_equal(buf_string(token), np->name))
         continue;
 
       TAILQ_REMOVE(&Aliases, np, entries);
@@ -277,6 +283,6 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
       alias_free(&np);
       break;
     }
-  } while (MoreArgs(s));
+  } while (MoreArgs(line));
   return MUTT_CMD_SUCCESS;
 }

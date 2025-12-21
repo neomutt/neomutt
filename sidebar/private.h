@@ -107,8 +107,8 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m);
 struct Mailbox *sb_get_highlight(struct MuttWindow *win);
 
 // commands.c
-enum CommandResult sb_parse_sidebar_unpin(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-enum CommandResult sb_parse_sidebar_pin  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_sidebar_pin  (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
 
 // functions.c
 bool sb_next(struct SidebarWindowData *wdata);

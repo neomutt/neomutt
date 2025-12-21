@@ -171,23 +171,23 @@ static void colon_macro(enum MenuType menu, FILE *fp)
 }
 
 /**
- * dump_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
+ * parse_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
-                                   intptr_t data, struct Buffer *err)
+enum CommandResult parse_bind_macro(const struct Command *cmd, struct Buffer *token,
+                                    struct Buffer *line, struct Buffer *err)
 {
   FILE *fp = NULL;
   struct Buffer *tempfile = NULL;
   bool dump_all = false;
-  bool bind = (data == 0);
+  bool bind = (cmd->data == 0);
   int rc = MUTT_CMD_ERROR;
 
-  if (!MoreArgs(s))
+  if (!MoreArgs(line))
     dump_all = true;
   else
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-  if (MoreArgs(s))
+  if (MoreArgs(line))
   {
     /* More arguments potentially means the user is using the
      * ::command_t :bind command thus we delegate the task. */
@@ -204,7 +204,7 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
     goto done;
   }
 
-  if (dump_all || mutt_istr_equal(buf_string(buf), "all"))
+  if (dump_all || mutt_istr_equal(buf_string(token), "all"))
   {
     if (bind)
       colon_bind(MENU_MAX, fp);
@@ -213,11 +213,11 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   }
   else
   {
-    const int menu = mutt_map_get_value(buf_string(buf), MenuNames);
+    const int menu = mutt_map_get_value(buf_string(token), MenuNames);
     if (menu == -1)
     {
       // L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-      buf_printf(err, _("%s: no such menu"), buf_string(buf));
+      buf_printf(err, _("%s: no such menu"), buf_string(token));
       goto done;
     }
 
@@ -232,7 +232,7 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
     // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
     //       it might also be 'all' when all menus are affected.
     buf_printf(err, bind ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
-               dump_all ? "all" : buf_string(buf));
+               dump_all ? "all" : buf_string(token));
     goto done;
   }
   mutt_file_fclose(&fp);
@@ -242,7 +242,7 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
 
   pdata.fname = buf_string(tempfile);
 
-  pview.banner = bind ? "bind" : "macro";
+  pview.banner = cmd->name;
   pview.flags = MUTT_PAGER_NO_FLAGS;
   pview.mode = PAGER_MODE_OTHER;
 

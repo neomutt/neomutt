@@ -89,35 +89,41 @@ void mutt_alternates_reset(struct MailboxView *mv)
 /**
  * parse_alternates - Parse the 'alternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
-                                    intptr_t data, struct Buffer *err)
+enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *token,
+                                    struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
 
   do
   {
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, buf, s, err) == -1)
-      goto bail;
+    if (parse_grouplist(&gl, token, line, err) == -1)
+      goto done;
 
-    mutt_regexlist_remove(&UnAlternates, buf->data);
+    mutt_regexlist_remove(&UnAlternates, buf_string(token));
 
-    if (mutt_regexlist_add(&Alternates, buf->data, REG_ICASE, err) != 0)
-      goto bail;
+    if (mutt_regexlist_add(&Alternates, buf_string(token), REG_ICASE, err) != 0)
+      goto done;
 
-    if (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0)
-      goto bail;
-  } while (MoreArgs(s));
+    if (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
+      goto done;
+  } while (MoreArgs(line));
 
   mutt_grouplist_destroy(&gl);
 
-  mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", buf->data);
+  mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", buf_string(token));
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_ADD, NULL);
 
   return MUTT_CMD_SUCCESS;
 
-bail:
+done:
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }
@@ -125,23 +131,29 @@ bail:
 /**
  * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
-                                      intptr_t data, struct Buffer *err)
+enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *token,
+                                      struct Buffer *line, struct Buffer *err)
 {
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
   do
   {
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&Alternates, buf->data);
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    mutt_regexlist_remove(&Alternates, buf_string(token));
 
-    if (!mutt_str_equal(buf->data, "*") &&
-        (mutt_regexlist_add(&UnAlternates, buf->data, REG_ICASE, err) != 0))
+    if (!mutt_str_equal(buf_string(token), "*") &&
+        (mutt_regexlist_add(&UnAlternates, buf_string(token), REG_ICASE, err) != 0))
     {
       return MUTT_CMD_ERROR;
     }
 
-  } while (MoreArgs(s));
+  } while (MoreArgs(line));
 
-  mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", buf->data);
+  mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", buf_string(token));
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_DELETE, NULL);
 
   return MUTT_CMD_SUCCESS;

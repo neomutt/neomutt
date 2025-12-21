@@ -222,10 +222,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Шаблон ограничения: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "attachments: отсутствует параметр disposition"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "Текущие настройки вложения:"
@@ -233,10 +229,6 @@ msgstr "Текущие настройки вложения:"
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "attachments: неверное значение параметра disposition"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "unattachments: отсутствует параметр disposition"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -974,13 +966,13 @@ msgstr[2] "source: %d предупреждений в %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
-msgstr "%sgroup: отсутствует -rx или -addr"
+msgid "%s: missing -rx or -addr"
+msgstr "%s: отсутствует -rx или -addr"
 
 #: commands.c:493
 #, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
-msgstr "%sgroup: предупреждение: некорректный IDN \"%s\""
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: предупреждение: некорректный IDN \"%s\""
 
 #: commands.c:571
 #, c-format
@@ -1025,10 +1017,6 @@ msgstr "Подключено к %s"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Подключено к %s"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "Ящик не указан"
 
 #: commands.c:1322
 #, c-format
@@ -5328,10 +5316,6 @@ msgstr "Функция «%s» не доступна для меню «%s»"
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: пустая последовательность клавиш"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: нет аргументов"
 
 #: key/commands.c:652
 #, c-format

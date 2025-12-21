@@ -216,10 +216,6 @@ msgstr "aneu"
 msgid "Limit: %s"
 msgstr "限制: %s"
 
-#: attach/commands.c:481
-msgid "attachments: no disposition"
-msgstr "附件： 沒有 disposition"
-
 #: attach/commands.c:492
 msgid "Current attachments settings:"
 msgstr "目前的附件設定："
@@ -227,10 +223,6 @@ msgstr "目前的附件設定："
 #: attach/commands.c:524
 msgid "attachments: invalid disposition"
 msgstr "附件： 無效的 disposition"
-
-#: attach/commands.c:544
-msgid "unattachments: no disposition"
-msgstr "unattachments: 沒有 disposition"
 
 #: attach/commands.c:584
 msgid "unattachments: invalid disposition"
@@ -961,12 +953,12 @@ msgstr[0] "source： %2$s 裡有 %1$d 個錯誤"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr ""
 
 #: commands.c:493
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "警告：別名「%2$s」當中的「%1$s」為無效的 IDN"
 
 #: commands.c:571
@@ -1011,10 +1003,6 @@ msgstr "訂閱 %s"
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "無法訂閱 %s"
-
-#: commands.c:1288 commands.c:1623
-msgid "No folder specified"
-msgstr "沒有指定目錄"
 
 #: commands.c:1322
 #, c-format
@@ -5375,10 +5363,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro：空的鍵值序列"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec：沒有引數"
 
 #: key/commands.c:652
 #, c-format

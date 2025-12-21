@@ -223,11 +223,6 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Ограничаване: %s"
 
-#: attach/commands.c:481
-#, fuzzy
-msgid "attachments: no disposition"
-msgstr "променя описанието на приложението"
-
 #: attach/commands.c:492
 #, fuzzy
 msgid "Current attachments settings:"
@@ -236,11 +231,6 @@ msgstr "променя описанието на приложението"
 #: attach/commands.c:524
 #, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "променя описанието на приложението"
-
-#: attach/commands.c:544
-#, fuzzy
-msgid "unattachments: no disposition"
 msgstr "променя описанието на приложението"
 
 #: attach/commands.c:584
@@ -993,12 +983,12 @@ msgstr[1] "source: грешки в %s"
 
 #: commands.c:467
 #, c-format
-msgid "%sgroup: missing -rx or -addr"
+msgid "%s: missing -rx or -addr"
 msgstr ""
 
 #: commands.c:493
 #, fuzzy, c-format
-msgid "%sgroup: warning: bad IDN '%s'"
+msgid "%s: warning: bad IDN '%s'"
 msgstr "Предупреждение: Лош IDN '%s' в псевдонима '%s'"
 
 #: commands.c:571
@@ -1043,11 +1033,6 @@ msgstr "Абониране за %s..."
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Абониране за %s..."
-
-#: commands.c:1288 commands.c:1623
-#, fuzzy
-msgid "No folder specified"
-msgstr "Липсва тема."
 
 #: commands.c:1322
 #, c-format
@@ -5420,10 +5405,6 @@ msgstr ""
 #: key/commands.c:555
 msgid "macro: empty key sequence"
 msgstr "macro: празна последователност от клавиши"
-
-#: key/commands.c:629
-msgid "exec: no arguments"
-msgstr "exec: липсват аргументи"
 
 #: key/commands.c:652
 #, c-format

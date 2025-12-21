@@ -48,12 +48,12 @@ struct ListHead SidebarPinned = STAILQ_HEAD_INITIALIZER(SidebarPinned); ///< Lis
  */
 static const struct Command SbCommands[] = {
   // clang-format off
-  { "sidebar_pin",   sb_parse_sidebar_pin,     0 },
-  { "sidebar_unpin", sb_parse_sidebar_unpin,   0 },
+  { "sidebar_pin",   parse_sidebar_pin,     0 },
+  { "sidebar_unpin", parse_sidebar_unpin,   0 },
 
   // Deprecated
-  { "sidebar_whitelist",   sb_parse_sidebar_pin,     0 },
-  { "unsidebar_whitelist", sb_parse_sidebar_unpin,   0 },
+  { "sidebar_whitelist",   parse_sidebar_pin,     0 },
+  { "unsidebar_whitelist", parse_sidebar_unpin,   0 },
   { NULL, NULL, 0 },
   // clang-format on
 };
