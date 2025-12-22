@@ -28,14 +28,14 @@
 
 void test_mutt_grouplist_remove_regex(void)
 {
-  // int mutt_grouplist_remove_regex(struct GroupList *head, const char *s);
+  // int mutt_grouplist_remove_regex(struct GroupList *head, const char *s, struct HashTable *groups);
 
   {
-    TEST_CHECK(mutt_grouplist_remove_regex(NULL, "apple") == -1);
+    TEST_CHECK(mutt_grouplist_remove_regex(NULL, "apple", NULL) == -1);
   }
 
   {
     struct GroupList head = { 0 };
-    TEST_CHECK(mutt_grouplist_remove_regex(&head, NULL) == -1);
+    TEST_CHECK(mutt_grouplist_remove_regex(&head, NULL, NULL) == -1);
   }
 }

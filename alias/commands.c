@@ -148,7 +148,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
   /* name */
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
   mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf_string(token));
-  if (parse_grouplist(&gl, token, line, err) == -1)
+  if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
   {
     return MUTT_CMD_ERROR;
   }

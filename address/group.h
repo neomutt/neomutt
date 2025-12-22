@@ -52,17 +52,18 @@ struct GroupNode
 };
 STAILQ_HEAD(GroupList, GroupNode);
 
+struct HashTable *mutt_grouplist_init   (void);
+void              mutt_grouplist_cleanup(struct HashTable **groups);
+
 void mutt_grouplist_add            (struct GroupList *gl, struct Group *group);
 void mutt_grouplist_add_addrlist   (struct GroupList *gl, struct AddressList *a);
 int  mutt_grouplist_add_regex      (struct GroupList *gl, const char *s, uint16_t flags, struct Buffer *err);
-void mutt_grouplist_cleanup        (void);
-void mutt_grouplist_clear          (struct GroupList *gl);
+void mutt_grouplist_clear          (struct GroupList *gl, struct HashTable *groups);
 void mutt_grouplist_destroy        (struct GroupList *gl);
-void mutt_grouplist_init           (void);
-int  mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *a);
-int  mutt_grouplist_remove_regex   (struct GroupList *gl, const char *s);
+int  mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *a, struct HashTable *groups);
+int  mutt_grouplist_remove_regex   (struct GroupList *gl, const char *s, struct HashTable *groups);
 
 bool          mutt_group_match  (struct Group *g, const char *s);
-struct Group *mutt_pattern_group(const char *pat);
+struct Group *mutt_pattern_group(const char *pat, struct HashTable *groups);
 
 #endif /* MUTT_ADDRESS_GROUP_H */

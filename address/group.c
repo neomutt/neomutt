@@ -36,13 +36,6 @@
 #include "address.h"
 
 /**
- * Groups - Hash Table: "group-name" -> Group
- *
- * A set of all the Address Groups.
- */
-static struct HashTable *Groups = NULL;
-
-/**
  * group_free - Free an Address Group
  * @param ptr Group to free
  */
@@ -91,40 +84,43 @@ static void group_hash_free(int type, void *obj, intptr_t data)
  * mutt_grouplist_init - Initialize the GroupList singleton
  *
  * This is called once from init.c when initializing the global structures.
+ * @retval ptr New Groups HashTable
  */
-void mutt_grouplist_init(void)
+struct HashTable *mutt_grouplist_init(void)
 {
-  Groups = mutt_hash_new(1031, MUTT_HASH_NO_FLAGS);
+  struct HashTable *groups = mutt_hash_new(1031, MUTT_HASH_NO_FLAGS);
 
-  mutt_hash_set_destructor(Groups, group_hash_free, 0);
+  mutt_hash_set_destructor(groups, group_hash_free, 0);
+
+  return groups;
 }
 
 /**
  * mutt_grouplist_cleanup - Free GroupList singleton resource
- *
- * This is called once from init.c when deinitializing the global resources.
+ * @param groups Groups HashTable to free
  */
-void mutt_grouplist_cleanup(void)
+void mutt_grouplist_cleanup(struct HashTable **groups)
 {
-  mutt_hash_free(&Groups);
+  mutt_hash_free(groups);
 }
 
 /**
  * mutt_pattern_group - Match a pattern to a Group
- * @param pat Pattern to match
+ * @param pat    Pattern to match
+ * @param groups Groups HashTable
  * @retval ptr Matching Group, or new Group (if no match)
  */
-struct Group *mutt_pattern_group(const char *pat)
+struct Group *mutt_pattern_group(const char *pat, struct HashTable *groups)
 {
-  if (!pat)
+  if (!pat || !groups)
     return NULL;
 
-  struct Group *g = mutt_hash_find(Groups, pat);
+  struct Group *g = mutt_hash_find(groups, pat);
   if (!g)
   {
     mutt_debug(LL_DEBUG2, "Creating group %s\n", pat);
     g = group_new(pat);
-    mutt_hash_insert(Groups, g->name, g);
+    mutt_hash_insert(groups, g->name, g);
   }
 
   return g;
@@ -132,29 +128,31 @@ struct Group *mutt_pattern_group(const char *pat)
 
 /**
  * group_remove - Remove a Group from the Hash Table
- * @param g Group to remove
+ * @param g      Group to remove
+ * @param groups Groups HashTable
  */
-static void group_remove(struct Group *g)
+static void group_remove(struct Group *g, struct HashTable *groups)
 {
-  if (!g)
+  if (!g || !groups)
     return;
-  mutt_hash_delete(Groups, g->name, g);
+  mutt_hash_delete(groups, g->name, g);
 }
 
 /**
  * mutt_grouplist_clear - Clear a GroupList
- * @param gl GroupList to clear
+ * @param gl     GroupList to clear
+ * @param groups Groups HashTable
  */
-void mutt_grouplist_clear(struct GroupList *gl)
+void mutt_grouplist_clear(struct GroupList *gl, struct HashTable *groups)
 {
-  if (!gl)
+  if (!gl || !groups)
     return;
 
   struct GroupNode *np = STAILQ_FIRST(gl);
   struct GroupNode *next = NULL;
   while (np)
   {
-    group_remove(np->group);
+    group_remove(np->group, groups);
     next = STAILQ_NEXT(np, entries);
     FREE(&np);
     np = next;
@@ -282,14 +280,16 @@ void mutt_grouplist_add_addrlist(struct GroupList *gl, struct AddressList *al)
 
 /**
  * mutt_grouplist_remove_addrlist - Remove an AddressList from a GroupList
- * @param gl GroupList to remove from
- * @param al AddressList to remove
+ * @param gl     GroupList to remove from
+ * @param al     AddressList to remove
+ * @param groups Groups HashTable
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *al)
+int mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *al,
+                                   struct HashTable *groups)
 {
-  if (!gl || !al)
+  if (!gl || !al || !groups)
     return -1;
 
   struct GroupNode *gnp = NULL;
@@ -302,7 +302,7 @@ int mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *al)
     }
     if (empty_group(gnp->group))
     {
-      group_remove(gnp->group);
+      group_remove(gnp->group, groups);
     }
   }
 
@@ -338,14 +338,15 @@ int mutt_grouplist_add_regex(struct GroupList *gl, const char *s,
 
 /**
  * mutt_grouplist_remove_regex - Remove matching addresses from a GroupList
- * @param gl GroupList to remove from
- * @param s  Address to match
+ * @param gl     GroupList to remove from
+ * @param s      Address to match
+ * @param groups Groups HashTable
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_grouplist_remove_regex(struct GroupList *gl, const char *s)
+int mutt_grouplist_remove_regex(struct GroupList *gl, const char *s, struct HashTable *groups)
 {
-  if (!gl || !s)
+  if (!gl || !s || !groups)
     return -1;
 
   int rc = 0;
@@ -354,7 +355,7 @@ int mutt_grouplist_remove_regex(struct GroupList *gl, const char *s)
   {
     rc = group_remove_regex(np->group, s);
     if (empty_group(np->group))
-      group_remove(np->group);
+      group_remove(np->group, groups);
     if (rc)
       return rc;
   }

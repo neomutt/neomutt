@@ -48,7 +48,7 @@ enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer 
 char *mutt_get_sourced_cwd(void);
 bool mailbox_add_simple(const char *mailbox, struct Buffer *err);
 
-int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err);
+int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err, struct HashTable *groups);
 void source_stack_cleanup(void);
 int source_rc(const char *rcfile_path, struct Buffer *err);
 

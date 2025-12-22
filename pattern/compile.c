@@ -86,7 +86,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
   }
   else if (pat->group_match)
   {
-    pat->p.group = mutt_pattern_group(token->data);
+    pat->p.group = mutt_pattern_group(token->data, NeoMutt->groups);
   }
   else
   {

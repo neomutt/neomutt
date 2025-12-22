@@ -28,10 +28,10 @@
 
 void test_mutt_grouplist_clear(void)
 {
-  // void mutt_grouplist_clear(struct GroupList *head);
+  // void mutt_grouplist_clear(struct GroupList *head, struct HashTable *groups);
 
   {
-    mutt_grouplist_clear(NULL);
-    TEST_CHECK_(1, "mutt_grouplist_clear(NULL)");
+    mutt_grouplist_clear(NULL, NULL);
+    TEST_CHECK_(1, "mutt_grouplist_clear(NULL, NULL)");
   }
 }

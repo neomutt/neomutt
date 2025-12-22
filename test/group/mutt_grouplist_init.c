@@ -27,10 +27,11 @@
 
 void test_mutt_grouplist_init(void)
 {
-  // void mutt_grouplist_init(void);
+  // struct HashTable *mutt_grouplist_init(void);
 
   {
-    mutt_grouplist_init();
-    TEST_CHECK_(1, "mutt_grouplist_init()");
+    struct HashTable *groups = mutt_grouplist_init();
+    TEST_CHECK(groups != NULL);
+    mutt_grouplist_cleanup(&groups);
   }
 }

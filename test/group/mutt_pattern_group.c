@@ -28,9 +28,9 @@
 
 void test_mutt_pattern_group(void)
 {
-  // struct Group *mutt_pattern_group(const char *k);
+  // struct Group *mutt_pattern_group(const char *k, struct HashTable *groups);
 
   {
-    TEST_CHECK(!mutt_pattern_group(NULL));
+    TEST_CHECK(!mutt_pattern_group(NULL, NULL));
   }
 }
