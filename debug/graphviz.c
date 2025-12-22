@@ -303,26 +303,6 @@ void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
   dot_object_footer(fp);
 }
 
-void dot_node_link(FILE *fp, void *ptr, const char *name, void *link, const char *colour)
-{
-  char obj[64] = { 0 };
-  dot_ptr_name(obj, sizeof(obj), ptr);
-
-  fprintf(fp, "\t%s [\n", obj);
-  fprintf(fp, "\t\tlabel=<<table cellspacing=\"0\" border=\"1\" rows=\"*\" "
-              "color=\"#d0d0d0\">\n");
-  fprintf(fp, "\t\t<tr>\n");
-  fprintf(fp, "\t\t\t<td border=\"0\" bgcolor=\"%s\" port=\"top\"><font color=\"#000000\" point-size=\"20\"><b>%s</b></font></td>\n",
-          colour, name);
-  fprintf(fp, "\t\t</tr>\n");
-
-  fprintf(fp, "\t\t<tr>\n");
-  fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\" bgcolor=\"%s\">%p</td>\n", colour, link);
-  fprintf(fp, "\t\t</tr>\n");
-
-  dot_object_footer(fp);
-}
-
 void dot_path_fs(char *buf, size_t buflen, const char *path)
 {
   if (!path)
@@ -620,61 +600,32 @@ void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 #endif
 }
 
-void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *links)
+void dot_mailbox_array(FILE *fp, struct MailboxArray *ma, struct ListHead *links)
 {
-  dot_node(fp, mn, "MN", "#80ff80");
-
-  dot_mailbox(fp, mn->mailbox, links);
-
-  dot_add_link(links, mn, mn->mailbox, "MailboxNode->mailbox", NULL, false, NULL);
-
   struct Buffer *buf = buf_pool_get();
 
   char name[256] = { 0 };
   buf_addstr(buf, "{ rank=same ");
 
-  dot_ptr_name(name, sizeof(name), mn);
-  buf_add_printf(buf, "%s ", name);
-
-  dot_ptr_name(name, sizeof(name), mn->mailbox);
-  buf_add_printf(buf, "%s ", name);
-
-#ifndef GV_HIDE_MDATA
-  if (mn->mailbox->mdata)
+  struct Mailbox *prev = NULL;
+  struct Mailbox **mp = NULL;
+  ARRAY_FOREACH(mp, ma)
   {
-    dot_ptr_name(name, sizeof(name), mn->mailbox->mdata);
-    buf_add_printf(buf, "%s ", name);
-  }
-#endif
+    struct Mailbox *m = *mp;
 
-#ifndef GV_HIDE_CONFIG
-  if (mn->mailbox->name)
-  {
-    dot_ptr_name(name, sizeof(name), mn->mailbox->name);
+    dot_mailbox(fp, m, links);
+    if (prev)
+      dot_add_link(links, prev, m, "MailboxNode->next", NULL, false, NULL);
+
+    dot_ptr_name(name, sizeof(name), m);
     buf_add_printf(buf, "%s ", name);
+
+    prev = m;
   }
-#endif
 
   buf_addstr(buf, "}");
-
   mutt_list_insert_tail(links, buf_strdup(buf));
   buf_pool_release(&buf);
-}
-
-void dot_mailbox_list(FILE *fp, struct MailboxList *ml, struct ListHead *links, bool abbr)
-{
-  struct MailboxNode *prev = NULL;
-  struct MailboxNode *np = NULL;
-  STAILQ_FOREACH(np, ml, entries)
-  {
-    if (abbr)
-      dot_node_link(fp, np, "MN", np->mailbox, "#80ff80");
-    else
-      dot_mailbox_node(fp, np, links);
-    if (prev)
-      dot_add_link(links, prev, np, "MailboxNode->next", NULL, false, NULL);
-    prev = np;
-  }
 }
 
 #ifndef GV_HIDE_ADATA
@@ -854,26 +805,31 @@ void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
   }
 #endif
 
-  struct MailboxNode *first = STAILQ_FIRST(&a->mailboxes);
-  dot_add_link(links, a, first, "Account->mailboxes", NULL, false, NULL);
-  dot_mailbox_list(fp, &a->mailboxes, links, false);
+  struct Mailbox **mp = ARRAY_FIRST(&a->mailboxes);
+  if (mp && *mp)
+  {
+    dot_add_link(links, a, *mp, "Account->mailboxes", NULL, false, NULL);
+    dot_mailbox_array(fp, &a->mailboxes, links);
+  }
 }
 
-void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *links)
+void dot_account_array(FILE *fp, struct AccountArray *aa, struct ListHead *links)
 {
   struct Account *prev = NULL;
-  struct Account *np = NULL;
-  TAILQ_FOREACH(np, al, entries)
+  struct Account **ap = NULL;
+  ARRAY_FOREACH(ap, aa)
   {
+    struct Account *a = *ap;
+
 #ifdef GV_HIDE_MBOX
-    if (np->type == MUTT_MBOX)
+    if (a->type == MUTT_MBOX)
       continue;
 #endif
-    dot_account(fp, np, links);
+    dot_account(fp, a, links);
     if (prev)
-      dot_add_link(links, prev, np, "Account->next", NULL, false, NULL);
+      dot_add_link(links, prev, a, "Account->next", NULL, false, NULL);
 
-    prev = np;
+    prev = a;
   }
 }
 
@@ -917,8 +873,11 @@ void dump_graphviz(const char *title, struct MailboxView *mv)
 
 #ifndef GV_HIDE_NEOMUTT
   dot_node(fp, NeoMutt, "NeoMutt", "#ffa500");
-  dot_add_link(&links, NeoMutt, TAILQ_FIRST(&NeoMutt->accounts),
-               "NeoMutt->accounts", NULL, false, NULL);
+  struct Account **ap = ARRAY_FIRST(&NeoMutt->accounts);
+  if (ap && *ap)
+  {
+    dot_add_link(&links, NeoMutt, *ap, "NeoMutt->accounts", NULL, false, NULL);
+  }
 #ifndef GV_HIDE_CONFIG
   dot_config(fp, (const char *) NeoMutt->sub, 0, NeoMutt->sub, &links);
   dot_add_link(&links, NeoMutt, NeoMutt->sub, "NeoMutt Config", NULL, false, NULL);
@@ -933,7 +892,7 @@ void dump_graphviz(const char *title, struct MailboxView *mv)
 #endif
 #endif
 
-  dot_account_list(fp, &NeoMutt->accounts, &links);
+  dot_account_array(fp, &NeoMutt->accounts, &links);
 
 #ifndef GV_HIDE_MVIEW
   if (mv)
@@ -954,14 +913,15 @@ void dump_graphviz(const char *title, struct MailboxView *mv)
 #endif
 
   fprintf(fp, "\t{ rank=same ");
-  struct Account *np = NULL;
-  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  ARRAY_FOREACH(ap, &NeoMutt->accounts)
   {
+    struct Account *a = *ap;
+
 #ifdef GV_HIDE_MBOX
-    if (np->type == MUTT_MBOX)
+    if (a->type == MUTT_MBOX)
       continue;
 #endif
-    dot_ptr_name(name, sizeof(name), np);
+    dot_ptr_name(name, sizeof(name), a);
     fprintf(fp, "%s ", name);
   }
   fprintf(fp, "}\n");
