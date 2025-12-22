@@ -149,7 +149,7 @@ static enum CommandResult parse_object(const struct Command *cmd,
                                        struct Buffer *token, struct Buffer *line,
                                        enum ColorId *cid, struct Buffer *err)
 {
-  if (!MoreArgs(line))
+  if (!MoreArgsF(line, TOKEN_COMMENT))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
