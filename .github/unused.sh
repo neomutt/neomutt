@@ -6,16 +6,12 @@ EXIT_CODE=0
 IGNORELIST=(
     # Used by macros
     "log_multiline_full"
-    "mutt_socket_buffer_readln_d"
 
     # Used by tests
+    "expando_serialise"
     "mutt_mem_malloc"
     "mutt_str_upper"
-    "name_expando_domain"
     "name_expando_node_type"
-    "name_expando_pad_type"
-    "name_expando_uid"
-    "name_format_justify"
 
     # Will be used by future code
     "progress_set_size"
