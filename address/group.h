@@ -52,17 +52,22 @@ struct GroupNode
 };
 STAILQ_HEAD(GroupList, GroupNode);
 
-void mutt_grouplist_add            (struct GroupList *gl, struct Group *group);
-void mutt_grouplist_add_addrlist   (struct GroupList *gl, struct AddressList *a);
-int  mutt_grouplist_add_regex      (struct GroupList *gl, const char *s, uint16_t flags, struct Buffer *err);
-void mutt_grouplist_cleanup        (void);
-void mutt_grouplist_clear          (struct GroupList *gl);
-void mutt_grouplist_destroy        (struct GroupList *gl);
-void mutt_grouplist_init           (void);
-int  mutt_grouplist_remove_addrlist(struct GroupList *gl, struct AddressList *a);
-int  mutt_grouplist_remove_regex   (struct GroupList *gl, const char *s);
+// Single Address Group
+bool group_match(struct Group *g, const char *str);
 
-bool          mutt_group_match  (struct Group *g, const char *s);
-struct Group *mutt_pattern_group(const char *pat);
+// List of Addres Groups
+void grouplist_add_group   (struct GroupList *gl, struct Group *g);
+void grouplist_add_addrlist(struct GroupList *gl, struct AddressList *al);
+int  grouplist_add_regex   (struct GroupList *gl, const char *str, uint16_t flags, struct Buffer *err);
+void grouplist_destroy     (struct GroupList *gl);
+
+// HashTable of Address Groups
+struct HashTable *groups_new (void);
+void              groups_free(struct HashTable **pptr);
+
+struct Group *groups_get_group       (struct HashTable *groups, const char *name);
+int           groups_remove_addrlist (struct HashTable *groups, struct GroupList *gl, struct AddressList *al);
+void          groups_remove_grouplist(struct HashTable *groups, struct GroupList *gl);
+int           groups_remove_regex    (struct HashTable *groups, struct GroupList *gl, const char *str);
 
 #endif /* MUTT_ADDRESS_GROUP_H */

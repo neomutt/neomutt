@@ -352,17 +352,17 @@ FILTER_OBJS	= test/filter/filter_create.o \
 
 FROM_OBJS	= test/from/is_from.o
 
-GROUP_OBJS	= test/group/mutt_group_match.o \
-		  test/group/mutt_grouplist_add.o \
-		  test/group/mutt_grouplist_add_addrlist.o \
-		  test/group/mutt_grouplist_add_regex.o \
-		  test/group/mutt_grouplist_cleanup.o \
-		  test/group/mutt_grouplist_clear.o \
-		  test/group/mutt_grouplist_destroy.o \
-		  test/group/mutt_grouplist_init.o \
-		  test/group/mutt_grouplist_remove_addrlist.o \
-		  test/group/mutt_grouplist_remove_regex.o \
-		  test/group/mutt_pattern_group.o
+GROUP_OBJS	= test/group/grouplist_add_addrlist.o \
+		  test/group/grouplist_add_group.o \
+		  test/group/grouplist_add_regex.o \
+		  test/group/grouplist_destroy.o \
+		  test/group/groups_free.o \
+		  test/group/groups_get_group.o \
+		  test/group/groups_new.o \
+		  test/group/groups_remove_addrlist.o \
+		  test/group/groups_remove_grouplist.o \
+		  test/group/groups_remove_regex.o \
+		  test/group/group_match.o
 
 GUI_OBJS	= test/gui/mutt_str_expand_tabs.o \
 		  test/gui/reflow.o \

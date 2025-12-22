@@ -1,10 +1,9 @@
 /**
  * @file
- * Test code for mutt_grouplist_add_addrlist()
+ * Test code for groups_get_group()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,22 +24,13 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include "mutt/lib.h"
 #include "address/lib.h"
 
-void test_mutt_grouplist_add_addrlist(void)
+void test_groups_get_group(void)
 {
-  // void mutt_grouplist_add_addrlist(struct GroupList *head, struct Address *a);
+  // struct Group *groups_get_group(struct HashTable *groups, const char *name);
 
   {
-    struct AddressList addr = TAILQ_HEAD_INITIALIZER(addr);
-    mutt_grouplist_add_addrlist(NULL, &addr);
-    TEST_CHECK_(1, "mutt_grouplist_add_addrlist(NULL, &addr)");
-  }
-
-  {
-    struct GroupList head = { 0 };
-    mutt_grouplist_add_addrlist(&head, NULL);
-    TEST_CHECK_(1, "mutt_grouplist_add_addrlist(&head, NULL)");
+    TEST_CHECK(!groups_get_group(NULL, NULL));
   }
 }

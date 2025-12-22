@@ -1185,7 +1185,6 @@ int main(int argc, char *argv[], char *envp[])
     log_gui();
   }
 
-  mutt_grouplist_init();
   alias_init();
   commands_init();
   hooks_init();
@@ -1807,7 +1806,6 @@ main_exit:
   mutt_regexlist_free(&UnMailLists);
   mutt_regexlist_free(&UnSubscribedLists);
 
-  mutt_grouplist_cleanup();
   driver_tags_cleanup();
 
   /* Lists of strings */

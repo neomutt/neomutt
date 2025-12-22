@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_pattern_group()
+ * Test code for groups_new()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,14 +23,15 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include "address/lib.h"
 
-void test_mutt_pattern_group(void)
+void test_groups_new(void)
 {
-  // struct Group *mutt_pattern_group(const char *k);
+  // struct HashTable *groups_new(void);
 
   {
-    TEST_CHECK(!mutt_pattern_group(NULL));
+    struct HashTable *groups = groups_new();
+    TEST_CHECK(groups != NULL);
+    groups_free(&groups);
   }
 }

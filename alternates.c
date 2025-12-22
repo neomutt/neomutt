@@ -104,7 +104,7 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *to
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, line, err) == -1)
+    if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
       goto done;
 
     mutt_regexlist_remove(&UnAlternates, buf_string(token));
@@ -112,11 +112,11 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *to
     if (mutt_regexlist_add(&Alternates, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
-    if (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
+    if (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
       goto done;
   } while (MoreArgs(line));
 
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
 
   mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", buf_string(token));
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_ADD, NULL);
@@ -124,7 +124,7 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *to
   return MUTT_CMD_SUCCESS;
 
 done:
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }
 

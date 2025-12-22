@@ -1,9 +1,10 @@
 /**
  * @file
- * Test code for mutt_grouplist_remove_regex()
+ * Test code for group_match()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,16 +27,16 @@
 #include <stddef.h>
 #include "address/lib.h"
 
-void test_mutt_grouplist_remove_regex(void)
+void test_group_match(void)
 {
-  // int mutt_grouplist_remove_regex(struct GroupList *head, const char *s);
+  // bool group_match(struct Group *g, const char *str);
 
   {
-    TEST_CHECK(mutt_grouplist_remove_regex(NULL, "apple") == -1);
+    TEST_CHECK(!group_match(NULL, "apple"));
   }
 
   {
-    struct GroupList head = { 0 };
-    TEST_CHECK(mutt_grouplist_remove_regex(&head, NULL) == -1);
+    struct Group group;
+    TEST_CHECK(!group_match(&group, NULL));
   }
 }

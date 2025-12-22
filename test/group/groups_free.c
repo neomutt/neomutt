@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_grouplist_clear()
+ * Test code for groups_free()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,15 +23,15 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include "address/lib.h"
 
-void test_mutt_grouplist_clear(void)
+void test_groups_free(void)
 {
-  // void mutt_grouplist_clear(struct GroupList *head);
+  // void groups_free(struct HashTable **pptr);
 
   {
-    mutt_grouplist_clear(NULL);
-    TEST_CHECK_(1, "mutt_grouplist_clear(NULL)");
+    struct HashTable *groups = NULL;
+    groups_free(&groups);
+    TEST_CHECK_(1, "groups_free(NULL)");
   }
 }

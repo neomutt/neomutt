@@ -34,6 +34,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "neomutt.h"
 #include "account.h"
@@ -75,6 +76,8 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   n->notify_resize = notify_new();
   notify_set_parent(n->notify_resize, n->notify);
 
+  n->groups = groups_new();
+
   return n;
 }
 
@@ -96,6 +99,8 @@ void neomutt_free(struct NeoMutt **ptr)
   notify_free(&n->notify);
   if (n->time_c_locale)
     freelocale(n->time_c_locale);
+
+  groups_free(&n->groups);
 
   FREE(&n->home_dir);
   FREE(&n->username);

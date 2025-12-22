@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_grouplist_cleanup()
+ * Test code for groups_remove_regex()
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,14 +23,19 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
 #include "address/lib.h"
 
-void test_mutt_grouplist_cleanup(void)
+void test_groups_remove_regex(void)
 {
-  // void mutt_grouplist_cleanup(void);
+  // int groups_remove_regex(struct HashTable *groups, struct GroupList *gl, const char *str);
 
   {
-    mutt_grouplist_cleanup();
-    TEST_CHECK_(1, "mutt_grouplist_cleanup()");
+    TEST_CHECK(groups_remove_regex(NULL, NULL, "apple") == -1);
+  }
+
+  {
+    struct GroupList gl = { 0 };
+    TEST_CHECK(groups_remove_regex(NULL, &gl, NULL) == -1);
   }
 }

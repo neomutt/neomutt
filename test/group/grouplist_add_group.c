@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_group_match()
+ * Test code for grouplist_add_group()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -27,16 +27,19 @@
 #include <stddef.h>
 #include "address/lib.h"
 
-void test_mutt_group_match(void)
+void test_grouplist_add_group(void)
 {
-  // bool mutt_group_match(struct Group *g, const char *s);
-
-  {
-    TEST_CHECK(!mutt_group_match(NULL, "apple"));
-  }
+  // void grouplist_add_group(struct GroupList *gl, struct Group *g);
 
   {
     struct Group group;
-    TEST_CHECK(!mutt_group_match(&group, NULL));
+    grouplist_add_group(NULL, &group);
+    TEST_CHECK_(1, "grouplist_add_group(NULL, &group)");
+  }
+
+  {
+    struct GroupList gl = { 0 };
+    grouplist_add_group(&gl, NULL);
+    TEST_CHECK_(1, "grouplist_add_group(&gl, NULL)");
   }
 }
