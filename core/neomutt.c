@@ -76,7 +76,7 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   n->notify_resize = notify_new();
   notify_set_parent(n->notify_resize, n->notify);
 
-  n->groups = mutt_grouplist_init();
+  n->groups = groups_new();
 
   return n;
 }
@@ -100,7 +100,7 @@ void neomutt_free(struct NeoMutt **ptr)
   if (n->time_c_locale)
     freelocale(n->time_c_locale);
 
-  mutt_grouplist_cleanup(&n->groups);
+  groups_free(&n->groups);
 
   FREE(&n->home_dir);
   FREE(&n->username);

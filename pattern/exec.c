@@ -76,7 +76,7 @@ static bool patmatch(const struct Pattern *pat, const char *buf)
   if (pat->string_match)
     return pat->ign_case ? mutt_istr_find(buf, pat->p.str) : strstr(buf, pat->p.str);
   if (pat->group_match)
-    return mutt_group_match(pat->p.group, buf);
+    return group_match(pat->p.group, buf);
   return (regexec(pat->p.regex, buf, 0, NULL, 0) == 0);
 }
 

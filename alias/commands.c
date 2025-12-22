@@ -202,7 +202,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
   }
   tmp->addr = al;
 
-  mutt_grouplist_add_addrlist(&gl, &tmp->addr);
+  grouplist_add_addrlist(&gl, &tmp->addr);
 
   const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
   if (c_debug_level > LL_DEBUG4)
@@ -220,7 +220,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
         mutt_debug(LL_DEBUG5, "  %s\n", buf_string(a->mailbox));
     }
   }
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   if (!MoreArgs(line) && (line->dptr[0] == '#'))
   {
     line->dptr++; // skip over the "# "
@@ -241,7 +241,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *token,
   return MUTT_CMD_SUCCESS;
 
 done:
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }
 

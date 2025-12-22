@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_grouplist_cleanup()
+ * Test code for groups_free()
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -25,13 +25,13 @@
 #include "acutest.h"
 #include "address/lib.h"
 
-void test_mutt_grouplist_cleanup(void)
+void test_groups_free(void)
 {
-  // void mutt_grouplist_cleanup(struct HashTable **groups);
+  // void groups_free(struct HashTable **pptr);
 
   {
     struct HashTable *groups = NULL;
-    mutt_grouplist_cleanup(&groups);
-    TEST_CHECK_(1, "mutt_grouplist_cleanup(NULL)");
+    groups_free(&groups);
+    TEST_CHECK_(1, "groups_free(NULL)");
   }
 }

@@ -1,9 +1,10 @@
 /**
  * @file
- * Test code for mutt_pattern_group()
+ * Test code for grouplist_add_group()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,11 +27,19 @@
 #include <stddef.h>
 #include "address/lib.h"
 
-void test_mutt_pattern_group(void)
+void test_grouplist_add_group(void)
 {
-  // struct Group *mutt_pattern_group(const char *k, struct HashTable *groups);
+  // void grouplist_add_group(struct GroupList *gl, struct Group *g);
 
   {
-    TEST_CHECK(!mutt_pattern_group(NULL, NULL));
+    struct Group group;
+    grouplist_add_group(NULL, &group);
+    TEST_CHECK_(1, "grouplist_add_group(NULL, &group)");
+  }
+
+  {
+    struct GroupList gl = { 0 };
+    grouplist_add_group(&gl, NULL);
+    TEST_CHECK_(1, "grouplist_add_group(&gl, NULL)");
   }
 }

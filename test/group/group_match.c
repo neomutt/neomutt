@@ -1,9 +1,10 @@
 /**
  * @file
- * Test code for mutt_grouplist_destroy()
+ * Test code for group_match()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,12 +27,16 @@
 #include <stddef.h>
 #include "address/lib.h"
 
-void test_mutt_grouplist_destroy(void)
+void test_group_match(void)
 {
-  // void mutt_grouplist_destroy(struct GroupList *head);
+  // bool group_match(struct Group *g, const char *str);
 
   {
-    mutt_grouplist_destroy(NULL);
-    TEST_CHECK_(1, "mutt_grouplist_destroy(NULL)");
+    TEST_CHECK(!group_match(NULL, "apple"));
+  }
+
+  {
+    struct Group group;
+    TEST_CHECK(!group_match(&group, NULL));
   }
 }

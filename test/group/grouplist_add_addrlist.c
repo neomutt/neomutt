@@ -1,9 +1,10 @@
 /**
  * @file
- * Test code for mutt_grouplist_clear()
+ * Test code for grouplist_add_addrlist()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,14 +25,22 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "address/lib.h"
 
-void test_mutt_grouplist_clear(void)
+void test_grouplist_add_addrlist(void)
 {
-  // void mutt_grouplist_clear(struct GroupList *head, struct HashTable *groups);
+  // void grouplist_add_addrlist(struct GroupList *gl, struct AddressList *al);
 
   {
-    mutt_grouplist_clear(NULL, NULL);
-    TEST_CHECK_(1, "mutt_grouplist_clear(NULL, NULL)");
+    struct AddressList addr = TAILQ_HEAD_INITIALIZER(addr);
+    grouplist_add_addrlist(NULL, &addr);
+    TEST_CHECK_(1, "grouplist_add_addrlist(NULL, &addr)");
+  }
+
+  {
+    struct GroupList gl = { 0 };
+    grouplist_add_addrlist(&gl, NULL);
+    TEST_CHECK_(1, "grouplist_add_addrlist(&gl, NULL)");
   }
 }

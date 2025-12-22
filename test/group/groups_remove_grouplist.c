@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_grouplist_remove_regex()
+ * Test code for groups_remove_grouplist()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,16 +26,12 @@
 #include <stddef.h>
 #include "address/lib.h"
 
-void test_mutt_grouplist_remove_regex(void)
+void test_groups_remove_grouplist(void)
 {
-  // int mutt_grouplist_remove_regex(struct GroupList *head, const char *s, struct HashTable *groups);
+  // void groups_remove_grouplist(struct HashTable *groups, struct GroupList *gl);
 
   {
-    TEST_CHECK(mutt_grouplist_remove_regex(NULL, "apple", NULL) == -1);
-  }
-
-  {
-    struct GroupList head = { 0 };
-    TEST_CHECK(mutt_grouplist_remove_regex(&head, NULL, NULL) == -1);
+    groups_remove_grouplist(NULL, NULL);
+    TEST_CHECK_(1, "groups_remove_grouplist(NULL, NULL)");
   }
 }

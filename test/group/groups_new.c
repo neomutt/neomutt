@@ -1,10 +1,9 @@
 /**
  * @file
- * Test code for mutt_grouplist_add_regex()
+ * Test code for groups_new()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2019-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,29 +23,15 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
-#include "mutt/lib.h"
 #include "address/lib.h"
 
-void test_mutt_grouplist_add_regex(void)
+void test_groups_new(void)
 {
-  // int mutt_grouplist_add_regex(struct GroupList *gl, const char *s, uint16_t flags, struct Buffer *err);
+  // struct HashTable *groups_new(void);
 
   {
-    struct Buffer *err = buf_pool_get();
-    TEST_CHECK(mutt_grouplist_add_regex(NULL, "apple", 0, err) == -1);
-    buf_pool_release(&err);
-  }
-
-  {
-    struct GroupList head = { 0 };
-    struct Buffer *err = buf_pool_get();
-    TEST_CHECK(mutt_grouplist_add_regex(&head, NULL, 0, err) == -1);
-    buf_pool_release(&err);
-  }
-
-  {
-    struct GroupList head = { 0 };
-    TEST_CHECK(mutt_grouplist_add_regex(&head, "apple", 0, NULL) == 0);
+    struct HashTable *groups = groups_new();
+    TEST_CHECK(groups != NULL);
+    groups_free(&groups);
   }
 }

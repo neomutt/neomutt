@@ -394,17 +394,17 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_is_from)                                              \
                                                                                \
   /* group */                                                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_group_match)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_add)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_add_addrlist)                          \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_add_regex)                             \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_cleanup)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_clear)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_destroy)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_init)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_remove_addrlist)                       \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_remove_regex)                          \
-  NEOMUTT_TEST_ITEM(test_mutt_pattern_group)                                   \
+  NEOMUTT_TEST_ITEM(test_grouplist_add_addrlist)                               \
+  NEOMUTT_TEST_ITEM(test_grouplist_add_group)                                  \
+  NEOMUTT_TEST_ITEM(test_grouplist_add_regex)                                  \
+  NEOMUTT_TEST_ITEM(test_grouplist_destroy)                                    \
+  NEOMUTT_TEST_ITEM(test_groups_free)                                          \
+  NEOMUTT_TEST_ITEM(test_groups_get_group)                                     \
+  NEOMUTT_TEST_ITEM(test_groups_new)                                           \
+  NEOMUTT_TEST_ITEM(test_groups_remove_addrlist)                               \
+  NEOMUTT_TEST_ITEM(test_groups_remove_grouplist)                              \
+  NEOMUTT_TEST_ITEM(test_groups_remove_regex)                                  \
+  NEOMUTT_TEST_ITEM(test_group_match)                                          \
                                                                                \
   /* gui */                                                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_expand_tabs)                                 \

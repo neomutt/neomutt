@@ -1,10 +1,9 @@
 /**
  * @file
- * Test code for mutt_group_match()
+ * Test code for groups_get_group()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,16 +26,11 @@
 #include <stddef.h>
 #include "address/lib.h"
 
-void test_mutt_group_match(void)
+void test_groups_get_group(void)
 {
-  // bool mutt_group_match(struct Group *g, const char *s);
+  // struct Group *groups_get_group(struct HashTable *groups, const char *name);
 
   {
-    TEST_CHECK(!mutt_group_match(NULL, "apple"));
-  }
-
-  {
-    struct Group group;
-    TEST_CHECK(!mutt_group_match(&group, NULL));
+    TEST_CHECK(!groups_get_group(NULL, NULL));
   }
 }

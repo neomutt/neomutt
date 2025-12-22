@@ -155,7 +155,7 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *token, struct Buffer *l
 
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    mutt_grouplist_add(gl, mutt_pattern_group(token->data, groups));
+    grouplist_add_group(gl, groups_get_group(groups, token->data));
 
     if (!MoreArgs(line))
     {
@@ -455,7 +455,7 @@ static enum CommandResult parse_group(const struct Command *cmd, struct Buffer *
 
     if ((cmd->data == MUTT_UNGROUP) && mutt_istr_equal(buf_string(token), "*"))
     {
-      mutt_grouplist_clear(&gl, NeoMutt->groups);
+      groups_remove_grouplist(NeoMutt->groups, &gl);
       goto out;
     }
 
@@ -477,12 +477,12 @@ static enum CommandResult parse_group(const struct Command *cmd, struct Buffer *
 
         case GS_RX:
           if ((cmd->data == MUTT_GROUP) &&
-              (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0))
+              (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0))
           {
             goto done;
           }
           else if ((cmd->data == MUTT_UNGROUP) &&
-                   (mutt_grouplist_remove_regex(&gl, buf_string(token), NeoMutt->groups) < 0))
+                   (groups_remove_regex(NeoMutt->groups, &gl, buf_string(token)) < 0))
           {
             goto done;
           }
@@ -503,9 +503,9 @@ static enum CommandResult parse_group(const struct Command *cmd, struct Buffer *
             goto done;
           }
           if (cmd->data == MUTT_GROUP)
-            mutt_grouplist_add_addrlist(&gl, &al);
+            grouplist_add_addrlist(&gl, &al);
           else if (cmd->data == MUTT_UNGROUP)
-            mutt_grouplist_remove_addrlist(&gl, &al, NeoMutt->groups);
+            groups_remove_addrlist(NeoMutt->groups, &gl, &al);
           mutt_addrlist_clear(&al);
           break;
         }
@@ -514,15 +514,15 @@ static enum CommandResult parse_group(const struct Command *cmd, struct Buffer *
   } while (MoreArgs(line));
 
 out:
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   return MUTT_CMD_SUCCESS;
 
 done:
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 
 warn:
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   return MUTT_CMD_WARNING;
 }
 
@@ -630,15 +630,15 @@ static enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *
     if (mutt_regexlist_add(&MailLists, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
-    if (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
+    if (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
       goto done;
   } while (MoreArgs(line));
 
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   return MUTT_CMD_SUCCESS;
 
 done:
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }
 
@@ -1280,15 +1280,15 @@ static enum CommandResult parse_subscribe(const struct Command *cmd, struct Buff
     if (mutt_regexlist_add(&SubscribedLists, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
-    if (mutt_grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
+    if (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
       goto done;
   } while (MoreArgs(line));
 
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   return MUTT_CMD_SUCCESS;
 
 done:
-  mutt_grouplist_destroy(&gl);
+  grouplist_destroy(&gl);
   return MUTT_CMD_ERROR;
 }
 

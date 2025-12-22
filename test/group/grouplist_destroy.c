@@ -1,10 +1,9 @@
 /**
  * @file
- * Test code for mutt_grouplist_remove_addrlist()
+ * Test code for grouplist_destroy()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,20 +24,14 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include "mutt/lib.h"
 #include "address/lib.h"
 
-void test_mutt_grouplist_remove_addrlist(void)
+void test_grouplist_destroy(void)
 {
-  // int mutt_grouplist_remove_addrlist(struct GroupList *head, struct Address *a, struct HashTable *groups);
+  // void grouplist_destroy(struct GroupList *gl);
 
   {
-    struct AddressList addr = TAILQ_HEAD_INITIALIZER(addr);
-    TEST_CHECK(mutt_grouplist_remove_addrlist(NULL, &addr, NULL) == -1);
-  }
-
-  {
-    struct GroupList head = { 0 };
-    TEST_CHECK(mutt_grouplist_remove_addrlist(&head, NULL, NULL) == -1);
+    grouplist_destroy(NULL);
+    TEST_CHECK_(1, "grouplist_destroy(NULL)");
   }
 }
