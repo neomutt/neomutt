@@ -81,50 +81,6 @@ static void group_hash_free(int type, void *obj, intptr_t data)
 }
 
 /**
- * groups_new - Create a HashTable for the Address Groups
- * @retval ptr New Groups HashTable
- */
-struct HashTable *groups_new(void)
-{
-  struct HashTable *groups = mutt_hash_new(1031, MUTT_HASH_NO_FLAGS);
-
-  mutt_hash_set_destructor(groups, group_hash_free, 0);
-
-  return groups;
-}
-
-/**
- * groups_free - Free GroupList singleton resource
- * @param pptr Groups HashTable to free
- */
-void groups_free(struct HashTable **pptr)
-{
-  mutt_hash_free(pptr);
-}
-
-/**
- * groups_get_group - Get a Group by its name
- * @param groups Groups HashTable
- * @param name   Name to find
- * @retval ptr Matching Group, or new Group (if no match)
- */
-struct Group *groups_get_group(struct HashTable *groups, const char *name)
-{
-  if (!groups || !name)
-    return NULL;
-
-  struct Group *g = mutt_hash_find(groups, name);
-  if (!g)
-  {
-    mutt_debug(LL_DEBUG2, "Creating group %s\n", name);
-    g = group_new(name);
-    mutt_hash_insert(groups, g->name, g);
-  }
-
-  return g;
-}
-
-/**
  * group_remove - Remove a Group from the Hash Table
  * @param groups Groups HashTable
  * @param g      Group to remove
@@ -137,28 +93,6 @@ static void group_remove(struct HashTable *groups, struct Group *g)
 }
 
 /**
- * groups_remove_grouplist - Clear a GroupList
- * @param groups Groups HashTable
- * @param gl     GroupList to clear
- */
-void groups_remove_grouplist(struct HashTable *groups, struct GroupList *gl)
-{
-  if (!groups || !gl)
-    return;
-
-  struct GroupNode *np = STAILQ_FIRST(gl);
-  struct GroupNode *next = NULL;
-  while (np)
-  {
-    group_remove(groups, np->group);
-    next = STAILQ_NEXT(np, entries);
-    FREE(&np);
-    np = next;
-  }
-  STAILQ_INIT(gl);
-}
-
-/**
  * group_is_empty - Is a Group empty?
  * @param g Group to test
  * @retval true The Group is empty
@@ -168,47 +102,6 @@ static bool group_is_empty(struct Group *g)
   if (!g)
     return true;
   return TAILQ_EMPTY(&g->al) && STAILQ_EMPTY(&g->rs);
-}
-
-/**
- * grouplist_add_group - Add a Group to a GroupList
- * @param gl GroupList to add to
- * @param g  Group to add
- */
-void grouplist_add_group(struct GroupList *gl, struct Group *g)
-{
-  if (!gl || !g)
-    return;
-
-  struct GroupNode *np = NULL;
-  STAILQ_FOREACH(np, gl, entries)
-  {
-    if (np->group == g)
-      return;
-  }
-  np = MUTT_MEM_CALLOC(1, struct GroupNode);
-  np->group = g;
-  STAILQ_INSERT_TAIL(gl, np, entries);
-}
-
-/**
- * grouplist_destroy - Free a GroupList
- * @param gl GroupList to free
- */
-void grouplist_destroy(struct GroupList *gl)
-{
-  if (!gl)
-    return;
-
-  struct GroupNode *np = STAILQ_FIRST(gl);
-  struct GroupNode *next = NULL;
-  while (np)
-  {
-    next = STAILQ_NEXT(np, entries);
-    FREE(&np);
-    np = next;
-  }
-  STAILQ_INIT(gl);
 }
 
 /**
@@ -260,6 +153,70 @@ static int group_remove_regex(struct Group *g, const char *str)
 }
 
 /**
+ * group_match - Does a string match an entry in a Group?
+ * @param g   Group to match against
+ * @param str String to match
+ * @retval true There's a match
+ */
+bool group_match(struct Group *g, const char *str)
+{
+  if (!g || !str)
+    return false;
+
+  if (mutt_regexlist_match(&g->rs, str))
+    return true;
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &g->al, entries)
+  {
+    if (a->mailbox && mutt_istr_equal(str, buf_string(a->mailbox)))
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * grouplist_add_group - Add a Group to a GroupList
+ * @param gl GroupList to add to
+ * @param g  Group to add
+ */
+void grouplist_add_group(struct GroupList *gl, struct Group *g)
+{
+  if (!gl || !g)
+    return;
+
+  struct GroupNode *np = NULL;
+  STAILQ_FOREACH(np, gl, entries)
+  {
+    if (np->group == g)
+      return;
+  }
+  np = MUTT_MEM_CALLOC(1, struct GroupNode);
+  np->group = g;
+  STAILQ_INSERT_TAIL(gl, np, entries);
+}
+
+/**
+ * grouplist_destroy - Free a GroupList
+ * @param gl GroupList to free
+ */
+void grouplist_destroy(struct GroupList *gl)
+{
+  if (!gl)
+    return;
+
+  struct GroupNode *np = STAILQ_FIRST(gl);
+  struct GroupNode *next = NULL;
+  while (np)
+  {
+    next = STAILQ_NEXT(np, entries);
+    FREE(&np);
+    np = next;
+  }
+  STAILQ_INIT(gl);
+}
+
+/**
  * grouplist_add_addrlist - Add Address list to a GroupList
  * @param gl GroupList to add to
  * @param al Address list to add
@@ -274,6 +231,99 @@ void grouplist_add_addrlist(struct GroupList *gl, struct AddressList *al)
   {
     group_add_addrlist(np->group, al);
   }
+}
+
+/**
+ * grouplist_add_regex - Add matching Addresses to a GroupList
+ * @param gl    GroupList to add to
+ * @param str   Address regex string to match
+ * @param flags Flags, e.g. REG_ICASE
+ * @param err   Buffer for error message
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int grouplist_add_regex(struct GroupList *gl, const char *str,
+                             uint16_t flags, struct Buffer *err)
+{
+  if (!gl || !str)
+    return -1;
+
+  int rc = 0;
+
+  struct GroupNode *np = NULL;
+  STAILQ_FOREACH(np, gl, entries)
+  {
+    rc = group_add_regex(np->group, str, flags, err);
+    if (rc)
+      return rc;
+  }
+  return rc;
+}
+
+/**
+ * groups_new - Create a HashTable for the Address Groups
+ * @retval ptr New Groups HashTable
+ */
+struct HashTable *groups_new(void)
+{
+  struct HashTable *groups = mutt_hash_new(1031, MUTT_HASH_NO_FLAGS);
+
+  mutt_hash_set_destructor(groups, group_hash_free, 0);
+
+  return groups;
+}
+
+/**
+ * groups_free - Free Address Groups HashTable
+ * @param pptr Groups HashTable to free
+ */
+void groups_free(struct HashTable **pptr)
+{
+  mutt_hash_free(pptr);
+}
+
+/**
+ * groups_get_group - Get a Group by its name
+ * @param groups Groups HashTable
+ * @param name   Name to find
+ * @retval ptr Matching Group, or new Group (if no match)
+ */
+struct Group *groups_get_group(struct HashTable *groups, const char *name)
+{
+  if (!groups || !name)
+    return NULL;
+
+  struct Group *g = mutt_hash_find(groups, name);
+  if (!g)
+  {
+    mutt_debug(LL_DEBUG2, "Creating group %s\n", name);
+    g = group_new(name);
+    mutt_hash_insert(groups, g->name, g);
+  }
+
+  return g;
+}
+
+/**
+ * groups_remove_grouplist - Clear a GroupList
+ * @param groups Groups HashTable
+ * @param gl     GroupList to clear
+ */
+void groups_remove_grouplist(struct HashTable *groups, struct GroupList *gl)
+{
+  if (!groups || !gl)
+    return;
+
+  struct GroupNode *np = STAILQ_FIRST(gl);
+  struct GroupNode *next = NULL;
+  while (np)
+  {
+    group_remove(groups, np->group);
+    next = STAILQ_NEXT(np, entries);
+    FREE(&np);
+    np = next;
+  }
+  STAILQ_INIT(gl);
 }
 
 /**
@@ -308,33 +358,6 @@ int groups_remove_addrlist(struct HashTable *groups, struct GroupList *gl,
 }
 
 /**
- * grouplist_add_regex - Add matching Addresses to a GroupList
- * @param gl    GroupList to add to
- * @param str   Address regex string to match
- * @param flags Flags, e.g. REG_ICASE
- * @param err   Buffer for error message
- * @retval  0 Success
- * @retval -1 Error
- */
-int grouplist_add_regex(struct GroupList *gl, const char *str,
-                             uint16_t flags, struct Buffer *err)
-{
-  if (!gl || !str)
-    return -1;
-
-  int rc = 0;
-
-  struct GroupNode *np = NULL;
-  STAILQ_FOREACH(np, gl, entries)
-  {
-    rc = group_add_regex(np->group, str, flags, err);
-    if (rc)
-      return rc;
-  }
-  return rc;
-}
-
-/**
  * groups_remove_regex - Remove matching addresses from a GroupList
  * @param groups Groups HashTable
  * @param gl     GroupList to remove from
@@ -360,25 +383,3 @@ int groups_remove_regex(struct HashTable *groups, struct GroupList *gl, const ch
   return rc;
 }
 
-/**
- * group_match - Does a string match an entry in a Group?
- * @param g   Group to match against
- * @param str String to match
- * @retval true There's a match
- */
-bool group_match(struct Group *g, const char *str)
-{
-  if (!g || !str)
-    return false;
-
-  if (mutt_regexlist_match(&g->rs, str))
-    return true;
-  struct Address *a = NULL;
-  TAILQ_FOREACH(a, &g->al, entries)
-  {
-    if (a->mailbox && mutt_istr_equal(str, buf_string(a->mailbox)))
-      return true;
-  }
-
-  return false;
-}
