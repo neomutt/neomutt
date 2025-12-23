@@ -38,8 +38,3 @@ const struct Command mutt_commands[] = {
   { NULL, NULL, 0 },
   // clang-format on
 };
-
-void buf_expand_path(struct Buffer *buf)
-{
-  buf_insert(buf, 0, "expanded/");
-}

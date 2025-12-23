@@ -60,8 +60,6 @@ static struct ConfigDef MyVarDef =
 
 /**
  * test_command_set_expand_value
- *
- * @note buf_expand_path() simply prepends the string with "expanded"
  */
 static void test_command_set_expand_value(void)
 {
@@ -72,9 +70,9 @@ static void test_command_set_expand_value(void)
   int type;
 
   type = DT_PATH | D_PATH_DIR;
-  buf_strcpy(buf, "apple");
+  buf_strcpy(buf, "~/apple");
   command_set_expand_value(type, buf);
-  TEST_CHECK_STR_EQ(buf_string(buf), "expanded/apple");
+  TEST_CHECK_STR_EQ(buf_string(buf), "/home/neomutt/apple");
 
   type = DT_PATH;
   buf_strcpy(buf, "~/banana");
@@ -82,14 +80,14 @@ static void test_command_set_expand_value(void)
   TEST_CHECK_STR_EQ(buf_string(buf), "/home/neomutt/banana");
 
   type = DT_STRING | D_STRING_MAILBOX;
-  buf_strcpy(buf, "cherry");
+  buf_strcpy(buf, "~/cherry");
   command_set_expand_value(type, buf);
-  TEST_CHECK_STR_EQ(buf_string(buf), "expanded/cherry");
+  TEST_CHECK_STR_EQ(buf_string(buf), "/home/neomutt/cherry");
 
   type = DT_STRING | D_STRING_COMMAND;
-  buf_strcpy(buf, "damson");
+  buf_strcpy(buf, "~/damson");
   command_set_expand_value(type, buf);
-  TEST_CHECK_STR_EQ(buf_string(buf), "expanded/damson");
+  TEST_CHECK_STR_EQ(buf_string(buf), "/home/neomutt/damson");
 
   type = DT_STRING | D_STRING_COMMAND;
   buf_strcpy(buf, "builtin");
@@ -217,7 +215,7 @@ static void test_command_set_query(void)
   buf_reset(err);
   rc = command_set_query(name, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
-  TEST_CHECK(!buf_is_empty(err));
+  TEST_CHECK(buf_is_empty(err));
 
   StartupComplete = false;
   buf_strcpy(name, "all");
@@ -231,7 +229,7 @@ static void test_command_set_query(void)
   buf_reset(err);
   rc = command_set_query(name, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
-  TEST_CHECK(!buf_is_empty(err));
+  TEST_CHECK(buf_is_empty(err));
 
   buf_strcpy(name, "unknown");
   buf_reset(err);
@@ -1530,9 +1528,9 @@ static void test_path_expanding(void)
       "=foo",
     };
     const char *expected[] = {
-      "expanded/<",
-      "expanded/~/bar",
-      "expanded/=foo",
+      "~/sent",
+      "/home/neomutt/bar",
+      "/home/neomutt/Mail/foo",
     };
     for (int v = 0; v < countof(pathlike); v++)
     {

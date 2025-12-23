@@ -30,11 +30,6 @@
 
 bool exit_called = false;
 
-void mutt_exit(int code)
-{
-  exit_called = true;
-}
-
 void test_mutt_mem_malloc(void)
 {
   // void *mutt_mem_malloc(size_t size);

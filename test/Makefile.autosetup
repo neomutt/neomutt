@@ -220,8 +220,7 @@ EDITOR_OBJS	= test/editor/common.o \
 		  test/editor/editor_transpose_chars.o \
 		  test/editor/state.o
 
-EMAIL_OBJS	= test/email/common.o \
-		  test/email/email_cmp_strict.o \
+EMAIL_OBJS	= test/email/email_cmp_strict.o \
 		  test/email/email_free.o \
 		  test/email/email_get_size.o \
 		  test/email/email_header_add.o \
@@ -518,8 +517,7 @@ PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_tilde.o \
 		  test/path/mutt_path_to_absolute.o
 
-PATTERN_OBJS	= pattern/pattern.o \
-		  test/pattern/comp.o \
+PATTERN_OBJS	= test/pattern/comp.o \
 		  test/pattern/dummy.o \
 		  test/pattern/leak.o
 
@@ -664,20 +662,30 @@ URL_OBJS	= test/url/url_check_scheme.o \
 		  test/url/url_tobuffer.o \
 		  test/url/url_tostring.o
 
+# Cherry-picked objects
+MISC_OBJS	= alternates.o \
+		  commands.o \
+		  hook.o \
+		  muttlib.o \
+		  mutt_config.o \
+		  pattern/pattern.o \
+		  score.o \
+		  subjectrx.o
+
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
-		  $(PWD)/test/cli $(PWD)/test/color $(PWD)/test/compress \
-		  $(PWD)/test/config $(PWD)/test/convert $(PWD)/test/core \
-		  $(PWD)/test/date $(PWD)/test/editor $(PWD)/test/email \
-		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/eqi \
-		  $(PWD)/test/expando $(PWD)/test/file $(PWD)/test/filter \
-		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui \
-		  $(PWD)/test/hash $(PWD)/test/history $(PWD)/test/idna \
-		  $(PWD)/test/imap $(PWD)/test/list $(PWD)/test/logging \
-		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
-		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
-		  $(PWD)/test/notify $(PWD)/test/notmuch \
+		  $(PWD)/test/cli $(PWD)/test/color \
+		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/convert \
+		  $(PWD)/test/core $(PWD)/test/date $(PWD)/test/editor \
+		  $(PWD)/test/email $(PWD)/test/envelope $(PWD)/test/envlist \
+		  $(PWD)/test/eqi $(PWD)/test/expando $(PWD)/test/file \
+		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/group \
+		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
+		  $(PWD)/test/idna $(PWD)/test/imap $(PWD)/test/list \
+		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
+		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
+		  $(PWD)/test/neo $(PWD)/test/notify $(PWD)/test/notmuch \
 		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
 		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
 		  $(PWD)/test/random $(PWD)/test/regex $(PWD)/test/rfc2047 \
@@ -744,7 +752,8 @@ TEST_OBJS	= test/common.o test/main.o \
 		  $(STRING_OBJS) \
 		  $(TAGS_OBJS) \
 		  $(THREAD_OBJS) \
-		  $(URL_OBJS)
+		  $(URL_OBJS) \
+		  $(MISC_OBJS)
 
 CFLAGS	+= -I$(SRCDIR)/test
 

@@ -30,12 +30,6 @@
 #include "parse/lib.h"
 #include "test_common.h"
 
-enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err)
-{
-  buf_strcpy(err, "config");
-  return MUTT_CMD_SUCCESS;
-}
-
 void test_parse_set(void)
 {
   TEST_CASE("parse_set");
