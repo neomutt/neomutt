@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parse_charset_iconv_hook()
+ * Test code for parse_hook_charset()
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -53,9 +53,9 @@ static const struct CommandTest IconvTests[] = {
 };
 // clang-format on
 
-void test_parse_charset_hook(void)
+void test_parse_hook_charset2(void)
 {
-  // enum CommandResult parse_charset_iconv_hook(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 
   struct Buffer *line = buf_pool_get();
   struct Buffer *err = buf_pool_get();
@@ -77,7 +77,7 @@ void test_parse_charset_hook(void)
 
 void test_parse_iconv_hook(void)
 {
-  // enum CommandResult parse_charset_iconv_hook(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 
   struct Buffer *line = buf_pool_get();
   struct Buffer *err = buf_pool_get();
@@ -97,8 +97,8 @@ void test_parse_iconv_hook(void)
   buf_pool_release(&line);
 }
 
-void test_parse_charset_iconv_hook(void)
+void test_parse_hook_charset(void)
 {
-  test_parse_charset_hook();
+  test_parse_hook_charset2();
   test_parse_iconv_hook();
 }

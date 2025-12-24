@@ -1,0 +1,137 @@
+/**
+ * @file
+ * Test code for parse_hook_mailbox()
+ *
+ * @authors
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#define TEST_NO_MAIN
+#include "config.h"
+#include "acutest.h"
+#include <stddef.h>
+#include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
+#include "common.h"
+#include "hook.h"
+#include "test_common.h"
+
+static struct ConfigDef Vars[] = {
+  // clang-format off
+  { "default_hook", DT_STRING, IP "~f %s !~P | (~P ~C %s)", 0, NULL, },
+  { NULL },
+  // clang-format on
+};
+
+// clang-format off
+static const struct Command FccHook     = { "fcc-hook",      NULL, MUTT_FCC_HOOK };
+static const struct Command FccSaveHook = { "fcc-save-hook", NULL, MUTT_FCC_HOOK | MUTT_SAVE_HOOK };
+static const struct Command SaveHook    = { "save-hook",     NULL, MUTT_SAVE_HOOK };
+// clang-format on
+
+// clang-format off
+static const struct CommandTest FccTests[] = {
+  // fcc-hook <pattern> <mailbox>
+  { MUTT_CMD_WARNING, "" },
+  { MUTT_CMD_SUCCESS, "[@.]aol\\.com$ +spammers" },
+  { MUTT_CMD_ERROR,   NULL },
+};
+
+static const struct CommandTest FccSaveTests[] = {
+  // fcc-save-hook <pattern> <mailbox>
+  { MUTT_CMD_WARNING, "" },
+  { MUTT_CMD_SUCCESS, "'~t neomutt-users*' +Lists/neomutt-users" },
+  { MUTT_CMD_ERROR,   NULL },
+};
+
+static const struct CommandTest SaveTests[] = {
+  // save-hook <pattern> <mailbox>
+  { MUTT_CMD_WARNING, "" },
+  { MUTT_CMD_SUCCESS, "'~f root@localhost' =Temp/rootmail" },
+  { MUTT_CMD_ERROR,   NULL },
+};
+// clang-format on
+
+static void test_parse_fcc_hook(void)
+{
+  struct Buffer *line = buf_pool_get();
+  struct Buffer *err = buf_pool_get();
+  enum CommandResult rc;
+
+  for (int i = 0; FccTests[i].line; i++)
+  {
+    TEST_CASE(FccTests[i].line);
+    buf_reset(err);
+    buf_strcpy(line, FccTests[i].line);
+    buf_seek(line, 0);
+    rc = parse_hook_mailbox(&FccHook, line, err);
+    TEST_CHECK_NUM_EQ(rc, FccTests[i].rc);
+  }
+
+  buf_pool_release(&err);
+  buf_pool_release(&line);
+}
+
+static void test_parse_fcc_save_hook(void)
+{
+  struct Buffer *line = buf_pool_get();
+  struct Buffer *err = buf_pool_get();
+  enum CommandResult rc;
+
+  for (int i = 0; FccSaveTests[i].line; i++)
+  {
+    TEST_CASE(FccSaveTests[i].line);
+    buf_reset(err);
+    buf_strcpy(line, FccSaveTests[i].line);
+    buf_seek(line, 0);
+    rc = parse_hook_mailbox(&FccSaveHook, line, err);
+    TEST_CHECK_NUM_EQ(rc, FccSaveTests[i].rc);
+  }
+
+  buf_pool_release(&err);
+  buf_pool_release(&line);
+}
+
+static void test_parse_save_hook(void)
+{
+  struct Buffer *line = buf_pool_get();
+  struct Buffer *err = buf_pool_get();
+  enum CommandResult rc;
+
+  for (int i = 0; SaveTests[i].line; i++)
+  {
+    TEST_CASE(SaveTests[i].line);
+    buf_reset(err);
+    buf_strcpy(line, SaveTests[i].line);
+    buf_seek(line, 0);
+    rc = parse_hook_mailbox(&SaveHook, line, err);
+    TEST_CHECK_NUM_EQ(rc, SaveTests[i].rc);
+  }
+
+  buf_pool_release(&err);
+  buf_pool_release(&line);
+}
+
+void test_parse_hook_mailbox(void)
+{
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
+
+  test_parse_fcc_hook();
+  test_parse_fcc_save_hook();
+  test_parse_save_hook();
+}

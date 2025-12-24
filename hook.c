@@ -50,7 +50,6 @@
 #include "compmbox/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
-#include "ncrypt/lib.h"
 #include "parse/lib.h"
 #include "pattern/lib.h"
 #include "commands.h"
