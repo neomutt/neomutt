@@ -144,14 +144,21 @@ COMMAND_OBJS	= test/command/common.o \
 		  test/command/parse_attachments.o \
 		  test/command/parse_bind.o \
 		  test/command/parse_cd.o \
-		  test/command/parse_charset_iconv_hook.o \
 		  test/command/parse_color.o \
 		  test/command/parse_echo.o \
 		  test/command/parse_exec.o \
 		  test/command/parse_finish.o \
 		  test/command/parse_group.o \
-		  test/command/parse_hook.o \
-		  test/command/parse_idxfmt_hook.o \
+		  test/command/parse_hook_charset.o \
+		  test/command/parse_hook_compress.o \
+		  test/command/parse_hook_crypt.o \
+		  test/command/parse_hook_folder.o \
+		  test/command/parse_hook_global.o \
+		  test/command/parse_hook_index.o \
+		  test/command/parse_hook_mailbox.o \
+		  test/command/parse_hook_mbox.o \
+		  test/command/parse_hook_pattern.o \
+		  test/command/parse_hook_regex.o \
 		  test/command/parse_ifdef.o \
 		  test/command/parse_ignore.o \
 		  test/command/parse_lists.o \

@@ -190,14 +190,21 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_parse_attachments)                                    \
   NEOMUTT_TEST_ITEM(test_parse_bind)                                           \
   NEOMUTT_TEST_ITEM(test_parse_cd)                                             \
-  NEOMUTT_TEST_ITEM(test_parse_charset_iconv_hook)                             \
   NEOMUTT_TEST_ITEM(test_parse_color)                                          \
   NEOMUTT_TEST_ITEM(test_parse_echo)                                           \
   NEOMUTT_TEST_ITEM(test_parse_exec)                                           \
   NEOMUTT_TEST_ITEM(test_parse_finish)                                         \
   NEOMUTT_TEST_ITEM(test_parse_group)                                          \
-  NEOMUTT_TEST_ITEM(test_parse_hook)                                           \
-  NEOMUTT_TEST_ITEM(test_parse_idxfmt_hook)                                    \
+  NEOMUTT_TEST_ITEM(test_parse_hook_charset)                                   \
+  NEOMUTT_TEST_ITEM(test_parse_hook_compress)                                  \
+  NEOMUTT_TEST_ITEM(test_parse_hook_crypt)                                     \
+  NEOMUTT_TEST_ITEM(test_parse_hook_folder)                                    \
+  NEOMUTT_TEST_ITEM(test_parse_hook_global)                                    \
+  NEOMUTT_TEST_ITEM(test_parse_hook_index)                                     \
+  NEOMUTT_TEST_ITEM(test_parse_hook_mailbox)                                   \
+  NEOMUTT_TEST_ITEM(test_parse_hook_mbox)                                      \
+  NEOMUTT_TEST_ITEM(test_parse_hook_pattern)                                   \
+  NEOMUTT_TEST_ITEM(test_parse_hook_regex)                                     \
   NEOMUTT_TEST_ITEM(test_parse_ifdef)                                          \
   NEOMUTT_TEST_ITEM(test_parse_ignore)                                         \
   NEOMUTT_TEST_ITEM(test_parse_lists)                                          \

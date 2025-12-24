@@ -62,18 +62,20 @@ enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, str
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+
   lua_init_state(&LuaState);
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(token));
 
-  if (luaL_dostring(LuaState, line->dptr) != LUA_OK)
+  if (luaL_dostring(LuaState, buf_string(token)) != LUA_OK)
   {
-    mutt_debug(LL_DEBUG2, "%s -> failure\n", line->dptr);
-    buf_printf(err, "%s: %s", line->dptr, lua_tostring(LuaState, -1));
+    mutt_debug(LL_DEBUG2, "%s -> failure\n", buf_string(token));
+    buf_printf(err, "%s: %s", buf_string(token), lua_tostring(LuaState, -1));
     /* pop error message from the stack */
     lua_pop(LuaState, 1);
     goto done;
   }
-  mutt_debug(LL_DEBUG2, "%s -> success\n", line->dptr);
+  mutt_debug(LL_DEBUG2, "%s -> success\n", buf_string(token));
   buf_reset(line); // Clear the rest of the line
 
   rc = MUTT_CMD_SUCCESS;
