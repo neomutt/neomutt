@@ -1698,9 +1698,9 @@ static const struct Command HookCommands[] = {
   { "save-hook",         parse_hook_mailbox, MUTT_SAVE_HOOK },
   { "send-hook",         parse_hook_pattern, MUTT_SEND_HOOK },
   { "send2-hook",        parse_hook_pattern, MUTT_SEND2_HOOK },
-  { "shutdown-hook",     parse_hook_global,  MUTT_SHUTDOWN_HOOK | MUTT_GLOBAL_HOOK },
-  { "startup-hook",      parse_hook_global,  MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
-  { "timeout-hook",      parse_hook_global,  MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
+  { "shutdown-hook",     parse_hook_global,  MUTT_SHUTDOWN_HOOK },
+  { "startup-hook",      parse_hook_global,  MUTT_STARTUP_HOOK },
+  { "timeout-hook",      parse_hook_global,  MUTT_TIMEOUT_HOOK },
   { "unhook",            parse_unhook,       0 },
   { NULL, NULL, 0 },
   // clang-format on

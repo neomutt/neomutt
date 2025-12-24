@@ -53,7 +53,6 @@ typedef uint32_t HookFlags;          ///< Flags for parse_hook(), e.g. #MUTT_FOL
 #define MUTT_TIMEOUT_HOOK  (1 << 16) ///< timeout-hook: run a command periodically
 #define MUTT_STARTUP_HOOK  (1 << 17) ///< startup-hook: run when starting NeoMutt
 #define MUTT_SHUTDOWN_HOOK (1 << 18) ///< shutdown-hook: run when leaving NeoMutt
-#define MUTT_GLOBAL_HOOK   (1 << 19) ///< Hooks which don't take a regex
 
 void hooks_init(void);
 
