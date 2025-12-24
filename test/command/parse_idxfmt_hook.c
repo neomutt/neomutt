@@ -68,7 +68,7 @@ void test_parse_idxfmt_hook(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_idxfmt_hook(&IndexFormatHook, line, err);
+    rc = parse_hook_index(&IndexFormatHook, line, err);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

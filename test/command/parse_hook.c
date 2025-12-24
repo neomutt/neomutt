@@ -232,7 +232,7 @@ static void test_parse_account_hook(void)
     buf_reset(err);
     buf_strcpy(line, AccountTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&AccountHook, line, err);
+    rc = parse_hook_regex(&AccountHook, line, err);
     TEST_CHECK_NUM_EQ(rc, AccountTests[i].rc);
   }
 
@@ -254,7 +254,7 @@ static void test_parse_append_hook(void)
     buf_reset(err);
     buf_strcpy(line, AppendTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&AppendHook, line, err);
+    rc = parse_hook_compress(&AppendHook, line, err);
     TEST_CHECK_NUM_EQ(rc, AppendTests[i].rc);
   }
 
@@ -276,7 +276,7 @@ static void test_parse_close_hook(void)
     buf_reset(err);
     buf_strcpy(line, CloseTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&CloseHook, line, err);
+    rc = parse_hook_compress(&CloseHook, line, err);
     TEST_CHECK_NUM_EQ(rc, CloseTests[i].rc);
   }
 
@@ -298,7 +298,7 @@ static void test_parse_crypt_hook(void)
     buf_reset(err);
     buf_strcpy(line, CryptTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&CryptHook, line, err);
+    rc = parse_hook_crypt(&CryptHook, line, err);
     TEST_CHECK_NUM_EQ(rc, CryptTests[i].rc);
   }
 
@@ -320,7 +320,7 @@ static void test_parse_fcc_hook(void)
     buf_reset(err);
     buf_strcpy(line, FccTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&FccHook, line, err);
+    rc = parse_hook_mailbox(&FccHook, line, err);
     TEST_CHECK_NUM_EQ(rc, FccTests[i].rc);
   }
 
@@ -342,7 +342,7 @@ static void test_parse_fcc_save_hook(void)
     buf_reset(err);
     buf_strcpy(line, FccSaveTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&FccSaveHook, line, err);
+    rc = parse_hook_mailbox(&FccSaveHook, line, err);
     TEST_CHECK_NUM_EQ(rc, FccSaveTests[i].rc);
   }
 
@@ -364,7 +364,7 @@ static void test_parse_folder_hook(void)
     buf_reset(err);
     buf_strcpy(line, FolderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&FolderHook, line, err);
+    rc = parse_hook_folder(&FolderHook, line, err);
     TEST_CHECK_NUM_EQ(rc, FolderTests[i].rc);
   }
 
@@ -386,7 +386,7 @@ static void test_parse_mbox_hook(void)
     buf_reset(err);
     buf_strcpy(line, MboxTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&MboxHook, line, err);
+    rc = parse_hook_mbox(&MboxHook, line, err);
     TEST_CHECK_NUM_EQ(rc, MboxTests[i].rc);
   }
 
@@ -408,7 +408,7 @@ static void test_parse_message_hook(void)
     buf_reset(err);
     buf_strcpy(line, MessageTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&MessageHook, line, err);
+    rc = parse_hook_pattern(&MessageHook, line, err);
     TEST_CHECK_NUM_EQ(rc, MessageTests[i].rc);
   }
 
@@ -430,7 +430,7 @@ static void test_parse_open_hook(void)
     buf_reset(err);
     buf_strcpy(line, OpenTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&OpenHook, line, err);
+    rc = parse_hook_compress(&OpenHook, line, err);
     TEST_CHECK_NUM_EQ(rc, OpenTests[i].rc);
   }
 
@@ -452,7 +452,7 @@ static void test_parse_reply_hook(void)
     buf_reset(err);
     buf_strcpy(line, ReplyTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&ReplyHook, line, err);
+    rc = parse_hook_pattern(&ReplyHook, line, err);
     TEST_CHECK_NUM_EQ(rc, ReplyTests[i].rc);
   }
 
@@ -474,7 +474,7 @@ static void test_parse_save_hook(void)
     buf_reset(err);
     buf_strcpy(line, SaveTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&SaveHook, line, err);
+    rc = parse_hook_mailbox(&SaveHook, line, err);
     TEST_CHECK_NUM_EQ(rc, SaveTests[i].rc);
   }
 
@@ -496,7 +496,7 @@ static void test_parse_send_hook(void)
     buf_reset(err);
     buf_strcpy(line, Send2Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&SendHook, line, err);
+    rc = parse_hook_pattern(&SendHook, line, err);
     TEST_CHECK_NUM_EQ(rc, Send2Tests[i].rc);
   }
 
@@ -518,7 +518,7 @@ static void test_parse_send2_hook(void)
     buf_reset(err);
     buf_strcpy(line, SendTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&Send2Hook, line, err);
+    rc = parse_hook_pattern(&Send2Hook, line, err);
     TEST_CHECK_NUM_EQ(rc, SendTests[i].rc);
   }
 
@@ -540,7 +540,7 @@ static void test_parse_shutdown_hook(void)
     buf_reset(err);
     buf_strcpy(line, ShutdownTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&ShutdownHook, line, err);
+    rc = parse_hook_global(&ShutdownHook, line, err);
     TEST_CHECK_NUM_EQ(rc, ShutdownTests[i].rc);
   }
 
@@ -562,7 +562,7 @@ static void test_parse_startup_hook(void)
     buf_reset(err);
     buf_strcpy(line, StartupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&StartupHook, line, err);
+    rc = parse_hook_global(&StartupHook, line, err);
     TEST_CHECK_NUM_EQ(rc, StartupTests[i].rc);
   }
 
@@ -584,7 +584,7 @@ static void test_parse_timeout_hook(void)
     buf_reset(err);
     buf_strcpy(line, TimeoutTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook(&TimeoutHook, line, err);
+    rc = parse_hook_global(&TimeoutHook, line, err);
     TEST_CHECK_NUM_EQ(rc, TimeoutTests[i].rc);
   }
 
