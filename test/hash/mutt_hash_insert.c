@@ -29,6 +29,7 @@
 void test_mutt_hash_insert(void)
 {
   // struct HashElem *mutt_hash_insert(struct HashTable *table, const char *strkey, void *data);
+  // struct HashElem *mutt_hash_insert_n(struct HashTable *table, const char *strkey, int keylen, void *data);
 
   {
     TEST_CHECK(!mutt_hash_insert(NULL, "apple", "banana"));
@@ -41,14 +42,56 @@ void test_mutt_hash_insert(void)
   }
 
   {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_STRDUP_KEYS);
+    TEST_CHECK(!mutt_hash_insert(table, "", NULL));
+    mutt_hash_free(&table);
+  }
+
+  {
     struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
     TEST_CHECK(mutt_hash_insert(table, "apple", NULL) != NULL);
     mutt_hash_free(&table);
   }
 
   {
+    TEST_CHECK(!mutt_hash_insert_n(NULL, "apple", 5, "banana"));
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    TEST_CHECK(!mutt_hash_insert_n(table, NULL, 0, "banana"));
+    mutt_hash_free(&table);
+  }
+
+  {
     struct HashTable *table = mutt_hash_new(10, MUTT_HASH_STRDUP_KEYS);
-    TEST_CHECK(mutt_hash_insert(table, "", NULL) != NULL);
+    TEST_CHECK(!mutt_hash_insert_n(table, "", 0, NULL));
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    TEST_CHECK(mutt_hash_insert_n(table, "apple", 5, NULL) != NULL);
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    TEST_CHECK(mutt_hash_insert_n(table, "apple", 5, NULL) != NULL);
+    TEST_CHECK(!mutt_hash_insert_n(table, "apple", 5, NULL));
+    TEST_CHECK(!mutt_hash_insert(table, "apple", NULL));
+    TEST_CHECK(mutt_hash_insert_n(table, "banana", 6, NULL) != NULL);
+    TEST_CHECK(!mutt_hash_insert(table, "banana", NULL));
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_STRCASECMP);
+    TEST_CHECK(mutt_hash_insert_n(table, "apple", 5, NULL) != NULL);
+    TEST_CHECK(!mutt_hash_insert_n(table, "apple", 5, NULL));
+    TEST_CHECK(!mutt_hash_insert(table, "apple", NULL));
+    TEST_CHECK(mutt_hash_insert_n(table, "banana", 6, NULL) != NULL);
+    TEST_CHECK(!mutt_hash_insert(table, "banana", NULL));
     mutt_hash_free(&table);
   }
 }

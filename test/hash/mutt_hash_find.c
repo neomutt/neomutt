@@ -29,10 +29,12 @@
 void test_mutt_hash_find(void)
 {
   // void *mutt_hash_find(const struct HashTable *table, const char *strkey);
+  // void *mutt_hash_find_n(const struct HashTable *table, const char *strkey, int keylen);
 
   int dummy1 = 42;
   int dummy2 = 13;
   int dummy3 = 99;
+  int dummy4 = 72;
 
   {
     TEST_CHECK(!mutt_hash_find(NULL, "apple"));
@@ -50,6 +52,93 @@ void test_mutt_hash_find(void)
     mutt_hash_insert(table, "banana", &dummy2);
     mutt_hash_insert(table, "cherry", &dummy3);
     TEST_CHECK(mutt_hash_find(table, "apple") != NULL);
+    mutt_hash_free(&table);
+  }
+
+  {
+    TEST_CHECK(!mutt_hash_find_n(NULL, "apple", 5));
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    TEST_CHECK(!mutt_hash_find_n(table, "apple", 5));
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    mutt_hash_insert(table, "apple", &dummy1);
+    mutt_hash_insert(table, "banana", &dummy2);
+    mutt_hash_insert(table, "cherry", &dummy3);
+    TEST_CHECK(mutt_hash_find_n(table, "apple", 5) != NULL);
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    mutt_hash_insert(table, "apple", &dummy1);
+    mutt_hash_insert(table, "banana", &dummy2);
+    mutt_hash_insert_n(table, "cherry", 6, &dummy3);
+    mutt_hash_insert_n(table, "damson", 6, &dummy4);
+
+    TEST_CHECK(mutt_hash_find(table, "apple") != NULL);
+    TEST_CHECK(mutt_hash_find_n(table, "apple", 5) != NULL);
+
+    TEST_CHECK(!mutt_hash_find(table, "applecart"));
+    TEST_CHECK(!mutt_hash_find_n(table, "applecart", 9));
+
+    TEST_CHECK(mutt_hash_find(table, "banana") != NULL);
+    TEST_CHECK(mutt_hash_find_n(table, "banana", 6) != NULL);
+
+    TEST_CHECK(!mutt_hash_find(table, "banananana"));
+    TEST_CHECK(!mutt_hash_find_n(table, "banananana", 10));
+
+    TEST_CHECK(mutt_hash_find(table, "cherry") != NULL);
+    TEST_CHECK(mutt_hash_find_n(table, "cherry", 6) != NULL);
+
+    TEST_CHECK(!mutt_hash_find(table, "cher"));
+    TEST_CHECK(!mutt_hash_find_n(table, "cher", 4));
+
+    TEST_CHECK(mutt_hash_find(table, "damson") != NULL);
+    TEST_CHECK(mutt_hash_find_n(table, "damson", 6) != NULL);
+
+    TEST_CHECK(!mutt_hash_find(table, "dam"));
+    TEST_CHECK(!mutt_hash_find_n(table, "dam", 3));
+
+    mutt_hash_free(&table);
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_STRCASECMP);
+    mutt_hash_insert(table, "apple", &dummy1);
+    mutt_hash_insert(table, "banana", &dummy2);
+    mutt_hash_insert_n(table, "cherry", 6, &dummy3);
+    mutt_hash_insert_n(table, "damson", 6, &dummy4);
+
+    TEST_CHECK(mutt_hash_find(table, "APPLE") != NULL);
+    TEST_CHECK(mutt_hash_find_n(table, "APPLE", 5) != NULL);
+
+    TEST_CHECK(!mutt_hash_find(table, "APPLECART"));
+    TEST_CHECK(!mutt_hash_find_n(table, "APPLECARt", 9));
+
+    TEST_CHECK(mutt_hash_find(table, "BANANA") != NULL);
+    TEST_CHECK(mutt_hash_find_n(table, "BANANA", 6) != NULL);
+
+    TEST_CHECK(!mutt_hash_find(table, "BANANANANA"));
+    TEST_CHECK(!mutt_hash_find_n(table, "BANANANANA", 10));
+
+    TEST_CHECK(mutt_hash_find(table, "CHERRY") != NULL);
+    TEST_CHECK(mutt_hash_find_n(table, "CHERRY", 6) != NULL);
+
+    TEST_CHECK(!mutt_hash_find(table, "CHER"));
+    TEST_CHECK(!mutt_hash_find_n(table, "CHER", 4));
+
+    TEST_CHECK(mutt_hash_find(table, "DAMSON") != NULL);
+    TEST_CHECK(mutt_hash_find_n(table, "DAMSON", 6) != NULL);
+
+    TEST_CHECK(!mutt_hash_find(table, "DAM"));
+    TEST_CHECK(!mutt_hash_find_n(table, "DAM", 3));
+
     mutt_hash_free(&table);
   }
 }

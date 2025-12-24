@@ -23,27 +23,34 @@
 #ifndef MUTT_MAILDIR_HCACHE_H
 #define MUTT_MAILDIR_HCACHE_H
 
+#include "config.h"
 #include <stdlib.h>
+#include "core/lib.h"
 
 struct Email;
+struct EmailArray;
+struct FilenameArray;
 struct HeaderCache;
-struct Mailbox;
+struct Progress;
+
+const char *maildir_hcache_key   (struct Email *e);
+size_t      maildir_hcache_keylen(const char *fn);
 
 #ifdef USE_HCACHE
 
 void                maildir_hcache_close (struct HeaderCache **ptr);
-int                 maildir_hcache_delete(struct HeaderCache *hc, struct Email *e);
+enum MxOpenReturns  maildir_hcache_delete(struct HeaderCache *hc, struct EmailArray *ea, const char *mbox_path, struct Progress *progress);
 struct HeaderCache *maildir_hcache_open  (struct Mailbox *m);
-struct Email *      maildir_hcache_read  (struct HeaderCache *hc, struct Email *e, const char *fn);
-int                 maildir_hcache_store (struct HeaderCache *hc, struct Email *e);
+enum MxOpenReturns  maildir_hcache_read  (struct HeaderCache *hc, const char *mbox_path, struct FilenameArray *fa, struct EmailArray *ea, struct Progress *progress);
+enum MxOpenReturns  maildir_hcache_store (struct HeaderCache *hc, struct EmailArray *ea, size_t skip, const char *path, struct Progress *progress);
 
 #else
 
 static inline void                maildir_hcache_close (struct HeaderCache **ptr) {}
-static inline int                 maildir_hcache_delete(struct HeaderCache *hc, struct Email *e) { return 0; }
+static inline enum MxOpenReturns  maildir_hcache_delete(struct HeaderCache *hc, struct EmailArray *ea, const char *mbox_path, struct Progress *progress) { return MX_OPEN_OK; }
 static inline struct HeaderCache *maildir_hcache_open  (struct Mailbox *m) { return NULL; }
-static inline struct Email *      maildir_hcache_read  (struct HeaderCache *hc, struct Email *e, const char *fn) { return NULL; }
-static inline int                 maildir_hcache_store (struct HeaderCache *hc, struct Email *e) { return 0; }
+static inline int                 maildir_hcache_read  (struct HeaderCache *hc, const char *mbox_path, struct FilenameArray *fa, struct EmailArray *ea, struct Progress *progress) { return -1; }
+static inline enum MxOpenReturns  maildir_hcache_store (struct HeaderCache *hc, struct EmailArray *ea, size_t skip, const char *path, struct Progress *progress) { return MX_OPEN_OK; }
 
 #endif
 
