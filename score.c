@@ -88,8 +88,8 @@ void mutt_check_rescore(struct Mailbox *m)
 /**
  * parse_score - Parse the 'score' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_score(const struct Command *cmd, struct Buffer *token,
-                               struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
+                               struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -99,20 +99,21 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *token,
 
   struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
-    return MUTT_CMD_WARNING;
+    goto done;
   }
   pattern = buf_strdup(token);
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
   if (MoreArgs(line))
   {
-    FREE(&pattern);
     buf_printf(err, _("%s: too many arguments"), cmd->name);
-    return MUTT_CMD_WARNING;
+    goto done;
   }
 
   /* look for an existing entry and update the value, else add it to the end
@@ -134,8 +135,7 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *token,
     struct PatternList *pat = mutt_pattern_comp(mv_cur, pattern, MUTT_PC_NO_FLAGS, err);
     if (!pat)
     {
-      FREE(&pattern);
-      return MUTT_CMD_ERROR;
+      goto done;
     }
     ptr = MUTT_MEM_CALLOC(1, struct Score);
     if (last)
@@ -144,21 +144,29 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *token,
       ScoreList = ptr;
     ptr->pat = pat;
     ptr->str = pattern;
+    pattern = NULL;
   }
+
   pc = token->data;
   if (*pc == '=')
   {
     ptr->exact = true;
     pc++;
   }
+
   if (!mutt_str_atoi_full(pc, &ptr->val))
   {
-    FREE(&pattern);
     buf_strcpy(err, _("Error: score: invalid number"));
-    return MUTT_CMD_ERROR;
+    goto done;
   }
   OptNeedRescore = true;
-  return MUTT_CMD_SUCCESS;
+
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  FREE(&pattern);
+  return rc;
 }
 
 /**
@@ -203,8 +211,8 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 /**
  * parse_unscore - Parse the 'unscore' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *token,
-                                 struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line,
+                                 struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -213,6 +221,7 @@ enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *token
   }
 
   struct Score *tmp = NULL, *last = NULL;
+  struct Buffer *token = buf_pool_get();
 
   while (MoreArgs(line))
   {
@@ -248,5 +257,6 @@ enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *token
   }
 
   OptNeedRescore = true;
+  buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
 }

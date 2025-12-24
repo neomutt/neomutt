@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -304,26 +303,27 @@ void mutt_attachments_reset(struct MailboxView *mv)
 
 /**
  * parse_attach_list - Parse the "attachments" command
- * @param token  Buffer for temporary storage
- * @param line    Buffer containing the attachments command
+ * @param cmd  Command being parsed
+ * @param line Buffer containing the attachments command
  * @param head List of AttachMatch to add to
  * @param err  Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-static enum CommandResult parse_attach_list(struct Buffer *token, struct Buffer *line,
+static enum CommandResult parse_attach_list(const struct Command *cmd, struct Buffer *line,
                                             struct ListHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
   char *p = NULL;
   char *tmpminor = NULL;
   size_t len;
-  int rc;
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (!token->data || (*token->data == '\0'))
+    if (buf_is_empty(token))
       continue;
 
     a = attachmatch_new();
@@ -334,7 +334,7 @@ static enum CommandResult parse_attach_list(struct Buffer *token, struct Buffer 
     else if (mutt_istr_equal(token->data, "none"))
       a->major = mutt_str_dup("cheap_hack/this_should_never_match");
     else
-      a->major = mutt_str_dup(token->data);
+      a->major = buf_strdup(token);
 
     p = strchr(a->major, '/');
     if (p)
@@ -356,16 +356,16 @@ static enum CommandResult parse_attach_list(struct Buffer *token, struct Buffer 
     tmpminor[len + 2] = '\0';
 
     a->major_int = mutt_check_mime_type(a->major);
-    rc = REG_COMP(&a->minor_regex, tmpminor, REG_ICASE);
+    int rc_regex = REG_COMP(&a->minor_regex, tmpminor, REG_ICASE);
 
     FREE(&tmpminor);
 
-    if (rc != 0)
+    if (rc_regex != 0)
     {
-      regerror(rc, &a->minor_regex, err->data, err->dsize);
+      regerror(rc_regex, &a->minor_regex, err->data, err->dsize);
       FREE(&a->major);
       FREE(&a);
-      return MUTT_CMD_ERROR;
+      goto done;
     }
 
     mutt_debug(LL_DEBUG3, "added %s/%s [%d]\n", a->major, a->minor, a->major_int);
@@ -374,25 +374,31 @@ static enum CommandResult parse_attach_list(struct Buffer *token, struct Buffer 
   } while (MoreArgs(line));
 
   if (!a)
-    return MUTT_CMD_ERROR;
+    goto done;
 
   mutt_debug(LL_NOTIFY, "NT_ATTACH_ADD: %s/%s\n", a->major, a->minor);
   notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_ADD, NULL);
 
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }
 
 /**
  * parse_unattach_list - Parse the "unattachments" command
- * @param token  Buffer for temporary storage
- * @param line    Buffer containing the unattachments command
+ * @param cmd  Command being parsed
+ * @param line Buffer containing the unattachments command
  * @param head List of AttachMatch to remove from
  * @param err  Buffer for error messages
  * @retval #MUTT_CMD_SUCCESS Always
  */
-static enum CommandResult parse_unattach_list(struct Buffer *token, struct Buffer *line,
+static enum CommandResult parse_unattach_list(const struct Command *cmd, struct Buffer *line,
                                               struct ListHead *head, struct Buffer *err)
 {
+  struct Buffer *token = buf_pool_get();
+
   struct AttachMatch *a = NULL;
   char *tmp = NULL;
   char *minor = NULL;
@@ -407,7 +413,7 @@ static enum CommandResult parse_unattach_list(struct Buffer *token, struct Buffe
     else if (mutt_istr_equal(token->data, "none"))
       tmp = mutt_str_dup("cheap_hack/this_should_never_match");
     else
-      tmp = mutt_str_dup(token->data);
+      tmp = buf_strdup(token);
 
     minor = strchr(tmp, '/');
     if (minor)
@@ -446,6 +452,7 @@ static enum CommandResult parse_unattach_list(struct Buffer *token, struct Buffe
 
   notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_DELETE, NULL);
 
+  buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
 }
 
@@ -472,7 +479,7 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
 /**
  * parse_attachments - Parse the 'attachments' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_attachments(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -480,6 +487,9 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *t
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
@@ -496,7 +506,9 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *t
     print_attach_list(&InlineAllow, '+', "I");
     print_attach_list(&InlineExclude, '-', "I");
     mutt_any_key_to_continue(NULL);
-    return MUTT_CMD_SUCCESS;
+
+    rc = MUTT_CMD_SUCCESS;
+    goto done;
   }
 
   if ((op != '+') && (op != '-'))
@@ -523,16 +535,20 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *t
   else
   {
     buf_strcpy(err, _("attachments: invalid disposition"));
-    return MUTT_CMD_ERROR;
+    goto done;
   }
 
-  return parse_attach_list(token, line, head, err);
+  rc = parse_attach_list(cmd, line, head, err);
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }
 
 /**
  * parse_unattachments - Parse the 'unattachments' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_unattachments(const struct Command *cmd,
                                        struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -541,13 +557,16 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
     return MUTT_CMD_WARNING;
   }
 
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
+
   char op;
-  char *p = NULL;
+  const char *p = NULL;
   struct ListHead *head = NULL;
 
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-  p = token->data;
+  p = buf_string(token);
   op = *p++;
 
   if (op == '*')
@@ -559,7 +578,9 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
 
     mutt_debug(LL_NOTIFY, "NT_ATTACH_DELETE_ALL\n");
     notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_DELETE_ALL, NULL);
-    return 0;
+
+    rc = MUTT_CMD_SUCCESS;
+    goto done;
   }
 
   if ((op != '+') && (op != '-'))
@@ -584,10 +605,14 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
   else
   {
     buf_strcpy(err, _("unattachments: invalid disposition"));
-    return MUTT_CMD_ERROR;
+    goto done;
   }
 
-  return parse_unattach_list(token, line, head, err);
+  rc = parse_unattach_list(cmd, line, head, err);
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }
 
 /**

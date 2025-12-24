@@ -29,24 +29,38 @@
 #include "acutest.h"
 #include <limits.h>
 #include <locale.h>
+#include <pwd.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "mutt.h"
+#include "browser/lib.h"
+#include "color/lib.h"
 #include "complete/lib.h"
+#include "send/lib.h"
 #include "copy.h"
+#include "external.h"
+#include "mutt_thread.h"
 #include "mx.h"
+#include "protos.h"
 
 struct AddressList;
+struct AttachCtx;
+struct Body;
 struct Email;
+struct EmailArray;
 struct Envelope;
+struct MailboxView;
 struct MuttWindow;
+struct Notify;
 struct PagerView;
 
 bool StartupComplete = true;
@@ -54,20 +68,34 @@ bool StartupComplete = true;
 char *HomeDir = NULL;
 char *ShortHostname = "example";
 bool MonitorContextChanged = false;
+char *LastFolder = NULL;
+
+bool OptResortInit = false;
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
-
-const struct CompleteOps CompleteMailboxOps = { 0 };
 
 static struct ConfigDef Vars[] = {
   // clang-format off
   { "assumed_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, NULL, },
   { "charset", DT_STRING|D_NOT_EMPTY|D_CHARSET_SINGLE, IP "utf-8", 0, NULL, },
+  { "config_charset", DT_STRING, 0, 0, NULL, },
+  { "debug_level", DT_NUMBER, 0, 0, NULL },
+  { "folder", DT_STRING|D_STRING_MAILBOX, IP "~/Mail", 0, NULL, },
   { "maildir_field_delimiter", DT_STRING, IP ":", 0, NULL, },
+  { "record", DT_STRING|D_STRING_MAILBOX, IP "~/sent", 0, NULL, },
+  { "simple_search", DT_STRING, IP "~f %s | ~s %s", 0, NULL, },
+  { "sleep_time", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL, },
   { "tmp_dir", DT_PATH|D_PATH_DIR|D_NOT_EMPTY, IP TMPDIR, 0, NULL, },
   { NULL },
   // clang-format on
 };
+
+const struct CompleteOps CompleteMailboxOps = {};
+
+struct ListHead AlternativeOrderList = STAILQ_HEAD_INITIALIZER(AlternativeOrderList);
+struct ListHead AutoViewList = STAILQ_HEAD_INITIALIZER(AutoViewList);
+struct ListHead HeaderOrderList = STAILQ_HEAD_INITIALIZER(HeaderOrderList);
+struct ListHead MimeLookupList = STAILQ_HEAD_INITIALIZER(MimeLookupList);
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType Cst##NAME;                                 \
@@ -94,6 +122,15 @@ void test_gen_path(struct Buffer *buf, const char *fmt)
   buf_printf(buf, NONULL(fmt), NONULL(get_test_dir()));
 }
 
+static void init_home_dir(struct NeoMutt *n)
+{
+  struct passwd *pw = getpwuid(getuid());
+  TEST_CHECK(pw != NULL);
+
+  NeoMutt->username = mutt_str_dup(pw->pw_name);
+  NeoMutt->home_dir = mutt_str_dup(pw->pw_dir);
+}
+
 bool test_neomutt_create(void)
 {
   struct ConfigSet *cs = cs_new(50);
@@ -114,10 +151,12 @@ bool test_neomutt_create(void)
 
   NeoMutt = neomutt_new(cs);
   TEST_CHECK(NeoMutt != NULL);
+  NeoMutt->env = MUTT_MEM_CALLOC(2, char *);
 
   TEST_CHECK(cs_register_variables(cs, Vars));
 
   init_tmp_dir(NeoMutt);
+  init_home_dir(NeoMutt);
 
   return NeoMutt;
 }
@@ -175,6 +214,7 @@ void test_init(void)
   }
 
   test_neomutt_create();
+  regex_colors_init();
   success = true;
 done:
   if (!success)
@@ -186,14 +226,10 @@ done:
 
 void test_fini(void)
 {
+  regex_colors_cleanup();
   config_cache_cleanup();
   test_neomutt_destroy();
   buf_pool_cleanup();
-}
-
-struct IndexSharedData *index_shared_data_new(void)
-{
-  return NULL;
 }
 
 struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top)
@@ -201,32 +237,9 @@ struct MuttWindow *add_panel_pager(struct MuttWindow *parent, bool status_on_top
   return NULL;
 }
 
-enum QuadOption query_yesorno(const char *msg, enum QuadOption def)
-{
-  return MUTT_YES;
-}
-
-struct Mailbox *get_current_mailbox(void)
-{
-  return NULL;
-}
-
-struct MailboxView *get_current_mailbox_view(void)
-{
-  return NULL;
-}
-
 int mutt_do_pager(struct PagerView *pview, struct Email *e)
 {
   return 0;
-}
-
-void buf_pretty_mailbox(struct Buffer *buf)
-{
-}
-
-void buf_expand_path_regex(struct Buffer *buf, bool regex)
-{
 }
 
 struct HashTable *mutt_make_id_hash(struct Mailbox *m)
@@ -248,24 +261,8 @@ bool mx_mbox_ac_link(struct Mailbox *m)
   return false;
 }
 
-void mutt_encode_path(struct Buffer *buf, const char *src)
-{
-}
-
 void mutt_set_header_color(struct Mailbox *m, struct Email *e)
 {
-}
-
-enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
-                                     intptr_t data, struct Buffer *err)
-{
-  return MUTT_CMD_SUCCESS;
-}
-
-enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
-                                   intptr_t data, struct Buffer *err)
-{
-  return MUTT_CMD_SUCCESS;
 }
 
 struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpenFlags flags)
@@ -299,19 +296,9 @@ int mutt_traverse_thread(struct Email *e, MuttThreadFlags flag)
   return 0;
 }
 
-int mutt_thread_style(void)
+enum UseThreads mutt_thread_style(void)
 {
-  return 0;
-}
-
-const char *mutt_get_name(const char *s)
-{
-  return NULL;
-}
-
-bool subjrx_apply_mods(struct Envelope *env)
-{
-  return false;
+  return UT_THREADS;
 }
 
 #ifdef USE_DEBUG_BACKTRACE
@@ -323,4 +310,262 @@ void show_backtrace(void)
 const char *mutt_make_version(void)
 {
   return "VERSION";
+}
+
+void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx,
+                           struct Body *b)
+{
+}
+
+bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen)
+{
+  return true;
+}
+
+int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e, bool use_tagged)
+{
+  return 0;
+}
+
+bool first_mailing_list(char *buf, size_t buflen, struct AddressList *al)
+{
+  return true;
+}
+
+const char *get_use_threads_str(enum UseThreads value)
+{
+  return NULL;
+}
+
+void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
+{
+}
+
+int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
+{
+  return 0;
+}
+
+void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx,
+                         struct Body *b, SendFlags flags)
+{
+}
+
+void mutt_attach_mail_sender(struct AttachCtx *actx, struct Body *b)
+{
+}
+
+void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
+                       struct AttachCtx *actx, struct Body *b, SendFlags flags)
+{
+}
+
+void mutt_attach_resend(FILE *fp, struct Mailbox *m, struct AttachCtx *actx, struct Body *b)
+{
+}
+
+bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailArray *ea)
+{
+  return true;
+}
+
+void mutt_clear_threads(struct ThreadsContext *tctx)
+{
+}
+
+void mutt_display_address(struct Envelope *env)
+{
+}
+
+void mutt_draw_tree(struct ThreadsContext *tctx)
+{
+}
+
+void mutt_emails_set_flag(struct Mailbox *m, struct EmailArray *ea,
+                          enum MessageType flag, bool bf)
+{
+}
+
+int mutt_ev_message(struct Mailbox *m, struct EmailArray *ea, enum EvMessage action)
+{
+  return 0;
+}
+
+void mutt_label_hash_add(struct Mailbox *m, struct Email *e)
+{
+}
+
+void mutt_label_hash_remove(struct Mailbox *m, struct Email *e)
+{
+}
+
+int mutt_label_message(struct MailboxView *mv, struct EmailArray *ea)
+{
+  return 0;
+}
+
+bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e)
+{
+  return true;
+}
+
+bool mutt_link_threads(struct Email *parent, struct EmailArray *children, struct Mailbox *m)
+{
+  return true;
+}
+
+int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
+{
+  return 0;
+}
+
+bool mutt_mailbox_list(void)
+{
+  return true;
+}
+
+struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s)
+{
+  return NULL;
+}
+
+bool mutt_mailbox_notify(struct Mailbox *m_cur)
+{
+  return true;
+}
+
+int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInThread mit)
+{
+  return 0;
+}
+
+int mutt_parent_message(struct Email *e, bool find_root)
+{
+  return 0;
+}
+
+void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
+{
+}
+
+void mutt_print_message(struct Mailbox *m, struct EmailArray *ea)
+{
+}
+
+int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
+                      enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt)
+{
+  return 0;
+}
+
+bool mutt_select_sort(bool reverse)
+{
+  return true;
+}
+
+off_t mutt_set_vnum(struct Mailbox *m)
+{
+  return 0;
+}
+
+void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
+{
+}
+
+bool mutt_thread_can_collapse(struct Email *e)
+{
+  return true;
+}
+
+void mutt_thread_collapse(struct ThreadsContext *tctx, bool collapse)
+{
+}
+
+void mutt_thread_collapse_collapsed(struct ThreadsContext *tctx)
+{
+}
+
+int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
+                         enum MessageType flag, bool bf, bool subthread)
+{
+  return 0;
+}
+
+void mview_free(struct MailboxView **ptr)
+{
+}
+
+bool mview_has_limit(const struct MailboxView *mv)
+{
+  return true;
+}
+
+struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
+{
+  return NULL;
+}
+
+int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
+{
+  return 0;
+}
+
+enum MxStatus mx_mbox_check(struct Mailbox *m)
+{
+  return MX_STATUS_OK;
+}
+
+enum MxStatus mx_mbox_sync(struct Mailbox *m)
+{
+  return MX_STATUS_OK;
+}
+
+int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *type)
+{
+  return 0;
+}
+
+int mx_save_hcache(struct Mailbox *m, struct Email *e)
+{
+  return 0;
+}
+
+int mx_tags_commit(struct Mailbox *m, struct Email *e, const char *tags)
+{
+  return 0;
+}
+
+int mx_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *buf)
+{
+  return 0;
+}
+
+bool mx_tags_is_supported(struct Mailbox *m)
+{
+  return true;
+}
+
+int mx_toggle_write(struct Mailbox *m)
+{
+  return 0;
+}
+
+enum MailboxType mx_type(struct Mailbox *m)
+{
+  return MUTT_MAILDIR;
+}
+
+void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
+                 char ***files, int *numfiles)
+{
+}
+
+int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)
+{
+  return 0;
+}
+
+int nntp_sort_unsorted(const struct Email *a, const struct Email *b, bool reverse)
+{
+  return 0;
 }

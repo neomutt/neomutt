@@ -95,10 +95,6 @@ static struct ConfigDef Vars[] = {
 };
 // clang-format on
 
-void mutt_pretty_mailbox(char *buf, size_t buflen)
-{
-}
-
 bool test_pretty_var(void)
 {
   // size_t pretty_var(const char *str, struct Buffer *buf);

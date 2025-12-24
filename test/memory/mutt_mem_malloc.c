@@ -23,17 +23,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "test_common.h"
-
-bool exit_called = false;
-
-void mutt_exit(int code)
-{
-  exit_called = true;
-}
 
 void test_mutt_mem_malloc(void)
 {
@@ -50,7 +42,6 @@ void test_mutt_mem_malloc(void)
     size_t big = 1024 * 1024; // ~0;
     void *ptr = mutt_mem_malloc(big);
     TEST_CHECK(ptr != NULL);
-    TEST_CHECK(exit_called == false);
     FREE(&ptr);
   }
 }

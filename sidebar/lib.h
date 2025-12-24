@@ -41,11 +41,16 @@
 #ifndef MUTT_SIDEBAR_LIB_H
 #define MUTT_SIDEBAR_LIB_H
 
+struct Buffer;
+struct Command;
 struct MuttWindow;
 
 void sb_init   (void);
 void sb_cleanup(void);
 
 int sb_function_dispatcher(struct MuttWindow *win, int op);
+
+enum CommandResult parse_sidebar_pin  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 #endif /* MUTT_SIDEBAR_LIB_H */

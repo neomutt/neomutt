@@ -138,6 +138,62 @@ COLOR_OBJS	= test/color/ansi.o \
 		  test/color/parse_color_prefix.o \
 		  test/color/parse_color_rrggbb.o
 
+COMMAND_OBJS	= test/command/common.o \
+		  test/command/parse_alias.o \
+		  test/command/parse_alternates.o \
+		  test/command/parse_attachments.o \
+		  test/command/parse_bind.o \
+		  test/command/parse_cd.o \
+		  test/command/parse_charset_iconv_hook.o \
+		  test/command/parse_color.o \
+		  test/command/parse_echo.o \
+		  test/command/parse_exec.o \
+		  test/command/parse_finish.o \
+		  test/command/parse_group.o \
+		  test/command/parse_hook.o \
+		  test/command/parse_idxfmt_hook.o \
+		  test/command/parse_ifdef.o \
+		  test/command/parse_ignore.o \
+		  test/command/parse_lists.o \
+		  test/command/parse_lua.o \
+		  test/command/parse_lua_source.o \
+		  test/command/parse_macro.o \
+		  test/command/parse_mailboxes.o \
+		  test/command/parse_mono.o \
+		  test/command/parse_my_hdr.o \
+		  test/command/parse_nospam.o \
+		  test/command/parse_push.o \
+		  test/command/parse_score.o \
+		  test/command/parse_setenv.o \
+		  test/command/parse_sidebar_pin.o \
+		  test/command/parse_sidebar_unpin.o \
+		  test/command/parse_source.o \
+		  test/command/parse_spam.o \
+		  test/command/parse_stailq.o \
+		  test/command/parse_subjectrx_list.o \
+		  test/command/parse_subscribe.o \
+		  test/command/parse_subscribe_to.o \
+		  test/command/parse_tag_formats.o \
+		  test/command/parse_tag_transforms.o \
+		  test/command/parse_unalias.o \
+		  test/command/parse_unalternates.o \
+		  test/command/parse_unattachments.o \
+		  test/command/parse_unbind.o \
+		  test/command/parse_uncolor.o \
+		  test/command/parse_uncolor_command.o \
+		  test/command/parse_unhook.o \
+		  test/command/parse_unignore.o \
+		  test/command/parse_unlists.o \
+		  test/command/parse_unmailboxes.o \
+		  test/command/parse_unmono.o \
+		  test/command/parse_unmy_hdr.o \
+		  test/command/parse_unscore.o \
+		  test/command/parse_unstailq.o \
+		  test/command/parse_unsubjectrx_list.o \
+		  test/command/parse_unsubscribe.o \
+		  test/command/parse_unsubscribe_from.o \
+		  test/command/parse_version.o
+
 @if USE_LZ4 || USE_ZLIB || USE_ZSTD
 COMPRESS_OBJS	+= test/compress/common.o
 @endif
@@ -220,8 +276,7 @@ EDITOR_OBJS	= test/editor/common.o \
 		  test/editor/editor_transpose_chars.o \
 		  test/editor/state.o
 
-EMAIL_OBJS	= test/email/common.o \
-		  test/email/email_cmp_strict.o \
+EMAIL_OBJS	= test/email/email_cmp_strict.o \
 		  test/email/email_free.o \
 		  test/email/email_get_size.o \
 		  test/email/email_header_add.o \
@@ -518,8 +573,7 @@ PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_tilde.o \
 		  test/path/mutt_path_to_absolute.o
 
-PATTERN_OBJS	= pattern/pattern.o \
-		  test/pattern/comp.o \
+PATTERN_OBJS	= test/pattern/comp.o \
 		  test/pattern/dummy.o \
 		  test/pattern/leak.o
 
@@ -664,20 +718,30 @@ URL_OBJS	= test/url/url_check_scheme.o \
 		  test/url/url_tobuffer.o \
 		  test/url/url_tostring.o
 
+# Cherry-picked objects
+MISC_OBJS	= alternates.o \
+		  commands.o \
+		  hook.o \
+		  muttlib.o \
+		  mutt_config.o \
+		  pattern/pattern.o \
+		  score.o \
+		  subjectrx.o
+
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
-		  $(PWD)/test/cli $(PWD)/test/color $(PWD)/test/compress \
-		  $(PWD)/test/config $(PWD)/test/convert $(PWD)/test/core \
-		  $(PWD)/test/date $(PWD)/test/editor $(PWD)/test/email \
-		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/eqi \
-		  $(PWD)/test/expando $(PWD)/test/file $(PWD)/test/filter \
-		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui \
-		  $(PWD)/test/hash $(PWD)/test/history $(PWD)/test/idna \
-		  $(PWD)/test/imap $(PWD)/test/list $(PWD)/test/logging \
-		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
-		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
-		  $(PWD)/test/notify $(PWD)/test/notmuch \
+		  $(PWD)/test/cli $(PWD)/test/color $(PWD)/test/command \
+		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/convert \
+		  $(PWD)/test/core $(PWD)/test/date $(PWD)/test/editor \
+		  $(PWD)/test/email $(PWD)/test/envelope $(PWD)/test/envlist \
+		  $(PWD)/test/eqi $(PWD)/test/expando $(PWD)/test/file \
+		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/group \
+		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
+		  $(PWD)/test/idna $(PWD)/test/imap $(PWD)/test/list \
+		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
+		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
+		  $(PWD)/test/neo $(PWD)/test/notify $(PWD)/test/notmuch \
 		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
 		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
 		  $(PWD)/test/random $(PWD)/test/regex $(PWD)/test/rfc2047 \
@@ -697,6 +761,7 @@ TEST_OBJS	= test/common.o test/main.o \
 		  $(CHARSET_OBJS) \
 		  $(CLI_OBJS) \
 		  $(COLOR_OBJS) \
+		  $(COMMAND_OBJS) \
 		  $(COMPRESS_OBJS) \
 		  $(CONFIG_OBJS) \
 		  $(CONVERT_OBJS) \
@@ -744,7 +809,8 @@ TEST_OBJS	= test/common.o test/main.o \
 		  $(STRING_OBJS) \
 		  $(TAGS_OBJS) \
 		  $(THREAD_OBJS) \
-		  $(URL_OBJS)
+		  $(URL_OBJS) \
+		  $(MISC_OBJS)
 
 CFLAGS	+= -I$(SRCDIR)/test
 

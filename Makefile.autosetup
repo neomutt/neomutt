@@ -1016,6 +1016,8 @@ coverage: all test
 	$(RM) mutt/exit.gc??
 	lcov --test-name "test" --output-file coverage.info --capture \
 	  --directory address \
+	  --directory alias \
+	  --directory attach \
 	  --directory cli \
 	  --directory color \
 	  --directory compress \
@@ -1025,10 +1027,13 @@ coverage: all test
 	  --directory email \
 	  --directory expando \
 	  --directory imap \
+	  --directory key \
+	  --directory lua \
 	  --directory mutt \
 	  --directory notmuch \
 	  --directory parse \
 	  --directory pattern \
+	  --directory sidebar \
 	  --directory store \
 	  --directory test/eqi \
 	  --exclude '*/atoi.h'

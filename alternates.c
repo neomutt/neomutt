@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -89,7 +88,7 @@ void mutt_alternates_reset(struct MailboxView *mv)
 /**
  * parse_alternates - Parse the 'alternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_alternates(const struct Command *cmd,
                                     struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -99,6 +98,8 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *to
   }
 
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   do
   {
@@ -116,22 +117,21 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *to
       goto done;
   } while (MoreArgs(line));
 
-  grouplist_destroy(&gl);
-
   mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", buf_string(token));
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_ADD, NULL);
 
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
 
 done:
+  buf_pool_release(&token);
   grouplist_destroy(&gl);
-  return MUTT_CMD_ERROR;
+  return rc;
 }
 
 /**
  * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *token,
+enum CommandResult parse_unalternates(const struct Command *cmd,
                                       struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
@@ -139,6 +139,9 @@ enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   do
   {
@@ -148,7 +151,7 @@ enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *
     if (!mutt_str_equal(buf_string(token), "*") &&
         (mutt_regexlist_add(&UnAlternates, buf_string(token), REG_ICASE, err) != 0))
     {
-      return MUTT_CMD_ERROR;
+      goto done;
     }
 
   } while (MoreArgs(line));
@@ -156,7 +159,11 @@ enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *
   mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", buf_string(token));
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_DELETE, NULL);
 
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }
 
 /**

@@ -48,7 +48,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "lib.h"
 #include "parse/lib.h"
 #include "muttlib.h"
 #include "version.h"
@@ -92,7 +91,6 @@ static int lua_cb_global_call(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, "enter\n");
   struct Buffer *err = buf_pool_get();
-  struct Buffer *token = buf_pool_get();
   struct Buffer *buf = buf_pool_get();
   const struct Command *cmd = NULL;
   int rc = 0;
@@ -117,7 +115,7 @@ static int lua_cb_global_call(lua_State *l)
   }
   buf_seek(buf, 0);
 
-  if (cmd->parse(cmd, token, buf, err))
+  if (cmd->parse(cmd, buf, err))
   {
     luaL_error(l, "NeoMutt error: %s", buf_string(err));
     rc = -1;
@@ -131,7 +129,6 @@ static int lua_cb_global_call(lua_State *l)
   }
 
   buf_pool_release(&buf);
-  buf_pool_release(&token);
   buf_pool_release(&err);
   return rc;
 }

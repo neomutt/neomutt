@@ -56,7 +56,7 @@ typedef uint32_t HookFlags;          ///< Flags for parse_hook(), e.g. #MUTT_FOL
 #define MUTT_GLOBAL_HOOK   (1 << 19) ///< Hooks which don't take a regex
 
 void hooks_init(void);
-enum CommandResult parse_hook(const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_hook(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 void                  mutt_account_hook            (const char *url);
 void                  mutt_crypt_hook              (struct ListHead *list, struct Address *addr);
@@ -66,9 +66,12 @@ char *                mutt_find_hook               (HookFlags type, const char *
 void                  mutt_folder_hook             (const char *path, const char *desc);
 const struct Expando *mutt_idxfmt_hook             (const char *name, struct Mailbox *m, struct Email *e);
 void                  mutt_message_hook            (struct Mailbox *m, struct Email *e, HookFlags type);
-enum CommandResult    parse_charset_iconv_hook     (const struct Command *cmd, struct Buffer *token, struct Buffer *line, struct Buffer *err);
+enum CommandResult    parse_charset_iconv_hook     (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 void                  mutt_select_fcc              (struct Buffer *path, struct Email *e);
 void                  mutt_startup_shutdown_hook   (HookFlags type);
 void                  mutt_timeout_hook            (void);
+
+enum CommandResult parse_idxfmt_hook(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unhook     (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 #endif /* MUTT_HOOK_H */

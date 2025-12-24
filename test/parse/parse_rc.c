@@ -37,22 +37,7 @@
 
 extern const struct Mapping MboxTypeMap[];
 extern struct EnumDef MboxTypeDef;
-
-/**
- * SortMethods - Sort methods for '$sort' for the index
- */
-const struct Mapping SortMethods[] = {
-  // clang-format off
-  { "date",    EMAIL_SORT_DATE },
-  { "from",    EMAIL_SORT_FROM },
-  { "label",   EMAIL_SORT_LABEL },
-  { "size",    EMAIL_SORT_SIZE },
-  { "spam",    EMAIL_SORT_SPAM },
-  { "subject", EMAIL_SORT_SUBJECT },
-  { "to",      EMAIL_SORT_TO },
-  { NULL, 0 },
-  // clang-format on
-};
+extern const struct Mapping SortMethods[];
 
 static struct ConfigDef Vars[] = {
   // clang-format off
@@ -65,7 +50,7 @@ static struct ConfigDef Vars[] = {
   { "signature",         DT_PATH|D_PATH_FILE,              IP "~/.signature",     0,               NULL, },
   { "print",             DT_QUAD,                          MUTT_ASKNO,            0,               NULL, },
   { "mask",              DT_REGEX|D_REGEX_NOSUB,           IP "!^\\.[^.]",        0,               NULL, },
-  { "sort",              DT_SORT|D_SORT_LAST,              EMAIL_SORT_DATE,             IP SortMethods,  NULL, },
+  { "sort",              DT_SORT|D_SORT_LAST,              EMAIL_SORT_DATE,       IP SortMethods,  NULL, },
   { "attribution_intro", DT_STRING,                        IP "On %d, %n wrote:", 0,               NULL, },
   { NULL },
   // clang-format on

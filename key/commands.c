@@ -28,8 +28,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
@@ -306,8 +304,8 @@ static enum CommandResult try_bind(char *key, enum MenuType mtype, char *func,
 /**
  * parse_push - Parse the 'push' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_push(const struct Command *cmd, struct Buffer *token,
-                              struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_push(const struct Command *cmd, struct Buffer *line,
+                              struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -315,15 +313,22 @@ enum CommandResult parse_push(const struct Command *cmd, struct Buffer *token,
     return MUTT_CMD_WARNING;
   }
 
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_WARNING;
+
   parse_extract_token(token, line, TOKEN_CONDENSE);
   if (MoreArgs(line))
   {
     buf_printf(err, _("%s: too many arguments"), cmd->name);
-    return MUTT_CMD_ERROR;
+    goto done;
   }
 
   generic_tokenize_push_string(token->data);
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }
 
 /**
@@ -331,41 +336,49 @@ enum CommandResult parse_push(const struct Command *cmd, struct Buffer *token,
  *
  * bind menu-name `<key_sequence>` function-name
  */
-enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *token,
-                              struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line,
+                              struct Buffer *err)
 {
   if (StartupComplete)
   {
     // Save and restore the offset in `line` because parse_bind_macro() might change it
     char *dptr = line->dptr;
-    if (parse_bind_macro(cmd, token, line, err) == MUTT_CMD_SUCCESS)
+    if (parse_bind_macro(cmd, line, err) == MUTT_CMD_SUCCESS)
+    {
       return MUTT_CMD_SUCCESS;
-
+    }
     if (!buf_is_empty(err))
+    {
       return MUTT_CMD_ERROR;
-
+    }
     line->dptr = dptr;
   }
+
+  struct Buffer *token = buf_pool_get();
+  struct Buffer *keystr = NULL;
 
   const struct MenuFuncOp *funcs = NULL;
   enum MenuType mtypes[MENU_MAX];
   int num_menus = 0;
-  enum CommandResult rc = MUTT_CMD_SUCCESS;
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   char *key = parse_keymap(mtypes, line, countof(mtypes), &num_menus, err, true);
   if (!key)
-    return MUTT_CMD_ERROR;
+    goto done;
 
   /* function to execute */
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
   if (MoreArgs(line))
   {
     buf_printf(err, _("%s: too many arguments"), cmd->name);
-    rc = MUTT_CMD_ERROR;
+    goto done;
   }
-  else if (mutt_istr_equal("noop", buf_string(token)))
+
+  rc = MUTT_CMD_SUCCESS;
+
+  if (mutt_istr_equal("noop", buf_string(token)))
   {
-    struct Buffer *keystr = buf_pool_get();
+    keystr = buf_pool_get();
     for (int i = 0; i < num_menus; i++)
     {
       km_bind(key, mtypes[i], OP_NULL, NULL, NULL, NULL); /* the 'unbind' command */
@@ -382,11 +395,10 @@ enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *token,
         notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_DELETE, &ev_b);
       }
     }
-    buf_pool_release(&keystr);
   }
   else
   {
-    struct Buffer *keystr = buf_pool_get();
+    keystr = buf_pool_get();
     for (int i = 0; i < num_menus; i++)
     {
       /* The pager and editor menus don't use the generic map,
@@ -430,9 +442,12 @@ enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *token,
         }
       }
     }
-    buf_pool_release(&keystr);
   }
+
+done:
   FREE(&key);
+  buf_pool_release(&keystr);
+  buf_pool_release(&token);
   return rc;
 }
 
@@ -446,14 +461,17 @@ enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *token,
  *
  * unbind `<menu-name[,...]|*>` [`<key_sequence>`]
  */
-enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *token,
-                                struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
+                                struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_WARNING;
 
   bool menu_matches[MENU_MAX] = { 0 };
   bool all_keys = false;
@@ -483,7 +501,7 @@ enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *token,
   if (MoreArgs(line))
   {
     buf_printf(err, _("%s: too many arguments"), cmd->name);
-    return MUTT_CMD_ERROR;
+    goto done;
   }
 
   for (enum MenuType i = 1; i < MENU_MAX; i++)
@@ -530,7 +548,11 @@ enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *token,
     }
   }
 
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }
 
 /**
@@ -538,29 +560,33 @@ enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *token,
  *
  * macro `<menu>` `<key>` `<macro>` `<description>`
  */
-enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *token,
-                               struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *line,
+                               struct Buffer *err)
 {
   if (StartupComplete)
   {
     // Save and restore the offset in `line` because parse_bind_macro() might change it
     char *dptr = line->dptr;
-    if (parse_bind_macro(cmd, token, line, err) == MUTT_CMD_SUCCESS)
+    if (parse_bind_macro(cmd, line, err) == MUTT_CMD_SUCCESS)
+    {
       return MUTT_CMD_SUCCESS;
-
+    }
     if (!buf_is_empty(err))
+    {
       return MUTT_CMD_ERROR;
-
+    }
     line->dptr = dptr;
   }
 
   enum MenuType mtypes[MENU_MAX];
   int num_menus = 0;
+  struct Buffer *token = buf_pool_get();
+  struct Buffer *keystr = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
 
   char *key = parse_keymap(mtypes, line, countof(mtypes), &num_menus, err, false);
   if (!key)
-    return MUTT_CMD_ERROR;
+    goto done;
 
   parse_extract_token(token, line, TOKEN_CONDENSE);
   /* make sure the macro sequence is not an empty string */
@@ -581,7 +607,7 @@ enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *token,
       }
       else
       {
-        struct Buffer *keystr = buf_pool_get();
+        keystr = buf_pool_get();
         for (int i = 0; i < num_menus; i++)
         {
           rc = km_bind(key, mtypes[i], OP_MACRO, seq, token->data, NULL);
@@ -597,14 +623,13 @@ enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *token,
             continue;
           }
         }
-        buf_pool_release(&keystr);
       }
 
       FREE(&seq);
     }
     else
     {
-      struct Buffer *keystr = buf_pool_get();
+      keystr = buf_pool_get();
       for (int i = 0; i < num_menus; i++)
       {
         rc = km_bind(key, mtypes[i], OP_MACRO, token->data, NULL, NULL);
@@ -620,18 +645,21 @@ enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *token,
           continue;
         }
       }
-      buf_pool_release(&keystr);
     }
   }
+
+done:
   FREE(&key);
+  buf_pool_release(&keystr);
+  buf_pool_release(&token);
   return rc;
 }
 
 /**
  * parse_exec - Parse the 'exec' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *token,
-                              struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *line,
+                              struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -639,16 +667,13 @@ enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *token,
     return MUTT_CMD_WARNING;
   }
 
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
+
   int ops[128];
   int nops = 0;
   const struct MenuFuncOp *funcs = NULL;
   char *function = NULL;
-
-  if (!MoreArgs(line))
-  {
-    buf_strcpy(err, _("exec: no arguments"));
-    return MUTT_CMD_ERROR;
-  }
 
   do
   {
@@ -670,7 +695,7 @@ enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *token,
     {
       mutt_flushinp();
       mutt_error(_("%s: no such function"), function);
-      return MUTT_CMD_ERROR;
+      goto done;
     }
     nops++;
   } while (MoreArgs(line) && nops < countof(ops));
@@ -678,5 +703,9 @@ enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *token,
   while (nops)
     mutt_push_macro_event(0, ops[--nops]);
 
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }

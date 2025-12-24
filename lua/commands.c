@@ -36,17 +36,13 @@
 #include "config.h"
 #include <lauxlib.h>
 #include <lua.h>
-#include <lualib.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
 #include "muttlib.h"
-#include "version.h"
 
 extern lua_State *LuaState;
 
@@ -55,14 +51,16 @@ bool lua_init_state(lua_State **l);
 /**
  * parse_lua - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *token,
-                                    struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   lua_init_state(&LuaState);
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(token));
@@ -73,24 +71,32 @@ static enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *to
     buf_printf(err, "%s: %s", line->dptr, lua_tostring(LuaState, -1));
     /* pop error message from the stack */
     lua_pop(LuaState, 1);
-    return MUTT_CMD_ERROR;
+    goto done;
   }
   mutt_debug(LL_DEBUG2, "%s -> success\n", line->dptr);
   buf_reset(line); // Clear the rest of the line
-  return MUTT_CMD_SUCCESS;
+
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }
 
 /**
  * parse_lua_source - Parse the 'lua-source' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *token,
-                                           struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_lua_source(const struct Command *cmd,
+                                    struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   mutt_debug(LL_DEBUG2, "enter\n");
 
@@ -99,28 +105,29 @@ static enum CommandResult parse_lua_source(const struct Command *cmd, struct Buf
   if (parse_extract_token(token, line, TOKEN_NO_FLAGS) != 0)
   {
     buf_printf(err, _("source: error at %s"), line->dptr);
-    return MUTT_CMD_ERROR;
+    goto done;
   }
   if (MoreArgs(line))
   {
     buf_printf(err, _("%s: too many arguments"), cmd->name);
-    return MUTT_CMD_WARNING;
+    rc = MUTT_CMD_WARNING;
+    goto done;
   }
 
-  struct Buffer *path = buf_pool_get();
-  buf_copy(path, token);
-  buf_expand_path(path);
+  buf_expand_path(token);
 
-  if (luaL_dofile(LuaState, buf_string(path)) != LUA_OK)
+  if (luaL_dofile(LuaState, buf_string(token)) != LUA_OK)
   {
     mutt_error(_("Couldn't source lua source: %s"), lua_tostring(LuaState, -1));
     lua_pop(LuaState, 1);
-    buf_pool_release(&path);
-    return MUTT_CMD_ERROR;
+    goto done;
   }
 
-  buf_pool_release(&path);
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }
 
 /**

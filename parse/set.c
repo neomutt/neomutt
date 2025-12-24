@@ -466,14 +466,13 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
  *
  * This is used by 'reset', 'set', 'toggle' and 'unset'.
  */
-enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
-                             struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 {
   /* The order must match `enum MuttSetCommand` */
   static const char *set_commands[] = { "set", "toggle", "unset", "reset" };
 
-  if (!token || !line)
-    return MUTT_CMD_ERROR;
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_WARNING;
 
   do
   {
@@ -512,7 +511,7 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
     {
       buf_printf(err, _("Can't use 'inv', 'no', '&' or '?' with the '%s' command"),
                  set_commands[cmd->data]);
-      return MUTT_CMD_WARNING;
+      goto done;
     }
 
     // get the variable name.  Note that token might be empty if no additional
@@ -520,7 +519,10 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
     int ret = parse_extract_token(token, line,
                                   TOKEN_EQUAL | TOKEN_QUESTION | TOKEN_PLUS | TOKEN_MINUS);
     if (ret == -1)
+    {
+      buf_pool_release(&token);
       return MUTT_CMD_ERROR;
+    }
 
     bool bool_or_quad = false;
     bool invertible = false;
@@ -543,14 +545,14 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
       if (prefix)
       {
         buf_printf(err, _("Can't use a prefix when querying a variable"));
-        return MUTT_CMD_WARNING;
+        goto done;
       }
 
       if (reset || unset || inv)
       {
         buf_printf(err, _("Can't query option with the '%s' command"),
                    set_commands[cmd->data]);
-        return MUTT_CMD_WARNING;
+        goto done;
       }
 
       query = true;
@@ -561,14 +563,14 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
       if (prefix)
       {
         buf_printf(err, _("Can't use prefix when incrementing or decrementing a variable"));
-        return MUTT_CMD_WARNING;
+        goto done;
       }
 
       if (reset || unset || inv)
       {
         buf_printf(err, _("Can't set option with the '%s' command"),
                    set_commands[cmd->data]);
-        return MUTT_CMD_WARNING;
+        goto done;
       }
       if (*line->dptr == '+')
         increment = true;
@@ -584,7 +586,7 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
       else
       {
         buf_printf(err, _("'+' and '-' must be followed by '='"));
-        return MUTT_CMD_WARNING;
+        goto done;
       }
     }
     else if (*line->dptr == '=')
@@ -592,14 +594,14 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
       if (prefix)
       {
         buf_printf(err, _("Can't use prefix when setting a variable"));
-        return MUTT_CMD_WARNING;
+        goto done;
       }
 
       if (reset || unset || inv)
       {
         buf_printf(err, _("Can't set option with the '%s' command"),
                    set_commands[cmd->data]);
-        return MUTT_CMD_WARNING;
+        goto done;
       }
 
       equals = true;
@@ -617,7 +619,7 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
         buf_printf(err, _("Command '%s' can only be used with bool/quad/number variables"),
                    set_commands[cmd->data]);
       }
-      return MUTT_CMD_WARNING;
+      goto done;
     }
 
     // sanity checks for the above
@@ -634,11 +636,11 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
     ASSERT(!(increment || decrement) || equals); // increment/decrement implies equals
     ASSERT(!inv || invertible); // inv (aka toggle) implies bool or quad
 
-    enum CommandResult rc = MUTT_CMD_ERROR;
+    rc = MUTT_CMD_ERROR;
     if (query)
     {
       rc = command_set_query(token, err);
-      return rc; // We can only do one query even if multiple config names are given
+      goto done; // We can only do one query even if multiple config names are given
     }
     else if (reset)
     {
@@ -681,14 +683,18 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *token,
       else
       {
         rc = command_set_query(token, err);
-        return rc; // We can only do one query even if multiple config names are given
+        goto done; // We can only do one query even if multiple config names are given
       }
     }
     // Short circuit (i.e. skipping further config variable names) if the action on
     // the current variable failed.
     if (rc != MUTT_CMD_SUCCESS)
-      return rc;
+      goto done;
   } while (MoreArgs(line));
 
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
 }

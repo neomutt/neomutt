@@ -242,8 +242,8 @@ void grouplist_add_addrlist(struct GroupList *gl, struct AddressList *al)
  * @retval  0 Success
  * @retval -1 Error
  */
-int grouplist_add_regex(struct GroupList *gl, const char *str,
-                             uint16_t flags, struct Buffer *err)
+int grouplist_add_regex(struct GroupList *gl, const char *str, uint16_t flags,
+                        struct Buffer *err)
 {
   if (!gl || !str)
     return -1;
@@ -335,7 +335,7 @@ void groups_remove_grouplist(struct HashTable *groups, struct GroupList *gl)
  * @retval -1 Error
  */
 int groups_remove_addrlist(struct HashTable *groups, struct GroupList *gl,
-                              struct AddressList *al)
+                           struct AddressList *al)
 {
   if (!groups || !gl || !al)
     return -1;
@@ -382,4 +382,3 @@ int groups_remove_regex(struct HashTable *groups, struct GroupList *gl, const ch
   }
   return rc;
 }
-
