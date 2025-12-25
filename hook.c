@@ -1693,7 +1693,6 @@ static const struct Command HookCommands[] = {
   { "index-format-hook", parse_hook_index,   MUTT_IDXFMTHOOK },
   { "mbox-hook",         parse_hook_mbox,    MUTT_MBOX_HOOK },
   { "message-hook",      parse_hook_pattern, MUTT_MESSAGE_HOOK },
-  { "pgp-hook",          parse_hook_crypt,   MUTT_CRYPT_HOOK },
   { "reply-hook",        parse_hook_pattern, MUTT_REPLY_HOOK },
   { "save-hook",         parse_hook_mailbox, MUTT_SAVE_HOOK },
   { "send-hook",         parse_hook_pattern, MUTT_SEND_HOOK },
@@ -1702,6 +1701,9 @@ static const struct Command HookCommands[] = {
   { "startup-hook",      parse_hook_global,  MUTT_STARTUP_HOOK },
   { "timeout-hook",      parse_hook_global,  MUTT_TIMEOUT_HOOK },
   { "unhook",            parse_unhook,       0 },
+
+  // Deprecated
+  { "pgp-hook",          parse_hook_crypt,   MUTT_CRYPT_HOOK, NULL, NULL, NULL, CF_SYNONYM },
   { NULL, NULL, 0 },
   // clang-format on
 };

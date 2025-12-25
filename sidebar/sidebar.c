@@ -52,8 +52,8 @@ static const struct Command SbCommands[] = {
   { "sidebar_unpin", parse_sidebar_unpin,   0 },
 
   // Deprecated
-  { "sidebar_whitelist",   parse_sidebar_pin,     0 },
-  { "unsidebar_whitelist", parse_sidebar_unpin,   0 },
+  { "sidebar_whitelist",   parse_sidebar_pin,     0, NULL, NULL, NULL, CF_SYNONYM },
+  { "unsidebar_whitelist", parse_sidebar_unpin,   0, NULL, NULL, NULL, CF_SYNONYM },
   { NULL, NULL, 0 },
   // clang-format on
 };
