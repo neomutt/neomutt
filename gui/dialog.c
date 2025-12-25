@@ -111,11 +111,11 @@ void dialog_push(struct MuttWindow *dlg)
   if (!dlg || !AllDialogsWindow)
     return;
 
-  struct MuttWindow *last = TAILQ_LAST(&AllDialogsWindow->children, MuttWindowList);
+  struct MuttWindow **last = ARRAY_LAST(&AllDialogsWindow->children);
   if (last)
-    last->state.visible = false;
+    (*last)->state.visible = false;
 
-  TAILQ_INSERT_TAIL(&AllDialogsWindow->children, dlg, entries);
+  ARRAY_ADD(&AllDialogsWindow->children, dlg);
   notify_set_parent(dlg->notify, AllDialogsWindow->notify);
 
   // Notify the world, allowing plugins to integrate
@@ -144,24 +144,26 @@ void dialog_pop(void)
   if (!AllDialogsWindow)
     return;
 
-  struct MuttWindow *last = TAILQ_LAST(&AllDialogsWindow->children, MuttWindowList);
+  struct MuttWindow **last = ARRAY_LAST(&AllDialogsWindow->children);
   if (!last)
     return;
 
+  struct MuttWindow *last_win = *last;
+
   // Notify the world, allowing plugins to clean up
   mutt_debug(LL_NOTIFY, "NT_WINDOW_DIALOG hidden: %s, %p\n",
-             mutt_window_win_name(last), (void *) last);
-  struct EventWindow ev_w = { last, WN_HIDDEN };
-  notify_send(last->notify, NT_WINDOW, NT_WINDOW_DIALOG, &ev_w);
+             mutt_window_win_name(last_win), (void *) last_win);
+  struct EventWindow ev_w = { last_win, WN_HIDDEN };
+  notify_send(last_win->notify, NT_WINDOW, NT_WINDOW_DIALOG, &ev_w);
 
-  last->state.visible = false;
-  last->parent = NULL;
-  TAILQ_REMOVE(&AllDialogsWindow->children, last, entries);
+  last_win->state.visible = false;
+  last_win->parent = NULL;
+  ARRAY_REMOVE(&AllDialogsWindow->children, last);
 
-  last = TAILQ_LAST(&AllDialogsWindow->children, MuttWindowList);
+  last = ARRAY_LAST(&AllDialogsWindow->children);
   if (last)
   {
-    last->state.visible = true;
+    (*last)->state.visible = true;
     mutt_window_reflow(AllDialogsWindow);
   }
   else
