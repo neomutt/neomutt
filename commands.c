@@ -365,6 +365,9 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 
 /**
  * parse_cd - Parse the 'cd' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `cd [ <directory> ]`
  */
 enum CommandResult parse_cd(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 {
@@ -396,6 +399,9 @@ done:
 
 /**
  * parse_echo - Parse the 'echo' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `echo <message>`
  */
 enum CommandResult parse_echo(const struct Command *cmd, struct Buffer *line,
                               struct Buffer *err)
@@ -424,6 +430,9 @@ enum CommandResult parse_echo(const struct Command *cmd, struct Buffer *line,
  * @retval  #MUTT_CMD_WARNING Failed
  *
  * If the 'finish' command is found, we should stop reading the current file.
+ *
+ * Parse:
+ * - `finish`
  */
 enum CommandResult parse_finish(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -439,6 +448,10 @@ enum CommandResult parse_finish(const struct Command *cmd, struct Buffer *line,
 
 /**
  * parse_group - Parse the 'group' and 'ungroup' commands - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }`
+ * - `ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }`
  */
 enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
@@ -539,9 +552,13 @@ done:
  * e.g.
  *      ifdef sidebar source ~/.neomutt/sidebar.rc
  *
- * If (data == 1) then it means use the 'ifndef' (if-not-defined) command.
+ * If (cmd->data == 1) then it means use the 'ifndef' (if-not-defined) command.
  * e.g.
  *      ifndef imap finish
+ *
+ * Parse:
+ * - `ifdef <symbol> "<config-command> [ <args> ... ]"`
+ * - `ifndef <symbol> "<config-command> [ <args> ... ]"`
  */
 enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
@@ -593,6 +610,9 @@ done:
 
 /**
  * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `ignore { * | <string> ... }`
  */
 enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -618,6 +638,9 @@ enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
 
 /**
  * parse_lists - Parse the 'lists' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `lists [ -group <name> ... ] <regex> [ <regex> ... ]`
  */
 enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
@@ -780,7 +803,9 @@ bool mailbox_add_simple(const char *mailbox, struct Buffer *err)
 /**
  * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
- * This is also used by 'virtual-mailboxes'.
+ * Parse:
+ * - `mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]`
+ * - `named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]`
  */
 enum CommandResult parse_mailboxes(const struct Command *cmd,
                                    struct Buffer *line, struct Buffer *err)
@@ -884,6 +909,9 @@ done:
 
 /**
  * parse_my_hdr - Parse the 'my_hdr' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `my_hdr <string>`
  */
 enum CommandResult parse_my_hdr(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -983,6 +1011,10 @@ static int envlist_sort(const void *a, const void *b, void *sdata)
 
 /**
  * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `setenv { <variable>? | <variable> <value> }`
+ * - `unsetenv <variable>`
  */
 enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -1146,6 +1178,9 @@ done:
 
 /**
  * parse_source - Parse the 'source' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `source <filename>`
  */
 enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -1188,6 +1223,9 @@ done:
 
 /**
  * parse_nospam - Parse the 'nospam' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `nospam { * | <regex> }`
  */
 enum CommandResult parse_nospam(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -1242,6 +1280,9 @@ done:
 
 /**
  * parse_spam - Parse the 'spam' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `spam <regex> <format>`
  */
 enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
                               struct Buffer *err)
@@ -1286,7 +1327,12 @@ done:
 /**
  * parse_stailq - Parse a list command - Implements Command::parse() - @ingroup command_parse
  *
- * This is used by 'alternative_order', 'auto_view' and several others.
+ * Parse:
+ * - `alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
+ * - `auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
+ * - `hdr_order <header> [ <header> ... ]`
+ * - `mailto_allow { * | <header-field> ... }`
+ * - `mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
  */
 enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -1311,6 +1357,9 @@ enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
 
 /**
  * parse_subscribe - Parse the 'subscribe' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `subscribe [ -group <name> ... ] <regex> [ <regex> ... ]`
  */
 enum CommandResult parse_subscribe(const struct Command *cmd,
                                    struct Buffer *line, struct Buffer *err)
@@ -1358,7 +1407,9 @@ done:
  *
  * The 'subscribe-to' command allows to subscribe to an IMAP-Mailbox.
  * Patterns are not supported.
- * Use it as follows: subscribe-to =folder
+ *
+ * Parse:
+ * - `subscribe-to <imap-folder-uri>`
  */
 enum CommandResult parse_subscribe_to(const struct Command *cmd,
                                       struct Buffer *line, struct Buffer *err)
@@ -1405,6 +1456,9 @@ done:
  * Parse config like: `tag-formats pgp GP`
  *
  * @note This maps format -> tag
+ *
+ * Parse:
+ * - `tag-formats <tag> <format-string> { tag format-string ...  }`
  */
 enum CommandResult parse_tag_formats(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
@@ -1448,6 +1502,9 @@ enum CommandResult parse_tag_formats(const struct Command *cmd,
  * Parse config like: `tag-transforms pgp P`
  *
  * @note This maps tag -> transform
+ *
+ * Parse:
+ * - `tag-transforms <tag> <transformed-string> { tag transformed-string ... }`
  */
 enum CommandResult parse_tag_transforms(const struct Command *cmd,
                                         struct Buffer *line, struct Buffer *err)
@@ -1489,6 +1546,9 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd,
 
 /**
  * parse_unignore - Parse the 'unignore' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unignore { * | <string> ... }`
  */
 enum CommandResult parse_unignore(const struct Command *cmd,
                                   struct Buffer *line, struct Buffer *err)
@@ -1518,6 +1578,9 @@ enum CommandResult parse_unignore(const struct Command *cmd,
 
 /**
  * parse_unlists - Parse the 'unlists' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unlists [ -group <name> ... ] { * | <regex> ... }`
  */
 enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line,
                                  struct Buffer *err)
@@ -1595,7 +1658,8 @@ static void do_unmailboxes_star(void)
 /**
  * parse_unmailboxes - Parse the 'unmailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
- * This is also used by 'unvirtual-mailboxes'
+ * Parse:
+ * - `unmailboxes { * | <mailbox> ... }`
  */
 enum CommandResult parse_unmailboxes(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
@@ -1639,6 +1703,9 @@ done:
 
 /**
  * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unmy_hdr { * | <field> ... }`
  */
 enum CommandResult parse_unmy_hdr(const struct Command *cmd,
                                   struct Buffer *line, struct Buffer *err)
@@ -1693,7 +1760,12 @@ enum CommandResult parse_unmy_hdr(const struct Command *cmd,
 /**
  * parse_unstailq - Parse an unlist command - Implements Command::parse() - @ingroup command_parse
  *
- * This is used by 'unalternative_order', 'unauto_view' and several others.
+ * Parse:
+ * - `unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
+ * - `unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
+ * - `unhdr_order { * | <header> ... }`
+ * - `unmailto_allow { * | <header-field> ... }`
+ * - `unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
  */
 enum CommandResult parse_unstailq(const struct Command *cmd,
                                   struct Buffer *line, struct Buffer *err)
@@ -1724,6 +1796,9 @@ enum CommandResult parse_unstailq(const struct Command *cmd,
 
 /**
  * parse_unsubscribe - Parse the 'unsubscribe' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unsubscribe [ -group <name> ... ] { * | <regex> ... }`
  */
 enum CommandResult parse_unsubscribe(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
@@ -1762,7 +1837,9 @@ done:
  *
  * The 'unsubscribe-from' command allows to unsubscribe from an IMAP-Mailbox.
  * Patterns are not supported.
- * Use it as follows: unsubscribe-from =folder
+ *
+ * Parse:
+ * - `unsubscribe-from <imap-folder-uri>`
  */
 enum CommandResult parse_unsubscribe_from(const struct Command *cmd,
                                           struct Buffer *line, struct Buffer *err)
@@ -1803,6 +1880,9 @@ done:
 
 /**
  * parse_version - Parse the 'version' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `version`
  */
 enum CommandResult parse_version(const struct Command *cmd, struct Buffer *line,
                                  struct Buffer *err)
@@ -1863,61 +1943,224 @@ void source_stack_cleanup(void)
  */
 static const struct Command MuttCommands[] = {
   // clang-format off
-  { "alias",               parse_alias,            0 },
-  { "alternates",          parse_alternates,       0 },
-  { "alternative_order",   parse_stailq,           IP &AlternativeOrderList },
-  { "attachments",         parse_attachments,      0 },
-  { "auto_view",           parse_stailq,           IP &AutoViewList },
-  { "cd",                  parse_cd,               0 },
-  { "color",               parse_color,            0 },
-  { "echo",                parse_echo,             0 },
-  { "finish",              parse_finish,           0 },
-  { "group",               parse_group,            MUTT_GROUP },
-  { "hdr_order",           parse_stailq,           IP &HeaderOrderList },
-  { "ifdef",               parse_ifdef,            0 },
-  { "ifndef",              parse_ifdef,            1 },
-  { "ignore",              parse_ignore,           0 },
-  { "lists",               parse_lists,            0 },
-  { "mailboxes",           parse_mailboxes,        0 },
-  { "mailto_allow",        parse_stailq,           IP &MailToAllow },
-  { "mime_lookup",         parse_stailq,           IP &MimeLookupList },
-  { "mono",                parse_mono,             0 },
-  { "my_hdr",              parse_my_hdr,           0 },
-  { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
-  { "nospam",              parse_nospam,           0 },
-  { "reset",               parse_set,              MUTT_SET_RESET },
-  { "score",               parse_score,            0 },
-  { "set",                 parse_set,              MUTT_SET_SET },
-  { "setenv",              parse_setenv,           MUTT_SET_SET },
-  { "source",              parse_source,           0 },
-  { "spam",                parse_spam,             0 },
-  { "subjectrx",           parse_subjectrx_list,   0 },
-  { "subscribe",           parse_subscribe,        0 },
-  { "tag-formats",         parse_tag_formats,      0 },
-  { "tag-transforms",      parse_tag_transforms,   0 },
-  { "toggle",              parse_set,              MUTT_SET_INV },
-  { "unalias",             parse_unalias,          0 },
-  { "unalternates",        parse_unalternates,     0 },
-  { "unalternative_order", parse_unstailq,         IP &AlternativeOrderList },
-  { "unattachments",       parse_unattachments,    0 },
-  { "unauto_view",         parse_unstailq,         IP &AutoViewList },
-  { "uncolor",             parse_uncolor,          0 },
-  { "ungroup",             parse_group,            MUTT_UNGROUP },
-  { "unhdr_order",         parse_unstailq,         IP &HeaderOrderList },
-  { "unignore",            parse_unignore,         0 },
-  { "unlists",             parse_unlists,          0 },
-  { "unmailboxes",         parse_unmailboxes,      0 },
-  { "unmailto_allow",      parse_unstailq,         IP &MailToAllow },
-  { "unmime_lookup",       parse_unstailq,         IP &MimeLookupList },
-  { "unmono",              parse_unmono,           0 },
-  { "unmy_hdr",            parse_unmy_hdr,         0 },
-  { "unscore",             parse_unscore,          0 },
-  { "unset",               parse_set,              MUTT_SET_UNSET },
-  { "unsetenv",            parse_setenv,           MUTT_SET_UNSET },
-  { "unsubjectrx",         parse_unsubjectrx_list, 0 },
-  { "unsubscribe",         parse_unsubscribe,      0 },
-  { "version",             parse_version,          0 },
-  { NULL, NULL, 0 },
+  { "alias", parse_alias, 0,
+        N_("Define an alias (name to email address)"),
+        N_("alias [ -group <name> ... ] <key> <address> [, <address> ... ]"),
+        "configuration.html#alias" },
+  { "alternates", parse_alternates, 0,
+        N_("Define a list of alternate email addresses for the user"),
+        N_("alternates [ -group <name> ... ] <regex> [ <regex> ... ]"),
+        "configuration.html#alternates" },
+  { "alternative_order", parse_stailq, IP &AlternativeOrderList,
+        N_("Set preference order for multipart alternatives"),
+        N_("alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"),
+        "mimesupport.html#alternative-order" },
+  { "attachments", parse_attachments, 0,
+        N_("Set attachment counting rules"),
+        N_("attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"),
+        "mimesupport.html#attachments" },
+  { "auto_view", parse_stailq, IP &AutoViewList,
+        N_("Automatically display specified MIME types inline"),
+        N_("auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"),
+        "mimesupport.html#auto-view" },
+  { "cd", parse_cd, 0,
+        N_("Change NeoMutt's current working directory"),
+        N_("cd [ <directory> ]"),
+        "configuration.html#cd" },
+  { "color", parse_color, 0,
+        N_("Define colors for the user interface"),
+        N_("color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"),
+        "configuration.html#color" },
+  { "echo", parse_echo, 0,
+        N_("Print a message to the status line"),
+        N_("echo <message>"),
+        "advancedusage.html#echo" },
+  { "finish", parse_finish, 0,
+        N_("Stop reading current config file"),
+        N_("finish "),
+        "optionalfeatures.html#ifdef" },
+  { "group", parse_group, MUTT_GROUP,
+        N_("Add addresses to an address group"),
+        N_("group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"),
+        "configuration.html#addrgroup" },
+  { "hdr_order", parse_stailq, IP &HeaderOrderList,
+        N_("Define custom order of headers displayed"),
+        N_("hdr_order <header> [ <header> ... ]"),
+        "configuration.html#hdr-order" },
+  { "ifdef", parse_ifdef, 0,
+        N_("Conditionally include config commands if symbol defined"),
+        N_("ifdef <symbol> '<config-command> [ <args> ... ]'"),
+        "optionalfeatures.html#ifdef" },
+  { "ifndef", parse_ifdef, 1,
+        N_("Conditionally include if symbol is not defined"),
+        N_("ifndef <symbol> '<config-command> [ <args> ... ]'"),
+        "optionalfeatures.html#ifdef" },
+  { "ignore", parse_ignore, 0,
+        N_("Hide specified headers when displaying messages"),
+        N_("ignore { * | <string> ... }"),
+        "configuration.html#ignore" },
+  { "lists", parse_lists, 0,
+        N_("Add address to the list of mailing lists"),
+        N_("lists [ -group <name> ... ] <regex> [ <regex> ... ]"),
+        "configuration.html#lists" },
+  { "mailboxes", parse_mailboxes, 0,
+        N_("Define a list of mailboxes to watch"),
+        N_("mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"),
+        "configuration.html#mailboxes" },
+  { "mailto_allow", parse_stailq, IP &MailToAllow,
+        N_("Permit specific header-fields in mailto URL processing"),
+        N_("mailto_allow { * | <header-field> ... }"),
+        "configuration.html#mailto-allow" },
+  { "mime_lookup", parse_stailq, IP &MimeLookupList,
+        N_("Map specified MIME types/subtypes to display handlers"),
+        N_("mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"),
+        "mimesupport.html#mime-lookup" },
+  { "mono", parse_mono, 0,
+        N_("**Deprecated**: Use `color`"),
+        N_("mono <object> <attribute> [ <pattern> | <regex> ]"),
+        "configuration.html#color-mono" },
+  { "my_hdr", parse_my_hdr, 0,
+        N_("Add a custom header to outgoing messages"),
+        N_("my_hdr <string>"),
+        "configuration.html#my-hdr" },
+  { "named-mailboxes", parse_mailboxes, MUTT_NAMED,
+        N_("Define a list of labelled mailboxes to watch"),
+        N_("named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"),
+        "configuration.html#mailboxes" },
+  { "nospam", parse_nospam, 0,
+        N_("Remove a spam detection rule"),
+        N_("nospam { * | <regex> }"),
+        "configuration.html#spam" },
+  { "reset", parse_set, MUTT_SET_RESET,
+        N_("Reset a config option to its initial value"),
+        N_("reset <variable> [ <variable> ... ]"),
+        "configuration.html#set" },
+  { "score", parse_score, 0,
+        N_("Set a score value on emails matching a pattern"),
+        N_("score <pattern> <value>"),
+        "configuration.html#score-command" },
+  { "set", parse_set, MUTT_SET_SET,
+        N_("Set a config variable"),
+        N_("set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"),
+        "configuration.html#set" },
+  { "setenv", parse_setenv, MUTT_SET_SET,
+        N_("Set an environment variable"),
+        N_("setenv { <variable>? | <variable> <value> }"),
+        "advancedusage.html#setenv" },
+  { "source", parse_source, 0,
+        N_("Read and execute commands from a config file"),
+        N_("source <filename>"),
+        "configuration.html#source" },
+  { "spam", parse_spam, 0,
+        N_("Define rules to parse spam detection headers"),
+        N_("spam <regex> <format>"),
+        "configuration.html#spam" },
+  { "subjectrx", parse_subjectrx_list, 0,
+        N_("Apply regex-based rewriting to message subjects"),
+        N_("subjectrx <regex> <replacement>"),
+        "advancedusage.html#display-munging" },
+  { "subscribe", parse_subscribe, 0,
+        N_("Add address to the list of subscribed mailing lists"),
+        N_("subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"),
+        "configuration.html#lists" },
+  { "tag-formats", parse_tag_formats, 0,
+        N_("Define expandos tags"),
+        N_("tag-formats <tag> <format-string> { tag format-string ... }"),
+        "optionalfeatures.html#custom-tags" },
+  { "tag-transforms", parse_tag_transforms, 0,
+        N_("Rules to transform tags into icons"),
+        N_("tag-transforms <tag> <transformed-string> { tag transformed-string ... }"),
+        "optionalfeatures.html#custom-tags" },
+  { "toggle", parse_set, MUTT_SET_INV,
+        N_("Toggle the value of a boolean/quad config option"),
+        N_("toggle <variable> [ <variable> ... ]"),
+        "configuration.html#set" },
+  { "unalias", parse_unalias, 0,
+        N_("Remove an alias definition"),
+        N_("unalias [ -group <name> ... ] { * | <key> ... }"),
+        "configuration.html#alias" },
+  { "unalternates", parse_unalternates, 0,
+        N_("Remove addresses from `alternates` list"),
+        N_("unalternates [ -group <name> ... ] { * | <regex> ... }"),
+        "configuration.html#alternates" },
+  { "unalternative_order", parse_unstailq, IP &AlternativeOrderList,
+        N_("Remove MIME types from preference order"),
+        N_("unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
+        "mimesupport.html#alternative-order" },
+  { "unattachments", parse_unattachments, 0,
+        N_("Remove attachment counting rules"),
+        N_("unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"),
+        "mimesupport.html#attachments" },
+  { "unauto_view", parse_unstailq, IP &AutoViewList,
+        N_("Remove MIME types from `auto_view` list"),
+        N_("unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
+        "mimesupport.html#auto-view" },
+  { "uncolor", parse_uncolor, 0,
+        N_("Remove a `color` definition"),
+        N_("uncolor <object> { * | <pattern> ... }"),
+        "configuration.html#color" },
+  { "ungroup", parse_group, MUTT_UNGROUP,
+        N_("Remove addresses from an address `group`"),
+        N_("ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"),
+        "configuration.html#addrgroup" },
+  { "unhdr_order", parse_unstailq, IP &HeaderOrderList,
+        N_("Remove header from `hdr_order` list"),
+        N_("unhdr_order { * | <header> ... }"),
+        "configuration.html#hdr-order" },
+  { "unignore", parse_unignore, 0,
+        N_("Remove a header from the `hdr_order` list"),
+        N_("unignore { * | <string> ... }"),
+        "configuration.html#ignore" },
+  { "unlists", parse_unlists, 0,
+        N_("Remove address from the list of mailing lists"),
+        N_("unlists [ -group <name> ... ] { * | <regex> ... }"),
+        "configuration.html#lists" },
+  { "unmailboxes", parse_unmailboxes, 0,
+        N_("Remove mailboxes from the watch list"),
+        N_("unmailboxes { * | <mailbox> ... }"),
+        "configuration.html#mailboxes" },
+  { "unmailto_allow", parse_unstailq, IP &MailToAllow,
+        N_("Disallow header-fields in mailto processing"),
+        N_("unmailto_allow { * | <header-field> ... }"),
+        "configuration.html#mailto-allow" },
+  { "unmime_lookup", parse_unstailq, IP &MimeLookupList,
+        N_("Remove custom MIME-type handlers"),
+        N_("unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
+        "mimesupport.html#mime-lookup" },
+  { "unmono", parse_unmono, 0,
+        N_("**Deprecated**: Use `uncolor`"),
+        N_("unmono <object> { * | <pattern> ... }"),
+        "configuration.html#color-mono" },
+  { "unmy_hdr", parse_unmy_hdr, 0,
+        N_("Remove a header previously added with `my_hdr`"),
+        N_("unmy_hdr { * | <field> ... }"),
+        "configuration.html#my-hdr" },
+  { "unscore", parse_unscore, 0,
+        N_("Remove scoring rules for matching patterns"),
+        N_("unscore { * | <pattern> ... }"),
+        "configuration.html#score-command" },
+  { "unset", parse_set, MUTT_SET_UNSET,
+        N_("Reset a config option to false/empty"),
+        N_("unset <variable> [ <variable> ... ]"),
+        "configuration.html#set" },
+  { "unsetenv", parse_setenv, MUTT_SET_UNSET,
+        N_("Unset an environment variable"),
+        N_("unsetenv <variable>"),
+        "advancedusage.html#setenv" },
+  { "unsubjectrx", parse_unsubjectrx_list, 0,
+        N_("Remove subject-rewriting rules"),
+        N_("unsubjectrx { * | <regex> }"),
+        "advancedusage.html#display-munging" },
+  { "unsubscribe", parse_unsubscribe, 0,
+        N_("Remove address from the list of subscribed mailing lists"),
+        N_("unsubscribe [ -group <name> ... ] { * | <regex> ... }"),
+        "configuration.html#lists" },
+  { "version", parse_version, 0,
+        N_("Show NeoMutt version and build information"),
+        N_("version "),
+        "configuration.html#version" },
+
+  { NULL, NULL, 0, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

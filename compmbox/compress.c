@@ -3,7 +3,7 @@
  * Compressed mbox local mailbox type
  *
  * @authors
- * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Reto Brunner <reto@slightlybroken.com>
  * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
@@ -61,10 +61,20 @@ struct Email;
  */
 static const struct Command CompCommands[] = {
   // clang-format off
-  { "append-hook", parse_hook_compress, MUTT_APPEND_HOOK },
-  { "close-hook",  parse_hook_compress, MUTT_CLOSE_HOOK },
-  { "open-hook",   parse_hook_compress, MUTT_OPEN_HOOK },
-  { NULL, NULL, 0 },
+  { "append-hook", parse_hook_compress, MUTT_APPEND_HOOK,
+        N_("Define command to append to a compressed mailbox"),
+        N_("append-hook <regex> <shell-command>"),
+        "optionalfeatures.html#append-hook" },
+  { "close-hook", parse_hook_compress, MUTT_CLOSE_HOOK,
+        N_("Define command to close a compressed mailbox"),
+        N_("close-hook <regex> <shell-command>"),
+        "optionalfeatures.html#close-hook" },
+  { "open-hook", parse_hook_compress, MUTT_OPEN_HOOK,
+        N_("Define command to open a compressed mailbox"),
+        N_("open-hook <regex> <shell-command>"),
+        "optionalfeatures.html#open-hook" },
+
+  { NULL, NULL, 0, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

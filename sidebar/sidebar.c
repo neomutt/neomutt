@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Whitney Cumber
  *
@@ -48,13 +48,20 @@ struct ListHead SidebarPinned = STAILQ_HEAD_INITIALIZER(SidebarPinned); ///< Lis
  */
 static const struct Command SbCommands[] = {
   // clang-format off
-  { "sidebar_pin",   parse_sidebar_pin,     0 },
-  { "sidebar_unpin", parse_sidebar_unpin,   0 },
+  { "sidebar_pin", parse_sidebar_pin, 0,
+        N_("Pin a mailbox in the sidebar (keep visible)"),
+        N_("sidebar_pin <mailbox> [ <mailbox> ... ]"),
+        "optionalfeatures.html#sidebar-pin" },
+  { "sidebar_unpin", parse_sidebar_unpin, 0,
+        N_("Unpin a previously pinned mailbox in the sidebar"),
+        N_("sidebar_unpin { * | <mailbox> ... }"),
+        "optionalfeatures.html#sidebar-pin" },
 
   // Deprecated
-  { "sidebar_whitelist",   parse_sidebar_pin,     0 },
-  { "unsidebar_whitelist", parse_sidebar_unpin,   0 },
-  { NULL, NULL, 0 },
+  { "sidebar_whitelist",   parse_sidebar_pin,     0, NULL, NULL, NULL, CF_SYNONYM },
+  { "unsidebar_whitelist", parse_sidebar_unpin,   0, NULL, NULL, NULL, CF_SYNONYM },
+
+  { NULL, NULL, 0, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

@@ -3,7 +3,7 @@
  * NeoMutt commands API
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -40,6 +40,14 @@ enum CommandResult
 };
 
 /**
+ * typedef CommandFlags - Special characters that end a text string
+ */
+typedef uint8_t CommandFlags;        ///< Flags, e.g. #CF_NO_FLAGS
+#define CF_NO_FLAGS               0  ///< No flags are set
+#define CF_SYNONYM         (1 <<  0) ///< Command is a synonym for another command
+#define CF_DEPRECATED      (1 <<  1) ///< Command is deprecated
+
+/**
  * @defgroup command_api Command API
  *
  * Observers of #NT_COMMAND will be passed a #Command.
@@ -48,7 +56,7 @@ enum CommandResult
  */
 struct Command
 {
-  const char *name; ///< Name of the command
+  const char *name;     ///< Name of the command
 
   /**
    * @defgroup command_parse parse()
@@ -62,7 +70,13 @@ struct Command
    */
   enum CommandResult (*parse)(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
-  intptr_t data; ///< Data or flags to pass to the command
+  intptr_t data;        ///< Data or flags to pass to the command
+
+  const char *help;     ///< One-line description of the Command
+  const char *proto;    ///< Command prototype
+  const char *path;     ///< Help path, relative to the NeoMutt Docs
+
+  CommandFlags flags;   ///< Command flags, e.g. #CF_SYNONYM
 };
 ARRAY_HEAD(CommandArray, const struct Command *);
 

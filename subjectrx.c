@@ -185,6 +185,9 @@ void subjrx_clear_mods(struct MailboxView *mv)
 
 /**
  * parse_subjectrx_list - Parse the 'subjectrx' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `subjectrx <regex> <replacement>`
  */
 enum CommandResult parse_subjectrx_list(const struct Command *cmd,
                                         struct Buffer *line, struct Buffer *err)
@@ -208,6 +211,9 @@ enum CommandResult parse_subjectrx_list(const struct Command *cmd,
 
 /**
  * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unsubjectrx { * | <regex> }`
  */
 enum CommandResult parse_unsubjectrx_list(const struct Command *cmd,
                                           struct Buffer *line, struct Buffer *err)

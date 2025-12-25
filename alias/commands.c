@@ -130,6 +130,9 @@ void parse_alias_comments(struct Alias *alias, const char *com)
  * parse_alias - Parse the 'alias' command - Implements Command::parse() - @ingroup command_parse
  *
  * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
+ *
+ * Parse:
+ * - `alias [ -group <name> ... ] <key> <address> [, <address> ... ]`
  */
 enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
@@ -248,6 +251,9 @@ done:
 
 /**
  * parse_unalias - Parse the 'unalias' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unalias [ -group <name> ... ] { * | <key> ... }`
  */
 enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
                                  struct Buffer *err)
