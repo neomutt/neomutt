@@ -32,7 +32,7 @@ struct Message;
 int  maildir_msg_close      (struct Mailbox *m, struct Message *msg);
 int  maildir_msg_commit     (struct Mailbox *m, struct Message *msg);
 bool maildir_msg_open_new   (struct Mailbox *m, struct Message *msg, const struct Email *e);
-bool maildir_msg_open       (struct Mailbox *m, struct Message *msg, struct Email *e);
+bool maildir_msg_open       (struct Mailbox *m, struct Message *msg, struct Email *e, MsgOpenFlags flags);
 int  maildir_msg_save_hcache(struct Mailbox *m, struct Email *e);
 
 #endif /* MUTT_MAILDIR_MESSAGE_H */

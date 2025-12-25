@@ -1204,7 +1204,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
        * 'offset' in the real mailbox */
       new_offset[i - first].hdr = ftello(fp) + offset;
 
-      struct Message *msg = mx_msg_open(m, m->emails[i]);
+      struct Message *msg = mx_msg_open(m, m->emails[i], MUTT_MSG_NO_FLAGS);
       const int rc2 = mutt_copy_message(fp, m->emails[i], msg, MUTT_CM_UPDATE,
                                         CH_FROM | CH_UPDATE | CH_UPDATE_LEN, 0);
       mx_msg_close(m, &msg);
@@ -1470,7 +1470,7 @@ static enum MxStatus mbox_mbox_close(struct Mailbox *m)
 /**
  * mbox_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
-static bool mbox_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
+static bool mbox_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e, MsgOpenFlags flags)
 {
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
