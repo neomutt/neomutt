@@ -6,7 +6,7 @@
  * Copyright (C) 1996-1998,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2012,2017 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
  * Copyright (C) 2018-2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
@@ -83,9 +83,16 @@ struct stat;
  */
 static const struct Command ImapCommands[] = {
   // clang-format off
-  { "subscribe-to",     parse_subscribe_to,     0 },
-  { "unsubscribe-from", parse_unsubscribe_from, 0 },
-  { NULL, NULL, 0 },
+  { "subscribe-to", parse_subscribe_to, 0,
+        N_("Subscribe to an IMAP mailbox"),
+        N_("subscribe-to <imap-folder-uri>"),
+        "optionalfeatures.html#imap" },
+  { "unsubscribe-from", parse_unsubscribe_from, 0,
+        N_("Unsubscribe from an IMAP mailbox"),
+        N_("unsubscribe-from <imap-folder-uri>"),
+        "optionalfeatures.html#imap" },
+
+  { NULL, NULL, 0, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

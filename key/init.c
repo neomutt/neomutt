@@ -3,7 +3,7 @@
  * Set up the key bindings
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -69,13 +69,32 @@ static void create_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
  */
 static const struct Command KeyCommands[] = {
   // clang-format off
-  { "bind",    parse_bind,   0 },
-  { "exec",    parse_exec,   0 },
-  { "macro",   parse_macro,  1 },
-  { "push",    parse_push,   0 },
-  { "unbind",  parse_unbind, MUTT_UNBIND },
-  { "unmacro", parse_unbind, MUTT_UNMACRO },
-  { NULL, NULL, 0 },
+  { "bind", parse_bind, 0,
+        N_("Bind a key to a function"),
+        N_("bind <map>[,<map> ... ] <key> <function>"),
+        "configuration.html#bind" },
+  { "exec", parse_exec, 0,
+        N_("Execute a function"),
+        N_("exec <function> [ <function> ... ]"),
+        "configuration.html#exec" },
+  { "macro", parse_macro, 1,
+        N_("Define a keyboard macro"),
+        N_("macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"),
+        "configuration.html#macro" },
+  { "push", parse_push, 0,
+        N_("Push a string into NeoMutt's input queue (simulate typing)"),
+        N_("push <string>"),
+        "configuration.html#push" },
+  { "unbind", parse_unbind, MUTT_UNBIND,
+        N_("Remove a key binding"),
+        N_("unbind { * | <menu>[,<menu> ... ] } [ <key> ]"),
+        "configuration.html#unbind" },
+  { "unmacro", parse_unbind, MUTT_UNMACRO,
+        N_("Remove a keyboard `macro`"),
+        N_("unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"),
+        "configuration.html#unmacro" },
+
+  { NULL, NULL, 0, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 
