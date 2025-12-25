@@ -3,7 +3,7 @@
  * Parse lines from a runtime configuration (rc) file
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -46,6 +46,7 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
 
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_SUCCESS;
+  bool show_help = false;
 
   buf_reset(err);
 
@@ -64,6 +65,13 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
     }
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
+    const int token_len = buf_len(token);
+    if ((token_len > 0) && (buf_at(token, token_len - 1) == '?'))
+    {
+      token->data[token_len - 1] = '\0';
+      show_help = true;
+    }
+
     bool match = false;
     const struct Command **cp = NULL;
     ARRAY_FOREACH(cp, &NeoMutt->commands)
@@ -72,6 +80,14 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
 
       if (mutt_str_equal(token->data, cmd->name))
       {
+        if (show_help)
+        {
+          buf_add_printf(err, "%s\n", gettext(cmd->help));
+          buf_add_printf(err, ":%s\n", gettext(cmd->proto));
+          buf_add_printf(err, "file:///usr/share/doc/neomutt/%s", gettext(cmd->path));
+          goto finish;
+        }
+
         mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
         rc = cmd->parse(cmd, line, err);
         if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
