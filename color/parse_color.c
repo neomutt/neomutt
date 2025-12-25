@@ -282,9 +282,6 @@ enum CommandResult parse_color_name(const char *s, struct ColorElement *elem,
 enum CommandResult parse_color_pair(const struct Command *cmd, struct Buffer *line,
                                     struct AttrColor *ac, struct Buffer *err)
 {
-  if (!line || !ac)
-    return MUTT_CMD_ERROR;
-
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_WARNING;
 
@@ -337,9 +334,6 @@ done:
 enum CommandResult parse_attr_spec(const struct Command *cmd, struct Buffer *line,
                                    struct AttrColor *ac, struct Buffer *err)
 {
-  if (!line || !ac)
-    return MUTT_CMD_ERROR;
-
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_WARNING;
 

@@ -40,6 +40,11 @@ struct AttrColor;
  * @param[out] err   Buffer for error messages
  * @retval  0 Success
  * @retval -1 Error
+ *
+ * @pre cmd  is not NULL
+ * @pre line is not NULL
+ * @pre ac   is not NULL
+ * @pre err  is not NULL
  */
 typedef enum CommandResult (*parser_callback_t)(const struct Command *cmd, struct Buffer *line, struct AttrColor *ac, struct Buffer *err);
 

@@ -295,6 +295,9 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
                                               struct Buffer *line, struct Buffer *err,
                                               parser_callback_t callback)
 {
+  if (!cmd || !line || !err)
+    return MUTT_CMD_ERROR;
+
   unsigned int match = 0;
   enum ColorId cid = MT_COLOR_NONE;
   enum CommandResult rc = MUTT_CMD_ERROR;

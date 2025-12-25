@@ -55,12 +55,6 @@ void test_parse_attr_spec(void)
     rc = parse_attr_spec(&Mono, line, ac, err);
     TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
-    rc = parse_attr_spec(&Mono, NULL, ac, err);
-    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
-
-    rc = parse_attr_spec(&Mono, line, NULL, err);
-    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
-
     attr_color_free(&ac);
 
     buf_pool_release(&line);

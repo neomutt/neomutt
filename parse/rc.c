@@ -42,7 +42,9 @@
 enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
 {
   if (buf_is_empty(line))
-    return 0;
+    return MUTT_CMD_SUCCESS;
+  if (!err)
+    return MUTT_CMD_ERROR;
 
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_SUCCESS;

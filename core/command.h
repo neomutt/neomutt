@@ -67,6 +67,10 @@ struct Command
    * @param line Buffer containing string to be parsed
    * @param err  Buffer for error messages
    * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+   *
+   * @pre cmd  is not NULL
+   * @pre line is not NULL
+   * @pre err  is not NULL
    */
   enum CommandResult (*parse)(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
