@@ -303,6 +303,9 @@ static enum CommandResult try_bind(char *key, enum MenuType mtype, char *func,
 
 /**
  * parse_push - Parse the 'push' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `push <string>`
  */
 enum CommandResult parse_push(const struct Command *cmd, struct Buffer *line,
                               struct Buffer *err)
@@ -335,6 +338,9 @@ done:
  * parse_bind - Parse the 'bind' command - Implements Command::parse() - @ingroup command_parse
  *
  * bind menu-name `<key_sequence>` function-name
+ *
+ * Parse:
+ * - `bind <map>[,<map> ... ] <key> <function>`
  */
 enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line,
                               struct Buffer *err)
@@ -459,7 +465,9 @@ done:
  * - one binding in all menu-names
  * - all bindings in all menu-names
  *
- * unbind `<menu-name[,...]|*>` [`<key_sequence>`]
+ * Parse:
+ * - `unbind { * | <menu>[,<menu> ... ] } [ <key> ]`
+ * - `unmacro { * | <menu>[,<menu> ... ] } [ <key> ]`
  */
 enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -558,7 +566,8 @@ done:
 /**
  * parse_macro - Parse the 'macro' command - Implements Command::parse() - @ingroup command_parse
  *
- * macro `<menu>` `<key>` `<macro>` `<description>`
+ * Parse:
+ * - `macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]`
  */
 enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
@@ -657,6 +666,9 @@ done:
 
 /**
  * parse_exec - Parse the 'exec' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `exec <function> [ <function> ... ]`
  */
 enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *line,
                               struct Buffer *err)

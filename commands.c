@@ -365,6 +365,9 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 
 /**
  * parse_cd - Parse the 'cd' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `cd [ <directory> ]`
  */
 enum CommandResult parse_cd(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 {
@@ -396,6 +399,9 @@ done:
 
 /**
  * parse_echo - Parse the 'echo' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `echo <message>`
  */
 enum CommandResult parse_echo(const struct Command *cmd, struct Buffer *line,
                               struct Buffer *err)
@@ -424,6 +430,9 @@ enum CommandResult parse_echo(const struct Command *cmd, struct Buffer *line,
  * @retval  #MUTT_CMD_WARNING Failed
  *
  * If the 'finish' command is found, we should stop reading the current file.
+ *
+ * Parse:
+ * - `finish`
  */
 enum CommandResult parse_finish(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -439,6 +448,10 @@ enum CommandResult parse_finish(const struct Command *cmd, struct Buffer *line,
 
 /**
  * parse_group - Parse the 'group' and 'ungroup' commands - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }`
+ * - `ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }`
  */
 enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
@@ -539,9 +552,13 @@ done:
  * e.g.
  *      ifdef sidebar source ~/.neomutt/sidebar.rc
  *
- * If (data == 1) then it means use the 'ifndef' (if-not-defined) command.
+ * If (cmd->data == 1) then it means use the 'ifndef' (if-not-defined) command.
  * e.g.
  *      ifndef imap finish
+ *
+ * Parse:
+ * - `ifdef <symbol> "<config-command> [ <args> ... ]"`
+ * - `ifndef <symbol> "<config-command> [ <args> ... ]"`
  */
 enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
@@ -593,6 +610,9 @@ done:
 
 /**
  * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `ignore { * | <string> ... }`
  */
 enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -618,6 +638,9 @@ enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
 
 /**
  * parse_lists - Parse the 'lists' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `lists [ -group <name> ... ] <regex> [ <regex> ... ]`
  */
 enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
@@ -780,7 +803,9 @@ bool mailbox_add_simple(const char *mailbox, struct Buffer *err)
 /**
  * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
- * This is also used by 'virtual-mailboxes'.
+ * Parse:
+ * - `mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]`
+ * - `named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]`
  */
 enum CommandResult parse_mailboxes(const struct Command *cmd,
                                    struct Buffer *line, struct Buffer *err)
@@ -884,6 +909,9 @@ done:
 
 /**
  * parse_my_hdr - Parse the 'my_hdr' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `my_hdr <string>`
  */
 enum CommandResult parse_my_hdr(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -983,6 +1011,10 @@ static int envlist_sort(const void *a, const void *b, void *sdata)
 
 /**
  * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `setenv { <variable>? | <variable> <value> }`
+ * - `unsetenv <variable>`
  */
 enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -1146,6 +1178,9 @@ done:
 
 /**
  * parse_source - Parse the 'source' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `source <filename>`
  */
 enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -1188,6 +1223,9 @@ done:
 
 /**
  * parse_nospam - Parse the 'nospam' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `nospam { * | <regex> }`
  */
 enum CommandResult parse_nospam(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -1242,6 +1280,9 @@ done:
 
 /**
  * parse_spam - Parse the 'spam' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `spam <regex> <format>`
  */
 enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
                               struct Buffer *err)
@@ -1286,7 +1327,12 @@ done:
 /**
  * parse_stailq - Parse a list command - Implements Command::parse() - @ingroup command_parse
  *
- * This is used by 'alternative_order', 'auto_view' and several others.
+ * Parse:
+ * - `alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
+ * - `auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
+ * - `hdr_order <header> [ <header> ... ]`
+ * - `mailto_allow { * | <header-field> ... }`
+ * - `mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
  */
 enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -1311,6 +1357,9 @@ enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
 
 /**
  * parse_subscribe - Parse the 'subscribe' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `subscribe [ -group <name> ... ] <regex> [ <regex> ... ]`
  */
 enum CommandResult parse_subscribe(const struct Command *cmd,
                                    struct Buffer *line, struct Buffer *err)
@@ -1358,7 +1407,9 @@ done:
  *
  * The 'subscribe-to' command allows to subscribe to an IMAP-Mailbox.
  * Patterns are not supported.
- * Use it as follows: subscribe-to =folder
+ *
+ * Parse:
+ * - `subscribe-to <imap-folder-uri>`
  */
 enum CommandResult parse_subscribe_to(const struct Command *cmd,
                                       struct Buffer *line, struct Buffer *err)
@@ -1405,6 +1456,9 @@ done:
  * Parse config like: `tag-formats pgp GP`
  *
  * @note This maps format -> tag
+ *
+ * Parse:
+ * - `tag-formats <tag> <format-string> { tag format-string ...  }`
  */
 enum CommandResult parse_tag_formats(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
@@ -1448,6 +1502,9 @@ enum CommandResult parse_tag_formats(const struct Command *cmd,
  * Parse config like: `tag-transforms pgp P`
  *
  * @note This maps tag -> transform
+ *
+ * Parse:
+ * - `tag-transforms <tag> <transformed-string> { tag transformed-string ... }`
  */
 enum CommandResult parse_tag_transforms(const struct Command *cmd,
                                         struct Buffer *line, struct Buffer *err)
@@ -1489,6 +1546,9 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd,
 
 /**
  * parse_unignore - Parse the 'unignore' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unignore { * | <string> ... }`
  */
 enum CommandResult parse_unignore(const struct Command *cmd,
                                   struct Buffer *line, struct Buffer *err)
@@ -1518,6 +1578,9 @@ enum CommandResult parse_unignore(const struct Command *cmd,
 
 /**
  * parse_unlists - Parse the 'unlists' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unlists [ -group <name> ... ] { * | <regex> ... }`
  */
 enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line,
                                  struct Buffer *err)
@@ -1595,7 +1658,8 @@ static void do_unmailboxes_star(void)
 /**
  * parse_unmailboxes - Parse the 'unmailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
- * This is also used by 'unvirtual-mailboxes'
+ * Parse:
+ * - `unmailboxes { * | <mailbox> ... }`
  */
 enum CommandResult parse_unmailboxes(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
@@ -1639,6 +1703,9 @@ done:
 
 /**
  * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unmy_hdr { * | <field> ... }`
  */
 enum CommandResult parse_unmy_hdr(const struct Command *cmd,
                                   struct Buffer *line, struct Buffer *err)
@@ -1693,7 +1760,12 @@ enum CommandResult parse_unmy_hdr(const struct Command *cmd,
 /**
  * parse_unstailq - Parse an unlist command - Implements Command::parse() - @ingroup command_parse
  *
- * This is used by 'unalternative_order', 'unauto_view' and several others.
+ * Parse:
+ * - `unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
+ * - `unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
+ * - `unhdr_order { * | <header> ... }`
+ * - `unmailto_allow { * | <header-field> ... }`
+ * - `unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
  */
 enum CommandResult parse_unstailq(const struct Command *cmd,
                                   struct Buffer *line, struct Buffer *err)
@@ -1724,6 +1796,9 @@ enum CommandResult parse_unstailq(const struct Command *cmd,
 
 /**
  * parse_unsubscribe - Parse the 'unsubscribe' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unsubscribe [ -group <name> ... ] { * | <regex> ... }`
  */
 enum CommandResult parse_unsubscribe(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
@@ -1762,7 +1837,9 @@ done:
  *
  * The 'unsubscribe-from' command allows to unsubscribe from an IMAP-Mailbox.
  * Patterns are not supported.
- * Use it as follows: unsubscribe-from =folder
+ *
+ * Parse:
+ * - `unsubscribe-from <imap-folder-uri>`
  */
 enum CommandResult parse_unsubscribe_from(const struct Command *cmd,
                                           struct Buffer *line, struct Buffer *err)
@@ -1803,6 +1880,9 @@ done:
 
 /**
  * parse_version - Parse the 'version' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `version`
  */
 enum CommandResult parse_version(const struct Command *cmd, struct Buffer *line,
                                  struct Buffer *err)

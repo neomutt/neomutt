@@ -464,7 +464,11 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
 /**
  * parse_set - Parse the 'set' family of commands - Implements Command::parse() - @ingroup command_parse
  *
- * This is used by 'reset', 'set', 'toggle' and 'unset'.
+ * Parse:
+ * - `reset <variable> [ <variable> ... ]`
+ * - `set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [... ]`
+ * - `toggle <variable> [ <variable> ... ]`
+ * - `unset <variable> [ <variable> ... ]`
  */
 enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 {

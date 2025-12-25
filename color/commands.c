@@ -439,6 +439,9 @@ done:
 
 /**
  * parse_uncolor - Parse the 'uncolor' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `uncolor <object> { * | <pattern> ... }`
  */
 enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *line,
                                  struct Buffer *err)
@@ -471,6 +474,9 @@ done:
 
 /**
  * parse_unmono - Parse the 'unmono' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unmono <object> { * | <pattern> ... }`
  */
 enum CommandResult parse_unmono(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -488,6 +494,9 @@ enum CommandResult parse_unmono(const struct Command *cmd, struct Buffer *line,
 
 /**
  * parse_color - Parse the 'color' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]`
  */
 enum CommandResult parse_color(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
@@ -516,6 +525,9 @@ done:
 
 /**
  * parse_mono - Parse the 'mono' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `mono <object> <attribute> [ <pattern> | <regex> ]`
  */
 enum CommandResult parse_mono(const struct Command *cmd, struct Buffer *line,
                               struct Buffer *err)

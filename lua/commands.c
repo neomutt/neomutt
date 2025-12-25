@@ -50,6 +50,9 @@ bool lua_init_state(lua_State **l);
 
 /**
  * parse_lua - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `lua "<lua-commands>"`
  */
 enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 {
@@ -87,6 +90,9 @@ done:
 
 /**
  * parse_lua_source - Parse the 'lua-source' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `lua-source <file>`
  */
 enum CommandResult parse_lua_source(const struct Command *cmd,
                                     struct Buffer *line, struct Buffer *err)
