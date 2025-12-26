@@ -15854,6 +15854,117 @@ bind index &lt;esc&gt;L limit-current-thread
       </sect2>
     </sect1>
 
+    <sect1 id="lua">
+      <title>Lua</title>
+      <subtitle>Embedded Lua Scripting</subtitle>
+
+      <sect2 id="lua-support">
+        <title>Support</title>
+        <para>
+          <emphasis role="bold">Since:</emphasis> NeoMutt 2017-04-14
+        </para>
+        <para>
+          <emphasis role="bold">Dependencies:</emphasis> None
+        </para>
+      </sect2>
+
+      <sect2 id="lua-intro">
+        <title>Introduction</title>
+        <para>
+          Lua is a simple scripting language that's frequently embedded into
+          other programs, such as NeoVim.  It allows users to cusotomise
+          the behaviour of the host program.
+        </para>
+        <para>
+          In NeoMutt, Lua can used to get/set config options and run commands.
+        </para>
+      </sect2>
+
+      <sect2 id="lua-commands">
+        <title>Commands</title>
+        <cmdsynopsis>
+          <command>lua</command>
+          <arg choice="plain">
+            <replaceable class="parameter">&quot;lua-commands&quot;</replaceable>
+          </arg>
+        </cmdsynopsis>
+        <cmdsynopsis>
+          <command>lua-source</command>
+          <arg choice="plain">
+            <replaceable class="parameter">filename</replaceable>
+          </arg>
+        </cmdsynopsis>
+      </sect2>
+
+      <sect2 id="lua-usage">
+        <title>Usage</title>
+        <para>
+          A simple example of running some Lua commands in NeoMutt.
+        </para>
+
+<screen>
+<emphasis role="comment"># In NeoMutt, make the Sidebar wider</emphasis>
+:lua "local x = mutt.get('sidebar_width'); x = x + 5; mutt.set('sidebar_width', x)"
+</screen>
+
+        <para>
+          Next, create a script for easier reuse.
+        </para>
+        <para>
+          Create a local Lua script, <literal>sw.lua</literal>
+        </para>
+
+<screen>
+<emphasis role="comment">-- Make the sidebar wider</emphasis>
+function sw()
+    local width = mutt.get('sidebar_width')
+    width = width + 5
+    mutt.set('sidebar_width', width)
+end
+</screen>
+
+        <para>
+          Alter your NeoMutt config to add:
+        </para>
+
+<screen>
+<emphasis role="comment"># Load the script once</emphasis>
+lua-source "sw.lua"
+
+<emphasis role="comment"># Create a binding to run the function in the script</emphasis>
+macro index &lt;F1&gt; "&lt;enter-command&gt;lua 'sw()'&lt;enter&gt;
+</screen>
+
+      </sect2>
+
+      <sect2 id="lua-limitations">
+        <title>Limitations</title>
+        <para>
+          Currently, the Lua Scripting is very limited.  It doesn't have any
+          way to interact with the objects within NeoMutt: the Mailboxes, the
+          Emails, etc. Beyond that, there's almost zero documentation.
+        </para>
+
+        <para>
+          This state is changing.  There is some new work coming to NeoMutt
+          that exposes the Accounts, Mailboxes and Emails to Lua.  This would
+          allow the user to perform meaningful actions.
+        </para>
+
+        <para>
+          See: <ulink url="https://github.com/neomutt/neomutt/pull/4707">https://github.com/neomutt/neomutt/pull/4707</ulink>
+        </para>
+      </sect2>
+
+      <sect2 id="lua-credits">
+        <title>Credits</title>
+        <para>
+          Richard Russon, Bernard Pratz, Rayford Shireman, Darshit Shah
+        </para>
+      </sect2>
+
+    </sect1>
+
     <sect1 id="multiple-fcc">
       <title>Multiple FCC Feature</title>
       <subtitle>Save multiple copies of outgoing mail</subtitle>
