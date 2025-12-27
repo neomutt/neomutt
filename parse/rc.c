@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <libintl.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
