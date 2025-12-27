@@ -87,8 +87,8 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
       {
         if (show_help)
         {
-          buf_add_printf(err, "%s\n", gettext(cmd->help));
-          buf_add_printf(err, ":%s\n", gettext(cmd->proto));
+          buf_add_printf(err, "%s\n", _(cmd->help));
+          buf_add_printf(err, ":%s\n", _(cmd->proto));
           buf_add_printf(err, "file:///usr/share/doc/neomutt/%s", cmd->path);
           goto finish;
         }
