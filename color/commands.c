@@ -456,6 +456,7 @@ enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *line,
   }
 
   struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
 
   if (!OptGui) // No GUI, so quietly discard the command
   {
@@ -467,7 +468,7 @@ enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *line,
   }
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(token));
-  enum CommandResult rc = parse_uncolor_command(cmd, line, err);
+  rc = parse_uncolor_command(cmd, line, err);
   curses_colors_dump(token);
 
 done:

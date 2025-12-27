@@ -32,6 +32,9 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "extract.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 /**
  * parse_rc_line - Parse a line of user config
@@ -84,9 +87,9 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
       {
         if (show_help)
         {
-          buf_add_printf(err, "%s\n", gettext(cmd->help));
-          buf_add_printf(err, ":%s\n", gettext(cmd->proto));
-          buf_add_printf(err, "file:///usr/share/doc/neomutt/%s", gettext(cmd->path));
+          buf_add_printf(err, "%s\n", _(cmd->help));
+          buf_add_printf(err, ":%s\n", _(cmd->proto));
+          buf_add_printf(err, "file:///usr/share/doc/neomutt/%s", cmd->path);
           goto finish;
         }
 

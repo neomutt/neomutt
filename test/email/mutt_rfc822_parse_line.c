@@ -40,23 +40,20 @@ void test_mutt_rfc822_parse_line(void)
   }
 
   {
-    struct Envelope envelope;
-    memset(&envelope, 0, sizeof(struct Envelope));
+    struct Envelope envelope = { 0 };
     TEST_CHECK(mutt_rfc822_parse_line(&envelope, NULL, "apple", strlen("apple"),
                                       "banana", false, false, false) == 0);
   }
 
   {
-    struct Envelope envelope;
-    memset(&envelope, 0, sizeof(struct Envelope));
+    struct Envelope envelope = { 0 };
     struct Email e = { 0 };
     TEST_CHECK(mutt_rfc822_parse_line(&envelope, &e, NULL, 0, "banana", false,
                                       false, false) == 0);
   }
 
   {
-    struct Envelope envelope;
-    memset(&envelope, 0, sizeof(struct Envelope));
+    struct Envelope envelope = { 0 };
     struct Email e = { 0 };
     TEST_CHECK(mutt_rfc822_parse_line(&envelope, &e, "apple", strlen("apple"),
                                       NULL, false, false, false) == 0);

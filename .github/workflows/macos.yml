@@ -24,7 +24,7 @@ jobs:
       uses: Homebrew/actions/setup-homebrew@master
 
     - name: Install dependencies
-      run: brew install notmuch libidn2 libiconv ncurses lmdb
+      run: brew install notmuch libiconv ncurses lmdb
 
     - name: Checkout Code
       uses: actions/checkout@v6

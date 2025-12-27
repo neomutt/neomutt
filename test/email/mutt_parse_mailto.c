@@ -66,14 +66,12 @@ void test_mutt_parse_mailto(void)
   }
 
   {
-    struct Envelope envelope;
-    memset(&envelope, 0, sizeof(struct Envelope));
+    struct Envelope envelope = { 0 };
     TEST_CHECK(!mutt_parse_mailto(&envelope, NULL, "apple"));
   }
 
   {
-    struct Envelope envelope;
-    memset(&envelope, 0, sizeof(struct Envelope));
+    struct Envelope envelope = { 0 };
     char *body = NULL;
     TEST_CHECK(!mutt_parse_mailto(&envelope, &body, NULL));
   }
