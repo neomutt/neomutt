@@ -99,6 +99,52 @@ enum GroupState
 };
 
 /**
+ * command_find_by_id - Find a NeoMutt Command by its CommandId
+ * @param ca Array of Commands
+ * @param id ID to find
+ * @retval ptr Matching Command
+ */
+const struct Command *command_find_by_id(const struct CommandArray *ca, enum CommandId id)
+{
+  if (!ca || (id == CMD_NONE))
+    return NULL;
+
+  const struct Command **cp = NULL;
+  ARRAY_FOREACH(cp, ca)
+  {
+    const struct Command *cmd = *cp;
+
+    if (cmd->id == id)
+      return cmd;
+  }
+
+  return NULL;
+}
+
+/**
+ * command_find_by_name - Find a NeoMutt Command by its name
+ * @param ca   Array of Commands
+ * @param name Name to find
+ * @retval ptr Matching Command
+ */
+const struct Command *command_find_by_name(const struct CommandArray *ca, const char *name)
+{
+  if (!ca || !name)
+    return NULL;
+
+  const struct Command **cp = NULL;
+  ARRAY_FOREACH(cp, ca)
+  {
+    const struct Command *cmd = *cp;
+
+    if (mutt_str_equal(cmd->name, name))
+      return cmd;
+  }
+
+  return NULL;
+}
+
+/**
  * is_function - Is the argument a neomutt function?
  * @param name  Command name to be searched for
  * @retval true  Function found

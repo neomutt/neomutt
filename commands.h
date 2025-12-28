@@ -65,6 +65,9 @@ enum CommandResult parse_unsubscribe     (const struct Command *cmd, struct Buff
 enum CommandResult parse_unsubscribe_from(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 enum CommandResult parse_version         (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
+const struct Command *command_find_by_id  (const struct CommandArray *ca, enum CommandId id);
+const struct Command *command_find_by_name(const struct CommandArray *ca, const char *name);
+
 enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err);
 char *mutt_get_sourced_cwd(void);
 bool mailbox_add_simple(const char *mailbox, struct Buffer *err);
