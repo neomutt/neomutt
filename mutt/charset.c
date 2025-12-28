@@ -65,22 +65,8 @@ wchar_t ReplacementChar = '?';
  */
 bool CharsetIsUtf8 = false;
 
-/**
- * struct Lookup - Regex to String lookup table
- *
- * This is used by 'charset-hook' and 'iconv-hook'.
- */
-struct Lookup
-{
-  enum LookupType type;        ///< Lookup type
-  struct Regex regex;          ///< Regular expression
-  char *replacement;           ///< Alternative charset to use
-  TAILQ_ENTRY(Lookup) entries; ///< Linked list
-};
-TAILQ_HEAD(LookupList, Lookup);
-
 /// Lookup table of preferred character set names
-static struct LookupList Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
+struct LookupList Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
 
 /**
  * struct IconvCacheEntry - Cached iconv conversion descriptor

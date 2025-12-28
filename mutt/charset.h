@@ -29,6 +29,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "queue.h"
+#include "regex3.h"
 
 struct Buffer;
 struct Slist;
@@ -63,6 +65,22 @@ enum LookupType
 
 #define MUTT_ICONV_NO_FLAGS  0 ///< No flags are set
 #define MUTT_ICONV_HOOK_FROM 1 ///< apply charset-hooks to fromcode
+
+/**
+ * struct Lookup - Regex to String lookup table
+ *
+ * This is used by 'charset-hook' and 'iconv-hook'.
+ */
+struct Lookup
+{
+  enum LookupType type;        ///< Lookup type
+  struct Regex regex;          ///< Regular expression
+  char *replacement;           ///< Alternative charset to use
+  TAILQ_ENTRY(Lookup) entries; ///< Linked list
+};
+TAILQ_HEAD(LookupList, Lookup);
+
+extern struct LookupList Lookups;
 
 void             mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name);
 const char *     mutt_ch_charset_lookup(const char *chs);
