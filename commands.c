@@ -473,7 +473,7 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
     if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
       goto done;
 
-    if ((cmd->data == MUTT_UNGROUP) && mutt_istr_equal(buf_string(token), "*"))
+    if ((cmd->id == CMD_UNGROUP) && mutt_istr_equal(buf_string(token), "*"))
     {
       groups_remove_grouplist(NeoMutt->groups, &gl);
       rc = MUTT_CMD_SUCCESS;
@@ -498,12 +498,12 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
           goto done;
 
         case GS_RX:
-          if ((cmd->data == MUTT_GROUP) &&
+          if ((cmd->id == CMD_GROUP) &&
               (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0))
           {
             goto done;
           }
-          else if ((cmd->data == MUTT_UNGROUP) &&
+          else if ((cmd->id == CMD_UNGROUP) &&
                    (groups_remove_regex(NeoMutt->groups, &gl, buf_string(token)) < 0))
           {
             goto done;
@@ -524,9 +524,9 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
             FREE(&estr);
             goto done;
           }
-          if (cmd->data == MUTT_GROUP)
+          if (cmd->id == CMD_GROUP)
             grouplist_add_addrlist(&gl, &al);
-          else if (cmd->data == MUTT_UNGROUP)
+          else if (cmd->id == CMD_UNGROUP)
             groups_remove_addrlist(NeoMutt->groups, &gl, &al);
           mutt_addrlist_clear(&al);
           break;
@@ -594,7 +594,7 @@ enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *line,
   parse_extract_token(token, line, TOKEN_SPACE);
 
   /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
-  if ((res && (cmd->data == 0)) || (!res && (cmd->data == 1)))
+  if ((res && (cmd->id == CMD_IFDEF)) || (!res && (cmd->id == CMD_IFNDEF)))
   {
     rc = parse_rc_line(token, err);
     if (rc == MUTT_CMD_ERROR)
@@ -865,7 +865,7 @@ enum CommandResult parse_mailboxes(const struct Command *cmd,
       {
         poll = TB_FALSE;
       }
-      else if ((cmd->data & MUTT_NAMED) && !label_set)
+      else if ((cmd->id == CMD_NAMED_MAILBOXES) && !label_set)
       {
         if (!MoreArgs(line))
         {
@@ -1027,7 +1027,7 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
 
   bool query = false;
   bool prefix = false;
-  bool unset = (cmd->data == MUTT_SET_UNSET);
+  bool unset = (cmd->id == CMD_UNSETENV);
 
   if (!MoreArgs(line))
   {
@@ -1516,7 +1516,7 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd,
   }
 
   struct Buffer *tag = buf_pool_get();
-  struct Buffer *trnbuf = buf_pool_get();
+  struct Buffer *trans = buf_pool_get();
 
   while (MoreArgs(line))
   {
@@ -1524,8 +1524,8 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd,
     if (buf_is_empty(tag))
       continue;
 
-    parse_extract_token(trnbuf, line, TOKEN_NO_FLAGS);
-    const char *trn = buf_string(trnbuf);
+    parse_extract_token(trans, line, TOKEN_NO_FLAGS);
+    const char *trn = buf_string(trans);
 
     /* avoid duplicates */
     const char *tmp = mutt_hash_find(TagTransforms, buf_string(tag));
@@ -1540,7 +1540,7 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd,
   }
 
   buf_pool_release(&tag);
-  buf_pool_release(&trnbuf);
+  buf_pool_release(&trans);
   return MUTT_CMD_SUCCESS;
 }
 
@@ -1943,224 +1943,224 @@ void source_stack_cleanup(void)
  */
 static const struct Command MuttCommands[] = {
   // clang-format off
-  { "alias", parse_alias, 0,
+  { "alias", CMD_ALIAS, parse_alias, CMD_NO_DATA,
         N_("Define an alias (name to email address)"),
         N_("alias [ -group <name> ... ] <key> <address> [, <address> ... ]"),
         "configuration.html#alias" },
-  { "alternates", parse_alternates, 0,
+  { "alternates", CMD_ALTERNATES, parse_alternates, CMD_NO_DATA,
         N_("Define a list of alternate email addresses for the user"),
         N_("alternates [ -group <name> ... ] <regex> [ <regex> ... ]"),
         "configuration.html#alternates" },
-  { "alternative_order", parse_stailq, IP &AlternativeOrderList,
+  { "alternative_order", CMD_ALTERNATIVE_ORDER, parse_stailq, IP &AlternativeOrderList,
         N_("Set preference order for multipart alternatives"),
         N_("alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"),
         "mimesupport.html#alternative-order" },
-  { "attachments", parse_attachments, 0,
+  { "attachments", CMD_ATTACHMENTS, parse_attachments, CMD_NO_DATA,
         N_("Set attachment counting rules"),
         N_("attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"),
         "mimesupport.html#attachments" },
-  { "auto_view", parse_stailq, IP &AutoViewList,
+  { "auto_view", CMD_AUTO_VIEW, parse_stailq, IP &AutoViewList,
         N_("Automatically display specified MIME types inline"),
         N_("auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"),
         "mimesupport.html#auto-view" },
-  { "cd", parse_cd, 0,
+  { "cd", CMD_CD, parse_cd, CMD_NO_DATA,
         N_("Change NeoMutt's current working directory"),
         N_("cd [ <directory> ]"),
         "configuration.html#cd" },
-  { "color", parse_color, 0,
+  { "color", CMD_COLOR, parse_color, CMD_NO_DATA,
         N_("Define colors for the user interface"),
         N_("color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"),
         "configuration.html#color" },
-  { "echo", parse_echo, 0,
+  { "echo", CMD_ECHO, parse_echo, CMD_NO_DATA,
         N_("Print a message to the status line"),
         N_("echo <message>"),
         "advancedusage.html#echo" },
-  { "finish", parse_finish, 0,
+  { "finish", CMD_FINISH, parse_finish, CMD_NO_DATA,
         N_("Stop reading current config file"),
         N_("finish "),
         "optionalfeatures.html#ifdef" },
-  { "group", parse_group, MUTT_GROUP,
+  { "group", CMD_GROUP, parse_group, CMD_NO_DATA,
         N_("Add addresses to an address group"),
         N_("group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"),
         "configuration.html#addrgroup" },
-  { "hdr_order", parse_stailq, IP &HeaderOrderList,
+  { "hdr_order", CMD_HDR_ORDER, parse_stailq, IP &HeaderOrderList,
         N_("Define custom order of headers displayed"),
         N_("hdr_order <header> [ <header> ... ]"),
         "configuration.html#hdr-order" },
-  { "ifdef", parse_ifdef, 0,
+  { "ifdef", CMD_IFDEF, parse_ifdef, CMD_NO_DATA,
         N_("Conditionally include config commands if symbol defined"),
         N_("ifdef <symbol> '<config-command> [ <args> ... ]'"),
         "optionalfeatures.html#ifdef" },
-  { "ifndef", parse_ifdef, 1,
+  { "ifndef", CMD_IFNDEF, parse_ifdef, CMD_NO_DATA,
         N_("Conditionally include if symbol is not defined"),
         N_("ifndef <symbol> '<config-command> [ <args> ... ]'"),
         "optionalfeatures.html#ifdef" },
-  { "ignore", parse_ignore, 0,
+  { "ignore", CMD_IGNORE, parse_ignore, CMD_NO_DATA,
         N_("Hide specified headers when displaying messages"),
         N_("ignore { * | <string> ... }"),
         "configuration.html#ignore" },
-  { "lists", parse_lists, 0,
+  { "lists", CMD_LISTS, parse_lists, CMD_NO_DATA,
         N_("Add address to the list of mailing lists"),
         N_("lists [ -group <name> ... ] <regex> [ <regex> ... ]"),
         "configuration.html#lists" },
-  { "mailboxes", parse_mailboxes, 0,
+  { "mailboxes", CMD_MAILBOXES, parse_mailboxes, CMD_NO_DATA,
         N_("Define a list of mailboxes to watch"),
         N_("mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"),
         "configuration.html#mailboxes" },
-  { "mailto_allow", parse_stailq, IP &MailToAllow,
+  { "mailto_allow", CMD_MAILTO_ALLOW, parse_stailq, IP &MailToAllow,
         N_("Permit specific header-fields in mailto URL processing"),
         N_("mailto_allow { * | <header-field> ... }"),
         "configuration.html#mailto-allow" },
-  { "mime_lookup", parse_stailq, IP &MimeLookupList,
+  { "mime_lookup", CMD_MIME_LOOKUP, parse_stailq, IP &MimeLookupList,
         N_("Map specified MIME types/subtypes to display handlers"),
         N_("mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"),
         "mimesupport.html#mime-lookup" },
-  { "mono", parse_mono, 0,
+  { "mono", CMD_MONO, parse_mono, CMD_NO_DATA,
         N_("**Deprecated**: Use `color`"),
         N_("mono <object> <attribute> [ <pattern> | <regex> ]"),
         "configuration.html#color-mono" },
-  { "my_hdr", parse_my_hdr, 0,
+  { "my_hdr", CMD_MY_HDR, parse_my_hdr, CMD_NO_DATA,
         N_("Add a custom header to outgoing messages"),
         N_("my_hdr <string>"),
         "configuration.html#my-hdr" },
-  { "named-mailboxes", parse_mailboxes, MUTT_NAMED,
+  { "named-mailboxes", CMD_NAMED_MAILBOXES, parse_mailboxes, MUTT_NAMED,
         N_("Define a list of labelled mailboxes to watch"),
         N_("named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"),
         "configuration.html#mailboxes" },
-  { "nospam", parse_nospam, 0,
+  { "nospam", CMD_NOSPAM, parse_nospam, CMD_NO_DATA,
         N_("Remove a spam detection rule"),
         N_("nospam { * | <regex> }"),
         "configuration.html#spam" },
-  { "reset", parse_set, MUTT_SET_RESET,
+  { "reset", CMD_RESET, parse_set, CMD_NO_DATA,
         N_("Reset a config option to its initial value"),
         N_("reset <variable> [ <variable> ... ]"),
         "configuration.html#set" },
-  { "score", parse_score, 0,
+  { "score", CMD_SCORE, parse_score, CMD_NO_DATA,
         N_("Set a score value on emails matching a pattern"),
         N_("score <pattern> <value>"),
         "configuration.html#score-command" },
-  { "set", parse_set, MUTT_SET_SET,
+  { "set", CMD_SET, parse_set, CMD_NO_DATA,
         N_("Set a config variable"),
         N_("set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"),
         "configuration.html#set" },
-  { "setenv", parse_setenv, MUTT_SET_SET,
+  { "setenv", CMD_SETENV, parse_setenv, CMD_NO_DATA,
         N_("Set an environment variable"),
         N_("setenv { <variable>? | <variable> <value> }"),
         "advancedusage.html#setenv" },
-  { "source", parse_source, 0,
+  { "source", CMD_SOURCE, parse_source, CMD_NO_DATA,
         N_("Read and execute commands from a config file"),
         N_("source <filename>"),
         "configuration.html#source" },
-  { "spam", parse_spam, 0,
+  { "spam", CMD_SPAM, parse_spam, CMD_NO_DATA,
         N_("Define rules to parse spam detection headers"),
         N_("spam <regex> <format>"),
         "configuration.html#spam" },
-  { "subjectrx", parse_subjectrx_list, 0,
+  { "subjectrx", CMD_SUBJECTRX, parse_subjectrx_list, CMD_NO_DATA,
         N_("Apply regex-based rewriting to message subjects"),
         N_("subjectrx <regex> <replacement>"),
         "advancedusage.html#display-munging" },
-  { "subscribe", parse_subscribe, 0,
+  { "subscribe", CMD_SUBSCRIBE, parse_subscribe, CMD_NO_DATA,
         N_("Add address to the list of subscribed mailing lists"),
         N_("subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"),
         "configuration.html#lists" },
-  { "tag-formats", parse_tag_formats, 0,
+  { "tag-formats", CMD_TAG_FORMATS, parse_tag_formats, CMD_NO_DATA,
         N_("Define expandos tags"),
         N_("tag-formats <tag> <format-string> { tag format-string ... }"),
         "optionalfeatures.html#custom-tags" },
-  { "tag-transforms", parse_tag_transforms, 0,
+  { "tag-transforms", CMD_TAG_TRANSFORMS, parse_tag_transforms, CMD_NO_DATA,
         N_("Rules to transform tags into icons"),
         N_("tag-transforms <tag> <transformed-string> { tag transformed-string ... }"),
         "optionalfeatures.html#custom-tags" },
-  { "toggle", parse_set, MUTT_SET_INV,
+  { "toggle", CMD_TOGGLE, parse_set, CMD_NO_DATA,
         N_("Toggle the value of a boolean/quad config option"),
         N_("toggle <variable> [ <variable> ... ]"),
         "configuration.html#set" },
-  { "unalias", parse_unalias, 0,
+  { "unalias", CMD_UNALIAS, parse_unalias, CMD_NO_DATA,
         N_("Remove an alias definition"),
         N_("unalias [ -group <name> ... ] { * | <key> ... }"),
         "configuration.html#alias" },
-  { "unalternates", parse_unalternates, 0,
+  { "unalternates", CMD_UNALTERNATES, parse_unalternates, CMD_NO_DATA,
         N_("Remove addresses from `alternates` list"),
         N_("unalternates [ -group <name> ... ] { * | <regex> ... }"),
         "configuration.html#alternates" },
-  { "unalternative_order", parse_unstailq, IP &AlternativeOrderList,
+  { "unalternative_order", CMD_UNALTERNATIVE_ORDER, parse_unstailq, IP &AlternativeOrderList,
         N_("Remove MIME types from preference order"),
         N_("unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
         "mimesupport.html#alternative-order" },
-  { "unattachments", parse_unattachments, 0,
+  { "unattachments", CMD_UNATTACHMENTS, parse_unattachments, CMD_NO_DATA,
         N_("Remove attachment counting rules"),
         N_("unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"),
         "mimesupport.html#attachments" },
-  { "unauto_view", parse_unstailq, IP &AutoViewList,
+  { "unauto_view", CMD_UNAUTO_VIEW, parse_unstailq, IP &AutoViewList,
         N_("Remove MIME types from `auto_view` list"),
         N_("unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
         "mimesupport.html#auto-view" },
-  { "uncolor", parse_uncolor, 0,
+  { "uncolor", CMD_UNCOLOR, parse_uncolor, CMD_NO_DATA,
         N_("Remove a `color` definition"),
         N_("uncolor <object> { * | <pattern> ... }"),
         "configuration.html#color" },
-  { "ungroup", parse_group, MUTT_UNGROUP,
+  { "ungroup", CMD_UNGROUP, parse_group, CMD_NO_DATA,
         N_("Remove addresses from an address `group`"),
         N_("ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"),
         "configuration.html#addrgroup" },
-  { "unhdr_order", parse_unstailq, IP &HeaderOrderList,
+  { "unhdr_order", CMD_UNHDR_ORDER, parse_unstailq, IP &HeaderOrderList,
         N_("Remove header from `hdr_order` list"),
         N_("unhdr_order { * | <header> ... }"),
         "configuration.html#hdr-order" },
-  { "unignore", parse_unignore, 0,
+  { "unignore", CMD_UNIGNORE, parse_unignore, CMD_NO_DATA,
         N_("Remove a header from the `hdr_order` list"),
         N_("unignore { * | <string> ... }"),
         "configuration.html#ignore" },
-  { "unlists", parse_unlists, 0,
+  { "unlists", CMD_UNLISTS, parse_unlists, CMD_NO_DATA,
         N_("Remove address from the list of mailing lists"),
         N_("unlists [ -group <name> ... ] { * | <regex> ... }"),
         "configuration.html#lists" },
-  { "unmailboxes", parse_unmailboxes, 0,
+  { "unmailboxes", CMD_UNMAILBOXES, parse_unmailboxes, CMD_NO_DATA,
         N_("Remove mailboxes from the watch list"),
         N_("unmailboxes { * | <mailbox> ... }"),
         "configuration.html#mailboxes" },
-  { "unmailto_allow", parse_unstailq, IP &MailToAllow,
+  { "unmailto_allow", CMD_UNMAILTO_ALLOW, parse_unstailq, IP &MailToAllow,
         N_("Disallow header-fields in mailto processing"),
         N_("unmailto_allow { * | <header-field> ... }"),
         "configuration.html#mailto-allow" },
-  { "unmime_lookup", parse_unstailq, IP &MimeLookupList,
+  { "unmime_lookup", CMD_UNMIME_LOOKUP, parse_unstailq, IP &MimeLookupList,
         N_("Remove custom MIME-type handlers"),
         N_("unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
         "mimesupport.html#mime-lookup" },
-  { "unmono", parse_unmono, 0,
+  { "unmono", CMD_UNMONO, parse_unmono, CMD_NO_DATA,
         N_("**Deprecated**: Use `uncolor`"),
         N_("unmono <object> { * | <pattern> ... }"),
         "configuration.html#color-mono" },
-  { "unmy_hdr", parse_unmy_hdr, 0,
+  { "unmy_hdr", CMD_UNMY_HDR, parse_unmy_hdr, CMD_NO_DATA,
         N_("Remove a header previously added with `my_hdr`"),
         N_("unmy_hdr { * | <field> ... }"),
         "configuration.html#my-hdr" },
-  { "unscore", parse_unscore, 0,
+  { "unscore", CMD_UNSCORE, parse_unscore, CMD_NO_DATA,
         N_("Remove scoring rules for matching patterns"),
         N_("unscore { * | <pattern> ... }"),
         "configuration.html#score-command" },
-  { "unset", parse_set, MUTT_SET_UNSET,
+  { "unset", CMD_UNSET, parse_set, CMD_NO_DATA,
         N_("Reset a config option to false/empty"),
         N_("unset <variable> [ <variable> ... ]"),
         "configuration.html#set" },
-  { "unsetenv", parse_setenv, MUTT_SET_UNSET,
+  { "unsetenv", CMD_UNSETENV, parse_setenv, CMD_NO_DATA,
         N_("Unset an environment variable"),
         N_("unsetenv <variable>"),
         "advancedusage.html#setenv" },
-  { "unsubjectrx", parse_unsubjectrx_list, 0,
+  { "unsubjectrx", CMD_UNSUBJECTRX, parse_unsubjectrx_list, CMD_NO_DATA,
         N_("Remove subject-rewriting rules"),
         N_("unsubjectrx { * | <regex> }"),
         "advancedusage.html#display-munging" },
-  { "unsubscribe", parse_unsubscribe, 0,
+  { "unsubscribe", CMD_UNSUBSCRIBE, parse_unsubscribe, CMD_NO_DATA,
         N_("Remove address from the list of subscribed mailing lists"),
         N_("unsubscribe [ -group <name> ... ] { * | <regex> ... }"),
         "configuration.html#lists" },
-  { "version", parse_version, 0,
+  { "version", CMD_VERSION, parse_version, CMD_NO_DATA,
         N_("Show NeoMutt version and build information"),
         N_("version "),
         "configuration.html#version" },
 
-  { NULL, NULL, 0, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

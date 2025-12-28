@@ -31,7 +31,8 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command TagTransformsCmd = { "tag-transforms", NULL, 0 };
+static const struct Command TagTransformsCmd = { "tag-transforms", CMD_TAG_TRANSFORMS,
+                                                 NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

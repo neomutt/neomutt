@@ -31,7 +31,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command SubscribeTo = { "subscribe-to", NULL, 0 };
+static const struct Command SubscribeTo = { "subscribe-to", CMD_SUBSCRIBE_TO, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

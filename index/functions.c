@@ -608,7 +608,7 @@ static int op_display_message(struct IndexSharedData *shared,
   if (!shared->email)
     return FR_NO_ACTION;
 
-  mutt_message_hook(shared->mailbox, shared->email, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(shared->mailbox, shared->email, CMD_MESSAGE_HOOK);
 
   /* toggle the weeding of headers so that a user can press the key
    * again while reading the message.  */
@@ -2116,7 +2116,7 @@ static int op_quit(struct IndexSharedData *shared, struct IndexPrivateData *priv
   {
     priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
-    mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
+    mutt_startup_shutdown_hook(CMD_SHUTDOWN_HOOK);
     mutt_debug(LL_NOTIFY, "NT_GLOBAL_SHUTDOWN\n");
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
 

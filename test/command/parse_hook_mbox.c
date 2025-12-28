@@ -31,7 +31,7 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command MboxHook = { "mbox-hook", NULL, MUTT_MBOX_HOOK };
+static const struct Command MboxHook = { "mbox-hook", CMD_MBOX_HOOK, NULL};
 // clang-format on
 
 // clang-format off

@@ -289,7 +289,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
   {
     struct Email *e = *ARRAY_GET(ea, 0);
     /* handle a single message */
-    mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+    mutt_message_hook(m, e, CMD_MESSAGE_HOOK);
 
     struct Message *msg = mx_msg_open(m, e);
     if (msg && (WithCrypto != 0) && decode)
@@ -331,7 +331,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
         if (msg)
         {
           mutt_parse_mime_message(e, msg->fp);
-          mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+          mutt_message_hook(m, e, CMD_MESSAGE_HOOK);
           mx_msg_close(m, &msg);
         }
         if ((e->security & SEC_ENCRYPT) && !crypt_valid_passphrase(e->security))
@@ -347,7 +347,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
       ARRAY_FOREACH(ep, ea)
       {
         struct Email *e = *ep;
-        mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+        mutt_message_hook(m, e, CMD_MESSAGE_HOOK);
         mutt_endwin();
         pid = filter_create(cmd, &fp_out, NULL, NULL, NeoMutt->env);
         if (pid < 0)
@@ -380,7 +380,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
       ARRAY_FOREACH(ep, ea)
       {
         struct Email *e = *ep;
-        mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+        mutt_message_hook(m, e, CMD_MESSAGE_HOOK);
         pipe_msg(m, e, NULL, fp_out, decode, print);
         /* add the message separator */
         if (sep)
@@ -841,7 +841,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
       break;
   }
 
-  mutt_message_hook(m, e_cur, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(m, e_cur, CMD_MESSAGE_HOOK);
   mutt_default_save(buf, e_cur);
   buf_pretty_mailbox(buf);
 
@@ -977,7 +977,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
     {
       struct Email *e = *ep;
       progress_update(progress, ++tagged_progress_count, -1);
-      mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+      mutt_message_hook(m, e, CMD_MESSAGE_HOOK);
       rc = mutt_save_message_mbox(m, e, save_opt, transform_opt, m_save);
       if (rc != 0)
         break;

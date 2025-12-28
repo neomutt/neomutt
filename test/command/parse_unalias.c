@@ -30,7 +30,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command UnAlias = { "unalias", NULL, 0 };
+static const struct Command UnAlias = { "unalias", CMD_UNALIAS, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

@@ -31,7 +31,7 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command FolderHook = { "folder-hook", NULL, MUTT_FOLDER_HOOK };
+static const struct Command FolderHook = { "folder-hook", CMD_FOLDER_HOOK, NULL };
 // clang-format on
 
 // clang-format off

@@ -31,12 +31,12 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command Source = { "source", NULL, 0 };
+static const struct Command Source = { "source", CMD_SOURCE, NULL, CMD_NO_DATA };
 
 const struct Command source_test_commands[] = {
   // clang-format off
-  { "set", parse_set, MUTT_SET_SET },
-  { NULL, NULL, 0 },
+  { "set", CMD_SET, parse_set, CMD_NO_DATA },
+  { NULL, CMD_NONE, NULL, CMD_NO_DATA },
   // clang-format on
 };
 

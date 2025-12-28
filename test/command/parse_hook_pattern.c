@@ -39,10 +39,10 @@ static struct ConfigDef Vars[] = {
 };
 
 // clang-format off
-static const struct Command MessageHook = { "message-hook", NULL, MUTT_MESSAGE_HOOK };
-static const struct Command ReplyHook   = { "reply-hook",   NULL, MUTT_REPLY_HOOK };
-static const struct Command SendHook    = { "send-hook",    NULL, MUTT_SEND_HOOK };
-static const struct Command Send2Hook   = { "send2-hook",   NULL, MUTT_SEND2_HOOK };
+static const struct Command MessageHook = { "message-hook", CMD_MESSAGE_HOOK, NULL };
+static const struct Command ReplyHook   = { "reply-hook",   CMD_REPLY_HOOK,   NULL };
+static const struct Command SendHook    = { "send-hook",    CMD_SEND_HOOK,    NULL };
+static const struct Command Send2Hook   = { "send2-hook",   CMD_SEND2_HOOK,   NULL };
 // clang-format on
 
 // clang-format off

@@ -67,7 +67,6 @@
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
-#include "parse/lib.h"
 #include "pattern/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"
@@ -515,7 +514,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
     return -1;
   }
   mutt_parse_mime_message(e, msg->fp);
-  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(m, e, CMD_MESSAGE_HOOK);
 
   const bool c_forward_decode = cs_subset_bool(sub, "forward_decode");
   if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT) && c_forward_decode)
@@ -578,7 +577,7 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
   }
 
   mutt_parse_mime_message(e, msg->fp);
-  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(m, e, CMD_MESSAGE_HOOK);
 
   actx = MUTT_MEM_CALLOC(1, struct AttachCtx);
   actx->email = e;
@@ -727,7 +726,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
     return -1;
   }
   mutt_parse_mime_message(e, msg->fp);
-  mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
+  mutt_message_hook(m, e, CMD_MESSAGE_HOOK);
 
   mutt_make_attribution_intro(e, fp_out, sub);
 
@@ -2289,7 +2288,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if ((flags & SEND_REPLY) && e_cur)
     {
       /* change setting based upon message we are replying to */
-      mutt_message_hook(m, e_cur, MUTT_REPLY_HOOK);
+      mutt_message_hook(m, e_cur, CMD_REPLY_HOOK);
 
       /* set the replied flag for the message we are generating so that the
        * user can use ~Q in a send-hook to know when reply-hook's are also
@@ -2299,7 +2298,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     /* change settings based upon recipients */
 
-    mutt_message_hook(NULL, e_templ, MUTT_SEND_HOOK);
+    mutt_message_hook(NULL, e_templ, CMD_SEND_HOOK);
 
     /* Unset the replied flag from the message we are composing since it is
      * no longer required.  This is done here because the FCC'd copy of
@@ -2367,7 +2366,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   /* This hook is even called for postponed messages, and can, e.g., be used
    * for setting the editor, the sendmail path, or the envelope sender.  */
-  mutt_message_hook(NULL, e_templ, MUTT_SEND2_HOOK);
+  mutt_message_hook(NULL, e_templ, CMD_SEND2_HOOK);
 
   /* wait until now to set the real name portion of our return address so
    * that $real_name can be set in a send-hook */
@@ -2445,7 +2444,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         }
       }
 
-      mutt_message_hook(NULL, e_templ, MUTT_SEND2_HOOK);
+      mutt_message_hook(NULL, e_templ, CMD_SEND2_HOOK);
     }
 
     if (!(flags & (SEND_POSTPONED | SEND_FORWARD | SEND_KEY | SEND_RESEND | SEND_DRAFT_FILE)))

@@ -31,9 +31,9 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command AppendHook = { "append-hook", NULL, MUTT_APPEND_HOOK };
-static const struct Command CloseHook  = { "close-hook",  NULL, MUTT_CLOSE_HOOK };
-static const struct Command OpenHook   = { "open-hook",   NULL, MUTT_OPEN_HOOK };
+static const struct Command AppendHook = { "append-hook", CMD_APPEND_HOOK, NULL };
+static const struct Command CloseHook  = { "close-hook",  CMD_CLOSE_HOOK,  NULL };
+static const struct Command OpenHook   = { "open-hook",   CMD_OPEN_HOOK,   NULL };
 // clang-format on
 
 // clang-format off

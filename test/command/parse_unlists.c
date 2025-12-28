@@ -30,7 +30,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command UnLists = { "unlists", NULL, 0 };
+static const struct Command UnLists = { "unlists", CMD_UNLISTS, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

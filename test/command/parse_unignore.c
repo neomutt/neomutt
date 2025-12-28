@@ -30,7 +30,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command UnIgnore = { "unignore", NULL, 0 };
+static const struct Command UnIgnore = { "unignore", CMD_UNIGNORE, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

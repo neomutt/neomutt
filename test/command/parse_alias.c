@@ -32,7 +32,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command Alias = { "alias", NULL, 0 };
+static const struct Command Alias = { "alias", CMD_ALIAS, NULL, CMD_NO_DATA };
 
 static struct ConfigDef Vars[] = {
   // clang-format off

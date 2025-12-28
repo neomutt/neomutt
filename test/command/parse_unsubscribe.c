@@ -30,7 +30,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command UnSubscribe = { "unsubscribe", NULL, 0 };
+static const struct Command UnSubscribe = { "unsubscribe", CMD_UNSUBSCRIBE, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

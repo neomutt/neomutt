@@ -29,9 +29,6 @@
 #include "mutt/lib.h"
 #include "address.h"
 
-#define MUTT_GROUP   0  ///< 'group' config command
-#define MUTT_UNGROUP 1  ///< 'ungroup' config command
-
 /**
  * struct Group - A set of email addresses
  */

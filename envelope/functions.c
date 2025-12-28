@@ -345,7 +345,7 @@ static int op_compose_pgp_menu(struct EnvelopeWindowData *wdata, int op)
   if (wdata->email->security == old_flags)
     return FR_NO_ACTION;
 
-  mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
+  mutt_message_hook(NULL, wdata->email, CMD_SEND2_HOOK);
   notify_send(wdata->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
   return FR_SUCCESS;
 }
@@ -384,7 +384,7 @@ static int op_compose_smime_menu(struct EnvelopeWindowData *wdata, int op)
   if (wdata->email->security == old_flags)
     return FR_NO_ACTION;
 
-  mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
+  mutt_message_hook(NULL, wdata->email, CMD_SEND2_HOOK);
   notify_send(wdata->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
   return FR_SUCCESS;
 }
@@ -420,7 +420,7 @@ static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata, int op)
   if (wdata->email->security == old_flags)
     return FR_NO_ACTION;
 
-  mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
+  mutt_message_hook(NULL, wdata->email, CMD_SEND2_HOOK);
   notify_send(wdata->email->notify, NT_EMAIL, NT_EMAIL_CHANGE, NULL);
   return FR_SUCCESS;
 }

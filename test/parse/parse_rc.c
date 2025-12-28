@@ -32,12 +32,21 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
-#include "common.h"      // IWYU pragma: keep
 #include "test_common.h" // IWYU pragma: keep
 
 extern const struct Mapping MboxTypeMap[];
 extern struct EnumDef MboxTypeDef;
 extern const struct Mapping SortMethods[];
+
+static const struct Command mutt_commands[] = {
+  // clang-format off
+  { "reset",  CMD_RESET,  parse_set, CMD_NO_DATA },
+  { "set",    CMD_SET,    parse_set, CMD_NO_DATA },
+  { "toggle", CMD_TOGGLE, parse_set, CMD_NO_DATA },
+  { "unset",  CMD_UNSET,  parse_set, CMD_NO_DATA },
+  { NULL, CMD_NONE, NULL, CMD_NO_DATA },
+  // clang-format on
+};
 
 static struct ConfigDef Vars[] = {
   // clang-format off

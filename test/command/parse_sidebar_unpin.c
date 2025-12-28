@@ -30,7 +30,8 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command SidebarUnpin = { "sidebar_unpin", NULL, 0 };
+static const struct Command SidebarUnpin = { "sidebar_unpin", CMD_SIDEBAR_UNPIN,
+                                             NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

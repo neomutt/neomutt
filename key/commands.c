@@ -154,17 +154,17 @@ enum CommandResult km_bind(const char *s, enum MenuType mtype, int op,
 /**
  * km_unbind_all - Free all the keys in the supplied Keymap
  * @param km_list Keymap mapping
- * @param mode    Undo bind or macro, e.g. #MUTT_UNBIND, #MUTT_UNMACRO
+ * @param id      CommandId: #CMD_UNBIND or #CMD_UNMACRO
  *
  * Iterate through Keymap and free keys defined either by "macro" or "bind".
  */
-static void km_unbind_all(struct KeymapList *km_list, unsigned long mode)
+static void km_unbind_all(struct KeymapList *km_list, enum CommandId id)
 {
   struct Keymap *np = NULL, *tmp = NULL;
 
   STAILQ_FOREACH_SAFE(np, km_list, entries, tmp)
   {
-    if (((mode & MUTT_UNBIND) && !np->macro) || ((mode & MUTT_UNMACRO) && np->macro))
+    if (((id == CMD_UNBIND) && !np->macro) || ((id == CMD_UNMACRO) && np->macro))
     {
       STAILQ_REMOVE(km_list, np, Keymap, entries);
       mutt_keymap_free(&np);
@@ -518,7 +518,7 @@ enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
       continue;
     if (all_keys)
     {
-      km_unbind_all(&Keymaps[i], cmd->data);
+      km_unbind_all(&Keymaps[i], cmd->id);
       km_bind("<enter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
       km_bind("<return>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
       km_bind("<enter>", MENU_INDEX, OP_DISPLAY_MESSAGE, NULL, NULL, NULL);
@@ -538,7 +538,7 @@ enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
 
       struct EventBinding ev_b = { i, NULL, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
-                  (cmd->data & MUTT_UNMACRO) ? NT_MACRO_DELETE_ALL : NT_BINDING_DELETE_ALL,
+                  (cmd->id == CMD_UNMACRO) ? NT_MACRO_DELETE_ALL : NT_BINDING_DELETE_ALL,
                   &ev_b);
     }
     else
@@ -552,7 +552,7 @@ enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
       km_bind(key, i, OP_NULL, NULL, NULL, NULL);
       struct EventBinding ev_b = { i, key, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING,
-                  (cmd->data & MUTT_UNMACRO) ? NT_MACRO_DELETE : NT_BINDING_DELETE, &ev_b);
+                  (cmd->id == CMD_UNMACRO) ? NT_MACRO_DELETE : NT_BINDING_DELETE, &ev_b);
     }
   }
 
