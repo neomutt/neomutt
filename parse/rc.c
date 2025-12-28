@@ -28,13 +28,10 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "commands.h"
 #include "extract.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 /**
  * parse_rc_line - Parse a line of user config
@@ -77,38 +74,28 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
       show_help = true;
     }
 
-    bool match = false;
-    const struct Command **cp = NULL;
-    ARRAY_FOREACH(cp, &NeoMutt->commands)
+    const struct Command *cmd = command_find_by_name(&NeoMutt->commands, buf_string(token));
+    if (cmd)
     {
-      const struct Command *cmd = *cp;
-
-      if (mutt_str_equal(token->data, cmd->name))
+      if (show_help)
       {
-        if (show_help)
-        {
-          buf_add_printf(err, "%s\n", _(cmd->help));
-          buf_add_printf(err, ":%s\n", _(cmd->proto));
-          buf_add_printf(err, "file:///usr/share/doc/neomutt/%s", cmd->path);
-          goto finish;
-        }
-
-        mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
-        rc = cmd->parse(cmd, line, err);
-        if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
-          goto finish; /* Propagate return code */
-
-        notify_send(NeoMutt->notify, NT_COMMAND, 0, (void *) cmd);
-        match = true;
-        break; /* Continue with next command */
+        buf_add_printf(err, "%s\n", _(cmd->help));
+        buf_add_printf(err, ":%s\n", _(cmd->proto));
+        buf_add_printf(err, "file:///usr/share/doc/neomutt/%s", cmd->path);
+        goto finish;
       }
-    }
 
-    if (!match)
+      mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
+      rc = cmd->parse(cmd, line, err);
+      if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
+        goto finish; /* Propagate return code */
+
+      notify_send(NeoMutt->notify, NT_COMMAND, 0, (void *) cmd);
+    }
+    else
     {
       buf_printf(err, _("%s: unknown command"), buf_string(token));
       rc = MUTT_CMD_ERROR;
-      break; /* Ignore the rest of the line */
     }
   }
 

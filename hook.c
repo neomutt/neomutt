@@ -1219,28 +1219,6 @@ out:
 }
 
 /**
- * mutt_get_hook_type - Find a hook by name
- * @param name Name to find
- * @retval num       CommandId, e.g. #CMD_FOLDER_HOOK
- * @retval #CMD_NONE Error, no matching hook
- */
-static enum CommandId mutt_get_hook_type(const char *name)
-{
-  const struct Command **cp = NULL;
-  ARRAY_FOREACH(cp, &NeoMutt->commands)
-  {
-    const struct Command *cmd = *cp;
-
-    if (mutt_istr_equal(cmd->name, name))
-    {
-      return cmd->id;
-    }
-  }
-
-  return CMD_NONE;
-}
-
-/**
  * parse_unhook - Parse the unhook command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
@@ -1274,31 +1252,32 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
     }
     else
     {
-      enum CommandId id = mutt_get_hook_type(buf_string(token));
-
-      if (id == CMD_NONE)
+      const struct Command *hook = command_find_by_name(&NeoMutt->commands,
+                                                        buf_string(token));
+      if (!hook)
       {
         buf_printf(err, _("unhook: unknown hook type: %s"), buf_string(token));
         rc = MUTT_CMD_ERROR;
         goto done;
       }
-      if ((id == CMD_CHARSET_HOOK) || (id == CMD_ICONV_HOOK))
+
+      if ((hook->id == CMD_CHARSET_HOOK) || (hook->id == CMD_ICONV_HOOK))
       {
         mutt_ch_lookup_remove();
         rc = MUTT_CMD_SUCCESS;
         goto done;
       }
-      if (CurrentHookId == id)
+      if (CurrentHookId == hook->id)
       {
         buf_printf(err, _("unhook: Can't delete a %s from within a %s"),
                    buf_string(token), buf_string(token));
         rc = MUTT_CMD_WARNING;
         goto done;
       }
-      if (id == CMD_INDEX_FORMAT_HOOK)
+      if (hook->id == CMD_INDEX_FORMAT_HOOK)
         delete_idxfmt_hooks();
       else
-        mutt_delete_hooks(id);
+        mutt_delete_hooks(hook->id);
     }
   }
 
