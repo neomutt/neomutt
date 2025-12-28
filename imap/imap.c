@@ -60,7 +60,6 @@
 #include "question/lib.h"
 #include "adata.h"
 #include "auth.h"
-#include "commands.h"
 #include "edata.h"
 #include "external.h"
 #include "hook.h"
@@ -77,6 +76,100 @@
 
 struct Progress;
 struct stat;
+
+/**
+ * parse_subscribe_to - Parse the 'subscribe-to' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * The 'subscribe-to' command allows to subscribe to an IMAP-Mailbox.
+ * Patterns are not supported.
+ *
+ * Parse:
+ * - `subscribe-to <imap-folder-uri>`
+ */
+enum CommandResult parse_subscribe_to(const struct Command *cmd,
+                                      struct Buffer *line, struct Buffer *err)
+{
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_WARNING;
+
+  buf_reset(err);
+
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+
+  if (MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
+    goto done;
+  }
+
+  // Expand and subscribe
+  buf_expand_path(token);
+  if (imap_subscribe(buf_string(token), true) != 0)
+  {
+    buf_printf(err, _("Could not subscribe to %s"), buf_string(token));
+    rc = MUTT_CMD_ERROR;
+    goto done;
+  }
+
+  mutt_message(_("Subscribed to %s"), buf_string(token));
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
+}
+
+/**
+ * parse_unsubscribe_from - Parse the 'unsubscribe-from' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * The 'unsubscribe-from' command allows to unsubscribe from an IMAP-Mailbox.
+ * Patterns are not supported.
+ *
+ * Parse:
+ * - `unsubscribe-from <imap-folder-uri>`
+ */
+enum CommandResult parse_unsubscribe_from(const struct Command *cmd,
+                                          struct Buffer *line, struct Buffer *err)
+{
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_WARNING;
+
+  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+
+  if (MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
+    goto done;
+  }
+
+  // Expand and unsubscribe
+  buf_expand_path(token);
+  if (imap_subscribe(buf_string(token), false) != 0)
+  {
+    buf_printf(err, _("Could not unsubscribe from %s"), buf_string(token));
+    rc = MUTT_CMD_ERROR;
+    goto done;
+  }
+
+  mutt_message(_("Unsubscribed from %s"), buf_string(token));
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
+}
 
 /**
  * ImapCommands - Imap Commands

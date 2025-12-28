@@ -1,6 +1,6 @@
 /**
  * @file
- * Subject Regex handling
+ * Parse Subjectrx Commands
  *
  * @authors
  * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page neo_subjrx Subject Regex handling
+ * @page commands_subjectrx Parse Subjectrx Commands
  *
- * Subject Regex handling
+ * Parse Subjectrx Commands
  */
 
 #include "config.h"

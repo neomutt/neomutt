@@ -1,6 +1,6 @@
 /**
  * @file
- * Subject Regex handling
+ * Parse Subjectrx Commands
  *
  * @authors
  * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SUBJECTRX_H
-#define MUTT_SUBJECTRX_H
+#ifndef MUTT_COMMANDS_SUBJECTRX_H
+#define MUTT_COMMANDS_SUBJECTRX_H
 
 #include <stdbool.h>
 #include "core/lib.h"
@@ -53,4 +53,4 @@ enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buff
 bool subjrx_apply_mods(struct Envelope *env);
 void subjrx_clear_mods(struct MailboxView *mv);
 
-#endif /* MUTT_SUBJECTRX_H */
+#endif /* MUTT_COMMANDS_SUBJECTRX_H */

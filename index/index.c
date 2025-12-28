@@ -77,9 +77,9 @@
 #include "gui/lib.h"
 #include "attach/lib.h"
 #include "color/lib.h"
+#include "commands/lib.h"
 #include "menu/lib.h"
 #include "postpone/lib.h"
-#include "alternates.h"
 #include "globals.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
@@ -87,7 +87,6 @@
 #include "private_data.h"
 #include "score.h"
 #include "shared_data.h"
-#include "subjectrx.h"
 
 /**
  * sort_use_threads_warn - Alert the user to odd $sort settings

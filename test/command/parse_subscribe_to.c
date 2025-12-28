@@ -27,7 +27,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "commands.h"
+#include "imap/lib.h"
 #include "common.h"
 #include "test_common.h"
 

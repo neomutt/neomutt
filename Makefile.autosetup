@@ -61,12 +61,12 @@ default:	all
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
+NEOMUTTOBJS=	conststrings.o copy.o editmsg.o \
 		enriched.o external.o flags.o git_ver.o globals.o handler.o \
 		help.o hook.o mailcap.o maillist.o muttlib.o mutt_body.o \
 		mutt_config.o mutt_header.o mutt_logging.o mutt_mailbox.o \
 		mutt_signal.o mutt_socket.o mutt_thread.o mview.o mx.o \
-		recvcmd.o rfc3676.o score.o subjectrx.o system.o usage.o \
+		recvcmd.o rfc3676.o score.o system.o usage.o \
 		version.o
 @if !ENABLE_FUZZ_TESTS
 NEOMUTTOBJS+=	main.o
@@ -208,6 +208,23 @@ $(LIBCOLOR):	$(PWD)/color $(LIBCOLOROBJS)
 	$(RANLIB) $@
 $(PWD)/color:
 	$(MKDIR_P) $(PWD)/color
+
+###############################################################################
+# libcommands
+LIBCOMMANDS=	libcommands.a
+LIBCOMMANDSOBJS=commands/alternates.o commands/commands.o commands/group.o \
+		commands/ifdef.o commands/ignore.o commands/mailboxes.o \
+		commands/my_hdr.o commands/parse.o commands/setenv.o \
+		commands/source.o commands/spam.o commands/stailq.o \
+		commands/subjectrx.o commands/tags.o
+CLEANFILES+=	$(LIBCOMMANDS) $(LIBCOMMANDSOBJS)
+ALLOBJS+=	$(LIBCOMMANDSOBJS)
+
+$(LIBCOMMANDS): $(PWD)/commands $(LIBCOMMANDSOBJS)
+	$(AR) cr $@ $(LIBCOMMANDSOBJS)
+	$(RANLIB) $@
+$(PWD)/commands:
+	$(MKDIR_P) $(PWD)/commands
 
 ###############################################################################
 # libcomplete
@@ -757,7 +774,7 @@ $(PWD)/pager:
 ###############################################################################
 # libparse
 LIBPARSE=	libparse.a
-LIBPARSEOBJS=	parse/extract.o parse/rc.o parse/set.o
+LIBPARSEOBJS=	parse/dump.o parse/extract.o parse/rc.o parse/set.o
 CLEANFILES+=	$(LIBPARSE) $(LIBPARSEOBJS)
 ALLOBJS+=	$(LIBPARSEOBJS)
 
@@ -934,11 +951,11 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBLUA) \
 		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) $(LIBPROGRESS) \
 		$(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) \
-		$(LIBNNTP) $(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) \
-		$(LIBHELPBAR) $(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) \
-		$(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) $(LIBNCRYPT) $(LIBIMAP) \
-		$(LIBCONN) $(LIBHCACHE) $(LIBCOMPRESS) $(LIBSIDEBAR) \
-		$(LIBBCACHE) $(LIBHISTORY) $(LIBCORE) $(LIBPARSE) \
+		$(LIBNNTP) $(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBCOMMANDS) \
+		$(LIBENVELOPE) $(LIBHELPBAR) $(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) \
+		$(LIBMAILDIR) $(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) \
+		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) $(LIBCOMPRESS) \
+		$(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) $(LIBCORE) $(LIBPARSE) \
 		$(LIBEXPANDO) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
 		$(LIBDEBUG) $(LIBCLI) $(LIBMUTT)
 
@@ -1020,6 +1037,7 @@ coverage: all test
 	  --directory attach \
 	  --directory cli \
 	  --directory color \
+	  --directory commands \
 	  --directory compress \
 	  --directory config \
 	  --directory core \

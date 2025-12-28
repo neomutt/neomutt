@@ -50,6 +50,7 @@
 #include "expando_index.h"
 #include "attach/lib.h"
 #include "color/lib.h"
+#include "commands/lib.h"
 #include "expando/lib.h"
 #include "ncrypt/lib.h"
 #include "hook.h"
@@ -57,7 +58,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "subjectrx.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif

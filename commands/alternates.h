@@ -1,6 +1,6 @@
 /**
  * @file
- * Alternate address handling
+ * Parse Alternate Commands
  *
  * @authors
  * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_ALTERNATES_H
-#define MUTT_ALTERNATES_H
+#ifndef MUTT_COMMANDS_ALTERNATES_H
+#define MUTT_COMMANDS_ALTERNATES_H
 
 #include <stdbool.h>
 #include "core/lib.h"
@@ -52,4 +52,4 @@ enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *
 bool mutt_alternates_match(const char *addr);
 void mutt_alternates_reset(struct MailboxView *mv);
 
-#endif /* MUTT_ALTERNATES_H */
+#endif /* MUTT_COMMANDS_ALTERNATES_H */

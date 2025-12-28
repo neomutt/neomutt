@@ -28,7 +28,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "commands.h"
+#include "commands/lib.h"
 #include "common.h"
 #include "globals.h"
 #include "test_common.h"

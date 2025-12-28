@@ -725,14 +725,12 @@ URL_OBJS	= test/url/url_check_scheme.o \
 		  test/url/url_tostring.o
 
 # Cherry-picked objects
-MISC_OBJS	= alternates.o \
-		  commands.o \
+MISC_OBJS	= commands/commands.o \
 		  hook.o \
 		  muttlib.o \
 		  mutt_config.o \
 		  pattern/pattern.o \
-		  score.o \
-		  subjectrx.o
+		  score.o
 
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \

@@ -30,7 +30,7 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "commands.h"
+#include "commands/lib.h"
 #include "extract.h"
 
 /**

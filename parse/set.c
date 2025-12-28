@@ -36,7 +36,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "set.h"
-#include "commands.h"
+#include "dump.h"
 #include "extract.h"
 #include "muttlib.h"
 

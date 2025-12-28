@@ -26,7 +26,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "alternates.h"
+#include "commands/lib.h"
 #include "common.h"
 #include "test_common.h"
 

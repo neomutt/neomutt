@@ -1,6 +1,6 @@
 /**
  * @file
- * Alternate address handling
+ * Parse Alternate Commands
  *
  * @authors
  * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page neo_alternates Alternate address handling
+ * @page commands_alternates Parse Alternate Commands
  *
- * Alternate address handling
+ * Parse Alternate Commands
  */
 
 #include "config.h"
@@ -35,7 +35,7 @@
 #include "core/lib.h"
 #include "alternates.h"
 #include "parse/lib.h"
-#include "commands.h"
+#include "group.h"
 #include "mview.h"
 
 static struct RegexList Alternates = STAILQ_HEAD_INITIALIZER(Alternates); ///< List of regexes to match the user's alternate email addresses

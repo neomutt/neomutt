@@ -26,8 +26,8 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "commands/lib.h"
 #include "common.h"
-#include "subjectrx.h"
 #include "test_common.h"
 
 static const struct Command UnSubjectrx = { "unsubjectrx", CMD_UNSUBJECTRX, NULL, CMD_NO_DATA };

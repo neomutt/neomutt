@@ -56,8 +56,6 @@
  *
  * | File            | Description                |
  * | :-------------- | :------------------------- |
- * | alternates.c    | @subpage neo_alternates    |
- * | commands.c      | @subpage neo_commands      |
  * | copy.c          | @subpage neo_copy          |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |
@@ -85,7 +83,6 @@
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | rfc3676.c       | @subpage neo_rfc3676       |
  * | score.c         | @subpage neo_score         |
- * | subjectrx.c     | @subpage neo_subjrx        |
  * | system.c        | @subpage neo_system        |
  * | timegm.c        | @subpage neo_timegm        |
  * | usage.c         | @subpage neo_usage         |
@@ -138,6 +135,7 @@
 #include "browser/lib.h"
 #include "cli/lib.h"
 #include "color/lib.h"
+#include "commands/lib.h"
 #include "compmbox/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
@@ -154,8 +152,6 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "sidebar/lib.h"
-#include "alternates.h"
-#include "commands.h"
 #include "external.h"
 #include "globals.h"
 #include "hook.h"
@@ -165,7 +161,6 @@
 #include "mx.h"
 #include "nntp/adata.h" // IWYU pragma: keep
 #include "protos.h"
-#include "subjectrx.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

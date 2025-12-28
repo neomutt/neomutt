@@ -28,6 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | parse/extract.c     | @subpage parse_extract     |
+ * | parse/dump.c        | @subpage parse_dump        |
  * | parse/rc.c          | @subpage parse_rc          |
  * | parse/set.c         | @subpage parse_set         |
  */
@@ -36,6 +37,7 @@
 #define MUTT_PARSE_LIB_H
 
 // IWYU pragma: begin_keep
+#include "dump.h"
 #include "extract.h"
 #include "rc.h"
 #include "set.h"
