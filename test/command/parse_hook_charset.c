@@ -26,8 +26,8 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "hooks/lib.h"
 #include "common.h"
-#include "hook.h"
 #include "test_common.h"
 
 // clang-format off

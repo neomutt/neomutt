@@ -34,7 +34,7 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "mutt_socket.h"
-#include "hook.h"
+#include "hooks/lib.h"
 #ifndef USE_SSL
 #include "mutt/lib.h"
 #endif

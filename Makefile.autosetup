@@ -61,13 +61,12 @@ default:	all
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	conststrings.o copy.o editmsg.o \
-		enriched.o external.o flags.o git_ver.o globals.o handler.o \
-		help.o hook.o mailcap.o maillist.o muttlib.o mutt_body.o \
-		mutt_config.o mutt_header.o mutt_logging.o mutt_mailbox.o \
-		mutt_signal.o mutt_socket.o mutt_thread.o mview.o mx.o \
-		recvcmd.o rfc3676.o score.o system.o usage.o \
-		version.o
+NEOMUTTOBJS=	conststrings.o copy.o editmsg.o enriched.o external.o flags.o \
+		git_ver.o globals.o handler.o help.o mailcap.o maillist.o \
+		muttlib.o mutt_body.o mutt_config.o mutt_header.o \
+		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
+		mutt_thread.o mview.o mx.o recvcmd.o rfc3676.o score.o \
+		system.o usage.o version.o
 @if !ENABLE_FUZZ_TESTS
 NEOMUTTOBJS+=	main.o
 @endif
@@ -297,10 +296,10 @@ $(PWD)/compress:
 # libconfig
 LIBCONFIG=	libconfig.a
 LIBCONFIGOBJS=	config/bool.o config/charset.o config/dump.o config/enum.o \
-		config/helpers.o config/long.o config/mbtable.o config/myvar.o \
-		config/number.o config/path.o config/quad.o config/regex.o \
-		config/set.o config/slist.o config/sort.o config/string.o \
-		config/subset.o
+		config/helpers.o config/long.o config/mbtable.o \
+		config/myvar.o config/number.o config/path.o config/quad.o \
+		config/regex.o config/set.o config/slist.o config/sort.o \
+		config/string.o config/subset.o
 CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
 ALLOBJS+=	$(LIBCONFIGOBJS)
 
@@ -537,6 +536,20 @@ $(LIBHISTORY): $(PWD)/history $(LIBHISTORYOBJS)
 	$(RANLIB) $@
 $(PWD)/history:
 	$(MKDIR_P) $(PWD)/history
+
+###############################################################################
+# libhooks
+LIBHOOKS=	libhooks.a
+LIBHOOKSOBJS=	hooks/commands.o hooks/dump.o hooks/hook.o hooks/parse.o \
+		hooks/run.o
+CLEANFILES+=	$(LIBHOOKS) $(LIBHOOKSOBJS)
+ALLOBJS+=	$(LIBHOOKSOBJS)
+
+$(LIBHOOKS): $(PWD)/hooks $(LIBHOOKSOBJS)
+	$(AR) cr $@ $(LIBHOOKSOBJS)
+	$(RANLIB) $@
+$(PWD)/hooks:
+	$(MKDIR_P) $(PWD)/hooks
 
 ###############################################################################
 # libimap
@@ -951,13 +964,14 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBLUA) \
 		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) $(LIBPROGRESS) \
 		$(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) \
-		$(LIBNNTP) $(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBCOMMANDS) \
-		$(LIBENVELOPE) $(LIBHELPBAR) $(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) \
-		$(LIBMAILDIR) $(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) \
-		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) $(LIBCOMPRESS) \
-		$(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) $(LIBCORE) $(LIBPARSE) \
-		$(LIBEXPANDO) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
-		$(LIBDEBUG) $(LIBCLI) $(LIBMUTT)
+		$(LIBNNTP) $(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) \
+		$(LIBCOMMANDS) $(LIBHOOKS) $(LIBENVELOPE) $(LIBHELPBAR) \
+		$(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) \
+		$(LIBCOMPLETE) $(LIBNNTP) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
+		$(LIBHCACHE) $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
+		$(LIBHISTORY) $(LIBCORE) $(LIBPARSE) $(LIBEXPANDO) \
+		$(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) $(LIBDEBUG) $(LIBCLI) \
+		$(LIBMUTT)
 
 # neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
@@ -1044,6 +1058,7 @@ coverage: all test
 	  --directory editor \
 	  --directory email \
 	  --directory expando \
+	  --directory hooks \
 	  --directory imap \
 	  --directory key \
 	  --directory lua \

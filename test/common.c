@@ -42,6 +42,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
+#include "attach/lib.h"
 #include "browser/lib.h"
 #include "color/lib.h"
 #include "complete/lib.h"
@@ -53,7 +54,6 @@
 #include "protos.h"
 
 struct AddressList;
-struct AttachCtx;
 struct Body;
 struct Email;
 struct EmailArray;
@@ -566,6 +566,21 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
 }
 
 int nntp_sort_unsorted(const struct Email *a, const struct Email *b, bool reverse)
+{
+  return 0;
+}
+
+int mutt_comp_valid_command(const char *cmd)
+{
+  return 1;
+}
+
+void mutt_temp_attachments_cleanup(void)
+{
+}
+
+int mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path,
+                                StateFlags flags, enum SaveAttach opt)
 {
   return 0;
 }

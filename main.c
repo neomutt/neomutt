@@ -64,7 +64,6 @@
  * | globals.c       | @subpage neo_globals       |
  * | handler.c       | @subpage neo_handler       |
  * | help.c          | @subpage neo_help          |
- * | hook.c          | @subpage neo_hook          |
  * | mailcap.c       | @subpage neo_mailcap       |
  * | maillist.c      | @subpage neo_maillist      |
  * | main.c          | @subpage neo_main          |
@@ -138,6 +137,7 @@
 #include "commands/lib.h"
 #include "compmbox/lib.h"
 #include "history/lib.h"
+#include "hooks/lib.h"
 #include "imap/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
@@ -154,7 +154,6 @@
 #include "sidebar/lib.h"
 #include "external.h"
 #include "globals.h"
-#include "hook.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"

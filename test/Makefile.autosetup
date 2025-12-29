@@ -726,7 +726,6 @@ URL_OBJS	= test/url/url_check_scheme.o \
 
 # Cherry-picked objects
 MISC_OBJS	= commands/commands.o \
-		  hook.o \
 		  muttlib.o \
 		  mutt_config.o \
 		  pattern/pattern.o \

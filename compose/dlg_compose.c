@@ -77,6 +77,7 @@
 #include "lib.h"
 #include "attach/lib.h"
 #include "envelope/lib.h"
+#include "hooks/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
@@ -85,7 +86,6 @@
 #include "cbar.h"
 #include "functions.h"
 #include "globals.h"
-#include "hook.h"
 #include "mutt_logging.h"
 #include "shared_data.h"
 

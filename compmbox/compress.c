@@ -49,8 +49,8 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "expando/lib.h"
+#include "hooks/lib.h"
 #include "expando.h"
-#include "hook.h"
 #include "mx.h"
 #include "protos.h"
 

@@ -52,11 +52,11 @@
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "hooks/lib.h"
 #include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "globals.h"
-#include "hook.h"
 #include "mx.h"
 #include "protos.h"
 
