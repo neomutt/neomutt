@@ -67,6 +67,9 @@ size_t escape_string(struct Buffer *buf, const char *src)
       case '\t':
         len += buf_addstr(buf, "\\t");
         break;
+      case '`':
+        len += buf_addstr(buf, "\\`");
+        break;
       default:
         if ((*src == '\\') || (*src == '"'))
           len += buf_addch(buf, '\\');
