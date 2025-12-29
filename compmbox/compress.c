@@ -61,20 +61,20 @@ struct Email;
  */
 static const struct Command CompCommands[] = {
   // clang-format off
-  { "append-hook", parse_hook_compress, MUTT_APPEND_HOOK,
+  { "append-hook", CMD_APPEND_HOOK, parse_hook_compress, CMD_NO_DATA,
         N_("Define command to append to a compressed mailbox"),
         N_("append-hook <regex> <shell-command>"),
         "optionalfeatures.html#append-hook" },
-  { "close-hook", parse_hook_compress, MUTT_CLOSE_HOOK,
+  { "close-hook", CMD_CLOSE_HOOK, parse_hook_compress, CMD_NO_DATA,
         N_("Define command to close a compressed mailbox"),
         N_("close-hook <regex> <shell-command>"),
         "optionalfeatures.html#close-hook" },
-  { "open-hook", parse_hook_compress, MUTT_OPEN_HOOK,
+  { "open-hook", CMD_OPEN_HOOK, parse_hook_compress, CMD_NO_DATA,
         N_("Define command to open a compressed mailbox"),
         N_("open-hook <regex> <shell-command>"),
         "optionalfeatures.html#open-hook" },
 
-  { NULL, NULL, 0, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 
@@ -249,12 +249,12 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
     return m->compress_info;
 
   /* Open is compulsory */
-  const char *o = mutt_find_hook(MUTT_OPEN_HOOK, mailbox_path(m));
+  const char *o = mutt_find_hook(CMD_OPEN_HOOK, mailbox_path(m));
   if (!o)
     return NULL;
 
-  const char *c = mutt_find_hook(MUTT_CLOSE_HOOK, mailbox_path(m));
-  const char *a = mutt_find_hook(MUTT_APPEND_HOOK, mailbox_path(m));
+  const char *c = mutt_find_hook(CMD_CLOSE_HOOK, mailbox_path(m));
+  const char *a = mutt_find_hook(CMD_APPEND_HOOK, mailbox_path(m));
 
   struct CompressInfo *ci = MUTT_MEM_CALLOC(1, struct CompressInfo);
   m->compress_info = ci;
@@ -373,7 +373,7 @@ bool mutt_comp_can_read(const char *path)
   if (!path)
     return false;
 
-  if (mutt_find_hook(MUTT_OPEN_HOOK, path))
+  if (mutt_find_hook(CMD_OPEN_HOOK, path))
     return true;
 
   return false;

@@ -30,7 +30,7 @@
 #include "subjectrx.h"
 #include "test_common.h"
 
-static const struct Command Subjectrx = { "subjectrx", NULL, 0 };
+static const struct Command Subjectrx = { "subjectrx", CMD_SUBJECTRX, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

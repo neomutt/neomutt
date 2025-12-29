@@ -29,7 +29,7 @@
 #include "color/lib.h"
 #include "test_common.h"
 
-static const struct Command Color = { "color", NULL, 0 };
+static const struct Command Color = { "color", CMD_COLOR, NULL, CMD_NO_DATA };
 
 void test_parse_color_pair(void)
 {

@@ -23,13 +23,12 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <string.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
-#include "common.h"
 #include "test_common.h"
+
+static const struct Command Set = { "set", CMD_SET, parse_set, CMD_NO_DATA };
 
 void test_parse_set(void)
 {
@@ -44,7 +43,7 @@ void test_parse_set(void)
   struct Buffer *err = buf_pool_get();
 
   TEST_CASE("parse_set");
-  enum CommandResult rc = parse_set(&mutt_commands[MUTT_SET_SET], line, err);
+  enum CommandResult rc = parse_set(&Set, line, err);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   buf_pool_release(&line);

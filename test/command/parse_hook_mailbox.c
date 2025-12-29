@@ -39,9 +39,9 @@ static struct ConfigDef Vars[] = {
 };
 
 // clang-format off
-static const struct Command FccHook     = { "fcc-hook",      NULL, MUTT_FCC_HOOK };
-static const struct Command FccSaveHook = { "fcc-save-hook", NULL, MUTT_FCC_HOOK | MUTT_SAVE_HOOK };
-static const struct Command SaveHook    = { "save-hook",     NULL, MUTT_SAVE_HOOK };
+static const struct Command FccHook     = { "fcc-hook",      CMD_FCC_HOOK,      NULL, CMD_NO_DATA };
+static const struct Command FccSaveHook = { "fcc-save-hook", CMD_FCC_SAVE_HOOK, NULL, CMD_NO_DATA };
+static const struct Command SaveHook    = { "save-hook",     CMD_SAVE_HOOK,     NULL, CMD_NO_DATA };
 // clang-format on
 
 // clang-format off

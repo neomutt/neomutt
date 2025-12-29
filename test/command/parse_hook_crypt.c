@@ -31,7 +31,7 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command CryptHook = { "crypt-hook", NULL, MUTT_CRYPT_HOOK };
+static const struct Command CryptHook = { "crypt-hook", CMD_CRYPT_HOOK, NULL };
 // clang-format on
 
 // clang-format off

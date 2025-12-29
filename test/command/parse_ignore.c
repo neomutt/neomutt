@@ -30,7 +30,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command Ignore = { "ignore", NULL, 0 };
+static const struct Command Ignore = { "ignore", CMD_IGNORE, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

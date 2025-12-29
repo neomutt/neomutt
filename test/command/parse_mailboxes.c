@@ -31,8 +31,8 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command Mailboxes      = { "mailboxes",       NULL, 0 };
-static const struct Command NamedMailboxes = { "named-mailboxes", NULL, MUTT_NAMED };
+static const struct Command Mailboxes      = { "mailboxes",       CMD_MAILBOXES,       NULL, CMD_NO_DATA };
+static const struct Command NamedMailboxes = { "named-mailboxes", CMD_NAMED_MAILBOXES, NULL, CMD_NO_DATA };
 // clang-format on
 
 // clang-format off

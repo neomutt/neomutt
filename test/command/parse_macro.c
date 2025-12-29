@@ -30,7 +30,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command Macro = { "macro", NULL, 1 };
+static const struct Command Macro = { "macro", CMD_MACRO, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

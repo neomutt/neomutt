@@ -31,7 +31,8 @@
 #include "hook.h"
 #include "test_common.h"
 
-static const struct Command IndexFormatHook = { "index-format-hook", NULL, MUTT_IDXFMTHOOK };
+static const struct Command IndexFormatHook = { "index-format-hook",
+                                                CMD_INDEX_FORMAT_HOOK, NULL };
 
 static struct ConfigDef Vars[] = {
   // clang-format off

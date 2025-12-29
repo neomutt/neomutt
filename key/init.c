@@ -69,32 +69,32 @@ static void create_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
  */
 static const struct Command KeyCommands[] = {
   // clang-format off
-  { "bind", parse_bind, 0,
+  { "bind", CMD_BIND, parse_bind, CMD_NO_DATA,
         N_("Bind a key to a function"),
         N_("bind <map>[,<map> ... ] <key> <function>"),
         "configuration.html#bind" },
-  { "exec", parse_exec, 0,
+  { "exec", CMD_EXEC, parse_exec, CMD_NO_DATA,
         N_("Execute a function"),
         N_("exec <function> [ <function> ... ]"),
         "configuration.html#exec" },
-  { "macro", parse_macro, 1,
+  { "macro", CMD_MACRO, parse_macro, CMD_NO_DATA,
         N_("Define a keyboard macro"),
         N_("macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"),
         "configuration.html#macro" },
-  { "push", parse_push, 0,
+  { "push", CMD_PUSH, parse_push, CMD_NO_DATA,
         N_("Push a string into NeoMutt's input queue (simulate typing)"),
         N_("push <string>"),
         "configuration.html#push" },
-  { "unbind", parse_unbind, MUTT_UNBIND,
+  { "unbind", CMD_UNBIND, parse_unbind, CMD_NO_DATA,
         N_("Remove a key binding"),
         N_("unbind { * | <menu>[,<menu> ... ] } [ <key> ]"),
         "configuration.html#unbind" },
-  { "unmacro", parse_unbind, MUTT_UNMACRO,
+  { "unmacro", CMD_UNMACRO, parse_unbind, CMD_NO_DATA,
         N_("Remove a keyboard `macro`"),
         N_("unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"),
         "configuration.html#unmacro" },
 
-  { NULL, NULL, 0, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

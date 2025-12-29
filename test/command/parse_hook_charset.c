@@ -31,8 +31,8 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command CharsetHook = { "charset-hook", NULL, MUTT_CHARSET_HOOK };
-static const struct Command IconvHook   = { "iconv-hook",   NULL, MUTT_ICONV_HOOK };
+static const struct Command CharsetHook = { "charset-hook", CMD_CHARSET_HOOK, NULL };
+static const struct Command IconvHook   = { "iconv-hook",   CMD_ICONV_HOOK,   NULL };
 // clang-format on
 
 // clang-format off

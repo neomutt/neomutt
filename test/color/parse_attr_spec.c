@@ -36,7 +36,7 @@ struct AttrTest
   int value;
 };
 
-static const struct Command Mono = { "mono", NULL, 0 };
+static const struct Command Mono = { "mono", CMD_MONO, NULL, CMD_NO_DATA };
 
 void test_parse_attr_spec(void)
 {

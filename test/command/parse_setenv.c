@@ -26,14 +26,13 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "parse/lib.h"
 #include "commands.h"
 #include "common.h"
 #include "test_common.h"
 
 // clang-format off
-static const struct Command Setenv   = { "setenv",   NULL, MUTT_SET_SET };
-static const struct Command UnSetenv = { "unsetenv", NULL, MUTT_SET_UNSET };
+static const struct Command Setenv   = { "setenv",   CMD_SETENV,   NULL, CMD_NO_DATA };
+static const struct Command UnSetenv = { "unsetenv", CMD_UNSETENV, NULL, CMD_NO_DATA };
 // clang-format on
 
 // clang-format off

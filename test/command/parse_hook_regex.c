@@ -31,7 +31,7 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command AccountHook = { "account-hook", NULL, MUTT_ACCOUNT_HOOK };
+static const struct Command AccountHook = { "account-hook", CMD_ACCOUNT_HOOK, NULL };
 // clang-format on
 
 // clang-format off

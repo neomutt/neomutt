@@ -30,7 +30,7 @@
 #include "score.h"
 #include "test_common.h"
 
-static const struct Command Score = { "score", NULL, 0 };
+static const struct Command Score = { "score", CMD_SCORE, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

@@ -34,11 +34,11 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command AlternativeOrder = { "alternative_order", NULL, IP &AlternativeOrderList };
-static const struct Command AutoView         = { "auto_view",         NULL, IP &AutoViewList         };
-static const struct Command HdrOrder         = { "hdr_order",         NULL, IP &HeaderOrderList      };
-static const struct Command MailtoAllow      = { "mailto_allow",      NULL, IP &MailToAllow          };
-static const struct Command MimeLookup       = { "mime_lookup",       NULL, IP &MimeLookupList       };
+static const struct Command AlternativeOrder = { "alternative_order", CMD_ALTERNATIVE_ORDER, NULL, IP &AlternativeOrderList };
+static const struct Command AutoView         = { "auto_view",         CMD_AUTO_VIEW,         NULL, IP &AutoViewList         };
+static const struct Command HdrOrder         = { "hdr_order",         CMD_HDR_ORDER,         NULL, IP &HeaderOrderList      };
+static const struct Command MailtoAllow      = { "mailto_allow",      CMD_MAILTO_ALLOW,      NULL, IP &MailToAllow          };
+static const struct Command MimeLookup       = { "mime_lookup",       CMD_MIME_LOOKUP,       NULL, IP &MimeLookupList       };
 // clang-format off
 
 // clang-format off

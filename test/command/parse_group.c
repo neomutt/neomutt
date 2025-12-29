@@ -26,7 +26,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "commands.h"
@@ -34,8 +33,8 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command Group   = { "group",   NULL, MUTT_GROUP };
-static const struct Command UnGroup = { "ungroup", NULL, MUTT_UNGROUP };
+static const struct Command Group   = { "group",   CMD_GROUP,   NULL, CMD_NO_DATA };
+static const struct Command UnGroup = { "ungroup", CMD_UNGROUP, NULL, CMD_NO_DATA };
 // clang-format on
 
 static struct ConfigDef Vars[] = {

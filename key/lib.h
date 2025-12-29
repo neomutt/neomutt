@@ -46,9 +46,6 @@
 #include "core/lib.h"
 #include "menu/lib.h"
 
-#define MUTT_UNBIND   (1 << 0)  ///< Parse 'unbind'  command
-#define MUTT_UNMACRO  (1 << 1)  ///< Parse 'unmacro' command
-
 typedef uint8_t GetChFlags;            ///< Flags for mutt_getch(), e.g. #GETCH_NO_FLAGS
 #define GETCH_NO_FLAGS             0   ///< No flags are set
 #define GETCH_IGNORE_MACRO   (1 << 0)  ///< Don't use MacroEvents

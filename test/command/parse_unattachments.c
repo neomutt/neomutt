@@ -30,7 +30,8 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command UnAttachments = { "unattachments", NULL, 0 };
+static const struct Command UnAttachments = { "unattachments", CMD_UNATTACHMENTS,
+                                              NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

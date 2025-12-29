@@ -30,7 +30,7 @@
 #include "subjectrx.h"
 #include "test_common.h"
 
-static const struct Command UnSubjectrx = { "unsubjectrx", NULL, 0 };
+static const struct Command UnSubjectrx = { "unsubjectrx", CMD_UNSUBJECTRX, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

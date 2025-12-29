@@ -31,9 +31,9 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command ShutdownHook = { "shutdown-hook", NULL, MUTT_SHUTDOWN_HOOK };
-static const struct Command StartupHook  = { "startup-hook",  NULL, MUTT_STARTUP_HOOK };
-static const struct Command TimeoutHook  = { "timeout-hook",  NULL, MUTT_TIMEOUT_HOOK };
+static const struct Command ShutdownHook = { "shutdown-hook", CMD_SHUTDOWN_HOOK, NULL };
+static const struct Command StartupHook  = { "startup-hook",  CMD_STARTUP_HOOK,  NULL };
+static const struct Command TimeoutHook  = { "timeout-hook",  CMD_TIMEOUT_HOOK,  NULL };
 // clang-format on
 
 // clang-format off

@@ -37,6 +37,8 @@
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -45,11 +47,13 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
+#include "mutt.h"
 #include "hook.h"
 #include "attach/lib.h"
 #include "compmbox/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
+#include "pager/lib.h"
 #include "parse/lib.h"
 #include "pattern/lib.h"
 #include "commands.h"
@@ -64,7 +68,7 @@ extern const struct ExpandoDefinition IndexFormatDef[];
  */
 struct Hook
 {
-  HookFlags type;              ///< Hook type
+  enum CommandId id;           ///< Hook CommandId, e.g. #CMD_FOLDER_HOOK
   struct Regex regex;          ///< Regular expression
   char *command;               ///< Filename, command or pattern to execute
   char *source_file;           ///< Used for relative-directory source
@@ -74,14 +78,14 @@ struct Hook
 };
 TAILQ_HEAD(HookList, Hook);
 
-/// All simple hooks, e.g. MUTT_FOLDER_HOOK
+/// All simple hooks, e.g. CMD_FOLDER_HOOK
 static struct HookList Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 /// All Index Format hooks
 static struct HashTable *IdxFmtHooks = NULL;
 
-/// The type of the hook currently being executed, e.g. #MUTT_SAVE_HOOK
-static HookFlags CurrentHookType = MUTT_HOOK_NO_FLAGS;
+/// The ID of the Hook currently being executed, e.g. #CMD_SAVE_HOOK
+static enum CommandId CurrentHookId = CMD_NONE;
 
 /**
  * hook_free - Free a Hook
@@ -117,7 +121,7 @@ static struct Hook *hook_new(void)
 }
 
 /**
- * parse_hook_charset - Parse charset hook commands - Implements Command::parse() - @ingroup command_parse
+ * parse_hook_charset - Parse charset Hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `charset-hook <alias>   <charset>`
@@ -141,8 +145,8 @@ enum CommandResult parse_hook_charset(const struct Command *cmd,
   if (parse_extract_token(charset, line, TOKEN_NO_FLAGS) < 0)
     goto done;
 
-  const enum LookupType type = (cmd->data & MUTT_ICONV_HOOK) ? MUTT_LOOKUP_ICONV :
-                                                               MUTT_LOOKUP_CHARSET;
+  const enum LookupType type = (cmd->id == CMD_ICONV_HOOK) ? MUTT_LOOKUP_ICONV :
+                                                             MUTT_LOOKUP_CHARSET;
 
   if (buf_is_empty(alias) || buf_is_empty(charset))
   {
@@ -168,7 +172,7 @@ done:
 }
 
 /**
- * parse_hook_global - Parse global hook commands - Implements Command::parse() - @ingroup command_parse
+ * parse_hook_global - Parse global Hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `shutdown-hook <command>`
@@ -200,11 +204,11 @@ enum CommandResult parse_hook_global(const struct Command *cmd,
     goto cleanup;
   }
 
-  /* check to make sure that a matching hook doesn't already exist */
+  /* check to make sure that a matching Hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    /* Ignore duplicate global hooks */
-    if ((hook->type == cmd->data) && mutt_str_equal(hook->command, buf_string(command)))
+    /* Ignore duplicate global Hooks */
+    if ((hook->id == cmd->id) && mutt_str_equal(hook->command, buf_string(command)))
     {
       rc = MUTT_CMD_SUCCESS;
       goto cleanup;
@@ -212,7 +216,7 @@ enum CommandResult parse_hook_global(const struct Command *cmd,
   }
 
   hook = hook_new();
-  hook->type = cmd->data;
+  hook->id = cmd->id;
   hook->command = buf_strdup(command);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = NULL;
@@ -230,7 +234,7 @@ cleanup:
 }
 
 /**
- * parse_hook_pattern - Parse pattern-based hook commands - Implements Command::parse() - @ingroup command_parse
+ * parse_hook_pattern - Parse pattern-based Hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `message-hook <pattern> <command>`
@@ -291,7 +295,7 @@ enum CommandResult parse_hook_pattern(const struct Command *cmd,
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if ((hook->type == cmd->data) && (hook->regex.pat_not == pat_not) &&
+    if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(pattern), hook->regex.pattern))
     {
       /* these hooks allow multiple commands with the same pattern,
@@ -306,9 +310,9 @@ enum CommandResult parse_hook_pattern(const struct Command *cmd,
   }
 
   PatternCompFlags comp_flags;
-  if (cmd->data & MUTT_SEND2_HOOK)
+  if (cmd->id == CMD_SEND2_HOOK)
     comp_flags = MUTT_PC_SEND_MODE_SEARCH;
-  else if (cmd->data & (MUTT_SEND_HOOK))
+  else if (cmd->id == CMD_SEND_HOOK)
     comp_flags = MUTT_PC_NO_FLAGS;
   else
     comp_flags = MUTT_PC_FULL_MSG;
@@ -319,7 +323,7 @@ enum CommandResult parse_hook_pattern(const struct Command *cmd,
     goto cleanup;
 
   hook = hook_new();
-  hook->type = cmd->data;
+  hook->id = cmd->id;
   hook->command = buf_strdup(command);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = pat;
@@ -338,6 +342,67 @@ cleanup:
 }
 
 /**
+ * add_mailbox_hook - Add a Mailbox Hook
+ * @param id      CommandId, e.g. CMD_FCC_SAVE_HOOK
+ * @param mailbox Mailbox
+ * @param pattern Pattern to match
+ * @param pat_not true of Pattern is inverted
+ * @param err     Buffer for error message
+ * @retval enum CommandResult, e.g. MUTT_CMD_SUCCESS
+ */
+enum CommandResult add_mailbox_hook(enum CommandId id, struct Buffer *mailbox,
+                                    struct Buffer *pattern, bool pat_not, struct Buffer *err)
+{
+  struct Hook *hook = NULL;
+  struct PatternList *pat = NULL;
+
+  /* check to make sure that a matching hook doesn't already exist */
+  TAILQ_FOREACH(hook, &Hooks, entries)
+  {
+    if ((hook->id == id) && (hook->regex.pat_not == pat_not) &&
+        mutt_str_equal(buf_string(pattern), hook->regex.pattern))
+    {
+      // Update an existing hook
+      FREE(&hook->command);
+      hook->command = buf_strdup(mailbox);
+      FREE(&hook->source_file);
+      hook->source_file = mutt_get_sourced_cwd();
+
+      expando_free(&hook->expando);
+      hook->expando = expando_parse(buf_string(mailbox), IndexFormatDef, err);
+
+      return MUTT_CMD_SUCCESS;
+    }
+  }
+
+  PatternCompFlags comp_flags;
+  if (id == CMD_FCC_HOOK)
+    comp_flags = MUTT_PC_NO_FLAGS;
+  else
+    comp_flags = MUTT_PC_FULL_MSG;
+
+  struct MailboxView *mv_cur = get_current_mailbox_view();
+  pat = mutt_pattern_comp(mv_cur, buf_string(pattern), comp_flags, err);
+  if (!pat)
+    return MUTT_CMD_ERROR;
+
+  struct Expando *exp = expando_parse(buf_string(mailbox), IndexFormatDef, err);
+
+  hook = hook_new();
+  hook->id = id;
+  hook->command = buf_strdup(mailbox);
+  hook->source_file = mutt_get_sourced_cwd();
+  hook->pattern = pat;
+  hook->regex.pattern = buf_strdup(pattern);
+  hook->regex.regex = NULL;
+  hook->regex.pat_not = pat_not;
+  hook->expando = exp;
+
+  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * parse_hook_mailbox - Parse mailbox pattern hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
@@ -348,10 +413,8 @@ cleanup:
 enum CommandResult parse_hook_mailbox(const struct Command *cmd,
                                       struct Buffer *line, struct Buffer *err)
 {
-  struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
-  struct PatternList *pat = NULL;
 
   struct Buffer *pattern = buf_pool_get();
   struct Buffer *mailbox = buf_pool_get();
@@ -396,50 +459,20 @@ enum CommandResult parse_hook_mailbox(const struct Command *cmd,
 
   buf_expand_path(mailbox);
 
-  /* check to make sure that a matching hook doesn't already exist */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  if ((cmd->id == CMD_FCC_HOOK) || (cmd->id == CMD_FCC_SAVE_HOOK))
   {
-    if ((hook->type == cmd->data) && (hook->regex.pat_not == pat_not) &&
-        mutt_str_equal(buf_string(pattern), hook->regex.pattern))
-    {
-      // Update an existing hook
-      FREE(&hook->command);
-      hook->command = buf_strdup(mailbox);
-      FREE(&hook->source_file);
-      hook->source_file = mutt_get_sourced_cwd();
-
-      expando_free(&hook->expando);
-      hook->expando = expando_parse(buf_string(mailbox), IndexFormatDef, err);
-
-      rc = MUTT_CMD_SUCCESS;
+    rc = add_mailbox_hook(CMD_FCC_HOOK, mailbox, pattern, pat_not, err);
+    if (rc != MUTT_CMD_SUCCESS)
       goto cleanup;
-    }
   }
 
-  PatternCompFlags comp_flags;
-  if (cmd->data & MUTT_FCC_HOOK)
-    comp_flags = MUTT_PC_NO_FLAGS;
-  else
-    comp_flags = MUTT_PC_FULL_MSG;
+  if ((cmd->id == CMD_SAVE_HOOK) || (cmd->id == CMD_FCC_SAVE_HOOK))
+  {
+    rc = add_mailbox_hook(CMD_SAVE_HOOK, mailbox, pattern, pat_not, err);
+    if (rc != MUTT_CMD_SUCCESS)
+      goto cleanup;
+  }
 
-  struct MailboxView *mv_cur = get_current_mailbox_view();
-  pat = mutt_pattern_comp(mv_cur, buf_string(pattern), comp_flags, err);
-  if (!pat)
-    goto cleanup;
-
-  struct Expando *exp = expando_parse(buf_string(mailbox), IndexFormatDef, err);
-
-  hook = hook_new();
-  hook->type = cmd->data;
-  hook->command = buf_strdup(mailbox);
-  hook->source_file = mutt_get_sourced_cwd();
-  hook->pattern = pat;
-  hook->regex.pattern = buf_strdup(pattern);
-  hook->regex.regex = NULL;
-  hook->regex.pat_not = pat_not;
-  hook->expando = exp;
-
-  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
@@ -500,7 +533,7 @@ enum CommandResult parse_hook_regex(const struct Command *cmd,
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if ((hook->type == cmd->data) && (hook->regex.pat_not == pat_not) &&
+    if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
     {
       // Ignore duplicate hooks
@@ -523,7 +556,7 @@ enum CommandResult parse_hook_regex(const struct Command *cmd,
   }
 
   hook = hook_new();
-  hook->type = cmd->data;
+  hook->id = cmd->id;
   hook->command = buf_strdup(command);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = NULL;
@@ -636,7 +669,7 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if ((hook->type == cmd->data) && (hook->regex.pat_not == pat_not) &&
+    if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
     {
       // Ignore duplicate hooks
@@ -659,7 +692,7 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
   }
 
   hook = hook_new();
-  hook->type = cmd->data;
+  hook->id = cmd->id;
   hook->command = buf_strdup(command);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = NULL;
@@ -730,7 +763,7 @@ enum CommandResult parse_hook_crypt(const struct Command *cmd,
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if ((hook->type == cmd->data) && (hook->regex.pat_not == pat_not) &&
+    if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
     {
       // Ignore duplicate hooks
@@ -753,7 +786,7 @@ enum CommandResult parse_hook_crypt(const struct Command *cmd,
   }
 
   hook = hook_new();
-  hook->type = cmd->data;
+  hook->id = cmd->id;
   hook->command = buf_strdup(keyid);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = NULL;
@@ -868,7 +901,7 @@ enum CommandResult parse_hook_mbox(const struct Command *cmd,
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if ((hook->type == cmd->data) && (hook->regex.pat_not == pat_not) &&
+    if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
     {
       // Update an existing hook
@@ -898,7 +931,7 @@ enum CommandResult parse_hook_mbox(const struct Command *cmd,
   struct Expando *exp = expando_parse(buf_string(command), IndexFormatDef, err);
 
   hook = hook_new();
-  hook->type = cmd->data;
+  hook->id = cmd->id;
   hook->command = buf_strdup(command);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = NULL;
@@ -977,7 +1010,7 @@ enum CommandResult parse_hook_compress(const struct Command *cmd,
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if ((hook->type == cmd->data) && (hook->regex.pat_not == pat_not) &&
+    if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
     {
       // Update an existing hook
@@ -1002,7 +1035,7 @@ enum CommandResult parse_hook_compress(const struct Command *cmd,
   }
 
   hook = hook_new();
-  hook->type = cmd->data;
+  hook->id = cmd->id;
   hook->command = buf_strdup(command);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = NULL;
@@ -1022,18 +1055,18 @@ cleanup:
 
 /**
  * mutt_delete_hooks - Delete matching hooks
- * @param type Hook type to delete, see #HookFlags
+ * @param id Hook CommandId to delete, e.g. #CMD_SEND_HOOK
  *
- * If MUTT_HOOK_NO_FLAGS is passed, all the hooks will be deleted.
+ * If CMD_NONE is passed, all the hooks will be deleted.
  */
-void mutt_delete_hooks(HookFlags type)
+void mutt_delete_hooks(enum CommandId id)
 {
   struct Hook *h = NULL;
   struct Hook *tmp = NULL;
 
   TAILQ_FOREACH_SAFE(h, &Hooks, entries, tmp)
   {
-    if ((type == MUTT_HOOK_NO_FLAGS) || (type == h->type))
+    if ((id == CMD_NONE) || (id == h->id))
     {
       TAILQ_REMOVE(&Hooks, h, entries);
       hook_free(&h);
@@ -1159,7 +1192,7 @@ enum CommandResult parse_hook_index(const struct Command *cmd,
     goto out;
 
   hook = hook_new();
-  hook->type = MUTT_IDXFMTHOOK;
+  hook->id = CMD_INDEX_FORMAT_HOOK;
   hook->command = NULL;
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = pat;
@@ -1189,32 +1222,6 @@ out:
 }
 
 /**
- * mutt_get_hook_type - Find a hook by name
- * @param name Name to find
- * @retval num                 Hook ID, e.g. #MUTT_FOLDER_HOOK
- * @retval #MUTT_HOOK_NO_FLAGS Error, no matching hook
- */
-static HookFlags mutt_get_hook_type(const char *name)
-{
-  const struct Command **cp = NULL;
-  ARRAY_FOREACH(cp, &NeoMutt->commands)
-  {
-    const struct Command *cmd = *cp;
-
-    if (((cmd->parse == parse_hook_index) || (cmd->parse == parse_hook_global) ||
-         (cmd->parse == parse_hook_pattern) ||
-         (cmd->parse == parse_hook_mailbox) || (cmd->parse == parse_hook_regex) ||
-         (cmd->parse == parse_hook_folder) || (cmd->parse == parse_hook_crypt) ||
-         (cmd->parse == parse_hook_mbox) || (cmd->parse == parse_hook_compress)) &&
-        mutt_istr_equal(cmd->name, name))
-    {
-      return cmd->data;
-    }
-  }
-  return MUTT_HOOK_NO_FLAGS;
-}
-
-/**
  * parse_unhook - Parse the unhook command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
@@ -1237,42 +1244,43 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf_string(token)))
     {
-      if (CurrentHookType != TOKEN_NO_FLAGS)
+      if (CurrentHookId != TOKEN_NO_FLAGS)
       {
         buf_addstr(err, _("unhook: Can't do unhook * from within a hook"));
         goto done;
       }
-      mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
+      mutt_delete_hooks(CMD_NONE);
       delete_idxfmt_hooks();
       mutt_ch_lookup_remove();
     }
     else
     {
-      HookFlags type = mutt_get_hook_type(buf_string(token));
-
-      if (type == MUTT_HOOK_NO_FLAGS)
+      const struct Command *hook = command_find_by_name(&NeoMutt->commands,
+                                                        buf_string(token));
+      if (!hook)
       {
         buf_printf(err, _("unhook: unknown hook type: %s"), buf_string(token));
         rc = MUTT_CMD_ERROR;
         goto done;
       }
-      if (type & (MUTT_CHARSET_HOOK | MUTT_ICONV_HOOK))
+
+      if ((hook->id == CMD_CHARSET_HOOK) || (hook->id == CMD_ICONV_HOOK))
       {
         mutt_ch_lookup_remove();
         rc = MUTT_CMD_SUCCESS;
         goto done;
       }
-      if (CurrentHookType == type)
+      if (CurrentHookId == hook->id)
       {
         buf_printf(err, _("unhook: Can't delete a %s from within a %s"),
                    buf_string(token), buf_string(token));
         rc = MUTT_CMD_WARNING;
         goto done;
       }
-      if (type == MUTT_IDXFMTHOOK)
+      if (hook->id == CMD_INDEX_FORMAT_HOOK)
         delete_idxfmt_hooks();
       else
-        mutt_delete_hooks(type);
+        mutt_delete_hooks(hook->id);
     }
   }
 
@@ -1296,14 +1304,14 @@ void mutt_folder_hook(const char *path, const char *desc)
   struct Hook *hook = NULL;
   struct Buffer *err = buf_pool_get();
 
-  CurrentHookType = MUTT_FOLDER_HOOK;
+  CurrentHookId = CMD_FOLDER_HOOK;
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!hook->command)
       continue;
 
-    if (!(hook->type & MUTT_FOLDER_HOOK))
+    if (!(hook->id == CMD_FOLDER_HOOK))
       continue;
 
     const char *match = NULL;
@@ -1325,27 +1333,27 @@ void mutt_folder_hook(const char *path, const char *desc)
   }
   buf_pool_release(&err);
 
-  CurrentHookType = MUTT_HOOK_NO_FLAGS;
+  CurrentHookId = CMD_NONE;
 }
 
 /**
  * mutt_find_hook - Find a matching hook
- * @param type Hook type, see #HookFlags
- * @param pat  Pattern to match
+ * @param id  Hook CommandId, e.g #CMD_FOLDER_HOOK
+ * @param pat Pattern to match
  * @retval ptr Command string
  *
  * @note The returned string must not be freed.
  */
-char *mutt_find_hook(HookFlags type, const char *pat)
+char *mutt_find_hook(enum CommandId id, const char *pat)
 {
-  struct Hook *tmp = NULL;
+  struct Hook *hook = NULL;
 
-  TAILQ_FOREACH(tmp, &Hooks, entries)
+  TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if (tmp->type & type)
+    if (hook->id == id)
     {
-      if (mutt_regex_match(&tmp->regex, pat))
-        return tmp->command;
+      if (mutt_regex_match(&hook->regex, pat))
+        return hook->command;
     }
   }
   return NULL;
@@ -1353,24 +1361,24 @@ char *mutt_find_hook(HookFlags type, const char *pat)
 
 /**
  * mutt_message_hook - Perform a message hook
- * @param m   Mailbox
- * @param e   Email
- * @param type Hook type, see #HookFlags
+ * @param m  Mailbox
+ * @param e  Email
+ * @param id Hook CommandId, e.g #CMD_FOLDER_HOOK
  */
-void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
+void mutt_message_hook(struct Mailbox *m, struct Email *e, enum CommandId id)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
   struct Buffer *err = buf_pool_get();
 
-  CurrentHookType = type;
+  CurrentHookId = id;
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!hook->command)
       continue;
 
-    if (hook->type & type)
+    if (hook->id == id)
     {
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
@@ -1378,7 +1386,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
         if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
         {
           mutt_error("%s", buf_string(err));
-          CurrentHookType = MUTT_HOOK_NO_FLAGS;
+          CurrentHookId = CMD_NONE;
           buf_pool_release(&err);
 
           return;
@@ -1391,19 +1399,20 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
   }
   buf_pool_release(&err);
 
-  CurrentHookType = MUTT_HOOK_NO_FLAGS;
+  CurrentHookId = CMD_NONE;
 }
 
 /**
  * addr_hook - Perform an address hook (get a path)
- * @param path    Buffer for path
- * @param type    Hook type, see #HookFlags
- * @param m       Mailbox
- * @param e       Email
+ * @param path Buffer for path
+ * @param id   Hook CommandId, e.g. #CMD_FOLDER_HOOK
+ * @param m    Mailbox
+ * @param e    Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int addr_hook(struct Buffer *path, HookFlags type, struct Mailbox *m, struct Email *e)
+static int addr_hook(struct Buffer *path, enum CommandId id, struct Mailbox *m,
+                     struct Email *e)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
@@ -1414,7 +1423,7 @@ static int addr_hook(struct Buffer *path, HookFlags type, struct Mailbox *m, str
     if (!hook->command)
       continue;
 
-    if (hook->type & type)
+    if (hook->id == id)
     {
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
@@ -1438,7 +1447,7 @@ static int addr_hook(struct Buffer *path, HookFlags type, struct Mailbox *m, str
 void mutt_default_save(struct Buffer *path, struct Email *e)
 {
   struct Mailbox *m_cur = get_current_mailbox();
-  if (addr_hook(path, MUTT_SAVE_HOOK, m_cur, e) == 0)
+  if (addr_hook(path, CMD_SAVE_HOOK, m_cur, e) == 0)
     return;
 
   struct Envelope *env = e->env;
@@ -1477,7 +1486,7 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
 {
   buf_alloc(path, PATH_MAX);
 
-  if (addr_hook(path, MUTT_FCC_HOOK, NULL, e) != 0)
+  if (addr_hook(path, CMD_FCC_HOOK, NULL, e) != 0)
   {
     const struct Address *to = TAILQ_FIRST(&e->env->to);
     const struct Address *cc = TAILQ_FIRST(&e->env->cc);
@@ -1513,15 +1522,15 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
  * list_hook - Find hook strings matching
  * @param[out] matches List of hook strings
  * @param[in]  match   String to match
- * @param[in]  type    Hook type, see #HookFlags
+ * @param[in]  id      Hook CommandId, e.g. #CMD_FOLDER_HOOK
  */
-static void list_hook(struct ListHead *matches, const char *match, HookFlags type)
+static void list_hook(struct ListHead *matches, const char *match, enum CommandId id)
 {
   struct Hook *tmp = NULL;
 
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
-    if ((tmp->type & type) && mutt_regex_match(&tmp->regex, match))
+    if ((tmp->id == id) && mutt_regex_match(&tmp->regex, match))
     {
       mutt_list_insert_tail(matches, mutt_str_dup(tmp->command));
     }
@@ -1537,7 +1546,7 @@ static void list_hook(struct ListHead *matches, const char *match, HookFlags typ
  */
 void mutt_crypt_hook(struct ListHead *list, struct Address *addr)
 {
-  list_hook(list, buf_string(addr->mailbox), MUTT_CRYPT_HOOK);
+  list_hook(list, buf_string(addr->mailbox), CMD_CRYPT_HOOK);
 }
 
 /**
@@ -1558,7 +1567,7 @@ void mutt_account_hook(const char *url)
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if (!(hook->command && (hook->type & MUTT_ACCOUNT_HOOK)))
+    if (!(hook->command && (hook->id == CMD_ACCOUNT_HOOK)))
       continue;
 
     if (mutt_regex_match(&hook->regex, url))
@@ -1596,7 +1605,7 @@ void mutt_timeout_hook(void)
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if (!(hook->command && (hook->type & MUTT_TIMEOUT_HOOK)))
+    if (!(hook->command && (hook->id == CMD_TIMEOUT_HOOK)))
       continue;
 
     if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
@@ -1616,19 +1625,19 @@ void mutt_timeout_hook(void)
 
 /**
  * mutt_startup_shutdown_hook - Execute any startup/shutdown hooks
- * @param type Hook type: #MUTT_STARTUP_HOOK or #MUTT_SHUTDOWN_HOOK
+ * @param id Hook CommandId: #CMD_STARTUP_HOOK or #CMD_SHUTDOWN_HOOK
  *
  * The user can configure hooks to be run on startup/shutdown.
  * This function finds all the matching hooks and executes them.
  */
-void mutt_startup_shutdown_hook(HookFlags type)
+void mutt_startup_shutdown_hook(enum CommandId id)
 {
   struct Hook *hook = NULL;
   struct Buffer *err = buf_pool_get();
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if (!(hook->command && (hook->type & type)))
+    if (!(hook->command && (hook->id == id)))
       continue;
 
     if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
@@ -1657,7 +1666,7 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
   if (!hl)
     return NULL;
 
-  CurrentHookType = MUTT_IDXFMTHOOK;
+  CurrentHookId = CMD_INDEX_FORMAT_HOOK;
 
   struct PatternCache cache = { 0 };
   const struct Expando *exp = NULL;
@@ -1673,9 +1682,242 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
     }
   }
 
-  CurrentHookType = MUTT_HOOK_NO_FLAGS;
+  CurrentHookId = CMD_NONE;
 
   return exp;
+}
+
+/**
+ * hooks_dump_one - Dump a single hook to the buffer
+ * @param hook Hook to dump
+ * @param cmd  Command defining the Hook
+ * @param buf  Buffer for the results
+ */
+static void hooks_dump_one(struct Hook *hook, const struct Command *cmd, struct Buffer *buf)
+{
+  struct Buffer *pretty = buf_pool_get();
+
+  buf_add_printf(buf, "%s ", cmd->name);
+
+  if (hook->regex.pattern)
+  {
+    if (hook->regex.pat_not)
+      buf_addch(pretty, '!');
+
+    if ((hook->id == CMD_FOLDER_HOOK) || (hook->id == CMD_MBOX_HOOK))
+    {
+      buf_strcpy(pretty, hook->regex.pattern);
+      buf_pretty_mailbox(pretty);
+      buf_add_printf(buf, "\"%s\" ", buf_string(pretty));
+    }
+    else
+    {
+      buf_addstr(pretty, hook->regex.pattern);
+      pretty_var(buf_string(pretty), buf);
+      buf_addch(buf, ' ');
+    }
+  }
+
+  if ((hook->id == CMD_FCC_HOOK) || (hook->id == CMD_MBOX_HOOK) || (hook->id == CMD_SAVE_HOOK))
+  {
+    buf_strcpy(pretty, hook->command);
+    buf_pretty_mailbox(pretty);
+    buf_add_printf(buf, "\"%s\"\n", buf_string(pretty));
+  }
+  else
+  {
+    pretty_var(hook->command, buf);
+    buf_addch(buf, '\n');
+  }
+
+  buf_pool_release(&pretty);
+}
+
+/**
+ * hooks_dump_simple - Dump the simple Hooks
+ * @param buf Buffer for the results
+ */
+static void hooks_dump_simple(struct Buffer *buf)
+{
+  // Dump all the Hooks, except: CMD_CHARSET_HOOK, CMD_ICONV_HOOK, CMD_INDEX_FORMAT_HOOK
+  static const enum CommandId hook_ids[] = {
+    CMD_ACCOUNT_HOOK, CMD_APPEND_HOOK,   CMD_CLOSE_HOOK,   CMD_CRYPT_HOOK,
+    CMD_FCC_HOOK,     CMD_FOLDER_HOOK,   CMD_MBOX_HOOK,    CMD_MESSAGE_HOOK,
+    CMD_OPEN_HOOK,    CMD_REPLY_HOOK,    CMD_SAVE_HOOK,    CMD_SEND_HOOK,
+    CMD_SEND2_HOOK,   CMD_SHUTDOWN_HOOK, CMD_STARTUP_HOOK, CMD_TIMEOUT_HOOK,
+  };
+
+  for (size_t i = 0; i < countof(hook_ids); i++)
+  {
+    const struct Command *hook_cmd = command_find_by_id(&NeoMutt->commands, hook_ids[i]);
+    enum CommandId id = hook_ids[i];
+    bool found_header = false;
+    struct Hook *hook = NULL;
+
+    TAILQ_FOREACH(hook, &Hooks, entries)
+    {
+      if (hook->id != id)
+        continue;
+
+      if (!found_header)
+      {
+        buf_add_printf(buf, "# %s\n", hook_cmd->help);
+        found_header = true;
+      }
+
+      hooks_dump_one(hook, hook_cmd, buf);
+    }
+
+    if (found_header)
+      buf_addstr(buf, "\n");
+  }
+}
+
+/**
+ * hooks_dump_index - Dump the Index Format Hooks
+ * @param buf Buffer for the results
+ */
+static void hooks_dump_index(struct Buffer *buf)
+{
+  if (!IdxFmtHooks)
+    return;
+
+  struct HashWalkState hws = { 0 };
+  struct HashElem *he = NULL;
+  bool found_header = false;
+
+  while ((he = mutt_hash_walk(IdxFmtHooks, &hws)))
+  {
+    const char *name = he->key.strkey;
+    struct HookList *hl = he->data;
+    struct Hook *hook = NULL;
+
+    TAILQ_FOREACH(hook, hl, entries)
+    {
+      if (!found_header)
+      {
+        const struct Command *hook_cmd = command_find_by_id(&NeoMutt->commands,
+                                                            CMD_INDEX_FORMAT_HOOK);
+        buf_add_printf(buf, "# %s\n", hook_cmd->help);
+        found_header = true;
+      }
+
+      buf_add_printf(buf, "index-format-hook '%s' %s'%s' '%s'\n", name,
+                     hook->regex.pat_not ? "! " : "",
+                     NONULL(hook->regex.pattern), NONULL(hook->expando->string));
+    }
+  }
+
+  if (found_header)
+    buf_addstr(buf, "\n");
+}
+
+/**
+ * hooks_dump_charset - Dump the Charset Hooks
+ * @param buf Buffer for the results
+ */
+static void hooks_dump_charset(struct Buffer *buf)
+{
+  struct Lookup *l = NULL;
+  struct Buffer *charset = buf_pool_get();
+  struct Buffer *iconv = buf_pool_get();
+
+  TAILQ_FOREACH(l, &Lookups, entries)
+  {
+    if (l->type == MUTT_LOOKUP_CHARSET)
+    {
+      buf_addstr(charset, "charset-hook ");
+      pretty_var(l->regex.pattern, charset);
+      buf_addch(charset, ' ');
+      pretty_var(l->replacement, charset);
+      buf_addch(charset, '\n');
+    }
+    else if (l->type == MUTT_LOOKUP_ICONV)
+    {
+      buf_addstr(iconv, "iconv-hook ");
+      pretty_var(l->regex.pattern, iconv);
+      buf_addch(iconv, ' ');
+      pretty_var(l->replacement, iconv);
+      buf_addch(iconv, '\n');
+    }
+  }
+
+  const struct Command *cmd = NULL;
+  if (!buf_is_empty(charset))
+  {
+    cmd = command_find_by_name(&NeoMutt->commands, "charset-hook");
+    buf_add_printf(buf, "# %s\n", cmd->help);
+    buf_add_printf(buf, "%s\n", buf_string(charset));
+  }
+
+  if (!buf_is_empty(iconv))
+  {
+    cmd = command_find_by_name(&NeoMutt->commands, "iconv-hook");
+    buf_add_printf(buf, "# %s\n", cmd->help);
+    buf_add_printf(buf, "%s\n", buf_string(iconv));
+  }
+
+  buf_pool_release(&iconv);
+  buf_pool_release(&charset);
+}
+
+/**
+ * parse_hooks - Parse the 'hooks' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `hooks`
+ */
+static enum CommandResult parse_hooks(const struct Command *cmd,
+                                      struct Buffer *line, struct Buffer *err)
+{
+  if (MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
+  if (!StartupComplete)
+    return MUTT_CMD_SUCCESS;
+
+  if (TAILQ_EMPTY(&Hooks))
+  {
+    buf_printf(err, _("%s: No Hooks are configured"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w");
+  if (!fp)
+  {
+    mutt_error(_("Could not create temporary file %s"), buf_string(tempfile));
+    buf_pool_release(&tempfile);
+    return MUTT_CMD_ERROR;
+  }
+
+  struct Buffer *buf = buf_pool_get();
+
+  hooks_dump_simple(buf);
+  hooks_dump_index(buf);
+  hooks_dump_charset(buf);
+
+  mutt_file_save_str(fp, buf_string(buf));
+  mutt_file_fclose(&fp);
+  buf_pool_release(&buf);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = buf_string(tempfile);
+
+  pview.banner = "hooks";
+  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview, NULL);
+  buf_pool_release(&tempfile);
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -1683,83 +1925,88 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
  */
 static const struct Command HookCommands[] = {
   // clang-format off
-  { "account-hook", parse_hook_regex, MUTT_ACCOUNT_HOOK,
+  { "account-hook", CMD_ACCOUNT_HOOK, parse_hook_regex, CMD_NO_DATA,
         N_("Run a command when switching to a matching account"),
         N_("account-hook <regex> <command>"),
         "optionalfeatures.html#account-hook" },
-  { "charset-hook", parse_hook_charset, MUTT_CHARSET_HOOK,
+  { "charset-hook", CMD_CHARSET_HOOK, parse_hook_charset, CMD_NO_DATA,
         N_("Define charset alias for languages"),
         N_("charset-hook <alias> <charset>"),
         "configuration.html#charset-hook" },
-  { "crypt-hook", parse_hook_crypt, MUTT_CRYPT_HOOK,
+  { "crypt-hook", CMD_CRYPT_HOOK, parse_hook_crypt, CMD_NO_DATA,
         N_("Specify which keyid to use for recipients matching regex"),
         N_("crypt-hook <regex> <keyid>"),
         "configuration.html#crypt-hook" },
-  { "fcc-hook", parse_hook_mailbox, MUTT_FCC_HOOK,
+  { "fcc-hook", CMD_FCC_HOOK, parse_hook_mailbox, CMD_NO_DATA,
         N_("Pattern rule to set the save location for outgoing mail"),
         N_("fcc-hook <pattern> <mailbox>"),
         "configuration.html#default-save-mailbox" },
-  { "fcc-save-hook", parse_hook_mailbox, MUTT_FCC_HOOK | MUTT_SAVE_HOOK,
+  { "fcc-save-hook", CMD_FCC_SAVE_HOOK, parse_hook_mailbox, CMD_NO_DATA,
         N_("Equivalent to both `fcc-hook` and `save-hook`"),
         N_("fcc-save-hook <pattern> <mailbox>"),
         "configuration.html#default-save-mailbox" },
-  { "folder-hook", parse_hook_folder, MUTT_FOLDER_HOOK,
+  { "folder-hook", CMD_FOLDER_HOOK, parse_hook_folder, CMD_NO_DATA,
         N_("Run a command upon entering a folder matching regex"),
         N_("folder-hook [ -noregex ] <regex> <command>"),
         "configuration.html#folder-hook" },
-  { "iconv-hook", parse_hook_charset, MUTT_ICONV_HOOK,
+  { "iconv-hook", CMD_ICONV_HOOK, parse_hook_charset, CMD_NO_DATA,
         N_("Define a system-specific alias for a character set"),
         N_("iconv-hook <charset> <local-charset>"),
         "configuration.html#charset-hook" },
-  { "index-format-hook", parse_hook_index, MUTT_IDXFMTHOOK,
+  { "index-format-hook", CMD_INDEX_FORMAT_HOOK, parse_hook_index, CMD_NO_DATA,
         N_("Create dynamic index format strings"),
         N_("index-format-hook <name> [ ! ]<pattern> <format-string>"),
         "configuration.html#index-format-hook" },
-  { "mbox-hook", parse_hook_mbox, MUTT_MBOX_HOOK,
+  { "mbox-hook", CMD_MBOX_HOOK, parse_hook_mbox, CMD_NO_DATA,
         N_("On leaving a mailbox, move read messages matching a regex regex"),
         N_("mbox-hook [ -noregex ] <regex> <mailbox>"),
         "configuration.html#mbox-hook" },
-  { "message-hook", parse_hook_pattern, MUTT_MESSAGE_HOOK,
+  { "message-hook", CMD_MESSAGE_HOOK, parse_hook_pattern, CMD_NO_DATA,
         N_("Run a command when viewing a message matching patterns"),
         N_("message-hook <pattern> <command>"),
         "configuration.html#message-hook" },
-  { "reply-hook", parse_hook_pattern, MUTT_REPLY_HOOK,
+  { "reply-hook", CMD_REPLY_HOOK, parse_hook_pattern, CMD_NO_DATA,
         N_("Run a command when replying to messages matching a pattern"),
         N_("reply-hook <pattern> <command>"),
         "configuration.html#send-hook" },
-  { "save-hook", parse_hook_mailbox, MUTT_SAVE_HOOK,
+  { "save-hook", CMD_SAVE_HOOK, parse_hook_mailbox, CMD_NO_DATA,
         N_("Set default save folder for messages"),
         N_("save-hook <pattern> <mailbox>"),
         "configuration.html#default-save-mailbox" },
-  { "send-hook", parse_hook_pattern, MUTT_SEND_HOOK,
+  { "send-hook", CMD_SEND_HOOK, parse_hook_pattern, CMD_NO_DATA,
         N_("Run a command when sending a message, new or reply, matching a pattern"),
         N_("send-hook <pattern> <command>"),
         "configuration.html#send-hook" },
-  { "send2-hook", parse_hook_pattern, MUTT_SEND2_HOOK,
+  { "send2-hook", CMD_SEND2_HOOK, parse_hook_pattern, CMD_NO_DATA,
         N_("Run command whenever a composed message is edited"),
         N_("send2-hook <pattern> <command>"),
         "configuration.html#send-hook" },
-  { "shutdown-hook", parse_hook_global, MUTT_SHUTDOWN_HOOK,
+  { "shutdown-hook", CMD_SHUTDOWN_HOOK, parse_hook_global, CMD_NO_DATA,
         N_("Run a command before NeoMutt exits"),
         N_("shutdown-hook <command>"),
         "optionalfeatures.html#global-hooks" },
-  { "startup-hook", parse_hook_global, MUTT_STARTUP_HOOK,
+  { "startup-hook", CMD_STARTUP_HOOK, parse_hook_global, CMD_NO_DATA,
         N_("Run a command when NeoMutt starts up"),
         N_("startup-hook <command>"),
         "optionalfeatures.html#global-hooks" },
-  { "timeout-hook", parse_hook_global, MUTT_TIMEOUT_HOOK,
+  { "timeout-hook", CMD_TIMEOUT_HOOK, parse_hook_global, CMD_NO_DATA,
         N_("Run a command after a specified timeout or idle period"),
         N_("timeout-hook <command>"),
         "optionalfeatures.html#global-hooks" },
-  { "unhook", parse_unhook, 0,
+  { "unhook", CMD_UNHOOK, parse_unhook, CMD_NO_DATA,
         N_("Remove hooks of a given type"),
         N_("unhook { * | <hook-type> }"),
         "configuration.html#unhook" },
 
-  // Deprecated
-  { "pgp-hook", parse_hook_crypt, MUTT_CRYPT_HOOK, NULL, NULL, NULL, CF_SYNONYM },
+  { "hooks", CMD_HOOKS, parse_hooks, CMD_NO_DATA,
+        N_("Show a list of all the hooks"),
+        N_("hooks"),
+        "configuration.html#hooks" },
 
-  { NULL, NULL, 0, NULL, NULL, NULL, CF_NO_FLAGS },
+  // Deprecated
+  { "pgp-hook", CMD_NONE, parse_hook_crypt, CMD_CRYPT_HOOK, NULL, NULL, NULL, CF_SYNONYM },
+
+  { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

@@ -31,7 +31,7 @@
 #include "test_common.h"
 
 #ifdef USE_LUA
-static const struct Command LuaSource = { "lua-source", NULL, 0 };
+static const struct Command LuaSource = { "lua-source", CMD_LUA_SOURCE, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {

@@ -211,7 +211,7 @@ static int compose_email_observer(struct NotifyCallback *nc)
   if (nc->event_subtype == NT_ENVELOPE_FCC)
     shared->fcc_set = true;
 
-  mutt_message_hook(shared->mailbox, shared->email, MUTT_SEND2_HOOK);
+  mutt_message_hook(shared->mailbox, shared->email, CMD_SEND2_HOOK);
   return 0;
 }
 

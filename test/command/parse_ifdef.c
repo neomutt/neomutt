@@ -31,14 +31,14 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command Ifdef  = { "ifdef",  NULL, 0 };
-static const struct Command Ifndef = { "ifndef", NULL, 1 };
+static const struct Command Ifdef  = { "ifdef",  CMD_IFDEF,  NULL, CMD_NO_DATA };
+static const struct Command Ifndef = { "ifndef", CMD_IFNDEF, NULL, CMD_NO_DATA };
 // clang-format on
 
 const struct Command test_commands[] = {
   // clang-format off
-  { "echo", parse_echo, 0 },
-  { NULL, NULL, 0 },
+  { "echo", CMD_ECHO, parse_echo, CMD_NO_DATA },
+  { NULL, CMD_NONE, NULL, CMD_NO_DATA },
   // clang-format on
 };
 

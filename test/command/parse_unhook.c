@@ -32,8 +32,8 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command FolderHook = { "folder-hook", NULL, MUTT_FOLDER_HOOK };
-static const struct Command UnHook     = { "unhook",      NULL, 0                };
+static const struct Command FolderHook = { "folder-hook", CMD_FOLDER_HOOK, NULL, CMD_NO_DATA };
+static const struct Command UnHook     = { "unhook",      CMD_UNHOOK,      NULL, CMD_NO_DATA };
 // clang-format on
 
 static struct ConfigDef Vars[] = {
@@ -45,8 +45,8 @@ static struct ConfigDef Vars[] = {
 
 const struct Command unhook_test_commands[] = {
   // clang-format off
-  { "folder-hook", parse_hook_folder, MUTT_FOLDER_HOOK },
-  { NULL, NULL, 0 },
+  { "folder-hook", CMD_FOLDER_HOOK, parse_hook_folder, CMD_NO_DATA },
+  { NULL, CMD_NONE, NULL, CMD_NO_DATA },
   // clang-format on
 };
 

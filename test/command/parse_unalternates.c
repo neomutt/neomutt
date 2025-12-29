@@ -30,7 +30,8 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command UnAlternates = { "unalternates", NULL, 0 };
+static const struct Command UnAlternates = { "unalternates", CMD_UNALTERNATES,
+                                             NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {
