@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-12-02 10:41+0000\n"
+"POT-Creation-Date: 2025-12-30 23:28+0000\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -89,16 +89,40 @@ msgstr "Σφάλμα κατά την εμφάνιση ψευδωνύμου"
 msgid "Alias added"
 msgstr "Το ψευδώνυμο προστέθηκε"
 
-#: alias/commands.c:144
-msgid "alias: no address"
-msgstr "Ψευδώνυμο: καμία διεύθυνση"
+#: alias/commands.c:142 alias/commands.c:263 attach/commands.c:490
+#: attach/commands.c:562 color/commands.c:151 color/commands.c:164
+#: color/commands.c:204 color/commands.c:316 color/commands.c:454
+#: color/parse_color.c:292 color/parse_color.c:317 color/parse_color.c:342
+#: commands/alternates.c:99 commands/alternates.c:145 commands/group.c:95
+#: commands/group.c:191 commands/group.c:234 commands/group.c:281
+#: commands/group.c:320 commands/ifdef.c:103 commands/ifdef.c:125
+#: commands/ignore.c:56 commands/ignore.c:84 commands/mailboxes.c:176
+#: commands/mailboxes.c:201 commands/mailboxes.c:233 commands/mailboxes.c:249
+#: commands/mailboxes.c:322 commands/my_hdr.c:57 commands/my_hdr.c:106
+#: commands/parse.c:98 commands/setenv.c:81 commands/setenv.c:207
+#: commands/source.c:220 commands/spam.c:56 commands/spam.c:113
+#: commands/stailq.c:59 commands/stailq.c:90 commands/subjectrx.c:77
+#: commands/subjectrx.c:116 commands/subjectrx.c:125 commands/subjectrx.c:197
+#: commands/subjectrx.c:223 commands/tags.c:59 commands/tags.c:105
+#: hooks/parse.c:69 hooks/parse.c:87 hooks/parse.c:129 hooks/parse.c:201
+#: hooks/parse.c:211 hooks/parse.c:367 hooks/parse.c:376 hooks/parse.c:446
+#: hooks/parse.c:455 hooks/parse.c:542 hooks/parse.c:551 hooks/parse.c:560
+#: hooks/parse.c:676 hooks/parse.c:685 hooks/parse.c:772 hooks/parse.c:781
+#: hooks/parse.c:790 hooks/parse.c:916 hooks/parse.c:926 hooks/parse.c:1048
+#: hooks/parse.c:1079 hooks/parse.c:1169 imap/imap.c:94 imap/imap.c:142
+#: key/commands.c:237 key/commands.c:315 key/commands.c:477 key/commands.c:678
+#: lua/commands.c:61 lua/commands.c:102 score.c:99 score.c:111 score.c:225
+#: sidebar/commands.c:48 sidebar/commands.c:76
+#, c-format
+msgid "%s: too few arguments"
+msgstr "%s: πολύ λίγα ορίσματα"
 
-#: alias/commands.c:164
+#: alias/commands.c:167
 #, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
 msgstr "Προειδοποίηση: Λανθασμένη διεθνής διεύθυνση IDN '%s' στο ψευδώνυμο '%s'"
 
-#: alias/commands.c:173
+#: alias/commands.c:176
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Προειδοποίηση: Λανθασμένη διεθνής διεύθυνση IDN '%s' στο ψευδώνυμο '%s'"
@@ -224,16 +248,16 @@ msgstr ""
 msgid "Limit: %s"
 msgstr "Όριο: %s"
 
-#: attach/commands.c:492
+#: attach/commands.c:506
 msgid "Current attachments settings:"
 msgstr "Τρέχουσες ρυθμίσεις συνημμένου: "
 
-#: attach/commands.c:524
+#: attach/commands.c:540
 #, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "επεξεργασία της περιγραφής της προσάρτησης"
 
-#: attach/commands.c:584
+#: attach/commands.c:613
 msgid "unattachments: invalid disposition"
 msgstr ""
 
@@ -300,10 +324,10 @@ msgstr "Αδυναμία ταιριάσματος του 'nametemplate', συν�
 msgid "Mailcap compose entry requires %%s"
 msgstr "Η καταχώρηση στοιχείων του mailcap χρειάζεται το %%s"
 
-#: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:312
+#: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:322
 #: compose/functions.c:1851 gui/curs_lib.c:125 index/dlg_index.c:1215
 #: index/dlg_index.c:1260 pager/dlg_pager.c:456 pager/do_pager.c:166
-#: pager/message.c:327 send/sendlib.c:580
+#: pager/message.c:327 send/sendlib.c:581
 #, c-format
 msgid "Error running \"%s\""
 msgstr "Σφάλμα κατά την εκτέλεση του \"%s\""
@@ -435,15 +459,15 @@ msgstr "Αδυναμία αποκρυπτογράφησης του κρυπτο�
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:1282
+#: autocrypt/autocrypt.c:77 main.c:1266
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "Το %s δεν υπάρχει. Δημιουργία;"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:331 main.c:653
-#: main.c:1286 nntp/newsrc.c:1020
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:331 main.c:638
+#: main.c:1270 nntp/newsrc.c:1020
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Αδυναμία δημιουργίας του %s: %s"
@@ -714,7 +738,7 @@ msgstr "Απεγγραφή"
 msgid "Catchup"
 msgstr ""
 
-#: browser/dlg_browser.c:315 browser/functions.c:433 browser/functions.c:771
+#: browser/dlg_browser.c:315 browser/functions.c:433 browser/functions.c:776
 #, c-format
 msgid "%s is not a directory"
 msgstr "Το %s δεν είναι κατάλογος"
@@ -814,75 +838,67 @@ msgstr "Το γραμματοκιβώτιο διαγράφηκε"
 msgid "File Mask: "
 msgstr "Μάσκα αρχείου: "
 
-#: browser/functions.c:847
+#: browser/functions.c:852
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Η μετονομασία υποστηρίζεται μόνο για τα γραμματοκιβώτια IMAP"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/functions.c:880
+#: browser/functions.c:885
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Αντίστροφη ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος, (e)περιγραφή, (c)αριθμό, (w)νέο, ή (n)άκυρο;"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/functions.c:882
+#: browser/functions.c:887
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος, (e)περιγραφή, (c)αριθμό, (w)νέο, ή (n)άκυρο;"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/functions.c:884
+#: browser/functions.c:889
 msgid "dazecwn"
 msgstr ""
 
-#: browser/functions.c:950
+#: browser/functions.c:955
 #, c-format
 msgid "Subscribe pattern: "
 msgstr "Μοτίβο εγγραφής: "
 
-#: browser/functions.c:952
+#: browser/functions.c:957
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Μοτίβο απεγγραφής: "
 
-#: color/commands.c:154 color/commands.c:195 color/commands.c:290
-#: color/parse_color.c:289 color/parse_color.c:314 color/parse_color.c:334
-#: commands.c:380 commands.c:402 commands.c:543 commands.c:560 commands.c:777
-#: commands.c:809 commands.c:825 commands.c:948 commands.c:1073 commands.c:1126
-#: commands.c:1166 hook.c:140 hook.c:195 hook.c:204 hook.c:218 hook.c:460
-#: hook.c:476 key/commands.c:239 score.c:100 subjectrx.c:73 subjectrx.c:102
-#: subjectrx.c:110
-#, c-format
-msgid "%s: too few arguments"
-msgstr "%s: πολύ λίγα ορίσματα"
-
-#: color/commands.c:168 color/commands.c:215
+#: color/commands.c:179 color/commands.c:231
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: δεν υπάρχει τέτοιο αντικείμενο"
 
-#: color/commands.c:315
+#: color/commands.c:339
 #, c-format
 msgid "Direct colors support not compiled in: %s"
 msgstr ""
 
-#: color/commands.c:322
+#: color/commands.c:346
 #, fuzzy, c-format
 msgid "Direct colors support disabled: %s"
 msgstr "δεν υποστηρίζονται τα εξ'ορισμού χρώματα"
 
-#: color/commands.c:329 color/parse_color.c:189 color/parse_color.c:228
+#: color/commands.c:353 color/parse_color.c:189 color/parse_color.c:228
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: το τερματικό δεν υποστηρίζει αυτό το χρώμα"
 
-#: color/commands.c:352 color/commands.c:389 commands.c:426 commands.c:1135
-#: commands.c:1266 commands.c:1601 hook.c:145 hook.c:225 hook.c:487
-#: key/commands.c:315 key/commands.c:355 key/commands.c:473 key/commands.c:566
-#: lua/commands.c:94 score.c:108
+#: color/commands.c:376 color/commands.c:412 commands/ifdef.c:161
+#: commands/parse.c:129 commands/spam.c:68 hooks/dump.c:229 hooks/parse.c:92
+#: hooks/parse.c:136 hooks/parse.c:218 hooks/parse.c:383 hooks/parse.c:462
+#: hooks/parse.c:567 hooks/parse.c:692 hooks/parse.c:797 hooks/parse.c:933
+#: hooks/parse.c:1090 imap/imap.c:107 imap/imap.c:153 key/commands.c:325
+#: key/commands.c:379 key/commands.c:511 key/commands.c:615 lua/commands.c:120
+#: score.c:118
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: πάρα πολλά ορίσματα"
 
-#: color/commands.c:378
+#: color/commands.c:402
 #, c-format
 msgid "%s: invalid number: %s"
 msgstr "%s: μη έγκυρος αριθμός: %s"
@@ -914,8 +930,8 @@ msgid "# Status Colors\n"
 msgstr ""
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/dump.c:460 commands.c:897 commands.c:959 commands.c:1644
-#: imap/message.c:1154 key/dump.c:203
+#: color/dump.c:460 commands/parse.c:142 commands/setenv.c:92 hooks/dump.c:248
+#: imap/message.c:1168 key/dump.c:203 parse/dump.c:63
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Αδυναμία δημιουργίας προσωρινού αρχείου %s"
@@ -925,172 +941,665 @@ msgstr "Αδυναμία δημιουργίας προσωρινού αρχεί�
 msgid "%s: no such color"
 msgstr "%s: δεν υπάρχει τέτοιο χρώμα"
 
-#: color/parse_color.c:343
+#: color/parse_color.c:351
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: δεν υπάρχει τέτοια ιδιότητα"
 
-#: commands.c:151
+#: commands/commands.c:62
+msgid "Define an alias (name to email address)"
+msgstr ""
+
+#: commands/commands.c:63
+#, fuzzy
+msgid "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
+msgstr "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
+
+#: commands/commands.c:66
+msgid "Define a list of alternate email addresses for the user"
+msgstr ""
+
+#: commands/commands.c:67
+#, fuzzy
+msgid "alternates [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgstr "alternates [ -group <name> ... ] <regex> [ <regex> ... ]"
+
+#: commands/commands.c:70
+msgid "Set preference order for multipart alternatives"
+msgstr ""
+
+#: commands/commands.c:71
+#, fuzzy
+msgid "alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+
+#: commands/commands.c:74
+msgid "Set attachment counting rules"
+msgstr ""
+
+#: commands/commands.c:75
+#, fuzzy
+msgid "attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"
+msgstr "attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"
+
+#: commands/commands.c:78
+msgid "Automatically display specified MIME types inline"
+msgstr ""
+
+#: commands/commands.c:79
+#, fuzzy
+msgid "auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+
+#: commands/commands.c:82
+msgid "Change NeoMutt's current working directory"
+msgstr ""
+
+#: commands/commands.c:83
+#, fuzzy
+msgid "cd [ <directory> ]"
+msgstr "cd [ <directory> ]"
+
+#: commands/commands.c:86
+msgid "Define colors for the user interface"
+msgstr ""
+
+#: commands/commands.c:87
+#, fuzzy
+msgid "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
+msgstr "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
+
+#: commands/commands.c:90
+msgid "Print a message to the status line"
+msgstr ""
+
+#: commands/commands.c:91
+#, fuzzy
+msgid "echo <message>"
+msgstr "echo <message>"
+
+#: commands/commands.c:94
+msgid "Stop reading current config file"
+msgstr ""
+
+#: commands/commands.c:95
+#, fuzzy
+msgid "finish "
+msgstr "finish "
+
+#: commands/commands.c:98
+msgid "Add addresses to an address group"
+msgstr ""
+
+#: commands/commands.c:99
+#, fuzzy
+msgid "group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"
+msgstr "group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"
+
+#: commands/commands.c:102
+msgid "Define custom order of headers displayed"
+msgstr ""
+
+#: commands/commands.c:103
+#, fuzzy
+msgid "hdr_order <header> [ <header> ... ]"
+msgstr "hdr_order <header> [ <header> ... ]"
+
+#: commands/commands.c:106
+msgid "Conditionally include config commands if symbol defined"
+msgstr ""
+
+#: commands/commands.c:107
+#, fuzzy
+msgid "ifdef <symbol> '<config-command> [ <args> ... ]'"
+msgstr "ifdef <symbol> '<config-command> [ <args> ... ]'"
+
+#: commands/commands.c:110
+msgid "Conditionally include if symbol is not defined"
+msgstr ""
+
+#: commands/commands.c:111
+#, fuzzy
+msgid "ifndef <symbol> '<config-command> [ <args> ... ]'"
+msgstr "ifndef <symbol> '<config-command> [ <args> ... ]'"
+
+#: commands/commands.c:114
+msgid "Hide specified headers when displaying messages"
+msgstr ""
+
+#: commands/commands.c:115
+#, fuzzy
+msgid "ignore { * | <string> ... }"
+msgstr "ignore { * | <string> ... }"
+
+#: commands/commands.c:118
+msgid "Add address to the list of mailing lists"
+msgstr ""
+
+#: commands/commands.c:119
+#, fuzzy
+msgid "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgstr "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
+
+#: commands/commands.c:122
+msgid "Define a list of mailboxes to watch"
+msgstr ""
+
+#: commands/commands.c:123
+#, fuzzy
+msgid "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
+msgstr "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
+
+#: commands/commands.c:126
+msgid "Permit specific header-fields in mailto URL processing"
+msgstr ""
+
+#: commands/commands.c:127
+#, fuzzy
+msgid "mailto_allow { * | <header-field> ... }"
+msgstr "mailto_allow { * | <header-field> ... }"
+
+#: commands/commands.c:130
+msgid "Map specified MIME types/subtypes to display handlers"
+msgstr ""
+
+#: commands/commands.c:131
+#, fuzzy
+msgid "mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+
+#: commands/commands.c:134
+msgid "Deprecated: Use 'color'"
+msgstr ""
+
+#: commands/commands.c:135
+#, fuzzy
+msgid "mono <object> <attribute> [ <pattern> | <regex> ]"
+msgstr "mono <object> <attribute> [ <pattern> | <regex> ]"
+
+#: commands/commands.c:138
+msgid "Add a custom header to outgoing messages"
+msgstr ""
+
+#: commands/commands.c:139
+#, fuzzy
+msgid "my_hdr <string>"
+msgstr "my_hdr <string>"
+
+#: commands/commands.c:142
+msgid "Define a list of labelled mailboxes to watch"
+msgstr ""
+
+#: commands/commands.c:143
+#, fuzzy
+msgid "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
+msgstr "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
+
+#: commands/commands.c:146
+msgid "Remove a spam detection rule"
+msgstr ""
+
+#: commands/commands.c:147
+#, fuzzy
+msgid "nospam { * | <regex> }"
+msgstr "nospam { * | <regex> }"
+
+#: commands/commands.c:150
+msgid "Reset a config option to its initial value"
+msgstr ""
+
+#: commands/commands.c:151
+#, fuzzy
+msgid "reset <variable> [ <variable> ... ]"
+msgstr "reset <variable> [ <variable> ... ]"
+
+#: commands/commands.c:154
+msgid "Set a score value on emails matching a pattern"
+msgstr ""
+
+#: commands/commands.c:155
+#, fuzzy
+msgid "score <pattern> <value>"
+msgstr "score <pattern> <value>"
+
+#: commands/commands.c:158
+msgid "Set a config variable"
+msgstr ""
+
+#: commands/commands.c:159
+#, fuzzy
+msgid "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"
+msgstr "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"
+
+#: commands/commands.c:162
+msgid "Set an environment variable"
+msgstr ""
+
+#: commands/commands.c:163
+#, fuzzy
+msgid "setenv { <variable>? | <variable> <value> }"
+msgstr "setenv { <variable>? | <variable> <value> }"
+
+#: commands/commands.c:166
+msgid "Read and execute commands from a config file"
+msgstr ""
+
+#: commands/commands.c:167
+#, fuzzy
+msgid "source <filename>"
+msgstr "source <filename>"
+
+#: commands/commands.c:170
+msgid "Define rules to parse spam detection headers"
+msgstr ""
+
+#: commands/commands.c:171
+#, fuzzy
+msgid "spam <regex> <format>"
+msgstr "spam <regex> <format>"
+
+#: commands/commands.c:174
+msgid "Apply regex-based rewriting to message subjects"
+msgstr ""
+
+#: commands/commands.c:175
+#, fuzzy
+msgid "subjectrx <regex> <replacement>"
+msgstr "subjectrx <regex> <replacement>"
+
+#: commands/commands.c:178
+msgid "Add address to the list of subscribed mailing lists"
+msgstr ""
+
+#: commands/commands.c:179
+#, fuzzy
+msgid "subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgstr "subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"
+
+#: commands/commands.c:182
+msgid "Define expandos tags"
+msgstr ""
+
+#: commands/commands.c:183
+#, fuzzy
+msgid "tag-formats <tag> <format-string> { tag format-string ... }"
+msgstr "tag-formats <tag> <format-string> { tag format-string ... }"
+
+#: commands/commands.c:186
+msgid "Rules to transform tags into icons"
+msgstr ""
+
+#: commands/commands.c:187
+#, fuzzy
+msgid "tag-transforms <tag> <transformed-string> { tag transformed-string ... }"
+msgstr "tag-transforms <tag> <transformed-string> { tag transformed-string ... }"
+
+#: commands/commands.c:190
+msgid "Toggle the value of a boolean/quad config option"
+msgstr ""
+
+#: commands/commands.c:191
+#, fuzzy
+msgid "toggle <variable> [ <variable> ... ]"
+msgstr "toggle <variable> [ <variable> ... ]"
+
+#: commands/commands.c:194
+msgid "Remove an alias definition"
+msgstr ""
+
+#: commands/commands.c:195
+#, fuzzy
+msgid "unalias [ -group <name> ... ] { * | <key> ... }"
+msgstr "unalias [ -group <name> ... ] { * | <key> ... }"
+
+#: commands/commands.c:198
+msgid "Remove addresses from 'alternates' list"
+msgstr ""
+
+#: commands/commands.c:199
+#, fuzzy
+msgid "unalternates [ -group <name> ... ] { * | <regex> ... }"
+msgstr "unalternates [ -group <name> ... ] { * | <regex> ... }"
+
+#: commands/commands.c:202
+msgid "Remove MIME types from preference order"
+msgstr ""
+
+#: commands/commands.c:203
+#, fuzzy
+msgid "unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+
+#: commands/commands.c:206
+msgid "Remove attachment counting rules"
+msgstr ""
+
+#: commands/commands.c:207
+#, fuzzy
+msgid "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"
+msgstr "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"
+
+#: commands/commands.c:210
+msgid "Remove MIME types from 'auto_view' list"
+msgstr ""
+
+#: commands/commands.c:211
+#, fuzzy
+msgid "unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+
+#: commands/commands.c:214
+msgid "Remove a 'color' definition"
+msgstr ""
+
+#: commands/commands.c:215
+#, fuzzy
+msgid "uncolor <object> { * | <pattern> ... }"
+msgstr "uncolor <object> { * | <pattern> ... }"
+
+#: commands/commands.c:218
+msgid "Remove addresses from an address 'group'"
+msgstr ""
+
+#: commands/commands.c:219
+#, fuzzy
+msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
+msgstr "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
+
+#: commands/commands.c:222
+msgid "Remove header from 'hdr_order' list"
+msgstr ""
+
+#: commands/commands.c:223
+#, fuzzy
+msgid "unhdr_order { * | <header> ... }"
+msgstr "unhdr_order { * | <header> ... }"
+
+#: commands/commands.c:226
+msgid "Remove a header from the 'hdr_order' list"
+msgstr ""
+
+#: commands/commands.c:227
+#, fuzzy
+msgid "unignore { * | <string> ... }"
+msgstr "unignore { * | <string> ... }"
+
+#: commands/commands.c:230
+msgid "Remove address from the list of mailing lists"
+msgstr ""
+
+#: commands/commands.c:231
+#, fuzzy
+msgid "unlists [ -group <name> ... ] { * | <regex> ... }"
+msgstr "unlists [ -group <name> ... ] { * | <regex> ... }"
+
+#: commands/commands.c:234
+msgid "Remove mailboxes from the watch list"
+msgstr ""
+
+#: commands/commands.c:235
+#, fuzzy
+msgid "unmailboxes { * | <mailbox> ... }"
+msgstr "unmailboxes { * | <mailbox> ... }"
+
+#: commands/commands.c:238
+msgid "Disallow header-fields in mailto processing"
+msgstr ""
+
+#: commands/commands.c:239
+#, fuzzy
+msgid "unmailto_allow { * | <header-field> ... }"
+msgstr "unmailto_allow { * | <header-field> ... }"
+
+#: commands/commands.c:242
+msgid "Remove custom MIME-type handlers"
+msgstr ""
+
+#: commands/commands.c:243
+#, fuzzy
+msgid "unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+
+#: commands/commands.c:246
+msgid "Deprecated: Use 'uncolor'"
+msgstr ""
+
+#: commands/commands.c:247
+#, fuzzy
+msgid "unmono <object> { * | <pattern> ... }"
+msgstr "unmono <object> { * | <pattern> ... }"
+
+#: commands/commands.c:250
+msgid "Remove a header previously added with 'my_hdr'"
+msgstr ""
+
+#: commands/commands.c:251
+#, fuzzy
+msgid "unmy_hdr { * | <field> ... }"
+msgstr "unmy_hdr { * | <field> ... }"
+
+#: commands/commands.c:254
+msgid "Remove scoring rules for matching patterns"
+msgstr ""
+
+#: commands/commands.c:255
+#, fuzzy
+msgid "unscore { * | <pattern> ... }"
+msgstr "unscore { * | <pattern> ... }"
+
+#: commands/commands.c:258
+msgid "Reset a config option to false/empty"
+msgstr ""
+
+#: commands/commands.c:259
+#, fuzzy
+msgid "unset <variable> [ <variable> ... ]"
+msgstr "unset <variable> [ <variable> ... ]"
+
+#: commands/commands.c:262
+msgid "Unset an environment variable"
+msgstr ""
+
+#: commands/commands.c:263
+#, fuzzy
+msgid "unsetenv <variable>"
+msgstr "unsetenv <variable>"
+
+#: commands/commands.c:266
+msgid "Remove subject-rewriting rules"
+msgstr ""
+
+#: commands/commands.c:267
+#, fuzzy
+msgid "unsubjectrx { * | <regex> }"
+msgstr "unsubjectrx { * | <regex> }"
+
+#: commands/commands.c:270
+msgid "Remove address from the list of subscribed mailing lists"
+msgstr ""
+
+#: commands/commands.c:271
+#, fuzzy
+msgid "unsubscribe [ -group <name> ... ] { * | <regex> ... }"
+msgstr "unsubscribe [ -group <name> ... ] { * | <regex> ... }"
+
+#: commands/commands.c:274
+msgid "Show NeoMutt version and build information"
+msgstr ""
+
+#: commands/commands.c:275
+#, fuzzy
+msgid "version"
+msgstr "version"
+
+#: commands/group.c:63
 msgid "-group: no group name"
 msgstr "-ομάδα: δεν υπάρχει όνομα ομάδας"
 
-#: commands.c:161
+#: commands/group.c:73
 msgid "out of arguments"
 msgstr "εκτός ορισμάτων"
 
-#: commands.c:243
+#: commands/group.c:130
+#, c-format
+msgid "%s: missing -rx or -addr"
+msgstr "%s: λείπουν -rx ή -addr"
+
+#: commands/group.c:156
+#, c-format
+msgid "%s: warning: bad IDN '%s'"
+msgstr "%s: λανθασμένη διεθνής διεύθυνση IDN '%s'"
+
+#: commands/ifdef.c:136
+#, c-format
+msgid "Error: %s"
+msgstr "Σφάλμα: %s"
+
+#: commands/my_hdr.c:68
+msgid "invalid header field"
+msgstr "μη έγκυρο πεδίο κεφαλίδας"
+
+#: commands/setenv.c:130 commands/setenv.c:144 parse/set.c:554
+#, fuzzy, c-format
+msgid "Can't query option with the '%s' command"
+msgstr "Δεν μπορεί να γίνει εξέταση μίας μεταβλητής με την εντολή '%s'"
+
+#: commands/setenv.c:150 parse/set.c:548
+msgid "Can't use a prefix when querying a variable"
+msgstr "Δεν γίνεται να χρησιμοποιηθεί πρόθεμα κατά την εξέταση μίας μεταβλητής"
+
+#: commands/setenv.c:183 commands/setenv.c:192
+#, c-format
+msgid "%s is unset"
+msgstr "Το %s δεν έχει οριστεί"
+
+#: commands/source.c:90
 #, c-format
 msgid "Error: Can't build path of '%s'"
 msgstr "Σφάλμα: Δεν είναι δυνατή η δημιουργία διαδρομής στο '%s'"
 
-#: commands.c:256
+#: commands/source.c:103
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr "Σφάλμα: Κυκλική αναφορά του αρχείου ρυθμίσεων '%s'"
 
-#: commands.c:336
+#: commands/source.c:182
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: λάθη στο %s"
 
-#: commands.c:336
+#: commands/source.c:182
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: αναστολή ανάγνωσης λόγω πολλών σφαλμάτων στο %s"
 
-#: commands.c:345
+#: commands/source.c:191
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: %d προειδοποίηση στο %s"
 msgstr[1] "source: %d προειδοποιήσεις στο %s"
 
-#: commands.c:467
-#, c-format
-msgid "%s: missing -rx or -addr"
-msgstr "%s: λείπουν -rx ή -addr"
-
-#: commands.c:493
-#, c-format
-msgid "%s: warning: bad IDN '%s'"
-msgstr "%s: λανθασμένη διεθνής διεύθυνση IDN '%s'"
-
-#: commands.c:571
-#, c-format
-msgid "Error: %s"
-msgstr "Σφάλμα: %s"
-
-#: commands.c:856
-msgid "invalid header field"
-msgstr "μη έγκυρο πεδίο κεφαλίδας"
-
-#: commands.c:997 commands.c:1011 parse/set.c:550
-#, fuzzy, c-format
-msgid "Can't query option with the '%s' command"
-msgstr "Δεν μπορεί να γίνει εξέταση μίας μεταβλητής με την εντολή '%s'"
-
-#: commands.c:1017 parse/set.c:544
-msgid "Can't use a prefix when querying a variable"
-msgstr "Δεν γίνεται να χρησιμοποιηθεί πρόθεμα κατά την εξέταση μίας μεταβλητής"
-
-#: commands.c:1049 commands.c:1057
-#, c-format
-msgid "%s is unset"
-msgstr "Το %s δεν έχει οριστεί"
-
-#: commands.c:1097 lua/commands.c:89
+#: commands/source.c:232 lua/commands.c:115
 #, c-format
 msgid "source: error at %s"
 msgstr "source: σφάλμα στο %s"
 
-#: commands.c:1106
+#: commands/source.c:240
 #, c-format
 msgid "source: file %s could not be sourced"
 msgstr "source: το αρχείο %s δεν μπόρεσε να συμπεριληθφει"
 
-#: commands.c:1276 imap/imap.c:1262
-#, c-format
-msgid "Subscribed to %s"
-msgstr "Έγινε εγγραφή στο %s"
-
-#: commands.c:1280
-#, c-format
-msgid "Could not subscribe to %s"
-msgstr "Δεν μπόρεσε να γίνει εγγραφή στο %s"
-
-#: commands.c:1322
+#: commands/tags.c:78
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr ""
 
-#: commands.c:1364
+#: commands/tags.c:125
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr ""
 
-#: commands.c:1611 imap/imap.c:1264
-#, c-format
-msgid "Unsubscribed from %s"
-msgstr "Απεγγραφή από %s"
+#: compmbox/compress.c:65
+msgid "Define command to append to a compressed mailbox"
+msgstr ""
 
-#: commands.c:1615
-#, c-format
-msgid "Could not unsubscribe from %s"
-msgstr "Δεν μπόρεσε να γίνει απεγγραφή από %s"
+#: compmbox/compress.c:66
+#, fuzzy
+msgid "append-hook <regex> <shell-command>"
+msgstr "append-hook <regex> <shell-command>"
 
-#: compmbox/compress.c:218
+#: compmbox/compress.c:69
+msgid "Define command to close a compressed mailbox"
+msgstr ""
+
+#: compmbox/compress.c:70
+#, fuzzy
+msgid "close-hook <regex> <shell-command>"
+msgstr "close-hook <regex> <shell-command>"
+
+#: compmbox/compress.c:73
+msgid "Define command to open a compressed mailbox"
+msgstr ""
+
+#: compmbox/compress.c:74
+#, fuzzy
+msgid "open-hook <regex> <shell-command>"
+msgstr "open-hook <regex> <shell-command>"
+
+#: compmbox/compress.c:228
 #, c-format
 msgid "Expando parse error: %s"
 msgstr ""
 
-#: compmbox/compress.c:347 compmbox/compress.c:478
+#: compmbox/compress.c:357 compmbox/compress.c:488
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Δεν μπορεί να γίνει προσάρτηση χωρίς append-hook ή close-hook : %s"
 
-#: compmbox/compress.c:429 compmbox/compress.c:490 compmbox/compress.c:565
-#: compmbox/compress.c:603 mbox/mbox.c:1106
+#: compmbox/compress.c:439 compmbox/compress.c:500 compmbox/compress.c:575
+#: compmbox/compress.c:613 mbox/mbox.c:1106
 msgid "Unable to lock mailbox"
 msgstr "Αδυναμία κλειδώματος του γραμματοκιβωτίου"
 
-#: compmbox/compress.c:433 compmbox/compress.c:497 compmbox/compress.c:569
+#: compmbox/compress.c:443 compmbox/compress.c:507 compmbox/compress.c:579
 #, c-format
 msgid "Decompressing %s"
 msgstr "Αποσυμπίεση %s"
 
-#: compmbox/compress.c:441
+#: compmbox/compress.c:451
 msgid "Can't identify the contents of the compressed file"
 msgstr "Δεν μπορεί να γίνει ταυτοποίηση των περιεχομένων του συμπιεσμένου αρχείου"
 
-#: compmbox/compress.c:448 compmbox/compress.c:519
+#: compmbox/compress.c:458 compmbox/compress.c:529
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Δεν μπορεί να γίνει εύρεση των ρυθμίσεων του γραμματοκιβωτίου για τον τύπο γραμματοκιβωτίου %d"
 
-#: compmbox/compress.c:499
+#: compmbox/compress.c:509
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "Αποτυχία εντολής συμπίεσης: %s"
 
-#: compmbox/compress.c:512
+#: compmbox/compress.c:522
 msgid "Unsupported mailbox type for appending"
 msgstr "Μη υποστηριζόμενος τύπος γραμματοκιβωτίου για προσάρτηση"
 
-#: compmbox/compress.c:593
+#: compmbox/compress.c:603
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Δεν μπορεί να γίνει συγχρονισμός ενός συμπιεσμένου αρχείου χωρίς ένα close-hook"
 
-#: compmbox/compress.c:615 compmbox/compress.c:666
+#: compmbox/compress.c:625 compmbox/compress.c:676
 #, c-format
 msgid "Compressing %s"
 msgstr "Συμπίεση %s"
 
-#: compmbox/compress.c:661
+#: compmbox/compress.c:671
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Συμπίεση-προσάρτηση στο %s"
 
-#: compmbox/compress.c:672 editmsg.c:266
+#: compmbox/compress.c:682 editmsg.c:266
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Σφάλμα. Διατήρηση προσωρινού αρχείου: %s"
@@ -1206,7 +1715,7 @@ msgstr "Άνοιγμα γραμματοκιβωτίου για σύναψη μη
 msgid "Open newsgroup to attach message from"
 msgstr "Άνοιγμα ομάδας νέων για σύναψη μηνύματος από"
 
-#: compose/functions.c:893 main.c:1742
+#: compose/functions.c:893 main.c:1726
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Αδυναμία ανοίγματος του γραμματοκιβωτίου %s"
@@ -1412,7 +1921,7 @@ msgid "'charset' must contain exactly one character set name"
 msgstr "Το 'charset' πρέπει να περιέχει ακριβώς ένα όνομα σετ χαρακτήρων"
 
 #: config/charset.c:70 config/charset.c:101 hcache/config.c:55
-#: hcache/config.c:78 hcache/config.c:103 mutt_config.c:119
+#: hcache/config.c:78 hcache/config.c:103 mutt_config.c:120
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Μη έγκυρη τιμή για επιλογή %s: %s"
@@ -1428,7 +1937,7 @@ msgid "Invalid enum value: %ld"
 msgstr "Μη έγκυρη τιμή enum: %ld"
 
 #: config/helpers.c:340 config/set.c:109 config/set.c:454 config/set.c:601
-#: config/set.c:677 config/set.c:797 main.c:681 parse/set.c:119 parse/set.c:179
+#: config/set.c:677 config/set.c:797 main.c:666 parse/set.c:119 parse/set.c:179
 #: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
 #: parse/set.c:433
 #, fuzzy, c-format
@@ -1688,15 +2197,15 @@ msgstr "Το πιστοποιητικό αποθηκεύτηκε"
 msgid "Warning: Couldn't save certificate"
 msgstr "Προειδοποίηση: Αδυναμία αποθήκευσης πιστοποιητικού"
 
-#: conn/gnutls.c:807 conn/gnutls.c:853
+#: conn/gnutls.c:794 conn/gnutls.c:831
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Όλα τα διαθέσιμα προτόκολλα για TLS/SSL σύνδεση απενεργοποιήθηκαν"
 
-#: conn/gnutls.c:860
+#: conn/gnutls.c:838
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
 
-#: conn/gnutls.c:885 imap/command.c:1329 imap/command.c:1450
+#: conn/gnutls.c:863 imap/command.c:1348 imap/command.c:1469
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "Έκλεισε η σύνδεση στο %s"
@@ -1704,16 +2213,16 @@ msgstr "Έκλεισε η σύνδεση στο %s"
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:952 conn/openssl.c:1158
+#: conn/gnutls.c:930 conn/openssl.c:1158
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Προειδοποίηση: αδυναμία ορισμού TLS SNI ονόματος host"
 
-#: conn/gnutls.c:1004
+#: conn/gnutls.c:982
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL σύνδεση χρησιμοποιώντας %s (%s/%s/%s)"
 
-#: conn/gnutls.c:1086 conn/gnutls.c:1121
+#: conn/gnutls.c:1064 conn/gnutls.c:1099
 msgid "Error: no TLS socket open"
 msgstr "Σφάλμα: δεν υπάρχει ανοιχτό SSL socket"
 
@@ -1785,7 +2294,7 @@ msgstr "SSL απέτυχε: %s"
 msgid "Unable to create SSL context"
 msgstr "Αδυναμία στην δημιουργία περιεχομένου SSL"
 
-#: conn/openssl.c:1281
+#: conn/openssl.c:1271
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "Προειδοποίηση: σφάλμα κατά την ενεργοποίηση του ssl_verify_partial_chains"
 
@@ -2197,27 +2706,27 @@ msgid "Conditional expando is missing '%c'"
 msgstr ""
 
 #. L10N: e.g. "Unknown expando: %Q"
-#: expando/node_expando.c:305
+#: expando/node_expando.c:356
 #, fuzzy, c-format
 msgid "Unknown expando: %%%.1s"
 msgstr "Άγνωστη μεταβλητή '%s'"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
-#: expando/node_expando.c:365
+#: expando/node_expando.c:465
 #, c-format
 msgid "Expando is missing terminator: '%c'"
 msgstr ""
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
-#: expando/node_padding.c:241
+#: expando/node_padding.c:242
 #, c-format
 msgid "Padding cannot be formatted"
 msgstr ""
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
-#: expando/node_padding.c:251
+#: expando/node_padding.c:252
 #, c-format
 msgid "Padding cannot be used as a condition"
 msgstr ""
@@ -4449,7 +4958,7 @@ msgstr "Ορίστε την επιλογή %s πριν ορίσετε την %s"
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: hcache/config.c:112 send/config.c:67
+#: hcache/config.c:112 send/config.c:68
 #, fuzzy, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "Η επιλογή %s πρέπει να είναι από %d έως %d"
@@ -4583,28 +5092,204 @@ msgstr "%s:%d: Λανθασμένη μορφοποίηση αρχείου ιστ
 msgid "Can't create temporary file"
 msgstr "Αδυναμία δημιουργίας προσωρινού αρχείου"
 
-#: hook.c:237
+#: hooks/commands.c:43
+msgid "Run a command when switching to a matching account"
+msgstr ""
+
+#: hooks/commands.c:44
+#, fuzzy
+msgid "account-hook <regex> <command>"
+msgstr "account-hook <regex> <command>"
+
+#: hooks/commands.c:47
+msgid "Define charset alias for languages"
+msgstr ""
+
+#: hooks/commands.c:48
+#, fuzzy
+msgid "charset-hook <alias> <charset>"
+msgstr "charset-hook <alias> <charset>"
+
+#: hooks/commands.c:51
+msgid "Specify which keyid to use for recipients matching regex"
+msgstr ""
+
+#: hooks/commands.c:52
+#, fuzzy
+msgid "crypt-hook <regex> <keyid>"
+msgstr "crypt-hook <regex> <keyid>"
+
+#: hooks/commands.c:55
+msgid "Pattern rule to set the save location for outgoing mail"
+msgstr ""
+
+#: hooks/commands.c:56
+#, fuzzy
+msgid "fcc-hook <pattern> <mailbox>"
+msgstr "fcc-hook <pattern> <mailbox>"
+
+#: hooks/commands.c:59
+msgid "Equivalent to both 'fcc-hook' and 'save-hook'"
+msgstr ""
+
+#: hooks/commands.c:60
+#, fuzzy
+msgid "fcc-save-hook <pattern> <mailbox>"
+msgstr "fcc-save-hook <pattern> <mailbox>"
+
+#: hooks/commands.c:63
+msgid "Run a command upon entering a folder matching regex"
+msgstr ""
+
+#: hooks/commands.c:64
+#, fuzzy
+msgid "folder-hook [ -noregex ] <regex> <command>"
+msgstr "folder-hook [ -noregex ] <regex> <command>"
+
+#: hooks/commands.c:67
+msgid "Define a system-specific alias for a character set"
+msgstr ""
+
+#: hooks/commands.c:68
+#, fuzzy
+msgid "iconv-hook <charset> <local-charset>"
+msgstr "iconv-hook <charset> <local-charset>"
+
+#: hooks/commands.c:71
+msgid "Create dynamic index format strings"
+msgstr ""
+
+#: hooks/commands.c:72
+#, fuzzy
+msgid "index-format-hook <name> [ ! ]<pattern> <format-string>"
+msgstr "index-format-hook <name> [ ! ]<pattern> <format-string>"
+
+#: hooks/commands.c:75
+msgid "On leaving a mailbox, move read messages matching a regex"
+msgstr ""
+
+#: hooks/commands.c:76
+#, fuzzy
+msgid "mbox-hook [ -noregex ] <regex> <mailbox>"
+msgstr "mbox-hook [ -noregex ] <regex> <mailbox>"
+
+#: hooks/commands.c:79
+msgid "Run a command when viewing a message matching patterns"
+msgstr ""
+
+#: hooks/commands.c:80
+#, fuzzy
+msgid "message-hook <pattern> <command>"
+msgstr "message-hook <pattern> <command>"
+
+#: hooks/commands.c:83
+msgid "Run a command when replying to messages matching a pattern"
+msgstr ""
+
+#: hooks/commands.c:84
+#, fuzzy
+msgid "reply-hook <pattern> <command>"
+msgstr "reply-hook <pattern> <command>"
+
+#: hooks/commands.c:87
+msgid "Set default save folder for messages"
+msgstr ""
+
+#: hooks/commands.c:88
+#, fuzzy
+msgid "save-hook <pattern> <mailbox>"
+msgstr "save-hook <pattern> <mailbox>"
+
+#: hooks/commands.c:91
+msgid "Run a command when sending a message, new or reply, matching a pattern"
+msgstr ""
+
+#: hooks/commands.c:92
+#, fuzzy
+msgid "send-hook <pattern> <command>"
+msgstr "send-hook <pattern> <command>"
+
+#: hooks/commands.c:95
+msgid "Run command whenever a composed message is edited"
+msgstr ""
+
+#: hooks/commands.c:96
+#, fuzzy
+msgid "send2-hook <pattern> <command>"
+msgstr "send2-hook <pattern> <command>"
+
+#: hooks/commands.c:99
+msgid "Run a command before NeoMutt exits"
+msgstr ""
+
+#: hooks/commands.c:100
+#, fuzzy
+msgid "shutdown-hook <command>"
+msgstr "shutdown-hook <command>"
+
+#: hooks/commands.c:103
+msgid "Run a command when NeoMutt starts up"
+msgstr ""
+
+#: hooks/commands.c:104
+#, fuzzy
+msgid "startup-hook <command>"
+msgstr "startup-hook <command>"
+
+#: hooks/commands.c:107
+msgid "Run a command after a specified timeout or idle period"
+msgstr ""
+
+#: hooks/commands.c:108
+#, fuzzy
+msgid "timeout-hook <command>"
+msgstr "timeout-hook <command>"
+
+#: hooks/commands.c:111
+msgid "Remove hooks of a given type"
+msgstr ""
+
+#: hooks/commands.c:112
+#, fuzzy
+msgid "unhook { * | <hook-type> }"
+msgstr "unhook { * | <hook-type> }"
+
+#: hooks/commands.c:116
+msgid "Show a list of all the hooks"
+msgstr ""
+
+#: hooks/commands.c:117
+#, fuzzy
+msgid "hooks"
+msgstr "hooks"
+
+#: hooks/dump.c:238
+#, fuzzy, c-format
+msgid "%s: No Hooks are configured"
+msgstr "Δεν έχει ρυθμιστεί PGP backend"
+
+#: hooks/parse.c:576 hooks/parse.c:806
 msgid "current mailbox shortcut '^' is unset"
 msgstr "η συντόμευση '^' δεν έχει τεθεί για το γραμματοκιβώτιο"
 
-#: hook.c:249
+#: hooks/parse.c:588 hooks/parse.c:818
 msgid "mailbox shortcut expanded to empty regex"
 msgstr "η συντόμευση για γραμματοκιβώριο επεκτάθηκε σε κενό regex"
 
-#: hook.c:268
+#: hooks/parse.c:940
 msgid "badly formatted command string"
 msgstr "Λανθασμένα μορφοποιημένο κείμενο εντολής"
 
-#: hook.c:589
+#: hooks/parse.c:1183
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Αδυναμία unhook * μέσα από ένα hook"
 
-#: hook.c:602
+#: hooks/parse.c:1196
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: άγνωστος τύπος hook: %s"
 
-#: hook.c:612
+#: hooks/parse.c:1209
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: Αδυναμία διαγραφής ενός %s μέσα από ένα %s"
@@ -4692,131 +5377,169 @@ msgstr "Απέτυχε η μετονομασία: %s"
 msgid "Mailbox renamed"
 msgstr "Το γραμματοκιβώτιο μετονομάστηκε"
 
-#: imap/command.c:180
+#: imap/command.c:182
 #, c-format
 msgid "Mailbox %s@%s closed"
 msgstr "Το γραμματοκιβώτιο %s@%s έκλεισε"
 
-#: imap/command.c:1225
+#: imap/command.c:1243
 #, c-format
 msgid "IMAP command failed: %s"
 msgstr "Αποτυχία εντολής IMAP: %s"
 
-#: imap/config.c:60 pop/config.c:60 send/config.c:90
+#: imap/config.c:60 pop/config.c:60 send/config.c:91
 #, fuzzy, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "Επιλογή %s: Το %s δεν είναι έγκυρος επικυρωτής"
 
-#: imap/imap.c:116
+#: imap/imap.c:115
+#, c-format
+msgid "Could not subscribe to %s"
+msgstr "Δεν μπόρεσε να γίνει εγγραφή στο %s"
+
+#: imap/imap.c:120 imap/imap.c:1377
+#, c-format
+msgid "Subscribed to %s"
+msgstr "Έγινε εγγραφή στο %s"
+
+#: imap/imap.c:161
+#, c-format
+msgid "Could not unsubscribe from %s"
+msgstr "Δεν μπόρεσε να γίνει απεγγραφή από %s"
+
+#: imap/imap.c:166 imap/imap.c:1379
+#, c-format
+msgid "Unsubscribed from %s"
+msgstr "Απεγγραφή από %s"
+
+#: imap/imap.c:180
+msgid "Subscribe to an IMAP mailbox"
+msgstr ""
+
+#: imap/imap.c:181
+#, fuzzy
+msgid "subscribe-to <imap-folder-uri>"
+msgstr "subscribe-to <imap-folder-uri>"
+
+#: imap/imap.c:184
+msgid "Unsubscribe from an IMAP mailbox"
+msgstr ""
+
+#: imap/imap.c:185
+#, fuzzy
+msgid "unsubscribe-from <imap-folder-uri>"
+msgstr "unsubscribe-from <imap-folder-uri>"
+
+#: imap/imap.c:216
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Αυτός ο διακομιστής IMAP είναι αρχαίος. Το NeoMutt δεν είναι συμβατό με αυτόν."
 
-#: imap/imap.c:446
+#: imap/imap.c:551
 #, fuzzy, c-format
 msgid "CREATE failed: %s"
 msgstr "Απέτυχε η δημιουργία: %s"
 
-#: imap/imap.c:574
+#: imap/imap.c:683
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Κλείσιμο σύνδεσης στο στο %s..."
 
-#: imap/imap.c:776 nntp/nntp.c:1852 pop/lib.c:339 send/smtp.c:1044
+#: imap/imap.c:885 nntp/nntp.c:1852 pop/lib.c:339 send/smtp.c:1044
 msgid "Secure connection with TLS?"
 msgstr "Προστατέψτε την σύνδεση με TLS;"
 
-#: imap/imap.c:793 nntp/nntp.c:1877 pop/lib.c:361 send/smtp.c:1062
+#: imap/imap.c:902 nntp/nntp.c:1877 pop/lib.c:361 send/smtp.c:1062
 msgid "Could not negotiate TLS connection"
 msgstr "Αδυναμία διαπραγμάτευσης σύνδεσης TLS"
 
-#: imap/imap.c:808 imap/imap.c:825 pop/lib.c:378
+#: imap/imap.c:917 imap/imap.c:934 pop/lib.c:378
 msgid "Encrypted connection unavailable"
 msgstr "Δεν είναι διαθέσιμη η κρυπτογραφημένη σύνδεση"
 
-#: imap/imap.c:1236
+#: imap/imap.c:1347
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Εγγραφή στο %s..."
 
-#: imap/imap.c:1238
+#: imap/imap.c:1349
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Γίνεται απεγγραφή από %s..."
 
-#: imap/imap.c:1419 imap/message.c:1803
+#: imap/imap.c:1537 imap/message.c:1822
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Αντιγραφή %d μηνύματος στο %s..."
 msgstr[1] "Αντιγραφή %d μηνυμάτων στο %s..."
 
-#: imap/imap.c:1437 imap/imap.c:2097 imap/message.c:1821 muttlib.c:799
+#: imap/imap.c:1555 imap/imap.c:2219 imap/message.c:1840 muttlib.c:799
 #, c-format
 msgid "Create %s?"
 msgstr "Δημιουργία του %s;"
 
-#: imap/imap.c:1512
+#: imap/imap.c:1630
 msgid "Expunge failed"
 msgstr "Διαγραφή απέτυχε"
 
-#: imap/imap.c:1530
+#: imap/imap.c:1648
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Σημείωση %d μηνύματος ως διαγραμμένο..."
 msgstr[1] "Σημείωση %d μηνυμάτων ως διαγραμμένα..."
 
-#: imap/imap.c:1569
+#: imap/imap.c:1687
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Αποθήκευση τροποποιημένου μηνύματος... [%d/%d]"
 msgstr[1] "Αποθήκευση τροποποιημένων μηνυμάτων... [%d/%d]"
 
-#: imap/imap.c:1612
+#: imap/imap.c:1730
 msgid "Error saving flags. Close anyway?"
 msgstr "Σφάλμα κατά την αποθήκευση σημαιών. Έξοδος;"
 
-#: imap/imap.c:1620
+#: imap/imap.c:1738
 msgid "Error saving flags"
 msgstr "Σφάλμα κατά την αποθήκευση σημαιών!"
 
-#: imap/imap.c:1647
+#: imap/imap.c:1765
 msgid "Expunging messages from server..."
 msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
 
-#: imap/imap.c:1653
+#: imap/imap.c:1771
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE απέτυχε"
 
-#: imap/imap.c:1896 nntp/nntp.c:2451
+#: imap/imap.c:2016 nntp/nntp.c:2451
 #, c-format
 msgid "Selecting %s..."
 msgstr "Επιλογή %s..."
 
-#: imap/imap.c:2064
+#: imap/imap.c:2184
 msgid "Error opening mailbox"
 msgstr "Σφάλμα κατά  το άνοιγμα του γραμματοκιβωτίου"
 
-#: imap/imap.c:2208
+#: imap/imap.c:2330
 msgid "IMAP server doesn't support custom flags"
 msgstr "Ο διακομιστής IMAP δεν υποστηρίζει προσαρμοσμένες σημαίες"
 
-#: imap/imap.c:2252
+#: imap/imap.c:2374
 msgid "Invalid IMAP flags"
 msgstr "Μη έγκυρες σημαίες IMAP"
 
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
-#: imap/message.c:509
+#: imap/message.c:513
 msgid "Abort download and close mailbox?"
 msgstr "Ματαίωση λήψης και κλήσιμο του γραμματοκιβωτίου;"
 
-#: imap/message.c:699 imap/message.c:839
+#: imap/message.c:709 imap/message.c:851
 #, fuzzy
 msgid "Evaluating cache..."
 msgstr "Έλεγχος προσωρινής μνήμης... [%d/%d]"
 
-#: imap/message.c:929
+#: imap/message.c:943
 #, fuzzy
 msgid "Fetching flag updates..."
 msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d]"
@@ -4824,36 +5547,36 @@ msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d
 #. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
-#: imap/message.c:1072
+#: imap/message.c:1086
 #, fuzzy
 msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "Αδυναμία επαναπρόσβασης του γραμματοκιβωτίου"
 
 #
-#: imap/message.c:1141
+#: imap/message.c:1155
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Αδυναμία λήψης επικεφαλίδων από αυτή την έκδοση του εξυπηρετητή IMAP"
 
-#: imap/message.c:1163 index/functions.c:2610 nntp/nntp.c:1284 pop/pop.c:371
+#: imap/message.c:1177 index/functions.c:2610 nntp/nntp.c:1284 pop/pop.c:371
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d]"
 
-#: imap/message.c:1572
+#: imap/message.c:1588
 #, fuzzy
 msgid "Uploading message..."
 msgstr "Ανέβασμα μηνύματος ..."
 
-#: imap/message.c:1739
+#: imap/message.c:1758
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Αντιγραφή μηνύματος %d στο %s ..."
 
-#: imap/message.c:2009 nntp/nntp.c:2681 pop/pop.c:1046
+#: imap/message.c:2028 nntp/nntp.c:2681 pop/pop.c:1046
 msgid "Fetching message..."
 msgstr "Λήψη μηνύματος..."
 
-#: imap/message.c:2060 pop/pop.c:1023
+#: imap/message.c:2079 pop/pop.c:1023
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Ο δείκτης του μηνύματος είναι άκυρος. Ξανανοίξτε το γραμματοκιβώτιο."
 
@@ -5300,36 +6023,36 @@ msgstr "Δεν υπάρχουν μηνύματα"
 msgid "No visible messages"
 msgstr "Δεν υπάρχουν ορατά μηνύματα"
 
-#: index/index.c:100
+#: index/index.c:99
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr ""
 
-#: key/commands.c:103
+#: key/commands.c:101
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
 msgstr ""
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-#: key/commands.c:213 key/commands.c:266 key/dump.c:220
+#: key/commands.c:211 key/commands.c:264 key/dump.c:220
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: δεν υπάρχει τέτοιο μενού"
 
-#: key/commands.c:229
+#: key/commands.c:227
 #, c-format
 msgid "%s: null key sequence"
 msgstr "%s: κενή ακολουθία πλήκτρων"
 
-#: key/commands.c:300
+#: key/commands.c:298
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: key/commands.c:555
+#: key/commands.c:604
 msgid "macro: empty key sequence"
 msgstr "macro: άδεια ακολουθία πλήκτρων"
 
-#: key/commands.c:652
+#: key/commands.c:709
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: δεν υπάρχει τέτοια λειτουργία"
@@ -5359,21 +6082,93 @@ msgstr "Το πλήκτρο δεν είναι συνδεδεμένο. Πατήσ
 msgid "Macro loop detected"
 msgstr "Εντοπίστηκε βρόγχος μακροεντολής"
 
-#: key/init.c:169
+#: key/init.c:73
+msgid "Bind a key to a function"
+msgstr ""
+
+#: key/init.c:74
+#, fuzzy
+msgid "bind <map>[,<map> ... ] <key> <function>"
+msgstr "bind <map>[,<map> ... ] <key> <function>"
+
+#: key/init.c:77
+msgid "Execute a function"
+msgstr ""
+
+#: key/init.c:78
+#, fuzzy
+msgid "exec <function> [ <function> ... ]"
+msgstr "exec <function> [ <function> ... ]"
+
+#: key/init.c:81
+msgid "Define a keyboard macro"
+msgstr ""
+
+#: key/init.c:82
+#, fuzzy
+msgid "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
+msgstr "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
+
+#: key/init.c:85
+msgid "Push a string into NeoMutt's input queue (simulate typing)"
+msgstr ""
+
+#: key/init.c:86
+#, fuzzy
+msgid "push <string>"
+msgstr "push <string>"
+
+#: key/init.c:89
+msgid "Remove a key binding"
+msgstr ""
+
+#: key/init.c:90
+#, fuzzy
+msgid "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgstr "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
+
+#: key/init.c:93
+msgid "Remove a keyboard 'macro'"
+msgstr ""
+
+#: key/init.c:94
+#, fuzzy
+msgid "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgstr "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
+
+#: key/init.c:188
 msgid "Abort key is not set, defaulting to Ctrl-G"
 msgstr ""
 
-#: key/init.c:175
+#: key/init.c:194
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
 msgstr ""
 
-#: lua/commands.c:104
+#: lua/commands.c:129
 #, fuzzy, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Αδυναμία κλειδώματος του %s\n"
 
-#: lua/lua.c:449
+#: lua/commands.c:147
+msgid "Run a Lua expression or call a Lua function"
+msgstr ""
+
+#: lua/commands.c:148
+#, fuzzy
+msgid "lua '<lua-commands>'"
+msgstr "lua '<lua-commands>'"
+
+#: lua/commands.c:151
+msgid "Execute a Lua script file"
+msgstr ""
+
+#: lua/commands.c:152
+#, fuzzy
+msgid "lua-source <file>"
+msgstr "lua-source <file>"
+
+#: lua/lua.c:448
 msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
@@ -5427,7 +6222,7 @@ msgstr "Ανάγνωση %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
 #: maildir/mailbox.c:854 mbox/mbox.c:1174 mh/mh.c:1079 mx.c:464
-#: notmuch/notmuch.c:2270
+#: notmuch/notmuch.c:2272
 #, c-format
 msgid "Writing %s..."
 msgstr "Εγγραφή %s..."
@@ -5442,75 +6237,75 @@ msgstr "Αδυναμία αποστολής του μηνύματος."
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): αδυναμία ορισμού χρόνου στο αρχείο"
 
-#: main.c:216
+#: main.c:199
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Λάθος στη γραμμή εντολών: %s"
 
-#: main.c:218
+#: main.c:201
 #, fuzzy, c-format
 msgid "Warning in command line: %s"
 msgstr "Λάθος στη γραμμή εντολών: %s"
 
-#: main.c:335
+#: main.c:320
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "αδυναμία στον εντοπισμό του ονόματος χρήστη"
 
-#: main.c:688 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
+#: main.c:673 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
 #: parse/set.c:331 parse/set.c:372 parse/set.c:439
 #, c-format
 msgid "Option %s is deprecated"
 msgstr ""
 
-#: main.c:764
+#: main.c:749
 msgid "Error initializing terminal"
 msgstr "Λάθος κατά την αρχικοποίηση του τερματικού"
 
-#: main.c:832
+#: main.c:817
 msgid "unable to determine username"
 msgstr "αδυναμία στον εντοπισμό του ονόματος χρήστη"
 
-#: main.c:838
+#: main.c:823
 msgid "unable to determine home directory"
 msgstr "αδυναμία στον εντοπισμό του καταλόγου χρήστη (home directory)"
 
-#: main.c:983
+#: main.c:968
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Σφάλμα: '%s' είναι λανθασμένη διεθνής διεύθυνση IDN"
 
-#: main.c:1342
+#: main.c:1326
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:1357 main.c:1628 send/send.c:306 send/send.c:2663 send/send.c:2667
+#: main.c:1341 main.c:1612 send/send.c:306 send/send.c:2663 send/send.c:2667
 msgid "No recipients specified"
 msgstr "Δεν έχουν οριστεί παραλήπτες"
 
-#: main.c:1391
+#: main.c:1375
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:1481
+#: main.c:1465
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Αδυναμία πρόσβασης στο αρχείο μηνυμάτων: %s"
 
-#: main.c:1552 mutt_header.c:350
+#: main.c:1536 mutt_header.c:350
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: αδυναμία στην προσάρτηση του αρχείου"
 
-#: main.c:1643
+#: main.c:1627
 msgid "No mailbox with new mail"
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο"
 
-#: main.c:1663
+#: main.c:1647
 msgid "No incoming mailboxes defined"
 msgstr "Δεν έχει οριστεί γραμματοκιβώτιο εισερχομένων"
 
-#: main.c:1716
+#: main.c:1700
 msgid "Mailbox is empty"
 msgstr "Το γραμματοκιβώτιο είναι άδειο"
 
@@ -5682,18 +6477,23 @@ msgstr "λανθασμένη κανονική έκφραση: %s"
 msgid "Not enough subexpressions for template"
 msgstr ""
 
-#: mutt_config.c:228
+#: mutt_config.c:219
+#, fuzzy, c-format
+msgid "Unknown expando: %%{%s}"
+msgstr "Άγνωστη μεταβλητή '%s'"
+
+#: mutt_config.c:242
 #, c-format
 msgid "index-hook cannot be used as a condition"
 msgstr ""
 
 #. L10N: $ts_icon_format default format
-#: mutt_config.c:766
+#: mutt_config.c:776
 msgid "M%<n?AIL&ail>"
 msgstr ""
 
 #. L10N: $ts_status_format default format
-#: mutt_config.c:770
+#: mutt_config.c:780
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
 msgstr ""
 
@@ -7132,7 +7932,7 @@ msgstr ""
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
-#: notmuch/config.c:94 notmuch/notmuch.c:322
+#: notmuch/config.c:94 notmuch/notmuch.c:324
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr ""
 
@@ -7151,39 +7951,39 @@ msgstr ""
 msgid "unknown reason"
 msgstr "άγνωστο σφάλμα"
 
-#: notmuch/mdata.c:83 notmuch/notmuch.c:1825
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1827
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:369
+#: notmuch/notmuch.c:371
 #, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:712
+#: notmuch/notmuch.c:714
 #, fuzzy
 msgid "Reading messages..."
 msgstr "Αποστολή μηνύματος..."
 
-#: notmuch/notmuch.c:1584
+#: notmuch/notmuch.c:1586
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
 
-#: notmuch/notmuch.c:1840
+#: notmuch/notmuch.c:1842
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "Αδυναμία προσάρτησης του %s"
 
-#: notmuch/notmuch.c:2350
+#: notmuch/notmuch.c:2352
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2410
+#: notmuch/notmuch.c:2412
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Αδυναμία πρόσθεσης στο φάκελο: %s"
@@ -7299,7 +8099,7 @@ msgstr "Η υπογραφή PGP ΔΕΝ μπόρεσε να επαληθευτε�
 msgid "%ld%%"
 msgstr "%ld%%"
 
-#: parse/rc.c:93
+#: parse/rc.c:97
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: άγνωστη εντολή"
@@ -7314,44 +8114,44 @@ msgstr "Η εντολή '%s' μπορεί να χρησιμοποιηθεί μό
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "Δεν επιτρέπεται η χρήση 'inv', 'no', '&' ή '?' με την εντολή '%s'"
 
-#: parse/set.c:561
+#: parse/set.c:565
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Δεν γίνεται να χρησιμοποιηθεί πρόθεμα κατά την αύξηση ή μείωση μίας μεταβλητής"
 
-#: parse/set.c:567 parse/set.c:597
+#: parse/set.c:571 parse/set.c:601
 #, fuzzy, c-format
 msgid "Can't set option with the '%s' command"
 msgstr "Δεν γίνεται να οριστεί μεταβλητή με την εντολή '%s'"
 
-#: parse/set.c:583
+#: parse/set.c:587
 msgid "'+' and '-' must be followed by '='"
 msgstr ""
 
-#: parse/set.c:591
+#: parse/set.c:595
 msgid "Can't use prefix when setting a variable"
 msgstr "Δεν μπορεί να γίνει χρήση προθέματος κατά την δημιουργία μίας μεταβλητής"
 
-#: parse/set.c:609
+#: parse/set.c:613
 #, fuzzy
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
 msgstr "Τα προθέματα 'no' και 'inv' μπορούν να χρησιμοποιηθούν μόνο με μεταβλητές bool/quad"
 
-#: parse/set.c:613
+#: parse/set.c:617
 #, fuzzy, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
 msgstr "Η εντολή '%s' μπορεί να χρησιμοποιηθεί μόνο με μεταβλητές bool/quad"
 
-#: pattern/compile.c:72 pattern/compile.c:159 pattern/compile.c:720
+#: pattern/compile.c:73 pattern/compile.c:159 pattern/compile.c:720
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Λάθος στην έκφραση: %s"
 
-#: pattern/compile.c:77 pattern/compile.c:164 pattern/compile.c:726
+#: pattern/compile.c:78 pattern/compile.c:164 pattern/compile.c:726
 #, fuzzy
 msgid "Empty expression"
 msgstr "σφάλμα στην έκφραση"
 
-#: pattern/compile.c:151
+#: pattern/compile.c:152
 #, fuzzy
 msgid "No search command defined"
 msgstr "Η εντολή ερωτήσεως δεν καθορίστηκε"
@@ -7508,271 +8308,271 @@ msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~A
-#: pattern/flags.c:44
+#: pattern/flags.c:53
 #, fuzzy
 msgid "all messages"
 msgstr "ταξινόμηση των μηνυμάτων"
 
 #. L10N: Pattern Completion Menu description for ~b
-#: pattern/flags.c:47
+#: pattern/flags.c:56
 msgid "messages whose body matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~B
-#: pattern/flags.c:50
+#: pattern/flags.c:59
 msgid "messages whose body or headers match EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~c
-#: pattern/flags.c:53
+#: pattern/flags.c:62
 msgid "messages whose CC header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~C
-#: pattern/flags.c:56
+#: pattern/flags.c:65
 msgid "messages whose recipient matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~d
-#: pattern/flags.c:59
+#: pattern/flags.c:68
 msgid "messages sent in DATERANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~D
-#: pattern/flags.c:62
+#: pattern/flags.c:71
 #, fuzzy
 msgid "deleted messages"
 msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~e
-#: pattern/flags.c:65
+#: pattern/flags.c:74
 msgid "messages whose Sender header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~E
-#: pattern/flags.c:68
+#: pattern/flags.c:77
 #, fuzzy
 msgid "expired messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~f
-#: pattern/flags.c:71
+#: pattern/flags.c:80
 msgid "messages whose From header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
-#: pattern/flags.c:74
+#: pattern/flags.c:83
 #, fuzzy
 msgid "flagged messages"
 msgstr "Δεν υπάρχουν σημειωμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~g
-#: pattern/flags.c:77
+#: pattern/flags.c:86
 #, fuzzy
 msgid "cryptographically signed messages"
 msgstr "επανάκληση ενός αναβληθέντος μηνύματος"
 
 #. L10N: Pattern Completion Menu description for ~G
-#: pattern/flags.c:80
+#: pattern/flags.c:89
 #, fuzzy
 msgid "cryptographically encrypted messages"
 msgstr "Αδυναμία αποκρυπτογράφησης του κρυπτογραφημένου μηνύματος"
 
 #. L10N: Pattern Completion Menu description for ~h
-#: pattern/flags.c:83
+#: pattern/flags.c:92
 msgid "messages whose header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~H
-#: pattern/flags.c:86
+#: pattern/flags.c:95
 msgid "messages whose spam tag matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~i
-#: pattern/flags.c:89
+#: pattern/flags.c:98
 #, fuzzy
 msgid "messages whose Message-ID matches EXPR"
 msgstr "επεξεργασία του μηνύματος με επικεφαλίδες"
 
 #. L10N: Pattern Completion Menu description for ~I
-#: pattern/flags.c:92
+#: pattern/flags.c:101
 msgid "messages whose Message-ID is included in the results returned from an external search program"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~k
-#: pattern/flags.c:95
+#: pattern/flags.c:104
 #, fuzzy
 msgid "messages which contain PGP key"
 msgstr "Το μήνυμα ανεβλήθη."
 
 #. L10N: Pattern Completion Menu description for ~K
-#: pattern/flags.c:98
+#: pattern/flags.c:107
 #, fuzzy
 msgid "messages whose BCC header matches EXPR"
 msgstr "επεξεργασία του μηνύματος με επικεφαλίδες"
 
 #. L10N: Pattern Completion Menu description for ~l
-#: pattern/flags.c:101
+#: pattern/flags.c:110
 msgid "messages addressed to known mailing lists"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~L
-#: pattern/flags.c:104
+#: pattern/flags.c:113
 msgid "messages whose From/Sender/To/CC matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~m
-#: pattern/flags.c:107
+#: pattern/flags.c:116
 msgid "messages whose number is in RANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~M
-#: pattern/flags.c:110
+#: pattern/flags.c:119
 msgid "messages with a Content-Type matching EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~n
-#: pattern/flags.c:113
+#: pattern/flags.c:122
 msgid "messages whose score is in RANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~N
-#: pattern/flags.c:116
+#: pattern/flags.c:125
 #, fuzzy
 msgid "new messages"
 msgstr "Δεν υπάρχουν νέα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~O
-#: pattern/flags.c:119
+#: pattern/flags.c:128
 #, fuzzy
 msgid "old messages"
 msgstr "ταξινόμηση των μηνυμάτων"
 
 #. L10N: Pattern Completion Menu description for ~p
-#: pattern/flags.c:122
+#: pattern/flags.c:131
 msgid "messages addressed to you"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~P
-#: pattern/flags.c:125
+#: pattern/flags.c:134
 #, fuzzy
 msgid "messages from you"
 msgstr "Το μήνυμα ανεβλήθη."
 
 #. L10N: Pattern Completion Menu description for ~Q
-#: pattern/flags.c:128
+#: pattern/flags.c:137
 msgid "messages which have been replied to"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~r
-#: pattern/flags.c:131
+#: pattern/flags.c:140
 msgid "messages received in DATERANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~R
-#: pattern/flags.c:134
+#: pattern/flags.c:143
 #, fuzzy
 msgid "already read messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~s
-#: pattern/flags.c:137
+#: pattern/flags.c:146
 msgid "messages whose Subject header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~S
-#: pattern/flags.c:140
+#: pattern/flags.c:149
 #, fuzzy
 msgid "superseded messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~t
-#: pattern/flags.c:143
+#: pattern/flags.c:152
 msgid "messages whose To header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~T
-#: pattern/flags.c:146
+#: pattern/flags.c:155
 #, fuzzy
 msgid "tagged messages"
 msgstr "Δεν υπάρχουν σημειωμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~u
-#: pattern/flags.c:149
+#: pattern/flags.c:158
 #, fuzzy
 msgid "messages addressed to subscribed mailing lists"
 msgstr "απάντηση στην καθορισμένη λίστα αλληλογραφίας"
 
 #. L10N: Pattern Completion Menu description for ~U
-#: pattern/flags.c:152
+#: pattern/flags.c:161
 #, fuzzy
 msgid "unread messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~v
-#: pattern/flags.c:155
+#: pattern/flags.c:164
 #, fuzzy
 msgid "messages in collapsed threads"
 msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
 
 #. L10N: Pattern Completion Menu description for ~V
-#: pattern/flags.c:158
+#: pattern/flags.c:167
 #, fuzzy
 msgid "cryptographically verified messages"
 msgstr "μετάβαση στο προηγούμενο νέο ή μη αναγνωσμένο μήνυμα"
 
 #. L10N: Pattern Completion Menu description for ~w
-#: pattern/flags.c:161
+#: pattern/flags.c:170
 #, fuzzy
 msgid "newsgroups matching EXPR"
 msgstr "Κανένα αρχείο δεν ταιριάζει με τη μάσκα αρχείου"
 
 #. L10N: Pattern Completion Menu description for ~x
-#: pattern/flags.c:164
+#: pattern/flags.c:173
 msgid "messages whose References header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~X
-#: pattern/flags.c:167
+#: pattern/flags.c:176
 #, fuzzy
 msgid "messages with RANGE attachments"
 msgstr "εμφάνιση των προσαρτήσεων MIME"
 
 #. L10N: Pattern Completion Menu description for ~y
-#: pattern/flags.c:170
+#: pattern/flags.c:179
 msgid "messages whose X-Label header matches EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~Y
-#: pattern/flags.c:173
+#: pattern/flags.c:182
 msgid "messages whose tags match EXPR"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~z
-#: pattern/flags.c:176
+#: pattern/flags.c:185
 msgid "messages whose size is in RANGE"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~=
-#: pattern/flags.c:179
+#: pattern/flags.c:188
 #, fuzzy
 msgid "duplicated messages"
 msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~$
-#: pattern/flags.c:182
+#: pattern/flags.c:191
 #, fuzzy
 msgid "unreferenced messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #. L10N: Pattern Completion Menu description for ~#
-#: pattern/flags.c:185
+#: pattern/flags.c:194
 #, fuzzy
 msgid "broken threads"
 msgstr "Δεν υπάρχουν άλλες συζητήσεις"
 
 #. L10N: Pattern Completion Menu description for =/
-#: pattern/flags.c:188
+#: pattern/flags.c:197
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
@@ -8049,7 +8849,7 @@ msgstr "Αδυναμία αποκωδικοποίησης όλων των σημ
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Μπορείτε να διαβιβάσετε μόνο μήνυμα/μέρη rfc822"
 
-#: score.c:151
+#: score.c:162
 msgid "Error: score: invalid number"
 msgstr "Σφάλμα: score: μη έγκυρος αριθμός"
 
@@ -8063,25 +8863,25 @@ msgid "%s no longer exists"
 msgstr "Το %s δεν υπάρχει πια"
 
 #. L10N: This applies to the "$sendmail" and "$inews_command" config variables.
-#: send/config.c:113
+#: send/config.c:114
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr ""
 
 #. L10N: $attribution_intro default format
-#: send/config.c:168
+#: send/config.c:193
 #, c-format
 msgid "On %d, %n wrote:"
 msgstr ""
 
 #. L10N: $forward_attribution_intro default format
-#: send/config.c:238
+#: send/config.c:263
 #, c-format
 msgid "----- Forwarded message from %f -----"
 msgstr ""
 
 #. L10N: $forward_attribution_trailer default format
-#: send/config.c:242
+#: send/config.c:267
 msgid "----- End forwarded message -----"
 msgstr ""
 
@@ -8285,17 +9085,17 @@ msgstr "Δε βρέθηκε"
 msgid "No List-Unsubscribe header found"
 msgstr "Μοτίβο απεγγραφής: "
 
-#: send/sendlib.c:176
+#: send/sendlib.c:177
 #, fuzzy
 msgid "Could not find any mime.types file"
 msgstr "Αδυναμία αποστολής του μηνύματος"
 
-#: send/sendlib.c:271
+#: send/sendlib.c:272
 #, c-format
 msgid "Could not open %s"
 msgstr "Αδυναμία ανοίγματος του %s"
 
-#: send/sendlib.c:946
+#: send/sendlib.c:907
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Λανθασμένη διεθνής διεύθυνση IDN %s κατά την δημιουργία του πεδίου Επαναποστολή-Από"
@@ -8347,6 +9147,24 @@ msgstr "Απέτυχε η συνεδρία SMTP: σφάλμα write"
 #: send/smtp.c:1200
 msgid "Invalid server response"
 msgstr "Μη έγκυρη απάντηση από τον διακομιστή"
+
+#: sidebar/sidebar.c:52
+msgid "Pin a mailbox in the sidebar (keep visible)"
+msgstr ""
+
+#: sidebar/sidebar.c:53
+#, fuzzy
+msgid "sidebar_pin <mailbox> [ <mailbox> ... ]"
+msgstr "sidebar_pin <mailbox> [ <mailbox> ... ]"
+
+#: sidebar/sidebar.c:56
+msgid "Unpin a previously pinned mailbox in the sidebar"
+msgstr ""
+
+#: sidebar/sidebar.c:57
+#, fuzzy
+msgid "sidebar_unpin { * | <mailbox> ... }"
+msgstr "sidebar_unpin { * | <mailbox> ... }"
 
 #. L10N: Help Overview -- `neomutt -h`
 #. The modes are: help, info, send, tui
@@ -9043,6 +9861,9 @@ msgstr "Προκαθορισμένοι παράμετροι:"
 
 #~ msgid "Unbound functions:"
 #~ msgstr "Μη συνδεδεμένες λειτουργίες:"
+
+#~ msgid "alias: no address"
+#~ msgstr "Ψευδώνυμο: καμία διεύθυνση"
 
 #, fuzzy
 #~ msgid "options:"

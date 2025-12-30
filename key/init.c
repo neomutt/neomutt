@@ -90,7 +90,7 @@ static const struct Command KeyCommands[] = {
         N_("unbind { * | <menu>[,<menu> ... ] } [ <key> ]"),
         "configuration.html#unbind" },
   { "unmacro", CMD_UNMACRO, parse_unbind, CMD_NO_DATA,
-        N_("Remove a keyboard `macro`"),
+        N_("Remove a keyboard 'macro'"),
         N_("unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"),
         "configuration.html#unmacro" },
 

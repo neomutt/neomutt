@@ -56,7 +56,7 @@ static const struct Command HookCommands[] = {
         N_("fcc-hook <pattern> <mailbox>"),
         "configuration.html#default-save-mailbox" },
   { "fcc-save-hook", CMD_FCC_SAVE_HOOK, parse_hook_mailbox, CMD_NO_DATA,
-        N_("Equivalent to both `fcc-hook` and `save-hook`"),
+        N_("Equivalent to both 'fcc-hook' and 'save-hook'"),
         N_("fcc-save-hook <pattern> <mailbox>"),
         "configuration.html#default-save-mailbox" },
   { "folder-hook", CMD_FOLDER_HOOK, parse_hook_folder, CMD_NO_DATA,
