@@ -550,7 +550,6 @@ struct Hook *parse_folder_hook_line(const char *line, struct HookParseError *err
   bool pat_not = false;
   bool use_regex = true;
   regex_t *rx = NULL;
-  const char *start = line;
 
   struct Buffer *linebuf = buf_pool_get();
   struct Buffer *regex = buf_pool_get();
@@ -624,13 +623,16 @@ struct Hook *parse_folder_hook_line(const char *line, struct HookParseError *err
     goto cleanup;
   }
 
+  // Save position before extracting command (for error reporting)
+  size_t cmd_start_pos = linebuf->dptr - linebuf->data;
+
   // Extract the command (TOKEN_SPACE allows whitespace without quoting)
   if (parse_extract_token(command, linebuf, TOKEN_SPACE) < 0)
   {
     if (error)
     {
       error->message = _("failed to extract command");
-      error->position = linebuf->dptr - linebuf->data;
+      error->position = cmd_start_pos;
     }
     goto cleanup;
   }
@@ -640,7 +642,7 @@ struct Hook *parse_folder_hook_line(const char *line, struct HookParseError *err
     if (error)
     {
       error->message = _("too few arguments");
-      error->position = linebuf->dptr - linebuf->data;
+      error->position = cmd_start_pos;
     }
     goto cleanup;
   }
@@ -673,10 +675,14 @@ struct Hook *parse_folder_hook_line(const char *line, struct HookParseError *err
     if (error)
     {
       // Get regex error message
+      // Note: Using thread-local storage would be ideal for multi-threaded use,
+      // but NeoMutt is single-threaded, so static buffer is acceptable.
       static char regerr_buf[256];
       regerror(rc2, rx, regerr_buf, sizeof(regerr_buf));
       error->message = regerr_buf;
-      error->position = start - line; // Position at the start of regex token
+      // Position 0 since we can't easily determine the regex token position
+      // after parsing. The error message from regerror describes the issue.
+      error->position = 0;
     }
     regfree(rx);
     FREE(&rx);
