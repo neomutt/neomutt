@@ -24,9 +24,20 @@
 #define MUTT_HOOKS_PARSE_H
 
 #include "config.h"
+#include <stddef.h>
 #include "core/lib.h"
 
 struct Buffer;
+struct Hook;
+
+/**
+ * struct HookParseError - Error information from parsing a hook command
+ */
+struct HookParseError
+{
+  const char *message;  ///< Error message (may be NULL if no error)
+  size_t position;      ///< Position in the original line where the error occurred
+};
 
 extern struct HookList Hooks;
 extern struct HashTable *IdxFmtHooks;
@@ -43,5 +54,7 @@ enum CommandResult parse_hook_mbox    (const struct Command *cmd, struct Buffer 
 enum CommandResult parse_hook_pattern (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 enum CommandResult parse_hook_regex   (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 enum CommandResult parse_unhook       (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+
+struct Hook *parse_folder_hook_line(const char *line, struct HookParseError *error);
 
 #endif /* MUTT_HOOKS_PARSE_H */

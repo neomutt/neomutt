@@ -42,6 +42,7 @@
 #include "globals.h"
 #include "hook.h"
 #include "muttlib.h"
+#include "parse.h"
 
 extern const struct ExpandoDefinition IndexFormatDef[];
 
@@ -506,6 +507,203 @@ cleanup:
   buf_pool_release(&regex);
   buf_pool_release(&command);
   return rc;
+}
+
+/**
+ * parse_folder_hook_line - Parse a folder-hook command line
+ * @param line  Command line to parse (without the "folder-hook" prefix)
+ * @param error Optional pointer to receive error information
+ * @retval ptr  Newly allocated Hook on success (caller must free with hook_free())
+ * @retval NULL On error (check error->message for details)
+ *
+ * Parse a folder-hook command line of the form:
+ * - `[ ! ] [ -noregex ] <regex> <command>`
+ *
+ * This function performs pure parsing without:
+ * - Path/mailbox shortcut expansion
+ * - Duplicate hook detection
+ * - Adding to global hook lists
+ *
+ * The returned Hook will have:
+ * - hook->id set to CMD_FOLDER_HOOK
+ * - hook->regex.pat_not set based on leading '!'
+ * - hook->regex.pattern set to the regex string (caller may need to expand paths)
+ * - hook->regex.regex set to compiled regex
+ * - hook->command set to the command string
+ * - hook->source_file set to NULL (caller should set if needed)
+ * - hook->pattern set to NULL
+ * - hook->expando set to NULL
+ */
+struct Hook *parse_folder_hook_line(const char *line, struct HookParseError *error)
+{
+  if (!line)
+  {
+    if (error)
+    {
+      error->message = _("empty line");
+      error->position = 0;
+    }
+    return NULL;
+  }
+
+  struct Hook *hook = NULL;
+  bool pat_not = false;
+  bool use_regex = true;
+  regex_t *rx = NULL;
+  const char *start = line;
+
+  struct Buffer *linebuf = buf_pool_get();
+  struct Buffer *regex = buf_pool_get();
+  struct Buffer *command = buf_pool_get();
+
+  buf_strcpy(linebuf, line);
+  buf_seek(linebuf, 0);
+
+  // Check for pattern negation
+  if (*linebuf->dptr == '!')
+  {
+    linebuf->dptr++;
+    SKIPWS(linebuf->dptr);
+    pat_not = true;
+  }
+
+  // Extract first token (may be -noregex or the regex)
+  if (parse_extract_token(regex, linebuf, TOKEN_NO_FLAGS) < 0)
+  {
+    if (error)
+    {
+      error->message = _("failed to extract token");
+      error->position = linebuf->dptr - linebuf->data;
+    }
+    goto cleanup;
+  }
+
+  // Check if it's the -noregex flag
+  if (mutt_str_equal(buf_string(regex), "-noregex"))
+  {
+    use_regex = false;
+    if (!MoreArgs(linebuf))
+    {
+      if (error)
+      {
+        error->message = _("too few arguments");
+        error->position = linebuf->dptr - linebuf->data;
+      }
+      goto cleanup;
+    }
+    if (parse_extract_token(regex, linebuf, TOKEN_NO_FLAGS) < 0)
+    {
+      if (error)
+      {
+        error->message = _("failed to extract regex");
+        error->position = linebuf->dptr - linebuf->data;
+      }
+      goto cleanup;
+    }
+  }
+
+  // Check if regex is empty (i.e., no arguments provided)
+  if (buf_is_empty(regex))
+  {
+    if (error)
+    {
+      error->message = _("too few arguments");
+      error->position = 0;
+    }
+    goto cleanup;
+  }
+
+  // Check for command argument
+  if (!MoreArgs(linebuf))
+  {
+    if (error)
+    {
+      error->message = _("too few arguments");
+      error->position = linebuf->dptr - linebuf->data;
+    }
+    goto cleanup;
+  }
+
+  // Extract the command (TOKEN_SPACE allows whitespace without quoting)
+  if (parse_extract_token(command, linebuf, TOKEN_SPACE) < 0)
+  {
+    if (error)
+    {
+      error->message = _("failed to extract command");
+      error->position = linebuf->dptr - linebuf->data;
+    }
+    goto cleanup;
+  }
+
+  if (buf_is_empty(command))
+  {
+    if (error)
+    {
+      error->message = _("too few arguments");
+      error->position = linebuf->dptr - linebuf->data;
+    }
+    goto cleanup;
+  }
+
+  // Check for extra arguments
+  if (MoreArgs(linebuf))
+  {
+    if (error)
+    {
+      error->message = _("too many arguments");
+      error->position = linebuf->dptr - linebuf->data;
+    }
+    goto cleanup;
+  }
+
+  // If -noregex was used, sanitize the regex pattern
+  if (!use_regex)
+  {
+    struct Buffer *tmp = buf_pool_get();
+    buf_copy(tmp, regex);
+    mutt_file_sanitize_regex(regex, buf_string(tmp));
+    buf_pool_release(&tmp);
+  }
+
+  // Compile the regex
+  rx = MUTT_MEM_CALLOC(1, regex_t);
+  int rc2 = REG_COMP(rx, buf_string(regex), 0);
+  if (rc2 != 0)
+  {
+    if (error)
+    {
+      // Get regex error message
+      static char regerr_buf[256];
+      regerror(rc2, rx, regerr_buf, sizeof(regerr_buf));
+      error->message = regerr_buf;
+      error->position = start - line; // Position at the start of regex token
+    }
+    regfree(rx);
+    FREE(&rx);
+    goto cleanup;
+  }
+
+  // Create the hook
+  hook = hook_new();
+  hook->id = CMD_FOLDER_HOOK;
+  hook->command = buf_strdup(command);
+  hook->source_file = NULL; // Caller should set this if needed
+  hook->pattern = NULL;
+  hook->regex.pattern = buf_strdup(regex);
+  hook->regex.regex = rx;
+  hook->regex.pat_not = pat_not;
+  hook->expando = NULL;
+
+  buf_pool_release(&linebuf);
+  buf_pool_release(&regex);
+  buf_pool_release(&command);
+  return hook;
+
+cleanup:
+  buf_pool_release(&linebuf);
+  buf_pool_release(&regex);
+  buf_pool_release(&command);
+  return NULL;
 }
 
 /**
