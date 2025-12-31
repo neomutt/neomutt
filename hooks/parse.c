@@ -551,25 +551,13 @@ void folder_hook_data_free(struct FolderHookData *data)
 bool parse_folder_hook_line(const char *line, struct FolderHookData *data,
                             struct HookParseError *error)
 {
-  if (!line || !data)
-  {
-    if (error)
-    {
-      error->message = _("invalid arguments");
-      error->position = 0;
-    }
+  if (!line || !data || !error)
     return false;
-  }
-
-  // Initialize output data
-  data->regex = NULL;
-  data->command = NULL;
-  data->pat_not = false;
-  data->use_regex = true;
 
   struct Buffer *linebuf = buf_pool_get();
   struct Buffer *regex = buf_pool_get();
   struct Buffer *command = buf_pool_get();
+  bool rc = false;
 
   buf_strcpy(linebuf, line);
   buf_seek(linebuf, 0);
@@ -585,11 +573,8 @@ bool parse_folder_hook_line(const char *line, struct FolderHookData *data,
   // Extract first token (may be -noregex or the regex)
   if (parse_extract_token(regex, linebuf, TOKEN_NO_FLAGS) < 0)
   {
-    if (error)
-    {
-      error->message = _("failed to extract token");
-      error->position = linebuf->dptr - linebuf->data;
-    }
+    error->message = _("failed to extract token");
+    error->position = linebuf->dptr - linebuf->data;
     goto cleanup;
   }
 
@@ -599,20 +584,14 @@ bool parse_folder_hook_line(const char *line, struct FolderHookData *data,
     data->use_regex = false;
     if (!MoreArgs(linebuf))
     {
-      if (error)
-      {
-        error->message = _("too few arguments");
-        error->position = linebuf->dptr - linebuf->data;
-      }
+      error->message = _("too few arguments");
+      error->position = linebuf->dptr - linebuf->data;
       goto cleanup;
     }
     if (parse_extract_token(regex, linebuf, TOKEN_NO_FLAGS) < 0)
     {
-      if (error)
-      {
-        error->message = _("failed to extract regex");
-        error->position = linebuf->dptr - linebuf->data;
-      }
+      error->message = _("failed to extract regex");
+      error->position = linebuf->dptr - linebuf->data;
       goto cleanup;
     }
   }
@@ -620,22 +599,16 @@ bool parse_folder_hook_line(const char *line, struct FolderHookData *data,
   // Check if regex is empty (i.e., no arguments provided)
   if (buf_is_empty(regex))
   {
-    if (error)
-    {
-      error->message = _("too few arguments");
-      error->position = 0;
-    }
+    error->message = _("too few arguments");
+    error->position = 0;
     goto cleanup;
   }
 
   // Check for command argument
   if (!MoreArgs(linebuf))
   {
-    if (error)
-    {
-      error->message = _("too few arguments");
-      error->position = linebuf->dptr - linebuf->data;
-    }
+    error->message = _("too few arguments");
+    error->position = linebuf->dptr - linebuf->data;
     goto cleanup;
   }
 
@@ -645,32 +618,23 @@ bool parse_folder_hook_line(const char *line, struct FolderHookData *data,
   // Extract the command (TOKEN_SPACE allows whitespace without quoting)
   if (parse_extract_token(command, linebuf, TOKEN_SPACE) < 0)
   {
-    if (error)
-    {
-      error->message = _("failed to extract command");
-      error->position = cmd_start_pos;
-    }
+    error->message = _("failed to extract command");
+    error->position = cmd_start_pos;
     goto cleanup;
   }
 
   if (buf_is_empty(command))
   {
-    if (error)
-    {
-      error->message = _("too few arguments");
-      error->position = cmd_start_pos;
-    }
+    error->message = _("too few arguments");
+    error->position = cmd_start_pos;
     goto cleanup;
   }
 
   // Check for extra arguments
   if (MoreArgs(linebuf))
   {
-    if (error)
-    {
-      error->message = _("too many arguments");
-      error->position = linebuf->dptr - linebuf->data;
-    }
+    error->message = _("too many arguments");
+    error->position = linebuf->dptr - linebuf->data;
     goto cleanup;
   }
 
@@ -678,16 +642,13 @@ bool parse_folder_hook_line(const char *line, struct FolderHookData *data,
   data->regex = buf_strdup(regex);
   data->command = buf_strdup(command);
 
-  buf_pool_release(&linebuf);
-  buf_pool_release(&regex);
-  buf_pool_release(&command);
-  return true;
+  rc = true;
 
 cleanup:
   buf_pool_release(&linebuf);
   buf_pool_release(&regex);
   buf_pool_release(&command);
-  return false;
+  return rc;
 }
 
 /**
