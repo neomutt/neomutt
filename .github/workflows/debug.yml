@@ -33,6 +33,8 @@ jobs:
             options: --debug-graphviz
           - name:    keymap
             options: --debug-keymap
+          - name:    logging
+            options: --debug-logging
           - name:    notify
             options: --debug-names
           - name:    notify
@@ -47,7 +49,7 @@ jobs:
             options: --fuzzing
             extras:  CC=clang-14 CXX=clang-14 fuzz
           - name:    all
-            options: --debug-backtrace --debug-color --debug-email --debug-graphviz --debug-keymap --debug-names --debug-notify --debug-queue --debug-window --coverage
+            options: --debug-backtrace --debug-color --debug-email --debug-graphviz --debug-keymap --debug-logging --debug-names --debug-notify --debug-queue --debug-window --coverage
 
     steps:
     - name: Get number of CPU cores
