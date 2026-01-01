@@ -3,8 +3,8 @@
  * Prepare and send an email
  *
  * @authors
- * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  * Copyright (C) 2020 Thomas Sanchez <thomas.sanchz@gmail.com>
  * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
@@ -15,7 +15,7 @@
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2023 Whitney Cumber
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
- * Copyright (C) 2024 Alejandro Colomar <alx@kernel.org>
+ * Copyright (C) 2024-2025 Alejandro Colomar <alx@kernel.org>
  * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright

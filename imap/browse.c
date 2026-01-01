@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
  * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>

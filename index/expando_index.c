@@ -3,7 +3,7 @@
  * String processing routines to generate the mail index
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016 Ian Zimmerman <itz@primate.net>
  * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017 Stefan Assmann <sassmann@kpanic.de>

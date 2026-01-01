@@ -3,7 +3,7 @@
  * Dump the details of an Expando Tree
  *
  * @authors
- * Copyright (C) 2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -3,7 +3,7 @@
  * Run user-defined Hooks
  *
  * @authors
- * Copyright (C) 1996-2002,2004,2007 Michael R. Elkins <me@mutt.org>, and others
+ * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>, and others
  * Copyright (C) 2016 Thomas Adam <thomas@xteddy.org>
  * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017-2021 Pietro Cerutti <gahr@gahr.ch>

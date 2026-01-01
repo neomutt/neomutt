@@ -5,8 +5,9 @@
  * @authors
  * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Austin Ray <austin@austinray.io>
- * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019-2025 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

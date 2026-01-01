@@ -3,7 +3,7 @@
  * Routines for querying an external address book
  *
  * @authors
- * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>

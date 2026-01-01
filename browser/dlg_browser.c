@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2016 Pierre-Elliott Bécue <becue@crans.org>
- * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Austin Ray <austin@austinray.io>
  * Copyright (C) 2019-2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>

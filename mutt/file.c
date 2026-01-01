@@ -9,6 +9,7 @@
  * Copyright (C) 2018 Federico Kircheis <federico.kircheis@gmail.com>
  * Copyright (C) 2018-2019 Ian Zimmerman <itz@no-use.mooo.com>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2016-2017 Bernard Pratz <z+mutt+pub@m0g.net>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Victor Fernandes <criw@pm.me>
  * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  * Copyright (C) 2019-2020 Pietro Cerutti <gahr@gahr.ch>

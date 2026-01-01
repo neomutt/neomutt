@@ -3,7 +3,7 @@
  * Manage keymappings
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +34,6 @@
  * | key/init.c          | @subpage key_init     |
  * | key/keymap.c        | @subpage key_keymap   |
  * | key/lib.c           | @subpage key_lib      |
- * | key/lib.h           | @subpage lib_key      |
  * | key/menu.c          | @subpage key_menu     |
  */
 

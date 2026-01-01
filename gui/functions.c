@@ -3,7 +3,7 @@
  * Definitions of user functions
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -186,7 +186,6 @@ static const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
 
 /**
  * generic_init_keys - Initialise the Generic Keybindings
- * @retval ptr SubMenu of Generic Keybindings
  */
 void generic_init_keys(void)
 {

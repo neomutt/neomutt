@@ -3,8 +3,8 @@
  * Generate the help-page and GUI display it
  *
  * @authors
- * Copyright (C) 1996-2000,2009 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
  * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>

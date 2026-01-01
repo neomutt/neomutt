@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 1995 Ulrich Drepper <drepper@gnu.ai.mit.edu>
- * Copyright (C) 1995,1996,1997,1999,2000,2001,2005,2006,2008 Free Software Foundation, Inc.
+ * Copyright (C) 1995-2008 Free Software Foundation, Inc.
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

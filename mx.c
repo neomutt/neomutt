@@ -3,11 +3,11 @@
  * Mailbox multiplexor
  *
  * @authors
- * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2003 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
- * Copyright (C) 2018-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2025 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Austin Ray <austin@austinray.io>
  * Copyright (C) 2020 Reto Brunner <reto@slightlybroken.com>
  * Copyright (C) 2023-2024 Dennis Schön <mail@dennis-schoen.de>

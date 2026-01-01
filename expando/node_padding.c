@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
- * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -10,6 +10,7 @@
  * Copyright (C) 2021 Christian Ludwig <ludwig@ma.tum.de>
  * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
  * Copyright (C) 2023 Steinar H Gunderson <steinar+neomutt@gunderson.no>
+ * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

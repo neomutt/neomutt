@@ -3,7 +3,7 @@
  * Sidebar commands
  *
  * @authors
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Whitney Cumber
  *
  * @copyright

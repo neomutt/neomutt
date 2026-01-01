@@ -7,6 +7,7 @@
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Rayford Shireman
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2025 Alejandro Colomar <alx@kernel.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

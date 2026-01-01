@@ -3,7 +3,7 @@
  * IMAP GSS authentication method
  *
  * @authors
- * Copyright (C) 1999-2001,2005,2009 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *

@@ -11,6 +11,8 @@
  * Copyright (C) 2023 Rayford Shireman
  * Copyright (C) 2023 Steinar H Gunderson <steinar+neomutt@gunderson.no>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2025 Alejandro Colomar <alx@kernel.org>
+ * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

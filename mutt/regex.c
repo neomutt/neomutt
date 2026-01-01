@@ -8,6 +8,7 @@
  * Copyright (C) 2018-2021 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2019 Simon Symeonidis <lethaljellybean@gmail.com>
  * Copyright (C) 2022 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -3,12 +3,13 @@
  * IMAP helper functions
  *
  * @authors
- * Copyright (C) 1996-1998,2010,2012-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2009,2012 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 1999-2012 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
  * Copyright (C) 2018-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

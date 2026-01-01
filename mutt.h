@@ -3,7 +3,7 @@
  * Many unsorted constants and some structs
  *
  * @authors
- * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
  * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
  *

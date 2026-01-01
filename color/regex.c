@@ -3,7 +3,7 @@
  * Regex Colour
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright

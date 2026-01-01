@@ -3,7 +3,7 @@
  * Window management
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright

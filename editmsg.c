@@ -6,7 +6,7 @@
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2017 Reis Radomil
  * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019-2025 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

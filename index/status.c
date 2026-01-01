@@ -3,7 +3,7 @@
  * GUI display a user-configurable status line
  *
  * @authors
- * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Austin Ray <austin@austinray.io>
  * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>

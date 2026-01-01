@@ -3,7 +3,7 @@
  * IMAP login authentication method
  *
  * @authors
- * Copyright (C) 1999-2001,2005,2009 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 2017-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright

@@ -3,7 +3,7 @@
  * GUI miscellaneous curses (window drawing) routines
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright

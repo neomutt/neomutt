@@ -3,7 +3,7 @@
  * IMAP anonymous authentication method
  *
  * @authors
- * Copyright (C) 1999-2001,2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 2017-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright

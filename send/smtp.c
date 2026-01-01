@@ -7,7 +7,7 @@
  * Copyright (C) 2018-2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
  * Copyright (C) 2021 Ryan Kavanagh <rak@rak.ac>
- * Copyright (C) 2023 Alejandro Colomar <alx@kernel.org>
+ * Copyright (C) 2023-2025 Alejandro Colomar <alx@kernel.org>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  * Copyright (C) 2023 Rayford Shireman
  *

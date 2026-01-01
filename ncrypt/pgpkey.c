@@ -3,7 +3,7 @@
  * PGP key management routines
  *
  * @authors
- * Copyright (c) 1998-2003 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 1998-2003 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2017-2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>

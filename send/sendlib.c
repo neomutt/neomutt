@@ -7,6 +7,7 @@
  * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Rayford Shireman
+ * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

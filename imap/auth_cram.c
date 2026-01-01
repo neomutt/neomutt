@@ -3,7 +3,7 @@
  * IMAP CRAM-MD5 authentication method
  *
  * @authors
- * Copyright (C) 1999-2001,2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
  *

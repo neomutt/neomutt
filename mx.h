@@ -3,7 +3,7 @@
  * API for mailboxes
  *
  * @authors
- * Copyright (C) 1996-2002,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *

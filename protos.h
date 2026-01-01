@@ -3,7 +3,7 @@
  * Prototypes for many functions
  *
  * @authors
- * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2013 Karel Zak <kzak@redhat.com>
  * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *

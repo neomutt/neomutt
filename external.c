@@ -3,8 +3,8 @@
  * Manage where the email is piped to external commands
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2018-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2025 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
  * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
  *

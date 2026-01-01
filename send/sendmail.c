@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
  * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *

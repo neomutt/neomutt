@@ -6,6 +6,7 @@
  * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
  * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2025 Alejandro Colomar <alx@kernel.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

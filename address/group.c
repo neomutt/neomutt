@@ -3,7 +3,7 @@
  * Handling for email address groups
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Bo Yu <tsu.yubo@gmail.com>
  * Copyright (C) 2018-2019 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
