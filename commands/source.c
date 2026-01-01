@@ -248,8 +248,9 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
     {
       if (access(pathstr, R_OK) != 0)
       {
+        int saved_errno = errno;
         mutt_debug(LL_DEBUG1, "source!: optional file '%s' not accessible: %s\n",
-                   pathstr, strerror(errno));
+                   pathstr, strerror(saved_errno));
         continue;
       }
     }

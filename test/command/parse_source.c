@@ -53,7 +53,7 @@ static const struct CommandTest TestsOptional[] = {
   // source! <filename> - silent on missing files
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "%s/source/test.rc" },
-  { MUTT_CMD_SUCCESS, "/nonexistent/path/file.rc" },  // Optional: missing file should succeed
+  { MUTT_CMD_SUCCESS, "%s/source/nonexistent_file.rc" },  // Optional: missing file should succeed
   { MUTT_CMD_ERROR,   NULL },
 };
 // clang-format on
