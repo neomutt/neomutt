@@ -43,7 +43,7 @@ jobs:
           cd test-files
           ./setup.sh
           cd -
-          ./configure --full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --kyotocabinet --tokyocabinet --with-lock=fcntl --zlib --zstd
+          ./configure --full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --kyotocabinet --tokyocabinet --with-lock=fcntl --zlib --zstd
           make -j ${{steps.cpu-cores.outputs.count}} neomutt
           ./neomutt -v
           ./neomutt -h all
@@ -51,3 +51,15 @@ jobs:
           make -j ${{steps.cpu-cores.outputs.count}} test/neomutt-test
           export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
           make test
+          make DESTDIR=$HOME/neo-install install
+          if [ ! -d "$HOME/neo-install" ] || [ -z "$(find "$HOME/neo-install" -type f)" ]; then
+            echo "Error: install directory is empty or does not exist"
+            exit 1
+          fi
+          make DESTDIR=$HOME/neo-install uninstall
+          REMAINING=$(find "$HOME/neo-install" -type f 2>/dev/null | wc -l)
+          if [ "$REMAINING" -ne 0 ]; then
+            echo "Error: $REMAINING file(s) left after uninstall:"
+            find "$HOME/neo-install" -type f
+            exit 1
+          fi
