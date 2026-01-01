@@ -26,7 +26,7 @@ jobs:
           - name: disabled
             options: --disable-nls --disable-pgp --disable-smime --ssl --gsasl
           - name: everything
-            options: --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
+            options: --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
     - name: Get number of CPU cores
@@ -82,4 +82,27 @@ jobs:
         cd build-${{ matrix.cfg.name }}
         export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
         make test
+
+    - name: Install NeoMutt
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        make DESTDIR=$HOME/neo-install install
+        if [ ! -d "$HOME/neo-install" ] || [ -z "$(find "$HOME/neo-install" -type f)" ]; then
+          echo "Error: install directory is empty or does not exist"
+          exit 1
+        fi
+
+    - name: Uninstall NeoMutt
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        make DESTDIR=$HOME/neo-install uninstall
+
+    - name: Check Uninstall
+      run: |
+        REMAINING=$(find "$HOME/neo-install" -type f 2>/dev/null | wc -l)
+        if [ "$REMAINING" -ne 0 ]; then
+          echo "Error: $REMAINING file(s) left after uninstall:"
+          find "$HOME/neo-install" -type f
+          exit 1
+        fi
 
