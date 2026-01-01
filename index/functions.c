@@ -89,7 +89,7 @@
 /**
  * OpIndex - Functions for the Index Menu
  */
-static const struct MenuFuncOp OpIndex[] = { /* map: index */
+const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "alias-dialog",                  OP_ALIAS_DIALOG },
 #ifdef USE_AUTOCRYPT
   { "autocrypt-acct-menu",           OP_AUTOCRYPT_ACCT_MENU },

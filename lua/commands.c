@@ -55,14 +55,14 @@ enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, str
     return MUTT_CMD_WARNING;
   }
 
+  lua_State *l = lua_init_state();
+  if (!l)
+    return MUTT_CMD_ERROR;
+
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
-
-  lua_State *l = lua_init_state();
-  if (!l)
-    return MUTT_CMD_ERROR;
 
   lua_debug(LL_DEBUG2, "%s\n", buf_string(token));
 
@@ -173,12 +173,12 @@ enum CommandResult parse_lua_source(const struct Command *cmd,
     return MUTT_CMD_WARNING;
   }
 
-  struct Buffer *token = buf_pool_get();
-  enum CommandResult rc = MUTT_CMD_ERROR;
-
   lua_State *l = lua_init_state();
   if (!l)
     return MUTT_CMD_ERROR;
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
 
   if (parse_extract_token(token, line, TOKEN_NO_FLAGS) != 0)
   {
