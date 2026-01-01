@@ -1794,7 +1794,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
     else
     {
       struct Buffer *keystroke = buf_pool_get();
-      if (km_expand_key(km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS), keystroke))
+      if (keymap_expand_key(km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS), keystroke))
       {
         if (c_honor_disposition && (b->disposition == DISP_ATTACH))
         {

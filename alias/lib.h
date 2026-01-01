@@ -58,8 +58,9 @@ struct TagList;
 
 extern const struct CompleteOps CompleteAliasOps;
 
-void alias_init   (void);
-void alias_cleanup(void);
+void alias_init     (void);
+void alias_init_keys(void);
+void alias_cleanup  (void);
 
 void                alias_create           (struct AddressList *al, const struct ConfigSubset *sub);
 struct AddressList *alias_lookup           (const char *name);

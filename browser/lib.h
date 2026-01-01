@@ -148,6 +148,8 @@ struct BrowserState
   bool is_mailbox_list; ///< Viewing mailboxes
 };
 
+void browser_init_keys(void);
+
 void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);
 void mutt_browser_cleanup(void);

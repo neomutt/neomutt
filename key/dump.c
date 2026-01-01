@@ -47,7 +47,7 @@
  * @param fp   File to write to
  * @retval num Number of bindings
  */
-static int print_bind(enum MenuType menu, FILE *fp)
+int print_bind(enum MenuType menu, FILE *fp)
 {
   struct BindingInfoArray bia_bind = ARRAY_HEAD_INITIALIZER;
 
@@ -76,6 +76,7 @@ static int print_bind(enum MenuType menu, FILE *fp)
     FREE(&bi->a[0]);
   }
 
+  ARRAY_FREE(&bia_bind);
   return count;
 }
 
@@ -84,7 +85,7 @@ static int print_bind(enum MenuType menu, FILE *fp)
  * @param menu Menu type
  * @param fp   File to write to
  */
-static void colon_bind(enum MenuType menu, FILE *fp)
+void colon_bind(enum MenuType menu, FILE *fp)
 {
   if (menu == MENU_MAX)
   {
@@ -106,7 +107,7 @@ static void colon_bind(enum MenuType menu, FILE *fp)
  * @param fp   File to write to
  * @retval num Number of macros
  */
-static int print_macro(enum MenuType menu, FILE *fp)
+int print_macro(enum MenuType menu, FILE *fp)
 {
   struct BindingInfoArray bia_macro = ARRAY_HEAD_INITIALIZER;
 
@@ -150,7 +151,7 @@ static int print_macro(enum MenuType menu, FILE *fp)
  * @param menu Menu type
  * @param fp   File to write to
  */
-static void colon_macro(enum MenuType menu, FILE *fp)
+void colon_macro(enum MenuType menu, FILE *fp)
 {
   if (menu == MENU_MAX)
   {
@@ -351,9 +352,9 @@ static const char *help_lookup_function(int op, enum MenuType menu)
 
 /**
  * gather_menu - Gather info about one menu
- * @param menu      Menu type
- * @param bia_bind  Array for bind  results (may be NULL)
- * @param bia_macro Array for macro results (may be NULL)
+ * @param[in]  menu      Menu type
+ * @param[out] bia_bind  Array for bind  results (may be NULL)
+ * @param[out] bia_macro Array for macro results (may be NULL)
  */
 void gather_menu(enum MenuType menu, struct BindingInfoArray *bia_bind,
                  struct BindingInfoArray *bia_macro)
@@ -367,7 +368,7 @@ void gather_menu(enum MenuType menu, struct BindingInfoArray *bia_bind,
     struct BindingInfo bi = { 0 };
 
     buf_reset(key_binding);
-    km_expand_key(map, key_binding);
+    keymap_expand_key(map, key_binding);
 
     if (map->op == OP_MACRO)
     {
@@ -423,4 +424,37 @@ int measure_column(struct BindingInfoArray *bia, int col)
   }
 
   return max_width;
+}
+
+/**
+ * gather_unbound - Gather info about unbound functions for one menu
+ * @param funcs       List of functions
+ * @param km_menu     Keymaps for the menu
+ * @param km_aux      Keymaps for generic
+ * @param bia_unbound Unbound functions
+ * @retval num Number of unbound functions
+ */
+int gather_unbound(const struct MenuFuncOp *funcs, const struct KeymapList *km_menu,
+                   const struct KeymapList *km_aux, struct BindingInfoArray *bia_unbound)
+{
+  if (!funcs)
+    return 0;
+
+  for (int i = 0; funcs[i].name; i++)
+  {
+    if (funcs[i].flags & MFF_DEPRECATED)
+      continue;
+
+    if (!is_bound(km_menu, funcs[i].op) &&
+        (!km_aux || !is_bound(km_aux, funcs[i].op)))
+    {
+      struct BindingInfo bi = { 0 };
+      bi.a[0] = NULL;
+      bi.a[1] = funcs[i].name;
+      bi.a[2] = _(opcodes_get_description(funcs[i].op));
+      ARRAY_ADD(bia_unbound, bi);
+    }
+  }
+
+  return ARRAY_SIZE(bia_unbound);
 }

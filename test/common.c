@@ -46,6 +46,7 @@
 #include "browser/lib.h"
 #include "color/lib.h"
 #include "complete/lib.h"
+#include "key/lib.h"
 #include "send/lib.h"
 #include "copy.h"
 #include "external.h"

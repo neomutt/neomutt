@@ -95,7 +95,7 @@ const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
 /**
  * AttachmentDefaultBindings - Key bindings for the Attachment Menu
  */
-const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment */
+static const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment */
   { OP_ATTACHMENT_COLLAPSE,                "v" },
   { OP_ATTACHMENT_DELETE,                  "d" },
   { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
@@ -122,6 +122,14 @@ const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment */
   { 0, NULL },
 };
 // clang-format on
+
+/**
+ * attach_init_keys - Initialise the Attach Keybindings - Implements ::init_keys_api
+ */
+void attach_init_keys(void)
+{
+  km_menu_add_bindings(AttachmentDefaultBindings, MENU_ATTACHMENT);
+}
 
 /**
  * attach_collapse - Close the tree of the current attachment

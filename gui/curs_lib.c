@@ -508,7 +508,7 @@ void mw_what_key(void)
   struct Buffer *prompt = buf_pool_get();
   struct Buffer *text = buf_pool_get();
 
-  km_keyname(AbortKey, key);
+  keymap_get_name(AbortKey, key);
 
   buf_printf(prompt, _("Enter keys (%s to abort): "), buf_string(key));
   msgwin_set_text(win, buf_string(prompt), MT_COLOR_PROMPT);
@@ -560,7 +560,7 @@ void mw_what_key(void)
     msgwin_clear_text(win);
 
     buf_reset(key);
-    km_keyname(ch, key);
+    keymap_get_name(ch, key);
 
     buf_printf(text, _("Char = %s, Octal = %o, Decimal = %d\n"), buf_string(key), ch, ch);
 

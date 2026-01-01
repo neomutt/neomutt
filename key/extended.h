@@ -1,9 +1,9 @@
 /**
  * @file
- * Definitions of user functions
+ * Set up the extended keys
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,14 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_FUNCTIONS_H
-#define MUTT_FUNCTIONS_H
+#ifndef MUTT_KEY_EXTENDED_H
+#define MUTT_KEY_EXTENDED_H
 
-#include "key/lib.h"
+#include "config.h"
 
-extern const struct MenuFuncOp OpDialog[];
-extern const struct MenuFuncOp OpGeneric[];
+const char *ext_key_find(const char *key);
 
-void generic_init_keys(void);
+#ifdef HAVE_USE_EXTENDED_NAMES
+void ext_keys_init(void);
+#else
+static inline void ext_keys_init(void) {}
+#endif
 
-#endif /* MUTT_FUNCTIONS_H */
+#endif /* MUTT_KEY_EXTENDED_H */

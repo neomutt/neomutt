@@ -1,9 +1,9 @@
 /**
  * @file
- * Definitions of user functions
+ * Set up the key bindings
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,14 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_FUNCTIONS_H
-#define MUTT_FUNCTIONS_H
+#ifndef MUTT_KEY_INIT_H
+#define MUTT_KEY_INIT_H
 
-#include "key/lib.h"
+#include "keymap.h"
+#include "menu.h"
 
-extern const struct MenuFuncOp OpDialog[];
-extern const struct MenuFuncOp OpGeneric[];
+extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
 
-void generic_init_keys(void);
+void                   km_init              (void);
+void                   km_menu_add_bindings (const struct MenuOpSeq *map, enum MenuType mtype);
+void                   km_set_abort_key     (void);
+void                   km_cleanup           (void);
 
-#endif /* MUTT_FUNCTIONS_H */
+#endif /* MUTT_KEY_INIT_H */
