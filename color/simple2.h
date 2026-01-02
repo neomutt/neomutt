@@ -23,7 +23,6 @@
 #ifndef MUTT_COLOR_SIMPLE2_H
 #define MUTT_COLOR_SIMPLE2_H
 
-#include "config.h"
 #include <stdbool.h>
 #include "color.h"
 

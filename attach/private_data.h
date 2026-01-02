@@ -24,7 +24,6 @@
 #ifndef MUTT_ATTACH_PRIVATE_DATA_H
 #define MUTT_ATTACH_PRIVATE_DATA_H
 
-#include "config.h"
 #include <stdbool.h>
 
 struct Menu;

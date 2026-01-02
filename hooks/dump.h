@@ -23,7 +23,6 @@
 #ifndef MUTT_HOOKS_DUMP_H
 #define MUTT_HOOKS_DUMP_H
 
-#include "config.h"
 #include "core/lib.h"
 
 struct Buffer;

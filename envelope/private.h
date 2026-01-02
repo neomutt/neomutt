@@ -23,7 +23,6 @@
 #ifndef MUTT_ENVELOPE_PRIVATE_H
 #define MUTT_ENVELOPE_PRIVATE_H
 
-#include "config.h"
 
 /**
  * enum HeaderField - Ordered list of headers for the compose screen

@@ -25,7 +25,6 @@
 #ifndef MUTT_MUTT_H
 #define MUTT_MUTT_H
 
-#include "config.h"
 #include "mutt.h"
 #include "menu/lib.h"
 #include <limits.h>

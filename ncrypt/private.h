@@ -23,7 +23,6 @@
 #ifndef MUTT_NCRYPT_PRIVATE_H
 #define MUTT_NCRYPT_PRIVATE_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 

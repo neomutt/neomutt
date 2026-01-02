@@ -24,7 +24,6 @@
 #ifndef MUTT_ATTACH_CID_H
 #define MUTT_ATTACH_CID_H
 
-#include "config.h"
 #include "mutt/lib.h"
 
 struct Body;

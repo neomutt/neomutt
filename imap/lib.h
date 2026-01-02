@@ -56,7 +56,6 @@
 #ifndef MUTT_IMAP_LIB_H
 #define MUTT_IMAP_LIB_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <sys/types.h>

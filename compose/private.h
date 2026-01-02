@@ -24,7 +24,6 @@
 #ifndef MUTT_COMPOSE_PRIVATE_H
 #define MUTT_COMPOSE_PRIVATE_H
 
-#include "config.h"
 #include <stdbool.h>
 
 struct AttachCtx;

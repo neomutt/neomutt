@@ -36,7 +36,6 @@
 #ifndef MUTT_ENVELOPE_LIB_H
 #define MUTT_ENVELOPE_LIB_H
 
-#include "config.h"
 
 struct Buffer;
 struct ConfigSubset;

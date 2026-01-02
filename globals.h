@@ -23,7 +23,6 @@
 #ifndef MUTT_GLOBALS_H
 #define MUTT_GLOBALS_H
 
-#include "config.h"
 #include <stdbool.h>
 
 extern bool ErrorBufMessage; ///< true if the last message was an error

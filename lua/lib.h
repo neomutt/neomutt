@@ -35,7 +35,6 @@
 #ifndef MUTT_LUA_LIB_H
 #define MUTT_LUA_LIB_H
 
-#include "config.h"
 
 #ifdef USE_LUA
 

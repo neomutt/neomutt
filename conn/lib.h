@@ -48,7 +48,6 @@
 #ifndef MUTT_CONN_LIB_H
 #define MUTT_CONN_LIB_H
 
-#include "config.h"
 // IWYU pragma: begin_keep
 #include "connaccount.h"
 #include "connection.h"

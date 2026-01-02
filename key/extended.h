@@ -23,7 +23,6 @@
 #ifndef MUTT_KEY_EXTENDED_H
 #define MUTT_KEY_EXTENDED_H
 
-#include "config.h"
 
 const char *ext_key_find(const char *key);
 

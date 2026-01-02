@@ -24,7 +24,6 @@
 #ifndef MUTT_NCRYPT_SMIME_H
 #define MUTT_NCRYPT_SMIME_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"

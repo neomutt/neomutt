@@ -24,7 +24,6 @@
 #ifndef MUTT_CORE_MAILBOX_H
 #define MUTT_CORE_MAILBOX_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/types.h>

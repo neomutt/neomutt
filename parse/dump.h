@@ -23,7 +23,6 @@
 #ifndef MUTT_PARSE_DUMP_H
 #define MUTT_PARSE_DUMP_H
 
-#include "config.h"
 #include "config/lib.h"
 #include "core/lib.h"
 

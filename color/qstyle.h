@@ -23,7 +23,6 @@
 #ifndef MUTT_COLOR_QSTYLE_H
 #define MUTT_COLOR_QSTYLE_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
 

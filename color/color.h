@@ -25,7 +25,6 @@
 #ifndef MUTT_COLOR_COLOR_H
 #define MUTT_COLOR_COLOR_H
 
-#include "config.h"
 #include "mutt/lib.h" // IWYU pragma: keep
 #include <stdbool.h>
 

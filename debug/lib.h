@@ -42,6 +42,7 @@
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
+#include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <time.h>

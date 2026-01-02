@@ -23,7 +23,6 @@
 #ifndef MUTT_COLOR_COMMANDS_H
 #define MUTT_COLOR_COMMANDS_H
 
-#include "config.h"
 #include "core/lib.h"
 #include "mutt/lib.h"
 

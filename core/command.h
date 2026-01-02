@@ -23,7 +23,6 @@
 #ifndef MUTT_CORE_COMMAND_H
 #define MUTT_CORE_COMMAND_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"

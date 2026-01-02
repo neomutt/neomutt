@@ -23,7 +23,6 @@
 #ifndef MUTT_COLOR_MERGED_H
 #define MUTT_COLOR_MERGED_H
 
-#include "config.h"
 
 struct AttrColor;
 

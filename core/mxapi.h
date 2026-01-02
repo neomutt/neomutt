@@ -24,7 +24,6 @@
 #ifndef MUTT_CORE_MXAPI_H
 #define MUTT_CORE_MXAPI_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "mailbox.h"

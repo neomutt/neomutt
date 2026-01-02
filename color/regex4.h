@@ -23,7 +23,6 @@
 #ifndef MUTT_COLOR_REGEX4_H
 #define MUTT_COLOR_REGEX4_H
 
-#include "config.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "attr.h"

@@ -23,7 +23,6 @@
 #ifndef MUTT_COMMANDS_COMMANDS_H
 #define MUTT_COMMANDS_COMMANDS_H
 
-#include "config.h"
 #include "core/lib.h"
 
 const struct Command *command_find_by_id  (const struct CommandArray *ca, enum CommandId id);

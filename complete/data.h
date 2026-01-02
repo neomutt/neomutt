@@ -23,7 +23,6 @@
 #ifndef MUTT_COMPLETE_DATA_H
 #define MUTT_COMPLETE_DATA_H
 
-#include "config.h"
 #include <stdbool.h>
 
 /**

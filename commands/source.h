@@ -23,7 +23,6 @@
 #ifndef MUTT_COMMANDS_SOURCE_H
 #define MUTT_COMMANDS_SOURCE_H
 
-#include "config.h"
 #include "core/lib.h"
 
 struct Buffer;

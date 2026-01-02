@@ -23,7 +23,6 @@
 #ifndef MUTT_MUTT_SIGNAL2_H
 #define MUTT_MUTT_SIGNAL2_H
 
-#include "config.h"
 #include <signal.h>
 #include <stdbool.h>
 

@@ -23,7 +23,6 @@
 #ifndef MUTT_GUI_MUTT_CURSES_H
 #define MUTT_GUI_MUTT_CURSES_H
 
-#include "config.h"
 #include "color/lib.h"
 
 #ifdef HAVE_NCURSESW_NCURSES_H

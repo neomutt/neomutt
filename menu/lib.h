@@ -41,7 +41,6 @@
 #ifndef MUTT_MENU_LIB_H
 #define MUTT_MENU_LIB_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"

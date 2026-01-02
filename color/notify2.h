@@ -23,7 +23,6 @@
 #ifndef MUTT_COLOR_NOTIFY2_H
 #define MUTT_COLOR_NOTIFY2_H
 
-#include "config.h"
 #include "mutt/lib.h"
 #include "color.h"
 

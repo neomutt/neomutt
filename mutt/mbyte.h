@@ -23,7 +23,6 @@
 #ifndef MUTT_MUTT_MBYTE_H
 #define MUTT_MUTT_MBYTE_H
 
-#include "config.h"
 #include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>

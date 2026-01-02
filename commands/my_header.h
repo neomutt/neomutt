@@ -23,7 +23,6 @@
 #ifndef MUTT_COMMANDS_MY_HEADER_H
 #define MUTT_COMMANDS_MY_HEADER_H
 
-#include "config.h"
 #include "core/lib.h"
 
 struct Buffer;

@@ -24,7 +24,6 @@
 #ifndef MUTT_SEND_SMTP_H
 #define MUTT_SEND_SMTP_H
 
-#include "config.h"
 #include <stdbool.h>
 
 struct AddressList;

@@ -24,7 +24,6 @@
 #ifndef MUTT_COMPOSE_SHARED_DATA_H
 #define MUTT_COMPOSE_SHARED_DATA_H
 
-#include "config.h"
 #include <stdbool.h>
 
 struct MuttWindow;

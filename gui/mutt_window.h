@@ -24,7 +24,6 @@
 #ifndef MUTT_GUI_MUTT_WINDOW_H
 #define MUTT_GUI_MUTT_WINDOW_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"

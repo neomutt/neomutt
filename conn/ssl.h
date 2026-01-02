@@ -23,13 +23,13 @@
 #ifndef MUTT_CONN_SSL_H
 #define MUTT_CONN_SSL_H
 
-#include "config.h"
 #include <stdbool.h>
 
 struct Connection;
-struct StringArray;
 
 #ifdef USE_SSL
+struct StringArray;
+
 /**
  * struct CertMenuData - Certificate data to use in the Menu
  */

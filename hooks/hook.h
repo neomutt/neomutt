@@ -23,7 +23,6 @@
 #ifndef MUTT_HOOKS_HOOK_H
 #define MUTT_HOOKS_HOOK_H
 
-#include "config.h"
 #include "mutt/lib.h"
 #include "core/lib.h"
 

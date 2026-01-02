@@ -24,7 +24,6 @@
 #ifndef MUTT_MUTT_REGEX3_H
 #define MUTT_MUTT_REGEX3_H
 
-#include "config.h"
 #include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>

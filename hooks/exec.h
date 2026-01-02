@@ -23,7 +23,6 @@
 #ifndef MUTT_HOOKS_EXEC_H
 #define MUTT_HOOKS_EXEC_H
 
-#include "config.h"
 #include "core/lib.h"
 
 struct Address;

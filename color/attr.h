@@ -23,7 +23,6 @@
 #ifndef MUTT_COLOR_ATTR_H
 #define MUTT_COLOR_ATTR_H
 
-#include "config.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "curses2.h"

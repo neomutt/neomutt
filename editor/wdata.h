@@ -23,7 +23,6 @@
 #ifndef MUTT_EDITOR_WDATA_H
 #define MUTT_EDITOR_WDATA_H
 
-#include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <wchar.h>
