@@ -84,9 +84,9 @@
  */
 struct CryptCache
 {
-  char *what;
-  char *dflt;
-  struct CryptCache *next;
+  char *what;                ///< Cached key identifier
+  char *dflt;                ///< Default key ID
+  struct CryptCache *next;   ///< Linked list
 };
 
 /// Cache of GPGME keys

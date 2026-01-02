@@ -87,10 +87,6 @@ enum MessageType
   MUTT_MT_MAX,
 };
 
-/* flags for parse_spam_list */
-#define MUTT_SPAM   1
-#define MUTT_NOSPAM 2
-
 void reset_value(const char *name);
 
 #endif /* MUTT_MUTT_H */

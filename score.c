@@ -50,11 +50,11 @@
  */
 struct Score
 {
-  char *str;
-  struct PatternList *pat;
-  int val;
-  bool exact;         ///< If this rule matches, don't evaluate any more
-  struct Score *next; ///< Linked list
+  char *str;                 ///< String to match
+  struct PatternList *pat;   ///< Pattern to match
+  int val;                   ///< Score to add
+  bool exact;                ///< If this rule matches, don't evaluate any more
+  struct Score *next;        ///< Linked list
 };
 
 /// Linked list of email scoring rules

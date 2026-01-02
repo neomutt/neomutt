@@ -41,13 +41,13 @@ struct Message;
  */
 struct SmimeKey
 {
-  char *email;
-  char *hash;
-  char *label;
-  char *issuer;
-  char trust; ///< i=Invalid r=revoked e=expired u=unverified v=verified t=trusted
-  KeyFlags flags;
-  struct SmimeKey *next;
+  char *email;            ///< Email address
+  char *hash;             ///< Key hash
+  char *label;            ///< Key label
+  char *issuer;           ///< Key issuer
+  char trust;             ///< i=Invalid r=revoked e=expired u=unverified v=verified t=trusted
+  KeyFlags flags;         ///< Key flags
+  struct SmimeKey *next;  ///< Linked list
 };
 ARRAY_HEAD(SmimeKeyArray, struct SmimeKey *);
 

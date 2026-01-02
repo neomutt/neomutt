@@ -32,10 +32,10 @@
  */
 struct ImapHeader
 {
-  struct ImapEmailData *edata;
+  struct ImapEmailData *edata;   ///< IMAP-specific Email data
 
-  time_t received;
-  long content_length;
+  time_t received;               ///< Time when message was received
+  long content_length;           ///< Length of message content
 };
 
 #endif /* MUTT_IMAP_MESSAGE_H */

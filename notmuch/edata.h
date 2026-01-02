@@ -33,7 +33,7 @@ struct Email;
 struct NmEmailData
 {
   char *folder;           ///< Location of the Email
-  char *oldpath;
+  char *oldpath;          ///< Old filesystem path
   char *virtual_id;       ///< Unique Notmuch Id
   enum MailboxType type;  ///< Type of Mailbox the Email is in
 };

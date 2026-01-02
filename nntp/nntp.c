@@ -91,13 +91,13 @@ static const char *OverviewFmt = "Subject:\0"
  */
 struct FetchCtx
 {
-  struct Mailbox *mailbox;
-  anum_t first;
-  anum_t last;
-  bool restore;
-  unsigned char *messages;
-  struct Progress *progress;
-  struct HeaderCache *hc;
+  struct Mailbox *mailbox;     ///< Mailbox
+  anum_t first;                ///< First article number
+  anum_t last;                 ///< Last article number
+  bool restore;                ///< Restore message headers from cache
+  unsigned char *messages;     ///< Array of message flags
+  struct Progress *progress;   ///< Progress bar
+  struct HeaderCache *hc;      ///< Header cache
 };
 
 /**
@@ -105,10 +105,10 @@ struct FetchCtx
  */
 struct ChildCtx
 {
-  struct Mailbox *mailbox;
-  unsigned int num;
-  unsigned int max;
-  anum_t *child;
+  struct Mailbox *mailbox;   ///< Mailbox
+  unsigned int num;          ///< Number of children
+  unsigned int max;          ///< Maximum number of children
+  anum_t *child;             ///< Array of child article numbers
 };
 
 /**

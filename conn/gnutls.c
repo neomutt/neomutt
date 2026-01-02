@@ -81,8 +81,8 @@ static int ProtocolPriority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1, GNU
  */
 struct TlsSockData
 {
-  gnutls_session_t session;
-  gnutls_certificate_credentials_t xcred;
+  gnutls_session_t session;                 ///< GNUTLS session
+  gnutls_certificate_credentials_t xcred;   ///< GNUTLS certificate credentials
 };
 
 /**

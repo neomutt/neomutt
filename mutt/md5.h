@@ -35,14 +35,14 @@ typedef uint32_t md5_uint32;
  */
 struct Md5Ctx
 {
-  md5_uint32 A;
-  md5_uint32 B;
-  md5_uint32 C;
-  md5_uint32 D;
+  md5_uint32 A;            ///< Accumulator A
+  md5_uint32 B;            ///< Accumulator B
+  md5_uint32 C;            ///< Accumulator C
+  md5_uint32 D;            ///< Accumulator D
 
-  md5_uint32 total[2];
-  md5_uint32 buflen;
-  md5_uint32 buffer[32];
+  md5_uint32 total[2];     ///< Total bytes processed
+  md5_uint32 buflen;       ///< Buffer length
+  md5_uint32 buffer[32];   ///< Internal buffer
 };
 
 void *mutt_md5(const char *str, void *buf);

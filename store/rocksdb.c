@@ -40,11 +40,11 @@
  */
 struct RocksDbStoreData
 {
-  rocksdb_t *db;
-  rocksdb_options_t *options;
-  rocksdb_readoptions_t *read_options;
-  rocksdb_writeoptions_t *write_options;
-  char *err;
+  rocksdb_t *db;                           ///< RocksDB database
+  rocksdb_options_t *options;              ///< Database options
+  rocksdb_readoptions_t *read_options;     ///< Read options
+  rocksdb_writeoptions_t *write_options;   ///< Write options
+  char *err;                               ///< Error message
 };
 
 /**

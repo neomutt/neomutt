@@ -147,10 +147,10 @@ typedef uint32_t ImapCapFlags;              ///< Flags, e.g. #IMAP_CAP_IMAP4
  */
 struct ImapList
 {
-  char *name;
-  char delim;
-  bool noselect;
-  bool noinferiors;
+  char *name;         ///< Mailbox name
+  char delim;         ///< Hierarchy delimiter
+  bool noselect;      ///< Mailbox is not selectable
+  bool noinferiors;   ///< Mailbox has no children
 };
 
 /**
@@ -167,14 +167,14 @@ struct ImapCommand
  */
 struct SeqsetIterator
 {
-  char *full_seqset;
-  char *eostr;
-  int in_range;
-  int down;
-  unsigned int range_cur;
-  unsigned int range_end;
-  char *substr_cur;
-  char *substr_end;
+  char *full_seqset;        ///< Full sequence set string
+  char *eostr;              ///< End of string
+  int in_range;             ///< Currently in a range
+  int down;                 ///< Counting down
+  unsigned int range_cur;   ///< Current range value
+  unsigned int range_end;   ///< End of range
+  char *substr_cur;         ///< Current position in substring
+  char *substr_end;         ///< End of substring
 };
 
 /* -- private IMAP functions -- */

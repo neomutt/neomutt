@@ -43,15 +43,15 @@ extern wchar_t ReplacementChar;
  */
 struct FgetConv
 {
-  FILE *fp;
-  iconv_t cd; ///< iconv conversion descriptor
-  char bufi[512];
-  char bufo[512];
-  char *p;
-  char *ob;
-  char *ib;
-  size_t ibl;
-  const char **inrepls;
+  FILE *fp;                ///< File to read from
+  iconv_t cd;              ///< iconv conversion descriptor
+  char bufi[512];          ///< Input buffer
+  char bufo[512];          ///< Output buffer
+  char *p;                 ///< Current position in output buffer
+  char *ob;                ///< End of output buffer
+  char *ib;                ///< Current position in input buffer
+  size_t ibl;              ///< Input buffer length
+  const char **inrepls;    ///< Replacement characters
 };
 
 /**

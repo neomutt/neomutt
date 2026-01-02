@@ -32,8 +32,8 @@
  */
 struct KeyValue
 {
-  const char *key;
-  const char *value;
+  const char *key;     ///< Key name
+  const char *value;   ///< Key value
 };
 ARRAY_HEAD(KeyValueArray, struct KeyValue);
 

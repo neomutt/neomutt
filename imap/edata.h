@@ -34,19 +34,19 @@ struct Email;
 struct ImapEmailData
 {
   /* server-side flags */
-  bool read    : 1; ///< Email has been read
-  bool old     : 1; ///< Email has been seen
-  bool deleted : 1; ///< Email has been deleted
-  bool flagged : 1; ///< Email has been flagged
-  bool replied : 1; ///< Email has been replied to
+  bool read    : 1;     ///< Email has been read
+  bool old     : 1;     ///< Email has been seen
+  bool deleted : 1;     ///< Email has been deleted
+  bool flagged : 1;     ///< Email has been flagged
+  bool replied : 1;     ///< Email has been replied to
 
-  bool parsed : 1;
+  bool parsed : 1;      ///< Email has been parsed
 
-  unsigned int uid; ///< 32-bit Message UID
-  unsigned int msn; ///< Message Sequence Number
+  unsigned int uid;     ///< 32-bit Message UID
+  unsigned int msn;     ///< Message Sequence Number
 
-  char *flags_system;
-  char *flags_remote;
+  char *flags_system;   ///< System flags
+  char *flags_remote;   ///< Remote flags
 };
 
 void                  imap_edata_free(void **ptr);

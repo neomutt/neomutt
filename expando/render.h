@@ -77,8 +77,8 @@ struct ExpandoRenderCallback
   int did;                  ///< Domain ID, #ExpandoDomain
   int uid;                  ///< Unique ID, e.g. #ExpandoDataAlias
 
-  get_string_t get_string;  // Callback function to get a string
-  get_number_t get_number;  // Callback function to get a number
+  get_string_t get_string;  ///< Callback function to get a string
+  get_number_t get_number;  ///< Callback function to get a number
 };
 
 int node_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *erc,

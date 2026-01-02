@@ -33,15 +33,15 @@ struct Mailbox;
  */
 struct NmMboxData
 {
-  struct Url *db_url;          ///< Parsed view url of the Notmuch database
-  char *db_query;              ///< Previous query
-  int db_limit;                ///< Maximum number of results to return
-  enum NmQueryType query_type; ///< Messages or Threads
+  struct Url *db_url;            ///< Parsed view url of the Notmuch database
+  char *db_query;                ///< Previous query
+  int db_limit;                  ///< Maximum number of results to return
+  enum NmQueryType query_type;   ///< Messages or Threads
 
-  struct Progress *progress;   ///< A progress bar
-  int oldmsgcount;
-  int ignmsgcount;             ///< Ignored messages
-  struct timespec mtime;       ///< Time Mailbox was last changed
+  struct Progress *progress;     ///< A progress bar
+  int oldmsgcount;               ///< Old message count
+  int ignmsgcount;               ///< Ignored messages
+  struct timespec mtime;         ///< Time Mailbox was last changed
 };
 
 void                  nm_mdata_free(void **ptr);

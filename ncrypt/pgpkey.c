@@ -65,9 +65,9 @@
  */
 struct PgpCache
 {
-  char *what;
-  char *dflt;
-  struct PgpCache *next; ///< Linked list
+  char *what;              ///< Cached key identifier
+  char *dflt;              ///< Default key ID
+  struct PgpCache *next;   ///< Linked list
 };
 
 /// Cache of GPGME keys

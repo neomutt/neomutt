@@ -42,12 +42,12 @@ struct Message;
  */
 struct CryptKeyInfo
 {
-  struct CryptKeyInfo *next; ///< Linked list
-  gpgme_key_t kobj;
-  int idx;                   ///< and the user ID at this index
-  const char *uid;           ///< and for convenience point to this user ID
-  KeyFlags flags;            ///< global and per uid flags (for convenience)
-  gpgme_validity_t validity; ///< uid validity (cached for convenience)
+  struct CryptKeyInfo *next;   ///< Linked list
+  gpgme_key_t kobj;            ///< GPGME key object
+  int idx;                     ///< and the user ID at this index
+  const char *uid;             ///< and for convenience point to this user ID
+  KeyFlags flags;              ///< global and per uid flags (for convenience)
+  gpgme_validity_t validity;   ///< uid validity (cached for convenience)
 };
 ARRAY_HEAD(CryptKeyInfoArray, struct CryptKeyInfo *);
 

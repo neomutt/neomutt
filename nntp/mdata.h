@@ -32,23 +32,24 @@
  */
 struct NntpMboxData
 {
-  char *group; ///< Name of newsgroup
-  char *desc;  ///< Description of newsgroup
-  anum_t first_message;
-  anum_t last_message;
-  anum_t last_loaded;
-  anum_t last_cached;
-  anum_t unread;
-  bool subscribed   : 1;
-  bool has_new_mail : 1;
-  bool allowed      : 1;
-  bool deleted      : 1;
-  unsigned int newsrc_len;
-  struct NewsrcEntry *newsrc_ent;
-  struct NntpAccountData *adata;
-  struct NntpAcache acache[NNTP_ACACHE_LEN];
-  struct BodyCache *bcache;
-  struct timespec mtime; ///< Time Mailbox was last changed
+  char *group;                                 ///< Name of newsgroup
+  char *desc;                                  ///< Description of newsgroup
+  anum_t first_message;                        ///< First article number
+  anum_t last_message;                         ///< Last article number
+  anum_t last_loaded;                          ///< Last loaded article
+  anum_t last_cached;                          ///< Last cached article
+  anum_t unread;                               ///< Unread articles
+  bool subscribed   : 1;                       ///< Subscribed to this newsgroup
+  bool has_new_mail : 1;                       ///< Has new articles
+  bool allowed      : 1;                       ///< Posting allowed
+  bool deleted      : 1;                       ///< Newsgroup is deleted
+  unsigned int newsrc_len;                     ///< Length of newsrc entry
+  struct NewsrcEntry *newsrc_ent;              ///< Newsrc entries
+  struct NntpAccountData *adata;               ///< Account data
+  struct NntpAcache acache[NNTP_ACACHE_LEN];   ///< Article cache
+  struct BodyCache *bcache;                    ///< Body cache
+
+  struct timespec mtime;                       ///< Time Mailbox was last changed
 };
 
 void nntp_mdata_free(void **ptr);

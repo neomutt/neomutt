@@ -65,10 +65,10 @@ enum LmdbTxnMode
  */
 struct LmdbStoreData
 {
-  MDB_env *env;
-  MDB_txn *txn;
-  MDB_dbi db;
-  enum LmdbTxnMode txn_mode;
+  MDB_env *env;                ///< LMDB environment
+  MDB_txn *txn;                ///< LMDB transaction
+  MDB_dbi db;                  ///< LMDB database
+  enum LmdbTxnMode txn_mode;   ///< Transaction mode
 };
 
 /**

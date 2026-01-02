@@ -34,32 +34,33 @@ struct Connection;
  */
 struct NntpAccountData
 {
-  bool hasCAPABILITIES    : 1; ///< Server supports CAPABILITIES command
-  bool hasSTARTTLS        : 1; ///< Server supports STARTTLS command
-  bool hasDATE            : 1; ///< Server supports DATE command
-  bool hasLIST_NEWSGROUPS : 1; ///< Server supports LIST_NEWSGROUPS command
-  bool hasXGTITLE         : 1; ///< Server supports XGTITLE command
-  bool hasLISTGROUP       : 1; ///< Server supports LISTGROUP command
-  bool hasLISTGROUPrange  : 1; ///< Server supports LISTGROUPrange command
-  bool hasOVER            : 1; ///< Server supports OVER command
-  bool hasXOVER           : 1; ///< Server supports XOVER command
-  unsigned int use_tls    : 3;
-  unsigned int status     : 3;
-  bool cacheable          : 1;
-  bool newsrc_modified    : 1;
-  FILE *fp_newsrc;
-  char *newsrc_file;
-  char *authenticators;
-  char *overview_fmt;
-  off_t size;
-  time_t mtime;
-  time_t newgroups_time;
-  time_t check_time;
-  unsigned int groups_num;
-  unsigned int groups_max;
-  struct NntpMboxData **groups_list;
-  struct HashTable *groups_hash; ///< Hash Table: "newsgroup" -> NntpMboxData
-  struct Connection *conn;       ///< Connection to NNTP Server
+  bool hasCAPABILITIES    : 1;         ///< Server supports CAPABILITIES command
+  bool hasSTARTTLS        : 1;         ///< Server supports STARTTLS command
+  bool hasDATE            : 1;         ///< Server supports DATE command
+  bool hasLIST_NEWSGROUPS : 1;         ///< Server supports LIST_NEWSGROUPS command
+  bool hasXGTITLE         : 1;         ///< Server supports XGTITLE command
+  bool hasLISTGROUP       : 1;         ///< Server supports LISTGROUP command
+  bool hasLISTGROUPrange  : 1;         ///< Server supports LISTGROUPrange command
+  bool hasOVER            : 1;         ///< Server supports OVER command
+  bool hasXOVER           : 1;         ///< Server supports XOVER command
+  unsigned int use_tls    : 3;         ///< Use TLS
+  unsigned int status     : 3;         ///< Connection status
+  bool cacheable          : 1;         ///< Can be cached
+  bool newsrc_modified    : 1;         ///< Newsrc file was modified
+  FILE *fp_newsrc;                     ///< Newsrc file handle
+  char *newsrc_file;                   ///< Newsrc file path
+  char *authenticators;                ///< Authenticators list
+  char *overview_fmt;                  ///< Overview format
+  off_t size;                          ///< Newsrc file size
+  time_t mtime;                        ///< Newsrc modification time
+  time_t newgroups_time;               ///< Last newgroups request time
+  time_t check_time;                   ///< Last check time
+  unsigned int groups_num;             ///< Number of newsgroups
+  unsigned int groups_max;             ///< Maximum number of newsgroups
+  struct NntpMboxData **groups_list;   ///< List of newsgroups
+
+  struct HashTable *groups_hash;       ///< Hash Table: "newsgroup" -> NntpMboxData
+  struct Connection *conn;             ///< Connection to NNTP Server
 };
 
 void                    nntp_adata_free(void **ptr);

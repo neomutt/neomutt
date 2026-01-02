@@ -35,18 +35,18 @@ struct Buffer;
  */
 struct MailcapEntry
 {
-  char *command;
-  char *testcommand;
-  char *composecommand;
-  char *composetypecommand;
-  char *editcommand;
-  char *printcommand;
-  char *nametemplate;
-  char *convert;
-  bool needsterminal : 1; ///< endwin() and system
-  bool copiousoutput : 1; ///< needs pager, basically
-  bool xneomuttkeep  : 1; ///< do not remove the file on command exit
-  bool xneomuttnowrap: 1; ///< do not wrap the output in the pager
+  char *command;              ///< Command to run
+  char *testcommand;          ///< Test command
+  char *composecommand;       ///< Compose command
+  char *composetypecommand;   ///< Compose type command
+  char *editcommand;          ///< Edit command
+  char *printcommand;         ///< Print command
+  char *nametemplate;         ///< Filename template
+  char *convert;              ///< Conversion command
+  bool needsterminal : 1;     ///< endwin() and system
+  bool copiousoutput : 1;     ///< needs pager, basically
+  bool xneomuttkeep  : 1;     ///< do not remove the file on command exit
+  bool xneomuttnowrap: 1;     ///< do not wrap the output in the pager
 };
 
 /**

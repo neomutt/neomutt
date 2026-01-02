@@ -90,8 +90,8 @@ static int IconvCacheUsed = 0;
  */
 struct MimeNames
 {
-  const char *key;
-  const char *pref;
+  const char *key;    ///< Charset alias
+  const char *pref;   ///< Preferred MIME name
 };
 
 /**

@@ -34,11 +34,11 @@
  */
 struct PgpUid
 {
-  char *addr;
-  short trust;
-  int flags;
-  struct PgpKeyInfo *parent; ///< Parent key
-  struct PgpUid *next;       ///< Linked list
+  char *addr;                  ///< Email address
+  short trust;                 ///< Trust level
+  int flags;                   ///< Flags for this UID
+  struct PgpKeyInfo *parent;   ///< Parent key
+  struct PgpUid *next;         ///< Linked list
 };
 ARRAY_HEAD(PgpUidArray, struct PgpUid *);
 
@@ -47,16 +47,16 @@ ARRAY_HEAD(PgpUidArray, struct PgpUid *);
  */
 struct PgpKeyInfo
 {
-  char *keyid;
-  char *fingerprint;
-  struct PgpUid *address;
-  KeyFlags flags;
-  short keylen;
-  time_t gen_time;
-  int numalg;
-  const char *algorithm;
-  struct PgpKeyInfo *parent;
-  struct PgpKeyInfo *next;
+  char *keyid;                 ///< Key ID
+  char *fingerprint;           ///< Key fingerprint
+  struct PgpUid *address;      ///< User IDs
+  KeyFlags flags;              ///< Key flags
+  short keylen;                ///< Key length
+  time_t gen_time;             ///< Key generation time
+  int numalg;                  ///< Algorithm number
+  const char *algorithm;       ///< Algorithm name
+  struct PgpKeyInfo *parent;   ///< Parent key
+  struct PgpKeyInfo *next;     ///< Linked list
 };
 
 /**

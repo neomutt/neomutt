@@ -75,29 +75,29 @@ typedef uint8_t PatternCompFlags;           ///< Flags for mutt_pattern_comp(), 
  */
 struct Pattern
 {
-  short op;                      ///< Operation, e.g. #MUTT_PAT_SCORE
-  bool pat_not      : 1;         ///< Pattern should be inverted (not)
-  bool all_addr     : 1;         ///< All Addresses in the list must match
-  bool string_match : 1;         ///< Check a string for a match
-  bool group_match  : 1;         ///< Check a group of Addresses
-  bool ign_case     : 1;         ///< Ignore case for local string_match searches
-  bool is_alias     : 1;         ///< Is there an alias for this Address?
-  bool dynamic      : 1;         ///< Evaluate date ranges at run time
-  bool sendmode     : 1;         ///< Evaluate searches in send-mode
-  bool is_multi     : 1;         ///< Multiple case (only for ~I pattern now)
-  long min;                      ///< Minimum for range checks
-  long max;                      ///< Maximum for range checks
-  struct PatternList *child;     ///< Arguments to logical operation
+  short op;                        ///< Operation, e.g. #MUTT_PAT_SCORE
+  bool pat_not      : 1;           ///< Pattern should be inverted (not)
+  bool all_addr     : 1;           ///< All Addresses in the list must match
+  bool string_match : 1;           ///< Check a string for a match
+  bool group_match  : 1;           ///< Check a group of Addresses
+  bool ign_case     : 1;           ///< Ignore case for local string_match searches
+  bool is_alias     : 1;           ///< Is there an alias for this Address?
+  bool dynamic      : 1;           ///< Evaluate date ranges at run time
+  bool sendmode     : 1;           ///< Evaluate searches in send-mode
+  bool is_multi     : 1;           ///< Multiple case (only for ~I pattern now)
+  long min;                        ///< Minimum for range checks
+  long max;                        ///< Maximum for range checks
+  struct PatternList *child;       ///< Arguments to logical operation
   union {
-    regex_t *regex;              ///< Compiled regex, for non-pattern matching
-    struct Group *group;         ///< Address group if group_match is set
-    char *str;                   ///< String, if string_match is set
-    struct ListHead multi_cases; ///< Multiple strings for ~I pattern
+    regex_t *regex;                ///< Compiled regex, for non-pattern matching
+    struct Group *group;           ///< Address group if group_match is set
+    char *str;                     ///< String, if string_match is set
+    struct ListHead multi_cases;   ///< Multiple strings for ~I pattern
   } p;
 #ifdef USE_DEBUG_GRAPHVIZ
-  const char *raw_pattern;
+  const char *raw_pattern;         ///< Raw pattern for generating graphs
 #endif
-  SLIST_ENTRY(Pattern) entries;  ///< Linked list
+  SLIST_ENTRY(Pattern) entries;    ///< Linked list
 };
 SLIST_HEAD(PatternList, Pattern);
 

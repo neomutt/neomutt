@@ -96,21 +96,21 @@ static const struct Etags EnrichedTags[] = {
  */
 struct EnrichedState
 {
-  wchar_t *buffer;
-  wchar_t *line;
-  wchar_t *param;
-  size_t buf_len;
-  size_t line_len;
-  size_t line_used;
-  size_t line_max;
-  size_t indent_len;
-  size_t word_len;
-  size_t buf_used;
-  size_t param_used;
-  size_t param_len;
-  int tag_level[RICH_MAX];
-  int wrap_margin;
-  struct State *state;
+  wchar_t *buffer;           ///< Output buffer
+  wchar_t *line;             ///< Current line
+  wchar_t *param;            ///< Current parameter
+  size_t buf_len;            ///< Length of buffer
+  size_t line_len;           ///< Capacity of line buffer
+  size_t line_used;          ///< Used bytes in line buffer
+  size_t line_max;           ///< Maximum line width
+  size_t indent_len;         ///< Current indentation level
+  size_t word_len;           ///< Current word length
+  size_t buf_used;           ///< Used bytes in output buffer
+  size_t param_used;         ///< Used bytes in param buffer
+  size_t param_len;          ///< Capacity of param buffer
+  int tag_level[RICH_MAX];   ///< Nesting level of each tag type
+  int wrap_margin;           ///< Wrap margin
+  struct State *state;       ///< State wrapper
 };
 
 /**

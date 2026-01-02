@@ -63,16 +63,16 @@
  */
 struct SaslSockData
 {
-  sasl_conn_t *saslconn;
-  const sasl_ssf_t *ssf;
-  const unsigned int *pbufsize;
+  sasl_conn_t *saslconn;          ///< Raw SASL connection
+  const sasl_ssf_t *ssf;          ///< Security strength factor, in bits
+  const unsigned int *pbufsize;   ///< Buffer size
 
   /* read buffer */
-  const char *buf;   ///< Buffer for data read from the connection
-  unsigned int blen; ///< Size of the read buffer
-  unsigned int bpos; ///< Current read position
+  const char *buf;                ///< Buffer for data read from the connection
+  unsigned int blen;              ///< Size of the read buffer
+  unsigned int bpos;              ///< Current read position
 
-  void *sockdata; ///< Underlying socket data
+  void *sockdata;                 ///< Underlying socket data
 
   /**
    * open - Open a socket Connection - Implements Connection::open() - @ingroup connection_open

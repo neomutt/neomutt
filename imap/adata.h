@@ -38,11 +38,11 @@ struct Mailbox;
  */
 struct ImapAccountData
 {
-  struct Connection *conn; ///< Connection to IMAP server
-  bool recovering;
-  bool closing;         ///< If true, we are waiting for CLOSE completion
-  unsigned char state;  ///< ImapState, e.g. #IMAP_AUTHENTICATED
-  unsigned char status; ///< ImapFlags, e.g. #IMAP_FATAL
+  struct Connection *conn;        ///< Connection to IMAP server
+  bool recovering;                ///< Recovering after a fatal error
+  bool closing;                   ///< If true, we are waiting for CLOSE completion
+  unsigned char state;            ///< ImapState, e.g. #IMAP_AUTHENTICATED
+  unsigned char status;           ///< ImapFlags, e.g. #IMAP_FATAL
   /* let me explain capstr: SASL needs the capability string (not bits).
    * we have 3 options:
    *   1. rerun CAPABILITY inside SASL function.
@@ -51,31 +51,30 @@ struct ImapAccountData
    * I've chosen (3) for now. (2) might not be too bad, but it involves
    * tracking all possible capabilities. bah. (1) I don't like because
    * it's just no fun to get the same information twice */
-  char *capstr;              ///< Capability string from the server
-  ImapCapFlags capabilities; ///< Capability flags
-  unsigned char seqid;       ///< tag sequence prefix
-  unsigned int seqno;        ///< tag sequence number, e.g. '{seqid}0001'
-  time_t lastread;           ///< last time we read a command for the server
-  char *buf;
-  size_t blen;
+  char *capstr;                   ///< Capability string from the server
+  ImapCapFlags capabilities;      ///< Capability flags
+  unsigned char seqid;            ///< tag sequence prefix
+  unsigned int seqno;             ///< tag sequence number, e.g. '{seqid}0001'
+  time_t lastread;                ///< last time we read a command for the server
+  char *buf;                      ///< Command buffer
+  size_t blen;                    ///< Command buffer length
 
-  bool unicode; ///< If true, we can send UTF-8, and the server will use UTF8 rather than mUTF7
-  bool qresync; ///< true, if QRESYNC is successfully ENABLE'd
+  bool unicode;                   ///< If true, we can send UTF-8, and the server will use UTF8 rather than mUTF7
+  bool qresync;                   ///< true, if QRESYNC is successfully ENABLE'd
 
-  // if set, the response parser will store results for complicated commands here
-  struct ImapList *cmdresult;
+  struct ImapList *cmdresult;     ///< Resuls of complicated commands
 
   /* command queue */
-  struct ImapCommand *cmds; ///< Queue of commands for the server
-  int cmdslots;             ///< Size of the command queue
-  int nextcmd;              ///< Next command to be sent
-  int lastcmd;              ///< Last command in the queue
-  struct Buffer cmdbuf;
+  struct ImapCommand *cmds;       ///< Queue of commands for the server
+  int cmdslots;                   ///< Size of the command queue
+  int nextcmd;                    ///< Next command to be sent
+  int lastcmd;                    ///< Last command in the queue
+  struct Buffer cmdbuf;           ///< Command queue
 
-  char delim;                   ///< Path delimiter
-  struct Mailbox *mailbox;      ///< Current selected mailbox
-  struct Mailbox *prev_mailbox; ///< Previously selected mailbox
-  struct Account *account;      ///< Parent Account
+  char delim;                     ///< Path delimiter
+  struct Mailbox *mailbox;        ///< Current selected mailbox
+  struct Mailbox *prev_mailbox;   ///< Previously selected mailbox
+  struct Account *account;        ///< Parent Account
 };
 
 void                    imap_adata_free(void **ptr);

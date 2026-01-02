@@ -67,8 +67,8 @@ enum PopAuthRes
  */
 struct PopCache
 {
-  unsigned int index;
-  char *path;
+  unsigned int index;   ///< Message index
+  char *path;           ///< Filesystem path
 };
 
 /**

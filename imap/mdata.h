@@ -38,30 +38,31 @@ struct ImapAccountData;
  */
 struct ImapMboxData
 {
-  char *name;        ///< Mailbox name
-  char *munge_name;  ///< Munged version of the mailbox name
-  char *real_name;   ///< Original Mailbox name, e.g.: INBOX can be just \0
+  char *name;                                 ///< Mailbox name
+  char *munge_name;                           ///< Munged version of the mailbox name
+  char *real_name;                            ///< Original Mailbox name, e.g.: INBOX can be just \0
 
-  ImapOpenFlags reopen;        ///< Flags, e.g. #IMAP_REOPEN_ALLOW
-  ImapOpenFlags check_status;  ///< Flags, e.g. #IMAP_NEWMAIL_PENDING
-  unsigned int new_mail_count; ///< Set when EXISTS notifies of new mail
+  ImapOpenFlags reopen;                       ///< Flags, e.g. #IMAP_REOPEN_ALLOW
+  ImapOpenFlags check_status;                 ///< Flags, e.g. #IMAP_NEWMAIL_PENDING
+  unsigned int new_mail_count;                ///< Set when EXISTS notifies of new mail
 
   // IMAP STATUS information
-  struct ListHead flags;
-  uint32_t uidvalidity;
-  unsigned int uid_next;
-  unsigned long long modseq;
-  unsigned int messages;
-  unsigned int recent;
-  unsigned int unseen;
+  struct ListHead flags;                      ///< List of permanent flags
+  uint32_t uidvalidity;                       ///< UID validity
+  unsigned int uid_next;                      ///< Next UID for new message
+  unsigned long long modseq;                  ///< Modification sequence number
+  unsigned int messages;                      ///< Number of messages
+  unsigned int recent;                        ///< Number of recent messages
+  unsigned int unseen;                        ///< Number of unseen messages
+
 
   // Cached data used only when the mailbox is opened
-  struct HashTable *uid_hash;               ///< Hash Table: "uid" -> Email
-  ARRAY_HEAD(MSNArray, struct Email *) msn; ///< look up headers by (MSN-1)
-  struct BodyCache *bcache;                 ///< Email body cache
+  struct HashTable *uid_hash;                 ///< Hash Table: "uid" -> Email
+  ARRAY_HEAD(MSNArray, struct Email *) msn;   ///< look up headers by (MSN-1)
+  struct BodyCache *bcache;                   ///< Email body cache
 
-  struct HeaderCache *hcache; ///< Email header cache
-  struct timespec mtime;      ///< Time Mailbox was last changed
+  struct HeaderCache *hcache;                 ///< Email header cache
+  struct timespec mtime;                      ///< Time Mailbox was last changed
 };
 
 void                 imap_mdata_free(void **ptr);

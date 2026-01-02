@@ -40,9 +40,9 @@
  */
 struct B64Context
 {
-  char buffer[3];
-  short size;
-  short linelen;
+  char buffer[3];   ///< Buffer for the conversion
+  short size;       ///< Number of bytes in the buffer
+  short linelen;    ///< Length of the line so far
 };
 
 /**

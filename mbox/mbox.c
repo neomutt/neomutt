@@ -66,11 +66,11 @@
  */
 struct MUpdate
 {
-  bool valid;
-  LOFF_T hdr;
-  LOFF_T body;
-  long lines;
-  LOFF_T length;
+  bool valid;      ///< Is this entry valid?
+  LOFF_T hdr;      ///< Header offset
+  LOFF_T body;     ///< Body offset
+  long lines;      ///< Number of lines
+  LOFF_T length;   ///< Total length
 };
 
 /**

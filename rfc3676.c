@@ -50,9 +50,9 @@
  */
 struct FlowedState
 {
-  size_t width;
-  size_t spaces;
-  bool delsp;
+  size_t width;    ///< Wrap width
+  size_t spaces;   ///< Number of spaces to insert
+  bool delsp;      ///< Delete trailing space
 };
 
 /**
