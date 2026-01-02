@@ -48,9 +48,10 @@
 #define MUTT_MEM_CALLOC(n, type)  ((type *) mutt_mem_calloc(n, sizeof(type)))
 #define MUTT_MEM_MALLOC(n, type)  ((type *) mutt_mem_mallocarray(n, sizeof(type)))
 
-#define MUTT_MEM_REALLOC(pptr, n, type)                                       \
-(                                                                             \
-  _Generic(*(pptr), type *: mutt_mem_reallocarray(pptr, n, sizeof(type)))     \
+#define MUTT_MEM_REALLOC(pptr, n, T)                                  \
+(                                                                     \
+  _Generic(*(pptr), T *: (void)0),                                    \
+  mutt_mem_reallocarray(pptr, n, sizeof(T))                           \
 )
 
 void *mutt_mem_calloc(size_t nmemb, size_t size);
