@@ -58,6 +58,12 @@
   mutt_mem_reallocarray(pptr, n, sizeof(T))                           \
 )
 
+#define MUTT_MEM_RECALLOC(pptr, n, T)                                 \
+({                                                                    \
+  _Generic(p, typeas(T) *: (void)0);                                  \
+  (typeas(T) *){mutt_mem_recallocarray(p, n, sizeof(T))};               \
+})
+
 void *mutt_mem_calloc(size_t nmemb, size_t size);
 void  mutt_mem_free(void *ptr);
 void *mutt_mem_malloc(size_t size);
