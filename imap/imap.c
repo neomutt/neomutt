@@ -54,6 +54,7 @@
 #include "conn/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "commands/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
 #include "hooks/lib.h"
@@ -1361,17 +1362,18 @@ int imap_subscribe(const char *path, bool subscribe)
   const bool c_imap_check_subscribed = cs_subset_bool(NeoMutt->sub, "imap_check_subscribed");
   if (c_imap_check_subscribed)
   {
-    struct Buffer *err = buf_pool_get();
-    struct Buffer *mbox = buf_pool_get();
-
-    size_t len = buf_printf(mbox, "%smailboxes ", subscribe ? "" : "un");
-    imap_quote_string(mbox->data + len, mbox->dsize - len, path, true);
-
-    if (parse_rc_line(mbox, err) != MUTT_CMD_SUCCESS)
-      mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", buf_string(err));
-
-    buf_pool_release(&mbox);
-    buf_pool_release(&err);
+    if (subscribe)
+    {
+      struct Buffer *err = buf_pool_get();
+      if (!mailbox_add_simple(path, err))
+        mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", buf_string(err));
+      buf_pool_release(&err);
+    }
+    else
+    {
+      if (!mailbox_remove_simple(path))
+        mutt_debug(LL_DEBUG1, "Error removing subscribed mailbox: %s\n", path);
+    }
   }
 
   if (subscribe)

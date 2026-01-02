@@ -44,5 +44,6 @@ enum CommandResult parse_mailboxes  (const struct Command *cmd, struct Buffer *l
 enum CommandResult parse_unmailboxes(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 bool mailbox_add_simple(const char *mailbox, struct Buffer *err);
+bool mailbox_remove_simple(const char *mailbox);
 
 #endif /* MUTT_COMMANDS_MAILBOXES_H */

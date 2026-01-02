@@ -294,6 +294,33 @@ static void do_unmailboxes(struct Mailbox *m)
 }
 
 /**
+ * mailbox_remove_simple - Remove a Mailbox
+ * @param mailbox Path of Mailbox to remove
+ * @retval true Success
+ */
+bool mailbox_remove_simple(const char *mailbox)
+{
+  struct Buffer *buf = buf_pool_get();
+  buf_strcpy(buf, mailbox);
+  buf_expand_path(buf);
+
+  struct Account **ap = NULL;
+  ARRAY_FOREACH(ap, &NeoMutt->accounts)
+  {
+    struct Mailbox *m = mx_mbox_find(*ap, buf_string(buf));
+    if (m)
+    {
+      do_unmailboxes(m);
+      buf_pool_release(&buf);
+      return true;
+    }
+  }
+
+  buf_pool_release(&buf);
+  return false;
+}
+
+/**
  * do_unmailboxes_star - Remove all Mailboxes from the Sidebar/notifications
  */
 static void do_unmailboxes_star(void)
