@@ -49,12 +49,12 @@
 # define typeas(T)  typeof((T){0})
 #endif
 
-#define MUTT_MEM_CALLOC(n, type)  ((type *) mutt_mem_calloc(n, sizeof(type)))
-#define MUTT_MEM_MALLOC(n, type)  ((type *) mutt_mem_mallocarray(n, sizeof(type)))
+#define MUTT_MEM_CALLOC(n, T)  ((typeas(T) *) mutt_mem_calloc(n, sizeof(T)))
+#define MUTT_MEM_MALLOC(n, T)  ((typeas(T) *) mutt_mem_mallocarray(n, sizeof(T)))
 
 #define MUTT_MEM_REALLOC(pptr, n, T)                                  \
 (                                                                     \
-  _Generic(*(pptr), T *: (void)0),                                    \
+  _Generic(*(pptr), typeas(T) *: (void)0),                            \
   mutt_mem_reallocarray(pptr, n, sizeof(T))                           \
 )
 
