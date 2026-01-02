@@ -45,6 +45,10 @@
 # define countof(x)  (sizeof(x) / sizeof((x)[0]))
 #endif
 
+#if !defined(typeas)
+# define typeas(T)  __typeof__((T){0})
+#endif
+
 #define MUTT_MEM_CALLOC(n, type)  ((type *) mutt_mem_calloc(n, sizeof(type)))
 #define MUTT_MEM_MALLOC(n, type)  ((type *) mutt_mem_mallocarray(n, sizeof(type)))
 
