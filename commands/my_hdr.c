@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse My_hdr Commands
+ * Parse My-hdr Commands
  *
  * @authors
  * Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>
@@ -29,9 +29,9 @@
  */
 
 /**
- * @page commands_my_hdr Parse My_hdr Commands
+ * @page commands_my_hdr Parse My-hdr Commands
  *
- * Parse My_hdr Commands
+ * Parse My-hdr Commands
  */
 
 #include "config.h"
@@ -44,10 +44,10 @@
 #include "globals.h"
 
 /**
- * parse_my_hdr - Parse the 'my_hdr' command - Implements Command::parse() - @ingroup command_parse
+ * parse_my_hdr - Parse the 'my-hdr' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `my_hdr <string>`
+ * - `my-hdr <string>`
  */
 enum CommandResult parse_my_hdr(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -93,10 +93,10 @@ done:
 }
 
 /**
- * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements Command::parse() - @ingroup command_parse
+ * parse_unmy_hdr - Parse the 'unmy-hdr' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unmy_hdr { * | <field> ... }`
+ * - `unmy-hdr { * | <field> ... }`
  */
 enum CommandResult parse_unmy_hdr(const struct Command *cmd,
                                   struct Buffer *line, struct Buffer *err)

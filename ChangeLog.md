@@ -392,7 +392,7 @@
   - Fix non-printable keyname printing to use `<octal>` syntax
   - Filter Arabic Letter Mark due to display corruption
   - Loosen `imap_open_mailbox()` SELECT response data parsing
-  - Change `mailto_allow` to be exact match only
+  - Change `mailto-allow` to be exact match only
   - Fix `mutt_read_rfc822_line()` to use `is_email_wsp()`
   - Improve pattern compiler whitespace skipping
   - Fix gpgme crash when listing keys in a public key block
@@ -773,7 +773,7 @@
   - #3653 - fix negative new-mail count on maildir
   - #3656 - skip zero width non-joiner character in the pager
   - #3664 - handle text/vcard as not being an attachment, same as for text/x-vcard
-  - #3666 - fix `hdr_order` not sorting last header correctly
+  - #3666 - fix `hdr-order` not sorting last header correctly
   - #3673 - make exiting via SIGINT more graceful
   - #3700 - fix `unhook index-format-hook`
   - #3709 - send: delete signature when sending fails #3709
@@ -783,7 +783,7 @@
   - fixed a number of memory leaks and crashes
 * Config
   - #3604 - rename `$ask_follow_up` to `$ask_followup_to`
-  - #3659 - rename `sidebar_whitelist`/`unsidebar_whitelist` to `sidebar_pin`/`sidebar_unpin`
+  - #3659 - rename `sidebar_whitelist`/`unsidebar_whitelist` to `sidebar-pin`/`sidebar-unpin`
   - #3629 - skip line rest of line after a warning
   - #3670 - `$vfolder_format` is now deprecated, use `$folder_format`
   - #3702 - rename `$connect_timeout` to `$socket_timeout`
@@ -983,7 +983,7 @@
   - fix menu display on window resize
   - Stop batch mode emails with no argument or recipients
   - Add sanitize call in print mailcap function
-  - fix `hdr_order` to use the longest match
+  - fix `hdr-order` to use the longest match
   - fix (un)setenv to not return an error with unset env vars
   - fix Imap sync when closing a mailbox
   - fix segfault on OpenBSD current
@@ -1126,7 +1126,7 @@
   - add SASL and S/MIME to `--everything`
   - fix contrib (un)install
 * Code
-  - `my_hdr` compose screen notifications
+  - `my-hdr` compose screen notifications
   - add contracts to the MXAPI
   - maildir refactoring
   - further reduce the use of global variables
@@ -1368,7 +1368,7 @@
   - fix resize bugs
   - notmuch: fix `<entire-thread>`: update current email pointer
   - sidebar: support indenting and shortening of names
-  - Handle variables inside backticks in `sidebar_pin`
+  - Handle variables inside backticks in `sidebar-pin`
   - browser: fix mask regex error reporting
 * Translations
   - 100% Lithuanian
@@ -2141,7 +2141,7 @@
   - Decode CRLF line endings to LF when copying headers
   - score address pattern do not match personal name
   - open attachments in read-only mode
-  - Add Cc, In-Reply-To, and References to default mailto_allow
+  - Add Cc, In-Reply-To, and References to default mailto-allow
   - Improve search for mime.types
 * Translations
   - Update Chinese (Simplified) translation
@@ -2462,7 +2462,7 @@
   - Pass envlist to filter children too
   - Fix `envlist_set()` for the case that envlist is null
   - Fix setenv overwriting to not truncate the envlist
-  - Fix `(un)sidebar_pin` to expand paths
+  - Fix `(un)sidebar-pin` to expand paths
   - Fix `mutt_refresh()` pausing during macro events
   - Add a menu stack to track current and past menus
   - Change CurrentMenu to be controlled by the menu stack
@@ -2505,7 +2505,7 @@
   - Set refresh when popping the menu stack
   - Remove redraw parameter from crypt send_menus
   - Don't full redraw the index when handling a command from the pager
-  - Fix `(un)sidebar_pin` to expand paths
+  - Fix `(un)sidebar-pin` to expand paths
   - Filter other directional markers that corrupt the screen
   - Remove the OPTFORCEREDRAW options
   - Remove SidebarNeedsRedraw
@@ -2950,7 +2950,7 @@
   - docs: mass tidy up
 * Upstream
   - Fix sidebar documentation a bit
-  - Add sidebar_pin command
+  - Add sidebar-pin command
   - Remove the $locale configuration variable
   - Add `$attribution_locale` configuration variable
   - Add missing include `<locale.h>` to `send.c` and `edit.c`

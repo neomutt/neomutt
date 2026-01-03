@@ -34,16 +34,16 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command AlternativeOrder = { "alternative_order", CMD_ALTERNATIVE_ORDER, NULL, IP &AlternativeOrderList };
-static const struct Command AutoView         = { "auto_view",         CMD_AUTO_VIEW,         NULL, IP &AutoViewList         };
-static const struct Command HdrOrder         = { "hdr_order",         CMD_HDR_ORDER,         NULL, IP &HeaderOrderList      };
-static const struct Command MailtoAllow      = { "mailto_allow",      CMD_MAILTO_ALLOW,      NULL, IP &MailToAllow          };
-static const struct Command MimeLookup       = { "mime_lookup",       CMD_MIME_LOOKUP,       NULL, IP &MimeLookupList       };
+static const struct Command AlternativeOrder = { "alternative-order", CMD_ALTERNATIVE_ORDER, NULL, IP &AlternativeOrderList };
+static const struct Command AutoView         = { "auto-view",         CMD_AUTO_VIEW,         NULL, IP &AutoViewList         };
+static const struct Command HdrOrder         = { "hdr-order",         CMD_HDR_ORDER,         NULL, IP &HeaderOrderList      };
+static const struct Command MailtoAllow      = { "mailto-allow",      CMD_MAILTO_ALLOW,      NULL, IP &MailToAllow          };
+static const struct Command MimeLookup       = { "mime-lookup",       CMD_MIME_LOOKUP,       NULL, IP &MimeLookupList       };
 // clang-format off
 
 // clang-format off
 static const struct CommandTest AlternativeOrderTests[] = {
-  // alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
+  // alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "text/enriched text/plain text application/postscript image/*" },
   { MUTT_CMD_ERROR,   NULL },
@@ -52,7 +52,7 @@ static const struct CommandTest AlternativeOrderTests[] = {
 
 // clang-format off
 static const struct CommandTest AutoViewTests[] = {
-  // auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
+  // auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "text/html application/x-gunzip image/gif application/x-tar-gz" },
   { MUTT_CMD_ERROR,   NULL },
@@ -70,7 +70,7 @@ static const struct CommandTest HdrOrderTests[] = {
 
 // clang-format off
 static const struct CommandTest MailtoAllowTests[] = {
-  // mailto_allow { * | <header-field> ... }
+  // mailto-allow { * | <header-field> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "bcc" },
   { MUTT_CMD_SUCCESS, "*" },
@@ -80,7 +80,7 @@ static const struct CommandTest MailtoAllowTests[] = {
 
 // clang-format off
 static const struct CommandTest MimeLookupTests[] = {
-  // mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
+  // mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "application/octet-stream application/X-Lotus-Manuscript" },
   { MUTT_CMD_ERROR,   NULL },

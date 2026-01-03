@@ -45,11 +45,11 @@
  * parse_stailq - Parse a list command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
- * - `auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
- * - `hdr_order <header> [ <header> ... ]`
- * - `mailto_allow { * | <header-field> ... }`
- * - `mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
+ * - `alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
+ * - `auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
+ * - `hdr-order <header> [ <header> ... ]`
+ * - `mailto-allow { * | <header-field> ... }`
+ * - `mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
  */
 enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -76,11 +76,11 @@ enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
  * parse_unstailq - Parse an unlist command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
- * - `unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
- * - `unhdr_order { * | <header> ... }`
- * - `unmailto_allow { * | <header-field> ... }`
- * - `unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
+ * - `unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
+ * - `unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
+ * - `unhdr-order { * | <header> ... }`
+ * - `unmailto-allow { * | <header-field> ... }`
+ * - `unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
  */
 enum CommandResult parse_unstailq(const struct Command *cmd,
                                   struct Buffer *line, struct Buffer *err)

@@ -30,11 +30,11 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command SidebarPin = { "sidebar_pin", CMD_SIDEBAR_PIN, NULL, CMD_NO_DATA };
+static const struct Command SidebarPin = { "sidebar-pin", CMD_SIDEBAR_PIN, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // sidebar_pin <mailbox> [ <mailbox> ... ]
+  // sidebar-pin <mailbox> [ <mailbox> ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "+" },
   { MUTT_CMD_SUCCESS, "+neo" },

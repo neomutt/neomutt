@@ -58,10 +58,10 @@ enum CommandId
   CMD_ACCOUNT_HOOK,          ///< `:account-hook`
   CMD_ALIAS,                 ///< `:alias`               @sa #CMD_UNALIAS
   CMD_ALTERNATES,            ///< `:alternates`          @sa #CMD_UNALTERNATES
-  CMD_ALTERNATIVE_ORDER,     ///< `:alternative_order`   @sa #CMD_UNALTERNATIVE_ORDER, #AlternativeOrderList
+  CMD_ALTERNATIVE_ORDER,     ///< `:alternative-order`   @sa #CMD_UNALTERNATIVE_ORDER, #AlternativeOrderList
   CMD_APPEND_HOOK,           ///< `:append-hook`         @sa #CMD_CLOSE_HOOK, #CMD_OPEN_HOOK
   CMD_ATTACHMENTS,           ///< `:attachments`         @sa #CMD_UNATTACHMENTS
-  CMD_AUTO_VIEW,             ///< `:auto_view`           @sa #CMD_UNAUTO_VIEW, #AutoViewList
+  CMD_AUTO_VIEW,             ///< `:auto-view`           @sa #CMD_UNAUTO_VIEW, #AutoViewList
   CMD_BIND,                  ///< `:bind`                @sa #CMD_UNBIND
   CMD_CD,                    ///< `:cd`
   CMD_CHARSET_HOOK,          ///< `:charset-hook`
@@ -75,7 +75,7 @@ enum CommandId
   CMD_FINISH,                ///< `:finish`              @sa #CMD_IFDEF, #CMD_IFNDEF
   CMD_FOLDER_HOOK,           ///< `:folder-hook`
   CMD_GROUP,                 ///< `:group`               @sa #CMD_UNGROUP
-  CMD_HDR_ORDER,             ///< `:hdr_order`           @sa #CMD_UNHDR_ORDER, #HeaderOrderList
+  CMD_HDR_ORDER,             ///< `:hdr-order`           @sa #CMD_UNHDR_ORDER, #HeaderOrderList
   CMD_HOOKS,                 ///< `:hooks`
   CMD_ICONV_HOOK,            ///< `:iconv-hook`
   CMD_IFDEF,                 ///< `:ifdef`               @sa #CMD_FINISH, #CMD_IFNDEF
@@ -87,12 +87,12 @@ enum CommandId
   CMD_LUA_SOURCE,            ///< `:lua-source`
   CMD_MACRO,                 ///< `:macro`               @sa #CMD_UNMACRO
   CMD_MAILBOXES,             ///< `:mailboxes`           @sa #CMD_NAMED_MAILBOXES, #CMD_UNMAILBOXES
-  CMD_MAILTO_ALLOW,          ///< `:mailto_allow`        @sa #CMD_UNMAILTO_ALLOW, #MailToAllow
+  CMD_MAILTO_ALLOW,          ///< `:mailto-allow`        @sa #CMD_UNMAILTO_ALLOW, #MailToAllow
   CMD_MBOX_HOOK,             ///< `:mbox-hook`
   CMD_MESSAGE_HOOK,          ///< `:message-hook`
-  CMD_MIME_LOOKUP,           ///< `:mime_lookup`         @sa #CMD_UNMIME_LOOKUP, #MimeLookupList
+  CMD_MIME_LOOKUP,           ///< `:mime-lookup`         @sa #CMD_UNMIME_LOOKUP, #MimeLookupList
   CMD_MONO,                  ///< `:mono`                @sa #CMD_UNMONO
-  CMD_MY_HDR,                ///< `:my_hdr`              @sa #CMD_UNMY_HDR
+  CMD_MY_HDR,                ///< `:my-hdr`              @sa #CMD_UNMY_HDR
   CMD_NAMED_MAILBOXES,       ///< `:named-mailboxes`     @sa #CMD_MAILBOXES, #CMD_UNMAILBOXES
   CMD_NOSPAM,                ///< `:nospam`              @sa #CMD_SPAM
   CMD_OPEN_HOOK,             ///< `:open-hook`           @sa #CMD_APPEND_HOOK, #CMD_CLOSE_HOOK
@@ -106,8 +106,8 @@ enum CommandId
   CMD_SET,                   ///< `:set`                 @sa #CMD_RESET, #CMD_TOGGLE, #CMD_UNSET
   CMD_SETENV,                ///< `:setenv`              @sa #CMD_UNSETENV
   CMD_SHUTDOWN_HOOK,         ///< `:shutdown-hook`
-  CMD_SIDEBAR_PIN,           ///< `:sidebar_pin`         @sa #CMD_SIDEBAR_UNPIN
-  CMD_SIDEBAR_UNPIN,         ///< `:sidebar_unpin`       @sa #CMD_SIDEBAR_PIN
+  CMD_SIDEBAR_PIN,           ///< `:sidebar-pin`         @sa #CMD_SIDEBAR_UNPIN
+  CMD_SIDEBAR_UNPIN,         ///< `:sidebar-unpin`       @sa #CMD_SIDEBAR_PIN
   CMD_SOURCE,                ///< `:source`
   CMD_SPAM,                  ///< `:spam`                @sa #CMD_NOSPAM
   CMD_STARTUP_HOOK,          ///< `:startup-hook`
@@ -120,22 +120,22 @@ enum CommandId
   CMD_TOGGLE,                ///< `:toggle`              @sa #CMD_RESET, #CMD_SET, #CMD_UNSET
   CMD_UNALIAS,               ///< `:unalias`             @sa #CMD_ALIAS
   CMD_UNALTERNATES,          ///< `:unalternates`        @sa #CMD_ALTERNATES
-  CMD_UNALTERNATIVE_ORDER,   ///< `:unalternative_order` @sa #CMD_ALTERNATIVE_ORDER, #AlternativeOrderList
+  CMD_UNALTERNATIVE_ORDER,   ///< `:unalternative-order` @sa #CMD_ALTERNATIVE_ORDER, #AlternativeOrderList
   CMD_UNATTACHMENTS,         ///< `:unattachments`       @sa #CMD_ATTACHMENTS
-  CMD_UNAUTO_VIEW,           ///< `:unauto_view`         @sa #CMD_AUTO_VIEW, #AutoViewList
+  CMD_UNAUTO_VIEW,           ///< `:unauto-view`         @sa #CMD_AUTO_VIEW, #AutoViewList
   CMD_UNBIND,                ///< `:unbind`              @sa #CMD_BIND
   CMD_UNCOLOR,               ///< `:uncolor`             @sa #CMD_COLOR
   CMD_UNGROUP,               ///< `:ungroup`             @sa #CMD_GROUP
-  CMD_UNHDR_ORDER,           ///< `:unhdr_order`         @sa #CMD_HDR_ORDER, #HeaderOrderList
+  CMD_UNHDR_ORDER,           ///< `:unhdr-order`         @sa #CMD_HDR_ORDER, #HeaderOrderList
   CMD_UNHOOK,                ///< `:unhook`
   CMD_UNIGNORE,              ///< `:unignore`            @sa #CMD_IGNORE
   CMD_UNLISTS,               ///< `:unlists`             @sa #CMD_LISTS
   CMD_UNMACRO,               ///< `:unmacro`             @sa #CMD_MACRO
   CMD_UNMAILBOXES,           ///< `:unmailboxes`         @sa #CMD_MAILBOXES, #CMD_NAMED_MAILBOXES
-  CMD_UNMAILTO_ALLOW,        ///< `:unmailto_allow`      @sa #CMD_MAILTO_ALLOW, #MailToAllow
-  CMD_UNMIME_LOOKUP,         ///< `:unmime_lookup`       @sa #CMD_MIME_LOOKUP, #MimeLookupList
+  CMD_UNMAILTO_ALLOW,        ///< `:unmailto-allow`      @sa #CMD_MAILTO_ALLOW, #MailToAllow
+  CMD_UNMIME_LOOKUP,         ///< `:unmime-lookup`       @sa #CMD_MIME_LOOKUP, #MimeLookupList
   CMD_UNMONO,                ///< `:unmono`              @sa #CMD_MONO
-  CMD_UNMY_HDR,              ///< `:unmy_hdr`            @sa #CMD_MY_HDR
+  CMD_UNMY_HDR,              ///< `:unmy-hdr`            @sa #CMD_MY_HDR
   CMD_UNSCORE,               ///< `:unscore`             @sa #CMD_SCORE
   CMD_UNSET,                 ///< `:unset`               @sa #CMD_RESET, #CMD_SET, #CMD_TOGGLE
   CMD_UNSETENV,              ///< `:unsetenv`            @sa #CMD_SETENV

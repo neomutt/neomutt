@@ -30,11 +30,11 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command MyHdr = { "my_hdr", CMD_MY_HDR, NULL, CMD_NO_DATA };
+static const struct Command MyHdr = { "my-hdr", CMD_MY_HDR, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // my_hdr <string>
+  // my-hdr <string>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "X-NeoMutt: Rocks" },
   { MUTT_CMD_ERROR,   NULL },

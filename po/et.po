@@ -95,7 +95,7 @@ msgstr "Hüüdnimi on lisatud"
 #: commands/group.c:320 commands/ifdef.c:103 commands/ifdef.c:125
 #: commands/ignore.c:56 commands/ignore.c:84 commands/mailboxes.c:176
 #: commands/mailboxes.c:201 commands/mailboxes.c:233 commands/mailboxes.c:249
-#: commands/mailboxes.c:322 commands/my_hdr.c:57 commands/my_hdr.c:106
+#: commands/mailboxes.c:322 commands/my-hdr.c:57 commands/my-hdr.c:106
 #: commands/parse.c:98 commands/setenv.c:81 commands/setenv.c:207
 #: commands/source.c:220 commands/spam.c:56 commands/spam.c:113
 #: commands/stailq.c:59 commands/stailq.c:90 commands/subjectrx.c:77
@@ -981,8 +981,8 @@ msgstr ""
 
 #: commands/commands.c:71
 #, fuzzy
-msgid "alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
 
 #: commands/commands.c:74
 msgid "Set attachment counting rules"
@@ -999,8 +999,8 @@ msgstr ""
 
 #: commands/commands.c:79
 #, fuzzy
-msgid "auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
 
 #: commands/commands.c:82
 msgid "Change NeoMutt's current working directory"
@@ -1053,8 +1053,8 @@ msgstr ""
 
 #: commands/commands.c:103
 #, fuzzy
-msgid "hdr_order <header> [ <header> ... ]"
-msgstr "hdr_order <header> [ <header> ... ]"
+msgid "hdr-order <header> [ <header> ... ]"
+msgstr "hdr-order <header> [ <header> ... ]"
 
 #: commands/commands.c:106
 msgid "Conditionally include config commands if symbol defined"
@@ -1107,8 +1107,8 @@ msgstr ""
 
 #: commands/commands.c:127
 #, fuzzy
-msgid "mailto_allow { * | <header-field> ... }"
-msgstr "mailto_allow { * | <header-field> ... }"
+msgid "mailto-allow { * | <header-field> ... }"
+msgstr "mailto-allow { * | <header-field> ... }"
 
 #: commands/commands.c:130
 msgid "Map specified MIME types/subtypes to display handlers"
@@ -1116,8 +1116,8 @@ msgstr ""
 
 #: commands/commands.c:131
 #, fuzzy
-msgid "mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
 
 #: commands/commands.c:134
 msgid "Deprecated: Use 'color'"
@@ -1134,8 +1134,8 @@ msgstr ""
 
 #: commands/commands.c:139
 #, fuzzy
-msgid "my_hdr <string>"
-msgstr "my_hdr <string>"
+msgid "my-hdr <string>"
+msgstr "my-hdr <string>"
 
 #: commands/commands.c:142
 msgid "Define a list of labelled mailboxes to watch"
@@ -1278,8 +1278,8 @@ msgstr ""
 
 #: commands/commands.c:203
 #, fuzzy
-msgid "unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgid "unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 
 #: commands/commands.c:206
 msgid "Remove attachment counting rules"
@@ -1291,13 +1291,13 @@ msgid "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... 
 msgstr "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"
 
 #: commands/commands.c:210
-msgid "Remove MIME types from 'auto_view' list"
+msgid "Remove MIME types from 'auto-view' list"
 msgstr ""
 
 #: commands/commands.c:211
 #, fuzzy
-msgid "unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgid "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 
 #: commands/commands.c:214
 msgid "Remove a 'color' definition"
@@ -1318,16 +1318,16 @@ msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ...
 msgstr "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
 
 #: commands/commands.c:222
-msgid "Remove header from 'hdr_order' list"
+msgid "Remove header from 'hdr-order' list"
 msgstr ""
 
 #: commands/commands.c:223
 #, fuzzy
-msgid "unhdr_order { * | <header> ... }"
-msgstr "unhdr_order { * | <header> ... }"
+msgid "unhdr-order { * | <header> ... }"
+msgstr "unhdr-order { * | <header> ... }"
 
 #: commands/commands.c:226
-msgid "Remove a header from the 'hdr_order' list"
+msgid "Remove a header from the 'hdr-order' list"
 msgstr ""
 
 #: commands/commands.c:227
@@ -1359,8 +1359,8 @@ msgstr ""
 
 #: commands/commands.c:239
 #, fuzzy
-msgid "unmailto_allow { * | <header-field> ... }"
-msgstr "unmailto_allow { * | <header-field> ... }"
+msgid "unmailto-allow { * | <header-field> ... }"
+msgstr "unmailto-allow { * | <header-field> ... }"
 
 #: commands/commands.c:242
 msgid "Remove custom MIME-type handlers"
@@ -1368,8 +1368,8 @@ msgstr ""
 
 #: commands/commands.c:243
 #, fuzzy
-msgid "unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgid "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 
 #: commands/commands.c:246
 msgid "Deprecated: Use 'uncolor'"
@@ -1381,13 +1381,13 @@ msgid "unmono <object> { * | <pattern> ... }"
 msgstr "unmono <object> { * | <pattern> ... }"
 
 #: commands/commands.c:250
-msgid "Remove a header previously added with 'my_hdr'"
+msgid "Remove a header previously added with 'my-hdr'"
 msgstr ""
 
 #: commands/commands.c:251
 #, fuzzy
-msgid "unmy_hdr { * | <field> ... }"
-msgstr "unmy_hdr { * | <field> ... }"
+msgid "unmy-hdr { * | <field> ... }"
+msgstr "unmy-hdr { * | <field> ... }"
 
 #: commands/commands.c:254
 msgid "Remove scoring rules for matching patterns"
@@ -1467,7 +1467,7 @@ msgstr ""
 msgid "Error: %s"
 msgstr ""
 
-#: commands/my_hdr.c:68
+#: commands/my-hdr.c:68
 msgid "invalid header field"
 msgstr "vigane päiseväli"
 
@@ -9234,8 +9234,8 @@ msgstr ""
 
 #: sidebar/sidebar.c:53
 #, fuzzy
-msgid "sidebar_pin <mailbox> [ <mailbox> ... ]"
-msgstr "sidebar_pin <mailbox> [ <mailbox> ... ]"
+msgid "sidebar-pin <mailbox> [ <mailbox> ... ]"
+msgstr "sidebar-pin <mailbox> [ <mailbox> ... ]"
 
 #: sidebar/sidebar.c:56
 msgid "Unpin a previously pinned mailbox in the sidebar"
@@ -9243,8 +9243,8 @@ msgstr ""
 
 #: sidebar/sidebar.c:57
 #, fuzzy
-msgid "sidebar_unpin { * | <mailbox> ... }"
-msgstr "sidebar_unpin { * | <mailbox> ... }"
+msgid "sidebar-unpin { * | <mailbox> ... }"
+msgstr "sidebar-unpin { * | <mailbox> ... }"
 
 #. L10N: Help Overview -- `neomutt -h`
 #. The modes are: help, info, send, tui

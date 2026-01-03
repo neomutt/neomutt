@@ -48,18 +48,20 @@ struct ListHead SidebarPinned = STAILQ_HEAD_INITIALIZER(SidebarPinned); ///< Lis
  */
 static const struct Command SbCommands[] = {
   // clang-format off
-  { "sidebar_pin", CMD_SIDEBAR_PIN, parse_sidebar_pin, CMD_NO_DATA,
+  { "sidebar-pin", CMD_SIDEBAR_PIN, parse_sidebar_pin, CMD_NO_DATA,
         N_("Pin a mailbox in the sidebar (keep visible)"),
-        N_("sidebar_pin <mailbox> [ <mailbox> ... ]"),
+        N_("sidebar-pin <mailbox> [ <mailbox> ... ]"),
         "optionalfeatures.html#sidebar-pin" },
-  { "sidebar_unpin", CMD_SIDEBAR_UNPIN, parse_sidebar_unpin, CMD_NO_DATA,
+  { "sidebar-unpin", CMD_SIDEBAR_UNPIN, parse_sidebar_unpin, CMD_NO_DATA,
         N_("Unpin a previously pinned mailbox in the sidebar"),
-        N_("sidebar_unpin { * | <mailbox> ... }"),
+        N_("sidebar-unpin { * | <mailbox> ... }"),
         "optionalfeatures.html#sidebar-pin" },
 
   // Deprecated
-  { "sidebar_whitelist",   CMD_NONE, NULL, IP "sidebar_pin",   NULL, NULL, NULL, CF_SYNONYM },
-  { "unsidebar_whitelist", CMD_NONE, NULL, IP "sidebar_unpin", NULL, NULL, NULL, CF_SYNONYM },
+  { "sidebar_pin",         CMD_NONE, NULL, IP "sidebar-pin",   NULL, NULL, NULL, CF_SYNONYM },
+  { "sidebar_unpin",       CMD_NONE, NULL, IP "sidebar-unpin", NULL, NULL, NULL, CF_SYNONYM },
+  { "sidebar_whitelist",   CMD_NONE, NULL, IP "sidebar-pin",   NULL, NULL, NULL, CF_SYNONYM },
+  { "unsidebar_whitelist", CMD_NONE, NULL, IP "sidebar-unpin", NULL, NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on

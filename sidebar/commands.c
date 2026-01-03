@@ -35,10 +35,10 @@
 #include "muttlib.h"
 
 /**
- * parse_sidebar_pin - Parse the 'sidebar_pin' command - Implements Command::parse() - @ingroup command_parse
+ * parse_sidebar_pin - Parse the 'sidebar-pin' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `sidebar_pin <mailbox> [ <mailbox> ... ]`
+ * - `sidebar-pin <mailbox> [ <mailbox> ... ]`
  */
 enum CommandResult parse_sidebar_pin(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
@@ -63,10 +63,10 @@ enum CommandResult parse_sidebar_pin(const struct Command *cmd,
 }
 
 /**
- * parse_sidebar_unpin - Parse the 'sidebar_unpin' command - Implements Command::parse() - @ingroup command_parse
+ * parse_sidebar_unpin - Parse the 'sidebar-unpin' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `sidebar_unpin { * | <mailbox> ... }`
+ * - `sidebar-unpin { * | <mailbox> ... }`
  */
 enum CommandResult parse_sidebar_unpin(const struct Command *cmd,
                                        struct Buffer *line, struct Buffer *err)

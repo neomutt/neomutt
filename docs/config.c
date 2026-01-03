@@ -730,7 +730,7 @@
 { "compose_show_user_headers", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will display user-defined headers (set via $my_hdr
+** When \fIset\fP, NeoMutt will display user-defined headers (set via $my-hdr
 ** or from editing with edit-headers).
 */
 
@@ -1603,7 +1603,7 @@
 /*
 ** .pp
 ** When \fIset\fP, this variable contains a default "from" address.  It
-** can be overridden using "$my_hdr" (including from a "$send-hook") and
+** can be overridden using "$my-hdr" (including from a "$send-hook") and
 ** $$reverse_name.  This variable is ignored if $$use_from is \fIunset\fP.
 ** .pp
 ** If not specified, then it may be read from the environment variable \fC$$$EMAIL\fP.
@@ -1694,7 +1694,7 @@
 { "hdrs", DT_BOOL, true },
 /*
 ** .pp
-** When \fIunset\fP, the header fields normally added by the "$my_hdr"
+** When \fIunset\fP, the header fields normally added by the "$my-hdr"
 ** command are not created.  This variable \fImust\fP be unset before
 ** composing a new message or replying in order to take effect.  If \fIset\fP,
 ** the user defined header fields are added to every new message.
@@ -3981,7 +3981,7 @@
 ** .pp
 ** This specifies the file into which your outgoing messages should be
 ** appended.  (This is meant as the primary method for saving a copy of
-** your messages, but another way to do this is using the "$my_hdr"
+** your messages, but another way to do this is using the "$my-hdr"
 ** command to create a "Bcc:" field with your email address in it.)
 ** .pp
 ** The value of \fI$$record\fP is overridden by the $$force_name and
@@ -4492,7 +4492,7 @@
 ** When set, the sidebar will only display mailboxes containing new, or
 ** flagged, mail.
 ** .pp
-** \fBSee also:\fP $sidebar_pin, $$sidebar_non_empty_mailbox_only.
+** \fBSee also:\fP $sidebar-pin, $$sidebar_non_empty_mailbox_only.
 */
 
 { "sidebar_next_new_wrap", DT_BOOL, false },
@@ -4509,7 +4509,7 @@
 ** .pp
 ** When set, the sidebar will only display mailboxes that contain one or more mails.
 ** .pp
-** \fBSee also:\fP $$sidebar_new_mail_only, $sidebar_pin.
+** \fBSee also:\fP $$sidebar_new_mail_only, $sidebar-pin.
 */
 
 { "sidebar_on_right", DT_BOOL, false },
@@ -5623,7 +5623,7 @@
 ** .pp
 ** When \fIset\fP, NeoMutt will generate the "From:" header field when
 ** sending messages.  If \fIunset\fP, no "From:" header field will be
-** generated unless the user explicitly sets one using the "$my_hdr"
+** generated unless the user explicitly sets one using the "$my-hdr"
 ** command.
 */
 
@@ -5680,7 +5680,7 @@
 ** \fC<pipe-message>\fP, \fC<pipe-entry>\fP, \fC<print-message>\fP,
 ** and \fC<print-entry>\fP commands.
 ** .pp
-** It is also used when viewing attachments with "$auto_view", provided
+** It is also used when viewing attachments with "$auto-view", provided
 ** that the corresponding mailcap entry has a \fIneedsterminal\fP flag,
 ** and the external program is interactive.
 ** .pp

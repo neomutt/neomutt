@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse My_hdr Commands
+ * Parse My-hdr Commands
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
