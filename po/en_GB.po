@@ -1200,16 +1200,16 @@ msgid "Remove an alias definition"
 msgstr "Remove an alias definition"
 
 #: commands/commands.c:195
-msgid "unalias [ -group <name> ... ] { * | <key> ... }"
-msgstr "unalias [ -group <name> ... ] { * | <key> ... }"
+msgid "unalias { * | <key> ... }"
+msgstr "unalias { * | <key> ... }"
 
 #: commands/commands.c:198
 msgid "Remove addresses from 'alternates' list"
 msgstr "Remove addresses from 'alternates' list"
 
 #: commands/commands.c:199
-msgid "unalternates [ -group <name> ... ] { * | <regex> ... }"
-msgstr "unalternates [ -group <name> ... ] { * | <regex> ... }"
+msgid "unalternates { * | <regex> ... }"
+msgstr "unalternates { * | <regex> ... }"
 
 #: commands/commands.c:202
 msgid "Remove MIME types from preference order"
@@ -1272,8 +1272,8 @@ msgid "Remove address from the list of mailing lists"
 msgstr "Remove address from the list of mailing lists"
 
 #: commands/commands.c:231
-msgid "unlists [ -group <name> ... ] { * | <regex> ... }"
-msgstr "unlists [ -group <name> ... ] { * | <regex> ... }"
+msgid "unlists { * | <regex> ... }"
+msgstr "unlists { * | <regex> ... }"
 
 #: commands/commands.c:234
 msgid "Remove mailboxes from the watch list"
@@ -1352,8 +1352,8 @@ msgid "Remove address from the list of subscribed mailing lists"
 msgstr "Remove address from the list of subscribed mailing lists"
 
 #: commands/commands.c:271
-msgid "unsubscribe [ -group <name> ... ] { * | <regex> ... }"
-msgstr "unsubscribe [ -group <name> ... ] { * | <regex> ... }"
+msgid "unsubscribe { * | <regex> ... }"
+msgstr "unsubscribe { * | <regex> ... }"
 
 #: commands/commands.c:274
 msgid "Show NeoMutt version and build information"

@@ -35,11 +35,10 @@ static const struct Command UnAlternates = { "unalternates", CMD_UNALTERNATES,
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // unalternates [ -group <name> ... ] { * | <regex> ... }
+  // unalternates { * | <regex> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'^john.*@example\\.com'" },
   { MUTT_CMD_SUCCESS, "'^smith.*@example\\.com' '^js@.*\\.example\\.com'" },
-  { MUTT_CMD_SUCCESS, "-group self '^john.*@example\\.com'" },
   { MUTT_CMD_ERROR,   NULL },
 };
 // clang-format on

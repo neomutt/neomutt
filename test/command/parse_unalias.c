@@ -34,10 +34,9 @@ static const struct Command UnAlias = { "unalias", CMD_UNALIAS, NULL, CMD_NO_DAT
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // unalias [ -group <name> ... ] { * | <key> ... }
+  // unalias { * | <key> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "jim" },
-  { MUTT_CMD_SUCCESS, "-group work bob" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
 };

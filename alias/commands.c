@@ -253,7 +253,7 @@ done:
  * parse_unalias - Parse the 'unalias' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unalias [ -group <name> ... ] { * | <key> ... }`
+ * - `unalias { * | <key> ... }`
  */
 enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
                                  struct Buffer *err)

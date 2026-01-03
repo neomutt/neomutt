@@ -135,7 +135,7 @@ done:
  * parse_unalternates - Parse the 'unalternates' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unalternates [ -group <name> ... ] { * | <regex> ... }`
+ * - `unalternates { * | <regex> ... }`
  */
 enum CommandResult parse_unalternates(const struct Command *cmd,
                                       struct Buffer *line, struct Buffer *err)

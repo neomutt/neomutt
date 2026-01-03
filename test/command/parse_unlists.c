@@ -34,7 +34,7 @@ static const struct Command UnLists = { "unlists", CMD_UNLISTS, NULL, CMD_NO_DAT
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // unlists [ -group <name> ... ] { * | <regex> ... }
+  // unlists { * | <regex> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "devel@neomutt.org" },
   { MUTT_CMD_SUCCESS, "users@neomutt.org lang@neomutt.org" },

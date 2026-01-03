@@ -271,7 +271,7 @@ done:
  * parse_unlists - Parse the 'unlists' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unlists [ -group <name> ... ] { * | <regex> ... }`
+ * - `unlists { * | <regex> ... }`
  */
 enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line,
                                  struct Buffer *err)
@@ -310,7 +310,7 @@ done:
  * parse_unsubscribe - Parse the 'unsubscribe' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unsubscribe [ -group <name> ... ] { * | <regex> ... }`
+ * - `unsubscribe { * | <regex> ... }`
  */
 enum CommandResult parse_unsubscribe(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)

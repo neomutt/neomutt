@@ -4116,10 +4116,6 @@ alternates -group me -group work address3
           </group>
         </group>
         <command>unalias</command>
-        <arg choice="opt" rep="repeat">
-          <option>-group</option>
-          <replaceable>name</replaceable>
-        </arg>
         <group choice="req">
           <arg choice="plain">
             <replaceable class="parameter">*</replaceable>
@@ -6141,10 +6137,6 @@ unignore posted-to:
           <replaceable>regex</replaceable>
         </arg>
         <command>unalternates</command>
-        <arg choice="opt" rep="repeat">
-          <option>-group</option>
-          <replaceable>name</replaceable>
-        </arg>
         <group choice="req">
           <arg choice="plain">
             <replaceable>*</replaceable>
@@ -20746,10 +20738,6 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="lists">unlists</link>
             </command>
-            <arg choice="opt" rep="repeat">
-              <option>-group</option>
-              <replaceable>name</replaceable>
-            </arg>
             <group choice="req">
               <arg choice="plain">
                 <replaceable>*</replaceable>
@@ -20774,10 +20762,6 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="lists">unsubscribe</link>
             </command>
-            <arg choice="opt" rep="repeat">
-              <option>-group</option>
-              <replaceable>name</replaceable>
-            </arg>
             <group choice="req">
               <arg choice="plain">
                 <replaceable class="parameter">*</replaceable>

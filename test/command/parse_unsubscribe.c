@@ -34,7 +34,7 @@ static const struct Command UnSubscribe = { "unsubscribe", CMD_UNSUBSCRIBE, NULL
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // unsubscribe [ -group <name> ... ] { * | <regex> ... }
+  // unsubscribe { * | <regex> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "devel@neomutt.org" },
   { MUTT_CMD_SUCCESS, "users@neomutt.org lang@neomutt.org" },
