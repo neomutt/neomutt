@@ -730,7 +730,7 @@
 { "compose_show_user_headers", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will display user-defined headers (set via $my-hdr
+** When \fIset\fP, NeoMutt will display user-defined headers (set via $my-header
 ** or from editing with edit-headers).
 */
 
@@ -1603,7 +1603,7 @@
 /*
 ** .pp
 ** When \fIset\fP, this variable contains a default "from" address.  It
-** can be overridden using "$my-hdr" (including from a "$send-hook") and
+** can be overridden using "$my-header" (including from a "$send-hook") and
 ** $$reverse_name.  This variable is ignored if $$use_from is \fIunset\fP.
 ** .pp
 ** If not specified, then it may be read from the environment variable \fC$$$EMAIL\fP.
@@ -1694,7 +1694,7 @@
 { "hdrs", DT_BOOL, true },
 /*
 ** .pp
-** When \fIunset\fP, the header fields normally added by the "$my-hdr"
+** When \fIunset\fP, the header fields normally added by the "$my-header"
 ** command are not created.  This variable \fImust\fP be unset before
 ** composing a new message or replying in order to take effect.  If \fIset\fP,
 ** the user defined header fields are added to every new message.
@@ -3981,7 +3981,7 @@
 ** .pp
 ** This specifies the file into which your outgoing messages should be
 ** appended.  (This is meant as the primary method for saving a copy of
-** your messages, but another way to do this is using the "$my-hdr"
+** your messages, but another way to do this is using the "$my-header"
 ** command to create a "Bcc:" field with your email address in it.)
 ** .pp
 ** The value of \fI$$record\fP is overridden by the $$force_name and
@@ -5623,7 +5623,7 @@
 ** .pp
 ** When \fIset\fP, NeoMutt will generate the "From:" header field when
 ** sending messages.  If \fIunset\fP, no "From:" header field will be
-** generated unless the user explicitly sets one using the "$my-hdr"
+** generated unless the user explicitly sets one using the "$my-header"
 ** command.
 */
 

@@ -10,7 +10,7 @@ ignore *
 unignore from: subject to cc date x-mailer x-url user-agent
 
 # Display the fields in this order
-hdr-order date from to cc subject
+header-order date from to cc subject
 
 # imitate the old search-body function
 macro index \eb "<search>~b " "search in message bodies"

@@ -92,7 +92,7 @@ msgstr "Alias added"
 #: commands/group.c:320 commands/ifdef.c:103 commands/ifdef.c:125
 #: commands/ignore.c:56 commands/ignore.c:84 commands/mailboxes.c:176
 #: commands/mailboxes.c:201 commands/mailboxes.c:233 commands/mailboxes.c:249
-#: commands/mailboxes.c:322 commands/my-hdr.c:57 commands/my-hdr.c:106
+#: commands/mailboxes.c:322 commands/my-header.c:57 commands/my-header.c:106
 #: commands/parse.c:98 commands/setenv.c:81 commands/setenv.c:207
 #: commands/source.c:220 commands/spam.c:56 commands/spam.c:113
 #: commands/stailq.c:59 commands/stailq.c:90 commands/subjectrx.c:77
@@ -1016,8 +1016,8 @@ msgid "Define custom order of headers displayed"
 msgstr "Define custom order of headers displayed"
 
 #: commands/commands.c:103
-msgid "hdr-order <header> [ <header> ... ]"
-msgstr "hdr-order <header> [ <header> ... ]"
+msgid "header-order <header> [ <header> ... ]"
+msgstr "header-order <header> [ <header> ... ]"
 
 #: commands/commands.c:106
 msgid "Conditionally include config commands if symbol defined"
@@ -1088,8 +1088,8 @@ msgid "Add a custom header to outgoing messages"
 msgstr "Add a custom header to outgoing messages"
 
 #: commands/commands.c:139
-msgid "my-hdr <string>"
-msgstr "my-hdr <string>"
+msgid "my-header <string>"
+msgstr "my-header <string>"
 
 #: commands/commands.c:142
 msgid "Define a list of labelled mailboxes to watch"
@@ -1252,16 +1252,16 @@ msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ...
 msgstr "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
 
 #: commands/commands.c:222
-msgid "Remove header from 'hdr-order' list"
-msgstr "Remove header from 'hdr-order' list"
+msgid "Remove header from 'header-order' list"
+msgstr "Remove header from 'header-order' list"
 
 #: commands/commands.c:223
-msgid "unhdr-order { * | <header> ... }"
-msgstr "unhdr-order { * | <header> ... }"
+msgid "unheader-order { * | <header> ... }"
+msgstr "unheader-order { * | <header> ... }"
 
 #: commands/commands.c:226
-msgid "Remove a header from the 'hdr-order' list"
-msgstr "Remove a header from the 'hdr-order' list"
+msgid "Remove a header from the 'header-order' list"
+msgstr "Remove a header from the 'header-order' list"
 
 #: commands/commands.c:227
 msgid "unignore { * | <string> ... }"
@@ -1308,12 +1308,12 @@ msgid "unmono <object> { * | <pattern> ... }"
 msgstr "unmono <object> { * | <pattern> ... }"
 
 #: commands/commands.c:250
-msgid "Remove a header previously added with 'my-hdr'"
-msgstr "Remove a header previously added with 'my-hdr'"
+msgid "Remove a header previously added with 'my-header'"
+msgstr "Remove a header previously added with 'my-header'"
 
 #: commands/commands.c:251
-msgid "unmy-hdr { * | <field> ... }"
-msgstr "unmy-hdr { * | <field> ... }"
+msgid "unmy-header { * | <field> ... }"
+msgstr "unmy-header { * | <field> ... }"
 
 #: commands/commands.c:254
 msgid "Remove scoring rules for matching patterns"
@@ -1386,7 +1386,7 @@ msgstr "%s: warning: bad IDN '%s'"
 msgid "Error: %s"
 msgstr "Error: %s"
 
-#: commands/my-hdr.c:68
+#: commands/my-header.c:68
 msgid "invalid header field"
 msgstr "invalid header field"
 

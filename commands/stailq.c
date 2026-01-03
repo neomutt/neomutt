@@ -47,7 +47,7 @@
  * Parse:
  * - `alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
  * - `auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
- * - `hdr-order <header> [ <header> ... ]`
+ * - `header-order <header> [ <header> ... ]`
  * - `mailto-allow { * | <header-field> ... }`
  * - `mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
  */
@@ -78,7 +78,7 @@ enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
  * Parse:
  * - `unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
  * - `unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
- * - `unhdr-order { * | <header> ... }`
+ * - `unheader-order { * | <header> ... }`
  * - `unmailto-allow { * | <header-field> ... }`
  * - `unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
  */

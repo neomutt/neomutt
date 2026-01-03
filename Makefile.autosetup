@@ -213,7 +213,7 @@ $(PWD)/color:
 LIBCOMMANDS=	libcommands.a
 LIBCOMMANDSOBJS=commands/alternates.o commands/commands.o commands/group.o \
 		commands/ifdef.o commands/ignore.o commands/mailboxes.o \
-		commands/my_hdr.o commands/parse.o commands/setenv.o \
+		commands/my_header.o commands/parse.o commands/setenv.o \
 		commands/source.o commands/spam.o commands/stailq.o \
 		commands/subjectrx.o commands/tags.o
 CLEANFILES+=	$(LIBCOMMANDS) $(LIBCOMMANDSOBJS)

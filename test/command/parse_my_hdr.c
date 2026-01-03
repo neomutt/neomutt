@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parse_my_hdr()
+ * Test code for parse_my_header()
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -30,20 +30,20 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command MyHdr = { "my-hdr", CMD_MY_HDR, NULL, CMD_NO_DATA };
+static const struct Command MyHeader = { "my-header", CMD_MY_HEADER, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // my-hdr <string>
+  // my-header <string>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "X-NeoMutt: Rocks" },
   { MUTT_CMD_ERROR,   NULL },
 };
 // clang-format on
 
-void test_parse_my_hdr(void)
+void test_parse_my_header(void)
 {
-  // enum CommandResult parse_my_hdr(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_my_header(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 
   struct Buffer *line = buf_pool_get();
   struct Buffer *err = buf_pool_get();
@@ -55,7 +55,7 @@ void test_parse_my_hdr(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_my_hdr(&MyHdr, line, err);
+    rc = parse_my_header(&MyHeader, line, err);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

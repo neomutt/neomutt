@@ -36,7 +36,7 @@
 // clang-format off
 static const struct Command AlternativeOrder = { "alternative-order", CMD_ALTERNATIVE_ORDER, NULL, IP &AlternativeOrderList };
 static const struct Command AutoView         = { "auto-view",         CMD_AUTO_VIEW,         NULL, IP &AutoViewList         };
-static const struct Command HdrOrder         = { "hdr-order",         CMD_HDR_ORDER,         NULL, IP &HeaderOrderList      };
+static const struct Command HdrOrder         = { "header-order",      CMD_HEADER_ORDER,      NULL, IP &HeaderOrderList      };
 static const struct Command MailtoAllow      = { "mailto-allow",      CMD_MAILTO_ALLOW,      NULL, IP &MailToAllow          };
 static const struct Command MimeLookup       = { "mime-lookup",       CMD_MIME_LOOKUP,       NULL, IP &MimeLookupList       };
 // clang-format off
@@ -61,7 +61,7 @@ static const struct CommandTest AutoViewTests[] = {
 
 // clang-format off
 static const struct CommandTest HdrOrderTests[] = {
-  // hdr_order <header> [ <header> ... ]
+  // header-order <header> [ <header> ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "From Date: From: To: Cc: Subject:" },
   { MUTT_CMD_ERROR,   NULL },

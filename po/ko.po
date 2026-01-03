@@ -97,7 +97,7 @@ msgstr "별칭 추가됨"
 #: commands/group.c:320 commands/ifdef.c:103 commands/ifdef.c:125
 #: commands/ignore.c:56 commands/ignore.c:84 commands/mailboxes.c:176
 #: commands/mailboxes.c:201 commands/mailboxes.c:233 commands/mailboxes.c:249
-#: commands/mailboxes.c:322 commands/my-hdr.c:57 commands/my-hdr.c:106
+#: commands/mailboxes.c:322 commands/my-header.c:57 commands/my-header.c:106
 #: commands/parse.c:98 commands/setenv.c:81 commands/setenv.c:207
 #: commands/source.c:220 commands/spam.c:56 commands/spam.c:113
 #: commands/stailq.c:59 commands/stailq.c:90 commands/subjectrx.c:77
@@ -1052,8 +1052,8 @@ msgstr ""
 
 #: commands/commands.c:103
 #, fuzzy
-msgid "hdr-order <header> [ <header> ... ]"
-msgstr "hdr-order <header> [ <header> ... ]"
+msgid "header-order <header> [ <header> ... ]"
+msgstr "header-order <header> [ <header> ... ]"
 
 #: commands/commands.c:106
 msgid "Conditionally include config commands if symbol defined"
@@ -1133,8 +1133,8 @@ msgstr ""
 
 #: commands/commands.c:139
 #, fuzzy
-msgid "my-hdr <string>"
-msgstr "my-hdr <string>"
+msgid "my-header <string>"
+msgstr "my-header <string>"
 
 #: commands/commands.c:142
 msgid "Define a list of labelled mailboxes to watch"
@@ -1317,16 +1317,16 @@ msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ...
 msgstr "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
 
 #: commands/commands.c:222
-msgid "Remove header from 'hdr-order' list"
+msgid "Remove header from 'header-order' list"
 msgstr ""
 
 #: commands/commands.c:223
 #, fuzzy
-msgid "unhdr-order { * | <header> ... }"
-msgstr "unhdr-order { * | <header> ... }"
+msgid "unheader-order { * | <header> ... }"
+msgstr "unheader-order { * | <header> ... }"
 
 #: commands/commands.c:226
-msgid "Remove a header from the 'hdr-order' list"
+msgid "Remove a header from the 'header-order' list"
 msgstr ""
 
 #: commands/commands.c:227
@@ -1380,13 +1380,13 @@ msgid "unmono <object> { * | <pattern> ... }"
 msgstr "unmono <object> { * | <pattern> ... }"
 
 #: commands/commands.c:250
-msgid "Remove a header previously added with 'my-hdr'"
+msgid "Remove a header previously added with 'my-header'"
 msgstr ""
 
 #: commands/commands.c:251
 #, fuzzy
-msgid "unmy-hdr { * | <field> ... }"
-msgstr "unmy-hdr { * | <field> ... }"
+msgid "unmy-header { * | <field> ... }"
+msgstr "unmy-header { * | <field> ... }"
 
 #: commands/commands.c:254
 msgid "Remove scoring rules for matching patterns"
@@ -1466,7 +1466,7 @@ msgstr "경고: 잘못된 IDN '%s' 알리아스 '%s'"
 msgid "Error: %s"
 msgstr ""
 
-#: commands/my-hdr.c:68
+#: commands/my-header.c:68
 msgid "invalid header field"
 msgstr "잘못된 헤더 필드"
 

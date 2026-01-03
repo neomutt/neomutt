@@ -773,7 +773,7 @@
   - #3653 - fix negative new-mail count on maildir
   - #3656 - skip zero width non-joiner character in the pager
   - #3664 - handle text/vcard as not being an attachment, same as for text/x-vcard
-  - #3666 - fix `hdr-order` not sorting last header correctly
+  - #3666 - fix `header-order` not sorting last header correctly
   - #3673 - make exiting via SIGINT more graceful
   - #3700 - fix `unhook index-format-hook`
   - #3709 - send: delete signature when sending fails #3709
@@ -983,7 +983,7 @@
   - fix menu display on window resize
   - Stop batch mode emails with no argument or recipients
   - Add sanitize call in print mailcap function
-  - fix `hdr-order` to use the longest match
+  - fix `header-order` to use the longest match
   - fix (un)setenv to not return an error with unset env vars
   - fix Imap sync when closing a mailbox
   - fix segfault on OpenBSD current
@@ -1126,7 +1126,7 @@
   - add SASL and S/MIME to `--everything`
   - fix contrib (un)install
 * Code
-  - `my-hdr` compose screen notifications
+  - `my-header` compose screen notifications
   - add contracts to the MXAPI
   - maildir refactoring
   - further reduce the use of global variables

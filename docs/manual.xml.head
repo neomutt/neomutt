@@ -3824,7 +3824,7 @@ set smime_decrypt_command = "..."
         <title>Commenting configuration files</title>
 
 <screen>
-my-hdr X-Disclaimer: Why are you listening to me?   <emphasis role="comment"># This is a comment</emphasis>
+my-header X-Disclaimer: Why are you listening to me?   <emphasis role="comment"># This is a comment</emphasis>
 </screen>
 
       </example>
@@ -3890,7 +3890,7 @@ over several lines"
       </para>
       <example id="ex-rc-backtick">
         <title>Using external command's output in configuration files</title>
-        <screen>my-hdr X-Operating-System: `uname -a`</screen>
+        <screen>my-header X-Operating-System: `uname -a`</screen>
       </example>
       <para>
         To avoid the output of backticks being parsed, place them inside double
@@ -6009,7 +6009,7 @@ uncolor status *
           Despite not being a real header, NeoMutt will also display an mbox
           &quot;From_&quot; line in the pager along with other headers.  This
           line can be manipulated with <command>ignore/unignore</command> and
-          <command>hdr-order/unhdr-order</command> commands.
+          <command>header-order/unheader-order</command> commands.
         </para>
       </sect2>
 
@@ -6079,20 +6079,20 @@ unignore posted-to:
         </para>
       </sect2>
 
-      <sect2 id="hdr-order">
+      <sect2 id="header-order">
         <title>Ordering Displayed Headers</title>
         <para>
           Usage:
         </para>
         <cmdsynopsis>
-          <command>hdr-order</command>
+          <command>header-order</command>
           <arg choice="plain">
             <replaceable class="parameter">header</replaceable>
           </arg>
           <arg choice="opt" rep="repeat">
             <replaceable class="parameter">header</replaceable>
           </arg>
-          <command>unhdr-order</command>
+          <command>unheader-order</command>
           <group choice="req">
             <arg choice="plain">
               <replaceable>*</replaceable>
@@ -6103,18 +6103,18 @@ unignore posted-to:
           </group>
         </cmdsynopsis>
         <para>
-          With the <command>hdr-order</command> command you can specify an
+          With the <command>header-order</command> command you can specify an
           order in which NeoMutt will attempt to present these headers to you
           when viewing messages.
         </para>
         <para>
-          <quote><command>unhdr-order</command>*</quote> will clear all
+          <quote><command>unheader-order</command>*</quote> will clear all
           previous headers from the order list, thus removing the header order
           effects set by the system-wide startup file.
         </para>
-        <example id="ex-hdr-order">
+        <example id="ex-header-order">
           <title>Configuring header display order</title>
-          <screen>hdr-order From Date: From: To: Cc: Subject:</screen>
+          <screen>header-order From Date: From: To: Cc: Subject:</screen>
         </example>
       </sect2>
     </sect1>
@@ -6500,17 +6500,17 @@ unignore posted-to:
       </note>
     </sect1>
 
-    <sect1 id="my-hdr">
+    <sect1 id="my-header">
       <title>User-Defined Headers</title>
       <para>
         Usage:
       </para>
       <cmdsynopsis>
-        <command>my-hdr</command>
+        <command>my-header</command>
         <arg choice="plain">
           <replaceable class="parameter">string</replaceable>
         </arg>
-        <command>unmy-hdr</command>
+        <command>unmy-header</command>
         <group choice="req">
           <arg choice="plain">
             <replaceable class="parameter">*</replaceable>
@@ -6521,7 +6521,7 @@ unignore posted-to:
         </group>
       </cmdsynopsis>
       <para>
-        The <command>my-hdr</command> command allows you to create your own
+        The <command>my-header</command> command allows you to create your own
         header fields which will be added to every message you send and appear
         in the editor if <link linkend="edit-headers">$edit_headers</link> is
         set.
@@ -6529,14 +6529,14 @@ unignore posted-to:
       <para>
         For example, if you would like to add an <quote>Organization:</quote>
         header field to all of your outgoing messages, you can put the command
-        something like shown in <xref linkend="ex-my-hdr" /> in your
+        something like shown in <xref linkend="ex-my-header" /> in your
         <literal>.neomuttrc</literal>.
       </para>
-      <example id="ex-my-hdr">
+      <example id="ex-my-header">
         <title>Defining custom headers</title>
 
 <screen>
-my-hdr Organization: A Really Big Company, Anytown, USA
+my-header Organization: A Really Big Company, Anytown, USA
 </screen>
 
       </example>
@@ -6557,12 +6557,12 @@ my-hdr Organization: A Really Big Company, Anytown, USA
       </para>
       <para>
         To remove user defined header fields, use the
-        <command>unmy-hdr</command> command. You may specify an asterisk
+        <command>unmy-header</command> command. You may specify an asterisk
         (<quote>*</quote>) to remove all header fields, or the fields to
         remove. For example, to remove all <quote>To</quote> and
         <quote>Cc</quote> header fields, you could use:
       </para>
-      <screen>unmy-hdr to cc</screen>
+      <screen>unmy-header to cc</screen>
     </sect1>
 
     <sect1 id="default-save-mailbox">
@@ -6750,7 +6750,7 @@ save-hook aol\\.com$ +spam
           <command>send-hook</command> to be executed, similarly if
           <link linkend="auto-edit">$auto_edit</link> is set (as then the initial
           list of recipients is empty). Also note that
-          <link linkend="my-hdr"><command>my-hdr</command></link> commands
+          <link linkend="my-header"><command>my-header</command></link> commands
           which modify recipient headers, or the message's subject, don't have
           any effect on the current message when executed from
           a <command>send-hook</command>.
@@ -9838,8 +9838,8 @@ Limit to messages matching: ~d 19950120-19951031
         <title>Specifying a <quote>default</quote> hook</title>
 
 <screen>
-send-hook . 'unmy-hdr From:'
-send-hook ~C'^b@b\\.b$' my-hdr from: c@c.c
+send-hook . 'unmy-header From:'
+send-hook ~C'^b@b\\.b$' my-header from: c@c.c
 </screen>
 
       </example>
@@ -9880,7 +9880,7 @@ send-hook ~C'^b@b\\.b$' my-hdr from: c@c.c
         </para>
 
 <screen>
-send-hook '~t ^user@work\\.com$' 'my-hdr From: John Smith &lt;user@host&gt;'
+send-hook '~t ^user@work\\.com$' 'my-header From: John Smith &lt;user@host&gt;'
 </screen>
 
         <para>
@@ -10647,7 +10647,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>
-            <link linkend="my-hdr">my-hdr</link> processing for To, Cc, Bcc,
+            <link linkend="my-header">my-header</link> processing for To, Cc, Bcc,
             Subject headers.
           </para>
         </listitem>
@@ -10679,7 +10679,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>
-            <link linkend="my-hdr">my-hdr</link> processing for From, Reply-To,
+            <link linkend="my-header">my-header</link> processing for From, Reply-To,
             Message-ID and user-defined headers. The To, Cc, Bcc, Subject, and
             Return-Path headers are ignored at this stage.
           </para>
@@ -20634,7 +20634,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="hdr-order">hdr-order</link>
+              <link linkend="header-order">header-order</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">header</replaceable>
@@ -20643,7 +20643,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">header</replaceable>
             </arg>
             <command>
-              <link linkend="hdr-order">unhdr-order</link>
+              <link linkend="header-order">unheader-order</link>
             </command>
             <group choice="req">
               <arg choice="plain">
@@ -21010,13 +21010,13 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="my-hdr">my-hdr</link>
+              <link linkend="my-header">my-header</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">string</replaceable>
             </arg>
             <command>
-              <link linkend="my-hdr">unmy-hdr</link>
+              <link linkend="my-header">unmy-header</link>
             </command>
             <group choice="req">
               <arg choice="plain">

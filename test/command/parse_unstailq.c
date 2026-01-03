@@ -36,7 +36,7 @@
 // clang-format off
 static const struct Command UnAlternativeOrder = { "unalternative-order", CMD_UNALTERNATIVE_ORDER, NULL, IP &AlternativeOrderList };
 static const struct Command UnAutoView         = { "unauto-view",         CMD_UNAUTO_VIEW,         NULL, IP &AutoViewList         };
-static const struct Command UnHdrOrder         = { "unhdr-order",         CMD_UNHDR_ORDER,         NULL, IP &HeaderOrderList      };
+static const struct Command UnHdrOrder         = { "unheader-order",      CMD_UNHEADER_ORDER,      NULL, IP &HeaderOrderList      };
 static const struct Command UnMailtoAllow      = { "unmailto-allow",      CMD_UNMAILTO_ALLOW,      NULL, IP &MailToAllow          };
 static const struct Command UnMimeLookup       = { "unmime-lookup",       CMD_UNMIME_LOOKUP,       NULL, IP &MimeLookupList       };
 // clang-format on
@@ -63,7 +63,7 @@ static const struct CommandTest UnAutoViewTests[] = {
 
 // clang-format off
 static const struct CommandTest UnHdrOrderTests[] = {
-  // unhdr-order { * | <header> ... }
+  // unheader-order { * | <header> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "From Date: From: To: Cc: Subject:" },
   { MUTT_CMD_SUCCESS, "*" },

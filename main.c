@@ -445,8 +445,8 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
     buf_seek(buf, 0);
 
     // Create a temporary Command struct for parse_my_hdr
-    const struct Command my_hdr_cmd = { .name = "my-hdr", .data = 0 };
-    parse_my_hdr(&my_hdr_cmd, buf, err); /* adds to UserHeader */
+    const struct Command my_hdr_cmd = { .name = "my-header", .data = 0 };
+    parse_my_header(&my_hdr_cmd, buf, err); /* adds to UserHeader */
   }
 
   p = mutt_str_getenv("EMAIL");
@@ -1634,7 +1634,7 @@ int main(int argc, char *argv[], char *envp[])
   else if (sendflags & SEND_BATCH)
   {
     /* This guards against invoking `neomutt < /dev/null` and accidentally
-     * sending an email due to a my-hdr or other setting.  */
+     * sending an email due to a my-header or other setting.  */
     mutt_error(_("No recipients specified"));
     goto main_curses;
   }
