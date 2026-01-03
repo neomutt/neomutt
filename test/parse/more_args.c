@@ -49,10 +49,11 @@ struct MoreArgsFTest
 
 void test_more_args(void)
 {
-  // bool MoreArgs(struct Buffer *buf)
+  // bool more_args(struct Buffer *buf, TokenFlags flags)
   // Returns true if there are more arguments to parse
+  // MoreArgs(buf) is a macro that calls more_args(buf, TOKEN_SPACE)
 
-  TEST_CASE("MoreArgs - Basic tests");
+  TEST_CASE("more_args - Basic tests (legacy MoreArgs behavior)");
 
   // clang-format off
   struct MoreArgsTest tests[] = {
@@ -102,10 +103,10 @@ void test_more_args(void)
 
 void test_more_args_f(void)
 {
-  // bool MoreArgsF(struct Buffer *buf, TokenFlags flags)
+  // bool more_args(struct Buffer *buf, TokenFlags flags)
   // Returns true if there are more arguments to parse based on flags
 
-  TEST_CASE("MoreArgsF - Basic tests");
+  TEST_CASE("more_args - Basic tests with flags");
 
   // clang-format off
   struct MoreArgsFTest tests[] = {

@@ -44,12 +44,11 @@ typedef uint16_t TokenFlags;          ///< Flags for parse_extract_token(), e.g.
 #define TOKEN_PLUS          (1 << 10) ///< Treat '+' as a special
 #define TOKEN_MINUS         (1 << 11) ///< Treat '-' as a special
 
-bool more_args              (struct Buffer *buf);
-bool more_args_f            (struct Buffer *buf, TokenFlags flags);
+bool more_args              (struct Buffer *buf, TokenFlags flags);
 int  parse_extract_token    (struct Buffer *dest, struct Buffer *line, TokenFlags flags);
 
-// Backward-compatible macros (deprecated - use functions instead)
-#define MoreArgs(buf)         more_args(buf)
-#define MoreArgsF(buf, flags) more_args_f(buf, flags)
+// Backward-compatible macros (deprecated - use more_args() with flags instead)
+#define MoreArgs(buf)         more_args(buf, TOKEN_SPACE)
+#define MoreArgsF(buf, flags) more_args(buf, flags)
 
 #endif /* MUTT_PARSE_EXTRACT_H */

@@ -39,25 +39,7 @@
 #include "extract.h"
 
 /**
- * more_args - Check if there are more arguments to parse
- * @param buf Buffer containing tokens
- * @retval true  There are more arguments
- * @retval false No more arguments (end of line, comment, or semicolon)
- *
- * This function checks if there are more arguments to parse in the buffer.
- * It returns false if the buffer is at end of string, or if the current
- * character is a comment (#) or semicolon (;).
- */
-bool more_args(struct Buffer *buf)
-{
-  if (!buf || !buf->dptr)
-    return false;
-
-  return (*buf->dptr && (*buf->dptr != ';') && (*buf->dptr != '#'));
-}
-
-/**
- * more_args_f - Check if there are more arguments to parse (with flags)
+ * more_args - Check if there are more arguments to parse (with flags)
  * @param buf   Buffer containing tokens
  * @param flags Token parsing flags
  * @retval true  There are more arguments
@@ -65,8 +47,11 @@ bool more_args(struct Buffer *buf)
  *
  * This function checks if there are more arguments to parse in the buffer,
  * taking into account the token flags that control parsing behavior.
+ *
+ * @note For legacy MoreArgs() behavior (only check #, ;, and empty), use
+ *       more_args(buf, TOKEN_SPACE) which allows whitespace.
  */
-bool more_args_f(struct Buffer *buf, TokenFlags flags)
+bool more_args(struct Buffer *buf, TokenFlags flags)
 {
   if (!buf || !buf->dptr || !*buf->dptr)
     return false;
