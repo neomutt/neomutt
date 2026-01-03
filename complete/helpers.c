@@ -138,7 +138,37 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
       {
         const struct Command *cmd = *cp;
 
-        candidate(cd, cd->user_typed, cmd->name, cd->completed, sizeof(cd->completed));
+        // For synonyms, match against the synonym name but complete to the real command name
+        if ((cmd->flags & CF_SYNONYM) && cmd->data)
+        {
+          // Check if user-typed matches the beginning of the synonym name
+          if (strstr(cmd->name, cd->user_typed) == cmd->name)
+          {
+            // Use the real command name for completion
+            const char *real_name = (const char *) cmd->data;
+
+            // Manually add the real command name to the match list
+            matches_ensure_morespace(cd, cd->num_matched);
+            cd->match_list[cd->num_matched++] = real_name;
+
+            // Update the completion result
+            if (cd->completed[0] == '\0')
+            {
+              mutt_str_copy(cd->completed, real_name, sizeof(cd->completed));
+            }
+            else
+            {
+              int l;
+              for (l = 0; (real_name[l] != '\0') && (real_name[l] == cd->completed[l]); l++)
+                ; // do nothing
+              cd->completed[l] = '\0';
+            }
+          }
+        }
+        else
+        {
+          candidate(cd, cd->user_typed, cmd->name, cd->completed, sizeof(cd->completed));
+        }
       }
 
       matches_ensure_morespace(cd, cd->num_matched);

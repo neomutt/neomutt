@@ -315,6 +315,8 @@ const struct Command *command_find_by_id(const struct CommandArray *ca, enum Com
  * @param ca   Array of Commands
  * @param name Name to find
  * @retval ptr Matching Command
+ *
+ * @note If the name matches a Command Synonym, the real Command is returned.
  */
 const struct Command *command_find_by_name(const struct CommandArray *ca, const char *name)
 {
@@ -327,7 +329,23 @@ const struct Command *command_find_by_name(const struct CommandArray *ca, const 
     const struct Command *cmd = *cp;
 
     if (mutt_str_equal(cmd->name, name))
+    {
+      // If this is a synonym, look up the real Command
+      if ((cmd->flags & CF_SYNONYM) && cmd->data)
+      {
+        const char *real_name = (const char *) cmd->data;
+        // Search for the real command (non-recursive, single pass)
+        const struct Command **rp = NULL;
+        ARRAY_FOREACH(rp, ca)
+        {
+          const struct Command *real_cmd = *rp;
+          if (mutt_str_equal(real_cmd->name, real_name) && !(real_cmd->flags & CF_SYNONYM))
+            return real_cmd;
+        }
+        return NULL; // Real command not found
+      }
       return cmd;
+    }
   }
 
   return NULL;
