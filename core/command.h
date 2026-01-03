@@ -111,7 +111,7 @@ enum CommandId
   CMD_SOURCE,                ///< `:source`
   CMD_SPAM,                  ///< `:spam`                @sa #CMD_NOSPAM
   CMD_STARTUP_HOOK,          ///< `:startup-hook`
-  CMD_SUBJECTRX,             ///< `:subjectrx`           @sa #CMD_UNSUBJECTRX
+  CMD_SUBJECT_REGEX,         ///< `:subject-regex`       @sa #CMD_UNSUBJECT_REGEX
   CMD_SUBSCRIBE,             ///< `:subscribe`           @sa #CMD_UNSUBSCRIBE
   CMD_SUBSCRIBE_TO,          ///< `:subscribe-to`        @sa #CMD_UNSUBSCRIBE_FROM
   CMD_TAG_FORMATS,           ///< `:tag-formats`         @sa #CMD_TAG_TRANSFORMS
@@ -139,7 +139,7 @@ enum CommandId
   CMD_UNSCORE,               ///< `:unscore`             @sa #CMD_SCORE
   CMD_UNSET,                 ///< `:unset`               @sa #CMD_RESET, #CMD_SET, #CMD_TOGGLE
   CMD_UNSETENV,              ///< `:unsetenv`            @sa #CMD_SETENV
-  CMD_UNSUBJECTRX,           ///< `:unsubjectrx`         @sa #CMD_SUBJECTRX
+  CMD_UNSUBJECT_REGEX,       ///< `:unsubject-regex`     @sa #CMD_SUBJECT_REGEX
   CMD_UNSUBSCRIBE,           ///< `:unsubscribe`         @sa #CMD_SUBSCRIBE
   CMD_UNSUBSCRIBE_FROM,      ///< `:unsubscribe-from`    @sa #CMD_SUBSCRIBE_TO
   CMD_VERSION,               ///< `:version`
