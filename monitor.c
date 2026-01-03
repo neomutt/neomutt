@@ -89,12 +89,12 @@ enum ResolveResult
  */
 struct Monitor
 {
-  struct Monitor *next;    ///< Linked list
-  char *mh_backup_path;    ///< MH backup path
-  dev_t st_dev;            ///< Device number
-  ino_t st_ino;            ///< Inode number
-  enum MailboxType type;   ///< Mailbox type
-  int desc;                ///< File descriptor
+  struct Monitor *next;  ///< Linked list
+  char *mh_backup_path;  ///< MH backup path
+  dev_t st_dev;          ///< Device number
+  ino_t st_ino;          ///< Inode number
+  enum MailboxType type; ///< Mailbox type
+  int desc;              ///< File descriptor
 };
 
 /**
@@ -102,13 +102,13 @@ struct Monitor
  */
 struct MonitorInfo
 {
-  enum MailboxType type;     ///< Mailbox type
-  bool is_dir;               ///< Is this a directory?
-  const char *path;          ///< Filesystem path
-  dev_t st_dev;              ///< Device number
-  ino_t st_ino;              ///< Inode number
-  struct Monitor *monitor;   ///< Monitor for this file
-  struct Buffer path_buf;    ///< access via path only (maybe not initialized)
+  enum MailboxType type;   ///< Mailbox type
+  bool is_dir;             ///< Is this a directory?
+  const char *path;        ///< Filesystem path
+  dev_t st_dev;            ///< Device number
+  ino_t st_ino;            ///< Inode number
+  struct Monitor *monitor; ///< Monitor for this file
+  struct Buffer path_buf;  ///< access via path only (maybe not initialized)
 };
 
 /**

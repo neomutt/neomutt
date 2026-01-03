@@ -100,9 +100,9 @@ static int ssl_socket_close(struct Connection *conn);
  */
 struct SslSockData
 {
-  SSL_CTX *sctx;          ///< SSL context
-  SSL *ssl;               ///< SSL socket
-  unsigned char isopen;   ///< Is the socket open?
+  SSL_CTX *sctx;        ///< SSL context
+  SSL *ssl;             ///< SSL socket
+  unsigned char isopen; ///< Is the socket open?
 };
 
 /**

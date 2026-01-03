@@ -45,10 +45,10 @@
  */
 struct BdbStoreData
 {
-  DB_ENV *env;              ///< Database environment
-  DB *db;                   ///< Database
-  int fd;                   ///< File descriptor
-  struct Buffer lockfile;   ///< Lock filename
+  DB_ENV *env;            ///< Database environment
+  DB *db;                 ///< Database
+  int fd;                 ///< File descriptor
+  struct Buffer lockfile; ///< Lock filename
 };
 
 /**

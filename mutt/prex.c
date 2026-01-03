@@ -67,16 +67,16 @@ static bool pcre2_has_unicode(void)
  */
 struct PrexStorage
 {
-  enum Prex which;           ///< Regex type, e.g. #PREX_URL
-  size_t nmatches;           ///< Number of regex matches
-  const char *str;           ///< Regex string
+  enum Prex which; ///< Regex type, e.g. #PREX_URL
+  size_t nmatches; ///< Number of regex matches
+  const char *str; ///< Regex string
 #ifdef HAVE_PCRE2
-  pcre2_code *re;            ///< Compiled PCRE2 regex
-  pcre2_match_data *mdata;   ///< PCRE2 match data
+  pcre2_code *re;          ///< Compiled PCRE2 regex
+  pcre2_match_data *mdata; ///< PCRE2 match data
 #else
-  regex_t *re;               ///< Compiled regex
+  regex_t *re; ///< Compiled regex
 #endif
-  regmatch_t *matches;       ///< Resulting matches
+  regmatch_t *matches; ///< Resulting matches
 };
 
 #define PREX_MONTH "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"

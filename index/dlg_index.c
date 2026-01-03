@@ -971,9 +971,9 @@ void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf,
    */
   struct StatusSyntax
   {
-    const struct AttrColor *attr_color;   ///< Colour attribute
-    int first;                            ///< First character of that colour
-    int last;                             ///< Last character of that colour
+    const struct AttrColor *attr_color; ///< Colour attribute
+    int first;                          ///< First character of that colour
+    int last;                           ///< Last character of that colour
   } *syntax = NULL;
 
   const struct AttrColor *ac_base = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL),
