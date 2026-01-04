@@ -121,10 +121,11 @@
  *       if the insertion happens after the last element.
  */
 #define ARRAY_SET(head, idx, elem)                                             \
-  (((head)->capacity > (idx)                                                   \
-    ? true                                                                     \
-    : ARRAY_RESERVE(head, (idx) + 1)),                                         \
-   ARRAY_SET_NORESERVE(head, idx, elem))
+  ({                                                                           \
+    if ((head)->capacity <= (idx))                                             \
+      ARRAY_RESERVE(head, (idx) + 1);                                          \
+    ARRAY_SET_NORESERVE(head, idx, elem);                                      \
+  })
 
 /**
  * ARRAY_FIRST - Convenience method to get the first element
@@ -154,10 +155,11 @@
  * @retval false Element was not added, array was full
  */
 #define ARRAY_ADD(head, elem)                                                  \
-  (((head)->capacity > (head)->size                                            \
-    ? true                                                                     \
-    : ARRAY_RESERVE(head, (head)->size + 1)),                                  \
-   ARRAY_ADD_NORESERVE(head, elem))
+  ({                                                                           \
+    if ((head)->capacity <= (head)->size)                                      \
+      ARRAY_RESERVE(head, (head)->size + 1);                                   \
+    ARRAY_ADD_NORESERVE(head, elem);                                           \
+  })
 
 /**
  * ARRAY_SHRINK - Mark a number of slots at the end of the array as unused
@@ -337,18 +339,24 @@
  * @param sdata Opaque argument to pass to sort function
  */
 #define ARRAY_SORT(head, fn, sdata)                                            \
-  ((head)->entries &&                                                          \
-   (mutt_qsort_r((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), fn, sdata), true))
+  ({                                                                           \
+    if ((head)->entries != NULL)                                               \
+      mutt_qsort_r((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), fn, sdata);\
+    !!(head)->entries;                                                         \
+  })
 
 /******************************************************************************
  * Internal APIs
  *****************************************************************************/
 #define ARRAY_SET_NORESERVE(head, idx, elem)                                   \
-  ((head)->capacity > (idx)                                                    \
-   ? (((head)->size = MAX((head)->size, (idx) + 1)),                           \
-      ((head)->entries[(idx)] = (elem)),                                       \
-      true)                                                                    \
-   : false)
+  ({                                                                           \
+    if ((head)->capacity > (idx))                                              \
+    {                                                                          \
+      (head)->size = MAX((head)->size, (idx) + 1);                             \
+      (head)->entries[(idx)] = (elem);                                         \
+    }                                                                          \
+    (head)->capacity > (idx);                                                  \
+  })
 
 #ifndef __COVERITY__
 #define __coverity_escape__(x) 0
