@@ -61,7 +61,8 @@
   (typeas(T) *) mutt_mem_mallocarray(n, sizeof(T))                    \
 )
 
-#define MUTT_MEM_REALLOC(pptr, n, T)                                  \
+// mutt_mem_realloc_T - resize allocation type-safe
+#define mutt_mem_realloc_T(pptr, n, T)                                \
 (                                                                     \
   _Generic(*(pptr), typeas(T) *: (void)0),                            \
   mutt_mem_reallocarray(pptr, n, sizeof(T))                           \

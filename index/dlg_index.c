@@ -1004,7 +1004,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf,
       if (!found)
       {
         chunks++;
-        MUTT_MEM_REALLOC(&syntax, chunks, struct StatusSyntax);
+        mutt_mem_realloc_T(&syntax, chunks, struct StatusSyntax);
       }
 
       i = chunks - 1;

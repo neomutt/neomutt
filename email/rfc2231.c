@@ -210,7 +210,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
 
       const size_t vl = strlen(par->value);
 
-      MUTT_MEM_REALLOC(&value, l + vl + 1, char);
+      mutt_mem_realloc_T(&value, l + vl + 1, char);
       strcpy(value + l, par->value);
       l += vl;
 
