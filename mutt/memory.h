@@ -65,8 +65,15 @@
 
 #define RVALUE(lv)  ((void)0, (lv))
 
-#define MUTT_MEM_CALLOC(n, T)  ((typeas(T) *) mutt_mem_calloc(n, sizeof(T)))
-#define MUTT_MEM_MALLOC(n, T)  ((typeas(T) *) mutt_mem_mallocarray(n, sizeof(T)))
+#define MUTT_MEM_CALLOC(n, T)                                         \
+(                                                                     \
+  RVALUE((typeas(T) *){mutt_mem_calloc(n, sizeof(T))})                \
+)
+
+#define MUTT_MEM_MALLOC(n, T)                                         \
+(                                                                     \
+  RVALUE((typeas(T) *){mutt_mem_mallocarray(n, sizeof(T))})           \
+)
 
 #define MUTT_MEM_REALLOC(pptr, n, T)                                  \
 (                                                                     \
