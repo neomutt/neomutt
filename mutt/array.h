@@ -205,10 +205,13 @@
 /**
  * ARRAY_FREE - Release all memory
  * @param head Pointer to a struct defined using ARRAY_HEAD()
- * @retval 0 Always
  */
 #define ARRAY_FREE(head)                                                       \
-  (FREE(&(head)->entries), (head)->size = (head)->capacity = 0)
+  do                                                                           \
+  {                                                                            \
+    FREE(&(head)->entries);                                                    \
+    (head)->size = (head)->capacity = 0;                                       \
+  } while (0)
 
 /**
  * ARRAY_FOREACH - Iterate over all elements of the array
@@ -327,10 +330,13 @@
  * @param elem Pointer to the element of the array to remove
  */
 #define ARRAY_REMOVE(head, elem)                                               \
-  (memmove(elem, (elem) + 1,                                                   \
-           ARRAY_ELEM_SIZE(head) *                                             \
-           MAX(0, (ARRAY_SIZE(head) - ARRAY_IDX(head, elem) - 1))),            \
-   ARRAY_SHRINK(head, 1))
+  do                                                                           \
+  {                                                                            \
+    memmove(elem, (elem) + 1,                                                  \
+            ARRAY_ELEM_SIZE(head) *                                            \
+                MAX(0, (ARRAY_SIZE(head) - ARRAY_IDX(head, elem) - 1)));       \
+    ARRAY_SHRINK(head, 1);                                                     \
+  } while (0)
 
 /**
  * ARRAY_SORT - Sort an array
