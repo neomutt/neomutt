@@ -183,18 +183,22 @@
 /**
  * ARRAY_RESERVE - Reserve memory for the array
  * @param head Pointer to a struct defined using ARRAY_HEAD()
- * @param num Number of elements to make room for
- * @retval num New capacity of the array
+ * @param n    Number of elements to make room for
+ * @retval n   New capacity of the array
  */
-#define ARRAY_RESERVE(head, num)                                               \
-  (((head)->capacity >= (num)) ?                                               \
-       (head)->capacity :                                                      \
-       ((mutt_mem_reallocarray(                                                \
-         &(head)->entries, (num) + ARRAY_HEADROOM, ARRAY_ELEM_SIZE(head))),    \
-        (memset((head)->entries + (head)->capacity, 0,                         \
-                ((num) + ARRAY_HEADROOM - (head)->capacity) *                  \
-                ARRAY_ELEM_SIZE(head))),                                       \
-        ((head)->capacity = (num) + ARRAY_HEADROOM)))
+#define ARRAY_RESERVE(head, n)                                                 \
+  ({                                                                           \
+    if ((head)->capacity < (n))                                                \
+    {                                                                          \
+      mutt_mem_reallocarray(&(head)->entries,                                  \
+                            (n) + ARRAY_HEADROOM,                              \
+                            ARRAY_ELEM_SIZE(head));                            \
+      memset((head)->entries + (head)->capacity, 0,                            \
+             ((n) + ARRAY_HEADROOM - (head)->capacity) * ARRAY_ELEM_SIZE(head)); \
+      (head)->capacity = (n) + ARRAY_HEADROOM;                                 \
+    }                                                                          \
+    (head)->capacity;                                                          \
+  })
 
 /**
  * ARRAY_FREE - Release all memory
