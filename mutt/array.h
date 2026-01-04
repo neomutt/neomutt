@@ -42,14 +42,14 @@
 /**
  * ARRAY_HEAD - Define a named struct for arrays of elements of a certain type
  * @param name Name of the resulting struct
- * @param type Type of the elements stored in the array
+ * @param T    Type of the elements stored in the array
  */
-#define ARRAY_HEAD(name, type)                                                 \
+#define ARRAY_HEAD(name, T)                                                    \
   struct name                                                                  \
   {                                                                            \
-    int size;        /**< Number of items in the array */                      \
-    int capacity;    /**< Maximum number of items in the array */              \
-    type *entries;   /**< A C array of the items */                            \
+    int size;     /**< Number of items in the array */                         \
+    int capacity; /**< Maximum number of items in the array */                 \
+    T *entries;   /**< A C array of the items */                               \
   }
 
 /**
@@ -162,20 +162,20 @@
 /**
  * ARRAY_SHRINK - Mark a number of slots at the end of the array as unused
  * @param head Pointer to a struct defined using ARRAY_HEAD()
- * @param num  Number of slots to mark as unused
- * @retval num New size of the array
+ * @param n    Number of slots to mark as unused
+ * @retval n   New size of the array
  *
  * @note This method does not do any memory management and has no effect on the
  *       capacity nor the contents of the array. It is just a resize which only
  *       works downwards.
  */
-#define ARRAY_SHRINK(head, num)                                                \
-  ((head)->size -= MIN(num, (head)->size))
+#define ARRAY_SHRINK(head, n)                                                  \
+  ((head)->size -= MIN(n, (head)->size))
 
 /**
  * ARRAY_ELEM_SIZE - Number of bytes occupied by an element of this array
  * @param head Pointer to a struct defined using ARRAY_HEAD()
- * @retval num Number of bytes per element
+ * @retval n   Number of bytes per element
  */
 #define ARRAY_ELEM_SIZE(head)                                                  \
   (sizeof(*(head)->entries))
@@ -314,7 +314,7 @@
  * ARRAY_IDX - Return the index of an element of the array
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  * @param elem Pointer to an element of the array
- * @retval num The index of element in the array
+ * @retval n   The index of element in the array
  */
 #define ARRAY_IDX(head, elem)                                                  \
   (elem - (head)->entries)
