@@ -187,7 +187,7 @@
  * @retval num New capacity of the array
  */
 #define ARRAY_RESERVE(head, num)                                               \
-  (((head)->capacity > (num)) ?                                                \
+  (((head)->capacity >= (num)) ?                                               \
        (head)->capacity :                                                      \
        ((mutt_mem_reallocarray(                                                \
          &(head)->entries, (num) + ARRAY_HEADROOM, ARRAY_ELEM_SIZE(head))),    \
