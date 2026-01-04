@@ -1267,7 +1267,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
     return;
   bool is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
-  char *buf = MUTT_MEM_MALLOC(strlen(prefix) + strlen(s) * 4 + 2, char);
+  char *buf = mutt_mem_malloc_T(strlen(prefix) + strlen(s) * 4 + 2, char);
   strcpy(buf, prefix);
   char *p = buf + strlen(buf);
   if (is_pgp && (strlen(s) == 40))
@@ -3499,7 +3499,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatf
       }
       else
       {
-        l = MUTT_MEM_MALLOC(1, struct CryptCache);
+        l = mutt_mem_malloc_T(1, struct CryptCache);
         l->next = IdDefaults;
         IdDefaults = l;
         l->what = mutt_str_dup(whatfor);

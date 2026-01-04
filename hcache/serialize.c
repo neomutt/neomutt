@@ -210,7 +210,7 @@ void serial_restore_char(char **c, const unsigned char *d, int *off, bool conver
     return;
   }
 
-  *c = MUTT_MEM_MALLOC(size, char);
+  *c = mutt_mem_malloc_T(size, char);
   memcpy(*c, d + *off, size);
   if (convert && !mutt_str_is_ascii(*c, size))
   {

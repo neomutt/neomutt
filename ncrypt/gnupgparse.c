@@ -101,7 +101,7 @@ static void fix_uid(char *uid)
   {
     int n = s - uid + 1; /* chars available in original buffer */
 
-    char *buf = MUTT_MEM_MALLOC(n + 1, char);
+    char *buf = mutt_mem_malloc_T(n + 1, char);
     const char *ib = uid;
     size_t ibl = d - uid + 1;
     char *ob = buf;
@@ -388,7 +388,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
   /* merge temp key back into real key */
   if (!(is_uid || is_fpr || (*is_subkey && c_pgp_ignore_subkeys)))
-    k = MUTT_MEM_MALLOC(1, struct PgpKeyInfo);
+    k = mutt_mem_malloc_T(1, struct PgpKeyInfo);
   if (!k)
     return NULL;
   memcpy(k, &tmp, sizeof(*k));

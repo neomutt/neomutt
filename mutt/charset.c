@@ -330,7 +330,7 @@ int mutt_ch_convert_nonmime_string(const struct Slist *const assumed_charset,
   {
     char const *c = np->data;
     size_t n = mutt_str_len(c);
-    char *fromcode = MUTT_MEM_MALLOC(n + 1, char);
+    char *fromcode = mutt_mem_malloc_T(n + 1, char);
     mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_strn_dup(u, ulen);
     int m = mutt_ch_convert_string(&s, fromcode, charset, MUTT_ICONV_NO_FLAGS);
@@ -790,7 +790,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
     return -1;
 
   size_t outlen = MB_LEN_MAX * slen;
-  char *out = MUTT_MEM_MALLOC(outlen + 1, char);
+  char *out = mutt_mem_malloc_T(outlen + 1, char);
   char *saved_out = out;
 
   const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, &outlen);
@@ -851,7 +851,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t 
     return -1;
   }
   size_t obl = MB_LEN_MAX * ibl;
-  char *buf = MUTT_MEM_MALLOC(obl + 1, char);
+  char *buf = mutt_mem_malloc_T(obl + 1, char);
   char *ob = buf;
 
   mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl, &rc);

@@ -386,7 +386,7 @@ char *mutt_strn_dup(const char *begin, size_t len)
   if (!begin)
     return NULL;
 
-  char *p = MUTT_MEM_MALLOC(len + 1, char);
+  char *p = mutt_mem_malloc_T(len + 1, char);
   memcpy(p, begin, len);
   p[len] = '\0';
   return p;
@@ -809,7 +809,7 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
 
   int rlen = 256;
 
-  *strp = MUTT_MEM_MALLOC(rlen, char);
+  *strp = mutt_mem_malloc_T(rlen, char);
   while (true)
   {
     va_list ap;
