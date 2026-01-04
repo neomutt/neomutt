@@ -123,8 +123,8 @@
 #define ARRAY_SET(head, idx, elem)                                             \
   (((head)->capacity > (idx)                                                   \
     ? true                                                                     \
-    : ARRAY_RESERVE((head), (idx) + 1)),                                       \
-   ARRAY_SET_NORESERVE((head), (idx), (elem)))
+    : ARRAY_RESERVE(head, (idx) + 1)),                                         \
+   ARRAY_SET_NORESERVE(head, idx, elem))
 
 /**
  * ARRAY_FIRST - Convenience method to get the first element
@@ -133,7 +133,7 @@
  * @retval NULL Array is empty
  */
 #define ARRAY_FIRST(head)                                                      \
-   ARRAY_GET((head), 0)
+   ARRAY_GET(head, 0)
 
 /**
  * ARRAY_LAST - Convenience method to get the last element
@@ -142,9 +142,9 @@
  * @retval NULL Array is empty
  */
 #define ARRAY_LAST(head)                                                       \
-  (ARRAY_EMPTY((head))                                                         \
+  (ARRAY_EMPTY(head)                                                           \
    ? NULL                                                                      \
-   : ARRAY_GET((head), ARRAY_SIZE((head)) - 1))
+   : ARRAY_GET(head, ARRAY_SIZE(head) - 1))
 
 /**
  * ARRAY_ADD - Add an element at the end of the array
@@ -156,8 +156,8 @@
 #define ARRAY_ADD(head, elem)                                                  \
   (((head)->capacity > (head)->size                                            \
     ? true                                                                     \
-    : ARRAY_RESERVE((head), (head)->size + 1)),                                \
-   ARRAY_ADD_NORESERVE((head), (elem)))
+    : ARRAY_RESERVE(head, (head)->size + 1)),                                  \
+   ARRAY_ADD_NORESERVE(head, elem))
 
 /**
  * ARRAY_SHRINK - Mark a number of slots at the end of the array as unused
@@ -170,7 +170,7 @@
  *       works downwards.
  */
 #define ARRAY_SHRINK(head, num)                                                \
-  ((head)->size -= MIN((num), (head)->size))
+  ((head)->size -= MIN(num, (head)->size))
 
 /**
  * ARRAY_ELEM_SIZE - Number of bytes occupied by an element of this array
@@ -216,7 +216,7 @@
  * @note Range: 0 .. (ARRAY_SIZE(head)-1)
  */
 #define ARRAY_FOREACH(elem, head)                                              \
-  ARRAY_FOREACH_FROM_TO(elem, (head), 0, (head)->size)
+  ARRAY_FOREACH_FROM_TO(elem, head, 0, (head)->size)
 
 /**
  * ARRAY_FOREACH_FROM - Iterate from an index to the end
@@ -228,7 +228,7 @@
  * @note 'from' must be between 0 and ARRAY_SIZE(head)
  */
 #define ARRAY_FOREACH_FROM(elem, head, from)                                   \
-  ARRAY_FOREACH_FROM_TO(elem, (head), (from), (head)->size)
+  ARRAY_FOREACH_FROM_TO(elem, head, from, (head)->size)
 
 /**
  * ARRAY_FOREACH_TO - Iterate from the beginning to an index
@@ -240,7 +240,7 @@
  * @note 'to' must be between 0 and ARRAY_SIZE(head)
  */
 #define ARRAY_FOREACH_TO(elem, head, to)                                       \
-  ARRAY_FOREACH_FROM_TO(elem, (head), 0, (to))
+  ARRAY_FOREACH_FROM_TO(elem, head, 0, to)
 
 /**
  * ARRAY_FOREACH_FROM_TO - Iterate between two indexes
@@ -256,7 +256,7 @@
 #define ARRAY_FOREACH_FROM_TO(elem, head, from, to)                            \
   for (int ARRAY_FOREACH_IDX_##elem = (from);                                  \
        (ARRAY_FOREACH_IDX_##elem < (to)) &&                                    \
-       (elem = ARRAY_GET((head), ARRAY_FOREACH_IDX_##elem));                   \
+       (elem = ARRAY_GET(head, ARRAY_FOREACH_IDX_##elem));                     \
        ARRAY_FOREACH_IDX_##elem++)
 
 /**
@@ -267,7 +267,7 @@
  * @note Range: (ARRAY_SIZE(head)-1) .. 0
  */
 #define ARRAY_FOREACH_REVERSE(elem, head)                                      \
-  ARRAY_FOREACH_REVERSE_FROM_TO(elem, (head), (head)->size, 0)
+  ARRAY_FOREACH_REVERSE_FROM_TO(elem, head, (head)->size, 0)
 
 /**
  * ARRAY_FOREACH_REVERSE_FROM - Iterate from an index to the beginning
@@ -279,7 +279,7 @@
  * @note 'from' must be between 0 and ARRAY_SIZE(head)
  */
 #define ARRAY_FOREACH_REVERSE_FROM(elem, head, from)                           \
-  ARRAY_FOREACH_REVERSE_FROM_TO(elem, (head), (from), 0)
+  ARRAY_FOREACH_REVERSE_FROM_TO(elem, head, from, 0)
 
 /**
  * ARRAY_FOREACH_REVERSE_TO - Iterate from the end to an index
@@ -291,7 +291,7 @@
  * @note 'to' must be between 0 and ARRAY_SIZE(head)
  */
 #define ARRAY_FOREACH_REVERSE_TO(elem, head, to)                               \
-  ARRAY_FOREACH_REVERSE_FROM_TO(elem, (head), (head)->size, (to))
+  ARRAY_FOREACH_REVERSE_FROM_TO(elem, head, (head)->size, to)
 
 /**
  * ARRAY_FOREACH_REVERSE_FROM_TO - Iterate between two indexes
@@ -307,7 +307,7 @@
 #define ARRAY_FOREACH_REVERSE_FROM_TO(elem, head, from, to)                    \
   for (int ARRAY_FOREACH_IDX_##elem = (from) - 1;                              \
        (ARRAY_FOREACH_IDX_##elem >= (to)) &&                                   \
-       (elem = ARRAY_GET((head), ARRAY_FOREACH_IDX_##elem));                   \
+       (elem = ARRAY_GET(head, ARRAY_FOREACH_IDX_##elem));                     \
        ARRAY_FOREACH_IDX_##elem--)
 
 /**
@@ -325,10 +325,10 @@
  * @param elem Pointer to the element of the array to remove
  */
 #define ARRAY_REMOVE(head, elem)                                               \
-  (memmove((elem), (elem) + 1,                                                 \
-           ARRAY_ELEM_SIZE((head)) *                                           \
-           MAX(0, (ARRAY_SIZE((head)) - ARRAY_IDX((head), (elem)) - 1))),      \
-   ARRAY_SHRINK((head), 1))
+  (memmove(elem, (elem) + 1,                                                   \
+           ARRAY_ELEM_SIZE(head) *                                             \
+           MAX(0, (ARRAY_SIZE(head) - ARRAY_IDX(head, elem) - 1))),            \
+   ARRAY_SHRINK(head, 1))
 
 /**
  * ARRAY_SORT - Sort an array
@@ -338,14 +338,14 @@
  */
 #define ARRAY_SORT(head, fn, sdata)                                            \
   ((head)->entries &&                                                          \
-   (mutt_qsort_r((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), (fn), (sdata)), true))
+   (mutt_qsort_r((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), fn, sdata), true))
 
 /******************************************************************************
  * Internal APIs
  *****************************************************************************/
 #define ARRAY_SET_NORESERVE(head, idx, elem)                                   \
   ((head)->capacity > (idx)                                                    \
-   ? (((head)->size = MAX((head)->size, ((idx) + 1))),                         \
+   ? (((head)->size = MAX((head)->size, (idx) + 1)),                           \
       ((head)->entries[(idx)] = (elem)),                                       \
       true)                                                                    \
    : false)
