@@ -332,9 +332,12 @@
 #define ARRAY_REMOVE(head, elem)                                               \
   do                                                                           \
   {                                                                            \
-    memmove(elem, (elem) + 1,                                                  \
-            ARRAY_ELEM_SIZE(head) *                                            \
-                MAX(0, (ARRAY_SIZE(head) - ARRAY_IDX(head, elem) - 1)));       \
+    if (ARRAY_SIZE(head) > ARRAY_IDX(head, elem) + 1)                          \
+    {                                                                          \
+      memmove(elem, (elem) + 1,                                                \
+              ARRAY_ELEM_SIZE(head) *                                          \
+              (ARRAY_SIZE(head) - ARRAY_IDX(head, elem) - 1));                 \
+    }                                                                          \
     ARRAY_SHRINK(head, 1);                                                     \
   } while (0)
 
