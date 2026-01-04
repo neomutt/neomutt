@@ -54,7 +54,7 @@ static int read_material(size_t material, size_t *used, FILE *fp)
   {
     mod_data->packet_buf_len = *used + material + CHUNK_SIZE;
 
-    MUTT_MEM_REALLOC(&mod_data->packet_buf, mod_data->packet_buf_len, unsigned char);
+    mutt_mem_realloc_T(&mod_data->packet_buf, mod_data->packet_buf_len, unsigned char);
   }
 
   if (fread(mod_data->packet_buf + *used, 1, material, fp) < material)

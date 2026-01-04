@@ -1229,8 +1229,8 @@ void mx_alloc_memory(struct Mailbox *m, int req_size)
 
   if (m->emails)
   {
-    MUTT_MEM_REALLOC(&m->emails, req_size, struct Email *);
-    MUTT_MEM_REALLOC(&m->v2r, req_size, int);
+    mutt_mem_realloc_T(&m->emails, req_size, struct Email *);
+    mutt_mem_realloc_T(&m->v2r, req_size, int);
   }
   else
   {
