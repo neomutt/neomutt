@@ -51,15 +51,15 @@
 
 // mutt_mem_calloc_T - clear allocate type-safe
 #define mutt_mem_calloc_T(n, T)                                       \
-(                                                                     \
-  (typeas(T) *) mutt_mem_calloc(n, sizeof(T))                         \
-)
+({                                                                    \
+  (typeas(T) *){mutt_mem_calloc(n, sizeof(T))};                       \
+})
 
 // mutt_mem_malloc_T - memory allocate type-safe
 #define mutt_mem_malloc_T(n, T)                                       \
-(                                                                     \
-  (typeas(T) *) mutt_mem_mallocarray(n, sizeof(T))                    \
-)
+({                                                                    \
+  (typeas(T) *){mutt_mem_mallocarray(n, sizeof(T))};                  \
+})
 
 // mutt_mem_realloc_T - resize allocation type-safe
 #define mutt_mem_realloc_T(pptr, n, T)                                \
