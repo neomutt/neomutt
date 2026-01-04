@@ -216,7 +216,7 @@ static void monitor_check_cleanup(void)
  */
 static struct Monitor *monitor_new(struct MonitorInfo *info, int descriptor)
 {
-  struct Monitor *monitor = MUTT_MEM_CALLOC(1, struct Monitor);
+  struct Monitor *monitor = mutt_mem_calloc_T(1, struct Monitor);
   monitor->type = info->type;
   monitor->st_dev = info->st_dev;
   monitor->st_ino = info->st_ino;

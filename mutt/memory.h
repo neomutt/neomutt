@@ -49,7 +49,12 @@
 # define typeas(T)  __typeof__((T){0})
 #endif
 
-#define MUTT_MEM_CALLOC(n, T)  ((typeas(T) *) mutt_mem_calloc(n, sizeof(T)))
+// mutt_mem_calloc_T - clear allocate type-safe
+#define mutt_mem_calloc_T(n, T)                                       \
+(                                                                     \
+  (typeas(T) *) mutt_mem_calloc(n, sizeof(T))                         \
+)
+
 #define MUTT_MEM_MALLOC(n, T)  ((typeas(T) *) mutt_mem_mallocarray(n, sizeof(T)))
 
 #define MUTT_MEM_REALLOC(pptr, n, T)                                  \

@@ -53,7 +53,7 @@ static struct CryptModuleList CryptModules = STAILQ_HEAD_INITIALIZER(CryptModule
  */
 void crypto_module_register(const struct CryptModuleSpecs *specs)
 {
-  struct CryptModule *module = MUTT_MEM_CALLOC(1, struct CryptModule);
+  struct CryptModule *module = mutt_mem_calloc_T(1, struct CryptModule);
   module->specs = specs;
   STAILQ_INSERT_HEAD(&CryptModules, module, entries);
 }

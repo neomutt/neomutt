@@ -140,7 +140,7 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
     {
       goto done;
     }
-    ptr = MUTT_MEM_CALLOC(1, struct Score);
+    ptr = mutt_mem_calloc_T(1, struct Score);
     if (last)
       last->next = ptr;
     else

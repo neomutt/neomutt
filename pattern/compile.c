@@ -91,7 +91,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
   }
   else
   {
-    pat->p.regex = MUTT_MEM_CALLOC(1, regex_t);
+    pat->p.regex = mutt_mem_calloc_T(1, regex_t);
 #ifdef USE_DEBUG_GRAPHVIZ
     pat->raw_pattern = buf_strdup(token);
 #endif
@@ -820,7 +820,7 @@ void mutt_pattern_free(struct PatternList **pat)
  */
 static struct Pattern *mutt_pattern_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct Pattern);
+  return mutt_mem_calloc_T(1, struct Pattern);
 }
 
 /**
@@ -829,7 +829,7 @@ static struct Pattern *mutt_pattern_new(void)
  */
 static struct PatternList *mutt_pattern_list_new(void)
 {
-  struct PatternList *h = MUTT_MEM_CALLOC(1, struct PatternList);
+  struct PatternList *h = mutt_mem_calloc_T(1, struct PatternList);
   SLIST_INIT(h);
   struct Pattern *p = mutt_pattern_new();
   SLIST_INSERT_HEAD(h, p, entries);

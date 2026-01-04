@@ -137,7 +137,7 @@ static void init_history(struct History *h)
 
   const short c_history = cs_subset_number(NeoMutt->sub, "history");
   if (c_history != 0)
-    h->hist = MUTT_MEM_CALLOC(c_history + 1, char *);
+    h->hist = mutt_mem_calloc_T(c_history + 1, char *);
 
   h->cur = 0;
   h->last = 0;

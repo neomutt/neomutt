@@ -157,7 +157,7 @@ void regex_color_free(struct RegexColor **ptr)
  */
 struct RegexColor *regex_color_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct RegexColor);
+  return mutt_mem_calloc_T(1, struct RegexColor);
 }
 
 /**
@@ -166,7 +166,7 @@ struct RegexColor *regex_color_new(void)
  */
 struct RegexColorList *regex_color_list_new(void)
 {
-  struct RegexColorList *rcl = MUTT_MEM_CALLOC(1, struct RegexColorList);
+  struct RegexColorList *rcl = mutt_mem_calloc_T(1, struct RegexColorList);
 
   STAILQ_INIT(rcl);
 

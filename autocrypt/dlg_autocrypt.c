@@ -159,7 +159,7 @@ bool populate_menu(struct Menu *menu)
   struct AutocryptAccount **pac = NULL;
   ARRAY_FOREACH(pac, &accounts)
   {
-    struct AccountEntry *entry = MUTT_MEM_CALLOC(1, struct AccountEntry);
+    struct AccountEntry *entry = mutt_mem_calloc_T(1, struct AccountEntry);
 
     entry->num = ARRAY_FOREACH_IDX_pac + 1;
     /* note: we are transferring the account pointer to the entries

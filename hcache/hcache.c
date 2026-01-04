@@ -119,7 +119,7 @@ static void hcache_free(struct HeaderCache **ptr)
  */
 static struct HeaderCache *hcache_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct HeaderCache);
+  return mutt_mem_calloc_T(1, struct HeaderCache);
 }
 
 /**

@@ -92,7 +92,7 @@ struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
   if (!m)
     return NULL;
 
-  struct MailboxView *mv = MUTT_MEM_CALLOC(1, struct MailboxView);
+  struct MailboxView *mv = mutt_mem_calloc_T(1, struct MailboxView);
 
   mv->notify = notify_new();
   notify_set_parent(mv->notify, parent);

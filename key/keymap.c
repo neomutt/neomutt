@@ -111,10 +111,10 @@ struct Mapping KeyNames[] = {
  */
 struct Keymap *keymap_alloc(size_t len, keycode_t *keys)
 {
-  struct Keymap *km = MUTT_MEM_CALLOC(1, struct Keymap);
+  struct Keymap *km = mutt_mem_calloc_T(1, struct Keymap);
 
   km->len = len;
-  km->keys = MUTT_MEM_CALLOC(len, keycode_t);
+  km->keys = mutt_mem_calloc_T(len, keycode_t);
   memcpy(km->keys, keys, len * sizeof(keycode_t));
 
   return km;

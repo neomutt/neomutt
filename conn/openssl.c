@@ -1209,7 +1209,7 @@ static int ssl_setup(struct Connection *conn)
 {
   int maxbits = 0;
 
-  conn->sockdata = MUTT_MEM_CALLOC(1, struct SslSockData);
+  conn->sockdata = mutt_mem_calloc_T(1, struct SslSockData);
 
   sockdata(conn)->sctx = SSL_CTX_new(SSLv23_client_method());
   if (!sockdata(conn)->sctx)

@@ -182,7 +182,7 @@ void window_set_visible(struct MuttWindow *win, bool visible)
 struct MuttWindow *mutt_window_new(enum WindowType type, enum MuttWindowOrientation orient,
                                    enum MuttWindowSize size, int cols, int rows)
 {
-  struct MuttWindow *win = MUTT_MEM_CALLOC(1, struct MuttWindow);
+  struct MuttWindow *win = mutt_mem_calloc_T(1, struct MuttWindow);
 
   win->type = type;
   win->orient = orient;
