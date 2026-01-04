@@ -41,7 +41,7 @@ extern struct ConfigDef PagerVars[];
  */
 static bool pager_init(struct NeoMutt *n)
 {
-  struct PagerModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PagerModuleData);
+  struct PagerModuleData *mod_data = mutt_mem_calloc_T(1, struct PagerModuleData);
   neomutt_set_module_data(n, MODULE_ID_PAGER, mod_data);
 
   mod_data->notify = notify_new();

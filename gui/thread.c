@@ -369,7 +369,7 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
  */
 struct ThreadsContext *mutt_thread_ctx_init(struct MailboxView *mv)
 {
-  struct ThreadsContext *tctx = MUTT_MEM_CALLOC(1, struct ThreadsContext);
+  struct ThreadsContext *tctx = mutt_mem_calloc_T(1, struct ThreadsContext);
   tctx->mailbox_view = mv;
   return tctx;
 }
@@ -908,7 +908,7 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   top = thread;
 
   array_size = 256;
-  array = MUTT_MEM_CALLOC(array_size, struct MuttThread *);
+  array = mutt_mem_calloc_T(array_size, struct MuttThread *);
   while (true)
   {
     if (init || !thread->sort_thread_key || !thread->sort_aux_key)
@@ -1242,7 +1242,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
       {
         tnew = (c_duplicate_threads ? thread : NULL);
 
-        thread = MUTT_MEM_CALLOC(1, struct MuttThread);
+        thread = mutt_mem_calloc_T(1, struct MuttThread);
         thread->message = e;
         thread->check_subject = true;
         e->thread = thread;
@@ -1334,7 +1334,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
       }
       else
       {
-        tnew = MUTT_MEM_CALLOC(1, struct MuttThread);
+        tnew = mutt_mem_calloc_T(1, struct MuttThread);
         mutt_hash_insert(tctx->hash, ref->data, tnew);
       }
 

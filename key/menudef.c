@@ -52,7 +52,7 @@ void submenu_free(struct SubMenu **pptr)
  */
 struct SubMenu *submenu_new(void)
 {
-  struct SubMenu *sm = MUTT_MEM_CALLOC(1, struct SubMenu);
+  struct SubMenu *sm = mutt_mem_calloc_T(1, struct SubMenu);
 
   ARRAY_INIT(&sm->keymaps);
 
@@ -83,7 +83,7 @@ void menudef_free(struct MenuDefinition **pptr)
  */
 struct MenuDefinition *menudef_new(void)
 {
-  struct MenuDefinition *md = MUTT_MEM_CALLOC(1, struct MenuDefinition);
+  struct MenuDefinition *md = mutt_mem_calloc_T(1, struct MenuDefinition);
 
   ARRAY_INIT(&md->submenus);
 

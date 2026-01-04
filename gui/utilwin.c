@@ -217,7 +217,7 @@ struct MuttWindow *utilwin_new(void)
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
                                            MUTT_WIN_SIZE_FIXED, UTILWIN_COLS, 1);
 
-  struct UtilWinData *priv = MUTT_MEM_CALLOC(1, struct UtilWinData);
+  struct UtilWinData *priv = mutt_mem_calloc_T(1, struct UtilWinData);
 
   win->wdata = priv;
   win->wdata_free = utilwin_wdata_free;

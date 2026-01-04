@@ -50,12 +50,12 @@ void test_sb_remove_mailbox(void)
 
   struct SidebarWindowData wdata = { 0 };
 
-  struct SbEntry *entry_a = MUTT_MEM_CALLOC(1, struct SbEntry);
+  struct SbEntry *entry_a = mutt_mem_calloc_T(1, struct SbEntry);
   entry_a->mailbox = &mailbox_a;
   entry_a->is_hidden = true; // No unhidden entry left for sb_prev() to backtrack to
   ARRAY_ADD(&wdata.entries, entry_a);
 
-  struct SbEntry *entry_b = MUTT_MEM_CALLOC(1, struct SbEntry);
+  struct SbEntry *entry_b = mutt_mem_calloc_T(1, struct SbEntry);
   entry_b->mailbox = &mailbox_b;
   entry_b->is_hidden = false;
   ARRAY_ADD(&wdata.entries, entry_b);

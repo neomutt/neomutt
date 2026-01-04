@@ -38,7 +38,7 @@
  */
 static bool editor_init(struct NeoMutt *n)
 {
-  struct EditorModuleData *mod_data = MUTT_MEM_CALLOC(1, struct EditorModuleData);
+  struct EditorModuleData *mod_data = mutt_mem_calloc_T(1, struct EditorModuleData);
   neomutt_set_module_data(n, MODULE_ID_EDITOR, mod_data);
 
   mod_data->notify = notify_new();

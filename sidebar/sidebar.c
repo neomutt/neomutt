@@ -111,7 +111,7 @@ void sb_add_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
   struct IndexSharedData *shared = wdata->shared;
-  struct SbEntry *entry = MUTT_MEM_CALLOC(1, struct SbEntry);
+  struct SbEntry *entry = mutt_mem_calloc_T(1, struct SbEntry);
   entry->mailbox = m;
   entry->score = -1;
 

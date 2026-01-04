@@ -163,7 +163,7 @@ bool test_neomutt_create(void)
   NeoMutt = neomutt_new();
   TEST_CHECK(NeoMutt != NULL);
 
-  char **tmp_env = MUTT_MEM_CALLOC(2, char *);
+  char **tmp_env = mutt_mem_calloc_T(2, char *);
   neomutt_init(NeoMutt, tmp_env, Modules);
   FREE(&tmp_env);
 

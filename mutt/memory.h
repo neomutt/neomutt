@@ -65,7 +65,8 @@
 
 #define RVALUE(lv)  ((void)0, (lv))
 
-#define MUTT_MEM_CALLOC(n, T)                                         \
+// mutt_mem_calloc_T - clear allocate type-safe
+#define mutt_mem_calloc_T(n, T)                                       \
 (                                                                     \
   RVALUE((typeas(T) *){mutt_mem_calloc(n, sizeof(T))})                \
 )
