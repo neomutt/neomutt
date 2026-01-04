@@ -71,7 +71,8 @@
   RVALUE((typeas(T) *){mutt_mem_calloc(n, sizeof(T))})                \
 )
 
-#define MUTT_MEM_MALLOC(n, T)                                         \
+// mutt_mem_malloc_T - memory allocate type-safe
+#define mutt_mem_malloc_T(n, T)                                       \
 (                                                                     \
   RVALUE((typeas(T) *){mutt_mem_mallocarray(n, sizeof(T))})           \
 )

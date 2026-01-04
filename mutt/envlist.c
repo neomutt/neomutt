@@ -110,7 +110,7 @@ bool envlist_set(char ***envp, const char *name, const char *value, bool overwri
   const char *val = NONULL(value);
   size_t nlen = mutt_str_len(name);
   size_t vlen = mutt_str_len(val);
-  char *work = MUTT_MEM_MALLOC(nlen + 1 + vlen + 1, char);
+  char *work = mutt_mem_malloc_T(nlen + 1 + vlen + 1, char);
   snprintf(work, nlen + 1 + vlen + 1, "%s=%s", name, val);
 
   if (match >= 0)

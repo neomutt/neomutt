@@ -91,7 +91,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (mod_data->packet_buf_len == 0)
   {
     mod_data->packet_buf_len = CHUNK_SIZE;
-    mod_data->packet_buf = MUTT_MEM_MALLOC(mod_data->packet_buf_len, unsigned char);
+    mod_data->packet_buf = mutt_mem_malloc_T(mod_data->packet_buf_len, unsigned char);
   }
 
   if (fread(&ctb, 1, 1, fp) < 1)
