@@ -1,4 +1,4 @@
-2025-12-11  Richard Russon  \<rich@flatcap.org\>
+2026-01-05  Richard Russon  \<rich@flatcap.org\>
 * Security
   - #4725	deprecate old ssl and tls options
 * Features
@@ -15,7 +15,6 @@
   - #4696	`cmd_parse_fetch()`: debug: avoid NULL dereference
   - #4697	expunge: guard against segfault
   - #4719	alias: complete when only one match
-  - #4721	browser: fix select/descend folder/mailbox
   - #4726	imap: protect against crash on shutdown
   - fix resolve for tagged save
   - help: fix sorting of unbound functions
@@ -53,6 +52,9 @@
   - pass focused window to global functions
   - Use `buf_at()` to get a char from a `Buffer`
   - use `StringArray` everywhere
+
+2025-12-11  Richard Russon  \<rich@flatcap.org\>
+  - Superseded by 2026-01-05
 
 2025-09-05  Richard Russon  \<rich@flatcap.org\>
 * Security
