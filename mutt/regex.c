@@ -324,7 +324,7 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
       const char *end = mutt_str_atoi(++p, &n);
       if (!end)
       {
-        // this is not an error, we might have matched %R or %L in subjectrx
+        // this is not an error, we might have matched %R or %L in subject-regex
         mutt_debug(LL_DEBUG2, "Invalid match number in replacelist: '%s'\n", p);
       }
       if (n > np->nmatch)

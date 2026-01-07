@@ -213,7 +213,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_parse_macro)                                          \
   NEOMUTT_TEST_ITEM(test_parse_mailboxes)                                      \
   NEOMUTT_TEST_ITEM(test_parse_mono)                                           \
-  NEOMUTT_TEST_ITEM(test_parse_my_hdr)                                         \
+  NEOMUTT_TEST_ITEM(test_parse_my_header)                                      \
   NEOMUTT_TEST_ITEM(test_parse_nospam)                                         \
   NEOMUTT_TEST_ITEM(test_parse_push)                                           \
   NEOMUTT_TEST_ITEM(test_parse_score)                                          \
@@ -239,7 +239,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_parse_unlists)                                        \
   NEOMUTT_TEST_ITEM(test_parse_unmailboxes)                                    \
   NEOMUTT_TEST_ITEM(test_parse_unmono)                                         \
-  NEOMUTT_TEST_ITEM(test_parse_unmy_hdr)                                       \
+  NEOMUTT_TEST_ITEM(test_parse_unmy_header)                                    \
   NEOMUTT_TEST_ITEM(test_parse_unscore)                                        \
   NEOMUTT_TEST_ITEM(test_parse_unstailq)                                       \
   NEOMUTT_TEST_ITEM(test_parse_unsubjectrx_list)                               \

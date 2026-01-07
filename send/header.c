@@ -590,7 +590,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b,
   }
 
   /* UseFrom is not consulted here so that we can still write a From:
-   * field if the user sets it with the 'my_hdr' command */
+   * field if the user sets it with the 'my-header' command */
   if (!TAILQ_EMPTY(&env->from) && !privacy)
   {
     mutt_addrlist_write_file(&env->from, fp, "From");

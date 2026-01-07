@@ -1050,13 +1050,13 @@ set sidebar_indent_string="  "          <emphasis role="comment"># Indent with t
             </para>
             <para>
               If you want some mailboxes to be always visible, then use the
-              <literal>sidebar_pin</literal> command. It takes a list of
+              <literal>sidebar-pin</literal> command. It takes a list of
               mailboxes as parameters.
             </para>
 
 <screen>
 set sidebar_new_mail_only         <emphasis role="comment"># Only mailboxes with new/flagged email</emphasis>
-sidebar_pin +fruit +fruit/apple   <emphasis role="comment"># Always display these two mailboxes</emphasis>
+sidebar-pin +fruit +fruit/apple   <emphasis role="comment"># Always display these two mailboxes</emphasis>
 </screen>
 
           </sect4>
@@ -3824,7 +3824,7 @@ set smime_decrypt_command = "..."
         <title>Commenting configuration files</title>
 
 <screen>
-my_hdr X-Disclaimer: Why are you listening to me?   <emphasis role="comment"># This is a comment</emphasis>
+my-header X-Disclaimer: Why are you listening to me?   <emphasis role="comment"># This is a comment</emphasis>
 </screen>
 
       </example>
@@ -3890,7 +3890,7 @@ over several lines"
       </para>
       <example id="ex-rc-backtick">
         <title>Using external command's output in configuration files</title>
-        <screen>my_hdr X-Operating-System: `uname -a`</screen>
+        <screen>my-header X-Operating-System: `uname -a`</screen>
       </example>
       <para>
         To avoid the output of backticks being parsed, place them inside double
@@ -6009,7 +6009,7 @@ uncolor status *
           Despite not being a real header, NeoMutt will also display an mbox
           &quot;From_&quot; line in the pager along with other headers.  This
           line can be manipulated with <command>ignore/unignore</command> and
-          <command>hdr_order/unhdr_order</command> commands.
+          <command>header-order/unheader-order</command> commands.
         </para>
       </sect2>
 
@@ -6079,20 +6079,20 @@ unignore posted-to:
         </para>
       </sect2>
 
-      <sect2 id="hdr-order">
+      <sect2 id="header-order">
         <title>Ordering Displayed Headers</title>
         <para>
           Usage:
         </para>
         <cmdsynopsis>
-          <command>hdr_order</command>
+          <command>header-order</command>
           <arg choice="plain">
             <replaceable class="parameter">header</replaceable>
           </arg>
           <arg choice="opt" rep="repeat">
             <replaceable class="parameter">header</replaceable>
           </arg>
-          <command>unhdr_order</command>
+          <command>unheader-order</command>
           <group choice="req">
             <arg choice="plain">
               <replaceable>*</replaceable>
@@ -6103,18 +6103,18 @@ unignore posted-to:
           </group>
         </cmdsynopsis>
         <para>
-          With the <command>hdr_order</command> command you can specify an
+          With the <command>header-order</command> command you can specify an
           order in which NeoMutt will attempt to present these headers to you
           when viewing messages.
         </para>
         <para>
-          <quote><command>unhdr_order</command>*</quote> will clear all
+          <quote><command>unheader-order</command>*</quote> will clear all
           previous headers from the order list, thus removing the header order
           effects set by the system-wide startup file.
         </para>
-        <example id="ex-hdr-order">
+        <example id="ex-header-order">
           <title>Configuring header display order</title>
-          <screen>hdr_order From Date: From: To: Cc: Subject:</screen>
+          <screen>header-order From Date: From: To: Cc: Subject:</screen>
         </example>
       </sect2>
     </sect1>
@@ -6500,17 +6500,17 @@ unignore posted-to:
       </note>
     </sect1>
 
-    <sect1 id="my-hdr">
+    <sect1 id="my-header">
       <title>User-Defined Headers</title>
       <para>
         Usage:
       </para>
       <cmdsynopsis>
-        <command>my_hdr</command>
+        <command>my-header</command>
         <arg choice="plain">
           <replaceable class="parameter">string</replaceable>
         </arg>
-        <command>unmy_hdr</command>
+        <command>unmy-header</command>
         <group choice="req">
           <arg choice="plain">
             <replaceable class="parameter">*</replaceable>
@@ -6521,7 +6521,7 @@ unignore posted-to:
         </group>
       </cmdsynopsis>
       <para>
-        The <command>my_hdr</command> command allows you to create your own
+        The <command>my-header</command> command allows you to create your own
         header fields which will be added to every message you send and appear
         in the editor if <link linkend="edit-headers">$edit_headers</link> is
         set.
@@ -6529,14 +6529,14 @@ unignore posted-to:
       <para>
         For example, if you would like to add an <quote>Organization:</quote>
         header field to all of your outgoing messages, you can put the command
-        something like shown in <xref linkend="ex-my-hdr" /> in your
+        something like shown in <xref linkend="ex-my-header" /> in your
         <literal>.neomuttrc</literal>.
       </para>
-      <example id="ex-my-hdr">
+      <example id="ex-my-header">
         <title>Defining custom headers</title>
 
 <screen>
-my_hdr Organization: A Really Big Company, Anytown, USA
+my-header Organization: A Really Big Company, Anytown, USA
 </screen>
 
       </example>
@@ -6557,12 +6557,12 @@ my_hdr Organization: A Really Big Company, Anytown, USA
       </para>
       <para>
         To remove user defined header fields, use the
-        <command>unmy_hdr</command> command. You may specify an asterisk
+        <command>unmy-header</command> command. You may specify an asterisk
         (<quote>*</quote>) to remove all header fields, or the fields to
         remove. For example, to remove all <quote>To</quote> and
         <quote>Cc</quote> header fields, you could use:
       </para>
-      <screen>unmy_hdr to cc</screen>
+      <screen>unmy-header to cc</screen>
     </sect1>
 
     <sect1 id="default-save-mailbox">
@@ -6750,7 +6750,7 @@ save-hook aol\\.com$ +spam
           <command>send-hook</command> to be executed, similarly if
           <link linkend="auto-edit">$auto_edit</link> is set (as then the initial
           list of recipients is empty). Also note that
-          <link linkend="my-hdr"><command>my_hdr</command></link> commands
+          <link linkend="my-header"><command>my-header</command></link> commands
           which modify recipient headers, or the message's subject, don't have
           any effect on the current message when executed from
           a <command>send-hook</command>.
@@ -8002,7 +8002,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%&lt;l?%4l&amp;%4c&gt;)%*  %s"
         Usage:
       </para>
       <cmdsynopsis>
-        <command>mailto_allow</command>
+        <command>mailto-allow</command>
         <group choice="req">
           <arg choice="plain">
             <replaceable class="parameter">*</replaceable>
@@ -8011,7 +8011,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%&lt;l?%4l&amp;%4c&gt;)%*  %s"
             <replaceable class="parameter">header-field</replaceable>
           </arg>
         </group>
-        <command>unmailto_allow</command>
+        <command>unmailto-allow</command>
         <group choice="req">
           <arg choice="plain">
             <replaceable class="parameter">*</replaceable>
@@ -8026,7 +8026,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%&lt;l?%4l&amp;%4c&gt;)%*  %s"
         fields from a <literal>mailto:</literal> URL. This is necessary since
         NeoMutt will handle certain header fields, such as
         <literal>Attach:</literal>, in a special way. The
-        <literal>mailto_allow</literal> and <literal>unmailto_allow</literal>
+        <literal>mailto-allow</literal> and <literal>unmailto-allow</literal>
         commands allow the user to modify the list of approved headers.
       </para>
       <para>
@@ -9838,8 +9838,8 @@ Limit to messages matching: ~d 19950120-19951031
         <title>Specifying a <quote>default</quote> hook</title>
 
 <screen>
-send-hook . 'unmy_hdr From:'
-send-hook ~C'^b@b\\.b$' my_hdr from: c@c.c
+send-hook . 'unmy-header From:'
+send-hook ~C'^b@b\\.b$' my-header from: c@c.c
 </screen>
 
       </example>
@@ -9880,7 +9880,7 @@ send-hook ~C'^b@b\\.b$' my_hdr from: c@c.c
         </para>
 
 <screen>
-send-hook '~t ^user@work\\.com$' 'my_hdr From: John Smith &lt;user@host&gt;'
+send-hook '~t ^user@work\\.com$' 'my-header From: John Smith &lt;user@host&gt;'
 </screen>
 
         <para>
@@ -10647,7 +10647,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>
-            <link linkend="my-hdr">my_hdr</link> processing for To, Cc, Bcc,
+            <link linkend="my-header">my-header</link> processing for To, Cc, Bcc,
             Subject headers.
           </para>
         </listitem>
@@ -10679,7 +10679,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
         </listitem>
         <listitem>
           <para>
-            <link linkend="my-hdr">my_hdr</link> processing for From, Reply-To,
+            <link linkend="my-header">my-header</link> processing for From, Reply-To,
             Message-ID and user-defined headers. The To, Cc, Bcc, Subject, and
             Return-Path headers are ignored at this stage.
           </para>
@@ -10953,7 +10953,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
                 <para>
                   NeoMutt will display internally supported MIME types (see <xref
                   linkend="mime-pager"/>) in the pager.  This will respect
-                  <link linkend="auto-view">auto_view</link> settings, to determine
+                  <link linkend="auto-view">auto-view</link> settings, to determine
                   whether to use a <literal>copiousoutput</literal> mailcap entry or
                   just directly display the attachment.
                 </para>
@@ -10976,7 +10976,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
                   NeoMutt will use the first matching
                   <literal>copiousoutput</literal> mailcap entry to display the
                   attachment in the pager (regardless of <link
-                  linkend="auto-view">auto_view</link> settings).
+                  linkend="auto-view">auto-view</link> settings).
                 </para>
                 <para>
                   If no matching mailcap entries are found, the attachment will
@@ -11454,7 +11454,7 @@ text/html; lynx -dump -width ${COLUMNS:-80} %s; copiousoutput
               <listitem>
                 <para>
                   NeoMutt uses this flag when viewing attachments with
-                  <link linkend="auto-view"><command>auto_view</command></link>,
+                  <link linkend="auto-view"><command>auto-view</command></link>,
                   in order to decide whether it should honor the setting of the
                   <link linkend="wait-key">$wait_key</link> variable or not.
                   When an attachment is viewed using an interactive program,
@@ -11612,7 +11612,7 @@ image/gif;      ; print=anytopnm %s | pnmtops | lpr; \
           </para>
           <para>
             In addition, you can use this with
-            <link linkend="auto-view"><command>auto_view</command></link> to
+            <link linkend="auto-view"><command>auto-view</command></link> to
             denote two commands for viewing an attachment, one to be viewed
             automatically, the other to be viewed interactively from the
             attachment menu using the <literal>&lt;view-mailcap&gt;</literal>
@@ -11628,7 +11628,7 @@ text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </screen>
 
           <para>
-            For <link linkend="auto-view"><command>auto_view</command></link>,
+            For <link linkend="auto-view"><command>auto-view</command></link>,
             NeoMutt will choose the third entry because of the
             <literal>copiousoutput</literal> tag. For interactive viewing,
             NeoMutt will run the program <literal>RunningX</literal> to
@@ -11817,7 +11817,7 @@ application/ms-excel;   open.pl %s
         Usage:
       </para>
       <cmdsynopsis>
-        <command>auto_view</command>
+        <command>auto-view</command>
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
@@ -11832,7 +11832,7 @@ application/ms-excel;   open.pl %s
             <replaceable>/mime-subtype</replaceable>
           </arg>
         </arg>
-        <command>unauto_view</command>
+        <command>unauto-view</command>
         <group choice="req">
           <arg choice="plain">*</arg>
           <arg choice="opt" rep="repeat">
@@ -11858,13 +11858,13 @@ application/ms-excel;   open.pl %s
         attachment to a text representation which you can view in the pager.
       </para>
       <para>
-        You then use the <command>auto_view</command> configuration command to
+        You then use the <command>auto-view</command> configuration command to
         list the content-types that you wish to view automatically. For
         instance, if you set it to:
       </para>
 
 <screen>
-auto_view text/html application/x-gunzip \
+auto-view text/html application/x-gunzip \
   application/postscript image/gif application/x-tar-gz
 </screen>
 
@@ -11884,11 +11884,11 @@ application/postscript; ps2ascii %s; copiousoutput
 </screen>
 
       <para>
-        <command>unauto_view</command> can be used to remove previous entries
-        from the <command>auto_view</command> list. This can be used with
+        <command>unauto-view</command> can be used to remove previous entries
+        from the <command>auto-view</command> list. This can be used with
         <link linkend="message-hook"><command>message-hook</command></link> to
         autoview messages based on size, etc.
-        <quote><command>unauto_view</command>&#160;*</quote> will remove all
+        <quote><command>unauto-view</command>&#160;*</quote> will remove all
         previous entries.
       </para>
     </sect1>
@@ -11915,21 +11915,21 @@ application/postscript; ps2ascii %s; copiousoutput
         <orderedlist>
           <listitem>
             <para>
-              First, NeoMutt will check the <command>alternative_order</command>
+              First, NeoMutt will check the <command>alternative-order</command>
               list to determine if one of the available types is preferred. It
               consists of a number of MIME types in order, including support for
               implicit and explicit wildcards. For example:
             </para>
 
 <screen>
-alternative_order text/enriched text/plain text application/postscript image/*
+alternative-order text/enriched text/plain text application/postscript image/*
 </screen>
 
           </listitem>
           <listitem>
             <para>
               Next, NeoMutt will check if any of the types have a defined
-              <link linkend="auto-view"><command>auto_view</command></link>, and
+              <link linkend="auto-view"><command>auto-view</command></link>, and
               use that.
             </para>
           </listitem>
@@ -11949,8 +11949,8 @@ alternative_order text/enriched text/plain text application/postscript image/*
           </listitem>
         </orderedlist>
         <para>
-          To remove a MIME type from the <command>alternative_order</command>
-          list, use the <command>unalternative_order</command> command.
+          To remove a MIME type from the <command>alternative-order</command>
+          list, use the <command>unalternative-order</command> command.
         </para>
       </sect2>
 
@@ -12405,7 +12405,7 @@ attachments  -I message/external-body
         Usage:
       </para>
       <cmdsynopsis>
-        <command>mime_lookup</command>
+        <command>mime-lookup</command>
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
@@ -12420,7 +12420,7 @@ attachments  -I message/external-body
             <replaceable>/mime-subtype</replaceable>
           </arg>
         </arg>
-        <command>unmime_lookup</command>
+        <command>unmime-lookup</command>
         <group choice="req">
           <arg choice="plain">*</arg>
           <arg choice="opt" rep="repeat">
@@ -12434,25 +12434,25 @@ attachments  -I message/external-body
         </group>
       </cmdsynopsis>
       <para>
-        NeoMutt's <command>mime_lookup</command> list specifies a list of MIME
+        NeoMutt's <command>mime-lookup</command> list specifies a list of MIME
         types that should <emphasis>not</emphasis> be treated according to
         their mailcap entry. This option is designed to deal with binary types
         such as <literal>application/octet-stream</literal>. When an
-        attachment's MIME type is listed in <command>mime_lookup</command>,
+        attachment's MIME type is listed in <command>mime-lookup</command>,
         then the extension of the filename will be compared to the list of
         extensions in the <literal>mime.types</literal> file. The MIME type
         associated with this extension will then be used to process the
         attachment according to the rules in the mailcap file and according to
-        any other configuration options (such as <command>auto_view</command>)
+        any other configuration options (such as <command>auto-view</command>)
         specified. Common usage would be:
       </para>
 
 <screen>
-mime_lookup application/octet-stream application/X-Lotus-Manuscript
+mime-lookup application/octet-stream application/X-Lotus-Manuscript
 </screen>
 
       <para>
-        In addition, the <literal>unmime_lookup</literal> command may be used
+        In addition, the <literal>unmime-lookup</literal> command may be used
         to disable this feature for any particular MIME type if it had been
         set, for example, in a global <literal>.neomuttrc</literal>.
       </para>
@@ -18114,14 +18114,14 @@ set browser_sort = "reverse-size"
         <anchor id="sidebar-pin" />
         <anchor id="sidebar-unpin" />
         <cmdsynopsis>
-          <command>sidebar_pin</command>
+          <command>sidebar-pin</command>
           <arg choice="plain">
             <replaceable class="parameter">mailbox</replaceable>
           </arg>
           <arg choice="opt" rep="repeat">
             <replaceable class="parameter">mailbox</replaceable>
           </arg>
-          <command>sidebar_unpin</command>
+          <command>sidebar-unpin</command>
           <group choice="req">
             <arg choice="plain">
               <replaceable class="parameter">*</replaceable>
@@ -18138,9 +18138,9 @@ set browser_sort = "reverse-size"
           is set and the mailbox does not contain new mail.
         </para>
         <para>
-          The <quote>sidebar_unpin</quote> command is used to remove
+          The <quote>sidebar-unpin</quote> command is used to remove
           a mailbox from the list of always displayed mailboxes. Use
-          <quote>sidebar_unpin&#160;*</quote> to remove all mailboxes.
+          <quote>sidebar-unpin&#160;*</quote> to remove all mailboxes.
         </para>
       </sect2>
 
@@ -18320,8 +18320,8 @@ set sidebar_new_mail_only = no
 <emphasis role="comment"># sidebar_new_mail_only option is enabled.</emphasis>
 set sidebar_non_empty_mailbox_only = no
 <emphasis role="comment"># Only show mailboxes that contain some mail</emphasis>
-sidebar_pin '/home/user/mailbox1'
-sidebar_pin '/home/user/mailbox2'
+sidebar-pin '/home/user/mailbox1'
+sidebar-pin '/home/user/mailbox2'
 <emphasis role="comment"># When searching for mailboxes containing new mail, should the search wrap</emphasis>
 <emphasis role="comment"># around when it reaches the end of the list?</emphasis>
 set sidebar_next_new_wrap = no
@@ -19626,9 +19626,9 @@ set use_threads=threads sort=last-date sort_aux=date
           <literal>Cc</literal>, <literal>In-Reply-To</literal>, and
           <literal>References</literal> headers.
           Allowed headers can be adjusted with the
-          <link linkend="mailto-allow"><command>mailto_allow</command></link>
+          <link linkend="mailto-allow"><command>mailto-allow</command></link>
           and
-          <link linkend="mailto-allow"><command>unmailto_allow</command></link>
+          <link linkend="mailto-allow"><command>unmailto-allow</command></link>
           commands.
         </para>
       </sect2>
@@ -20253,7 +20253,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="alternative-order">alternative_order</link>
+              <link linkend="alternative-order">alternative-order</link>
             </command>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
@@ -20270,7 +20270,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </arg>
             <command>
-              <link linkend="alternative-order">unalternative_order</link>
+              <link linkend="alternative-order">unalternative-order</link>
             </command>
             <group choice="req">
               <arg choice="plain">*</arg>
@@ -20336,7 +20336,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="auto-view">auto_view</link>
+              <link linkend="auto-view">auto-view</link>
             </command>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
@@ -20353,7 +20353,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </arg>
             <command>
-              <link linkend="auto-view">unauto_view</link>
+              <link linkend="auto-view">unauto-view</link>
             </command>
             <group choice="req">
               <arg choice="plain">*</arg>
@@ -20634,7 +20634,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="hdr-order">hdr_order</link>
+              <link linkend="header-order">header-order</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">header</replaceable>
@@ -20643,7 +20643,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">header</replaceable>
             </arg>
             <command>
-              <link linkend="hdr-order">unhdr_order</link>
+              <link linkend="header-order">unheader-order</link>
             </command>
             <group choice="req">
               <arg choice="plain">
@@ -20856,7 +20856,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="mailto-allow">mailto_allow</link>
+              <link linkend="mailto-allow">mailto-allow</link>
             </command>
             <group choice="req">
               <arg choice="plain">
@@ -20867,7 +20867,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </group>
             <command>
-              <link linkend="mailto-allow">unmailto_allow</link>
+              <link linkend="mailto-allow">unmailto-allow</link>
             </command>
             <group choice="req">
               <arg choice="plain">
@@ -20911,7 +20911,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="mime-lookup">mime_lookup</link>
+              <link linkend="mime-lookup">mime-lookup</link>
             </command>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
@@ -20928,7 +20928,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </arg>
             <command>
-              <link linkend="mime-lookup">unmime_lookup</link>
+              <link linkend="mime-lookup">unmime-lookup</link>
             </command>
             <group choice="req">
               <arg choice="plain">*</arg>
@@ -21010,13 +21010,13 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="my-hdr">my_hdr</link>
+              <link linkend="my-header">my-header</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">string</replaceable>
             </arg>
             <command>
-              <link linkend="my-hdr">unmy_hdr</link>
+              <link linkend="my-header">unmy-header</link>
             </command>
             <group choice="req">
               <arg choice="plain">
@@ -21205,7 +21205,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="sidebar-pin">sidebar_pin</link>
+              <link linkend="sidebar-pin">sidebar-pin</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
@@ -21214,7 +21214,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
             <command>
-              <link linkend="sidebar-pin">sidebar_unpin</link>
+              <link linkend="sidebar-pin">sidebar-unpin</link>
             </command>
             <group choice="req">
               <arg choice="plain">

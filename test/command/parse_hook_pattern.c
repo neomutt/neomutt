@@ -73,7 +73,7 @@ static const struct CommandTest SendTests[] = {
 static const struct CommandTest Send2Tests[] = {
   // send2-hook <pattern> <command>
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "'~s neomutt' 'my_hdr X-Custom: hello world'" },
+  { MUTT_CMD_SUCCESS, "'~s neomutt' 'my-header X-Custom: hello world'" },
   { MUTT_CMD_ERROR,   NULL },
 };
 // clang-format on

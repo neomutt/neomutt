@@ -10,7 +10,7 @@ ignore *
 unignore from: subject to cc date x-mailer x-url user-agent
 
 # Display the fields in this order
-hdr_order date from to cc subject
+header-order date from to cc subject
 
 # imitate the old search-body function
 macro index \eb "<search>~b " "search in message bodies"
@@ -49,8 +49,8 @@ bind editor <delete> delete-char
 # set use_8bit_mime
 
 # Use mime.types to look up handlers for application/octet-stream. Can
-# be undone with unmime_lookup.
-mime_lookup application/octet-stream
+# be undone with unmime-lookup.
+mime-lookup application/octet-stream
 
 # Please see the manual (section "attachments")  for detailed
 # documentation of the "attachments" command.

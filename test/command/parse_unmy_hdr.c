@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parse_unmy_hdr()
+ * Test code for parse_unmy_header()
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -30,11 +30,11 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command UnMyHdr = { "unmy_hdr", CMD_UNMY_HDR, NULL, CMD_NO_DATA };
+static const struct Command UnMyHeader = { "unmy-header", CMD_UNMY_HEADER, NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // unmy_hdr { * | <field> ... }
+  // unmy-header { * | <field> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "X-NeoMutt: Rocks" },
   { MUTT_CMD_SUCCESS, "*" },
@@ -42,9 +42,9 @@ static const struct CommandTest Tests[] = {
 };
 // clang-format on
 
-void test_parse_unmy_hdr(void)
+void test_parse_unmy_header(void)
 {
-  // enum CommandResult parse_unmy_hdr(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 
   struct Buffer *line = buf_pool_get();
   struct Buffer *err = buf_pool_get();
@@ -56,7 +56,7 @@ void test_parse_unmy_hdr(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_unmy_hdr(&UnMyHdr, line, err);
+    rc = parse_unmy_header(&UnMyHeader, line, err);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

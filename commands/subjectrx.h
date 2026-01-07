@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse Subjectrx Commands
+ * Parse Subject-regex Commands
  *
  * @authors
  * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>

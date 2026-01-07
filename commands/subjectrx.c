@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse Subjectrx Commands
+ * Parse Subject-regex Commands
  *
  * @authors
  * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page commands_subjectrx Parse Subjectrx Commands
+ * @page commands_subjectrx Parse subject-regex Commands
  *
- * Parse Subjectrx Commands
+ * Parse subject-regex Commands
  */
 
 #include "config.h"
@@ -35,7 +35,7 @@
 #include "parse/lib.h"
 #include "mview.h"
 
-/// List of subjectrx rules for modifying the Subject:
+/// List of subject-regex rules for modifying the Subject:
 static struct ReplaceList SubjectRegexList = STAILQ_HEAD_INITIALIZER(SubjectRegexList);
 static struct Notify *SubjRxNotify = NULL; ///< Notifications: #NotifySubjRx
 
@@ -184,10 +184,10 @@ void subjrx_clear_mods(struct MailboxView *mv)
 }
 
 /**
- * parse_subjectrx_list - Parse the 'subjectrx' command - Implements Command::parse() - @ingroup command_parse
+ * parse_subjectrx_list - Parse the 'subject-regex' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `subjectrx <regex> <replacement>`
+ * - `subject-regex <regex> <replacement>`
  */
 enum CommandResult parse_subjectrx_list(const struct Command *cmd,
                                         struct Buffer *line, struct Buffer *err)
@@ -210,10 +210,10 @@ enum CommandResult parse_subjectrx_list(const struct Command *cmd,
 }
 
 /**
- * parse_unsubjectrx_list - Parse the 'unsubjectrx' command - Implements Command::parse() - @ingroup command_parse
+ * parse_unsubjectrx_list - Parse the 'unsubject-regex' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unsubjectrx { * | <regex> }`
+ * - `unsubject-regex { * | <regex> }`
  */
 enum CommandResult parse_unsubjectrx_list(const struct Command *cmd,
                                           struct Buffer *line, struct Buffer *err)

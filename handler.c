@@ -494,12 +494,12 @@ static bool is_autoview(struct Body *b)
   const bool c_implicit_auto_view = cs_subset_bool(NeoMutt->sub, "implicit_auto_view");
   if (c_implicit_auto_view)
   {
-    /* $implicit_auto_view is essentially the same as "auto_view *" */
+    /* $implicit_auto_view is essentially the same as "auto-view *" */
     is_av = true;
   }
   else
   {
-    /* determine if this type is on the user's auto_view list */
+    /* determine if this type is on the user's auto-view list */
     mutt_check_lookup_list(b, type, sizeof(type));
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &AutoViewList, entries)
@@ -519,9 +519,9 @@ static bool is_autoview(struct Body *b)
       is_av = true;
   }
 
-  /* determine if there is a mailcap entry suitable for auto_view
+  /* determine if there is a mailcap entry suitable for auto-view
    *
-   * @warning type is altered by this call as a result of 'mime_lookup' support */
+   * @warning type is altered by this call as a result of 'mime-lookup' support */
   if (is_av)
     return mailcap_lookup(b, type, sizeof(type), NULL, MUTT_MC_AUTOVIEW);
 

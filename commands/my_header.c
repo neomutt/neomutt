@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse My_hdr Commands
+ * Parse My-header Commands
  *
  * @authors
  * Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>
@@ -29,9 +29,9 @@
  */
 
 /**
- * @page commands_my_hdr Parse My_hdr Commands
+ * @page commands_my_header Parse My-header Commands
  *
- * Parse My_hdr Commands
+ * Parse My-header Commands
  */
 
 #include "config.h"
@@ -39,18 +39,18 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "my_hdr.h"
+#include "my_header.h"
 #include "parse/lib.h"
 #include "globals.h"
 
 /**
- * parse_my_hdr - Parse the 'my_hdr' command - Implements Command::parse() - @ingroup command_parse
+ * parse_my_header - Parse the 'my-header' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `my_hdr <string>`
+ * - `my-header <string>`
  */
-enum CommandResult parse_my_hdr(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+enum CommandResult parse_my_header(const struct Command *cmd,
+                                   struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {
@@ -93,13 +93,13 @@ done:
 }
 
 /**
- * parse_unmy_hdr - Parse the 'unmy_hdr' command - Implements Command::parse() - @ingroup command_parse
+ * parse_unmy_header - Parse the 'unmy-header' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unmy_hdr { * | <field> ... }`
+ * - `unmy-header { * | <field> ... }`
  */
-enum CommandResult parse_unmy_hdr(const struct Command *cmd,
-                                  struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unmy_header(const struct Command *cmd,
+                                     struct Buffer *line, struct Buffer *err)
 {
   if (!MoreArgs(line))
   {

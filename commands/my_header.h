@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse My_hdr Commands
+ * Parse My-header Commands
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -20,15 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_MY_HDR_H
-#define MUTT_COMMANDS_MY_HDR_H
+#ifndef MUTT_COMMANDS_MY_HEADER_H
+#define MUTT_COMMANDS_MY_HEADER_H
 
 #include "config.h"
 #include "core/lib.h"
 
 struct Buffer;
 
-enum CommandResult parse_my_hdr          (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unmy_hdr        (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_my_header  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
-#endif /* MUTT_COMMANDS_MY_HDR_H */
+#endif /* MUTT_COMMANDS_MY_HEADER_H */

@@ -529,7 +529,7 @@ static int index_score_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_subjrx_observer - Notification that a 'subjectrx' command has occurred - Implements ::observer_t - @ingroup observer_api
+ * index_subjrx_observer - Notification that a 'subject-regex' command has occurred - Implements ::observer_t - @ingroup observer_api
  */
 static int index_subjrx_observer(struct NotifyCallback *nc)
 {
@@ -543,7 +543,7 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
   struct IndexSharedData *shared = dlg->wdata;
 
   subjrx_clear_mods(shared->mailbox_view);
-  mutt_debug(LL_DEBUG5, "subjectrx done\n");
+  mutt_debug(LL_DEBUG5, "subject-regex done\n");
   return 0;
 }
 

@@ -30,11 +30,13 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command Subjectrx = { "subjectrx", CMD_SUBJECTRX, NULL, CMD_NO_DATA };
+// clang-format off
+static const struct Command SubjectRegex = { "subject-regex", CMD_SUBJECT_REGEX, NULL, CMD_NO_DATA };
+// clang-format on
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // subjectrx <regex> <replacement>
+  // subject-regex <regex> <replacement>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'\\[neomutt/neomutt\\] *' '%L%R'" },
   { MUTT_CMD_ERROR,   NULL },
@@ -55,7 +57,7 @@ void test_parse_subjectrx_list(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_subjectrx_list(&Subjectrx, line, err);
+    rc = parse_subjectrx_list(&SubjectRegex, line, err);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

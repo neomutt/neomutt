@@ -30,12 +30,12 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command SidebarUnpin = { "sidebar_unpin", CMD_SIDEBAR_UNPIN,
+static const struct Command SidebarUnpin = { "sidebar-unpin", CMD_SIDEBAR_UNPIN,
                                              NULL, CMD_NO_DATA };
 
 // clang-format off
 static const struct CommandTest Tests[] = {
-  // sidebar_unpin { * | <mailbox> ... }
+  // sidebar-unpin { * | <mailbox> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "+" },
   { MUTT_CMD_SUCCESS, "+neo" },
