@@ -3,7 +3,7 @@
  * Test code for parse_unbind()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,7 +26,11 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
+#include "index/lib.h"
 #include "key/lib.h"
+#include "pager/lib.h"
+#include "sidebar/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -35,16 +39,30 @@ static const struct Command UnBind  = { "unbind",  CMD_UNBIND,  NULL, CMD_NO_DAT
 static const struct Command UnMacro = { "unmacro", CMD_UNMACRO, NULL, CMD_NO_DATA };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest UnBindTests[] = {
+  // clang-format off
   // unbind { * | <menu>[,<menu> ... ] } [ <key> ]
+  { MUTT_CMD_SUCCESS, "*" },
+  { MUTT_CMD_SUCCESS, "* d" },
+  { MUTT_CMD_SUCCESS, "* missing" },
+  { MUTT_CMD_SUCCESS, "index" },
+  { MUTT_CMD_SUCCESS, "index,pager" },
+  { MUTT_CMD_SUCCESS, "index *" },
+  { MUTT_CMD_SUCCESS, "index,pager *" },
+  { MUTT_CMD_SUCCESS, "index d" },
+  { MUTT_CMD_SUCCESS, "index missing" },
+  { MUTT_CMD_SUCCESS, "index,pager d" },
+  { MUTT_CMD_SUCCESS, "index,pager missing" },
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "index j" },
-  { MUTT_CMD_SUCCESS, "index,pager s" },
-  { MUTT_CMD_SUCCESS, "pager <f1>" },
+  { MUTT_CMD_WARNING, "bad" },
+  { MUTT_CMD_WARNING, "bad,index" },
+  { MUTT_CMD_WARNING, "index,bad" },
+  { MUTT_CMD_WARNING, "index d extra" },
+  { MUTT_CMD_WARNING, "index,pager d extra" },
+  { MUTT_CMD_WARNING, "* d extra" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 // clang-format off
 static const struct CommandTest UnMacroTests[] = {
@@ -56,6 +74,15 @@ static const struct CommandTest UnMacroTests[] = {
 };
 // clang-format on
 
+static void init_menus(void)
+{
+  struct SubMenu *sm_generic = generic_init_keys();
+
+  sidebar_init_keys(sm_generic);
+  index_init_keys(sm_generic);
+  pager_init_keys(sm_generic);
+}
+
 static void test_parse_unbind2(void)
 {
   // enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
@@ -66,12 +93,16 @@ static void test_parse_unbind2(void)
 
   for (int i = 0; UnBindTests[i].line; i++)
   {
+    init_menus();
+
     TEST_CASE(UnBindTests[i].line);
     buf_reset(err);
     buf_strcpy(line, UnBindTests[i].line);
     buf_seek(line, 0);
     rc = parse_unbind(&UnBind, line, err);
     TEST_CHECK_NUM_EQ(rc, UnBindTests[i].rc);
+
+    km_cleanup();
   }
 
   buf_pool_release(&err);
@@ -82,6 +113,7 @@ static void test_parse_unmacro(void)
 {
   // enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 
+  init_menus();
   struct Buffer *line = buf_pool_get();
   struct Buffer *err = buf_pool_get();
   enum CommandResult rc;
@@ -98,6 +130,7 @@ static void test_parse_unmacro(void)
 
   buf_pool_release(&err);
   buf_pool_release(&line);
+  km_cleanup();
 }
 
 void test_parse_unbind(void)

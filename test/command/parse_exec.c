@@ -3,7 +3,7 @@
  * Test code for parse_exec()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,25 +26,44 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "key/lib.h"
+#include "menu/lib.h"
 #include "common.h"
 #include "test_common.h"
 
 static const struct Command Exec = { "exec", CMD_EXEC, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // exec <function> [ <function> ... ]
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "next-page" },
-  { MUTT_CMD_SUCCESS, "next-page previous-unread" },
+  { MUTT_CMD_SUCCESS, "next-new" },
+  { MUTT_CMD_SUCCESS, "next-new previous-unread" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
+
+static const struct MenuFuncOp OpIndex[] = {
+  // clang-format off
+  { "next-new",        OP_MAIN_NEXT_NEW },
+  { "previous-unread", OP_MAIN_PREV_UNREAD },
+  { NULL, 0 },
+  // clang-format on
+};
 
 void test_parse_exec(void)
 {
   // enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpIndex);
+  md = km_register_menu(MENU_INDEX, "index");
+  km_menu_add_submenu(md, sm);
+
+  // ----------------------------------------
 
   struct Buffer *line = buf_pool_get();
   struct Buffer *err = buf_pool_get();

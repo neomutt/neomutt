@@ -3,7 +3,7 @@
  * Common code for command tests
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,20 +29,20 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "autocrypt/lib.h"
 #include "browser/lib.h"
 #include "complete/lib.h"
-#include "expando/lib.h"
 #include "key/lib.h"
 #include "send/lib.h"
 #include "copy.h"
 #include "external.h"
 #include "mailcap.h"
 
+struct Body;
 struct ConnAccount;
+struct Email;
+struct Envelope;
 struct stat;
 
 bool MonitorCurMboxChanged = false;
@@ -67,21 +67,7 @@ const struct MenuFuncOp OpCompose[] = {
   { NULL, OP_NULL },
 };
 
-struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
-{
-  return NULL;
-}
-
-void email_set_color(struct Mailbox *m, struct Email *e)
-{
-}
-
 const char *GitVer = "";
-
-struct MuttWindow *index_pager_init(void)
-{
-  return NULL;
-}
 
 void mailbox_restore_timestamp(const char *path, struct stat *st)
 {
@@ -116,31 +102,6 @@ bool mailcap_lookup(struct Body *b, char *type, size_t typelen,
 bool message_is_tagged(struct Email *e)
 {
   return false;
-}
-
-int mutt_autocrypt_generate_gossip_list(struct Email *e)
-{
-  return 0;
-}
-
-int mutt_autocrypt_set_sign_as_default_key(struct Email *e)
-{
-  return 0;
-}
-
-enum AutocryptRec mutt_autocrypt_ui_recommendation(const struct Email *e, char **keylist)
-{
-  return AUTOCRYPT_REC_OFF;
-}
-
-int mutt_autocrypt_write_autocrypt_header(struct Envelope *env, FILE *fp)
-{
-  return 0;
-}
-
-int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
-{
-  return 0;
 }
 
 int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src)
@@ -183,10 +144,6 @@ void mutt_decode_base64(struct State *state, size_t len, bool istext, iconv_t cd
 {
 }
 
-void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf, size_t buflen)
-{
-}
-
 bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 {
   return false;
@@ -195,18 +152,6 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
                        struct Buffer *fcc)
 {
-}
-
-bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
-{
-  return false;
-}
-
-int mutt_make_string(struct Buffer *buf, size_t max_cols,
-                     const struct Expando *exp, struct Mailbox *m, int inpgr,
-                     struct Email *e, MuttFormatFlags flags, const char *progress)
-{
-  return 0;
 }
 
 bool mutt_prefer_as_attachment(struct Body *b)
@@ -270,42 +215,11 @@ int mx_msg_commit(struct Mailbox *m, struct Message *msg)
   return 0;
 }
 
-struct Address *mutt_default_from(struct ConfigSubset *sub)
-{
-  return NULL;
-}
-
-const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
-{
-  return NULL;
-}
-
-void mutt_generate_boundary(struct ParameterList *pl)
-{
-}
-
-void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
-{
-}
-
-void mutt_prepare_envelope(struct Envelope *env, bool final, struct ConfigSubset *sub)
-{
-}
-
-struct Body *mutt_remove_multipart(struct Body *b)
-{
-  return NULL;
-}
-
 int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b,
                              enum MuttWriteHeaderMode mode, bool privacy,
                              bool hide_protected_subject, struct ConfigSubset *sub)
 {
   return 0;
-}
-
-void mutt_update_encoding(struct Body *b, struct ConfigSubset *sub)
-{
 }
 
 int mutt_write_mime_body(struct Body *b, FILE *fp, struct ConfigSubset *sub)
@@ -323,10 +237,6 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           struct ConfigSubset *sub)
 {
   return 0;
-}
-
-void sbar_set_title(struct MuttWindow *win, const char *title)
-{
 }
 
 bool feature_enabled(const char *name)
@@ -371,15 +281,6 @@ bool print_version(FILE *fp, bool use_ansi)
   return false;
 }
 
-enum ContentType mutt_lookup_mime_type(struct Body *b, const char *path)
-{
-  return TYPE_IMAGE;
-}
-
-void mutt_stamp_attachment(struct Body *b)
-{
-}
-
 const struct MxOps *mx_get_ops(enum MailboxType type)
 {
   return NULL;
@@ -388,10 +289,6 @@ const struct MxOps *mx_get_ops(enum MailboxType type)
 int mx_access(const char *path, int flags)
 {
   return 0;
-}
-
-void index_change_folder(struct MuttWindow *dlg, struct Mailbox *m)
-{
 }
 
 int debug_level_validator(const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
