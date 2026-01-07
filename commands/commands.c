@@ -282,12 +282,14 @@ static const struct Command MuttCommands[] = {
   { "mailto_allow",        CMD_NONE, NULL, IP "mailto-allow",        NULL, NULL, NULL, CF_SYNONYM },
   { "mime_lookup",         CMD_NONE, NULL, IP "mime-lookup",         NULL, NULL, NULL, CF_SYNONYM },
   { "my_hdr",              CMD_NONE, NULL, IP "my-header",           NULL, NULL, NULL, CF_SYNONYM },
+  { "subjectrx",           CMD_NONE, NULL, IP "subject-regex",       NULL, NULL, NULL, CF_SYNONYM },
   { "unalternative_order", CMD_NONE, NULL, IP "unalternative-order", NULL, NULL, NULL, CF_SYNONYM },
   { "unauto_view",         CMD_NONE, NULL, IP "unauto-view",         NULL, NULL, NULL, CF_SYNONYM },
   { "unhdr_order",         CMD_NONE, NULL, IP "unheader-order",      NULL, NULL, NULL, CF_SYNONYM },
   { "unmailto_allow",      CMD_NONE, NULL, IP "unmailto-allow",      NULL, NULL, NULL, CF_SYNONYM },
   { "unmime_lookup",       CMD_NONE, NULL, IP "unmime-lookup",       NULL, NULL, NULL, CF_SYNONYM },
   { "unmy_hdr",            CMD_NONE, NULL, IP "unmy-header",         NULL, NULL, NULL, CF_SYNONYM },
+  { "unsubjectrx",         CMD_NONE, NULL, IP "unsubject-regex",     NULL, NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
