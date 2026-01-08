@@ -90,6 +90,20 @@ void string_array_clear(struct StringArray *arr);
   s__ == NULL ? NULL : stpspn(s__, MUTT_CTYPE_SPACE_C);               \
 })
 
+/**
+ * mutt_str_skip_email_wsp - Skip over FWS as defined by RFC5322
+ * @param s   String to search
+ * @retval s  First non-whitespace character
+ *
+ * This is used primarily for parsing header fields.
+ */
+#define mutt_str_skip_email_wsp(s)                                    \
+({                                                                    \
+  __auto_type  s__ = s;                                               \
+                                                                      \
+  s__ == NULL ? NULL : stpspn(s__, MUTT_CTYPE_RFC5322_FWS);           \
+})
+
 #ifndef HAVE_STRRSPN_
 size_t      strrspn_(const char *s, const char *accept);
 #endif
@@ -108,7 +122,6 @@ size_t      mutt_str_lws_len(const char *s, size_t n);
 void        mutt_str_remove_trailing_ws(char *s);
 char *      mutt_str_replace(char **p, const char *s);
 char *      mutt_str_sep(char **stringp, const char *delim);
-char *      mutt_str_skip_email_wsp(const char *s);
 const char *mutt_str_sysexit(int e);
 char *      mutt_str_upper(char *str);
 

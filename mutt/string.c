@@ -603,26 +603,6 @@ size_t mutt_str_copy(char *dest, const char *src, size_t dsize)
 }
 
 /**
- * mutt_str_skip_email_wsp - Skip over whitespace as defined by RFC5322
- * @param s String to search
- * @retval ptr
- * - First non-whitespace character
- * - Terminating NUL character, if the string was entirely whitespace
- *
- * This is used primarily for parsing header fields.
- */
-char *mutt_str_skip_email_wsp(const char *s)
-{
-  if (!s)
-    return NULL;
-
-  for (; mutt_str_is_email_wsp(*s); s++)
-    ; // Do nothing
-
-  return (char *) s;
-}
-
-/**
  * mutt_str_lws_len - Measure the linear-white-space at the beginning of a string
  * @param s String to check
  * @param n Maximum number of characters to check
