@@ -563,20 +563,6 @@ const char *mutt_istr_find(const char *haystack, const char *needle)
 }
 
 /**
- * mutt_str_remove_trailing_ws - Trim trailing whitespace from a string
- * @param s String to trim
- *
- * The string is modified in place.
- */
-void mutt_str_remove_trailing_ws(char *s)
-{
-  if (!s)
-    return;
-
-  stpcpy(stprspn(s, MUTT_CTYPE_SPACE_C), "");
-}
-
-/**
  * mutt_str_copy - Copy a string into a buffer (guaranteeing NUL-termination)
  * @param dest  Buffer for the result
  * @param src   String to copy
