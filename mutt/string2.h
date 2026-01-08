@@ -34,6 +34,8 @@
 #include "array.h"
 #include "memory.h"
 
+#define MUTT_CTYPE_SPACE_C   " \t\n\v\f\r"  // [:space:]
+
 /// Useful ARRAY of strings
 ARRAY_HEAD(StringArray, const char *);
 
@@ -49,7 +51,7 @@ void string_array_clear(struct StringArray *arr);
 
 #define SKIPWS(p)  do                                                 \
 {                                                                     \
-  p += strspn(p, " \t\n\v\f\r");                                      \
+  p += strspn(p, MUTT_CTYPE_SPACE_C);                                 \
 } while (0)
 
 #define terminate_string(str, strlen, buflen)                                  \
