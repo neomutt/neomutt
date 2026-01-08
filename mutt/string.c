@@ -573,8 +573,7 @@ void mutt_str_remove_trailing_ws(char *s)
   if (!s)
     return;
 
-  for (char *p = s + mutt_str_len(s) - 1; (p >= s) && mutt_isspace(*p); p--)
-    *p = '\0';
+  stpcpy(stprspn(s, MUTT_CTYPE_SPACE_C), "");
 }
 
 /**
