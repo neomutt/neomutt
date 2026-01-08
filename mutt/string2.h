@@ -114,6 +114,19 @@ void string_array_clear(struct StringArray *arr);
   s__ == NULL ? NULL : stpspn(s__, MUTT_CTYPE_RFC5322_FWS);           \
 })
 
+/**
+ * mutt_str_remove_trailing_ws - Trim trailing whitespace from a string
+ * @param s String to trim
+ *
+ * The string is modified in place.
+ */
+#define mutt_str_remove_trailing_ws(s)                                \
+({                                                                    \
+  __auto_type  s__ = s;                                               \
+                                                                      \
+  s__ == NULL ? NULL : stpcpy(stprspn(s__, MUTT_CTYPE_SPACE_C), "");  \
+})
+
 #ifndef HAVE_STRRSPN_
 size_t      strrspn_(const char *s, const char *accept);
 #endif
@@ -129,7 +142,6 @@ bool        mutt_str_is_ascii(const char *str, size_t len);
 size_t      mutt_str_len(const char *a);
 char *      mutt_str_lower(char *str);
 size_t      mutt_str_lws_len(const char *s, size_t n);
-void        mutt_str_remove_trailing_ws(char *s);
 char *      mutt_str_replace(char **p, const char *s);
 char *      mutt_str_sep(char **stringp, const char *delim);
 const char *mutt_str_sysexit(int e);
