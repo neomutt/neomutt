@@ -36,6 +36,9 @@
 
 #define MUTT_CTYPE_SPACE_C   " \t\n\v\f\r"  // [:space:]
 
+// RFC 5322 characters
+#define MUTT_CTYPE_RFC5322_FWS  " \t\r\n"   // 'FWS' (3.2.2.)
+
 /// Useful ARRAY of strings
 ARRAY_HEAD(StringArray, const char *);
 
