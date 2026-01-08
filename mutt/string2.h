@@ -67,6 +67,16 @@ void string_array_clear(struct StringArray *arr);
 })
 #endif  // stpspn
 
+// stprspn - string offset-pointer rear span
+#ifndef stprspn
+#define stprspn(s, accept)                                            \
+({                                                                    \
+  __auto_type  s_ = s;                                                \
+                                                                      \
+  strnul(s_) - strrspn_(s_, accept);                                  \
+})
+#endif  // stprspn
+
 #define SKIPWS(p)  do                                                 \
 {                                                                     \
   p = stpspn(p, MUTT_CTYPE_SPACE_C);                                  \
