@@ -87,6 +87,10 @@ void string_array_clear(struct StringArray *arr);
   s__ == NULL ? NULL : stpspn(s__, MUTT_CTYPE_SPACE_C);               \
 })
 
+#ifndef HAVE_STRRSPN_
+size_t      strrspn_(const char *s, const char *accept);
+#endif
+
 void        mutt_str_adjust(char **ptr);
 int         mutt_str_asprintf(char **strp, const char *fmt, ...)
                               __attribute__((__format__(__printf__, 2, 3)));
