@@ -49,6 +49,11 @@ void string_array_clear(struct StringArray *arr);
 #define S_ERR 127
 #define S_BKG 126
 
+// strnul - string NUL
+#ifndef strnul
+#define strnul(s)  strchr(s, '\0')
+#endif  // strnul
+
 // stpspn - string offset-pointer span
 #ifndef stpspn
 #define stpspn(s, accept)                                             \
