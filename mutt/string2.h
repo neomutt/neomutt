@@ -47,11 +47,10 @@ void string_array_clear(struct StringArray *arr);
 #define S_ERR 127
 #define S_BKG 126
 
-/* this macro must check for (*ch == 0) since isspace(0) has unreliable behavior
- * on some systems */
-#define SKIPWS(ch)                                                             \
-  while (*(ch) && mutt_isspace(*(ch)))                              \
-    ch++;
+#define SKIPWS(p)  do                                                 \
+{                                                                     \
+  p += strspn(p, " \t\n\v\f\r");                                      \
+} while (0)
 
 #define terminate_string(str, strlen, buflen)                                  \
   (str)[MIN((strlen), (buflen))] = '\0'
