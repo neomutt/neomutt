@@ -1152,11 +1152,10 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
 
     read += linelen;
 
-    size_t off = linelen - 1;
-    if (line[off] == '\n')
+    if (line[linelen - 1] == '\n')
     {
       /* We did get a full line: remove trailing space */
-      off = stpcpy(stprspn(line, MUTT_CTYPE_RFC5322_FWS), "") - line;
+      char *p = stpcpy(stprspn(line, MUTT_CTYPE_RFC5322_FWS), "");
 
       /* check to see if the next line is a continuation line */
       int ch = fgetc(fp);
@@ -1176,7 +1175,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       }
 
       ungetc(ch, fp);
-      stpcpy(line + off, " ");
+      stpcpy(p, " ");
     }
 
     buf_addstr(buf, line);
