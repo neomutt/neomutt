@@ -70,6 +70,18 @@ void string_array_clear(struct StringArray *arr);
 #define terminate_buffer(str, strlen)                                          \
   terminate_string(str, strlen, sizeof(str) - 1)
 
+/**
+ * mutt_str_skip_whitespace - Find the first non-whitespace character in a string
+ * @param s   String to search
+ * @retval s  First non-whitespace character
+ */
+#define mutt_str_skip_whitespace(s)                                   \
+({                                                                    \
+  __auto_type  s__ = s;                                               \
+                                                                      \
+  s__ == NULL ? NULL : stpspn(s__, MUTT_CTYPE_SPACE_C);               \
+})
+
 void        mutt_str_adjust(char **ptr);
 int         mutt_str_asprintf(char **strp, const char *fmt, ...)
                               __attribute__((__format__(__printf__, 2, 3)));
@@ -85,7 +97,6 @@ void        mutt_str_remove_trailing_ws(char *s);
 char *      mutt_str_replace(char **p, const char *s);
 char *      mutt_str_sep(char **stringp, const char *delim);
 char *      mutt_str_skip_email_wsp(const char *s);
-char *      mutt_str_skip_whitespace(const char *p);
 const char *mutt_str_sysexit(int e);
 char *      mutt_str_upper(char *str);
 

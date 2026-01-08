@@ -544,21 +544,6 @@ const char *mutt_istr_find(const char *haystack, const char *needle)
 }
 
 /**
- * mutt_str_skip_whitespace - Find the first non-whitespace character in a string
- * @param p String to search
- * @retval ptr
- * - First non-whitespace character
- * - Terminating NUL character, if the string was entirely whitespace
- */
-char *mutt_str_skip_whitespace(const char *p)
-{
-  if (!p)
-    return NULL;
-  SKIPWS(p);
-  return (char *) p;
-}
-
-/**
  * mutt_str_remove_trailing_ws - Trim trailing whitespace from a string
  * @param s String to trim
  *
