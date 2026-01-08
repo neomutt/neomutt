@@ -49,9 +49,19 @@ void string_array_clear(struct StringArray *arr);
 #define S_ERR 127
 #define S_BKG 126
 
+// stpspn - string offset-pointer span
+#ifndef stpspn
+#define stpspn(s, accept)                                             \
+({                                                                    \
+  __auto_type  s_ = s;                                                \
+                                                                      \
+  s_ + strspn(s_, accept);                                            \
+})
+#endif  // stpspn
+
 #define SKIPWS(p)  do                                                 \
 {                                                                     \
-  p += strspn(p, MUTT_CTYPE_SPACE_C);                                 \
+  p = stpspn(p, MUTT_CTYPE_SPACE_C);                                  \
 } while (0)
 
 #define terminate_string(str, strlen, buflen)                                  \
