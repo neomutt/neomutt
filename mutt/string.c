@@ -106,6 +106,25 @@ static char *strsep(char **stringp, const char *delim)
 }
 #endif /* HAVE_STRSEP */
 
+#ifndef HAVE_STRRSPN_
+// strrspn_ - string rear span
+size_t
+strrspn_(const char *s, const char *accept)
+{
+	const char  *p, *nul;
+
+	p = nul = strnul(s);
+	while (p > s) {
+		p--;
+		if (strchr(accept, *p) == NULL) {
+			p++;
+			break;
+		}
+	}
+	return nul - p;
+}
+#endif // HAVE_STRRSPN_
+
 /**
  * struct SysExits - Lookup table of error messages
  */
