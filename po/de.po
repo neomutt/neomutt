@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-12-30 23:28+0000\n"
-"PO-Revision-Date: 2025-08-30 16:44+0200\n"
-"Last-Translator: kbcb <gerritche@gmail.com>\n"
+"PO-Revision-Date: 2026-01-08 19:34+0100\n"
+"Last-Translator: xbcb <rittchen@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -940,489 +940,435 @@ msgstr "%s: Attribut unbekannt"
 
 #: commands/commands.c:62
 msgid "Define an alias (name to email address)"
-msgstr ""
+msgstr "Erstelle ein Alias (Name zu E-Mail-Adresse)"
 
 #: commands/commands.c:63
-#, fuzzy
 msgid "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
-msgstr "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
+msgstr "alias [ -group <Name> ... ] <Schlüssel> <Adresse> [, <Adresse> ... ]"
 
 #: commands/commands.c:66
 msgid "Define a list of alternate email addresses for the user"
-msgstr ""
+msgstr "Erstelle Liste alternativer E-Mail-Adressen für den Nutzer"
 
 #: commands/commands.c:67
-#, fuzzy
 msgid "alternates [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "alternates [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgstr "alternates [ -group <Name> ... ] <regex> [ <regex> ... ]"
 
 #: commands/commands.c:70
 msgid "Set preference order for multipart alternatives"
-msgstr ""
+msgstr "Präferiere Reihenfolge für multipart Alternativen"
 
 #: commands/commands.c:71
-#, fuzzy
-msgid "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "alternative_order <MIME-Typ>[/<MIME-Subtyp> ] [ ... ]"
 
 #: commands/commands.c:74
 msgid "Set attachment counting rules"
-msgstr ""
+msgstr "Setze Regeln, wie NeoMutt Anhänge zählt"
 
 #: commands/commands.c:75
-#, fuzzy
 msgid "attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"
-msgstr "attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"
+msgstr "attachments { + | - }<Anordnung> <MIME-Typ> [ MIME-Typ ... ] | ?"
 
 #: commands/commands.c:78
 msgid "Automatically display specified MIME types inline"
-msgstr ""
+msgstr "Zeige spezifizierte MIME-Typen im Text an"
 
 #: commands/commands.c:79
-#, fuzzy
-msgid "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "auto_view <MIME-Typ>[/<MIME-Subtyp> ] [ <MIME-Typ>[/<MIME-Subtyp> ] ... ]"
 
 #: commands/commands.c:82
 msgid "Change NeoMutt's current working directory"
-msgstr ""
+msgstr "Wechsele NeoMutts aktuelles Arbeitsverzeichnis"
 
 #: commands/commands.c:83
-#, fuzzy
 msgid "cd [ <directory> ]"
-msgstr "cd [ <directory> ]"
+msgstr "cd [ <Verzeichnis> ]"
 
 #: commands/commands.c:86
 msgid "Define colors for the user interface"
-msgstr ""
+msgstr "Wähle Farben für die Nutzeransicht"
 
 #: commands/commands.c:87
-#, fuzzy
 msgid "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
-msgstr "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
+msgstr "color <Objekt> [ <Attribut> ... ] <Vordergrd> <Hintergrd> [ <regex> [ <Num> ]]"
 
 #: commands/commands.c:90
 msgid "Print a message to the status line"
-msgstr ""
+msgstr "Gibt eine Nachricht in der Statuszeile aus"
 
 #: commands/commands.c:91
-#, fuzzy
 msgid "echo <message>"
-msgstr "echo <message>"
+msgstr "echo <Nachricht>"
 
 #: commands/commands.c:94
 msgid "Stop reading current config file"
-msgstr ""
+msgstr "Beende Einlesen aktueller Konfigdatei"
 
 #: commands/commands.c:95
-#, fuzzy
 msgid "finish "
-msgstr "finish "
+msgstr "Ende  "
 
 #: commands/commands.c:98
 msgid "Add addresses to an address group"
-msgstr ""
+msgstr "Füge Adressen zu einer Gruppe hinzu"
 
 #: commands/commands.c:99
-#, fuzzy
 msgid "group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"
-msgstr "group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"
+msgstr "group [ -group <Name> ... ] { -rx <regex> ... | -addr <Adresse> ... }"
 
 #: commands/commands.c:102
 msgid "Define custom order of headers displayed"
-msgstr ""
+msgstr "Erstelle eigene Reihenfolge für Header-Zeilen"
 
 #: commands/commands.c:103
-#, fuzzy
-msgid "header-order <header> [ <header> ... ]"
-msgstr "header-order <header> [ <header> ... ]"
+msgid "hdr_order <header> [ <header> ... ]"
+msgstr "hdr_order <Kopfzeile> [ <Kopfzeile> ... ]"
 
 #: commands/commands.c:106
 msgid "Conditionally include config commands if symbol defined"
-msgstr ""
+msgstr "Falls Symbol definiert, ergänze Konfig-Kommandos"
 
 #: commands/commands.c:107
-#, fuzzy
 msgid "ifdef <symbol> '<config-command> [ <args> ... ]'"
-msgstr "ifdef <symbol> '<config-command> [ <args> ... ]'"
+msgstr "ifdef <Symbol> '<Konfig-Befehl> [ <Argumente> ... ]'"
 
 #: commands/commands.c:110
 msgid "Conditionally include if symbol is not defined"
-msgstr ""
+msgstr "Ergänze falls Symbol nicht definiert ist"
 
 #: commands/commands.c:111
-#, fuzzy
 msgid "ifndef <symbol> '<config-command> [ <args> ... ]'"
-msgstr "ifndef <symbol> '<config-command> [ <args> ... ]'"
+msgstr "ifndef <Symbol> '<Konfig-Befehl> [ <Argumente> ... ]'"
 
 #: commands/commands.c:114
 msgid "Hide specified headers when displaying messages"
-msgstr ""
+msgstr "Zeige bestimmte Header nicht in der Nachrichtenansicht an"
 
 #: commands/commands.c:115
-#, fuzzy
 msgid "ignore { * | <string> ... }"
-msgstr "ignore { * | <string> ... }"
+msgstr "ignore { * | <Zeichenkette> ... }"
 
 #: commands/commands.c:118
 msgid "Add address to the list of mailing lists"
-msgstr ""
+msgstr "Setze Adresse auf die Liste der Mailinglisten"
 
 #: commands/commands.c:119
-#, fuzzy
 msgid "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgstr "lists [ -group <Name> ... ] <regex> [ <regex> ... ]"
 
 #: commands/commands.c:122
 msgid "Define a list of mailboxes to watch"
-msgstr ""
+msgstr "Erstelle Liste zu überwachender Mailboxen"
 
 #: commands/commands.c:123
-#, fuzzy
 msgid "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
-msgstr "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
+msgstr "mailboxes [ -[no]label [ <Etikett> ] ] [ -[no]notify ] [ -[no]poll ] <Postf> ]"
 
 #: commands/commands.c:126
 msgid "Permit specific header-fields in mailto URL processing"
-msgstr ""
+msgstr "Erlaube bestimmte Header bei Verarbeitung einer mailto URL"
 
 #: commands/commands.c:127
-#, fuzzy
-msgid "mailto-allow { * | <header-field> ... }"
-msgstr "mailto-allow { * | <header-field> ... }"
+msgid "mailto_allow { * | <header-field> ... }"
+msgstr "mailto_allow { * | <Kopfzeile> ... }"
 
 #: commands/commands.c:130
 msgid "Map specified MIME types/subtypes to display handlers"
-msgstr ""
+msgstr "Weise MIME Typen/Subtypen bestimmte Darstellungswerkzeuge zu"
 
 #: commands/commands.c:131
-#, fuzzy
-msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "mime_lookup <MIME-Typ>[/<MIME-Subtyp> ] [ <MIME-Typ>[/<MIME-Subtyp> ] ... ]"
 
 #: commands/commands.c:134
 msgid "Deprecated: Use 'color'"
-msgstr ""
+msgstr "Veraltet: Nutze 'color'"
 
 #: commands/commands.c:135
-#, fuzzy
 msgid "mono <object> <attribute> [ <pattern> | <regex> ]"
-msgstr "mono <object> <attribute> [ <pattern> | <regex> ]"
+msgstr "mono <Objekt> <Attribut> [ <Muster> | <regex> ]"
 
 #: commands/commands.c:138
 msgid "Add a custom header to outgoing messages"
-msgstr ""
+msgstr "Füge ausgehenden Nachrichten individuellen header hinzu"
 
 #: commands/commands.c:139
-#, fuzzy
-msgid "my-header <string>"
-msgstr "my-header <string>"
+msgid "my_hdr <string>"
+msgstr "my_hdr <Zeichenkette>"
 
 #: commands/commands.c:142
 msgid "Define a list of labelled mailboxes to watch"
-msgstr ""
+msgstr "Erstelle Liste zu überwachender (labelled) Mailboxes"
 
 #: commands/commands.c:143
-#, fuzzy
 msgid "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
-msgstr "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
+msgstr "named-mailboxes <Beschreibung> <Postfach> [ <Beschreibung> <> ... ]"
 
 #: commands/commands.c:146
 msgid "Remove a spam detection rule"
-msgstr ""
+msgstr "Lösche Spamerkennungsregel"
 
 #: commands/commands.c:147
-#, fuzzy
 msgid "nospam { * | <regex> }"
 msgstr "nospam { * | <regex> }"
 
 #: commands/commands.c:150
 msgid "Reset a config option to its initial value"
-msgstr ""
+msgstr "Setze eine Konfig-Option zurück auf Ausgangswert"
 
 #: commands/commands.c:151
-#, fuzzy
 msgid "reset <variable> [ <variable> ... ]"
-msgstr "reset <variable> [ <variable> ... ]"
+msgstr "reset <Variable> [ <Variable> ... ]"
 
 #: commands/commands.c:154
 msgid "Set a score value on emails matching a pattern"
-msgstr ""
+msgstr "Bewerte E-Mail nach Übereinstimmung mit Muster"
 
 #: commands/commands.c:155
-#, fuzzy
 msgid "score <pattern> <value>"
-msgstr "score <pattern> <value>"
+msgstr "score <Muster> <Wert>"
 
 #: commands/commands.c:158
 msgid "Set a config variable"
-msgstr ""
+msgstr "Setze einen Konfig Wert"
 
 #: commands/commands.c:159
-#, fuzzy
 msgid "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"
-msgstr "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"
+msgstr "set { [ no | inv | & ] <Variable> [?] | <Variable> [=|+=|-=] Wert } [ ... ]"
 
 #: commands/commands.c:162
 msgid "Set an environment variable"
-msgstr ""
+msgstr "Setze eine Umgebungsvariable"
 
 #: commands/commands.c:163
-#, fuzzy
 msgid "setenv { <variable>? | <variable> <value> }"
-msgstr "setenv { <variable>? | <variable> <value> }"
+msgstr "setenv { <Variable>? | <Variable> <Wert> }"
 
 #: commands/commands.c:166
 msgid "Read and execute commands from a config file"
-msgstr ""
+msgstr "Liest Kommandos aus einer Konfig-Datei und führt sie aus"
 
 #: commands/commands.c:167
-#, fuzzy
 msgid "source <filename>"
-msgstr "source <filename>"
+msgstr "source <Dateiname>"
 
 #: commands/commands.c:170
 msgid "Define rules to parse spam detection headers"
-msgstr ""
+msgstr "Erstelle Regeln zur Analyse von Spam-Erkennungs-Headern"
 
 #: commands/commands.c:171
-#, fuzzy
 msgid "spam <regex> <format>"
-msgstr "spam <regex> <format>"
+msgstr "spam <regex> <Format>"
 
 #: commands/commands.c:174
 msgid "Apply regex-based rewriting to message subjects"
-msgstr ""
+msgstr "Schreibe Betreffe gemäß regex-Vorgaben um"
 
 #: commands/commands.c:175
-#, fuzzy
 msgid "subjectrx <regex> <replacement>"
-msgstr "subjectrx <regex> <replacement>"
+msgstr "subjectrx <regex> <Ersetzung>"
 
 #: commands/commands.c:178
 msgid "Add address to the list of subscribed mailing lists"
-msgstr ""
+msgstr "Setze Adresse auf die Liste der abonnierten Mailinglisten"
 
 #: commands/commands.c:179
-#, fuzzy
 msgid "subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgstr "subscribe [ -group <Name> ... ] <regex> [ <regex> ... ]"
 
 #: commands/commands.c:182
 msgid "Define expandos tags"
-msgstr ""
+msgstr "Definiere expandos Etiketten"
 
 #: commands/commands.c:183
-#, fuzzy
 msgid "tag-formats <tag> <format-string> { tag format-string ... }"
-msgstr "tag-formats <tag> <format-string> { tag format-string ... }"
+msgstr "tag-formats <Etikett> <Format-Zeichenkette> { Etikett Format-Zeichenkette ... }"
 
 #: commands/commands.c:186
 msgid "Rules to transform tags into icons"
-msgstr ""
+msgstr "Regeln zur Umformung von Etiketten in Icons"
 
 #: commands/commands.c:187
-#, fuzzy
 msgid "tag-transforms <tag> <transformed-string> { tag transformed-string ... }"
-msgstr "tag-transforms <tag> <transformed-string> { tag transformed-string ... }"
+msgstr "tag-transforms <Etikett> <umgeformte Zeichen> { Etikett umgeformte Zeichen ... }"
 
 #: commands/commands.c:190
 msgid "Toggle the value of a boolean/quad config option"
-msgstr ""
+msgstr "Schalte den Wert einer boolean/quad Konfig-Option um"
 
 #: commands/commands.c:191
-#, fuzzy
 msgid "toggle <variable> [ <variable> ... ]"
-msgstr "toggle <variable> [ <variable> ... ]"
+msgstr "toggle <Variable> [ <Variable> ... ]"
 
 #: commands/commands.c:194
 msgid "Remove an alias definition"
-msgstr ""
+msgstr "Entferne ein Alias"
 
 #: commands/commands.c:195
-#, fuzzy
-msgid "unalias { * | <key> ... }"
-msgstr "unalias { * | <key> ... }"
+msgid "unalias [ -group <name> ... ] { * | <key> ... }"
+msgstr "unalias [ -group <Name> ... ] { * | <Schlüssel> ... }"
 
 #: commands/commands.c:198
 msgid "Remove addresses from 'alternates' list"
-msgstr ""
+msgstr "Entferne Adressen von der 'Alternative Mail-Adressen' Liste"
 
 #: commands/commands.c:199
-#, fuzzy
-msgid "unalternates { * | <regex> ... }"
-msgstr "unalternates { * | <regex> ... }"
+msgid "unalternates [ -group <name> ... ] { * | <regex> ... }"
+msgstr "unalternates [ -group <Name> ... ] { * | <regex> ... }"
 
 #: commands/commands.c:202
 msgid "Remove MIME types from preference order"
-msgstr ""
+msgstr "Entferne MIME-Typen aus der Wunschreihenfolge"
 
 #: commands/commands.c:203
-#, fuzzy
-msgid "unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgid "unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unalternative_order { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
 
 #: commands/commands.c:206
 msgid "Remove attachment counting rules"
-msgstr ""
+msgstr "Entferne Regeln zum Zählen der Anhänge"
 
 #: commands/commands.c:207
-#, fuzzy
 msgid "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"
-msgstr "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"
+msgstr "unattachments { * | { + | - }<Anordnung> <MIME-Typ> [ <MIME-Type> ... ] }"
 
 #: commands/commands.c:210
-msgid "Remove MIME types from 'auto-view' list"
-msgstr ""
+msgid "Remove MIME types from 'auto_view' list"
+msgstr "Entferne MIM Typen von der 'auto_view' Liste"
 
 #: commands/commands.c:211
-#, fuzzy
-msgid "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgid "unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unauto_view { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
 
 #: commands/commands.c:214
 msgid "Remove a 'color' definition"
-msgstr ""
+msgstr "Entfernt eine 'color' Zuweisung"
 
 #: commands/commands.c:215
-#, fuzzy
 msgid "uncolor <object> { * | <pattern> ... }"
-msgstr "uncolor <object> { * | <pattern> ... }"
+msgstr "uncolor <Objekt> { * | <Muster> ... }"
 
 #: commands/commands.c:218
 msgid "Remove addresses from an address 'group'"
-msgstr ""
+msgstr "Entferne Adressen von einer Empfänger 'group'"
 
 #: commands/commands.c:219
-#, fuzzy
 msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
-msgstr "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
+msgstr "ungroup [ -group <Name> ... ] { * | -rx <regex> ... | -addr <Adresse> ... }"
 
 #: commands/commands.c:222
-msgid "Remove header from 'header-order' list"
-msgstr ""
+msgid "Remove header from 'hdr_order' list"
+msgstr "Entferne den Header von der 'hdr_order' Liste"
 
 #: commands/commands.c:223
-#, fuzzy
-msgid "unheader-order { * | <header> ... }"
-msgstr "unheader-order { * | <header> ... }"
+msgid "unhdr_order { * | <header> ... }"
+msgstr "unhdr_order { * | <Kopfzeile> ... }"
 
 #: commands/commands.c:226
-msgid "Remove a header from the 'header-order' list"
-msgstr ""
+msgid "Remove a header from the 'hdr_order' list"
+msgstr "Entfernt einen Header von der 'hdr_order' Liste"
 
 #: commands/commands.c:227
-#, fuzzy
 msgid "unignore { * | <string> ... }"
-msgstr "unignore { * | <string> ... }"
+msgstr "unignore { * | <Zeichenkette> ... }"
 
 #: commands/commands.c:230
 msgid "Remove address from the list of mailing lists"
-msgstr ""
+msgstr "Entferne Adresse von der Liste der Mailinglists"
 
 #: commands/commands.c:231
-#, fuzzy
-msgid "unlists { * | <regex> ... }"
-msgstr "unlists { * | <regex> ... }"
+msgid "unlists [ -group <name> ... ] { * | <regex> ... }"
+msgstr "unlists [ -group <Name> ... ] { * | <regex> ... }"
 
 #: commands/commands.c:234
 msgid "Remove mailboxes from the watch list"
-msgstr ""
+msgstr "Entferne Postfächer von der Beobachtungsliste"
 
 #: commands/commands.c:235
-#, fuzzy
 msgid "unmailboxes { * | <mailbox> ... }"
-msgstr "unmailboxes { * | <mailbox> ... }"
+msgstr "unmailboxes { * | <Postfach> ... }"
 
 #: commands/commands.c:238
 msgid "Disallow header-fields in mailto processing"
-msgstr ""
+msgstr "Unterdrücke bestimmte Header in 'mailto' Funktion"
 
 #: commands/commands.c:239
-#, fuzzy
-msgid "unmailto-allow { * | <header-field> ... }"
-msgstr "unmailto-allow { * | <header-field> ... }"
+msgid "unmailto_allow { * | <header-field> ... }"
+msgstr "unmailto_allow { * | <Kopfzeile> ... }"
 
 #: commands/commands.c:242
 msgid "Remove custom MIME-type handlers"
-msgstr ""
+msgstr "Entferne eigene MIME-Typ Verarbeitungen"
 
 #: commands/commands.c:243
-#, fuzzy
-msgid "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgid "unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unmime_lookup { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
 
 #: commands/commands.c:246
 msgid "Deprecated: Use 'uncolor'"
-msgstr ""
+msgstr "Veraltet: Nutze 'uncolor'"
 
 #: commands/commands.c:247
-#, fuzzy
 msgid "unmono <object> { * | <pattern> ... }"
-msgstr "unmono <object> { * | <pattern> ... }"
+msgstr "unmono <Objekt> { * | <Muster> ... }"
 
 #: commands/commands.c:250
-msgid "Remove a header previously added with 'my-header'"
-msgstr ""
+msgid "Remove a header previously added with 'my_hdr'"
+msgstr "Entfernt einen zuvor mit 'my_hdr' eingefügten Header"
 
 #: commands/commands.c:251
-#, fuzzy
-msgid "unmy-header { * | <field> ... }"
-msgstr "unmy-header { * | <field> ... }"
+msgid "unmy_hdr { * | <field> ... }"
+msgstr "unmy_hdr { * | <Feld> ... }"
 
 #: commands/commands.c:254
 msgid "Remove scoring rules for matching patterns"
-msgstr ""
+msgstr "Entferne Regeln zur Bewertung für Mustererkennung"
 
 #: commands/commands.c:255
-#, fuzzy
 msgid "unscore { * | <pattern> ... }"
-msgstr "unscore { * | <pattern> ... }"
+msgstr "unscore { * | <Muster> ... }"
 
 #: commands/commands.c:258
 msgid "Reset a config option to false/empty"
-msgstr ""
+msgstr "Setze eine Konfig-Option auf false/empty"
 
 #: commands/commands.c:259
-#, fuzzy
 msgid "unset <variable> [ <variable> ... ]"
-msgstr "unset <variable> [ <variable> ... ]"
+msgstr "unset <Variable> [ <Variable> ... ]"
 
 #: commands/commands.c:262
 msgid "Unset an environment variable"
-msgstr ""
+msgstr "Lösche Environment-Variable"
 
 #: commands/commands.c:263
-#, fuzzy
 msgid "unsetenv <variable>"
-msgstr "unsetenv <variable>"
+msgstr "unsetenv <Variable>"
 
 #: commands/commands.c:266
 msgid "Remove subject-rewriting rules"
-msgstr ""
+msgstr "Entferne Regeln zur Anpassung des Betreffs"
 
 #: commands/commands.c:267
-#, fuzzy
 msgid "unsubjectrx { * | <regex> }"
 msgstr "unsubjectrx { * | <regex> }"
 
 #: commands/commands.c:270
 msgid "Remove address from the list of subscribed mailing lists"
-msgstr ""
+msgstr "Entferne Adresse von Liste abonnierter Mailinglisten"
 
 #: commands/commands.c:271
-#, fuzzy
-msgid "unsubscribe { * | <regex> ... }"
-msgstr "unsubscribe { * | <regex> ... }"
+msgid "unsubscribe [ -group <name> ... ] { * | <regex> ... }"
+msgstr "unsubscribe [ -group <Name> ... ] { * | <regex> ... }"
 
 #: commands/commands.c:274
 msgid "Show NeoMutt version and build information"
-msgstr ""
+msgstr "Zeige NeoMutts Version und Kompilierungsinformationen"
 
 #: commands/commands.c:275
-#, fuzzy
 msgid "version"
-msgstr "version"
+msgstr "Version"
 
 #: commands/group.c:63
 msgid "-group: no group name"
@@ -1514,30 +1460,27 @@ msgstr "Markierungsumwandlung '%s' ist bereits  als '%s' registriert"
 
 #: compmbox/compress.c:65
 msgid "Define command to append to a compressed mailbox"
-msgstr ""
+msgstr "Definiere Kommando, um an komprimierte Mailbox anzuhängen"
 
 #: compmbox/compress.c:66
-#, fuzzy
 msgid "append-hook <regex> <shell-command>"
-msgstr "append-hook <regex> <shell-command>"
+msgstr "append-hook <regex> <Shell-Befehl>"
 
 #: compmbox/compress.c:69
 msgid "Define command to close a compressed mailbox"
-msgstr ""
+msgstr "Definiere Kommando zum Schliessen einer komprimierten Mailbox"
 
 #: compmbox/compress.c:70
-#, fuzzy
 msgid "close-hook <regex> <shell-command>"
-msgstr "close-hook <regex> <shell-command>"
+msgstr "close-hook <regex> <Shell-Befehl>"
 
 #: compmbox/compress.c:73
 msgid "Define command to open a compressed mailbox"
-msgstr ""
+msgstr "Defniere ein Kommando zum Öffnen einer komprimierten Mailbox"
 
 #: compmbox/compress.c:74
-#, fuzzy
 msgid "open-hook <regex> <shell-command>"
-msgstr "open-hook <regex> <shell-command>"
+msgstr "open-hook <regex> <Shell-Befehl>"
 
 #: compmbox/compress.c:228
 #, c-format
@@ -4992,179 +4935,160 @@ msgstr "Kann Temporärdatei nicht erzeugen"
 
 #: hooks/commands.c:43
 msgid "Run a command when switching to a matching account"
-msgstr ""
+msgstr "Führe bei Umschalten auf regex-übereinstimmenden Konto Kommandos aus"
 
 #: hooks/commands.c:44
-#, fuzzy
 msgid "account-hook <regex> <command>"
-msgstr "account-hook <regex> <command>"
+msgstr "account-hook <regex> <Befehl>"
 
 #: hooks/commands.c:47
 msgid "Define charset alias for languages"
-msgstr ""
+msgstr "Erstelle ein Zeichensatz-Alias für Sprachen"
 
 #: hooks/commands.c:48
-#, fuzzy
 msgid "charset-hook <alias> <charset>"
-msgstr "charset-hook <alias> <charset>"
+msgstr "charset-hook <Alias> <Zeichensatz>"
 
 #: hooks/commands.c:51
 msgid "Specify which keyid to use for recipients matching regex"
-msgstr ""
+msgstr "Bestimme für Empfänger zu verwendende KeyID per regex-Ausdruck"
 
 #: hooks/commands.c:52
-#, fuzzy
 msgid "crypt-hook <regex> <keyid>"
-msgstr "crypt-hook <regex> <keyid>"
+msgstr "crypt-hook <regex> <Schlüssel-ID>"
 
 #: hooks/commands.c:55
 msgid "Pattern rule to set the save location for outgoing mail"
-msgstr ""
+msgstr "Regel nach deren Muster ausgehende Mail gespeichert wird"
 
 #: hooks/commands.c:56
-#, fuzzy
 msgid "fcc-hook <pattern> <mailbox>"
-msgstr "fcc-hook <pattern> <mailbox>"
+msgstr "fcc-hook <Muster> <Postfach>"
 
 #: hooks/commands.c:59
 msgid "Equivalent to both 'fcc-hook' and 'save-hook'"
-msgstr ""
+msgstr "Entspricht beidem 'fcc-hook' und 'save-hook'"
 
 #: hooks/commands.c:60
-#, fuzzy
 msgid "fcc-save-hook <pattern> <mailbox>"
-msgstr "fcc-save-hook <pattern> <mailbox>"
+msgstr "fcc-save-hook <Muster> <Postfach>"
 
 #: hooks/commands.c:63
 msgid "Run a command upon entering a folder matching regex"
-msgstr ""
+msgstr "Führe Kommando bei Umschalten auf regex-übereinstimmenden Ordner aus"
 
 #: hooks/commands.c:64
-#, fuzzy
 msgid "folder-hook [ -noregex ] <regex> <command>"
-msgstr "folder-hook [ -noregex ] <regex> <command>"
+msgstr "folder-hook [ -noregex ] <regex> <Befehl>"
 
 #: hooks/commands.c:67
 msgid "Define a system-specific alias for a character set"
-msgstr ""
+msgstr "Erstelle ein systemspezifisches Alias für einen Zeichensatz"
 
 #: hooks/commands.c:68
-#, fuzzy
 msgid "iconv-hook <charset> <local-charset>"
-msgstr "iconv-hook <charset> <local-charset>"
+msgstr "iconv-hook <Zeichensatz> <Lokaler-Zeichensatz>"
 
 #: hooks/commands.c:71
 msgid "Create dynamic index format strings"
-msgstr ""
+msgstr "Erzeuge dynamische Formatierungsstrings für Index"
 
 #: hooks/commands.c:72
-#, fuzzy
 msgid "index-format-hook <name> [ ! ]<pattern> <format-string>"
-msgstr "index-format-hook <name> [ ! ]<pattern> <format-string>"
+msgstr "index-format-hook <Name> [ ! ]<Muster> <Formatierungszeichenkette>"
 
 #: hooks/commands.c:75
 msgid "On leaving a mailbox, move read messages matching a regex"
-msgstr ""
+msgstr "Beim Verlassen einer Mailbox bewege Gelesenes entsprechend regex"
 
 #: hooks/commands.c:76
-#, fuzzy
 msgid "mbox-hook [ -noregex ] <regex> <mailbox>"
-msgstr "mbox-hook [ -noregex ] <regex> <mailbox>"
+msgstr "mbox-hook [ -noregex ] <regex> <Postfach>"
 
 #: hooks/commands.c:79
 msgid "Run a command when viewing a message matching patterns"
-msgstr ""
+msgstr "Führe Kommmando bei Anzeige einer regex-übereinstimmenden Nachricht aus"
 
 #: hooks/commands.c:80
-#, fuzzy
 msgid "message-hook <pattern> <command>"
-msgstr "message-hook <pattern> <command>"
+msgstr "message-hook <Muster> <Befehl>"
 
 #: hooks/commands.c:83
 msgid "Run a command when replying to messages matching a pattern"
-msgstr ""
+msgstr "Führe Kommando bei Beantwortung regex-übereinstimmender Nachricht aus"
 
 #: hooks/commands.c:84
-#, fuzzy
 msgid "reply-hook <pattern> <command>"
-msgstr "reply-hook <pattern> <command>"
+msgstr "reply-hook <Muster> <Befehl>"
 
 #: hooks/commands.c:87
 msgid "Set default save folder for messages"
-msgstr ""
+msgstr "Setze Standardordner zum Speichern von Nachrichten"
 
 #: hooks/commands.c:88
-#, fuzzy
 msgid "save-hook <pattern> <mailbox>"
-msgstr "save-hook <pattern> <mailbox>"
+msgstr "save-hook <Muster> <Postfach>"
 
 #: hooks/commands.c:91
 msgid "Run a command when sending a message, new or reply, matching a pattern"
-msgstr ""
+msgstr "Führe Kommando bei Versand regex-übereinstimmender Nachricht (new/reply) aus"
 
 #: hooks/commands.c:92
-#, fuzzy
 msgid "send-hook <pattern> <command>"
-msgstr "send-hook <pattern> <command>"
+msgstr "send-hook <Muster> <Befehl>"
 
 #: hooks/commands.c:95
 msgid "Run command whenever a composed message is edited"
-msgstr ""
+msgstr "Führe Kommando aus, wenn eine erstellte Nachricht editiert wird"
 
 #: hooks/commands.c:96
-#, fuzzy
 msgid "send2-hook <pattern> <command>"
-msgstr "send2-hook <pattern> <command>"
+msgstr "send2-hook <Muster> <Befehl>"
 
 #: hooks/commands.c:99
 msgid "Run a command before NeoMutt exits"
-msgstr ""
+msgstr "Führe Kommando vor dem Beenden von NeoMutt aus"
 
 #: hooks/commands.c:100
-#, fuzzy
 msgid "shutdown-hook <command>"
-msgstr "shutdown-hook <command>"
+msgstr "shutdown-hook <Befehl>"
 
 #: hooks/commands.c:103
 msgid "Run a command when NeoMutt starts up"
-msgstr ""
+msgstr "Führe ein Kommando aus, wenn NeoMutt startet"
 
 #: hooks/commands.c:104
-#, fuzzy
 msgid "startup-hook <command>"
-msgstr "startup-hook <command>"
+msgstr "startup-hook <Befehl>"
 
 #: hooks/commands.c:107
 msgid "Run a command after a specified timeout or idle period"
-msgstr ""
+msgstr "Führe Kommando nach einer angegebenen Warte- oder Untätigkeitszeit aus"
 
 #: hooks/commands.c:108
-#, fuzzy
 msgid "timeout-hook <command>"
-msgstr "timeout-hook <command>"
+msgstr "timeout-hook <Befehl>"
 
 #: hooks/commands.c:111
 msgid "Remove hooks of a given type"
-msgstr ""
+msgstr "Entferne hooks eines bestimmten Typs"
 
 #: hooks/commands.c:112
-#, fuzzy
 msgid "unhook { * | <hook-type> }"
-msgstr "unhook { * | <hook-type> }"
+msgstr "unhook { * | <Hook-Typ> }"
 
 #: hooks/commands.c:116
 msgid "Show a list of all the hooks"
-msgstr ""
+msgstr "Zeige Liste aller hooks"
 
 #: hooks/commands.c:117
-#, fuzzy
 msgid "hooks"
 msgstr "hooks"
 
 #: hooks/dump.c:238
-#, fuzzy, c-format
+#, c-format
 msgid "%s: No Hooks are configured"
-msgstr "Kein PGP-Backend eingerichtet"
+msgstr "%s: Es sind keine Hooks konfiguriert"
 
 #: hooks/parse.c:576 hooks/parse.c:806
 msgid "current mailbox shortcut '^' is unset"
@@ -5311,21 +5235,19 @@ msgstr "Abonnement von %s abbestellt"
 
 #: imap/imap.c:180
 msgid "Subscribe to an IMAP mailbox"
-msgstr ""
+msgstr "Abonniere eine IMAP mailbox"
 
 #: imap/imap.c:181
-#, fuzzy
 msgid "subscribe-to <imap-folder-uri>"
-msgstr "subscribe-to <imap-folder-uri>"
+msgstr "subscribe-to <IMAP-Ordner-URI>"
 
 #: imap/imap.c:184
 msgid "Unsubscribe from an IMAP mailbox"
-msgstr ""
+msgstr "Melde von einer IMAP mailbox ab"
 
 #: imap/imap.c:185
-#, fuzzy
 msgid "unsubscribe-from <imap-folder-uri>"
-msgstr "unsubscribe-from <imap-folder-uri>"
+msgstr "unsubscribe-from <IMAP-Ordner-URI>"
 
 #: imap/imap.c:216
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -5960,57 +5882,51 @@ msgstr "Makroschleife gefunden"
 
 #: key/init.c:73
 msgid "Bind a key to a function"
-msgstr ""
+msgstr "Erstelle Tastenkombination für eine Funktion"
 
 #: key/init.c:74
-#, fuzzy
 msgid "bind <map>[,<map> ... ] <key> <function>"
-msgstr "bind <map>[,<map> ... ] <key> <function>"
+msgstr "bind <Schema>[,<Schema> ... ] <Taste> <Funktion>"
 
 #: key/init.c:77
 msgid "Execute a function"
-msgstr ""
+msgstr "Führe eine Funktion aus"
 
 #: key/init.c:78
-#, fuzzy
 msgid "exec <function> [ <function> ... ]"
-msgstr "exec <function> [ <function> ... ]"
+msgstr "exec <Funktion> [ <Funktion> ... ]"
 
 #: key/init.c:81
 msgid "Define a keyboard macro"
-msgstr ""
+msgstr "Definiere Tastatur Macro"
 
 #: key/init.c:82
-#, fuzzy
 msgid "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
-msgstr "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
+msgstr "macro <Menü>[,<Menü> ... ] <Taste> <Sequenz> [ <Beschreibung> ]"
 
 #: key/init.c:85
 msgid "Push a string into NeoMutt's input queue (simulate typing)"
-msgstr ""
+msgstr "Schiebt eine Zeichenkette in NeoMutts Eingabewarteschlange (simuliert Tippen)"
 
 #: key/init.c:86
-#, fuzzy
 msgid "push <string>"
-msgstr "push <string>"
+msgstr "push <Zeichenkette>"
 
 #: key/init.c:89
 msgid "Remove a key binding"
-msgstr ""
+msgstr "Entfernt Tastenzuordnung"
 
 #: key/init.c:90
-#, fuzzy
 msgid "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
-msgstr "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgstr "unbind { * | <Menü>[,<Menü> ... ] } [ <Taste> ]"
 
 #: key/init.c:93
 msgid "Remove a keyboard 'macro'"
-msgstr ""
+msgstr "Entferne ein Tastatur 'macro'"
 
 #: key/init.c:94
-#, fuzzy
 msgid "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
-msgstr "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgstr "unmacro { * | <Menü>[,<Menü> ... ] } [ <Taste> ]"
 
 #: key/init.c:188
 msgid "Abort key is not set, defaulting to Ctrl-G"
@@ -6028,21 +5944,19 @@ msgstr "Konnte Lua-Datei nicht laden: %s"
 
 #: lua/commands.c:147
 msgid "Run a Lua expression or call a Lua function"
-msgstr ""
+msgstr "Starte einen Lua Ausdruck oder rufe Lua Funktion auf"
 
 #: lua/commands.c:148
-#, fuzzy
 msgid "lua '<lua-commands>'"
-msgstr "lua '<lua-commands>'"
+msgstr "lua '<lua-Befehle>'"
 
 #: lua/commands.c:151
 msgid "Execute a Lua script file"
-msgstr ""
+msgstr "Führe Lua Skript Datei aus"
 
 #: lua/commands.c:152
-#, fuzzy
 msgid "lua-source <file>"
-msgstr "lua-source <file>"
+msgstr "lua-source <Datei>"
 
 #: lua/lua.c:448
 msgid "Error: Couldn't load the lua interpreter"
@@ -6347,9 +6261,9 @@ msgid "Not enough subexpressions for template"
 msgstr "Nicht genügend Unterausdrücke für Vorlage"
 
 #: mutt_config.c:219
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown expando: %%{%s}"
-msgstr "Unbekanntes Expando: %%%.1s"
+msgstr "Unbekanntes Expando: %%{%s}"
 
 #: mutt_config.c:242
 #, c-format
@@ -8878,21 +8792,19 @@ msgstr "Ungültige Serverantwort"
 
 #: sidebar/sidebar.c:52
 msgid "Pin a mailbox in the sidebar (keep visible)"
-msgstr ""
+msgstr "Fixiere eine Mailbox in der Seitenliste (bleibt sichtbar)"
 
 #: sidebar/sidebar.c:53
-#, fuzzy
-msgid "sidebar-pin <mailbox> [ <mailbox> ... ]"
-msgstr "sidebar-pin <mailbox> [ <mailbox> ... ]"
+msgid "sidebar_pin <mailbox> [ <mailbox> ... ]"
+msgstr "sidebar_pin <Postfach> [ <Postfach> ... ]"
 
 #: sidebar/sidebar.c:56
 msgid "Unpin a previously pinned mailbox in the sidebar"
-msgstr ""
+msgstr "Löse eine zuvor in der Seitenleiste angepinnte mailbox"
 
 #: sidebar/sidebar.c:57
-#, fuzzy
-msgid "sidebar-unpin { * | <mailbox> ... }"
-msgstr "sidebar-unpin { * | <mailbox> ... }"
+msgid "sidebar_unpin { * | <mailbox> ... }"
+msgstr "sidebar_unpin { * | <Postfach> ... }"
 
 #. L10N: Help Overview -- `neomutt -h`
 #. The modes are: help, info, send, tui
