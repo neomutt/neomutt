@@ -6,14 +6,14 @@
 # Fatih Demir <kabalak@gtranslator.org>, 2001
 # Recai Oktaş <roktas@debian.org>, 2006
 # Perry Thompson <contact@ryper.org>, 2018
-# Emir SARI <emir_sari@icloud.com>, 2020-2025
+# Emir SARI <emir_sari@icloud.com>, 2020-2026
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-12-30 23:28+0000\n"
-"PO-Revision-Date: 2025-11-25 22:00+0300\n"
+"PO-Revision-Date: 2026-01-09 15:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -936,237 +936,213 @@ msgstr "%s: Böyle bir öznitelik yok"
 
 #: commands/commands.c:62
 msgid "Define an alias (name to email address)"
-msgstr ""
+msgstr "Arma tanımla (e-posta adresi adı)"
 
 #: commands/commands.c:63
-#, fuzzy
 msgid "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
-msgstr "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
+msgstr "alias [ -group <ad> ... ] <düğme> <adres> [, <adres> ... ]"
 
 #: commands/commands.c:66
 msgid "Define a list of alternate email addresses for the user"
-msgstr ""
+msgstr "Kullanıcı için alternatif e-posta adresleri listesi tanımla"
 
 #: commands/commands.c:67
-#, fuzzy
 msgid "alternates [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "alternates [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgstr "alternates [ -group <ad> ... ] <d-ifade> [ <d-ifade> ... ]"
 
 #: commands/commands.c:70
 msgid "Set preference order for multipart alternatives"
-msgstr ""
+msgstr "Çok kısımlı alternatifler için tercih sırası ayarla"
 
 #: commands/commands.c:71
-#, fuzzy
 msgid "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "alternative-order <mime-türü>[/<mime-alt-türü> ] [ <mime-t>[/<mime-a-t> ] ... ]"
 
 #: commands/commands.c:74
 msgid "Set attachment counting rules"
-msgstr ""
+msgstr "İlişik sayım kurallarını ayarla"
 
 #: commands/commands.c:75
-#, fuzzy
 msgid "attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"
-msgstr "attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"
+msgstr "attachments { + | - }<eğilim> <mime-türü> [ <mime-türü> ... ] | ?"
 
 #: commands/commands.c:78
 msgid "Automatically display specified MIME types inline"
-msgstr ""
+msgstr "Belirtilen MIME türlerini kendiliğinden satır için görüntüle"
 
 #: commands/commands.c:79
-#, fuzzy
 msgid "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "auto-view <mime-türü>[/<mime-alt-türü> ] [ <mime-t>[/<mime-a-t> ] ... ]"
 
 #: commands/commands.c:82
 msgid "Change NeoMutt's current working directory"
-msgstr ""
+msgstr "NeoMutt'ın geçerli çalışma dizinini değiştir"
 
 #: commands/commands.c:83
-#, fuzzy
 msgid "cd [ <directory> ]"
-msgstr "cd [ <directory> ]"
+msgstr "cd [ <dizin> ]"
 
 #: commands/commands.c:86
 msgid "Define colors for the user interface"
-msgstr ""
+msgstr "Kullanıcı arayüzü renklerini tanımla"
 
 #: commands/commands.c:87
-#, fuzzy
 msgid "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
-msgstr "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
+msgstr "color <nesne> [ <öznitelik> ... ] <ön-plan> <arka-plan> [ <d-ifade> [ <sayı> ]]"
 
 #: commands/commands.c:90
 msgid "Print a message to the status line"
-msgstr ""
+msgstr "Durum çubuğuna bir ileti yazdır"
 
 #: commands/commands.c:91
-#, fuzzy
 msgid "echo <message>"
-msgstr "echo <message>"
+msgstr "echo <ileti>"
 
 #: commands/commands.c:94
 msgid "Stop reading current config file"
-msgstr ""
+msgstr "Geçerli yapılandırma dosyasını okumayı durdur"
 
 #: commands/commands.c:95
-#, fuzzy
 msgid "finish "
 msgstr "finish "
 
 #: commands/commands.c:98
 msgid "Add addresses to an address group"
-msgstr ""
+msgstr "Adres grubuna adresler ekle"
 
 #: commands/commands.c:99
-#, fuzzy
 msgid "group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"
-msgstr "group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"
+msgstr "group [ -group <ad> ... ] { -rx <d-ifade> ... | -addr <adres> ... }"
 
 #: commands/commands.c:102
 msgid "Define custom order of headers displayed"
-msgstr ""
+msgstr "Görüntülenen üstbilgi sırasını tanımla"
 
 #: commands/commands.c:103
-#, fuzzy
 msgid "header-order <header> [ <header> ... ]"
-msgstr "header-order <header> [ <header> ... ]"
+msgstr "header-order <üstbilgi> [ <üstbilgi> ... ]"
 
 #: commands/commands.c:106
 msgid "Conditionally include config commands if symbol defined"
-msgstr ""
+msgstr "Sembol tanımlıysa koşullu olarak yapılandırma komutları içer"
 
 #: commands/commands.c:107
-#, fuzzy
 msgid "ifdef <symbol> '<config-command> [ <args> ... ]'"
-msgstr "ifdef <symbol> '<config-command> [ <args> ... ]'"
+msgstr "ifdef <sembol> '<yapılandırma-komutu> [ <argümanlar> ... ]'"
 
 #: commands/commands.c:110
 msgid "Conditionally include if symbol is not defined"
-msgstr ""
+msgstr "Sembol tanımlı değilse koşullu olarak içer"
 
 #: commands/commands.c:111
-#, fuzzy
 msgid "ifndef <symbol> '<config-command> [ <args> ... ]'"
-msgstr "ifndef <symbol> '<config-command> [ <args> ... ]'"
+msgstr "ifndef <sembol> '<yapılandırma-komutu> [ <argümanlar> ... ]'"
 
 #: commands/commands.c:114
 msgid "Hide specified headers when displaying messages"
-msgstr ""
+msgstr "İletileri görüntülerken belirli üstbilgileri gizle"
 
 #: commands/commands.c:115
-#, fuzzy
 msgid "ignore { * | <string> ... }"
-msgstr "ignore { * | <string> ... }"
+msgstr "ignore { * | <dizi> ... }"
 
 #: commands/commands.c:118
 msgid "Add address to the list of mailing lists"
-msgstr ""
+msgstr "Posta listeleri listesine adres ekle"
 
 #: commands/commands.c:119
-#, fuzzy
 msgid "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgstr "lists [ -group <ad> ... ] <d-ifade> [ <d-ifade> ... ]"
 
 #: commands/commands.c:122
 msgid "Define a list of mailboxes to watch"
-msgstr ""
+msgstr "İzlenecek posta kutuları listesi tanımla"
 
 #: commands/commands.c:123
-#, fuzzy
 msgid "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
-msgstr "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
+msgstr ""
+"mailboxes [[ -label <etiket> ] | -nolabel ] [[ -notify | -nonotify ]\n"
+"  [ -poll | -nopoll ] <kutu> ] [ ... ]"
 
 #: commands/commands.c:126
 msgid "Permit specific header-fields in mailto URL processing"
-msgstr ""
+msgstr "mailto URL işlemesi için belirli üstbilgi alanlarına izin ver"
 
 #: commands/commands.c:127
-#, fuzzy
 msgid "mailto-allow { * | <header-field> ... }"
-msgstr "mailto-allow { * | <header-field> ... }"
+msgstr "mailto-allow { * | <üstbilgi-alanı> ... }"
 
 #: commands/commands.c:130
 msgid "Map specified MIME types/subtypes to display handlers"
-msgstr ""
+msgstr "Görüntülenen üstbilgilere belirli MIME tür/alt türlerini eşlemle"
 
 #: commands/commands.c:131
-#, fuzzy
 msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "mime-lookup <mime-türü>[/<mime-alt-türü> ] [ <mime-t>[/<mime-a-t> ] ... ]"
 
 #: commands/commands.c:134
 msgid "Deprecated: Use 'color'"
-msgstr ""
+msgstr "Artık kullanılmıyor: Yerine \"color\" kullanın"
 
 #: commands/commands.c:135
-#, fuzzy
 msgid "mono <object> <attribute> [ <pattern> | <regex> ]"
-msgstr "mono <object> <attribute> [ <pattern> | <regex> ]"
+msgstr "mono <nesne> <öznitelik> [ <dizgi> | <d-ifade> ]"
 
 #: commands/commands.c:138
 msgid "Add a custom header to outgoing messages"
-msgstr ""
+msgstr "Giden iletilere özel üstbilgi ekle"
 
 #: commands/commands.c:139
-#, fuzzy
 msgid "my-header <string>"
-msgstr "my-header <string>"
+msgstr "my-header <dizi>"
 
 #: commands/commands.c:142
 msgid "Define a list of labelled mailboxes to watch"
-msgstr ""
+msgstr "İzlenecek etiketli bir posta kutusu listesi tanımla"
 
 #: commands/commands.c:143
-#, fuzzy
 msgid "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
-msgstr "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
+msgstr "named-mailboxes <açıklama> <kutu> [ <açıklama> <kutu> ... ]"
 
 #: commands/commands.c:146
 msgid "Remove a spam detection rule"
-msgstr ""
+msgstr "İstenmeyen posta algılama kuralını kaldır"
 
 #: commands/commands.c:147
-#, fuzzy
 msgid "nospam { * | <regex> }"
-msgstr "nospam { * | <regex> }"
+msgstr "nospam { * | <d-ifade> }"
 
 #: commands/commands.c:150
 msgid "Reset a config option to its initial value"
-msgstr ""
+msgstr "Yapılandırma seçeneğini başlangıç değerine sıfırla"
 
 #: commands/commands.c:151
-#, fuzzy
 msgid "reset <variable> [ <variable> ... ]"
-msgstr "reset <variable> [ <variable> ... ]"
+msgstr "reset <değişken> [ <değişken> ... ]"
 
 #: commands/commands.c:154
 msgid "Set a score value on emails matching a pattern"
-msgstr ""
+msgstr "Dizgiyle eşleşen iletilere bir puan değeri ayarla"
 
 #: commands/commands.c:155
-#, fuzzy
 msgid "score <pattern> <value>"
-msgstr "score <pattern> <value>"
+msgstr "score <dizgi> <değer>"
 
 #: commands/commands.c:158
 msgid "Set a config variable"
-msgstr ""
+msgstr "Yapılandırma değişkeni ayarla"
 
 #: commands/commands.c:159
-#, fuzzy
 msgid "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"
-msgstr "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"
+msgstr "set { [ no | inv | & ] <değişken> [?] | <değişken> [=|+=|-=] value } [ ... ]"
 
 #: commands/commands.c:162
 msgid "Set an environment variable"
-msgstr ""
+msgstr "Çevre değişkeni ayarla"
 
 #: commands/commands.c:163
-#, fuzzy
 msgid "setenv { <variable>? | <variable> <value> }"
-msgstr "setenv { <variable>? | <variable> <value> }"
+msgstr "setenv { <değişken>? | <değişken> <değer> }"
 
 #: commands/commands.c:166
 msgid "Read and execute commands from a config file"
@@ -2644,7 +2620,7 @@ msgstr "<öntanımlı>"
 
 #: envelope/window.c:461
 msgid "Encrypt with: "
-msgstr "Şifreleme anahtarı: "
+msgstr "Şununla şifrele: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
@@ -5956,57 +5932,51 @@ msgstr "Makro döngüsü algılandı"
 
 #: key/init.c:73
 msgid "Bind a key to a function"
-msgstr ""
+msgstr "İşleve düğme bağıntıla"
 
 #: key/init.c:74
-#, fuzzy
 msgid "bind <map>[,<map> ... ] <key> <function>"
-msgstr "bind <map>[,<map> ... ] <key> <function>"
+msgstr "bind <eşlem> [,<eşlem> ... ] <düğme> <işlev>"
 
 #: key/init.c:77
 msgid "Execute a function"
-msgstr ""
+msgstr "İşlev yürüt"
 
 #: key/init.c:78
-#, fuzzy
 msgid "exec <function> [ <function> ... ]"
-msgstr "exec <function> [ <function> ... ]"
+msgstr "exec <işlev> [ <işlev> ... ]"
 
 #: key/init.c:81
 msgid "Define a keyboard macro"
-msgstr ""
+msgstr "Klavye makrosu tanımla"
 
 #: key/init.c:82
-#, fuzzy
 msgid "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
-msgstr "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
+msgstr "macro <menü> [,<menü> ... ] <düğme> <sekans> [ <açıklama> ]"
 
 #: key/init.c:85
 msgid "Push a string into NeoMutt's input queue (simulate typing)"
-msgstr ""
+msgstr "NeoMutt'ın girdi kuyruğuna dizi it (yazmayı benzet)"
 
 #: key/init.c:86
-#, fuzzy
 msgid "push <string>"
-msgstr "push <string>"
+msgstr "push <dizi>"
 
 #: key/init.c:89
 msgid "Remove a key binding"
-msgstr ""
+msgstr "Düğme bağıntısını kaldır"
 
 #: key/init.c:90
-#, fuzzy
 msgid "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
-msgstr "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgstr "unbind { * | <menü> [,<menü> ... ] } [ <düğme> ]"
 
 #: key/init.c:93
 msgid "Remove a keyboard 'macro'"
-msgstr ""
+msgstr "Klavye \"makrosunu\" kaldır"
 
 #: key/init.c:94
-#, fuzzy
 msgid "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
-msgstr "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgstr "unmacro { * | <menü> [,<menü> ... ] } [ <düğme> ]"
 
 #: key/init.c:188
 msgid "Abort key is not set, defaulting to Ctrl-G"
@@ -6024,21 +5994,19 @@ msgstr "Lua kaynağı kaynak alınamadı: %s"
 
 #: lua/commands.c:147
 msgid "Run a Lua expression or call a Lua function"
-msgstr ""
+msgstr "Lua işlevi çağır veya Lua ifadesi çalıştır"
 
 #: lua/commands.c:148
-#, fuzzy
 msgid "lua '<lua-commands>'"
-msgstr "lua '<lua-commands>'"
+msgstr "lua '<lua-komutları>'"
 
 #: lua/commands.c:151
 msgid "Execute a Lua script file"
-msgstr ""
+msgstr "Lua betiği yürüt"
 
 #: lua/commands.c:152
-#, fuzzy
 msgid "lua-source <file>"
-msgstr "lua-source <file>"
+msgstr "lua-source <dosya>"
 
 #: lua/lua.c:448
 msgid "Error: Couldn't load the lua interpreter"
@@ -6343,9 +6311,9 @@ msgid "Not enough subexpressions for template"
 msgstr "Şablon için yetersiz alt ifadeler"
 
 #: mutt_config.c:219
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown expando: %%{%s}"
-msgstr "Geçersiz expando: %%%.1s"
+msgstr "Geçersiz expando: %%{%s}"
 
 #: mutt_config.c:242
 #, c-format
@@ -8874,21 +8842,19 @@ msgstr "Geçersiz sunucu yanıtı"
 
 #: sidebar/sidebar.c:52
 msgid "Pin a mailbox in the sidebar (keep visible)"
-msgstr ""
+msgstr "Kenar çubuğuna posta kutusu sabitle (görünür tut)"
 
 #: sidebar/sidebar.c:53
-#, fuzzy
 msgid "sidebar-pin <mailbox> [ <mailbox> ... ]"
-msgstr "sidebar-pin <mailbox> [ <mailbox> ... ]"
+msgstr "sidebar-pin <kutu> [ <kutu> ... ]"
 
 #: sidebar/sidebar.c:56
 msgid "Unpin a previously pinned mailbox in the sidebar"
-msgstr ""
+msgstr "Kenar çubuğuna sabitlenmiş posta kutusunu çıkar"
 
 #: sidebar/sidebar.c:57
-#, fuzzy
 msgid "sidebar-unpin { * | <mailbox> ... }"
-msgstr "sidebar-unpin { * | <mailbox> ... }"
+msgstr "sidebar-unpin { * | <kutu> ... }"
 
 #. L10N: Help Overview -- `neomutt -h`
 #. The modes are: help, info, send, tui
@@ -9448,6 +9414,3 @@ msgstr "Derleme seçenekleri:"
 #: version.c:678
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
-
-#~ msgid "alias: no address"
-#~ msgstr "arma: Adres yok"
