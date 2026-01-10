@@ -160,6 +160,8 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
   if (!n)
     return false;
 
+  n->modules = modules;
+
   ARRAY_INIT(&n->accounts);
   n->notify = notify_new();
 
@@ -180,6 +182,16 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
 }
 
 /**
+ * cleanup_modules - Clean up each of the Modules
+ * @param n NeoMutt
+ */
+static void cleanup_modules(struct NeoMutt *n)
+{
+  if (!n || !n->modules)
+    return;
+}
+
+/**
  * neomutt_cleanup - Clean up NeoMutt and Modules
  * @param n NeoMutt
  */
@@ -187,6 +199,8 @@ void neomutt_cleanup(struct NeoMutt *n)
 {
   if (!n)
     return;
+
+  cleanup_modules(n);
 }
 
 /**
