@@ -136,7 +136,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
       {
         char **tfiles = NULL;
         *cdata->numfiles = 1;
-        tfiles = MUTT_MEM_CALLOC(*cdata->numfiles, char *);
+        tfiles = mutt_mem_calloc_T(*cdata->numfiles, char *);
         buf_expand_path_regex(wdata->buffer, false);
         tfiles[0] = buf_strdup(wdata->buffer);
         *cdata->files = tfiles;
@@ -149,7 +149,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
     if (wdata->state->lastchar >= wdata->state->wbuflen)
     {
       wdata->state->wbuflen = wdata->state->lastchar + 20;
-      MUTT_MEM_REALLOC(&wdata->state->wbuf, wdata->state->wbuflen, wchar_t);
+      mutt_mem_realloc_T(&wdata->state->wbuf, wdata->state->wbuflen, wchar_t);
     }
     memmove(wdata->state->wbuf + wdata->state->curpos + 1,
             wdata->state->wbuf + wdata->state->curpos,

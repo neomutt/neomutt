@@ -52,7 +52,7 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   if (!cs)
     return NULL;
 
-  struct NeoMutt *n = MUTT_MEM_CALLOC(1, struct NeoMutt);
+  struct NeoMutt *n = mutt_mem_calloc_T(1, struct NeoMutt);
 
   ARRAY_INIT(&n->accounts);
   n->notify = notify_new();

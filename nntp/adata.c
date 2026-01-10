@@ -64,11 +64,11 @@ void nntp_adata_free(void **ptr)
  */
 struct NntpAccountData *nntp_adata_new(struct Connection *conn)
 {
-  struct NntpAccountData *adata = MUTT_MEM_CALLOC(1, struct NntpAccountData);
+  struct NntpAccountData *adata = mutt_mem_calloc_T(1, struct NntpAccountData);
   adata->conn = conn;
   adata->groups_hash = mutt_hash_new(1009, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(adata->groups_hash, nntp_hashelem_free, 0);
   adata->groups_max = 16;
-  adata->groups_list = MUTT_MEM_MALLOC(adata->groups_max, struct NntpMboxData *);
+  adata->groups_list = mutt_mem_malloc_T(adata->groups_max, struct NntpMboxData *);
   return adata;
 }

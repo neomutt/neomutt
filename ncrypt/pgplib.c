@@ -131,7 +131,7 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
 
   for (; up; up = up->next)
   {
-    *lp = MUTT_MEM_CALLOC(1, struct PgpUid);
+    *lp = mutt_mem_calloc_T(1, struct PgpUid);
     (*lp)->trust = up->trust;
     (*lp)->flags = up->flags;
     (*lp)->addr = mutt_str_dup(up->addr);

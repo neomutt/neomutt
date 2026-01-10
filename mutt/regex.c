@@ -60,9 +60,9 @@ struct Regex *mutt_regex_compile(const char *str, uint16_t flags)
 {
   if (!str || (*str == '\0'))
     return NULL;
-  struct Regex *rx = MUTT_MEM_CALLOC(1, struct Regex);
+  struct Regex *rx = mutt_mem_calloc_T(1, struct Regex);
   rx->pattern = mutt_str_dup(str);
-  rx->regex = MUTT_MEM_CALLOC(1, regex_t);
+  rx->regex = mutt_mem_calloc_T(1, regex_t);
   if (REG_COMP(rx->regex, str, flags) != 0)
     mutt_regex_free(&rx);
 
@@ -83,9 +83,9 @@ struct Regex *mutt_regex_new(const char *str, uint32_t flags, struct Buffer *err
     return NULL;
 
   uint16_t rflags = 0;
-  struct Regex *reg = MUTT_MEM_CALLOC(1, struct Regex);
+  struct Regex *reg = mutt_mem_calloc_T(1, struct Regex);
 
-  reg->regex = MUTT_MEM_CALLOC(1, regex_t);
+  reg->regex = mutt_mem_calloc_T(1, regex_t);
   reg->pattern = mutt_str_dup(str);
 
   /* Should we use smart case matching? */
@@ -220,7 +220,7 @@ bool mutt_regexlist_match(struct RegexList *rl, const char *str)
  */
 struct RegexNode *mutt_regexlist_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct RegexNode);
+  return mutt_mem_calloc_T(1, struct RegexNode);
 }
 
 /**
@@ -386,7 +386,7 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, const char *str)
     /* If this pattern needs more matches, expand pmatch. */
     if (np->nmatch > nmatch)
     {
-      MUTT_MEM_REALLOC(&pmatch, np->nmatch, regmatch_t);
+      mutt_mem_realloc_T(&pmatch, np->nmatch, regmatch_t);
       nmatch = np->nmatch;
     }
 
@@ -491,7 +491,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
     /* If this pattern needs more matches, expand pmatch. */
     if (np->nmatch > nmatch)
     {
-      MUTT_MEM_REALLOC(&pmatch, np->nmatch, regmatch_t);
+      mutt_mem_realloc_T(&pmatch, np->nmatch, regmatch_t);
       nmatch = np->nmatch;
     }
 
@@ -554,7 +554,7 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
  */
 struct Replace *mutt_replacelist_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct Replace);
+  return mutt_mem_calloc_T(1, struct Replace);
 }
 
 /**

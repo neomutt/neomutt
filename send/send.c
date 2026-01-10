@@ -579,7 +579,7 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
   mutt_parse_mime_message(e, msg->fp);
   mutt_message_hook(m, e, CMD_MESSAGE_HOOK);
 
-  actx = MUTT_MEM_CALLOC(1, struct AttachCtx);
+  actx = mutt_mem_calloc_T(1, struct AttachCtx);
   actx->email = e;
   actx->fp_root = msg->fp;
 
@@ -1630,7 +1630,7 @@ static bool search_attach_keyword(char *filename, struct ConfigSubset *sub)
   if (!fp_att)
     return false;
 
-  char *inputline = MUTT_MEM_MALLOC(1024, char);
+  char *inputline = mutt_mem_malloc_T(1024, char);
   bool found = false;
   while (!feof(fp_att) && fgets(inputline, 1024, fp_att))
   {

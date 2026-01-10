@@ -127,7 +127,7 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
  */
 struct ConfigSet *cs_new(size_t size)
 {
-  struct ConfigSet *cs = MUTT_MEM_CALLOC(1, struct ConfigSet);
+  struct ConfigSet *cs = mutt_mem_calloc_T(1, struct ConfigSet);
 
   cs->hash = mutt_hash_new(size, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(cs->hash, cs_hashelem_free, (intptr_t) cs);
@@ -327,7 +327,7 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[])
 struct HashElem *cs_create_variable(const struct ConfigSet *cs,
                                     struct ConfigDef *cdef, struct Buffer *err)
 {
-  struct ConfigDef *cdef_copy = MUTT_MEM_CALLOC(1, struct ConfigDef);
+  struct ConfigDef *cdef_copy = mutt_mem_calloc_T(1, struct ConfigDef);
   cdef_copy->name = mutt_str_dup(cdef->name);
   cdef_copy->type = cdef->type | D_INTERNAL_FREE_CONFIGDEF;
   cdef_copy->initial = cdef->initial;
@@ -363,7 +363,7 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
   if (CONFIG_TYPE(he_parent->type) == DT_MYVAR)
     return NULL;
 
-  struct Inheritance *i = MUTT_MEM_CALLOC(1, struct Inheritance);
+  struct Inheritance *i = mutt_mem_calloc_T(1, struct Inheritance);
   i->parent = he_parent;
   i->name = mutt_str_dup(name);
 

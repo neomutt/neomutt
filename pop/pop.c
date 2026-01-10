@@ -523,7 +523,7 @@ void pop_fetch_mail(void)
   int last = 0, msgs = 0, bytes = 0, rset = 0, rc;
   struct ConnAccount cac = { { 0 } };
 
-  char *p = MUTT_MEM_CALLOC(strlen(c_pop_host) + 7, char);
+  char *p = mutt_mem_calloc_T(strlen(c_pop_host) + 7, char);
   char *url = p;
   if (url_check_scheme(c_pop_host) == U_UNKNOWN)
   {

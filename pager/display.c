@@ -436,7 +436,7 @@ static void match_body_patterns(char *pat, struct Line *lines, int line_num)
         }
         if (++(lines[line_num].syntax_arr_size) > 1)
         {
-          MUTT_MEM_REALLOC(&(lines[line_num].syntax),
+          mutt_mem_realloc_T(&(lines[line_num].syntax),
                            lines[line_num].syntax_arr_size, struct TextSyntax);
           // Zero the new entry
           const int index = lines[line_num].syntax_arr_size - 1;
@@ -597,7 +597,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
       if (lines[i].syntax_arr_size)
       {
         lines[i].syntax_arr_size = 0;
-        MUTT_MEM_REALLOC(&(lines[line_num].syntax), 1, struct TextSyntax);
+        mutt_mem_realloc_T(&(lines[line_num].syntax), 1, struct TextSyntax);
       }
       lines[i++].cid = MT_COLOR_SIGNATURE;
     }
@@ -665,7 +665,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
           {
             if (++(lines[line_num].syntax_arr_size) > 1)
             {
-              MUTT_MEM_REALLOC(&(lines[line_num].syntax),
+              mutt_mem_realloc_T(&(lines[line_num].syntax),
                                lines[line_num].syntax_arr_size, struct TextSyntax);
               // Zero the new entry
               const int index = lines[line_num].syntax_arr_size - 1;
@@ -1081,13 +1081,13 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   if (*lines_used == *lines_max)
   {
     *lines_max += LINES;
-    MUTT_MEM_REALLOC(lines, *lines_max, struct Line);
+    mutt_mem_realloc_T(lines, *lines_max, struct Line);
     for (ch = *lines_used; ch < *lines_max; ch++)
     {
       memset(&((*lines)[ch]), 0, sizeof(struct Line));
       (*lines)[ch].cid = -1;
       (*lines)[ch].search_arr_size = -1;
-      (*lines)[ch].syntax = MUTT_MEM_CALLOC(1, struct TextSyntax);
+      (*lines)[ch].syntax = mutt_mem_calloc_T(1, struct TextSyntax);
       ((*lines)[ch].syntax)[0].first = -1;
       ((*lines)[ch].syntax)[0].last = -1;
     }
@@ -1209,7 +1209,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     {
       if (++(cur_line->search_arr_size) > 1)
       {
-        MUTT_MEM_REALLOC(&(cur_line->search), cur_line->search_arr_size, struct TextSyntax);
+        mutt_mem_realloc_T(&(cur_line->search), cur_line->search_arr_size, struct TextSyntax);
         // Zero the new entry
         const int index = cur_line->search_arr_size - 1;
         struct TextSyntax *ts = &cur_line->search[index];
@@ -1217,7 +1217,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       }
       else
       {
-        cur_line->search = MUTT_MEM_CALLOC(1, struct TextSyntax);
+        cur_line->search = mutt_mem_calloc_T(1, struct TextSyntax);
       }
       pmatch[0].rm_so += offset;
       pmatch[0].rm_eo += offset;

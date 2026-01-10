@@ -151,7 +151,7 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
 
   if (savelen)
   {
-    savebuf = MUTT_MEM_CALLOC(savelen, wchar_t);
+    savebuf = mutt_mem_calloc_T(savelen, wchar_t);
     wmemcpy(savebuf, es->wbuf + es->curpos, savelen);
   }
 
@@ -164,7 +164,7 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
     if (es->curpos + savelen > es->wbuflen)
     {
       es->wbuflen = es->curpos + savelen;
-      MUTT_MEM_REALLOC(&es->wbuf, es->wbuflen, wchar_t);
+      mutt_mem_realloc_T(&es->wbuf, es->wbuflen, wchar_t);
     }
 
     /* Restore suffix */

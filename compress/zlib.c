@@ -70,7 +70,7 @@ void zlib_cdata_free(struct ZlibComprData **ptr)
  */
 static struct ZlibComprData *zlib_cdata_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct ZlibComprData);
+  return mutt_mem_calloc_T(1, struct ZlibComprData);
 }
 
 /**

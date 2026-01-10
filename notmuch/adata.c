@@ -57,7 +57,7 @@ void nm_adata_free(void **ptr)
  */
 struct NmAccountData *nm_adata_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct NmAccountData);
+  return mutt_mem_calloc_T(1, struct NmAccountData);
 }
 
 /**

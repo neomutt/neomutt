@@ -132,7 +132,7 @@ static void decode_one(char *dest, char *src)
  */
 static struct Rfc2231Parameter *parameter_new(void)
 {
-  return MUTT_MEM_CALLOC(1, struct Rfc2231Parameter);
+  return mutt_mem_calloc_T(1, struct Rfc2231Parameter);
 }
 
 /**
@@ -210,7 +210,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
 
       const size_t vl = strlen(par->value);
 
-      MUTT_MEM_REALLOC(&value, l + vl + 1, char);
+      mutt_mem_realloc_T(&value, l + vl + 1, char);
       strcpy(value + l, par->value);
       l += vl;
 

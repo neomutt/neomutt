@@ -343,7 +343,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
       {
         size_t blen = mutt_str_len(buf);
 
-        MUTT_MEM_REALLOC(&this_one, this_one_len + blen + 1, char);
+        mutt_mem_realloc_T(&this_one, this_one_len + blen + 1, char);
         mutt_strn_copy(this_one + this_one_len, buf, blen, blen + 1);
         this_one_len += blen;
       }

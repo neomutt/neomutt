@@ -310,7 +310,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
       if (i >= wbuflen)
       {
         wbuflen = i + 20;
-        MUTT_MEM_REALLOC(&wbuf, wbuflen, wchar_t);
+        mutt_mem_realloc_T(&wbuf, wbuflen, wchar_t);
       }
       wbuf[i++] = wc;
     }
@@ -319,7 +319,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
       if (i >= wbuflen)
       {
         wbuflen = i + 20;
-        MUTT_MEM_REALLOC(&wbuf, wbuflen, wchar_t);
+        mutt_mem_realloc_T(&wbuf, wbuflen, wchar_t);
       }
       wbuf[i++] = ReplacementChar;
       buf++;
@@ -457,7 +457,7 @@ int mutt_mb_filter_unprintable(char **s)
   FREE(s);
 
   if (buf_is_empty(buf))
-    *s = MUTT_MEM_CALLOC(1, char); // Fake empty string
+    *s = mutt_mem_calloc_T(1, char); // Fake empty string
   else
     *s = buf_strdup(buf);
 

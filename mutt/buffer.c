@@ -303,7 +303,7 @@ bool buf_is_empty(const struct Buffer *buf)
  */
 struct Buffer *buf_new(const char *str)
 {
-  struct Buffer *buf = MUTT_MEM_CALLOC(1, struct Buffer);
+  struct Buffer *buf = mutt_mem_calloc_T(1, struct Buffer);
 
   if (str)
     buf_addstr(buf, str);
@@ -360,7 +360,7 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
 
   buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
 
-  MUTT_MEM_REALLOC(&buf->data, buf->dsize, char);
+  mutt_mem_realloc_T(&buf->data, buf->dsize, char);
   buf->dptr = buf->data + offset;
 
   // Ensures that initially NULL buf->data is properly terminated

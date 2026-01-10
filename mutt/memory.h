@@ -45,12 +45,27 @@
 # define countof(x)  (sizeof(x) / sizeof((x)[0]))
 #endif
 
-#define MUTT_MEM_CALLOC(n, type)  ((type *) mutt_mem_calloc(n, sizeof(type)))
-#define MUTT_MEM_MALLOC(n, type)  ((type *) mutt_mem_mallocarray(n, sizeof(type)))
+#if !defined(typeas)
+# define typeas(T)  __typeof__((T){0})
+#endif
 
-#define MUTT_MEM_REALLOC(pptr, n, type)                                       \
-(                                                                             \
-  _Generic(*(pptr), type *: mutt_mem_reallocarray(pptr, n, sizeof(type)))     \
+// mutt_mem_calloc_T - clear allocate type-safe
+#define mutt_mem_calloc_T(n, T)                                       \
+({                                                                    \
+  (typeas(T) *){mutt_mem_calloc(n, sizeof(T))};                       \
+})
+
+// mutt_mem_malloc_T - memory allocate type-safe
+#define mutt_mem_malloc_T(n, T)                                       \
+({                                                                    \
+  (typeas(T) *){mutt_mem_mallocarray(n, sizeof(T))};                  \
+})
+
+// mutt_mem_realloc_T - resize allocation type-safe
+#define mutt_mem_realloc_T(pptr, n, T)                                \
+(                                                                     \
+  _Generic(*(pptr), typeas(T) *: (void)0),                            \
+  mutt_mem_reallocarray(pptr, n, sizeof(T))                           \
 )
 
 void *mutt_mem_calloc(size_t nmemb, size_t size);

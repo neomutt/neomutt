@@ -148,7 +148,7 @@ struct BodyCache *mutt_bcache_open(struct ConnAccount *account, const char *mail
   if (!account)
     return NULL;
 
-  struct BodyCache *bcache = MUTT_MEM_CALLOC(1, struct BodyCache);
+  struct BodyCache *bcache = mutt_mem_calloc_T(1, struct BodyCache);
   if (bcache_path(account, mailbox, bcache) < 0)
   {
     mutt_bcache_close(&bcache);

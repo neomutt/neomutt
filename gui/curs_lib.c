@@ -608,7 +608,7 @@ char *mutt_str_expand_tabs(char *str, size_t *len, int tabwidth)
   while (required_len > *len)
   {
     *len += 256;
-    MUTT_MEM_REALLOC(&str, *len, char);
+    mutt_mem_realloc_T(&str, *len, char);
   }
 
   // expand tabs

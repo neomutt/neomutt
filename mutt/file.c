@@ -694,7 +694,7 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, Rea
   if (!line)
   {
     *size = 256;
-    line = MUTT_MEM_MALLOC(*size, char);
+    line = mutt_mem_malloc_T(*size, char);
   }
 
   while (true)
@@ -739,7 +739,7 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, Rea
         /* There wasn't room for the line -- increase "line" */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += 256;
-        MUTT_MEM_REALLOC(&line, *size, char);
+        mutt_mem_realloc_T(&line, *size, char);
       }
     }
   }

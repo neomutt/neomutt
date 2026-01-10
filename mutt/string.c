@@ -304,7 +304,7 @@ void mutt_str_adjust(char **ptr)
 {
   if (!ptr || !*ptr)
     return;
-  MUTT_MEM_REALLOC(ptr, strlen(*ptr) + 1, char);
+  mutt_mem_realloc_T(ptr, strlen(*ptr) + 1, char);
 }
 
 /**
@@ -386,7 +386,7 @@ char *mutt_strn_dup(const char *begin, size_t len)
   if (!begin)
     return NULL;
 
-  char *p = MUTT_MEM_MALLOC(len + 1, char);
+  char *p = mutt_mem_malloc_T(len + 1, char);
   memcpy(p, begin, len);
   p[len] = '\0';
   return p;
@@ -809,7 +809,7 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
 
   int rlen = 256;
 
-  *strp = MUTT_MEM_MALLOC(rlen, char);
+  *strp = mutt_mem_malloc_T(rlen, char);
   while (true)
   {
     va_list ap;
@@ -829,12 +829,12 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
       if (n == 0) /* convention is to use NULL for zero-length strings. */
         FREE(strp);
       else if (n != rlen - 1)
-        MUTT_MEM_REALLOC(strp, n + 1, char);
+        mutt_mem_realloc_T(strp, n + 1, char);
       return n;
     }
     /* increase size and try again */
     rlen = n + 1;
-    MUTT_MEM_REALLOC(strp, rlen, char);
+    mutt_mem_realloc_T(strp, rlen, char);
   }
   /* not reached */
 }

@@ -420,7 +420,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
   if ((check != MX_STATUS_REOPENED) && (oldcount > 0) &&
       (lmt || c_uncollapse_new) && (num_new > 0))
   {
-    save_new = MUTT_MEM_MALLOC(num_new, struct Email *);
+    save_new = mutt_mem_malloc_T(num_new, struct Email *);
     for (int i = oldcount; i < m->msg_count; i++)
       save_new[i - oldcount] = m->emails[i];
   }
@@ -1004,7 +1004,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf,
       if (!found)
       {
         chunks++;
-        MUTT_MEM_REALLOC(&syntax, chunks, struct StatusSyntax);
+        mutt_mem_realloc_T(&syntax, chunks, struct StatusSyntax);
       }
 
       i = chunks - 1;

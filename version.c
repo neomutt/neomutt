@@ -468,7 +468,7 @@ static void kva_clear(struct KeyValueArray *kva)
  */
 struct NeoMuttVersion *version_get(void)
 {
-  struct NeoMuttVersion *ver = MUTT_MEM_CALLOC(1, struct NeoMuttVersion);
+  struct NeoMuttVersion *ver = mutt_mem_calloc_T(1, struct NeoMuttVersion);
 
   ver->version = mutt_str_dup(mutt_make_version());
 
