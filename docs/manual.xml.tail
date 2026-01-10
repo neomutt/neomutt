@@ -22,6 +22,7 @@ __print_map(browser)
 __print_map(pgp)
 __print_map(smime)
 __print_map(editor)
+__print_map(sidebar)
 __print_map(autocrypt account)
 
     </sect1>

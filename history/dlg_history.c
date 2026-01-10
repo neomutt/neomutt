@@ -65,10 +65,10 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "expando/lib.h"
-#include "key/lib.h"
 #include "menu/lib.h"
 #include "expando.h"
 #include "functions.h"
+#include "key/get.h"
 #include "mutt_logging.h"
 
 /// Help Bar for the History Selection dialog
@@ -118,7 +118,7 @@ static int history_make_entry(struct Menu *menu, int line, int max_cols, struct 
  */
 void dlg_history(struct Buffer *buf, struct StringArray *matches)
 {
-  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_DIALOG, WT_DLG_HISTORY, HistoryHelp);
   struct Menu *menu = sdw.menu;
 
   struct HistoryData hd = { false, false, buf, menu, matches };

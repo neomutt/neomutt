@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
  *
  * @copyright
@@ -84,7 +84,7 @@
 /**
  * OpCompose - Functions for the Compose Menu
  */
-const struct MenuFuncOp OpCompose[] = { /* map: compose */
+static const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "attach-file",                   OP_ATTACHMENT_ATTACH_FILE },
   { "attach-key",                    OP_ATTACHMENT_ATTACH_KEY },
   { "attach-message",                OP_ATTACHMENT_ATTACH_MESSAGE },
@@ -215,9 +215,16 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
 /**
  * compose_init_keys - Initialise the Compose Keybindings - Implements ::init_keys_api
  */
-void compose_init_keys(void)
+void compose_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(ComposeDefaultBindings, MENU_COMPOSE);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpCompose);
+  md = km_register_menu(MENU_COMPOSE, "compose");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, ComposeDefaultBindings);
 }
 
 /**

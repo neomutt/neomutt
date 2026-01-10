@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Naveen Nathan <naveen@lastninja.net>
- * Copyright (C) 2019-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020-2021 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Rayford Shireman
  *
@@ -60,9 +60,6 @@ const struct MenuFuncOp OpAutocrypt[] = {
   { NULL, OP_NULL },
 };
 const struct MenuFuncOp OpBrowser[] = {
-  { NULL, OP_NULL },
-};
-const struct MenuFuncOp OpQuery[] = {
   { NULL, OP_NULL },
 };
 

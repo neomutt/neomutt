@@ -3,7 +3,7 @@
  * Common code for file tests
  *
  * @authors
- * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
@@ -42,11 +42,9 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "attach/lib.h"
 #include "browser/lib.h"
 #include "color/lib.h"
 #include "complete/lib.h"
-#include "key/lib.h"
 #include "send/lib.h"
 #include "copy.h"
 #include "external.h"
@@ -55,6 +53,7 @@
 #include "protos.h"
 
 struct AddressList;
+struct AttachCtx;
 struct Body;
 struct Email;
 struct EmailArray;
@@ -556,32 +555,7 @@ enum MailboxType mx_type(struct Mailbox *m)
   return MUTT_MAILDIR;
 }
 
-void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
-                 char ***files, int *numfiles)
-{
-}
-
-int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env)
-{
-  return 0;
-}
-
-int nntp_sort_unsorted(const struct Email *a, const struct Email *b, bool reverse)
-{
-  return 0;
-}
-
 int mutt_comp_valid_command(const char *cmd)
 {
   return 1;
-}
-
-void mutt_temp_attachments_cleanup(void)
-{
-}
-
-int mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path,
-                                StateFlags flags, enum SaveAttach opt)
-{
-  return 0;
 }

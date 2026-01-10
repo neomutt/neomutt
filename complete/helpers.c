@@ -3,7 +3,7 @@
  * Auto-completion helpers
  *
  * @authors
- * Copyright (C) 2022-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
@@ -98,6 +98,17 @@ bool candidate(struct CompletionData *cd, char *user, const char *src, char *des
     dest[l] = '\0';
   }
   return true;
+}
+
+/**
+ * complete_sort_strings - Compare two strings - Implements ::sort_t - @ingroup sort_api
+ */
+static int complete_sort_strings(const void *a, const void *b, void *sdata)
+{
+  const char *pa = *(const char **) a;
+  const char *pb = *(const char **) b;
+
+  return mutt_str_cmp(pa, pb);
 }
 
 /**
@@ -265,25 +276,6 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
   }
   else if (buf_startswith(buf, "exec"))
   {
-    enum MenuType mtype = MENU_GENERIC;
-    if (cdata)
-    {
-      struct FileCompletionData *fcd = cdata;
-      struct MuttWindow *win = fcd->win;
-      if (win && win->wdata)
-      {
-        struct Menu *menu = win->wdata;
-        mtype = menu->type;
-      }
-    }
-    else
-    {
-      mtype = menu_get_current_type();
-    }
-    const struct MenuFuncOp *funcs = km_get_table(mtype);
-    if (!funcs && (mtype != MENU_PAGER))
-      funcs = OpGeneric;
-
     pt++;
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
@@ -292,16 +284,33 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
       mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
       memset(cd->match_list, 0, cd->match_list_len);
       memset(cd->completed, 0, sizeof(cd->completed));
-      for (int num = 0; funcs[num].name; num++)
-        candidate(cd, cd->user_typed, funcs[num].name, cd->completed, sizeof(cd->completed));
-      /* try the generic menu */
-      if ((mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
+
+      enum MenuType mtype = MENU_GENERIC;
+      if (cdata)
       {
-        funcs = OpGeneric;
-        for (int num = 0; funcs[num].name; num++)
-          candidate(cd, cd->user_typed, funcs[num].name, cd->completed,
-                    sizeof(cd->completed));
+        struct FileCompletionData *fcd = cdata;
+        struct MuttWindow *win = fcd->win;
+        if (win && win->wdata)
+        {
+          struct Menu *menu = win->wdata;
+          mtype = menu->type;
+        }
       }
+      else
+      {
+        mtype = menu_get_current_type();
+      }
+
+      struct StringArray fna = km_get_func_array(mtype);
+
+      ARRAY_SORT(&fna, complete_sort_strings, NULL);
+      const char **strp = NULL;
+      ARRAY_FOREACH(strp, &fna)
+      {
+        candidate(cd, cd->user_typed, *strp, cd->completed, sizeof(cd->completed));
+      }
+      ARRAY_FREE(&fna);
+
       matches_ensure_morespace(cd, cd->num_matched);
       cd->match_list[cd->num_matched++] = cd->user_typed;
 

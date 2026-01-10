@@ -283,7 +283,7 @@ bool dlg_pattern(struct Buffer *buf)
 {
   struct PatternData *pd = pattern_data_new();
 
-  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_DIALOG, WT_DLG_PATTERN, PatternHelp);
   create_pattern_entries(&pd->entries);
 
   struct Menu *menu = sdw.menu;

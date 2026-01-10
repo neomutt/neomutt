@@ -6,7 +6,7 @@
  * Copyright (C) 1996-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017-2025 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
@@ -176,6 +176,7 @@
 #ifndef DOMAIN
 #include "conn/lib.h"
 #endif
+#include "debug/lib.h"
 
 bool StartupComplete = false; ///< When the config has been read
 
@@ -743,20 +744,21 @@ static void init_keys(void)
 {
   km_init();
 
-  generic_init_keys();
+  struct SubMenu *sm_generic = generic_init_keys();
 
-  alias_init_keys();
-  attach_init_keys();
+  alias_init_keys(sm_generic);
+  attach_init_keys(sm_generic);
 #ifdef USE_AUTOCRYPT
-  autocrypt_init_keys();
+  autocrypt_init_keys(sm_generic);
 #endif
-  browser_init_keys();
-  compose_init_keys();
-  editor_init_keys();
-  index_init_keys();
-  pager_init_keys();
-  pgp_init_keys();
-  postponed_init_keys();
+  browser_init_keys(sm_generic);
+  compose_init_keys(sm_generic);
+  editor_init_keys(sm_generic);
+  sidebar_init_keys(sm_generic);
+  index_init_keys(sm_generic);
+  pager_init_keys(sm_generic);
+  pgp_init_keys(sm_generic);
+  postponed_init_keys(sm_generic);
 }
 
 /**

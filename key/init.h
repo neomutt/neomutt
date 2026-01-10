@@ -26,11 +26,20 @@
 #include "keymap.h"
 #include "menu.h"
 
+struct NotifyCallback;
+
 extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
 
+extern struct SubMenuArray        SubMenus;
+extern struct MenuDefinitionArray MenuDefs;
+
+int                    km_config_observer  (struct NotifyCallback *nc);
 void                   km_init              (void);
-void                   km_menu_add_bindings (const struct MenuOpSeq *map, enum MenuType mtype);
-void                   km_set_abort_key     (void);
-void                   km_cleanup           (void);
+void                   km_menu_add_bindings    (struct MenuDefinition *md, const struct MenuOpSeq bindings[]);
+void                   km_menu_add_submenu     (struct MenuDefinition *md, struct SubMenu *sm);
+struct MenuDefinition *km_register_menu        (int menu, const char *name);
+struct SubMenu *       km_register_submenu(const struct MenuFuncOp functions[]);
+void                   km_set_abort_key  (void);
+void                   km_cleanup    (void);
 
 #endif /* MUTT_KEY_INIT_H */

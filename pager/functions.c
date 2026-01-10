@@ -3,7 +3,7 @@
  * Pager functions
  *
  * @authors
- * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -50,6 +50,7 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
+#include "sidebar/lib.h"
 #include "display.h"
 #include "functions.h"
 #include "muttlib.h"
@@ -67,7 +68,7 @@ static int op_pager_search_next(struct IndexSharedData *shared,
 /**
  * OpPager - Functions for the Pager Menu
  */
-const struct MenuFuncOp OpPager[] = { /* map: pager */
+static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "bottom",                        OP_PAGER_BOTTOM },
   { "bounce-message",                OP_BOUNCE_MESSAGE },
   { "break-thread",                  OP_MAIN_BREAK_THREAD },
@@ -186,17 +187,6 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "shell-escape",                  OP_SHELL_ESCAPE },
   { "show-log-messages",             OP_SHOW_LOG_MESSAGES },
   { "show-version",                  OP_VERSION },
-  { "sidebar-first",                 OP_SIDEBAR_FIRST },
-  { "sidebar-last",                  OP_SIDEBAR_LAST },
-  { "sidebar-next",                  OP_SIDEBAR_NEXT },
-  { "sidebar-next-new",              OP_SIDEBAR_NEXT_NEW },
-  { "sidebar-open",                  OP_SIDEBAR_OPEN },
-  { "sidebar-page-down",             OP_SIDEBAR_PAGE_DOWN },
-  { "sidebar-page-up",               OP_SIDEBAR_PAGE_UP },
-  { "sidebar-prev",                  OP_SIDEBAR_PREV },
-  { "sidebar-prev-new",              OP_SIDEBAR_PREV_NEW },
-  { "sidebar-toggle-virtual",        OP_SIDEBAR_TOGGLE_VIRTUAL },
-  { "sidebar-toggle-visible",        OP_SIDEBAR_TOGGLE_VISIBLE },
   { "skip-headers",                  OP_PAGER_SKIP_HEADERS },
   { "skip-quoted",                   OP_PAGER_SKIP_QUOTED },
   { "sort-mailbox",                  OP_SORT },
@@ -241,7 +231,6 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_EDIT_LABEL,                         "Y" },
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,           "e" },
   { OP_ENTER_COMMAND,                      ":" },
-  { OP_EXIT,                               "i" },
   { OP_EXIT,                               "q" },
   { OP_EXIT,                               "x" },
   { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
@@ -330,9 +319,17 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
 /**
  * pager_init_keys - Initialise the Pager Keybindings - Implements ::init_keys_api
  */
-void pager_init_keys(void)
+void pager_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(PagerDefaultBindings, MENU_PAGER);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm_pager = NULL;
+  struct SubMenu *sm_sidebar = sidebar_get_submenu();
+
+  sm_pager = km_register_submenu(OpPager);
+  md = km_register_menu(MENU_PAGER, "pager");
+  km_menu_add_submenu(md, sm_pager);
+  km_menu_add_submenu(md, sm_sidebar);
+  km_menu_add_bindings(md, PagerDefaultBindings);
 }
 
 /**

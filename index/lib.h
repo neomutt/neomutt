@@ -58,6 +58,7 @@ struct Email;
 struct MailboxView;
 struct Menu;
 struct MuttWindow;
+struct SubMenu;
 
 // Observers of #NT_INDEX will be passed an #IndexSharedData.
 typedef uint8_t NotifyIndex;         ///< Flags, e.g. #NT_INDEX_ACCOUNT
@@ -82,7 +83,7 @@ extern const struct Mapping IndexNewsHelp[];
 
 extern const struct ExpandoDefinition StatusFormatDef[];
 
-void index_init_keys(void);
+void index_init_keys(struct SubMenu *sm_generic);
 
 void                    change_folder_mailbox   (struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
 struct Mailbox *        change_folder_notmuch   (struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);

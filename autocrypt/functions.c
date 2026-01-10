@@ -3,7 +3,7 @@
  * Autocrypt functions
  *
  * @authors
- * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -47,11 +47,10 @@
 #endif
 
 // clang-format off
-#ifdef USE_AUTOCRYPT
 /**
  * OpAutocrypt - Functions for the Autocrypt Account
  */
-const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
+static const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
   { "create-account",                OP_AUTOCRYPT_CREATE_ACCT },
   { "delete-account",                OP_AUTOCRYPT_DELETE_ACCT },
   { "exit",                          OP_EXIT },
@@ -59,9 +58,7 @@ const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
   { "toggle-prefer-encrypt",         OP_AUTOCRYPT_TOGGLE_PREFER },
   { NULL, 0 }
 };
-#endif
 
-#ifdef USE_AUTOCRYPT
 /**
  * AutocryptDefaultBindings - Key bindings for the Autocrypt Account
  */
@@ -73,15 +70,21 @@ static const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt a
   { OP_EXIT,                               "q" },
   { 0, NULL }
 };
-#endif
 // clang-format on
 
 /**
  * autocrypt_init_keys - Initialise the Autocrypt Keybindings - Implements ::init_keys_api
  */
-void autocrypt_init_keys(void)
+void autocrypt_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(AutocryptDefaultBindings, MENU_AUTOCRYPT);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpAutocrypt);
+  md = km_register_menu(MENU_AUTOCRYPT, "autocrypt");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, AutocryptDefaultBindings);
 }
 
 /**

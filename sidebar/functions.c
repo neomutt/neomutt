@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -38,6 +38,51 @@
 #include "functions.h"
 #include "lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
+#include "menu/lib.h"
+
+/// Sidebar functions
+static struct SubMenu *SmSidebar = NULL;
+
+// clang-format off
+/**
+ * OpSidebar - Functions for the Sidebar Window
+ */
+static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
+  { "sidebar-first",          OP_SIDEBAR_FIRST          },
+  { "sidebar-last",           OP_SIDEBAR_LAST           },
+  { "sidebar-next",           OP_SIDEBAR_NEXT           },
+  { "sidebar-next-new",       OP_SIDEBAR_NEXT_NEW       },
+  { "sidebar-open",           OP_SIDEBAR_OPEN           },
+  { "sidebar-page-down",      OP_SIDEBAR_PAGE_DOWN      },
+  { "sidebar-page-up",        OP_SIDEBAR_PAGE_UP        },
+  { "sidebar-prev",           OP_SIDEBAR_PREV           },
+  { "sidebar-prev-new",       OP_SIDEBAR_PREV_NEW       },
+  { "sidebar-toggle-virtual", OP_SIDEBAR_TOGGLE_VIRTUAL },
+  { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
+  { NULL, 0 },
+};
+// clang-format on
+
+/**
+ * sb_init_keys - Initialise the Sidebar Keybindings - Implements ::init_keys_api
+ */
+void sidebar_init_keys(struct SubMenu *sm_generic)
+{
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpSidebar);
+  md = km_register_menu(MENU_SIDEBAR, "sidebar");
+  km_menu_add_submenu(md, sm);
+
+  SmSidebar = sm;
+}
+
+struct SubMenu *sidebar_get_submenu(void)
+{
+  return SmSidebar;
+}
 
 /**
  * sb_next - Find the next unhidden Mailbox

@@ -46,11 +46,8 @@ enum NotifyBinding
 {
   NT_BINDING_ADD = 1,    ///< Key binding has been added
   NT_BINDING_DELETE,     ///< Key binding has been deleted
-  NT_BINDING_DELETE_ALL, ///< All key bindings have been deleted
-
   NT_MACRO_ADD,          ///< Key macro has been added
   NT_MACRO_DELETE,       ///< Key macro has been deleted
-  NT_MACRO_DELETE_ALL,   ///< All key macros have been deleted
 };
 
 #endif /* MUTT_KEY_NOTIFY_H */

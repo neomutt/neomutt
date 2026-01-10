@@ -3,7 +3,7 @@
  * Set up the key bindings
  *
  * @authors
- * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,24 +32,19 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
-#include "menu/lib.h"
+#include "init.h"
+#include "commands.h"
+#include "get.h"
+#include "keymap.h"
+#include "menu.h"
+
+/// All the registered Menus
+struct MenuDefinitionArray MenuDefs;
+
+/// All the registered SubMenus
+struct SubMenuArray SubMenus;
 
 keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
-
-/**
- * km_menu_add_bindings - Attach a set of keybindings to a Menu
- * @param map   Key bindings
- * @param mtype Menu type, e.g. #MENU_PAGER
- */
-void km_menu_add_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
-{
-  STAILQ_INIT(&Keymaps[mtype]);
-
-  for (int i = 0; map[i].op != OP_NULL; i++)
-    if (map[i].seq)
-      km_bind(map[i].seq, mtype, map[i].op, NULL, NULL, NULL);
-}
 
 /**
  * KeyCommands - Key Binding Commands
@@ -86,13 +81,67 @@ static const struct Command KeyCommands[] = {
 };
 
 /**
- * km_init - Initialise all the menu keybindings
+ * km_register_submenu - Register a submenu
+ * @param functions Function definitions
+ * @retval ptr SubMenu
+ *
+ * Register a set of functions.
+ * The result can be used in multiple Menus.
  */
-void km_init(void)
+struct SubMenu *km_register_submenu(const struct MenuFuncOp functions[])
 {
-  memset(Keymaps, 0, sizeof(struct KeymapList) * MENU_MAX);
+  struct SubMenu sm = { 0 };
+  sm.functions = functions;
+  ARRAY_INIT(&sm.keymaps);
 
-  commands_register(&NeoMutt->commands, KeyCommands);
+  ARRAY_ADD(&SubMenus, sm);
+  return ARRAY_LAST(&SubMenus);
+}
+
+/**
+ * km_register_menu - Register a menu
+ * @param menu Menu Type, e.g. #MENU_INDEX
+ * @param name Menu name, e.g. "index"
+ * @retval ptr Menu Definition
+ */
+struct MenuDefinition *km_register_menu(int menu, const char *name)
+{
+  struct MenuDefinition md = { 0 };
+  md.id = menu;
+  md.name = mutt_str_dup(name);
+  ARRAY_INIT(&md.submenus);
+
+  ARRAY_ADD(&MenuDefs, md);
+  return ARRAY_LAST(&MenuDefs);
+}
+
+/**
+ * km_menu_add_submenu - Add a SubMenu to a Menu Definition
+ * @param md Menu Definition
+ * @param sm SubMenu to add
+ */
+void km_menu_add_submenu(struct MenuDefinition *md, struct SubMenu *sm)
+{
+  if (!sm->parent)
+    sm->parent = md;
+
+  ARRAY_ADD(&md->submenus, sm);
+}
+
+/**
+ * km_menu_add_bindings - Add Keybindings to a Menu
+ * @param md       Menu Definition
+ * @param bindings Keybindings to add
+ */
+void km_menu_add_bindings(struct MenuDefinition *md, const struct MenuOpSeq bindings[])
+{
+  for (int i = 0; bindings[i].op != OP_NULL; i++)
+  {
+    if (bindings[i].seq)
+    {
+      km_bind(md, bindings[i].seq, bindings[i].op, NULL, NULL, NULL);
+    }
+  }
 }
 
 /**
@@ -116,17 +165,43 @@ int km_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * km_init - Initialise all the menu keybindings
+ */
+void km_init(void)
+{
+  ARRAY_INIT(&MenuDefs);
+  ARRAY_INIT(&SubMenus);
+
+  commands_register(&NeoMutt->commands, KeyCommands);
+
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, km_config_observer, NULL);
+}
+
+/**
  * km_cleanup - Free the key maps
  */
 void km_cleanup(void)
 {
-  for (enum MenuType i = 1; i < MENU_MAX; i++)
-  {
-    keymaplist_free(&Keymaps[i]);
-  }
-
   if (NeoMutt && NeoMutt->sub)
     notify_observer_remove(NeoMutt->sub->notify, km_config_observer, NULL);
+
+  struct MenuDefinition *md = NULL;
+  ARRAY_FOREACH(md, &MenuDefs)
+  {
+    FREE(&md->name);
+    ARRAY_FREE(&md->submenus);
+  }
+  ARRAY_FREE(&MenuDefs);
+
+  struct SubMenu *sm = NULL;
+  ARRAY_FOREACH(sm, &SubMenus)
+  {
+    keymaplist_free(&sm->keymaps);
+  }
+  ARRAY_FREE(&SubMenus);
+
+  ARRAY_FREE(&MacroEvents);
+  ARRAY_FREE(&UngetKeyEvents);
 }
 
 /**
@@ -153,6 +228,4 @@ void km_set_abort_key(void)
                  c_abort_key);
   }
   AbortKey = buf[0];
-
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, km_config_observer, NULL);
 }

@@ -3,7 +3,7 @@
  * Test code for parse_bind()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,26 +26,57 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "key/lib.h"
+#include "menu/lib.h"
 #include "common.h"
 #include "test_common.h"
 
 static const struct Command Bind = { "bind", CMD_BIND, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // bind map [ ,map ...] key function
-  { MUTT_CMD_ERROR,   "" },
+  { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "index j next-undeleted" },
   { MUTT_CMD_SUCCESS, "index,pager s sidebar-toggle-visible" },
   { MUTT_CMD_SUCCESS, "pager <f1> help" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
+
+static const struct MenuFuncOp OpIndex[] = {
+  // clang-format off
+  { "next-undeleted",         OP_MAIN_NEXT_UNDELETED },
+  { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
+  { NULL, 0 },
+  // clang-format on
+};
+
+static const struct MenuFuncOp OpPager[] = {
+  // clang-format off
+  { "next-undeleted",         OP_MAIN_NEXT_UNDELETED },
+  { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
+  { NULL, 0 },
+  // clang-format on
+};
 
 void test_parse_bind(void)
 {
   // enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpIndex);
+  md = km_register_menu(MENU_INDEX, "index");
+  km_menu_add_submenu(md, sm);
+
+  sm = km_register_submenu(OpPager);
+  md = km_register_menu(MENU_PAGER, "pager");
+  km_menu_add_submenu(md, sm);
+
+  // ----------------------------------------
 
   struct Buffer *line = buf_pool_get();
   struct Buffer *err = buf_pool_get();

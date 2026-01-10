@@ -3,7 +3,7 @@
  * PGP/Smime functions
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,13 +33,14 @@
 #include <stddef.h>
 #include "gui/lib.h"
 #include "key/lib.h"
+#include "menu/lib.h"
 #endif
 
 // clang-format off
 /**
  * OpPgp - Functions for the Pgp Menu
  */
-const struct MenuFuncOp OpPgp[] = { /* map: pgp */
+static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
   { "exit",                          OP_EXIT },
   { "verify-key",                    OP_VERIFY_KEY },
   { "view-name",                     OP_VIEW_ID },
@@ -49,7 +50,7 @@ const struct MenuFuncOp OpPgp[] = { /* map: pgp */
 /**
  * OpSmime - Functions for the Smime Menu
  */
-const struct MenuFuncOp OpSmime[] = { /* map: smime */
+static const struct MenuFuncOp OpSmime[] = { /* map: smime */
   { "exit",                          OP_EXIT },
 #ifdef CRYPT_BACKEND_GPGME
   { "verify-key",                    OP_VERIFY_KEY },
@@ -84,8 +85,20 @@ static const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
 /**
  * pgp_init_keys - Initialise the PGP Keybindings - Implements ::init_keys_api
  */
-void pgp_init_keys(void)
+void pgp_init_keys(struct SubMenu *sm_generic)
 {
-  km_menu_add_bindings(PgpDefaultBindings, MENU_PGP);
-  km_menu_add_bindings(SmimeDefaultBindings, MENU_SMIME);
+  struct MenuDefinition *md = NULL;
+  struct SubMenu *sm = NULL;
+
+  sm = km_register_submenu(OpPgp);
+  md = km_register_menu(MENU_PGP, "pgp");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, PgpDefaultBindings);
+
+  sm = km_register_submenu(OpSmime);
+  md = km_register_menu(MENU_SMIME, "smime");
+  km_menu_add_submenu(md, sm);
+  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_bindings(md, SmimeDefaultBindings);
 }

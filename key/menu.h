@@ -25,10 +25,12 @@
 
 #include <stdbool.h>
 #include "mutt/lib.h"
-#include "core/lib.h"
 #include "menu/lib.h"
 #include "get.h"
 #include "keymap.h"
+
+/// Maximum length of a key binding sequence used for buffer in km_bind
+#define MAX_SEQ 8
 
 /**
  * struct MenuFuncOp - Mapping between a function and an operation
@@ -49,8 +51,56 @@ struct MenuOpSeq
   const char *seq;  ///< Default key binding
 };
 
-bool                   is_bound           (const struct KeymapList *km_list, int op);
-struct Keymap *        km_find_func       (enum MenuType mtype, int func);
-int                    km_get_op          (const struct MenuFuncOp *funcs, const char *start, size_t len);
+/**
+ * struct MenuFunctionOp - Mapping between a function and an operation
+ */
+struct MenuFunctionOp
+{
+  int         menu;       ///< Menu, e.g. #MENU_ALIAS
+  const char *function;   ///< Name of the function
+  int         op;         ///< Operation, e.g. OP_DELETE
+};
+ARRAY_HEAD(MenuFunctionOpArray, struct MenuFunctionOp);
+
+/**
+ * struct SubMenu - Collection of related functions
+ */
+struct SubMenu
+{
+  struct MenuDefinition   *parent;      ///< Primary parent
+  const struct MenuFuncOp *functions;   ///< All available functions
+  struct KeymapList        keymaps;     ///< All keybindings
+};
+ARRAY_HEAD(SubMenuArray,  struct SubMenu);
+ARRAY_HEAD(SubMenuPArray, struct SubMenu *);
+
+/**
+ * struct MenuDefinition - Functions for a Dialog or Window
+ */
+struct MenuDefinition
+{
+  int                   id;         ///< Menu ID, e.g. #MENU_ALIAS
+  const char           *name;       ///< Menu name, e.g. "alias"
+  struct SubMenuPArray  submenus;   ///< Parts making up the Menu
+};
+ARRAY_HEAD(MenuDefinitionArray, struct MenuDefinition);
+
+/**
+ * @defgroup init_keys_api Initialise Key Bindings
+ *
+ * init_keys_t - Initialise Key Bindings
+ * @param[in] sm_generic Generic SubMenu
+ *
+ * Register menus and submenus.
+ */
+typedef void (*init_keys_t)(struct SubMenu *sm_generic);
+
+bool                   is_bound           (const struct MenuDefinition *md, int op);
+struct Keymap *        km_find_func       (enum MenuType menu, int func);
+int                    km_get_menu_id     (const char *name);
+const char *           km_get_menu_name   (int mtype);
+int                    km_get_op          (const char *func);
+int                    km_get_op_menu     (int mtype, const char *func);
+struct MenuDefinition *menu_find          (int menu);
 
 #endif /* MUTT_KEY_MENU_H */

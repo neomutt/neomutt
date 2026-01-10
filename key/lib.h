@@ -33,7 +33,6 @@
  * | key/get.c           | @subpage key_get      |
  * | key/init.c          | @subpage key_init     |
  * | key/keymap.c        | @subpage key_keymap   |
- * | key/lib.c           | @subpage key_lib      |
  * | key/menu.c          | @subpage key_menu     |
  */
 
@@ -50,15 +49,5 @@
 #include "menu.h"
 #include "notify.h"
 // IWYU pragma: end_keep
-
-extern struct KeymapList Keymaps[]; ///< Array of Keymap keybindings, one for each Menu
-
-int km_dokey(enum MenuType mtype, GetChFlags flags);
-void km_error_key(enum MenuType mtype);
-struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags);
-
-const struct MenuFuncOp *km_get_table(enum MenuType mtype);
-int km_get_op(const struct MenuFuncOp *funcs, const char *start, size_t len);
-const char *mutt_get_func(const struct MenuFuncOp *bindings, int op);
 
 #endif /* MUTT_KEY_LIB_H */
