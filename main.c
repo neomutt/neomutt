@@ -113,7 +113,6 @@
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
-#include <locale.h>
 #include <pwd.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -181,6 +180,9 @@
 bool StartupComplete = false; ///< When the config has been read
 
 void show_cli(enum HelpMode mode, bool use_color);
+void init_locale(void);
+void localise_config(struct ConfigSet *cs);
+void reset_tilde(struct ConfigSet *cs);
 
 /**
  * execute_commands - Execute a set of NeoMutt commands
@@ -686,58 +688,6 @@ static int get_elem_queries(struct StringArray *queries, struct HashElemArray *h
 }
 
 /**
- * reset_tilde - Temporary measure
- * @param cs Config Set
- */
-static void reset_tilde(struct ConfigSet *cs)
-{
-  static const char *names[] = { "folder", "mbox", "postponed", "record" };
-
-  struct Buffer *value = buf_pool_get();
-  for (size_t i = 0; i < countof(names); i++)
-  {
-    struct HashElem *he = cs_get_elem(cs, names[i]);
-    if (!he)
-      continue;
-    buf_reset(value);
-    cs_he_initial_get(cs, he, value);
-    buf_expand_path_regex(value, false);
-    config_he_set_initial(cs, he, value->data);
-  }
-  buf_pool_release(&value);
-}
-
-#ifdef ENABLE_NLS
-/**
- * localise_config - Localise some config
- * @param cs Config Set
- */
-static void localise_config(struct ConfigSet *cs)
-{
-  struct Buffer *value = buf_pool_get();
-  struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, GEL_ALL_CONFIG);
-  struct HashElem **hep = NULL;
-
-  ARRAY_FOREACH(hep, &hea)
-  {
-    struct HashElem *he = *hep;
-    if (!(he->type & D_L10N_STRING))
-      continue;
-
-    buf_reset(value);
-    cs_he_initial_get(cs, he, value);
-
-    // Lookup the translation
-    const char *l10n = gettext(buf_string(value));
-    config_he_set_initial(cs, he, l10n);
-  }
-
-  ARRAY_FREE(&hea);
-  buf_pool_release(&value);
-}
-#endif
-
-/**
  * init_keys - Initialise the Keybindings
  */
 static void init_keys(void)
@@ -791,30 +741,6 @@ static int start_curses(void)
    * The first call to refresh() will swap us back to curses screen mode. */
   endwin();
   return 0;
-}
-
-/**
- * init_locale - Initialise the Locale/NLS settings
- */
-static void init_locale(void)
-{
-  setlocale(LC_ALL, "");
-
-#ifdef ENABLE_NLS
-  const char *domdir = mutt_str_getenv("TEXTDOMAINDIR");
-  if (domdir)
-    bindtextdomain(PACKAGE, domdir);
-  else
-    bindtextdomain(PACKAGE, MUTTLOCALEDIR);
-  textdomain(PACKAGE);
-#endif
-#ifndef LOCALES_HACK
-  /* Do we have a locale definition? */
-  if (mutt_str_getenv("LC_ALL") || mutt_str_getenv("LANG") || mutt_str_getenv("LC_CTYPE"))
-  {
-    OptLocales = true;
-  }
-#endif
 }
 
 /**

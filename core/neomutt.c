@@ -39,8 +39,85 @@
 #include "neomutt.h"
 #include "account.h"
 #include "mailbox.h"
+#include "muttlib.h"
 
 struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
+
+/**
+ * init_locale - Initialise the Locale/NLS settings
+ */
+void init_locale(void)
+{
+  setlocale(LC_ALL, "");
+
+#ifdef ENABLE_NLS
+  const char *domdir = mutt_str_getenv("TEXTDOMAINDIR");
+  if (domdir)
+    bindtextdomain(PACKAGE, domdir);
+  else
+    bindtextdomain(PACKAGE, MUTTLOCALEDIR);
+  textdomain(PACKAGE);
+#endif
+#ifndef LOCALES_HACK
+  /* Do we have a locale definition? */
+  if (mutt_str_getenv("LC_ALL") || mutt_str_getenv("LANG") || mutt_str_getenv("LC_CTYPE"))
+  {
+    OptLocales = true;
+  }
+#endif
+}
+
+#ifdef ENABLE_NLS
+/**
+ * localise_config - Localise some config
+ * @param cs Config Set
+ */
+void localise_config(struct ConfigSet *cs)
+{
+  struct Buffer *value = buf_pool_get();
+  struct HashElemArray hea = get_elem_list(cs, GEL_ALL_CONFIG);
+  struct HashElem **hep = NULL;
+
+  ARRAY_FOREACH(hep, &hea)
+  {
+    struct HashElem *he = *hep;
+    if (!(he->type & D_L10N_STRING))
+      continue;
+
+    buf_reset(value);
+    cs_he_initial_get(cs, he, value);
+
+    // Lookup the translation
+    const char *l10n = gettext(buf_string(value));
+    config_he_set_initial(cs, he, l10n);
+  }
+
+  ARRAY_FREE(&hea);
+  buf_pool_release(&value);
+}
+#endif
+
+/**
+ * reset_tilde - Temporary measure
+ * @param cs Config Set
+ */
+void reset_tilde(struct ConfigSet *cs)
+{
+  static const char *names[] = { "folder", "mbox", "postponed", "record" };
+
+  struct Buffer *value = buf_pool_get();
+  for (size_t i = 0; i < countof(names); i++)
+  {
+    struct HashElem *he = cs_get_elem(cs, names[i]);
+    if (!he)
+      continue;
+    buf_reset(value);
+    cs_he_initial_get(cs, he, value);
+    buf_expand_path_regex(value, false);
+    config_he_set_initial(cs, he, value->data);
+  }
+  buf_pool_release(&value);
+}
 
 /**
  * neomutt_new - Create the main NeoMutt object
