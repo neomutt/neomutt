@@ -127,8 +127,8 @@ static void init_home_dir(struct NeoMutt *n)
   struct passwd *pw = getpwuid(getuid());
   TEST_CHECK(pw != NULL);
 
-  NeoMutt->username = mutt_str_dup(pw->pw_name);
-  NeoMutt->home_dir = mutt_str_dup(pw->pw_dir);
+  mutt_str_replace(&n->username, pw->pw_name);
+  mutt_str_replace(&n->home_dir, pw->pw_dir);
 }
 
 bool test_neomutt_create(void)
@@ -151,9 +151,10 @@ bool test_neomutt_create(void)
 
   NeoMutt = neomutt_new(cs);
   TEST_CHECK(NeoMutt != NULL);
-  NeoMutt->env = MUTT_MEM_CALLOC(2, char *);
 
-  neomutt_init(NeoMutt, NULL, NULL);
+  char **tmp_env = MUTT_MEM_CALLOC(2, char *);
+  neomutt_init(NeoMutt, tmp_env, NULL);
+  FREE(&tmp_env);
 
   TEST_CHECK(cs_register_variables(cs, Vars));
 

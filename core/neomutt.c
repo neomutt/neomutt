@@ -44,6 +44,26 @@
 struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
 
 /**
+ * init_env - Initialise the Environment
+ * @param n    NeoMutt
+ * @param envp External environment
+ * @retval true Success
+ */
+static bool init_env(struct NeoMutt *n, char **envp)
+{
+  if (!n)
+    return false;
+
+  mutt_str_replace(&n->username, mutt_str_getenv("USER"));
+  mutt_str_replace(&n->home_dir, mutt_str_getenv("HOME"));
+
+  envlist_free(&n->env);
+  n->env = envlist_init(envp);
+
+  return true;
+}
+
+/**
  * init_locale - Initialise the Locale/NLS settings
  */
 void init_locale(void)
@@ -161,6 +181,9 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
     return false;
 
   n->modules = modules;
+
+  if (!init_env(n, envp))
+    return false;
 
   ARRAY_INIT(&n->accounts);
   n->notify = notify_new();

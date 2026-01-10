@@ -1110,10 +1110,6 @@ int main(int argc, char *argv[], char *envp[])
   if (!neomutt_init(NeoMutt, envp, Modules))
     goto main_curses;
 
-  NeoMutt->env = envlist_init(envp);
-  mutt_str_replace(&NeoMutt->username, mutt_str_getenv("USER"));
-  mutt_str_replace(&NeoMutt->home_dir, mutt_str_getenv("HOME"));
-
   init_config(cs);
 
   cli_parse(argc, argv, cli);
