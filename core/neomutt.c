@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -42,6 +43,14 @@
 #include "muttlib.h"
 
 struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
+
+#define CONFIG_INIT_TYPE(CS, NAME)                                             \
+  extern const struct ConfigSetType Cst##NAME;                                 \
+  cs_register_type(CS, &Cst##NAME)
+
+#define CONFIG_INIT_VARS(CS, NAME)                                             \
+  bool config_init_##NAME(struct ConfigSet *cs);                               \
+  config_init_##NAME(CS)
 
 /**
  * init_env - Initialise the Environment
@@ -110,7 +119,7 @@ static bool init_locale(struct NeoMutt *n)
  * localise_config - Localise some config
  * @param cs Config Set
  */
-void localise_config(struct ConfigSet *cs)
+static void localise_config(struct ConfigSet *cs)
 {
   struct Buffer *value = buf_pool_get();
   struct HashElemArray hea = get_elem_list(cs, GEL_ALL_CONFIG);
@@ -139,7 +148,7 @@ void localise_config(struct ConfigSet *cs)
  * reset_tilde - Temporary measure
  * @param cs Config Set
  */
-void reset_tilde(struct ConfigSet *cs)
+static void reset_tilde(struct ConfigSet *cs)
 {
   static const char *names[] = { "folder", "mbox", "postponed", "record" };
 
@@ -158,22 +167,80 @@ void reset_tilde(struct ConfigSet *cs)
 }
 
 /**
- * neomutt_new - Create the main NeoMutt object
- * @param cs Config Set
- * @retval ptr New NeoMutt
+ * init_config - Initialise the config system
+ * @param n Neomutt
+ * @retval true Success
+ *
+ * Set up the config variables in three stages:
+ * - Create the config types
+ * - Create the config variables
+ * - Set some run-time defaults
  */
-struct NeoMutt *neomutt_new(struct ConfigSet *cs)
+static bool init_config(struct NeoMutt *n)
 {
-  if (!cs)
-    return NULL;
+  if (!n)
+    return false;
 
-  struct NeoMutt *n = MUTT_MEM_CALLOC(1, struct NeoMutt);
+  n->cs = cs_new(500);
 
   n->sub = cs_subset_new(NULL, NULL, n->notify);
-  n->sub->cs = cs;
   n->sub->scope = SET_SCOPE_NEOMUTT;
+  n->sub->cs = n->cs;
 
-  return n;
+  bool rc = true;
+
+  // Set up the Config Types
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->config_define_types)
+    {
+      mutt_debug(LL_DEBUG3, "%s:config_define_types()\n", mod->name);
+      rc &= mod->config_define_types(n, n->sub->cs);
+    }
+  }
+
+  if (!rc)
+    return false;
+
+  // Define the Config Variables
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->config_define_variables)
+    {
+      mutt_debug(LL_DEBUG3, "%s:config_define_variables()\n", mod->name);
+      rc &= mod->config_define_variables(n, n->sub->cs);
+    }
+  }
+
+  if (!rc)
+    return false;
+
+  // Post-processing
+#ifdef ENABLE_NLS
+  localise_config(n->sub->cs);
+#endif
+  reset_tilde(n->sub->cs);
+
+#ifdef HAVE_GETSID
+  /* Unset suspend by default if we're the session leader */
+  if (getsid(0) == getpid())
+    config_str_set_initial(n->sub->cs, "suspend", "no");
+#endif
+
+  return rc;
+}
+
+/**
+ * neomutt_new - Create the main NeoMutt object
+ * @retval ptr New NeoMutt
+ */
+struct NeoMutt *neomutt_new(void)
+{
+  return MUTT_MEM_CALLOC(1, struct NeoMutt);
 }
 
 /**
@@ -194,6 +261,9 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
     return false;
 
   if (!init_locale(n))
+    return false;
+
+  if (!init_config(n))
     return false;
 
   ARRAY_INIT(&n->accounts);
@@ -249,7 +319,6 @@ void neomutt_free(struct NeoMutt **ptr)
   struct NeoMutt *n = *ptr;
 
   neomutt_accounts_free(n);
-  cs_subset_free(&n->sub);
   notify_free(&n->notify_resize);
   notify_free(&n->notify_timeout);
   notify_free(&n->notify);
@@ -262,6 +331,12 @@ void neomutt_free(struct NeoMutt **ptr)
   FREE(&n->username);
 
   envlist_free(&n->env);
+  if (n->sub)
+  {
+    struct ConfigSet *cs = n->sub->cs;
+    cs_subset_free(&n->sub);
+    cs_free(&cs);
+  }
 
   FREE(ptr);
 }

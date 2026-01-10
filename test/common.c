@@ -74,22 +74,6 @@ bool OptResortInit = false;
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "assumed_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, NULL, },
-  { "charset", DT_STRING|D_NOT_EMPTY|D_CHARSET_SINGLE, IP "utf-8", 0, NULL, },
-  { "config_charset", DT_STRING, 0, 0, NULL, },
-  { "debug_level", DT_NUMBER, 0, 0, NULL },
-  { "folder", DT_STRING|D_STRING_MAILBOX, IP "~/Mail", 0, NULL, },
-  { "maildir_field_delimiter", DT_STRING, IP ":", 0, NULL, },
-  { "record", DT_STRING|D_STRING_MAILBOX, IP "~/sent", 0, NULL, },
-  { "simple_search", DT_STRING, IP "~f %s | ~s %s", 0, NULL, },
-  { "sleep_time", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL, },
-  { "tmp_dir", DT_PATH|D_PATH_DIR|D_NOT_EMPTY, IP TMPDIR, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
 const struct CompleteOps CompleteMailboxOps = {};
 
 struct ListHead AlternativeOrderList = STAILQ_HEAD_INITIALIZER(AlternativeOrderList);
@@ -97,9 +81,8 @@ struct ListHead AutoViewList = STAILQ_HEAD_INITIALIZER(AutoViewList);
 struct ListHead HeaderOrderList = STAILQ_HEAD_INITIALIZER(HeaderOrderList);
 struct ListHead MimeLookupList = STAILQ_HEAD_INITIALIZER(MimeLookupList);
 
-#define CONFIG_INIT_TYPE(CS, NAME)                                             \
-  extern const struct ConfigSetType Cst##NAME;                                 \
-  cs_register_type(CS, &Cst##NAME)
+extern const struct Module ModuleTest;
+static const struct Module *Modules[] = { &ModuleTest, NULL };
 
 const char *get_test_dir(void)
 {
@@ -133,30 +116,12 @@ static void init_home_dir(struct NeoMutt *n)
 
 bool test_neomutt_create(void)
 {
-  struct ConfigSet *cs = cs_new(50);
-  CONFIG_INIT_TYPE(cs, Address);
-  CONFIG_INIT_TYPE(cs, Bool);
-  CONFIG_INIT_TYPE(cs, Enum);
-  CONFIG_INIT_TYPE(cs, Expando);
-  CONFIG_INIT_TYPE(cs, Long);
-  CONFIG_INIT_TYPE(cs, Mbtable);
-  CONFIG_INIT_TYPE(cs, MyVar);
-  CONFIG_INIT_TYPE(cs, Number);
-  CONFIG_INIT_TYPE(cs, Path);
-  CONFIG_INIT_TYPE(cs, Quad);
-  CONFIG_INIT_TYPE(cs, Regex);
-  CONFIG_INIT_TYPE(cs, Slist);
-  CONFIG_INIT_TYPE(cs, Sort);
-  CONFIG_INIT_TYPE(cs, String);
-
-  NeoMutt = neomutt_new(cs);
+  NeoMutt = neomutt_new();
   TEST_CHECK(NeoMutt != NULL);
 
   char **tmp_env = MUTT_MEM_CALLOC(2, char *);
-  neomutt_init(NeoMutt, tmp_env, NULL);
+  neomutt_init(NeoMutt, tmp_env, Modules);
   FREE(&tmp_env);
-
-  TEST_CHECK(cs_register_variables(cs, Vars));
 
   init_tmp_dir(NeoMutt);
   init_home_dir(NeoMutt);
@@ -170,9 +135,7 @@ void test_neomutt_destroy(void)
     return;
 
   neomutt_cleanup(NeoMutt);
-  struct ConfigSet *cs = NeoMutt->sub->cs;
   neomutt_free(&NeoMutt);
-  cs_free(&cs);
 }
 
 void test_init(void)

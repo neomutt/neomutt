@@ -27,8 +27,39 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern struct ConfigDef NcryptVars[];
+extern struct ConfigDef NcryptVarsGpgme[];
+extern struct ConfigDef NcryptVarsPgp[];
+extern struct ConfigDef NcryptVarsSmime[];
+
+/**
+ * ncrypt_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool ncrypt_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  bool rc = true;
+
+  rc &= cs_register_variables(cs, NcryptVars);
+
+#if defined(CRYPT_BACKEND_GPGME)
+  rc &= cs_register_variables(cs, NcryptVarsGpgme);
+#endif
+
+#if defined(CRYPT_BACKEND_CLASSIC_PGP)
+  rc &= cs_register_variables(cs, NcryptVarsPgp);
+#endif
+
+#if defined(CRYPT_BACKEND_CLASSIC_SMIME)
+  rc &= cs_register_variables(cs, NcryptVarsSmime);
+#endif
+
+  return rc;
+}
 
 /**
  * ModuleNcrypt - Module for the Ncrypt library
@@ -37,7 +68,7 @@ const struct Module ModuleNcrypt = {
   "ncrypt",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  ncrypt_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

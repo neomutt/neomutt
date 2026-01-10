@@ -88,6 +88,7 @@ static void test_command_set_expand_value(void)
   void command_set_expand_value(uint32_t type, struct Buffer *value);
 
   mutt_str_replace(&NeoMutt->home_dir, "/home/neomutt");
+  mutt_str_replace(&NeoMutt->username, "neomutt");
   struct Buffer *buf = buf_pool_get();
   int type;
 
@@ -1529,9 +1530,9 @@ static void test_path_expanding(void)
       "=foo",
     };
     const char *expected[] = {
-      "~/sent",
+      "/home/mutt/sent",
       "/home/neomutt/bar",
-      "/home/neomutt/Mail/foo",
+      "/home/mutt/Mail/foo",
     };
     for (int v = 0; v < countof(pathlike); v++)
     {

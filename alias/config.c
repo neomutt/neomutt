@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Romeu Vieira <romeu.bizz@gmail.com>
- * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -110,7 +109,7 @@ static const struct ExpandoDefinition QueryFormatDef[] = {
 /**
  * AliasVars - Config definitions for the alias library
  */
-static struct ConfigDef AliasVars[] = {
+struct ConfigDef AliasVars[] = {
   // clang-format off
   { "alias_file", DT_PATH|D_PATH_FILE, IP "~/.neomuttrc", 0, NULL,
     "Save new aliases to this file"
@@ -133,11 +132,3 @@ static struct ConfigDef AliasVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_alias - Register alias config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_alias(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, AliasVars);
-}

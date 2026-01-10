@@ -27,8 +27,20 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern const struct ConfigSetType CstAddress;
+
+/**
+ * address_config_define_types - Set up Config Types - Implements Module::config_define_types()
+ */
+static bool address_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_type(cs, &CstAddress);
+}
 
 /**
  * ModuleAddress - Module for the Address library
@@ -36,7 +48,7 @@
 const struct Module ModuleAddress = {
   "address",
   NULL, // init
-  NULL, // config_define_types
+  address_config_define_types,
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init

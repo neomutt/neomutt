@@ -180,8 +180,6 @@
 bool StartupComplete = false; ///< When the config has been read
 
 void show_cli(enum HelpMode mode, bool use_color);
-void localise_config(struct ConfigSet *cs);
-void reset_tilde(struct ConfigSet *cs);
 
 // clang-format off
 extern const struct Module ModuleMain;
@@ -1100,15 +1098,9 @@ int main(int argc, char *argv[], char *envp[])
 
   OptGui = true;
 
-  cs = cs_new(500);
-  if (!cs)
-    goto main_curses;
-
-  NeoMutt = neomutt_new(cs);
+  NeoMutt = neomutt_new();
   if (!neomutt_init(NeoMutt, envp, Modules))
     goto main_curses;
-
-  init_config(cs);
 
   cli_parse(argc, argv, cli);
 
@@ -1124,13 +1116,9 @@ int main(int argc, char *argv[], char *envp[])
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_all_observer, NULL);
 #endif
 
+  cs = NeoMutt->sub->cs;
   if (!get_user_info(cs))
     goto main_exit;
-
-  reset_tilde(cs);
-#ifdef ENABLE_NLS
-  localise_config(cs);
-#endif
 
   if (!init_logging(&cli->shared, cs))
     goto main_exit;
@@ -1831,7 +1819,6 @@ main_exit:
   config_cache_cleanup();
   neomutt_cleanup(NeoMutt);
   neomutt_free(&NeoMutt);
-  cs_free(&cs);
   log_queue_flush(log_disp_terminal);
   mutt_log_stop();
   return rc;

@@ -130,6 +130,7 @@ struct NeoMutt
   struct Notify *notify;         ///< Notifications handler
   struct Notify *notify_resize;  ///< Window resize notifications handler
   struct Notify *notify_timeout; ///< Timeout notifications handler
+  struct ConfigSet *cs;          ///< Config set
   struct ConfigSubset *sub;      ///< Inherited config items
   struct AccountArray accounts;  ///< All Accounts
   locale_t time_c_locale;        ///< Current locale but LC_TIME=C
@@ -160,7 +161,7 @@ bool            neomutt_account_add   (struct NeoMutt *n, struct Account *a);
 void            neomutt_account_remove(struct NeoMutt *n, struct Account *a);
 void            neomutt_accounts_free (struct NeoMutt *n);
 void            neomutt_free          (struct NeoMutt **ptr);
-struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
+struct NeoMutt *neomutt_new           (void);
 
 bool neomutt_init   (struct NeoMutt *n, char **envp, const struct Module **modules);
 void neomutt_cleanup(struct NeoMutt *n);

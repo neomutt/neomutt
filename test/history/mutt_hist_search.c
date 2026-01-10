@@ -23,21 +23,14 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "history/lib.h"
 #include "test_common.h" // IWYU pragma: keep
-
-bool config_init_history(struct ConfigSet *cs);
 
 void test_mutt_hist_search(void)
 {
   // int mutt_hist_search(const char *find, enum HistoryClass hclass, struct StringArray *matches);
-
-  config_init_history(NeoMutt->sub->cs);
 
   {
     struct StringArray ha = ARRAY_HEAD_INITIALIZER;

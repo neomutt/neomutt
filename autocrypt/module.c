@@ -27,8 +27,26 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern struct ConfigDef AutocryptVars[];
+
+/**
+ * autocrypt_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool autocrypt_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  bool rc = false;
+
+#if defined(USE_AUTOCRYPT)
+  rc |= cs_register_variables(cs, AutocryptVars);
+#endif
+
+  return rc;
+}
 
 /**
  * ModuleAutocrypt - Module for the Autocrypt library
@@ -37,7 +55,7 @@ const struct Module ModuleAutocrypt = {
   "autocrypt",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  autocrypt_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

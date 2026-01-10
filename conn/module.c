@@ -27,8 +27,47 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern struct ConfigDef ConnVars[];
+extern struct ConfigDef ConnVarsGetaddr[];
+extern struct ConfigDef ConnVarsGnutls[];
+extern struct ConfigDef ConnVarsOpenssl[];
+extern struct ConfigDef ConnVarsPartial[];
+extern struct ConfigDef ConnVarsSsl[];
+
+/**
+ * conn_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool conn_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  bool rc = true;
+
+#if defined(USE_SSL)
+  rc &= cs_register_variables(cs, ConnVarsSsl);
+#endif
+
+#if defined(USE_SSL_GNUTLS)
+  rc &= cs_register_variables(cs, ConnVarsGnutls);
+#endif
+
+#if defined(USE_SSL_OPENSSL)
+  rc &= cs_register_variables(cs, ConnVarsOpenssl);
+#endif
+
+#if defined(HAVE_SSL_PARTIAL_CHAIN)
+  rc &= cs_register_variables(cs, ConnVarsPartial);
+#endif
+
+#if defined(HAVE_GETADDRINFO)
+  rc &= cs_register_variables(cs, ConnVarsGetaddr);
+#endif
+
+  return rc;
+}
 
 /**
  * ModuleConn - Module for the Conn library
@@ -37,7 +76,7 @@ const struct Module ModuleConn = {
   "conn",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  conn_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

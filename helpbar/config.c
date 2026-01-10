@@ -3,7 +3,7 @@
  * Config used by Help Bar
  *
  * @authors
- * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +34,7 @@
 /**
  * HelpbarVars - Config definitions for the Helpbar
  */
-static struct ConfigDef HelpbarVars[] = {
+struct ConfigDef HelpbarVars[] = {
   // clang-format off
   { "help", DT_BOOL, true, 0, NULL,
     "Display a help line with common key bindings"
@@ -42,11 +42,3 @@ static struct ConfigDef HelpbarVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_helpbar - Register helpbar config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_helpbar(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, HelpbarVars);
-}

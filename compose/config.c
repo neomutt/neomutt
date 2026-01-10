@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
- * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
@@ -62,7 +62,7 @@ static const struct ExpandoDefinition ComposeFormatDef[] = {
 /**
  * ComposeVars - Config definitions for compose
  */
-static struct ConfigDef ComposeVars[] = {
+struct ConfigDef ComposeVars[] = {
   // clang-format off
   { "compose_confirm_detach_first", DT_BOOL, true, 0, NULL,
     "Prevent the accidental deletion of the composed message"
@@ -100,11 +100,3 @@ static struct ConfigDef ComposeVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_compose - Register compose config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_compose(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, ComposeVars);
-}

@@ -27,8 +27,27 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern struct ConfigDef ImapVars[];
+extern struct ConfigDef ImapVarsZlib[];
+
+/**
+ * imap_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool imap_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  bool rc = cs_register_variables(cs, ImapVars);
+
+#if defined(USE_ZLIB)
+  rc |= cs_register_variables(cs, ImapVarsZlib);
+#endif
+
+  return rc;
+}
 
 /**
  * ModuleImap - Module for the Imap library
@@ -37,7 +56,7 @@ const struct Module ModuleImap = {
   "imap",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  imap_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

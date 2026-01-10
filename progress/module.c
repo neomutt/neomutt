@@ -27,8 +27,20 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern struct ConfigDef ProgressVars[];
+
+/**
+ * progress_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool progress_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, ProgressVars);
+}
 
 /**
  * ModuleProgress - Module for the Progress library
@@ -37,7 +49,7 @@ const struct Module ModuleProgress = {
   "progress",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  progress_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

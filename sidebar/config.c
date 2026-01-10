@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -90,7 +90,7 @@ static const struct ExpandoDefinition SidebarFormatDef[] = {
 /**
  * SidebarVars - Config definitions for the sidebar
  */
-static struct ConfigDef SidebarVars[] = {
+struct ConfigDef SidebarVars[] = {
   // clang-format off
   { "sidebar_component_depth", DT_NUMBER, 0, 0, NULL,
     "(sidebar) Strip leading path components from sidebar folders"
@@ -140,11 +140,3 @@ static struct ConfigDef SidebarVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_sidebar - Register sidebar config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_sidebar(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, SidebarVars);
-}

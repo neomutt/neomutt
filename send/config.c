@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
- * Copyright (C) 2020-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 raf <raf@raf.org>
  * Copyright (C) 2023 Whitney Cumber
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
@@ -158,7 +158,7 @@ static const struct ExpandoDefinition MsgIdFormatDef[] = {
 /**
  * SendVars - Config definitions for the send library
  */
-static struct ConfigDef SendVars[] = {
+struct ConfigDef SendVars[] = {
   // clang-format off
   { "abort_noattach", DT_QUAD, MUTT_NO, 0, NULL,
     "Abort sending the email if attachments are missing"
@@ -432,11 +432,3 @@ static struct ConfigDef SendVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_send - Register send config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_send(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, SendVars);
-}

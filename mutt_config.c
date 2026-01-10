@@ -6,7 +6,7 @@
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Louis Brauer <louis@openbooking.ch>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
@@ -36,11 +36,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "debug/lib.h"
 #include "attach/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
@@ -49,14 +49,6 @@
 #include "mx.h"
 
 extern const struct ExpandoDefinition IndexFormatDef[];
-
-#define CONFIG_INIT_TYPE(CS, NAME)                                             \
-  extern const struct ConfigSetType Cst##NAME;                                 \
-  cs_register_type(CS, &Cst##NAME)
-
-#define CONFIG_INIT_VARS(CS, NAME)                                             \
-  bool config_init_##NAME(struct ConfigSet *cs);                               \
-  config_init_##NAME(CS)
 
 /**
  * SortAuxMethods - Sort methods for '$sort_aux' for the index
@@ -386,7 +378,7 @@ const struct ExpandoDefinition *const StatusFormatDefNoPadding = &(StatusFormatD
 /**
  * MainVars - General Config definitions for NeoMutt
  */
-static struct ConfigDef MainVars[] = {
+struct ConfigDef MainVars[] = {
   // clang-format off
   { "abort_backspace", DT_BOOL, true, 0, NULL,
     "Hitting backspace against an empty prompt aborts the prompt"
@@ -840,7 +832,7 @@ static struct ConfigDef MainVars[] = {
 /**
  * MainVarsIdn - IDN Config definitions
  */
-static struct ConfigDef MainVarsIdn[] = {
+struct ConfigDef MainVarsIdn[] = {
   // clang-format off
   { "idn_decode", DT_BOOL, true, 0, NULL,
     "(idn) Decode international domain names"
@@ -852,91 +844,3 @@ static struct ConfigDef MainVarsIdn[] = {
   // clang-format on
 };
 #endif
-
-/**
- * config_init_main - Register main config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-static bool config_init_main(struct ConfigSet *cs)
-{
-  bool rc = cs_register_variables(cs, MainVars);
-
-#if defined(HAVE_LIBIDN)
-  rc |= cs_register_variables(cs, MainVarsIdn);
-#endif
-
-  return rc;
-}
-
-/**
- * init_types - Create the config types
- * @param cs Config items
- *
- * Define the config types, e.g. #DT_STRING.
- */
-static void init_types(struct ConfigSet *cs)
-{
-  CONFIG_INIT_TYPE(cs, Address);
-  CONFIG_INIT_TYPE(cs, Bool);
-  CONFIG_INIT_TYPE(cs, Enum);
-  CONFIG_INIT_TYPE(cs, Expando);
-  CONFIG_INIT_TYPE(cs, Long);
-  CONFIG_INIT_TYPE(cs, Mbtable);
-  CONFIG_INIT_TYPE(cs, MyVar);
-  CONFIG_INIT_TYPE(cs, Number);
-  CONFIG_INIT_TYPE(cs, Path);
-  CONFIG_INIT_TYPE(cs, Quad);
-  CONFIG_INIT_TYPE(cs, Regex);
-  CONFIG_INIT_TYPE(cs, Slist);
-  CONFIG_INIT_TYPE(cs, Sort);
-  CONFIG_INIT_TYPE(cs, String);
-}
-
-/**
- * init_variables - Define the config variables
- * @param cs Config items
- */
-static void init_variables(struct ConfigSet *cs)
-{
-  // Define the config variables
-  config_init_main(cs);
-  CONFIG_INIT_VARS(cs, alias);
-#if defined(USE_AUTOCRYPT)
-  CONFIG_INIT_VARS(cs, autocrypt);
-#endif
-  CONFIG_INIT_VARS(cs, browser);
-  CONFIG_INIT_VARS(cs, compose);
-  CONFIG_INIT_VARS(cs, conn);
-  CONFIG_INIT_VARS(cs, email);
-#if defined(USE_HCACHE)
-  CONFIG_INIT_VARS(cs, hcache);
-#endif
-  CONFIG_INIT_VARS(cs, helpbar);
-  CONFIG_INIT_VARS(cs, history);
-  CONFIG_INIT_VARS(cs, imap);
-  CONFIG_INIT_VARS(cs, index);
-  CONFIG_INIT_VARS(cs, maildir);
-  CONFIG_INIT_VARS(cs, mbox);
-  CONFIG_INIT_VARS(cs, menu);
-  CONFIG_INIT_VARS(cs, mh);
-  CONFIG_INIT_VARS(cs, ncrypt);
-  CONFIG_INIT_VARS(cs, nntp);
-#if defined(USE_NOTMUCH)
-  CONFIG_INIT_VARS(cs, notmuch);
-#endif
-  CONFIG_INIT_VARS(cs, pager);
-  CONFIG_INIT_VARS(cs, pattern);
-  CONFIG_INIT_VARS(cs, pop);
-  CONFIG_INIT_VARS(cs, progress);
-  CONFIG_INIT_VARS(cs, send);
-  CONFIG_INIT_VARS(cs, sidebar);
-}
-
-/**
- * init_config - Initialise the config system
- * @param cs Config items
- */
-void init_config(struct ConfigSet *cs)
-{
-  init_types(cs);
-  init_variables(cs);
-}

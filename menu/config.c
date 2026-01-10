@@ -3,7 +3,7 @@
  * Config used by libmenu
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,7 +34,7 @@
 /**
  * MenuVars - Config definitions for the Menu library
  */
-static struct ConfigDef MenuVars[] = {
+struct ConfigDef MenuVars[] = {
   // clang-format off
   { "arrow_cursor", DT_BOOL, false, 0, NULL,
     "Use an arrow '->' instead of highlighting in the index"
@@ -54,11 +54,3 @@ static struct ConfigDef MenuVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_menu - Register menu config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_menu(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, MenuVars);
-}
