@@ -180,7 +180,6 @@
 bool StartupComplete = false; ///< When the config has been read
 
 void show_cli(enum HelpMode mode, bool use_color);
-void init_locale(void);
 void localise_config(struct ConfigSet *cs);
 void reset_tilde(struct ConfigSet *cs);
 
@@ -1099,7 +1098,6 @@ int main(int argc, char *argv[], char *envp[])
     goto main_exit; // TEST01: neomutt (as root, chgrp mail neomutt; chmod +s neomutt)
   }
 
-  init_locale();
   OptGui = true;
 
   cs = cs_new(500);

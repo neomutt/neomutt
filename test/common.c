@@ -169,6 +169,7 @@ void test_neomutt_destroy(void)
   if (!NeoMutt)
     return;
 
+  neomutt_cleanup(NeoMutt);
   struct ConfigSet *cs = NeoMutt->sub->cs;
   neomutt_free(&NeoMutt);
   cs_free(&cs);
@@ -209,6 +210,8 @@ void test_init(void)
     goto done;
   }
 
+  test_neomutt_create();
+
   if (!TEST_CHECK((setlocale(LC_ALL, "C.UTF-8") != NULL) ||
                   (setlocale(LC_ALL, "en_US.UTF-8") != NULL)))
   {
@@ -216,7 +219,6 @@ void test_init(void)
     goto done;
   }
 
-  test_neomutt_create();
   regex_colors_init();
   success = true;
 done:

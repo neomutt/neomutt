@@ -65,9 +65,14 @@ static bool init_env(struct NeoMutt *n, char **envp)
 
 /**
  * init_locale - Initialise the Locale/NLS settings
+ * @param n NeoMutt
+ * @retval true Success
  */
-void init_locale(void)
+static bool init_locale(struct NeoMutt *n)
 {
+  if (!n)
+    return false;
+
   setlocale(LC_ALL, "");
 
 #ifdef ENABLE_NLS
@@ -78,6 +83,17 @@ void init_locale(void)
     bindtextdomain(PACKAGE, MUTTLOCALEDIR);
   textdomain(PACKAGE);
 #endif
+
+  n->time_c_locale = duplocale(LC_GLOBAL_LOCALE);
+  if (n->time_c_locale)
+    n->time_c_locale = newlocale(LC_TIME_MASK, "C", n->time_c_locale);
+
+  if (!n->time_c_locale)
+  {
+    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
+    return false;                      // LCOV_EXCL_LINE
+  }
+
 #ifndef LOCALES_HACK
   /* Do we have a locale definition? */
   if (mutt_str_getenv("LC_ALL") || mutt_str_getenv("LANG") || mutt_str_getenv("LC_CTYPE"))
@@ -85,6 +101,8 @@ void init_locale(void)
     OptLocales = true;
   }
 #endif
+
+  return true;
 }
 
 #ifdef ENABLE_NLS
@@ -155,16 +173,6 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   n->sub->cs = cs;
   n->sub->scope = SET_SCOPE_NEOMUTT;
 
-  n->time_c_locale = duplocale(LC_GLOBAL_LOCALE);
-  if (n->time_c_locale)
-    n->time_c_locale = newlocale(LC_TIME_MASK, "C", n->time_c_locale);
-
-  if (!n->time_c_locale)
-  {
-    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
-    mutt_exit(1);                      // LCOV_EXCL_LINE
-  }
-
   return n;
 }
 
@@ -183,6 +191,9 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
   n->modules = modules;
 
   if (!init_env(n, envp))
+    return false;
+
+  if (!init_locale(n))
     return false;
 
   ARRAY_INIT(&n->accounts);
