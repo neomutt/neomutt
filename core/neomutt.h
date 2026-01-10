@@ -161,6 +161,9 @@ void            neomutt_accounts_free (struct NeoMutt *n);
 void            neomutt_free          (struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
 
+bool neomutt_init   (struct NeoMutt *n, char **envp, const struct Module **modules);
+void neomutt_cleanup(struct NeoMutt *n);
+
 struct MailboxArray neomutt_mailboxes_get(struct NeoMutt *n, enum MailboxType type);
 
 // Similar to mutt_file_fopen, but with the proper permissions inferred from

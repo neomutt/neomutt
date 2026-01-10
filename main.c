@@ -1055,6 +1055,8 @@ int main(int argc, char *argv[], char *envp[])
     goto main_curses;
 
   NeoMutt = neomutt_new(cs);
+  if (!neomutt_init(NeoMutt, envp, NULL))
+    goto main_curses;
 
   NeoMutt->env = envlist_init(envp);
   mutt_str_replace(&NeoMutt->username, mutt_str_getenv("USER"));
@@ -1067,8 +1069,6 @@ int main(int argc, char *argv[], char *envp[])
   if (!show_help(&cli->help))
     goto main_ok;
 
-  // Change the current umask, and save the original one
-  NeoMutt->user_default_umask = umask(077);
   subjrx_init();
   attach_init();
   alternates_init();
@@ -1092,8 +1092,6 @@ int main(int argc, char *argv[], char *envp[])
   mutt_log_prep();
   MuttLogger = log_disp_queue;
   log_translation();
-  mutt_debug(LL_DEBUG1, "user's umask %03o\n", NeoMutt->user_default_umask);
-  mutt_debug(LL_DEBUG3, "umask set to 077\n");
 
   /* Check for a batch send. */
   if (!isatty(STDIN_FILENO) || !ARRAY_EMPTY(&cli->info.queries) ||
@@ -1785,6 +1783,7 @@ main_exit:
   km_cleanup();
   mutt_prex_cleanup();
   config_cache_cleanup();
+  neomutt_cleanup(NeoMutt);
   neomutt_free(&NeoMutt);
   cs_free(&cs);
   log_queue_flush(log_disp_terminal);

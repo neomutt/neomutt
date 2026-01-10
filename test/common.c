@@ -153,6 +153,8 @@ bool test_neomutt_create(void)
   TEST_CHECK(NeoMutt != NULL);
   NeoMutt->env = MUTT_MEM_CALLOC(2, char *);
 
+  neomutt_init(NeoMutt, NULL, NULL);
+
   TEST_CHECK(cs_register_variables(cs, Vars));
 
   init_tmp_dir(NeoMutt);

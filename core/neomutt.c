@@ -131,8 +131,6 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
 
   struct NeoMutt *n = MUTT_MEM_CALLOC(1, struct NeoMutt);
 
-  ARRAY_INIT(&n->accounts);
-  n->notify = notify_new();
   n->sub = cs_subset_new(NULL, NULL, n->notify);
   n->sub->cs = cs;
   n->sub->scope = SET_SCOPE_NEOMUTT;
@@ -147,6 +145,24 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
     mutt_exit(1);                      // LCOV_EXCL_LINE
   }
 
+  return n;
+}
+
+/**
+ * neomutt_init - Initialise NeoMutt
+ * @param n       NeoMutt
+ * @param envp    External environment
+ * @param modules Library modules to initialise
+ * @retval true Success
+ */
+bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
+{
+  if (!n)
+    return false;
+
+  ARRAY_INIT(&n->accounts);
+  n->notify = notify_new();
+
   n->notify_timeout = notify_new();
   notify_set_parent(n->notify_timeout, n->notify);
 
@@ -155,7 +171,22 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
 
   n->groups = groups_new();
 
-  return n;
+  // Change the current umask, and save the original one
+  n->user_default_umask = umask(077);
+  mutt_debug(LL_DEBUG1, "user's umask %03o\n", n->user_default_umask);
+  mutt_debug(LL_DEBUG3, "umask set to 077\n");
+
+  return true;
+}
+
+/**
+ * neomutt_cleanup - Clean up NeoMutt and Modules
+ * @param n NeoMutt
+ */
+void neomutt_cleanup(struct NeoMutt *n)
+{
+  if (!n)
+    return;
 }
 
 /**
