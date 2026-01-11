@@ -386,7 +386,7 @@ static int lua_email_cb_get_subject(lua_State *l)
   struct Email *e = *(struct Email **) luaL_checkudata(l, 1, "Email");
   lua_debug(LL_DEBUG1, "email = %p\n", e);
 
-  lua_pushstring(l, e->env->subject);
+  lua_pushstring(l, NONULL(e->env->subject));
 
   return 1;
 }
