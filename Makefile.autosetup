@@ -399,7 +399,7 @@ LIBDEBUGOBJS+=	debug/notify.o
 @if USE_DEBUG_WINDOW
 LIBDEBUGOBJS+=	debug/window.o
 @endif
-@if USE_DEBUG_BACKTRACE || USE_DEBUG_COLOR || USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ || USE_DEBUG_KEYMAP || USE_DEBUG_LOGGING || USE_DEBUG_NAMES || USE_DEBUG_NOTIFY || USE_DEBUG_WINDOW
+@if USE_DEBUG_BACKTRACE || USE_DEBUG_COLOR || USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ || USE_DEBUG_KEYMAP || USE_DEBUG_LOGGING || USE_DEBUG_LUA || USE_DEBUG_NAMES || USE_DEBUG_NOTIFY || USE_DEBUG_WINDOW
 LIBDEBUGOBJS+=	debug/names.o
 @endif
 @if USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ
@@ -616,7 +616,9 @@ $(PWD)/key:
 # liblua
 @if USE_LUA
 LIBLUA=		liblua.a
-LIBLUAOBJS=	lua/commands.o lua/lua.o
+LIBLUAOBJS=	lua/account.o lua/commands.o lua/config.o lua/console.o lua/email.o lua/global.o \
+		lua/gui.o lua/helpers.o lua/iterator.o lua/logging.o \
+		lua/index.o lua/mailbox.o lua/module.o lua/neomutt.o
 CLEANFILES+=	$(LIBLUA) $(LIBLUAOBJS)
 ALLOBJS+=	$(LIBLUAOBJS)
 

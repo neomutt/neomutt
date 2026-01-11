@@ -26,13 +26,6 @@
  * Lua Commands
  */
 
-#ifndef LUA_COMPAT_ALL
-#define LUA_COMPAT_ALL
-#endif
-#ifndef LUA_COMPAT_5_1
-#define LUA_COMPAT_5_1
-#endif
-
 #include "config.h"
 #include <lauxlib.h>
 #include <lua.h>
@@ -40,13 +33,13 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
+#include "console.h"
+#include "logging.h"
+#include "module.h"
 #include "muttlib.h"
-
-extern lua_State *LuaState;
-
-bool lua_init_state(lua_State **l);
 
 /**
  * parse_lua - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
@@ -62,26 +55,103 @@ enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, str
     return MUTT_CMD_WARNING;
   }
 
+  lua_State *l = lua_init_state();
+  if (!l)
+    return MUTT_CMD_ERROR;
+
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-  lua_init_state(&LuaState);
-  mutt_debug(LL_DEBUG2, "%s\n", buf_string(token));
+  lua_debug(LL_DEBUG2, "%s\n", buf_string(token));
 
-  if (luaL_dostring(LuaState, buf_string(token)) != LUA_OK)
+  if (luaL_dostring(l, buf_string(token)) != LUA_OK)
   {
-    mutt_debug(LL_DEBUG2, "%s -> failure\n", buf_string(token));
-    buf_printf(err, "%s: %s", buf_string(token), lua_tostring(LuaState, -1));
+    lua_debug(LL_DEBUG2, "%s -> failure\n", buf_string(token));
+    // buf_printf(err, "%s: %s", buf_string(token), lua_tostring(l, -1));
+    buf_strcpy(err, lua_tostring(l, -1));
     /* pop error message from the stack */
-    lua_pop(LuaState, 1);
+    // lua_debug(LL_DEBUG1, "parse_lua1: stack: %d\n", lua_gettop(l));
+    lua_pop(l, 1);
+    // lua_debug(LL_DEBUG1, "parse_lua2: stack: %d\n", lua_gettop(l));
     goto done;
   }
-  mutt_debug(LL_DEBUG2, "%s -> success\n", buf_string(token));
+
+  // lua_debug(LL_DEBUG1, "parse_lua3: stack: %d\n", lua_gettop(l));
+  lua_debug(LL_DEBUG2, "%s -> success\n", buf_string(token));
   buf_reset(line); // Clear the rest of the line
+  // mutt_refresh();
 
   rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&token);
+  return rc;
+}
+
+/**
+ * parse_lua_console - Parse the 'lua-console' command - Implements Command::parse() - @ingroup command_parse
+ */
+static enum CommandResult parse_lua_console(const struct Command *cmd,
+                                            struct Buffer *line, struct Buffer *err)
+{
+  lua_debug(LL_DEBUG2, "enter\n");
+
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), "lua-console");
+    return MUTT_CMD_WARNING;
+  }
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
+
+  if (parse_extract_token(token, line, TOKEN_NO_FLAGS) != 0)
+  {
+    buf_printf(err, _("source: error at %s"), buf_string(line));
+    return MUTT_CMD_ERROR;
+  }
+
+  if (MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
+    rc = MUTT_CMD_WARNING;
+    goto done;
+  }
+
+  rc = MUTT_CMD_SUCCESS;
+  if (mutt_str_equal(buf_string(token), "show"))
+  {
+    lua_console_set_visibility(LCV_SHOW);
+    goto done;
+  }
+
+  if (mutt_str_equal(buf_string(token), "hide"))
+  {
+    lua_console_set_visibility(LCV_HIDE);
+    goto done;
+  }
+
+  if (mutt_str_equal(buf_string(token), "toggle"))
+  {
+    lua_console_set_visibility(LCV_TOGGLE);
+    goto done;
+  }
+
+  if (mutt_str_equal(buf_string(token), "reset"))
+  {
+    if (NeoMutt && NeoMutt->lua_module)
+    {
+      lua_log_reset(NeoMutt->lua_module->log_file);
+      lua_console_update();
+    }
+
+    goto done;
+  }
+
+  buf_printf(err, _("%s: unknown command '%s'"), cmd->name, buf_string(token));
+  rc = MUTT_CMD_WARNING;
 
 done:
   buf_pool_release(&token);
@@ -103,12 +173,12 @@ enum CommandResult parse_lua_source(const struct Command *cmd,
     return MUTT_CMD_WARNING;
   }
 
+  lua_State *l = lua_init_state();
+  if (!l)
+    return MUTT_CMD_ERROR;
+
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
-
-  mutt_debug(LL_DEBUG2, "enter\n");
-
-  lua_init_state(&LuaState);
 
   if (parse_extract_token(token, line, TOKEN_NO_FLAGS) != 0)
   {
@@ -124,10 +194,10 @@ enum CommandResult parse_lua_source(const struct Command *cmd,
 
   buf_expand_path(token);
 
-  if (luaL_dofile(LuaState, buf_string(token)) != LUA_OK)
+  if (luaL_dofile(l, buf_string(token)) != LUA_OK)
   {
-    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(LuaState, -1));
-    lua_pop(LuaState, 1);
+    lua_error(_("Couldn't source lua source: %s"), lua_tostring(l, -1));
+    lua_pop(l, 1);
     goto done;
   }
 
@@ -147,6 +217,10 @@ static const struct Command LuaCommands[] = {
         N_("Run a Lua expression or call a Lua function"),
         N_("lua '<lua-commands>'"),
         "optionalfeatures.html#lua-commands" },
+  { "lua-console", CMD_LUA_CONSOLE, parse_lua_console, CMD_NO_DATA,
+        N_("Show the Lua Console"),
+        N_("lua-console"),
+        "optionalfeatures.html#lua-commands" },
   { "lua-source", CMD_LUA_SOURCE, parse_lua_source, CMD_NO_DATA,
         N_("Execute a Lua script file"),
         N_("lua-source <file>"),
@@ -157,21 +231,9 @@ static const struct Command LuaCommands[] = {
 };
 
 /**
- * lua_init - Setup feature commands
+ * lua_commands_init - Setup Lua commands
  */
-void lua_init(void)
+void lua_commands_init(void)
 {
   commands_register(&NeoMutt->commands, LuaCommands);
-}
-
-/**
- * lua_cleanup - Clean up Lua
- */
-void lua_cleanup(void)
-{
-  if (LuaState)
-  {
-    lua_close(LuaState);
-    LuaState = NULL;
-  }
 }

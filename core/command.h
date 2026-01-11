@@ -84,6 +84,7 @@ enum CommandId
   CMD_INDEX_FORMAT_HOOK,     ///< `:index-format-hook`
   CMD_LISTS,                 ///< `:lists`               @sa #CMD_UNLISTS
   CMD_LUA,                   ///< `:lua`
+  CMD_LUA_CONSOLE,           ///< `:lua-console`
   CMD_LUA_SOURCE,            ///< `:lua-source`
   CMD_MACRO,                 ///< `:macro`               @sa #CMD_UNMACRO
   CMD_MAILBOXES,             ///< `:mailboxes`           @sa #CMD_NAMED_MAILBOXES, #CMD_UNMAILBOXES

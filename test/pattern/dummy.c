@@ -63,17 +63,6 @@ const struct MenuFuncOp OpBrowser[] = {
   { NULL, OP_NULL },
 };
 
-const struct MenuFuncOp OpIndex[] = {
-  { "help", OP_HELP },
-  { "next-line", OP_NEXT_LINE },
-  { "next-page", OP_NEXT_PAGE },
-  { "next-undeleted", OP_MAIN_NEXT_UNDELETED },
-  { "previous-line", OP_PREV_LINE },
-  { "previous-unread", OP_MAIN_PREV_UNREAD },
-  { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
-  { NULL, OP_NULL },
-};
-
 const struct MenuFuncOp OpPager[] = {
   { "help", OP_HELP },
   { "next-line", OP_NEXT_LINE },

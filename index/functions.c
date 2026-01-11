@@ -64,6 +64,7 @@
 #include "functions.h"
 #include "globals.h"
 #include "mutt_header.h"
+#include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
@@ -88,7 +89,7 @@
 /**
  * OpIndex - Functions for the Index Menu
  */
-static const struct MenuFuncOp OpIndex[] = { /* map: index */
+const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "alias-dialog",                  OP_ALIAS_DIALOG },
 #ifdef USE_AUTOCRYPT
   { "autocrypt-acct-menu",           OP_AUTOCRYPT_ACCT_MENU },
@@ -158,23 +159,23 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "modify-labels-then-hide",       OP_MAIN_MODIFY_TAGS_THEN_HIDE },
   { "modify-tags",                   OP_MAIN_MODIFY_TAGS },
   { "modify-tags-then-hide",         OP_MAIN_MODIFY_TAGS_THEN_HIDE },
-  { "next-new",                      OP_MAIN_NEXT_NEW },
-  { "next-new-then-unread",          OP_MAIN_NEXT_NEW_THEN_UNREAD },
-  { "next-subthread",                OP_MAIN_NEXT_SUBTHREAD },
-  { "next-thread",                   OP_MAIN_NEXT_THREAD },
-  { "next-undeleted",                OP_MAIN_NEXT_UNDELETED },
-  { "next-unread",                   OP_MAIN_NEXT_UNREAD },
+  { "next-new",                      OP_MAIN_NEXT_NEW,             MFF_LUA },
+  { "next-new-then-unread",          OP_MAIN_NEXT_NEW_THEN_UNREAD, MFF_LUA },
+  { "next-subthread",                OP_MAIN_NEXT_SUBTHREAD,       MFF_LUA },
+  { "next-thread",                   OP_MAIN_NEXT_THREAD,          MFF_LUA },
+  { "next-undeleted",                OP_MAIN_NEXT_UNDELETED,       MFF_LUA },
+  { "next-unread",                   OP_MAIN_NEXT_UNREAD,          MFF_LUA },
   { "next-unread-mailbox",           OP_MAIN_NEXT_UNREAD_MAILBOX },
   { "parent-message",                OP_MAIN_PARENT_MESSAGE },
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
   { "post-message",                  OP_POST },
-  { "previous-new",                  OP_MAIN_PREV_NEW },
-  { "previous-new-then-unread",      OP_MAIN_PREV_NEW_THEN_UNREAD },
-  { "previous-subthread",            OP_MAIN_PREV_SUBTHREAD },
-  { "previous-thread",               OP_MAIN_PREV_THREAD },
-  { "previous-undeleted",            OP_MAIN_PREV_UNDELETED },
-  { "previous-unread",               OP_MAIN_PREV_UNREAD },
+  { "previous-new",                  OP_MAIN_PREV_NEW,             MFF_LUA },
+  { "previous-new-then-unread",      OP_MAIN_PREV_NEW_THEN_UNREAD, MFF_LUA },
+  { "previous-subthread",            OP_MAIN_PREV_SUBTHREAD,       MFF_LUA },
+  { "previous-thread",               OP_MAIN_PREV_THREAD,          MFF_LUA },
+  { "previous-undeleted",            OP_MAIN_PREV_UNDELETED,       MFF_LUA },
+  { "previous-unread",               OP_MAIN_PREV_UNREAD,          MFF_LUA },
   { "print-message",                 OP_PRINT },
   { "purge-message",                 OP_PURGE_MESSAGE },
   { "purge-thread",                  OP_PURGE_THREAD },
@@ -419,6 +420,226 @@ bool index_next_undeleted(struct MuttWindow *win_index)
   menu_set_index(menu, index);
   return true;
 }
+
+/**
+ * limit_func - Perform a Limit by Pattern
+ * @param mv     Mailbox View
+ * @param prompt Prompt to show the user
+ * @retval true  Success
+ * @retval false Failure
+ */
+static int limit_func(struct MailboxView *mv, char *prompt)
+{
+  if (!mv || !mv->mailbox)
+    return false;
+
+  struct Mailbox *m = mv->mailbox;
+  struct Buffer *err = NULL;
+  struct Progress *progress = NULL;
+  struct Buffer *buf = buf_pool_get();
+  bool interrupted = false;
+  bool rc = false;
+
+  buf_strcpy(buf, mv->pattern);
+  if (prompt)
+  {
+    if ((mw_get_field(prompt, buf, MUTT_COMP_CLEAR, HC_PATTERN, &CompletePatternOps, NULL) != 0) ||
+        buf_is_empty(buf))
+    {
+      buf_pool_release(&buf);
+      return false;
+    }
+  }
+
+  mutt_message(_("Compiling search pattern..."));
+
+  char *simple = buf_strdup(buf);
+  const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
+  mutt_check_simple(buf, NONULL(c_simple_search));
+  const char *pbuf = buf->data;
+  while (*pbuf == ' ')
+    pbuf++;
+  const bool match_all = mutt_str_equal(pbuf, "~A");
+
+  err = buf_pool_get();
+  struct PatternList *pat = mutt_pattern_comp(mv, buf->data, MUTT_PC_FULL_MSG, err);
+  if (!pat)
+  {
+    mutt_error("%s", buf_string(err));
+    goto bail;
+  }
+
+  if ((m->type == MUTT_IMAP) && (!imap_search(m, pat)))
+    goto bail;
+
+  progress = progress_new(MUTT_PROGRESS_READ, m->msg_count);
+  progress_set_message(progress, _("Executing command on matching messages..."));
+
+  m->vcount = 0;
+  mv->vsize = 0;
+  mv->collapsed = false;
+  int padding = mx_msg_padding_size(m);
+
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      break;
+
+    if (SigInt)
+    {
+      interrupted = true;
+      SigInt = false;
+      break;
+    }
+    progress_update(progress, i, -1);
+    /* new limit pattern implicitly uncollapses all threads */
+    e->vnum = -1;
+    e->visible = false;
+    e->limit_visited = true;
+    e->collapsed = false;
+    e->num_hidden = 0;
+
+    if (match_all ||
+        mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
+    {
+      e->vnum = m->vcount;
+      e->visible = true;
+      m->v2r[m->vcount] = i;
+      m->vcount++;
+      struct Body *b = e->body;
+      mv->vsize += b->length + b->offset - b->hdr_offset + padding;
+    }
+  }
+
+  progress_free(&progress);
+
+  mutt_clear_error();
+
+  /* drop previous limit pattern */
+  FREE(&mv->pattern);
+  mutt_pattern_free(&mv->limit_pattern);
+
+  if (m->msg_count && !m->vcount)
+    mutt_error(_("No messages matched criteria"));
+
+  /* record new limit pattern, unless match all */
+  if (!match_all)
+  {
+    mv->pattern = simple;
+    simple = NULL; /* don't clobber it */
+    mv->limit_pattern = mutt_pattern_comp(mv, buf->data, MUTT_PC_FULL_MSG, err);
+  }
+
+  if (interrupted)
+    mutt_error(_("Search interrupted"));
+
+  rc = true;
+
+bail:
+  buf_pool_release(&buf);
+  buf_pool_release(&err);
+  FREE(&simple);
+  mutt_pattern_free(&pat);
+
+  return rc;
+
+}
+
+/**
+ * pattern_func - Perform some Pattern matching
+ * @param mv     Mailbox View
+ * @param prompt Prompt to show the user
+ * @param ea     Array for the results
+ * @retval true  Success
+ * @retval false Failure
+ */
+bool pattern_func(struct MailboxView *mv, char *prompt, struct EmailArray *ea)
+{
+  if (!mv || !mv->mailbox || !ea)
+    return false;
+
+  struct Mailbox *m = mv->mailbox;
+  struct Buffer *err = NULL;
+  struct Progress *progress = NULL;
+  struct Buffer *buf = buf_pool_get();
+  bool interrupted = false;
+  bool rc = false;
+
+  buf_strcpy(buf, mv->pattern);
+  if (prompt)
+  {
+    if ((mw_get_field(prompt, buf, MUTT_COMP_CLEAR, HC_PATTERN, &CompletePatternOps, NULL) != 0) ||
+        buf_is_empty(buf))
+    {
+      buf_pool_release(&buf);
+      return false;
+    }
+  }
+
+  mutt_message(_("Compiling search pattern..."));
+
+  const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
+  mutt_check_simple(buf, NONULL(c_simple_search));
+  const char *pbuf = buf->data;
+  while (*pbuf == ' ')
+    pbuf++;
+  const bool match_all = mutt_str_equal(pbuf, "~A");
+
+  err = buf_pool_get();
+  struct PatternList *pat = mutt_pattern_comp(mv, buf->data, MUTT_PC_FULL_MSG, err);
+  if (!pat)
+  {
+    mutt_error("%s", buf_string(err));
+    goto bail;
+  }
+
+  if ((m->type == MUTT_IMAP) && (!imap_search(m, pat)))
+    goto bail;
+
+  progress = progress_new(MUTT_PROGRESS_READ, m->vcount);
+  progress_set_message(progress, _("Executing command on matching messages..."));
+
+  for (int i = 0; i < m->vcount; i++)
+  {
+    struct Email *e = mutt_get_virt_email(m, i);
+    if (!e)
+      continue;
+
+    if (SigInt)
+    {
+      interrupted = true;
+      SigInt = false;
+      break;
+    }
+
+    progress_update(progress, i, -1);
+    if (match_all || mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
+    {
+      ARRAY_ADD(ea, e);
+    }
+  }
+
+  progress_free(&progress);
+
+  mutt_clear_error();
+
+  if (interrupted)
+  {
+    mutt_warning(_("Search interrupted"));
+    goto bail;
+  }
+
+  rc = true;
+
+bail:
+  buf_pool_release(&buf);
+  buf_pool_release(&err);
+  mutt_pattern_free(&pat);
+
+  return rc;
+}
+
 
 // -----------------------------------------------------------------------------
 
@@ -1217,10 +1438,27 @@ static int op_main_delete_pattern(struct IndexSharedData *shared,
   if (!check_acl(shared->mailbox, MUTT_ACL_DELETE, _("Can't delete messages")))
     return FR_ERROR;
 
-  mutt_pattern_func(shared->mailbox_view, MUTT_DELETE, _("Delete messages matching: "));
-  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  int rc = FR_ERROR;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
 
-  return FR_SUCCESS;
+  struct MailboxView *mv = shared->mailbox_view;
+  if (!pattern_func(mv, _("Delete messages matching: "), &ea))
+    goto done;
+
+  struct Mailbox *m = mv->mailbox;
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
+  {
+    struct Email *e = *ep;
+    mutt_set_flag(m, e, MUTT_DELETE, true, true);
+  }
+
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  rc = FR_SUCCESS;
+
+done:
+  ARRAY_FREE(&ea);
+  return rc;
 }
 
 /**
@@ -1233,60 +1471,71 @@ static int op_main_delete_pattern(struct IndexSharedData *shared,
  */
 static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  const bool lmt = mview_has_limit(shared->mailbox_view);
-  int old_index = shared->email ? shared->email->index : -1;
+  struct MailboxView *mv = shared->mailbox_view;
+  struct Mailbox *m = shared->mailbox;
+  struct Email *e = shared->email;
+
+  const bool lmt = mview_has_limit(mv);
+  int old_index = e ? e->index : -1;
+
   if (op == OP_TOGGLE_READ)
   {
-    char buf2[1024] = { 0 };
+    char buf[1024] = { 0 };
 
-    if (!lmt || !mutt_strn_equal(shared->mailbox_view->pattern, "!~R!~D~s", 8))
+    if (!lmt || !mutt_strn_equal(mv->pattern, "!~R!~D~s", 8))
     {
-      snprintf(buf2, sizeof(buf2), "!~R!~D~s%s", lmt ? shared->mailbox_view->pattern : ".*");
+      snprintf(buf, sizeof(buf), "!~R!~D~s%s", lmt ? mv->pattern : ".*");
     }
     else
     {
-      mutt_str_copy(buf2, shared->mailbox_view->pattern + 8, sizeof(buf2));
-      if ((*buf2 == '\0') || mutt_strn_equal(buf2, ".*", 2))
-        snprintf(buf2, sizeof(buf2), "~A");
+      mutt_str_copy(buf, mv->pattern + 8, sizeof(buf));
+      if ((*buf == '\0') || mutt_strn_equal(buf, ".*", 2))
+        snprintf(buf, sizeof(buf), "~A");
     }
-    mutt_str_replace(&shared->mailbox_view->pattern, buf2);
-    mutt_pattern_func(shared->mailbox_view, MUTT_LIMIT, NULL);
+    mutt_str_replace(&mv->pattern, buf);
+    if (!limit_func(mv, NULL))
+      goto done;
+  }
+  else if (op == OP_LIMIT_CURRENT_THREAD)
+  {
+    if (!mutt_limit_current_thread(mv, e))
+      goto done;
+  }
+  else if (op == OP_MAIN_LIMIT)
+  {
+    if (!limit_func(mv, _("Limit to messages matching: ")))
+      goto done;
   }
 
-  if (((op == OP_LIMIT_CURRENT_THREAD) &&
-       mutt_limit_current_thread(shared->mailbox_view, shared->email)) ||
-      (op == OP_TOGGLE_READ) ||
-      ((op == OP_MAIN_LIMIT) && (mutt_pattern_func(shared->mailbox_view, MUTT_LIMIT,
-                                                   _("Limit to messages matching: ")) == 0)))
+  priv->menu->max = m->vcount;
+  menu_set_index(priv->menu, 0);
+  if (old_index >= 0)
   {
-    priv->menu->max = shared->mailbox->vcount;
-    menu_set_index(priv->menu, 0);
-    if (old_index >= 0)
+    /* try to find what used to be the current message */
+    for (size_t i = 0; i < m->vcount; i++)
     {
-      /* try to find what used to be the current message */
-      for (size_t i = 0; i < shared->mailbox->vcount; i++)
+      e = mutt_get_virt_email(m, i);
+      if (!e)
+        continue;
+      if (e->index == old_index)
       {
-        struct Email *e = mutt_get_virt_email(shared->mailbox, i);
-        if (!e)
-          continue;
-        if (e->index == old_index)
-        {
-          menu_set_index(priv->menu, i);
-          break;
-        }
+        menu_set_index(priv->menu, i);
+        break;
       }
     }
-
-    if ((shared->mailbox->msg_count != 0) && mutt_using_threads())
-    {
-      const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
-      if (c_collapse_all)
-        collapse_all(shared->mailbox_view, priv->menu, 0);
-      mutt_draw_tree(shared->mailbox_view->threads);
-    }
-    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
-    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   }
+
+  if ((m->msg_count != 0) && mutt_using_threads())
+  {
+    const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
+    if (c_collapse_all)
+      collapse_all(mv, priv->menu, 0);
+    mutt_draw_tree(mv->threads);
+  }
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+
+done:
   if (lmt)
     mutt_message(_("To view all messages, limit to \"all\""));
 
@@ -1933,10 +2182,27 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
 static int op_main_tag_pattern(struct IndexSharedData *shared,
                                struct IndexPrivateData *priv, int op)
 {
-  mutt_pattern_func(shared->mailbox_view, MUTT_TAG, _("Tag messages matching: "));
-  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  int rc = FR_ERROR;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
 
-  return FR_SUCCESS;
+  struct MailboxView *mv = shared->mailbox_view;
+  if (!pattern_func(mv, _("Tag messages matching: "), &ea))
+    goto done;
+
+  struct Mailbox *m = mv->mailbox;
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
+  {
+    struct Email *e = *ep;
+    mutt_set_flag(m, e, MUTT_TAG, true, true);
+  }
+
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  rc = FR_SUCCESS;
+
+done:
+  ARRAY_FREE(&ea);
+  return rc;
 }
 
 /**
@@ -1952,13 +2218,28 @@ static int op_main_undelete_pattern(struct IndexSharedData *shared,
   if (!check_acl(shared->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
     return FR_ERROR;
 
-  if (mutt_pattern_func(shared->mailbox_view, MUTT_UNDELETE,
-                        _("Undelete messages matching: ")) == 0)
+  int rc = FR_ERROR;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+
+  struct MailboxView *mv = shared->mailbox_view;
+  if (!pattern_func(mv, _("Undelete messages matching: "), &ea))
+    goto done;
+
+  struct Mailbox *m = mv->mailbox;
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
   {
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+    struct Email *e = *ep;
+    mutt_set_flag(m, e, MUTT_PURGE, false, true);
+    mutt_set_flag(m, e, MUTT_DELETE, false, true);
   }
 
-  return FR_SUCCESS;
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  rc = FR_SUCCESS;
+
+done:
+  ARRAY_FREE(&ea);
+  return rc;
 }
 
 /**
@@ -1967,10 +2248,27 @@ static int op_main_undelete_pattern(struct IndexSharedData *shared,
 static int op_main_untag_pattern(struct IndexSharedData *shared,
                                  struct IndexPrivateData *priv, int op)
 {
-  if (mutt_pattern_func(shared->mailbox_view, MUTT_UNTAG, _("Untag messages matching: ")) == 0)
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  int rc = FR_ERROR;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
 
-  return FR_SUCCESS;
+  struct MailboxView *mv = shared->mailbox_view;
+  if (!pattern_func(mv, _("Untag messages matching: "), &ea))
+    goto done;
+
+  struct Mailbox *m = mv->mailbox;
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
+  {
+    struct Email *e = *ep;
+    mutt_set_flag(m, e, MUTT_TAG, false, true);
+  }
+
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  rc = FR_SUCCESS;
+
+done:
+  ARRAY_FREE(&ea);
+  return rc;
 }
 
 /**

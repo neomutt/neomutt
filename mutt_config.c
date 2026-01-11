@@ -315,7 +315,7 @@ struct ExpandoNode *parse_subject(const char *str, struct ExpandoFormat *fmt,
  * - $message_format
  * - $pager_format
  *
- * @note Longer Expandos must precede any similar, but shorter Expandos
+ * @note Longer Expandos must precede any similar, but shorter, Expandos
  */
 const struct ExpandoDefinition IndexFormatDef[] = {
   // clang-format off
@@ -346,6 +346,11 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   { "J",  "thread-tags",         ED_EMAIL,    ED_EMA_THREAD_TAGS,         NULL },
   { "K",  "list-empty",          ED_ENVELOPE, ED_ENV_LIST_EMPTY,          NULL },
   { "l",  "lines",               ED_EMAIL,    ED_EMA_LINES,               NULL },
+#ifdef USE_LUA
+  { "L1", "lua-custom-1",        ED_EMAIL,    ED_EMA_LUA_CUSTOM1,         NULL },
+  { "L2", "lua-custom-2",        ED_EMAIL,    ED_EMA_LUA_CUSTOM2,         NULL },
+  { "L3", "lua-custom-3",        ED_EMAIL,    ED_EMA_LUA_CUSTOM3,         NULL },
+#endif
   { "L",  "from-list",           ED_EMAIL,    ED_EMA_FROM_LIST,           NULL },
   { "m",  "message-count",       ED_MAILBOX,  ED_MBX_MESSAGE_COUNT,       NULL },
   { "M",  "thread-hidden-count", ED_EMAIL,    ED_EMA_THREAD_HIDDEN_COUNT, NULL },
@@ -914,6 +919,9 @@ static void init_variables(struct ConfigSet *cs)
   CONFIG_INIT_VARS(cs, history);
   CONFIG_INIT_VARS(cs, imap);
   CONFIG_INIT_VARS(cs, index);
+#ifdef USE_LUA
+  CONFIG_INIT_VARS(cs, lua);
+#endif
   CONFIG_INIT_VARS(cs, maildir);
   CONFIG_INIT_VARS(cs, mbox);
   CONFIG_INIT_VARS(cs, menu);
