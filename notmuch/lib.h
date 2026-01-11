@@ -55,7 +55,6 @@ extern const struct CompleteOps CompleteNmTagOps;
 
 extern const struct MxOps MxNotmuchOps;
 
-void  nm_init                    (void);
 void  nm_db_debug_check          (struct Mailbox *m);
 void  nm_db_longrun_done         (struct Mailbox *m);
 void  nm_db_longrun_init         (struct Mailbox *m, bool writable);

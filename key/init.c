@@ -49,7 +49,7 @@ keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
 /**
  * KeyCommands - Key Binding Commands
  */
-static const struct Command KeyCommands[] = {
+const struct Command KeyCommands[] = {
   // clang-format off
   { "bind", CMD_BIND, parse_bind, CMD_NO_DATA,
         N_("Bind a key to a function"),
@@ -171,8 +171,6 @@ void km_init(void)
 {
   ARRAY_INIT(&MenuDefs);
   ARRAY_INIT(&SubMenus);
-
-  commands_register(&NeoMutt->commands, KeyCommands);
 
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, km_config_observer, NULL);
 }

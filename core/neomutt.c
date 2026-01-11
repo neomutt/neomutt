@@ -235,6 +235,38 @@ static bool init_config(struct NeoMutt *n)
 }
 
 /**
+ * init_commands - Initialise the NeoMutt commands
+ * @param n Neomutt
+ * @retval true Success
+ */
+static bool init_commands(struct NeoMutt *n)
+{
+  if (!n)
+    return false;
+
+  if (!n->modules)
+    return true;
+
+  struct CommandArray *ca = &n->commands;
+
+  bool rc = true;
+
+  // Set up the Config Types
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->commands_register)
+    {
+      mutt_debug(LL_DEBUG3, "%s:commands_register()\n", mod->name);
+      rc &= mod->commands_register(n, ca);
+    }
+  }
+
+  return rc;
+}
+
+/**
  * neomutt_new - Create the main NeoMutt object
  * @retval ptr New NeoMutt
  */
@@ -264,6 +296,9 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
     return false;
 
   if (!init_config(n))
+    return false;
+
+  if (!init_commands(n))
     return false;
 
   ARRAY_INIT(&n->accounts);

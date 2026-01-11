@@ -24,10 +24,7 @@
 #define MUTT_COMMANDS_COMMANDS_H
 
 #include "config.h"
-#include <stdbool.h>
 #include "core/lib.h"
-
-bool commands_init(void);
 
 const struct Command *command_find_by_id  (const struct CommandArray *ca, enum CommandId id);
 const struct Command *command_find_by_name(const struct CommandArray *ca, const char *name);

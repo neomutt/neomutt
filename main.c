@@ -135,7 +135,6 @@
 #include "cli/lib.h"
 #include "color/lib.h"
 #include "commands/lib.h"
-#include "compmbox/lib.h"
 #include "compose/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
@@ -147,7 +146,6 @@
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
-#include "notmuch/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
 #include "pop/lib.h"
@@ -1163,18 +1161,9 @@ int main(int argc, char *argv[], char *envp[])
   }
 
   alias_init();
-  commands_init();
-  hooks_init();
-  mutt_comp_init();
-  imap_init();
-  lua_init();
   driver_tags_init();
-
   menu_init();
   sb_init();
-#ifdef USE_NOTMUCH
-  nm_init();
-#endif
 
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, &cli->shared.log_level, &cli->shared.log_file,

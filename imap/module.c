@@ -35,6 +35,8 @@
 extern struct ConfigDef ImapVars[];
 extern struct ConfigDef ImapVarsZlib[];
 
+extern const struct Command ImapCommands[];
+
 /**
  * imap_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
  */
@@ -50,6 +52,14 @@ static bool imap_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
 }
 
 /**
+ * imap_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool imap_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, ImapCommands);
+}
+
+/**
  * ModuleImap - Module for the Imap library
  */
 const struct Module ModuleImap = {
@@ -57,7 +67,7 @@ const struct Module ModuleImap = {
   NULL, // init
   NULL, // config_define_types
   imap_config_define_variables,
-  NULL, // commands_register
+  imap_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup

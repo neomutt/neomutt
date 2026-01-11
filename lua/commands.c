@@ -3,7 +3,7 @@
  * Lua Commands
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -141,7 +141,7 @@ done:
 /**
  * LuaCommands - List of NeoMutt commands to register
  */
-static const struct Command LuaCommands[] = {
+const struct Command LuaCommands[] = {
   // clang-format off
   { "lua", CMD_LUA, parse_lua, CMD_NO_DATA,
         N_("Run a Lua expression or call a Lua function"),
@@ -155,14 +155,6 @@ static const struct Command LuaCommands[] = {
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
-
-/**
- * lua_init - Setup feature commands
- */
-void lua_init(void)
-{
-  commands_register(&NeoMutt->commands, LuaCommands);
-}
 
 /**
  * lua_cleanup - Clean up Lua

@@ -3,7 +3,7 @@
  * Compressed mbox local mailbox type
  *
  * @authors
- * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Reto Brunner <reto@slightlybroken.com>
  * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
@@ -59,7 +59,7 @@ struct Email;
 /**
  * CompCommands - Compression Commands
  */
-static const struct Command CompCommands[] = {
+const struct Command CompCommands[] = {
   // clang-format off
   { "append-hook", CMD_APPEND_HOOK, parse_hook_compress, CMD_NO_DATA,
         N_("Define command to append to a compressed mailbox"),
@@ -93,14 +93,6 @@ const struct ExpandoDefinition CompressFormatDef[] = {
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
-
-/**
- * mutt_comp_init - Setup Compressed Mailbox commands
- */
-void mutt_comp_init(void)
-{
-  commands_register(&NeoMutt->commands, CompCommands);
-}
 
 /**
  * lock_realpath - Try to lock the Mailbox.realpath

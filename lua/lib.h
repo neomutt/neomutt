@@ -42,7 +42,6 @@
 struct Buffer;
 struct Command;
 
-void lua_init   (void);
 void lua_cleanup(void);
 
 enum CommandResult parse_lua       (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
@@ -50,7 +49,6 @@ enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *li
 
 #else
 
-static inline void lua_init   (void) {}
 static inline void lua_cleanup(void) {}
 
 #endif
