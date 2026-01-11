@@ -267,6 +267,36 @@ static bool init_commands(struct NeoMutt *n)
 }
 
 /**
+ * init_modules - Initialise the Modules
+ * @param n Neomutt
+ * @retval true Success
+ */
+static bool init_modules(struct NeoMutt *n)
+{
+  if (!n)
+    return false;
+
+  if (!n->modules)
+    return true;
+
+  bool rc = true;
+
+  // Initialise the Modules
+  for (int i = 0; n->modules[i]; i++)
+  {
+    const struct Module *mod = n->modules[i];
+
+    if (mod->init)
+    {
+      mutt_debug(LL_DEBUG3, "%s:init()\n", mod->name);
+      rc &= mod->init(n);
+    }
+  }
+
+  return rc;
+}
+
+/**
  * neomutt_new - Create the main NeoMutt object
  * @retval ptr New NeoMutt
  */
@@ -299,6 +329,9 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
     return false;
 
   if (!init_commands(n))
+    return false;
+
+  if (!init_modules(n))
     return false;
 
   ARRAY_INIT(&n->accounts);
