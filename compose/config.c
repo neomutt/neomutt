@@ -95,6 +95,8 @@ static struct ConfigDef ComposeVars[] = {
   { "postpone", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Save messages to the `$postponed` folder"
   },
+
+  { "edit_hdrs", DT_SYNONYM, IP "edit_headers", IP "2021-03-21" },
   { NULL },
   // clang-format on
 };

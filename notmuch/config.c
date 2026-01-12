@@ -162,7 +162,6 @@ static struct ConfigDef NotmuchVars[] = {
   { "vfolder_format",     D_INTERNAL_DEPRECATED|DT_STRING, 0,  IP "2018-11-01" },
 
   { "nm_default_uri",     DT_SYNONYM, IP "nm_default_url",     IP "2021-02-11" },
-  { "virtual_spoolfile",  DT_SYNONYM, IP "spool_file",         IP "2025-12-08" },
   { NULL },
   // clang-format on
 };
