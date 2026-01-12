@@ -682,18 +682,13 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
     enum MailboxType type = mx_path_probe(buf_string(buf));
     buf_pool_release(&buf);
 
-    const bool dot_dot = mutt_str_equal(ff->name, "..");
-
-    // Descend into a directory, if:
-    // 1) User selected '..'
-    // 2) User pressed <descend-directory>
-    // 3) User is looking for a Mailbox and this directory isn't one
-    if (dot_dot || (op == OP_DESCEND_DIRECTORY) || (priv->folder && (type <= MUTT_UNKNOWN)))
+    if ((op == OP_DESCEND_DIRECTORY) || (type == MUTT_MAILBOX_ERROR) ||
+        (type == MUTT_UNKNOWN) || ff->inferiors)
     {
       /* save the old directory */
       buf_copy(priv->old_last_dir, &LastDir);
 
-      if (dot_dot)
+      if (mutt_str_equal(ff->name, ".."))
       {
         size_t lastdirlen = buf_len(&LastDir);
         if ((lastdirlen > 1) && mutt_str_equal("..", buf_string(&LastDir) + lastdirlen - 2))
