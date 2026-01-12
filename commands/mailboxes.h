@@ -25,6 +25,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
 
 struct Buffer;
@@ -39,7 +40,22 @@ enum TriBool
   TB_TRUE,       ///< Value is true
 };
 
+/**
+ * struct ParseMailbox - Parsed data for a single mailbox
+ */
+struct ParseMailbox
+{
+  char *path;          ///< Mailbox path
+  char *label;         ///< Descriptive label (strdup'd, may be NULL)
+  enum TriBool poll;   ///< Enable mailbox polling?
+  enum TriBool notify; ///< Enable mailbox notification?
+};
+ARRAY_HEAD(ParseMailboxArray, struct ParseMailbox);
 
+void               parse_mailbox_free (struct ParseMailbox *pm);
+void               parse_mailbox_array_free(struct ParseMailboxArray *pma);
+bool               parse_mailboxes_args(const struct Command *cmd, struct Buffer *line, struct Buffer *err, struct ParseMailboxArray *args);
+enum CommandResult parse_mailboxes_exec(const struct Command *cmd, struct ParseMailboxArray *args, struct Buffer *err);
 enum CommandResult parse_mailboxes  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 enum CommandResult parse_unmailboxes(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 

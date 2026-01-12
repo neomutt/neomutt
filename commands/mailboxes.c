@@ -162,27 +162,65 @@ bool mailbox_add_simple(const char *mailbox, struct Buffer *err)
 }
 
 /**
- * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse() - @ingroup command_parse
+ * parse_mailbox_free - Free a ParseMailbox structure
+ * @param pm ParseMailbox to free
+ */
+void parse_mailbox_free(struct ParseMailbox *pm)
+{
+  if (!pm)
+    return;
+
+  FREE(&pm->path);
+  FREE(&pm->label);
+}
+
+/**
+ * parse_mailbox_array_free - Free a ParseMailboxArray
+ * @param pma ParseMailboxArray to free
+ */
+void parse_mailbox_array_free(struct ParseMailboxArray *pma)
+{
+  if (!pma)
+    return;
+
+  struct ParseMailbox *pm = NULL;
+  ARRAY_FOREACH(pm, pma)
+  {
+    parse_mailbox_free(pm);
+  }
+  ARRAY_FREE(pma);
+}
+
+/**
+ * parse_mailboxes_args - Parse the 'mailboxes' and 'named-mailboxes' commands
+ * @param[in]  cmd  Command being parsed
+ * @param[in]  line Text to parse
+ * @param[out] err  Buffer for error messages
+ * @param[out] args Parsed args
+ * @retval true Success
  *
  * Parse:
  * - `mailboxes [[ -label <label> ] | -nolabel ] [ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> [ ... ]`
  * - `named-mailboxes [ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> [ ... ]`
  */
-enum CommandResult parse_mailboxes(const struct Command *cmd,
-                                   struct Buffer *line, struct Buffer *err)
+bool parse_mailboxes_args(const struct Command *cmd, struct Buffer *line,
+                          struct Buffer *err, struct ParseMailboxArray *args)
 {
+  if (!cmd || !line || !err || !args)
+    return false;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
-    return MUTT_CMD_WARNING;
+    return false;
   }
 
+  // Parsed (label, mailbox, flags) tuples will be appended to the @args array
   struct Buffer *label = buf_pool_get();
   struct Buffer *mailbox = buf_pool_get();
   struct Buffer *token = buf_pool_get();
-  enum CommandResult rc = MUTT_CMD_WARNING;
+  bool rc = false;
 
-  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   while (MoreArgs(line))
   {
     bool label_set = false;
@@ -250,21 +288,74 @@ enum CommandResult parse_mailboxes(const struct Command *cmd,
       goto done;
     }
 
-    rc = mailbox_add(c_folder, buf_string(mailbox),
-                     label_set ? buf_string(label) : NULL, poll, notify, err);
-    if (rc != MUTT_CMD_SUCCESS)
-      goto done;
+    struct ParseMailbox pm = {
+      .path = buf_strdup(mailbox),
+      .label = label_set ? buf_strdup(label) : NULL,
+      .poll = poll,
+      .notify = notify,
+    };
+    ARRAY_ADD(args, pm);
 
     buf_reset(label);
     buf_reset(mailbox);
   }
 
-  rc = MUTT_CMD_SUCCESS;
+  rc = true;
 
 done:
   buf_pool_release(&label);
   buf_pool_release(&mailbox);
   buf_pool_release(&token);
+  return rc;
+}
+
+/**
+ * parse_mailboxes_exec - Execute the 'mailboxes' or 'named-mailboxes' command
+ * @param[in]  cmd  Command being executed
+ * @param[in]  args Parsed arguments
+ * @param[out] err  Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ */
+enum CommandResult parse_mailboxes_exec(const struct Command *cmd,
+                                        struct ParseMailboxArray *args, struct Buffer *err)
+{
+  if (!cmd || !args || !err)
+    return MUTT_CMD_ERROR;
+
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
+
+  struct ParseMailbox *pm = NULL;
+  ARRAY_FOREACH(pm, args)
+  {
+    rc = mailbox_add(c_folder, pm->path, pm->label, pm->poll, pm->notify, err);
+    if (rc != MUTT_CMD_SUCCESS)
+      return rc;
+  }
+
+  return rc;
+}
+
+/**
+ * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]`
+ * - `named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]`
+ */
+enum CommandResult parse_mailboxes(const struct Command *cmd,
+                                   struct Buffer *line, struct Buffer *err)
+{
+  struct ParseMailboxArray args = ARRAY_HEAD_INITIALIZER;
+  enum CommandResult rc = MUTT_CMD_WARNING;
+
+  if (!parse_mailboxes_args(cmd, line, err, &args))
+    goto done;
+
+  rc = parse_mailboxes_exec(cmd, &args, err);
+
+done:
+  parse_mailbox_array_free(&args);
   return rc;
 }
 
