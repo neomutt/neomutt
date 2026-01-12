@@ -46,13 +46,15 @@ static struct ConfigDef Vars[] = {
   { "Ilama",      DT_STRING,  IP "iguana",     0, NULL, },
   { "Jackfruit",  DT_SYNONYM, IP "Ilama",      0, NULL, },
   { NULL },
+  // clang-format on
 };
 
 static struct ConfigDef Vars2[] = {
+  // clang-format off
   { "Jackfruit",  DT_SYNONYM, IP "Broken",     0, NULL },
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 {

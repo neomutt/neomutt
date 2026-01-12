@@ -33,16 +33,16 @@
 static const struct Command UnAttachments = { "unattachments", CMD_UNATTACHMENTS,
                                               NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "+A */.*" },
   { MUTT_CMD_SUCCESS, "-A text/x-vcard application/pgp.*" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_unattachments(void)
 {

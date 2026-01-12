@@ -28,12 +28,12 @@
 #include "config/lib.h"
 #include "core/lib.h"
 
-// clang-format off
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple", DT_NUMBER, 42, 0, NULL },
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_neomutt_new(void)
 {

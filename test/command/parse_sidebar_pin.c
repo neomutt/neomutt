@@ -32,15 +32,15 @@
 
 static const struct Command SidebarPin = { "sidebar-pin", CMD_SIDEBAR_PIN, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // sidebar-pin <mailbox> [ <mailbox> ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "+" },
   { MUTT_CMD_SUCCESS, "+neo" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_sidebar_pin(void)
 {

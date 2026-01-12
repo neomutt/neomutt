@@ -44,28 +44,32 @@ static const struct Command FccSaveHook = { "fcc-save-hook", CMD_FCC_SAVE_HOOK, 
 static const struct Command SaveHook    = { "save-hook",     CMD_SAVE_HOOK,     NULL, CMD_NO_DATA };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest FccTests[] = {
+  // clang-format off
   // fcc-hook <pattern> <mailbox>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "[@.]aol\\.com$ +spammers" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
 
 static const struct CommandTest FccSaveTests[] = {
+  // clang-format off
   // fcc-save-hook <pattern> <mailbox>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'~t neomutt-users*' +Lists/neomutt-users" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
 
 static const struct CommandTest SaveTests[] = {
+  // clang-format off
   // save-hook <pattern> <mailbox>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'~f root@localhost' =Temp/rootmail" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void test_parse_fcc_hook(void)
 {

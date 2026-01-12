@@ -32,14 +32,14 @@
 
 static const struct Command Push = { "push", CMD_PUSH, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // push <string>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "<collapse-all>" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_push(void)
 {

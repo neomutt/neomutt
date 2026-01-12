@@ -34,8 +34,8 @@
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
-// clang-format off
 static struct Mapping MboxTypeMap[] = {
+  // clang-format off
   { "mbox",    MUTT_MBOX,    },
   { "MMDF",    MUTT_MMDF,    },
   { "MH",      MUTT_MH,      },
@@ -61,8 +61,8 @@ static const struct Mapping SortMangoMethods[] = {
   { "threads",       EMAIL_SORT_THREADS },
   { "to",            EMAIL_SORT_TO },
   { NULL,            0 },
+  // clang-format on
 };
-// clang-format on
 
 static struct EnumDef MboxTypeDef = {
   "mbox_type",
@@ -70,8 +70,8 @@ static struct EnumDef MboxTypeDef = {
   (struct Mapping *) &MboxTypeMap,
 };
 
-// clang-format off
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",      DT_BOOL,                           false,                       0,                   NULL, },
   { "Banana",     DT_BOOL,                           true,                        0,                   NULL, },
   { "Cherry",     DT_NUMBER,                         0,                           0,                   NULL, },
@@ -87,8 +87,8 @@ static struct ConfigDef Vars[] = {
   { "Nectarine",  DT_STRING|D_SENSITIVE,             IP "nectarine",              0,                   NULL, },
   { "Olive",      DT_SLIST,                          IP "olive",                  IP "olive",          NULL, },
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_config_helpers(void)
 {

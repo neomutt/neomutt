@@ -45,8 +45,8 @@ static struct ConfigDef Vars[] = {
   // clang-format on
 };
 
-// clang-format off
 static const struct CommandTest GroupTests[] = {
+  // clang-format off
   // group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "-addr 'Jim Smith <js@example.com>'" },
@@ -54,11 +54,11 @@ static const struct CommandTest GroupTests[] = {
   { MUTT_CMD_SUCCESS, "-group work -addr 'Mike Jones <mj@example.com>'" },
   { MUTT_CMD_SUCCESS, "-group other -rx '.*@example\\.com'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest UnGroupTests[] = {
+  // clang-format off
   // ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "-addr 'Jim Smith <js@example.com>'" },
@@ -67,8 +67,8 @@ static const struct CommandTest UnGroupTests[] = {
   { MUTT_CMD_SUCCESS, "-group other -rx '.*@example\\.com'" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void test_parse_group2(void)
 {

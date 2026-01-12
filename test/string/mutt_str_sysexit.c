@@ -36,8 +36,8 @@ struct TestValue
   const char *result; ///< Expected result string
 };
 
-// clang-format off
 static const struct TestValue tests[] = {
+// clang-format off
 #ifdef EX_NOUSER
   { 0xff & EX_NOUSER,      "User unknown."            },
 #endif
@@ -55,8 +55,8 @@ static const struct TestValue tests[] = {
 #endif
   { 255,                   NULL                       },
   { -1,                    NULL                       },
+  // clang-format on
 };
-// clang-format on
 
 void test_mutt_str_sysexit(void)
 {

@@ -37,8 +37,8 @@ struct IsFromTest
   time_t epoch;       // expected time in seconds since Epoch
 };
 
-// clang-format off
 static struct IsFromTest test[] = {
+  // clang-format off
   {
     NULL,
     false
@@ -107,9 +107,8 @@ static struct IsFromTest test[] = {
     "god@heaven.af.mil",
     820631134
   },
+  // clang-format on
 };
-
-// clang-format on
 
 void test_is_from(void)
 {

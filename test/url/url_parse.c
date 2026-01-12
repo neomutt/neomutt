@@ -40,8 +40,8 @@ struct UrlTest
                        // and terminated by a pipe '|' character
 };
 
-// clang-format off
 static struct UrlTest test[] = {
+  // clang-format off
   {
     "mailto:mail@example.com",
     true,
@@ -205,8 +205,8 @@ static struct UrlTest test[] = {
     },
     "query|folder:\"[Gmail]/Sent Mail\"|"
   }
+  // clang-format on
 };
-// clang-format on
 
 void check_query_string(const char *exp, const struct UrlQueryList *act)
 {

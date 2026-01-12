@@ -34,16 +34,16 @@
 
 static const struct Command Macro = { "macro", CMD_MACRO, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "index eee '<enter-function>echo<enter>'" },
   { MUTT_CMD_SUCCESS, "index nn  '<next-line><next-page>'" },
   { MUTT_CMD_ERROR,   NULL },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static const struct MenuFuncOp OpIndex[] = {
   // clang-format off

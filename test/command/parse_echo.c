@@ -32,15 +32,15 @@
 
 static const struct Command Echo = { "echo", CMD_ECHO, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // echo <message>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "hello" },
   { MUTT_CMD_SUCCESS, "'hello world'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_echo(void)
 {

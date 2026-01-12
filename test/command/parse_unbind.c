@@ -64,15 +64,15 @@ static const struct CommandTest UnBindTests[] = {
   // clang-format on
 };
 
-// clang-format off
 static const struct CommandTest UnMacroTests[] = {
+  // clang-format off
   // unmacro { * | <menu>[,<menu> ... ] } [ <key> ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "index eee" },
   { MUTT_CMD_SUCCESS, "index nn" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void init_menus(void)
 {

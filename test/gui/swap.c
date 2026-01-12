@@ -29,8 +29,8 @@
 #include "gui/lib.h"
 #include "test_common.h"
 
-// clang-format off
-static const char * initial_order[] = {
+static const char *initial_order[] = {
+  // clang-format off
   "apple",
   "banana",
   "cherry",
@@ -39,8 +39,8 @@ static const char * initial_order[] = {
   "fig",
   "guava",
   "hawthorn"
+  // clang-format on
 };
-// clang-format on
 
 static const int num_children = countof(initial_order);
 

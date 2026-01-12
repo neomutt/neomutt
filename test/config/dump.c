@@ -36,19 +36,21 @@
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
-// clang-format off
 static struct Mapping MboxTypeMap[] = {
+  // clang-format off
   { "mbox",    MUTT_MBOX,    },
   { "MMDF",    MUTT_MMDF,    },
   { "MH",      MUTT_MH,      },
   { "Maildir", MUTT_MAILDIR, },
   { NULL,      0,            },
+  // clang-format on
 };
 
 /**
  * Test Lookup table
  */
 const struct Mapping SortMangoMethods[] = {
+  // clang-format off
   { "date",          EMAIL_SORT_DATE },
   { "date-sent",     EMAIL_SORT_DATE },
   { "date-received", EMAIL_SORT_DATE_RECEIVED },
@@ -63,8 +65,8 @@ const struct Mapping SortMangoMethods[] = {
   { "threads",       EMAIL_SORT_THREADS },
   { "to",            EMAIL_SORT_TO },
   { NULL,            0 },
+  // clang-format on
 };
-// clang-format on
 
 struct EnumDef MboxTypeDef = {
   "mbox_type",
@@ -72,8 +74,8 @@ struct EnumDef MboxTypeDef = {
   (struct Mapping *) &MboxTypeMap,
 };
 
-// clang-format off
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",      DT_BOOL,                           false,                       0,                   NULL, },
   { "Banana",     DT_BOOL,                           true,                        0,                   NULL, },
   { "Cherry",     DT_NUMBER,                         0,                           0,                   NULL, },
@@ -92,8 +94,8 @@ static struct ConfigDef Vars[] = {
   { "Pap_aya",    DT_STRING,                         IP "papaya",                 0,                   NULL, },
   { "Quince",     DT_MYVAR,                          IP "my_value",               0,                   NULL, },
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 bool test_pretty_var(void)
 {

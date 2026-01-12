@@ -35,8 +35,8 @@ struct TestValue
   unsigned long result; ///< Expected result (outparam)
 };
 
-// clang-format off
 static const struct TestValue tests[] = {
+  // clang-format off
   // Valid tests
   { "0",           0,    0 },
   { "1",           0,    1 },
@@ -80,8 +80,8 @@ static const struct TestValue tests[] = {
   { "1.234",       1,    1 },
   { ".123",        1,    0 },
   { "3 ",          1,    3 },
+  // clang-format on
 };
-// clang-format on
 
 static const int UNEXPECTED = -9999;
 

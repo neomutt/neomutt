@@ -30,14 +30,14 @@
 #include "core/lib.h"
 #include "test_common.h" // IWYU pragma: keep
 
-// clang-format off
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",  DT_NUMBER, 0, 0, NULL, },
   { "Banana", DT_NUMBER, 0, 0, NULL, },
   { "Cherry", DT_NUMBER, 0, 0, NULL, },
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_config_account(void)
 {

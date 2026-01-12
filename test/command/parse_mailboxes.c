@@ -35,8 +35,8 @@ static const struct Command Mailboxes      = { "mailboxes",       CMD_MAILBOXES,
 static const struct Command NamedMailboxes = { "named-mailboxes", CMD_NAMED_MAILBOXES, NULL, CMD_NO_DATA };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest MailboxesTests[] = {
+  // clang-format off
   // mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "+" },
@@ -51,18 +51,18 @@ static const struct CommandTest MailboxesTests[] = {
   { MUTT_CMD_SUCCESS, "-nopoll +home/cherry" },
   { MUTT_CMD_SUCCESS, "+home/damson +home/endive -label f +home/fig" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest NamedMailboxesTests[] = {
+  // clang-format off
   // named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "apple +home/apple" },
   { MUTT_CMD_SUCCESS, "banana +home/banana cherry +home/cherry" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void test_parse_mailboxes2(void)
 {

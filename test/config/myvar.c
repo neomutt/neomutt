@@ -34,8 +34,8 @@
 #include "common.h"      // IWYU pragma: keep
 #include "test_common.h" // IWYU pragma: keep
 
-// clang-format off
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",      DT_MYVAR, IP "apple",      0, NULL, }, /* test_initial_values */
   { "Banana",     DT_MYVAR, IP "banana",     0, NULL, },
   { "Cherry",     DT_MYVAR, IP "cherry",     0, NULL, },
@@ -54,8 +54,8 @@ static struct ConfigDef Vars[] = {
   { "Strawberry", DT_MYVAR, 0,               0, NULL, }, /* test_inherit */
   { "Tangerine",  DT_MYVAR, 0,               0, NULL, }, /* test_plus_equals */
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 /**
  * cs_subset_myvar - Get a MyVar config item by name

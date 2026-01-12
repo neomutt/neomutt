@@ -34,13 +34,13 @@
 #include "common.h"      // IWYU pragma: keep
 #include "test_common.h" // IWYU pragma: keep
 
-// clang-format off
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",  DT_NUMBER,  0, 0, NULL, },
   { "Banana", DT_BOOL,    1, 0, NULL, },
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 static int dummy_string_set(void *var, struct ConfigDef *cdef,
                             const char *value, struct Buffer *err)

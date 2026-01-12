@@ -34,14 +34,14 @@
 static const struct Command UnSubscribeFrom = { "unsubscribe-from", CMD_UNSUBSCRIBE_FROM,
                                                 NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // unsubscribe-from <imap-folder-uri>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_ERROR,   "imaps://mail.example.org/inbox" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static struct ConfigDef Vars[] = {
   // clang-format off

@@ -34,15 +34,15 @@
 static const struct Command UnSubjectRegex = { "unsubject-regex", CMD_UNSUBJECT_REGEX, NULL, CMD_NO_DATA };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // unsubject-regex { * | <regex> }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'\\[neomutt/neomutt\\] *' '%L%R'" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_unsubjectrx_list(void)
 {

@@ -36,28 +36,32 @@ static const struct Command StartupHook  = { "startup-hook",  CMD_STARTUP_HOOK, 
 static const struct Command TimeoutHook  = { "timeout-hook",  CMD_TIMEOUT_HOOK,  NULL };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest ShutdownTests[] = {
+  // clang-format off
   // shutdown-hook <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'<shell-escape>touch ~/test<enter>'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
 
 static const struct CommandTest StartupTests[] = {
+  // clang-format off
   // startup-hook <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'exec sync-mailbox'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
 
 static const struct CommandTest TimeoutTests[] = {
+  // clang-format off
   // timeout-hook <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'exec sync-mailbox'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void test_parse_shutdown_hook(void)
 {

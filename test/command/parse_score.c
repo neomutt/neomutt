@@ -32,15 +32,15 @@
 
 static const struct Command Score = { "score", CMD_SCORE, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // score <pattern> <value>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'~s patch' +70" },
   { MUTT_CMD_SUCCESS, "'~f rr' 19" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_score(void)
 {

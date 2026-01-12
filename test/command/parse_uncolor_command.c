@@ -32,8 +32,8 @@
 
 static const struct Command Command = { "uncolor", CMD_UNCOLOR, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // uncolor <object> { * | <pattern> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "error" },
@@ -43,8 +43,8 @@ static const struct CommandTest Tests[] = {
   { MUTT_CMD_SUCCESS, "status '[0-9]+'" },
   { MUTT_CMD_SUCCESS, "status *" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_uncolor_command(void)
 {

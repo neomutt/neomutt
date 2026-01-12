@@ -32,15 +32,15 @@
 
 static const struct Command UnAlias = { "unalias", CMD_UNALIAS, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // unalias { * | <key> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "jim" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_unalias(void)
 {

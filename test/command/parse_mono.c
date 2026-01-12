@@ -32,15 +32,15 @@
 
 static const struct Command Mono = { "mono", CMD_MONO, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // mono <object> <attribute> [ <pattern> | <regex> ]
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "warning underline" },
   { MUTT_CMD_SUCCESS, "index_author underline '~s neomutt'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_mono(void)
 {

@@ -41,55 +41,55 @@ static const struct Command UnMailtoAllow      = { "unmailto-allow",      CMD_UN
 static const struct Command UnMimeLookup       = { "unmime-lookup",       CMD_UNMIME_LOOKUP,       NULL, IP &MimeLookupList       };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest UnAlternativeOrderTests[] = {
+  // clang-format off
   // unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "text/enriched text/plain text application/postscript image/*" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest UnAutoViewTests[] = {
+  // clang-format off
   // unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "text/html application/x-gunzip image/gif application/x-tar-gz" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest UnHdrOrderTests[] = {
+  // clang-format off
   // unheader-order { * | <header> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "From Date: From: To: Cc: Subject:" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest UnMailtoAllowTests[] = {
+  // clang-format off
   // unmailto-allow { * | <header-field> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "bcc" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest UnMimeLookupTests[] = {
+  // clang-format off
   // unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "application/octet-stream application/X-Lotus-Manuscript" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void test_parse_unalternative_order(void)
 {

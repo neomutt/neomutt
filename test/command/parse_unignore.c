@@ -32,15 +32,15 @@
 
 static const struct Command UnIgnore = { "unignore", CMD_UNIGNORE, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // unignore { * | <string> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "unignore from" },
   { MUTT_CMD_SUCCESS, "unignore date subject to cc" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_unignore(void)
 {

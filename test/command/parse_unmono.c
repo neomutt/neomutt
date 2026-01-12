@@ -32,16 +32,16 @@
 
 static const struct Command UnMono = { "unmono", CMD_UNMONO, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // unmono <object> { * | <pattern> ... }
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "warning" },
   { MUTT_CMD_SUCCESS, "index_author '~s neomutt'" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_unmono(void)
 {

@@ -35,23 +35,23 @@ static const struct Command CharsetHook = { "charset-hook", CMD_CHARSET_HOOK, NU
 static const struct Command IconvHook   = { "iconv-hook",   CMD_ICONV_HOOK,   NULL };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest CharsetTests[] = {
+  // clang-format off
   // charset-hook alias charset
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "u8 utf-8" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest IconvTests[] = {
+  // clang-format off
   // iconv-hook charset local-charset
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "ascii utf-8" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_hook_charset2(void)
 {

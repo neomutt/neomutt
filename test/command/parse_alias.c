@@ -42,8 +42,8 @@ static struct ConfigDef Vars[] = {
   // clang-format on
 };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // alias [ -group name ...] key address [ , address ...] [ # [ comments ] [ tags:... ]]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_ERROR,   "js" },
@@ -55,8 +55,8 @@ static const struct CommandTest Tests[] = {
   { MUTT_CMD_SUCCESS, "work js2, 'Bob Williams <bw@example.com>', js3" },
   { MUTT_CMD_SUCCESS, "other -group misc j1, j4, work" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_alias(void)
 {

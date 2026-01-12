@@ -33,15 +33,15 @@
 
 static const struct Command TagFormatsCmd = { "tag-formats", CMD_TAG_FORMATS, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // tag-formats <tag> <format-string> { tag format-string ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'inbox' 'GI'" },
   { MUTT_CMD_SUCCESS, "'replied' 'GR' 'sent' 'GS'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_tag_formats(void)
 {

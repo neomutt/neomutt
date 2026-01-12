@@ -33,14 +33,14 @@
 
 static const struct Command SubscribeTo = { "subscribe-to", CMD_SUBSCRIBE_TO, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // subscribe-to <imap-folder-uri>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_ERROR,   "imaps://mail.example.org/inbox" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static struct ConfigDef Vars[] = {
   // clang-format off

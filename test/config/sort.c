@@ -36,11 +36,11 @@
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
-// clang-format off
 /**
  * Test Lookup Table, used by everything
  */
 static const struct Mapping SortTestMethods[] = {
+  // clang-format off
   { "date",          EMAIL_SORT_DATE },
   { "date-received", EMAIL_SORT_DATE_RECEIVED },
   { "from",          EMAIL_SORT_FROM },
@@ -56,9 +56,11 @@ static const struct Mapping SortTestMethods[] = {
   { "date-sent",     EMAIL_SORT_DATE },
   { "mailbox-order", EMAIL_SORT_UNSORTED },
   { NULL,            0 },
+  // clang-format on
 };
 
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",      DT_SORT,                            EMAIL_SORT_DATE, IP SortTestMethods, NULL,              }, /* test_initial_values */
   { "Banana",     DT_SORT,                            EMAIL_SORT_SIZE, IP SortTestMethods, NULL,              },
   { "Cherry",     DT_SORT,                            EMAIL_SORT_DATE, IP SortTestMethods, NULL,              },
@@ -79,9 +81,11 @@ static struct ConfigDef Vars[] = {
   { "Strawberry", DT_SORT,                            EMAIL_SORT_DATE, IP SortTestMethods, NULL,              }, /* test_inherit */
   { "Tangerine",  DT_SORT | D_ON_STARTUP,             EMAIL_SORT_DATE, IP SortTestMethods, NULL,              }, /* startup */
   { NULL },
+  // clang-format on
 };
 
 static struct ConfigDef Vars2[] = {
+  // clang-format off
   { "Raspberry", DT_SORT, 1, 0, NULL, }, /* test_sort_type */
   { NULL },
 };

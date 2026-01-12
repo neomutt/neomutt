@@ -32,16 +32,16 @@
 
 static const struct Command UnLists = { "unlists", CMD_UNLISTS, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // unlists { * | <regex> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "devel@neomutt.org" },
   { MUTT_CMD_SUCCESS, "users@neomutt.org lang@neomutt.org" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_unlists(void)
 {

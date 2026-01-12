@@ -32,15 +32,15 @@
 
 static const struct Command UnMyHeader = { "unmy-header", CMD_UNMY_HEADER, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // unmy-header { * | <field> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "X-NeoMutt: Rocks" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_unmy_header(void)
 {

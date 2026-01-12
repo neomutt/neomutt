@@ -56,8 +56,8 @@ static struct ExpandoDefinition TestFormatDef[] = {
   // clang-format on
 };
 
-// clang-format off
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",      DT_EXPANDO,              IP "apple",      IP &TestFormatDef, NULL,              }, /* test_initial_values */
   { "Banana",     DT_EXPANDO,              IP "banana",     IP &TestFormatDef, NULL,              },
   { "Cherry",     DT_EXPANDO,              IP "cherry",     IP &TestFormatDef, NULL,              },
@@ -80,8 +80,8 @@ static struct ConfigDef Vars[] = {
   { "Tangerine",  DT_EXPANDO,              IP "tangerine",  IP &TestFormatDef, NULL,              },
   { "Wolfberry",  DT_EXPANDO|D_ON_STARTUP, IP "wolfberry",  IP &TestFormatDef, NULL,              }, /* startup */
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 {

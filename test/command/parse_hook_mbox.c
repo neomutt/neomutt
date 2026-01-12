@@ -34,15 +34,15 @@
 static const struct Command MboxHook = { "mbox-hook", CMD_MBOX_HOOK, NULL};
 // clang-format on
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // mbox-hook [ -noregex ] <regex> <mailbox>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'.*example\\.com' '+work'" },
   { MUTT_CMD_SUCCESS, "-noregex 'example\\.com' '+other'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_hook_mbox(void)
 {

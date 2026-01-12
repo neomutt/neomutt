@@ -35,24 +35,24 @@ static const struct Command Setenv   = { "setenv",   CMD_SETENV,   NULL, CMD_NO_
 static const struct Command UnSetenv = { "unsetenv", CMD_UNSETENV, NULL, CMD_NO_DATA };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest SetenvTests[] = {
+  // clang-format off
   // setenv { <variable>? | <variable> <value> }
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "ORGANIZATION 'The NeoMutt Development Team'" },
   { MUTT_CMD_SUCCESS, "TERM vt100" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest UnSetenvTests[] = {
+  // clang-format off
   // unsetenv <variable>
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "ORGANIZATION" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void test_parse_setenv2(void)
 {

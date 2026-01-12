@@ -26,9 +26,8 @@
 #include <stddef.h>
 #include "common.h"
 
-// clang-format off
-const struct Md5TestData md5_test_data[] =
-{
+const struct Md5TestData md5_test_data[] = {
+  // clang-format off
   {
     "The quick brown fox jumps over the lazy dog",
     "9e107d9d372bb6826bd81d3542a419d6"
@@ -38,5 +37,5 @@ const struct Md5TestData md5_test_data[] =
     "d41d8cd98f00b204e9800998ecf8427e"
   },
   { NULL, NULL },
+  // clang-format on
 };
-// clang-format on

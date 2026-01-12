@@ -37,8 +37,8 @@
 #include "core/lib.h"
 #include "test_common.h"
 
-// clang-format off
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",      DT_ADDRESS, IP "apple@example.com",      0, NULL,              }, /* test_initial_values */
   { "Banana",     DT_ADDRESS, IP "banana@example.com",     0, NULL,              },
   { "Cherry",     DT_ADDRESS, IP "cherry@example.com",     0, NULL,              },
@@ -58,8 +58,8 @@ static struct ConfigDef Vars[] = {
   { "Quince",     DT_ADDRESS, 0,                           0, NULL,              }, /* test_inherit */
   { "Raspberry",  DT_ADDRESS|D_NOT_EMPTY, IP "raspberry",  0, NULL,              },
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 {

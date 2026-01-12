@@ -32,14 +32,14 @@
 
 static const struct Command Spam = { "spam", CMD_SPAM, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // spam <regex> <format>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'X-Spam-Status: Yes' '90+/SA'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_spam(void)
 {

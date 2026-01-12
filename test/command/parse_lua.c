@@ -33,14 +33,14 @@
 #ifdef USE_LUA
 static const struct Command Lua = { "lua", CMD_LUA, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // lua "<lua-commands>"
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'local num = 42'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 #endif
 
 void test_parse_lua(void)

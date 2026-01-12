@@ -34,18 +34,20 @@
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
-// clang-format off
 enum AnimalType
 {
+  // clang-format off
   ANIMAL_ANTELOPE  =  1,
   ANIMAL_BADGER    =  2,
   ANIMAL_CASSOWARY =  3,
   ANIMAL_DINGO     = 40,
   ANIMAL_ECHIDNA   = 41,
   ANIMAL_FROG      = 42,
+  // clang-format on
 };
 
 static struct Mapping AnimalMap[] = {
+  // clang-format off
   { "Antelope",  ANIMAL_ANTELOPE,  },
   { "Badger",    ANIMAL_BADGER,    },
   { "Cassowary", ANIMAL_CASSOWARY, },
@@ -58,15 +60,19 @@ static struct Mapping AnimalMap[] = {
   { "carnivore", ANIMAL_BADGER,    },
   { "herbivore", ANIMAL_ANTELOPE,  },
   { NULL,        0,                },
+  // clang-format on
 };
 
 static struct EnumDef AnimalDef = {
+  // clang-format off
   "animal",
   5,
   (struct Mapping *) &AnimalMap,
+  // clang-format on
 };
 
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",      DT_ENUM, ANIMAL_DINGO,    IP &AnimalDef, NULL,              }, /* test_initial_values */
   { "Banana",     DT_ENUM, ANIMAL_BADGER,   IP &AnimalDef, NULL,              },
   { "Cherry",     DT_ENUM, ANIMAL_FROG,     IP &AnimalDef, NULL,              },
@@ -85,8 +91,8 @@ static struct ConfigDef Vars[] = {
   { "Papaya",     DT_ENUM | D_ON_STARTUP, ANIMAL_ANTELOPE, IP &AnimalDef, NULL, }, /* startup */
   { "Quince",     DT_ENUM, 99,              IP &AnimalDef, NULL,              }, /* invalid */
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 {

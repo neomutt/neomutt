@@ -32,8 +32,8 @@
 
 static const struct Command Color = { "color", CMD_COLOR, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "error bold red white" },
@@ -44,8 +44,8 @@ static const struct CommandTest Tests[] = {
   { MUTT_CMD_SUCCESS, "index_author red green '~f fl.*'" },
   { MUTT_CMD_SUCCESS, "status yellow blue '[0-9]+' 1" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_color(void)
 {

@@ -33,8 +33,8 @@
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
-// clang-format off
 static struct ConfigDef Vars[] = {
+  // clang-format off
   { "Apple",      DT_PATH,              IP "apple",      0, NULL,              }, /* test_initial_values */
   { "Banana",     DT_PATH,              IP "banana",     0, NULL,              },
   { "Cherry",     DT_PATH,              IP "cherry",     0, NULL,              },
@@ -56,8 +56,8 @@ static struct ConfigDef Vars[] = {
   { "Strawberry", DT_PATH,              0,               0, NULL,              }, /* test_inherit */
   { "Tangerine",  DT_PATH|D_ON_STARTUP, IP "tangerine",  0, NULL,              }, /* startup */
   { NULL },
+  // clang-format on
 };
-// clang-format on
 
 static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 {

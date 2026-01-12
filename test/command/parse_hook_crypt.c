@@ -34,15 +34,15 @@
 static const struct Command CryptHook = { "crypt-hook", CMD_CRYPT_HOOK, NULL };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // crypt-hook <regex> <keyid>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'.'              0x1111111111222222222233333333334444444444" },
   { MUTT_CMD_SUCCESS, "'.*@example.com' 0xAAAAAAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDD" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_hook_crypt(void)
 {

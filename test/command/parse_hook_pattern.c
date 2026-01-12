@@ -45,38 +45,44 @@ static const struct Command SendHook    = { "send-hook",    CMD_SEND_HOOK,    NU
 static const struct Command Send2Hook   = { "send2-hook",   CMD_SEND2_HOOK,   NULL };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest MessageTests[] = {
+  // clang-format off
   // message-hook <pattern> <command>
   { MUTT_CMD_SUCCESS, "~g 'set my_var=42'" },
   { MUTT_CMD_SUCCESS, ". 'color header default default (Date|From|To)'" },
   { MUTT_CMD_SUCCESS, "'~h bob' 'set signature=\"~/.sig\"'" },
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
 
 static const struct CommandTest ReplyTests[] = {
+  // clang-format off
   // reply-hook <pattern> <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, ". 'set from=\"Dave Jones <dave@jones.com>\"'" },
   { MUTT_CMD_SUCCESS, "'~s neomutt' 'set signature=\"~/.sig\"'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
 
 static const struct CommandTest SendTests[] = {
+  // clang-format off
   // send-hook <pattern> <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "~A 'set signature=\"~/.sig\"'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
 
 static const struct CommandTest Send2Tests[] = {
+  // clang-format off
   // send2-hook <pattern> <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'~s neomutt' 'my-header X-Custom: hello world'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void test_parse_message_hook(void)
 {

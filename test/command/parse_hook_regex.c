@@ -34,15 +34,15 @@
 static const struct Command AccountHook = { "account-hook", CMD_ACCOUNT_HOOK, NULL };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // account-hook <regex> <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, ". 'unset imap_user; unset imap_pass; unset tunnel'" },
   { MUTT_CMD_SUCCESS, "imap://host1/ 'set imap_user=me1 imap_pass=foo'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_hook_regex(void)
 {

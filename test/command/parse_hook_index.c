@@ -42,16 +42,16 @@ static struct ConfigDef Vars[] = {
   // clang-format on
 };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "date '~d<1d' '%[%H:%M]'" },
   { MUTT_CMD_SUCCESS, "date '~d<1m' '%[%a %d]'" },
   { MUTT_CMD_SUCCESS, "date '~d<1y' '%[%b %d]'" },
   { MUTT_CMD_SUCCESS, "date '~A'    '%[%m/%y]'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_hook_index(void)
 {

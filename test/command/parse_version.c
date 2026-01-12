@@ -32,14 +32,14 @@
 
 static const struct Command Version = { "version", CMD_VERSION, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // version
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_WARNING, "something" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_version(void)
 {

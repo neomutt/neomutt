@@ -32,16 +32,16 @@
 
 static const struct Command Ignore = { "ignore", CMD_IGNORE, NULL, CMD_NO_DATA };
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // ignore { * | <string> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_SUCCESS, "delivered-to" },
   { MUTT_CMD_SUCCESS, "lines precedence status" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_ignore(void)
 {

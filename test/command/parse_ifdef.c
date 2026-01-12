@@ -42,8 +42,8 @@ const struct Command test_commands[] = {
   // clang-format on
 };
 
-// clang-format off
 static const struct CommandTest IfdefTests[] = {
+  // clang-format off
   // ifdef <symbol> "<config-command> [ <args> ... ]"
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_WARNING, "folder" },
@@ -55,11 +55,11 @@ static const struct CommandTest IfdefTests[] = {
   { MUTT_CMD_SUCCESS, "lmdb echo store" },
   { MUTT_CMD_SUCCESS, "HOME echo env" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest IfndefTests[] = {
+  // clang-format off
   // ifndef <symbol> "<config-command> [ <args> ... ]"
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_WARNING, "folder" },
@@ -71,8 +71,8 @@ static const struct CommandTest IfndefTests[] = {
   { MUTT_CMD_SUCCESS, "lmdb echo store" },
   { MUTT_CMD_SUCCESS, "HOME echo env" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void test_parse_ifdef2(void)
 {

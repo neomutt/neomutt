@@ -41,51 +41,51 @@ static const struct Command MailtoAllow      = { "mailto-allow",      CMD_MAILTO
 static const struct Command MimeLookup       = { "mime-lookup",       CMD_MIME_LOOKUP,       NULL, IP &MimeLookupList       };
 // clang-format off
 
-// clang-format off
 static const struct CommandTest AlternativeOrderTests[] = {
+// clang-format off
   // alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "text/enriched text/plain text application/postscript image/*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest AutoViewTests[] = {
+  // clang-format off
   // auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "text/html application/x-gunzip image/gif application/x-tar-gz" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest HdrOrderTests[] = {
+  // clang-format off
   // header-order <header> [ <header> ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "From Date: From: To: Cc: Subject:" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest MailtoAllowTests[] = {
+  // clang-format off
   // mailto-allow { * | <header-field> ... }
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "bcc" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
-// clang-format off
 static const struct CommandTest MimeLookupTests[] = {
+  // clang-format off
   // mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "application/octet-stream application/X-Lotus-Manuscript" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 static void alternative_order(void)
 {

@@ -27,9 +27,8 @@
 #include <locale.h>
 #include "common.h"
 
-// clang-format off
-const struct Rfc2047TestData rfc2047_test_data[] =
-{
+const struct Rfc2047TestData rfc2047_test_data[] = {
+  // clang-format off
   {
     /* The string is split in the middle of a multi-byte sequence */
       "=?UTF-8?Q?Kvie=C4=8Diame=20drauge=20pildyti=20ESO=20pasi=C5=BEad=C4?="
@@ -71,5 +70,5 @@ const struct Rfc2047TestData rfc2047_test_data[] =
     , "=?utf-8?Q?Sicherheitsl=C3=BCcke?= in praktisch allen IT-Systemen"
   },
   { NULL, NULL, NULL },
+  // clang-format on
 };
-// clang-format on

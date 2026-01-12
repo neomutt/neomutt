@@ -34,15 +34,15 @@
 static const struct Command FolderHook = { "folder-hook", CMD_FOLDER_HOOK, NULL };
 // clang-format on
 
-// clang-format off
 static const struct CommandTest Tests[] = {
+  // clang-format off
   // folder-hook [ -noregex ] <regex> <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, ".             'set sort=date-sent'" },
   { MUTT_CMD_SUCCESS, "-noregex work 'set sort=threads'" },
   { MUTT_CMD_ERROR,   NULL },
+  // clang-format on
 };
-// clang-format on
 
 void test_parse_hook_folder(void)
 {
