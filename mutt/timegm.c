@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_timegm For systems lacking timegm()
+ * @page mutt_timegm For systems lacking timegm()
  *
  * For systems lacking timegm()
  */

@@ -28,39 +28,41 @@
  *
  * Each source file in the library provides a group of related functions.
  *
- * | File             | Description             |
- * | :--------------- | :---------------------- |
- * | mutt/array.h     | @subpage mutt_array     |
- * | mutt/atoi.c      | @subpage mutt_atoi      |
- * | mutt/base64.c    | @subpage mutt_base64    |
- * | mutt/buffer.c    | @subpage mutt_buffer    |
- * | mutt/charset.c   | @subpage mutt_charset   |
- * | mutt/ctype.c     | @subpage mutt_ctype     |
- * | mutt/date.c      | @subpage mutt_date      |
- * | mutt/envlist.c   | @subpage mutt_envlist   |
- * | mutt/eqi.h       | @subpage mutt_eqi       |
- * | mutt/exit.c      | @subpage mutt_exit      |
- * | mutt/file.c      | @subpage mutt_file      |
- * | mutt/filter.c    | @subpage mutt_filter    |
- * | mutt/hash.c      | @subpage mutt_hash      |
- * | mutt/list.c      | @subpage mutt_list      |
- * | mutt/logging.c   | @subpage mutt_logging   |
- * | mutt/mapping.c   | @subpage mutt_mapping   |
- * | mutt/mbyte.c     | @subpage mutt_mbyte     |
- * | mutt/md5.c       | @subpage mutt_md5       |
- * | mutt/memory.c    | @subpage mutt_memory    |
- * | mutt/module.c    | @subpage mutt_module    |
- * | mutt/notify.c    | @subpage mutt_notify    |
- * | mutt/path.c      | @subpage mutt_path      |
- * | mutt/pool.c      | @subpage mutt_pool      |
- * | mutt/prex.c      | @subpage mutt_prex      |
- * | mutt/qsort_r.c   | @subpage mutt_qsort_r   |
- * | mutt/random.c    | @subpage mutt_random    |
- * | mutt/regex.c     | @subpage mutt_regex     |
- * | mutt/signal.c    | @subpage mutt_signal    |
- * | mutt/slist.c     | @subpage mutt_slist     |
- * | mutt/state.c     | @subpage mutt_state     |
- * | mutt/string.c    | @subpage mutt_string    |
+ * | File              | Description              |
+ * | :---------------- | :----------------------- |
+ * | mutt/array.h      | @subpage mutt_array      |
+ * | mutt/atoi.c       | @subpage mutt_atoi       |
+ * | mutt/base64.c     | @subpage mutt_base64     |
+ * | mutt/buffer.c     | @subpage mutt_buffer     |
+ * | mutt/charset.c    | @subpage mutt_charset    |
+ * | mutt/ctype.c      | @subpage mutt_ctype      |
+ * | mutt/date.c       | @subpage mutt_date       |
+ * | mutt/envlist.c    | @subpage mutt_envlist    |
+ * | mutt/eqi.h        | @subpage mutt_eqi        |
+ * | mutt/exit.c       | @subpage mutt_exit       |
+ * | mutt/file.c       | @subpage mutt_file       |
+ * | mutt/filter.c     | @subpage mutt_filter     |
+ * | mutt/hash.c       | @subpage mutt_hash       |
+ * | mutt/list.c       | @subpage mutt_list       |
+ * | mutt/logging.c    | @subpage mutt_logging    |
+ * | mutt/mapping.c    | @subpage mutt_mapping    |
+ * | mutt/mbyte.c      | @subpage mutt_mbyte      |
+ * | mutt/md5.c        | @subpage mutt_md5        |
+ * | mutt/memory.c     | @subpage mutt_memory     |
+ * | mutt/module.c     | @subpage mutt_module     |
+ * | mutt/notify.c     | @subpage mutt_notify     |
+ * | mutt/path.c       | @subpage mutt_path       |
+ * | mutt/pool.c       | @subpage mutt_pool       |
+ * | mutt/prex.c       | @subpage mutt_prex       |
+ * | mutt/qsort_r.c    | @subpage mutt_qsort_r    |
+ * | mutt/random.c     | @subpage mutt_random     |
+ * | mutt/regex.c      | @subpage mutt_regex      |
+ * | mutt/signal.c     | @subpage mutt_signal     |
+ * | mutt/slist.c      | @subpage mutt_slist      |
+ * | mutt/state.c      | @subpage mutt_state      |
+ * | mutt/string.c     | @subpage mutt_string     |
+ * | mutt/timegm.c     | @subpage mutt_timegm     |
+ * | mutt/wcscasecmp.c | @subpage mutt_wcscasecmp |
  *
  * @note The library is self-contained -- some files may depend on others in
  *       the library, but none depends on source from outside.

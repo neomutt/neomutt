@@ -74,12 +74,6 @@ NEOMUTTOBJS+=	main.o
 @if USE_INOTIFY
 NEOMUTTOBJS+=	monitor.o
 @endif
-@if !HAVE_TIMEGM
-NEOMUTTOBJS+=	timegm.o
-@endif
-@if !HAVE_WCSCASECMP
-NEOMUTTOBJS+=	wcscasecmp.o
-@endif
 
 CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
 ALLOBJS+=	$(NEOMUTTOBJS)
@@ -698,6 +692,13 @@ LIBMUTTOBJS=	mutt/atoi.o mutt/base64.o mutt/buffer.o mutt/charset.o \
 		mutt/notify.o mutt/path.o mutt/pool.o mutt/prex.o \
 		mutt/qsort_r.o mutt/random.o mutt/regex.o mutt/signal.o \
 		mutt/slist.o mutt/state.o mutt/string.o mutt/module.o
+
+@if !HAVE_TIMEGM
+NEOMUTTOBJS+=	mutt/timegm.o
+@endif
+@if !HAVE_WCSCASECMP
+NEOMUTTOBJS+=	mutt/wcscasecmp.o
+@endif
 
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 ALLOBJS+=	$(LIBMUTTOBJS)

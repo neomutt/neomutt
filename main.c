@@ -84,10 +84,8 @@
  * | rfc3676.c       | @subpage neo_rfc3676       |
  * | score.c         | @subpage neo_score         |
  * | system.c        | @subpage neo_system        |
- * | timegm.c        | @subpage neo_timegm        |
  * | usage.c         | @subpage neo_usage         |
  * | version.c       | @subpage neo_version       |
- * | wcscasecmp.c    | @subpage neo_wcscasecmp    |
  *
  * ## Building these Docs
  *
