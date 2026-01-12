@@ -32,8 +32,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 
-extern struct ConfigDef HooksVars[];
-
 extern const struct Command HooksCommands[];
 
 /**

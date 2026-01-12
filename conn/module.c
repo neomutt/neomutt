@@ -46,6 +46,8 @@ static bool conn_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
 {
   bool rc = true;
 
+  rc &= cs_register_variables(cs, ConnVars);
+
 #if defined(USE_SSL)
   rc &= cs_register_variables(cs, ConnVarsSsl);
 #endif
