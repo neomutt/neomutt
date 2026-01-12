@@ -32,6 +32,7 @@
 #include "test_common.h"
 
 static const struct Command Source = { "source", CMD_SOURCE, NULL, CMD_NO_DATA };
+static const struct Command SourceOpt = { "source!", CMD_SOURCE_OPT, NULL, 1 };
 
 const struct Command source_test_commands[] = {
   // clang-format off
@@ -45,6 +46,14 @@ static const struct CommandTest Tests[] = {
   // source <filename>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "%s/source/test.rc" },
+  { MUTT_CMD_ERROR,   NULL },
+};
+
+static const struct CommandTest TestsOptional[] = {
+  // source! <filename> - silent on missing files
+  { MUTT_CMD_WARNING, "" },
+  { MUTT_CMD_SUCCESS, "%s/source/test.rc" },
+  { MUTT_CMD_SUCCESS, "%s/source/nonexistent_file.rc" },  // Optional: missing file should succeed
   { MUTT_CMD_ERROR,   NULL },
 };
 // clang-format on
@@ -69,6 +78,18 @@ void test_parse_source(void)
     buf_seek(file, 0);
     rc = parse_source(&Source, file, err);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
+  }
+
+  // Test source! (optional) command
+  for (int i = 0; TestsOptional[i].line; i++)
+  {
+    TEST_CASE(TestsOptional[i].line);
+    buf_reset(err);
+    buf_strcpy(line, TestsOptional[i].line);
+    test_gen_path(file, buf_string(line));
+    buf_seek(file, 0);
+    rc = parse_source(&SourceOpt, file, err);
+    TEST_CHECK_NUM_EQ(rc, TestsOptional[i].rc);
   }
 
   buf_pool_release(&err);

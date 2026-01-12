@@ -41,6 +41,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -211,6 +212,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
  *
  * Parse:
  * - `source <filename>`
+ * - `source! <filename>` - quiet if file is missing or unreadable
  */
 enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -220,6 +222,8 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     return MUTT_CMD_WARNING;
   }
+
+  const bool optional = (cmd->data != 0);
 
   struct Buffer *token = buf_pool_get();
   struct Buffer *path = buf_pool_get();
@@ -235,9 +239,25 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
     buf_copy(path, token);
     buf_expand_path(path);
 
-    if (source_rc(buf_string(path), err) < 0)
+    const char *pathstr = buf_string(path);
+    size_t pathlen = buf_len(path);
+
+    // For source! (optional), check if file exists and is readable
+    // Skip the check for pipe commands (ending with '|')
+    if (optional && (pathlen > 0) && (pathstr[pathlen - 1] != '|'))
     {
-      buf_printf(err, _("source: file %s could not be sourced"), buf_string(path));
+      if (access(pathstr, R_OK) != 0)
+      {
+        int saved_errno = errno;
+        mutt_debug(LL_DEBUG1, "source!: optional file '%s' not accessible: %s\n",
+                   pathstr, strerror(saved_errno));
+        continue;
+      }
+    }
+
+    if (source_rc(pathstr, err) < 0)
+    {
+      buf_printf(err, _("source: file %s could not be sourced"), pathstr);
       goto done;
     }
 

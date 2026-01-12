@@ -109,6 +109,7 @@ enum CommandId
   CMD_SIDEBAR_PIN,           ///< `:sidebar-pin`         @sa #CMD_SIDEBAR_UNPIN
   CMD_SIDEBAR_UNPIN,         ///< `:sidebar-unpin`       @sa #CMD_SIDEBAR_PIN
   CMD_SOURCE,                ///< `:source`
+  CMD_SOURCE_OPT,            ///< `:source!`             @sa #CMD_SOURCE
   CMD_SPAM,                  ///< `:spam`                @sa #CMD_NOSPAM
   CMD_STARTUP_HOOK,          ///< `:startup-hook`
   CMD_SUBJECT_REGEX,         ///< `:subject-regex`       @sa #CMD_UNSUBJECT_REGEX
