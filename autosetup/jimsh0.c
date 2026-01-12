@@ -2600,7 +2600,7 @@ static int aio_cmd_gets(Jim_Interp *interp, int argc, Jim_Obj *const *argv)
     Jim_Obj *objPtr = NULL;
     int len;
     int nb;
-    char *nl = NULL;
+    const char *nl = NULL;
     int offset = 0;
 
     errno = 0;

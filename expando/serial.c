@@ -53,8 +53,6 @@ static void dump_node_condition(const struct ExpandoNode *node, struct Buffer *b
 {
   buf_addstr(buf, "<COND");
 
-  // dump_did_uid(node, buf);
-
   // These shouldn't happen
   if (node->text)
     buf_add_printf(buf, ",text=%s", node->text);
@@ -174,12 +172,6 @@ static void dump_node_expando(const struct ExpandoNode *node, struct Buffer *buf
                      just + 8, fmt->leader);
   }
 
-  // These shouldn't happen
-  // if (node->ndata)
-  //   buf_add_printf(buf, ",ndata=%p", node->ndata);
-  // if (node->ndata_free)
-  //   buf_add_printf(buf, ",ndata_free=%p", (void *) (intptr_t) node->ndata_free);
-
   buf_addstr(buf, ">");
 }
 
@@ -206,14 +198,6 @@ static void dump_node_padding(const struct ExpandoNode *node, struct Buffer *buf
   buf_addstr(buf, "|");
   dump_node(right, buf);
 
-  // buf_add_printf(buf, ":(%s,%zu)", priv->buffer_start, priv->buffer_len);
-
-  // These shouldn't happen
-  // if (node->did != 0)
-  //   buf_add_printf(buf, ",did=%d", node->did);
-  // if (node->uid != 0)
-  //   buf_add_printf(buf, ",uid=%d", node->uid);
-
   buf_addstr(buf, ">");
 }
 
@@ -225,10 +209,6 @@ static void dump_node_text(const struct ExpandoNode *node, struct Buffer *buf)
   buf_add_printf(buf, "'%s'", node->text);
 
   // These shouldn't happen
-  // if (node->did != 0)
-  //   buf_add_printf(buf, ",did=%d", node->did);
-  // if (node->uid != 0)
-  //   buf_add_printf(buf, ",uid=%d", node->uid);
   if (node->ndata)
     buf_add_printf(buf, ",ndata=%p", node->ndata);
   if (node->ndata_free)

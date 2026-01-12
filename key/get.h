@@ -84,6 +84,5 @@ int              mutt_monitor_getch          (void);
 void             mutt_push_macro_event       (int ch, int op);
 void             mutt_unget_ch               (int ch);
 void             mutt_unget_op               (int op);
-void             mutt_unget_string           (const char *s);
 
 #endif /* MUTT_KEY_GET_H */

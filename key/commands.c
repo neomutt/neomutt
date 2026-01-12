@@ -536,14 +536,13 @@ done:
 }
 
 /**
- * parse_unbind_execute - Execute the 'unbind' or 'unmacro' command
+ * parse_unbind_exec - Execute the 'unbind' or 'unmacro' command
  * @param[in]  cmd  Command being executed
  * @param[in]  args Parsed arguments
  * @param[out] err  Buffer for error messages
  * @retval true Success
  */
-bool parse_unbind_execute(const struct Command *cmd, struct ParseUnbind *args,
-                          struct Buffer *err)
+bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, struct Buffer *err)
 {
   if (!cmd || !args || !err)
     return false;
@@ -652,7 +651,7 @@ enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
     goto done;
 
   rc = MUTT_CMD_ERROR;
-  if (parse_unbind_execute(cmd, &args, err))
+  if (parse_unbind_exec(cmd, &args, err))
     rc = MUTT_CMD_SUCCESS;
 
 done:

@@ -57,7 +57,7 @@ const struct Mapping ColorNames[] = {
 /**
  * AttributeNames - Mapping of attribute names to their IDs
  */
-static struct Mapping AttributeNames[] = {
+static const struct Mapping AttributeNames[] = {
   // clang-format off
   { "bold",      A_BOLD      },
   { "italic",    A_ITALIC    },

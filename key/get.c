@@ -135,22 +135,6 @@ void mutt_unget_op(int op)
 }
 
 /**
- * mutt_unget_string - Return a string to the input buffer
- * @param s String to return
- *
- * This puts events into the `UngetKeyEvents` buffer
- */
-void mutt_unget_string(const char *s)
-{
-  const char *p = s + mutt_str_len(s) - 1;
-
-  while (p >= s)
-  {
-    mutt_unget_ch((unsigned char) *p--);
-  }
-}
-
-/**
  * mutt_push_macro_event - Add the character/operation to the macro buffer
  * @param ch Character to add
  * @param op Operation to add
