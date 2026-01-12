@@ -3,7 +3,7 @@
  * Setup NeoMutt Commands
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -54,9 +53,9 @@
 #include "tags.h"
 
 /**
- * MuttCommands - General NeoMutt Commands
+ * CommandsCommands - General NeoMutt Commands
  */
-static const struct Command MuttCommands[] = {
+const struct Command CommandsCommands[] = {
   // clang-format off
   { "alias", CMD_ALIAS, parse_alias, CMD_NO_DATA,
         N_("Define an alias (name to email address)"),
@@ -294,14 +293,6 @@ static const struct Command MuttCommands[] = {
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
-
-/**
- * commands_init - Initialize commands array and register default commands
- */
-bool commands_init(void)
-{
-  return commands_register(&NeoMutt->commands, MuttCommands);
-}
 
 /**
  * command_find_by_id - Find a NeoMutt Command by its CommandId

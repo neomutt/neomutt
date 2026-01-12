@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2022 Carlos Henrique Lima Melara <charlesmelara@outlook.com>
- * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
@@ -135,7 +135,7 @@ static const struct ExpandoDefinition GroupIndexFormatDef[] = {
 /**
  * BrowserVars - Config definitions for the browser
  */
-static struct ConfigDef BrowserVars[] = {
+struct ConfigDef BrowserVars[] = {
   // clang-format off
   { "browser_abbreviate_mailboxes", DT_BOOL, true, 0, NULL,
     "Abbreviate mailboxes using '~' and '=' in the browser"
@@ -167,11 +167,3 @@ static struct ConfigDef BrowserVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_browser - Register browser config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_browser(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, BrowserVars);
-}

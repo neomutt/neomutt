@@ -34,6 +34,7 @@
  * | key/init.c          | @subpage key_init     |
  * | key/keymap.c        | @subpage key_keymap   |
  * | key/menu.c          | @subpage key_menu     |
+ * | key/module.c        | @subpage key_module   |
  */
 
 #ifndef MUTT_KEY_LIB_H

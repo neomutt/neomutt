@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 2011-2016 Karel Zak <kzak@redhat.com>
  * Copyright (C) 2016 Kevin Velghe <kevin@paretje.be>
- * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017 Bernard Pratz <guyzmo+github+pub@m0g.net>
  * Copyright (C) 2017 Bryan Bennett <bbenne10@gmail.com>
  * Copyright (C) 2017 Julian Andres Klode <jak@jak-linux.org>
@@ -66,7 +66,6 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
-#include "commands/lib.h"
 #include "editor/lib.h"
 #include "hcache/lib.h"
 #include "history/lib.h"
@@ -90,7 +89,7 @@ struct stat;
 /**
  * NmCommands - Notmuch Commands
  */
-static const struct Command NmCommands[] = {
+const struct Command NmCommands[] = {
   // clang-format off
   // Deprecated
   { "unvirtual-mailboxes", CMD_NONE, NULL, IP "unmailboxes",     NULL, NULL, NULL, CF_SYNONYM },
@@ -104,14 +103,6 @@ static const struct Command NmCommands[] = {
 const char NmUrlProtocol[] = "notmuch://";
 /// Length of #NmUrlProtocol string
 const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
-
-/**
- * nm_init - Setup feature commands
- */
-void nm_init(void)
-{
-  commands_register(&NeoMutt->commands, NmCommands);
-}
 
 /**
  * nm_hcache_open - Open a header cache

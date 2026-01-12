@@ -3,7 +3,7 @@
  * Hook Commands
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,9 +36,9 @@
 #include "parse.h"
 
 /**
- * HookCommands - Hook Commands
+ * HooksCommands - Hook Commands
  */
-static const struct Command HookCommands[] = {
+const struct Command HooksCommands[] = {
   // clang-format off
   { "account-hook", CMD_ACCOUNT_HOOK, parse_hook_regex, CMD_NO_DATA,
         N_("Run a command when switching to a matching account"),
@@ -124,11 +124,3 @@ static const struct Command HookCommands[] = {
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
-
-/**
- * hooks_init - Setup feature commands
- */
-void hooks_init(void)
-{
-  commands_register(&NeoMutt->commands, HookCommands);
-}

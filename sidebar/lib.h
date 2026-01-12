@@ -31,6 +31,7 @@
  * | sidebar/config.c    | @subpage sidebar_config    |
  * | sidebar/expando.c   | @subpage sidebar_expando   |
  * | sidebar/functions.c | @subpage sidebar_functions |
+ * | sidebar/module.c    | @subpage sidebar_module    |
  * | sidebar/observer.c  | @subpage sidebar_observers |
  * | sidebar/sidebar.c   | @subpage sidebar_sidebar   |
  * | sidebar/sort.c      | @subpage sidebar_sort      |

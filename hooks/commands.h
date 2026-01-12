@@ -23,6 +23,4 @@
 #ifndef MUTT_HOOKS_COMMANDS_H
 #define MUTT_HOOKS_COMMANDS_H
 
-void hooks_init(void);
-
 #endif /* MUTT_HOOKS_COMMANDS_H */

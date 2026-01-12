@@ -607,8 +607,8 @@ bool parse_unbind_execute(const struct Command *cmd, struct ParseUnbind *args,
     {
       buf_reset(keystr);
       keymap_expand_string(args->key, keystr);
-      mutt_debug(LL_NOTIFY, "%s: %s %s\n", notify_binding_name(nb),
-                 md->name, buf_string(keystr));
+      mutt_debug(LL_NOTIFY, "%s: %s %s\n", notify_binding_name(nb), md->name,
+                 buf_string(keystr));
 
       struct EventBinding ev_b = { md->id, args->key, OP_NULL };
       notify_send(NeoMutt->notify, NT_BINDING, nb, &ev_b);
@@ -622,8 +622,7 @@ bool parse_unbind_execute(const struct Command *cmd, struct ParseUnbind *args,
   {
     buf_reset(keystr);
     keymap_expand_string(args->key, keystr);
-    mutt_debug(LL_NOTIFY, "%s: ALL %s\n", notify_binding_name(nb),
-               buf_string(keystr));
+    mutt_debug(LL_NOTIFY, "%s: ALL %s\n", notify_binding_name(nb), buf_string(keystr));
 
     struct EventBinding ev_b = { MENU_MAX, args->key, OP_NULL };
     notify_send(NeoMutt->notify, NT_BINDING, nb, &ev_b);

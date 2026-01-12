@@ -28,6 +28,7 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | question/module.c   | @subpage question_module   |
  * | question/question.c | @subpage question_question |
  */
 

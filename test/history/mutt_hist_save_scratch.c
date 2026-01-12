@@ -23,20 +23,13 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stddef.h>
-#include "config/lib.h"
-#include "core/lib.h"
 #include "history/lib.h"
 #include "test_common.h" // IWYU pragma: keep
-
-bool config_init_history(struct ConfigSet *cs);
 
 void test_mutt_hist_save_scratch(void)
 {
   // void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
-
-  config_init_history(NeoMutt->sub->cs);
 
   {
     mutt_hist_save_scratch(0, NULL);

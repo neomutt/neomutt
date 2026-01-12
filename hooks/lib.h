@@ -30,6 +30,7 @@
  * | hooks/commands.c   | @subpage hooks_commands  |
  * | hooks/dump.c       | @subpage hooks_dump      |
  * | hooks/hook.c       | @subpage hooks_hook      |
+ * | hooks/module.c     | @subpage hooks_module    |
  * | hooks/parse.c      | @subpage hooks_parse     |
  * | hooks/run.c        | @subpage hooks_run       |
  */

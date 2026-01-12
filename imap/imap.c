@@ -6,7 +6,7 @@
  * Copyright (C) 1996-2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2017 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
  * Copyright (C) 2018-2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
@@ -176,7 +176,7 @@ done:
 /**
  * ImapCommands - Imap Commands
  */
-static const struct Command ImapCommands[] = {
+const struct Command ImapCommands[] = {
   // clang-format off
   { "subscribe-to", CMD_SUBSCRIBE_TO, parse_subscribe_to, CMD_NO_DATA,
         N_("Subscribe to an IMAP mailbox"),
@@ -190,14 +190,6 @@ static const struct Command ImapCommands[] = {
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
-
-/**
- * imap_init - Setup feature commands
- */
-void imap_init(void)
-{
-  commands_register(&NeoMutt->commands, ImapCommands);
-}
 
 /**
  * check_capabilities - Make sure we can log in to this server

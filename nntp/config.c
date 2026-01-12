@@ -3,7 +3,7 @@
  * Config used by libnntp
  *
  * @authors
- * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
@@ -56,7 +56,7 @@ const struct ExpandoDefinition NntpFormatDef[] = {
 /**
  * NntpVars - Config definitions for the NNTP library
  */
-static struct ConfigDef NntpVars[] = {
+struct ConfigDef NntpVars[] = {
   // clang-format off
   { "catchup_newsgroup", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "(nntp) Mark all articles as read when leaving a newsgroup"
@@ -112,11 +112,3 @@ static struct ConfigDef NntpVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_nntp - Register nntp config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_nntp(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, NntpVars);
-}

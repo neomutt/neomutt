@@ -33,6 +33,7 @@
  * | commands/ifdef.c       | @subpage commands_ifdef       |
  * | commands/ignore.c      | @subpage commands_ignore      |
  * | commands/mailboxes.c   | @subpage commands_mailboxes   |
+ * | commands/module.c      | @subpage commands_module      |
  * | commands/my_header.c   | @subpage commands_my_header   |
  * | commands/parse.c       | @subpage commands_parse       |
  * | commands/setenv.c      | @subpage commands_setenv      |

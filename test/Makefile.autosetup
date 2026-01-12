@@ -752,7 +752,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/sort $(PWD)/test/store $(PWD)/test/string \
 		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
 
-TEST_OBJS	= test/common.o test/main.o \
+TEST_OBJS	= test/common.o test/main.o test/module.o \
 		  $(ACCOUNT_OBJS) \
 		  $(ADDRESS_OBJS) \
 		  $(ARRAY_OBJS) \

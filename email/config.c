@@ -3,7 +3,7 @@
  * Config used by the Email library
  *
  * @authors
- * Copyright (C) 2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,7 +35,7 @@
 /**
  * EmailVars - Config definitions for the Email library
  */
-static struct ConfigDef EmailVars[] = {
+struct ConfigDef EmailVars[] = {
   // clang-format off
   { "auto_subscribe", DT_BOOL, false, 0, NULL,
     "Automatically check if the user is subscribed to a mailing list"
@@ -79,11 +79,3 @@ static struct ConfigDef EmailVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_email - Register email config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_email(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, EmailVars);
-}

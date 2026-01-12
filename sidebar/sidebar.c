@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
- * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Whitney Cumber
  *
@@ -46,7 +46,7 @@ struct ListHead SidebarPinned = STAILQ_HEAD_INITIALIZER(SidebarPinned); ///< Lis
 /**
  * SbCommands - Sidebar Commands
  */
-static const struct Command SbCommands[] = {
+const struct Command SbCommands[] = {
   // clang-format off
   { "sidebar-pin", CMD_SIDEBAR_PIN, parse_sidebar_pin, CMD_NO_DATA,
         N_("Pin a mailbox in the sidebar (keep visible)"),
@@ -212,8 +212,6 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
  */
 void sb_init(void)
 {
-  commands_register(&NeoMutt->commands, SbCommands);
-
   // Set a default style
   struct AttrColor *ac = simple_color_get(MT_COLOR_SIDEBAR_HIGHLIGHT);
   ac->attrs = A_UNDERLINE;
