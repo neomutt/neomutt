@@ -481,7 +481,10 @@ if {[get-define want-locales-fix]} {define LOCALES_HACK}
 # Documentation
 if {[get-define want-doc]} {
   if {![cc-check-progs xsltproc]} {
-    user-error "Unable to find xsltproc"
+    user-error "Unable to find xsltproc. Install package: libxslt / xsltproc."
+  }
+  if {![cc-check-progs xmlcatalog]} {
+    user-error "Unable to find xmlcatalog. Install package: libxml2 / libxml2-utils"
   }
 
   msg-checking "Checking for DocBook DTDs and Stylesheets..."
