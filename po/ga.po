@@ -1236,8 +1236,8 @@ msgstr ""
 
 #: commands/commands.c:183
 #, fuzzy
-msgid "tag-formats <tag> <format-string> { tag format-string ... }"
-msgstr "tag-formats <tag> <format-string> { tag format-string ... }"
+msgid "tag-formats <tag> <format-string> { <tag> <format-string> ... }"
+msgstr "tag-formats <tag> <format-string> { <tag> <format-string> ... }"
 
 #: commands/commands.c:186
 msgid "Rules to transform tags into icons"
@@ -1245,8 +1245,8 @@ msgstr ""
 
 #: commands/commands.c:187
 #, fuzzy
-msgid "tag-transforms <tag> <transformed-string> { tag transformed-string ... }"
-msgstr "tag-transforms <tag> <transformed-string> { tag transformed-string ... }"
+msgid "tag-transforms <tag> <transformed-string> { <tag> <transformed-string> ... }"
+msgstr "tag-transforms <tag> <transformed-string> { <tag> <transformed-string> ... }"
 
 #: commands/commands.c:190
 msgid "Toggle the value of a boolean/quad config option"

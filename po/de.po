@@ -1183,16 +1183,16 @@ msgid "Define expandos tags"
 msgstr "Definiere expandos Etiketten"
 
 #: commands/commands.c:183
-msgid "tag-formats <tag> <format-string> { tag format-string ... }"
-msgstr "tag-formats <Etikett> <Format-Zeichenkette> { Etikett Format-Zeichenkette ... }"
+msgid "tag-formats <tag> <format-string> { <tag> <format-string> ... }"
+msgstr "tag-formats <Etikett> <Format-Zeichenkette> { <Etikett> <Format-Zeichenkette> ... }"
 
 #: commands/commands.c:186
 msgid "Rules to transform tags into icons"
 msgstr "Regeln zur Umformung von Etiketten in Icons"
 
 #: commands/commands.c:187
-msgid "tag-transforms <tag> <transformed-string> { tag transformed-string ... }"
-msgstr "tag-transforms <Etikett> <umgeformte Zeichen> { Etikett umgeformte Zeichen ... }"
+msgid "tag-transforms <tag> <transformed-string> { <tag> <transformed-string> ... }"
+msgstr "tag-transforms <Etikett> <umgeformte Zeichen> { <Etikett> <umgeformte Zeichen> ... }"
 
 #: commands/commands.c:190
 msgid "Toggle the value of a boolean/quad config option"
