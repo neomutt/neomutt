@@ -23,7 +23,6 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdio.h>
 #include <string.h>
 #include "email/lib.h"
 #include "expando/lib.h"

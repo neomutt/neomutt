@@ -27,11 +27,11 @@
  */
 
 #include <stdbool.h>
-#include <string.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <unistd.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
-#include "email/lib.h"
+#include "core/lib.h"
 #include "expando_msgid.h"
 #include "expando/lib.h"
 #include "globals.h"

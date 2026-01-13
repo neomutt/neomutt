@@ -8,7 +8,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "protos.h"
 
 bool StartupComplete = true;
 

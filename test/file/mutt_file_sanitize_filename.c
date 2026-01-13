@@ -26,7 +26,6 @@
 #include "acutest.h"
 #include <locale.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include "mutt/lib.h"
 #include "test_common.h"
 

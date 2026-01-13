@@ -27,7 +27,6 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
 
 void test_neomutt_mailboxes_get(void)
 {

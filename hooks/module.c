@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
-#include "config/lib.h"
 #include "core/lib.h"
 
 extern const struct Command HooksCommands[];

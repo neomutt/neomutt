@@ -24,7 +24,6 @@
 #include "config.h"
 #include "acutest.h"
 #include <limits.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"

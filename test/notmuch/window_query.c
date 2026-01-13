@@ -25,7 +25,6 @@
 #include "config.h"
 #include "acutest.h"
 #include <stdbool.h>
-#include "mutt/lib.h"
 #include "notmuch/lib.h"
 #include "notmuch/query.h" // IWYU pragma: keep
 #include "test_common.h"
