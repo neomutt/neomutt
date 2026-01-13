@@ -91,7 +91,7 @@ const struct Command CommandsCommands[] = {
         "advancedusage.html#echo" },
   { "finish", CMD_FINISH, parse_finish, CMD_NO_DATA,
         N_("Stop reading current config file"),
-        N_("finish "),
+        N_("finish"),
         "optionalfeatures.html#ifdef" },
   { "group", CMD_GROUP, parse_group, CMD_NO_DATA,
         N_("Add addresses to an address group"),

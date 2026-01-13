@@ -1028,8 +1028,8 @@ msgstr ""
 
 #: commands/commands.c:95
 #, fuzzy
-msgid "finish "
-msgstr "finish "
+msgid "finish"
+msgstr "finish"
 
 #: commands/commands.c:98
 msgid "Add addresses to an address group"

@@ -1003,8 +1003,8 @@ msgid "Stop reading current config file"
 msgstr "Geçerli yapılandırma dosyasını okumayı durdur"
 
 #: commands/commands.c:95
-msgid "finish "
-msgstr "finish "
+msgid "finish"
+msgstr "finish"
 
 #: commands/commands.c:98
 msgid "Add addresses to an address group"
