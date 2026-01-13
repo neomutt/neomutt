@@ -1199,8 +1199,8 @@ msgstr ""
 
 #: commands/commands.c:175
 #, fuzzy
-msgid "subjectrx <regex> <replacement>"
-msgstr "subjectrx <regex> <replacement>"
+msgid "subject-regex <regex> <replacement>"
+msgstr "subject-regex <regex> <replacement>"
 
 #: commands/commands.c:178
 msgid "Add address to the list of subscribed mailing lists"
@@ -1406,8 +1406,8 @@ msgstr ""
 
 #: commands/commands.c:267
 #, fuzzy
-msgid "unsubjectrx { * | <regex> }"
-msgstr "unsubjectrx { * | <regex> }"
+msgid "unsubject-regex { * | <regex> }"
+msgstr "unsubject-regex { * | <regex> }"
 
 #: commands/commands.c:270
 msgid "Remove address from the list of subscribed mailing lists"

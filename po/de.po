@@ -1207,16 +1207,16 @@ msgid "Remove an alias definition"
 msgstr "Entferne ein Alias"
 
 #: commands/commands.c:195
-msgid "unalias [ -group <name> ... ] { * | <key> ... }"
-msgstr "unalias [ -group <Name> ... ] { * | <Schlüssel> ... }"
+msgid "unalias { * | <key> ... }"
+msgstr "unalias { * | <Schlüssel> ... }"
 
 #: commands/commands.c:198
 msgid "Remove addresses from 'alternates' list"
 msgstr "Entferne Adressen von der 'Alternative Mail-Adressen' Liste"
 
 #: commands/commands.c:199
-msgid "unalternates [ -group <name> ... ] { * | <regex> ... }"
-msgstr "unalternates [ -group <Name> ... ] { * | <regex> ... }"
+msgid "unalternates { * | <regex> ... }"
+msgstr "unalternates { * | <regex> ... }"
 
 #: commands/commands.c:202
 msgid "Remove MIME types from preference order"
@@ -1279,8 +1279,8 @@ msgid "Remove address from the list of mailing lists"
 msgstr "Entferne Adresse von der Liste der Mailinglists"
 
 #: commands/commands.c:231
-msgid "unlists [ -group <name> ... ] { * | <regex> ... }"
-msgstr "unlists [ -group <Name> ... ] { * | <regex> ... }"
+msgid "unlists { * | <regex> ... }"
+msgstr "unlists { * | <regex> ... }"
 
 #: commands/commands.c:234
 msgid "Remove mailboxes from the watch list"
@@ -1351,16 +1351,16 @@ msgid "Remove subject-rewriting rules"
 msgstr "Entferne Regeln zur Anpassung des Betreffs"
 
 #: commands/commands.c:267
-msgid "unsubjectrx { * | <regex> }"
-msgstr "unsubjectrx { * | <regex> }"
+msgid "unsubject-regex { * | <regex> }"
+msgstr "unsubject-regex { * | <regex> }"
 
 #: commands/commands.c:270
 msgid "Remove address from the list of subscribed mailing lists"
 msgstr "Entferne Adresse von Liste abonnierter Mailinglisten"
 
 #: commands/commands.c:271
-msgid "unsubscribe [ -group <name> ... ] { * | <regex> ... }"
-msgstr "unsubscribe [ -group <Name> ... ] { * | <regex> ... }"
+msgid "unsubscribe { * | <regex> ... }"
+msgstr "unsubscribe { * | <regex> ... }"
 
 #: commands/commands.c:274
 msgid "Show NeoMutt version and build information"

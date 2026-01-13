@@ -1160,8 +1160,8 @@ msgid "Apply regex-based rewriting to message subjects"
 msgstr "Apply regex-based rewriting to message subjects"
 
 #: commands/commands.c:175
-msgid "subjectrx <regex> <replacement>"
-msgstr "subjectrx <regex> <replacement>"
+msgid "subject-regex <regex> <replacement>"
+msgstr "subject-regex <regex> <replacement>"
 
 #: commands/commands.c:178
 msgid "Add address to the list of subscribed mailing lists"
@@ -1344,8 +1344,8 @@ msgid "Remove subject-rewriting rules"
 msgstr "Remove subject-rewriting rules"
 
 #: commands/commands.c:267
-msgid "unsubjectrx { * | <regex> }"
-msgstr "unsubjectrx { * | <regex> }"
+msgid "unsubject-regex { * | <regex> }"
+msgstr "unsubject-regex { * | <regex> }"
 
 #: commands/commands.c:270
 msgid "Remove address from the list of subscribed mailing lists"
