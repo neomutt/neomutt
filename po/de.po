@@ -1135,8 +1135,8 @@ msgid "Set a config variable"
 msgstr "Setze einen Konfig Wert"
 
 #: commands/commands.c:159
-msgid "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"
-msgstr "set { [ no | inv | & ] <Variable> [?] | <Variable> [=|+=|-=] Wert } [ ... ]"
+msgid "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> } [ ... ]"
+msgstr "set { [ no | inv | & ] <Variable> [?] | <Variable> [=|+=|-=] <Wert> } [ ... ]"
 
 #: commands/commands.c:162
 msgid "Set an environment variable"

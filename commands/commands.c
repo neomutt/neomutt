@@ -155,7 +155,7 @@ const struct Command CommandsCommands[] = {
         "configuration.html#score-command" },
   { "set", CMD_SET, parse_set, CMD_NO_DATA,
         N_("Set a config variable"),
-        N_("set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [ ... ]"),
+        N_("set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> } [ ... ]"),
         "configuration.html#set" },
   { "setenv", CMD_SETENV, parse_setenv, CMD_NO_DATA,
         N_("Set an environment variable"),
