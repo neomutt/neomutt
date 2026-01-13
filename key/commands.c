@@ -541,6 +541,10 @@ done:
  * @param[in]  args Parsed arguments
  * @param[out] err  Buffer for error messages
  * @retval true Success
+ *
+ * The user is trying to remove a binding or a macro.
+ * We choose *not* to distinguish the two, since a key can only be bound to one or the other.
+ * i.e. `unbind` will also clear macros, `unmacro` will also clear bindings
  */
 bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, struct Buffer *err)
 {
@@ -575,13 +579,6 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
     struct Keymap *km_tmp = NULL;
     STAILQ_FOREACH_SAFE(km, &sm->keymaps, entries, km_tmp)
     {
-      const bool is_macro = (km->op == OP_MACRO);
-      const bool want_macro = (cmd->id == CMD_UNMACRO);
-
-      // Is this the type we're looking for?
-      if (is_macro ^ want_macro)
-        continue;
-
       if (args->all_keys ||
           ((key_len == km->len) && (memcmp(km->keys, key_bytes, km->len) == 0)))
       {
