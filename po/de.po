@@ -959,8 +959,8 @@ msgid "Set preference order for multipart alternatives"
 msgstr "Präferiere Reihenfolge für multipart Alternativen"
 
 #: commands/commands.c:71
-msgid "alternative_order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "alternative_order <MIME-Typ>[/<MIME-Subtyp> ] [ ... ]"
+msgid "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "alternative-order <MIME-Typ>[/<MIME-Subtyp> ] [ ... ]"
 
 #: commands/commands.c:74
 msgid "Set attachment counting rules"
@@ -975,8 +975,8 @@ msgid "Automatically display specified MIME types inline"
 msgstr "Zeige spezifizierte MIME-Typen im Text an"
 
 #: commands/commands.c:79
-msgid "auto_view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "auto_view <MIME-Typ>[/<MIME-Subtyp> ] [ <MIME-Typ>[/<MIME-Subtyp> ] ... ]"
+msgid "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "auto-view <MIME-Typ>[/<MIME-Subtyp> ] [ <MIME-Typ>[/<MIME-Subtyp> ] ... ]"
 
 #: commands/commands.c:82
 msgid "Change NeoMutt's current working directory"
@@ -1023,8 +1023,8 @@ msgid "Define custom order of headers displayed"
 msgstr "Erstelle eigene Reihenfolge für Header-Zeilen"
 
 #: commands/commands.c:103
-msgid "hdr_order <header> [ <header> ... ]"
-msgstr "hdr_order <Kopfzeile> [ <Kopfzeile> ... ]"
+msgid "header-order <header> [ <header> ... ]"
+msgstr "header-order <Kopfzeile> [ <Kopfzeile> ... ]"
 
 #: commands/commands.c:106
 msgid "Conditionally include config commands if symbol defined"
@@ -1071,16 +1071,16 @@ msgid "Permit specific header-fields in mailto URL processing"
 msgstr "Erlaube bestimmte Header bei Verarbeitung einer mailto URL"
 
 #: commands/commands.c:127
-msgid "mailto_allow { * | <header-field> ... }"
-msgstr "mailto_allow { * | <Kopfzeile> ... }"
+msgid "mailto-allow { * | <header-field> ... }"
+msgstr "mailto-allow { * | <Kopfzeile> ... }"
 
 #: commands/commands.c:130
 msgid "Map specified MIME types/subtypes to display handlers"
 msgstr "Weise MIME Typen/Subtypen bestimmte Darstellungswerkzeuge zu"
 
 #: commands/commands.c:131
-msgid "mime_lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "mime_lookup <MIME-Typ>[/<MIME-Subtyp> ] [ <MIME-Typ>[/<MIME-Subtyp> ] ... ]"
+msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgstr "mime-lookup <MIME-Typ>[/<MIME-Subtyp> ] [ <MIME-Typ>[/<MIME-Subtyp> ] ... ]"
 
 #: commands/commands.c:134
 msgid "Deprecated: Use 'color'"
@@ -1095,8 +1095,8 @@ msgid "Add a custom header to outgoing messages"
 msgstr "Füge ausgehenden Nachrichten individuellen header hinzu"
 
 #: commands/commands.c:139
-msgid "my_hdr <string>"
-msgstr "my_hdr <Zeichenkette>"
+msgid "my-header <string>"
+msgstr "my-header <Zeichenkette>"
 
 #: commands/commands.c:142
 msgid "Define a list of labelled mailboxes to watch"
@@ -1167,8 +1167,8 @@ msgid "Apply regex-based rewriting to message subjects"
 msgstr "Schreibe Betreffe gemäß regex-Vorgaben um"
 
 #: commands/commands.c:175
-msgid "subjectrx <regex> <replacement>"
-msgstr "subjectrx <regex> <Ersetzung>"
+msgid "subject-regex <regex> <replacement>"
+msgstr "subject-regex <regex> <Ersetzung>"
 
 #: commands/commands.c:178
 msgid "Add address to the list of subscribed mailing lists"
@@ -1223,8 +1223,8 @@ msgid "Remove MIME types from preference order"
 msgstr "Entferne MIME-Typen aus der Wunschreihenfolge"
 
 #: commands/commands.c:203
-msgid "unalternative_order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unalternative_order { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
+msgid "unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unalternative-order { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
 
 #: commands/commands.c:206
 msgid "Remove attachment counting rules"
@@ -1235,12 +1235,12 @@ msgid "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... 
 msgstr "unattachments { * | { + | - }<Anordnung> <MIME-Typ> [ <MIME-Type> ... ] }"
 
 #: commands/commands.c:210
-msgid "Remove MIME types from 'auto_view' list"
-msgstr "Entferne MIM Typen von der 'auto_view' Liste"
+msgid "Remove MIME types from 'auto-view' list"
+msgstr "Entferne MIM Typen von der 'auto-view' Liste"
 
 #: commands/commands.c:211
-msgid "unauto_view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unauto_view { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
+msgid "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unauto-view { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
 
 #: commands/commands.c:214
 msgid "Remove a 'color' definition"
@@ -1259,16 +1259,16 @@ msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ...
 msgstr "ungroup [ -group <Name> ... ] { * | -rx <regex> ... | -addr <Adresse> ... }"
 
 #: commands/commands.c:222
-msgid "Remove header from 'hdr_order' list"
-msgstr "Entferne den Header von der 'hdr_order' Liste"
+msgid "Remove header from 'header-order' list"
+msgstr "Entferne den Header von der 'header-order' Liste"
 
 #: commands/commands.c:223
-msgid "unhdr_order { * | <header> ... }"
-msgstr "unhdr_order { * | <Kopfzeile> ... }"
+msgid "unheader-order { * | <header> ... }"
+msgstr "unheader-order { * | <Kopfzeile> ... }"
 
 #: commands/commands.c:226
-msgid "Remove a header from the 'hdr_order' list"
-msgstr "Entfernt einen Header von der 'hdr_order' Liste"
+msgid "Remove a header from the 'header-order' list"
+msgstr "Entfernt einen Header von der 'header-order' Liste"
 
 #: commands/commands.c:227
 msgid "unignore { * | <string> ... }"
@@ -1295,16 +1295,16 @@ msgid "Disallow header-fields in mailto processing"
 msgstr "Unterdrücke bestimmte Header in 'mailto' Funktion"
 
 #: commands/commands.c:239
-msgid "unmailto_allow { * | <header-field> ... }"
-msgstr "unmailto_allow { * | <Kopfzeile> ... }"
+msgid "unmailto-allow { * | <header-field> ... }"
+msgstr "unmailto-allow { * | <Kopfzeile> ... }"
 
 #: commands/commands.c:242
 msgid "Remove custom MIME-type handlers"
 msgstr "Entferne eigene MIME-Typ Verarbeitungen"
 
 #: commands/commands.c:243
-msgid "unmime_lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unmime_lookup { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
+msgid "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unmime-lookup { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
 
 #: commands/commands.c:246
 msgid "Deprecated: Use 'uncolor'"
@@ -1315,12 +1315,12 @@ msgid "unmono <object> { * | <pattern> ... }"
 msgstr "unmono <Objekt> { * | <Muster> ... }"
 
 #: commands/commands.c:250
-msgid "Remove a header previously added with 'my_hdr'"
-msgstr "Entfernt einen zuvor mit 'my_hdr' eingefügten Header"
+msgid "Remove a header previously added with 'my-header'"
+msgstr "Entfernt einen zuvor mit 'my-header' eingefügten Header"
 
 #: commands/commands.c:251
-msgid "unmy_hdr { * | <field> ... }"
-msgstr "unmy_hdr { * | <Feld> ... }"
+msgid "unmy-header { * | <field> ... }"
+msgstr "unmy-header { * | <Feld> ... }"
 
 #: commands/commands.c:254
 msgid "Remove scoring rules for matching patterns"
@@ -8795,16 +8795,16 @@ msgid "Pin a mailbox in the sidebar (keep visible)"
 msgstr "Fixiere eine Mailbox in der Seitenliste (bleibt sichtbar)"
 
 #: sidebar/sidebar.c:53
-msgid "sidebar_pin <mailbox> [ <mailbox> ... ]"
-msgstr "sidebar_pin <Postfach> [ <Postfach> ... ]"
+msgid "sidebar-pin <mailbox> [ <mailbox> ... ]"
+msgstr "sidebar-pin <Postfach> [ <Postfach> ... ]"
 
 #: sidebar/sidebar.c:56
 msgid "Unpin a previously pinned mailbox in the sidebar"
 msgstr "Löse eine zuvor in der Seitenleiste angepinnte mailbox"
 
 #: sidebar/sidebar.c:57
-msgid "sidebar_unpin { * | <mailbox> ... }"
-msgstr "sidebar_unpin { * | <Postfach> ... }"
+msgid "sidebar-unpin { * | <mailbox> ... }"
+msgstr "sidebar-unpin { * | <Postfach> ... }"
 
 #. L10N: Help Overview -- `neomutt -h`
 #. The modes are: help, info, send, tui
