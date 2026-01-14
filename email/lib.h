@@ -45,6 +45,7 @@
  * | email/parse.c          | @subpage email_parse      |
  * | email/rfc2047.c        | @subpage email_rfc2047    |
  * | email/rfc2231.c        | @subpage email_rfc2231    |
+ * | email/rfc3676.c        | @subpage email_rfc3676    |
  * | email/score.c          | @subpage email_score      |
  * | email/sort.c           | @subpage email_sort       |
  * | email/tags.c           | @subpage email_tags       |
@@ -75,6 +76,7 @@
 #include "parse.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
+#include "rfc3676.h"
 #include "score.h"
 #include "sort.h"
 #include "tags.h"

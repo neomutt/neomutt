@@ -50,7 +50,6 @@
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "rfc3676.h"
 
 /// Number of postponed (draft) emails
 short PostCount = 0;

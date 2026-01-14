@@ -27,7 +27,7 @@
  */
 
 /**
- * @page neo_rfc3676 RFC3676 Format Flowed routines
+ * @page email_rfc3676 RFC3676 Format Flowed routines
  *
  * RFC3676 Format Flowed routines
  */
@@ -38,10 +38,13 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "rfc3676.h"
+#include "body.h"
+#include "email.h"
+#include "mime.h"
+#include "parameter.h"
 
 #define FLOWED_MAX 72
 

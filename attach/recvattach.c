@@ -58,7 +58,6 @@
 #include "external.h"
 #include "mutt_attach.h"
 #include "muttlib.h"
-#include "rfc3676.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

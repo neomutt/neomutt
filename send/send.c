@@ -81,7 +81,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "nntp/mdata.h"
-#include "rfc3676.h"
 #include "sendlib.h"
 #include "sendmail.h"
 #include "smtp.h"

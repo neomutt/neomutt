@@ -23,8 +23,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_RFC3676_H
-#define MUTT_RFC3676_H
+#ifndef MUTT_EMAIL_RFC3676_H
+#define MUTT_EMAIL_RFC3676_H
 
 #include <stdbool.h>
 
@@ -39,4 +39,4 @@ void mutt_rfc3676_space_unstuff           (struct Email *e);
 void mutt_rfc3676_space_unstuff_attachment(struct Body *b, const char *filename);
 void mutt_rfc3676_space_stuff_attachment  (struct Body *b, const char *filename);
 
-#endif /* MUTT_RFC3676_H */
+#endif /* MUTT_EMAIL_RFC3676_H */

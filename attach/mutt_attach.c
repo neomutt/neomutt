@@ -58,7 +58,6 @@
 #include "globals.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "rfc3676.h"
 
 /**
  * mutt_get_tmp_attachment - Get a temporary copy of an attachment
