@@ -26,10 +26,10 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "gui/lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
-#include "mutt_thread.h"
 #include "test_common.h"
 
 struct NodeExpandoPrivate *node_expando_private_new(void);

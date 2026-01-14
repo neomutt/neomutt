@@ -82,7 +82,6 @@
 #include "menu/lib.h"
 #include "postpone/lib.h"
 #include "globals.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
 #include "private_data.h"
 #include "shared_data.h"

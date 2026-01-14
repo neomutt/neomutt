@@ -42,18 +42,16 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "browser/lib.h"
 #include "color/lib.h"
 #include "complete/lib.h"
 #include "send/lib.h"
 #include "external.h"
-#include "mutt_thread.h"
 #include "mx.h"
 
 struct AttachCtx;
-struct MailboxView;
-struct MuttWindow;
 struct Notify;
 struct PagerView;
 

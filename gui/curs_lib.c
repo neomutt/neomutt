@@ -57,9 +57,9 @@
 #include "msgwin.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
-#include "mutt_thread.h"
 #include "mutt_window.h"
 #include "opcodes.h"
+#include "thread.h"
 
 /**
  * mutt_beep - Irritate the user

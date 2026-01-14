@@ -47,6 +47,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
+#include "gui/lib.h"
 #include "expando_index.h"
 #include "attach/lib.h"
 #include "color/lib.h"
@@ -54,7 +55,6 @@
 #include "expando/lib.h"
 #include "hooks/lib.h"
 #include "ncrypt/lib.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
 #ifdef USE_NOTMUCH

@@ -33,8 +33,8 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/lib.h"
+#include "gui/lib.h"
 #include "format.h"
-#include "mutt_thread.h"
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif

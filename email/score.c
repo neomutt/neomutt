@@ -35,12 +35,12 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "score.h"
 #include "pattern/lib.h"
 #include "email.h"
 #include "globals.h"
-#include "mutt_thread.h"
 #include "sort.h"
 
 /// Linked list of email scoring rules

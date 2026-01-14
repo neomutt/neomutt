@@ -47,7 +47,6 @@
 #include "postpone/lib.h"
 #include "globals.h"
 #include "mutt_mailbox.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
 #include "shared_data.h"
 #include "version.h"

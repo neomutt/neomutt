@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_THREAD_H
-#define MUTT_MUTT_THREAD_H
+#ifndef MUTT_GUI_THREAD_H
+#define MUTT_GUI_THREAD_H
 
 #include "email/lib.h"
 #include <stdbool.h>
@@ -135,4 +135,4 @@ int                    mutt_parent_message    (struct Email *e, bool find_root);
 off_t                  mutt_set_vnum          (struct Mailbox *m);
 void                   mutt_sort_threads      (struct ThreadsContext *tctx, bool init);
 
-#endif /* MUTT_MUTT_THREAD_H */
+#endif /* MUTT_GUI_THREAD_H */

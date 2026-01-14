@@ -45,7 +45,6 @@
 #include "email.h"
 #include "envelope.h"
 #include "mutt_logging.h"
-#include "mutt_thread.h"
 #include "mx.h"
 #include "score.h"
 

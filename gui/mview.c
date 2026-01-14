@@ -37,8 +37,8 @@
 #include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
-#include "mutt_thread.h"
 #include "mx.h"
+#include "thread.h"
 
 /**
  * mview_free - Free a MailboxView

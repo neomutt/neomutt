@@ -45,6 +45,7 @@
  * | gui/sbar.c          | @subpage gui_sbar          |
  * | gui/simple.c        | @subpage gui_simple        |
  * | gui/terminal.c      | @subpage gui_terminal      |
+ * | gui/thread.c        | @subpage gui_thread        |
  */
 
 #ifndef MUTT_GUI_LIB_H
@@ -66,6 +67,7 @@
 #include "sbar.h"
 #include "simple.h"
 #include "terminal.h"
+#include "thread.h"
 // IWYU pragma: end_keep
 
 #endif /* MUTT_GUI_LIB_H */

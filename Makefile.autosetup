@@ -61,12 +61,10 @@ default:	all
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	conststrings.o editmsg.o external.o flags.o \
-		git_ver.o globals.o help.o \
-		module.o muttlib.o mutt_config.o \
+NEOMUTTOBJS=	conststrings.o editmsg.o external.o flags.o git_ver.o \
+		globals.o help.o module.o muttlib.o mutt_config.o \
 		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
-		mutt_thread.o mx.o rfc3676.o \
-		system.o usage.o version.o
+		mx.o rfc3676.o system.o usage.o version.o
 @if !ENABLE_FUZZ_TESTS
 NEOMUTTOBJS+=	main.o
 @endif
@@ -479,10 +477,10 @@ $(PWD)/expando:
 # libgui
 LIBGUI=		libgui.a
 LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/functions.o gui/global.o \
-		gui/msgcont.o gui/msgwin.o gui/msgwin_wdata.o \
+		gui/module.o gui/msgcont.o gui/msgwin.o gui/msgwin_wdata.o \
 		gui/mutt_curses.o gui/mutt_window.o gui/mview.o gui/opcodes.o \
 		gui/reflow.o gui/resize.o gui/rootwin.o gui/sbar.o \
-		gui/simple.o gui/terminal.o gui/module.o
+		gui/simple.o gui/terminal.o gui/thread.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
 
