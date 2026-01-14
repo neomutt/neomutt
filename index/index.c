@@ -688,17 +688,17 @@ struct MailboxView *get_current_mailbox_view(void)
   if (!AllDialogsWindow)
     return NULL;
 
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH_REVERSE(np, &AllDialogsWindow->children, MuttWindowList, entries)
+  struct MuttWindow **np = NULL;
+  ARRAY_FOREACH_REVERSE(np, &AllDialogsWindow->children)
   {
-    struct MuttWindow *win = window_find_child(np, WT_DLG_INDEX);
+    struct MuttWindow *win = window_find_child(*np, WT_DLG_INDEX);
     if (win)
     {
       struct IndexSharedData *shared = win->wdata;
       return shared->mailbox_view;
     }
 
-    win = window_find_child(np, WT_DLG_POSTPONED);
+    win = window_find_child(*np, WT_DLG_POSTPONED);
     if (win)
     {
       return postponed_get_mailbox_view(win);

@@ -71,10 +71,10 @@ static void win_serialise(struct MuttWindow *win, struct Buffer *buf)
   buf_add_printf(buf, "<%s {%dx,%dy} [%dC,%dR]", win_size(win), win->state.col_offset,
                  win->state.row_offset, win->state.cols, win->state.rows);
 
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
+  struct MuttWindow **np = NULL;
+  ARRAY_FOREACH(np, &win->children)
   {
-    win_serialise(np, buf);
+    win_serialise(*np, buf);
   }
 
   buf_addstr(buf, ">");
