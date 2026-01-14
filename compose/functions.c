@@ -68,7 +68,6 @@
 #include "globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "mview.h"
 #include "mx.h"
 #include "nntp/adata.h" // IWYU pragma: keep
 #include "protos.h"

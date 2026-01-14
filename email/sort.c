@@ -38,6 +38,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
+#include "gui/lib.h"
 #include "sort.h"
 #include "nntp/lib.h"
 #include "body.h"
@@ -45,7 +46,6 @@
 #include "envelope.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
-#include "mview.h"
 #include "mx.h"
 #include "score.h"
 

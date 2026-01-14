@@ -66,7 +66,6 @@
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
-#include "mview.h"
 #include "mx.h"
 #include "nntp/mdata.h"
 #include "private_data.h"

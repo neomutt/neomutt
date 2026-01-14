@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_mview View of a Mailbox
+ * @page gui_mview View of a Mailbox
  *
  * View of a Mailbox
  */

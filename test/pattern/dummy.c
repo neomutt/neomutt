@@ -34,7 +34,6 @@
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "mview.h"
 
 struct Address;
 struct Buffer;

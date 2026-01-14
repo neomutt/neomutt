@@ -71,7 +71,6 @@
  * | mutt_signal.c   | @subpage neo_mutt_signal   |
  * | mutt_socket.c   | @subpage neo_mutt_socket   |
  * | mutt_thread.c   | @subpage neo_mutt_thread   |
- * | mview.c         | @subpage neo_mview         |
  * | mx.c            | @subpage neo_mx            |
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | rfc3676.c       | @subpage neo_rfc3676       |

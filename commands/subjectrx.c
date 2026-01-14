@@ -31,9 +31,9 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "subjectrx.h"
 #include "parse/lib.h"
-#include "mview.h"
 
 /// List of subject-regex rules for modifying the Subject:
 static struct ReplaceList SubjectRegexList = STAILQ_HEAD_INITIALIZER(SubjectRegexList);

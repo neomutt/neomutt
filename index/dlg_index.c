@@ -83,7 +83,6 @@
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
-#include "mview.h"
 #include "mx.h"
 #include "nntp/adata.h"
 #include "private_data.h"

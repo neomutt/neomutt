@@ -84,7 +84,6 @@
 #include "commands.h"
 #include "functions.h"
 #include "mutt_logging.h"
-#include "mview.h"
 #include "private_data.h"
 #include "recvattach.h"
 

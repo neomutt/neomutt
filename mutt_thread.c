@@ -38,10 +38,10 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "mutt_thread.h"
 #include "globals.h"
-#include "mview.h"
 #include "mx.h"
 #include "protos.h"
 

@@ -41,7 +41,6 @@
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "functions.h"
-#include "mview.h"
 #include "protos.h"
 #endif
 

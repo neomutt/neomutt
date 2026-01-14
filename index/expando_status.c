@@ -40,6 +40,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "expando_status.h"
 #include "expando/lib.h"
 #include "menu/lib.h"
@@ -48,7 +49,6 @@
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
-#include "mview.h"
 #include "shared_data.h"
 #include "version.h"
 

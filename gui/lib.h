@@ -37,6 +37,7 @@
  * | gui/msgwin_wdata.c  | @subpage gui_msgwin_wdata  |
  * | gui/mutt_curses.c   | @subpage gui_curses        |
  * | gui/mutt_window.c   | @subpage gui_window        |
+ * | gui/mview.c         | @subpage gui_mview         |
  * | gui/opcodes.c       | @subpage gui_opcode        |
  * | gui/reflow.c        | @subpage gui_reflow        |
  * | gui/resize.c        | @subpage gui_resize        |
@@ -58,6 +59,7 @@
 #include "msgwin.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
+#include "mview.h"
 #include "opcodes.h"
 #include "reflow.h"
 #include "rootwin.h"

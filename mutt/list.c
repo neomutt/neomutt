@@ -359,4 +359,3 @@ void remove_from_stailq(struct ListHead *head, const char *str)
     }
   }
 }
-

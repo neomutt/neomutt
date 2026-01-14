@@ -48,7 +48,6 @@
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "globals.h"
-#include "mview.h"
 #include "mx.h"
 #include "protos.h"
 #ifdef USE_AUTOCRYPT
