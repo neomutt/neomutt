@@ -79,7 +79,6 @@
 #include "handler.h"
 #include "header.h"
 #include "multipart.h"
-#include "mutt_body.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "muttlib.h"

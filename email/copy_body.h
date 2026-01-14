@@ -1,6 +1,6 @@
 /**
  * @file
- * Representation of the body of an email
+ * Copy the body of an email
  *
  * @authors
  * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_BODY_H
-#define MUTT_MUTT_BODY_H
+#ifndef MUTT_EMAIL_COPY_BODY_H
+#define MUTT_EMAIL_COPY_BODY_H
 
 #include <stdio.h>
 
@@ -29,4 +29,4 @@ struct Body;
 
 int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src);
 
-#endif /* MUTT_MUTT_BODY_H */
+#endif /* MUTT_EMAIL_COPY_BODY_H */

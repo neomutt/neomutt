@@ -29,6 +29,7 @@
  * | :--------------------- | :----------------------- |
  * | email/body.c           | @subpage email_body      |
  * | email/config.c         | @subpage email_config    |
+ * | email/copy_body.c      | @subpage email_copy_body |
  * | email/email.c          | @subpage email_email     |
  * | email/envelope.c       | @subpage email_envelope  |
  * | email/from.c           | @subpage email_from      |
@@ -53,6 +54,7 @@
 // IWYU pragma: begin_keep
 #include "body.h"
 #include "content.h"
+#include "copy_body.h"
 #include "email.h"
 #include "envelope.h"
 #include "from.h"

@@ -69,7 +69,6 @@
  * | module.c        | @subpage main_module       |
  * | monitor.c       | @subpage neo_monitor       |
  * | muttlib.c       | @subpage neo_muttlib       |
- * | mutt_body.c     | @subpage neo_mutt_body     |
  * | mutt_config.c   | @subpage neo_mutt_config   |
  * | mutt_header.c   | @subpage neo_mutt_header   |
  * | mutt_logging.c  | @subpage neo_mutt_logging  |
