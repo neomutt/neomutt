@@ -325,6 +325,29 @@
   (elem - (head)->entries)
 
 /**
+ * ARRAY_INSERT - Insert an element into the, shifting up the subsequent entries
+ * @param head Pointer to a struct defined using ARRAY_HEAD()
+ * @param idx  Index where the element should be inserted
+ * @param elem Element to insert
+ * @retval true  Element was inserted
+ * @retval false Index was out of bounds (idx > ARRAY_SIZE)
+ *
+ * @note idx must be between 0 and ARRAY_SIZE(head) (inclusive)
+ * @note To append to the end, use ARRAY_ADD() instead.
+ */
+#define ARRAY_INSERT(head, idx, elem)                                          \
+  (((head)->capacity > (head)->size                                            \
+    ? true                                                                     \
+    : ARRAY_RESERVE((head), (head)->size + 1)),                                \
+   ((idx) <= (head)->size                                                      \
+    ? (memmove(&(head)->entries[(idx) + 1], &(head)->entries[(idx)],           \
+               ARRAY_ELEM_SIZE((head)) * ((head)->size - (idx))),              \
+       (head)->entries[(idx)] = (elem),                                        \
+       (head)->size++,                                                         \
+       true)                                                                   \
+    : false))
+
+/**
  * ARRAY_REMOVE - Remove an entry from the array, shifting down the subsequent entries
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  * @param elem Pointer to the element of the array to remove
