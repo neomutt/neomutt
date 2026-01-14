@@ -62,4 +62,7 @@ bool             mutt_list_match       (const char *s, struct ListHead *h);
 size_t           mutt_list_str_split   (struct ListHead *head, const char *src, char sep);
 size_t           mutt_list_write       (const struct ListHead *h, struct Buffer *buf);
 
+void add_to_stailq     (struct ListHead *head, const char *str);
+void remove_from_stailq(struct ListHead *head, const char *str);
+
 #endif /* MUTT_MUTT_LIST_H */

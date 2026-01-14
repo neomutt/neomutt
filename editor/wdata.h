@@ -25,8 +25,8 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <wchar.h>
-#include "mutt.h"
 #include "history/lib.h"
 
 /**
@@ -38,6 +38,12 @@ enum EnterRedrawFlags
   ENTER_REDRAW_INIT,     ///< Go to end of line and redraw
   ENTER_REDRAW_LINE,     ///< Redraw entire line
 };
+
+typedef uint8_t CompletionFlags;       ///< Flags for mw_get_field(), e.g. #MUTT_COMP_NO_FLAGS
+#define MUTT_COMP_NO_FLAGS          0  ///< No flags are set
+#define MUTT_COMP_CLEAR       (1 << 0) ///< Clear input if printable character is pressed
+#define MUTT_COMP_PASS        (1 << 1) ///< Password mode (no echo)
+#define MUTT_COMP_UNBUFFERED  (1 << 2) ///< Ignore macro buffer
 
 /**
  * struct EnterWindowData - Data to fill the Enter Window

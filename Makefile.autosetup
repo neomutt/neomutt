@@ -61,12 +61,10 @@ default:	all
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	conststrings.o copy.o editmsg.o enriched.o external.o flags.o \
-		git_ver.o globals.o handler.o help.o mailcap.o maillist.o \
-		module.o muttlib.o mutt_body.o mutt_config.o mutt_header.o \
+NEOMUTTOBJS=	conststrings.o editmsg.o external.o flags.o git_ver.o \
+		globals.o help.o module.o muttlib.o mutt_config.o \
 		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
-		mutt_thread.o mview.o mx.o recvcmd.o rfc3676.o score.o \
-		system.o usage.o version.o
+		mx.o system.o usage.o version.o
 @if !ENABLE_FUZZ_TESTS
 NEOMUTTOBJS+=	main.o
 @endif
@@ -82,7 +80,7 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 # libaddress
 LIBADDRESS=	libaddress.a
 LIBADDRESSOBJS=	address/address.o address/config_type.o address/group.o \
-		address/idna.o address/module.o
+		address/idna.o address/maillist.o address/module.o
 CLEANFILES+=	$(LIBADDRESS) $(LIBADDRESSOBJS)
 ALLOBJS+=	$(LIBADDRESSOBJS)
 
@@ -114,7 +112,7 @@ LIBATTACH=	libattach.a
 LIBATTACHOBJS=	attach/attach.o attach/cid.o attach/commands.o \
 		attach/dlg_attach.o attach/expando.o attach/functions.o \
 		attach/lib.o attach/mutt_attach.o attach/private_data.o \
-		attach/recvattach.o attach/module.o
+		attach/recvattach.o attach/recvcmd.o attach/module.o
 CLEANFILES+=	$(LIBATTACH) $(LIBATTACHOBJS)
 ALLOBJS+=	$(LIBATTACHOBJS)
 
@@ -207,9 +205,10 @@ $(PWD)/color:
 LIBCOMMANDS=	libcommands.a
 LIBCOMMANDSOBJS=commands/alternates.o commands/commands.o commands/group.o \
 		commands/ifdef.o commands/ignore.o commands/mailboxes.o \
-		commands/my_header.o commands/parse.o commands/setenv.o \
-		commands/source.o commands/spam.o commands/stailq.o \
-		commands/subjectrx.o commands/tags.o commands/module.o
+		commands/my_header.o commands/parse.o commands/score.o \
+		commands/setenv.o commands/source.o commands/spam.o \
+		commands/stailq.o commands/subjectrx.o commands/tags.o \
+		commands/module.o
 CLEANFILES+=	$(LIBCOMMANDS) $(LIBCOMMANDSOBJS)
 ALLOBJS+=	$(LIBCOMMANDSOBJS)
 
@@ -426,10 +425,13 @@ $(PWD)/editor:
 ###############################################################################
 # libemail
 LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/body.o email/config.o email/email.o email/envelope.o \
-		email/from.o email/globals.o email/mime.o email/parameter.o \
-		email/parse.o email/rfc2047.o email/rfc2231.o email/sort.o \
-		email/tags.o email/thread.o email/url.o email/module.o
+LIBEMAILOBJS=	email/body.o email/config.o email/copy_body.o \
+		email/copy_email.o email/email.o email/enriched.o \
+		email/envelope.o email/from.o email/globals.o email/handler.o \
+		email/header.o email/mailcap.o email/mime.o email/parameter.o \
+		email/parse.o email/rfc2047.o email/rfc2231.o email/rfc3676.o \
+		email/score.o email/sort.o email/tags.o email/thread.o \
+		email/url.o email/module.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
 ALLOBJS+=	$(LIBEMAILOBJS)
 
@@ -475,10 +477,10 @@ $(PWD)/expando:
 # libgui
 LIBGUI=		libgui.a
 LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/functions.o gui/global.o \
-		gui/msgcont.o gui/msgwin.o gui/msgwin_wdata.o \
-		gui/mutt_curses.o gui/mutt_window.o gui/opcodes.o gui/reflow.o \
-		gui/resize.o gui/rootwin.o gui/sbar.o gui/simple.o \
-		gui/terminal.o gui/module.o
+		gui/module.o gui/msgcont.o gui/msgwin.o gui/msgwin_wdata.o \
+		gui/mutt_curses.o gui/mutt_window.o gui/mview.o gui/opcodes.o \
+		gui/reflow.o gui/resize.o gui/rootwin.o gui/sbar.o \
+		gui/simple.o gui/terminal.o gui/thread.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
 

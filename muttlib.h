@@ -32,7 +32,6 @@
 struct Address;
 struct Body;
 struct Buffer;
-struct ListHead;
 struct passwd;
 struct stat;
 
@@ -55,8 +54,5 @@ int         mutt_save_confirm(const char *s, struct stat *st);
 void        mutt_save_path(char *d, size_t dsize, const struct Address *a);
 void        mutt_sleep(short s);
 int         mutt_str_pretty_size(struct Buffer *buf, size_t num);
-
-void add_to_stailq     (struct ListHead *head, const char *str);
-void remove_from_stailq(struct ListHead *head, const char *str);
 
 #endif /* MUTT_MUTTLIB_H */

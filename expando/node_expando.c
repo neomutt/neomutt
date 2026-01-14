@@ -32,12 +32,12 @@
 #include <limits.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "gui/lib.h"
 #include "node_expando.h"
 #include "color/lib.h"
 #include "definition.h"
 #include "format.h"
 #include "helpers.h"
-#include "mutt_thread.h"
 #include "node.h"
 #include "parse.h"
 #include "render.h"

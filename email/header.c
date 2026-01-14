@@ -23,7 +23,7 @@
  */
 
 /**
- * @page neo_mutt_header Manipulate an email's header
+ * @page email_header Manipulate an email's header
  *
  * Manipulate an email's header
  */
@@ -35,12 +35,11 @@
 #include <sys/stat.h>
 #include <time.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "mutt_header.h"
+#include "header.h"
 #include "complete/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
@@ -48,9 +47,12 @@
 #include "ncrypt/lib.h"
 #include "postpone/lib.h"
 #include "send/lib.h"
+#include "body.h"
+#include "email.h"
+#include "envelope.h"
 #include "globals.h"
 #include "muttlib.h"
-#include "mview.h"
+#include "parse.h"
 
 /**
  * label_ref_dec - Decrease the refcount of a label

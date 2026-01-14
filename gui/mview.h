@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MVIEW_H
-#define MUTT_MVIEW_H
+#ifndef MUTT_GUI_MVIEW_H
+#define MUTT_GUI_MVIEW_H
 
 #include <stdbool.h>
 #include <sys/types.h>
@@ -86,4 +86,4 @@ int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e
 
 bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e);
 
-#endif /* MUTT_MVIEW_H */
+#endif /* MUTT_GUI_MVIEW_H */

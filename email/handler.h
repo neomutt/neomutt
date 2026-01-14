@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_HANDLER_H
-#define MUTT_HANDLER_H
+#ifndef MUTT_EMAIL_HANDLER_H
+#define MUTT_EMAIL_HANDLER_H
 
 #include <iconv.h>
 #include <stdbool.h>
@@ -37,4 +37,4 @@ void mutt_decode_attachment   (const struct Body *b, struct State *state);
 void mutt_decode_base64       (struct State *state, size_t len, bool istext, iconv_t cd);
 bool mutt_prefer_as_attachment(struct Body *b);
 
-#endif /* MUTT_HANDLER_H */
+#endif /* MUTT_EMAIL_HANDLER_H */

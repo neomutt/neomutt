@@ -728,8 +728,7 @@ URL_OBJS	= test/url/url_check_scheme.o \
 MISC_OBJS	= commands/commands.o \
 		  muttlib.o \
 		  mutt_config.o \
-		  pattern/pattern.o \
-		  score.o
+		  pattern/pattern.o
 
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \

@@ -41,11 +41,11 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "attach/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
 #include "mutt_logging.h"
-#include "mutt_thread.h"
 #include "mx.h"
 
 extern const struct ExpandoDefinition IndexFormatDef[];

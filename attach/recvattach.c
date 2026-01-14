@@ -45,7 +45,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "recvattach.h"
 #include "browser/lib.h"
 #include "editor/lib.h"
@@ -57,12 +56,8 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "external.h"
-#include "handler.h"
-#include "mailcap.h"
 #include "mutt_attach.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
-#include "rfc3676.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

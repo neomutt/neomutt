@@ -36,10 +36,10 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "mutt.h"
 #include "socket.h"
 #include "connaccount.h"
 #include "connection.h"
-#include "protos.h"
 #include "ssl.h"
 
 /**

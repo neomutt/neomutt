@@ -36,7 +36,6 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "attach/lib.h"
-#include "protos.h"
 #if defined(USE_DEBUG_GRAPHVIZ) || defined(USE_DEBUG_BACKTRACE)
 #include "debug/lib.h"
 #endif

@@ -31,6 +31,7 @@
  * | address/config_type.c  | @subpage addr_config_type |
  * | address/group.c        | @subpage addr_group       |
  * | address/idna.c         | @subpage addr_idna        |
+ * | address/maillist.c     | @subpage addr_maillist    |
  * | address/module.c       | @subpage addr_module      |
  */
 
@@ -42,6 +43,7 @@
 #include "config_type.h"
 #include "group.h"
 #include "idna2.h"
+#include "maillist.h"
 // IWYU pragma: end_keep
 
 #endif /* MUTT_ADDRESS_LIB_H */

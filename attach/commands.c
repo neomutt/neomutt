@@ -39,7 +39,6 @@
 #include "commands.h"
 #include "ncrypt/lib.h"
 #include "parse/lib.h"
-#include "mview.h"
 
 /**
  * struct AttachMatch - An attachment matching a regex for attachment counter

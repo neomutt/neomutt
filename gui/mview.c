@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_mview View of a Mailbox
+ * @page gui_mview View of a Mailbox
  *
  * View of a Mailbox
  */
@@ -37,10 +37,8 @@
 #include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
-#include "mutt_header.h"
-#include "mutt_thread.h"
 #include "mx.h"
-#include "score.h"
+#include "thread.h"
 
 /**
  * mview_free - Free a MailboxView

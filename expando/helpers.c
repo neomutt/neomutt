@@ -31,8 +31,8 @@
 #include "config.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "gui/lib.h"
 #include "helpers.h"
-#include "mutt_thread.h"
 #include "render.h"
 
 /**

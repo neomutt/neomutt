@@ -61,15 +61,12 @@
 #include "nntp/lib.h"
 #include "pop/lib.h"
 #include "question/lib.h"
-#include "copy.h"
 #include "external.h"
 #include "globals.h"
-#include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "nntp/mdata.h" // IWYU pragma: keep
-#include "protos.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif

@@ -32,10 +32,10 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "shared_data.h"
 #include "lib.h"
 #include "pattern/lib.h"
-#include "mview.h"
 
 /**
  * index_shared_mview_observer - Notification that the MailboxView has changed - Implements ::observer_t - @ingroup observer_api

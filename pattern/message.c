@@ -34,9 +34,9 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
 #include "menu/lib.h"
-#include "mview.h"
 
 #define KILO 1024
 #define MEGA 1048576

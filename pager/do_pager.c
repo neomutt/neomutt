@@ -62,9 +62,9 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "lib.h"
 #include "index/lib.h"
-#include "protos.h"
 
 struct Email;
 

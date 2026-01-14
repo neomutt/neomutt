@@ -40,19 +40,16 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #include "globals.h"
-#include "handler.h"
 #include "mutt_logging.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "protos.h"
-#include "rfc3676.h"
 
 /// Number of postponed (draft) emails
 short PostCount = 0;

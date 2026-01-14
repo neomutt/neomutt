@@ -24,7 +24,7 @@
  */
 
 /**
- * @page neo_score Routines for adding user scores to emails
+ * @page commands_score Routines for adding user scores to emails
  *
  * Routines for adding user scores to emails
  */
@@ -33,57 +33,13 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "mutt.h"
 #include "score.h"
 #include "index/lib.h"
 #include "parse/lib.h"
 #include "pattern/lib.h"
 #include "globals.h"
-#include "mutt_thread.h"
-#include "protos.h"
-
-/**
- * struct Score - Scoring rule for email
- */
-struct Score
-{
-  char *str;               ///< String to match
-  struct PatternList *pat; ///< Pattern to match
-  int val;                 ///< Score to add
-  bool exact;              ///< If this rule matches, don't evaluate any more
-  struct Score *next;      ///< Linked list
-};
-
-/// Linked list of email scoring rules
-static struct Score *ScoreList = NULL;
-
-/**
- * mutt_check_rescore - Do the emails need to have their scores recalculated?
- * @param m Mailbox
- */
-void mutt_check_rescore(struct Mailbox *m)
-{
-  const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
-  if (OptNeedRescore && c_score)
-  {
-    const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-    const enum EmailSortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
-    if (((c_sort & SORT_MASK) == EMAIL_SORT_SCORE) ||
-        ((c_sort_aux & SORT_MASK) == EMAIL_SORT_SCORE))
-    {
-      OptNeedResort = true;
-      if (mutt_using_threads())
-        OptSortSubthreads = true;
-    }
-
-    mutt_debug(LL_NOTIFY, "NT_SCORE: %p\n", (void *) m);
-    notify_send(m->notify, NT_SCORE, 0, NULL);
-  }
-  OptNeedRescore = false;
-}
 
 /**
  * parse_score - Parse the 'score' command - Implements Command::parse() - @ingroup command_parse
@@ -170,45 +126,6 @@ done:
   buf_pool_release(&token);
   FREE(&pattern);
   return rc;
-}
-
-/**
- * mutt_score_message - Apply scoring to an email
- * @param m        Mailbox
- * @param e        Email
- * @param upd_mbox If true, update the Mailbox too
- */
-void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
-{
-  struct Score *tmp = NULL;
-  struct PatternCache cache = { 0 };
-
-  e->score = 0; /* in case of re-scoring */
-  for (tmp = ScoreList; tmp; tmp = tmp->next)
-  {
-    if (mutt_pattern_exec(SLIST_FIRST(tmp->pat), MUTT_MATCH_FULL_ADDRESS, NULL, e, &cache) > 0)
-    {
-      if (tmp->exact || (tmp->val == 9999) || (tmp->val == -9999))
-      {
-        e->score = tmp->val;
-        break;
-      }
-      e->score += tmp->val;
-    }
-  }
-  if (e->score < 0)
-    e->score = 0;
-
-  const short c_score_threshold_delete = cs_subset_number(NeoMutt->sub, "score_threshold_delete");
-  const short c_score_threshold_flag = cs_subset_number(NeoMutt->sub, "score_threshold_flag");
-  const short c_score_threshold_read = cs_subset_number(NeoMutt->sub, "score_threshold_read");
-
-  if (e->score <= c_score_threshold_delete)
-    mutt_set_flag(m, e, MUTT_DELETE, true, upd_mbox);
-  if (e->score <= c_score_threshold_read)
-    mutt_set_flag(m, e, MUTT_READ, true, upd_mbox);
-  if (e->score >= c_score_threshold_flag)
-    mutt_set_flag(m, e, MUTT_FLAG, true, upd_mbox);
 }
 
 /**

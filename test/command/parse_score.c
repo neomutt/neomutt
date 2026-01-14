@@ -26,8 +26,8 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "commands/lib.h"
 #include "common.h"
-#include "score.h"
 #include "test_common.h"
 
 static const struct Command Score = { "score", CMD_SCORE, NULL, CMD_NO_DATA };

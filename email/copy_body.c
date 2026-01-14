@@ -1,6 +1,6 @@
 /**
  * @file
- * Representation of the body of an email
+ * Copy the body of an email
  *
  * @authors
  * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
@@ -22,9 +22,9 @@
  */
 
 /**
- * @page neo_mutt_body Representation of the body of an email
+ * @page email_copy_body Copy the body of an email
  *
- * Representation of the body of an email
+ * Copy the body of an email
  */
 
 #include "config.h"
@@ -32,11 +32,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
-#include "mutt_body.h"
+#include "copy_body.h"
 #include "attach/lib.h"
 #include "send/lib.h"
+#include "body.h"
 #include "muttlib.h"
+#include "parameter.h"
 
 /**
  * mutt_body_copy - Create a send-mode duplicate from a receive-mode body

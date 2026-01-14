@@ -72,7 +72,6 @@
 #include "expando/lib.h"
 #include "index/lib.h"
 #include "display.h"
-#include "mview.h"
 #include "private_data.h"
 
 /**

@@ -29,20 +29,16 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "browser/lib.h"
 #include "complete/lib.h"
 #include "key/lib.h"
 #include "send/lib.h"
-#include "copy.h"
 #include "external.h"
-#include "mailcap.h"
 
-struct Body;
 struct ConnAccount;
-struct Email;
-struct Envelope;
 struct stat;
 
 bool MonitorCurMboxChanged = false;

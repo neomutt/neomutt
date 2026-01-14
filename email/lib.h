@@ -25,24 +25,32 @@
  *
  * Structs that make up an email
  *
- * | File                   | Description              |
- * | :--------------------- | :----------------------- |
- * | email/body.c           | @subpage email_body      |
- * | email/config.c         | @subpage email_config    |
- * | email/email.c          | @subpage email_email     |
- * | email/envelope.c       | @subpage email_envelope  |
- * | email/from.c           | @subpage email_from      |
- * | email/globals.c        | @subpage email_globals   |
- * | email/mime.c           | @subpage email_mime      |
- * | email/module.c         | @subpage email_module    |
- * | email/parameter.c      | @subpage email_parameter |
- * | email/parse.c          | @subpage email_parse     |
- * | email/rfc2047.c        | @subpage email_rfc2047   |
- * | email/rfc2231.c        | @subpage email_rfc2231   |
- * | email/sort.c           | @subpage email_sort      |
- * | email/tags.c           | @subpage email_tags      |
- * | email/thread.c         | @subpage email_thread    |
- * | email/url.c            | @subpage email_url       |
+ * | File                   | Description               |
+ * | :--------------------- | :------------------------ |
+ * | email/body.c           | @subpage email_body       |
+ * | email/config.c         | @subpage email_config     |
+ * | email/copy_body.c      | @subpage email_copy_body  |
+ * | email/copy_email.c     | @subpage email_copy_email |
+ * | email/email.c          | @subpage email_email      |
+ * | email/enriched.c       | @subpage email_enriched   |
+ * | email/envelope.c       | @subpage email_envelope   |
+ * | email/from.c           | @subpage email_from       |
+ * | email/globals.c        | @subpage email_globals    |
+ * | email/handler.c        | @subpage email_handler    |
+ * | email/header.c         | @subpage email_header     |
+ * | email/mailcap.c        | @subpage email_mailcap    |
+ * | email/mime.c           | @subpage email_mime       |
+ * | email/module.c         | @subpage email_module     |
+ * | email/parameter.c      | @subpage email_parameter  |
+ * | email/parse.c          | @subpage email_parse      |
+ * | email/rfc2047.c        | @subpage email_rfc2047    |
+ * | email/rfc2231.c        | @subpage email_rfc2231    |
+ * | email/rfc3676.c        | @subpage email_rfc3676    |
+ * | email/score.c          | @subpage email_score      |
+ * | email/sort.c           | @subpage email_sort       |
+ * | email/tags.c           | @subpage email_tags       |
+ * | email/thread.c         | @subpage email_thread     |
+ * | email/url.c            | @subpage email_url        |
  *
  * @image html libemail.svg
  */
@@ -53,15 +61,23 @@
 // IWYU pragma: begin_keep
 #include "body.h"
 #include "content.h"
+#include "copy_body.h"
+#include "copy_email.h"
 #include "email.h"
+#include "enriched.h"
 #include "envelope.h"
 #include "from.h"
-#include "globals.h"
+#include "globals2.h"
+#include "handler.h"
+#include "header.h"
+#include "mailcap.h"
 #include "mime.h"
 #include "parameter.h"
 #include "parse.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
+#include "rfc3676.h"
+#include "score.h"
 #include "sort.h"
 #include "tags.h"
 #include "thread.h"

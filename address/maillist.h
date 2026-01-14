@@ -1,9 +1,9 @@
 /**
  * @file
- * Representation of the body of an email
+ * Handle mailing lists
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,13 +20,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_BODY_H
-#define MUTT_MUTT_BODY_H
+#ifndef MUTT_ADDRESS_MAILLIST_H
+#define MUTT_ADDRESS_MAILLIST_H
 
-#include <stdio.h>
+#include <stdbool.h>
+#include <stddef.h>
 
-struct Body;
+struct Address;
+struct AddressList;
 
-int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src);
+bool check_for_mailing_list     (struct AddressList *al, const char *pfx, char *buf, int buflen);
+bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen);
+bool first_mailing_list         (char *buf, size_t buflen, struct AddressList *al);
+bool mutt_is_mail_list          (const struct Address *addr);
+bool mutt_is_subscribed_list    (const struct Address *addr);
 
-#endif /* MUTT_MUTT_BODY_H */
+#endif /* MUTT_ADDRESS_MAILLIST_H */

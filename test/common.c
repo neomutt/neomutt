@@ -40,26 +40,18 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "browser/lib.h"
 #include "color/lib.h"
 #include "complete/lib.h"
 #include "send/lib.h"
-#include "copy.h"
 #include "external.h"
-#include "mutt_thread.h"
 #include "mx.h"
-#include "protos.h"
 
-struct AddressList;
 struct AttachCtx;
-struct Body;
-struct Email;
-struct EmailArray;
-struct Envelope;
-struct MailboxView;
-struct MuttWindow;
 struct Notify;
 struct PagerView;
 
@@ -253,11 +245,6 @@ int log_disp_null(time_t stamp, const char *file, int line, const char *function
   return 0;
 }
 
-bool check_for_mailing_list(struct AddressList *al, const char *pfx, char *buf, int buflen)
-{
-  return false;
-}
-
 typedef uint8_t MuttThreadFlags;
 int mutt_traverse_thread(struct Email *e, MuttThreadFlags flag)
 {
@@ -285,19 +272,9 @@ void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx,
 {
 }
 
-bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen)
-{
-  return true;
-}
-
 int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e, bool use_tagged)
 {
   return 0;
-}
-
-bool first_mailing_list(char *buf, size_t buflen, struct AddressList *al)
-{
-  return true;
 }
 
 const char *get_use_threads_str(enum UseThreads value)

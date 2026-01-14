@@ -64,6 +64,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "editor/lib.h"
@@ -75,9 +76,7 @@
 #include "edata.h"
 #include "maildir/shared.h"
 #include "mdata.h"
-#include "mutt_thread.h"
 #include "mx.h"
-#include "protos.h"
 #include "query.h"
 #include "tag.h"
 #ifdef ENABLE_NLS

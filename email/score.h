@@ -1,9 +1,9 @@
 /**
  * @file
- * Handle mailing lists
+ * Routines for adding user scores to emails
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,19 +20,29 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAILLIST_H
-#define MUTT_MAILLIST_H
+#ifndef MUTT_EMAIL_SCORE_H
+#define MUTT_EMAIL_SCORE_H
 
 #include <stdbool.h>
-#include <stddef.h>
 
-struct Address;
-struct AddressList;
+struct Email;
+struct Mailbox;
 
-bool check_for_mailing_list     (struct AddressList *al, const char *pfx, char *buf, int buflen);
-bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen);
-bool first_mailing_list         (char *buf, size_t buflen, struct AddressList *al);
-bool mutt_is_mail_list          (const struct Address *addr);
-bool mutt_is_subscribed_list    (const struct Address *addr);
+/**
+ * struct Score - Scoring rule for email
+ */
+struct Score
+{
+  char *str;               ///< String to match
+  struct PatternList *pat; ///< Pattern to match
+  int val;                 ///< Score to add
+  bool exact;              ///< If this rule matches, don't evaluate any more
+  struct Score *next;      ///< Linked list
+};
 
-#endif /* MUTT_MAILLIST_H */
+extern struct Score *ScoreList;
+
+void mutt_check_rescore(struct Mailbox *m);
+void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox);
+
+#endif /* MUTT_EMAIL_SCORE_H */

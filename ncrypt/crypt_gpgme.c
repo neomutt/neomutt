@@ -64,7 +64,6 @@
 #include "crypt.h"
 #include "globals.h"
 #include "gpgme_functions.h"
-#include "handler.h"
 #include "mutt_logging.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"

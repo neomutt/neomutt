@@ -55,7 +55,6 @@
 #include "functions.h"
 #include "muttlib.h"
 #include "private_data.h"
-#include "protos.h"
 #endif
 
 /// Error message for unavailable functions

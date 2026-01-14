@@ -25,7 +25,7 @@
  */
 
 /**
- * @page neo_mutt_thread Create/manipulate threading in emails
+ * @page gui_thread Create/manipulate threading in emails
  *
  * Create/manipulate threading in emails
  */
@@ -39,11 +39,10 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "mutt_thread.h"
+#include "thread.h"
 #include "globals.h"
 #include "mview.h"
 #include "mx.h"
-#include "protos.h"
 
 /**
  * UseThreadsMethods - Choices for '$use_threads' for the index

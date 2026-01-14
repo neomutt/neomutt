@@ -47,12 +47,12 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "lib.h"
 #include "expando/lib.h"
 #include "hooks/lib.h"
 #include "expando.h"
 #include "mx.h"
-#include "protos.h"
 
 struct Email;
 

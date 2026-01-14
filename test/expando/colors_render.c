@@ -29,7 +29,6 @@
 #include "color/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
-#include "mutt_thread.h"
 #include "test_common.h"
 
 struct SimpleExpandoData

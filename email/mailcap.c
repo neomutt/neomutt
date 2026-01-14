@@ -23,7 +23,7 @@
  */
 
 /**
- * @page neo_mailcap RFC1524 Mailcap routines
+ * @page email_mailcap RFC1524 Mailcap routines
  *
  * RFC1524 defines a format for the Multimedia Mail Configuration, which is the
  * standard mailcap file format under Unix which specifies what external
@@ -40,12 +40,13 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
+#include "mutt.h"
 #include "mailcap.h"
 #include "attach/lib.h"
+#include "body.h"
 #include "muttlib.h"
-#include "protos.h"
+#include "parameter.h"
 
 /**
  * mailcap_expand_command - Expand expandos in a command

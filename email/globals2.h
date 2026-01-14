@@ -1,9 +1,9 @@
 /**
  * @file
- * Representation of the email's header
+ * Email Global Variables
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,19 +20,20 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MUTT_HEADER_H
-#define MUTT_MUTT_HEADER_H
+#ifndef MUTT_EMAIL_GLOBALS2_H
+#define MUTT_EMAIL_GLOBALS2_H
 
-struct Buffer;
-struct Email;
-struct EmailArray;
-struct Mailbox;
-struct MailboxView;
+#include <stdbool.h>
 
-void mutt_edit_headers(const char *editor, const char *body, struct Email *e, struct Buffer *fcc);
-void mutt_label_hash_add(struct Mailbox *m, struct Email *e);
-void mutt_label_hash_remove(struct Mailbox *m, struct Email *e);
-int mutt_label_message(struct MailboxView *mv, struct EmailArray *ea);
-void mutt_make_label_hash(struct Mailbox *m);
+extern struct HashTable  *AutoSubscribeCache;
+extern struct ListHead    Ignore;
+extern struct RegexList   MailLists;
+extern struct ListHead    MailToAllow;
+extern struct RegexList   NoSpamList;
+extern struct ReplaceList SpamList;
+extern struct RegexList   SubscribedLists;
+extern struct ListHead    UnIgnore;
+extern struct RegexList   UnMailLists;
+extern struct RegexList   UnSubscribedLists;
 
-#endif /* MUTT_MUTT_HEADER_H */
+#endif /* MUTT_EMAIL_GLOBALS2_H */

@@ -57,7 +57,6 @@
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
-#include "protos.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif

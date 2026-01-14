@@ -45,6 +45,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "mutt_attach.h"
 #include "lib.h"
 #include "imap/lib.h"
@@ -54,14 +55,9 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "cid.h"
-#include "copy.h"
 #include "globals.h"
-#include "handler.h"
-#include "mailcap.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "protos.h"
-#include "rfc3676.h"
 
 /**
  * mutt_get_tmp_attachment - Get a temporary copy of an attachment

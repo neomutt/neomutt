@@ -47,7 +47,7 @@
 #include "email.h"
 #include "envelope.h"
 #include "from.h"
-#include "globals.h"
+#include "globals2.h"
 #include "mime.h"
 #include "parameter.h"
 #include "rfc2047.h"

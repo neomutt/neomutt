@@ -60,9 +60,6 @@
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mx.h"
-#ifdef USE_HCACHE
-#include "protos.h"
-#endif
 #ifdef USE_SASL_CYRUS
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

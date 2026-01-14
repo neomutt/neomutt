@@ -59,10 +59,8 @@
 #include "functions.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
-#include "mview.h"
 #include "mx.h"
 #include "private_data.h"
-#include "protos.h"
 
 /// Braille display: row to leave the cursor
 int BrailleRow = -1;

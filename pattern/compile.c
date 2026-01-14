@@ -42,9 +42,9 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
-#include "mview.h"
 
 // clang-format off
 typedef uint16_t ParseDateRangeFlags; ///< Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS

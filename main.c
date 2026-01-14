@@ -56,33 +56,21 @@
  *
  * | File            | Description                |
  * | :-------------- | :------------------------- |
- * | copy.c          | @subpage neo_copy          |
  * | editmsg.c       | @subpage neo_editmsg       |
- * | enriched.c      | @subpage neo_enriched      |
  * | external.c      | @subpage neo_external      |
  * | flags.c         | @subpage neo_flags         |
  * | globals.c       | @subpage neo_globals       |
- * | handler.c       | @subpage neo_handler       |
  * | help.c          | @subpage neo_help          |
- * | mailcap.c       | @subpage neo_mailcap       |
- * | maillist.c      | @subpage neo_maillist      |
  * | main.c          | @subpage neo_main          |
  * | module.c        | @subpage main_module       |
  * | monitor.c       | @subpage neo_monitor       |
  * | muttlib.c       | @subpage neo_muttlib       |
- * | mutt_body.c     | @subpage neo_mutt_body     |
  * | mutt_config.c   | @subpage neo_mutt_config   |
- * | mutt_header.c   | @subpage neo_mutt_header   |
  * | mutt_logging.c  | @subpage neo_mutt_logging  |
  * | mutt_mailbox.c  | @subpage neo_mutt_mailbox  |
  * | mutt_signal.c   | @subpage neo_mutt_signal   |
  * | mutt_socket.c   | @subpage neo_mutt_socket   |
- * | mutt_thread.c   | @subpage neo_mutt_thread   |
- * | mview.c         | @subpage neo_mview         |
  * | mx.c            | @subpage neo_mx            |
- * | recvcmd.c       | @subpage neo_recvcmd       |
- * | rfc3676.c       | @subpage neo_rfc3676       |
- * | score.c         | @subpage neo_score         |
  * | system.c        | @subpage neo_system        |
  * | usage.c         | @subpage neo_usage         |
  * | version.c       | @subpage neo_version       |
@@ -158,7 +146,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "nntp/adata.h" // IWYU pragma: keep
-#include "protos.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

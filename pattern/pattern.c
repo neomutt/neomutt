@@ -49,9 +49,7 @@
 #include "menu/lib.h"
 #include "progress/lib.h"
 #include "mutt_logging.h"
-#include "mview.h"
 #include "mx.h"
-#include "protos.h"
 #include "search_state.h"
 
 /**

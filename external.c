@@ -56,14 +56,11 @@
 #include "progress/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
-#include "copy.h"
 #include "globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "protos.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif

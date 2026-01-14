@@ -29,7 +29,7 @@
  */
 
 /**
- * @page neo_handler Decide how to display email content
+ * @page email_handler Decide how to display email content
  *
  * Decide how to display email content
  */
@@ -44,7 +44,6 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
@@ -54,12 +53,17 @@
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
-#include "copy.h"
+#include "body.h"
+#include "copy_email.h"
 #include "enriched.h"
+#include "envelope.h"
 #include "globals.h"
 #include "mailcap.h"
+#include "mime.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
+#include "parameter.h"
+#include "parse.h"
 #include "rfc3676.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

@@ -42,7 +42,6 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
-#include "protos.h"
 
 /**
  * FlagCharsDesc - Descriptions of the $flag_chars flags

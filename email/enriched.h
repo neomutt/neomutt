@@ -20,12 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_ENRICHED_H
-#define MUTT_ENRICHED_H
+#ifndef MUTT_EMAIL_ENRICHED_H
+#define MUTT_EMAIL_ENRICHED_H
 
 struct Body;
 struct State;
 
 int text_enriched_handler(struct Body *b_email, struct State *state);
 
-#endif /* MUTT_ENRICHED_H */
+#endif /* MUTT_EMAIL_ENRICHED_H */

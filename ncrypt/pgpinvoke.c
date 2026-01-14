@@ -40,13 +40,13 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "pgpinvoke.h"
 #include "lib.h"
 #include "expando/lib.h"
 #include "expando_command.h"
 #include "mutt_logging.h"
 #include "pgpkey.h"
-#include "protos.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #endif
