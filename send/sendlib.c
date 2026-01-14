@@ -53,7 +53,6 @@
 #include "copy.h"
 #include "expando_msgid.h"
 #include "globals.h"
-#include "handler.h"
 #include "header.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"

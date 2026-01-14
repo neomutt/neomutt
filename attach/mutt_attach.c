@@ -56,7 +56,6 @@
 #include "cid.h"
 #include "copy.h"
 #include "globals.h"
-#include "handler.h"
 #include "mailcap.h"
 #include "muttlib.h"
 #include "mx.h"

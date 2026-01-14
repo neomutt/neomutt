@@ -52,7 +52,6 @@
 #include "send/lib.h"
 #include "copy.h"
 #include "globals.h"
-#include "handler.h"
 #include "mutt_logging.h"
 #include "protos.h"
 #ifdef ENABLE_NLS

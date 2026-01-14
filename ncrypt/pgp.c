@@ -56,7 +56,6 @@
 #include "crypt.h"
 #include "cryptglue.h"
 #include "globals.h"
-#include "handler.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
 #include "pgpmicalg.h"

@@ -49,7 +49,6 @@
 #include "pager/lib.h"
 #include "send/lib.h"
 #include "globals.h"
-#include "handler.h"
 #include "mx.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"

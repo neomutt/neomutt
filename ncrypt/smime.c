@@ -57,7 +57,6 @@
 #include "crypt.h"
 #include "cryptglue.h"
 #include "expando_smime.h"
-#include "handler.h"
 #include "mutt_logging.h"
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 #include "smime.h"

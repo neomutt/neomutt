@@ -62,7 +62,6 @@
  * | external.c      | @subpage neo_external      |
  * | flags.c         | @subpage neo_flags         |
  * | globals.c       | @subpage neo_globals       |
- * | handler.c       | @subpage neo_handler       |
  * | help.c          | @subpage neo_help          |
  * | mailcap.c       | @subpage neo_mailcap       |
  * | main.c          | @subpage neo_main          |

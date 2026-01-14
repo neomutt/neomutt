@@ -76,7 +76,6 @@
 #include "expando_greeting.h"
 #include "expando_msgid.h"
 #include "globals.h"
-#include "handler.h"
 #include "header.h"
 #include "multipart.h"
 #include "mutt_logging.h"
