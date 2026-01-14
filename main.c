@@ -57,7 +57,6 @@
  * | File            | Description                |
  * | :-------------- | :------------------------- |
  * | editmsg.c       | @subpage neo_editmsg       |
- * | enriched.c      | @subpage neo_enriched      |
  * | external.c      | @subpage neo_external      |
  * | flags.c         | @subpage neo_flags         |
  * | globals.c       | @subpage neo_globals       |

@@ -32,6 +32,7 @@
  * | email/copy_body.c      | @subpage email_copy_body  |
  * | email/copy_email.c     | @subpage email_copy_email |
  * | email/email.c          | @subpage email_email      |
+ * | email/enriched.c       | @subpage email_enriched   |
  * | email/envelope.c       | @subpage email_envelope   |
  * | email/from.c           | @subpage email_from       |
  * | email/globals.c        | @subpage email_globals    |
@@ -60,6 +61,7 @@
 #include "copy_body.h"
 #include "copy_email.h"
 #include "email.h"
+#include "enriched.h"
 #include "envelope.h"
 #include "from.h"
 #include "globals2.h"

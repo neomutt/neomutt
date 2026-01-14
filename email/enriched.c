@@ -21,7 +21,7 @@
  */
 
 /**
- * @page neo_enriched Rich text handler
+ * @page email_enriched Rich text handler
  *
  * Rich text handler
  */
@@ -36,8 +36,8 @@
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "enriched.h"
+#include "body.h"
 
 #define INDENT_SIZE 4
 
