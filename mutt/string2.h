@@ -34,6 +34,11 @@
 #include "array.h"
 #include "memory.h"
 
+#define MUTT_CTYPE_SPACE_C   " \t\n\v\f\r"  // [:space:]
+
+// RFC 5322 characters
+#define MUTT_CTYPE_RFC5322_FWS  " \t\r\n"   // 'FWS' (3.2.2.)
+
 /// Useful ARRAY of strings
 ARRAY_HEAD(StringArray, const char *);
 
@@ -47,17 +52,89 @@ void string_array_clear(struct StringArray *arr);
 #define S_ERR 127
 #define S_BKG 126
 
-/* this macro must check for (*ch == 0) since isspace(0) has unreliable behavior
- * on some systems */
-#define SKIPWS(ch)                                                             \
-  while (*(ch) && mutt_isspace(*(ch)))                              \
-    ch++;
+// strnul - string NUL
+#ifndef strnul
+#define strnul(s)                                                     \
+({                                                                    \
+  __auto_type  s_ = s;                                                \
+                                                                      \
+  s_ + strlen(s_);                                                    \
+})
+#endif  // strnul
+
+// stpspn - string offset-pointer span
+#ifndef stpspn
+#define stpspn(s, accept)                                             \
+({                                                                    \
+  __auto_type  s_ = s;                                                \
+                                                                      \
+  s_ + strspn(s_, accept);                                            \
+})
+#endif  // stpspn
+
+// stprspn - string offset-pointer rear span
+#ifndef stprspn
+#define stprspn(s, accept)                                            \
+({                                                                    \
+  __auto_type  s__ = s;                                               \
+                                                                      \
+  strnul(s__) - strrspn_(s__, accept);                                \
+})
+#endif  // stprspn
+
+#define SKIPWS(p)  do                                                 \
+{                                                                     \
+  p = stpspn(p, MUTT_CTYPE_SPACE_C);                                  \
+} while (0)
 
 #define terminate_string(str, strlen, buflen)                                  \
   (str)[MIN((strlen), (buflen))] = '\0'
 
 #define terminate_buffer(str, strlen)                                          \
   terminate_string(str, strlen, sizeof(str) - 1)
+
+/**
+ * mutt_str_skip_whitespace - Find the first non-whitespace character in a string
+ * @param s   String to search
+ * @retval s  First non-whitespace character
+ */
+#define mutt_str_skip_whitespace(s)                                   \
+({                                                                    \
+  __auto_type  s__ = s;                                               \
+                                                                      \
+  s__ == NULL ? NULL : stpspn(s__, MUTT_CTYPE_SPACE_C);               \
+})
+
+/**
+ * mutt_str_skip_email_wsp - Skip over FWS as defined by RFC5322
+ * @param s   String to search
+ * @retval s  First non-whitespace character
+ *
+ * This is used primarily for parsing header fields.
+ */
+#define mutt_str_skip_email_wsp(s)                                    \
+({                                                                    \
+  __auto_type  s__ = s;                                               \
+                                                                      \
+  s__ == NULL ? NULL : stpspn(s__, MUTT_CTYPE_RFC5322_FWS);           \
+})
+
+/**
+ * mutt_str_remove_trailing_ws - Trim trailing whitespace from a string
+ * @param s String to trim
+ *
+ * The string is modified in place.
+ */
+#define mutt_str_remove_trailing_ws(s)                                \
+({                                                                    \
+  __auto_type  s___ = s;                                              \
+                                                                      \
+  s___ == NULL ? NULL : stpcpy(stprspn(s___, MUTT_CTYPE_SPACE_C), "");\
+})
+
+#ifndef HAVE_STRRSPN_
+size_t      strrspn_(const char *s, const char *accept);
+#endif
 
 void        mutt_str_adjust(char **ptr);
 int         mutt_str_asprintf(char **strp, const char *fmt, ...)
@@ -70,11 +147,8 @@ bool        mutt_str_is_ascii(const char *str, size_t len);
 size_t      mutt_str_len(const char *a);
 char *      mutt_str_lower(char *str);
 size_t      mutt_str_lws_len(const char *s, size_t n);
-void        mutt_str_remove_trailing_ws(char *s);
 char *      mutt_str_replace(char **p, const char *s);
 char *      mutt_str_sep(char **stringp, const char *delim);
-char *      mutt_str_skip_email_wsp(const char *s);
-char *      mutt_str_skip_whitespace(const char *p);
 const char *mutt_str_sysexit(int e);
 char *      mutt_str_upper(char *str);
 
