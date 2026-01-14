@@ -25,11 +25,9 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "copy.h"
+#include "email/lib.h"
 
-struct Body;
 struct ConfigSubset;
-struct Envelope;
 struct ListHead;
 
 /**

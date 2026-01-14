@@ -54,7 +54,6 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "cid.h"
-#include "copy.h"
 #include "globals.h"
 #include "mailcap.h"
 #include "muttlib.h"

@@ -61,7 +61,6 @@
 #include "nntp/lib.h"
 #include "pop/lib.h"
 #include "question/lib.h"
-#include "copy.h"
 #include "external.h"
 #include "globals.h"
 #include "mutt_logging.h"

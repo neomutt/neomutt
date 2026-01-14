@@ -51,7 +51,6 @@
 #include "attach/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
-#include "copy.h"
 #include "mx.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>

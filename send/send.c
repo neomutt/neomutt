@@ -72,7 +72,6 @@
 #include "postpone/lib.h"
 #include "question/lib.h"
 #include "body.h"
-#include "copy.h"
 #include "expando_greeting.h"
 #include "expando_msgid.h"
 #include "globals.h"

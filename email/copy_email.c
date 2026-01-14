@@ -25,7 +25,7 @@
  */
 
 /**
- * @page neo_copy Duplicate the structure of an entire email
+ * @page email_copy_email Duplicate the structure of an entire email
  *
  * Duplicate the structure of an entire email
  */
@@ -38,18 +38,26 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "copy.h"
+#include "copy_email.h"
 #include "expando/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "send/lib.h"
+#include "body.h"
+#include "email.h"
+#include "envelope.h"
+#include "from.h"
 #include "globals.h"
+#include "handler.h"
+#include "mime.h"
 #include "mx.h"
+#include "parse.h"
+#include "rfc2047.h"
+#include "tags.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #include "muttlib.h"

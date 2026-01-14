@@ -53,7 +53,6 @@
 #include "history/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
-#include "copy.h"
 #include "crypt.h"
 #include "cryptglue.h"
 #include "expando_smime.h"

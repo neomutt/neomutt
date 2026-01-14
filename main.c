@@ -56,7 +56,6 @@
  *
  * | File            | Description                |
  * | :-------------- | :------------------------- |
- * | copy.c          | @subpage neo_copy          |
  * | editmsg.c       | @subpage neo_editmsg       |
  * | enriched.c      | @subpage neo_enriched      |
  * | external.c      | @subpage neo_external      |

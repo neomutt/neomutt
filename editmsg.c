@@ -43,7 +43,6 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "copy.h"
 #include "mx.h"
 #include "protos.h"
 

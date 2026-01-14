@@ -50,7 +50,6 @@
 #include "convert/lib.h"
 #include "ncrypt/lib.h"
 #include "body.h"
-#include "copy.h"
 #include "expando_msgid.h"
 #include "globals.h"
 #include "header.h"

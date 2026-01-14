@@ -43,7 +43,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "message.h"
-#include "copy.h"
 #include "edata.h"
 #include "globals.h"
 #include "hcache.h"

@@ -49,7 +49,6 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "progress/lib.h"
-#include "copy.h"
 #include "errno.h"
 #include "mdata.h"
 #include "mhemail.h"

@@ -29,17 +29,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "copy.h"
 #include "mview.h"
 
 struct Address;
-struct Body;
 struct Buffer;
-struct Email;
 struct Mapping;
 struct State;
 
@@ -112,16 +110,6 @@ int mutt_copy_header(FILE *in, struct Email *e, FILE *out,
                      CopyHeaderFlags chflags, const char *prefix, int wraplen)
 {
   return -1;
-}
-
-bool mutt_is_mail_list(struct Address *addr)
-{
-  return g_is_mail_list;
-}
-
-bool mutt_is_subscribed_list(struct Address *addr)
-{
-  return g_is_subscribed_list;
 }
 
 void mutt_set_flag(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox)

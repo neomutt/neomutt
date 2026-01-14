@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COPY_H
-#define MUTT_COPY_H
+#ifndef MUTT_EMAIL_COPY_EMAIL_H
+#define MUTT_EMAIL_COPY_EMAIL_H
 
 #include "config.h"
 #include <stdint.h>
@@ -83,4 +83,4 @@ int mutt_copy_message   (FILE *fp_out, struct Email *e, struct Message *msg, Cop
 
 int mutt_append_message(struct Mailbox *m_dst, struct Mailbox *m_src, struct Email *e, struct Message *msg, CopyMessageFlags cmflags, CopyHeaderFlags chflags);
 
-#endif /* MUTT_COPY_H */
+#endif /* MUTT_EMAIL_COPY_EMAIL_H */

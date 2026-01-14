@@ -54,7 +54,7 @@
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "body.h"
-#include "copy.h"
+#include "copy_email.h"
 #include "enriched.h"
 #include "envelope.h"
 #include "globals.h"

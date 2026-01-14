@@ -54,7 +54,6 @@
 #include "mutt.h"
 #include "lib.h"
 #include "progress/lib.h"
-#include "copy.h"
 #include "globals.h"
 #include "muttlib.h"
 #include "mx.h"
