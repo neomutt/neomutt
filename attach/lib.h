@@ -38,6 +38,7 @@
  * | attach/mutt_attach.c  | @subpage attach_mutt_attach  |
  * | attach/private_data.c | @subpage attach_private_data |
  * | attach/recvattach.c   | @subpage attach_recvattach   |
+ * | attach/recvcmd.c      | @subpage attach_recvcmd      |
  */
 
 #ifndef MUTT_ATTACH_LIB_H

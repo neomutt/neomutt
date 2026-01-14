@@ -25,7 +25,7 @@
  */
 
 /**
- * @page neo_recvcmd Send/reply with an attachment
+ * @page attach_recvcmd Send/reply with an attachment
  *
  * Send/reply with an attachment
  */
@@ -43,13 +43,13 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "recvcmd.h"
-#include "attach/lib.h"
 #include "editor/lib.h"
 #include "expando/lib.h"
 #include "history/lib.h"
 #include "index/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
+#include "attach.h"
 #include "globals.h"
 #include "mutt_logging.h"
 #include "protos.h"

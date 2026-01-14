@@ -65,7 +65,7 @@ NEOMUTTOBJS=	conststrings.o editmsg.o external.o flags.o \
 		git_ver.o globals.o help.o \
 		module.o muttlib.o mutt_config.o \
 		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
-		mutt_thread.o mx.o recvcmd.o rfc3676.o \
+		mutt_thread.o mx.o rfc3676.o \
 		system.o usage.o version.o
 @if !ENABLE_FUZZ_TESTS
 NEOMUTTOBJS+=	main.o
@@ -114,7 +114,7 @@ LIBATTACH=	libattach.a
 LIBATTACHOBJS=	attach/attach.o attach/cid.o attach/commands.o \
 		attach/dlg_attach.o attach/expando.o attach/functions.o \
 		attach/lib.o attach/mutt_attach.o attach/private_data.o \
-		attach/recvattach.o attach/module.o
+		attach/recvattach.o attach/recvcmd.o attach/module.o
 CLEANFILES+=	$(LIBATTACH) $(LIBATTACHOBJS)
 ALLOBJS+=	$(LIBATTACHOBJS)
 

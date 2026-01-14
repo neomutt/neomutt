@@ -72,7 +72,6 @@
  * | mutt_socket.c   | @subpage neo_mutt_socket   |
  * | mutt_thread.c   | @subpage neo_mutt_thread   |
  * | mx.c            | @subpage neo_mx            |
- * | recvcmd.c       | @subpage neo_recvcmd       |
  * | rfc3676.c       | @subpage neo_rfc3676       |
  * | system.c        | @subpage neo_system        |
  * | usage.c         | @subpage neo_usage         |

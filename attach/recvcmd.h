@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_RECVCMD_H
-#define MUTT_RECVCMD_H
+#ifndef MUTT_ATTACH_RECVCMD_H
+#define MUTT_ATTACH_RECVCMD_H
 
 #include <stdio.h>
 #include "send/lib.h"
@@ -37,4 +37,4 @@ void mutt_attach_forward    (FILE *fp, struct Email *e, struct AttachCtx *actx, 
 void mutt_attach_reply      (FILE *fp, struct Mailbox *m, struct Email *e, struct AttachCtx *actx, struct Body *b, SendFlags flags);
 void mutt_attach_mail_sender(struct AttachCtx *actx, struct Body *b);
 
-#endif /* MUTT_RECVCMD_H */
+#endif /* MUTT_ATTACH_RECVCMD_H */
