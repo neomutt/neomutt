@@ -35,7 +35,6 @@
 #include "core/lib.h"
 #include "cid.h"
 #include "attach.h"
-#include "mailcap.h"
 #include "mutt_attach.h"
 
 /**

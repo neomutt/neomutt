@@ -55,7 +55,6 @@
 #include "attach.h"
 #include "cid.h"
 #include "globals.h"
-#include "mailcap.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"

@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAILCAP_H
-#define MUTT_MAILCAP_H
+#ifndef MUTT_EMAIL_MAILCAP_H
+#define MUTT_EMAIL_MAILCAP_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -67,4 +67,4 @@ int                  mailcap_expand_command(struct Body *b, const char *filename
 void                 mailcap_expand_filename(const char *nametemplate, const char *oldfile, struct Buffer *newfile);
 bool                 mailcap_lookup(struct Body *b, char *type, size_t typelen, struct MailcapEntry *entry, enum MailcapLookup opt);
 
-#endif /* MUTT_MAILCAP_H */
+#endif /* MUTT_EMAIL_MAILCAP_H */

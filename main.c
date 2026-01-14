@@ -61,7 +61,6 @@
  * | flags.c         | @subpage neo_flags         |
  * | globals.c       | @subpage neo_globals       |
  * | help.c          | @subpage neo_help          |
- * | mailcap.c       | @subpage neo_mailcap       |
  * | main.c          | @subpage neo_main          |
  * | module.c        | @subpage main_module       |
  * | monitor.c       | @subpage neo_monitor       |

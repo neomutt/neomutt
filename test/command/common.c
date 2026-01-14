@@ -37,7 +37,6 @@
 #include "key/lib.h"
 #include "send/lib.h"
 #include "external.h"
-#include "mailcap.h"
 
 struct ConnAccount;
 struct stat;

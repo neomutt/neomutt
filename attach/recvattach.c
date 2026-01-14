@@ -57,7 +57,6 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "external.h"
-#include "mailcap.h"
 #include "mutt_attach.h"
 #include "mutt_thread.h"
 #include "muttlib.h"

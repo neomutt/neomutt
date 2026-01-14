@@ -38,6 +38,7 @@
  * | email/globals.c        | @subpage email_globals    |
  * | email/handler.c        | @subpage email_handler    |
  * | email/header.c         | @subpage email_header     |
+ * | email/mailcap.c        | @subpage email_mailcap    |
  * | email/mime.c           | @subpage email_mime       |
  * | email/module.c         | @subpage email_module     |
  * | email/parameter.c      | @subpage email_parameter  |
@@ -67,6 +68,7 @@
 #include "globals2.h"
 #include "handler.h"
 #include "header.h"
+#include "mailcap.h"
 #include "mime.h"
 #include "parameter.h"
 #include "parse.h"
