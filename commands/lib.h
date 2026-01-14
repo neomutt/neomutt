@@ -36,6 +36,7 @@
  * | commands/module.c      | @subpage commands_module      |
  * | commands/my_header.c   | @subpage commands_my_header   |
  * | commands/parse.c       | @subpage commands_parse       |
+ * | commands/score.c       | @subpage commands_score       |
  * | commands/setenv.c      | @subpage commands_setenv      |
  * | commands/source.c      | @subpage commands_source      |
  * | commands/spam.c        | @subpage commands_spam        |
@@ -56,6 +57,7 @@
 #include "mailboxes.h"
 #include "my_header.h"
 #include "parse.h"
+#include "score.h"
 #include "setenv.h"
 #include "source.h"
 #include "spam.h"

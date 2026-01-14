@@ -39,7 +39,6 @@
 #include "pattern/lib.h"
 #include "mutt_thread.h"
 #include "mx.h"
-#include "score.h"
 
 /**
  * mview_free - Free a MailboxView

@@ -52,7 +52,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "muttlib.h"
-#include "mview.h"
 #include "parse.h"
 
 /**

@@ -65,7 +65,7 @@ NEOMUTTOBJS=	conststrings.o editmsg.o external.o flags.o \
 		git_ver.o globals.o help.o \
 		module.o muttlib.o mutt_config.o \
 		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
-		mutt_thread.o mx.o recvcmd.o rfc3676.o score.o \
+		mutt_thread.o mx.o recvcmd.o rfc3676.o \
 		system.o usage.o version.o
 @if !ENABLE_FUZZ_TESTS
 NEOMUTTOBJS+=	main.o
@@ -207,9 +207,10 @@ $(PWD)/color:
 LIBCOMMANDS=	libcommands.a
 LIBCOMMANDSOBJS=commands/alternates.o commands/commands.o commands/group.o \
 		commands/ifdef.o commands/ignore.o commands/mailboxes.o \
-		commands/my_header.o commands/parse.o commands/setenv.o \
-		commands/source.o commands/spam.o commands/stailq.o \
-		commands/subjectrx.o commands/tags.o commands/module.o
+		commands/my_header.o commands/parse.o commands/score.o \
+		commands/setenv.o commands/source.o commands/spam.o \
+		commands/stailq.o commands/subjectrx.o commands/tags.o \
+		commands/module.o
 CLEANFILES+=	$(LIBCOMMANDS) $(LIBCOMMANDSOBJS)
 ALLOBJS+=	$(LIBCOMMANDSOBJS)
 
@@ -430,8 +431,9 @@ LIBEMAILOBJS=	email/body.o email/config.o email/copy_body.o \
 		email/copy_email.o email/email.o email/enriched.o \
 		email/envelope.o email/from.o email/globals.o email/handler.o \
 		email/header.o email/mailcap.o email/mime.o email/parameter.o \
-		email/parse.o email/rfc2047.o email/rfc2231.o email/sort.o \
-		email/tags.o email/thread.o email/url.o email/module.o
+		email/parse.o email/rfc2047.o email/rfc2231.o email/score.o \
+		email/sort.o email/tags.o email/thread.o email/url.o \
+		email/module.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
 ALLOBJS+=	$(LIBEMAILOBJS)
 

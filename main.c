@@ -74,7 +74,6 @@
  * | mx.c            | @subpage neo_mx            |
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | rfc3676.c       | @subpage neo_rfc3676       |
- * | score.c         | @subpage neo_score         |
  * | system.c        | @subpage neo_system        |
  * | usage.c         | @subpage neo_usage         |
  * | version.c       | @subpage neo_version       |

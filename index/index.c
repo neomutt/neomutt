@@ -85,7 +85,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "private_data.h"
-#include "score.h"
 #include "shared_data.h"
 
 /**

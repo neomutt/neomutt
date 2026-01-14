@@ -20,18 +20,29 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_SCORE_H
-#define MUTT_SCORE_H
+#ifndef MUTT_EMAIL_SCORE_H
+#define MUTT_EMAIL_SCORE_H
 
 #include <stdbool.h>
-#include "core/lib.h"
 
-struct Buffer;
 struct Email;
+struct Mailbox;
+
+/**
+ * struct Score - Scoring rule for email
+ */
+struct Score
+{
+  char *str;               ///< String to match
+  struct PatternList *pat; ///< Pattern to match
+  int val;                 ///< Score to add
+  bool exact;              ///< If this rule matches, don't evaluate any more
+  struct Score *next;      ///< Linked list
+};
+
+extern struct Score *ScoreList;
 
 void mutt_check_rescore(struct Mailbox *m);
-enum CommandResult parse_score  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox);
 
-#endif /* MUTT_SCORE_H */
+#endif /* MUTT_EMAIL_SCORE_H */
