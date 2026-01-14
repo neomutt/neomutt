@@ -69,7 +69,6 @@
 #include "mx.h"
 #include "nntp/mdata.h"
 #include "private_data.h"
-#include "protos.h"
 #include "shared_data.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"

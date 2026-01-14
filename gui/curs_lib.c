@@ -60,7 +60,6 @@
 #include "mutt_thread.h"
 #include "mutt_window.h"
 #include "opcodes.h"
-#include "protos.h"
 
 /**
  * mutt_beep - Irritate the user

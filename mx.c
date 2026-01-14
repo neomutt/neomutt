@@ -67,7 +67,6 @@
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "nntp/mdata.h" // IWYU pragma: keep
-#include "protos.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif

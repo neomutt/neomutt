@@ -63,7 +63,6 @@
 #include "msn.h"
 #include "mutt_logging.h"
 #include "mx.h"
-#include "protos.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

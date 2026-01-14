@@ -41,7 +41,6 @@
 #include "email.h"
 #include "globals.h"
 #include "mutt_thread.h"
-#include "protos.h"
 #include "sort.h"
 
 /// Linked list of email scoring rules

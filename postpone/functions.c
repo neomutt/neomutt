@@ -41,7 +41,6 @@
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "functions.h"
-#include "protos.h"
 #endif
 
 // clang-format off

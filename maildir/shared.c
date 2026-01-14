@@ -37,7 +37,6 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "mdata.h"
-#include "protos.h"
 
 /**
  * maildir_umask - Create a umask from the mailbox directory

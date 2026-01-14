@@ -26,9 +26,16 @@
 #define MUTT_MUTT_H
 
 #include "config.h"
+#include "mutt.h"
+#include "menu/lib.h"
 #include <limits.h>
 #include <stdbool.h>
-#include <stdint.h>
+
+struct Buffer;
+struct Email;
+struct EmailArray;
+struct Mailbox;
+struct NotifyCallback;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
@@ -52,11 +59,23 @@
 
 extern bool StartupComplete;
 
-typedef uint8_t CompletionFlags;       ///< Flags for mw_get_field(), e.g. #MUTT_COMP_NO_FLAGS
-#define MUTT_COMP_NO_FLAGS          0  ///< No flags are set
-#define MUTT_COMP_CLEAR       (1 << 0) ///< Clear input if printable character is pressed
-#define MUTT_COMP_PASS        (1 << 1) ///< Password mode (no echo)
-#define MUTT_COMP_UNBUFFERED  (1 << 2) ///< Ignore macro buffer
+/**
+ * enum XdgType - XDG variable types
+ */
+enum XdgType
+{
+  XDG_CONFIG_HOME, ///< XDG home dir: ~/.config
+  XDG_CONFIG_DIRS, ///< XDG system dir: /etc/xdg
+};
+
+/**
+ * enum EvMessage - Edit or View a message
+ */
+enum EvMessage
+{
+  EVM_VIEW, ///< View the message
+  EVM_EDIT, ///< Edit the message
+};
 
 /**
  * enum MessageType - To set flags or match patterns
@@ -87,6 +106,20 @@ enum MessageType
   MUTT_MT_MAX,
 };
 
-void reset_value(const char *name);
+int mutt_ev_message(struct Mailbox *m, struct EmailArray *ea, enum EvMessage action);
+
+int mutt_system(const char *cmd);
+
+int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf);
+void mutt_help(enum MenuType menu);
+void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool upd_mbox);
+void mutt_signal_init(void);
+void mutt_emails_set_flag(struct Mailbox *m, struct EmailArray *ea, enum MessageType flag, bool bf);
+int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf);
+
+int mutt_thread_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool subthread);
+extern short PostCount;
+
+int mutt_reply_observer(struct NotifyCallback *nc);
 
 #endif /* MUTT_MUTT_H */

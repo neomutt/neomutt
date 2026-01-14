@@ -41,12 +41,12 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "mutt.h"
 #include "mailcap.h"
 #include "attach/lib.h"
 #include "body.h"
 #include "muttlib.h"
 #include "parameter.h"
-#include "protos.h"
 
 /**
  * mailcap_expand_command - Expand expandos in a command

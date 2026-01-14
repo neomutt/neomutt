@@ -50,7 +50,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "protos.h"
 #include "rfc3676.h"
 
 /// Number of postponed (draft) emails

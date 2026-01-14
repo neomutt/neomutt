@@ -67,6 +67,7 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"
@@ -86,7 +87,6 @@
 #include "mx.h"
 #include "nntp/adata.h"
 #include "private_data.h"
-#include "protos.h"
 #include "shared_data.h"
 #include "status.h"
 #ifdef USE_NOTMUCH

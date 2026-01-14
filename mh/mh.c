@@ -53,7 +53,6 @@
 #include "mdata.h"
 #include "mhemail.h"
 #include "mx.h"
-#include "protos.h"
 #include "sequence.h"
 #include "shared.h"
 #ifdef USE_INOTIFY

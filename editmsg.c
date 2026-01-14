@@ -44,7 +44,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "mx.h"
-#include "protos.h"
 
 /**
  * ev_message - Edit an email or view it in an external editor

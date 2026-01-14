@@ -77,7 +77,6 @@
 #include "mdata.h"
 #include "mutt_thread.h"
 #include "mx.h"
-#include "protos.h"
 #include "query.h"
 #include "tag.h"
 #ifdef ENABLE_NLS

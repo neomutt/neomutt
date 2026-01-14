@@ -50,7 +50,6 @@
 #include "external.h"
 #include "mutt_thread.h"
 #include "mx.h"
-#include "protos.h"
 
 struct AttachCtx;
 struct MailboxView;

@@ -52,7 +52,6 @@
 #include "attach.h"
 #include "globals.h"
 #include "mutt_logging.h"
-#include "protos.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

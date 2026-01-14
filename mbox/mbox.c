@@ -57,7 +57,6 @@
 #include "globals.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "protos.h"
 
 /**
  * struct MUpdate - Store of new offsets, used by mutt_sync_mailbox()

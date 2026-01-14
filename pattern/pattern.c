@@ -50,7 +50,6 @@
 #include "progress/lib.h"
 #include "mutt_logging.h"
 #include "mx.h"
-#include "protos.h"
 #include "search_state.h"
 
 /**

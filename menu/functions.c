@@ -41,7 +41,6 @@
 #include "editor/lib.h"
 #include "history/lib.h"
 #include "key/lib.h"
-#include "protos.h"
 #include "type.h"
 
 extern char *SearchBuffers[];

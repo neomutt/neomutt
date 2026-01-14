@@ -43,7 +43,6 @@
 #include "index/lib.h"
 #include "key/lib.h"
 #include "mutt_thread.h"
-#include "protos.h"
 
 /**
  * mutt_set_flag - Set a flag on an email

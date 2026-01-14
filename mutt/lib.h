@@ -117,4 +117,14 @@
 #define FALLTHROUGH
 #endif
 
+#ifndef HAVE_TIMEGM
+#include <time.h>
+time_t timegm(struct tm *tm);
+#endif
+
+#ifndef HAVE_WCSCASECMP
+#include <stddef.h>
+int wcscasecmp(const wchar_t *a, const wchar_t *b);
+#endif
+
 #endif /* MUTT_MUTT_LIB_H */

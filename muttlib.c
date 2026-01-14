@@ -59,7 +59,6 @@
 #include "question/lib.h"
 #include "globals.h"
 #include "mx.h"
-#include "protos.h"
 
 /// Accepted XDG environment variables
 static const char *XdgEnvVars[] = {

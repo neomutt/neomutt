@@ -70,7 +70,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "nntp/adata.h" // IWYU pragma: keep
-#include "protos.h"
 #include "rfc3676.h"
 #include "shared_data.h"
 #ifdef ENABLE_NLS

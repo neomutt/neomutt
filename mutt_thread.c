@@ -43,7 +43,6 @@
 #include "mutt_thread.h"
 #include "globals.h"
 #include "mx.h"
-#include "protos.h"
 
 /**
  * UseThreadsMethods - Choices for '$use_threads' for the index

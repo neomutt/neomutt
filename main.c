@@ -148,7 +148,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "nntp/adata.h" // IWYU pragma: keep
-#include "protos.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

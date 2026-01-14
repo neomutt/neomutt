@@ -62,7 +62,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "protos.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif

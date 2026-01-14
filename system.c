@@ -37,7 +37,6 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "imap/lib.h"
-#include "protos.h"
 
 /**
  * mutt_system - Run an external command

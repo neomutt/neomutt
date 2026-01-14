@@ -49,7 +49,6 @@
 #include "question/lib.h"
 #include "globals.h"
 #include "mx.h"
-#include "protos.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
