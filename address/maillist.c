@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_maillist Handle mailing lists
+ * @page addr_maillist Handle mailing lists
  *
  * Handle mailing lists
  */
@@ -31,9 +31,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
 #include "email/lib.h"
 #include "maillist.h"
+#include "address.h"
 #include "muttlib.h"
 
 /**

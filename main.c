@@ -65,7 +65,6 @@
  * | handler.c       | @subpage neo_handler       |
  * | help.c          | @subpage neo_help          |
  * | mailcap.c       | @subpage neo_mailcap       |
- * | maillist.c      | @subpage neo_maillist      |
  * | main.c          | @subpage neo_main          |
  * | module.c        | @subpage main_module       |
  * | monitor.c       | @subpage neo_monitor       |

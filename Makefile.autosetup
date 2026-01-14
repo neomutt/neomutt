@@ -62,7 +62,7 @@ default:	all
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	conststrings.o copy.o editmsg.o enriched.o external.o flags.o \
-		git_ver.o globals.o handler.o help.o mailcap.o maillist.o \
+		git_ver.o globals.o handler.o help.o mailcap.o \
 		module.o muttlib.o mutt_body.o mutt_config.o mutt_header.o \
 		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
 		mutt_thread.o mview.o mx.o recvcmd.o rfc3676.o score.o \
@@ -82,7 +82,7 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 # libaddress
 LIBADDRESS=	libaddress.a
 LIBADDRESSOBJS=	address/address.o address/config_type.o address/group.o \
-		address/idna.o address/module.o
+		address/idna.o address/maillist.o address/module.o
 CLEANFILES+=	$(LIBADDRESS) $(LIBADDRESSOBJS)
 ALLOBJS+=	$(LIBADDRESSOBJS)
 

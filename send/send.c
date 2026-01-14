@@ -78,7 +78,6 @@
 #include "globals.h"
 #include "handler.h"
 #include "header.h"
-#include "maillist.h"
 #include "multipart.h"
 #include "mutt_body.h"
 #include "mutt_header.h"

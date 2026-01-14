@@ -54,7 +54,6 @@
 #include "expando/lib.h"
 #include "hooks/lib.h"
 #include "ncrypt/lib.h"
-#include "maillist.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"

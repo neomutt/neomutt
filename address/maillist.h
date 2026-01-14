@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAILLIST_H
-#define MUTT_MAILLIST_H
+#ifndef MUTT_ADDRESS_MAILLIST_H
+#define MUTT_ADDRESS_MAILLIST_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -35,4 +35,4 @@ bool first_mailing_list         (char *buf, size_t buflen, struct AddressList *a
 bool mutt_is_mail_list          (const struct Address *addr);
 bool mutt_is_subscribed_list    (const struct Address *addr);
 
-#endif /* MUTT_MAILLIST_H */
+#endif /* MUTT_ADDRESS_MAILLIST_H */

@@ -54,7 +54,6 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "globals.h"
-#include "maillist.h"
 #include "muttlib.h"
 #include "reverse.h"
 
