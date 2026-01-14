@@ -52,7 +52,6 @@
 #include "question/lib.h"
 #include "adata.h"
 #include "edata.h"
-#include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mx.h"

@@ -64,7 +64,6 @@
 #include "copy.h"
 #include "external.h"
 #include "globals.h"
-#include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"

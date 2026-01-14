@@ -66,7 +66,6 @@
 #include "external.h"
 #include "functions.h"
 #include "globals.h"
-#include "mutt_header.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mview.h"

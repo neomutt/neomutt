@@ -56,7 +56,6 @@
 #include "progress/lib.h"
 #include "copy.h"
 #include "globals.h"
-#include "mutt_header.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"

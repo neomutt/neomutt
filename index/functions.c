@@ -63,7 +63,6 @@
 #include "external.h"
 #include "functions.h"
 #include "globals.h"
-#include "mutt_header.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"

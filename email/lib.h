@@ -34,6 +34,7 @@
  * | email/envelope.c       | @subpage email_envelope  |
  * | email/from.c           | @subpage email_from      |
  * | email/globals.c        | @subpage email_globals   |
+ * | email/header.c         | @subpage email_header    |
  * | email/mime.c           | @subpage email_mime      |
  * | email/module.c         | @subpage email_module    |
  * | email/parameter.c      | @subpage email_parameter |
@@ -58,7 +59,8 @@
 #include "email.h"
 #include "envelope.h"
 #include "from.h"
-#include "globals.h"
+#include "globals2.h"
+#include "header.h"
 #include "mime.h"
 #include "parameter.h"
 #include "parse.h"

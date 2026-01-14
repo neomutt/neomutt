@@ -70,7 +70,6 @@
  * | monitor.c       | @subpage neo_monitor       |
  * | muttlib.c       | @subpage neo_muttlib       |
  * | mutt_config.c   | @subpage neo_mutt_config   |
- * | mutt_header.c   | @subpage neo_mutt_header   |
  * | mutt_logging.c  | @subpage neo_mutt_logging  |
  * | mutt_mailbox.c  | @subpage neo_mutt_mailbox  |
  * | mutt_signal.c   | @subpage neo_mutt_signal   |
