@@ -112,12 +112,14 @@ void mutt_adv_mktemp(struct Buffer *buf)
 }
 
 /**
- * buf_expand_path - Create the canonical path
- * @param buf Buffer with path
+ * buf_expand_path_regex - Create the canonical path (optionally with regex escaping)
+ * @param buf   Buffer with path
+ * @param regex If true, escape regex special chars in expanded shortcuts
  *
  * @note The path is expanded in-place
+ * @note This function is exposed for use by hooks that need regex escaping
  */
-void buf_expand_path(struct Buffer *buf)
+void buf_expand_path_regex(struct Buffer *buf, bool regex)
 {
   const char *s = NULL;
   const char *tail = "";
@@ -125,6 +127,7 @@ void buf_expand_path(struct Buffer *buf)
   bool recurse = false;
 
   struct Buffer *p = buf_pool_get();
+  struct Buffer *q = buf_pool_get();
   struct Buffer *tmp = buf_pool_get();
 
   do
@@ -280,17 +283,38 @@ void buf_expand_path(struct Buffer *buf)
       }
     }
 
-    buf_printf(tmp, "%s%s", buf_string(p), tail);
+    if (regex && *(buf_string(p)) && !recurse)
+    {
+      mutt_file_sanitize_regex(q, buf_string(p));
+      buf_printf(tmp, "%s%s", buf_string(q), tail);
+    }
+    else
+    {
+      buf_printf(tmp, "%s%s", buf_string(p), tail);
+    }
+
     buf_copy(buf, tmp);
   } while (recurse);
 
   buf_pool_release(&p);
+  buf_pool_release(&q);
   buf_pool_release(&tmp);
 
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
   if (imap_path_probe(buf_string(buf), NULL) == MUTT_IMAP)
     imap_path_canon(buf);
+}
+
+/**
+ * buf_expand_path - Create the canonical path
+ * @param buf Buffer with path
+ *
+ * @note The path is expanded in-place
+ */
+void buf_expand_path(struct Buffer *buf)
+{
+  buf_expand_path_regex(buf, false);
 }
 
 /**
