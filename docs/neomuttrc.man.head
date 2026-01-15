@@ -801,8 +801,8 @@ still supported.
 You can alter the environment that NeoMutt passes on to its child processes
 using the \fBsetenv\fP and \fBunsetenv\fP operators.
 .IP
-Variable names must follow the pattern \fB[A-Za-z][A-Za-z0-9_]*\fP:
-they must start with a letter (uppercase or lowercase), and contain only
+Variable names must follow the pattern \fB[_a-zA-Z][_a-zA-Z0-9]*\fP:
+they must start with a letter or underscore, and contain only
 letters, digits, and underscores.
 .IP
 You can also query current environment \fIvalue\fPs by prefixing a

@@ -9848,8 +9848,8 @@ folder-hook '\@imap\.example\.com' "set sort=threads"
       </para>
 
       <para>
-        Variable names must follow the pattern <literal>[A-Za-z][A-Za-z0-9_]*</literal>:
-        they must start with a letter (uppercase or lowercase), and contain only
+        Variable names must follow the pattern <literal>[_a-zA-Z][_a-zA-Z0-9]*</literal>:
+        they must start with a letter or underscore, and contain only
         letters, digits, and underscores.
       </para>
 

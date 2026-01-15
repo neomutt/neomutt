@@ -53,12 +53,12 @@ static const struct CommandTest SetenvTests[] = {
   { MUTT_CMD_SUCCESS, "VAR_NAME= value" },
   // Variable names with underscores and numbers
   { MUTT_CMD_SUCCESS, "MY_VAR_123=test" },
-  // Lowercase and mixed case (now valid)
+  { MUTT_CMD_SUCCESS, "_UNDERSCORE_START=value" },
+  // Lowercase and mixed case (valid)
   { MUTT_CMD_SUCCESS, "lowercase=value" },
   { MUTT_CMD_SUCCESS, "Mixed_Case=value" },
   { MUTT_CMD_SUCCESS, "myVar=value" },
-  // Invalid variable names (starting with underscore, digit, or special characters)
-  { MUTT_CMD_WARNING, "_UNDERSCORE_START=value" },
+  // Invalid variable names (starting with digit or special characters)
   { MUTT_CMD_WARNING, "123STARTS_WITH_NUMBER=value" },
   { MUTT_CMD_WARNING, "HAS-DASH=value" },
   { MUTT_CMD_WARNING, "HAS.DOT=value" },
@@ -72,11 +72,12 @@ static const struct CommandTest UnSetenvTests[] = {
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "ORGANIZATION" },
   { MUTT_CMD_SUCCESS, "NONEXISTENT_VAR" },  // Should succeed even if doesn't exist
-  // Lowercase and mixed case (now valid)
+  // Lowercase and mixed case (valid)
   { MUTT_CMD_SUCCESS, "lowercase" },
   { MUTT_CMD_SUCCESS, "Mixed_Case" },
-  // Invalid variable names (starting with underscore, digit, or special characters)
-  { MUTT_CMD_WARNING, "_UNDERSCORE" },
+  // Underscore prefix (now valid)
+  { MUTT_CMD_SUCCESS, "_UNDERSCORE" },
+  // Invalid variable names (starting with digit or special characters)
   { MUTT_CMD_WARNING, "123NUMBER" },
   { MUTT_CMD_WARNING, "HAS-DASH" },
   { MUTT_CMD_ERROR,   NULL },

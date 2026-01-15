@@ -138,12 +138,12 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
   /* get variable name */
   parse_extract_token(token, line, TOKEN_EQUAL | TOKEN_QUESTION);
 
-  /* Validate variable name: must match [A-Za-z][A-Za-z0-9_]* */
+  /* Validate variable name: must match [_a-zA-Z][_a-zA-Z0-9]* */
   const char *name = buf_string(token);
   if (!buf_is_empty(token))
   {
-    /* First character must be a letter */
-    if (!isalpha(name[0]))
+    /* First character must be a letter or underscore */
+    if (!isalpha(name[0]) && (name[0] != '_'))
     {
       buf_printf(err, _("%s: invalid variable name '%s'"), cmd->name, name);
       goto done;
