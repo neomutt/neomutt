@@ -808,6 +808,9 @@ letters, digits, and underscores.
 You can also query current environment \fIvalue\fPs by prefixing a
 \(lq\fB?\fP\(rq character.
 .IP
+Running \fBsetenv\fP with no parameters will show a list of all the
+environment variables.
+.IP
 For backward compatibility, the old syntax where the variable name and value
 are separated by whitespace is also supported:
 \fBsetenv\fP \fIvariable\fP \fIvalue\fP
