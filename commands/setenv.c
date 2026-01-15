@@ -35,6 +35,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -136,6 +137,27 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
 
   /* get variable name */
   parse_extract_token(token, line, TOKEN_EQUAL | TOKEN_QUESTION);
+
+  // Validate variable name: must match [A-Z_][A-Z0-9_]*
+  const char *name = buf_string(token);
+  if (!buf_is_empty(token))
+  {
+    // First character must be uppercase letter or underscore
+    if (!isupper(name[0]) && (name[0] != '_'))
+    {
+      buf_printf(err, _("%s: invalid variable name '%s'"), cmd->name, name);
+      goto done;
+    }
+    // Subsequent characters must be uppercase letter, digit, or underscore
+    for (size_t i = 1; name[i] != '\0'; i++)
+    {
+      if (!isupper(name[i]) && !mutt_isdigit(name[i]) && (name[i] != '_'))
+      {
+        buf_printf(err, _("%s: invalid variable name '%s'"), cmd->name, name);
+        goto done;
+      }
+    }
+  }
 
   if (*line->dptr == '?')
   {
