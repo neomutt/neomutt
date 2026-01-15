@@ -51,8 +51,6 @@ tags
 asan.*
 .env
 _codeql_detected_source_root
-build-*/
-test-files/
 
 # Clangd
 .cache/clangd
