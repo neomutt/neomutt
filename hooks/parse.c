@@ -50,6 +50,7 @@
 #include "hook.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "run.h"
 
 extern const struct ExpandoDefinition IndexFormatDef[];
 
@@ -72,6 +73,21 @@ enum CommandId CurrentHookId = CMD_NONE;
  *
  * This is used for hook patterns where shortcuts need expansion but should
  * not interfere with regex matching.
+ */
+/**
+ * buf_expand_path_regex_helper - Expand a path and escape regex characters
+ * @param buf Buffer containing path to expand
+ *
+ * This performs path expansion like buf_expand_path(), but also escapes regex
+ * special characters in the expanded shortcut portion of the path (not the tail).
+ * This is needed for hook patterns where paths containing regex metacharacters
+ * need to match literally, while allowing the tail to contain regex patterns.
+ *
+ * For example, "~/mail/ *.txt" expands to "/home/user/mail/ *.txt" where
+ * "/home/user" is escaped but "/ *.txt" is left as a regex pattern.
+ *
+ * This is a specialized version only used for hooks, so the logic is kept here
+ * rather than complicating the main buf_expand_path() function.
  */
 static void buf_expand_path_regex_helper(struct Buffer *buf)
 {
@@ -234,7 +250,8 @@ static void buf_expand_path_regex_helper(struct Buffer *buf)
       }
     }
 
-    // Escape regex special characters in the expanded shortcut portion
+    // Escape regex special characters in the expanded shortcut portion only
+    // Keep the tail as-is since it may contain intentional regex patterns
     if (*(buf_string(p)) && !recurse)
     {
       mutt_file_sanitize_regex(q, buf_string(p));
