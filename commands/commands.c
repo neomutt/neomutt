@@ -167,7 +167,7 @@ const struct Command CommandsCommands[] = {
         "configuration.html#source" },
   { "spam", CMD_SPAM, parse_spam, CMD_NO_DATA,
         N_("Define rules to parse spam detection headers"),
-        N_("spam <regex> <format>"),
+        N_("spam <regex> [ <format> ]"),
         "configuration.html#spam" },
   { "subject-regex", CMD_SUBJECT_REGEX, parse_subjectrx_list, CMD_NO_DATA,
         N_("Apply regex-based rewriting to message subjects"),
