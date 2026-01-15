@@ -873,7 +873,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
   if (OptNews)
     nntp_expand_path(fname->data, fname->dsize, &CurrentNewsSrv->conn->account);
   else
-    buf_expand_path_regex(fname, false);
+    buf_expand_path(fname, false);
 
   if (imap_path_probe(buf_string(fname), NULL) != MUTT_IMAP)
   {
@@ -1463,7 +1463,7 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
   {
     goto done;
   }
-  buf_expand_path_regex(fname, false);
+  buf_expand_path(fname, false);
 
   /* Call to lookup_mime_type () ?  maybe later */
   type = buf_pool_get();
@@ -1914,7 +1914,7 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
       return FR_ERROR;
     }
 
-    buf_expand_path_regex(fname, false);
+    buf_expand_path(fname, false);
     if (mutt_file_rename(cur_att->body->filename, buf_string(fname)))
     {
       buf_pool_release(&fname);
@@ -1978,7 +1978,7 @@ static int op_compose_write_message(struct ComposeSharedData *shared, int op)
       !buf_is_empty(fname))
   {
     mutt_message(_("Writing message to %s ..."), buf_string(fname));
-    buf_expand_path_regex(fname, false);
+    buf_expand_path(fname, false);
 
     if (shared->email->body->next)
       shared->email->body = mutt_make_multipart(shared->email->body);
