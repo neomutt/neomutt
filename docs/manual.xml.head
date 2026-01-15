@@ -9847,17 +9847,28 @@ folder-hook '\@imap\.example\.com' "set sort=threads"
         <quote>?</quote> character.
       </para>
 
-      <note>
-        <para>
-          These follow NeoMutt-style syntax, not shell-style!
-        </para>
-      </note>
+      <para>
+        Variable names must follow the pattern <literal>[A-Z_][A-Z0-9_]*</literal>:
+        they must start with an uppercase letter or underscore, and contain only
+        uppercase letters, digits, and underscores.
+      </para>
+
+<screen>
+setenv TERM=vt100
+setenv ORGANIZATION="The NeoMutt Development Team"
+unsetenv DISPLAY
+setenv LESS?
+</screen>
+
+      <para>
+        For backward compatibility, the old syntax is also supported,
+        where the variable name and value are separated by whitespace instead of
+        an equals sign:
+      </para>
 
 <screen>
 setenv TERM vt100
 setenv ORGANIZATION "The NeoMutt Development Team"
-unsetenv DISPLAY
-setenv LESS?
 </screen>
 
       <para>
@@ -21092,7 +21103,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">?variable</replaceable>
               </arg>
               <arg choice="plain">
-                <replaceable class="parameter">variable value</replaceable>
+                <replaceable class="parameter">variable=value</replaceable>
               </arg>
             </group>
             <command>

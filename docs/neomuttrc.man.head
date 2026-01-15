@@ -794,15 +794,23 @@ still supported.
 .
 .PP
 .nf
-\fBsetenv\fP { \fB?\fP\fIvariable\fP | \fIvariable\fP \fIvalue\fP }
+\fBsetenv\fP { \fB?\fP\fIvariable\fP | \fIvariable\fP\fB=\fP\fIvalue\fP }
 \fBunsetenv\fP \fIvariable\fP
 .fi
 .IP
 You can alter the environment that NeoMutt passes on to its child processes
 using the \fBsetenv\fP and \fBunsetenv\fP operators.
 .IP
+Variable names must follow the pattern \fB[A-Z_][A-Z0-9_]*\fP:
+they must start with an uppercase letter or underscore, and contain only
+uppercase letters, digits, and underscores.
+.IP
 You can also query current environment \fIvalue\fPs by prefixing a
 \(lq\fB?\fP\(rq character.
+.IP
+For backward compatibility, the old syntax where the variable name and value
+are separated by whitespace is also supported:
+\fBsetenv\fP \fIvariable\fP \fIvalue\fP
 .
 .PP
 .nf
