@@ -27,30 +27,21 @@
  */
 
 #include "config.h"
-#include <limits.h>
-#include <pwd.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
-#include "alias/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "email/lib.h"
 #include "commands/lib.h"
 #include "compmbox/lib.h"
 #include "expando/lib.h"
-#include "imap/lib.h"
 #include "index/lib.h"
 #include "parse/lib.h"
 #include "pattern/lib.h"
 #include "globals.h"
 #include "hook.h"
 #include "muttlib.h"
-#include "mx.h"
-#include "run.h"
 
 extern const struct ExpandoDefinition IndexFormatDef[];
 
@@ -62,207 +53,6 @@ struct HashTable *IdxFmtHooks = NULL;
 
 /// The ID of the Hook currently being executed, e.g. #CMD_SAVE_HOOK
 enum CommandId CurrentHookId = CMD_NONE;
-
-/**
- * buf_expand_path_regex_helper - Expand a path and escape regex characters
- * @param buf Buffer containing path to expand
- *
- * This performs path expansion like buf_expand_path(), but also escapes regex
- * special characters in the expanded shortcut portion of the path (not the tail).
- * This is needed for hook patterns where paths containing regex metacharacters
- * need to match literally, while allowing the tail to contain regex patterns.
- *
- * For example, "~/mail/ *.txt" expands to "/home/user/mail/ *.txt" where
- * "/home/user" is escaped but "/ *.txt" is left as a regex pattern.
- *
- * This is a specialized version only used for hooks, so the logic is kept here
- * rather than complicating the main buf_expand_path() function.
- */
-static void buf_expand_path_regex_helper(struct Buffer *buf)
-{
-  const char *s = NULL;
-  const char *tail = "";
-  bool recurse = false;
-
-  struct Buffer *p = buf_pool_get();
-  struct Buffer *q = buf_pool_get();
-  struct Buffer *tmp = buf_pool_get();
-
-  do
-  {
-    recurse = false;
-    s = buf_string(buf);
-
-    switch (*s)
-    {
-      case '~':
-      {
-        if ((s[1] == '/') || (s[1] == '\0'))
-        {
-          buf_strcpy(p, NeoMutt->home_dir);
-          tail = s + 1;
-        }
-        else
-        {
-          char *t = strchr(s + 1, '/');
-          if (t)
-            *t = '\0';
-
-          struct passwd *pw = getpwnam(s + 1);
-          if (pw)
-          {
-            buf_strcpy(p, pw->pw_dir);
-            if (t)
-            {
-              *t = '/';
-              tail = t;
-            }
-            else
-            {
-              tail = "";
-            }
-          }
-          else
-          {
-            /* user not found! */
-            if (t)
-              *t = '/';
-            buf_reset(p);
-            tail = s;
-          }
-        }
-        break;
-      }
-
-      case '=':
-      case '+':
-      {
-        const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
-        enum MailboxType mb_type = mx_path_probe(c_folder);
-
-        /* if folder = {host} or imap[s]://host/: don't append slash */
-        if ((mb_type == MUTT_IMAP) && ((c_folder[strlen(c_folder) - 1] == '}') ||
-                                       (c_folder[strlen(c_folder) - 1] == '/')))
-        {
-          buf_strcpy(p, c_folder);
-        }
-        else if (mb_type == MUTT_NOTMUCH)
-        {
-          buf_strcpy(p, c_folder);
-        }
-        else if (c_folder && (c_folder[strlen(c_folder) - 1] == '/'))
-        {
-          buf_strcpy(p, c_folder);
-        }
-        else
-        {
-          buf_printf(p, "%s/", NONULL(c_folder));
-        }
-
-        tail = s + 1;
-        break;
-      }
-
-      case '@':
-      {
-        struct AddressList *al = alias_lookup(s + 1);
-        if (al && !TAILQ_EMPTY(al))
-        {
-          struct Email *e = email_new();
-          e->env = mutt_env_new();
-          mutt_addrlist_copy(&e->env->from, al, false);
-          mutt_addrlist_copy(&e->env->to, al, false);
-
-          buf_alloc(p, PATH_MAX);
-          mutt_default_save(p, e);
-
-          email_free(&e);
-          /* Avoid infinite recursion if the resulting folder starts with '@' */
-          if (*p->data != '@')
-            recurse = true;
-
-          tail = "";
-        }
-        break;
-      }
-
-      case '>':
-      {
-        const char *const c_mbox = cs_subset_string(NeoMutt->sub, "mbox");
-        buf_strcpy(p, c_mbox);
-        tail = s + 1;
-        break;
-      }
-
-      case '<':
-      {
-        const char *const c_record = cs_subset_string(NeoMutt->sub, "record");
-        buf_strcpy(p, c_record);
-        tail = s + 1;
-        break;
-      }
-
-      case '!':
-      {
-        if (s[1] == '!')
-        {
-          buf_strcpy(p, LastFolder);
-          tail = s + 2;
-        }
-        else
-        {
-          const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
-          buf_strcpy(p, c_spool_file);
-          tail = s + 1;
-        }
-        break;
-      }
-
-      case '-':
-      {
-        buf_strcpy(p, LastFolder);
-        tail = s + 1;
-        break;
-      }
-
-      case '^':
-      {
-        buf_strcpy(p, CurrentFolder);
-        tail = s + 1;
-        break;
-      }
-
-      default:
-      {
-        buf_reset(p);
-        tail = s;
-      }
-    }
-
-    // Escape regex special characters in the expanded shortcut portion only
-    // Keep the tail as-is since it may contain intentional regex patterns
-    if (*(buf_string(p)) && !recurse)
-    {
-      mutt_file_sanitize_regex(q, buf_string(p));
-      buf_printf(tmp, "%s%s", buf_string(q), tail);
-    }
-    else
-    {
-      buf_printf(tmp, "%s%s", buf_string(p), tail);
-    }
-
-    buf_copy(buf, tmp);
-  } while (recurse);
-
-  buf_pool_release(&p);
-  buf_pool_release(&q);
-  buf_pool_release(&tmp);
-
-  /* Rewrite IMAP path in canonical form - aids in string comparisons of
-   * folders. May possibly fail, in which case buf should be the same. */
-  if (imap_path_probe(buf_string(buf), NULL) == MUTT_IMAP)
-    imap_path_canon(buf);
-}
 
 /**
  * parse_hook_charset - Parse charset Hook commands - Implements Command::parse() - @ingroup command_parse
@@ -789,15 +579,7 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
 
   struct Buffer *tmp = buf_pool_get();
   buf_copy(tmp, regex);
-
-  if (use_regex)
-  {
-    buf_expand_path_regex_helper(tmp);
-  }
-  else
-  {
-    buf_expand_path(tmp);
-  }
+  buf_expand_path_regex(tmp, use_regex);
 
   /* Check for other mailbox shortcuts that expand to the empty string.
    * This is likely a mistake too */
@@ -1027,15 +809,7 @@ enum CommandResult parse_hook_mbox(const struct Command *cmd,
 
   struct Buffer *tmp = buf_pool_get();
   buf_copy(tmp, regex);
-
-  if (use_regex)
-  {
-    buf_expand_path_regex_helper(tmp);
-  }
-  else
-  {
-    buf_expand_path(tmp);
-  }
+  buf_expand_path_regex(tmp, use_regex);
 
   /* Check for other mailbox shortcuts that expand to the empty string.
    * This is likely a mistake too */
