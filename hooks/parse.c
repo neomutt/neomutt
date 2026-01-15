@@ -64,17 +64,6 @@ struct HashTable *IdxFmtHooks = NULL;
 enum CommandId CurrentHookId = CMD_NONE;
 
 /**
- * buf_expand_path_regex_helper - Expand path with regex escaping of shortcuts
- * @param buf Buffer with path to expand
- *
- * Expands mailbox shortcuts (like ~, =, +, etc.) and escapes regex special
- * characters in the expanded portions, while preserving any regex patterns
- * in the original input that come after the shortcuts.
- *
- * This is used for hook patterns where shortcuts need expansion but should
- * not interfere with regex matching.
- */
-/**
  * buf_expand_path_regex_helper - Expand a path and escape regex characters
  * @param buf Buffer containing path to expand
  *
@@ -800,7 +789,7 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
 
   struct Buffer *tmp = buf_pool_get();
   buf_copy(tmp, regex);
-  
+
   if (use_regex)
   {
     buf_expand_path_regex_helper(tmp);
@@ -1038,7 +1027,7 @@ enum CommandResult parse_hook_mbox(const struct Command *cmd,
 
   struct Buffer *tmp = buf_pool_get();
   buf_copy(tmp, regex);
-  
+
   if (use_regex)
   {
     buf_expand_path_regex_helper(tmp);
