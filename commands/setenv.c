@@ -138,20 +138,20 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
   /* get variable name */
   parse_extract_token(token, line, TOKEN_EQUAL | TOKEN_QUESTION);
 
-  /* Validate variable name: must match [A-Z_][A-Z0-9_]* */
+  /* Validate variable name: must match [A-Za-z][A-Za-z0-9_]* */
   const char *name = buf_string(token);
   if (!buf_is_empty(token))
   {
-    /* First character must be uppercase letter or underscore */
-    if (!isupper(name[0]) && (name[0] != '_'))
+    /* First character must be a letter */
+    if (!isalpha(name[0]))
     {
       buf_printf(err, _("%s: invalid variable name '%s'"), cmd->name, name);
       goto done;
     }
-    /* Subsequent characters must be uppercase letter, digit, or underscore */
+    /* Subsequent characters must be letter, digit, or underscore */
     for (size_t i = 1; name[i] != '\0'; i++)
     {
-      if (!isupper(name[i]) && !mutt_isdigit(name[i]) && (name[i] != '_'))
+      if (!isalpha(name[i]) && !mutt_isdigit(name[i]) && (name[i] != '_'))
       {
         buf_printf(err, _("%s: invalid variable name '%s'"), cmd->name, name);
         goto done;
@@ -208,11 +208,8 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
 
   if (unset)
   {
-    if (envlist_unset(&NeoMutt->env, buf_string(token)))
-      rc = MUTT_CMD_SUCCESS;
-    else
-      buf_printf(err, _("%s is unset"), buf_string(token));
-
+    envlist_unset(&NeoMutt->env, buf_string(token));
+    rc = MUTT_CMD_SUCCESS;
     goto done;
   }
 
