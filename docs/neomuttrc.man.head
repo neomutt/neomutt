@@ -512,9 +512,9 @@ ignore list.
 .PP
 .nf
 \fBlists\fP [ \fB\-group\fP \fIname\fP ... ] \fIregex\fP [ \fIregex\fP ... ]
-\fBunlists\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fIregex\fP ... }
+\fBunlists\fP { \fB*\fP | \fIregex\fP ... }
 \fBsubscribe\fP [ \fB\-group\fP \fIname\fP ... ] \fIregex\fP [ \fIregex\fP ... ]
-\fBunsubscribe\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fIregex\fP ... }
+\fBunsubscribe\fP { \fB*\fP | \fIregex\fP ... }
 .fi
 .IP
 NeoMutt maintains two lists of mailing list address regular expressions, a list
