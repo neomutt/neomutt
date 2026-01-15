@@ -794,15 +794,18 @@ still supported.
 .
 .PP
 .nf
-\fBsetenv\fP { \fB?\fP\fIvariable\fP | \fIvariable\fP \fIvalue\fP }
+\fBsetenv\fP [ { \fIvariable\fP\fB?\fP | \fIvariable\fP \fIvalue\fP } ]
 \fBunsetenv\fP \fIvariable\fP
 .fi
 .IP
 You can alter the environment that NeoMutt passes on to its child processes
 using the \fBsetenv\fP and \fBunsetenv\fP operators.
 .IP
-You can also query current environment \fIvalue\fPs by prefixing a
+You can also query current environment \fIvalue\fPs by suffixing a
 \(lq\fB?\fP\(rq character.
+.IP
+Running \fBsetenv\fP with no parameters will show a list of
+all the environment variables.
 .
 .PP
 .nf
