@@ -112,14 +112,14 @@ void mutt_adv_mktemp(struct Buffer *buf)
 }
 
 /**
- * buf_expand_path - Create the canonical path
+ * expand_path - Create the canonical path
  * @param buf   Buffer with path
  * @param regex If true, escape regex special characters in expanded shortcuts
  *              (see mutt_file_sanitize_regex() for details)
  *
  * @note The path is expanded in-place
  */
-void buf_expand_path(struct Buffer *buf, bool regex)
+void expand_path(struct Buffer *buf, bool regex)
 {
   const char *s = NULL;
   const char *tail = "";
@@ -881,7 +881,7 @@ int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
   {
     if (buf_printf(buf, "%s/%s/neomuttrc", token, PACKAGE) < 0)
       continue;
-    buf_expand_path(buf, false);
+    expand_path(buf, false);
     if (access(buf_string(buf), F_OK) == 0)
     {
       rc = 1;
@@ -890,7 +890,7 @@ int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
 
     if (buf_printf(buf, "%s/%s/Muttrc", token, PACKAGE) < 0)
       continue;
-    buf_expand_path(buf, false);
+    expand_path(buf, false);
     if (access(buf_string(buf), F_OK) == 0)
     {
       rc = 1;

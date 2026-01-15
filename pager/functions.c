@@ -1032,7 +1032,7 @@ static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv
     goto done;
   }
 
-  buf_expand_path(buf, false);
+  expand_path(buf, false);
   fp_save = mutt_file_fopen(buf_string(buf), "a+");
   if (!fp_save)
   {
