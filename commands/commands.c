@@ -159,7 +159,7 @@ const struct Command CommandsCommands[] = {
         "configuration.html#set" },
   { "setenv", CMD_SETENV, parse_setenv, CMD_NO_DATA,
         N_("Set an environment variable"),
-        N_("setenv { <variable>? | <variable> <value> }"),
+        N_("setenv [ { ?<variable> | <variable>? | <variable> <value> } ]"),
         "advancedusage.html#setenv" },
   { "source", CMD_SOURCE, parse_source, CMD_NO_DATA,
         N_("Read and execute commands from a config file"),
