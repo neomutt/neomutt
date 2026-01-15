@@ -233,7 +233,7 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
       goto done;
     }
     buf_copy(path, token);
-    buf_expand_path(path);
+    buf_expand_path_regex(path, false);
 
     if (source_rc(buf_string(path), err) < 0)
     {

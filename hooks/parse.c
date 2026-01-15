@@ -391,7 +391,7 @@ enum CommandResult parse_hook_mailbox(const struct Command *cmd,
     mutt_check_simple(pattern, c_default_hook);
   }
 
-  buf_expand_path(mailbox);
+  buf_expand_path_regex(mailbox, false);
 
   if ((cmd->id == CMD_FCC_HOOK) || (cmd->id == CMD_FCC_SAVE_HOOK))
   {
@@ -830,7 +830,7 @@ enum CommandResult parse_hook_mbox(const struct Command *cmd,
   }
   buf_pool_release(&tmp);
 
-  buf_expand_path(command);
+  buf_expand_path_regex(command, false);
 
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)

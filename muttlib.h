@@ -36,7 +36,6 @@ struct passwd;
 struct stat;
 
 void        mutt_adv_mktemp(struct Buffer *buf);
-void        buf_expand_path(struct Buffer *buf);
 void        buf_expand_path_regex(struct Buffer *buf, bool regex);
 void        buf_pretty_mailbox(struct Buffer *s);
 void        buf_sanitize_filename (struct Buffer *buf, const char *path, short slash);

@@ -112,12 +112,11 @@ void mutt_adv_mktemp(struct Buffer *buf)
 }
 
 /**
- * buf_expand_path_regex - Create the canonical path (optionally with regex escaping)
- * @param buf   Buffer with path
- * @param regex If true, escape regex special chars in expanded shortcuts
+ * buf_expand_path_regex - Create the canonical path (with regex char escaping)
+ * @param buf     Buffer with path
+ * @param regex If true, escape any regex characters
  *
  * @note The path is expanded in-place
- * @note This function is exposed for use by hooks that need regex escaping
  */
 void buf_expand_path_regex(struct Buffer *buf, bool regex)
 {
@@ -304,17 +303,6 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
    * folders. May possibly fail, in which case buf should be the same. */
   if (imap_path_probe(buf_string(buf), NULL) == MUTT_IMAP)
     imap_path_canon(buf);
-}
-
-/**
- * buf_expand_path - Create the canonical path
- * @param buf Buffer with path
- *
- * @note The path is expanded in-place
- */
-void buf_expand_path(struct Buffer *buf)
-{
-  buf_expand_path_regex(buf, false);
 }
 
 /**
@@ -892,7 +880,7 @@ int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
   {
     if (buf_printf(buf, "%s/%s/neomuttrc", token, PACKAGE) < 0)
       continue;
-    buf_expand_path(buf);
+    buf_expand_path_regex(buf, false);
     if (access(buf_string(buf), F_OK) == 0)
     {
       rc = 1;
@@ -901,7 +889,7 @@ int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf)
 
     if (buf_printf(buf, "%s/%s/Muttrc", token, PACKAGE) < 0)
       continue;
-    buf_expand_path(buf);
+    buf_expand_path_regex(buf, false);
     if (access(buf_string(buf), F_OK) == 0)
     {
       rc = 1;
