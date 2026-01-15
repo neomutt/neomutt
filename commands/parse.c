@@ -68,7 +68,7 @@ enum CommandResult parse_cd(const struct Command *cmd, struct Buffer *line, stru
   }
   else
   {
-    buf_expand_path(token);
+    expand_path(token, false);
   }
 
   if (chdir(buf_string(token)) != 0)

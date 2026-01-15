@@ -54,7 +54,7 @@ enum CommandResult parse_sidebar_pin(const struct Command *cmd,
   do
   {
     parse_extract_token(path, line, TOKEN_BACKTICK_VARS);
-    buf_expand_path(path);
+    expand_path(path, false);
     add_to_stailq(&SidebarPinned, buf_string(path));
   } while (MoreArgs(line));
   buf_pool_release(&path);
@@ -88,7 +88,7 @@ enum CommandResult parse_sidebar_unpin(const struct Command *cmd,
       mutt_list_free(&SidebarPinned);
       break;
     }
-    buf_expand_path(path);
+    expand_path(path, false);
     remove_from_stailq(&SidebarPinned, buf_string(path));
   } while (MoreArgs(line));
   buf_pool_release(&path);

@@ -887,7 +887,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   }
   else if (!buf_is_empty(file))
   {
-    buf_expand_path(file);
+    expand_path(file, false);
     if (imap_path_probe(buf_string(file), NULL) == MUTT_IMAP)
     {
       init_state(&priv->state);

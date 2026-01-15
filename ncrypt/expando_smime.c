@@ -75,7 +75,7 @@ static void smime_command_certificate_path(const struct ExpandoNode *node, void 
   struct stat st = { 0 };
 
   buf_strcpy(path, c_smime_ca_location);
-  buf_expand_path(path);
+  expand_path(path, false);
   buf_quote_filename(buf1, buf_string(path), true);
 
   if ((stat(buf_string(path), &st) != 0) || !S_ISDIR(st.st_mode))

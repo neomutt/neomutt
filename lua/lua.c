@@ -187,7 +187,7 @@ static int lua_cb_global_set(lua_State *l)
       struct Buffer *value_buf = buf_pool_get();
       buf_strcpy_n(value_buf, value, val_size);
       if (CONFIG_TYPE(he->type) == DT_PATH)
-        buf_expand_path(value_buf);
+        expand_path(value_buf, false);
 
       int rv = cs_subset_he_string_set(NeoMutt->sub, he, buf_string(value_buf), err);
       buf_pool_release(&value_buf);

@@ -199,7 +199,7 @@ int mutt_log_set_file(const char *file)
   {
     struct Buffer *expanded = buf_pool_get();
     buf_addstr(expanded, c_debug_file);
-    buf_expand_path(expanded);
+    expand_path(expanded, false);
 
     const char *name = mutt_file_rotate(buf_string(expanded), NumOfLogs);
     buf_pool_release(&expanded);

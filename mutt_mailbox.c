@@ -330,7 +330,7 @@ static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
     {
       struct Mailbox *m = *mp;
 
-      buf_expand_path(&m->pathbuf);
+      expand_path(&m->pathbuf, false);
       struct Mailbox *m_cur = m;
 
       if ((found || (pass > 0)) && (find_new ? m_cur->has_new : m_cur->msg_unread > 0))
@@ -361,7 +361,7 @@ static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
  */
 struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
 {
-  buf_expand_path(s);
+  expand_path(s, false);
 
   if (mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NO_FLAGS) > 0)
   {
@@ -387,7 +387,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
  */
 struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s)
 {
-  buf_expand_path(s);
+  expand_path(s, false);
 
   struct Mailbox *m_res = find_next_mailbox(s, false);
   if (m_res)

@@ -665,7 +665,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
 
     if (is_spool && !buf_is_empty(mbox))
     {
-      buf_expand_path(mbox);
+      expand_path(mbox, false);
       buf_printf(buf,
                  /* L10N: The first argument is the number of read messages to be
                             moved, the second argument is the target mailbox. */

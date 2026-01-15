@@ -391,7 +391,7 @@ enum CommandResult parse_hook_mailbox(const struct Command *cmd,
     mutt_check_simple(pattern, c_default_hook);
   }
 
-  buf_expand_path(mailbox);
+  expand_path(mailbox, false);
 
   if ((cmd->id == CMD_FCC_HOOK) || (cmd->id == CMD_FCC_SAVE_HOOK))
   {
@@ -579,7 +579,7 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
 
   struct Buffer *tmp = buf_pool_get();
   buf_copy(tmp, regex);
-  buf_expand_path_regex(tmp, use_regex);
+  expand_path(tmp, use_regex);
 
   /* Check for other mailbox shortcuts that expand to the empty string.
    * This is likely a mistake too */
@@ -809,7 +809,7 @@ enum CommandResult parse_hook_mbox(const struct Command *cmd,
 
   struct Buffer *tmp = buf_pool_get();
   buf_copy(tmp, regex);
-  buf_expand_path_regex(tmp, use_regex);
+  expand_path(tmp, use_regex);
 
   /* Check for other mailbox shortcuts that expand to the empty string.
    * This is likely a mistake too */
@@ -830,7 +830,7 @@ enum CommandResult parse_hook_mbox(const struct Command *cmd,
   }
   buf_pool_release(&tmp);
 
-  buf_expand_path(command);
+  expand_path(command, false);
 
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)

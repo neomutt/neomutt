@@ -518,7 +518,7 @@ bool mailcap_lookup(struct Body *b, char *type, size_t typelen,
   STAILQ_FOREACH(np, &c_mailcap_path->head, entries)
   {
     buf_strcpy(path, np->data);
-    buf_expand_path(path);
+    expand_path(path, false);
 
     mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", buf_string(path));
     found = rfc1524_mailcap_parse(b, buf_string(path), type, entry, opt);
