@@ -849,7 +849,7 @@ configuration file the hook is defined in.
 .
 .PP
 .nf
-\fBspam\fP \fIregex\fP \fIformat\fP
+\fBspam\fP \fIregex\fP [ \fIformat\fP ]
 \fBnospam\fP { \fB*\fP | \fIregex\fP }
 .fi
 .IP
