@@ -112,9 +112,10 @@ void mutt_adv_mktemp(struct Buffer *buf)
 }
 
 /**
- * buf_expand_path_regex - Create the canonical path (with regex char escaping)
- * @param buf     Buffer with path
- * @param regex If true, escape any regex characters
+ * buf_expand_path_regex - Create the canonical path
+ * @param buf   Buffer with path
+ * @param regex If true, escape regex special characters in expanded shortcuts
+ *              (see mutt_file_sanitize_regex() for details)
  *
  * @note The path is expanded in-place
  */
