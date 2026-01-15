@@ -579,7 +579,7 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
     {
       buf_strcpy(buf, *cp);
       FREE(cp);
-      buf_expand_path(buf);
+      expand_path(buf, false);
       ARRAY_SET(user_files, ARRAY_FOREACH_IDX_cp, buf_strdup(buf));
       if (access(buf_string(buf), F_OK))
       {
@@ -1214,7 +1214,7 @@ int main(int argc, char *argv[], char *envp[])
     struct Buffer *fpath = buf_pool_get();
 
     buf_strcpy(fpath, c_folder);
-    buf_expand_path(fpath);
+    expand_path(fpath, false);
     bool skip = false;
     /* we're not connected yet - skip mail folder creation */
     skip |= (imap_path_probe(buf_string(fpath), NULL) == MUTT_IMAP);
@@ -1341,7 +1341,7 @@ int main(int argc, char *argv[], char *envp[])
         else
         {
           buf_strcpy(expanded_infile, infile);
-          buf_expand_path(expanded_infile);
+          expand_path(expanded_infile, false);
           fp_in = mutt_file_fopen(buf_string(expanded_infile), "r");
           if (!fp_in)
           {
@@ -1642,7 +1642,7 @@ int main(int argc, char *argv[], char *envp[])
     }
     else
     {
-      buf_expand_path(folder);
+      expand_path(folder, false);
     }
 
     mutt_str_replace(&CurrentFolder, buf_string(folder));

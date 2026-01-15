@@ -336,7 +336,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         }
         p = mutt_str_skip_email_wsp(p);
 
-        buf_expand_path(path);
+        expand_path(path, false);
         body2 = mutt_make_file_attach(buf_string(path), NeoMutt->sub);
         if (body2)
         {

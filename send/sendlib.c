@@ -973,7 +973,7 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
     return -1;
 
   mutt_debug(LL_DEBUG1, "Fcc: initial mailbox = '%s'\n", tok);
-  /* buf_expand_path already called above for the first token */
+  /* expand_path already called above for the first token */
   int status = mutt_write_fcc(tok, e, msgid, post, fcc, finalpath, sub);
   if (status != 0)
     return status;
@@ -984,10 +984,10 @@ int mutt_write_multiple_fcc(const char *path, struct Email *e, const char *msgid
     if (*tok == '\0')
       continue;
 
-    /* Only call buf_expand_path if tok has some data */
+    /* Only call expand_path if tok has some data */
     mutt_debug(LL_DEBUG1, "Fcc: additional mailbox token = '%s'\n", tok);
     buf_strcpy(fcc_expanded, tok);
-    buf_expand_path(fcc_expanded);
+    expand_path(fcc_expanded, false);
     mutt_debug(LL_DEBUG1, "     Additional mailbox expanded = '%s'\n",
                buf_string(fcc_expanded));
     status = mutt_write_fcc(buf_string(fcc_expanded), e, msgid, post, fcc, finalpath, sub);

@@ -160,7 +160,7 @@ static void reset_tilde(struct ConfigSet *cs)
       continue;
     buf_reset(value);
     cs_he_initial_get(cs, he, value);
-    buf_expand_path_regex(value, false);
+    expand_path(value, false);
     config_he_set_initial(cs, he, value->data);
   }
   buf_pool_release(&value);

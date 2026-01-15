@@ -1028,7 +1028,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
     struct Buffer *buf = buf_pool_get();
     expando_filter(c_newsrc, NntpRenderCallbacks, adata, MUTT_FORMAT_NO_FLAGS,
                    buf->dsize, NeoMutt->env, buf);
-    buf_expand_path(buf);
+    expand_path(buf, false);
     adata->newsrc_file = buf_strdup(buf);
     buf_pool_release(&buf);
     rc = nntp_newsrc_parse(adata);

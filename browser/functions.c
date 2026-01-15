@@ -235,7 +235,7 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct Ke
     int index = menu_get_index(priv->menu);
     struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
     buf_strcpy(buf, ff->name);
-    buf_expand_path(buf);
+    expand_path(buf, false);
     imap_subscribe(buf_string(buf), (op == OP_BROWSER_SUBSCRIBE));
     buf_pool_release(&buf);
   }
@@ -389,7 +389,7 @@ static int op_change_directory(struct BrowserPrivateData *priv, const struct Key
   if (!buf_is_empty(buf))
   {
     priv->state.is_mailbox_list = false;
-    buf_expand_path(buf);
+    expand_path(buf, false);
     if (imap_path_probe(buf_string(buf), NULL) == MUTT_IMAP)
     {
       buf_copy(&LastDir, buf);
@@ -620,7 +620,7 @@ static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event
         {
           struct Buffer *buf = buf_pool_get();
           buf_concat_path(buf, buf_string(&LastDir), ff->name);
-          buf_expand_path(buf);
+          expand_path(buf, false);
           tfiles[j++] = buf_strdup(buf);
           buf_pool_release(&buf);
         }
@@ -631,7 +631,7 @@ static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event
     {
       *priv->numfiles = 1;
       tfiles = MUTT_MEM_CALLOC(*priv->numfiles, char *);
-      buf_expand_path(priv->file);
+      expand_path(priv->file, false);
       tfiles[0] = buf_strdup(priv->file);
       *priv->files = tfiles;
     }
@@ -671,7 +671,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
     if (priv->state.is_mailbox_list)
     {
       buf_strcpy(buf, ff->name);
-      buf_expand_path(buf);
+      expand_path(buf, false);
     }
     else if (priv->state.imap_browse)
     {
@@ -721,7 +721,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
       else if (priv->state.is_mailbox_list)
       {
         buf_strcpy(&LastDir, ff->name);
-        buf_expand_path(&LastDir);
+        expand_path(&LastDir, false);
       }
       else if (priv->state.imap_browse)
       {
@@ -793,7 +793,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
   if (priv->state.is_mailbox_list || OptNews)
   {
     buf_strcpy(priv->file, ff->name);
-    buf_expand_path(priv->file);
+    expand_path(priv->file, false);
   }
   else if (priv->state.imap_browse)
   {

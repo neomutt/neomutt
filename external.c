@@ -417,7 +417,7 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
   if (buf_is_empty(buf))
     goto cleanup;
 
-  buf_expand_path(buf);
+  expand_path(buf, false);
   const bool c_pipe_decode = cs_subset_bool(NeoMutt->sub, "pipe_decode");
   const bool c_pipe_split = cs_subset_bool(NeoMutt->sub, "pipe_split");
   const char *const c_pipe_sep = cs_subset_string(NeoMutt->sub, "pipe_sep");
@@ -862,7 +862,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
   else
     buf_strcpy(&LastSaveFolder, buf_string(buf));
 
-  buf_expand_path(buf);
+  expand_path(buf, false);
 
   /* check to make sure that this file is really the one the user wants */
   if (mutt_save_confirm(buf_string(buf), &st) != 0)

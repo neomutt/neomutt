@@ -307,7 +307,7 @@ static int query_save_attachment(FILE *fp, struct Body *b, struct Email *e, char
     }
 
     prompt = NULL;
-    buf_expand_path(buf);
+    expand_path(buf, false);
 
     bool is_message = (fp && has_a_message(b));
 
@@ -390,7 +390,7 @@ static int save_without_prompting(FILE *fp, struct Body *b, struct Email *e)
   }
 
   prepend_savedir(buf);
-  buf_expand_path(buf);
+  expand_path(buf, false);
 
   bool is_message = (fp && has_a_message(b));
 
@@ -487,7 +487,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           {
             goto cleanup;
           }
-          buf_expand_path(buf);
+          expand_path(buf, false);
           if (mutt_check_overwrite(b->filename, buf_string(buf), tfile, &opt, NULL))
             goto cleanup;
         }
@@ -737,7 +737,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   if (buf_is_empty(buf))
     goto cleanup;
 
-  buf_expand_path(buf);
+  expand_path(buf, false);
 
   const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
   if (!filter && !c_attach_split)

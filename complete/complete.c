@@ -147,7 +147,7 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
         buf_substrcpy(dirpart, buf_string(buf), p);
         buf_strcpy(filepart, p + 1);
         buf_copy(exp_dirpart, dirpart);
-        buf_expand_path(exp_dirpart);
+        expand_path(exp_dirpart, false);
         dir = mutt_file_opendir(buf_string(exp_dirpart), MUTT_OPENDIR_NONE);
       }
     }

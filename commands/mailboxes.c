@@ -393,7 +393,7 @@ bool mailbox_remove_simple(const char *mailbox)
 {
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, mailbox);
-  buf_expand_path(buf);
+  expand_path(buf, false);
 
   struct Account **ap = NULL;
   ARRAY_FOREACH(ap, &NeoMutt->accounts)
@@ -453,7 +453,7 @@ enum CommandResult parse_unmailboxes(const struct Command *cmd,
       goto done;
     }
 
-    buf_expand_path(token);
+    expand_path(token, false);
 
     struct Account **ap = NULL;
     ARRAY_FOREACH(ap, &NeoMutt->accounts)

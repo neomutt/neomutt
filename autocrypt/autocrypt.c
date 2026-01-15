@@ -935,7 +935,7 @@ void mutt_autocrypt_scan_mailboxes(void)
                          NULL, MUTT_SEL_NO_FLAGS)) &&
         (!buf_is_empty(folderbuf)))
     {
-      buf_expand_path_regex(folderbuf, false);
+      expand_path(folderbuf, false);
       struct Mailbox *m_ac = mx_path_resolve(buf_string(folderbuf));
       /* NOTE: I am purposely *not* executing folder hooks here,
        * as they can do all sorts of things like push into the getch() buffer.

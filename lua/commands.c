@@ -122,7 +122,7 @@ enum CommandResult parse_lua_source(const struct Command *cmd,
     goto done;
   }
 
-  buf_expand_path(token);
+  expand_path(token, false);
 
   if (luaL_dofile(LuaState, buf_string(token)) != LUA_OK)
   {

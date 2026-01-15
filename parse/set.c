@@ -61,13 +61,13 @@ void command_set_expand_value(int type, struct Buffer *value)
   if (CONFIG_TYPE(type) == DT_PATH)
   {
     if (type & (D_PATH_DIR | D_PATH_FILE))
-      buf_expand_path(value);
+      expand_path(value, false);
     else
       mutt_path_tilde(value, NeoMutt->home_dir);
   }
   else if (IS_MAILBOX(type))
   {
-    buf_expand_path(value);
+    expand_path(value, false);
   }
   else if (IS_COMMAND(type))
   {
@@ -76,7 +76,7 @@ void command_set_expand_value(int type, struct Buffer *value)
 
     if (!mutt_str_equal(value->data, "builtin"))
     {
-      buf_expand_path(scratch);
+      expand_path(scratch, false);
     }
     buf_reset(value);
     buf_addstr(value, buf_string(scratch));

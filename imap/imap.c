@@ -111,7 +111,7 @@ enum CommandResult parse_subscribe_to(const struct Command *cmd,
   }
 
   // Expand and subscribe
-  buf_expand_path(token);
+  expand_path(token, false);
   if (imap_subscribe(buf_string(token), true) != 0)
   {
     buf_printf(err, _("Could not subscribe to %s"), buf_string(token));
@@ -157,7 +157,7 @@ enum CommandResult parse_unsubscribe_from(const struct Command *cmd,
   }
 
   // Expand and unsubscribe
-  buf_expand_path(token);
+  expand_path(token, false);
   if (imap_subscribe(buf_string(token), false) != 0)
   {
     buf_printf(err, _("Could not unsubscribe from %s"), buf_string(token));
