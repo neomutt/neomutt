@@ -163,7 +163,7 @@ const struct Command CommandsCommands[] = {
         "advancedusage.html#setenv" },
   { "source", CMD_SOURCE, parse_source, CMD_NO_DATA,
         N_("Read and execute commands from a config file"),
-        N_("source <filename>"),
+        N_("source <filename> [ <filename> ... ]"),
         "configuration.html#source" },
   { "spam", CMD_SPAM, parse_spam, CMD_NO_DATA,
         N_("Define rules to parse spam detection headers"),

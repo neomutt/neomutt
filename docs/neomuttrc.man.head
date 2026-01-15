@@ -820,7 +820,7 @@ the list of always displayed \fImailbox\fPes. Use
 .
 .PP
 .nf
-\fBsource\fP \fIfilename\fP
+\fBsource\fP \fIfilename\fP [ \fIfilename\fP ... ]
 .fi
 .IP
 This command allows the inclusion of initialization commands from other files.
