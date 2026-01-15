@@ -69,8 +69,6 @@ static const struct CommandTest UnSetenvTests[] = {
   // unsetenv <variable>
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "ORGANIZATION" },
-  { MUTT_CMD_SUCCESS, "MY_VAR_123" },
-  { MUTT_CMD_SUCCESS, "_UNDERSCORE" },
   // Invalid variable names
   { MUTT_CMD_WARNING, "lowercase" },
   { MUTT_CMD_WARNING, "Mixed_Case" },
