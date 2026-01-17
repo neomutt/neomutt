@@ -9725,7 +9725,10 @@ Limit to messages matching: ~d 19950120-19951031
         </listitem>
       </itemizedlist>
       <para>
-        for specific details on each type of <emphasis>hook</emphasis>
+        To show a list of all the current Hooks, run the <command>hooks</command> command.
+      </para>
+      <para>
+        For specific details on each type of <emphasis>hook</emphasis>
         available.  Also see <link linkend="compose-flow">Message Composition
         Flow</link> for an overview of the composition process.
       </para>
@@ -10534,6 +10537,19 @@ unset confirm_append
 macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;echo 'Saved to archive'&lt;enter&gt;"
 </screen>
 
+    </sect1>
+
+    <sect1 id="version">
+      <title>Displaying the version</title>
+      <para>Usage:</para>
+      <cmdsynopsis>
+        <command>version</command>
+      </cmdsynopsis>
+      <para>
+        Running the <command>version</command> command will display full
+        information about NeoMutt &mdash; its version; which features are built
+        in; its build parameters.
+      </para>
     </sect1>
 
     <sect1 id="compose-flow">
@@ -20381,7 +20397,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command><link linkend="cd">cd</link></command>
-            <arg choice="plain">
+            <arg choice="opt">
               <replaceable class="parameter">directory</replaceable>
             </arg>
           </cmdsynopsis>
@@ -20500,6 +20516,16 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">keyid</replaceable>
+            </arg>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
+              <link linkend="echo">echo</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">text</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -20640,6 +20666,13 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
+              <link linkend="hooks">hooks</link>
+            </command>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
               <link linkend="ifdef">ifdef</link>
             </command>
             <arg choice="plain">
@@ -20752,6 +20785,26 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">regex</replaceable>
               </arg>
             </group>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
+              <link linkend="lua">lua</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">lua-command</replaceable>
+            </arg>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
+              <link linkend="lua">lua-source</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">filename</replaceable>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -21333,6 +21386,38 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
+              <link linkend="custom-tags">tag-formats</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">tag</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">format-string</replaceable>
+            </arg>
+            <group choice="opt" rep="repeat">
+              <arg choice="plain">
+                <replaceable class="parameter">tag format-string</replaceable>
+              </arg>
+            </group>
+            <command>
+              <link linkend="custom-tags">tag-transforms</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">tag</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">transformed-string</replaceable>
+            </arg>
+            <group choice="opt" rep="repeat">
+              <arg choice="plain">
+                <replaceable class="parameter">tag transformed-string</replaceable>
+              </arg>
+            </group>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
               <link linkend="global-hooks">timeout-hook</link>
             </command>
             <arg choice="plain">
@@ -21365,6 +21450,13 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">hook-type</replaceable>
               </arg>
             </group>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
+              <link linkend="version">version</link>
+            </command>
           </cmdsynopsis>
         </listitem>
       </itemizedlist>
