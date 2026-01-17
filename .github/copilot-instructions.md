@@ -106,6 +106,27 @@ Example:
 - Use `FREE()` macro which sets pointer to NULL after freeing
 - Be careful with pointer arithmetic
 
+## Common Pitfalls to Avoid
+
+### Parse/Execute Pattern
+
+When refactoring command parsing:
+- ALWAYS separate parsing from execution (see parse_unbind() pattern)
+- Create struct to hold parsed data
+- Return early on parse errors with clear messages
+- Write tests for parser BEFORE implementation
+
+### Buffer Pool
+✅ ALWAYS release buffers on ALL code paths: 
+```c
+struct Buffer *buf = buf_pool_get();
+if (error_condition) {
+  buf_pool_release(&buf);  // Release before return! 
+  return -1;
+}
+buf_pool_release(&buf);
+```
+
 ## Build and Test
 
 NeoMutt uses GitHub Actions for continuous integration. The main workflow is `.github/workflows/build-and-test.yml` which performs three build configurations: default, minimal (disabled), and full (everything).

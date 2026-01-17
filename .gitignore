@@ -50,7 +50,6 @@ tags
 !tags/
 asan.*
 .env
-_codeql_detected_source_root
 
 # Clangd
 .cache/clangd
@@ -61,3 +60,9 @@ compile_commands.*
 
 # gcc -fdump-rtl-expand
 *.expand
+
+# Copilot
+build*/
+test-files/
+_codeql_detected_source_root
+
