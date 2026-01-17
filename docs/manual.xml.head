@@ -6003,13 +6003,14 @@ unignore posted-to:
             </arg>
           </group>
         </cmdsynopsis>
+        <note><para>Before 2026-01-13, these commands were called <literal>hdr_order</literal> and <literal>unhdr_order</literal>.</para></note>
         <para>
           With the <command>header-order</command> command you can specify an
           order in which NeoMutt will attempt to present these headers to you
           when viewing messages.
         </para>
         <para>
-          <quote><command>unheader-order</command>*</quote> will clear all
+          <quote><command>unheader-order</command> *</quote> will clear all
           previous headers from the order list, thus removing the header order
           effects set by the system-wide startup file.
         </para>
@@ -6421,6 +6422,7 @@ unignore posted-to:
           </arg>
         </group>
       </cmdsynopsis>
+      <note><para>Before 2026-01-13, these commands were called <literal>my_hdr</literal> and <literal>unmy_hdr</literal>.</para></note>
       <para>
         The <command>my-header</command> command allows you to create your own
         header fields which will be added to every message you send and appear
@@ -7922,6 +7924,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%&lt;l?%4l&amp;%4c&gt;)%*  %s"
           </arg>
         </group>
       </cmdsynopsis>
+      <note><para>Before 2026-01-13, these commands were called <literal>mailto_allow</literal> and <literal>unmailto_allow</literal>.</para></note>
       <para>
         As a security measure, NeoMutt will only add user-approved header
         fields from a <literal>mailto:</literal> URL. This is necessary since
@@ -11746,6 +11749,7 @@ application/ms-excel;   open.pl %s
           </arg>
         </group>
       </cmdsynopsis>
+      <note><para>Before 2026-01-13, these commands were called <literal>auto_view</literal> and <literal>unauto_view</literal>.</para></note>
       <para>
         In addition to explicitly telling NeoMutt to view an attachment with
         the MIME viewer defined in the mailcap file from the attachments menu,
@@ -11796,7 +11800,43 @@ application/postscript; ps2ascii %s; copiousoutput
 
     <sect1 id="alternative-order">
       <title>MIME Multipart/Alternative</title>
-
+      <para>
+        Usage:
+      </para>
+      <cmdsynopsis>
+        <command>
+          <link linkend="alternative-order">alternative-order</link>
+        </command>
+        <arg choice="plain">
+          <replaceable>mime-type</replaceable>
+        </arg>
+        <arg choice="opt">
+          <replaceable>/mime-subtype</replaceable>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <arg choice="plain">
+            <replaceable>mime-type</replaceable>
+          </arg>
+          <arg choice="opt">
+            <replaceable>/mime-subtype</replaceable>
+          </arg>
+        </arg>
+        <command>
+          <link linkend="alternative-order">unalternative-order</link>
+        </command>
+        <group choice="req">
+          <arg choice="plain">*</arg>
+          <arg choice="opt" rep="repeat">
+            <arg choice="plain">
+              <replaceable>mime-type</replaceable>
+            </arg>
+            <arg choice="opt">
+              <replaceable>/mime-subtype</replaceable>
+            </arg>
+          </arg>
+        </group>
+      </cmdsynopsis>
+      <note><para>Before 2026-01-13, these commands were called <literal>alternative_order</literal> and <literal>unalternative_order</literal>.</para></note>
       <para>
         A <literal>multipart/alternative</literal> email has several
         parts that represent the same content in different formats, such as
@@ -12334,6 +12374,7 @@ attachments  -I message/external-body
           </arg>
         </group>
       </cmdsynopsis>
+      <note><para>Before 2026-01-13, these commands were called <literal>mime_lookup</literal> and <literal>unmime_lookup</literal>.</para></note>
       <para>
         NeoMutt's <command>mime-lookup</command> list specifies a list of MIME
         types that should <emphasis>not</emphasis> be treated according to
@@ -18014,6 +18055,9 @@ set browser_sort = "reverse-size"
         <title>Commands</title>
         <anchor id="sidebar-pin" />
         <anchor id="sidebar-unpin" />
+        <para>
+          Usage:
+        </para>
         <cmdsynopsis>
           <command>sidebar-pin</command>
           <arg choice="plain">
@@ -18032,6 +18076,7 @@ set browser_sort = "reverse-size"
             </arg>
           </group>
         </cmdsynopsis>
+        <note><para>Before 2026-01-13, these commands were called <literal>sidebar_pin</literal> and <literal>sidebar_unpin</literal>.</para></note>
         <para>
           This command specifies mailboxes that will always be displayed in the
           sidebar, even if
@@ -20171,6 +20216,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </arg>
             <command>
+              alternative_order
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="alternative-order">alternative-order</link> instead</option>
+            </arg>
+            <command>
               <link linkend="alternative-order">unalternative-order</link>
             </command>
             <group choice="req">
@@ -20184,6 +20235,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 </arg>
               </arg>
             </group>
+            <command>
+              unalternative_order
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="alternative-order">unalternative-order</link> instead</option>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -20254,6 +20311,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </arg>
             <command>
+              auto_view
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="auto-view">auto-view</link> instead</option>
+            </arg>
+            <command>
               <link linkend="auto-view">unauto-view</link>
             </command>
             <group choice="req">
@@ -20267,6 +20330,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 </arg>
               </arg>
             </group>
+            <command>
+              unauto_view
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="auto-view">unauto-view</link> instead</option>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -20544,6 +20613,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">header</replaceable>
             </arg>
             <command>
+              hdr_order
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="header-order">header-order</link> instead</option>
+            </arg>
+            <command>
               <link linkend="header-order">unheader-order</link>
             </command>
             <group choice="req">
@@ -20554,6 +20629,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>header</replaceable>
               </arg>
             </group>
+            <command>
+              unhdr_order
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="header-order">unheader-order</link> instead</option>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -20768,6 +20849,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </group>
             <command>
+              mailto_allow
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="mailto-allow">mailto-allow</link> instead</option>
+            </arg>
+            <command>
               <link linkend="mailto-allow">unmailto-allow</link>
             </command>
             <group choice="req">
@@ -20778,6 +20865,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">header-field</replaceable>
               </arg>
             </group>
+            <command>
+              unmailto_allow
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="mailto-allow">unmailto-allow</link> instead</option>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -20829,6 +20922,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </arg>
             <command>
+              mime_lookup
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="mime-lookup">mime-lookup</link> instead</option>
+            </arg>
+            <command>
               <link linkend="mime-lookup">unmime-lookup</link>
             </command>
             <group choice="req">
@@ -20842,6 +20941,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 </arg>
               </arg>
             </group>
+            <command>
+              unmime_lookup
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="mime-lookup">unmime-lookup</link> instead</option>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -20917,6 +21022,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">string</replaceable>
             </arg>
             <command>
+              my_hdr
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="my-header">my-header</link> instead</option>
+            </arg>
+            <command>
               <link linkend="my-header">unmy-header</link>
             </command>
             <group choice="req">
@@ -20927,6 +21038,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">field</replaceable>
               </arg>
             </group>
+            <command>
+              unmy_hdr
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="my-header">unmy-header</link> instead</option>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -21115,6 +21232,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
             <command>
+              sidebar_pin
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="sidebar-pin">sidebar-pin</link> instead</option>
+            </arg>
+            <command>
               <link linkend="sidebar-pin">sidebar-unpin</link>
             </command>
             <group choice="req">
@@ -21125,6 +21248,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">mailbox</replaceable>
               </arg>
             </group>
+            <command>
+              sidebar_unpin
+            </command>
+            <arg choice="plain">
+              <option>Deprecated, use <link linkend="sidebar-pin">sidebar-unpin</link> instead</option>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
