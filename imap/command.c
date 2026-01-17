@@ -295,7 +295,11 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
   {
     e = imap_msn_get(&mdata->msn, cur);
     if (e)
-      imap_edata_get(e)->msn--;
+    {
+      struct ImapEmailData *edata = imap_edata_get(e);
+      if (edata)
+        edata->msn--;
+    }
     imap_msn_set(&mdata->msn, cur - 1, e);
   }
   imap_msn_shrink(&mdata->msn, 1);
