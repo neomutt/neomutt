@@ -295,7 +295,11 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
   {
     e = imap_msn_get(&mdata->msn, cur);
     if (e)
-      imap_edata_get(e)->msn--;
+    {
+      struct ImapEmailData *edata = imap_edata_get(e);
+      if (edata)
+        edata->msn--;
+    }
     imap_msn_set(&mdata->msn, cur - 1, e);
   }
   imap_msn_shrink(&mdata->msn, 1);
@@ -441,9 +445,9 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
   }
 
   struct ImapEmailData *edata = imap_edata_get(e);
-  if (edata)
+  if (!edata)
   {
-    mutt_debug(LL_DEBUG2, "Message UID %u updated\n", edata->uid);
+    mutt_debug(LL_DEBUG3, "Skipping FETCH response - MSN %u missing edata\n", msn);
     return;
   }
   /* skip FETCH */
@@ -496,7 +500,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
         mutt_debug(LL_DEBUG1, "Illegal UID.  Skipping update\n");
         return;
       }
-      if (uid != imap_edata_get(e)->uid)
+      if (uid != edata->uid)
       {
         mutt_debug(LL_DEBUG1, "UID vs MSN mismatch.  Skipping update\n");
         return;
