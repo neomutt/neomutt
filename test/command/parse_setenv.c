@@ -39,8 +39,29 @@ static const struct CommandTest SetenvTests[] = {
   // clang-format off
   // setenv { <variable>? | <variable> <value> }
   { MUTT_CMD_SUCCESS, "" },
+  // Old syntax: variable name followed by value (space-separated)
   { MUTT_CMD_SUCCESS, "ORGANIZATION 'The NeoMutt Development Team'" },
   { MUTT_CMD_SUCCESS, "TERM vt100" },
+  // New syntax: variable=value (equals sign, no space)
+  { MUTT_CMD_SUCCESS, "ORGANIZATION='The NeoMutt Development Team'" },
+  { MUTT_CMD_SUCCESS, "TERM=vt100" },
+  { MUTT_CMD_SUCCESS, "PATH=/usr/bin:/bin" },
+  // New syntax with quotes
+  { MUTT_CMD_SUCCESS, "MY_VAR=\"quoted value\"" },
+  { MUTT_CMD_SUCCESS, "TEST_123='single quotes'" },
+  // Mixed syntax with equals and space (should work)
+  { MUTT_CMD_SUCCESS, "VAR_NAME= value" },
+  // Variable names with underscores and numbers
+  { MUTT_CMD_SUCCESS, "MY_VAR_123=test" },
+  { MUTT_CMD_SUCCESS, "_UNDERSCORE_START=value" },
+  // Lowercase and mixed case (valid)
+  { MUTT_CMD_SUCCESS, "lowercase=value" },
+  { MUTT_CMD_SUCCESS, "Mixed_Case=value" },
+  { MUTT_CMD_SUCCESS, "myVar=value" },
+  // Invalid variable names (starting with digit or special characters)
+  { MUTT_CMD_WARNING, "123STARTS_WITH_NUMBER=value" },
+  { MUTT_CMD_WARNING, "HAS-DASH=value" },
+  { MUTT_CMD_WARNING, "HAS.DOT=value" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
@@ -50,6 +71,15 @@ static const struct CommandTest UnSetenvTests[] = {
   // unsetenv <variable>
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "ORGANIZATION" },
+  { MUTT_CMD_SUCCESS, "NONEXISTENT_VAR" },  // Should succeed even if doesn't exist
+  // Lowercase and mixed case (valid)
+  { MUTT_CMD_SUCCESS, "lowercase" },
+  { MUTT_CMD_SUCCESS, "Mixed_Case" },
+  // Underscore prefix (now valid)
+  { MUTT_CMD_SUCCESS, "_UNDERSCORE" },
+  // Invalid variable names (starting with digit or special characters)
+  { MUTT_CMD_WARNING, "123NUMBER" },
+  { MUTT_CMD_WARNING, "HAS-DASH" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
