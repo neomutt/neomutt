@@ -943,7 +943,7 @@ msgid "Define an alias (name to email address)"
 msgstr "Erstelle ein Alias (Name zu E-Mail-Adresse)"
 
 #: commands/commands.c:62
-msgid "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
+msgid "alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"
 msgstr "alias [ -group <Name> ... ] <Schlüssel> <Adresse> [, <Adresse> ... ]"
 
 #: commands/commands.c:65
@@ -959,7 +959,7 @@ msgid "Set preference order for multipart alternatives"
 msgstr "Präferiere Reihenfolge für multipart Alternativen"
 
 #: commands/commands.c:70
-msgid "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "alternative-order <mime-type>[/<mime-subtype> ] [ ... ]"
 msgstr "alternative-order <MIME-Typ>[/<MIME-Subtyp> ] [ ... ]"
 
 #: commands/commands.c:73
@@ -975,7 +975,7 @@ msgid "Automatically display specified MIME types inline"
 msgstr "Zeige spezifizierte MIME-Typen im Text an"
 
 #: commands/commands.c:78
-msgid "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "auto-view <mime-type>[/<mime-subtype> ] [ ... ]"
 msgstr "auto-view <MIME-Typ>[/<MIME-Subtyp> ] [ <MIME-Typ>[/<MIME-Subtyp> ] ... ]"
 
 #: commands/commands.c:81
@@ -991,7 +991,7 @@ msgid "Define colors for the user interface"
 msgstr "Wähle Farben für die Nutzeransicht"
 
 #: commands/commands.c:86
-msgid "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
+msgid "color <object> [ <attribute> ... ] <fg> <bg> [ <regex> [ <num> ]]"
 msgstr "color <Objekt> [ <Attribut> ... ] <Vordergrd> <Hintergrd> [ <regex> [ <Num> ]]"
 
 #: commands/commands.c:89
@@ -1047,7 +1047,7 @@ msgid "Hide specified headers when displaying messages"
 msgstr "Zeige bestimmte Header nicht in der Nachrichtenansicht an"
 
 #: commands/commands.c:114
-msgid "ignore { * | <string> ... }"
+msgid "ignore <string> [ <string> ...]"
 msgstr "ignore { * | <Zeichenkette> ... }"
 
 #: commands/commands.c:117
@@ -1055,15 +1055,15 @@ msgid "Add address to the list of mailing lists"
 msgstr "Setze Adresse auf die Liste der Mailinglisten"
 
 #: commands/commands.c:118
-msgid "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "lists [ -group <Name> ... ] <regex> [ <regex> ... ]"
+msgid "lists [ -group <name> ... ] <regex> [ ... ]"
+msgstr "lists [ -group <name> ... ] <regex> [ ... ]"
 
 #: commands/commands.c:121
 msgid "Define a list of mailboxes to watch"
 msgstr "Erstelle Liste zu überwachender Mailboxen"
 
 #: commands/commands.c:122
-msgid "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
+msgid "mailboxes [-label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"
 msgstr "mailboxes [ -[no]label [ <Etikett> ] ] [ -[no]notify ] [ -[no]poll ] <Postf> ]"
 
 #: commands/commands.c:125
@@ -1079,11 +1079,11 @@ msgid "Map specified MIME types/subtypes to display handlers"
 msgstr "Weise MIME Typen/Subtypen bestimmte Darstellungswerkzeuge zu"
 
 #: commands/commands.c:130
-msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"
 msgstr "mime-lookup <MIME-Typ>[/<MIME-Subtyp> ] [ <MIME-Typ>[/<MIME-Subtyp> ] ... ]"
 
 #: commands/commands.c:133
-msgid "Deprecated: Use 'color'"
+msgid "Deprecated: Use `color` instead"
 msgstr "Veraltet: Nutze 'color'"
 
 #: commands/commands.c:134
@@ -1103,7 +1103,7 @@ msgid "Define a list of labelled mailboxes to watch"
 msgstr "Erstelle Liste zu überwachender (labelled) Mailboxes"
 
 #: commands/commands.c:142
-msgid "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
+msgid "named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"
 msgstr "named-mailboxes <Beschreibung> <Postfach> [ <Beschreibung> <> ... ]"
 
 #: commands/commands.c:145
@@ -1135,7 +1135,7 @@ msgid "Set a config variable"
 msgstr "Setze einen Konfig Wert"
 
 #: commands/commands.c:158
-msgid "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> } [ ... ]"
+msgid "set [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> [...]"
 msgstr "set { [ no | inv | & ] <Variable> [?] | <Variable> [=|+=|-=] <Wert> } [ ... ]"
 
 #: commands/commands.c:161
@@ -1143,7 +1143,7 @@ msgid "Set an environment variable"
 msgstr "Setze eine Umgebungsvariable"
 
 #: commands/commands.c:162
-msgid "setenv { <variable>? | <variable> <value> }"
+msgid "setenv { <variable>? | <variable>=<value> }"
 msgstr "setenv { <Variable>? | <Variable> <Wert> }"
 
 #: commands/commands.c:165
@@ -1151,7 +1151,7 @@ msgid "Read and execute commands from a config file"
 msgstr "Liest Kommandos aus einer Konfig-Datei und führt sie aus"
 
 #: commands/commands.c:166
-msgid "source <filename>"
+msgid "source <filename> [ <filename> ... ]"
 msgstr "source <Dateiname>"
 
 #: commands/commands.c:169
@@ -1159,8 +1159,8 @@ msgid "Define rules to parse spam detection headers"
 msgstr "Erstelle Regeln zur Analyse von Spam-Erkennungs-Headern"
 
 #: commands/commands.c:170
-msgid "spam <regex> <format>"
-msgstr "spam <regex> <Format>"
+msgid "spam <regex> [ <format> ]"
+msgstr "spam <regex> [ <format> ]"
 
 #: commands/commands.c:173
 msgid "Apply regex-based rewriting to message subjects"
@@ -1175,15 +1175,15 @@ msgid "Add address to the list of subscribed mailing lists"
 msgstr "Setze Adresse auf die Liste der abonnierten Mailinglisten"
 
 #: commands/commands.c:178
-msgid "subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "subscribe [ -group <Name> ... ] <regex> [ <regex> ... ]"
+msgid "subscribe [ -group <name> ... ] <regex> [ ... ]"
+msgstr "subscribe [ -group <name> ... ] <regex> [ ... ]"
 
 #: commands/commands.c:181
 msgid "Define expandos tags"
 msgstr "Definiere expandos Etiketten"
 
 #: commands/commands.c:182
-msgid "tag-formats <tag> <format-string> { <tag> <format-string> ... }"
+msgid "tag-formats <tag> <format-string> [ ... ] }"
 msgstr "tag-formats <Etikett> <Format-Zeichenkette> { <Etikett> <Format-Zeichenkette> ... }"
 
 #: commands/commands.c:185
@@ -1191,7 +1191,7 @@ msgid "Rules to transform tags into icons"
 msgstr "Regeln zur Umformung von Etiketten in Icons"
 
 #: commands/commands.c:186
-msgid "tag-transforms <tag> <transformed-string> { <tag> <transformed-string> ... }"
+msgid "tag-transforms <tag> <transformed-string> [ ... ]"
 msgstr "tag-transforms <Etikett> <umgeformte Zeichen> { <Etikett> <umgeformte Zeichen> ... }"
 
 #: commands/commands.c:189
@@ -1199,8 +1199,8 @@ msgid "Toggle the value of a boolean/quad config option"
 msgstr "Schalte den Wert einer boolean/quad Konfig-Option um"
 
 #: commands/commands.c:190
-msgid "toggle <variable> [ <variable> ... ]"
-msgstr "toggle <Variable> [ <Variable> ... ]"
+msgid "toggle <variable> [ ... ]"
+msgstr "toggle <variable> [ ... ]"
 
 #: commands/commands.c:193
 msgid "Remove an alias definition"
@@ -1211,7 +1211,7 @@ msgid "unalias { * | <key> ... }"
 msgstr "unalias { * | <Schlüssel> ... }"
 
 #: commands/commands.c:197
-msgid "Remove addresses from 'alternates' list"
+msgid "Remove addresses from `alternates` list"
 msgstr "Entferne Adressen von der 'Alternative Mail-Adressen' Liste"
 
 #: commands/commands.c:198
@@ -1231,11 +1231,11 @@ msgid "Remove attachment counting rules"
 msgstr "Entferne Regeln zum Zählen der Anhänge"
 
 #: commands/commands.c:206
-msgid "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"
+msgid "unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"
 msgstr "unattachments { * | { + | - }<Anordnung> <MIME-Typ> [ <MIME-Type> ... ] }"
 
 #: commands/commands.c:209
-msgid "Remove MIME types from 'auto-view' list"
+msgid "Remove MIME types from `auto-view` list"
 msgstr "Entferne MIM Typen von der 'auto-view' Liste"
 
 #: commands/commands.c:210
@@ -1243,7 +1243,7 @@ msgid "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 msgstr "unauto-view { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
 
 #: commands/commands.c:213
-msgid "Remove a 'color' definition"
+msgid "Remove a `color` definition"
 msgstr "Entfernt eine 'color' Zuweisung"
 
 #: commands/commands.c:214
@@ -1251,7 +1251,7 @@ msgid "uncolor <object> { * | <pattern> ... }"
 msgstr "uncolor <Objekt> { * | <Muster> ... }"
 
 #: commands/commands.c:217
-msgid "Remove addresses from an address 'group'"
+msgid "Remove addresses from an address `group`"
 msgstr "Entferne Adressen von einer Empfänger 'group'"
 
 #: commands/commands.c:218
@@ -1259,7 +1259,7 @@ msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ...
 msgstr "ungroup [ -group <Name> ... ] { * | -rx <regex> ... | -addr <Adresse> ... }"
 
 #: commands/commands.c:221
-msgid "Remove header from 'header-order' list"
+msgid "Remove header from `header-order` list"
 msgstr "Entferne den Header von der 'header-order' Liste"
 
 #: commands/commands.c:222
@@ -1267,7 +1267,7 @@ msgid "unheader-order { * | <header> ... }"
 msgstr "unheader-order { * | <Kopfzeile> ... }"
 
 #: commands/commands.c:225
-msgid "Remove a header from the 'header-order' list"
+msgid "Remove a header from the `header-order` list"
 msgstr "Entfernt einen Header von der 'header-order' Liste"
 
 #: commands/commands.c:226
@@ -1307,7 +1307,7 @@ msgid "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 msgstr "unmime-lookup { * | [ <MIME-Typ>[/<MIME-Subtyp> ] ... ] }"
 
 #: commands/commands.c:245
-msgid "Deprecated: Use 'uncolor'"
+msgid "Deprecated: Use `uncolor` instead"
 msgstr "Veraltet: Nutze 'uncolor'"
 
 #: commands/commands.c:246
@@ -1315,7 +1315,7 @@ msgid "unmono <object> { * | <pattern> ... }"
 msgstr "unmono <Objekt> { * | <Muster> ... }"
 
 #: commands/commands.c:249
-msgid "Remove a header previously added with 'my-header'"
+msgid "Remove a header previously added with `my-header`"
 msgstr "Entfernt einen zuvor mit 'my-header' eingefügten Header"
 
 #: commands/commands.c:250
@@ -4966,7 +4966,7 @@ msgid "fcc-hook <pattern> <mailbox>"
 msgstr "fcc-hook <Muster> <Postfach>"
 
 #: hooks/commands.c:60
-msgid "Equivalent to both 'fcc-hook' and 'save-hook'"
+msgid "Equivalent to both `fcc-hook` and `save-hook`"
 msgstr "Entspricht beidem 'fcc-hook' und 'save-hook'"
 
 #: hooks/commands.c:61
@@ -4994,7 +4994,7 @@ msgid "Create dynamic index format strings"
 msgstr "Erzeuge dynamische Formatierungsstrings für Index"
 
 #: hooks/commands.c:73
-msgid "index-format-hook <name> [ ! ]<pattern> <format-string>"
+msgid "index-format-hook <name> [!]<pattern> <format-string>"
 msgstr "index-format-hook <Name> [ ! ]<Muster> <Formatierungszeichenkette>"
 
 #: hooks/commands.c:76
@@ -5891,7 +5891,7 @@ msgid "Define a keyboard macro"
 msgstr "Definiere Tastatur Macro"
 
 #: key/init.c:64
-msgid "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
+msgid "macro <map>[,<map> ... ] <key> <sequence> [ <description> ]"
 msgstr "macro <Menü>[,<Menü> ... ] <Taste> <Sequenz> [ <Beschreibung> ]"
 
 #: key/init.c:67
@@ -5907,15 +5907,15 @@ msgid "Remove a key binding"
 msgstr "Entfernt Tastenzuordnung"
 
 #: key/init.c:72
-msgid "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgid "unbind { * | <map>[,<map> ... ] } [ <key> ]"
 msgstr "unbind { * | <Menü>[,<Menü> ... ] } [ <Taste> ]"
 
 #: key/init.c:75
-msgid "Remove a keyboard 'macro'"
+msgid "Remove a keyboard `macro`"
 msgstr "Entferne ein Tastatur 'macro'"
 
 #: key/init.c:76
-msgid "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgid "unmacro { * | <map>[,<map> ... ] } [ <key> ]"
 msgstr "unmacro { * | <Menü>[,<Menü> ... ] } [ <Taste> ]"
 
 #: key/init.c:218
@@ -5942,7 +5942,7 @@ msgid "Run a Lua expression or call a Lua function"
 msgstr "Starte einen Lua Ausdruck oder rufe Lua Funktion auf"
 
 #: lua/commands.c:148
-msgid "lua '<lua-commands>'"
+msgid "lua <lua-command>"
 msgstr "lua '<lua-Befehle>'"
 
 #: lua/commands.c:151
@@ -5950,7 +5950,7 @@ msgid "Execute a Lua script file"
 msgstr "Führe Lua Skript Datei aus"
 
 #: lua/commands.c:152
-msgid "lua-source <file>"
+msgid "lua-source <filename>"
 msgstr "lua-source <Datei>"
 
 #: lua/lua.c:448

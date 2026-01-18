@@ -939,7 +939,7 @@ msgid "Define an alias (name to email address)"
 msgstr "Arma tanımla (e-posta adresi adı)"
 
 #: commands/commands.c:62
-msgid "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
+msgid "alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"
 msgstr "alias [ -group <ad> ... ] <düğme> <adres> [, <adres> ... ]"
 
 #: commands/commands.c:65
@@ -955,7 +955,7 @@ msgid "Set preference order for multipart alternatives"
 msgstr "Çok kısımlı alternatifler için tercih sırası ayarla"
 
 #: commands/commands.c:70
-msgid "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "alternative-order <mime-type>[/<mime-subtype> ] [ ... ]"
 msgstr "alternative-order <mime-türü>[/<mime-alt-türü> ] [ <mime-t>[/<mime-a-t> ] ... ]"
 
 #: commands/commands.c:73
@@ -971,7 +971,7 @@ msgid "Automatically display specified MIME types inline"
 msgstr "Belirtilen MIME türlerini kendiliğinden satır için görüntüle"
 
 #: commands/commands.c:78
-msgid "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "auto-view <mime-type>[/<mime-subtype> ] [ ... ]"
 msgstr "auto-view <mime-türü>[/<mime-alt-türü> ] [ <mime-t>[/<mime-a-t> ] ... ]"
 
 #: commands/commands.c:81
@@ -987,7 +987,7 @@ msgid "Define colors for the user interface"
 msgstr "Kullanıcı arayüzü renklerini tanımla"
 
 #: commands/commands.c:86
-msgid "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
+msgid "color <object> [ <attribute> ... ] <fg> <bg> [ <regex> [ <num> ]]"
 msgstr "color <nesne> [ <öznitelik> ... ] <ön-plan> <arka-plan> [ <d-ifade> [ <sayı> ]]"
 
 #: commands/commands.c:89
@@ -1043,7 +1043,7 @@ msgid "Hide specified headers when displaying messages"
 msgstr "İletileri görüntülerken belirli üstbilgileri gizle"
 
 #: commands/commands.c:114
-msgid "ignore { * | <string> ... }"
+msgid "ignore <string> [ <string> ...]"
 msgstr "ignore { * | <dizi> ... }"
 
 #: commands/commands.c:117
@@ -1051,7 +1051,7 @@ msgid "Add address to the list of mailing lists"
 msgstr "Posta listeleri listesine adres ekle"
 
 #: commands/commands.c:118
-msgid "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgid "lists [ -group <name> ... ] <regex> [ ... ]"
 msgstr "lists [ -group <ad> ... ] <d-ifade> [ <d-ifade> ... ]"
 
 #: commands/commands.c:121
@@ -1059,7 +1059,7 @@ msgid "Define a list of mailboxes to watch"
 msgstr "İzlenecek posta kutuları listesi tanımla"
 
 #: commands/commands.c:122
-msgid "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
+msgid "mailboxes [-label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"
 msgstr ""
 "mailboxes [[ -label <etiket> ] | -nolabel ] [[ -notify | -nonotify ]\n"
 "  [ -poll | -nopoll ] <kutu> ] [ ... ]"
@@ -1077,11 +1077,11 @@ msgid "Map specified MIME types/subtypes to display handlers"
 msgstr "Görüntülenen üstbilgilere belirli MIME tür/alt türlerini eşlemle"
 
 #: commands/commands.c:130
-msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"
 msgstr "mime-lookup <mime-türü>[/<mime-alt-türü> ] [ <mime-t>[/<mime-a-t> ] ... ]"
 
 #: commands/commands.c:133
-msgid "Deprecated: Use 'color'"
+msgid "Deprecated: Use `color` instead"
 msgstr "Artık kullanılmıyor: Yerine \"color\" kullanın"
 
 #: commands/commands.c:134
@@ -1101,7 +1101,7 @@ msgid "Define a list of labelled mailboxes to watch"
 msgstr "İzlenecek etiketli bir posta kutusu listesi tanımla"
 
 #: commands/commands.c:142
-msgid "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
+msgid "named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"
 msgstr "named-mailboxes <açıklama> <kutu> [ <açıklama> <kutu> ... ]"
 
 #: commands/commands.c:145
@@ -1133,7 +1133,7 @@ msgid "Set a config variable"
 msgstr "Yapılandırma değişkeni ayarla"
 
 #: commands/commands.c:158
-msgid "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> } [ ... ]"
+msgid "set [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> [...]"
 msgstr "set { [ no | inv | & ] <değişken> [?] | <değişken> [=|+=|-=] <value> } [ ... ]"
 
 #: commands/commands.c:161
@@ -1141,7 +1141,7 @@ msgid "Set an environment variable"
 msgstr "Çevre değişkeni ayarla"
 
 #: commands/commands.c:162
-msgid "setenv { <variable>? | <variable> <value> }"
+msgid "setenv { <variable>? | <variable>=<value> }"
 msgstr "setenv { <değişken>? | <değişken> <değer> }"
 
 #: commands/commands.c:165
@@ -1149,7 +1149,7 @@ msgid "Read and execute commands from a config file"
 msgstr ""
 
 #: commands/commands.c:166
-msgid "source <filename>"
+msgid "source <filename> [ <filename> ... ]"
 msgstr "source <dosya-adı>"
 
 #: commands/commands.c:169
@@ -1157,7 +1157,7 @@ msgid "Define rules to parse spam detection headers"
 msgstr ""
 
 #: commands/commands.c:170
-msgid "spam <regex> <format>"
+msgid "spam <regex> [ <format> ]"
 msgstr "spam <d-ifade> <biçim>"
 
 #: commands/commands.c:173
@@ -1173,7 +1173,7 @@ msgid "Add address to the list of subscribed mailing lists"
 msgstr ""
 
 #: commands/commands.c:178
-msgid "subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgid "subscribe [ -group <name> ... ] <regex> [ ... ]"
 msgstr "subscribe [ -group <ad> ... ] <d-ifade> [ <d-ifade> ... ]"
 
 #: commands/commands.c:181
@@ -1181,7 +1181,7 @@ msgid "Define expandos tags"
 msgstr ""
 
 #: commands/commands.c:182
-msgid "tag-formats <tag> <format-string> { <tag> <format-string> ... }"
+msgid "tag-formats <tag> <format-string> [ ... ] }"
 msgstr "tag-formats <künye> <biçim-dizisi> { <künye> <biçim-dizisi> ... }"
 
 #: commands/commands.c:185
@@ -1189,7 +1189,7 @@ msgid "Rules to transform tags into icons"
 msgstr ""
 
 #: commands/commands.c:186
-msgid "tag-transforms <tag> <transformed-string> { <tag> <transformed-string> ... }"
+msgid "tag-transforms <tag> <transformed-string> [ ... ]"
 msgstr ""
 "tag-transforms <künye> <dönüşmüş-dizi> { <künye> <dönüşmüş-dizi> ... }"
 
@@ -1198,7 +1198,7 @@ msgid "Toggle the value of a boolean/quad config option"
 msgstr ""
 
 #: commands/commands.c:190
-msgid "toggle <variable> [ <variable> ... ]"
+msgid "toggle <variable> [ ... ]"
 msgstr "toggle <değişken> [ <değişken> ... ]"
 
 #: commands/commands.c:193
@@ -1210,7 +1210,7 @@ msgid "unalias { * | <key> ... }"
 msgstr "unalias { * | <anahtar> ... }"
 
 #: commands/commands.c:197
-msgid "Remove addresses from 'alternates' list"
+msgid "Remove addresses from `alternates` list"
 msgstr ""
 
 #: commands/commands.c:198
@@ -1230,12 +1230,12 @@ msgid "Remove attachment counting rules"
 msgstr ""
 
 #: commands/commands.c:206
-msgid "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"
+msgid "unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"
 msgstr ""
 "unattachments { * | { + | - } <eğilim> <mime-türü> [ <mime-türü> ... ] }"
 
 #: commands/commands.c:209
-msgid "Remove MIME types from 'auto-view' list"
+msgid "Remove MIME types from `auto-view` list"
 msgstr ""
 
 #: commands/commands.c:210
@@ -1243,7 +1243,7 @@ msgid "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 msgstr "unauto-view { * | [ <mime-türü>[/<mime-alt-türü> ] ... ] }"
 
 #: commands/commands.c:213
-msgid "Remove a 'color' definition"
+msgid "Remove a `color` definition"
 msgstr ""
 
 #: commands/commands.c:214
@@ -1251,7 +1251,7 @@ msgid "uncolor <object> { * | <pattern> ... }"
 msgstr "uncolor <nesne> { * | <dizgi> ... }"
 
 #: commands/commands.c:217
-msgid "Remove addresses from an address 'group'"
+msgid "Remove addresses from an address `group`"
 msgstr ""
 
 #: commands/commands.c:218
@@ -1260,7 +1260,7 @@ msgstr ""
 "ungroup [ -group <ad> ... ] { * | -rx <d-ifade> ... | -addr <adres> ... }"
 
 #: commands/commands.c:221
-msgid "Remove header from 'header-order' list"
+msgid "Remove header from `header-order` list"
 msgstr ""
 
 #: commands/commands.c:222
@@ -1268,7 +1268,7 @@ msgid "unheader-order { * | <header> ... }"
 msgstr "unheader-order { * | <üstbilgi> ... }"
 
 #: commands/commands.c:225
-msgid "Remove a header from the 'header-order' list"
+msgid "Remove a header from the `header-order` list"
 msgstr ""
 
 #: commands/commands.c:226
@@ -1308,7 +1308,7 @@ msgid "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 msgstr "unmime-lookup { * | [ <mime-türü>[/<mime-alt-türü> ] ... ] }"
 
 #: commands/commands.c:245
-msgid "Deprecated: Use 'uncolor'"
+msgid "Deprecated: Use `uncolor` instead"
 msgstr ""
 
 #: commands/commands.c:246
@@ -1316,7 +1316,7 @@ msgid "unmono <object> { * | <pattern> ... }"
 msgstr "unmono <nesne> { * | <dizgi> ... }"
 
 #: commands/commands.c:249
-msgid "Remove a header previously added with 'my-header'"
+msgid "Remove a header previously added with `my-header`"
 msgstr ""
 
 #: commands/commands.c:250
@@ -4967,7 +4967,7 @@ msgid "fcc-hook <pattern> <mailbox>"
 msgstr "fcc-hook <dizgi> <kutu>"
 
 #: hooks/commands.c:60
-msgid "Equivalent to both 'fcc-hook' and 'save-hook'"
+msgid "Equivalent to both `fcc-hook` and `save-hook`"
 msgstr ""
 
 #: hooks/commands.c:61
@@ -4995,7 +4995,7 @@ msgid "Create dynamic index format strings"
 msgstr ""
 
 #: hooks/commands.c:73
-msgid "index-format-hook <name> [ ! ]<pattern> <format-string>"
+msgid "index-format-hook <name> [!]<pattern> <format-string>"
 msgstr "index-format-hook <ad> [ ! ] <dizgi> <biçim-dizisi>"
 
 #: hooks/commands.c:76
@@ -5892,7 +5892,7 @@ msgid "Define a keyboard macro"
 msgstr "Klavye makrosu tanımla"
 
 #: key/init.c:64
-msgid "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
+msgid "macro <map>[,<map> ... ] <key> <sequence> [ <description> ]"
 msgstr "macro <menü> [,<menü> ... ] <düğme> <sekans> [ <açıklama> ]"
 
 #: key/init.c:67
@@ -5908,15 +5908,15 @@ msgid "Remove a key binding"
 msgstr "Düğme bağıntısını kaldır"
 
 #: key/init.c:72
-msgid "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgid "unbind { * | <map>[,<map> ... ] } [ <key> ]"
 msgstr "unbind { * | <menü> [,<menü> ... ] } [ <düğme> ]"
 
 #: key/init.c:75
-msgid "Remove a keyboard 'macro'"
+msgid "Remove a keyboard `macro`"
 msgstr "Klavye \"makrosunu\" kaldır"
 
 #: key/init.c:76
-msgid "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgid "unmacro { * | <map>[,<map> ... ] } [ <key> ]"
 msgstr "unmacro { * | <menü> [,<menü> ... ] } [ <düğme> ]"
 
 #: key/init.c:218
@@ -5943,7 +5943,7 @@ msgid "Run a Lua expression or call a Lua function"
 msgstr "Lua işlevi çağır veya Lua ifadesi çalıştır"
 
 #: lua/commands.c:148
-msgid "lua '<lua-commands>'"
+msgid "lua <lua-command>"
 msgstr "lua '<lua-komutları>'"
 
 #: lua/commands.c:151
@@ -5951,7 +5951,7 @@ msgid "Execute a Lua script file"
 msgstr "Lua betiği yürüt"
 
 #: lua/commands.c:152
-msgid "lua-source <file>"
+msgid "lua-source <filename>"
 msgstr "lua-source <dosya>"
 
 #: lua/lua.c:448

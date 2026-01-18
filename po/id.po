@@ -959,8 +959,8 @@ msgstr ""
 
 #: commands/commands.c:62
 #, fuzzy
-msgid "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
-msgstr "alias [ -group <name> ... ] <key> <address> [, <address> ... ]"
+msgid "alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"
+msgstr "alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"
 
 #: commands/commands.c:65
 msgid "Define a list of alternate email addresses for the user"
@@ -977,8 +977,8 @@ msgstr ""
 
 #: commands/commands.c:70
 #, fuzzy
-msgid "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "alternative-order <mime-type>[/<mime-subtype> ] [ ... ]"
+msgstr "alternative-order <mime-type>[/<mime-subtype> ] [ ... ]"
 
 #: commands/commands.c:73
 msgid "Set attachment counting rules"
@@ -995,8 +995,8 @@ msgstr ""
 
 #: commands/commands.c:78
 #, fuzzy
-msgid "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "auto-view <mime-type>[/<mime-subtype> ] [ ... ]"
+msgstr "auto-view <mime-type>[/<mime-subtype> ] [ ... ]"
 
 #: commands/commands.c:81
 msgid "Change NeoMutt's current working directory"
@@ -1013,8 +1013,8 @@ msgstr ""
 
 #: commands/commands.c:86
 #, fuzzy
-msgid "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
-msgstr "color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]"
+msgid "color <object> [ <attribute> ... ] <fg> <bg> [ <regex> [ <num> ]]"
+msgstr "color <object> [ <attribute> ... ] <fg> <bg> [ <regex> [ <num> ]]"
 
 #: commands/commands.c:89
 msgid "Print a message to the status line"
@@ -1076,8 +1076,8 @@ msgstr ""
 
 #: commands/commands.c:114
 #, fuzzy
-msgid "ignore { * | <string> ... }"
-msgstr "ignore { * | <string> ... }"
+msgid "ignore <string> [ <string> ...]"
+msgstr "ignore <string> [ <string> ...]"
 
 #: commands/commands.c:117
 msgid "Add address to the list of mailing lists"
@@ -1085,8 +1085,8 @@ msgstr ""
 
 #: commands/commands.c:118
 #, fuzzy
-msgid "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "lists [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgid "lists [ -group <name> ... ] <regex> [ ... ]"
+msgstr "lists [ -group <name> ... ] <regex> [ ... ]"
 
 #: commands/commands.c:121
 msgid "Define a list of mailboxes to watch"
@@ -1094,8 +1094,8 @@ msgstr ""
 
 #: commands/commands.c:122
 #, fuzzy
-msgid "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
-msgstr "mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]"
+msgid "mailboxes [-label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"
+msgstr "mailboxes [-label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"
 
 #: commands/commands.c:125
 msgid "Permit specific header-fields in mailto URL processing"
@@ -1112,11 +1112,11 @@ msgstr ""
 
 #: commands/commands.c:130
 #, fuzzy
-msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-msgstr "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
+msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"
+msgstr "mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"
 
 #: commands/commands.c:133
-msgid "Deprecated: Use 'color'"
+msgid "Deprecated: Use `color` instead"
 msgstr ""
 
 #: commands/commands.c:134
@@ -1139,8 +1139,8 @@ msgstr ""
 
 #: commands/commands.c:142
 #, fuzzy
-msgid "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
-msgstr "named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]"
+msgid "named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"
+msgstr "named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"
 
 #: commands/commands.c:145
 msgid "Remove a spam detection rule"
@@ -1175,8 +1175,8 @@ msgstr ""
 
 #: commands/commands.c:158
 #, fuzzy
-msgid "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> } [ ... ]"
-msgstr "set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> } [ ... ]"
+msgid "set [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> [...]"
+msgstr "set [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> [...]"
 
 #: commands/commands.c:161
 msgid "Set an environment variable"
@@ -1184,8 +1184,8 @@ msgstr ""
 
 #: commands/commands.c:162
 #, fuzzy
-msgid "setenv { <variable>? | <variable> <value> }"
-msgstr "setenv { <variable>? | <variable> <value> }"
+msgid "setenv { <variable>? | <variable>=<value> }"
+msgstr "setenv { <variable>? | <variable>=<value> }"
 
 #: commands/commands.c:165
 msgid "Read and execute commands from a config file"
@@ -1193,8 +1193,8 @@ msgstr ""
 
 #: commands/commands.c:166
 #, fuzzy
-msgid "source <filename>"
-msgstr "source <filename>"
+msgid "source <filename> [ <filename> ... ]"
+msgstr "source <filename> [ <filename> ... ]"
 
 #: commands/commands.c:169
 msgid "Define rules to parse spam detection headers"
@@ -1202,8 +1202,8 @@ msgstr ""
 
 #: commands/commands.c:170
 #, fuzzy
-msgid "spam <regex> <format>"
-msgstr "spam <regex> <format>"
+msgid "spam <regex> [ <format> ]"
+msgstr "spam <regex> [ <format> ]"
 
 #: commands/commands.c:173
 msgid "Apply regex-based rewriting to message subjects"
@@ -1220,8 +1220,8 @@ msgstr ""
 
 #: commands/commands.c:178
 #, fuzzy
-msgid "subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "subscribe [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgid "subscribe [ -group <name> ... ] <regex> [ ... ]"
+msgstr "subscribe [ -group <name> ... ] <regex> [ ... ]"
 
 #: commands/commands.c:181
 msgid "Define expandos tags"
@@ -1229,8 +1229,8 @@ msgstr ""
 
 #: commands/commands.c:182
 #, fuzzy
-msgid "tag-formats <tag> <format-string> { <tag> <format-string> ... }"
-msgstr "tag-formats <tag> <format-string> { <tag> <format-string> ... }"
+msgid "tag-formats <tag> <format-string> [ ... ] }"
+msgstr "tag-formats <tag> <format-string> [ ... ] }"
 
 #: commands/commands.c:185
 msgid "Rules to transform tags into icons"
@@ -1238,8 +1238,8 @@ msgstr ""
 
 #: commands/commands.c:186
 #, fuzzy
-msgid "tag-transforms <tag> <transformed-string> { <tag> <transformed-string> ... }"
-msgstr "tag-transforms <tag> <transformed-string> { <tag> <transformed-string> ... }"
+msgid "tag-transforms <tag> <transformed-string> [ ... ]"
+msgstr "tag-transforms <tag> <transformed-string> [ ... ]"
 
 #: commands/commands.c:189
 msgid "Toggle the value of a boolean/quad config option"
@@ -1247,8 +1247,8 @@ msgstr ""
 
 #: commands/commands.c:190
 #, fuzzy
-msgid "toggle <variable> [ <variable> ... ]"
-msgstr "toggle <variable> [ <variable> ... ]"
+msgid "toggle <variable> [ ... ]"
+msgstr "toggle <variable> [ ... ]"
 
 #: commands/commands.c:193
 msgid "Remove an alias definition"
@@ -1260,7 +1260,7 @@ msgid "unalias { * | <key> ... }"
 msgstr "unalias { * | <key> ... }"
 
 #: commands/commands.c:197
-msgid "Remove addresses from 'alternates' list"
+msgid "Remove addresses from `alternates` list"
 msgstr ""
 
 #: commands/commands.c:198
@@ -1283,11 +1283,11 @@ msgstr ""
 
 #: commands/commands.c:206
 #, fuzzy
-msgid "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"
-msgstr "unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }"
+msgid "unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"
+msgstr "unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"
 
 #: commands/commands.c:209
-msgid "Remove MIME types from 'auto-view' list"
+msgid "Remove MIME types from `auto-view` list"
 msgstr ""
 
 #: commands/commands.c:210
@@ -1296,7 +1296,7 @@ msgid "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 msgstr "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 
 #: commands/commands.c:213
-msgid "Remove a 'color' definition"
+msgid "Remove a `color` definition"
 msgstr ""
 
 #: commands/commands.c:214
@@ -1305,7 +1305,7 @@ msgid "uncolor <object> { * | <pattern> ... }"
 msgstr "uncolor <object> { * | <pattern> ... }"
 
 #: commands/commands.c:217
-msgid "Remove addresses from an address 'group'"
+msgid "Remove addresses from an address `group`"
 msgstr ""
 
 #: commands/commands.c:218
@@ -1314,7 +1314,7 @@ msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ...
 msgstr "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
 
 #: commands/commands.c:221
-msgid "Remove header from 'header-order' list"
+msgid "Remove header from `header-order` list"
 msgstr ""
 
 #: commands/commands.c:222
@@ -1323,7 +1323,7 @@ msgid "unheader-order { * | <header> ... }"
 msgstr "unheader-order { * | <header> ... }"
 
 #: commands/commands.c:225
-msgid "Remove a header from the 'header-order' list"
+msgid "Remove a header from the `header-order` list"
 msgstr ""
 
 #: commands/commands.c:226
@@ -1368,7 +1368,7 @@ msgid "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 msgstr "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 
 #: commands/commands.c:245
-msgid "Deprecated: Use 'uncolor'"
+msgid "Deprecated: Use `uncolor` instead"
 msgstr ""
 
 #: commands/commands.c:246
@@ -1377,7 +1377,7 @@ msgid "unmono <object> { * | <pattern> ... }"
 msgstr "unmono <object> { * | <pattern> ... }"
 
 #: commands/commands.c:249
-msgid "Remove a header previously added with 'my-header'"
+msgid "Remove a header previously added with `my-header`"
 msgstr ""
 
 #: commands/commands.c:250
@@ -5155,7 +5155,7 @@ msgid "fcc-hook <pattern> <mailbox>"
 msgstr "fcc-hook <pattern> <mailbox>"
 
 #: hooks/commands.c:60
-msgid "Equivalent to both 'fcc-hook' and 'save-hook'"
+msgid "Equivalent to both `fcc-hook` and `save-hook`"
 msgstr ""
 
 #: hooks/commands.c:61
@@ -5187,8 +5187,8 @@ msgstr ""
 
 #: hooks/commands.c:73
 #, fuzzy
-msgid "index-format-hook <name> [ ! ]<pattern> <format-string>"
-msgstr "index-format-hook <name> [ ! ]<pattern> <format-string>"
+msgid "index-format-hook <name> [!]<pattern> <format-string>"
+msgstr "index-format-hook <name> [!]<pattern> <format-string>"
 
 #: hooks/commands.c:76
 msgid "On leaving a mailbox, move read messages matching a regex"
@@ -6131,8 +6131,8 @@ msgstr ""
 
 #: key/init.c:64
 #, fuzzy
-msgid "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
-msgstr "macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]"
+msgid "macro <map>[,<map> ... ] <key> <sequence> [ <description> ]"
+msgstr "macro <map>[,<map> ... ] <key> <sequence> [ <description> ]"
 
 #: key/init.c:67
 msgid "Push a string into NeoMutt's input queue (simulate typing)"
@@ -6149,17 +6149,17 @@ msgstr ""
 
 #: key/init.c:72
 #, fuzzy
-msgid "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
-msgstr "unbind { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgid "unbind { * | <map>[,<map> ... ] } [ <key> ]"
+msgstr "unbind { * | <map>[,<map> ... ] } [ <key> ]"
 
 #: key/init.c:75
-msgid "Remove a keyboard 'macro'"
+msgid "Remove a keyboard `macro`"
 msgstr ""
 
 #: key/init.c:76
 #, fuzzy
-msgid "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
-msgstr "unmacro { * | <menu>[,<menu> ... ] } [ <key> ]"
+msgid "unmacro { * | <map>[,<map> ... ] } [ <key> ]"
+msgstr "unmacro { * | <map>[,<map> ... ] } [ <key> ]"
 
 #: key/init.c:218
 msgid "Abort key is not set, defaulting to Ctrl-G"
@@ -6186,8 +6186,8 @@ msgstr ""
 
 #: lua/commands.c:148
 #, fuzzy
-msgid "lua '<lua-commands>'"
-msgstr "lua '<lua-commands>'"
+msgid "lua <lua-command>"
+msgstr "lua <lua-command>"
 
 #: lua/commands.c:151
 msgid "Execute a Lua script file"
@@ -6195,8 +6195,8 @@ msgstr ""
 
 #: lua/commands.c:152
 #, fuzzy
-msgid "lua-source <file>"
-msgstr "lua-source <file>"
+msgid "lua-source <filename>"
+msgstr "lua-source <filename>"
 
 #: lua/lua.c:448
 msgid "Error: Couldn't load the lua interpreter"
