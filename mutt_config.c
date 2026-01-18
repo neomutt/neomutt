@@ -815,7 +815,6 @@ struct ConfigDef MainVars[] = {
   { "realname",                  DT_SYNONYM, IP "real_name",                  IP "2021-03-21" },
   { "spoolfile",                 DT_SYNONYM, IP "spool_file",                 IP "2021-03-21" },
   { "tmpdir",                    DT_SYNONYM, IP "tmp_dir",                    IP "2023-01-25" },
-  { "virtual_spoolfile",         DT_SYNONYM, IP "spool_file",                 IP "2025-12-08" },
   { "xterm_icon",                DT_SYNONYM, IP "ts_icon_format",             IP "2021-03-21" },
   { "xterm_set_titles",          DT_SYNONYM, IP "ts_enabled",                 IP "2021-03-21" },
   { "xterm_title",               DT_SYNONYM, IP "ts_status_format",           IP "2021-03-21" },

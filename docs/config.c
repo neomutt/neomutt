@@ -128,9 +128,6 @@
 ** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
 ** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
 ** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
-** .dt \fC%c\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%C\fP instead
-** .dt \fC%n\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%i\fP instead
-** .dt \fC%r\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%A\fP instead
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -303,7 +300,7 @@
 ** .dt \fC%t\fP    .dd \fC%{tagged}\fP           .dd Tagged flag
 ** .dt \fC%u\fP    .dd \fC%{unlink}\fP           .dd Unlink (=to delete) flag
 ** .dt \fC%X\fP    .dd \fC%{attach-count}\fP     .dd Number of qualifying MIME parts in this part and its children
-**                                                   (see the $$attachments section for possible speed effects)
+** .dt             .dd                           .dd (see the $$attachments section for possible speed effects)
 ** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP     .dd Soft-fill with character \fCX\fP as pad
 ** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP     .dd Right justify the rest of the string and pad with character \fCX\fP
 ** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP      .dd Pad to the end of the line with character \fCX\fP
@@ -721,7 +718,7 @@
 ** available for the message preview window to shown.
 */
 
-{ "compose_show_preview", DT_BOOL, true },
+{ "compose_show_preview", DT_BOOL, false },
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will display a preview of message in the compose view.
@@ -1450,11 +1447,11 @@
 ** .dt \fC%a\fP     .dd \fC%{notify}\fP        .dd Alert: 1 if user is notified of new mail
 ** .dt \fC%C\fP     .dd \fC%{number}\fP        .dd Current file number
 ** .dt \fC%D\fP     .dd \fC%{date}\fP          .dd Date/time folder was last modified using $$date_format.
-**                                                 It is recommended to use \fC%[fmt]\fP instead, where \fCfmt\fP is the value of $$date_format.
+** .dt              .dd                        .dd It is recommended to use \fC%[fmt]\fP instead, where \fCfmt\fP is the value of $$date_format.
 ** .dt \fC%d\fP     .dd \fC%{date-format}\fP   .dd Date/time folder was last modified
 ** .dt \fC%F\fP     .dd \fC%{file-mode}\fP     .dd File permissions
 ** .dt \fC%f\fP     .dd \fC%{filename}\fP      .dd Filename (\fC/\fP is appended to directory names,
-**                                                 \fC@\fP to symbolic links and \fC*\fP to executable files)
+** .dt              .dd                        .dd \fC@\fP to symbolic links and \fC*\fP to executable files)
 ** .dt \fC%g\fP     .dd \fC%{file-group}\fP    .dd Group name (or numeric gid, if missing)
 ** .dt \fC%i\fP     .dd \fC%{description}\fP   .dd Description of the folder
 ** .dt \fC%l\fP     .dd \fC%{hard-links}\fP    .dd Number of hard links
@@ -2247,9 +2244,9 @@
 ** .dt \fC%c\fP      .dd \fC%{body-characters}\fP     .dd Number of characters (bytes) in the body of the message (see $formatstrings-size)
 ** .dt \fC%cr\fP     .dd \fC%{size}\fP                .dd Number of characters (bytes) in the raw message, including the header (see $formatstrings-size)
 ** .dt \fC%D\fP      .dd \fC%{date-format-local}\fP   .dd Date and time of message using $$date_format and local timezone.
-**                                                        It is recommended to use \fC%[fmt]\fP instead, where \fCfmt\fP is the value of $$date_format.
+** .dt               .dd                              .dd It is recommended to use \fC%[fmt]\fP instead, where \fCfmt\fP is the value of $$date_format.
 ** .dt \fC%d\fP      .dd \fC%{date-format}\fP         .dd Date and time of message using $$date_format and sender's timezone.
-**                                                        It is recommended to use \fC%{fmt}\fP instead, where \fCfmt\fP is the value of $$date_format.
+** .dt               .dd                              .dd It is recommended to use \fC%{fmt}\fP instead, where \fCfmt\fP is the value of $$date_format.
 ** .dt \fC%E\fP      .dd \fC%{thread-count}\fP        .dd Number of messages in current thread
 ** .dt \fC%e\fP      .dd \fC%{thread-number}\fP       .dd Current message number in thread
 ** .dt \fC%F\fP      .dd \fC%{sender}\fP              .dd Author name, or recipient name if the message is from you
@@ -2263,14 +2260,14 @@
 ** .dt \fC%J\fP      .dd \fC%{thread-tags}\fP         .dd Message tags (if present, tree unfolded, and != parent's tags)
 ** .dt \fC%K\fP      .dd \fC%{list-empty}\fP          .dd List to which the email was sent (if any; otherwise: empty)
 ** .dt \fC%L\fP      .dd \fC%{from-list}\fP           .dd If an address in the \fCTo:\fP or \fCCc:\fP header field matches an address
-**                                                        defined by the user's $$subscribe command, this displays.
+** .dt               .dd                              .dd defined by the user's $$subscribe command, this displays.
 ** .dt \fC%l\fP      .dd \fC%{lines}\fP               .dd Number of lines in the unprocessed message (may not work with maildir, mh, and IMAP folders)
 ** .dt \fC%M\fP      .dd \fC%{thread-hidden-count}\fP .dd Number of hidden messages if the thread is collapsed
 ** .dt \fC%m\fP      .dd \fC%{message-count}\fP       .dd Total number of message in the mailbox
 ** .dt \fC%N\fP      .dd \fC%{score}\fP               .dd Message score
 ** .dt \fC%n\fP      .dd \fC%{name}\fP                .dd Author's real name (or address if missing)
 ** .dt \fC%O\fP      .dd \fC%{save-folder}\fP         .dd Original save folder where NeoMutt would formerly have Stashed the message:
-**                                                        list name or recipient name if not sent to a list
+** .dt               .dd                              .dd list name or recipient name if not sent to a list
 ** .dt \fC%P\fP      .dd \fC%{percentage}\fP          .dd Progress indicator for the built-in pager (how much of the file has been displayed)
 ** .dt \fC%q\fP      .dd \fC%{newsgroup}\fP           .dd Newsgroup name (if compiled with NNTP support)
 ** .dt \fC%R\fP      .dd \fC%{cc-all}\fP              .dd Comma separated list of \fCCc:\fP recipients
@@ -2285,27 +2282,27 @@
 ** .dt \fC%X\fP      .dd \fC%{attachment-count}\fP    .dd Number of MIME attachments (see the $$attachments section for possible speed effects)
 ** .dt \fC%x\fP      .dd \fC%{x-comment-to}\fP        .dd \fC%{X-Comment-To:}\fP field (if present)
 ** .dt \fC%Y\fP      .dd \fC%{thread-x-label}\fP      .dd \fC%{X-Label:}\fP field, if present, and
-**                                                        1. not at part of a thread tree
-**                                                        2. at the top of a thread, or
-**                                                        3. \fCX-Label:\fP is different from Preceding message's \fCX-Label:\fP
+** .dt               .dd                              .dd 1. not at part of a thread tree
+** .dt               .dd                              .dd 2. at the top of a thread, or
+** .dt               .dd                              .dd 3. \fCX-Label:\fP is different from Preceding message's \fCX-Label:\fP
 ** .dt \fC%y\fP      .dd \fC%{x-label}\fP             .dd \fC%{X-Label:}\fP field, if present
 ** .dt \fC%Z\fP      .dd \fC%{combined-flags}\fP      .dd A three character set of message status flags.
-**                                                        The first character is new/read/replied flags (\fCn\fP/\fCo\fP/\fCr\fP/\fCO\fP/\fCN\fP).
-**                                                        The second is deleted or encryption flags (\fCD\fP/\fCd\fP/\fCS\fP/\fCP\fP/\fCs\fP/\fCK\fP).
-**                                                        The third is either tagged/flagged (\fC*\fP/\fC!\fP), or one of the characters.
-**                                                        Listed in $$to_chars.
+** .dt               .dd                              .dd The first character is new/read/replied flags (\fCn\fP/\fCo\fP/\fCr\fP/\fCO\fP/\fCN\fP).
+** .dt               .dd                              .dd The second is deleted or encryption flags (\fCD\fP/\fCd\fP/\fCS\fP/\fCP\fP/\fCs\fP/\fCK\fP).
+** .dt               .dd                              .dd The third is either tagged/flagged (\fC*\fP/\fC!\fP), or one of the characters.
+** .dt               .dd                              .dd Listed in $$to_chars.
 ** .dt \fC%zc\fP     .dd \fC%{crypto-flags}\fP        .dd Message crypto flags
 ** .dt \fC%zs\fP     .dd \fC%{status-flags}\fP        .dd Message status flags
 ** .dt \fC%zt\fP     .dd \fC%{message-flags}\fP       .dd Message tag flags
 ** .dt \fC%@name@\fP .dd                              .dd Insert and evaluate format-string from the matching \fC$index-format-hook\fP command
 ** .dt \fC%{fmt}\fP  .dd                              .dd Date and time of the message is converted to sender's time zone, and \fCfmt\fP is expanded by the library function \fCstrftime(3)\fP;
-**                                                        if the first character inside the braces is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
-**                                                        Note that the sender's time zone might only be available as a numerical offset, so \fC%Z\fP behaves like \fC%z\fP.
-**                                                        \fC%{fmt}\fP behaves like \fC%[fmt]\fP on systems where \fCstruct tm\fP doesn't have a \fCtm_gmtoff\fP member.
+** .dt               .dd                              .dd if the first character inside the braces is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
+** .dt               .dd                              .dd Note that the sender's time zone might only be available as a numerical offset, so \fC%Z\fP behaves like \fC%z\fP.
+** .dt               .dd                              .dd \fC%{fmt}\fP behaves like \fC%[fmt]\fP on systems where \fCstruct tm\fP doesn't have a \fCtm_gmtoff\fP member.
 ** .dt \fC%[fmt]\fP  .dd                              .dd Date and time of the message is converted to the local time zone, and \fCfmt\fP is expanded by the library function \fCstrftime(3)\fP;
-**                                                        if the first character inside the brackets is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
+** .dt               .dd                              .dd if the first character inside the brackets is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
 ** .dt \fC%(fmt)\fP  .dd                              .dd Local date and time when the message was received, and \fCfmt\fP is expanded by the library function \fCstrftime(3)\fP;
-**                                                        if the first character inside the parentheses is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
+** .dt               .dd                              .dd if the first character inside the parentheses is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
 ** .dt \fC%*X\fP     .dd \fC%{padding-soft}\fP        .dd Soft-fill with character \fCX\fP as pad
 ** .dt \fC%>X\fP     .dd \fC%{padding-hard}\fP        .dd Right justify the rest of the string and pad with character \fCX\fP
 ** .dt \fC%|X\fP     .dd \fC%{padding-eol}\fP         .dd Pad to the end of the line with character \fCX\fP
@@ -3208,10 +3205,10 @@
 ** .dt \fC%a\fP    .dd \fC%{sign-as}\fP        .dd Value of $$pgp_sign_as if set, otherwise the value of $$pgp_default_key
 ** .dt \fC%f\fP    .dd \fC%{file-message}\fP   .dd Expands to the name of a file containing a message
 ** .dt \fC%p\fP    .dd \fC%{need-pass}\fP      .dd Expands to \fCPGPPASSFD=0\fP when a pass phrase is needed, to an empty string otherwise.
-**                                                 Note: This may be used with a \fC%<...>\fP construct.
+** .dt             .dd                         .dd Note: This may be used with a \fC%<...>\fP construct.
 ** .dt \fC%r\fP    .dd \fC%{key-ids}\fP        .dd One or more key IDs (or fingerprints if available)
 ** .dt \fC%s\fP    .dd \fC%{file-signature}\fP .dd Expands to the name of a file containing the signature part
-**                                                 of a \fCmultipart/signed\fP attachment when verifying it
+** .dt             .dd                         .dd of a \fCmultipart/signed\fP attachment when verifying it
 ** .de
 ** .pp
 ** (PGP only)
@@ -3756,6 +3753,13 @@
 ** (Crypto only)
 */
 
+{ "postpone_encrypt_as", DT_STRING, 0 },
+/*
+** .pp
+** When \fIset\fP, NeoMutt will use this as a fallback encryption key for
+** postponed messages.
+*/
+
 { "postponed", D_STRING_MAILBOX, "~/postponed" },
 /*
 ** .pp
@@ -3884,10 +3888,6 @@
 ** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
 ** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
 ** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
-** .dt \fC%a\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%E\fP instead
-** .dt \fC%c\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%i\fP instead
-** .dt \fC%e\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%C\fP instead
-** .dt \fC%n\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%N\fP instead
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -4030,7 +4030,7 @@
 ** Also see $$wrap.
 */
 
-{ "reply_regex", DT_REGEX, "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*" },
+{ "reply_regex", DT_REGEX, "^((re)(\\[[0-9]+\\])*:[ \t]*)*" },
 /*
 ** .pp
 ** A regular expression used to recognize reply messages when
@@ -4463,8 +4463,8 @@
 ** .dt \fC%t\fP    .dd \fC%{tagged-count}\fP  .dd Cur       .dd Number of tagged messages in the mailbox
 ** .dt \fC%Z\fP    .dd \fC%{unseen-count}\fP  .dd           .dd Number of new messages in the mailbox (unread, unseen)
 ** .dt \fC%!\fP    .dd \fC%{flagged}\fP       .dd           .dd \fC!\fP : one flagged message
-**                                                              \fC!!\fP : two flagged messages
-**                                                              \fC%{n!}\fP : n flagged messages (for n > 2)
+** .dt             .dd                        .dd           .dd \fC!!\fP : two flagged messages
+** .dt             .dd                        .dd           .dd \fCn!\fP : n flagged messages (for n > 2)
 ** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP  .dd           .dd Soft-fill with character \fCX\fP as pad
 ** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP  .dd           .dd Right justify the rest of the string and pad with character \fCX\fP
 ** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP   .dd           .dd Pad to the end of the line with character \fCX\fP
@@ -4721,14 +4721,14 @@
 ** .dt \fBShort\fP .dd \fBLong Name\fP           .dd \fBDescription\fP
 ** .dt \fC%a\fP    .dd \fC%{algorithm}\fP        .dd Algorithm used for encryption
 ** .dt \fC%C\fP    .dd \fC%{certificate-path}\fP .dd CA location:  Depending on whether $$smime_ca_location points to a directory or file,
-**                                                   this expands to "-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location"
+** .dt             .dd                           .dd this expands to "-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location"
 ** .dt \fC%c\fP    .dd \fC%{certificate-ids}\fP  .dd One or more certificate IDs
 ** .dt \fC%d\fP    .dd \fC%{digest-algorithm}\fP .dd Message digest algorithm specified with $$smime_sign_digest_alg
 ** .dt \fC%f\fP    .dd \fC%{message-file}\fP     .dd Expands to the name of a file containing a message
 ** .dt \fC%i\fP    .dd \fC%{intermediate-ids}\fP .dd Intermediate certificates
 ** .dt \fC%k\fP    .dd \fC%{key}\fP              .dd Key-pair specified with $$smime_default_key
 ** .dt \fC%s\fP    .dd \fC%{signature-file}\fP   .dd Expands to the name of a file containing the signature part
-**                                                   of a \fCmultipart/signed\fP attachment when verifying it
+** .dt             .dd                           .dd of a \fCmultipart/signed\fP attachment when verifying it
 ** .de
 ** .pp
 ** For examples on how to configure these formats, see the \fCsmime.rc\fP in
@@ -5261,12 +5261,11 @@
 ** .dt 1 .dd - .dd Mailbox is unchanged
 ** .dt 2 .dd * .dd Mailbox has been changed and needs to be resynchronized
 ** .dt 3 .dd % .dd Mailbox is read-only, or will not be written when exiting.
-**                 (You can toggle whether to write changes to a mailbox
-**                 with the \fC<toggle-write>\fP operation, bound by default
-**                 to "%")
+** .dt   .dd   .dd (You can toggle whether to write changes to a mailbox
+** .dt   .dd   .dd with the \fC<toggle-write>\fP operation, bound by default to "%")
 ** .dt 4 .dd A .dd Folder opened in attach-message mode.
-**                 (Certain operations like composing a new mail, replying,
-**                 forwarding, etc. are not permitted in this mode)
+** .dt   .dd   .dd (Certain operations like composing a new mail, replying,
+** .dt   .dd   .dd forwarding, etc. are not permitted in this mode)
 ** .de
 */
 
@@ -5671,6 +5670,15 @@
 ** messages, indicating which version of NeoMutt was used for composing
 ** them.
 */
+
+#ifdef USE_NOTMUCH
+{ "virtual_spool_file", DT_BOOL, false },
+/*
+** .pp
+** When \fIset\fP, NeoMutt will use the first Notmuch virtual mailbox as a
+** spool file.
+*/
+#endif
 
 { "wait_key", DT_BOOL, true },
 /*

@@ -99,8 +99,8 @@ configuration settings to different IMAP or POP servers.
 .
 .PP
 .nf
-\fBalias\fP [ \fB\-group\fP \fIname\fP ... ] \fIkey\fP \fIaddress\fP [\fB,\fP \fIaddress\fP ... ]
-\fBunalias\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fIkey\fP ... }
+\fBalias\fP [ \fB\-group\fP \fIname\fP ... ] \fIkey\fP \fIaddress\fP [\fB,\fP \fIaddress\fP ... ] [ \fB#\fP [ \fIcomments\fP ] [ \fBtags:\fP... ]]
+\fBunalias\fP { \fB*\fP | \fIkey\fP ... }
 .fi
 .IP
 \fBalias\fP defines a surrogate \fIkey\fP for the given address(es). Each
@@ -139,17 +139,17 @@ to be added to the \fIname\fPd group.
 .
 .PP
 .nf
-\fBalternative_order\fP \fImime-type\fP[/\fImime-subtype\fP] [ \fImime-type\fP[/\fImime-subtype\fP] ... ]
-\fBunalternative_order\fP { \fB*\fP | \fImime-type\fP[/\fImime-subtype\fP] ... }
+\fBalternative-order\fP \fImime-type\fP[/\fImime-subtype\fP] [ \fImime-type\fP[/\fImime-subtype\fP] ... ]
+\fBunalternative-order\fP { \fB*\fP | \fImime-type\fP[/\fImime-subtype\fP] ... }
 .fi
 .IP
-\fBalternative_order\fP command permits you to define an order of preference
+\fBalternative-order\fP command permits you to define an order of preference
 that is used by NeoMutt to determine which part of
 a \fBmultipart/\:alternative\fP body to display. A \fImime-subtype\fP of
 \(lq\fB*\fP\(rq matches any \fBmultipart/\:alternative\fP subtype, as does an
 empty \fImime-subtype\fP.
 .IP
-\fBunalternative_order\fP removes entries from the ordered list or deletes the
+\fBunalternative-order\fP removes entries from the ordered list or deletes the
 entire list when \(lq\fB*\fP\(rq is used as an argument.
 .
 .PP
@@ -193,8 +193,8 @@ attachment settings.
 .
 .PP
 .nf
-\fBauto_view\fP \fImime-type\fP[\fB/\fP\fImime-subtype\fP] [ \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
-\fBunauto_view\fP { \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... }
+\fBauto-view\fP \fImime-type\fP[\fB/\fP\fImime-subtype\fP] [ \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
+\fBunauto-view\fP { \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... }
 .fi
 .IP
 This commands permits you to specify that NeoMutt should automatically convert
@@ -448,16 +448,23 @@ limit the display to messages matching a group.
 .
 .PP
 .nf
-\fBhdr_order\fP \fIheader\fP [ \fIheader\fP ... ]
-\fBunhdr_order\fP { \fB*\fP | \fIheader\fP ... }
+\fBheader-order\fP \fIheader\fP [ \fIheader\fP ... ]
+\fBunheader-order\fP { \fB*\fP | \fIheader\fP ... }
 .fi
 .IP
-With the \fBhdr_order\fP command you can specify an order in which NeoMutt will
+With the \fBheader-order\fP command you can specify an order in which NeoMutt will
 attempt to present these headers to you when viewing messages.
 .IP
-\(lq\fBunhdr_order\~*\fP\(rq will clear all previous headers from the order
+\(lq\fBunheader-order\~*\fP\(rq will clear all previous headers from the order
 list, thus removing the header order effects set by the system-wide startup
 file.
+.
+.PP
+.nf
+\fBhooks\fP
+.fi
+.IP
+This information command will show a list of all the hooks that you have defined.
 .
 .PP
 .nf
@@ -532,6 +539,15 @@ list of subscribed mailing lists.
 The \fB\-group\fP flag adds all of the subsequent regular expressions to the
 \fIname\fPd group.
 .
+
+.PP
+.nf
+\fBlua\fP \fIlua-command\fP
+\fBlua-source\fP \fIfilename\fP
+.fi
+.IP
+These commands allow you to run Lua scripts within NeoMutt.
+.
 .PP
 .nf
 \fBmacro\fP \fImenu\fP[\fB,\fP\fImenu\fP ... ] \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
@@ -571,14 +587,14 @@ name, the list is emptied.
 .
 .PP
 .nf
-\fBmailto_allow\fP { \fB*\fP | \fIheader-field\fP ... }
-\fBunmailto_allow\fP { \fB*\fP | \fIheader-field\fP ... }
+\fBmailto-allow\fP { \fB*\fP | \fIheader-field\fP ... }
+\fBunmailto-allow\fP { \fB*\fP | \fIheader-field\fP ... }
 .fi
 .IP
 As a security measure, NeoMutt will only add user-approved \fIheader-field\fPs
 from a \fImailto:\fP URL. This is necessary since NeoMutt will handle certain
 \fIheader-field\fPs, such as \fBAttach\fP, in a special way. The
-\fBmailto_allow\fP and \fBunmailto_allow\fP commands allow the user to modify
+\fBmailto-allow\fP and \fBunmailto-allow\fP commands allow the user to modify
 the list of approved headers.
 .IP
 NeoMutt initializes the default list to contain only the \fBSubject\fP and
@@ -591,7 +607,7 @@ Prints \fImessage\fP to the message window. After printing the
 message, echo will pause for the number of seconds specified by
 $sleep_time.
 .TP
-\fBcd\fP \fIdirectory\fP
+\fBcd\fP [ \fIdirectory\fP ]
 Changes the current working directory.
 .
 .PP
@@ -624,8 +640,8 @@ which they occur in the configuration file.
 .
 .PP
 .nf
-\fBmime_lookup\fP \fImime-type\fP[\fB/\fP\fImime-subtype\fP] [ \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
-\fBunmime_lookup\fP { \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... }
+\fBmime-lookup\fP \fImime-type\fP[\fB/\fP\fImime-subtype\fP] [ \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
+\fBunmime-lookup\fP { \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... }
 .fi
 .IP
 This command permits you to define a list of \(lqdata\(rq MIME content types
@@ -635,7 +651,7 @@ name, and not use a
 entry given for the original MIME type. For instance, you may add the
 \fBapplication/\:octet-stream\fP MIME type to this list.
 .IP
-In addition, the \fBunmime_lookup\fP command may be used to disable this
+In addition, the \fBunmime-lookup\fP command may be used to disable this
 feature for any particular MIME type if it had been set, for example in
 a global \fIneomuttrc\fP.
 .
@@ -652,12 +668,12 @@ attributes to objects.
 .
 .PP
 .nf
-\fBmy_hdr\fP \fIstring\fP
-\fBunmy_hdr\fP { \fB*\fP | \fIfield\fP ... }
+\fBmy-header\fP \fIstring\fP
+\fBunmy-header\fP { \fB*\fP | \fIfield\fP ... }
 .fi
 .IP
-Using \fBmy_hdr\fP, you can define headers which will be added to the messages
-you compose. \fBunmy_hdr\fP will remove the given user-defined headers.
+Using \fBmy-header\fP, you can define headers which will be added to the messages
+you compose. \fBunmy-header\fP will remove the given user-defined headers.
 .
 .PP
 .nf
@@ -743,12 +759,12 @@ the list of all score entries.
 .
 .PP
 .nf
-\fBset\fP { [ \fBno\fP | \fBinv\fP | \fB&\fP | \fB?\fP ]\fIvariable\fP } [ ... ]
+\fBset\fP { [ \fBno\fP | \fBinv\fP | \fB&\fP ]\fIvariable\fP } [ ... ]
 \fBset\fP { \fIvariable\fP=\fIvalue\fP | \fIvariable+=increment\fP | \fIvariable-=decrement\fP } [ ... ]
 \fBunset\fP \fIvariable\fP  [ \fIvariable\fP ... ]
 \fBreset\fP \fIvariable\fP  [ \fIvariable\fP ... ]
 \fBtoggle\fP \fIvariable\fP [ \fIvariable\fP ... ]
-\fBset\fP \fIvariable\fP \fB?\fP
+\fBset\fP \fIvariable\fP\fB?\fP
 .fi
 .IP
 These commands are used to set and manipulate configuration \fIvariable\fPs.
@@ -820,17 +836,17 @@ all the environment variables.
 .
 .PP
 .nf
-\fBsidebar_pin\fP \fImailbox\fP [ \fImailbox\fP ...]
-\fBsidebar_unpin\fP { \fB*\fP | \fImailbox\fP ... }
+\fBsidebar-pin\fP \fImailbox\fP [ \fImailbox\fP ...]
+\fBsidebar-unpin\fP { \fB*\fP | \fImailbox\fP ... }
 .fi
 .IP
-The \fBsidebar_pin\fP command specifies \fImailbox\fPes that will always
+The \fBsidebar-pin\fP command specifies \fImailbox\fPes that will always
 be displayed in the sidebar, even if $sidebar_new_mail_only is set and the
 \fImailbox\fP does not contain new mail.
 .IP
-The \fBsidebar_unpin\fP command is used to remove a \fImailbox\fP from
+The \fBsidebar-unpin\fP command is used to remove a \fImailbox\fP from
 the list of always displayed \fImailbox\fPes. Use
-\(lq\fBsidebar_unpin\~*\fP\(rq to remove all \fImailbox\fPes.
+\(lq\fBsidebar-unpin\~*\fP\(rq to remove all \fImailbox\fPes.
 .
 .PP
 .nf
@@ -934,6 +950,18 @@ run the \fBshutdown-hook\fP for the given \fIcommand\fP.
 .
 .PP
 .nf
+\fBtag-formats\fP \fItag\fP \fIformat-string\fP [\fItag\fP \fIformat-string\fP ... ]
+\fBtag-transforms\fP \fItag\fP \fItransformed-string\fP [\fItag\fP \fItransformed-string\fP ... ]
+.fi
+.IP
+These commands allow you to define custom tag display.
+.IP
+\fBtag-formats\fP defines custom expandos for the Index and
+\fBtag-transforms\fP defines rules to transform tags into icons.
+For more info, see https://neomutt.org/feature/custom-tags
+.
+.PP
+.nf
 \fBunhook\fP { \fB*\fP | \fIhook-type\fP }
 .fi
 .IP
@@ -941,6 +969,15 @@ This command permits you to flush hooks you have previously defined. You can
 either remove all hooks by giving the \(lq\fB*\fP\(rq character as an argument,
 or you can remove all hooks of a specific \fIhook-type\fP by saying something
 like \(lq\fBunhook\fP\~\fIsend-hook\fP\(rq.
+.
+.PP
+.nf
+\fBversion\fP
+.fi
+.IP
+Running the version command will display full
+information about NeoMutt \(em its version; which features are built
+in; its build parameters.
 .
 .\" --------------------------------------------------------------------
 .SH PATTERNS
@@ -1425,7 +1462,7 @@ identical plus and minus error margins.
 .\".PP
 .\".
 .TS
-allbox center tab(|);
+allbox tab(|);
 lb c c c c
 lb l l l l .
 \0Date Unit|d|w|m|y
@@ -1433,7 +1470,7 @@ lb l l l l .
 .TE
 .
 .TS
-allbox center tab(|);
+allbox tab(|);
 lb c c c
 lb l l l .
 \0Date Unit|S|M|H
