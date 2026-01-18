@@ -44,7 +44,7 @@ const struct Command test_commands[] = {
 
 static const struct CommandTest IfdefTests[] = {
   // clang-format off
-  // ifdef <symbol> "<config-command> [ <args> ... ]"
+  // ifdef  <symbol> '<config-command> [ <args> ... ]'
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_WARNING, "folder" },
   { MUTT_CMD_SUCCESS, "folder echo variable" },
@@ -60,7 +60,7 @@ static const struct CommandTest IfdefTests[] = {
 
 static const struct CommandTest IfndefTests[] = {
   // clang-format off
-  // ifndef <symbol> "<config-command> [ <args> ... ]"
+  // ifndef <symbol> '<config-command> [ <args> ... ]'
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_WARNING, "folder" },
   { MUTT_CMD_SUCCESS, "folder echo variable" },

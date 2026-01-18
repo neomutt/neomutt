@@ -52,7 +52,7 @@ bool lua_init_state(lua_State **l);
  * parse_lua - Parse the 'lua' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `lua "<lua-commands>"`
+ * - `lua <lua-command>`
  */
 enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
 {
@@ -92,7 +92,7 @@ done:
  * parse_lua_source - Parse the 'lua-source' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `lua-source <file>`
+ * - `lua-source <filename>`
  */
 enum CommandResult parse_lua_source(const struct Command *cmd,
                                     struct Buffer *line, struct Buffer *err)
@@ -145,12 +145,12 @@ const struct Command LuaCommands[] = {
   // clang-format off
   { "lua", CMD_LUA, parse_lua, CMD_NO_DATA,
         N_("Run a Lua expression or call a Lua function"),
-        N_("lua '<lua-commands>'"),
-        "optionalfeatures.html#lua-commands" },
+        N_("lua <lua-command>"),
+        "optionalfeatures.html#lua" },
   { "lua-source", CMD_LUA_SOURCE, parse_lua_source, CMD_NO_DATA,
         N_("Execute a Lua script file"),
-        N_("lua-source <file>"),
-        "optionalfeatures.html#lua-commands" },
+        N_("lua-source <filename>"),
+        "optionalfeatures.html#lua" },
 
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on

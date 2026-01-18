@@ -36,7 +36,7 @@ static const struct Command Bind = { "bind", CMD_BIND, NULL, CMD_NO_DATA };
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // bind map [ ,map ...] key function
+  // bind <map>[,<map> ... ] <key> <function>
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "index j next-undeleted" },
   { MUTT_CMD_SUCCESS, "index,pager s sidebar-toggle-visible" },

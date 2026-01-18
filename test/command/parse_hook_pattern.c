@@ -58,7 +58,7 @@ static const struct CommandTest MessageTests[] = {
 
 static const struct CommandTest ReplyTests[] = {
   // clang-format off
-  // reply-hook <pattern> <command>
+  // reply-hook   <pattern> <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, ". 'set from=\"Dave Jones <dave@jones.com>\"'" },
   { MUTT_CMD_SUCCESS, "'~s neomutt' 'set signature=\"~/.sig\"'" },
@@ -68,7 +68,7 @@ static const struct CommandTest ReplyTests[] = {
 
 static const struct CommandTest SendTests[] = {
   // clang-format off
-  // send-hook <pattern> <command>
+  // send-hook    <pattern> <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "~A 'set signature=\"~/.sig\"'" },
   { MUTT_CMD_ERROR,   NULL },
@@ -77,7 +77,7 @@ static const struct CommandTest SendTests[] = {
 
 static const struct CommandTest Send2Tests[] = {
   // clang-format off
-  // send2-hook <pattern> <command>
+  // send2-hook   <pattern> <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'~s neomutt' 'my-header X-Custom: hello world'" },
   { MUTT_CMD_ERROR,   NULL },

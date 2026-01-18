@@ -165,8 +165,8 @@ bool mailbox_add_simple(const char *mailbox, struct Buffer *err)
  * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]`
- * - `named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]`
+ * - `mailboxes [[ -label <label> ] | -nolabel ] [ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> [ ... ]`
+ * - `named-mailboxes [ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> [ ... ]`
  */
 enum CommandResult parse_mailboxes(const struct Command *cmd,
                                    struct Buffer *line, struct Buffer *err)

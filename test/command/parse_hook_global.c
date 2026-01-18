@@ -47,7 +47,7 @@ static const struct CommandTest ShutdownTests[] = {
 
 static const struct CommandTest StartupTests[] = {
   // clang-format off
-  // startup-hook <command>
+  // startup-hook  <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'exec sync-mailbox'" },
   { MUTT_CMD_ERROR,   NULL },
@@ -56,7 +56,7 @@ static const struct CommandTest StartupTests[] = {
 
 static const struct CommandTest TimeoutTests[] = {
   // clang-format off
-  // timeout-hook <command>
+  // timeout-hook  <command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'exec sync-mailbox'" },
   { MUTT_CMD_ERROR,   NULL },

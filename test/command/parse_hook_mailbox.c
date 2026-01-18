@@ -46,7 +46,7 @@ static const struct Command SaveHook    = { "save-hook",     CMD_SAVE_HOOK,     
 
 static const struct CommandTest FccTests[] = {
   // clang-format off
-  // fcc-hook <pattern> <mailbox>
+  // fcc-hook      <pattern> <mailbox>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "[@.]aol\\.com$ +spammers" },
   { MUTT_CMD_ERROR,   NULL },
@@ -64,7 +64,7 @@ static const struct CommandTest FccSaveTests[] = {
 
 static const struct CommandTest SaveTests[] = {
   // clang-format off
-  // save-hook <pattern> <mailbox>
+  // save-hook     <pattern> <mailbox>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'~f root@localhost' =Temp/rootmail" },
   { MUTT_CMD_ERROR,   NULL },

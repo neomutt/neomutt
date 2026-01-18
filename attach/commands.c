@@ -479,7 +479,8 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
  * parse_attachments - Parse the 'attachments' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?`
+ * - `attachments { + | - }<disposition> <mime-type> [ <mime-type> ...]`
+ * - `attachments ?`
  */
 enum CommandResult parse_attachments(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
@@ -551,7 +552,8 @@ done:
  * parse_unattachments - Parse the 'unattachments' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unattachments { * | { + | - }<disposition> <mime-type> [ <mime-type> ... ] }`
+ * - `unattachments { + | - } disposition mime-type [ mime-type ...]`
+ * - `unattachments *`
  */
 enum CommandResult parse_unattachments(const struct Command *cmd,
                                        struct Buffer *line, struct Buffer *err)

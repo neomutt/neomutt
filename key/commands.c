@@ -635,8 +635,8 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
  * parse_unbind - Parse the 'unbind' and 'unmacro' commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `unbind { * | <menu>[,<menu> ... ] } [ <key> ]`
- * - `unmacro { * | <menu>[,<menu> ... ] } [ <key> ]`
+ * - `unbind { * | <map>[,<map> ... ] } [ <key> ]`
+ * - `unmacro { * | <map>[,<map> ... ] } [ <key> ]`
  */
 enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -660,7 +660,7 @@ done:
  * parse_macro - Parse the 'macro' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]`
+ * - `macro <map>[,<map> ... ] <key> <sequence> [ <description> ]`
  */
 enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)

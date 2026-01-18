@@ -41,7 +41,7 @@ static const struct Command UnMacro = { "unmacro", CMD_UNMACRO, NULL, CMD_NO_DAT
 
 static const struct CommandTest UnBindTests[] = {
   // clang-format off
-  // unbind { * | <menu>[,<menu> ... ] } [ <key> ]
+  // unbind { * | <map>[,<map> ... ] } [ <key> ]
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_SUCCESS, "* d" },
   { MUTT_CMD_SUCCESS, "* missing" },
@@ -66,7 +66,7 @@ static const struct CommandTest UnBindTests[] = {
 
 static const struct CommandTest UnMacroTests[] = {
   // clang-format off
-  // unmacro { * | <menu>[,<menu> ... ] } [ <key> ]
+  // unmacro { * | <map>[,<map> ... ] } [ <key> ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "index eee" },
   { MUTT_CMD_SUCCESS, "index nn" },

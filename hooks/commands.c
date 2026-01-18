@@ -57,7 +57,7 @@ const struct Command HooksCommands[] = {
         N_("fcc-hook <pattern> <mailbox>"),
         "configuration.html#default-save-mailbox" },
   { "fcc-save-hook", CMD_FCC_SAVE_HOOK, parse_hook_mailbox, CMD_NO_DATA,
-        N_("Equivalent to both 'fcc-hook' and 'save-hook'"),
+        N_("Equivalent to both `fcc-hook` and `save-hook`"),
         N_("fcc-save-hook <pattern> <mailbox>"),
         "configuration.html#default-save-mailbox" },
   { "folder-hook", CMD_FOLDER_HOOK, parse_hook_folder, CMD_NO_DATA,
@@ -70,7 +70,7 @@ const struct Command HooksCommands[] = {
         "configuration.html#charset-hook" },
   { "index-format-hook", CMD_INDEX_FORMAT_HOOK, parse_hook_index, CMD_NO_DATA,
         N_("Create dynamic index format strings"),
-        N_("index-format-hook <name> [ ! ]<pattern> <format-string>"),
+        N_("index-format-hook <name> [!]<pattern> <format-string>"),
         "configuration.html#index-format-hook" },
   { "mbox-hook", CMD_MBOX_HOOK, parse_hook_mbox, CMD_NO_DATA,
         N_("On leaving a mailbox, move read messages matching a regex"),
@@ -116,7 +116,7 @@ const struct Command HooksCommands[] = {
   { "hooks", CMD_HOOKS, parse_hooks, CMD_NO_DATA,
         N_("Show a list of all the hooks"),
         N_("hooks"),
-        "configuration.html#hooks" },
+        "advancedusage.html#hooks" },
 
   // Deprecated
   { "pgp-hook", CMD_NONE, NULL, IP "crypt-hook", NULL, NULL, NULL, CF_SYNONYM },

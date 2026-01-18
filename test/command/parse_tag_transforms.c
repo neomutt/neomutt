@@ -36,7 +36,7 @@ static const struct Command TagTransformsCmd = { "tag-transforms", CMD_TAG_TRANS
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // tag-transforms <tag> <transformed-string> { tag transformed-string ... }
+  // tag-transforms <tag> <transformed-string> [ <tag> <transformed-string> ... ]}
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'inbox' 'i'" },
   { MUTT_CMD_SUCCESS, "'replied' '↻ ' 'sent' '➥ '" },

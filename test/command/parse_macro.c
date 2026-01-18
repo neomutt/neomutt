@@ -36,7 +36,7 @@ static const struct Command Macro = { "macro", CMD_MACRO, NULL, CMD_NO_DATA };
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // macro <menu>[,<menu> ... ] <key> <sequence> [ <description> ]
+  // macro <map>[,<map> ... ] <key> <sequence> [ <description> ]
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "index eee '<enter-function>echo<enter>'" },
   { MUTT_CMD_SUCCESS, "index nn  '<next-line><next-page>'" },

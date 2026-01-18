@@ -34,7 +34,7 @@ static const struct Command Alternates = { "alternates", CMD_ALTERNATES, NULL, C
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // alternates [ -group name ...] regex [ regex ...]
+  // alternates [ -group <name> ... ] <regex> [ <regex> ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'^john.*@example\\.com'" },
   { MUTT_CMD_SUCCESS, "'^smith.*@example\\.com' '^js@.*\\.example\\.com'" },

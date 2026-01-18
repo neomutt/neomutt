@@ -42,7 +42,7 @@ const struct Command source_test_commands[] = {
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // source <filename>
+  // source <filename> [ <filename> ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "%s/source/test.rc" },
   { MUTT_CMD_ERROR,   NULL },

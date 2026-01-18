@@ -35,7 +35,7 @@ static const struct Command LuaSource = { "lua-source", CMD_LUA_SOURCE, NULL, CM
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // lua-source <file>
+  // lua-source <filename>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "%s/lua/test.lua" },
   { MUTT_CMD_ERROR,   NULL },

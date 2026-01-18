@@ -38,7 +38,7 @@ static const struct Command OpenHook   = { "open-hook",   CMD_OPEN_HOOK,   NULL 
 
 static const struct CommandTest AppendTests[] = {
   // clang-format off
-  // append-hook <regex> "<shell-command>"
+  // append-hook <regex> <shell-command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'\\.gz$' \"gzip --stdout              '%t' >> '%f'\"" },
   { MUTT_CMD_ERROR,   NULL },
@@ -47,7 +47,7 @@ static const struct CommandTest AppendTests[] = {
 
 static const struct CommandTest CloseTests[] = {
   // clang-format off
-  // close-hook <regex> "<shell-command>"
+  // close-hook  <regex> <shell-command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'\\.gz$' \"gzip --stdout              '%t' >  '%f'\"" },
   { MUTT_CMD_ERROR,   NULL },
@@ -56,7 +56,7 @@ static const struct CommandTest CloseTests[] = {
 
 static const struct CommandTest OpenTests[] = {
   // clang-format off
-  // open-hook <regex> "<shell-command>"
+  // open-hook   <regex> <shell-command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'\\.gz$' \"gzip --stdout --decompress '%f' >  '%t'\"" },
   { MUTT_CMD_ERROR,   NULL },

@@ -132,7 +132,7 @@ void parse_alias_comments(struct Alias *alias, const char *com)
  * e.g. "alias jim James Smith <js@example.com> # Pointy-haired boss"
  *
  * Parse:
- * - `alias [ -group <name> ... ] <key> <address> [, <address> ... ]`
+ * - `alias [ -group <name> ... ] <key> <address> [, <address> ...] [ # [ <comments> ] [ tags:... ]]`
  */
 enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)

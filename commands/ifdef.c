@@ -83,8 +83,8 @@ static bool is_color_object(const char *name)
  *      ifdef sidebar source ~/.neomutt/sidebar.rc
  *
  * Parse:
- * - `ifdef <symbol> "<config-command> [ <args> ... ]"`
- * - `ifndef <symbol> "<config-command> [ <args> ... ]"`
+ * - `ifdef  <symbol> '<config-command> [ <args> ... ]'`
+ * - `ifndef <symbol> '<config-command> [ <args> ... ]'`
  */
 enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)

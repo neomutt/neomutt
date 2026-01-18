@@ -34,7 +34,9 @@ static const struct Command Color = { "color", CMD_COLOR, NULL, CMD_NO_DATA };
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]
+  // color object [ attribute ...] foreground background
+  // color index [ attribute ...] foreground background [ pattern ]
+  // color { header | body } [ attribute ...] foreground background regex
   { MUTT_CMD_SUCCESS, "" },
   { MUTT_CMD_SUCCESS, "error bold red white" },
   { MUTT_CMD_SUCCESS, "warning color216 color15" },

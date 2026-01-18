@@ -49,7 +49,7 @@
  * @note This maps format -> tag
  *
  * Parse:
- * - `tag-formats <tag> <format-string> { tag format-string ...  }`
+ * - `tag-formats <tag> <format-string> [ <tag> <format-string> ... ] }`
  */
 enum CommandResult parse_tag_formats(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
@@ -95,7 +95,7 @@ enum CommandResult parse_tag_formats(const struct Command *cmd,
  * @note This maps tag -> transform
  *
  * Parse:
- * - `tag-transforms <tag> <transformed-string> { tag transformed-string ... }`
+ * - `tag-transforms <tag> <transformed-string> [ <tag> <transformed-string> ... ]}`
  */
 enum CommandResult parse_tag_transforms(const struct Command *cmd,
                                         struct Buffer *line, struct Buffer *err)

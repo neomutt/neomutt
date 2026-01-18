@@ -210,7 +210,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
  * parse_source - Parse the 'source' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `source <filename>`
+ * - `source <filename> [ <filename> ... ]`
  */
 enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)

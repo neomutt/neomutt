@@ -44,7 +44,7 @@ static struct ConfigDef Vars[] = {
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // alias [ -group name ...] key address [ , address ...] [ # [ comments ] [ tags:... ]]
+  // alias [ -group <name> ... ] <key> <address> [, <address> ...] [ # [ <comments> ] [ tags:... ]]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_ERROR,   "js" },
   { MUTT_CMD_SUCCESS, "js1 'John Smith <js@example.com>'" },

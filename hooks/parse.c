@@ -1038,7 +1038,7 @@ static void delete_idxfmt_hooks(void)
  * parse_hook_index - Parse the index format hook command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `index-format-hook <name> [ ! ]<pattern> <format-string>`
+ * - `index-format-hook <name> [!]<pattern> <format-string>`
  */
 enum CommandResult parse_hook_index(const struct Command *cmd,
                                     struct Buffer *line, struct Buffer *err)

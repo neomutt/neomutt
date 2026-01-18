@@ -35,6 +35,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -58,8 +59,10 @@ static int envlist_sort(const void *a, const void *b, void *sdata)
  * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `setenv { <variable>? | <variable> <value> }`
+ * - `setenv { <variable>? | <variable>=<value> }`
  * - `unsetenv <variable>`
+ *
+ * Note: Also accepts the old syntax: `setenv <variable> <value>`
  */
 enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)
@@ -137,6 +140,27 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
   /* get variable name */
   parse_extract_token(token, line, TOKEN_EQUAL | TOKEN_QUESTION);
 
+  /* Validate variable name: must match [_a-zA-Z][_a-zA-Z0-9]* */
+  const char *name = buf_string(token);
+  if (!buf_is_empty(token))
+  {
+    /* First character must be a letter or underscore */
+    if (!isalpha(name[0]) && (name[0] != '_'))
+    {
+      buf_printf(err, _("%s: invalid variable name '%s'"), cmd->name, name);
+      goto done;
+    }
+    /* Subsequent characters must be letter, digit, or underscore */
+    for (size_t i = 1; name[i] != '\0'; i++)
+    {
+      if (!isalpha(name[i]) && !mutt_isdigit(name[i]) && (name[i] != '_'))
+      {
+        buf_printf(err, _("%s: invalid variable name '%s'"), cmd->name, name);
+        goto done;
+      }
+    }
+  }
+
   if (*line->dptr == '?')
   {
     if (unset)
@@ -186,11 +210,8 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
 
   if (unset)
   {
-    if (envlist_unset(&NeoMutt->env, buf_string(token)))
-      rc = MUTT_CMD_SUCCESS;
-    else
-      buf_printf(err, _("%s is unset"), buf_string(token));
-
+    envlist_unset(&NeoMutt->env, buf_string(token));
+    rc = MUTT_CMD_SUCCESS;
     goto done;
   }
 

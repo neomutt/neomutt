@@ -500,7 +500,9 @@ enum CommandResult parse_unmono(const struct Command *cmd, struct Buffer *line,
  * parse_color - Parse the 'color' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `color <object> [ <attribute> ... ] <foreground> <background> [ <regex> [ <num> ]]`
+ * - `color object [ attribute ...] foreground background`
+ * - `color index [ attribute ...] foreground background [ pattern ]`
+ * - `color { header | body } [ attribute ...] foreground background regex`
  */
 enum CommandResult parse_color(const struct Command *cmd, struct Buffer *line,
                                struct Buffer *err)
