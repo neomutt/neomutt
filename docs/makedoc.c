@@ -76,6 +76,18 @@ int fd_recurse = 0;
 
 #define BUFSIZE 2048
 
+/* Table buffering for man page multi-column tables */
+#define MAX_TABLE_ROWS 256
+#define MAX_TABLE_COLS 8
+#define MAX_CELL_SIZE 1024
+
+static char TableCells[MAX_TABLE_ROWS][MAX_TABLE_COLS][MAX_CELL_SIZE];
+static int TableRowCount = 0;
+static int TableColCount = 0;
+static int CurrentRow = -1;
+static int CurrentCol = -1;
+static bool InManTable = false;
+
 // clang-format off
 #define D_NL    (1 <<  0)
 #define D_EM    (1 <<  1)
@@ -313,6 +325,170 @@ static int sgml_fputs(const char *s, FILE *fp_out)
   return 0;
 }
 
+/**
+ * man_table_init - Initialize the table buffer for man page output
+ */
+static void man_table_init(void)
+{
+  TableRowCount = 0;
+  TableColCount = 0;
+  CurrentRow = -1;
+  CurrentCol = -1;
+  InManTable = true;
+  memset(TableCells, 0, sizeof(TableCells));
+}
+
+/**
+ * man_table_start_row - Start a new row in the table
+ */
+static void man_table_start_row(void)
+{
+  if (TableRowCount < MAX_TABLE_ROWS)
+  {
+    CurrentRow = TableRowCount++;
+    CurrentCol = 0;
+  }
+  else
+  {
+    fprintf(stderr, "%s: Warning: Table has too many rows (max %d)\n",
+            Progname, MAX_TABLE_ROWS);
+  }
+}
+
+/**
+ * man_table_next_col - Move to the next column in the current row
+ */
+static void man_table_next_col(void)
+{
+  if (CurrentRow >= 0 && CurrentCol < MAX_TABLE_COLS - 1)
+  {
+    CurrentCol++;
+    if (CurrentCol + 1 > TableColCount)
+      TableColCount = CurrentCol + 1;
+  }
+  else if (CurrentRow >= 0)
+  {
+    fprintf(stderr, "%s: Warning: Table row has too many columns (max %d)\n",
+            Progname, MAX_TABLE_COLS);
+  }
+}
+
+/**
+ * man_table_append - Append text to the current cell
+ * @param str String to append
+ */
+static void man_table_append(const char *str)
+{
+  if (CurrentRow < 0 || CurrentCol < 0)
+    return;
+
+  char *cell = TableCells[CurrentRow][CurrentCol];
+  size_t len = strlen(cell);
+  size_t slen = strlen(str);
+  size_t avail = MAX_CELL_SIZE - 1 - len;
+
+  if (slen <= avail)
+  {
+    strcpy(cell + len, str);
+  }
+  else if (avail > 0)
+  {
+    /* Truncate if necessary */
+    strncpy(cell + len, str, avail);
+    cell[MAX_CELL_SIZE - 1] = '\0';
+  }
+}
+
+/**
+ * man_table_append_char - Append a character to the current cell
+ * @param c Character to append
+ */
+static void man_table_append_char(char c)
+{
+  char buf[2] = { c, '\0' };
+  man_table_append(buf);
+}
+
+/**
+ * man_table_output - Output the buffered table as a .TS/.TE table
+ * @param fp_out Output file
+ */
+static void man_table_output(FILE *fp_out)
+{
+  if (TableRowCount == 0 || TableColCount == 0)
+  {
+    InManTable = false;
+    return;
+  }
+
+  /* Check if first row is a header row (contains bold/italic formatting) */
+  bool has_header = false;
+  for (int c = 0; c < TableColCount; c++)
+  {
+    if (strstr(TableCells[0][c], "\\fB") || strstr(TableCells[0][c], "\\fI"))
+    {
+      has_header = true;
+      break;
+    }
+  }
+
+  /* Output table header */
+  fputs(".TS\nbox;\n", fp_out);
+
+  if (has_header)
+  {
+    /* Output format line for header row (bold) */
+    for (int i = 0; i < TableColCount; i++)
+    {
+      fputs("lb", fp_out);
+      if (i < TableColCount - 1)
+        fputc('|', fp_out);
+    }
+    fputs("\n", fp_out);
+  }
+
+  /* Output format line for data rows */
+  for (int i = 0; i < TableColCount; i++)
+  {
+    fputc('l', fp_out);
+    if (i < TableColCount - 1)
+      fputc('|', fp_out);
+  }
+  fputs(" .\n", fp_out);
+
+  /* Output table data */
+  for (int r = 0; r < TableRowCount; r++)
+  {
+    for (int c = 0; c < TableColCount; c++)
+    {
+      /* Trim leading/trailing whitespace from cell */
+      char *cell = TableCells[r][c];
+      char *start = cell;
+      while (*start && isspace((unsigned char)*start))
+        start++;
+
+      char *end = start + strlen(start);
+      while (end > start && isspace((unsigned char)*(end - 1)))
+        end--;
+
+      /* Output cell content (may be empty) */
+      for (char *p = start; p < end; p++)
+        fputc(*p, fp_out);
+
+      if (c < TableColCount - 1)
+        fputc('\t', fp_out);
+    }
+    fputc('\n', fp_out);
+
+    /* Add separator line after first row if it's a header */
+    if (r == 0 && has_header)
+      fputs("_\n", fp_out);
+  }
+
+  fputs(".TE\n", fp_out);
+  InManTable = false;
+}
+
 /* print something. */
 
 static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_out, int docstat)
@@ -447,34 +623,51 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
       {
         case SP_END_FT:
         {
-          fputs("\\fP", fp_out);
+          if (InManTable)
+            man_table_append("\\fP");
+          else
+            fputs("\\fP", fp_out);
           docstat &= ~(D_EM | D_BF | D_TT);
           break;
         }
         case SP_START_BF:
         {
-          fputs("\\fB", fp_out);
+          if (InManTable)
+            man_table_append("\\fB");
+          else
+            fputs("\\fB", fp_out);
           docstat |= D_BF;
           docstat &= ~(D_EM | D_TT);
           break;
         }
         case SP_START_EM:
         {
-          fputs("\\fI", fp_out);
+          if (InManTable)
+            man_table_append("\\fI");
+          else
+            fputs("\\fI", fp_out);
           docstat |= D_EM;
           docstat &= ~(D_BF | D_TT);
           break;
         }
         case SP_START_TT:
         {
-          fputs("\\f[CR]", fp_out);
+          if (InManTable)
+            man_table_append("\\f[CR]");
+          else
+            fputs("\\f[CR]", fp_out);
           docstat |= D_TT;
           docstat &= ~(D_BF | D_EM);
           break;
         }
         case SP_NEWLINE:
         {
-          if (onl)
+          if (InManTable)
+          {
+            /* Don't add newlines within table cells */
+            docstat |= D_NL;
+          }
+          else if (onl)
             docstat |= onl;
           else
           {
@@ -513,26 +706,30 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
         }
         case SP_START_DL:
         {
-          fputs(".RS\n.PD 0\n", fp_out);
+          man_table_init();
           docstat |= D_DL;
           break;
         }
         case SP_DT:
         {
-          fputs(".TP\n", fp_out);
+          if (InManTable)
+            man_table_start_row();
           break;
         }
         case SP_DD:
         {
           if (docstat & D_IL)
             fputs(".TP\n\\(hy ", fp_out);
+          else if (InManTable)
+            man_table_next_col();
           else
             fputs("\n", fp_out);
           break;
         }
         case SP_END_DL:
         {
-          fputs(".RE\n.PD 1", fp_out);
+          if (InManTable)
+            man_table_output(fp_out);
           docstat &= ~D_DL;
           break;
         }
@@ -550,40 +747,81 @@ static int print_it(enum OutputFormats format, int special, char *str, FILE *fp_
         }
         case SP_STR:
         {
-          while (*str)
+          if (InManTable)
           {
+            /* Buffer strings for table output */
             for (; *str; str++)
             {
               if (*str == '"')
               {
-                fputs("\"", fp_out);
+                man_table_append("\"");
               }
               else if (*str == '\\')
               {
-                fputs("\\e", fp_out);
+                man_table_append("\\e");
               }
               else if (*str == '-')
               {
-                fputs("\\-", fp_out);
+                man_table_append("\\-");
               }
               else if (strncmp(str, "e.g.", 4) == 0)
               {
-                fputs("e.g.\\&", fp_out);
+                man_table_append("e.g.\\&");
                 str += 3;
               }
               else if (strncmp(str, "``", 2) == 0)
               {
-                fputs("\\(lq", fp_out);
+                man_table_append("\\(lq");
                 str++;
               }
               else if (strncmp(str, "''", 2) == 0)
               {
-                fputs("\\(rq", fp_out);
+                man_table_append("\\(rq");
                 str++;
               }
               else
               {
-                fputc(*str, fp_out);
+                man_table_append_char(*str);
+              }
+            }
+          }
+          else
+          {
+            while (*str)
+            {
+              for (; *str; str++)
+              {
+                if (*str == '"')
+                {
+                  fputs("\"", fp_out);
+                }
+                else if (*str == '\\')
+                {
+                  fputs("\\e", fp_out);
+                }
+                else if (*str == '-')
+                {
+                  fputs("\\-", fp_out);
+                }
+                else if (strncmp(str, "e.g.", 4) == 0)
+                {
+                  fputs("e.g.\\&", fp_out);
+                  str += 3;
+                }
+                else if (strncmp(str, "``", 2) == 0)
+                {
+                  fputs("\\(lq", fp_out);
+                  str++;
+                }
+                else if (strncmp(str, "''", 2) == 0)
+                {
+                  fputs("\\(rq", fp_out);
+                  str++;
+                }
+                else
+                {
+                  fputc(*str, fp_out);
+                }
               }
             }
           }
@@ -867,10 +1105,24 @@ static void print_ref(enum OutputFormats format, FILE *fp_out,
   switch (format)
   {
     case F_CONF:
-    case F_MAN:
       if (output_dollar)
         putc('$', fp_out);
       fputs(ref, fp_out);
+      break;
+
+    case F_MAN:
+      if (InManTable)
+      {
+        if (output_dollar)
+          man_table_append("$");
+        man_table_append(ref);
+      }
+      else
+      {
+        if (output_dollar)
+          putc('$', fp_out);
+        fputs(ref, fp_out);
+      }
       break;
 
     case F_SGML:
