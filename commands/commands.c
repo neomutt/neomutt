@@ -119,7 +119,7 @@ const struct Command CommandsCommands[] = {
         "configuration.html#lists" },
   { "mailboxes", CMD_MAILBOXES, parse_mailboxes, CMD_NO_DATA,
         N_("Define a list of mailboxes to watch"),
-        N_("mailboxes [-label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"),
+        N_("mailboxes [ -label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"),
         "configuration.html#mailboxes" },
   { "mailto-allow", CMD_MAILTO_ALLOW, parse_stailq, IP &MailToAllow,
         N_("Permit specific header-fields in mailto URL processing"),
