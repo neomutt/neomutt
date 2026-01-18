@@ -37,7 +37,7 @@ static const struct Command UnSetenv = { "unsetenv", CMD_UNSETENV, NULL, CMD_NO_
 
 static const struct CommandTest SetenvTests[] = {
   // clang-format off
-  // setenv { <variable>? | <variable> <value> }
+  // setenv { <variable>? | <variable>=<value> }
   { MUTT_CMD_SUCCESS, "" },
   // Old syntax: variable name followed by value (space-separated)
   { MUTT_CMD_SUCCESS, "ORGANIZATION 'The NeoMutt Development Team'" },

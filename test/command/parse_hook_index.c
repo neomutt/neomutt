@@ -36,7 +36,7 @@ static const struct Command IndexFormatHook = { "index-format-hook",
 
 static struct ConfigDef Vars[] = {
   // clang-format off
-  // index-format-hook <name> [ ! ]<pattern> <format-string>
+  // index-format-hook <name> [!]<pattern> <format-string>
   { "default_hook", DT_STRING, IP "~f %s !~P | (~P ~C %s)", 0, NULL, },
   { NULL },
   // clang-format on

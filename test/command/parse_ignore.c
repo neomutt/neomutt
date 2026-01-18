@@ -34,7 +34,7 @@ static const struct Command Ignore = { "ignore", CMD_IGNORE, NULL, CMD_NO_DATA }
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // ignore { * | <string> ... }
+  // ignore <string> [ <string> ...]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "*" },
   { MUTT_CMD_SUCCESS, "delivered-to" },

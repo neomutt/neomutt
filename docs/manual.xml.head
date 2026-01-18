@@ -4796,7 +4796,7 @@ bind index gg first-entry
       <para>Usage:</para>
       <cmdsynopsis>
         <command>cd</command>
-        <arg choice="plain">
+        <arg choice="opt">
           <replaceable class="parameter">directory</replaceable>
         </arg>
       </cmdsynopsis>
@@ -4937,10 +4937,10 @@ folder-hook work "set sort=threads"
       <cmdsynopsis>
         <command>macro</command>
         <arg choice="plain">
-          <replaceable class="parameter">menu</replaceable>
+          <replaceable class="parameter">map</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable class="parameter">,menu</replaceable>
+          <replaceable class="parameter">,map</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">key</replaceable>
@@ -4981,10 +4981,10 @@ folder-hook work "set sort=threads"
         <cmdsynopsis>
           <command>macro</command>
           <arg choice="plain">
-            <replaceable class="parameter">menu</replaceable>
+            <replaceable class="parameter">map</replaceable>
           </arg>
           <arg choice="opt" rep="repeat">
-            <replaceable class="parameter">,menu</replaceable>
+            <replaceable class="parameter">,map</replaceable>
           </arg>
           <arg choice="plain">
             <replaceable class="parameter">key</replaceable>
@@ -4999,13 +4999,13 @@ folder-hook work "set sort=threads"
         <para>
           Macros are useful when you would like a single key to perform a series
           of actions. When you press <emphasis>key</emphasis> in menu
-          <emphasis>menu</emphasis>, NeoMutt will behave as if you had typed
+          <emphasis>map</emphasis>, NeoMutt will behave as if you had typed
           <emphasis>sequence</emphasis>. So if you have a common sequence of
           commands you type, you can create a macro to execute those commands
           with a single key or fewer keys.
         </para>
         <para>
-          <emphasis>menu</emphasis> is the <link linkend="maps">map</link> which
+          <emphasis>map</emphasis> is the <link linkend="maps">map</link> which
           the macro will be bound in. Multiple maps may be specified by
           separating multiple menu arguments by commas. Whitespace may not be
           used in between the menu arguments and the commas separating them.
@@ -5051,10 +5051,10 @@ folder-hook work "set sort=threads"
         <cmdsynopsis>
           <command>unmacro</command>
           <arg choice="plain">
-            <replaceable class="parameter">menu</replaceable>
+            <replaceable class="parameter">map</replaceable>
           </arg>
           <arg choice="opt" rep="repeat">
-            <replaceable class="parameter">,menu</replaceable>
+            <replaceable class="parameter">,map</replaceable>
           </arg>
           <arg choice="plain">
             <replaceable class="parameter">key</replaceable>
@@ -5064,7 +5064,7 @@ folder-hook work "set sort=threads"
          </arg>
         </cmdsynopsis>
         <para>
-          <emphasis>menu</emphasis> specifies from which menus the macro
+          <emphasis>map</emphasis> specifies from which menus the macro
           should be removed.  Multiple menus may be specified by separating them
           with commas (no additional whitespace is allowed).  If
           <literal>*</literal> is given, then the macro is removed from
@@ -5079,7 +5079,7 @@ folder-hook work "set sort=threads"
         <note>
           <para>
             Missing key sequence in unmacro command means unmacro all macros in menus
-            given in <emphasis>menu</emphasis>.
+            given in <emphasis>map</emphasis>.
           </para>
         </note>
       </sect2>
@@ -6282,38 +6282,52 @@ unignore posted-to:
       </para>
       <cmdsynopsis>
         <command>mailboxes</command>
-        <arg choice="opt">
-          <group choice="opt">
-            <arg choice="plain">
-              <option>-label</option>
-              <replaceable>label</replaceable>
-            </arg>
-            <arg choice="plain">
-              <option>-nolabel</option>
-            </arg>
-          </group>
-          <group choice="opt">
-            <arg choice="plain">
-              <option>-notify</option>
-            </arg>
-            <arg choice="plain">
-              <option>-nonotify</option>
-            </arg>
-          </group>
-          <group choice="opt">
-            <arg choice="plain">
-              <option>-poll</option>
-            </arg>
-            <arg choice="plain">
-              <option>-nopoll</option>
-            </arg>
-          </group>
+        <group choice="opt">
           <arg choice="plain">
-            <replaceable class="parameter">mailbox</replaceable>
+            <option>-label</option>
+            <replaceable>label</replaceable>
           </arg>
+          <arg choice="plain">
+            <option>-nolabel</option>
+          </arg>
+        </group>
+        <group choice="opt">
+          <arg choice="plain">
+            <option>-notify</option>
+          </arg>
+          <arg choice="plain">
+            <option>-nonotify</option>
+          </arg>
+        </group>
+        <group choice="opt">
+          <arg choice="plain">
+            <option>-poll</option>
+          </arg>
+          <arg choice="plain">
+            <option>-nopoll</option>
+          </arg>
+        </group>
+        <arg choice="plain">
+          <replaceable class="parameter">mailbox</replaceable>
         </arg>
         <arg choice="opt" rep="repeat"></arg>
         <command>named-mailboxes</command>
+        <group choice="opt">
+          <arg choice="plain">
+            <option>-notify</option>
+          </arg>
+          <arg choice="plain">
+            <option>-nonotify</option>
+          </arg>
+        </group>
+        <group choice="opt">
+          <arg choice="plain">
+            <option>-poll</option>
+          </arg>
+          <arg choice="plain">
+            <option>-nopoll</option>
+          </arg>
+        </group>
         <arg choice="plain">
           <replaceable class="parameter">label</replaceable>
           <arg choice="plain">
@@ -6939,7 +6953,7 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
         <arg choice="plain">
           <replaceable class="parameter">regex</replaceable>
         </arg>
-        <arg choice="plain">
+        <arg choice="opt">
           <replaceable class="parameter">format</replaceable>
         </arg>
         <command>nospam</command>
@@ -7234,11 +7248,11 @@ set spam_separator=", "
                 <arg choice="plain">
                   <option>&amp;</option>
                 </arg>
-                <arg choice="plain">
-                  <option>?</option>
-                </arg>
               </group>
               <replaceable class="parameter">variable</replaceable>
+              <arg choice="opt">
+                <option>?</option>
+              </arg>
             </arg>
           </group>
           <arg choice="opt" rep="repeat"></arg>
@@ -10221,14 +10235,14 @@ ma@yew.com      Murray Abraham  Oscar
         that either is reproduced elsewhere, or is of secondary interest.
       </para>
       <cmdsynopsis>
-        <command>subjectrx</command>
+        <command>subject-regex</command>
         <arg choice="plain">
           <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">replacement</replaceable>
         </arg>
-        <command>unsubjectrx</command>
+        <command>unsubject-regex</command>
         <group choice="req">
           <arg choice="plain">
             <replaceable class="parameter">*</replaceable>
@@ -10238,8 +10252,9 @@ ma@yew.com      Murray Abraham  Oscar
           </arg>
         </group>
       </cmdsynopsis>
+      <note><para>Before 2026-01-13, these commands were called <literal>subjectrx</literal> and <literal>unsubjectrx</literal>.</para></note>
       <para>
-        <literal>subjectrx</literal> specifies a regular expression
+        <literal>subject-regex</literal> specifies a regular expression
         which, if detected in a message subject, causes
         the subject to be replaced with the <quote>replacement</quote> value.
         The replacement is subject to substitutions in the same way as for the
@@ -10247,7 +10262,7 @@ ma@yew.com      Murray Abraham  Oscar
         text to the left of the match, <literal>%R</literal> for text to the
         right of the match, and <literal>%1</literal> for the first subgroup in
         the match (etc). If you simply want to erase the match, set it to
-        <quote>%L%R</quote>. Any number of <literal>subjectrx</literal>
+        <quote>%L%R</quote>. Any number of <literal>subject-regex</literal>
         commands may coexist.
       </para>
       <para>
@@ -10255,21 +10270,21 @@ ma@yew.com      Murray Abraham  Oscar
         entire subject, not just the match!
       </para>
       <para>
-        <literal>unsubjectrx</literal> removes a given subjectrx from the
+        <literal>unsubject-regex</literal> removes a given subject-regex from the
         substitution list. If <literal>*</literal> is used as the argument, all
         substitutions will be removed.
       </para>
-      <example id="ex-subjectrx">
+      <example id="ex-subject-regex">
         <title>Subject Munging</title>
 
 <screen>
 <emphasis role="comment"># Erase [rt #12345] tags from Request Tracker (RT) e-mails</emphasis>
-subjectrx '\[rt #[0-9]+\] *' '%L%R'
+subject-regex '\[rt #[0-9]+\] *' '%L%R'
 <emphasis role="comment"># Servicedesk is another RT that sends more complex subjects.</emphasis>
 <emphasis role="comment"># Keep the ticket number.</emphasis>
-subjectrx '\[servicedesk #([0-9]+)\] ([^.]+)\.([^.]+) - (new|open|pending|update) - ' '%L[#%1] %R'
+subject-regex '\[servicedesk #([0-9]+)\] ([^.]+)\.([^.]+) - (new|open|pending|update) - ' '%L[#%1] %R'
 <emphasis role="comment"># Strip out annoying [listname] prefixes in subjects</emphasis>
-subjectrx '\[[^]]*\]:? *' '%L%R'
+subject-regex '\[[^]]*\]:? *' '%L%R'
 </screen>
 
       </example>
@@ -11831,9 +11846,7 @@ application/postscript; ps2ascii %s; copiousoutput
         Usage:
       </para>
       <cmdsynopsis>
-        <command>
-          <link linkend="alternative-order">alternative-order</link>
-        </command>
+        <command>alternative-order</command>
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
@@ -11848,9 +11861,7 @@ application/postscript; ps2ascii %s; copiousoutput
             <replaceable>/mime-subtype</replaceable>
           </arg>
         </arg>
-        <command>
-          <link linkend="alternative-order">unalternative-order</link>
-        </command>
+        <command>unalternative-order</command>
         <group choice="req">
           <arg choice="plain">*</arg>
           <arg choice="opt" rep="repeat">
@@ -20177,10 +20188,6 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="alias">unalias</link>
             </command>
-            <arg choice="opt" rep="repeat">
-              <option>-group</option>
-              <replaceable>name</replaceable>
-            </arg>
             <group choice="req">
               <arg choice="plain">
                 <replaceable class="parameter">*</replaceable>
@@ -20209,10 +20216,6 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="alternates">unalternates</link>
             </command>
-            <arg choice="opt" rep="repeat">
-              <option>-group</option>
-              <replaceable>name</replaceable>
-            </arg>
             <group choice="req">
               <arg choice="plain">
                 <replaceable>*</replaceable>
@@ -20536,7 +20539,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="echo">echo</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">text</replaceable>
+              <replaceable class="parameter">message</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -20589,6 +20592,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="folder-hook">folder-hook</link>
             </command>
+            <arg choice="opt">
+              <replaceable class="parameter">-noregex</replaceable>
+            </arg>
             <arg choice="plain">
               <replaceable class="parameter">regex</replaceable>
             </arg>
@@ -20824,10 +20830,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="macro">macro</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">menu</replaceable>
+              <replaceable class="parameter">map</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">,menu</replaceable>
+              <replaceable class="parameter">,map</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">key</replaceable>
@@ -20866,24 +20872,66 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="mailboxes">mailboxes</link>
             </command>
+            <group choice="opt">
+              <arg choice="plain">
+                <option>-label</option>
+                <replaceable>label</replaceable>
+              </arg>
+              <arg choice="plain">
+                <option>-nolabel</option>
+              </arg>
+            </group>
+            <group choice="opt">
+              <arg choice="plain">
+                <option>-notify</option>
+              </arg>
+              <arg choice="plain">
+                <option>-nonotify</option>
+              </arg>
+            </group>
+            <group choice="opt">
+              <arg choice="plain">
+                <option>-poll</option>
+              </arg>
+              <arg choice="plain">
+                <option>-nopoll</option>
+              </arg>
+            </group>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
-            <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">mailbox</replaceable>
-            </arg>
+            <arg choice="opt" rep="repeat"></arg>
             <command>
               <link linkend="mailboxes">named-mailboxes</link>
             </command>
-            <arg choice="plain">
-              <replaceable class="parameter">description</replaceable>
-            </arg>
-            <arg choice="plain">
-              <replaceable class="parameter">mailbox</replaceable>
-            </arg>
-            <group choice="opt" rep="repeat">
+            <group choice="opt">
               <arg choice="plain">
-                <replaceable class="parameter">description mailbox</replaceable>
+                <option>-notify</option>
+              </arg>
+              <arg choice="plain">
+                <option>-nonotify</option>
+              </arg>
+            </group>
+            <group choice="opt">
+              <arg choice="plain">
+                <option>-poll</option>
+              </arg>
+              <arg choice="plain">
+                <option>-nopoll</option>
+              </arg>
+            </group>
+            <arg choice="plain">
+              <replaceable class="parameter">label</replaceable>
+              <arg choice="plain">
+                <replaceable class="parameter">mailbox</replaceable>
+              </arg>
+            </arg>
+            <group choice="req" rep="repeat">
+              <arg choice="plain">
+                <replaceable class="parameter">label</replaceable>
+                <arg choice="plain">
+                  <replaceable class="parameter">mailbox</replaceable>
+                </arg>
               </arg>
             </group>
             <command>
@@ -21223,14 +21271,26 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                   <arg choice="plain">
                     <option>&amp;</option>
                   </arg>
-                  <arg choice="plain">
-                    <option>?</option>
-                  </arg>
                 </group>
                 <replaceable class="parameter">variable</replaceable>
+                <arg choice="opt">
+                  <option>?</option>
+                </arg>
               </arg>
+            </group>
+            <arg choice="opt" rep="repeat"></arg>
+            <command>
+              <link linkend="set">set</link>
+            </command>
+            <group choice="req">
               <arg choice="plain">
                 <replaceable class="parameter">variable=value</replaceable>
+              </arg>
+              <arg choice="plain">
+                <replaceable class="parameter">variable+=increment</replaceable>
+              </arg>
+              <arg choice="plain">
+                <replaceable class="parameter">variable-=decrement</replaceable>
               </arg>
             </group>
             <arg choice="opt" rep="repeat"></arg>
@@ -21328,6 +21388,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="plain">
               <replaceable class="parameter">filename</replaceable>
             </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">filename</replaceable>
+            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -21338,7 +21401,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="plain">
               <replaceable class="parameter">regex</replaceable>
             </arg>
-            <arg choice="plain">
+            <arg choice="opt">
               <replaceable class="parameter">format</replaceable>
             </arg>
             <command>
@@ -21357,7 +21420,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="display-munging">subjectrx</link>
+              <link linkend="display-munging">subject-regex</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">regex</replaceable>
@@ -21366,7 +21429,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">replacement</replaceable>
             </arg>
             <command>
-              <link linkend="display-munging">unsubjectrx</link>
+              <link linkend="display-munging">unsubject-regex</link>
             </command>
             <group choice="req">
               <arg choice="plain">

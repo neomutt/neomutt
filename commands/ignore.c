@@ -46,7 +46,7 @@
  * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `ignore { * | <string> ... }`
+ * - `ignore <string> [ <string> ...]`
  */
 enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)

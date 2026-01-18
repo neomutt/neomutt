@@ -34,7 +34,7 @@ static const struct Command Attachments = { "attachments", CMD_ATTACHMENTS, NULL
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // attachments { + | - } disposition mime-type [ mime-type ...]
+  // attachments { + | - }<disposition> <mime-type> [ <mime-type> ...]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "+A */.*" },
   { MUTT_CMD_SUCCESS, "-A text/x-vcard application/pgp.*" },

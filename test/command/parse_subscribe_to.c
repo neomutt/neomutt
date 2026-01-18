@@ -44,7 +44,6 @@ static const struct CommandTest Tests[] = {
 
 static struct ConfigDef Vars[] = {
   // clang-format off
-  // index-format-hook <name> [ ! ]<pattern> <format-string>
   { "imap_delim_chars", DT_STRING, IP "/.", 0, NULL, },
   { NULL },
   // clang-format on

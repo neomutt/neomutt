@@ -36,8 +36,8 @@ static const struct CommandTest Tests[] = {
   // clang-format off
   // unignore { * | <string> ... }
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "unignore from" },
-  { MUTT_CMD_SUCCESS, "unignore date subject to cc" },
+  { MUTT_CMD_SUCCESS, "from" },
+  { MUTT_CMD_SUCCESS, "date subject to cc" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };

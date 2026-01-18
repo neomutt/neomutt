@@ -59,8 +59,10 @@ static int envlist_sort(const void *a, const void *b, void *sdata)
  * parse_setenv - Parse the 'setenv' and 'unsetenv' commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `setenv { <variable>? | <variable> <value> }`
+ * - `setenv { <variable>? | <variable>=<value> }`
  * - `unsetenv <variable>`
+ *
+ * Note: Also accepts the old syntax: `setenv <variable> <value>`
  */
 enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
                                 struct Buffer *err)

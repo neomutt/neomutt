@@ -877,22 +877,22 @@ section \(lq\fBSpam Detection\fP\(rq in the NeoMutt manual.
 .
 .PP
 .nf
-\fBsubjectrx\fP \fIregex\fP \fIreplacement\fP
-\fBunsubjectrx\fP { \fB*\fP | \fIregex\fP }
+\fBsubject-regex\fP \fIregex\fP \fIreplacement\fP
+\fBunsubject-regex\fP { \fB*\fP | \fIregex\fP }
 .fi
 .IP
-The \fBsubjectrx\fP command specifies a regular expression which,
+The \fBsubject-regex\fP command specifies a regular expression which,
 if detected in a message subject, causes the subject to be replaced with the
 \fIreplacement\fP value. The \fIreplacement\fP is subject to substitutions in
 the same way as for the \fBspam\fP command: %L for the text to the left of the
 match, %R for text to the right of the match, and %1 for the first subgroup in
 the match (etc). If you simply want to erase the match, set it to \(lq%L%R\(rq.
-Any number of \fBsubjectrx\fP commands may coexist.
+Any number of \fBsubject-regex\fP commands may coexist.
 .IP
 Note this well: the \fIreplacement\fP value replaces the entire subject, not
 just the match!
 .IP
-\fBunsubjectrx\fP removes a given \fBsubjectrx\fP from the substitution list.
+\fBunsubject-regex\fP removes a given \fBsubject-regex\fP from the substitution list.
 If \(lq\fB*\fP\(rq is used as the argument, all substitutions will be removed.
 .
 .PP

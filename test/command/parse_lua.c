@@ -35,7 +35,7 @@ static const struct Command Lua = { "lua", CMD_LUA, NULL, CMD_NO_DATA };
 
 static const struct CommandTest Tests[] = {
   // clang-format off
-  // lua "<lua-commands>"
+  // lua <lua-command>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "'local num = 42'" },
   { MUTT_CMD_ERROR,   NULL },

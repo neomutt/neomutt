@@ -466,7 +466,7 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
  *
  * Parse:
  * - `reset <variable> [ <variable> ... ]`
- * - `set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [... ]`
+ * - `set [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> [...]`
  * - `toggle <variable> [ <variable> ... ]`
  * - `unset <variable> [ <variable> ... ]`
  */

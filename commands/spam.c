@@ -103,7 +103,7 @@ done:
  * parse_spam - Parse the 'spam' command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
- * - `spam <regex> <format>`
+ * - `spam <regex> [ <format> ]`
  */
 enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
                               struct Buffer *err)
