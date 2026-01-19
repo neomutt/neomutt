@@ -30,6 +30,7 @@
  * | parse/dump.c        | @subpage parse_dump        |
  * | parse/extract.c     | @subpage parse_extract     |
  * | parse/module.c      | @subpage parse_module      |
+ * | parse/pcontext.c    | @subpage parse_pcontext    |
  * | parse/rc.c          | @subpage parse_rc          |
  * | parse/set.c         | @subpage parse_set         |
  */
@@ -40,6 +41,7 @@
 // IWYU pragma: begin_keep
 #include "dump.h"
 #include "extract.h"
+#include "pcontext.h"
 #include "rc.h"
 #include "set.h"
 // IWYU pragma: end_keep
