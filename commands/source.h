@@ -27,13 +27,19 @@
 #include "core/lib.h"
 
 struct Buffer;
+struct ConfigParseError;
+struct ParseContext;
 
-enum CommandResult parse_source          (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
 int source_rc(const char *rcfile_path, struct Buffer *err);
+int source_rc_ctx(const char *rcfile_path, struct ParseContext *pctx, struct ConfigParseError *perr);
 
 void source_stack_cleanup(void);
 enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err);
+enum CommandResult parse_rc_line_cwd_ctx(const char *line, const char *cwd,
+                                         struct ParseContext *pctx,
+                                         struct ConfigParseError *perr);
 char *mutt_get_sourced_cwd(void);
 
 #endif /* MUTT_COMMANDS_SOURCE_H */
