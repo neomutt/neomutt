@@ -234,7 +234,9 @@ void config_parse_error_set(struct ConfigParseError *err, enum CommandResult res
     va_list ap;
     va_start(ap, fmt);
     buf_reset(&err->message);
-    char buf[1024];
+    /* Use a reasonably large buffer - this is consistent with other
+     * logging code in the codebase (e.g., mutt/logging.c) */
+    char buf[2048];
     vsnprintf(buf, sizeof(buf), fmt, ap);
     buf_strcpy(&err->message, buf);
     va_end(ap);
