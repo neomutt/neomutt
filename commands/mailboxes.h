@@ -56,8 +56,8 @@ void               parse_mailbox_free (struct ParseMailbox *pm);
 void               parse_mailbox_array_free(struct ParseMailboxArray *pma);
 bool               parse_mailboxes_args(const struct Command *cmd, struct Buffer *line, struct Buffer *err, struct ParseMailboxArray *args);
 enum CommandResult parse_mailboxes_exec(const struct Command *cmd, struct ParseMailboxArray *args, struct Buffer *err);
-enum CommandResult parse_mailboxes  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unmailboxes(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_mailboxes(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_unmailboxes(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
 
 bool mailbox_add_simple(const char *mailbox, struct Buffer *err);
 bool mailbox_remove_simple(const char *mailbox);

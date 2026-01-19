@@ -51,9 +51,9 @@
  * - `mailto-allow { * | <header-field> ... }`
  * - `mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
  */
-enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -82,9 +82,9 @@ enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
  * - `unmailto-allow { * | <header-field> ... }`
  * - `unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
  */
-enum CommandResult parse_unstailq(const struct Command *cmd,
-                                  struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

@@ -28,6 +28,9 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 
+struct ParseContext;
+struct ConfigParseError;
+
 /**
  * enum CommandResult - Error codes for command_t parse functions
  */
@@ -166,14 +169,15 @@ struct Command
    * parse - Function to parse a command
    * @param cmd  Command being parsed
    * @param line Buffer containing string to be parsed
-   * @param err  Buffer for error messages
+   * @param pctx Parse context (may be NULL)
+   * @param perr Error information structure (may be NULL)
    * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
    *
    * @pre cmd  is not NULL
    * @pre line is not NULL
-   * @pre err  is not NULL
    */
-  enum CommandResult (*parse)(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+  enum CommandResult (*parse)(const struct Command *cmd, struct Buffer *line,
+                              struct ParseContext *pctx, struct ConfigParseError *perr);
 
   intptr_t data;        ///< Data or flags to pass to the command
 

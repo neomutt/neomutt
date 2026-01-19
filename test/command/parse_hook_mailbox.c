@@ -83,7 +83,7 @@ static void test_parse_fcc_hook(void)
     buf_reset(err);
     buf_strcpy(line, FccTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mailbox(&FccHook, line, err);
+    rc = parse_hook_mailbox(&FccHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, FccTests[i].rc);
   }
 
@@ -103,7 +103,7 @@ static void test_parse_fcc_save_hook(void)
     buf_reset(err);
     buf_strcpy(line, FccSaveTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mailbox(&FccSaveHook, line, err);
+    rc = parse_hook_mailbox(&FccSaveHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, FccSaveTests[i].rc);
   }
 
@@ -123,7 +123,7 @@ static void test_parse_save_hook(void)
     buf_reset(err);
     buf_strcpy(line, SaveTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mailbox(&SaveHook, line, err);
+    rc = parse_hook_mailbox(&SaveHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, SaveTests[i].rc);
   }
 

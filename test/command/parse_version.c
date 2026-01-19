@@ -55,7 +55,7 @@ void test_parse_version(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_version(&Version, line, err);
+    rc = parse_version(&Version, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

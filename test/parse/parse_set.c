@@ -43,7 +43,7 @@ void test_parse_set(void)
   struct Buffer *err = buf_pool_get();
 
   TEST_CASE("parse_set");
-  enum CommandResult rc = parse_set(&Set, line, err);
+  enum CommandResult rc = parse_set(&Set, line, NULL, NULL);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   buf_pool_release(&line);

@@ -40,9 +40,9 @@
  * Parse:
  * - `sidebar-pin <mailbox> [ <mailbox> ... ]`
  */
-enum CommandResult parse_sidebar_pin(const struct Command *cmd,
-                                     struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -68,9 +68,9 @@ enum CommandResult parse_sidebar_pin(const struct Command *cmd,
  * Parse:
  * - `sidebar-unpin { * | <mailbox> ... }`
  */
-enum CommandResult parse_sidebar_unpin(const struct Command *cmd,
-                                       struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

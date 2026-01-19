@@ -47,8 +47,8 @@ enum NotifySubjRx
 void subjrx_init(void);
 void subjrx_cleanup(void);
 
-enum CommandResult parse_subjectrx_list  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_subjectrx_list(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
 
 bool subjrx_apply_mods(struct Envelope *env);
 void subjrx_clear_mods(struct MailboxView *mv);

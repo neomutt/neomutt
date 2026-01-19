@@ -101,7 +101,7 @@ static void alternative_order(void)
     buf_reset(err);
     buf_strcpy(line, AlternativeOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&AlternativeOrder, line, err);
+    rc = parse_stailq(&AlternativeOrder, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, AlternativeOrderTests[i].rc);
   }
 
@@ -123,7 +123,7 @@ static void auto_view(void)
     buf_reset(err);
     buf_strcpy(line, AutoViewTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&AutoView, line, err);
+    rc = parse_stailq(&AutoView, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, AutoViewTests[i].rc);
   }
 
@@ -145,7 +145,7 @@ static void hdr_order(void)
     buf_reset(err);
     buf_strcpy(line, HdrOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&HdrOrder, line, err);
+    rc = parse_stailq(&HdrOrder, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, HdrOrderTests[i].rc);
   }
 
@@ -167,7 +167,7 @@ static void mailto_allow(void)
     buf_reset(err);
     buf_strcpy(line, MailtoAllowTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&MailtoAllow, line, err);
+    rc = parse_stailq(&MailtoAllow, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, MailtoAllowTests[i].rc);
   }
 
@@ -189,7 +189,7 @@ static void mime_lookup(void)
     buf_reset(err);
     buf_strcpy(line, MimeLookupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&MimeLookup, line, err);
+    rc = parse_stailq(&MimeLookup, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, MimeLookupTests[i].rc);
   }
 

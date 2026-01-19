@@ -75,7 +75,7 @@ static void test_parse_append_hook(void)
     buf_reset(err);
     buf_strcpy(line, AppendTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_compress(&AppendHook, line, err);
+    rc = parse_hook_compress(&AppendHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, AppendTests[i].rc);
   }
 
@@ -95,7 +95,7 @@ static void test_parse_close_hook(void)
     buf_reset(err);
     buf_strcpy(line, CloseTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_compress(&CloseHook, line, err);
+    rc = parse_hook_compress(&CloseHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, CloseTests[i].rc);
   }
 
@@ -115,7 +115,7 @@ static void test_parse_open_hook(void)
     buf_reset(err);
     buf_strcpy(line, OpenTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_compress(&OpenHook, line, err);
+    rc = parse_hook_compress(&OpenHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, OpenTests[i].rc);
   }
 

@@ -59,7 +59,7 @@ void test_parse_tag_transforms(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_tag_transforms(&TagTransformsCmd, line, err);
+    rc = parse_tag_transforms(&TagTransformsCmd, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

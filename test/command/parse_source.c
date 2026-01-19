@@ -67,7 +67,7 @@ void test_parse_source(void)
     buf_strcpy(line, Tests[i].line);
     test_gen_path(file, buf_string(line));
     buf_seek(file, 0);
-    rc = parse_source(&Source, file, err);
+    rc = parse_source(&Source, file, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

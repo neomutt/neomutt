@@ -64,9 +64,9 @@ static int envlist_sort(const void *a, const void *b, void *sdata)
  *
  * Note: Also accepts the old syntax: `setenv <variable> <value>`
  */
-enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Buffer *token = buf_pool_get();
   struct Buffer *tempfile = NULL;
   enum CommandResult rc = MUTT_CMD_WARNING;

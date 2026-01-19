@@ -99,7 +99,7 @@ static void test_parse_unbind2(void)
     buf_reset(err);
     buf_strcpy(line, UnBindTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unbind(&UnBind, line, err);
+    rc = parse_unbind(&UnBind, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, UnBindTests[i].rc);
 
     km_cleanup();
@@ -124,7 +124,7 @@ static void test_parse_unmacro(void)
     buf_reset(err);
     buf_strcpy(line, UnMacroTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unbind(&UnMacro, line, err);
+    rc = parse_unbind(&UnMacro, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, UnMacroTests[i].rc);
   }
 

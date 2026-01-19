@@ -196,9 +196,9 @@ static enum CommandResult parse_object(const struct Command *cmd, struct Buffer 
  * Usage:
  * * uncolor OBJECT [ PATTERN | REGEX | * ]
  */
-enum CommandResult parse_uncolor_command(const struct Command *cmd,
-                                         struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_uncolor_command(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -446,9 +446,9 @@ done:
  * Parse:
  * - `uncolor <object> { * | <pattern> ... }`
  */
-enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *line,
-                                 struct Buffer *err)
+enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -468,7 +468,7 @@ enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *line,
   }
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(token));
-  rc = parse_uncolor_command(cmd, line, err);
+  rc = parse_uncolor_command(cmd, line, pctx, perr);
   curses_colors_dump(token);
 
 done:
@@ -482,9 +482,9 @@ done:
  * Parse:
  * - `unmono <object> { * | <pattern> ... }`
  */
-enum CommandResult parse_unmono(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+enum CommandResult parse_unmono(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   // Quietly discard the command
   struct Buffer *token = buf_pool_get();
   while (MoreArgs(line))
@@ -504,9 +504,9 @@ enum CommandResult parse_unmono(const struct Command *cmd, struct Buffer *line,
  * - `color index [ attribute ...] foreground background [ pattern ]`
  * - `color { header | body } [ attribute ...] foreground background regex`
  */
-enum CommandResult parse_color(const struct Command *cmd, struct Buffer *line,
-                               struct Buffer *err)
+enum CommandResult parse_color(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
@@ -535,9 +535,9 @@ done:
  * Parse:
  * - `mono <object> <attribute> [ <pattern> | <regex> ]`
  */
-enum CommandResult parse_mono(const struct Command *cmd, struct Buffer *line,
-                              struct Buffer *err)
+enum CommandResult parse_mono(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 

@@ -105,7 +105,7 @@ static void test_parse_unalternative_order(void)
     buf_reset(err);
     buf_strcpy(line, UnAlternativeOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnAlternativeOrder, line, err);
+    rc = parse_unstailq(&UnAlternativeOrder, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, UnAlternativeOrderTests[i].rc);
   }
 
@@ -127,7 +127,7 @@ static void test_parse_unauto_view(void)
     buf_reset(err);
     buf_strcpy(line, UnAutoViewTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnAutoView, line, err);
+    rc = parse_unstailq(&UnAutoView, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, UnAutoViewTests[i].rc);
   }
 
@@ -149,7 +149,7 @@ static void test_parse_unhdr_order(void)
     buf_reset(err);
     buf_strcpy(line, UnHdrOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnHdrOrder, line, err);
+    rc = parse_unstailq(&UnHdrOrder, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, UnHdrOrderTests[i].rc);
   }
 
@@ -171,7 +171,7 @@ static void test_parse_unmailto_allow(void)
     buf_reset(err);
     buf_strcpy(line, UnMailtoAllowTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnMailtoAllow, line, err);
+    rc = parse_unstailq(&UnMailtoAllow, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, UnMailtoAllowTests[i].rc);
   }
 
@@ -193,7 +193,7 @@ static void test_parse_unmime_lookup(void)
     buf_reset(err);
     buf_strcpy(line, UnMimeLookupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnMimeLookup, line, err);
+    rc = parse_unstailq(&UnMimeLookup, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, UnMimeLookupTests[i].rc);
   }
 

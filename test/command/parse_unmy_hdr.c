@@ -56,7 +56,7 @@ void test_parse_unmy_header(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_unmy_header(&UnMyHeader, line, err);
+    rc = parse_unmy_header(&UnMyHeader, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

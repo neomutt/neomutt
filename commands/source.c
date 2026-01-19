@@ -213,11 +213,16 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
  * - `source <filename> [ <filename> ... ]`
  */
 enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+                                struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
+  
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
+    if (perr)
+      config_parse_error_set(perr, MUTT_CMD_WARNING, NULL, 0, "%s", buf_string(err));
+    buf_pool_release(&err);
     return MUTT_CMD_WARNING;
   }
 
@@ -230,15 +235,38 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
     if (parse_extract_token(token, line, TOKEN_BACKTICK_VARS) != 0)
     {
       buf_printf(err, _("source: error at %s"), line->dptr);
+      if (perr)
+        config_parse_error_set(perr, MUTT_CMD_ERROR, NULL, 0, "%s", buf_string(err));
       goto done;
     }
     buf_copy(path, token);
     buf_expand_path(path);
 
-    if (source_rc(buf_string(path), err) < 0)
+    if (pctx)
     {
-      buf_printf(err, _("source: file %s could not be sourced"), buf_string(path));
-      goto done;
+      /* Use context-aware sourcing */
+      struct ConfigParseError src_err = { 0 };
+      config_parse_error_init(&src_err);
+      if (source_rc_ctx(buf_string(path), pctx, &src_err) < 0)
+      {
+        buf_printf(err, _("source: file %s could not be sourced"), buf_string(path));
+        if (perr)
+          config_parse_error_set(perr, MUTT_CMD_ERROR, NULL, 0, "%s", buf_string(err));
+        config_parse_error_free(&src_err);
+        goto done;
+      }
+      config_parse_error_free(&src_err);
+    }
+    else
+    {
+      /* Use legacy sourcing */
+      if (source_rc(buf_string(path), err) < 0)
+      {
+        buf_printf(err, _("source: file %s could not be sourced"), buf_string(path));
+        if (perr)
+          config_parse_error_set(perr, MUTT_CMD_ERROR, NULL, 0, "%s", buf_string(err));
+        goto done;
+      }
     }
 
   } while (MoreArgs(line));
@@ -248,6 +276,7 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
 done:
   buf_pool_release(&path);
   buf_pool_release(&token);
+  buf_pool_release(&err);
   return rc;
 }
 

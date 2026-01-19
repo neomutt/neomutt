@@ -30,7 +30,8 @@ struct Buffer;
 struct ConfigParseError;
 struct ParseContext;
 
-enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
+                                struct ParseContext *pctx, struct ConfigParseError *perr);
 
 int source_rc(const char *rcfile_path, struct Buffer *err);
 int source_rc_ctx(const char *rcfile_path, struct ParseContext *pctx, struct ConfigParseError *perr);

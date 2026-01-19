@@ -52,8 +52,8 @@ void sb_cleanup(void);
 
 int sb_function_dispatcher(struct MuttWindow *win, int op);
 
-enum CommandResult parse_sidebar_pin  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
 
 void sidebar_init_keys(struct SubMenu *sm_generic);
 struct SubMenu *sidebar_get_submenu(void);

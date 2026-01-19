@@ -56,7 +56,7 @@ void test_parse_unalias(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_unalias(&UnAlias, line, err);
+    rc = parse_unalias(&UnAlias, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

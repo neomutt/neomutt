@@ -57,7 +57,7 @@ void test_parse_subjectrx_list(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_subjectrx_list(&SubjectRegex, line, err);
+    rc = parse_subjectrx_list(&SubjectRegex, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

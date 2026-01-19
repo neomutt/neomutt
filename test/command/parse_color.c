@@ -63,7 +63,7 @@ void test_parse_color(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_color(&Color, line, err);
+    rc = parse_color(&Color, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

@@ -48,9 +48,9 @@
  * Parse:
  * - `ignore <string> [ <string> ...]`
  */
-enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -76,9 +76,9 @@ enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
  * Parse:
  * - `unignore { * | <string> ... }`
  */
-enum CommandResult parse_unignore(const struct Command *cmd,
-                                  struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unignore(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

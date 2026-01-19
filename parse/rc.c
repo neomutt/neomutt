@@ -98,17 +98,9 @@ enum CommandResult parse_rc_line_ctx(struct Buffer *line, struct ParseContext *p
       }
 
       mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
-      rc = cmd->parse(cmd, line, err);
+      rc = cmd->parse(cmd, line, pctx, perr);
       if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
       {
-        /* Set error information if error occurred */
-        if (perr && (rc != MUTT_CMD_FINISH))
-        {
-          struct FileLocation *fl = pctx ? parse_context_current(pctx) : NULL;
-          config_parse_error_set(perr, rc, fl ? fl->filename : NULL,
-                                 fl ? fl->lineno : 0, "%s", buf_string(err));
-          perr->origin = pctx ? pctx->origin : CO_CONFIG_FILE;
-        }
         goto finish; /* Propagate return code */
       }
 
@@ -125,6 +117,7 @@ enum CommandResult parse_rc_line_ctx(struct Buffer *line, struct ParseContext *p
                                fl ? fl->lineno : 0, "%s", buf_string(err));
         perr->origin = pctx ? pctx->origin : CO_CONFIG_FILE;
       }
+      goto finish;
     }
   }
 
@@ -150,6 +143,10 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_SUCCESS;
   bool show_help = false;
+
+  /* Create a temporary ConfigParseError to capture errors */
+  struct ConfigParseError perr = { 0 };
+  config_parse_error_init(&perr);
 
   buf_reset(err);
 
@@ -187,9 +184,14 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
       }
 
       mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
-      rc = cmd->parse(cmd, line, err);
+      rc = cmd->parse(cmd, line, NULL, &perr);
       if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
+      {
+        /* Copy error message from perr to err */
+        if (!buf_is_empty(&perr.message))
+          buf_copy(err, &perr.message);
         goto finish; /* Propagate return code */
+      }
 
       notify_send(NeoMutt->notify, NT_COMMAND, 0, (void *) cmd);
     }
@@ -202,5 +204,6 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
 
 finish:
   buf_pool_release(&token);
+  config_parse_error_free(&perr);
   return rc;
 }

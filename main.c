@@ -481,7 +481,7 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
 
     // Create a temporary Command struct for parse_my_hdr
     const struct Command my_hdr_cmd = { .name = "my-header", .data = 0 };
-    parse_my_header(&my_hdr_cmd, buf, err); /* adds to UserHeader */
+    parse_my_header(&my_hdr_cmd, buf, NULL, NULL); /* adds to UserHeader */
   }
 
   p = mutt_str_getenv("EMAIL");

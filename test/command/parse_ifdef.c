@@ -88,7 +88,7 @@ static void test_parse_ifdef2(void)
     buf_reset(err);
     buf_strcpy(line, IfdefTests[i].line);
     buf_seek(line, 0);
-    rc = parse_ifdef(&Ifdef, line, err);
+    rc = parse_ifdef(&Ifdef, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, IfdefTests[i].rc);
   }
 
@@ -110,7 +110,7 @@ static void test_parse_ifndef(void)
     buf_reset(err);
     buf_strcpy(line, IfndefTests[i].line);
     buf_seek(line, 0);
-    rc = parse_ifdef(&Ifndef, line, err);
+    rc = parse_ifdef(&Ifndef, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, IfndefTests[i].rc);
   }
 

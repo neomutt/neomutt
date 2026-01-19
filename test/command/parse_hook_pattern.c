@@ -96,7 +96,7 @@ static void test_parse_message_hook(void)
     buf_reset(err);
     buf_strcpy(line, MessageTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&MessageHook, line, err);
+    rc = parse_hook_pattern(&MessageHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, MessageTests[i].rc);
   }
 
@@ -116,7 +116,7 @@ static void test_parse_reply_hook(void)
     buf_reset(err);
     buf_strcpy(line, ReplyTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&ReplyHook, line, err);
+    rc = parse_hook_pattern(&ReplyHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, ReplyTests[i].rc);
   }
 
@@ -136,7 +136,7 @@ static void test_parse_send_hook(void)
     buf_reset(err);
     buf_strcpy(line, SendTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&SendHook, line, err);
+    rc = parse_hook_pattern(&SendHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, SendTests[i].rc);
   }
 
@@ -156,7 +156,7 @@ static void test_parse_send2_hook(void)
     buf_reset(err);
     buf_strcpy(line, Send2Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&Send2Hook, line, err);
+    rc = parse_hook_pattern(&Send2Hook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Send2Tests[i].rc);
   }
 

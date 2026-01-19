@@ -56,7 +56,7 @@ void test_parse_sidebar_pin(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_sidebar_pin(&SidebarPin, line, err);
+    rc = parse_sidebar_pin(&SidebarPin, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

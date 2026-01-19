@@ -56,7 +56,7 @@ void test_parse_unignore(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_unignore(&UnIgnore, line, err);
+    rc = parse_unignore(&UnIgnore, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

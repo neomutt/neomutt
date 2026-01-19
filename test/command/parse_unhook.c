@@ -74,7 +74,7 @@ void test_parse_unhook(void)
   // Create a folder-hook, to delete
   buf_strcpy(line, "~g 'set my_var=42'");
   buf_seek(line, 0);
-  rc = parse_hook_folder(&FolderHook, line, err);
+  rc = parse_hook_folder(&FolderHook, line, NULL, NULL);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   for (int i = 0; Tests[i].line; i++)
@@ -83,7 +83,7 @@ void test_parse_unhook(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_unhook(&UnHook, line, err);
+    rc = parse_unhook(&UnHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 
