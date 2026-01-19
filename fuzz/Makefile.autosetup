@@ -1,23 +1,27 @@
-FUZZ_OBJS   = fuzz/address.o fuzz/date.o
+FUZZ_OBJS   = fuzz/address.o fuzz/cli.o fuzz/date.o
 
 CFLAGS	+= -I$(SRCDIR)/fuzz
 
 FUZZ_ADDRESS = fuzz/address-fuzz$(EXEEXT)
+FUZZ_CLI = fuzz/cli-fuzz$(EXEEXT)
 FUZZ_DATE = fuzz/date-fuzz$(EXEEXT)
 
 .PHONY: fuzz
-fuzz: $(FUZZ_ADDRESS) $(FUZZ_DATE)
+fuzz: $(FUZZ_ADDRESS) $(FUZZ_CLI) $(FUZZ_DATE)
 
 $(FUZZ_ADDRESS): fuzz/address.o $(NEOMUTTOBJS) $(LIBCOMMANDS) $(LIBHOOKS) $(MUTTLIBS) $(NEOMUTTLIBS)
 	$(CXX) $(CXXFLAGS) -o $@ fuzz/address.o $(NEOMUTTOBJS) $(LIBCOMMANDS) $(LIBHOOKS) $(MUTTLIBS) $(NEOMUTTLIBS) $(LDFLAGS) $(LIBS) $(LIB_FUZZING_ENGINE)
 
+$(FUZZ_CLI): fuzz/cli.o $(NEOMUTTOBJS) $(LIBCOMMANDS) $(LIBHOOKS) $(MUTTLIBS) $(NEOMUTTLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ fuzz/cli.o $(NEOMUTTOBJS) $(LIBCOMMANDS) $(LIBHOOKS) $(MUTTLIBS) $(NEOMUTTLIBS) $(LDFLAGS) $(LIBS) $(LIB_FUZZING_ENGINE)
+
 $(FUZZ_DATE): fuzz/date.o $(NEOMUTTOBJS) $(LIBCOMMANDS) $(LIBHOOKS) $(MUTTLIBS) $(NEOMUTTLIBS)
 	$(CXX) $(CXXFLAGS) -o $@ fuzz/date.o $(NEOMUTTOBJS) $(LIBCOMMANDS) $(LIBHOOKS) $(MUTTLIBS) $(NEOMUTTLIBS) $(LDFLAGS) $(LIBS) $(LIB_FUZZING_ENGINE)
 
-all-fuzz: $(FUZZ_ADDRESS) $(FUZZ_DATE)
+all-fuzz: $(FUZZ_ADDRESS) $(FUZZ_CLI) $(FUZZ_DATE)
 
 clean-fuzz:
-	$(RM) $(FUZZ_ADDRESS) $(FUZZ_DATE) $(FUZZ_OBJS) $(FUZZ_OBJS:.o=.Po)
+	$(RM) $(FUZZ_ADDRESS) $(FUZZ_CLI) $(FUZZ_DATE) $(FUZZ_OBJS) $(FUZZ_OBJS:.o=.Po)
 
 install-fuzz:
 uninstall-fuzz:

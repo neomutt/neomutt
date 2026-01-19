@@ -13,6 +13,7 @@ neomutt
 pgpewrap
 test/neomutt-test
 fuzz/address-fuzz
+fuzz/cli-fuzz
 fuzz/date-fuzz
 
 # Build products

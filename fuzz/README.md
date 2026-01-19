@@ -4,22 +4,39 @@ NeoMutt has some support for Fuzzing.
 
 - https://en.wikipedia.org/wiki/Fuzzing
 
-It's currently limited to two functions.
-Two that could be susceptible to remote attacks.
+### Fuzz Targets
+
+#### address-fuzz
+
+Tests two functions that could be susceptible to remote attacks:
 
 - `mutt_rfc822_read_header();`
 - `mutt_parse_part();`
 
+#### cli-fuzz
+
+Tests the command line parser:
+
+- `cli_parse();`
+
+#### date-fuzz
+
+Tests the date parser:
+
+- `mutt_date_parse_date();`
+
+### Fuzzing Machinery
+
 The fuzzing machinery uses a custom entry point to the code.
-This can be found in `fuzz/address.c`
+Each fuzz target implements the LibFuzzer interface:
 
 ```c
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 ```
 
-### Build the Fuzzer
+### Build the Fuzzers
 
-To build the fuzzer, we need to build with `clang` and pass some extra flags:
+To build the fuzzers, we need to build with `clang` and pass some extra flags:
 
 ```sh
 # Set some environment variables
@@ -33,20 +50,26 @@ export CXXFLAGS="$EXTRA_CFLAGS"
 make CC=clang CXX=clang fuzz
 ```
 
-### Run the Fuzzer
+### Run the Fuzzers
 
-The fuzzer can be run by simply:
+The fuzzers can be run simply:
 
 ```sh
 fuzz/address-fuzz
+fuzz/cli-fuzz
+fuzz/date-fuzz
 ```
 
-or it can be run against our corpus of test cases:
+or they can be run against a corpus of test cases:
 
 ```sh
-# Run the fuzzer on the sample data
+# Run the address fuzzer on sample data
 git clone https://github.com/neomutt/corpus-address.git
 fuzz/address-fuzz corpus-address
+
+# Run the CLI fuzzer on sample data
+git clone https://github.com/neomutt/corpus-cli.git
+fuzz/cli-fuzz corpus-cli
 ```
 
 To see some more options, run:
