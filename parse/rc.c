@@ -74,6 +74,9 @@ enum CommandResult parse_rc_line_ctx(struct Buffer *line, struct ParseContext *p
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
     const int token_len = buf_len(token);
+    if (token_len == 0)
+      break; /* Empty token, nothing more to parse */
+
     if ((token_len > 0) && (buf_at(token, token_len - 1) == '?'))
     {
       token->data[token_len - 1] = '\0';
@@ -88,6 +91,9 @@ enum CommandResult parse_rc_line_ctx(struct Buffer *line, struct ParseContext *p
         buf_add_printf(err, "%s\n", _(cmd->help));
         buf_add_printf(err, ":%s\n", _(cmd->proto));
         buf_add_printf(err, "file:///usr/share/doc/neomutt/%s", cmd->path);
+        /* Copy help text to perr if provided */
+        if (perr)
+          buf_copy(&perr->message, err);
         goto finish;
       }
 
