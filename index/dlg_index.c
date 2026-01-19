@@ -1295,7 +1295,8 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     mutt_refresh();
 
     window_redraw(NULL);
-    op = km_dokey(MENU_INDEX, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(MENU_INDEX, GETCH_NO_FLAGS);
+    op = event.op;
 
     if (op == OP_REPAINT)
     {

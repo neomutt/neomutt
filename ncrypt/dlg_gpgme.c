@@ -275,7 +275,8 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(menu_to_use, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(menu_to_use, GETCH_NO_FLAGS);
+    op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
