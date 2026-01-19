@@ -493,11 +493,12 @@ static const struct EnterFunction EnterFunctions[] = {
 /**
  * enter_function_dispatcher - Perform an Enter function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int enter_function_dispatcher(struct MuttWindow *win, int op)
+int enter_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   if (!win || !win->wdata)
     return FR_UNKNOWN;
 
+  const int op = event->op;
   struct EnterWindowData *wdata = win->wdata;
 
   int rc = FR_UNKNOWN;

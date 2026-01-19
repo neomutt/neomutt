@@ -44,13 +44,14 @@
 
 struct Buffer;
 struct Command;
+struct KeyEvent;
 struct MuttWindow;
 struct SubMenu;
 
 void sb_init   (void);
 void sb_cleanup(void);
 
-int sb_function_dispatcher(struct MuttWindow *win, int op);
+int sb_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 enum CommandResult parse_sidebar_pin  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *line, struct Buffer *err);

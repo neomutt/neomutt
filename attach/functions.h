@@ -24,6 +24,7 @@
 #define MUTT_ATTACH_FUNCTIONS_H
 
 struct AttachPrivateData;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -47,6 +48,6 @@ struct AttachFunction
   attach_function_t function; ///< Function to call
 };
 
-int attach_function_dispatcher(struct MuttWindow *win, int op);
+int attach_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_ATTACH_FUNCTIONS_H */

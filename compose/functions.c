@@ -2149,13 +2149,14 @@ static const struct ComposeFunction ComposeFunctions[] = {
 /**
  * compose_function_dispatcher - Perform a Compose function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int compose_function_dispatcher(struct MuttWindow *win, int op)
+int compose_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; ComposeFunctions[i].op != OP_NULL; i++)
   {

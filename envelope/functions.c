@@ -38,13 +38,13 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "functions.h"
 #include "lib.h"
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
 #include "hooks/lib.h"
+#include "key/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "mutt_logging.h"
@@ -527,11 +527,12 @@ static const struct EnvelopeFunction EnvelopeFunctions[] = {
 /**
  * env_function_dispatcher - Perform an Envelope function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int env_function_dispatcher(struct MuttWindow *win, int op)
+int env_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   if (!win || !win->wdata)
     return FR_UNKNOWN;
 
+  const int op = event->op;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; EnvelopeFunctions[i].op != OP_NULL; i++)
   {

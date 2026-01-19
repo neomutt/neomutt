@@ -33,6 +33,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "smime_functions.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "mutt_logging.h"
@@ -106,13 +107,14 @@ static const struct SmimeFunction SmimeFunctions[] = {
 /**
  * smime_function_dispatcher - Perform a Smime function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int smime_function_dispatcher(struct MuttWindow *win, int op)
+int smime_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct SmimeData *sd = menu->mdata;
 

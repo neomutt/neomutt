@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -60,6 +61,6 @@ struct PostponeFunction
   postpone_function_t function; ///< Function to call
 };
 
-int postpone_function_dispatcher(struct MuttWindow *win, int op);
+int postpone_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_POSTPONE_FUNCTIONS_H */

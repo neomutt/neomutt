@@ -35,6 +35,7 @@
 #include "core/lib.h"
 #include "global.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "pager/lib.h"
 #include "curs_lib.h"
 #include "external.h"
@@ -178,8 +179,9 @@ static const struct GlobalFunction GlobalFunctions[] = {
  *
  * @note @a win Should be the currently focused Window
  */
-int global_function_dispatcher(struct MuttWindow *win, int op)
+int global_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
+  const int op = event->op;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; GlobalFunctions[i].op != OP_NULL; i++)
   {

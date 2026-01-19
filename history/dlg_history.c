@@ -65,10 +65,10 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "expando/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "expando.h"
 #include "functions.h"
-#include "key/get.h"
 #include "mutt_logging.h"
 
 /// Help Bar for the History Selection dialog
@@ -136,12 +136,13 @@ void dlg_history(struct Buffer *buf, struct StringArray *matches)
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
+  struct KeyEvent event = { 0, OP_NULL };
   do
   {
-    menu_tagging_dispatcher(menu->win, op);
+    menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    struct KeyEvent event = km_dokey(MENU_DIALOG, GETCH_NO_FLAGS);
+    event = km_dokey(MENU_DIALOG, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
@@ -153,11 +154,11 @@ void dlg_history(struct Buffer *buf, struct StringArray *matches)
     }
     mutt_clear_error();
 
-    int rc = history_function_dispatcher(sdw.dlg, op);
+    int rc = history_function_dispatcher(sdw.dlg, &event);
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(menu->win, op);
+      rc = menu_function_dispatcher(menu->win, &event);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(menu->win, &event);
   } while (!hd.done);
   // ---------------------------------------------------------------------------
 

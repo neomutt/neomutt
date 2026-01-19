@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -59,6 +60,6 @@ struct SmimeFunction
   smime_function_t function; ///< Function to call
 };
 
-int smime_function_dispatcher(struct MuttWindow *win, int op);
+int smime_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_NCRYPT_SMIME_FUNCTIONS_H */

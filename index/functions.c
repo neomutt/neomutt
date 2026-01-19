@@ -3266,13 +3266,14 @@ static const struct IndexFunction IndexFunctions[] = {
 /**
  * index_function_dispatcher - Perform an Index function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int index_function_dispatcher(struct MuttWindow *win, int op)
+int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata || !win->parent || !win->parent->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct IndexPrivateData *priv = win->parent->wdata;
   struct IndexSharedData *shared = dlg->wdata;
 

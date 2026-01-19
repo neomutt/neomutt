@@ -25,6 +25,7 @@
 
 #include "pattern_data.h"
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -48,6 +49,6 @@ struct PatternFunction
   pattern_function_t function; ///< Function to call
 };
 
-int pattern_function_dispatcher(struct MuttWindow *win, int op);
+int pattern_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_PATTERN_FUNCTIONS_H */

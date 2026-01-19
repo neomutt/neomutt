@@ -28,6 +28,7 @@
 
 struct EnterState;
 struct EnterWindowData;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -50,7 +51,7 @@ struct EnterFunction
   enter_function_t function; ///< Function to call
 };
 
-int enter_function_dispatcher(struct MuttWindow *win, int op);
+int enter_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool self_insert(struct EnterWindowData *wdata, int ch);
 void replace_part(struct EnterState *es, size_t from, const char *buf);
 

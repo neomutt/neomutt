@@ -26,6 +26,7 @@
 #include <stdbool.h>
 
 struct CryptKeyInfo;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -62,6 +63,6 @@ struct GpgmeFunction
 };
 
 bool crypt_keys_are_valid(struct CryptKeyInfo *keys);
-int gpgme_function_dispatcher(struct MuttWindow *win, int op);
+int gpgme_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_NCRYPT_GPGME_FUNCTIONS_H */

@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -59,6 +60,6 @@ struct PgpFunction
   pgp_function_t function; ///< Function to call
 };
 
-int pgp_function_dispatcher(struct MuttWindow *win, int op);
+int pgp_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_NCRYPT_PGP_FUNCTIONS_H */
