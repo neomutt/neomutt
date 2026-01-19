@@ -41,6 +41,7 @@
 #include "gui/lib.h"
 #include "gpgme_functions.h"
 #include "lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
@@ -853,13 +854,14 @@ static const struct GpgmeFunction GpgmeFunctions[] = {
 /**
  * gpgme_function_dispatcher - Perform a Gpgme function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int gpgme_function_dispatcher(struct MuttWindow *win, int op)
+int gpgme_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct GpgmeData *gd = menu->mdata;
 

@@ -41,9 +41,10 @@
 struct Buffer;
 struct ConfigSubset;
 struct Email;
+struct KeyEvent;
 struct MuttWindow;
 
 struct MuttWindow *env_window_new(struct Email *e, struct Buffer *fcc, struct ConfigSubset *sub);
-int env_function_dispatcher(struct MuttWindow *win, int op);
+int env_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_ENVELOPE_LIB_H */

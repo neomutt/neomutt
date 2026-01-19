@@ -222,13 +222,14 @@ static const struct AutocryptFunction AutocryptFunctions[] = {
 /**
  * autocrypt_function_dispatcher - Perform a Autocrypt function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int autocrypt_function_dispatcher(struct MuttWindow *win, int op)
+int autocrypt_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct AutocryptData *ad = menu->mdata;
 

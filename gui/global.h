@@ -23,6 +23,7 @@
 #ifndef MUTT_GUI_GLOBAL_H
 #define MUTT_GUI_GLOBAL_H
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -46,6 +47,6 @@ struct GlobalFunction
   global_function_t function; ///< Function to call
 };
 
-int global_function_dispatcher(struct MuttWindow *win, int op);
+int global_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_GLOBAL_FUNCTIONS_H */

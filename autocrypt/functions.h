@@ -24,6 +24,7 @@
 #define MUTT_AUTOCRYPT_FUNCTIONS_H
 
 struct AutocryptData;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -47,6 +48,6 @@ struct AutocryptFunction
   autocrypt_function_t function; ///< Function to call
 };
 
-int autocrypt_function_dispatcher(struct MuttWindow *win, int op);
+int autocrypt_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_AUTOCRYPT_FUNCTIONS_H */

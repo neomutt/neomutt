@@ -66,6 +66,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "key/lib.h"
 
 // Maxixum body size in bytes to show in preview.
 const long MAX_PREVIEW_BODY_SIZE = 1024 * 1024 * 5;
@@ -404,11 +405,12 @@ static const struct PreviewFunction PreviewFunctions[] = {
 /**
  * preview_function_dispatcher - Perform a preview function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int preview_function_dispatcher(struct MuttWindow *win, int op)
+int preview_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   if (!win || !win->wdata)
     return FR_UNKNOWN;
 
+  const int op = event->op;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PreviewFunctions[i].op != OP_NULL; i++)
   {

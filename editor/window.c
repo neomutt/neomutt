@@ -362,7 +362,7 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
       if ((event.op != OP_EDITOR_COMPLETE) && (event.op != OP_EDITOR_COMPLETE_QUERY))
         wdata.tabs = 0;
       wdata.redraw = ENTER_REDRAW_LINE;
-      int rc_disp = enter_function_dispatcher(win, event.op);
+      int rc_disp = enter_function_dispatcher(win, &event);
       switch (rc_disp)
       {
         case FR_NO_ACTION:

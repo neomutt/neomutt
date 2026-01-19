@@ -38,7 +38,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
@@ -484,7 +483,7 @@ static const struct AliasFunction AliasFunctions[] = {
 /**
  * alias_function_dispatcher - Perform a Alias function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int alias_function_dispatcher(struct MuttWindow *win, int op)
+int alias_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
@@ -493,6 +492,7 @@ int alias_function_dispatcher(struct MuttWindow *win, int op)
 
   struct Menu *menu = dlg->wdata;
   struct AliasMenuData *mdata = menu->mdata;
+  const int op = event->op;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; AliasFunctions[i].op != OP_NULL; i++)

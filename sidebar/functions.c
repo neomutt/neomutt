@@ -417,11 +417,12 @@ static const struct SidebarFunction SidebarFunctions[] = {
 /**
  * sb_function_dispatcher - Perform a Sidebar function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int sb_function_dispatcher(struct MuttWindow *win, int op)
+int sb_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   if (!win || !win->wdata)
     return FR_UNKNOWN;
 
+  const int op = event->op;
   struct SidebarWindowData *wdata = win->wdata;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; SidebarFunctions[i].op != OP_NULL; i++)

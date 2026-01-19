@@ -33,6 +33,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "functions.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern_data.h"
 
@@ -79,13 +80,14 @@ static const struct PatternFunction PatternFunctions[] = {
 /**
  * pattern_function_dispatcher - Perform a Pattern function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int pattern_function_dispatcher(struct MuttWindow *win, int op)
+int pattern_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct PatternData *pd = menu->mdata;
 

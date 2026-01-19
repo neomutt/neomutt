@@ -36,6 +36,7 @@
 #include "gui/lib.h"
 #include "pgp_functions.h"
 #include "lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
@@ -218,13 +219,14 @@ static const struct PgpFunction PgpFunctions[] = {
 /**
  * pgp_function_dispatcher - Perform a Pgp function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int pgp_function_dispatcher(struct MuttWindow *win, int op)
+int pgp_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct PgpData *pd = menu->mdata;
 

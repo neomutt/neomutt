@@ -270,12 +270,13 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
+  struct KeyEvent event = { 0, OP_NULL };
   do
   {
-    menu_tagging_dispatcher(menu->win, op);
+    menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    struct KeyEvent event = km_dokey(menu_to_use, GETCH_NO_FLAGS);
+    event = km_dokey(menu_to_use, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
@@ -287,12 +288,12 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
     }
     mutt_clear_error();
 
-    int rc = gpgme_function_dispatcher(sdw.dlg, op);
+    int rc = gpgme_function_dispatcher(sdw.dlg, &event);
 
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(menu->win, op);
+      rc = menu_function_dispatcher(menu->win, &event);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(menu->win, &event);
   } while (!gd.done);
   // ---------------------------------------------------------------------------
 

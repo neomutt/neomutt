@@ -1131,7 +1131,7 @@ static const struct PagerFunction PagerFunctions[] = {
 /**
  * pager_function_dispatcher - Perform a Pager function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int pager_function_dispatcher(struct MuttWindow *win, int op)
+int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   if (!win)
   {
@@ -1147,6 +1147,7 @@ int pager_function_dispatcher(struct MuttWindow *win, int op)
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PagerFunctions[i].op != OP_NULL; i++)
   {

@@ -32,6 +32,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "functions.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 
 /**
@@ -77,13 +78,14 @@ static const struct HistoryFunction HistoryFunctions[] = {
 /**
  * history_function_dispatcher - Perform a History function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int history_function_dispatcher(struct MuttWindow *win, int op)
+int history_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct HistoryData *hd = menu->mdata;
 

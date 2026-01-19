@@ -23,8 +23,9 @@
 #ifndef MUTT_COMPOSE_FUNCTIONS_H
 #define MUTT_COMPOSE_FUNCTIONS_H
 
-struct MuttWindow;
 struct ComposeSharedData;
+struct KeyEvent;
+struct MuttWindow;
 
 /**
  * @defgroup compose_function_api Compose Function API
@@ -47,6 +48,6 @@ struct ComposeFunction
   compose_function_t function; ///< Function to call
 };
 
-int compose_function_dispatcher(struct MuttWindow *win, int op);
+int compose_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_COMPOSE_FUNCTIONS_H */

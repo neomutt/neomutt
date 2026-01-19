@@ -223,6 +223,7 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
   // Event Loop
   int choice = 0;
   int op = OP_NULL;
+  struct KeyEvent event = { 0, OP_NULL };
   do
   {
     window_redraw(NULL);
@@ -231,7 +232,7 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
     // Try to catch dialog keys before ops
     if (menu_dialog_dokey(menu, &op) != 0)
     {
-      struct KeyEvent event = km_dokey(MENU_DIALOG, GETCH_IGNORE_MACRO);
+      event = km_dokey(MENU_DIALOG, GETCH_IGNORE_MACRO);
       op = event.op;
     }
 
@@ -284,7 +285,7 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
         continue;
     }
 
-    (void) menu_function_dispatcher(menu->win, op);
+    (void) menu_function_dispatcher(menu->win, &event);
   } while (choice == 0);
   // ---------------------------------------------------------------------------
 

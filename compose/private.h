@@ -32,6 +32,7 @@ struct ComposeAttachData;
 struct ComposeSharedData;
 struct ConfigSubset;
 struct Email;
+struct KeyEvent;
 struct Menu;
 struct MuttWindow;
 
@@ -42,6 +43,6 @@ void attachment_size_fixed(struct MuttWindow *win);
 void attachment_size_max(struct MuttWindow *win);
 
 struct MuttWindow *preview_window_new(struct Email *e, struct MuttWindow *bar);
-int preview_function_dispatcher(struct MuttWindow *win, int op);
+int preview_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_COMPOSE_PRIVATE_H */

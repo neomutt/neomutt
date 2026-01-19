@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -60,6 +61,6 @@ struct HistoryFunction
   history_function_t function; ///< Function to call
 };
 
-int history_function_dispatcher(struct MuttWindow *win, int op);
+int history_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_HISTORY_FUNCTIONS_H */

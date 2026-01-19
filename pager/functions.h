@@ -26,6 +26,7 @@
 #include <stdbool.h>
 
 struct IndexSharedData;
+struct KeyEvent;
 struct MuttWindow;
 struct PagerPrivateData;
 struct PagerView;
@@ -52,7 +53,7 @@ struct PagerFunction
   pager_function_t function; ///< Function to call
 };
 
-int pager_function_dispatcher(struct MuttWindow *win, int op);
+int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview);
 
 #endif /* MUTT_PAGER_FUNCTIONS_H */

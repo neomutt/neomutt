@@ -315,11 +315,12 @@ static const struct MenuFunction MenuFunctions[] = {
 /**
  * menu_function_dispatcher - Perform a Menu function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int menu_function_dispatcher(struct MuttWindow *win, int op)
+int menu_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   if (!win || !win->wdata)
     return FR_UNKNOWN;
 
+  const int op = event->op;
   struct Menu *menu = win->wdata;
 
   int rc = FR_UNKNOWN;

@@ -27,6 +27,7 @@
 
 struct IndexPrivateData;
 struct IndexSharedData;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -52,7 +53,7 @@ struct IndexFunction
   int flags;                 ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
 };
 
-int index_function_dispatcher(struct MuttWindow *win, int op);
+int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool index_next_undeleted(struct MuttWindow *win_index);
 
 #endif /* MUTT_INDEX_FUNCTIONS_H */
