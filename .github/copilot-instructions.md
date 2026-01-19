@@ -240,6 +240,90 @@ void test_function_name(void)
 }
 ```
 
+### Fuzz Testing
+
+NeoMutt supports fuzz testing using LLVM's LibFuzzer. Fuzzing helps find security vulnerabilities and bugs by testing parsing functions with randomly generated inputs.
+
+#### Current Fuzz Targets
+
+Two fuzz executables exist in the `fuzz/` directory:
+
+- **`fuzz/address-fuzz`**: Tests email header parsing via `mutt_rfc822_read_header()` and MIME parsing via `mutt_parse_part()`. These are security-critical functions susceptible to remote attacks.
+- **`fuzz/date-fuzz`**: Tests date parsing via `mutt_date_parse_date()`.
+
+#### Building the Fuzzers
+
+Fuzzing requires the `clang` compiler with the `-fsanitize=fuzzer` flag:
+
+```bash
+# Configure with fuzzing enabled
+./configure CC=clang --fuzzing --disable-doc --disable-nls --disable-idn2
+
+# Build the fuzz executables
+make CC=clang CXX=clang fuzz
+```
+
+**Note**: The `--fuzzing` flag automatically adds `-fsanitize=fuzzer` to CFLAGS and LDFLAGS. You may need `--disable-nls` and `--disable-idn2` if those libraries are not installed.
+
+#### Running the Fuzzers
+
+Basic usage:
+```bash
+# Run with default settings (1200 second timeout)
+fuzz/address-fuzz
+
+# Run for a limited time (recommended for CI)
+fuzz/address-fuzz -max_total_time=60
+
+# Show help and all available options
+fuzz/address-fuzz -help=1
+```
+
+Using a corpus directory (recommended):
+```bash
+# Clone the address corpus
+git clone https://github.com/neomutt/corpus-address.git
+
+# Run fuzzer with corpus
+fuzz/address-fuzz corpus-address
+```
+
+Useful options:
+- `-max_total_time=N`: Limit runtime to N seconds
+- `-timeout=N`: Timeout per test case in seconds (default: 1200)
+- `-jobs=N`: Run N parallel fuzzing jobs
+- `-workers=N`: Number of worker processes
+- `-verbosity=N`: Output verbosity level
+
+#### Fuzz Test Implementation
+
+Fuzz targets implement the LibFuzzer entry point:
+```c
+int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
+{
+  // Parse the fuzzed data
+  // Return 0 on success, -1 to reject input
+  return 0;
+}
+```
+
+See `fuzz/address.c` and `fuzz/date.c` for examples.
+
+#### Future Fuzzing Targets
+
+The following libraries are candidates for future fuzz testing:
+
+- **`libcli`** (`cli/`): Command line parsing
+  - `cli_parse()`: Parses command line arguments into `CommandLine` struct
+  - Entry point: `cli/parse.c`
+  - Security relevance: Processes untrusted command line input
+
+- **`libparse`** (`parse/`): NeoMutt command parsing
+  - `parse_rc_line()`: Parses runtime configuration commands
+  - `parse_extract_token()`: Tokenizes config file lines
+  - Entry point: `parse/rc.c`, `parse/extract.c`
+  - Security relevance: Processes config files which may contain malicious content
+
 ### Common Configure Options
 
 - **TLS/SSL**: `--gnutls` or `--ssl`
@@ -247,6 +331,7 @@ void test_function_name(void)
 - **Search**: `--notmuch`
 - **Scripting**: `--lua`
 - **Testing**: `--testing`
+- **Fuzzing**: `--fuzzing` (requires clang compiler)
 - **Authentication**: `--sasl`, `--gss`, `--gsasl`
 - **Header Cache**: `--lmdb`, `--tokyocabinet`, `--kyotocabinet`, `--gdbm`, `--bdb`, `--qdbm`, `--rocksdb`, `--tdb`
 - **Compression**: `--lz4`, `--zlib`, `--zstd`
