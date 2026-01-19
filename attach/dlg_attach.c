@@ -252,7 +252,8 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_ATTACHMENT, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(MENU_ATTACHMENT, GETCH_NO_FLAGS);
+    op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
@@ -271,7 +272,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
 
     if (rc == FR_CONTINUE)
     {
-      op = priv->op;
+      event.op = priv->op;
     }
 
   } while (rc != FR_DONE);

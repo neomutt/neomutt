@@ -231,7 +231,8 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
     // Try to catch dialog keys before ops
     if (menu_dialog_dokey(menu, &op) != 0)
     {
-      op = km_dokey(MENU_DIALOG, GETCH_IGNORE_MACRO);
+      struct KeyEvent event = km_dokey(MENU_DIALOG, GETCH_IGNORE_MACRO);
+      op = event.op;
     }
 
     if (op == OP_TIMEOUT)

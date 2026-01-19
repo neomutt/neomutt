@@ -423,12 +423,12 @@ KeyGatherFlags gather_functions(const struct MenuDefinition *md, const keycode_t
 }
 
 /**
- * km_dokey_event - Determine what a keypress should do
+ * km_dokey - Determine what a keypress should do
  * @param mtype Menu type, e.g. #MENU_EDITOR
  * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
  * @retval ptr Event
  */
-struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
+struct KeyEvent km_dokey(enum MenuType mtype, GetChFlags flags)
 {
   struct KeyEvent event = { 0, OP_NULL };
   int pos = 0;
@@ -522,18 +522,4 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
   mutt_flushinp();
   mutt_error(_("Macro loop detected"));
   return (struct KeyEvent) { '\0', OP_ABORT };
-}
-
-/**
- * km_dokey - Determine what a keypress should do
- * @param mtype Menu type, e.g. #MENU_EDITOR
- * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
- * @retval >0      Function to execute
- * @retval OP_NULL No function bound to key sequence
- * @retval -1      Error occurred while reading input
- * @retval -2      A timeout or sigwinch occurred
- */
-int km_dokey(enum MenuType mtype, GetChFlags flags)
-{
-  return km_dokey_event(mtype, flags).op;
 }

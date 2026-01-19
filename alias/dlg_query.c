@@ -80,7 +80,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "editor/lib.h"
 #include "expando/lib.h"
@@ -370,7 +369,8 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_QUERY, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(MENU_QUERY, GETCH_NO_FLAGS);
+    op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
