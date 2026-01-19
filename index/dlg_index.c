@@ -697,6 +697,7 @@ static void handle_new_mail(struct IndexPrivateData *priv, struct IndexSharedDat
     buf_pool_release(&cmd);
   }
 
+  buf_pool_release(&path);
   buf_free(&message);
 }
 
