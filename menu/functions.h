@@ -23,6 +23,8 @@
 #ifndef MUTT_MENU_FUNCTIONS_H
 #define MUTT_MENU_FUNCTIONS_H
 
+#include "key/lib.h"
+
 struct Menu;
 
 /**
@@ -31,11 +33,11 @@ struct Menu;
  *
  * Prototype for a Menu Function
  *
- * @param menu Menu
- * @param op   Operation to perform, e.g. OP_NEXT_PAGE
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*menu_function_t)(struct Menu *menu, int op);
+typedef int (*menu_function_t)(struct Menu *menu, const struct KeyEvent *event);
 
 /**
  * struct MenuFunction - A NeoMutt function

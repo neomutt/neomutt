@@ -42,7 +42,7 @@
 /**
  * op_exit - Exit this menu - Implements ::smime_function_t - @ingroup smime_function_api
  */
-static int op_exit(struct SmimeData *sd, int op)
+static int op_exit(struct SmimeData *sd, const struct KeyEvent *event)
 {
   sd->done = true;
   return FR_SUCCESS;
@@ -51,7 +51,7 @@ static int op_exit(struct SmimeData *sd, int op)
 /**
  * op_generic_select_entry - Select the current entry - Implements ::smime_function_t - @ingroup smime_function_api
  */
-static int op_generic_select_entry(struct SmimeData *sd, int op)
+static int op_generic_select_entry(struct SmimeData *sd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(sd->menu);
   struct SmimeKey **pkey = ARRAY_GET(sd->ska, index);
@@ -124,7 +124,7 @@ int smime_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
     const struct SmimeFunction *fn = &SmimeFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(sd, op);
+      rc = fn->function(sd, event);
       break;
     }
   }

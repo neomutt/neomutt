@@ -38,10 +38,10 @@ struct MuttWindow;
  *
  * @param shared Shared Index data
  * @param priv   Private Index data
- * @param op     Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param event Event to process
  * @retval num #FunctionRetval or opcode, e.g. OP_JUMP
  */
-typedef int (*index_function_t)(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op);
+typedef int (*index_function_t)(struct IndexSharedData *shared, struct IndexPrivateData *priv, const struct KeyEvent *event);
 
 /**
  * struct IndexFunction - A NeoMutt function

@@ -34,10 +34,10 @@ struct MuttWindow;
  * Prototype for a Compose Function
  *
  * @param shared Shared Compose data
- * @param op     Operation to perform, e.g. OP_COMPOSE_WRITE_MESSAGE
+ * @param event  Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*compose_function_t)(struct ComposeSharedData *priv, int op);
+typedef int (*compose_function_t)(struct ComposeSharedData *priv, const struct KeyEvent *event);
 
 /**
  * struct ComposeFunction - A NeoMutt function

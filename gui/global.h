@@ -32,11 +32,11 @@ struct MuttWindow;
  *
  * Prototype for a Global Function
  *
- * @param win Focused Window
- * @param op  Operation to perform, e.g. OP_VERSION
+ * @param win   Focused Window
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*global_function_t)(struct MuttWindow *win, int op);
+typedef int (*global_function_t)(struct MuttWindow *win, const struct KeyEvent *event);
 
 /**
  * struct GlobalFunction - A NeoMutt function

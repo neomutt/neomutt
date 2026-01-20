@@ -184,7 +184,7 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
  * - OP_EDITOR_COMPLETE
  * - OP_EDITOR_COMPLETE_QUERY
  */
-static int op_editor_complete(struct EnterWindowData *wdata, int op)
+static int op_editor_complete(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   if (wdata->tabs == 0)
   {
@@ -198,7 +198,7 @@ static int op_editor_complete(struct EnterWindowData *wdata, int op)
   wdata->redraw = ENTER_REDRAW_LINE;
 
   if (wdata->comp_api && wdata->comp_api->complete)
-    return wdata->comp_api->complete(wdata, op);
+    return wdata->comp_api->complete(wdata, event->op);
 
   return FR_NO_ACTION;
 }
@@ -208,7 +208,7 @@ static int op_editor_complete(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_history_down - Scroll down through the history list - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_history_down(struct EnterWindowData *wdata, int op)
+static int op_editor_history_down(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   wdata->state->curpos = wdata->state->lastchar;
   if (mutt_hist_at_scratch(wdata->hclass))
@@ -224,7 +224,7 @@ static int op_editor_history_down(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_history_search - Search through the history list - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_history_search(struct EnterWindowData *wdata, int op)
+static int op_editor_history_search(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   wdata->state->curpos = wdata->state->lastchar;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
@@ -236,7 +236,7 @@ static int op_editor_history_search(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_history_up - Scroll up through the history list - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_history_up(struct EnterWindowData *wdata, int op)
+static int op_editor_history_up(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   wdata->state->curpos = wdata->state->lastchar;
   if (mutt_hist_at_scratch(wdata->hclass))
@@ -254,7 +254,7 @@ static int op_editor_history_up(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_backspace - Delete the char in front of the cursor - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_backspace(struct EnterWindowData *wdata, int op)
+static int op_editor_backspace(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   int rc = editor_backspace(wdata->state);
 
@@ -275,7 +275,7 @@ static int op_editor_backspace(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_backward_char - Move the cursor one character to the left - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_backward_char(struct EnterWindowData *wdata, int op)
+static int op_editor_backward_char(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_backward_char(wdata->state);
 }
@@ -283,7 +283,7 @@ static int op_editor_backward_char(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_backward_word - Move the cursor to the beginning of the word - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_backward_word(struct EnterWindowData *wdata, int op)
+static int op_editor_backward_word(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_backward_word(wdata->state);
 }
@@ -291,7 +291,7 @@ static int op_editor_backward_word(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_bol - Jump to the beginning of the line - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_bol(struct EnterWindowData *wdata, int op)
+static int op_editor_bol(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_bol(wdata->state);
 }
@@ -303,10 +303,10 @@ static int op_editor_bol(struct EnterWindowData *wdata, int op)
  * - OP_EDITOR_DOWNCASE_WORD
  * - OP_EDITOR_UPCASE_WORD
  */
-static int op_editor_capitalize_word(struct EnterWindowData *wdata, int op)
+static int op_editor_capitalize_word(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   enum EnterCase ec;
-  switch (op)
+  switch (event->op)
   {
     case OP_EDITOR_CAPITALIZE_WORD:
       ec = EC_CAPITALIZE;
@@ -326,7 +326,7 @@ static int op_editor_capitalize_word(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_delete_char - Delete the char under the cursor - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_delete_char(struct EnterWindowData *wdata, int op)
+static int op_editor_delete_char(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_delete_char(wdata->state);
 }
@@ -334,7 +334,7 @@ static int op_editor_delete_char(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_eol - Jump to the end of the line - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_eol(struct EnterWindowData *wdata, int op)
+static int op_editor_eol(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   int rc = editor_eol(wdata->state);
   wdata->redraw = ENTER_REDRAW_INIT;
@@ -344,7 +344,7 @@ static int op_editor_eol(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_forward_char - Move the cursor one character to the right - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_forward_char(struct EnterWindowData *wdata, int op)
+static int op_editor_forward_char(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_forward_char(wdata->state);
 }
@@ -352,7 +352,7 @@ static int op_editor_forward_char(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_forward_word - Move the cursor to the end of the word - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_forward_word(struct EnterWindowData *wdata, int op)
+static int op_editor_forward_word(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_forward_word(wdata->state);
 }
@@ -360,7 +360,7 @@ static int op_editor_forward_word(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_kill_eol - Delete chars from cursor to end of line - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_kill_eol(struct EnterWindowData *wdata, int op)
+static int op_editor_kill_eol(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_kill_eol(wdata->state);
 }
@@ -368,7 +368,7 @@ static int op_editor_kill_eol(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_kill_eow - Delete chars from the cursor to the end of the word - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_kill_eow(struct EnterWindowData *wdata, int op)
+static int op_editor_kill_eow(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_kill_eow(wdata->state);
 }
@@ -376,7 +376,7 @@ static int op_editor_kill_eow(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_kill_line - Delete all chars on the line - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_kill_line(struct EnterWindowData *wdata, int op)
+static int op_editor_kill_line(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_kill_line(wdata->state);
 }
@@ -384,7 +384,7 @@ static int op_editor_kill_line(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_kill_whole_line - Delete all chars on the line - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_kill_whole_line(struct EnterWindowData *wdata, int op)
+static int op_editor_kill_whole_line(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_kill_whole_line(wdata->state);
 }
@@ -392,7 +392,7 @@ static int op_editor_kill_whole_line(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_kill_word - Delete the word in front of the cursor - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_kill_word(struct EnterWindowData *wdata, int op)
+static int op_editor_kill_word(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_kill_word(wdata->state);
 }
@@ -404,18 +404,18 @@ static int op_editor_kill_word(struct EnterWindowData *wdata, int op)
  *
  * @sa #gui_mw
  */
-static int op_editor_quote_char(struct EnterWindowData *wdata, int op)
+static int op_editor_quote_char(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
-  struct KeyEvent event = { 0, OP_NULL };
+  struct KeyEvent event_q = { 0, OP_NULL };
   do
   {
     window_redraw(NULL);
-    event = mutt_getch(GETCH_NO_FLAGS);
-  } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
+    event_q = mutt_getch(GETCH_NO_FLAGS);
+  } while ((event_q.op == OP_TIMEOUT) || (event_q.op == OP_REPAINT));
 
-  if (event.op != OP_ABORT)
+  if (event_q.op != OP_ABORT)
   {
-    if (self_insert(wdata, event.ch))
+    if (self_insert(wdata, event_q.ch))
     {
       wdata->done = true;
       return FR_SUCCESS;
@@ -427,7 +427,7 @@ static int op_editor_quote_char(struct EnterWindowData *wdata, int op)
 /**
  * op_editor_transpose_chars - Transpose character under cursor with previous - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_editor_transpose_chars(struct EnterWindowData *wdata, int op)
+static int op_editor_transpose_chars(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   return editor_transpose_chars(wdata->state);
 }
@@ -435,7 +435,7 @@ static int op_editor_transpose_chars(struct EnterWindowData *wdata, int op)
 /**
  * op_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_help(struct EnterWindowData *wdata, int op)
+static int op_help(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   mutt_help(MENU_EDITOR);
   return FR_SUCCESS;
@@ -444,7 +444,7 @@ static int op_help(struct EnterWindowData *wdata, int op)
 /**
  * op_redraw - Redraw the screen - Implements ::enter_function_t - @ingroup enter_function_api
  */
-static int op_redraw(struct EnterWindowData *wdata, int op)
+static int op_redraw(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
   clearok(stdscr, true);
   mutt_resize_screen();
@@ -507,7 +507,7 @@ int enter_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
     const struct EnterFunction *fn = &EnterFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(wdata, op);
+      rc = fn->function(wdata, event);
       break;
     }
   }

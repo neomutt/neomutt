@@ -1097,7 +1097,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     }
     mutt_clear_error();
 
-    int rc = browser_function_dispatcher(sdw.dlg, op);
+    int rc = browser_function_dispatcher(sdw.dlg, &event);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, &event);

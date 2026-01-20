@@ -40,7 +40,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "editor/lib.h"
@@ -63,7 +62,7 @@
 #include "sort.h"
 #endif
 
-static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op);
+static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct KeyEvent *event);
 
 // clang-format off
 /**
@@ -164,7 +163,7 @@ void destroy_state(struct BrowserState *state)
 /**
  * op_browser_new_file - Select a new file in this directory - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_browser_new_file(struct BrowserPrivateData *priv, int op)
+static int op_browser_new_file(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   struct Buffer *buf = buf_pool_get();
   buf_printf(buf, "%s/", buf_string(&LastDir));
@@ -191,8 +190,10 @@ static int op_browser_new_file(struct BrowserPrivateData *priv, int op)
  * - OP_BROWSER_SUBSCRIBE
  * - OP_BROWSER_UNSUBSCRIBE
  */
-static int op_browser_subscribe(struct BrowserPrivateData *priv, int op)
+static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  const int op = event->op;
+
   if (OptNews)
   {
     struct NntpAccountData *adata = CurrentNewsSrv;
@@ -244,7 +245,7 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, int op)
 /**
  * op_browser_tell - Display the currently selected file's name - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_browser_tell(struct BrowserPrivateData *priv, int op)
+static int op_browser_tell(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   int index = menu_get_index(priv->menu);
   if (ARRAY_EMPTY(&priv->state.entry))
@@ -257,7 +258,7 @@ static int op_browser_tell(struct BrowserPrivateData *priv, int op)
 /**
  * op_browser_toggle_lsub - Toggle view all/subscribed mailboxes (IMAP only) - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_browser_toggle_lsub(struct BrowserPrivateData *priv, int op)
+static int op_browser_toggle_lsub(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
 
@@ -268,7 +269,7 @@ static int op_browser_toggle_lsub(struct BrowserPrivateData *priv, int op)
 /**
  * op_browser_view_file - View file - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_browser_view_file(struct BrowserPrivateData *priv, int op)
+static int op_browser_view_file(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (ARRAY_EMPTY(&priv->state.entry))
   {
@@ -313,7 +314,7 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, int op)
 /**
  * op_catchup - Mark all articles in newsgroup as read - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_catchup(struct BrowserPrivateData *priv, int op)
+static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (!OptNews)
     return FR_NOT_IMPL;
@@ -326,7 +327,7 @@ static int op_catchup(struct BrowserPrivateData *priv, int op)
 
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-  if (op == OP_CATCHUP)
+  if (event->op == OP_CATCHUP)
     mdata = mutt_newsgroup_catchup(priv->mailbox, CurrentNewsSrv, ff->name);
   else
     mdata = mutt_newsgroup_uncatchup(priv->mailbox, CurrentNewsSrv, ff->name);
@@ -353,7 +354,7 @@ static int op_catchup(struct BrowserPrivateData *priv, int op)
  * - OP_GOTO_PARENT
  * - OP_CHANGE_DIRECTORY
  */
-static int op_change_directory(struct BrowserPrivateData *priv, int op)
+static int op_change_directory(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (OptNews)
     return FR_NOT_IMPL;
@@ -368,6 +369,7 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
       buf_addch(buf, '/');
   }
 
+  const int op = event->op;
   if (op == OP_CHANGE_DIRECTORY)
   {
     struct FileCompletionData cdata = { false, priv->mailbox, NULL, NULL, NULL };
@@ -461,7 +463,7 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
 /**
  * op_create_mailbox - Create a new mailbox (IMAP only) - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_create_mailbox(struct BrowserPrivateData *priv, int op)
+static int op_create_mailbox(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (!priv->state.imap_browse)
   {
@@ -488,7 +490,7 @@ static int op_create_mailbox(struct BrowserPrivateData *priv, int op)
 /**
  * op_delete_mailbox - Delete the current mailbox (IMAP only) - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_delete_mailbox(struct BrowserPrivateData *priv, int op)
+static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
@@ -536,7 +538,7 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, int op)
 /**
  * op_enter_mask - Enter a file mask - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_enter_mask(struct BrowserPrivateData *priv, int op)
+static int op_enter_mask(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
   struct Buffer *buf = buf_pool_get();
@@ -600,7 +602,7 @@ static int op_enter_mask(struct BrowserPrivateData *priv, int op)
 /**
  * op_exit - Exit this menu - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_exit(struct BrowserPrivateData *priv, int op)
+static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (priv->multiple)
   {
@@ -646,7 +648,7 @@ static int op_exit(struct BrowserPrivateData *priv, int op)
  * - OP_DESCEND_DIRECTORY
  * - OP_GENERIC_SELECT_ENTRY
  */
-static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
+static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (ARRAY_EMPTY(&priv->state.entry))
   {
@@ -654,6 +656,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
     return FR_ERROR;
   }
 
+  const int op = event->op;
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
   if ((priv->menu->tag_prefix) && (op == OP_GENERIC_SELECT_ENTRY))
@@ -801,13 +804,13 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
     buf_concat_path(priv->file, buf_string(&LastDir), ff->name);
   }
 
-  return op_exit(priv, op);
+  return op_exit(priv, event);
 }
 
 /**
  * op_load_active - Load list of all newsgroups from NNTP server - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_load_active(struct BrowserPrivateData *priv, int op)
+static int op_load_active(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (!OptNews)
     return FR_NOT_IMPL;
@@ -844,7 +847,7 @@ static int op_load_active(struct BrowserPrivateData *priv, int op)
 /**
  * op_mailbox_list - List mailboxes with new mail - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_mailbox_list(struct BrowserPrivateData *priv, int op)
+static int op_mailbox_list(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   mutt_mailbox_list();
   return FR_SUCCESS;
@@ -853,7 +856,7 @@ static int op_mailbox_list(struct BrowserPrivateData *priv, int op)
 /**
  * op_rename_mailbox - Rename the current mailbox (IMAP only) - Implements ::browser_function_t - @ingroup browser_function_api
  */
-static int op_rename_mailbox(struct BrowserPrivateData *priv, int op)
+static int op_rename_mailbox(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
@@ -884,10 +887,11 @@ static int op_rename_mailbox(struct BrowserPrivateData *priv, int op)
  * - OP_SORT
  * - OP_SORT_REVERSE
  */
-static int op_sort(struct BrowserPrivateData *priv, int op)
+static int op_sort(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   bool resort = true;
   int sort = -1;
+  const int op = event->op;
   int reverse = (op == OP_SORT_REVERSE);
 
   switch (mw_multi_choice((reverse) ?
@@ -949,7 +953,7 @@ static int op_sort(struct BrowserPrivateData *priv, int op)
  * - OP_SUBSCRIBE_PATTERN
  * - OP_UNSUBSCRIBE_PATTERN
  */
-static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op)
+static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (!OptNews)
     return FR_NOT_IMPL;
@@ -960,6 +964,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op)
 
   char tmp2[256] = { 0 };
 
+  const int op = event->op;
   struct Buffer *buf = buf_pool_get();
   if (op == OP_SUBSCRIBE_PATTERN)
     snprintf(tmp2, sizeof(tmp2), _("Subscribe pattern: "));
@@ -1034,13 +1039,14 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op)
  * - OP_CHECK_NEW
  * - OP_TOGGLE_MAILBOXES
  */
-static int op_toggle_mailboxes(struct BrowserPrivateData *priv, int op)
+static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   if (priv->state.is_mailbox_list)
   {
     priv->last_selected_mailbox = menu_get_index(priv->menu);
   }
 
+  const int op = event->op;
   if (op == OP_TOGGLE_MAILBOXES)
   {
     priv->state.is_mailbox_list = !priv->state.is_mailbox_list;
@@ -1138,11 +1144,11 @@ static const struct BrowserFunction BrowserFunctions[] = {
 
 /**
  * browser_function_dispatcher - Perform a Browser function
- * @param win Window for the Browser
- * @param op  Operation to perform, e.g. OP_GOTO_PARENT
+ * @param win   Window for the Browser
+ * @param event Event to process
  * @retval num #FunctionRetval, e.g. #FR_SUCCESS
  */
-int browser_function_dispatcher(struct MuttWindow *win, int op)
+int browser_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
@@ -1158,9 +1164,9 @@ int browser_function_dispatcher(struct MuttWindow *win, int op)
   for (size_t i = 0; BrowserFunctions[i].op != OP_NULL; i++)
   {
     const struct BrowserFunction *fn = &BrowserFunctions[i];
-    if (fn->op == op)
+    if (fn->op == event->op)
     {
-      rc = fn->function(priv, op);
+      rc = fn->function(priv, event);
       break;
     }
   }

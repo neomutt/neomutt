@@ -48,7 +48,7 @@
 /**
  * op_check_stats - Calculate message statistics for all mailboxes - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_check_stats(struct MuttWindow *win, int op)
+static int op_check_stats(struct MuttWindow *win, const struct KeyEvent *event)
 {
   mutt_mailbox_check(get_current_mailbox(),
                      MUTT_MAILBOX_CHECK_POSTPONED | MUTT_MAILBOX_CHECK_STATS);
@@ -58,7 +58,7 @@ static int op_check_stats(struct MuttWindow *win, int op)
 /**
  * op_enter_command - Enter a neomuttrc command - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_enter_command(struct MuttWindow *win, int op)
+static int op_enter_command(struct MuttWindow *win, const struct KeyEvent *event)
 {
   mutt_enter_command(win);
   window_redraw(NULL);
@@ -68,7 +68,7 @@ static int op_enter_command(struct MuttWindow *win, int op)
 /**
  * op_redraw - Clear and redraw the screen - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_redraw(struct MuttWindow *win, int op)
+static int op_redraw(struct MuttWindow *win, const struct KeyEvent *event)
 {
   clearok(stdscr, true);
   mutt_resize_screen();
@@ -80,7 +80,7 @@ static int op_redraw(struct MuttWindow *win, int op)
 /**
  * op_shell_escape - Invoke a command in a subshell - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_shell_escape(struct MuttWindow *win, int op)
+static int op_shell_escape(struct MuttWindow *win, const struct KeyEvent *event)
 {
   if (mutt_shell_escape())
   {
@@ -97,7 +97,7 @@ static int op_shell_escape(struct MuttWindow *win, int op)
 /**
  * op_show_log_messages - Show log (and debug) messages - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_show_log_messages(struct MuttWindow *win, int op)
+static int op_show_log_messages(struct MuttWindow *win, const struct KeyEvent *event)
 {
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
@@ -141,7 +141,7 @@ static int op_show_log_messages(struct MuttWindow *win, int op)
 /**
  * op_version - Show the NeoMutt version number - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_version(struct MuttWindow *win, int op)
+static int op_version(struct MuttWindow *win, const struct KeyEvent *event)
 {
   mutt_message("%s", mutt_make_version());
   return FR_SUCCESS;
@@ -150,7 +150,7 @@ static int op_version(struct MuttWindow *win, int op)
 /**
  * op_what_key - display the keycode for a key press - Implements ::global_function_t - @ingroup global_function_api
  */
-static int op_what_key(struct MuttWindow *win, int op)
+static int op_what_key(struct MuttWindow *win, const struct KeyEvent *event)
 {
   mw_what_key();
   return FR_SUCCESS;
@@ -188,7 +188,7 @@ int global_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *ev
     const struct GlobalFunction *fn = &GlobalFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(win, op);
+      rc = fn->function(win, event);
       break;
     }
   }

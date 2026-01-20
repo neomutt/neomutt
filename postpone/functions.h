@@ -46,11 +46,11 @@ struct PostponeData
  *
  * Prototype for a Postpone Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_DELETE
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*postpone_function_t)(struct PostponeData *pd, int op);
+typedef int (*postpone_function_t)(struct PostponeData *pd, const struct KeyEvent *event);
 
 /**
  * struct PostponeFunction - A NeoMutt function

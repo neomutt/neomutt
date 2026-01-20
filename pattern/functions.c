@@ -40,7 +40,7 @@
 /**
  * op_generic_select_entry - Select the current entry - Implements ::pattern_function_t - @ingroup pattern_function_api
  */
-static int op_generic_select_entry(struct PatternData *pd, int op)
+static int op_generic_select_entry(struct PatternData *pd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(pd->menu);
   struct PatternEntry *entry = ARRAY_GET(&pd->entries, index);
@@ -56,7 +56,7 @@ static int op_generic_select_entry(struct PatternData *pd, int op)
 /**
  * op_quit - Quit this menu - Implements ::pattern_function_t - @ingroup pattern_function_api
  */
-static int op_quit(struct PatternData *pd, int op)
+static int op_quit(struct PatternData *pd, const struct KeyEvent *event)
 {
   pd->done = true;
   pd->selection = false;
@@ -97,7 +97,7 @@ int pattern_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *e
     const struct PatternFunction *fn = &PatternFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(pd, op);
+      rc = fn->function(pd, event);
       break;
     }
   }

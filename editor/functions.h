@@ -36,11 +36,11 @@ struct MuttWindow;
  *
  * Prototype for a Enter Function
  *
- * @param wdata  Enter Window data
- * @param op     Operation to perform, e.g. OP_EDITOR_BACKSPACE
+ * @param wdata Enter Window data
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*enter_function_t)(struct EnterWindowData *wdata, int op);
+typedef int (*enter_function_t)(struct EnterWindowData *wdata, const struct KeyEvent *event);
 
 /**
  * struct EnterFunction - A NeoMutt function

@@ -422,7 +422,7 @@ bool index_next_undeleted(struct MuttWindow *win_index)
  * op_alias_dialog - Open the aliases dialog - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_alias_dialog(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
+                           struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   alias_dialog(shared->mailbox, shared->sub);
   return FR_SUCCESS;
@@ -432,7 +432,8 @@ static int op_alias_dialog(struct IndexSharedData *shared,
  * op_attachment_edit_type - Edit attachment content type - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_attachment_edit_type(struct IndexSharedData *shared,
-                                   struct IndexPrivateData *priv, int op)
+                                   struct IndexPrivateData *priv,
+                                   const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
@@ -446,7 +447,7 @@ static int op_attachment_edit_type(struct IndexSharedData *shared,
  * op_bounce_message - Remail a message to another user - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_bounce_message(struct IndexSharedData *shared,
-                             struct IndexPrivateData *priv, int op)
+                             struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
@@ -460,7 +461,7 @@ static int op_bounce_message(struct IndexSharedData *shared,
  * op_check_traditional - Check for classic PGP - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_check_traditional(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!(WithCrypto & APPLICATION_PGP))
     return FR_NOT_IMPL;
@@ -483,7 +484,7 @@ static int op_check_traditional(struct IndexSharedData *shared,
  * op_compose_to_sender - Compose new message to the current message sender - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_compose_to_sender(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
@@ -499,7 +500,7 @@ static int op_compose_to_sender(struct IndexSharedData *shared,
  * op_create_alias - Create an alias from a message sender - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_create_alias(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
+                           struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct AddressList *al = NULL;
   if (shared->email && shared->email->env)
@@ -517,7 +518,8 @@ static int op_create_alias(struct IndexSharedData *shared,
  * - OP_DELETE
  * - OP_PURGE_MESSAGE
  */
-static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_delete(struct IndexSharedData *shared,
+                     struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   /* L10N: CHECK_ACL */
   if (!check_acl(shared->mailbox, MUTT_ACL_DELETE, _("Can't delete message")))
@@ -527,7 +529,7 @@ static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *pr
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
 
   mutt_emails_set_flag(shared->mailbox, &ea, MUTT_DELETE, true);
-  mutt_emails_set_flag(shared->mailbox, &ea, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
+  mutt_emails_set_flag(shared->mailbox, &ea, MUTT_PURGE, (event->op == OP_PURGE_MESSAGE));
   const bool c_delete_untag = cs_subset_bool(shared->sub, "delete_untag");
   if (c_delete_untag)
     mutt_emails_set_flag(shared->mailbox, &ea, MUTT_TAG, false);
@@ -554,7 +556,7 @@ static int op_delete(struct IndexSharedData *shared, struct IndexPrivateData *pr
  * - OP_PURGE_THREAD
  */
 static int op_delete_thread(struct IndexSharedData *shared,
-                            struct IndexPrivateData *priv, int op)
+                            struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   /* L10N: CHECK_ACL */
   /* L10N: Due to the implementation details we do not know whether we
@@ -565,6 +567,7 @@ static int op_delete_thread(struct IndexSharedData *shared,
   if (!shared->email)
     return FR_NO_ACTION;
 
+  const int op = event->op;
   int subthread = (op == OP_DELETE_SUBTHREAD);
   int rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_DELETE, true, subthread);
   if (rc == -1)
@@ -589,7 +592,7 @@ static int op_delete_thread(struct IndexSharedData *shared,
  * op_display_address - Display full address of sender - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_display_address(struct IndexSharedData *shared,
-                              struct IndexPrivateData *priv, int op)
+                              struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
@@ -606,13 +609,14 @@ static int op_display_address(struct IndexSharedData *shared,
  * - OP_DISPLAY_MESSAGE
  */
 static int op_display_message(struct IndexSharedData *shared,
-                              struct IndexPrivateData *priv, int op)
+                              struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
 
   mutt_message_hook(shared->mailbox, shared->email, CMD_MESSAGE_HOOK);
 
+  int op = event->op;
   /* toggle the weeding of headers so that a user can press the key
    * again while reading the message.  */
   if (op == OP_DISPLAY_HEADERS)
@@ -676,7 +680,8 @@ static int op_display_message(struct IndexSharedData *shared,
 /**
  * op_edit_label - Add, change, or delete a message's label - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_edit_label(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_edit_label(struct IndexSharedData *shared,
+                         struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
@@ -712,10 +717,11 @@ static int op_edit_label(struct IndexSharedData *shared, struct IndexPrivateData
  * - OP_VIEW_RAW_MESSAGE
  */
 static int op_edit_raw_message(struct IndexSharedData *shared,
-                               struct IndexPrivateData *priv, int op)
+                               struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   /* TODO split this into 3 cases? */
   bool edit;
+  const int op = event->op;
   if (op == OP_EDIT_RAW_MESSAGE)
   {
     /* L10N: CHECK_ACL */
@@ -756,7 +762,8 @@ static int op_edit_raw_message(struct IndexSharedData *shared,
 /**
  * op_end_cond - End of conditional execution (noop) - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_end_cond(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_end_cond(struct IndexSharedData *shared,
+                       struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   return FR_SUCCESS;
 }
@@ -764,7 +771,8 @@ static int op_end_cond(struct IndexSharedData *shared, struct IndexPrivateData *
 /**
  * op_exit - Exit this menu - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_exit(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_exit(struct IndexSharedData *shared,
+                   struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (shared->attach_msg)
     return FR_DONE;
@@ -786,7 +794,7 @@ static int op_exit(struct IndexSharedData *shared, struct IndexPrivateData *priv
  * op_extract_keys - Extract supported public keys - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_extract_keys(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
+                           struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!WithCrypto)
     return FR_NOT_IMPL;
@@ -803,7 +811,7 @@ static int op_extract_keys(struct IndexSharedData *shared,
  * op_flag_message - Toggle a message's 'important' flag - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_flag_message(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
+                           struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   /* L10N: CHECK_ACL */
   if (!check_acl(shared->mailbox, MUTT_ACL_WRITE, _("Can't flag message")))
@@ -839,7 +847,7 @@ static int op_flag_message(struct IndexSharedData *shared,
  * op_forget_passphrase - Wipe passphrases from memory - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_forget_passphrase(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   crypt_forget_passphrase();
   return FR_SUCCESS;
@@ -849,7 +857,7 @@ static int op_forget_passphrase(struct IndexSharedData *shared,
  * op_forward_message - Forward a message with comments - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_forward_message(struct IndexSharedData *shared,
-                              struct IndexPrivateData *priv, int op)
+                              struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
@@ -878,10 +886,10 @@ static int op_forward_message(struct IndexSharedData *shared,
  * - OP_GROUP_REPLY
  */
 static int op_group_reply(struct IndexSharedData *shared,
-                          struct IndexPrivateData *priv, int op)
+                          struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   SendFlags replyflags = SEND_REPLY;
-  if (op == OP_GROUP_REPLY)
+  if (event->op == OP_GROUP_REPLY)
     replyflags |= SEND_GROUP_REPLY;
   else
     replyflags |= SEND_GROUP_CHAT_REPLY;
@@ -907,12 +915,13 @@ static int op_group_reply(struct IndexSharedData *shared,
 /**
  * op_jump - Jump to an index number - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_jump(struct IndexSharedData *shared,
+                   struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int rc = FR_ERROR;
   struct Buffer *buf = buf_pool_get();
 
-  const int digit = op - OP_JUMP;
+  const int digit = event->op - OP_JUMP;
   if ((digit > 0) && (digit < 10))
   {
     mutt_unget_ch('0' + digit);
@@ -957,7 +966,8 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
 /**
  * op_list_reply - Reply to specified mailing list - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_list_reply(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_list_reply(struct IndexSharedData *shared,
+                         struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
@@ -982,7 +992,7 @@ static int op_list_reply(struct IndexSharedData *shared, struct IndexPrivateData
  * op_list_subscribe - Subscribe to a mailing list - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_list_subscribe(struct IndexSharedData *shared,
-                             struct IndexPrivateData *priv, int op)
+                             struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   return mutt_send_list_subscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_NO_ACTION;
 }
@@ -991,7 +1001,7 @@ static int op_list_subscribe(struct IndexSharedData *shared,
  * op_list_unsubscribe - Unsubscribe from mailing list - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_list_unsubscribe(struct IndexSharedData *shared,
-                               struct IndexPrivateData *priv, int op)
+                               struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   return mutt_send_list_unsubscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_NO_ACTION;
 }
@@ -999,7 +1009,8 @@ static int op_list_unsubscribe(struct IndexSharedData *shared,
 /**
  * op_mail - Compose a new mail message - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_mail(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_mail(struct IndexSharedData *shared,
+                   struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int rc = mutt_send_message(SEND_NO_FLAGS, NULL, NULL, shared->mailbox, NULL,
                              shared->sub);
@@ -1011,7 +1022,7 @@ static int op_mail(struct IndexSharedData *shared, struct IndexPrivateData *priv
  * op_mailbox_list - List mailboxes with new mail - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_mailbox_list(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
+                           struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   mutt_mailbox_list();
   return FR_SUCCESS;
@@ -1020,7 +1031,8 @@ static int op_mailbox_list(struct IndexSharedData *shared,
 /**
  * op_mail_key - Mail a PGP public key - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_mail_key(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_mail_key(struct IndexSharedData *shared,
+                       struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!(WithCrypto & APPLICATION_PGP))
     return FR_NOT_IMPL;
@@ -1034,7 +1046,7 @@ static int op_mail_key(struct IndexSharedData *shared, struct IndexPrivateData *
  * op_main_break_thread - Break the thread in two - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_break_thread(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct Mailbox *m = shared->mailbox;
   /* L10N: CHECK_ACL */
@@ -1082,7 +1094,7 @@ static int op_main_break_thread(struct IndexSharedData *shared,
  * - OP_MAIN_CHANGE_VFOLDER
  */
 static int op_main_change_folder(struct IndexSharedData *shared,
-                                 struct IndexPrivateData *priv, int op)
+                                 struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct Buffer *folderbuf = buf_pool_get();
   buf_alloc(folderbuf, PATH_MAX);
@@ -1090,6 +1102,7 @@ static int op_main_change_folder(struct IndexSharedData *shared,
   char *cp = NULL;
   bool read_only;
   const bool c_read_only = cs_subset_bool(shared->sub, "read_only");
+  const int op = event->op;
   if (shared->attach_msg || c_read_only || (op == OP_MAIN_CHANGE_FOLDER_READONLY))
   {
     cp = _("Open mailbox in read-only mode");
@@ -1146,7 +1159,7 @@ changefoldercleanup:
  * op_main_collapse_all - Collapse/uncollapse all threads - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_collapse_all(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!mutt_using_threads())
   {
@@ -1163,7 +1176,8 @@ static int op_main_collapse_all(struct IndexSharedData *shared,
  * op_main_collapse_thread - Collapse/uncollapse current thread - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_collapse_thread(struct IndexSharedData *shared,
-                                   struct IndexPrivateData *priv, int op)
+                                   struct IndexPrivateData *priv,
+                                   const struct KeyEvent *event)
 {
   if (!mutt_using_threads())
   {
@@ -1204,7 +1218,7 @@ static int op_main_collapse_thread(struct IndexSharedData *shared,
  * op_main_delete_pattern - Delete messages matching a pattern - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_delete_pattern(struct IndexSharedData *shared,
-                                  struct IndexPrivateData *priv, int op)
+                                  struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   /* L10N: CHECK_ACL */
   /* L10N: Due to the implementation details we do not know whether we
@@ -1227,10 +1241,12 @@ static int op_main_delete_pattern(struct IndexSharedData *shared,
  * - OP_MAIN_LIMIT
  * - OP_TOGGLE_READ
  */
-static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_main_limit(struct IndexSharedData *shared,
+                         struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   const bool lmt = mview_has_limit(shared->mailbox_view);
   int old_index = shared->email ? shared->email->index : -1;
+  const int op = event->op;
   if (op == OP_TOGGLE_READ)
   {
     char buf2[1024] = { 0 };
@@ -1293,7 +1309,7 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
  * op_main_link_threads - Link tagged message to the current one - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_link_threads(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct Mailbox *m = shared->mailbox;
   /* L10N: CHECK_ACL */
@@ -1350,7 +1366,7 @@ static int op_main_link_threads(struct IndexSharedData *shared,
  * - OP_MAIN_MODIFY_TAGS_THEN_HIDE
  */
 static int op_main_modify_tags(struct IndexSharedData *shared,
-                               struct IndexPrivateData *priv, int op)
+                               struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int rc = FR_ERROR;
   struct Buffer *buf = NULL;
@@ -1369,6 +1385,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
     goto done;
   }
 
+  const int op = event->op;
   struct Buffer *tags = buf_pool_get();
   if (!priv->tag_prefix)
     driver_tags_get_with_hidden(&shared->email->tags, tags);
@@ -1468,7 +1485,7 @@ done:
  * - OP_MAIN_PREV_UNREAD
  */
 static int op_main_next_new(struct IndexSharedData *shared,
-                            struct IndexPrivateData *priv, int op)
+                            struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int first_unread = -1;
   int first_new = -1;
@@ -1477,6 +1494,7 @@ static int op_main_next_new(struct IndexSharedData *shared,
   int mcur = saved_current;
   int index = -1;
   const bool threaded = mutt_using_threads();
+  const int op = event->op;
   for (size_t i = 0; i != shared->mailbox->vcount; i++)
   {
     if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_NEXT_UNREAD) ||
@@ -1592,9 +1610,10 @@ static int op_main_next_new(struct IndexSharedData *shared,
  * - OP_MAIN_PREV_THREAD
  */
 static int op_main_next_thread(struct IndexSharedData *shared,
-                               struct IndexPrivateData *priv, int op)
+                               struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int index = -1;
+  const int op = event->op;
   switch (op)
   {
     case OP_MAIN_NEXT_THREAD:
@@ -1634,7 +1653,7 @@ static int op_main_next_thread(struct IndexSharedData *shared,
  * op_main_next_undeleted - Move to the next undeleted message - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_next_undeleted(struct IndexSharedData *shared,
-                                  struct IndexPrivateData *priv, int op)
+                                  struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int index = menu_get_index(priv->menu);
   if (index >= (shared->mailbox->vcount - 1))
@@ -1667,7 +1686,8 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
  * op_main_next_unread_mailbox - Open next mailbox with unread mail - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_next_unread_mailbox(struct IndexSharedData *shared,
-                                       struct IndexPrivateData *priv, int op)
+                                       struct IndexPrivateData *priv,
+                                       const struct KeyEvent *event)
 {
   struct Mailbox *m = shared->mailbox;
 
@@ -1690,7 +1710,7 @@ static int op_main_next_unread_mailbox(struct IndexSharedData *shared,
  * op_main_prev_undeleted - Move to the previous undeleted message - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_prev_undeleted(struct IndexSharedData *shared,
-                                  struct IndexPrivateData *priv, int op)
+                                  struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int index = menu_get_index(priv->menu);
   if (index < 1)
@@ -1723,7 +1743,7 @@ static int op_main_prev_undeleted(struct IndexSharedData *shared,
  * op_main_quasi_delete - Delete from NeoMutt, don't touch on disk - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_quasi_delete(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (priv->tag_prefix)
   {
@@ -1759,7 +1779,7 @@ static int op_main_quasi_delete(struct IndexSharedData *shared,
  * - OP_MAIN_READ_THREAD
  */
 static int op_main_read_thread(struct IndexSharedData *shared,
-                               struct IndexPrivateData *priv, int op)
+                               struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   /* L10N: CHECK_ACL */
   /* L10N: Due to the implementation details we do not know whether we
@@ -1768,6 +1788,7 @@ static int op_main_read_thread(struct IndexSharedData *shared,
   if (!check_acl(shared->mailbox, MUTT_ACL_SEEN, _("Can't mark messages as read")))
     return FR_ERROR;
 
+  const int op = event->op;
   int rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_READ, true,
                                 (op != OP_MAIN_READ_THREAD));
   if (rc != -1)
@@ -1789,9 +1810,9 @@ static int op_main_read_thread(struct IndexSharedData *shared,
  * - OP_MAIN_ROOT_MESSAGE
  */
 static int op_main_root_message(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
-  int index = mutt_parent_message(shared->email, op == OP_MAIN_ROOT_MESSAGE);
+  int index = mutt_parent_message(shared->email, event->op == OP_MAIN_ROOT_MESSAGE);
   if (index != -1)
     menu_set_index(priv->menu, index);
 
@@ -1806,12 +1827,12 @@ static int op_main_root_message(struct IndexSharedData *shared,
  * - OP_MAIN_SET_FLAG
  */
 static int op_main_set_flag(struct IndexSharedData *shared,
-                            struct IndexPrivateData *priv, int op)
+                            struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
 
-  if (mw_change_flag(shared->mailbox, &ea, (op == OP_MAIN_SET_FLAG)) == 0)
+  if (mw_change_flag(shared->mailbox, &ea, (event->op == OP_MAIN_SET_FLAG)) == 0)
   {
     if (priv->tag_prefix)
     {
@@ -1831,7 +1852,7 @@ static int op_main_set_flag(struct IndexSharedData *shared,
  * op_main_show_limit - Show currently active limit pattern - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_show_limit(struct IndexSharedData *shared,
-                              struct IndexPrivateData *priv, int op)
+                              struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (mview_has_limit(shared->mailbox_view))
   {
@@ -1852,7 +1873,7 @@ static int op_main_show_limit(struct IndexSharedData *shared,
  * op_main_sync_folder - Save changes to mailbox - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_sync_folder(struct IndexSharedData *shared,
-                               struct IndexPrivateData *priv, int op)
+                               struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->mailbox || (shared->mailbox->msg_count == 0) || shared->mailbox->readonly)
     return FR_NO_ACTION;
@@ -1927,7 +1948,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
  * op_main_tag_pattern - Tag messages matching a pattern - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_tag_pattern(struct IndexSharedData *shared,
-                               struct IndexPrivateData *priv, int op)
+                               struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   mutt_pattern_func(shared->mailbox_view, MUTT_TAG, _("Tag messages matching: "));
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -1939,7 +1960,8 @@ static int op_main_tag_pattern(struct IndexSharedData *shared,
  * op_main_undelete_pattern - Undelete messages matching a pattern - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_undelete_pattern(struct IndexSharedData *shared,
-                                    struct IndexPrivateData *priv, int op)
+                                    struct IndexPrivateData *priv,
+                                    const struct KeyEvent *event)
 {
   /* L10N: CHECK_ACL */
   /* L10N: Due to the implementation details we do not know whether we
@@ -1961,7 +1983,7 @@ static int op_main_undelete_pattern(struct IndexSharedData *shared,
  * op_main_untag_pattern - Untag messages matching a pattern - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_untag_pattern(struct IndexSharedData *shared,
-                                 struct IndexPrivateData *priv, int op)
+                                 struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (mutt_pattern_func(shared->mailbox_view, MUTT_UNTAG, _("Untag messages matching: ")) == 0)
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -1972,7 +1994,8 @@ static int op_main_untag_pattern(struct IndexSharedData *shared,
 /**
  * op_mark_msg - Create a hotkey macro for the current message - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_mark_msg(struct IndexSharedData *shared,
+                       struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
@@ -2028,7 +2051,8 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
 /**
  * op_next_entry - Move to the next entry - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_next_entry(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_next_entry(struct IndexSharedData *shared,
+                         struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   const int index = menu_get_index(priv->menu) + 1;
   if (index >= shared->mailbox->vcount)
@@ -2044,7 +2068,8 @@ static int op_next_entry(struct IndexSharedData *shared, struct IndexPrivateData
 /**
  * op_pipe - Pipe message/attachment to a shell command - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_pipe(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_pipe(struct IndexSharedData *shared,
+                   struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
@@ -2065,7 +2090,8 @@ static int op_pipe(struct IndexSharedData *shared, struct IndexPrivateData *priv
 /**
  * op_prev_entry - Move to the previous entry - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_prev_entry(struct IndexSharedData *shared,
+                         struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int index = menu_get_index(priv->menu);
   if (index < 1)
@@ -2081,7 +2107,8 @@ static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData
 /**
  * op_print - Print the current entry - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_print(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_print(struct IndexSharedData *shared,
+                    struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
@@ -2102,7 +2129,8 @@ static int op_print(struct IndexSharedData *shared, struct IndexPrivateData *pri
 /**
  * op_query - Query external program for addresses - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_query(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_query(struct IndexSharedData *shared,
+                    struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   query_index(shared->mailbox, shared->sub);
   return FR_SUCCESS;
@@ -2111,7 +2139,8 @@ static int op_query(struct IndexSharedData *shared, struct IndexPrivateData *pri
 /**
  * op_quit - Save changes to mailbox and quit - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_quit(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_quit(struct IndexSharedData *shared,
+                   struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (shared->attach_msg)
     return FR_DONE;
@@ -2148,7 +2177,7 @@ static int op_quit(struct IndexSharedData *shared, struct IndexPrivateData *priv
  * op_recall_message - Recall a postponed message - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_recall_message(struct IndexSharedData *shared,
-                             struct IndexPrivateData *priv, int op)
+                             struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int rc = mutt_send_message(SEND_POSTPONED, NULL, NULL, shared->mailbox, NULL,
                              shared->sub);
@@ -2159,7 +2188,8 @@ static int op_recall_message(struct IndexSharedData *shared,
 /**
  * op_reply - Reply to a message - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_reply(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_reply(struct IndexSharedData *shared,
+                    struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
@@ -2183,7 +2213,8 @@ static int op_reply(struct IndexSharedData *shared, struct IndexPrivateData *pri
 /**
  * op_resend - Use the current message as a template for a new one - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_resend(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_resend(struct IndexSharedData *shared,
+                     struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int rc = -1;
   if (priv->tag_prefix)
@@ -2218,8 +2249,10 @@ static int op_resend(struct IndexSharedData *shared, struct IndexPrivateData *pr
  * - OP_DECRYPT_SAVE
  * - OP_SAVE
  */
-static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_save(struct IndexSharedData *shared,
+                   struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
+  const int op = event->op;
   if (((op == OP_DECRYPT_COPY) || (op == OP_DECRYPT_SAVE)) && !WithCrypto)
     return FR_NOT_IMPL;
 
@@ -2258,10 +2291,11 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
  * - OP_SEARCH_OPPOSITE
  * - OP_SEARCH_REVERSE
  */
-static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_search(struct IndexSharedData *shared,
+                     struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   SearchFlags flags = SEARCH_NO_FLAGS;
-  switch (op)
+  switch (event->op)
   {
     case OP_SEARCH:
       flags |= SEARCH_PROMPT;
@@ -2297,9 +2331,10 @@ static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *pr
  * - OP_SORT
  * - OP_SORT_REVERSE
  */
-static int op_sort(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_sort(struct IndexSharedData *shared,
+                   struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
-  if (!mutt_select_sort(op == OP_SORT_REVERSE))
+  if (!mutt_select_sort(event->op == OP_SORT_REVERSE))
     return FR_ERROR;
 
   if (shared->mailbox && (shared->mailbox->msg_count != 0))
@@ -2314,7 +2349,8 @@ static int op_sort(struct IndexSharedData *shared, struct IndexPrivateData *priv
 /**
  * op_tag - Tag the current entry - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
+                  const struct KeyEvent *event)
 {
   const bool c_auto_tag = cs_subset_bool(shared->sub, "auto_tag");
   if (priv->tag_prefix && !c_auto_tag)
@@ -2348,11 +2384,13 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
  * - OP_TAG_SUBTHREAD
  * - OP_TAG_THREAD
  */
-static int op_tag_thread(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_tag_thread(struct IndexSharedData *shared,
+                         struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
 
+  const int op = event->op;
   int rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_TAG,
                                 !shared->email->tagged, (op != OP_TAG_THREAD));
   if (rc != -1)
@@ -2369,7 +2407,8 @@ static int op_tag_thread(struct IndexSharedData *shared, struct IndexPrivateData
 /**
  * op_toggle_new - Toggle a message's 'new' flag - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_toggle_new(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_toggle_new(struct IndexSharedData *shared,
+                         struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   /* L10N: CHECK_ACL */
   if (!check_acl(shared->mailbox, MUTT_ACL_SEEN, _("Can't toggle new")))
@@ -2412,7 +2451,7 @@ static int op_toggle_new(struct IndexSharedData *shared, struct IndexPrivateData
  * op_toggle_write - Toggle whether the mailbox will be rewritten - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_toggle_write(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
+                           struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   mx_toggle_write(shared->mailbox);
   return FR_SUCCESS;
@@ -2421,7 +2460,8 @@ static int op_toggle_write(struct IndexSharedData *shared,
 /**
  * op_undelete - Undelete the current entry - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_undelete(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_undelete(struct IndexSharedData *shared,
+                       struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   /* L10N: CHECK_ACL */
   if (!check_acl(shared->mailbox, MUTT_ACL_DELETE, _("Can't undelete message")))
@@ -2454,7 +2494,7 @@ static int op_undelete(struct IndexSharedData *shared, struct IndexPrivateData *
  * - OP_UNDELETE_THREAD
  */
 static int op_undelete_thread(struct IndexSharedData *shared,
-                              struct IndexPrivateData *priv, int op)
+                              struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   /* L10N: CHECK_ACL */
   /* L10N: Due to the implementation details we do not know whether we
@@ -2463,6 +2503,7 @@ static int op_undelete_thread(struct IndexSharedData *shared,
   if (!check_acl(shared->mailbox, MUTT_ACL_DELETE, _("Can't undelete messages")))
     return FR_ERROR;
 
+  const int op = event->op;
   int rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_DELETE,
                                 false, (op != OP_UNDELETE_THREAD));
   if (rc != -1)
@@ -2485,7 +2526,7 @@ static int op_undelete_thread(struct IndexSharedData *shared,
  * op_view_attachments - Show MIME attachments - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_view_attachments(struct IndexSharedData *shared,
-                               struct IndexPrivateData *priv, int op)
+                               struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
@@ -2514,7 +2555,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
  * op_autocrypt_acct_menu - Manage autocrypt accounts - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_autocrypt_acct_menu(struct IndexSharedData *shared,
-                                  struct IndexPrivateData *priv, int op)
+                                  struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   dlg_autocrypt();
   return FR_SUCCESS;
@@ -2525,7 +2566,7 @@ static int op_autocrypt_acct_menu(struct IndexSharedData *shared,
  * op_main_imap_fetch - Force retrieval of mail from IMAP server - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_imap_fetch(struct IndexSharedData *shared,
-                              struct IndexPrivateData *priv, int op)
+                              struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->mailbox || (shared->mailbox->type != MUTT_IMAP))
     return FR_NO_ACTION;
@@ -2538,7 +2579,8 @@ static int op_main_imap_fetch(struct IndexSharedData *shared,
  * op_main_imap_logout_all - Logout from all IMAP servers - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_imap_logout_all(struct IndexSharedData *shared,
-                                   struct IndexPrivateData *priv, int op)
+                                   struct IndexPrivateData *priv,
+                                   const struct KeyEvent *event)
 {
   if (shared->mailbox && (shared->mailbox->type == MUTT_IMAP))
   {
@@ -2569,7 +2611,8 @@ static int op_main_imap_logout_all(struct IndexSharedData *shared,
 /**
  * op_catchup - Mark all articles in newsgroup as read - Implements ::index_function_t - @ingroup index_function_api
  */
-static int op_catchup(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_catchup(struct IndexSharedData *shared,
+                      struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct Mailbox *m = shared->mailbox;
   if (!m || (m->type != MUTT_NNTP))
@@ -2590,7 +2633,7 @@ static int op_catchup(struct IndexSharedData *shared, struct IndexPrivateData *p
  * - OP_RECONSTRUCT_THREAD
  */
 static int op_get_children(struct IndexSharedData *shared,
-                           struct IndexPrivateData *priv, int op)
+                           struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct Mailbox *m = shared->mailbox;
   if (m->type != MUTT_NNTP)
@@ -2616,6 +2659,7 @@ static int op_get_children(struct IndexSharedData *shared,
     m->id_hash = mutt_make_id_hash(m);
   mutt_str_copy(buf, e->env->message_id, sizeof(buf));
 
+  const int op = event->op;
   /* trying to find msgid of the root message */
   if (op == OP_RECONSTRUCT_THREAD)
   {
@@ -2691,7 +2735,7 @@ static int op_get_children(struct IndexSharedData *shared,
  * - OP_GET_PARENT
  */
 static int op_get_message(struct IndexSharedData *shared,
-                          struct IndexPrivateData *priv, int op)
+                          struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct Mailbox *m = shared->mailbox;
   if (m->type != MUTT_NNTP)
@@ -2700,6 +2744,7 @@ static int op_get_message(struct IndexSharedData *shared,
   int rc = FR_ERROR;
   struct Buffer *buf = buf_pool_get();
 
+  const int op = event->op;
   if (op == OP_GET_MESSAGE)
   {
     if ((mw_get_field(_("Enter Message-Id: "), buf, MUTT_COMP_NO_FLAGS,
@@ -2772,7 +2817,7 @@ done:
  * - OP_MAIN_CHANGE_GROUP_READONLY
  */
 static int op_main_change_group(struct IndexSharedData *shared,
-                                struct IndexPrivateData *priv, int op)
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   struct Buffer *folderbuf = buf_pool_get();
   buf_alloc(folderbuf, PATH_MAX);
@@ -2781,6 +2826,7 @@ static int op_main_change_group(struct IndexSharedData *shared,
   bool read_only;
   char *cp = NULL;
   const bool c_read_only = cs_subset_bool(shared->sub, "read_only");
+  const int op = event->op;
   if (shared->attach_msg || c_read_only || (op == OP_MAIN_CHANGE_GROUP_READONLY))
   {
     cp = _("Open newsgroup in read-only mode");
@@ -2847,11 +2893,13 @@ changefoldercleanup2:
  * - OP_FOLLOWUP
  * - OP_POST
  */
-static int op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
+static int op_post(struct IndexSharedData *shared,
+                   struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (!shared->email)
     return FR_NO_ACTION;
 
+  const int op = event->op;
   if ((op != OP_FOLLOWUP) || !shared->email->env->followup_to ||
       !mutt_istr_equal(shared->email->env->followup_to, "poster") ||
       (query_quadoption(_("Reply by mail as poster prefers?"), shared->sub,
@@ -2880,7 +2928,8 @@ static int op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv
     return FR_SUCCESS;
   }
 
-  return op_reply(shared, priv, OP_REPLY);
+  struct KeyEvent event_r = { 0, OP_REPLY };
+  return op_reply(shared, priv, &event_r);
 }
 
 #ifdef USE_NOTMUCH
@@ -2888,7 +2937,7 @@ static int op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv
  * op_main_entire_thread - Read entire thread of the current message - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_entire_thread(struct IndexSharedData *shared,
-                                 struct IndexPrivateData *priv, int op)
+                                 struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   if (shared->mailbox->type != MUTT_NOTMUCH)
   {
@@ -2967,7 +3016,8 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
  * - OP_MAIN_VFOLDER_FROM_QUERY_READONLY op_main_vfolder_from_query
  */
 static int op_main_vfolder_from_query(struct IndexSharedData *shared,
-                                      struct IndexPrivateData *priv, int op)
+                                      struct IndexPrivateData *priv,
+                                      const struct KeyEvent *event)
 {
   int rc = FR_SUCCESS;
   struct Buffer *buf = buf_pool_get();
@@ -2985,6 +3035,7 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
   char *query_unencoded = buf_strdup(buf);
 
   buf_alloc(buf, PATH_MAX);
+  const int op = event->op;
   struct Mailbox *m_query = change_folder_notmuch(priv->menu, buf->data, buf->dsize,
                                                   &priv->oldcount, shared,
                                                   (op == OP_MAIN_VFOLDER_FROM_QUERY_READONLY));
@@ -3014,7 +3065,8 @@ done:
  * - OP_MAIN_WINDOWED_VFOLDER_RESET
  */
 static int op_main_windowed_vfolder(struct IndexSharedData *shared,
-                                    struct IndexPrivateData *priv, int op)
+                                    struct IndexPrivateData *priv,
+                                    const struct KeyEvent *event)
 {
   // Common guard clauses.
   if (!nm_query_window_available())
@@ -3030,7 +3082,7 @@ static int op_main_windowed_vfolder(struct IndexSharedData *shared,
   }
 
   // Call the specific operation.
-  switch (op)
+  switch (event->op)
   {
     case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
       nm_query_window_backward();
@@ -3056,7 +3108,7 @@ static int op_main_windowed_vfolder(struct IndexSharedData *shared,
  * op_main_fetch_mail - Retrieve mail from POP server - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_fetch_mail(struct IndexSharedData *shared,
-                              struct IndexPrivateData *priv, int op)
+                              struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   pop_fetch_mail();
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -3288,7 +3340,7 @@ int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
         rc = FR_ERROR;
         break;
       }
-      rc = fn->function(shared, priv, op);
+      rc = fn->function(shared, priv, event);
       break;
     }
   }
