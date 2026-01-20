@@ -45,6 +45,7 @@
 #include "monitor.h"
 #endif
 
+/// XXX
 static const int MaxKeyLoop = 10;
 
 // It's not possible to unget more than one char under some curses libs,
@@ -422,17 +423,16 @@ KeyGatherFlags gather_functions(const struct MenuDefinition *md, const keycode_t
 }
 
 /**
- * km_dokey_event - Determine what a keypress should do
+ * km_dokey - Determine what a keypress should do
  * @param mtype Menu type, e.g. #MENU_EDITOR
  * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
  * @retval ptr Event
  */
-struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
+struct KeyEvent km_dokey(enum MenuType mtype, GetChFlags flags)
 {
   struct KeyEvent event = { 0, OP_NULL };
   int pos = 0;
   const struct MenuDefinition *md = NULL;
-  static bool dump = true;
   keycode_t keys[MAX_SEQ] = { 0 };
 
   ARRAY_FOREACH(md, &MenuDefs)
@@ -440,42 +440,6 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
     if (md->id == mtype)
       break;
   }
-
-  struct SubMenu **smp = NULL;
-
-  ARRAY_FOREACH(smp, &md->submenus)
-  {
-    struct SubMenu *sm = *smp;
-    struct Keymap *km = NULL;
-    int num_fn = 0;
-    int num_km = 0;
-
-    for (; sm->functions[num_fn].name; num_fn++)
-      ; // do nothing
-
-    STAILQ_FOREACH(km, &sm->keymaps, entries)
-    {
-      num_km++;
-    }
-
-    mutt_debug(LL_DEBUG1, "KEY:    SubMenu: %d functions, %d keymaps\n", num_fn, num_km);
-
-    if (dump && !STAILQ_EMPTY(&sm->keymaps))
-    {
-      mutt_debug(LL_DEBUG1, "KEY:    Keymaps:\n");
-
-      struct Buffer *buf = buf_pool_get();
-      STAILQ_FOREACH(km, &sm->keymaps, entries)
-      {
-        buf_reset(buf);
-        keymap_expand_key(km, buf);
-        mutt_debug(LL_DEBUG1, "KEY:        \"%s\" -> %s (%d)\n",
-                   buf_string(buf), opcodes_get_name(km->op), km->op);
-      }
-      buf_pool_release(&buf);
-    }
-  }
-  dump = false;
 
   for (int n = 0; n < MaxKeyLoop; n++)
   {
@@ -558,18 +522,4 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
   mutt_flushinp();
   mutt_error(_("Macro loop detected"));
   return (struct KeyEvent) { '\0', OP_ABORT };
-}
-
-/**
- * km_dokey - Determine what a keypress should do
- * @param mtype Menu type, e.g. #MENU_EDITOR
- * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
- * @retval >0      Function to execute
- * @retval OP_NULL No function bound to key sequence
- * @retval -1      Error occurred while reading input
- * @retval -2      A timeout or sigwinch occurred
- */
-int km_dokey(enum MenuType mtype, GetChFlags flags)
-{
-  return km_dokey_event(mtype, flags).op;
 }

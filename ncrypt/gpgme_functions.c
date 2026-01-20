@@ -41,6 +41,7 @@
 #include "gui/lib.h"
 #include "gpgme_functions.h"
 #include "lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
@@ -733,7 +734,7 @@ bool crypt_keys_are_valid(struct CryptKeyInfo *keys)
 /**
  * op_exit - Exit this menu - Implements ::gpgme_function_t - @ingroup gpgme_function_api
  */
-static int op_exit(struct GpgmeData *gd, int op)
+static int op_exit(struct GpgmeData *gd, const struct KeyEvent *event)
 {
   gd->done = true;
   return FR_SUCCESS;
@@ -742,7 +743,7 @@ static int op_exit(struct GpgmeData *gd, int op)
 /**
  * op_generic_select_entry - Select the current entry - Implements ::gpgme_function_t - @ingroup gpgme_function_api
  */
-static int op_generic_select_entry(struct GpgmeData *gd, int op)
+static int op_generic_select_entry(struct GpgmeData *gd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(gd->menu);
   struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
@@ -809,7 +810,7 @@ static int op_generic_select_entry(struct GpgmeData *gd, int op)
 /**
  * op_verify_key - Verify a PGP public key - Implements ::gpgme_function_t - @ingroup gpgme_function_api
  */
-static int op_verify_key(struct GpgmeData *gd, int op)
+static int op_verify_key(struct GpgmeData *gd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(gd->menu);
   struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
@@ -824,7 +825,7 @@ static int op_verify_key(struct GpgmeData *gd, int op)
 /**
  * op_view_id - View the key's user id - Implements ::gpgme_function_t - @ingroup gpgme_function_api
  */
-static int op_view_id(struct GpgmeData *gd, int op)
+static int op_view_id(struct GpgmeData *gd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(gd->menu);
   struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
@@ -853,15 +854,18 @@ static const struct GpgmeFunction GpgmeFunctions[] = {
 /**
  * gpgme_function_dispatcher - Perform a Gpgme function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int gpgme_function_dispatcher(struct MuttWindow *win, int op)
+int gpgme_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct GpgmeData *gd = menu->mdata;
+  if (!gd)
+    return FR_ERROR;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; GpgmeFunctions[i].op != OP_NULL; i++)
@@ -869,7 +873,7 @@ int gpgme_function_dispatcher(struct MuttWindow *win, int op)
     const struct GpgmeFunction *fn = &GpgmeFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(gd, op);
+      rc = fn->function(gd, event);
       break;
     }
   }

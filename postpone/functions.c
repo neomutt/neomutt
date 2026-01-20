@@ -83,7 +83,7 @@ void postponed_init_keys(struct SubMenu *sm_generic)
 /**
  * op_delete - Delete the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
  */
-static int op_delete(struct PostponeData *pd, int op)
+static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
 {
   struct Menu *menu = pd->menu;
   struct MailboxView *mv = pd->mailbox_view;
@@ -91,7 +91,7 @@ static int op_delete(struct PostponeData *pd, int op)
 
   const int index = menu_get_index(menu);
   /* should deleted draft messages be saved in the trash folder? */
-  mutt_set_flag(m, m->emails[index], MUTT_DELETE, (op == OP_DELETE), true);
+  mutt_set_flag(m, m->emails[index], MUTT_DELETE, (event->op == OP_DELETE), true);
   PostCount = m->msg_count - m->msg_deleted;
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve && (index < (menu->max - 1)))
@@ -114,7 +114,7 @@ static int op_delete(struct PostponeData *pd, int op)
 /**
  * op_exit - Exit this menu - Implements ::postpone_function_t - @ingroup postpone_function_api
  */
-static int op_exit(struct PostponeData *pd, int op)
+static int op_exit(struct PostponeData *pd, const struct KeyEvent *event)
 {
   pd->done = true;
   return FR_SUCCESS;
@@ -123,7 +123,7 @@ static int op_exit(struct PostponeData *pd, int op)
 /**
  * op_generic_select_entry - Select the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
  */
-static int op_generic_select_entry(struct PostponeData *pd, int op)
+static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEvent *event)
 {
   int index = menu_get_index(pd->menu);
   struct MailboxView *mv = pd->mailbox_view;
@@ -136,10 +136,10 @@ static int op_generic_select_entry(struct PostponeData *pd, int op)
 /**
  * op_search - Search for a regular expression - Implements ::postpone_function_t - @ingroup postpone_function_api
  */
-static int op_search(struct PostponeData *pd, int op)
+static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
 {
   SearchFlags flags = SEARCH_NO_FLAGS;
-  switch (op)
+  switch (event->op)
   {
     case OP_SEARCH:
       flags |= SEARCH_PROMPT;
@@ -187,15 +187,18 @@ static const struct PostponeFunction PostponeFunctions[] = {
 /**
  * postpone_function_dispatcher - Perform a Postpone function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int postpone_function_dispatcher(struct MuttWindow *win, int op)
+int postpone_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct PostponeData *pd = menu->mdata;
+  if (!pd)
+    return FR_ERROR;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PostponeFunctions[i].op != OP_NULL; i++)
@@ -203,7 +206,7 @@ int postpone_function_dispatcher(struct MuttWindow *win, int op)
     const struct PostponeFunction *fn = &PostponeFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(pd, op);
+      rc = fn->function(pd, event);
       break;
     }
   }

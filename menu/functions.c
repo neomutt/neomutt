@@ -137,9 +137,9 @@ done:
 /**
  * menu_movement - Handle all the common Menu movements - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int menu_movement(struct Menu *menu, int op)
+static int menu_movement(struct Menu *menu, const struct KeyEvent *event)
 {
-  switch (op)
+  switch (event->op)
   {
     case OP_BOTTOM_PAGE:
       menu_bottom_page(menu);
@@ -213,11 +213,11 @@ static int menu_movement(struct Menu *menu, int op)
 /**
  * menu_search - Handle Menu searching - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int menu_search(struct Menu *menu, int op)
+static int menu_search(struct Menu *menu, const struct KeyEvent *event)
 {
   if (menu->search)
   {
-    int index = search(menu, op);
+    int index = search(menu, event->op);
     if (index != -1)
       menu_set_index(menu, index);
   }
@@ -227,7 +227,7 @@ static int menu_search(struct Menu *menu, int op)
 /**
  * op_help - Show the help screen - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int op_help(struct Menu *menu, int op)
+static int op_help(struct Menu *menu, const struct KeyEvent *event)
 {
   mutt_help(menu->type);
   menu->redraw = MENU_REDRAW_FULL;
@@ -237,7 +237,7 @@ static int op_help(struct Menu *menu, int op)
 /**
  * op_jump - Jump to an index number - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int op_jump(struct Menu *menu, int op)
+static int op_jump(struct Menu *menu, const struct KeyEvent *event)
 {
   if (menu->max == 0)
   {
@@ -245,7 +245,7 @@ static int op_jump(struct Menu *menu, int op)
     return FR_SUCCESS;
   }
 
-  const int digit = op - OP_JUMP;
+  const int digit = event->op - OP_JUMP;
   if ((digit > 0) && (digit < 10))
   {
     mutt_unget_ch('0' + digit);
@@ -315,11 +315,12 @@ static const struct MenuFunction MenuFunctions[] = {
 /**
  * menu_function_dispatcher - Perform a Menu function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int menu_function_dispatcher(struct MuttWindow *win, int op)
+int menu_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
-  if (!win || !win->wdata)
+  if (!event || !win || !win->wdata)
     return FR_UNKNOWN;
 
+  const int op = event->op;
   struct Menu *menu = win->wdata;
 
   int rc = FR_UNKNOWN;
@@ -328,7 +329,7 @@ int menu_function_dispatcher(struct MuttWindow *win, int op)
     const struct MenuFunction *fn = &MenuFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(menu, op);
+      rc = fn->function(menu, event);
       break;
     }
   }

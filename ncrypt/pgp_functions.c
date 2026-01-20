@@ -36,6 +36,7 @@
 #include "gui/lib.h"
 #include "pgp_functions.h"
 #include "lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
@@ -49,7 +50,7 @@
 /**
  * op_exit - Exit this menu - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_exit(struct PgpData *pd, int op)
+static int op_exit(struct PgpData *pd, const struct KeyEvent *event)
 {
   pd->done = true;
   return FR_SUCCESS;
@@ -58,7 +59,7 @@ static int op_exit(struct PgpData *pd, int op)
 /**
  * op_generic_select_entry - Select the current entry - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_generic_select_entry(struct PgpData *pd, int op)
+static int op_generic_select_entry(struct PgpData *pd, const struct KeyEvent *event)
 {
   /* XXX make error reporting more verbose */
 
@@ -118,7 +119,7 @@ static int op_generic_select_entry(struct PgpData *pd, int op)
 /**
  * op_verify_key - Verify a PGP public key - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_verify_key(struct PgpData *pd, int op)
+static int op_verify_key(struct PgpData *pd, const struct KeyEvent *event)
 {
   FILE *fp_null = mutt_file_fopen("/dev/null", "w");
   if (!fp_null)
@@ -189,7 +190,7 @@ static int op_verify_key(struct PgpData *pd, int op)
 /**
  * op_view_id - View the key's user id - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_view_id(struct PgpData *pd, int op)
+static int op_view_id(struct PgpData *pd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(pd->menu);
   struct PgpUid **pkey = ARRAY_GET(pd->key_table, index);
@@ -218,15 +219,18 @@ static const struct PgpFunction PgpFunctions[] = {
 /**
  * pgp_function_dispatcher - Perform a Pgp function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int pgp_function_dispatcher(struct MuttWindow *win, int op)
+int pgp_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct PgpData *pd = menu->mdata;
+  if (!pd)
+    return FR_ERROR;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PgpFunctions[i].op != OP_NULL; i++)
@@ -234,7 +238,7 @@ int pgp_function_dispatcher(struct MuttWindow *win, int op)
     const struct PgpFunction *fn = &PgpFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(pd, op);
+      rc = fn->function(pd, event);
       break;
     }
   }

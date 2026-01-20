@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -45,11 +46,14 @@ struct HistoryData
  *
  * Prototype for a History Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_GENERIC_SELECT_ENTRY
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
-typedef int (*history_function_t)(struct HistoryData *pd, int op);
+typedef int (*history_function_t)(struct HistoryData *pd, const struct KeyEvent *event);
 
 /**
  * struct HistoryFunction - A NeoMutt function
@@ -60,6 +64,6 @@ struct HistoryFunction
   history_function_t function; ///< Function to call
 };
 
-int history_function_dispatcher(struct MuttWindow *win, int op);
+int history_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_HISTORY_FUNCTIONS_H */

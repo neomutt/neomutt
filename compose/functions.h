@@ -23,8 +23,9 @@
 #ifndef MUTT_COMPOSE_FUNCTIONS_H
 #define MUTT_COMPOSE_FUNCTIONS_H
 
-struct MuttWindow;
 struct ComposeSharedData;
+struct KeyEvent;
+struct MuttWindow;
 
 /**
  * @defgroup compose_function_api Compose Function API
@@ -33,10 +34,13 @@ struct ComposeSharedData;
  * Prototype for a Compose Function
  *
  * @param shared Shared Compose data
- * @param op     Operation to perform, e.g. OP_COMPOSE_WRITE_MESSAGE
+ * @param event  Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre shared is not NULL
+ * @pre event  is not NULL
  */
-typedef int (*compose_function_t)(struct ComposeSharedData *priv, int op);
+typedef int (*compose_function_t)(struct ComposeSharedData *priv, const struct KeyEvent *event);
 
 /**
  * struct ComposeFunction - A NeoMutt function
@@ -47,6 +51,6 @@ struct ComposeFunction
   compose_function_t function; ///< Function to call
 };
 
-int compose_function_dispatcher(struct MuttWindow *win, int op);
+int compose_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_COMPOSE_FUNCTIONS_H */

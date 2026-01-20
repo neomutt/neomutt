@@ -26,6 +26,7 @@
 #include <stdbool.h>
 
 struct CryptKeyInfo;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -46,11 +47,14 @@ struct GpgmeData
  *
  * Prototype for a Gpgme Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_GENERIC_SELECT_ENTRY
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
-typedef int (*gpgme_function_t)(struct GpgmeData *gd, int op);
+typedef int (*gpgme_function_t)(struct GpgmeData *gd, const struct KeyEvent *event);
 
 /**
  * struct GpgmeFunction - A NeoMutt function
@@ -62,6 +66,6 @@ struct GpgmeFunction
 };
 
 bool crypt_keys_are_valid(struct CryptKeyInfo *keys);
-int gpgme_function_dispatcher(struct MuttWindow *win, int op);
+int gpgme_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_NCRYPT_GPGME_FUNCTIONS_H */

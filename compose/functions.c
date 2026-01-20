@@ -743,7 +743,8 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
 /**
  * op_attachment_attach_file - Attach files to this message - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
+static int op_attachment_attach_file(struct ComposeSharedData *shared,
+                                     const struct KeyEvent *event)
 {
   char *prompt = _("Attach file");
   int numfiles = 0;
@@ -808,7 +809,8 @@ static int op_attachment_attach_file(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_attach_key - Attach a PGP public key - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_attach_key(struct ComposeSharedData *shared, int op)
+static int op_attachment_attach_key(struct ComposeSharedData *shared,
+                                    const struct KeyEvent *event)
 {
   if (!(WithCrypto & APPLICATION_PGP))
     return FR_NOT_IMPL;
@@ -836,11 +838,13 @@ static int op_attachment_attach_key(struct ComposeSharedData *shared, int op)
  * - OP_ATTACHMENT_ATTACH_MESSAGE
  * - OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
  */
-static int op_attachment_attach_message(struct ComposeSharedData *shared, int op)
+static int op_attachment_attach_message(struct ComposeSharedData *shared,
+                                        const struct KeyEvent *event)
 {
   char *prompt = _("Open mailbox to attach message from");
 
   OptNews = false;
+  const int op = event->op;
   if (shared->mailbox && (op == OP_ATTACHMENT_ATTACH_NEWS_MESSAGE))
   {
     const char *const c_news_server = cs_subset_string(shared->sub, "news_server");
@@ -984,7 +988,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
 /**
  * op_attachment_detach - Delete the current entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_detach(struct ComposeSharedData *shared, int op)
+static int op_attachment_detach(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
@@ -1020,7 +1024,8 @@ static int op_attachment_detach(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_edit_content_id - Edit the 'Content-ID' of the attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_content_id(struct ComposeSharedData *shared,
+                                         const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1073,7 +1078,8 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
 /**
  * op_attachment_edit_description - Edit attachment description - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_edit_description(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_description(struct ComposeSharedData *shared,
+                                          const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1104,7 +1110,8 @@ static int op_attachment_edit_description(struct ComposeSharedData *shared, int 
 /**
  * op_attachment_edit_encoding - Edit attachment transfer-encoding - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_edit_encoding(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_encoding(struct ComposeSharedData *shared,
+                                       const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1147,7 +1154,8 @@ static int op_attachment_edit_encoding(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_edit_language - Edit the 'Content-Language' of the attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_language(struct ComposeSharedData *shared,
+                                       const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1183,7 +1191,8 @@ static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_edit_mime - Edit attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_edit_mime(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_mime(struct ComposeSharedData *shared,
+                                   const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1201,7 +1210,8 @@ static int op_attachment_edit_mime(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_edit_type - Edit attachment content type - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_edit_type(struct ComposeSharedData *shared, int op)
+static int op_attachment_edit_type(struct ComposeSharedData *shared,
+                                   const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1225,7 +1235,7 @@ static int op_attachment_edit_type(struct ComposeSharedData *shared, int op)
  * - OP_ATTACHMENT_FILTER
  * - OP_PIPE
  */
-static int op_attachment_filter(struct ComposeSharedData *shared, int op)
+static int op_attachment_filter(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
@@ -1238,6 +1248,8 @@ static int op_attachment_filter(struct ComposeSharedData *shared, int op)
     mutt_error(_("Can't filter multipart attachments"));
     return FR_ERROR;
   }
+
+  const int op = event->op;
   mutt_pipe_attachment_list(actx, NULL, menu->tag_prefix, cur_att->body,
                             (op == OP_ATTACHMENT_FILTER));
   if (op == OP_ATTACHMENT_FILTER) /* cte might have changed */
@@ -1252,7 +1264,8 @@ static int op_attachment_filter(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_get_attachment - Get a temporary copy of an attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_get_attachment(struct ComposeSharedData *shared, int op)
+static int op_attachment_get_attachment(struct ComposeSharedData *shared,
+                                        const struct KeyEvent *event)
 {
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
@@ -1288,7 +1301,8 @@ done:
 /**
  * op_attachment_group_alts - Group tagged attachments as 'multipart/alternative' - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
+static int op_attachment_group_alts(struct ComposeSharedData *shared,
+                                    const struct KeyEvent *event)
 {
   if (shared->adata->menu->num_tagged < 2)
   {
@@ -1302,7 +1316,8 @@ static int op_attachment_group_alts(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_group_lingual - Group tagged attachments as 'multipart/multilingual' - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
+static int op_attachment_group_lingual(struct ComposeSharedData *shared,
+                                       const struct KeyEvent *event)
 {
   if (shared->adata->menu->num_tagged < 2)
   {
@@ -1332,7 +1347,8 @@ static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_group_related - Group tagged attachments as 'multipart/related' - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
+static int op_attachment_group_related(struct ComposeSharedData *shared,
+                                       const struct KeyEvent *event)
 {
   if (shared->adata->menu->num_tagged < 2)
   {
@@ -1358,7 +1374,8 @@ static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_move_down - Move an attachment down in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_move_down(struct ComposeSharedData *shared, int op)
+static int op_attachment_move_down(struct ComposeSharedData *shared,
+                                   const struct KeyEvent *event)
 {
   int index = menu_get_index(shared->adata->menu);
 
@@ -1414,7 +1431,7 @@ static int op_attachment_move_down(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_move_up - Move an attachment up in the attachment list - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_move_up(struct ComposeSharedData *shared, int op)
+static int op_attachment_move_up(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   int index = menu_get_index(shared->adata->menu);
   if (index < 0)
@@ -1449,7 +1466,7 @@ static int op_attachment_move_up(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_new_mime - Compose new attachment using mailcap entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
+static int op_attachment_new_mime(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   int rc = FR_NO_ACTION;
   struct Buffer *fname = buf_pool_get();
@@ -1531,7 +1548,7 @@ done:
 /**
  * op_attachment_print - Print the current entry - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_print(struct ComposeSharedData *shared, int op)
+static int op_attachment_print(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
@@ -1553,7 +1570,8 @@ static int op_attachment_print(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_rename_attachment - Send attachment with a different name - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int op)
+static int op_attachment_rename_attachment(struct ComposeSharedData *shared,
+                                           const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1582,7 +1600,7 @@ static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int
 /**
  * op_attachment_save - Save message/attachment to a mailbox/file - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_save(struct ComposeSharedData *shared, int op)
+static int op_attachment_save(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
@@ -1604,7 +1622,8 @@ static int op_attachment_save(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_toggle_disposition - Toggle disposition between inline/attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_toggle_disposition(struct ComposeSharedData *shared, int op)
+static int op_attachment_toggle_disposition(struct ComposeSharedData *shared,
+                                            const struct KeyEvent *event)
 {
   /* toggle the content-disposition between inline/attachment */
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
@@ -1620,7 +1639,8 @@ static int op_attachment_toggle_disposition(struct ComposeSharedData *shared, in
 /**
  * op_attachment_toggle_recode - Toggle recoding of this attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_toggle_recode(struct ComposeSharedData *shared, int op)
+static int op_attachment_toggle_recode(struct ComposeSharedData *shared,
+                                       const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1644,7 +1664,8 @@ static int op_attachment_toggle_recode(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_toggle_unlink - Toggle whether to delete file after sending it - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_toggle_unlink(struct ComposeSharedData *shared, int op)
+static int op_attachment_toggle_unlink(struct ComposeSharedData *shared,
+                                       const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1660,7 +1681,7 @@ static int op_attachment_toggle_unlink(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_ungroup - Ungroup a 'multipart' attachment - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
+static int op_attachment_ungroup(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   if (shared->adata->actx->idx[shared->adata->menu->current]->body->type != TYPE_MULTIPART)
   {
@@ -1724,7 +1745,8 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
 /**
  * op_attachment_update_encoding - Update an attachment's encoding info - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_attachment_update_encoding(struct ComposeSharedData *shared, int op)
+static int op_attachment_update_encoding(struct ComposeSharedData *shared,
+                                         const struct KeyEvent *event)
 {
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
@@ -1758,7 +1780,8 @@ done:
 /**
  * op_envelope_edit_headers - Edit the message with headers - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_envelope_edit_headers(struct ComposeSharedData *shared, int op)
+static int op_envelope_edit_headers(struct ComposeSharedData *shared,
+                                    const struct KeyEvent *event)
 {
   mutt_rfc3676_space_unstuff(shared->email);
   const char *tag = NULL;
@@ -1805,7 +1828,7 @@ static int op_envelope_edit_headers(struct ComposeSharedData *shared, int op)
 /**
  * op_compose_edit_file - Edit the file to be attached - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_file(struct ComposeSharedData *shared, int op)
+static int op_compose_edit_file(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1829,7 +1852,8 @@ static int op_compose_edit_file(struct ComposeSharedData *shared, int op)
 /**
  * op_compose_edit_message - Edit the message - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_edit_message(struct ComposeSharedData *shared, int op)
+static int op_compose_edit_message(struct ComposeSharedData *shared,
+                                   const struct KeyEvent *event)
 {
   const bool c_edit_headers = cs_subset_bool(shared->sub, "edit_headers");
   if (!c_edit_headers)
@@ -1845,13 +1869,13 @@ static int op_compose_edit_message(struct ComposeSharedData *shared, int op)
     return FR_SUCCESS;
   }
 
-  return op_envelope_edit_headers(shared, op);
+  return op_envelope_edit_headers(shared, event);
 }
 
 /**
  * op_compose_ispell - Run ispell on the message - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_ispell(struct ComposeSharedData *shared, int op)
+static int op_compose_ispell(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   endwin();
   const char *const c_ispell = cs_subset_string(shared->sub, "ispell");
@@ -1871,7 +1895,8 @@ static int op_compose_ispell(struct ComposeSharedData *shared, int op)
 /**
  * op_compose_postpone_message - Save this message to send later - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_postpone_message(struct ComposeSharedData *shared, int op)
+static int op_compose_postpone_message(struct ComposeSharedData *shared,
+                                       const struct KeyEvent *event)
 {
   if (check_attachments(shared->adata->actx, shared->sub) != 0)
   {
@@ -1886,7 +1911,7 @@ static int op_compose_postpone_message(struct ComposeSharedData *shared, int op)
 /**
  * op_compose_rename_file - Rename/move an attached file - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
+static int op_compose_rename_file(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
@@ -1935,7 +1960,8 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
 /**
  * op_compose_send_message - Send the message - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_send_message(struct ComposeSharedData *shared, int op)
+static int op_compose_send_message(struct ComposeSharedData *shared,
+                                   const struct KeyEvent *event)
 {
   /* Note: We don't invoke send2-hook here, since we want to leave
    * users an opportunity to change settings from the ":" prompt.  */
@@ -1962,7 +1988,8 @@ static int op_compose_send_message(struct ComposeSharedData *shared, int op)
 /**
  * op_compose_write_message - Write the message to a folder - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_compose_write_message(struct ComposeSharedData *shared, int op)
+static int op_compose_write_message(struct ComposeSharedData *shared,
+                                    const struct KeyEvent *event)
 {
   int rc = FR_NO_ACTION;
   struct Buffer *fname = buf_pool_get();
@@ -2004,13 +2031,14 @@ static int op_compose_write_message(struct ComposeSharedData *shared, int op)
  * - OP_ATTACHMENT_VIEW_TEXT
  * - OP_DISPLAY_HEADERS
  */
-static int op_display_headers(struct ComposeSharedData *shared, int op)
+static int op_display_headers(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
 
   enum ViewAttachMode mode = MUTT_VA_REGULAR;
 
+  const int op = event->op;
   switch (op)
   {
     case OP_ATTACHMENT_VIEW:
@@ -2051,7 +2079,7 @@ static int op_display_headers(struct ComposeSharedData *shared, int op)
 /**
  * op_exit - Exit this menu - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_exit(struct ComposeSharedData *shared, int op)
+static int op_exit(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   enum QuadOption ans = query_quadoption(_("Save (postpone) draft message?"),
                                          shared->sub, "postpone");
@@ -2080,13 +2108,13 @@ static int op_exit(struct ComposeSharedData *shared, int op)
     return FR_NO_ACTION;
   }
 
-  return op_compose_postpone_message(shared, op);
+  return op_compose_postpone_message(shared, event);
 }
 
 /**
  * op_forget_passphrase - Wipe passphrases from memory - Implements ::compose_function_t - @ingroup compose_function_api
  */
-static int op_forget_passphrase(struct ComposeSharedData *shared, int op)
+static int op_forget_passphrase(struct ComposeSharedData *shared, const struct KeyEvent *event)
 {
   crypt_forget_passphrase();
   return FR_SUCCESS;
@@ -2149,13 +2177,14 @@ static const struct ComposeFunction ComposeFunctions[] = {
 /**
  * compose_function_dispatcher - Perform a Compose function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int compose_function_dispatcher(struct MuttWindow *win, int op)
+int compose_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; ComposeFunctions[i].op != OP_NULL; i++)
   {
@@ -2163,7 +2192,7 @@ int compose_function_dispatcher(struct MuttWindow *win, int op)
     if (fn->op == op)
     {
       struct ComposeSharedData *shared = dlg->wdata;
-      rc = fn->function(shared, op);
+      rc = fn->function(shared, event);
       break;
     }
   }

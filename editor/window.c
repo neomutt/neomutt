@@ -33,7 +33,6 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "color/lib.h"
 #include "complete/lib.h"
 #include "history/lib.h"
@@ -326,7 +325,7 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
         win->actions |= WA_REPAINT;
 
       window_redraw(NULL);
-      struct KeyEvent event = km_dokey_event(MENU_EDITOR, flags);
+      struct KeyEvent event = km_dokey(MENU_EDITOR, flags);
       if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
       {
         continue;
@@ -363,7 +362,7 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
       if ((event.op != OP_EDITOR_COMPLETE) && (event.op != OP_EDITOR_COMPLETE_QUERY))
         wdata.tabs = 0;
       wdata.redraw = ENTER_REDRAW_LINE;
-      int rc_disp = enter_function_dispatcher(win, event.op);
+      int rc_disp = enter_function_dispatcher(win, &event);
       switch (rc_disp)
       {
         case FR_NO_ACTION:

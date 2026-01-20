@@ -48,6 +48,7 @@
 #include "type.h"
 
 struct ConfigSubset;
+struct KeyEvent;
 struct MuttWindow;
 
 // Observers of #NT_MENU will not be passed any Event data.
@@ -201,7 +202,7 @@ MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative);
 MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index);
 void menu_adjust(struct Menu *menu);
 
-int menu_function_dispatcher(struct MuttWindow *win, int op);
-int menu_tagging_dispatcher(struct MuttWindow *win, int op);
+int menu_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
+int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_MENU_LIB_H */

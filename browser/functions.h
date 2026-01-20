@@ -23,6 +23,8 @@
 #ifndef MUTT_BROWSER_FUNCTIONS_H
 #define MUTT_BROWSER_FUNCTIONS_H
 
+#include "key/lib.h"
+
 struct MuttWindow;
 struct BrowserPrivateData;
 
@@ -31,11 +33,14 @@ struct BrowserPrivateData;
  *
  * Prototype for a Browser Function
  *
- * @param priv   Private Browser data
- * @param op     Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param priv  Private Browser data
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre priv  is not NULL
+ * @pre event is not NULL
  */
-typedef int (*browser_function_t)(struct BrowserPrivateData *priv, int op);
+typedef int (*browser_function_t)(struct BrowserPrivateData *priv, const struct KeyEvent *event);
 
 /**
  * struct BrowserFunction - A NeoMutt function
@@ -46,6 +51,6 @@ struct BrowserFunction
   browser_function_t function; ///< Function to call
 };
 
-int browser_function_dispatcher(struct MuttWindow *win, int op);
+int browser_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif //MUTT_BROWSER_FUNCTIONS_H

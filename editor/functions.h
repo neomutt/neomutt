@@ -28,6 +28,7 @@
 
 struct EnterState;
 struct EnterWindowData;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -35,11 +36,14 @@ struct MuttWindow;
  *
  * Prototype for a Enter Function
  *
- * @param wdata  Enter Window data
- * @param op     Operation to perform, e.g. OP_EDITOR_BACKSPACE
+ * @param wdata Enter Window data
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre wdata is not NULL
+ * @pre event is not NULL
  */
-typedef int (*enter_function_t)(struct EnterWindowData *wdata, int op);
+typedef int (*enter_function_t)(struct EnterWindowData *wdata, const struct KeyEvent *event);
 
 /**
  * struct EnterFunction - A NeoMutt function
@@ -50,7 +54,7 @@ struct EnterFunction
   enter_function_t function; ///< Function to call
 };
 
-int enter_function_dispatcher(struct MuttWindow *win, int op);
+int enter_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool self_insert(struct EnterWindowData *wdata, int ch);
 void replace_part(struct EnterState *es, size_t from, const char *buf);
 

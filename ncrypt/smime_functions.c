@@ -33,6 +33,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "smime_functions.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "mutt_logging.h"
@@ -41,7 +42,7 @@
 /**
  * op_exit - Exit this menu - Implements ::smime_function_t - @ingroup smime_function_api
  */
-static int op_exit(struct SmimeData *sd, int op)
+static int op_exit(struct SmimeData *sd, const struct KeyEvent *event)
 {
   sd->done = true;
   return FR_SUCCESS;
@@ -50,7 +51,7 @@ static int op_exit(struct SmimeData *sd, int op)
 /**
  * op_generic_select_entry - Select the current entry - Implements ::smime_function_t - @ingroup smime_function_api
  */
-static int op_generic_select_entry(struct SmimeData *sd, int op)
+static int op_generic_select_entry(struct SmimeData *sd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(sd->menu);
   struct SmimeKey **pkey = ARRAY_GET(sd->ska, index);
@@ -106,15 +107,18 @@ static const struct SmimeFunction SmimeFunctions[] = {
 /**
  * smime_function_dispatcher - Perform a Smime function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int smime_function_dispatcher(struct MuttWindow *win, int op)
+int smime_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct SmimeData *sd = menu->mdata;
+  if (!sd)
+    return FR_ERROR;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; SmimeFunctions[i].op != OP_NULL; i++)
@@ -122,7 +126,7 @@ int smime_function_dispatcher(struct MuttWindow *win, int op)
     const struct SmimeFunction *fn = &SmimeFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(sd, op);
+      rc = fn->function(sd, event);
       break;
     }
   }

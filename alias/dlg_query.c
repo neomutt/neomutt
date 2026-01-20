@@ -80,7 +80,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "editor/lib.h"
 #include "expando/lib.h"
@@ -365,12 +364,14 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
   // Event Loop
   int rc = 0;
   int op = OP_NULL;
+  struct KeyEvent event = { 0, OP_NULL };
   do
   {
-    menu_tagging_dispatcher(menu->win, op);
+    menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_QUERY, GETCH_NO_FLAGS);
+    event = km_dokey(MENU_QUERY, GETCH_NO_FLAGS);
+    op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
@@ -381,11 +382,11 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
     }
     mutt_clear_error();
 
-    rc = alias_function_dispatcher(sdw.dlg, op);
+    rc = alias_function_dispatcher(sdw.dlg, &event);
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(menu->win, op);
+      rc = menu_function_dispatcher(menu->win, &event);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(menu->win, &event);
   } while ((rc != FR_DONE) && (rc != FR_CONTINUE));
   // ---------------------------------------------------------------------------
 

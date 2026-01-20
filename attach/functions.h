@@ -24,6 +24,7 @@
 #define MUTT_ATTACH_FUNCTIONS_H
 
 struct AttachPrivateData;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -32,11 +33,14 @@ struct MuttWindow;
  *
  * Prototype for an Attachment Function
  *
- * @param priv   Private Attach data
- * @param op     Operation to perform, e.g. OP_ATTACHMENT_COLLAPSE
+ * @param priv  Private Attach data
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre priv  is not NULL
+ * @pre event is not NULL
  */
-typedef int (*attach_function_t)(struct AttachPrivateData *priv, int op);
+typedef int (*attach_function_t)(struct AttachPrivateData *priv, const struct KeyEvent *event);
 
 /**
  * struct AttachFunction - A NeoMutt function
@@ -47,6 +51,6 @@ struct AttachFunction
   attach_function_t function; ///< Function to call
 };
 
-int attach_function_dispatcher(struct MuttWindow *win, int op);
+int attach_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_ATTACH_FUNCTIONS_H */

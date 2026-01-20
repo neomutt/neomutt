@@ -26,6 +26,7 @@
 #include <stdbool.h>
 
 struct IndexSharedData;
+struct KeyEvent;
 struct MuttWindow;
 struct PagerPrivateData;
 struct PagerView;
@@ -38,10 +39,14 @@ struct PagerView;
  *
  * @param shared Shared Index data
  * @param priv   Private Index data
- * @param op     Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param event  Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre shared is not NULL
+ * @pre priv   is not NULL
+ * @pre event  is not NULL
  */
-typedef int (*pager_function_t)(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op);
+typedef int (*pager_function_t)(struct IndexSharedData *shared, struct PagerPrivateData *priv, const struct KeyEvent *event);
 
 /**
  * struct PagerFunction - A NeoMutt function
@@ -52,7 +57,7 @@ struct PagerFunction
   pager_function_t function; ///< Function to call
 };
 
-int pager_function_dispatcher(struct MuttWindow *win, int op);
+int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview);
 
 #endif /* MUTT_PAGER_FUNCTIONS_H */

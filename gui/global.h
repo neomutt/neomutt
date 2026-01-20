@@ -23,6 +23,7 @@
 #ifndef MUTT_GUI_GLOBAL_H
 #define MUTT_GUI_GLOBAL_H
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -31,11 +32,14 @@ struct MuttWindow;
  *
  * Prototype for a Global Function
  *
- * @param win Focused Window
- * @param op  Operation to perform, e.g. OP_VERSION
+ * @param win   Focused Window
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre win   is not NULL
+ * @pre event is not NULL
  */
-typedef int (*global_function_t)(struct MuttWindow *win, int op);
+typedef int (*global_function_t)(struct MuttWindow *win, const struct KeyEvent *event);
 
 /**
  * struct GlobalFunction - A NeoMutt function
@@ -46,6 +50,6 @@ struct GlobalFunction
   global_function_t function; ///< Function to call
 };
 
-int global_function_dispatcher(struct MuttWindow *win, int op);
+int global_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_GLOBAL_FUNCTIONS_H */

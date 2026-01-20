@@ -1295,7 +1295,8 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     mutt_refresh();
 
     window_redraw(NULL);
-    op = km_dokey(MENU_INDEX, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(MENU_INDEX, GETCH_NO_FLAGS);
+    op = event.op;
 
     if (op == OP_REPAINT)
     {
@@ -1365,18 +1366,18 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     nm_db_debug_check(shared->mailbox);
 #endif
 
-    rc = index_function_dispatcher(priv->win_index, op);
+    rc = index_function_dispatcher(priv->win_index, &event);
 
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(priv->win_index, op);
+      rc = menu_function_dispatcher(priv->win_index, &event);
 
     if (rc == FR_UNKNOWN)
     {
       struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
-      rc = sb_function_dispatcher(win_sidebar, op);
+      rc = sb_function_dispatcher(win_sidebar, &event);
     }
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(priv->menu->win, op);
+      rc = global_function_dispatcher(priv->menu->win, &event);
 
     if (rc == FR_UNKNOWN)
       km_error_key(MENU_INDEX);

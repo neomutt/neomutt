@@ -23,6 +23,7 @@
 #ifndef MUTT_CORE_DISPATCHER_H
 #define MUTT_CORE_DISPATCHER_H
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -45,11 +46,11 @@ enum FunctionRetval
  * Prototype for a Function Dispatcher
  *
  * function_dispatcher_t - Perform a NeoMutt function
- * @param win Window
- * @param op  Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param win   Window
+ * @param event Event to act upon
  * @retval num FunctionRetval
  */
-typedef int (*function_dispatcher_t)(struct MuttWindow *win, int op);
+typedef int (*function_dispatcher_t)(struct MuttWindow *win, const struct KeyEvent *event);
 
 const char *dispatcher_get_retval_name(int rv);
 

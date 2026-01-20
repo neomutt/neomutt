@@ -191,7 +191,7 @@ struct Mailbox *mview_mailbox(struct MailboxView *mv)
   return mv ? mv->mailbox : NULL;
 }
 
-int global_function_dispatcher(struct MuttWindow *win, int op)
+int global_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   return 0;
 }

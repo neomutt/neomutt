@@ -25,6 +25,7 @@
 
 #include "pattern_data.h"
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -33,11 +34,14 @@ struct MuttWindow;
  *
  * Prototype for a Pattern Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_GENERIC_SELECT_ENTRY
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
-typedef int (*pattern_function_t)(struct PatternData *pd, int op);
+typedef int (*pattern_function_t)(struct PatternData *pd, const struct KeyEvent *event);
 
 /**
  * struct PatternFunction - A NeoMutt function
@@ -48,6 +52,6 @@ struct PatternFunction
   pattern_function_t function; ///< Function to call
 };
 
-int pattern_function_dispatcher(struct MuttWindow *win, int op);
+int pattern_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_PATTERN_FUNCTIONS_H */

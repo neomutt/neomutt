@@ -38,13 +38,13 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "functions.h"
 #include "lib.h"
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
 #include "hooks/lib.h"
+#include "key/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "mutt_logging.h"
@@ -190,7 +190,7 @@ void update_crypt_info(struct EnvelopeWindowData *wdata)
 /**
  * op_envelope_edit_bcc - Edit the BCC list - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_bcc(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_bcc(struct EnvelopeWindowData *wdata, const struct KeyEvent *event)
 {
   if (wdata->is_news)
     return FR_NO_ACTION;
@@ -205,7 +205,7 @@ static int op_envelope_edit_bcc(struct EnvelopeWindowData *wdata, int op)
 /**
  * op_envelope_edit_cc - Edit the CC list - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_cc(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_cc(struct EnvelopeWindowData *wdata, const struct KeyEvent *event)
 {
   if (wdata->is_news)
     return FR_NO_ACTION;
@@ -220,7 +220,7 @@ static int op_envelope_edit_cc(struct EnvelopeWindowData *wdata, int op)
 /**
  * op_envelope_edit_fcc - Enter a file to save a copy of this message in - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, const struct KeyEvent *event)
 {
   int rc = FR_NO_ACTION;
   struct Buffer *fname = buf_pool_get();
@@ -249,7 +249,7 @@ done:
 /**
  * op_envelope_edit_from - Edit the from field - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_from(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_from(struct EnvelopeWindowData *wdata, const struct KeyEvent *event)
 {
   if (!edit_address_list(HDR_FROM, &wdata->email->env->from))
     return FR_NO_ACTION;
@@ -262,7 +262,8 @@ static int op_envelope_edit_from(struct EnvelopeWindowData *wdata, int op)
 /**
  * op_envelope_edit_reply_to - Edit the Reply-To field - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_reply_to(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_reply_to(struct EnvelopeWindowData *wdata,
+                                     const struct KeyEvent *event)
 {
   if (!edit_address_list(HDR_REPLYTO, &wdata->email->env->reply_to))
     return FR_NO_ACTION;
@@ -274,7 +275,8 @@ static int op_envelope_edit_reply_to(struct EnvelopeWindowData *wdata, int op)
 /**
  * op_envelope_edit_subject - Edit the subject of this message - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_subject(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_subject(struct EnvelopeWindowData *wdata,
+                                    const struct KeyEvent *event)
 {
   int rc = FR_NO_ACTION;
   struct Buffer *buf = buf_pool_get();
@@ -300,7 +302,7 @@ done:
 /**
  * op_envelope_edit_to - Edit the TO list - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_to(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_to(struct EnvelopeWindowData *wdata, const struct KeyEvent *event)
 {
   if (wdata->is_news)
     return FR_NO_ACTION;
@@ -315,7 +317,7 @@ static int op_envelope_edit_to(struct EnvelopeWindowData *wdata, int op)
 /**
  * op_compose_pgp_menu - Show PGP options - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_compose_pgp_menu(struct EnvelopeWindowData *wdata, int op)
+static int op_compose_pgp_menu(struct EnvelopeWindowData *wdata, const struct KeyEvent *event)
 {
   const SecurityFlags old_flags = wdata->email->security;
   if (!(WithCrypto & APPLICATION_PGP))
@@ -353,7 +355,7 @@ static int op_compose_pgp_menu(struct EnvelopeWindowData *wdata, int op)
 /**
  * op_compose_smime_menu - Show S/MIME options - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_compose_smime_menu(struct EnvelopeWindowData *wdata, int op)
+static int op_compose_smime_menu(struct EnvelopeWindowData *wdata, const struct KeyEvent *event)
 {
   const SecurityFlags old_flags = wdata->email->security;
   if (!(WithCrypto & APPLICATION_SMIME))
@@ -393,7 +395,8 @@ static int op_compose_smime_menu(struct EnvelopeWindowData *wdata, int op)
 /**
  * op_compose_autocrypt_menu - Show autocrypt compose menu options - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata, int op)
+static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata,
+                                     const struct KeyEvent *event)
 {
   const SecurityFlags old_flags = wdata->email->security;
   const bool c_autocrypt = cs_subset_bool(wdata->sub, "autocrypt");
@@ -431,7 +434,8 @@ static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata, int op)
 /**
  * op_envelope_edit_followup_to - Edit the Followup-To field - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_followup_to(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_followup_to(struct EnvelopeWindowData *wdata,
+                                        const struct KeyEvent *event)
 {
   if (!wdata->is_news)
     return FR_NO_ACTION;
@@ -454,7 +458,8 @@ static int op_envelope_edit_followup_to(struct EnvelopeWindowData *wdata, int op
 /**
  * op_envelope_edit_newsgroups - Edit the newsgroups list - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_newsgroups(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_newsgroups(struct EnvelopeWindowData *wdata,
+                                       const struct KeyEvent *event)
 {
   if (!wdata->is_news)
     return FR_NO_ACTION;
@@ -477,7 +482,8 @@ static int op_envelope_edit_newsgroups(struct EnvelopeWindowData *wdata, int op)
 /**
  * op_envelope_edit_x_comment_to - Edit the X-Comment-To field - Implements ::envelope_function_t - @ingroup envelope_function_api
  */
-static int op_envelope_edit_x_comment_to(struct EnvelopeWindowData *wdata, int op)
+static int op_envelope_edit_x_comment_to(struct EnvelopeWindowData *wdata,
+                                         const struct KeyEvent *event)
 {
   const bool c_x_comment_to = cs_subset_bool(wdata->sub, "x_comment_to");
   if (!(wdata->is_news && c_x_comment_to))
@@ -527,11 +533,12 @@ static const struct EnvelopeFunction EnvelopeFunctions[] = {
 /**
  * env_function_dispatcher - Perform an Envelope function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int env_function_dispatcher(struct MuttWindow *win, int op)
+int env_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
-  if (!win || !win->wdata)
+  if (!event || !win || !win->wdata)
     return FR_UNKNOWN;
 
+  const int op = event->op;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; EnvelopeFunctions[i].op != OP_NULL; i++)
   {
@@ -539,7 +546,7 @@ int env_function_dispatcher(struct MuttWindow *win, int op)
     if (fn->op == op)
     {
       struct EnvelopeWindowData *wdata = win->wdata;
-      rc = fn->function(wdata, op);
+      rc = fn->function(wdata, event);
       break;
     }
   }

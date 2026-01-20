@@ -434,13 +434,15 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
   // Event Loop
   int rc = 0;
   int op = OP_NULL;
+  struct KeyEvent event = { 0, OP_NULL };
   do
   {
     OptNews = false; /* for any case */
-    menu_tagging_dispatcher(menu->win, op);
+    menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_COMPOSE, GETCH_NO_FLAGS);
+    event = km_dokey(MENU_COMPOSE, GETCH_NO_FLAGS);
+    op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
@@ -451,15 +453,15 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
     }
     mutt_clear_error();
 
-    rc = compose_function_dispatcher(dlg, op);
+    rc = compose_function_dispatcher(dlg, &event);
     if (rc == FR_UNKNOWN)
-      rc = env_function_dispatcher(win_env, op);
+      rc = env_function_dispatcher(win_env, &event);
     if (rc == FR_UNKNOWN)
-      rc = preview_function_dispatcher(shared->win_preview, op);
+      rc = preview_function_dispatcher(shared->win_preview, &event);
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(menu->win, op);
+      rc = menu_function_dispatcher(menu->win, &event);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(menu->win, &event);
   } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 

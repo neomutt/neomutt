@@ -227,9 +227,13 @@ static int menu_other(struct Menu *menu)
 /**
  * menu_tagging_dispatcher - Perform tagging operations on the Menu - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int menu_tagging_dispatcher(struct MuttWindow *win, int op)
+int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
+  if (!win || !win->wdata || !event)
+    return FR_ERROR;
+
   struct Menu *menu = win->wdata;
+  const int op = event->op;
 
   switch (op)
   {

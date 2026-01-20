@@ -66,6 +66,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "key/lib.h"
 
 // Maxixum body size in bytes to show in preview.
 const long MAX_PREVIEW_BODY_SIZE = 1024 * 1024 * 5;
@@ -89,10 +90,14 @@ struct PreviewWindowData
  * Prototype for a Preview Function
  *
  * @param wdata Preview Window data
- * @param op    Operation to perform, e.g. OP_NEXT_PAGE
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre wdata is not NULL
+ * @pre event is not NULL
  */
-typedef int (*preview_function_t)(struct PreviewWindowData *wdata, int op);
+typedef int (*preview_function_t)(struct PreviewWindowData *wdata,
+                                  const struct KeyEvent *event);
 
 /**
  * struct PreviewFunction - A message preview function
@@ -365,7 +370,7 @@ struct MuttWindow *preview_window_new(struct Email *e, struct MuttWindow *bar)
 /**
  * preview_page_up - Show the previous page of the message - Implements ::preview_function_t - @ingroup preview_function_api
  */
-static int preview_page_up(struct PreviewWindowData *wdata, int op)
+static int preview_page_up(struct PreviewWindowData *wdata, const struct KeyEvent *event)
 {
   if (wdata->scroll_offset <= 0)
     return FR_NO_ACTION;
@@ -379,7 +384,7 @@ static int preview_page_up(struct PreviewWindowData *wdata, int op)
 /**
  * preview_page_down - Show the previous page of the message - Implements ::preview_function_t - @ingroup preview_function_api
  */
-static int preview_page_down(struct PreviewWindowData *wdata, int op)
+static int preview_page_down(struct PreviewWindowData *wdata, const struct KeyEvent *event)
 {
   if (!wdata->more_content)
     return FR_NO_ACTION;
@@ -404,11 +409,12 @@ static const struct PreviewFunction PreviewFunctions[] = {
 /**
  * preview_function_dispatcher - Perform a preview function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int preview_function_dispatcher(struct MuttWindow *win, int op)
+int preview_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
-  if (!win || !win->wdata)
+  if (!event || !win || !win->wdata)
     return FR_UNKNOWN;
 
+  const int op = event->op;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PreviewFunctions[i].op != OP_NULL; i++)
   {
@@ -416,7 +422,7 @@ int preview_function_dispatcher(struct MuttWindow *win, int op)
     if (fn->op == op)
     {
       struct PreviewWindowData *wdata = win->wdata;
-      rc = fn->function(wdata, op);
+      rc = fn->function(wdata, event);
       break;
     }
   }

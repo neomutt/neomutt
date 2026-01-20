@@ -27,6 +27,7 @@
 
 struct IndexPrivateData;
 struct IndexSharedData;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -37,10 +38,14 @@ struct MuttWindow;
  *
  * @param shared Shared Index data
  * @param priv   Private Index data
- * @param op     Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param event Event to process
  * @retval num #FunctionRetval or opcode, e.g. OP_JUMP
+ *
+ * @pre shared is not NULL
+ * @pre priv   is not NULL
+ * @pre event  is not NULL
  */
-typedef int (*index_function_t)(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op);
+typedef int (*index_function_t)(struct IndexSharedData *shared, struct IndexPrivateData *priv, const struct KeyEvent *event);
 
 /**
  * struct IndexFunction - A NeoMutt function
@@ -52,7 +57,7 @@ struct IndexFunction
   int flags;                 ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
 };
 
-int index_function_dispatcher(struct MuttWindow *win, int op);
+int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool index_next_undeleted(struct MuttWindow *win_index);
 
 #endif /* MUTT_INDEX_FUNCTIONS_H */

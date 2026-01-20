@@ -33,13 +33,14 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "functions.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern_data.h"
 
 /**
  * op_generic_select_entry - Select the current entry - Implements ::pattern_function_t - @ingroup pattern_function_api
  */
-static int op_generic_select_entry(struct PatternData *pd, int op)
+static int op_generic_select_entry(struct PatternData *pd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(pd->menu);
   struct PatternEntry *entry = ARRAY_GET(&pd->entries, index);
@@ -55,7 +56,7 @@ static int op_generic_select_entry(struct PatternData *pd, int op)
 /**
  * op_quit - Quit this menu - Implements ::pattern_function_t - @ingroup pattern_function_api
  */
-static int op_quit(struct PatternData *pd, int op)
+static int op_quit(struct PatternData *pd, const struct KeyEvent *event)
 {
   pd->done = true;
   pd->selection = false;
@@ -79,15 +80,18 @@ static const struct PatternFunction PatternFunctions[] = {
 /**
  * pattern_function_dispatcher - Perform a Pattern function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int pattern_function_dispatcher(struct MuttWindow *win, int op)
+int pattern_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct PatternData *pd = menu->mdata;
+  if (!pd)
+    return FR_ERROR;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PatternFunctions[i].op != OP_NULL; i++)
@@ -95,7 +99,7 @@ int pattern_function_dispatcher(struct MuttWindow *win, int op)
     const struct PatternFunction *fn = &PatternFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(pd, op);
+      rc = fn->function(pd, event);
       break;
     }
   }

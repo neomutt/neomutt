@@ -31,6 +31,7 @@ struct AliasList;
 struct AliasMenuData;
 struct AliasViewArray;
 struct ConfigSubset;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -39,11 +40,14 @@ struct MuttWindow;
  *
  * Prototype for a Alias Function
  *
- * @param wdata  Alias Window data
- * @param op     Operation to perform, e.g. OP_CREATE_ALIAS
+ * @param wdata Alias Window data
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre wdata is not NULL
+ * @pre event is not NULL
  */
-typedef int (*alias_function_t)(struct AliasMenuData *wdata, int op);
+typedef int (*alias_function_t)(struct AliasMenuData *wdata, const struct KeyEvent *event);
 
 /**
  * struct AliasFunction - A NeoMutt function
@@ -55,7 +59,7 @@ struct AliasFunction
 };
 
 void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub);
-int alias_function_dispatcher(struct MuttWindow *win, int op);
+int alias_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool alias_to_addrlist(struct AddressList *al, struct Alias *alias);
 int query_run(const char *s, bool verbose, struct AliasList *al, const struct ConfigSubset *sub);
 

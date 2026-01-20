@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -44,11 +45,14 @@ struct SmimeData
  *
  * Prototype for a Smime Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_GENERIC_SELECT_ENTRY
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
-typedef int (*smime_function_t)(struct SmimeData *sd, int op);
+typedef int (*smime_function_t)(struct SmimeData *sd, const struct KeyEvent *event);
 
 /**
  * struct SmimeFunction - A NeoMutt function
@@ -59,6 +63,6 @@ struct SmimeFunction
   smime_function_t function; ///< Function to call
 };
 
-int smime_function_dispatcher(struct MuttWindow *win, int op);
+int smime_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_NCRYPT_SMIME_FUNCTIONS_H */

@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -45,11 +46,14 @@ struct PostponeData
  *
  * Prototype for a Postpone Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_DELETE
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
-typedef int (*postpone_function_t)(struct PostponeData *pd, int op);
+typedef int (*postpone_function_t)(struct PostponeData *pd, const struct KeyEvent *event);
 
 /**
  * struct PostponeFunction - A NeoMutt function
@@ -60,6 +64,6 @@ struct PostponeFunction
   postpone_function_t function; ///< Function to call
 };
 
-int postpone_function_dispatcher(struct MuttWindow *win, int op);
+int postpone_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_POSTPONE_FUNCTIONS_H */

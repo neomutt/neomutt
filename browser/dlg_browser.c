@@ -1079,12 +1079,14 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
+  struct KeyEvent event = { 0, OP_NULL };
   do
   {
-    menu_tagging_dispatcher(priv->menu->win, op);
+    menu_tagging_dispatcher(priv->menu->win, &event);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_BROWSER, GETCH_NO_FLAGS);
+    event = km_dokey(MENU_BROWSER, GETCH_NO_FLAGS);
+    op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
@@ -1095,12 +1097,12 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     }
     mutt_clear_error();
 
-    int rc = browser_function_dispatcher(sdw.dlg, op);
+    int rc = browser_function_dispatcher(sdw.dlg, &event);
 
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(menu->win, op);
+      rc = menu_function_dispatcher(menu->win, &event);
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(menu->win, op);
+      rc = global_function_dispatcher(menu->win, &event);
   } while (!priv->done);
   // ---------------------------------------------------------------------------
 

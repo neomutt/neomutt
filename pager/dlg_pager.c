@@ -484,7 +484,8 @@ int dlg_pager(struct PagerView *pview)
     // One of such functions is `mutt_enter_command()`
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index handles the operation and then restarts pager
-    op = km_dokey(MENU_PAGER, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(MENU_PAGER, GETCH_NO_FLAGS);
+    op = event.op;
 
     // km_dokey() can block, so recheck the timer.
     // Note: This check must occur before handling the operations of the index
@@ -512,17 +513,17 @@ int dlg_pager(struct PagerView *pview)
       continue;
     }
 
-    int rc = pager_function_dispatcher(priv->pview->win_pager, op);
+    int rc = pager_function_dispatcher(priv->pview->win_pager, &event);
 
     if (pview->mode == PAGER_MODE_EMAIL)
     {
       if ((rc == FR_UNKNOWN) && priv->pview->win_index)
-        rc = index_function_dispatcher(priv->pview->win_index, op);
+        rc = index_function_dispatcher(priv->pview->win_index, &event);
       if (rc == FR_UNKNOWN)
-        rc = sb_function_dispatcher(win_sidebar, op);
+        rc = sb_function_dispatcher(win_sidebar, &event);
     }
     if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(priv->pview->win_pager, op);
+      rc = global_function_dispatcher(priv->pview->win_pager, &event);
 
     if ((rc == FR_UNKNOWN) &&
         ((pview->mode == PAGER_MODE_ATTACH) || (pview->mode == PAGER_MODE_ATTACH_E)))

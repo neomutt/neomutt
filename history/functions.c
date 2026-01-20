@@ -32,12 +32,13 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "functions.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 
 /**
  * op_generic_select_entry - Select the current entry - Implements ::history_function_t - @ingroup history_function_api
  */
-static int op_generic_select_entry(struct HistoryData *hd, int op)
+static int op_generic_select_entry(struct HistoryData *hd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(hd->menu);
 
@@ -53,7 +54,7 @@ static int op_generic_select_entry(struct HistoryData *hd, int op)
 /**
  * op_quit - Quit this menu - Implements ::history_function_t - @ingroup history_function_api
  */
-static int op_quit(struct HistoryData *hd, int op)
+static int op_quit(struct HistoryData *hd, const struct KeyEvent *event)
 {
   hd->done = true;
   hd->selection = false;
@@ -77,15 +78,18 @@ static const struct HistoryFunction HistoryFunctions[] = {
 /**
  * history_function_dispatcher - Perform a History function - Implements ::function_dispatcher_t - @ingroup dispatcher_api
  */
-int history_function_dispatcher(struct MuttWindow *win, int op)
+int history_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
+  const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct HistoryData *hd = menu->mdata;
+  if (!hd)
+    return FR_ERROR;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; HistoryFunctions[i].op != OP_NULL; i++)
@@ -93,7 +97,7 @@ int history_function_dispatcher(struct MuttWindow *win, int op)
     const struct HistoryFunction *fn = &HistoryFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(hd, op);
+      rc = fn->function(hd, event);
       break;
     }
   }

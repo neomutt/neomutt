@@ -24,6 +24,7 @@
 #define MUTT_AUTOCRYPT_FUNCTIONS_H
 
 struct AutocryptData;
+struct KeyEvent;
 struct MuttWindow;
 
 /**
@@ -32,11 +33,14 @@ struct MuttWindow;
  *
  * Prototype for a Autocrypt Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_AUTOCRYPT_CREATE_ACCT
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
-typedef int (*autocrypt_function_t)(struct AutocryptData *pd, int op);
+typedef int (*autocrypt_function_t)(struct AutocryptData *pd, const struct KeyEvent *event);
 
 /**
  * struct AutocryptFunction - A NeoMutt function
@@ -47,6 +51,6 @@ struct AutocryptFunction
   autocrypt_function_t function; ///< Function to call
 };
 
-int autocrypt_function_dispatcher(struct MuttWindow *win, int op);
+int autocrypt_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 
 #endif /* MUTT_AUTOCRYPT_FUNCTIONS_H */
