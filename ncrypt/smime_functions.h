@@ -48,6 +48,9 @@ struct SmimeData
  * @param menu  Menu
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
 typedef int (*smime_function_t)(struct SmimeData *sd, const struct KeyEvent *event);
 

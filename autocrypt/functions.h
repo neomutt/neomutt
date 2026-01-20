@@ -36,6 +36,9 @@ struct MuttWindow;
  * @param menu  Menu
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
 typedef int (*autocrypt_function_t)(struct AutocryptData *pd, const struct KeyEvent *event);
 

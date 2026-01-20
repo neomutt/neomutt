@@ -1143,7 +1143,7 @@ static const struct PagerFunction PagerFunctions[] = {
  */
 int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
-  if (!win)
+  if (!win || !event)
   {
     mutt_error("%s", _(Not_available_in_this_menu));
     return FR_ERROR;

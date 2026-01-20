@@ -41,6 +41,10 @@ struct PagerView;
  * @param priv   Private Index data
  * @param event  Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre shared is not NULL
+ * @pre priv   is not NULL
+ * @pre event  is not NULL
  */
 typedef int (*pager_function_t)(struct IndexSharedData *shared, struct PagerPrivateData *priv, const struct KeyEvent *event);
 

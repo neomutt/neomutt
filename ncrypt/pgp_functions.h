@@ -48,6 +48,9 @@ struct PgpData
  * @param menu  Menu
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
 typedef int (*pgp_function_t)(struct PgpData *pd, const struct KeyEvent *event);
 

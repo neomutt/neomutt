@@ -36,6 +36,9 @@ struct Menu;
  * @param menu  Menu
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
 typedef int (*menu_function_t)(struct Menu *menu, const struct KeyEvent *event);
 

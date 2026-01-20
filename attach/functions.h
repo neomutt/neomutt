@@ -36,6 +36,9 @@ struct MuttWindow;
  * @param priv  Private Attach data
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre priv  is not NULL
+ * @pre event is not NULL
  */
 typedef int (*attach_function_t)(struct AttachPrivateData *priv, const struct KeyEvent *event);
 

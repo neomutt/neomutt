@@ -39,6 +39,9 @@ struct MuttWindow;
  * @param wdata Enter Window data
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre wdata is not NULL
+ * @pre event is not NULL
  */
 typedef int (*enter_function_t)(struct EnterWindowData *wdata, const struct KeyEvent *event);
 

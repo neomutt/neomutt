@@ -40,6 +40,10 @@ struct MuttWindow;
  * @param priv   Private Index data
  * @param event Event to process
  * @retval num #FunctionRetval or opcode, e.g. OP_JUMP
+ *
+ * @pre shared is not NULL
+ * @pre priv   is not NULL
+ * @pre event  is not NULL
  */
 typedef int (*index_function_t)(struct IndexSharedData *shared, struct IndexPrivateData *priv, const struct KeyEvent *event);
 

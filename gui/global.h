@@ -35,6 +35,9 @@ struct MuttWindow;
  * @param win   Focused Window
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre win   is not NULL
+ * @pre event is not NULL
  */
 typedef int (*global_function_t)(struct MuttWindow *win, const struct KeyEvent *event);
 

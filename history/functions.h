@@ -49,6 +49,9 @@ struct HistoryData
  * @param menu  Menu
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
 typedef int (*history_function_t)(struct HistoryData *pd, const struct KeyEvent *event);
 

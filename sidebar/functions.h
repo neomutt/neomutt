@@ -36,6 +36,9 @@ struct SidebarWindowData;
  * @param wdata Sidebar Window data
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre wdata is not NULL
+ * @pre event is not NULL
  */
 typedef int (*sidebar_function_t)(struct SidebarWindowData *wdata, const struct KeyEvent *event);
 

@@ -82,12 +82,14 @@ int history_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *e
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
   const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct HistoryData *hd = menu->mdata;
+  if (!hd)
+    return FR_ERROR;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; HistoryFunctions[i].op != OP_NULL; i++)
