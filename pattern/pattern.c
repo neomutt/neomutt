@@ -222,6 +222,7 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata,
       buf_pool_release(&err);
       goto bail;
     }
+    buf_pool_release(&err);
   }
   else
   {
