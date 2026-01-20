@@ -24,9 +24,36 @@
 #define MUTT_HOOKS_PARSE_H
 
 #include "config.h"
+#include <stddef.h>
 #include "core/lib.h"
 
 struct Buffer;
+struct Hook;
+
+/**
+ * struct HookParseError - Error information from parsing a hook command
+ */
+struct HookParseError
+{
+  const char *message;  ///< Error message (may be NULL if no error)
+  size_t position;      ///< Position in the original line where the error occurred
+};
+
+/**
+ * struct FolderHookData - Parsed data from a folder-hook command line
+ *
+ * This structure holds the parsed components of a folder-hook command.
+ * The caller is responsible for freeing the allocated strings.
+ */
+struct FolderHookData
+{
+  char *regex;    ///< The regex pattern (caller must free)
+  char *command;  ///< The command to execute (caller must free)
+  bool pat_not;   ///< true if the pattern is negated (starts with '!')
+  bool use_regex; ///< true if regex mode is enabled (false if -noregex was used)
+};
+
+void folder_hook_data_free(struct FolderHookData *data);
 
 extern struct HookList Hooks;
 extern struct HashTable *IdxFmtHooks;
@@ -43,5 +70,8 @@ enum CommandResult parse_hook_mbox    (const struct Command *cmd, struct Buffer 
 enum CommandResult parse_hook_pattern (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 enum CommandResult parse_hook_regex   (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 enum CommandResult parse_unhook       (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+
+bool parse_folder_hook_line(const char *line, struct FolderHookData *data,
+                            struct HookParseError *error);
 
 #endif /* MUTT_HOOKS_PARSE_H */

@@ -42,6 +42,7 @@
 #include "globals.h"
 #include "hook.h"
 #include "muttlib.h"
+#include "parse.h"
 
 extern const struct ExpandoDefinition IndexFormatDef[];
 
@@ -509,6 +510,148 @@ cleanup:
 }
 
 /**
+ * folder_hook_data_free - Free a FolderHookData structure
+ * @param data Pointer to the structure to free
+ *
+ * Free the dynamically allocated strings in the structure.
+ * The structure itself is not freed (it's typically stack-allocated).
+ */
+void folder_hook_data_free(struct FolderHookData *data)
+{
+  if (!data)
+    return;
+
+  FREE(&data->regex);
+  FREE(&data->command);
+}
+
+/**
+ * parse_folder_hook_line - Parse a folder-hook command line
+ * @param line  Command line to parse (without the "folder-hook" prefix)
+ * @param data  Pointer to structure to receive the parsed data
+ * @param error Optional pointer to receive error information
+ * @retval true  Success
+ * @retval false Error (check error->message for details)
+ *
+ * Parse a folder-hook command line of the form:
+ * - `[ ! ] [ -noregex ] <regex> <command>`
+ *
+ * This function performs pure parsing without:
+ * - Path/mailbox shortcut expansion
+ * - Regex compilation
+ * - Duplicate hook detection
+ * - Adding to global hook lists
+ *
+ * On success, the data structure will contain:
+ * - data->regex: The regex pattern string (caller must free)
+ * - data->command: The command string (caller must free)
+ * - data->pat_not: true if pattern is negated with '!'
+ * - data->use_regex: true if regex mode (false if -noregex was used)
+ */
+bool parse_folder_hook_line(const char *line, struct FolderHookData *data,
+                            struct HookParseError *error)
+{
+  if (!line || !data || !error)
+    return false;
+
+  struct Buffer *linebuf = buf_pool_get();
+  struct Buffer *regex = buf_pool_get();
+  struct Buffer *command = buf_pool_get();
+  bool rc = false;
+
+  buf_strcpy(linebuf, line);
+  buf_seek(linebuf, 0);
+
+  // Check for pattern negation
+  if (*linebuf->dptr == '!')
+  {
+    linebuf->dptr++;
+    SKIPWS(linebuf->dptr);
+    data->pat_not = true;
+  }
+
+  // Extract first token (may be -noregex or the regex)
+  if (parse_extract_token(regex, linebuf, TOKEN_NO_FLAGS) < 0)
+  {
+    error->message = _("failed to extract token");
+    error->position = linebuf->dptr - linebuf->data;
+    goto cleanup;
+  }
+
+  // Check if it's the -noregex flag
+  if (mutt_str_equal(buf_string(regex), "-noregex"))
+  {
+    data->use_regex = false;
+    if (!MoreArgs(linebuf))
+    {
+      error->message = _("too few arguments");
+      error->position = linebuf->dptr - linebuf->data;
+      goto cleanup;
+    }
+    if (parse_extract_token(regex, linebuf, TOKEN_NO_FLAGS) < 0)
+    {
+      error->message = _("failed to extract regex");
+      error->position = linebuf->dptr - linebuf->data;
+      goto cleanup;
+    }
+  }
+
+  // Check if regex is empty (i.e., no arguments provided)
+  if (buf_is_empty(regex))
+  {
+    error->message = _("too few arguments");
+    error->position = 0;
+    goto cleanup;
+  }
+
+  // Check for command argument
+  if (!MoreArgs(linebuf))
+  {
+    error->message = _("too few arguments");
+    error->position = linebuf->dptr - linebuf->data;
+    goto cleanup;
+  }
+
+  // Save position before extracting command (for error reporting)
+  size_t cmd_start_pos = linebuf->dptr - linebuf->data;
+
+  // Extract the command (TOKEN_SPACE allows whitespace without quoting)
+  if (parse_extract_token(command, linebuf, TOKEN_SPACE) < 0)
+  {
+    error->message = _("failed to extract command");
+    error->position = cmd_start_pos;
+    goto cleanup;
+  }
+
+  if (buf_is_empty(command))
+  {
+    error->message = _("too few arguments");
+    error->position = cmd_start_pos;
+    goto cleanup;
+  }
+
+  // Check for extra arguments
+  if (MoreArgs(linebuf))
+  {
+    error->message = _("too many arguments");
+    error->position = linebuf->dptr - linebuf->data;
+    goto cleanup;
+  }
+
+  // Success - copy the parsed data
+  data->regex = buf_strdup(regex);
+  data->command = buf_strdup(command);
+
+  rc = true;
+
+cleanup:
+  buf_pool_release(&linebuf);
+  buf_pool_release(&regex);
+  buf_pool_release(&command);
+  return rc;
+}
+
+/**
  * parse_hook_folder - Parse folder hook command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
@@ -517,57 +660,29 @@ cleanup:
 enum CommandResult parse_hook_folder(const struct Command *cmd,
                                      struct Buffer *line, struct Buffer *err)
 {
-  struct Hook *hook = NULL;
+  // Use parse_folder_hook_line() to do the basic parsing
+  struct FolderHookData hook_data = { 0 };
+  struct HookParseError parse_error = { 0 };
+
+  if (!parse_folder_hook_line(line->dptr, &hook_data, &parse_error))
+  {
+    if (parse_error.message)
+    {
+      buf_printf(err, _("%s: %s"), cmd->name, parse_error.message);
+    }
+    else
+    {
+      buf_printf(err, _("%s: parse error"), cmd->name);
+    }
+    return MUTT_CMD_WARNING;
+  }
+
   enum CommandResult rc = MUTT_CMD_ERROR;
-  bool pat_not = false;
-  bool use_regex = true;
+  struct Hook *hook = NULL;
   regex_t *rx = NULL;
 
   struct Buffer *regex = buf_pool_get();
-  struct Buffer *command = buf_pool_get();
-
-  if (*line->dptr == '!')
-  {
-    line->dptr++;
-    SKIPWS(line->dptr);
-    pat_not = true;
-  }
-
-  parse_extract_token(regex, line, TOKEN_NO_FLAGS);
-  if (mutt_str_equal(buf_string(regex), "-noregex"))
-  {
-    use_regex = false;
-    if (!MoreArgs(line))
-    {
-      buf_printf(err, _("%s: too few arguments"), cmd->name);
-      rc = MUTT_CMD_WARNING;
-      goto cleanup;
-    }
-    parse_extract_token(regex, line, TOKEN_NO_FLAGS);
-  }
-
-  if (!MoreArgs(line))
-  {
-    buf_printf(err, _("%s: too few arguments"), cmd->name);
-    rc = MUTT_CMD_WARNING;
-    goto cleanup;
-  }
-
-  parse_extract_token(command, line, TOKEN_SPACE);
-
-  if (buf_is_empty(command))
-  {
-    buf_printf(err, _("%s: too few arguments"), cmd->name);
-    rc = MUTT_CMD_WARNING;
-    goto cleanup;
-  }
-
-  if (MoreArgs(line))
-  {
-    buf_printf(err, _("%s: too many arguments"), cmd->name);
-    rc = MUTT_CMD_WARNING;
-    goto cleanup;
-  }
+  buf_strcpy(regex, hook_data.regex);
 
   /* Accidentally using the ^ mailbox shortcut in the .neomuttrc is a
    * common mistake */
@@ -579,7 +694,7 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
 
   struct Buffer *tmp = buf_pool_get();
   buf_copy(tmp, regex);
-  buf_expand_path_regex(tmp, use_regex);
+  buf_expand_path_regex(tmp, hook_data.use_regex);
 
   /* Check for other mailbox shortcuts that expand to the empty string.
    * This is likely a mistake too */
@@ -590,7 +705,7 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
     goto cleanup;
   }
 
-  if (use_regex)
+  if (hook_data.use_regex)
   {
     buf_copy(regex, tmp);
   }
@@ -603,11 +718,11 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
   /* check to make sure that a matching hook doesn't already exist */
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
+    if ((hook->id == cmd->id) && (hook->regex.pat_not == hook_data.pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
     {
       // Ignore duplicate hooks
-      if (mutt_str_equal(hook->command, buf_string(command)))
+      if (mutt_str_equal(hook->command, hook_data.command))
       {
         rc = MUTT_CMD_SUCCESS;
         goto cleanup;
@@ -627,12 +742,12 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
 
   hook = hook_new();
   hook->id = cmd->id;
-  hook->command = buf_strdup(command);
+  hook->command = mutt_str_dup(hook_data.command);
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = NULL;
   hook->regex.pattern = buf_strdup(regex);
   hook->regex.regex = rx;
-  hook->regex.pat_not = pat_not;
+  hook->regex.pat_not = hook_data.pat_not;
   hook->expando = NULL;
 
   TAILQ_INSERT_TAIL(&Hooks, hook, entries);
@@ -640,7 +755,7 @@ enum CommandResult parse_hook_folder(const struct Command *cmd,
 
 cleanup:
   buf_pool_release(&regex);
-  buf_pool_release(&command);
+  folder_hook_data_free(&hook_data);
   return rc;
 }
 
