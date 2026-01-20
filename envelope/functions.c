@@ -535,7 +535,7 @@ static const struct EnvelopeFunction EnvelopeFunctions[] = {
  */
 int env_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
-  if (!win || !win->wdata)
+  if (!event || !win || !win->wdata)
     return FR_UNKNOWN;
 
   const int op = event->op;

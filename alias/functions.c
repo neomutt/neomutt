@@ -490,11 +490,14 @@ int alias_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
   struct Menu *menu = dlg->wdata;
   struct AliasMenuData *mdata = menu->mdata;
+  if (!mdata)
+    return FR_ERROR;
+
   const int op = event->op;
 
   int rc = FR_UNKNOWN;

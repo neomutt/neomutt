@@ -50,6 +50,9 @@ struct GpgmeData
  * @param menu  Menu
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre menu  is not NULL
+ * @pre event is not NULL
  */
 typedef int (*gpgme_function_t)(struct GpgmeData *gd, const struct KeyEvent *event);
 

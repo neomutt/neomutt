@@ -36,6 +36,9 @@ struct BrowserPrivateData;
  * @param priv  Private Browser data
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre priv  is not NULL
+ * @pre event is not NULL
  */
 typedef int (*browser_function_t)(struct BrowserPrivateData *priv, const struct KeyEvent *event);
 

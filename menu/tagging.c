@@ -229,6 +229,9 @@ static int menu_other(struct Menu *menu)
  */
 int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
+  if (!win || !win->wdata || !event)
+    return FR_ERROR;
+
   struct Menu *menu = win->wdata;
   const int op = event->op;
 

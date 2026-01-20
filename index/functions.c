@@ -3322,7 +3322,7 @@ int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata || !win->parent || !win->parent->wdata)
+  if (!event || !dlg || !dlg->wdata || !win->parent || !win->parent->wdata)
     return FR_ERROR;
 
   const int op = event->op;

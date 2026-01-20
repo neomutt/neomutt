@@ -181,6 +181,9 @@ static const struct GlobalFunction GlobalFunctions[] = {
  */
 int global_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
+  if (!event || !win)
+    return FR_UNKNOWN;
+
   const int op = event->op;
   int rc = FR_UNKNOWN;
   for (size_t i = 0; GlobalFunctions[i].op != OP_NULL; i++)

@@ -2181,7 +2181,7 @@ int compose_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *e
 {
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!event || !dlg || !dlg->wdata)
     return FR_ERROR;
 
   const int op = event->op;

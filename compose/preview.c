@@ -92,6 +92,9 @@ struct PreviewWindowData
  * @param wdata Preview Window data
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre wdata is not NULL
+ * @pre event is not NULL
  */
 typedef int (*preview_function_t)(struct PreviewWindowData *wdata,
                                   const struct KeyEvent *event);
@@ -408,7 +411,7 @@ static const struct PreviewFunction PreviewFunctions[] = {
  */
 int preview_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
-  if (!win || !win->wdata)
+  if (!event || !win || !win->wdata)
     return FR_UNKNOWN;
 
   const int op = event->op;

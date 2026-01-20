@@ -43,6 +43,9 @@ struct MuttWindow;
  * @param wdata Alias Window data
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre wdata is not NULL
+ * @pre event is not NULL
  */
 typedef int (*alias_function_t)(struct AliasMenuData *wdata, const struct KeyEvent *event);
 

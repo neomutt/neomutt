@@ -36,6 +36,9 @@ struct MuttWindow;
  * @param shared Shared Compose data
  * @param event  Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre shared is not NULL
+ * @pre event  is not NULL
  */
 typedef int (*compose_function_t)(struct ComposeSharedData *priv, const struct KeyEvent *event);
 

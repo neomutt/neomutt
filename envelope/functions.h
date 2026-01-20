@@ -36,6 +36,9 @@ struct EnvelopeWindowData;
  * @param wdata Envelope Window data
  * @param event Event to process
  * @retval enum #FunctionRetval
+ *
+ * @pre wdata is not NULL
+ * @pre event is not NULL
  */
 typedef int (*envelope_function_t)(struct EnvelopeWindowData *wdata, const struct KeyEvent *event);
 
