@@ -35,7 +35,7 @@ jobs:
             options: --debug-keymap
           - name:    logging
             options: --debug-logging
-          - name:    notify
+          - name:    names
             options: --debug-names
           - name:    notify
             options: --debug-notify

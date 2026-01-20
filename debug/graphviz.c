@@ -38,6 +38,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "compmbox/lib.h"
@@ -54,11 +55,10 @@
 #include "imap/private.h"  // IWYU pragma: keep
 #include "maildir/edata.h" // IWYU pragma: keep
 #include "maildir/mdata.h" // IWYU pragma: keep
-#include "mview.h"
-#include "nntp/adata.h"  // IWYU pragma: keep
-#include "nntp/mdata.h"  // IWYU pragma: keep
-#include "pop/adata.h"   // IWYU pragma: keep
-#include "pop/private.h" // IWYU pragma: keep
+#include "nntp/adata.h"    // IWYU pragma: keep
+#include "nntp/mdata.h"    // IWYU pragma: keep
+#include "pop/adata.h"     // IWYU pragma: keep
+#include "pop/private.h"   // IWYU pragma: keep
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #include "notmuch/adata.h"   // IWYU pragma: keep

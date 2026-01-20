@@ -35,7 +35,6 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
-#include "mview.h"
 
 extern const struct Mapping ColorFields[];
 
