@@ -46,11 +46,11 @@ struct HistoryData
  *
  * Prototype for a History Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_GENERIC_SELECT_ENTRY
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*history_function_t)(struct HistoryData *pd, int op);
+typedef int (*history_function_t)(struct HistoryData *pd, const struct KeyEvent *event);
 
 /**
  * struct HistoryFunction - A NeoMutt function

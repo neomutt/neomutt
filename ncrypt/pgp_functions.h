@@ -45,11 +45,11 @@ struct PgpData
  *
  * Prototype for a Pgp Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_GENERIC_SELECT_ENTRY
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*pgp_function_t)(struct PgpData *pd, int op);
+typedef int (*pgp_function_t)(struct PgpData *pd, const struct KeyEvent *event);
 
 /**
  * struct PgpFunction - A NeoMutt function

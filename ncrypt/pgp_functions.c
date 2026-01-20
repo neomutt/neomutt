@@ -50,7 +50,7 @@
 /**
  * op_exit - Exit this menu - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_exit(struct PgpData *pd, int op)
+static int op_exit(struct PgpData *pd, const struct KeyEvent *event)
 {
   pd->done = true;
   return FR_SUCCESS;
@@ -59,7 +59,7 @@ static int op_exit(struct PgpData *pd, int op)
 /**
  * op_generic_select_entry - Select the current entry - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_generic_select_entry(struct PgpData *pd, int op)
+static int op_generic_select_entry(struct PgpData *pd, const struct KeyEvent *event)
 {
   /* XXX make error reporting more verbose */
 
@@ -119,7 +119,7 @@ static int op_generic_select_entry(struct PgpData *pd, int op)
 /**
  * op_verify_key - Verify a PGP public key - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_verify_key(struct PgpData *pd, int op)
+static int op_verify_key(struct PgpData *pd, const struct KeyEvent *event)
 {
   FILE *fp_null = mutt_file_fopen("/dev/null", "w");
   if (!fp_null)
@@ -190,7 +190,7 @@ static int op_verify_key(struct PgpData *pd, int op)
 /**
  * op_view_id - View the key's user id - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_view_id(struct PgpData *pd, int op)
+static int op_view_id(struct PgpData *pd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(pd->menu);
   struct PgpUid **pkey = ARRAY_GET(pd->key_table, index);
@@ -236,7 +236,7 @@ int pgp_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event
     const struct PgpFunction *fn = &PgpFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(pd, op);
+      rc = fn->function(pd, event);
       break;
     }
   }

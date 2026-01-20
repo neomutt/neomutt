@@ -45,11 +45,11 @@ struct SmimeData
  *
  * Prototype for a Smime Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_GENERIC_SELECT_ENTRY
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*smime_function_t)(struct SmimeData *sd, int op);
+typedef int (*smime_function_t)(struct SmimeData *sd, const struct KeyEvent *event);
 
 /**
  * struct SmimeFunction - A NeoMutt function

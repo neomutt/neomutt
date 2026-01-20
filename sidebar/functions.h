@@ -23,6 +23,8 @@
 #ifndef MUTT_SIDEBAR_FUNCTIONS_H
 #define MUTT_SIDEBAR_FUNCTIONS_H
 
+#include "key/lib.h"
+
 struct SidebarWindowData;
 
 /**
@@ -31,11 +33,11 @@ struct SidebarWindowData;
  *
  * Prototype for a Sidebar Function
  *
- * @param wdata  Sidebar Window data
- * @param op     Operation to perform, e.g. OP_SIDEBAR_NEXT
+ * @param wdata Sidebar Window data
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*sidebar_function_t)(struct SidebarWindowData *wdata, int op);
+typedef int (*sidebar_function_t)(struct SidebarWindowData *wdata, const struct KeyEvent *event);
 
 /**
  * struct SidebarFunction - A NeoMutt function

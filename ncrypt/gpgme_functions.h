@@ -47,11 +47,11 @@ struct GpgmeData
  *
  * Prototype for a Gpgme Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_GENERIC_SELECT_ENTRY
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*gpgme_function_t)(struct GpgmeData *gd, int op);
+typedef int (*gpgme_function_t)(struct GpgmeData *gd, const struct KeyEvent *event);
 
 /**
  * struct GpgmeFunction - A NeoMutt function

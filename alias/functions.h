@@ -40,11 +40,11 @@ struct MuttWindow;
  *
  * Prototype for a Alias Function
  *
- * @param wdata  Alias Window data
- * @param op     Operation to perform, e.g. OP_CREATE_ALIAS
+ * @param wdata Alias Window data
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*alias_function_t)(struct AliasMenuData *wdata, int op);
+typedef int (*alias_function_t)(struct AliasMenuData *wdata, const struct KeyEvent *event);
 
 /**
  * struct AliasFunction - A NeoMutt function

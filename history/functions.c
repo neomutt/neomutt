@@ -38,7 +38,7 @@
 /**
  * op_generic_select_entry - Select the current entry - Implements ::history_function_t - @ingroup history_function_api
  */
-static int op_generic_select_entry(struct HistoryData *hd, int op)
+static int op_generic_select_entry(struct HistoryData *hd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(hd->menu);
 
@@ -54,7 +54,7 @@ static int op_generic_select_entry(struct HistoryData *hd, int op)
 /**
  * op_quit - Quit this menu - Implements ::history_function_t - @ingroup history_function_api
  */
-static int op_quit(struct HistoryData *hd, int op)
+static int op_quit(struct HistoryData *hd, const struct KeyEvent *event)
 {
   hd->done = true;
   hd->selection = false;
@@ -95,7 +95,7 @@ int history_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *e
     const struct HistoryFunction *fn = &HistoryFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(hd, op);
+      rc = fn->function(hd, event);
       break;
     }
   }

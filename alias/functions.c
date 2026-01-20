@@ -145,7 +145,7 @@ void alias_init_keys(struct SubMenu *sm_generic)
 /**
  * op_create_alias - create an alias from a message sender - Implements ::alias_function_t - @ingroup alias_function_api
  */
-static int op_create_alias(struct AliasMenuData *mdata, int op)
+static int op_create_alias(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   struct Menu *menu = mdata->menu;
 
@@ -185,9 +185,10 @@ static int op_create_alias(struct AliasMenuData *mdata, int op)
 /**
  * op_delete - delete the current entry - Implements ::alias_function_t - @ingroup alias_function_api
  */
-static int op_delete(struct AliasMenuData *mdata, int op)
+static int op_delete(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   struct Menu *menu = mdata->menu;
+  const int op = event->op;
 
   if (menu->tag_prefix)
   {
@@ -217,7 +218,7 @@ static int op_delete(struct AliasMenuData *mdata, int op)
 /**
  * op_exit - exit this menu - Implements ::alias_function_t - @ingroup alias_function_api
  */
-static int op_exit(struct AliasMenuData *mdata, int op)
+static int op_exit(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   return FR_DONE;
 }
@@ -231,7 +232,7 @@ static int op_exit(struct AliasMenuData *mdata, int op)
  *
  * @note AliasMenuData.is_tagged will show the user's selection
  */
-static int op_generic_select_entry(struct AliasMenuData *mdata, int op)
+static int op_generic_select_entry(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   struct Menu *menu = mdata->menu;
   if (menu->tag_prefix)
@@ -261,7 +262,7 @@ static int op_generic_select_entry(struct AliasMenuData *mdata, int op)
 /**
  * op_main_limit - show only messages matching a pattern - Implements ::alias_function_t - @ingroup alias_function_api
  */
-static int op_main_limit(struct AliasMenuData *mdata, int op)
+static int op_main_limit(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   struct Menu *menu = mdata->menu;
   int rc = mutt_pattern_alias_func(_("Limit to addresses matching: "), mdata,
@@ -280,7 +281,7 @@ static int op_main_limit(struct AliasMenuData *mdata, int op)
 /**
  * op_main_tag_pattern - Tag messages matching a pattern - Implements ::alias_function_t - @ingroup alias_function_api
  */
-static int op_main_tag_pattern(struct AliasMenuData *mdata, int op)
+static int op_main_tag_pattern(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   struct Menu *menu = mdata->menu;
   int rc = mutt_pattern_alias_func(_("Tag addresses matching: "), mdata, PAA_TAG, menu);
@@ -296,7 +297,7 @@ static int op_main_tag_pattern(struct AliasMenuData *mdata, int op)
 /**
  * op_main_untag_pattern - Untag messages matching a pattern - Implements ::alias_function_t - @ingroup alias_function_api
  */
-static int op_main_untag_pattern(struct AliasMenuData *mdata, int op)
+static int op_main_untag_pattern(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   struct Menu *menu = mdata->menu;
   int rc = mutt_pattern_alias_func(_("Untag addresses matching: "), mdata, PAA_UNTAG, menu);
@@ -316,7 +317,7 @@ static int op_main_untag_pattern(struct AliasMenuData *mdata, int op)
  * - OP_QUERY
  * - OP_QUERY_APPEND
  */
-static int op_query(struct AliasMenuData *mdata, int op)
+static int op_query(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   struct Buffer *buf = mdata->query;
   if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
@@ -325,6 +326,7 @@ static int op_query(struct AliasMenuData *mdata, int op)
     return FR_NO_ACTION;
   }
 
+  const int op = event->op;
   if (op == OP_QUERY)
   {
     ARRAY_FREE(&mdata->ava);
@@ -369,10 +371,10 @@ static int op_query(struct AliasMenuData *mdata, int op)
  * - OP_SEARCH_OPPOSITE
  * - OP_SEARCH_REVERSE
  */
-static int op_search(struct AliasMenuData *mdata, int op)
+static int op_search(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   SearchFlags flags = SEARCH_NO_FLAGS;
-  switch (op)
+  switch (event->op)
   {
     case OP_SEARCH:
       flags |= SEARCH_PROMPT;
@@ -406,10 +408,11 @@ static int op_search(struct AliasMenuData *mdata, int op)
  * - OP_SORT
  * - OP_SORT_REVERSE
  */
-static int op_sort(struct AliasMenuData *mdata, int op)
+static int op_sort(struct AliasMenuData *mdata, const struct KeyEvent *event)
 {
   int sort = cs_subset_sort(mdata->sub, "alias_sort");
   bool resort = true;
+  const int op = event->op;
   bool reverse = (op == OP_SORT_REVERSE);
 
   switch (mw_multi_choice(reverse ?
@@ -500,7 +503,7 @@ int alias_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
     const struct AliasFunction *fn = &AliasFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(mdata, op);
+      rc = fn->function(mdata, event);
       break;
     }
   }

@@ -90,10 +90,11 @@ struct PreviewWindowData
  * Prototype for a Preview Function
  *
  * @param wdata Preview Window data
- * @param op    Operation to perform, e.g. OP_NEXT_PAGE
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*preview_function_t)(struct PreviewWindowData *wdata, int op);
+typedef int (*preview_function_t)(struct PreviewWindowData *wdata,
+                                  const struct KeyEvent *event);
 
 /**
  * struct PreviewFunction - A message preview function
@@ -366,7 +367,7 @@ struct MuttWindow *preview_window_new(struct Email *e, struct MuttWindow *bar)
 /**
  * preview_page_up - Show the previous page of the message - Implements ::preview_function_t - @ingroup preview_function_api
  */
-static int preview_page_up(struct PreviewWindowData *wdata, int op)
+static int preview_page_up(struct PreviewWindowData *wdata, const struct KeyEvent *event)
 {
   if (wdata->scroll_offset <= 0)
     return FR_NO_ACTION;
@@ -380,7 +381,7 @@ static int preview_page_up(struct PreviewWindowData *wdata, int op)
 /**
  * preview_page_down - Show the previous page of the message - Implements ::preview_function_t - @ingroup preview_function_api
  */
-static int preview_page_down(struct PreviewWindowData *wdata, int op)
+static int preview_page_down(struct PreviewWindowData *wdata, const struct KeyEvent *event)
 {
   if (!wdata->more_content)
     return FR_NO_ACTION;
@@ -418,7 +419,7 @@ int preview_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *e
     if (fn->op == op)
     {
       struct PreviewWindowData *wdata = win->wdata;
-      rc = fn->function(wdata, op);
+      rc = fn->function(wdata, event);
       break;
     }
   }

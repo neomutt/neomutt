@@ -39,10 +39,10 @@ struct PagerView;
  *
  * @param shared Shared Index data
  * @param priv   Private Index data
- * @param op     Operation to perform, e.g. OP_MAIN_LIMIT
+ * @param event  Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*pager_function_t)(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op);
+typedef int (*pager_function_t)(struct IndexSharedData *shared, struct PagerPrivateData *priv, const struct KeyEvent *event);
 
 /**
  * struct PagerFunction - A NeoMutt function

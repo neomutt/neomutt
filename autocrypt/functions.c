@@ -122,7 +122,7 @@ static void toggle_prefer_encrypt(struct AccountEntry *entry)
 /**
  * op_autocrypt_create_acct - Create a new autocrypt account - Implements ::autocrypt_function_t - @ingroup autocrypt_function_api
  */
-static int op_autocrypt_create_acct(struct AutocryptData *ad, int op)
+static int op_autocrypt_create_acct(struct AutocryptData *ad, const struct KeyEvent *event)
 {
   if (mutt_autocrypt_account_init(false) == 0)
     populate_menu(ad->menu);
@@ -133,7 +133,7 @@ static int op_autocrypt_create_acct(struct AutocryptData *ad, int op)
 /**
  * op_autocrypt_delete_acct - Delete the current account - Implements ::autocrypt_function_t - @ingroup autocrypt_function_api
  */
-static int op_autocrypt_delete_acct(struct AutocryptData *ad, int op)
+static int op_autocrypt_delete_acct(struct AutocryptData *ad, const struct KeyEvent *event)
 {
   if (!ad->menu->mdata)
     return FR_ERROR;
@@ -159,7 +159,7 @@ static int op_autocrypt_delete_acct(struct AutocryptData *ad, int op)
 /**
  * op_autocrypt_toggle_active - Toggle the current account active/inactive - Implements ::autocrypt_function_t - @ingroup autocrypt_function_api
  */
-static int op_autocrypt_toggle_active(struct AutocryptData *ad, int op)
+static int op_autocrypt_toggle_active(struct AutocryptData *ad, const struct KeyEvent *event)
 {
   if (!ad->menu->mdata)
     return FR_ERROR;
@@ -178,7 +178,7 @@ static int op_autocrypt_toggle_active(struct AutocryptData *ad, int op)
 /**
  * op_autocrypt_toggle_prefer - Toggle the current account prefer-encrypt flag - Implements ::autocrypt_function_t - @ingroup autocrypt_function_api
  */
-static int op_autocrypt_toggle_prefer(struct AutocryptData *ad, int op)
+static int op_autocrypt_toggle_prefer(struct AutocryptData *ad, const struct KeyEvent *event)
 {
   if (!ad->menu->mdata)
     return FR_ERROR;
@@ -197,7 +197,7 @@ static int op_autocrypt_toggle_prefer(struct AutocryptData *ad, int op)
 /**
  * op_exit - Exit this menu - Implements ::autocrypt_function_t - @ingroup autocrypt_function_api
  */
-static int op_exit(struct AutocryptData *ad, int op)
+static int op_exit(struct AutocryptData *ad, const struct KeyEvent *event)
 {
   ad->done = true;
   return FR_SUCCESS;
@@ -239,7 +239,7 @@ int autocrypt_function_dispatcher(struct MuttWindow *win, const struct KeyEvent 
     const struct AutocryptFunction *fn = &AutocryptFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(ad, op);
+      rc = fn->function(ad, event);
       break;
     }
   }

@@ -734,7 +734,7 @@ bool crypt_keys_are_valid(struct CryptKeyInfo *keys)
 /**
  * op_exit - Exit this menu - Implements ::gpgme_function_t - @ingroup gpgme_function_api
  */
-static int op_exit(struct GpgmeData *gd, int op)
+static int op_exit(struct GpgmeData *gd, const struct KeyEvent *event)
 {
   gd->done = true;
   return FR_SUCCESS;
@@ -743,7 +743,7 @@ static int op_exit(struct GpgmeData *gd, int op)
 /**
  * op_generic_select_entry - Select the current entry - Implements ::gpgme_function_t - @ingroup gpgme_function_api
  */
-static int op_generic_select_entry(struct GpgmeData *gd, int op)
+static int op_generic_select_entry(struct GpgmeData *gd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(gd->menu);
   struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
@@ -810,7 +810,7 @@ static int op_generic_select_entry(struct GpgmeData *gd, int op)
 /**
  * op_verify_key - Verify a PGP public key - Implements ::gpgme_function_t - @ingroup gpgme_function_api
  */
-static int op_verify_key(struct GpgmeData *gd, int op)
+static int op_verify_key(struct GpgmeData *gd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(gd->menu);
   struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
@@ -825,7 +825,7 @@ static int op_verify_key(struct GpgmeData *gd, int op)
 /**
  * op_view_id - View the key's user id - Implements ::gpgme_function_t - @ingroup gpgme_function_api
  */
-static int op_view_id(struct GpgmeData *gd, int op)
+static int op_view_id(struct GpgmeData *gd, const struct KeyEvent *event)
 {
   const int index = menu_get_index(gd->menu);
   struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
@@ -871,7 +871,7 @@ int gpgme_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
     const struct GpgmeFunction *fn = &GpgmeFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(gd, op);
+      rc = fn->function(gd, event);
       break;
     }
   }

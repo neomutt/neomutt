@@ -33,11 +33,11 @@ struct MuttWindow;
  *
  * Prototype for a Autocrypt Function
  *
- * @param menu   Menu
- * @param op     Operation to perform, e.g. OP_AUTOCRYPT_CREATE_ACCT
+ * @param menu  Menu
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*autocrypt_function_t)(struct AutocryptData *pd, int op);
+typedef int (*autocrypt_function_t)(struct AutocryptData *pd, const struct KeyEvent *event);
 
 /**
  * struct AutocryptFunction - A NeoMutt function

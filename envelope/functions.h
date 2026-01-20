@@ -23,6 +23,8 @@
 #ifndef MUTT_ENVELOPE_FUNCTIONS_H
 #define MUTT_ENVELOPE_FUNCTIONS_H
 
+#include "key/lib.h"
+
 struct EnvelopeWindowData;
 
 /**
@@ -32,10 +34,10 @@ struct EnvelopeWindowData;
  * Prototype for a Envelope Function
  *
  * @param wdata Envelope Window data
- * @param op    Operation to perform, e.g. OP_ENVELOPE_EDIT_FROM
+ * @param event Event to process
  * @retval enum #FunctionRetval
  */
-typedef int (*envelope_function_t)(struct EnvelopeWindowData *wdata, int op);
+typedef int (*envelope_function_t)(struct EnvelopeWindowData *wdata, const struct KeyEvent *event);
 
 /**
  * struct EnvelopeFunction - A NeoMutt Envelope function
