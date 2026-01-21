@@ -445,9 +445,9 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
   }
 
   struct ImapEmailData *edata = imap_edata_get(e);
-  if (!edata)
+  if (edata)
   {
-    mutt_debug(LL_DEBUG3, "Skipping FETCH response - MSN %u missing edata\n", msn);
+    mutt_debug(LL_DEBUG2, "Message UID %u updated\n", edata->uid);
     return;
   }
   /* skip FETCH */
