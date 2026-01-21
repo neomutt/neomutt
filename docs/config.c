@@ -718,7 +718,7 @@
 ** available for the message preview window to shown.
 */
 
-{ "compose_show_preview", DT_BOOL, false },
+{ "compose_show_preview", DT_BOOL, true },
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will display a preview of message in the compose view.
