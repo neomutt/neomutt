@@ -500,7 +500,7 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
         mutt_debug(LL_DEBUG1, "Illegal UID.  Skipping update\n");
         return;
       }
-      if (uid != edata->uid)
+      if (edata && uid != edata->uid)
       {
         mutt_debug(LL_DEBUG1, "UID vs MSN mismatch.  Skipping update\n");
         return;
