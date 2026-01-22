@@ -38,7 +38,6 @@
 #define MUTT_EDITOR_LIB_H
 
 #include <stddef.h>
-#include "mutt.h"
 // IWYU pragma: begin_keep
 #include "enter.h"
 #include "state.h"

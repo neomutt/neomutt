@@ -357,8 +357,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
 
         if (bestname[0] == '\0') /* init */
         {
-          mutt_str_copy(bestname, a->name,
-                        MIN(mutt_str_len(a->name) + 1, sizeof(bestname)));
+          mutt_str_copy(bestname, a->name, MIN(mutt_str_len(a->name) + 1, sizeof(bestname)));
         }
         else
         {

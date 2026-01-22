@@ -39,7 +39,6 @@
 #include "core/lib.h"
 #include "stailq.h"
 #include "parse/lib.h"
-#include "muttlib.h"
 
 /**
  * parse_stailq - Parse a list command - Implements Command::parse() - @ingroup command_parse

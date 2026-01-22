@@ -34,6 +34,7 @@
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "ncrypt/lib.h"
 #endif
 
 // clang-format off

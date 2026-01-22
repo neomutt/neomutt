@@ -31,6 +31,7 @@
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>
+#include <stdbool.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"

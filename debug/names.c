@@ -33,6 +33,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "color/lib.h"
 #include "menu/lib.h"
 
 #define DEBUG_NAME(NAME)                                                       \

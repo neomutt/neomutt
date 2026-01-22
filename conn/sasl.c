@@ -50,7 +50,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
-#include "mutt.h"
 #include "sasl.h"
 #include "editor/lib.h"
 #include "history/lib.h"

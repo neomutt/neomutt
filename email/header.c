@@ -38,7 +38,6 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "header.h"
 #include "complete/lib.h"
 #include "editor/lib.h"

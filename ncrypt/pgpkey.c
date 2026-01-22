@@ -44,7 +44,6 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "mutt.h"
 #include "pgpkey.h"
 #include "lib.h"
 #include "editor/lib.h"

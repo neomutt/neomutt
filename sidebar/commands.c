@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "core/lib.h"

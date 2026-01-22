@@ -28,8 +28,6 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 
-struct Buffer;
-
 /**
  * enum TriBool - Tri-state boolean
  */

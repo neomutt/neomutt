@@ -44,7 +44,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "alias.h"
 #include "lib.h"
 #include "browser/lib.h"

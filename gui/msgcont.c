@@ -73,8 +73,8 @@ struct MuttWindow *msgcont_pop_window(void)
   window_set_visible(win_pop, false);
 
   // Get the window that will become top of stack
-  struct MuttWindow **wp_top = ARRAY_GET(&MessageContainer->children, 
-                                              ARRAY_SIZE(&MessageContainer->children) - 2);
+  struct MuttWindow **wp_top = ARRAY_GET(&MessageContainer->children,
+                                         ARRAY_SIZE(&MessageContainer->children) - 2);
   struct MuttWindow *win_top = wp_top ? *wp_top : NULL;
 
   ARRAY_REMOVE(&MessageContainer->children, wp_pop);

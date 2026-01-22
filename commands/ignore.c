@@ -40,7 +40,6 @@
 #include "core/lib.h"
 #include "ignore.h"
 #include "parse/lib.h"
-#include "muttlib.h"
 
 /**
  * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
