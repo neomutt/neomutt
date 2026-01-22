@@ -95,7 +95,8 @@ static void test_parse_set(void)
     "%s inv%s=42", "%s inv%s?", "%s &%s",     "%s &%s=42", "%s &%s?",
   };
 
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   for (size_t v = 0; v < countof(vars); v++)
@@ -105,16 +106,17 @@ static void test_parse_set(void)
       TEST_CASE_("%s %s", commands[c], vars[v]);
       for (size_t t = 0; t < countof(tests); t++)
       {
-        buf_reset(err);
+        parse_error_reset(pe);
 
         buf_printf(line, tests[t], commands[c], vars[v]);
         // enum CommandResult rc =
-        parse_rc_line(line, err);
+        parse_rc_line(line, pc, pe);
       }
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -122,29 +124,30 @@ void test_parse_rc(void)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   commands_register(&NeoMutt->commands, mutt_commands);
 
   // enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err);
   TEST_CASE("parse_rc_line");
   buf_reset(line);
-  rc = parse_rc_line(line, err);
+  rc = parse_rc_line(line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   buf_strcpy(line, "; set");
   TEST_CASE("parse_rc_line");
-  rc = parse_rc_line(line, err);
+  rc = parse_rc_line(line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   TEST_CASE("parse_rc_line");
   buf_strcpy(line, "# set");
-  rc = parse_rc_line(line, err);
+  rc = parse_rc_line(line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   TEST_CASE("parse_rc_line");
   buf_strcpy(line, "unknown");
-  rc = parse_rc_line(line, err);
+  rc = parse_rc_line(line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
@@ -154,6 +157,7 @@ void test_parse_rc(void)
   test_parse_set();
 
   buf_pool_release(&line);
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   commands_clear(&NeoMutt->commands);
 }

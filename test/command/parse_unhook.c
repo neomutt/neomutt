@@ -28,6 +28,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -62,32 +63,34 @@ static const struct CommandTest Tests[] = {
 
 void test_parse_unhook(void)
 {
-  // enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
   commands_register(&NeoMutt->commands, unhook_test_commands);
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   // Create a folder-hook, to delete
   buf_strcpy(line, "~g 'set my_var=42'");
   buf_seek(line, 0);
-  rc = parse_hook_folder(&FolderHook, line, err);
+  rc = parse_hook_folder(&FolderHook, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   for (int i = 0; Tests[i].line; i++)
   {
     TEST_CASE(Tests[i].line);
-    buf_reset(err);
+    buf_reset(pe->message);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_unhook(&UnHook, line, err);
+    rc = parse_unhook(&UnHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
   commands_clear(&NeoMutt->commands);
 }

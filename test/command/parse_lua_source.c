@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "lua/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -46,27 +47,29 @@ static const struct CommandTest Tests[] = {
 void test_parse_lua_source(void)
 {
 #ifdef USE_LUA
-  // enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   MuttLogger = log_disp_null;
 
   struct Buffer *line = buf_pool_get();
   struct Buffer *file = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
   for (int i = 0; Tests[i].line; i++)
   {
     TEST_CASE(Tests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, Tests[i].line);
     test_gen_path(file, buf_string(line));
     buf_seek(file, 0);
-    rc = parse_lua_source(&LuaSource, file, err);
+    rc = parse_lua_source(&LuaSource, file, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&file);
   buf_pool_release(&line);
   MuttLogger = log_disp_terminal;

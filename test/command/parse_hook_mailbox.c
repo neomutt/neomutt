@@ -28,6 +28,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -74,60 +75,66 @@ static const struct CommandTest SaveTests[] = {
 static void test_parse_fcc_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; FccTests[i].line; i++)
   {
     TEST_CASE(FccTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, FccTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mailbox(&FccHook, line, err);
+    rc = parse_hook_mailbox(&FccHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, FccTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_fcc_save_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; FccSaveTests[i].line; i++)
   {
     TEST_CASE(FccSaveTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, FccSaveTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mailbox(&FccSaveHook, line, err);
+    rc = parse_hook_mailbox(&FccSaveHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, FccSaveTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_save_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; SaveTests[i].line; i++)
   {
     TEST_CASE(SaveTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, SaveTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mailbox(&SaveHook, line, err);
+    rc = parse_hook_mailbox(&SaveHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, SaveTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
