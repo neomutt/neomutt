@@ -184,7 +184,8 @@ static int query_tag(struct Menu *menu, int sel, int act)
  * @retval  0 Success
  * @retval -1 Error
  */
-int query_run(const char *s, bool verbose, struct AliasArray *aa, const struct ConfigSubset *sub)
+int query_run(const char *s, bool verbose, struct AliasArray *aa,
+              const struct ConfigSubset *sub)
 {
   FILE *fp = NULL;
   char *buf = NULL;
