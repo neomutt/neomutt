@@ -332,9 +332,9 @@ static void show_cli_tui(bool use_color)
 void show_cli(enum HelpMode mode, bool use_color)
 {
   if (use_color)
-    printf("\033[38;5;255m%s\033[0m\n\n", mutt_make_version());
+    printf("\033[38;5;255mNeoMutt %s\033[0m\n\n", mutt_make_version());
   else
-    printf("%s\n\n", mutt_make_version());
+    printf("NeoMutt %s\n\n", mutt_make_version());
 
   switch (mode)
   {

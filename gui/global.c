@@ -143,7 +143,7 @@ static int op_show_log_messages(struct MuttWindow *win, const struct KeyEvent *e
  */
 static int op_version(struct MuttWindow *win, const struct KeyEvent *event)
 {
-  mutt_message("%s", mutt_make_version());
+  mutt_message("NeoMutt %s", mutt_make_version());
   return FR_SUCCESS;
 }
 

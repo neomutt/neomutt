@@ -295,7 +295,7 @@ static const struct CompileOption DevelOpts[] = {
 const char *mutt_make_version(void)
 {
   static char vstring[256];
-  snprintf(vstring, sizeof(vstring), "NeoMutt %s%s", PACKAGE_VERSION, GitVer);
+  snprintf(vstring, sizeof(vstring), "%s%s", PACKAGE_VERSION, GitVer);
   return vstring;
 }
 
@@ -608,7 +608,7 @@ bool print_version(FILE *fp, bool use_ansi)
     col_end = "\033[0m";     // Escape, end
   }
 
-  fprintf(fp, "%s%s%s\n", col_cyan, ver->version, col_end);
+  fprintf(fp, "%sNeoMutt %s%s\n", col_cyan, ver->version, col_end);
   fprintf(fp, "%s\n", _(Notice));
 
   ARRAY_FOREACH(kv, &ver->system)
@@ -701,7 +701,7 @@ bool print_version(FILE *fp, bool use_ansi)
  */
 bool print_copyright(void)
 {
-  puts(mutt_make_version());
+  printf("NeoMutt %s\n", mutt_make_version());
   puts(Copyright);
   puts(_(Thanks));
   puts(_(License));
