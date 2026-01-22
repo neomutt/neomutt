@@ -29,6 +29,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "commands/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -72,45 +73,49 @@ static const struct CommandTest UnGroupTests[] = {
 
 static void test_parse_group2(void)
 {
-  // enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; GroupTests[i].line; i++)
   {
     TEST_CASE(GroupTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, GroupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_group(&Group, line, err);
+    rc = parse_group(&Group, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, GroupTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_ungroup(void)
 {
-  // enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; UnGroupTests[i].line; i++)
   {
     TEST_CASE(UnGroupTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, UnGroupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_group(&UnGroup, line, err);
+    rc = parse_group(&UnGroup, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnGroupTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 

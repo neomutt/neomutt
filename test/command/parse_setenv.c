@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "commands/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -86,45 +87,49 @@ static const struct CommandTest UnSetenvTests[] = {
 
 static void test_parse_setenv2(void)
 {
-  // enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; SetenvTests[i].line; i++)
   {
     TEST_CASE(SetenvTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, SetenvTests[i].line);
     buf_seek(line, 0);
-    rc = parse_setenv(&Setenv, line, err);
+    rc = parse_setenv(&Setenv, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, SetenvTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_unsetenv(void)
 {
-  // enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; UnSetenvTests[i].line; i++)
   {
     TEST_CASE(UnSetenvTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, UnSetenvTests[i].line);
     buf_seek(line, 0);
-    rc = parse_setenv(&UnSetenv, line, err);
+    rc = parse_setenv(&UnSetenv, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnSetenvTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 

@@ -459,61 +459,63 @@ static void test_command_set_unset(void)
 
 static void test_parse_set(void)
 {
-  // enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+  // enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
   enum CommandResult rc;
 
-  buf_reset(err);
+  parse_error_reset(pe);
   buf_strcpy(line, "invwrap");
   buf_seek(line, 0);
-  rc = parse_set(&Reset, line, err);
+  rc = parse_set(&Reset, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
-  buf_reset(err);
+  parse_error_reset(pe);
   buf_strcpy(line, "wrap?");
   buf_seek(line, 0);
-  rc = parse_set(&Reset, line, err);
+  rc = parse_set(&Reset, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
-  buf_reset(err);
+  parse_error_reset(pe);
   buf_strcpy(line, "invwrap++");
   buf_seek(line, 0);
-  rc = parse_set(&Set, line, err);
+  rc = parse_set(&Set, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
-  buf_reset(err);
+  parse_error_reset(pe);
   buf_strcpy(line, "invwrap = 42");
   buf_seek(line, 0);
-  rc = parse_set(&Set, line, err);
+  rc = parse_set(&Set, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
-  buf_reset(err);
+  parse_error_reset(pe);
   buf_strcpy(line, "wrap = 42");
   buf_seek(line, 0);
-  rc = parse_set(&Reset, line, err);
+  rc = parse_set(&Reset, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
-  buf_reset(err);
+  parse_error_reset(pe);
   buf_strcpy(line, "wrap++");
   buf_seek(line, 0);
-  rc = parse_set(&Reset, line, err);
+  rc = parse_set(&Reset, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
-  buf_reset(err);
+  parse_error_reset(pe);
   buf_strcpy(line, "index_format");
   buf_seek(line, 0);
-  rc = parse_set(&Toggle, line, err);
+  rc = parse_set(&Toggle, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
-  buf_reset(err);
+  parse_error_reset(pe);
   buf_strcpy(line, "`missing");
   buf_seek(line, 0);
-  rc = parse_set(&Toggle, line, err);
+  rc = parse_set(&Toggle, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -613,7 +615,8 @@ static void test_set(void)
 {
   // set bool / quad config variable
 
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   {
@@ -635,28 +638,28 @@ static void test_set(void)
       };
       for (int v = 0; v < countof(boolish); v++)
       {
-        buf_reset(err);
+        parse_error_reset(pe);
         buf_printf(line, template[t], boolish[v]);
         buf_seek(line, 0);
-        enum CommandResult rc = parse_set(&Set, line, err);
+        enum CommandResult rc = parse_set(&Set, line, pc, pe);
         if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
         {
           TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                   rc, buf_string(err));
+                   rc, buf_string(pe->message));
           return;
         }
 
         // Check effect
-        buf_reset(err);
-        int grc = cs_str_string_get(NeoMutt->sub->cs, boolish[v], err);
+        parse_error_reset(pe);
+        int grc = cs_str_string_get(NeoMutt->sub->cs, boolish[v], pe->message);
         if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
         {
-          TEST_MSG("Failed to get %s: %s", boolish[v], buf_string(err));
+          TEST_MSG("Failed to get %s: %s", boolish[v], buf_string(pe->message));
           return;
         }
-        if (!TEST_CHECK_STR_EQ(buf_string(err), "yes"))
+        if (!TEST_CHECK_STR_EQ(buf_string(pe->message), "yes"))
         {
-          TEST_MSG("Variable not set %s: %s", boolish[v], buf_string(err));
+          TEST_MSG("Variable not set %s: %s", boolish[v], buf_string(pe->message));
           return;
         }
       }
@@ -665,78 +668,79 @@ static void test_set(void)
 
   // set string
   {
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, "Damson = newfoo");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(&Set, line, err);
+    enum CommandResult rc = parse_set(&Set, line, pc, pe);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-               buf_string(err));
+               buf_string(pe->message));
       return;
     }
 
     // Check effect
-    buf_reset(err);
-    int grc = cs_str_string_get(NeoMutt->sub->cs, "Damson", err);
+    parse_error_reset(pe);
+    int grc = cs_str_string_get(NeoMutt->sub->cs, "Damson", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
     {
-      TEST_MSG("Failed to get %s: %s", "Damson", buf_string(err));
+      TEST_MSG("Failed to get %s: %s", "Damson", buf_string(pe->message));
       return;
     }
-    if (!TEST_CHECK_STR_EQ(buf_string(err), "newfoo"))
+    if (!TEST_CHECK_STR_EQ(buf_string(pe->message), "newfoo"))
     {
-      TEST_MSG("Variable not set %s: %s", "Damson", buf_string(err));
+      TEST_MSG("Variable not set %s: %s", "Damson", buf_string(pe->message));
       return;
     }
   }
 
   // set on my_var succeeds even if not existent.
   {
-    int grc = cs_str_delete(NeoMutt->sub->cs, "my_var", err);
+    int grc = cs_str_delete(NeoMutt->sub->cs, "my_var", pe->message);
     // return value grc is irrelevant.
 
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, "my_var = newbar");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(&Set, line, err);
+    enum CommandResult rc = parse_set(&Set, line, pc, pe);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-               buf_string(err));
+               buf_string(pe->message));
       return;
     }
 
     // Check effect
-    buf_reset(err);
-    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", err);
+    parse_error_reset(pe);
+    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
     {
-      TEST_MSG("Failed to get %s: %s", "my_var", buf_string(err));
+      TEST_MSG("Failed to get %s: %s", "my_var", buf_string(pe->message));
       return;
     }
-    if (!TEST_CHECK_STR_EQ(buf_string(err), "newbar"))
+    if (!TEST_CHECK_STR_EQ(buf_string(pe->message), "newbar"))
     {
-      TEST_MSG("Variable not set %s: %s", "my_var", buf_string(err));
+      TEST_MSG("Variable not set %s: %s", "my_var", buf_string(pe->message));
       return;
     }
   }
 
   // set fails on unknown variable
   {
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, "zzz = newbaz");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(&Set, line, err);
+    enum CommandResult rc = parse_set(&Set, line, pc, pe);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_ERROR, rc,
-               buf_string(err));
+               buf_string(pe->message));
       return;
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -753,7 +757,8 @@ static void test_unset(void)
 {
   // unset bool / quad config variable
 
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   {
@@ -777,28 +782,28 @@ static void test_unset(void)
       };
       for (int v = 0; v < countof(boolish); v++)
       {
-        buf_reset(err);
+        parse_error_reset(pe);
         buf_strcpy(line, boolish[v]);
         buf_seek(line, 0);
-        enum CommandResult rc = parse_set(&Unset, line, err);
+        enum CommandResult rc = parse_set(&Unset, line, pc, pe);
         if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
         {
           TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                   rc, buf_string(err));
+                   rc, buf_string(pe->message));
           return;
         }
 
         // Check effect
-        buf_reset(err);
-        int grc = cs_str_string_get(NeoMutt->sub->cs, boolish[v], err);
+        parse_error_reset(pe);
+        int grc = cs_str_string_get(NeoMutt->sub->cs, boolish[v], pe->message);
         if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
         {
-          TEST_MSG("Failed to get %s: %s", boolish[v], buf_string(err));
+          TEST_MSG("Failed to get %s: %s", boolish[v], buf_string(pe->message));
           return;
         }
-        if (!TEST_CHECK_STR_EQ(buf_string(err), "no"))
+        if (!TEST_CHECK_STR_EQ(buf_string(pe->message), "no"))
         {
-          TEST_MSG("Variable not unset %s: %s", boolish[v], buf_string(err));
+          TEST_MSG("Variable not unset %s: %s", boolish[v], buf_string(pe->message));
           return;
         }
       }
@@ -807,42 +812,42 @@ static void test_unset(void)
 
   // unset number sets it to 0
   {
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, "Cherry");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(&Unset, line, err);
+    enum CommandResult rc = parse_set(&Unset, line, pc, pe);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-               buf_string(err));
+               buf_string(pe->message));
       return;
     }
   }
 
   // unset string
   {
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, "Damson");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(&Unset, line, err);
+    enum CommandResult rc = parse_set(&Unset, line, pc, pe);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-               buf_string(err));
+               buf_string(pe->message));
       return;
     }
 
     // Check effect
-    buf_reset(err);
-    int grc = cs_str_string_get(NeoMutt->sub->cs, "Damson", err);
+    parse_error_reset(pe);
+    int grc = cs_str_string_get(NeoMutt->sub->cs, "Damson", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
     {
-      TEST_MSG("Failed to get %s: %s", "Damson", buf_string(err));
+      TEST_MSG("Failed to get %s: %s", "Damson", buf_string(pe->message));
       return;
     }
-    if (!TEST_CHECK_STR_EQ(buf_string(err), ""))
+    if (!TEST_CHECK_STR_EQ(buf_string(pe->message), ""))
     {
-      TEST_MSG("Variable not unset %s: %s", "Damson", buf_string(err));
+      TEST_MSG("Variable not unset %s: %s", "Damson", buf_string(pe->message));
       return;
     }
   }
@@ -850,57 +855,58 @@ static void test_unset(void)
   // unset on my_var deletes it
   {
     // Delete any trace of my_var if existent
-    cs_str_delete(NeoMutt->sub->cs, "my_var", err); // return value is irrelevant.
-    buf_reset(err);
-    if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, err) != NULL))
+    cs_str_delete(NeoMutt->sub->cs, "my_var", pe->message); // return value is irrelevant.
+    parse_error_reset(pe);
+    if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, pe->message) != NULL))
     {
-      TEST_MSG("Failed to register my_var config variable: %s", buf_string(err));
+      TEST_MSG("Failed to register my_var config variable: %s", buf_string(pe->message));
       return;
     }
-    buf_reset(err);
-    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+    parse_error_reset(pe);
+    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
     {
-      TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(err));
+      TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(pe->message));
       return;
     }
 
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, "my_var");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(&Unset, line, err);
+    enum CommandResult rc = parse_set(&Unset, line, pc, pe);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-               buf_string(err));
+               buf_string(pe->message));
       return;
     }
 
     // Check effect
-    buf_reset(err);
-    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", err);
+    parse_error_reset(pe);
+    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_ERR_UNKNOWN))
     {
-      TEST_MSG("my_var was not an unknown config variable: %s", buf_string(err));
+      TEST_MSG("my_var was not an unknown config variable: %s", buf_string(pe->message));
       return;
     }
   }
 
   // unset fails on unknown variable
   {
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, "zzz");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(&Unset, line, err);
+    enum CommandResult rc = parse_set(&Unset, line, pc, pe);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_ERROR, rc,
-               buf_string(err));
+               buf_string(pe->message));
       return;
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -914,7 +920,8 @@ static void test_unset(void)
  */
 static void test_reset(void)
 {
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   {
@@ -935,23 +942,23 @@ static void test_reset(void)
       // Just Apple..Fig
       for (int v = 0; v < 6; v++)
       {
-        buf_reset(err);
+        parse_error_reset(pe);
         buf_printf(line, template[t].str, ConfigVars[v].name);
         buf_seek(line, 0);
-        enum CommandResult rc = parse_set(template[t].cmd, line, err);
+        enum CommandResult rc = parse_set(template[t].cmd, line, pc, pe);
         if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
         {
           TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                   rc, buf_string(err));
+                   rc, buf_string(pe->message));
           return;
         }
 
         // Check effect
-        buf_reset(err);
-        int grc = cs_str_string_get(NeoMutt->sub->cs, ConfigVars[v].name, err);
+        parse_error_reset(pe);
+        int grc = cs_str_string_get(NeoMutt->sub->cs, ConfigVars[v].name, pe->message);
         if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
         {
-          TEST_MSG("Failed to get %s: %s", ConfigVars[v].name, buf_string(err));
+          TEST_MSG("Failed to get %s: %s", ConfigVars[v].name, buf_string(pe->message));
           return;
         }
         struct Buffer *buf = buf_pool_get();
@@ -962,10 +969,10 @@ static void test_reset(void)
           buf_pool_release(&buf);
           return;
         }
-        if (!TEST_CHECK_STR_EQ(buf_string(err), buf->data))
+        if (!TEST_CHECK_STR_EQ(buf_string(pe->message), buf->data))
         {
           TEST_MSG("Variable not reset %s: %s != %s", ConfigVars[v].name,
-                   buf_string(err), buf_string(buf));
+                   buf_string(pe->message), buf_string(buf));
           buf_pool_release(&buf);
           return;
         }
@@ -977,38 +984,38 @@ static void test_reset(void)
   // reset on my_var deletes it
   {
     // Delete any trace of my_var if existent
-    cs_str_delete(NeoMutt->sub->cs, "my_var", err); // return value is irrelevant.
-    buf_reset(err);
-    if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, err) != NULL))
+    cs_str_delete(NeoMutt->sub->cs, "my_var", pe->message); // return value is irrelevant.
+    parse_error_reset(pe);
+    if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, pe->message) != NULL))
     {
-      TEST_MSG("Failed to register my_var config variable: %s", buf_string(err));
+      TEST_MSG("Failed to register my_var config variable: %s", buf_string(pe->message));
       return;
     }
-    buf_reset(err);
-    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+    parse_error_reset(pe);
+    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
     {
-      TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(err));
+      TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(pe->message));
       return;
     }
 
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, "my_var");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(&Reset, line, err);
+    enum CommandResult rc = parse_set(&Reset, line, pc, pe);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-               buf_string(err));
+               buf_string(pe->message));
       return;
     }
 
     // Check effect
-    buf_reset(err);
-    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", err);
+    parse_error_reset(pe);
+    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_ERR_UNKNOWN))
     {
-      TEST_MSG("my_var was not an unknown config variable: %s", buf_string(err));
+      TEST_MSG("my_var was not an unknown config variable: %s", buf_string(pe->message));
       return;
     }
   }
@@ -1021,29 +1028,29 @@ static void test_reset(void)
       return;
     }
     // Delete any trace of my_var if existent
-    cs_str_delete(NeoMutt->sub->cs, "my_var", err); // return value is irrelevant.
-    buf_reset(err);
-    if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, err) != NULL))
+    cs_str_delete(NeoMutt->sub->cs, "my_var", pe->message); // return value is irrelevant.
+    parse_error_reset(pe);
+    if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, pe->message) != NULL))
     {
-      TEST_MSG("Failed to register my_var config variable: %s", buf_string(err));
+      TEST_MSG("Failed to register my_var config variable: %s", buf_string(pe->message));
       return;
     }
-    buf_reset(err);
-    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+    parse_error_reset(pe);
+    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
     {
-      TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(err));
+      TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(pe->message));
       return;
     }
 
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, "all");
     buf_seek(line, 0);
-    enum CommandResult rc = parse_set(&Reset, line, err);
+    enum CommandResult rc = parse_set(&Reset, line, pc, pe);
     if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
     {
       TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-               buf_string(err));
+               buf_string(pe->message));
       return;
     }
 
@@ -1051,11 +1058,11 @@ static void test_reset(void)
     // Just Apple..Fig
     for (int v = 0; v < 6; v++)
     {
-      buf_reset(err);
-      grc = cs_str_string_get(NeoMutt->sub->cs, ConfigVars[v].name, err);
+      parse_error_reset(pe);
+      grc = cs_str_string_get(NeoMutt->sub->cs, ConfigVars[v].name, pe->message);
       if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
       {
-        TEST_MSG("Failed to get %s: %s", ConfigVars[v].name, buf_string(err));
+        TEST_MSG("Failed to get %s: %s", ConfigVars[v].name, buf_string(pe->message));
         return;
       }
       struct Buffer *buf = buf_pool_get();
@@ -1066,27 +1073,28 @@ static void test_reset(void)
         buf_pool_release(&buf);
         return;
       }
-      if (!TEST_CHECK_STR_EQ(buf_string(err), buf->data))
+      if (!TEST_CHECK_STR_EQ(buf_string(pe->message), buf->data))
       {
         TEST_MSG("Variable not reset %s: %s != %s", ConfigVars[v].name,
-                 buf_string(err), buf_string(buf));
+                 buf_string(pe->message), buf_string(buf));
         buf_pool_release(&buf);
         return;
       }
       buf_pool_release(&buf);
     }
 
-    buf_reset(err);
-    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", err);
+    parse_error_reset(pe);
+    grc = cs_str_string_get(NeoMutt->sub->cs, "my_var", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_ERR_UNKNOWN))
     {
       TEST_MSG("my_var was not an unknown config variable: expected = %d, got = %d, err = %s",
-               CSR_ERR_UNKNOWN, CSR_RESULT(grc), buf_string(err));
+               CSR_ERR_UNKNOWN, CSR_RESULT(grc), buf_string(pe->message));
       return;
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -1102,7 +1110,8 @@ static void test_toggle(void)
 {
   // toggle bool / quad config variable
 
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   {
@@ -1136,58 +1145,59 @@ static void test_toggle(void)
       {
         // First toggle
         {
-          buf_reset(err);
+          parse_error_reset(pe);
           buf_printf(line, template[t].str, boolish[v]);
           buf_seek(line, 0);
-          enum CommandResult rc = parse_set(template[t].cmd, line, err);
+          enum CommandResult rc = parse_set(template[t].cmd, line, pc, pe);
           if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
           {
             TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                     rc, buf_string(err));
+                     rc, buf_string(pe->message));
             return;
           }
 
           // Check effect
-          buf_reset(err);
-          int grc = cs_str_string_get(NeoMutt->sub->cs, boolish[v], err);
+          parse_error_reset(pe);
+          int grc = cs_str_string_get(NeoMutt->sub->cs, boolish[v], pe->message);
           if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
           {
-            TEST_MSG("Failed to get %s: %s", boolish[v], buf_string(err));
+            TEST_MSG("Failed to get %s: %s", boolish[v], buf_string(pe->message));
             return;
           }
-          if (!TEST_CHECK_STR_EQ(buf_string(err), expected1[v]))
+          if (!TEST_CHECK_STR_EQ(buf_string(pe->message), expected1[v]))
           {
             TEST_MSG("Variable %s not toggled off: got = %s, expected = %s",
-                     boolish[v], buf_string(err), expected1[v], buf_string(err));
+                     boolish[v], buf_string(pe->message), expected1[v],
+                     buf_string(pe->message));
             return;
           }
         }
 
         // Second toggle
         {
-          buf_reset(err);
+          parse_error_reset(pe);
           buf_printf(line, template[t].str, boolish[v]);
           buf_seek(line, 0);
-          enum CommandResult rc = parse_set(template[t].cmd, line, err);
+          enum CommandResult rc = parse_set(template[t].cmd, line, pc, pe);
           if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
           {
             TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                     rc, buf_string(err));
+                     rc, buf_string(pe->message));
             return;
           }
 
           // Check effect
-          buf_reset(err);
-          int grc = cs_str_string_get(NeoMutt->sub->cs, boolish[v], err);
+          parse_error_reset(pe);
+          int grc = cs_str_string_get(NeoMutt->sub->cs, boolish[v], pe->message);
           if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
           {
-            TEST_MSG("Failed to get %s: %s", boolish[v], buf_string(err));
+            TEST_MSG("Failed to get %s: %s", boolish[v], buf_string(pe->message));
             return;
           }
-          if (!TEST_CHECK_STR_EQ(buf_string(err), expected2[v]))
+          if (!TEST_CHECK_STR_EQ(buf_string(pe->message), expected2[v]))
           {
-            TEST_MSG("Variable %s not toggled on: got = %s, expected = %s",
-                     boolish[v], buf_string(err), expected2[v], buf_string(err));
+            TEST_MSG("Variable %s not toggled on: got = %s, expected = %s", boolish[v],
+                     buf_string(pe->message), expected2[v], buf_string(pe->message));
             return;
           }
         }
@@ -1195,7 +1205,8 @@ static void test_toggle(void)
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -1210,7 +1221,8 @@ static void test_toggle(void)
  */
 static void test_query(void)
 {
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   {
@@ -1226,18 +1238,18 @@ static void test_query(void)
         return;
       }
       // Delete any trace of my_var if existent
-      cs_str_delete(NeoMutt->sub->cs, "my_var", err); // return value is irrelevant
-      buf_reset(err);
-      if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, err) != NULL))
+      cs_str_delete(NeoMutt->sub->cs, "my_var", pe->message); // return value is irrelevant
+      parse_error_reset(pe);
+      if (!TEST_CHECK(cs_register_variable(NeoMutt->sub->cs, &MyVarDef, pe->message) != NULL))
       {
-        TEST_MSG("Failed to register my_var config variable: %s", buf_string(err));
+        TEST_MSG("Failed to register my_var config variable: %s", buf_string(pe->message));
         return;
       }
-      buf_reset(err);
-      int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+      parse_error_reset(pe);
+      int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", pe->message);
       if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
       {
-        TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(err));
+        TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(pe->message));
         return;
       }
 
@@ -1249,23 +1261,23 @@ static void test_query(void)
       };
       for (int v = 0; v < countof(vars); v++)
       {
-        buf_reset(err);
+        parse_error_reset(pe);
         buf_printf(line, template[t], vars[v]);
         buf_seek(line, 0);
-        enum CommandResult rc = parse_set(&Set, line, err);
+        enum CommandResult rc = parse_set(&Set, line, pc, pe);
         if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
         {
           TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                   rc, buf_string(err));
+                   rc, buf_string(pe->message));
           return;
         }
 
         // Check effect
         buf_printf(line, "%s=\"%s\"", vars[v], expected[v]);
-        if (!TEST_CHECK_STR_EQ(buf_string(err), buf_string(line)))
+        if (!TEST_CHECK_STR_EQ(buf_string(pe->message), buf_string(line)))
         {
           TEST_MSG("Variable query failed for %s: got = %s, expected = %s",
-                   vars[v], buf_string(err), buf_string(line));
+                   vars[v], buf_string(pe->message), buf_string(line));
           return;
         }
       }
@@ -1279,10 +1291,10 @@ static void test_query(void)
       TEST_MSG("setup failed");
       return;
     }
-    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+    int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", pe->message);
     if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
     {
-      TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(err));
+      TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(pe->message));
       return;
     }
 
@@ -1298,29 +1310,30 @@ static void test_query(void)
     };
     for (int v = 0; v < countof(vars); v++)
     {
-      buf_reset(err);
+      parse_error_reset(pe);
       buf_strcpy(line, vars[v]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(&Set, line, err);
+      enum CommandResult rc = parse_set(&Set, line, pc, pe);
       if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
       {
         TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-                 buf_string(err));
+                 buf_string(pe->message));
         return;
       }
 
       // Check effect
       buf_printf(line, "%s=\"%s\"", vars[v], expected[v]);
-      if (!TEST_CHECK_STR_EQ(buf_string(err), buf_string(line)))
+      if (!TEST_CHECK_STR_EQ(buf_string(pe->message), buf_string(line)))
       {
         TEST_MSG("Variable query failed for %s: got = %s, expected = %s",
-                 vars[v], buf_string(err), buf_string(line));
+                 vars[v], buf_string(pe->message), buf_string(line));
         return;
       }
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -1334,7 +1347,8 @@ static void test_query(void)
  */
 static void test_increment(void)
 {
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   if (!TEST_CHECK(set_non_empty_values()))
@@ -1342,10 +1356,10 @@ static void test_increment(void)
     TEST_MSG("setup failed");
     return;
   }
-  int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", err);
+  int grc = cs_str_string_set(NeoMutt->sub->cs, "my_var", "foo", pe->message);
   if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
   {
-    TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(err));
+    TEST_MSG("Failed to set dummy value for %s: %s", "my_var", buf_string(pe->message));
     return;
   }
 
@@ -1368,35 +1382,36 @@ static void test_increment(void)
     };
     for (int v = 0; v < countof(vars); v++)
     {
-      buf_reset(err);
+      parse_error_reset(pe);
       buf_printf(line, "%s += %s", vars[v], increment[v]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(&Set, line, err);
+      enum CommandResult rc = parse_set(&Set, line, pc, pe);
       if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
       {
         TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-                 buf_string(err));
+                 buf_string(pe->message));
         return;
       }
 
       // Check effect
-      buf_reset(err);
-      grc = cs_str_string_get(NeoMutt->sub->cs, vars[v], err);
+      parse_error_reset(pe);
+      grc = cs_str_string_get(NeoMutt->sub->cs, vars[v], pe->message);
       if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
       {
-        TEST_MSG("Failed to get %s: %s", vars[v], buf_string(err));
+        TEST_MSG("Failed to get %s: %s", vars[v], buf_string(pe->message));
         return;
       }
-      if (!TEST_CHECK_STR_EQ(buf_string(err), expected[v]))
+      if (!TEST_CHECK_STR_EQ(buf_string(pe->message), expected[v]))
       {
         TEST_MSG("Variable not incremented %s: got = %s, expected = %s",
-                 vars[v], buf_string(err), expected[v]);
+                 vars[v], buf_string(pe->message), expected[v]);
         return;
       }
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -1409,7 +1424,8 @@ static void test_increment(void)
  */
 static void test_decrement(void)
 {
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   if (!TEST_CHECK(set_non_empty_values()))
@@ -1431,35 +1447,36 @@ static void test_decrement(void)
     };
     for (int v = 0; v < countof(vars); v++)
     {
-      buf_reset(err);
+      parse_error_reset(pe);
       buf_printf(line, "%s -= %s", vars[v], increment[v]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(&Set, line, err);
+      enum CommandResult rc = parse_set(&Set, line, pc, pe);
       if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
       {
         TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-                 buf_string(err));
+                 buf_string(pe->message));
         return;
       }
 
       // Check effect
-      buf_reset(err);
-      int grc = cs_str_string_get(NeoMutt->sub->cs, vars[v], err);
+      parse_error_reset(pe);
+      int grc = cs_str_string_get(NeoMutt->sub->cs, vars[v], pe->message);
       if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
       {
-        TEST_MSG("Failed to get %s: %s", vars[v], buf_string(err));
+        TEST_MSG("Failed to get %s: %s", vars[v], buf_string(pe->message));
         return;
       }
-      if (!TEST_CHECK_STR_EQ(buf_string(err), expected[v]))
+      if (!TEST_CHECK_STR_EQ(buf_string(pe->message), expected[v]))
       {
         TEST_MSG("Variable not decremented %s: got = %s, expected = %s",
-                 vars[v], buf_string(err), expected[v]);
+                 vars[v], buf_string(pe->message), expected[v]);
         return;
       }
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -1470,7 +1487,8 @@ static void test_decrement(void)
  */
 static void test_invalid_syntax(void)
 {
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   {
@@ -1487,20 +1505,22 @@ static void test_invalid_syntax(void)
 
     for (int t = 0; t < countof(template); t++)
     {
-      buf_reset(err);
+      parse_error_reset(pe);
       buf_strcpy(line, template[t]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(&Set, line, err);
+      enum CommandResult rc = parse_set(&Set, line, pc, pe);
       if (!TEST_CHECK((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR)))
       {
         TEST_MSG("For command '%s': Expected %d or %d, but got %d; err is: '%s'",
-                 template[t], MUTT_CMD_WARNING, MUTT_CMD_ERROR, rc, buf_string(err));
+                 template[t], MUTT_CMD_WARNING, MUTT_CMD_ERROR, rc,
+                 buf_string(pe->message));
         // return;
       }
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
@@ -1515,7 +1535,8 @@ static void test_invalid_syntax(void)
  */
 static void test_path_expanding(void)
 {
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   struct Buffer *line = buf_pool_get();
 
   {
@@ -1536,35 +1557,36 @@ static void test_path_expanding(void)
     };
     for (int v = 0; v < countof(pathlike); v++)
     {
-      buf_reset(err);
+      parse_error_reset(pe);
       buf_printf(line, "%s = %s", pathlike[v], newvalue[v]);
       buf_seek(line, 0);
-      enum CommandResult rc = parse_set(&Set, line, err);
+      enum CommandResult rc = parse_set(&Set, line, pc, pe);
       if (!TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS))
       {
         TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
-                 buf_string(err));
+                 buf_string(pe->message));
         return;
       }
 
       // Check effect
-      buf_reset(err);
-      int grc = cs_str_string_get(NeoMutt->sub->cs, pathlike[v], err);
+      parse_error_reset(pe);
+      int grc = cs_str_string_get(NeoMutt->sub->cs, pathlike[v], pe->message);
       if (!TEST_CHECK_NUM_EQ(CSR_RESULT(grc), CSR_SUCCESS))
       {
-        TEST_MSG("Failed to get %s: %s", pathlike[v], buf_string(err));
+        TEST_MSG("Failed to get %s: %s", pathlike[v], buf_string(pe->message));
         return;
       }
-      if (!TEST_CHECK_STR_EQ(buf_string(err), expected[v]))
+      if (!TEST_CHECK_STR_EQ(buf_string(pe->message), expected[v]))
       {
         TEST_MSG("Variable not incremented %s: got = %s, expected = %s",
-                 pathlike[v], buf_string(err), expected[v]);
+                 pathlike[v], buf_string(pe->message), expected[v]);
         return;
       }
     }
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 

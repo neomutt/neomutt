@@ -29,6 +29,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "commands/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "globals.h"
 #include "test_common.h"
@@ -93,111 +94,121 @@ static const struct CommandTest UnMimeLookupTests[] = {
 
 static void test_parse_unalternative_order(void)
 {
-  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; UnAlternativeOrderTests[i].line; i++)
   {
     TEST_CASE(UnAlternativeOrderTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, UnAlternativeOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnAlternativeOrder, line, err);
+    rc = parse_unstailq(&UnAlternativeOrder, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnAlternativeOrderTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_unauto_view(void)
 {
-  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; UnAutoViewTests[i].line; i++)
   {
     TEST_CASE(UnAutoViewTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, UnAutoViewTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnAutoView, line, err);
+    rc = parse_unstailq(&UnAutoView, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnAutoViewTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_unhdr_order(void)
 {
-  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; UnHdrOrderTests[i].line; i++)
   {
     TEST_CASE(UnHdrOrderTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, UnHdrOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnHdrOrder, line, err);
+    rc = parse_unstailq(&UnHdrOrder, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnHdrOrderTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_unmailto_allow(void)
 {
-  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; UnMailtoAllowTests[i].line; i++)
   {
     TEST_CASE(UnMailtoAllowTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, UnMailtoAllowTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnMailtoAllow, line, err);
+    rc = parse_unstailq(&UnMailtoAllow, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnMailtoAllowTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_unmime_lookup(void)
 {
-  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; UnMimeLookupTests[i].line; i++)
   {
     TEST_CASE(UnMimeLookupTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, UnMimeLookupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnMimeLookup, line, err);
+    rc = parse_unstailq(&UnMimeLookup, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnMimeLookupTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 

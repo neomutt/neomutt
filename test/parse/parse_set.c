@@ -32,7 +32,7 @@ static const struct Command Set = { "set", CMD_SET, parse_set, CMD_NO_DATA };
 
 void test_parse_set(void)
 {
-  // enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   // reset <variable> [ <variable> ... ]
   // set { [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] value } [... ]
@@ -40,12 +40,14 @@ void test_parse_set(void)
   // unset <variable> [ <variable> ... ]
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   TEST_CASE("parse_set");
-  enum CommandResult rc = parse_set(&Set, line, err);
+  enum CommandResult rc = parse_set(&Set, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   buf_pool_release(&line);
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
 }

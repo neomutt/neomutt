@@ -30,6 +30,7 @@
 #include "index/lib.h"
 #include "key/lib.h"
 #include "pager/lib.h"
+#include "parse/lib.h"
 #include "sidebar/lib.h"
 #include "common.h"
 #include "test_common.h"
@@ -85,10 +86,11 @@ static void init_menus(void)
 
 static void test_parse_unbind2(void)
 {
-  // enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; UnBindTests[i].line; i++)
@@ -96,39 +98,42 @@ static void test_parse_unbind2(void)
     init_menus();
 
     TEST_CASE(UnBindTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, UnBindTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unbind(&UnBind, line, err);
+    rc = parse_unbind(&UnBind, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnBindTests[i].rc);
 
     km_cleanup();
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_unmacro(void)
 {
-  // enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   init_menus();
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; UnMacroTests[i].line; i++)
   {
     TEST_CASE(UnMacroTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, UnMacroTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unbind(&UnMacro, line, err);
+    rc = parse_unbind(&UnMacro, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnMacroTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
   km_cleanup();
 }

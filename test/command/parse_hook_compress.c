@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -66,60 +67,66 @@ static const struct CommandTest OpenTests[] = {
 static void test_parse_append_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; AppendTests[i].line; i++)
   {
     TEST_CASE(AppendTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, AppendTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_compress(&AppendHook, line, err);
+    rc = parse_hook_compress(&AppendHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, AppendTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_close_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; CloseTests[i].line; i++)
   {
     TEST_CASE(CloseTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, CloseTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_compress(&CloseHook, line, err);
+    rc = parse_hook_compress(&CloseHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, CloseTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_open_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; OpenTests[i].line; i++)
   {
     TEST_CASE(OpenTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, OpenTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_compress(&OpenHook, line, err);
+    rc = parse_hook_compress(&OpenHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, OpenTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 

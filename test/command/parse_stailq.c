@@ -29,6 +29,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "commands/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "globals.h"
 #include "test_common.h"
@@ -89,111 +90,121 @@ static const struct CommandTest MimeLookupTests[] = {
 
 static void alternative_order(void)
 {
-  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; AlternativeOrderTests[i].line; i++)
   {
     TEST_CASE(AlternativeOrderTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, AlternativeOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&AlternativeOrder, line, err);
+    rc = parse_stailq(&AlternativeOrder, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, AlternativeOrderTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void auto_view(void)
 {
-  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; AutoViewTests[i].line; i++)
   {
     TEST_CASE(AutoViewTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, AutoViewTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&AutoView, line, err);
+    rc = parse_stailq(&AutoView, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, AutoViewTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void hdr_order(void)
 {
-  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; HdrOrderTests[i].line; i++)
   {
     TEST_CASE(HdrOrderTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, HdrOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&HdrOrder, line, err);
+    rc = parse_stailq(&HdrOrder, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, HdrOrderTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void mailto_allow(void)
 {
-  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; MailtoAllowTests[i].line; i++)
   {
     TEST_CASE(MailtoAllowTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, MailtoAllowTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&MailtoAllow, line, err);
+    rc = parse_stailq(&MailtoAllow, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, MailtoAllowTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void mime_lookup(void)
 {
-  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; MimeLookupTests[i].line; i++)
   {
     TEST_CASE(MimeLookupTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, MimeLookupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&MimeLookup, line, err);
+    rc = parse_stailq(&MimeLookup, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, MimeLookupTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 

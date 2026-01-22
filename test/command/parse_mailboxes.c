@@ -23,10 +23,12 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "commands/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -493,45 +495,49 @@ static void test_parse_mailbox_array_free_func(void)
 
 static void test_parse_mailboxes2(void)
 {
-  // enum CommandResult parse_mailboxes(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_mailboxes(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; MailboxesTests[i].line; i++)
   {
     TEST_CASE(MailboxesTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, MailboxesTests[i].line);
     buf_seek(line, 0);
-    rc = parse_mailboxes(&Mailboxes, line, err);
+    rc = parse_mailboxes(&Mailboxes, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, MailboxesTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_named_mailboxes(void)
 {
-  // enum CommandResult parse_mailboxes(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_mailboxes(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; NamedMailboxesTests[i].line; i++)
   {
     TEST_CASE(NamedMailboxesTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, NamedMailboxesTests[i].line);
     buf_seek(line, 0);
-    rc = parse_mailboxes(&NamedMailboxes, line, err);
+    rc = parse_mailboxes(&NamedMailboxes, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, NamedMailboxesTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 

@@ -51,27 +51,29 @@ static const struct CommandTest Tests[] = {
 
 void test_parse_source(void)
 {
-  // enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   commands_register(&NeoMutt->commands, source_test_commands);
 
   struct Buffer *line = buf_pool_get();
   struct Buffer *file = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; Tests[i].line; i++)
   {
     TEST_CASE(Tests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, Tests[i].line);
     test_gen_path(file, buf_string(line));
     buf_seek(file, 0);
-    rc = parse_source(&Source, file, err);
+    rc = parse_source(&Source, file, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&file);
   buf_pool_release(&line);
   commands_clear(&NeoMutt->commands);

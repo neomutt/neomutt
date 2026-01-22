@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -55,45 +56,49 @@ static const struct CommandTest IconvTests[] = {
 
 void test_parse_hook_charset2(void)
 {
-  // enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; CharsetTests[i].line; i++)
   {
     TEST_CASE(CharsetTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, CharsetTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_charset(&CharsetHook, line, err);
+    rc = parse_hook_charset(&CharsetHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, CharsetTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 void test_parse_iconv_hook(void)
 {
-  // enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; IconvTests[i].line; i++)
   {
     TEST_CASE(IconvTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, IconvTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_charset(&IconvHook, line, err);
+    rc = parse_hook_charset(&IconvHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, IconvTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 

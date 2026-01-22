@@ -29,6 +29,7 @@
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -63,7 +64,7 @@ static const struct MenuFuncOp OpPager[] = {
 
 void test_parse_bind(void)
 {
-  // enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+  // enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -79,19 +80,21 @@ void test_parse_bind(void)
   // ----------------------------------------
 
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; Tests[i].line; i++)
   {
     TEST_CASE(Tests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_bind(&Bind, line, err);
+    rc = parse_bind(&Bind, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }

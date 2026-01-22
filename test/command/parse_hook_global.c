@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -66,60 +67,66 @@ static const struct CommandTest TimeoutTests[] = {
 static void test_parse_shutdown_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; ShutdownTests[i].line; i++)
   {
     TEST_CASE(ShutdownTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, ShutdownTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_global(&ShutdownHook, line, err);
+    rc = parse_hook_global(&ShutdownHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, ShutdownTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_startup_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; StartupTests[i].line; i++)
   {
     TEST_CASE(StartupTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, StartupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_global(&StartupHook, line, err);
+    rc = parse_hook_global(&StartupHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, StartupTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_timeout_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; TimeoutTests[i].line; i++)
   {
     TEST_CASE(TimeoutTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, TimeoutTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_global(&TimeoutHook, line, err);
+    rc = parse_hook_global(&TimeoutHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, TimeoutTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
