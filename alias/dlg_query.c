@@ -179,7 +179,7 @@ static int query_tag(struct Menu *menu, int sel, int act)
  * query_run - Run an external program to find Addresses
  * @param s       String to match
  * @param verbose If true, print progress messages
- * @param al      Alias list to fill
+ * @param aa      Alias list to fill
  * @param sub     Config items
  * @retval  0 Success
  * @retval -1 Error
