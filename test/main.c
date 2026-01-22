@@ -614,6 +614,7 @@ void test_fini(void);
   /* parse */                                                                  \
   NEOMUTT_TEST_ITEM(test_command_set)                                          \
   NEOMUTT_TEST_ITEM(test_parse_extract_token)                                  \
+  NEOMUTT_TEST_ITEM(test_parse_pcontext)                                       \
   NEOMUTT_TEST_ITEM(test_parse_rc)                                             \
   NEOMUTT_TEST_ITEM(test_parse_set)                                            \
                                                                                \

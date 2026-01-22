@@ -35,7 +35,7 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line, 
 int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseError *pe);
 
 void source_stack_cleanup(void);
-enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_rc_line_cwd(const char *line, const char *cwd, struct ParseContext *pc, struct ParseError *pe);
 char *mutt_get_sourced_cwd(void);
 
 #endif /* MUTT_COMMANDS_SOURCE_H */

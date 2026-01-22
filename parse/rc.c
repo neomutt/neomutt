@@ -28,11 +28,14 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "rc.h"
 #include "commands/lib.h"
 #include "extract.h"
+#include "fileloc.h"
+#include "pcontext.h"
 #include "perror.h"
 
 /**
@@ -93,7 +96,9 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct ParseContext *pc,
       mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
       rc = cmd->parse(cmd, line, pc, pe);
       if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
+      {
         goto finish; /* Propagate return code */
+      }
 
       notify_send(NeoMutt->notify, NT_COMMAND, 0, (void *) cmd);
     }
@@ -101,6 +106,10 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct ParseContext *pc,
     {
       buf_printf(err, _("%s: unknown command"), buf_string(token));
       rc = MUTT_CMD_ERROR;
+      struct FileLocation *fl = pc ? parse_context_current(pc) : NULL;
+      parse_error_set(pe, rc, fl ? fl->filename : NULL, fl ? fl->lineno : 0, "%s", buf_string(err));
+      pe->origin = pc ? pc->origin : CO_CONFIG_FILE;
+      goto finish;
     }
   }
 

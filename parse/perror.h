@@ -23,6 +23,9 @@
 #ifndef MUTT_PARSE_PERROR_H
 #define MUTT_PARSE_PERROR_H
 
+#include "core/lib.h"
+#include "pcontext.h"
+
 /**
  * struct ParseError - Detailed error information from config parsing
  *
@@ -32,12 +35,21 @@
  */
 struct ParseError
 {
-  struct Buffer *message;        ///< Error message
+  struct Buffer *message;       ///< Error message
+  char *filename;               ///< File where error occurred (may be NULL)
+  int lineno;                   ///< Line number where error occurred (0 if N/A)
+  enum CommandOrigin origin;    ///< Origin of the command
+  enum CommandResult result;    ///< Error code result
 };
 
 struct ParseError *parse_error_new(void);
 void               parse_error_free(struct ParseError **pptr);
 
 void parse_error_reset(struct ParseError *pe);
+
+void                  parse_error_init(struct ParseError *pe);
+void                  parse_error_set (struct ParseError *pe, enum CommandResult result,
+                                       const char *filename, int lineno, const char *fmt, ...)
+                                       __attribute__((__format__(__printf__, 5, 6)));
 
 #endif /* MUTT_PARSE_PERROR_H */

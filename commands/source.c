@@ -69,8 +69,6 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
   if (!rcfile_path || !pc || !pe)
     return -1;
 
-  struct Buffer *err = pe->message;
-
   int lineno = 0, rc = 0, warnings = 0;
   enum CommandResult line_rc;
   struct Buffer *linebuf = NULL;
@@ -90,27 +88,27 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
 
   if (!ispipe)
   {
-    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-    if (!mutt_path_to_absolute(rcfile, np ? NONULL(np->data) : ""))
+    /* Build absolute path using the context's current directory */
+    const char *ctx_cwd = parse_context_cwd(pc);
+    if (!mutt_path_to_absolute(rcfile, ctx_cwd ? ctx_cwd : ""))
     {
+      parse_error_set(pe, MUTT_CMD_ERROR, NULL, 0,
+                      _("Error: Can't build path of '%s'"), rcfile_path);
       mutt_error(_("Error: Can't build path of '%s'"), rcfile_path);
       return -1;
     }
 
-    STAILQ_FOREACH(np, &MuttrcStack, entries)
+    /* Check for cyclic sourcing using the context stack */
+    if (parse_context_contains(pc, rcfile))
     {
-      if (mutt_str_equal(np->data, rcfile))
-      {
-        break;
-      }
-    }
-    if (np)
-    {
+      parse_error_set(pe, MUTT_CMD_ERROR, rcfile, 0,
+                      _("Error: Cyclic sourcing of configuration file '%s'"), rcfile);
       mutt_error(_("Error: Cyclic sourcing of configuration file '%s'"), rcfile);
       return -1;
     }
 
-    mutt_list_insert_head(&MuttrcStack, mutt_str_dup(rcfile));
+    /* Push this file onto the context stack */
+    parse_context_push(pc, rcfile, 0);
   }
 
   mutt_debug(LL_DEBUG2, "Reading configuration file '%s'\n", rcfile);
@@ -118,7 +116,9 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
   FILE *fp = mutt_open_read(rcfile, &pid);
   if (!fp)
   {
-    buf_printf(err, "%s: %s", rcfile, strerror(errno));
+    parse_error_set(pe, MUTT_CMD_ERROR, rcfile, 0, "%s: %s", rcfile, strerror(errno));
+    if (!ispipe)
+      parse_context_pop(pc);
     return -1;
   }
 
@@ -143,13 +143,19 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
 
     buf_strcpy(linebuf, currentline);
 
-    buf_reset(err);
+    /* Update the current line number in the context */
+    struct FileLocation *fl = parse_context_current(pc);
+    if (fl)
+      fl->lineno = lineno;
+
     line_rc = parse_rc_line(linebuf, pc, pe);
+
     if (line_rc == MUTT_CMD_ERROR)
     {
-      mutt_error("%s:%d: %s", rcfile, lineno, buf_string(err));
+      mutt_error("%s:%d: %s", rcfile, lineno, buf_string(pe->message));
       if (--rc < -MAX_ERRS)
       {
+        // parse_error_free(pe);
         if (conv)
           FREE(&currentline);
         break;
@@ -158,11 +164,12 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
     else if (line_rc == MUTT_CMD_WARNING)
     {
       /* Warning */
-      mutt_warning("%s:%d: %s", rcfile, lineno, buf_string(err));
+      mutt_warning("%s:%d: %s", rcfile, lineno, buf_string(pe->message));
       warnings++;
     }
     else if (line_rc == MUTT_CMD_FINISH)
     {
+      // parse_error_free(pe);
       if (conv)
         FREE(&currentline);
       break; /* Found "finish" command */
@@ -172,6 +179,7 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
       if (rc < 0)
         rc = -1;
     }
+    // parse_error_free(pe);
     if (conv)
       FREE(&currentline);
   }
@@ -184,9 +192,11 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
   if (rc)
   {
     /* the neomuttrc source keyword */
-    buf_reset(err);
-    buf_printf(err, (rc >= -MAX_ERRS) ? _("source: errors in %s") : _("source: reading aborted due to too many errors in %s"),
-               rcfile);
+    parse_error_set(pe, MUTT_CMD_ERROR, rcfile, 0,
+                    (rc >= -MAX_ERRS) ?
+                        _("source: errors in %s") :
+                        _("source: reading aborted due to too many errors in %s"),
+                    rcfile);
     rc = -1;
   }
   else
@@ -194,19 +204,15 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
     /* Don't alias errors with warnings */
     if (warnings > 0)
     {
-      buf_printf(err, ngettext("source: %d warning in %s", "source: %d warnings in %s", warnings),
-                 warnings, rcfile);
+      parse_error_set(pe, MUTT_CMD_WARNING, rcfile, 0,
+                      ngettext("source: %d warning in %s", "source: %d warnings in %s", warnings),
+                      warnings, rcfile);
       rc = -2;
     }
   }
 
-  if (!ispipe && !STAILQ_EMPTY(&MuttrcStack))
-  {
-    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-    STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
-    FREE(&np->data);
-    FREE(&np);
-  }
+  if (!ispipe)
+    parse_context_pop(pc);
 
   buf_pool_release(&linebuf);
   return rc;
@@ -243,10 +249,13 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
     buf_copy(path, token);
     expand_path(path, false);
 
+    parse_error_init(pe);
     // Cheat: Remove the `const` so we can recurse
     if (source_rc(buf_string(path), (struct ParseContext *) pc, pe) < 0)
     {
       buf_printf(err, _("source: file %s could not be sourced"), buf_string(path));
+      parse_error_set(pe, MUTT_CMD_ERROR, NULL, 0, "%s", buf_string(err));
+      parse_error_free(&pe);
       goto done;
     }
 
@@ -276,7 +285,7 @@ void source_stack_cleanup(void)
  * @param pe   Parse Errors
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-enum CommandResult parse_rc_line_cwd(const char *line, char *cwd,
+enum CommandResult parse_rc_line_cwd(const char *line, const char *cwd,
                                      struct ParseContext *pc, struct ParseError *pe)
 {
   if (!line || !cwd || !pc || !pe)
@@ -284,10 +293,25 @@ enum CommandResult parse_rc_line_cwd(const char *line, char *cwd,
 
   mutt_list_insert_head(&MuttrcStack, mutt_str_dup(NONULL(cwd)));
 
+  if (!pc)
+  {
+    struct Buffer *err = buf_pool_get();
+    struct Buffer *buf = buf_pool_get();
+    buf_strcpy(buf, line);
+    enum CommandResult ret = parse_rc_line(buf, pc, pe);
+    buf_pool_release(&buf);
+    buf_pool_release(&err);
+    return ret;
+  }
+
+  parse_context_push(pc, cwd, 0);
+
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, line);
   enum CommandResult ret = parse_rc_line(buf, pc, pe);
   buf_pool_release(&buf);
+
+  parse_context_pop(pc);
 
   struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
   STAILQ_REMOVE_HEAD(&MuttrcStack, entries);

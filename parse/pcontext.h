@@ -23,6 +23,24 @@
 #ifndef MUTT_PARSE_PCONTEXT_H
 #define MUTT_PARSE_PCONTEXT_H
 
+#include "config.h"
+#include <stdbool.h>
+#include "core/lib.h"
+#include "fileloc.h"
+
+/**
+ * enum CommandOrigin - Origin of a config command
+ *
+ * Identifies where a configuration command originated from.
+ */
+enum CommandOrigin
+{
+  CO_CONFIG_FILE = 0, ///< Command from a config file
+  CO_USER,            ///< User manually entered the command
+  CO_HOOK,            ///< Hook triggered by an event
+  CO_LUA,             ///< Lua script executing the command
+};
+
 /**
  * struct ParseContext - Context for config parsing (history/backtrace)
  *
@@ -32,10 +50,19 @@
  */
 struct ParseContext
 {
-  int dummy;
+  struct FileLocationArray locations; ///< LIFO stack of file locations
+  enum CommandOrigin origin;          ///< Origin of the command
+  enum CommandId hook_id;             ///< Hook ID if origin is CO_HOOK
 };
 
 struct ParseContext *parse_context_new(void);
 void                 parse_context_free(struct ParseContext **pptr);
+
+void                  parse_context_init    (struct ParseContext *pc, enum CommandOrigin origin);
+void                  parse_context_push    (struct ParseContext *pc, const char *filename, int lineno);
+void                  parse_context_pop     (struct ParseContext *pc);
+struct FileLocation  *parse_context_current (struct ParseContext *pc);
+bool                  parse_context_contains(struct ParseContext *pc, const char *filename);
+const char           *parse_context_cwd     (struct ParseContext *pc);
 
 #endif /* MUTT_PARSE_PCONTEXT_H */
