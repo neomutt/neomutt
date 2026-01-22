@@ -49,6 +49,7 @@
 #include "commands/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
+#include "parse/lib.h"
 #include "pattern/lib.h"
 #include "hook.h"
 #include "muttlib.h"
@@ -66,7 +67,8 @@ void mutt_folder_hook(const char *path, const char *desc)
     return;
 
   struct Hook *hook = NULL;
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   CurrentHookId = CMD_FOLDER_HOOK;
 
@@ -88,16 +90,17 @@ void mutt_folder_hook(const char *path, const char *desc)
     {
       mutt_debug(LL_DEBUG1, "folder-hook '%s' matches '%s'\n", hook->regex.pattern, match);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
-      if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+      if (parse_rc_line_cwd(hook->command, hook->source_file, pc, pe) == MUTT_CMD_ERROR)
       {
-        mutt_error("%s", buf_string(err));
+        mutt_error("%s", buf_string(pe->message));
         break;
       }
     }
   }
-  buf_pool_release(&err);
 
   CurrentHookId = CMD_NONE;
+  parse_context_free(&pc);
+  parse_error_free(&pe);
 }
 
 /**
@@ -133,7 +136,8 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, enum CommandId id)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   CurrentHookId = id;
 
@@ -147,13 +151,10 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, enum CommandId id)
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
-        if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+        if (parse_rc_line_cwd(hook->command, hook->source_file, pc, pe) == MUTT_CMD_ERROR)
         {
-          mutt_error("%s", buf_string(err));
-          CurrentHookId = CMD_NONE;
-          buf_pool_release(&err);
-
-          return;
+          mutt_error("%s", buf_string(pe->message));
+          goto done;
         }
         /* Executing arbitrary commands could affect the pattern results,
          * so the cache has to be wiped */
@@ -161,9 +162,11 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, enum CommandId id)
       }
     }
   }
-  buf_pool_release(&err);
 
+done:
   CurrentHookId = CMD_NONE;
+  parse_context_free(&pc);
+  parse_error_free(&pe);
 }
 
 /**
@@ -327,7 +330,8 @@ void mutt_account_hook(const char *url)
     return;
 
   struct Hook *hook = NULL;
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
@@ -340,11 +344,9 @@ void mutt_account_hook(const char *url)
       mutt_debug(LL_DEBUG1, "account-hook '%s' matches '%s'\n", hook->regex.pattern, url);
       mutt_debug(LL_DEBUG5, "    %s\n", hook->command);
 
-      if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+      if (parse_rc_line_cwd(hook->command, hook->source_file, pc, pe) == MUTT_CMD_ERROR)
       {
-        mutt_error("%s", buf_string(err));
-        buf_pool_release(&err);
-
+        mutt_error("%s", buf_string(pe->message));
         inhook = false;
         goto done;
       }
@@ -352,8 +354,10 @@ void mutt_account_hook(const char *url)
       inhook = false;
     }
   }
+
 done:
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
 }
 
 /**
@@ -365,26 +369,29 @@ done:
 void mutt_timeout_hook(void)
 {
   struct Hook *hook = NULL;
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->id == CMD_TIMEOUT_HOOK)))
       continue;
 
-    if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+    if (parse_rc_line_cwd(hook->command, hook->source_file, pc, pe) == MUTT_CMD_ERROR)
     {
-      mutt_error("%s", buf_string(err));
-      buf_reset(err);
+      mutt_error("%s", buf_string(pe->message));
+      parse_error_reset(pe);
 
-      /* The hooks should be independent of each other, so even though this on
+      /* The hooks should be independent of each other, so even though this one
        * failed, we'll carry on with the others. */
     }
   }
-  buf_pool_release(&err);
 
   /* Delete temporary attachment files */
   mutt_temp_attachments_cleanup();
+
+  parse_context_free(&pc);
+  parse_error_free(&pe);
 }
 
 /**
@@ -397,20 +404,23 @@ void mutt_timeout_hook(void)
 void mutt_startup_shutdown_hook(enum CommandId id)
 {
   struct Hook *hook = NULL;
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->id == id)))
       continue;
 
-    if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+    if (parse_rc_line_cwd(hook->command, hook->source_file, pc, pe) == MUTT_CMD_ERROR)
     {
-      mutt_error("%s", buf_string(err));
-      buf_reset(err);
+      mutt_error("%s", buf_string(pe->message));
+      parse_error_reset(pe);
     }
   }
-  buf_pool_release(&err);
+
+  parse_context_free(&pc);
+  parse_error_free(&pe);
 }
 
 /**

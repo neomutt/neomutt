@@ -54,8 +54,11 @@ bool lua_init_state(lua_State **l);
  * Parse:
  * - `lua <lua-command>`
  */
-enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line,
+                             const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -94,9 +97,11 @@ done:
  * Parse:
  * - `lua-source <filename>`
  */
-enum CommandResult parse_lua_source(const struct Command *cmd,
-                                    struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *line,
+                                    const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

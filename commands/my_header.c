@@ -49,9 +49,11 @@
  * Parse:
  * - `my-header <string>`
  */
-enum CommandResult parse_my_header(const struct Command *cmd,
-                                   struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_my_header(const struct Command *cmd, struct Buffer *line,
+                                   const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -98,9 +100,11 @@ done:
  * Parse:
  * - `unmy-header { * | <field> ... }`
  */
-enum CommandResult parse_unmy_header(const struct Command *cmd,
-                                     struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *line,
+                                     const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

@@ -40,7 +40,6 @@
 #include "core/lib.h"
 #include "ignore.h"
 #include "parse/lib.h"
-#include "muttlib.h"
 
 /**
  * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
@@ -49,8 +48,10 @@
  * - `ignore <string> [ <string> ...]`
  */
 enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+                                const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -76,9 +77,11 @@ enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
  * Parse:
  * - `unignore { * | <string> ... }`
  */
-enum CommandResult parse_unignore(const struct Command *cmd,
-                                  struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unignore(const struct Command *cmd, struct Buffer *line,
+                                  const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

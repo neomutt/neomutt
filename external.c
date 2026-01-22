@@ -619,7 +619,8 @@ done:
 void mutt_enter_command(struct MuttWindow *win)
 {
   struct Buffer *buf = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   window_redraw(NULL);
 
@@ -632,15 +633,15 @@ void mutt_enter_command(struct MuttWindow *win)
     goto done;
   }
 
-  enum CommandResult rc = parse_rc_line(buf, err);
-  if (!buf_is_empty(err))
+  enum CommandResult rc = parse_rc_line(buf, pc, pe);
+  if (!buf_is_empty(pe->message))
   {
     if (rc == MUTT_CMD_SUCCESS) /* command succeeded with message */
-      mutt_message("%s", buf_string(err));
+      mutt_message("%s", buf_string(pe->message));
     else if (rc == MUTT_CMD_ERROR)
-      mutt_error("%s", buf_string(err));
+      mutt_error("%s", buf_string(pe->message));
     else if (rc == MUTT_CMD_WARNING)
-      mutt_warning("%s", buf_string(err));
+      mutt_warning("%s", buf_string(pe->message));
   }
 
   if (NeoMutt)
@@ -651,7 +652,8 @@ void mutt_enter_command(struct MuttWindow *win)
 
 done:
   buf_pool_release(&buf);
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
 }
 
 /**

@@ -60,11 +60,17 @@ static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 /**
  * source_rc - Read an initialization file
  * @param rcfile_path Path to initialization file
- * @param err         Buffer for error messages
+ * @param pc          Parse Context
+ * @param pe          Parse Errors
  * @retval <0 NeoMutt should pause to let the user know
  */
-int source_rc(const char *rcfile_path, struct Buffer *err)
+int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseError *pe)
 {
+  if (!rcfile_path || !pc || !pe)
+    return -1;
+
+  struct Buffer *err = pe->message;
+
   int lineno = 0, rc = 0, warnings = 0;
   enum CommandResult line_rc;
   struct Buffer *linebuf = NULL;
@@ -138,7 +144,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     buf_strcpy(linebuf, currentline);
 
     buf_reset(err);
-    line_rc = parse_rc_line(linebuf, err);
+    line_rc = parse_rc_line(linebuf, pc, pe);
     if (line_rc == MUTT_CMD_ERROR)
     {
       mutt_error("%s:%d: %s", rcfile, lineno, buf_string(err));
@@ -213,8 +219,10 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
  * - `source <filename> [ <filename> ... ]`
  */
 enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+                                const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -235,7 +243,8 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
     buf_copy(path, token);
     expand_path(path, false);
 
-    if (source_rc(buf_string(path), err) < 0)
+    // Cheat: Remove the `const` so we can recurse
+    if (source_rc(buf_string(path), (struct ParseContext *) pc, pe) < 0)
     {
       buf_printf(err, _("source: file %s could not be sourced"), buf_string(path));
       goto done;
@@ -261,18 +270,23 @@ void source_stack_cleanup(void)
 
 /**
  * parse_rc_line_cwd - Parse and run a muttrc line in a relative directory
- * @param line   Line to be parsed
- * @param cwd    File relative where to run the line
- * @param err    Where to write error messages
+ * @param line Line to be parsed
+ * @param cwd  File relative where to run the line
+ * @param pc   Parse Context
+ * @param pe   Parse Errors
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err)
+enum CommandResult parse_rc_line_cwd(const char *line, char *cwd,
+                                     struct ParseContext *pc, struct ParseError *pe)
 {
+  if (!line || !cwd || !pc || !pe)
+    return MUTT_CMD_ERROR;
+
   mutt_list_insert_head(&MuttrcStack, mutt_str_dup(NONULL(cwd)));
 
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, line);
-  enum CommandResult ret = parse_rc_line(buf, err);
+  enum CommandResult ret = parse_rc_line(buf, pc, pe);
   buf_pool_release(&buf);
 
   struct ListNode *np = STAILQ_FIRST(&MuttrcStack);

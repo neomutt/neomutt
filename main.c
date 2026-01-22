@@ -225,28 +225,31 @@ static const struct Module *Modules[] = {
 static int execute_commands(struct StringArray *sa)
 {
   int rc = 0;
-  struct Buffer *err = buf_pool_get();
   struct Buffer *line = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   const char **cp = NULL;
   ARRAY_FOREACH(cp, sa)
   {
     buf_strcpy(line, *cp);
-    enum CommandResult rc2 = parse_rc_line(line, err);
+    enum CommandResult rc2 = parse_rc_line(line, pc, pe);
     if (rc2 == MUTT_CMD_ERROR)
-      mutt_error(_("Error in command line: %s"), buf_string(err));
+      mutt_error(_("Error in command line: %s"), buf_string(pe->message));
     else if (rc2 == MUTT_CMD_WARNING)
-      mutt_warning(_("Warning in command line: %s"), buf_string(err));
+      mutt_warning(_("Warning in command line: %s"), buf_string(pe->message));
 
     if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
     {
-      buf_pool_release(&err);
-      return -1;
+      rc = -1;
+      goto done;
     }
   }
 
+done:
   buf_pool_release(&line);
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
 
   return rc;
 }
@@ -430,8 +433,9 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
 {
   bool need_pause = false;
   int rc = 1;
-  struct Buffer *err = buf_pool_get();
   struct Buffer *buf = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   const char **cp = NULL;
 
 #ifdef NEOMUTT_DIRECT_COLORS
@@ -481,7 +485,7 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
 
     // Create a temporary Command struct for parse_my_hdr
     const struct Command my_hdr_cmd = { .name = "my-header", .data = 0 };
-    parse_my_header(&my_hdr_cmd, buf, err); /* adds to UserHeader */
+    parse_my_header(&my_hdr_cmd, buf, pc, pe); /* adds to UserHeader */
   }
 
   p = mutt_str_getenv("EMAIL");
@@ -624,9 +628,9 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
 
     if (access(buf_string(buf), F_OK) == 0)
     {
-      if (source_rc(buf_string(buf), err) != 0)
+      if (source_rc(buf_string(buf), pc, pe) != 0)
       {
-        mutt_error("%s", buf_string(err));
+        mutt_error("%s", buf_string(pe->message));
         need_pause = true; // TEST11: neomutt (error in /etc/neomuttrc)
       }
     }
@@ -637,9 +641,9 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
   {
     if (*cp)
     {
-      if (source_rc(*cp, err) != 0)
+      if (source_rc(*cp, pc, pe) != 0)
       {
-        mutt_error("%s", buf_string(err));
+        mutt_error("%s", buf_string(pe->message));
         need_pause = true; // TEST12: neomutt (error in ~/.neomuttrc)
       }
     }
@@ -680,7 +684,8 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
   rc = 0;
 
 done:
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&buf);
   return rc;
 }

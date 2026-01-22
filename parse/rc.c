@@ -30,22 +30,27 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "rc.h"
 #include "commands/lib.h"
 #include "extract.h"
+#include "perror.h"
 
 /**
  * parse_rc_line - Parse a line of user config
- * @param line  config line to read
- * @param err   where to write error messages
+ * @param line Config line to read
+ * @param pc   Parse Context
+ * @param pe   Parse Errors
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_rc_line(struct Buffer *line, struct ParseContext *pc,
+                                 struct ParseError *pe)
 {
   if (buf_is_empty(line))
     return MUTT_CMD_SUCCESS;
-  if (!err)
+  if (!pc || !pe)
     return MUTT_CMD_ERROR;
 
+  struct Buffer *err = pe->message;
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_SUCCESS;
   bool show_help = false;
@@ -86,7 +91,7 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
       }
 
       mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
-      rc = cmd->parse(cmd, line, err);
+      rc = cmd->parse(cmd, line, pc, pe);
       if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
         goto finish; /* Propagate return code */
 

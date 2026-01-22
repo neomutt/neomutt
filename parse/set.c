@@ -39,6 +39,7 @@
 #include "dump.h"
 #include "extract.h"
 #include "muttlib.h"
+#include "perror.h"
 
 /**
  * command_set_expand_value - Expand special characters
@@ -470,8 +471,11 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
  * - `toggle <variable> [ <variable> ... ]`
  * - `unset <variable> [ <variable> ... ]`
  */
-enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line,
+                             const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_WARNING;
 
