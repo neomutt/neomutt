@@ -29,15 +29,17 @@
 
 struct Buffer;
 struct MenuDefinition;
+struct ParseContext;
+struct ParseError;
 
 enum CommandResult km_bind     (struct MenuDefinition *md, const char *key_str, int op, char *macro, char *desc, struct Buffer *err);
 char *             parse_keymap(const struct Command *cmd, enum MenuType *mtypes, struct Buffer *line, int max_menus, int *num_menus, struct Buffer *err);
 void               parse_menu  (bool *menus, const char *s, struct Buffer *err);
 
-enum CommandResult parse_bind  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_exec  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_macro (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_push  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_bind  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_exec  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_macro (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_push  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
 #endif /* MUTT_KEY_COMMANDS_H */

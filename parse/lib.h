@@ -42,6 +42,8 @@
 // IWYU pragma: begin_keep
 #include "dump.h"
 #include "extract.h"
+#include "pcontext.h"
+#include "perror.h"
 #include "rc.h"
 #include "set.h"
 // IWYU pragma: end_keep

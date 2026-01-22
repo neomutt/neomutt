@@ -56,8 +56,11 @@
  * Parse:
  * - `cd [ <directory> ]`
  */
-enum CommandResult parse_cd(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_cd(const struct Command *cmd, struct Buffer *line,
+                            const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
@@ -91,8 +94,10 @@ done:
  * - `echo <message>`
  */
 enum CommandResult parse_echo(const struct Command *cmd, struct Buffer *line,
-                              struct Buffer *err)
+                              const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -118,8 +123,10 @@ enum CommandResult parse_echo(const struct Command *cmd, struct Buffer *line,
  * - `version`
  */
 enum CommandResult parse_version(const struct Command *cmd, struct Buffer *line,
-                                 struct Buffer *err)
+                                 const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   // silently ignore 'version' if it's in a config file
   if (!StartupComplete)
     return MUTT_CMD_SUCCESS;

@@ -135,8 +135,10 @@ void parse_alias_comments(struct Alias *alias, const char *com)
  * - `alias [ -group <name> ... ] <key> <address> [, <address> ...] [ # [ <comments> ] [ tags:... ]]`
  */
 enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
-                               struct Buffer *err)
+                               const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -260,8 +262,10 @@ done:
  * - `unalias { * | <key> ... }`
  */
 enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
-                                 struct Buffer *err)
+                                 const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

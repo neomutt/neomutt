@@ -26,7 +26,9 @@
 #include "core/lib.h"
 
 struct Buffer;
+struct ParseContext;
+struct ParseError;
 
-enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_rc_line(struct Buffer *line, struct ParseContext *pc, struct ParseError *pe);
 
 #endif /* MUTT_PARSE_RC_H */

@@ -68,6 +68,8 @@ struct Buffer;
 struct ConnAccount;
 struct Email;
 struct EmailArray;
+struct ParseContext;
+struct ParseError;
 struct PatternList;
 struct stat;
 
@@ -84,8 +86,8 @@ int imap_fast_trash(struct Mailbox *m, const char *dest);
 enum MailboxType imap_path_probe(const char *path, const struct stat *st);
 int imap_path_canon(struct Buffer *buf);
 void imap_notify_delete_email(struct Mailbox *m, struct Email *e);
-enum CommandResult parse_subscribe_to(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unsubscribe_from(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_subscribe_to(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unsubscribe_from(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
 extern const struct MxOps MxImapOps;
 

@@ -90,8 +90,9 @@ static int lua_handle_error(lua_State *l)
 static int lua_cb_global_call(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, "enter\n");
-  struct Buffer *err = buf_pool_get();
   struct Buffer *buf = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   const struct Command *cmd = NULL;
   int rc = 0;
 
@@ -115,21 +116,22 @@ static int lua_cb_global_call(lua_State *l)
   }
   buf_seek(buf, 0);
 
-  if (cmd->parse(cmd, buf, err))
+  if (cmd->parse(cmd, buf, pc, pe))
   {
-    luaL_error(l, "NeoMutt error: %s", buf_string(err));
+    luaL_error(l, "NeoMutt error: %s", buf_string(pe->message));
     rc = -1;
   }
   else
   {
-    if (!lua_pushstring(l, buf_string(err)))
+    if (!lua_pushstring(l, buf_string(pe->message)))
       lua_handle_error(l);
     else
       rc++;
   }
 
   buf_pool_release(&buf);
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   return rc;
 }
 
@@ -300,27 +302,29 @@ static int lua_cb_global_get(lua_State *l)
 static int lua_cb_global_enter(lua_State *l)
 {
   mutt_debug(LL_DEBUG2, "enter\n");
-  struct Buffer *err = buf_pool_get();
   struct Buffer *line = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
 
   buf_strcpy(line, lua_tostring(l, -1));
   int rc = 0;
 
-  if (parse_rc_line(line, err))
+  if (parse_rc_line(line, pc, pe))
   {
-    luaL_error(l, "NeoMutt error: %s", buf_string(err));
+    luaL_error(l, "NeoMutt error: %s", buf_string(pe->message));
     rc = -1;
   }
   else
   {
-    if (!lua_pushstring(l, buf_string(err)))
+    if (!lua_pushstring(l, buf_string(pe->message)))
       lua_handle_error(l);
     else
       rc++;
   }
 
   buf_pool_release(&line);
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
 
   return rc;
 }

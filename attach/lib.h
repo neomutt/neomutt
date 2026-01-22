@@ -56,6 +56,8 @@
 
 struct Body;
 struct Buffer;
+struct ParseContext;
+struct ParseError;
 struct SubMenu;
 
 void attach_init_keys(struct SubMenu *sm_generic);
@@ -67,7 +69,7 @@ bool         attach_body_parent  (struct Body *start, struct Body *start_parent,
 struct Body *attach_body_ancestor(struct Body *start, struct Body *body, const char *subtype);
 bool         attach_body_previous(struct Body *start, struct Body *body, struct Body **previous);
 
-enum CommandResult parse_attachments  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_attachments  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
 #endif /* MUTT_ATTACH_LIB_H */

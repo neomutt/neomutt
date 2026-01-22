@@ -27,8 +27,10 @@
 #include "core/lib.h"
 
 struct Buffer;
+struct ParseContext;
+struct ParseError;
 
-enum CommandResult parse_stailq          (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unstailq        (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_stailq          (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unstailq        (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
 #endif /* MUTT_COMMANDS_STAILQ_H */

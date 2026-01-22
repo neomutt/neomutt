@@ -28,6 +28,8 @@
 
 struct Buffer;
 struct MailboxView;
+struct ParseContext;
+struct ParseError;
 
 /**
  * enum NotifyAlternates - Alternates command notification types
@@ -46,8 +48,8 @@ enum NotifyAlternates
 void alternates_init(void);
 void alternates_cleanup(void);
 
-enum CommandResult parse_alternates  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_alternates  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
 bool mutt_alternates_match(const char *addr);
 void mutt_alternates_reset(struct MailboxView *mv);
