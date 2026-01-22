@@ -791,7 +791,8 @@ $(PWD)/pager:
 ###############################################################################
 # libparse
 LIBPARSE=	libparse.a
-LIBPARSEOBJS=	parse/dump.o parse/extract.o parse/rc.o parse/set.o parse/module.o
+LIBPARSEOBJS=	parse/dump.o parse/extract.o parse/module.o parse/pcontext.o \
+		parse/perror.o parse/rc.o parse/set.o
 CLEANFILES+=	$(LIBPARSE) $(LIBPARSEOBJS)
 ALLOBJS+=	$(LIBPARSEOBJS)
 
