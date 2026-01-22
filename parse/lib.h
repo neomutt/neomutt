@@ -30,6 +30,8 @@
  * | parse/dump.c        | @subpage parse_dump        |
  * | parse/extract.c     | @subpage parse_extract     |
  * | parse/module.c      | @subpage parse_module      |
+ * | parse/pcontext.c    | @subpage parse_context    |
+ * | parse/perror.c      | @subpage parse_error      |
  * | parse/rc.c          | @subpage parse_rc          |
  * | parse/set.c         | @subpage parse_set         |
  */
