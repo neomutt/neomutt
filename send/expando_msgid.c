@@ -275,8 +275,7 @@ char *msgid_generate(void)
   if (buf_at(buf, 0) != '<')
     buf_insert(buf, 0, "<");
 
-  const int last = buf_len(buf) - 1;
-  if (buf_at(buf, last) != '>')
+  if (buf_at(buf, -1) != '>')
     buf_addch(buf, '>');
 
   char *msgid = buf_strdup(buf);
