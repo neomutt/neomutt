@@ -661,13 +661,31 @@ const char *buf_find_char(const struct Buffer *buf, const char c)
 /**
  * buf_at - Return the character at the given offset
  * @param buf    Buffer to search
- * @param offset Offset to get
+ * @param offset Offset to get (negative offsets count from the end, -1 is the last char)
  * @retval NUL Offset out of bounds
  * @return n   The char at the offset
+ *
+ * @note Accessing position len (the null terminator) is valid and returns '\0'
  */
-char buf_at(const struct Buffer *buf, size_t offset)
+char buf_at(const struct Buffer *buf, ssize_t offset)
 {
-  if (!buf || (offset > buf_len(buf)))
+  if (!buf)
+    return '\0';
+
+  const size_t len = buf_len(buf);
+  if (len == 0)
+    return '\0';
+
+  if (offset < 0)
+  {
+    // Convert negative offset to positive index from end
+    // -1 means last char, -2 means second to last, etc.
+    offset = (ssize_t) len + offset;
+    if (offset < 0)
+      return '\0'; // Offset too negative
+  }
+
+  if ((size_t) offset > len)
     return '\0';
 
   return buf->data[offset];

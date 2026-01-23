@@ -28,6 +28,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <sys/types.h>
 
 /**
  * struct Buffer - String manipulation buffer
@@ -53,7 +54,7 @@ struct Buffer *buf_dup             (const struct Buffer *buf);
 void           buf_seek            (struct Buffer *buf, size_t offset);
 const char*    buf_find_string     (const struct Buffer *buf, const char *s);
 const char*    buf_find_char       (const struct Buffer *buf, const char c);
-char           buf_at              (const struct Buffer *buf, size_t offset);
+char           buf_at              (const struct Buffer *buf, ssize_t offset);
 bool           buf_str_equal       (const struct Buffer *a, const struct Buffer *b);
 bool           buf_istr_equal      (const struct Buffer *a, const struct Buffer *b);
 int            buf_coll            (const struct Buffer *a, const struct Buffer *b);
