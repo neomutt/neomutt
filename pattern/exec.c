@@ -89,8 +89,8 @@ static void print_crypt_pattern_op_error(int op)
   {
     /* L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
        was invoked when NeoMutt was compiled without crypto support.
-       %c is the pattern character, i.e. "g".  */
-    mutt_error(_("Pattern operator '~%c' is disabled"), entry->tag);
+       %c%c is the pattern prefix and character, e.g. "~g".  */
+    mutt_error(_("Pattern operator '%c%c' is disabled"), entry->prefix, entry->tag);
   }
   else
   {

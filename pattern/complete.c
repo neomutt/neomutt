@@ -36,6 +36,17 @@
 #include "editor/lib.h"
 
 /**
+ * is_pattern_prefix - Check if a character is a pattern prefix
+ * @param c Character to check
+ * @retval true  Character is a pattern prefix (~, %, or =)
+ * @retval false Character is not a pattern prefix
+ */
+static bool is_pattern_prefix(wchar_t c)
+{
+  return (c == '~') || (c == '%') || (c == '=');
+}
+
+/**
  * complete_pattern - Complete a NeoMutt Pattern - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
 static enum FunctionRetval complete_pattern(struct EnterWindowData *wdata, int op)
@@ -44,7 +55,9 @@ static enum FunctionRetval complete_pattern(struct EnterWindowData *wdata, int o
     return FR_NO_ACTION;
 
   size_t i = wdata->state->curpos;
-  if (i && (wdata->state->wbuf[i - 1] == '~'))
+
+  // Check if cursor is right after a pattern prefix (~, %, or =)
+  if (i && is_pattern_prefix(wdata->state->wbuf[i - 1]))
   {
     if (dlg_pattern(wdata->buffer))
       replace_part(wdata->state, i - 1, wdata->buffer->data);
@@ -52,12 +65,14 @@ static enum FunctionRetval complete_pattern(struct EnterWindowData *wdata, int o
     return FR_CONTINUE;
   }
 
-  for (; (i > 0) && (wdata->state->wbuf[i - 1] != '~'); i--)
+  // Search backwards for a pattern prefix
+  for (; (i > 0) && !is_pattern_prefix(wdata->state->wbuf[i - 1]); i--)
     ; // do nothing
 
   if ((i > 0) && (i < wdata->state->curpos) &&
       (wdata->state->wbuf[i - 1] == '~') && (wdata->state->wbuf[i] == 'y'))
   {
+    // Label completion for ~y pattern
     i++;
     buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
     int rc = mutt_label_complete(wdata->cd, wdata->buffer, wdata->tabs);
