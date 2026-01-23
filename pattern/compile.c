@@ -1024,15 +1024,16 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, const char *s,
           pat_or = false;
         }
 
-        entry = lookup_tag(ps->dptr[1]);
+        char prefix = ps->dptr[0];
+        entry = lookup_tag(prefix, ps->dptr[1]);
         if (!entry)
         {
-          buf_printf(err, _("%c: invalid pattern modifier"), *ps->dptr);
+          buf_printf(err, _("%c%c: invalid pattern"), prefix, ps->dptr[1]);
           goto cleanup;
         }
         if (entry->flags && ((flags & entry->flags) == 0))
         {
-          buf_printf(err, _("%c: not supported in this mode"), *ps->dptr);
+          buf_printf(err, _("%c%c: not supported in this mode"), prefix, ps->dptr[1]);
           goto cleanup;
         }
 
@@ -1040,15 +1041,15 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, const char *s,
         leaf->pat_not = pat_not;
         leaf->all_addr = all_addr;
         leaf->is_alias = is_alias;
-        leaf->string_match = (ps->dptr[0] == '=');
-        leaf->group_match = (ps->dptr[0] == '%');
+        leaf->string_match = (prefix == '=');
+        leaf->group_match = (prefix == '%');
         leaf->sendmode = (flags & MUTT_PC_SEND_MODE_SEARCH);
         leaf->op = entry->op;
         pat_not = false;
         all_addr = false;
         is_alias = false;
 
-        ps->dptr++; /* move past the ~ */
+        ps->dptr++; /* move past the prefix (~, %, =) */
         ps->dptr++; /* eat the operator and any optional whitespace */
         SKIPWS(ps->dptr);
         if (entry->eat_arg)
