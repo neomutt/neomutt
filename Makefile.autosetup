@@ -1050,6 +1050,7 @@ coverage: all test
 	$(RM) coverage
 	$(RM) mutt/exit.gc??
 	lcov --test-name "test" --output-file coverage.info --capture \
+	  --ignore-errors empty \
 	  --directory address \
 	  --directory alias \
 	  --directory attach \
