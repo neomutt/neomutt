@@ -8048,13 +8048,13 @@ msgstr "неупарена заграда: %s"
 
 #: pattern/compile.c:1030
 #, c-format
-msgid "%c: invalid pattern modifier"
-msgstr "%c: неисправан модификатор шеме"
+msgid "%c%c: invalid pattern"
+msgstr "%c%c: неисправан модификатор шеме"
 
 #: pattern/compile.c:1035
 #, c-format
-msgid "%c: not supported in this mode"
-msgstr "%c: није подржано у овом режиму"
+msgid "%c%c: not supported in this mode"
+msgstr "%c%c: није подржано у овом режиму"
 
 #: pattern/compile.c:1058
 msgid "missing parameter"
@@ -8064,7 +8064,7 @@ msgstr "недостаје параметар"
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlg_pattern.c:150
-msgid "EXPR"
+msgid "REGEX"
 msgstr "ИЗРАЗ"
 
 #. L10N:
@@ -8124,8 +8124,8 @@ msgstr "Шеме"
 #. %c is the pattern character, i.e. "g".
 #: pattern/exec.c:93
 #, c-format
-msgid "Pattern operator '~%c' is disabled"
-msgstr "Оператор шеме „~%c“ је искључен"
+msgid "Pattern operator '%c%c' is disabled"
+msgstr "Оператор шеме „~%c%c“ је искључен"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -8161,23 +8161,35 @@ msgstr "све поруке"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:56
-msgid "messages whose body matches EXPR"
+msgid "messages whose body matches REGEX"
 msgstr "поруке чије тело одговара ИЗРАЗ-у"
+
+msgid "IMAP: messages whose body contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:59
-msgid "messages whose body or headers match EXPR"
+msgid "messages whose body or headers match REGEX"
 msgstr "поруке чије тело или заглавља одговарају ИЗРАЗ-у"
+
+msgid "IMAP: messages whose body or headers contain STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:62
-msgid "messages whose CC header matches EXPR"
+msgid "messages whose Cc: header matches REGEX"
 msgstr "поруке чије заглавље CC одговара ИЗРАЗ-у"
+
+msgid "messages whose Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:65
-msgid "messages whose recipient matches EXPR"
+msgid "messages whose To:, Cc: or Bcc: header matches REGEX"
 msgstr "поруке чији прималац одговара ИЗРАЗ-у"
+
+msgid "messages whose To:, Cc: or Bcc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:68
@@ -8191,8 +8203,11 @@ msgstr "обрисане поруке"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:74
-msgid "messages whose Sender header matches EXPR"
+msgid "messages whose Sender: header matches REGEX"
 msgstr "поруке чије заглавље Sender одговара ИЗРАЗ-у"
+
+msgid "messages whose Sender: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:77
@@ -8201,8 +8216,11 @@ msgstr "истекле поруке"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:80
-msgid "messages whose From header matches EXPR"
+msgid "messages whose From: header matches REGEX"
 msgstr "поруке чије заглавље From одговара ИЗРАЗ-у"
+
+msgid "messages whose From: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:83
@@ -8221,32 +8239,35 @@ msgstr "криптографски шифроване поруке"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:92
-msgid "messages whose header matches EXPR"
+msgid "messages whose header matches REGEX"
 msgstr "поруке чије заглавље одговара ИЗРАЗ-у"
+
+msgid "IMAP: messages whose header contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:95
-msgid "messages whose spam tag matches EXPR"
+msgid "messages whose spam header matches REGEX"
 msgstr "поруке чија ознака за спам одговара ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:98
-msgid "messages whose Message-ID matches EXPR"
+msgid "messages whose Message-Id: header matches REGEX"
 msgstr "поруке чији Message-ID одговара ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:101
-msgid "messages whose Message-ID is included in the results returned from an external search program"
+msgid "messages whose Message-Id: is included in results from $external_search_command"
 msgstr "поруке чији Message-ID је укључен у резултате претраге спољашњим програмом"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:104
-msgid "messages which contain PGP key"
+msgid "messages which contain a PGP key"
 msgstr "поруке које садрже PGP кључ"
 
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:107
-msgid "messages whose BCC header matches EXPR"
+msgid "messages whose Bcc: header matches REGEX"
 msgstr "поруке чије заглавље BCC одговара ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~l
@@ -8256,8 +8277,11 @@ msgstr "поруке послате на познате мејлинг лист�
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:113
-msgid "messages whose From/Sender/To/CC matches EXPR"
+msgid "messages whose From:, Sender:, To: or Cc: header matches REGEX"
 msgstr "поруке чија заглавља From/Sender/To/CC одговарају ИЗРАЗ-у"
+
+msgid "messages whose From:, Sender:, To: or Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:116
@@ -8266,7 +8290,7 @@ msgstr "поруке чији број је у ОПСЕГ-у"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:119
-msgid "messages with a Content-Type matching EXPR"
+msgid "messages with a Content-Type matching REGEX"
 msgstr "поруке са Content-Type-ом који одговара ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~n
@@ -8306,12 +8330,12 @@ msgstr "поруке примљене у опсегу ОПСЕГДАТУМА"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:143
-msgid "already read messages"
+msgid "read messages"
 msgstr "већ прочитане поруке"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:146
-msgid "messages whose Subject header matches EXPR"
+msgid "messages whose Subject: header matches REGEX"
 msgstr "поруке чије заглавље Subject одговара ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~S
@@ -8321,7 +8345,7 @@ msgstr "замењене поруке"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:152
-msgid "messages whose To header matches EXPR"
+msgid "messages whose To: header matches REGEX"
 msgstr "поруке чије заглавље To одговара ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~T
@@ -8351,12 +8375,12 @@ msgstr "криптографски верификоване поруке"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:170
-msgid "newsgroups matching EXPR"
+msgid "newsgroups matching REGEX"
 msgstr "њузгрупе које одговарају ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:173
-msgid "messages whose References header matches EXPR"
+msgid "messages whose References: or In-Reply-To: header matches REGEX"
 msgstr "поруке чије заглавље References одговара ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~X
@@ -8366,12 +8390,12 @@ msgstr "поруке са бројем прилога у ОПСЕГ-у"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:179
-msgid "messages whose X-Label header matches EXPR"
+msgid "messages whose X-Label: header matches REGEX"
 msgstr "поруке чије заглавље X-Label одговара ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:182
-msgid "messages whose tags match EXPR"
+msgid "messages whose tags match REGEX"
 msgstr "поруке чије ознаке одговарају ИЗРАЗ-у"
 
 #. L10N: Pattern Completion Menu description for ~z
@@ -8396,7 +8420,7 @@ msgstr "прекинуте нити"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:197
-msgid "IMAP custom server-side search for STRING"
+msgid "GMail: custom server-side search for STRING"
 msgstr "Прилагођена IMAP претрага сервера за ниском НИСКА"
 
 #: pattern/message.c:104 pattern/message.c:253

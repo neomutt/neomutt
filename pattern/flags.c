@@ -51,25 +51,25 @@ const struct PatternFlags Flags[] = {
     N_("all messages") },
   { '~', 'b', MUTT_PAT_BODY, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~b
-    N_("messages whose body matches EXPR") },
+    N_("messages whose body matches REGEX") },
   { '=', 'b', MUTT_PAT_BODY, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_STRING,
     // L10N: Pattern Completion Menu description for =b
     N_("IMAP: messages whose body contains STRING") },
   { '~', 'B', MUTT_PAT_WHOLE_MSG, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~B
-    N_("messages whose body or headers match EXPR") },
+    N_("messages whose body or headers match REGEX") },
   { '=', 'B', MUTT_PAT_WHOLE_MSG, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_STRING,
     // L10N: Pattern Completion Menu description for =B
     N_("IMAP: messages whose body or headers contain STRING") },
   { '~', 'c', MUTT_PAT_CC, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~c
-    N_("messages whose Cc: header matches EXPR") },
+    N_("messages whose Cc: header matches REGEX") },
   { '%', 'c', MUTT_PAT_CC, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %c
     N_("messages whose Cc: is a member of GROUP") },
   { '~', 'C', MUTT_PAT_RECIPIENT, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~C
-    N_("messages whose To:, Cc: or Bcc: header matches EXPR") },
+    N_("messages whose To:, Cc: or Bcc: header matches REGEX") },
   { '%', 'C', MUTT_PAT_RECIPIENT, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %C
     N_("messages whose To:, Cc: or Bcc: is a member of GROUP") },
@@ -81,7 +81,7 @@ const struct PatternFlags Flags[] = {
     N_("deleted messages") },
   { '~', 'e', MUTT_PAT_SENDER, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~e
-    N_("messages whose Sender: header matches EXPR") },
+    N_("messages whose Sender: header matches REGEX") },
   { '%', 'e', MUTT_PAT_SENDER, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %e
     N_("messages whose Sender: is a member of GROUP") },
@@ -90,7 +90,7 @@ const struct PatternFlags Flags[] = {
     N_("expired messages") },
   { '~', 'f', MUTT_PAT_FROM, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~f
-    N_("messages whose From: header matches EXPR") },
+    N_("messages whose From: header matches REGEX") },
   { '%', 'f', MUTT_PAT_FROM, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %f
     N_("messages whose From: is a member of GROUP") },
@@ -105,31 +105,31 @@ const struct PatternFlags Flags[] = {
     N_("cryptographically encrypted messages") },
   { '~', 'h', MUTT_PAT_HEADER, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~h
-    N_("messages whose header matches EXPR") },
+    N_("messages whose header matches REGEX") },
   { '=', 'h', MUTT_PAT_HEADER, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_STRING,
     // L10N: Pattern Completion Menu description for =h
     N_("IMAP: messages whose header contains STRING") },
   { '~', 'H', MUTT_PAT_HORMEL, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~H
-    N_("messages whose spam tag matches EXPR") },
+    N_("messages whose spam header matches REGEX") },
   { '~', 'i', MUTT_PAT_ID, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~i
-    N_("messages whose Message-Id: header matches EXPR") },
+    N_("messages whose Message-Id: header matches REGEX") },
   { '~', 'I', MUTT_PAT_ID_EXTERNAL, 0, EAT_QUERY,
     // L10N: Pattern Completion Menu description for ~I
-    N_("messages whose Message-Id: is included in the results returned from an external search program") },
+    N_("messages whose Message-Id: is included in results from $external_search_command") },
   { '~', 'k', MUTT_PAT_PGP_KEY, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~k
-    N_("messages which contain PGP key") },
+    N_("messages which contain a PGP key") },
   { '~', 'K', MUTT_PAT_BCC, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~K
-    N_("messages whose Bcc: header matches EXPR") },
+    N_("messages whose Bcc: header matches REGEX") },
   { '~', 'l', MUTT_PAT_LIST, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~l
     N_("messages addressed to known mailing lists") },
   { '~', 'L', MUTT_PAT_ADDRESS, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~L
-    N_("messages whose From:, Sender:, To: or Cc: header matches EXPR") },
+    N_("messages whose From:, Sender:, To: or Cc: header matches REGEX") },
   { '%', 'L', MUTT_PAT_ADDRESS, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %L
     N_("messages whose From:, Sender:, To: or Cc: is a member of GROUP") },
@@ -138,7 +138,7 @@ const struct PatternFlags Flags[] = {
     N_("messages whose number is in RANGE") },
   { '~', 'M', MUTT_PAT_MIMETYPE, MUTT_PC_FULL_MSG, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~M
-    N_("messages with a Content-Type matching EXPR") },
+    N_("messages with a Content-Type matching REGEX") },
   { '~', 'n', MUTT_PAT_SCORE, 0, EAT_RANGE,
     // L10N: Pattern Completion Menu description for ~n
     N_("messages whose score is in RANGE") },
@@ -162,16 +162,16 @@ const struct PatternFlags Flags[] = {
     N_("messages received in DATERANGE") },
   { '~', 'R', MUTT_READ, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~R
-    N_("already read messages") },
+    N_("read messages") },
   { '~', 's', MUTT_PAT_SUBJECT, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~s
-    N_("messages whose Subject: header matches EXPR") },
+    N_("messages whose Subject: header matches REGEX") },
   { '~', 'S', MUTT_SUPERSEDED, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~S
     N_("superseded messages") },
   { '~', 't', MUTT_PAT_TO, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~t
-    N_("messages whose To: header matches EXPR") },
+    N_("messages whose To: header matches REGEX") },
   { '~', 'T', MUTT_TAG, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~T
     N_("tagged messages") },
@@ -189,19 +189,19 @@ const struct PatternFlags Flags[] = {
     N_("cryptographically verified messages") },
   { '~', 'w', MUTT_PAT_NEWSGROUPS, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~w
-    N_("newsgroups matching EXPR") },
+    N_("newsgroups matching REGEX") },
   { '~', 'x', MUTT_PAT_REFERENCE, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~x
-    N_("messages whose References: header matches EXPR") },
+    N_("messages whose References: or In-Reply-To: header matches REGEX") },
   { '~', 'X', MUTT_PAT_MIMEATTACH, 0, EAT_RANGE,
     // L10N: Pattern Completion Menu description for ~X
     N_("messages with RANGE attachments") },
   { '~', 'y', MUTT_PAT_XLABEL, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~y
-    N_("messages whose X-Label: header matches EXPR") },
+    N_("messages whose X-Label: header matches REGEX") },
   { '~', 'Y', MUTT_PAT_DRIVER_TAGS, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~Y
-    N_("messages whose tags match EXPR") },
+    N_("messages whose tags match REGEX") },
   { '~', 'z', MUTT_PAT_SIZE, 0, EAT_RANGE,
     // L10N: Pattern Completion Menu description for ~z
     N_("messages whose size is in RANGE") },
@@ -213,11 +213,10 @@ const struct PatternFlags Flags[] = {
     N_("unreferenced messages") },
   { '=', '/', MUTT_PAT_SERVERSEARCH, 0, EAT_STRING,
     // L10N: Pattern Completion Menu description for =/
-    N_("IMAP: custom server-side search for STRING") },
+    N_("GMail: custom server-side search for STRING") },
   { '~', '=', MUTT_PAT_DUPLICATED, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~=
     N_("duplicated messages") },
-
   { 0, 0, 0, 0, EAT_NONE, NULL, },
   // clang-format on
 };

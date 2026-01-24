@@ -8063,13 +8063,13 @@ msgstr "niesparowane nawiasy: %s"
 
 #: pattern/compile.c:1030
 #, c-format
-msgid "%c: invalid pattern modifier"
-msgstr "%c: błędny modyfikator wyrażenia"
+msgid "%c%c: invalid pattern"
+msgstr "%c%c: błędny modyfikator wyrażenia"
 
 #: pattern/compile.c:1035
 #, c-format
-msgid "%c: not supported in this mode"
-msgstr "%c: nie obsługiwane w tym trybie"
+msgid "%c%c: not supported in this mode"
+msgstr "%c%c: nie obsługiwane w tym trybie"
 
 #: pattern/compile.c:1058
 msgid "missing parameter"
@@ -8079,7 +8079,7 @@ msgstr "brakujący parametr"
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlg_pattern.c:150
-msgid "EXPR"
+msgid "REGEX"
 msgstr "WYRAŻENIE"
 
 #. L10N:
@@ -8139,8 +8139,8 @@ msgstr "Wzorce"
 #. %c is the pattern character, i.e. "g".
 #: pattern/exec.c:93
 #, c-format
-msgid "Pattern operator '~%c' is disabled"
-msgstr "Operator wzorca '~%c' jest niedostępny"
+msgid "Pattern operator '%c%c' is disabled"
+msgstr "Operator wzorca '~%c%c' jest niedostępny"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -8176,23 +8176,35 @@ msgstr "wszystkie wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:56
-msgid "messages whose body matches EXPR"
+msgid "messages whose body matches REGEX"
 msgstr "wiadomości których treść pasuje do WYRAŻENIA"
+
+msgid "IMAP: messages whose body contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:59
-msgid "messages whose body or headers match EXPR"
+msgid "messages whose body or headers match REGEX"
 msgstr "wiadomości których treść lub nagłówek pasuje do WYRAŻENIA"
+
+msgid "IMAP: messages whose body or headers contain STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:62
-msgid "messages whose CC header matches EXPR"
+msgid "messages whose Cc: header matches REGEX"
 msgstr "wiadomości których nagłówek Kopia pasuje do WYRAŻENIA"
+
+msgid "messages whose Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:65
-msgid "messages whose recipient matches EXPR"
+msgid "messages whose To:, Cc: or Bcc: header matches REGEX"
 msgstr "wiadomości których odbiorca pasuje do WYRAŻENIA"
+
+msgid "messages whose To:, Cc: or Bcc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:68
@@ -8206,8 +8218,11 @@ msgstr "usunięte wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:74
-msgid "messages whose Sender header matches EXPR"
+msgid "messages whose Sender: header matches REGEX"
 msgstr "wiadomości których nagłówek Nadawca pasuje do WYRAŻENIA"
+
+msgid "messages whose Sender: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:77
@@ -8216,8 +8231,11 @@ msgstr "przeterminowane wiadomości"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:80
-msgid "messages whose From header matches EXPR"
+msgid "messages whose From: header matches REGEX"
 msgstr "wiadomości których nagłówek Od pasuje do WYRAŻENIA"
+
+msgid "messages whose From: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:83
@@ -8236,32 +8254,35 @@ msgstr "wiadomości saszyfrowane kryptograficznie"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:92
-msgid "messages whose header matches EXPR"
+msgid "messages whose header matches REGEX"
 msgstr "wiadomości których nagłówek pasuje do WYRAŻENIA"
+
+msgid "IMAP: messages whose header contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:95
-msgid "messages whose spam tag matches EXPR"
+msgid "messages whose spam header matches REGEX"
 msgstr "wiadmości których oznaczenie spamowe pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:98
-msgid "messages whose Message-ID matches EXPR"
+msgid "messages whose Message-Id: header matches REGEX"
 msgstr "wiadmości których nagłówek Message-ID pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:101
-msgid "messages whose Message-ID is included in the results returned from an external search program"
+msgid "messages whose Message-Id: is included in results from $external_search_command"
 msgstr "wiadmości których nagłówek Message-ID znajduje się w wynikach z zewnętrzego programu-szukajki"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:104
-msgid "messages which contain PGP key"
+msgid "messages which contain a PGP key"
 msgstr "wiadomości zawierające klucz PGP"
 
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:107
-msgid "messages whose BCC header matches EXPR"
+msgid "messages whose Bcc: header matches REGEX"
 msgstr "wiadomości których Ukryta kopia pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~l
@@ -8271,8 +8292,11 @@ msgstr "wiadomości zaadresowane do znanych list pocztowych"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:113
-msgid "messages whose From/Sender/To/CC matches EXPR"
+msgid "messages whose From:, Sender:, To: or Cc: header matches REGEX"
 msgstr "wiadomości z Od/Nadawca/Do/Kopia pasującymi do WYRAŻENIA"
+
+msgid "messages whose From:, Sender:, To: or Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:116
@@ -8281,7 +8305,7 @@ msgstr "wiadomości których numer jest w ZAKRESIE"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:119
-msgid "messages with a Content-Type matching EXPR"
+msgid "messages with a Content-Type matching REGEX"
 msgstr "wiadomości z typem \"Content-Type\" pasującym do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~n
@@ -8321,12 +8345,12 @@ msgstr "wiadomości odebrane w ZAKRES-DAT"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:143
-msgid "already read messages"
+msgid "read messages"
 msgstr "wiadomości już przeczytane"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:146
-msgid "messages whose Subject header matches EXPR"
+msgid "messages whose Subject: header matches REGEX"
 msgstr "wiadomości których nagłówek Temat pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~S
@@ -8336,7 +8360,7 @@ msgstr "zastąpione listy"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:152
-msgid "messages whose To header matches EXPR"
+msgid "messages whose To: header matches REGEX"
 msgstr "wiadomości których nagłówek Do pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~T
@@ -8366,12 +8390,12 @@ msgstr "wiadomości zweryfikowane kryptograficznie"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:170
-msgid "newsgroups matching EXPR"
+msgid "newsgroups matching REGEX"
 msgstr "grupy dyskusyjne pasujące do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:173
-msgid "messages whose References header matches EXPR"
+msgid "messages whose References: or In-Reply-To: header matches REGEX"
 msgstr "listy, które odnoszą się (nagłówek References) do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~X
@@ -8381,12 +8405,12 @@ msgstr "listy z LICZBĄ załączników"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:179
-msgid "messages whose X-Label header matches EXPR"
+msgid "messages whose X-Label: header matches REGEX"
 msgstr "wiadomości których nagłówek X-Label pasuje do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:182
-msgid "messages whose tags match EXPR"
+msgid "messages whose tags match REGEX"
 msgstr "wiadomości których tagi pasują do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~z
@@ -8411,7 +8435,7 @@ msgstr "rozłączone wątki"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:197
-msgid "IMAP custom server-side search for STRING"
+msgid "GMail: custom server-side search for STRING"
 msgstr "Wyszukiwanie użytkownika po stronie serwera IMAP"
 
 #: pattern/message.c:104 pattern/message.c:253

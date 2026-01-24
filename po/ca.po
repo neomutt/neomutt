@@ -8462,13 +8462,13 @@ msgstr "Els parèntesis no estan aparellats: %s"
 
 #: pattern/compile.c:1030
 #, c-format
-msgid "%c: invalid pattern modifier"
-msgstr "%c: El modificador de patró no és vàlid."
+msgid "%c%c: invalid pattern"
+msgstr "%c%c: El modificador de patró no és vàlid."
 
 #: pattern/compile.c:1035
 #, c-format
-msgid "%c: not supported in this mode"
-msgstr "%c: No es permet en aquest mode."
+msgid "%c%c: not supported in this mode"
+msgstr "%c%c: No es permet en aquest mode."
 
 #: pattern/compile.c:1058
 msgid "missing parameter"
@@ -8478,7 +8478,7 @@ msgstr "Manca un paràmetre."
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlg_pattern.c:150
-msgid "EXPR"
+msgid "REGEX"
 msgstr "EXPRESSIÓ"
 
 #. L10N:
@@ -8538,7 +8538,7 @@ msgstr "Patrons"
 #. %c is the pattern character, i.e. "g".
 #: pattern/exec.c:93
 #, c-format
-msgid "Pattern operator '~%c' is disabled"
+msgid "Pattern operator '%c%c' is disabled"
 msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
@@ -8580,23 +8580,35 @@ msgstr "tots els missatges"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:56
-msgid "messages whose body matches EXPR"
+msgid "messages whose body matches REGEX"
 msgstr "missatges amb cossos que concorden amb l’EXPRESSIÓ"
+
+msgid "IMAP: messages whose body contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:59
-msgid "messages whose body or headers match EXPR"
+msgid "messages whose body or headers match REGEX"
 msgstr "missatges amb cossos o capçaleres que concorden amb l’EXPRESSIÓ"
+
+msgid "IMAP: messages whose body or headers contain STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:62
-msgid "messages whose CC header matches EXPR"
+msgid "messages whose Cc: header matches REGEX"
 msgstr "missatges amb capçaleres de còpia (Cc) que concorden amb l’EXPRESSIÓ"
+
+msgid "messages whose Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:65
-msgid "messages whose recipient matches EXPR"
+msgid "messages whose To:, Cc: or Bcc: header matches REGEX"
 msgstr "missatges amb destinataris que concorden amb l’EXPRESSIÓ"
+
+msgid "messages whose To:, Cc: or Bcc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:68
@@ -8610,8 +8622,11 @@ msgstr "missatges esborrats"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:74
-msgid "messages whose Sender header matches EXPR"
+msgid "messages whose Sender: header matches REGEX"
 msgstr "missatges amb capçaleres de remitent (Sender) que concorden amb l’EXPRESSIÓ"
+
+msgid "messages whose Sender: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:77
@@ -8620,8 +8635,11 @@ msgstr "missatges expirats"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:80
-msgid "messages whose From header matches EXPR"
+msgid "messages whose From: header matches REGEX"
 msgstr "missatges amb capçaleres de remitent (From) que concorden amb l’EXPRESSIÓ"
+
+msgid "messages whose From: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:83
@@ -8640,32 +8658,35 @@ msgstr "missatges xifrats criptogràficament"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:92
-msgid "messages whose header matches EXPR"
+msgid "messages whose header matches REGEX"
 msgstr "missatges amb capçaleres que concorden amb l’EXPRESSIÓ"
+
+msgid "IMAP: messages whose header contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:95
-msgid "messages whose spam tag matches EXPR"
+msgid "messages whose spam header matches REGEX"
 msgstr "missatges amb etiquetes d’spam que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:98
-msgid "messages whose Message-ID matches EXPR"
+msgid "messages whose Message-Id: header matches REGEX"
 msgstr "missatges amb identificadors (Message-ID) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:101
-msgid "messages whose Message-ID is included in the results returned from an external search program"
+msgid "messages whose Message-Id: is included in results from $external_search_command"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:104
-msgid "messages which contain PGP key"
+msgid "messages which contain a PGP key"
 msgstr "missatges que contenen claus PGP"
 
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:107
-msgid "messages whose BCC header matches EXPR"
+msgid "messages whose Bcc: header matches REGEX"
 msgstr "missatges amb capçaleres de còpia (Bcc) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~l
@@ -8675,8 +8696,11 @@ msgstr "missatges adreçats a llistes de correu conegudes"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:113
-msgid "messages whose From/Sender/To/CC matches EXPR"
+msgid "messages whose From:, Sender:, To: or Cc: header matches REGEX"
 msgstr "missatges amb capçaleres From/Sender/To/Cc que concorden amb l’EXPRESSIÓ"
+
+msgid "messages whose From:, Sender:, To: or Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:116
@@ -8685,7 +8709,7 @@ msgstr "missatges amb números dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:119
-msgid "messages with a Content-Type matching EXPR"
+msgid "messages with a Content-Type matching REGEX"
 msgstr "missatges amb tipus (Content-Type) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~n
@@ -8725,12 +8749,12 @@ msgstr "missatges rebuts durant el RANG_DATA"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:143
-msgid "already read messages"
+msgid "read messages"
 msgstr "missatges ja llegits"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:146
-msgid "messages whose Subject header matches EXPR"
+msgid "messages whose Subject: header matches REGEX"
 msgstr "missatges amb capçaleres d’assumpte (Subject) que concorden amb l’EXPRESSIÓ"
 
 # Empre aquest terme ja que Replaces i Supersedes tenen usos similars.  ivb
@@ -8742,7 +8766,7 @@ msgstr "missatges reemplaçats"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:152
-msgid "messages whose To header matches EXPR"
+msgid "messages whose To: header matches REGEX"
 msgstr "missatges amb capçaleres de destinatari (To) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~T
@@ -8773,12 +8797,12 @@ msgstr "missatges verificats criptogràficament"
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:170
 #, fuzzy
-msgid "newsgroups matching EXPR"
+msgid "newsgroups matching REGEX"
 msgstr "No hi ha cap fitxer que concorde amb la màscara de fitxers."
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:173
-msgid "messages whose References header matches EXPR"
+msgid "messages whose References: or In-Reply-To: header matches REGEX"
 msgstr "missatges amb capçaleres de referències (References) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~X
@@ -8788,12 +8812,12 @@ msgstr "missatges amb un nombre d’adjuncions dins del RANG_NUM"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:179
-msgid "messages whose X-Label header matches EXPR"
+msgid "messages whose X-Label: header matches REGEX"
 msgstr "missatges amb capçaleres d’etiquetes (X-Label) que concorden amb l’EXPRESSIÓ"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:182
-msgid "messages whose tags match EXPR"
+msgid "messages whose tags match REGEX"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~z
@@ -8819,7 +8843,7 @@ msgstr "No hi ha més fils"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:197
-msgid "IMAP custom server-side search for STRING"
+msgid "GMail: custom server-side search for STRING"
 msgstr ""
 
 #: pattern/message.c:104 pattern/message.c:253
