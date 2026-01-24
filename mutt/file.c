@@ -72,11 +72,6 @@ const char FilenameSafeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
 
 #define MAX_LOCK_ATTEMPTS 5
 
-/* This is defined in POSIX:2008 which isn't a build requirement */
-#ifndef O_NOFOLLOW
-#define O_NOFOLLOW 0
-#endif
-
 /**
  * stat_equal - Compare the struct stat's of two files/dirs
  * @param st_old struct stat of the first file/dir
