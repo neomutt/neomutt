@@ -178,8 +178,16 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
 
   FREE(&line);
   mutt_file_fclose(&fp);
-  if (pid != -1)
-    filter_wait(pid);
+  if (ispipe && (pid != -1))
+  {
+    int status = filter_wait(pid);
+    if (status != 0)
+    {
+      mutt_error(_("Command '%s' exited with status %d"), rcfile, status);
+      if (rc == 0)
+        rc = -1; // Set error code if not already set
+    }
+  }
 
   if (rc)
   {
