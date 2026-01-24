@@ -9691,11 +9691,10 @@ msgid ""
 msgstr ""
 
 #: version.c:110
-msgid ""
-"Copyright (C) 2015-2026 Richard Russon and friends\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
-"NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type 'neomutt -vv' for details.\n"
+msgid "Copyright (C) 2015-2026 Richard Russon and friends"
+msgstr ""
+
+msgid "NeoMutt is free software, provided without warranty: `neomutt -vv` for details"
 msgstr ""
 
 #: version.c:672

@@ -9593,22 +9593,11 @@ msgstr ""
 "nebo jej zašlete na e-mail: <neomutt-devel@neomutt.org>\n"
 
 #: version.c:110
-msgid ""
-"Copyright (C) 2015-2026 Richard Russon and friends\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
-"NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type 'neomutt -vv' for details.\n"
-msgstr ""
-"Copyright © 2015-2026 Richard Russon a další.\n"
-"NeoMutt je rozšiřován BEZ JAKÉKOLI ZÁRUKY; podrobnosti získáte příkazem\n"
-"„neomutt -vv“.\n"
-"NeoMutt je volné programové vybavení. Rozšiřování tohoto programu je vítáno,\n"
-"musíte ovšem dodržet určitá pravidla; další informace získáte příkazem\n"
-"„neomutt -vv“.\n"
+msgid "Copyright (C) 2015-2026 Richard Russon and friends"
+msgstr "Copyright © 2015-2026 Richard Russon a další"
 
-#: version.c:672
-msgid "Compile options:"
-msgstr "Přeloženo s volbami:"
+msgid "NeoMutt is free software, provided without warranty: `neomutt -vv` for details"
+msgstr ""
 
 #: version.c:678
 msgid "Devel options:"

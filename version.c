@@ -106,11 +106,8 @@ static const char *ReachingUs = N_("To learn more about NeoMutt, visit: https://
 
 // clang-format off
 /// CLI Version: Warranty notice
-static const char *Notice =
-    N_("Copyright (C) 2015-2026 Richard Russon and friends\n"
-       "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
-       "NeoMutt is free software, and you are welcome to redistribute it\n"
-       "under certain conditions; type 'neomutt -vv' for details.\n");
+static const char *Notice1 = N_("Copyright (C) 2015-2026 Richard Russon and friends");
+static const char *Notice2 = N_("NeoMutt is free software, provided without warranty: `neomutt -vv` for details");
 // clang-format on
 
 /* These are sorted by the display string */
@@ -609,7 +606,8 @@ bool print_version(FILE *fp, bool use_ansi)
   }
 
   fprintf(fp, "%sNeoMutt %s%s\n", col_cyan, ver->version, col_end);
-  fprintf(fp, "%s\n", _(Notice));
+  fprintf(fp, "%s\n", _(Notice1));
+  fprintf(fp, "%s\n\n", _(Notice2));
 
   ARRAY_FOREACH(kv, &ver->system)
   {

@@ -9419,16 +9419,11 @@ msgstr ""
 "vagy küldjön e-mailt ide: <neomutt-devel@neomutt.org>\n"
 
 #: version.c:110
-msgid ""
-"Copyright (C) 2015-2026 Richard Russon and friends\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
-"NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type 'neomutt -vv' for details.\n"
+msgid "Copyright (C) 2015-2026 Richard Russon and friends"
+msgstr "Copyright (C) 2015-2026 Richard Russon és sokan mások"
+
+msgid "NeoMutt is free software, provided without warranty: `neomutt -vv` for details"
 msgstr ""
-"Copyright (C) 2015-2026 Richard Russon és sokan mások.\n"
-"A NeoMutt-ra SEMMIFÉLE GARANCIA NINCS; a részletekért írd be: 'neomutt -vv'.\n"
-"A NeoMutt szabad szoftver, és terjesztheted az alábbi feltételek\n"
-"szerint; írd be a 'neomutt -vv'-t a részletekért.\n"
 
 #: version.c:672
 msgid "Compile options:"

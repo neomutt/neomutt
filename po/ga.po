@@ -9951,17 +9951,11 @@ msgstr ""
 
 #: version.c:110
 #, fuzzy
-msgid ""
-"Copyright (C) 2015-2026 Richard Russon and friends\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
-"NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type 'neomutt -vv' for details.\n"
+msgid "Copyright (C) 2015-2026 Richard Russon and friends"
+msgstr "Copyright © 2015-2026 Richard Russon agus daoine eile"
+
+msgid "NeoMutt is free software, provided without warranty: `neomutt -vv` for details"
 msgstr ""
-"Copyright © 2015-2026 Richard Russon agus daoine eile.\n"
-"Níl baránta AR BITH le NeoMutt; iontráil 'neomutt -vv' chun tuilleadh\n"
-"eolais a fháil.  Is saorbhogearra é NeoMutt: is féidir leat é\n"
-"a athdháileadh, agus fáilte, ach de réir coinníollacha áirithe.\n"
-"Iontráil 'neomutt -vv' chun tuilleadh eolais a fháil.\n"
 
 #: version.c:672
 msgid "Compile options:"
