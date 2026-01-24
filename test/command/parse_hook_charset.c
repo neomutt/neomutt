@@ -67,7 +67,7 @@ void test_parse_hook_charset2(void)
     buf_reset(err);
     buf_strcpy(line, CharsetTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_charset(&CharsetHook, line, err);
+    rc = parse_hook_charset(&CharsetHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, CharsetTests[i].rc);
   }
 
@@ -89,7 +89,7 @@ void test_parse_iconv_hook(void)
     buf_reset(err);
     buf_strcpy(line, IconvTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_charset(&IconvHook, line, err);
+    rc = parse_hook_charset(&IconvHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, IconvTests[i].rc);
   }
 

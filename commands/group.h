@@ -41,10 +41,10 @@ enum GroupState
 };
 
 int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err, struct HashTable *groups);
-enum CommandResult parse_group           (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_lists           (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_subscribe       (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unlists         (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unsubscribe     (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_unsubscribe(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
 
 #endif /* MUTT_COMMANDS_GROUP_H */

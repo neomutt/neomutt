@@ -28,6 +28,6 @@
 
 struct Buffer;
 
-enum CommandResult parse_setenv          (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
 
 #endif /* MUTT_COMMANDS_SETENV_H */

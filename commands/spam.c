@@ -48,9 +48,9 @@
  * Parse:
  * - `nospam { * | <regex> }`
  */
-enum CommandResult parse_nospam(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+enum CommandResult parse_nospam(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -105,9 +105,9 @@ done:
  * Parse:
  * - `spam <regex> [ <format> ]`
  */
-enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
-                              struct Buffer *err)
+enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

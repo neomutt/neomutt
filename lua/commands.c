@@ -54,7 +54,7 @@ bool lua_init_state(lua_State **l);
  * Parse:
  * - `lua <lua-command>`
  */
-enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
   if (!MoreArgs(line))
   {
@@ -94,8 +94,7 @@ done:
  * Parse:
  * - `lua-source <filename>`
  */
-enum CommandResult parse_lua_source(const struct Command *cmd,
-                                    struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
   if (!MoreArgs(line))
   {

@@ -58,7 +58,7 @@ void test_parse_echo(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_echo(&Echo, line, err);
+    rc = parse_echo(&Echo, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

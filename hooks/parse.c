@@ -61,9 +61,9 @@ enum CommandId CurrentHookId = CMD_NONE;
  * - `charset-hook <alias>   <charset>`
  * - `iconv-hook   <charset> <local-charset>`
  */
-enum CommandResult parse_hook_charset(const struct Command *cmd,
-                                      struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -113,9 +113,9 @@ done:
  * - `startup-hook  <command>`
  * - `timeout-hook  <command>`
  */
-enum CommandResult parse_hook_global(const struct Command *cmd,
-                                     struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_global(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
 
@@ -176,9 +176,9 @@ cleanup:
  * - `send-hook    <pattern> <command>`
  * - `send2-hook   <pattern> <command>`
  */
-enum CommandResult parse_hook_pattern(const struct Command *cmd,
-                                      struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_pattern(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -344,9 +344,9 @@ enum CommandResult add_mailbox_hook(enum CommandId id, struct Buffer *mailbox,
  * - `fcc-save-hook <pattern> <mailbox>`
  * - `save-hook     <pattern> <mailbox>`
  */
-enum CommandResult parse_hook_mailbox(const struct Command *cmd,
-                                      struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_mailbox(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
 
@@ -421,9 +421,9 @@ cleanup:
  * Parse:
  * - `account-hook <regex> <command>`
  */
-enum CommandResult parse_hook_regex(const struct Command *cmd,
-                                    struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_regex(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -514,9 +514,9 @@ cleanup:
  * Parse:
  * - `folder-hook [ -noregex ] <regex> <command>`
  */
-enum CommandResult parse_hook_folder(const struct Command *cmd,
-                                     struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_folder(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -651,9 +651,9 @@ cleanup:
  * - `crypt-hook <regex> <keyid>`
  * - `pgp-hook` is a deprecated synonym for `crypt-hook`
  */
-enum CommandResult parse_hook_crypt(const struct Command *cmd,
-                                    struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_crypt(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -744,9 +744,9 @@ cleanup:
  * Parse:
  * - `mbox-hook [ -noregex ] <regex> <mailbox>`
  */
-enum CommandResult parse_hook_mbox(const struct Command *cmd,
-                                   struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_mbox(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -891,9 +891,9 @@ cleanup:
  * - `close-hook  <regex> <shell-command>`
  * - `open-hook   <regex> <shell-command>`
  */
-enum CommandResult parse_hook_compress(const struct Command *cmd,
-                                       struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_compress(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -1040,9 +1040,9 @@ static void delete_idxfmt_hooks(void)
  * Parse:
  * - `index-format-hook <name> [!]<pattern> <format-string>`
  */
-enum CommandResult parse_hook_index(const struct Command *cmd,
-                                    struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_hook_index(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -1161,9 +1161,9 @@ out:
  * Parse:
  * - `unhook { * | <hook-type> }`
  */
-enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

@@ -69,7 +69,7 @@ void test_parse_hook_index(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_index(&IndexFormatHook, line, err);
+    rc = parse_hook_index(&IndexFormatHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

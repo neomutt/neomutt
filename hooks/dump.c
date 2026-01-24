@@ -221,9 +221,9 @@ static void hooks_dump_charset(struct Buffer *buf)
  * Parse:
  * - `hooks`
  */
-enum CommandResult parse_hooks(const struct Command *cmd, struct Buffer *line,
-                               struct Buffer *err)
+enum CommandResult parse_hooks(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (MoreArgs(line))
   {
     buf_printf(err, _("%s: too many arguments"), cmd->name);

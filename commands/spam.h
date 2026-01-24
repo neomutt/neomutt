@@ -28,7 +28,7 @@
 
 struct Buffer;
 
-enum CommandResult parse_nospam          (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_spam            (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_nospam(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
 
 #endif /* MUTT_COMMANDS_SPAM_H */

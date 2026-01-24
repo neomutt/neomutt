@@ -56,7 +56,7 @@ void test_parse_nospam(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_nospam(&Nospam, line, err);
+    rc = parse_nospam(&Nospam, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

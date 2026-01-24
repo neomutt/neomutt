@@ -75,7 +75,7 @@ void test_parse_exec(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_exec(&Exec, line, err);
+    rc = parse_exec(&Exec, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

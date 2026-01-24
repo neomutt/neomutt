@@ -3,7 +3,7 @@
  * Parse lines from a runtime configuration (rc) file
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,7 +26,11 @@
 #include "core/lib.h"
 
 struct Buffer;
+struct ConfigParseError;
+struct ParseContext;
 
 enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_rc_line_ctx(struct Buffer *line, struct ParseContext *pctx,
+                                     struct ConfigParseError *perr);
 
 #endif /* MUTT_PARSE_RC_H */

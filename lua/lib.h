@@ -44,8 +44,8 @@ struct Command;
 
 void lua_cleanup(void);
 
-enum CommandResult parse_lua       (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
 
 #else
 

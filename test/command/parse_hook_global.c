@@ -75,7 +75,7 @@ static void test_parse_shutdown_hook(void)
     buf_reset(err);
     buf_strcpy(line, ShutdownTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_global(&ShutdownHook, line, err);
+    rc = parse_hook_global(&ShutdownHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, ShutdownTests[i].rc);
   }
 
@@ -95,7 +95,7 @@ static void test_parse_startup_hook(void)
     buf_reset(err);
     buf_strcpy(line, StartupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_global(&StartupHook, line, err);
+    rc = parse_hook_global(&StartupHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, StartupTests[i].rc);
   }
 
@@ -115,7 +115,7 @@ static void test_parse_timeout_hook(void)
     buf_reset(err);
     buf_strcpy(line, TimeoutTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_global(&TimeoutHook, line, err);
+    rc = parse_hook_global(&TimeoutHook, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, TimeoutTests[i].rc);
   }
 

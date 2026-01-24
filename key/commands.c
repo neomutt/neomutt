@@ -57,9 +57,9 @@ struct ParseUnbind
 /**
  * parse_dump - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult parse_dump(const struct Command *cmd, struct Buffer *line,
-                              struct Buffer *err)
+enum CommandResult parse_dump(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Buffer *token = buf_pool_get();
   int mtype = MENU_MAX;
   enum CommandResult rc = MUTT_CMD_ERROR;
@@ -201,9 +201,9 @@ void parse_menu(bool *menus, const char *s, struct Buffer *err)
  * Parse:
  * - `push <string>`
  */
-enum CommandResult parse_push(const struct Command *cmd, struct Buffer *line,
-                              struct Buffer *err)
+enum CommandResult parse_push(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -236,14 +236,14 @@ done:
  * Parse:
  * - `bind <map>[,<map> ... ] <key> <function>`
  */
-enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line,
-                              struct Buffer *err)
+enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (StartupComplete)
   {
     // Save and restore the offset in `line` because parse_dump() might change it
     char *dptr = line->dptr;
-    if (parse_dump(cmd, line, err) == MUTT_CMD_SUCCESS)
+    if (parse_dump(cmd, line, pctx, perr) == MUTT_CMD_SUCCESS)
     {
       return MUTT_CMD_SUCCESS;
     }
@@ -638,9 +638,9 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
  * - `unbind { * | <map>[,<map> ... ] } [ <key> ]`
  * - `unmacro { * | <map>[,<map> ... ] } [ <key> ]`
  */
-enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct ParseUnbind args = { 0 };
   enum CommandResult rc = MUTT_CMD_WARNING;
 
@@ -662,14 +662,14 @@ done:
  * Parse:
  * - `macro <map>[,<map> ... ] <key> <sequence> [ <description> ]`
  */
-enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *line,
-                               struct Buffer *err)
+enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (StartupComplete)
   {
     // Save and restore the offset in `line` because parse_dump() might change it
     char *dptr = line->dptr;
-    if (parse_dump(cmd, line, err) == MUTT_CMD_SUCCESS)
+    if (parse_dump(cmd, line, pctx, perr) == MUTT_CMD_SUCCESS)
     {
       return MUTT_CMD_SUCCESS;
     }
@@ -765,9 +765,9 @@ done:
  * Parse:
  * - `exec <function> [ <function> ... ]`
  */
-enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *line,
-                              struct Buffer *err)
+enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

@@ -506,7 +506,7 @@ static void test_parse_mailboxes2(void)
     buf_reset(err);
     buf_strcpy(line, MailboxesTests[i].line);
     buf_seek(line, 0);
-    rc = parse_mailboxes(&Mailboxes, line, err);
+    rc = parse_mailboxes(&Mailboxes, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, MailboxesTests[i].rc);
   }
 
@@ -528,7 +528,7 @@ static void test_parse_named_mailboxes(void)
     buf_reset(err);
     buf_strcpy(line, NamedMailboxesTests[i].line);
     buf_seek(line, 0);
-    rc = parse_mailboxes(&NamedMailboxes, line, err);
+    rc = parse_mailboxes(&NamedMailboxes, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, NamedMailboxesTests[i].rc);
   }
 

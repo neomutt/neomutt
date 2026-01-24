@@ -56,7 +56,7 @@ void test_parse_mono(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_mono(&Mono, line, err);
+    rc = parse_mono(&Mono, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

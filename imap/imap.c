@@ -88,9 +88,9 @@ struct stat;
  * Parse:
  * - `subscribe-to <imap-folder-uri>`
  */
-enum CommandResult parse_subscribe_to(const struct Command *cmd,
-                                      struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_subscribe_to(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -136,9 +136,9 @@ done:
  * Parse:
  * - `unsubscribe-from <imap-folder-uri>`
  */
-enum CommandResult parse_unsubscribe_from(const struct Command *cmd,
-                                          struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unsubscribe_from(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

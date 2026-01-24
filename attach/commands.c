@@ -482,9 +482,9 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
  * - `attachments { + | - }<disposition> <mime-type> [ <mime-type> ...]`
  * - `attachments ?`
  */
-enum CommandResult parse_attachments(const struct Command *cmd,
-                                     struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -555,9 +555,9 @@ done:
  * - `unattachments { + | - } disposition mime-type [ mime-type ...]`
  * - `unattachments *`
  */
-enum CommandResult parse_unattachments(const struct Command *cmd,
-                                       struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

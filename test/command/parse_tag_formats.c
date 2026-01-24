@@ -58,7 +58,7 @@ void test_parse_tag_formats(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_tag_formats(&TagFormatsCmd, line, err);
+    rc = parse_tag_formats(&TagFormatsCmd, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

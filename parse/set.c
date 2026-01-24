@@ -470,8 +470,9 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
  * - `toggle <variable> [ <variable> ... ]`
  * - `unset <variable> [ <variable> ... ]`
  */
-enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_WARNING;
 

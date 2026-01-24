@@ -84,7 +84,7 @@ static void test_parse_group2(void)
     buf_reset(err);
     buf_strcpy(line, GroupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_group(&Group, line, err);
+    rc = parse_group(&Group, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, GroupTests[i].rc);
   }
 
@@ -106,7 +106,7 @@ static void test_parse_ungroup(void)
     buf_reset(err);
     buf_strcpy(line, UnGroupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_group(&UnGroup, line, err);
+    rc = parse_group(&UnGroup, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, UnGroupTests[i].rc);
   }
 

@@ -343,9 +343,9 @@ enum CommandResult parse_mailboxes_exec(const struct Command *cmd,
  * - `mailboxes [[ -label <label> ] | -nolabel ] [[ -notify | -nonotify ] [ -poll | -nopoll ] <mailbox> ] [ ... ]`
  * - `named-mailboxes <description> <mailbox> [ <description> <mailbox> ... ]`
  */
-enum CommandResult parse_mailboxes(const struct Command *cmd,
-                                   struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_mailboxes(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   struct ParseMailboxArray args = ARRAY_HEAD_INITIALIZER;
   enum CommandResult rc = MUTT_CMD_WARNING;
 
@@ -432,9 +432,9 @@ static void do_unmailboxes_star(void)
  * Parse:
  * - `unmailboxes { * | <mailbox> ... }`
  */
-enum CommandResult parse_unmailboxes(const struct Command *cmd,
-                                     struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unmailboxes(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

@@ -55,7 +55,7 @@ void test_parse_finish(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_finish(&Finish, line, err);
+    rc = parse_finish(&Finish, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

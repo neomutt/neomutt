@@ -98,7 +98,7 @@ static void test_parse_setenv2(void)
     buf_reset(err);
     buf_strcpy(line, SetenvTests[i].line);
     buf_seek(line, 0);
-    rc = parse_setenv(&Setenv, line, err);
+    rc = parse_setenv(&Setenv, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, SetenvTests[i].rc);
   }
 
@@ -120,7 +120,7 @@ static void test_parse_unsetenv(void)
     buf_reset(err);
     buf_strcpy(line, UnSetenvTests[i].line);
     buf_seek(line, 0);
-    rc = parse_setenv(&UnSetenv, line, err);
+    rc = parse_setenv(&UnSetenv, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, UnSetenvTests[i].rc);
   }
 

@@ -59,7 +59,7 @@ void test_parse_unattachments(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_unattachments(&UnAttachments, line, err);
+    rc = parse_unattachments(&UnAttachments, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

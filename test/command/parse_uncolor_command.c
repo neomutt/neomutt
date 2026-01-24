@@ -60,7 +60,7 @@ void test_parse_uncolor_command(void)
     buf_reset(err);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_uncolor_command(&Command, line, err);
+    rc = parse_uncolor_command(&Command, line, NULL, NULL);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

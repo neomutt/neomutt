@@ -32,6 +32,100 @@
 #include "core/lib.h"
 #include "commands/lib.h"
 #include "extract.h"
+#include "pcontext.h"
+
+/**
+ * parse_rc_line_ctx - Parse a line of user config with context
+ * @param line  config line to read
+ * @param pctx  Parse context (may be NULL)
+ * @param perr  Error information structure (may be NULL)
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
+ *
+ * This function provides the same functionality as parse_rc_line() but
+ * accepts a ParseContext for tracking file locations and a ConfigParseError
+ * for detailed error information.
+ */
+enum CommandResult parse_rc_line_ctx(struct Buffer *line, struct ParseContext *pctx,
+                                     struct ConfigParseError *perr)
+{
+  if (buf_is_empty(line))
+    return MUTT_CMD_SUCCESS;
+
+  struct Buffer *token = buf_pool_get();
+  struct Buffer *err = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_SUCCESS;
+  bool show_help = false;
+
+  buf_reset(err);
+
+  /* Read from the beginning of line->data */
+  buf_seek(line, 0);
+
+  SKIPWS(line->dptr);
+  while (*line->dptr)
+  {
+    if (*line->dptr == '#')
+      break; /* rest of line is a comment */
+    if (*line->dptr == ';')
+    {
+      line->dptr++;
+      continue;
+    }
+    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+
+    const int token_len = buf_len(token);
+    if (token_len == 0)
+      break; /* Empty token, nothing more to parse */
+
+    if ((token_len > 0) && (buf_at(token, token_len - 1) == '?'))
+    {
+      token->data[token_len - 1] = '\0';
+      show_help = true;
+    }
+
+    const struct Command *cmd = command_find_by_name(&NeoMutt->commands, buf_string(token));
+    if (cmd)
+    {
+      if (show_help)
+      {
+        buf_add_printf(err, "%s\n", _(cmd->help));
+        buf_add_printf(err, ":%s\n", _(cmd->proto));
+        buf_add_printf(err, "file:///usr/share/doc/neomutt/%s", cmd->path);
+        /* Copy help text to perr if provided */
+        if (perr)
+          buf_copy(&perr->message, err);
+        goto finish;
+      }
+
+      mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
+      rc = cmd->parse(cmd, line, pctx, perr);
+      if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
+      {
+        goto finish; /* Propagate return code */
+      }
+
+      notify_send(NeoMutt->notify, NT_COMMAND, 0, (void *) cmd);
+    }
+    else
+    {
+      buf_printf(err, _("%s: unknown command"), buf_string(token));
+      rc = MUTT_CMD_ERROR;
+      if (perr)
+      {
+        struct FileLocation *fl = pctx ? parse_context_current(pctx) : NULL;
+        config_parse_error_set(perr, rc, fl ? fl->filename : NULL,
+                               fl ? fl->lineno : 0, "%s", buf_string(err));
+        perr->origin = pctx ? pctx->origin : CO_CONFIG_FILE;
+      }
+      goto finish;
+    }
+  }
+
+finish:
+  buf_pool_release(&token);
+  buf_pool_release(&err);
+  return rc;
+}
 
 /**
  * parse_rc_line - Parse a line of user config
@@ -49,6 +143,10 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_SUCCESS;
   bool show_help = false;
+
+  /* Create a temporary ConfigParseError to capture errors */
+  struct ConfigParseError perr = { 0 };
+  config_parse_error_init(&perr);
 
   buf_reset(err);
 
@@ -86,9 +184,14 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
       }
 
       mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
-      rc = cmd->parse(cmd, line, err);
+      rc = cmd->parse(cmd, line, NULL, &perr);
       if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
+      {
+        /* Copy error message from perr to err */
+        if (!buf_is_empty(&perr.message))
+          buf_copy(err, &perr.message);
         goto finish; /* Propagate return code */
+      }
 
       notify_send(NeoMutt->notify, NT_COMMAND, 0, (void *) cmd);
     }
@@ -101,5 +204,6 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct Buffer *err)
 
 finish:
   buf_pool_release(&token);
+  config_parse_error_free(&perr);
   return rc;
 }

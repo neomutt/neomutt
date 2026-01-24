@@ -189,9 +189,9 @@ void subjrx_clear_mods(struct MailboxView *mv)
  * Parse:
  * - `subject-regex <regex> <replacement>`
  */
-enum CommandResult parse_subjectrx_list(const struct Command *cmd,
-                                        struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_subjectrx_list(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -215,9 +215,9 @@ enum CommandResult parse_subjectrx_list(const struct Command *cmd,
  * Parse:
  * - `unsubject-regex { * | <regex> }`
  */
-enum CommandResult parse_unsubjectrx_list(const struct Command *cmd,
-                                          struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr)
 {
+  struct Buffer *err = buf_pool_get();
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

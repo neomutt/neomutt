@@ -72,8 +72,8 @@ void                mutt_expand_aliases_env(struct Envelope *env);
 void                mutt_expand_aliases    (struct AddressList *al);
 struct AddressList *mutt_get_address       (struct Envelope *env, const char **prefix);
 
-enum CommandResult parse_alias  (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
-enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
+enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
+enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line, struct ParseContext *pctx, struct ConfigParseError *perr);
 
 void alias_tags_to_buffer(struct TagList *tl, struct Buffer *buf);
 void parse_alias_comments(struct Alias *alias, const char *com);
