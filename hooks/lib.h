@@ -29,10 +29,10 @@
  * | :----------------- | :----------------------- |
  * | hooks/commands.c   | @subpage hooks_commands  |
  * | hooks/dump.c       | @subpage hooks_dump      |
+ * | hooks/exec.c       | @subpage hooks_exec      |
  * | hooks/hook.c       | @subpage hooks_hook      |
  * | hooks/module.c     | @subpage hooks_module    |
  * | hooks/parse.c      | @subpage hooks_parse     |
- * | hooks/run.c        | @subpage hooks_run       |
  */
 
 #ifndef MUTT_HOOKS_LIB_H
@@ -41,9 +41,9 @@
 // IWYU pragma: begin_keep
 #include "commands.h"
 #include "dump.h"
+#include "exec.h"
 #include "hook.h"
 #include "parse.h"
-#include "run.h"
 // IWYU pragma: end_keep
 
 #endif /* MUTT_HOOKS_LIB_H */

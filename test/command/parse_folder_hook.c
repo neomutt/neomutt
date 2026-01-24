@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parse_hook_folder()
+ * Test code for parse_folder_hook()
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -58,7 +58,7 @@ void test_parse_hook_folder(void)
     parse_error_reset(pe);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_folder(&FolderHook, line, pc, pe);
+    rc = parse_folder_hook(&FolderHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

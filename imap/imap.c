@@ -1829,7 +1829,7 @@ static bool imap_ac_add(struct Account *a, struct Mailbox *m)
       return false;
     }
 
-    mutt_account_hook(m->realpath);
+    exec_account_hook(m->realpath);
 
     if (imap_login(adata) < 0)
     {

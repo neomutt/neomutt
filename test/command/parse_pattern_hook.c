@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parse_hook_pattern()
+ * Test code for parse_pattern_hook()
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -98,7 +98,7 @@ static void test_parse_message_hook(void)
     parse_error_reset(pe);
     buf_strcpy(line, MessageTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&MessageHook, line, pc, pe);
+    rc = parse_pattern_hook(&MessageHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, MessageTests[i].rc);
   }
 
@@ -120,7 +120,7 @@ static void test_parse_reply_hook(void)
     parse_error_reset(pe);
     buf_strcpy(line, ReplyTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&ReplyHook, line, pc, pe);
+    rc = parse_pattern_hook(&ReplyHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, ReplyTests[i].rc);
   }
 
@@ -142,7 +142,7 @@ static void test_parse_send_hook(void)
     parse_error_reset(pe);
     buf_strcpy(line, SendTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&SendHook, line, pc, pe);
+    rc = parse_pattern_hook(&SendHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, SendTests[i].rc);
   }
 
@@ -164,7 +164,7 @@ static void test_parse_send2_hook(void)
     parse_error_reset(pe);
     buf_strcpy(line, Send2Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&Send2Hook, line, pc, pe);
+    rc = parse_pattern_hook(&Send2Hook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Send2Tests[i].rc);
   }
 

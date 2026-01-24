@@ -2405,7 +2405,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   url->path = strchr(url->path, '\0');
   url_tostring(url, server, sizeof(server), U_NO_FLAGS);
 
-  mutt_account_hook(m->realpath);
+  exec_account_hook(m->realpath);
   struct NntpAccountData *adata = m->account->adata;
   if (!adata)
     adata = CurrentNewsSrv;

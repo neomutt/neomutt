@@ -893,7 +893,7 @@ static int main_timeout_observer(struct NotifyCallback *nc)
     goto done;
 
   last_run = now;
-  mutt_timeout_hook();
+  exec_timeout_hook();
 
 done:
   mutt_debug(LL_DEBUG5, "timeout done\n");
@@ -1664,9 +1664,9 @@ int main(int argc, char *argv[], char *envp[])
     struct Mailbox *m_cur = mailbox_find(buf_string(folder));
     // Take a copy of the name just in case the hook alters m_cur
     const char *name = m_cur ? mutt_str_dup(m_cur->name) : NULL;
-    mutt_folder_hook(buf_string(folder), name);
+    exec_folder_hook(buf_string(folder), name);
     FREE(&name);
-    mutt_startup_shutdown_hook(CMD_STARTUP_HOOK);
+    exec_startup_shutdown_hook(CMD_STARTUP_HOOK);
     mutt_debug(LL_NOTIFY, "NT_GLOBAL_STARTUP\n");
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
 

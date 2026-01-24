@@ -1,6 +1,6 @@
 /**
  * @file
- * Run user-defined Hooks
+ * Execute user-defined Hooks
  *
  * @authors
  * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>, and others
@@ -29,9 +29,9 @@
  */
 
 /**
- * @page hooks_run Run user-defined Hooks
+ * @page hooks_exec Execute user-defined Hooks
  *
- * Run user-defined Hooks
+ * Execute user-defined Hooks
  */
 
 #include "config.h"
@@ -57,11 +57,11 @@
 #include "parse.h"
 
 /**
- * mutt_folder_hook - Perform a folder hook
+ * exec_folder_hook - Perform a folder hook
  * @param path Path to potentially match
  * @param desc Description to potentially match
  */
-void mutt_folder_hook(const char *path, const char *desc)
+void exec_folder_hook(const char *path, const char *desc)
 {
   if (!path && !desc)
     return;
@@ -127,12 +127,12 @@ char *mutt_find_hook(enum CommandId id, const char *pat)
 }
 
 /**
- * mutt_message_hook - Perform a message hook
+ * exec_message_hook - Perform a message hook
  * @param m  Mailbox
  * @param e  Email
  * @param id Hook CommandId, e.g #CMD_FOLDER_HOOK
  */
-void mutt_message_hook(struct Mailbox *m, struct Email *e, enum CommandId id)
+void exec_message_hook(struct Mailbox *m, struct Email *e, enum CommandId id)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
@@ -317,10 +317,10 @@ void mutt_crypt_hook(struct ListHead *list, struct Address *addr)
 }
 
 /**
- * mutt_account_hook - Perform an account hook
+ * exec_account_hook - Perform an account hook
  * @param url Account URL to match
  */
-void mutt_account_hook(const char *url)
+void exec_account_hook(const char *url)
 {
   /* parsing commands with URLs in an account hook can cause a recursive
    * call. We just skip processing if this occurs. Typically such commands
@@ -361,12 +361,12 @@ done:
 }
 
 /**
- * mutt_timeout_hook - Execute any timeout hooks
+ * exec_timeout_hook - Execute any timeout hooks
  *
  * The user can configure hooks to be run on timeout.
  * This function finds all the matching hooks and executes them.
  */
-void mutt_timeout_hook(void)
+void exec_timeout_hook(void)
 {
   struct Hook *hook = NULL;
   struct ParseContext *pc = parse_context_new();
@@ -395,13 +395,13 @@ void mutt_timeout_hook(void)
 }
 
 /**
- * mutt_startup_shutdown_hook - Execute any startup/shutdown hooks
+ * exec_startup_shutdown_hook - Execute any startup/shutdown hooks
  * @param id Hook CommandId: #CMD_STARTUP_HOOK or #CMD_SHUTDOWN_HOOK
  *
  * The user can configure hooks to be run on startup/shutdown.
  * This function finds all the matching hooks and executes them.
  */
-void mutt_startup_shutdown_hook(enum CommandId id)
+void exec_startup_shutdown_hook(enum CommandId id)
 {
   struct Hook *hook = NULL;
   struct ParseContext *pc = parse_context_new();

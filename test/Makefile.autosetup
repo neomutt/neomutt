@@ -144,32 +144,32 @@ COMMAND_OBJS	= test/command/common.o \
 		  test/command/parse_attachments.o \
 		  test/command/parse_bind.o \
 		  test/command/parse_cd.o \
+		  test/command/parse_charset_hook.o \
 		  test/command/parse_color.o \
+		  test/command/parse_compress_hook.o \
+		  test/command/parse_crypt_hook.o \
 		  test/command/parse_echo.o \
 		  test/command/parse_exec.o \
 		  test/command/parse_finish.o \
+		  test/command/parse_folder_hook.o \
+		  test/command/parse_global_hook.o \
 		  test/command/parse_group.o \
-		  test/command/parse_hook_charset.o \
-		  test/command/parse_hook_compress.o \
-		  test/command/parse_hook_crypt.o \
-		  test/command/parse_hook_folder.o \
-		  test/command/parse_hook_global.o \
-		  test/command/parse_hook_index.o \
-		  test/command/parse_hook_mailbox.o \
-		  test/command/parse_hook_mbox.o \
-		  test/command/parse_hook_pattern.o \
-		  test/command/parse_hook_regex.o \
 		  test/command/parse_ifdef.o \
 		  test/command/parse_ignore.o \
+		  test/command/parse_index_hook.o \
 		  test/command/parse_lists.o \
 		  test/command/parse_lua.o \
 		  test/command/parse_lua_source.o \
 		  test/command/parse_macro.o \
 		  test/command/parse_mailboxes.o \
+		  test/command/parse_mailbox_hook.o \
+		  test/command/parse_mbox_hook.o \
 		  test/command/parse_mono.o \
 		  test/command/parse_my_hdr.o \
 		  test/command/parse_nospam.o \
+		  test/command/parse_pattern_hook.o \
 		  test/command/parse_push.o \
+		  test/command/parse_regex_hook.o \
 		  test/command/parse_score.o \
 		  test/command/parse_setenv.o \
 		  test/command/parse_sidebar_pin.o \

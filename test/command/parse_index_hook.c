@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parse_hook_index()
+ * Test code for parse_index_hook()
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -56,7 +56,7 @@ static const struct CommandTest Tests[] = {
 
 void test_parse_hook_index(void)
 {
-  // enum CommandResult parse_hook_index(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
+  // enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
@@ -71,7 +71,7 @@ void test_parse_hook_index(void)
     parse_error_reset(pe);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_index(&IndexFormatHook, line, pc, pe);
+    rc = parse_index_hook(&IndexFormatHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

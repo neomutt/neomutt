@@ -46,7 +46,7 @@ static struct ConfigDef Vars[] = {
 
 const struct Command unhook_test_commands[] = {
   // clang-format off
-  { "folder-hook", CMD_FOLDER_HOOK, parse_hook_folder, CMD_NO_DATA },
+  { "folder-hook", CMD_FOLDER_HOOK, parse_folder_hook, CMD_NO_DATA },
   { NULL, CMD_NONE, NULL, CMD_NO_DATA },
   // clang-format on
 };
@@ -76,7 +76,7 @@ void test_parse_unhook(void)
   // Create a folder-hook, to delete
   buf_strcpy(line, "~g 'set my_var=42'");
   buf_seek(line, 0);
-  rc = parse_hook_folder(&FolderHook, line, pc, pe);
+  rc = parse_folder_hook(&FolderHook, line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   for (int i = 0; Tests[i].line; i++)

@@ -1029,7 +1029,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     set_noconv_flags(e->body, true);
 
 #ifdef RECORD_FOLDER_HOOK
-  mutt_folder_hook(path, NULL);
+  exec_folder_hook(path, NULL);
 #endif
   struct Mailbox *m_fcc = mx_path_resolve(path);
   bool old_append = m_fcc->append;
@@ -1222,7 +1222,7 @@ done:
    * now we run it for the user's current mailbox */
   const struct Mailbox *m_cur = get_current_mailbox();
   if (m_cur)
-    mutt_folder_hook(m_cur->path, m_cur->desc);
+    exec_folder_hook(m_cur->path, m_cur->desc);
 #endif
 
   if (fp_tmp)

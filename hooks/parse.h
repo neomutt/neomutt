@@ -34,16 +34,16 @@ extern struct HookList Hooks;
 extern struct HashTable *IdxFmtHooks;
 extern enum CommandId CurrentHookId;
 
-enum CommandResult parse_hook_charset (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_hook_compress(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_hook_crypt   (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_hook_folder  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_hook_global  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_hook_index   (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_hook_mailbox (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_hook_mbox    (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_hook_pattern (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_hook_regex   (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_charset_hook (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_crypt_hook   (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_folder_hook  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_global_hook  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_index_hook   (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_mailbox_hook (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_mbox_hook    (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_pattern_hook (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_regex_hook   (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unhook       (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
 #endif /* MUTT_HOOKS_PARSE_H */

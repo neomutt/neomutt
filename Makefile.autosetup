@@ -536,8 +536,8 @@ $(PWD)/history:
 ###############################################################################
 # libhooks
 LIBHOOKS=	libhooks.a
-LIBHOOKSOBJS=	hooks/commands.o hooks/dump.o hooks/hook.o hooks/parse.o \
-		hooks/run.o hooks/module.o
+LIBHOOKSOBJS=	hooks/commands.o hooks/dump.o hooks/exec.o hooks/hook.o \
+		hooks/module.o hooks/parse.o
 CLEANFILES+=	$(LIBHOOKS) $(LIBHOOKSOBJS)
 ALLOBJS+=	$(LIBHOOKSOBJS)
 

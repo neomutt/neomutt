@@ -1,6 +1,6 @@
 /**
  * @file
- * Run user-defined Hooks
+ * Execute user-defined Hooks
  *
  * @authors
  * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_HOOKS_RUN_H
-#define MUTT_HOOKS_RUN_H
+#ifndef MUTT_HOOKS_EXEC_H
+#define MUTT_HOOKS_EXEC_H
 
 #include "config.h"
 #include "core/lib.h"
@@ -31,16 +31,17 @@ struct Buffer;
 struct Email;
 struct ListHead;
 
-void                  mutt_account_hook            (const char *url);
+void                  exec_account_hook            (const char *url);
+void                  exec_folder_hook             (const char *path, const char *desc);
+void                  exec_message_hook            (struct Mailbox *m, struct Email *e, enum CommandId id);
+void                  exec_startup_shutdown_hook   (enum CommandId id);
+void                  exec_timeout_hook            (void);
+
 void                  mutt_crypt_hook              (struct ListHead *list, struct Address *addr);
 void                  mutt_default_save            (struct Buffer *path, struct Email *e);
 void                  mutt_delete_hooks            (enum CommandId id);
 char *                mutt_find_hook               (enum CommandId id, const char *pat);
-void                  mutt_folder_hook             (const char *path, const char *desc);
 const struct Expando *mutt_idxfmt_hook             (const char *name, struct Mailbox *m, struct Email *e);
-void                  mutt_message_hook            (struct Mailbox *m, struct Email *e, enum CommandId id);
 void                  mutt_select_fcc              (struct Buffer *path, struct Email *e);
-void                  mutt_startup_shutdown_hook   (enum CommandId id);
-void                  mutt_timeout_hook            (void);
 
-#endif /* MUTT_HOOKS_RUN_H */
+#endif /* MUTT_HOOKS_EXEC_H */

@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parse_hook_mbox()
+ * Test code for parse_mbox_hook()
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -58,7 +58,7 @@ void test_parse_hook_mbox(void)
     parse_error_reset(pe);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mbox(&MboxHook, line, pc, pe);
+    rc = parse_mbox_hook(&MboxHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

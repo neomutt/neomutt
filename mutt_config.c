@@ -217,16 +217,16 @@ struct ExpandoNode *parse_index_date(const char *str, struct ExpandoFormat *fmt,
 }
 
 /**
- * parse_index_hook - Parse an index-hook - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
+ * parse_index_format_hook - Parse an index-hook - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
  * Parse a custom Expando of the form, "%@name@".
  * The "name" will be looked up as an index-hook, then the result parsed as an
  * Expando.
  */
-struct ExpandoNode *parse_index_hook(const char *str, struct ExpandoFormat *fmt,
-                                     int did, int uid, ExpandoParserFlags flags,
-                                     const char **parsed_until,
-                                     struct ExpandoParseError *err)
+struct ExpandoNode *parse_index_format_hook(const char *str, struct ExpandoFormat *fmt,
+                                            int did, int uid, ExpandoParserFlags flags,
+                                            const char **parsed_until,
+                                            struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
@@ -315,7 +315,7 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   { ">",  "padding-hard",        ED_GLOBAL,   ED_GLO_PADDING_HARD,        node_padding_parse },
   { "|",  "padding-eol",         ED_GLOBAL,   ED_GLO_PADDING_EOL,         node_padding_parse },
   { "(",  NULL,                  ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL,     parse_index_date_recv_local },
-  { "@",  NULL,                  ED_EMAIL,    ED_EMA_INDEX_HOOK,          parse_index_hook },
+  { "@",  NULL,                  ED_EMAIL,    ED_EMA_INDEX_HOOK,          parse_index_format_hook },
   { "a",  "from",                ED_ENVELOPE, ED_ENV_FROM,                NULL },
   { "A",  "reply-to",            ED_ENVELOPE, ED_ENV_REPLY_TO,            NULL },
   { "b",  "mailbox-name",        ED_MAILBOX,  ED_MBX_MAILBOX_NAME,        NULL },

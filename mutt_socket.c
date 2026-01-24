@@ -94,7 +94,7 @@ struct Connection *mutt_conn_find(const struct ConnAccount *cac)
   account_to_url((struct ConnAccount *) cac, &url);
   url.path = NULL;
   url_tostring(&url, hook, sizeof(hook), U_NO_FLAGS);
-  mutt_account_hook(hook);
+  exec_account_hook(hook);
 
   return mutt_conn_new(cac);
 }

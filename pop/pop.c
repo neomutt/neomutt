@@ -776,7 +776,7 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
   }
 
   if (conn->fd < 0)
-    mutt_account_hook(m->realpath);
+    exec_account_hook(m->realpath);
 
   if (pop_open_connection(adata) < 0)
     return MX_OPEN_ERROR;

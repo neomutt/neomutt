@@ -55,13 +55,13 @@ struct HashTable *IdxFmtHooks = NULL;
 enum CommandId CurrentHookId = CMD_NONE;
 
 /**
- * parse_hook_charset - Parse charset Hook commands - Implements Command::parse() - @ingroup command_parse
+ * parse_charset_hook - Parse charset Hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `charset-hook <alias>   <charset>`
  * - `iconv-hook   <charset> <local-charset>`
  */
-enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_charset_hook(const struct Command *cmd, struct Buffer *line,
                                       const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
@@ -108,14 +108,14 @@ done:
 }
 
 /**
- * parse_hook_global - Parse global Hook commands - Implements Command::parse() - @ingroup command_parse
+ * parse_global_hook - Parse global Hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `shutdown-hook <command>`
  * - `startup-hook  <command>`
  * - `timeout-hook  <command>`
  */
-enum CommandResult parse_hook_global(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_global_hook(const struct Command *cmd, struct Buffer *line,
                                      const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
@@ -172,7 +172,7 @@ cleanup:
 }
 
 /**
- * parse_hook_pattern - Parse pattern-based Hook commands - Implements Command::parse() - @ingroup command_parse
+ * parse_pattern_hook - Parse pattern-based Hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `message-hook <pattern> <command>`
@@ -180,7 +180,7 @@ cleanup:
  * - `send-hook    <pattern> <command>`
  * - `send2-hook   <pattern> <command>`
  */
-enum CommandResult parse_hook_pattern(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_pattern_hook(const struct Command *cmd, struct Buffer *line,
                                       const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
@@ -343,14 +343,14 @@ enum CommandResult add_mailbox_hook(enum CommandId id, struct Buffer *mailbox,
 }
 
 /**
- * parse_hook_mailbox - Parse mailbox pattern hook commands - Implements Command::parse() - @ingroup command_parse
+ * parse_mailbox_hook - Parse mailbox pattern hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `fcc-hook      <pattern> <mailbox>`
  * - `fcc-save-hook <pattern> <mailbox>`
  * - `save-hook     <pattern> <mailbox>`
  */
-enum CommandResult parse_hook_mailbox(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_mailbox_hook(const struct Command *cmd, struct Buffer *line,
                                       const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
@@ -424,12 +424,12 @@ cleanup:
 }
 
 /**
- * parse_hook_regex - Parse regex-based hook command - Implements Command::parse() - @ingroup command_parse
+ * parse_regex_hook - Parse regex-based hook command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `account-hook <regex> <command>`
  */
-enum CommandResult parse_hook_regex(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_regex_hook(const struct Command *cmd, struct Buffer *line,
                                     const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
@@ -519,12 +519,12 @@ cleanup:
 }
 
 /**
- * parse_hook_folder - Parse folder hook command - Implements Command::parse() - @ingroup command_parse
+ * parse_folder_hook - Parse folder hook command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `folder-hook [ -noregex ] <regex> <command>`
  */
-enum CommandResult parse_hook_folder(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_folder_hook(const struct Command *cmd, struct Buffer *line,
                                      const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
@@ -657,13 +657,13 @@ cleanup:
 }
 
 /**
- * parse_hook_crypt - Parse crypt hook commands - Implements Command::parse() - @ingroup command_parse
+ * parse_crypt_hook - Parse crypt hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `crypt-hook <regex> <keyid>`
  * - `pgp-hook` is a deprecated synonym for `crypt-hook`
  */
-enum CommandResult parse_hook_crypt(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_crypt_hook(const struct Command *cmd, struct Buffer *line,
                                     const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
@@ -753,12 +753,12 @@ cleanup:
 }
 
 /**
- * parse_hook_mbox - Parse mbox hook command - Implements Command::parse() - @ingroup command_parse
+ * parse_mbox_hook - Parse mbox hook command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `mbox-hook [ -noregex ] <regex> <mailbox>`
  */
-enum CommandResult parse_hook_mbox(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_mbox_hook(const struct Command *cmd, struct Buffer *line,
                                    const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
@@ -900,14 +900,14 @@ cleanup:
 }
 
 /**
- * parse_hook_compress - Parse compress hook commands - Implements Command::parse() - @ingroup command_parse
+ * parse_compress_hook - Parse compress hook commands - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `append-hook <regex> <shell-command>`
  * - `close-hook  <regex> <shell-command>`
  * - `open-hook   <regex> <shell-command>`
  */
-enum CommandResult parse_hook_compress(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer *line,
                                        const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
@@ -1053,12 +1053,12 @@ static void delete_idxfmt_hooks(void)
 }
 
 /**
- * parse_hook_index - Parse the index format hook command - Implements Command::parse() - @ingroup command_parse
+ * parse_index_hook - Parse the index format hook command - Implements Command::parse() - @ingroup command_parse
  *
  * Parse:
  * - `index-format-hook <name> [!]<pattern> <format-string>`
  */
-enum CommandResult parse_hook_index(const struct Command *cmd, struct Buffer *line,
+enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *line,
                                     const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;

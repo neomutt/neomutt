@@ -665,7 +665,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   char *dup_path = mutt_str_dup(mailbox_path(m));
   char *dup_name = mutt_str_dup(m->name);
 
-  mutt_folder_hook(dup_path, dup_name);
+  exec_folder_hook(dup_path, dup_name);
   if (m)
   {
     /* `m` is still valid, but we won't need the observer again before the end

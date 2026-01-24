@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parse_hook_charset()
+ * Test code for parse_charset_hook()
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -56,7 +56,7 @@ static const struct CommandTest IconvTests[] = {
 
 void test_parse_hook_charset2(void)
 {
-  // enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
+  // enum CommandResult parse_charset_hook(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
   struct ParseContext *pc = parse_context_new();
@@ -69,7 +69,7 @@ void test_parse_hook_charset2(void)
     parse_error_reset(pe);
     buf_strcpy(line, CharsetTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_charset(&CharsetHook, line, pc, pe);
+    rc = parse_charset_hook(&CharsetHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, CharsetTests[i].rc);
   }
 
@@ -80,7 +80,7 @@ void test_parse_hook_charset2(void)
 
 void test_parse_iconv_hook(void)
 {
-  // enum CommandResult parse_hook_charset(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
+  // enum CommandResult parse_charset_hook(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();
   struct ParseContext *pc = parse_context_new();
@@ -93,7 +93,7 @@ void test_parse_iconv_hook(void)
     parse_error_reset(pe);
     buf_strcpy(line, IconvTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_charset(&IconvHook, line, pc, pe);
+    rc = parse_charset_hook(&IconvHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, IconvTests[i].rc);
   }
 

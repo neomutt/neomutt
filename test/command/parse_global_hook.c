@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for parse_hook_mailbox()
+ * Test code for parse_global_hook()
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -25,68 +25,60 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
 #include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "default_hook", DT_STRING, IP "~f %s !~P | (~P ~C %s)", 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
 // clang-format off
-static const struct Command FccHook     = { "fcc-hook",      CMD_FCC_HOOK,      NULL, CMD_NO_DATA };
-static const struct Command FccSaveHook = { "fcc-save-hook", CMD_FCC_SAVE_HOOK, NULL, CMD_NO_DATA };
-static const struct Command SaveHook    = { "save-hook",     CMD_SAVE_HOOK,     NULL, CMD_NO_DATA };
+static const struct Command ShutdownHook = { "shutdown-hook", CMD_SHUTDOWN_HOOK, NULL };
+static const struct Command StartupHook  = { "startup-hook",  CMD_STARTUP_HOOK,  NULL };
+static const struct Command TimeoutHook  = { "timeout-hook",  CMD_TIMEOUT_HOOK,  NULL };
 // clang-format on
 
-static const struct CommandTest FccTests[] = {
+static const struct CommandTest ShutdownTests[] = {
   // clang-format off
-  // fcc-hook      <pattern> <mailbox>
+  // shutdown-hook <command>
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "[@.]aol\\.com$ +spammers" },
+  { MUTT_CMD_SUCCESS, "'<shell-escape>touch ~/test<enter>'" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
 
-static const struct CommandTest FccSaveTests[] = {
+static const struct CommandTest StartupTests[] = {
   // clang-format off
-  // fcc-save-hook <pattern> <mailbox>
+  // startup-hook  <command>
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "'~t neomutt-users*' +Lists/neomutt-users" },
+  { MUTT_CMD_SUCCESS, "'exec sync-mailbox'" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
 
-static const struct CommandTest SaveTests[] = {
+static const struct CommandTest TimeoutTests[] = {
   // clang-format off
-  // save-hook     <pattern> <mailbox>
+  // timeout-hook  <command>
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "'~f root@localhost' =Temp/rootmail" },
+  { MUTT_CMD_SUCCESS, "'exec sync-mailbox'" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
 
-static void test_parse_fcc_hook(void)
+static void test_parse_shutdown_hook(void)
 {
   struct Buffer *line = buf_pool_get();
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
-  for (int i = 0; FccTests[i].line; i++)
+  for (int i = 0; ShutdownTests[i].line; i++)
   {
-    TEST_CASE(FccTests[i].line);
+    TEST_CASE(ShutdownTests[i].line);
     parse_error_reset(pe);
-    buf_strcpy(line, FccTests[i].line);
+    buf_strcpy(line, ShutdownTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mailbox(&FccHook, line, pc, pe);
-    TEST_CHECK_NUM_EQ(rc, FccTests[i].rc);
+    rc = parse_global_hook(&ShutdownHook, line, pc, pe);
+    TEST_CHECK_NUM_EQ(rc, ShutdownTests[i].rc);
   }
 
   parse_context_free(&pc);
@@ -94,21 +86,21 @@ static void test_parse_fcc_hook(void)
   buf_pool_release(&line);
 }
 
-static void test_parse_fcc_save_hook(void)
+static void test_parse_startup_hook(void)
 {
   struct Buffer *line = buf_pool_get();
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
-  for (int i = 0; FccSaveTests[i].line; i++)
+  for (int i = 0; StartupTests[i].line; i++)
   {
-    TEST_CASE(FccSaveTests[i].line);
+    TEST_CASE(StartupTests[i].line);
     parse_error_reset(pe);
-    buf_strcpy(line, FccSaveTests[i].line);
+    buf_strcpy(line, StartupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mailbox(&FccSaveHook, line, pc, pe);
-    TEST_CHECK_NUM_EQ(rc, FccSaveTests[i].rc);
+    rc = parse_global_hook(&StartupHook, line, pc, pe);
+    TEST_CHECK_NUM_EQ(rc, StartupTests[i].rc);
   }
 
   parse_context_free(&pc);
@@ -116,21 +108,21 @@ static void test_parse_fcc_save_hook(void)
   buf_pool_release(&line);
 }
 
-static void test_parse_save_hook(void)
+static void test_parse_timeout_hook(void)
 {
   struct Buffer *line = buf_pool_get();
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
-  for (int i = 0; SaveTests[i].line; i++)
+  for (int i = 0; TimeoutTests[i].line; i++)
   {
-    TEST_CASE(SaveTests[i].line);
+    TEST_CASE(TimeoutTests[i].line);
     parse_error_reset(pe);
-    buf_strcpy(line, SaveTests[i].line);
+    buf_strcpy(line, TimeoutTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_mailbox(&SaveHook, line, pc, pe);
-    TEST_CHECK_NUM_EQ(rc, SaveTests[i].rc);
+    rc = parse_global_hook(&TimeoutHook, line, pc, pe);
+    TEST_CHECK_NUM_EQ(rc, TimeoutTests[i].rc);
   }
 
   parse_context_free(&pc);
@@ -138,11 +130,9 @@ static void test_parse_save_hook(void)
   buf_pool_release(&line);
 }
 
-void test_parse_hook_mailbox(void)
+void test_parse_hook_global(void)
 {
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
-
-  test_parse_fcc_hook();
-  test_parse_fcc_save_hook();
-  test_parse_save_hook();
+  test_parse_shutdown_hook();
+  test_parse_startup_hook();
+  test_parse_timeout_hook();
 }

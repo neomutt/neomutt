@@ -734,7 +734,7 @@ static int group_attachments(struct ComposeSharedData *shared, char *subtype)
   shared->adata->menu->current = group_idx;
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
 
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -802,7 +802,7 @@ static int op_attachment_attach_file(struct ComposeSharedData *shared,
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   if (added_attachment)
-    mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+    exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -820,7 +820,7 @@ static int op_attachment_attach_key(struct ComposeSharedData *shared,
   {
     update_idx(shared->adata->menu, shared->adata->actx, ap);
     menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
-    mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+    exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   }
   else
   {
@@ -981,7 +981,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared,
   cs_subset_str_native_set(shared->sub, "use_threads", old_use_threads, NULL);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   if (added_attachment)
-    mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+    exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -1017,7 +1017,7 @@ static int op_attachment_detach(struct ComposeSharedData *shared, const struct K
   if (index == 0)
     shared->email->body = actx->idx[0]->body;
 
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -1056,7 +1056,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared,
         mutt_str_replace(&cur_att->body->content_id, buf_string(buf));
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
-        mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+        exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
         rc = FR_SUCCESS;
       }
       else
@@ -1098,7 +1098,7 @@ static int op_attachment_edit_description(struct ComposeSharedData *shared,
     {
       mutt_str_replace(&cur_att->body->description, buf_string(buf));
       menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-      mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+      exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
       rc = FR_SUCCESS;
     }
   }
@@ -1136,7 +1136,7 @@ static int op_attachment_edit_encoding(struct ComposeSharedData *shared,
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         mutt_clear_error();
-        mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+        exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
         rc = FR_SUCCESS;
       }
     }
@@ -1173,7 +1173,7 @@ static int op_attachment_edit_language(struct ComposeSharedData *shared,
       mutt_str_replace(&cur_att->body->language, buf_string(buf));
       menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
       notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
-      mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+      exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
       rc = FR_SUCCESS;
     }
     mutt_clear_error();
@@ -1203,7 +1203,7 @@ static int op_attachment_edit_mime(struct ComposeSharedData *shared,
 
   mutt_update_encoding(cur_att->body, shared->sub);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -1224,7 +1224,7 @@ static int op_attachment_edit_type(struct ComposeSharedData *shared,
   /* this may have been a change to text/something */
   mutt_update_encoding(cur_att->body, shared->sub);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -1257,7 +1257,7 @@ static int op_attachment_filter(struct ComposeSharedData *shared, const struct K
     menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
   }
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -1535,7 +1535,7 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, const struct
     mutt_update_encoding(cur_att->body, shared->sub);
     menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
   }
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   rc = FR_SUCCESS;
 
 done:
@@ -1657,7 +1657,7 @@ static int op_attachment_toggle_recode(struct ComposeSharedData *shared,
   else
     mutt_message(_("The current attachment will be converted"));
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -1738,7 +1738,7 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, const struct 
   actx->idxlen--;
   update_menu(actx, shared->adata->menu, false);
 
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -1767,7 +1767,7 @@ static int op_attachment_update_encoding(struct ComposeSharedData *shared,
 
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   rc = FR_SUCCESS;
 
 done:
@@ -1821,7 +1821,7 @@ static int op_envelope_edit_headers(struct ComposeSharedData *shared,
 
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
   /* Unconditional hook since editor was invoked */
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -1845,7 +1845,7 @@ static int op_compose_edit_file(struct ComposeSharedData *shared, const struct K
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   /* Unconditional hook since editor was invoked */
-  mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+  exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
 
@@ -1865,7 +1865,7 @@ static int op_compose_edit_message(struct ComposeSharedData *shared,
     mutt_update_encoding(shared->email->body, shared->sub);
     menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
     /* Unconditional hook since editor was invoked */
-    mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+    exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
     return FR_SUCCESS;
   }
 
@@ -1951,7 +1951,7 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, const struct
 
     if (cur_att->body->stamp >= st.st_mtime)
       mutt_stamp_attachment(cur_att->body);
-    mutt_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
+    exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   }
   buf_pool_release(&fname);
   return FR_SUCCESS;
