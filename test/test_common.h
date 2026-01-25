@@ -79,9 +79,6 @@ static inline FILE *test_make_file_with_contents(char *contents, size_t len)
   return fp;
 }
 
-int log_disp_null (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
-                   __attribute__((__format__(__printf__, 6, 7)));
-
 #define TEST_CHECK_STR_EQ(actual, expected) test_check_str_eq(actual, expected, __FILE__, __LINE__)
 #define TEST_CHECK_NUM_EQ(actual, expected) test_check_num_eq(actual, expected, __FILE__, __LINE__)
 

@@ -99,6 +99,8 @@ void log_multiline_full(enum LogLevel level, const char *str, const char *file, 
 
 int  log_disp_file    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
                        __attribute__((__format__(__printf__, 6, 7)));
+int  log_disp_null    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
+                       __attribute__((__format__(__printf__, 6, 7)));
 int  log_disp_queue   (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
                        __attribute__((__format__(__printf__, 6, 7)));
 int  log_disp_terminal(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
