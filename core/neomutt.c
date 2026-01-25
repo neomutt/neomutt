@@ -225,11 +225,9 @@ static bool init_config(struct NeoMutt *n)
 #endif
   reset_tilde(n->sub->cs);
 
-#ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
     config_str_set_initial(n->sub->cs, "suspend", "no");
-#endif
 
   return rc;
 }

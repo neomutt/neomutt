@@ -541,12 +541,6 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
   }
   config_str_set_initial(cs, "real_name", c_real_name);
 
-#ifdef HAVE_GETSID
-  /* Unset suspend by default if we're the session leader */
-  if (getsid(0) == getpid())
-    config_str_set_initial(cs, "suspend", "no");
-#endif
-
   /* RFC2368, "4. Unsafe headers"
    * The creator of a mailto URL can't expect the resolver of a URL to
    * understand more than the "subject" and "body" headers. Clients that
