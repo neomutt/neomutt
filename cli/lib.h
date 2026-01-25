@@ -25,6 +25,10 @@
  *
  * Parse the Command Line
  *
+ * Command line flags in use:
+ *	- `abcdefghi..lmn.p..s..v..yz`
+ *	- `A.CDEFGH......O.QRS......Z`
+ *
  * | File             | Description             |
  * | :--------------- | :---------------------- |
  * | cli/parse.h      | @subpage cli_parse      |

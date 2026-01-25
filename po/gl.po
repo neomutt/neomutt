@@ -9953,27 +9953,3 @@ msgstr "Opcións de compilación:"
 msgid "Devel options:"
 msgstr "Opcións de compilación:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Abrir buzón en modo de só lectura"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Vínculos xerais:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Vínculos xerais:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Funcións sen vínculo:"
-
-#~ msgid "alias: no address"
-#~ msgstr "alias: sen enderezo"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Opcións de compilación:"

@@ -9362,3 +9362,4 @@ msgstr "Derleme seçenekleri:"
 #: version.c:678
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
+

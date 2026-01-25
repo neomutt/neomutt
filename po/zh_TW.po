@@ -9767,24 +9767,3 @@ msgstr "編譯選項："
 msgid "Devel options:"
 msgstr "編譯選項："
 
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "用唯讀模式開啟信箱"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "標準功能定義："
-
-#~ msgid "Generic bindings:"
-#~ msgstr "標準功能定義："
-
-#~ msgid "Unbound functions:"
-#~ msgstr "未被定義的功能："
-
-#~ msgid "alias: no address"
-#~ msgstr "別名：沒有電子郵件地址"
-
-#~ msgid "options:"
-#~ msgstr "編譯選項："

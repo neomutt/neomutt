@@ -10039,28 +10039,3 @@ msgstr "Opcions de compilació:"
 msgid "Devel options:"
 msgstr "Opcions de compilació:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-# És una pregunta.  -- ivb
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Obri en mode de només lectura la bústia"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Vincles genèrics:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Vincles genèrics:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Funcions no vinculades:"
-
-#~ msgid "alias: no address"
-#~ msgstr "alias: No s’ha indicat cap adreça."
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Opcions de compilació:"

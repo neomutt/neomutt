@@ -9748,32 +9748,3 @@ msgstr "Параметры компиляции:"
 msgid "Devel options:"
 msgstr "Параметры по умолчанию:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "  -R            Открыть почтовый ящик только для чтения"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Стандартные назначения:"
-
-#, c-format
-#~ msgid "Function '%s' not available for menu '%s'"
-#~ msgstr "Функция «%s» не доступна для меню «%s»"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Стандартные назначения:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Неназначенные функции:"
-
-#~ msgid "alias: no address"
-#~ msgstr "псевдоним: отсутствует адрес"
-
-#~ msgid "options:"
-#~ msgstr "опции:"
-
-#~ msgid "usage:"
-#~ msgstr "использование:"

@@ -9895,27 +9895,3 @@ msgstr "Опции при компилация:"
 msgid "Devel options:"
 msgstr "Опции при компилация:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Отваряне на пощенската кутия само за четене"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Общи клавишни комбинации:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Общи клавишни комбинации:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Функции, без клавишна комбинация:"
-
-#~ msgid "alias: no address"
-#~ msgstr "alias: няма адрес"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Опции при компилация:"

@@ -9863,27 +9863,3 @@ msgstr "Konpilazio aukerak:"
 msgid "Devel options:"
 msgstr "Konpilazio aukerak:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Postakutxa irakurtzeko bakarrik ireki"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Lotura orokorrak:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Lotura orokorrak:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Loturagabeko funtzioak:"
-
-#~ msgid "alias: no address"
-#~ msgstr "ezizena: helbide gabea"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Konpilazio aukerak:"

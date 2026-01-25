@@ -9825,27 +9825,3 @@ msgstr "Opties tijdens compileren:"
 msgid "Devel options:"
 msgstr "Opties tijdens compileren:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Open postvak in schrijfbeveiligde modus"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Algemene toetsenbindingen:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Algemene toetsenbindingen:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Ongebonden functies:"
-
-#~ msgid "alias: no address"
-#~ msgstr "alias: Geen adres"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Opties tijdens compileren:"

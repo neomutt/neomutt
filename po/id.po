@@ -9828,27 +9828,3 @@ msgstr "Opsi2 saat kompilasi:"
 msgid "Devel options:"
 msgstr "Opsi2 saat kompilasi:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Buka kotak surat dengan mode read-only"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Penentuan tombol generik:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Penentuan tombol generik:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Fungsi-fungsi yang belum ditentukan tombolnya:"
-
-#~ msgid "alias: no address"
-#~ msgstr "alias: tidak ada alamat email"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Opsi2 saat kompilasi:"

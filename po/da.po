@@ -9778,27 +9778,3 @@ msgstr "Tilvalg ved oversættelsen:"
 msgid "Devel options:"
 msgstr "Tilvalg ved oversættelsen:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Åbn brevbakke i skrivebeskyttet tilstand"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Almene tastetildelinger:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Almene tastetildelinger:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Funktioner uden tastetildelinger:"
-
-#~ msgid "alias: no address"
-#~ msgstr "alias: Ingen adresse"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Tilvalg ved oversættelsen:"

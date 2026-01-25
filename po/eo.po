@@ -9453,9 +9453,3 @@ msgstr "Parametroj de la tradukaĵo:"
 msgid "Devel options:"
 msgstr "Disvolvaj parametroj:"
 
-#, c-format
-#~ msgid "Function '%s' not available for menu '%s'"
-#~ msgstr "Funkcio '%s' ne haveblas por menuo '%s'"
-
-#~ msgid "alias: no address"
-#~ msgstr "adresaro: mankas adreso"

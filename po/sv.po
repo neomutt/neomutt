@@ -9774,5 +9774,3 @@ msgstr "Kompileringsval:"
 msgid "Devel options:"
 msgstr "Kompileringsval:"
 
-#~ msgid "alias: no address"
-#~ msgstr "alias: ingen adress"

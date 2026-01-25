@@ -387,9 +387,9 @@
 ** message.  The send-menu may still be accessed once you have finished
 ** editing the body of your message.
 ** .pp
-** \fBNote:\fP when this option is \fIset\fP, you can't use send-hooks that depend
-** on the recipients when composing a new (non-reply) message, as the initial
-** list of recipients is empty.
+** \fBNote:\fP when this option is \fIset\fP, you can't use send-hooks that
+** depend on the recipients when composing a new (non-reply) message, as the
+** initial list of recipients is empty.
 ** .pp
 ** Also see $$fast_reply.
 */
@@ -471,8 +471,8 @@
 { "beep_new", DT_BOOL, false },
 /*
 ** .pp
-** When this variable is \fIset\fP, NeoMutt will beep whenever it prints a message
-** notifying you of new mail.  This is independent of the setting of the
+** When this variable is \fIset\fP, NeoMutt will beep whenever it prints a
+** message notifying you of new mail. This is independent of the setting of the
 ** $$beep variable.
 */
 
@@ -488,18 +488,18 @@
 { "bounce_delivered", DT_BOOL, true },
 /*
 ** .pp
-** When this variable is \fIset\fP, NeoMutt will include Delivered-To headers when
-** bouncing messages.  Postfix users may wish to \fIunset\fP this variable.
+** When this variable is \fIset\fP, NeoMutt will include Delivered-To headers
+** when bouncing messages. Postfix users may wish to \fIunset\fP this variable.
 */
 
 { "braille_friendly", DT_BOOL, false },
 /*
 ** .pp
-** When this variable is \fIset\fP, NeoMutt will place the cursor at the beginning
-** of the current line in menus, even when the $$arrow_cursor variable
+** When this variable is \fIset\fP, NeoMutt will place the cursor at the
+** beginning of the current line in menus, even when the $$arrow_cursor variable
 ** is \fIunset\fP, making it easier for blind persons using Braille displays to
-** follow these menus.  The option is \fIunset\fP by default because many
-** visual terminals don't permit making the cursor invisible.
+** follow these menus. The option is \fIunset\fP by default because many visual
+** terminals don't permit making the cursor invisible.
 */
 
 { "browser_abbreviate_mailboxes", DT_BOOL, true },
@@ -601,8 +601,8 @@
 { "check_mbox_size", DT_BOOL, false },
 /*
 ** .pp
-** When this variable is \fIset\fP, NeoMutt will use file size attribute instead of
-** access time when checking for new mail in mbox and mmdf folders.
+** When this variable is \fIset\fP, NeoMutt will use file size attribute instead
+** of access time when checking for new mail in mbox and mmdf folders.
 ** .pp
 ** This variable is \fIunset\fP by default and should only be enabled when
 ** new mail detection for these folder types is unreliable or doesn't work.
@@ -721,7 +721,8 @@
 { "compose_show_preview", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will display a preview of message in the compose view.
+** When \fIset\fP, NeoMutt will display a preview of message in the compose
+** view.
 */
 
 { "compose_show_user_headers", DT_BOOL, true },
@@ -749,15 +750,15 @@
 { "confirm_append", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will prompt for confirmation when appending messages to
-** an existing mailbox.
+** When \fIset\fP, NeoMutt will prompt for confirmation when appending messages
+** to an existing mailbox.
 */
 
 { "confirm_create", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will prompt for confirmation when saving messages to a
-** mailbox which does not yet exist before creating it.
+** When \fIset\fP, NeoMutt will prompt for confirmation when saving messages to
+** a mailbox which does not yet exist before creating it.
 */
 
 { "confirm_empty_to", DT_BOOL, false },
@@ -917,9 +918,9 @@
 { "crypt_protected_headers_read", DT_BOOL, true },
 /*
 ** .pp
-** When set, NeoMutt will display protected headers ("Memory Hole") in the pager,
-** When set, NeoMutt will display protected headers in the pager,
-** and will update the index and header cache with revised headers.
+** When set, NeoMutt will display protected headers ("Memory Hole") in the
+** pager, When set, NeoMutt will display protected headers in the pager, and
+** will update the index and header cache with revised headers.
 ** .pp
 ** Protected headers are stored inside the encrypted or signed part of an
 ** email, to prevent disclosure or tampering.
@@ -996,9 +997,8 @@
 { "crypt_reply_encrypt", DT_BOOL, true },
 /*
 ** .pp
-** If \fIset\fP, automatically PGP or OpenSSL encrypt replies to messages which are
-** encrypted.
-** (Crypto only)
+** If \fIset\fP, automatically PGP or OpenSSL encrypt replies to messages which
+** are encrypted. (Crypto only)
 */
 
 { "crypt_reply_sign", DT_BOOL, false },
@@ -1038,11 +1038,10 @@
 { "crypt_use_gpgme", DT_BOOL, true },
 /*
 ** .pp
-** This variable controls the use of the GPGME-enabled crypto backends.
-** If it is \fIset\fP and NeoMutt was built with GPGME support, the gpgme code for
-** S/MIME and PGP will be used instead of the classic code.  Note that
-** you need to set this option in .neomuttrc; it won't have any effect when
-** used interactively.
+** This variable controls the use of the GPGME-enabled crypto backends. If it is
+** \fIset\fP and NeoMutt was built with GPGME support, the gpgme code for S/MIME
+** and PGP will be used instead of the classic code. Note that you need to set
+** this option in .neomuttrc; it won't have any effect when used interactively.
 ** .pp
 ** Note that the GPGME backend does not support creating old-style inline
 ** (traditional) PGP encrypted or signed messages (see $$pgp_auto_inline).
@@ -1098,10 +1097,11 @@
 { "debug_file", DT_PATH, "~/.neomuttdebug" },
 /*
 ** .pp
-** Debug logging is controlled by the variables \fC$$debug_file\fP and \fC$$debug_level\fP.
-** \fC$$debug_file\fP specifies the root of the filename.  NeoMutt will add "0" to the end.
-** Each time NeoMutt is run with logging enabled, the log files are rotated.
-** A maximum of five log files are kept, numbered 0 (most recent) to 4 (oldest).
+** Debug logging is controlled by the variables \fC$$debug_file\fP and
+** \fC$$debug_level\fP. \fC$$debug_file\fP specifies the root of the filename.
+** NeoMutt will add "0" to the end. Each time NeoMutt is run with logging
+** enabled, the log files are rotated. A maximum of five log files are kept,
+** numbered 0 (most recent) to 4 (oldest).
 ** .pp
 ** This option can be enabled on the command line, "neomutt -l mylog"
 ** .pp
@@ -1111,12 +1111,13 @@
 { "debug_level", DT_NUMBER, 0 },
 /*
 ** .pp
-** Debug logging is controlled by the variables \fC$$debug_file\fP and \fC$$debug_level\fP.
+** Debug logging is controlled by the variables \fC$$debug_file\fP and
+** \fC$$debug_level\fP.
 ** .pp
-** The debug level controls how much information is saved to the log file.
-** If you have a problem with NeoMutt, then enabling logging may help find the cause.
-** Levels 1-3 will usually provide enough information for writing a bug report.
-** Levels 4,5 will be extremely verbose.
+** The debug level controls how much information is saved to the log file. If
+** you have a problem with NeoMutt, then enabling logging may help find the
+** cause. Levels 1-3 will usually provide enough information for writing a bug
+** report. Levels 4,5 will be extremely verbose.
 ** .pp
 ** Warning: Logging at high levels may save private information to the file.
 ** .pp
@@ -1163,15 +1164,17 @@
 { "devel_security", DT_BOOL, false },
 /*
 ** .pp
-** If this option is \fIset\fP, NeoMutt will enable the \fBSecurity\fP development features.
-** See: https://github.com/neomutt/neomutt/discussions/4251
+** If this option is \fIset\fP, NeoMutt will enable the \fBSecurity\fP
+** development features. See:
+** https://github.com/neomutt/neomutt/discussions/4251
 */
 
 { "digest_collapse", DT_BOOL, true },
 /*
 ** .pp
-** If this option is \fIset\fP, NeoMutt's received-attachments menu will not show the subparts of
-** individual messages in a multipart/digest.  To see these subparts, press "v" on that menu.
+** If this option is \fIset\fP, NeoMutt's received-attachments menu will not
+** show the subparts of individual messages in a multipart/digest. To see these
+** subparts, press "v" on that menu.
 */
 
 { "display_filter", D_STRING_COMMAND, 0 },
@@ -1186,7 +1189,8 @@
 ** 64-bit number.
 ** .pp
 ** If these escape sequences interfere with your filter, they can be removed
-** using a tool like \fCansifilter\fP or \fCsed 's/^\x1b]9;[0-9]\+\x7//'\fP
+** using a tool like \fCansifilter\fP or
+** \fCsed 's/^\x1b]9;[0-9]\+\x7//'\fP
 ** .pp
 ** If they are removed, then PGP and MIME headers will no longer be coloured.
 ** This can be fixed by adding this to your config:
@@ -1208,11 +1212,11 @@
 ** set dsn_notify="failure,delay"
 ** .te
 ** .pp
-** \fBNote:\fP when using $$sendmail for delivery, you should not enable
-** this unless you are either using Sendmail 8.8.x or greater or a MTA
-** providing a \fCsendmail(1)\fP-compatible interface supporting the \fC-N\fP option
-** for DSN. For SMTP delivery, DSN support is auto-detected so that it
-** depends on the server whether DSN will be used or not.
+** \fBNote:\fP when using $$sendmail for delivery, you should not enable this
+** unless you are either using Sendmail 8.8.x or greater or a MTA providing a
+** \fCsendmail(1)\fP-compatible interface supporting the \fC-N\fP option for
+** DSN. For SMTP delivery, DSN support is auto-detected so that it depends on
+** the server whether DSN will be used or not.
 */
 
 { "dsn_return", DT_STRING, 0 },
@@ -1227,20 +1231,20 @@
 ** set dsn_return=hdrs
 ** .te
 ** .pp
-** \fBNote:\fP when using $$sendmail for delivery, you should not enable
-** this unless you are either using Sendmail 8.8.x or greater or a MTA
-** providing a \fCsendmail(1)\fP-compatible interface supporting the \fC-R\fP option
-** for DSN. For SMTP delivery, DSN support is auto-detected so that it
-** depends on the server whether DSN will be used or not.
+** \fBNote:\fP when using $$sendmail for delivery, you should not enable this
+** unless you are either using Sendmail 8.8.x or greater or a MTA providing a
+** \fCsendmail(1)\fP-compatible interface supporting the \fC-R\fP option for
+** DSN. For SMTP delivery, DSN support is auto-detected so that it depends on
+** the server whether DSN will be used or not.
 */
 
 { "duplicate_threads", DT_BOOL, true },
 /*
 ** .pp
-** This variable controls whether NeoMutt, when $$sort is set to \fIthreads\fP, threads
-** messages with the same Message-Id together.  If it is \fIset\fP, it will indicate
-** that it thinks they are duplicates of each other with an equals sign
-** in the thread tree.
+** This variable controls whether NeoMutt, when $$sort is set to \fIthreads\fP,
+** threads messages with the same Message-Id together. If it is \fIset\fP, it
+** will indicate that it thinks they are duplicates of each other with an equals
+** sign in the thread tree.
 */
 
 { "edit_headers", DT_BOOL, false },
@@ -1263,13 +1267,13 @@
 { "editor", D_STRING_COMMAND, 0 },
 /*
 ** .pp
-** This variable specifies which editor is used by NeoMutt.
-** It defaults to the value of the \fC$$$VISUAL\fP, or \fC$$$EDITOR\fP, environment
-** variable, or to the string "vi" if neither of those are set.
+** This variable specifies which editor is used by NeoMutt. It defaults to the
+** value of the \fC$$$VISUAL\fP, or \fC$$$EDITOR\fP, environment variable, or to
+** the string "vi" if neither of those are set.
 ** .pp
-** The \fC$$editor\fP string may contain a \fI%s\fP escape, which will be replaced by the name
-** of the file to be edited.  If the \fI%s\fP escape does not appear in \fC$$editor\fP, a
-** space and the name to be edited are appended.
+** The \fC$$editor\fP string may contain a \fI%s\fP escape, which will be
+** replaced by the name of the file to be edited. If the \fI%s\fP escape does
+** not appear in \fC$$editor\fP, a space and the name to be edited are appended.
 ** .pp
 ** The resulting string is then executed by running
 ** .ts
@@ -1289,10 +1293,10 @@
 { "encode_from", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will quoted-printable encode messages when
-** they contain the string "From " (note the trailing space) in the beginning of a line.
-** This is useful to avoid the tampering certain mail delivery and transport
-** agents tend to do with messages (in order to prevent tools from
+** When \fIset\fP, NeoMutt will quoted-printable encode messages when they
+** contain the string "From " (note the trailing space) in the beginning of a
+** line. This is useful to avoid the tampering certain mail delivery and
+** transport agents tend to do with messages (in order to prevent tools from
 ** misinterpreting the line as a mbox message separator).
 */
 
@@ -1349,12 +1353,12 @@
 { "fast_reply", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, the initial prompt for recipients (to, cc, bcc) and
-** subject are skipped when the relevant information is already provided.
-** These cases include replying to messages and passing the relevant
-** command line arguments. The initial prompt for recipients
-** is also skipped when composing a new message to the current message sender,
-** while the initial prompt for subject is also skipped when forwarding messages.
+** When \fIset\fP, the initial prompt for recipients (to, cc, bcc) and subject
+** are skipped when the relevant information is already provided. These cases
+** include replying to messages and passing the relevant command line arguments.
+** The initial prompt for recipients is also skipped when composing a new
+** message to the current message sender, while the initial prompt for subject
+** is also skipped when forwarding messages.
 ** .pp
 ** \fBNote:\fP this variable has no effect when the $$auto_edit
 ** variable is \fIset\fP.
@@ -1603,7 +1607,8 @@
 ** can be overridden using "$my-header" (including from a "$send-hook") and
 ** $$reverse_name.  This variable is ignored if $$use_from is \fIunset\fP.
 ** .pp
-** If not specified, then it may be read from the environment variable \fC$$$EMAIL\fP.
+** If not specified, then it may be read from the environment variable
+** \fC$$$EMAIL\fP.
 */
 
 { "from_chars", DT_MBTABLE, 0 },
@@ -1641,9 +1646,9 @@
 ** should set it to "\fC.*\fP".
 ** .pp
 ** This can be useful if you see the following behavior: you address an e-mail
-** to user ID "stevef" whose full name is "Steve Franklin".  If NeoMutt expands
-** "stevef" to '"Franklin" stevef@foo.bar' then you should set the $$gecos_mask to
-** a regular expression that will match the whole name so NeoMutt will expand
+** to user ID "stevef" whose full name is "Steve Franklin". If NeoMutt expands
+** "stevef" to '"Franklin" stevef@foo.bar' then you should set the $$gecos_mask
+** to a regular expression that will match the whole name so NeoMutt will expand
 ** "Franklin" to "Franklin, Steve".
 */
 
@@ -1788,8 +1793,8 @@
 { "hide_limited", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will not show the presence of messages that are hidden
-** by limiting, in the thread tree.
+** When \fIset\fP, NeoMutt will not show the presence of messages that are
+** hidden by limiting, in the thread tree.
 */
 
 { "hide_missing", DT_BOOL, true },
@@ -1810,8 +1815,8 @@
 { "hide_top_limited", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will not show the presence of messages that are hidden
-** by limiting, at the top of threads in the thread tree.  Note that when
+** When \fIset\fP, NeoMutt will not show the presence of messages that are
+** hidden by limiting, at the top of threads in the thread tree. Note that when
 ** $$hide_limited is \fIset\fP, this option will have no effect.
 */
 
@@ -1898,7 +1903,8 @@
 ** containing the host's name and the DNS domain it belongs to. It is used
 ** as the domain part (after "@") for local email addresses.
 ** .pp
-** If not specified in a config file, then NeoMutt will try to determine the hostname itself.
+** If not specified in a config file, then NeoMutt will try to determine the
+** hostname itself.
 ** .pp
 ** Optionally, NeoMutt can be compiled with a fixed domain name.
 ** .pp
@@ -2076,9 +2082,9 @@
 { "imap_pass", DT_STRING, 0 },
 /*
 ** .pp
-** Specifies the password for your IMAP account.  If \fIunset\fP, NeoMutt will
-** prompt you for your password when you invoke the \fC<imap-fetch-mail>\fP function
-** or try to open an IMAP folder.
+** Specifies the password for your IMAP account. If \fIunset\fP, NeoMutt will
+** prompt you for your password when you invoke the \fC<imap-fetch-mail>\fP
+** function or try to open an IMAP folder.
 ** .pp
 ** \fBWarning\fP: you should only use this option when you are on a
 ** fairly secure machine, because the superuser can read your neomuttrc even
@@ -2098,10 +2104,10 @@
 { "imap_peek", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will avoid implicitly marking your mail as read whenever
-** you fetch a message from the server. This is generally a good thing,
-** but can make closing an IMAP folder somewhat slower. This option
-** exists to appease speed freaks.
+** When \fIset\fP, NeoMutt will avoid implicitly marking your mail as read
+** whenever you fetch a message from the server. This is generally a good thing,
+** but can make closing an IMAP folder somewhat slower. This option exists to
+** appease speed freaks.
 */
 
 { "imap_pipeline_depth", DT_NUMBER, 15 },
@@ -2178,10 +2184,9 @@
 /*
 ** .pp
 ** If set to "yes", NeoMutt will look for a mailcap entry with the
-** "\fCcopiousoutput\fP" flag set for \fIevery\fP MIME attachment it doesn't have
-** an internal viewer defined for.  If such an entry is found, NeoMutt will
-** use the viewer defined in that entry to convert the body part to text
-** form.
+** "\fCcopiousoutput\fP" flag set for \fIevery\fP MIME attachment it doesn't
+** have an internal viewer defined for. If such an entry is found, NeoMutt will
+** use the viewer defined in that entry to convert the body part to text form.
 */
 
 { "include", DT_QUAD, MUTT_ASKYES },
@@ -2230,10 +2235,10 @@
 ** This variable allows you to customize the message index display to
 ** your personal taste.
 ** .pp
-** "Format strings" are similar to the strings used in the C
-** function \fCprintf(3)\fP to format output (see the man page for more details).
-** For an explanation of the %<...> construct, see the $status_format description.
-** The following sequences are defined in NeoMutt:
+** "Format strings" are similar to the strings used in the C function
+** \fCprintf(3)\fP to format output (see the man page for more details). For an
+** explanation of the %<...> construct, see the $status_format description. The
+** following sequences are defined in NeoMutt:
 ** .dl
 ** .dt \fBShort\fP   .dd \fBLong Name\fP              .dd \fBDescription\fP
 ** .dt \fC%A\fP      .dd \fC%{reply-to}\fP            .dd Reply-to address (if present; otherwise: address of author)
@@ -2386,10 +2391,10 @@
 { "mail_check_recent", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will only notify you about new mail that has been received
-** since the last time you opened the mailbox.  When \fIunset\fP, NeoMutt will notify you
-** if any new mail exists in the mailbox, regardless of whether you have visited it
-** recently.
+** When \fIset\fP, NeoMutt will only notify you about new mail that has been
+** received since the last time you opened the mailbox. When \fIunset\fP,
+** NeoMutt will notify you if any new mail exists in the mailbox, regardless of
+** whether you have visited it recently.
 */
 
 { "mail_check_stats", DT_BOOL, false },
@@ -2578,10 +2583,9 @@
 { "message_cache_clean", DT_BOOL, false },
 /*
 ** .pp
-** If \fIset\fP, NeoMutt will clean out obsolete entries from the message cache when
-** the mailbox is synchronized. You probably only want to set it
-** every once in a while, since it can be a little slow
-** (especially for large folders).
+** If \fIset\fP, NeoMutt will clean out obsolete entries from the message cache
+** when the mailbox is synchronized. You probably only want to set it every once
+** in a while, since it can be a little slow (especially for large folders).
 */
 
 { "message_cache_dir", DT_PATH, 0 },
@@ -2650,20 +2654,19 @@
 { "meta_key", DT_BOOL, false },
 /*
 ** .pp
-** If \fIset\fP, forces NeoMutt to interpret keystrokes with the high bit (bit 8)
-** set as if the user had pressed the Esc key and whatever key remains
-** after having the high bit removed.  For example, if the key pressed
-** has an ASCII value of \fC0xf8\fP, then this is treated as if the user had
-** pressed Esc then "x".  This is because the result of removing the
-** high bit from \fC0xf8\fP is \fC0x78\fP, which is the ASCII character
-** "x".
+** If \fIset\fP, forces NeoMutt to interpret keystrokes with the high bit (bit
+** 8) set as if the user had pressed the Esc key and whatever key remains after
+** having the high bit removed. For example, if the key pressed has an ASCII
+** value of \fC0xf8\fP, then this is treated as if the user had pressed Esc then
+** "x". This is because the result of removing the high bit from \fC0xf8\fP is
+** \fC0x78\fP, which is the ASCII character "x".
 */
 
 { "mh_purge", DT_BOOL, false },
 /*
 ** .pp
-** When \fIunset\fP, NeoMutt will mimic mh's behavior and rename deleted messages
-** to \fI,<old file name>\fP in mh folders instead of really deleting
+** When \fIunset\fP, NeoMutt will mimic mh's behavior and rename deleted
+** messages to \fI,<old file name>\fP in mh folders instead of really deleting
 ** them. This leaves the message on disk but makes programs reading the folder
 ** ignore it. If the variable is \fIset\fP, the message files will simply be
 ** deleted.
@@ -2692,12 +2695,12 @@
 { "mime_forward", DT_QUAD, MUTT_NO },
 /*
 ** .pp
-** When \fIset\fP, the message you are forwarding will be attached as a
-** separate \fCmessage/rfc822\fP MIME part instead of included in the main body of the
-** message.  This is useful for forwarding MIME messages so the receiver
-** can properly view the message as it was delivered to you. If you like
-** to switch between MIME and not MIME from mail to mail, set this
-** variable to "ask-no" or "ask-yes".
+** When \fIset\fP, the message you are forwarding will be attached as a separate
+** \fCmessage/rfc822\fP MIME part instead of included in the main body of the
+** message. This is useful for forwarding MIME messages so the receiver can
+** properly view the message as it was delivered to you. If you like to switch
+** between MIME and not MIME from mail to mail, set this variable to "ask-no" or
+** "ask-yes".
 ** .pp
 ** Also see $$forward_decode and $$mime_forward_decode.
 */
@@ -2862,8 +2865,9 @@
 /*
 ** .pp
 ** This variable specifies notmuch tag which is used for flagged messages. The
-** variable is used to count flagged messages in DB and set the flagged flag when
-** modifying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
+** variable is used to count flagged messages in DB and set the flagged flag
+** when modifying tags. All other NeoMutt commands use standard (e.g. maildir)
+** flags.
 */
 
 { "nm_open_timeout", DT_NUMBER, 5 },
@@ -2875,19 +2879,22 @@
 { "nm_query_type", DT_STRING, "messages" },
 /*
 ** .pp
-** This variable specifies the default query type (threads or messages) used in notmuch queries.
+** This variable specifies the default query type (threads or messages) used in
+** notmuch queries.
 */
 
 { "nm_query_window_current_position", DT_NUMBER, 0 },
 /*
 ** .pp
-** This variable contains the position of the current search for window based vfolder.
+** This variable contains the position of the current search for window based
+** vfolder.
 */
 
 { "nm_query_window_current_search", DT_STRING, 0 },
 /*
 ** .pp
-** This variable contains the currently setup notmuch search for window based vfolder.
+** This variable contains the currently setup notmuch search for window based
+** vfolder.
 */
 
 { "nm_query_window_duration", DT_NUMBER, 0 },
@@ -2947,8 +2954,8 @@
 /*
 ** .pp
 ** This variable specifies notmuch tag which is used for replied messages. The
-** variable is used to set the replied flag when modifying tags. All other NeoMutt
-** commands use standard (e.g. maildir) flags.
+** variable is used to set the replied flag when modifying tags. All other
+** NeoMutt commands use standard (e.g. maildir) flags.
 */
 
 { "nm_unread_tag", DT_STRING, "unread" },
@@ -3127,9 +3134,9 @@
 ** .pp
 ** If \fIset\fP, NeoMutt will automatically attempt to decrypt traditional PGP
 ** messages whenever the user performs an operation which ordinarily would
-** result in the contents of the message being operated on.  For example,
-** if the user displays a pgp-traditional message which has not been manually
-** checked with the \fC$<check-traditional-pgp>\fP function, NeoMutt will automatically
+** result in the contents of the message being operated on. For example, if the
+** user displays a pgp-traditional message which has not been manually checked
+** with the \fC$<check-traditional-pgp>\fP function, NeoMutt will automatically
 ** check the message for traditional pgp.
 */
 
@@ -3199,7 +3206,8 @@
 ** This format strings specifies a command which is used to decode
 ** application/pgp attachments.
 ** .pp
-** The PGP command formats have their own set of \fCprintf(3)\fP-like sequences:
+** The PGP command formats have their own set of \fCprintf(3)\fP-like
+** sequences:
 ** .dl
 ** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
 ** .dt \fC%a\fP    .dd \fC%{sign-as}\fP        .dd Value of $$pgp_sign_as if set, otherwise the value of $$pgp_default_key
@@ -3337,12 +3345,12 @@
 { "pgp_get_keys_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
-** This command is invoked whenever NeoMutt needs to fetch the public key associated with
-** an email address.  Of the sequences supported by $$pgp_decode_command, %r is
-** the only \fCprintf(3)\fP-like sequence used with this format.  Note that
-** in this case, %r expands to the email address, not the public key ID (the key ID is
-** unknown, which is why NeoMutt is invoking this command).
-** (PGP only)
+** This command is invoked whenever NeoMutt needs to fetch the public key
+** associated with an email address. Of the sequences supported by
+** $$pgp_decode_command, %r is the only \fCprintf(3)\fP-like sequence used with
+** this format. Note that in this case, %r expands to the email address, not the
+** public key ID (the key ID is unknown, which is why NeoMutt is invoking this
+** command). (PGP only)
 */
 
 { "pgp_good_sign", DT_REGEX, 0 },
@@ -3435,11 +3443,10 @@
 { "pgp_long_ids", DT_BOOL, true },
 /*
 ** .pp
-** If \fIset\fP, use 64-bit PGP key IDs, if \fIunset\fP use the normal 32-bit key IDs.
-** NOTE: Internally, NeoMutt has transitioned to using fingerprints (or long key IDs
-** as a fallback).  This option now only controls the display of key IDs
-** in the key selection menu and a few other places.
-** (PGP only)
+** If \fIset\fP, use 64-bit PGP key IDs, if \fIunset\fP use the normal 32-bit
+** key IDs. NOTE: Internally, NeoMutt has transitioned to using fingerprints (or
+** long key IDs as a fallback). This option now only controls the display of key
+** IDs in the key selection menu and a few other places. (PGP only)
 */
 
 { "pgp_mime_auto", DT_QUAD, MUTT_ASKYES },
@@ -3594,9 +3601,9 @@
 { "pipe_decode", DT_BOOL, false },
 /*
 ** .pp
-** Used in connection with the \fC<pipe-message>\fP function.  When \fIunset\fP,
-** NeoMutt will pipe the messages without any preprocessing. When \fIset\fP, NeoMutt
-** will attempt to decode the messages first.
+** Used in connection with the \fC<pipe-message>\fP function. When \fIunset\fP,
+** NeoMutt will pipe the messages without any preprocessing. When \fIset\fP,
+** NeoMutt will attempt to decode the messages first.
 ** .pp
 ** Also see $$pipe_decode_weed, which controls whether headers will
 ** be weeded when this is \fIset\fP.
@@ -3630,10 +3637,10 @@
 { "pop_auth_try_all", DT_BOOL, true },
 /*
 ** .pp
-** If \fIset\fP, NeoMutt will try all available authentication methods.
-** When \fIunset\fP, NeoMutt will only fall back to other authentication
-** methods if the previous methods are unavailable. If a method is
-** available but authentication fails, NeoMutt will not connect to the POP server.
+** If \fIset\fP, NeoMutt will try all available authentication methods. When
+** \fIunset\fP, NeoMutt will only fall back to other authentication methods if
+** the previous methods are unavailable. If a method is available but
+** authentication fails, NeoMutt will not connect to the POP server.
 */
 
 { "pop_authenticators", DT_SLIST, 0 },
@@ -3663,9 +3670,9 @@
 { "pop_delete", DT_QUAD, MUTT_ASKNO },
 /*
 ** .pp
-** If \fIset\fP, NeoMutt will delete successfully downloaded messages from the POP
-** server when using the \fC$<fetch-mail>\fP function.  When \fIunset\fP, NeoMutt will
-** download messages but also leave them on the POP server.
+** If \fIset\fP, NeoMutt will delete successfully downloaded messages from the
+** POP server when using the \fC$<fetch-mail>\fP function. When \fIunset\fP,
+** NeoMutt will download messages but also leave them on the POP server.
 */
 
 { "pop_host", DT_STRING, 0 },
@@ -3683,8 +3690,8 @@
 { "pop_last", DT_BOOL, false },
 /*
 ** .pp
-** If this variable is \fIset\fP, NeoMutt will try to use the "\fCLAST\fP" POP command
-** for retrieving only unread messages from the POP server when using
+** If this variable is \fIset\fP, NeoMutt will try to use the "\fCLAST\fP" POP
+** command for retrieving only unread messages from the POP server when using
 ** the \fC$<fetch-mail>\fP function.
 */
 
@@ -3904,10 +3911,10 @@
 { "quit", DT_QUAD, MUTT_YES },
 /*
 ** .pp
-** This variable controls whether "quit" and "exit" actually quit
-** from NeoMutt.  If this option is \fIset\fP, they do quit, if it is \fIunset\fP, they
-** have no effect, and if it is set to \fIask-yes\fP or \fIask-no\fP, you are
-** prompted for confirmation when you try to quit.
+** This variable controls whether "quit" and "exit" actually quit from NeoMutt.
+** If this option is \fIset\fP, they do quit, if it is \fIunset\fP, they have no
+** effect, and if it is set to \fIask-yes\fP or \fIask-no\fP, you are prompted
+** for confirmation when you try to quit.
 ** .pp
 ** In order to quit from NeoMutt if this variable is \fIunset\fP, you must send
 ** the signal SIGINT to NeoMutt.  This can usually be achieved by pressing
@@ -3933,15 +3940,14 @@
 { "read_inc", DT_NUMBER, 10 },
 /*
 ** .pp
-** If set to a value greater than 0, NeoMutt will display which message it
-** is currently on when reading a mailbox or when performing search actions
-** such as search and limit. The message is printed after
-** this many messages have been read or searched (e.g., if set to 25, NeoMutt will
-** print a message when it is at message 25, and then again when it gets
-** to message 50).  This variable is meant to indicate progress when
-** reading or searching large mailboxes which may take some time.
-** When set to 0, only a single message will appear before the reading
-** the mailbox.
+** If set to a value greater than 0, NeoMutt will display which message it is
+** currently on when reading a mailbox or when performing search actions such as
+** search and limit. The message is printed after this many messages have been
+** read or searched (e.g., if set to 25, NeoMutt will print a message when it is
+** at message 25, and then again when it gets to message 50). This variable is
+** meant to indicate progress when reading or searching large mailboxes which
+** may take some time. When set to 0, only a single message will appear before
+** the reading the mailbox.
 ** .pp
 ** Also see the $$write_inc, $$net_inc and $$time_inc variables and the
 ** "$tuning" section of the manual for performance considerations.
@@ -3959,8 +3965,8 @@
 ** This variable specifies what "real" or "personal" name should be used
 ** when sending messages.
 ** .pp
-** If not specified, then the user's "real name" will be read from \fC/etc/passwd\fP.
-** This option will not be used, if "$$from" is set.
+** If not specified, then the user's "real name" will be read from
+** \fC/etc/passwd\fP. This option will not be used, if "$$from" is set.
 */
 
 { "recall", DT_QUAD, MUTT_ASKYES },
@@ -4015,17 +4021,17 @@
 { "reflow_wrap", DT_NUMBER, 78 },
 /*
 ** .pp
-** This variable controls the maximum paragraph width when reformatting text/plain
-** parts when $$reflow_text is \fIset\fP.  When the value is 0, paragraphs will
-** be wrapped at the terminal's right margin.  A positive value sets the
-** paragraph width relative to the left margin.  A negative value set the
-** paragraph width relative to the right margin.
+** This variable controls the maximum paragraph width when reformatting
+** text/plain parts when $$reflow_text is \fIset\fP. When the value is 0,
+** paragraphs will be wrapped at the terminal's right margin. A positive value
+** sets the paragraph width relative to the left margin. A negative value set
+** the paragraph width relative to the right margin.
 ** .pp
-** Be aware that the reformatted lines of a paragraph are still subject to $$wrap.
-** This means if $$reflow_wrap is 40 and $$wrap is 30, then the paragraph gets
-** reformatted to 40 characters a line (due to $$reflow_wrap) and afterwards
-** each 40-character-line is split at 30 characters (due to $$wrap), resulting in
-** alternating line lengths of 30 and 10 characters.
+** Be aware that the reformatted lines of a paragraph are still subject to
+** $$wrap. This means if $$reflow_wrap is 40 and $$wrap is 30, then the
+** paragraph gets reformatted to 40 characters a line (due to $$reflow_wrap) and
+** afterwards each 40-character-line is split at 30 characters (due to $$wrap),
+** resulting in alternating line lengths of 30 and 10 characters.
 ** .pp
 ** Also see $$wrap.
 */
@@ -4305,13 +4311,12 @@
 { "send_charset", DT_SLIST, "us-ascii:iso-8859-1:utf-8" },
 /*
 ** .pp
-** A colon-delimited list of character sets for outgoing messages. NeoMutt will use the
-** first character set into which the text can be converted exactly.
-** If your $$charset is not "iso-8859-1" and recipients may not
-** understand "UTF-8", it is advisable to include in the list an
-** appropriate widely used standard character set (such as
-** "iso-8859-2", "koi8-r" or "iso-2022-jp") either instead of or after
-** "iso-8859-1".
+** A colon-delimited list of character sets for outgoing messages. NeoMutt will
+** use the first character set into which the text can be converted exactly. If
+** your $$charset is not "iso-8859-1" and recipients may not understand "UTF-8",
+** it is advisable to include in the list an appropriate widely used standard
+** character set (such as "iso-8859-2", "koi8-r" or "iso-2022-jp") either
+** instead of or after "iso-8859-1".
 ** .pp
 ** In case the text can't be converted into one of these exactly,
 ** NeoMutt uses $$charset as a fallback.
@@ -4415,7 +4420,8 @@
 ** set sidebar_delim_chars='.'
 ** .te
 ** .pp
-** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_indent_string.
+** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent,
+** $$sidebar_indent_string.
 */
 
 { "sidebar_divider_char", DT_STRING, "|" },
@@ -4437,7 +4443,8 @@
 ** .pp
 ** Set this to indent mailboxes in the sidebar.
 ** .pp
-** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string, $$sidebar_delim_chars.
+** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string,
+** $$sidebar_delim_chars.
 */
 
 { "sidebar_format", DT_STRING, "%D%*  %n" },
@@ -4483,7 +4490,8 @@
 ** This specifies the string that is used to indent mailboxes in the sidebar.
 ** It defaults to two spaces.
 ** .pp
-** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_delim_chars.
+** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent,
+** $$sidebar_delim_chars.
 */
 
 { "sidebar_new_mail_only", DT_BOOL, false },
@@ -4507,7 +4515,8 @@
 { "sidebar_non_empty_mailbox_only", DT_BOOL, false },
 /*
 ** .pp
-** When set, the sidebar will only display mailboxes that contain one or more mails.
+** When set, the sidebar will only display mailboxes that contain one or more
+** mails.
 ** .pp
 ** \fBSee also:\fP $$sidebar_new_mail_only, $sidebar-pin.
 */
@@ -4580,12 +4589,12 @@
 { "sig_dashes", DT_BOOL, true },
 /*
 ** .pp
-** If \fIset\fP, a line containing "-- " (note the trailing space) will be inserted before your
-** $$signature.  It is \fBstrongly\fP recommended that you not \fIunset\fP
-** this variable unless your signature contains just your name.  The
-** reason for this is because many software packages use "-- \n" to
-** detect your signature.  For example, NeoMutt has the ability to highlight
-** the signature in a different color in the built-in pager.
+** If \fIset\fP, a line containing "-- " (note the trailing space) will be
+** inserted before your $$signature. It is \fBstrongly\fP recommended that you
+** not \fIunset\fP this variable unless your signature contains just your name.
+** The reason for this is because many software packages use "-- \n" to detect
+** your signature. For example, NeoMutt has the ability to highlight the
+** signature in a different color in the built-in pager.
 */
 
 { "sig_on_top", DT_BOOL, false },
@@ -4647,8 +4656,8 @@
 { "size_units_on_left", DT_BOOL, false },
 /*
 ** .pp
-** If \fIset\fP, message sizes units will be displayed to the left of the number.
-** See $formatstrings-size.
+** If \fIset\fP, message sizes units will be displayed to the left of the
+** number. See $formatstrings-size.
 */
 
 { "sleep_time", DT_NUMBER, 1 },
@@ -4699,14 +4708,12 @@
 { "smime_certificates", DT_PATH, 0 },
 /*
 ** .pp
-** Since for S/MIME there is no pubring/secring as with PGP, NeoMutt has to handle
-** storage and retrieval of keys by itself. This is very basic right
-** now, and keys and certificates are stored in two different
-** directories, both named as the hash-value retrieved from
-** OpenSSL. There is an index file which contains mailbox-address
-** keyid pairs, and which can be manually edited. This option points to
-** the location of the certificates.
-** (S/MIME only)
+** Since for S/MIME there is no pubring/secring as with PGP, NeoMutt has to
+** handle storage and retrieval of keys by itself. This is very basic right now,
+** and keys and certificates are stored in two different directories, both named
+** as the hash-value retrieved from OpenSSL. There is an index file which
+** contains mailbox-address keyid pairs, and which can be manually edited. This
+** option points to the location of the certificates. (S/MIME only)
 */
 
 { "smime_decrypt_command", D_STRING_COMMAND, 0 },
@@ -4715,8 +4722,8 @@
 ** This format string specifies a command which is used to decrypt
 ** \fCapplication/pkcs7-mime\fP attachments.
 ** .pp
-** The OpenSSL command formats have their own set of \fCprintf(3)\fP-like sequences
-** similar to PGP's:
+** The OpenSSL command formats have their own set of \fCprintf(3)\fP-like
+** sequences similar to PGP's:
 ** .dl
 ** .dt \fBShort\fP .dd \fBLong Name\fP           .dd \fBDescription\fP
 ** .dt \fC%a\fP    .dd \fC%{algorithm}\fP        .dd Algorithm used for encryption
@@ -4740,10 +4747,10 @@
 { "smime_decrypt_use_default_key", DT_BOOL, true },
 /*
 ** .pp
-** If \fIset\fP (default) this tells NeoMutt to use the default key for decryption. Otherwise,
-** if managing multiple certificate-key-pairs, NeoMutt will try to use the mailbox-address
-** to determine the key to use. It will ask you to supply a key, if it can't find one.
-** (S/MIME only)
+** If \fIset\fP (default) this tells NeoMutt to use the default key for
+** decryption. Otherwise, if managing multiple certificate-key-pairs, NeoMutt
+** will try to use the mailbox-address to determine the key to use. It will ask
+** you to supply a key, if it can't find one. (S/MIME only)
 */
 #endif
 
@@ -4783,8 +4790,8 @@
 { "smime_encrypt_with", DT_STRING, "aes256" },
 /*
 ** .pp
-** This sets the algorithm that should be used for encryption.
-** Valid choices are "aes128", "aes192", "aes256", "des", "des3", "rc2-40", "rc2-64", "rc2-128".
+** This sets the algorithm that should be used for encryption. Valid choices are
+** "aes128", "aes192", "aes256", "des", "des3", "rc2-40", "rc2-64", "rc2-128".
 ** (S/MIME only)
 */
 
@@ -4814,8 +4821,8 @@
 { "smime_get_signer_cert_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
-** This command is used to extract only the signers X509 certificate from a S/MIME
-** signature, so that the certificate's owner may get compared to the
+** This command is used to extract only the signers X509 certificate from a
+** S/MIME signature, so that the certificate's owner may get compared to the
 ** email's "From:" field.
 ** .pp
 ** This is a format string, see the $$smime_decrypt_command command for
@@ -4842,21 +4849,20 @@
 ** operations. To override and to use OpenSSL instead this must be \fIset\fP.
 ** However, this has no effect while replying, since NeoMutt will automatically
 ** select the same application that was used to sign/encrypt the original
-** message.  (Note that this variable can be overridden by unsetting $$crypt_auto_smime.)
-** (S/MIME only)
+** message. (Note that this variable can be overridden by unsetting
+** $$crypt_auto_smime.) (S/MIME only)
 */
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 { "smime_keys", DT_PATH, 0 },
 /*
 ** .pp
-** Since for S/MIME there is no pubring/secring as with PGP, NeoMutt has to handle
-** storage and retrieval of keys/certs by itself. This is very basic right now,
-** and stores keys and certificates in two different directories, both
-** named as the hash-value retrieved from OpenSSL. There is an index file
-** which contains mailbox-address keyid pair, and which can be manually
-** edited. This option points to the location of the private keys.
-** (S/MIME only)
+** Since for S/MIME there is no pubring/secring as with PGP, NeoMutt has to
+** handle storage and retrieval of keys/certs by itself. This is very basic
+** right now, and stores keys and certificates in two different directories,
+** both named as the hash-value retrieved from OpenSSL. There is an index file
+** which contains mailbox-address keyid pair, and which can be manually edited.
+** This option points to the location of the private keys. (S/MIME only)
 */
 
 { "smime_pk7out_command", D_STRING_COMMAND, 0 },
@@ -4918,7 +4924,8 @@
 { "smime_verify_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
-** This command is used to verify S/MIME signatures of type \fCmultipart/signed\fP.
+** This command is used to verify S/MIME signatures of type
+** \fCmultipart/signed\fP.
 ** .pp
 ** This is a format string, see the $$smime_decrypt_command command for
 ** possible \fCprintf(3)\fP-like sequences.
@@ -5180,9 +5187,9 @@
 { "ssl_starttls", DT_QUAD, MUTT_YES },
 /*
 ** .pp
-** If \fIset\fP (the default), NeoMutt will attempt to use \fCSTARTTLS\fP on servers
-** advertising the capability. When \fIunset\fP, NeoMutt will not attempt to
-** use \fCSTARTTLS\fP regardless of the server's capabilities.
+** If \fIset\fP (the default), NeoMutt will attempt to use \fCSTARTTLS\fP on
+** servers advertising the capability. When \fIunset\fP, NeoMutt will not
+** attempt to use \fCSTARTTLS\fP regardless of the server's capabilities.
 ** .pp
 ** \fBNote\fP that \fCSTARTTLS\fP is subject to many kinds of
 ** attacks, including the ability of a machine-in-the-middle to
@@ -5340,9 +5347,9 @@
 ** .pp
 ** \fC%<T?%s/%S&%T/%s>\fP
 ** .pp
-** You can force the result of any \fCprintf(3)\fP-like sequence to be lowercase
-** by prefixing the sequence character with an underscore ("_") sign.
-** For example, if you want to display the local hostname in lowercase,
+** You can force the result of any \fCprintf(3)\fP-like sequence to be
+** lowercase by prefixing the sequence character with an underscore ("_")
+** sign. For example, if you want to display the local hostname in lowercase,
 ** you would use: "\fC%_h\fP".
 ** .pp
 ** If you prefix the sequence character with a colon (":") character, NeoMutt
@@ -5386,11 +5393,11 @@
 { "text_flowed", DT_BOOL, false },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will generate "format=flowed" bodies with a content type
-** of "\fCtext/plain; format=flowed\fP".
-** This format is easier to handle for some mailing software, and generally
-** just looks like ordinary text.  To actually make use of this format's
-** features, you'll need support in your editor.
+** When \fIset\fP, NeoMutt will generate "format=flowed" bodies with a content
+** type of "\fCtext/plain; format=flowed\fP". This format is easier to handle
+** for some mailing software, and generally just looks like ordinary text. To
+** actually make use of this format's features, you'll need support in your
+** editor.
 ** .pp
 ** The option only controls newly composed messages.  Postponed messages,
 ** resent messages, and draft messages (via -H on the command line) will
@@ -5402,16 +5409,16 @@
 { "thorough_search", DT_BOOL, true },
 /*
 ** .pp
-** Affects the \fC~b\fP, \fC~B\fP, and \fC~h\fP search operations described in
-** section "$patterns".  If \fIset\fP, the headers and body/attachments of
-** messages to be searched are decoded before searching. If \fIunset\fP,
-** messages are searched as they appear in the folder.
+** Affects the \fC~b\fP, \fC~B\fP, and \fC~h\fP search operations
+** described in section "$patterns".  If \fIset\fP, the headers and
+** body/attachments of messages to be searched are decoded before searching.
+** If \fIunset\fP, messages are searched as they appear in the folder.
 ** .pp
-** Users searching attachments or for non-ASCII characters should \fIset\fP
-** this value because decoding also includes MIME parsing/decoding and possible
-** character set conversions. Otherwise NeoMutt will attempt to match against the
-** raw message received (for example quoted-printable encoded or with encoded
-** headers) which may lead to incorrect search results.
+** Users searching attachments or for non-ASCII characters should \fIset\fP this
+** value because decoding also includes MIME parsing/decoding and possible
+** character set conversions. Otherwise NeoMutt will attempt to match against
+** the raw message received (for example quoted-printable encoded or with
+** encoded headers) which may lead to incorrect search results.
 */
 
 { "thread_received", DT_BOOL, false },
@@ -5631,8 +5638,8 @@
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will look for IPv6 addresses of hosts it tries to
-** contact.  If this option is \fIunset\fP, NeoMutt will restrict itself to IPv4 addresses.
-** Normally, the default should work.
+** contact. If this option is \fIunset\fP, NeoMutt will restrict itself to IPv4
+** addresses. Normally, the default should work.
 */
 #endif
 
@@ -5683,17 +5690,17 @@
 { "wait_key", DT_BOOL, true },
 /*
 ** .pp
-** Controls whether NeoMutt will ask you to press a key after an external command
-** has been invoked by these functions: \fC<shell-escape>\fP,
-** \fC<pipe-message>\fP, \fC<pipe-entry>\fP, \fC<print-message>\fP,
-** and \fC<print-entry>\fP commands.
+** Controls whether NeoMutt will ask you to press a key after an external
+** command has been invoked by these functions: \fC<shell-escape>\fP,
+** \fC<pipe-message>\fP, \fC<pipe-entry>\fP, \fC<print-message>\fP, and
+** \fC<print-entry>\fP commands.
 ** .pp
 ** It is also used when viewing attachments with "$auto-view", provided
 ** that the corresponding mailcap entry has a \fIneedsterminal\fP flag,
 ** and the external program is interactive.
 ** .pp
-** When \fIset\fP, NeoMutt will always ask for a key. When \fIunset\fP, NeoMutt will wait
-** for a key only if the external command returned a non-zero status.
+** When \fIset\fP, NeoMutt will always ask for a key. When \fIunset\fP, NeoMutt
+** will wait for a key only if the external command returned a non-zero status.
 */
 
 { "weed", DT_BOOL, true },

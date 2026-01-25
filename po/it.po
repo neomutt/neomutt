@@ -9856,27 +9856,3 @@ msgstr "Opzioni di compilazione:"
 msgid "Devel options:"
 msgstr "Opzioni di compilazione:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Apri la mailbox in sola lettura"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Assegnazioni generiche:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Assegnazioni generiche:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Funzioni non assegnate:"
-
-#~ msgid "alias: no address"
-#~ msgstr "alias: nessun indirizzo"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Opzioni di compilazione:"

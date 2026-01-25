@@ -9904,27 +9904,3 @@ msgstr "Kompileerimise võtmed:"
 msgid "Devel options:"
 msgstr "Kompileerimise võtmed:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Avan postkasti ainult lugemiseks"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Üldised seosed:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Üldised seosed:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Sidumata funktsioonid:"
-
-#~ msgid "alias: no address"
-#~ msgstr "alias: aadress puudub"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Kompileerimise võtmed:"

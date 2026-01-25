@@ -9707,31 +9707,3 @@ msgstr "コンパイル時オプション:"
 msgid "Devel options:"
 msgstr "コンパイル時オプション:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "読み出し専用モードでメールボックスをオープン"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "一般的なキーバインド:"
-
-#, c-format
-#~ msgid "Function '%s' not available for menu '%s'"
-#~ msgstr "関数 '%s' は メニュー '%s' で利用できない"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "一般的なキーバインド:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "未バインドの機能:"
-
-#~ msgid "alias: no address"
-#~ msgstr "alias (別名): アドレスがない"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "コンパイル時オプション:"

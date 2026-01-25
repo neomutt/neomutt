@@ -9862,27 +9862,3 @@ msgstr "컴파일 선택사항:"
 msgid "Devel options:"
 msgstr "컴파일 선택사항:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "읽기 전용으로 메일함 열기"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "기본 글쇠 정의:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "기본 글쇠 정의:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "글쇠가 정의되지 않은 기능:"
-
-#~ msgid "alias: no address"
-#~ msgstr "별칭: 주소 없음"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "컴파일 선택사항:"

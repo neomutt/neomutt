@@ -9972,27 +9972,3 @@ msgstr "Roghanna tiomsaithe:"
 msgid "Devel options:"
 msgstr "Roghanna tiomsaithe:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Oscail bosca poist i mód inléite amháin"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Ceangail ghinearálta:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Ceangail ghinearálta:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Feidhmeanna gan cheangal:"
-
-#~ msgid "alias: no address"
-#~ msgstr "ailias: gan seoladh"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Roghanna tiomsaithe:"

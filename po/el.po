@@ -9845,27 +9845,3 @@ msgstr "Παράμετροι μεταγλώττισης:"
 msgid "Devel options:"
 msgstr "Προκαθορισμένοι παράμετροι:"
 
-#, fuzzy
-#~ msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-#~ msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
-
-#, fuzzy
-#~ msgid "  -R            Open mailbox in read-only mode"
-#~ msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο για εγγραφή"
-
-#, fuzzy, c-format
-#~ msgid "%s bindings:"
-#~ msgstr "Γενικές συνδέσεις:"
-
-#~ msgid "Generic bindings:"
-#~ msgstr "Γενικές συνδέσεις:"
-
-#~ msgid "Unbound functions:"
-#~ msgstr "Μη συνδεδεμένες λειτουργίες:"
-
-#~ msgid "alias: no address"
-#~ msgstr "Ψευδώνυμο: καμία διεύθυνση"
-
-#, fuzzy
-#~ msgid "options:"
-#~ msgstr "Παράμετροι μεταγλώττισης:"

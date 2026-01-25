@@ -28,7 +28,7 @@
 .ft
 .fi
 ..
-.TH neomuttrc 5 @MAN_DATE@ Unix "User Manuals"
+.TH NEOMUTTRC 5 @MAN_DATE@ Unix "User Manuals"
 .\" --------------------------------------------------------------------
 .SH NAME
 .\" --------------------------------------------------------------------
@@ -134,8 +134,8 @@ expression. To remove a regular expression from the alternates list, use the
 unalternates command with exactly the same \fIregex\fP or use \(lq\fB*\fP\(rq
 to remove all entries.
 .IP
-The optional \fB\-group\fP flag for the \fBalternates\fP command causes all of the subsequent regular expressions
-to be added to the \fIname\fPd group.
+The optional \fB\-group\fP flag for the \fBalternates\fP command causes all of
+the subsequent regular expressions to be added to the \fIname\fPd group.
 .
 .PP
 .nf
@@ -198,8 +198,8 @@ attachment settings.
 .fi
 .IP
 This commands permits you to specify that NeoMutt should automatically convert
-the given \fImime-type\fPs to text/plain when displaying messages. For this to work,
-there must be a
+the given \fImime-type\fPs to text/plain when displaying messages. For this to
+work, there must be a
 .BR mailcap (5)
 entry for the given \fImime-type\fP with the \fBcopiousoutput\fP option set.
 A \fImime-subtype\fP of \(lq\fB*\fP\(rq matches any
@@ -229,7 +229,8 @@ symbolic names for the keys on your keyboard.
 \fIfunction\fP specifies which action to take when key is pressed. Note that
 the function name is to be specified without angle brackets.
 .IP
-Missing key sequence in \fBunbind\fP command means unbind all bindings in menus given in \fImap\fP .
+Missing key sequence in \fBunbind\fP command means unbind all bindings in menus
+given in \fImap\fP .
 .IP
 For more information on keys and functions, please consult the NeoMutt manual.
 .
@@ -452,8 +453,8 @@ limit the display to messages matching a group.
 \fBunheader-order\fP { \fB*\fP | \fIheader\fP ... }
 .fi
 .IP
-With the \fBheader-order\fP command you can specify an order in which NeoMutt will
-attempt to present these headers to you when viewing messages.
+With the \fBheader-order\fP command you can specify an order in which NeoMutt
+will attempt to present these headers to you when viewing messages.
 .IP
 \(lq\fBunheader-order\~*\fP\(rq will clear all previous headers from the order
 list, thus removing the header order effects set by the system-wide startup
@@ -464,7 +465,8 @@ file.
 \fBhooks\fP
 .fi
 .IP
-This information command will show a list of all the hooks that you have defined.
+This information command will show a list of all the hooks that you have
+defined.
 .
 .PP
 .nf
@@ -561,7 +563,8 @@ command above. To specify multiple menus, put only a comma between the menus.
 Optionally you can specify a descriptive text after \fIsequence\fP, which is
 shown in the help screens if they contain a \fIdescription\fP.
 .IP
-Missing key sequence in \fBunmacro\fP command means unmacro all macros in menus given in \fImenu\fP.
+Missing key sequence in \fBunmacro\fP command means unmacro all macros in menus
+given in \fImenu\fP.
 .
 .PP
 .nf
@@ -672,8 +675,9 @@ attributes to objects.
 \fBunmy-header\fP { \fB*\fP | \fIfield\fP ... }
 .fi
 .IP
-Using \fBmy-header\fP, you can define headers which will be added to the messages
-you compose. \fBunmy-header\fP will remove the given user-defined headers.
+Using \fBmy-header\fP, you can define headers which will be added to the
+messages you compose. \fBunmy-header\fP will remove the given user-defined
+headers.
 .
 .PP
 .nf
@@ -769,13 +773,13 @@ the list of all score entries.
 .IP
 These commands are used to set and manipulate configuration \fIvariable\fPs.
 .IP
-NeoMutt knows four basic types of \fIvariable\fPs: boolean, number, string, string
-list and quadoption. Boolean \fIvariable\fPs can be \fBset\fP (true), \fBunset\fP
-(false), or \fBtoggle\fPd. Number \fIvariable\fPs can be assigned a positive
-integer \fIvalue\fP. Value of number \fIvariable\fPs can be incremented "\fB+=\fP"
-and decremented "\fB\-=\fP". String list \fIvariable\fPs use "\fB+=\fP" for
-appending increment to the string list and "\fB\-=\fP" for removal decrement from
-the string list.
+NeoMutt knows four basic types of \fIvariable\fPs: boolean, number, string,
+string list and quadoption. Boolean \fIvariable\fPs can be \fBset\fP (true),
+\fBunset\fP (false), or \fBtoggle\fPd. Number \fIvariable\fPs can be assigned a
+positive integer \fIvalue\fP. Value of number \fIvariable\fPs can be
+incremented "\fB+=\fP" and decremented "\fB\-=\fP". String list \fIvariable\fPs
+use "\fB+=\fP" for appending increment to the string list and "\fB\-=\fP" for
+removal decrement from the string list.
 .IP
 String \fIvariable\fPs consist of any number of printable characters and must
 be enclosed in quotes if they contain spaces or tabs. You may also use the
@@ -864,14 +868,14 @@ is considered to be an executable program from which to read input, (e.g.\&
 If the filename is relative and the command \fBsource\fP is executed from the
 context of a configuration file, then the filename is interpreted relative to
 the directory of that configuration file.  If the command is executed outside
-of a configuration file, e.g.\& from the prompt, then the filename is interpreted
-relative to the current working directory (see \fBcd\fP on how to change the
-current working directory at runtime).
+of a configuration file, e.g.\& from the prompt, then the filename is
+interpreted relative to the current working directory (see \fBcd\fP on how to
+change the current working directory at runtime).
 .IP
 Note: A hook remembers the configuration file it was defined in and sets the
-context to that file when executing its commands.  As a result a \fBsource\fP command
-inside a hook is executed in the context of the configuration file the hook was
-defined in.  Thus relative filenames are interpreted relative to the
+context to that file when executing its commands.  As a result a \fBsource\fP
+command inside a hook is executed in the context of the configuration file the
+hook was defined in.  Thus relative filenames are interpreted relative to the
 configuration file the hook is defined in.
 .
 .PP
@@ -1275,7 +1279,6 @@ T{
 T}
 .T&
 l l s .
-.PP
 \0\fB*\fP)|T{
 The message number ranges (introduced by \(lq\fB~m\fP\(rq) are even
 more general and powerful than the other types of ranges. Read on and see
