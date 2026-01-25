@@ -59,7 +59,7 @@ mode_t mh_umask(struct Mailbox *m)
     return 077;
   }
 
-  return 0777 & ~st.st_mode;
+  return (S_IRWXU | S_IRWXG | S_IRWXO) & ~st.st_mode;
 }
 
 /**
@@ -83,7 +83,7 @@ bool mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
   {
     snprintf(path, sizeof(path), "%s/.neomutt-%s-%d-%" PRIu64, mailbox_path(m),
              NONULL(ShortHostname), (int) getpid(), mutt_rand64());
-    fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666);
+    fd = open(path, O_WRONLY | O_EXCL | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
     if (fd == -1)
     {
       if (errno != EEXIST)

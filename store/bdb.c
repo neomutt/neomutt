@@ -138,7 +138,7 @@ static StoreHandle *store_bdb_open(const char *path, bool create)
   if (rc)
     goto fail_unlock;
 
-  rc = (*sdata->env->open)(sdata->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE, 0600);
+  rc = (*sdata->env->open)(sdata->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE, S_IRUSR | S_IWUSR);
   if (rc)
     goto fail_env;
 
@@ -156,7 +156,7 @@ static StoreHandle *store_bdb_open(const char *path, bool create)
     sdata->db->set_pagesize(sdata->db, pagesize);
   }
 
-  rc = (*sdata->db->open)(sdata->db, NULL, path, NULL, DB_BTREE, createflags, 0600);
+  rc = (*sdata->db->open)(sdata->db, NULL, path, NULL, DB_BTREE, createflags, S_IRUSR | S_IWUSR);
   if (rc)
     goto fail_db;
 

@@ -169,7 +169,7 @@ static StoreHandle *store_lmdb_open(const char *path, bool create)
 
   mdb_env_set_mapsize(sdata->env, LMDB_DB_SIZE);
 
-  rc = mdb_env_open(sdata->env, path, MDB_NOSUBDIR, 0644);
+  rc = mdb_env_open(sdata->env, path, MDB_NOSUBDIR, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_env_open: %s\n", mdb_strerror(rc));

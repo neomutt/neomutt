@@ -563,7 +563,7 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
 
     mutt_debug(LL_DEBUG2, "Trying %s\n", path);
 
-    fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666);
+    fd = open(path, O_WRONLY | O_EXCL | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
     if (fd == -1)
     {
       if (errno != EEXIST)

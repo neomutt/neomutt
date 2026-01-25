@@ -518,7 +518,7 @@ int mutt_file_open(const char *path, uint32_t flags, mode_t mode)
   if (!path)
     return -1;
 
-  int fd = open(path, flags & ~O_EXCL, 0600);
+  int fd = open(path, flags & ~O_EXCL, S_IRUSR | S_IWUSR);
   if (fd < 0)
     return -1;
 

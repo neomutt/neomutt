@@ -29,6 +29,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 
 struct Buffer;
@@ -134,8 +135,8 @@ void        mutt_file_resolve_symlink(struct Buffer *buf);
 void        buf_quote_filename(struct Buffer *buf, const char *filename, bool add_outer);
 void        buf_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src);
 
-// Safest default permissions should be 0600
-#define mutt_file_fopen(PATH, MODE) mutt_file_fopen_full(PATH, MODE, 0600, __FILE__, __LINE__, __func__)
+// Safest default permissions should be S_IRUSR | S_IWUSR (owner read+write)
+#define mutt_file_fopen(PATH, MODE) mutt_file_fopen_full(PATH, MODE, S_IRUSR | S_IWUSR, __FILE__, __LINE__, __func__)
 #define mutt_file_fclose(FP)        mutt_file_fclose_full(FP, __FILE__, __LINE__, __func__)
 
 #endif /* MUTT_MUTT_FILE_H */

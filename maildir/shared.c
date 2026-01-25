@@ -56,7 +56,7 @@ mode_t maildir_umask(struct Mailbox *m)
     return 077;
   }
 
-  return 0777 & ~st.st_mode;
+  return (S_IRWXU | S_IRWXG | S_IRWXO) & ~st.st_mode;
 }
 
 /**
