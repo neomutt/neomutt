@@ -107,11 +107,11 @@ const char *name_expando_uid_smime_cmd    (int uid);
 const char *name_format_justify           (enum FormatJustify just);
 
 // Graphviz
-void        dump_graphviz             (const char *title, struct MailboxView *mv);
-void        dump_graphviz_attach_ctx  (struct AttachCtx *actx);
-void        dump_graphviz_body        (struct Body *b);
-void        dump_graphviz_email       (struct Email *e, const char *title);
-void        dump_graphviz_expando_node(struct ExpandoNode *node);
+void        dump_graphviz             (const char *title, const struct MailboxView *mv);
+void        dump_graphviz_attach_ctx  (const struct AttachCtx *actx);
+void        dump_graphviz_body        (const struct Body *b);
+void        dump_graphviz_email       (const struct Email *e, const char *title);
+void        dump_graphviz_expando_node(const struct ExpandoNode *node);
 
 // Keymap
 void dump_menu_binds(bool brief);

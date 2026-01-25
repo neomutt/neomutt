@@ -76,11 +76,17 @@
 // #define GV_HIDE_BODY_CONTENT
 // #define GV_HIDE_ENVELOPE
 
-void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
-void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links);
-void dot_patternlist(FILE *fp, struct PatternList *pl, struct ListHead *links);
-void dot_expando_node(FILE *fp, struct ExpandoNode *node, struct ListHead *links);
+void dot_email(FILE *fp, const struct Email *e, struct ListHead *links);
+void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *links);
+void dot_patternlist(FILE *fp, const struct PatternList *pl, struct ListHead *links);
+void dot_expando_node(FILE *fp, const struct ExpandoNode *node, struct ListHead *links);
 
+/**
+ * dot_type_bool - Write a boolean type field to GraphViz output
+ * @param fp   File pointer
+ * @param name Field name
+ * @param val  Boolean value
+ */
 void dot_type_bool(FILE *fp, const char *name, bool val)
 {
   static const char *values[] = { "false", "true" };
@@ -92,6 +98,12 @@ void dot_type_bool(FILE *fp, const char *name, bool val)
 }
 
 #ifndef GV_HIDE_ADATA
+/**
+ * dot_type_char - Write a character type field to GraphViz output
+ * @param fp   File pointer
+ * @param name Field name
+ * @param ch   Character value
+ */
 void dot_type_char(FILE *fp, const char *name, char ch)
 {
   fprintf(fp, "\t\t<tr>\n");
@@ -105,11 +117,23 @@ void dot_type_char(FILE *fp, const char *name, char ch)
 }
 #endif
 
+/**
+ * dot_type_date - Format a timestamp for GraphViz output
+ * @param buf    Buffer for output
+ * @param buflen Buffer length
+ * @param timestamp Timestamp to format
+ */
 void dot_type_date(char *buf, size_t buflen, time_t timestamp)
 {
   mutt_date_localtime_format(buf, buflen, "%Y-%m-%d %H:%M:%S", timestamp);
 }
 
+/**
+ * dot_type_file - Write a file pointer field to GraphViz output
+ * @param fp         File pointer
+ * @param name       Field name
+ * @param struct_fp  File pointer value
+ */
 void dot_type_file(FILE *fp, const char *name, FILE *struct_fp)
 {
   fprintf(fp, "\t\t<tr>\n");
@@ -118,7 +142,7 @@ void dot_type_file(FILE *fp, const char *name, FILE *struct_fp)
   if (struct_fp)
   {
     fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%p (%d)</td>\n",
-            (void *) struct_fp, fileno(struct_fp));
+            struct_fp, fileno(struct_fp));
   }
   else
   {
@@ -127,6 +151,12 @@ void dot_type_file(FILE *fp, const char *name, FILE *struct_fp)
   fprintf(fp, "\t\t</tr>\n");
 }
 
+/**
+ * dot_type_number - Write a number type field to GraphViz output
+ * @param fp   File pointer
+ * @param name Field name
+ * @param num  Numeric value
+ */
 void dot_type_number(FILE *fp, const char *name, int num)
 {
   fprintf(fp, "\t\t<tr>\n");
@@ -136,6 +166,10 @@ void dot_type_number(FILE *fp, const char *name, int num)
   fprintf(fp, "\t\t</tr>\n");
 }
 
+/**
+ * dot_type_string_escape - Escape special characters in a string for GraphViz
+ * @param buf String buffer to escape
+ */
 void dot_type_string_escape(struct Buffer *buf)
 {
   for (int i = buf_len(buf) - 1; i >= 0; i--)
@@ -149,6 +183,13 @@ void dot_type_string_escape(struct Buffer *buf)
   }
 }
 
+/**
+ * dot_type_string - Write a string type field to GraphViz output
+ * @param fp    File pointer
+ * @param name  Field name
+ * @param str   String value
+ * @param force Always output even if empty
+ */
 void dot_type_string(FILE *fp, const char *name, const char *str, bool force)
 {
   if ((!str || (str[0] == '\0')) && !force)
@@ -174,17 +215,36 @@ void dot_type_string(FILE *fp, const char *name, const char *str, bool force)
 }
 
 #ifndef GV_HIDE_MDATA
+/**
+ * dot_type_umask - Format a file mode as octal string
+ * @param buf    Buffer for output
+ * @param buflen Buffer length
+ * @param umask  File mode mask
+ */
 void dot_type_umask(char *buf, size_t buflen, int umask)
 {
   snprintf(buf, buflen, "0%03o", umask);
 }
 #endif
 
+/**
+ * dot_ptr_name - Generate GraphViz object name from pointer
+ * @param buf    Buffer for output
+ * @param buflen Buffer length
+ * @param ptr    Pointer to convert
+ */
 void dot_ptr_name(char *buf, size_t buflen, const void *ptr)
 {
   snprintf(buf, buflen, "obj_%p", ptr);
 }
 
+/**
+ * dot_ptr - Write a pointer field to GraphViz output
+ * @param fp     File pointer
+ * @param name   Field name
+ * @param ptr    Pointer value
+ * @param colour Optional color for pointer
+ */
 void dot_ptr(FILE *fp, const char *name, void *ptr, const char *colour)
 {
   fprintf(fp, "\t\t<tr>\n");
@@ -202,8 +262,18 @@ void dot_ptr(FILE *fp, const char *name, void *ptr, const char *colour)
   fprintf(fp, "\t\t</tr>\n");
 }
 
-void dot_add_link(struct ListHead *links, void *src, void *dst, const char *label,
-                  const char *short_label, bool back, const char *colour)
+/**
+ * dot_add_link - Add a link between two objects in GraphViz
+ * @param links        List to add link to
+ * @param src          Source object pointer
+ * @param dst          Destination object pointer
+ * @param label        Full label text
+ * @param short_label  Short label text
+ * @param back         True if arrow should be reversed
+ * @param colour       Optional color for edge
+ */
+void dot_add_link(struct ListHead *links, const void *src, const void *dst,
+                  const char *label, const char *short_label, bool back, const char *colour)
 {
   if (!src || !dst)
     return;
@@ -230,6 +300,10 @@ void dot_add_link(struct ListHead *links, void *src, void *dst, const char *labe
   mutt_list_insert_tail(links, mutt_str_dup(text));
 }
 
+/**
+ * dot_graph_header - Write GraphViz graph header
+ * @param fp File pointer
+ */
 void dot_graph_header(FILE *fp)
 {
   fprintf(fp, "digraph neomutt\n");
@@ -253,6 +327,11 @@ void dot_graph_header(FILE *fp)
   fprintf(fp, "\n");
 }
 
+/**
+ * dot_graph_footer - Write GraphViz graph footer with links
+ * @param fp    File pointer
+ * @param links List of link definitions
+ */
 void dot_graph_footer(FILE *fp, struct ListHead *links)
 {
   fprintf(fp, "\n");
@@ -264,6 +343,13 @@ void dot_graph_footer(FILE *fp, struct ListHead *links)
   fprintf(fp, "\n}\n");
 }
 
+/**
+ * dot_object_header - Write GraphViz object header
+ * @param fp     File pointer
+ * @param ptr    Object pointer
+ * @param name   Object name
+ * @param colour Background color
+ */
 void dot_object_header(FILE *fp, const void *ptr, const char *name, const char *colour)
 {
   char obj[64] = { 0 };
@@ -281,6 +367,10 @@ void dot_object_header(FILE *fp, const void *ptr, const char *name, const char *
   fprintf(fp, "\t\t</tr>\n");
 }
 
+/**
+ * dot_object_footer - Write GraphViz object footer
+ * @param fp File pointer
+ */
 void dot_object_footer(FILE *fp)
 {
   fprintf(fp, "\t\t</table>>\n");
@@ -288,6 +378,13 @@ void dot_object_footer(FILE *fp)
   fprintf(fp, "\n");
 }
 
+/**
+ * dot_node - Write a simple GraphViz node
+ * @param fp     File pointer
+ * @param ptr    Node pointer
+ * @param name   Node name
+ * @param colour Node color
+ */
 void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
 {
   char obj[64] = { 0 };
@@ -303,6 +400,12 @@ void dot_node(FILE *fp, void *ptr, const char *name, const char *colour)
   dot_object_footer(fp);
 }
 
+/**
+ * dot_path_fs - Extract filesystem path from full path
+ * @param buf    Buffer for output
+ * @param buflen Buffer length
+ * @param path   Full path
+ */
 void dot_path_fs(char *buf, size_t buflen, const char *path)
 {
   if (!path)
@@ -320,6 +423,12 @@ void dot_path_fs(char *buf, size_t buflen, const char *path)
   mutt_str_copy(buf, slash, buflen);
 }
 
+/**
+ * dot_path_imap - Extract IMAP path from full path
+ * @param buf    Buffer for output
+ * @param buflen Buffer length
+ * @param path   Full path
+ */
 void dot_path_imap(char *buf, size_t buflen, const char *path)
 {
   char tmp[1024] = { 0 };
@@ -343,7 +452,7 @@ void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
     return;
 
   struct Buffer *value = buf_pool_get();
-  dot_object_header(fp, (void *) name, "Config", "#ffff80");
+  dot_object_header(fp, name, "Config", "#ffff80");
   dot_type_string(fp, "scope", sub->name, true);
 
   if (sub->name)
@@ -400,6 +509,12 @@ void dot_comp(FILE *fp, struct CompressInfo *ci, struct ListHead *links)
   dot_object_footer(fp);
 }
 
+/**
+ * dot_mailbox_type - Write a mailbox type field to GraphViz output
+ * @param fp   File pointer
+ * @param name Field name
+ * @param type Mailbox type
+ */
 void dot_mailbox_type(FILE *fp, const char *name, enum MailboxType type)
 {
   const char *typestr = NULL;
@@ -445,6 +560,12 @@ void dot_mailbox_type(FILE *fp, const char *name, enum MailboxType type)
 }
 
 #ifndef GV_HIDE_MDATA
+/**
+ * dot_mailbox_imap - Dump IMAP mailbox metadata
+ * @param fp    File pointer
+ * @param mdata IMAP metadata
+ * @param links List of links
+ */
 void dot_mailbox_imap(FILE *fp, struct ImapMboxData *mdata, struct ListHead *links)
 {
   dot_object_header(fp, mdata, "ImapMboxData", "#60c060");
@@ -454,6 +575,12 @@ void dot_mailbox_imap(FILE *fp, struct ImapMboxData *mdata, struct ListHead *lin
   dot_object_footer(fp);
 }
 
+/**
+ * dot_mailbox_maildir - Dump Maildir mailbox metadata
+ * @param fp    File pointer
+ * @param mdata Maildir metadata
+ * @param links List of links
+ */
 void dot_mailbox_maildir(FILE *fp, struct MaildirMboxData *mdata, struct ListHead *links)
 {
   char buf[64] = { 0 };
@@ -468,6 +595,12 @@ void dot_mailbox_maildir(FILE *fp, struct MaildirMboxData *mdata, struct ListHea
   dot_object_footer(fp);
 }
 
+/**
+ * dot_mailbox_mbox - Dump Mbox mailbox metadata
+ * @param fp    File pointer
+ * @param mdata Mbox metadata
+ * @param links List of links
+ */
 void dot_mailbox_mbox(FILE *fp, struct MboxAccountData *mdata, struct ListHead *links)
 {
   char buf[64] = { 0 };
@@ -481,6 +614,12 @@ void dot_mailbox_mbox(FILE *fp, struct MboxAccountData *mdata, struct ListHead *
   dot_object_footer(fp);
 }
 
+/**
+ * dot_mailbox_nntp - Dump NNTP mailbox metadata
+ * @param fp    File pointer
+ * @param mdata NNTP metadata
+ * @param links List of links
+ */
 void dot_mailbox_nntp(FILE *fp, struct NntpMboxData *mdata, struct ListHead *links)
 {
   dot_object_header(fp, mdata, "NntpMboxData", "#60c060");
@@ -502,6 +641,12 @@ void dot_mailbox_nntp(FILE *fp, struct NntpMboxData *mdata, struct ListHead *lin
 }
 
 #ifdef USE_NOTMUCH
+/**
+ * dot_mailbox_notmuch - Dump Notmuch mailbox metadata
+ * @param fp    File pointer
+ * @param mdata Notmuch metadata
+ * @param links List of links
+ */
 void dot_mailbox_notmuch(FILE *fp, struct NmMboxData *mdata, struct ListHead *links)
 {
   dot_object_header(fp, mdata, "NmMboxData", "#60c060");
@@ -510,6 +655,12 @@ void dot_mailbox_notmuch(FILE *fp, struct NmMboxData *mdata, struct ListHead *li
 }
 #endif
 
+/**
+ * dot_mailbox_pop - Dump POP mailbox metadata
+ * @param fp    File pointer
+ * @param adata POP account metadata
+ * @param links List of links
+ */
 void dot_mailbox_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *links)
 {
   dot_object_header(fp, adata, "PopAccountData", "#60c060");
@@ -518,6 +669,12 @@ void dot_mailbox_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *li
 }
 #endif
 
+/**
+ * dot_mailbox - Dump a mailbox object
+ * @param fp    File pointer
+ * @param m     Mailbox to dump
+ * @param links List of links
+ */
 void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 {
   char buf[64] = { 0 };
@@ -600,6 +757,12 @@ void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 #endif
 }
 
+/**
+ * dot_mailbox_array - Dump an array of mailboxes
+ * @param fp    File pointer
+ * @param ma    Mailbox array
+ * @param links List of links
+ */
 void dot_mailbox_array(FILE *fp, struct MailboxArray *ma, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
@@ -629,6 +792,12 @@ void dot_mailbox_array(FILE *fp, struct MailboxArray *ma, struct ListHead *links
 }
 
 #ifndef GV_HIDE_ADATA
+/**
+ * dot_connection - Dump a connection
+ * @param fp    File pointer
+ * @param c     Connection to dump
+ * @param links List of links
+ */
 void dot_connection(FILE *fp, struct Connection *c, struct ListHead *links)
 {
   dot_object_header(fp, c, "Connection", "#ff8080");
@@ -645,6 +814,12 @@ void dot_connection(FILE *fp, struct Connection *c, struct ListHead *links)
   dot_add_link(links, c, c->inbuf, "Connection.ConnAccount", NULL, false, NULL);
 }
 
+/**
+ * dot_account_imap - Dump IMAP account data
+ * @param fp    File pointer
+ * @param adata IMAP account data
+ * @param links List of links
+ */
 void dot_account_imap(FILE *fp, struct ImapAccountData *adata, struct ListHead *links)
 {
   dot_object_header(fp, adata, "ImapAccountData", "#60c0c0");
@@ -667,6 +842,12 @@ void dot_account_imap(FILE *fp, struct ImapAccountData *adata, struct ListHead *
   }
 }
 
+/**
+ * dot_account_mbox - Dump Mbox account data
+ * @param fp    File pointer
+ * @param adata Mbox account data
+ * @param links List of links
+ */
 void dot_account_mbox(FILE *fp, struct MboxAccountData *adata, struct ListHead *links)
 {
   char buf[64] = { 0 };
@@ -682,6 +863,12 @@ void dot_account_mbox(FILE *fp, struct MboxAccountData *adata, struct ListHead *
   dot_object_footer(fp);
 }
 
+/**
+ * dot_account_nntp - Dump NNTP account data
+ * @param fp    File pointer
+ * @param adata NNTP account data
+ * @param links List of links
+ */
 void dot_account_nntp(FILE *fp, struct NntpAccountData *adata, struct ListHead *links)
 {
   dot_object_header(fp, adata, "NntpAccountData", "#60c0c0");
@@ -725,6 +912,12 @@ void dot_account_nntp(FILE *fp, struct NntpAccountData *adata, struct ListHead *
 }
 
 #ifdef USE_NOTMUCH
+/**
+ * dot_account_notmuch - Dump Notmuch account data
+ * @param fp    File pointer
+ * @param adata Notmuch account data
+ * @param links List of links
+ */
 void dot_account_notmuch(FILE *fp, struct NmAccountData *adata, struct ListHead *links)
 {
   dot_object_header(fp, adata, "NmAccountData", "#60c0c0");
@@ -733,6 +926,12 @@ void dot_account_notmuch(FILE *fp, struct NmAccountData *adata, struct ListHead 
 }
 #endif
 
+/**
+ * dot_account_pop - Dump POP account data
+ * @param fp    File pointer
+ * @param adata POP account data
+ * @param links List of links
+ */
 void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *links)
 {
   char buf[64] = { 0 };
@@ -754,6 +953,12 @@ void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *li
 }
 #endif
 
+/**
+ * dot_account - Dump an account object
+ * @param fp    File pointer
+ * @param a     Account to dump
+ * @param links List of links
+ */
 void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
 {
   dot_object_header(fp, a, "Account", "#80ffff");
@@ -813,6 +1018,12 @@ void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
   }
 }
 
+/**
+ * dot_account_array - Dump an array of accounts
+ * @param fp    File pointer
+ * @param aa    Account array
+ * @param links List of links
+ */
 void dot_account_array(FILE *fp, struct AccountArray *aa, struct ListHead *links)
 {
   struct Account *prev = NULL;
@@ -834,7 +1045,13 @@ void dot_account_array(FILE *fp, struct AccountArray *aa, struct ListHead *links
 }
 
 #ifndef GV_HIDE_MVIEW
-void dot_mview(FILE *fp, struct MailboxView *mv, struct ListHead *links)
+/**
+ * dot_mview - Dump a mailbox view
+ * @param fp    File pointer
+ * @param mv    Mailbox view to dump
+ * @param links List of links
+ */
+void dot_mview(FILE *fp, const struct MailboxView *mv, struct ListHead *links)
 {
   dot_object_header(fp, mv, "MailboxView", "#ff80ff");
   dot_ptr(fp, "mailbox", mv->mailbox, "#80ff80");
@@ -847,7 +1064,12 @@ void dot_mview(FILE *fp, struct MailboxView *mv, struct ListHead *links)
 }
 #endif
 
-void dump_graphviz(const char *title, struct MailboxView *mv)
+/**
+ * dump_graphviz - Dump NeoMutt data structures to GraphViz format
+ * @param title Optional title for the output file
+ * @param mv    Mailbox view to dump
+ */
+void dump_graphviz(const char *title, const struct MailboxView *mv)
 {
   char name[256] = { 0 };
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
@@ -1000,7 +1222,7 @@ void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
   dot_add_link(links, aptr->body, aptr, "AttachPtr->body", NULL, true, NULL);
 }
 
-void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
+void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, bool link_next)
 {
   struct Buffer *buf = buf_pool_get();
 
@@ -1173,7 +1395,7 @@ void dot_addr_list(FILE *fp, const char *name, const struct AddressList *al,
   buf_pool_release(&buf);
 }
 
-void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)
+void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
 
@@ -1234,7 +1456,7 @@ void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links)
 }
 #endif
 
-void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
+void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
   char arr[256];
@@ -1355,7 +1577,7 @@ void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   buf_pool_release(&buf);
 }
 
-void dump_graphviz_body(struct Body *b)
+void dump_graphviz_body(const struct Body *b)
 {
   char name[256] = { 0 };
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
@@ -1377,7 +1599,7 @@ void dump_graphviz_body(struct Body *b)
   mutt_list_free(&links);
 }
 
-void dump_graphviz_email(struct Email *e, const char *title)
+void dump_graphviz_email(const struct Email *e, const char *title)
 {
   char name[256] = { 0 };
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
@@ -1511,7 +1733,7 @@ void dot_array_actx_body_idx(FILE *fp, struct Body **body_idx, short body_len,
   }
 }
 
-void dot_attach_ctx(FILE *fp, struct AttachCtx *actx, struct ListHead *links)
+void dot_attach_ctx(FILE *fp, const struct AttachCtx *actx, struct ListHead *links)
 {
   dot_object_header(fp, actx, "AttachCtx", "#9347de");
 
@@ -1545,7 +1767,7 @@ void dot_attach_ctx(FILE *fp, struct AttachCtx *actx, struct ListHead *links)
   }
 }
 
-void dump_graphviz_attach_ctx(struct AttachCtx *actx)
+void dump_graphviz_attach_ctx(const struct AttachCtx *actx)
 {
   char name[256] = { 0 };
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
@@ -1678,7 +1900,7 @@ void dot_pattern(FILE *fp, struct Pattern *pat, struct ListHead *links)
   buf_pool_release(&buf);
 }
 
-void dot_patternlist(FILE *fp, struct PatternList *pl, struct ListHead *links)
+void dot_patternlist(FILE *fp, const struct PatternList *pl, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
 
@@ -1751,14 +1973,14 @@ void dot_format(FILE *fp, struct ExpandoFormat *fmt)
   dot_type_char(fp, "leader", fmt->leader);
 }
 
-void dot_expando_node_empty(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node_empty(FILE *fp, const struct ExpandoNode *node, struct ListHead *links)
 {
   dot_object_header(fp, node, "Empty", "#ffffff");
   // dot_type_string(fp, "type", "ENT_EMPTY", true);
   dot_object_footer(fp);
 }
 
-void dot_expando_node_text(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node_text(FILE *fp, const struct ExpandoNode *node, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
   dot_object_header(fp, node, "Text", "#ffff80");
@@ -1770,7 +1992,7 @@ void dot_expando_node_text(FILE *fp, struct ExpandoNode *node, struct ListHead *
   buf_pool_release(&buf);
 }
 
-void dot_expando_node_pad(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node_pad(FILE *fp, const struct ExpandoNode *node, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
   dot_object_header(fp, node, "Pad", "#80ffff");
@@ -1795,14 +2017,14 @@ void dot_expando_node_pad(FILE *fp, struct ExpandoNode *node, struct ListHead *l
 
   dot_object_footer(fp);
 
-  struct ExpandoNode *left = node_get_child(node, ENP_LEFT);
+  struct ExpandoNode *left = node_get_child((struct ExpandoNode *) node, ENP_LEFT);
   if (left)
   {
     dot_expando_node(fp, left, links);
     dot_add_link(links, node, left, "Pad->left", "left", false, "#80ff80");
   }
 
-  struct ExpandoNode *right = node_get_child(node, ENP_RIGHT);
+  struct ExpandoNode *right = node_get_child((struct ExpandoNode *) node, ENP_RIGHT);
   if (right)
   {
     dot_expando_node(fp, right, links);
@@ -1812,7 +2034,7 @@ void dot_expando_node_pad(FILE *fp, struct ExpandoNode *node, struct ListHead *l
   buf_pool_release(&buf);
 }
 
-void dot_expando_node_condition(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node_condition(FILE *fp, const struct ExpandoNode *node, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
   dot_object_header(fp, node, "Condition", "#ff8080");
@@ -1842,7 +2064,7 @@ void dot_expando_node_condition(FILE *fp, struct ExpandoNode *node, struct ListH
   buf_pool_release(&buf);
 }
 
-void dot_expando_node_conditional_bool(FILE *fp, struct ExpandoNode *node,
+void dot_expando_node_conditional_bool(FILE *fp, const struct ExpandoNode *node,
                                        struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
@@ -1857,7 +2079,7 @@ void dot_expando_node_conditional_bool(FILE *fp, struct ExpandoNode *node,
   buf_pool_release(&buf);
 }
 
-void dot_expando_node_conditional_date(FILE *fp, struct ExpandoNode *node,
+void dot_expando_node_conditional_date(FILE *fp, const struct ExpandoNode *node,
                                        struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
@@ -1879,7 +2101,7 @@ void dot_expando_node_conditional_date(FILE *fp, struct ExpandoNode *node,
   buf_pool_release(&buf);
 }
 
-void dot_expando_node_container(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node_container(FILE *fp, const struct ExpandoNode *node, struct ListHead *links)
 {
   dot_object_header(fp, node, "Container", "#80ffff");
   // dot_type_string(fp, "type", "ENT_CONTAINER", true);
@@ -1920,7 +2142,7 @@ void dot_expando_node_container(FILE *fp, struct ExpandoNode *node, struct ListH
   buf_pool_release(&rank);
 }
 
-void dot_expando_node_expando(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node_expando(FILE *fp, const struct ExpandoNode *node, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
   dot_object_header(fp, node, "Expando", "#80ff80");
@@ -1937,7 +2159,7 @@ void dot_expando_node_expando(FILE *fp, struct ExpandoNode *node, struct ListHea
   buf_pool_release(&buf);
 }
 
-void dot_expando_node_unknown(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node_unknown(FILE *fp, const struct ExpandoNode *node, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
   dot_object_header(fp, node, "UNKNOWN", "#ff0000");
@@ -1952,7 +2174,7 @@ void dot_expando_node_unknown(FILE *fp, struct ExpandoNode *node, struct ListHea
   buf_pool_release(&buf);
 }
 
-void dot_expando_node(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node(FILE *fp, const struct ExpandoNode *node, struct ListHead *links)
 {
   switch (node->type)
   {
@@ -1986,7 +2208,7 @@ void dot_expando_node(FILE *fp, struct ExpandoNode *node, struct ListHead *links
   }
 }
 
-void dump_graphviz_expando_node(struct ExpandoNode *node)
+void dump_graphviz_expando_node(const struct ExpandoNode *node)
 {
   char name[256] = { 0 };
   struct ListHead links = STAILQ_HEAD_INITIALIZER(links);

@@ -35,6 +35,10 @@
 #include "pager/display.h"
 #include "pager/private_data.h"
 
+/**
+ * dump_text_syntax_array - Dump a text syntax array
+ * @param tsa Text syntax array
+ */
 void dump_text_syntax_array(struct TextSyntaxArray *tsa)
 {
   if (!tsa || ARRAY_EMPTY(tsa))
@@ -61,6 +65,11 @@ void dump_text_syntax_array(struct TextSyntaxArray *tsa)
   }
 }
 
+/**
+ * dump_text_syntax - Dump text syntax
+ * @param ts  Text syntax array
+ * @param num Number of elements
+ */
 void dump_text_syntax(struct TextSyntax *ts, int num)
 {
   if (!ts || (num == 0))
@@ -83,6 +92,11 @@ void dump_text_syntax(struct TextSyntax *ts, int num)
   }
 }
 
+/**
+ * dump_line - Dump a pager line
+ * @param i    Line number
+ * @param line Line to dump
+ */
 void dump_line(int i, struct Line *line)
 {
   struct Buffer *buf = buf_pool_get();
@@ -125,6 +139,10 @@ void dump_line(int i, struct Line *line)
   buf_pool_release(&buf);
 }
 
+/**
+ * dump_pager - Dump pager state
+ * @param priv Pager private data
+ */
 void dump_pager(struct PagerPrivateData *priv)
 {
   if (!priv)

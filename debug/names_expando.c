@@ -62,6 +62,11 @@
   default:                                                                     \
     return "UNKNOWN"
 
+/**
+ * name_expando_node_type - Get the name of an expando node type
+ * @param type Expando node type enum
+ * @retval str Name of the node type
+ */
 const char *name_expando_node_type(enum ExpandoNodeType type)
 {
   switch (type)
@@ -77,6 +82,11 @@ const char *name_expando_node_type(enum ExpandoNodeType type)
   }
 }
 
+/**
+ * name_expando_pad_type - Get the name of an expando padding type
+ * @param type Padding type enum
+ * @retval str Name of the padding type
+ */
 const char *name_expando_pad_type(enum ExpandoPadType type)
 {
   switch (type)
@@ -88,6 +98,11 @@ const char *name_expando_pad_type(enum ExpandoPadType type)
   }
 }
 
+/**
+ * name_expando_domain - Get the name of an expando domain
+ * @param did Domain ID enum
+ * @retval str Name of the domain
+ */
 const char *name_expando_domain(enum ExpandoDomain did)
 {
   switch (did)
@@ -117,6 +132,11 @@ const char *name_expando_domain(enum ExpandoDomain did)
   }
 }
 
+/**
+ * name_expando_uid_alias - Get the name of an alias expando field
+ * @param uid Unique ID
+ * @retval str Name of the field
+ */
 const char *name_expando_uid_alias(int uid)
 {
   switch (uid)
@@ -499,6 +519,12 @@ const char *name_expando_uid_smime_cmd(int uid)
   }
 }
 
+/**
+ * name_expando_uid - Get the name of an email expando field
+ * @param did Domain ID
+ * @param uid Unique ID
+ * @retval str Name of the field
+ */
 const char *name_expando_uid(enum ExpandoDomain did, int uid)
 {
   switch (did)

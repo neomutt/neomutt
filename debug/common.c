@@ -31,6 +31,12 @@
 #include "mutt/lib.h"
 #include "lib.h"
 
+/**
+ * add_flag - Add a flag name to a buffer if set
+ * @param buf    Buffer to append to
+ * @param is_set True if flag is set
+ * @param name   Flag name
+ */
 void add_flag(struct Buffer *buf, bool is_set, const char *name)
 {
   if (!buf || !name)

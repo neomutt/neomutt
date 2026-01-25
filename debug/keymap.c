@@ -42,6 +42,12 @@ struct SubMenuId
 };
 ARRAY_HEAD(SubMenuIdArray, struct SubMenuId);
 
+/**
+ * log_bind - Log a key binding
+ * @param md     Menu definition
+ * @param keystr Key string
+ * @param km     Key mapping
+ */
 void log_bind(const struct MenuDefinition *md, const char *keystr, struct Keymap *km)
 {
   const char *fn_name = NULL;
@@ -94,6 +100,11 @@ void log_macro(const char *keystr, struct Keymap *km)
   buf_pool_release(&keys);
 }
 
+/**
+ * dump_submenu_functions - Dump submenu functions
+ * @param sm    Submenu to dump
+ * @param brief True for brief output
+ */
 void dump_submenu_functions(const struct SubMenu *sm, bool brief)
 {
   for (int i = 0; sm->functions[i].name; i++)
@@ -110,6 +121,12 @@ void dump_submenu_functions(const struct SubMenu *sm, bool brief)
   }
 }
 
+/**
+ * dump_submenu_bindings - Dump submenu bindings
+ * @param md    Menu definition
+ * @param sm    Submenu to dump
+ * @param brief True for brief output
+ */
 void dump_submenu_bindings(const struct MenuDefinition *md, const struct SubMenu *sm, bool brief)
 {
   if (STAILQ_EMPTY(&sm->keymaps))
@@ -147,6 +164,11 @@ void dump_submenu_bindings(const struct MenuDefinition *md, const struct SubMenu
   buf_pool_release(&esc_key);
 }
 
+/**
+ * dump_submenus - Dump all submenus
+ * @param brief True for brief output
+ * @param smia  Submenu ID array to populate
+ */
 void dump_submenus(bool brief, struct SubMenuIdArray *smia)
 {
   struct SubMenu *sm = NULL;
@@ -170,6 +192,10 @@ void dump_submenus(bool brief, struct SubMenuIdArray *smia)
   }
 }
 
+/**
+ * dump_menus - Dump all menus
+ * @param smia Submenu ID array
+ */
 void dump_menus(struct SubMenuIdArray *smia)
 {
   struct Buffer *buf = buf_pool_get();
@@ -211,6 +237,10 @@ void dump_menus(struct SubMenuIdArray *smia)
   buf_pool_release(&buf);
 }
 
+/**
+ * dump_menu_funcs - Dump all menu functions
+ * @param brief True for brief output
+ */
 void dump_menu_funcs(bool brief)
 {
   struct SubMenuIdArray smia = ARRAY_HEAD_INITIALIZER;
@@ -221,6 +251,10 @@ void dump_menu_funcs(bool brief)
   ARRAY_FREE(&smia);
 }
 
+/**
+ * dump_menu_binds - Dump all menu bindings
+ * @param brief True for brief output
+ */
 void dump_menu_binds(bool brief)
 {
   struct MenuDefinition *md = NULL;

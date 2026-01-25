@@ -37,6 +37,13 @@
 #include "attach/lib.h"
 #include "ncrypt/lib.h"
 
+/**
+ * dump_addr_list - Dump an address list
+ * @param buf    Buffer to write to
+ * @param buflen Length of buffer
+ * @param al     Address list to dump
+ * @param name   Name of the list
+ */
 void dump_addr_list(char *buf, size_t buflen, const struct AddressList *al, const char *name)
 {
   if (!buf || !al)
@@ -53,6 +60,11 @@ void dump_addr_list(char *buf, size_t buflen, const struct AddressList *al, cons
   mutt_debug(LL_DEBUG1, "\t%s: %s\n", name, buf);
 }
 
+/**
+ * dump_list_head - Dump a list of strings
+ * @param list List to dump
+ * @param name Name of the list
+ */
 void dump_list_head(const struct ListHead *list, const char *name)
 {
   if (!list || !name)
@@ -74,6 +86,10 @@ void dump_list_head(const struct ListHead *list, const char *name)
   buf_pool_release(&buf);
 }
 
+/**
+ * dump_envelope - Dump an envelope
+ * @param env Envelope to dump
+ */
 void dump_envelope(const struct Envelope *env)
 {
   mutt_debug(LL_DEBUG1, "Envelope\n");
@@ -144,6 +160,10 @@ void dump_envelope(const struct Envelope *env)
   buf_pool_release(&buf);
 }
 
+/**
+ * dump_email - Dump an email message
+ * @param e Email to dump
+ */
 void dump_email(const struct Email *e)
 {
   mutt_debug(LL_DEBUG1, "Email\n");
@@ -235,6 +255,10 @@ void dump_email(const struct Email *e)
   // void *edata
 }
 
+/**
+ * dump_param_list - Dump a parameter list
+ * @param pl Parameter list to dump
+ */
 void dump_param_list(const struct ParameterList *pl)
 {
   mutt_debug(LL_DEBUG1, "\tparameters\n");
@@ -258,6 +282,10 @@ void dump_param_list(const struct ParameterList *pl)
   }
 }
 
+/**
+ * dump_body - Dump a message body
+ * @param body Body to dump
+ */
 void dump_body(const struct Body *body)
 {
   mutt_debug(LL_DEBUG1, "Body\n");
@@ -341,6 +369,10 @@ void dump_body(const struct Body *body)
   buf_pool_release(&buf);
 }
 
+/**
+ * dump_attach - Dump an attachment
+ * @param att Attachment to dump
+ */
 void dump_attach(const struct AttachPtr *att)
 {
   mutt_debug(LL_DEBUG1, "AttachPtr\n");
@@ -369,6 +401,11 @@ void dump_attach(const struct AttachPtr *att)
   buf_pool_release(&buf);
 }
 
+/**
+ * body_name - Get the first character of a body
+ * @param b Body to examine
+ * @retval char Character from description, filename or indicator
+ */
 char body_name(const struct Body *b)
 {
   if (!b)
@@ -392,6 +429,11 @@ char body_name(const struct Body *b)
   return '!';
 }
 
+/**
+ * dump_body_next - Dump the body tree structure
+ * @param buf Buffer to write to
+ * @param b   Body to dump
+ */
 void dump_body_next(struct Buffer *buf, const struct Body *b)
 {
   if (!b)
@@ -408,6 +450,10 @@ void dump_body_next(struct Buffer *buf, const struct Body *b)
   buf_addstr(buf, ">");
 }
 
+/**
+ * dump_body_one_line - Dump body layout as a one-line summary
+ * @param b Body to summarize
+ */
 void dump_body_one_line(const struct Body *b)
 {
   if (!b)

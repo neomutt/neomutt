@@ -44,6 +44,11 @@
   default:                                                                     \
     return "UNKNOWN"
 
+/**
+ * name_content_type - Get the name of a content type
+ * @param type Content type enum
+ * @retval str Name of the content type
+ */
 const char *name_content_type(enum ContentType type)
 {
   switch (type)
@@ -62,6 +67,11 @@ const char *name_content_type(enum ContentType type)
   }
 }
 
+/**
+ * name_content_encoding - Get the name of a content encoding
+ * @param enc Content encoding enum
+ * @retval str Name of the content encoding
+ */
 const char *name_content_encoding(enum ContentEncoding enc)
 {
   switch (enc)
@@ -77,6 +87,11 @@ const char *name_content_encoding(enum ContentEncoding enc)
   }
 }
 
+/**
+ * name_content_disposition - Get the name of a content disposition
+ * @param disp Content disposition enum
+ * @retval str Name of the content disposition
+ */
 const char *name_content_disposition(enum ContentDisposition disp)
 {
   switch (disp)
@@ -89,6 +104,11 @@ const char *name_content_disposition(enum ContentDisposition disp)
   }
 }
 
+/**
+ * name_notify_type - Get the name of a notification type
+ * @param type Notification type enum
+ * @retval str Name of the notification type
+ */
 const char *name_notify_type(enum NotifyType type)
 {
   switch (type)
@@ -120,6 +140,11 @@ const char *name_notify_type(enum NotifyType type)
   }
 }
 
+/**
+ * name_mailbox_type - Get the name of a mailbox type
+ * @param type Mailbox type enum
+ * @retval str Name of the mailbox type
+ */
 const char *name_mailbox_type(enum MailboxType type)
 {
   switch (type)
@@ -140,6 +165,11 @@ const char *name_mailbox_type(enum MailboxType type)
   }
 }
 
+/**
+ * name_menu_type - Get the name of a menu type
+ * @param mt Menu type enum
+ * @retval str Name of the menu type
+ */
 const char *name_menu_type(enum MenuType mt)
 {
   switch (mt)
@@ -165,6 +195,11 @@ const char *name_menu_type(enum MenuType mt)
   }
 }
 
+/**
+ * name_notify_global - Get the name of a global notification type
+ * @param id Notification subtype
+ * @retval str Name of the notification
+ */
 const char *name_notify_global(int id)
 {
   switch (id)
@@ -176,6 +211,11 @@ const char *name_notify_global(int id)
   }
 }
 
+/**
+ * name_notify_config - Get the name of a config notification type
+ * @param id Notification subtype
+ * @retval str Name of the notification
+ */
 const char *name_notify_config(int id)
 {
   switch (id)
@@ -187,6 +227,11 @@ const char *name_notify_config(int id)
   }
 }
 
+/**
+ * name_notify_mailbox - Get the name of a mailbox notification type
+ * @param id Notification subtype
+ * @retval str Name of the notification
+ */
 const char *name_notify_mailbox(int id)
 {
   switch (id)
@@ -203,6 +248,11 @@ const char *name_notify_mailbox(int id)
   }
 }
 
+/**
+ * name_notify_mview - Get the name of a mailbox view notification type
+ * @param id Notification subtype
+ * @retval str Name of the notification
+ */
 const char *name_notify_mview(int id)
 {
   switch (id)
@@ -214,6 +264,11 @@ const char *name_notify_mview(int id)
   }
 }
 
+/**
+ * name_window_type - Get the name of a window type
+ * @param win Window to examine
+ * @retval str Name of the window type
+ */
 const char *name_window_type(const struct MuttWindow *win)
 {
   if (!win)
@@ -251,6 +306,11 @@ const char *name_window_type(const struct MuttWindow *win)
   }
 }
 
+/**
+ * name_window_size - Get the name of a window size
+ * @param win Window to examine
+ * @retval str Name of the window size
+ */
 const char *name_window_size(const struct MuttWindow *win)
 {
   if (!win)
@@ -265,6 +325,11 @@ const char *name_window_size(const struct MuttWindow *win)
   }
 }
 
+/**
+ * name_color_id - Get the name of a color ID
+ * @param cid Color ID
+ * @retval str Name of the color
+ */
 const char *name_color_id(int cid)
 {
   if (cid < 0)

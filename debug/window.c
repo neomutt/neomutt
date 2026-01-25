@@ -39,6 +39,11 @@
 /// The focus spans from #RootWindow through MuttWindow.focus
 static struct MuttWindow *WinFocus = NULL;
 
+/**
+ * win_dump - Recursively dump window structure
+ * @param win    Window to dump
+ * @param indent Indentation level
+ */
 static void win_dump(struct MuttWindow *win, int indent)
 {
   bool visible = mutt_window_is_visible(win);
@@ -59,6 +64,11 @@ static void win_dump(struct MuttWindow *win, int indent)
 }
 
 #ifdef DEBUG_SHOW_SERIALISE
+/**
+ * win_size - Get window size name
+ * @param win Window to examine
+ * @retval str Name of size
+ */
 static const char *win_size(struct MuttWindow *win)
 {
   if (!win)
@@ -77,6 +87,11 @@ static const char *win_size(struct MuttWindow *win)
   return "???";
 }
 
+/**
+ * win_serialise - Serialise window structure to string
+ * @param win Window to serialise
+ * @param buf Buffer for output
+ */
 static void win_serialise(struct MuttWindow *win, struct Buffer *buf)
 {
   if (!mutt_window_is_visible(win))
@@ -93,6 +108,9 @@ static void win_serialise(struct MuttWindow *win, struct Buffer *buf)
 }
 #endif
 
+/**
+ * debug_win_dump - Dump all windows to debug output
+ */
 void debug_win_dump(void)
 {
   WinFocus = window_get_focus();

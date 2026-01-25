@@ -38,6 +38,10 @@
 
 extern const struct Mapping ColorFields[];
 
+/**
+ * notify_dump_account - Dump account notification
+ * @param nc Notification callback
+ */
 static void notify_dump_account(struct NotifyCallback *nc)
 {
   struct EventAccount *ev_a = nc->event_data;
@@ -49,6 +53,10 @@ static void notify_dump_account(struct NotifyCallback *nc)
              name_mailbox_type(a->type), NONULL(a->name));
 }
 
+/**
+ * notify_dump_color - Dump color notification
+ * @param nc Notification callback
+ */
 static void notify_dump_color(struct NotifyCallback *nc)
 {
   struct EventColor *ev_c = nc->event_data;
@@ -68,6 +76,10 @@ static void notify_dump_color(struct NotifyCallback *nc)
              (nc->event_subtype == NT_COLOR_SET) ? "set" : "reset", color, ev_c->cid);
 }
 
+/**
+ * notify_dump_command - Dump command notification
+ * @param nc Notification callback
+ */
 static void notify_dump_command(struct NotifyCallback *nc)
 {
   struct Command *cmd = nc->event_data;
@@ -78,6 +90,10 @@ static void notify_dump_command(struct NotifyCallback *nc)
     mutt_debug(LL_DEBUG1, "    Command: %s, data: %p\n", cmd->name, (void *) cmd->data);
 }
 
+/**
+ * notify_dump_config - Dump config notification
+ * @param nc Notification callback
+ */
 static void notify_dump_config(struct NotifyCallback *nc)
 {
   struct EventConfig *ev_c = nc->event_data;
@@ -89,6 +105,10 @@ static void notify_dump_config(struct NotifyCallback *nc)
   buf_pool_release(&value);
 }
 
+/**
+ * notify_dump_mview - Dump mailbox view notification
+ * @param nc Notification callback
+ */
 static void notify_dump_mview(struct NotifyCallback *nc)
 {
   struct EventMview *ev_m = nc->event_data;
@@ -101,6 +121,10 @@ static void notify_dump_mview(struct NotifyCallback *nc)
              name_notify_mview(nc->event_subtype), path);
 }
 
+/**
+ * notify_dump_email - Dump email notification
+ * @param nc Notification callback
+ */
 static void notify_dump_email(struct NotifyCallback *nc)
 {
   struct EventEmail *ev_e = nc->event_data;
@@ -112,11 +136,19 @@ static void notify_dump_email(struct NotifyCallback *nc)
   }
 }
 
+/**
+ * notify_dump_global - Dump global notification
+ * @param nc Notification callback
+ */
 static void notify_dump_global(struct NotifyCallback *nc)
 {
   mutt_debug(LL_DEBUG1, "    Global: %s\n", name_notify_global(nc->event_subtype));
 }
 
+/**
+ * notify_dump_mailbox - Dump mailbox notification
+ * @param nc Notification callback
+ */
 static void notify_dump_mailbox(struct NotifyCallback *nc)
 {
   struct EventMailbox *ev_m = nc->event_data;
@@ -127,6 +159,10 @@ static void notify_dump_mailbox(struct NotifyCallback *nc)
              name_notify_mailbox(nc->event_subtype), path);
 }
 
+/**
+ * notify_dump_window_state - Dump window state notification
+ * @param nc Notification callback
+ */
 static void notify_dump_window_state(struct NotifyCallback *nc)
 {
   struct EventWindow *ev_w = nc->event_data;
@@ -162,6 +198,10 @@ static void notify_dump_window_state(struct NotifyCallback *nc)
   buf_pool_release(&buf);
 }
 
+/**
+ * notify_dump_window_focus - Dump window focus notification
+ * @param nc Notification callback
+ */
 static void notify_dump_window_focus(struct NotifyCallback *nc)
 {
   struct EventWindow *ev_w = nc->event_data;
@@ -192,6 +232,11 @@ static void notify_dump_window_focus(struct NotifyCallback *nc)
   buf_pool_release(&buf);
 }
 
+/**
+ * debug_all_observer - Debug observer for all notifications
+ * @param nc Notification callback
+ * @retval 0 Always
+ */
 int debug_all_observer(struct NotifyCallback *nc)
 {
   mutt_debug(LL_DEBUG1, "\033[1;31mNotification:\033[0m %s\n",
