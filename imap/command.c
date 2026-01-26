@@ -44,6 +44,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -59,6 +60,12 @@
 
 /// Default buffer size for IMAP commands
 #define IMAP_CMD_BUFSIZE 512
+
+/// Maximum number of reconnection attempts before giving up
+#define IMAP_MAX_RETRIES 5
+
+/// Maximum backoff delay in seconds between reconnection attempts
+#define IMAP_MAX_BACKOFF 30
 
 /**
  * Capabilities - Server capabilities strings that we understand
@@ -166,13 +173,16 @@ static int cmd_queue(struct ImapAccountData *adata, const char *cmdstr, ImapCmdF
 /**
  * cmd_handle_fatal - When ImapAccountData is in fatal state, do what we can
  * @param adata Imap Account data
+ *
+ * Attempts to reconnect using exponential backoff (1s, 2s, 4s, 8s... max 30s).
+ * Gives up after IMAP_MAX_RETRIES consecutive failures.
  */
 static void cmd_handle_fatal(struct ImapAccountData *adata)
 {
   adata->status = IMAP_FATAL;
 
-  mutt_debug(LL_DEBUG1, "state=%d, status=%d, recovering=%d\n",
-             adata->state, adata->status, adata->recovering);
+  mutt_debug(LL_DEBUG1, "state=%d, status=%d, recovering=%d, retries=%d\n",
+             adata->state, adata->status, adata->recovering, adata->retry_count);
   mutt_debug(LL_DEBUG1, "Connection: fd=%d, host=%s\n",
              adata->conn ? adata->conn->fd : -1,
              adata->conn ? adata->conn->account.host : "NULL");
@@ -195,16 +205,44 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
   if (!adata->recovering)
   {
     adata->recovering = true;
-    mutt_debug(LL_DEBUG1, "Attempting to reconnect to %s\n",
-               adata->conn ? adata->conn->account.host : "NULL");
+
+    /* Exponential backoff: 1s, 2s, 4s, 8s, 16s, max 30s */
+    if (adata->retry_count > 0)
+    {
+      unsigned int delay = (adata->retry_count < 32) ?
+                               (1U << (adata->retry_count - 1)) :
+                               IMAP_MAX_BACKOFF;
+      if (delay > IMAP_MAX_BACKOFF)
+        delay = IMAP_MAX_BACKOFF;
+      mutt_message(_("Connection lost. Retrying in %u seconds..."), delay);
+      sleep(delay);
+    }
+
+    mutt_debug(LL_DEBUG1, "Attempting to reconnect to %s (attempt %d)\n",
+               adata->conn ? adata->conn->account.host : "NULL", adata->retry_count + 1);
+
     if (imap_login(adata))
     {
       mutt_message(_("Reconnected to %s"), adata->conn->account.host);
+      adata->retry_count = 0; // Reset on success
     }
     else
     {
-      mutt_debug(LL_DEBUG1, "Reconnection failed\n");
-      mutt_error(_("Failed to reconnect to %s"), adata->conn->account.host);
+      adata->retry_count++;
+      mutt_debug(LL_DEBUG1, "Reconnection failed (attempt %d/%d)\n",
+                 adata->retry_count, IMAP_MAX_RETRIES);
+
+      if (adata->retry_count >= IMAP_MAX_RETRIES)
+      {
+        mutt_error(_("Failed to reconnect to %s after %d attempts"),
+                   adata->conn->account.host, adata->retry_count);
+        adata->retry_count = 0; // Reset for future attempts
+      }
+      else
+      {
+        mutt_error(_("Reconnection to %s failed. Will retry automatically."),
+                   adata->conn->account.host);
+      }
     }
     adata->recovering = false;
   }
