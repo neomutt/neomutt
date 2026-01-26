@@ -622,9 +622,41 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 
   time_t start_time = mutt_date_now();
   time_t last_progress = start_time;
+  time_t last_activity = start_time;
+
+  /* Get timeout value - use imap_poll_timeout or default to 60 seconds */
+  const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  const int stall_timeout = (c_imap_poll_timeout > 0) ? c_imap_poll_timeout : 60;
 
   for (unsigned long pos = 0; pos < bytes; pos++)
   {
+    /* Check for user interrupt (Ctrl-C) periodically */
+    if ((pos % 4096) == 0)
+    {
+      if (SigInt)
+      {
+        mutt_debug(LL_DEBUG1, "Literal read interrupted by user at %lu/%lu bytes\n",
+                   pos, bytes);
+        mutt_error(_("Download interrupted"));
+        SigInt = false;
+        adata->status = IMAP_FATAL;
+        buf_dealloc(&buf);
+        return -1;
+      }
+
+      /* Check for stalled transfer */
+      time_t now = mutt_date_now();
+      if ((now - last_activity) > stall_timeout)
+      {
+        mutt_debug(LL_DEBUG1, "Literal read stalled at %lu/%lu bytes (no data for %d seconds)\n",
+                   pos, bytes, stall_timeout);
+        mutt_error(_("Download stalled - no data received for %d seconds"), stall_timeout);
+        adata->status = IMAP_FATAL;
+        buf_dealloc(&buf);
+        return -1;
+      }
+    }
+
     if (mutt_socket_readchar(adata->conn, &c) != 1)
     {
       time_t duration = mutt_date_now() - start_time;
@@ -637,6 +669,8 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
       buf_dealloc(&buf);
       return -1;
     }
+
+    last_activity = mutt_date_now();
 
     if (r && (c != '\n'))
       fputc('\r', fp);
