@@ -1531,17 +1531,25 @@ int imap_cmd_idle(struct ImapAccountData *adata)
 {
   int rc;
 
+  mutt_debug(LL_DEBUG2, "Entering IDLE mode for %s\n",
+             adata->conn ? adata->conn->account.host : "NULL");
+
   if (cmd_start(adata, "IDLE", IMAP_CMD_POLL) < 0)
   {
+    mutt_debug(LL_DEBUG1, "Failed to send IDLE command\n");
     cmd_handle_fatal(adata);
     return -1;
   }
 
   const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  mutt_debug(LL_DEBUG2, "Waiting for IDLE continuation (timeout=%d)\n", c_imap_poll_timeout);
+
   if ((c_imap_poll_timeout > 0) &&
       ((mutt_socket_poll(adata->conn, c_imap_poll_timeout)) == 0))
   {
-    mutt_error(_("Connection to %s timed out"), adata->conn->account.host);
+    mutt_debug(LL_DEBUG1, "IDLE timed out waiting for server continuation response\n");
+    mutt_error(_("Connection to %s timed out waiting for IDLE response"),
+               adata->conn->account.host);
     cmd_handle_fatal(adata);
     return -1;
   }
@@ -1557,11 +1565,14 @@ int imap_cmd_idle(struct ImapAccountData *adata)
     adata->state = IMAP_IDLE;
     /* queue automatic exit when next command is issued */
     buf_addstr(&adata->cmdbuf, "DONE\r\n");
+    mutt_debug(LL_DEBUG2, "Successfully entered IDLE state\n");
     rc = IMAP_RES_OK;
   }
   if (rc != IMAP_RES_OK)
   {
-    mutt_debug(LL_DEBUG1, "error starting IDLE\n");
+    mutt_debug(LL_DEBUG1, "IDLE command failed with rc=%d (expected RESPOND=%d)\n",
+               rc, IMAP_RES_RESPOND);
+    mutt_error(_("IDLE command failed for %s"), adata->conn->account.host);
     return -1;
   }
 
