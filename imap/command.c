@@ -44,6 +44,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -1234,10 +1235,25 @@ int imap_cmd_step(struct ImapAccountData *adata)
     /* back up over '\0' */
     if (len)
       len--;
+
+    mutt_debug(LL_DEBUG3, "reading from socket (fd=%d, state=%d)\n",
+               adata->conn ? adata->conn->fd : -1, adata->state);
+    time_t read_start = mutt_date_now();
+
     c = mutt_socket_readln_d(adata->buf + len, adata->blen - len, adata->conn, MUTT_SOCK_LOG_FULL);
+
+    time_t read_duration = mutt_date_now() - read_start;
+    if (read_duration > 1)
+    {
+      mutt_debug(LL_DEBUG1, "socket read took %ld seconds\n", (long) read_duration);
+    }
+
     if (c <= 0)
     {
-      mutt_debug(LL_DEBUG1, "Error reading server response\n");
+      mutt_debug(LL_DEBUG1, "Error reading server response (rc=%d, errno=%d: %s)\n",
+                 c, errno, strerror(errno));
+      mutt_debug(LL_DEBUG1, "Connection state: fd=%d, state=%d, status=%d\n",
+                 adata->conn ? adata->conn->fd : -1, adata->state, adata->status);
       cmd_handle_fatal(adata);
       return IMAP_RES_BAD;
     }
