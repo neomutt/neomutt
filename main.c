@@ -1729,12 +1729,11 @@ main_exit:
     notify_observer_remove(NeoMutt->sub->notify, main_log_observer, NULL);
     notify_observer_remove(NeoMutt->notify, main_timeout_observer, NULL);
   }
-  MuttLogger = log_disp_queue;
+
   buf_pool_release(&expanded_infile);
   buf_pool_release(&tempfile);
   crypto_module_cleanup();
   rootwin_cleanup();
-  buf_pool_cleanup();
   if (NeoMutt)
     envlist_free(&NeoMutt->env);
   mutt_browser_cleanup();
@@ -1790,8 +1789,10 @@ main_exit:
   km_cleanup();
   mutt_prex_cleanup();
   config_cache_cleanup();
+  MuttLogger = log_disp_queue;
   neomutt_cleanup(NeoMutt);
   neomutt_free(&NeoMutt);
+  buf_pool_cleanup();
   log_queue_flush(log_disp_terminal);
   mutt_log_stop();
   return rc;

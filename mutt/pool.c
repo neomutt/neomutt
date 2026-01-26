@@ -45,6 +45,13 @@ static const size_t BufferPoolInitialBufferSize = 1024;
 /// A pool of buffers
 static struct Buffer **BufferPool = NULL;
 
+/// Statistics: total number of buf_pool_get() calls
+static size_t BufferPoolGetCount = 0;
+/// Statistics: number of buffers currently given out
+static size_t BufferPoolGivenOut = 0;
+/// Statistics: maximum number of buffers given out concurrently
+static size_t BufferPoolMaxGivenOut = 0;
+
 /**
  * pool_increase_size - Increase the size of the Buffer pool
  */
@@ -67,7 +74,9 @@ static void pool_increase_size(void)
  */
 void buf_pool_cleanup(void)
 {
-  mutt_debug(LL_DEBUG1, "%zu of %zu returned to pool\n", BufferPoolCount, BufferPoolLen);
+  mutt_debug(LL_DEBUG3, "%zu of %zu returned to pool\n", BufferPoolCount, BufferPoolLen);
+  mutt_debug(LL_DEBUG3, "pool stats: %zu gets, %zu max buffers in use\n",
+             BufferPoolGetCount, BufferPoolMaxGivenOut);
 
   while (BufferPoolCount)
     buf_free(&BufferPool[--BufferPoolCount]);
@@ -84,6 +93,12 @@ struct Buffer *buf_pool_get(void)
   if (BufferPoolCount == 0)
     pool_increase_size();
   ASSERT(BufferPoolCount > 0);
+
+  BufferPoolGetCount++;
+  BufferPoolGivenOut++;
+  if (BufferPoolGivenOut > BufferPoolMaxGivenOut)
+    BufferPoolMaxGivenOut = BufferPoolGivenOut;
+
   return BufferPool[--BufferPoolCount];
 }
 
@@ -97,6 +112,9 @@ void buf_pool_release(struct Buffer **ptr)
 {
   if (!ptr || !*ptr)
     return;
+
+  if (BufferPoolGivenOut > 0)
+    BufferPoolGivenOut--;
 
   if (BufferPoolCount >= BufferPoolLen)
   {
