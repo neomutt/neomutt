@@ -55,7 +55,6 @@
 #include "edata.h"
 #include "mdata.h"
 #include "msn.h"
-#include "mutt_logging.h"
 #include "mx.h"
 
 /// Default buffer size for IMAP commands
@@ -172,6 +171,12 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
 {
   adata->status = IMAP_FATAL;
 
+  mutt_debug(LL_DEBUG1, "state=%d, status=%d, recovering=%d\n",
+             adata->state, adata->status, adata->recovering);
+  mutt_debug(LL_DEBUG1, "Connection: fd=%d, host=%s\n",
+             adata->conn ? adata->conn->fd : -1,
+             adata->conn ? adata->conn->account.host : "NULL");
+
   if (!adata->mailbox)
     return;
 
@@ -190,8 +195,17 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
   if (!adata->recovering)
   {
     adata->recovering = true;
+    mutt_debug(LL_DEBUG1, "Attempting to reconnect to %s\n",
+               adata->conn ? adata->conn->account.host : "NULL");
     if (imap_login(adata))
-      mutt_clear_error();
+    {
+      mutt_message(_("Reconnected to %s"), adata->conn->account.host);
+    }
+    else
+    {
+      mutt_debug(LL_DEBUG1, "Reconnection failed\n");
+      mutt_error(_("Failed to reconnect to %s"), adata->conn->account.host);
+    }
     adata->recovering = false;
   }
 }
