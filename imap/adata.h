@@ -62,6 +62,9 @@ struct ImapAccountData
   bool unicode; ///< If true, we can send UTF-8, and the server will use UTF8 rather than mUTF7
   bool qresync; ///< true, if QRESYNC is successfully ENABLE'd
 
+  /* Reconnection state */
+  unsigned char retry_count;      ///< Number of consecutive reconnection attempts
+
   // if set, the response parser will store results for complicated commands here
   struct ImapList *cmdresult;
 
