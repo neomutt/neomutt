@@ -87,8 +87,10 @@ static bool is_color_object(const char *name)
  * - `ifndef \<symbol\> '<config-command> [ \<args\> ... ]'`
  */
 enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *line,
-                               struct Buffer *err)
+                               const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -122,7 +124,8 @@ enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *line,
   /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
   if ((res && (cmd->id == CMD_IFDEF)) || (!res && (cmd->id == CMD_IFNDEF)))
   {
-    rc = parse_rc_line(token, err);
+    // Cheat: Remove the `const` so we can recurse
+    rc = parse_rc_line(token, (struct ParseContext *) pc, pe);
     if (rc == MUTT_CMD_ERROR)
       mutt_error(_("Error: %s"), buf_string(err));
 
@@ -145,8 +148,10 @@ done:
  * - `finish`
  */
 enum CommandResult parse_finish(const struct Command *cmd, struct Buffer *line,
-                                struct Buffer *err)
+                                const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (MoreArgs(line))
   {
     buf_printf(err, _("%s: too many arguments"), cmd->name);

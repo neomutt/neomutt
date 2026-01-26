@@ -48,8 +48,10 @@
  * - `score <pattern> <value>`
  */
 enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
-                               struct Buffer *err)
+                               const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -57,7 +59,7 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
   }
 
   struct Score *ptr = NULL, *last = NULL;
-  char *pattern = NULL, *pc = NULL;
+  char *pattern = NULL, *patchar = NULL;
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
@@ -106,14 +108,14 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
     pattern = NULL;
   }
 
-  pc = token->data;
-  if (*pc == '=')
+  patchar = token->data;
+  if (*patchar == '=')
   {
     ptr->exact = true;
-    pc++;
+    patchar++;
   }
 
-  if (!mutt_str_atoi_full(pc, &ptr->val))
+  if (!mutt_str_atoi_full(patchar, &ptr->val))
   {
     buf_strcpy(err, _("Error: score: invalid number"));
     goto done;
@@ -135,8 +137,10 @@ done:
  * - `unscore { * | <pattern> ... }`
  */
 enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line,
-                                 struct Buffer *err)
+                                 const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

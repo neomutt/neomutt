@@ -28,6 +28,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
+#include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
@@ -87,80 +88,88 @@ static const struct CommandTest Send2Tests[] = {
 static void test_parse_message_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; MessageTests[i].line; i++)
   {
     TEST_CASE(MessageTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, MessageTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&MessageHook, line, err);
+    rc = parse_hook_pattern(&MessageHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, MessageTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_reply_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; ReplyTests[i].line; i++)
   {
     TEST_CASE(ReplyTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, ReplyTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&ReplyHook, line, err);
+    rc = parse_hook_pattern(&ReplyHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, ReplyTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_send_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; SendTests[i].line; i++)
   {
     TEST_CASE(SendTests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, SendTests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&SendHook, line, err);
+    rc = parse_hook_pattern(&SendHook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, SendTests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 
 static void test_parse_send2_hook(void)
 {
   struct Buffer *line = buf_pool_get();
-  struct Buffer *err = buf_pool_get();
+  struct ParseContext *pc = parse_context_new();
+  struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
   for (int i = 0; Send2Tests[i].line; i++)
   {
     TEST_CASE(Send2Tests[i].line);
-    buf_reset(err);
+    parse_error_reset(pe);
     buf_strcpy(line, Send2Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_hook_pattern(&Send2Hook, line, err);
+    rc = parse_hook_pattern(&Send2Hook, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Send2Tests[i].rc);
   }
 
-  buf_pool_release(&err);
+  parse_context_free(&pc);
+  parse_error_free(&pe);
   buf_pool_release(&line);
 }
 

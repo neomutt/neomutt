@@ -1,9 +1,9 @@
 /**
  * @file
- * Parse Stailq Commands
+ * Parse Context
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,17 +20,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_STAILQ_H
-#define MUTT_COMMANDS_STAILQ_H
+#ifndef MUTT_PARSE_PCONTEXT_H
+#define MUTT_PARSE_PCONTEXT_H
 
-#include "config.h"
-#include "core/lib.h"
+/**
+ * struct ParseContext - Context for config parsing (history/backtrace)
+ *
+ * This structure maintains the history of nested files being processed,
+ * allowing proper error reporting with full file location backtrace
+ * and detection of infinite loops in config file sourcing.
+ */
+struct ParseContext
+{
+  int dummy;
+};
 
-struct Buffer;
-struct ParseContext;
-struct ParseError;
+struct ParseContext *parse_context_new(void);
+void                 parse_context_free(struct ParseContext **pptr);
 
-enum CommandResult parse_stailq          (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_unstailq        (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-
-#endif /* MUTT_COMMANDS_STAILQ_H */
+#endif /* MUTT_PARSE_PCONTEXT_H */

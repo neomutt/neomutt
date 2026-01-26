@@ -91,9 +91,11 @@ void mutt_alternates_reset(struct MailboxView *mv)
  * Parse:
  * - `alternates [ -group <name> ... ] <regex> [ <regex> ... ]`
  */
-enum CommandResult parse_alternates(const struct Command *cmd,
-                                    struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *line,
+                                    const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -137,9 +139,11 @@ done:
  * Parse:
  * - `unalternates { * | <regex> ... }`
  */
-enum CommandResult parse_unalternates(const struct Command *cmd,
-                                      struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *line,
+                                      const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

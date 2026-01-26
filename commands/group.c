@@ -88,8 +88,10 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *token, struct Buffer *l
  * - `ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }`
  */
 enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
-                               struct Buffer *err)
+                               const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -184,8 +186,10 @@ done:
  * - `lists [ -group <name> ... ] <regex> [ <regex> ... ]`
  */
 enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
-                               struct Buffer *err)
+                               const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -226,9 +230,11 @@ done:
  * Parse:
  * - `subscribe [ -group <name> ... ] <regex> [ <regex> ... ]`
  */
-enum CommandResult parse_subscribe(const struct Command *cmd,
-                                   struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *line,
+                                   const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -274,8 +280,10 @@ done:
  * - `unlists { * | <regex> ... }`
  */
 enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line,
-                                 struct Buffer *err)
+                                 const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
@@ -312,9 +320,11 @@ done:
  * Parse:
  * - `unsubscribe { * | <regex> ... }`
  */
-enum CommandResult parse_unsubscribe(const struct Command *cmd,
-                                     struct Buffer *line, struct Buffer *err)
+enum CommandResult parse_unsubscribe(const struct Command *cmd, struct Buffer *line,
+                                     const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct Buffer *err = pe->message;
+
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);

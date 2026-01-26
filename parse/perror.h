@@ -1,9 +1,9 @@
 /**
  * @file
- * Parse Stailq Commands
+ * Parse Errors
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,17 +20,24 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_STAILQ_H
-#define MUTT_COMMANDS_STAILQ_H
+#ifndef MUTT_PARSE_PERROR_H
+#define MUTT_PARSE_PERROR_H
 
-#include "config.h"
-#include "core/lib.h"
+/**
+ * struct ParseError - Detailed error information from config parsing
+ *
+ * This structure provides comprehensive error information when
+ * a config parsing error occurs, including the error message,
+ * location information, and the result code.
+ */
+struct ParseError
+{
+  struct Buffer *message;        ///< Error message
+};
 
-struct Buffer;
-struct ParseContext;
-struct ParseError;
+struct ParseError *parse_error_new(void);
+void               parse_error_free(struct ParseError **pptr);
 
-enum CommandResult parse_stailq          (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_unstailq        (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+void parse_error_reset(struct ParseError *pe);
 
-#endif /* MUTT_COMMANDS_STAILQ_H */
+#endif /* MUTT_PARSE_PERROR_H */
