@@ -56,6 +56,7 @@ struct ImapAccountData
   unsigned char seqid;       ///< tag sequence prefix
   unsigned int seqno;        ///< tag sequence number, e.g. '{seqid}0001'
   time_t lastread;           ///< last time we read a command for the server
+  time_t last_success;       ///< last time a command completed successfully
   char *buf;
   size_t blen;
 
