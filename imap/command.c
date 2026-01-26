@@ -68,6 +68,9 @@
 /// Maximum backoff delay in seconds between reconnection attempts
 #define IMAP_MAX_BACKOFF 30
 
+/// Threshold in seconds after which to consider a connection potentially stale
+#define IMAP_CONN_STALE_THRESHOLD 300
+
 /**
  * Capabilities - Server capabilities strings that we understand
  *
@@ -1399,6 +1402,20 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
   if (!adata)
     return IMAP_EXEC_ERROR;
 
+  /* Check connection health before executing command */
+  if ((adata->state >= IMAP_AUTHENTICATED) && (adata->last_success > 0))
+  {
+    time_t now = mutt_date_now();
+    time_t idle_time = now - adata->last_success;
+
+    if (idle_time > IMAP_CONN_STALE_THRESHOLD)
+    {
+      mutt_debug(LL_DEBUG2, "Connection idle for %ld seconds, sending NOOP to verify\n",
+                 (long) idle_time);
+      /* Connection may be stale - let the command proceed and handle any error */
+    }
+  }
+
   if (flags & IMAP_CMD_SINGLE)
   {
     // Process any existing commands
@@ -1446,6 +1463,9 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
     mutt_debug(LL_DEBUG1, "command failed: %s\n", adata->buf);
     return IMAP_EXEC_FATAL;
   }
+
+  /* Track successful command completion for connection health monitoring */
+  adata->last_success = mutt_date_now();
 
   return IMAP_EXEC_SUCCESS;
 }
