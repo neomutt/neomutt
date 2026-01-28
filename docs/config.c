@@ -5460,17 +5460,11 @@
 { "timeout", DT_NUMBER, 600 },
 /*
 ** .pp
-** When NeoMutt is waiting for user input either idling in menus or
-** in an interactive prompt, NeoMutt would block until input is
-** present. Depending on the context, this would prevent certain
-** operations from working, like checking for new mail or keeping
-** an IMAP connection alive.
+** This variable sets the time interval in seconds in which \fItimeout-hook\fP
+** commands get executed while waiting for user input either idling in menus
+** or in an interactive prompt.
 ** .pp
-** This variable controls how many seconds NeoMutt will at most wait
-** until it aborts waiting for input, performs these operations and
-** continues to wait for input.
-** .pp
-** A value of zero or less will cause NeoMutt to never time out.
+** A value of zero disables timeout hooks.
 */
 
 { "tmp_dir", DT_PATH, TMPDIR },
