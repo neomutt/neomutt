@@ -5,14 +5,14 @@
 #
 # Edmund GRIMLEY EVANS <edmundo@rano.org>, 2000-2003, 2007
 # Benno Schulenberg <benno@vertaalt.nl>, 2015-2017
-# Keith Bowes, 2025
+# Keith Bowes, 2025–2026
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2026-02-07 01:16+0000\n"
-"PO-Revision-Date: 2025-11-27 11:23-0500\n"
+"PO-Revision-Date: 2026-03-03 19:36-0500\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
 "Language: eo\n"
@@ -946,19 +946,19 @@ msgstr "Malabona ŝablono: "
 #: cli/parse.c:164
 #, c-format
 msgid "Invalid option syntax: %s (use space instead of '=')"
-msgstr ""
+msgstr "Nevalida opcia sintakso: %s (uzu spaceton anstataŭ '=')"
 
 #. L10N: e.g. `neomutt -X`
 #: cli/parse.c:437
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid option: %c"
-msgstr "Nevalida longo: %s"
+msgstr "Nevalida opcio: %c"
 
 #. L10N: e.g. `neomutt -F`
 #: cli/parse.c:442
 #, c-format
 msgid "Option %c requires an argument"
-msgstr ""
+msgstr "Opcio %c postulas argumenton"
 
 #: color/commands.c:179 color/commands.c:234
 #, c-format
@@ -1041,487 +1041,433 @@ msgstr "%s: nekonata trajto"
 
 #: commands/commands.c:61
 msgid "Define an alias (name to email address)"
-msgstr ""
+msgstr "Difini alinomon (nomo por retpoŝtadreso)"
 
 #: commands/commands.c:62
-#, fuzzy
 msgid "alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"
-msgstr "alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"
+msgstr "alias [ -group <grupnomo> ... ] <ŝlosilo> <adreso> [,...] [ # <komentoj> ]"
 
 #: commands/commands.c:65
 msgid "Define a list of alternate email addresses for the user"
-msgstr ""
+msgstr "Difini liston de alternativaj retpoŝtadresoj por la uzanto"
 
 #: commands/commands.c:66
-#, fuzzy
 msgid "alternates [ -group <name> ... ] <regex> [ <regex> ... ]"
-msgstr "alternates [ -group <name> ... ] <regex> [ <regex> ... ]"
+msgstr "alternates [ -group <grupnomo> ... ] <regulesprimo> [ <regulesprimo> ... ]"
 
 #: commands/commands.c:69
 msgid "Set preference order for multipart alternatives"
-msgstr ""
+msgstr "Agordi preferatan ordon por plurpartaj alternativoj"
 
 #: commands/commands.c:70
-#, fuzzy
 msgid "alternative-order <mime-type>[/<mime-subtype> ] [ ... ]"
-msgstr "alternative-order <mime-type>[/<mime-subtype> ] [ ... ]"
+msgstr "alternative-order <enhavo-tipo>[/<enhavo-subtipo> ] [ ... ]"
 
 #: commands/commands.c:73
 msgid "Set attachment counting rules"
-msgstr ""
+msgstr "Agordi regulojn por nombrado de kunmetaĵoj"
 
 #: commands/commands.c:74
-#, fuzzy
 msgid "attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"
-msgstr "attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"
+msgstr "attachments { + | - }<dispozicio> <enhavo-tipo> [ <enhavo-tipo> ... ] | ?"
 
 #: commands/commands.c:77
 msgid "Automatically display specified MIME types inline"
-msgstr ""
+msgstr "Aŭtomate enlinie elmontri specifitajn enhavo-tipoj"
 
 #: commands/commands.c:78
-#, fuzzy
 msgid "auto-view <mime-type>[/<mime-subtype> ] [ ... ]"
-msgstr "auto-view <mime-type>[/<mime-subtype> ] [ ... ]"
+msgstr "auto-view <enhavo-tipo>[/<enhavo-subtipo> ] [ ... ]"
 
 #: commands/commands.c:81
 msgid "Change NeoMutt's current working directory"
-msgstr ""
+msgstr "Ŝanĝi la nunan labordosierujon de NeoMutt"
 
 #: commands/commands.c:82
-#, fuzzy
 msgid "cd [ <directory> ]"
-msgstr "cd [ <directory> ]"
+msgstr "cd [ <dosierujo> ]"
 
 #: commands/commands.c:85
 msgid "Define colors for the user interface"
-msgstr ""
+msgstr "Difini kolorojn por la fasado"
 
 #: commands/commands.c:86
-#, fuzzy
 msgid "color <object> [ <attribute> ... ] <fg> <bg> [ <regex> [ <num> ]]"
-msgstr "color <object> [ <attribute> ... ] <fg> <bg> [ <regex> [ <num> ]]"
+msgstr "color <objekto> [ <atributo> ... ] <malfono> <fono> [ <regulesprimo> [ <nombro> ]]"
 
 #: commands/commands.c:89
 msgid "Print a message to the status line"
-msgstr ""
+msgstr "Eligi mesaĝon al la stata linio"
 
 #: commands/commands.c:90
-#, fuzzy
 msgid "echo <message>"
-msgstr "echo <message>"
+msgstr "echo <mesaĝo>"
 
 #: commands/commands.c:93
 msgid "Stop reading current config file"
-msgstr ""
+msgstr "Finigi legadon de nuna agordo-dosiero"
 
 #: commands/commands.c:94
-#, fuzzy
 msgid "finish"
 msgstr "finish"
 
 #: commands/commands.c:97
 msgid "Add addresses to an address group"
-msgstr ""
+msgstr "Aldoni adresojn al adreso-grupo"
 
 #: commands/commands.c:98
-#, fuzzy
 msgid "group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"
-msgstr "group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"
+msgstr "group [ -group <grupnomo> ... ] { -rx <regulesprimo> ... | -addr <adreso> ... }"
 
 #: commands/commands.c:101
 msgid "Define custom order of headers displayed"
-msgstr ""
+msgstr "Difini propran ordon de ĉapoj elmontrotaj"
 
 #: commands/commands.c:102
-#, fuzzy
 msgid "header-order <header> [ <header> ... ]"
-msgstr "header-order <header> [ <header> ... ]"
+msgstr "header-order <ĉapo> [ <ĉapo> ... ]"
 
 #: commands/commands.c:105
 msgid "Conditionally include config commands if symbol defined"
-msgstr ""
+msgstr "Kondiĉe inkluzivigi agordo-komandojn de simbolo estas difinita"
 
 #: commands/commands.c:106
-#, fuzzy
 msgid "ifdef <symbol> '<config-command> [ <args> ... ]'"
-msgstr "ifdef <symbol> '<config-command> [ <args> ... ]'"
+msgstr "ifdef <simbolo> '<agordo-komando> [ <argumentoj> ... ]'"
 
 #: commands/commands.c:109
 msgid "Conditionally include if symbol is not defined"
-msgstr ""
+msgstr "Kondiĉe inkluzivigi se simbolo ne estas difinita"
 
 #: commands/commands.c:110
-#, fuzzy
 msgid "ifndef <symbol> '<config-command> [ <args> ... ]'"
-msgstr "ifndef <symbol> '<config-command> [ <args> ... ]'"
+msgstr "ifndef <simbolo> '<agordo-komando> [ <argumentoj> ... ]'"
 
 #: commands/commands.c:113
 msgid "Hide specified headers when displaying messages"
-msgstr ""
+msgstr "Kaŝi specifitajn ĉapojn dum mesaĝa elmontro"
 
 #: commands/commands.c:114
-#, fuzzy
 msgid "ignore <string> [ <string> ...]"
-msgstr "ignore <string> [ <string> ...]"
+msgstr "ignore <ĉeno> [ <ĉeno> ...]"
 
 #: commands/commands.c:117
 msgid "Add address to the list of mailing lists"
-msgstr ""
+msgstr "Aldoni adreson al la listo de dissendolistoj"
 
 #: commands/commands.c:118
-#, fuzzy
 msgid "lists [ -group <name> ... ] <regex> [ ... ]"
-msgstr "lists [ -group <name> ... ] <regex> [ ... ]"
+msgstr "lists [ -group <grupnomo> ... ] <regulesprimo> [ ... ]"
 
 #: commands/commands.c:121
 msgid "Define a list of mailboxes to watch"
-msgstr ""
+msgstr "Difini liston de leterkestojn observotajn"
 
 #: commands/commands.c:122
-#, fuzzy
 msgid "mailboxes [ -label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"
-msgstr "mailboxes [ -label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"
+msgstr "mailboxes [ -label <etikedo> ] [ -notify ] [ -poll ] <leterkesto> [ ... ]"
 
 #: commands/commands.c:125
 msgid "Permit specific header-fields in mailto URL processing"
-msgstr ""
+msgstr "Permesi specifajn ĉapo-kampojn en traktado de mailto-URL-oj"
 
 #: commands/commands.c:126
-#, fuzzy
 msgid "mailto-allow { * | <header-field> ... }"
-msgstr "mailto-allow { * | <header-field> ... }"
+msgstr "mailto-allow { * | <ĉapo-kampo> ... }"
 
 #: commands/commands.c:129
 msgid "Map specified MIME types/subtypes to display handlers"
-msgstr ""
+msgstr "Mapigi specifitajn enhavo-(sub)tipojn por elmontri traktilojn"
 
 #: commands/commands.c:130
-#, fuzzy
 msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"
-msgstr "mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"
+msgstr "mime-lookup <enhavo-tipo>[/<enhavo-subtipo> ] [ ... ]"
 
 #: commands/commands.c:133
 msgid "Deprecated: Use `color` instead"
-msgstr ""
+msgstr "Arkaikiĝinta: Anstataŭe uzi la komandon `color`"
 
 #: commands/commands.c:134
-#, fuzzy
 msgid "mono <object> <attribute> [ <pattern> | <regex> ]"
-msgstr "mono <object> <attribute> [ <pattern> | <regex> ]"
+msgstr "mono <objekto> <atributo> [ <ŝablono> | <regulesprimo> ]"
 
 #: commands/commands.c:137
 msgid "Add a custom header to outgoing messages"
-msgstr ""
+msgstr "Aldoni propran ĉapon por sendataj mesaĝoj"
 
 #: commands/commands.c:138
-#, fuzzy
 msgid "my-header <string>"
-msgstr "my-header <string>"
+msgstr "my-header <ĉeno>"
 
 #: commands/commands.c:141
 msgid "Define a list of labelled mailboxes to watch"
-msgstr ""
+msgstr "Difini liston de nomitaj leterkestoj observotaj"
 
 #: commands/commands.c:142
-#, fuzzy
 msgid "named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"
-msgstr "named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"
+msgstr "named-mailboxes [ -notify ] [ -poll ] <nomo> <leterkesto> [ ... ]"
 
 #: commands/commands.c:145
 msgid "Remove a spam detection rule"
-msgstr ""
+msgstr "Forigi regulon por malkovro de spamo"
 
 #: commands/commands.c:146
-#, fuzzy
 msgid "nospam { * | <regex> }"
-msgstr "nospam { * | <regex> }"
+msgstr "nospam { * | <regulesprimo> }"
 
 #: commands/commands.c:149
 msgid "Reset a config option to its initial value"
-msgstr ""
+msgstr "Restarigi agordaĵo al sia apriora valoro"
 
 #: commands/commands.c:150
-#, fuzzy
 msgid "reset <variable> [ <variable> ... ]"
-msgstr "reset <variable> [ <variable> ... ]"
+msgstr "reset <variablo> [ <variablo> ... ]"
 
 #: commands/commands.c:153
 msgid "Set a score value on emails matching a pattern"
-msgstr ""
+msgstr "Agordi poentaron por retpoŝtaĵoj kongruantaj kun ŝablono"
 
 #: commands/commands.c:154
-#, fuzzy
 msgid "score <pattern> <value>"
-msgstr "score <pattern> <value>"
+msgstr "score <ŝablono> <valoro>"
 
 #: commands/commands.c:157
 msgid "Set a config variable"
-msgstr ""
+msgstr "Agordi agordo-variablon"
 
 #: commands/commands.c:158
-#, fuzzy
 msgid "set [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> [...]"
-msgstr "set [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> [...]"
+msgstr "set [ no | inv | & ] <variablo> [?] | <variablo> [=|+=|-=] <valoro> [...]"
 
 #: commands/commands.c:161
 msgid "Set an environment variable"
-msgstr ""
+msgstr "Agordi medivariablon"
 
 #: commands/commands.c:162
-#, fuzzy
 msgid "setenv { <variable>? | <variable>=<value> }"
-msgstr "setenv { <variable>? | <variable>=<value> }"
+msgstr "setenv { <variablo>? | <variablo>=<valoro> }"
 
 #: commands/commands.c:165
 msgid "Read and execute commands from a config file"
-msgstr ""
+msgstr "Legi kaj plenumigi komandojn de agordo-dosiero"
 
 #: commands/commands.c:166
-#, fuzzy
 msgid "source <filename> [ <filename> ... ]"
-msgstr "source <filename> [ <filename> ... ]"
+msgstr "source <dosiernomo> [ <dosiernomo> ... ]"
 
 #: commands/commands.c:169
 msgid "Define rules to parse spam detection headers"
-msgstr ""
+msgstr "Difini regulojn por analizi ĉapojn por malkovro de spamo"
 
 #: commands/commands.c:170
-#, fuzzy
 msgid "spam <regex> [ <format> ]"
-msgstr "spam <regex> [ <format> ]"
+msgstr "spam <regulesprimo> [ <formato> ]"
 
 #: commands/commands.c:173
 msgid "Apply regex-based rewriting to message subjects"
-msgstr ""
+msgstr "Apliki regulesprimon por reskribado de mesaĝaj temoj"
 
 #: commands/commands.c:174
-#, fuzzy
 msgid "subject-regex <regex> <replacement>"
-msgstr "subject-regex <regex> <replacement>"
+msgstr "subject-regex <regulesprimo> <anstataŭo>"
 
 #: commands/commands.c:177
 msgid "Add address to the list of subscribed mailing lists"
-msgstr ""
+msgstr "Aldoni adreson al la listo de abonitaj dissendolistoj"
 
 #: commands/commands.c:178
-#, fuzzy
 msgid "subscribe [ -group <name> ... ] <regex> [ ... ]"
-msgstr "subscribe [ -group <name> ... ] <regex> [ ... ]"
+msgstr "subscribe [ -group <gruponomo> ... ] <regulesprimo> [ ... ]"
 
 #: commands/commands.c:181
 msgid "Define expandos tags"
-msgstr ""
+msgstr "Difini ekspandajn etikedojn"
 
 #: commands/commands.c:182
-#, fuzzy
 msgid "tag-formats <tag> <format-string> [ ... ] }"
-msgstr "tag-formats <tag> <format-string> [ ... ] }"
+msgstr "tag-formats <etikodo> <formato-ĉeno> [ ... ] }"
 
 #: commands/commands.c:185
 msgid "Rules to transform tags into icons"
-msgstr ""
+msgstr "Reguloj por aliformigi etikedojn en piktogramojn"
 
 #: commands/commands.c:186
-#, fuzzy
 msgid "tag-transforms <tag> <transformed-string> [ ... ]"
-msgstr "tag-transforms <tag> <transformed-string> [ ... ]"
+msgstr "tag-transforms <etikedo> <aliformigita-ĉeno> [ ... ]"
 
 #: commands/commands.c:189
 msgid "Toggle the value of a boolean/quad config option"
-msgstr ""
+msgstr "Baskuli la valori de bulean/kvarvaloran agordaĵon"
 
 #: commands/commands.c:190
-#, fuzzy
 msgid "toggle <variable> [ ... ]"
-msgstr "toggle <variable> [ ... ]"
+msgstr "toggle <variablo> [ ... ]"
 
 #: commands/commands.c:193
 msgid "Remove an alias definition"
-msgstr ""
+msgstr "Forigi difinon de alinomo"
 
 #: commands/commands.c:194
-#, fuzzy
 msgid "unalias { * | <key> ... }"
-msgstr "unalias { * | <key> ... }"
+msgstr "unalias { * | <ŝlosilo> ... }"
 
 #: commands/commands.c:197
 msgid "Remove addresses from `alternates` list"
-msgstr ""
+msgstr "Forigi adresojn de listo `alternates`"
 
 #: commands/commands.c:198
-#, fuzzy
 msgid "unalternates { * | <regex> ... }"
-msgstr "unalternates { * | <regex> ... }"
+msgstr "unalternates { * | <regulesprimo> ... }"
 
 #: commands/commands.c:201
 msgid "Remove MIME types from preference order"
-msgstr ""
+msgstr "Forigi enhavo-tipoj de preferata ordo"
 
 #: commands/commands.c:202
-#, fuzzy
 msgid "unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unalternative-order { * | [ <enhavo-tipo>[/<enhavo-subtipo> ] ... ] }"
 
 #: commands/commands.c:205
 msgid "Remove attachment counting rules"
-msgstr ""
+msgstr "Forigi regulojn por nombrado de kunsendaĵoj"
 
 #: commands/commands.c:206
-#, fuzzy
 msgid "unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"
-msgstr "unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"
+msgstr "unattachments { * | { + | - }<dispozicio> <enhavo-tipo> [ ... ] }"
 
 #: commands/commands.c:209
 msgid "Remove MIME types from `auto-view` list"
-msgstr ""
+msgstr "Forigi enhavo-tipoj de listo `auto-view`"
 
 #: commands/commands.c:210
-#, fuzzy
 msgid "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unauto-view { * | [ <enhavo-tipo>[/<enhavo-subtipo> ] ... ] }"
 
 #: commands/commands.c:213
 msgid "Remove a `color` definition"
-msgstr ""
+msgstr "Forigi difinon `color`"
 
 #: commands/commands.c:214
-#, fuzzy
 msgid "uncolor <object> { * | <pattern> ... }"
-msgstr "uncolor <object> { * | <pattern> ... }"
+msgstr "uncolor <objekto> { * | <ŝablono> ... }"
 
 #: commands/commands.c:217
 msgid "Remove addresses from an address `group`"
-msgstr ""
+msgstr "Forigi adresojn de adreso-grupo"
 
 #: commands/commands.c:218
-#, fuzzy
 msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
-msgstr "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
+msgstr "ungroup [ -group <grupnomo> ... ] { * | -rx <regulesprimo> ... | -addr <adreso> ... }"
 
 #: commands/commands.c:221
 msgid "Remove header from `header-order` list"
-msgstr ""
+msgstr "Forigi ĉapon de la listo `header-order`"
 
 #: commands/commands.c:222
-#, fuzzy
 msgid "unheader-order { * | <header> ... }"
-msgstr "unheader-order { * | <header> ... }"
+msgstr "unheader-order { * | <ĉapo> ... }"
 
 #: commands/commands.c:225
 msgid "Remove a header from the `header-order` list"
-msgstr ""
+msgstr "Forigi ĉapon de la listo `header-order`"
 
 #: commands/commands.c:226
-#, fuzzy
 msgid "unignore { * | <string> ... }"
-msgstr "unignore { * | <string> ... }"
+msgstr "unignore { * | <ĉeno> ... }"
 
 #: commands/commands.c:229
 msgid "Remove address from the list of mailing lists"
-msgstr ""
+msgstr "Forigi adreson de la listo de dissendolistoj"
 
 #: commands/commands.c:230
-#, fuzzy
 msgid "unlists { * | <regex> ... }"
-msgstr "unlists { * | <regex> ... }"
+msgstr "unlists { * | <regulesprimo> ... }"
 
 #: commands/commands.c:233
 msgid "Remove mailboxes from the watch list"
-msgstr ""
+msgstr "Forigi leterkestojn de la observo-listo"
 
 #: commands/commands.c:234
-#, fuzzy
 msgid "unmailboxes { * | <mailbox> ... }"
-msgstr "unmailboxes { * | <mailbox> ... }"
+msgstr "unmailboxes { * | <leterkesto> ... }"
 
 #: commands/commands.c:237
 msgid "Disallow header-fields in mailto processing"
-msgstr ""
+msgstr "Malpermesi ĉapo-kamajn en traktado de mailto-URL-oj"
 
 #: commands/commands.c:238
-#, fuzzy
 msgid "unmailto-allow { * | <header-field> ... }"
-msgstr "unmailto-allow { * | <header-field> ... }"
+msgstr "unmailto-allow { * | <ĉapo-kampo> ... }"
 
 #: commands/commands.c:241
 msgid "Remove custom MIME-type handlers"
-msgstr ""
+msgstr "Forigi proprajn traktilojn de enhavo-tipo"
 
 #: commands/commands.c:242
-#, fuzzy
 msgid "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
-msgstr "unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
+msgstr "unmime-lookup { * | [ <enhavo-tipo>[/<enhavo-subtipo> ] ... ] }"
 
 #: commands/commands.c:245
 msgid "Deprecated: Use `uncolor` instead"
-msgstr ""
+msgstr "Arkaikiĝinta: Anstataŭe uzi la komandon `uncolor`"
 
 #: commands/commands.c:246
-#, fuzzy
-msgid "unmono <object> { * | <pattern> ... }"
-msgstr "unmono <object> { * | <pattern> ... }"
+msgid "unmono <objekt> { * | <pattern> ... }"
+msgstr "unmono <objekto> { * | <ŝablono> ... }"
 
 #: commands/commands.c:249
 msgid "Remove a header previously added with `my-header`"
-msgstr ""
+msgstr "Forigi ĉapon antaŭe aldonitan per `my-header`"
 
 #: commands/commands.c:250
-#, fuzzy
 msgid "unmy-header { * | <field> ... }"
-msgstr "unmy-header { * | <field> ... }"
+msgstr "unmy-header { * | <kampo> ... }"
 
 #: commands/commands.c:253
 msgid "Remove scoring rules for matching patterns"
-msgstr ""
+msgstr "Forigi regulojn por poentaro kongruanta ŝablonojn"
 
 #: commands/commands.c:254
-#, fuzzy
 msgid "unscore { * | <pattern> ... }"
-msgstr "unscore { * | <pattern> ... }"
+msgstr "unscore { * | <ŝablono> ... }"
 
 #: commands/commands.c:257
 msgid "Reset a config option to false/empty"
-msgstr ""
+msgstr "Restarigi agordaĵo al malvera/malplena"
 
 #: commands/commands.c:258
-#, fuzzy
 msgid "unset <variable> [ <variable> ... ]"
-msgstr "unset <variable> [ <variable> ... ]"
+msgstr "unset <variablo> [ <variablo> ... ]"
 
 #: commands/commands.c:261
 msgid "Unset an environment variable"
-msgstr ""
+msgstr "Malagordi medivariablon"
 
 #: commands/commands.c:262
-#, fuzzy
 msgid "unsetenv <variable>"
-msgstr "unsetenv <variable>"
+msgstr "unsetenv <variablo>"
 
 #: commands/commands.c:265
 msgid "Remove subject-rewriting rules"
-msgstr ""
+msgstr "Forigi regulojn por reskribi temojn"
 
 #: commands/commands.c:266
-#, fuzzy
 msgid "unsubject-regex { * | <regex> }"
-msgstr "unsubject-regex { * | <regex> }"
+msgstr "unsubject-regex { * | <regulesprimo> }"
 
 #: commands/commands.c:269
 msgid "Remove address from the list of subscribed mailing lists"
-msgstr ""
+msgstr "Forigi adreson de la listo de abonitaj dissendolistoj"
 
 #: commands/commands.c:270
-#, fuzzy
 msgid "unsubscribe { * | <regex> ... }"
-msgstr "unsubscribe { * | <regex> ... }"
+msgstr "unsubscribe { * | <regulesprimo> ... }"
 
 #: commands/commands.c:273
 msgid "Show NeoMutt version and build information"
-msgstr ""
+msgstr "Montri eldonajn kaj muntajn informojn pri NeoMutt"
 
 #: commands/commands.c:274
-#, fuzzy
 msgid "version"
 msgstr "version"
 
@@ -1562,9 +1508,9 @@ msgid "Can't query option with the '%s' command"
 msgstr "En povas mendi opcion per la komando '%s'"
 
 #: commands/setenv.c:152 commands/setenv.c:160
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid variable name '%s'"
-msgstr "%s: nevalida cifero: %s"
+msgstr "%s: nevalida variablonomo: '%s'"
 
 #: commands/setenv.c:176 parse/set.c:552
 msgid "Can't use a prefix when querying a variable"
@@ -1588,7 +1534,7 @@ msgstr "Eraro: Cikla fontado de agordodosiero '%s'"
 #: commands/source.c:186
 #, c-format
 msgid "Command '%s' exited with status %d"
-msgstr ""
+msgstr "Komando '%s' finiĝis kun stato %d"
 
 #: commands/source.c:196
 #, c-format
@@ -1629,30 +1575,27 @@ msgstr "etikeda aliformigo '%s' jam registrita kiel '%s'"
 
 #: compmbox/compress.c:65
 msgid "Define command to append to a compressed mailbox"
-msgstr ""
+msgstr "Difini komandon por alkroĉi al densigita leterkesto"
 
 #: compmbox/compress.c:66
-#, fuzzy
 msgid "append-hook <regex> <shell-command>"
-msgstr "append-hook <regex> <shell-command>"
+msgstr "append-hook <regulesprimo> <ŝelo-komando>"
 
 #: compmbox/compress.c:69
 msgid "Define command to close a compressed mailbox"
-msgstr ""
+msgstr "Difini komandon por fermi densigitan leterkeston"
 
 #: compmbox/compress.c:70
-#, fuzzy
 msgid "close-hook <regex> <shell-command>"
-msgstr "close-hook <regex> <shell-command>"
+msgstr "close-hook <regulesprimo> <ŝelo-komando>"
 
 #: compmbox/compress.c:73
 msgid "Define command to open a compressed mailbox"
-msgstr ""
+msgstr "Difini komandon por malfermi densigitan leterkeston"
 
 #: compmbox/compress.c:74
-#, fuzzy
 msgid "open-hook <regex> <shell-command>"
-msgstr "open-hook <regex> <shell-command>"
+msgstr "open-hook <regulesprimo> <ŝelo-komando>"
 
 #: compmbox/compress.c:220
 #, c-format
@@ -5130,179 +5073,160 @@ msgstr "Ne eblas krei dumtempan dosieron"
 
 #: hooks/commands.c:44
 msgid "Run a command when switching to a matching account"
-msgstr ""
+msgstr "Plenumi komandon dum ŝanĝo al kongruanta konto"
 
 #: hooks/commands.c:45
-#, fuzzy
 msgid "account-hook <regex> <command>"
-msgstr "account-hook <regex> <command>"
+msgstr "account-hook <regulesprimo> <komando>"
 
 #: hooks/commands.c:48
 msgid "Define charset alias for languages"
-msgstr ""
+msgstr "Difini signaran alinomon por lingvo:qj"
 
 #: hooks/commands.c:49
-#, fuzzy
 msgid "charset-hook <alias> <charset>"
-msgstr "charset-hook <alias> <charset>"
+msgstr "charset-hook <alinomo> <signaro>"
 
 #: hooks/commands.c:52
 msgid "Specify which keyid to use for recipients matching regex"
-msgstr ""
+msgstr "Specifi la ŝlosilan identigilon uzotan por ricevontoj kongruantaj kun regulesprimo"
 
 #: hooks/commands.c:53
-#, fuzzy
 msgid "crypt-hook <regex> <keyid>"
-msgstr "crypt-hook <regex> <keyid>"
+msgstr "crypt-hook <regulesprimo> <ŝlosila-identigilo>"
 
 #: hooks/commands.c:56
 msgid "Pattern rule to set the save location for outgoing mail"
-msgstr ""
+msgstr "Ŝablona regulo por agordi la konservejon por sendataj retpoŝtaĵoj"
 
 #: hooks/commands.c:57
-#, fuzzy
 msgid "fcc-hook <pattern> <mailbox>"
-msgstr "fcc-hook <pattern> <mailbox>"
+msgstr "fcc-hook <ŝablono> <leterkesto>"
 
 #: hooks/commands.c:60
 msgid "Equivalent to both `fcc-hook` and `save-hook`"
-msgstr ""
+msgstr "Ekvivalenta al kaj `fcc-hook` kaj `save-hook`"
 
 #: hooks/commands.c:61
-#, fuzzy
 msgid "fcc-save-hook <pattern> <mailbox>"
-msgstr "fcc-save-hook <pattern> <mailbox>"
+msgstr "fcc-save-hook <ŝablono> <leterkesto>"
 
 #: hooks/commands.c:64
 msgid "Run a command upon entering a folder matching regex"
-msgstr ""
+msgstr "Plenumigi komandon dum eniro en dosieron, kiu kongruas kun regulesprimo"
 
 #: hooks/commands.c:65
-#, fuzzy
 msgid "folder-hook [ -noregex ] <regex> <command>"
-msgstr "folder-hook [ -noregex ] <regex> <command>"
+msgstr "folder-hook [ -noregex ] <regulesprimo> <komando>"
 
 #: hooks/commands.c:68
 msgid "Define a system-specific alias for a character set"
-msgstr ""
+msgstr "Difini sistemspecifa alinomo por signaro"
 
 #: hooks/commands.c:69
-#, fuzzy
 msgid "iconv-hook <charset> <local-charset>"
-msgstr "iconv-hook <charset> <local-charset>"
+msgstr "iconv-hook <signaro> <loka-signaro>"
 
 #: hooks/commands.c:72
 msgid "Create dynamic index format strings"
-msgstr ""
+msgstr "Krei formatajn ĉenojn por dinamika indekso"
 
 #: hooks/commands.c:73
-#, fuzzy
 msgid "index-format-hook <name> [!]<pattern> <format-string>"
-msgstr "index-format-hook <name> [!]<pattern> <format-string>"
+msgstr "index-format-hook <nomo> [!]<ŝablono> <formato-ĉeno>"
 
 #: hooks/commands.c:76
 msgid "On leaving a mailbox, move read messages matching a regex"
-msgstr ""
+msgstr "Dum eliro el leterkesto movi legitajn mesaĝojn, kiuj kongruas kun regulesprimo"
 
 #: hooks/commands.c:77
-#, fuzzy
 msgid "mbox-hook [ -noregex ] <regex> <mailbox>"
-msgstr "mbox-hook [ -noregex ] <regex> <mailbox>"
+msgstr "mbox-hook [ -noregex ] <regulesprimo> <leterkesto>"
 
 #: hooks/commands.c:80
 msgid "Run a command when viewing a message matching patterns"
-msgstr ""
+msgstr "Plenumigi komandon dum vidado de mesaĝo, kiu kongruas kun ŝablonoj"
 
 #: hooks/commands.c:81
-#, fuzzy
 msgid "message-hook <pattern> <command>"
-msgstr "message-hook <pattern> <command>"
+msgstr "message-hook <ŝablono> <komando>"
 
 #: hooks/commands.c:84
 msgid "Run a command when replying to messages matching a pattern"
-msgstr ""
+msgstr "Plenumigi komandon dum respondi mesaĝojn, kiuj kongruas kun ŝablono"
 
 #: hooks/commands.c:85
-#, fuzzy
 msgid "reply-hook <pattern> <command>"
-msgstr "reply-hook <pattern> <command>"
+msgstr "reply-hook <ŝablono> <komando>"
 
 #: hooks/commands.c:88
 msgid "Set default save folder for messages"
-msgstr ""
+msgstr "Agordi aprioran konservo-dosieron por mesaĝoj"
 
 #: hooks/commands.c:89
-#, fuzzy
 msgid "save-hook <pattern> <mailbox>"
-msgstr "save-hook <pattern> <mailbox>"
+msgstr "save-hook <ŝablono> <leterkesto>"
 
 #: hooks/commands.c:92
 msgid "Run a command when sending a message, new or reply, matching a pattern"
-msgstr ""
+msgstr "Plenumigi komandon dum sendi mesaĝon, novan kaj responditan, kongruanta kun ŝablono"
 
 #: hooks/commands.c:93
-#, fuzzy
 msgid "send-hook <pattern> <command>"
-msgstr "send-hook <pattern> <command>"
+msgstr "send-hook <ŝablono> <komando>"
 
 #: hooks/commands.c:96
 msgid "Run command whenever a composed message is edited"
-msgstr ""
+msgstr "Plenumigi komandon kiam komponita mesaĝo estas redaktita"
 
 #: hooks/commands.c:97
-#, fuzzy
 msgid "send2-hook <pattern> <command>"
-msgstr "send2-hook <pattern> <command>"
+msgstr "send2-hook <ŝablono> <komando>"
 
 #: hooks/commands.c:100
 msgid "Run a command before NeoMutt exits"
-msgstr ""
+msgstr "Plenumigi komando antaŭ ol NeoMutt finiĝas"
 
 #: hooks/commands.c:101
-#, fuzzy
 msgid "shutdown-hook <command>"
-msgstr "shutdown-hook <command>"
+msgstr "shutdown-hook <komando>"
 
 #: hooks/commands.c:104
 msgid "Run a command when NeoMutt starts up"
-msgstr ""
+msgstr "Plenumigi komandon kiam NeoMutt ekplenumiĝas"
 
 #: hooks/commands.c:105
-#, fuzzy
 msgid "startup-hook <command>"
-msgstr "startup-hook <command>"
+msgstr "startup-hook <komando>"
 
 #: hooks/commands.c:108
 msgid "Run a command after a specified timeout or idle period"
-msgstr ""
+msgstr "Plenumigi komandon por tempolimo aŭ periodo de neuzo"
 
 #: hooks/commands.c:109
-#, fuzzy
 msgid "timeout-hook <command>"
-msgstr "timeout-hook <command>"
+msgstr "timeout-hook <comando>"
 
 #: hooks/commands.c:112
 msgid "Remove hooks of a given type"
-msgstr ""
+msgstr "Forigi hokojn de donita tipo"
 
 #: hooks/commands.c:113
-#, fuzzy
 msgid "unhook { * | <hook-type> }"
-msgstr "unhook { * | <hook-type> }"
+msgstr "unhook { * | <hoko-hipo> }"
 
 #: hooks/commands.c:117
 msgid "Show a list of all the hooks"
-msgstr ""
+msgstr "Montri liston de ĉiuj hokoj"
 
 #: hooks/commands.c:118
-#, fuzzy
 msgid "hooks"
-msgstr "hooks"
+msgstr "hokoj"
 
 #: hooks/dump.c:240
-#, fuzzy, c-format
+#, c-format
 msgid "%s: No Hooks are configured"
-msgstr "PGP-modulo ne estas agordita"
+msgstr "%s: Neniuj hokoj estas agorditaj"
 
 #: hooks/parse.c:588 hooks/parse.c:822
 msgid "current mailbox shortcut '^' is unset"
@@ -5323,7 +5247,7 @@ msgstr "unhook: Ne eblas fari unhook * de en hoko"
 #: hooks/parse.c:1218
 #, c-format
 msgid "unhook: unknown hook type: %s"
-msgstr "unhook: nekonata speco de hook: %s"
+msgstr "unhook: nekonata speco de hoko: %s"
 
 #: hooks/parse.c:1231
 #, c-format
@@ -5449,21 +5373,19 @@ msgstr "Malabonis de %s"
 
 #: imap/imap.c:187
 msgid "Subscribe to an IMAP mailbox"
-msgstr ""
+msgstr "Ekaboni IMAP-leterkeston"
 
 #: imap/imap.c:188
-#, fuzzy
 msgid "subscribe-to <imap-folder-uri>"
-msgstr "subscribe-to <imap-folder-uri>"
+msgstr "subscribe-to <imap-dosiera-uri>"
 
 #: imap/imap.c:191
 msgid "Unsubscribe from an IMAP mailbox"
-msgstr ""
+msgstr "Malaboni de IMAP-leterkesto"
 
 #: imap/imap.c:192
-#, fuzzy
 msgid "unsubscribe-from <imap-folder-uri>"
-msgstr "unsubscribe-from <imap-folder-uri>"
+msgstr "unsubscribe-from <imap-dosiera-uri>"
 
 #: imap/imap.c:215
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -6088,57 +6010,51 @@ msgstr "Cirkla makroo trovita"
 
 #: key/init.c:55
 msgid "Bind a key to a function"
-msgstr ""
+msgstr "Ligi klavon al funkcio"
 
 #: key/init.c:56
-#, fuzzy
 msgid "bind <map>[,<map> ... ] <key> <function>"
-msgstr "bind <map>[,<map> ... ] <key> <function>"
+msgstr "bind <menuo>[,<menuo> ... ] <klavo> <funkcio>"
 
 #: key/init.c:59
 msgid "Execute a function"
-msgstr ""
+msgstr "Plenumigi funkcion"
 
 #: key/init.c:60
-#, fuzzy
 msgid "exec <function> [ <function> ... ]"
-msgstr "exec <function> [ <function> ... ]"
+msgstr "exec <funkcio> [ <funkcio> ... ]"
 
 #: key/init.c:63
 msgid "Define a keyboard macro"
-msgstr ""
+msgstr "Difini klavaran makroon"
 
 #: key/init.c:64
-#, fuzzy
 msgid "macro <map>[,<map> ... ] <key> <sequence> [ <description> ]"
-msgstr "macro <map>[,<map> ... ] <key> <sequence> [ <description> ]"
+msgstr "macro <menuo>[,<menuo> ... ] <klavo> <sinsekvo> [ <priskribo> ]"
 
 #: key/init.c:67
 msgid "Push a string into NeoMutt's input queue (simulate typing)"
-msgstr ""
+msgstr "Puŝi ĉenon en la enigan atendovicon de NeoMutt (imiti tajpadon)"
 
 #: key/init.c:68
-#, fuzzy
 msgid "push <string>"
-msgstr "push <string>"
+msgstr "push <ĉeno>"
 
 #: key/init.c:71
 msgid "Remove a key binding"
-msgstr ""
+msgstr "Malligi klavon"
 
 #: key/init.c:72
-#, fuzzy
 msgid "unbind { * | <map>[,<map> ... ] } [ <key> ]"
-msgstr "unbind { * | <map>[,<map> ... ] } [ <key> ]"
+msgstr "unbind { * | <menuo>[,<menuo> ... ] } [ <klavo> ]"
 
 #: key/init.c:75
 msgid "Remove a keyboard `macro`"
-msgstr ""
+msgstr "Forigi klavaran makroon"
 
 #: key/init.c:76
-#, fuzzy
 msgid "unmacro { * | <map>[,<map> ... ] } [ <key> ]"
-msgstr "unmacro { * | <map>[,<map> ... ] } [ <key> ]"
+msgstr "unmacro { * | <menuo>[,<menuo> ... ] } [ <klavo> ]"
 
 #: key/init.c:218
 msgid "Abort key is not set, defaulting to Ctrl-G"
@@ -6161,21 +6077,19 @@ msgstr "Ne eblis fonti la lua-fontotekston: %s"
 
 #: lua/commands.c:152
 msgid "Run a Lua expression or call a Lua function"
-msgstr ""
+msgstr "Plenumigi Lua-esprimon aŭ voki Lua-funkcion"
 
 #: lua/commands.c:153
-#, fuzzy
 msgid "lua <lua-command>"
-msgstr "lua <lua-command>"
+msgstr "lua <lua-komando>"
 
 #: lua/commands.c:156
 msgid "Execute a Lua script file"
-msgstr ""
+msgstr "Plenumigi Lua-skripton en dosiero"
 
 #: lua/commands.c:157
-#, fuzzy
 msgid "lua-source <filename>"
-msgstr "lua-source <filename>"
+msgstr "lua-source <dosiernomo>"
 
 #: lua/lua.c:452
 msgid "Error: Couldn't load the lua interpreter"
@@ -6448,9 +6362,9 @@ msgid "Not enough subexpressions for template"
 msgstr "Malsufiĉaj subesprimoj por ŝablono"
 
 #: mutt_config.c:211
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown expando: %%{%s}"
-msgstr "Nekonata ekspando: %%%.1s"
+msgstr "Nekonata ekspando: %%{%s}"
 
 #: mutt_config.c:234
 #, c-format
@@ -8081,16 +7995,15 @@ msgstr "DATOGAMO"
 #.
 #: pattern/dlg_pattern.c:158
 msgid "GROUP"
-msgstr ""
+msgstr "GRUPO"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a message range.
 #. Used by ~m.
 #.
 #: pattern/dlg_pattern.c:165
-#, fuzzy
 msgid "MSGRANGE"
-msgstr "GAMO"
+msgstr "MESAĜA GAMO"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -8121,7 +8034,7 @@ msgstr "ESPR"
 #.
 #: pattern/dlg_pattern.c:192
 msgid "STRING"
-msgstr ""
+msgstr "ĈENO"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
@@ -8199,17 +8112,17 @@ msgstr "mesaĝoj, kies korpo konformas al ESPR"
 #. L10N: Pattern Completion Menu description for =b
 #: pattern/flags.c:57
 msgid "IMAP: messages whose body contains STRING"
-msgstr ""
+msgstr "IMAP: mesaĝoj kies korpo enhavas ĈENON"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:60
 msgid "messages whose body or headers match REGEX"
-msgstr "mesaĝoj, kies korpo aŭ ĉapaĵo konformas al ESPR"
+msgstr "mesaĝoj, kies korpo aŭ ĉapoj konformas al ESPR"
 
 #. L10N: Pattern Completion Menu description for =B
 #: pattern/flags.c:63
 msgid "IMAP: messages whose body or headers contain STRING"
-msgstr ""
+msgstr "IMAP: mesaĝoj kies korpo aŭ ĉapoj enhavas ĈENON"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:66
@@ -8219,7 +8132,7 @@ msgstr "mesaĝoj, kies Kopie-Al-kampo konformas al ESPR"
 #. L10N: Pattern Completion Menu description for %c
 #: pattern/flags.c:69
 msgid "messages whose Cc: is a member of GROUP"
-msgstr ""
+msgstr "mesaĝoj kies Cc: estas ano de GRUPO"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:72
@@ -8229,7 +8142,7 @@ msgstr "mesaĝoj, kies ricevonto konformas al ESPR"
 #. L10N: Pattern Completion Menu description for %C
 #: pattern/flags.c:75
 msgid "messages whose To:, Cc: or Bcc: is a member of GROUP"
-msgstr ""
+msgstr "mesaĝoj kies To:, CC: aŭ Bcc: estas ano de GRUPO"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:78
@@ -8249,7 +8162,7 @@ msgstr "mesaĝoj, kies Sendinto-kampo konformas al ESPR"
 #. L10N: Pattern Completion Menu description for %e
 #: pattern/flags.c:87
 msgid "messages whose Sender: is a member of GROUP"
-msgstr ""
+msgstr "mesaĝoj kies Sender: estas ano de GRUPO"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:90
@@ -8264,7 +8177,7 @@ msgstr "mesaĝoj, kies De-kampo konformas al ESPR"
 #. L10N: Pattern Completion Menu description for %f
 #: pattern/flags.c:96
 msgid "messages whose From: is a member of GROUP"
-msgstr ""
+msgstr "mesaĝoj kies From: estas ano de GRUPO"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:99
@@ -8289,7 +8202,7 @@ msgstr "mesaĝoj, kies ĉapaĵo konformas al ESPR"
 #. L10N: Pattern Completion Menu description for =h
 #: pattern/flags.c:111
 msgid "IMAP: messages whose header contains STRING"
-msgstr ""
+msgstr "IMAP: mesaĝoj kies ĉapo enhavas ĈENON"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:114
@@ -8307,7 +8220,7 @@ msgid "messages whose Message-Id: is included in results from $external_search_c
 msgstr "mesaĝoj kies identigiloj inkluzivitaj en la rezultoj redonitaj de ekstera serĉoprogramo"
 
 #. L10N: Pattern Completion Menu description for ~k
-#: pattern/flags.c:123
+#: pattern/flags.c:123:
 msgid "messages which contain a PGP key"
 msgstr "mesaĝoj, kiuj enhavas PGP-ŝlosilon"
 
@@ -8329,7 +8242,7 @@ msgstr "mesaĝoj, kies De/Sendinto/Al/Kopie-Al-kampo konformas al ESPR"
 #. L10N: Pattern Completion Menu description for %L
 #: pattern/flags.c:135
 msgid "messages whose From:, Sender:, To: or Cc: is a member of GROUP"
-msgstr ""
+msgstr "mesaĝoj kies From:, Sender:, To: aŭ Cc: estas ano de GRUPO"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:138
@@ -8971,645 +8884,522 @@ msgstr "Nevalida respondo de servilo"
 
 #: sidebar/sidebar.c:52
 msgid "Pin a mailbox in the sidebar (keep visible)"
-msgstr ""
+msgstr "Alpingli (restigi videbla) leterkeston en la flankostrio"
 
 #: sidebar/sidebar.c:53
-#, fuzzy
 msgid "sidebar-pin <mailbox> [ <mailbox> ... ]"
-msgstr "sidebar-pin <mailbox> [ <mailbox> ... ]"
+msgstr "sidebar-pin <leterkesto> [ <leterkesto> ... ]"
 
 #: sidebar/sidebar.c:56
 msgid "Unpin a previously pinned mailbox in the sidebar"
-msgstr ""
+msgstr "Depingli antaŭe alpinglita leterkesto en la flankostrio"
 
 #: sidebar/sidebar.c:57
-#, fuzzy
 msgid "sidebar-unpin { * | <mailbox> ... }"
-msgstr "sidebar-unpin { * | <mailbox> ... }"
+msgstr "sidebar-unpin { * | <leterkeston> ... }"
 
 #. L10N: Help Overview -- `neomutt --help`
 #. The modes are: help, info, send, tui
 #. Plus two helper modes: shared, all
 #. These should not be translated.
 #: usage.c:60
-#, fuzzy
 msgid "NeoMutt has four modes of operation:"
 msgstr "NeoMutt havas kvar operaciajn reĝimojn:"
 
 #: usage.c:66
-#, fuzzy
 msgid "The default mode, if no command line arguments are specified, is tui."
 msgstr "La apriora reĝimo, se neniuj komandliniaj parametroj estas specifitaj, estas tui."
 
 #. L10N: Parameters in <>s may be translated
 #. L10N: Shared Help -- `neomutt --help shared`
 #: usage.c:70 usage.c:131
-#, fuzzy
 msgid "Options that apply to all modes"
 msgstr "Opcioj, kiuj aplikiĝas al ĉiuj reĝimoj"
 
 #: usage.c:71
-#, fuzzy
 msgid "neomutt -n, --no-system-config       Don't read system config file"
 msgstr "neomutt -n, --no-system-config       Ne atenti la tutsisteman agordodosieron"
 
 #: usage.c:72
-#, fuzzy
 msgid "        -F, --config <file>          Use this user config file"
-msgstr "        -F, --config <dosiero>       Uzi la specifan uzanto-agordodosieron"
+msgstr "        -F, --config <dosiero>       Uzi la specifitan uzanto-agordodosieron"
 
 #: usage.c:73
-#, fuzzy
 msgid "        -e, --command <command>      Run extra commands"
 msgstr "        -e, --command <komando>      Plenumigi aldonajn komandojn"
 
 #: usage.c:74
-#, fuzzy
 msgid "        -m, --mbox-type <type>       Set default mailbox type"
 msgstr "        -m, --mbox-type <tipo>       Agordi la aprioran leterkestan tipon"
 
 #: usage.c:75
-#, fuzzy
 msgid "        -d, --debug-level <level>    Set logging level (1..5)"
 msgstr "        -d, --debug-level <nivelo>   Agordi la protokolan nivelon (1..5)"
 
 #: usage.c:76
-#, fuzzy
 msgid "        -l, --debug-file <file>      Set logging file"
 msgstr "        -l, --debug-file <dosiero>   Specifi protokolon"
 
 #. L10N: Help Help -- `neomutt --help help`
 #: usage.c:79 usage.c:187
-#, fuzzy
 msgid "Get command line help for NeoMutt"
 msgstr "Vidigi komandlinian helpilon por NeoMutt"
 
 #: usage.c:80
-#, fuzzy
 msgid "neomutt -h, --help <mode>            Detailed help for a mode"
 msgstr "neomutt -h, --help <reĝimo>          Detala helpilo por reĝimo"
 
 #: usage.c:81
-#, fuzzy
 msgid "        -v, --version                Version"
-msgstr "        -v, --version                Eldono aŭ permesilo"
+msgstr "        -v, --version                Eldono"
 
 #: usage.c:82
-#, fuzzy
 msgid "        -vv, --license               License"
-msgstr "        -vv, --license               License"
+msgstr "        -vv, --license               Permesilo"
 
 #. L10N: Info Help -- `neomutt --help info`
 #: usage.c:85 usage.c:214
-#, fuzzy
 msgid "Ask NeoMutt for config information"
 msgstr "Peti al NeoMutt pri agordaj informoj"
 
 #: usage.c:86
-#, fuzzy
 msgid "neomutt -A, --alias <alias> [...]             Lookup email aliases"
 msgstr "neomutt -A, --alias <adreso> [...]            Serĉi en la adresaro"
 
 #: usage.c:87
-#, fuzzy
 msgid "        -D, --dump-config [-O] [-S]           Dump the config"
 msgstr "        -D, --dump-config [-O] [-S]           Ŝuti la agordon"
 
 #: usage.c:88
-#, fuzzy
 msgid "        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"
-msgstr "        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"
+msgstr "        -DD, --dump-changed-config [-O] [-S]  Ŝuti la ŝanĝitajn agordaĵojn"
 
 #: usage.c:89
-#, fuzzy
 msgid "        -Q, --query <option> [...] [-O] [-S]  Query config options"
-msgstr "        -Q, --query <option> [...] [-O] [-S]  Mendi agordajn informojn"
+msgstr "        -Q, --query <option> [...] [-O] [-S]  Peti agordajn informojn"
 
 #: usage.c:90
-#, fuzzy
 msgid "        -O, --with-docs                       Add one-liner documentation"
-msgstr "        -O, --with-docs                       Add one-liner documentation"
+msgstr "        -O, --with-docs                       Aldoni unulinian dokumentaron"
 
 #: usage.c:91
-#, fuzzy
 msgid "        -S, --hide-sensitive                  Hide sensitive option values"
-msgstr "        -S, --hide-sensitive                  Hide sensitive option values"
+msgstr "        -S, --hide-sensitive                  Kaŝi kaŝindajn opciajn valorojn"
 
 #. L10N: Sending Help -- `neomutt --help send`
 #: usage.c:94 usage.c:253
-#, fuzzy
 msgid "Send an email from the command line"
 msgstr "Sendi retpoŝtmesaĝo per la komandlinio"
 
 #: usage.c:95
-#, fuzzy
 msgid "neomutt -a, --attach <file> [...]    Attach files"
 msgstr "neomutt -a, --attach <dosiero> [...] Aldoni dosierojn"
 
 #: usage.c:96
-#, fuzzy
 msgid "        -b, --bcc <address>          Add Bcc: address"
 msgstr "        -b, --bcc <adreso>           Aldoni trian adreson"
 
 #: usage.c:97
-#, fuzzy
 msgid "        -C, --crypto                 Use crypto (signing/encryption)"
 msgstr "        -C, --crypto                 Uzi subskribojn aŭ ĉifradon"
 
 #: usage.c:98
-#, fuzzy
 msgid "        -c, --cc <address>           Add Cc: address"
 msgstr "        -c, --cc <adreso>            Aldoni duan adreson"
 
 #: usage.c:99
-#, fuzzy
 msgid "        -E, --edit-message           Edit message (draft/include)"
-msgstr "        -E, --edit-message           Redakti mesaĝon"
+msgstr "        -E, --edit-message           Redakti mesaĝon (malneto/inkluzivaĵo)"
 
 #: usage.c:100
-#, fuzzy
 msgid "        -H, --draft <file>           Use draft email file"
-msgstr "        -H, --draft <malneto>        Uzi malnetan retpoŝtmesaĝon"
+msgstr "        -H, --draft <malneto>        Uzi malnetan retpoŝtmesaĝan dosieron"
 
 #: usage.c:101
-#, fuzzy
 msgid "        -i, --include <file>         Include body file"
-msgstr "        -i, --include <inkluzivaĵo>  Inkluzivigi korpan dosieron"
+msgstr "        -i, --include <dosiero>      Inkluzivigi korpan dosieron"
 
 #: usage.c:102
-#, fuzzy
 msgid "        -s, --subject <subject>      Set Subject:"
 msgstr "        -s, --subject <temo>         Specifi temon"
 
 #: usage.c:103
-#, fuzzy
 msgid "        -- <address> [...]           Add To: addresses"
 msgstr "        -- <adreo> [...]             Aldoni alsendotajn adresojn"
 
 #. L10N: TUI Help -- `neomutt --help tui`
 #: usage.c:106 usage.c:297
-#, fuzzy
 msgid "Start NeoMutt's TUI (Terminal User Interface)"
 msgstr "Startigi la fasadon terminalan (TUI) de NeoMutt"
 
 #: usage.c:107
-#, fuzzy
 msgid "neomutt                              Start NeoMutt's TUI"
 msgstr "neomutt                              Startigi la fasadon terminalan de NeoMutt"
 
 #: usage.c:108
-#, fuzzy
 msgid "        -f, --folder <mailbox>       Open this mailbox"
 msgstr "        -f, --folder <leterkesto>    Malfermi leterkeston"
 
 #: usage.c:109
-#, fuzzy
 msgid "        -G, --nntp-browser           Open NNTP browser"
 msgstr "        -G, --nntp-browser           Malfermi NNTP-legilon"
 
 #: usage.c:110
-#, fuzzy
 msgid "        -g, --nntp-server <server>   Use this NNTP server"
 msgstr "        -g, --nntp-server <servilo>  Uzi specifan NNTP-servilon"
 
 #: usage.c:111
-#, fuzzy
 msgid "        -p, --postponed              Resume postponed email"
 msgstr "        -p, --postponed              Restarigi malneton"
 
 #: usage.c:112
-#, fuzzy
 msgid "        -R, --read-only              Open mailbox read-only"
 msgstr "        -R, --read-only              Malfermi leterkeston kiel nurlegan"
 
 #: usage.c:113
-#, fuzzy
 msgid "        -y, --browser                Open mailbox browser"
 msgstr "        -y, --browser                Malfermi leterkestan foliumilon"
 
 #: usage.c:114
-#, fuzzy
 msgid "        -Z, --check-new-mail         Check for new mail"
 msgstr "        -Z, --check-new-mail         Kontroli novajn poŝtaĵojn"
 
 #: usage.c:115
-#, fuzzy
 msgid "        -z, --check-any-mail         Check for any mail"
 msgstr "        -z, --check-any-mail         Kontroli ĉiajn ajn poŝtaĵojn"
 
 #: usage.c:119 usage.c:121
-#, fuzzy
 msgid "For detailed help, run:"
 msgstr "Por detala helpilo, plenumigi:"
 
 #: usage.c:134
-#, fuzzy
 msgid "By default NeoMutt loads one system and one user config file,"
-msgstr "Apriore NeoMutt uzas unu uzonta-agordodosieron kaj unu sisteman,"
+msgstr "Apriore NeoMutt uzas unu sisteman agordodosieron kaj unu uzulan,"
 
 #: usage.c:135
-#, fuzzy
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
 msgstr "ekz-e /etc/neomuttrc kaj ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:138
-#, fuzzy
 msgid "  -n, --no-system-config      Don't read system config file"
 msgstr "  -n, --no-system-config      Ne analizi la sisteman agordodosieron"
 
 #: usage.c:139
-#, fuzzy
 msgid "  -F, --config <file>         Use this user config file"
-msgstr "  -F, --config <dosiero>      Uzi specifan agordodosieron"
+msgstr "  -F, --config <dosiero>      Uzi specifitan agordodosieron"
 
 #: usage.c:140 usage.c:147
-#, fuzzy
 msgid "                              May be used multiple times"
-msgstr "                              Eble uzata plurfoje"
+msgstr "                              Rajtas esti uzata plurfoje"
 
 #: usage.c:143
-#, fuzzy
 msgid "These options override the config:"
-msgstr "Tiuj parametroj superregas la agordodosieron:"
+msgstr "Tiuj opcioj superregas la agordodosieron:"
 
 #: usage.c:144
-#, fuzzy
 msgid "  -m, --mbox-type <type>      Set default mailbox type"
 msgstr "  -m, --mbox-type <type>      Agordi la aprioran tipon de leterkestoj"
 
 #: usage.c:145
-#, fuzzy
 msgid "                              May be: maildir, mbox, mh, mmdf"
 msgstr "                              Eblaj valoroj: maildir, mbox, mh, mmdf"
 
 #: usage.c:146
-#, fuzzy
 msgid "  -e, --command <command>     Run extra commands"
 msgstr "  -e, --command <komando>     Plenumigi aldonajn komandojn"
 
 #: usage.c:150
-#, fuzzy
 msgid "These logging options override the config:"
 msgstr "Tiuj protokolaj opcioj superregas la agordodosieron:"
 
 #: usage.c:151
-#, fuzzy
 msgid "  -d, --debug-level <level>   Set logging level"
 msgstr "  -d, --debug-level <nivelo>  Specifi la protokolan nivelon"
 
 #: usage.c:152
-#, fuzzy
 msgid "                              0 (off), 1 (low) .. 5 (high)"
 msgstr "                              0 (malŝalta), 1 (malalta) .. 5 (alta)"
 
 #: usage.c:153
-#, fuzzy
 msgid "  -l, --debug-file <file>     Set logging file"
 msgstr "  -l, --debug-file <dosiero>  Agordi protokolon"
 
 #: usage.c:154
-#, fuzzy
 msgid "                              Default file '~/.neomuttdebug0'"
 msgstr "                              Apriora dosiero: '~/.neomuttdebug0'"
 
 #: usage.c:158 usage.c:160 usage.c:198 usage.c:200 usage.c:235 usage.c:237
 #: usage.c:279 usage.c:281 usage.c:321 usage.c:323
-#, fuzzy
 msgid "Examples:"
 msgstr "Ekzemploj:"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:163
-#, fuzzy
 msgid "  neomutt --no-system-config"
 msgstr "  neomutt --no-system-config"
 
 #: usage.c:164
-#, fuzzy
 msgid "  neomutt --config work.rc"
 msgstr "  neomutt -F laboro.rc"
 
 #: usage.c:165
-#, fuzzy
 msgid "  neomutt --config work.rc --config colours.rc"
 msgstr "  neomutt -F laboro.rc -F koloroj.rc"
 
 #: usage.c:168
-#, fuzzy
 msgid "  neomutt --mbox-type maildir"
 msgstr "  neomutt -m leterkesta_dosierujo"
 
 #: usage.c:169
-#, fuzzy
 msgid "  neomutt --command 'set ask_cc = yes'"
 msgstr "  neomutt --command 'set ask_cc = yes'"
 
 #: usage.c:172
-#, fuzzy
 msgid "  neomutt --debug-level 2"
 msgstr "  neomutt --debug-level 2"
 
 #: usage.c:173
-#, fuzzy
 msgid "  neomutt --debug-level 5 --debug-file neolog"
 msgstr "  neomutt --debug-level 5 --debug-file neolog"
 
 #: usage.c:176
-#, fuzzy
 msgid "See also:"
 msgstr "Ankaŭ legindas:"
 
 #: usage.c:177
-#, fuzzy
 msgid "- Config files: https://neomutt.org/guide/configuration"
 msgstr "- Agordodosieroj: https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:191
-#, fuzzy
 msgid "  -h, --help           Overview of command line options"
 msgstr "  -h, --help           Superrigardo de la komandliniaj opcioj"
 
 #: usage.c:192
-#, fuzzy
 msgid "  -h, --help <mode>    Detailed help for: shared, help, info, send, tui, all"
 msgstr "  -h, --help <reĝimo>  Detala helpilo por: shared, help, info, send, tui, all"
 
 #: usage.c:193
-#, fuzzy
 msgid "  -v, --version        NeoMutt version and build parameters"
 msgstr "  -v, --version        Eldono de NeoMutt kaj ties muntaj parametroj"
 
 #: usage.c:194
-#, fuzzy
 msgid "  -vv, --license       NeoMutt Copyright and license"
 msgstr "  -vv, --license       Aŭtorrajto kaj permesilo de NeoMutt"
 
 #. L10N: Examples
 #: usage.c:203
-#, fuzzy
 msgid "  neomutt --help info"
 msgstr "  neomutt --help info"
 
 #: usage.c:204
-#, fuzzy
 msgid "  neomutt --license"
 msgstr "  neomutt --license"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:218
-#, fuzzy
 msgid "  -A, --alias <alias> [...]   Lookup email aliases"
 msgstr "  -A, --alias <alinomo> [...] Serĉi alinomojn"
 
 #: usage.c:219
-#, fuzzy
 msgid "                              Multiple aliases can be looked up (space-separated)"
 msgstr "                              Eblas serĉi plurajn alinomojn (apartigitaj per spacetoj)"
 
 #: usage.c:222
-#, fuzzy
 msgid "  -D, --dump-config           Dump all the config options"
 msgstr "  -D, --dump-config           Ŝuti ĉiujn agordaĵojn"
 
 #: usage.c:223
-#, fuzzy
 msgid "  -DD, --dump-changed-config  Dump the changed config options"
 msgstr "  -DD, --dump-changed-config  Same kiel -D, sed montri nur ŝanĝitajn agordaĵojn"
 
 #: usage.c:226
-#, fuzzy
 msgid "  -Q, --query <option> [...]  Query config options"
 msgstr "  -Q, --query <opcio> [...]   Serĉi agordaĵojn"
 
 #: usage.c:227
-#, fuzzy
 msgid "                              Multiple options can be looked up (space-separated)"
 msgstr "                              Eblas serĉi plurajn agordaĵojn (apartigitaj per spacetoj)"
 
 #: usage.c:229
-#, fuzzy
 msgid "Modify the -D and -Q options:"
 msgstr "Modifi la opciojn -D kaj -Q:"
 
 #: usage.c:230
-#, fuzzy
 msgid "  -O, --with-docs             Add one-liner documentation"
 msgstr "  -O, --with-docs             Aldoni unulinian dokumentaron"
 
 #: usage.c:231
-#, fuzzy
 msgid "  -S, --hide-sensitive        Hide the value of sensitive options"
 msgstr "  -S, --hide-sensitive        Kaŝi la valoron de kaŝindaj opcioj"
 
 #. L10N: Examples
 #: usage.c:240
-#, fuzzy
 msgid "  neomutt --alias flatcap gahr"
 msgstr "  neomutt --alias flatcap gahr"
 
 #: usage.c:241
-#, fuzzy
 msgid "  neomutt --dump-config --with-docs"
 msgstr "  neomutt --dump-config --with-docs"
 
 #: usage.c:242
-#, fuzzy
 msgid "  neomutt --dump-changed-config --hide-sensitive"
 msgstr "  neomutt --dump-changed-config --hide-sensitive"
 
 #: usage.c:243
-#, fuzzy
 msgid "  neomutt --with-docs --query alias_format index_format"
 msgstr "  neomutt --with-docs --query alias_format index_format"
 
 #: usage.c:256
-#, fuzzy
 msgid "These options can supply everything NeoMutt needs to send an email."
 msgstr "Ĉi tiuj opcioj povas provizi ĉion, kion bezonas NeoMutt por sendi retpoŝtaĵon."
 
 #: usage.c:257
-#, fuzzy
 msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
 msgstr "Se mankas iuj partoj, la terminala fasado de NeoMutt petos ilin."
 
 #: usage.c:258
-#, fuzzy
 msgid "Addresses may be used before the options, or after a -- marker."
 msgstr "Adresoj estas uzeblaj antaŭ la opcioj, aŭ post la markilo --."
 
 #: usage.c:259
-#, fuzzy
 msgid "Aliases may be used in place of addresses."
 msgstr "Alinomoj estas uzeblaj anstataŭ adresoj."
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:263
-#, fuzzy
 msgid "  -a, --attach <file> [...]   Attach files"
 msgstr "  -a, --attach <dosiero> [...]  Aldoni dosierojn"
 
 #: usage.c:264
-#, fuzzy
 msgid "                              Terminated by -- or another option"
 msgstr "                              Finigita per -- aŭ alia opcio"
 
 #: usage.c:265
-#, fuzzy
 msgid "  -b, --bcc <address>         Add Bcc: address"
-msgstr "  -b, --bcc <adreso>          Aldodi trian adreson"
+msgstr "  -b, --bcc <adreso>          Aldoni trian adreson"
 
 #: usage.c:266
-#, fuzzy
 msgid "  -C, --crypto                Use crypto (signing/encryption)"
 msgstr "  -C, --crypto                Subskribi aŭ ĉifri"
 
 #: usage.c:267
-#, fuzzy
 msgid "                              Must be set up in the config file"
 msgstr "                              Devas esti agordita en la agordodosiero"
 
 #: usage.c:268
-#, fuzzy
 msgid "  -c, --cc <address>          Add Cc: address"
 msgstr "  -c, --cc <adreso>           Aldoni duan adreson"
 
 #: usage.c:269
-#, fuzzy
 msgid "  -E, --edit-message          Edit message (draft/include)"
-msgstr "  -E, --edit-message          Redakti mesaĝon"
+msgstr "  -E, --edit-message          Redakti mesaĝon (malneto/inkluzivaĵo)"
 
 #: usage.c:270
-#, fuzzy
 msgid "                              (supplied by -H or -i)"
 msgstr "                              (provizita per -H aŭ -i)"
 
 #: usage.c:271
-#, fuzzy
 msgid "  -H, --draft <file>          Use draft email file"
-msgstr "  -H, --draft <malneto>       Uzi malneton"
+msgstr "  -H, --draft <dosiero>       Uzi malnetan retpoŝtaĵan dosieron"
 
 #: usage.c:272
-#, fuzzy
 msgid "                              Full email with headers and body"
 msgstr "                              Plena retpoŝtaĵo kun ĉapoj kaj korpo"
 
 #: usage.c:273
-#, fuzzy
 msgid "  -i, --include <file>        Include body file"
 msgstr "  -i, --include <inkluzivaĵo> Inkluvizigi korpodosieron"
 
 #: usage.c:274
-#, fuzzy
 msgid "  -s, --subject <subject>     Set Subject:"
-msgstr "  -s, --subject <subject>     Specifi temon:"
+msgstr "  -s, --subject <subject>     Specifi temon"
 
 #: usage.c:275
-#, fuzzy
 msgid "  -- <address> [...]          Add To: addresses"
 msgstr "  -- <adreso>  [...]          Aldoni alsendotajn adresojn"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:284
-#, fuzzy
 msgid "  neomutt flatcap --subject 'Meeting' < meeting.txt"
 msgstr "  neomutt flatcap --subject 'Kunveno' < kunveno.txt"
 
 #: usage.c:285
-#, fuzzy
 msgid "  neomutt jim@example.com --cc bob@example.com --subject 'Party' --include party.txt"
 msgstr "  neomutt jim@example.com --cc bob@example.com --subject 'Festo' --include festo.txt"
 
 #: usage.c:286
-#, fuzzy
 msgid "  neomutt --subject 'Receipts' --attach receipt1.pdf receipt2.pdf -- rocco"
 msgstr "  neomutt --subject 'Kvitancoj' --attach kvitanco1.pdf kvitanco2.pdf -- rocco"
 
 #: usage.c:287
-#, fuzzy
 msgid "  cat secret.txt | neomutt gahr --subject 'Secret' --crypto"
 msgstr "  cat sekreto.txt | neomutt gahr --subject 'Sekreto' --crypto"
 
 #: usage.c:300
-#, fuzzy
 msgid "Running NeoMutt with no options will read the config and start the TUI."
 msgstr "Plenumigo de NeoMutt kun neniuj opcioj analizos la agordodosieron kaj startigos la terminalan fasadon."
 
 #: usage.c:301
-#, fuzzy
 msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
-msgstr "Apriore ĝi malfermos la indeksan dialogujon kun la $spool_file Mailbox."
+msgstr "Apriore ĝi malfermos la indeksan dialogujon kun la leterkesto $spool_file."
 
 #: usage.c:304
-#, fuzzy
 msgid "These options cause NeoMutt to check a mailbox for mail."
-msgstr "Per ĉi tiuj opcioj NeoMutt kontroli leterkeston por poŝtaĵo."
+msgstr "Per ĉi tiuj opcioj NeoMutt kontrolas leterkeston por poŝtaĵo."
 
 #: usage.c:305
-#, fuzzy
 msgid "If the condition isn't matched, NeoMutt exits."
 msgstr "Se la kondiĉo ne estas plenumita, NeoMutt finiĝas."
 
 #: usage.c:306
-#, fuzzy
 msgid "  -p, --postponed       Resume postponed email"
 msgstr "  -p, --postponed       Restarigi prokrastitan retpoŝtaĵon"
 
 #: usage.c:307
-#, fuzzy
 msgid "  -Z, --check-new-mail  Check for new mail"
 msgstr "  -Z, --check-new-mail  Kontroli novajn retpoŝtaĵojn"
 
 #: usage.c:308
-#, fuzzy
 msgid "  -z, --check-any-mail  Check for any mail"
 msgstr "  -z, --check-any-mail  Kontroli ĉiajn retpoŝtaĵojn"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:312
-#, fuzzy
 msgid "These options change the starting behavior:"
-msgstr "Ĉi tiuj opcio ŝanĝas kiel NeoMutt startas:"
+msgstr "Ĉi tiuj opcioj ŝanĝas kiel NeoMutt startas:"
 
 #: usage.c:313
-#, fuzzy
 msgid "  -f, --folder <mailbox>      Open this mailbox"
-msgstr "  -f, --folder <leterkesto>   Malfermi specifan leterkeston"
+msgstr "  -f, --folder <leterkesto>   Malfermi specifitan leterkeston"
 
 #: usage.c:314
-#, fuzzy
 msgid "  -G, --nntp-browser          Open NNTP browser"
 msgstr "  -G, --nntp-browser          Malfermi NNTP-foliumilon"
 
 #: usage.c:315
-#, fuzzy
 msgid "  -g, --nntp-server <server>  Use this NNTP server"
-msgstr "  -g, --nntp-server <servilo> Uzi specifan  NNTP-servilon"
+msgstr "  -g, --nntp-server <servilo> Uzi specifitan NNTP-servilon"
 
 #: usage.c:316
-#, fuzzy
 msgid "  -R, --read-only             Open mailbox read-only"
 msgstr "  -R, --read-only             Malfermi leterkeston kiel nurlegan"
 
 #: usage.c:317
-#, fuzzy
 msgid "  -y, --browser               Open mailbox browser"
 msgstr "  -y, --browser               Malfermi leterkestan foliumilon"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:326
-#, fuzzy
 msgid "  neomutt --folder ~/mail --check-new-mail"
 msgstr "  neomutt --folder ~/poŝtaĵoj --check-new-mail"
 
 #: usage.c:327
-#, fuzzy
 msgid "  neomutt --postponed"
 msgstr "  neomutt --postponed"
 
 #: usage.c:328
-#, fuzzy
 msgid "  neomutt --browser"
 msgstr "  neomutt --browser"
 
@@ -9665,9 +9455,20 @@ msgstr ""
 msgid "Copyright (C) 2015-2026 Richard Russon and friends"
 msgstr "Kopirajto (C) 2015-2026 Richard Russon kaj aliaj"
 
+msgid ""
+"Copyright (C) 2015-2026 Richard Russon and friends\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
+"NeoMutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
+msgstr ""
+"Kopirajto (C) 2015-2026 Richard Russon kaj aliaj.\n"
+"NeoMutt inkluzivas ABSOLUTE NENIAN GARANTION; por detaloj tajpu 'neomutt -vv'.\n"
+"NeoMutt estas libera programo, kaj vi rajtas pludoni kopiojn\n"
+"laŭ difinitaj kondiĉoj; tajpu 'neomutt -vv' por detaloj.\n"
+
 #: version.c:111
 msgid "NeoMutt is free software, provided without warranty: `neomutt -vv` for details"
-msgstr ""
+msgstr "NeoMutt estas libera programa, provizita sen garantio: `neomutt -vv` por detaloj"
 
 #: version.c:671
 msgid "Compile options:"
