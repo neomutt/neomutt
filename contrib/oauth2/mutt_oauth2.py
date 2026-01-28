@@ -40,6 +40,10 @@ import socket
 import http.server
 import subprocess
 
+# Sometime the communication will hang, freezing Mutt.
+# this timeout prevents this from happening
+socket.setdefaulttimeout(15)
+
 # The token file must be encrypted because it contains multi-use bearer tokens
 # whose usage does not require additional verification. Specify whichever
 # encryption and decryption pipes you prefer. They should read from standard
