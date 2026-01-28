@@ -333,6 +333,8 @@ void exec_account_hook(const char *url)
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
 
+  CurrentHookId = CMD_ACCOUNT_HOOK;
+
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->id == CMD_ACCOUNT_HOOK)))
@@ -356,6 +358,7 @@ void exec_account_hook(const char *url)
   }
 
 done:
+  CurrentHookId = CMD_NONE;
   parse_context_free(&pc);
   parse_error_free(&pe);
 }
@@ -371,6 +374,8 @@ void exec_timeout_hook(void)
   struct Hook *hook = NULL;
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
+
+  CurrentHookId = CMD_TIMEOUT_HOOK;
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
@@ -390,6 +395,7 @@ void exec_timeout_hook(void)
   /* Delete temporary attachment files */
   mutt_temp_attachments_cleanup();
 
+  CurrentHookId = CMD_NONE;
   parse_context_free(&pc);
   parse_error_free(&pe);
 }
@@ -407,6 +413,8 @@ void exec_startup_shutdown_hook(enum CommandId id)
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
 
+  CurrentHookId = id;
+
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->id == id)))
@@ -419,6 +427,7 @@ void exec_startup_shutdown_hook(enum CommandId id)
     }
   }
 
+  CurrentHookId = CMD_NONE;
   parse_context_free(&pc);
   parse_error_free(&pe);
 }
@@ -440,8 +449,6 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
   if (!hl)
     return NULL;
 
-  CurrentHookId = CMD_INDEX_FORMAT_HOOK;
-
   struct PatternCache cache = { 0 };
   const struct Expando *exp = NULL;
   struct Hook *hook = NULL;
@@ -455,8 +462,6 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
       break;
     }
   }
-
-  CurrentHookId = CMD_NONE;
 
   return exp;
 }
