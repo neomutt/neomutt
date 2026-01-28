@@ -895,6 +895,8 @@ void mutt_account_hook(const char *url)
   struct Hook *hook = NULL;
   struct Buffer *err = buf_pool_get();
 
+  CurrentHookType = MUTT_ACCOUNT_HOOK;
+
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & MUTT_ACCOUNT_HOOK)))
@@ -918,7 +920,9 @@ void mutt_account_hook(const char *url)
       inhook = false;
     }
   }
+
 done:
+  CurrentHookType = MUTT_HOOK_NO_FLAGS;
   buf_pool_release(&err);
 }
 
@@ -933,6 +937,7 @@ void mutt_timeout_hook(void)
   struct Hook *hook = NULL;
   struct Buffer *err = buf_pool_get();
 
+  CurrentHookType = MUTT_TIMEOUT_HOOK;
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & MUTT_TIMEOUT_HOOK)))
@@ -947,6 +952,8 @@ void mutt_timeout_hook(void)
        * failed, we'll carry on with the others. */
     }
   }
+
+  CurrentHookType = MUTT_HOOK_NO_FLAGS;
   buf_pool_release(&err);
 
   /* Delete temporary attachment files */
@@ -965,6 +972,7 @@ void mutt_startup_shutdown_hook(HookFlags type)
   struct Hook *hook = NULL;
   struct Buffer *err = buf_pool_get();
 
+  CurrentHookType = type;
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & type)))
@@ -976,6 +984,8 @@ void mutt_startup_shutdown_hook(HookFlags type)
       buf_reset(err);
     }
   }
+
+  CurrentHookType = MUTT_HOOK_NO_FLAGS;
   buf_pool_release(&err);
 }
 
@@ -996,8 +1006,6 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
   if (!hl)
     return NULL;
 
-  CurrentHookType = MUTT_IDXFMTHOOK;
-
   struct PatternCache cache = { 0 };
   const struct Expando *exp = NULL;
   struct Hook *hook = NULL;
@@ -1011,8 +1019,6 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
       break;
     }
   }
-
-  CurrentHookType = MUTT_HOOK_NO_FLAGS;
 
   return exp;
 }
