@@ -56,10 +56,10 @@ static void win_dump(struct MuttWindow *win, int indent)
              visible ? "" : "\033[0m",
              (win == WinFocus) ? " <-- \033[1;31mFOCUS\033[0m" : "");
 
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &win->children, entries)
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &win->children)
   {
-    win_dump(np, indent + 4);
+    win_dump(*wp, indent + 4);
   }
 }
 
