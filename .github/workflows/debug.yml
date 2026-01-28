@@ -47,7 +47,7 @@ jobs:
             options: --coverage
           - name:    fuzzing
             options: --fuzzing
-            extras:  CC=clang-14 CXX=clang-14 fuzz
+            extras:  CC=clang CXX=clang fuzz
           - name:    all
             options: --debug-backtrace --debug-color --debug-email --debug-graphviz --debug-keymap --debug-logging --debug-names --debug-notify --debug-queue --debug-window --coverage
 
