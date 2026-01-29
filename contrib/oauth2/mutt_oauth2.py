@@ -109,6 +109,8 @@ ap.add_argument('--client-id', type=str, default='',
                 help='Provider id from registration')
 ap.add_argument('--client-secret', type=str, default='',
                 help='(optional) Provider secret from registration')
+ap.add_argument('--redirect-uri', type=str, default='',
+                help='Specify redirect-uri (May need to match match app registration with provider).')
 ap.add_argument('--provider', type=str, choices=registrations.keys(),
                 help='Specify provider to use.')
 ap.add_argument('--tenant', type=str, default='common',
@@ -167,6 +169,9 @@ if not token:
     token['client_secret'] = args.client_secret or input('Client secret: ')
     if token['registration'] == "microsoft":
         token['tenant'] = args.tenant
+    if args.redirect_uri:
+        # This overrides redirect_uri in registration
+        token['redirect_uri'] = args.redirect_uri
     writetokenfile()
 
 if token['registration'] not in registrations:
@@ -222,6 +227,8 @@ if args.authorize:
         verifier = secrets.token_urlsafe(90)
         challenge = base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest())[:-1]
         redirect_uri = registration['redirect_uri']
+        if 'redirect_uri' in token: # Override if user specified
+            redirect_uri = token['redirect_uri']
         listen_port = 0
         if authflow == 'localhostauthcode':
             # Find an available port to listen on
