@@ -1120,7 +1120,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   /* Create a temporary file to write the new version of the mailbox in. */
   tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  int fd = open(buf_string(tempfile), O_WRONLY | O_EXCL | O_CREAT, 0600);
+  int fd = open(buf_string(tempfile), O_WRONLY | O_EXCL | O_CREAT, S_IRUSR | S_IWUSR);
   if ((fd == -1) || !(fp = fdopen(fd, "w")))
   {
     if (fd != -1)

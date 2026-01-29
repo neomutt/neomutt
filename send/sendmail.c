@@ -151,7 +151,7 @@ static int send_msg(const char *path, struct StringArray *args, const char *msg,
       if ((wait_time >= 0) && tempfile && *tempfile)
       {
         /* *tempfile will be opened as stdout */
-        if (open(*tempfile, O_WRONLY | O_APPEND | O_CREAT | O_EXCL, 0600) < 0)
+        if (open(*tempfile, O_WRONLY | O_APPEND | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR) < 0)
           _exit(S_ERR);
         /* redirect stderr to *tempfile too */
         if (dup(1) < 0)
