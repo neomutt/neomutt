@@ -40,6 +40,7 @@ import shlex
 import socket
 import http.server
 import subprocess
+import readline # Enables the input of long lines like the log URL returned in  authflow: authcode
 
 # The token file must be encrypted because it contains multi-use bearer tokens
 # whose usage does not require additional verification. Specify whichever
