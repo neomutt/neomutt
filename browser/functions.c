@@ -608,7 +608,7 @@ static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event
   {
     char **tfiles = NULL;
 
-    if (priv->menu->num_tagged)
+    if (priv->menu->tag_prefix && (priv->menu->num_tagged != 0))
     {
       *priv->numfiles = priv->menu->num_tagged;
       tfiles = MUTT_MEM_CALLOC(*priv->numfiles, char *);
