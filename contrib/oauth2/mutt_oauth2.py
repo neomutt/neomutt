@@ -111,6 +111,8 @@ ap.add_argument('--client-secret', type=str, default='',
                 help='(optional) Provider secret from registration')
 ap.add_argument('--provider', type=str, choices=registrations.keys(),
                 help='Specify provider to use.')
+ap.add_argument('--tenant', type=str, default='common',
+                help='Specify tenant (common: Work on School, consumers - personal).')
 ap.add_argument('--email', type=str, help='Your email address.')
 args = ap.parse_args()
 
@@ -163,12 +165,26 @@ if not token:
     token['refresh_token'] = ''
     token['client_id'] = args.client_id or input('Client ID: ')
     token['client_secret'] = args.client_secret or input('Client secret: ')
+    if token['registration'] == "microsoft":
+        token['tenant'] = args.tenant
     writetokenfile()
 
 if token['registration'] not in registrations:
     sys.exit(f'ERROR: Unknown registration "{token["registration"]}". Delete token file '
              f'and start over.')
 registration = registrations[token['registration']]
+if token['registration'] == "microsoft":
+    if not 'tenant' in token:
+        # Existing token was not written with tenant.  Just default to common.
+        token['tenant'] = 'common'
+    # This only matters for microsoft registration
+    if token['tenant'] != "common":
+        registration['authorize_endpoint'] = registration['authorize_endpoint'].replace("common", token['tenant'], 1)
+        registration['devicecode_endpoint'] = registration['devicecode_endpoint'].replace("common", token['tenant'], 1)
+        registration['token_endpoint'] = registration['token_endpoint'].replace("common", token['tenant'], 1)
+        registration['redirect_uri'] = registration['redirect_uri'].replace("common", token['tenant'], 1)
+        registration['tenant'] = token['tenant']
+
 
 authflow = token['authflow']
 if args.authflow:
