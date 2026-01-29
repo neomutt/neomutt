@@ -62,6 +62,7 @@ enum PatternEat
  */
 struct PatternFlags
 {
+  char prefix;             ///< Prefix for this pattern, e.g. '~', '%', or '='
   char tag;                ///< Character used to represent this operation, e.g. 'A' for '~A'
   int op;                  ///< Operation to perform, e.g. #MUTT_PAT_SCORE
   PatternCompFlags flags;  ///< Pattern flags, e.g. #MUTT_PC_FULL_MSG
@@ -144,7 +145,7 @@ extern struct RangeRegex RangeRegexes[];
 extern const struct PatternFlags Flags[];
 
 const struct PatternFlags *lookup_op(int op);
-const struct PatternFlags *lookup_tag(char tag);
+const struct PatternFlags *lookup_tag(char prefix, char tag);
 bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err);
 bool eat_message_range(struct Pattern *pat, PatternCompFlags flags, struct Buffer *s, struct Buffer *err, struct MailboxView *mv);
 
