@@ -429,8 +429,9 @@ void pretty_mailbox(struct Buffer *buf)
   if (!buf || !buf->data)
     return;
 
-  /* This reduces the size of the Buffer, so we can pass it through.
-   * We adjust the size just to make sure buf->data is not NULL though */
+  /* Ensure buffer is large enough for path manipulation operations.
+   * The function will modify the string in-place, potentially shortening it.
+   * buf_alloc() also guarantees buf->data is not NULL. */
   buf_alloc(buf, PATH_MAX);
 
   char *p = buf->data;
