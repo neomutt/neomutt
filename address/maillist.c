@@ -116,19 +116,18 @@ bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen)
 
 /**
  * first_mailing_list - Get the first mailing list in the list of addresses
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
  * @param al     AddressList
+ * @param buf    Buffer for the result
  * @retval true A mailing list was found
  */
-bool first_mailing_list(char *buf, size_t buflen, struct AddressList *al)
+bool first_mailing_list(struct AddressList *al, struct Buffer *buf)
 {
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
     if (mutt_is_subscribed_list(a))
     {
-      mutt_save_path(buf, buflen, a);
+      generate_save_path(buf, a);
       return true;
     }
   }

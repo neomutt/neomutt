@@ -598,40 +598,13 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
 }
 
 /**
- * mutt_save_path - Turn an email address into a filename (for saving)
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
- * @param addr   Email address to use
- *
- * If the user hasn't set `$save_address` the name will be truncated to the '@'
- * character.
- */
-void mutt_save_path(char *buf, size_t buflen, const struct Address *addr)
-{
-  if (addr && addr->mailbox)
-  {
-    mutt_str_copy(buf, buf_string(addr->mailbox), buflen);
-    const bool c_save_address = cs_subset_bool(NeoMutt->sub, "save_address");
-    if (!c_save_address)
-    {
-      char *p = strpbrk(buf, "%@");
-      if (p)
-        *p = '\0';
-    }
-    mutt_str_lower(buf);
-  }
-  else
-  {
-    *buf = '\0';
-  }
-}
-
-/**
- * buf_save_path - Make a safe filename from an email address
+ * generate_save_path - Make a safe filename from an email address
  * @param dest Buffer for the result
  * @param a    Address to use
+ *
+ * The filename will be stripped of unsafe characters (/, space, etc) to make it safe.
  */
-void buf_save_path(struct Buffer *dest, const struct Address *a)
+void generate_save_path(struct Buffer *dest, const struct Address *a)
 {
   if (a && a->mailbox)
   {
@@ -647,26 +620,15 @@ void buf_save_path(struct Buffer *dest, const struct Address *a)
       }
     }
     mutt_str_lower(dest->data);
+    /* Sanitize filename by replacing unsafe characters */
+    for (char *p = dest->data; *p; p++)
+      if ((*p == '/') || mutt_isspace(*p) || !IsPrint((unsigned char) *p))
+        *p = '_';
   }
   else
   {
     buf_reset(dest);
   }
-}
-
-/**
- * mutt_safe_path - Make a safe filename from an email address
- * @param dest Buffer for the result
- * @param a    Address to use
- *
- * The filename will be stripped of '/', space, etc to make it safe.
- */
-void mutt_safe_path(struct Buffer *dest, const struct Address *a)
-{
-  buf_save_path(dest, a);
-  for (char *p = dest->data; *p; p++)
-    if ((*p == '/') || mutt_isspace(*p) || !IsPrint((unsigned char) *p))
-      *p = '_';
 }
 
 /**

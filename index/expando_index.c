@@ -1263,14 +1263,8 @@ static void envelope_list_address(const struct ExpandoNode *node, void *data,
   if (!e || !e->env)
     return;
 
-  char tmp[128] = { 0 };
-
-  if (first_mailing_list(tmp, sizeof(tmp), &e->env->to) ||
-      first_mailing_list(tmp, sizeof(tmp), &e->env->cc))
-  {
-    buf_strcpy(buf, tmp);
+  if (first_mailing_list(&e->env->to, buf) || first_mailing_list(&e->env->cc, buf))
     return;
-  }
 
   mailbox_mailbox_name(node, data, flags, buf);
 }
@@ -1286,13 +1280,8 @@ static void envelope_list_empty(const struct ExpandoNode *node, void *data,
   if (!e || !e->env)
     return;
 
-  char tmp[128] = { 0 };
-
-  if (first_mailing_list(tmp, sizeof(tmp), &e->env->to) ||
-      first_mailing_list(tmp, sizeof(tmp), &e->env->cc))
-  {
-    buf_strcpy(buf, tmp);
-  }
+  if (!first_mailing_list(&e->env->to, buf))
+    first_mailing_list(&e->env->cc, buf);
 }
 
 /**

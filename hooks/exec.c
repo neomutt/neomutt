@@ -238,7 +238,7 @@ void mutt_default_save(struct Buffer *path, struct Email *e)
   if (addr)
   {
     struct Buffer *tmp = buf_pool_get();
-    mutt_safe_path(tmp, addr);
+    generate_save_path(tmp, addr);
     buf_add_printf(path, "=%s", buf_string(tmp));
     buf_pool_release(&tmp);
   }
@@ -265,7 +265,7 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
     {
       const struct Address *addr = to ? to : (cc ? cc : bcc);
       struct Buffer *buf = buf_pool_get();
-      mutt_safe_path(buf, addr);
+      generate_save_path(buf, addr);
       const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
       buf_concat_path(path, NONULL(c_folder), buf_string(buf));
       buf_pool_release(&buf);
