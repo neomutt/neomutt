@@ -1,0 +1,152 @@
+name: format-and-lint
+intent: Format and lint code
+description: |
+  Run clang-format to check or apply formatting across C source files in the repository.
+  Supports check mode (CI-friendly) that fails if files need formatting, and fix mode that applies formatting in-place.
+  Essential for maintaining consistent code style during refactoring and ensuring no formatting drift.
+  NOTE: Header files (*.h) are NOT formatted - they are manually formatted for legibility.
+triggers:
+  - commands:
+      - "format code"
+      - "clang-format"
+      - "check format"
+      - "lint code"
+  - files:
+      - "*.c"
+      - ".clang-format"
+tools:
+  - bash
+  - clang-format
+  - git
+inputs:
+  paths:
+    description: "File globs to include (passed to git ls-files). Excludes autosetup/ and docs/ by default."
+    default: "':!autosetup/' ':!docs/' '*.c'"
+  fix:
+    description: "Apply fixes in-place when true; otherwise run check only"
+    default: false
+  show_diff:
+    description: "Show diff of formatting changes (in check mode)"
+    default: true
+  staged_only:
+    description: "Only format staged files (useful for pre-commit checks)"
+    default: false
+commands:
+  - name: ensure-clang-format
+    run: |
+      if ! command -v clang-format >/dev/null; then
+        echo "ERROR: clang-format not found in PATH"
+        echo "Install with: apt-get install clang-format (Ubuntu) or brew install clang-format (macOS)"
+        exit 1
+      fi
+      echo "Using: $(clang-format --version)"
+    safe: true
+    timeout: 30
+  - name: get-files
+    run: |
+      if [ "{{staged_only}}" = "true" ]; then
+        echo "Checking staged files only..."
+        git diff --cached --name-only --diff-filter=ACMR -- {{paths}} > /tmp/format-files.txt
+      else
+        echo "Checking all tracked C source files (header files excluded)..."
+        git ls-files -- {{paths}} > /tmp/format-files.txt
+      fi
+      
+      FILE_COUNT=$(wc -l < /tmp/format-files.txt)
+      echo "Found $FILE_COUNT files to check"
+      
+      if [ "$FILE_COUNT" -eq 0 ]; then
+        echo "No files to format"
+        exit 0
+      fi
+      
+      echo "Files to check:"
+      head -10 /tmp/format-files.txt
+      [ "$FILE_COUNT" -gt 10 ] && echo "  ... and $((FILE_COUNT - 10)) more"
+    safe: true
+    timeout: 60
+  - name: check
+    run: |
+      if [ ! -f /tmp/format-files.txt ]; then
+        echo "No files list found"
+        exit 0
+      fi
+      
+      echo "Checking formatting..."
+      NEEDS_FORMAT=0
+      
+      while IFS= read -r file; do
+        if [ ! -f "$file" ]; then continue; fi
+        
+        if ! clang-format -style=file "$file" | cmp -s "$file" -; then
+          echo "✗ $file needs formatting"
+          NEEDS_FORMAT=$((NEEDS_FORMAT + 1))
+          
+          if [ "{{show_diff}}" = "true" ] && [ "{{fix}}" = "false" ]; then
+            echo "  Diff:"
+            clang-format -style=file "$file" | diff -u "$file" - || true
+          fi
+        fi
+      done < /tmp/format-files.txt
+      
+      if [ $NEEDS_FORMAT -gt 0 ]; then
+        echo ""
+        echo "ERROR: $NEEDS_FORMAT file(s) need formatting"
+        echo "Run with --fix=true to apply formatting"
+        exit 1
+      else
+        echo "✓ All files are properly formatted"
+      fi
+    safe: true
+    timeout: 600
+  - name: fix
+    run: |
+      if [ "{{fix}}" != "true" ]; then
+        echo "Skipping fix (--fix=false)"
+        exit 0
+      fi
+      
+      if [ ! -f /tmp/format-files.txt ]; then
+        echo "No files list found"
+        exit 0
+      fi
+      
+      echo "Applying formatting fixes..."
+      cat /tmp/format-files.txt | xargs -r clang-format -style=file -i
+      
+      echo "✓ Formatting applied"
+    safe: true
+    timeout: 600
+  - name: verify
+    run: |
+      if [ "{{fix}}" = "true" ]; then
+        echo "Changed files:"
+        git --no-pager diff --stat
+        git --no-pager status --porcelain
+      fi
+      rm -f /tmp/format-files.txt
+    safe: true
+    timeout: 30
+examples:
+  - description: Check formatting without making changes (CI mode)
+    run: "copilot run format-and-lint -- --fix=false"
+  - description: Apply formatting fixes to all C source files
+    run: "copilot run format-and-lint -- --fix=true"
+  - description: Check only staged files (pre-commit hook)
+    run: "copilot run format-and-lint -- --staged_only=true --fix=false"
+  - description: Quick check without diff output
+    run: "copilot run format-and-lint -- --show_diff=false"
+success_criteria:
+  - "check: exits 0 when all files are correctly formatted"
+  - "check: exits 1 and lists files when formatting is needed"
+  - "fix: applies formatting and git status shows changes"
+  - "Header files (*.h) are never formatted"
+timeout: 1200
+notes: |
+  - IMPORTANT: Header files (*.h) are NOT formatted by this skill - they are manually formatted for legibility
+  - Only C source files (*.c) are formatted with clang-format
+  - Files in autosetup/ and docs/ are excluded (third-party or generated code)
+  - Use --fix=false in CI to enforce formatting standards
+  - Use --staged_only=true for pre-commit hooks to only check staged changes
+  - The .clang-format file defines the project's formatting rules
+  - Consider running this before committing refactored code to maintain consistency

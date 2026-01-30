@@ -1,0 +1,121 @@
+name: build-neomutt
+intent: Build NeoMutt binary
+description: |
+  Automate configuring and building the neomutt binary in a reproducible way.
+  Provides safe, parameterized command templates for common build configurations.
+  Supports out-of-source builds and multiple configurations (default, minimal, full).
+triggers:
+  - commands:
+      - "build neomutt"
+      - "make neomutt"
+      - "configure neomutt"
+  - files:
+      - "configure"
+      - "Makefile*"
+      - "auto.def"
+tools:
+  - bash
+  - make
+  - git
+inputs:
+  configure_opts:
+    description: Options to pass to ../configure (use 'default', 'minimal', or 'full' for presets)
+    default: "--full-doc"
+  jobs:
+    description: Number of parallel make jobs (0 = auto-detect)
+    default: 0
+  cc:
+    description: CC environment variable for compiler (e.g., clang, gcc)
+    default: ""
+  build_dir:
+    description: Build directory name (relative to repo root)
+    default: "build"
+  clean:
+    description: Clean build directory before configuring
+    default: false
+commands:
+  - name: setup-parallel-jobs
+    run: |
+      if [ "{{jobs}}" = "0" ]; then
+        JOBS=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)
+      else
+        JOBS={{jobs}}
+      fi
+      echo "JOBS=$JOBS" >> $GITHUB_ENV || export JOBS
+      echo "Using $JOBS parallel jobs"
+    safe: true
+    timeout: 30
+  - name: prepare-build-dir
+    run: |
+      if [ "{{clean}}" = "true" ] && [ -d "{{build_dir}}" ]; then
+        echo "Cleaning build directory..."
+        rm -rf {{build_dir}}
+      fi
+      mkdir -p {{build_dir}}
+      cd {{build_dir}}
+      
+      # Expand preset configurations
+      OPTS="{{configure_opts}}"
+      case "$OPTS" in
+        "default")
+          OPTS="--full-doc"
+          ;;
+        "minimal")
+          OPTS="--full-doc --disable-nls --disable-pgp --disable-smime --ssl --gsasl"
+          ;;
+        "full")
+          OPTS="--full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd"
+          ;;
+      esac
+      
+      echo "Configuring with: $OPTS"
+      if [ -n "{{cc}}" ]; then
+        env CC={{cc}} ../configure $OPTS
+      else
+        ../configure $OPTS
+      fi
+    safe: true
+    timeout: 1800
+  - name: build
+    run: |
+      JOBS=${JOBS:-{{jobs}}}
+      [ "$JOBS" = "0" ] && JOBS=$(nproc 2>/dev/null || echo 2)
+      echo "Building neomutt with -j$JOBS..."
+      make -C {{build_dir}} neomutt -j$JOBS
+    safe: true
+    timeout: 3600
+  - name: verify
+    run: |
+      if [ ! -x "{{build_dir}}/neomutt" ]; then
+        echo "ERROR: {{build_dir}}/neomutt not found or not executable"
+        exit 1
+      fi
+      echo "Build successful:"
+      {{build_dir}}/neomutt -v
+    safe: true
+    timeout: 60
+examples:
+  - description: Default build using recommended options (auto-detect CPUs)
+    run: "copilot run build-neomutt -- --configure-opts='default' --jobs=0"
+  - description: Minimal build configuration (for testing disabled features)
+    run: "copilot run build-neomutt -- --configure-opts='minimal' --jobs=4"
+  - description: Full build with all features enabled
+    run: "copilot run build-neomutt -- --configure-opts='full' --jobs=8"
+  - description: Build with clang and fuzzing enabled
+    run: "copilot run build-neomutt -- --cc=clang --configure-opts='--fuzzing --disable-doc --disable-nls --disable-idn2' --jobs=8"
+  - description: Clean rebuild in custom directory
+    run: "copilot run build-neomutt -- --build_dir='build-test' --clean=true"
+success_criteria:
+  - "The binary {{build_dir}}/neomutt exists and is executable"
+  - "{{build_dir}}/neomutt -v exits 0 and prints version/features"
+  - "No compiler warnings or errors during build"
+timeout: 7200
+notes: |
+  - Use preset configurations: 'default', 'minimal', or 'full' to match CI workflows
+  - This skill runs configure in a dedicated build directory to avoid polluting source tree
+  - Out-of-tree builds may encounter Makefile race conditions with parallel make (-j > 1)
+  - For most reliable builds, consider in-tree: ./configure && make neomutt
+  - For CI, prefer deterministic configure_opts and pin CC for reproducibility
+  - Auto-detect parallel jobs with --jobs=0 for faster local builds
+  - Use --clean=true to ensure a fresh build when switching configurations
+  - If you see "ar: file.o: No such file or directory", try reducing parallel jobs

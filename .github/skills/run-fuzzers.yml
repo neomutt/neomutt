@@ -1,0 +1,246 @@
+name: run-fuzzers
+intent: Build and run fuzzers
+description: |
+  Build and run LibFuzzer-based fuzz targets under fuzz/ using clang with -fsanitize=fuzzer.
+  Supports corpus-based fuzzing for security testing of parsing functions.
+  Each fuzz target has a corresponding corpus repository with test cases.
+  Critical for testing security-sensitive code like email header, MIME, and CLI parsing.
+triggers:
+  - commands:
+      - "run fuzzers"
+      - "fuzz"
+      - "build fuzzers"
+      - "test fuzzing"
+  - files:
+      - "fuzz/**"
+      - "fuzz/README.md"
+tools:
+  - bash
+  - clang
+  - make
+  - git
+inputs:
+  cc:
+    description: Compiler to use (must support -fsanitize=fuzzer)
+    default: "clang"
+  configure_opts:
+    description: Additional options to pass to configure (--fuzzing is recommended)
+    default: "--fuzzing --disable-doc --disable-nls --disable-idn2"
+  targets:
+    description: Space-separated fuzz targets under fuzz/ (empty = all available)
+    default: ""
+  corpus_base_dir:
+    description: Base directory for corpus repositories (each target gets its own subdir)
+    default: "corpus"
+  auto_clone_corpus:
+    description: Automatically clone missing corpus repositories
+    default: false
+  max_time:
+    description: Max total time per fuzzer in seconds
+    default: 60
+  jobs:
+    description: Parallel make jobs (0 = auto-detect)
+    default: 0
+  build_dir:
+    description: Build directory name
+    default: "build-fuzz"
+  list_only:
+    description: Only list available fuzz targets without running
+    default: false
+commands:
+  - name: ensure-clang
+    run: |
+      if ! command -v {{cc}} >/dev/null; then
+        echo "ERROR: {{cc}} not found in PATH"
+        echo "Install with: apt-get install clang (Ubuntu) or brew install llvm (macOS)"
+        exit 1
+      fi
+      echo "Using: $({{cc}} --version | head -1)"
+      
+      # Verify fuzzer support
+      if ! {{cc}} -fsanitize=fuzzer -x c - -o /dev/null <<<'int LLVMFuzzerTestOneInput(const unsigned char *d, unsigned long s){return 0;}' 2>/dev/null; then
+        echo "WARNING: {{cc}} may not support -fsanitize=fuzzer"
+      fi
+    safe: true
+    timeout: 30
+  - name: setup-parallel-jobs
+    run: |
+      if [ "{{jobs}}" = "0" ]; then
+        JOBS=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)
+      else
+        JOBS={{jobs}}
+      fi
+      echo "JOBS=$JOBS" >> $GITHUB_ENV || export JOBS
+      echo "Using $JOBS parallel jobs"
+    safe: true
+    timeout: 30
+  - name: prepare-build
+    run: |
+      if [ -d "{{build_dir}}" ]; then
+        echo "Cleaning existing build directory..."
+        rm -rf {{build_dir}}
+      fi
+      mkdir -p {{build_dir}}
+      mkdir -p {{build_dir}}/fuzz
+      cd {{build_dir}}
+      
+      echo "Configuring with: CC={{cc}} {{configure_opts}}"
+      env CC={{cc}} ../configure {{configure_opts}}
+    safe: true
+    timeout: 1800
+  - name: build-fuzzers
+    run: |
+      JOBS=${JOBS:-{{jobs}}}
+      [ "$JOBS" = "0" ] && JOBS=$(nproc 2>/dev/null || echo 2)
+      
+      echo "Building fuzz targets with -j$JOBS..."
+      cd {{build_dir}}
+      
+      # Ensure fuzz subdirectory exists
+      mkdir -p fuzz
+      
+      # CXX must be clang++ for LibFuzzer linkage; clear EXTRA_CFLAGS to avoid GCC-only flags
+      if ! make -j$JOBS CXX=clang++ EXTRA_CFLAGS="" fuzz; then
+        echo "ERROR: Fuzzer build failed"
+        exit 1
+      fi
+      
+      echo "✓ Fuzz targets built successfully"
+    safe: true
+    timeout: 3600
+  - name: list-built
+    run: |
+      cd {{build_dir}}/fuzz || exit 1
+      echo "Available fuzz targets:"
+      ls -1 *-fuzz 2>/dev/null || echo "  (none found)"
+      
+      # Auto-detect targets if not specified
+      if [ -z "{{targets}}" ]; then
+        TARGETS=$(ls -1 *-fuzz 2>/dev/null | tr '\n' ' ')
+        echo "FUZZ_TARGETS=$TARGETS" >> $GITHUB_ENV || export FUZZ_TARGETS
+        echo "Will run: $TARGETS"
+      else
+        echo "FUZZ_TARGETS={{targets}}" >> $GITHUB_ENV || export FUZZ_TARGETS
+      fi
+    safe: true
+    timeout: 30
+  - name: setup-corpus
+    run: |
+      mkdir -p {{corpus_base_dir}}
+      
+      # Map of fuzz targets to their corpus repositories
+      declare -A CORPUS_REPOS
+      CORPUS_REPOS["address-fuzz"]="https://github.com/neomutt/corpus-address"
+      CORPUS_REPOS["cli-fuzz"]="https://github.com/neomutt/corpus-cli"
+      
+      TARGETS="${FUZZ_TARGETS:-{{targets}}}"
+      
+      for target in $TARGETS; do
+        # Remove -fuzz suffix to get corpus dir name
+        CORPUS_NAME="${target%-fuzz}"
+        CORPUS_DIR="{{corpus_base_dir}}/corpus-$CORPUS_NAME"
+        CORPUS_REPO="${CORPUS_REPOS[$target]}"
+        
+        if [ -n "$CORPUS_REPO" ]; then
+          if [ -d "$CORPUS_DIR" ]; then
+            FILE_COUNT=$(find "$CORPUS_DIR" -type f 2>/dev/null | wc -l)
+            echo "✓ Found corpus for $target: $CORPUS_DIR ($FILE_COUNT files)"
+          elif [ "{{auto_clone_corpus}}" = "true" ]; then
+            echo "Cloning corpus for $target from $CORPUS_REPO..."
+            if git clone "$CORPUS_REPO" "$CORPUS_DIR"; then
+              FILE_COUNT=$(find "$CORPUS_DIR" -type f 2>/dev/null | wc -l)
+              echo "✓ Cloned corpus: $CORPUS_DIR ($FILE_COUNT files)"
+            else
+              echo "WARNING: Failed to clone corpus for $target"
+            fi
+          else
+            echo "WARNING: Corpus not found for $target at $CORPUS_DIR"
+            echo "  Clone with: git clone $CORPUS_REPO $CORPUS_DIR"
+            echo "  Or use --auto_clone_corpus=true"
+          fi
+        else
+          echo "No corpus repository defined for $target (will use random inputs only)"
+        fi
+      done
+    safe: true
+    timeout: 300
+  - name: run-fuzzer
+    run: |
+      if [ "{{list_only}}" = "true" ]; then
+        echo "List-only mode, skipping fuzzer execution"
+        exit 0
+      fi
+      
+      set -e
+      TARGETS="${FUZZ_TARGETS:-{{targets}}}"
+      
+      if [ -z "$TARGETS" ]; then
+        echo "ERROR: No fuzz targets specified or found"
+        exit 1
+      fi
+      
+      for t in $TARGETS; do
+        FUZZBIN="{{build_dir}}/fuzz/$t"
+        if [ ! -x "$FUZZBIN" ]; then
+          echo "ERROR: Fuzzer $t not found at $FUZZBIN"
+          exit 1
+        fi
+        
+        echo ""
+        echo "=========================================="
+        echo "Running: $t"
+        echo "=========================================="
+        
+        # Find corpus directory for this target
+        CORPUS_NAME="${t%-fuzz}"
+        CORPUS_DIR="{{corpus_base_dir}}/corpus-$CORPUS_NAME"
+        
+        ARGS="-max_total_time={{max_time}} -timeout=10"
+        if [ -d "$CORPUS_DIR" ]; then
+          CORPUS_FILES=$(find "$CORPUS_DIR" -type f 2>/dev/null | wc -l)
+          echo "Using corpus: $CORPUS_DIR ($CORPUS_FILES files)"
+          ARGS="$ARGS $CORPUS_DIR"
+        else
+          echo "No corpus directory found (using random inputs only)"
+        fi
+        
+        echo "Command: $FUZZBIN $ARGS"
+        if ! "$FUZZBIN" $ARGS; then
+          echo "WARNING: $t exited with non-zero status (may have found crashes)"
+        else
+          echo "✓ $t completed successfully"
+        fi
+      done
+      
+      echo ""
+      echo "✓ All fuzzers completed"
+    safe: false
+    timeout: 10800
+examples:
+  - description: List available fuzz targets
+    run: "copilot run run-fuzzers -- --list_only=true"
+  - description: Build and run all fuzzers with auto-clone corpus
+    run: "copilot run run-fuzzers -- --auto_clone_corpus=true --max_time=60"
+  - description: Run specific fuzzer with existing corpus
+    run: "copilot run run-fuzzers -- --targets='address-fuzz' --max_time=300"
+  - description: Quick fuzzing test (CI mode)
+    run: "copilot run run-fuzzers -- --max_time=30 --jobs=0"
+  - description: Extended fuzzing session for security audit
+    run: "copilot run run-fuzzers -- --auto_clone_corpus=true --max_time=3600"
+success_criteria:
+  - "Fuzz binaries exist under {{build_dir}}/fuzz/ and are executable"
+  - "Fuzzers run without immediate crashes (may find bugs in target code)"
+  - "Corpus directories are used if available"
+timeout: 14400
+notes: |
+  - Fuzzing requires clang with LibFuzzer support (-fsanitize=fuzzer)
+  - See fuzz/README.md for complete documentation on fuzzing setup
+  - Fuzz targets and their corpus repositories:
+    * address-fuzz (fuzz/address.c): https://github.com/neomutt/corpus-address
+    * cli-fuzz (fuzz/cli.c): https://github.com/neomutt/corpus-cli
+  - Use --auto_clone_corpus=true to automatically clone missing corpus repositories
+  - In CI, use short max_time (30-60s) for quick validation
+  - For security audits, run with longer max_time (3600s+) and comprehensive corpus
+  - Fuzzers may find crashes/bugs - this is expected behavior for security testing
+  - Out-of-tree fuzzer builds may encounter Makefile race conditions with parallel make
+  - If build fails with "No such file or directory", the prepare-build step creates fuzz/ dir

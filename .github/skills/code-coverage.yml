@@ -1,0 +1,288 @@
+name: code-coverage
+intent: Generate code coverage report
+description: |
+  Build NeoMutt with coverage instrumentation, run tests, and generate code coverage reports.
+  Uses lcov to generate coverage.info and HTML reports showing which lines are exercised by tests.
+  Essential for identifying untested code paths and improving test coverage during refactoring.
+  See .github/workflows/coveralls.yml for the CI implementation.
+triggers:
+  - commands:
+      - "code coverage"
+      - "coverage report"
+      - "make coverage"
+      - "test coverage"
+  - files:
+      - "test/**"
+      - "Makefile*"
+tools:
+  - bash
+  - make
+  - lcov
+  - git
+depends_on:
+  - build-neomutt
+  - run-tests
+inputs:
+  configure_opts:
+    description: Additional configure options (--coverage is always added). Use 'minimal' for fast local testing.
+    default: "--disable-doc"
+  jobs:
+    description: Parallel make jobs (0 = auto-detect)
+    default: 0
+  neomutt_test_dir:
+    description: Path to test-files corpus (auto-detect if empty)
+    default: ""
+  coverage_dir:
+    description: Output directory for HTML coverage report
+    default: "coverage"
+  show_summary:
+    description: Show coverage summary after generation
+    default: true
+  show_file:
+    description: Show coverage for specific file (e.g., "email/parse.c")
+    default: ""
+  open_browser:
+    description: Open HTML coverage report in browser
+    default: false
+commands:
+  - name: ensure-tools
+    run: |
+      # Check for required tools
+      MISSING=""
+      if ! command -v lcov >/dev/null; then
+        MISSING="$MISSING lcov"
+      fi
+      if ! command -v genhtml >/dev/null; then
+        MISSING="$MISSING genhtml"
+      fi
+      if ! command -v gcov >/dev/null; then
+        MISSING="$MISSING gcov"
+      fi
+      
+      if [ -n "$MISSING" ]; then
+        echo "ERROR: Missing required tools:$MISSING"
+        echo "Install with: apt-get install lcov (Ubuntu) or brew install lcov (macOS)"
+        exit 1
+      fi
+      
+      echo "Using: lcov $(lcov --version | head -1)"
+      echo "Using: gcov $(gcov --version | head -1)"
+    safe: true
+    timeout: 30
+  - name: setup-parallel-jobs
+    run: |
+      if [ "{{jobs}}" = "0" ]; then
+        JOBS=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)
+      else
+        JOBS={{jobs}}
+      fi
+      echo "JOBS=$JOBS" >> $GITHUB_ENV || export JOBS
+      echo "Using $JOBS parallel jobs"
+    safe: true
+    timeout: 30
+  - name: setup-test-dir
+    run: |
+      if [ -n "{{neomutt_test_dir}}" ]; then
+        TEST_DIR="{{neomutt_test_dir}}"
+      elif [ -d "$GITHUB_WORKSPACE/test-files" ]; then
+        TEST_DIR="$GITHUB_WORKSPACE/test-files"
+      elif [ -d "test-files" ]; then
+        TEST_DIR="test-files"
+      elif [ -d "../test-files" ]; then
+        TEST_DIR="../test-files"
+      else
+        TEST_DIR=""
+      fi
+      
+      if [ -n "$TEST_DIR" ] && [ -d "$TEST_DIR" ]; then
+        export NEOMUTT_TEST_DIR="$TEST_DIR"
+        echo "NEOMUTT_TEST_DIR=$TEST_DIR" >> $GITHUB_ENV || true
+        echo "✓ Using test files: $TEST_DIR"
+      else
+        echo "WARNING: Test files not found. Coverage will be incomplete."
+        echo "Clone test files with:"
+        echo "  git clone https://github.com/neomutt/neomutt-test-files test-files"
+        echo "  cd test-files && ./setup.sh"
+      fi
+    safe: true
+    timeout: 60
+  - name: configure-with-coverage
+    run: |
+      echo "Configuring NeoMutt with coverage instrumentation..."
+      
+      # Add --coverage to configure options
+      OPTS="--coverage {{configure_opts}}"
+      
+      echo "Configure options: $OPTS"
+      ./configure $OPTS
+    safe: true
+    timeout: 1800
+  - name: build-neomutt
+    run: |
+      JOBS=${JOBS:-{{jobs}}}
+      [ "$JOBS" = "0" ] && JOBS=$(nproc 2>/dev/null || echo 2)
+      
+      echo "Building NeoMutt with coverage instrumentation (may be slower)..."
+      make neomutt -j$JOBS
+      
+      if [ ! -x "neomutt" ]; then
+        echo "ERROR: Failed to build neomutt"
+        exit 1
+      fi
+      
+      echo "✓ NeoMutt built with coverage support"
+      ./neomutt -v | head -1
+    safe: true
+    timeout: 3600
+  - name: build-tests
+    run: |
+      JOBS=${JOBS:-{{jobs}}}
+      [ "$JOBS" = "0" ] && JOBS=$(nproc 2>/dev/null || echo 2)
+      
+      echo "Building test suite..."
+      make test/neomutt-test -j$JOBS
+      
+      if [ ! -x "test/neomutt-test" ]; then
+        echo "ERROR: Failed to build test suite"
+        exit 1
+      fi
+      
+      echo "✓ Test suite built"
+    safe: true
+    timeout: 1800
+  - name: make-coverage
+    run: |
+      echo "Running tests and generating coverage report..."
+      echo "This may take several minutes..."
+      
+      if [ -n "$NEOMUTT_TEST_DIR" ]; then
+        export NEOMUTT_TEST_DIR
+      fi
+      
+      if ! make coverage; then
+        echo "ERROR: Coverage generation failed"
+        exit 1
+      fi
+      
+      if [ ! -f "coverage.info" ]; then
+        echo "ERROR: coverage.info not found"
+        exit 1
+      fi
+      
+      echo "✓ Coverage data generated: coverage.info"
+      ls -lh coverage.info
+    safe: true
+    timeout: 3600
+  - name: verify-coverage-dir
+    run: |
+      if [ ! -d "{{coverage_dir}}" ]; then
+        echo "ERROR: Coverage directory not found at {{coverage_dir}}"
+        echo "Expected 'make coverage' to generate HTML in {{coverage_dir}}/"
+        exit 1
+      fi
+      
+      if [ ! -f "{{coverage_dir}}/index.html" ]; then
+        echo "ERROR: index.html not found in {{coverage_dir}}/"
+        exit 1
+      fi
+      
+      FILE_COUNT=$(find {{coverage_dir}} -name '*.html' | wc -l)
+      echo "✓ Coverage HTML report generated: {{coverage_dir}}/index.html"
+      echo "  HTML files: $FILE_COUNT"
+    safe: true
+    timeout: 30
+  - name: show-summary
+    run: |
+      if [ "{{show_summary}}" != "true" ]; then
+        echo "Skipping summary (--show_summary=false)"
+        exit 0
+      fi
+      
+      echo ""
+      echo "=========================================="
+      echo "Coverage Summary"
+      echo "=========================================="
+      lcov --list coverage.info
+    safe: true
+    timeout: 60
+  - name: show-file-coverage
+    run: |
+      if [ -z "{{show_file}}" ]; then
+        echo "No specific file requested (use --show_file=PATH/FILE.c)"
+        exit 0
+      fi
+      
+      echo ""
+      echo "=========================================="
+      echo "Coverage for {{show_file}}"
+      echo "=========================================="
+      
+      if [ ! -f "{{show_file}}" ]; then
+        echo "ERROR: File not found: {{show_file}}"
+        exit 1
+      fi
+      
+      # Find the corresponding .gcno/.gcda files
+      # They should be in the same directory as the source
+      BASENAME=$(basename "{{show_file}}" .c)
+      DIRNAME=$(dirname "{{show_file}}")
+      
+      if gcov -t "{{show_file}}" 2>/dev/null; then
+        echo "✓ Coverage details shown above"
+      else
+        echo "WARNING: Could not generate gcov output for {{show_file}}"
+        echo "Make sure the file was compiled with coverage and tests were run"
+      fi
+    safe: true
+    timeout: 60
+  - name: open-report
+    run: |
+      if [ "{{open_browser}}" != "true" ]; then
+        exit 0
+      fi
+      
+      REPORT="{{coverage_dir}}/index.html"
+      if [ ! -f "$REPORT" ]; then
+        echo "ERROR: Report not found at $REPORT"
+        exit 1
+      fi
+      
+      if command -v xdg-open >/dev/null; then
+        xdg-open "$REPORT"
+      elif command -v open >/dev/null; then
+        open "$REPORT"
+      else
+        echo "Cannot open browser automatically. Open: $REPORT"
+      fi
+    safe: true
+    timeout: 30
+examples:
+  - description: Generate coverage report with default options
+    run: "copilot run code-coverage"
+  - description: Generate coverage and open in browser
+    run: "copilot run code-coverage -- --open_browser=true"
+  - description: Show coverage for specific file
+    run: "copilot run code-coverage -- --show_file='email/parse.c'"
+  - description: Quick coverage with minimal features (default)
+    run: "copilot run code-coverage -- --jobs=0"
+  - description: Full coverage with all features (matches CI)
+    run: "copilot run code-coverage -- --configure_opts='--full-doc --autocrypt --bdb --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd' --jobs=0"
+success_criteria:
+  - "NeoMutt builds successfully with --coverage flag"
+  - "Tests run and generate coverage data"
+  - "coverage.info file is created"
+  - "HTML report is generated in {{coverage_dir}}/"
+  - "lcov --list shows coverage percentages"
+timeout: 10800
+notes: |
+  - Coverage instrumentation adds overhead; builds and tests will be slower
+  - Requires test-files corpus for comprehensive coverage:
+    git clone https://github.com/neomutt/neomutt-test-files test-files && cd test-files && ./setup.sh
+  - The --coverage flag adds -fprofile-arcs -ftest-coverage to compilation
+  - Use lcov --list coverage.info to see summary of code coverage
+  - Use gcov -t PATH/FILE.c to see line-by-line coverage for specific files
+  - HTML report in coverage/ directory shows detailed per-file coverage with highlighted lines
+  - See .github/workflows/coveralls.yml for CI implementation
+  - Useful for identifying untested code paths during refactoring
+  - Coverage data helps prioritize which areas need more tests
+  - This skill performs in-tree build; out-of-tree builds not supported for coverage

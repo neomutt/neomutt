@@ -1,0 +1,138 @@
+name: code-docs
+intent: Generate API documentation
+description: |
+  Run Doxygen to generate API documentation using the action-doxygen configuration and assets.
+  The action-doxygen repository contains the Doxygen config file and extra files (CSS, header, footer, graphics)
+  needed to generate properly styled HTML documentation.
+  Intended for local development, code exploration, and CI validation.
+triggers:
+  - commands:
+      - "build docs"
+      - "generate docs"
+      - "doxygen"
+      - "api docs"
+  - files:
+      - "action-doxygen/doxygen.conf"
+      - "docs/"
+      - "**/*.h"
+tools:
+  - bash
+  - doxygen
+  - git
+inputs:
+  output_dir:
+    description: Output directory for generated docs (relative to repo root)
+    default: "html"
+  warnings_as_errors:
+    description: Fail if Doxygen generates warnings
+    default: false
+  open_browser:
+    description: Open generated HTML documentation in browser after completion
+    default: false
+commands:
+  - name: ensure-doxygen
+    run: |
+      if ! command -v doxygen >/dev/null; then
+        echo "ERROR: doxygen not found in PATH"
+        echo "Install with: apt-get install doxygen (Ubuntu) or brew install doxygen (macOS)"
+        exit 1
+      fi
+      echo "Using: $(doxygen --version)"
+    safe: true
+    timeout: 30
+  - name: check-action-doxygen
+    run: |
+      if [ ! -d "action-doxygen" ]; then
+        echo "ERROR: action-doxygen directory not found"
+        echo "The action-doxygen repository should be a submodule or checked out separately"
+        echo "Clone it with: git clone https://github.com/neomutt/action-doxygen"
+        exit 1
+      fi
+      
+      if [ ! -f "action-doxygen/doxygen.conf" ]; then
+        echo "ERROR: action-doxygen/doxygen.conf not found"
+        exit 1
+      fi
+      
+      echo "✓ Found action-doxygen configuration"
+      echo "  Config: action-doxygen/doxygen.conf"
+      echo "  Assets: $(find action-doxygen -type f \( -name '*.css' -o -name '*.html' -o -name '*.xml' \) | wc -l) files"
+    safe: true
+    timeout: 30
+  - name: clean-output
+    run: |
+      if [ -d "{{output_dir}}" ]; then
+        echo "Cleaning existing docs at {{output_dir}}..."
+        rm -rf {{output_dir}}
+      fi
+    safe: true
+    timeout: 60
+  - name: generate
+    run: |
+      echo "Generating documentation with action-doxygen config..."
+      
+      if [ "{{warnings_as_errors}}" = "true" ]; then
+        # Capture output and fail on warnings
+        if ! doxygen action-doxygen/doxygen.conf 2>&1 | tee doxygen.log; then
+          echo "ERROR: Doxygen failed"
+          exit 1
+        fi
+        if grep -i "warning" doxygen.log; then
+          echo "ERROR: Doxygen warnings detected"
+          cat doxygen.log
+          exit 1
+        fi
+        rm -f doxygen.log
+      else
+        doxygen action-doxygen/doxygen.conf
+      fi
+    safe: true
+    timeout: 900
+  - name: verify
+    run: |
+      if [ ! -d "{{output_dir}}" ]; then
+        echo "ERROR: Output directory not found at {{output_dir}}"
+        exit 1
+      fi
+      if [ ! -f "{{output_dir}}/index.html" ]; then
+        echo "ERROR: index.html not found at {{output_dir}}/index.html"
+        exit 1
+      fi
+      
+      # Show summary
+      echo "✓ Documentation generated successfully"
+      echo "  Location: {{output_dir}}/index.html"
+      echo "  HTML files: $(find {{output_dir}} -name '*.html' | wc -l)"
+      echo "  Total files: $(find {{output_dir}} -type f | wc -l)"
+      
+      if [ "{{open_browser}}" = "true" ]; then
+        if command -v xdg-open >/dev/null; then
+          xdg-open {{output_dir}}/index.html
+        elif command -v open >/dev/null; then
+          open {{output_dir}}/index.html
+        fi
+      fi
+    safe: true
+    timeout: 30
+examples:
+  - description: Generate docs with default settings
+    run: "copilot run code-docs"
+  - description: Generate docs and open in browser
+    run: "copilot run code-docs -- --open_browser=true"
+  - description: Generate docs with warnings as errors (CI mode)
+    run: "copilot run code-docs -- --warnings_as_errors=true"
+  - description: Generate to custom output directory
+    run: "copilot run code-docs -- --output_dir=docs-build"
+success_criteria:
+  - "The directory {{output_dir}} exists and contains index.html"
+  - "The generate command exits 0"
+  - "No Doxygen warnings when warnings_as_errors is true"
+  - "Generated HTML includes custom CSS and styling from action-doxygen"
+timeout: 1800
+notes: |
+  - Uses action-doxygen/doxygen.conf instead of the root Doxyfile
+  - The action-doxygen repository provides custom CSS, headers, footers, and graphics
+  - DO NOT run action-doxygen/bin/generate.sh (this skill replicates its core functionality)
+  - See .github/workflows/doxygen.yml for the CI implementation
+  - Use --warnings_as_errors=true in CI to catch documentation issues early
+  - Generated documentation is useful for understanding module dependencies and API contracts

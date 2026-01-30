@@ -1,0 +1,261 @@
+name: run-tests
+intent: Run NeoMutt unit tests
+description: |
+  Build and run NeoMutt unit tests. Delegates building to the build-neomutt skill for consistent configuration.
+  Supports running all tests or specific test subsets. Tests require the NEOMUTT_TEST_DIR environment variable
+  pointing to the test-files corpus for comprehensive testing.
+triggers:
+  - commands:
+      - "run tests"
+      - "make test"
+      - "test neomutt"
+      - "unit tests"
+  - files:
+      - "test/**"
+      - "test/*.c"
+tools:
+  - bash
+  - make
+  - git
+depends_on:
+  - build-neomutt
+inputs:
+  build_config:
+    description: Configure options (use 'default', 'minimal', 'full', or custom flags)
+    default: "default"
+  jobs:
+    description: Parallel make jobs (0 = auto-detect)
+    default: 0
+  test_filter:
+    description: Arguments to pass to test runner (test name or pattern)
+    default: ""
+  neomutt_test_dir:
+    description: Path to test-files corpus (auto-detect if empty)
+    default: ""
+  build_dir:
+    description: Build directory name (must match build-neomutt)
+    default: "build"
+  list_tests:
+    description: List available tests without running them
+    default: false
+  verbose:
+    description: Show verbose test output
+    default: false
+  skip_build:
+    description: Skip building NeoMutt binary (assume it exists)
+    default: false
+commands:
+  - name: setup-parallel-jobs
+    run: |
+      if [ "{{jobs}}" = "0" ]; then
+        JOBS=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)
+      else
+        JOBS={{jobs}}
+      fi
+      echo "JOBS=$JOBS" >> $GITHUB_ENV || export JOBS
+      echo "Using $JOBS parallel jobs"
+    safe: true
+    timeout: 30
+  - name: setup-test-dir
+    run: |
+      if [ -n "{{neomutt_test_dir}}" ]; then
+        TEST_DIR="{{neomutt_test_dir}}"
+      elif [ -d "$GITHUB_WORKSPACE/test-files" ]; then
+        TEST_DIR="$GITHUB_WORKSPACE/test-files"
+      elif [ -d "test-files" ]; then
+        TEST_DIR="test-files"
+      elif [ -d "../test-files" ]; then
+        TEST_DIR="../test-files"
+      else
+        TEST_DIR=""
+      fi
+      
+      if [ -n "$TEST_DIR" ] && [ -d "$TEST_DIR" ]; then
+        export NEOMUTT_TEST_DIR="$TEST_DIR"
+        echo "NEOMUTT_TEST_DIR=$TEST_DIR" >> $GITHUB_ENV || true
+        echo "✓ Using test files: $TEST_DIR"
+      else
+        echo "WARNING: Test files not found. Some tests may be skipped."
+        echo "Clone test files with:"
+        echo "  git clone https://github.com/neomutt/neomutt-test-files test-files"
+        echo "  cd test-files && ./setup.sh"
+      fi
+    safe: true
+    timeout: 60
+  - name: ensure-build
+    run: |
+      if [ "{{skip_build}}" = "true" ]; then
+        echo "Skipping build (--skip_build=true)"
+        if [ ! -x "{{build_dir}}/neomutt" ]; then
+          echo "WARNING: {{build_dir}}/neomutt not found but skip_build is true"
+        fi
+        exit 0
+      fi
+      
+      if [ -x "{{build_dir}}/neomutt" ]; then
+        echo "✓ Found existing build: {{build_dir}}/neomutt"
+        {{build_dir}}/neomutt -v | head -1
+      else
+        echo "NeoMutt binary not found, delegating to build-neomutt skill..."
+        
+        # Delegate to build-neomutt skill
+        JOBS=${JOBS:-{{jobs}}}
+        [ "$JOBS" = "0" ] && JOBS=$(nproc 2>/dev/null || echo 2)
+        
+        # Check if copilot CLI is available
+        if ! command -v copilot >/dev/null; then
+          echo "WARNING: copilot CLI not found, building directly with make"
+          mkdir -p {{build_dir}}
+          cd {{build_dir}}
+          
+          OPTS="{{build_config}}"
+          case "$OPTS" in
+            "default") OPTS="--full-doc" ;;
+            "minimal") OPTS="--full-doc --disable-nls --disable-pgp --disable-smime --ssl --gsasl" ;;
+            "full") OPTS="--full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd" ;;
+          esac
+          
+          ../configure $OPTS
+          make neomutt -j$JOBS
+        else
+          copilot run build-neomutt -- --configure-opts='{{build_config}}' --jobs=$JOBS --build_dir='{{build_dir}}' || exit 1
+        fi
+      fi
+    safe: true
+    timeout: 3600
+  - name: build-tests
+    run: |
+      JOBS=${JOBS:-{{jobs}}}
+      [ "$JOBS" = "0" ] && JOBS=$(nproc 2>/dev/null || echo 2)
+      
+      echo "Building test suite with -j$JOBS..."
+      
+      # Try out-of-source build first
+      if [ -f "{{build_dir}}/Makefile" ]; then
+        if make -C {{build_dir}} test/neomutt-test -j$JOBS; then
+          echo "✓ Built {{build_dir}}/test/neomutt-test"
+          exit 0
+        fi
+      fi
+      
+      # Fall back to in-tree build
+      if make test/neomutt-test -j$JOBS; then
+        echo "✓ Built test/neomutt-test"
+      else
+        echo "ERROR: Failed to build test suite"
+        exit 1
+      fi
+    safe: true
+    timeout: 1800
+  - name: find-test-binary
+    run: |
+      if [ -x "{{build_dir}}/test/neomutt-test" ]; then
+        TEST_BIN="{{build_dir}}/test/neomutt-test"
+      elif [ -x "test/neomutt-test" ]; then
+        TEST_BIN="test/neomutt-test"
+      else
+        echo "ERROR: neomutt-test binary not found"
+        exit 1
+      fi
+      echo "TEST_BIN=$TEST_BIN" >> $GITHUB_ENV || export TEST_BIN
+      echo "Using test binary: $TEST_BIN"
+    safe: true
+    timeout: 30
+  - name: list-tests
+    run: |
+      if [ "{{list_tests}}" = "true" ]; then
+        TEST_BIN="${TEST_BIN:-{{build_dir}}/test/neomutt-test}"
+        [ ! -x "$TEST_BIN" ] && TEST_BIN="test/neomutt-test"
+        
+        if [ -x "$TEST_BIN" ]; then
+          echo "Available tests:"
+          "$TEST_BIN" -l
+        else
+          echo "ERROR: Test binary not found"
+          exit 1
+        fi
+        exit 0
+      fi
+    safe: true
+    timeout: 60
+  - name: run-tests
+    run: |
+      if [ "{{list_tests}}" = "true" ]; then
+        echo "List-only mode, skipping test execution"
+        exit 0
+      fi
+      
+      TEST_BIN="${TEST_BIN:-{{build_dir}}/test/neomutt-test}"
+      [ ! -x "$TEST_BIN" ] && TEST_BIN="test/neomutt-test"
+      
+      if [ ! -x "$TEST_BIN" ]; then
+        echo "ERROR: Test binary not found at $TEST_BIN"
+        exit 1
+      fi
+      
+      ARGS=""
+      if [ "{{verbose}}" = "true" ]; then
+        ARGS="$ARGS -v"
+      fi
+      if [ -n "{{test_filter}}" ]; then
+        ARGS="$ARGS {{test_filter}}"
+        echo "Running filtered tests: $TEST_BIN $ARGS"
+      else
+        echo "Running all tests: $TEST_BIN $ARGS"
+      fi
+      
+      if [ -n "$NEOMUTT_TEST_DIR" ]; then
+        echo "Test files: $NEOMUTT_TEST_DIR"
+      fi
+      
+      "$TEST_BIN" $ARGS
+      TEST_EXIT=$?
+      
+      if [ $TEST_EXIT -eq 0 ]; then
+        echo ""
+        echo "✓ All tests passed"
+      else
+        echo ""
+        echo "✗ Tests failed with exit code $TEST_EXIT"
+        exit $TEST_EXIT
+      fi
+    safe: true
+    timeout: 3600
+  - name: verify
+    run: |
+      echo "Test run completed"
+    safe: true
+    timeout: 30
+examples:
+  - description: List all available tests
+    run: "copilot run run-tests -- --list_tests=true"
+  - description: Run all tests with default configuration
+    run: "copilot run run-tests -- --build_config='default' --jobs=0"
+  - description: Run specific test by name
+    run: "copilot run run-tests -- --test_filter='test_parse_bind'"
+  - description: Run tests matching pattern with verbose output
+    run: "copilot run run-tests -- --test_filter='test_mutt_str_*' --verbose=true"
+  - description: Run minimal build tests (testing disabled features)
+    run: "copilot run run-tests -- --build_config='minimal'"
+  - description: Quick test with custom test files location
+    run: "copilot run run-tests -- --neomutt_test_dir='$PWD/test-files' --test_filter='test_buffer_*'"
+  - description: Run tests without rebuilding NeoMutt
+    run: "copilot run run-tests -- --skip_build=true"
+success_criteria:
+  - "The test runner exits 0 when all tests pass"
+  - "Test runner exit code is non-zero when tests fail"
+  - "Test output shows number of tests run and results"
+  - "Building is delegated to build-neomutt skill for consistency"
+timeout: 10800
+notes: |
+  - Tests require neomutt-test-files repository for comprehensive coverage:
+    git clone https://github.com/neomutt/neomutt-test-files test-files && cd test-files && ./setup.sh
+  - Tests will run without test-files but some may be skipped
+  - Use --list_tests=true to discover available test names
+  - Use test_filter to run specific tests during development (e.g. test_mutt_str_*)
+  - For CI, run with multiple build configs (default, minimal, full) to test all code paths
+  - This skill delegates building to build-neomutt skill for consistent configuration
+  - Falls back to direct make commands if copilot CLI is not available
+  - Auto-detects NEOMUTT_TEST_DIR from common locations (can override with parameter)
+  - Use --skip_build=true if you've already built NeoMutt and want to run tests quickly
+  - Out-of-tree builds (build_dir != ".") may encounter parallel build issues
