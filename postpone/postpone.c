@@ -747,7 +747,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     {
       p = mutt_str_skip_email_wsp(np->data + plen);
       buf_strcpy(fcc, p);
-      buf_pretty_mailbox(fcc);
+      pretty_mailbox(fcc);
 
       /* note that mutt-fcc was present.  we do this because we want to add a
        * default fcc if the header was missing, but preserve the request of the

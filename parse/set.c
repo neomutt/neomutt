@@ -455,7 +455,7 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
     // LCOV_EXCL_STOP
   }
   if (CONFIG_TYPE(he->type) == DT_PATH)
-    mutt_pretty_mailbox(value->data, value->dsize);
+    pretty_mailbox(value);
   pretty_var(value->data, err);
   buf_pool_release(&value);
 

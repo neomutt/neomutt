@@ -296,7 +296,7 @@ static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
       if (!pretty)
         pretty = buf_pool_get();
       buf_strcpy(pretty, actx->idx[i]->body->filename);
-      buf_pretty_mailbox(pretty);
+      pretty_mailbox(pretty);
       /* L10N: This message is displayed in the compose menu when an attachment
          doesn't stat.  %d is the attachment number and %s is the attachment
          filename.  The filename is located last to avoid a long path hiding
@@ -310,7 +310,7 @@ static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
       if (!pretty)
         pretty = buf_pool_get();
       buf_strcpy(pretty, actx->idx[i]->body->filename);
-      buf_pretty_mailbox(pretty);
+      pretty_mailbox(pretty);
 
       if (!msg)
         msg = buf_pool_get();
@@ -862,7 +862,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared,
     if ((op == OP_ATTACHMENT_ATTACH_MESSAGE) ^ (shared->mailbox->type == MUTT_NNTP))
     {
       buf_strcpy(fname, mailbox_path(shared->mailbox));
-      buf_pretty_mailbox(fname);
+      pretty_mailbox(fname);
     }
   }
 
@@ -1924,7 +1924,7 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, const struct
   }
   struct Buffer *fname = buf_pool_get();
   buf_strcpy(fname, cur_att->body->filename);
-  buf_pretty_mailbox(fname);
+  pretty_mailbox(fname);
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL, NULL };
   if ((mw_get_field(_("Rename to: "), fname, MUTT_COMP_NO_FLAGS, HC_FILE,
                     &CompleteFileOps, &cdata) == 0) &&
@@ -1996,7 +1996,7 @@ static int op_compose_write_message(struct ComposeSharedData *shared,
   if (shared->mailbox)
   {
     buf_strcpy(fname, mailbox_path(shared->mailbox));
-    buf_pretty_mailbox(fname);
+    pretty_mailbox(fname);
   }
   if (shared->adata->actx->idxlen)
     shared->email->body = shared->adata->actx->idx[0]->body;

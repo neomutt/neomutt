@@ -34,10 +34,9 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "dump.h"
+#include "muttlib.h"
 #include "set.h"
 #include "types.h"
-
-void mutt_pretty_mailbox(char *buf, size_t buflen);
 
 /**
  * escape_string - Write a string to a buffer, escaping special characters
@@ -236,7 +235,7 @@ bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea,
       }
 
       if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (buf_at(value, 0) == '/'))
-        mutt_pretty_mailbox(value->data, value->dsize);
+        pretty_mailbox(value);
 
       // Quote/escape the values of config options NOT of these types
       if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
@@ -260,7 +259,7 @@ bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea,
       }
 
       if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (buf_at(initial, 0) == '/'))
-        mutt_pretty_mailbox(initial->data, initial->dsize);
+        pretty_mailbox(initial);
 
       // Quote/escape the values of config options NOT of these types
       if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&

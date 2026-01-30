@@ -224,7 +224,7 @@ static void body_file(const struct ExpandoNode *node, void *data,
     struct Buffer *path = buf_pool_get();
 
     buf_strcpy(path, aptr->body->filename);
-    buf_pretty_mailbox(path);
+    pretty_mailbox(path);
     buf_copy(buf, path);
     buf_pool_release(&path);
   }

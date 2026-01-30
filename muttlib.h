@@ -37,7 +37,7 @@ struct stat;
 
 void        mutt_adv_mktemp(struct Buffer *buf);
 void        expand_path(struct Buffer *buf, bool regex);
-void        buf_pretty_mailbox(struct Buffer *s);
+void        pretty_mailbox(struct Buffer *s);
 void        buf_sanitize_filename (struct Buffer *buf, const char *path, short slash);
 void        buf_save_path(struct Buffer *dest, const struct Address *a);
 int         mutt_check_overwrite(const char *attname, const char *path, struct Buffer *fname, enum SaveAttach *opt, char **directory);
@@ -47,7 +47,6 @@ void        mutt_get_parent_path(const char *path, char *buf, size_t buflen);
 bool        mutt_is_text_part(const struct Body *b);
 bool        mutt_needs_mailcap(struct Body *b);
 FILE *      mutt_open_read(const char *path, pid_t *thepid);
-void        mutt_pretty_mailbox(char *buf, size_t buflen);
 void        mutt_safe_path(struct Buffer *dest, const struct Address *a);
 int         mutt_save_confirm(const char *s, struct stat *st);
 void        mutt_save_path(char *d, size_t dsize, const struct Address *a);

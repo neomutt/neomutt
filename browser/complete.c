@@ -80,7 +80,7 @@ enum FunctionRetval complete_file_mbox(struct EnterWindowData *wdata, int op)
     dlg_browser(wdata->buffer, flags, cdata->mailbox, cdata->files, cdata->numfiles);
     if (!buf_is_empty(wdata->buffer))
     {
-      buf_pretty_mailbox(wdata->buffer);
+      pretty_mailbox(wdata->buffer);
       if (!wdata->pass)
         mutt_hist_add(wdata->hclass, buf_string(wdata->buffer), true);
       wdata->done = true;

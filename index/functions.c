@@ -1118,7 +1118,7 @@ static int op_main_change_folder(struct IndexSharedData *shared,
   if (c_change_folder_next && shared->mailbox && !buf_is_empty(&shared->mailbox->pathbuf))
   {
     buf_strcpy(folderbuf, mailbox_path(shared->mailbox));
-    buf_pretty_mailbox(folderbuf);
+    pretty_mailbox(folderbuf);
   }
   /* By default, fill buf with the next mailbox that contains unread mail */
   mutt_mailbox_next(shared->mailbox_view ? shared->mailbox : NULL, folderbuf);
@@ -2842,7 +2842,7 @@ static int op_main_change_group(struct IndexSharedData *shared,
   if (c_change_folder_next && shared->mailbox && !buf_is_empty(&shared->mailbox->pathbuf))
   {
     buf_strcpy(folderbuf, mailbox_path(shared->mailbox));
-    buf_pretty_mailbox(folderbuf);
+    pretty_mailbox(folderbuf);
   }
 
   OptNews = true;

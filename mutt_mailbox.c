@@ -264,7 +264,7 @@ bool mutt_mailbox_list(void)
       continue;
 
     buf_strcpy(path, mailbox_path(m));
-    buf_pretty_mailbox(path);
+    pretty_mailbox(path);
 
     if (any_new)
     {
@@ -336,7 +336,7 @@ static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
       if ((found || (pass > 0)) && (find_new ? m_cur->has_new : m_cur->msg_unread > 0))
       {
         buf_strcpy(s, mailbox_path(m));
-        buf_pretty_mailbox(s);
+        pretty_mailbox(s);
         struct Mailbox *m_result = m;
         ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
         return m_result;

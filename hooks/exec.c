@@ -282,7 +282,7 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
     buf_fix_dptr(path);
   }
 
-  buf_pretty_mailbox(path);
+  pretty_mailbox(path);
 }
 
 /**

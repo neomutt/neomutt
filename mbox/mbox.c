@@ -1319,7 +1319,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
     rename(buf_string(tempfile), buf_string(savefile));
     mutt_sig_unblock();
     mx_fastclose_mailbox(m, false);
-    buf_pretty_mailbox(savefile);
+    pretty_mailbox(savefile);
     mutt_error(_("Write failed!  Saved partial mailbox to %s"), buf_string(savefile));
     buf_pool_release(&savefile);
     FREE(&new_offset);
