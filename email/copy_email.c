@@ -516,13 +516,11 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     char *folder = nm_email_get_folder(e);
     if (folder && !(c_weed && mutt_matches_ignore("Folder")))
     {
-      char buf[1024] = { 0 };
-      mutt_str_copy(buf, folder, sizeof(buf));
-      mutt_pretty_mailbox(buf, sizeof(buf));
-
-      fputs("Folder: ", fp_out);
-      fputs(buf, fp_out);
-      fputc('\n', fp_out);
+      struct Buffer *buf = buf_pool_get();
+      buf_strcpy(buf, folder);
+      pretty_mailbox(buf);
+      fprintf(fp_out, "Folder: %s\n", buf->data);
+      buf_pool_release(&buf);
     }
   }
 #endif

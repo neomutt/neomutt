@@ -842,7 +842,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
 
   exec_message_hook(m, e_cur, CMD_MESSAGE_HOOK);
   mutt_default_save(buf, e_cur);
-  buf_pretty_mailbox(buf);
+  pretty_mailbox(buf);
 
   if (mw_enter_fname(prompt, buf, false, NULL, false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
   {

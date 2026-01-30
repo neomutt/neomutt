@@ -61,7 +61,7 @@ static void hooks_dump_one(struct Hook *hook, const struct Command *cmd, struct 
     if ((hook->id == CMD_FOLDER_HOOK) || (hook->id == CMD_MBOX_HOOK))
     {
       buf_strcpy(pretty, hook->regex.pattern);
-      buf_pretty_mailbox(pretty);
+      pretty_mailbox(pretty);
       buf_add_printf(buf, "\"%s\" ", buf_string(pretty));
     }
     else
@@ -75,7 +75,7 @@ static void hooks_dump_one(struct Hook *hook, const struct Command *cmd, struct 
   if ((hook->id == CMD_FCC_HOOK) || (hook->id == CMD_MBOX_HOOK) || (hook->id == CMD_SAVE_HOOK))
   {
     buf_strcpy(pretty, hook->command);
-    buf_pretty_mailbox(pretty);
+    pretty_mailbox(pretty);
     buf_add_printf(buf, "\"%s\"\n", buf_string(pretty));
   }
   else

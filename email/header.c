@@ -307,7 +307,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
       if (*p)
       {
         buf_strcpy(fcc, p);
-        buf_pretty_mailbox(fcc);
+        pretty_mailbox(fcc);
       }
       keep = false;
     }
@@ -347,7 +347,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         }
         else
         {
-          buf_pretty_mailbox(path);
+          pretty_mailbox(path);
           mutt_error(_("%s: unable to attach file"), buf_string(path));
         }
       }

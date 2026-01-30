@@ -419,38 +419,43 @@ bool mutt_is_text_part(const struct Body *b)
 }
 
 /**
- * mutt_pretty_mailbox - Shorten a mailbox path using '~' or '='
- * @param buf    Buffer containing string to shorten
- * @param buflen Length of buffer
+ * pretty_mailbox - Shorten a mailbox path using '~' or '='
+ * @param buf Buffer containing Mailbox name
  *
  * Collapse the pathname using ~ or = when possible
  */
-void mutt_pretty_mailbox(char *buf, size_t buflen)
+void pretty_mailbox(struct Buffer *buf)
 {
-  if (!buf)
+  if (!buf || !buf->data)
     return;
 
-  char *p = buf, *q = buf;
+  /* Ensure buffer is large enough for path manipulation operations.
+   * The function will modify the string in-place, potentially shortening it.
+   * buf_alloc() also guarantees buf->data is not NULL. */
+  buf_alloc(buf, PATH_MAX);
+
+  char *p = buf->data;
+  char *q = buf->data;
   size_t len;
   enum UrlScheme scheme;
   char tmp[PATH_MAX] = { 0 };
 
-  scheme = url_check_scheme(buf);
+  scheme = url_check_scheme(buf->data);
 
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   if ((scheme == U_IMAP) || (scheme == U_IMAPS))
   {
-    imap_pretty_mailbox(buf, buflen, c_folder);
-    return;
+    imap_pretty_mailbox(buf->data, buf->dsize, c_folder);
+    goto done;
   }
 
   if (scheme == U_NOTMUCH)
-    return;
+    goto done;
 
   /* if buf is an url, only collapse path component */
   if (scheme != U_UNKNOWN)
   {
-    p = strchr(buf, ':') + 1;
+    p = strchr(buf->data, ':') + 1;
     if (mutt_strn_equal(p, "//", 2))
       q = strchr(p + 2, '/');
     if (!q)
@@ -485,33 +490,22 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
   else if (strstr(p, "..") && ((scheme == U_UNKNOWN) || (scheme == U_FILE)) &&
            realpath(p, tmp))
   {
-    mutt_str_copy(p, tmp, buflen - (p - buf));
+    mutt_str_copy(p, tmp, buf->dsize - (p - buf->data));
   }
 
-  if ((len = mutt_str_startswith(buf, c_folder)) && (buf[len] == '/'))
+  if ((len = mutt_str_startswith(buf->data, c_folder)) && (buf->data[len] == '/'))
   {
-    *buf++ = '=';
-    memmove(buf, buf + len, mutt_str_len(buf + len) + 1);
+    buf->data[0] = '=';
+    memmove(buf->data + 1, buf->data + len, mutt_str_len(buf->data + len) + 1);
   }
-  else if ((len = mutt_str_startswith(buf, NeoMutt->home_dir)) && (buf[len] == '/'))
+  else if ((len = mutt_str_startswith(buf->data, NeoMutt->home_dir)) &&
+           (buf->data[len] == '/'))
   {
-    *buf++ = '~';
-    memmove(buf, buf + len - 1, mutt_str_len(buf + len - 1) + 1);
+    buf->data[0] = '~';
+    memmove(buf->data + 1, buf->data + len, mutt_str_len(buf->data + len) + 1);
   }
-}
 
-/**
- * buf_pretty_mailbox - Shorten a mailbox path using '~' or '='
- * @param buf Buffer containing Mailbox name
- */
-void buf_pretty_mailbox(struct Buffer *buf)
-{
-  if (!buf || !buf->data)
-    return;
-  /* This reduces the size of the Buffer, so we can pass it through.
-   * We adjust the size just to make sure buf->data is not NULL though */
-  buf_alloc(buf, PATH_MAX);
-  mutt_pretty_mailbox(buf->data, buf->dsize);
+done:
   buf_fix_dptr(buf);
 }
 

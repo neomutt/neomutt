@@ -1454,7 +1454,7 @@ int imap_complete(struct Buffer *buf, const char *path)
   {
     /* reformat output */
     imap_buf_qualify_path(buf, &adata->conn->account, completion_buf->data);
-    buf_pretty_mailbox(buf);
+    pretty_mailbox(buf);
     buf_fix_dptr(buf);
     buf_pool_release(&completion_buf);
     return 0;

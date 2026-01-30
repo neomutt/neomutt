@@ -237,7 +237,7 @@ static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, const struct K
     goto done; // no change
 
   buf_copy(wdata->fcc, fname);
-  buf_pretty_mailbox(wdata->fcc);
+  pretty_mailbox(wdata->fcc);
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_FCC);
   rc = FR_SUCCESS;
 

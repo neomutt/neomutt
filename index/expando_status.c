@@ -239,28 +239,24 @@ static void index_mailbox_path(const struct ExpandoNode *node, void *data,
   const struct IndexSharedData *shared = msld->shared;
   const struct Mailbox *m = shared->mailbox;
 
-  char tmp[128] = { 0 };
-
   if (m && m->compress_info && (m->realpath[0] != '\0'))
   {
-    mutt_str_copy(tmp, m->realpath, sizeof(tmp));
-    mutt_pretty_mailbox(tmp, sizeof(tmp));
+    buf_strcpy(buf, m->realpath);
+    pretty_mailbox(buf);
   }
   else if (m && (m->type == MUTT_NOTMUCH) && m->name)
   {
-    mutt_str_copy(tmp, m->name, sizeof(tmp));
+    buf_strcpy(buf, m->name);
   }
   else if (m && !buf_is_empty(&m->pathbuf))
   {
-    mutt_str_copy(tmp, mailbox_path(m), sizeof(tmp));
-    mutt_pretty_mailbox(tmp, sizeof(tmp));
+    buf_strcpy(buf, mailbox_path(m));
+    pretty_mailbox(buf);
   }
   else
   {
-    mutt_str_copy(tmp, _("(no mailbox)"), sizeof(tmp));
+    buf_strcpy(buf, _("(no mailbox)"));
   }
-
-  buf_strcpy(buf, tmp);
 }
 
 /**

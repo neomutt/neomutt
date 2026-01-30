@@ -439,7 +439,7 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
 
       buf_strcpy(mailbox, mailbox_path(m_match));
       if (c_browser_abbreviate_mailboxes)
-        buf_pretty_mailbox(mailbox);
+        pretty_mailbox(mailbox);
 
       switch (m_match->type)
       {
@@ -618,7 +618,7 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
     {
       struct Buffer *path = buf_pool_get();
       buf_copy(path, &LastDir);
-      buf_pretty_mailbox(path);
+      pretty_mailbox(path);
       const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
       const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
       if (state->imap_browse && c_imap_list_subscribed)
