@@ -519,10 +519,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       struct Buffer *buf = buf_pool_get();
       buf_strcpy(buf, folder);
       pretty_mailbox(buf);
-
-      fputs("Folder: ", fp_out);
-      fputs(buf->data, fp_out);
-      fputc('\n', fp_out);
+      fprintf(fp_out, "Folder: %s\n", buf->data);
       buf_pool_release(&buf);
     }
   }
