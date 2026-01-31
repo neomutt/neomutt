@@ -32,6 +32,7 @@ struct AddressList;
 struct ConfigSubset;
 struct Mailbox;
 
+/// Length of random tag for message boundaries
 #define MUTT_RANDTAG_LEN 16
 
 int              mutt_bounce_message     (FILE *fp, struct Mailbox *m, struct Email *e, struct AddressList *to, struct ConfigSubset *sub);

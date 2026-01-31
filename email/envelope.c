@@ -327,11 +327,7 @@ void mutt_env_to_local(struct Envelope *env)
   mutt_addrlist_to_local(&env->mail_followup_to);
 }
 
-/* Note that 'member' in the 'env->member' expression is macro argument, not
- * "real" name of an 'env' compound member.  Real name will be substituted by
- * preprocessor at the macro-expansion time.
- * Note that #member escapes and double quotes the argument.
- */
+/// Helper to convert an address list member to international format
 #define H_TO_INTL(member)                                                      \
   if (mutt_addrlist_to_intl(&env->member, err) && (rc == 0))                   \
   {                                                                            \

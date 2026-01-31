@@ -99,19 +99,19 @@ typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
 #define APPLICATION_SMIME       (1 << 12) ///< Use SMIME to encrypt/sign
 #define PGP_TRADITIONAL_CHECKED (1 << 13) ///< Email has a traditional (inline) signature
 
-#define SEC_ALL_FLAGS          ((1 << 14) - 1)
+#define SEC_ALL_FLAGS          ((1 << 14) - 1)              ///< Mask for all security flags
 
-#define PGP_ENCRYPT  (APPLICATION_PGP | SEC_ENCRYPT)
-#define PGP_SIGN     (APPLICATION_PGP | SEC_SIGN)
-#define PGP_GOODSIGN (APPLICATION_PGP | SEC_GOODSIGN)
-#define PGP_KEY      (APPLICATION_PGP | SEC_KEYBLOCK)
-#define PGP_INLINE   (APPLICATION_PGP | SEC_INLINE)
+#define PGP_ENCRYPT  (APPLICATION_PGP | SEC_ENCRYPT)        ///< Email is PGP encrypted
+#define PGP_SIGN     (APPLICATION_PGP | SEC_SIGN)           ///< Email is PGP signed
+#define PGP_GOODSIGN (APPLICATION_PGP | SEC_GOODSIGN)       ///< Email has a good PGP signature
+#define PGP_KEY      (APPLICATION_PGP | SEC_KEYBLOCK)       ///< Email contains a PGP key
+#define PGP_INLINE   (APPLICATION_PGP | SEC_INLINE)         ///< Email is inline PGP encrypted/signed
 
-#define SMIME_ENCRYPT  (APPLICATION_SMIME | SEC_ENCRYPT)
-#define SMIME_SIGN     (APPLICATION_SMIME | SEC_SIGN)
-#define SMIME_GOODSIGN (APPLICATION_SMIME | SEC_GOODSIGN)
-#define SMIME_BADSIGN  (APPLICATION_SMIME | SEC_BADSIGN)
-#define SMIME_OPAQUE   (APPLICATION_SMIME | SEC_SIGNOPAQUE)
+#define SMIME_ENCRYPT  (APPLICATION_SMIME | SEC_ENCRYPT)    ///< Email is S/MIME encrypted
+#define SMIME_SIGN     (APPLICATION_SMIME | SEC_SIGN)       ///< Email is S/MIME signed
+#define SMIME_GOODSIGN (APPLICATION_SMIME | SEC_GOODSIGN)   ///< Email has a good S/MIME signature
+#define SMIME_BADSIGN  (APPLICATION_SMIME | SEC_BADSIGN)    ///< Email has a bad S/MIME signature
+#define SMIME_OPAQUE   (APPLICATION_SMIME | SEC_SIGNOPAQUE) ///< Email has an opaque S/MIME signature
 
 /* WITHCRYPTO actually replaces ifdefs to make the code more readable.
  * Because it is defined as a constant and known at compile time, the

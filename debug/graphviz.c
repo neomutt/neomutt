@@ -1185,6 +1185,7 @@ void dot_content(FILE *fp, struct Content *cont, struct ListHead *links)
   dot_type_number(fp, "ascii", cont->ascii);
   dot_type_number(fp, "linemax", cont->linemax);
 
+  /// Helper to add a boolean content flag to graphviz output
 #define ADD_BOOL(F) add_flag(buf, cont->F, #F)
   ADD_BOOL(space);
   ADD_BOOL(binary);
@@ -1251,6 +1252,7 @@ void dot_body(FILE *fp, const struct Body *b, struct ListHead *links, bool link_
     dot_type_string(fp, "stamp", arr, true);
   }
 
+  /// Helper to add a boolean body flag to graphviz output
 #define ADD_BOOL(F) add_flag(buf, b->F, #F)
   ADD_BOOL(attach_qualifies);
   ADD_BOOL(badsig);
@@ -1401,6 +1403,7 @@ void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *links)
 
   dot_object_header(fp, env, "Envelope", "#ffff00");
 
+  /// Helper to add an envelope changed flag to graphviz output
 #define ADD_FLAG(F) add_flag(buf, (env->changed & F), #F)
   ADD_FLAG(MUTT_ENV_CHANGED_IRT);
   ADD_FLAG(MUTT_ENV_CHANGED_REFS);
@@ -1409,6 +1412,7 @@ void dot_envelope(FILE *fp, const struct Envelope *env, struct ListHead *links)
 #undef ADD_BOOL
   dot_type_string(fp, "changed", buf_is_empty(buf) ? "[NONE]" : buf_string(buf), true);
 
+  /// Helper to output an address list in graphviz
 #define ADDR_LIST(AL) dot_addr_list(fp, #AL, &env->AL, links)
   ADDR_LIST(return_path);
   ADDR_LIST(from);
@@ -1465,6 +1469,7 @@ void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
 
   dot_type_string(fp, "path", e->path, true);
 
+  /// Helper to add an email boolean flag to graphviz output
 #define ADD_BOOL(F) add_flag(buf, e->F, #F)
   ADD_BOOL(active);
   ADD_BOOL(attach_del);
@@ -1494,6 +1499,7 @@ void dot_email(FILE *fp, const struct Email *e, struct ListHead *links)
   dot_type_string(fp, "bools", buf_is_empty(buf) ? "[NONE]" : buf_string(buf), true);
 
   buf_reset(buf);
+  /// Helper to add an email security flag to graphviz output
 #define ADD_BOOL(F) add_flag(buf, (e->security & F), #F)
   ADD_BOOL(SEC_ENCRYPT);
   ADD_BOOL(SEC_SIGN);

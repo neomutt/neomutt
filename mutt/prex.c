@@ -36,6 +36,7 @@
 #include "signal2.h"
 
 #ifdef HAVE_PCRE2
+/// Set PCRE2 to use 8-bit character strings
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
 #include <string.h>
@@ -105,8 +106,10 @@ static struct PrexStorage *prex(enum Prex which)
       PREX_URL_MATCH_MAX,
       /* Spec: https://tools.ietf.org/html/rfc3986#section-3 */
 #ifdef HAVE_PCRE2
+/// Characters allowed in URL components (unreserved + percent-encoded + sub-delims) - with Unicode support
 #define UNR_PCTENC_SUBDEL "][\\p{L}\\p{N}._~%!$&'()*+,;="
 #else
+/// Characters allowed in URL components (unreserved + percent-encoded + sub-delims) - without Unicode
 #define UNR_PCTENC_SUBDEL "][[:alnum:]._~%!$&'()*+,;="
 #endif
 #define PATH ":@/ "
@@ -141,6 +144,7 @@ static struct PrexStorage *prex(enum Prex which)
     {
       PREX_URL_QUERY_KEY_VAL,
       PREX_URL_QUERY_KEY_VAL_MATCH_MAX,
+      /// Characters allowed in URL query key/value pairs
 #define QUERY_PART "^&=" // Should be: "-[:alnum:]._~%!$'()*+,;:@/"
       "([" QUERY_PART "]+)=([" QUERY_PART "]+)"   // query + ' '
 #undef QUERY_PART

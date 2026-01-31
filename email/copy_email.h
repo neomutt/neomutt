@@ -47,6 +47,8 @@ typedef uint16_t CopyMessageFlags;     ///< Flags for mutt_copy_message(), e.g. 
 #define MUTT_CM_DECODE_PGP   (1 << 9)  ///< Used for decoding PGP messages
 #define MUTT_CM_DECODE_SMIME (1 << 10) ///< Used for decoding S/MIME messages
 #define MUTT_CM_VERIFY       (1 << 11) ///< Do signature verification
+
+/// Combination flag for decoding any kind of cryptography (PGP or S/MIME)
 #define MUTT_CM_DECODE_CRYPT (MUTT_CM_DECODE_PGP | MUTT_CM_DECODE_SMIME)
 
 typedef uint32_t CopyHeaderFlags;   ///< Flags for mutt_copy_header(), e.g. #CH_UPDATE

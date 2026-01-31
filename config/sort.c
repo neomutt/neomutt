@@ -41,7 +41,9 @@
 #include "set.h"
 #include "types.h"
 
+/// Prefix for reverse sorting
 #define PREFIX_REVERSE "reverse-"
+/// Prefix for last sorting (used in threading)
 #define PREFIX_LAST "last-"
 
 /**

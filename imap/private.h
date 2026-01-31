@@ -44,10 +44,9 @@ struct Progress;
 #define IMAP_PORT     143  ///< Default port for IMAP
 #define IMAP_SSL_PORT 993  ///< Port for IMAP over SSL/TLS
 
-/* logging levels */
-#define IMAP_LOG_CMD  2
-#define IMAP_LOG_LTRL 3
-#define IMAP_LOG_PASS 5
+#define IMAP_LOG_CMD   2   ///< Log commands only
+#define IMAP_LOG_LTRL  3   ///< Log literal values
+#define IMAP_LOG_PASS  5   ///< Log passwords (dangerous!)
 
 /* IMAP command responses. Used in ImapCommand.state too */
 #define IMAP_RES_NO       -2  ///< `<tag> NO ...`
@@ -57,6 +56,7 @@ struct Progress;
 #define IMAP_RES_RESPOND   2  ///< `+`
 #define IMAP_RES_NEW       3  ///< ImapCommand.state additions
 
+/// Length of IMAP sequence buffer
 #define SEQ_LEN 16
 
 typedef uint8_t ImapOpenFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
@@ -84,7 +84,7 @@ enum ImapExecResult
   IMAP_EXEC_FATAL,       ///< Imap connection failure
 };
 
-/* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (NUL-terminated) */
+/// Length of IMAP date string "DD-MMM-YYYY HH:MM:SS +ZZzz" plus NUL
 #define IMAP_DATELEN 27
 
 /**

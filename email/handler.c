@@ -69,12 +69,12 @@
 #include <libintl.h>
 #endif
 
-#define BUFI_SIZE 1000
-#define BUFO_SIZE 2000
+#define BUFI_SIZE 1000 ///< Input buffer size for handler operations
+#define BUFO_SIZE 2000 ///< Output buffer size for handler operations
 
-#define TXT_HTML 1
-#define TXT_PLAIN 2
-#define TXT_ENRICHED 3
+#define TXT_HTML 1     ///< HTML text format
+#define TXT_PLAIN 2    ///< Plain text format
+#define TXT_ENRICHED 3 ///< Enriched text format
 
 /**
  * @defgroup handler_api Mime Handler API

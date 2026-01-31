@@ -70,6 +70,7 @@ static const char RxSpecialChars[] = "^.[$()|*+?{\\";
 /// Set of characters <=0x7F that are safe to use in filenames
 const char FilenameSafeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
 
+/// Maximum number of attempts to lock a file
 #define MAX_LOCK_ATTEMPTS 5
 
 /**

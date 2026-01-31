@@ -46,8 +46,8 @@ enum UrlScheme
   U_NOTMUCH, ///< Url is notmuch://
 };
 
-#define U_NO_FLAGS       0
-#define U_PATH          (1 << 1)
+#define U_NO_FLAGS        0   ///< No flags are set for URL parsing
+#define U_PATH      (1 << 1)  ///< Path is included in URL
 
 /**
  * struct UrlQuery - Parsed Query String

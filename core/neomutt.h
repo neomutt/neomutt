@@ -43,7 +43,7 @@ struct NeoMutt;
  */
 struct Module
 {
-  const char *name;                   /// Name of the library module
+  const char *name;                   ///< Name of the library module
 
   /**
    * @defgroup module_init init()
@@ -168,7 +168,7 @@ void neomutt_cleanup(struct NeoMutt *n);
 
 struct MailboxArray neomutt_mailboxes_get(struct NeoMutt *n, enum MailboxType type);
 
-// Similar to mutt_file_fopen, but with the proper permissions inferred from
+/// Open a file with proper permissions, tracked for debugging
 #define mutt_file_fopen_masked(PATH, MODE) mutt_file_fopen_masked_full(PATH, MODE, __FILE__, __LINE__, __func__)
 
 #endif /* MUTT_CORE_NEOMUTT_H */

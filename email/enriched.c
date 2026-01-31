@@ -39,6 +39,7 @@
 #include "enriched.h"
 #include "body.h"
 
+/// Number of spaces for indentation in enriched text
 #define INDENT_SIZE 4
 
 /**

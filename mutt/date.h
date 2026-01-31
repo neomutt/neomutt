@@ -36,11 +36,14 @@
 struct Buffer;
 struct timespec;
 
-/* theoretically time_t can be float but it is integer on most (if not all) systems */
+/// Maximum value for a time_t
 #define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
+/// Minimum value for a time_t
 #define TIME_T_MIN (-TIME_T_MAX - 1)
+/// Maximum year value representable in a struct tm
 #define TM_YEAR_MAX                                                            \
   (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
+/// Minimum year value representable in a struct tm
 #define TM_YEAR_MIN (1970 - (TM_YEAR_MAX - 1970) - 1)
 
 /**

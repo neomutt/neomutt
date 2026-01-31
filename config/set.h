@@ -46,7 +46,9 @@
 #define CSR_INV_VALIDATOR (1 << 5) ///< Value was rejected by the validator
 #define CSV_INV_NOT_IMPL  (1 << 6) ///< Operation not permitted for the type
 
+/// Mask to extract the result code from CSR_* flags
 #define CSR_RESULT_MASK 0x0F
+/// Extract the result code from CSR_* flags
 #define CSR_RESULT(x) ((x) & CSR_RESULT_MASK)
 
 #define IP (intptr_t)

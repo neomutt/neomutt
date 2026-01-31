@@ -38,8 +38,8 @@
 #include "lib.h"
 #include "menu/lib.h"
 
-#define KILO 1024
-#define MEGA 1048576
+#define KILO 1024    ///< 1024 bytes (1 kibibyte)
+#define MEGA 1048576 ///< 1048576 bytes (1 mebibyte)
 
 /**
  * enum EatRangeError - Error codes for eat_range_by_regex()

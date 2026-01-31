@@ -55,6 +55,7 @@
 #include <gnutls/gnutls.h>
 #endif
 #ifdef HAVE_PCRE2
+/// Set PCRE2 to use 8-bit character strings
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
 #endif

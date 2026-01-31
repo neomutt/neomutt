@@ -60,33 +60,34 @@
 #include <sasl/sasl.h>
 #endif
 
+/// Check if SMTP response code indicates success (2xx codes)
 #define smtp_success(x) (((x) / 100) == 2)
-#define SMTP_READY 334
-#define SMTP_CONTINUE 354
+#define SMTP_READY 334    ///< SMTP server ready for authentication data
+#define SMTP_CONTINUE 354 ///< SMTP server ready to accept message data
 
-#define SMTP_ERR_READ -2
-#define SMTP_ERR_WRITE -3
-#define SMTP_ERR_CODE -4
+#define SMTP_ERR_READ -2  ///< Error reading from server
+#define SMTP_ERR_WRITE -3 ///< Error writing to server
+#define SMTP_ERR_CODE -4  ///< Invalid server response code
 
-#define SMTP_PORT 25
-#define SMTPS_PORT 465
+#define SMTP_PORT 25   ///< Default SMTP port
+#define SMTPS_PORT 465 ///< Default SMTPS (SMTP over SSL) port
 
-#define SMTP_AUTH_SUCCESS 0
-#define SMTP_AUTH_UNAVAIL 1
-#define SMTP_AUTH_FAIL -1
+#define SMTP_AUTH_SUCCESS 0 ///< Authentication completed successfully
+#define SMTP_AUTH_UNAVAIL 1 ///< Authentication method unavailable
+#define SMTP_AUTH_FAIL -1   ///< Authentication failed
 
 // clang-format off
 /**
  * typedef SmtpCapFlags - SMTP server capabilities
  */
-typedef uint8_t SmtpCapFlags;          ///< Flags, e.g. #SMTP_CAP_STARTTLS
-#define SMTP_CAP_NO_FLAGS           0  ///< No flags are set
-#define SMTP_CAP_STARTTLS     (1 << 0) ///< Server supports STARTTLS command
-#define SMTP_CAP_AUTH         (1 << 1) ///< Server supports AUTH command
-#define SMTP_CAP_DSN          (1 << 2) ///< Server supports Delivery Status Notification
-#define SMTP_CAP_EIGHTBITMIME (1 << 3) ///< Server supports 8-bit MIME content
-#define SMTP_CAP_SMTPUTF8     (1 << 4) ///< Server accepts UTF-8 strings
-#define SMTP_CAP_ALL         ((1 << 5) - 1)
+typedef uint8_t SmtpCapFlags;               ///< Flags, e.g. #SMTP_CAP_STARTTLS
+#define SMTP_CAP_NO_FLAGS           0       ///< No flags are set
+#define SMTP_CAP_STARTTLS     (1 << 0)      ///< Server supports STARTTLS command
+#define SMTP_CAP_AUTH         (1 << 1)      ///< Server supports AUTH command
+#define SMTP_CAP_DSN          (1 << 2)      ///< Server supports Delivery Status Notification
+#define SMTP_CAP_EIGHTBITMIME (1 << 3)      ///< Server supports 8-bit MIME content
+#define SMTP_CAP_SMTPUTF8     (1 << 4)      ///< Server accepts UTF-8 strings
+#define SMTP_CAP_ALL         ((1 << 5) - 1) ///< All SMTP capability flags
 // clang-format on
 
 /**

@@ -111,14 +111,10 @@ static const char *const SaslAuthenticators[] = {
   "SRP",
 };
 
-/* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
- * been a while since I've had access to an SASL server which negotiated
- * a protection buffer. */
+/// Maximum size for SASL protection buffer
 #define MUTT_SASL_MAXBUF 65536
 
-/* used to hold a string "host;port"
- * where host is size NI_MAXHOST-1 and port is size NI_MAXSERV-1
- * plus two bytes for the ';' and trailing \0 */
+/// Buffer size for "host;port" string (NI_MAXHOST + NI_MAXSERV)
 #define IP_PORT_BUFLEN (NI_MAXHOST + NI_MAXSERV)
 
 /// SASL callback functions, e.g. mutt_sasl_cb_authname(), mutt_sasl_cb_pass()

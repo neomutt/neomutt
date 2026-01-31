@@ -53,9 +53,9 @@
 #include <gssapi/gssapi_generic.h>
 #endif
 
-#define GSS_AUTH_P_NONE 1
-#define GSS_AUTH_P_INTEGRITY 2
-#define GSS_AUTH_P_PRIVACY 4
+#define GSS_AUTH_P_NONE 1      ///< No protection (authentication only)
+#define GSS_AUTH_P_INTEGRITY 2 ///< Integrity protection
+#define GSS_AUTH_P_PRIVACY 4   ///< Privacy protection (encryption)
 
 /**
  * print_gss_error - Print detailed error message to the debug log

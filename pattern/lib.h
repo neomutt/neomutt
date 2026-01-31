@@ -61,6 +61,7 @@ struct Mailbox;
 struct MailboxView;
 struct Menu;
 
+/// Simple search pattern for aliases (from/to/cc fields)
 #define MUTT_ALIAS_SIMPLESEARCH "~f %s | ~t %s | ~c %s"
 
 extern const struct CompleteOps CompletePatternOps;

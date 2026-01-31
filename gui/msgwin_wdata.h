@@ -27,6 +27,7 @@
 
 struct MuttWindow;
 
+/// Maximum number of rows to show in the message window
 #define MSGWIN_MAX_ROWS 3
 
 /**

@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 
+/// Default shell to use for executing commands
 #define EXEC_SHELL "/bin/sh"
 
 pid_t filter_create   (const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err, char **envlist);

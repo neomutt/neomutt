@@ -23,6 +23,7 @@
 #ifndef MUTT_CONFIG_SORT_H
 #define MUTT_CONFIG_SORT_H
 
+/// Compare two numbers, return -1, 0, or 1
 #define mutt_numeric_cmp(a,b) ((a) < (b) ? -1 : ((a) > (b) ? 1 : 0))
 
 /* `$sort` and `$sort_aux` are shorts, and are a composite of a constant sort

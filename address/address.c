@@ -67,16 +67,16 @@ const char AddressSpecials[] = "\"(),.:;<>@[\\]";
 #define is_special(ch, mask)                                                   \
   ((ch) >= 32 && (ch) < 96 && ((mask >> ((ch) - 32)) & 1))
 
-/** #AddressSpecials, for is_special() */
+/// Mask for #AddressSpecials, for is_special()
 #define ADDRESS_SPECIAL_MASK 0x380000015c005304ULL
 
-/** #AddressSpecials except " ( . \ */
+/// Mask for #AddressSpecials except " ( . \ characters
 #define USER_SPECIAL_MASK 0x280000015c001200ULL
 
-/** #AddressSpecials except ( . [ \ ] */
+/// Mask for #AddressSpecials except ( . [ \ ] characters
 #define DOMAIN_SPECIAL_MASK 0x000000015c001204ULL
 
-/** #AddressSpecials except ( , . [ \ ] */
+/// Mask for #AddressSpecials except ( , . [ \ ] characters
 #define ROUTE_SPECIAL_MASK 0x000000015c000204ULL
 
 /**

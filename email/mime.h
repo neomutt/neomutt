@@ -65,8 +65,9 @@ enum ContentDisposition
   DISP_NONE,      ///< No preferred disposition
 };
 
-/* Some limits to mitigate stack overflow and denial of service attacks */
+/// Maximum nesting depth for MIME parts to prevent stack overflow
 #define MUTT_MIME_MAX_DEPTH  50
+/// Maximum number of MIME parts to process to prevent DoS
 #define MUTT_MIME_MAX_PARTS  500
 
 
@@ -77,8 +78,10 @@ extern const char *const BodyTypes[];
 extern const char *const BodyEncodings[];
 extern const char MimeSpecials[];
 
+/// Convert hexadecimal character to its integer value
 #define hexval(ch) IndexHex[(unsigned int) (ch)]
 
+/// Check if a body part is multipart or a message container
 #define is_multipart(body)                                                     \
   (((body)->type == TYPE_MULTIPART) ||                                         \
    (((body)->type == TYPE_MESSAGE) && ((body)->subtype) &&                     \
@@ -86,9 +89,11 @@ extern const char MimeSpecials[];
      (strcasecmp((body)->subtype, "news") == 0) ||                             \
      (strcasecmp((body)->subtype, "global") == 0))))
 
+/// Get the type name of a body part
 #define BODY_TYPE(body)                                                        \
   ((body->type == TYPE_OTHER) && body->xtype ? body->xtype : BodyTypes[(body->type)])
 
+/// Get the encoding name for an encoding type
 #define ENCODING(x) BodyEncodings[(x)]
 
 #endif /* MUTT_EMAIL_MIME_H */

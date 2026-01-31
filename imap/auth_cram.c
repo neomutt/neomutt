@@ -36,8 +36,8 @@
 #include "adata.h"
 #include "auth.h"
 
-#define MD5_BLOCK_LEN 64
-#define MD5_DIGEST_LEN 16
+#define MD5_BLOCK_LEN 64  ///< MD5 block size in bytes for CRAM-MD5
+#define MD5_DIGEST_LEN 16 ///< MD5 digest size in bytes for CRAM-MD5
 
 /**
  * hmac_md5 - Produce CRAM-MD5 challenge response

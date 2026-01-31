@@ -50,7 +50,7 @@ struct ConfigSubset;
 struct Email;
 struct SubMenu;
 
-/* flags for dlg_compose() */
+/// Don't free the header when closing compose dialog
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
 void compose_init_keys(struct SubMenu *sm_generic);

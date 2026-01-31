@@ -46,6 +46,7 @@
 #include "mime.h"
 #include "parameter.h"
 
+/// Maximum line length for format=flowed text (RFC 3676)
 #define FLOWED_MAX 72
 
 /**

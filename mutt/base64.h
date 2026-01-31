@@ -29,6 +29,7 @@ struct Buffer;
 
 extern const int Index64[];
 
+/// Convert base64 character to its numeric value
 #define base64val(ch) Index64[(unsigned int) (ch)]
 
 int    mutt_b64_decode(const char *in, char *out, size_t olen);

@@ -103,6 +103,7 @@ void dump_envelope(const struct Envelope *env)
   struct Buffer *buf = buf_pool_get();
   char arr[1024];
 
+  /// Helper to add a flag to debug output
 #define ADD_FLAG(F) add_flag(buf, (env->changed & F), #F)
   ADD_FLAG(MUTT_ENV_CHANGED_IRT);
   ADD_FLAG(MUTT_ENV_CHANGED_REFS);
@@ -111,6 +112,7 @@ void dump_envelope(const struct Envelope *env)
 #undef ADD_FLAG
   mutt_debug(LL_DEBUG1, "\tchanged: %s\n", buf_is_empty(buf) ? "[NONE]" : buf_string(buf));
 
+  /// Helper to dump an address list with debug output
 #define ADDR_LIST(AL) dump_addr_list(arr, sizeof(arr), &env->AL, #AL)
   ADDR_LIST(return_path);
   ADDR_LIST(from);
@@ -123,6 +125,7 @@ void dump_envelope(const struct Envelope *env)
   ADDR_LIST(x_original_to);
 #undef ADDR_LIST
 
+  /// Helper to print optional string fields
 #define OPT_STRING(S)                                                          \
   if (env->S)                                                                  \
   mutt_debug(LL_DEBUG1, "\t%s: %s\n", #S, env->S)
@@ -179,6 +182,7 @@ void dump_email(const struct Email *e)
 
   mutt_debug(LL_DEBUG1, "\tpath: %s\n", e->path);
 
+  /// Helper to add an email flag to debug output
 #define ADD_FLAG(F) add_flag(buf, e->F, #F)
   ADD_FLAG(active);
   ADD_FLAG(attach_del);
@@ -207,6 +211,7 @@ void dump_email(const struct Email *e)
 #undef ADD_FLAG
   mutt_debug(LL_DEBUG1, "\tFlags: %s\n", buf_is_empty(buf) ? "[NONE]" : buf_string(buf));
 
+  /// Helper to add a security flag to debug output
 #define ADD_FLAG(F) add_flag(buf, (e->security & F), #F)
   buf_reset(buf);
   ADD_FLAG(SEC_ENCRYPT);
@@ -299,6 +304,7 @@ void dump_body(const struct Body *body)
   struct Buffer *buf = buf_pool_get();
   char arr[256];
 
+  /// Helper to add a body flag to debug output
 #define ADD_FLAG(F) add_flag(buf, body->F, #F)
   ADD_FLAG(attach_qualifies);
   ADD_FLAG(badsig);
@@ -316,6 +322,7 @@ void dump_body(const struct Body *body)
 #undef ADD_FLAG
   mutt_debug(LL_DEBUG1, "\tFlags: %s\n", buf_is_empty(buf) ? "[NONE]" : buf_string(buf));
 
+  /// Helper to print optional string fields in body
 #define OPT_STRING(S)                                                          \
   if (body->S)                                                                 \
   mutt_debug(LL_DEBUG1, "\t%s: %s\n", #S, body->S)
@@ -385,6 +392,7 @@ void dump_attach(const struct AttachPtr *att)
 
   struct Buffer *buf = buf_pool_get();
 
+  /// Helper to add an attach flag to debug output
 #define ADD_FLAG(F) add_flag(buf, att->F, #F)
   ADD_FLAG(unowned);
   ADD_FLAG(decrypted);

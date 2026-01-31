@@ -50,18 +50,18 @@
 int gnutls_protocol_set_priority(gnutls_session_t session, const int *list);
 
 // clang-format off
-/* certificate error bitmap values */
-#define CERTERR_VALID              0
-#define CERTERR_EXPIRED      (1 << 0)
-#define CERTERR_NOTYETVALID  (1 << 1)
-#define CERTERR_REVOKED      (1 << 2)
-#define CERTERR_NOTTRUSTED   (1 << 3)
-#define CERTERR_HOSTNAME     (1 << 4)
-#define CERTERR_SIGNERNOTCA  (1 << 5)
-#define CERTERR_INSECUREALG  (1 << 6)
-#define CERTERR_OTHER        (1 << 7)
+#define CERTERR_VALID              0    ///< Certificate is valid
+#define CERTERR_EXPIRED      (1 << 0)   ///< Certificate is expired
+#define CERTERR_NOTYETVALID  (1 << 1)   ///< Certificate is not yet valid
+#define CERTERR_REVOKED      (1 << 2)   ///< Certificate has been revoked
+#define CERTERR_NOTTRUSTED   (1 << 3)   ///< Certificate issuer is not trusted
+#define CERTERR_HOSTNAME     (1 << 4)   ///< Certificate hostname does not match
+#define CERTERR_SIGNERNOTCA  (1 << 5)   ///< Certificate signer is not a CA
+#define CERTERR_INSECUREALG  (1 << 6)   ///< Certificate uses insecure algorithm
+#define CERTERR_OTHER        (1 << 7)   ///< Other certificate error
 // clang-format on
 
+/// Certificate separator string
 #define CERT_SEP "-----BEGIN"
 
 #ifndef HAVE_GNUTLS_PRIORITY_SET_DIRECT

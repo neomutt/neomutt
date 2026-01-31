@@ -99,28 +99,33 @@ enum RangeType
   RANGE_K_INVALID, ///< Range is invalid
 };
 
-/* The regexes in a modern format */
+/// Regex for a number (decimal or hex) with optional K/M suffix
 #define RANGE_NUM_RX      "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
+/// Regex for one slot in a relative range (e.g., "5" or "-3")
 #define RANGE_REL_SLOT_RX "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
+/// Regex for relative range (e.g., "1,5" or "-3,.")
 #define RANGE_REL_RX      "^" RANGE_REL_SLOT_RX "," RANGE_REL_SLOT_RX
 
-/* Almost the same, but no negative numbers allowed */
+/// Regex for one slot in an absolute range (no negative numbers)
 #define RANGE_ABS_SLOT_RX "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
+/// Regex for absolute range (e.g., "1-5")
 #define RANGE_ABS_RX      "^" RANGE_ABS_SLOT_RX "-" RANGE_ABS_SLOT_RX
 
-/* First group is intentionally empty */
+/// Regex for less-than range (e.g., "<100")
 #define RANGE_LT_RX "^()[[:blank:]]*(<[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
+/// Regex for greater-than range (e.g., ">50")
 #define RANGE_GT_RX "^()[[:blank:]]*(>[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
 
-/* Single group for min and max */
+/// Regex for bare number range
 #define RANGE_BARE_RX "^[[:blank:]]*([.^$]|" RANGE_NUM_RX ")[[:blank:]]*"
+/// Number of capture groups in range regexes
 #define RANGE_RX_GROUPS 5
 
-#define RANGE_DOT    '.'
-#define RANGE_CIRCUM '^'
-#define RANGE_DOLLAR '$'
-#define RANGE_LT     '<'
-#define RANGE_GT     '>'
+#define RANGE_DOT     '.'   ///< Current position indicator '.'
+#define RANGE_CIRCUM  '^'   ///< First message indicator '^'
+#define RANGE_DOLLAR  '$'   ///< Last message indicator '$'
+#define RANGE_LT      '<'   ///< Less-than operator '<'
+#define RANGE_GT      '>'   ///< Greater-than operator '>'
 
 /**
  * enum RangeSide - Which side of the range

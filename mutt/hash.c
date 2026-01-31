@@ -35,6 +35,7 @@
 #include "memory.h"
 #include "string2.h"
 
+/// A prime number used for hashing
 #define SOME_PRIME 149711
 
 /**

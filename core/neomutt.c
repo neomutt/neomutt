@@ -44,10 +44,12 @@
 
 struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
 
+/// Register a config type in the config set
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType Cst##NAME;                                 \
   cs_register_type(CS, &Cst##NAME)
 
+/// Initialize config variables for a subsystem
 #define CONFIG_INIT_VARS(CS, NAME)                                             \
   bool config_init_##NAME(struct ConfigSet *cs);                               \
   config_init_##NAME(CS)

@@ -34,6 +34,7 @@ const char *mutt_str_atoul (const char *str, unsigned long *dst);
 const char *mutt_str_atoull(const char *str, unsigned long long *dst);
 const char *mutt_str_atous (const char *str, unsigned short *dst);
 
+/// Generate full-string conversion wrappers for mutt_str_ato* functions
 #define make_str_ato_wrappers(flavour, type) \
   static inline bool mutt_str_ato ## flavour ## _full(const char *src, type *dst) \
   { \

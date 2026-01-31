@@ -46,6 +46,7 @@ enum ConfigType
   DT_END,
 };
 
+/// Extract the type from the flags
 #define CONFIG_TYPE(t) ((enum ConfigType)((t) & 0x1F))
 
 enum ConfigTypeField

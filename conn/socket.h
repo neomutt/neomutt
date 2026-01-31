@@ -48,10 +48,9 @@ int                mutt_socket_readchar(struct Connection *conn, char *c);
 int                mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int dbg);
 int                mutt_socket_write_d (struct Connection *conn, const char *buf, int len, int dbg);
 
-/* logging levels */
-#define MUTT_SOCK_LOG_CMD  2
-#define MUTT_SOCK_LOG_HDR  3
-#define MUTT_SOCK_LOG_FULL 5
+#define MUTT_SOCK_LOG_CMD   2  ///< Log commands only
+#define MUTT_SOCK_LOG_HDR   3  ///< Log commands and headers
+#define MUTT_SOCK_LOG_FULL  5  ///< Log everything including full protocol
 
 #define mutt_socket_readln(buf, buflen, conn) mutt_socket_readln_d(buf, buflen, conn, MUTT_SOCK_LOG_CMD)
 #define mutt_socket_send(conn, buf)           mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_CMD)

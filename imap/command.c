@@ -58,6 +58,7 @@
 #include "mutt_logging.h"
 #include "mx.h"
 
+/// Default buffer size for IMAP commands
 #define IMAP_CMD_BUFSIZE 512
 
 /**

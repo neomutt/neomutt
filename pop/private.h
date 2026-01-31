@@ -32,14 +32,12 @@ struct Mailbox;
 struct PopAccountData;
 struct Progress;
 
-#define POP_PORT 110
-#define POP_SSL_PORT 995
+#define POP_PORT         110   ///< Default port for POP3
+#define POP_SSL_PORT     995   ///< Default port for POP3 over SSL
 
-/* number of entries in the hash table */
-#define POP_CACHE_LEN 10
+#define POP_CACHE_LEN     10   ///< Number of entries in the POP cache hash table
 
-/* maximal length of the server response (RFC1939) */
-#define POP_CMD_RESPONSE 512
+#define POP_CMD_RESPONSE 512   ///< Maximum length of POP server response (per RFC1939)
 
 /**
  * enum PopStatus - POP server responses

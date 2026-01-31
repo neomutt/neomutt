@@ -49,6 +49,7 @@
 #define A_ITALIC 0
 #endif
 
+/// Convert a letter to a control character (e.g., 'A' -> Ctrl-A)
 #define ctrl(ch) ((ch) - '@')
 
 #ifdef KEY_ENTER

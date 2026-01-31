@@ -34,11 +34,15 @@
 #undef MAX
 #undef MIN
 #undef CLAMP
+/// Return the maximum of two values
 #define MAX(a, b) (((a) < (b)) ? (b) : (a))
+/// Return the minimum of two values
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
+/// Clamp a value between a lower and upper bound
 #define CLAMP(val, lo, hi) MIN(hi, MAX(lo, val))
 
 #undef ROUND_UP
+/// Round up NUM to the nearest multiple of STEP
 #define ROUND_UP(NUM, STEP) ((((NUM) + (STEP) -1) / (STEP)) * (STEP))
 
 #if !defined(countof)
@@ -60,6 +64,7 @@ void *mutt_mem_mallocarray(size_t nmemb, size_t size);
 void  mutt_mem_realloc(void *pptr, size_t size);
 void  mutt_mem_reallocarray(void *pptr, size_t nmemb, size_t size);
 
+/// Free memory and set the pointer to NULL
 #define FREE(x) mutt_mem_free(x)
 
 #endif /* MUTT_MUTT_MEMORY_H */

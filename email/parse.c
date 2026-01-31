@@ -57,8 +57,7 @@
 #include "autocrypt/lib.h"
 #endif
 
-/* If the 'Content-Length' is bigger than 1GiB, then it's clearly wrong.
- * Cap the value to prevent overflow of Body.length */
+/// Maximum reasonable Content-Length value (1 GiB) to prevent overflow
 #define CONTENT_TOO_BIG (1 << 30)
 
 static void parse_part(FILE *fp, struct Body *b, int *counter);

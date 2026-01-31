@@ -70,7 +70,7 @@ typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
 #define MUTT_ACL_SEEN    (1 <<  9)  ///< Change the 'seen' status of a message
 #define MUTT_ACL_WRITE   (1 << 10)  ///< Write to a message (for flagging or linking threads)
 
-#define MUTT_ACL_ALL    ((1 << 11) - 1)
+#define MUTT_ACL_ALL    ((1 << 11) - 1) ///< All permissions
 
 /**
  * struct Mailbox - A mailbox

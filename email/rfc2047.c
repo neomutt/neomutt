@@ -43,11 +43,15 @@
 #include "envelope.h"
 #include "mime.h"
 
+/// Maximum length of an RFC2047 encoded word (75 chars per RFC2047)
 #define ENCWORD_LEN_MAX 75
+/// Minimum length of an RFC2047 encoded word ("=?.?.?.?=" = 9 chars)
 #define ENCWORD_LEN_MIN 9 /* strlen ("=?.?.?.?=") */
 
+/// Check if character is horizontal whitespace (space, tab, or null)
 #define HSPACE(ch) (((ch) == '\0') || ((ch) == ' ') || ((ch) == '\t'))
 
+/// Check if a byte is a UTF-8 continuation byte (10xxxxxx pattern)
 #define CONTINUATION_BYTE(ch) (((ch) & 0xc0) == 0x80)
 
 /**
