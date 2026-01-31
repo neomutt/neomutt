@@ -8027,13 +8027,13 @@ msgstr "parenteser samsvarer ikke: %s"
 
 #: pattern/compile.c:1030
 #, c-format
-msgid "%c: invalid pattern modifier"
-msgstr "%c: ugyldig mønstermodifikator"
+msgid "%c%c: invalid pattern"
+msgstr "%c%c: ugyldig mønstermodifikator"
 
 #: pattern/compile.c:1035
 #, c-format
-msgid "%c: not supported in this mode"
-msgstr "%c: støttes ikke i dette modus"
+msgid "%c%c: not supported in this mode"
+msgstr "%c%c: støttes ikke i dette modus"
 
 #: pattern/compile.c:1058
 msgid "missing parameter"
@@ -8043,8 +8043,8 @@ msgstr "manglende parameter"
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlg_pattern.c:150
-msgid "EXPR"
-msgstr "EXPR"
+msgid "REGEX"
+msgstr "REGEX"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a numeric range.
@@ -8103,8 +8103,8 @@ msgstr "Mønstre"
 #. %c is the pattern character, i.e. "g".
 #: pattern/exec.c:93
 #, c-format
-msgid "Pattern operator '~%c' is disabled"
-msgstr "Mønsteroperator «~%c» er slått av"
+msgid "Pattern operator '%c%c' is disabled"
+msgstr "Mønsteroperator «~%c%c» er slått av"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
@@ -8140,23 +8140,35 @@ msgstr "alle meldinger"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:56
-msgid "messages whose body matches EXPR"
-msgstr "meldinger hvis kropp samsvarer med EXPR"
+msgid "messages whose body matches REGEX"
+msgstr "meldinger hvis kropp samsvarer med REGEX"
+
+msgid "IMAP: messages whose body contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:59
-msgid "messages whose body or headers match EXPR"
-msgstr "meldinger hvis kropp eller hode samsvarer med EXPR"
+msgid "messages whose body or headers match REGEX"
+msgstr "meldinger hvis kropp eller hode samsvarer med REGEX"
+
+msgid "IMAP: messages whose body or headers contain STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:62
-msgid "messages whose CC header matches EXPR"
-msgstr "meldinger hvis Cc-hode samsvarer med EXPR"
+msgid "messages whose Cc: header matches REGEX"
+msgstr "meldinger hvis Cc-hode samsvarer med REGEX"
+
+msgid "messages whose Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:65
-msgid "messages whose recipient matches EXPR"
-msgstr "meldinger hvis mottager samsvarer med EXPR"
+msgid "messages whose To:, Cc: or Bcc: header matches REGEX"
+msgstr "meldinger hvis mottager samsvarer med REGEX"
+
+msgid "messages whose To:, Cc: or Bcc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:68
@@ -8170,8 +8182,11 @@ msgstr "slettede meldinger"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:74
-msgid "messages whose Sender header matches EXPR"
-msgstr "meldinger hvis sender-hode samsvarer med EXPR"
+msgid "messages whose Sender: header matches REGEX"
+msgstr "meldinger hvis sender-hode samsvarer med REGEX"
+
+msgid "messages whose Sender: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:77
@@ -8180,8 +8195,11 @@ msgstr "utløpte meldinger"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:80
-msgid "messages whose From header matches EXPR"
-msgstr "meldinger hvis fra-hode samsvarer med EXPR"
+msgid "messages whose From: header matches REGEX"
+msgstr "meldinger hvis fra-hode samsvarer med REGEX"
+
+msgid "messages whose From: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:83
@@ -8200,33 +8218,36 @@ msgstr "meldinger med kryptografisk kryptering"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:92
-msgid "messages whose header matches EXPR"
-msgstr "meldinger hvis hode samsvarer med EXPR"
+msgid "messages whose header matches REGEX"
+msgstr "meldinger hvis hode samsvarer med REGEX"
+
+msgid "IMAP: messages whose header contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:95
-msgid "messages whose spam tag matches EXPR"
-msgstr "meldinger hvis søppelpost-etikett samsvarer med EXPR"
+msgid "messages whose spam header matches REGEX"
+msgstr "meldinger hvis søppelpost-etikett samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:98
-msgid "messages whose Message-ID matches EXPR"
-msgstr "meldinger hvis meldings-ID samsvarer med EXPR"
+msgid "messages whose Message-Id: header matches REGEX"
+msgstr "meldinger hvis meldings-ID samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:101
-msgid "messages whose Message-ID is included in the results returned from an external search program"
+msgid "messages whose Message-Id: is included in results from $external_search_command"
 msgstr "meldinger hvis meldings-ID er å finne i resultatene fra et eksternt søkeprogram"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:104
-msgid "messages which contain PGP key"
+msgid "messages which contain a PGP key"
 msgstr "meldinger som inneholder PGP-nøkkel"
 
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:107
-msgid "messages whose BCC header matches EXPR"
-msgstr "meldinger hvis Bcc-hode samsvarer med EXPR"
+msgid "messages whose Bcc: header matches REGEX"
+msgstr "meldinger hvis Bcc-hode samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:110
@@ -8235,8 +8256,11 @@ msgstr "meldinger adressert til kjente e-postlister"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:113
-msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr "meldinger hvis Fra/Avsender/Til/Cc samsvarer med EXPR"
+msgid "messages whose From:, Sender:, To: or Cc: header matches REGEX"
+msgstr "meldinger hvis Fra/Avsender/Til/Cc samsvarer med REGEX"
+
+msgid "messages whose From:, Sender:, To: or Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:116
@@ -8245,8 +8269,8 @@ msgstr "meldinger hvis nummer er innenfor RANGE"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:119
-msgid "messages with a Content-Type matching EXPR"
-msgstr "meldinger med en innholdstype som samsvarer med EXPR"
+msgid "messages with a Content-Type matching REGEX"
+msgstr "meldinger med en innholdstype som samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:122
@@ -8285,13 +8309,13 @@ msgstr "meldinger mottatt innenfor DATERANGE"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:143
-msgid "already read messages"
+msgid "read messages"
 msgstr "allerede leste meldinger"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:146
-msgid "messages whose Subject header matches EXPR"
-msgstr "meldinger hvis emne-hode samsvarer med EXPR"
+msgid "messages whose Subject: header matches REGEX"
+msgstr "meldinger hvis emne-hode samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:149
@@ -8300,8 +8324,8 @@ msgstr "overflødige meldinger"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:152
-msgid "messages whose To header matches EXPR"
-msgstr "meldinger hvis til-hode samsvarer med EXPR"
+msgid "messages whose To: header matches REGEX"
+msgstr "meldinger hvis til-hode samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:155
@@ -8330,13 +8354,13 @@ msgstr "kryptografisk bekreftede meldinger"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:170
-msgid "newsgroups matching EXPR"
-msgstr "nyhetsgrupper som samsvarer med EXPR"
+msgid "newsgroups matching REGEX"
+msgstr "nyhetsgrupper som samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:173
-msgid "messages whose References header matches EXPR"
-msgstr "meldinger hvis referansehode samsvarer med EXPR"
+msgid "messages whose References: or In-Reply-To: header matches REGEX"
+msgstr "meldinger hvis referansehode samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:176
@@ -8345,13 +8369,13 @@ msgstr "meldinger med RANGE-vedlegg"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:179
-msgid "messages whose X-Label header matches EXPR"
-msgstr "meldinger hvis X-etiketthoder samsvarer med EXPR"
+msgid "messages whose X-Label: header matches REGEX"
+msgstr "meldinger hvis X-etiketthoder samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:182
-msgid "messages whose tags match EXPR"
-msgstr "meldinger hvis etiketter samsvarer med EXPR"
+msgid "messages whose tags match REGEX"
+msgstr "meldinger hvis etiketter samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:185
@@ -8375,7 +8399,7 @@ msgstr "brutte tråder"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:197
-msgid "IMAP custom server-side search for STRING"
+msgid "GMail: custom server-side search for STRING"
 msgstr "Egendefinert IMAP-tjenersidesøk for STRENG"
 
 #: pattern/message.c:104 pattern/message.c:253

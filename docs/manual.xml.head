@@ -8444,495 +8444,302 @@ subscribe "only\\.dot@example\\.org"
               <row>
                 <entry>~A</entry>
                 <entry></entry>
-                <entry>
-                  all messages
-                </entry>
+                <entry>all messages</entry>
               </row>
               <row>
-                <entry>~b <emphasis>EXPR</emphasis></entry>
+                <entry>~b <emphasis>REGEX</emphasis></entry>
                 <entry>d)</entry>
-                <entry>
-                  messages which contain <emphasis>EXPR</emphasis> in the
-                  message body
-                </entry>
+                <entry>messages whose body matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>=b <emphasis>STRING</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  If IMAP is enabled, like ~b but searches for
-                  <emphasis>STRING</emphasis> on the server, rather than
-                  downloading each message and searching it locally.
-                </entry>
+                <entry>IMAP: messages whose body contains <emphasis>STRING</emphasis> (searches on the server)</entry>
               </row>
               <row>
-                <entry>~B <emphasis>EXPR</emphasis></entry>
+                <entry>~B <emphasis>REGEX</emphasis></entry>
                 <entry>d)</entry>
-                <entry>
-                  messages which contain <emphasis>EXPR</emphasis> in the whole
-                  message
-                </entry>
+                <entry>messages whose body or headers match <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>=B <emphasis>STRING</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  If IMAP is enabled, like ~B but searches for
-                  <emphasis>STRING</emphasis> on the server, rather than
-                  downloading each message and searching it locally.
-                </entry>
+                <entry>IMAP: messages whose body or headers contain <emphasis>STRING (searches on the server)</emphasis></entry>
               </row>
               <row>
-                <entry>~c <emphasis>EXPR</emphasis></entry>
+                <entry>~c <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages carbon-copied to <emphasis>EXPR</emphasis>
-                </entry>
+                <entry>messages whose <quote>Cc:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>%c <emphasis>GROUP</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages carbon-copied to any member of
-                  <emphasis>GROUP</emphasis>
-                </entry>
+                <entry>messages whose <quote>Cc:</quote> is a member of <emphasis>GROUP</emphasis></entry>
               </row>
               <row>
-                <entry>~C <emphasis>EXPR</emphasis></entry>
+                <entry>~C <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages either to:, cc: or bcc: <emphasis>EXPR</emphasis>
-                </entry>
+                <entry>messages whose <quote>To:</quote>, <quote>Cc:</quote> or <quote>Bcc:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>%C <emphasis>GROUP</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages either to:, cc: or bcc: to any member of
-                  <emphasis>GROUP</emphasis>
-                </entry>
+                <entry>messages whose <quote>To:</quote>, <quote>Cc:</quote> or <quote>Bcc:</quote> is a member of <emphasis>GROUP</emphasis></entry>
               </row>
               <row>
-                <entry>~d [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>~d <emphasis>DATERANGE</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages with <quote>date-sent</quote> in a Date range
-                </entry>
+                <entry>messages sent in <emphasis>DATERANGE</emphasis></entry>
               </row>
               <row>
                 <entry>~D</entry>
                 <entry></entry>
-                <entry>
-                  deleted messages
-                </entry>
+                <entry>deleted messages</entry>
               </row>
               <row>
-                <entry>~e <emphasis>EXPR</emphasis></entry>
+                <entry>~e <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages which contains <emphasis>EXPR</emphasis> in the
-                  <quote>Sender</quote> field
-                </entry>
+                <entry>messages whose <quote>Sender:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>%e <emphasis>GROUP</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages which contain a member of <emphasis>GROUP</emphasis>
-                  in the <quote>Sender</quote> field
-                </entry>
+                <entry>messages whose <quote>Sender:</quote> is a member of <emphasis>GROUP</emphasis></entry>
               </row>
               <row>
                 <entry>~E</entry>
                 <entry></entry>
-                <entry>
-                  expired messages
-                </entry>
+                <entry>expired messages</entry>
               </row>
               <row>
-                <entry>~F</entry>
+                <entry>~f <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  flagged messages
-                </entry>
-              </row>
-              <row>
-                <entry>~f <emphasis>EXPR</emphasis></entry>
-                <entry></entry>
-                <entry>
-                  messages originating from <emphasis>EXPR</emphasis>
-                </entry>
+                <entry>messages whose <quote>From:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>%f <emphasis>GROUP</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages originating from any member of
-                  <emphasis>GROUP</emphasis>
-                </entry>
+                <entry>messages whose <quote>From:</quote> is a member of <emphasis>GROUP</emphasis></entry>
+              </row>
+              <row>
+                <entry>~F</entry>
+                <entry></entry>
+                <entry>flagged messages</entry>
               </row>
               <row>
                 <entry>~g</entry>
                 <entry></entry>
-                <entry>
-                  cryptographically signed messages
-                </entry>
+                <entry>cryptographically signed messages</entry>
               </row>
               <row>
                 <entry>~G</entry>
                 <entry></entry>
-                <entry>
-                  cryptographically encrypted messages
-                </entry>
+                <entry>cryptographically encrypted messages</entry>
               </row>
               <row>
-                <entry>~h <emphasis>EXPR</emphasis></entry>
+                <entry>~h <emphasis>REGEX</emphasis></entry>
                 <entry>d)</entry>
-                <entry>
-                  messages which contain <emphasis>EXPR</emphasis> in the
-                  message header
-                </entry>
+                <entry>messages whose header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>=h <emphasis>STRING</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  If IMAP is enabled, like ~h but searches for
-                  <emphasis>STRING</emphasis> on the server, rather than
-                  downloading each message and searching it locally;
-                  <emphasis>STRING</emphasis> must be of the form
-                  <quote>header: substring</quote>(see below).
-                </entry>
+                <entry>IMAP: messages whose header contains <emphasis>STRING (searches on the server)</emphasis></entry>
               </row>
               <row>
-                <entry>~H <emphasis>EXPR</emphasis></entry>
+                <entry>~H <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages with a spam attribute matching
-                  <emphasis>EXPR</emphasis>
-                </entry>
+                <entry>messages whose spam header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
-                <entry>~i <emphasis>EXPR</emphasis></entry>
+                <entry>~i <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages which match <emphasis>EXPR</emphasis> in the
-                  <quote>Message-ID</quote> field
-                </entry>
+                <entry>messages whose <quote>Message-Id:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>~I <emphasis>QUERY</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages whose <quote>Message-ID</quote> field is included in
-                  the results returned from an external search program, when the program
-                  is run with <emphasis>QUERY</emphasis> as its argument.
-                  This is explained in greater detail in the variable reference entry
-                  <xref linkend="external-search-command"/>,
-                </entry>
+                <entry>messages whose <quote>Message-Id:</quote> is included in results from $external_search_command (see: <xref linkend="external-search-command" />)</entry>
               </row>
               <row>
                 <entry>~k</entry>
                 <entry></entry>
-                <entry>
-                  messages which contain PGP key material
-                </entry>
+                <entry>messages which contain a PGP key</entry>
               </row>
               <row>
-                <entry>~K <emphasis>EXPR</emphasis></entry>
+                <entry>~K <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages blind carbon-copied to <emphasis>EXPR</emphasis>
-                </entry>
-              </row>
-              <row>
-                <entry>~L <emphasis>EXPR</emphasis></entry>
-                <entry></entry>
-                <entry>
-                  messages either originated or received by
-                  <emphasis>EXPR</emphasis>
-                </entry>
-              </row>
-              <row>
-                <entry>%L <emphasis>GROUP</emphasis></entry>
-                <entry></entry>
-                <entry>
-                  message either originated or received by any member of
-                  <emphasis>GROUP</emphasis>
-                </entry>
+                <entry>messages whose <quote>Bcc:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>~l</entry>
                 <entry></entry>
-                <entry>
-                  messages addressed to a known mailing list
-                </entry>
+                <entry>messages addressed to known mailing lists</entry>
               </row>
               <row>
-                <entry>~m [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>~L <emphasis>REGEX</emphasis></entry>
+                <entry></entry>
+                <entry>messages whose <quote>From:</quote>, <quote>Sender:</quote>, <quote>To:</quote> or <quote>Cc:</quote> header matches <emphasis>REGEX</emphasis></entry>
+              </row>
+              <row>
+                <entry>%L <emphasis>GROUP</emphasis></entry>
+                <entry></entry>
+                <entry>messages whose <quote>From:</quote>, <quote>Sender:</quote>, <quote>To:</quote> or <quote>Cc:</quote> is a member of <emphasis>GROUP</emphasis></entry>
+              </row>
+              <row>
+                <entry>~m <emphasis>RANGE</emphasis></entry>
                 <entry>c)</entry>
-                <entry>
-                  messages with numbers in the range <emphasis>MIN</emphasis>
-                  to <emphasis>MAX</emphasis>
-                </entry>
+                <entry>messages whose number is in <emphasis>RANGE</emphasis></entry>
               </row>
               <row>
-                <entry>~m &lt;[<emphasis>MAX</emphasis>]</entry>
-                <entry>c)</entry>
-                <entry>
-                  messages with numbers less than <emphasis>MAX</emphasis>
-                </entry>
-              </row>
-              <row>
-                <entry>~m &gt;[<emphasis>MIN</emphasis>]</entry>
-                <entry>c)</entry>
-                <entry>
-                  messages with numbers greater than <emphasis>MIN</emphasis>
-                </entry>
-              </row>
-              <row>
-                <entry>~m [<emphasis>M</emphasis>]</entry>
-                <entry>c)</entry>
-                <entry>
-                  just message number <emphasis>M</emphasis>
-                </entry>
-              </row>
-              <row>
-                <entry>~m [<emphasis>MIN</emphasis>],[<emphasis>MAX</emphasis>]</entry>
-                <entry>c)</entry>
-                <entry>
-                  messages with offsets (from selected message) in the range
-                  <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis>
-                </entry>
-              </row>
-              <row>
-                <entry>~M <emphasis>EXPR</emphasis></entry>
+                <entry>~M <emphasis>REGEX</emphasis></entry>
                 <entry>d)</entry>
-                <entry>
-                   messages which contain a mime Content-Type matching
-                   <emphasis>EXPR</emphasis>
-                </entry>
+                <entry>messages with a Content-Type matching <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
-                <entry>~n [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>~n <emphasis>RANGE</emphasis></entry>
                 <entry>a)</entry>
-                <entry>
-                  messages with a score in the range <emphasis>MIN</emphasis>
-                  to <emphasis>MAX</emphasis>
-                </entry>
+                <entry>messages whose score is in <emphasis>RANGE</emphasis></entry>
               </row>
               <row>
                 <entry>~N</entry>
                 <entry></entry>
-                <entry>
-                  new messages
-                </entry>
+                <entry>new messages</entry>
               </row>
               <row>
                 <entry>~O</entry>
                 <entry></entry>
-                <entry>
-                  old messages
-                </entry>
+                <entry>old messages</entry>
               </row>
               <row>
                 <entry>~p</entry>
                 <entry></entry>
-                <entry>
-                  messages addressed to you (consults <link linkend="from">$from</link>,
-                  <command>alternates</command>, and local account/hostname information)
-                </entry>
+                <entry>messages addressed to you (consults <link linkend="from">$from</link>, <command>alternates</command>, and local account/hostname information)</entry>
               </row>
               <row>
                 <entry>~P</entry>
                 <entry></entry>
-                <entry>
-                  messages from you (consults <link linkend="from">$from</link>,
-                  <command>alternates</command>, and local account/hostname information)
-                </entry>
+                <entry>messages from you (consults <link linkend="from">$from</link>, <command>alternates</command>, and local account/hostname information)</entry>
               </row>
               <row>
                 <entry>~Q</entry>
                 <entry></entry>
-                <entry>
-                  messages which have been replied to
-                </entry>
+                <entry>messages which have been replied to</entry>
               </row>
               <row>
-                <entry>~r [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>~r <emphasis>DATERANGE</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages with <quote>date-received</quote> in a Date range
-                </entry>
+                <entry>messages received in <emphasis>DATERANGE</emphasis></entry>
               </row>
               <row>
                 <entry>~R</entry>
                 <entry></entry>
-                <entry>
-                  read messages
-                </entry>
+                <entry>read messages</entry>
               </row>
               <row>
-                <entry>~s <emphasis>EXPR</emphasis></entry>
+                <entry>~s <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages having <emphasis>EXPR</emphasis> in the
-                  <quote>Subject</quote> field.
-                </entry>
+                <entry>messages whose <quote>Subject:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>~S</entry>
                 <entry></entry>
-                <entry>
-                  superseded messages
-                </entry>
+                <entry>superseded messages</entry>
               </row>
               <row>
-                <entry>~t <emphasis>EXPR</emphasis></entry>
+                <entry>~t <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages addressed to <emphasis>EXPR</emphasis>
-                </entry>
+                <entry>messages whose <quote>To:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>~T</entry>
                 <entry></entry>
-                <entry>
-                  tagged messages
-                </entry>
+                <entry>tagged messages</entry>
               </row>
               <row>
                 <entry>~u</entry>
                 <entry></entry>
-                <entry>
-                  messages addressed to a subscribed mailing list
-                </entry>
+                <entry>messages addressed to subscribed mailing lists</entry>
               </row>
               <row>
                 <entry>~U</entry>
                 <entry></entry>
-                <entry>
-                  unread messages
-                </entry>
+                <entry>unread messages</entry>
               </row>
               <row>
                 <entry>~v</entry>
                 <entry></entry>
-                <entry>
-                  messages part of a collapsed thread.
-                </entry>
+                <entry>messages in collapsed threads</entry>
               </row>
               <row>
                 <entry>~V</entry>
                 <entry></entry>
-                <entry>
-                  cryptographically verified messages
-                </entry>
+                <entry>cryptographically verified messages</entry>
               </row>
               <row>
-                <entry>~w <emphasis>EXPR</emphasis></entry>
+                <entry>~w <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  newsgroups matching EXPR
-                </entry>
+                <entry>newsgroups matching <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
-                <entry>~x <emphasis>EXPR</emphasis></entry>
+                <entry>~x <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages which contain <emphasis>EXPR</emphasis> in the
-                  <quote>References</quote> or <quote>In-Reply-To</quote> field
-                </entry>
+                <entry>messages whose <quote>References:</quote> or <quote>In-Reply-To</quote> headers matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
-                <entry>~X [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>~X <emphasis>RANGE</emphasis></entry>
                 <entry>a), d)</entry>
-                <entry>
-                  messages with <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> attachments
-                </entry>
+                <entry>messages with <emphasis>RANGE</emphasis>attachments</entry>
               </row>
               <row>
-                <entry>~y <emphasis>EXPR</emphasis></entry>
+                <entry>~y <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages which contain <emphasis>EXPR</emphasis> in their
-                  keywords
-                </entry>
+                <entry>messages whose <quote>X-Label:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
-                <entry>~Y <emphasis>EXPR</emphasis></entry>
+                <entry>~Y <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>
-                  messages whose tags match <emphasis>EXPR</emphasis>
-                </entry>
+                <entry>messages whose tags match <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
-                <entry>~z [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>~z <emphasis>RANGE</emphasis></entry>
                 <entry>a), b)</entry>
-                <entry>
-                  messages with a size in the range <emphasis>MIN</emphasis> to
-                  <emphasis>MAX</emphasis>
-                </entry>
-              </row>
-              <row>
-                <entry>=/ <emphasis>STRING</emphasis></entry>
-                <entry></entry>
-                <entry>
-                  IMAP custom server-side search for
-                  <emphasis>STRING</emphasis>. Currently only defined for
-                  Gmail. See:
-                  <link linkend="gmail-patterns">Gmail Patterns</link>
-                </entry>
-              </row>
-              <row>
-                <entry>~=</entry>
-                <entry></entry>
-                <entry>
-                  duplicated messages (see
-                  <link linkend="duplicate-threads">$duplicate_threads</link>)
-                </entry>
+                <entry>messages whose size is in <emphasis>RANGE</emphasis></entry>
               </row>
               <row>
                 <entry>~#</entry>
                 <entry></entry>
-                <entry>
-                  broken threads (see
-                  <link linkend="strict-threads">$strict_threads</link>)
-                </entry>
+                <entry>broken threads (see <link linkend="strict-threads">$strict_threads</link>)</entry>
               </row>
               <row>
                 <entry>~$</entry>
                 <entry></entry>
-                <entry>
-                  unreferenced messages (requires threaded view)
-                </entry>
+                <entry>unreferenced messages (requires threaded view)</entry>
+              </row>
+              <row>
+                <entry>=/ <emphasis>STRING</emphasis></entry>
+                <entry></entry>
+                <entry>GMail: custom server-side search for <emphasis>STRING</emphasis></entry>
+              </row>
+              <row>
+                <entry>~=</entry>
+                <entry></entry>
+                <entry>duplicated messages (see <link linkend="duplicate-threads">$duplicate_threads</link>)</entry>
               </row>
               <row>
                 <entry>~(<emphasis>PATTERN</emphasis>)</entry>
                 <entry></entry>
-                <entry>
-                  messages in threads containing messages matching
-                  <emphasis>PATTERN</emphasis>, e.g. all threads containing
-                  messages from you: ~(~P)
-                </entry>
+                <entry>messages in threads containing messages matching <emphasis>PATTERN</emphasis>, e.g. all threads containing messages from you: <quote>~(~P)</quote></entry>
               </row>
               <row>
                 <entry>~&lt;(<emphasis>PATTERN</emphasis>)</entry>
                 <entry></entry>
-                <entry>
-                  messages whose immediate parent matches
-                  <emphasis>PATTERN</emphasis>, e.g. replies to your messages:
-                  ~&lt;(~P)
-                </entry>
+                <entry>messages whose immediate parent matches <emphasis>PATTERN</emphasis>, e.g. replies to your messages: <quote>~&lt;(~P)</quote></entry>
               </row>
               <row>
                 <entry>~&gt;(<emphasis>PATTERN</emphasis>)</entry>
                 <entry></entry>
-                <entry>
-                  messages having an immediate child matching
-                  <emphasis>PATTERN</emphasis>, e.g. messages you replied to:
-                  ~&gt;(~P)
-                </entry>
+                <entry>messages having an immediate child matching <emphasis>PATTERN</emphasis>, e.g. messages you replied to: <quote>~&gt;(~P)</quote></entry>
               </row>
             </tbody>
           </tgroup>
@@ -8950,26 +8757,26 @@ subscribe "only\\.dot@example\\.org"
             </thead>
             <tbody>
               <row>
-                <entry>~c <emphasis>EXPR</emphasis></entry>
+                <entry>~c <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
                 <entry>
-                  aliases which contain <emphasis>EXPR</emphasis> in the
+                  aliases which contain <emphasis>REGEX</emphasis> in the
                   alias comment
                 </entry>
               </row>
               <row>
-                <entry>~f <emphasis>EXPR</emphasis></entry>
+                <entry>~f <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
                 <entry>
-                  aliases which contain <emphasis>EXPR</emphasis> in the
+                  aliases which contain <emphasis>REGEX</emphasis> in the
                   alias name (<emphasis>From</emphasis> part of alias)
                 </entry>
               </row>
               <row>
-                <entry>~t <emphasis>EXPR</emphasis></entry>
+                <entry>~t <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
                 <entry>
-                  aliases which contain <emphasis>EXPR</emphasis> in the
+                  aliases which contain <emphasis>REGEX</emphasis> in the
                   alias address (<emphasis>To</emphasis> part of alias)
                 </entry>
               </row>
@@ -8977,12 +8784,52 @@ subscribe "only\\.dot@example\\.org"
           </tgroup>
         </table>
 
-        <para>
-          Where <emphasis>EXPR</emphasis> is a
-          <link linkend="regex">regular expression</link>, and
-          <emphasis>GROUP</emphasis> is an
-          <link linkend="addrgroup">address group</link>.
-        </para>
+        <para>Argument Types:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>REGEX</term>
+            <listitem>
+          <para>Regular expression, see <xref linkend="regex" /></para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>STRING</term>
+            <listitem>
+              <para>Plain text string (for IMAP server-side search)</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>GROUP</term>
+            <listitem>
+              <para>Address group name (defined via <command>group</command> command, see <xref linkend="addrgroup" />)</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>DATERANGE</term>
+            <listitem>
+              <para>Date or date range (see <xref linkend="date-patterns" />)</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>RANGE</term>
+            <listitem>
+              <para>Numeric range: 
+              <literal>N</literal>, 
+              <literal>N-M</literal>, 
+              <literal>&lt;N</literal>, 
+              <literal>&gt;N</literal>, 
+              <literal>N,M</literal> (relative) (see <xref linkend="message-ranges" />)</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>QUERY</term>
+            <listitem>
+              <para>Query string for external search command</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
         <para>
           a) The forms <quote>&lt;[<emphasis>MAX</emphasis>]</quote>,
           <quote>&gt;[<emphasis>MIN</emphasis>]</quote>,
@@ -9030,7 +8877,7 @@ save-hook ~h"list-id:\\\\s*&lt;only\\\\.dot&gt;"    '=archive'
       </example>
         <para>
           You can force NeoMutt to treat
-          <emphasis>EXPR</emphasis> as a simple substring instead of a regular
+          <emphasis>REGEX</emphasis> as a simple substring instead of a regular
           expression by using = instead of ~ in the pattern name. For example,
           <literal>=b *.*</literal> will find all messages that contain the
           literal string <quote>*.*</quote>. Simple string matches are less

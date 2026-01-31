@@ -67,7 +67,7 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
 {
   struct Buffer *token = buf_pool_get();
   bool rc = false;
-  char *pexpr = s->dptr;
+  const char *pexpr = s->dptr;
   if ((parse_extract_token(token, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) ||
       !token->data)
   {
@@ -80,32 +80,83 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
     goto out;
   }
 
-  if (pat->string_match)
-  {
-    pat->p.str = buf_strdup(token);
-    pat->ign_case = mutt_mb_is_lower(token->data);
-  }
-  else if (pat->group_match)
-  {
-    pat->p.group = groups_get_group(NeoMutt->groups, token->data);
-  }
-  else
-  {
-    pat->p.regex = MUTT_MEM_CALLOC(1, regex_t);
+  pat->p.regex = MUTT_MEM_CALLOC(1, regex_t);
 #ifdef USE_DEBUG_GRAPHVIZ
-    pat->raw_pattern = buf_strdup(token);
+  pat->raw_pattern = buf_strdup(token);
 #endif
-    uint16_t case_flags = mutt_mb_is_lower(token->data) ? REG_ICASE : 0;
-    int rc2 = REG_COMP(pat->p.regex, token->data, REG_NEWLINE | REG_NOSUB | case_flags);
-    if (rc2 != 0)
-    {
-      char errmsg[256] = { 0 };
-      regerror(rc2, pat->p.regex, errmsg, sizeof(errmsg));
-      buf_printf(err, "'%s': %s", token->data, errmsg);
-      FREE(&pat->p.regex);
-      goto out;
-    }
+  uint16_t case_flags = mutt_mb_is_lower(token->data) ? REG_ICASE : 0;
+  int rc2 = REG_COMP(pat->p.regex, token->data, REG_NEWLINE | REG_NOSUB | case_flags);
+  if (rc2 != 0)
+  {
+    char errmsg[256] = { 0 };
+    regerror(rc2, pat->p.regex, errmsg, sizeof(errmsg));
+    buf_printf(err, "'%s': %s", token->data, errmsg);
+    FREE(&pat->p.regex);
+    goto out;
   }
+
+  rc = true;
+
+out:
+  buf_pool_release(&token);
+  return rc;
+}
+
+/**
+ * eat_string - Parse a plain string - Implements ::eat_arg_t - @ingroup eat_arg_api
+ */
+static bool eat_string(struct Pattern *pat, PatternCompFlags flags,
+                       struct Buffer *s, struct Buffer *err)
+{
+  struct Buffer *token = buf_pool_get();
+  bool rc = false;
+  const char *pexpr = s->dptr;
+  if ((parse_extract_token(token, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) ||
+      !token->data)
+  {
+    buf_printf(err, _("Error in expression: %s"), pexpr);
+    goto out;
+  }
+  if (buf_is_empty(token))
+  {
+    buf_addstr(err, _("Empty expression"));
+    goto out;
+  }
+
+  pat->string_match = true;
+  pat->p.str = buf_strdup(token);
+  pat->ign_case = mutt_mb_is_lower(token->data);
+
+  rc = true;
+
+out:
+  buf_pool_release(&token);
+  return rc;
+}
+
+/**
+ * eat_group - Parse a group name - Implements ::eat_arg_t - @ingroup eat_arg_api
+ */
+static bool eat_group(struct Pattern *pat, PatternCompFlags flags,
+                      struct Buffer *s, struct Buffer *err)
+{
+  struct Buffer *token = buf_pool_get();
+  bool rc = false;
+  const char *pexpr = s->dptr;
+  if ((parse_extract_token(token, s, TOKEN_PATTERN | TOKEN_COMMENT) != 0) ||
+      !token->data)
+  {
+    buf_printf(err, _("Error in expression: %s"), pexpr);
+    goto out;
+  }
+  if (buf_is_empty(token))
+  {
+    buf_addstr(err, _("Empty expression"));
+    goto out;
+  }
+
+  pat->group_match = true;
+  pat->p.group = groups_get_group(NeoMutt->groups, token->data);
 
   rc = true;
 
@@ -1024,15 +1075,16 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, const char *s,
           pat_or = false;
         }
 
-        entry = lookup_tag(ps->dptr[1]);
+        char prefix = ps->dptr[0];
+        entry = lookup_tag(prefix, ps->dptr[1]);
         if (!entry)
         {
-          buf_printf(err, _("%c: invalid pattern modifier"), *ps->dptr);
+          buf_printf(err, _("%c%c: invalid pattern"), prefix, ps->dptr[1]);
           goto cleanup;
         }
         if (entry->flags && ((flags & entry->flags) == 0))
         {
-          buf_printf(err, _("%c: not supported in this mode"), *ps->dptr);
+          buf_printf(err, _("%c%c: not supported in this mode"), prefix, ps->dptr[1]);
           goto cleanup;
         }
 
@@ -1040,28 +1092,43 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, const char *s,
         leaf->pat_not = pat_not;
         leaf->all_addr = all_addr;
         leaf->is_alias = is_alias;
-        leaf->string_match = (ps->dptr[0] == '=');
-        leaf->group_match = (ps->dptr[0] == '%');
         leaf->sendmode = (flags & MUTT_PC_SEND_MODE_SEARCH);
         leaf->op = entry->op;
         pat_not = false;
         all_addr = false;
         is_alias = false;
 
-        ps->dptr++; /* move past the ~ */
+        // Determine the actual eat_arg to use.
+        // If the entry was found via fallback (entry->prefix is '~' but we used '=' or '%'),
+        // override the eat_arg to use string or group parsing respectively.
+        enum PatternEat eat_arg = entry->eat_arg;
+        if ((entry->prefix == '~') && (prefix == '=') && (eat_arg == EAT_REGEX))
+          eat_arg = EAT_STRING;
+        else if ((entry->prefix == '~') && (prefix == '%') && (eat_arg == EAT_REGEX))
+          eat_arg = EAT_GROUP;
+
+        ps->dptr++; /* move past the prefix (~, %, =) */
         ps->dptr++; /* eat the operator and any optional whitespace */
         SKIPWS(ps->dptr);
-        if (entry->eat_arg)
+        if (eat_arg)
         {
           if (ps->dptr[0] == '\0')
           {
             buf_addstr(err, _("missing parameter"));
             goto cleanup;
           }
-          switch (entry->eat_arg)
+          switch (eat_arg)
           {
             case EAT_REGEX:
               if (!eat_regex(leaf, flags, ps, err))
+                goto cleanup;
+              break;
+            case EAT_STRING:
+              if (!eat_string(leaf, flags, ps, err))
+                goto cleanup;
+              break;
+            case EAT_GROUP:
+              if (!eat_group(leaf, flags, ps, err))
                 goto cleanup;
               break;
             case EAT_DATE:

@@ -128,7 +128,7 @@ static void create_pattern_entries(struct PatternEntryArray *pea)
   while (Flags[num_entries].tag != 0)
     num_entries++;
 
-  /* Add three more hard-coded entries */
+  /* Add three more hard-coded entries for thread patterns */
   ARRAY_RESERVE(pea, num_entries + 3);
 
   struct Buffer *buf = buf_pool_get();
@@ -138,25 +138,11 @@ static void create_pattern_entries(struct PatternEntryArray *pea)
   {
     entry.num = i + 1;
 
-    buf_printf(buf, "~%c", Flags[i].tag);
+    buf_printf(buf, "%c%c", Flags[i].prefix, Flags[i].tag);
     entry.tag = buf_strdup(buf);
 
     switch (Flags[i].eat_arg)
     {
-      case EAT_REGEX:
-        /* L10N:
-           Pattern Completion Menu argument type: a regular expression
-        */
-        buf_add_printf(buf, " %s", _("EXPR"));
-        break;
-      case EAT_RANGE:
-      case EAT_MESSAGE_RANGE:
-        /* L10N:
-           Pattern Completion Menu argument type: a numeric range.
-           Used by ~m, ~n, ~X, ~z.
-        */
-        buf_add_printf(buf, " %s", _("RANGE"));
-        break;
       case EAT_DATE:
         /* L10N:
            Pattern Completion Menu argument type: a date range
@@ -164,12 +150,46 @@ static void create_pattern_entries(struct PatternEntryArray *pea)
         */
         buf_add_printf(buf, " %s", _("DATERANGE"));
         break;
+      case EAT_GROUP:
+        /* L10N:
+           Pattern Completion Menu argument type: an address group
+           Used by %c, %C, %e, %f, %L.
+        */
+        buf_add_printf(buf, " %s", _("GROUP"));
+        break;
+      case EAT_MESSAGE_RANGE:
+        /* L10N:
+           Pattern Completion Menu argument type: a message range.
+           Used by ~m.
+        */
+        buf_add_printf(buf, " %s", _("MSGRANGE"));
+        break;
       case EAT_QUERY:
         /* L10N:
            Pattern Completion Menu argument type: a query
            Used by ~I.
         */
         buf_add_printf(buf, " %s", _("QUERY"));
+        break;
+      case EAT_RANGE:
+        /* L10N:
+           Pattern Completion Menu argument type: a numeric range.
+           Used by ~n, ~X, ~z.
+        */
+        buf_add_printf(buf, " %s", _("RANGE"));
+        break;
+      case EAT_REGEX:
+        /* L10N:
+           Pattern Completion Menu argument type: a regular expression
+        */
+        buf_add_printf(buf, " %s", _("REGEX"));
+        break;
+      case EAT_STRING:
+        /* L10N:
+           Pattern Completion Menu argument type: a string (for IMAP patterns)
+           Used by =b, =B, =h, =/.
+        */
+        buf_add_printf(buf, " %s", _("STRING"));
         break;
       default:
         break;

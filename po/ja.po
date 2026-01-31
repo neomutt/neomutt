@@ -8160,13 +8160,13 @@ msgstr "対応する括弧がない: %s"
 
 #: pattern/compile.c:1030
 #, c-format
-msgid "%c: invalid pattern modifier"
-msgstr "%c は不正なパターン修飾子"
+msgid "%c%c: invalid pattern"
+msgstr "%c%c は不正なパターン修飾子"
 
 #: pattern/compile.c:1035
 #, c-format
-msgid "%c: not supported in this mode"
-msgstr "%c はこのモードではサポートされていない"
+msgid "%c%c: not supported in this mode"
+msgstr "%c%c はこのモードではサポートされていない"
 
 #: pattern/compile.c:1058
 msgid "missing parameter"
@@ -8176,8 +8176,8 @@ msgstr "パラメータがない"
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlg_pattern.c:150
-msgid "EXPR"
-msgstr "EXPR"
+msgid "REGEX"
+msgstr "REGEX"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a numeric range.
@@ -8236,7 +8236,7 @@ msgstr "パターン"
 #. %c is the pattern character, i.e. "g".
 #: pattern/exec.c:93
 #, c-format
-msgid "Pattern operator '~%c' is disabled"
+msgid "Pattern operator '%c%c' is disabled"
 msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
@@ -8277,23 +8277,35 @@ msgstr "すべてのメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:56
-msgid "messages whose body matches EXPR"
-msgstr "本文が EXPR に一致するメッセージ"
+msgid "messages whose body matches REGEX"
+msgstr "本文が REGEX に一致するメッセージ"
+
+msgid "IMAP: messages whose body contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:59
-msgid "messages whose body or headers match EXPR"
-msgstr "本文またはヘッダが EXPR に一致するメッセージ"
+msgid "messages whose body or headers match REGEX"
+msgstr "本文またはヘッダが REGEX に一致するメッセージ"
+
+msgid "IMAP: messages whose body or headers contain STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:62
-msgid "messages whose CC header matches EXPR"
-msgstr "CC ヘッダが EXPR に一致するメッセージ"
+msgid "messages whose Cc: header matches REGEX"
+msgstr "CC ヘッダが REGEX に一致するメッセージ"
+
+msgid "messages whose Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:65
-msgid "messages whose recipient matches EXPR"
-msgstr "宛先が EXPR に一致するメッセージ"
+msgid "messages whose To:, Cc: or Bcc: header matches REGEX"
+msgstr "宛先が REGEX に一致するメッセージ"
+
+msgid "messages whose To:, Cc: or Bcc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:68
@@ -8307,8 +8319,11 @@ msgstr "削除マーク付きメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:74
-msgid "messages whose Sender header matches EXPR"
-msgstr "Sender ヘッダが EXPR に一致するメッセージ"
+msgid "messages whose Sender: header matches REGEX"
+msgstr "Sender ヘッダが REGEX に一致するメッセージ"
+
+msgid "messages whose Sender: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:77
@@ -8317,8 +8332,11 @@ msgstr "期限切れメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:80
-msgid "messages whose From header matches EXPR"
-msgstr "From ヘッダが EXPR に一致するメッセージ"
+msgid "messages whose From: header matches REGEX"
+msgstr "From ヘッダが REGEX に一致するメッセージ"
+
+msgid "messages whose From: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:83
@@ -8337,33 +8355,36 @@ msgstr "暗号で暗号化されたメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:92
-msgid "messages whose header matches EXPR"
-msgstr "ヘッダが EXPR に一致するメッセージ"
+msgid "messages whose header matches REGEX"
+msgstr "ヘッダが REGEX に一致するメッセージ"
+
+msgid "IMAP: messages whose header contains STRING"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:95
-msgid "messages whose spam tag matches EXPR"
-msgstr "スパムタグが EXPR に一致するメッセージ"
+msgid "messages whose spam header matches REGEX"
+msgstr "スパムタグが REGEX に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:98
-msgid "messages whose Message-ID matches EXPR"
-msgstr "Message-ID が EXPR に一致するメッセージ"
+msgid "messages whose Message-Id: header matches REGEX"
+msgstr "Message-ID が REGEX に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:101
-msgid "messages whose Message-ID is included in the results returned from an external search program"
+msgid "messages whose Message-Id: is included in results from $external_search_command"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:104
-msgid "messages which contain PGP key"
+msgid "messages which contain a PGP key"
 msgstr "PGP 鍵を含むメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:107
 #, fuzzy
-msgid "messages whose BCC header matches EXPR"
+msgid "messages whose Bcc: header matches REGEX"
 msgstr "メッセージをヘッダごと編集"
 
 #. L10N: Pattern Completion Menu description for ~l
@@ -8373,8 +8394,11 @@ msgstr "既知のメーリングリストに宛てたメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:113
-msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr "From/Sender/To/CC が EXPR に一致するメッセージ"
+msgid "messages whose From:, Sender:, To: or Cc: header matches REGEX"
+msgstr "From/Sender/To/CC が REGEX に一致するメッセージ"
+
+msgid "messages whose From:, Sender:, To: or Cc: is a member of GROUP"
+msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:116
@@ -8383,8 +8407,8 @@ msgstr "番号が RANGE 内のメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:119
-msgid "messages with a Content-Type matching EXPR"
-msgstr "Content-Type が EXPR に一致するメッセージ"
+msgid "messages with a Content-Type matching REGEX"
+msgstr "Content-Type が REGEX に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:122
@@ -8423,13 +8447,13 @@ msgstr "受取が DATERANGE 内のメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:143
-msgid "already read messages"
+msgid "read messages"
 msgstr "既読メッセージ"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:146
-msgid "messages whose Subject header matches EXPR"
-msgstr "題名ヘッダが EXPR に一致するメッセージ"
+msgid "messages whose Subject: header matches REGEX"
+msgstr "題名ヘッダが REGEX に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:149
@@ -8438,8 +8462,8 @@ msgstr "上書き済みメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:152
-msgid "messages whose To header matches EXPR"
-msgstr "To ヘッダが EXPR に一致するメッセージ"
+msgid "messages whose To: header matches REGEX"
+msgstr "To ヘッダが REGEX に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:155
@@ -8469,13 +8493,13 @@ msgstr "暗号で検証されたメッセージ"
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:170
 #, fuzzy
-msgid "newsgroups matching EXPR"
+msgid "newsgroups matching REGEX"
 msgstr "マスクに一致するニュースグループがない"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:173
-msgid "messages whose References header matches EXPR"
-msgstr "References ヘッダが EXPR に一致するメッセージ"
+msgid "messages whose References: or In-Reply-To: header matches REGEX"
+msgstr "References ヘッダが REGEX に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:176
@@ -8484,12 +8508,12 @@ msgstr "RANGE 個ファイルが添付されたメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:179
-msgid "messages whose X-Label header matches EXPR"
-msgstr "X-Label ヘッダが EXPR に一致するメッセージ"
+msgid "messages whose X-Label: header matches REGEX"
+msgstr "X-Label ヘッダが REGEX に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:182
-msgid "messages whose tags match EXPR"
+msgid "messages whose tags match REGEX"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~z
@@ -8515,7 +8539,7 @@ msgstr "もうスレッドがない。"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:197
-msgid "IMAP custom server-side search for STRING"
+msgid "GMail: custom server-side search for STRING"
 msgstr ""
 
 #: pattern/message.c:104 pattern/message.c:253
