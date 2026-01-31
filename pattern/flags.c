@@ -52,25 +52,25 @@ const struct PatternFlags Flags[] = {
   { '~', 'b', MUTT_PAT_BODY, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~b
     N_("messages whose body matches EXPR") },
-  { '=', 'b', MUTT_PAT_BODY, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_REGEX,
+  { '=', 'b', MUTT_PAT_BODY, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_STRING,
     // L10N: Pattern Completion Menu description for =b
     N_("IMAP: messages whose body contains STRING") },
   { '~', 'B', MUTT_PAT_WHOLE_MSG, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~B
     N_("messages whose body or headers match EXPR") },
-  { '=', 'B', MUTT_PAT_WHOLE_MSG, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_REGEX,
+  { '=', 'B', MUTT_PAT_WHOLE_MSG, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_STRING,
     // L10N: Pattern Completion Menu description for =B
     N_("IMAP: messages whose body or headers contain STRING") },
   { '~', 'c', MUTT_PAT_CC, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~c
     N_("messages whose Cc: header matches EXPR") },
-  { '%', 'c', MUTT_PAT_CC, 0, EAT_REGEX,
+  { '%', 'c', MUTT_PAT_CC, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %c
     N_("messages whose Cc: is a member of GROUP") },
   { '~', 'C', MUTT_PAT_RECIPIENT, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~C
     N_("messages whose To:, Cc: or Bcc: header matches EXPR") },
-  { '%', 'C', MUTT_PAT_RECIPIENT, 0, EAT_REGEX,
+  { '%', 'C', MUTT_PAT_RECIPIENT, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %C
     N_("messages whose To:, Cc: or Bcc: is a member of GROUP") },
   { '~', 'd', MUTT_PAT_DATE, 0, EAT_DATE,
@@ -82,7 +82,7 @@ const struct PatternFlags Flags[] = {
   { '~', 'e', MUTT_PAT_SENDER, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~e
     N_("messages whose Sender: header matches EXPR") },
-  { '%', 'e', MUTT_PAT_SENDER, 0, EAT_REGEX,
+  { '%', 'e', MUTT_PAT_SENDER, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %e
     N_("messages whose Sender: is a member of GROUP") },
   { '~', 'E', MUTT_EXPIRED, 0, EAT_NONE,
@@ -91,7 +91,7 @@ const struct PatternFlags Flags[] = {
   { '~', 'f', MUTT_PAT_FROM, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~f
     N_("messages whose From: header matches EXPR") },
-  { '%', 'f', MUTT_PAT_FROM, 0, EAT_REGEX,
+  { '%', 'f', MUTT_PAT_FROM, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %f
     N_("messages whose From: is a member of GROUP") },
   { '~', 'F', MUTT_FLAG, 0, EAT_NONE,
@@ -106,7 +106,7 @@ const struct PatternFlags Flags[] = {
   { '~', 'h', MUTT_PAT_HEADER, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~h
     N_("messages whose header matches EXPR") },
-  { '=', 'h', MUTT_PAT_HEADER, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_REGEX,
+  { '=', 'h', MUTT_PAT_HEADER, MUTT_PC_FULL_MSG | MUTT_PC_SEND_MODE_SEARCH, EAT_STRING,
     // L10N: Pattern Completion Menu description for =h
     N_("IMAP: messages whose header contains STRING") },
   { '~', 'H', MUTT_PAT_HORMEL, 0, EAT_REGEX,
@@ -130,7 +130,7 @@ const struct PatternFlags Flags[] = {
   { '~', 'L', MUTT_PAT_ADDRESS, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~L
     N_("messages whose From:, Sender:, To: or Cc: header matches EXPR") },
-  { '%', 'L', MUTT_PAT_ADDRESS, 0, EAT_REGEX,
+  { '%', 'L', MUTT_PAT_ADDRESS, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %L
     N_("messages whose From:, Sender:, To: or Cc: is a member of GROUP") },
   { '~', 'm', MUTT_PAT_MESSAGE, 0, EAT_MESSAGE_RANGE,
@@ -211,7 +211,7 @@ const struct PatternFlags Flags[] = {
   { '~', '$', MUTT_PAT_UNREFERENCED, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~$
     N_("unreferenced messages") },
-  { '=', '/', MUTT_PAT_SERVERSEARCH, 0, EAT_REGEX,
+  { '=', '/', MUTT_PAT_SERVERSEARCH, 0, EAT_STRING,
     // L10N: Pattern Completion Menu description for =/
     N_("IMAP: custom server-side search for STRING") },
   { '~', '=', MUTT_PAT_DUPLICATED, 0, EAT_NONE,

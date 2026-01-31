@@ -50,11 +50,13 @@ enum ExpandoDataPattern
 enum PatternEat
 {
   EAT_NONE,          ///< No arguments required
-  EAT_REGEX,         ///< Process a regex
   EAT_DATE,          ///< Process a date (range)
-  EAT_RANGE,         ///< Process a number (range)
+  EAT_GROUP,         ///< Process a group name
   EAT_MESSAGE_RANGE, ///< Process a message number (range)
   EAT_QUERY,         ///< Process a query string
+  EAT_RANGE,         ///< Process a number (range)
+  EAT_REGEX,         ///< Process a regex
+  EAT_STRING,        ///< Process a plain string
 };
 
 /**
