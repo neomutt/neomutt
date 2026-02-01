@@ -125,6 +125,11 @@ clean-docs:
 
 validate-docs: docs docs/manual.xml
 	xmllint --noout --noblanks --postvalid docs/manual.xml
+	mandoc -T lint $(SRCDIR)/docs/mbox.5
+	mandoc -T lint $(SRCDIR)/docs/mmdf.5
+	mandoc -T lint docs/neomutt.1
+	mandoc -T lint docs/neomuttrc.5
+	mandoc -T lint $(SRCDIR)/docs/pgpewrap.1
 
 spellcheck-docs:
 	-aspell -d american --mode=sgml --encoding=utf-8 -p \
