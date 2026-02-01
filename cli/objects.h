@@ -76,8 +76,8 @@ struct CliHelp
 struct CliInfo
 {
   bool is_set;                      ///< This struct has been used
-  bool dump_config;                 ///< `-D`  Dump the config
-  bool dump_changed;                ///< `-DD` Dump the changed config
+  bool dump_config;                 ///< `-D`  Dump the config options
+  bool dump_changed;                ///< `-DD` Dump the changed config options
   bool show_help;                   ///< `-O`  Show one-liner help
   bool hide_sensitive;              ///< `-S`  Hide sensitive config
 

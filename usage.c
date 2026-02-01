@@ -53,7 +53,7 @@ static void print_header(const char *section, const char *desc, bool use_color)
  */
 static void show_cli_overview(bool use_color)
 {
-  // L10N: Help Overview -- `neomutt -h`
+  // L10N: Help Overview -- `neomutt --help`
   //       The modes are: help, info, send, tui
   //       Plus two helper modes: shared, all
   //       These should not be translated.
@@ -68,53 +68,57 @@ static void show_cli_overview(bool use_color)
 
   // L10N: Parameters in <>s may be translated
   print_header("shared", _("Options that apply to all modes"), use_color);
-  puts(_("neomutt -n                           Don't read system config file"));
-  puts(_("        -F <config>                  Use this user config file"));
-  puts(_("        -e <command>                 Run extra commands"));
-  puts(_("        -m <type>                    Set default mailbox type"));
-  puts(_("        -d <level>                   Set logging level (1..5)"));
-  puts(_("        -l <file>                    Set logging file"));
+  puts(_("neomutt -n, --no-system-config       Don't read system config file"));
+  puts(_("        -F, --config <file>          Use this user config file"));
+  puts(_("        -e, --command <command>      Run extra commands"));
+  puts(_("        -m, --mbox-type <type>       Set default mailbox type"));
+  puts(_("        -d, --debug-level <level>    Set logging level (1..5)"));
+  puts(_("        -l, --debug-file <file>      Set logging file"));
   puts("");
 
   print_header("help", _("Get command line help for NeoMutt"), use_color);
-  puts(_("neomutt -h <mode>                    Detailed help for a mode"));
-  puts(_("        -v[v]                        Version or license"));
+  puts(_("neomutt -h, --help <mode>            Detailed help for a mode"));
+  puts(_("        -v, --version                Version"));
+  puts(_("        -vv, --license               License"));
   puts("");
 
   print_header("info", _("Ask NeoMutt for config information"), use_color);
-  puts(_("neomutt -A <alias> [...]             Lookup email aliases"));
-  puts(_("        -D [-D] [-O] [-S]            Dump the config"));
-  puts(_("        -Q <option> [...] [-O] [-S]  Query config options"));
+  puts(_("neomutt -A, --alias <alias> [...]             Lookup email aliases"));
+  puts(_("        -D, --dump-config [-O] [-S]           Dump the config"));
+  puts(_("        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"));
+  puts(_("        -Q, --query <option> [...] [-O] [-S]  Query config options"));
+  puts(_("        -O, --with-docs                       Add one-liner documentation"));
+  puts(_("        -S, --hide-sensitive                  Hide sensitive option values"));
   puts("");
 
   print_header("send", _("Send an email from the command line"), use_color);
-  puts(_("neomutt -a <file> [...]              Attach files"));
-  puts(_("        -b <address>                 Add Bcc: address"));
-  puts(_("        -C                           Use crypto (signing/encryption)"));
-  puts(_("        -c <address>                 Add Cc: address"));
-  puts(_("        -E                           Edit message"));
-  puts(_("        -H <draft>                   Use draft email"));
-  puts(_("        -i <include>                 Include body file"));
-  puts(_("        -s <subject>                 Set Subject:"));
+  puts(_("neomutt -a, --attach <file> [...]    Attach files"));
+  puts(_("        -b, --bcc <address>          Add Bcc: address"));
+  puts(_("        -C, --crypto                 Use crypto (signing/encryption)"));
+  puts(_("        -c, --cc <address>           Add Cc: address"));
+  puts(_("        -E, --edit-message           Edit message (draft/include)"));
+  puts(_("        -H, --draft <file>           Use draft email file"));
+  puts(_("        -i, --include <file>         Include body file"));
+  puts(_("        -s, --subject <subject>      Set Subject:"));
   puts(_("        -- <address> [...]           Add To: addresses"));
   puts("");
 
   print_header("tui", _("Start NeoMutt's TUI (Terminal User Interface)"), use_color);
   puts(_("neomutt                              Start NeoMutt's TUI"));
-  puts(_("        -f <mailbox>                 Open this mailbox"));
-  puts(_("        -G                           Open NNTP browser"));
-  puts(_("        -g <server>                  Use this NNTP server"));
-  puts(_("        -p                           Resume postponed email"));
-  puts(_("        -R                           Open mailbox read-only"));
-  puts(_("        -y                           Open mailbox browser"));
-  puts(_("        -Z                           Check for new mail"));
-  puts(_("        -z                           Check for any mail"));
+  puts(_("        -f, --folder <mailbox>       Open this mailbox"));
+  puts(_("        -G, --nntp-browser           Open NNTP browser"));
+  puts(_("        -g, --nntp-server <server>   Use this NNTP server"));
+  puts(_("        -p, --postponed              Resume postponed email"));
+  puts(_("        -R, --read-only              Open mailbox read-only"));
+  puts(_("        -y, --browser                Open mailbox browser"));
+  puts(_("        -Z, --check-new-mail         Check for new mail"));
+  puts(_("        -z, --check-any-mail         Check for any mail"));
   puts("");
 
   if (use_color)
-    printf("%s \033[1m%s\033[0m\n", _("For detailed help, run:"), "neomutt -h all");
+    printf("%s \033[1m%s\033[0m\n", _("For detailed help, run:"), "neomutt --help all");
   else
-    printf("%s %s\n", _("For detailed help, run:"), "neomutt -h all");
+    printf("%s %s\n", _("For detailed help, run:"), "neomutt --help all");
 }
 
 /**
@@ -123,7 +127,7 @@ static void show_cli_overview(bool use_color)
  */
 static void show_cli_shared(bool use_color)
 {
-  // L10N: Shared Help -- `neomutt -h shared`
+  // L10N: Shared Help -- `neomutt --help shared`
   print_header("shared", _("Options that apply to all modes"), use_color);
   puts("");
 
@@ -131,23 +135,23 @@ static void show_cli_shared(bool use_color)
   puts(_("e.g. /etc/neomuttrc and ~/.neomuttrc"));
 
   // L10N: Parameters in <>s may be translated
-  puts(_("  -n            Don't read system config file"));
-  puts(_("  -F <config>   Use this user config file"));
-  puts(_("                May be used multiple times"));
+  puts(_("  -n, --no-system-config      Don't read system config file"));
+  puts(_("  -F, --config <file>         Use this user config file"));
+  puts(_("                              May be used multiple times"));
   puts("");
 
   puts(_("These options override the config:"));
-  puts(_("  -m <type>     Set default mailbox type"));
-  puts(_("                May be: maildir, mbox, mh, mmdf"));
-  puts(_("  -e <command>  Run extra commands"));
-  puts(_("                May be used multiple times"));
+  puts(_("  -m, --mbox-type <type>      Set default mailbox type"));
+  puts(_("                              May be: maildir, mbox, mh, mmdf"));
+  puts(_("  -e, --command <command>     Run extra commands"));
+  puts(_("                              May be used multiple times"));
   puts("");
 
   puts(_("These logging options override the config:"));
-  puts(_("  -d <level>    Set logging level"));
-  puts(_("                0 (off), 1 (low) .. 5 (high)"));
-  puts(_("  -l <file>     Set logging file"));
-  puts(_("                Default file '~/.neomuttdebug0'"));
+  puts(_("  -d, --debug-level <level>   Set logging level"));
+  puts(_("                              0 (off), 1 (low) .. 5 (high)"));
+  puts(_("  -l, --debug-file <file>     Set logging file"));
+  puts(_("                              Default file '~/.neomuttdebug0'"));
   puts("");
 
   if (use_color)
@@ -156,17 +160,17 @@ static void show_cli_shared(bool use_color)
     printf("%s\n", _("Examples:"));
 
   // L10N: Examples: Filenames may be translated
-  puts(_("  neomutt -n"));
-  puts(_("  neomutt -F work.rc"));
-  puts(_("  neomutt -F work.rc -F colours.rc"));
+  puts(_("  neomutt --no-system-config"));
+  puts(_("  neomutt --config work.rc"));
+  puts(_("  neomutt --config work.rc --config colours.rc"));
   puts("");
 
-  puts(_("  neomutt -m maildir"));
-  puts(_("  neomutt -e 'set ask_cc = yes'"));
+  puts(_("  neomutt --mbox-type maildir"));
+  puts(_("  neomutt --command 'set ask_cc = yes'"));
   puts("");
 
-  puts(_("  neomutt -d 2"));
-  puts(_("  neomutt -d 5 -l neolog"));
+  puts(_("  neomutt --debug-level 2"));
+  puts(_("  neomutt --debug-level 5 --debug-file neolog"));
   puts("");
 
   puts(_("See also:"));
@@ -179,15 +183,15 @@ static void show_cli_shared(bool use_color)
  */
 static void show_cli_help(bool use_color)
 {
-  // L10N: Help Help -- `neomutt -h help`
+  // L10N: Help Help -- `neomutt --help help`
   print_header("help", _("Get command line help for NeoMutt"), use_color);
   puts("");
 
   // L10N: Parameters in <>s may be translated
-  puts(_("  -h         Overview of command line options"));
-  puts(_("  -h <mode>  Detailed help for: shared, help, info, send, tui, all"));
-  puts(_("  -v         NeoMutt version and build parameters"));
-  puts(_("  -vv        NeoMutt Copyright and license"));
+  puts(_("  -h, --help           Overview of command line options"));
+  puts(_("  -h, --help <mode>    Detailed help for: shared, help, info, send, tui, all"));
+  puts(_("  -v, --version        NeoMutt version and build parameters"));
+  puts(_("  -vv, --license       NeoMutt Copyright and license"));
   puts("");
 
   if (use_color)
@@ -196,8 +200,8 @@ static void show_cli_help(bool use_color)
     printf("%s\n", _("Examples:"));
 
   // L10N: Examples
-  puts(_("  neomutt -h info"));
-  puts(_("  neomutt -vv"));
+  puts(_("  neomutt --help info"));
+  puts(_("  neomutt --license"));
 }
 
 /**
@@ -206,25 +210,25 @@ static void show_cli_help(bool use_color)
  */
 static void show_cli_info(bool use_color)
 {
-  // L10N: Info Help -- `neomutt -h info`
+  // L10N: Info Help -- `neomutt --help info`
   print_header("info", _("Ask NeoMutt for config information"), use_color);
   puts("");
 
   // L10N: Parameters in <>s may be translated
-  puts(_("  -A <alias> [...]  Lookup email aliases"));
-  puts(_("                    Multiple aliases can be looked up (space-separated)"));
+  puts(_("  -A, --alias <alias> [...]   Lookup email aliases"));
+  puts(_("                              Multiple aliases can be looked up (space-separated)"));
   puts("");
 
-  puts(_("  -D                Dump all the config options"));
-  puts(_("  -D -D             (or -DD) Like -D, but only show changed config"));
+  puts(_("  -D, --dump-config           Dump all the config options"));
+  puts(_("  -DD, --dump-changed-config  Dump the changed config options"));
   puts("");
 
-  puts(_("  -Q <option> [...] Query config options"));
-  puts(_("                    Multiple options can be looked up (space-separated)"));
+  puts(_("  -Q, --query <option> [...]  Query config options"));
+  puts(_("                              Multiple options can be looked up (space-separated)"));
 
   puts(_("Modify the -D and -Q options:"));
-  puts(_("  -O                Add one-liner documentation"));
-  puts(_("  -S                Hide the value of sensitive options"));
+  puts(_("  -O, --with-docs             Add one-liner documentation"));
+  puts(_("  -S, --hide-sensitive        Hide the value of sensitive options"));
   puts("");
 
   if (use_color)
@@ -233,10 +237,10 @@ static void show_cli_info(bool use_color)
     printf("%s\n", _("Examples:"));
 
   // L10N: Examples
-  puts(_("  neomutt -A flatcap gahr"));
-  puts(_("  neomutt -D -O"));
-  puts(_("  neomutt -DD -S"));
-  puts(_("  neomutt -O -Q alias_format index_format"));
+  puts(_("  neomutt --alias flatcap gahr"));
+  puts(_("  neomutt --dump-config --with-docs"));
+  puts(_("  neomutt --dump-changed-config --hide-sensitive"));
+  puts(_("  neomutt --with-docs --query alias_format index_format"));
 }
 
 /**
@@ -245,7 +249,7 @@ static void show_cli_info(bool use_color)
  */
 static void show_cli_send(bool use_color)
 {
-  // L10N: Sending Help -- `neomutt -h send`
+  // L10N: Sending Help -- `neomutt --help send`
   print_header("send", _("Send an email from the command line"), use_color);
   puts("");
 
@@ -256,19 +260,19 @@ static void show_cli_send(bool use_color)
   puts("");
 
   // L10N: Parameters in <>s may be translated
-  puts(_("  -a <file> [...]     Attach files"));
-  puts(_("                      Terminated by -- or another option"));
-  puts(_("  -b <address>        Add Bcc: address"));
-  puts(_("  -C                  Use crypto (signing/encryption)"));
-  puts(_("                      Must be set up in the config file"));
-  puts(_("  -c <address>        Add Cc: address"));
-  puts(_("  -E                  Edit message"));
-  puts(_("                      (supplied by -H or -i)"));
-  puts(_("  -H <draft>          Use draft email"));
-  puts(_("                      Full email with headers and body"));
-  puts(_("  -i <include>        Include body file"));
-  puts(_("  -s <subject>        Set Subject:"));
-  puts(_("  -- <address> [...]  Add To: addresses"));
+  puts(_("  -a, --attach <file> [...]   Attach files"));
+  puts(_("                              Terminated by -- or another option"));
+  puts(_("  -b, --bcc <address>         Add Bcc: address"));
+  puts(_("  -C, --crypto                Use crypto (signing/encryption)"));
+  puts(_("                              Must be set up in the config file"));
+  puts(_("  -c, --cc <address>          Add Cc: address"));
+  puts(_("  -E, --edit-message          Edit message (draft/include)"));
+  puts(_("                              (supplied by -H or -i)"));
+  puts(_("  -H, --draft <file>          Use draft email file"));
+  puts(_("                              Full email with headers and body"));
+  puts(_("  -i, --include <file>        Include body file"));
+  puts(_("  -s, --subject <subject>     Set Subject:"));
+  puts(_("  -- <address> [...]          Add To: addresses"));
   puts("");
 
   if (use_color)
@@ -277,10 +281,10 @@ static void show_cli_send(bool use_color)
     printf("%s\n", _("Examples:"));
 
   // L10N: Examples: Filenames and email subjects may be translated
-  puts(_("  neomutt flatcap -s 'Meeting' < meeting.txt"));
-  puts(_("  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"));
-  puts(_("  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"));
-  puts(_("  cat secret.txt | neomutt gahr -s 'Secret' -C"));
+  puts(_("  neomutt flatcap --subject 'Meeting' < meeting.txt"));
+  puts(_("  neomutt jim@example.com --cc bob@example.com --subject 'Party' --include party.txt"));
+  puts(_("  neomutt --subject 'Receipts' --attach receipt1.pdf receipt2.pdf -- rocco"));
+  puts(_("  cat secret.txt | neomutt gahr --subject 'Secret' --crypto"));
 }
 
 /**
@@ -289,7 +293,7 @@ static void show_cli_send(bool use_color)
  */
 static void show_cli_tui(bool use_color)
 {
-  // L10N: TUI Help -- `neomutt -h tui`
+  // L10N: TUI Help -- `neomutt --help tui`
   print_header("tui", _("Start NeoMutt's TUI (Terminal User Interface)"), use_color);
   puts("");
 
@@ -299,18 +303,18 @@ static void show_cli_tui(bool use_color)
 
   puts(_("These options cause NeoMutt to check a mailbox for mail."));
   puts(_("If the condition isn't matched, NeoMutt exits."));
-  puts(_("  -p            Resume postponed email"));
-  puts(_("  -Z            Check for new mail"));
-  puts(_("  -z            Check for any mail"));
+  puts(_("  -p, --postponed       Resume postponed email"));
+  puts(_("  -Z, --check-new-mail  Check for new mail"));
+  puts(_("  -z, --check-any-mail  Check for any mail"));
   puts("");
 
   // L10N: Parameters in <>s may be translated
   puts(_("These options change the starting behavior:"));
-  puts(_("  -f <mailbox>  Open this mailbox"));
-  puts(_("  -G            Open NNTP browser"));
-  puts(_("  -g <server>   Use this NNTP server"));
-  puts(_("  -R            Open mailbox read-only"));
-  puts(_("  -y            Open mailbox browser"));
+  puts(_("  -f, --folder <mailbox>      Open this mailbox"));
+  puts(_("  -G, --nntp-browser          Open NNTP browser"));
+  puts(_("  -g, --nntp-server <server>  Use this NNTP server"));
+  puts(_("  -R, --read-only             Open mailbox read-only"));
+  puts(_("  -y, --browser               Open mailbox browser"));
   puts("");
 
   if (use_color)
@@ -319,9 +323,9 @@ static void show_cli_tui(bool use_color)
     printf("%s\n", _("Examples:"));
 
   // L10N: Examples: Path may be translated
-  puts(_("  neomutt -f ~/mail -Z"));
-  puts(_("  neomutt -p"));
-  puts(_("  neomutt -y"));
+  puts(_("  neomutt --folder ~/mail --check-new-mail"));
+  puts(_("  neomutt --postponed"));
+  puts(_("  neomutt --browser"));
 }
 
 /**

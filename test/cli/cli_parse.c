@@ -333,6 +333,55 @@ void test_cli_parse(void)
       // clang-format on
     };
 
+    static const char *LongTests[][2] = {
+      // clang-format off
+      // Long options (backwards compatible extension)
+      { "--help",                "H(YNN0)" },
+      { "--version",             "H(NYN0)" },
+      { "--help --version",      "H(YYN0)" },
+
+      // Shared long options
+      { "--no-system-config",             "X(:{}Y:{}:-:-:-)" },
+      { "--config apple",                 "X(:{apple}N:{}:-:-:-)" },
+      { "--config apple --config banana", "X(:{apple,banana}N:{}:-:-:-)" },
+      { "--command apple",                "X(:{}N:{apple}:-:-:-)" },
+      { "--mbox-type apple",              "X(:{}N:{}:apple:-:-)" },
+      { "--debug-level 3",                "X(:{}N:{}:-:3:-)" },
+      { "--debug-file apple",             "X(:{}N:{}:-:-:apple)" },
+
+      // Info long options
+      { "--dump-config",                  "I(YNNN:{}:{})" },
+      { "--with-docs",                    "I(NNYN:{}:{})" },
+      { "--hide-sensitive",               "I(NNNY:{}:{})" },
+      { "--alias apple",                  "I(NNNN:{apple}:{})" },
+      { "--query apple",                  "I(NNNN:{}:{apple})" },
+
+      // Send long options
+      { "--crypto",                       "S(YN:{}:{}:{}:{}:-:-:-)" },
+      { "--edit-message",                 "S(NY:{}:{}:{}:{}:-:-:-)" },
+      { "--attach apple",                 "S(NN:{apple}:{}:{}:{}:-:-:-)" },
+      { "--bcc apple",                    "S(NN:{}:{apple}:{}:{}:-:-:-)" },
+      { "--cc apple",                     "S(NN:{}:{}:{apple}:{}:-:-:-)" },
+      { "--draft apple",                  "S(NN:{}:{}:{}:{}:apple:-:-)" },
+      { "--include apple",                "S(NN:{}:{}:{}:{}:-:apple:-)" },
+      { "--subject apple",                "S(NN:{}:{}:{}:{}:-:-:apple)" },
+
+      // TUI long options
+      { "--read-only",                    "T(YNNNNN:-:-)" },
+      { "--postponed",                    "T(NYNNNN:-:-)" },
+      { "--browser",                      "T(NNYNNN:-:-)" },
+      { "--nntp-browser",                 "T(NNNYNN:-:-)" },
+      { "--check-new-mail",               "T(NNNNYN:-:-)" },
+      { "--check-any-mail",               "T(NNNNNY:-:-)" },
+      { "--folder apple",                 "T(NNNNNN:apple:-)" },
+      { "--nntp-server apple",            "T(NNNYNN:-:apple)" },
+
+      // Mixed short and long options
+      { "-F apple --no-system-config",    "X(:{apple}Y:{}:-:-:-)" },
+      { "--config apple -n",              "X(:{apple}Y:{}:-:-:-)" },
+      // clang-format on
+    };
+
     struct Buffer *res = buf_pool_get();
 
     for (size_t i = 0; i < countof(Tests); i++)
@@ -348,6 +397,24 @@ void test_cli_parse(void)
 
       serialise_cli(cli, res);
       TEST_CHECK_STR_EQ(buf_string(res), Tests[i][1]);
+
+      args_clear(&sa);
+      command_line_free(&cli);
+    }
+
+    for (size_t i = 0; i < countof(LongTests); i++)
+    {
+      struct CommandLine *cli = command_line_new();
+      struct StringArray sa = ARRAY_HEAD_INITIALIZER;
+
+      TEST_CASE(LongTests[i][0]);
+      args_split(LongTests[i][0], &sa);
+
+      rc = cli_parse(ARRAY_SIZE(&sa), (char *const *) sa.entries, cli);
+      TEST_CHECK(rc == true);
+
+      serialise_cli(cli, res);
+      TEST_CHECK_STR_EQ(buf_string(res), LongTests[i][1]);
 
       args_clear(&sa);
       command_line_free(&cli);
