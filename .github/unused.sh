@@ -9,6 +9,7 @@ IGNORELIST=(
 
     # Used by tests
     "expando_serialise"
+    "log_disp_null"
     "mutt_mem_malloc"
     "mutt_str_upper"
     "name_expando_node_type"
