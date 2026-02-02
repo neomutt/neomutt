@@ -123,7 +123,7 @@ clean-docs:
 	    docs/makedoc.Po docs/manual.txt docs/manual.xml \
 	    docs/neomuttrc
 
-validate-docs: docs docs/manual.xml
+validate-docs: docs all-docs
 	xmllint --noout --noblanks --postvalid docs/manual.xml
 	mandoc -T lint $(SRCDIR)/docs/mbox.5
 	mandoc -T lint $(SRCDIR)/docs/mmdf.5
