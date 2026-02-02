@@ -20,7 +20,7 @@ define PACKAGE_VERSION  "20251211"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
-set subdirs {po data docs contrib test smime}
+set subdirs {po data contrib test smime}
 ###############################################################################
 
 ###############################################################################
@@ -30,7 +30,6 @@ set valid_options {
   with-ncurses:path         => "Location of ncurses"
 # Features w/o 3rd party dependencies
   doc=1                     => "Disable building the documentation"
-  full-doc=0                => "Build the full documentation set"
   docdir:path               => "Documentation root"
   with-lock:=fcntl          => "Select fcntl() or flock() to lock files"
   fmemopen=0                => "Use fmemopen() for temporary in-memory files"
@@ -123,6 +122,7 @@ set valid_options {
 }
 
 set deprecated_options  {
+  full-doc:=
   idn:
   include-path-in-cflags:=
   mixmaster:=
@@ -175,7 +175,7 @@ if {1} {
   foreach opt {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color
     debug-email debug-graphviz debug-keymap debug-logging debug-names
-    debug-notify debug-queue debug-window doc everything fmemopen full-doc
+    debug-notify debug-queue debug-window doc everything fmemopen
     fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 inotify kyotocabinet
     lmdb locales-fix lua lz4 nls notmuch paths-in-cflags pcre2 pgp
     qdbm rocksdb sasl smime sqlite ssl tdb
@@ -510,8 +510,6 @@ if {[get-define want-doc]} {
     user-error "Install dependencies or './configure --disable-doc'"
   }
 }
-if {[get-define want-full-doc]} {define MAKEDOC_FULL}
-
 ###############################################################################
 # AutoCrypt
 if {[get-define want-autocrypt]} {
@@ -1247,6 +1245,11 @@ foreach dir $subdirs {
   define-append INSTALL_TARGETS install-$dir
   define-append UNINSTALL_TARGETS uninstall-$dir
 }
+
+# Docs are not built by default, but clean/install/uninstall targets are included
+define-append CLEAN_TARGETS clean-docs
+define-append INSTALL_TARGETS install-docs
+define-append UNINSTALL_TARGETS uninstall-docs
 
 ###############################################################################
 # Define package timestamp (UTC) based on PACKAGE_VERSION for:

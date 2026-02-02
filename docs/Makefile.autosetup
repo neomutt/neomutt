@@ -22,8 +22,6 @@ docs/neomuttrc: docs docs/makedoc$(EXEEXT) $(SRCDIR)/docs/neomuttrc.head \
 docs:
 	$(MKDIR_P) docs
 
-@if BUILD_DOC
-
 CHUNKED_DOCFILES = docs/advancedusage.html docs/configuration.html \
 			docs/gettingstarted.html docs/intro.html docs/mimesupport.html \
 			docs/miscellany.html docs/optionalfeatures.html docs/reference.html \
@@ -36,8 +34,18 @@ srcdir_DOCFILES = $(SRCDIR)/ChangeLog.md \
 		  $(SRCDIR)/docs/CONTRIBUTING.md $(SRCDIR)/SECURITY.md \
 		  $(SRCDIR)/INSTALL.md $(SRCDIR)/LICENSE.md $(SRCDIR)/README.md
 
-all-docs:	docs $(CHUNKED_DOCFILES) docs/index.html docs/manual.txt \
+.PHONY: docs-full docs-light
+
+@if BUILD_DOC
+
+docs-full: MAKEDOC_CPP = $(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) -D_MAKEDOC -DMAKEDOC_FULL -E -C -I. -I$(SRCDIR)
+docs-full: docs $(CHUNKED_DOCFILES) docs/index.html docs/manual.txt \
 		docs/manual.html docs/neomuttrc docs/neomutt.1 docs/neomuttrc.5
+
+docs-light: docs $(CHUNKED_DOCFILES) docs/index.html docs/manual.txt \
+		docs/manual.html docs/neomuttrc docs/neomutt.1 docs/neomuttrc.5
+
+all-docs: docs-full
 
 docs/manual.html:	docs docs/manual.xml $(SRCDIR)/docs/html.xsl \
 			$(SRCDIR)/docs/neomutt.css $(SRCDIR)/docs/neomutt.xsl
@@ -152,6 +160,11 @@ sortcheck-docs: docs docs/manual.xml
 # Let's generate neomuttrc in all cases: it doesn't require any additional 3rd
 # party dependencies and distributions tend to rely on having it.
 all-docs: docs docs/neomuttrc
+
+docs-full docs-light:
+	@echo "Error: Documentation build requirements not met." >&2
+	@echo "Required: xsltproc, xmlcatalog, DocBook DTDs and Stylesheets" >&2
+	@exit 1
 
 clean-docs:
 	$(RM) docs/neomuttrc docs/makedoc$(EXEEXT)
