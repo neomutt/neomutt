@@ -28,9 +28,6 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -38,6 +35,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "functions.h"
 #include "lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
@@ -46,10 +44,8 @@
 #include "pattern/lib.h"
 #include "question/lib.h"
 #include "alias.h"
-#include "functions.h"
 #include "gui.h"
 #include "sort.h"
-#endif
 
 // clang-format off
 /**

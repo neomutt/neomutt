@@ -1,5 +1,4 @@
 #include "config.h"
-#include "makedoc_defs.h"
 
 #ifndef ISPELL
 #define ISPELL "ispell"
@@ -413,7 +412,6 @@
 ** by default) to make the next function apply to all tagged messages.
 */
 
-#ifdef USE_AUTOCRYPT
 { "autocrypt", DT_BOOL, false },
 /*
 ** .pp
@@ -460,7 +458,6 @@
 ** isn't forced on for all encrypted replies.
 ** (Autocrypt only)
 */
-#endif
 
 { "beep", DT_BOOL, true },
 /*
@@ -554,7 +551,6 @@
 ** as read when you quit the newsgroup (catchup newsgroup).
 */
 
-#ifdef USE_SSL
 { "certificate_file", DT_PATH, "~/.mutt_certificates" },
 /*
 ** .pp
@@ -575,7 +571,6 @@
 ** .pp
 ** (OpenSSL and GnuTLS only)
 */
-#endif
 
 { "change_folder_next", DT_BOOL, false },
 /*
@@ -1034,7 +1029,6 @@
 ** (Crypto only)
 */
 
-#ifdef CRYPT_BACKEND_GPGME
 { "crypt_use_gpgme", DT_BOOL, true },
 /*
 ** .pp
@@ -1054,7 +1048,6 @@
 ** (only supported by the GPGME backend).
 ** See: http://www.g10code.de/docs/pka-intro.de.pdf
 */
-#endif
 
 { "crypt_verify_sig", DT_QUAD, MUTT_YES },
 /*
@@ -1300,14 +1293,12 @@
 ** misinterpreting the line as a mbox message separator).
 */
 
-#ifdef USE_SSL_OPENSSL
 { "entropy_file", DT_PATH, 0 },
 /*
 ** .pp
 ** The file which includes random data that is used to initialize SSL
 ** library functions. (OpenSSL only)
 */
-#endif
 
 { "envelope_from_address", DT_ADDRESS, 0 },
 /*
@@ -1710,7 +1701,6 @@
 ** The $$weed setting applies.
 */
 
-#ifdef USE_HCACHE
 { "header_cache", DT_PATH, 0 },
 /*
 ** .pp
@@ -1733,7 +1723,6 @@
 ** tokyocabinet, kyotocabinet, qdbm, rocksdb, gdbm, bdb, tdb, lmdb.
 */
 
-#ifdef USE_HCACHE_COMPRESSION
 { "header_cache_compress_level", DT_NUMBER, 1 },
 /*
 ** .pp
@@ -1748,8 +1737,6 @@
 ** can use these compression methods for compressing the cache files.
 ** This results in much smaller cache file sizes and may even improve speed.
 */
-#endif
-#endif
 
 { "header_color_partial", DT_BOOL, false },
 /*
@@ -1911,7 +1898,6 @@
 ** Also see $$use_domain and $$hidden_host.
 */
 
-#ifdef HAVE_LIBIDN
 { "idn_decode", DT_BOOL, true },
 /*
 ** .pp
@@ -1927,7 +1913,6 @@
 ** IDN.  Unset this if your SMTP server can handle newer (RFC6531)
 ** UTF-8 encoded domains. (IDN only)
 */
-#endif
 
 { "ignore_list_reply_to", DT_BOOL, false },
 /*
@@ -1986,7 +1971,6 @@
 ** mileage may vary.
 */
 
-#ifdef USE_ZLIB
 { "imap_deflate", DT_BOOL, true },
 /*
 ** .pp
@@ -1996,7 +1980,6 @@
 ** In general a good compression efficiency can be achieved, which
 ** speeds up reading large mailboxes also on fairly good connections.
 */
-#endif
 
 { "imap_delim_chars", DT_STRING, "/." },
 /*
@@ -2476,7 +2459,6 @@
 ** it will have no effect on other mailbox types.
 */
 
-#ifdef USE_HCACHE
 { "maildir_header_cache_verify", DT_BOOL, true },
 /*
 ** .pp
@@ -2485,7 +2467,6 @@
 ** message every time the folder is opened (which can be very slow for NFS
 ** folders).
 */
-#endif
 
 { "maildir_trash", DT_BOOL, false },
 /*
@@ -2828,7 +2809,6 @@
 ** .de
 */
 
-#ifdef USE_NOTMUCH
 { "nm_config_file", DT_PATH, "auto" },
 /*
 ** .pp
@@ -2965,7 +2945,6 @@
 ** variable is used to count unread messages in DB and set the unread flag when
 ** modifying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
 */
-#endif
 
 { "nntp_authenticators", DT_STRING, 0 },
 /*
@@ -3161,7 +3140,6 @@
 ** (PGP only)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
 { "pgp_check_exit", DT_BOOL, true },
 /*
 ** .pp
@@ -3255,7 +3233,6 @@
 ** is ignored.
 ** (PGP only)
 */
-#endif
 
 { "pgp_default_key", DT_STRING, 0 },
 /*
@@ -3268,7 +3245,6 @@
 ** (PGP only)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
 { "pgp_encrypt_only_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
@@ -3290,7 +3266,6 @@
 ** possible \fCprintf(3)\fP-like sequences.
 ** (PGP only)
 */
-#endif
 
 { "pgp_entry_format", DT_STRING, "%4n %t%f %4l/0x%k %-4a %2c %u" },
 /*
@@ -3330,7 +3305,6 @@
 ** (Crypto only) or (PGP only when GPGME disabled)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
 { "pgp_export_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
@@ -3362,7 +3336,6 @@
 ** even for bad signatures.
 ** (PGP only)
 */
-#endif
 
 { "pgp_ignore_subkeys", DT_BOOL, true },
 /*
@@ -3373,7 +3346,6 @@
 ** (PGP only)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
 { "pgp_import_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
@@ -3438,7 +3410,6 @@
 ** possible \fCprintf(3)\fP-like sequences.
 ** (PGP only)
 */
-#endif
 
 { "pgp_long_ids", DT_BOOL, true },
 /*
@@ -3523,7 +3494,6 @@
 ** (PGP only)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
 { "pgp_sign_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
@@ -3534,7 +3504,6 @@
 ** possible \fCprintf(3)\fP-like sequences.
 ** (PGP only)
 */
-#endif
 
 { "pgp_strict_enc", DT_BOOL, true },
 /*
@@ -3546,7 +3515,6 @@
 ** (PGP only)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
 { "pgp_timeout", DT_LONG, 300 },
 /*
 ** .pp
@@ -3596,7 +3564,6 @@
 ** possible \fCprintf(3)\fP-like sequences.
 ** (PGP only)
 */
-#endif
 
 { "pipe_decode", DT_BOOL, false },
 /*
@@ -4687,7 +4654,6 @@
 ** happens at the beginning of a line.
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
 { "smime_ask_cert_label", DT_BOOL, true },
 /*
 ** .pp
@@ -4752,7 +4718,6 @@
 ** will try to use the mailbox-address to determine the key to use. It will ask
 ** you to supply a key, if it can't find one. (S/MIME only)
 */
-#endif
 
 { "smime_default_key", DT_STRING, 0 },
 /*
@@ -4772,7 +4737,6 @@
 ** (S/MIME only)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
 { "smime_encrypt_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
@@ -4785,7 +4749,6 @@
 ** Encrypt the message to $$smime_default_key too.
 ** (S/MIME only)
 */
-#endif
 
 { "smime_encrypt_with", DT_STRING, "aes256" },
 /*
@@ -4795,7 +4758,6 @@
 ** (S/MIME only)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
 { "smime_get_cert_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
@@ -4840,7 +4802,6 @@
 ** to $$smime_sign_as if set, otherwise $$smime_default_key.
 ** (S/MIME only)
 */
-#endif
 
 { "smime_is_default", DT_BOOL, false },
 /*
@@ -4853,7 +4814,6 @@
 ** $$crypt_auto_smime.) (S/MIME only)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
 { "smime_keys", DT_PATH, 0 },
 /*
 ** .pp
@@ -4875,7 +4835,6 @@
 ** possible \fCprintf(3)\fP-like sequences.
 ** (S/MIME only)
 */
-#endif
 
 { "smime_self_encrypt", DT_BOOL, true },
 /*
@@ -4893,7 +4852,6 @@
 ** (S/MIME only)
 */
 
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
 { "smime_sign_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
@@ -4942,7 +4900,6 @@
 ** possible \fCprintf(3)\fP-like sequences.
 ** (S/MIME only)
 */
-#endif
 
 { "smtp_authenticators", DT_SLIST, 0 },
 /*
@@ -5127,7 +5084,6 @@
 ** \fC$$$MAILDIR\fP will be checked.
 */
 
-#ifdef USE_SSL_GNUTLS
 { "ssl_ca_certificates_file", DT_PATH, 0 },
 /*
 ** .pp
@@ -5140,9 +5096,7 @@
 ** set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
 ** .te
 */
-#endif
 
-#ifdef USE_SSL
 { "ssl_ciphers", DT_STRING, 0 },
 /*
 ** .pp
@@ -5171,9 +5125,7 @@
 ** since it would otherwise have to abort the connection anyway. This
 ** option supersedes $$ssl_starttls.
 */
-#endif
 
-#ifdef USE_SSL_GNUTLS
 { "ssl_min_dh_prime_bits", DT_NUMBER, 0 },
 /*
 ** .pp
@@ -5181,9 +5133,7 @@
 ** for use in any Diffie-Hellman key exchange. A value of 0 will use
 ** the default from the GNUTLS library. (GnuTLS only)
 */
-#endif
 
-#ifdef USE_SSL
 { "ssl_starttls", DT_QUAD, MUTT_YES },
 /*
 ** .pp
@@ -5196,9 +5146,7 @@
 ** suppress the advertising of support.  Setting $$ssl_force_tls is
 ** recommended if you rely on \fCSTARTTLS\fP.
 */
-#endif
 
-#ifdef USE_SSL_OPENSSL
 { "ssl_use_system_certs", DT_BOOL, true },
 /*
 ** .pp
@@ -5206,9 +5154,7 @@
 ** system-wide certificate store when checking if a server certificate
 ** is signed by a trusted CA. (OpenSSL only)
 */
-#endif
 
-#ifdef USE_SSL
 { "ssl_use_tlsv1_2", DT_BOOL, true },
 /*
 ** .pp
@@ -5240,9 +5186,7 @@
 ** URL. You should only unset this for particular known hosts, using
 ** the \fC$<account-hook>\fP function.
 */
-#endif
 
-#ifdef HAVE_SSL_PARTIAL_CHAIN
 { "ssl_verify_partial_chains", DT_BOOL, false },
 /*
 ** .pp
@@ -5257,7 +5201,6 @@
 ** .pp
 ** (OpenSSL 1.0.2b and newer only).
 */
-#endif
 
 { "status_chars", DT_MBTABLE, "-*%A" },
 /*
@@ -5627,7 +5570,6 @@
 ** command.
 */
 
-#ifdef HAVE_GETADDRINFO
 { "use_ipv6", DT_BOOL, true },
 /*
 ** .pp
@@ -5635,7 +5577,6 @@
 ** contact. If this option is \fIunset\fP, NeoMutt will restrict itself to IPv4
 ** addresses. Normally, the default should work.
 */
-#endif
 
 { "use_threads", DT_ENUM, UT_UNSET },
 /*
@@ -5672,14 +5613,12 @@
 ** them.
 */
 
-#ifdef USE_NOTMUCH
 { "virtual_spool_file", DT_BOOL, false },
 /*
 ** .pp
 ** When \fIset\fP, NeoMutt will use the first Notmuch virtual mailbox as a
 ** spool file.
 */
-#endif
 
 { "wait_key", DT_BOOL, true },
 /*

@@ -28,9 +28,6 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -38,18 +35,17 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "functions.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach.h"
-#include "functions.h"
 #include "mutt_attach.h"
 #include "private_data.h"
 #include "recvattach.h"
 #include "recvcmd.h"
-#endif
 
 /// Error message for unavailable functions in attach mode
 static const char *Function_not_permitted_in_attach_message_mode = N_(

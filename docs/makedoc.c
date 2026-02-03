@@ -68,7 +68,6 @@
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
-#include "makedoc_defs.h"
 
 char *Progname = NULL;
 short Debug = 0;

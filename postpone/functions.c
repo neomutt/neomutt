@@ -28,20 +28,16 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "functions.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
-#include "functions.h"
-#endif
 
 // clang-format off
 /**

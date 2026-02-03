@@ -29,9 +29,6 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -47,6 +44,7 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
@@ -64,7 +62,6 @@
 #include "send/lib.h"
 #include "attach_data.h"
 #include "external.h"
-#include "functions.h"
 #include "globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
@@ -73,7 +70,6 @@
 #include "shared_data.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
-#endif
 #endif
 
 // clang-format off

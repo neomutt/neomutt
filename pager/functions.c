@@ -27,9 +27,6 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -40,6 +37,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
@@ -52,10 +50,8 @@
 #include "pattern/lib.h"
 #include "sidebar/lib.h"
 #include "display.h"
-#include "functions.h"
 #include "muttlib.h"
 #include "private_data.h"
-#endif
 
 /// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");

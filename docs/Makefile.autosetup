@@ -1,4 +1,4 @@
-MAKEDOC_CPP = $(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) -D_MAKEDOC -E -C -I. -I$(SRCDIR)
+MAKEDOC_CPP = $(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) -E -C -I. -I$(SRCDIR)
 
 FUNCTION_SRC = $(SRCDIR)/gui/functions.c $(SRCDIR)/alias/functions.c \
 	       $(SRCDIR)/attach/functions.c $(SRCDIR)/autocrypt/functions.c \
@@ -80,7 +80,7 @@ docs/manual.xml:	docs/.keepme docs/makedoc$(EXEEXT) $(SRCDIR)/docs/gen-map-doc \
 	( sed -e "s/@VERSION@/$(PACKAGE_DATE)/; s!/usr/libexec!$(libexecdir)!g" \
 	    $(SRCDIR)/docs/manual.xml.head && \
 	    $(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -s && \
-	    $(MAKEDOC_CPP) $(FUNCTION_SRC) | \
+	    cat $(FUNCTION_SRC) | \
 	    perl $(SRCDIR)/docs/gen-map-doc $(SRCDIR)/docs/manual.xml.tail \
 	    $(SRCDIR)/gui/opcodes.h \
 	) > $@

@@ -28,9 +28,6 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -40,6 +37,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "editor/lib.h"
@@ -51,7 +49,6 @@
 #include "pattern/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
-#include "functions.h"
 #include "globals.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
@@ -60,7 +57,6 @@
 #include "nntp/mdata.h" // IWYU pragma: keep
 #include "private_data.h"
 #include "sort.h"
-#endif
 
 static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct KeyEvent *event);
 

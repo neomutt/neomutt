@@ -27,24 +27,20 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <wchar.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "functions.h"
 #include "complete/lib.h"
 #include "history/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "enter.h"
-#include "functions.h"
 #include "state.h"
 #include "wdata.h"
-#endif
 
 // clang-format off
 /**

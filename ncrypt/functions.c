@@ -27,15 +27,11 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <stddef.h>
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
-#endif
 
 // clang-format off
 /**

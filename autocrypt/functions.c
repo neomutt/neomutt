@@ -27,9 +27,6 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <stdbool.h>
 #include <stdio.h>
 #include "private.h"
@@ -38,13 +35,12 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "functions.h"
 #include "lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "autocrypt_data.h"
-#include "functions.h"
-#endif
 
 // clang-format off
 /**

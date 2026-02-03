@@ -41,18 +41,10 @@
  */
 
 #include "config.h"
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
-#ifdef _MAKEDOC
-#include "docs/makedoc_defs.h"
-#else
 #include <stddef.h>
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "opcodes.h"
-#endif
-#endif
 
 // clang-format off
 /**
