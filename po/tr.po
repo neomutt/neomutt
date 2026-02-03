@@ -8863,27 +8863,27 @@ msgid "Options that apply to all modes"
 msgstr "Tüm kiplere uyan seçenekler"
 
 #: usage.c:71
-msgid "neomutt -n                           Don't read system config file"
-msgstr "neomutt -n                           Sistem yapılandırma dosyasını okuma"
+msgid "neomutt -n, --no-system-config       Don't read system config file"
+msgstr "neomutt -n, --no-system-config       Sistem yapılandırma dosyasını okuma"
 
 #: usage.c:72
-msgid "        -F <config>                  Use this user config file"
+msgid "        -F, --config <file>          Use this user config file"
 msgstr "        -F <yapılandırma>            Bu yapılandırma dosyasını kullan"
 
 #: usage.c:73
-msgid "        -e <command>                 Run extra commands"
+msgid "        -e, --command <command>      Run extra commands"
 msgstr "        -e <komut>                   Ek komutlar çalıştır"
 
 #: usage.c:74
-msgid "        -m <type>                    Set default mailbox type"
+msgid "        -m, --mbox-type <type>       Set default mailbox type"
 msgstr "-m <tür>                     Öntanımlı posta kutusu türünü ayarla"
 
 #: usage.c:75
-msgid "        -d <level>                   Set logging level (1..5)"
+msgid "        -d, --debug-level <level>    Set logging level (1..5)"
 msgstr "        -d <düzey>                   Günlükleme düzeyini ayarla (1..5)"
 
 #: usage.c:76
-msgid "        -l <file>                    Set logging file"
+msgid "        -l, --debug-file <file>      Set logging file"
 msgstr "        -l <dosya>                   Günlükleme dosyasını ayarla"
 
 #. L10N: Help Help -- `neomutt -h help`
@@ -8892,7 +8892,7 @@ msgid "Get command line help for NeoMutt"
 msgstr "NeoMutt için komut satırı yardımı al"
 
 #: usage.c:80
-msgid "neomutt -h <mode>                    Detailed help for a mode"
+msgid "neomutt -h, --help <mode>            Detailed help for a mode"
 msgstr "neomutt -h <kip>                     Bir kip için ayrıntılı yardım"
 
 #: usage.c:81
@@ -8926,31 +8926,31 @@ msgid "neomutt -a <file> [...]              Attach files"
 msgstr "neomutt -a <dosya> [...]             Dosyalar iliştir"
 
 #: usage.c:92
-msgid "        -b <address>                 Add Bcc: address"
+msgid "        -b, --bcc <address>          Add Bcc: address"
 msgstr "        -b <adres>                   Gizli kopya: adresi ekle"
 
 #: usage.c:93
-msgid "        -C                           Use crypto (signing/encryption)"
-msgstr "        -C                           Kripto kullan (imza/şifre)"
+msgid "        -C, --crypto                 Use crypto (signing/encryption)"
+msgstr "        -C, --crypto                 Kripto kullan (imza/şifre)"
 
 #: usage.c:94
-msgid "        -c <address>                 Add Cc: address"
+msgid "        -c, --cc <address>           Add Cc: address"
 msgstr "        -c <adres>                   Kopya: adresi ekle"
 
 #: usage.c:95
-msgid "        -E                           Edit message"
-msgstr "        -E                           İletiyi düzenle"
+msgid "        -E, --edit-message           Edit message"
+msgstr "        -E, --edit-message           İletiyi düzenle"
 
 #: usage.c:96
-msgid "        -H <draft>                   Use draft email"
+msgid "        -H, --draft <file>           Use draft email"
 msgstr "        -H <taslak>                  Taslak e-postayı kullan"
 
 #: usage.c:97
-msgid "        -i <include>                 Include body file"
+msgid "        -i, --include <file>         Include body file"
 msgstr "        -i <içer>                    Gövde dosyası içer"
 
 #: usage.c:98
-msgid "        -s <subject>                 Set Subject:"
+msgid "        -s, --subject <subject>      Set Subject:"
 msgstr "        -s <konu>                    Konu: ayarla"
 
 #: usage.c:99
@@ -8967,36 +8967,36 @@ msgid "neomutt                              Start NeoMutt's TUI"
 msgstr "neomutt                              NeoMutt'ın TUI'sini başlat"
 
 #: usage.c:104
-msgid "        -f <mailbox>                 Open this mailbox"
+msgid "        -f, --folder <mailbox>       Open this mailbox"
 msgstr "        -f <kutu>                    Bu posta kutusunu aç"
 
 #: usage.c:105
-msgid "        -G                           Open NNTP browser"
-msgstr "        -G                           NNTP tarayıcısını aç"
+msgid "        -G, --nntp-browser           Open NNTP browser"
+msgstr "        -G, --nntp-browser           NNTP tarayıcısını aç"
 
 #: usage.c:106
-msgid "        -g <server>                  Use this NNTP server"
+msgid "        -g, --nntp-server <server>   Use this NNTP server"
 msgstr "        -g <sunucu>                  Bu NNTP sunucusunu kullan"
 
 #: usage.c:107
-msgid "        -p                           Resume postponed email"
-msgstr "        -p                           Ertelenen postayı sürdür"
+msgid "        -p, --postponed              Resume postponed email"
+msgstr "        -p, --postponed              Ertelenen postayı sürdür"
 
 #: usage.c:108
-msgid "        -R                           Open mailbox read-only"
-msgstr "        -R                           Posta kutusunu saltokunur aç"
+msgid "        -R, --read-only              Open mailbox read-only"
+msgstr "        -R, --read-only              Posta kutusunu saltokunur aç"
 
 #: usage.c:109
-msgid "        -y                           Open mailbox browser"
-msgstr "        -y                           Posta kutusu tarayıcısını aç"
+msgid "        -y, --browser                Open mailbox browser"
+msgstr "        -y, --browser                Posta kutusu tarayıcısını aç"
 
 #: usage.c:110
-msgid "        -Z                           Check for new mail"
-msgstr "        -Z                           Yeni postayı denetle"
+msgid "        -Z, --check-new-mail         Check for new mail"
+msgstr "        -Z, --check-new-mail         Yeni postayı denetle"
 
 #: usage.c:111
-msgid "        -z                           Check for any mail"
-msgstr "        -z                           Herhangi bir postayı denetle"
+msgid "        -z, --check-any-mail         Check for any mail"
+msgstr "        -z, --check-any-mail         Herhangi bir postayı denetle"
 
 #: usage.c:115 usage.c:117
 msgid "For detailed help, run:"
@@ -9012,11 +9012,11 @@ msgstr "örneğin, /etc/neomuttrc ve ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
-msgid "  -n            Don't read system config file"
-msgstr "  -n            Sistem yapılandırma dosyasını okuma"
+msgid "  -n, --no-system-config      Don't read system config file"
+msgstr "  -n, --no-system-config      Sistem yapılandırma dosyasını okuma"
 
 #: usage.c:135
-msgid "  -F <config>   Use this user config file"
+msgid "  -F, --config <file>         Use this user config file"
 msgstr "  -F <dosya>    Bu yapılandırma dosyasını kullan"
 
 #: usage.c:136 usage.c:143
@@ -9028,7 +9028,7 @@ msgid "These options override the config:"
 msgstr "Bu seçenekler, yapılandırmayı geçersiz kılar:"
 
 #: usage.c:140
-msgid "  -m <type>     Set default mailbox type"
+msgid "  -m, --mbox-type <type>      Set default mailbox type"
 msgstr "  -m <tür>      Öntanımlı posta kutusu türünü ayarla"
 
 #: usage.c:141
@@ -9036,7 +9036,7 @@ msgid "                May be: maildir, mbox, mh, mmdf"
 msgstr "                Şunlar olabilir: maildir, mbox, mh, mmdf"
 
 #: usage.c:142
-msgid "  -e <command>  Run extra commands"
+msgid "  -e, --command <command>     Run extra commands"
 msgstr "  -e <komut>    Ek komutlar çalıştır"
 
 #: usage.c:146
@@ -9044,7 +9044,7 @@ msgid "These logging options override the config:"
 msgstr "Bu günlükleme seçenekleri, yapılandırmayı geçersiz kılabilir:"
 
 #: usage.c:147
-msgid "  -d <level>    Set logging level"
+msgid "  -d, --debug-level <level>   Set logging level"
 msgstr "  -d <düzey>    Günlükleme düzeyini ayarla"
 
 #: usage.c:148
@@ -9052,7 +9052,7 @@ msgid "                0 (off), 1 (low) .. 5 (high)"
 msgstr "                0 (kapalı), 1 (düşük) .. 5 (yüksek)"
 
 #: usage.c:149
-msgid "  -l <file>     Set logging file"
+msgid "  -l, --debug-file <file>     Set logging file"
 msgstr "  -l <dosya>    Günlükleme dosyası ayarla"
 
 #: usage.c:150
@@ -9066,32 +9066,32 @@ msgstr "Örnekler:"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:159
-msgid "  neomutt -n"
-msgstr "  neomutt -n"
+msgid "  neomutt --no-system-config"
+msgstr ""
 
 #: usage.c:160
-msgid "  neomutt -F work.rc"
+msgid "  neomutt --config work.rc"
 msgstr "  neomutt -F iş.rc"
 
 #: usage.c:161
-msgid "  neomutt -F work.rc -F colours.rc"
+msgid "  neomutt --config work.rc --config colours.rc"
 msgstr "  neomutt -F iş.rc -F renkler.rc"
 
 #: usage.c:164
-msgid "  neomutt -m maildir"
-msgstr "  neomutt -m maildir"
+msgid "  neomutt --mbox-type maildir"
+msgstr ""
 
 #: usage.c:165
-msgid "  neomutt -e 'set ask_cc = yes'"
-msgstr "  neomutt -e 'set ask_cc = yes'"
+msgid "  neomutt --command 'set ask_cc = yes'"
+msgstr ""
 
 #: usage.c:168
-msgid "  neomutt -d 2"
-msgstr "  neomutt -d 2"
+msgid "  neomutt --debug-level 2"
+msgstr ""
 
 #: usage.c:169
-msgid "  neomutt -d 5 -l neolog"
-msgstr "  neomutt -d 5 -l neolog"
+msgid "  neomutt --debug-level 5 --debug-file neolog"
+msgstr ""
 
 #: usage.c:172
 msgid "See also:"
@@ -9103,29 +9103,29 @@ msgstr "- Yapılandırma dosyaları: https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:187
-msgid "  -h         Overview of command line options"
-msgstr "  -h         Komut satırı seçeneklerine genel bakış"
+msgid "  -h, --help           Overview of command line options"
+msgstr "  -h, --help           Komut satırı seçeneklerine genel bakış"
 
 #: usage.c:188
-msgid "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
+msgid "  -h, --help <mode>    Detailed help for: shared, help, info, send, tui, all"
 msgstr "  -h <kip>   Ayrıntılı yardım: shared, help, info, send, tui, all"
 
 #: usage.c:189
-msgid "  -v         NeoMutt version and build parameters"
-msgstr "  -v         NeoMutt sürümü ve yapı parametreleri"
+msgid "  -v, --version        NeoMutt version and build parameters"
+msgstr "  -v, --version        NeoMutt sürümü ve yapı parametreleri"
 
 #: usage.c:190
-msgid "  -vv        NeoMutt Copyright and license"
-msgstr "  -vv        NeoMutt telif hakkı ve lisansı"
+msgid "  -vv, --license       NeoMutt Copyright and license"
+msgstr "  -vv, --license       NeoMutt telif hakkı ve lisansı"
 
 #. L10N: Examples
 #: usage.c:199
-msgid "  neomutt -h info"
-msgstr "  neomutt -h info"
+msgid "  neomutt --help info"
+msgstr ""
 
 #: usage.c:200
-msgid "  neomutt -vv"
-msgstr "  neomutt -vv"
+msgid "  neomutt --license"
+msgstr ""
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:214
@@ -9137,12 +9137,12 @@ msgid "                    Multiple aliases can be looked up (space-separated)"
 msgstr "                    Birden çok arma aranabilir (boşlukla ayırın)"
 
 #: usage.c:218
-msgid "  -D                Dump all the config options"
-msgstr "  -D                Tüm yapılandıma seçeneklerini dök"
+msgid "  -D, --dump-config           Dump all the config options"
+msgstr "  -D, --dump-config           Tüm yapılandıma seçeneklerini dök"
 
 #: usage.c:219
-msgid "  -D -D             (or -DD) Like -D, but only show changed config"
-msgstr "  -D -D             (veya -DD) -D gibi; ancak değiştirileni gösterir"
+msgid "  -DD, --dump-changed-config  (or -DD) Like -D, but only show changed config"
+msgstr "  -DD, --dump-changed-config  (veya -DD) -D gibi; ancak değiştirileni gösterir"
 
 #: usage.c:222
 msgid "  -Q <option> [...] Query config options"
@@ -9157,29 +9157,29 @@ msgid "Modify the -D and -Q options:"
 msgstr "-D ve -Q seçeneklerinde değişiklik yapın:"
 
 #: usage.c:226
-msgid "  -O                Add one-liner documentation"
-msgstr "  -O                Tek satırlık belgelendirme ekle"
+msgid "  -O, --with-docs             Add one-liner documentation"
+msgstr "  -O, --with-docs             Tek satırlık belgelendirme ekle"
 
 #: usage.c:227
-msgid "  -S                Hide the value of sensitive options"
-msgstr "  -S                Hassas seçeneklerin değerini gizle"
+msgid "  -S, --hide-sensitive        Hide the value of sensitive options"
+msgstr "  -S, --hide-sensitive        Hassas seçeneklerin değerini gizle"
 
 #. L10N: Examples
 #: usage.c:236
-msgid "  neomutt -A flatcap gahr"
+msgid "  neomutt --alias flatcap gahr"
 msgstr "  neomutt -A bilge ayça"
 
 #: usage.c:237
-msgid "  neomutt -D -O"
-msgstr "  neomutt -D -O"
+msgid "  neomutt --dump-config --with-docs"
+msgstr ""
 
 #: usage.c:238
-msgid "  neomutt -DD -S"
-msgstr "  neomutt -DD -S"
+msgid "  neomutt --dump-changed-config --hide-sensitive"
+msgstr ""
 
 #: usage.c:239
-msgid "  neomutt -O -Q alias_format index_format"
-msgstr "  neomutt -O -Q alias_format index_format"
+msgid "  neomutt --with-docs --query alias_format index_format"
+msgstr ""
 
 #: usage.c:252
 msgid "These options can supply everything NeoMutt needs to send an email."
@@ -9203,47 +9203,47 @@ msgid "  -a <file> [...]     Attach files"
 msgstr "  -a <dosya> [...]    Dosyalar iliştir"
 
 #: usage.c:260
-msgid "                      Terminated by -- or another option"
-msgstr "                      -- veya başka bir seçenekle sonlandırılır"
+msgid "                              Terminated by -- or another option"
+msgstr "                              -- veya başka bir seçenekle sonlandırılır"
 
 #: usage.c:261
-msgid "  -b <address>        Add Bcc: address"
+msgid "  -b, --bcc <address>         Add Bcc: address"
 msgstr "  -b <adres>          Gizli kopya: adresi ekle"
 
 #: usage.c:262
-msgid "  -C                  Use crypto (signing/encryption)"
-msgstr "  -C                  Kripto kullan (imza/şifre)"
+msgid "  -C, --crypto                Use crypto (signing/encryption)"
+msgstr "  -C, --crypto                Kripto kullan (imza/şifre)"
 
 #: usage.c:263
-msgid "                      Must be set up in the config file"
-msgstr "                      Yapılandırma dosyasında ayarlanmalıdır"
+msgid "                              Must be set up in the config file"
+msgstr "                              Yapılandırma dosyasında ayarlanmalıdır"
 
 #: usage.c:264
-msgid "  -c <address>        Add Cc: address"
+msgid "  -c, --cc <address>          Add Cc: address"
 msgstr "  -c <adres>          Kopya: adresi ekle"
 
 #: usage.c:265
-msgid "  -E                  Edit message"
-msgstr "  -E                  İletiyi düzenle"
+msgid "  -E, --edit-message          Edit message"
+msgstr "  -E, --edit-message          İletiyi düzenle"
 
 #: usage.c:266
-msgid "                      (supplied by -H or -i)"
-msgstr "                      (-H veya -i ile sağlanır)"
+msgid "                              (supplied by -H or -i)"
+msgstr "                              (-H veya -i ile sağlanır)"
 
 #: usage.c:267
-msgid "  -H <draft>          Use draft email"
+msgid "  -H, --draft <file>          Use draft email"
 msgstr "  -H <taslak>         Taslak e-postayı kullan"
 
 #: usage.c:268
-msgid "                      Full email with headers and body"
-msgstr "                      Üstbilgi ve gövde ile tam e-posta"
+msgid "                              Full email with headers and body"
+msgstr "                              Üstbilgi ve gövde ile tam e-posta"
 
 #: usage.c:269
-msgid "  -i <include>        Include body file"
+msgid "  -i, --include <file>        Include body file"
 msgstr "  -i <içer>           Gövde dosyası içer"
 
 #: usage.c:270
-msgid "  -s <subject>        Set Subject:"
+msgid "  -s, --subject <subject>     Set Subject:"
 msgstr "  -s <konu>           Konu: ayarla"
 
 #: usage.c:271
@@ -9252,19 +9252,19 @@ msgstr "  -- <adres> [...]    Kime: adresi ekle"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:280
-msgid "  neomutt flatcap -s 'Meeting' < meeting.txt"
+msgid "  neomutt flatcap --subject 'Meeting' < meeting.txt"
 msgstr "  neomutt hakan -s 'Toplantı' < toplantı.txt"
 
 #: usage.c:281
-msgid "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
+msgid "  neomutt jim@example.com --cc bob@example.com --subject 'Party' --include party.txt"
 msgstr "  neomutt aylin@örnek.com -c aysu@örnek.com -s 'Parti' -i parti.txt"
 
 #: usage.c:282
-msgid "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
+msgid "  neomutt --subject 'Receipts' --attach receipt1.pdf receipt2.pdf -- rocco"
 msgstr "  neomutt -s 'Makbuzlar' -a makbuz1.pdf makbuz2.pdf -- patron"
 
 #: usage.c:283
-msgid "  cat secret.txt | neomutt gahr -s 'Secret' -C"
+msgid "  cat secret.txt | neomutt gahr --subject 'Secret' --crypto"
 msgstr "  cat gizli.txt | neomutt umay -s 'Gizli' -C"
 
 #: usage.c:296
@@ -9284,16 +9284,16 @@ msgid "If the condition isn't matched, NeoMutt exits."
 msgstr "Koşul eşleşmezse NeoMutt çıkar."
 
 #: usage.c:302
-msgid "  -p            Resume postponed email"
-msgstr "  -p            Ertelenen postayı sürdür"
+msgid "  -p, --postponed       Resume postponed email"
+msgstr "  -p, --postponed       Ertelenen postayı sürdür"
 
 #: usage.c:303
-msgid "  -Z            Check for new mail"
-msgstr "  -Z            Yeni postayı denetle"
+msgid "  -Z, --check-new-mail  Check for new mail"
+msgstr "  -Z, --check-new-mail  Yeni postayı denetle"
 
 #: usage.c:304
-msgid "  -z            Check for any mail"
-msgstr "  -z            Herhangi bir postayı denetle"
+msgid "  -z, --check-any-mail  Check for any mail"
+msgstr "  -z, --check-any-mail  Herhangi bir postayı denetle"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:308
@@ -9301,37 +9301,37 @@ msgid "These options change the starting behavior:"
 msgstr "Bu seçenekler, başlatma davranışını değiştirir:"
 
 #: usage.c:309
-msgid "  -f <mailbox>  Open this mailbox"
+msgid "  -f, --folder <mailbox>      Open this mailbox"
 msgstr "  -f <kutu>     Bu posta kutusunu aç"
 
 #: usage.c:310
-msgid "  -G            Open NNTP browser"
-msgstr "  -G            NNTP tarayıcısını aç"
+msgid "  -G, --nntp-browser          Open NNTP browser"
+msgstr "  -G, --nntp-browser          NNTP tarayıcısını aç"
 
 #: usage.c:311
-msgid "  -g <server>   Use this NNTP server"
+msgid "  -g, --nntp-server <server>  Use this NNTP server"
 msgstr "  -g <sunucu>   Bu NNTP sunucusunu kullan"
 
 #: usage.c:312
-msgid "  -R            Open mailbox read-only"
-msgstr "  -R            Posta kutusunu saltokunur aç"
+msgid "  -R, --read-only             Open mailbox read-only"
+msgstr "  -R, --read-only             Posta kutusunu saltokunur aç"
 
 #: usage.c:313
-msgid "  -y            Open mailbox browser"
-msgstr "  -y            Posta kutusu tarayıcısını aç"
+msgid "  -y, --browser               Open mailbox browser"
+msgstr "  -y, --browser               Posta kutusu tarayıcısını aç"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
-msgid "  neomutt -f ~/mail -Z"
-msgstr "  neomutt -f ~/mail -Z"
+msgid "  neomutt --folder ~/mail --check-new-mail"
+msgstr ""
 
 #: usage.c:323
-msgid "  neomutt -p"
-msgstr "  neomutt -p"
+msgid "  neomutt --postponed"
+msgstr ""
 
 #: usage.c:324
-msgid "  neomutt -y"
-msgstr "  neomutt -y"
+msgid "  neomutt --browser"
+msgstr ""
 
 #: version.c:83
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"

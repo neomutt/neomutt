@@ -9263,28 +9263,28 @@ msgid "Options that apply to all modes"
 msgstr "適用於所有模式的選項"
 
 #: usage.c:71
-msgid "neomutt -n                           Don't read system config file"
-msgstr "neomutt -n                           忽略系統設定檔"
+msgid "neomutt -n, --no-system-config       Don't read system config file"
+msgstr "neomutt -n, --no-system-config       忽略系統設定檔"
 
 #: usage.c:72
-msgid "        -F <config>                  Use this user config file"
-msgstr "        -F <config>                  採用這個設定檔"
+msgid "        -F, --config <file>          Use this user config file"
+msgstr "        -F, --config <file>          採用這個設定檔"
 
 #: usage.c:73
-msgid "        -e <command>                 Run extra commands"
-msgstr "        -e <command>                 額外執行指令"
+msgid "        -e, --command <command>      Run extra commands"
+msgstr "        -e, --command <command>      額外執行指令"
 
 #: usage.c:74
-msgid "        -m <type>                    Set default mailbox type"
-msgstr "        -m <type>                    設定預設的信箱類型"
+msgid "        -m, --mbox-type <type>       Set default mailbox type"
+msgstr "        -m, --mbox-type <type>       設定預設的信箱類型"
 
 #: usage.c:75
-msgid "        -d <level>                   Set logging level (1..5)"
-msgstr "        -d <level>                   設定紀錄/除錯等級 (1..5)"
+msgid "        -d, --debug-level <level>    Set logging level (1..5)"
+msgstr "        -d, --debug-level <level>    設定紀錄/除錯等級 (1..5)"
 
 #: usage.c:76
-msgid "        -l <file>                    Set logging file"
-msgstr "        -l <file>                    指定紀錄檔"
+msgid "        -l, --debug-file <file>      Set logging file"
+msgstr "        -l, --debug-file <file>      指定紀錄檔"
 
 #. L10N: Help Help -- `neomutt -h help`
 #: usage.c:79 usage.c:183
@@ -9292,8 +9292,8 @@ msgid "Get command line help for NeoMutt"
 msgstr "求助/列出命令列參數"
 
 #: usage.c:80
-msgid "neomutt -h <mode>                    Detailed help for a mode"
-msgstr "neomutt -h <mode>                    詳述某個模式的使用方式"
+msgid "neomutt -h, --help <mode>            Detailed help for a mode"
+msgstr "neomutt -h, --help <mode>            詳述某個模式的使用方式"
 
 #: usage.c:81
 msgid "        -v[v]                        Version or license"
@@ -9315,7 +9315,7 @@ msgstr "        -D [-D] [-O] [-S]            列印設定值"
 
 #: usage.c:87
 msgid "        -Q <option> [...] [-O] [-S]  Query config options"
-msgstr "        -Q <option> [...] [-O] [-S]  Query config options"
+msgstr ""
 
 #. L10N: Sending Help -- `neomutt -h send`
 #: usage.c:90 usage.c:249
@@ -9327,33 +9327,33 @@ msgid "neomutt -a <file> [...]              Attach files"
 msgstr "neomutt -a <file> [...]              增加附件"
 
 #: usage.c:92
-msgid "        -b <address>                 Add Bcc: address"
-msgstr "        -b <address>                 增加密件附本 (Bcc) 地址"
+msgid "        -b, --bcc <address>          Add Bcc: address"
+msgstr "        -b, --bcc <address>          增加密件附本 (Bcc) 地址"
 
 #: usage.c:93
-msgid "        -C                           Use crypto (signing/encryption)"
-msgstr "        -C                           採用加密演算法 (簽章/加密)"
+msgid "        -C, --crypto                 Use crypto (signing/encryption)"
+msgstr "        -C, --crypto                 採用加密演算法 (簽章/加密)"
 
 #: usage.c:94
-msgid "        -c <address>                 Add Cc: address"
-msgstr "        -c <address>                 增加附本 (Cc) 地址"
+msgid "        -c, --cc <address>           Add Cc: address"
+msgstr "        -c, --cc <address>           增加附本 (Cc) 地址"
 
 #: usage.c:95
-msgid "        -E                           Edit message"
-msgstr "        -E                           編輯信件"
+msgid "        -E, --edit-message           Edit message"
+msgstr "        -E, --edit-message           編輯信件"
 
 #: usage.c:96
-msgid "        -H <draft>                   Use draft email"
-msgstr "        -H <draft>                   使用草稿"
+msgid "        -H, --draft <file>           Use draft email"
+msgstr "        -H, --draft <file>           使用草稿"
 
 #: usage.c:97
 #, fuzzy
-msgid "        -i <include>                 Include body file"
-msgstr "        -i <include>                 插入內文檔"
+msgid "        -i, --include <file>         Include body file"
+msgstr "        -i, --include <file>         插入內文檔"
 
 #: usage.c:98
-msgid "        -s <subject>                 Set Subject:"
-msgstr "        -s <subject>                 設定主旨："
+msgid "        -s, --subject <subject>      Set Subject:"
+msgstr "        -s, --subject <subject>      設定主旨："
 
 #: usage.c:99
 msgid "        -- <address> [...]           Add To: addresses"
@@ -9369,36 +9369,36 @@ msgid "neomutt                              Start NeoMutt's TUI"
 msgstr "neomutt                              啟用 NeoMutt 的 TUI"
 
 #: usage.c:104
-msgid "        -f <mailbox>                 Open this mailbox"
-msgstr "        -f <mailbox>                 開啟這個信箱"
+msgid "        -f, --folder <mailbox>       Open this mailbox"
+msgstr "        -f, --folder <mailbox>       開啟這個信箱"
 
 #: usage.c:105
-msgid "        -G                           Open NNTP browser"
-msgstr "        -G                           開啟 NNTP 瀏覽器"
+msgid "        -G, --nntp-browser           Open NNTP browser"
+msgstr "        -G, --nntp-browser           開啟 NNTP 瀏覽器"
 
 #: usage.c:106
-msgid "        -g <server>                  Use this NNTP server"
-msgstr "        -g <server>                  採用這個 NNTP 伺服器"
+msgid "        -g, --nntp-server <server>   Use this NNTP server"
+msgstr "        -g, --nntp-server <server>   採用這個 NNTP 伺服器"
 
 #: usage.c:107
-msgid "        -p                           Resume postponed email"
-msgstr "        -p                           繼續編寫未完成的郵件"
+msgid "        -p, --postponed              Resume postponed email"
+msgstr "        -p, --postponed              繼續編寫未完成的郵件"
 
 #: usage.c:108
-msgid "        -R                           Open mailbox read-only"
-msgstr "        -R                           以唯讀模式開啟信箱"
+msgid "        -R, --read-only              Open mailbox read-only"
+msgstr "        -R, --read-only              以唯讀模式開啟信箱"
 
 #: usage.c:109
-msgid "        -y                           Open mailbox browser"
-msgstr "        -y                           開啟信箱瀏覽器"
+msgid "        -y, --browser                Open mailbox browser"
+msgstr "        -y, --browser                開啟信箱瀏覽器"
 
 #: usage.c:110
-msgid "        -Z                           Check for new mail"
-msgstr "        -Z                           檢查新郵件"
+msgid "        -Z, --check-new-mail         Check for new mail"
+msgstr "        -Z, --check-new-mail         檢查新郵件"
 
 #: usage.c:111
-msgid "        -z                           Check for any mail"
-msgstr "        -z                           檢查所有郵件"
+msgid "        -z, --check-any-mail         Check for any mail"
+msgstr "        -z, --check-any-mail         檢查所有郵件"
 
 #: usage.c:115 usage.c:117
 msgid "For detailed help, run:"
@@ -9414,12 +9414,12 @@ msgstr "例如 /etc/neomuttrc 與 ~/.neomuttrc。"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
-msgid "  -n            Don't read system config file"
-msgstr "  -n            略過系統設定檔"
+msgid "  -n, --no-system-config      Don't read system config file"
+msgstr "  -n, --no-system-config      略過系統設定檔"
 
 #: usage.c:135
-msgid "  -F <config>   Use this user config file"
-msgstr "  -F <config>   改採這個使用者設定檔"
+msgid "  -F, --config <file>         Use this user config file"
+msgstr "  -F, --config <file>         改採這個使用者設定檔"
 
 #: usage.c:136 usage.c:143
 msgid "                May be used multiple times"
@@ -9430,24 +9430,24 @@ msgid "These options override the config:"
 msgstr "以下選項會蓋過設定"
 
 #: usage.c:140
-msgid "  -m <type>     Set default mailbox type"
-msgstr "  -m <type>     設定預設的信箱類型"
+msgid "  -m, --mbox-type <type>      Set default mailbox type"
+msgstr "  -m, --mbox-type <type>      設定預設的信箱類型"
 
 #: usage.c:141
 msgid "                May be: maildir, mbox, mh, mmdf"
 msgstr "                可以是： maildir、 mbox、 mh、 mmdf"
 
 #: usage.c:142
-msgid "  -e <command>  Run extra commands"
-msgstr "  -e <command>  執行額外的指令"
+msgid "  -e, --command <command>     Run extra commands"
+msgstr "  -e, --command <command>     執行額外的指令"
 
 #: usage.c:146
 msgid "These logging options override the config:"
 msgstr "以下記錄相關選項會蓋過設定"
 
 #: usage.c:147
-msgid "  -d <level>    Set logging level"
-msgstr "  -d <level>    設定記錄詳細等級"
+msgid "  -d, --debug-level <level>   Set logging level"
+msgstr "  -d, --debug-level <level>   設定記錄詳細等級"
 
 #: usage.c:148
 #, fuzzy
@@ -9456,8 +9456,8 @@ msgstr "                0 (關閉記錄), 1 (簡略) .. 5 (詳盡)"
 
 #: usage.c:149
 #, fuzzy
-msgid "  -l <file>     Set logging file"
-msgstr "  -l <file>     設定記錄檔"
+msgid "  -l, --debug-file <file>     Set logging file"
+msgstr "  -l, --debug-file <file>     設定記錄檔"
 
 #: usage.c:150
 msgid "                Default file '~/.neomuttdebug0'"
@@ -9470,32 +9470,32 @@ msgstr "範例："
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:159
-msgid "  neomutt -n"
-msgstr "  neomutt -n"
+msgid "  neomutt --no-system-config"
+msgstr ""
 
 #: usage.c:160
-msgid "  neomutt -F work.rc"
-msgstr "  neomutt -F work.rc"
+msgid "  neomutt --config work.rc"
+msgstr ""
 
 #: usage.c:161
-msgid "  neomutt -F work.rc -F colours.rc"
-msgstr "  neomutt -F work.rc -F colours.rc"
+msgid "  neomutt --config work.rc --config colours.rc"
+msgstr ""
 
 #: usage.c:164
-msgid "  neomutt -m maildir"
-msgstr "  neomutt -m maildir"
+msgid "  neomutt --mbox-type maildir"
+msgstr ""
 
 #: usage.c:165
-msgid "  neomutt -e 'set ask_cc = yes'"
-msgstr "  neomutt -e 'set ask_cc = yes'"
+msgid "  neomutt --command 'set ask_cc = yes'"
+msgstr ""
 
 #: usage.c:168
-msgid "  neomutt -d 2"
-msgstr "  neomutt -d 2"
+msgid "  neomutt --debug-level 2"
+msgstr ""
 
 #: usage.c:169
-msgid "  neomutt -d 5 -l neolog"
-msgstr "  neomutt -d 5 -l neolog"
+msgid "  neomutt --debug-level 5 --debug-file neolog"
+msgstr ""
 
 #: usage.c:172
 msgid "See also:"
@@ -9507,29 +9507,29 @@ msgstr "- 設定檔： https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:187
-msgid "  -h         Overview of command line options"
-msgstr "  -h         命令列選項概觀"
+msgid "  -h, --help           Overview of command line options"
+msgstr "  -h, --help           命令列選項概觀"
 
 #: usage.c:188
-msgid "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
-msgstr "  -h <mode>  shared, help, info, send, tui, all 的詳細說明訊息"
+msgid "  -h, --help <mode>    Detailed help for: shared, help, info, send, tui, all"
+msgstr "  -h, --help <mode>    shared, help, info, send, tui, all 的詳細說明訊息"
 
 #: usage.c:189
-msgid "  -v         NeoMutt version and build parameters"
-msgstr "  -v         NeoMutt 版本與編譯參數"
+msgid "  -v, --version        NeoMutt version and build parameters"
+msgstr "  -v, --version        NeoMutt 版本與編譯參數"
 
 #: usage.c:190
-msgid "  -vv        NeoMutt Copyright and license"
-msgstr "  -vv        NeoMutt 授權聲明"
+msgid "  -vv, --license       NeoMutt Copyright and license"
+msgstr "  -vv, --license       NeoMutt 授權聲明"
 
 #. L10N: Examples
 #: usage.c:199
-msgid "  neomutt -h info"
-msgstr "  neomutt -h info"
+msgid "  neomutt --help info"
+msgstr ""
 
 #: usage.c:200
-msgid "  neomutt -vv"
-msgstr "  neomutt -vv"
+msgid "  neomutt --license"
+msgstr ""
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:214
@@ -9541,12 +9541,12 @@ msgid "                    Multiple aliases can be looked up (space-separated)"
 msgstr "                    可以一次查詢多個別名 (以空格分開)"
 
 #: usage.c:218
-msgid "  -D                Dump all the config options"
-msgstr "  -D                列印所有設定選項"
+msgid "  -D, --dump-config           Dump all the config options"
+msgstr "  -D, --dump-config           列印所有設定選項"
 
 #: usage.c:219
-msgid "  -D -D             (or -DD) Like -D, but only show changed config"
-msgstr "  -D -D             (或 -DD) 類似 -D 但只顯示有更改過的設定"
+msgid "  -DD, --dump-changed-config  (or -DD) Like -D, but only show changed config"
+msgstr "  -DD, --dump-changed-config  (或 -DD) 類似 -D 但只顯示有更改過的設定"
 
 #: usage.c:222
 msgid "  -Q <option> [...] Query config options"
@@ -9562,29 +9562,29 @@ msgstr "修改 -D 與 -Q 選項:"
 
 #: usage.c:226
 #, fuzzy
-msgid "  -O                Add one-liner documentation"
-msgstr "  -O                加入一列的短文件"
+msgid "  -O, --with-docs             Add one-liner documentation"
+msgstr "  -O, --with-docs             加入一列的短文件"
 
 #: usage.c:227
-msgid "  -S                Hide the value of sensitive options"
-msgstr "  -S                隱藏敏感私密的設定值"
+msgid "  -S, --hide-sensitive        Hide the value of sensitive options"
+msgstr "  -S, --hide-sensitive        隱藏敏感私密的設定值"
 
 #. L10N: Examples
 #: usage.c:236
-msgid "  neomutt -A flatcap gahr"
-msgstr "  neomutt -A flatcap gahr"
+msgid "  neomutt --alias flatcap gahr"
+msgstr ""
 
 #: usage.c:237
-msgid "  neomutt -D -O"
-msgstr "  neomutt -D -O"
+msgid "  neomutt --dump-config --with-docs"
+msgstr ""
 
 #: usage.c:238
-msgid "  neomutt -DD -S"
-msgstr "  neomutt -DD -S"
+msgid "  neomutt --dump-changed-config --hide-sensitive"
+msgstr ""
 
 #: usage.c:239
-msgid "  neomutt -O -Q alias_format index_format"
-msgstr "  neomutt -O -Q alias_format index_format"
+msgid "  neomutt --with-docs --query alias_format index_format"
+msgstr ""
 
 #: usage.c:252
 msgid "These options can supply everything NeoMutt needs to send an email."
@@ -9609,49 +9609,49 @@ msgid "  -a <file> [...]     Attach files"
 msgstr "  -a <file> [...]     插入附件"
 
 #: usage.c:260
-msgid "                      Terminated by -- or another option"
-msgstr "                      直到命令列上出現 -- 或另一個選項為止"
+msgid "                              Terminated by -- or another option"
+msgstr "                              直到命令列上出現 -- 或另一個選項為止"
 
 #: usage.c:261
-msgid "  -b <address>        Add Bcc: address"
-msgstr "  -b <address>        增加密件附本 (Bcc) 地址"
+msgid "  -b, --bcc <address>         Add Bcc: address"
+msgstr "  -b, --bcc <address>         增加密件附本 (Bcc) 地址"
 
 #: usage.c:262
-msgid "  -C                  Use crypto (signing/encryption)"
-msgstr "  -C                  採用密碼 (簽章或加密)"
+msgid "  -C, --crypto                Use crypto (signing/encryption)"
+msgstr "  -C, --crypto                採用密碼 (簽章或加密)"
 
 #: usage.c:263
-msgid "                      Must be set up in the config file"
-msgstr "                      只能在設定檔中設定"
+msgid "                              Must be set up in the config file"
+msgstr "                              只能在設定檔中設定"
 
 #: usage.c:264
-msgid "  -c <address>        Add Cc: address"
-msgstr "  -c <address>        增加附本 (Cc) 地址"
+msgid "  -c, --cc <address>          Add Cc: address"
+msgstr "  -c, --cc <address>          增加附本 (Cc) 地址"
 
 #: usage.c:265
-msgid "  -E                  Edit message"
-msgstr "  -E                  編輯信件"
+msgid "  -E, --edit-message          Edit message"
+msgstr "  -E, --edit-message          編輯信件"
 
 #: usage.c:266
-msgid "                      (supplied by -H or -i)"
-msgstr "                      (由 -H 或 -i 提供)"
+msgid "                              (supplied by -H or -i)"
+msgstr "                              (由 -H 或 -i 提供)"
 
 #: usage.c:267
 #, fuzzy
-msgid "  -H <draft>          Use draft email"
-msgstr "  -H <draft>          使用草稿"
+msgid "  -H, --draft <file>          Use draft email"
+msgstr "  -H, --draft <file>          使用草稿"
 
 #: usage.c:268
-msgid "                      Full email with headers and body"
-msgstr "                      完整的信件，包含標頭與內文"
+msgid "                              Full email with headers and body"
+msgstr "                              完整的信件，包含標頭與內文"
 
 #: usage.c:269
-msgid "  -i <include>        Include body file"
-msgstr "  -i <include>        插入內文檔"
+msgid "  -i, --include <file>        Include body file"
+msgstr "  -i, --include <file>        插入內文檔"
 
 #: usage.c:270
-msgid "  -s <subject>        Set Subject:"
-msgstr "  -s <subject>        設定主旨："
+msgid "  -s, --subject <subject>     Set Subject:"
+msgstr "  -s, --subject <subject>     設定主旨："
 
 #: usage.c:271
 msgid "  -- <address> [...]  Add To: addresses"
@@ -9659,19 +9659,19 @@ msgstr "  -- <address> [...]  增加收件人地址"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:280
-msgid "  neomutt flatcap -s 'Meeting' < meeting.txt"
+msgid "  neomutt flatcap --subject 'Meeting' < meeting.txt"
 msgstr "  neomutt flatcap -s '會議' < 會議.txt"
 
 #: usage.c:281
-msgid "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
+msgid "  neomutt jim@example.com --cc bob@example.com --subject 'Party' --include party.txt"
 msgstr "  neomutt jim@example.com -c bob@example.com -s '派對' -i 派對.txt"
 
 #: usage.c:282
-msgid "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
+msgid "  neomutt --subject 'Receipts' --attach receipt1.pdf receipt2.pdf -- rocco"
 msgstr "  neomutt -s '收據' -a 收據1.pdf 收據2.pdf -- rocco"
 
 #: usage.c:283
-msgid "  cat secret.txt | neomutt gahr -s 'Secret' -C"
+msgid "  cat secret.txt | neomutt gahr --subject 'Secret' --crypto"
 msgstr "  cat 秘密.txt | neomutt gahr -s '秘密' -C"
 
 #: usage.c:296
@@ -9692,16 +9692,16 @@ msgid "If the condition isn't matched, NeoMutt exits."
 msgstr "如果條件不符， NeoMutt 會結束執行。"
 
 #: usage.c:302
-msgid "  -p            Resume postponed email"
-msgstr "  -p            繼續編寫未完成的郵件"
+msgid "  -p, --postponed       Resume postponed email"
+msgstr "  -p, --postponed       繼續編寫未完成的郵件"
 
 #: usage.c:303
-msgid "  -Z            Check for new mail"
-msgstr "  -Z            檢查新郵件"
+msgid "  -Z, --check-new-mail  Check for new mail"
+msgstr "  -Z, --check-new-mail  檢查新郵件"
 
 #: usage.c:304
-msgid "  -z            Check for any mail"
-msgstr "  -z            檢查所有郵件"
+msgid "  -z, --check-any-mail  Check for any mail"
+msgstr "  -z, --check-any-mail  檢查所有郵件"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:308
@@ -9709,38 +9709,38 @@ msgid "These options change the starting behavior:"
 msgstr "這些選項會改變初始的動作："
 
 #: usage.c:309
-msgid "  -f <mailbox>  Open this mailbox"
-msgstr "  -f <mailbox>  開啟這個信箱"
+msgid "  -f, --folder <mailbox>      Open this mailbox"
+msgstr "  -f, --folder <mailbox>      開啟這個信箱"
 
 #: usage.c:310
 #, fuzzy
-msgid "  -G            Open NNTP browser"
-msgstr "  -G            開啟 NNTP 瀏覽器"
+msgid "  -G, --nntp-browser          Open NNTP browser"
+msgstr "  -G, --nntp-browser          開啟 NNTP 瀏覽器"
 
 #: usage.c:311
-msgid "  -g <server>   Use this NNTP server"
-msgstr "  -g <server>   採用這個 NNTP 伺服器"
+msgid "  -g, --nntp-server <server>  Use this NNTP server"
+msgstr "  -g, --nntp-server <server>  採用這個 NNTP 伺服器"
 
 #: usage.c:312
-msgid "  -R            Open mailbox read-only"
-msgstr "  -R            以唯讀模式開啟信箱"
+msgid "  -R, --read-only             Open mailbox read-only"
+msgstr "  -R, --read-only             以唯讀模式開啟信箱"
 
 #: usage.c:313
-msgid "  -y            Open mailbox browser"
-msgstr "  -y            開啟信箱瀏覽器"
+msgid "  -y, --browser               Open mailbox browser"
+msgstr "  -y, --browser               開啟信箱瀏覽器"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
-msgid "  neomutt -f ~/mail -Z"
-msgstr "  neomutt -f ~/mail -Z"
+msgid "  neomutt --folder ~/mail --check-new-mail"
+msgstr ""
 
 #: usage.c:323
-msgid "  neomutt -p"
-msgstr "  neomutt -p"
+msgid "  neomutt --postponed"
+msgstr ""
 
 #: usage.c:324
-msgid "  neomutt -y"
-msgstr "  neomutt -y"
+msgid "  neomutt --browser"
+msgstr ""
 
 #: version.c:83
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
