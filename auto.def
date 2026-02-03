@@ -479,22 +479,36 @@ if {[get-define want-locales-fix]} {define LOCALES_HACK}
 ###############################################################################
 # Documentation
 if {[get-define want-doc]} {
+  set doc_requirements_met 1
   if {![cc-check-progs xsltproc]} {
-    user-error "Unable to find xsltproc. Install package: libxslt / xsltproc."
+    user-notice "Warning: xsltproc not found"
+    set doc_requirements_met 0
   }
   if {![cc-check-progs xmlcatalog]} {
-    user-error "Unable to find xmlcatalog. Install package: libxml2 / libxml2-utils"
+    user-notice "Warning: xmlcatalog not found"
+    set doc_requirements_met 0
   }
-
-  msg-checking "Checking for DocBook DTDs and Stylesheets..."
-  foreach catalog { "-//OASIS//DTD DocBook XML V4.2//EN" "http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl" } {
-    if {[catch {exec xmlcatalog "" $catalog}]} {
-      user-error "Install DocBook DTDs and Stylesheets or './configure --disable-doc'"
+  if {$doc_requirements_met} {
+    msg-checking "Checking for DocBook DTDs and Stylesheets..."
+    foreach catalog { "-//OASIS//DTD DocBook XML V4.2//EN" "http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl" } {
+      if {[catch {exec xmlcatalog "" $catalog}]} {
+        user-notice "Warning: DocBook DTDs/Stylesheets not found"
+        set doc_requirements_met 0
+        break
+      }
+    }
+    if {$doc_requirements_met} {
+      msg-result "yes"
     }
   }
-  msg-result "yes"
-
-  define BUILD_DOC
+  if {$doc_requirements_met} {
+    define BUILD_DOC
+  } else {
+    user-notice "Install dependencies, e.g."
+    user-notice "    Debian: docbook-xsl libxml2-utils xsltproc"
+    user-notice "    Fedora: docbook-dtds docbook-style-xsl libxslt"
+    user-error "Install dependencies or './configure --disable-doc'"
+  }
 }
 if {[get-define want-full-doc]} {define MAKEDOC_FULL}
 
