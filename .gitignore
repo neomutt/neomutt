@@ -22,6 +22,7 @@ fuzz/date-fuzz
 *.gc??
 *.Po
 *.Tpo
+*.keepme
 coverage
 coverage.info
 html

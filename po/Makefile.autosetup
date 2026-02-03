@@ -16,11 +16,11 @@ MOFILES		= po/bg.mo po/ca.mo po/cs.mo po/da.mo po/de.mo po/el.mo \
 		po/zh_CN.mo po/zh_TW.mo
 POTFILE		= po/$(PACKAGE).pot
 
-all-po:	po $(MOFILES)
+all-po:	po/.keepme $(MOFILES)
 
-.PHONY: po
-po:
+po/.keepme:
 	$(MKDIR_P) po
+	touch po/.keepme
 
 .SUFFIXES: .mo .po
 .po.mo:
@@ -30,6 +30,7 @@ clean-po:
 	$(RM) $(MOFILES)
 	$(RM) $(POTFILE)
 	$(RM) po/*~ po/POTFILES
+	$(RM) po/.keepme
 
 install-po: all-po
 	@catalogs='$(MOFILES)'; \
@@ -54,11 +55,11 @@ update-po: clean-po
 	$(MAKE) $(PACKAGE).pot-update
 	$(MAKE) all-po
 
-po/POTFILES: po
+po/POTFILES: po/.keepme
 	@echo gui/opcodes.h > $@
 	@(cd $(SRCDIR); find . -type f -name '*.c') | grep -v -e test/ -e jimsh0 -e docs/ -e conststrings -e git_ver >> $@
 
-$(PACKAGE).pot-update: po po/POTFILES
+$(PACKAGE).pot-update: po/.keepme po/POTFILES
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(SRCDIR) \
 	    $(XGETTEXT_OPTIONS) \
 	    --files-from=po/POTFILES \
