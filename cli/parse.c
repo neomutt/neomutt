@@ -30,6 +30,7 @@
 #include <getopt.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <string.h>
 #include <sys/param.h> // IWYU pragma: keep
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -149,6 +150,24 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
 {
   if ((argc < 1) || !argv || !cli)
     return false;
+
+  // Check for unsupported '=' syntax in options
+  for (int i = 1; i < argc; i++)
+  {
+    if ((argv[i][0] == '-') && (argv[i][1] != '\0'))
+    {
+      const char *equals = strchr(argv[i], '=');
+      if (equals)
+      {
+        // L10N: Neomutt doesn't support `-X=VALUE` or `--OPTION=VALUE`
+        //       Use `-X VALUE` or `--OPTION VALUE` instead
+        mutt_warning(_("Invalid option syntax: %s (use space instead of '=')"), argv[i]);
+        cli->help.help = true;
+        cli->help.is_set = true;
+        return false;
+      }
+    }
+  }
 
   // Any leading non-options must be addresses
   int count = mop_up(argc, argv, 1, &cli->send.addresses);
@@ -413,9 +432,15 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
       default: // error
       {
         if (opt == '?')
-          mutt_warning("Invalid option: %c", optopt);
+        {
+          // L10N: e.g. `neomutt -X`
+          mutt_warning(_("Invalid option: %c"), optopt);
+        }
         else if (opt == ':')
-          mutt_warning("Option %c requires an argument", optopt);
+        {
+          // L10N: e.g. `neomutt -F`
+          mutt_warning(_("Option %c requires an argument"), optopt);
+        }
 
         cli->help.help = true;
         cli->help.is_set = true;

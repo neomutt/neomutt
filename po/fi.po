@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-02-04 03:28+0000\n"
+"POT-Creation-Date: 2026-02-07 01:16+0000\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -951,6 +951,25 @@ msgstr "Tilauskuvio: "
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Tilauksen poistokuvio: "
+
+#. L10N: Neomutt doesn't support `-X=VALUE` or `--OPTION=VALUE`
+#. Use `-X VALUE` or `--OPTION VALUE` instead
+#: cli/parse.c:164
+#, c-format
+msgid "Invalid option syntax: %s (use space instead of '=')"
+msgstr ""
+
+#. L10N: e.g. `neomutt -X`
+#: cli/parse.c:437
+#, fuzzy, c-format
+msgid "Invalid option: %c"
+msgstr "Virheellinen kuukausi: %s"
+
+#. L10N: e.g. `neomutt -F`
+#: cli/parse.c:442
+#, c-format
+msgid "Option %c requires an argument"
+msgstr ""
 
 #: color/commands.c:179 color/commands.c:234
 #, c-format
