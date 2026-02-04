@@ -8906,489 +8906,626 @@ msgstr "sidebar-unpin { * | <сандуче> ... }"
 #. Plus two helper modes: shared, all
 #. These should not be translated.
 #: usage.c:60
+#, fuzzy
 msgid "NeoMutt has four modes of operation:"
 msgstr "NeoMutt има четири режима:"
 
 #: usage.c:66
+#, fuzzy
 msgid "The default mode, if no command line arguments are specified, is tui."
 msgstr "Подразумевани режим, ако нису задати аргументи командне линије, је tui."
 
 #. L10N: Parameters in <>s may be translated
 #. L10N: Shared Help -- `neomutt -h shared`
 #: usage.c:70 usage.c:127
+#, fuzzy
 msgid "Options that apply to all modes"
 msgstr "Опције које се односе на све режиме"
 
 #: usage.c:71
+#, fuzzy
 msgid "neomutt -n, --no-system-config       Don't read system config file"
 msgstr "neomutt -n, --no-system-config       Не читати системску конфигурациону датотеку"
 
 #: usage.c:72
+#, fuzzy
 msgid "        -F, --config <file>          Use this user config file"
-msgstr "        -F <конфиг>                  Користи ову корисничку конфигурациону датотеку"
+msgstr "        -F, --config <конфиг>        Користи ову корисничку конфигурациону датотеку"
 
 #: usage.c:73
+#, fuzzy
 msgid "        -e, --command <command>      Run extra commands"
-msgstr "        -e <наредба>                 Покреће додатне наредбе"
+msgstr "        -e, --command <наредба>      Покреће додатне наредбе"
 
 #: usage.c:74
+#, fuzzy
 msgid "        -m, --mbox-type <type>       Set default mailbox type"
-msgstr "        -m <врста>                   Задаје подразумевану врсту сандучета"
+msgstr "        -m, --mbox-type <врста>      Задаје подразумевану врсту сандучета"
 
 #: usage.c:75
+#, fuzzy
 msgid "        -d, --debug-level <level>    Set logging level (1..5)"
-msgstr "        -d <ниво>                    Задаје ниво бележења у дневник (1..5)"
+msgstr "        -d, --debug-level <ниво>     Задаје ниво бележења у дневник (1..5)"
 
 #: usage.c:76
+#, fuzzy
 msgid "        -l, --debug-file <file>      Set logging file"
-msgstr "        -l <датотека>                Задаје дневничку датотеку"
+msgstr "        -l, --debug-file <датотека>  Задаје дневничку датотеку"
 
 #. L10N: Help Help -- `neomutt -h help`
 #: usage.c:79 usage.c:183
+#, fuzzy
 msgid "Get command line help for NeoMutt"
 msgstr "Приказивање помоћи у вези са командном линијом NeoMutt-а"
 
 #: usage.c:80
+#, fuzzy
 msgid "neomutt -h, --help <mode>            Detailed help for a mode"
-msgstr "neomutt -h <режим>                   Детаљна помоћ у вези са режимом"
+msgstr "neomutt -h, --help <режим>           Детаљна помоћ у вези са режимом"
 
 #: usage.c:81
-msgid "        -v[v]                        Version or license"
-msgstr "        -v[v]                        Верзија или лиценца"
+#, fuzzy
+msgid "        -v, --version	             Version or license"
+msgstr "        -v, --version	             Верзија или лиценца"
+
+#: usage.c:82
+#, fuzzy
+msgid "        -vv, --license               License"
+msgstr "        -vv, --license               License"
 
 #. L10N: Info Help -- `neomutt -h info`
 #: usage.c:84 usage.c:210
+#, fuzzy
 msgid "Ask NeoMutt for config information"
 msgstr "Тражење конфигурационих података од NeoMutt-а"
 
 #: usage.c:85
-msgid "neomutt -A <alias> [...]             Lookup email aliases"
-msgstr "neomutt -A <алијас> [...]            Тражи мејл алијасе"
+#, fuzzy
+msgid "neomutt -A <alias> [...]                      Lookup email aliases"
+msgstr "neomutt -A <алијас> [...]                     Тражи мејл алијасе"
 
 #: usage.c:86
-msgid "        -D [-D] [-O] [-S]            Dump the config"
-msgstr "        -D [-D] [-O] [-S]            Истоварује конфигурацију"
+#, fuzzy
+msgid "        -D, --dump-config [-O] [-S]           Dump the config"
+msgstr "        -D, --dump-config [-O] [-S]           Истоварује конфигурацију"
+
+#: usage.c:88
+#, fuzzy
+msgid "        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"
+msgstr "        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"
 
 #: usage.c:87
-msgid "        -Q <option> [...] [-O] [-S]  Query config options"
-msgstr "        -Q <опција> [...] [-O] [-S]  Испитује конфигурационе опције"
+#, fuzzy
+msgid "        -Q, --query <option> [...] [-O] [-S]  Query config options"
+msgstr "        -Q, --query <опција> [...] [-O] [-S]  Испитује конфигурационе опције"
+
+#: usage.c:90
+#, fuzzy
+msgid "        -O, --with-docs                       Add one-liner documentation"
+msgstr "        -O, --with-docs                       Add one-liner documentation"
+
+#: usage.c:91
+#, fuzzy
+msgid "        -S, --hide-sensitive                  Hide sensitive option values"
+msgstr "        -S, --hide-sensitive                  Hide sensitive option values"
 
 #. L10N: Sending Help -- `neomutt -h send`
 #: usage.c:90 usage.c:249
+#, fuzzy
 msgid "Send an email from the command line"
 msgstr "Слање мејла из командне линије"
 
 #: usage.c:91
-msgid "neomutt -a <file> [...]              Attach files"
-msgstr "neomutt -a <датотека> [...]          Додаје датотеке"
+#, fuzzy
+msgid "neomutt -a, --attach <file> [...]    Attach files"
+msgstr "neomutt -a, --attach <датотека> [...] Додаје датотеке"
 
 #: usage.c:92
+#, fuzzy
 msgid "        -b, --bcc <address>          Add Bcc: address"
-msgstr "        -b <адреса>                  Додаје Bcc: адресу"
+msgstr "        -b, --bcc <адреса>           Додаје Bcc: адресу"
 
 #: usage.c:93
+#, fuzzy
 msgid "        -C, --crypto                 Use crypto (signing/encryption)"
 msgstr "        -C, --crypto                 Користи крипто (потписивање/шифровање)"
 
 #: usage.c:94
+#, fuzzy
 msgid "        -c, --cc <address>           Add Cc: address"
-msgstr "        -c <адреса>                  Додаје Cc: адресу"
+msgstr "        -c, --cc <адреса>            Додаје Cc: адресу"
 
 #: usage.c:95
+#, fuzzy
 msgid "        -E, --edit-message           Edit message"
 msgstr "        -E, --edit-message           Уређује поруку"
 
 #: usage.c:96
+#, fuzzy
 msgid "        -H, --draft <file>           Use draft email"
-msgstr "        -H <скица>                   Користи скицу мејла"
+msgstr "        -H, --draft <скица>          Користи скицу мејла"
 
 #: usage.c:97
+#, fuzzy
 msgid "        -i, --include <file>         Include body file"
-msgstr "        -i <укључивање>              Укључује датотеку тела"
+msgstr "        -i, --include <укључивање>   Укључује датотеку тела"
 
 #: usage.c:98
+#, fuzzy
 msgid "        -s, --subject <subject>      Set Subject:"
-msgstr "        -s <тема>                    Поставља поље Subject:"
+msgstr "        -s, --subject <тема>         Поставља поље Subject:"
 
 #: usage.c:99
+#, fuzzy
 msgid "        -- <address> [...]           Add To: addresses"
 msgstr "        -- <адреса> [...]            Додаје To: адресе"
 
 #. L10N: TUI Help -- `neomutt -h tui`
 #: usage.c:102 usage.c:293
+#, fuzzy
 msgid "Start NeoMutt's TUI (Terminal User Interface)"
 msgstr "Покретање NeoMutt-овог TUI (терминалског корисничког интерфејса)"
 
 #: usage.c:103
+#, fuzzy
 msgid "neomutt                              Start NeoMutt's TUI"
 msgstr "neomutt                              Покреће NeoMutt-ов TUI"
 
 #: usage.c:104
+#, fuzzy
 msgid "        -f, --folder <mailbox>       Open this mailbox"
-msgstr "        -f <сандуче>                 Отвара дато сандуче"
+msgstr "        -f, --folder <сандуче>       Отвара дато сандуче"
 
 #: usage.c:105
+#, fuzzy
 msgid "        -G, --nntp-browser           Open NNTP browser"
 msgstr "        -G, --nntp-browser           Отвара NNTP прегледач"
 
 #: usage.c:106
+#, fuzzy
 msgid "        -g, --nntp-server <server>   Use this NNTP server"
-msgstr "        -g <сервер>                  Користи дати NNTP сервер"
+msgstr "        -g, --nntp-server <сервер>   Користи дати NNTP сервер"
 
 #: usage.c:107
+#, fuzzy
 msgid "        -p, --postponed              Resume postponed email"
 msgstr "        -p, --postponed              Наставља одложени мејл"
 
 #: usage.c:108
+#, fuzzy
 msgid "        -R, --read-only              Open mailbox read-only"
 msgstr "        -R, --read-only              Отвара сандуче само за читање"
 
 #: usage.c:109
+#, fuzzy
 msgid "        -y, --browser                Open mailbox browser"
 msgstr "        -y, --browser                Отвара прегледач сандучића"
 
 #: usage.c:110
+#, fuzzy
 msgid "        -Z, --check-new-mail         Check for new mail"
 msgstr "        -Z, --check-new-mail         Проверава нову пошту"
 
 #: usage.c:111
+#, fuzzy
 msgid "        -z, --check-any-mail         Check for any mail"
 msgstr "        -z, --check-any-mail         Проверава било какву пошту"
 
 #: usage.c:115 usage.c:117
+#, fuzzy
 msgid "For detailed help, run:"
 msgstr "За детаљнију помоћ, покрените:"
 
 #: usage.c:130
+#, fuzzy
 msgid "By default NeoMutt loads one system and one user config file,"
 msgstr "Подразумевано, NeoMutt учитава системску и корисничку конфигурацију,"
 
 #: usage.c:131
+#, fuzzy
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
 msgstr "нпр. /etc/neomuttrc и ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
+#, fuzzy
 msgid "  -n, --no-system-config      Don't read system config file"
 msgstr "  -n, --no-system-config      Не учитава системску конфигурацију"
 
 #: usage.c:135
+#, fuzzy
 msgid "  -F, --config <file>         Use this user config file"
-msgstr "  -F <конфиг>   Користи дату корисничку конфигурацију"
+msgstr "  -F, --config <конфиг>       Користи дату корисничку конфигурацију"
 
 #: usage.c:136 usage.c:143
-msgid "                May be used multiple times"
-msgstr "                Може се користити више пута"
+#, fuzzy
+msgid "                              May be used multiple times"
+msgstr "                              Може се користити више пута"
 
 #: usage.c:139
+#, fuzzy
 msgid "These options override the config:"
 msgstr "Ове опције заобилазе конфигурацију:"
 
 #: usage.c:140
+#, fuzzy
 msgid "  -m, --mbox-type <type>      Set default mailbox type"
-msgstr "  -m <врста>    Поставља подразумевану врсту сандучета"
+msgstr "  -m, --mbox-type <врста>     Поставља подразумевану врсту сандучета"
 
 #: usage.c:141
-msgid "                May be: maildir, mbox, mh, mmdf"
-msgstr "                Може бити: maildir, mbox, mh, mmdf"
+#, fuzzy
+msgid "                              May be: maildir, mbox, mh, mmdf"
+msgstr "                              Може бити: maildir, mbox, mh, mmdf"
 
 #: usage.c:142
+#, fuzzy
 msgid "  -e, --command <command>     Run extra commands"
-msgstr "  -e <наредба>  Покреће додатне наредбе"
+msgstr "  -e, --command <наредба>     Покреће додатне наредбе"
 
 #: usage.c:146
+#, fuzzy
 msgid "These logging options override the config:"
 msgstr "Ове опције бележења у дневник заобилазе конфигурацију:"
 
 #: usage.c:147
+#, fuzzy
 msgid "  -d, --debug-level <level>   Set logging level"
-msgstr "  -d <ниво>     Поставља ниво бележења у дневник"
+msgstr "  -d, --debug-level <ниво>    Поставља ниво бележења у дневник"
 
 #: usage.c:148
-msgid "                0 (off), 1 (low) .. 5 (high)"
-msgstr "                0 (искључено), 1 (низак) .. 5 (висок)"
+#, fuzzy
+msgid "                              0 (off), 1 (low) .. 5 (high)"
+msgstr "                              0 (искључено), 1 (низак) .. 5 (висок)"
 
 #: usage.c:149
+#, fuzzy
 msgid "  -l, --debug-file <file>     Set logging file"
-msgstr "  -l <дато>     Поставља датотеку дневника"
+msgstr "  -l, --debug-file <дато>     Поставља датотеку дневника"
 
 #: usage.c:150
+#, fuzzy
 msgid "                Default file '~/.neomuttdebug0'"
 msgstr "                Подразумевана датотека је „~/.neomuttdebug0“"
 
 #: usage.c:154 usage.c:156 usage.c:194 usage.c:196 usage.c:231 usage.c:233
 #: usage.c:275 usage.c:277 usage.c:317 usage.c:319
+#, fuzzy
 msgid "Examples:"
 msgstr "Примери:"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:159
+#, fuzzy
 msgid "  neomutt --no-system-config"
-msgstr ""
+msgstr "  neomutt --no-system-config"
 
 #: usage.c:160
+#, fuzzy
 msgid "  neomutt --config work.rc"
-msgstr "  neomutt -F posao.rc"
+msgstr "  neomutt --config posao.rc"
 
 #: usage.c:161
+#, fuzzy
 msgid "  neomutt --config work.rc --config colours.rc"
-msgstr "  neomutt -F posao.rc -F boje.rc"
+msgstr "  neomutt --config posao.rc --config boje.rc"
 
 #: usage.c:164
+#, fuzzy
 msgid "  neomutt --mbox-type maildir"
-msgstr ""
+msgstr "  neomutt --mbox-type maildir"
 
 #: usage.c:165
+#, fuzzy
 msgid "  neomutt --command 'set ask_cc = yes'"
-msgstr ""
+msgstr "  neomutt --command 'set ask_cc = yes'"
 
 #: usage.c:168
+#, fuzzy
 msgid "  neomutt --debug-level 2"
-msgstr ""
+msgstr "  neomutt --debug-level 2"
 
 #: usage.c:169
+#, fuzzy
 msgid "  neomutt --debug-level 5 --debug-file neolog"
-msgstr ""
+msgstr "  neomutt --debug-level 5 --debug-file neolog"
 
 #: usage.c:172
+#, fuzzy
 msgid "See also:"
 msgstr "Видети и:"
 
 #: usage.c:173
+#, fuzzy
 msgid "- Config files: https://neomutt.org/guide/configuration"
 msgstr "- Конфигурационе датотеке: https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:187
+#, fuzzy
 msgid "  -h, --help           Overview of command line options"
 msgstr "  -h, --help           Преглед опција командне линије"
 
 #: usage.c:188
+#, fuzzy
 msgid "  -h, --help <mode>    Detailed help for: shared, help, info, send, tui, all"
-msgstr "  -h <режим> Детаљна помоћ за: shared, help, info, send, tui, all"
+msgstr "  -h, --help <режим>   Детаљна помоћ за: shared, help, info, send, tui, all"
 
 #: usage.c:189
+#, fuzzy
 msgid "  -v, --version        NeoMutt version and build parameters"
 msgstr "  -v, --version        Верзија и параметри изградње NeoMutt-а"
 
 #: usage.c:190
+#, fuzzy
 msgid "  -vv, --license       NeoMutt Copyright and license"
 msgstr "  -vv, --license       Ауторска права и лиценца NeoMutt-а"
 
 #. L10N: Examples
 #: usage.c:199
+#, fuzzy
 msgid "  neomutt --help info"
-msgstr ""
+msgstr "  neomutt --help info"
 
 #: usage.c:200
+#, fuzzy
 msgid "  neomutt --license"
-msgstr ""
+msgstr "  neomutt --license"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:214
-msgid "  -A <alias> [...]  Lookup email aliases"
-msgstr "  -A <алијас> [...] Тражи мејл алијасе"
+#, fuzzy
+msgid "  -A, --alias <alias> [...]   Lookup email aliases"
+msgstr "  -A, --alias <алијас> [...]  Тражи мејл алијасе"
 
 #: usage.c:215
-msgid "                    Multiple aliases can be looked up (space-separated)"
-msgstr "                    Може се тражити више алијаса (раздвојених размацима)"
+#, fuzzy
+msgid "                              Multiple aliases can be looked up (space-separated)"
+msgstr "                              Може се тражити више алијаса (раздвојених размацима)"
 
 #: usage.c:218
+#, fuzzy
 msgid "  -D, --dump-config           Dump all the config options"
 msgstr "  -D, --dump-config           Истоварује све конфигурационе опције"
 
 #: usage.c:219
-msgid "  -DD, --dump-changed-config  (or -DD) Like -D, but only show changed config"
-msgstr "  -DD, --dump-changed-config  (или -DD) Као -D, али приказује само измењену конфигурацију"
+#, fuzzy
+msgid "  -DD, --dump-changed-config  Dump the changed config options"
+msgstr "  -DD, --dump-changed-config  Као -D, али приказује само измењену конфигурацију"
 
 #: usage.c:222
-msgid "  -Q <option> [...] Query config options"
-msgstr "  -Q <опција> [...] Испитује конфигурационе опције"
+#, fuzzy
+msgid "  -Q, --query <option> [...]  Query config options"
+msgstr "  -Q, --query <опција> [...]  Испитује конфигурационе опције"
 
 #: usage.c:223
-msgid "                    Multiple options can be looked up (space-separated)"
-msgstr "                    Може се тражити више опција (раздвојених размацима)"
+#, fuzzy
+msgid "                              Multiple options can be looked up (space-separated)"
+msgstr "                              Може се тражити више опција (раздвојених размацима)"
 
 #: usage.c:225
+#, fuzzy
 msgid "Modify the -D and -Q options:"
 msgstr "Измена опција -D и -Q:"
 
 #: usage.c:226
+#, fuzzy
 msgid "  -O, --with-docs             Add one-liner documentation"
 msgstr "  -O, --with-docs             Додаје кратак опис"
 
 #: usage.c:227
+#, fuzzy
 msgid "  -S, --hide-sensitive        Hide the value of sensitive options"
 msgstr "  -S, --hide-sensitive        Сакрива вредност осетљивих опција"
 
 #. L10N: Examples
 #: usage.c:236
+#, fuzzy
 msgid "  neomutt --alias flatcap gahr"
-msgstr ""
+msgstr "  neomutt --alias flatcap gahr"
 
 #: usage.c:237
+#, fuzzy
 msgid "  neomutt --dump-config --with-docs"
-msgstr ""
+msgstr "  neomutt --dump-config --with-docs"
 
 #: usage.c:238
+#, fuzzy
 msgid "  neomutt --dump-changed-config --hide-sensitive"
-msgstr ""
+msgstr "  neomutt --dump-changed-config --hide-sensitive"
 
 #: usage.c:239
+#, fuzzy
 msgid "  neomutt --with-docs --query alias_format index_format"
-msgstr ""
+msgstr "  neomutt --with-docs --query alias_format index_format"
 
 #: usage.c:252
+#, fuzzy
 msgid "These options can supply everything NeoMutt needs to send an email."
 msgstr "Ове опције могу обезедити све што NeoMutt-у треба за слање мејла."
 
 #: usage.c:253
+#, fuzzy
 msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
 msgstr "Ако било шта недостаје, NeoMutt ће покренути TUI да за то пита."
 
 #: usage.c:254
+#, fuzzy
 msgid "Addresses may be used before the options, or after a -- marker."
 msgstr "Адресе се могу користити пре опција, или после ознаке „--“."
 
 #: usage.c:255
+#, fuzzy
 msgid "Aliases may be used in place of addresses."
 msgstr "Уместо адреса, могу се користити и алијаси."
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:259
-msgid "  -a <file> [...]     Attach files"
-msgstr "  -a <дато> [...]     Прилаже датотеке"
+#, fuzzy
+msgid "  -a, --attach <file> [...]   Attach files"
+msgstr "  -a, --attach <дато> [...]   Прилаже датотеке"
 
 #: usage.c:260
+#, fuzzy
 msgid "                              Terminated by -- or another option"
 msgstr "                              Завршава се „--“ или другом опцијом"
 
 #: usage.c:261
+#, fuzzy
 msgid "  -b, --bcc <address>         Add Bcc: address"
-msgstr "  -b <адреса>         Додаје Bcc: адресу"
+msgstr "  -b, --bcc <адреса>          Додаје Bcc: адресу"
 
 #: usage.c:262
+#, fuzzy
 msgid "  -C, --crypto                Use crypto (signing/encryption)"
 msgstr "  -C, --crypto                Користи крипто (потписивање/шифровање)"
 
 #: usage.c:263
+#, fuzzy
 msgid "                              Must be set up in the config file"
 msgstr "                              Мора бити подешен у конфигурацији"
 
 #: usage.c:264
+#, fuzzy
 msgid "  -c, --cc <address>          Add Cc: address"
-msgstr "  -c <адреса>         Додаје Cc: адресу"
+msgstr "  -c, --cc <адреса>           Додаје Cc: адресу"
 
 #: usage.c:265
+#, fuzzy
 msgid "  -E, --edit-message          Edit message"
 msgstr "  -E, --edit-message          Уређује поруку"
 
 #: usage.c:266
+#, fuzzy
 msgid "                              (supplied by -H or -i)"
 msgstr "                              (задату преко -H или -i)"
 
 #: usage.c:267
+#, fuzzy
 msgid "  -H, --draft <file>          Use draft email"
-msgstr "  -H <скица>          Користи скицу мејла"
+msgstr "  -H, --draft <скица>         Користи скицу мејла"
 
 #: usage.c:268
+#, fuzzy
 msgid "                              Full email with headers and body"
 msgstr "                              Потпуни мејл са заглављима и телом"
 
 #: usage.c:269
+#, fuzzy
 msgid "  -i, --include <file>        Include body file"
-msgstr "  -i <укључивање>     Укључује датотеку тела"
+msgstr "  -i, --include <укључивање>  Укључује датотеку тела"
 
 #: usage.c:270
+#, fuzzy
 msgid "  -s, --subject <subject>     Set Subject:"
-msgstr "  -s <тема>           Поставља Subject:"
+msgstr "  -s, --subject <тема>        Поставља Subject:"
 
 #: usage.c:271
-msgid "  -- <address> [...]  Add To: addresses"
-msgstr "  -- <адреса> [...]   Додаје To: адресе"
+#, fuzzy
+msgid "  -- <address> [...]          Add To: addresses"
+msgstr "  -- <адреса> [...]           Додаје To: адресе"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:280
+#, fuzzy
 msgid "  neomutt flatcap --subject 'Meeting' < meeting.txt"
-msgstr "  neomutt flatcap -s 'Састанак' < sastanak.txt"
+msgstr "  neomutt flatcap --subject 'Састанак' < sastanak.txt"
 
 #: usage.c:281
+#, fuzzy
 msgid "  neomutt jim@example.com --cc bob@example.com --subject 'Party' --include party.txt"
-msgstr "  neomutt pera@primer.com -c zika@primer.com -s 'Журка' -i zurka.txt"
+msgstr "  neomutt pera@primer.com --cc zika@primer.com -s 'Журка' --include zurka.txt"
 
 #: usage.c:282
+#, fuzzy
 msgid "  neomutt --subject 'Receipts' --attach receipt1.pdf receipt2.pdf -- rocco"
-msgstr "  neomutt -s 'Рачуни' -a racun1.pdf racun2.pdf -- rocco"
+msgstr "  neomutt -s 'Рачуни' --attach racun1.pdf racun2.pdf -- rocco"
 
 #: usage.c:283
+#, fuzzy
 msgid "  cat secret.txt | neomutt gahr --subject 'Secret' --crypto"
-msgstr "  cat tajna.txt | neomutt gahr -s 'Тајна' -C"
+msgstr "  cat tajna.txt | neomutt gahr --subject 'Тајна' --crypto"
 
 #: usage.c:296
+#, fuzzy
 msgid "Running NeoMutt with no options will read the config and start the TUI."
 msgstr "Покретање NeoMutt-а без опција ће учитати конфигурацију и покренути TUI."
 
 #: usage.c:297
+#, fuzzy
 msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
 msgstr "Подразумевано, отвориће се дијалог индекса са сандучетом $spool_file."
 
 #: usage.c:300
+#, fuzzy
 msgid "These options cause NeoMutt to check a mailbox for mail."
 msgstr "Ове опције чине да MeoMutt провери сандуче."
 
 #: usage.c:301
+#, fuzzy
 msgid "If the condition isn't matched, NeoMutt exits."
 msgstr "Ако услов није испуњен, NeoMutt излази."
 
 #: usage.c:302
+#, fuzzy
 msgid "  -p, --postponed       Resume postponed email"
 msgstr "  -p, --postponed       Наставља одложени мејл"
 
 #: usage.c:303
+#, fuzzy
 msgid "  -Z, --check-new-mail  Check for new mail"
 msgstr "  -Z, --check-new-mail  Проверава нову пошту"
 
 #: usage.c:304
+#, fuzzy
 msgid "  -z, --check-any-mail  Check for any mail"
 msgstr "  -z, --check-any-mail  Проверава било какву пошту"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:308
+#, fuzzy
 msgid "These options change the starting behavior:"
 msgstr "Ове опције мењају понашање при покретању:"
 
 #: usage.c:309
+#, fuzzy
 msgid "  -f, --folder <mailbox>      Open this mailbox"
-msgstr "  -f <сандуче>  Отвара дато сандуче"
+msgstr "  -f, --folder <сандуче>      Отвара дато сандуче"
 
 #: usage.c:310
+#, fuzzy
 msgid "  -G, --nntp-browser          Open NNTP browser"
 msgstr "  -G, --nntp-browser          Отвара NNTP прегледач"
 
 #: usage.c:311
+#, fuzzy
 msgid "  -g, --nntp-server <server>  Use this NNTP server"
-msgstr "  -g <сервер>   Користи дати NNTP сервер"
+msgstr "  -g, --nntp-server <сервер>  Користи дати NNTP сервер"
 
 #: usage.c:312
+#, fuzzy
 msgid "  -R, --read-only             Open mailbox read-only"
 msgstr "  -R, --read-only             Отвара сандуче само за читање"
 
 #: usage.c:313
+#, fuzzy
 msgid "  -y, --browser               Open mailbox browser"
 msgstr "  -y, --browser               Отвара прегледач сандучића"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
+#, fuzzy
 msgid "  neomutt --folder ~/mail --check-new-mail"
-msgstr ""
+msgstr "  neomutt --folder ~/mail --check-new-mail"
 
 #: usage.c:323
+#, fuzzy
 msgid "  neomutt --postponed"
-msgstr ""
+msgstr "  neomutt --postponed"
 
 #: usage.c:324
+#, fuzzy
 msgid "  neomutt --browser"
-msgstr ""
+msgstr "  neomutt --browser"
 
 #: version.c:83
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"

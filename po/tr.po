@@ -8849,489 +8849,626 @@ msgstr "sidebar-unpin { * | <kutu> ... }"
 #. Plus two helper modes: shared, all
 #. These should not be translated.
 #: usage.c:60
+#, fuzzy
 msgid "NeoMutt has four modes of operation:"
 msgstr "NeoMutt'ın dört işlem kipi vardır:"
 
 #: usage.c:66
+#, fuzzy
 msgid "The default mode, if no command line arguments are specified, is tui."
 msgstr "Bir komut satırı argümanı sağlanmazsa öntanımlı TUI kipi açılır."
 
 #. L10N: Parameters in <>s may be translated
 #. L10N: Shared Help -- `neomutt -h shared`
 #: usage.c:70 usage.c:127
+#, fuzzy
 msgid "Options that apply to all modes"
 msgstr "Tüm kiplere uyan seçenekler"
 
 #: usage.c:71
+#, fuzzy
 msgid "neomutt -n, --no-system-config       Don't read system config file"
 msgstr "neomutt -n, --no-system-config       Sistem yapılandırma dosyasını okuma"
 
 #: usage.c:72
+#, fuzzy
 msgid "        -F, --config <file>          Use this user config file"
-msgstr "        -F <yapılandırma>            Bu yapılandırma dosyasını kullan"
+msgstr "        -F, --config <yapılandırma>  Bu yapılandırma dosyasını kullan"
 
 #: usage.c:73
+#, fuzzy
 msgid "        -e, --command <command>      Run extra commands"
-msgstr "        -e <komut>                   Ek komutlar çalıştır"
+msgstr "        -e, --command <komut>        Ek komutlar çalıştır"
 
 #: usage.c:74
+#, fuzzy
 msgid "        -m, --mbox-type <type>       Set default mailbox type"
-msgstr "-m <tür>                     Öntanımlı posta kutusu türünü ayarla"
+msgstr "        -m, --mbox-type <tür>        Öntanımlı posta kutusu türünü ayarla"
 
 #: usage.c:75
+#, fuzzy
 msgid "        -d, --debug-level <level>    Set logging level (1..5)"
-msgstr "        -d <düzey>                   Günlükleme düzeyini ayarla (1..5)"
+msgstr "        -d, --debug-level <düzey>    Günlükleme düzeyini ayarla (1..5)"
 
 #: usage.c:76
+#, fuzzy
 msgid "        -l, --debug-file <file>      Set logging file"
-msgstr "        -l <dosya>                   Günlükleme dosyasını ayarla"
+msgstr "        -l, --debug-file <dosya>     Günlükleme dosyasını ayarla"
 
 #. L10N: Help Help -- `neomutt -h help`
 #: usage.c:79 usage.c:183
+#, fuzzy
 msgid "Get command line help for NeoMutt"
 msgstr "NeoMutt için komut satırı yardımı al"
 
 #: usage.c:80
+#, fuzzy
 msgid "neomutt -h, --help <mode>            Detailed help for a mode"
-msgstr "neomutt -h <kip>                     Bir kip için ayrıntılı yardım"
+msgstr "neomutt -h, --help <kip>             Bir kip için ayrıntılı yardım"
 
 #: usage.c:81
-msgid "        -v[v]                        Version or license"
-msgstr "        -v[v]                        Sürüm veya lisans"
+#, fuzzy
+msgid "        -v, --version	             Version or license"
+msgstr "        -v, --version	             Sürüm veya lisans"
+
+#: usage.c:82
+#, fuzzy
+msgid "        -vv, --license               License"
+msgstr "        -vv, --license               License"
 
 #. L10N: Info Help -- `neomutt -h info`
 #: usage.c:84 usage.c:210
+#, fuzzy
 msgid "Ask NeoMutt for config information"
 msgstr "Yapılandırma bilgisini NeoMutt'a sorun"
 
 #: usage.c:85
-msgid "neomutt -A <alias> [...]             Lookup email aliases"
-msgstr "neomutt -A <arma> [...]              E-posta armalarını ara"
+#, fuzzy
+msgid "neomutt -A <alias> [...]                      Lookup email aliases"
+msgstr "neomutt -A <arma> [...]                       E-posta armalarını ara"
 
 #: usage.c:86
-msgid "        -D [-D] [-O] [-S]            Dump the config"
-msgstr "        -D [-D] [-O] [-S]            Yapılandırmayı dök"
+#, fuzzy
+msgid "        -D, --dump-config [-O] [-S]           Dump the config"
+msgstr "        -D, --dump-config [-O] [-S]           Yapılandırmayı dök"
+
+#: usage.c:88
+#, fuzzy
+msgid "        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"
+msgstr "        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"
 
 #: usage.c:87
-msgid "        -Q <option> [...] [-O] [-S]  Query config options"
-msgstr "        -Q <seçenek> [...] [-O] [-S] Yapılandırma seçeneklerini sorgula"
+#, fuzzy
+msgid "        -Q, --query <option> [...] [-O] [-S]  Query config options"
+msgstr "        -Q, --query <seçenek> [...] [-O] [-S] Yapılandırma seçeneklerini sorgula"
+
+#: usage.c:90
+#, fuzzy
+msgid "        -O, --with-docs                       Add one-liner documentation"
+msgstr "        -O, --with-docs                       Add one-liner documentation"
+
+#: usage.c:91
+#, fuzzy
+msgid "        -S, --hide-sensitive                  Hide sensitive option values"
+msgstr "        -S, --hide-sensitive                  Hide sensitive option values"
 
 #. L10N: Sending Help -- `neomutt -h send`
 #: usage.c:90 usage.c:249
+#, fuzzy
 msgid "Send an email from the command line"
 msgstr "Komut satırından bir e-posta gönderin"
 
 #: usage.c:91
-msgid "neomutt -a <file> [...]              Attach files"
-msgstr "neomutt -a <dosya> [...]             Dosyalar iliştir"
+#, fuzzy
+msgid "neomutt -a, --attach <file> [...]    Attach files"
+msgstr "neomutt -a, --attach <dosya> [...]   Dosyalar iliştir"
 
 #: usage.c:92
+#, fuzzy
 msgid "        -b, --bcc <address>          Add Bcc: address"
-msgstr "        -b <adres>                   Gizli kopya: adresi ekle"
+msgstr "        -b, --bcc <adres>            Gizli kopya: adresi ekle"
 
 #: usage.c:93
+#, fuzzy
 msgid "        -C, --crypto                 Use crypto (signing/encryption)"
 msgstr "        -C, --crypto                 Kripto kullan (imza/şifre)"
 
 #: usage.c:94
+#, fuzzy
 msgid "        -c, --cc <address>           Add Cc: address"
-msgstr "        -c <adres>                   Kopya: adresi ekle"
+msgstr "        -c, --cc <adres>             Kopya: adresi ekle"
 
 #: usage.c:95
+#, fuzzy
 msgid "        -E, --edit-message           Edit message"
 msgstr "        -E, --edit-message           İletiyi düzenle"
 
 #: usage.c:96
+#, fuzzy
 msgid "        -H, --draft <file>           Use draft email"
-msgstr "        -H <taslak>                  Taslak e-postayı kullan"
+msgstr "        -H, --draft <taslak>         Taslak e-postayı kullan"
 
 #: usage.c:97
+#, fuzzy
 msgid "        -i, --include <file>         Include body file"
-msgstr "        -i <içer>                    Gövde dosyası içer"
+msgstr "        -i, --include <içer>         Gövde dosyası içer"
 
 #: usage.c:98
+#, fuzzy
 msgid "        -s, --subject <subject>      Set Subject:"
-msgstr "        -s <konu>                    Konu: ayarla"
+msgstr "        -s, --subject <konu>         Konu: ayarla"
 
 #: usage.c:99
+#, fuzzy
 msgid "        -- <address> [...]           Add To: addresses"
 msgstr "        -- <adres> [...]             Kime: adresi ekle"
 
 #. L10N: TUI Help -- `neomutt -h tui`
 #: usage.c:102 usage.c:293
+#, fuzzy
 msgid "Start NeoMutt's TUI (Terminal User Interface)"
 msgstr "NeoMutt'ın Uçbirim Kullanıcı Arayüzü'nü (TUI) başlat"
 
 #: usage.c:103
+#, fuzzy
 msgid "neomutt                              Start NeoMutt's TUI"
 msgstr "neomutt                              NeoMutt'ın TUI'sini başlat"
 
 #: usage.c:104
+#, fuzzy
 msgid "        -f, --folder <mailbox>       Open this mailbox"
-msgstr "        -f <kutu>                    Bu posta kutusunu aç"
+msgstr "        -f, --folder <kutu>          Bu posta kutusunu aç"
 
 #: usage.c:105
+#, fuzzy
 msgid "        -G, --nntp-browser           Open NNTP browser"
 msgstr "        -G, --nntp-browser           NNTP tarayıcısını aç"
 
 #: usage.c:106
+#, fuzzy
 msgid "        -g, --nntp-server <server>   Use this NNTP server"
-msgstr "        -g <sunucu>                  Bu NNTP sunucusunu kullan"
+msgstr "        -g, --nntp-server <sunucu>   Bu NNTP sunucusunu kullan"
 
 #: usage.c:107
+#, fuzzy
 msgid "        -p, --postponed              Resume postponed email"
 msgstr "        -p, --postponed              Ertelenen postayı sürdür"
 
 #: usage.c:108
+#, fuzzy
 msgid "        -R, --read-only              Open mailbox read-only"
 msgstr "        -R, --read-only              Posta kutusunu saltokunur aç"
 
 #: usage.c:109
+#, fuzzy
 msgid "        -y, --browser                Open mailbox browser"
 msgstr "        -y, --browser                Posta kutusu tarayıcısını aç"
 
 #: usage.c:110
+#, fuzzy
 msgid "        -Z, --check-new-mail         Check for new mail"
 msgstr "        -Z, --check-new-mail         Yeni postayı denetle"
 
 #: usage.c:111
+#, fuzzy
 msgid "        -z, --check-any-mail         Check for any mail"
 msgstr "        -z, --check-any-mail         Herhangi bir postayı denetle"
 
 #: usage.c:115 usage.c:117
+#, fuzzy
 msgid "For detailed help, run:"
 msgstr "Ayrıntılı yardım için şunu çalıştırın:"
 
 #: usage.c:130
+#, fuzzy
 msgid "By default NeoMutt loads one system and one user config file,"
 msgstr "Öntanımlı olarak NeoMutt, bir sistem ve bir kullanıcı yapılandırması yükler."
 
 #: usage.c:131
+#, fuzzy
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
 msgstr "örneğin, /etc/neomuttrc ve ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:134
+#, fuzzy
 msgid "  -n, --no-system-config      Don't read system config file"
 msgstr "  -n, --no-system-config      Sistem yapılandırma dosyasını okuma"
 
 #: usage.c:135
+#, fuzzy
 msgid "  -F, --config <file>         Use this user config file"
-msgstr "  -F <dosya>    Bu yapılandırma dosyasını kullan"
+msgstr "  -F, --config <dosya>        Bu yapılandırma dosyasını kullan"
 
 #: usage.c:136 usage.c:143
-msgid "                May be used multiple times"
-msgstr "                Birden çok kez kullanılabilir"
+#, fuzzy
+msgid "                              May be used multiple times"
+msgstr "                              Birden çok kez kullanılabilir"
 
 #: usage.c:139
+#, fuzzy
 msgid "These options override the config:"
 msgstr "Bu seçenekler, yapılandırmayı geçersiz kılar:"
 
 #: usage.c:140
+#, fuzzy
 msgid "  -m, --mbox-type <type>      Set default mailbox type"
-msgstr "  -m <tür>      Öntanımlı posta kutusu türünü ayarla"
+msgstr "  -m, --mbox-type <tür>       Öntanımlı posta kutusu türünü ayarla"
 
 #: usage.c:141
-msgid "                May be: maildir, mbox, mh, mmdf"
-msgstr "                Şunlar olabilir: maildir, mbox, mh, mmdf"
+#, fuzzy
+msgid "                              May be: maildir, mbox, mh, mmdf"
+msgstr "                              Şunlar olabilir: maildir, mbox, mh, mmdf"
 
 #: usage.c:142
+#, fuzzy
 msgid "  -e, --command <command>     Run extra commands"
-msgstr "  -e <komut>    Ek komutlar çalıştır"
+msgstr "  -e, --command <komut>       Ek komutlar çalıştır"
 
 #: usage.c:146
+#, fuzzy
 msgid "These logging options override the config:"
 msgstr "Bu günlükleme seçenekleri, yapılandırmayı geçersiz kılabilir:"
 
 #: usage.c:147
+#, fuzzy
 msgid "  -d, --debug-level <level>   Set logging level"
-msgstr "  -d <düzey>    Günlükleme düzeyini ayarla"
+msgstr "  -d, --debug-level <düzey>   Günlükleme düzeyini ayarla"
 
 #: usage.c:148
-msgid "                0 (off), 1 (low) .. 5 (high)"
-msgstr "                0 (kapalı), 1 (düşük) .. 5 (yüksek)"
+#, fuzzy
+msgid "                              0 (off), 1 (low) .. 5 (high)"
+msgstr "                              0 (kapalı), 1 (düşük) .. 5 (yüksek)"
 
 #: usage.c:149
+#, fuzzy
 msgid "  -l, --debug-file <file>     Set logging file"
-msgstr "  -l <dosya>    Günlükleme dosyası ayarla"
+msgstr "  -l, --debug-file <dosya>    Günlükleme dosyası ayarla"
 
 #: usage.c:150
-msgid "                Default file '~/.neomuttdebug0'"
-msgstr "                Öntanımlı dosya '~/.neomuttdebug0'dır"
+#, fuzzy
+msgid "                              Default file '~/.neomuttdebug0'"
+msgstr "                              Öntanımlı dosya '~/.neomuttdebug0'dır"
 
 #: usage.c:154 usage.c:156 usage.c:194 usage.c:196 usage.c:231 usage.c:233
 #: usage.c:275 usage.c:277 usage.c:317 usage.c:319
+#, fuzzy
 msgid "Examples:"
 msgstr "Örnekler:"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:159
+#, fuzzy
 msgid "  neomutt --no-system-config"
-msgstr ""
+msgstr "  neomutt --no-system-config"
 
 #: usage.c:160
+#, fuzzy
 msgid "  neomutt --config work.rc"
-msgstr "  neomutt -F iş.rc"
+msgstr "  neomutt --config iş.rc"
 
 #: usage.c:161
+#, fuzzy
 msgid "  neomutt --config work.rc --config colours.rc"
-msgstr "  neomutt -F iş.rc -F renkler.rc"
+msgstr "  neomutt --config iş.rc --config renkler.rc"
 
 #: usage.c:164
+#, fuzzy
 msgid "  neomutt --mbox-type maildir"
-msgstr ""
+msgstr "  neomutt --mbox-type maildir"
 
 #: usage.c:165
+#, fuzzy
 msgid "  neomutt --command 'set ask_cc = yes'"
-msgstr ""
+msgstr "  neomutt --command 'set ask_cc = yes'"
 
 #: usage.c:168
+#, fuzzy
 msgid "  neomutt --debug-level 2"
-msgstr ""
+msgstr "  neomutt --debug-level 2"
 
 #: usage.c:169
+#, fuzzy
 msgid "  neomutt --debug-level 5 --debug-file neolog"
-msgstr ""
+msgstr "  neomutt --debug-level 5 --debug-file neolog"
 
 #: usage.c:172
+#, fuzzy
 msgid "See also:"
 msgstr "Ayrıca bakınız:"
 
 #: usage.c:173
+#, fuzzy
 msgid "- Config files: https://neomutt.org/guide/configuration"
 msgstr "- Yapılandırma dosyaları: https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:187
+#, fuzzy
 msgid "  -h, --help           Overview of command line options"
 msgstr "  -h, --help           Komut satırı seçeneklerine genel bakış"
 
 #: usage.c:188
+#, fuzzy
 msgid "  -h, --help <mode>    Detailed help for: shared, help, info, send, tui, all"
-msgstr "  -h <kip>   Ayrıntılı yardım: shared, help, info, send, tui, all"
+msgstr "  -h, --help <kip>     Ayrıntılı yardım: shared, help, info, send, tui, all"
 
 #: usage.c:189
+#, fuzzy
 msgid "  -v, --version        NeoMutt version and build parameters"
 msgstr "  -v, --version        NeoMutt sürümü ve yapı parametreleri"
 
 #: usage.c:190
+#, fuzzy
 msgid "  -vv, --license       NeoMutt Copyright and license"
 msgstr "  -vv, --license       NeoMutt telif hakkı ve lisansı"
 
 #. L10N: Examples
 #: usage.c:199
+#, fuzzy
 msgid "  neomutt --help info"
-msgstr ""
+msgstr "  neomutt --help info"
 
 #: usage.c:200
+#, fuzzy
 msgid "  neomutt --license"
-msgstr ""
+msgstr "  neomutt --license"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:214
-msgid "  -A <alias> [...]  Lookup email aliases"
-msgstr "  -A <arma> [...]   E-posta adresini ara"
+#, fuzzy
+msgid "  -A, --alias <alias> [...]   Lookup email aliases"
+msgstr "  -A, --alias <arma> [...]    E-posta adresini ara"
 
 #: usage.c:215
-msgid "                    Multiple aliases can be looked up (space-separated)"
-msgstr "                    Birden çok arma aranabilir (boşlukla ayırın)"
+#, fuzzy
+msgid "                              Multiple aliases can be looked up (space-separated)"
+msgstr "                              Birden çok arma aranabilir (boşlukla ayırın)"
 
 #: usage.c:218
+#, fuzzy
 msgid "  -D, --dump-config           Dump all the config options"
 msgstr "  -D, --dump-config           Tüm yapılandıma seçeneklerini dök"
 
 #: usage.c:219
-msgid "  -DD, --dump-changed-config  (or -DD) Like -D, but only show changed config"
-msgstr "  -DD, --dump-changed-config  (veya -DD) -D gibi; ancak değiştirileni gösterir"
+#, fuzzy
+msgid "  -DD, --dump-changed-config  Dump the changed config options"
+msgstr "  -DD, --dump-changed-config  -D gibi; ancak değiştirileni gösterir"
 
 #: usage.c:222
-msgid "  -Q <option> [...] Query config options"
-msgstr "  -Q <sçnk> [...]   Yapılandırma seçeneklerini ara"
+#, fuzzy
+msgid "  -Q, --query <option> [...]  Query config options"
+msgstr "  -Q, --query <sçnk> [...]    Yapılandırma seçeneklerini ara"
 
 #: usage.c:223
-msgid "                    Multiple options can be looked up (space-separated)"
-msgstr "                    Birden çok seçenek aranabilir (boşlukla ayırın)"
+#, fuzzy
+msgid "                              Multiple options can be looked up (space-separated)"
+msgstr "                              Birden çok seçenek aranabilir (boşlukla ayırın)"
 
 #: usage.c:225
+#, fuzzy
 msgid "Modify the -D and -Q options:"
 msgstr "-D ve -Q seçeneklerinde değişiklik yapın:"
 
 #: usage.c:226
+#, fuzzy
 msgid "  -O, --with-docs             Add one-liner documentation"
 msgstr "  -O, --with-docs             Tek satırlık belgelendirme ekle"
 
 #: usage.c:227
+#, fuzzy
 msgid "  -S, --hide-sensitive        Hide the value of sensitive options"
 msgstr "  -S, --hide-sensitive        Hassas seçeneklerin değerini gizle"
 
 #. L10N: Examples
 #: usage.c:236
+#, fuzzy
 msgid "  neomutt --alias flatcap gahr"
 msgstr "  neomutt -A bilge ayça"
 
 #: usage.c:237
+#, fuzzy
 msgid "  neomutt --dump-config --with-docs"
-msgstr ""
+msgstr "  neomutt --dump-config --with-docs"
 
 #: usage.c:238
+#, fuzzy
 msgid "  neomutt --dump-changed-config --hide-sensitive"
-msgstr ""
+msgstr "  neomutt --dump-changed-config --hide-sensitive"
 
 #: usage.c:239
+#, fuzzy
 msgid "  neomutt --with-docs --query alias_format index_format"
-msgstr ""
+msgstr "  neomutt --with-docs --query alias_format index_format"
 
 #: usage.c:252
+#, fuzzy
 msgid "These options can supply everything NeoMutt needs to send an email."
 msgstr "Bunlar, NeoMutt'ın bir e-posta gönderebilmesi için gerekli her şeyi sağlar."
 
 #: usage.c:253
+#, fuzzy
 msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
 msgstr "Eksik bir kısım varsa NeoMutt onları sormak için TUI'yi başlatır."
 
 #: usage.c:254
+#, fuzzy
 msgid "Addresses may be used before the options, or after a -- marker."
 msgstr "Adresler seçeneklerden önce veya -- imleyicisinden sonra kullanılabilir."
 
 #: usage.c:255
+#, fuzzy
 msgid "Aliases may be used in place of addresses."
 msgstr "Adreslerin yerine armalar kullanılabilir."
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:259
-msgid "  -a <file> [...]     Attach files"
-msgstr "  -a <dosya> [...]    Dosyalar iliştir"
+#, fuzzy
+msgid "  -a, --attach <file> [...]   Attach files"
+msgstr "  -a, --attach <dosya> [...]  Dosyalar iliştir"
 
 #: usage.c:260
+#, fuzzy
 msgid "                              Terminated by -- or another option"
 msgstr "                              -- veya başka bir seçenekle sonlandırılır"
 
 #: usage.c:261
+#, fuzzy
 msgid "  -b, --bcc <address>         Add Bcc: address"
-msgstr "  -b <adres>          Gizli kopya: adresi ekle"
+msgstr "  -b, --bcc <adres>           Gizli kopya: adresi ekle"
 
 #: usage.c:262
+#, fuzzy
 msgid "  -C, --crypto                Use crypto (signing/encryption)"
 msgstr "  -C, --crypto                Kripto kullan (imza/şifre)"
 
 #: usage.c:263
+#, fuzzy
 msgid "                              Must be set up in the config file"
 msgstr "                              Yapılandırma dosyasında ayarlanmalıdır"
 
 #: usage.c:264
+#, fuzzy
 msgid "  -c, --cc <address>          Add Cc: address"
-msgstr "  -c <adres>          Kopya: adresi ekle"
+msgstr "  -c, --cc <adres>            Kopya: adresi ekle"
 
 #: usage.c:265
+#, fuzzy
 msgid "  -E, --edit-message          Edit message"
 msgstr "  -E, --edit-message          İletiyi düzenle"
 
 #: usage.c:266
+#, fuzzy
 msgid "                              (supplied by -H or -i)"
 msgstr "                              (-H veya -i ile sağlanır)"
 
 #: usage.c:267
+#, fuzzy
 msgid "  -H, --draft <file>          Use draft email"
-msgstr "  -H <taslak>         Taslak e-postayı kullan"
+msgstr "  -H, --draft <taslak>        Taslak e-postayı kullan"
 
 #: usage.c:268
+#, fuzzy
 msgid "                              Full email with headers and body"
 msgstr "                              Üstbilgi ve gövde ile tam e-posta"
 
 #: usage.c:269
+#, fuzzy
 msgid "  -i, --include <file>        Include body file"
-msgstr "  -i <içer>           Gövde dosyası içer"
+msgstr "  -i, --include <içer>        Gövde dosyası içer"
 
 #: usage.c:270
+#, fuzzy
 msgid "  -s, --subject <subject>     Set Subject:"
-msgstr "  -s <konu>           Konu: ayarla"
+msgstr "  -s, --subject <konu>        Konu: ayarla"
 
 #: usage.c:271
-msgid "  -- <address> [...]  Add To: addresses"
-msgstr "  -- <adres> [...]    Kime: adresi ekle"
+#, fuzzy
+msgid "  -- <address> [...]          Add To: addresses"
+msgstr "  -- <adres> [...]            Kime: adresi ekle"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:280
+#, fuzzy
 msgid "  neomutt flatcap --subject 'Meeting' < meeting.txt"
-msgstr "  neomutt hakan -s 'Toplantı' < toplantı.txt"
+msgstr "  neomutt hakan --subject 'Toplantı' < toplantı.txt"
 
 #: usage.c:281
+#, fuzzy
 msgid "  neomutt jim@example.com --cc bob@example.com --subject 'Party' --include party.txt"
-msgstr "  neomutt aylin@örnek.com -c aysu@örnek.com -s 'Parti' -i parti.txt"
+msgstr "  neomutt aylin@örnek.com --cc aysu@örnek.com -s 'Parti' --include parti.txt"
 
 #: usage.c:282
+#, fuzzy
 msgid "  neomutt --subject 'Receipts' --attach receipt1.pdf receipt2.pdf -- rocco"
-msgstr "  neomutt -s 'Makbuzlar' -a makbuz1.pdf makbuz2.pdf -- patron"
+msgstr "  neomutt -s 'Makbuzlar' --attach makbuz1.pdf makbuz2.pdf -- patron"
 
 #: usage.c:283
+#, fuzzy
 msgid "  cat secret.txt | neomutt gahr --subject 'Secret' --crypto"
-msgstr "  cat gizli.txt | neomutt umay -s 'Gizli' -C"
+msgstr "  cat gizli.txt | neomutt umay --subject 'Gizli' --crypto"
 
 #: usage.c:296
+#, fuzzy
 msgid "Running NeoMutt with no options will read the config and start the TUI."
 msgstr "NeoMutt'ı seçenek olmadan çalıştırmak yapılandırmayı okur ve TUI'yi başlatır."
 
 #: usage.c:297
+#, fuzzy
 msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
 msgstr "Öntanımlı olarak, $spool_file posta kutusuyla indeks penceresini açar."
 
 #: usage.c:300
+#, fuzzy
 msgid "These options cause NeoMutt to check a mailbox for mail."
 msgstr "Bu seçenekler, NeoMutt'ın posta için posta kutusunu denetlemesini sağlar."
 
 #: usage.c:301
+#, fuzzy
 msgid "If the condition isn't matched, NeoMutt exits."
 msgstr "Koşul eşleşmezse NeoMutt çıkar."
 
 #: usage.c:302
+#, fuzzy
 msgid "  -p, --postponed       Resume postponed email"
 msgstr "  -p, --postponed       Ertelenen postayı sürdür"
 
 #: usage.c:303
+#, fuzzy
 msgid "  -Z, --check-new-mail  Check for new mail"
 msgstr "  -Z, --check-new-mail  Yeni postayı denetle"
 
 #: usage.c:304
+#, fuzzy
 msgid "  -z, --check-any-mail  Check for any mail"
 msgstr "  -z, --check-any-mail  Herhangi bir postayı denetle"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:308
+#, fuzzy
 msgid "These options change the starting behavior:"
 msgstr "Bu seçenekler, başlatma davranışını değiştirir:"
 
 #: usage.c:309
+#, fuzzy
 msgid "  -f, --folder <mailbox>      Open this mailbox"
-msgstr "  -f <kutu>     Bu posta kutusunu aç"
+msgstr "  -f, --folder <kutu>         Bu posta kutusunu aç"
 
 #: usage.c:310
+#, fuzzy
 msgid "  -G, --nntp-browser          Open NNTP browser"
 msgstr "  -G, --nntp-browser          NNTP tarayıcısını aç"
 
 #: usage.c:311
+#, fuzzy
 msgid "  -g, --nntp-server <server>  Use this NNTP server"
-msgstr "  -g <sunucu>   Bu NNTP sunucusunu kullan"
+msgstr "  -g, --nntp-server <sunucu>  Bu NNTP sunucusunu kullan"
 
 #: usage.c:312
+#, fuzzy
 msgid "  -R, --read-only             Open mailbox read-only"
 msgstr "  -R, --read-only             Posta kutusunu saltokunur aç"
 
 #: usage.c:313
+#, fuzzy
 msgid "  -y, --browser               Open mailbox browser"
 msgstr "  -y, --browser               Posta kutusu tarayıcısını aç"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:322
+#, fuzzy
 msgid "  neomutt --folder ~/mail --check-new-mail"
-msgstr ""
+msgstr "  neomutt --folder ~/mail --check-new-mail"
 
 #: usage.c:323
+#, fuzzy
 msgid "  neomutt --postponed"
-msgstr ""
+msgstr "  neomutt --postponed"
 
 #: usage.c:324
+#, fuzzy
 msgid "  neomutt --browser"
-msgstr ""
+msgstr "  neomutt --browser"
 
 #: version.c:83
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
