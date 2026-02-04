@@ -9642,7 +9642,3 @@ msgstr "Fordítási opciók:"
 #: version.c:677
 msgid "Devel options:"
 msgstr "Fejlesztői opciók:"
-
-#, fuzzy
-#~ msgid "  -- <address> [...]  Add To: addresses"
-#~ msgstr "  -- <cím> [...]  Címzettek hozzáadása"

@@ -9680,7 +9680,3 @@ msgstr "Kompiliavimo parinktys:"
 #: version.c:677
 msgid "Devel options:"
 msgstr "Derinimo parinktys:"
-
-#, fuzzy
-#~ msgid "  -- <address> [...]  Add To: addresses"
-#~ msgstr "  -- <adressas> [...] Pridėti adresus prie To: antraštės"

@@ -9619,15 +9619,3 @@ msgstr "Derleme seçenekleri:"
 #: version.c:677
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
-
-#~ msgid "alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-#~ msgstr "alternative-order <mime-türü>[/<mime-alt-türü> ] [ <mime-t>[/<mime-a-t> ] ... ]"
-
-#~ msgid "auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-#~ msgstr "auto-view <mime-türü>[/<mime-alt-türü> ] [ <mime-t>[/<mime-a-t> ] ... ]"
-
-#~ msgid "lua-source <file>"
-#~ msgstr "lua-source <dosya>"
-
-#~ msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]"
-#~ msgstr "mime-lookup <mime-türü>[/<mime-alt-türü> ] [ <mime-t>[/<mime-a-t> ] ... ]"
