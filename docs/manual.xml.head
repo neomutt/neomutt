@@ -19628,14 +19628,14 @@ folder-hook ^pop 'set read_inc=1'
               </entry>
             </row>
             <row>
-              <entry>-A <literal>alias</literal></entry>
+              <entry>-A, --alias <literal>alias</literal></entry>
               <entry>
                 Print an expanded version of the given <literal>alias</literal>
                 to stdout and exit
               </entry>
             </row>
             <row>
-              <entry>-a <literal>file</literal></entry>
+              <entry>-a, --attach <literal>file</literal></entry>
               <entry>
                 Attach one or more <literal>file</literal>s to a message (must
                 be the last option). Add any addresses after the
@@ -19649,13 +19649,13 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-b <literal>address</literal></entry>
+              <entry>-b, --bcc <literal>address</literal></entry>
               <entry>
                 Specify a blind carbon copy (Bcc) recipient
               </entry>
             </row>
             <row>
-              <entry>-C</entry>
+              <entry>-C, --crypto</entry>
               <entry>
                 Enable cryptographic operations in the cases in which they're
                 disabled by default. Those include batch mode, sending a
@@ -19663,13 +19663,13 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-c <literal>address</literal></entry>
+              <entry>-c, --cc <literal>address</literal></entry>
               <entry>
                 Specify a carbon copy (Cc) recipient
               </entry>
             </row>
             <row>
-              <entry>-D</entry>
+              <entry>-D, --dump-config</entry>
               <entry>
                 Dump all config variables as
                 &apos;<emphasis role="bold">name=value</emphasis>&apos; pairs
@@ -19677,27 +19677,28 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-D -D (or -DD)</entry>
+              <entry>-DD, --dump-changed-config</entry>
               <entry>
-                Like <emphasis role="bold">-D</emphasis>, but only show the
-                config that has changed
+                Dump all changed config variables as
+                &apos;<emphasis role="bold">name=value</emphasis>&apos; pairs
+                to stdout
               </entry>
             </row>
             <row>
-              <entry>-D -O</entry>
+              <entry>-D -O, --with-docs</entry>
               <entry>
                 Like <emphasis role="bold">-D</emphasis>, but show one-liner documentation
               </entry>
             </row>
             <row>
-              <entry>-D -S</entry>
+              <entry>-D -S, --hide-sensitive</entry>
               <entry>
                 Like <emphasis role="bold">-D</emphasis>, but hide the value of
-                sensitive variables
+                sensitive config options
               </entry>
             </row>
             <row>
-              <entry>-d <literal>level</literal></entry>
+              <entry>-d, --debug-level <literal>level</literal></entry>
               <entry>
                 Log debugging output to a file (default is
                 &quot;<literal>~/.neomuttdebug0</literal>&quot;).
@@ -19711,7 +19712,7 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-E</entry>
+              <entry>-E, --edit-message</entry>
               <entry>
                 Edit
                 <literal>draft</literal> (<emphasis role="bold">-H</emphasis>) or
@@ -19720,14 +19721,14 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-e <literal>command</literal></entry>
+              <entry>-e, --command <literal>command</literal></entry>
               <entry>
                 Specify a <literal>command</literal> to be run after reading
                 the config files
               </entry>
             </row>
             <row>
-              <entry>-F <literal>config</literal></entry>
+              <entry>-F, --config <literal>config</literal></entry>
               <entry>
                 Specify an alternative initialization file to read, see section
                 <link linkend="configuration-files">Location of Initialization Files</link>
@@ -19735,7 +19736,7 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-f <literal>mailbox</literal></entry>
+              <entry>-f, --folder <literal>mailbox</literal></entry>
               <entry>
                 Specify a <literal>mailbox</literal> (as defined with
                 <link linkend="mailboxes"><command>mailboxes</command> command</link>)
@@ -19743,40 +19744,40 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-G</entry>
+              <entry>-G, --nntp-browser</entry>
               <entry>
                 Start NeoMutt with a listing of subscribed newsgroups
               </entry>
             </row>
             <row>
-              <entry>-g <literal>server</literal></entry>
+              <entry>-g, --nntp-server <literal>server</literal></entry>
               <entry>
                 Like <emphasis role="bold">-G</emphasis>, but start at
                 specified news <literal>server</literal>
               </entry>
             </row>
             <row>
-              <entry>-H <literal>draft</literal></entry>
+              <entry>-H, --draft <literal>draft</literal></entry>
               <entry>
                 Specify a <literal>draft</literal> file with header and body
                 for message composing
               </entry>
             </row>
             <row>
-              <entry>-h</entry>
+              <entry>-h, --help</entry>
               <entry>
                 Print this help message and exit
               </entry>
             </row>
             <row>
-              <entry>-i <literal>include</literal></entry>
+              <entry>-i, --include <literal>include</literal></entry>
               <entry>
                 Specify an <literal>include</literal> file to be embedded in
                 the body of a message
               </entry>
             </row>
             <row>
-              <entry>-l <literal>file</literal></entry>
+              <entry>-l, --debug-file <literal>file</literal></entry>
               <entry>
                 Specify a <literal>file</literal> for debugging output (default
                 &quot;<literal>~/.neomuttdebug0</literal>&quot;). This
@@ -19789,7 +19790,7 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-m <literal>type</literal></entry>
+              <entry>-m, --mbox-type <literal>type</literal></entry>
               <entry>
                 Specify a default mailbox format <literal>type</literal> for
                 newly created folders. The <literal>type</literal> is either
@@ -19797,19 +19798,19 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-n</entry>
+              <entry>-n, --no-system-config</entry>
               <entry>
                 Do not read the system-wide configuration file
               </entry>
             </row>
             <row>
-              <entry>-p</entry>
+              <entry>-p, --postponed</entry>
               <entry>
                 Resume a prior postponed message, if any
               </entry>
             </row>
             <row>
-              <entry>-Q <literal>variable</literal></entry>
+              <entry>-Q, --query <literal>variable</literal></entry>
               <entry>
                 Query a configuration <literal>variable</literal> and print its
                 value to stdout (after the config has been read and any
@@ -19818,45 +19819,45 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-R</entry>
+              <entry>-R, --read-only</entry>
               <entry>
                 Open mailbox in read-only mode
               </entry>
             </row>
             <row>
-              <entry>-s <literal>subject</literal></entry>
+              <entry>-s, --subject <literal>subject</literal></entry>
               <entry>
                 Specify a <literal>subject</literal> (must be enclosed in
                 quotes if it has spaces)
               </entry>
             </row>
             <row>
-              <entry>-v</entry>
+              <entry>-v, --version</entry>
               <entry>
                 Print the NeoMutt version and compile-time definitions and exit
               </entry>
             </row>
             <row>
-              <entry>-vv</entry>
+              <entry>-vv, --license</entry>
               <entry>
                 Print the NeoMutt license and copyright information and exit
               </entry>
             </row>
             <row>
-              <entry>-y</entry>
+              <entry>-y, --browser</entry>
               <entry>
                 Start NeoMutt with a listing of all defined mailboxes
               </entry>
             </row>
             <row>
-              <entry>-Z</entry>
+              <entry>-Z, --check-new-mail</entry>
               <entry>
                 Open the first mailbox with new message or exit immediately
                 with exit code 1 if none is found in all defined mailboxes
               </entry>
             </row>
             <row>
-              <entry>-z</entry>
+              <entry>-z, --check-any-mail</entry>
               <entry>
                 Open the first or specified
                 (<emphasis role="bold">-f</emphasis>) mailbox if it holds any

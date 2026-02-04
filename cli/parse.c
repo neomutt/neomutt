@@ -27,11 +27,66 @@
  */
 
 #include "config.h"
+#include <getopt.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <sys/param.h> // IWYU pragma: keep
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "objects.h"
+
+/**
+ * LongOptions - Long option definitions for getopt_long()
+ *
+ * All short options have corresponding long options for clarity.
+ * The syntax is backwards compatible - all original short options work.
+ */
+static const struct option LongOptions[] = {
+  // clang-format off
+  // Shared options
+  { "command",             required_argument, NULL, 'e' },
+  { "config",              required_argument, NULL, 'F' },
+  { "debug-file",          required_argument, NULL, 'l' },
+  { "debug-level",         required_argument, NULL, 'd' },
+  { "mbox-type",           required_argument, NULL, 'm' },
+  { "no-system-config",    no_argument,       NULL, 'n' },
+
+  // Help options
+  { "help",                no_argument,       NULL, 'h' },
+  { "license",             no_argument,       NULL, 'L' },
+  { "version",             no_argument,       NULL, 'v' },
+
+  // Info options
+  { "alias",               required_argument, NULL, 'A' },
+  { "dump-changed-config", no_argument,       NULL, 'X' },
+  { "dump-config",         no_argument,       NULL, 'D' },
+  { "hide-sensitive",      no_argument,       NULL, 'S' },
+  { "query",               required_argument, NULL, 'Q' },
+  { "with-docs",           no_argument,       NULL, 'O' },
+
+  // Send options
+  { "attach",              required_argument, NULL, 'a' },
+  { "bcc",                 required_argument, NULL, 'b' },
+  { "cc",                  required_argument, NULL, 'c' },
+  { "crypto",              no_argument,       NULL, 'C' },
+  { "draft",               required_argument, NULL, 'H' },
+  { "edit-message",        no_argument,       NULL, 'E' },
+  { "include",             required_argument, NULL, 'i' },
+  { "subject",             required_argument, NULL, 's' },
+
+  // TUI options
+  { "browser",             no_argument,       NULL, 'y' },
+  { "check-any-mail",      no_argument,       NULL, 'z' },
+  { "check-new-mail",      no_argument,       NULL, 'Z' },
+  { "folder",              required_argument, NULL, 'f' },
+  { "nntp-browser",        no_argument,       NULL, 'G' },
+  { "nntp-server",         required_argument, NULL, 'g' },
+  { "postponed",           no_argument,       NULL, 'p' },
+  { "read-only",           no_argument,       NULL, 'R' },
+
+  { NULL, 0, NULL, 0 },
+  // clang-format on
+};
 
 /**
  * check_help_mode - Check for help mode
@@ -117,7 +172,8 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
 
   while (rc && (argc > 1) && (optind < argc))
   {
-    int opt = getopt(argc, argv, "+:A:a:b:Cc:Dd:Ee:F:f:Gg:H:hi:l:m:nOpQ:RSs:TvyZz");
+    int opt = getopt_long(argc, argv, "+:A:a:b:Cc:Dd:Ee:F:f:Gg:H:hi:l:m:nOpQ:RSs:vyZz",
+                          LongOptions, NULL);
     switch (opt)
     {
       // ------------------------------------------------------------
@@ -173,6 +229,12 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
         cli->help.is_set = true;
         break;
       }
+      case 'L': // license
+      {
+        cli->help.license = true;
+        cli->help.is_set = true;
+        break;
+      }
       case 'v': // version, license
       {
         if (cli->help.version)
@@ -221,6 +283,13 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
       case 'S': // hide sensitive
       {
         cli->info.hide_sensitive = true;
+        cli->info.is_set = true;
+        break;
+      }
+      case 'X': // dump changed
+      {
+        cli->info.dump_config = true;
+        cli->info.dump_changed = true;
         cli->info.is_set = true;
         break;
       }

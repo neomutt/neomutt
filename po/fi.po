@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-01-18 03:49+0000\n"
+"POT-Creation-Date: 2026-02-04 03:28+0000\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -28,110 +28,110 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: address/config_type.c:87 config/long.c:51 config/path.c:98 config/path.c:173
-#: config/sort.c:58 config/string.c:69 config/string.c:144
+#: config/sort.c:60 config/string.c:69 config/string.c:144
 #: expando/config_type.c:69 expando/config_type.c:167
 #, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr "Asetusta %s ei voi asettaa tai poistaa sivuttimesta"
 
 #. L10N: prompt to add a new alias
-#: alias/alias.c:394
+#: alias/alias.c:395
 msgid "Alias as: "
 msgstr "Aliakseksi: "
 
-#: alias/alias.c:403
+#: alias/alias.c:404
 msgid "You already have an alias defined with that name"
 msgstr "Tällä nimellä on jo alias"
 
-#: alias/alias.c:409
+#: alias/alias.c:410
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Varoitus: Tämä alias ei ehkä toimi, korjataanko?"
 
-#: alias/alias.c:434
+#: alias/alias.c:435
 msgid "Address: "
 msgstr "Osoite: "
 
-#: alias/alias.c:446 attach/recvcmd.c:227 conn/raw.c:177 conn/raw.c:234
+#: alias/alias.c:447 attach/recvcmd.c:227 conn/raw.c:177 conn/raw.c:234
 #: envelope/functions.c:133 external.c:132 send/send.c:210
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Viallinen IDN: %s"
 
-#: alias/alias.c:457
+#: alias/alias.c:458
 msgid "Personal name: "
 msgstr "Henkilönnimi: "
 
-#: alias/alias.c:466
+#: alias/alias.c:467
 #, fuzzy
 msgid "Comment: "
 msgstr "X-Comment-To: "
 
-#: alias/alias.c:472
+#: alias/alias.c:473
 msgid "Tags (comma-separated): "
 msgstr ""
 
-#: alias/alias.c:501
+#: alias/alias.c:502
 msgid "Accept?"
 msgstr "Hyväksytäänkö?"
 
-#: alias/alias.c:516 attach/recvattach.c:299 attach/recvattach.c:322
+#: alias/alias.c:517 attach/recvattach.c:299 attach/recvattach.c:322
 #: attach/recvattach.c:340 attach/recvattach.c:357 attach/recvattach.c:484
-#: pager/functions.c:1027
+#: pager/functions.c:1033
 msgid "Save to file: "
 msgstr "Tallenna tiedostoon: "
 
-#: alias/alias.c:538
+#: alias/alias.c:539
 msgid "Error reading alias file"
 msgstr "Virhe luettaessa aliastiedostoa"
 
-#: alias/alias.c:577
+#: alias/alias.c:578
 msgid "Trouble adding alias"
 msgstr "Virhe lisättäessä aliasta"
 
-#: alias/alias.c:579
+#: alias/alias.c:580
 msgid "Alias added"
 msgstr "Alias lisätty"
 
-#: alias/commands.c:142 alias/commands.c:263 attach/commands.c:490
-#: attach/commands.c:563 color/commands.c:151 color/commands.c:164
-#: color/commands.c:204 color/commands.c:316 color/commands.c:454
+#: alias/commands.c:144 alias/commands.c:271 attach/commands.c:492
+#: attach/commands.c:567 color/commands.c:151 color/commands.c:164
+#: color/commands.c:207 color/commands.c:319 color/commands.c:459
 #: color/parse_color.c:292 color/parse_color.c:317 color/parse_color.c:342
-#: commands/alternates.c:99 commands/alternates.c:145 commands/group.c:95
-#: commands/group.c:191 commands/group.c:234 commands/group.c:281
-#: commands/group.c:320 commands/ifdef.c:94 commands/ifdef.c:116
-#: commands/ignore.c:56 commands/ignore.c:84 commands/mailboxes.c:176
-#: commands/mailboxes.c:201 commands/mailboxes.c:233 commands/mailboxes.c:249
-#: commands/mailboxes.c:349 commands/my_header.c:57 commands/my_header.c:106
-#: commands/parse.c:98 commands/score.c:55 commands/score.c:67
-#: commands/score.c:142 commands/setenv.c:84 commands/setenv.c:228
-#: commands/source.c:220 commands/spam.c:56 commands/spam.c:113
-#: commands/stailq.c:59 commands/stailq.c:90 commands/subjectrx.c:77
-#: commands/subjectrx.c:116 commands/subjectrx.c:125 commands/subjectrx.c:197
-#: commands/subjectrx.c:223 commands/tags.c:59 commands/tags.c:105
-#: hooks/parse.c:69 hooks/parse.c:87 hooks/parse.c:129 hooks/parse.c:201
-#: hooks/parse.c:211 hooks/parse.c:367 hooks/parse.c:376 hooks/parse.c:446
-#: hooks/parse.c:455 hooks/parse.c:542 hooks/parse.c:551 hooks/parse.c:560
-#: hooks/parse.c:676 hooks/parse.c:685 hooks/parse.c:772 hooks/parse.c:781
-#: hooks/parse.c:790 hooks/parse.c:916 hooks/parse.c:926 hooks/parse.c:1048
-#: hooks/parse.c:1079 hooks/parse.c:1169 imap/imap.c:96 imap/imap.c:144
-#: key/commands.c:160 key/commands.c:209 key/commands.c:469 key/commands.c:773
-#: lua/commands.c:61 lua/commands.c:102 sidebar/commands.c:48
-#: sidebar/commands.c:76
+#: commands/alternates.c:101 commands/alternates.c:149 commands/group.c:97
+#: commands/group.c:195 commands/group.c:240 commands/group.c:289
+#: commands/group.c:330 commands/ifdef.c:96 commands/ifdef.c:118
+#: commands/ignore.c:57 commands/ignore.c:87 commands/mailboxes.c:214
+#: commands/mailboxes.c:239 commands/mailboxes.c:271 commands/mailboxes.c:287
+#: commands/mailboxes.c:444 commands/my_header.c:59 commands/my_header.c:110
+#: commands/parse.c:103 commands/score.c:57 commands/score.c:69
+#: commands/score.c:146 commands/setenv.c:86 commands/setenv.c:230
+#: commands/source.c:236 commands/spam.c:58 commands/spam.c:117
+#: commands/stailq.c:60 commands/stailq.c:93 commands/subjectrx.c:77
+#: commands/subjectrx.c:116 commands/subjectrx.c:125 commands/subjectrx.c:200
+#: commands/subjectrx.c:229 commands/tags.c:61 commands/tags.c:110
+#: hooks/parse.c:71 hooks/parse.c:89 hooks/parse.c:133 hooks/parse.c:207
+#: hooks/parse.c:217 hooks/parse.c:375 hooks/parse.c:384 hooks/parse.c:456
+#: hooks/parse.c:465 hooks/parse.c:554 hooks/parse.c:563 hooks/parse.c:572
+#: hooks/parse.c:690 hooks/parse.c:699 hooks/parse.c:788 hooks/parse.c:797
+#: hooks/parse.c:806 hooks/parse.c:934 hooks/parse.c:944 hooks/parse.c:1068
+#: hooks/parse.c:1099 hooks/parse.c:1191 imap/imap.c:98 imap/imap.c:149
+#: key/commands.c:162 key/commands.c:213 key/commands.c:475 key/commands.c:785
+#: lua/commands.c:64 lua/commands.c:107 sidebar/commands.c:51
+#: sidebar/commands.c:81
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: liian vähän argumentteja"
 
-#: alias/commands.c:167
+#: alias/commands.c:169
 #, fuzzy, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
 msgstr "Varoitus: Viallinen IDN %s aliaksessa %s"
 
-#: alias/commands.c:176
+#: alias/commands.c:178
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Varoitus: Viallinen IDN %s aliaksessa %s"
 
-#: alias/dlg_alias.c:101 alias/dlg_query.c:101 attach/dlg_attach.c:93
+#: alias/dlg_alias.c:101 alias/dlg_query.c:100 attach/dlg_attach.c:93
 #: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:111
 #: browser/dlg_browser.c:123 conn/dlg_verifycert.c:67 history/dlg_history.c:77
 #: ncrypt/dlg_gpgme.c:93 ncrypt/dlg_pgp.c:92 ncrypt/dlg_smime.c:74
@@ -150,11 +150,11 @@ msgstr "Poista"
 msgid "Undel"
 msgstr "Palauta"
 
-#: alias/dlg_alias.c:104 alias/dlg_query.c:105
+#: alias/dlg_alias.c:104 alias/dlg_query.c:104
 msgid "Sort"
 msgstr ""
 
-#: alias/dlg_alias.c:105 alias/dlg_query.c:106
+#: alias/dlg_alias.c:105 alias/dlg_query.c:105
 msgid "Rev-Sort"
 msgstr ""
 
@@ -163,10 +163,10 @@ msgstr ""
 msgid "Select"
 msgstr "Valitse"
 
-#: alias/dlg_alias.c:107 alias/dlg_query.c:108 attach/dlg_attach.c:97
+#: alias/dlg_alias.c:107 alias/dlg_query.c:107 attach/dlg_attach.c:97
 #: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:115
 #: browser/dlg_browser.c:129 compose/dlg_compose.c:105
-#: compose/dlg_compose.c:119 conn/dlg_verifycert.c:68 editor/window.c:50
+#: compose/dlg_compose.c:119 conn/dlg_verifycert.c:68 editor/window.c:49
 #: history/dlg_history.c:80 index/dlg_index.c:108 index/dlg_index.c:123
 #: ncrypt/dlg_gpgme.c:96 ncrypt/dlg_pgp.c:95 ncrypt/dlg_smime.c:76
 #: pager/dlg_pager.c:76 pager/dlg_pager.c:101 pager/dlg_pager.c:116
@@ -182,19 +182,19 @@ msgstr "Aliaksia ei ole"
 msgid "Aliases"
 msgstr "Aliakset"
 
-#: alias/dlg_query.c:102 index/dlg_index.c:105
+#: alias/dlg_query.c:101 index/dlg_index.c:105
 msgid "Mail"
 msgstr "Posti"
 
-#: alias/dlg_query.c:103
+#: alias/dlg_query.c:102
 msgid "New Query"
 msgstr "Uusi haku"
 
-#: alias/dlg_query.c:104
+#: alias/dlg_query.c:103
 msgid "Make Alias"
 msgstr "Tee alias"
 
-#: alias/dlg_query.c:107 history/dlg_history.c:79
+#: alias/dlg_query.c:106 history/dlg_history.c:79
 msgid "Search"
 msgstr "Haku"
 
@@ -207,59 +207,59 @@ msgstr "Odotetaan vastausta..."
 msgid "Query"
 msgstr "Haku: "
 
-#: alias/dlg_query.c:413 alias/dlg_query.c:486
+#: alias/dlg_query.c:415 alias/dlg_query.c:488
 msgid "Query command not defined"
 msgstr "Hakukomentoa ei ole määritelty"
 
-#: alias/dlg_query.c:496 alias/functions.c:323 alias/functions.c:341
+#: alias/dlg_query.c:498 alias/functions.c:319 alias/functions.c:338
 msgid "Query: "
 msgstr "Haku: "
 
-#: alias/functions.c:268
+#: alias/functions.c:264
 #, fuzzy
 msgid "Limit to addresses matching: "
 msgstr "Rajoita viestit täsmäämään: "
 
-#: alias/functions.c:287
+#: alias/functions.c:283
 #, fuzzy
 msgid "Tag addresses matching: "
 msgstr "Merkitse täsmäävät viestit: "
 
-#: alias/functions.c:303
+#: alias/functions.c:299
 #, fuzzy
 msgid "Untag addresses matching: "
 msgstr "Peru täsmäävien viestien merkintä: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/functions.c:418
+#: alias/functions.c:415
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
 msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/functions.c:420
+#: alias/functions.c:417
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
 msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/functions.c:422
+#: alias/functions.c:419
 msgid "aneu"
 msgstr ""
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:84 index/functions.c:1840
+#: alias/gui.c:84 index/functions.c:1857
 #, c-format
 msgid "Limit: %s"
 msgstr "Rajoite: %s"
 
-#: attach/commands.c:506
+#: attach/commands.c:508
 msgid "Current attachments settings:"
 msgstr "Nykyiset liiteasetukset:"
 
-#: attach/commands.c:540
+#: attach/commands.c:542
 msgid "attachments: invalid disposition"
 msgstr "liitteet: dispositio on väärä"
 
-#: attach/commands.c:614
+#: attach/commands.c:618
 msgid "unattachments: invalid disposition"
 msgstr "epäliitteet: viallinen dispositio"
 
@@ -279,39 +279,39 @@ msgstr "Tulosta"
 msgid "Attachments"
 msgstr "Liitteitä"
 
-#: attach/functions.c:56 index/functions.c:3111
+#: attach/functions.c:52 index/functions.c:3159
 msgid "Function not permitted in attach-message mode"
 msgstr "Funktio ei toimi viestinliitetilassa"
 
-#: attach/functions.c:203 index/functions.c:3105 mx.c:930
+#: attach/functions.c:199 index/functions.c:3153 mx.c:930
 msgid "Mailbox is read-only"
 msgstr "Kirjoitussuojattu postilaatikko"
 
-#: attach/functions.c:271
+#: attach/functions.c:267
 msgid "There are no subparts to show"
 msgstr "Ei aliosia näytettäväksi"
 
-#: attach/functions.c:290
+#: attach/functions.c:286
 msgid "Can't delete attachment from POP server"
 msgstr "Ei voitu poistaa liitettä POP-palvelimelta"
 
-#: attach/functions.c:297
+#: attach/functions.c:293
 msgid "Can't delete attachment from news server"
 msgstr "Ei voitu poistaa liitettä uutisryhmäpalvelimelta"
 
-#: attach/functions.c:303
+#: attach/functions.c:299
 msgid "Deletion of attachments from encrypted messages is unsupported"
 msgstr "Liitteiden poistoa salatuista viesteistä ei tueta"
 
-#: attach/functions.c:308
+#: attach/functions.c:304
 msgid "Deletion of attachments from signed messages may invalidate the signature"
 msgstr "Liitteiden poista allekirjoitetusta viestistä saattaa mitätöidä allekirjoituksen"
 
-#: attach/functions.c:324 attach/functions.c:348
+#: attach/functions.c:320 attach/functions.c:344
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Vain multipart-liitteiden poisto on tuettu"
 
-#: attach/functions.c:658 index/functions.c:2857
+#: attach/functions.c:656 index/functions.c:2901
 msgid "Reply by mail as poster prefers?"
 msgstr "Vastataanko postitse kuten lähettäjä pyytää?"
 
@@ -325,7 +325,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcapin compose-tietueessa pitää olla %%s"
 
 #: attach/mutt_attach.c:162 attach/mutt_attach.c:301 compmbox/compress.c:314
-#: compose/functions.c:1862 gui/curs_lib.c:124 index/dlg_index.c:1213
+#: compose/functions.c:1882 gui/curs_lib.c:124 index/dlg_index.c:1213
 #: index/dlg_index.c:1258 pager/dlg_pager.c:454 pager/do_pager.c:166
 #: pager/message.c:324 send/sendlib.c:580
 #, c-format
@@ -368,8 +368,8 @@ msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME-tyyppiä ei ole määritelty, joten liitettä ei voi avata."
 
 #: attach/mutt_attach.c:571 attach/mutt_attach.c:769 attach/mutt_attach.c:1189
-#: attach/mutt_attach.c:1254 email/handler.c:601 ncrypt/pgp_functions.c:160
-#: ncrypt/pgpkey.c:300
+#: attach/mutt_attach.c:1254 email/handler.c:601 ncrypt/pgp_functions.c:161
+#: ncrypt/pgpkey.c:299
 msgid "Can't create filter"
 msgstr "Ei voida luoda filtteriä"
 
@@ -543,15 +543,15 @@ msgstr "Vain message/rfc822-osia kirjoittaa lähettäjälle"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:1226
+#: autocrypt/autocrypt.c:77 main.c:1225
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s puuttuu, luodaanko se?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:331 main.c:676
-#: main.c:1230 nntp/newsrc.c:1019
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:331 main.c:674
+#: main.c:1229 nntp/newsrc.c:1019
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Ei voitu luoda kohdetta %s: %s"
@@ -720,12 +720,12 @@ msgstr "kryptaa manuaalisesti"
 
 #. L10N: This error message is displayed if a database update of an
 #. account record fails for some odd reason.
-#: autocrypt/functions.c:102 autocrypt/functions.c:116
+#: autocrypt/functions.c:98 autocrypt/functions.c:112
 msgid "Error updating account record"
 msgstr "Tilitiedonpäivitysvirhe"
 
 #. L10N: Confirmation message when deleting an autocrypt account
-#: autocrypt/functions.c:149
+#: autocrypt/functions.c:145
 #, c-format
 msgid "Really delete account \"%s\"?"
 msgstr "Poistetaanko tili %s?"
@@ -822,7 +822,7 @@ msgstr "Poista tilaus"
 msgid "Catchup"
 msgstr "Ota kiinni"
 
-#: browser/dlg_browser.c:315 browser/functions.c:448 browser/functions.c:786
+#: browser/dlg_browser.c:315 browser/functions.c:446 browser/functions.c:785
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s ei ole hakemisto"
@@ -856,74 +856,74 @@ msgstr "Hakemisto [%s], Tiedostomaski: %s"
 msgid "Can't attach a directory"
 msgstr "Ei voida liittää hakemistoa"
 
-#: browser/functions.c:173
+#: browser/functions.c:168
 msgid "New file name: "
 msgstr "Uusi tiedostonimi: "
 
-#: browser/functions.c:203
+#: browser/functions.c:200
 msgid "No newsgroups match the mask"
 msgstr "Ei uutisryhmiä jotka täsmäävät maskiin"
 
-#: browser/functions.c:229
+#: browser/functions.c:226
 #, fuzzy
 msgid "There are no mailboxes"
 msgstr "Ei viestejä"
 
-#: browser/functions.c:275 browser/functions.c:594 browser/functions.c:653
+#: browser/functions.c:272 browser/functions.c:592 browser/functions.c:651
 msgid "No files match the file mask"
 msgstr "Ei tiedostoja jotka täsmäävät maskiin"
 
-#: browser/functions.c:290
+#: browser/functions.c:287
 msgid "Can't view a directory"
 msgstr "Ei voida näyttää tiedostoa"
 
-#: browser/functions.c:306
+#: browser/functions.c:303
 msgid "Error trying to view file"
 msgstr "Virhe tiedostoa näytettäessä"
 
-#: browser/functions.c:374
+#: browser/functions.c:372
 msgid "Chdir to: "
 msgstr "Vaihda hakemistoa: "
 
-#: browser/functions.c:435 browser/functions.c:587
+#: browser/functions.c:433 browser/functions.c:585
 msgid "Error scanning directory"
 msgstr "Virhe skannatessa hakemistoa"
 
-#: browser/functions.c:468
+#: browser/functions.c:466
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Luonti toimii vain IMAP-postille"
 
-#: browser/functions.c:497
+#: browser/functions.c:495
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Poisto toimii vain IMAP-laatikoille"
 
-#: browser/functions.c:508
+#: browser/functions.c:506
 #, fuzzy
 msgid "Can't delete currently selected mailbox"
 msgstr "näytä nykyisen valitun tiedoston nimi"
 
-#: browser/functions.c:512
+#: browser/functions.c:510
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Poistetaanko %s?"
 
-#: browser/functions.c:515
+#: browser/functions.c:513
 msgid "Mailbox not deleted"
 msgstr "Laatikkoa ei poistettu"
 
-#: browser/functions.c:521
+#: browser/functions.c:519
 msgid "Mailbox deletion failed"
 msgstr "Laatikon poisto ei onnistunut"
 
-#: browser/functions.c:530
+#: browser/functions.c:528
 msgid "Mailbox deleted"
 msgstr "Laatikko poistettu"
 
-#: browser/functions.c:544
+#: browser/functions.c:542
 msgid "File Mask: "
 msgstr "Tiedostomaski: "
 
-#: browser/functions.c:862
+#: browser/functions.c:861
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Uudellennimeys toimii vain IMAP-laatikoille"
 
@@ -942,48 +942,48 @@ msgstr "Järjestele (p)äivän, (a)akkosten, (k)oon, ku(v)auksen, uusien (m)ää
 msgid "dazecwn"
 msgstr "pakvmun"
 
-#: browser/functions.c:965
+#: browser/functions.c:966
 #, c-format
 msgid "Subscribe pattern: "
 msgstr "Tilauskuvio: "
 
-#: browser/functions.c:967
+#: browser/functions.c:968
 #, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Tilauksen poistokuvio: "
 
-#: color/commands.c:179 color/commands.c:231
+#: color/commands.c:179 color/commands.c:234
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: objektia ei löydy"
 
-#: color/commands.c:339
+#: color/commands.c:342
 #, c-format
 msgid "Direct colors support not compiled in: %s"
 msgstr ""
 
-#: color/commands.c:346
+#: color/commands.c:349
 #, fuzzy, c-format
 msgid "Direct colors support disabled: %s"
 msgstr "oletusvärejä ei tueta"
 
-#: color/commands.c:353 color/parse_color.c:189 color/parse_color.c:228
+#: color/commands.c:356 color/parse_color.c:189 color/parse_color.c:228
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: väri ei toimi tässä terminaalissa"
 
-#: color/commands.c:376 color/commands.c:412 commands/ifdef.c:152
-#: commands/parse.c:129 commands/score.c:74 commands/spam.c:68 hooks/dump.c:229
-#: hooks/parse.c:92 hooks/parse.c:136 hooks/parse.c:218 hooks/parse.c:383
-#: hooks/parse.c:462 hooks/parse.c:567 hooks/parse.c:692 hooks/parse.c:797
-#: hooks/parse.c:933 hooks/parse.c:1090 imap/imap.c:109 imap/imap.c:155
-#: key/commands.c:219 key/commands.c:272 key/commands.c:527 key/commands.c:708
-#: lua/commands.c:120
+#: color/commands.c:379 color/commands.c:415 commands/ifdef.c:157
+#: commands/parse.c:136 commands/score.c:76 commands/spam.c:70 hooks/dump.c:231
+#: hooks/parse.c:94 hooks/parse.c:140 hooks/parse.c:224 hooks/parse.c:391
+#: hooks/parse.c:472 hooks/parse.c:579 hooks/parse.c:706 hooks/parse.c:813
+#: hooks/parse.c:951 hooks/parse.c:1110 imap/imap.c:111 imap/imap.c:160
+#: key/commands.c:223 key/commands.c:278 key/commands.c:533 key/commands.c:718
+#: lua/commands.c:125
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: liikaa argumentteja"
 
-#: color/commands.c:402
+#: color/commands.c:405
 #, fuzzy, c-format
 msgid "%s: invalid number: %s"
 msgstr "Virhe: score: ei ole numero"
@@ -1015,7 +1015,7 @@ msgid "# Status Colors\n"
 msgstr ""
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/dump.c:460 commands/parse.c:142 commands/setenv.c:95 hooks/dump.c:248
+#: color/dump.c:460 commands/parse.c:149 commands/setenv.c:97 hooks/dump.c:250
 #: imap/message.c:1168 key/dump.c:199 parse/dump.c:63
 #, c-format
 msgid "Could not create temporary file %s"
@@ -1525,91 +1525,96 @@ msgstr "-group: ei ryhmän nimeä"
 msgid "out of arguments"
 msgstr "argumentit loppuivat"
 
-#: commands/group.c:130
+#: commands/group.c:132
 #, c-format
 msgid "%s: missing -rx or -addr"
 msgstr "%sryhmä: -rx tai -addr puuttuu"
 
-#: commands/group.c:156
+#: commands/group.c:158
 #, c-format
 msgid "%s: warning: bad IDN '%s'"
 msgstr "%sryhmä: varoitus: huono IDN '%s'"
 
-#: commands/ifdef.c:127
+#: commands/ifdef.c:130
 #, c-format
 msgid "Error: %s"
 msgstr "Virhe: %s"
 
-#: commands/my_header.c:68
+#: commands/my_header.c:70
 msgid "invalid header field"
 msgstr "viallinen otsakekenttä"
 
-#: commands/score.c:118
+#: commands/score.c:120
 msgid "Error: score: invalid number"
 msgstr "Virhe: score: ei ole numero"
 
-#: commands/setenv.c:133 commands/setenv.c:168 parse/set.c:554
+#: commands/setenv.c:135 commands/setenv.c:170 parse/set.c:558
 #, c-format
 msgid "Can't query option with the '%s' command"
 msgstr ""
 
-#: commands/setenv.c:150 commands/setenv.c:158
+#: commands/setenv.c:152 commands/setenv.c:160
 #, fuzzy, c-format
 msgid "%s: invalid variable name '%s'"
 msgstr "Virhe: score: ei ole numero"
 
-#: commands/setenv.c:174 parse/set.c:548
+#: commands/setenv.c:176 parse/set.c:552
 msgid "Can't use a prefix when querying a variable"
 msgstr ""
 
-#: commands/setenv.c:207
+#: commands/setenv.c:209
 #, c-format
 msgid "%s is unset"
 msgstr "%s on asettamatta"
 
-#: commands/source.c:90
+#: commands/source.c:96
 #, c-format
 msgid "Error: Can't build path of '%s'"
 msgstr "Virhe: polun %s rakentaminen ei onnistu"
 
-#: commands/source.c:103
+#: commands/source.c:109
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr "Virhe: asetustiedoston %s latauksissa on sykli"
 
-#: commands/source.c:182
+#: commands/source.c:186
+#, c-format
+msgid "Command '%s' exited with status %d"
+msgstr ""
+
+#: commands/source.c:196
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: virheet kohteessa %s"
 
-#: commands/source.c:182
+#: commands/source.c:196
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: lukeminen peruttu liian monen virheen takia kohteessa %s"
 
-#: commands/source.c:191
+#: commands/source.c:205
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source: %d irhe kohteessa %s"
 msgstr[1] "source: %d virhettä kohteessa %s"
 
-#: commands/source.c:232 lua/commands.c:115
+#: commands/source.c:248 lua/commands.c:120
 #, c-format
 msgid "source: error at %s"
 msgstr "source: virhe kohteessa %s"
 
-#: commands/source.c:240
+#: commands/source.c:257
 #, c-format
 msgid "source: file %s could not be sourced"
 msgstr "source: tiedostoa %s ei voi ladata"
 
-#: commands/tags.c:78
+#: commands/tags.c:80
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr ""
 
-#: commands/tags.c:125
+#: commands/tags.c:130
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr ""
@@ -1726,7 +1731,7 @@ msgstr "Kopio"
 msgid "Subj"
 msgstr "Aihe"
 
-#: compose/dlg_compose.c:103 compose/dlg_compose.c:117 compose/functions.c:748
+#: compose/dlg_compose.c:103 compose/dlg_compose.c:117 compose/functions.c:745
 msgid "Attach file"
 msgstr "Liitä tiedosto"
 
@@ -1742,11 +1747,11 @@ msgstr "Uutisryhmät"
 msgid "-- Attachments"
 msgstr "-- Liitteet"
 
-#: compose/dlg_compose.c:337 compose/preview.c:139
+#: compose/dlg_compose.c:337 compose/preview.c:144
 msgid "-- Preview"
 msgstr ""
 
-#: compose/functions.c:235
+#: compose/functions.c:231
 msgid "There are no attachments"
 msgstr "Ei liitteitä"
 
@@ -1754,7 +1759,7 @@ msgstr "Ei liitteitä"
 #. doesn't stat.  %d is the attachment number and %s is the attachment
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
-#: compose/functions.c:304
+#: compose/functions.c:300
 #, c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "liite #%d on kadonnut: %s"
@@ -1763,12 +1768,12 @@ msgstr "liite #%d on kadonnut: %s"
 #. is modified behind the scenes.  %d is the attachment number and %s is
 #. the attachment filename.  The filename is located last to avoid a long
 #. path hiding the prompt question.
-#: compose/functions.c:321
+#: compose/functions.c:317
 #, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "Liitettä #%d on muokattu, päivitetäänkö koodaus kohteelle %s?"
 
-#: compose/functions.c:361
+#: compose/functions.c:357
 msgid "You may not delete the only attachment"
 msgstr "Ainoaa liitettä ei voi poistaa"
 
@@ -1776,32 +1781,32 @@ msgstr "Ainoaa liitettä ei voi poistaa"
 #. the compose menu.  This entry is most likely the message they just
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
-#: compose/functions.c:371
+#: compose/functions.c:367
 #, fuzzy
 msgid "Really delete the main message?"
 msgstr "Poistetaanko %s?"
 
-#: compose/functions.c:388 compose/functions.c:580
+#: compose/functions.c:384 compose/functions.c:576
 #, fuzzy
 msgid "Can't leave group with only one attachment"
 msgstr "Ainoaa liitettä ei voi poistaa"
 
-#: compose/functions.c:548 compose/functions.c:562
+#: compose/functions.c:544 compose/functions.c:558
 msgid "Attachments to be grouped must have the same parent"
 msgstr ""
 
-#: compose/functions.c:769
+#: compose/functions.c:766
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Liitetään valittua tiedostoa..."
 msgstr[1] "Liitetään valittuja tiedostoja..."
 
-#: compose/functions.c:789
+#: compose/functions.c:786
 #, c-format
 msgid "Unable to attach %s"
 msgstr "Ei voida liittää kohdetta %s"
 
-#: compose/functions.c:841
+#: compose/functions.c:840
 msgid "Open mailbox to attach message from"
 msgstr "Avaa postilaatikko josta liitetään viesti"
 
@@ -1809,7 +1814,7 @@ msgstr "Avaa postilaatikko josta liitetään viesti"
 msgid "Open newsgroup to attach message from"
 msgstr "Avaa uutisryhmä josta liitetään viesti"
 
-#: compose/functions.c:904 main.c:1686
+#: compose/functions.c:904 main.c:1685
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Ei voitu avata postilaatikkoa %s"
@@ -1826,177 +1831,177 @@ msgstr "Tägää viestit jotka haluat liittää"
 msgid "Unable to attach"
 msgstr "Ei voida liittää"
 
-#: compose/functions.c:1059
+#: compose/functions.c:1060
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
 msgstr ""
 
-#: compose/functions.c:1138
+#: compose/functions.c:1141
 msgid "Invalid encoding"
 msgstr "Virheellinen koodaus"
 
-#: compose/functions.c:1175
+#: compose/functions.c:1179
 msgid "Empty 'Content-Language'"
 msgstr "Tyhjä 'Content-Language'"
 
-#: compose/functions.c:1238
+#: compose/functions.c:1244
 #, fuzzy
 msgid "Can't filter multipart attachments"
 msgstr "Vain multipart-liitteiden poisto on tuettu"
 
-#: compose/functions.c:1273
+#: compose/functions.c:1282
 #, fuzzy
 msgid "Can't get multipart attachments"
 msgstr "Vain multipart-liitteiden poisto on tuettu"
 
-#: compose/functions.c:1295
+#: compose/functions.c:1305
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Vaihtoehtojen ryhmittely vaatii vähintään 2 merkittyä viestiä"
 
-#: compose/functions.c:1309
+#: compose/functions.c:1320
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Monikielinen ryhmittely vaatii vähintään 2 merkittyä viestiä"
 
-#: compose/functions.c:1321
+#: compose/functions.c:1332
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Kaikissa osissa ei ole 'Content-Language'-ostaketta, jatketaanko joka tapauksessa?"
 
-#: compose/functions.c:1324
+#: compose/functions.c:1335
 msgid "Not sending this message"
 msgstr "Ei lähetetä tätä viestiä"
 
-#: compose/functions.c:1339
+#: compose/functions.c:1351
 #, fuzzy
 msgid "Grouping 'related' requires at least 2 tagged messages"
 msgstr "Vaihtoehtojen ryhmittely vaatii vähintään 2 merkittyä viestiä"
 
-#: compose/functions.c:1372 compose/functions.c:1391
+#: compose/functions.c:1385 compose/functions.c:1404
 msgid "Attachment is already at bottom"
 msgstr "Liite on jo viimeisenä"
 
-#: compose/functions.c:1378 compose/functions.c:1432
+#: compose/functions.c:1391 compose/functions.c:1445
 msgid "Attachment can't be moved out of group"
 msgstr ""
 
-#: compose/functions.c:1427
+#: compose/functions.c:1440
 msgid "Attachment is already at top"
 msgstr "Liite on jo ensimmäisenä"
 
-#: compose/functions.c:1460
+#: compose/functions.c:1473
 msgid "New file: "
 msgstr "Uusi tiedosto: "
 
-#: compose/functions.c:1480
+#: compose/functions.c:1493
 msgid "Content-Type is of the form base/sub"
 msgstr "Sisältötyypin muoto on perusosa/aliosa"
 
-#: compose/functions.c:1487
+#: compose/functions.c:1500
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Tuntematon sisältötyyppi %s"
 
-#: compose/functions.c:1495
+#: compose/functions.c:1508
 #, c-format
 msgid "Can't create file %s"
 msgstr "Tiedostoa ei voitu luoda %s"
 
-#: compose/functions.c:1502
+#: compose/functions.c:1515
 #, fuzzy
 msgid "Error attaching file"
 msgstr "Tässä on epäonnistunut yritys liitteen tuottamisessa"
 
-#: compose/functions.c:1544
+#: compose/functions.c:1557
 #, fuzzy
 msgid "Can't print multipart attachments"
 msgstr "Tulostetaanko merkitty liite?"
 
-#: compose/functions.c:1570
+#: compose/functions.c:1584
 msgid "Send attachment with name: "
 msgstr "Lähetä liite nimellä: "
 
-#: compose/functions.c:1595
+#: compose/functions.c:1609
 #, fuzzy
 msgid "Can't save multipart attachments"
 msgstr "Vain multipart-liitteiden poisto on tuettu"
 
-#: compose/functions.c:1631
+#: compose/functions.c:1647
 msgid "Recoding only affects text attachments"
 msgstr "Uudelleenkoodaus vaikuttaa vain tekstiliitteisiin"
 
-#: compose/functions.c:1636
+#: compose/functions.c:1652
 msgid "The current attachment won't be converted"
 msgstr "Tätä liitettä ei konvertoida"
 
-#: compose/functions.c:1638
+#: compose/functions.c:1654
 msgid "The current attachment will be converted"
 msgstr "Tämä liite konvertoidaan"
 
-#: compose/functions.c:1667
+#: compose/functions.c:1684
 #, fuzzy
 msgid "Attachment is not 'multipart'"
 msgstr "Liite on jo ensimmäisenä"
 
-#: compose/functions.c:1783 send/send.c:2667
+#: compose/functions.c:1802 send/send.c:2667
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Virheellinen IDN %s: %s"
 
-#: compose/functions.c:1816
+#: compose/functions.c:1835
 #, fuzzy
 msgid "Can't edit multipart attachments"
 msgstr "Vain multipart-liitteiden poisto on tuettu"
 
-#: compose/functions.c:1897
+#: compose/functions.c:1918
 #, fuzzy
 msgid "Can't rename multipart attachments"
 msgstr "Vain multipart-liitteiden poisto on tuettu"
 
-#: compose/functions.c:1904
+#: compose/functions.c:1925
 msgid "Rename to: "
 msgstr "Uudelleennimeä:"
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1912 convert/content_info.c:208 editmsg.c:102
+#: compose/functions.c:1933 convert/content_info.c:208 editmsg.c:102
 #: editmsg.c:135 editmsg.c:154
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "stat ei onnistunut %s: %s"
 
-#: compose/functions.c:1950
+#: compose/functions.c:1972
 msgid "Save a copy of this message?"
 msgstr "Tallennetaanko viestin kopio?"
 
-#: compose/functions.c:1976
+#: compose/functions.c:1999
 msgid "Write message to mailbox"
 msgstr "Kirjoita viesti postilaatikkoon"
 
-#: compose/functions.c:1980
+#: compose/functions.c:2003
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Kirjoitetaan viestiä kohteesee %s..."
 
-#: compose/functions.c:1988
+#: compose/functions.c:2011
 msgid "Message written"
 msgstr "Viesti kirjoitettu"
 
-#: compose/functions.c:2056
+#: compose/functions.c:2080
 #, fuzzy
 msgid "Save (postpone) draft message?"
 msgstr "Palautetaanko lykätty viesti?"
 
-#: compose/preview.c:144
+#: compose/preview.c:149
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:152
+#: compose/preview.c:157
 msgid "Email too large to preview"
 msgstr ""
 
-#: compose/preview.c:198
+#: compose/preview.c:203
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "Ei voitu varmistaa lähettäjää"
 
-#: compose/preview.c:222
+#: compose/preview.c:227
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -2032,9 +2037,9 @@ msgid "Invalid enum value: %ld"
 msgstr "Väärä arvo asetuksella %s: %ld"
 
 #: config/helpers.c:340 config/set.c:110 config/set.c:455 config/set.c:602
-#: config/set.c:678 config/set.c:798 main.c:704 parse/set.c:119 parse/set.c:179
-#: parse/set.c:228 parse/set.c:262 parse/set.c:325 parse/set.c:366
-#: parse/set.c:433
+#: config/set.c:678 config/set.c:798 main.c:703 parse/set.c:120 parse/set.c:180
+#: parse/set.c:229 parse/set.c:263 parse/set.c:326 parse/set.c:367
+#: parse/set.c:434
 #, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "%s: tuntematon muuttuja"
@@ -2089,12 +2094,12 @@ msgstr "Virhe: arvo %s ei ole salittu valitsimelle -d"
 msgid "Type '%s' doesn't support operation '%s'"
 msgstr ""
 
-#: config/sort.c:88
+#: config/sort.c:90
 #, fuzzy, c-format
 msgid "Invalid sort name: %s"
 msgstr "Virheellinen suhteellinen päiväys: %s"
 
-#: config/sort.c:165
+#: config/sort.c:167
 #, fuzzy, c-format
 msgid "Invalid sort type: %ld"
 msgstr "Virheellinen suhteellinen päiväys: %s"
@@ -2115,12 +2120,12 @@ msgid "Unable to run account command"
 msgstr "Refresh-komento ei toimi"
 
 #. L10N: Example: Username at myhost.com
-#: conn/connaccount.c:80
+#: conn/connaccount.c:79
 #, c-format
 msgid "Username at %s: "
 msgstr "Käyttäjänimi kohteessa %s: "
 
-#: conn/connaccount.c:157
+#: conn/connaccount.c:156
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Salasana kohteelle %s@%s: "
@@ -2129,19 +2134,19 @@ msgstr "Salasana kohteelle %s@%s: "
 #. one of your $*_authenticators and (2) you do not have the corresponding
 #. $*_oauth_refresh_command defined. So the message does not mean "None of
 #. your $*_oauth_refresh_command's are defined."
-#: conn/connaccount.c:212
+#: conn/connaccount.c:211
 msgid "No OAUTH refresh command defined"
 msgstr "OAUTH refresh komento puuttuu"
 
-#: conn/connaccount.c:220
+#: conn/connaccount.c:219
 msgid "Unable to run refresh command"
 msgstr "Refresh-komento ei toimi"
 
-#: conn/connaccount.c:235
+#: conn/connaccount.c:234
 msgid "Command returned empty string"
 msgstr "Komento palautti tyhjän merkkijonon"
 
-#: conn/connaccount.c:242
+#: conn/connaccount.c:241
 #, c-format
 msgid "OAUTH token is too big: %ld"
 msgstr ""
@@ -2190,11 +2195,11 @@ msgstr "(h)ylkää, hyväksy (k)erran"
 msgid "ro"
 msgstr "hk"
 
-#: conn/dlg_verifycert.c:275
+#: conn/dlg_verifycert.c:277
 msgid "Jumping is not implemented for dialogs"
 msgstr "Siirtymistä ei ole toteutettu dialogeille"
 
-#: conn/dlg_verifycert.c:282
+#: conn/dlg_verifycert.c:284
 msgid "Search is not implemented for this menu"
 msgstr "Hakua ei ole toteutettu tälle valikolle"
 
@@ -2300,7 +2305,7 @@ msgstr "Kaikki protokollat TLS/SSL-yhteyttä varten ovat pois käytöstä"
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr "Salauksen valintaa $ssl_ciphers-muuttujalla ei tueta"
 
-#: conn/gnutls.c:864 imap/command.c:1350 imap/command.c:1471
+#: conn/gnutls.c:864 imap/command.c:1355 imap/command.c:1476
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "Yhteys %s aikakatkaistu"
@@ -2423,23 +2428,23 @@ msgstr "Virhe kohteen %s kanssa keskustellessa (%s)"
 msgid "Connection to %s has been aborted"
 msgstr "Yhteys kohteeseen %s on peruttu"
 
-#: conn/sasl.c:613
+#: conn/sasl.c:608
 msgid "Unknown SASL profile"
 msgstr "Tuntematon SASL-profiili"
 
-#: conn/sasl.c:657
+#: conn/sasl.c:652
 msgid "Error allocating SASL connection"
 msgstr "Virhe SASL-yhteyden allokoinnissa"
 
-#: conn/sasl.c:667
+#: conn/sasl.c:662
 msgid "Error setting SASL security properties"
 msgstr "Virhe SASL-turvallisuusasetusten määrittämisessä"
 
-#: conn/sasl.c:678
+#: conn/sasl.c:673
 msgid "Error setting SASL external security strength"
 msgstr "Virhe ulkoisen SASL-turvallisuusvahvuuden määrittämisessä"
 
-#: conn/sasl.c:688
+#: conn/sasl.c:683
 msgid "Error setting SASL external user name"
 msgstr "Virhe ulkoisen SASL-käyttäjänimen asetuksessa"
 
@@ -2510,36 +2515,36 @@ msgstr "Ei voitu avata viestitiedostoa: %s"
 msgid "Can't append to folder: %s"
 msgstr "Ei voitu avata kansiota: %s"
 
-#: editor/window.c:51
+#: editor/window.c:50
 msgid "Complete"
 msgstr ""
 
-#: editor/window.c:52
+#: editor/window.c:51
 msgid "Hist Up"
 msgstr ""
 
-#: editor/window.c:53
+#: editor/window.c:52
 msgid "Hist Down"
 msgstr ""
 
-#: editor/window.c:54
+#: editor/window.c:53
 #, fuzzy
 msgid "Hist Search"
 msgstr "Haku"
 
-#: editor/window.c:55
+#: editor/window.c:54
 msgid "Begin Line"
 msgstr ""
 
-#: editor/window.c:56
+#: editor/window.c:55
 msgid "End Line"
 msgstr ""
 
-#: editor/window.c:57
+#: editor/window.c:56
 msgid "Kill Line"
 msgstr ""
 
-#: editor/window.c:58
+#: editor/window.c:57
 msgid "Kill Word"
 msgstr ""
 
@@ -2566,14 +2571,14 @@ msgstr ""
 msgid "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 msgstr ""
 
-#: email/copy_email.c:743
+#: email/copy_email.c:741
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] "Pituuslaskelmat ovat pielessä %ld tavulla"
 msgstr[1] "Pituuslaskelmat ovat pielessä %ld tavulla"
 
-#: email/copy_email.c:836
+#: email/copy_email.c:834
 msgid "No decryption engine available for message"
 msgstr "Viestille ei ole purkualgoritmia"
 
@@ -2784,7 +2789,7 @@ msgstr "[-- Tämä on liitetiedosto ('view-attachments' pitää olla asetettu n�
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- tyyppiä %s/%s ei tueta ('view-attachments' pitää olla asetettu näppäimeen) --]\n"
 
-#: email/header.c:352 main.c:1496
+#: email/header.c:351 main.c:1495
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: ei voitu liittää tiedostoa"
@@ -2816,7 +2821,7 @@ msgstr "Sekä mailcap_path- että MAILCAPS-asetukset puuttuvat"
 msgid "mailcap entry for type %s not found"
 msgstr "Mailcap-tietue tyypille %s puuttuu"
 
-#: email/parse.c:1593
+#: email/parse.c:1592
 msgid "multipart message has no boundary parameter"
 msgstr "multipart-viestillä ei ole rajoitinmerkkiparametriä"
 
@@ -2842,19 +2847,19 @@ msgstr ""
 msgid "eca"
 msgstr "spa"
 
-#: envelope/functions.c:325
+#: envelope/functions.c:327
 msgid "No PGP backend configured"
 msgstr "PGP-sovellusta ei ole asetettu"
 
-#: envelope/functions.c:332 envelope/functions.c:407
+#: envelope/functions.c:334 envelope/functions.c:410
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME on jo valittu, poistetaanko ja jatketaan?"
 
-#: envelope/functions.c:363
+#: envelope/functions.c:365
 msgid "No S/MIME backend configured"
 msgstr "S/MIME-sovellusta ei ole asetettu"
 
-#: envelope/functions.c:371
+#: envelope/functions.c:373
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP on jo valittu, poistetaanko ja jatketaan?"
 
@@ -3116,113 +3121,113 @@ msgid "Shell command: "
 msgstr "Komentorivikomento: "
 
 #. L10N: Progress meter message when copying tagged messages
-#: external.c:804
+#: external.c:806
 #, fuzzy
 msgid "Copying tagged messages..."
 msgstr "Kopioidaan %d viestiä kansioon %s..."
 
-#: external.c:808
+#: external.c:810
 msgid "Copy tagged to mailbox"
 msgstr "Kopioi merkitty postilaatikkoon"
 
-#: external.c:808
+#: external.c:810
 msgid "Copy to mailbox"
 msgstr "Kopio postilaatikkoon"
 
-#: external.c:811
+#: external.c:813
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Decrypt-copy merkitty postilaatikkoon"
 
-#: external.c:812
+#: external.c:814
 msgid "Decrypt-copy to mailbox"
 msgstr "Decrypt-copy postilaatikkoon"
 
-#: external.c:815
+#: external.c:817
 msgid "Decode-copy tagged to mailbox"
 msgstr "Decode-copy merkitty postilaatikkoon"
 
-#: external.c:816
+#: external.c:818
 msgid "Decode-copy to mailbox"
 msgstr "Decode-copy postilaatikkoon"
 
 #. L10N: Progress meter message when saving tagged messages
-#: external.c:823
+#: external.c:825
 #, fuzzy
 msgid "Saving tagged messages..."
 msgstr "Tulostetaanko tägätyt viestit?"
 
-#: external.c:827
+#: external.c:829
 msgid "Save tagged to mailbox"
 msgstr "Tallenna merkitty postilaatikkoon"
 
-#: external.c:827
+#: external.c:829
 msgid "Save to mailbox"
 msgstr "Tallenna postilaatikkoon"
 
-#: external.c:830
+#: external.c:832
 msgid "Decrypt-save tagged to mailbox"
 msgstr "Decrypt-save merkitty postilaatikkoon"
 
-#: external.c:831
+#: external.c:833
 msgid "Decrypt-save to mailbox"
 msgstr "Decrypt-save postilaatikkoon"
 
-#: external.c:834
+#: external.c:836
 msgid "Decode-save tagged to mailbox"
 msgstr "Decode-save merkitty postilaatikkoon"
 
-#: external.c:835
+#: external.c:837
 msgid "Decode-save to mailbox"
 msgstr "Decode-save postilaatikkoon"
 
-#: external.c:878
+#: external.c:880
 #, c-format
 msgid "Copying to %s..."
 msgstr "Kopioidaan kohteeseen%s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: external.c:1031
+#: external.c:1033
 msgid "Error saving tagged messages"
 msgstr "Virhe merkittyjen viestien tallennuksessa"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: external.c:1036
+#: external.c:1038
 msgid "Error saving message"
 msgstr "Virhe viestin tallentamisessa"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: external.c:1043
+#: external.c:1045
 msgid "Error copying tagged messages"
 msgstr "Virhe merkittyjen viestien kopioinnissa"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: external.c:1048
+#: external.c:1050
 msgid "Error copying message"
 msgstr "Virhe viestin kopioinnissa"
 
-#: external.c:1118
+#: external.c:1120
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Konvertoidaanko muotook %s lähetettäessä?"
 
-#: external.c:1129
+#: external.c:1131
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "Sisältötyypiksi asetettiin %s"
 
-#: external.c:1134
+#: external.c:1136
 #, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Merkistöksi asetettiin %s; ei konvertoida."
 
-#: external.c:1135
+#: external.c:1137
 #, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Merkistöksi asetettiin %s; konvertoidaan."
 
 #: flags.c:390 gui/thread.c:1296 gui/thread.c:1362 gui/thread.c:1448
-#: index/functions.c:1050 index/functions.c:1153 index/functions.c:1170
-#: index/functions.c:1311
+#: index/functions.c:1058 index/functions.c:1162 index/functions.c:1180
+#: index/functions.c:1323
 msgid "Threading is not enabled"
 msgstr "Ketjutus ei ole päällä"
 
@@ -3234,7 +3239,7 @@ msgstr "Poista lippu"
 msgid "Set flag"
 msgstr "Aseta lippu"
 
-#: gui/curs_lib.c:140 index/functions.c:772
+#: gui/curs_lib.c:140 index/functions.c:776
 msgid "Exit NeoMutt without saving?"
 msgstr "Poistutaanko neomuttista tallentamatta?"
 
@@ -5129,10 +5134,10 @@ msgstr "%s:%d: Historiatiedoston muotovirhe"
 #: ncrypt/crypt_gpgme.c:2035 ncrypt/crypt_gpgme.c:2069
 #: ncrypt/crypt_gpgme.c:2087 ncrypt/crypt_gpgme.c:2127
 #: ncrypt/crypt_gpgme.c:2774 ncrypt/crypt_gpgme.c:2867
-#: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:589 ncrypt/pgp.c:596
+#: ncrypt/gpgme_functions.c:646 ncrypt/pgp.c:589 ncrypt/pgp.c:596
 #: ncrypt/pgp.c:924 ncrypt/pgp.c:1041 ncrypt/pgp.c:1198 ncrypt/pgp.c:1222
-#: ncrypt/pgp.c:1255 ncrypt/pgp.c:1609 ncrypt/pgp_functions.c:135
-#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:712
+#: ncrypt/pgp.c:1255 ncrypt/pgp.c:1609 ncrypt/pgp_functions.c:136
+#: ncrypt/pgpkey.c:281 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:712
 #: ncrypt/smime.c:720 ncrypt/smime.c:819 ncrypt/smime.c:929 ncrypt/smime.c:996
 #: ncrypt/smime.c:1003 ncrypt/smime.c:1214 ncrypt/smime.c:1617
 #: ncrypt/smime.c:1696 ncrypt/smime.c:1703 ncrypt/smime.c:1810
@@ -5312,33 +5317,33 @@ msgstr ""
 msgid "hooks"
 msgstr "hooks"
 
-#: hooks/dump.c:238
+#: hooks/dump.c:240
 #, fuzzy, c-format
 msgid "%s: No Hooks are configured"
 msgstr "PGP-sovellusta ei ole asetettu"
 
-#: hooks/parse.c:576 hooks/parse.c:806
+#: hooks/parse.c:588 hooks/parse.c:822
 msgid "current mailbox shortcut '^' is unset"
 msgstr "nykyisen postilaatikon oikopolku ^ on asettamatta"
 
-#: hooks/parse.c:588 hooks/parse.c:818
+#: hooks/parse.c:600 hooks/parse.c:834
 msgid "mailbox shortcut expanded to empty regex"
 msgstr "postilaatikon oikopolku laventui tyhjäksi ilmaukseksi"
 
-#: hooks/parse.c:940
+#: hooks/parse.c:958
 msgid "badly formatted command string"
 msgstr "epäkelpo komentojono"
 
-#: hooks/parse.c:1183
+#: hooks/parse.c:1205
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: unhook * ei toimi hookin sisältä."
 
-#: hooks/parse.c:1196
+#: hooks/parse.c:1218
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: tuntematon hook-tyyppi: %s"
 
-#: hooks/parse.c:1209
+#: hooks/parse.c:1231
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: Ei voitu poistaa kohdetta %s kohteesta %s"
@@ -5351,7 +5356,7 @@ msgstr "Ei autentikoijia tai huonot tiedot"
 #: imap/auth_anon.c:56 imap/auth_cram.c:102 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:168 imap/auth_oauth.c:73 imap/auth_sasl.c:125
 #: nntp/nntp.c:525 nntp/nntp.c:596 pop/auth.c:79 pop/auth.c:193 pop/auth.c:338
-#: pop/auth.c:433 send/smtp.c:537 send/smtp.c:656 send/smtp.c:742
+#: pop/auth.c:433 send/smtp.c:538 send/smtp.c:657 send/smtp.c:743
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autentikoidaan (%s)..."
@@ -5359,7 +5364,7 @@ msgstr "Autentikoidaan (%s)..."
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:89 imap/auth_cram.c:182 imap/auth_gss.c:349
 #: imap/auth_oauth.c:104 imap/auth_sasl.c:259 nntp/nntp.c:697 pop/auth.c:291
-#: pop/auth.c:359 send/smtp.c:820 send/smtp.c:896 send/smtp.c:1000
+#: pop/auth.c:359 send/smtp.c:821 send/smtp.c:897 send/smtp.c:1001
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s-autentikointi epäonnistui"
@@ -5380,57 +5385,57 @@ msgstr "Kirjaudutaan siäsään..."
 msgid "Login failed"
 msgstr "Kirjautuminen epäonnistui"
 
-#: imap/browse.c:213
+#: imap/browse.c:212
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s ei ole toimiva IMAP-polku"
 
-#: imap/browse.c:251
+#: imap/browse.c:250
 msgid "Getting folder list..."
 msgstr "Haetaan kansiolistaa..."
 
 #. L10N: (%s) is the name / path of the folder we were trying to browse
-#: imap/browse.c:373
+#: imap/browse.c:372
 #, c-format
 msgid "No such folder: %s"
 msgstr "Kansiota ei ole: %s"
 
-#: imap/browse.c:415
+#: imap/browse.c:414
 msgid "Create mailbox: "
 msgstr "Luo postilaatikko: "
 
-#: imap/browse.c:423 imap/browse.c:484
+#: imap/browse.c:422 imap/browse.c:483
 msgid "Mailbox must have a name"
 msgstr "Postilaatikolla pitää olla nimi"
 
-#: imap/browse.c:431
+#: imap/browse.c:430
 msgid "Mailbox created"
 msgstr "Postilaatikko luotu"
 
-#: imap/browse.c:465
+#: imap/browse.c:464
 msgid "Can't rename root folder"
 msgstr "Juurikansiota ei voi uudelleennimetä"
 
-#: imap/browse.c:472
+#: imap/browse.c:471
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Uudelleennimeä postilaatikko %s:"
 
-#: imap/browse.c:492
+#: imap/browse.c:491
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Uudelleennimeys epäonnistui: %s"
 
-#: imap/browse.c:496
+#: imap/browse.c:495
 msgid "Mailbox renamed"
 msgstr "Postilaatikko uudelleennimetty"
 
-#: imap/command.c:184
+#: imap/command.c:185
 #, c-format
 msgid "Mailbox %s@%s closed"
 msgstr "Postilaatikko %s@%s on katkaistu"
 
-#: imap/command.c:1245
+#: imap/command.c:1250
 #, fuzzy, c-format
 msgid "IMAP command failed: %s"
 msgstr "Pakkaus epäonnistui: %s"
@@ -5440,140 +5445,140 @@ msgstr "Pakkaus epäonnistui: %s"
 msgid "Option %s: %s is not a valid authenticator"
 msgstr ""
 
-#: imap/imap.c:117
+#: imap/imap.c:119
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "Ryhmää %s ei voitu tilata"
 
-#: imap/imap.c:122 imap/imap.c:1372
+#: imap/imap.c:124 imap/imap.c:1377
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s tilattu"
 
-#: imap/imap.c:163
+#: imap/imap.c:168
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Kansion %s tilausta ei voitu poistaa"
 
-#: imap/imap.c:168 imap/imap.c:1374
+#: imap/imap.c:173 imap/imap.c:1379
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Kansion %s tilaus poistettu"
 
-#: imap/imap.c:182
+#: imap/imap.c:187
 msgid "Subscribe to an IMAP mailbox"
 msgstr ""
 
-#: imap/imap.c:183
+#: imap/imap.c:188
 #, fuzzy
 msgid "subscribe-to <imap-folder-uri>"
 msgstr "subscribe-to <imap-folder-uri>"
 
-#: imap/imap.c:186
+#: imap/imap.c:191
 msgid "Unsubscribe from an IMAP mailbox"
 msgstr ""
 
-#: imap/imap.c:187
+#: imap/imap.c:192
 #, fuzzy
 msgid "unsubscribe-from <imap-folder-uri>"
 msgstr "unsubscribe-from <imap-folder-uri>"
 
-#: imap/imap.c:210
+#: imap/imap.c:215
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "IMAP-palvelin on niin vanha ettei neomutt toimi sen kanssa."
 
-#: imap/imap.c:545
+#: imap/imap.c:550
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "CREATE epäonnistui: %s"
 
-#: imap/imap.c:677
+#: imap/imap.c:682
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Suljetaan yhteyttä %s..."
 
-#: imap/imap.c:879 nntp/nntp.c:1850 pop/lib.c:339 send/smtp.c:1044
+#: imap/imap.c:884 nntp/nntp.c:1850 pop/lib.c:339 send/smtp.c:1045
 msgid "Secure connection with TLS?"
 msgstr "Salataanko yhteys TLS:llä?"
 
-#: imap/imap.c:896 nntp/nntp.c:1875 pop/lib.c:361 send/smtp.c:1062
+#: imap/imap.c:901 nntp/nntp.c:1875 pop/lib.c:361 send/smtp.c:1063
 msgid "Could not negotiate TLS connection"
 msgstr "Ei voitu neuvotella TLS-yhteyttä"
 
-#: imap/imap.c:911 imap/imap.c:928 pop/lib.c:378
+#: imap/imap.c:916 imap/imap.c:933 pop/lib.c:378
 msgid "Encrypted connection unavailable"
 msgstr "Salattu yhteys ei käytettävissä"
 
-#: imap/imap.c:1341
+#: imap/imap.c:1346
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Tilataan hakemistoa %s..."
 
-#: imap/imap.c:1343
+#: imap/imap.c:1348
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Poistetaan hakemiston %s tilaus..."
 
-#: imap/imap.c:1532 imap/message.c:1822
+#: imap/imap.c:1537 imap/message.c:1822
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Kopioidaan %d viestiä kansioon %s..."
 msgstr[1] "Kopioidaan %d viestejä kansioon %s..."
 
-#: imap/imap.c:1550 imap/imap.c:2214 imap/message.c:1840 muttlib.c:799
+#: imap/imap.c:1555 imap/imap.c:2219 imap/message.c:1840 muttlib.c:782
 #, c-format
 msgid "Create %s?"
 msgstr "Luodaanko %s?"
 
-#: imap/imap.c:1625
+#: imap/imap.c:1630
 msgid "Expunge failed"
 msgstr "Poisto epäonnistui"
 
-#: imap/imap.c:1643
+#: imap/imap.c:1648
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "Merkataan %d viesti poistetuksi..."
 msgstr[1] "Merkataan %d viestiä poistetuksi..."
 
-#: imap/imap.c:1682
+#: imap/imap.c:1687
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Tallennetaan muutettua viestiä... [%d/%d]"
 msgstr[1] "Tallennetaan muutettuja viestejä... [%d/%d]"
 
-#: imap/imap.c:1725
+#: imap/imap.c:1730
 msgid "Error saving flags. Close anyway?"
 msgstr "Virhe tallennettaessa lippuja, suljetaanko joka tapauksessa?"
 
-#: imap/imap.c:1733
+#: imap/imap.c:1738
 msgid "Error saving flags"
 msgstr "Virhe tallennettaessa lippuja."
 
-#: imap/imap.c:1760
+#: imap/imap.c:1765
 msgid "Expunging messages from server..."
 msgstr "Poistetaan viestejä palvelimelta..."
 
-#: imap/imap.c:1766
+#: imap/imap.c:1771
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE epäonnistui"
 
-#: imap/imap.c:2011 nntp/nntp.c:2449
+#: imap/imap.c:2016 nntp/nntp.c:2449
 #, c-format
 msgid "Selecting %s..."
 msgstr "Valitaan %s..."
 
-#: imap/imap.c:2179
+#: imap/imap.c:2184
 msgid "Error opening mailbox"
 msgstr "Virhe avattaessa postilaatikkoa"
 
-#: imap/imap.c:2325
+#: imap/imap.c:2330
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP-palvelin ei tue omia merkintöjä"
 
-#: imap/imap.c:2369
+#: imap/imap.c:2374
 msgid "Invalid IMAP flags"
 msgstr "Vialliset IMAP-merkinnät  "
 
@@ -5602,7 +5607,7 @@ msgstr "Ei voitu uudelleenavata postilaatikkoa"
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Ei voida hakea otsakkeita tämän IMAP-version palvelimelta"
 
-#: imap/message.c:1177 index/functions.c:2614 nntp/nntp.c:1282 pop/pop.c:370
+#: imap/message.c:1177 index/functions.c:2653 nntp/nntp.c:1282 pop/pop.c:370
 msgid "Fetching message headers..."
 msgstr "Haetaan viestien otsakkeita..."
 
@@ -5672,7 +5677,7 @@ msgstr "%s: Operaatio on estetty ACL:n perusteella"
 msgid "Failed to create query, aborting"
 msgstr "Haun luonti epäonnistui joten peruutetaan"
 
-#: index/dlg_index.c:779 muttlib.c:783 mx.c:202 mx.c:340
+#: index/dlg_index.c:779 muttlib.c:766 mx.c:202 mx.c:340
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s ei ole postilaatikko"
@@ -5689,44 +5694,44 @@ msgstr "Uusi viesti postilaatikossa"
 msgid "Mailbox was externally modified"
 msgstr "Postilaatikkoa on muokattu muualla"
 
-#: index/dlg_index.c:1333 index/functions.c:3085 pattern/message.c:287
+#: index/dlg_index.c:1334 index/functions.c:3133 pattern/message.c:287
 msgid "No mailbox is open"
 msgstr "Ei postilaatikoita auki"
 
-#: index/dlg_index.c:1341
+#: index/dlg_index.c:1342
 msgid "No tagged messages"
 msgstr "Ei merkittyjä viestejä"
 
-#: index/dlg_index.c:1346 index/functions.c:925
+#: index/dlg_index.c:1347 index/functions.c:930
 msgid "Nothing to do"
 msgstr "Ei mitään tehtävissä"
 
-#: index/expando_status.c:260
+#: index/expando_status.c:258
 msgid "(no mailbox)"
 msgstr "(ei postilaatikkoa)"
 
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #. L10N: Status bar message: the end of the email is visible in the pager
-#: index/expando_status.c:445 pager/pbar.c:121
+#: index/expando_status.c:441 pager/pbar.c:121
 msgid "end"
 msgstr "loppu"
 
 #. L10N: Status bar message: all the emails are visible in the index
 #. L10N: Status bar message: the entire email is visible in the pager
-#: index/expando_status.c:447 pager/message.c:57 pager/pbar.c:119
+#: index/expando_status.c:443 pager/message.c:57 pager/pbar.c:119
 msgid "all"
 msgstr "kaikki"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: index/expando_status.c:455
+#: index/expando_status.c:451
 #, fuzzy, c-format
 msgid "%d%%"
 msgstr "%d%%"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:523
+#: index/functions.c:521
 msgid "Can't delete message"
 msgstr "Ei voitu poistaa viestejä"
 
@@ -5734,13 +5739,13 @@ msgstr "Ei voitu poistaa viestejä"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:563 index/functions.c:1213
+#: index/functions.c:561 index/functions.c:1223
 msgid "Can't delete messages"
 msgstr "Ei voitu poistaa viestejä"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index/functions.c:692
+#: index/functions.c:693
 #, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -5750,153 +5755,153 @@ msgstr[1] "%d merkintää muutettu."
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index/functions.c:702
+#: index/functions.c:703
 msgid "No labels changed"
 msgstr "Ei muuttuneita merkintöjä"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:722
+#: index/functions.c:724
 msgid "Can't edit message"
 msgstr "Ei voitu muokata viestiä"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:809
+#: index/functions.c:813
 msgid "Can't flag message"
 msgstr "Ei voitu merkitä viestejä"
 
-#: index/functions.c:922
+#: index/functions.c:927
 msgid "Jump to message: "
 msgstr "Siirry viestiin: "
 
-#: index/functions.c:930
+#: index/functions.c:935
 msgid "Argument must be a message number"
 msgstr "Argumentin pitää olla viestinnumero"
 
-#: index/functions.c:934
+#: index/functions.c:939
 msgid "Invalid message number"
 msgstr "Viestinnumero ei kelpaa"
 
-#: index/functions.c:938
+#: index/functions.c:943
 msgid "That message is not visible"
 msgstr "Se viesti ei ole näkyvissä"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1041
+#: index/functions.c:1049
 msgid "Can't break thread"
 msgstr "Ei voitu katkaista ketjuja"
 
-#: index/functions.c:1064
+#: index/functions.c:1072
 msgid "Thread broken"
 msgstr "Ketju rikki"
 
-#: index/functions.c:1070
+#: index/functions.c:1078
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "Ketjua ei voi rikkoa, kun viesti ei ole osa ketjua"
 
-#: index/functions.c:1095
+#: index/functions.c:1104
 msgid "Open mailbox in read-only mode"
 msgstr "Avaa postilaatikko kirjoitussuojattuna"
 
-#: index/functions.c:1100
+#: index/functions.c:1109
 msgid "Open mailbox"
 msgstr "Avaa postilaatikko"
 
-#: index/functions.c:1193
+#: index/functions.c:1203
 msgid "Thread contains unread or flagged messages"
 msgstr "Ketjussa on lukemattomia viestejä"
 
-#: index/functions.c:1216
+#: index/functions.c:1226
 msgid "Delete messages matching: "
 msgstr "Poista täsmäävät viestit: "
 
-#: index/functions.c:1256
+#: index/functions.c:1268
 msgid "Limit to messages matching: "
 msgstr "Rajoita viestit täsmäämään: "
 
-#: index/functions.c:1287
+#: index/functions.c:1299
 msgid "To view all messages, limit to \"all\""
 msgstr "Kaikkiin viesteihin täsmää rajoite \"all\""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1300
+#: index/functions.c:1312
 msgid "Can't link threads"
 msgstr "Ei voitu yhdistää ketjuja"
 
-#: index/functions.c:1315
+#: index/functions.c:1327
 msgid "No Message-ID: header available to link thread"
 msgstr "Ei Viesti-ID-otsaketta ketjun yhdistämiseksi"
 
-#: index/functions.c:1329
+#: index/functions.c:1341
 msgid "Threads linked"
 msgstr "Ketjut linkitetty"
 
-#: index/functions.c:1334
+#: index/functions.c:1346
 msgid "No thread linked"
 msgstr "Ei ketjuja linkitetty"
 
-#: index/functions.c:1363 mx.c:1284 mx.c:1304
+#: index/functions.c:1375 mx.c:1284 mx.c:1304
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Kansiosta puuttuu merkintätuki, joten peruutetaan"
 
-#: index/functions.c:1384
+#: index/functions.c:1397
 msgid "No tag specified, aborting"
 msgstr "Ei merkintää, joten peruttiin"
 
-#: index/functions.c:1395
+#: index/functions.c:1408
 msgid "Update tags..."
 msgstr "Päivitetään merkinnät..."
 
-#: index/functions.c:1435
+#: index/functions.c:1448
 msgid "Failed to modify tags, aborting"
 msgstr "Merkintöjen muokkaaminen epäonnistui joten peruutetaan"
 
-#: index/functions.c:1549
+#: index/functions.c:1563
 msgid "No new messages in this limited view"
 msgstr "Ei uusia viestejä tässä rajallisessa näkymässä"
 
-#: index/functions.c:1551
+#: index/functions.c:1565
 msgid "No new messages"
 msgstr "Ei uusia viestejä"
 
-#: index/functions.c:1556
+#: index/functions.c:1570
 msgid "No unread messages in this limited view"
 msgstr "Ei lukemattomia viestejä tässä rajallisessa näkymässä"
 
-#: index/functions.c:1558
+#: index/functions.c:1572
 msgid "No unread messages"
 msgstr "Ei lukemattomia viestejä"
 
-#: index/functions.c:1574 menu/functions.c:108 pager/functions.c:768
-#: pattern/pattern.c:551 pattern/pattern.c:706
+#: index/functions.c:1588 menu/functions.c:108 pager/functions.c:770
+#: pattern/pattern.c:552 pattern/pattern.c:707
 msgid "Search wrapped to top"
 msgstr "Haku jatkoi ylhäältä"
 
-#: index/functions.c:1579 pager/functions.c:799 pattern/pattern.c:564
-#: pattern/pattern.c:719
+#: index/functions.c:1593 pager/functions.c:801 pattern/pattern.c:565
+#: pattern/pattern.c:720
 msgid "Search wrapped to bottom"
 msgstr "Haku jatkoi alhaalta"
 
-#: index/functions.c:1623
+#: index/functions.c:1638
 msgid "No more threads"
 msgstr "Ei enää ketjuja"
 
-#: index/functions.c:1625
+#: index/functions.c:1640
 msgid "You are on the first thread"
 msgstr "Ensimmäisessä ketjussa"
 
-#: index/functions.c:1643 index/functions.c:2036
+#: index/functions.c:1658 index/functions.c:2056
 msgid "You are on the last message"
 msgstr "Viimeisessä viestissä"
 
-#: index/functions.c:1660 index/functions.c:1715
+#: index/functions.c:1675 index/functions.c:1731
 msgid "No undeleted messages"
 msgstr "Ei poistetusta palautettuja viestejä"
 
-#: index/functions.c:1681
+#: index/functions.c:1697
 msgid "No mailboxes have new mail"
 msgstr "Ei uusia viestejä postilaatikoissa"
 
-#: index/functions.c:1699 index/functions.c:2074
+#: index/functions.c:1715 index/functions.c:2096
 msgid "You are on the first message"
 msgstr "Ensimmäisessä viestissä"
 
@@ -5904,15 +5909,15 @@ msgstr "Ensimmäisessä viestissä"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1768
+#: index/functions.c:1784
 msgid "Can't mark messages as read"
 msgstr "Ei voitu merkitä viestejä lukemattomiksi"
 
-#: index/functions.c:1845
+#: index/functions.c:1862
 msgid "No limit pattern is in effect"
 msgstr "Ei rajoittavaa kuviota"
 
-#: index/functions.c:1932
+#: index/functions.c:1949
 msgid "Tag messages matching: "
 msgstr "Merkitse täsmäävät viestit: "
 
@@ -5920,135 +5925,135 @@ msgstr "Merkitse täsmäävät viestit: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1948 index/functions.c:2463
+#: index/functions.c:1966 index/functions.c:2499
 msgid "Can't undelete messages"
 msgstr "Ei voitu perua viestien poistoa"
 
-#: index/functions.c:1952
+#: index/functions.c:1970
 msgid "Undelete messages matching: "
 msgstr "Peru täsmäävien viestien poisto: "
 
-#: index/functions.c:1966
+#: index/functions.c:1984
 msgid "Untag messages matching: "
 msgstr "Peru täsmäävien viestien merkintä: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1989
+#: index/functions.c:2008
 msgid "Enter macro stroke: "
 msgstr "Makronäppäimet: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:2006
+#: index/functions.c:2025
 msgid "message hotkey"
 msgstr "viestin pikanäppäin"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:2011
+#: index/functions.c:2030
 #, c-format
 msgid "Message bound to %s"
 msgstr "Viesti yhdistetty makroon %s."
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:2021
+#: index/functions.c:2040
 msgid "No message ID to macro"
 msgstr "Ei viesti-ID:tä makrolle"
 
-#: index/functions.c:2119
+#: index/functions.c:2144
 msgid "Quit NeoMutt?"
 msgstr "Lopetetaanko neomutt?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2375
+#: index/functions.c:2410
 msgid "Can't toggle new"
 msgstr "Ei voitu vaihtaa uudeksi"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2427
+#: index/functions.c:2463
 msgid "Can't undelete message"
 msgstr "Ei voitu perua viestin poistoa"
 
-#: index/functions.c:2562
+#: index/functions.c:2600
 msgid "Logged out of IMAP servers"
 msgstr "Kirjauduttiin ulos IMAP-palvelimelta"
 
-#: index/functions.c:2610
+#: index/functions.c:2649
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Ei Viesti-Id:tä, joten ei voida suorittaa."
 
-#: index/functions.c:2680
+#: index/functions.c:2720
 msgid "No deleted messages found in the thread"
 msgstr "Tässä ketjussa ei ole poistettuja viestejä"
 
-#: index/functions.c:2705
+#: index/functions.c:2746
 msgid "Enter Message-Id: "
 msgstr "Anna viesti-ID: "
 
-#: index/functions.c:2717
+#: index/functions.c:2758
 msgid "Article has no parent reference"
 msgstr "Artikkelilla ei ole viitettä vanhempaan"
 
-#: index/functions.c:2740
+#: index/functions.c:2781
 msgid "Message is not visible in limited view"
 msgstr "Juuriviesti ei ole näkyvissä tässä rajatussa näkymässä"
 
-#: index/functions.c:2745
+#: index/functions.c:2786
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "Haetaan %s palvelimelta..."
 
-#: index/functions.c:2758 nntp/nntp.c:2716
+#: index/functions.c:2799 nntp/nntp.c:2716
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Artikkelia %s ei ole palvelimella"
 
-#: index/functions.c:2786
+#: index/functions.c:2828
 msgid "Open newsgroup in read-only mode"
 msgstr "Avaa uutosryhmä kirjoitussuojattuna"
 
-#: index/functions.c:2791
+#: index/functions.c:2833
 msgid "Open newsgroup"
 msgstr "Avoin uutisryhmä"
 
-#: index/functions.c:2862
+#: index/functions.c:2906
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Vastaaminen ryhmään ei ole sallittu, ehkä se on moderoitu, jatketaanko?"
 
-#: index/functions.c:2898
+#: index/functions.c:2943
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Ei virtuaalikansiota, joten peruttiin"
 
-#: index/functions.c:2927
+#: index/functions.c:2972
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index/functions.c:2939
+#: index/functions.c:2984
 msgid "Failed to read thread, aborting"
 msgstr "Ei voitu lukea ketjua joten peruttiin"
 
-#: index/functions.c:2979
+#: index/functions.c:3025
 msgid "No query, aborting"
 msgstr "Ei hakua, joten peruttiin"
 
-#: index/functions.c:3022
+#: index/functions.c:3070
 msgid "Windowed queries disabled"
 msgstr "Ikkunoidut haut poissa köytöstä"
 
-#: index/functions.c:3028
+#: index/functions.c:3076
 msgid "No notmuch vfolder currently loaded"
 msgstr "Notmuch-vkansiota ei ole ladattuna"
 
-#: index/functions.c:3091
+#: index/functions.c:3139
 msgid "There are no messages"
 msgstr "Ei viestejä"
 
-#: index/functions.c:3099
+#: index/functions.c:3147
 msgid "No visible messages"
 msgstr "Ei näkyviä viestejä"
 
@@ -6057,21 +6062,21 @@ msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr ""
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-#: key/commands.c:84 key/commands.c:134 key/commands.c:186
+#: key/commands.c:86 key/commands.c:136 key/commands.c:188
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: valikko puuttuu"
 
-#: key/commands.c:150
+#: key/commands.c:152
 #, c-format
 msgid "%s: null key sequence"
 msgstr "%s: tyhjä avainsekvenssi"
 
-#: key/commands.c:697
+#: key/commands.c:707
 msgid "macro: empty key sequence"
 msgstr "macro: tyhjä näppäinsekvenssi"
 
-#: key/commands.c:794
+#: key/commands.c:806
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: funktiota ei ole"
@@ -6088,16 +6093,16 @@ msgstr "%s: valikko puuttuu"
 msgid "%s: no macros for this menu"
 msgstr "%s: valikko puuttuu"
 
-#: key/get.c:289
+#: key/get.c:290
 msgid "Key is not bound"
 msgstr "Näppäin on asettamatta"
 
-#: key/get.c:295
+#: key/get.c:296
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Näppäin on asettamatta, näppäimellä %s saa ohjeita."
 
-#: key/get.c:559
+#: key/get.c:523
 msgid "Macro loop detected"
 msgstr "Makrosilmukka havaittu"
 
@@ -6169,30 +6174,30 @@ msgstr ""
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
 msgstr "Yhdistys '%s' tarviaa aliasta '%s'  Kokeile: 'bind %s %s noop'"
 
-#: lua/commands.c:129
+#: lua/commands.c:134
 #, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Ei voitu ladata lua-koodia: %s"
 
-#: lua/commands.c:147
+#: lua/commands.c:152
 msgid "Run a Lua expression or call a Lua function"
 msgstr ""
 
-#: lua/commands.c:148
+#: lua/commands.c:153
 #, fuzzy
 msgid "lua <lua-command>"
 msgstr "lua <lua-command>"
 
-#: lua/commands.c:151
+#: lua/commands.c:156
 msgid "Execute a Lua script file"
 msgstr ""
 
-#: lua/commands.c:152
+#: lua/commands.c:157
 #, fuzzy
 msgid "lua-source <filename>"
 msgstr "lua-source <filename>"
 
-#: lua/lua.c:448
+#: lua/lua.c:452
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Virhe: Ei voitu ladata lua-tulkkia"
 
@@ -6232,69 +6237,69 @@ msgstr "Ei voitu kirjoittaa viestiä levylle"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): tiedoston ajan asetus ei onnistunut"
 
-#: main.c:237
+#: main.c:238
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Virhe komentorivillä: %s"
 
-#: main.c:239
+#: main.c:240
 #, fuzzy, c-format
 msgid "Warning in command line: %s"
 msgstr "Virhe komentorivillä: %s"
 
-#: main.c:358
+#: main.c:361
 msgid "unable to determine nodename via uname()"
 msgstr "ei voitu ratkaista laitenimeä uname()-funktiolla"
 
-#: main.c:711 parse/set.c:126 parse/set.c:186 parse/set.c:234 parse/set.c:268
-#: parse/set.c:331 parse/set.c:372 parse/set.c:439
+#: main.c:710 parse/set.c:127 parse/set.c:187 parse/set.c:235 parse/set.c:269
+#: parse/set.c:332 parse/set.c:373 parse/set.c:440
 #, c-format
 msgid "Option %s is deprecated"
 msgstr ""
 
-#: main.c:759
+#: main.c:758
 msgid "Error initializing terminal"
 msgstr "Virhe terminaalin alustuksessa"
 
-#: main.c:803
+#: main.c:802
 msgid "unable to determine username"
 msgstr "ei voitu ratkaista käyttäjänimeä"
 
-#: main.c:809
+#: main.c:808
 msgid "unable to determine home directory"
 msgstr "ei voitu ratkaista kotihakemistoa"
 
-#: main.c:954
+#: main.c:953
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Virhe: arvo %s ei ole salittu valitsimelle -d"
 
-#: main.c:1286
+#: main.c:1285
 msgid "Failed to parse mailto: link"
 msgstr "Virhe mailto:-linkin jäsennyksessä"
 
-#: main.c:1301 main.c:1572 send/send.c:299 send/send.c:2656 send/send.c:2660
+#: main.c:1300 main.c:1571 send/send.c:299 send/send.c:2656 send/send.c:2660
 msgid "No recipients specified"
 msgstr "Ei vastaanottajia"
 
-#: main.c:1335
+#: main.c:1334
 msgid "Can't use -E flag with stdin"
 msgstr "Valitsin -E ei toimi yhdessä vakiosyötteen kanssa"
 
-#: main.c:1425
+#: main.c:1424
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "Ei voitu avata viestimallinetta: %s"
 
-#: main.c:1587
+#: main.c:1586
 msgid "No mailbox with new mail"
 msgstr "Ei uutta postia postilaatikoissa"
 
-#: main.c:1607
+#: main.c:1606
 msgid "No incoming mailboxes defined"
 msgstr "Tulevien viestien postilaatikoita ei ole määritelty"
 
-#: main.c:1660
+#: main.c:1659
 msgid "Mailbox is empty"
 msgstr "Postilaatikko on tyhjä"
 
@@ -6340,18 +6345,18 @@ msgstr "Ei voitu uudelleenavata postilaatikkoa"
 msgid "Can't write message"
 msgstr "Ei voitu kirjoittaa viestiä"
 
-#: menu/functions.c:71 pager/functions.c:590 pattern/pattern.c:485
-#: pattern/pattern.c:641
+#: menu/functions.c:71 pager/functions.c:588 pattern/pattern.c:486
+#: pattern/pattern.c:642
 msgid "Reverse search for: "
 msgstr "Hae takaperin: "
 
-#: menu/functions.c:71 pager/functions.c:590 pattern/pattern.c:485
-#: pattern/pattern.c:641
+#: menu/functions.c:71 pager/functions.c:588 pattern/pattern.c:486
+#: pattern/pattern.c:642
 msgid "Search for: "
 msgstr "Hae: "
 
-#: menu/functions.c:127 pager/functions.c:697 pager/functions.c:764
-#: pager/functions.c:795 pattern/pattern.c:615 pattern/pattern.c:767
+#: menu/functions.c:127 pager/functions.c:697 pager/functions.c:766
+#: pager/functions.c:797 pattern/pattern.c:616 pattern/pattern.c:768
 msgid "Not found"
 msgstr "Ei löytynyt"
 
@@ -6397,25 +6402,25 @@ msgstr "Ei merkittyjä tietueita"
 msgid "Out of memory"
 msgstr ""
 
-#: mutt/file.c:665
+#: mutt/file.c:661
 #, fuzzy, c-format
 msgid "Failed to seek file: %s"
 msgstr "Virhe uudelleennimeämisessä"
 
-#: mutt/file.c:1125
+#: mutt/file.c:1121
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "Aikakatkaisu ylittyi fcntl-lukolle"
 
-#: mutt/file.c:1131
+#: mutt/file.c:1127
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Odotetaan fcntl-lukkoa... %d"
 
-#: mutt/file.c:1191
+#: mutt/file.c:1187
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "Aikakatkaisu ylittyi flock-lukolle"
 
-#: mutt/file.c:1198
+#: mutt/file.c:1194
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Odotetaan flock-yritystä... %d"
@@ -6500,43 +6505,43 @@ msgstr "Ei SSL:ää saavutettavissa, joten yhdistäminen kohteeseen %s ei onnist
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
-#: muttlib.c:559
+#: muttlib.c:542
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
 msgstr "Tiedosto on hakemisto, tallennetaanko sen alle? k(y)llä, (e)i, k(a)ikki"
 
-#: muttlib.c:559
+#: muttlib.c:542
 msgid "yna"
 msgstr "yea"
 
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:577
+#: muttlib.c:560
 msgid "File is a directory, save under it?"
 msgstr "Tiedosto on hakemisto, tallennetaanko sen alle?"
 
-#: muttlib.c:583
+#: muttlib.c:566
 msgid "File under directory: "
 msgstr "Tiedosto hakemistossa: "
 
 #. L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
-#: muttlib.c:599
+#: muttlib.c:582
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Tiedosto on olemassa, k(o)rvaa, j(a)tka tai (p)eru?"
 
-#: muttlib.c:600
+#: muttlib.c:583
 msgid "oac"
 msgstr "oap"
 
-#: muttlib.c:752
+#: muttlib.c:735
 msgid "Can't save message to POP mailbox"
 msgstr "Ei voida tallentaa POP-laatikkoon"
 
-#: muttlib.c:762
+#: muttlib.c:745
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Lisätäänkö viestit kohteeseen %s?"
 
-#: muttlib.c:775
+#: muttlib.c:758
 msgid "Can't save message to news server"
 msgstr "Ei voitu tallentaa viestiä uutispalvelimelle"
 
@@ -6676,8 +6681,8 @@ msgstr "Inline-PGP ei toimi tekstimuodossa format=flowed, käytetäänkö sitten
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "Viestiä ei lähetetty: inline-PGP ei toimi tekstimuodossa format=flowed"
 
-#: ncrypt/crypt.c:207 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:141
-#: ncrypt/pgpkey.c:295
+#: ncrypt/crypt.c:207 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:142
+#: ncrypt/pgpkey.c:294
 msgid "Invoking PGP..."
 msgstr "Kutsutaan PGP:tä..."
 
@@ -6851,7 +6856,7 @@ msgstr "Varoitus: PKA-tietue ei täsmää allekirjoittajan osoitteeseen: "
 msgid "PKA verified signer's address is: "
 msgstr "PKA-varmistettu allekirjoitusosoite on: "
 
-#: ncrypt/crypt_gpgme.c:1262 ncrypt/gpgme_functions.c:63
+#: ncrypt/crypt_gpgme.c:1262 ncrypt/gpgme_functions.c:64
 msgid "Fingerprint: "
 msgstr "Sormenjälki: "
 
@@ -6868,7 +6873,7 @@ msgid "WARNING: It is NOT certain that the key belongs to the person named as sh
 msgstr "Varoitus: Ei ole varmaa kuuluuko avain yllämainitulle henkilölle\n"
 
 #: ncrypt/crypt_gpgme.c:1368 ncrypt/crypt_gpgme.c:1373
-#: ncrypt/gpgme_functions.c:62
+#: ncrypt/gpgme_functions.c:63
 msgid "aka: "
 msgstr "alias: "
 
@@ -7078,13 +7083,13 @@ msgstr "gpgme_op_keylist_stasrt-virhe: %s"
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next-virhe: %s"
 
-#: ncrypt/crypt_gpgme.c:3269 ncrypt/crypt_gpgme.c:3389 ncrypt/pgpkey.c:398
-#: ncrypt/pgpkey.c:530
+#: ncrypt/crypt_gpgme.c:3269 ncrypt/crypt_gpgme.c:3389 ncrypt/pgpkey.c:397
+#: ncrypt/pgpkey.c:529
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Etsitään täsmääviä avaimia %s..."
 
-#: ncrypt/crypt_gpgme.c:3513 ncrypt/pgpkey.c:248 ncrypt/smime.c:563
+#: ncrypt/crypt_gpgme.c:3513 ncrypt/pgpkey.c:247 ncrypt/smime.c:563
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr "Ei täsmääviä avaimia kohteelle \"%s\""
@@ -7106,7 +7111,7 @@ msgstr "Anna keyID kohteelle %s: "
 msgid "No secret keys found"
 msgstr "Salaisia avaimia ei löytynyt"
 
-#: ncrypt/crypt_gpgme.c:3774 ncrypt/pgpkey.c:268
+#: ncrypt/crypt_gpgme.c:3774 ncrypt/pgpkey.c:267
 msgid "Please enter the key ID: "
 msgstr "Anna avaimen tunnus: "
 
@@ -7326,58 +7331,58 @@ msgstr "S/MIME-sertifikaatit täsmäävät %s"
 #. L10N: The following are the headers for the "verify key" output from the
 #. GPGME key selection menu (bound to "c" in the key selection menu).
 #. They will be automatically aligned.
-#: ncrypt/gpgme_functions.c:62
+#: ncrypt/gpgme_functions.c:63
 msgid "Name: "
 msgstr "Nimi: "
 
-#: ncrypt/gpgme_functions.c:62
+#: ncrypt/gpgme_functions.c:63
 msgid "Valid From: "
 msgstr "Voimassa lähtien:"
 
-#: ncrypt/gpgme_functions.c:62
+#: ncrypt/gpgme_functions.c:63
 msgid "Valid To: "
 msgstr "Voimassa saakka:"
 
-#: ncrypt/gpgme_functions.c:63
+#: ncrypt/gpgme_functions.c:64
 msgid "Key Type: "
 msgstr "Avaintyyppi: "
 
-#: ncrypt/gpgme_functions.c:63
+#: ncrypt/gpgme_functions.c:64
 msgid "Key Usage: "
 msgstr "Avaimen käyttö: "
 
-#: ncrypt/gpgme_functions.c:63
+#: ncrypt/gpgme_functions.c:64
 msgid "Serial-No: "
 msgstr "Sarjanumero: "
 
-#: ncrypt/gpgme_functions.c:64
+#: ncrypt/gpgme_functions.c:65
 msgid "Issued By: "
 msgstr "Myöntäjä: "
 
-#: ncrypt/gpgme_functions.c:64
+#: ncrypt/gpgme_functions.c:65
 msgid "Subkey: "
 msgstr "Aliavain: "
 
-#: ncrypt/gpgme_functions.c:356
+#: ncrypt/gpgme_functions.c:357
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Ei voida näyttää käyttäjätunnusta (tuntematon koodaus)]"
 
-#: ncrypt/gpgme_functions.c:360
+#: ncrypt/gpgme_functions.c:361
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Ei voida näyttää käyttäjätunnusta (huono koodaus)]"
 
-#: ncrypt/gpgme_functions.c:377
+#: ncrypt/gpgme_functions.c:378
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Ei voida näyttää käyttäjätunnusta (huono domain)]"
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
-#: ncrypt/gpgme_functions.c:429 ncrypt/gpgme_functions.c:564
+#: ncrypt/gpgme_functions.c:430 ncrypt/gpgme_functions.c:565
 msgid "[Invalid]"
 msgstr "[Kelvoton]"
 
 #. L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA
-#: ncrypt/gpgme_functions.c:469 ncrypt/gpgme_functions.c:604
+#: ncrypt/gpgme_functions.c:470 ncrypt/gpgme_functions.c:605
 #, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
@@ -7385,77 +7390,77 @@ msgstr[0] "%s, %lu-bittinen %s\n"
 msgstr[1] "%s, %lu-bittinen %s\n"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/gpgme_functions.c:477 ncrypt/gpgme_functions.c:611
+#: ncrypt/gpgme_functions.c:478 ncrypt/gpgme_functions.c:612
 msgid "encryption"
 msgstr "salaus"
 
-#: ncrypt/gpgme_functions.c:478 ncrypt/gpgme_functions.c:484
-#: ncrypt/gpgme_functions.c:612 ncrypt/gpgme_functions.c:617
+#: ncrypt/gpgme_functions.c:479 ncrypt/gpgme_functions.c:485
+#: ncrypt/gpgme_functions.c:613 ncrypt/gpgme_functions.c:618
 msgid ", "
 msgstr ", "
 
 #. L10N: value in Key Usage: field
-#: ncrypt/gpgme_functions.c:483 ncrypt/gpgme_functions.c:616
+#: ncrypt/gpgme_functions.c:484 ncrypt/gpgme_functions.c:617
 msgid "signing"
 msgstr "allekirjotus"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/gpgme_functions.c:489 ncrypt/gpgme_functions.c:621
+#: ncrypt/gpgme_functions.c:490 ncrypt/gpgme_functions.c:622
 msgid "certification"
 msgstr "sertifikaation"
 
 #. L10N: describes a subkey
-#: ncrypt/gpgme_functions.c:558
+#: ncrypt/gpgme_functions.c:559
 msgid "[Revoked]"
 msgstr "[Käytöstä poistettu]"
 
 #. L10N: describes a subkey
-#: ncrypt/gpgme_functions.c:570
+#: ncrypt/gpgme_functions.c:571
 msgid "[Expired]"
 msgstr "[Vanhentunut]"
 
 #. L10N: describes a subkey
-#: ncrypt/gpgme_functions.c:576
+#: ncrypt/gpgme_functions.c:577
 msgid "[Disabled]"
 msgstr "[Ei käytössä]"
 
-#: ncrypt/gpgme_functions.c:648
+#: ncrypt/gpgme_functions.c:649
 msgid "Collecting data..."
 msgstr "Haetaan dataa..."
 
-#: ncrypt/gpgme_functions.c:666
+#: ncrypt/gpgme_functions.c:667
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Ei löytynyt myöntäjän avainta: %s\n"
 
-#: ncrypt/gpgme_functions.c:675
+#: ncrypt/gpgme_functions.c:676
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Virhe: ylipitkä sertifikaattiketju, lopetettiin tähän\n"
 
-#: ncrypt/gpgme_functions.c:686 ncrypt/pgp_functions.c:171
+#: ncrypt/gpgme_functions.c:687 ncrypt/pgp_functions.c:172
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Avaimen ID: 0x%s"
 
-#: ncrypt/gpgme_functions.c:760 ncrypt/pgp_functions.c:74
+#: ncrypt/gpgme_functions.c:761 ncrypt/pgp_functions.c:75
 msgid "This key can't be used: expired/disabled/revoked"
 msgstr "Tätä avainta ei voi käyttää, koska se on vanhentunut/pois käytöstä/poistettu käytöstä"
 
-#: ncrypt/gpgme_functions.c:772 ncrypt/pgp_functions.c:86
-#: ncrypt/smime_functions.c:68
+#: ncrypt/gpgme_functions.c:773 ncrypt/pgp_functions.c:87
+#: ncrypt/smime_functions.c:69
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr "ID on vanhentunut/pois käytöstä/poistettu käytöstä, käytetäänkö siitä huolimatta?"
 
-#: ncrypt/gpgme_functions.c:780 ncrypt/pgp_functions.c:96
+#: ncrypt/gpgme_functions.c:781 ncrypt/pgp_functions.c:97
 msgid "ID is not valid. Do you really want to use the key?"
 msgstr "ID ei ole toimiva, käytetäänkö siitä huolimatta?"
 
-#: ncrypt/gpgme_functions.c:783 ncrypt/pgp_functions.c:99
+#: ncrypt/gpgme_functions.c:784 ncrypt/pgp_functions.c:100
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "ID on rajallisesti toimiva, käytetäänkö siitä huolimatta?"
 
-#: ncrypt/gpgme_functions.c:790 ncrypt/pgp_functions.c:93
-#: ncrypt/smime_functions.c:71
+#: ncrypt/gpgme_functions.c:791 ncrypt/pgp_functions.c:94
+#: ncrypt/smime_functions.c:72
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID:n toimivuutta ei tiedetä, käytetäänkö siitä huolimatta?"
 
@@ -7585,7 +7590,7 @@ msgstr "PGP-(s)alaa, -(a)llekirjoita, (n)imellä, (m)olemmat tai (t)yhjennä"
 msgid "esabc"
 msgstr "sanmt"
 
-#: ncrypt/pgp_functions.c:126 ncrypt/pgpkey.c:289
+#: ncrypt/pgp_functions.c:127 ncrypt/pgpkey.c:288
 msgid "Can't open /dev/null"
 msgstr "Ei voitu avata laitetta /dev/null"
 
@@ -7593,12 +7598,12 @@ msgstr "Ei voitu avata laitetta /dev/null"
 msgid "Fetching PGP key..."
 msgstr "Haetaan PGP-avainta..."
 
-#: ncrypt/pgpkey.c:318
+#: ncrypt/pgpkey.c:317
 #, c-format
 msgid "PGP Key %s"
 msgstr "PGP-avain %s"
 
-#: ncrypt/pgpkey.c:600
+#: ncrypt/pgpkey.c:599
 #, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Tätä avainta ei voi käyttää, koska se on vanhentunut/pois käytöstä/poistettu käytöstä"
@@ -7715,7 +7720,7 @@ msgstr "123"
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
-#: ncrypt/smime_functions.c:74
+#: ncrypt/smime_functions.c:75
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "ID:hen ei luoteta, käytetäänkö siitä huolimatta?"
 
@@ -7740,7 +7745,7 @@ msgstr "Palvelin katkaisi yhteyden"
 msgid "Server doesn't support reader mode"
 msgstr "Palvelin ei tue luintilaa"
 
-#: nntp/nntp.c:496 pop/auth.c:621 send/smtp.c:1004
+#: nntp/nntp.c:496 pop/auth.c:621 send/smtp.c:1005
 msgid "No authenticators available"
 msgstr "Ei autentikoijia"
 
@@ -7894,17 +7899,17 @@ msgstr "Näytä liite"
 msgid "Next"
 msgstr "Seuraava"
 
-#: pager/functions.c:61
+#: pager/functions.c:57
 msgid "Not available in this menu"
 msgstr "Ei tässä valikossa"
 
-#: pager/functions.c:411 pager/functions.c:432 pager/functions.c:505
-#: pager/functions.c:526
+#: pager/functions.c:408 pager/functions.c:429 pager/functions.c:502
+#: pager/functions.c:523
 msgid "Bottom of message is shown"
 msgstr "Viestin loppu näkyy"
 
-#: pager/functions.c:457 pager/functions.c:549 pager/functions.c:562
-#: pager/functions.c:967
+#: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
+#: pager/functions.c:970
 msgid "Top of message is shown"
 msgstr "Viestin alku näkyy"
 
@@ -7912,23 +7917,23 @@ msgstr "Viestin alku näkyy"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:852
+#: pager/functions.c:854
 msgid "No text past headers"
 msgstr "Ei tekstiä otsakkeiden jälkeen"
 
-#: pager/functions.c:911 pager/functions.c:951
+#: pager/functions.c:913 pager/functions.c:953
 msgid "No more unquoted text after quoted text"
 msgstr "Ei enää lainaamatont tekstiä lainausten jälkeen"
 
-#: pager/functions.c:933
+#: pager/functions.c:935
 msgid "No more quoted text"
 msgstr "Ei enää lainauksia"
 
-#: pager/functions.c:998
+#: pager/functions.c:1003
 msgid "Help is currently being shown"
 msgstr "Ohje näkyy"
 
-#: pager/functions.c:1054
+#: pager/functions.c:1060
 #, c-format
 msgid "Saved to: %s"
 msgstr ""
@@ -7950,27 +7955,27 @@ msgstr "Ei voitu kopioida viestiä"
 msgid "Command: "
 msgstr "Komento: "
 
-#: pager/message.c:363
+#: pager/message.c:364
 msgid "S/MIME signature successfully verified"
 msgstr "S/MIME-allekirjoitus varmistettiin"
 
-#: pager/message.c:365
+#: pager/message.c:366
 msgid "S/MIME certificate owner does not match sender"
 msgstr "S/MIME-sertifikaatin omistaja ei täsmää lähettäjään"
 
-#: pager/message.c:369 pager/message.c:382
+#: pager/message.c:370 pager/message.c:383
 msgid "Warning: Part of this message has not been signed"
 msgstr "Varoitus: Viestin osa on allekirjoittamatta"
 
-#: pager/message.c:373
+#: pager/message.c:374
 msgid "S/MIME signature could NOT be verified"
 msgstr "S/MIME-allekirjoitusta ei voitu vahvistaa"
 
-#: pager/message.c:380
+#: pager/message.c:381
 msgid "PGP signature successfully verified"
 msgstr "PGP-allekirjoitus vahvistettu"
 
-#: pager/message.c:384
+#: pager/message.c:385
 msgid "PGP signature could NOT be verified"
 msgstr "PGP-allekirjoitusta ei voitu vahvistaa"
 
@@ -7982,136 +7987,140 @@ msgstr "PGP-allekirjoitusta ei voitu vahvistaa"
 msgid "%ld%%"
 msgstr "%ld%%"
 
-#: parse/rc.c:97
+#: parse/rc.c:102
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: tuntematon komento"
 
-#: parse/set.c:390
+#: parse/set.c:391
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr ""
 
-#: parse/set.c:513
+#: parse/set.c:517
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr ""
 
-#: parse/set.c:565
+#: parse/set.c:569
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr ""
 
-#: parse/set.c:571 parse/set.c:601
+#: parse/set.c:575 parse/set.c:605
 #, c-format
 msgid "Can't set option with the '%s' command"
 msgstr ""
 
-#: parse/set.c:587
+#: parse/set.c:591
 msgid "'+' and '-' must be followed by '='"
 msgstr ""
 
-#: parse/set.c:595
+#: parse/set.c:599
 msgid "Can't use prefix when setting a variable"
 msgstr ""
 
-#: parse/set.c:613
+#: parse/set.c:617
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
 msgstr ""
 
-#: parse/set.c:617
+#: parse/set.c:621
 #, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
 msgstr ""
 
-#: pattern/compile.c:74 pattern/compile.c:160 pattern/compile.c:721
+#: pattern/compile.c:74 pattern/compile.c:117 pattern/compile.c:149
+#: pattern/compile.c:211 pattern/compile.c:772
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Virhe ilmauksessa: %s"
 
-#: pattern/compile.c:79 pattern/compile.c:165 pattern/compile.c:727
+#: pattern/compile.c:79 pattern/compile.c:122 pattern/compile.c:154
+#: pattern/compile.c:216 pattern/compile.c:778
 msgid "Empty expression"
 msgstr "Tyhjä ilmaus"
 
-#: pattern/compile.c:153
+#: pattern/compile.c:204
 #, fuzzy
 msgid "No search command defined"
 msgstr "OAUTH refresh komento puuttuu"
 
-#: pattern/compile.c:187
+#: pattern/compile.c:238
 #, fuzzy, c-format
 msgid "Running search command: %s ..."
 msgstr "Avataan automaattinen näyttö: %s"
 
-#: pattern/compile.c:305 pattern/compile.c:320
+#: pattern/compile.c:356 pattern/compile.c:371
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Virheellinen kuukaudenpäivä: %s"
 
-#: pattern/compile.c:310 pattern/compile.c:334
+#: pattern/compile.c:361 pattern/compile.c:385
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Virheellinen kuukausi: %s"
 
-#: pattern/compile.c:445
+#: pattern/compile.c:496
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Virheellinen suhteellinen päiväys: %s"
 
-#: pattern/compile.c:921 pattern/compile.c:1135
+#: pattern/compile.c:972 pattern/compile.c:1202
 msgid "empty pattern"
 msgstr "tyhjä kuvio"
 
-#: pattern/compile.c:951 pattern/compile.c:1126
+#: pattern/compile.c:1002 pattern/compile.c:1193
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "virhe ilmauksen kohdassa: %s"
 
-#: pattern/compile.c:978
+#: pattern/compile.c:1029
 #, c-format
 msgid "missing pattern: %s"
 msgstr "puuttuvua ilmaus: %s"
 
-#: pattern/compile.c:996 pattern/compile.c:1096
+#: pattern/compile.c:1047 pattern/compile.c:1163
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "pariton sulje: %s"
 
-#: pattern/compile.c:1030
+#: pattern/compile.c:1082
 #, c-format
 msgid "%c%c: invalid pattern"
 msgstr "%c%c: viallinen ilmaus-parametri"
 
-#: pattern/compile.c:1035
+#: pattern/compile.c:1087
 #, c-format
 msgid "%c%c: not supported in this mode"
 msgstr "%c%c: ei tuettu tässä tilassa"
 
-#: pattern/compile.c:1058
+#: pattern/compile.c:1117
 msgid "missing parameter"
 msgstr "puuttuva parametri"
-
-#. L10N:
-#. Pattern Completion Menu argument type: a regular expression
-#.
-#: pattern/dlg_pattern.c:150
-msgid "REGEX"
-msgstr "REGEX"
-
-#. L10N:
-#. Pattern Completion Menu argument type: a numeric range.
-#. Used by ~m, ~n, ~X, ~z.
-#.
-#: pattern/dlg_pattern.c:158
-msgid "RANGE"
-msgstr "RANGE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a date range
 #. Used by ~d, ~r.
 #.
-#: pattern/dlg_pattern.c:165
+#: pattern/dlg_pattern.c:151
 msgid "DATERANGE"
 msgstr "DATERANGE"
+
+#. L10N:
+#. Pattern Completion Menu argument type: an address group
+#. Used by %c, %C, %e, %f, %L.
+#.
+#: pattern/dlg_pattern.c:158
+msgid "GROUP"
+msgstr ""
+
+#. L10N:
+#. Pattern Completion Menu argument type: a message range.
+#. Used by ~m.
+#.
+#: pattern/dlg_pattern.c:165
+#, fuzzy
+msgid "MSGRANGE"
+msgstr "RANGE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -8122,36 +8131,59 @@ msgid "QUERY"
 msgstr ""
 
 #. L10N:
+#. Pattern Completion Menu argument type: a numeric range.
+#. Used by ~n, ~X, ~z.
+#.
+#: pattern/dlg_pattern.c:179
+msgid "RANGE"
+msgstr "RANGE"
+
+#. L10N:
+#. Pattern Completion Menu argument type: a regular expression
+#.
+#: pattern/dlg_pattern.c:185
+msgid "REGEX"
+msgstr "REGEX"
+
+#. L10N:
+#. Pattern Completion Menu argument type: a string (for IMAP patterns)
+#. Used by =b, =B, =h, =/.
+#.
+#: pattern/dlg_pattern.c:192
+msgid "STRING"
+msgstr ""
+
+#. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
 #. Used by ~(), ~<(), ~>().
 #.
-#: pattern/dlg_pattern.c:191
+#: pattern/dlg_pattern.c:211
 msgid "PATTERN"
 msgstr "PATTERN"
 
 #. L10N: Pattern Completion Menu description for ~()
-#: pattern/dlg_pattern.c:198
+#: pattern/dlg_pattern.c:218
 msgid "messages in threads containing messages matching PATTERN"
 msgstr "viestit joiden ketjuissa on viestejä jotka täsämäävät ilmaukseen PATTERN"
 
 #. L10N: Pattern Completion Menu description for ~<()
-#: pattern/dlg_pattern.c:206
+#: pattern/dlg_pattern.c:226
 msgid "messages whose immediate parent matches PATTERN"
 msgstr "viestit joiden välitön vanhempi täsmää kuvioon PATTERN"
 
 #. L10N: Pattern Completion Menu description for ~>()
-#: pattern/dlg_pattern.c:214
+#: pattern/dlg_pattern.c:234
 msgid "messages having an immediate child matching PATTERN"
 msgstr "viestit joiden välitön lapsi täsmää kuvioon PATTERN"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlg_pattern.c:299
+#: pattern/dlg_pattern.c:319
 msgid "Patterns"
 msgstr "Kuviot"
 
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
-#. %c is the pattern character, i.e. "g".
+#. %c%c is the pattern prefix and character, e.g. "~g".
 #: pattern/exec.c:93
 #, c-format
 msgid "Pattern operator '%c%c' is disabled"
@@ -8186,307 +8218,323 @@ msgid "error: server custom search only supported with IMAP"
 msgstr "virhe: palvelimen haku toimii vain IMAPilla"
 
 #. L10N: Pattern Completion Menu description for ~A
-#: pattern/flags.c:53
+#: pattern/flags.c:51
 msgid "all messages"
 msgstr "kaikki viestit"
 
 #. L10N: Pattern Completion Menu description for ~b
-#: pattern/flags.c:56
+#: pattern/flags.c:54
 msgid "messages whose body matches REGEX"
 msgstr "viestit joiden sisältöön täsmää REGEX"
 
+#. L10N: Pattern Completion Menu description for =b
+#: pattern/flags.c:57
 msgid "IMAP: messages whose body contains STRING"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~B
-#: pattern/flags.c:59
+#: pattern/flags.c:60
 msgid "messages whose body or headers match REGEX"
 msgstr "viestit joiden sisältöön tai otsakkeisiin täsmää REGEX"
 
+#. L10N: Pattern Completion Menu description for =B
+#: pattern/flags.c:63
 msgid "IMAP: messages whose body or headers contain STRING"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~c
-#: pattern/flags.c:62
+#: pattern/flags.c:66
 msgid "messages whose Cc: header matches REGEX"
 msgstr "viestit joiden CC-otsakkeeseen täsmää REGEX"
 
+#. L10N: Pattern Completion Menu description for %c
+#: pattern/flags.c:69
 msgid "messages whose Cc: is a member of GROUP"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~C
-#: pattern/flags.c:65
+#: pattern/flags.c:72
 msgid "messages whose To:, Cc: or Bcc: header matches REGEX"
 msgstr "viestit joiden vastaanottajaan täsmää REGEX"
 
+#. L10N: Pattern Completion Menu description for %C
+#: pattern/flags.c:75
 msgid "messages whose To:, Cc: or Bcc: is a member of GROUP"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~d
-#: pattern/flags.c:68
+#: pattern/flags.c:78
 msgid "messages sent in DATERANGE"
 msgstr "viestit jotka on lähetetty aikavälillä DATERANGE"
 
 #. L10N: Pattern Completion Menu description for ~D
-#: pattern/flags.c:71
+#: pattern/flags.c:81
 msgid "deleted messages"
 msgstr "poistetut viestit"
 
 #. L10N: Pattern Completion Menu description for ~e
-#: pattern/flags.c:74
+#: pattern/flags.c:84
 msgid "messages whose Sender: header matches REGEX"
 msgstr "viestit joiden Sender-otsakkeeseen täsmää REGEX"
 
+#. L10N: Pattern Completion Menu description for %e
+#: pattern/flags.c:87
 msgid "messages whose Sender: is a member of GROUP"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~E
-#: pattern/flags.c:77
+#: pattern/flags.c:90
 msgid "expired messages"
 msgstr "vanhenneet viestit"
 
 #. L10N: Pattern Completion Menu description for ~f
-#: pattern/flags.c:80
+#: pattern/flags.c:93
 msgid "messages whose From: header matches REGEX"
 msgstr "viestit joiden "
 
+#. L10N: Pattern Completion Menu description for %f
+#: pattern/flags.c:96
 msgid "messages whose From: is a member of GROUP"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~F
-#: pattern/flags.c:83
+#: pattern/flags.c:99
 msgid "flagged messages"
 msgstr "merkityt viestit"
 
 #. L10N: Pattern Completion Menu description for ~g
-#: pattern/flags.c:86
+#: pattern/flags.c:102
 msgid "cryptographically signed messages"
 msgstr "kryptografisesti allekirjoitetut viestit"
 
 #. L10N: Pattern Completion Menu description for ~G
-#: pattern/flags.c:89
+#: pattern/flags.c:105
 msgid "cryptographically encrypted messages"
 msgstr "kryptografisesti salatut viestit"
 
 #. L10N: Pattern Completion Menu description for ~h
-#: pattern/flags.c:92
+#: pattern/flags.c:108
 msgid "messages whose header matches REGEX"
 msgstr "viestit joiden otsakkeisiin täsmää REGEX"
 
+#. L10N: Pattern Completion Menu description for =h
+#: pattern/flags.c:111
 msgid "IMAP: messages whose header contains STRING"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~H
-#: pattern/flags.c:95
+#: pattern/flags.c:114
 msgid "messages whose spam header matches REGEX"
 msgstr "viestit joiden spam-tägiin täsmää REGEX"
 
 #. L10N: Pattern Completion Menu description for ~i
-#: pattern/flags.c:98
+#: pattern/flags.c:117
 msgid "messages whose Message-Id: header matches REGEX"
 msgstr "viestit joiden Message-ID:hen täsmää REGEX"
 
 #. L10N: Pattern Completion Menu description for ~I
-#: pattern/flags.c:101
+#: pattern/flags.c:120
 msgid "messages whose Message-Id: is included in results from $external_search_command"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~k
-#: pattern/flags.c:104
+#: pattern/flags.c:123
 msgid "messages which contain a PGP key"
 msgstr "viestit joissa on PGP-avain"
 
 #. L10N: Pattern Completion Menu description for ~K
-#: pattern/flags.c:107
+#: pattern/flags.c:126
 #, fuzzy
 msgid "messages whose Bcc: header matches REGEX"
 msgstr "hae viesti ID:llä"
 
 #. L10N: Pattern Completion Menu description for ~l
-#: pattern/flags.c:110
+#: pattern/flags.c:129
 msgid "messages addressed to known mailing lists"
 msgstr "viestit jotka on osoitettu tunnetuille postituslistoille"
 
 #. L10N: Pattern Completion Menu description for ~L
-#: pattern/flags.c:113
+#: pattern/flags.c:132
 msgid "messages whose From:, Sender:, To: or Cc: header matches REGEX"
 msgstr "viestit joiden From/Sender/To/CC-otsakkeisiin täsmää REGEX"
 
+#. L10N: Pattern Completion Menu description for %L
+#: pattern/flags.c:135
 msgid "messages whose From:, Sender:, To: or Cc: is a member of GROUP"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~m
-#: pattern/flags.c:116
+#: pattern/flags.c:138
 msgid "messages whose number is in RANGE"
 msgstr "viestit joiden numero on alueella RANGE"
 
 #. L10N: Pattern Completion Menu description for ~M
-#: pattern/flags.c:119
+#: pattern/flags.c:141
 msgid "messages with a Content-Type matching REGEX"
 msgstr "viestit joiden Content-Typeen täsmää REGEX"
 
 #. L10N: Pattern Completion Menu description for ~n
-#: pattern/flags.c:122
+#: pattern/flags.c:144
 msgid "messages whose score is in RANGE"
 msgstr "viestit joiden pisteitykseen täsmää RANGE"
 
 #. L10N: Pattern Completion Menu description for ~N
-#: pattern/flags.c:125
+#: pattern/flags.c:147
 msgid "new messages"
 msgstr "uudet viestit"
 
 #. L10N: Pattern Completion Menu description for ~O
-#: pattern/flags.c:128
+#: pattern/flags.c:150
 msgid "old messages"
 msgstr "vanhat viestit"
 
 #. L10N: Pattern Completion Menu description for ~p
-#: pattern/flags.c:131
+#: pattern/flags.c:153
 msgid "messages addressed to you"
 msgstr "viestit jotka on osoitettu sinulle"
 
 #. L10N: Pattern Completion Menu description for ~P
-#: pattern/flags.c:134
+#: pattern/flags.c:156
 msgid "messages from you"
 msgstr "viestin sinulta"
 
 #. L10N: Pattern Completion Menu description for ~Q
-#: pattern/flags.c:137
+#: pattern/flags.c:159
 msgid "messages which have been replied to"
 msgstr "viestit joihin on jo vastattu"
 
 #. L10N: Pattern Completion Menu description for ~r
-#: pattern/flags.c:140
+#: pattern/flags.c:162
 msgid "messages received in DATERANGE"
 msgstr "viestit jotka on saatu aikana DATERANGE"
 
 #. L10N: Pattern Completion Menu description for ~R
-#: pattern/flags.c:143
+#: pattern/flags.c:165
 msgid "read messages"
 msgstr "luetut viestit"
 
 #. L10N: Pattern Completion Menu description for ~s
-#: pattern/flags.c:146
+#: pattern/flags.c:168
 msgid "messages whose Subject: header matches REGEX"
 msgstr "viestit joiden aihe-otsakkeeseen täsmää REGEX"
 
 #. L10N: Pattern Completion Menu description for ~S
-#: pattern/flags.c:149
+#: pattern/flags.c:171
 msgid "superseded messages"
 msgstr "korvatut viestit"
 
 #. L10N: Pattern Completion Menu description for ~t
-#: pattern/flags.c:152
+#: pattern/flags.c:174
 msgid "messages whose To: header matches REGEX"
 msgstr "viestit joiden vastaanottaja-otsakkeeseen täsmää REGEX"
 
 #. L10N: Pattern Completion Menu description for ~T
-#: pattern/flags.c:155
+#: pattern/flags.c:177
 msgid "tagged messages"
 msgstr "merkittyt viestit"
 
 #. L10N: Pattern Completion Menu description for ~u
-#: pattern/flags.c:158
+#: pattern/flags.c:180
 msgid "messages addressed to subscribed mailing lists"
 msgstr "viestit jotka on osoitettu tilatulle postituslistalle"
 
 #. L10N: Pattern Completion Menu description for ~U
-#: pattern/flags.c:161
+#: pattern/flags.c:183
 msgid "unread messages"
 msgstr "lukemattomat viestit"
 
 #. L10N: Pattern Completion Menu description for ~v
-#: pattern/flags.c:164
+#: pattern/flags.c:186
 msgid "messages in collapsed threads"
 msgstr "viestit piilotetuissa ketjuissa"
 
 #. L10N: Pattern Completion Menu description for ~V
-#: pattern/flags.c:167
+#: pattern/flags.c:189
 msgid "cryptographically verified messages"
 msgstr "kryptografisesti varmennetut viestit"
 
 #. L10N: Pattern Completion Menu description for ~w
-#: pattern/flags.c:170
+#: pattern/flags.c:192
 #, fuzzy
 msgid "newsgroups matching REGEX"
 msgstr "Ei uutisryhmiä jotka täsmäävät maskiin"
 
 #. L10N: Pattern Completion Menu description for ~x
-#: pattern/flags.c:173
+#: pattern/flags.c:195
 msgid "messages whose References: or In-Reply-To: header matches REGEX"
 msgstr "viestit joiden References-otsakkeeseen täsmää REGEX"
 
 #. L10N: Pattern Completion Menu description for ~X
-#: pattern/flags.c:176
+#: pattern/flags.c:198
 msgid "messages with RANGE attachments"
 msgstr "viestit joissa on RANGE liitettä"
 
 #. L10N: Pattern Completion Menu description for ~y
-#: pattern/flags.c:179
+#: pattern/flags.c:201
 msgid "messages whose X-Label: header matches REGEX"
 msgstr "Viestit joiden X-Label-otsakkeeseen täsmää REGEX"
 
 #. L10N: Pattern Completion Menu description for ~Y
-#: pattern/flags.c:182
+#: pattern/flags.c:204
 msgid "messages whose tags match REGEX"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~z
-#: pattern/flags.c:185
+#: pattern/flags.c:207
 msgid "messages whose size is in RANGE"
 msgstr "viestit joiden koko on alueella RANGE"
 
-#. L10N: Pattern Completion Menu description for ~=
-#: pattern/flags.c:188
-msgid "duplicated messages"
-msgstr "duplikaattiviestit"
-
-#. L10N: Pattern Completion Menu description for ~$
-#: pattern/flags.c:191
-msgid "unreferenced messages"
-msgstr "viittaamattomat viestit"
-
 #. L10N: Pattern Completion Menu description for ~#
-#: pattern/flags.c:194
+#: pattern/flags.c:210
 #, fuzzy
 msgid "broken threads"
 msgstr "Ei enää ketjuja"
 
+#. L10N: Pattern Completion Menu description for ~$
+#: pattern/flags.c:213
+msgid "unreferenced messages"
+msgstr "viittaamattomat viestit"
+
 #. L10N: Pattern Completion Menu description for =/
-#: pattern/flags.c:197
+#: pattern/flags.c:216
 msgid "GMail: custom server-side search for STRING"
 msgstr ""
+
+#. L10N: Pattern Completion Menu description for ~=
+#: pattern/flags.c:219
+msgid "duplicated messages"
+msgstr "duplikaattiviestit"
 
 #: pattern/message.c:104 pattern/message.c:253
 msgid "No current message"
 msgstr "Ei nykyistä viestejä"
 
-#: pattern/pattern.c:204 pattern/pattern.c:330 pattern/pattern.c:509
-#: pattern/pattern.c:664
+#: pattern/pattern.c:204 pattern/pattern.c:331 pattern/pattern.c:510
+#: pattern/pattern.c:665
 msgid "Compiling search pattern..."
 msgstr "Käännetään hakuilmausta..."
 
-#: pattern/pattern.c:232 pattern/pattern.c:352
+#: pattern/pattern.c:233 pattern/pattern.c:353
 msgid "Executing command on matching messages..."
 msgstr "Suoritetaan viestintäsmäyskomentoa..."
 
-#: pattern/pattern.c:438
+#: pattern/pattern.c:439
 msgid "No messages matched criteria"
 msgstr "Ei täsmääviä viestejä"
 
-#: pattern/pattern.c:450 pattern/pattern.c:607 pattern/pattern.c:759
+#: pattern/pattern.c:451 pattern/pattern.c:608 pattern/pattern.c:760
 msgid "Search interrupted"
 msgstr "Haku katkaistu"
 
-#: pattern/pattern.c:539 pattern/pattern.c:694
+#: pattern/pattern.c:540 pattern/pattern.c:695
 msgid "Searching..."
 msgstr "Haetaan..."
 
-#: pattern/pattern.c:555 pattern/pattern.c:710
+#: pattern/pattern.c:556 pattern/pattern.c:711
 msgid "Search hit bottom without finding match"
 msgstr "Haku eteni loppuun ilman täsmäyksiä"
 
-#: pattern/pattern.c:568 pattern/pattern.c:723
+#: pattern/pattern.c:569 pattern/pattern.c:724
 msgid "Search hit top without finding match"
 msgstr "Haku eteni alkuun ilman täsmäyksiä"
 
@@ -8863,7 +8911,7 @@ msgstr "Ei vastaanottajia"
 msgid "Missing encryption key; mail not sent"
 msgstr ""
 
-#: send/send.c:2769 send/smtp.c:262
+#: send/send.c:2769 send/smtp.c:263
 msgid "Sending message..."
 msgstr "Lähetetään viestiä..."
 
@@ -8925,38 +8973,38 @@ msgstr "Virhe viestin lähetyksessä, lapsiprosessi palautti arvon %d (%s)"
 msgid "Output of the delivery process"
 msgstr "Lähetysprosessin tuloste"
 
-#: send/smtp.c:187
+#: send/smtp.c:188
 #, c-format
 msgid "SMTP session failed: %s"
 msgstr "SMTP-sessio epäonnistui: %s"
 
-#: send/smtp.c:251
+#: send/smtp.c:252
 #, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "SMTP-sessio epäonnistui: ei voitu avata kohdetta %s"
 
-#: send/smtp.c:374
+#: send/smtp.c:375
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "Viallinen SMTP-URL: %s"
 
-#: send/smtp.c:1077
+#: send/smtp.c:1078
 msgid "SMTP server does not support authentication"
 msgstr "SMTP-palvelin ei tue autentikointia"
 
-#: send/smtp.c:1134
+#: send/smtp.c:1135
 msgid "No from address given"
 msgstr "Ei lähettäjäosoitetta"
 
-#: send/smtp.c:1196
+#: send/smtp.c:1197
 msgid "SMTP session failed: read error"
 msgstr "SMTP-sessio epäonnistui: lukuvirhe"
 
-#: send/smtp.c:1198
+#: send/smtp.c:1199
 msgid "SMTP session failed: write error"
 msgstr "SMTP-sessio epäonnistui: kirjoitusvirhe"
 
-#: send/smtp.c:1200
+#: send/smtp.c:1201
 msgid "Invalid server response"
 msgstr "Viallinen palvelinvastaus"
 
@@ -8978,617 +9026,518 @@ msgstr ""
 msgid "sidebar-unpin { * | <mailbox> ... }"
 msgstr "sidebar-unpin { * | <mailbox> ... }"
 
-#. L10N: Help Overview -- `neomutt -h`
+#. L10N: Help Overview -- `neomutt --help`
 #. The modes are: help, info, send, tui
 #. Plus two helper modes: shared, all
 #. These should not be translated.
 #: usage.c:60
-#, fuzzy
 msgid "NeoMutt has four modes of operation:"
-msgstr "NeoMutt has four modes of operation:"
+msgstr ""
 
 #: usage.c:66
-#, fuzzy
 msgid "The default mode, if no command line arguments are specified, is tui."
-msgstr "The default mode, if no command line arguments are specified, is tui."
+msgstr ""
 
 #. L10N: Parameters in <>s may be translated
-#. L10N: Shared Help -- `neomutt -h shared`
-#: usage.c:70 usage.c:127
-#, fuzzy
+#. L10N: Shared Help -- `neomutt --help shared`
+#: usage.c:70 usage.c:131
 msgid "Options that apply to all modes"
-msgstr "Options that apply to all modes"
+msgstr ""
 
 #: usage.c:71
-#, fuzzy
-msgid "neomutt -n                           Don't read system config file"
-msgstr "neomutt -n                           Don't read system config file"
+msgid "neomutt -n, --no-system-config       Don't read system config file"
+msgstr ""
 
 #: usage.c:72
-#, fuzzy
-msgid "        -F <config>                  Use this user config file"
-msgstr "        -F <config>                  Use this user config file"
+msgid "        -F, --config <file>          Use this user config file"
+msgstr ""
 
 #: usage.c:73
-#, fuzzy
-msgid "        -e <command>                 Run extra commands"
-msgstr "        -e <command>                 Run extra commands"
+msgid "        -e, --command <command>      Run extra commands"
+msgstr ""
 
 #: usage.c:74
-#, fuzzy
-msgid "        -m <type>                    Set default mailbox type"
-msgstr "        -m <type>                    Set default mailbox type"
+msgid "        -m, --mbox-type <type>       Set default mailbox type"
+msgstr ""
 
 #: usage.c:75
-#, fuzzy
-msgid "        -d <level>                   Set logging level (1..5)"
-msgstr "        -d <level>                   Set logging level (1..5)"
+msgid "        -d, --debug-level <level>    Set logging level (1..5)"
+msgstr ""
 
 #: usage.c:76
-#, fuzzy
-msgid "        -l <file>                    Set logging file"
-msgstr "        -l <file>                    Set logging file"
+msgid "        -l, --debug-file <file>      Set logging file"
+msgstr ""
 
-#. L10N: Help Help -- `neomutt -h help`
-#: usage.c:79 usage.c:183
-#, fuzzy
+#. L10N: Help Help -- `neomutt --help help`
+#: usage.c:79 usage.c:187
 msgid "Get command line help for NeoMutt"
-msgstr "Get command line help for NeoMutt"
+msgstr ""
 
 #: usage.c:80
-#, fuzzy
-msgid "neomutt -h <mode>                    Detailed help for a mode"
-msgstr "neomutt -h <mode>                    Detailed help for a mode"
+msgid "neomutt -h, --help <mode>            Detailed help for a mode"
+msgstr ""
 
 #: usage.c:81
-#, fuzzy
-msgid "        -v[v]                        Version or license"
-msgstr "        -v[v]                        Version or license"
+msgid "        -v, --version                Version"
+msgstr ""
 
-#. L10N: Info Help -- `neomutt -h info`
-#: usage.c:84 usage.c:210
-#, fuzzy
+#: usage.c:82
+msgid "        -vv, --license               License"
+msgstr ""
+
+#. L10N: Info Help -- `neomutt --help info`
+#: usage.c:85 usage.c:214
 msgid "Ask NeoMutt for config information"
-msgstr "Ask NeoMutt for config information"
-
-#: usage.c:85
-#, fuzzy
-msgid "neomutt -A <alias> [...]             Lookup email aliases"
-msgstr "neomutt -A <alias> [...]             Lookup email aliases"
+msgstr ""
 
 #: usage.c:86
-#, fuzzy
-msgid "        -D [-D] [-O] [-S]            Dump the config"
-msgstr "        -D [-D] [-O] [-S]            Dump the config"
+msgid "neomutt -A, --alias <alias> [...]             Lookup email aliases"
+msgstr ""
 
 #: usage.c:87
-#, fuzzy
-msgid "        -Q <option> [...] [-O] [-S]  Query config options"
-msgstr "        -Q <option> [...] [-O] [-S]  Query config options"
+msgid "        -D, --dump-config [-O] [-S]           Dump the config"
+msgstr ""
 
-#. L10N: Sending Help -- `neomutt -h send`
-#: usage.c:90 usage.c:249
-#, fuzzy
-msgid "Send an email from the command line"
-msgstr "Send an email from the command line"
+#: usage.c:88
+msgid "        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"
+msgstr ""
+
+#: usage.c:89
+msgid "        -Q, --query <option> [...] [-O] [-S]  Query config options"
+msgstr ""
+
+#: usage.c:90
+msgid "        -O, --with-docs                       Add one-liner documentation"
+msgstr ""
 
 #: usage.c:91
-#, fuzzy
-msgid "neomutt -a <file> [...]              Attach files"
-msgstr "neomutt -a <file> [...]              Attach files"
+msgid "        -S, --hide-sensitive                  Hide sensitive option values"
+msgstr ""
 
-#: usage.c:92
-#, fuzzy
-msgid "        -b <address>                 Add Bcc: address"
-msgstr "        -b <address>                 Add Bcc: address"
-
-#: usage.c:93
-#, fuzzy
-msgid "        -C                           Use crypto (signing/encryption)"
-msgstr "        -C                           Use crypto (signing/encryption)"
-
-#: usage.c:94
-#, fuzzy
-msgid "        -c <address>                 Add Cc: address"
-msgstr "        -c <address>                 Add Cc: address"
+#. L10N: Sending Help -- `neomutt --help send`
+#: usage.c:94 usage.c:253
+msgid "Send an email from the command line"
+msgstr ""
 
 #: usage.c:95
-#, fuzzy
-msgid "        -E                           Edit message"
-msgstr "        -E                           Edit message"
+msgid "neomutt -a, --attach <file> [...]    Attach files"
+msgstr ""
 
 #: usage.c:96
-#, fuzzy
-msgid "        -H <draft>                   Use draft email"
-msgstr "        -H <draft>                   Use draft email"
+msgid "        -b, --bcc <address>          Add Bcc: address"
+msgstr ""
 
 #: usage.c:97
-#, fuzzy
-msgid "        -i <include>                 Include body file"
-msgstr "        -i <include>                 Include body file"
+msgid "        -C, --crypto                 Use crypto (signing/encryption)"
+msgstr ""
 
 #: usage.c:98
-#, fuzzy
-msgid "        -s <subject>                 Set Subject:"
-msgstr "        -s <subject>                 Set Subject:"
+msgid "        -c, --cc <address>           Add Cc: address"
+msgstr ""
 
 #: usage.c:99
-#, fuzzy
-msgid "        -- <address> [...]           Add To: addresses"
-msgstr "        -- <address> [...]           Add To: addresses"
+msgid "        -E, --edit-message           Edit message (draft/include)"
+msgstr ""
 
-#. L10N: TUI Help -- `neomutt -h tui`
-#: usage.c:102 usage.c:293
-#, fuzzy
-msgid "Start NeoMutt's TUI (Terminal User Interface)"
-msgstr "Start NeoMutt's TUI (Terminal User Interface)"
+#: usage.c:100
+msgid "        -H, --draft <file>           Use draft email file"
+msgstr ""
+
+#: usage.c:101
+msgid "        -i, --include <file>         Include body file"
+msgstr ""
+
+#: usage.c:102
+msgid "        -s, --subject <subject>      Set Subject:"
+msgstr ""
 
 #: usage.c:103
-#, fuzzy
-msgid "neomutt                              Start NeoMutt's TUI"
-msgstr "neomutt                              Start NeoMutt's TUI"
+msgid "        -- <address> [...]           Add To: addresses"
+msgstr ""
 
-#: usage.c:104
-#, fuzzy
-msgid "        -f <mailbox>                 Open this mailbox"
-msgstr "        -f <mailbox>                 Open this mailbox"
-
-#: usage.c:105
-#, fuzzy
-msgid "        -G                           Open NNTP browser"
-msgstr "        -G                           Open NNTP browser"
-
-#: usage.c:106
-#, fuzzy
-msgid "        -g <server>                  Use this NNTP server"
-msgstr "        -g <server>                  Use this NNTP server"
+#. L10N: TUI Help -- `neomutt --help tui`
+#: usage.c:106 usage.c:297
+msgid "Start NeoMutt's TUI (Terminal User Interface)"
+msgstr ""
 
 #: usage.c:107
-#, fuzzy
-msgid "        -p                           Resume postponed email"
-msgstr "        -p                           Resume postponed email"
+msgid "neomutt                              Start NeoMutt's TUI"
+msgstr ""
 
 #: usage.c:108
-#, fuzzy
-msgid "        -R                           Open mailbox read-only"
-msgstr "        -R                           Open mailbox read-only"
+msgid "        -f, --folder <mailbox>       Open this mailbox"
+msgstr ""
 
 #: usage.c:109
-#, fuzzy
-msgid "        -y                           Open mailbox browser"
-msgstr "        -y                           Open mailbox browser"
+msgid "        -G, --nntp-browser           Open NNTP browser"
+msgstr ""
 
 #: usage.c:110
-#, fuzzy
-msgid "        -Z                           Check for new mail"
-msgstr "        -Z                           Check for new mail"
+msgid "        -g, --nntp-server <server>   Use this NNTP server"
+msgstr ""
 
 #: usage.c:111
-#, fuzzy
-msgid "        -z                           Check for any mail"
-msgstr "        -z                           Check for any mail"
+msgid "        -p, --postponed              Resume postponed email"
+msgstr ""
 
-#: usage.c:115 usage.c:117
-#, fuzzy
+#: usage.c:112
+msgid "        -R, --read-only              Open mailbox read-only"
+msgstr ""
+
+#: usage.c:113
+msgid "        -y, --browser                Open mailbox browser"
+msgstr ""
+
+#: usage.c:114
+msgid "        -Z, --check-new-mail         Check for new mail"
+msgstr ""
+
+#: usage.c:115
+msgid "        -z, --check-any-mail         Check for any mail"
+msgstr ""
+
+#: usage.c:119 usage.c:121
 msgid "For detailed help, run:"
-msgstr "For detailed help, run:"
+msgstr ""
 
-#: usage.c:130
-#, fuzzy
-msgid "By default NeoMutt loads one system and one user config file,"
-msgstr "By default NeoMutt loads one system and one user config file,"
-
-#: usage.c:131
-#, fuzzy
-msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
-msgstr "e.g. /etc/neomuttrc and ~/.neomuttrc"
-
-#. L10N: Parameters in <>s may be translated
 #: usage.c:134
-#, fuzzy
-msgid "  -n            Don't read system config file"
-msgstr "  -n            Don't read system config file"
+msgid "By default NeoMutt loads one system and one user config file,"
+msgstr ""
 
 #: usage.c:135
-#, fuzzy
-msgid "  -F <config>   Use this user config file"
-msgstr "  -F <config>   Use this user config file"
+msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
+msgstr ""
 
-#: usage.c:136 usage.c:143
-#, fuzzy
-msgid "                May be used multiple times"
-msgstr "                May be used multiple times"
+#. L10N: Parameters in <>s may be translated
+#: usage.c:138
+msgid "  -n, --no-system-config      Don't read system config file"
+msgstr ""
 
 #: usage.c:139
-#, fuzzy
+msgid "  -F, --config <file>         Use this user config file"
+msgstr ""
+
+#: usage.c:140 usage.c:147
+msgid "                              May be used multiple times"
+msgstr ""
+
+#: usage.c:143
 msgid "These options override the config:"
-msgstr "These options override the config:"
+msgstr ""
 
-#: usage.c:140
-#, fuzzy
-msgid "  -m <type>     Set default mailbox type"
-msgstr "  -m <type>     Set default mailbox type"
+#: usage.c:144
+msgid "  -m, --mbox-type <type>      Set default mailbox type"
+msgstr ""
 
-#: usage.c:141
-#, fuzzy
-msgid "                May be: maildir, mbox, mh, mmdf"
-msgstr "                May be: maildir, mbox, mh, mmdf"
-
-#: usage.c:142
-#, fuzzy
-msgid "  -e <command>  Run extra commands"
-msgstr "  -e <command>  Run extra commands"
+#: usage.c:145
+msgid "                              May be: maildir, mbox, mh, mmdf"
+msgstr ""
 
 #: usage.c:146
-#, fuzzy
-msgid "These logging options override the config:"
-msgstr "These logging options override the config:"
-
-#: usage.c:147
-#, fuzzy
-msgid "  -d <level>    Set logging level"
-msgstr "  -d <level>    Set logging level"
-
-#: usage.c:148
-#, fuzzy
-msgid "                0 (off), 1 (low) .. 5 (high)"
-msgstr "                0 (off), 1 (low) .. 5 (high)"
-
-#: usage.c:149
-#, fuzzy
-msgid "  -l <file>     Set logging file"
-msgstr "  -l <file>     Set logging file"
+msgid "  -e, --command <command>     Run extra commands"
+msgstr ""
 
 #: usage.c:150
-#, fuzzy
-msgid "                Default file '~/.neomuttdebug0'"
-msgstr "                Default file '~/.neomuttdebug0'"
+msgid "These logging options override the config:"
+msgstr ""
 
-#: usage.c:154 usage.c:156 usage.c:194 usage.c:196 usage.c:231 usage.c:233
-#: usage.c:275 usage.c:277 usage.c:317 usage.c:319
-#, fuzzy
+#: usage.c:151
+msgid "  -d, --debug-level <level>   Set logging level"
+msgstr ""
+
+#: usage.c:152
+msgid "                              0 (off), 1 (low) .. 5 (high)"
+msgstr ""
+
+#: usage.c:153
+msgid "  -l, --debug-file <file>     Set logging file"
+msgstr ""
+
+#: usage.c:154
+msgid "                              Default file '~/.neomuttdebug0'"
+msgstr ""
+
+#: usage.c:158 usage.c:160 usage.c:198 usage.c:200 usage.c:235 usage.c:237
+#: usage.c:279 usage.c:281 usage.c:321 usage.c:323
 msgid "Examples:"
-msgstr "Examples:"
+msgstr ""
 
 #. L10N: Examples: Filenames may be translated
-#: usage.c:159
-#, fuzzy
-msgid "  neomutt -n"
-msgstr "  neomutt -n"
-
-#: usage.c:160
-#, fuzzy
-msgid "  neomutt -F work.rc"
-msgstr "  neomutt -F work.rc"
-
-#: usage.c:161
-#, fuzzy
-msgid "  neomutt -F work.rc -F colours.rc"
-msgstr "  neomutt -F work.rc -F colours.rc"
+#: usage.c:163
+msgid "  neomutt --no-system-config"
+msgstr ""
 
 #: usage.c:164
-#, fuzzy
-msgid "  neomutt -m maildir"
-msgstr "  neomutt -m maildir"
+msgid "  neomutt --config work.rc"
+msgstr ""
 
 #: usage.c:165
-#, fuzzy
-msgid "  neomutt -e 'set ask_cc = yes'"
-msgstr "  neomutt -e 'set ask_cc = yes'"
+msgid "  neomutt --config work.rc --config colours.rc"
+msgstr ""
 
 #: usage.c:168
-#, fuzzy
-msgid "  neomutt -d 2"
-msgstr "  neomutt -d 2"
+msgid "  neomutt --mbox-type maildir"
+msgstr ""
 
 #: usage.c:169
-#, fuzzy
-msgid "  neomutt -d 5 -l neolog"
-msgstr "  neomutt -d 5 -l neolog"
+msgid "  neomutt --command 'set ask_cc = yes'"
+msgstr ""
 
 #: usage.c:172
-#, fuzzy
-msgid "See also:"
-msgstr "See also:"
+msgid "  neomutt --debug-level 2"
+msgstr ""
 
 #: usage.c:173
-#, fuzzy
+msgid "  neomutt --debug-level 5 --debug-file neolog"
+msgstr ""
+
+#: usage.c:176
+msgid "See also:"
+msgstr ""
+
+#: usage.c:177
 msgid "- Config files: https://neomutt.org/guide/configuration"
-msgstr "- Config files: https://neomutt.org/guide/configuration"
+msgstr ""
 
 #. L10N: Parameters in <>s may be translated
-#: usage.c:187
-#, fuzzy
-msgid "  -h         Overview of command line options"
-msgstr "  -h         Overview of command line options"
+#: usage.c:191
+msgid "  -h, --help           Overview of command line options"
+msgstr ""
 
-#: usage.c:188
-#, fuzzy
-msgid "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
-msgstr "  -h <mode>  Detailed help for: shared, help, info, send, tui, all"
+#: usage.c:192
+msgid "  -h, --help <mode>    Detailed help for: shared, help, info, send, tui, all"
+msgstr ""
 
-#: usage.c:189
-#, fuzzy
-msgid "  -v         NeoMutt version and build parameters"
-msgstr "  -v         NeoMutt version and build parameters"
+#: usage.c:193
+msgid "  -v, --version        NeoMutt version and build parameters"
+msgstr ""
 
-#: usage.c:190
-#, fuzzy
-msgid "  -vv        NeoMutt Copyright and license"
-msgstr "  -vv        NeoMutt Copyright and license"
+#: usage.c:194
+msgid "  -vv, --license       NeoMutt Copyright and license"
+msgstr ""
 
 #. L10N: Examples
-#: usage.c:199
-#, fuzzy
-msgid "  neomutt -h info"
-msgstr "  neomutt -h info"
+#: usage.c:203
+msgid "  neomutt --help info"
+msgstr ""
 
-#: usage.c:200
-#, fuzzy
-msgid "  neomutt -vv"
-msgstr "  neomutt -vv"
+#: usage.c:204
+msgid "  neomutt --license"
+msgstr ""
 
 #. L10N: Parameters in <>s may be translated
-#: usage.c:214
-#, fuzzy
-msgid "  -A <alias> [...]  Lookup email aliases"
-msgstr "  -A <alias> [...]  Lookup email aliases"
-
-#: usage.c:215
-#, fuzzy
-msgid "                    Multiple aliases can be looked up (space-separated)"
-msgstr "                    Multiple aliases can be looked up (space-separated)"
-
 #: usage.c:218
-#, fuzzy
-msgid "  -D                Dump all the config options"
-msgstr "  -D                Dump all the config options"
+msgid "  -A, --alias <alias> [...]   Lookup email aliases"
+msgstr ""
 
 #: usage.c:219
-#, fuzzy
-msgid "  -D -D             (or -DD) Like -D, but only show changed config"
-msgstr "  -D -D             (or -DD) Like -D, but only show changed config"
+msgid "                              Multiple aliases can be looked up (space-separated)"
+msgstr ""
 
 #: usage.c:222
-#, fuzzy
-msgid "  -Q <option> [...] Query config options"
-msgstr "  -Q <option> [...] Query config options"
+msgid "  -D, --dump-config           Dump all the config options"
+msgstr ""
 
 #: usage.c:223
-#, fuzzy
-msgid "                    Multiple options can be looked up (space-separated)"
-msgstr "                    Multiple options can be looked up (space-separated)"
-
-#: usage.c:225
-#, fuzzy
-msgid "Modify the -D and -Q options:"
-msgstr "Modify the -D and -Q options:"
+msgid "  -DD, --dump-changed-config  Dump the changed config options"
+msgstr ""
 
 #: usage.c:226
-#, fuzzy
-msgid "  -O                Add one-liner documentation"
-msgstr "  -O                Add one-liner documentation"
+msgid "  -Q, --query <option> [...]  Query config options"
+msgstr ""
 
 #: usage.c:227
-#, fuzzy
-msgid "  -S                Hide the value of sensitive options"
-msgstr "  -S                Hide the value of sensitive options"
+msgid "                              Multiple options can be looked up (space-separated)"
+msgstr ""
+
+#: usage.c:229
+msgid "Modify the -D and -Q options:"
+msgstr ""
+
+#: usage.c:230
+msgid "  -O, --with-docs             Add one-liner documentation"
+msgstr ""
+
+#: usage.c:231
+msgid "  -S, --hide-sensitive        Hide the value of sensitive options"
+msgstr ""
 
 #. L10N: Examples
-#: usage.c:236
-#, fuzzy
-msgid "  neomutt -A flatcap gahr"
-msgstr "  neomutt -A flatcap gahr"
+#: usage.c:240
+msgid "  neomutt --alias flatcap gahr"
+msgstr ""
 
-#: usage.c:237
-#, fuzzy
-msgid "  neomutt -D -O"
-msgstr "  neomutt -D -O"
+#: usage.c:241
+msgid "  neomutt --dump-config --with-docs"
+msgstr ""
 
-#: usage.c:238
-#, fuzzy
-msgid "  neomutt -DD -S"
-msgstr "  neomutt -DD -S"
+#: usage.c:242
+msgid "  neomutt --dump-changed-config --hide-sensitive"
+msgstr ""
 
-#: usage.c:239
-#, fuzzy
-msgid "  neomutt -O -Q alias_format index_format"
-msgstr "  neomutt -O -Q alias_format index_format"
+#: usage.c:243
+msgid "  neomutt --with-docs --query alias_format index_format"
+msgstr ""
 
-#: usage.c:252
-#, fuzzy
+#: usage.c:256
 msgid "These options can supply everything NeoMutt needs to send an email."
-msgstr "These options can supply everything NeoMutt needs to send an email."
+msgstr ""
 
-#: usage.c:253
-#, fuzzy
+#: usage.c:257
 msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
-msgstr "If any parts are missing, NeoMutt will start the TUI to ask for them."
+msgstr ""
 
-#: usage.c:254
-#, fuzzy
+#: usage.c:258
 msgid "Addresses may be used before the options, or after a -- marker."
-msgstr "Addresses may be used before the options, or after a -- marker."
+msgstr ""
 
-#: usage.c:255
-#, fuzzy
+#: usage.c:259
 msgid "Aliases may be used in place of addresses."
-msgstr "Aliases may be used in place of addresses."
+msgstr ""
 
 #. L10N: Parameters in <>s may be translated
-#: usage.c:259
-#, fuzzy
-msgid "  -a <file> [...]     Attach files"
-msgstr "  -a <file> [...]     Attach files"
-
-#: usage.c:260
-#, fuzzy
-msgid "                      Terminated by -- or another option"
-msgstr "                      Terminated by -- or another option"
-
-#: usage.c:261
-#, fuzzy
-msgid "  -b <address>        Add Bcc: address"
-msgstr "  -b <address>        Add Bcc: address"
-
-#: usage.c:262
-#, fuzzy
-msgid "  -C                  Use crypto (signing/encryption)"
-msgstr "  -C                  Use crypto (signing/encryption)"
-
 #: usage.c:263
-#, fuzzy
-msgid "                      Must be set up in the config file"
-msgstr "                      Must be set up in the config file"
+msgid "  -a, --attach <file> [...]   Attach files"
+msgstr ""
 
 #: usage.c:264
-#, fuzzy
-msgid "  -c <address>        Add Cc: address"
-msgstr "  -c <address>        Add Cc: address"
+msgid "                              Terminated by -- or another option"
+msgstr ""
 
 #: usage.c:265
-#, fuzzy
-msgid "  -E                  Edit message"
-msgstr "  -E                  Edit message"
+msgid "  -b, --bcc <address>         Add Bcc: address"
+msgstr ""
 
 #: usage.c:266
-#, fuzzy
-msgid "                      (supplied by -H or -i)"
-msgstr "                      (supplied by -H or -i)"
+msgid "  -C, --crypto                Use crypto (signing/encryption)"
+msgstr ""
 
 #: usage.c:267
-#, fuzzy
-msgid "  -H <draft>          Use draft email"
-msgstr "  -H <draft>          Use draft email"
+msgid "                              Must be set up in the config file"
+msgstr ""
 
 #: usage.c:268
-#, fuzzy
-msgid "                      Full email with headers and body"
-msgstr "                      Full email with headers and body"
+msgid "  -c, --cc <address>          Add Cc: address"
+msgstr ""
 
 #: usage.c:269
-#, fuzzy
-msgid "  -i <include>        Include body file"
-msgstr "  -i <include>        Include body file"
+msgid "  -E, --edit-message          Edit message (draft/include)"
+msgstr ""
 
 #: usage.c:270
-#, fuzzy
-msgid "  -s <subject>        Set Subject:"
-msgstr "  -s <subject>        Set Subject:"
+msgid "                              (supplied by -H or -i)"
+msgstr ""
 
 #: usage.c:271
-#, fuzzy
-msgid "  -- <address> [...]  Add To: addresses"
-msgstr "  -- <address> [...]  Add To: addresses"
+msgid "  -H, --draft <file>          Use draft email file"
+msgstr ""
+
+#: usage.c:272
+msgid "                              Full email with headers and body"
+msgstr ""
+
+#: usage.c:273
+msgid "  -i, --include <file>        Include body file"
+msgstr ""
+
+#: usage.c:274
+msgid "  -s, --subject <subject>     Set Subject:"
+msgstr ""
+
+#: usage.c:275
+msgid "  -- <address> [...]          Add To: addresses"
+msgstr ""
 
 #. L10N: Examples: Filenames and email subjects may be translated
-#: usage.c:280
-#, fuzzy
-msgid "  neomutt flatcap -s 'Meeting' < meeting.txt"
-msgstr "  neomutt flatcap -s 'Meeting' < meeting.txt"
+#: usage.c:284
+msgid "  neomutt flatcap --subject 'Meeting' < meeting.txt"
+msgstr ""
 
-#: usage.c:281
-#, fuzzy
-msgid "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
-msgstr "  neomutt jim@example.com -c bob@example.com -s 'Party' -i party.txt"
+#: usage.c:285
+msgid "  neomutt jim@example.com --cc bob@example.com --subject 'Party' --include party.txt"
+msgstr ""
 
-#: usage.c:282
-#, fuzzy
-msgid "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
-msgstr "  neomutt -s 'Receipts' -a receipt1.pdf receipt2.pdf -- rocco"
+#: usage.c:286
+msgid "  neomutt --subject 'Receipts' --attach receipt1.pdf receipt2.pdf -- rocco"
+msgstr ""
 
-#: usage.c:283
-#, fuzzy
-msgid "  cat secret.txt | neomutt gahr -s 'Secret' -C"
-msgstr "  cat secret.txt | neomutt gahr -s 'Secret' -C"
-
-#: usage.c:296
-#, fuzzy
-msgid "Running NeoMutt with no options will read the config and start the TUI."
-msgstr "Running NeoMutt with no options will read the config and start the TUI."
-
-#: usage.c:297
-#, fuzzy
-msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
-msgstr "By default, it will open the Index Dialog with the $spool_file Mailbox."
+#: usage.c:287
+msgid "  cat secret.txt | neomutt gahr --subject 'Secret' --crypto"
+msgstr ""
 
 #: usage.c:300
-#, fuzzy
-msgid "These options cause NeoMutt to check a mailbox for mail."
-msgstr "These options cause NeoMutt to check a mailbox for mail."
+msgid "Running NeoMutt with no options will read the config and start the TUI."
+msgstr ""
 
 #: usage.c:301
-#, fuzzy
-msgid "If the condition isn't matched, NeoMutt exits."
-msgstr "If the condition isn't matched, NeoMutt exits."
-
-#: usage.c:302
-#, fuzzy
-msgid "  -p            Resume postponed email"
-msgstr "  -p            Resume postponed email"
-
-#: usage.c:303
-#, fuzzy
-msgid "  -Z            Check for new mail"
-msgstr "  -Z            Check for new mail"
+msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
+msgstr ""
 
 #: usage.c:304
-#, fuzzy
-msgid "  -z            Check for any mail"
-msgstr "  -z            Check for any mail"
+msgid "These options cause NeoMutt to check a mailbox for mail."
+msgstr ""
 
-#. L10N: Parameters in <>s may be translated
+#: usage.c:305
+msgid "If the condition isn't matched, NeoMutt exits."
+msgstr ""
+
+#: usage.c:306
+msgid "  -p, --postponed       Resume postponed email"
+msgstr ""
+
+#: usage.c:307
+#, fuzzy
+msgid "  -Z, --check-new-mail  Check for new mail"
+msgstr "tarkasta uusi posti postilaatikoista"
+
 #: usage.c:308
 #, fuzzy
-msgid "These options change the starting behavior:"
-msgstr "These options change the starting behavior:"
+msgid "  -z, --check-any-mail  Check for any mail"
+msgstr "tarkasta uusi posti postilaatikoista"
 
-#: usage.c:309
-#, fuzzy
-msgid "  -f <mailbox>  Open this mailbox"
-msgstr "  -f <mailbox>  Open this mailbox"
-
-#: usage.c:310
-#, fuzzy
-msgid "  -G            Open NNTP browser"
-msgstr "  -G            Open NNTP browser"
-
-#: usage.c:311
-#, fuzzy
-msgid "  -g <server>   Use this NNTP server"
-msgstr "  -g <server>   Use this NNTP server"
-
+#. L10N: Parameters in <>s may be translated
 #: usage.c:312
-#, fuzzy
-msgid "  -R            Open mailbox read-only"
-msgstr "  -R            Open mailbox read-only"
+msgid "These options change the starting behavior:"
+msgstr ""
 
 #: usage.c:313
-#, fuzzy
-msgid "  -y            Open mailbox browser"
-msgstr "  -y            Open mailbox browser"
+msgid "  -f, --folder <mailbox>      Open this mailbox"
+msgstr ""
+
+#: usage.c:314
+msgid "  -G, --nntp-browser          Open NNTP browser"
+msgstr ""
+
+#: usage.c:315
+msgid "  -g, --nntp-server <server>  Use this NNTP server"
+msgstr ""
+
+#: usage.c:316
+msgid "  -R, --read-only             Open mailbox read-only"
+msgstr ""
+
+#: usage.c:317
+msgid "  -y, --browser               Open mailbox browser"
+msgstr ""
 
 #. L10N: Examples: Path may be translated
-#: usage.c:322
-#, fuzzy
-msgid "  neomutt -f ~/mail -Z"
-msgstr "  neomutt -f ~/mail -Z"
+#: usage.c:326
+msgid "  neomutt --folder ~/mail --check-new-mail"
+msgstr ""
 
-#: usage.c:323
-#, fuzzy
-msgid "  neomutt -p"
-msgstr "  neomutt -p"
+#: usage.c:327
+msgid "  neomutt --postponed"
+msgstr ""
 
-#: usage.c:324
-#, fuzzy
-msgid "  neomutt -y"
-msgstr "  neomutt -y"
+#: usage.c:328
+msgid "  neomutt --browser"
+msgstr ""
 
-#: version.c:83
+#: version.c:84
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
 msgstr "Monet muutkin ovat lähettäneet koodia, korjauksia ja ehdotuksia.\n"
 
-#: version.c:87
+#: version.c:88
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -9614,7 +9563,7 @@ msgstr ""
 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
 "GNU General Public License for more details.\n"
 
-#: version.c:102
+#: version.c:103
 msgid ""
 "To learn more about NeoMutt, visit: https://neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -9631,15 +9580,15 @@ msgstr ""
 msgid "Copyright (C) 2015-2026 Richard Russon and friends"
 msgstr "Copyright (C) 2015-2026 Richard Russon ja muut"
 
+#: version.c:111
 msgid "NeoMutt is free software, provided without warranty: `neomutt -vv` for details"
 msgstr ""
 
-#: version.c:672
+#: version.c:671
 msgid "Compile options:"
 msgstr "Käännösaikaiset asetukset:"
 
-#: version.c:678
+#: version.c:677
 #, fuzzy
 msgid "Devel options:"
 msgstr "Oletusasetukset:"
-

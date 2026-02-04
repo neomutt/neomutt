@@ -30,40 +30,43 @@ The NeoMutt Mail User Agent (MUA)
 .SH SYNTAX
 .\" --------------------------------------------------------------------
 .SY neomutt
-.RB [ \-Enx ]
-.RB [ \-e\~\c
+.RB [ \-E | \-\-edit\-message ]
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-x ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.RB [ \-H\~\c
+.RB [ \-H | \-\-draft \~\c
 .IR draft ]
-.RB [ \-i\~\c
+.RB [ \-i | \-\-include \~\c
 .IR include ]
-.RB [ \-b\~\c
+.RB [ \-b | \-\-bcc \~\c
 .IR address ]
-.RB [ \-c\~\c
+.RB [ \-c | \-\-cc \~\c
 .IR address ]
-.RB [ \-s\~\c
+.RB [ \-s | \-\-subject \~\c
 .IR subject ]
-.RB [ \-a\~\c
+.RB [ \-a | \-\-attach \~\c
 .IR file ]\~.\|.\|.\&
 .RB [ \-\- ]
 .IR address \~.\|.\|.
 .YS
 .
 .SY neomutt
-.RB [ \-nx ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-x ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.RB [ \-b\~\c
+.RB [ \-b | \-\-bcc \~\c
 .IR address ]
-.RB [ \-c\~\c
+.RB [ \-c | \-\-cc \~\c
 .IR address ]
-.RB [ \-s\~\c
+.RB [ \-s | \-\-subject \~\c
 .IR subject ]
-.RB [ \-a\~\c
+.RB [ \-a | \-\-attach \~\c
 .IR file ]\~.\|.\|.\&
 .RB [ \-\- ]
 .IR address \~.\|.\|.\&
@@ -71,115 +74,126 @@ The NeoMutt Mail User Agent (MUA)
 .YS
 .
 .SY neomutt
-.RB [ \-nRy ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-R | \-\-read\-only ]
+.RB [ \-y | \-\-browser ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.RB [ \-f\~\c
+.RB [ \-f | \-\-folder \~\c
 .IR mailbox ]
-.RB [ \-m\~\c
+.RB [ \-m | \-\-mbox\-type \~\c
 .IR type ]
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.BI \-A\~ alias
+.BR \-A | \-\-alias \~\c
+.IR alias
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
 .B \-B
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.B \-D
-.RB [ \-S ]
-.RB [ \-O ]
+.BR \-D | \-\-dump\-config | \-DD | \-\-dump-changed
+.RB [ \-S | \-\-hide\-sensitive ]
+.RB [ \-O | \-\-with\-docs ]
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.BI \-d\~ level
-.BI \-l\~ file
+.BR \-d | \-\-debug\-level \~\c
+.IR level
+.BR \-l | \-\-debug\-file \~\c
+.IR file
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.B \-G
+.BR \-G | \-\-nntp\-browser
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.BI \-g\~ server
+.BR \-g | \-\-nntp\-server \~\c
+.IR server
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.B \-p
+.BR \-p | \-\-postponed
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.BI \-Q\~ variable
-.RB [ \-O ]
+.BR \-Q | \-\-query \~\c
+.IR variable
+.RB [ \-O | \-\-with\-docs ]
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.B \-Z
+.BR \-Z | \-\-check\-new\-mail
 .YS
 .
 .SY neomutt
-.RB [ \-n ]
-.RB [ \-e\~\c
+.RB [ \-n | \-\-no\-system\-config ]
+.RB [ \-e | \-\-command \~\c
 .IR command ]
-.RB [ \-F\~\c
+.RB [ \-F | \-\-config \~\c
 .IR config ]
-.B \-z
-.RB [ \-f\~\c
+.BR \-z | \-\-check\-any\-mail
+.RB [ \-f | \-\-folder \~\c
 .IR mailbox ]
 .YS
 .
 .SY neomutt
-.BR \-v [ v ]
+.BR \-v | \-\-version | \-vv | \-\-license
+.YS
+.
+.SY neomutt
+.BR \-h | \-\-help
 .YS
 .
 .\" --------------------------------------------------------------------
@@ -211,11 +225,11 @@ Special argument forces NeoMutt to stop option parsing and
 treat remaining arguments as \fIaddress\fPes even if they start with a dash
 .
 .TP
-.BI \-A " alias"
+.BR \-A ", " \-\-alias " " \fIalias\fP
 Print an expanded version of the given \fIalias\fP to stdout and exit
 .
 .TP
-.BI \-a " file"
+.BR \-a ", " \-\-attach " " \fIfile\fP
 Attach one or more \fIfile\fPs to a message (must be the last option).
 Add any addresses after the \(aq\fB\-\-\fP\(aq argument, e.g.:
 .RS
@@ -227,11 +241,11 @@ Add any addresses after the \(aq\fB\-\-\fP\(aq argument, e.g.:
 .RE
 .
 .TP
-.BI \-b " address"
+.BR \-b ", " \-\-bcc " " \fIaddress\fP
 Specify a blind carbon copy (Bcc) recipient
 .
 .TP
-.B \-C
+.BR \-C ", " \-\-crypto
 Enable cryptographic operations
 in the cases in which they're disabled by default.
 Those include:
@@ -247,30 +261,29 @@ Resending a message.
 .RE
 .
 .TP
-.BI \-c " address"
+.BR \-c ", " \-\-cc " " \fIaddress\fP
 Specify a carbon copy (Cc) recipient
 .
 .TP
-.B \-D
+.BR \-D ", " \-\-dump\-config
 Dump all configuration variables as
 .RB \(aq name = value \(aq
 pairs to stdout
 .
 .TP
-.B \-D\ \-D
-.B \-DD
+.B \-DD ", " \-\-dump\-changed\-config
 Like \fB\-D\fP, but only show the config that has changed
 .
 .TP
-.B \-D\ \-O
+.BR "\-D \-O" ", " "\-\-dump\-config \-\-with\-docs"
 Like \fB\-D\fP, but show one-liner documentation
 .
 .TP
-.B \-D\ \-S
+.BR "\-D \-S" ", " "\-\-dump\-config \-\-hide\-sensitive"
 Like \fB\-D\fP, but hide the value of sensitive variables
 .
 .TP
-.BI \-d " level"
+.BR \-d ", " \-\-debug\-level " " \fIlevel\fP
 Log debugging output to a file (default is \(dq\fI~/.neomuttdebug0\fP\(dq).
 The \fIlevel\fP can range from 1\(en5 and affects verbosity
 (a value of 2 is recommended)
@@ -280,33 +293,33 @@ to log the early startup process
 (before reading any configuration and hence $debug_level and $debug_file)
 .
 .TP
-.B \-E
+.BR \-E ", " \-\-edit\-message
 Edit \fIdraft\fP (\fB\-H\fP) or \fIinclude\fP (\fB\-i\fP) file
 during message composition
 .
 .TP
-.BI \-e " command"
+.BR \-e ", " \-\-command " " \fIcommand\fP
 Specify a \fIcommand\fP to be run after reading the config files
 .
 .TP
-.BI \-F " config"
+.BR \-F ", " \-\-config " " \fIconfig\fP
 Specify an alternative initialization file to read,
 see \fIFILES\fP section below for a list of regular configuration files
 .
 .TP
-.BI \-f " mailbox"
+.BR \-f ", " \-\-folder " " \fImailbox\fP
 Specify a \fImailbox\fP (as defined with \fBmailboxes\fP command) to load
 .
 .TP
-.B \-G
+.BR \-G ", " \-\-nntp\-browser
 Start NeoMutt with a listing of subscribed newsgroups
 .
 .TP
-.BI \-g " server"
+.BR \-g ", " \-\-nntp\-server " " \fIserver\fP
 Like \fB\-G\fP, but start at specified news \fIserver\fP
 .
 .TP
-.BI \-H " draft"
+.BR \-H ", " \-\-draft " " \fIdraft\fP
 Specify a \fIdraft\fP file which contains header and body to use to
 send a message.  If \fIdraft\fP is \*(lq\fB\-\fP\*(rq, then data is
 read from stdin.  The draft file is expected to contain just an RFC822
@@ -317,15 +330,15 @@ are not passed through untouched.  For example, encrypted draft files
 will be decrypted.
 .
 .TP
-.B \-h
+.BR \-h ", " \-\-help
 Print this help message and exit
 .
 .TP
-.BI \-i " include"
+.BR \-i ", " \-\-include " " \fIinclude\fP
 Specify an \fIinclude\fP file to be embedded in the body of a message
 .
 .TP
-.BI \-l " file"
+.BR \-l ", " \-\-debug\-file " " \fIfile\fP
 Specify a \fIfile\fP for debugging output (default
 \(dq\fI~/.neomuttdebug0\fP\(dq)
 .IP
@@ -334,54 +347,62 @@ This overrules $debug_file setting and NeoMutt keeps up to five debug logs
 before override the oldest file
 .
 .TP
-.BI \-m " type"
+.BR \-m ", " \-\-mbox\-type " " \fItype\fP
 Specify a default mailbox format \fItype\fP for newly created folders
 .IP
 The \fItype\fP is either MH, MMDF, Maildir or mbox (case-insensitive)
 .
 .TP
-.B \-n
+.BR \-n ", " \-\-no\-system\-config
 Do not read the system-wide configuration file
 .
 .TP
-.B \-p
+.BR \-O ", " \-\-with\-docs
+Show one-liner documentation (used with \fB\-D\fP or \fB\-Q\fP)
+.
+.TP
+.BR \-p ", " \-\-postponed
 Resume a prior postponed message, if any
 .
 .TP
-.BI \-Q " variable"
+.BR \-Q ", " \-\-query " " \fIvariable\fP
 Query a configuration \fIvariable\fP and print its value to stdout
 (after the config has been read and any commands executed).
 Add \-O for one-liner documentation.
 .
 .TP
-.B \-R
+.BR \-R ", " \-\-read\-only
 Open mailbox in read-only mode
 .
 .TP
-.BI \-s " subject"
+.BR \-S ", " \-\-hide\-sensitive
+Hide the value of sensitive variables (used with \fB\-D\fP)
+.
+.TP
+.BR \-s ", " \-\-subject " " \fIsubject\fP
 Specify a \fIsubject\fP
 (must be enclosed in quotes if it has spaces)
 .
 .TP
-.B \-v
+.BR \-v ", " \-\-version
 Print the NeoMutt version and compile-time definitions and exit
 .
 .TP
-.B \-vv
+.B \-vv ", " \-\-license
 Print the NeoMutt license and copyright information and exit
 .
 .TP
-.B \-y
+.BR \-y ", " \-\-browser
 Start NeoMutt with a listing of all defined mailboxes
 .
 .TP
-.B \-Z
+.BR \-Z ", " \-\-check\-new\-mail
 Open the first mailbox with new message
 or exit immediately with exit code 1
 if none is found in all defined mailboxes
 .
 .TP
-.B \-z
+.BR \-z ", " \-\-check\-any\-mail
 Open the first or specified (\fB\-f\fP) mailbox
 if it holds any message
 or exit immediately with exit code 1 otherwise
