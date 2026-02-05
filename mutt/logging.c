@@ -176,6 +176,8 @@ int log_file_set_filename(const char *file, bool verbose)
  */
 int log_file_set_level(enum LogLevel level, bool verbose)
 {
+  int rc = 0;
+
   if ((level < LL_MESSAGE) || (level >= LL_MAX))
     return -1;
 
@@ -197,10 +199,13 @@ int log_file_set_level(enum LogLevel level, bool verbose)
   }
   else
   {
-    log_file_open(verbose);
+    rc = log_file_open(verbose);
   }
 
-  if (LogFileLevel >= LL_DEBUG5)
+  if (rc != 0)
+    return rc;
+
+  if (LogFileFP && (LogFileLevel >= LL_DEBUG5))
   {
     fprintf(LogFileFP, "\n"
                        "WARNING:\n"
