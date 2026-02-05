@@ -254,6 +254,8 @@ struct ExpandoNode *parse_short_name(const char *str, const struct ExpandoDefini
   for (; def && (def->short_name || def->long_name); def++)
   {
     size_t len = mutt_str_len(def->short_name);
+    if (len == 0)
+      continue;
 
     if (mutt_strn_equal(def->short_name, str, len))
     {
