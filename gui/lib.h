@@ -27,6 +27,7 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | gui/config.c        | @subpage gui_config        |
  * | gui/curs_lib.c      | @subpage gui_curs_lib      |
  * | gui/dialog.c        | @subpage gui_dialog        |
  * | gui/functions.c     | @subpage gui_functions     |

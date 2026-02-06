@@ -62,6 +62,9 @@ struct ConfigDef PatternVars[] = {
   { "pattern_format", DT_EXPANDO, IP "%2n %-15e  %d", IP &PatternFormatDef, NULL,
     "printf-like format string for the pattern completion menu"
   },
+  { "simple_search", DT_STRING, IP "~f %s | ~s %s", 0, NULL,
+    "Pattern to search for when search doesn't contain ~'s"
+  },
   { "thorough_search", DT_BOOL, true, 0, NULL,
     "Decode headers and messages before searching them"
   },

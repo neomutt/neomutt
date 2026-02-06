@@ -30,6 +30,7 @@
  * | attach/attach.c       | @subpage attach_attach       |
  * | attach/cid.c          | @subpage attach_cid          |
  * | attach/commands.c     | @subpage attach_commands     |
+ * | attach/config.c       | @subpage attach_config       |
  * | attach/dlg_attach.c   | @subpage attach_dlg_attach   |
  * | attach/expando.c      | @subpage attach_expando      |
  * | attach/functions.c    | @subpage attach_functions    |

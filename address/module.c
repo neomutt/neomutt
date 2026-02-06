@@ -33,6 +33,9 @@
 #include "core/lib.h"
 
 extern const struct ConfigSetType CstAddress;
+#if defined(HAVE_LIBIDN)
+extern struct ConfigDef AddressVarsIdn[];
+#endif
 
 /**
  * address_config_define_types - Set up Config Types - Implements Module::config_define_types()
@@ -43,13 +46,27 @@ static bool address_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
 }
 
 /**
+ * address_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool address_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  bool rc = true;
+
+#if defined(HAVE_LIBIDN)
+  rc &= cs_register_variables(cs, AddressVarsIdn);
+#endif
+
+  return rc;
+}
+
+/**
  * ModuleAddress - Module for the Address library
  */
 const struct Module ModuleAddress = {
   "address",
   NULL, // init
   address_config_define_types,
-  NULL, // config_define_variables
+  address_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

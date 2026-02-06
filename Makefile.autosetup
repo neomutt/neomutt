@@ -79,8 +79,8 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 ###############################################################################
 # libaddress
 LIBADDRESS=	libaddress.a
-LIBADDRESSOBJS=	address/address.o address/config_type.o address/group.o \
-		address/idna.o address/maillist.o address/module.o
+LIBADDRESSOBJS=	address/address.o address/config.o address/config_type.o \
+		address/group.o address/idna.o address/maillist.o address/module.o
 CLEANFILES+=	$(LIBADDRESS) $(LIBADDRESSOBJS)
 ALLOBJS+=	$(LIBADDRESSOBJS)
 
@@ -110,9 +110,10 @@ $(PWD)/alias:
 # libattach
 LIBATTACH=	libattach.a
 LIBATTACHOBJS=	attach/attach.o attach/cid.o attach/commands.o \
-		attach/dlg_attach.o attach/expando.o attach/functions.o \
-		attach/lib.o attach/mutt_attach.o attach/private_data.o \
-		attach/recvattach.o attach/recvcmd.o attach/module.o
+		attach/config.o attach/dlg_attach.o attach/expando.o \
+		attach/functions.o attach/lib.o attach/mutt_attach.o \
+		attach/private_data.o attach/recvattach.o attach/recvcmd.o \
+		attach/module.o
 CLEANFILES+=	$(LIBATTACH) $(LIBATTACHOBJS)
 ALLOBJS+=	$(LIBATTACHOBJS)
 
@@ -476,11 +477,12 @@ $(PWD)/expando:
 ###############################################################################
 # libgui
 LIBGUI=		libgui.a
-LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/functions.o gui/global.o \
-		gui/module.o gui/msgcont.o gui/msgwin.o gui/msgwin_wdata.o \
-		gui/mutt_curses.o gui/mutt_window.o gui/mview.o gui/opcodes.o \
-		gui/reflow.o gui/resize.o gui/rootwin.o gui/sbar.o \
-		gui/simple.o gui/terminal.o gui/thread.o
+LIBGUIOBJS=	gui/config.o gui/curs_lib.o gui/dialog.o gui/functions.o \
+		gui/global.o gui/module.o gui/msgcont.o gui/msgwin.o \
+		gui/msgwin_wdata.o gui/mutt_curses.o gui/mutt_window.o \
+		gui/mview.o gui/opcodes.o gui/reflow.o gui/resize.o \
+		gui/rootwin.o gui/sbar.o gui/simple.o gui/terminal.o \
+		gui/thread.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
 
@@ -536,8 +538,8 @@ $(PWD)/history:
 ###############################################################################
 # libhooks
 LIBHOOKS=	libhooks.a
-LIBHOOKSOBJS=	hooks/commands.o hooks/dump.o hooks/exec.o hooks/hook.o \
-		hooks/module.o hooks/parse.o
+LIBHOOKSOBJS=	hooks/commands.o hooks/config.o hooks/dump.o hooks/exec.o \
+		hooks/hook.o hooks/module.o hooks/parse.o
 CLEANFILES+=	$(LIBHOOKS) $(LIBHOOKSOBJS)
 ALLOBJS+=	$(LIBHOOKSOBJS)
 

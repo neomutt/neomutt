@@ -33,20 +33,13 @@
 #include "core/lib.h"
 
 extern struct ConfigDef MainVars[];
-extern struct ConfigDef MainVarsIdn[];
 
 /**
  * main_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
  */
 static bool main_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, MainVars);
-
-#if defined(HAVE_LIBIDN)
-  rc |= cs_register_variables(cs, MainVarsIdn);
-#endif
-
-  return rc;
+  return cs_register_variables(cs, MainVars);
 }
 
 /**

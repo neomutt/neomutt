@@ -29,9 +29,19 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
 
+extern struct ConfigDef HooksVars[];
 extern const struct Command HooksCommands[];
+
+/**
+ * hooks_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool hooks_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, HooksVars);
+}
 
 /**
  * hooks_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
@@ -48,7 +58,7 @@ const struct Module ModuleHooks = {
   "hooks",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  hooks_config_define_variables,
   hooks_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup

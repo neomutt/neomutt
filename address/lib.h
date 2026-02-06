@@ -28,6 +28,7 @@
  * | File                   | Description               |
  * | :--------------------- | :------------------------ |
  * | address/address.c      | @subpage addr_address     |
+ * | address/config.c       | @subpage addr_config      |
  * | address/config_type.c  | @subpage addr_config_type |
  * | address/group.c        | @subpage addr_group       |
  * | address/idna.c         | @subpage addr_idna        |

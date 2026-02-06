@@ -28,6 +28,7 @@
  * | File               | Description              |
  * | :----------------- | :----------------------- |
  * | hooks/commands.c   | @subpage hooks_commands  |
+ * | hooks/config.c     | @subpage hooks_config    |
  * | hooks/dump.c       | @subpage hooks_dump      |
  * | hooks/exec.c       | @subpage hooks_exec      |
  * | hooks/hook.c       | @subpage hooks_hook      |
