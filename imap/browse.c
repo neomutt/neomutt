@@ -405,7 +405,7 @@ int imap_mailbox_create(const char *path)
 
   /* append a delimiter if necessary */
   const size_t n = buf_strcpy(name, mdata->real_name);
-  if ((n != 0) && (buf_at(name, n - 1) != adata->delim))
+  if ((n != 0) && (buf_at(name, -1) != adata->delim))
   {
     buf_addch(name, adata->delim);
   }
