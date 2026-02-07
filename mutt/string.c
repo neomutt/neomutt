@@ -106,6 +106,25 @@ static char *strsep(char **stringp, const char *delim)
 }
 #endif /* HAVE_STRSEP */
 
+#ifndef HAVE_STRRSPN_
+// strrspn_ - string rear span
+size_t
+strrspn_(const char *s, const char *accept)
+{
+	const char  *p, *nul;
+
+	p = nul = strnul(s);
+	while (p > s) {
+		p--;
+		if (strchr(accept, *p) == NULL) {
+			p++;
+			break;
+		}
+	}
+	return nul - p;
+}
+#endif // HAVE_STRRSPN_
+
 /**
  * struct SysExits - Lookup table of error messages
  */
@@ -544,36 +563,6 @@ const char *mutt_istr_find(const char *haystack, const char *needle)
 }
 
 /**
- * mutt_str_skip_whitespace - Find the first non-whitespace character in a string
- * @param p String to search
- * @retval ptr
- * - First non-whitespace character
- * - Terminating NUL character, if the string was entirely whitespace
- */
-char *mutt_str_skip_whitespace(const char *p)
-{
-  if (!p)
-    return NULL;
-  SKIPWS(p);
-  return (char *) p;
-}
-
-/**
- * mutt_str_remove_trailing_ws - Trim trailing whitespace from a string
- * @param s String to trim
- *
- * The string is modified in place.
- */
-void mutt_str_remove_trailing_ws(char *s)
-{
-  if (!s)
-    return;
-
-  for (char *p = s + mutt_str_len(s) - 1; (p >= s) && mutt_isspace(*p); p--)
-    *p = '\0';
-}
-
-/**
  * mutt_str_copy - Copy a string into a buffer (guaranteeing NUL-termination)
  * @param dest  Buffer for the result
  * @param src   String to copy
@@ -596,26 +585,6 @@ size_t mutt_str_copy(char *dest, const char *src, size_t dsize)
 
   *dest = '\0';
   return dest - dest0;
-}
-
-/**
- * mutt_str_skip_email_wsp - Skip over whitespace as defined by RFC5322
- * @param s String to search
- * @retval ptr
- * - First non-whitespace character
- * - Terminating NUL character, if the string was entirely whitespace
- *
- * This is used primarily for parsing header fields.
- */
-char *mutt_str_skip_email_wsp(const char *s)
-{
-  if (!s)
-    return NULL;
-
-  for (; mutt_str_is_email_wsp(*s); s++)
-    ; // Do nothing
-
-  return (char *) s;
 }
 
 /**
