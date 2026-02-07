@@ -100,7 +100,7 @@ struct Mapping KeyNames[] = {
   { "<A-Next>",  -1 },
   { "<A-Prev>",  -1 },
   { NULL, 0 },
-  // clang-format off
+  // clang-format on
 };
 
 /**

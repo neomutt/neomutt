@@ -200,7 +200,7 @@ static const struct Tz *find_tz(const char *s, size_t len)
  * @param tm Date to be tested
  * @retval true It's a leap year
  */
-static int is_leap_year_feb(struct tm *tm)
+static int is_leap_year_feb(const struct tm *tm)
 {
   if (tm->tm_mon != 1)
     return 0;

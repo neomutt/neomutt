@@ -177,7 +177,7 @@ void test_expando_parser(void)
       "%{bad}",    // unknown long name (not a short-name enclosure expando)
       "%<{unknown}?aaa&bbb>",  // unknown long name in conditional
       "%<{apple?aaa&bbb>",     // missing closing '}' in conditional
-      // clang-format off
+      // clang-format on
     };
 
     struct Buffer *buf = buf_pool_get();
