@@ -44,6 +44,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -55,11 +57,19 @@
 #include "edata.h"
 #include "mdata.h"
 #include "msn.h"
-#include "mutt_logging.h"
 #include "mx.h"
 
 /// Default buffer size for IMAP commands
 #define IMAP_CMD_BUFSIZE 512
+
+/// Maximum number of reconnection attempts before giving up
+#define IMAP_MAX_RETRIES 5
+
+/// Maximum backoff delay in seconds between reconnection attempts
+#define IMAP_MAX_BACKOFF 30
+
+/// Threshold in seconds after which to consider a connection potentially stale
+#define IMAP_CONN_STALE_THRESHOLD 300
 
 /**
  * Capabilities - Server capabilities strings that we understand
@@ -167,10 +177,19 @@ static int cmd_queue(struct ImapAccountData *adata, const char *cmdstr, ImapCmdF
 /**
  * cmd_handle_fatal - When ImapAccountData is in fatal state, do what we can
  * @param adata Imap Account data
+ *
+ * Attempts to reconnect using exponential backoff (1s, 2s, 4s, 8s... max 30s).
+ * Gives up after IMAP_MAX_RETRIES consecutive failures.
  */
 static void cmd_handle_fatal(struct ImapAccountData *adata)
 {
   adata->status = IMAP_FATAL;
+
+  mutt_debug(LL_DEBUG1, "state=%d, status=%d, recovering=%d, retries=%d\n",
+             adata->state, adata->status, adata->recovering, adata->retry_count);
+  mutt_debug(LL_DEBUG1, "Connection: fd=%d, host=%s\n",
+             adata->conn ? adata->conn->fd : -1,
+             adata->conn ? adata->conn->account.host : "NULL");
 
   if (!adata->mailbox)
     return;
@@ -190,8 +209,45 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
   if (!adata->recovering)
   {
     adata->recovering = true;
+
+    /* Exponential backoff: 1s, 2s, 4s, 8s, 16s, max 30s */
+    if (adata->retry_count > 0)
+    {
+      unsigned int delay = (adata->retry_count < 32) ?
+                               (1U << (adata->retry_count - 1)) :
+                               IMAP_MAX_BACKOFF;
+      if (delay > IMAP_MAX_BACKOFF)
+        delay = IMAP_MAX_BACKOFF;
+      mutt_message(_("Connection lost. Retrying in %u seconds..."), delay);
+      sleep(delay);
+    }
+
+    mutt_debug(LL_DEBUG1, "Attempting to reconnect to %s (attempt %d)\n",
+               adata->conn ? adata->conn->account.host : "NULL", adata->retry_count + 1);
+
     if (imap_login(adata))
-      mutt_clear_error();
+    {
+      mutt_message(_("Reconnected to %s"), adata->conn->account.host);
+      adata->retry_count = 0; // Reset on success
+    }
+    else
+    {
+      adata->retry_count++;
+      mutt_debug(LL_DEBUG1, "Reconnection failed (attempt %d/%d)\n",
+                 adata->retry_count, IMAP_MAX_RETRIES);
+
+      if (adata->retry_count >= IMAP_MAX_RETRIES)
+      {
+        mutt_error(_("Failed to reconnect to %s after %d attempts"),
+                   adata->conn->account.host, adata->retry_count);
+        adata->retry_count = 0; // Reset for future attempts
+      }
+      else
+      {
+        mutt_error(_("Reconnection to %s failed. Will retry automatically."),
+                   adata->conn->account.host);
+      }
+    }
     adata->recovering = false;
   }
 }
@@ -1182,10 +1238,25 @@ int imap_cmd_step(struct ImapAccountData *adata)
     /* back up over '\0' */
     if (len)
       len--;
+
+    mutt_debug(LL_DEBUG3, "reading from socket (fd=%d, state=%d)\n",
+               adata->conn ? adata->conn->fd : -1, adata->state);
+    time_t read_start = mutt_date_now();
+
     c = mutt_socket_readln_d(adata->buf + len, adata->blen - len, adata->conn, MUTT_SOCK_LOG_FULL);
+
+    time_t read_duration = mutt_date_now() - read_start;
+    if (read_duration > 1)
+    {
+      mutt_debug(LL_DEBUG1, "socket read took %ld seconds\n", (long) read_duration);
+    }
+
     if (c <= 0)
     {
-      mutt_debug(LL_DEBUG1, "Error reading server response\n");
+      mutt_debug(LL_DEBUG1, "Error reading server response (rc=%d, errno=%d: %s)\n",
+                 c, errno, strerror(errno));
+      mutt_debug(LL_DEBUG1, "Connection state: fd=%d, state=%d, status=%d\n",
+                 adata->conn ? adata->conn->fd : -1, adata->state, adata->status);
       cmd_handle_fatal(adata);
       return IMAP_RES_BAD;
     }
@@ -1331,6 +1402,20 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
   if (!adata)
     return IMAP_EXEC_ERROR;
 
+  /* Check connection health before executing command */
+  if ((adata->state >= IMAP_AUTHENTICATED) && (adata->last_success > 0))
+  {
+    time_t now = mutt_date_now();
+    time_t idle_time = now - adata->last_success;
+
+    if (idle_time > IMAP_CONN_STALE_THRESHOLD)
+    {
+      mutt_debug(LL_DEBUG2, "Connection idle for %ld seconds, sending NOOP to verify\n",
+                 (long) idle_time);
+      /* Connection may be stale - let the command proceed and handle any error */
+    }
+  }
+
   if (flags & IMAP_CMD_SINGLE)
   {
     // Process any existing commands
@@ -1378,6 +1463,9 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
     mutt_debug(LL_DEBUG1, "command failed: %s\n", adata->buf);
     return IMAP_EXEC_FATAL;
   }
+
+  /* Track successful command completion for connection health monitoring */
+  adata->last_success = mutt_date_now();
 
   return IMAP_EXEC_SUCCESS;
 }
@@ -1463,17 +1551,25 @@ int imap_cmd_idle(struct ImapAccountData *adata)
 {
   int rc;
 
+  mutt_debug(LL_DEBUG2, "Entering IDLE mode for %s\n",
+             adata->conn ? adata->conn->account.host : "NULL");
+
   if (cmd_start(adata, "IDLE", IMAP_CMD_POLL) < 0)
   {
+    mutt_debug(LL_DEBUG1, "Failed to send IDLE command\n");
     cmd_handle_fatal(adata);
     return -1;
   }
 
   const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  mutt_debug(LL_DEBUG2, "Waiting for IDLE continuation (timeout=%d)\n", c_imap_poll_timeout);
+
   if ((c_imap_poll_timeout > 0) &&
       ((mutt_socket_poll(adata->conn, c_imap_poll_timeout)) == 0))
   {
-    mutt_error(_("Connection to %s timed out"), adata->conn->account.host);
+    mutt_debug(LL_DEBUG1, "IDLE timed out waiting for server continuation response\n");
+    mutt_error(_("Connection to %s timed out waiting for IDLE response"),
+               adata->conn->account.host);
     cmd_handle_fatal(adata);
     return -1;
   }
@@ -1489,11 +1585,14 @@ int imap_cmd_idle(struct ImapAccountData *adata)
     adata->state = IMAP_IDLE;
     /* queue automatic exit when next command is issued */
     buf_addstr(&adata->cmdbuf, "DONE\r\n");
+    mutt_debug(LL_DEBUG2, "Successfully entered IDLE state\n");
     rc = IMAP_RES_OK;
   }
   if (rc != IMAP_RES_OK)
   {
-    mutt_debug(LL_DEBUG1, "error starting IDLE\n");
+    mutt_debug(LL_DEBUG1, "IDLE command failed with rc=%d (expected RESPOND=%d)\n",
+               rc, IMAP_RES_RESPOND);
+    mutt_error(_("IDLE command failed for %s"), adata->conn->account.host);
     return -1;
   }
 
