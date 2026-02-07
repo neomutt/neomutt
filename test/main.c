@@ -613,9 +613,12 @@ void test_fini(void);
                                                                                \
   /* parse */                                                                  \
   NEOMUTT_TEST_ITEM(test_command_set)                                          \
+  NEOMUTT_TEST_ITEM(test_more_args)                                            \
+  NEOMUTT_TEST_ITEM(test_more_args_f)                                          \
   NEOMUTT_TEST_ITEM(test_parse_extract_token)                                  \
   NEOMUTT_TEST_ITEM(test_parse_rc)                                             \
   NEOMUTT_TEST_ITEM(test_parse_set)                                            \
+  NEOMUTT_TEST_ITEM(test_skipws)                                               \
                                                                                \
   /* path */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_path_abbr_folder)                                \
