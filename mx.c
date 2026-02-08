@@ -1103,6 +1103,9 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
  * mx_mbox_check - Check for new mail - Wrapper for MxOps::mbox_check()
  * @param m          Mailbox
  * @retval enum #MxStatus
+ *
+ * @note This is a compatibility wrapper that calls the unified check.
+ *       It will be removed once all code is migrated.
  */
 enum MxStatus mx_mbox_check(struct Mailbox *m)
 {
@@ -1117,13 +1120,8 @@ enum MxStatus mx_mbox_check(struct Mailbox *m)
 
   m->last_checked = t;
 
-  enum MxStatus rc = m->mx_ops->mbox_check(m);
-  if ((rc == MX_STATUS_NEW_MAIL) || (rc == MX_STATUS_REOPENED))
-  {
-    mailbox_changed(m, NT_MAILBOX_INVALID);
-  }
-
-  return rc;
+  // Use unified check with no special flags
+  return mx_mbox_check_unified(m, MBOX_CHECK_NO_FLAGS);
 }
 
 /**
@@ -1767,7 +1765,12 @@ int mx_ac_remove(struct Mailbox *m, bool keep_account)
 
 /**
  * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check_stats()
+ * @param m          Mailbox
+ * @param flags      Flags, see #CheckStatsFlags
+ * @retval enum #MxStatus
  *
+ * @note This is a compatibility wrapper that calls the unified check.
+ *       It will be removed once all code is migrated.
  * @note Emits: #NT_MAILBOX_CHANGE
  */
 enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
@@ -1775,14 +1778,15 @@ enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (!m)
     return MX_STATUS_ERROR;
 
-  enum MxStatus rc = m->mx_ops->mbox_check_stats(m, flags);
-  if (rc != MX_STATUS_ERROR)
-  {
-    struct EventMailbox ev_m = { m };
-    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
-  }
+  // Convert old flags to unified flags
+  MboxCheckFlags unified_flags = MBOX_CHECK_NO_FLAGS;
+  if (flags & MUTT_MAILBOX_CHECK_STATS)
+    unified_flags |= MBOX_CHECK_FORCE_STATS;
+  if (flags & MUTT_MAILBOX_CHECK_POSTPONED)
+    unified_flags |= MBOX_CHECK_POSTPONED;
+  // MUTT_MAILBOX_CHECK_IMMEDIATE was for queuing - not directly mappable
 
-  return rc;
+  return mx_mbox_check_unified(m, unified_flags);
 }
 
 /**
