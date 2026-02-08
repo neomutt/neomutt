@@ -446,12 +446,7 @@ int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
   return 0;
 }
 
-enum MxStatus mx_mbox_check(struct Mailbox *m)
-{
-  return MX_STATUS_OK;
-}
-
-enum MxStatus mx_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+enum MxStatus mx_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   return MX_STATUS_OK;
 }

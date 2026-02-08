@@ -2264,7 +2264,7 @@ static int nm_path_canon(struct Buffer *path)
 }
 
 /**
- * nm_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * nm_mbox_check - Check for new mail and statistics - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m     Mailbox to check
  * @param flags Check behavior flags
  * @retval enum #MxStatus
@@ -2281,7 +2281,7 @@ static int nm_path_canon(struct Buffer *path)
  * - For closed mailboxes: use nm_mbox_check_stats() (database queries only)
  * - Always set has_new flag correctly based on msg_new count
  */
-static enum MxStatus nm_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+static enum MxStatus nm_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   if (!m)
     return MX_STATUS_ERROR;
@@ -2351,7 +2351,7 @@ const struct MxOps MxNotmuchOps = {
   .ac_add            = nm_ac_add,
   .mbox_open         = nm_mbox_open,
   .mbox_open_append  = NULL,
-  .mbox_check_unified = nm_mbox_check_unified,
+  .mbox_check = nm_mbox_check,
   .mbox_sync         = nm_mbox_sync,
   .mbox_close        = nm_mbox_close,
   .msg_open          = nm_msg_open,

@@ -538,7 +538,7 @@ cmoa_fail1:
 }
 
 /**
- * comp_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * comp_mbox_check - Check for new mail and statistics - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m     Mailbox
  * @param flags Check behavior flags
  * @retval enum #MxStatus
@@ -548,7 +548,7 @@ cmoa_fail1:
  *
  * If the mailbox has been changed in NeoMutt, warn the user.
  */
-static enum MxStatus comp_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+static enum MxStatus comp_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   if (!m->compress_info)
     return MX_STATUS_ERROR;
@@ -576,7 +576,7 @@ static enum MxStatus comp_mbox_check_unified(struct Mailbox *m, MboxCheckFlags f
     return MX_STATUS_ERROR;
 
   // Delegate to the underlying backend's unified check
-  return ops->mbox_check_unified(m, flags);
+  return ops->mbox_check(m, flags);
 }
 
 /**
@@ -608,7 +608,7 @@ static enum MxStatus comp_mbox_sync(struct Mailbox *m)
     return MX_STATUS_ERROR;
   }
 
-  enum MxStatus check = comp_mbox_check_unified(m, MBOX_CHECK_NO_FLAGS);
+  enum MxStatus check = comp_mbox_check(m, MBOX_CHECK_NO_FLAGS);
   if (check != MX_STATUS_OK)
     goto sync_cleanup;
 
@@ -894,7 +894,7 @@ const struct MxOps MxCompOps = {
   .ac_add           = comp_ac_add,
   .mbox_open        = comp_mbox_open,
   .mbox_open_append = comp_mbox_open_append,
-  .mbox_check_unified = comp_mbox_check_unified,
+  .mbox_check = comp_mbox_check,
   .mbox_sync        = comp_mbox_sync,
   .mbox_close       = comp_mbox_close,
   .msg_open         = comp_msg_open,
