@@ -1776,20 +1776,6 @@ int mx_ac_remove(struct Mailbox *m, bool keep_account)
 }
 
 /**
- * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check()
- * @param m          Mailbox
- * @param flags      Flags, see #MboxCheckFlags
- * @retval enum #MxStatus
- *
- * @note This is a compatibility wrapper. Just calls mx_mbox_check() directly.
- * @note Emits: #NT_MAILBOX_CHANGE
- */
-enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
-{
-  return mx_mbox_check(m, flags);
-}
-
-/**
  * mx_save_hcache - Save message to the header cache - Wrapper for MxOps::msg_save_hcache()
  * @param m Mailbox
  * @param e Email
