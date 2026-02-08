@@ -1778,26 +1778,15 @@ int mx_ac_remove(struct Mailbox *m, bool keep_account)
 /**
  * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check()
  * @param m          Mailbox
- * @param flags      Flags, see #CheckStatsFlags
+ * @param flags      Flags, see #MboxCheckFlags
  * @retval enum #MxStatus
  *
- * @note This is a compatibility wrapper that translates old flags to new API.
+ * @note This is a compatibility wrapper. Just calls mx_mbox_check() directly.
  * @note Emits: #NT_MAILBOX_CHANGE
  */
 enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
-  if (!m)
-    return MX_STATUS_ERROR;
-
-  // Convert old flags to new flags
-  MboxCheckFlags new_flags = MBOX_CHECK_NO_FLAGS;
-  if (flags & MUTT_MAILBOX_CHECK_STATS)
-    new_flags |= MBOX_CHECK_FORCE_STATS;
-  if (flags & MUTT_MAILBOX_CHECK_POSTPONED)
-    new_flags |= MBOX_CHECK_POSTPONED;
-  // MUTT_MAILBOX_CHECK_IMMEDIATE was for queuing - not directly mappable
-
-  return mx_mbox_check(m, new_flags);
+  return mx_mbox_check(m, flags);
 }
 
 /**

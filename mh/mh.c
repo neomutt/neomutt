@@ -1262,7 +1262,7 @@ static enum MxStatus mh_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
   if (update_stats)
   {
     // Use check_stats which reads sequences and sets has_new correctly
-    return mh_check_stats(m, MUTT_MAILBOX_CHECK_STATS);
+    return mh_check_stats(m, MBOX_CHECK_FORCE_STATS);
   }
   else
   {

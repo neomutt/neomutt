@@ -2302,7 +2302,7 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
   if (update_stats)
   {
     // Run full stats queries (msg_count, msg_unread, msg_flagged)
-    enum MxStatus rc = nm_mbox_check_stats(m, MUTT_MAILBOX_CHECK_STATS);
+    enum MxStatus rc = nm_mbox_check_stats(m, MBOX_CHECK_FORCE_STATS);
     
     // Notmuch check_stats doesn't set has_new, but we can infer it from msg_new
     // Note: Notmuch doesn't have a separate "new" tag by default, msg_new

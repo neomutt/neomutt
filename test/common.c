@@ -350,7 +350,7 @@ bool mutt_link_threads(struct Email *parent, struct EmailArray *children, struct
   return true;
 }
 
-int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
+int mutt_mailbox_check(struct Mailbox *m_cur, MboxCheckFlags flags)
 {
   return 0;
 }

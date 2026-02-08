@@ -317,7 +317,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
     }
 
     if (m)
-      mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
+      mutt_mailbox_check(m, MBOX_CHECK_NO_FLAGS);
 
     dir = mutt_file_opendir(dirname, MUTT_OPENDIR_NONE);
     if (!dir)
@@ -421,7 +421,7 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
     mailbox = buf_pool_get();
     md = buf_pool_get();
 
-    mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
+    mutt_mailbox_check(m, MBOX_CHECK_NO_FLAGS);
 
     struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
     const bool c_browser_abbreviate_mailboxes = cs_subset_bool(NeoMutt->sub, "browser_abbreviate_mailboxes");
@@ -612,7 +612,7 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
     if (state->is_mailbox_list)
     {
       snprintf(title, sizeof(title), _("Mailboxes [%d]"),
-               mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS));
+               mutt_mailbox_check(m, MBOX_CHECK_NO_FLAGS));
     }
     else
     {
