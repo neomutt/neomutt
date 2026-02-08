@@ -2554,6 +2554,62 @@ static enum MxStatus nntp_mbox_check(struct Mailbox *m)
 }
 
 /**
+ * nntp_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * @param m     Mailbox to check
+ * @param flags Check behavior flags
+ * @retval enum #MxStatus
+ *
+ * This is the unified implementation for NNTP (Usenet) mailboxes.
+ *
+ * For NNTP:
+ * - Check queries newsgroup for new article numbers (network round-trip)
+ * - Stats come from article counting (relatively cheap)
+ * - Similar to IMAP but typically for read-only newsgroups
+ *
+ * Strategy:
+ * - Use existing check_mailbox() for checking
+ * - NO_STATS flag is ignored - NNTP always gets article info
+ * - Moderate caching recommended (30s default)
+ * - Always set has_new flag correctly
+ */
+static enum MxStatus nntp_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+{
+  if (!m)
+    return MX_STATUS_ERROR;
+
+  struct NntpMboxData *mdata = m->mdata;
+  if (!mdata)
+    return MX_STATUS_ERROR;
+
+  // NNTP check is always the same - query for new article numbers
+  // The NO_STATS flag doesn't help - we get article info regardless
+  
+  // Respect check interval unless FORCE flag is set
+  struct NntpAccountData *adata = mdata->adata;
+  const short c_nntp_poll = cs_subset_number(NeoMutt->sub, "nntp_poll");
+  if (!(flags & MBOX_CHECK_FORCE))
+  {
+    if ((adata->check_time + c_nntp_poll) > mutt_date_now())
+    {
+      // Within check interval, don't check
+      return MX_STATUS_OK;
+    }
+  }
+
+  // Use the existing check which queries for new articles
+  enum MxStatus rc = nntp_mbox_check(m);
+  
+  // Ensure has_new is set correctly
+  // check_mailbox() returns NEW_MAIL when new articles are found
+  if (rc == MX_STATUS_NEW_MAIL)
+    m->has_new = true;
+  else if (rc == MX_STATUS_OK)
+    m->has_new = false;
+  
+  return rc;
+}
+
+/**
  * nntp_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync() - @ingroup mx_mbox_sync
  *
  * @note May also return values from check_mailbox()
@@ -2804,26 +2860,27 @@ static int nntp_path_canon(struct Buffer *path)
  */
 const struct MxOps MxNntpOps = {
   // clang-format off
-  .type            = MUTT_NNTP,
-  .name             = "nntp",
-  .is_local         = false,
-  .ac_owns_path     = nntp_ac_owns_path,
-  .ac_add           = nntp_ac_add,
-  .mbox_open        = nntp_mbox_open,
-  .mbox_open_append = NULL,
-  .mbox_check       = nntp_mbox_check,
-  .mbox_check_stats = NULL,
-  .mbox_sync        = nntp_mbox_sync,
-  .mbox_close       = nntp_mbox_close,
-  .msg_open         = nntp_msg_open,
-  .msg_open_new     = NULL,
-  .msg_commit       = NULL,
-  .msg_close        = nntp_msg_close,
-  .msg_padding_size = NULL,
-  .msg_save_hcache  = NULL,
-  .tags_edit        = NULL,
-  .tags_commit      = NULL,
-  .path_probe       = nntp_path_probe,
-  .path_canon       = nntp_path_canon,
+  .type              = MUTT_NNTP,
+  .name              = "nntp",
+  .is_local          = false,
+  .ac_owns_path      = nntp_ac_owns_path,
+  .ac_add            = nntp_ac_add,
+  .mbox_open         = nntp_mbox_open,
+  .mbox_open_append  = NULL,
+  .mbox_check        = nntp_mbox_check,
+  .mbox_check_stats  = NULL,
+  .mbox_check_unified = nntp_mbox_check_unified,
+  .mbox_sync         = nntp_mbox_sync,
+  .mbox_close        = nntp_mbox_close,
+  .msg_open          = nntp_msg_open,
+  .msg_open_new      = NULL,
+  .msg_commit        = NULL,
+  .msg_close         = nntp_msg_close,
+  .msg_padding_size  = NULL,
+  .msg_save_hcache   = NULL,
+  .tags_edit         = NULL,
+  .tags_commit       = NULL,
+  .path_probe        = nntp_path_probe,
+  .path_canon        = nntp_path_canon,
   // clang-format on
 };
