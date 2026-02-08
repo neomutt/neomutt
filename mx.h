@@ -41,7 +41,6 @@ typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_
 
 /* Wrappers for the Mailbox API, see MxOps */
 enum MxStatus        mx_mbox_check         (struct Mailbox *m, MboxCheckFlags flags);
-enum MxStatus        mx_mbox_check_stats   (struct Mailbox *m, uint8_t flags);
 enum MxStatus        mx_mbox_close         (struct Mailbox *m);
 bool                 mx_mbox_open         (struct Mailbox *m, OpenMailboxFlags flags);
 enum MxStatus        mx_mbox_sync         (struct Mailbox *m);
