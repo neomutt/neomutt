@@ -2302,11 +2302,15 @@ static enum MxStatus imap_check_full(struct Mailbox *m)
 /**
  * imap_check_stats - Check mailbox statistics (internal helper)
  * @param m     Mailbox
- * @param flags Check flags
+ * @param flags Check flags (MBOX_CHECK_FORCE to execute immediately)
  * @retval enum #MxStatus
+ *
+ * When MBOX_CHECK_FORCE is set, the STATUS command executes immediately.
+ * Otherwise, it's queued for batch execution to reduce network round-trips.
  */
 static enum MxStatus imap_check_stats(struct Mailbox *m, uint8_t flags)
 {
+  // MBOX_CHECK_FORCE means "execute immediately", otherwise queue
   const bool queue = (flags & MBOX_CHECK_FORCE) == 0;
   const int new_msgs = imap_mailbox_status(m, queue);
   if (new_msgs == -1)
@@ -2466,7 +2470,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *bu
  * @param flags Check behavior flags
  * @retval enum #MxStatus
  *
- * This is the unified implementation for IMAP mailboxes.
+ * This is the implementation for IMAP mailboxes.
  *
  * For IMAP:
  * - Basic check: NOOP or IDLE command (cheap, no data transfer)
@@ -2474,10 +2478,11 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *bu
  * - Network latency makes stats expensive, so caching is beneficial
  *
  * Strategy:
- * - For open mailboxes: use imap_mbox_check() (NOOP/IDLE + sync state)
- * - For closed mailboxes with stats: use STATUS command (faster than full open)
- * - For closed mailboxes without stats: lightweight STATUS for EXISTS only
- * - Aggressive caching recommended (60s default)
+ * - For open mailboxes: use NOOP/IDLE + sync state
+ * - For closed mailboxes: use STATUS command (faster than full open)
+ * - MBOX_CHECK_FORCE bypasses queueing and executes immediately
+ * - Without FORCE, commands are queued for batch execution (more efficient)
+ * - Aggressive caching recommended (60s default minimum)
  */
 static enum MxStatus imap_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
@@ -2502,6 +2507,7 @@ static enum MxStatus imap_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
   {
     // Run STATUS command for full statistics
     // This queries: MESSAGES RECENT UNSEEN
+    // MBOX_CHECK_FORCE means "execute immediately", otherwise queue for batch execution
     const bool queue = !(flags & MBOX_CHECK_FORCE);
     enum MxStatus rc = imap_check_stats(m, queue ? 0 : MBOX_CHECK_FORCE);
     
@@ -2518,6 +2524,7 @@ static enum MxStatus imap_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
   {
     // Lightweight check: just see if mailbox has changed
     // Use STATUS with minimal attributes
+    // MBOX_CHECK_FORCE means "execute immediately", otherwise queue for batch execution
     const bool queue = !(flags & MBOX_CHECK_FORCE);
     int new_msgs = imap_mailbox_status(m, queue);
     
