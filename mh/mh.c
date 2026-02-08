@@ -1231,31 +1231,103 @@ static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 }
 
 /**
+ * mh_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * @param m     Mailbox to check
+ * @param flags Check behavior flags
+ * @retval enum #MxStatus
+ *
+ * This is the unified implementation for MH mailboxes.
+ *
+ * For MH directories:
+ * - Basic check: stat() the directory and .mh_sequences file for mtime changes
+ * - Stats update: read .mh_sequences file and count message files
+ * - MH uses sequence files for flags, making stats moderately expensive
+ *
+ * Strategy:
+ * - For open mailboxes: use full mh_check() (handles message parsing)
+ * - For closed mailboxes: use mh_mbox_check_stats() (reads sequences)
+ * - Always set has_new flag correctly
+ */
+static enum MxStatus mh_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+{
+  if (!m)
+    return MX_STATUS_ERROR;
+
+  // For open mailboxes with emails loaded, use the full check
+  if (m->emails && (m->msg_count > 0))
+    return mh_check(m);
+
+  // For closed/sidebar mailboxes, use the stats-based check
+  // This reads the .mh_sequences file and counts message files
+  bool update_stats = !(flags & MBOX_CHECK_NO_STATS);
+  
+  if (update_stats)
+  {
+    // Use check_stats which reads sequences and sets has_new correctly
+    return mh_mbox_check_stats(m, MUTT_MAILBOX_CHECK_STATS);
+  }
+  else
+  {
+    // Lightweight check: just see if .mh_sequences changed
+    const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+    if (c_mail_check_recent && (mh_seq_changed(m) <= 0))
+    {
+      return MX_STATUS_OK;
+    }
+    
+    // Read sequences to check for new mail but don't update all stats
+    struct MhSequences mhs = { 0 };
+    if (mh_seq_read(&mhs, mailbox_path(m)) < 0)
+      return MX_STATUS_ERROR;
+
+    enum MxStatus rc = MX_STATUS_OK;
+    m->has_new = false;
+    
+    for (int i = mhs.max; i > 0; i--)
+    {
+      if (mh_seq_check(&mhs, i) & MH_SEQ_UNSEEN)
+      {
+        if (!c_mail_check_recent || (mh_already_notified(m, i) == 0))
+        {
+          m->has_new = true;
+          rc = MX_STATUS_NEW_MAIL;
+          break; // Found new mail, we can stop
+        }
+      }
+    }
+    
+    mh_seq_free(&mhs);
+    return rc;
+  }
+}
+
+/**
  * MxMhOps - MH Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 const struct MxOps MxMhOps = {
   // clang-format off
-  .type            = MUTT_MH,
-  .name             = "mh",
-  .is_local         = true,
-  .ac_owns_path     = mh_ac_owns_path,
-  .ac_add           = mh_ac_add,
-  .mbox_open        = mh_mbox_open,
-  .mbox_open_append = mh_mbox_open_append,
-  .mbox_check       = mh_mbox_check,
-  .mbox_check_stats = mh_mbox_check_stats,
-  .mbox_sync        = mh_mbox_sync,
-  .mbox_close       = mh_mbox_close,
-  .msg_open         = mh_msg_open,
-  .msg_open_new     = mh_msg_open_new,
-  .msg_commit       = mh_msg_commit,
-  .msg_close        = mh_msg_close,
-  .msg_padding_size = NULL,
-  .msg_save_hcache  = mh_msg_save_hcache,
-  .tags_edit        = NULL,
-  .tags_commit      = NULL,
-  .path_probe       = mh_path_probe,
-  .path_canon       = mh_path_canon,
-  .path_is_empty    = mh_check_empty,
+  .type              = MUTT_MH,
+  .name              = "mh",
+  .is_local          = true,
+  .ac_owns_path      = mh_ac_owns_path,
+  .ac_add            = mh_ac_add,
+  .mbox_open         = mh_mbox_open,
+  .mbox_open_append  = mh_mbox_open_append,
+  .mbox_check        = mh_mbox_check,
+  .mbox_check_stats  = mh_mbox_check_stats,
+  .mbox_check_unified = mh_mbox_check_unified,
+  .mbox_sync         = mh_mbox_sync,
+  .mbox_close        = mh_mbox_close,
+  .msg_open          = mh_msg_open,
+  .msg_open_new      = mh_msg_open_new,
+  .msg_commit        = mh_msg_commit,
+  .msg_close         = mh_msg_close,
+  .msg_padding_size  = NULL,
+  .msg_save_hcache   = mh_msg_save_hcache,
+  .tags_edit         = NULL,
+  .tags_commit       = NULL,
+  .path_probe        = mh_path_probe,
+  .path_canon        = mh_path_canon,
+  .path_is_empty     = mh_check_empty,
   // clang-format on
 };
