@@ -52,6 +52,16 @@ typedef uint8_t CheckStatsFlags;     ///< Flags for mutt_mailbox_check
 #define MUTT_MAILBOX_CHECK_IMMEDIATE (1 << 2) ///< Don't postpone the actual checking
 
 /**
+ * MboxCheckFlags - Flags for the unified mbox_check function
+ */
+typedef uint8_t MboxCheckFlags;       ///< Flags for mx_mbox_check()
+#define MBOX_CHECK_NO_FLAGS     0     ///< No flags are set
+#define MBOX_CHECK_FORCE        (1 << 0) ///< Ignore timestamp, force check
+#define MBOX_CHECK_FORCE_STATS  (1 << 1) ///< Ignore stats cache, force stats update
+#define MBOX_CHECK_NO_STATS     (1 << 2) ///< Skip statistics update (quick check only)
+#define MBOX_CHECK_POSTPONED    (1 << 3) ///< Update postponed message count
+
+/**
  * enum MxStatus - Return values from mbox_check(), mbox_check_stats(),
  * mbox_sync(), and mbox_close()
  */
@@ -169,6 +179,23 @@ struct MxOps
    * @pre m is not NULL
    */
   enum MxStatus (*mbox_check_stats)(struct Mailbox *m, CheckStatsFlags flags);
+
+  /**
+   * @defgroup mx_mbox_check_unified mbox_check_unified()
+   * @ingroup mx_api
+   *
+   * mbox_check_unified - Unified check for new mail and statistics
+   * @param m     Mailbox to check
+   * @param flags Check behavior flags, see #MboxCheckFlags
+   * @retval enum #MxStatus
+   *
+   * This function replaces the split mbox_check()/mbox_check_stats() API.
+   * It always checks for new mail and sets the has_new flag correctly.
+   * Statistics are updated based on caching policy and flags.
+   *
+   * @pre m is not NULL
+   */
+  enum MxStatus (*mbox_check_unified)(struct Mailbox *m, MboxCheckFlags flags);
 
   /**
    * @defgroup mx_mbox_sync mbox_sync()
