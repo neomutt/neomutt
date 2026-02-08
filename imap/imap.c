@@ -2307,7 +2307,7 @@ static enum MxStatus imap_check_full(struct Mailbox *m)
  */
 static enum MxStatus imap_check_stats(struct Mailbox *m, uint8_t flags)
 {
-  const bool queue = (flags & MUTT_MAILBOX_CHECK_IMMEDIATE) == 0;
+  const bool queue = (flags & MBOX_CHECK_FORCE) == 0;
   const int new_msgs = imap_mailbox_status(m, queue);
   if (new_msgs == -1)
     return MX_STATUS_ERROR;
@@ -2503,7 +2503,7 @@ static enum MxStatus imap_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
     // Run STATUS command for full statistics
     // This queries: MESSAGES RECENT UNSEEN
     const bool queue = !(flags & MBOX_CHECK_FORCE);
-    enum MxStatus rc = imap_check_stats(m, queue ? 0 : MUTT_MAILBOX_CHECK_IMMEDIATE);
+    enum MxStatus rc = imap_check_stats(m, queue ? 0 : MBOX_CHECK_FORCE);
     
     // IMAP check_stats returns NEW_MAIL based on new message count
     // Ensure has_new flag is set correctly

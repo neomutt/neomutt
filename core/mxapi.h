@@ -45,21 +45,15 @@ typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MU
 #define MUTT_APPENDNEW     (1 << 6) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
                                     ///< Used by maildir/mh to create the mailbox.
 
-typedef uint8_t CheckStatsFlags;     ///< Flags for mutt_mailbox_check
-#define MUTT_MAILBOX_CHECK_NO_FLAGS  0  ///< No flags are set
-#define MUTT_MAILBOX_CHECK_POSTPONED (1 << 0) ///< Make sure the number of postponed messages is updated
-#define MUTT_MAILBOX_CHECK_STATS     (1 << 1) ///< Ignore mail_check_stats and calculate statistics (used by <check-stats>)
-#define MUTT_MAILBOX_CHECK_IMMEDIATE (1 << 2) ///< Don't postpone the actual checking
-
 /**
- * MboxCheckFlags - Flags for the unified mbox_check function
+ * MboxCheckFlags - Flags for the mbox_check function
  */
 typedef uint8_t MboxCheckFlags;       ///< Flags for mx_mbox_check()
-#define MBOX_CHECK_NO_FLAGS     0     ///< No flags are set
-#define MBOX_CHECK_FORCE        (1 << 0) ///< Ignore timestamp, force check
-#define MBOX_CHECK_FORCE_STATS  (1 << 1) ///< Ignore stats cache, force stats update
-#define MBOX_CHECK_NO_STATS     (1 << 2) ///< Skip statistics update (quick check only)
-#define MBOX_CHECK_POSTPONED    (1 << 3) ///< Update postponed message count
+#define MBOX_CHECK_NO_FLAGS     0         ///< No flags are set
+#define MBOX_CHECK_FORCE        (1 << 0)  ///< Ignore timestamp, force check
+#define MBOX_CHECK_FORCE_STATS  (1 << 1)  ///< Ignore stats cache, force stats update
+#define MBOX_CHECK_NO_STATS     (1 << 2)  ///< Skip statistics update (quick check only)
+#define MBOX_CHECK_POSTPONED    (1 << 3)  ///< Update postponed message count
 
 /**
  * enum MxStatus - Return values from mbox_check(), mbox_check_stats(),
