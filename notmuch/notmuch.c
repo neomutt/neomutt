@@ -2485,31 +2485,108 @@ static int nm_path_canon(struct Buffer *path)
 }
 
 /**
+ * nm_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * @param m     Mailbox to check
+ * @param flags Check behavior flags
+ * @retval enum #MxStatus
+ *
+ * This is the unified implementation for Notmuch virtual mailboxes.
+ *
+ * For Notmuch:
+ * - Check for new mail: query database for mtime changes
+ * - Stats update: run database queries (relatively fast, no filesystem parsing)
+ * - Notmuch is database-backed, so stats are cheap compared to file parsing
+ *
+ * Strategy:
+ * - For open mailboxes: use full nm_mbox_check() (handles email updates)
+ * - For closed mailboxes: use nm_mbox_check_stats() (database queries only)
+ * - Always set has_new flag correctly based on msg_new count
+ */
+static enum MxStatus nm_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+{
+  if (!m)
+    return MX_STATUS_ERROR;
+
+  struct NmMboxData *mdata = nm_mdata_get(m);
+  if (!mdata)
+    return MX_STATUS_ERROR;
+
+  // For open mailboxes with emails loaded, use the full check
+  // This handles email updates, tag changes, occult messages, etc.
+  if (m->emails && (m->msg_count > 0))
+    return nm_mbox_check(m);
+
+  // For closed/sidebar mailboxes, use stats-based check
+  // Notmuch stats are database queries, which are relatively fast
+  bool update_stats = !(flags & MBOX_CHECK_NO_STATS);
+
+  if (update_stats)
+  {
+    // Run full stats queries (msg_count, msg_unread, msg_flagged)
+    enum MxStatus rc = nm_mbox_check_stats(m, MUTT_MAILBOX_CHECK_STATS);
+    
+    // Notmuch check_stats doesn't set has_new, but we can infer it from msg_new
+    // Note: Notmuch doesn't have a separate "new" tag by default, msg_new
+    // typically reflects unread messages
+    if (m->msg_new > 0)
+    {
+      m->has_new = true;
+      rc = MX_STATUS_NEW_MAIL;
+    }
+    
+    return rc;
+  }
+  else
+  {
+    // Lightweight check: just check database mtime
+    time_t mtime = 0;
+    if (nm_db_get_mtime(m, &mtime) != 0)
+      return MX_STATUS_ERROR;
+
+    // If database hasn't changed, no new mail
+    if (mdata->mtime.tv_sec >= mtime)
+    {
+      m->has_new = false;
+      return MX_STATUS_OK;
+    }
+
+    // Database changed, assume new mail (conservative approach)
+    // Without running queries, we can't know for sure
+    m->has_new = true;
+    mdata->mtime.tv_sec = mutt_date_now();
+    mdata->mtime.tv_nsec = 0;
+    
+    return MX_STATUS_NEW_MAIL;
+  }
+}
+
+/**
  * MxNotmuchOps - Notmuch Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 const struct MxOps MxNotmuchOps = {
   // clang-format off
-  .type             = MUTT_NOTMUCH,
-  .name             = "notmuch",
-  .is_local         = false,
-  .ac_owns_path     = nm_ac_owns_path,
-  .ac_add           = nm_ac_add,
-  .mbox_open        = nm_mbox_open,
-  .mbox_open_append = NULL,
-  .mbox_check       = nm_mbox_check,
-  .mbox_check_stats = nm_mbox_check_stats,
-  .mbox_sync        = nm_mbox_sync,
-  .mbox_close       = nm_mbox_close,
-  .msg_open         = nm_msg_open,
-  .msg_open_new     = maildir_msg_open_new,
-  .msg_commit       = nm_msg_commit,
-  .msg_close        = nm_msg_close,
-  .msg_padding_size = NULL,
-  .msg_save_hcache  = NULL,
-  .tags_edit        = nm_tags_edit,
-  .tags_commit      = nm_tags_commit,
-  .path_probe       = nm_path_probe,
-  .path_canon       = nm_path_canon,
-  .path_is_empty    = NULL,
+  .type              = MUTT_NOTMUCH,
+  .name              = "notmuch",
+  .is_local          = false,
+  .ac_owns_path      = nm_ac_owns_path,
+  .ac_add            = nm_ac_add,
+  .mbox_open         = nm_mbox_open,
+  .mbox_open_append  = NULL,
+  .mbox_check        = nm_mbox_check,
+  .mbox_check_stats  = nm_mbox_check_stats,
+  .mbox_check_unified = nm_mbox_check_unified,
+  .mbox_sync         = nm_mbox_sync,
+  .mbox_close        = nm_mbox_close,
+  .msg_open          = nm_msg_open,
+  .msg_open_new      = maildir_msg_open_new,
+  .msg_commit        = nm_msg_commit,
+  .msg_close         = nm_msg_close,
+  .msg_padding_size  = NULL,
+  .msg_save_hcache   = NULL,
+  .tags_edit         = nm_tags_edit,
+  .tags_commit       = nm_tags_commit,
+  .path_probe        = nm_path_probe,
+  .path_canon        = nm_path_canon,
+  .path_is_empty     = NULL,
   // clang-format on
 };
