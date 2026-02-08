@@ -1704,32 +1704,124 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 }
 
 /**
+ * mbox_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * @param m     Mailbox to check
+ * @param flags Check behavior flags
+ * @retval enum #MxStatus
+ *
+ * This is the unified implementation for mbox/mmdf mailboxes.
+ *
+ * For mbox files:
+ * - Basic check: stat() the file, check size/mtime changes
+ * - Stats update: requires opening the file and parsing (expensive)
+ * - The mbox format is a single file, so stats are more expensive than maildir
+ *
+ * Strategy:
+ * - Always check for new mail via file stat
+ * - Only parse file for stats when necessary (based on flags/caching)
+ */
+static enum MxStatus mbox_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+{
+  if (!m)
+    return MX_STATUS_ERROR;
+
+  struct stat st = { 0 };
+  if (stat(mailbox_path(m), &st) != 0)
+    return MX_STATUS_ERROR;
+
+  // For open mailboxes with a file pointer, use full check logic
+  struct MboxAccountData *adata = mbox_adata_get(m);
+  if (adata && adata->fp)
+    return mbox_mbox_check(m);
+
+  // For closed mailboxes, use lightweight stat-based check
+  bool new_or_changed;
+
+  const bool c_check_mbox_size = cs_subset_bool(NeoMutt->sub, "check_mbox_size");
+  if (c_check_mbox_size)
+  {
+    new_or_changed = (st.st_size > m->size);
+  }
+  else
+  {
+    new_or_changed =
+        (mutt_file_stat_compare(&st, MUTT_STAT_MTIME, &st, MUTT_STAT_ATIME) > 0) ||
+        (m->newly_created &&
+         (mutt_file_stat_compare(&st, MUTT_STAT_CTIME, &st, MUTT_STAT_MTIME) == 0) &&
+         (mutt_file_stat_compare(&st, MUTT_STAT_CTIME, &st, MUTT_STAT_ATIME) == 0));
+  }
+
+  // Always set has_new flag based on file changes
+  m->has_new = false;
+  if (new_or_changed)
+  {
+    const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+    if (!c_mail_check_recent ||
+        (mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->last_visited) > 0))
+    {
+      m->has_new = true;
+    }
+  }
+  else if (c_check_mbox_size)
+  {
+    /* some other program has deleted mail from the folder */
+    m->size = (off_t) st.st_size;
+  }
+
+  if (m->newly_created && ((st.st_ctime != st.st_mtime) || (st.st_ctime != st.st_atime)))
+    m->newly_created = false;
+
+  // Update statistics if requested and not skipped
+  bool update_stats = !(flags & MBOX_CHECK_NO_STATS);
+  if (update_stats && adata)
+  {
+    // Only update if file has been modified since last stats check
+    if (mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME,
+                                        &adata->stats_last_checked) > 0)
+    {
+      // Parse the mailbox to get accurate statistics
+      // This is expensive - we open, parse headers, then close
+      bool old_peek = m->peekonly;
+      mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
+      mx_mbox_close(m);
+      m->peekonly = old_peek;
+      mutt_time_now(&adata->stats_last_checked);
+    }
+  }
+
+  if (m->has_new || m->msg_new)
+    return MX_STATUS_NEW_MAIL;
+  return MX_STATUS_OK;
+}
+
+/**
  * MxMboxOps - Mbox Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 const struct MxOps MxMboxOps = {
   // clang-format off
-  .type            = MUTT_MBOX,
-  .name             = "mbox",
-  .is_local         = true,
-  .ac_owns_path     = mbox_ac_owns_path,
-  .ac_add           = mbox_ac_add,
-  .mbox_open        = mbox_mbox_open,
-  .mbox_open_append = mbox_mbox_open_append,
-  .mbox_check       = mbox_mbox_check,
-  .mbox_check_stats = mbox_mbox_check_stats,
-  .mbox_sync        = mbox_mbox_sync,
-  .mbox_close       = mbox_mbox_close,
-  .msg_open         = mbox_msg_open,
-  .msg_open_new     = mbox_msg_open_new,
-  .msg_commit       = mbox_msg_commit,
-  .msg_close        = mbox_msg_close,
-  .msg_padding_size = mbox_msg_padding_size,
-  .msg_save_hcache  = NULL,
-  .tags_edit        = NULL,
-  .tags_commit      = NULL,
-  .path_probe       = mbox_path_probe,
-  .path_canon       = mbox_path_canon,
-  .path_is_empty    = mbox_path_is_empty,
+  .type              = MUTT_MBOX,
+  .name              = "mbox",
+  .is_local          = true,
+  .ac_owns_path      = mbox_ac_owns_path,
+  .ac_add            = mbox_ac_add,
+  .mbox_open         = mbox_mbox_open,
+  .mbox_open_append  = mbox_mbox_open_append,
+  .mbox_check        = mbox_mbox_check,
+  .mbox_check_stats  = mbox_mbox_check_stats,
+  .mbox_check_unified = mbox_mbox_check_unified,
+  .mbox_sync         = mbox_mbox_sync,
+  .mbox_close        = mbox_mbox_close,
+  .msg_open          = mbox_msg_open,
+  .msg_open_new      = mbox_msg_open_new,
+  .msg_commit        = mbox_msg_commit,
+  .msg_close         = mbox_msg_close,
+  .msg_padding_size  = mbox_msg_padding_size,
+  .msg_save_hcache   = NULL,
+  .tags_edit         = NULL,
+  .tags_commit       = NULL,
+  .path_probe        = mbox_path_probe,
+  .path_canon        = mbox_path_canon,
+  .path_is_empty     = mbox_path_is_empty,
   // clang-format on
 };
 
@@ -1738,16 +1830,17 @@ const struct MxOps MxMboxOps = {
  */
 const struct MxOps MxMmdfOps = {
   // clang-format off
-  .type            = MUTT_MMDF,
-  .name             = "mmdf",
-  .is_local         = true,
-  .ac_owns_path     = mbox_ac_owns_path,
-  .ac_add           = mbox_ac_add,
-  .mbox_open        = mbox_mbox_open,
-  .mbox_open_append = mbox_mbox_open_append,
-  .mbox_check       = mbox_mbox_check,
-  .mbox_check_stats = mbox_mbox_check_stats,
-  .mbox_sync        = mbox_mbox_sync,
+  .type              = MUTT_MMDF,
+  .name              = "mmdf",
+  .is_local          = true,
+  .ac_owns_path      = mbox_ac_owns_path,
+  .ac_add            = mbox_ac_add,
+  .mbox_open         = mbox_mbox_open,
+  .mbox_open_append  = mbox_mbox_open_append,
+  .mbox_check        = mbox_mbox_check,
+  .mbox_check_stats  = mbox_mbox_check_stats,
+  .mbox_check_unified = mbox_mbox_check_unified,
+  .mbox_sync         = mbox_mbox_sync,
   .mbox_close       = mbox_mbox_close,
   .msg_open         = mbox_msg_open,
   .msg_open_new     = mbox_msg_open_new,
