@@ -811,46 +811,6 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
 }
 
 /**
- * pop_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
- */
-static enum MxStatus pop_mbox_check(struct Mailbox *m)
-{
-  if (!m || !m->account)
-    return MX_STATUS_ERROR;
-
-  struct PopAccountData *adata = pop_adata_get(m);
-
-  const short c_pop_check_interval = cs_subset_number(NeoMutt->sub, "pop_check_interval");
-  if ((adata->check_time + c_pop_check_interval) > mutt_date_now())
-    return MX_STATUS_OK;
-
-  pop_logout(m);
-
-  mutt_socket_close(adata->conn);
-
-  if (pop_open_connection(adata) < 0)
-    return MX_STATUS_ERROR;
-
-  m->size = adata->size;
-
-  mutt_message(_("Checking for new messages..."));
-
-  int old_msg_count = m->msg_count;
-  int rc = pop_fetch_headers(m);
-  pop_clear_cache(adata);
-  if (m->msg_count > old_msg_count)
-    mailbox_changed(m, NT_MAILBOX_INVALID);
-
-  if (rc < 0)
-    return MX_STATUS_ERROR;
-
-  if (rc > 0)
-    return MX_STATUS_NEW_MAIL;
-
-  return MX_STATUS_OK;
-}
-
-/**
  * pop_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
  * @param m     Mailbox to check
  * @param flags Check behavior flags
@@ -864,7 +824,7 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
  * - Stats come from counting downloaded headers
  *
  * Strategy:
- * - Use the existing pop_mbox_check() which fetches all headers
+ * - Inline the check logic (reconnect and fetch headers)
  * - NO_STATS flag is ignored - POP3 always gets all data when checking
  * - Aggressive caching is critical (300s default to avoid constant reconnects)
  * - Always set has_new flag based on new message count
@@ -878,10 +838,6 @@ static enum MxStatus pop_mbox_check_unified(struct Mailbox *m, MboxCheckFlags fl
   if (!adata)
     return MX_STATUS_ERROR;
 
-  // POP3 has no lightweight check - it's all or nothing
-  // The NO_STATS flag doesn't help us here
-  // We always have to reconnect and fetch headers to check for new mail
-  
   // Respect the check interval unless FORCE flag is set
   const short c_pop_check_interval = cs_subset_number(NeoMutt->sub, "pop_check_interval");
   if (!(flags & MBOX_CHECK_FORCE))
@@ -893,17 +849,38 @@ static enum MxStatus pop_mbox_check_unified(struct Mailbox *m, MboxCheckFlags fl
     }
   }
 
-  // Use the existing full check - POP3 has no optimization options
-  enum MxStatus rc = pop_mbox_check(m);
+  // POP3 check: reconnect and fetch headers
+  pop_logout(m);
+  mutt_socket_close(adata->conn);
+
+  if (pop_open_connection(adata) < 0)
+    return MX_STATUS_ERROR;
+
+  m->size = adata->size;
+
+  mutt_message(_("Checking for new messages..."));
+
+  int old_msg_count = m->msg_count;
+  int rc = pop_fetch_headers(m);
+  pop_clear_cache(adata);
   
-  // Ensure has_new is set correctly
-  // pop_mbox_check returns NEW_MAIL when new messages were fetched
-  if (rc == MX_STATUS_NEW_MAIL)
-    m->has_new = true;
-  else if (rc == MX_STATUS_OK)
+  if (m->msg_count > old_msg_count)
+  {
+    mailbox_changed(m, NT_MAILBOX_INVALID);
+    m->has_new = true;  // Always set has_new for new mail
+  }
+  else
+  {
     m->has_new = false;
-  
-  return rc;
+  }
+
+  if (rc < 0)
+    return MX_STATUS_ERROR;
+
+  if (rc > 0)
+    return MX_STATUS_NEW_MAIL;
+
+  return MX_STATUS_OK;
 }
 
 /**
@@ -1239,8 +1216,6 @@ const struct MxOps MxPopOps = {
   .ac_add            = pop_ac_add,
   .mbox_open         = pop_mbox_open,
   .mbox_open_append  = NULL,
-  .mbox_check        = pop_mbox_check,
-  .mbox_check_stats  = NULL,
   .mbox_check_unified = pop_mbox_check_unified,
   .mbox_sync         = pop_mbox_sync,
   .mbox_close        = pop_mbox_close,

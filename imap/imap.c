@@ -1264,20 +1264,6 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 }
 
 /**
- * imap_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats() - @ingroup mx_mbox_check_stats
- */
-static enum MxStatus imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
-{
-  const bool queue = (flags & MUTT_MAILBOX_CHECK_IMMEDIATE) == 0;
-  const int new_msgs = imap_mailbox_status(m, queue);
-  if (new_msgs == -1)
-    return MX_STATUS_ERROR;
-  if (new_msgs == 0)
-    return MX_STATUS_OK;
-  return MX_STATUS_NEW_MAIL;
-}
-
-/**
  * imap_path_status - Refresh the number of total and new messages
  * @param path   Mailbox path
  * @param queue  Queue the STATUS command
@@ -2234,7 +2220,7 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  * @retval >0 Success, e.g. #MX_STATUS_REOPENED
  * @retval -1 Failure
  */
-static enum MxStatus imap_mbox_check(struct Mailbox *m)
+static enum MxStatus imap_check_full(struct Mailbox *m)
 {
   imap_allow_reopen(m);
   enum MxStatus rc = imap_check_mailbox(m, false);
@@ -2243,6 +2229,23 @@ static enum MxStatus imap_mbox_check(struct Mailbox *m)
   imap_disallow_reopen(m);
 
   return rc;
+}
+
+/**
+ * imap_check_stats - Check mailbox statistics (internal helper)
+ * @param m     Mailbox
+ * @param flags Check flags
+ * @retval enum #MxStatus
+ */
+static enum MxStatus imap_check_stats(struct Mailbox *m, uint8_t flags)
+{
+  const bool queue = (flags & MUTT_MAILBOX_CHECK_IMMEDIATE) == 0;
+  const int new_msgs = imap_mailbox_status(m, queue);
+  if (new_msgs == -1)
+    return MX_STATUS_ERROR;
+  if (new_msgs == 0)
+    return MX_STATUS_OK;
+  return MX_STATUS_NEW_MAIL;
 }
 
 /**
@@ -2421,7 +2424,7 @@ static enum MxStatus imap_mbox_check_unified(struct Mailbox *m, MboxCheckFlags f
   // For open mailboxes (currently selected), use the full check
   // This uses NOOP or IDLE and syncs message state
   if (m == adata->mailbox)
-    return imap_mbox_check(m);
+    return imap_check_full(m);
 
   // For closed/sidebar mailboxes, use STATUS command
   // This is faster than opening the mailbox
@@ -2432,7 +2435,7 @@ static enum MxStatus imap_mbox_check_unified(struct Mailbox *m, MboxCheckFlags f
     // Run STATUS command for full statistics
     // This queries: MESSAGES RECENT UNSEEN
     const bool queue = !(flags & MBOX_CHECK_FORCE);
-    enum MxStatus rc = imap_mbox_check_stats(m, queue ? 0 : MUTT_MAILBOX_CHECK_IMMEDIATE);
+    enum MxStatus rc = imap_check_stats(m, queue ? 0 : MUTT_MAILBOX_CHECK_IMMEDIATE);
     
     // IMAP check_stats returns NEW_MAIL based on new message count
     // Ensure has_new flag is set correctly
@@ -2614,8 +2617,6 @@ const struct MxOps MxImapOps = {
   .ac_add            = imap_ac_add,
   .mbox_open         = imap_mbox_open,
   .mbox_open_append  = imap_mbox_open_append,
-  .mbox_check        = imap_mbox_check,
-  .mbox_check_stats  = imap_mbox_check_stats,
   .mbox_check_unified = imap_mbox_check_unified,
   .mbox_sync         = NULL, /* imap syncing is handled by imap_sync_mailbox */
   .mbox_close        = imap_mbox_close,

@@ -917,13 +917,17 @@ static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * mbox_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
+ * mbox_check_mailbox - Check for new mail (internal helper)
  * @param[in]  m Mailbox
  * @retval #MX_STATUS_REOPENED  Mailbox has been reopened
  * @retval #MX_STATUS_NEW_MAIL  New mail has arrived
- * @retval #MX_STATUS_LOCKED    Couldn't lock the file
+ * @retval #MX_STATUS_LOCKED    Couldn't lock the mailbox
+ * @retval #MX_STATUS_ERROR     Error
+ *
+ * This is the original check logic for open mbox files.
+ * Used internally by the unified API and mbox_sync.
  */
-static enum MxStatus mbox_mbox_check(struct Mailbox *m)
+static enum MxStatus mbox_check_mailbox(struct Mailbox *m)
 {
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (!adata)
@@ -1105,7 +1109,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  enum MxStatus check = mbox_mbox_check(m);
+  enum MxStatus check = mbox_check_mailbox(m);
   if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
@@ -1642,68 +1646,6 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 }
 
 /**
- * mbox_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats() - @ingroup mx_mbox_check_stats
- */
-static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
-{
-  struct stat st = { 0 };
-  if (stat(mailbox_path(m), &st) != 0)
-    return MX_STATUS_ERROR;
-
-  bool new_or_changed;
-
-  const bool c_check_mbox_size = cs_subset_bool(NeoMutt->sub, "check_mbox_size");
-  if (c_check_mbox_size)
-  {
-    new_or_changed = (st.st_size > m->size);
-  }
-  else
-  {
-    new_or_changed =
-        (mutt_file_stat_compare(&st, MUTT_STAT_MTIME, &st, MUTT_STAT_ATIME) > 0) ||
-        (m->newly_created &&
-         (mutt_file_stat_compare(&st, MUTT_STAT_CTIME, &st, MUTT_STAT_MTIME) == 0) &&
-         (mutt_file_stat_compare(&st, MUTT_STAT_CTIME, &st, MUTT_STAT_ATIME) == 0));
-  }
-
-  if (new_or_changed)
-  {
-    const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
-    if (!c_mail_check_recent ||
-        (mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->last_visited) > 0))
-    {
-      m->has_new = true;
-    }
-  }
-  else if (c_check_mbox_size)
-  {
-    /* some other program has deleted mail from the folder */
-    m->size = (off_t) st.st_size;
-  }
-
-  if (m->newly_created && ((st.st_ctime != st.st_mtime) || (st.st_ctime != st.st_atime)))
-    m->newly_created = false;
-
-  if (flags & MUTT_MAILBOX_CHECK_STATS)
-  {
-    struct MboxAccountData *adata = mbox_adata_get(m);
-    if (adata && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME,
-                                                 &adata->stats_last_checked) > 0)
-    {
-      bool old_peek = m->peekonly;
-      mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
-      mx_mbox_close(m);
-      m->peekonly = old_peek;
-      mutt_time_now(&adata->stats_last_checked);
-    }
-  }
-
-  if (m->has_new || m->msg_new)
-    return MX_STATUS_NEW_MAIL;
-  return MX_STATUS_OK;
-}
-
-/**
  * mbox_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
  * @param m     Mailbox to check
  * @param flags Check behavior flags
@@ -1732,7 +1674,7 @@ static enum MxStatus mbox_mbox_check_unified(struct Mailbox *m, MboxCheckFlags f
   // For open mailboxes with a file pointer, use full check logic
   struct MboxAccountData *adata = mbox_adata_get(m);
   if (adata && adata->fp)
-    return mbox_mbox_check(m);
+    return mbox_check_mailbox(m);
 
   // For closed mailboxes, use lightweight stat-based check
   bool new_or_changed;
@@ -1806,8 +1748,6 @@ const struct MxOps MxMboxOps = {
   .ac_add            = mbox_ac_add,
   .mbox_open         = mbox_mbox_open,
   .mbox_open_append  = mbox_mbox_open_append,
-  .mbox_check        = mbox_mbox_check,
-  .mbox_check_stats  = mbox_mbox_check_stats,
   .mbox_check_unified = mbox_mbox_check_unified,
   .mbox_sync         = mbox_mbox_sync,
   .mbox_close        = mbox_mbox_close,
@@ -1837,8 +1777,6 @@ const struct MxOps MxMmdfOps = {
   .ac_add            = mbox_ac_add,
   .mbox_open         = mbox_mbox_open,
   .mbox_open_append  = mbox_mbox_open_append,
-  .mbox_check        = mbox_mbox_check,
-  .mbox_check_stats  = mbox_mbox_check_stats,
   .mbox_check_unified = mbox_mbox_check_unified,
   .mbox_sync         = mbox_mbox_sync,
   .mbox_close       = mbox_mbox_close,
