@@ -835,6 +835,62 @@ enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 }
 
 /**
+ * maildir_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * @param m     Mailbox to check
+ * @param flags Check behavior flags
+ * @retval enum #MxStatus
+ *
+ * This is the unified implementation that replaces both maildir_mbox_check()
+ * and maildir_mbox_check_stats(). It always checks for new mail and updates
+ * has_new correctly. Statistics are updated based on flags and caching policy.
+ *
+ * For Maildir:
+ * - Checking for new mail: scan new/ directory for unread messages
+ * - Updating statistics: count messages in new/ and cur/ directories
+ * - Both operations scan directories, so the cost difference is minimal
+ */
+enum MxStatus maildir_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+{
+  if (!m)
+    return MX_STATUS_ERROR;
+
+  // If this is an open mailbox with emails loaded, use the full check logic
+  if (m->emails && (m->msg_count > 0))
+    return maildir_check(m);
+
+  // For closed/sidebar mailboxes, use lightweight directory scan
+  bool check_stats = !(flags & MBOX_CHECK_NO_STATS);
+  bool check_new = true;
+
+  // Always reset has_new before checking
+  m->has_new = false;
+
+  // Reset stats if we're going to update them
+  if (check_stats)
+  {
+    m->msg_new = 0;
+    m->msg_count = 0;
+    m->msg_unread = 0;
+    m->msg_flagged = 0;
+  }
+
+  // Always check new/ directory for new mail
+  maildir_check_dir(m, "new", check_new, check_stats);
+
+  // Check cur/ directory if:
+  // - We haven't found new mail yet AND $maildir_check_cur is set, OR
+  // - We need stats
+  const bool c_maildir_check_cur = cs_subset_bool(NeoMutt->sub, "maildir_check_cur");
+  check_new = !m->has_new && c_maildir_check_cur;
+  if (check_new || check_stats)
+    maildir_check_dir(m, "cur", check_new, check_stats);
+
+  // Return NEW_MAIL if we found new messages
+  // This ensures consistent behavior and has_new flag is always correct
+  return m->has_new ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
+}
+
+/**
  * maildir_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync() - @ingroup mx_mbox_sync
  * @retval enum #MxStatus
  *
