@@ -801,47 +801,13 @@ bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * maildir_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
- */
-enum MxStatus maildir_mbox_check(struct Mailbox *m)
-{
-  return maildir_check(m);
-}
-
-/**
- * maildir_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats() - @ingroup mx_mbox_check_stats
- */
-enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
-{
-  bool check_stats = flags & MUTT_MAILBOX_CHECK_STATS;
-  bool check_new = true;
-
-  if (check_stats)
-  {
-    m->msg_new = 0;
-    m->msg_count = 0;
-    m->msg_unread = 0;
-    m->msg_flagged = 0;
-  }
-
-  maildir_check_dir(m, "new", check_new, check_stats);
-
-  const bool c_maildir_check_cur = cs_subset_bool(NeoMutt->sub, "maildir_check_cur");
-  check_new = !m->has_new && c_maildir_check_cur;
-  if (check_new || check_stats)
-    maildir_check_dir(m, "cur", check_new, check_stats);
-
-  return m->msg_new ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
-}
-
-/**
- * maildir_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * maildir_mbox_check - Check for new mail and statistics - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m     Mailbox to check
  * @param flags Check behavior flags
  * @retval enum #MxStatus
  *
- * This is the unified implementation that replaces both maildir_mbox_check()
- * and maildir_mbox_check_stats(). It always checks for new mail and updates
+ * This implementation replaces both maildir_mbox_check() and
+ * maildir_mbox_check_stats(). It always checks for new mail and updates
  * has_new correctly. Statistics are updated based on flags and caching policy.
  *
  * For Maildir:
@@ -849,7 +815,7 @@ enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
  * - Updating statistics: count messages in new/ and cur/ directories
  * - Both operations scan directories, so the cost difference is minimal
  */
-enum MxStatus maildir_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+enum MxStatus maildir_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   if (!m)
     return MX_STATUS_ERROR;

@@ -2537,7 +2537,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
 }
 
 /**
- * nntp_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * nntp_mbox_check - Check for new mail and statistics - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m     Mailbox to check
  * @param flags Check behavior flags
  * @retval enum #MxStatus
@@ -2555,7 +2555,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
  * - Moderate caching recommended (30s default)
  * - Always set has_new flag correctly
  */
-static enum MxStatus nntp_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+static enum MxStatus nntp_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   if (!m)
     return MX_STATUS_ERROR;
@@ -2851,7 +2851,7 @@ const struct MxOps MxNntpOps = {
   .ac_add            = nntp_ac_add,
   .mbox_open         = nntp_mbox_open,
   .mbox_open_append  = NULL,
-  .mbox_check_unified = nntp_mbox_check_unified,
+  .mbox_check = nntp_mbox_check,
   .mbox_sync         = nntp_mbox_sync,
   .mbox_close        = nntp_mbox_close,
   .msg_open          = nntp_msg_open,

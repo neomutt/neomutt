@@ -1171,7 +1171,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
        * modified underneath us.) */
-      enum MxStatus check = mx_mbox_check_unified(shared->mailbox, MBOX_CHECK_NO_FLAGS);
+      enum MxStatus check = mx_mbox_check(shared->mailbox, MBOX_CHECK_NO_FLAGS);
 
       if (check == MX_STATUS_ERROR)
       {

@@ -811,7 +811,7 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
 }
 
 /**
- * pop_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * pop_mbox_check - Check for new mail and statistics - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m     Mailbox to check
  * @param flags Check behavior flags
  * @retval enum #MxStatus
@@ -829,7 +829,7 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
  * - Aggressive caching is critical (300s default to avoid constant reconnects)
  * - Always set has_new flag based on new message count
  */
-static enum MxStatus pop_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+static enum MxStatus pop_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   if (!m || !m->account)
     return MX_STATUS_ERROR;
@@ -1216,7 +1216,7 @@ const struct MxOps MxPopOps = {
   .ac_add            = pop_ac_add,
   .mbox_open         = pop_mbox_open,
   .mbox_open_append  = NULL,
-  .mbox_check_unified = pop_mbox_check_unified,
+  .mbox_check = pop_mbox_check,
   .mbox_sync         = pop_mbox_sync,
   .mbox_close        = pop_mbox_close,
   .msg_open          = pop_msg_open,

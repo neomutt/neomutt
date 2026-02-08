@@ -29,9 +29,7 @@
 
 struct Email;
 
-enum MxStatus      maildir_mbox_check        (struct Mailbox *m);
-enum MxStatus      maildir_mbox_check_stats  (struct Mailbox *m, uint8_t flags);
-enum MxStatus      maildir_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags);
+enum MxStatus      maildir_mbox_check(struct Mailbox *m, MboxCheckFlags flags);
 enum MxStatus      maildir_mbox_close        (struct Mailbox *m);
 enum MxOpenReturns maildir_mbox_open       (struct Mailbox *m);
 bool               maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags);

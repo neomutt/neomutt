@@ -1229,7 +1229,7 @@ static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
 }
 
 /**
- * mh_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * mh_mbox_check - Check for new mail and statistics - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m     Mailbox to check
  * @param flags Check behavior flags
  * @retval enum #MxStatus
@@ -1246,7 +1246,7 @@ static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
  * - For closed mailboxes: use mh_check_stats() (reads sequences)
  * - Always set has_new flag correctly
  */
-static enum MxStatus mh_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+static enum MxStatus mh_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   if (!m)
     return MX_STATUS_ERROR;
@@ -1311,7 +1311,7 @@ const struct MxOps MxMhOps = {
   .ac_add            = mh_ac_add,
   .mbox_open         = mh_mbox_open,
   .mbox_open_append  = mh_mbox_open_append,
-  .mbox_check_unified = mh_mbox_check_unified,
+  .mbox_check = mh_mbox_check,
   .mbox_sync         = mh_mbox_sync,
   .mbox_close        = mh_mbox_close,
   .msg_open          = mh_msg_open,

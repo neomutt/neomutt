@@ -1101,27 +1101,39 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
 
 /**
  * mx_mbox_check - Check for new mail - Wrapper for MxOps::mbox_check()
- * @param m          Mailbox
+ * @param m     Mailbox
+ * @param flags Check behavior flags
  * @retval enum #MxStatus
- *
- * @note This is a compatibility wrapper that calls the unified check.
- *       It will be removed once all code is migrated.
  */
-enum MxStatus mx_mbox_check(struct Mailbox *m)
+enum MxStatus mx_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   if (!m || !m->mx_ops)
     return MX_STATUS_ERROR;
 
-  const short c_mail_check = cs_subset_number(NeoMutt->sub, "mail_check");
+  // If backend doesn't implement check yet, return error
+  if (!m->mx_ops->mbox_check)
+    return MX_STATUS_ERROR;
 
-  time_t t = mutt_date_now();
-  if ((t - m->last_checked) < c_mail_check)
-    return MX_STATUS_OK;
+  // Backend has implementation - use it
+  enum MxStatus rc = m->mx_ops->mbox_check(m, flags);
 
-  m->last_checked = t;
+  // Update has_new based on return value
+  if (rc == MX_STATUS_NEW_MAIL)
+  {
+    m->has_new = true;
+  }
+  else if (rc == MX_STATUS_REOPENED)
+  {
+    m->has_new = true;
+  }
 
-  // Use unified check with no special flags
-  return mx_mbox_check_unified(m, MBOX_CHECK_NO_FLAGS);
+  // Emit notification if mailbox changed
+  if ((rc == MX_STATUS_NEW_MAIL) || (rc == MX_STATUS_REOPENED))
+  {
+    mailbox_changed(m, NT_MAILBOX_INVALID);
+  }
+
+  return rc;
 }
 
 /**
@@ -1764,13 +1776,12 @@ int mx_ac_remove(struct Mailbox *m, bool keep_account)
 }
 
 /**
- * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check_stats()
+ * mx_mbox_check_stats - Check the statistics for a mailbox - Wrapper for MxOps::mbox_check()
  * @param m          Mailbox
  * @param flags      Flags, see #CheckStatsFlags
  * @retval enum #MxStatus
  *
- * @note This is a compatibility wrapper that calls the unified check.
- *       It will be removed once all code is migrated.
+ * @note This is a compatibility wrapper that translates old flags to new API.
  * @note Emits: #NT_MAILBOX_CHANGE
  */
 enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
@@ -1778,166 +1789,15 @@ enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (!m)
     return MX_STATUS_ERROR;
 
-  // Convert old flags to unified flags
-  MboxCheckFlags unified_flags = MBOX_CHECK_NO_FLAGS;
+  // Convert old flags to new flags
+  MboxCheckFlags new_flags = MBOX_CHECK_NO_FLAGS;
   if (flags & MUTT_MAILBOX_CHECK_STATS)
-    unified_flags |= MBOX_CHECK_FORCE_STATS;
+    new_flags |= MBOX_CHECK_FORCE_STATS;
   if (flags & MUTT_MAILBOX_CHECK_POSTPONED)
-    unified_flags |= MBOX_CHECK_POSTPONED;
+    new_flags |= MBOX_CHECK_POSTPONED;
   // MUTT_MAILBOX_CHECK_IMMEDIATE was for queuing - not directly mappable
 
-  return mx_mbox_check_unified(m, unified_flags);
-}
-
-/**
- * should_update_stats - Determine if statistics need updating
- * @param m     Mailbox to check
- * @param flags Check flags
- * @retval true  Statistics should be updated
- * @retval false Statistics can be skipped (use cached values)
- *
- * This helper implements the caching policy for mailbox statistics.
- * Statistics are updated when:
- * - FORCE_STATS flag is set (user explicitly requested update)
- * - NO_STATS flag is NOT set
- * - Cache is invalid OR stale (based on backend-specific interval)
- * - New mail was detected (has_new is true)
- */
-static bool should_update_stats(struct Mailbox *m, MboxCheckFlags flags)
-{
-  if (!m)
-    return false;
-
-  // Explicit no-stats request
-  if (flags & MBOX_CHECK_NO_STATS)
-    return false;
-
-  // Force update requested
-  if (flags & MBOX_CHECK_FORCE_STATS)
-    return true;
-
-  // Cache invalid - must update
-  if (!m->stats_valid)
-    return true;
-
-  // No caching configured - always update
-  const short c_mail_check_stats_interval =
-      cs_subset_number(m->sub, "mail_check_stats_interval");
-  if (c_mail_check_stats_interval == 0)
-    return true;
-
-  // Check if cache is stale based on backend-specific interval
-  time_t now = mutt_date_now();
-  time_t interval = c_mail_check_stats_interval;
-
-  // Backend-specific interval adjustments
-  // IMAP and POP benefit from aggressive caching (network round-trip cost)
-  // Local backends can check more frequently
-  switch (m->type)
-  {
-    case MUTT_IMAP:
-      // Default IMAP interval is 60 seconds minimum
-      if (interval < 60)
-        interval = 60;
-      break;
-    case MUTT_POP:
-      // POP is even more expensive, cache for 5 minutes
-      if (interval < 300)
-        interval = 300;
-      break;
-    case MUTT_MAILDIR:
-    case MUTT_MH:
-      // Local directories - moderate caching (30s)
-      if (interval < 30)
-        interval = 30;
-      break;
-    case MUTT_MBOX:
-    case MUTT_MMDF:
-      // Single file formats - moderate caching
-      if (interval < 30)
-        interval = 30;
-      break;
-    case MUTT_NOTMUCH:
-    case MUTT_NNTP:
-      // Notmuch/NNTP stats are cheap, check more often
-      if (interval < 10)
-        interval = 10;
-      break;
-    default:
-      break;
-  }
-
-  // Stats are stale if last check was more than interval ago
-  if ((now - m->stats_last_checked) >= interval)
-    return true;
-
-  // New mail detected - update stats to get accurate counts
-  if (m->has_new)
-    return true;
-
-  // Cache is fresh, skip update
-  return false;
-}
-
-/**
- * mx_mbox_check_unified - Unified check for new mail and statistics
- * @param m     Mailbox to check
- * @param flags Check behavior flags
- * @retval enum #MxStatus
- *
- * This is the unified replacement for mx_mbox_check() and mx_mbox_check_stats().
- * It always checks for new mail and sets has_new correctly.
- * Statistics are updated based on caching policy.
- *
- * @note This function will eventually replace both mx_mbox_check() and
- *       mx_mbox_check_stats() once all backends are migrated.
- */
-enum MxStatus mx_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
-{
-  if (!m || !m->mx_ops)
-    return MX_STATUS_ERROR;
-
-  // If backend doesn't implement unified check yet, fall back to old API
-  if (!m->mx_ops->mbox_check_unified)
-  {
-    // Determine which old function to call based on flags
-    if (should_update_stats(m, flags))
-    {
-      CheckStatsFlags old_flags = MUTT_MAILBOX_CHECK_NO_FLAGS;
-      if (flags & MBOX_CHECK_POSTPONED)
-        old_flags |= MUTT_MAILBOX_CHECK_POSTPONED;
-      if (flags & MBOX_CHECK_FORCE_STATS)
-        old_flags |= MUTT_MAILBOX_CHECK_STATS;
-      return mx_mbox_check_stats(m, old_flags);
-    }
-    else
-    {
-      return mx_mbox_check(m);
-    }
-  }
-
-  // Backend has unified implementation - use it
-  enum MxStatus rc = m->mx_ops->mbox_check_unified(m, flags);
-
-  // Update cache metadata if stats were computed
-  if (should_update_stats(m, flags))
-  {
-    m->stats_last_checked = mutt_date_now();
-    m->stats_valid = true;
-  }
-
-  // Send notifications on mailbox changes
-  if ((rc == MX_STATUS_NEW_MAIL) || (rc == MX_STATUS_REOPENED))
-  {
-    mailbox_changed(m, NT_MAILBOX_INVALID);
-  }
-  else if (rc != MX_STATUS_ERROR)
-  {
-    struct EventMailbox ev_m = { m };
-    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
-  }
-
-  return rc;
+  return mx_mbox_check(m, new_flags);
 }
 
 /**

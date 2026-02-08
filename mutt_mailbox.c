@@ -143,7 +143,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
           unified_flags |= MBOX_CHECK_POSTPONED;
         // MUTT_MAILBOX_CHECK_IMMEDIATE doesn't map directly - it was for queuing
         
-        mx_mbox_check_unified(m_check, unified_flags);
+        mx_mbox_check(m_check, unified_flags);
         break;
       }
       default:; /* do nothing */

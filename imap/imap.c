@@ -2393,7 +2393,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *bu
 }
 
 /**
- * imap_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * imap_mbox_check - Check for new mail and statistics - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m     Mailbox to check
  * @param flags Check behavior flags
  * @retval enum #MxStatus
@@ -2411,7 +2411,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *bu
  * - For closed mailboxes without stats: lightweight STATUS for EXISTS only
  * - Aggressive caching recommended (60s default)
  */
-static enum MxStatus imap_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+static enum MxStatus imap_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   if (!m)
     return MX_STATUS_ERROR;
@@ -2617,7 +2617,7 @@ const struct MxOps MxImapOps = {
   .ac_add            = imap_ac_add,
   .mbox_open         = imap_mbox_open,
   .mbox_open_append  = imap_mbox_open_append,
-  .mbox_check_unified = imap_mbox_check_unified,
+  .mbox_check = imap_mbox_check,
   .mbox_sync         = NULL, /* imap syncing is handled by imap_sync_mailbox */
   .mbox_close        = imap_mbox_close,
   .msg_open          = imap_msg_open,

@@ -156,10 +156,10 @@ struct MxOps
   bool (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
 
   /**
-   * @defgroup mx_mbox_check_unified mbox_check_unified()
+   * @defgroup mx_mbox_check mbox_check()
    * @ingroup mx_api
    *
-   * mbox_check_unified - Unified check for new mail and statistics
+   * mbox_check - Check for new mail and statistics
    * @param m     Mailbox to check
    * @param flags Check behavior flags, see #MboxCheckFlags
    * @retval enum #MxStatus
@@ -170,7 +170,7 @@ struct MxOps
    *
    * @pre m is not NULL
    */
-  enum MxStatus (*mbox_check_unified)(struct Mailbox *m, MboxCheckFlags flags);
+  enum MxStatus (*mbox_check)(struct Mailbox *m, MboxCheckFlags flags);
 
   /**
    * @defgroup mx_mbox_sync mbox_sync()

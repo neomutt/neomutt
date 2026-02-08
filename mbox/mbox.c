@@ -1646,12 +1646,12 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
 }
 
 /**
- * mbox_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * mbox_mbox_check - Check for new mail and statistics - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
  * @param m     Mailbox to check
  * @param flags Check behavior flags
  * @retval enum #MxStatus
  *
- * This is the unified implementation for mbox/mmdf mailboxes.
+ * This is the implementation for mbox/mmdf mailboxes.
  *
  * For mbox files:
  * - Basic check: stat() the file, check size/mtime changes
@@ -1662,7 +1662,7 @@ static int mmdf_msg_padding_size(struct Mailbox *m)
  * - Always check for new mail via file stat
  * - Only parse file for stats when necessary (based on flags/caching)
  */
-static enum MxStatus mbox_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+static enum MxStatus mbox_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 {
   if (!m)
     return MX_STATUS_ERROR;
@@ -1748,7 +1748,7 @@ const struct MxOps MxMboxOps = {
   .ac_add            = mbox_ac_add,
   .mbox_open         = mbox_mbox_open,
   .mbox_open_append  = mbox_mbox_open_append,
-  .mbox_check_unified = mbox_mbox_check_unified,
+  .mbox_check = mbox_mbox_check,
   .mbox_sync         = mbox_mbox_sync,
   .mbox_close        = mbox_mbox_close,
   .msg_open          = mbox_msg_open,
@@ -1777,7 +1777,7 @@ const struct MxOps MxMmdfOps = {
   .ac_add            = mbox_ac_add,
   .mbox_open         = mbox_mbox_open,
   .mbox_open_append  = mbox_mbox_open_append,
-  .mbox_check_unified = mbox_mbox_check_unified,
+  .mbox_check = mbox_mbox_check,
   .mbox_sync         = mbox_mbox_sync,
   .mbox_close       = mbox_mbox_close,
   .msg_open         = mbox_msg_open,

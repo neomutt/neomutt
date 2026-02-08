@@ -404,7 +404,7 @@ int dlg_pager(struct PagerView *pview)
     {
       int oldcount = shared->mailbox->msg_count;
       /* check for new mail */
-      enum MxStatus check = mx_mbox_check_unified(shared->mailbox, MBOX_CHECK_NO_FLAGS);
+      enum MxStatus check = mx_mbox_check(shared->mailbox, MBOX_CHECK_NO_FLAGS);
       if (check == MX_STATUS_ERROR)
       {
         if (!shared->mailbox || buf_is_empty(&shared->mailbox->pathbuf))
