@@ -135,9 +135,15 @@ int mh_check_empty(struct Buffer *path)
 }
 
 /**
- * mh_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats() - @ingroup mx_mbox_check_stats
+ * mh_check_stats - Check statistics for MH mailbox (internal helper)
+ * @param m     Mailbox
+ * @param flags Check flags
+ * @retval enum #MxStatus
+ *
+ * Internal helper used by unified API and other functions.
+ * Reads .mh_sequences and counts messages.
  */
-static enum MxStatus mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+static enum MxStatus mh_check_stats(struct Mailbox *m, uint8_t flags)
 {
   struct MhSequences mhs = { 0 };
   DIR *dir = NULL;
@@ -1043,14 +1049,6 @@ static enum MxStatus mh_check(struct Mailbox *m)
 }
 
 /**
- * mh_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
- */
-static enum MxStatus mh_mbox_check(struct Mailbox *m)
-{
-  return mh_check(m);
-}
-
-/**
  * mh_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync() - @ingroup mx_mbox_sync
  * @retval #MX_STATUS_REOPENED  mailbox has been externally modified
  * @retval #MX_STATUS_NEW_MAIL  new mail has arrived
@@ -1245,7 +1243,7 @@ static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
  *
  * Strategy:
  * - For open mailboxes: use full mh_check() (handles message parsing)
- * - For closed mailboxes: use mh_mbox_check_stats() (reads sequences)
+ * - For closed mailboxes: use mh_check_stats() (reads sequences)
  * - Always set has_new flag correctly
  */
 static enum MxStatus mh_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
@@ -1264,7 +1262,7 @@ static enum MxStatus mh_mbox_check_unified(struct Mailbox *m, MboxCheckFlags fla
   if (update_stats)
   {
     // Use check_stats which reads sequences and sets has_new correctly
-    return mh_mbox_check_stats(m, MUTT_MAILBOX_CHECK_STATS);
+    return mh_check_stats(m, MUTT_MAILBOX_CHECK_STATS);
   }
   else
   {
@@ -1313,8 +1311,6 @@ const struct MxOps MxMhOps = {
   .ac_add            = mh_ac_add,
   .mbox_open         = mh_mbox_open,
   .mbox_open_append  = mh_mbox_open_append,
-  .mbox_check        = mh_mbox_check,
-  .mbox_check_stats  = mh_mbox_check_stats,
   .mbox_check_unified = mh_mbox_check_unified,
   .mbox_sync         = mh_mbox_sync,
   .mbox_close        = mh_mbox_close,

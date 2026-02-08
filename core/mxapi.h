@@ -156,31 +156,6 @@ struct MxOps
   bool (*mbox_open_append)(struct Mailbox *m, OpenMailboxFlags flags);
 
   /**
-   * @defgroup mx_mbox_check mbox_check()
-   * @ingroup mx_api
-   *
-   * mbox_check - Check for new mail
-   * @param m Mailbox
-   * @retval enum #MxStatus
-   *
-   * @pre m is not NULL
-   */
-  enum MxStatus (*mbox_check)(struct Mailbox *m);
-
-  /**
-   * @defgroup mx_mbox_check_stats mbox_check_stats()
-   * @ingroup mx_api
-   *
-   * mbox_check_stats - Check the Mailbox statistics
-   * @param m     Mailbox to check
-   * @param flags Function flags
-   * @retval enum #MxStatus
-   *
-   * @pre m is not NULL
-   */
-  enum MxStatus (*mbox_check_stats)(struct Mailbox *m, CheckStatsFlags flags);
-
-  /**
    * @defgroup mx_mbox_check_unified mbox_check_unified()
    * @ingroup mx_api
    *
@@ -189,7 +164,7 @@ struct MxOps
    * @param flags Check behavior flags, see #MboxCheckFlags
    * @retval enum #MxStatus
    *
-   * This function replaces the split mbox_check()/mbox_check_stats() API.
+   * This function replaces the old mbox_check()/mbox_check_stats() API.
    * It always checks for new mail and sets the has_new flag correctly.
    * Statistics are updated based on caching policy and flags.
    *

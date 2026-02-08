@@ -1,0 +1,67 @@
+/**
+ * mh_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats() - @ingroup mx_mbox_check_stats
+ */
+static enum MxStatus mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+{
+  struct MhSequences mhs = { 0 };
+  DIR *dir = NULL;
+  struct dirent *de = NULL;
+
+  /* when $mail_check_recent is set and the .mh_sequences file hasn't changed
+   * since the last m visit, there is no "new mail" */
+  const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  if (c_mail_check_recent && (mh_seq_changed(m) <= 0))
+  {
+    return MX_STATUS_OK;
+  }
+
+  if (mh_seq_read(&mhs, mailbox_path(m)) < 0)
+    return MX_STATUS_ERROR;
+
+  m->msg_count = 0;
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
+
+  enum MxStatus rc = MX_STATUS_OK;
+  bool check_new = true;
+  for (int i = mhs.max; i > 0; i--)
+  {
+    if ((mh_seq_check(&mhs, i) & MH_SEQ_FLAGGED))
+      m->msg_flagged++;
+    if (mh_seq_check(&mhs, i) & MH_SEQ_UNSEEN)
+    {
+      m->msg_unread++;
+      if (check_new)
+      {
+        /* if the first unseen message we encounter was in the m during the
+         * last visit, don't notify about it */
+        if (!c_mail_check_recent || (mh_already_notified(m, i) == 0))
+        {
+          m->has_new = true;
+          rc = MX_STATUS_NEW_MAIL;
+        }
+        /* Because we are traversing from high to low, we can stop
+         * checking for new mail after the first unseen message.
+         * Whether it resulted in "new mail" or not. */
+        check_new = false;
+      }
+    }
+  }
+
+  mh_seq_free(&mhs);
+
+  dir = mutt_file_opendir(mailbox_path(m), MUTT_OPENDIR_NONE);
+  if (dir)
+  {
+    while ((de = readdir(dir)))
+    {
+      if (*de->d_name == '.')
+        continue;
+      if (mh_valid_message(de->d_name))
+        m->msg_count++;
+    }
+    closedir(dir);
+  }
+
+  return rc;
+}

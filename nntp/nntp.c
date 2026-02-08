@@ -2537,23 +2537,6 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
 }
 
 /**
- * nntp_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
- * @param m          Mailbox
- * @retval enum #MxStatus
- */
-static enum MxStatus nntp_mbox_check(struct Mailbox *m)
-{
-  enum MxStatus rc = check_mailbox(m);
-  if (rc == MX_STATUS_OK)
-  {
-    struct NntpMboxData *mdata = m->mdata;
-    struct NntpAccountData *adata = mdata->adata;
-    nntp_newsrc_close(adata);
-  }
-  return rc;
-}
-
-/**
  * nntp_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
  * @param m     Mailbox to check
  * @param flags Check behavior flags
@@ -2581,11 +2564,9 @@ static enum MxStatus nntp_mbox_check_unified(struct Mailbox *m, MboxCheckFlags f
   if (!mdata)
     return MX_STATUS_ERROR;
 
-  // NNTP check is always the same - query for new article numbers
-  // The NO_STATS flag doesn't help - we get article info regardless
+  struct NntpAccountData *adata = mdata->adata;
   
   // Respect check interval unless FORCE flag is set
-  struct NntpAccountData *adata = mdata->adata;
   const short c_nntp_poll = cs_subset_number(NeoMutt->sub, "nntp_poll");
   if (!(flags & MBOX_CHECK_FORCE))
   {
@@ -2596,11 +2577,14 @@ static enum MxStatus nntp_mbox_check_unified(struct Mailbox *m, MboxCheckFlags f
     }
   }
 
-  // Use the existing check which queries for new articles
-  enum MxStatus rc = nntp_mbox_check(m);
+  // Check for new articles
+  enum MxStatus rc = check_mailbox(m);
+  if (rc == MX_STATUS_OK)
+  {
+    nntp_newsrc_close(adata);
+  }
   
   // Ensure has_new is set correctly
-  // check_mailbox() returns NEW_MAIL when new articles are found
   if (rc == MX_STATUS_NEW_MAIL)
     m->has_new = true;
   else if (rc == MX_STATUS_OK)
@@ -2867,8 +2851,6 @@ const struct MxOps MxNntpOps = {
   .ac_add            = nntp_ac_add,
   .mbox_open         = nntp_mbox_open,
   .mbox_open_append  = NULL,
-  .mbox_check        = nntp_mbox_check,
-  .mbox_check_stats  = NULL,
   .mbox_check_unified = nntp_mbox_check_unified,
   .mbox_sync         = nntp_mbox_sync,
   .mbox_close        = nntp_mbox_close,
