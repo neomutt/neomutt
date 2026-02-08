@@ -825,7 +825,7 @@ enum MxStatus maildir_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
     return maildir_check(m);
 
   // For closed/sidebar mailboxes, use lightweight directory scan
-  bool check_stats = !(flags & MBOX_CHECK_NO_STATS);
+  bool check_stats = !(flags & MUTT_MAILBOX_CHECK_NO_STATS);
   bool check_new = true;
 
   // Always reset has_new before checking

@@ -49,11 +49,11 @@ typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MU
  * MboxCheckFlags - Flags for the mbox_check function
  */
 typedef uint8_t MboxCheckFlags;       ///< Flags for mx_mbox_check()
-#define MBOX_CHECK_NO_FLAGS     0         ///< No flags are set
-#define MBOX_CHECK_FORCE        (1 << 0)  ///< Ignore timestamp/cache, force immediate check (implies no queueing for IMAP)
-#define MBOX_CHECK_FORCE_STATS  (1 << 1)  ///< Ignore stats cache, force stats update
-#define MBOX_CHECK_NO_STATS     (1 << 2)  ///< Skip statistics update (quick check only)
-#define MBOX_CHECK_POSTPONED    (1 << 3)  ///< Update postponed message count
+#define MUTT_MAILBOX_CHECK_NO_FLAGS     0         ///< No flags are set
+#define MUTT_MAILBOX_CHECK_FORCE        (1 << 0)  ///< Ignore timestamp/cache, force immediate check (implies no queueing for IMAP)
+#define MUTT_MAILBOX_CHECK_FORCE_STATS  (1 << 1)  ///< Ignore stats cache, force stats update
+#define MUTT_MAILBOX_CHECK_NO_STATS     (1 << 2)  ///< Skip statistics update (quick check only)
+#define MUTT_MAILBOX_CHECK_POSTPONED    (1 << 3)  ///< Update postponed message count
 
 /**
  * enum MxStatus - Return values from mbox_check(), mbox_check_stats(),

@@ -678,7 +678,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     }
   }
 
-  mx_mbox_check(m, MBOX_CHECK_NO_FLAGS);
+  mx_mbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
 
   if (m->msg_count == 0)
   {

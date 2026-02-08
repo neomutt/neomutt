@@ -1257,12 +1257,12 @@ static enum MxStatus mh_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 
   // For closed/sidebar mailboxes, use the stats-based check
   // This reads the .mh_sequences file and counts message files
-  bool update_stats = !(flags & MBOX_CHECK_NO_STATS);
+  bool update_stats = !(flags & MUTT_MAILBOX_CHECK_NO_STATS);
   
   if (update_stats)
   {
     // Use check_stats which reads sequences and sets has_new correctly
-    return mh_check_stats(m, MBOX_CHECK_FORCE_STATS);
+    return mh_check_stats(m, MUTT_MAILBOX_CHECK_FORCE_STATS);
   }
   else
   {

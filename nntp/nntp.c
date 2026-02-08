@@ -2568,7 +2568,7 @@ static enum MxStatus nntp_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
   
   // Respect check interval unless FORCE flag is set
   const short c_nntp_poll = cs_subset_number(NeoMutt->sub, "nntp_poll");
-  if (!(flags & MBOX_CHECK_FORCE))
+  if (!(flags & MUTT_MAILBOX_CHECK_FORCE))
   {
     if ((adata->check_time + c_nntp_poll) > mutt_date_now())
     {

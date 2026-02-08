@@ -608,7 +608,7 @@ static enum MxStatus comp_mbox_sync(struct Mailbox *m)
     return MX_STATUS_ERROR;
   }
 
-  enum MxStatus check = comp_mbox_check(m, MBOX_CHECK_NO_FLAGS);
+  enum MxStatus check = comp_mbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
   if (check != MX_STATUS_OK)
     goto sync_cleanup;
 
