@@ -1714,7 +1714,7 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
     m->newly_created = false;
 
   // Update statistics if requested and not skipped
-  bool update_stats = !(flags & MBOX_CHECK_NO_STATS);
+  bool update_stats = !(flags & MUTT_MAILBOX_CHECK_NO_STATS);
   if (update_stats && adata)
   {
     // Only update if file has been modified since last stats check

@@ -710,7 +710,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
   struct EventMailbox ev_m = { shared->mailbox };
-  mutt_mailbox_check(ev_m.mailbox, MBOX_CHECK_POSTPONED);
+  mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_POSTPONED);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   mutt_pattern_free(&shared->search_state->pattern);
 }
@@ -1127,7 +1127,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   if (!shared->attach_msg)
   {
     /* force the mailbox check after we enter the folder */
-    mutt_mailbox_check(shared->mailbox, MBOX_CHECK_POSTPONED);
+    mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_POSTPONED);
   }
 #ifdef USE_INOTIFY
   mutt_monitor_add(NULL);
@@ -1171,7 +1171,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
        * modified underneath us.) */
-      enum MxStatus check = mx_mbox_check(shared->mailbox, MBOX_CHECK_NO_FLAGS);
+      enum MxStatus check = mx_mbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NO_FLAGS);
 
       if (check == MX_STATUS_ERROR)
       {
@@ -1241,7 +1241,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (!shared->attach_msg)
     {
       /* check for new mail in the incoming folders */
-      mutt_mailbox_check(shared->mailbox, MBOX_CHECK_NO_FLAGS);
+      mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NO_FLAGS);
       if (priv->do_mailbox_notify)
       {
         if (mutt_mailbox_notify(shared->mailbox))

@@ -840,7 +840,7 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
 
   // Respect the check interval unless FORCE flag is set
   const short c_pop_check_interval = cs_subset_number(NeoMutt->sub, "pop_check_interval");
-  if (!(flags & MBOX_CHECK_FORCE))
+  if (!(flags & MUTT_MAILBOX_CHECK_FORCE))
   {
     if ((adata->check_time + c_pop_check_interval) > mutt_date_now())
     {
