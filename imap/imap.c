@@ -2458,6 +2458,81 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *bu
 }
 
 /**
+ * imap_mbox_check_unified - Unified check for new mail and statistics - Implements MxOps::mbox_check_unified() - @ingroup mx_mbox_check_unified
+ * @param m     Mailbox to check
+ * @param flags Check behavior flags
+ * @retval enum #MxStatus
+ *
+ * This is the unified implementation for IMAP mailboxes.
+ *
+ * For IMAP:
+ * - Basic check: NOOP or IDLE command (cheap, no data transfer)
+ * - Stats update: STATUS command (network round-trip, moderate cost)
+ * - Network latency makes stats expensive, so caching is beneficial
+ *
+ * Strategy:
+ * - For open mailboxes: use imap_mbox_check() (NOOP/IDLE + sync state)
+ * - For closed mailboxes with stats: use STATUS command (faster than full open)
+ * - For closed mailboxes without stats: lightweight STATUS for EXISTS only
+ * - Aggressive caching recommended (60s default)
+ */
+static enum MxStatus imap_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+{
+  if (!m)
+    return MX_STATUS_ERROR;
+
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!adata || !mdata)
+    return MX_STATUS_ERROR;
+
+  // For open mailboxes (currently selected), use the full check
+  // This uses NOOP or IDLE and syncs message state
+  if (m == adata->mailbox)
+    return imap_mbox_check(m);
+
+  // For closed/sidebar mailboxes, use STATUS command
+  // This is faster than opening the mailbox
+  bool update_stats = !(flags & MBOX_CHECK_NO_STATS);
+  
+  if (update_stats)
+  {
+    // Run STATUS command for full statistics
+    // This queries: MESSAGES RECENT UNSEEN
+    const bool queue = !(flags & MBOX_CHECK_FORCE);
+    enum MxStatus rc = imap_mbox_check_stats(m, queue ? 0 : MUTT_MAILBOX_CHECK_IMMEDIATE);
+    
+    // IMAP check_stats returns NEW_MAIL based on new message count
+    // Ensure has_new flag is set correctly
+    if (rc == MX_STATUS_NEW_MAIL)
+      m->has_new = true;
+    else if (rc == MX_STATUS_OK)
+      m->has_new = false;
+    
+    return rc;
+  }
+  else
+  {
+    // Lightweight check: just see if mailbox has changed
+    // Use STATUS with minimal attributes
+    const bool queue = !(flags & MBOX_CHECK_FORCE);
+    int new_msgs = imap_mailbox_status(m, queue);
+    
+    if (new_msgs == -1)
+      return MX_STATUS_ERROR;
+    
+    if (new_msgs > 0)
+    {
+      m->has_new = true;
+      return MX_STATUS_NEW_MAIL;
+    }
+    
+    m->has_new = false;
+    return MX_STATUS_OK;
+  }
+}
+
+/**
  * imap_tags_commit - Save the tags to a message - Implements MxOps::tags_commit() - @ingroup mx_tags_commit
  *
  * This method update the server flags on the server by
@@ -2600,27 +2675,28 @@ static int imap_path_is_empty(struct Buffer *path)
  */
 const struct MxOps MxImapOps = {
   // clang-format off
-  .type            = MUTT_IMAP,
-  .name             = "imap",
-  .is_local         = false,
-  .ac_owns_path     = imap_ac_owns_path,
-  .ac_add           = imap_ac_add,
-  .mbox_open        = imap_mbox_open,
-  .mbox_open_append = imap_mbox_open_append,
-  .mbox_check       = imap_mbox_check,
-  .mbox_check_stats = imap_mbox_check_stats,
-  .mbox_sync        = NULL, /* imap syncing is handled by imap_sync_mailbox */
-  .mbox_close       = imap_mbox_close,
-  .msg_open         = imap_msg_open,
-  .msg_open_new     = imap_msg_open_new,
-  .msg_commit       = imap_msg_commit,
-  .msg_close        = imap_msg_close,
-  .msg_padding_size = NULL,
-  .msg_save_hcache  = imap_msg_save_hcache,
-  .tags_edit        = imap_tags_edit,
-  .tags_commit      = imap_tags_commit,
-  .path_probe       = imap_path_probe,
-  .path_canon       = imap_path_canon,
-  .path_is_empty    = imap_path_is_empty,
+  .type              = MUTT_IMAP,
+  .name              = "imap",
+  .is_local          = false,
+  .ac_owns_path      = imap_ac_owns_path,
+  .ac_add            = imap_ac_add,
+  .mbox_open         = imap_mbox_open,
+  .mbox_open_append  = imap_mbox_open_append,
+  .mbox_check        = imap_mbox_check,
+  .mbox_check_stats  = imap_mbox_check_stats,
+  .mbox_check_unified = imap_mbox_check_unified,
+  .mbox_sync         = NULL, /* imap syncing is handled by imap_sync_mailbox */
+  .mbox_close        = imap_mbox_close,
+  .msg_open          = imap_msg_open,
+  .msg_open_new      = imap_msg_open_new,
+  .msg_commit        = imap_msg_commit,
+  .msg_close         = imap_msg_close,
+  .msg_padding_size  = NULL,
+  .msg_save_hcache   = imap_msg_save_hcache,
+  .tags_edit         = imap_tags_edit,
+  .tags_commit       = imap_tags_commit,
+  .path_probe        = imap_path_probe,
+  .path_canon        = imap_path_canon,
+  .path_is_empty     = imap_path_is_empty,
   // clang-format on
 };
