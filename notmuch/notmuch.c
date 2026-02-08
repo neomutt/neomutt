@@ -2269,7 +2269,7 @@ static int nm_path_canon(struct Buffer *path)
  * @param flags Check behavior flags
  * @retval enum #MxStatus
  *
- * This is the unified implementation for Notmuch virtual mailboxes.
+ * This is the implementation for Notmuch virtual mailboxes.
  *
  * For Notmuch:
  * - Check for new mail: query database for mtime changes

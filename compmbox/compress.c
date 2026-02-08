@@ -575,7 +575,7 @@ static enum MxStatus comp_mbox_check(struct Mailbox *m, MboxCheckFlags flags)
   if (!rc)
     return MX_STATUS_ERROR;
 
-  // Delegate to the underlying backend's unified check
+  // Delegate to the underlying backend's check function
   return ops->mbox_check(m, flags);
 }
 

@@ -2542,7 +2542,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
  * @param flags Check behavior flags
  * @retval enum #MxStatus
  *
- * This is the unified implementation for NNTP (Usenet) mailboxes.
+ * This is the implementation for NNTP (Usenet) mailboxes.
  *
  * For NNTP:
  * - Check queries newsgroup for new article numbers (network round-trip)

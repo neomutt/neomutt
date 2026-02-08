@@ -816,7 +816,7 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
  * @param flags Check behavior flags
  * @retval enum #MxStatus
  *
- * This is the unified implementation for POP3 mailboxes.
+ * This is the implementation for POP3 mailboxes.
  *
  * For POP3:
  * - Check requires reconnecting and fetching headers (very expensive!)
