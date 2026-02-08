@@ -134,8 +134,18 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
       case MUTT_MMDF:
       case MUTT_MAILDIR:
       case MUTT_MH:
-        mx_mbox_check_stats(m_check, flags);
+      {
+        // Convert old flags to new unified flags
+        MboxCheckFlags unified_flags = MBOX_CHECK_NO_FLAGS;
+        if (flags & MUTT_MAILBOX_CHECK_STATS)
+          unified_flags |= MBOX_CHECK_FORCE_STATS;
+        if (flags & MUTT_MAILBOX_CHECK_POSTPONED)
+          unified_flags |= MBOX_CHECK_POSTPONED;
+        // MUTT_MAILBOX_CHECK_IMMEDIATE doesn't map directly - it was for queuing
+        
+        mx_mbox_check_unified(m_check, unified_flags);
         break;
+      }
       default:; /* do nothing */
     }
   }
