@@ -105,6 +105,10 @@ struct Mailbox
 
   const struct MxOps *mx_ops;         ///< MXAPI callback functions
 
+  // Statistics caching for unified check
+  time_t stats_last_checked;          ///< Last time statistics were updated
+  bool stats_valid            : 1;    ///< Cached statistics are valid
+
   bool append                 : 1;    ///< Mailbox is opened in append mode
   bool changed                : 1;    ///< Mailbox has been modified
   bool dontwrite              : 1;    ///< Don't write the mailbox on close
