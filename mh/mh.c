@@ -140,7 +140,7 @@ int mh_check_empty(struct Buffer *path)
  * @param flags Check flags
  * @retval enum #MxStatus
  *
- * Internal helper used by unified API and other functions.
+ * Internal helper used by mbox_check and other functions.
  * Reads .mh_sequences and counts messages.
  */
 static enum MxStatus mh_check_stats(struct Mailbox *m, uint8_t flags)
@@ -1234,7 +1234,7 @@ static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
  * @param flags Check behavior flags
  * @retval enum #MxStatus
  *
- * This is the unified implementation for MH mailboxes.
+ * This is the implementation for MH mailboxes.
  *
  * For MH directories:
  * - Basic check: stat() the directory and .mh_sequences file for mtime changes

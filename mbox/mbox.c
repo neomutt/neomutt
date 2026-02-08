@@ -925,7 +925,7 @@ static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  * @retval #MX_STATUS_ERROR     Error
  *
  * This is the original check logic for open mbox files.
- * Used internally by the unified API and mbox_sync.
+ * Used internally by the mbox_check API and mbox_sync.
  */
 static enum MxStatus mbox_check_mailbox(struct Mailbox *m)
 {

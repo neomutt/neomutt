@@ -105,7 +105,7 @@ struct Mailbox
 
   const struct MxOps *mx_ops;         ///< MXAPI callback functions
 
-  // Statistics caching for unified check
+  // Statistics caching for mbox_check
   time_t stats_last_checked;          ///< Last time statistics were updated
   bool stats_valid            : 1;    ///< Cached statistics are valid
 
