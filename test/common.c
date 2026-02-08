@@ -451,6 +451,11 @@ enum MxStatus mx_mbox_check(struct Mailbox *m)
   return MX_STATUS_OK;
 }
 
+enum MxStatus mx_mbox_check_unified(struct Mailbox *m, MboxCheckFlags flags)
+{
+  return MX_STATUS_OK;
+}
+
 enum MxStatus mx_mbox_sync(struct Mailbox *m)
 {
   return MX_STATUS_OK;
