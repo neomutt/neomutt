@@ -45,9 +45,7 @@ typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MU
 #define MUTT_APPENDNEW     (1 << 6) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
                                     ///< Used by maildir/mh to create the mailbox.
 
-/**
- * MboxCheckFlags - Flags for the mbox_check function
- */
+/* MboxCheckFlags - Flags for mbox_check() */
 typedef uint8_t MboxCheckFlags;       ///< Flags for mx_mbox_check()
 #define MUTT_MAILBOX_CHECK_NO_FLAGS     0         ///< No flags are set
 #define MUTT_MAILBOX_CHECK_FORCE        (1 << 0)  ///< Ignore timestamp/cache, force immediate check (implies no queueing for IMAP)
@@ -158,9 +156,7 @@ struct MxOps
    * @param flags Check behavior flags, see #MboxCheckFlags
    * @retval enum #MxStatus
    *
-   * This function replaces the old mbox_check()/mbox_check_stats() API.
-   * It always checks for new mail and sets the has_new flag correctly.
-   * Statistics are updated based on caching policy and flags.
+   * Checks the mailbox for new mail and optionally updates statistics.
    *
    * @pre m is not NULL
    */

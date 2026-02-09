@@ -1264,6 +1264,27 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
 }
 
 /**
+ * imap_mbox_check_stats - Check mailbox statistics (internal helper)
+ * @param m     Mailbox
+ * @param flags Check flags (MUTT_MAILBOX_CHECK_FORCE to execute immediately)
+ * @retval enum #MxStatus
+ *
+ * When MUTT_MAILBOX_CHECK_FORCE is set, the STATUS command executes immediately.
+ * Otherwise, it's queued for batch execution to reduce network round-trips.
+ */
+static enum MxStatus imap_mbox_check_stats(struct Mailbox *m, uint8_t flags)
+{
+  // MUTT_MAILBOX_CHECK_FORCE means "execute immediately", otherwise queue
+  const bool queue = (flags & MUTT_MAILBOX_CHECK_FORCE) == 0;
+  const int new_msgs = imap_mailbox_status(m, queue);
+  if (new_msgs == -1)
+    return MX_STATUS_ERROR;
+  if (new_msgs == 0)
+    return MX_STATUS_OK;
+  return MX_STATUS_NEW_MAIL;
+}
+
+/**
  * imap_path_status - Refresh the number of total and new messages
  * @param path   Mailbox path
  * @param queue  Queue the STATUS command
@@ -2229,27 +2250,6 @@ static enum MxStatus imap_check_full(struct Mailbox *m)
   imap_disallow_reopen(m);
 
   return rc;
-}
-
-/**
- * imap_check_stats - Check mailbox statistics (internal helper)
- * @param m     Mailbox
- * @param flags Check flags (MUTT_MAILBOX_CHECK_FORCE to execute immediately)
- * @retval enum #MxStatus
- *
- * When MUTT_MAILBOX_CHECK_FORCE is set, the STATUS command executes immediately.
- * Otherwise, it's queued for batch execution to reduce network round-trips.
- */
-static enum MxStatus imap_check_stats(struct Mailbox *m, uint8_t flags)
-{
-  // MUTT_MAILBOX_CHECK_FORCE means "execute immediately", otherwise queue
-  const bool queue = (flags & MUTT_MAILBOX_CHECK_FORCE) == 0;
-  const int new_msgs = imap_mailbox_status(m, queue);
-  if (new_msgs == -1)
-    return MX_STATUS_ERROR;
-  if (new_msgs == 0)
-    return MX_STATUS_OK;
-  return MX_STATUS_NEW_MAIL;
 }
 
 /**
