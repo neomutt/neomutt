@@ -1264,7 +1264,10 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
   if (mdata->check_status & IMAP_EXPUNGE_PENDING)
     check = MX_STATUS_REOPENED;
   else if (mdata->check_status & IMAP_NEWMAIL_PENDING)
+  {
+    m->has_new = true;
     check = MX_STATUS_NEW_MAIL;
+  }
   else if (mdata->check_status & IMAP_FLAGS_PENDING)
     check = MX_STATUS_FLAGS;
   else if (rc < 0)
