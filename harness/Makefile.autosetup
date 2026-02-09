@@ -1,0 +1,43 @@
+# NEOMUTTOBJS minus main.o — these are the core application objects
+HARNESS_APP_OBJS = conststrings.o editmsg.o external.o flags.o git_ver.o \
+		globals.o help.o module.o muttlib.o mutt_config.o \
+		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
+		mx.o system.o usage.o version.o
+@if USE_INOTIFY
+HARNESS_APP_OBJS += monitor.o
+@endif
+
+HARNESS_COMMON = harness/common.o harness/modules.o
+
+HARNESS_OBJS = $(HARNESS_COMMON) \
+	harness/mbox.o
+
+CFLAGS += -I$(SRCDIR)/harness
+
+HARNESS_MBOX =    harness/mbox-harness$(EXEEXT)
+
+HARNESS_BINS = $(HARNESS_MBOX)
+
+CLEANFILES += $(HARNESS_BINS) $(HARNESS_OBJS)
+
+$(PWD)/harness:
+	$(MKDIR_P) $(PWD)/harness
+
+.PHONY: harness
+harness: $(HARNESS_BINS)
+
+$(HARNESS_MBOX): $(PWD)/harness harness/mbox.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ harness/mbox.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+all-harness: harness
+
+clean-harness:
+	$(RM) $(HARNESS_BINS) $(HARNESS_OBJS) $(HARNESS_OBJS:.o=.Po)
+
+install-harness:
+uninstall-harness:
+
+HARNESS_DEPFILES = $(HARNESS_OBJS:.o=.Po)
+-include $(HARNESS_DEPFILES)
+
+# vim: set ts=8 noexpandtab:
