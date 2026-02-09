@@ -16,6 +16,7 @@ fuzz/address-fuzz
 fuzz/cli-fuzz
 fuzz/date-fuzz
 harness/compmbox-harness
+harness/imap-harness
 harness/maildir-harness
 harness/mbox-harness
 harness/mh-harness
