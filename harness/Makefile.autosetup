@@ -10,13 +10,18 @@ HARNESS_APP_OBJS += monitor.o
 HARNESS_COMMON = harness/common.o harness/modules.o
 
 HARNESS_OBJS = $(HARNESS_COMMON) \
-	harness/mbox.o
+	harness/mbox.o harness/mmdf.o \
+	harness/maildir.o harness/mh.o
 
 CFLAGS += -I$(SRCDIR)/harness
 
 HARNESS_MBOX =    harness/mbox-harness$(EXEEXT)
+HARNESS_MMDF =    harness/mmdf-harness$(EXEEXT)
+HARNESS_MAILDIR = harness/maildir-harness$(EXEEXT)
+HARNESS_MH =      harness/mh-harness$(EXEEXT)
 
-HARNESS_BINS = $(HARNESS_MBOX)
+HARNESS_BINS = $(HARNESS_MBOX) $(HARNESS_MMDF) $(HARNESS_MAILDIR) \
+	$(HARNESS_MH)
 
 CLEANFILES += $(HARNESS_BINS) $(HARNESS_OBJS)
 
@@ -28,6 +33,15 @@ harness: $(HARNESS_BINS)
 
 $(HARNESS_MBOX): $(PWD)/harness harness/mbox.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ harness/mbox.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(HARNESS_MMDF): $(PWD)/harness harness/mmdf.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ harness/mmdf.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(HARNESS_MAILDIR): $(PWD)/harness harness/maildir.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ harness/maildir.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(HARNESS_MH): $(PWD)/harness harness/mh.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ harness/mh.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 all-harness: harness
 
