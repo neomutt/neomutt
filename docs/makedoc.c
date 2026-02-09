@@ -1536,7 +1536,7 @@ static void print_confline(enum OutputFormats format, const char *varname,
     /* manual page */
     case F_MAN:
     {
-      fprintf(fp_out, "\n.TP\n.B %s\n", varname);
+      fprintf(fp_out, ".TP\n.B %s\n", varname);
       fputs(".nf\n", fp_out);
       fprintf(fp_out, "Type: %s\n", type2human(type));
       if ((type == DT_STRING) || (type == DT_REGEX) || (type == DT_ADDRESS) ||
