@@ -63,7 +63,7 @@ docs/neomuttrc.5:	docs/.keepme docs/makedoc$(EXEEXT) $(SRCDIR)/docs/config.c \
 	    $(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -m && \
 	    sed -e "s|@MAN_DOCDIR@|$(docdir)|g" \
 	      $(SRCDIR)/docs/neomuttrc.man.tail \
-	) | sed 's/ \+$$//' > $@
+	) | sed -e 's/ \+$$//' -e 's/^$$/.sp/' > $@
 
 docs/neomutt.1:
 	( sed -e "/^\.TH/s|@MAN_DATE@|$(PACKAGE_DATE)|" \
