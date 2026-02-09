@@ -197,7 +197,7 @@ attachment settings.
 \fBunauto-view\fP { \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... }
 .fi
 .IP
-This commands permits you to specify that NeoMutt should automatically convert
+This command permits you to specify that NeoMutt should automatically convert
 the given \fImime-type\fPs to text/plain when displaying messages. For this to
 work, there must be a
 .BR mailcap (5)
@@ -229,8 +229,8 @@ symbolic names for the keys on your keyboard.
 \fIfunction\fP specifies which action to take when key is pressed. Note that
 the function name is to be specified without angle brackets.
 .IP
-Missing key sequence in \fBunbind\fP command means unbind all bindings in menus
-given in \fImap\fP .
+A missing key sequence in the \fBunbind\fP command means unbind all bindings
+in the menus given in \fImap\fP.
 .IP
 For more information on keys and functions, please consult the NeoMutt manual.
 .
@@ -1403,7 +1403,7 @@ For example:
 .BI ~f \~\(dquser@ ( home\(rs.org | work\(rs.com ) \(dq
 .
 .PP
-Without the quotes, the parenthesis wouldn't end. This would be separated to
+Without the quotes, the parenthesis would not end. This would be separated into
 two OR'd patterns:
 .BI ~f \~user@(home\(rs.org
 .RI "and " work\(rs.com) ". They are never what you want."

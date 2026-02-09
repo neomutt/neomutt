@@ -200,7 +200,7 @@ The NeoMutt Mail User Agent (MUA)
 .SH DESCRIPTION
 .\" --------------------------------------------------------------------
 NeoMutt is a small but very powerful
-text based program for reading and sending electronic mail
+text-based program for reading and sending electronic mail
 under Unix operating systems,
 including support for
 color terminals,

@@ -1,6 +1,6 @@
 ## Contributors
 
-Here's a list of everyone who's helped NeoMutt:
+Here is a list of everyone who has helped NeoMutt:
 
 [Adam Borowski](https://github.com/kilobyte "kilobyte"),
 [Adam Dinwoodie](https://github.com/me-and "me-and"),

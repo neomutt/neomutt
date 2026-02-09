@@ -4890,7 +4890,7 @@ bind index gg first-entry
       <note>
         <para>
           Settings are <emphasis>not</emphasis> restored when you leave the
-          mailbox. For example, a command action to perform is to change the
+          mailbox. For example, a common action to perform is to change the
           sorting method based upon the mailbox being read:
         </para>
         <screen>folder-hook work "set sort=threads"</screen>

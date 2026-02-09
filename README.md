@@ -11,14 +11,14 @@
 
 ## What is NeoMutt?
 
-* NeoMutt is a project of projects.
-* A place to gather all the patches against Mutt.
-* A place for all the developers to gather.
+NeoMutt is a project of projects:
+* A place to gather all the patches against Mutt
+* A place for all the developers to gather
 
-Hopefully this will build the community and reduce duplicated effort.
+This builds community and reduces duplicated effort.
 
-NeoMutt was created when Richard Russon (@FlatCap) took all the old Mutt patches,
-sorted through them, fixed them up and documented them.
+NeoMutt was created when Richard Russon (@FlatCap) gathered all the old Mutt patches,
+sorted through them, fixed them up, and documented them.
 
 ## What Features does NeoMutt have?
 
@@ -34,7 +34,7 @@ sorted through them, fixed them up and documented them.
 | Custom Mailbox Tags      | Implements Notmuch tags and Imap keywords
 | Encrypt-to-Self          | Save a self-encrypted copy of emails
 | Fmemopen                 | Replace some temporary files with memory buffers
-| Forgotten Attachment     | Alert user when (s)he forgets to attach a file to an outgoing email.
+| Forgotten Attachment     | Alert the user when they forget to attach a file to an outgoing email
 | Global Hooks             | Define actions to run globally within NeoMutt
 | Header Cache Compression | Options for compressing the header cache files
 | Ifdef                    | Conditional config options
@@ -45,7 +45,7 @@ sorted through them, fixed them up and documented them.
 | LMDB                     | LMDB backend for the header cache
 | Multiple FCC             | Save multiple copies of outgoing mail
 | Nested If                | Allow complex nested conditions in format strings
-| New Mail                 | Execute a command upon the receipt of new mail.
+| New Mail                 | Execute a command upon the receipt of new mail
 | NNTP                     | Talk to a Usenet news server
 | Notmuch                  | Email search engine
 | Pager Read Delay         | Delay when the pager marks a previewed message as read
@@ -70,11 +70,11 @@ sorted through them, fixed them up and documented them.
 | Vi Keys                | Easy and clean Vi-keys for NeoMutt
 | Vim Syntax             | Vim Syntax File
 
-## How to Install NeoMutt?
+## How to Install NeoMutt
 
-NeoMutt may be packaged for your distribution, and otherwise it can be
+NeoMutt may be packaged for your distribution. If not, it can be
 [built from source](https://neomutt.org/dev/build/build). Please refer to the
-instructions on the [distro page](https://neomutt.org/distro.html).
+installation instructions on the [distro page](https://neomutt.org/distro.html).
 
 ## Where is NeoMutt?
 
@@ -82,8 +82,8 @@ instructions on the [distro page](https://neomutt.org/distro.html).
 - Releases:        https://github.com/neomutt/neomutt/releases/latest
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
 - Website:         https://neomutt.org
-- IRC:             [irc://irc.libera.chat/neomutt](https://web.libera.chat/#neomutt "IRC Web Client") - please be patient.
-  We're a small group, so our answer might take some time.
+- IRC:             [irc://irc.libera.chat/neomutt](https://web.libera.chat/#neomutt "IRC Web Client") — please be patient,
+  we're a small group, so responses may take some time
 - Mailing Lists:   [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
   and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 - Development:     https://neomutt.org/dev.html
@@ -91,8 +91,8 @@ instructions on the [distro page](https://neomutt.org/distro.html).
 
 ## Copyright
 
-NeoMutt is released under the GPL v2+ (GNU General Public License).
-See [LICENSE.md](LICENSE.md).
+NeoMutt is released under the GPL v2+ (GNU General Public License);
+see [LICENSE.md](LICENSE.md).
 
 The principal authors of NeoMutt are:
 
