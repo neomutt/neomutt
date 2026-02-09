@@ -12,7 +12,12 @@ HARNESS_COMMON = harness/common.o harness/modules.o
 HARNESS_OBJS = $(HARNESS_COMMON) \
 	harness/mbox.o harness/mmdf.o \
 	harness/maildir.o harness/mh.o \
-	harness/compmbox.o harness/imap.o
+	harness/compmbox.o harness/imap.o \
+	harness/pop.o harness/nntp.o
+
+@if USE_NOTMUCH
+HARNESS_OBJS += harness/notmuch.o
+@endif
 
 CFLAGS += -I$(SRCDIR)/harness
 
@@ -22,9 +27,19 @@ HARNESS_MAILDIR = harness/maildir-harness$(EXEEXT)
 HARNESS_MH =      harness/mh-harness$(EXEEXT)
 HARNESS_COMPMBOX = harness/compmbox-harness$(EXEEXT)
 HARNESS_IMAP =    harness/imap-harness$(EXEEXT)
+HARNESS_POP =     harness/pop-harness$(EXEEXT)
+HARNESS_NNTP =    harness/nntp-harness$(EXEEXT)
+@if USE_NOTMUCH
+HARNESS_NOTMUCH = harness/notmuch-harness$(EXEEXT)
+@endif
 
 HARNESS_BINS = $(HARNESS_MBOX) $(HARNESS_MMDF) $(HARNESS_MAILDIR) \
-	$(HARNESS_MH) $(HARNESS_COMPMBOX) $(HARNESS_IMAP)
+	$(HARNESS_MH) $(HARNESS_COMPMBOX) $(HARNESS_IMAP) \
+	$(HARNESS_POP) $(HARNESS_NNTP)
+
+@if USE_NOTMUCH
+HARNESS_BINS +=	$(HARNESS_NOTMUCH)
+@endif
 
 CLEANFILES += $(HARNESS_BINS) $(HARNESS_OBJS)
 
@@ -51,6 +66,17 @@ $(HARNESS_COMPMBOX): $(PWD)/harness harness/compmbox.o $(HARNESS_COMMON) $(HARNE
 
 $(HARNESS_IMAP): $(PWD)/harness harness/imap.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ harness/imap.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(HARNESS_POP): $(PWD)/harness harness/pop.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ harness/pop.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+$(HARNESS_NNTP): $(PWD)/harness harness/nntp.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ harness/nntp.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+@if USE_NOTMUCH
+$(HARNESS_NOTMUCH): $(PWD)/harness harness/notmuch.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ harness/notmuch.o $(HARNESS_COMMON) $(HARNESS_APP_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+@endif
 
 all-harness: harness
 

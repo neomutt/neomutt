@@ -21,6 +21,9 @@ harness/maildir-harness
 harness/mbox-harness
 harness/mh-harness
 harness/mmdf-harness
+harness/nntp-harness
+harness/notmuch-harness
+harness/pop-harness
 
 # Build products
 *.o
