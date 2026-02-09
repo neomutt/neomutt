@@ -29,6 +29,7 @@
 #include "config.h"
 #include "private.h"
 #include "mutt/lib.h"
+#include "conn/lib.h"
 #include "adata.h"
 
 struct Connection;
@@ -51,6 +52,7 @@ void nntp_adata_free(void **ptr)
   FREE(&adata->newsrc_file);
   FREE(&adata->authenticators);
   FREE(&adata->overview_fmt);
+  mutt_socket_close(adata->conn);
   FREE(&adata->conn);
   FREE(&adata->groups_list);
   mutt_hash_free(&adata->groups_hash);
