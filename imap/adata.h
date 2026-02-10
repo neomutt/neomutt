@@ -56,11 +56,15 @@ struct ImapAccountData
   unsigned char seqid;       ///< tag sequence prefix
   unsigned int seqno;        ///< tag sequence number, e.g. '{seqid}0001'
   time_t lastread;           ///< last time we read a command for the server
+  time_t last_success;       ///< last time a command completed successfully
   char *buf;
   size_t blen;
 
   bool unicode; ///< If true, we can send UTF-8, and the server will use UTF8 rather than mUTF7
   bool qresync; ///< true, if QRESYNC is successfully ENABLE'd
+
+  /* Reconnection state */
+  unsigned char retry_count;      ///< Number of consecutive reconnection attempts
 
   // if set, the response parser will store results for complicated commands here
   struct ImapList *cmdresult;
