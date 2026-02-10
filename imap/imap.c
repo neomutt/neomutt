@@ -41,11 +41,13 @@
  */
 
 #include "config.h"
+#include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -710,18 +712,64 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
   if (c_debug_level >= IMAP_LOG_LTRL)
     buf_alloc(&buf, bytes + 1);
 
-  mutt_debug(LL_DEBUG2, "reading %lu bytes\n", bytes);
+  mutt_debug(LL_DEBUG2, "reading %lu byte literal from server\n", bytes);
+
+  /* For large transfers, calculate checkpoint for progress logging */
+  unsigned long checkpoint = bytes / 10; // Log every 10%
+  if (checkpoint == 0)
+    checkpoint = bytes; // For small transfers, don't log progress
+
+  time_t start_time = mutt_date_now();
+  time_t last_progress = start_time;
+  time_t last_activity = start_time;
+
+  /* Get timeout value - use imap_poll_timeout or default to 60 seconds */
+  const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+  const int stall_timeout = (c_imap_poll_timeout > 0) ? c_imap_poll_timeout : 60;
 
   for (unsigned long pos = 0; pos < bytes; pos++)
   {
+    /* Check for user interrupt (Ctrl-C) periodically */
+    if ((pos % 4096) == 0)
+    {
+      if (SigInt)
+      {
+        mutt_debug(LL_DEBUG1, "Literal read interrupted by user at %lu/%lu bytes\n",
+                   pos, bytes);
+        mutt_error(_("Download interrupted"));
+        SigInt = false;
+        adata->status = IMAP_FATAL;
+        buf_dealloc(&buf);
+        return -1;
+      }
+
+      /* Check for stalled transfer */
+      time_t now = mutt_date_now();
+      if ((now - last_activity) > stall_timeout)
+      {
+        mutt_debug(LL_DEBUG1, "Literal read stalled at %lu/%lu bytes (no data for %d seconds)\n",
+                   pos, bytes, stall_timeout);
+        mutt_error(_("Download stalled - no data received for %d seconds"), stall_timeout);
+        adata->status = IMAP_FATAL;
+        buf_dealloc(&buf);
+        return -1;
+      }
+    }
+
     if (mutt_socket_readchar(adata->conn, &c) != 1)
     {
-      mutt_debug(LL_DEBUG1, "error during read, %lu bytes read\n", pos);
+      time_t duration = mutt_date_now() - start_time;
+      mutt_debug(LL_DEBUG1, "Error during literal read at byte %lu/%lu (%.1f%% complete)\n",
+                 pos, bytes, (bytes > 0) ? ((double) pos / bytes * 100.0) : 0.0);
+      mutt_debug(LL_DEBUG1, "Read failed after %ld seconds (errno=%d: %s)\n",
+                 (long) duration, errno, strerror(errno));
       adata->status = IMAP_FATAL;
 
       buf_dealloc(&buf);
       return -1;
     }
+
+    last_activity = mutt_date_now();
 
     if (r && (c != '\n'))
       fputc('\r', fp);
@@ -740,8 +788,28 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 
     if ((pos % 1024) == 0)
       progress_update(progress, pos, -1);
+
+    /* Log progress every 10% for large transfers */
+    if ((checkpoint > 0) && ((pos % checkpoint) == 0) && (pos > 0))
+    {
+      time_t now = mutt_date_now();
+      if (now > last_progress)
+      {
+        mutt_debug(LL_DEBUG2, "Literal read progress: %lu/%lu bytes (%.1f%%)\n",
+                   pos, bytes, ((double) pos / bytes * 100.0));
+        last_progress = now;
+      }
+    }
+
     if (c_debug_level >= IMAP_LOG_LTRL)
       buf_addch(&buf, c);
+  }
+
+  time_t duration = mutt_date_now() - start_time;
+  if (duration > 0)
+  {
+    mutt_debug(LL_DEBUG2, "Literal read complete: %lu bytes in %ld seconds\n",
+               bytes, (long) duration);
   }
 
   if (c_debug_level >= IMAP_LOG_LTRL)
