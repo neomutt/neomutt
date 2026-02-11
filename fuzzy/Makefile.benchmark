@@ -1,0 +1,52 @@
+# Makefile for fuzzy benchmark
+# Usage: make -f Makefile.benchmark
+
+CC = gcc
+CFLAGS = -std=c11 -O2 -Wall -I.. -D_POSIX_C_SOURCE=199309L
+LDFLAGS =
+LIBS = -lm
+
+SOURCES = benchmark.c fuzzy.c subseq.c
+OBJECTS = $(SOURCES:.c=.o)
+TARGET = fuzzy-benchmark
+
+.PHONY: all clean run
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
+
+clean:
+	rm -f $(OBJECTS) $(TARGET)
+
+run: $(TARGET)
+	./$(TARGET)
+
+benchmark: $(TARGET)
+	@echo "Running quick benchmark (10k iterations)..."
+	./$(TARGET) 10000
+	@echo ""
+	@echo "Running full benchmark (100k iterations)..."
+	./$(TARGET) 100000
+	@echo ""
+	@echo "Running intensive benchmark (1M iterations)..."
+	./$(TARGET) 1000000
+
+help:
+	@echo "Fuzzy Benchmark Makefile"
+	@echo ""
+	@echo "Targets:"
+	@echo "  all        - Build the benchmark program"
+	@echo "  clean      - Remove build artifacts"
+	@echo "  run        - Run the benchmark with default iterations"
+	@echo "  benchmark  - Run benchmarks at different iteration counts"
+	@echo "  help       - Show this help message"
+	@echo ""
+	@echo "Usage:"
+	@echo "  make -f Makefile.benchmark"
+	@echo "  make -f Makefile.benchmark run"
+	@echo "  make -f Makefile.benchmark benchmark"
