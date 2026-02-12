@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef MboxVars[];
+
+/**
+ * mbox_init - Initialise a Module - Implements Module::init()
+ */
+static bool mbox_init(struct NeoMutt *n)
+{
+  // struct MboxModuleData *md = MUTT_MEM_CALLOC(1, struct MboxModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_MBOX, md);
+
+  return true;
+}
 
 /**
  * mbox_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool mbox_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
 }
 
 /**
+ * mbox_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool mbox_cleanup(struct NeoMutt *n)
+{
+  // struct MboxModuleData *md = neomutt_get_module_data(n, MODULE_ID_MBOX);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleMbox - Module for the Mbox library
  */
 const struct Module ModuleMbox = {
   MODULE_ID_MBOX,
   "mbox",
-  NULL, // init
+  mbox_init,
   NULL, // config_define_types
   mbox_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  mbox_cleanup,
 };
