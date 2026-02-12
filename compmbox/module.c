@@ -29,9 +29,22 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern const struct Command CompCommands[];
+
+/**
+ * compmbox_init - Initialise a Module - Implements Module::init()
+ */
+static bool compmbox_init(struct NeoMutt *n)
+{
+  // struct CompmboxModuleData *md = MUTT_MEM_CALLOC(1, struct CompmboxModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COMPMBOX, md);
+
+  return true;
+}
 
 /**
  * compmbox_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
@@ -42,16 +55,28 @@ static bool compmbox_commands_register(struct NeoMutt *n, struct CommandArray *c
 }
 
 /**
+ * compmbox_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool compmbox_cleanup(struct NeoMutt *n)
+{
+  // struct CompmboxModuleData *md = neomutt_get_module_data(n, MODULE_ID_COMPMBOX);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleCompmbox - Module for the Compmbox library
  */
 const struct Module ModuleCompmbox = {
   MODULE_ID_COMPMBOX,
   "compmbox",
-  NULL, // init
+  compmbox_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   compmbox_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  compmbox_cleanup,
 };
