@@ -27,8 +27,34 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
+
+/**
+ * convert_init - Initialise a Module - Implements Module::init()
+ */
+static bool convert_init(struct NeoMutt *n)
+{
+  // struct ConvertModuleData *md = MUTT_MEM_CALLOC(1, struct ConvertModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_CONVERT, md);
+
+  return true;
+}
+
+/**
+ * convert_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool convert_cleanup(struct NeoMutt *n)
+{
+  // struct ConvertModuleData *md = neomutt_get_module_data(n, MODULE_ID_CONVERT);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleConvert - Module for the Convert library
@@ -36,11 +62,11 @@
 const struct Module ModuleConvert = {
   MODULE_ID_CONVERT,
   "convert",
-  NULL, // init
+  convert_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  convert_cleanup,
 };
