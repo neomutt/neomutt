@@ -27,19 +27,46 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include "core/lib.h"
+#include "memory.h"
+#include "module_data.h"
+#include "signal2.h"
+
+/**
+ * mutt_init - Initialise a Module - Implements Module::init()
+ */
+static bool mutt_init(struct NeoMutt *n)
+{
+  // struct MuttModuleData *md = MUTT_MEM_CALLOC(1, struct MuttModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_MUTT, md);
+
+  return true;
+}
+
+/**
+ * mutt_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool mutt_cleanup(struct NeoMutt *n)
+{
+  // struct MuttModuleData *md = neomutt_get_module_data(n, MODULE_ID_MUTT);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleMutt - Module for the Mutt library
  */
 const struct Module ModuleMutt = {
   MODULE_ID_MUTT, "mutt",
-  NULL, // init
+  mutt_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  mutt_cleanup,
 };
