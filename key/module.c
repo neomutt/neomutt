@@ -29,9 +29,22 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern const struct Command KeyCommands[];
+
+/**
+ * key_init - Initialise a Module - Implements Module::init()
+ */
+static bool key_init(struct NeoMutt *n)
+{
+  // struct KeyModuleData *md = MUTT_MEM_CALLOC(1, struct KeyModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_KEY, md);
+
+  return true;
+}
 
 /**
  * key_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
@@ -42,16 +55,28 @@ static bool key_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 }
 
 /**
+ * key_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool key_cleanup(struct NeoMutt *n)
+{
+  // struct KeyModuleData *md = neomutt_get_module_data(n, MODULE_ID_KEY);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleKey - Module for the Key library
  */
 const struct Module ModuleKey = {
   MODULE_ID_KEY,
   "key",
-  NULL, // init
+  key_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   key_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  key_cleanup,
 };
