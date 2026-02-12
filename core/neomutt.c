@@ -40,6 +40,7 @@
 #include "neomutt.h"
 #include "account.h"
 #include "mailbox.h"
+#include "module_api.h"
 #include "muttlib.h"
 
 struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
@@ -192,9 +193,11 @@ static bool init_config(struct NeoMutt *n)
   bool rc = true;
 
   // Set up the Config Types
-  for (int i = 0; n->modules[i]; i++)
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
   {
-    const struct Module *mod = n->modules[i];
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
 
     if (mod->config_define_types)
     {
@@ -207,9 +210,11 @@ static bool init_config(struct NeoMutt *n)
     return false;
 
   // Define the Config Variables
-  for (int i = 0; n->modules[i]; i++)
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
   {
-    const struct Module *mod = n->modules[i];
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
 
     if (mod->config_define_variables)
     {
@@ -244,17 +249,16 @@ static bool init_commands(struct NeoMutt *n)
   if (!n)
     return false;
 
-  if (!n->modules)
-    return true;
-
   struct CommandArray *ca = &n->commands;
 
   bool rc = true;
 
   // Set up the Config Types
-  for (int i = 0; n->modules[i]; i++)
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
   {
-    const struct Module *mod = n->modules[i];
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
 
     if (mod->commands_register)
     {
@@ -276,15 +280,14 @@ static bool init_modules(struct NeoMutt *n)
   if (!n)
     return false;
 
-  if (!n->modules)
-    return true;
-
   bool rc = true;
 
   // Initialise the Modules
-  for (int i = 0; n->modules[i]; i++)
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
   {
-    const struct Module *mod = n->modules[i];
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
 
     if (mod->init)
     {
@@ -314,10 +317,15 @@ struct NeoMutt *neomutt_new(void)
  */
 bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
 {
-  if (!n)
+  if (!n || !modules)
     return false;
 
-  n->modules = modules;
+  for (int i = 0; modules[i]; i++)
+  {
+    const struct Module *mod = modules[i];
+
+    n->modules[mod->mid] = mod;
+  }
 
   if (!init_env(n, envp))
     return false;
@@ -359,7 +367,7 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
  */
 static void cleanup_modules(struct NeoMutt *n)
 {
-  if (!n || !n->modules)
+  if (!n)
     return;
 }
 

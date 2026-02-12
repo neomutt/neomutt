@@ -29,32 +29,32 @@
 #include "account.h"
 #include "command.h"
 #include "mailbox.h"
+#include "module_api.h"
 #ifdef __APPLE__
 #include <xlocale.h>
 #endif
-
-struct Module;
 
 /**
  * struct NeoMutt - Container for Accounts, Notifications
  */
 struct NeoMutt
 {
-  const struct Module **modules; ///< Library modules
-  struct Notify *notify;         ///< Notifications handler
-  struct Notify *notify_resize;  ///< Window resize notifications handler
-  struct Notify *notify_timeout; ///< Timeout notifications handler
-  struct ConfigSet *cs;          ///< Config set
-  struct ConfigSubset *sub;      ///< Inherited config items
-  struct AccountArray accounts;  ///< All Accounts
-  locale_t time_c_locale;        ///< Current locale but LC_TIME=C
-  mode_t user_default_umask;     ///< User's default file writing permissions (inferred from umask)
-  struct CommandArray commands;  ///< NeoMutt commands
-  struct HashTable *groups;      ///< Hash Table: "group-name" -> Group
+  const struct Module *modules[MODULE_ID_MAX];  ///< Library modules
 
-  char *home_dir;                ///< User's home directory
-  char *username;                ///< User's login name
-  char **env;                    ///< Private copy of the environment variables
+  struct Notify *notify;             ///< Notifications handler
+  struct Notify *notify_resize;      ///< Window resize notifications handler
+  struct Notify *notify_timeout;     ///< Timeout notifications handler
+  struct ConfigSet *cs;              ///< Config set
+  struct ConfigSubset *sub;          ///< Inherited config items
+  struct AccountArray accounts;      ///< All Accounts
+  locale_t time_c_locale;            ///< Current locale but LC_TIME=C
+  mode_t user_default_umask;         ///< User's default file writing permissions (inferred from umask)
+  struct CommandArray commands;      ///< NeoMutt commands
+  struct HashTable *groups;          ///< Hash Table: "group-name" -> Group
+
+  char *home_dir;                    ///< User's home directory
+  char *username;                    ///< User's login name
+  char **env;                        ///< Private copy of the environment variables
 };
 
 extern struct NeoMutt *NeoMutt;
