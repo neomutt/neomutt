@@ -27,8 +27,34 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
+
+/**
+ * color_init - Initialise a Module - Implements Module::init()
+ */
+static bool color_init(struct NeoMutt *n)
+{
+  // struct ColorModuleData *md = MUTT_MEM_CALLOC(1, struct ColorModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COLOR, md);
+
+  return true;
+}
+
+/**
+ * color_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool color_cleanup(struct NeoMutt *n)
+{
+  // struct ColorModuleData *md = neomutt_get_module_data(n, MODULE_ID_COLOR);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleColor - Module for the Color library
@@ -36,11 +62,11 @@
 const struct Module ModuleColor = {
   MODULE_ID_COLOR,
   "color",
-  NULL, // init
+  color_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  color_cleanup,
 };
