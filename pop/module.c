@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef PopVars[];
+
+/**
+ * pop_init - Initialise a Module - Implements Module::init()
+ */
+static bool pop_init(struct NeoMutt *n)
+{
+  // struct PopModuleData *md = MUTT_MEM_CALLOC(1, struct PopModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_POP, md);
+
+  return true;
+}
 
 /**
  * pop_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool pop_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 }
 
 /**
+ * pop_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool pop_cleanup(struct NeoMutt *n)
+{
+  // struct PopModuleData *md = neomutt_get_module_data(n, MODULE_ID_POP);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModulePop - Module for the Pop library
  */
 const struct Module ModulePop = {
   MODULE_ID_POP,
   "pop",
-  NULL, // init
+  pop_init,
   NULL, // config_define_types
   pop_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  pop_cleanup,
 };
