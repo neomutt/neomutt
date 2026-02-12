@@ -27,8 +27,34 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
+
+/**
+ * compress_init - Initialise a Module - Implements Module::init()
+ */
+static bool compress_init(struct NeoMutt *n)
+{
+  // struct CompressModuleData *md = MUTT_MEM_CALLOC(1, struct CompressModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COMPRESS, md);
+
+  return true;
+}
+
+/**
+ * compress_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool compress_cleanup(struct NeoMutt *n)
+{
+  // struct CompressModuleData *md = neomutt_get_module_data(n, MODULE_ID_COMPRESS);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleCompress - Module for the Compress library
@@ -36,11 +62,11 @@
 const struct Module ModuleCompress = {
   MODULE_ID_COMPRESS,
   "compress",
-  NULL, // init
+  compress_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  compress_cleanup,
 };
