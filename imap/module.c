@@ -29,13 +29,26 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef ImapVars[];
 extern struct ConfigDef ImapVarsZlib[];
 
 extern const struct Command ImapCommands[];
+
+/**
+ * imap_init - Initialise a Module - Implements Module::init()
+ */
+static bool imap_init(struct NeoMutt *n)
+{
+  // struct ImapModuleData *md = MUTT_MEM_CALLOC(1, struct ImapModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_IMAP, md);
+
+  return true;
+}
 
 /**
  * imap_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -60,16 +73,28 @@ static bool imap_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 }
 
 /**
+ * imap_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool imap_cleanup(struct NeoMutt *n)
+{
+  // struct ImapModuleData *md = neomutt_get_module_data(n, MODULE_ID_IMAP);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleImap - Module for the Imap library
  */
 const struct Module ModuleImap = {
   MODULE_ID_IMAP,
   "imap",
-  NULL, // init
+  imap_init,
   NULL, // config_define_types
   imap_config_define_variables,
   imap_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  imap_cleanup,
 };
