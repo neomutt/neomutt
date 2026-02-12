@@ -27,8 +27,34 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
+
+/**
+ * editor_init - Initialise a Module - Implements Module::init()
+ */
+static bool editor_init(struct NeoMutt *n)
+{
+  // struct EditorModuleData *md = MUTT_MEM_CALLOC(1, struct EditorModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_EDITOR, md);
+
+  return true;
+}
+
+/**
+ * editor_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool editor_cleanup(struct NeoMutt *n)
+{
+  // struct EditorModuleData *md = neomutt_get_module_data(n, MODULE_ID_EDITOR);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleEditor - Module for the Editor library
@@ -36,11 +62,11 @@
 const struct Module ModuleEditor = {
   MODULE_ID_EDITOR,
   "editor",
-  NULL, // init
+  editor_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  editor_cleanup,
 };
