@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef AliasVars[];
+
+/**
+ * alias_init - Initialise a Module - Implements Module::init()
+ */
+static bool alias_init(struct NeoMutt *n)
+{
+  struct AliasModuleData *md = MUTT_MEM_CALLOC(1, struct AliasModuleData);
+  neomutt_set_module_data(n, MODULE_ID_ALIAS, md);
+
+  return true;
+}
 
 /**
  * alias_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool alias_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
 }
 
 /**
+ * alias_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool alias_cleanup(struct NeoMutt *n)
+{
+  struct AliasModuleData *md = neomutt_get_module_data(n, MODULE_ID_ALIAS);
+  ASSERT(md);
+
+  FREE(&md);
+  return true;
+}
+
+/**
  * ModuleAlias - Module for the Alias library
  */
 const struct Module ModuleAlias = {
   MODULE_ID_ALIAS,
   "alias",
-  NULL, // init
+  alias_init,
   NULL, // config_define_types
   alias_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  alias_cleanup,
 };
