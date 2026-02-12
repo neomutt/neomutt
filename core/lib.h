@@ -34,6 +34,7 @@
  * | core/mailbox.c      | @subpage core_mailbox      |
  * | core/message.c      | @subpage core_message      |
  * | core/module.c       | @subpage core_module       |
+ * | core/module_api.h   | @subpage core_module_api   |
  * | core/neomutt.c      | @subpage core_neomutt      |
  * | core/tmp.c          | @subpage core_tmp          |
  */
@@ -48,6 +49,7 @@
 #include "dispatcher.h"
 #include "mailbox.h"
 #include "message.h"
+#include "module_api.h"
 #include "mxapi.h"
 #include "neomutt.h"
 #include "tmp.h"
