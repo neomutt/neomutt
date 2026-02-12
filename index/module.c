@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef IndexVars[];
+
+/**
+ * index_init - Initialise a Module - Implements Module::init()
+ */
+static bool index_init(struct NeoMutt *n)
+{
+  struct IndexModuleData *md = MUTT_MEM_CALLOC(1, struct IndexModuleData);
+  neomutt_set_module_data(n, MODULE_ID_INDEX, md);
+
+  return true;
+}
 
 /**
  * index_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool index_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
 }
 
 /**
+ * index_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool index_cleanup(struct NeoMutt *n)
+{
+  struct IndexModuleData *md = neomutt_get_module_data(n, MODULE_ID_INDEX);
+  ASSERT(md);
+
+  FREE(&md);
+  return true;
+}
+
+/**
  * ModuleIndex - Module for the Index library
  */
 const struct Module ModuleIndex = {
   MODULE_ID_INDEX,
   "index",
-  NULL, // init
+  index_init,
   NULL, // config_define_types
   index_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  index_cleanup,
 };
