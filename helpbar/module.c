@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef HelpbarVars[];
+
+/**
+ * helpbar_init - Initialise a Module - Implements Module::init()
+ */
+static bool helpbar_init(struct NeoMutt *n)
+{
+  // struct HelpbarModuleData *md = MUTT_MEM_CALLOC(1, struct HelpbarModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_HELPBAR, md);
+
+  return true;
+}
 
 /**
  * helpbar_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool helpbar_config_define_variables(struct NeoMutt *n, struct ConfigSet 
 }
 
 /**
+ * helpbar_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool helpbar_cleanup(struct NeoMutt *n)
+{
+  // struct HelpbarModuleData *md = neomutt_get_module_data(n, MODULE_ID_HELPBAR);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleHelpbar - Module for the Helpbar library
  */
 const struct Module ModuleHelpbar = {
   MODULE_ID_HELPBAR,
   "helpbar",
-  NULL, // init
+  helpbar_init,
   NULL, // config_define_types
   helpbar_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  helpbar_cleanup,
 };
