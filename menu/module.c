@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef MenuVars[];
+
+/**
+ * menu_init - Initialise a Module - Implements Module::init()
+ */
+static bool menu_init(struct NeoMutt *n)
+{
+  // struct MenuModuleData *md = MUTT_MEM_CALLOC(1, struct MenuModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_MENU, md);
+
+  return true;
+}
 
 /**
  * menu_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool menu_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
 }
 
 /**
+ * menu_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool menu_cleanup(struct NeoMutt *n)
+{
+  // struct MenuModuleData *md = neomutt_get_module_data(n, MODULE_ID_MENU);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleMenu - Module for the Menu library
  */
 const struct Module ModuleMenu = {
   MODULE_ID_MENU,
   "menu",
-  NULL, // init
+  menu_init,
   NULL, // config_define_types
   menu_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  menu_cleanup,
 };
