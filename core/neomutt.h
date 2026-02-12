@@ -40,6 +40,7 @@
 struct NeoMutt
 {
   const struct Module *modules[MODULE_ID_MAX];  ///< Library modules
+  void *module_data[MODULE_ID_MAX];             ///< Private library module data
 
   struct Notify *notify;             ///< Notifications handler
   struct Notify *notify_resize;      ///< Window resize notifications handler
@@ -76,6 +77,9 @@ void            neomutt_account_remove(struct NeoMutt *n, struct Account *a);
 void            neomutt_accounts_free (struct NeoMutt *n);
 void            neomutt_free          (struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new           (void);
+
+void *neomutt_get_module_data(struct NeoMutt *n, enum ModuleId id);
+void  neomutt_set_module_data(struct NeoMutt *n, enum ModuleId id, void *data);
 
 bool neomutt_init   (struct NeoMutt *n, char **envp, const struct Module **modules);
 void neomutt_cleanup(struct NeoMutt *n);

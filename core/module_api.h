@@ -174,7 +174,7 @@ struct Module
    * cleanup - Clean up a Module
    * @retval true Success
    */
-  void (*cleanup)(struct NeoMutt *n);
+  bool (*cleanup)(struct NeoMutt *n);
 };
 
 #endif /* MUTT_CORE_MODULE_H */

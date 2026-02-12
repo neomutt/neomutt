@@ -364,11 +364,36 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
 /**
  * cleanup_modules - Clean up each of the Modules
  * @param n NeoMutt
+ * @retval true Success
  */
-static void cleanup_modules(struct NeoMutt *n)
+static bool cleanup_modules(struct NeoMutt *n)
 {
   if (!n)
-    return;
+    return false;
+
+  bool rc = true;
+
+  // Cleanup the Modules
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
+  {
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
+
+    if (mod->cleanup)
+    {
+      mutt_debug(LL_DEBUG3, "%s:clenaup()\n", mod->name);
+      rc &= mod->cleanup(n);
+    }
+
+    if (n->module_data[mod->mid])
+    {
+      mutt_debug(LL_DEBUG1, "Module %s didn't clean up its data\n", mod->name);
+      rc = false;
+    }
+  }
+
+  return rc;
 }
 
 /**
@@ -544,4 +569,32 @@ FILE *mutt_file_fopen_masked_full(const char *path, const char *mode,
   mutt_debug(LL_DEBUG3, "umask set to %03o\n", old_umask);
 
   return fp;
+}
+
+/**
+ * neomutt_get_module_data - Get the private data for a Module
+ * @param n  NeoMutt
+ * @param id Module Id
+ * @retval ptr Private Module data
+ */
+void *neomutt_get_module_data(struct NeoMutt *n, enum ModuleId id)
+{
+  if (!n)
+    return NULL;
+
+  return n->module_data[id];
+}
+
+/**
+ * neomutt_set_module_data - Set the private data for a Module
+ * @param n    NeoMutt
+ * @param id   Module Id
+ * @param data Private Module data
+ */
+void neomutt_set_module_data(struct NeoMutt *n, enum ModuleId id, void *data)
+{
+  if (!n)
+    return;
+
+  n->module_data[id] = data;
 }
