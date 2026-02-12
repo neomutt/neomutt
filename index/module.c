@@ -36,6 +36,8 @@
 
 extern struct ConfigDef IndexVars[];
 
+extern const struct Command IndexCommands[];
+
 /**
  * index_init - Initialise a Module - Implements Module::init()
  */
@@ -53,6 +55,14 @@ static bool index_init(struct NeoMutt *n)
 static bool index_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 {
   return cs_register_variables(cs, IndexVars);
+}
+
+/**
+ * index_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool index_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, IndexCommands);
 }
 
 /**
@@ -76,7 +86,7 @@ const struct Module ModuleIndex = {
   index_init,
   NULL, // config_define_types
   index_config_define_variables,
-  NULL, // commands_register
+  index_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
   index_cleanup,

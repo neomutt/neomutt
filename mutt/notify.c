@@ -3,7 +3,7 @@
  * Notification API
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,11 +39,11 @@
 /// Lookup table for NotifyType
 /// Must be the same size and order as #NotifyType
 static const char *NotifyTypeNames[] = {
-  "NT_ALL",     "NT_ACCOUNT",  "NT_ALIAS",   "NT_ALTERN", "NT_ATTACH",
-  "NT_BINDING", "NT_COLOR",    "NT_COMMAND", "NT_CONFIG", "NT_CONTEXT",
-  "NT_EMAIL",   "NT_ENVELOPE", "NT_GLOBAL",  "NT_HEADER", "NT_INDEX",
-  "NT_MAILBOX", "NT_MENU",     "NT_PAGER",   "NT_RESIZE", "NT_SCORE",
-  "NT_SUBJRX",  "NT_TIMEOUT",  "NT_WINDOW",
+  "NT_ALL",       "NT_ACCOUNT",  "NT_ALIAS",   "NT_ALTERN", "NT_ATTACH",
+  "NT_BINDING",   "NT_COLOR",    "NT_COMMAND", "NT_CONFIG", "NT_CONTEXT",
+  "NT_EMAIL",     "NT_ENVELOPE", "NT_GLOBAL",  "NT_HEADER", "NT_INDEX",
+  "NT_MAILBOX",   "NT_MENU",     "NT_PAGER",   "NT_RESIZE", "NT_SCORE",
+  "NT_SUBJECTRX", "NT_TIMEOUT",  "NT_WINDOW",
 };
 
 /**

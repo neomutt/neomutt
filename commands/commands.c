@@ -49,7 +49,6 @@
 #include "source.h"
 #include "spam.h"
 #include "stailq.h"
-#include "subjectrx.h"
 #include "tags.h"
 
 /**
@@ -169,10 +168,6 @@ const struct Command CommandsCommands[] = {
         N_("Define rules to parse spam detection headers"),
         N_("spam <regex> [ <format> ]"),
         "configuration.html#spam" },
-  { "subject-regex", CMD_SUBJECT_REGEX, parse_subjectrx_list, CMD_NO_DATA,
-        N_("Apply regex-based rewriting to message subjects"),
-        N_("subject-regex <regex> <replacement>"),
-        "advancedusage.html#display-munging" },
   { "subscribe", CMD_SUBSCRIBE, parse_subscribe, CMD_NO_DATA,
         N_("Add address to the list of subscribed mailing lists"),
         N_("subscribe [ -group <name> ... ] <regex> [ ... ]"),
@@ -261,10 +256,6 @@ const struct Command CommandsCommands[] = {
         N_("Unset an environment variable"),
         N_("unsetenv <variable>"),
         "advancedusage.html#setenv" },
-  { "unsubject-regex", CMD_UNSUBJECT_REGEX, parse_unsubjectrx_list, CMD_NO_DATA,
-        N_("Remove subject-rewriting rules"),
-        N_("unsubject-regex { * | <regex> }"),
-        "advancedusage.html#display-munging" },
   { "unsubscribe", CMD_UNSUBSCRIBE, parse_unsubscribe, CMD_NO_DATA,
         N_("Remove address from the list of subscribed mailing lists"),
         N_("unsubscribe { * | <regex> ... }"),
@@ -281,14 +272,12 @@ const struct Command CommandsCommands[] = {
   { "mailto_allow",        CMD_NONE, NULL, CMD_NO_DATA, "mailto-allow",        NULL, NULL, CF_SYNONYM },
   { "mime_lookup",         CMD_NONE, NULL, CMD_NO_DATA, "mime-lookup",         NULL, NULL, CF_SYNONYM },
   { "my_hdr",              CMD_NONE, NULL, CMD_NO_DATA, "my-header",           NULL, NULL, CF_SYNONYM },
-  { "subjectrx",           CMD_NONE, NULL, CMD_NO_DATA, "subject-regex",       NULL, NULL, CF_SYNONYM },
   { "unalternative_order", CMD_NONE, NULL, CMD_NO_DATA, "unalternative-order", NULL, NULL, CF_SYNONYM },
   { "unauto_view",         CMD_NONE, NULL, CMD_NO_DATA, "unauto-view",         NULL, NULL, CF_SYNONYM },
   { "unhdr_order",         CMD_NONE, NULL, CMD_NO_DATA, "unheader-order",      NULL, NULL, CF_SYNONYM },
   { "unmailto_allow",      CMD_NONE, NULL, CMD_NO_DATA, "unmailto-allow",      NULL, NULL, CF_SYNONYM },
   { "unmime_lookup",       CMD_NONE, NULL, CMD_NO_DATA, "unmime-lookup",       NULL, NULL, CF_SYNONYM },
   { "unmy_hdr",            CMD_NONE, NULL, CMD_NO_DATA, "unmy-header",         NULL, NULL, CF_SYNONYM },
-  { "unsubjectrx",         CMD_NONE, NULL, CMD_NO_DATA, "unsubject-regex",     NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on

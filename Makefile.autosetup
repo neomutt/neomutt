@@ -208,8 +208,7 @@ LIBCOMMANDSOBJS=commands/alternates.o commands/commands.o commands/group.o \
 		commands/ifdef.o commands/ignore.o commands/mailboxes.o \
 		commands/my_header.o commands/parse.o commands/score.o \
 		commands/setenv.o commands/source.o commands/spam.o \
-		commands/stailq.o commands/subjectrx.o commands/tags.o \
-		commands/module.o
+		commands/stailq.o commands/tags.o commands/module.o
 CLEANFILES+=	$(LIBCOMMANDS) $(LIBCOMMANDSOBJS)
 ALLOBJS+=	$(LIBCOMMANDSOBJS)
 
@@ -580,10 +579,11 @@ $(PWD)/imap:
 ###############################################################################
 # libindex
 LIBINDEX=	libindex.a
-LIBINDEXOBJS=	index/config.o index/dlg_index.o index/expando_index.o \
-		index/expando_status.o index/functions.o index/ibar.o \
-		index/index.o index/ipanel.o index/private_data.o \
-		index/shared_data.o index/status.o index/module.o
+LIBINDEXOBJS=	index/commands.o index/config.o index/dlg_index.o \
+		index/expando_index.o index/expando_status.o index/functions.o \
+		index/ibar.o index/index.o index/ipanel.o index/private_data.o \
+		index/shared_data.o index/status.o index/subjectrx.o \
+		index/module.o
 CLEANFILES+=	$(LIBINDEX) $(LIBINDEXOBJS)
 ALLOBJS+=	$(LIBINDEXOBJS)
 

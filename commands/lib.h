@@ -3,7 +3,7 @@
  * NeoMutt Commands
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -41,7 +41,6 @@
  * | commands/source.c      | @subpage commands_source      |
  * | commands/spam.c        | @subpage commands_spam        |
  * | commands/stailq.c      | @subpage commands_stailq      |
- * | commands/subjectrx.c   | @subpage commands_subjectrx   |
  * | commands/tags.c        | @subpage commands_tags        |
  */
 
@@ -62,7 +61,6 @@
 #include "source.h"
 #include "spam.h"
 #include "stailq.h"
-#include "subjectrx.h"
 #include "tags.h"
 // IWYU pragma: end_keep
 

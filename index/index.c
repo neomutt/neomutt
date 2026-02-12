@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2025 Alejandro Colomar <alx@kernel.org>
  *
@@ -50,18 +50,18 @@
  *
  * Once constructed, it is controlled by the following events:
  *
- * | Event Type            | Handler                 |
- * | :-------------------- | :---------------------- |
- * | #NT_ALTERN            | index_altern_observer() |
- * | #NT_ATTACH            | index_attach_observer() |
- * | #NT_COLOR             | index_color_observer()  |
- * | #NT_CONFIG            | index_config_observer() |
- * | #NT_MENU              | index_menu_observer()   |
- * | #NT_SCORE             | index_score_observer()  |
- * | #NT_SUBJRX            | index_subjrx_observer() |
- * | #NT_WINDOW            | index_window_observer() |
- * | MuttWindow::recalc()  | index_recalc()          |
- * | MuttWindow::repaint() | index_repaint()         |
+ * | Event Type            | Handler                    |
+ * | :-------------------- | :------------------------- |
+ * | #NT_ALTERN            | index_altern_observer()    |
+ * | #NT_ATTACH            | index_attach_observer()    |
+ * | #NT_COLOR             | index_color_observer()     |
+ * | #NT_CONFIG            | index_config_observer()    |
+ * | #NT_MENU              | index_menu_observer()      |
+ * | #NT_SCORE             | index_score_observer()     |
+ * | #NT_SUBJECTRX         | index_subjectrx_observer() |
+ * | #NT_WINDOW            | index_window_observer()    |
+ * | MuttWindow::recalc()  | index_recalc()             |
+ * | MuttWindow::repaint() | index_repaint()            |
  *
  * The Index Window does not implement MuttWindow::recalc() or MuttWindow::repaint().
  *
@@ -85,6 +85,7 @@
 #include "muttlib.h"
 #include "private_data.h"
 #include "shared_data.h"
+#include "subjectrx.h"
 
 /**
  * sort_use_threads_warn - Alert the user to odd $sort settings
@@ -526,11 +527,11 @@ static int index_score_observer(struct NotifyCallback *nc)
 }
 
 /**
- * index_subjrx_observer - Notification that a 'subject-regex' command has occurred - Implements ::observer_t - @ingroup observer_api
+ * index_subjectrx_observer - Notification that a 'subject-regex' command has occurred - Implements ::observer_t - @ingroup observer_api
  */
-static int index_subjrx_observer(struct NotifyCallback *nc)
+static int index_subjectrx_observer(struct NotifyCallback *nc)
 {
-  if (nc->event_type != NT_SUBJRX)
+  if (nc->event_type != NT_SUBJECTRX)
     return 0;
   if (!nc->global_data)
     return -1;
@@ -539,7 +540,7 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
   struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
-  subjrx_clear_mods(shared->mailbox_view);
+  subjectrx_clear_mods(shared->mailbox_view);
   mutt_debug(LL_DEBUG5, "subject-regex done\n");
   return 0;
 }
@@ -577,7 +578,7 @@ static int index_window_observer(struct NotifyCallback *nc)
   notify_observer_remove(priv->shared->notify, index_index_observer, win);
   notify_observer_remove(menu->notify, index_menu_observer, win);
   notify_observer_remove(NeoMutt->notify, index_score_observer, win);
-  notify_observer_remove(NeoMutt->notify, index_subjrx_observer, win);
+  notify_observer_remove(NeoMutt->notify, index_subjectrx_observer, win);
   notify_observer_remove(win->notify, index_window_observer, win);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -670,7 +671,7 @@ struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
   notify_observer_add(priv->shared->notify, NT_ALL, index_index_observer, win);
   notify_observer_add(menu->notify, NT_MENU, index_menu_observer, win);
   notify_observer_add(NeoMutt->notify, NT_SCORE, index_score_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_SUBJRX, index_subjrx_observer, win);
+  notify_observer_add(NeoMutt->notify, NT_SUBJECTRX, index_subjectrx_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, index_window_observer, win);
 
   return win;

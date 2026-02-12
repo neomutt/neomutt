@@ -3,7 +3,7 @@
  * Notification Types
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -52,7 +52,7 @@ enum NotifyType
   NT_RESIZE,    ///< Window has been resized
   NT_PAGER,     ///< Pager data has changed,        #NotifyPager,     #PagerPrivateData
   NT_SCORE,     ///< Email scoring has changed
-  NT_SUBJRX,    ///< Subject Regex has changed,     #NotifySubjRx
+  NT_SUBJECTRX, ///< Subject Regex has changed,     #NotifySubjectRx
   NT_TIMEOUT,   ///< Timeout has occurred
   NT_WINDOW,    ///< MuttWindow has changed,        #NotifyWindow,    #EventWindow
 };
