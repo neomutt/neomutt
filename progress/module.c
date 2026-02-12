@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef ProgressVars[];
+
+/**
+ * progress_init - Initialise a Module - Implements Module::init()
+ */
+static bool progress_init(struct NeoMutt *n)
+{
+  // struct ProgressModuleData *md = MUTT_MEM_CALLOC(1, struct ProgressModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_PROGRESS, md);
+
+  return true;
+}
 
 /**
  * progress_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool progress_config_define_variables(struct NeoMutt *n, struct ConfigSet
 }
 
 /**
+ * progress_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool progress_cleanup(struct NeoMutt *n)
+{
+  // struct ProgressModuleData *md = neomutt_get_module_data(n, MODULE_ID_PROGRESS);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleProgress - Module for the Progress library
  */
 const struct Module ModuleProgress = {
   MODULE_ID_PROGRESS,
   "progress",
-  NULL, // init
+  progress_init,
   NULL, // config_define_types
   progress_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  progress_cleanup,
 };
