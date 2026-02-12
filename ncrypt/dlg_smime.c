@@ -21,7 +21,7 @@
  */
 
 /**
- * @page crypt_dlg_smime SMIME Key Selection Dialog
+ * @page ncrypt_dlg_smime SMIME Key Selection Dialog
  *
  * The SMIME Key Selection Dialog lets the user select a SMIME key.
  *

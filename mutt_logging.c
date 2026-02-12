@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_mutt_logging NeoMutt Logging
+ * @page main_mutt_logging NeoMutt Logging
  *
  * NeoMutt Logging
  */

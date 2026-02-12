@@ -23,7 +23,7 @@
  */
 
 /**
- * @page addr_config_type Config type: Email address
+ * @page address_config_type Config type: Email address
  *
  * Config type representing an email address.
  *

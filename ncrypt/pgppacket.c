@@ -22,7 +22,7 @@
  */
 
 /**
- * @page crypt_pgppacket Parse PGP data packets
+ * @page ncrypt_pgppacket Parse PGP data packets
  *
  * Parse PGP data packets
  */

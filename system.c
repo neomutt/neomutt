@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_system Execute external programs
+ * @page main_system Execute external programs
  *
  * Execute external programs
  */

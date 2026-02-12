@@ -25,15 +25,15 @@
  *
  * Email Address Handling
  *
- * | File                   | Description               |
- * | :--------------------- | :------------------------ |
- * | address/address.c      | @subpage addr_address     |
- * | address/config.c       | @subpage addr_config      |
- * | address/config_type.c  | @subpage addr_config_type |
- * | address/group.c        | @subpage addr_group       |
- * | address/idna.c         | @subpage addr_idna        |
- * | address/maillist.c     | @subpage addr_maillist    |
- * | address/module.c       | @subpage addr_module      |
+ * | File                   | Description                  |
+ * | :--------------------- | :--------------------------- |
+ * | address/address.c      | @subpage address_address     |
+ * | address/config.c       | @subpage address_config      |
+ * | address/config_type.c  | @subpage address_config_type |
+ * | address/group.c        | @subpage address_group       |
+ * | address/idna.c         | @subpage address_idna        |
+ * | address/maillist.c     | @subpage address_maillist    |
+ * | address/module.c       | @subpage address_module      |
  */
 
 #ifndef MUTT_ADDRESS_LIB_H

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page smime_functions Smime functions
+ * @page ncrypt_smime_functions Smime functions
  *
  * Smime functions
  */

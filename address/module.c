@@ -21,7 +21,7 @@
  */
 
 /**
- * @page addr_module Definition of the Address Module
+ * @page address_module Definition of the Address Module
  *
  * Definition of the Address Module
  */

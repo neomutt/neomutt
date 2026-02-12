@@ -1,6 +1,6 @@
 /**
  * @file
- * Command line processing
+ * NeoMutt Email Client
  *
  * @authors
  * Copyright (C) 1996-2013 Michael R. Elkins <me@mutt.org>
@@ -56,24 +56,24 @@
  *
  * | File            | Description                |
  * | :-------------- | :------------------------- |
- * | editmsg.c       | @subpage neo_editmsg       |
- * | external.c      | @subpage neo_external      |
- * | flags.c         | @subpage neo_flags         |
- * | globals.c       | @subpage neo_globals       |
- * | help.c          | @subpage neo_help          |
- * | main.c          | @subpage neo_main          |
+ * | editmsg.c       | @subpage main_editmsg      |
+ * | external.c      | @subpage main_external     |
+ * | flags.c         | @subpage main_flags        |
+ * | globals.c       | @subpage main_globals      |
+ * | help.c          | @subpage main_help         |
+ * | main.c          | @subpage lib_main          |
  * | module.c        | @subpage main_module       |
- * | monitor.c       | @subpage neo_monitor       |
- * | muttlib.c       | @subpage neo_muttlib       |
- * | mutt_config.c   | @subpage neo_mutt_config   |
- * | mutt_logging.c  | @subpage neo_mutt_logging  |
- * | mutt_mailbox.c  | @subpage neo_mutt_mailbox  |
- * | mutt_signal.c   | @subpage neo_mutt_signal   |
- * | mutt_socket.c   | @subpage neo_mutt_socket   |
- * | mx.c            | @subpage neo_mx            |
- * | system.c        | @subpage neo_system        |
- * | usage.c         | @subpage neo_usage         |
- * | version.c       | @subpage neo_version       |
+ * | monitor.c       | @subpage main_monitor      |
+ * | muttlib.c       | @subpage main_muttlib      |
+ * | mutt_config.c   | @subpage main_mutt_config  |
+ * | mutt_logging.c  | @subpage main_mutt_logging |
+ * | mutt_mailbox.c  | @subpage main_mutt_mailbox |
+ * | mutt_signal.c   | @subpage main_mutt_signal  |
+ * | mutt_socket.c   | @subpage main_mutt_socket  |
+ * | mx.c            | @subpage main_mx           |
+ * | system.c        | @subpage main_system       |
+ * | usage.c         | @subpage main_usage        |
+ * | version.c       | @subpage main_version      |
  *
  * ## Building these Docs
  *
@@ -89,9 +89,9 @@
  */
 
 /**
- * @page neo_main Command line processing
+ * @page lib_main NeoMutt Email Client
  *
- * Command line processing
+ * NeoMutt Email Client
  */
 
 #define GNULIB_defined_setlocale

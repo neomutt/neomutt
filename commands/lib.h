@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_command NeoMutt Commands
+ * @page lib_commands NeoMutt Commands
  *
  * NeoMutt Commands
  *

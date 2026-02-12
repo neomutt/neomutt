@@ -24,7 +24,7 @@
  */
 
 /**
- * @page crypt_dlg_gpgme GPGME Key Selection Dialog
+ * @page ncrypt_dlg_gpgme GPGME Key Selection Dialog
  *
  * The GPGME Key Selection Dialog lets the user select a PGP key.
  *

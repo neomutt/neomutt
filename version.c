@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_version Display version and copyright about NeoMutt
+ * @page main_version Display version and copyright about NeoMutt
  *
  * Display version and copyright about NeoMutt
  */

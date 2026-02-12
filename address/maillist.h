@@ -24,10 +24,10 @@
 #define MUTT_ADDRESS_MAILLIST_H
 
 #include <stdbool.h>
-#include <stddef.h>
 
 struct Address;
 struct AddressList;
+struct Buffer;
 
 bool check_for_mailing_list     (struct AddressList *al, const char *pfx, char *buf, int buflen);
 bool check_for_mailing_list_addr(struct AddressList *al, char *buf, int buflen);

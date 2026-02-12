@@ -22,7 +22,7 @@
  */
 
 /**
- * @page crypt_pgpmicalg Identify the hash algorithm from a PGP signature
+ * @page ncrypt_pgpmicalg Identify the hash algorithm from a PGP signature
  *
  * Identify the Message Integrity Check algorithm (micalg) from a PGP signature
  */

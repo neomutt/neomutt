@@ -23,7 +23,7 @@
  */
 
 /**
- * @page crypt_pgpinvoke Wrapper around calls to external PGP program
+ * @page ncrypt_pgpinvoke Wrapper around calls to external PGP program
  *
  * This file contains the new pgp invocation code.
  *

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page crypt_functions PGP/Smime functions
+ * @page ncrypt_functions PGP/Smime functions
  *
  * PGP/Smime functions
  */

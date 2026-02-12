@@ -21,7 +21,7 @@
  */
 
 /**
- * @page hc_module Definition of the Hcache Module
+ * @page hcache_module Definition of the Hcache Module
  *
  * Definition of the Hcache Module
  */

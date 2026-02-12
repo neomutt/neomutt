@@ -21,7 +21,7 @@
  */
 
 /**
- * @page neo_usage Display Usage Information for NeoMutt
+ * @page main_usage Display Usage Information for NeoMutt
  *
  * Display Usage Information for NeoMutt
  */

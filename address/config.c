@@ -13,7 +13,7 @@
  */
 
 /**
- * @page addr_config Config used by libaddress
+ * @page address_config Config used by libaddress
  *
  * Config used by libaddress
  */

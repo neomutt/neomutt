@@ -26,7 +26,7 @@
  */
 
 /**
- * @page neo_muttlib Some miscellaneous functions
+ * @page main_muttlib Some miscellaneous functions
  *
  * Some miscellaneous functions
  */

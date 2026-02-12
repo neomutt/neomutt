@@ -21,7 +21,7 @@
  */
 
 /**
- * @page nm_module Definition of the Notmuch Module
+ * @page notmuch_module Definition of the Notmuch Module
  *
  * Definition of the Notmuch Module
  */

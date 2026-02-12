@@ -24,7 +24,7 @@
  */
 
 /**
- * @page addr_group Address groups
+ * @page address_group Address groups
  *
  * Handling for email address groups
  */

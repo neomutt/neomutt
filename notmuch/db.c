@@ -24,7 +24,7 @@
  */
 
 /**
- * @page nm_db Notmuch database handling
+ * @page notmuch_db Notmuch database handling
  *
  * Notmuch database handling
  */

@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_mutt_socket NeoMutt connections
+ * @page main_mutt_socket NeoMutt connections
  *
  * NeoMutt connections
  */
