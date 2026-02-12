@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef EmailVars[];
+
+/**
+ * email_init - Initialise a Module - Implements Module::init()
+ */
+static bool email_init(struct NeoMutt *n)
+{
+  struct EmailModuleData *md = MUTT_MEM_CALLOC(1, struct EmailModuleData);
+  neomutt_set_module_data(n, MODULE_ID_EMAIL, md);
+
+  return true;
+}
 
 /**
  * email_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool email_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
 }
 
 /**
+ * email_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool email_cleanup(struct NeoMutt *n)
+{
+  struct EmailModuleData *md = neomutt_get_module_data(n, MODULE_ID_EMAIL);
+  ASSERT(md);
+
+  FREE(&md);
+  return true;
+}
+
+/**
  * ModuleEmail - Module for the Email library
  */
 const struct Module ModuleEmail = {
   MODULE_ID_EMAIL,
   "email",
-  NULL, // init
+  email_init,
   NULL, // config_define_types
   email_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  email_cleanup,
 };
