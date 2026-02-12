@@ -27,8 +27,34 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
+
+/**
+ * question_init - Initialise a Module - Implements Module::init()
+ */
+static bool question_init(struct NeoMutt *n)
+{
+  // struct QuestionModuleData *md = MUTT_MEM_CALLOC(1, struct QuestionModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_QUESTION, md);
+
+  return true;
+}
+
+/**
+ * question_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool question_cleanup(struct NeoMutt *n)
+{
+  // struct QuestionModuleData *md = neomutt_get_module_data(n, MODULE_ID_QUESTION);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleQuestion - Module for the Question library
@@ -36,11 +62,11 @@
 const struct Module ModuleQuestion = {
   MODULE_ID_QUESTION,
   "question",
-  NULL, // init
+  question_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  question_cleanup,
 };
