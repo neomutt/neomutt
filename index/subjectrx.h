@@ -28,6 +28,7 @@
 
 struct Buffer;
 struct Envelope;
+struct IndexModuleData;
 struct MailboxView;
 struct ParseContext;
 struct ParseError;
@@ -46,8 +47,8 @@ enum NotifySubjectRx
   NT_SUBJECTRX_DELETE_ALL, ///< All Subject Regexes have been deleted
 };
 
-void subjectrx_init(void);
-void subjectrx_cleanup(void);
+void subjectrx_init   (struct NeoMutt *n, struct IndexModuleData *md);
+void subjectrx_cleanup(struct IndexModuleData *md);
 
 enum CommandResult parse_subjectrx_list  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);

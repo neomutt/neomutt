@@ -1089,7 +1089,6 @@ int main(int argc, char *argv[], char *envp[])
   if (!show_help(&cli->help))
     goto main_ok;
 
-  subjectrx_init();
   attach_init();
   alternates_init();
   init_keys();
@@ -1779,7 +1778,6 @@ main_exit:
   mutt_hist_cleanup();
 
   lua_cleanup();
-  subjectrx_cleanup();
   attach_cleanup();
   alternates_cleanup();
   km_cleanup();

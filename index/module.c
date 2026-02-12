@@ -33,6 +33,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "module_data.h"
+#include "subjectrx.h"
 
 extern struct ConfigDef IndexVars[];
 
@@ -46,6 +47,7 @@ static bool index_init(struct NeoMutt *n)
   struct IndexModuleData *md = MUTT_MEM_CALLOC(1, struct IndexModuleData);
   neomutt_set_module_data(n, MODULE_ID_INDEX, md);
 
+  subjectrx_init(n, md);
   return true;
 }
 
@@ -72,6 +74,8 @@ static bool index_cleanup(struct NeoMutt *n)
 {
   struct IndexModuleData *md = neomutt_get_module_data(n, MODULE_ID_INDEX);
   ASSERT(md);
+
+  subjectrx_cleanup(md);
 
   FREE(&md);
   return true;

@@ -34,30 +34,27 @@
 #include "gui/lib.h"
 #include "subjectrx.h"
 #include "parse/lib.h"
-
-/// List of subject-regex rules for modifying the Subject:
-static struct ReplaceList SubjectRegexList = STAILQ_HEAD_INITIALIZER(SubjectRegexList);
-static struct Notify *SubjectRxNotify = NULL; ///< Notifications: #NotifySubjectRx
-
-/**
- * subjectrx_cleanup - Free the Subject Regex List
- */
-void subjectrx_cleanup(void)
-{
-  notify_free(&SubjectRxNotify);
-  mutt_replacelist_free(&SubjectRegexList);
-}
+#include "module_data.h"
 
 /**
  * subjectrx_init - Create new Subject Regex List
  */
-void subjectrx_init(void)
+void subjectrx_init(struct NeoMutt *n, struct IndexModuleData *md)
 {
-  if (SubjectRxNotify)
-    return;
+  STAILQ_INIT(&md->subject_rx_list);
 
-  SubjectRxNotify = notify_new();
-  notify_set_parent(SubjectRxNotify, NeoMutt->notify);
+  md->subject_rx_notify = notify_new();
+  notify_set_parent(md->subject_rx_notify, n->notify);
+}
+
+/**
+ * subjectrx_cleanup - Free the Subject Regex List
+ */
+void subjectrx_cleanup(struct IndexModuleData *md)
+{
+  notify_free(&md->subject_rx_notify);
+
+  mutt_replacelist_free(&md->subject_rx_list);
 }
 
 /**
@@ -156,10 +153,13 @@ bool subjectrx_apply_mods(struct Envelope *env)
   if (env->disp_subj)
     return true;
 
-  if (STAILQ_EMPTY(&SubjectRegexList))
+  struct IndexModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(md);
+
+  if (STAILQ_EMPTY(&md->subject_rx_list))
     return false;
 
-  env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, env->subject);
+  env->disp_subj = mutt_replacelist_apply(&md->subject_rx_list, env->subject);
   return true;
 }
 
@@ -201,13 +201,16 @@ enum CommandResult parse_subjectrx_list(const struct Command *cmd, struct Buffer
     return MUTT_CMD_WARNING;
   }
 
+  struct IndexModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(md);
+
   enum CommandResult rc;
 
-  rc = parse_replace_list(cmd, line, &SubjectRegexList, err);
+  rc = parse_replace_list(cmd, line, &md->subject_rx_list, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
     mutt_debug(LL_NOTIFY, "NT_SUBJECTRX_ADD: %s\n", cmd->name);
-    notify_send(SubjectRxNotify, NT_SUBJECTRX, NT_SUBJECTRX_ADD, NULL);
+    notify_send(md->subject_rx_notify, NT_SUBJECTRX, NT_SUBJECTRX_ADD, NULL);
   }
   return rc;
 }
@@ -230,13 +233,16 @@ enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buff
     return MUTT_CMD_WARNING;
   }
 
+  struct IndexModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(md);
+
   enum CommandResult rc;
 
-  rc = parse_unreplace_list(cmd, line, &SubjectRegexList, err);
+  rc = parse_unreplace_list(cmd, line, &md->subject_rx_list, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
     mutt_debug(LL_NOTIFY, "NT_SUBJECTRX_DELETE: %s\n", cmd->name);
-    notify_send(SubjectRxNotify, NT_SUBJECTRX, NT_SUBJECTRX_DELETE, NULL);
+    notify_send(md->subject_rx_notify, NT_SUBJECTRX, NT_SUBJECTRX_DELETE, NULL);
   }
   return rc;
 }

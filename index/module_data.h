@@ -23,12 +23,15 @@
 #ifndef MUTT_INDEX_MODULE_DATA_H
 #define MUTT_INDEX_MODULE_DATA_H
 
+#include "mutt/lib.h"
+
 /**
  * struct IndexModuleData - Index private Module data
  */
 struct IndexModuleData
 {
-  int dummy;
+  struct ReplaceList subject_rx_list;      /// List of subject-regex rules for modifying the Subject:
+  struct Notify     *subject_rx_notify;    ///< Notifications: #NotifySubjectRx
 };
 
 #endif /* MUTT_INDEX_MODULE_DATA_H */
