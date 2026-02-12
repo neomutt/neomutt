@@ -29,11 +29,24 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef MaildirVars[];
 extern struct ConfigDef MaildirVarsHcache[];
+
+/**
+ * maildir_init - Initialise a Module - Implements Module::init()
+ */
+static bool maildir_init(struct NeoMutt *n)
+{
+  // struct MaildirModuleData *md = MUTT_MEM_CALLOC(1, struct MaildirModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_MAILDIR, md);
+
+  return true;
+}
 
 /**
  * maildir_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -50,16 +63,28 @@ static bool maildir_config_define_variables(struct NeoMutt *n, struct ConfigSet 
 }
 
 /**
+ * maildir_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool maildir_cleanup(struct NeoMutt *n)
+{
+  // struct MaildirModuleData *md = neomutt_get_module_data(n, MODULE_ID_MAILDIR);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleMaildir - Module for the Maildir library
  */
 const struct Module ModuleMaildir = {
   MODULE_ID_MAILDIR,
   "maildir",
-  NULL, // init
+  maildir_init,
   NULL, // config_define_types
   maildir_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  maildir_cleanup,
 };
