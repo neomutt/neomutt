@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef ComposeVars[];
+
+/**
+ * compose_init - Initialise a Module - Implements Module::init()
+ */
+static bool compose_init(struct NeoMutt *n)
+{
+  // struct ComposeModuleData *md = MUTT_MEM_CALLOC(1, struct ComposeModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COMPOSE, md);
+
+  return true;
+}
 
 /**
  * compose_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool compose_config_define_variables(struct NeoMutt *n, struct ConfigSet 
 }
 
 /**
+ * compose_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool compose_cleanup(struct NeoMutt *n)
+{
+  // struct ComposeModuleData *md = neomutt_get_module_data(n, MODULE_ID_COMPOSE);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleCompose - Module for the Compose library
  */
 const struct Module ModuleCompose = {
   MODULE_ID_COMPOSE,
   "compose",
-  NULL, // init
+  compose_init,
   NULL, // config_define_types
   compose_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  compose_cleanup,
 };
