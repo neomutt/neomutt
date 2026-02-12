@@ -29,13 +29,26 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern const struct ConfigSetType CstAddress;
 #if defined(HAVE_LIBIDN)
 extern struct ConfigDef AddressVarsIdn[];
 #endif
+
+/**
+ * address_init - Initialise a Module - Implements Module::init()
+ */
+static bool address_init(struct NeoMutt *n)
+{
+  // struct AddressModuleData *md = MUTT_MEM_CALLOC(1, struct AddressModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_ADDRESS, md);
+
+  return true;
+}
 
 /**
  * address_config_define_types - Set up Config Types - Implements Module::config_define_types()
@@ -60,16 +73,28 @@ static bool address_config_define_variables(struct NeoMutt *n, struct ConfigSet 
 }
 
 /**
+ * address_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool address_cleanup(struct NeoMutt *n)
+{
+  // struct AddressModuleData *md = neomutt_get_module_data(n, MODULE_ID_ADDRESS);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleAddress - Module for the Address library
  */
 const struct Module ModuleAddress = {
   MODULE_ID_ADDRESS,
   "address",
-  NULL, // init
+  address_init,
   address_config_define_types,
   address_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  address_cleanup,
 };
