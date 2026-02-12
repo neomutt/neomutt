@@ -36,8 +36,6 @@ extern char *LastFolder;     ///< Previously selected mailbox
 extern const char *GitVer;
 
 /* Lists of strings */
-extern struct ListHead MimeLookupList;       ///< List of mime types that that shouldn't use the mailcap entry
-extern struct ListHead TempAttachmentsList;  ///< List of temporary files for displaying attachments
 extern struct ListHead UserHeader;           ///< List of custom headers to add to outgoing emails
 
 /* pseudo options */

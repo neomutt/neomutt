@@ -41,8 +41,6 @@ char *LastFolder = NULL;    ///< Previously selected mailbox
 
 /* Lists of strings */
 // clang-format off
-struct ListHead MimeLookupList       = STAILQ_HEAD_INITIALIZER(MimeLookupList);       ///< List of mime types that that shouldn't use the mailcap entry
-struct ListHead TempAttachmentsList  = STAILQ_HEAD_INITIALIZER(TempAttachmentsList);  ///< List of temporary files for displaying attachments
 struct ListHead UserHeader           = STAILQ_HEAD_INITIALIZER(UserHeader);           ///< List of custom headers to add to outgoing emails
 // clang-format on
 

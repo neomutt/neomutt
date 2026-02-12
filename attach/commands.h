@@ -3,7 +3,7 @@
  * Handle the attachments command
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,9 +24,13 @@
 #define MUTT_ATTACH_COMMANDS_H
 
 #include <stdio.h>
+#include "core/lib.h"
 
+struct Buffer;
 struct Email;
 struct MailboxView;
+struct ParseContext;
+struct ParseError;
 
 /**
  * enum NotifyAttach - Attachments notification types
@@ -42,11 +46,14 @@ enum NotifyAttach
   NT_ATTACH_DELETE_ALL, ///< All Attachment regexes have been deleted
 };
 
-void attach_init(void);
-void attach_cleanup(void);
-
 void mutt_attachments_reset (struct MailboxView *mv);
 int  mutt_count_body_parts  (struct Email *e, FILE *fp);
 void mutt_parse_mime_message(struct Email *e, FILE *fp);
+
+struct AttachMatch *attachmatch_new (void);
+void                attachmatch_free(struct AttachMatch **ptr);
+
+enum CommandResult parse_mime_lookup  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unmime_lookup(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
 #endif /* MUTT_ATTACH_COMMANDS_H */

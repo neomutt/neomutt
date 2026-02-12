@@ -29,22 +29,18 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "attach/lib.h"
 #include "color/lib.h"
 #include "parse/lib.h"
 #include "alternates.h"
-#include "globals.h"
 #include "ifdef.h"
 #include "mailboxes.h"
 #include "my_header.h"
 #include "parse.h"
 #include "setenv.h"
 #include "source.h"
-#include "stailq.h"
 #include "tags.h"
 
 /**
@@ -60,10 +56,6 @@ const struct Command CommandsCommands[] = {
         N_("Define a list of alternate email addresses for the user"),
         N_("alternates [ -group <name> ... ] <regex> [ <regex> ... ]"),
         "configuration.html#alternates" },
-  { "attachments", CMD_ATTACHMENTS, parse_attachments, CMD_NO_DATA,
-        N_("Set attachment counting rules"),
-        N_("attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"),
-        "mimesupport.html#attachments" },
   { "cd", CMD_CD, parse_cd, CMD_NO_DATA,
         N_("Change NeoMutt's current working directory"),
         N_("cd [ <directory> ]"),
@@ -92,10 +84,6 @@ const struct Command CommandsCommands[] = {
         N_("Define a list of mailboxes to watch"),
         N_("mailboxes [ -label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"),
         "configuration.html#mailboxes" },
-  { "mime-lookup", CMD_MIME_LOOKUP, parse_stailq, IP &MimeLookupList,
-        N_("Map specified MIME types/subtypes to display handlers"),
-        N_("mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"),
-        "mimesupport.html#mime-lookup" },
   { "mono", CMD_MONO, parse_mono, CMD_NO_DATA,
         N_("Deprecated: Use `color` instead"),
         N_("mono <object> <attribute> [ <pattern> | <regex> ]"),
@@ -148,10 +136,6 @@ const struct Command CommandsCommands[] = {
         N_("Remove addresses from `alternates` list"),
         N_("unalternates { * | <regex> ... }"),
         "configuration.html#alternates" },
-  { "unattachments", CMD_UNATTACHMENTS, parse_unattachments, CMD_NO_DATA,
-        N_("Remove attachment counting rules"),
-        N_("unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"),
-        "mimesupport.html#attachments" },
   { "uncolor", CMD_UNCOLOR, parse_uncolor, CMD_NO_DATA,
         N_("Remove a `color` definition"),
         N_("uncolor <object> { * | <pattern> ... }"),
@@ -160,10 +144,6 @@ const struct Command CommandsCommands[] = {
         N_("Remove mailboxes from the watch list"),
         N_("unmailboxes { * | <mailbox> ... }"),
         "configuration.html#mailboxes" },
-  { "unmime-lookup", CMD_UNMIME_LOOKUP, parse_unstailq, IP &MimeLookupList,
-        N_("Remove custom MIME-type handlers"),
-        N_("unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
-        "mimesupport.html#mime-lookup" },
   { "unmono", CMD_UNMONO, parse_unmono, CMD_NO_DATA,
         N_("Deprecated: Use `uncolor` instead"),
         N_("unmono <object> { * | <pattern> ... }"),
@@ -190,9 +170,7 @@ const struct Command CommandsCommands[] = {
         "advancedusage.html#version" },
 
   // Deprecated
-  { "mime_lookup",         CMD_NONE, NULL, CMD_NO_DATA, "mime-lookup",         NULL, NULL, CF_SYNONYM },
   { "my_hdr",              CMD_NONE, NULL, CMD_NO_DATA, "my-header",           NULL, NULL, CF_SYNONYM },
-  { "unmime_lookup",       CMD_NONE, NULL, CMD_NO_DATA, "unmime-lookup",       NULL, NULL, CF_SYNONYM },
   { "unmy_hdr",            CMD_NONE, NULL, CMD_NO_DATA, "unmy-header",         NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },

@@ -1075,7 +1075,6 @@ int main(int argc, char *argv[], char *envp[])
   if (!show_help(&cli->help))
     goto main_ok;
 
-  attach_init();
   alternates_init();
   init_keys();
 
@@ -1703,7 +1702,6 @@ main_ok:
   rc = 0;
 main_curses:
   mutt_endwin();
-  mutt_temp_attachments_cleanup();
   /* Repeat the last message to the user */
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
@@ -1749,7 +1747,6 @@ main_exit:
   mutt_hist_cleanup();
 
   lua_cleanup();
-  attach_cleanup();
   alternates_cleanup();
   km_cleanup();
   mutt_prex_cleanup();

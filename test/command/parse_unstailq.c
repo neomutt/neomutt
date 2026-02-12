@@ -25,18 +25,13 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "attach/lib.h"
 #include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"
-#include "globals.h"
 #include "test_common.h"
-
-// clang-format off
-static const struct Command UnMimeLookup       = { "unmime-lookup",       CMD_UNMIME_LOOKUP,       NULL, IP &MimeLookupList       };
-// clang-format on
 
 static const struct CommandTest UnAlternativeOrderTests[] = {
   // clang-format off
@@ -205,13 +200,16 @@ static void test_parse_unmime_lookup(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_UNMIME_LOOKUP);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; UnMimeLookupTests[i].line; i++)
   {
     TEST_CASE(UnMimeLookupTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, UnMimeLookupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnMimeLookup, line, pc, pe);
+    rc = parse_unmime_lookup(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnMimeLookupTests[i].rc);
   }
 

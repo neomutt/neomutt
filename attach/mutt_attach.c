@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2017-2021 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
  * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
@@ -55,7 +55,7 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "cid.h"
-#include "globals.h"
+#include "module_data.h"
 #include "muttlib.h"
 #include "mx.h"
 
@@ -338,8 +338,11 @@ bailout:
  */
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
 {
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
+
   struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &MimeLookupList, entries)
+  STAILQ_FOREACH(np, &md->mime_lookup_list, entries)
   {
     const int i = (int) mutt_str_len(np->data) - 1;
     if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
@@ -705,7 +708,7 @@ return_error:
   {
     if ((fp && !buf_is_empty(tempfile)) || has_tempfile)
     {
-      /* add temporary file to TempAttachmentsList to be deleted on timeout hook */
+      /* add temporary file to list of files to be deleted on timeout hook */
       mutt_add_temp_attachment(buf_string(tempfile));
     }
   }
@@ -1292,7 +1295,10 @@ out:
  */
 void mutt_add_temp_attachment(const char *filename)
 {
-  mutt_list_insert_tail(&TempAttachmentsList, mutt_str_dup(filename));
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
+
+  mutt_list_insert_tail(&md->temp_attachments_list, mutt_str_dup(filename));
 }
 
 /**
@@ -1300,13 +1306,16 @@ void mutt_add_temp_attachment(const char *filename)
  */
 void mutt_temp_attachments_cleanup(void)
 {
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
+
   struct ListNode *np = NULL;
 
-  STAILQ_FOREACH(np, &TempAttachmentsList, entries)
+  STAILQ_FOREACH(np, &md->temp_attachments_list, entries)
   {
     (void) mutt_file_chmod_add(np->data, S_IWUSR);
     mutt_file_unlink(np->data);
   }
 
-  mutt_list_free(&TempAttachmentsList);
+  mutt_list_free(&md->temp_attachments_list);
 }

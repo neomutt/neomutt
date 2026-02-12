@@ -25,21 +25,16 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "attach/lib.h"
 #include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"
-#include "globals.h"
 #include "test_common.h"
 
-// clang-format off
-static const struct Command MimeLookup       = { "mime-lookup",       CMD_MIME_LOOKUP,       NULL, IP &MimeLookupList       };
-// clang-format off
-
 static const struct CommandTest AlternativeOrderTests[] = {
-// clang-format off
+  // clang-format off
   // alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "text/enriched text/plain text application/postscript image/*" },
@@ -201,13 +196,16 @@ static void mime_lookup(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_MAILTO_ALLOW);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; MimeLookupTests[i].line; i++)
   {
     TEST_CASE(MimeLookupTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, MimeLookupTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&MimeLookup, line, pc, pe);
+    rc = parse_mime_lookup(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, MimeLookupTests[i].rc);
   }
 
