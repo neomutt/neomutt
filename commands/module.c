@@ -29,9 +29,22 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern const struct Command CommandsCommands[];
+
+/**
+ * commands_init - Initialise a Module - Implements Module::init()
+ */
+static bool commands_init(struct NeoMutt *n)
+{
+  // struct CommandsModuleData *md = MUTT_MEM_CALLOC(1, struct CommandsModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COMMANDS, md);
+
+  return true;
+}
 
 /**
  * commands_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
@@ -42,16 +55,28 @@ static bool commands_commands_register(struct NeoMutt *n, struct CommandArray *c
 }
 
 /**
+ * commands_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool commands_cleanup(struct NeoMutt *n)
+{
+  // struct CommandsModuleData *md = neomutt_get_module_data(n, MODULE_ID_COMMANDS);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleCommands - Module for the Commands library
  */
 const struct Module ModuleCommands = {
   MODULE_ID_COMMANDS,
   "commands",
-  NULL, // init
+  commands_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   commands_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  commands_cleanup,
 };
