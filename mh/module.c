@@ -46,6 +46,7 @@ static bool mh_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
  * ModuleMh - Module for the Mh library
  */
 const struct Module ModuleMh = {
+  MODULE_ID_MH,
   "mh",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleMh = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

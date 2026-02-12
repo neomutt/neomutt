@@ -34,6 +34,7 @@
  * ModuleCompress - Module for the Compress library
  */
 const struct Module ModuleCompress = {
+  MODULE_ID_COMPRESS,
   "compress",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleCompress = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

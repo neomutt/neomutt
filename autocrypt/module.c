@@ -52,6 +52,7 @@ static bool autocrypt_config_define_variables(struct NeoMutt *n, struct ConfigSe
  * ModuleAutocrypt - Module for the Autocrypt library
  */
 const struct Module ModuleAutocrypt = {
+  MODULE_ID_AUTOCRYPT,
   "autocrypt",
   NULL, // init
   NULL, // config_define_types
@@ -60,5 +61,4 @@ const struct Module ModuleAutocrypt = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

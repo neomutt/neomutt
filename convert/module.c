@@ -34,6 +34,7 @@
  * ModuleConvert - Module for the Convert library
  */
 const struct Module ModuleConvert = {
+  MODULE_ID_CONVERT,
   "convert",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleConvert = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

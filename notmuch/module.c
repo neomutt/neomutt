@@ -62,6 +62,7 @@ static bool notmuch_commands_register(struct NeoMutt *n, struct CommandArray *ca
  * ModuleNotmuch - Module for the Notmuch library
  */
 const struct Module ModuleNotmuch = {
+  MODULE_ID_NOTMUCH,
   "notmuch",
   NULL, // init
   NULL, // config_define_types
@@ -70,5 +71,4 @@ const struct Module ModuleNotmuch = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

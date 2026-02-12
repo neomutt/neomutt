@@ -46,6 +46,7 @@ static bool pager_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
  * ModulePager - Module for the Pager library
  */
 const struct Module ModulePager = {
+  MODULE_ID_PAGER,
   "pager",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModulePager = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

@@ -46,6 +46,7 @@ static bool send_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  * ModuleSend - Module for the Send library
  */
 const struct Module ModuleSend = {
+  MODULE_ID_SEND,
   "send",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleSend = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

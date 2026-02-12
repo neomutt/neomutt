@@ -46,6 +46,7 @@ static bool gui_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
  * ModuleGui - Module for the Gui library
  */
 const struct Module ModuleGui = {
+  MODULE_ID_GUI,
   "gui",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleGui = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

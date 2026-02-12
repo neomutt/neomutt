@@ -34,6 +34,7 @@
  * ModuleStore - Module for the Store library
  */
 const struct Module ModuleStore = {
+  MODULE_ID_STORE,
   "store",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleStore = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

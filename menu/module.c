@@ -46,6 +46,7 @@ static bool menu_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  * ModuleMenu - Module for the Menu library
  */
 const struct Module ModuleMenu = {
+  MODULE_ID_MENU,
   "menu",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleMenu = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

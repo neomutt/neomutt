@@ -100,6 +100,7 @@ enum ModuleId
  */
 struct Module
 {
+  enum ModuleId mid;                  ///< Module Id
   const char *name;                   ///< Name of the library module
 
   /**
@@ -174,8 +175,6 @@ struct Module
    * @retval true Success
    */
   void (*cleanup)(struct NeoMutt *n);
-
-  void *mod_data;                     ///< Module specific data
 };
 
 #endif /* MUTT_CORE_MODULE_H */

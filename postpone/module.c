@@ -34,6 +34,7 @@
  * ModulePostpone - Module for the Postpone library
  */
 const struct Module ModulePostpone = {
+  MODULE_ID_POSTPONE,
   "postpone",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModulePostpone = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

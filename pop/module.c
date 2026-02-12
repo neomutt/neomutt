@@ -46,6 +46,7 @@ static bool pop_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
  * ModulePop - Module for the Pop library
  */
 const struct Module ModulePop = {
+  MODULE_ID_POP,
   "pop",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModulePop = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

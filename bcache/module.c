@@ -34,6 +34,7 @@
  * ModuleBcache - Module for the Bcache library
  */
 const struct Module ModuleBcache = {
+  MODULE_ID_BCACHE,
   "bcache",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleBcache = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

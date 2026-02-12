@@ -34,7 +34,7 @@
  * ModuleMutt - Module for the Mutt library
  */
 const struct Module ModuleMutt = {
-  "mutt",
+  MODULE_ID_MUTT, "mutt",
   NULL, // init
   NULL, // config_define_types
   NULL, // config_define_variables
@@ -42,5 +42,4 @@ const struct Module ModuleMutt = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

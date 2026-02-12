@@ -45,6 +45,7 @@ static bool lua_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  * ModuleLua - Module for the Lua library
  */
 const struct Module ModuleLua = {
+  MODULE_ID_LUA,
   "lua",
   NULL, // init
   NULL, // config_define_types
@@ -53,5 +54,4 @@ const struct Module ModuleLua = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

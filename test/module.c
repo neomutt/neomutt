@@ -87,6 +87,7 @@ static bool test_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  * ModuleTest - Module for the Test library
  */
 const struct Module ModuleTest = {
+  MODULE_ID_MAIN,
   "test",
   NULL, // init
   test_config_define_types,
@@ -95,5 +96,4 @@ const struct Module ModuleTest = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

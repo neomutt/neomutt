@@ -46,6 +46,7 @@ static bool nntp_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  * ModuleNntp - Module for the Nntp library
  */
 const struct Module ModuleNntp = {
+  MODULE_ID_NNTP,
   "nntp",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleNntp = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

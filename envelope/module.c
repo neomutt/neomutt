@@ -34,6 +34,7 @@
  * ModuleEnvelope - Module for the Envelope library
  */
 const struct Module ModuleEnvelope = {
+  MODULE_ID_ENVELOPE,
   "envelope",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleEnvelope = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

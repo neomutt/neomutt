@@ -34,6 +34,7 @@
  * ModuleComplete - Module for the Complete library
  */
 const struct Module ModuleComplete = {
+  MODULE_ID_COMPLETE,
   "complete",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleComplete = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

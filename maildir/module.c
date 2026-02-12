@@ -53,6 +53,7 @@ static bool maildir_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  * ModuleMaildir - Module for the Maildir library
  */
 const struct Module ModuleMaildir = {
+  MODULE_ID_MAILDIR,
   "maildir",
   NULL, // init
   NULL, // config_define_types
@@ -61,5 +62,4 @@ const struct Module ModuleMaildir = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

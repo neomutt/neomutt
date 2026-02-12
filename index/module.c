@@ -46,6 +46,7 @@ static bool index_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
  * ModuleIndex - Module for the Index library
  */
 const struct Module ModuleIndex = {
+  MODULE_ID_INDEX,
   "index",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleIndex = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

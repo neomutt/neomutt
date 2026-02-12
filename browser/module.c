@@ -46,6 +46,7 @@ static bool browser_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  * ModuleBrowser - Module for the Browser library
  */
 const struct Module ModuleBrowser = {
+  MODULE_ID_BROWSER,
   "browser",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleBrowser = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };
