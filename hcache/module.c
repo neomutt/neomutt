@@ -21,7 +21,7 @@
  */
 
 /**
- * @page hc_module Definition of the Hcache Module
+ * @page hcache_module Definition of the Hcache Module
  *
  * Definition of the Hcache Module
  */
@@ -67,6 +67,7 @@ static bool hcache_config_define_variables(struct NeoMutt *n, struct ConfigSet *
  * ModuleHcache - Module for the Hcache library
  */
 const struct Module ModuleHcache = {
+  MODULE_ID_HCACHE,
   "hcache",
   NULL, // init
   NULL, // config_define_types
@@ -75,5 +76,4 @@ const struct Module ModuleHcache = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

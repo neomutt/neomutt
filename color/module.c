@@ -34,6 +34,7 @@
  * ModuleColor - Module for the Color library
  */
 const struct Module ModuleColor = {
+  MODULE_ID_COLOR,
   "color",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleColor = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

@@ -46,6 +46,7 @@ static bool email_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
  * ModuleEmail - Module for the Email library
  */
 const struct Module ModuleEmail = {
+  MODULE_ID_EMAIL,
   "email",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleEmail = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

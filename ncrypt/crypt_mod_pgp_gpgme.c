@@ -21,7 +21,7 @@
  */
 
 /**
- * @page crypt_crypt_mod_pgp_gpgme Wrappers for calls to GPGME PGP
+ * @page ncrypt_crypt_mod_pgp_gpgme Wrappers for calls to GPGME PGP
  *
  * Wrappers for calls to GPGME PGP
  */

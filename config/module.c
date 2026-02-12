@@ -72,6 +72,7 @@ static bool config_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
  * ModuleConfig - Module for the Config library
  */
 const struct Module ModuleConfig = {
+  MODULE_ID_CONFIG,
   "config",
   NULL, // init
   config_config_define_types,
@@ -80,5 +81,4 @@ const struct Module ModuleConfig = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

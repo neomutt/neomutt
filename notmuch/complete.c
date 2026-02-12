@@ -21,7 +21,7 @@
  */
 
 /**
- * @page nm_complete Notmuch Auto-Completion
+ * @page notmuch_complete Notmuch Auto-Completion
  *
  * Notmuch Auto-Completion
  */

@@ -42,7 +42,7 @@
  * @sa Address Body Buffer Email Envelope ListNode Parameter
  *
  * To save the data, the Header Cache uses a set of 'dump' functions
- * (\ref hc_serial) to 'serialise' the structures.  The cache also stores a CRC
+ * (\ref hcache_serial) to 'serialise' the structures.  The cache also stores a CRC
  * checksum of the C structs that were used.  When retrieving the data, the
  * Header Cache uses a set of 'restore' functions to turn the data back into
  * structs.
@@ -57,12 +57,12 @@
  *
  * ## Source
  *
- * | File                | Description        |
- * | :------------------ | :----------------- |
- * | hcache/config.c     | @subpage hc_config |
- * | hcache/hcache.c     | @subpage hc_hcache |
- * | hcache/module.c     | @subpage hc_module |
- * | hcache/serialize.c  | @subpage hc_serial |
+ * | File                | Description            |
+ * | :------------------ | :--------------------- |
+ * | hcache/config.c     | @subpage hcache_config |
+ * | hcache/hcache.c     | @subpage hcache_hcache |
+ * | hcache/module.c     | @subpage hcache_module |
+ * | hcache/serialize.c  | @subpage hcache_serial |
  */
 
 #ifndef MUTT_HCACHE_LIB_H

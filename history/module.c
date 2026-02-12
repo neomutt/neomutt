@@ -46,6 +46,7 @@ static bool history_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  * ModuleHistory - Module for the History library
  */
 const struct Module ModuleHistory = {
+  MODULE_ID_HISTORY,
   "history",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleHistory = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

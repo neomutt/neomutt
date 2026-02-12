@@ -46,6 +46,7 @@ static bool progress_config_define_variables(struct NeoMutt *n, struct ConfigSet
  * ModuleProgress - Module for the Progress library
  */
 const struct Module ModuleProgress = {
+  MODULE_ID_PROGRESS,
   "progress",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleProgress = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

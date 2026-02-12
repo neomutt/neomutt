@@ -55,6 +55,7 @@ static bool hooks_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  * ModuleHooks - Module for the Hooks library
  */
 const struct Module ModuleHooks = {
+  MODULE_ID_HOOKS,
   "hooks",
   NULL, // init
   NULL, // config_define_types
@@ -63,5 +64,4 @@ const struct Module ModuleHooks = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

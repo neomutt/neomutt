@@ -23,7 +23,7 @@
  */
 
 /**
- * @page nm_query Notmuch query functions
+ * @page notmuch_query Notmuch query functions
  *
  * Notmuch query functions
  *

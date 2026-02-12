@@ -56,6 +56,7 @@ static bool sidebar_commands_register(struct NeoMutt *n, struct CommandArray *ca
  * ModuleSidebar - Module for the Sidebar library
  */
 const struct Module ModuleSidebar = {
+  MODULE_ID_SIDEBAR,
   "sidebar",
   NULL, // init
   NULL, // config_define_types
@@ -64,5 +65,4 @@ const struct Module ModuleSidebar = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

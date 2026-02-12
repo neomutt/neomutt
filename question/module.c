@@ -34,6 +34,7 @@
  * ModuleQuestion - Module for the Question library
  */
 const struct Module ModuleQuestion = {
+  MODULE_ID_QUESTION,
   "question",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleQuestion = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

@@ -22,7 +22,7 @@
  */
 
 /**
- * @page addr_maillist Handle mailing lists
+ * @page address_maillist Handle mailing lists
  *
  * Handle mailing lists
  */

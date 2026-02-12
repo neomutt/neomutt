@@ -46,6 +46,7 @@ static bool mbox_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  * ModuleMbox - Module for the Mbox library
  */
 const struct Module ModuleMbox = {
+  MODULE_ID_MBOX,
   "mbox",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleMbox = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

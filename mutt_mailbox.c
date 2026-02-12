@@ -23,7 +23,7 @@
  */
 
 /**
- * @page neo_mutt_mailbox Mailbox helper functions
+ * @page main_mutt_mailbox Mailbox helper functions
  *
  * Mailbox helper functions
  */

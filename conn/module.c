@@ -75,6 +75,7 @@ static bool conn_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  * ModuleConn - Module for the Conn library
  */
 const struct Module ModuleConn = {
+  MODULE_ID_CONN,
   "conn",
   NULL, // init
   NULL, // config_define_types
@@ -83,5 +84,4 @@ const struct Module ModuleConn = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

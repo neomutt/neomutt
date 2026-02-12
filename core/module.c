@@ -28,13 +28,13 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "neomutt.h"
+#include "module_api.h"
 
 /**
  * ModuleCore - Module for the Core library
  */
 const struct Module ModuleCore = {
-  "core",
+  MODULE_ID_CORE, "core",
   NULL, // init
   NULL, // config_define_types
   NULL, // config_define_variables
@@ -42,5 +42,4 @@ const struct Module ModuleCore = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

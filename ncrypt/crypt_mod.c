@@ -22,7 +22,7 @@
  */
 
 /**
- * @page crypt_crypt_mod Register crypto modules
+ * @page ncrypt_crypt_mod Register crypto modules
  *
  * Register crypto modules
  */

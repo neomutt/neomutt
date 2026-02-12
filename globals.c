@@ -21,7 +21,7 @@
  */
 
 /**
- * @page neo_globals Global variables
+ * @page main_globals Global variables
  *
  * Global variables
  */

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page nm_edata Notmuch-specific Email data
+ * @page notmuch_edata Notmuch-specific Email data
  *
  * Notmuch-specific Email data
  */

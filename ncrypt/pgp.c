@@ -23,7 +23,7 @@
  */
 
 /**
- * @page crypt_pgp PGP sign, encrypt, check routines
+ * @page ncrypt_pgp PGP sign, encrypt, check routines
  *
  * Code to sign, encrypt, verify and decrypt PGP messages.
  *

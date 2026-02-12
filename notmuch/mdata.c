@@ -21,7 +21,7 @@
  */
 
 /**
- * @page nm_mdata Notmuch-specific Mailbox data
+ * @page notmuch_mdata Notmuch-specific Mailbox data
  *
  * Notmuch-specific Mailbox data
  */

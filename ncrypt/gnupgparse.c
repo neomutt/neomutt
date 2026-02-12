@@ -23,7 +23,7 @@
  */
 
 /**
- * @page crypt_gnupg Parse the output of CLI PGP program
+ * @page ncrypt_gnupg Parse the output of CLI PGP program
  *
  * Parse the output of CLI PGP program
  *

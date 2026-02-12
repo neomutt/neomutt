@@ -40,6 +40,7 @@
 #include "neomutt.h"
 #include "account.h"
 #include "mailbox.h"
+#include "module_api.h"
 #include "muttlib.h"
 
 struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
@@ -192,9 +193,11 @@ static bool init_config(struct NeoMutt *n)
   bool rc = true;
 
   // Set up the Config Types
-  for (int i = 0; n->modules[i]; i++)
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
   {
-    const struct Module *mod = n->modules[i];
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
 
     if (mod->config_define_types)
     {
@@ -207,9 +210,11 @@ static bool init_config(struct NeoMutt *n)
     return false;
 
   // Define the Config Variables
-  for (int i = 0; n->modules[i]; i++)
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
   {
-    const struct Module *mod = n->modules[i];
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
 
     if (mod->config_define_variables)
     {
@@ -244,17 +249,16 @@ static bool init_commands(struct NeoMutt *n)
   if (!n)
     return false;
 
-  if (!n->modules)
-    return true;
-
   struct CommandArray *ca = &n->commands;
 
   bool rc = true;
 
   // Set up the Config Types
-  for (int i = 0; n->modules[i]; i++)
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
   {
-    const struct Module *mod = n->modules[i];
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
 
     if (mod->commands_register)
     {
@@ -276,15 +280,14 @@ static bool init_modules(struct NeoMutt *n)
   if (!n)
     return false;
 
-  if (!n->modules)
-    return true;
-
   bool rc = true;
 
   // Initialise the Modules
-  for (int i = 0; n->modules[i]; i++)
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
   {
-    const struct Module *mod = n->modules[i];
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
 
     if (mod->init)
     {
@@ -314,10 +317,15 @@ struct NeoMutt *neomutt_new(void)
  */
 bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
 {
-  if (!n)
+  if (!n || !modules)
     return false;
 
-  n->modules = modules;
+  for (int i = 0; modules[i]; i++)
+  {
+    const struct Module *mod = modules[i];
+
+    n->modules[mod->mid] = mod;
+  }
 
   if (!init_env(n, envp))
     return false;
@@ -356,11 +364,36 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
 /**
  * cleanup_modules - Clean up each of the Modules
  * @param n NeoMutt
+ * @retval true Success
  */
-static void cleanup_modules(struct NeoMutt *n)
+static bool cleanup_modules(struct NeoMutt *n)
 {
-  if (!n || !n->modules)
-    return;
+  if (!n)
+    return false;
+
+  bool rc = true;
+
+  // Cleanup the Modules
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
+  {
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
+
+    if (mod->cleanup)
+    {
+      mutt_debug(LL_DEBUG3, "%s:clenaup()\n", mod->name);
+      rc &= mod->cleanup(n);
+    }
+
+    if (n->module_data[mod->mid])
+    {
+      mutt_debug(LL_DEBUG1, "Module %s didn't clean up its data\n", mod->name);
+      rc = false;
+    }
+  }
+
+  return rc;
 }
 
 /**
@@ -536,4 +569,32 @@ FILE *mutt_file_fopen_masked_full(const char *path, const char *mode,
   mutt_debug(LL_DEBUG3, "umask set to %03o\n", old_umask);
 
   return fp;
+}
+
+/**
+ * neomutt_get_module_data - Get the private data for a Module
+ * @param n  NeoMutt
+ * @param id Module Id
+ * @retval ptr Private Module data
+ */
+void *neomutt_get_module_data(struct NeoMutt *n, enum ModuleId id)
+{
+  if (!n)
+    return NULL;
+
+  return n->module_data[id];
+}
+
+/**
+ * neomutt_set_module_data - Set the private data for a Module
+ * @param n    NeoMutt
+ * @param id   Module Id
+ * @param data Private Module data
+ */
+void neomutt_set_module_data(struct NeoMutt *n, enum ModuleId id, void *data)
+{
+  if (!n)
+    return;
+
+  n->module_data[id] = data;
 }

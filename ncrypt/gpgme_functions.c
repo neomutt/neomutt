@@ -23,7 +23,7 @@
  */
 
 /**
- * @page crypt_gpgme_functions Gpgme functions
+ * @page ncrypt_gpgme_functions Gpgme functions
  *
  * Gpgme functions
  */

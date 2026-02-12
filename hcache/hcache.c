@@ -23,7 +23,7 @@
  */
 
 /**
- * @page hc_hcache Header cache multiplexor
+ * @page hcache_hcache Header cache multiplexor
  *
  * Header cache multiplexor
  *

@@ -28,7 +28,7 @@
  */
 
 /**
- * @page crypt_crypt_gpgme Wrapper for PGP/SMIME calls to GPGME
+ * @page ncrypt_crypt_gpgme Wrapper for PGP/SMIME calls to GPGME
  *
  * Wrapper for PGP/SMIME calls to GPGME
  */

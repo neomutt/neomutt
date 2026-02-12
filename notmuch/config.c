@@ -23,7 +23,7 @@
  */
 
 /**
- * @page nm_config Config used by libnotmuch
+ * @page notmuch_config Config used by libnotmuch
  *
  * Config used by libnotmuch
  */

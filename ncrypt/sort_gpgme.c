@@ -22,7 +22,7 @@
  */
 
 /**
- * @page crypt_sort_gpgme GPGME Key Sorting
+ * @page ncrypt_sort_gpgme GPGME Key Sorting
  *
  * GPGME Key Sorting
  */

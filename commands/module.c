@@ -45,6 +45,7 @@ static bool commands_commands_register(struct NeoMutt *n, struct CommandArray *c
  * ModuleCommands - Module for the Commands library
  */
 const struct Module ModuleCommands = {
+  MODULE_ID_COMMANDS,
   "commands",
   NULL, // init
   NULL, // config_define_types
@@ -53,5 +54,4 @@ const struct Module ModuleCommands = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page nm_adata Notmuch-specific Account data
+ * @page notmuch_adata Notmuch-specific Account data
  *
  * Notmuch-specific Account data
  */

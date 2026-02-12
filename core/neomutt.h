@@ -29,118 +29,33 @@
 #include "account.h"
 #include "command.h"
 #include "mailbox.h"
+#include "module_api.h"
 #ifdef __APPLE__
 #include <xlocale.h>
 #endif
-
-struct ConfigSet;
-struct NeoMutt;
-
-/**
- * @defgroup module_api NeoMutt library API
- *
- * Allow libraries to initialise themselves.
- */
-struct Module
-{
-  const char *name;                   ///< Name of the library module
-
-  /**
-   * @defgroup module_init init()
-   * @ingroup module_api
-   *
-   * init - Initialise a Module
-   * @retval true Success
-   */
-  bool (*init)(struct NeoMutt *n);
-
-  /**
-   * @defgroup module_config_define_types config_define_types()
-   * @ingroup module_api
-   *
-   * config_define_types - Set up Config Types
-   * @param cs Config Set
-   * @retval true Success
-   *
-   * @pre cs is not NULL
-   */
-  bool (*config_define_types)(struct NeoMutt *n, struct ConfigSet *cs);
-
-  /**
-   * @defgroup module_config_define_variables config_define_variables()
-   * @ingroup module_api
-   *
-   * config_define_variables - Define the Config Variables
-   * @param cs Config Set
-   * @retval true Success
-   *
-   * @pre cs is not NULL
-   */
-  bool (*config_define_variables)(struct NeoMutt *n, struct ConfigSet *cs);
-
-  /**
-   * @defgroup module_commands_register commands_register()
-   * @ingroup module_api
-   *
-   * commands_register - Register NeoMutt Commands
-   * @param ca Command Array
-   * @retval true Success
-   *
-   * @pre ca is not NULL
-   */
-  bool (*commands_register)(struct NeoMutt *n, struct CommandArray *ca);
-
-  /**
-   * @defgroup module_gui_init gui_init()
-   * @ingroup module_api
-   *
-   * gui_init - Initialise the GUI
-   * @retval true Success
-   */
-  bool (*gui_init)(struct NeoMutt *n);
-
-  /**
-   * @defgroup module_gui_cleanup gui_cleanup()
-   * @ingroup module_api
-   *
-   * gui_cleanup - Clean up the GUI
-   *
-   * @retval true Success
-   */
-  void (*gui_cleanup)(struct NeoMutt *n);
-
-  /**
-   * @defgroup module_cleanup cleanup()
-   * @ingroup module_api
-   *
-   * cleanup - Clean up a Module
-   * @retval true Success
-   */
-  void (*cleanup)(struct NeoMutt *n);
-
-  void *mod_data;                     ///< Module specific data
-};
 
 /**
  * struct NeoMutt - Container for Accounts, Notifications
  */
 struct NeoMutt
 {
-  const struct Module **modules; ///< Library modules
-  struct Notify *notify;         ///< Notifications handler
-  struct Notify *notify_resize;  ///< Window resize notifications handler
-  struct Notify *notify_timeout; ///< Timeout notifications handler
-  struct ConfigSet *cs;          ///< Config set
-  struct ConfigSubset *sub;      ///< Inherited config items
-  struct AccountArray accounts;  ///< All Accounts
-  locale_t time_c_locale;        ///< Current locale but LC_TIME=C
-  mode_t user_default_umask;     ///< User's default file writing permissions (inferred from umask)
-  struct CommandArray commands;  ///< NeoMutt commands
-  struct HashTable *groups;      ///< Hash Table: "group-name" -> Group
+  const struct Module *modules[MODULE_ID_MAX];  ///< Library modules
+  void *module_data[MODULE_ID_MAX];             ///< Private library module data
 
-  char *home_dir;                ///< User's home directory
-  char *username;                ///< User's login name
-  char **env;                    ///< Private copy of the environment variables
+  struct Notify *notify;             ///< Notifications handler
+  struct Notify *notify_resize;      ///< Window resize notifications handler
+  struct Notify *notify_timeout;     ///< Timeout notifications handler
+  struct ConfigSet *cs;              ///< Config set
+  struct ConfigSubset *sub;          ///< Inherited config items
+  struct AccountArray accounts;      ///< All Accounts
+  locale_t time_c_locale;            ///< Current locale but LC_TIME=C
+  mode_t user_default_umask;         ///< User's default file writing permissions (inferred from umask)
+  struct CommandArray commands;      ///< NeoMutt commands
+  struct HashTable *groups;          ///< Hash Table: "group-name" -> Group
+
+  char *home_dir;                    ///< User's home directory
+  char *username;                    ///< User's login name
+  char **env;                        ///< Private copy of the environment variables
 };
 
 extern struct NeoMutt *NeoMutt;
@@ -162,6 +77,9 @@ void            neomutt_account_remove(struct NeoMutt *n, struct Account *a);
 void            neomutt_accounts_free (struct NeoMutt *n);
 void            neomutt_free          (struct NeoMutt **ptr);
 struct NeoMutt *neomutt_new           (void);
+
+void *neomutt_get_module_data(struct NeoMutt *n, enum ModuleId id);
+void  neomutt_set_module_data(struct NeoMutt *n, enum ModuleId id, void *data);
 
 bool neomutt_init   (struct NeoMutt *n, char **envp, const struct Module **modules);
 void neomutt_cleanup(struct NeoMutt *n);

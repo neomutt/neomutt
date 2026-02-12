@@ -34,6 +34,7 @@
  * ModuleParse - Module for the Parse library
  */
 const struct Module ModuleParse = {
+  MODULE_ID_PARSE,
   "parse",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleParse = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

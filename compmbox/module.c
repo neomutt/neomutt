@@ -45,6 +45,7 @@ static bool compmbox_commands_register(struct NeoMutt *n, struct CommandArray *c
  * ModuleCompmbox - Module for the Compmbox library
  */
 const struct Module ModuleCompmbox = {
+  MODULE_ID_COMPMBOX,
   "compmbox",
   NULL, // init
   NULL, // config_define_types
@@ -53,5 +54,4 @@ const struct Module ModuleCompmbox = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

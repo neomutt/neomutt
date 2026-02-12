@@ -24,7 +24,7 @@
  */
 
 /**
- * @page crypt_config Config used by libncrypt
+ * @page ncrypt_config Config used by libncrypt
  *
  * Config used by libncrypt
  */

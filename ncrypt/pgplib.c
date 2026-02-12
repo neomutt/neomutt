@@ -22,7 +22,7 @@
  */
 
 /**
- * @page crypt_pgplib Misc PGP helper routines
+ * @page ncrypt_pgplib Misc PGP helper routines
  *
  * Misc PGP helper routines
  */

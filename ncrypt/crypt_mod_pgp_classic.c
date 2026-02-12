@@ -21,7 +21,7 @@
  */
 
 /**
- * @page crypt_crypt_mod_pgp Wrappers for calls to CLI PGP
+ * @page ncrypt_crypt_mod_pgp Wrappers for calls to CLI PGP
  *
  * Wrappers for calls to CLI PGP
  */

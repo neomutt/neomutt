@@ -46,6 +46,7 @@ static bool compose_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  * ModuleCompose - Module for the Compose library
  */
 const struct Module ModuleCompose = {
+  MODULE_ID_COMPOSE,
   "compose",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleCompose = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

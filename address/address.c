@@ -25,7 +25,7 @@
  */
 
 /**
- * @page addr_address Email address
+ * @page address_address Email address
  *
  * Representation of an email address
  */

@@ -46,6 +46,7 @@ static bool expando_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
  * ModuleExpando - Module for the Expando library
  */
 const struct Module ModuleExpando = {
+  MODULE_ID_EXPANDO,
   "expando",
   NULL, // init
   expando_config_define_types,
@@ -54,5 +55,4 @@ const struct Module ModuleExpando = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

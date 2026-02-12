@@ -33,7 +33,7 @@
  */
 
 /**
- * @page nm_notmuch Notmuch virtual mailbox type
+ * @page notmuch_notmuch Notmuch virtual mailbox type
  *
  * Notmuch virtual mailbox type
  *

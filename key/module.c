@@ -45,6 +45,7 @@ static bool key_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  * ModuleKey - Module for the Key library
  */
 const struct Module ModuleKey = {
+  MODULE_ID_KEY,
   "key",
   NULL, // init
   NULL, // config_define_types
@@ -53,5 +54,4 @@ const struct Module ModuleKey = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

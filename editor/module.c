@@ -34,6 +34,7 @@
  * ModuleEditor - Module for the Editor library
  */
 const struct Module ModuleEditor = {
+  MODULE_ID_EDITOR,
   "editor",
   NULL, // init
   NULL, // config_define_types
@@ -42,5 +43,4 @@ const struct Module ModuleEditor = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

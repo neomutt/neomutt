@@ -24,7 +24,7 @@
  */
 
 /**
- * @page neo_external Manage where the email is piped to external commands
+ * @page main_external Manage where the email is piped to external commands
  *
  * Manage where the email is piped to external commands
  */

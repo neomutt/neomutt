@@ -25,7 +25,7 @@
  */
 
 /**
- * @page neo_flags Manipulate the flags in an email header
+ * @page main_flags Manipulate the flags in an email header
  *
  * Manipulate the flags in an email header
  */

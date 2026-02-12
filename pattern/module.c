@@ -46,6 +46,7 @@ static bool pattern_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  * ModulePattern - Module for the Pattern library
  */
 const struct Module ModulePattern = {
+  MODULE_ID_PATTERN,
   "pattern",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModulePattern = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

@@ -21,7 +21,7 @@
  */
 
 /**
- * @page crypt_crypt_mod_smime_gpgme Wrappers for calls to GPGME SMIME
+ * @page ncrypt_crypt_mod_smime_gpgme Wrappers for calls to GPGME SMIME
  *
  * Wrappers for calls to GPGME SMIME
  */

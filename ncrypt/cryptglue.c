@@ -22,7 +22,7 @@
  */
 
 /**
- * @page crypt_cryptglue Wrapper around crypto functions
+ * @page ncrypt_cryptglue Wrapper around crypto functions
  *
  * This file dispatches the generic crypto functions to the implemented
  * backend or provides dummy stubs.

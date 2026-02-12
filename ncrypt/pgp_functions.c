@@ -21,7 +21,7 @@
  */
 
 /**
- * @page pgp_functions Pgp functions
+ * @page ncrypt_pgp_functions Pgp functions
  *
  * Pgp functions
  */

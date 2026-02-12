@@ -26,7 +26,7 @@
  */
 
 /**
- * @page crypt_smime SMIME helper routines
+ * @page ncrypt_smime SMIME helper routines
  *
  * SMIME helper routines
  */

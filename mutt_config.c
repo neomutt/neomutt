@@ -27,14 +27,13 @@
  */
 
 /**
- * @page neo_mutt_config Definitions of config variables
+ * @page main_mutt_config Definitions of config variables
  *
  * Definitions of config variables
  */
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -44,7 +43,6 @@
 #include "gui/lib.h"
 #include "attach/lib.h"
 #include "expando/lib.h"
-#include "index/lib.h"
 #include "mutt_logging.h"
 #include "mx.h"
 

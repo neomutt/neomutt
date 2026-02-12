@@ -25,7 +25,7 @@
  */
 
 /**
- * @page crypt_pgpkey PGP key management routines
+ * @page ncrypt_pgpkey PGP key management routines
  *
  * PGP key management routines
  */

@@ -65,6 +65,7 @@ static bool ncrypt_config_define_variables(struct NeoMutt *n, struct ConfigSet *
  * ModuleNcrypt - Module for the Ncrypt library
  */
 const struct Module ModuleNcrypt = {
+  MODULE_ID_NCRYPT,
   "ncrypt",
   NULL, // init
   NULL, // config_define_types
@@ -73,5 +74,4 @@ const struct Module ModuleNcrypt = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

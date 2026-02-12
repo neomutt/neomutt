@@ -21,7 +21,7 @@
  */
 
 /**
- * @page crypt_crypt_mod_smime Wrappers for calls to CLI SMIME
+ * @page ncrypt_crypt_mod_smime Wrappers for calls to CLI SMIME
  *
  * Wrappers for calls to CLI SMIME
  */

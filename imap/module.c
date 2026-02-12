@@ -63,6 +63,7 @@ static bool imap_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  * ModuleImap - Module for the Imap library
  */
 const struct Module ModuleImap = {
+  MODULE_ID_IMAP,
   "imap",
   NULL, // init
   NULL, // config_define_types
@@ -71,5 +72,4 @@ const struct Module ModuleImap = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

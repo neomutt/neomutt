@@ -25,7 +25,7 @@
  */
 
 /**
- * @page crypt_crypt Signing/encryption multiplexor
+ * @page ncrypt_crypt Signing/encryption multiplexor
  *
  * Signing/encryption multiplexor
  */

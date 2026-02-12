@@ -26,39 +26,39 @@
  *
  * Encrypt/decrypt/sign/verify emails
  *
- * | File                             | Description                          |
- * | :------------------------------- | :----------------------------------- |
- * | ncrypt/config.c                  | @subpage crypt_config                |
- * | ncrypt/crypt.c                   | @subpage crypt_crypt                 |
- * | ncrypt/crypt_gpgme.c             | @subpage crypt_crypt_gpgme           |
- * | ncrypt/crypt_mod.c               | @subpage crypt_crypt_mod             |
- * | ncrypt/crypt_mod_pgp_classic.c   | @subpage crypt_crypt_mod_pgp         |
- * | ncrypt/crypt_mod_pgp_gpgme.c     | @subpage crypt_crypt_mod_pgp_gpgme   |
- * | ncrypt/crypt_mod_smime_classic.c | @subpage crypt_crypt_mod_smime       |
- * | ncrypt/crypt_mod_smime_gpgme.c   | @subpage crypt_crypt_mod_smime_gpgme |
- * | ncrypt/cryptglue.c               | @subpage crypt_cryptglue             |
- * | ncrypt/dlg_gpgme.c               | @subpage crypt_dlg_gpgme             |
- * | ncrypt/dlg_pgp.c                 | @subpage crypt_dlg_pgp               |
- * | ncrypt/dlg_smime.c               | @subpage crypt_dlg_smime             |
- * | ncrypt/expando_command.c         | @subpage ncrypt_expando_command      |
- * | ncrypt/expando_gpgme.c           | @subpage ncrypt_expando_gpgme        |
- * | ncrypt/expando_pgp.c             | @subpage ncrypt_expando_pgp          |
- * | ncrypt/expando_smime.c           | @subpage ncrypt_expando_smime        |
- * | ncrypt/functions.c               | @subpage crypt_functions             |
- * | ncrypt/gnupgparse.c              | @subpage crypt_gnupg                 |
- * | ncrypt/gpgme_functions.c         | @subpage crypt_gpgme_functions       |
- * | ncrypt/module.c                  | @subpage ncrypt_module               |
- * | ncrypt/pgp.c                     | @subpage crypt_pgp                   |
- * | ncrypt/pgp_functions.c           | @subpage pgp_functions               |
- * | ncrypt/pgpinvoke.c               | @subpage crypt_pgpinvoke             |
- * | ncrypt/pgpkey.c                  | @subpage crypt_pgpkey                |
- * | ncrypt/pgplib.c                  | @subpage crypt_pgplib                |
- * | ncrypt/pgpmicalg.c               | @subpage crypt_pgpmicalg             |
- * | ncrypt/pgppacket.c               | @subpage crypt_pgppacket             |
- * | ncrypt/smime.c                   | @subpage crypt_smime                 |
- * | ncrypt/smime_functions.c         | @subpage smime_functions             |
- * | ncrypt/sort_gpgme.c              | @subpage crypt_sort_gpgme            |
- * | ncrypt/sort_pgp.c                | @subpage crypt_sort_pgp              |
+ * | File                             | Description                           |
+ * | :------------------------------- | :------------------------------------ |
+ * | ncrypt/config.c                  | @subpage ncrypt_config                |
+ * | ncrypt/crypt.c                   | @subpage ncrypt_crypt                 |
+ * | ncrypt/crypt_gpgme.c             | @subpage ncrypt_crypt_gpgme           |
+ * | ncrypt/crypt_mod.c               | @subpage ncrypt_crypt_mod             |
+ * | ncrypt/crypt_mod_pgp_classic.c   | @subpage ncrypt_crypt_mod_pgp         |
+ * | ncrypt/crypt_mod_pgp_gpgme.c     | @subpage ncrypt_crypt_mod_pgp_gpgme   |
+ * | ncrypt/crypt_mod_smime_classic.c | @subpage ncrypt_crypt_mod_smime       |
+ * | ncrypt/crypt_mod_smime_gpgme.c   | @subpage ncrypt_crypt_mod_smime_gpgme |
+ * | ncrypt/cryptglue.c               | @subpage ncrypt_cryptglue             |
+ * | ncrypt/dlg_gpgme.c               | @subpage ncrypt_dlg_gpgme             |
+ * | ncrypt/dlg_pgp.c                 | @subpage ncrypt_dlg_pgp               |
+ * | ncrypt/dlg_smime.c               | @subpage ncrypt_dlg_smime             |
+ * | ncrypt/expando_command.c         | @subpage ncrypt_expando_command       |
+ * | ncrypt/expando_gpgme.c           | @subpage ncrypt_expando_gpgme         |
+ * | ncrypt/expando_pgp.c             | @subpage ncrypt_expando_pgp           |
+ * | ncrypt/expando_smime.c           | @subpage ncrypt_expando_smime         |
+ * | ncrypt/functions.c               | @subpage ncrypt_functions             |
+ * | ncrypt/gnupgparse.c              | @subpage ncrypt_gnupg                 |
+ * | ncrypt/gpgme_functions.c         | @subpage ncrypt_gpgme_functions       |
+ * | ncrypt/module.c                  | @subpage ncrypt_module                |
+ * | ncrypt/pgp.c                     | @subpage ncrypt_pgp                   |
+ * | ncrypt/pgp_functions.c           | @subpage ncrypt_pgp_functions         |
+ * | ncrypt/pgpinvoke.c               | @subpage ncrypt_pgpinvoke             |
+ * | ncrypt/pgpkey.c                  | @subpage ncrypt_pgpkey                |
+ * | ncrypt/pgplib.c                  | @subpage ncrypt_pgplib                |
+ * | ncrypt/pgpmicalg.c               | @subpage ncrypt_pgpmicalg             |
+ * | ncrypt/pgppacket.c               | @subpage ncrypt_pgppacket             |
+ * | ncrypt/smime.c                   | @subpage ncrypt_smime                 |
+ * | ncrypt/smime_functions.c         | @subpage ncrypt_smime_functions       |
+ * | ncrypt/sort_gpgme.c              | @subpage ncrypt_sort_gpgme            |
+ * | ncrypt/sort_pgp.c                | @subpage ncrypt_sort_pgp              |
  */
 
 #ifndef MUTT_NCRYPT_LIB_H

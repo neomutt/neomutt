@@ -23,7 +23,7 @@
  */
 
 /**
- * @page hc_serial Email-object serialiser
+ * @page hcache_serial Email-object serialiser
  *
  * Email-object serialiser
  */

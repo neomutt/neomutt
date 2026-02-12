@@ -21,7 +21,7 @@
  */
 
 /**
- * @page addr_module Definition of the Address Module
+ * @page address_module Definition of the Address Module
  *
  * Definition of the Address Module
  */
@@ -63,6 +63,7 @@ static bool address_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  * ModuleAddress - Module for the Address library
  */
 const struct Module ModuleAddress = {
+  MODULE_ID_ADDRESS,
   "address",
   NULL, // init
   address_config_define_types,
@@ -71,5 +72,4 @@ const struct Module ModuleAddress = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

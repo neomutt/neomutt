@@ -46,6 +46,7 @@ static bool helpbar_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  * ModuleHelpbar - Module for the Helpbar library
  */
 const struct Module ModuleHelpbar = {
+  MODULE_ID_HELPBAR,
   "helpbar",
   NULL, // init
   NULL, // config_define_types
@@ -54,5 +55,4 @@ const struct Module ModuleHelpbar = {
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
-  NULL, // mod_data
 };

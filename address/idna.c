@@ -22,7 +22,7 @@
  */
 
 /**
- * @page addr_idna International domain names
+ * @page address_idna International domain names
  *
  * Handling of international domain names
  */

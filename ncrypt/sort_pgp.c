@@ -21,7 +21,7 @@
  */
 
 /**
- * @page crypt_sort_pgp PGP Key Sorting
+ * @page ncrypt_sort_pgp PGP Key Sorting
  *
  * PGP Key Sorting
  */

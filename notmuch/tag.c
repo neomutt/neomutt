@@ -23,7 +23,7 @@
  */
 
 /**
- * @page nm_tag Notmuch tag functions
+ * @page notmuch_tag Notmuch tag functions
  *
  * Notmuch tag functions
  */
