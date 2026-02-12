@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef AttachVars[];
+
+/**
+ * attach_init - Initialise a Module - Implements Module::init()
+ */
+static bool attach_init(struct NeoMutt *n)
+{
+  struct AttachModuleData *md = MUTT_MEM_CALLOC(1, struct AttachModuleData);
+  neomutt_set_module_data(n, MODULE_ID_ATTACH, md);
+
+  return true;
+}
 
 /**
  * attach_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool attach_config_define_variables(struct NeoMutt *n, struct ConfigSet *
 }
 
 /**
+ * attach_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool attach_cleanup(struct NeoMutt *n)
+{
+  struct AttachModuleData *md = neomutt_get_module_data(n, MODULE_ID_ATTACH);
+  ASSERT(md);
+
+  FREE(&md);
+  return true;
+}
+
+/**
  * ModuleAttach - Module for the Attach library
  */
 const struct Module ModuleAttach = {
   MODULE_ID_ATTACH,
   "attach",
-  NULL, // init
+  attach_init,
   NULL, // config_define_types
   attach_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  attach_cleanup,
 };
