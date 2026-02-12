@@ -29,7 +29,9 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 #include "set.h"
 
 extern const struct ConfigSetType CstBool;
@@ -44,6 +46,17 @@ extern const struct ConfigSetType CstRegex;
 extern const struct ConfigSetType CstSlist;
 extern const struct ConfigSetType CstSort;
 extern const struct ConfigSetType CstString;
+
+/**
+ * config_init - Initialise a Module - Implements Module::init()
+ */
+static bool config_init(struct NeoMutt *n)
+{
+  // struct ConfigModuleData *md = MUTT_MEM_CALLOC(1, struct ConfigModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_CONFIG, md);
+
+  return true;
+}
 
 /**
  * config_config_define_types - Set up Config Types - Implements Module::config_define_types()
@@ -69,16 +82,28 @@ static bool config_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
 }
 
 /**
+ * config_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool config_cleanup(struct NeoMutt *n)
+{
+  // struct ConfigModuleData *md = neomutt_get_module_data(n, MODULE_ID_CONFIG);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleConfig - Module for the Config library
  */
 const struct Module ModuleConfig = {
   MODULE_ID_CONFIG,
   "config",
-  NULL, // init
+  config_init,
   config_config_define_types,
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  config_cleanup,
 };
