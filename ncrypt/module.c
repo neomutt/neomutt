@@ -29,13 +29,26 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef NcryptVars[];
 extern struct ConfigDef NcryptVarsGpgme[];
 extern struct ConfigDef NcryptVarsPgp[];
 extern struct ConfigDef NcryptVarsSmime[];
+
+/**
+ * ncrypt_init - Initialise a Module - Implements Module::init()
+ */
+static bool ncrypt_init(struct NeoMutt *n)
+{
+  // struct NcryptModuleData *md = MUTT_MEM_CALLOC(1, struct NcryptModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_NCRYPT, md);
+
+  return true;
+}
 
 /**
  * ncrypt_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -62,16 +75,28 @@ static bool ncrypt_config_define_variables(struct NeoMutt *n, struct ConfigSet *
 }
 
 /**
+ * ncrypt_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool ncrypt_cleanup(struct NeoMutt *n)
+{
+  // struct NcryptModuleData *md = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleNcrypt - Module for the Ncrypt library
  */
 const struct Module ModuleNcrypt = {
   MODULE_ID_NCRYPT,
   "ncrypt",
-  NULL, // init
+  ncrypt_init,
   NULL, // config_define_types
   ncrypt_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  ncrypt_cleanup,
 };
