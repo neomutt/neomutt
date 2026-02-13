@@ -79,6 +79,7 @@
 #include "attach/lib.h"
 #include "color/lib.h"
 #include "commands/lib.h"
+#include "index/lib.h"
 #include "menu/lib.h"
 #include "postpone/lib.h"
 #include "globals.h"

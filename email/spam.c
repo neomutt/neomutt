@@ -29,7 +29,7 @@
  */
 
 /**
- * @page commands_spam Parse Spam Commands
+ * @page email_spam Parse Spam Commands
  *
  * Parse Spam Commands
  */
@@ -37,10 +37,10 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "spam.h"
 #include "parse/lib.h"
+#include "globals2.h"
 
 /**
  * parse_nospam - Parse the 'nospam' command - Implements Command::parse() - @ingroup command_parse

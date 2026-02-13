@@ -25,13 +25,13 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
-#include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command Ignore = { "ignore", CMD_IGNORE, NULL, CMD_NO_DATA };
+static const struct Command CmdIgnore = { "ignore", CMD_IGNORE, NULL, CMD_NO_DATA };
 
 static const struct CommandTest Tests[] = {
   // clang-format off
@@ -59,7 +59,7 @@ void test_parse_ignore(void)
     parse_error_reset(pe);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_ignore(&Ignore, line, pc, pe);
+    rc = parse_ignore(&CmdIgnore, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

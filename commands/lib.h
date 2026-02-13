@@ -29,17 +29,13 @@
  * | :--------------------- | :---------------------------- |
  * | commands/alternates.c  | @subpage commands_alternates  |
  * | commands/commands.c    | @subpage commands_commands    |
- * | commands/group.c       | @subpage commands_group       |
  * | commands/ifdef.c       | @subpage commands_ifdef       |
- * | commands/ignore.c      | @subpage commands_ignore      |
  * | commands/mailboxes.c   | @subpage commands_mailboxes   |
  * | commands/module.c      | @subpage commands_module      |
  * | commands/my_header.c   | @subpage commands_my_header   |
  * | commands/parse.c       | @subpage commands_parse       |
- * | commands/score.c       | @subpage commands_score       |
  * | commands/setenv.c      | @subpage commands_setenv      |
  * | commands/source.c      | @subpage commands_source      |
- * | commands/spam.c        | @subpage commands_spam        |
  * | commands/stailq.c      | @subpage commands_stailq      |
  * | commands/tags.c        | @subpage commands_tags        |
  */
@@ -50,16 +46,12 @@
 // IWYU pragma: begin_keep
 #include "alternates.h"
 #include "commands.h"
-#include "group.h"
 #include "ifdef.h"
-#include "ignore.h"
 #include "mailboxes.h"
 #include "my_header.h"
 #include "parse.h"
-#include "score.h"
 #include "setenv.h"
 #include "source.h"
-#include "spam.h"
 #include "stailq.h"
 #include "tags.h"
 // IWYU pragma: end_keep

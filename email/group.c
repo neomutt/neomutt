@@ -29,7 +29,7 @@
  */
 
 /**
- * @page commands_group Parse Group/Lists Commands
+ * @page email_group Parse Group/Lists Commands
  *
  * Parse Group/Lists Commands
  */
@@ -38,10 +38,10 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "group.h"
 #include "parse/lib.h"
+#include "globals2.h"
 
 /**
  * parse_grouplist - Parse a group context

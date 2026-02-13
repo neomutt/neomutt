@@ -38,16 +38,12 @@
 #include "parse/lib.h"
 #include "alternates.h"
 #include "globals.h"
-#include "group.h"
 #include "ifdef.h"
-#include "ignore.h"
 #include "mailboxes.h"
 #include "my_header.h"
 #include "parse.h"
-#include "score.h"
 #include "setenv.h"
 #include "source.h"
-#include "spam.h"
 #include "stailq.h"
 #include "tags.h"
 
@@ -92,10 +88,6 @@ const struct Command CommandsCommands[] = {
         N_("Stop reading current config file"),
         N_("finish"),
         "optionalfeatures.html#ifdef" },
-  { "group", CMD_GROUP, parse_group, CMD_NO_DATA,
-        N_("Add addresses to an address group"),
-        N_("group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"),
-        "configuration.html#addrgroup" },
   { "header-order", CMD_HEADER_ORDER, parse_stailq, IP &HeaderOrderList,
         N_("Define custom order of headers displayed"),
         N_("header-order <header> [ <header> ... ]"),
@@ -108,10 +100,6 @@ const struct Command CommandsCommands[] = {
         N_("Conditionally include if symbol is not defined"),
         N_("ifndef <symbol> '<config-command> [ <args> ... ]'"),
         "optionalfeatures.html#ifdef" },
-  { "ignore", CMD_IGNORE, parse_ignore, CMD_NO_DATA,
-        N_("Hide specified headers when displaying messages"),
-        N_("ignore <string> [ <string> ...]"),
-        "configuration.html#ignore" },
   { "lists", CMD_LISTS, parse_lists, CMD_NO_DATA,
         N_("Add address to the list of mailing lists"),
         N_("lists [ -group <name> ... ] <regex> [ ... ]"),
@@ -140,18 +128,10 @@ const struct Command CommandsCommands[] = {
         N_("Define a list of labelled mailboxes to watch"),
         N_("named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"),
         "configuration.html#mailboxes" },
-  { "nospam", CMD_NOSPAM, parse_nospam, CMD_NO_DATA,
-        N_("Remove a spam detection rule"),
-        N_("nospam { * | <regex> }"),
-        "configuration.html#spam" },
   { "reset", CMD_RESET, parse_set, CMD_NO_DATA,
         N_("Reset a config option to its initial value"),
         N_("reset <variable> [ <variable> ... ]"),
         "configuration.html#set" },
-  { "score", CMD_SCORE, parse_score, CMD_NO_DATA,
-        N_("Set a score value on emails matching a pattern"),
-        N_("score <pattern> <value>"),
-        "configuration.html#score-command" },
   { "set", CMD_SET, parse_set, CMD_NO_DATA,
         N_("Set a config variable"),
         N_("set [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> [...]"),
@@ -164,10 +144,6 @@ const struct Command CommandsCommands[] = {
         N_("Read and execute commands from a config file"),
         N_("source <filename> [ <filename> ... ]"),
         "configuration.html#source" },
-  { "spam", CMD_SPAM, parse_spam, CMD_NO_DATA,
-        N_("Define rules to parse spam detection headers"),
-        N_("spam <regex> [ <format> ]"),
-        "configuration.html#spam" },
   { "subscribe", CMD_SUBSCRIBE, parse_subscribe, CMD_NO_DATA,
         N_("Add address to the list of subscribed mailing lists"),
         N_("subscribe [ -group <name> ... ] <regex> [ ... ]"),
@@ -208,18 +184,10 @@ const struct Command CommandsCommands[] = {
         N_("Remove a `color` definition"),
         N_("uncolor <object> { * | <pattern> ... }"),
         "configuration.html#color" },
-  { "ungroup", CMD_UNGROUP, parse_group, CMD_NO_DATA,
-        N_("Remove addresses from an address `group`"),
-        N_("ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"),
-        "configuration.html#addrgroup" },
   { "unheader-order", CMD_UNHEADER_ORDER, parse_unstailq, IP &HeaderOrderList,
         N_("Remove header from `header-order` list"),
         N_("unheader-order { * | <header> ... }"),
         "configuration.html#header-order" },
-  { "unignore", CMD_UNIGNORE, parse_unignore, CMD_NO_DATA,
-        N_("Remove a header from the `header-order` list"),
-        N_("unignore { * | <string> ... }"),
-        "configuration.html#ignore" },
   { "unlists", CMD_UNLISTS, parse_unlists, CMD_NO_DATA,
         N_("Remove address from the list of mailing lists"),
         N_("unlists { * | <regex> ... }"),
@@ -244,10 +212,6 @@ const struct Command CommandsCommands[] = {
         N_("Remove a header previously added with `my-header`"),
         N_("unmy-header { * | <field> ... }"),
         "configuration.html#my-header" },
-  { "unscore", CMD_UNSCORE, parse_unscore, CMD_NO_DATA,
-        N_("Remove scoring rules for matching patterns"),
-        N_("unscore { * | <pattern> ... }"),
-        "configuration.html#score-command" },
   { "unset", CMD_UNSET, parse_set, CMD_NO_DATA,
         N_("Reset a config option to false/empty"),
         N_("unset <variable> [ <variable> ... ]"),

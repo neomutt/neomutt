@@ -27,8 +27,8 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
-#include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"

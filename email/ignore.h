@@ -1,9 +1,9 @@
 /**
  * @file
- * Routines for adding user scores to emails
+ * Parse Ignore Commands
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_SCORE_H
-#define MUTT_COMMANDS_SCORE_H
+#ifndef MUTT_EMAIL_IGNORE_H
+#define MUTT_EMAIL_IGNORE_H
 
 #include "core/lib.h"
 
@@ -29,7 +29,7 @@ struct Buffer;
 struct ParseContext;
 struct ParseError;
 
-enum CommandResult parse_score  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_ignore          (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unignore        (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
-#endif /* MUTT_COMMANDS_SCORE_H */
+#endif /* MUTT_EMAIL_IGNORE_H */

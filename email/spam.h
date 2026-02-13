@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse Ignore Commands
+ * Parse Spam Commands
  *
  * @authors
  * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_IGNORE_H
-#define MUTT_COMMANDS_IGNORE_H
+#ifndef MUTT_EMAIL_SPAM_H
+#define MUTT_EMAIL_SPAM_H
 
 #include "core/lib.h"
 
@@ -29,7 +29,7 @@ struct Buffer;
 struct ParseContext;
 struct ParseError;
 
-enum CommandResult parse_ignore          (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_unignore        (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_nospam          (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_spam            (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
-#endif /* MUTT_COMMANDS_IGNORE_H */
+#endif /* MUTT_EMAIL_SPAM_H */

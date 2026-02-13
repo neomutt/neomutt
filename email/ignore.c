@@ -29,17 +29,17 @@
  */
 
 /**
- * @page commands_ignore Parse Ignore Commands
+ * @page email_ignore Parse Ignore Commands
  *
  * Parse Ignore Commands
  */
 
 #include "config.h"
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "ignore.h"
 #include "parse/lib.h"
+#include "globals2.h"
 
 /**
  * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse

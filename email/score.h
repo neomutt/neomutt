@@ -3,7 +3,7 @@
  * Routines for adding user scores to emails
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,9 +24,12 @@
 #define MUTT_EMAIL_SCORE_H
 
 #include <stdbool.h>
+#include "core/lib.h"
 
+struct Buffer;
 struct Email;
-struct Mailbox;
+struct ParseContext;
+struct ParseError;
 
 /**
  * struct Score - Scoring rule for email
@@ -41,6 +44,9 @@ struct Score
 };
 
 extern struct Score *ScoreList;
+
+enum CommandResult parse_score  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
 void mutt_check_rescore(struct Mailbox *m);
 void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox);

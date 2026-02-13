@@ -36,6 +36,8 @@
 
 extern struct ConfigDef EmailVars[];
 
+extern const struct Command EmailCommands[];
+
 /**
  * email_init - Initialise a Module - Implements Module::init()
  */
@@ -53,6 +55,14 @@ static bool email_init(struct NeoMutt *n)
 static bool email_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 {
   return cs_register_variables(cs, EmailVars);
+}
+
+/**
+ * email_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool email_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, EmailCommands);
 }
 
 /**
@@ -76,7 +86,7 @@ const struct Module ModuleEmail = {
   email_init,
   NULL, // config_define_types
   email_config_define_variables,
-  NULL, // commands_register
+  email_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
   email_cleanup,
