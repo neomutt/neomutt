@@ -150,13 +150,13 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
         const struct Command *cmd = *cp;
 
         // For synonyms, match against the synonym name but complete to the real command name
-        if ((cmd->flags & CF_SYNONYM) && cmd->data)
+        if ((cmd->flags & CF_SYNONYM) && cmd->help)
         {
           // Check if user-typed matches the beginning of the synonym name
           if (strstr(cmd->name, cd->user_typed) == cmd->name)
           {
             // Use the real command name for completion
-            const char *real_name = (const char *) cmd->data;
+            const char *real_name = cmd->help;
 
             // Manually add the real command name to the match list
             matches_ensure_morespace(cd, cd->num_matched);

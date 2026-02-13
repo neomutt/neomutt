@@ -275,20 +275,20 @@ const struct Command CommandsCommands[] = {
         "advancedusage.html#version" },
 
   // Deprecated
-  { "alternative_order",   CMD_NONE, NULL, IP "alternative-order",   NULL, NULL, NULL, CF_SYNONYM },
-  { "auto_view",           CMD_NONE, NULL, IP "auto-view",           NULL, NULL, NULL, CF_SYNONYM },
-  { "hdr_order",           CMD_NONE, NULL, IP "header-order",        NULL, NULL, NULL, CF_SYNONYM },
-  { "mailto_allow",        CMD_NONE, NULL, IP "mailto-allow",        NULL, NULL, NULL, CF_SYNONYM },
-  { "mime_lookup",         CMD_NONE, NULL, IP "mime-lookup",         NULL, NULL, NULL, CF_SYNONYM },
-  { "my_hdr",              CMD_NONE, NULL, IP "my-header",           NULL, NULL, NULL, CF_SYNONYM },
-  { "subjectrx",           CMD_NONE, NULL, IP "subject-regex",       NULL, NULL, NULL, CF_SYNONYM },
-  { "unalternative_order", CMD_NONE, NULL, IP "unalternative-order", NULL, NULL, NULL, CF_SYNONYM },
-  { "unauto_view",         CMD_NONE, NULL, IP "unauto-view",         NULL, NULL, NULL, CF_SYNONYM },
-  { "unhdr_order",         CMD_NONE, NULL, IP "unheader-order",      NULL, NULL, NULL, CF_SYNONYM },
-  { "unmailto_allow",      CMD_NONE, NULL, IP "unmailto-allow",      NULL, NULL, NULL, CF_SYNONYM },
-  { "unmime_lookup",       CMD_NONE, NULL, IP "unmime-lookup",       NULL, NULL, NULL, CF_SYNONYM },
-  { "unmy_hdr",            CMD_NONE, NULL, IP "unmy-header",         NULL, NULL, NULL, CF_SYNONYM },
-  { "unsubjectrx",         CMD_NONE, NULL, IP "unsubject-regex",     NULL, NULL, NULL, CF_SYNONYM },
+  { "alternative_order",   CMD_NONE, NULL, CMD_NO_DATA, "alternative-order",   NULL, NULL, CF_SYNONYM },
+  { "auto_view",           CMD_NONE, NULL, CMD_NO_DATA, "auto-view",           NULL, NULL, CF_SYNONYM },
+  { "hdr_order",           CMD_NONE, NULL, CMD_NO_DATA, "header-order",        NULL, NULL, CF_SYNONYM },
+  { "mailto_allow",        CMD_NONE, NULL, CMD_NO_DATA, "mailto-allow",        NULL, NULL, CF_SYNONYM },
+  { "mime_lookup",         CMD_NONE, NULL, CMD_NO_DATA, "mime-lookup",         NULL, NULL, CF_SYNONYM },
+  { "my_hdr",              CMD_NONE, NULL, CMD_NO_DATA, "my-header",           NULL, NULL, CF_SYNONYM },
+  { "subjectrx",           CMD_NONE, NULL, CMD_NO_DATA, "subject-regex",       NULL, NULL, CF_SYNONYM },
+  { "unalternative_order", CMD_NONE, NULL, CMD_NO_DATA, "unalternative-order", NULL, NULL, CF_SYNONYM },
+  { "unauto_view",         CMD_NONE, NULL, CMD_NO_DATA, "unauto-view",         NULL, NULL, CF_SYNONYM },
+  { "unhdr_order",         CMD_NONE, NULL, CMD_NO_DATA, "unheader-order",      NULL, NULL, CF_SYNONYM },
+  { "unmailto_allow",      CMD_NONE, NULL, CMD_NO_DATA, "unmailto-allow",      NULL, NULL, CF_SYNONYM },
+  { "unmime_lookup",       CMD_NONE, NULL, CMD_NO_DATA, "unmime-lookup",       NULL, NULL, CF_SYNONYM },
+  { "unmy_hdr",            CMD_NONE, NULL, CMD_NO_DATA, "unmy-header",         NULL, NULL, CF_SYNONYM },
+  { "unsubjectrx",         CMD_NONE, NULL, CMD_NO_DATA, "unsubject-regex",     NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
@@ -338,9 +338,9 @@ const struct Command *command_find_by_name(const struct CommandArray *ca, const 
     if (mutt_str_equal(cmd->name, name))
     {
       // If this is a synonym, look up the real Command
-      if ((cmd->flags & CF_SYNONYM) && cmd->data)
+      if ((cmd->flags & CF_SYNONYM) && cmd->help)
       {
-        const char *real_name = (const char *) cmd->data;
+        const char *real_name = cmd->help;
         // Search for the real command (non-recursive, single pass)
         const struct Command **rp = NULL;
         ARRAY_FOREACH(rp, ca)

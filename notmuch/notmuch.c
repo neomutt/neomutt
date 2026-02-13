@@ -91,8 +91,8 @@ struct stat;
 const struct Command NmCommands[] = {
   // clang-format off
   // Deprecated
-  { "unvirtual-mailboxes", CMD_NONE, NULL, IP "unmailboxes",     NULL, NULL, NULL, CF_SYNONYM },
-  { "virtual-mailboxes",   CMD_NONE, NULL, IP "named-mailboxes", NULL, NULL, NULL, CF_SYNONYM },
+  { "unvirtual-mailboxes", CMD_NONE, NULL, CMD_NO_DATA, "unmailboxes",     NULL, NULL, CF_SYNONYM },
+  { "virtual-mailboxes",   CMD_NONE, NULL, CMD_NO_DATA, "named-mailboxes", NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on

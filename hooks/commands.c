@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "commands.h"
 #include "dump.h"
@@ -119,7 +118,7 @@ const struct Command HooksCommands[] = {
         "advancedusage.html#hooks" },
 
   // Deprecated
-  { "pgp-hook", CMD_NONE, NULL, IP "crypt-hook", NULL, NULL, NULL, CF_SYNONYM },
+  { "pgp-hook", CMD_NONE, NULL, CMD_NO_DATA, "crypt-hook", NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on

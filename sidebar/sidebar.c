@@ -58,10 +58,10 @@ const struct Command SbCommands[] = {
         "optionalfeatures.html#sidebar-pin" },
 
   // Deprecated
-  { "sidebar_pin",         CMD_NONE, NULL, IP "sidebar-pin",   NULL, NULL, NULL, CF_SYNONYM },
-  { "sidebar_unpin",       CMD_NONE, NULL, IP "sidebar-unpin", NULL, NULL, NULL, CF_SYNONYM },
-  { "sidebar_whitelist",   CMD_NONE, NULL, IP "sidebar-pin",   NULL, NULL, NULL, CF_SYNONYM },
-  { "unsidebar_whitelist", CMD_NONE, NULL, IP "sidebar-unpin", NULL, NULL, NULL, CF_SYNONYM },
+  { "sidebar_pin",         CMD_NONE, NULL, CMD_NO_DATA, "sidebar-pin",   NULL, NULL, CF_SYNONYM },
+  { "sidebar_unpin",       CMD_NONE, NULL, CMD_NO_DATA, "sidebar-unpin", NULL, NULL, CF_SYNONYM },
+  { "sidebar_whitelist",   CMD_NONE, NULL, CMD_NO_DATA, "sidebar-pin",   NULL, NULL, CF_SYNONYM },
+  { "unsidebar_whitelist", CMD_NONE, NULL, CMD_NO_DATA, "sidebar-unpin", NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
