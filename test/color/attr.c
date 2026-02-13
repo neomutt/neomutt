@@ -36,13 +36,6 @@
 color_t color_xterm256_to_24bit(const color_t color);
 void modify_color_by_prefix(enum ColorPrefix prefix, bool is_fg, color_t *col, int *attrs);
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "color_directcolor", DT_BOOL, true, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
 struct ModifyTest
 {
   enum ColorPrefix prefix;
@@ -62,7 +55,6 @@ void test_attr_colors(void)
 #endif
 
   curses_colors_init();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   {
     attr_color_free(NULL);

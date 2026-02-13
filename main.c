@@ -1778,10 +1778,6 @@ main_exit:
 
   mutt_hist_cleanup();
 
-  mutt_regexlist_free(&NoSpamList);
-  if (NeoMutt)
-    commands_clear(&NeoMutt->commands);
-
   lua_cleanup();
   subjrx_cleanup();
   attach_cleanup();

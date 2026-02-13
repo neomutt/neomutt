@@ -23,19 +23,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stddef.h>
-#include "config/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "color_directcolor", DT_BOOL, true, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
 
 void test_color_dump(void)
 {
@@ -48,8 +38,6 @@ void test_color_dump(void)
   quoted_colors_init();
   regex_colors_init();
   simple_colors_init();
-
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   struct AttrColor ac = { 0 };
 

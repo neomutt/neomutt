@@ -26,24 +26,13 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
 #include "test_common.h"
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "color_directcolor", DT_BOOL, true, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
 void test_ansi_color(void)
 {
   // int ansi_color_parse(const char *str, struct AnsiColor *ansi, struct AttrColorList *acl, bool dry_run);
-
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   curses_colors_init();
 

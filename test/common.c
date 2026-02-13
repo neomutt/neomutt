@@ -74,7 +74,9 @@ struct ListHead HeaderOrderList = STAILQ_HEAD_INITIALIZER(HeaderOrderList);
 struct ListHead MimeLookupList = STAILQ_HEAD_INITIALIZER(MimeLookupList);
 
 extern const struct Module ModuleTest;
-static const struct Module *Modules[] = { &ModuleTest, NULL };
+extern const struct Module ModuleAttach;
+extern const struct Module ModuleIndex;
+static const struct Module *Modules[] = { &ModuleTest, &ModuleAttach, &ModuleIndex, NULL };
 
 const char *get_test_dir(void)
 {

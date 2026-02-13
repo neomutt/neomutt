@@ -3,7 +3,7 @@
  * Shared Testing Code
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
  * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
@@ -130,7 +130,7 @@ void cs_dump_set(const struct ConfigSet *cs)
   struct Buffer *result = buf_pool_get();
 
   char tmp[128];
-  char *list[64] = { 0 };
+  char *list[640] = { 0 };
   size_t index = 0;
   size_t i = 0;
 

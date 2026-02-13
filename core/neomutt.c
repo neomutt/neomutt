@@ -39,6 +39,7 @@
 #include "config/lib.h"
 #include "neomutt.h"
 #include "account.h"
+#include "command.h"
 #include "mailbox.h"
 #include "module_api.h"
 #include "muttlib.h"
@@ -405,6 +406,7 @@ void neomutt_cleanup(struct NeoMutt *n)
   if (!n)
     return;
 
+  commands_clear(&n->commands);
   cleanup_modules(n);
 }
 
