@@ -425,9 +425,9 @@ $(PWD)/editor:
 ###############################################################################
 # libemail
 LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/body.o email/commands.o email/config.o email/copy_body.o \
-		email/copy_email.o email/email.o email/enriched.o \
-		email/envelope.o email/from.o email/globals.o email/group.o \
+LIBEMAILOBJS=	email/body.o email/commands.o email/config.o \
+		email/copy_body.o email/copy_email.o email/email.o \
+		email/enriched.o email/envelope.o email/from.o email/group.o \
 		email/handler.o email/header.o email/ignore.o email/mailcap.o \
 		email/mime.o email/module.o email/parameter.o email/parse.o \
 		email/rfc2047.o email/rfc2231.o email/rfc3676.o email/score.o \

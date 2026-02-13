@@ -3,7 +3,7 @@
  * Test code for parse_unstailq()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,10 +35,6 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command UnAlternativeOrder = { "unalternative-order", CMD_UNALTERNATIVE_ORDER, NULL, IP &AlternativeOrderList };
-static const struct Command UnAutoView         = { "unauto-view",         CMD_UNAUTO_VIEW,         NULL, IP &AutoViewList         };
-static const struct Command UnHdrOrder         = { "unheader-order",      CMD_UNHEADER_ORDER,      NULL, IP &HeaderOrderList      };
-static const struct Command UnMailtoAllow      = { "unmailto-allow",      CMD_UNMAILTO_ALLOW,      NULL, IP &MailToAllow          };
 static const struct Command UnMimeLookup       = { "unmime-lookup",       CMD_UNMIME_LOOKUP,       NULL, IP &MimeLookupList       };
 // clang-format on
 
@@ -101,13 +97,16 @@ static void test_parse_unalternative_order(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_UNALTERNATIVE_ORDER);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; UnAlternativeOrderTests[i].line; i++)
   {
     TEST_CASE(UnAlternativeOrderTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, UnAlternativeOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnAlternativeOrder, line, pc, pe);
+    rc = parse_unlist(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnAlternativeOrderTests[i].rc);
   }
 
@@ -125,13 +124,16 @@ static void test_parse_unauto_view(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_UNAUTO_VIEW);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; UnAutoViewTests[i].line; i++)
   {
     TEST_CASE(UnAutoViewTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, UnAutoViewTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnAutoView, line, pc, pe);
+    rc = parse_unlist(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnAutoViewTests[i].rc);
   }
 
@@ -149,13 +151,16 @@ static void test_parse_unhdr_order(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_UNHEADER_ORDER);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; UnHdrOrderTests[i].line; i++)
   {
     TEST_CASE(UnHdrOrderTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, UnHdrOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnHdrOrder, line, pc, pe);
+    rc = parse_unlist(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnHdrOrderTests[i].rc);
   }
 
@@ -173,13 +178,16 @@ static void test_parse_unmailto_allow(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_UNMAILTO_ALLOW);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; UnMailtoAllowTests[i].line; i++)
   {
     TEST_CASE(UnMailtoAllowTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, UnMailtoAllowTests[i].line);
     buf_seek(line, 0);
-    rc = parse_unstailq(&UnMailtoAllow, line, pc, pe);
+    rc = parse_unlist(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnMailtoAllowTests[i].rc);
   }
 

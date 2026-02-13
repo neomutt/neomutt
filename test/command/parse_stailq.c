@@ -3,7 +3,7 @@
  * Test code for parse_stailq()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,10 +35,6 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command AlternativeOrder = { "alternative-order", CMD_ALTERNATIVE_ORDER, NULL, IP &AlternativeOrderList };
-static const struct Command AutoView         = { "auto-view",         CMD_AUTO_VIEW,         NULL, IP &AutoViewList         };
-static const struct Command HdrOrder         = { "header-order",      CMD_HEADER_ORDER,      NULL, IP &HeaderOrderList      };
-static const struct Command MailtoAllow      = { "mailto-allow",      CMD_MAILTO_ALLOW,      NULL, IP &MailToAllow          };
 static const struct Command MimeLookup       = { "mime-lookup",       CMD_MIME_LOOKUP,       NULL, IP &MimeLookupList       };
 // clang-format off
 
@@ -97,13 +93,16 @@ static void alternative_order(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_ALTERNATIVE_ORDER);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; AlternativeOrderTests[i].line; i++)
   {
     TEST_CASE(AlternativeOrderTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, AlternativeOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&AlternativeOrder, line, pc, pe);
+    rc = parse_list(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, AlternativeOrderTests[i].rc);
   }
 
@@ -121,13 +120,16 @@ static void auto_view(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_AUTO_VIEW);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; AutoViewTests[i].line; i++)
   {
     TEST_CASE(AutoViewTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, AutoViewTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&AutoView, line, pc, pe);
+    rc = parse_list(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, AutoViewTests[i].rc);
   }
 
@@ -145,13 +147,16 @@ static void hdr_order(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_HEADER_ORDER);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; HdrOrderTests[i].line; i++)
   {
     TEST_CASE(HdrOrderTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, HdrOrderTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&HdrOrder, line, pc, pe);
+    rc = parse_list(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, HdrOrderTests[i].rc);
   }
 
@@ -169,13 +174,16 @@ static void mailto_allow(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_MAILTO_ALLOW);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; MailtoAllowTests[i].line; i++)
   {
     TEST_CASE(MailtoAllowTests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, MailtoAllowTests[i].line);
     buf_seek(line, 0);
-    rc = parse_stailq(&MailtoAllow, line, pc, pe);
+    rc = parse_list(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, MailtoAllowTests[i].rc);
   }
 

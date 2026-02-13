@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2014 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017-2025 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2025 Thomas Klausner <wiz@gatalith.at>
@@ -51,9 +51,9 @@
 #include "email.h"
 #include "envelope.h"
 #include "from.h"
-#include "globals.h"
 #include "handler.h"
 #include "mime.h"
+#include "module_data.h"
 #include "mx.h"
 #include "parse.h"
 #include "rfc2047.h"
@@ -209,13 +209,16 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
   hdr_count = 1;
   x = 0;
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   /* We are going to read and collect the headers in an array
    * so we are able to do re-ordering.
    * First count the number of entries in the array */
   if (chflags & CH_REORDER)
   {
     struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &HeaderOrderList, entries)
+    STAILQ_FOREACH(np, &md->header_order, entries)
     {
       mutt_debug(LL_DEBUG3, "Reorder list: %s\n", np->data);
       hdr_count++;
@@ -322,7 +325,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         int match = -1;
         size_t match_len = 0;
 
-        STAILQ_FOREACH(np, &HeaderOrderList, entries)
+        STAILQ_FOREACH(np, &md->header_order, entries)
         {
           size_t hdr_order_len = mutt_str_len(np->data);
           if (mutt_istrn_equal(buf, np->data, hdr_order_len))

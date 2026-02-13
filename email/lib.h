@@ -28,6 +28,7 @@
  * | File                   | Description               |
  * | :--------------------- | :------------------------ |
  * | email/body.c           | @subpage email_body       |
+ * | email/commands.c       | @subpage email_commands   |
  * | email/config.c         | @subpage email_config     |
  * | email/copy_body.c      | @subpage email_copy_body  |
  * | email/copy_email.c     | @subpage email_copy_email |
@@ -35,7 +36,6 @@
  * | email/enriched.c       | @subpage email_enriched   |
  * | email/envelope.c       | @subpage email_envelope   |
  * | email/from.c           | @subpage email_from       |
- * | email/globals.c        | @subpage email_globals    |
  * | email/group.c          | @subpage email_group      |
  * | email/handler.c        | @subpage email_handler    |
  * | email/header.c         | @subpage email_header     |
@@ -63,6 +63,7 @@
 
 // IWYU pragma: begin_keep
 #include "body.h"
+#include "commands.h"
 #include "content.h"
 #include "copy_body.h"
 #include "copy_email.h"
@@ -70,13 +71,13 @@
 #include "enriched.h"
 #include "envelope.h"
 #include "from.h"
-#include "globals2.h"
 #include "group.h"
 #include "handler.h"
 #include "header.h"
 #include "ignore.h"
 #include "mailcap.h"
 #include "mime.h"
+#include "module_data.h"
 #include "parameter.h"
 #include "parse.h"
 #include "rfc2047.h"

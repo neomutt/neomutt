@@ -1,9 +1,9 @@
 /**
  * @file
- * Email Global Variables
+ * Handle Email Commands
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,20 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_EMAIL_GLOBALS2_H
-#define MUTT_EMAIL_GLOBALS2_H
+#ifndef MUTT_EMAIL_COMMANDS_H
+#define MUTT_EMAIL_COMMANDS_H
 
-#include <stdbool.h>
+#include <stdio.h>
 
-extern struct HashTable  *AutoSubscribeCache;
-extern struct ListHead    Ignore;
-extern struct RegexList   MailLists;
-extern struct ListHead    MailToAllow;
-extern struct RegexList   NoSpamList;
-extern struct ReplaceList SpamList;
-extern struct RegexList   SubscribedLists;
-extern struct ListHead    UnIgnore;
-extern struct RegexList   UnMailLists;
-extern struct RegexList   UnSubscribedLists;
+struct Buffer;
+struct Command;
+struct ParseContext;
+struct ParseError;
 
-#endif /* MUTT_EMAIL_GLOBALS2_H */
+enum CommandResult parse_list  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unlist(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+
+#endif /* MUTT_EMAIL_COMMANDS_H */

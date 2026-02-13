@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
@@ -41,7 +41,7 @@
 #include "core/lib.h"
 #include "group.h"
 #include "parse/lib.h"
-#include "globals2.h"
+#include "module_data.h"
 
 /**
  * parse_grouplist - Parse a group context
@@ -200,6 +200,9 @@ enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -207,9 +210,9 @@ enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
     if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
       goto done;
 
-    mutt_regexlist_remove(&UnMailLists, buf_string(token));
+    mutt_regexlist_remove(&md->unmail, buf_string(token));
 
-    if (mutt_regexlist_add(&MailLists, buf_string(token), REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&md->mail, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
     if (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
@@ -245,6 +248,9 @@ enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *lin
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -252,13 +258,13 @@ enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *lin
     if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
       goto done;
 
-    mutt_regexlist_remove(&UnMailLists, buf_string(token));
-    mutt_regexlist_remove(&UnSubscribedLists, buf_string(token));
+    mutt_regexlist_remove(&md->unmail, buf_string(token));
+    mutt_regexlist_remove(&md->unsubscribed, buf_string(token));
 
-    if (mutt_regexlist_add(&MailLists, buf_string(token), REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&md->mail, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
-    if (mutt_regexlist_add(&SubscribedLists, buf_string(token), REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&md->subscribed, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
     if (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
@@ -293,15 +299,18 @@ enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  mutt_hash_free(&AutoSubscribeCache);
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
+  mutt_hash_free(&md->auto_subscribe_cache);
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&SubscribedLists, buf_string(token));
-    mutt_regexlist_remove(&MailLists, buf_string(token));
+    mutt_regexlist_remove(&md->subscribed, buf_string(token));
+    mutt_regexlist_remove(&md->mail, buf_string(token));
 
     if (!mutt_str_equal(buf_string(token), "*") &&
-        (mutt_regexlist_add(&UnMailLists, buf_string(token), REG_ICASE, err) != 0))
+        (mutt_regexlist_add(&md->unmail, buf_string(token), REG_ICASE, err) != 0))
     {
       goto done;
     }
@@ -331,17 +340,20 @@ enum CommandResult parse_unsubscribe(const struct Command *cmd, struct Buffer *l
     return MUTT_CMD_WARNING;
   }
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  mutt_hash_free(&AutoSubscribeCache);
+  mutt_hash_free(&md->auto_subscribe_cache);
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&SubscribedLists, buf_string(token));
+    mutt_regexlist_remove(&md->subscribed, buf_string(token));
 
     if (!mutt_str_equal(buf_string(token), "*") &&
-        (mutt_regexlist_add(&UnSubscribedLists, buf_string(token), REG_ICASE, err) != 0))
+        (mutt_regexlist_add(&md->unsubscribed, buf_string(token), REG_ICASE, err) != 0))
     {
       goto done;
     }

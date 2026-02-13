@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2017-2022 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Federico Kircheis <federico.kircheis@gmail.com>
  * Copyright (C) 2018 Reis Radomil
  * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
@@ -60,6 +60,7 @@
 #include "globals.h"
 #include "mailcap.h"
 #include "mime.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "parameter.h"
@@ -495,6 +496,9 @@ static bool is_autoview(struct Body *b)
 
   snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   const bool c_implicit_auto_view = cs_subset_bool(NeoMutt->sub, "implicit_auto_view");
   if (c_implicit_auto_view)
   {
@@ -506,7 +510,7 @@ static bool is_autoview(struct Body *b)
     /* determine if this type is on the user's auto-view list */
     mutt_check_lookup_list(b, type, sizeof(type));
     struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &AutoViewList, entries)
+    STAILQ_FOREACH(np, &md->auto_view, entries)
     {
       int i = mutt_str_len(np->data);
       i--;
@@ -970,9 +974,12 @@ static int alternative_handler(struct Body *b_email, struct State *state)
 
   b_email = b;
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   /* First, search list of preferred types */
   struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &AlternativeOrderList, entries)
+  STAILQ_FOREACH(np, &md->alternative_order, entries)
   {
     int btlen; /* length of basetype */
     bool wild; /* do we have a wildcard to match all subtypes? */

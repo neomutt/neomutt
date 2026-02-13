@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
@@ -39,7 +39,7 @@
 #include "core/lib.h"
 #include "ignore.h"
 #include "parse/lib.h"
-#include "globals2.h"
+#include "module_data.h"
 
 /**
  * parse_ignore - Parse the 'ignore' command - Implements Command::parse() - @ingroup command_parse
@@ -60,11 +60,14 @@ enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
 
   struct Buffer *token = buf_pool_get();
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    remove_from_stailq(&UnIgnore, buf_string(token));
-    add_to_stailq(&Ignore, buf_string(token));
+    remove_from_stailq(&md->unignore, buf_string(token));
+    add_to_stailq(&md->ignore, buf_string(token));
   } while (MoreArgs(line));
 
   buf_pool_release(&token);
@@ -90,15 +93,18 @@ enum CommandResult parse_unignore(const struct Command *cmd, struct Buffer *line
 
   struct Buffer *token = buf_pool_get();
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
     /* don't add "*" to the unignore list */
     if (!mutt_str_equal(buf_string(token), "*"))
-      add_to_stailq(&UnIgnore, buf_string(token));
+      add_to_stailq(&md->unignore, buf_string(token));
 
-    remove_from_stailq(&Ignore, buf_string(token));
+    remove_from_stailq(&md->ignore, buf_string(token));
   } while (MoreArgs(line));
 
   buf_pool_release(&token);

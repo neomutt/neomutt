@@ -541,20 +541,6 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
   }
   config_str_set_initial(cs, "real_name", c_real_name);
 
-  /* RFC2368, "4. Unsafe headers"
-   * The creator of a mailto URL can't expect the resolver of a URL to
-   * understand more than the "subject" and "body" headers. Clients that
-   * resolve mailto URLs into mail messages should be able to correctly
-   * create RFC822-compliant mail messages using the "subject" and "body"
-   * headers.  */
-  add_to_stailq(&MailToAllow, "body");
-  add_to_stailq(&MailToAllow, "subject");
-  /* Cc, In-Reply-To, and References help with not breaking threading on
-   * mailing lists, see https://github.com/neomutt/neomutt/issues/115 */
-  add_to_stailq(&MailToAllow, "cc");
-  add_to_stailq(&MailToAllow, "in-reply-to");
-  add_to_stailq(&MailToAllow, "references");
-
   if (ARRAY_EMPTY(user_files))
   {
     const char *xdg_cfg_home = mutt_str_getenv("XDG_CONFIG_HOME");
@@ -1747,22 +1733,9 @@ main_exit:
   alias_cleanup();
   sb_cleanup();
 
-  mutt_regexlist_free(&MailLists);
-  mutt_regexlist_free(&NoSpamList);
-  mutt_regexlist_free(&SubscribedLists);
-  mutt_regexlist_free(&UnMailLists);
-  mutt_regexlist_free(&UnSubscribedLists);
-
   driver_tags_cleanup();
 
   /* Lists of strings */
-  mutt_list_free(&AlternativeOrderList);
-  mutt_list_free(&AutoViewList);
-  mutt_list_free(&HeaderOrderList);
-  mutt_list_free(&Ignore);
-  mutt_list_free(&MailToAllow);
-  mutt_list_free(&MimeLookupList);
-  mutt_list_free(&UnIgnore);
   mutt_list_free(&UserHeader);
 
   colors_cleanup();
@@ -1770,8 +1743,6 @@ main_exit:
   FREE(&CurrentFolder);
   FREE(&LastFolder);
   FREE(&ShortHostname);
-
-  mutt_replacelist_free(&SpamList);
 
   mutt_delete_hooks(CMD_NONE);
 
