@@ -3,7 +3,7 @@
  * Parse Stailq Commands
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,10 +26,14 @@
 #include "core/lib.h"
 
 struct Buffer;
+struct ListHead;
 struct ParseContext;
 struct ParseError;
 
 enum CommandResult parse_stailq          (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unstailq        (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+
+enum CommandResult parse_stailq_list  (const struct Command *cmd, struct Buffer *line, struct ListHead *list, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_unstailq_list(const struct Command *cmd, struct Buffer *line, struct ListHead *list, const struct ParseContext *pc, struct ParseError *pe);
 
 #endif /* MUTT_COMMANDS_STAILQ_H */
