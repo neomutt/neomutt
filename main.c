@@ -484,7 +484,7 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
     buf_seek(buf, 0);
 
     // Create a temporary Command struct for parse_my_hdr
-    const struct Command my_hdr_cmd = { .name = "my-header", .data = 0 };
+    const struct Command my_hdr_cmd = { .name = "my-header" };
     parse_my_header(&my_hdr_cmd, buf, pc, pe); /* adds to UserHeader */
   }
 

@@ -674,27 +674,27 @@ enum CommandResult parse_unmime_lookup(const struct Command *cmd, struct Buffer 
  */
 const struct Command AttachCommands[] = {
   // clang-format off
-  { "attachments", CMD_ATTACHMENTS, parse_attachments, CMD_NO_DATA,
+  { "attachments", CMD_ATTACHMENTS, parse_attachments,
         N_("Set attachment counting rules"),
         N_("attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"),
         "mimesupport.html#attachments" },
-  { "mime-lookup", CMD_MIME_LOOKUP, parse_mime_lookup, CMD_NO_DATA,
+  { "mime-lookup", CMD_MIME_LOOKUP, parse_mime_lookup,
         N_("Map specified MIME types/subtypes to display handlers"),
         N_("mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"),
         "mimesupport.html#mime-lookup" },
-  { "unattachments", CMD_UNATTACHMENTS, parse_unattachments, CMD_NO_DATA,
+  { "unattachments", CMD_UNATTACHMENTS, parse_unattachments,
         N_("Remove attachment counting rules"),
         N_("unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"),
         "mimesupport.html#attachments" },
-  { "unmime-lookup", CMD_UNMIME_LOOKUP, parse_unmime_lookup, CMD_NO_DATA,
+  { "unmime-lookup", CMD_UNMIME_LOOKUP, parse_unmime_lookup,
         N_("Remove custom MIME-type handlers"),
         N_("unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
         "mimesupport.html#mime-lookup" },
 
   // Deprecated
-  { "mime_lookup",         CMD_NONE, NULL, CMD_NO_DATA, "mime-lookup",         NULL, NULL, CF_SYNONYM },
-  { "unmime_lookup",       CMD_NONE, NULL, CMD_NO_DATA, "unmime-lookup",       NULL, NULL, CF_SYNONYM },
+  { "mime_lookup",         CMD_NONE, NULL, "mime-lookup",         NULL, NULL, CF_SYNONYM },
+  { "unmime_lookup",       CMD_NONE, NULL, "unmime-lookup",       NULL, NULL, CF_SYNONYM },
 
-  { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };

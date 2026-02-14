@@ -37,19 +37,19 @@
  */
 const struct Command IndexCommands[] = {
   // clang-format off
-  { "subject-regex", CMD_SUBJECT_REGEX, parse_subjectrx_list, CMD_NO_DATA,
+  { "subject-regex", CMD_SUBJECT_REGEX, parse_subjectrx_list,
         N_("Apply regex-based rewriting to message subjects"),
         N_("subject-regex <regex> <replacement>"),
         "advancedusage.html#display-munging" },
-  { "unsubject-regex", CMD_UNSUBJECT_REGEX, parse_unsubjectrx_list, CMD_NO_DATA,
+  { "unsubject-regex", CMD_UNSUBJECT_REGEX, parse_unsubjectrx_list,
         N_("Remove subject-rewriting rules"),
         N_("unsubject-regex { * | <regex> }"),
         "advancedusage.html#display-munging" },
 
   // Deprecated
-  { "subjectrx",           CMD_NONE, NULL, CMD_NO_DATA, "subject-regex",       NULL, NULL, CF_SYNONYM },
-  { "unsubjectrx",         CMD_NONE, NULL, CMD_NO_DATA, "unsubject-regex",     NULL, NULL, CF_SYNONYM },
+  { "subjectrx",           CMD_NONE, NULL, "subject-regex",       NULL, NULL, CF_SYNONYM },
+  { "unsubjectrx",         CMD_NONE, NULL, "unsubject-regex",     NULL, NULL, CF_SYNONYM },
 
-  { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };

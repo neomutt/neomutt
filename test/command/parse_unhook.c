@@ -3,7 +3,7 @@
  * Test code for parse_unhook()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,8 +33,8 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command FolderHook = { "folder-hook", CMD_FOLDER_HOOK, NULL, CMD_NO_DATA };
-static const struct Command UnHook     = { "unhook",      CMD_UNHOOK,      NULL, CMD_NO_DATA };
+static const struct Command FolderHook = { "folder-hook", CMD_FOLDER_HOOK, NULL};
+static const struct Command UnHook     = { "unhook",      CMD_UNHOOK,      NULL};
 // clang-format on
 
 static struct ConfigDef Vars[] = {
@@ -46,8 +46,8 @@ static struct ConfigDef Vars[] = {
 
 const struct Command unhook_test_commands[] = {
   // clang-format off
-  { "folder-hook", CMD_FOLDER_HOOK, parse_folder_hook, CMD_NO_DATA },
-  { NULL, CMD_NONE, NULL, CMD_NO_DATA },
+  { "folder-hook", CMD_FOLDER_HOOK, parse_folder_hook},
+  { NULL, CMD_NONE, NULL},
   // clang-format on
 };
 

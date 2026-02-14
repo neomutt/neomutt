@@ -3,7 +3,7 @@
  * Test code for parse_ifdef()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,14 +32,14 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command Ifdef  = { "ifdef",  CMD_IFDEF,  NULL, CMD_NO_DATA };
-static const struct Command Ifndef = { "ifndef", CMD_IFNDEF, NULL, CMD_NO_DATA };
+static const struct Command Ifdef  = { "ifdef",  CMD_IFDEF,  NULL};
+static const struct Command Ifndef = { "ifndef", CMD_IFNDEF, NULL};
 // clang-format on
 
 const struct Command test_commands[] = {
   // clang-format off
-  { "echo", CMD_ECHO, parse_echo, CMD_NO_DATA },
-  { NULL, CMD_NONE, NULL, CMD_NO_DATA },
+  { "echo", CMD_ECHO, parse_echo},
+  { NULL, CMD_NONE, NULL},
   // clang-format on
 };
 

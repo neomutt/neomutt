@@ -147,8 +147,6 @@ enum CommandId
   CMD_VERSION,               ///< `:version`
 };
 
-#define CMD_NO_DATA  0    ///< Convenience symbol
-
 /**
  * @defgroup command_api Command API
  *
@@ -178,8 +176,6 @@ struct Command
    * @pre pe   is not NULL
    */
   enum CommandResult (*parse)(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-
-  intptr_t data;        ///< Data or flags to pass to the command
 
   const char *help;     ///< One-line description of the Command
   const char *proto;    ///< Command prototype

@@ -3,7 +3,7 @@
  * Test code for parse_setenv()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,8 +32,8 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command Setenv   = { "setenv",   CMD_SETENV,   NULL, CMD_NO_DATA };
-static const struct Command UnSetenv = { "unsetenv", CMD_UNSETENV, NULL, CMD_NO_DATA };
+static const struct Command Setenv   = { "setenv",   CMD_SETENV,   NULL};
+static const struct Command UnSetenv = { "unsetenv", CMD_UNSETENV, NULL};
 // clang-format on
 
 static const struct CommandTest SetenvTests[] = {

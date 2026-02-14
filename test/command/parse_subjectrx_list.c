@@ -3,7 +3,7 @@
  * Test code for parse_subjectrx_list()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,7 +32,7 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command SubjectRegex = { "subject-regex", CMD_SUBJECT_REGEX, NULL, CMD_NO_DATA };
+static const struct Command SubjectRegex = { "subject-regex", CMD_SUBJECT_REGEX, NULL};
 // clang-format on
 
 static const struct CommandTest Tests[] = {

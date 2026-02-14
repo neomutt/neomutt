@@ -185,16 +185,16 @@ done:
  */
 const struct Command ImapCommands[] = {
   // clang-format off
-  { "subscribe-to", CMD_SUBSCRIBE_TO, parse_subscribe_to, CMD_NO_DATA,
+  { "subscribe-to", CMD_SUBSCRIBE_TO, parse_subscribe_to,
         N_("Subscribe to an IMAP mailbox"),
         N_("subscribe-to <imap-folder-uri>"),
         "optionalfeatures.html#imap" },
-  { "unsubscribe-from", CMD_UNSUBSCRIBE_FROM, parse_unsubscribe_from, CMD_NO_DATA,
+  { "unsubscribe-from", CMD_UNSUBSCRIBE_FROM, parse_unsubscribe_from,
         N_("Unsubscribe from an IMAP mailbox"),
         N_("unsubscribe-from <imap-folder-uri>"),
         "optionalfeatures.html#imap" },
 
-  { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

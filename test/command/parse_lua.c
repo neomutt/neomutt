@@ -3,7 +3,7 @@
  * Test code for parse_lua()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,7 +32,7 @@
 #include "test_common.h"
 
 #ifdef USE_LUA
-static const struct Command Lua = { "lua", CMD_LUA, NULL, CMD_NO_DATA };
+static const struct Command Lua = { "lua", CMD_LUA, NULL };
 
 static const struct CommandTest Tests[] = {
   // clang-format off

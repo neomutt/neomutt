@@ -33,7 +33,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command Exec = { "exec", CMD_EXEC, NULL, CMD_NO_DATA };
+static const struct Command Exec = { "exec", CMD_EXEC, NULL };
 
 static const struct CommandTest Tests[] = {
   // clang-format off

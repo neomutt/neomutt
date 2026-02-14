@@ -148,16 +148,16 @@ done:
  */
 const struct Command LuaCommands[] = {
   // clang-format off
-  { "lua", CMD_LUA, parse_lua, CMD_NO_DATA,
+  { "lua", CMD_LUA, parse_lua,
         N_("Run a Lua expression or call a Lua function"),
         N_("lua <lua-command>"),
         "optionalfeatures.html#lua" },
-  { "lua-source", CMD_LUA_SOURCE, parse_lua_source, CMD_NO_DATA,
+  { "lua-source", CMD_LUA_SOURCE, parse_lua_source,
         N_("Execute a Lua script file"),
         N_("lua-source <filename>"),
         "optionalfeatures.html#lua" },
 
-  { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

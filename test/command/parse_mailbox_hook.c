@@ -3,7 +3,7 @@
  * Test code for parse_mailbox_hook()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -40,9 +40,9 @@ static struct ConfigDef Vars[] = {
 };
 
 // clang-format off
-static const struct Command FccHook     = { "fcc-hook",      CMD_FCC_HOOK,      NULL, CMD_NO_DATA };
-static const struct Command FccSaveHook = { "fcc-save-hook", CMD_FCC_SAVE_HOOK, NULL, CMD_NO_DATA };
-static const struct Command SaveHook    = { "save-hook",     CMD_SAVE_HOOK,     NULL, CMD_NO_DATA };
+static const struct Command FccHook     = { "fcc-hook",      CMD_FCC_HOOK,      NULL};
+static const struct Command FccSaveHook = { "fcc-save-hook", CMD_FCC_SAVE_HOOK, NULL};
+static const struct Command SaveHook    = { "save-hook",     CMD_SAVE_HOOK,     NULL};
 // clang-format on
 
 static const struct CommandTest FccTests[] = {
