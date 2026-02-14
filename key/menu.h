@@ -28,9 +28,6 @@
 #include "get.h"
 #include "keymap.h"
 
-/// Maximum length of a key binding sequence used for buffer in km_bind
-#define MAX_SEQ 8
-
 /**
  * struct MenuFuncOp - Mapping between a function and an operation
  */
