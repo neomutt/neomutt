@@ -94,7 +94,7 @@ struct KeyEvent *array_pop(struct KeyEventArray *a)
  */
 void array_add(struct KeyEventArray *a, int ch, int op)
 {
-  struct KeyEvent event = { ch, op };
+  struct KeyEvent event = { ch, op, 0 };
   ARRAY_ADD(a, event);
 }
 
@@ -192,9 +192,9 @@ static int mutt_monitor_getch_timeout(int timeout_ms)
  */
 static struct KeyEvent mutt_getch_timeout(GetChFlags flags, int timeout_ms)
 {
-  static const struct KeyEvent event_abort = { 0, OP_ABORT };
-  static const struct KeyEvent event_repaint = { 0, OP_REPAINT };
-  static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT };
+  static const struct KeyEvent event_abort = { 0, OP_ABORT, 0 };
+  static const struct KeyEvent event_repaint = { 0, OP_REPAINT, 0 };
+  static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT, 0 };
 
   if (!OptGui)
     return event_abort;
@@ -263,11 +263,11 @@ static struct KeyEvent mutt_getch_timeout(GetChFlags flags, int timeout_ms)
       /* send ALT-x as ESC-x */
       ch &= ~0x80;
       mutt_unget_ch(ch);
-      return (struct KeyEvent) { '\033', OP_NULL }; // Escape
+      return (struct KeyEvent) { '\033', OP_NULL, 0 }; // Escape
     }
   }
 
-  return (struct KeyEvent) { ch, OP_NULL };
+  return (struct KeyEvent) { ch, OP_NULL, 0 };
 }
 
 /**
@@ -442,7 +442,7 @@ KeyGatherFlags gather_functions(const struct MenuDefinition *md, const keycode_t
  */
 struct KeyEvent km_dokey(enum MenuType mtype, GetChFlags flags)
 {
-  struct KeyEvent event = { 0, OP_NULL };
+  struct KeyEvent event = { 0, OP_NULL, 0 };
   int pos = 0;
   const struct MenuDefinition *md = NULL;
   keycode_t keys[MAX_SEQ] = { 0 };
@@ -533,5 +533,5 @@ struct KeyEvent km_dokey(enum MenuType mtype, GetChFlags flags)
 
   mutt_flushinp();
   mutt_error(_("Macro loop detected"));
-  return (struct KeyEvent) { '\0', OP_ABORT };
+  return (struct KeyEvent) { '\0', OP_ABORT, 0 };
 }
