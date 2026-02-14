@@ -48,8 +48,9 @@ typedef uint8_t MenuFuncFlags;          ///< Flags, e.g. #MFF_DEPRECATED
  */
 struct KeyEvent
 {
-  int ch; ///< Raw key pressed
-  int op; ///< Function opcode, e.g. OP_HELP
+  int ch;    ///< Raw key pressed
+  int op;    ///< Function opcode, e.g. OP_HELP
+  int count; ///< Optional count prefix, e.g. 3 for `3j`
 };
 ARRAY_HEAD(KeyEventArray, struct KeyEvent);
 
