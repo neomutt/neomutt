@@ -33,6 +33,12 @@ struct MenuDefinition;
 typedef uint8_t GetChFlags;             ///< Flags for mutt_getch(), e.g. #GETCH_NO_FLAGS
 #define GETCH_NO_FLAGS              0   ///< No flags are set
 #define GETCH_IGNORE_MACRO    (1 << 0)  ///< Don't use MacroEvents
+#define GETCH_NO_COUNTER      (1 << 1)  ///< km_dokey(): disable numeric count prefix parsing
+
+/// Maximum number of digits in a key count prefix, e.g. `123j`
+#define KEY_COUNT_MAX_DIGITS 6
+/// Maximum number of keys in a key sequence, e.g. `abc`
+#define KEY_SEQ_MAX_LEN 8
 
 typedef uint8_t KeyGatherFlags;         ///< Flags for gather_functions(), e.g. #KEY_GATHER_NO_MATCH
 #define KEY_GATHER_NO_MATCH         0   ///< No bindings match the search string
