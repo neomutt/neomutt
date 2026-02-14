@@ -32,6 +32,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "menu.h"
+#include "get.h"
 #include "init.h"
 #include "keymap.h"
 
@@ -58,14 +59,14 @@ enum CommandResult km_bind(struct MenuDefinition *md, const char *key_str,
   struct Keymap *last = NULL;
   struct Keymap *np = NULL;
   struct Keymap *compare = NULL;
-  keycode_t buf[MAX_SEQ] = { 0 };
+  keycode_t buf[KEY_SEQ_MAX_LEN] = { 0 };
   size_t pos = 0;
   size_t lastpos = 0;
 
   struct SubMenu *sm = *ARRAY_FIRST(&md->submenus);
   struct KeymapList *kml = &sm->keymaps;
 
-  size_t len = parse_keys(key_str, buf, MAX_SEQ);
+  size_t len = parse_keys(key_str, buf, KEY_SEQ_MAX_LEN);
 
   struct Keymap *map = keymap_alloc(len, buf);
   map->op = op;

@@ -28,8 +28,9 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <limits.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include <string.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -46,7 +47,7 @@
 #endif
 
 /// XXX
-static const int MaxKeyLoop = 10;
+static const int MaxKeyLoop = 64;
 
 // It's not possible to unget more than one char under some curses libs,
 // so roll our own input buffering routines.
@@ -404,6 +405,9 @@ KeyGatherFlags gather_functions(const struct MenuDefinition *md, const keycode_t
 
     STAILQ_FOREACH(km, &(*smp)->keymaps, entries)
     {
+      if (key_len > km->len)
+        continue;
+
       bool match = true;
 
       for (int i = 0; i < key_len; i++)
@@ -435,6 +439,16 @@ KeyGatherFlags gather_functions(const struct MenuDefinition *md, const keycode_t
 }
 
 /**
+ * enum DokeyState - Internal state for km_dokey()
+ */
+enum DokeyState
+{
+  DKS_START = 1, ///< Initial state, no input received yet
+  DKS_COUNTER,   ///< Reading count prefix digits
+  DKS_NEED_MORE, ///< Prefix matches an exact and/or longer keybinding
+};
+
+/**
  * km_dokey - Determine what a keypress should do
  * @param mtype Menu type, e.g. #MENU_EDITOR
  * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
@@ -443,9 +457,16 @@ KeyGatherFlags gather_functions(const struct MenuDefinition *md, const keycode_t
 struct KeyEvent km_dokey(enum MenuType mtype, GetChFlags flags)
 {
   struct KeyEvent event = { 0, OP_NULL, 0 };
-  int pos = 0;
+  enum DokeyState state = DKS_START;
+  int count = 0;
+  int count_digits = 0;
+  int key_len = 0;
+  struct Keymap *pending_exact = NULL;
   const struct MenuDefinition *md = NULL;
-  keycode_t keys[MAX_SEQ] = { 0 };
+  keycode_t keys[KEY_SEQ_MAX_LEN] = { 0 };
+
+  const int c_key_timeout_initial = 1000;
+  const int c_key_timeout_progress = 700;
 
   ARRAY_FOREACH(md, &MenuDefs)
   {
@@ -455,77 +476,168 @@ struct KeyEvent km_dokey(enum MenuType mtype, GetChFlags flags)
 
   for (int n = 0; n < MaxKeyLoop; n++)
   {
-    event = mutt_getch(flags);
+    const int timeout_ms = (state == DKS_START) ? c_key_timeout_initial : c_key_timeout_progress;
+    event = mutt_getch_timeout(flags, timeout_ms);
     mutt_debug(LL_DEBUG1, "KEY: \n");
 
     // abort, timeout, repaint
     if (event.op < OP_NULL)
     {
+      if (event.op == OP_TIMEOUT)
+      {
+        if ((state == DKS_NEED_MORE) && pending_exact)
+        {
+          if (pending_exact->op != OP_MACRO)
+          {
+            return (struct KeyEvent) { 0, pending_exact->op, count };
+          }
+
+          if (flags & GETCH_IGNORE_MACRO)
+          {
+            return (struct KeyEvent) { 0, OP_NULL, 0 };
+          }
+
+          generic_tokenize_push_string(pending_exact->macro);
+          state = DKS_START;
+          count = 0;
+          count_digits = 0;
+          key_len = 0;
+          pending_exact = NULL;
+          memset(keys, 0, sizeof(keys));
+          continue;
+        }
+      }
+
       mutt_debug(LL_DEBUG1, "KEY: getch() %s\n", opcodes_get_name(event.op));
+      return event;
+    }
+
+    // macro op pushed into queue (e.g. from `exec`)
+    if (event.op > OP_NULL)
+    {
       return event;
     }
 
     mutt_debug(LL_DEBUG1, "KEY: getch() '%c'\n", isprint(event.ch) ? event.ch : '?');
 
-    keys[pos] = event.ch;
+    if (!(flags & GETCH_NO_COUNTER) && (state != DKS_NEED_MORE) &&
+        (event.ch >= '0') && (event.ch <= '9'))
+    {
+      if (count_digits >= KEY_COUNT_MAX_DIGITS)
+      {
+        return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+      }
+
+      const int digit = event.ch - '0';
+      if ((count > (INT_MAX / 10)) ||
+          ((count == (INT_MAX / 10)) && (digit > (INT_MAX % 10))))
+      {
+        return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+      }
+
+      count = (count * 10) + digit;
+      count_digits++;
+      state = DKS_COUNTER;
+      continue;
+    }
+
+    if (key_len >= KEY_SEQ_MAX_LEN)
+    {
+      return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+    }
+
+    keys[key_len] = event.ch;
+    key_len++;
+
     struct KeymapMatchArray kma = ARRAY_HEAD_INITIALIZER;
-    KeyGatherFlags kfg = gather_functions(md, keys, pos + 1, &kma);
+    KeyGatherFlags kfg = gather_functions(md, keys, key_len, &kma);
 
     mutt_debug(LL_DEBUG1, "KEY: flags = %x\n", kfg);
 
-    if (kfg == KEY_GATHER_NO_MATCH)
+    bool has_exact = false;
+    bool has_longer = false;
+    pending_exact = NULL;
+
+    struct KeymapMatch *kmatch = NULL;
+    ARRAY_FOREACH(kmatch, &kma)
     {
-      mutt_debug(LL_DEBUG1, "KEY: \033[1;31mFAIL1: ('%c', %s)\033[0m\n",
+      if (kmatch->flags == KEY_GATHER_MATCH)
+      {
+        has_exact = true;
+        if (!pending_exact)
+          pending_exact = kmatch->keymap;
+      }
+      else if (kmatch->flags == KEY_GATHER_LONGER)
+      {
+        has_longer = true;
+      }
+    }
+
+    if (!has_exact && !has_longer)
+    {
+      mutt_debug(LL_DEBUG1, "KEY: FAIL1: ('%c', %s)\n",
                  isprint(event.ch) ? event.ch : '?', opcodes_get_name(event.op));
+      ARRAY_FREE(&kma);
       return event;
     }
 
-    if ((kfg & KEY_GATHER_MATCH) == KEY_GATHER_MATCH)
+    if (has_exact && has_longer)
     {
-      struct KeymapMatch *kmatch = NULL;
-
-      ARRAY_FOREACH(kmatch, &kma)
-      {
-        if (kmatch->flags == KEY_GATHER_MATCH)
-        {
-          struct Keymap *map = kmatch->keymap;
-
-          if (map->op != OP_MACRO)
-          {
-            mutt_debug(LL_DEBUG1, "KEY: \033[1;32mSUCCESS: ('%c', %s)\033[0m\n",
-                       isprint(event.ch) ? event.ch : '?', opcodes_get_name(map->op));
-            ARRAY_FREE(&kma);
-            return (struct KeyEvent) { event.ch, map->op };
-          }
-
-          /* #GETCH_IGNORE_MACRO turns off processing the MacroEvents buffer
-           * in mutt_getch().  Generating new macro events during that time would
-           * result in undesired behavior once the option is turned off.
-           *
-           * Originally this returned -1, however that results in an unbuffered
-           * username or password prompt being aborted.  Returning OP_NULL allows
-           * mw_get_field() to display the keybinding pressed instead.
-           *
-           * It may be unexpected for a macro's keybinding to be returned,
-           * but less so than aborting the prompt.  */
-          if (flags & GETCH_IGNORE_MACRO)
-          {
-            ARRAY_FREE(&kma);
-            return (struct KeyEvent) { event.ch, OP_NULL };
-          }
-
-          generic_tokenize_push_string(map->macro);
-          pos = 0;
-          ARRAY_FREE(&kma);
-          break;
-        }
-      }
+      state = DKS_NEED_MORE;
+      ARRAY_FREE(&kma);
+      continue;
     }
-    else
+
+    if (!has_exact && has_longer)
     {
-      mutt_debug(LL_DEBUG1, "KEY: \033[1;33mLONGER: getch() '%c'\033[0m\n",
-                 isprint(event.ch) ? event.ch : '?');
-      pos++;
+      state = DKS_NEED_MORE;
+      ARRAY_FREE(&kma);
+      continue;
+    }
+
+    if (has_exact && pending_exact)
+    {
+      struct Keymap *map = pending_exact;
+
+      if (map->op != OP_MACRO)
+      {
+        if ((count_digits > 0) && (count == 0))
+        {
+          ARRAY_FREE(&kma);
+          return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+        }
+
+        mutt_debug(LL_DEBUG1, "KEY: SUCCESS: ('%c', %s)\n",
+                   isprint(event.ch) ? event.ch : '?', opcodes_get_name(map->op));
+        ARRAY_FREE(&kma);
+        return (struct KeyEvent) { event.ch, map->op, count_digits > 0 ? count : 0 };
+      }
+
+      /* #GETCH_IGNORE_MACRO turns off processing the MacroEvents buffer
+       * in mutt_getch().  Generating new macro events during that time would
+       * result in undesired behavior once the option is turned off.
+       *
+       * Originally this returned -1, however that results in an unbuffered
+       * username or password prompt being aborted.  Returning OP_NULL allows
+       * mw_get_field() to display the keybinding pressed instead.
+       *
+       * It may be unexpected for a macro's keybinding to be returned,
+       * but less so than aborting the prompt.  */
+      if (flags & GETCH_IGNORE_MACRO)
+      {
+        ARRAY_FREE(&kma);
+        return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+      }
+
+      generic_tokenize_push_string(map->macro);
+      state = DKS_START;
+      count = 0;
+      count_digits = 0;
+      key_len = 0;
+      pending_exact = NULL;
+      memset(keys, 0, sizeof(keys));
+      ARRAY_FREE(&kma);
+      continue;
     }
 
     ARRAY_FREE(&kma);
