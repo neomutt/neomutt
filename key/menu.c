@@ -54,6 +54,7 @@ enum CommandResult km_bind(struct MenuDefinition *md, const char *key_str,
 {
   if (!md)
     return MUTT_CMD_ERROR;
+  (void) err;
 
   enum CommandResult rc = MUTT_CMD_SUCCESS;
   struct Keymap *last = NULL;
@@ -92,40 +93,23 @@ enum CommandResult km_bind(struct MenuDefinition *md, const char *key_str,
     }
     else /* equal keycodes */
     {
-      /* Don't warn on overwriting a 'noop' binding */
-      if ((np->len != len) && (np->op != OP_NULL))
+      if (np->len < len)
       {
-        static const char *guide_link = "https://neomutt.org/guide/configuration.html#bind-warnings";
-        /* Overwrite with the different lengths, warn */
-        struct Buffer *old_binding = buf_pool_get();
-        struct Buffer *new_binding = buf_pool_get();
-
-        keymap_expand_key(map, old_binding);
-        keymap_expand_key(np, new_binding);
-
-        char *err_msg = _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'");
-        if (err)
-        {
-          /* err was passed, put the string there */
-          buf_printf(err, err_msg, buf_string(old_binding),
-                     buf_string(new_binding), md->name, buf_string(new_binding));
-          buf_add_printf(err, "  %s", guide_link);
-        }
-        else
-        {
-          struct Buffer *tmp = buf_pool_get();
-          buf_printf(tmp, err_msg, buf_string(old_binding),
-                     buf_string(new_binding), md->name, buf_string(new_binding));
-          buf_add_printf(tmp, "  %s", guide_link);
-          mutt_error("%s", buf_string(tmp));
-          buf_pool_release(&tmp);
-        }
-        rc = MUTT_CMD_WARNING;
-
-        buf_pool_release(&old_binding);
-        buf_pool_release(&new_binding);
+        // Prefix-compatible binding, continue looking for insertion point.
+        last = np;
+        lastpos = np->len;
+        if (pos > np->eq)
+          pos = np->eq;
+        continue;
+      }
+      else if (np->len > len)
+      {
+        // Prefix-compatible binding, insert before the longer sequence.
+        map->eq = len;
+        break;
       }
 
+      // Exact same key sequence: replace existing mapping.
       map->eq = np->eq;
       STAILQ_REMOVE(kml, np, Keymap, entries);
       keymap_free(&np);
