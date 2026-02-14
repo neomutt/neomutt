@@ -161,17 +161,18 @@ void mutt_flush_macro_to_endcond(void)
 
 #ifdef USE_INOTIFY
 /**
- * mutt_monitor_getch - Get a character and poll the filesystem monitor
+ * mutt_monitor_getch_timeout - Get a character and poll the filesystem monitor
+ * @param timeout_ms Timeout in milliseconds
  * @retval num Character pressed
  * @retval ERR Timeout
  */
-int mutt_monitor_getch(void)
+static int mutt_monitor_getch_timeout(int timeout_ms)
 {
   /* ncurses has its own internal buffer, so before we perform a poll,
    * we need to make sure there isn't a character waiting */
   timeout(0);
   int ch = getch();
-  timeout(1000); // 1 second
+  timeout(timeout_ms);
   if (ch == ERR)
   {
     if (mutt_monitor_poll() != 0)
@@ -184,21 +185,12 @@ int mutt_monitor_getch(void)
 #endif /* USE_INOTIFY */
 
 /**
- * mutt_getch - Read a character from the input buffer
- * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
+ * mutt_getch_timeout - Read a character from the input buffer with timeout
+ * @param flags      Flags, e.g. #GETCH_IGNORE_MACRO
+ * @param timeout_ms Timeout in milliseconds
  * @retval obj KeyEvent to process
- *
- * The priority for reading events is:
- * 1. UngetKeyEvents buffer
- * 2. MacroEvents buffer
- * 3. Keyboard
- *
- * This function can return:
- * - Abort   `{ 0, OP_ABORT   }`
- * - Repaint `{ 0, OP_REPAINT }`
- * - Timeout `{ 0, OP_TIMEOUT }`
  */
-struct KeyEvent mutt_getch(GetChFlags flags)
+static struct KeyEvent mutt_getch_timeout(GetChFlags flags, int timeout_ms)
 {
   static const struct KeyEvent event_abort = { 0, OP_ABORT };
   static const struct KeyEvent event_repaint = { 0, OP_REPAINT };
@@ -221,9 +213,9 @@ struct KeyEvent mutt_getch(GetChFlags flags)
   int ch;
   SigInt = false;
   mutt_sig_allow_interrupt(true);
-  timeout(1000); // 1 second
+  timeout(timeout_ms);
 #ifdef USE_INOTIFY
-  ch = mutt_monitor_getch();
+  ch = mutt_monitor_getch_timeout(timeout_ms);
 #else
   ch = getch();
 #endif
@@ -276,6 +268,26 @@ struct KeyEvent mutt_getch(GetChFlags flags)
   }
 
   return (struct KeyEvent) { ch, OP_NULL };
+}
+
+/**
+ * mutt_getch - Read a character from the input buffer
+ * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
+ * @retval obj KeyEvent to process
+ *
+ * The priority for reading events is:
+ * 1. UngetKeyEvents buffer
+ * 2. MacroEvents buffer
+ * 3. Keyboard
+ *
+ * This function can return:
+ * - Abort   `{ 0, OP_ABORT,   0 }`
+ * - Repaint `{ 0, OP_REPAINT, 0 }`
+ * - Timeout `{ 0, OP_TIMEOUT, 0 }`
+ */
+struct KeyEvent mutt_getch(GetChFlags flags)
+{
+  return mutt_getch_timeout(flags, 1000);
 }
 
 /**
