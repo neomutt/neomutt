@@ -42,6 +42,7 @@
 #include "keymap.h"
 #include "menu.h"
 #include "module_data.h"
+#include "notify.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
@@ -455,6 +456,29 @@ enum DokeyState
 };
 
 /**
+ * key_progress_notify - Send key matching progress notification
+ * @param md      Menu Definition
+ * @param count   Parsed count prefix
+ * @param keys    Entered keys
+ * @param key_len Number of entered keys
+ */
+static void key_progress_notify(const struct MenuDefinition *md, int count,
+                                const keycode_t *keys, int key_len)
+{
+  struct EventKeyProgress ev_k = { 0 };
+  ev_k.md = md;
+  ev_k.count = count;
+  ev_k.key_len = MAX(0, MIN(key_len, KEY_SEQ_MAX_LEN));
+
+  for (int i = 0; i < ev_k.key_len; i++)
+  {
+    ev_k.keys[i] = keys[i];
+  }
+
+  notify_send(NeoMutt->notify, NT_KEY, NT_KEY_PROGRESS, &ev_k);
+}
+
+/**
  * km_dokey - Determine what a keypress should do
  * @param md    Menu Definition
  * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
@@ -468,6 +492,7 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
   int count_digits = 0;
   int key_len = 0;
   struct Keymap *pending_exact = NULL;
+  bool feedback_active = false;
   keycode_t keys[KEY_SEQ_MAX_LEN] = { 0 };
 
   const int c_key_timeout_idle = 1000;
@@ -490,11 +515,14 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
         {
           if (pending_exact->op != OP_MACRO)
           {
+            key_progress_notify(md, count, keys, key_len);
+            key_progress_notify(md, 0, NULL, 0);
             return (struct KeyEvent) { 0, pending_exact->op, count };
           }
 
           if (flags & GETCH_IGNORE_MACRO)
           {
+            key_progress_notify(md, 0, NULL, 0);
             return (struct KeyEvent) { 0, OP_NULL, 0 };
           }
 
@@ -505,6 +533,8 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
           key_len = 0;
           pending_exact = NULL;
           memset(keys, 0, sizeof(keys));
+          feedback_active = false;
+          key_progress_notify(md, 0, NULL, 0);
           continue;
         }
       }
@@ -516,6 +546,10 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
     // macro op pushed into queue (e.g. from `exec`)
     if (event.op > OP_NULL)
     {
+      if (feedback_active || (state != DKS_START))
+      {
+        key_progress_notify(md, 0, NULL, 0);
+      }
       return event;
     }
 
@@ -526,6 +560,8 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
     {
       if (count_digits >= KEY_COUNT_MAX_DIGITS)
       {
+        key_progress_notify(md, count, keys, key_len);
+        key_progress_notify(md, 0, NULL, 0);
         return (struct KeyEvent) { event.ch, OP_NULL, 0 };
       }
 
@@ -533,17 +569,23 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
       if ((count > (INT_MAX / 10)) ||
           ((count == (INT_MAX / 10)) && (digit > (INT_MAX % 10))))
       {
+        key_progress_notify(md, count, keys, key_len);
+        key_progress_notify(md, 0, NULL, 0);
         return (struct KeyEvent) { event.ch, OP_NULL, 0 };
       }
 
       count = (count * 10) + digit;
       count_digits++;
       state = DKS_COUNTER;
+      feedback_active = true;
+      key_progress_notify(md, count, keys, key_len);
       continue;
     }
 
     if (key_len >= KEY_SEQ_MAX_LEN)
     {
+      key_progress_notify(md, count, keys, key_len);
+      key_progress_notify(md, 0, NULL, 0);
       return (struct KeyEvent) { event.ch, OP_NULL, 0 };
     }
 
@@ -576,6 +618,8 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
 
     if (!has_exact && !has_longer)
     {
+      key_progress_notify(md, count, keys, key_len);
+      key_progress_notify(md, 0, NULL, 0);
       mutt_debug(LL_DEBUG3, "KEY: FAIL1: ('%c', %s)\n",
                  isprint(event.ch) ? event.ch : '?', opcodes_get_name(event.op));
       ARRAY_FREE(&kma);
@@ -585,6 +629,8 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
     if (has_exact && has_longer)
     {
       state = DKS_NEED_MORE;
+      feedback_active = true;
+      key_progress_notify(md, count, keys, key_len);
       ARRAY_FREE(&kma);
       continue;
     }
@@ -592,6 +638,8 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
     if (!has_exact && has_longer)
     {
       state = DKS_NEED_MORE;
+      feedback_active = true;
+      key_progress_notify(md, count, keys, key_len);
       ARRAY_FREE(&kma);
       continue;
     }
@@ -604,10 +652,14 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
       {
         if ((count_digits > 0) && (count == 0))
         {
+          key_progress_notify(md, count, keys, key_len);
+          key_progress_notify(md, 0, NULL, 0);
           ARRAY_FREE(&kma);
           return (struct KeyEvent) { event.ch, OP_NULL, 0 };
         }
 
+        key_progress_notify(md, count, keys, key_len);
+        key_progress_notify(md, 0, NULL, 0);
         mutt_debug(LL_DEBUG3, "KEY: SUCCESS: ('%c', %s)\n",
                    isprint(event.ch) ? event.ch : '?', opcodes_get_name(map->op));
         ARRAY_FREE(&kma);
@@ -626,6 +678,7 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
        * but less so than aborting the prompt.  */
       if (flags & GETCH_IGNORE_MACRO)
       {
+        key_progress_notify(md, 0, NULL, 0);
         ARRAY_FREE(&kma);
         return (struct KeyEvent) { event.ch, OP_NULL, 0 };
       }
@@ -637,6 +690,8 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
       key_len = 0;
       pending_exact = NULL;
       memset(keys, 0, sizeof(keys));
+      feedback_active = false;
+      key_progress_notify(md, 0, NULL, 0);
       ARRAY_FREE(&kma);
       continue;
     }
@@ -644,6 +699,7 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
     ARRAY_FREE(&kma);
   }
 
+  key_progress_notify(md, 0, NULL, 0);
   mutt_flushinp();
   mutt_error(_("Macro loop detected"));
   return (struct KeyEvent) { '\0', OP_ABORT, 0 };
