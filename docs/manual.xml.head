@@ -10631,6 +10631,85 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
       </itemizedlist>
     </sect1>
 
+    <sect1 id="batch-compose-flow">
+      <title>Batch Composition Flow</title>
+      <para>
+        In batch mode, NeoMutt performs fewer steps than interactive mode.
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            <link linkend="my-header">my-header</link> processing for To, Cc,
+            Bcc headers. (Subject is not processed.)
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            From header setting. Note: this is so <link
+            linkend="send-hook">send-hook</link>s below can match ~P, but
+            From is re-set further below in case a send-hook changes the
+            value.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="send-hook">send-hook</link>
+          </para>
+        </listitem>
+        <listitem>
+          <para>From header setting.</para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="my-header">my-header</link> processing for From,
+            Reply-To, Message-ID and user-defined headers. The To, Cc, Bcc,
+            Subject, and Return-Path headers are ignored at this stage.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Message body is copied from stdin. <link
+            linkend="signature">$signature</link> is not appended in batch
+            mode.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="send2-hook">send2-hook</link>
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="real-name">$real_name</link> part of From header setting.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <link linkend="fcc-hook">fcc-hook</link>. Fcc setting.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Fcc saving if <link
+            linkend="fcc-before-send">$fcc_before_send</link> is set. (Note the
+            variable documentation for caveats of Fcc'ing before sending.)
+          </para>
+        </listitem>
+        <listitem>
+          <para>Message sending.</para>
+        </listitem>
+        <listitem>
+          <para>
+            Fcc saving if <link
+            linkend="fcc-before-send">$fcc_before_send</link> is unset
+            (the default). Note: prior to version 1.12, the Fcc was saved
+            before sending the message. It is now by default saved afterwards,
+            but if the saving fails, the user is prompted.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect1>
+
     <sect1 id="misc-topics">
       <title>Miscellany</title>
       <para>
