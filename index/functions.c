@@ -2050,6 +2050,11 @@ static int op_mark_msg(struct IndexSharedData *shared,
 static int op_next_entry(struct IndexSharedData *shared,
                          struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
+  int count = MAX(1, event->count);
+  for (int i = 0; i < count; i++)
+    menu_next_entry(priv->menu);
+  return FR_SUCCESS;
+
   const int index = menu_get_index(priv->menu) + 1;
   if (index >= shared->mailbox->vcount)
   {
@@ -2089,6 +2094,11 @@ static int op_pipe(struct IndexSharedData *shared,
 static int op_prev_entry(struct IndexSharedData *shared,
                          struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
+  int count = MAX(1, event->count);
+  for (int i = 0; i < count; i++)
+    menu_prev_entry(priv->menu);
+  return FR_SUCCESS;
+
   int index = menu_get_index(priv->menu);
   if (index < 1)
   {
