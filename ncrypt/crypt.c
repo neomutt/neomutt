@@ -663,9 +663,14 @@ SecurityFlags mutt_is_application_smime(struct Body *b)
     len++;
     if (mutt_istr_equal((t + len), "p7m"))
     {
-      /* Not sure if this is the correct thing to do, but
-       * it's required for compatibility with Outlook */
-      return SMIME_SIGN | SMIME_OPAQUE;
+      const char *const c_smime_pkcs7_default_smime_type =
+          cs_subset_string(NeoMutt->sub, "smime_pkcs7_default_smime_type");
+      if (mutt_istr_equal(c_smime_pkcs7_default_smime_type, "signed"))
+        return SMIME_SIGN | SMIME_OPAQUE;
+      else if (mutt_istr_equal(c_smime_pkcs7_default_smime_type, "enveloped"))
+        return SMIME_ENCRYPT;
+      else
+        return SEC_NO_FLAGS;
     }
     else if (mutt_istr_equal((t + len), "p7s"))
     {

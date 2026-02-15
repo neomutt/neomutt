@@ -403,6 +403,9 @@ struct ConfigDef NcryptVarsSmime[] = {
   { "smime_keys", DT_PATH|D_PATH_DIR, 0, 0, NULL,
     "File containing user's private certificates"
   },
+  { "smime_pkcs7_default_smime_type", DT_STRING, IP "signed", 0, NULL,
+    "Default S/MIME type to assume for pkcs7-mime .p7m parts without smime-type"
+  },
   { "smime_pk7out_command", DT_EXPANDO|D_STRING_COMMAND, 0, IP &SmimeCommandFormatDef, NULL,
     "(smime) External command to extract a public certificate"
   },
