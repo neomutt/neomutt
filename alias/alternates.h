@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_ALTERNATES_H
-#define MUTT_COMMANDS_ALTERNATES_H
+#ifndef MUTT_ALIAS_ALTERNATES_H
+#define MUTT_ALIAS_ALTERNATES_H
 
 #include <stdbool.h>
 #include "core/lib.h"
@@ -54,4 +54,4 @@ enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *
 bool mutt_alternates_match(const char *addr);
 void mutt_alternates_reset(struct MailboxView *mv);
 
-#endif /* MUTT_COMMANDS_ALTERNATES_H */
+#endif /* MUTT_ALIAS_ALTERNATES_H */

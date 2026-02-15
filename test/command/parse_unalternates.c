@@ -26,12 +26,11 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
-
-static const struct Command UnAlternates = { "unalternates", CMD_UNALTERNATES, NULL };
 
 static const struct CommandTest Tests[] = {
   // clang-format off
@@ -52,13 +51,16 @@ void test_parse_unalternates(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_UNALTERNATES);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; Tests[i].line; i++)
   {
     TEST_CASE(Tests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_unalternates(&UnAlternates, line, pc, pe);
+    rc = parse_unalternates(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

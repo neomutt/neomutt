@@ -31,10 +31,8 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "color/lib.h"
 #include "parse/lib.h"
-#include "alternates.h"
 #include "ifdef.h"
 #include "mailboxes.h"
 #include "parse.h"
@@ -47,14 +45,6 @@
  */
 const struct Command CommandsCommands[] = {
   // clang-format off
-  { "alias", CMD_ALIAS, parse_alias,
-        N_("Define an alias (name to email address)"),
-        N_("alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"),
-        "configuration.html#alias" },
-  { "alternates", CMD_ALTERNATES, parse_alternates,
-        N_("Define a list of alternate email addresses for the user"),
-        N_("alternates [ -group <name> ... ] <regex> [ <regex> ... ]"),
-        "configuration.html#alternates" },
   { "cd", CMD_CD, parse_cd,
         N_("Change NeoMutt's current working directory"),
         N_("cd [ <directory> ]"),
@@ -123,14 +113,6 @@ const struct Command CommandsCommands[] = {
         N_("Toggle the value of a boolean/quad config option"),
         N_("toggle <variable> [ ... ]"),
         "configuration.html#set" },
-  { "unalias", CMD_UNALIAS, parse_unalias,
-        N_("Remove an alias definition"),
-        N_("unalias { * | <key> ... }"),
-        "configuration.html#alias" },
-  { "unalternates", CMD_UNALTERNATES, parse_unalternates,
-        N_("Remove addresses from `alternates` list"),
-        N_("unalternates { * | <regex> ... }"),
-        "configuration.html#alternates" },
   { "uncolor", CMD_UNCOLOR, parse_uncolor,
         N_("Remove a `color` definition"),
         N_("uncolor <object> { * | <pattern> ... }"),

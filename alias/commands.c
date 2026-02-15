@@ -35,9 +35,9 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
-#include "commands/lib.h"
 #include "parse/lib.h"
 #include "alias.h"
+#include "alternates.h"
 #include "reverse.h"
 
 /**
@@ -307,3 +307,29 @@ done:
   buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
 }
+
+/**
+ * AliasCommands - Alias Commands
+ */
+const struct Command AliasCommands[] = {
+  // clang-format off
+  { "alias", CMD_ALIAS, parse_alias,
+        N_("Define an alias (name to email address)"),
+        N_("alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"),
+        "configuration.html#alias" },
+  { "alternates", CMD_ALTERNATES, parse_alternates,
+        N_("Define a list of alternate email addresses for the user"),
+        N_("alternates [ -group <name> ... ] <regex> [ <regex> ... ]"),
+        "configuration.html#alternates" },
+  { "unalias", CMD_UNALIAS, parse_unalias,
+        N_("Remove an alias definition"),
+        N_("unalias { * | <key> ... }"),
+        "configuration.html#alias" },
+  { "unalternates", CMD_UNALTERNATES, parse_unalternates,
+        N_("Remove addresses from `alternates` list"),
+        N_("unalternates { * | <regex> ... }"),
+        "configuration.html#alternates" },
+
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  // clang-format on
+};

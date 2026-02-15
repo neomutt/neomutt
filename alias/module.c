@@ -36,6 +36,8 @@
 
 extern struct ConfigDef AliasVars[];
 
+extern const struct Command AliasCommands[];
+
 /**
  * alias_init - Initialise a Module - Implements Module::init()
  */
@@ -53,6 +55,14 @@ static bool alias_init(struct NeoMutt *n)
 static bool alias_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 {
   return cs_register_variables(cs, AliasVars);
+}
+
+/**
+ * alias_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool alias_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, AliasCommands);
 }
 
 /**
@@ -76,7 +86,7 @@ const struct Module ModuleAlias = {
   alias_init,
   NULL, // config_define_types
   alias_config_define_variables,
-  NULL, // commands_register
+  alias_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
   alias_cleanup,

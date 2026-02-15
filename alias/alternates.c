@@ -21,7 +21,7 @@
  */
 
 /**
- * @page commands_alternates Parse Alternate Commands
+ * @page alias_alternates Parse Alternate Commands
  *
  * Parse Alternate Commands
  */

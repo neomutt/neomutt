@@ -27,7 +27,6 @@
  *
  * | File                   | Description                   |
  * | :--------------------- | :---------------------------- |
- * | commands/alternates.c  | @subpage commands_alternates  |
  * | commands/commands.c    | @subpage commands_commands    |
  * | commands/ifdef.c       | @subpage commands_ifdef       |
  * | commands/mailboxes.c   | @subpage commands_mailboxes   |
@@ -43,7 +42,6 @@
 #define MUTT_COMMANDS_LIB_H
 
 // IWYU pragma: begin_keep
-#include "alternates.h"
 #include "commands.h"
 #include "ifdef.h"
 #include "mailboxes.h"
