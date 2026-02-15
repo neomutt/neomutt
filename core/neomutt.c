@@ -300,6 +300,35 @@ static bool init_modules(struct NeoMutt *n)
 }
 
 /**
+ * init_gui_modules - Initialise the Gui Modules
+ * @param n Neomutt
+ * @retval true Success
+ */
+static bool init_gui_modules(struct NeoMutt *n)
+{
+  if (!n)
+    return false;
+
+  bool rc = true;
+
+  // Initialise the Gui Modules
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
+  {
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
+
+    if (mod->gui_init)
+    {
+      mutt_debug(LL_DEBUG3, "%s:gui_init()\n", mod->name);
+      rc &= mod->gui_init(n);
+    }
+  }
+
+  return rc;
+}
+
+/**
  * neomutt_new - Create the main NeoMutt object
  * @retval ptr New NeoMutt
  */
@@ -361,6 +390,19 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
 }
 
 /**
+ * neomutt_gui_init - Initialise the GUI Modules
+ * @param n       NeoMutt
+ * @retval true Success
+ */
+bool neomutt_gui_init(struct NeoMutt *n)
+{
+  if (!n)
+    return false;
+
+  return init_gui_modules(n);
+}
+
+/**
  * cleanup_modules - Clean up each of the Modules
  * @param n NeoMutt
  * @retval true Success
@@ -396,6 +438,35 @@ static bool cleanup_modules(struct NeoMutt *n)
 }
 
 /**
+ * cleanup_gui_modules - Clean up each of the Gui Modules
+ * @param n NeoMutt
+ */
+static void cleanup_gui_modules(struct NeoMutt *n)
+{
+  if (!n)
+    return;
+
+  // Cleanup the Gui Modules
+  for (enum ModuleId id = MODULE_ID_MAIN; id < MODULE_ID_MAX; id++)
+  {
+    const struct Module *mod = n->modules[id];
+    if (!mod)
+      continue;
+
+    if (mod->gui_cleanup)
+    {
+      mutt_debug(LL_DEBUG3, "%s:gui_cleanup()\n", mod->name);
+      mod->gui_cleanup(n);
+    }
+
+    if (n->module_data[mod->mid])
+    {
+      mutt_debug(LL_DEBUG1, "Module %s didn't clean up its data\n", mod->name);
+    }
+  }
+}
+
+/**
  * neomutt_cleanup - Clean up NeoMutt and Modules
  * @param n NeoMutt
  */
@@ -404,8 +475,22 @@ void neomutt_cleanup(struct NeoMutt *n)
   if (!n)
     return;
 
+  cleanup_gui_modules(n);
+
   commands_clear(&n->commands);
   cleanup_modules(n);
+}
+
+/**
+ * neomutt_gui_cleanup - Clean up the GUI Modules
+ * @param n NeoMutt
+ */
+void neomutt_gui_cleanup(struct NeoMutt *n)
+{
+  if (!n)
+    return;
+
+  cleanup_gui_modules(n);
 }
 
 /**

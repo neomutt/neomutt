@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "lib.h"
 #include "module_data.h"
 
 extern struct ConfigDef SidebarVars[];
@@ -78,6 +79,14 @@ static bool sidebar_cleanup(struct NeoMutt *n)
 }
 
 /**
+ * sidebar_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+void sidebar_gui_cleanup(struct NeoMutt *n)
+{
+  sb_cleanup();
+}
+
+/**
  * ModuleSidebar - Module for the Sidebar library
  */
 const struct Module ModuleSidebar = {
@@ -88,6 +97,6 @@ const struct Module ModuleSidebar = {
   sidebar_config_define_variables,
   sidebar_commands_register,
   NULL, // gui_init
-  NULL, // gui_cleanup
+  sidebar_gui_cleanup,
   sidebar_cleanup,
 };

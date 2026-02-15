@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "lib.h"
 #include "module_data.h"
 
 extern struct ConfigDef HistoryVars[];
@@ -68,6 +69,14 @@ static bool history_cleanup(struct NeoMutt *n)
 }
 
 /**
+ * history_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+void history_gui_cleanup(struct NeoMutt *n)
+{
+  mutt_hist_cleanup();
+}
+
+/**
  * ModuleHistory - Module for the History library
  */
 const struct Module ModuleHistory = {
@@ -78,6 +87,6 @@ const struct Module ModuleHistory = {
   history_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
-  NULL, // gui_cleanup
+  history_gui_cleanup,
   history_cleanup,
 };

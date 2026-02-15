@@ -1132,7 +1132,7 @@ int main(int argc, char *argv[], char *envp[])
     log_gui();
   }
 
-  menu_init();
+  menu_init2();
   sb_init();
 
   /* set defaults and read init files */
@@ -1703,7 +1703,7 @@ int main(int argc, char *argv[], char *envp[])
 main_ok:
   rc = 0;
 main_curses:
-  mutt_endwin();
+  neomutt_gui_cleanup(NeoMutt);
   /* Repeat the last message to the user */
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
@@ -1718,21 +1718,14 @@ main_exit:
   buf_pool_release(&expanded_infile);
   buf_pool_release(&tempfile);
   crypto_module_cleanup();
-  rootwin_cleanup();
   if (NeoMutt)
     envlist_free(&NeoMutt->env);
-  mutt_browser_cleanup();
   external_cleanup();
-  menu_cleanup();
   crypt_cleanup();
   mutt_ch_cache_cleanup();
   command_line_free(&cli);
 
   source_stack_cleanup();
-
-  sb_cleanup();
-
-  colors_cleanup();
 
   FREE(&CurrentFolder);
   FREE(&LastFolder);
@@ -1740,10 +1733,7 @@ main_exit:
 
   mutt_delete_hooks(CMD_NONE);
 
-  mutt_hist_cleanup();
-
   lua_cleanup();
-  km_cleanup();
   mutt_prex_cleanup();
   config_cache_cleanup();
   MuttLogger = log_disp_queue;

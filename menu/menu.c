@@ -67,18 +67,18 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
 }
 
 /**
- * menu_cleanup - Free the saved Menu searches
+ * menu_cleanup2 - Free the saved Menu searches
  */
-void menu_cleanup(void)
+void menu_cleanup2(void)
 {
   for (int i = 0; i < MENU_MAX; i++)
     FREE(&SearchBuffers[i]);
 }
 
 /**
- * menu_init - Initialise all the Menus
+ * menu_init2 - Initialise all the Menus
  */
-void menu_init(void)
+void menu_init2(void)
 {
   for (int i = 0; i < MENU_MAX; i++)
     SearchBuffers[i] = NULL;

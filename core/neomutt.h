@@ -83,6 +83,9 @@ void  neomutt_set_module_data(struct NeoMutt *n, enum ModuleId id, void *data);
 bool neomutt_init   (struct NeoMutt *n, char **envp, const struct Module **modules);
 void neomutt_cleanup(struct NeoMutt *n);
 
+bool neomutt_gui_init   (struct NeoMutt *n);
+void neomutt_gui_cleanup(struct NeoMutt *n);
+
 struct MailboxArray neomutt_mailboxes_get(struct NeoMutt *n, enum MailboxType type);
 
 /// Open a file with proper permissions, tracked for debugging

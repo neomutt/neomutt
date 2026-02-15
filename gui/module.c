@@ -32,7 +32,9 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "curs_lib.h"
 #include "module_data.h"
+#include "rootwin.h"
 
 extern struct ConfigDef GuiVars[];
 
@@ -53,6 +55,16 @@ static bool gui_init(struct NeoMutt *n)
 static bool gui_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 {
   return cs_register_variables(cs, GuiVars);
+}
+
+/**
+ * gui_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+void gui_gui_cleanup(struct NeoMutt *n)
+{
+  rootwin_cleanup();
+
+  mutt_endwin();
 }
 
 /**
@@ -78,6 +90,6 @@ const struct Module ModuleGui = {
   gui_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
-  NULL, // gui_cleanup
+  gui_gui_cleanup,
   gui_cleanup,
 };

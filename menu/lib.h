@@ -187,9 +187,9 @@ void         menu_redraw_index  (struct Menu *menu);
 void         menu_redraw_motion (struct Menu *menu);
 int          menu_redraw        (struct Menu *menu);
 
-void         menu_cleanup(void);
+void         menu_cleanup2(void);
 enum MenuType menu_get_current_type(void);
-void         menu_init(void);
+void         menu_init2(void);
 
 struct MuttWindow *menu_window_new(const struct MenuDefinition *md, struct ConfigSubset *sub);
 

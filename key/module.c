@@ -31,6 +31,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "init.h"
 #include "module_data.h"
 
 extern const struct Command KeyCommands[];
@@ -67,6 +68,14 @@ static bool key_cleanup(struct NeoMutt *n)
 }
 
 /**
+ * key_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+void key_gui_cleanup(struct NeoMutt *n)
+{
+  km_cleanup();
+}
+
+/**
  * ModuleKey - Module for the Key library
  */
 const struct Module ModuleKey = {
@@ -77,6 +86,6 @@ const struct Module ModuleKey = {
   NULL, // config_define_variables
   key_commands_register,
   NULL, // gui_init
-  NULL, // gui_cleanup
+  key_gui_cleanup,
   key_cleanup,
 };

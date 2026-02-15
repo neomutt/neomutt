@@ -31,6 +31,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "color.h"
 #include "module_data.h"
 
 /**
@@ -42,6 +43,14 @@ static bool color_init(struct NeoMutt *n)
   // neomutt_set_module_data(n, MODULE_ID_COLOR, md);
 
   return true;
+}
+
+/**
+ * color_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+void color_gui_cleanup(struct NeoMutt *n)
+{
+  colors_cleanup();
 }
 
 /**
@@ -67,6 +76,6 @@ const struct Module ModuleColor = {
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
-  NULL, // gui_cleanup
+  color_gui_cleanup,
   color_cleanup,
 };

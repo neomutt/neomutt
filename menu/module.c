@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "lib.h"
 #include "module_data.h"
 
 extern struct ConfigDef MenuVars[];
@@ -68,6 +69,14 @@ static bool menu_cleanup(struct NeoMutt *n)
 }
 
 /**
+ * menu_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+void menu_gui_cleanup(struct NeoMutt *n)
+{
+  menu_cleanup(n);
+}
+
+/**
  * ModuleMenu - Module for the Menu library
  */
 const struct Module ModuleMenu = {
@@ -78,6 +87,6 @@ const struct Module ModuleMenu = {
   menu_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
-  NULL, // gui_cleanup
+  menu_gui_cleanup,
   menu_cleanup,
 };
