@@ -1239,7 +1239,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
       }
       else
       {
-        if (fputs("\n", fp) == EOF)
+        if (fputs(MBOX_SEP, fp) == EOF)
         {
           mutt_perror("%s", buf_string(tempfile));
           goto bail;
@@ -1508,7 +1508,7 @@ static bool mbox_msg_open_new(struct Mailbox *m, struct Message *msg, const stru
  */
 static int mbox_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (fputc('\n', msg->fp) == EOF)
+  if (fputs(MBOX_SEP, msg->fp) == EOF)
     return -1;
 
   if ((fflush(msg->fp) == EOF) || (fsync(fileno(msg->fp)) == -1))
