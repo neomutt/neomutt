@@ -64,4 +64,6 @@ const char *const BodyEncodings[] = {
 /**
  * MimeSpecials - Characters that need special treatment in MIME
  */
-const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
+/* RFC2045 tspecials plus space/tab.
+ * Note: this intentionally does not contain '.', which is in RFC822Specials. */
+const char MimeSpecials[] = "@,;:<>[]\\\"()?/= \t";

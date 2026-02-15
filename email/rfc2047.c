@@ -67,6 +67,10 @@
  */
 typedef size_t (*encoder_t)(char *res, const char *buf, size_t buflen, const char *tocode);
 
+/* RFC2047 specials are similar to MimeSpecials, but must include '.'
+ * for encoded-words used outside quoted MIME parameters. */
+static const char RFC2047Specials[] = "@.,;:<>[]\\\"()?/= \t";
+
 /**
  * b_encoder - Base64 Encode a string - Implements ::encoder_t - @ingroup encoder_api
  */
@@ -121,7 +125,7 @@ static size_t q_encoder(char *res, const char *src, size_t srclen, const char *t
     {
       *res++ = '_';
     }
-    else if ((c >= 0x7f) || (c < 0x20) || (c == '_') || strchr(MimeSpecials, c))
+    else if ((c >= 0x7f) || (c < 0x20) || (c == '_') || strchr(RFC2047Specials, c))
     {
       *res++ = '=';
       *res++ = hex[(c & 0xf0) >> 4];
@@ -229,9 +233,9 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   for (char *p = buf; p < ob; p++)
   {
     unsigned char c = *p;
-    ASSERT(strchr(MimeSpecials, '?'));
+    ASSERT(strchr(RFC2047Specials, '?'));
     if ((c >= 0x7f) || (c < 0x20) || (*p == '_') ||
-        ((c != ' ') && strchr(MimeSpecials, *p)))
+        ((c != ' ') && strchr(RFC2047Specials, *p)))
     {
       count++;
     }
