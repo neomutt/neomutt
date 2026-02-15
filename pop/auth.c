@@ -60,6 +60,7 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
   struct Buffer *input_buf = NULL;
   int rc = POP_A_FAILURE;
   int gsasl_rc = GSASL_OK;
+  int first_challenge = 1;
 
   const char *chosen_mech = mutt_gsasl_get_mech(method, buf_string(&adata->auth_list));
   if (!chosen_mech)
@@ -102,6 +103,16 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
       break;
 
     const char *pop_auth_data = buf_string(input_buf) + 2;
+
+    /* Workaround for broken POP3 servers. See pop_auth_sasl() above. */
+    if (first_challenge)
+    {
+      first_challenge = 0;
+      // Reuse output_buf as a temporary decode buffer
+      if (mutt_b64_buffer_decode(output_buf, pop_auth_data) < 0)
+        pop_auth_data = "";
+    }
+
     char *gsasl_step_output = NULL;
     gsasl_rc = gsasl_step64(gsasl_session, pop_auth_data, &gsasl_step_output);
     if ((gsasl_rc == GSASL_NEEDS_MORE) || (gsasl_rc == GSASL_OK))
