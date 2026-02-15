@@ -12244,11 +12244,14 @@ set preferred_languages="fr,en,de"
         actually evaluating a message.
       </para>
       <para>
-        Note that the first MIME part is treated slightly differently: It is
-        almost always the message text.  Thus, it is not counted as an
-        attachment if its disposition is <literal>inline</literal> and it is
-        not a <literal>multipart/*</literal> or <literal>message/*</literal>
-        MIME-type.
+        The first part of a message or multipart group, if inline, is counted
+        separately than other inline parts.  Specify <literal>root</literal> or
+        <literal>R</literal> for <emphasis>disposition</emphasis> to count these
+        as attachments.  If this first part is of type
+        <literal>multipart/alternative</literal>, note that its top-level inline
+        parts are also counted via <literal>root</literal>
+        <emphasis>disposition</emphasis> (if
+        <link linkend="count-alternatives">$count_alternatives</link> is set).
       </para>
       <para>
         Some examples might help to illustrate. The examples that are not
