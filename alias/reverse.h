@@ -24,10 +24,12 @@
 #define MUTT_ALIAS_REVERSE_H
 
 struct Alias;
+struct HashTable;
 
-void alias_reverse_init    (void);
-void alias_reverse_add     (struct Alias *alias);
-void alias_reverse_delete  (struct Alias *alias);
-void alias_reverse_shutdown(void);
+struct HashTable *alias_reverse_init   (void);
+void              alias_reverse_cleanup(struct HashTable **reverse);
+
+void alias_reverse_add   (struct Alias *alias);
+void alias_reverse_delete(struct Alias *alias);
 
 #endif /* MUTT_ALIAS_REVERSE_H */

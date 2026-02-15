@@ -23,6 +23,8 @@
 #ifndef MUTT_SEND_MODULE_DATA_H
 #define MUTT_SEND_MODULE_DATA_H
 
+#include "mutt/lib.h"
+
 /**
  * struct SendModuleData - Send private Module data
  */

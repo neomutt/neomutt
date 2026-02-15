@@ -1075,7 +1075,6 @@ int main(int argc, char *argv[], char *envp[])
   if (!show_help(&cli->help))
     goto main_ok;
 
-  alternates_init();
   init_keys();
 
 #ifdef USE_DEBUG_NOTIFY
@@ -1128,7 +1127,6 @@ int main(int argc, char *argv[], char *envp[])
     log_gui();
   }
 
-  alias_init();
   driver_tags_init();
   menu_init();
   sb_init();
@@ -1728,7 +1726,6 @@ main_exit:
 
   source_stack_cleanup();
 
-  alias_cleanup();
   sb_cleanup();
 
   driver_tags_cleanup();
@@ -1743,7 +1740,6 @@ main_exit:
   mutt_hist_cleanup();
 
   lua_cleanup();
-  alternates_cleanup();
   km_cleanup();
   mutt_prex_cleanup();
   config_cache_cleanup();

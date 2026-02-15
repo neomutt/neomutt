@@ -36,33 +36,7 @@
 #include "gui/lib.h"
 #include "alternates.h"
 #include "parse/lib.h"
-
-static struct RegexList Alternates = STAILQ_HEAD_INITIALIZER(Alternates); ///< List of regexes to match the user's alternate email addresses
-static struct RegexList UnAlternates = STAILQ_HEAD_INITIALIZER(UnAlternates); ///< List of regexes to exclude false matches in Alternates
-static struct Notify *AlternatesNotify = NULL; ///< Notifications: #NotifyAlternates
-
-/**
- * alternates_cleanup - Free the alternates lists
- */
-void alternates_cleanup(void)
-{
-  notify_free(&AlternatesNotify);
-
-  mutt_regexlist_free(&Alternates);
-  mutt_regexlist_free(&UnAlternates);
-}
-
-/**
- * alternates_init - Set up the alternates lists
- */
-void alternates_init(void)
-{
-  if (AlternatesNotify)
-    return;
-
-  AlternatesNotify = notify_new();
-  notify_set_parent(AlternatesNotify, NeoMutt->notify);
-}
+#include "module_data.h"
 
 /**
  * mutt_alternates_reset - Clear the recipient valid flag of all emails
@@ -105,6 +79,9 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *li
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -112,9 +89,9 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *li
     if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
       goto done;
 
-    mutt_regexlist_remove(&UnAlternates, buf_string(token));
+    mutt_regexlist_remove(&md->unalternates, buf_string(token));
 
-    if (mutt_regexlist_add(&Alternates, buf_string(token), REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&md->alternates, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
     if (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
@@ -122,7 +99,7 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *li
   } while (MoreArgs(line));
 
   mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", buf_string(token));
-  notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_ADD, NULL);
+  notify_send(md->alternates_notify, NT_ALTERN, NT_ALTERN_ADD, NULL);
 
   rc = MUTT_CMD_SUCCESS;
 
@@ -152,13 +129,16 @@ enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&Alternates, buf_string(token));
+    mutt_regexlist_remove(&md->alternates, buf_string(token));
 
     if (!mutt_str_equal(buf_string(token), "*") &&
-        (mutt_regexlist_add(&UnAlternates, buf_string(token), REG_ICASE, err) != 0))
+        (mutt_regexlist_add(&md->unalternates, buf_string(token), REG_ICASE, err) != 0))
     {
       goto done;
     }
@@ -166,7 +146,7 @@ enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *
   } while (MoreArgs(line));
 
   mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", buf_string(token));
-  notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_DELETE, NULL);
+  notify_send(md->alternates_notify, NT_ALTERN, NT_ALTERN_DELETE, NULL);
 
   rc = MUTT_CMD_SUCCESS;
 
@@ -176,7 +156,7 @@ done:
 }
 
 /**
- * mutt_alternates_match - Compare an Address to the Un/Alternates lists
+ * mutt_alternates_match - Compare an Address to the un/alternates lists
  * @param addr Address to check
  * @retval true Address matches
  */
@@ -185,10 +165,13 @@ bool mutt_alternates_match(const char *addr)
   if (!addr)
     return false;
 
-  if (mutt_regexlist_match(&Alternates, addr))
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
+  if (mutt_regexlist_match(&md->alternates, addr))
   {
     mutt_debug(LL_DEBUG5, "yes, %s matched by alternates\n", addr);
-    if (mutt_regexlist_match(&UnAlternates, addr))
+    if (mutt_regexlist_match(&md->unalternates, addr))
       mutt_debug(LL_DEBUG5, "but, %s matched by unalternates\n", addr);
     else
       return true;

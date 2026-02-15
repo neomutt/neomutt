@@ -32,7 +32,9 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "alias.h"
 #include "module_data.h"
+#include "reverse.h"
 
 extern struct ConfigDef AliasVars[];
 
@@ -45,6 +47,15 @@ static bool alias_init(struct NeoMutt *n)
 {
   struct AliasModuleData *md = MUTT_MEM_CALLOC(1, struct AliasModuleData);
   neomutt_set_module_data(n, MODULE_ID_ALIAS, md);
+
+  STAILQ_INIT(&md->alternates);
+  STAILQ_INIT(&md->unalternates);
+
+  md->alternates_notify = notify_new();
+  notify_set_parent(md->alternates_notify, n->notify);
+
+  ARRAY_INIT(&md->aliases);
+  md->reverse_aliases = alias_reverse_init();
 
   return true;
 }
@@ -72,6 +83,20 @@ static bool alias_cleanup(struct NeoMutt *n)
 {
   struct AliasModuleData *md = neomutt_get_module_data(n, MODULE_ID_ALIAS);
   ASSERT(md);
+
+  notify_free(&md->alternates_notify);
+
+  mutt_regexlist_free(&md->alternates);
+  mutt_regexlist_free(&md->unalternates);
+
+  struct Alias **ap = NULL;
+  ARRAY_FOREACH(ap, &md->aliases)
+  {
+    alias_reverse_delete(*ap);
+  }
+  aliaslist_clear(&md->aliases);
+
+  alias_reverse_cleanup(&md->reverse_aliases);
 
   FREE(&md);
   return true;

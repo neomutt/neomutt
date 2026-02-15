@@ -45,9 +45,6 @@ enum NotifyAlternates
   NT_ALTERN_DELETE_ALL, ///< All Alternate addresses have been deleted
 };
 
-void alternates_init(void);
-void alternates_cleanup(void);
-
 enum CommandResult parse_alternates  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 

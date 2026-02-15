@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
-#include "mutt/lib.h"
 
 bool ErrorBufMessage; ///< true if the last message was an error
 char ErrorBuf[1024];  ///< Copy of the last error message

@@ -41,7 +41,6 @@
 #include "core/lib.h"
 #include "my_header.h"
 #include "parse/lib.h"
-#include "globals.h"
 #include "module_data.h"
 
 /**
