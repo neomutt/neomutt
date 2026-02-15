@@ -5075,12 +5075,15 @@
 { "spool_file", D_STRING_MAILBOX, 0 },
 /*
 ** .pp
-** If your spool mailbox is in a non-default place where NeoMutt can't find
-** it, you can specify its location with this variable. The description from
-** "named-mailboxes" may be used for the spool_file.
+** If your default mailbox or spool file is in a non-default place where
+** NeoMutt can't find it, you can specify its location with this variable.
+** The description from "named-mailboxes" may be used for the spool_file.
 ** .pp
 ** If not specified, then the environment variables \fC$$$MAIL\fP and
 ** \fC$$$MAILDIR\fP will be checked.
+** .pp
+** Note: Despite the name, this can refer to a local or remote mailbox, e.g.,
+** "+INBOX".
 */
 
 { "ssl_ca_certificates_file", DT_PATH, 0 },
