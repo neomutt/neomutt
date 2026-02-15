@@ -29,10 +29,36 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "alias.h"
+#include "module_data.h"
+#include "reverse.h"
 
 extern struct ConfigDef AliasVars[];
+
+extern const struct Command AliasCommands[];
+
+/**
+ * alias_init - Initialise a Module - Implements Module::init()
+ */
+static bool alias_init(struct NeoMutt *n)
+{
+  struct AliasModuleData *md = MUTT_MEM_CALLOC(1, struct AliasModuleData);
+  neomutt_set_module_data(n, MODULE_ID_ALIAS, md);
+
+  STAILQ_INIT(&md->alternates);
+  STAILQ_INIT(&md->unalternates);
+
+  md->alternates_notify = notify_new();
+  notify_set_parent(md->alternates_notify, n->notify);
+
+  ARRAY_INIT(&md->aliases);
+  md->reverse_aliases = alias_reverse_init();
+
+  return true;
+}
 
 /**
  * alias_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +69,50 @@ static bool alias_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
 }
 
 /**
+ * alias_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool alias_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, AliasCommands);
+}
+
+/**
+ * alias_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool alias_cleanup(struct NeoMutt *n)
+{
+  struct AliasModuleData *md = neomutt_get_module_data(n, MODULE_ID_ALIAS);
+  ASSERT(md);
+
+  notify_free(&md->alternates_notify);
+
+  mutt_regexlist_free(&md->alternates);
+  mutt_regexlist_free(&md->unalternates);
+
+  struct Alias **ap = NULL;
+  ARRAY_FOREACH(ap, &md->aliases)
+  {
+    alias_reverse_delete(*ap);
+  }
+  aliaslist_clear(&md->aliases);
+
+  alias_reverse_cleanup(&md->reverse_aliases);
+
+  FREE(&md);
+  return true;
+}
+
+/**
  * ModuleAlias - Module for the Alias library
  */
 const struct Module ModuleAlias = {
   MODULE_ID_ALIAS,
   "alias",
-  NULL, // init
+  alias_init,
   NULL, // config_define_types
   alias_config_define_variables,
-  NULL, // commands_register
+  alias_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  alias_cleanup,
 };

@@ -28,6 +28,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | alias/alias.c       | @subpage alias_alias       |
+ * | alias/alternates.c  | @subpage alias_alternates  |
  * | alias/array.c       | @subpage alias_array       |
  * | alias/commands.c    | @subpage alias_commands    |
  * | alias/complete.c    | @subpage alias_complete    |
@@ -47,7 +48,8 @@
 
 #include <stdbool.h>
 #include "core/lib.h"
-#include "expando.h" // IWYU pragma: keep
+#include "alternates.h" // IWYU pragma: keep
+#include "expando.h"    // IWYU pragma: keep
 
 struct Address;
 struct AddressList;

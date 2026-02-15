@@ -3,7 +3,7 @@
  * Prepare and send an email
  *
  * @authors
- * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017-2025 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  * Copyright (C) 2020 Thomas Sanchez <thomas.sanchz@gmail.com>
@@ -76,6 +76,7 @@
 #include "expando_msgid.h"
 #include "globals.h"
 #include "header.h"
+#include "module_data.h"
 #include "multipart.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
@@ -308,6 +309,9 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     }
   }
 
+  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(md);
+
   if (en->subject)
   {
     const bool c_fast_reply = cs_subset_bool(sub, "fast_reply");
@@ -324,7 +328,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
 
     buf_reset(buf);
     struct ListNode *uh = NULL;
-    STAILQ_FOREACH(uh, &UserHeader, entries)
+    STAILQ_FOREACH(uh, &md->user_header, entries)
     {
       size_t plen = mutt_istr_startswith(uh->data, "subject:");
       if (plen)
@@ -369,8 +373,11 @@ static char *nntp_get_header(const char *s)
  */
 static void process_user_recips(struct Envelope *env)
 {
+  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(md);
+
   struct ListNode *uh = NULL;
-  STAILQ_FOREACH(uh, &UserHeader, entries)
+  STAILQ_FOREACH(uh, &md->user_header, entries)
   {
     size_t plen;
     if ((plen = mutt_istr_startswith(uh->data, "to:")))
@@ -394,8 +401,11 @@ static void process_user_recips(struct Envelope *env)
  */
 static void process_user_header(struct Envelope *env)
 {
+  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(md);
+
   struct ListNode *uh = NULL;
-  STAILQ_FOREACH(uh, &UserHeader, entries)
+  STAILQ_FOREACH(uh, &md->user_header, entries)
   {
     size_t plen;
     if ((plen = mutt_istr_startswith(uh->data, "from:")))

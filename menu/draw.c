@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
@@ -62,6 +63,9 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
 
   struct RegexColor *np = NULL;
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   if (type == MT_COLOR_INDEX_TAG)
   {
     const struct AttrColor *ac_merge = NULL;
@@ -72,7 +76,7 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
         ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
         continue;
       }
-      const char *transform = mutt_hash_find(TagTransforms, np->pattern);
+      const char *transform = mutt_hash_find(md->tag_transforms, np->pattern);
       if (transform && mutt_strn_equal((const char *) (s + 1), transform, strlen(transform)))
       {
         ac_merge = merged_color_overlay(ac_merge, &np->attr_color);

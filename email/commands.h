@@ -33,4 +33,7 @@ struct ParseError;
 enum CommandResult parse_list  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unlist(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
+enum CommandResult parse_tag_formats     (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+enum CommandResult parse_tag_transforms  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+
 #endif /* MUTT_EMAIL_COMMANDS_H */

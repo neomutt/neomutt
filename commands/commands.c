@@ -31,31 +31,19 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "color/lib.h"
 #include "parse/lib.h"
-#include "alternates.h"
 #include "ifdef.h"
 #include "mailboxes.h"
-#include "my_header.h"
 #include "parse.h"
 #include "setenv.h"
 #include "source.h"
-#include "tags.h"
 
 /**
  * CommandsCommands - General NeoMutt Commands
  */
 const struct Command CommandsCommands[] = {
   // clang-format off
-  { "alias", CMD_ALIAS, parse_alias,
-        N_("Define an alias (name to email address)"),
-        N_("alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"),
-        "configuration.html#alias" },
-  { "alternates", CMD_ALTERNATES, parse_alternates,
-        N_("Define a list of alternate email addresses for the user"),
-        N_("alternates [ -group <name> ... ] <regex> [ <regex> ... ]"),
-        "configuration.html#alternates" },
   { "cd", CMD_CD, parse_cd,
         N_("Change NeoMutt's current working directory"),
         N_("cd [ <directory> ]"),
@@ -88,10 +76,6 @@ const struct Command CommandsCommands[] = {
         N_("Deprecated: Use `color` instead"),
         N_("mono <object> <attribute> [ <pattern> | <regex> ]"),
         "configuration.html#color-mono" },
-  { "my-header", CMD_MY_HEADER, parse_my_header,
-        N_("Add a custom header to outgoing messages"),
-        N_("my-header <string>"),
-        "configuration.html#my-header" },
   { "named-mailboxes", CMD_NAMED_MAILBOXES, parse_mailboxes,
         N_("Define a list of labelled mailboxes to watch"),
         N_("named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"),
@@ -116,26 +100,10 @@ const struct Command CommandsCommands[] = {
         N_("Add address to the list of subscribed mailing lists"),
         N_("subscribe [ -group <name> ... ] <regex> [ ... ]"),
         "configuration.html#lists" },
-  { "tag-formats", CMD_TAG_FORMATS, parse_tag_formats,
-        N_("Define expandos tags"),
-        N_("tag-formats <tag> <format-string> [ ... ] }"),
-        "optionalfeatures.html#custom-tags" },
-  { "tag-transforms", CMD_TAG_TRANSFORMS, parse_tag_transforms,
-        N_("Rules to transform tags into icons"),
-        N_("tag-transforms <tag> <transformed-string> [ ... ]"),
-        "optionalfeatures.html#custom-tags" },
   { "toggle", CMD_TOGGLE, parse_set,
         N_("Toggle the value of a boolean/quad config option"),
         N_("toggle <variable> [ ... ]"),
         "configuration.html#set" },
-  { "unalias", CMD_UNALIAS, parse_unalias,
-        N_("Remove an alias definition"),
-        N_("unalias { * | <key> ... }"),
-        "configuration.html#alias" },
-  { "unalternates", CMD_UNALTERNATES, parse_unalternates,
-        N_("Remove addresses from `alternates` list"),
-        N_("unalternates { * | <regex> ... }"),
-        "configuration.html#alternates" },
   { "uncolor", CMD_UNCOLOR, parse_uncolor,
         N_("Remove a `color` definition"),
         N_("uncolor <object> { * | <pattern> ... }"),
@@ -148,10 +116,6 @@ const struct Command CommandsCommands[] = {
         N_("Deprecated: Use `uncolor` instead"),
         N_("unmono <object> { * | <pattern> ... }"),
         "configuration.html#color-mono" },
-  { "unmy-header", CMD_UNMY_HEADER, parse_unmy_header,
-        N_("Remove a header previously added with `my-header`"),
-        N_("unmy-header { * | <field> ... }"),
-        "configuration.html#my-header" },
   { "unset", CMD_UNSET, parse_set,
         N_("Reset a config option to false/empty"),
         N_("unset <variable> [ <variable> ... ]"),
@@ -168,10 +132,6 @@ const struct Command CommandsCommands[] = {
         N_("Show NeoMutt version and build information"),
         N_("version"),
         "advancedusage.html#version" },
-
-  // Deprecated
-  { "my_hdr",              CMD_NONE, NULL, "my-header",           NULL, NULL, CF_SYNONYM },
-  { "unmy_hdr",            CMD_NONE, NULL, "unmy-header",         NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on

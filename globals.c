@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
-#include "mutt/lib.h"
 
 bool ErrorBufMessage; ///< true if the last message was an error
 char ErrorBuf[1024];  ///< Copy of the last error message
@@ -38,11 +37,6 @@ char *ShortHostname = NULL; ///< Short version of the hostname
 
 char *CurrentFolder = NULL; ///< Currently selected mailbox
 char *LastFolder = NULL;    ///< Previously selected mailbox
-
-/* Lists of strings */
-// clang-format off
-struct ListHead UserHeader           = STAILQ_HEAD_INITIALIZER(UserHeader);           ///< List of custom headers to add to outgoing emails
-// clang-format on
 
 /* pseudo options */
 // clang-format off

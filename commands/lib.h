@@ -27,33 +27,27 @@
  *
  * | File                   | Description                   |
  * | :--------------------- | :---------------------------- |
- * | commands/alternates.c  | @subpage commands_alternates  |
  * | commands/commands.c    | @subpage commands_commands    |
  * | commands/ifdef.c       | @subpage commands_ifdef       |
  * | commands/mailboxes.c   | @subpage commands_mailboxes   |
  * | commands/module.c      | @subpage commands_module      |
- * | commands/my_header.c   | @subpage commands_my_header   |
  * | commands/parse.c       | @subpage commands_parse       |
  * | commands/setenv.c      | @subpage commands_setenv      |
  * | commands/source.c      | @subpage commands_source      |
  * | commands/stailq.c      | @subpage commands_stailq      |
- * | commands/tags.c        | @subpage commands_tags        |
  */
 
 #ifndef MUTT_COMMANDS_LIB_H
 #define MUTT_COMMANDS_LIB_H
 
 // IWYU pragma: begin_keep
-#include "alternates.h"
 #include "commands.h"
 #include "ifdef.h"
 #include "mailboxes.h"
-#include "my_header.h"
 #include "parse.h"
 #include "setenv.h"
 #include "source.h"
 #include "stailq.h"
-#include "tags.h"
 // IWYU pragma: end_keep
 
 #endif /* MUTT_COMMANDS_LIB_H */

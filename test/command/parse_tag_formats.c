@@ -27,7 +27,6 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
@@ -48,7 +47,9 @@ void test_parse_tag_formats(void)
 {
   // enum CommandResult parse_tag_formats(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
-  driver_tags_init();
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   struct Buffer *line = buf_pool_get();
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
@@ -67,5 +68,4 @@ void test_parse_tag_formats(void)
   parse_context_free(&pc);
   parse_error_free(&pe);
   buf_pool_release(&line);
-  driver_tags_cleanup();
 }

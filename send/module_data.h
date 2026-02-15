@@ -1,9 +1,9 @@
 /**
  * @file
- * Parse Tags Commands
+ * Send private Module data
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,16 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_TAGS_H
-#define MUTT_COMMANDS_TAGS_H
+#ifndef MUTT_SEND_MODULE_DATA_H
+#define MUTT_SEND_MODULE_DATA_H
 
-#include "core/lib.h"
+#include "mutt/lib.h"
 
-struct Buffer;
-struct ParseContext;
-struct ParseError;
+/**
+ * struct SendModuleData - Send private Module data
+ */
+struct SendModuleData
+{
+  struct ListHead user_header;      ///< Custom headers to add to outgoing emails
+};
 
-enum CommandResult parse_tag_formats     (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_tag_transforms  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-
-#endif /* MUTT_COMMANDS_TAGS_H */
+#endif /* MUTT_SEND_MODULE_DATA_H */

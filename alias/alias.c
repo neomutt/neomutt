@@ -47,16 +47,15 @@
 #include "alias.h"
 #include "lib.h"
 #include "browser/lib.h"
-#include "commands/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
+#include "alternates.h"
 #include "globals.h"
+#include "module_data.h"
 #include "muttlib.h"
 #include "reverse.h"
-
-struct AliasArray Aliases = ARRAY_HEAD_INITIALIZER; ///< List of all the user's email aliases
 
 /**
  * write_safe_address - Defang malicious email addresses
@@ -275,7 +274,10 @@ struct AddressList *alias_lookup(const char *name)
 {
   struct Alias **ap = NULL;
 
-  ARRAY_FOREACH(ap, &Aliases)
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
+  ARRAY_FOREACH(ap, &md->aliases)
   {
     struct Alias *a = *ap;
 
@@ -507,8 +509,11 @@ retry_name:
     goto done;
   }
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   alias_reverse_add(alias);
-  ARRAY_ADD(&Aliases, alias);
+  ARRAY_ADD(&md->aliases, alias);
 
   const char *const c_alias_file = cs_subset_path(sub, "alias_file");
   buf_strcpy(buf, c_alias_file);
@@ -701,26 +706,4 @@ void aliaslist_clear(struct AliasArray *aa)
     alias_free(ap);
   }
   ARRAY_FREE(aa);
-}
-
-/**
- * alias_init - Set up the Alias globals
- */
-void alias_init(void)
-{
-  alias_reverse_init();
-}
-
-/**
- * alias_cleanup - Clean up the Alias globals
- */
-void alias_cleanup(void)
-{
-  struct Alias **ap = NULL;
-  ARRAY_FOREACH(ap, &Aliases)
-  {
-    alias_reverse_delete(*ap);
-  }
-  aliaslist_clear(&Aliases);
-  alias_reverse_shutdown();
 }

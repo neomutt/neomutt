@@ -35,9 +35,6 @@ extern char *LastFolder;     ///< Previously selected mailbox
 
 extern const char *GitVer;
 
-/* Lists of strings */
-extern struct ListHead UserHeader;           ///< List of custom headers to add to outgoing emails
-
 /* pseudo options */
 #ifdef USE_AUTOCRYPT
 extern bool OptAutocryptGpgme;      ///< (pseudo) use Autocrypt context inside ncrypt/crypt_gpgme.c

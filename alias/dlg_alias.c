@@ -93,6 +93,7 @@
 #include "expando.h"
 #include "functions.h"
 #include "gui.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 
 /// Help Bar for the Alias dialog (address book)
@@ -344,10 +345,13 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
   mdata.limit = buf_strdup(buf);
   mdata.search_state = search_state_new();
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   if (buf_at(buf, 0) != '\0')
   {
     struct Alias **ap = NULL;
-    ARRAY_FOREACH(ap, &Aliases)
+    ARRAY_FOREACH(ap, &md->aliases)
     {
       struct Alias *a = *ap;
       if (a->name && mutt_strn_equal(a->name, buf_string(buf), buf_len(buf)))
@@ -385,7 +389,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     {
       // Create a View Array of all the Aliases
       FREE(&mdata.limit);
-      ARRAY_FOREACH(ap, &Aliases)
+      ARRAY_FOREACH(ap, &md->aliases)
       {
         alias_array_alias_add(&mdata.ava, *ap);
       }
@@ -408,7 +412,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
       }
 
       /* build alias list and show it */
-      ARRAY_FOREACH(ap, &Aliases)
+      ARRAY_FOREACH(ap, &md->aliases)
       {
         struct Alias *a = *ap;
         int aasize = alias_array_alias_add(&mdata.ava, a);
@@ -426,7 +430,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
   if (ARRAY_EMPTY(&mdata.ava))
   {
     struct Alias **ap = NULL;
-    ARRAY_FOREACH(ap, &Aliases)
+    ARRAY_FOREACH(ap, &md->aliases)
     {
       alias_array_alias_add(&mdata.ava, *ap);
     }
@@ -462,11 +466,11 @@ done:
 
     // Find and remove the alias from the Aliases array
     struct Alias **ap = NULL;
-    ARRAY_FOREACH(ap, &Aliases)
+    ARRAY_FOREACH(ap, &md->aliases)
     {
       if (*ap == avp->alias)
       {
-        ARRAY_REMOVE(&Aliases, ap);
+        ARRAY_REMOVE(&md->aliases, ap);
         break;
       }
     }
@@ -493,8 +497,11 @@ void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.search_state = search_state_new();
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   // Create a View Array of all the Aliases
-  ARRAY_FOREACH(ap, &Aliases)
+  ARRAY_FOREACH(ap, &md->aliases)
   {
     alias_array_alias_add(&mdata.ava, *ap);
   }
@@ -529,11 +536,11 @@ done:
     if (avp->is_deleted)
     {
       // Find and remove the alias from the Aliases array
-      ARRAY_FOREACH(ap, &Aliases)
+      ARRAY_FOREACH(ap, &md->aliases)
       {
         if (*ap == avp->alias)
         {
-          ARRAY_REMOVE(&Aliases, ap);
+          ARRAY_REMOVE(&md->aliases, ap);
           break;
         }
       }

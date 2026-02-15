@@ -35,9 +35,10 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "lib.h"
-#include "commands/lib.h"
 #include "parse/lib.h"
 #include "alias.h"
+#include "alternates.h"
+#include "module_data.h"
 #include "reverse.h"
 
 /**
@@ -181,9 +182,12 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
     goto done;
   }
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   /* check to see if an alias with this name already exists */
   struct Alias **ap = NULL;
-  ARRAY_FOREACH(ap, &Aliases)
+  ARRAY_FOREACH(ap, &md->aliases)
   {
     if (mutt_istr_equal((*ap)->name, name))
     {
@@ -206,7 +210,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
     /* create a new alias */
     a = alias_new();
     a->name = name;
-    ARRAY_ADD(&Aliases, a);
+    ARRAY_ADD(&md->aliases, a);
     event = NT_ALIAS_ADD;
   }
   a->addr = al;
@@ -274,6 +278,9 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
 
   struct Buffer *token = buf_pool_get();
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
@@ -281,22 +288,22 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
     struct Alias **ap = NULL;
     if (mutt_str_equal("*", buf_string(token)))
     {
-      ARRAY_FOREACH(ap, &Aliases)
+      ARRAY_FOREACH(ap, &md->aliases)
       {
         alias_reverse_delete(*ap);
       }
 
-      aliaslist_clear(&Aliases);
+      aliaslist_clear(&md->aliases);
       goto done;
     }
 
-    ARRAY_FOREACH(ap, &Aliases)
+    ARRAY_FOREACH(ap, &md->aliases)
     {
       if (!mutt_istr_equal(buf_string(token), (*ap)->name))
         continue;
 
       struct Alias *a = *ap;
-      ARRAY_REMOVE(&Aliases, ap);
+      ARRAY_REMOVE(&md->aliases, ap);
       alias_reverse_delete(a);
       alias_free(&a);
       break;
@@ -307,3 +314,29 @@ done:
   buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
 }
+
+/**
+ * AliasCommands - Alias Commands
+ */
+const struct Command AliasCommands[] = {
+  // clang-format off
+  { "alias", CMD_ALIAS, parse_alias,
+        N_("Define an alias (name to email address)"),
+        N_("alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"),
+        "configuration.html#alias" },
+  { "alternates", CMD_ALTERNATES, parse_alternates,
+        N_("Define a list of alternate email addresses for the user"),
+        N_("alternates [ -group <name> ... ] <regex> [ <regex> ... ]"),
+        "configuration.html#alternates" },
+  { "unalias", CMD_UNALIAS, parse_unalias,
+        N_("Remove an alias definition"),
+        N_("unalias { * | <key> ... }"),
+        "configuration.html#alias" },
+  { "unalternates", CMD_UNALTERNATES, parse_unalternates,
+        N_("Remove addresses from `alternates` list"),
+        N_("unalternates { * | <regex> ... }"),
+        "configuration.html#alternates" },
+
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  // clang-format on
+};

@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
@@ -29,7 +29,7 @@
  */
 
 /**
- * @page commands_my_header Parse My-header Commands
+ * @page send_my_header Parse My-header Commands
  *
  * Parse My-header Commands
  */
@@ -41,7 +41,7 @@
 #include "core/lib.h"
 #include "my_header.h"
 #include "parse/lib.h"
-#include "globals.h"
+#include "module_data.h"
 
 /**
  * parse_my_header - Parse the 'my-header' command - Implements Command::parse() - @ingroup command_parse
@@ -71,8 +71,11 @@ enum CommandResult parse_my_header(const struct Command *cmd, struct Buffer *lin
     goto done;
   }
 
+  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(md);
+
   struct EventHeader ev_h = { token->data };
-  struct ListNode *node = header_find(&UserHeader, buf_string(token));
+  struct ListNode *node = header_find(&md->user_header, buf_string(token));
 
   if (node)
   {
@@ -82,7 +85,7 @@ enum CommandResult parse_my_header(const struct Command *cmd, struct Buffer *lin
   }
   else
   {
-    header_add(&UserHeader, buf_string(token));
+    header_add(&md->user_header, buf_string(token));
     mutt_debug(LL_NOTIFY, "NT_HEADER_ADD: %s\n", buf_string(token));
     notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &ev_h);
   }
@@ -116,19 +119,22 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
   struct ListNode *np = NULL, *tmp = NULL;
   size_t l;
 
+  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(md);
+
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf_string(token)))
     {
       /* Clear all headers, send a notification for each header */
-      STAILQ_FOREACH(np, &UserHeader, entries)
+      STAILQ_FOREACH(np, &md->user_header, entries)
       {
         mutt_debug(LL_NOTIFY, "NT_HEADER_DELETE: %s\n", np->data);
         struct EventHeader ev_h = { np->data };
         notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
       }
-      mutt_list_free(&UserHeader);
+      mutt_list_free(&md->user_header);
       continue;
     }
 
@@ -136,7 +142,7 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
     if (buf_at(token, l - 1) == ':')
       l--;
 
-    STAILQ_FOREACH_SAFE(np, &UserHeader, entries, tmp)
+    STAILQ_FOREACH_SAFE(np, &md->user_header, entries, tmp)
     {
       if (mutt_istrn_equal(buf_string(token), np->data, l) && (np->data[l] == ':'))
       {
@@ -144,7 +150,7 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
         struct EventHeader ev_h = { np->data };
         notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
 
-        header_free(&UserHeader, np);
+        header_free(&md->user_header, np);
       }
     }
   } while (MoreArgs(line));
