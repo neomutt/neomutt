@@ -1680,28 +1680,6 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
 
   expand_path(fcc, false);
 
-  /* Don't save a copy when we are in batch-mode, and the FCC
-   * folder is on an IMAP server: This would involve possibly lots
-   * of user interaction, which is not available in batch mode.
-   *
-   * Note: A patch to fix the problems with the use of IMAP servers
-   * from non-curses mode is available from Brendan Cully.  However,
-   * I'd like to think a bit more about this before including it.  */
-
-  if ((flags & SEND_BATCH) && !buf_is_empty(fcc) &&
-      (imap_path_probe(buf_string(fcc), NULL) == MUTT_IMAP))
-  {
-    mutt_error(_("Warning: Fcc to an IMAP mailbox is not supported in batch mode"));
-    /* L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
-       To make it clearer that the message doesn't mean NeoMutt is aborting
-       sending the mail too.
-       %s is the full mailbox URL, including imap(s)://
-    */
-    mutt_error(_("Skipping Fcc to %s"), buf_string(fcc));
-    buf_reset(fcc);
-    return rc;
-  }
-
   if (buf_is_empty(fcc) || mutt_str_equal("/dev/null", buf_string(fcc)))
     return rc;
 
