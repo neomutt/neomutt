@@ -557,7 +557,7 @@ bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
    * mutt_date_make_time() returns something larger than will fit in a time_t
    * on some systems */
   struct tm max = { 0 };
-  max.tm_year = 130;
+  max.tm_year = 137;
   max.tm_mon = 11;
   max.tm_mday = 31;
   max.tm_hour = 23;
