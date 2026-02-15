@@ -74,7 +74,7 @@ static bool email_init(struct NeoMutt *n)
   add_to_stailq(&md->mail_to_allow, "in-reply-to");
   add_to_stailq(&md->mail_to_allow, "references");
 
-  driver_tags_init();
+  driver_tags_init(md);
 
   return true;
 }
@@ -120,7 +120,7 @@ static bool email_cleanup(struct NeoMutt *n)
 
   mutt_replacelist_free(&md->spam);
 
-  driver_tags_cleanup();
+  driver_tags_cleanup(md);
 
   FREE(&md);
   return true;

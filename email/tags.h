@@ -29,8 +29,7 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 
-extern struct HashTable *TagTransforms;
-extern struct HashTable *TagFormats;
+struct EmailModuleData;
 
 /**
  * struct Tag - LinkedList Tag Element
@@ -58,7 +57,7 @@ void driver_tags_get_with_hidden    (struct TagList *tl, struct Buffer *tags);
 bool driver_tags_replace            (struct TagList *tl, const char *tags);
 void driver_tags_add                (struct TagList *tl, char *tag);
 
-void driver_tags_init(void);
-void driver_tags_cleanup(void);
+void driver_tags_init   (struct EmailModuleData *md);
+void driver_tags_cleanup(struct EmailModuleData *md);
 
 #endif /* MUTT_EMAIL_TAGS_H */

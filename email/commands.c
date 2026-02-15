@@ -38,7 +38,6 @@
 #include "module_data.h"
 #include "score.h"
 #include "spam.h"
-#include "tags.h"
 
 /**
  * parse_list - Parse a list command - Implements Command::parse() - @ingroup command_parse
@@ -136,6 +135,9 @@ enum CommandResult parse_tag_formats(const struct Command *cmd, struct Buffer *l
   struct Buffer *tag = buf_pool_get();
   struct Buffer *fmt = buf_pool_get();
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   while (MoreArgs(line))
   {
     parse_extract_token(tag, line, TOKEN_NO_FLAGS);
@@ -145,14 +147,14 @@ enum CommandResult parse_tag_formats(const struct Command *cmd, struct Buffer *l
     parse_extract_token(fmt, line, TOKEN_NO_FLAGS);
 
     /* avoid duplicates */
-    const char *tmp = mutt_hash_find(TagFormats, buf_string(fmt));
+    const char *tmp = mutt_hash_find(md->tag_formats, buf_string(fmt));
     if (tmp)
     {
       mutt_warning(_("tag format '%s' already registered as '%s'"), buf_string(fmt), tmp);
       continue;
     }
 
-    mutt_hash_insert(TagFormats, buf_string(fmt), buf_strdup(tag));
+    mutt_hash_insert(md->tag_formats, buf_string(fmt), buf_strdup(tag));
   }
 
   buf_pool_release(&tag);
@@ -185,6 +187,9 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd, struct Buffer
   struct Buffer *tag = buf_pool_get();
   struct Buffer *trans = buf_pool_get();
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   while (MoreArgs(line))
   {
     parse_extract_token(tag, line, TOKEN_NO_FLAGS);
@@ -195,7 +200,7 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd, struct Buffer
     const char *trn = buf_string(trans);
 
     /* avoid duplicates */
-    const char *tmp = mutt_hash_find(TagTransforms, buf_string(tag));
+    const char *tmp = mutt_hash_find(md->tag_transforms, buf_string(tag));
     if (tmp)
     {
       mutt_warning(_("tag transform '%s' already registered as '%s'"),
@@ -203,7 +208,7 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd, struct Buffer
       continue;
     }
 
-    mutt_hash_insert(TagTransforms, buf_string(tag), mutt_str_dup(trn));
+    mutt_hash_insert(md->tag_transforms, buf_string(tag), mutt_str_dup(trn));
   }
 
   buf_pool_release(&tag);
