@@ -59,16 +59,16 @@ enum CommandResult parse_list(const struct Command *cmd, struct Buffer *line,
   switch (cmd->id)
   {
     case CMD_ALTERNATIVE_ORDER:
-      return parse_stailq_list(cmd, line, &md->alternative_order, pc, pe);
+      return parse_stailq(cmd, line, &md->alternative_order, pc, pe);
 
     case CMD_AUTO_VIEW:
-      return parse_stailq_list(cmd, line, &md->auto_view, pc, pe);
+      return parse_stailq(cmd, line, &md->auto_view, pc, pe);
 
     case CMD_HEADER_ORDER:
-      return parse_stailq_list(cmd, line, &md->header_order, pc, pe);
+      return parse_stailq(cmd, line, &md->header_order, pc, pe);
 
     case CMD_MAILTO_ALLOW:
-      return parse_stailq_list(cmd, line, &md->mail_to_allow, pc, pe);
+      return parse_stailq(cmd, line, &md->mail_to_allow, pc, pe);
 
     default:
       ASSERT(false);
@@ -95,16 +95,16 @@ enum CommandResult parse_unlist(const struct Command *cmd, struct Buffer *line,
   switch (cmd->id)
   {
     case CMD_UNALTERNATIVE_ORDER:
-      return parse_unstailq_list(cmd, line, &md->alternative_order, pc, pe);
+      return parse_unstailq(cmd, line, &md->alternative_order, pc, pe);
 
     case CMD_UNAUTO_VIEW:
-      return parse_unstailq_list(cmd, line, &md->auto_view, pc, pe);
+      return parse_unstailq(cmd, line, &md->auto_view, pc, pe);
 
     case CMD_UNHEADER_ORDER:
-      return parse_unstailq_list(cmd, line, &md->header_order, pc, pe);
+      return parse_unstailq(cmd, line, &md->header_order, pc, pe);
 
     case CMD_UNMAILTO_ALLOW:
-      return parse_unstailq_list(cmd, line, &md->mail_to_allow, pc, pe);
+      return parse_unstailq(cmd, line, &md->mail_to_allow, pc, pe);
 
     default:
       ASSERT(false);

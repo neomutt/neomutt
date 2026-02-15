@@ -53,8 +53,8 @@ static bool attach_init(struct NeoMutt *n)
   STAILQ_INIT(&md->inline_allow);
   STAILQ_INIT(&md->inline_exclude);
 
-  STAILQ_INIT(&md->mime_lookup_list);
-  STAILQ_INIT(&md->temp_attachments_list);
+  STAILQ_INIT(&md->mime_lookup);
+  STAILQ_INIT(&md->temp_attachments);
 
   md->attachments_notify = notify_new();
   notify_set_parent(md->attachments_notify, NeoMutt->notify);
@@ -94,7 +94,7 @@ static bool attach_cleanup(struct NeoMutt *n)
   mutt_list_free_type(&md->inline_allow, (list_free_t) attachmatch_free);
   mutt_list_free_type(&md->inline_exclude, (list_free_t) attachmatch_free);
 
-  mutt_list_free(&md->mime_lookup_list);
+  mutt_list_free(&md->mime_lookup);
 
   mutt_temp_attachments_cleanup();
 

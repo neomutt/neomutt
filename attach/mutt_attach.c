@@ -342,7 +342,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
   ASSERT(md);
 
   struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &md->mime_lookup_list, entries)
+  STAILQ_FOREACH(np, &md->mime_lookup, entries)
   {
     const int i = (int) mutt_str_len(np->data) - 1;
     if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
@@ -1298,7 +1298,7 @@ void mutt_add_temp_attachment(const char *filename)
   struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
   ASSERT(md);
 
-  mutt_list_insert_tail(&md->temp_attachments_list, mutt_str_dup(filename));
+  mutt_list_insert_tail(&md->temp_attachments, mutt_str_dup(filename));
 }
 
 /**
@@ -1311,11 +1311,11 @@ void mutt_temp_attachments_cleanup(void)
 
   struct ListNode *np = NULL;
 
-  STAILQ_FOREACH(np, &md->temp_attachments_list, entries)
+  STAILQ_FOREACH(np, &md->temp_attachments, entries)
   {
     (void) mutt_file_chmod_add(np->data, S_IWUSR);
     mutt_file_unlink(np->data);
   }
 
-  mutt_list_free(&md->temp_attachments_list);
+  mutt_list_free(&md->temp_attachments);
 }

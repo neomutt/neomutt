@@ -650,7 +650,7 @@ enum CommandResult parse_mime_lookup(const struct Command *cmd, struct Buffer *l
   struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
   ASSERT(md);
 
-  return parse_stailq_list(cmd, line, &md->mime_lookup_list, pc, pe);
+  return parse_stailq(cmd, line, &md->mime_lookup, pc, pe);
 }
 
 /**
@@ -666,7 +666,7 @@ enum CommandResult parse_unmime_lookup(const struct Command *cmd, struct Buffer 
   struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
   ASSERT(md);
 
-  return parse_unstailq_list(cmd, line, &md->mime_lookup_list, pc, pe);
+  return parse_unstailq(cmd, line, &md->mime_lookup, pc, pe);
 }
 
 /**

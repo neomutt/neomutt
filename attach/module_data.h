@@ -36,8 +36,8 @@ struct AttachModuleData
   struct ListHead inline_exclude;        ///< List of inline types to ignore
   struct Notify  *attachments_notify;    ///< Notifications: #NotifyAttach
 
-  struct ListHead mime_lookup_list;      ///< List of mime types that that shouldn't use the mailcap entry
-  struct ListHead temp_attachments_list; ///< List of temporary files for displaying attachments
+  struct ListHead mime_lookup;           ///< List of mime types that that shouldn't use the mailcap entry
+  struct ListHead temp_attachments;      ///< List of temporary files for displaying attachments
 };
 
 #endif /* MUTT_ATTACH_MODULE_DATA_H */

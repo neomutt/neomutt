@@ -41,7 +41,7 @@
 #include "parse/lib.h"
 
 /**
- * parse_stailq_list - Parse a list command - Implements Command::parse() - @ingroup command_parse
+ * parse_stailq - Parse a list command - Implements Command::parse() - @ingroup command_parse
  * @param cmd  Command being parsed
  * @param line Buffer containing string to be parsed
  * @param list List for the results
@@ -49,9 +49,9 @@
  * @param pe   Parse Errors
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-enum CommandResult parse_stailq_list(const struct Command *cmd,
-                                     struct Buffer *line, struct ListHead *list,
-                                     const struct ParseContext *pc, struct ParseError *pe)
+enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
+                                struct ListHead *list,
+                                const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
 
@@ -74,21 +74,7 @@ enum CommandResult parse_stailq_list(const struct Command *cmd,
 }
 
 /**
- * parse_stailq - Parse a list command - Implements Command::parse() - @ingroup command_parse
- *
- * Parse:
- * - `alternative-order <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
- * - `auto-view <mime-type>[/<mime-subtype> ] [ <mime-type>[/<mime-subtype> ] ... ]`
- * - `header-order <header> [ <header> ... ]`
- */
-enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
-                                const struct ParseContext *pc, struct ParseError *pe)
-{
-  return parse_stailq_list(cmd, line, (struct ListHead *) cmd->data, pc, pe);
-}
-
-/**
- * parse_unstailq_list - Parse an unlist command - Implements Command::parse() - @ingroup command_parse
+ * parse_unstailq - Parse an unlist command - Implements Command::parse() - @ingroup command_parse
  * @param cmd  Command being parsed
  * @param line Buffer containing string to be parsed
  * @param list List for the results
@@ -96,9 +82,9 @@ enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
  * @param pe   Parse Errors
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-enum CommandResult parse_unstailq_list(const struct Command *cmd,
-                                       struct Buffer *line, struct ListHead *list,
-                                       const struct ParseContext *pc, struct ParseError *pe)
+enum CommandResult parse_unstailq(const struct Command *cmd,
+                                  struct Buffer *line, struct ListHead *list,
+                                  const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
 
@@ -124,19 +110,4 @@ enum CommandResult parse_unstailq_list(const struct Command *cmd,
 
   buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
-}
-
-/**
- * parse_unstailq - Parse an unlist command - Implements Command::parse() - @ingroup command_parse
- *
- * Parse:
- * - `unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
- * - `unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
- * - `unheader-order { * | <header> ... }`
- * - `unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }`
- */
-enum CommandResult parse_unstailq(const struct Command *cmd, struct Buffer *line,
-                                  const struct ParseContext *pc, struct ParseError *pe)
-{
-  return parse_unstailq_list(cmd, line, (struct ListHead *) cmd->data, pc, pe);
 }

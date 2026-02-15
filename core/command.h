@@ -92,7 +92,7 @@ enum CommandId
   CMD_MAILTO_ALLOW,          ///< `:mailto-allow`        @sa #CMD_UNMAILTO_ALLOW, #EmailModuleData.mail_to_allow
   CMD_MBOX_HOOK,             ///< `:mbox-hook`
   CMD_MESSAGE_HOOK,          ///< `:message-hook`
-  CMD_MIME_LOOKUP,           ///< `:mime-lookup`         @sa #CMD_UNMIME_LOOKUP, #AttachModuleData.mime_lookup_list
+  CMD_MIME_LOOKUP,           ///< `:mime-lookup`         @sa #CMD_UNMIME_LOOKUP, #AttachModuleData.mime_lookup
   CMD_MONO,                  ///< `:mono`                @sa #CMD_UNMONO
   CMD_MY_HEADER,             ///< `:my-header`           @sa #CMD_UNMY_HEADER
   CMD_NAMED_MAILBOXES,       ///< `:named-mailboxes`     @sa #CMD_MAILBOXES, #CMD_UNMAILBOXES
@@ -135,7 +135,7 @@ enum CommandId
   CMD_UNMACRO,               ///< `:unmacro`             @sa #CMD_MACRO
   CMD_UNMAILBOXES,           ///< `:unmailboxes`         @sa #CMD_MAILBOXES, #CMD_NAMED_MAILBOXES
   CMD_UNMAILTO_ALLOW,        ///< `:unmailto-allow`      @sa #CMD_MAILTO_ALLOW, #EmailModuleData.mail_to_allow
-  CMD_UNMIME_LOOKUP,         ///< `:unmime-lookup`       @sa #CMD_MIME_LOOKUP, #AttachModuleData.mime_lookup_list
+  CMD_UNMIME_LOOKUP,         ///< `:unmime-lookup`       @sa #CMD_MIME_LOOKUP, #AttachModuleData.mime_lookup
   CMD_UNMONO,                ///< `:unmono`              @sa #CMD_MONO
   CMD_UNMY_HEADER,           ///< `:unmy-header`         @sa #CMD_MY_HEADER
   CMD_UNSCORE,               ///< `:unscore`             @sa #CMD_SCORE
