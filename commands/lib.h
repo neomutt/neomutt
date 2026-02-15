@@ -35,7 +35,6 @@
  * | commands/setenv.c      | @subpage commands_setenv      |
  * | commands/source.c      | @subpage commands_source      |
  * | commands/stailq.c      | @subpage commands_stailq      |
- * | commands/tags.c        | @subpage commands_tags        |
  */
 
 #ifndef MUTT_COMMANDS_LIB_H
@@ -49,7 +48,6 @@
 #include "setenv.h"
 #include "source.h"
 #include "stailq.h"
-#include "tags.h"
 // IWYU pragma: end_keep
 
 #endif /* MUTT_COMMANDS_LIB_H */

@@ -38,7 +38,6 @@
 #include "parse.h"
 #include "setenv.h"
 #include "source.h"
-#include "tags.h"
 
 /**
  * CommandsCommands - General NeoMutt Commands
@@ -101,14 +100,6 @@ const struct Command CommandsCommands[] = {
         N_("Add address to the list of subscribed mailing lists"),
         N_("subscribe [ -group <name> ... ] <regex> [ ... ]"),
         "configuration.html#lists" },
-  { "tag-formats", CMD_TAG_FORMATS, parse_tag_formats,
-        N_("Define expandos tags"),
-        N_("tag-formats <tag> <format-string> [ ... ] }"),
-        "optionalfeatures.html#custom-tags" },
-  { "tag-transforms", CMD_TAG_TRANSFORMS, parse_tag_transforms,
-        N_("Rules to transform tags into icons"),
-        N_("tag-transforms <tag> <transformed-string> [ ... ]"),
-        "optionalfeatures.html#custom-tags" },
   { "toggle", CMD_TOGGLE, parse_set,
         N_("Toggle the value of a boolean/quad config option"),
         N_("toggle <variable> [ ... ]"),

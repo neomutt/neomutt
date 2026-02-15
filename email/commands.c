@@ -32,14 +32,13 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "commands/lib.h"
+#include "parse/lib.h"
 #include "group.h"
 #include "ignore.h"
 #include "module_data.h"
 #include "score.h"
 #include "spam.h"
-
-struct ParseContext;
-struct ParseError;
+#include "tags.h"
 
 /**
  * parse_list - Parse a list command - Implements Command::parse() - @ingroup command_parse
@@ -114,6 +113,105 @@ enum CommandResult parse_unlist(const struct Command *cmd, struct Buffer *line,
 }
 
 /**
+ * parse_tag_formats - Parse the 'tag-formats' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse config like: `tag-formats pgp GP`
+ *
+ * @note This maps format -> tag
+ *
+ * Parse:
+ * - `tag-formats <tag> <format-string> [ <tag> <format-string> ... ] }`
+ */
+enum CommandResult parse_tag_formats(const struct Command *cmd, struct Buffer *line,
+                                     const struct ParseContext *pc, struct ParseError *pe)
+{
+  struct Buffer *err = pe->message;
+
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
+  struct Buffer *tag = buf_pool_get();
+  struct Buffer *fmt = buf_pool_get();
+
+  while (MoreArgs(line))
+  {
+    parse_extract_token(tag, line, TOKEN_NO_FLAGS);
+    if (buf_is_empty(tag))
+      continue;
+
+    parse_extract_token(fmt, line, TOKEN_NO_FLAGS);
+
+    /* avoid duplicates */
+    const char *tmp = mutt_hash_find(TagFormats, buf_string(fmt));
+    if (tmp)
+    {
+      mutt_warning(_("tag format '%s' already registered as '%s'"), buf_string(fmt), tmp);
+      continue;
+    }
+
+    mutt_hash_insert(TagFormats, buf_string(fmt), buf_strdup(tag));
+  }
+
+  buf_pool_release(&tag);
+  buf_pool_release(&fmt);
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_tag_transforms - Parse the 'tag-transforms' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse config like: `tag-transforms pgp P`
+ *
+ * @note This maps tag -> transform
+ *
+ * Parse:
+ * - `tag-transforms <tag> <transformed-string> [ <tag> <transformed-string> ... ]}`
+ */
+enum CommandResult parse_tag_transforms(const struct Command *cmd, struct Buffer *line,
+                                        const struct ParseContext *pc,
+                                        struct ParseError *pe)
+{
+  struct Buffer *err = pe->message;
+
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), cmd->name);
+    return MUTT_CMD_WARNING;
+  }
+
+  struct Buffer *tag = buf_pool_get();
+  struct Buffer *trans = buf_pool_get();
+
+  while (MoreArgs(line))
+  {
+    parse_extract_token(tag, line, TOKEN_NO_FLAGS);
+    if (buf_is_empty(tag))
+      continue;
+
+    parse_extract_token(trans, line, TOKEN_NO_FLAGS);
+    const char *trn = buf_string(trans);
+
+    /* avoid duplicates */
+    const char *tmp = mutt_hash_find(TagTransforms, buf_string(tag));
+    if (tmp)
+    {
+      mutt_warning(_("tag transform '%s' already registered as '%s'"),
+                   buf_string(tag), tmp);
+      continue;
+    }
+
+    mutt_hash_insert(TagTransforms, buf_string(tag), mutt_str_dup(trn));
+  }
+
+  buf_pool_release(&tag);
+  buf_pool_release(&trans);
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * EmailCommands - Email Commands
  */
 const struct Command EmailCommands[] = {
@@ -158,6 +256,14 @@ const struct Command EmailCommands[] = {
         N_("Define rules to parse spam detection headers"),
         N_("spam <regex> [ <format> ]"),
         "configuration.html#spam" },
+  { "tag-formats", CMD_TAG_FORMATS, parse_tag_formats,
+        N_("Define expandos tags"),
+        N_("tag-formats <tag> <format-string> [ ... ] }"),
+        "optionalfeatures.html#custom-tags" },
+  { "tag-transforms", CMD_TAG_TRANSFORMS, parse_tag_transforms,
+        N_("Rules to transform tags into icons"),
+        N_("tag-transforms <tag> <transformed-string> [ ... ]"),
+        "optionalfeatures.html#custom-tags" },
   { "unalternative-order", CMD_UNALTERNATIVE_ORDER, parse_unlist,
         N_("Remove MIME types from preference order"),
         N_("unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),

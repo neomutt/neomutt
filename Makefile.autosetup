@@ -207,7 +207,7 @@ $(PWD)/color:
 LIBCOMMANDS=	libcommands.a
 LIBCOMMANDSOBJS= commands/commands.o commands/ifdef.o commands/mailboxes.o \
 		 commands/parse.o commands/setenv.o commands/source.o \
-		 commands/stailq.o commands/tags.o commands/module.o
+		 commands/stailq.o commands/module.o
 CLEANFILES+=	$(LIBCOMMANDS) $(LIBCOMMANDSOBJS)
 ALLOBJS+=	$(LIBCOMMANDSOBJS)
 

@@ -1127,7 +1127,6 @@ int main(int argc, char *argv[], char *envp[])
     log_gui();
   }
 
-  driver_tags_init();
   menu_init();
   sb_init();
 
@@ -1728,7 +1727,6 @@ main_exit:
 
   sb_cleanup();
 
-  driver_tags_cleanup();
   colors_cleanup();
 
   FREE(&CurrentFolder);

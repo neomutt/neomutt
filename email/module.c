@@ -33,6 +33,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "module_data.h"
+#include "tags.h"
 
 extern struct ConfigDef EmailVars[];
 
@@ -72,6 +73,8 @@ static bool email_init(struct NeoMutt *n)
   add_to_stailq(&md->mail_to_allow, "cc");
   add_to_stailq(&md->mail_to_allow, "in-reply-to");
   add_to_stailq(&md->mail_to_allow, "references");
+
+  driver_tags_init();
 
   return true;
 }
@@ -116,6 +119,8 @@ static bool email_cleanup(struct NeoMutt *n)
   mutt_regexlist_free(&md->unsubscribed);
 
   mutt_replacelist_free(&md->spam);
+
+  driver_tags_cleanup();
 
   FREE(&md);
   return true;
