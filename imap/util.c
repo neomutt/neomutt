@@ -110,6 +110,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
  */
 void imap_mdata_cache_reset(struct ImapMboxData *mdata)
 {
+  mdata->check_status = IMAP_OPEN_NO_FLAGS;
   mdata->reopen = IMAP_OPEN_NO_FLAGS;
   mutt_hash_free(&mdata->uid_hash);
   imap_msn_free(&mdata->msn);
