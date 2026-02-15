@@ -524,6 +524,7 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
   Gsasl_session *gsasl_session = NULL;
   struct Buffer *input_buf = NULL, *output_buf = NULL, *smtp_response_buf = NULL;
   int rc = SMTP_AUTH_FAIL, gsasl_rc = GSASL_OK, smtp_rc;
+  bool first_response = true;
 
   const char *chosen_mech = mutt_gsasl_get_mech(mechlist, adata->auth_mechs);
   if (!chosen_mech)
@@ -554,6 +555,7 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
    * encountered difficulties with a server requiring it. */
   if (mutt_str_equal(chosen_mech, "PLAIN"))
   {
+    first_response = false;
     char *gsasl_step_output = NULL;
     gsasl_rc = gsasl_step64(gsasl_session, "", &gsasl_step_output);
     if (gsasl_rc != GSASL_NEEDS_MORE && gsasl_rc != GSASL_OK)
@@ -580,6 +582,19 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
 
     if (smtp_rc != SMTP_READY)
       break;
+
+    /* Another workaround for broken SMTP servers.  Instead of an
+     * empty challenge, some MS servers return a meaningless
+     * non-BASE64 encoded response in the initial reply, e.g. "334
+     * GSSAPI supported".
+     */
+    if (first_response)
+    {
+      first_response = false;
+      /* Use input_buf as a temp buffer. We've already processed the input */
+      if (mutt_b64_buffer_decode(input_buf, buf_string(smtp_response_buf)) < 0)
+        buf_reset(smtp_response_buf);
+    }
 
     char *gsasl_step_output = NULL;
     gsasl_rc = gsasl_step64(gsasl_session, buf_string(smtp_response_buf), &gsasl_step_output);
