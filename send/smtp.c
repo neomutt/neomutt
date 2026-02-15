@@ -52,6 +52,7 @@
 #include "question/lib.h"
 #include "globals.h"
 #include "mutt_socket.h"
+#include "muttlib.h"
 #include "sendlib.h"
 #ifdef USE_SASL_GNU
 #include <gsasl.h>
@@ -225,7 +226,12 @@ static int smtp_rcpt_to(struct SmtpAccountData *adata, const struct AddressList 
       return SMTP_ERR_WRITE;
     int rc = smtp_get_resp(adata);
     if (rc != 0)
+    {
+      mutt_sleep(2);
+      mutt_error(_("SMTP session failed: cannot add recipient <%s>"),
+                 buf_string(a->mailbox));
       return rc;
+    }
   }
 
   return 0;
