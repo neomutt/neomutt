@@ -133,7 +133,7 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
     }
 
     l = mutt_str_len(buf_string(token));
-    if (buf_at(token, l - 1) == ':')
+    if (buf_at(token, -1) == ':')
       l--;
 
     STAILQ_FOREACH_SAFE(np, &UserHeader, entries, tmp)

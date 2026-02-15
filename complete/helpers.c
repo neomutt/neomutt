@@ -486,7 +486,7 @@ enum FunctionRetval complete_command(struct EnterWindowData *wdata, int op)
   int rc = FR_SUCCESS;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
   size_t i = buf_len(wdata->buffer);
-  if ((i != 0) && (buf_at(wdata->buffer, i - 1) == '=') &&
+  if ((i != 0) && (buf_at(wdata->buffer, -1) == '=') &&
       (mutt_var_value_complete(wdata->cd, wdata->buffer, i) != 0))
   {
     wdata->tabs = 0;

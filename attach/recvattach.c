@@ -174,7 +174,7 @@ static void prepend_savedir(struct Buffer *buf)
   if (c_attach_save_dir)
   {
     buf_addstr(tmp, c_attach_save_dir);
-    if (tmp->dptr[-1] != '/')
+    if (buf_at(tmp, -1) != '/')
       buf_addch(tmp, '/');
   }
   else
