@@ -1579,6 +1579,16 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
     struct Email *e = m->emails[i];
     if (!e)
       break;
+
+    /* If message has already been checkpoint-deleted server-side, don't use
+     * UID COPY because that can propagate the deleted flag to trash too. */
+    struct ImapEmailData *edata = imap_edata_get(e);
+    if (e->active && e->deleted && !e->purge && edata && edata->deleted)
+    {
+      mutt_debug(LL_DEBUG1, "imap_fast_trash: server-side delete flag set. aborting.\n");
+      goto out;
+    }
+
     if (e->active && e->changed && e->deleted && !e->purge)
     {
       rc = imap_sync_message_for_copy(m, e, sync_cmd, &err_continue);
