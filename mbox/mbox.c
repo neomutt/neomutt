@@ -367,6 +367,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   struct Email *e_cur = NULL;
   time_t t = 0;
   int count = 0, lines = 0;
+  bool has_mbox_sep = false;
   LOFF_T loc;
   struct Progress *progress = NULL;
   enum MxOpenReturns rc = MX_OPEN_ERROR;
@@ -408,7 +409,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
         struct Email *e = m->emails[m->msg_count - 1];
         if (e->body->length < 0)
         {
-          e->body->length = loc - e->body->offset - 1;
+          e->body->length = loc - e->body->offset - (has_mbox_sep ? 1 : 0);
           if (e->body->length < 0)
             e->body->length = 0;
         }
@@ -503,10 +504,12 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
         mutt_addrlist_copy(&e_cur->env->from, &e_cur->env->return_path, false);
 
       lines = 0;
+      has_mbox_sep = false;
     }
     else
     {
       lines++;
+      has_mbox_sep = mutt_str_equal("\n", buf);
     }
 
     loc = ftello(adata->fp);
@@ -521,7 +524,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
     struct Email *e = m->emails[m->msg_count - 1];
     if (e->body->length < 0)
     {
-      e->body->length = ftello(adata->fp) - e->body->offset - 1;
+      e->body->length = ftello(adata->fp) - e->body->offset - (has_mbox_sep ? 1 : 0);
       if (e->body->length < 0)
         e->body->length = 0;
     }
