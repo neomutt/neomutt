@@ -3,7 +3,7 @@
  * Parse My-header Commands
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_MY_HEADER_H
-#define MUTT_COMMANDS_MY_HEADER_H
+#ifndef MUTT_SEND_MY_HEADER_H
+#define MUTT_SEND_MY_HEADER_H
 
 #include "core/lib.h"
 
@@ -32,4 +32,4 @@ struct ParseError;
 enum CommandResult parse_my_header  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
-#endif /* MUTT_COMMANDS_MY_HEADER_H */
+#endif /* MUTT_SEND_MY_HEADER_H */

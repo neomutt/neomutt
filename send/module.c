@@ -36,6 +36,8 @@
 
 extern struct ConfigDef SendVars[];
 
+extern const struct Command SendCommands[];
+
 /**
  * send_init - Initialise a Module - Implements Module::init()
  */
@@ -53,6 +55,14 @@ static bool send_init(struct NeoMutt *n)
 static bool send_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 {
   return cs_register_variables(cs, SendVars);
+}
+
+/**
+ * send_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool send_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, SendCommands);
 }
 
 /**
@@ -76,7 +86,7 @@ const struct Module ModuleSend = {
   send_init,
   NULL, // config_define_types
   send_config_define_variables,
-  NULL, // commands_register
+  send_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
   send_cleanup,

@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
@@ -29,7 +29,7 @@
  */
 
 /**
- * @page commands_my_header Parse My-header Commands
+ * @page send_my_header Parse My-header Commands
  *
  * Parse My-header Commands
  */

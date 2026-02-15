@@ -3,7 +3,7 @@
  * Convenience wrapper for the send headers
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -34,6 +34,7 @@
  * | send/header.c           | @subpage send_header           |
  * | send/module.c           | @subpage send_module           |
  * | send/multipart.c        | @subpage send_multipart        |
+ * | send/my_header.c        | @subpage send_my_header        |
  * | send/send.c             | @subpage send_send             |
  * | send/sendlib.c          | @subpage send_sendlib          |
  * | send/sendmail.c         | @subpage send_sendmail         |
@@ -47,6 +48,7 @@
 #include "body.h"
 #include "header.h"
 #include "multipart.h"
+#include "my_header.h"
 #include "send.h"
 #include "sendlib.h"
 #include "sendmail.h"

@@ -37,7 +37,6 @@
 #include "alternates.h"
 #include "ifdef.h"
 #include "mailboxes.h"
-#include "my_header.h"
 #include "parse.h"
 #include "setenv.h"
 #include "source.h"
@@ -88,10 +87,6 @@ const struct Command CommandsCommands[] = {
         N_("Deprecated: Use `color` instead"),
         N_("mono <object> <attribute> [ <pattern> | <regex> ]"),
         "configuration.html#color-mono" },
-  { "my-header", CMD_MY_HEADER, parse_my_header,
-        N_("Add a custom header to outgoing messages"),
-        N_("my-header <string>"),
-        "configuration.html#my-header" },
   { "named-mailboxes", CMD_NAMED_MAILBOXES, parse_mailboxes,
         N_("Define a list of labelled mailboxes to watch"),
         N_("named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"),
@@ -148,10 +143,6 @@ const struct Command CommandsCommands[] = {
         N_("Deprecated: Use `uncolor` instead"),
         N_("unmono <object> { * | <pattern> ... }"),
         "configuration.html#color-mono" },
-  { "unmy-header", CMD_UNMY_HEADER, parse_unmy_header,
-        N_("Remove a header previously added with `my-header`"),
-        N_("unmy-header { * | <field> ... }"),
-        "configuration.html#my-header" },
   { "unset", CMD_UNSET, parse_set,
         N_("Reset a config option to false/empty"),
         N_("unset <variable> [ <variable> ... ]"),
@@ -168,10 +159,6 @@ const struct Command CommandsCommands[] = {
         N_("Show NeoMutt version and build information"),
         N_("version"),
         "advancedusage.html#version" },
-
-  // Deprecated
-  { "my_hdr",              CMD_NONE, NULL, "my-header",           NULL, NULL, CF_SYNONYM },
-  { "unmy_hdr",            CMD_NONE, NULL, "unmy-header",         NULL, NULL, CF_SYNONYM },
 
   { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
