@@ -77,8 +77,9 @@ extern const struct Module ModuleTest;
 extern const struct Module ModuleAttach;
 extern const struct Module ModuleEmail;
 extern const struct Module ModuleIndex;
+extern const struct Module ModuleSend;
 static const struct Module *Modules[] = {
-  &ModuleTest, &ModuleAttach, &ModuleEmail, &ModuleIndex, NULL,
+  &ModuleTest, &ModuleAttach, &ModuleEmail, &ModuleIndex, &ModuleSend, NULL,
 };
 
 const char *get_test_dir(void)

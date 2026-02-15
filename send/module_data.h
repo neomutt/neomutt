@@ -28,7 +28,7 @@
  */
 struct SendModuleData
 {
-  int dummy;
+  struct ListHead user_header;      ///< Custom headers to add to outgoing emails
 };
 
 #endif /* MUTT_SEND_MODULE_DATA_H */

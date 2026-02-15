@@ -46,6 +46,8 @@ static bool send_init(struct NeoMutt *n)
   struct SendModuleData *md = MUTT_MEM_CALLOC(1, struct SendModuleData);
   neomutt_set_module_data(n, MODULE_ID_SEND, md);
 
+  STAILQ_INIT(&md->user_header);
+
   return true;
 }
 
@@ -72,6 +74,8 @@ static bool send_cleanup(struct NeoMutt *n)
 {
   struct SendModuleData *md = neomutt_get_module_data(n, MODULE_ID_SEND);
   ASSERT(md);
+
+  mutt_list_free(&md->user_header);
 
   FREE(&md);
   return true;

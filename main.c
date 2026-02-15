@@ -483,9 +483,9 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
     buf_printf(buf, "Reply-To: %s", p);
     buf_seek(buf, 0);
 
-    // Create a temporary Command struct for parse_my_hdr
-    const struct Command my_hdr_cmd = { .name = "my-header" };
-    parse_my_header(&my_hdr_cmd, buf, pc, pe); /* adds to UserHeader */
+    const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_MY_HEADER);
+    ASSERT(cmd);
+    parse_my_header(cmd, buf, pc, pe);
   }
 
   p = mutt_str_getenv("EMAIL");
@@ -1732,10 +1732,6 @@ main_exit:
   sb_cleanup();
 
   driver_tags_cleanup();
-
-  /* Lists of strings */
-  mutt_list_free(&UserHeader);
-
   colors_cleanup();
 
   FREE(&CurrentFolder);
