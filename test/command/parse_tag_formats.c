@@ -3,7 +3,7 @@
  * Test code for parse_tag_formats()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,7 +32,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command TagFormatsCmd = { "tag-formats", CMD_TAG_FORMATS, NULL, CMD_NO_DATA };
+static const struct Command TagFormatsCmd = { "tag-formats", CMD_TAG_FORMATS, NULL };
 
 static const struct CommandTest Tests[] = {
   // clang-format off

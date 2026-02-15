@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -37,8 +37,10 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "commands.h"
+#include "commands/lib.h"
 #include "ncrypt/lib.h"
 #include "parse/lib.h"
+#include "module_data.h"
 
 /**
  * struct AttachMatch - An attachment matching a regex for attachment counter
@@ -51,12 +53,6 @@ struct AttachMatch
   regex_t minor_regex;        ///< Minor mime type regex
 };
 
-static struct ListHead AttachAllow = STAILQ_HEAD_INITIALIZER(AttachAllow); ///< List of attachment types to be counted
-static struct ListHead AttachExclude = STAILQ_HEAD_INITIALIZER(AttachExclude); ///< List of attachment types to be ignored
-static struct ListHead InlineAllow = STAILQ_HEAD_INITIALIZER(InlineAllow); ///< List of inline types to counted
-static struct ListHead InlineExclude = STAILQ_HEAD_INITIALIZER(InlineExclude); ///< List of inline types to ignore
-static struct Notify *AttachmentsNotify = NULL; ///< Notifications: #NotifyAttach
-
 /**
  * attachmatch_free - Free an AttachMatch - Implements ::list_free_t - @ingroup list_free_api
  * @param ptr AttachMatch to free
@@ -64,7 +60,7 @@ static struct Notify *AttachmentsNotify = NULL; ///< Notifications: #NotifyAttac
  * @note We don't free minor because it is either a pointer into major,
  *       or a static string.
  */
-static void attachmatch_free(struct AttachMatch **ptr)
+void attachmatch_free(struct AttachMatch **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -79,35 +75,9 @@ static void attachmatch_free(struct AttachMatch **ptr)
  * attachmatch_new - Create a new AttachMatch
  * @retval ptr New AttachMatch
  */
-static struct AttachMatch *attachmatch_new(void)
+struct AttachMatch *attachmatch_new(void)
 {
   return MUTT_MEM_CALLOC(1, struct AttachMatch);
-}
-
-/**
- * attach_cleanup - Free the attachments lists
- */
-void attach_cleanup(void)
-{
-  notify_free(&AttachmentsNotify);
-
-  /* Lists of AttachMatch */
-  mutt_list_free_type(&AttachAllow, (list_free_t) attachmatch_free);
-  mutt_list_free_type(&AttachExclude, (list_free_t) attachmatch_free);
-  mutt_list_free_type(&InlineAllow, (list_free_t) attachmatch_free);
-  mutt_list_free_type(&InlineExclude, (list_free_t) attachmatch_free);
-}
-
-/**
- * attach_init - Set up the attachments lists
- */
-void attach_init(void)
-{
-  if (AttachmentsNotify)
-    return;
-
-  AttachmentsNotify = notify_new();
-  notify_set_parent(AttachmentsNotify, NeoMutt->notify);
 }
 
 /**
@@ -156,6 +126,9 @@ static int count_body_parts(struct Body *b)
 {
   if (!b)
     return 0;
+
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
 
   int count = 0;
 
@@ -207,16 +180,16 @@ static int count_body_parts(struct Body *b)
 
       if (bp->disposition == DISP_ATTACH)
       {
-        if (!count_body_parts_check(&AttachAllow, bp, true))
+        if (!count_body_parts_check(&md->attach_allow, bp, true))
           shallcount = false; /* attach not allowed */
-        if (count_body_parts_check(&AttachExclude, bp, false))
+        if (count_body_parts_check(&md->attach_exclude, bp, false))
           shallcount = false; /* attach excluded */
       }
       else
       {
-        if (!count_body_parts_check(&InlineAllow, bp, true))
+        if (!count_body_parts_check(&md->inline_allow, bp, true))
           shallcount = false; /* inline not allowed */
-        if (count_body_parts_check(&InlineExclude, bp, false))
+        if (count_body_parts_check(&md->inline_exclude, bp, false))
           shallcount = false; /* excluded */
       }
     }
@@ -251,6 +224,9 @@ int mutt_count_body_parts(struct Email *e, FILE *fp)
   if (!e)
     return 0;
 
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
+
   bool keep_parts = false;
 
   if (e->attach_valid)
@@ -261,8 +237,8 @@ int mutt_count_body_parts(struct Email *e, FILE *fp)
   else
     mutt_parse_mime_message(e, fp);
 
-  if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
-      !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))
+  if (!STAILQ_EMPTY(&md->attach_allow) || !STAILQ_EMPTY(&md->attach_exclude) ||
+      !STAILQ_EMPTY(&md->inline_allow) || !STAILQ_EMPTY(&md->inline_exclude))
   {
     e->attach_total = count_body_parts(e->body);
   }
@@ -317,6 +293,9 @@ static enum CommandResult parse_attach_list(const struct Command *cmd, struct Bu
   size_t len;
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
+
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
 
   do
   {
@@ -376,7 +355,7 @@ static enum CommandResult parse_attach_list(const struct Command *cmd, struct Bu
     goto done;
 
   mutt_debug(LL_NOTIFY, "NT_ATTACH_ADD: %s/%s\n", a->major, a->minor);
-  notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_ADD, NULL);
+  notify_send(md->attachments_notify, NT_ATTACH, NT_ATTACH_ADD, NULL);
 
   rc = MUTT_CMD_SUCCESS;
 
@@ -397,6 +376,9 @@ static enum CommandResult parse_unattach_list(const struct Command *cmd, struct 
                                               struct ListHead *head, struct Buffer *err)
 {
   struct Buffer *token = buf_pool_get();
+
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
 
   struct AttachMatch *a = NULL;
   char *tmp = NULL;
@@ -449,7 +431,7 @@ static enum CommandResult parse_unattach_list(const struct Command *cmd, struct 
 
   FREE(&tmp);
 
-  notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_DELETE, NULL);
+  notify_send(md->attachments_notify, NT_ATTACH, NT_ATTACH_DELETE, NULL);
 
   buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
@@ -485,6 +467,9 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
 enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *line,
                                      const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
+
   struct Buffer *err = pe->message;
 
   if (!MoreArgs(line))
@@ -506,10 +491,10 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *l
     mutt_endwin();
     fflush(stdout);
     printf("\n%s\n\n", _("Current attachments settings:"));
-    print_attach_list(&AttachAllow, '+', "A");
-    print_attach_list(&AttachExclude, '-', "A");
-    print_attach_list(&InlineAllow, '+', "I");
-    print_attach_list(&InlineExclude, '-', "I");
+    print_attach_list(&md->attach_allow, '+', "A");
+    print_attach_list(&md->attach_exclude, '-', "A");
+    print_attach_list(&md->inline_allow, '+', "I");
+    print_attach_list(&md->inline_exclude, '-', "I");
     mutt_any_key_to_continue(NULL);
 
     rc = MUTT_CMD_SUCCESS;
@@ -526,16 +511,16 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *l
   if (mutt_istr_startswith("attachment", category))
   {
     if (op == '+')
-      head = &AttachAllow;
+      head = &md->attach_allow;
     else
-      head = &AttachExclude;
+      head = &md->attach_exclude;
   }
   else if (mutt_istr_startswith("inline", category))
   {
     if (op == '+')
-      head = &InlineAllow;
+      head = &md->inline_allow;
     else
-      head = &InlineExclude;
+      head = &md->inline_exclude;
   }
   else
   {
@@ -568,6 +553,9 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
     return MUTT_CMD_WARNING;
   }
 
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
+
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
@@ -582,13 +570,13 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
 
   if (op == '*')
   {
-    mutt_list_free_type(&AttachAllow, (list_free_t) attachmatch_free);
-    mutt_list_free_type(&AttachExclude, (list_free_t) attachmatch_free);
-    mutt_list_free_type(&InlineAllow, (list_free_t) attachmatch_free);
-    mutt_list_free_type(&InlineExclude, (list_free_t) attachmatch_free);
+    mutt_list_free_type(&md->attach_allow, (list_free_t) attachmatch_free);
+    mutt_list_free_type(&md->attach_exclude, (list_free_t) attachmatch_free);
+    mutt_list_free_type(&md->inline_allow, (list_free_t) attachmatch_free);
+    mutt_list_free_type(&md->inline_exclude, (list_free_t) attachmatch_free);
 
     mutt_debug(LL_NOTIFY, "NT_ATTACH_DELETE_ALL\n");
-    notify_send(AttachmentsNotify, NT_ATTACH, NT_ATTACH_DELETE_ALL, NULL);
+    notify_send(md->attachments_notify, NT_ATTACH, NT_ATTACH_DELETE_ALL, NULL);
 
     rc = MUTT_CMD_SUCCESS;
     goto done;
@@ -602,16 +590,16 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
   if (mutt_istr_startswith("attachment", p))
   {
     if (op == '+')
-      head = &AttachAllow;
+      head = &md->attach_allow;
     else
-      head = &AttachExclude;
+      head = &md->attach_exclude;
   }
   else if (mutt_istr_startswith("inline", p))
   {
     if (op == '+')
-      head = &InlineAllow;
+      head = &md->inline_allow;
     else
-      head = &InlineExclude;
+      head = &md->inline_exclude;
   }
   else
   {
@@ -648,3 +636,65 @@ void mutt_parse_mime_message(struct Email *e, FILE *fp)
 
   e->attach_valid = false;
 }
+
+/**
+ * parse_mime_lookup - Parse the 'mime-lookup' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `mime-lookup { + | - }<disposition> <mime-type> [ <mime-type> ...]`
+ * - `mime-lookup ?`
+ */
+enum CommandResult parse_mime_lookup(const struct Command *cmd, struct Buffer *line,
+                                     const struct ParseContext *pc, struct ParseError *pe)
+{
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
+
+  return parse_stailq(cmd, line, &md->mime_lookup, pc, pe);
+}
+
+/**
+ * parse_unmime_lookup - Parse the 'unmime-lookup' command - Implements Command::parse() - @ingroup command_parse
+ *
+ * Parse:
+ * - `unmime-lookup { + | - } disposition mime-type [ mime-type ...]`
+ * - `unmime-lookup *`
+ */
+enum CommandResult parse_unmime_lookup(const struct Command *cmd, struct Buffer *line,
+                                       const struct ParseContext *pc, struct ParseError *pe)
+{
+  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(md);
+
+  return parse_unstailq(cmd, line, &md->mime_lookup, pc, pe);
+}
+
+/**
+ * AttachCommands - Attach Commands
+ */
+const struct Command AttachCommands[] = {
+  // clang-format off
+  { "attachments", CMD_ATTACHMENTS, parse_attachments,
+        N_("Set attachment counting rules"),
+        N_("attachments { + | - }<disposition> <mime-type> [ <mime-type> ... ] | ?"),
+        "mimesupport.html#attachments" },
+  { "mime-lookup", CMD_MIME_LOOKUP, parse_mime_lookup,
+        N_("Map specified MIME types/subtypes to display handlers"),
+        N_("mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"),
+        "mimesupport.html#mime-lookup" },
+  { "unattachments", CMD_UNATTACHMENTS, parse_unattachments,
+        N_("Remove attachment counting rules"),
+        N_("unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"),
+        "mimesupport.html#attachments" },
+  { "unmime-lookup", CMD_UNMIME_LOOKUP, parse_unmime_lookup,
+        N_("Remove custom MIME-type handlers"),
+        N_("unmime-lookup { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
+        "mimesupport.html#mime-lookup" },
+
+  // Deprecated
+  { "mime_lookup",         CMD_NONE, NULL, "mime-lookup",         NULL, NULL, CF_SYNONYM },
+  { "unmime_lookup",       CMD_NONE, NULL, "unmime-lookup",       NULL, NULL, CF_SYNONYM },
+
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  // clang-format on
+};

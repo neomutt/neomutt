@@ -3,7 +3,7 @@
  * Test code for parse_subscribe()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,13 +25,12 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
-
-static const struct Command Subscribe = { "subscribe", CMD_SUBSCRIBE, NULL, CMD_NO_DATA };
 
 static const struct CommandTest Tests[] = {
   // clang-format off
@@ -53,13 +52,16 @@ void test_parse_subscribe(void)
   struct ParseError *pe = parse_error_new();
   enum CommandResult rc;
 
+  const struct Command *cmd = command_find_by_id(&NeoMutt->commands, CMD_IGNORE);
+  TEST_CHECK(cmd != NULL);
+
   for (int i = 0; Tests[i].line; i++)
   {
     TEST_CASE(Tests[i].line);
     parse_error_reset(pe);
     buf_strcpy(line, Tests[i].line);
     buf_seek(line, 0);
-    rc = parse_subscribe(&Subscribe, line, pc, pe);
+    rc = parse_subscribe(cmd, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, Tests[i].rc);
   }
 

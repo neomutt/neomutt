@@ -36,8 +36,8 @@
 #include "test_common.h"
 
 // clang-format off
-static const struct Command UnBind  = { "unbind",  CMD_UNBIND,  NULL, CMD_NO_DATA };
-static const struct Command UnMacro = { "unmacro", CMD_UNMACRO, NULL, CMD_NO_DATA };
+static const struct Command UnBind  = { "unbind",  CMD_UNBIND,  NULL};
+static const struct Command UnMacro = { "unmacro", CMD_UNMACRO, NULL};
 // clang-format on
 
 static const struct CommandTest UnBindTests[] = {

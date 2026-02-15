@@ -3,7 +3,7 @@
  * Parse Subject-regex Commands
  *
  * @authors
- * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,7 +21,7 @@
  */
 
 /**
- * @page commands_subjectrx Parse subject-regex Commands
+ * @page index_subjectrx Parse subject-regex Commands
  *
  * Parse subject-regex Commands
  */
@@ -34,30 +34,27 @@
 #include "gui/lib.h"
 #include "subjectrx.h"
 #include "parse/lib.h"
-
-/// List of subject-regex rules for modifying the Subject:
-static struct ReplaceList SubjectRegexList = STAILQ_HEAD_INITIALIZER(SubjectRegexList);
-static struct Notify *SubjRxNotify = NULL; ///< Notifications: #NotifySubjRx
+#include "module_data.h"
 
 /**
- * subjrx_cleanup - Free the Subject Regex List
+ * subjectrx_init - Create new Subject Regex List
  */
-void subjrx_cleanup(void)
+void subjectrx_init(struct NeoMutt *n, struct IndexModuleData *md)
 {
-  notify_free(&SubjRxNotify);
-  mutt_replacelist_free(&SubjectRegexList);
+  STAILQ_INIT(&md->subject_rx_list);
+
+  md->subject_rx_notify = notify_new();
+  notify_set_parent(md->subject_rx_notify, n->notify);
 }
 
 /**
- * subjrx_init - Create new Subject Regex List
+ * subjectrx_cleanup - Free the Subject Regex List
  */
-void subjrx_init(void)
+void subjectrx_cleanup(struct IndexModuleData *md)
 {
-  if (SubjRxNotify)
-    return;
+  notify_free(&md->subject_rx_notify);
 
-  SubjRxNotify = notify_new();
-  notify_set_parent(SubjRxNotify, NeoMutt->notify);
+  mutt_replacelist_free(&md->subject_rx_list);
 }
 
 /**
@@ -144,11 +141,11 @@ done:
 }
 
 /**
- * subjrx_apply_mods - Apply regex modifications to the subject
+ * subjectrx_apply_mods - Apply regex modifications to the subject
  * @param env Envelope of Email
  * @retval true Subject modified
  */
-bool subjrx_apply_mods(struct Envelope *env)
+bool subjectrx_apply_mods(struct Envelope *env)
 {
   if (!env || !env->subject || (*env->subject == '\0'))
     return false;
@@ -156,18 +153,21 @@ bool subjrx_apply_mods(struct Envelope *env)
   if (env->disp_subj)
     return true;
 
-  if (STAILQ_EMPTY(&SubjectRegexList))
+  struct IndexModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(md);
+
+  if (STAILQ_EMPTY(&md->subject_rx_list))
     return false;
 
-  env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, env->subject);
+  env->disp_subj = mutt_replacelist_apply(&md->subject_rx_list, env->subject);
   return true;
 }
 
 /**
- * subjrx_clear_mods - Clear out all modified email subjects
+ * subjectrx_clear_mods - Clear out all modified email subjects
  * @param mv Mailbox view
  */
-void subjrx_clear_mods(struct MailboxView *mv)
+void subjectrx_clear_mods(struct MailboxView *mv)
 {
   if (!mv || !mv->mailbox)
     return;
@@ -201,13 +201,16 @@ enum CommandResult parse_subjectrx_list(const struct Command *cmd, struct Buffer
     return MUTT_CMD_WARNING;
   }
 
+  struct IndexModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(md);
+
   enum CommandResult rc;
 
-  rc = parse_replace_list(cmd, line, &SubjectRegexList, err);
+  rc = parse_replace_list(cmd, line, &md->subject_rx_list, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
-    mutt_debug(LL_NOTIFY, "NT_SUBJRX_ADD: %s\n", cmd->name);
-    notify_send(SubjRxNotify, NT_SUBJRX, NT_SUBJRX_ADD, NULL);
+    mutt_debug(LL_NOTIFY, "NT_SUBJECTRX_ADD: %s\n", cmd->name);
+    notify_send(md->subject_rx_notify, NT_SUBJECTRX, NT_SUBJECTRX_ADD, NULL);
   }
   return rc;
 }
@@ -230,13 +233,16 @@ enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buff
     return MUTT_CMD_WARNING;
   }
 
+  struct IndexModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(md);
+
   enum CommandResult rc;
 
-  rc = parse_unreplace_list(cmd, line, &SubjectRegexList, err);
+  rc = parse_unreplace_list(cmd, line, &md->subject_rx_list, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
-    mutt_debug(LL_NOTIFY, "NT_SUBJRX_DELETE: %s\n", cmd->name);
-    notify_send(SubjRxNotify, NT_SUBJRX, NT_SUBJRX_DELETE, NULL);
+    mutt_debug(LL_NOTIFY, "NT_SUBJECTRX_DELETE: %s\n", cmd->name);
+    notify_send(md->subject_rx_notify, NT_SUBJECTRX, NT_SUBJECTRX_DELETE, NULL);
   }
   return rc;
 }

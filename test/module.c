@@ -31,6 +31,7 @@ static struct ConfigDef TestVars[] = {
   // clang-format off
   { "assumed_charset",         DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0,                         0, NULL },
   { "charset",                 DT_STRING|D_NOT_EMPTY|D_CHARSET_SINGLE,         IP "utf-8",                0, NULL },
+  { "color_directcolor",       DT_BOOL,                                        true,                      0, NULL },
   { "config_charset",          DT_STRING,                                      0,                         0, NULL },
   { "debug_level",             DT_NUMBER,                                      0,                         0, NULL },
   { "folder",                  DT_STRING|D_STRING_MAILBOX,                     IP "/home/mutt/Mail",      0, NULL },

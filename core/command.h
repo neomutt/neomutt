@@ -3,7 +3,7 @@
  * NeoMutt commands API
  *
  * @authors
- * Copyright (C) 2021-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -60,10 +60,10 @@ enum CommandId
   CMD_ACCOUNT_HOOK,          ///< `:account-hook`
   CMD_ALIAS,                 ///< `:alias`               @sa #CMD_UNALIAS
   CMD_ALTERNATES,            ///< `:alternates`          @sa #CMD_UNALTERNATES
-  CMD_ALTERNATIVE_ORDER,     ///< `:alternative-order`   @sa #CMD_UNALTERNATIVE_ORDER, #AlternativeOrderList
+  CMD_ALTERNATIVE_ORDER,     ///< `:alternative-order`   @sa #CMD_UNALTERNATIVE_ORDER, #EmailModuleData.alternative_order
   CMD_APPEND_HOOK,           ///< `:append-hook`         @sa #CMD_CLOSE_HOOK, #CMD_OPEN_HOOK
   CMD_ATTACHMENTS,           ///< `:attachments`         @sa #CMD_UNATTACHMENTS
-  CMD_AUTO_VIEW,             ///< `:auto-view`           @sa #CMD_UNAUTO_VIEW, #AutoViewList
+  CMD_AUTO_VIEW,             ///< `:auto-view`           @sa #CMD_UNAUTO_VIEW, #EmailModuleData.auto_view
   CMD_BIND,                  ///< `:bind`                @sa #CMD_UNBIND
   CMD_CD,                    ///< `:cd`
   CMD_CHARSET_HOOK,          ///< `:charset-hook`
@@ -77,7 +77,7 @@ enum CommandId
   CMD_FINISH,                ///< `:finish`              @sa #CMD_IFDEF, #CMD_IFNDEF
   CMD_FOLDER_HOOK,           ///< `:folder-hook`
   CMD_GROUP,                 ///< `:group`               @sa #CMD_UNGROUP
-  CMD_HEADER_ORDER,          ///< `:header-order`        @sa #CMD_UNHEADER_ORDER, #HeaderOrderList
+  CMD_HEADER_ORDER,          ///< `:header-order`        @sa #CMD_UNHEADER_ORDER, #EmailModuleData.header_order
   CMD_HOOKS,                 ///< `:hooks`
   CMD_ICONV_HOOK,            ///< `:iconv-hook`
   CMD_IFDEF,                 ///< `:ifdef`               @sa #CMD_FINISH, #CMD_IFNDEF
@@ -89,10 +89,10 @@ enum CommandId
   CMD_LUA_SOURCE,            ///< `:lua-source`
   CMD_MACRO,                 ///< `:macro`               @sa #CMD_UNMACRO
   CMD_MAILBOXES,             ///< `:mailboxes`           @sa #CMD_NAMED_MAILBOXES, #CMD_UNMAILBOXES
-  CMD_MAILTO_ALLOW,          ///< `:mailto-allow`        @sa #CMD_UNMAILTO_ALLOW, #MailToAllow
+  CMD_MAILTO_ALLOW,          ///< `:mailto-allow`        @sa #CMD_UNMAILTO_ALLOW, #EmailModuleData.mail_to_allow
   CMD_MBOX_HOOK,             ///< `:mbox-hook`
   CMD_MESSAGE_HOOK,          ///< `:message-hook`
-  CMD_MIME_LOOKUP,           ///< `:mime-lookup`         @sa #CMD_UNMIME_LOOKUP, #MimeLookupList
+  CMD_MIME_LOOKUP,           ///< `:mime-lookup`         @sa #CMD_UNMIME_LOOKUP, #AttachModuleData.mime_lookup
   CMD_MONO,                  ///< `:mono`                @sa #CMD_UNMONO
   CMD_MY_HEADER,             ///< `:my-header`           @sa #CMD_UNMY_HEADER
   CMD_NAMED_MAILBOXES,       ///< `:named-mailboxes`     @sa #CMD_MAILBOXES, #CMD_UNMAILBOXES
@@ -122,20 +122,20 @@ enum CommandId
   CMD_TOGGLE,                ///< `:toggle`              @sa #CMD_RESET, #CMD_SET, #CMD_UNSET
   CMD_UNALIAS,               ///< `:unalias`             @sa #CMD_ALIAS
   CMD_UNALTERNATES,          ///< `:unalternates`        @sa #CMD_ALTERNATES
-  CMD_UNALTERNATIVE_ORDER,   ///< `:unalternative-order` @sa #CMD_ALTERNATIVE_ORDER, #AlternativeOrderList
+  CMD_UNALTERNATIVE_ORDER,   ///< `:unalternative-order` @sa #CMD_ALTERNATIVE_ORDER, #EmailModuleData.alternative_order
   CMD_UNATTACHMENTS,         ///< `:unattachments`       @sa #CMD_ATTACHMENTS
-  CMD_UNAUTO_VIEW,           ///< `:unauto-view`         @sa #CMD_AUTO_VIEW, #AutoViewList
+  CMD_UNAUTO_VIEW,           ///< `:unauto-view`         @sa #CMD_AUTO_VIEW, #EmailModuleData.auto_view
   CMD_UNBIND,                ///< `:unbind`              @sa #CMD_BIND
   CMD_UNCOLOR,               ///< `:uncolor`             @sa #CMD_COLOR
   CMD_UNGROUP,               ///< `:ungroup`             @sa #CMD_GROUP
-  CMD_UNHEADER_ORDER,        ///< `:unheader-order`      @sa #CMD_HEADER_ORDER, #HeaderOrderList
+  CMD_UNHEADER_ORDER,        ///< `:unheader-order`      @sa #CMD_HEADER_ORDER, #EmailModuleData.header_order
   CMD_UNHOOK,                ///< `:unhook`
   CMD_UNIGNORE,              ///< `:unignore`            @sa #CMD_IGNORE
   CMD_UNLISTS,               ///< `:unlists`             @sa #CMD_LISTS
   CMD_UNMACRO,               ///< `:unmacro`             @sa #CMD_MACRO
   CMD_UNMAILBOXES,           ///< `:unmailboxes`         @sa #CMD_MAILBOXES, #CMD_NAMED_MAILBOXES
-  CMD_UNMAILTO_ALLOW,        ///< `:unmailto-allow`      @sa #CMD_MAILTO_ALLOW, #MailToAllow
-  CMD_UNMIME_LOOKUP,         ///< `:unmime-lookup`       @sa #CMD_MIME_LOOKUP, #MimeLookupList
+  CMD_UNMAILTO_ALLOW,        ///< `:unmailto-allow`      @sa #CMD_MAILTO_ALLOW, #EmailModuleData.mail_to_allow
+  CMD_UNMIME_LOOKUP,         ///< `:unmime-lookup`       @sa #CMD_MIME_LOOKUP, #AttachModuleData.mime_lookup
   CMD_UNMONO,                ///< `:unmono`              @sa #CMD_MONO
   CMD_UNMY_HEADER,           ///< `:unmy-header`         @sa #CMD_MY_HEADER
   CMD_UNSCORE,               ///< `:unscore`             @sa #CMD_SCORE
@@ -146,8 +146,6 @@ enum CommandId
   CMD_UNSUBSCRIBE_FROM,      ///< `:unsubscribe-from`    @sa #CMD_SUBSCRIBE_TO
   CMD_VERSION,               ///< `:version`
 };
-
-#define CMD_NO_DATA  0    ///< Convenience symbol
 
 /**
  * @defgroup command_api Command API
@@ -178,8 +176,6 @@ struct Command
    * @pre pe   is not NULL
    */
   enum CommandResult (*parse)(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-
-  intptr_t data;        ///< Data or flags to pass to the command
 
   const char *help;     ///< One-line description of the Command
   const char *proto;    ///< Command prototype

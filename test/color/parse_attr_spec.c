@@ -3,7 +3,7 @@
  * Test code for Colour Parsing
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,7 +36,7 @@ struct AttrTest
   int value;
 };
 
-static const struct Command Mono = { "mono", CMD_MONO, NULL, CMD_NO_DATA };
+static const struct Command Mono = { "mono", CMD_MONO, NULL };
 
 void test_parse_attr_spec(void)
 {

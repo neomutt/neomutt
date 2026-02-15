@@ -3,7 +3,7 @@
  * Parse Subject-regex Commands
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,39 +20,40 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_SUBJECTRX_H
-#define MUTT_COMMANDS_SUBJECTRX_H
+#ifndef MUTT_INDEX_SUBJECTRX_H
+#define MUTT_INDEX_SUBJECTRX_H
 
 #include <stdbool.h>
 #include "core/lib.h"
 
 struct Buffer;
 struct Envelope;
+struct IndexModuleData;
 struct MailboxView;
 struct ParseContext;
 struct ParseError;
 
 /**
- * enum NotifySubjRx - Subject Regex notification types
+ * enum NotifySubjectRx - Subject Regex notification types
  *
- * Observers of #NT_SUBJRX will not be passed any Event data.
+ * Observers of #NT_SUBJECTRX will not be passed any Event data.
  *
  * @note Notifications are sent **after** the event.
  */
-enum NotifySubjRx
+enum NotifySubjectRx
 {
-  NT_SUBJRX_ADD = 1,    ///< Subject Regex has been added
-  NT_SUBJRX_DELETE,     ///< Subject Regex has been deleted
-  NT_SUBJRX_DELETE_ALL, ///< All Subject Regexes have been deleted
+  NT_SUBJECTRX_ADD = 1,    ///< Subject Regex has been added
+  NT_SUBJECTRX_DELETE,     ///< Subject Regex has been deleted
+  NT_SUBJECTRX_DELETE_ALL, ///< All Subject Regexes have been deleted
 };
 
-void subjrx_init(void);
-void subjrx_cleanup(void);
+void subjectrx_init   (struct NeoMutt *n, struct IndexModuleData *md);
+void subjectrx_cleanup(struct IndexModuleData *md);
 
 enum CommandResult parse_subjectrx_list  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
-bool subjrx_apply_mods(struct Envelope *env);
-void subjrx_clear_mods(struct MailboxView *mv);
+bool subjectrx_apply_mods(struct Envelope *env);
+void subjectrx_clear_mods(struct MailboxView *mv);
 
-#endif /* MUTT_COMMANDS_SUBJECTRX_H */
+#endif /* MUTT_INDEX_SUBJECTRX_H */

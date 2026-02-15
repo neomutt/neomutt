@@ -3,7 +3,7 @@
  * GUI manage the main index (list of emails)
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,6 +27,7 @@
  *
  * | File                   | Description                   |
  * | :--------------------- | :---------------------------- |
+ * | index/commands.c       | @subpage index_commands       |
  * | index/config.c         | @subpage index_config         |
  * | index/dlg_index.c      | @subpage index_dlg_index      |
  * | index/expando_index.c  | @subpage index_expando_index  |
@@ -39,6 +40,7 @@
  * | index/private_data.c   | @subpage index_private_data   |
  * | index/shared_data.c    | @subpage index_shared_data    |
  * | index/status.c         | @subpage index_status         |
+ * | index/subjectrx.c      | @subpage index_subjectrx      |
  */
 
 #ifndef MUTT_INDEX_LIB_H
@@ -54,6 +56,7 @@
 #include "functions.h"     // IWYU pragma: keep
 #include "shared_data.h"   // IWYU pragma: keep
 #include "status.h"        // IWYU pragma: keep
+#include "subjectrx.h"     // IWYU pragma: keep
 
 struct Email;
 struct MailboxView;

@@ -3,7 +3,7 @@
  * Test code for parse_unscore()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,13 +25,13 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
-#include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command UnScore = { "unscore", CMD_UNSCORE, NULL, CMD_NO_DATA };
+static const struct Command UnScore = { "unscore", CMD_UNSCORE, NULL };
 
 static const struct CommandTest Tests[] = {
   // clang-format off

@@ -3,7 +3,7 @@
  * Test code for parse_group()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,15 +27,15 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
-#include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
 
 // clang-format off
-static const struct Command Group   = { "group",   CMD_GROUP,   NULL, CMD_NO_DATA };
-static const struct Command UnGroup = { "ungroup", CMD_UNGROUP, NULL, CMD_NO_DATA };
+static const struct Command Group   = { "group",   CMD_GROUP,   NULL};
+static const struct Command UnGroup = { "ungroup", CMD_UNGROUP, NULL};
 // clang-format on
 
 static struct ConfigDef Vars[] = {

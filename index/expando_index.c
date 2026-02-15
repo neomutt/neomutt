@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016 Ian Zimmerman <itz@primate.net>
- * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017 Stefan Assmann <sassmann@kpanic.de>
  * Copyright (C) 2019 Victor Fernandes <criw@pm.me>
  * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
@@ -51,12 +51,12 @@
 #include "expando_index.h"
 #include "attach/lib.h"
 #include "color/lib.h"
-#include "commands/lib.h"
 #include "expando/lib.h"
 #include "hooks/lib.h"
 #include "ncrypt/lib.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "subjectrx.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif
@@ -1447,7 +1447,7 @@ static void envelope_subject(const struct ExpandoNode *node, void *data,
   if (flags & MUTT_FORMAT_INDEX)
     node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
 
-  subjrx_apply_mods(e->env);
+  subjectrx_apply_mods(e->env);
 
   if (e->env->disp_subj)
     buf_strcpy(buf, e->env->disp_subj);

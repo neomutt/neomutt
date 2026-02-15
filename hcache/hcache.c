@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2016-2023 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2020 Tino Reichardt <milky-neomutt@mcmilk.de>
  *
  * @copyright
@@ -446,9 +446,12 @@ static unsigned int generate_hcachever(void)
   unsigned int ver = HCACHEVER;
   mutt_md5_process_bytes(&ver, sizeof(ver), &md5ctx);
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   /* Mix in user's spam list */
   struct Replace *sp = NULL;
-  STAILQ_FOREACH(sp, &SpamList, entries)
+  STAILQ_FOREACH(sp, &md->spam, entries)
   {
     mutt_md5_process(sp->regex->pattern, &md5ctx);
     mutt_md5_process(sp->templ, &md5ctx);
@@ -456,7 +459,7 @@ static unsigned int generate_hcachever(void)
 
   /* Mix in user's nospam list */
   struct RegexNode *np = NULL;
-  STAILQ_FOREACH(np, &NoSpamList, entries)
+  STAILQ_FOREACH(np, &md->no_spam, entries)
   {
     mutt_md5_process(np->regex->pattern, &md5ctx);
   }

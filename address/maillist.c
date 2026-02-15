@@ -3,7 +3,7 @@
  * Handle mailing lists
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "maillist.h"
 #include "address.h"
 #include "muttlib.h"
@@ -43,8 +44,11 @@
  */
 bool mutt_is_mail_list(const struct Address *addr)
 {
-  if (!mutt_regexlist_match(&UnMailLists, buf_string(addr->mailbox)))
-    return mutt_regexlist_match(&MailLists, buf_string(addr->mailbox));
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
+  if (!mutt_regexlist_match(&md->unmail, buf_string(addr->mailbox)))
+    return mutt_regexlist_match(&md->mail, buf_string(addr->mailbox));
   return false;
 }
 
@@ -55,10 +59,13 @@ bool mutt_is_mail_list(const struct Address *addr)
  */
 bool mutt_is_subscribed_list(const struct Address *addr)
 {
-  if (!mutt_regexlist_match(&UnMailLists, buf_string(addr->mailbox)) &&
-      !mutt_regexlist_match(&UnSubscribedLists, buf_string(addr->mailbox)))
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
+  if (!mutt_regexlist_match(&md->unmail, buf_string(addr->mailbox)) &&
+      !mutt_regexlist_match(&md->unsubscribed, buf_string(addr->mailbox)))
   {
-    return mutt_regexlist_match(&SubscribedLists, buf_string(addr->mailbox));
+    return mutt_regexlist_match(&md->subscribed, buf_string(addr->mailbox));
   }
   return false;
 }

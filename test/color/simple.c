@@ -26,24 +26,12 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
-#include "test_common.h"
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "color_directcolor", DT_BOOL, true, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
 
 void test_simple_colors(void)
 {
   MuttLogger = log_disp_null;
-
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   simple_colors_init();
 

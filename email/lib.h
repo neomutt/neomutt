@@ -3,7 +3,7 @@
  * Structs that make up an email
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,6 +28,7 @@
  * | File                   | Description               |
  * | :--------------------- | :------------------------ |
  * | email/body.c           | @subpage email_body       |
+ * | email/commands.c       | @subpage email_commands   |
  * | email/config.c         | @subpage email_config     |
  * | email/copy_body.c      | @subpage email_copy_body  |
  * | email/copy_email.c     | @subpage email_copy_email |
@@ -35,9 +36,10 @@
  * | email/enriched.c       | @subpage email_enriched   |
  * | email/envelope.c       | @subpage email_envelope   |
  * | email/from.c           | @subpage email_from       |
- * | email/globals.c        | @subpage email_globals    |
+ * | email/group.c          | @subpage email_group      |
  * | email/handler.c        | @subpage email_handler    |
  * | email/header.c         | @subpage email_header     |
+ * | email/ignore.c         | @subpage email_ignore     |
  * | email/mailcap.c        | @subpage email_mailcap    |
  * | email/mime.c           | @subpage email_mime       |
  * | email/module.c         | @subpage email_module     |
@@ -48,6 +50,7 @@
  * | email/rfc3676.c        | @subpage email_rfc3676    |
  * | email/score.c          | @subpage email_score      |
  * | email/sort.c           | @subpage email_sort       |
+ * | email/spam.c           | @subpage email_spam       |
  * | email/tags.c           | @subpage email_tags       |
  * | email/thread.c         | @subpage email_thread     |
  * | email/url.c            | @subpage email_url        |
@@ -60,6 +63,7 @@
 
 // IWYU pragma: begin_keep
 #include "body.h"
+#include "commands.h"
 #include "content.h"
 #include "copy_body.h"
 #include "copy_email.h"
@@ -67,11 +71,13 @@
 #include "enriched.h"
 #include "envelope.h"
 #include "from.h"
-#include "globals2.h"
+#include "group.h"
 #include "handler.h"
 #include "header.h"
+#include "ignore.h"
 #include "mailcap.h"
 #include "mime.h"
+#include "module_data.h"
 #include "parameter.h"
 #include "parse.h"
 #include "rfc2047.h"
@@ -79,6 +85,7 @@
 #include "rfc3676.h"
 #include "score.h"
 #include "sort.h"
+#include "spam.h"
 #include "tags.h"
 #include "thread.h"
 #include "url.h"

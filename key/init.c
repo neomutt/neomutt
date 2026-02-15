@@ -51,32 +51,32 @@ keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
  */
 const struct Command KeyCommands[] = {
   // clang-format off
-  { "bind", CMD_BIND, parse_bind, CMD_NO_DATA,
+  { "bind", CMD_BIND, parse_bind,
         N_("Bind a key to a function"),
         N_("bind <map>[,<map> ... ] <key> <function>"),
         "configuration.html#bind" },
-  { "exec", CMD_EXEC, parse_exec, CMD_NO_DATA,
+  { "exec", CMD_EXEC, parse_exec,
         N_("Execute a function"),
         N_("exec <function> [ <function> ... ]"),
         "configuration.html#exec" },
-  { "macro", CMD_MACRO, parse_macro, CMD_NO_DATA,
+  { "macro", CMD_MACRO, parse_macro,
         N_("Define a keyboard macro"),
         N_("macro <map>[,<map> ... ] <key> <sequence> [ <description> ]"),
         "configuration.html#macro" },
-  { "push", CMD_PUSH, parse_push, CMD_NO_DATA,
+  { "push", CMD_PUSH, parse_push,
         N_("Push a string into NeoMutt's input queue (simulate typing)"),
         N_("push <string>"),
         "configuration.html#push" },
-  { "unbind", CMD_UNBIND, parse_unbind, CMD_NO_DATA,
+  { "unbind", CMD_UNBIND, parse_unbind,
         N_("Remove a key binding"),
         N_("unbind { * | <map>[,<map> ... ] } [ <key> ]"),
         "configuration.html#unbind" },
-  { "unmacro", CMD_UNMACRO, parse_unbind, CMD_NO_DATA,
+  { "unmacro", CMD_UNMACRO, parse_unbind,
         N_("Remove a keyboard `macro`"),
         N_("unmacro { * | <map>[,<map> ... ] } [ <key> ]"),
         "configuration.html#unmacro" },
 
-  { NULL, CMD_NONE, NULL, CMD_NO_DATA, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
 

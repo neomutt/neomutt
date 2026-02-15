@@ -3,7 +3,7 @@
  * Test code for parse_source()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,12 +31,12 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command Source = { "source", CMD_SOURCE, NULL, CMD_NO_DATA };
+static const struct Command Source = { "source", CMD_SOURCE, NULL };
 
 const struct Command source_test_commands[] = {
   // clang-format off
-  { "set", CMD_SET, parse_set, CMD_NO_DATA },
-  { NULL, CMD_NONE, NULL, CMD_NO_DATA },
+  { "set", CMD_SET, parse_set},
+  { NULL, CMD_NONE, NULL},
   // clang-format on
 };
 

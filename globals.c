@@ -3,7 +3,7 @@
  * Global variables
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -41,11 +41,6 @@ char *LastFolder = NULL;    ///< Previously selected mailbox
 
 /* Lists of strings */
 // clang-format off
-struct ListHead AlternativeOrderList = STAILQ_HEAD_INITIALIZER(AlternativeOrderList); ///< List of preferred mime types to display
-struct ListHead AutoViewList         = STAILQ_HEAD_INITIALIZER(AutoViewList);         ///< List of mime types to auto view
-struct ListHead HeaderOrderList      = STAILQ_HEAD_INITIALIZER(HeaderOrderList);      ///< List of header fields in the order they should be displayed
-struct ListHead MimeLookupList       = STAILQ_HEAD_INITIALIZER(MimeLookupList);       ///< List of mime types that that shouldn't use the mailcap entry
-struct ListHead TempAttachmentsList  = STAILQ_HEAD_INITIALIZER(TempAttachmentsList);  ///< List of temporary files for displaying attachments
 struct ListHead UserHeader           = STAILQ_HEAD_INITIALIZER(UserHeader);           ///< List of custom headers to add to outgoing emails
 // clang-format on
 

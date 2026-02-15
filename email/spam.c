@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
@@ -29,7 +29,7 @@
  */
 
 /**
- * @page commands_spam Parse Spam Commands
+ * @page email_spam Parse Spam Commands
  *
  * Parse Spam Commands
  */
@@ -37,10 +37,10 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "spam.h"
 #include "parse/lib.h"
+#include "module_data.h"
 
 /**
  * parse_nospam - Parse the 'nospam' command - Implements Command::parse() - @ingroup command_parse
@@ -71,24 +71,27 @@ enum CommandResult parse_nospam(const struct Command *cmd, struct Buffer *line,
     goto done;
   }
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   // "*" is special - clear both spam and nospam lists
   if (mutt_str_equal(buf_string(token), "*"))
   {
-    mutt_replacelist_free(&SpamList);
-    mutt_regexlist_free(&NoSpamList);
+    mutt_replacelist_free(&md->spam);
+    mutt_regexlist_free(&md->no_spam);
     rc = MUTT_CMD_SUCCESS;
     goto done;
   }
 
   // If it's on the spam list, just remove it
-  if (mutt_replacelist_remove(&SpamList, buf_string(token)) != 0)
+  if (mutt_replacelist_remove(&md->spam, buf_string(token)) != 0)
   {
     rc = MUTT_CMD_SUCCESS;
     goto done;
   }
 
   // Otherwise, add it to the nospam list
-  if (mutt_regexlist_add(&NoSpamList, buf_string(token), REG_ICASE, err) != 0)
+  if (mutt_regexlist_add(&md->no_spam, buf_string(token), REG_ICASE, err) != 0)
   {
     rc = MUTT_CMD_ERROR;
     goto done;
@@ -125,6 +128,9 @@ enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
   // Extract the first token, a regex
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(md);
+
   // If there's a second parameter, it's a template for the spam tag
   if (MoreArgs(line))
   {
@@ -132,13 +138,13 @@ enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
     parse_extract_token(templ, line, TOKEN_NO_FLAGS);
 
     // Add to the spam list
-    if (mutt_replacelist_add(&SpamList, buf_string(token), buf_string(templ), err) != 0)
+    if (mutt_replacelist_add(&md->spam, buf_string(token), buf_string(templ), err) != 0)
       goto done;
   }
   else
   {
     // If not, try to remove from the nospam list
-    mutt_regexlist_remove(&NoSpamList, buf_string(token));
+    mutt_regexlist_remove(&md->no_spam, buf_string(token));
   }
 
   rc = MUTT_CMD_SUCCESS;

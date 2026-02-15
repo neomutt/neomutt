@@ -1,9 +1,9 @@
 /**
  * @file
- * Parse Spam Commands
+ * Index private Module data
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,16 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_SPAM_H
-#define MUTT_COMMANDS_SPAM_H
+#ifndef MUTT_INDEX_MODULE_DATA_H
+#define MUTT_INDEX_MODULE_DATA_H
 
-#include "core/lib.h"
+#include "mutt/lib.h"
 
-struct Buffer;
-struct ParseContext;
-struct ParseError;
+/**
+ * struct IndexModuleData - Index private Module data
+ */
+struct IndexModuleData
+{
+  struct ReplaceList subject_rx_list;      /// List of subject-regex rules for modifying the Subject:
+  struct Notify     *subject_rx_notify;    ///< Notifications: #NotifySubjectRx
+};
 
-enum CommandResult parse_nospam          (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-enum CommandResult parse_spam            (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
-
-#endif /* MUTT_COMMANDS_SPAM_H */
+#endif /* MUTT_INDEX_MODULE_DATA_H */

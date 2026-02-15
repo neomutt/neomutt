@@ -29,10 +29,38 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "commands.h"
+#include "module_data.h"
+#include "mutt_attach.h"
 
 extern struct ConfigDef AttachVars[];
+
+extern const struct Command AttachCommands[];
+
+/**
+ * attach_init - Initialise a Module - Implements Module::init()
+ */
+static bool attach_init(struct NeoMutt *n)
+{
+  struct AttachModuleData *md = MUTT_MEM_CALLOC(1, struct AttachModuleData);
+  neomutt_set_module_data(n, MODULE_ID_ATTACH, md);
+
+  STAILQ_INIT(&md->attach_allow);
+  STAILQ_INIT(&md->attach_exclude);
+  STAILQ_INIT(&md->inline_allow);
+  STAILQ_INIT(&md->inline_exclude);
+
+  STAILQ_INIT(&md->mime_lookup);
+  STAILQ_INIT(&md->temp_attachments);
+
+  md->attachments_notify = notify_new();
+  notify_set_parent(md->attachments_notify, NeoMutt->notify);
+
+  return true;
+}
 
 /**
  * attach_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +71,48 @@ static bool attach_config_define_variables(struct NeoMutt *n, struct ConfigSet *
 }
 
 /**
+ * attach_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool attach_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, AttachCommands);
+}
+
+/**
+ * attach_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool attach_cleanup(struct NeoMutt *n)
+{
+  struct AttachModuleData *md = neomutt_get_module_data(n, MODULE_ID_ATTACH);
+  ASSERT(md);
+
+  notify_free(&md->attachments_notify);
+
+  /* Lists of AttachMatch */
+  mutt_list_free_type(&md->attach_allow, (list_free_t) attachmatch_free);
+  mutt_list_free_type(&md->attach_exclude, (list_free_t) attachmatch_free);
+  mutt_list_free_type(&md->inline_allow, (list_free_t) attachmatch_free);
+  mutt_list_free_type(&md->inline_exclude, (list_free_t) attachmatch_free);
+
+  mutt_list_free(&md->mime_lookup);
+
+  mutt_temp_attachments_cleanup();
+
+  FREE(&md);
+  return true;
+}
+
+/**
  * ModuleAttach - Module for the Attach library
  */
 const struct Module ModuleAttach = {
   MODULE_ID_ATTACH,
   "attach",
-  NULL, // init
+  attach_init,
   NULL, // config_define_types
   attach_config_define_variables,
-  NULL, // commands_register
+  attach_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  attach_cleanup,
 };

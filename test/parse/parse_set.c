@@ -3,7 +3,7 @@
  * Test code for parsing the 'set' command
  *
  * @authors
- * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -28,7 +28,7 @@
 #include "parse/lib.h"
 #include "test_common.h"
 
-static const struct Command Set = { "set", CMD_SET, parse_set, CMD_NO_DATA };
+static const struct Command Set = { "set", CMD_SET, parse_set };
 
 void test_parse_set(void)
 {

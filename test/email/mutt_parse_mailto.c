@@ -3,7 +3,7 @@
  * Test code for mutt_parse_mailto()
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2022 Claes Nästén <pekdon@gmail.com>
  *
@@ -30,6 +30,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "test_common.h"
 
 static void check_addrlist(struct AddressList *list, const char *const exp[], size_t num)
@@ -56,8 +57,11 @@ void test_mutt_parse_mailto(void)
 {
   // int mutt_parse_mailto(struct Envelope *e, char **body, const char *src);
 
-  mutt_list_insert_head(&MailToAllow, "cc");
-  mutt_list_insert_head(&MailToAllow, "body");
+  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  TEST_CHECK(md != NULL);
+
+  mutt_list_insert_head(&md->mail_to_allow, mutt_str_dup("cc"));
+  mutt_list_insert_head(&md->mail_to_allow, mutt_str_dup("body"));
 
   {
     char *body = NULL;

@@ -3,7 +3,7 @@
  * Test code for parse_alias()
  *
  * @authors
- * Copyright (C) 2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2025-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,7 +33,7 @@
 #include "common.h"
 #include "test_common.h"
 
-static const struct Command Alias = { "alias", CMD_ALIAS, NULL, CMD_NO_DATA };
+static const struct Command Alias = { "alias", CMD_ALIAS, NULL };
 
 static struct ConfigDef Vars[] = {
   // clang-format off

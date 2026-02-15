@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_GROUP_H
-#define MUTT_COMMANDS_GROUP_H
+#ifndef MUTT_EMAIL_GROUP_H
+#define MUTT_EMAIL_GROUP_H
 
 #include "core/lib.h"
 
@@ -48,4 +48,4 @@ enum CommandResult parse_subscribe       (const struct Command *cmd, struct Buff
 enum CommandResult parse_unlists         (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unsubscribe     (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
-#endif /* MUTT_COMMANDS_GROUP_H */
+#endif /* MUTT_EMAIL_GROUP_H */

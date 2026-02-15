@@ -3,7 +3,7 @@
  * Test code for parsing config files
  *
  * @authors
- * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
@@ -40,11 +40,11 @@ extern const struct Mapping SortMethods[];
 
 static const struct Command mutt_commands[] = {
   // clang-format off
-  { "reset",  CMD_RESET,  parse_set, CMD_NO_DATA },
-  { "set",    CMD_SET,    parse_set, CMD_NO_DATA },
-  { "toggle", CMD_TOGGLE, parse_set, CMD_NO_DATA },
-  { "unset",  CMD_UNSET,  parse_set, CMD_NO_DATA },
-  { NULL, CMD_NONE, NULL, CMD_NO_DATA },
+  { "reset",  CMD_RESET,  parse_set},
+  { "set",    CMD_SET,    parse_set},
+  { "toggle", CMD_TOGGLE, parse_set},
+  { "unset",  CMD_UNSET,  parse_set},
+  { NULL, CMD_NONE, NULL},
   // clang-format on
 };
 
@@ -54,7 +54,6 @@ static struct ConfigDef Vars[] = {
   { "beep",              DT_BOOL,                          true,                  0,               NULL, },
   { "ispell",            DT_STRING|D_STRING_COMMAND,       IP "ispell",           0,               NULL, },
   { "mbox_type",         DT_ENUM,                          MUTT_MBOX,             IP &MboxTypeDef, NULL, },
-  { "to_chars",          DT_MBTABLE,                       IP " +TCFLR",          0,               NULL, },
   { "net_inc",           DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10,                    0,               NULL, },
   { "signature",         DT_PATH|D_PATH_FILE,              IP "~/.signature",     0,               NULL, },
   { "print",             DT_QUAD,                          MUTT_ASKNO,            0,               NULL, },
