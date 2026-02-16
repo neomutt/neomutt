@@ -84,10 +84,7 @@ static void notify_dump_command(struct NotifyCallback *nc)
 {
   struct Command *cmd = nc->event_data;
 
-  if (cmd->data < 4096)
-    mutt_debug(LL_DEBUG1, "    Command: %s, data: %ld\n", cmd->name, cmd->data);
-  else
-    mutt_debug(LL_DEBUG1, "    Command: %s, data: %p\n", cmd->name, (void *) cmd->data);
+  mutt_debug(LL_DEBUG1, "    Command: %s, (%s)\n", cmd->name, name_command_id(cmd->id));
 }
 
 /**
