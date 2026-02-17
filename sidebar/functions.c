@@ -432,6 +432,7 @@ static void sidebar_matcher_cb(void *data, const char *pattern)
     {
       struct SbEntry *sbe = *sbep;
       sbe->mailbox->visible = true;
+      sbe->score = -1;
       if (wdata->hil_index == -1)
         wdata->hil_index = ARRAY_FOREACH_IDX_sbep;
     }
@@ -450,6 +451,11 @@ static void sidebar_matcher_cb(void *data, const char *pattern)
     struct SbEntry *sbe = *sbep;
     buf_printf(buf, "%s %s", sbe->box, sbe->display);
     int score = fuzzy_match(pattern, buf_string(buf), FUZZY_ALGO_SUBSEQ, &opts, &result);
+    if (score > 0)
+    {
+      score += (2 * sbe->mailbox->msg_new);
+      score += (sbe->mailbox->msg_unread - sbe->mailbox->msg_new);
+    }
     sbe->score = score;
     if (score >= 0)
     {
