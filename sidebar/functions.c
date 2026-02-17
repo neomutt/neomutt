@@ -436,6 +436,7 @@ static void sidebar_matcher_cb(const char *text, void *data)
     {
       struct SbEntry *sbe = *sbep;
       sbe->mailbox->visible = true;
+      sbe->score = -1;
       if (wdata->hil_index == -1)
         wdata->hil_index = ARRAY_FOREACH_IDX_sbep;
     }
@@ -461,7 +462,7 @@ static void sidebar_matcher_cb(const char *text, void *data)
       score += (2 * sbe->mailbox->msg_new);
       score += (sbe->mailbox->msg_unread - sbe->mailbox->msg_new);
     }
-
+    sbe->score = score;
     if (score >= 0)
     {
       if ((best_score == -1) || (score > best_score))
@@ -542,6 +543,11 @@ static int op_sidebar_start_search(struct SidebarWindowData *wdata, const struct
     goto done;
   }
 
+  ARRAY_FOREACH(sbep, &wdata->entries)
+  {
+    struct SbEntry *sbe = *sbep;
+    sbe->score = -1;
+  }
   rc = FR_SUCCESS;
 
 done:

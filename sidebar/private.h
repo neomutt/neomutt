@@ -46,6 +46,7 @@ struct SbEntry
   struct Mailbox *mailbox;        ///< Mailbox this represents
   bool is_hidden;                 ///< Don't show, e.g. $sidebar_new_mail_only
   const struct AttrColor *color;  ///< Colour to use
+  int score;                      ///< Fuzzy-match score
 };
 ARRAY_HEAD(SbEntryArray, struct SbEntry *);
 
@@ -63,6 +64,7 @@ enum ExpandoDataSidebar
   ED_SID_LIMITED_COUNT,        ///< Mailbox.vcount
   ED_SID_MESSAGE_COUNT,        ///< Mailbox.msg_count
   ED_SID_NAME,                 ///< SbEntry.box
+  ED_SID_FUZZY_SCORE,          ///< SbEntry.score
   ED_SID_NEW_MAIL,             ///< Mailbox.has_new
   ED_SID_NOTIFY,               ///< Mailbox.notify_user
   ED_SID_OLD_COUNT,            ///< Mailbox.msg_unread, Mailbox.msg_new
