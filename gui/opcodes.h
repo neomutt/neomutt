@@ -468,15 +468,6 @@ const char *opcodes_get_name       (int op);
   /*       Index: <op_jump> */ \
   /*       Menu: <op_jump> */ \
   _fmt(OP_JUMP,                               N_("Jump to an index number")) \
-  _fmt(OP_JUMP_1,                             N_("Jump to an index number")) \
-  _fmt(OP_JUMP_2,                             N_("Jump to an index number")) \
-  _fmt(OP_JUMP_3,                             N_("Jump to an index number")) \
-  _fmt(OP_JUMP_4,                             N_("Jump to an index number")) \
-  _fmt(OP_JUMP_5,                             N_("Jump to an index number")) \
-  _fmt(OP_JUMP_6,                             N_("Jump to an index number")) \
-  _fmt(OP_JUMP_7,                             N_("Jump to an index number")) \
-  _fmt(OP_JUMP_8,                             N_("Jump to an index number")) \
-  _fmt(OP_JUMP_9,                             N_("Jump to an index number")) \
   /* L10N: Help screen description for OP_LAST_ENTRY */ \
   /*       Menu: <menu_movement> */ \
   _fmt(OP_LAST_ENTRY,                         N_("Move to the last entry")) \
