@@ -76,6 +76,9 @@
 #include <libintl.h>
 #endif
 
+static int op_jump(struct IndexSharedData *shared,
+                   struct IndexPrivateData *priv, const struct KeyEvent *event);
+
 // clang-format off
 /**
  * OpIndex - Functions for the Index Menu
@@ -917,34 +920,35 @@ static int op_jump(struct IndexSharedData *shared,
   int rc = FR_ERROR;
   struct Buffer *buf = buf_pool_get();
 
-  const int digit = event->op - OP_JUMP;
-  if ((digit > 0) && (digit < 10))
+  int num = event->count;
+  if (num == 0)
   {
-    mutt_unget_ch('0' + digit);
+    if ((mw_get_field(_("Jump to message: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
+        buf_is_empty(buf))
+    {
+      mutt_message(_("Nothing to do"));
+      rc = FR_NO_ACTION;
+      goto done;
+    }
+
+    if (!mutt_str_atoi_full(buf_string(buf), &num))
+    {
+      mutt_warning(_("Argument must be a message number"));
+      goto done;
+    }
   }
 
-  int msg_num = 0;
-  if ((mw_get_field(_("Jump to message: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
-      buf_is_empty(buf))
-  {
-    mutt_message(_("Nothing to do"));
-    rc = FR_NO_ACTION;
-  }
-  else if (!mutt_str_atoi_full(buf_string(buf), &msg_num))
-  {
-    mutt_warning(_("Argument must be a message number"));
-  }
-  else if ((msg_num < 1) || (msg_num > shared->mailbox->msg_count))
+  if ((num < 1) || (num > shared->mailbox->msg_count))
   {
     mutt_warning(_("Invalid message number"));
   }
-  else if (!shared->mailbox->emails[msg_num - 1]->visible)
+  else if (!shared->mailbox->emails[num - 1]->visible)
   {
     mutt_warning(_("That message is not visible"));
   }
   else
   {
-    struct Email *e = shared->mailbox->emails[msg_num - 1];
+    struct Email *e = shared->mailbox->emails[num - 1];
 
     if (mutt_messages_in_thread(shared->mailbox, e, MIT_POSITION) > 1)
     {
@@ -955,6 +959,7 @@ static int op_jump(struct IndexSharedData *shared,
     rc = FR_SUCCESS;
   }
 
+done:
   buf_pool_release(&buf);
   return rc;
 }
@@ -3217,15 +3222,6 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_GROUP_CHAT_REPLY,                    op_group_reply,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_REPLY,                         op_group_reply,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_JUMP,                                op_jump,                              CHECK_IN_MAILBOX },
-  { OP_JUMP_1,                              op_jump,                              CHECK_IN_MAILBOX },
-  { OP_JUMP_2,                              op_jump,                              CHECK_IN_MAILBOX },
-  { OP_JUMP_3,                              op_jump,                              CHECK_IN_MAILBOX },
-  { OP_JUMP_4,                              op_jump,                              CHECK_IN_MAILBOX },
-  { OP_JUMP_5,                              op_jump,                              CHECK_IN_MAILBOX },
-  { OP_JUMP_6,                              op_jump,                              CHECK_IN_MAILBOX },
-  { OP_JUMP_7,                              op_jump,                              CHECK_IN_MAILBOX },
-  { OP_JUMP_8,                              op_jump,                              CHECK_IN_MAILBOX },
-  { OP_JUMP_9,                              op_jump,                              CHECK_IN_MAILBOX },
   { OP_LIMIT_CURRENT_THREAD,                op_main_limit,                        CHECK_IN_MAILBOX },
   { OP_LIST_REPLY,                          op_list_reply,                        CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_LIST_SUBSCRIBE,                      op_list_subscribe,                    CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
