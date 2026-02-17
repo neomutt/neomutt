@@ -450,6 +450,7 @@ static void sidebar_matcher_cb(void *data, const char *pattern)
     struct SbEntry *sbe = *sbep;
     buf_printf(buf, "%s %s", sbe->box, sbe->display);
     int score = fuzzy_match(pattern, buf_string(buf), FUZZY_ALGO_SUBSEQ, &opts, &result);
+    sbe->score = score;
     if (score >= 0)
     {
       if ((best_score == -1) || (score > best_score))
