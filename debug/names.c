@@ -44,7 +44,6 @@
   default:                                                                     \
     return "UNKNOWN"
 
-
 /**
  * name_command_id - Get the name of a Command id
  * @param id Command id enum
@@ -146,7 +145,6 @@ const char *name_command_id(enum CommandId id)
     DEBUG_DEFAULT;
   }
 }
-
 
 /**
  * name_content_type - Get the name of a content type

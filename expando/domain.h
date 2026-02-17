@@ -32,28 +32,28 @@
  */
 enum ExpandoDomain
 {
-  ED_ALIAS = 1,    ///< Alias         ED_ALI_ #ExpandoDataAlias
-  ED_ATTACH,       ///< Attach        ED_ATT_ #ExpandoDataAttach
-  ED_AUTOCRYPT,    ///< Autocrypt     ED_AUT_ #ExpandoDataAutocrypt
-  ED_BODY,         ///< Body          ED_BOD_ #ExpandoDataBody
-  ED_COMPOSE,      ///< Compose       ED_COM_ #ExpandoDataCompose
-  ED_COMPRESS,     ///< Compress      ED_CMP_ #ExpandoDataCompress
-  ED_EMAIL,        ///< Email         ED_EMA_ #ExpandoDataEmail
-  ED_ENVELOPE,     ///< Envelope      ED_ENV_ #ExpandoDataEnvelope
-  ED_FOLDER,       ///< Folder        ED_FOL_ #ExpandoDataFolder
-  ED_GLOBAL,       ///< Global        ED_GLO_ #ExpandoDataGlobal
-  ED_HISTORY,      ///< History       ED_HIS_ #ExpandoDataHistory
-  ED_INDEX,        ///< Index         ED_IND_ #ExpandoDataIndex
-  ED_MAILBOX,      ///< Mailbox       ED_MBX_ #ExpandoDataMailbox
-  ED_MENU,         ///< Menu          ED_MEN_ #ExpandoDataMenu
-  ED_MSG_ID,       ///< Message Id    ED_MSG_ #ExpandoDataMsgId
-  ED_NNTP,         ///< Nntp          ED_NTP_ #ExpandoDataNntp
-  ED_PATTERN,      ///< Pattern       ED_PAT_ #ExpandoDataPattern
-  ED_PGP,          ///< Pgp           ED_PGP_ #ExpandoDataPgp
-  ED_PGP_CMD,      ///< Pgp Command   ED_PGC_ #ExpandoDataPgpCmd
-  ED_PGP_KEY,      ///< Pgp_Key       ED_PGK_ #ExpandoDataPgpKey
-  ED_SIDEBAR,      ///< Sidebar       ED_SID_ #ExpandoDataSidebar
-  ED_SMIME_CMD,    ///< Smime Command ED_SMI_ #ExpandoDataSmimeCmd
+  ED_ALIAS = 1,    ///< Alias         ED_ALI_ #ExpandoDataAlias     @sa AliasFormatDef, QueryFormatDef
+  ED_ATTACH,       ///< Attach        ED_ATT_ #ExpandoDataAttach    @sa AttachFormatDef
+  ED_AUTOCRYPT,    ///< Autocrypt     ED_AUT_ #ExpandoDataAutocrypt @sa AutocryptFormatDef
+  ED_BODY,         ///< Body          ED_BOD_ #ExpandoDataBody      @sa AttachFormatDef
+  ED_COMPOSE,      ///< Compose       ED_COM_ #ExpandoDataCompose   @sa ComposeFormatDef
+  ED_COMPRESS,     ///< Compress      ED_CMP_ #ExpandoDataCompress  @sa CompressFormatDef
+  ED_EMAIL,        ///< Email         ED_EMA_ #ExpandoDataEmail     @sa IndexFormatDef
+  ED_ENVELOPE,     ///< Envelope      ED_ENV_ #ExpandoDataEnvelope  @sa GreetingFormatDef, IndexFormatDef
+  ED_FOLDER,       ///< Folder        ED_FOL_ #ExpandoDataFolder    @sa FolderFormatDef, GroupIndexFormatDef
+  ED_GLOBAL,       ///< Global        ED_GLO_ #ExpandoDataGlobal    @sa AliasFormatDef, AttachFormatDef, AutocryptFormatDef, ComposeFormatDef, FolderFormatDef, GroupIndexFormatDef, HistoryFormatDef, IndexFormatDef, IndexFormatDefNoPadding, PatternFormatDef, PgpEntryFormatDef, QueryFormatDef, SidebarFormatDef, StatusFormatDef, StatusFormatDefNoPadding
+  ED_HISTORY,      ///< History       ED_HIS_ #ExpandoDataHistory   @sa HistoryFormatDef
+  ED_INDEX,        ///< Index         ED_IND_ #ExpandoDataIndex     @sa StatusFormatDef
+  ED_MAILBOX,      ///< Mailbox       ED_MBX_ #ExpandoDataMailbox   @sa IndexFormatDef
+  ED_MENU,         ///< Menu          ED_MEN_ #ExpandoDataMenu      @sa StatusFormatDef
+  ED_MSG_ID,       ///< Message Id    ED_MSG_ #ExpandoDataMsgId     @sa MsgIdFormatDef
+  ED_NNTP,         ///< Nntp          ED_NTP_ #ExpandoDataNntp      @sa NntpFormatDef
+  ED_PATTERN,      ///< Pattern       ED_PAT_ #ExpandoDataPattern   @sa PatternFormatDef
+  ED_PGP,          ///< Pgp           ED_PGP_ #ExpandoDataPgp       @sa PgpEntryFormatDef
+  ED_PGP_CMD,      ///< Pgp Command   ED_PGC_ #ExpandoDataPgpCmd    @sa PgpCommandFormatDef
+  ED_PGP_KEY,      ///< Pgp_Key       ED_PGK_ #ExpandoDataPgpKey    @sa PgpEntryFormatDef
+  ED_SIDEBAR,      ///< Sidebar       ED_SID_ #ExpandoDataSidebar   @sa SidebarFormatDef
+  ED_SMIME_CMD,    ///< Smime Command ED_SMI_ #ExpandoDataSmimeCmd  @sa SmimeCommandFormatDef
 };
 
 #endif /* MUTT_EXPANDO_DOMAIN_H */
