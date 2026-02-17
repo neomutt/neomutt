@@ -41,7 +41,7 @@ extern struct MenuDefinition *MdIndex;
  * @param shared Shared Index data
  * @param priv   Private Index data
  * @param event Event to process
- * @retval num #FunctionRetval or opcode, e.g. OP_JUMP
+ * @retval num #FunctionRetval or opcode, e.g. OP_NEXT_ENTRY
  *
  * @pre shared is not NULL
  * @pre priv   is not NULL
