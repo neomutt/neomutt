@@ -208,7 +208,7 @@ static void body_disposition(const struct ExpandoNode *node, void *data,
     ch = '!';
   }
 
-  buf_printf(buf, "%c", ch);
+  buf_addch(buf, ch);
 }
 
 /**
