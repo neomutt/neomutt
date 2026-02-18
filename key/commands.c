@@ -557,11 +557,11 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
   if (!cmd || !args || !err)
     return false;
 
-  keycode_t key_bytes[MAX_SEQ] = { 0 };
+  keycode_t key_bytes[KEY_SEQ_MAX_LEN] = { 0 };
   int key_len = 0;
   if (args->key)
   {
-    key_len = parse_keys(args->key, key_bytes, MAX_SEQ);
+    key_len = parse_keys(args->key, key_bytes, KEY_SEQ_MAX_LEN);
     if (key_len == 0)
       return false;
   }

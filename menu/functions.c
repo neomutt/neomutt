@@ -245,29 +245,32 @@ static int op_jump(struct Menu *menu, const struct KeyEvent *event)
     return FR_SUCCESS;
   }
 
-  const int digit = event->op - OP_JUMP;
-  if ((digit > 0) && (digit < 10))
-  {
-    mutt_unget_ch('0' + digit);
-  }
-
   struct Buffer *buf = buf_pool_get();
-  if ((mw_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0) &&
-      !buf_is_empty(buf))
+  int rc = FR_ERROR;
+
+  int num = event->count;
+  if (num == 0)
   {
-    int n = 0;
-    if (mutt_str_atoi_full(buf_string(buf), &n) && (n > 0) && (n < (menu->max + 1)))
+    if ((mw_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
+        buf_is_empty(buf))
     {
-      menu_set_index(menu, n - 1); // msg numbers are 0-based
+      rc = FR_NO_ACTION;
+      goto done;
     }
-    else
+
+    if (!mutt_str_atoi_full(buf_string(buf), &num) || (num < 1) || (num > menu->max))
     {
       mutt_error(_("Invalid index number"));
+      goto done;
     }
   }
 
+  menu_set_index(menu, num - 1); // msg numbers are 0-based
+  rc = FR_SUCCESS;
+
+done:
   buf_pool_release(&buf);
-  return FR_SUCCESS;
+  return rc;
 }
 
 // -----------------------------------------------------------------------------
@@ -286,15 +289,6 @@ static const struct MenuFunction MenuFunctions[] = {
   { OP_HALF_UP,                menu_movement },
   { OP_HELP,                   op_help },
   { OP_JUMP,                   op_jump },
-  { OP_JUMP_1,                 op_jump },
-  { OP_JUMP_2,                 op_jump },
-  { OP_JUMP_3,                 op_jump },
-  { OP_JUMP_4,                 op_jump },
-  { OP_JUMP_5,                 op_jump },
-  { OP_JUMP_6,                 op_jump },
-  { OP_JUMP_7,                 op_jump },
-  { OP_JUMP_8,                 op_jump },
-  { OP_JUMP_9,                 op_jump },
   { OP_LAST_ENTRY,             menu_movement },
   { OP_MIDDLE_PAGE,            menu_movement },
   { OP_NEXT_ENTRY,             menu_movement },

@@ -274,7 +274,7 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
 
-  GetChFlags flags = GETCH_NO_FLAGS;
+  GetChFlags flags = GETCH_NO_FLAGS | GETCH_NO_COUNTER;
   if (complete & MUTT_COMP_UNBUFFERED)
     flags = GETCH_IGNORE_MACRO;
 
