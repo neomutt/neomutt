@@ -132,12 +132,8 @@ static void nntp_server(const struct ExpandoNode *node, void *data,
   const struct NntpAccountData *adata = data;
   const struct ConnAccount *cac = &adata->conn->account;
 
-  char tmp[128] = { 0 };
-
-  mutt_str_copy(tmp, cac->host, sizeof(tmp));
-  mutt_str_lower(tmp);
-
-  buf_strcpy(buf, tmp);
+  buf_strcpy(buf, cac->host);
+  buf_lower(buf);
 }
 
 /**

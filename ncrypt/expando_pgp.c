@@ -86,7 +86,7 @@ static void pgp_entry_trust(const struct ExpandoNode *node, void *data,
   const struct PgpEntry *entry = data;
   const struct PgpUid *uid = entry->uid;
 
-  buf_printf(buf, "%c", TrustFlags[uid->trust & 0x03]);
+  buf_addch(buf, TrustFlags[uid->trust & 0x03]);
 }
 
 /**
@@ -218,7 +218,7 @@ static void pgp_key_flags(const struct ExpandoNode *node, void *data,
 
   const KeyFlags kflags = key->flags | uid->flags;
 
-  buf_printf(buf, "%c", pgp_flags(kflags));
+  buf_addch(buf, pgp_flags(kflags));
 }
 
 /**
@@ -292,7 +292,7 @@ static void pgp_pkey_flags(const struct ExpandoNode *node, void *data,
 
   const KeyFlags kflags = (pkey->flags & KEYFLAG_RESTRICTIONS) | uid->flags;
 
-  buf_printf(buf, "%c", pgp_flags(kflags));
+  buf_addch(buf, pgp_flags(kflags));
 }
 
 /**

@@ -94,11 +94,7 @@ static void sidebar_flagged(const struct ExpandoNode *node, void *data,
   const struct SbEntry *sbe = sdata->entry;
   const struct Mailbox *m = sbe->mailbox;
 
-  if (m->msg_flagged == 0)
-  {
-    buf_strcpy(buf, "");
-  }
-  else if (m->msg_flagged == 1)
+  if (m->msg_flagged == 1)
   {
     buf_strcpy(buf, "!");
   }
@@ -106,7 +102,7 @@ static void sidebar_flagged(const struct ExpandoNode *node, void *data,
   {
     buf_strcpy(buf, "!!");
   }
-  else
+  else if (m->msg_flagged > 2)
   {
     buf_printf(buf, "%d!", m->msg_flagged);
   }

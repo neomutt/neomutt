@@ -47,8 +47,6 @@ static void group_index_description(const struct ExpandoNode *node, void *data,
 {
   const struct Folder *folder = data;
 
-  char tmp[128] = { 0 };
-
   if (!folder->ff->nd->desc)
     return;
 
@@ -59,10 +57,8 @@ static void group_index_description(const struct ExpandoNode *node, void *data,
     mutt_ch_convert_string(&desc, c_newsgroups_charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
   }
   mutt_mb_filter_unprintable(&desc);
-  mutt_str_copy(tmp, desc, sizeof(tmp));
+  buf_strcpy(buf, desc);
   FREE(&desc);
-
-  buf_strcpy(buf, tmp);
 }
 
 /**

@@ -1014,17 +1014,13 @@ static void email_thread_hidden_count(const struct ExpandoNode *node, void *data
 
   if (threads && is_index && e->collapsed && (e->num_hidden > 1))
   {
-    if (flags & MUTT_FORMAT_INDEX)
-      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
-    const int num = e->num_hidden;
-    buf_printf(buf, "%d", num);
+    node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
+    buf_printf(buf, "%zu", e->num_hidden);
   }
   else if (is_index && threads)
   {
-    if (flags & MUTT_FORMAT_INDEX)
-      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
-    const char *s = " ";
-    buf_strcpy(buf, s);
+    node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
+    buf_strcpy(buf, " ");
   }
 }
 
@@ -1044,8 +1040,7 @@ static long email_thread_hidden_count_num(const struct ExpandoNode *node,
 
   if (threads && is_index && e->collapsed && (e->num_hidden > 1))
   {
-    if (flags & MUTT_FORMAT_INDEX)
-      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
+    node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
     return e->num_hidden;
   }
 
@@ -1584,17 +1579,13 @@ static void envelope_username(const struct ExpandoNode *node, void *data,
   if (!from || !from->mailbox)
     return;
 
-  char tmp[128] = { 0 };
-  char *p = NULL;
-
-  mutt_str_copy(tmp, mutt_addr_for_display(from), sizeof(tmp));
-  p = strpbrk(tmp, "%@");
+  buf_strcpy(buf, mutt_addr_for_display(from));
+  char *p = strpbrk(buf->data, "%@");
   if (p)
   {
     *p = '\0';
+    buf_fix_dptr(buf);
   }
-
-  buf_strcpy(buf, tmp);
 }
 
 /**

@@ -59,16 +59,15 @@ extern const struct Mapping SortMethods[];
 /**
  * get_sort_str - Get the sort method as a string
  * @param buf    Buffer for the sort string
- * @param buflen Length of the buffer
  * @param method Sort method, see #EmailSortType
- * @retval ptr Buffer pointer
  */
-static char *get_sort_str(char *buf, size_t buflen, enum EmailSortType method)
+static void get_sort_str(struct Buffer *buf, enum EmailSortType method)
 {
-  snprintf(buf, buflen, "%s%s%s", (method & SORT_REVERSE) ? "reverse-" : "",
-           (method & SORT_LAST) ? "last-" : "",
-           mutt_map_get_name(method & SORT_MASK, SortMethods));
-  return buf;
+  if (method & SORT_REVERSE)
+    buf_addstr(buf, "reverse-");
+  if (method & SORT_LAST)
+    buf_addstr(buf, "last-");
+  buf_addstr(buf, mutt_map_get_name(method & SORT_MASK, SortMethods));
 }
 
 /**
@@ -77,11 +76,8 @@ static char *get_sort_str(char *buf, size_t buflen, enum EmailSortType method)
 static void global_config_sort(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
 {
-  char tmp[128] = { 0 };
-
   const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  const char *s = get_sort_str(tmp, sizeof(tmp), c_sort);
-  buf_strcpy(buf, s);
+  get_sort_str(buf, c_sort);
 }
 
 /**
@@ -90,11 +86,8 @@ static void global_config_sort(const struct ExpandoNode *node, void *data,
 static void global_config_sort_aux(const struct ExpandoNode *node, void *data,
                                    MuttFormatFlags flags, struct Buffer *buf)
 {
-  char tmp[128] = { 0 };
-
   const enum EmailSortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
-  const char *s = get_sort_str(tmp, sizeof(tmp), c_sort_aux);
-  buf_strcpy(buf, s);
+  get_sort_str(buf, c_sort_aux);
 }
 
 /**
@@ -431,16 +424,14 @@ static void menu_percentage(const struct ExpandoNode *node, void *data,
   if (!menu)
     return;
 
-  char tmp[128] = { 0 };
-
-  char *cp = NULL;
   if (menu->top + menu->page_len >= menu->max)
   {
-    cp = menu->top ?
-             /* L10N: Status bar message: the end of the list emails is visible in the index */
-             _("end") :
-             /* L10N: Status bar message: all the emails are visible in the index */
-             _("all");
+    const char *s = menu->top ?
+                        /* L10N: Status bar message: the end of the list emails is visible in the index */
+                        _("end") :
+                        /* L10N: Status bar message: all the emails are visible in the index */
+                        _("all");
+    buf_strcpy(buf, s);
   }
   else
   {
@@ -448,11 +439,8 @@ static void menu_percentage(const struct ExpandoNode *node, void *data,
     /* L10N: Status bar, percentage of way through index.
            `%d` is the number, `%%` is the percent symbol.
            They may be reordered, or space inserted, if you wish. */
-    snprintf(tmp, sizeof(tmp), _("%d%%"), count);
-    cp = tmp;
+    buf_printf(buf, _("%d%%"), count);
   }
-
-  buf_strcpy(buf, cp);
 }
 
 /**
