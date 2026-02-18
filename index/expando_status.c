@@ -431,16 +431,14 @@ static void menu_percentage(const struct ExpandoNode *node, void *data,
   if (!menu)
     return;
 
-  char tmp[128] = { 0 };
-
-  char *cp = NULL;
   if (menu->top + menu->page_len >= menu->max)
   {
-    cp = menu->top ?
-             /* L10N: Status bar message: the end of the list emails is visible in the index */
-             _("end") :
-             /* L10N: Status bar message: all the emails are visible in the index */
-             _("all");
+    const char *s = menu->top ?
+                        /* L10N: Status bar message: the end of the list emails is visible in the index */
+                        _("end") :
+                        /* L10N: Status bar message: all the emails are visible in the index */
+                        _("all");
+    buf_strcpy(buf, s);
   }
   else
   {
@@ -448,11 +446,8 @@ static void menu_percentage(const struct ExpandoNode *node, void *data,
     /* L10N: Status bar, percentage of way through index.
            `%d` is the number, `%%` is the percent symbol.
            They may be reordered, or space inserted, if you wish. */
-    snprintf(tmp, sizeof(tmp), _("%d%%"), count);
-    cp = tmp;
+    buf_printf(buf, _("%d%%"), count);
   }
-
-  buf_strcpy(buf, cp);
 }
 
 /**
