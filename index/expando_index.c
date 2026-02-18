@@ -1584,17 +1584,13 @@ static void envelope_username(const struct ExpandoNode *node, void *data,
   if (!from || !from->mailbox)
     return;
 
-  char tmp[128] = { 0 };
-  char *p = NULL;
-
-  mutt_str_copy(tmp, mutt_addr_for_display(from), sizeof(tmp));
-  p = strpbrk(tmp, "%@");
+  buf_strcpy(buf, mutt_addr_for_display(from));
+  char *p = strpbrk(buf->data, "%@");
   if (p)
   {
     *p = '\0';
+    buf_fix_dptr(buf);
   }
-
-  buf_strcpy(buf, tmp);
 }
 
 /**
