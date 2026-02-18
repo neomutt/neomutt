@@ -165,7 +165,7 @@ void mutt_file_unlink(const char *s)
   if (!is_regular_file)
     return;
 
-  const int fd = open(s, O_RDWR | O_NOFOLLOW);
+  const int fd = open(s, O_RDONLY | O_NOFOLLOW | O_CLOEXEC);
   if (fd < 0)
     return;
 
@@ -194,9 +194,9 @@ int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size)
   if (!fp_in || !fp_out)
     return -1;
 
+  char buf[2048];
   while (size > 0)
   {
-    char buf[2048] = { 0 };
     size_t chunk = (size > sizeof(buf)) ? sizeof(buf) : size;
     chunk = fread(buf, 1, chunk, fp_in);
     if (chunk < 1)
@@ -207,6 +207,8 @@ int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size)
     size -= chunk;
   }
 
+  if (ferror(fp_in))
+    return -1;
   if (fflush(fp_out) != 0)
     return -1;
   return 0;
@@ -226,7 +228,7 @@ int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
 
   size_t total = 0;
   size_t l;
-  char buf[1024] = { 0 };
+  char buf[2048] = { 0 };
 
   while ((l = fread(buf, 1, sizeof(buf), fp_in)) > 0)
   {
@@ -235,6 +237,8 @@ int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
     total += l;
   }
 
+  if (ferror(fp_in))
+    return -1;
   if (fflush(fp_out) != 0)
     return -1;
   return total;
@@ -514,17 +518,9 @@ int mutt_file_open(const char *path, uint32_t flags, mode_t mode)
   if (!path)
     return -1;
 
-  int fd = open(path, flags & ~O_EXCL, 0600);
+  int fd = open(path, flags | O_NOFOLLOW | O_CLOEXEC, mode);
   if (fd < 0)
     return -1;
-
-  /* make sure the file is not symlink */
-  struct stat st = { 0 };
-  if ((lstat(path, &st) < 0) || S_ISLNK(st.st_mode))
-  {
-    close(fd);
-    return -1;
-  }
 
   return fd;
 }
@@ -1229,7 +1225,7 @@ void mutt_file_unlink_empty(const char *path)
 
   struct stat st = { 0 };
 
-  int fd = open(path, O_RDWR);
+  int fd = open(path, O_RDWR | O_NOFOLLOW | O_CLOEXEC);
   if (fd == -1)
     return;
 
@@ -1276,7 +1272,13 @@ int mutt_file_rename(const char *oldfile, const char *newfile)
     mutt_file_fclose(&fp_old);
     return 3;
   }
-  mutt_file_copy_stream(fp_old, fp_new);
+  if (mutt_file_copy_stream(fp_old, fp_new) == -1)
+  {
+    mutt_file_fclose(&fp_new);
+    mutt_file_fclose(&fp_old);
+    mutt_file_unlink(newfile);
+    return 3;
+  }
   mutt_file_fclose(&fp_new);
   mutt_file_fclose(&fp_old);
   mutt_file_unlink(oldfile);
@@ -1295,6 +1297,9 @@ int mutt_file_rename(const char *oldfile, const char *newfile)
  */
 char *mutt_file_read_keyword(const char *file, char *buf, size_t buflen)
 {
+  if (!buf || (buflen == 0))
+    return NULL;
+
   FILE *fp = mutt_file_fopen(file, "r");
   if (!fp)
     return NULL;
