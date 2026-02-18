@@ -70,28 +70,24 @@ static void smime_command_certificate_path(const struct ExpandoNode *node, void 
   const char *const c_smime_ca_location = cs_subset_path(NeoMutt->sub, "smime_ca_location");
 
   struct Buffer *path = buf_pool_get();
-  struct Buffer *buf1 = buf_pool_get();
-  struct Buffer *buf2 = buf_pool_get();
+  struct Buffer *quoted = buf_pool_get();
   struct stat st = { 0 };
 
   buf_strcpy(path, c_smime_ca_location);
   expand_path(path, false);
-  buf_quote_filename(buf1, buf_string(path), true);
+  buf_quote_filename(quoted, buf_string(path), true);
 
   if ((stat(buf_string(path), &st) != 0) || !S_ISDIR(st.st_mode))
   {
-    buf_printf(buf2, "-CAfile %s", buf_string(buf1));
+    buf_printf(buf, "-CAfile %s", buf_string(quoted));
   }
   else
   {
-    buf_printf(buf2, "-CApath %s", buf_string(buf1));
+    buf_printf(buf, "-CApath %s", buf_string(quoted));
   }
 
-  buf_copy(buf, buf2);
-
   buf_pool_release(&path);
-  buf_pool_release(&buf1);
-  buf_pool_release(&buf2);
+  buf_pool_release(&quoted);
 }
 
 /**
