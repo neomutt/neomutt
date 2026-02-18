@@ -130,14 +130,14 @@ static int buf_vaprintf(struct Buffer *buf, const char *fmt, va_list ap)
 
   buf_alloc(buf, 128);
 
-  int doff = buf->dptr - buf->data;
-  int blen = buf->dsize - doff;
+  size_t doff = buf->dptr - buf->data;
+  size_t blen = buf->dsize - doff;
 
   va_list ap_retry;
   va_copy(ap_retry, ap);
 
   int len = vsnprintf(buf->dptr, blen, fmt, ap);
-  if (len >= blen)
+  if (len >= (int) blen)
   {
     buf_alloc(buf, buf->dsize + len - blen + 1);
     len = vsnprintf(buf->dptr, len + 1, fmt, ap_retry);
@@ -521,7 +521,7 @@ size_t buf_concat_path(struct Buffer *buf, const char *dir, const char *fname)
   if (!d_set && !f_set)
     return 0;
 
-  const int d_len = strlen(dir);
+  const size_t d_len = strlen(dir);
   const bool slash = d_set && (dir[d_len - 1] == '/');
 
   const char *fmt = "%s/%s";
@@ -637,7 +637,7 @@ void buf_seek(struct Buffer *buf, size_t offset)
  */
 const char *buf_find_string(const struct Buffer *buf, const char *s)
 {
-  if (!buf || !s)
+  if (!buf || !buf->data || !s)
     return NULL;
 
   return strstr(buf->data, s);
@@ -652,7 +652,7 @@ const char *buf_find_string(const struct Buffer *buf, const char *s)
  */
 const char *buf_find_char(const struct Buffer *buf, const char c)
 {
-  if (!buf)
+  if (!buf || !buf->data)
     return NULL;
 
   return strchr(buf->data, c);
@@ -667,7 +667,7 @@ const char *buf_find_char(const struct Buffer *buf, const char c)
  */
 char buf_at(const struct Buffer *buf, size_t offset)
 {
-  if (!buf || (offset > buf_len(buf)))
+  if (!buf || !buf->data || (offset > buf_len(buf)))
     return '\0';
 
   return buf->data[offset];
@@ -733,7 +733,7 @@ int buf_coll(const struct Buffer *a, const struct Buffer *b)
  */
 void buf_lower(struct Buffer *buf)
 {
-  if (!buf)
+  if (!buf || !buf->data)
     return;
 
   mutt_str_lower(buf->data);
@@ -767,18 +767,22 @@ void buf_join_str(struct Buffer *buf, const char *str, char sep)
  */
 void buf_inline_replace(struct Buffer *buf, size_t pos, size_t len, const char *str)
 {
-  if (!buf || !str)
+  if (!buf || !buf->data || !str)
     return;
 
-  size_t olen = buf->dsize;
-  size_t rlen = mutt_str_len(str);
+  size_t slen = buf_len(buf);
+  if (pos > slen)
+    return;
+  if (len > slen - pos)
+    len = slen - pos;
 
-  size_t new_size = buf->dsize - len + rlen + 1;
+  size_t rlen = mutt_str_len(str);
+  size_t new_size = slen - len + rlen + 1;
   if (new_size > buf->dsize)
     buf_alloc(buf, new_size);
 
-  memmove(buf->data + pos + rlen, buf->data + pos + len, olen - pos - len);
-  memmove(buf->data + pos, str, rlen);
+  memmove(buf->data + pos + rlen, buf->data + pos + len, slen - pos - len + 1);
+  memcpy(buf->data + pos, str, rlen);
 
   buf_fix_dptr(buf);
 }
@@ -794,7 +798,7 @@ void buf_inline_replace(struct Buffer *buf, size_t pos, size_t len, const char *
  */
 const char *buf_rfind(const struct Buffer *buf, const char *str)
 {
-  if (buf_is_empty(buf) || !str)
+  if (buf_is_empty(buf) || !str || (*str == '\0'))
     return NULL;
 
   size_t len = strlen(str);
