@@ -33,6 +33,16 @@
 #include "mutt_window.h"
 
 /**
+ * non_negative - Clamp an integer to a non-negative value
+ * @param value Number to clamp
+ * @retval num Non-negative value
+ */
+static int non_negative(int value)
+{
+  return (value > 0) ? value : 0;
+}
+
+/**
  * window_reflow_horiz - Reflow Windows using all the available horizontal space
  * @param win Window
  */
@@ -42,7 +52,7 @@ static void window_reflow_horiz(struct MuttWindow *win)
     return;
 
   int max_count = 0;
-  int space = win->state.cols;
+  int space = non_negative(win->state.cols);
 
   // Pass one - minimal allocation
   struct MuttWindow **wp = NULL;
@@ -55,7 +65,8 @@ static void window_reflow_horiz(struct MuttWindow *win)
     {
       case MUTT_WIN_SIZE_FIXED:
       {
-        const int avail = MIN(space, (*wp)->req_cols);
+        const int req = non_negative((*wp)->req_cols);
+        const int avail = MIN(space, req);
         (*wp)->state.cols = avail;
         (*wp)->state.rows = win->state.rows;
         space -= avail;
@@ -63,23 +74,26 @@ static void window_reflow_horiz(struct MuttWindow *win)
       }
       case MUTT_WIN_SIZE_MAXIMISE:
       {
-        (*wp)->state.cols = 1;
+        const int avail = (space > 0) ? 1 : 0;
+        (*wp)->state.cols = avail;
         (*wp)->state.rows = win->state.rows;
         max_count++;
-        space -= 1;
+        space -= avail;
         break;
       }
       case MUTT_WIN_SIZE_MINIMISE:
       {
         (*wp)->state.rows = win->state.rows;
-        (*wp)->state.cols = win->state.cols;
+        (*wp)->state.cols = non_negative(space);
         (*wp)->state.row_offset = win->state.row_offset;
         (*wp)->state.col_offset = win->state.col_offset;
         window_reflow(*wp);
-        space -= (*wp)->state.cols;
+        space -= non_negative((*wp)->state.cols);
         break;
       }
     }
+
+    space = non_negative(space);
   }
 
   // Pass two - sharing
@@ -95,9 +109,9 @@ static void window_reflow_horiz(struct MuttWindow *win)
       if ((*wp)->size != MUTT_WIN_SIZE_MAXIMISE)
         continue;
 
-      alloc = MIN(space, alloc);
-      (*wp)->state.cols += alloc;
-      space -= alloc;
+      const int share = MIN(space, alloc);
+      (*wp)->state.cols += share;
+      space -= share;
     }
   }
 
@@ -116,9 +130,7 @@ static void window_reflow_horiz(struct MuttWindow *win)
   }
 
   if ((space > 0) && (win->size == MUTT_WIN_SIZE_MINIMISE))
-  {
-    win->state.cols -= space;
-  }
+    win->state.cols = non_negative(win->state.cols - space);
 }
 
 /**
@@ -131,7 +143,7 @@ static void window_reflow_vert(struct MuttWindow *win)
     return;
 
   int max_count = 0;
-  int space = win->state.rows;
+  int space = non_negative(win->state.rows);
 
   // Pass one - minimal allocation
   struct MuttWindow **wp = NULL;
@@ -144,7 +156,8 @@ static void window_reflow_vert(struct MuttWindow *win)
     {
       case MUTT_WIN_SIZE_FIXED:
       {
-        const int avail = MIN(space, (*wp)->req_rows);
+        const int req = non_negative((*wp)->req_rows);
+        const int avail = MIN(space, req);
         (*wp)->state.rows = avail;
         (*wp)->state.cols = win->state.cols;
         space -= avail;
@@ -152,23 +165,26 @@ static void window_reflow_vert(struct MuttWindow *win)
       }
       case MUTT_WIN_SIZE_MAXIMISE:
       {
-        (*wp)->state.rows = 1;
+        const int avail = (space > 0) ? 1 : 0;
+        (*wp)->state.rows = avail;
         (*wp)->state.cols = win->state.cols;
         max_count++;
-        space -= 1;
+        space -= avail;
         break;
       }
       case MUTT_WIN_SIZE_MINIMISE:
       {
-        (*wp)->state.rows = win->state.rows;
+        (*wp)->state.rows = non_negative(space);
         (*wp)->state.cols = win->state.cols;
         (*wp)->state.row_offset = win->state.row_offset;
         (*wp)->state.col_offset = win->state.col_offset;
         window_reflow(*wp);
-        space -= (*wp)->state.rows;
+        space -= non_negative((*wp)->state.rows);
         break;
       }
     }
+
+    space = non_negative(space);
   }
 
   // Pass two - sharing
@@ -184,9 +200,9 @@ static void window_reflow_vert(struct MuttWindow *win)
       if ((*wp)->size != MUTT_WIN_SIZE_MAXIMISE)
         continue;
 
-      alloc = MIN(space, alloc);
-      (*wp)->state.rows += alloc;
-      space -= alloc;
+      const int share = MIN(space, alloc);
+      (*wp)->state.rows += share;
+      space -= share;
     }
   }
 
@@ -205,9 +221,7 @@ static void window_reflow_vert(struct MuttWindow *win)
   }
 
   if ((space > 0) && (win->size == MUTT_WIN_SIZE_MINIMISE))
-  {
-    win->state.rows -= space;
-  }
+    win->state.rows = non_negative(win->state.rows - space);
 }
 
 /**
