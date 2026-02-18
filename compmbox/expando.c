@@ -42,10 +42,7 @@ static void compress_from(const struct ExpandoNode *node, void *data,
 {
   const struct Mailbox *m = data;
 
-  struct Buffer *quoted = buf_pool_get();
-  buf_quote_filename(quoted, m->realpath, false);
-  buf_copy(buf, quoted);
-  buf_pool_release(&quoted);
+  buf_quote_filename(buf, m->realpath, false);
 }
 
 /**
@@ -56,10 +53,7 @@ static void compress_to(const struct ExpandoNode *node, void *data,
 {
   const struct Mailbox *m = data;
 
-  struct Buffer *quoted = buf_pool_get();
-  buf_quote_filename(quoted, mailbox_path(m), false);
-  buf_copy(buf, quoted);
-  buf_pool_release(&quoted);
+  buf_quote_filename(buf, mailbox_path(m), false);
 }
 
 /**
