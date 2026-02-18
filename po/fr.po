@@ -5621,7 +5621,7 @@ msgstr "Désabonné de %s"
 
 #: imap/imap.c:187
 msgid "Subscribe to an IMAP mailbox"
-msgstr ""
+msgstr "Abonner à une boîte aux lettres IMAP"
 
 #: imap/imap.c:188
 #, fuzzy
@@ -5630,7 +5630,7 @@ msgstr "subscribe-to <imap-folder-uri>"
 
 #: imap/imap.c:191
 msgid "Unsubscribe from an IMAP mailbox"
-msgstr ""
+msgstr "Désabanner d'une boîte aux lettres IMAP"
 
 #: imap/imap.c:192
 #, fuzzy
@@ -5638,6 +5638,7 @@ msgid "unsubscribe-from <imap-folder-uri>"
 msgstr "unsubscribe-from <imap-folder-uri>"
 
 #: imap/imap.c:215
+#, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Ce serveur IMAP est trop ancien. NeoMutt ne marche pas avec."
 
@@ -6372,12 +6373,11 @@ msgstr "lua <lua-command>"
 
 #: lua/commands.c:156
 msgid "Execute a Lua script file"
-msgstr ""
+msgstr "Exécuter un fichier Lua"
 
 #: lua/commands.c:157
-#, fuzzy
 msgid "lua-source <filename>"
-msgstr "lua-source <filename>"
+msgstr "lua-source <fichier>"
 
 #: lua/lua.c:452
 msgid "Error: Couldn't load the lua interpreter"
@@ -9473,19 +9473,16 @@ msgstr "        -- <address> [...]           Add To: addresses"
 
 #. L10N: TUI Help -- `neomutt --help tui`
 #: usage.c:106 usage.c:297
-#, fuzzy
 msgid "Start NeoMutt's TUI (Terminal User Interface)"
-msgstr "Start NeoMutt's TUI (Terminal User Interface)"
+msgstr "Démarrer le TUI de NeoMutt (Environnement en mode texte)"
 
 #: usage.c:107
-#, fuzzy
 msgid "neomutt                              Start NeoMutt's TUI"
-msgstr "neomutt                              Start NeoMutt's TUI"
+msgstr "neomutt                              Démarrer de TUI de NeoMutt"
 
 #: usage.c:108
-#, fuzzy
 msgid "        -f, --folder <mailbox>       Open this mailbox"
-msgstr "        -f, --folder <mailbox>       Ouvrir cette boîte aux lettres"
+msgstr "        -f, --folder <bôite aux lettres>  Ouvrir la boîte aux lettres spécifiée"
 
 #: usage.c:109
 #, fuzzy
@@ -9495,30 +9492,25 @@ msgstr "        -G, --nntp-browser           Ouvrir le navigateur des serveurs N
 #: usage.c:110
 #, fuzzy
 msgid "        -g, --nntp-server <server>   Use this NNTP server"
-msgstr "        -g, --nntp-server <server>   Utiliser ce serveur NNTP"
+msgstr "        -g, --nntp-server <server>   Utiliser le serveur NNTP spécifié"
 
 #: usage.c:111
-#, fuzzy
 msgid "        -p, --postponed              Resume postponed email"
 msgstr "        -p, --postponed              Reprendre un message adjourné"
 
 #: usage.c:112
-#, fuzzy
 msgid "        -R, --read-only              Open mailbox read-only"
-msgstr "        -R, --read-only              Ouvrir la boîtes aux lettres en lecture seule"
+msgstr "        -R, --read-only              Ouvrir la boîte aux lettres en lecture seule"
 
 #: usage.c:113
-#, fuzzy
 msgid "        -y, --browser                Open mailbox browser"
 msgstr "        -y, --browser                Ouvrir le navigateur des boîtes aux lettres"
 
 #: usage.c:114
-#, fuzzy
 msgid "        -Z, --check-new-mail         Check for new mail"
 msgstr "        -Z, --check-new-mail         Vérifier s'il y a de nouveaux messages"
 
 #: usage.c:115
-#, fuzzy
 msgid "        -z, --check-any-mail         Check for any mail"
 msgstr "        -z, --check-any-mail         Vérifier s'il y a de messages"
 
@@ -9528,35 +9520,31 @@ msgid "For detailed help, run:"
 msgstr "For detailed help, run:"
 
 #: usage.c:134
-#, fuzzy
 msgid "By default NeoMutt loads one system and one user config file,"
-msgstr "By default NeoMutt loads one system and one user config file,"
+msgstr ""
+"Par défaut, NeoMutt prend en charge un fichier de configuration du système,\n,"
+"et un fichier de configuration utilisateur."
 
 #: usage.c:135
-#, fuzzy
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
-msgstr "p. ex. /etc/neomuttrc et ~/.neomuttrc"
+msgstr "par exemple /etc/neomuttrc et ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:138
-#, fuzzy
 msgid "  -n, --no-system-config      Don't read system config file"
-msgstr "  -n, --no-system-config      Don't read system config file"
+msgstr "  -n, --no-system-config      Ne pas utiliser le fichier de configuration du système"
 
 #: usage.c:139
-#, fuzzy
 msgid "  -F, --config <file>         Use this user config file"
-msgstr "  -F, --config <file>         Utiliser ce fichier de configuration"
+msgstr "  -F, --config <fichier>      Utiliser le fichier de configuration spécifié"
 
 #: usage.c:140 usage.c:147
-#, fuzzy
 msgid "                              May be used multiple times"
-msgstr "                              May be used multiple times"
+msgstr "                              Peut être utilisé à plusieurs réprises"
 
 #: usage.c:143
-#, fuzzy
 msgid "These options override the config:"
-msgstr "These options override the config:"
+msgstr "Ces options écrasent celles qui se trouvent dans le fichier configuration :"
 
 #: usage.c:144
 #, fuzzy
@@ -9574,29 +9562,24 @@ msgid "  -e, --command <command>     Run extra commands"
 msgstr "  -e, --command <command>     Run extra commands"
 
 #: usage.c:150
-#, fuzzy
 msgid "These logging options override the config:"
-msgstr "These logging options override the config:"
+msgstr "Ces options de journalisation écrasent celles qui se trouvent dans le fichier configuration :"
 
 #: usage.c:151
-#, fuzzy
 msgid "  -d, --debug-level <level>   Set logging level"
-msgstr "  -d, --debug-level <level>   Set logging level"
+msgstr "  -d, --debug-level <niveau>  Configurer le niveau de journalisation"
 
 #: usage.c:152
-#, fuzzy
 msgid "                              0 (off), 1 (low) .. 5 (high)"
-msgstr "                              0 (off), 1 (low) .. 5 (high)"
+msgstr "                              0 (aucun), 1 (bas) .. 5 (élevé)"
 
 #: usage.c:153
-#, fuzzy
 msgid "  -l, --debug-file <file>     Set logging file"
-msgstr "  -l, --debug-file <file>     Set logging file"
+msgstr "  -l, --debug-file <fichier>  Configurer le fichier journal"
 
 #: usage.c:154
-#, fuzzy
 msgid "                              Default file '~/.neomuttdebug0'"
-msgstr "                Default file '~/.neomuttdebug0'"
+msgstr "                Fichier par défaut '~/.neomuttdebug0'"
 
 #: usage.c:158 usage.c:160 usage.c:198 usage.c:200 usage.c:235 usage.c:237
 #: usage.c:279 usage.c:281 usage.c:321 usage.c:323
@@ -9606,17 +9589,14 @@ msgstr "Exemples :"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:163
-#, fuzzy
 msgid "  neomutt --no-system-config"
 msgstr "  neomutt --no-system-config"
 
 #: usage.c:164
-#, fuzzy
 msgid "  neomutt --config work.rc"
 msgstr "  neomutt --config travail.rc"
 
 #: usage.c:165
-#, fuzzy
 msgid "  neomutt --config work.rc --config colours.rc"
 msgstr "  neomutt --config travail.rc --config couleurs.rc"
 
@@ -9631,7 +9611,6 @@ msgid "  neomutt --command 'set ask_cc = yes'"
 msgstr "  neomutt --command 'set ask_cc = yes'"
 
 #: usage.c:172
-#, fuzzy
 msgid "  neomutt --debug-level 2"
 msgstr "  neomutt --debug-level 2"
 
@@ -9646,7 +9625,6 @@ msgid "See also:"
 msgstr "À voir aussi :"
 
 #: usage.c:177
-#, fuzzy
 msgid "- Config files: https://neomutt.org/guide/configuration"
 msgstr "- Fichiers de configuration : https://neomutt.org/guide/configuration"
 
@@ -9678,7 +9656,6 @@ msgid "  neomutt --help info"
 msgstr "  neomutt --help info"
 
 #: usage.c:204
-#, fuzzy
 msgid "  neomutt --license"
 msgstr "  neomutt --license"
 
@@ -9893,14 +9870,12 @@ msgstr "  -z, --check-any-mail  Vérifier s'il y a de messages"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:312
-#, fuzzy
 msgid "These options change the starting behavior:"
 msgstr "Ces options changent le comportement au démarrage :"
 
 #: usage.c:313
-#, fuzzy
 msgid "  -f, --folder <mailbox>      Open this mailbox"
-msgstr "  -f, --folder <boîtes aux lettres>  Ouvrir cette boîte aux lettres"
+msgstr "  -f, --folder <boîtes aux lettres>  Ouvrir la boîte aux lettres spécifiée"
 
 #: usage.c:314
 #, fuzzy
@@ -9992,7 +9967,7 @@ msgstr "Copyright (C) 2015-2026 Richard Russon et autres"
 
 #: version.c:111
 msgid "NeoMutt is free software, provided without warranty: `neomutt -vv` for details"
-msgstr ""
+msgstr "Neomutt est un logiciel libre, fourni sans garantie : `neomutt -vv` pour plus de détail"
 
 #: version.c:671
 msgid "Compile options:"
