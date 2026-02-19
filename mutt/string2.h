@@ -47,11 +47,9 @@ void string_array_clear(struct StringArray *arr);
 #define S_ERR 127
 #define S_BKG 126
 
-/* this macro must check for (*ch == 0) since isspace(0) has unreliable behavior
- * on some systems */
-#define SKIPWS(ch)                                                             \
-  while (*(ch) && mutt_isspace(*(ch)))                              \
-    ch++;
+// skip_ws() function declaration is below
+// SKIPWS is a backward-compatible wrapper macro
+#define SKIPWS(ch) skip_ws((char **) &(ch))
 
 #define terminate_string(str, strlen, buflen)                                  \
   (str)[MIN((strlen), (buflen))] = '\0'
@@ -75,6 +73,7 @@ char *      mutt_str_replace(char **p, const char *s);
 char *      mutt_str_sep(char **stringp, const char *delim);
 char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(const char *p);
+void        skip_ws(char **ptr);
 const char *mutt_str_sysexit(int e);
 char *      mutt_str_upper(char *str);
 

@@ -544,6 +544,22 @@ const char *mutt_istr_find(const char *haystack, const char *needle)
 }
 
 /**
+ * skip_ws - Skip whitespace in a string
+ * @param[in,out] ptr Pointer to the string pointer (updated)
+ *
+ * This function advances the pointer past any whitespace characters.
+ * The pointer is modified in place.
+ */
+void skip_ws(char **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  while (**ptr && mutt_isspace(**ptr))
+    (*ptr)++;
+}
+
+/**
  * mutt_str_skip_whitespace - Find the first non-whitespace character in a string
  * @param p String to search
  * @retval ptr
@@ -554,8 +570,9 @@ char *mutt_str_skip_whitespace(const char *p)
 {
   if (!p)
     return NULL;
-  SKIPWS(p);
-  return (char *) p;
+  char *q = (char *) p;
+  skip_ws(&q);
+  return q;
 }
 
 /**
