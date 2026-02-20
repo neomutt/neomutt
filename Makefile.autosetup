@@ -1099,6 +1099,7 @@ coverage: all test
 @if ENABLE_FUZZ_TESTS
 @include @srcdir@/fuzz/Makefile.autosetup
 @endif
+@include @srcdir@/harness/Makefile.autosetup
 
 @if COMPILE_COMMANDS
 compile_commands.json: $(ALLOBJS)
