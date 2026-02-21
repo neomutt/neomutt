@@ -46,6 +46,7 @@ struct SbEntry
   struct Mailbox *mailbox;        ///< Mailbox this represents
   bool is_hidden;                 ///< Don't show, e.g. $sidebar_new_mail_only
   const struct AttrColor *color;  ///< Colour to use
+  int score;                      ///< Fuzzy-match score
 };
 ARRAY_HEAD(SbEntryArray, struct SbEntry *);
 
@@ -63,6 +64,7 @@ enum ExpandoDataSidebar
   ED_SID_LIMITED_COUNT,        ///< Mailbox.vcount
   ED_SID_MESSAGE_COUNT,        ///< Mailbox.msg_count
   ED_SID_NAME,                 ///< SbEntry.box
+  ED_SID_FUZZY_SCORE,          ///< SbEntry.score
   ED_SID_NEW_MAIL,             ///< Mailbox.has_new
   ED_SID_NOTIFY,               ///< Mailbox.notify_user
   ED_SID_OLD_COUNT,            ///< Mailbox.msg_unread, Mailbox.msg_new
@@ -95,6 +97,7 @@ struct SidebarWindowData
   int opn_index;             ///< Current (open) mailbox
   int hil_index;             ///< Highlighted mailbox
   int bot_index;             ///< Last mailbox visible in sidebar
+  bool repage;               ///< Force RECALC to recompute the paging used for the overlays
 
   short previous_sort;       ///< Old `$sidebar_sort`
   enum DivType divider_type; ///< Type of divider to use, e.g. #SB_DIV_ASCII
@@ -128,6 +131,7 @@ struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
 struct SidebarWindowData *sb_wdata_new(struct MuttWindow *win, struct IndexSharedData *shared);
 
 // window.c
+void sb_entry_set_display_name(struct SbEntry *entry);
 int sb_recalc(struct MuttWindow *win);
 int sb_repaint(struct MuttWindow *win);
 

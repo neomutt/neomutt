@@ -299,6 +299,46 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
 }
 
 /**
+ * sb_entry_set_display_name - Set the display name for an SbEntry
+ * @param entry SbEntry to update
+ */
+void sb_entry_set_display_name(struct SbEntry *entry)
+{
+  const char *path = mailbox_path(entry->mailbox);
+
+  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  const char *abbr = abbrev_folder(path, c_folder, entry->mailbox->type);
+  if (!abbr)
+    abbr = abbrev_url(path, entry->mailbox->type);
+  const char *short_path = abbr ? abbr : path;
+
+  const char *last_part = abbr;
+  const char *const c_sidebar_delim_chars = cs_subset_string(NeoMutt->sub, "sidebar_delim_chars");
+  entry->depth = calc_path_depth(abbr, c_sidebar_delim_chars, &last_part);
+
+  const bool short_path_is_abbr = (short_path == abbr);
+  const bool c_sidebar_short_path = cs_subset_bool(NeoMutt->sub, "sidebar_short_path");
+  if (c_sidebar_short_path)
+  {
+    short_path = last_part;
+  }
+
+  const bool c_sidebar_folder_indent = cs_subset_bool(NeoMutt->sub, "sidebar_folder_indent");
+  if (c_sidebar_folder_indent && short_path_is_abbr)
+  {
+    const short c_sidebar_component_depth = cs_subset_number(NeoMutt->sub, "sidebar_component_depth");
+    if (c_sidebar_component_depth > 0)
+      entry->depth -= c_sidebar_component_depth;
+  }
+  else if (!c_sidebar_folder_indent)
+  {
+    entry->depth = 0;
+  }
+
+  mutt_str_copy(entry->box, short_path, sizeof(entry->box));
+}
+
+/**
  * make_sidebar_entry - Turn mailbox data into a sidebar string
  * @param[out] buf     Buffer in which to save string
  * @param[in]  buflen  Buffer length
@@ -466,7 +506,7 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
 
   /* If `$sidebar_new_mail_only` or `$sidebar_non_empty_mailbox_only` is set,
    * some entries may be hidden so we need to scan for the framing interval */
-  if (c_sidebar_new_mail_only || c_sidebar_non_empty_mailbox_only)
+  if (c_sidebar_new_mail_only || c_sidebar_non_empty_mailbox_only || wdata->repage)
   {
     wdata->top_index = -1;
     wdata->bot_index = -1;
@@ -563,42 +603,7 @@ int sb_recalc(struct MuttWindow *win)
       m->msg_flagged = m_cur->msg_flagged;
     }
 
-    const char *path = mailbox_path(m);
-
-    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
-    // Try to abbreviate the full path
-    const char *abbr = abbrev_folder(path, c_folder, m->type);
-    if (!abbr)
-      abbr = abbrev_url(path, m->type);
-    const char *short_path = abbr ? abbr : path;
-
-    /* Compute the depth */
-    const char *last_part = abbr;
-    const char *const c_sidebar_delim_chars = cs_subset_string(NeoMutt->sub, "sidebar_delim_chars");
-    entry->depth = calc_path_depth(abbr, c_sidebar_delim_chars, &last_part);
-
-    const bool short_path_is_abbr = (short_path == abbr);
-    const bool c_sidebar_short_path = cs_subset_bool(NeoMutt->sub, "sidebar_short_path");
-    if (c_sidebar_short_path)
-    {
-      short_path = last_part;
-    }
-
-    // Don't indent if we were unable to create an abbreviation.
-    // Otherwise, the full path will be indent, and it looks unusual.
-    const bool c_sidebar_folder_indent = cs_subset_bool(NeoMutt->sub, "sidebar_folder_indent");
-    if (c_sidebar_folder_indent && short_path_is_abbr)
-    {
-      const short c_sidebar_component_depth = cs_subset_number(NeoMutt->sub, "sidebar_component_depth");
-      if (c_sidebar_component_depth > 0)
-        entry->depth -= c_sidebar_component_depth;
-    }
-    else if (!c_sidebar_folder_indent)
-    {
-      entry->depth = 0;
-    }
-
-    mutt_str_copy(entry->box, short_path, sizeof(entry->box));
+    sb_entry_set_display_name(entry);
     make_sidebar_entry(entry->display, sizeof(entry->display), width, entry, shared);
     row++;
   }
