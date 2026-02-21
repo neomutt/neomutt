@@ -8780,6 +8780,13 @@ subscribe "only\\.dot@example\\.org"
                   alias address (<emphasis>To</emphasis> part of alias)
                 </entry>
               </row>
+              <row>
+                <entry>~Y <emphasis>REGEX</emphasis></entry>
+                <entry></entry>
+                <entry>
+                  aliases whose tags match <emphasis>REGEX</emphasis>
+                </entry>
+              </row>
             </tbody>
           </tgroup>
         </table>
