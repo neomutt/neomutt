@@ -42,6 +42,11 @@
 
 static void dump_node(const struct ExpandoNode *node, struct Buffer *buf);
 
+/**
+ * dump_did_uid - Serialise the Domain ID and UID of an Expando Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_did_uid(const struct ExpandoNode *node, struct Buffer *buf)
 {
   const char *did = name_expando_domain(node->did);
@@ -49,6 +54,11 @@ static void dump_did_uid(const struct ExpandoNode *node, struct Buffer *buf)
   buf_add_printf(buf, "(%s,%s)", did, uid);
 }
 
+/**
+ * dump_node_condition - Serialise a Condition Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_node_condition(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<COND");
@@ -83,6 +93,11 @@ static void dump_node_condition(const struct ExpandoNode *node, struct Buffer *b
   buf_addstr(buf, ">");
 }
 
+/**
+ * dump_node_condbool - Serialise a Conditional Bool Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_node_condbool(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<BOOL");
@@ -94,6 +109,11 @@ static void dump_node_condbool(const struct ExpandoNode *node, struct Buffer *bu
   buf_addstr(buf, ">");
 }
 
+/**
+ * dump_node_conddate - Serialise a Conditional Date Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_node_conddate(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<DATE:");
@@ -112,6 +132,11 @@ static void dump_node_conddate(const struct ExpandoNode *node, struct Buffer *bu
   buf_addstr(buf, ">");
 }
 
+/**
+ * dump_node_container - Serialise a Container Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_node_container(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<CONT:");
@@ -128,6 +153,11 @@ static void dump_node_container(const struct ExpandoNode *node, struct Buffer *b
   buf_addstr(buf, ">");
 }
 
+/**
+ * dump_node_empty - Serialise an Empty Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_node_empty(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<EMPTY");
@@ -147,6 +177,11 @@ static void dump_node_empty(const struct ExpandoNode *node, struct Buffer *buf)
   buf_addstr(buf, ">");
 }
 
+/**
+ * dump_node_expando - Serialise an Expando Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_node_expando(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<EXP:");
@@ -175,6 +210,11 @@ static void dump_node_expando(const struct ExpandoNode *node, struct Buffer *buf
   buf_addstr(buf, ">");
 }
 
+/**
+ * dump_node_padding - Serialise a Padding Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_node_padding(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<PAD:");
@@ -201,6 +241,11 @@ static void dump_node_padding(const struct ExpandoNode *node, struct Buffer *buf
   buf_addstr(buf, ">");
 }
 
+/**
+ * dump_node_text - Serialise a Text Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_node_text(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<TEXT:");
@@ -217,6 +262,11 @@ static void dump_node_text(const struct ExpandoNode *node, struct Buffer *buf)
   buf_addstr(buf, ">");
 }
 
+/**
+ * dump_node - Serialise an Expando Node
+ * @param node Expando Node
+ * @param buf  Buffer for the result
+ */
 static void dump_node(const struct ExpandoNode *node, struct Buffer *buf)
 {
   if (!node || !buf)
@@ -253,6 +303,11 @@ static void dump_node(const struct ExpandoNode *node, struct Buffer *buf)
   }
 }
 
+/**
+ * expando_serialise - Serialise an Expando into a string
+ * @param exp Expando
+ * @param buf Buffer for the result
+ */
 void expando_serialise(const struct Expando *exp, struct Buffer *buf)
 {
   if (!exp || !buf)

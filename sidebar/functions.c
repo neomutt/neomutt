@@ -65,7 +65,7 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
 // clang-format on
 
 /**
- * sb_init_keys - Initialise the Sidebar Keybindings - Implements ::init_keys_api
+ * sidebar_init_keys - Initialise the Sidebar Keybindings - Implements ::init_keys_api
  */
 void sidebar_init_keys(struct SubMenu *sm_generic)
 {
@@ -79,6 +79,10 @@ void sidebar_init_keys(struct SubMenu *sm_generic)
   SmSidebar = sm;
 }
 
+/**
+ * sidebar_get_submenu - Get the Sidebar SubMenu
+ * @retval ptr Sidebar SubMenu
+ */
 struct SubMenu *sidebar_get_submenu(void)
 {
   return SmSidebar;

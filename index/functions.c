@@ -264,7 +264,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_MAIN_NEXT_UNDELETED,                "<down>" },
   { OP_MAIN_NEXT_UNDELETED,                "j" },
   { OP_MAIN_PARENT_MESSAGE,                "P" },
-  { OP_MAIN_PREV_NEW_THEN_UNREAD,          "\033\t" },         // <Alt-\>
+  { OP_MAIN_PREV_NEW_THEN_UNREAD,          "\033\t" },         // <Alt-Tab>
   { OP_MAIN_PREV_SUBTHREAD,                "\033p" },          // <Alt-p>
   { OP_MAIN_PREV_THREAD,                   "\020" },           // <Ctrl-P>
   { OP_MAIN_PREV_UNDELETED,                "<up>" },
