@@ -7588,9 +7588,9 @@ mailboxes $my_mx +mailbox3
       </note>
       <para>
         If the filename ends with a vertical bar (<quote>|</quote>), then
-        <emphasis>filename</emphasis> is considered to be an executable program
-        from which to read input (e.g.
-        <literal><command>source</command> ~/bin/myscript|</literal>).
+        <emphasis>filename</emphasis> is considered to be a command line which
+        will be executed using <literal><command>/bin/sh -c</command></literal>
+        (e.g.  <literal><command>source</command> ~/bin/myscript arg1 arg2|</literal>).
       </para>
     </sect1>
 

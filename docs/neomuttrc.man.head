@@ -862,8 +862,8 @@ If the \fIfilename\fP begins with a tilde (\(lq~\(rq), it will be expanded to
 the path of your home directory.
 .IP
 If the \fIfilename\fP ends with a vertical bar (\(lq|\(rq), then \fIfilename\fP
-is considered to be an executable program from which to read input, (e.g.\&
-\(lq\fBsource\fP\~\fI~/\:bin/\:myscript\fP|\(rq).
+is considered to be a command line which will be executed using \(lq/bin/sh
+-c\(rq (e.g.\& \(lq\fBsource\fP\~\fI~/\:bin/\:myscript arg1 arg2\fP|\(rq).
 .IP
 If the filename is relative and the command \fBsource\fP is executed from the
 context of a configuration file, then the filename is interpreted relative to
