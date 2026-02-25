@@ -213,7 +213,8 @@ Couldn't look up the value of the neomutt variable "$var".
 You must set this in your neomutt config file. See contrib/smime.rc for an example.
 EOF
 
-  $answer =~ /\"(.*?)\"/ and return bsd_glob($1, GLOB_TILDE | GLOB_NOCHECK);
+  $answer =~ /^\s*(?:set\s+)?\Q$var\E\s*=\s*"(.*?)"/
+    and return bsd_glob($1, GLOB_TILDE | GLOB_NOCHECK);
 
   $answer =~ /^NeoMutt (.*?) / and die<<EOF;
 This script requires neomutt 1.5.0 or later. You are using neomutt $1.
