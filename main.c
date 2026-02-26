@@ -726,6 +726,8 @@ static void init_keys(void)
   pager_init_keys(sm_generic);
   pgp_init_keys(sm_generic);
   postponed_init_keys(sm_generic);
+
+  km_sort();
 }
 
 /**

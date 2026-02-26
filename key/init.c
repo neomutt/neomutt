@@ -176,6 +176,25 @@ void km_init(void)
 }
 
 /**
+ * menu_defs_sort - Compare two MenuDefinitions by their names - Implements ::sort_t - @ingroup sort_api
+ */
+static int menu_defs_sort(const void *a, const void *b, void *sdata)
+{
+  const struct MenuDefinition *md_a = *(const struct MenuDefinition **) a;
+  const struct MenuDefinition *md_b = *(const struct MenuDefinition **) b;
+
+  return mutt_str_cmp(md_a->name, md_b->name);
+}
+
+/**
+ * km_sort - Sort all the menu keybindings
+ */
+void km_sort(void)
+{
+  ARRAY_SORT(&MenuDefs, menu_defs_sort, NULL);
+}
+
+/**
  * km_cleanup - Free the key maps
  */
 void km_cleanup(void)
