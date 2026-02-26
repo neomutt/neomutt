@@ -82,7 +82,7 @@ struct MenuDefinition
   const char           *name;       ///< Menu name, e.g. "alias"
   struct SubMenuPArray  submenus;   ///< Parts making up the Menu
 };
-ARRAY_HEAD(MenuDefinitionArray, struct MenuDefinition);
+ARRAY_HEAD(MenuDefinitionArray, struct MenuDefinition *);
 
 /**
  * @defgroup init_keys_api Initialise Key Bindings

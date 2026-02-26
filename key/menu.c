@@ -183,9 +183,10 @@ struct Keymap *km_find_func(const struct MenuDefinition *md, int func)
  */
 int km_get_op(const char *func)
 {
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
     struct SubMenu **smp = NULL;
 
     ARRAY_FOREACH(smp, &md->submenus)
@@ -211,9 +212,11 @@ int km_get_op(const char *func)
  */
 int km_get_op_menu(int mtype, const char *func)
 {
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     if (md->id != mtype)
       continue;
 
@@ -241,9 +244,11 @@ int km_get_op_menu(int mtype, const char *func)
  */
 struct MenuDefinition *menu_find(int menu)
 {
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     if (md->id == menu)
       return md;
   }
@@ -261,9 +266,11 @@ struct MenuDefinition *menu_find_by_name(const char *name)
   if (!name)
     return NULL;
 
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     if (mutt_str_equal(md->name, name))
       return md;
   }
