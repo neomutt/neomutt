@@ -215,6 +215,9 @@ static int op_editor_complete(struct EnterWindowData *wdata, const struct KeyEve
  */
 static int op_editor_history_down(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
+  if (wdata->hclass == HC_NONE)
+    return FR_SUCCESS;
+
   wdata->state->curpos = wdata->state->lastchar;
   if (mutt_hist_at_scratch(wdata->hclass))
   {
@@ -231,6 +234,9 @@ static int op_editor_history_down(struct EnterWindowData *wdata, const struct Ke
  */
 static int op_editor_history_search(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
+  if (wdata->hclass == HC_NONE)
+    return FR_SUCCESS;
+
   wdata->state->curpos = wdata->state->lastchar;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
   mutt_hist_complete(wdata->buffer, wdata->hclass);
@@ -243,6 +249,9 @@ static int op_editor_history_search(struct EnterWindowData *wdata, const struct 
  */
 static int op_editor_history_up(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
+  if (wdata->hclass == HC_NONE)
+    return FR_SUCCESS;
+
   wdata->state->curpos = wdata->state->lastchar;
   if (mutt_hist_at_scratch(wdata->hclass))
   {
