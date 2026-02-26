@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
-#include "mutt/lib.h"
 #include "config/lib.h"
 #include "expando/lib.h"
 

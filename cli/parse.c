@@ -29,7 +29,6 @@
 #include "config.h"
 #include <getopt.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <string.h>
 #include <sys/param.h> // IWYU pragma: keep
 #include <unistd.h>

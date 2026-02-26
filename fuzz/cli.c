@@ -25,7 +25,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
-#include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "cli/lib.h"

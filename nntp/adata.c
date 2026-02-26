@@ -32,8 +32,6 @@
 #include "conn/lib.h"
 #include "adata.h"
 
-struct Connection;
-
 /**
  * nntp_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  *
