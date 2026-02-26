@@ -23,12 +23,11 @@
 #ifndef MUTT_KEY_COMMANDS_H
 #define MUTT_KEY_COMMANDS_H
 
-#include <stdbool.h>
 #include "core/lib.h"
-#include "menu/lib.h"
-#include "menu.h"
 
 struct Buffer;
+struct MenuDefinition;
+struct MenuDefinitionArray;
 struct ParseContext;
 struct ParseError;
 

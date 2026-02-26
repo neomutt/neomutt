@@ -106,13 +106,13 @@ struct SubMenu *km_register_submenu(const struct MenuFuncOp functions[])
  */
 struct MenuDefinition *km_register_menu(int menu, const char *name)
 {
-  struct MenuDefinition md = { 0 };
-  md.id = menu;
-  md.name = mutt_str_dup(name);
-  ARRAY_INIT(&md.submenus);
+  struct MenuDefinition *md = MUTT_MEM_CALLOC(1, struct MenuDefinition);
+  md->id = menu;
+  md->name = mutt_str_dup(name);
+  ARRAY_INIT(&md->submenus);
 
   ARRAY_ADD(&MenuDefs, md);
-  return ARRAY_LAST(&MenuDefs);
+  return *ARRAY_LAST(&MenuDefs);
 }
 
 /**
@@ -183,11 +183,14 @@ void km_cleanup(void)
   if (NeoMutt && NeoMutt->sub)
     notify_observer_remove(NeoMutt->sub->notify, km_config_observer, NULL);
 
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     FREE(&md->name);
     ARRAY_FREE(&md->submenus);
+    FREE(&md);
   }
   ARRAY_FREE(&MenuDefs);
 
