@@ -15,6 +15,15 @@ test/neomutt-test
 fuzz/address-fuzz
 fuzz/cli-fuzz
 fuzz/date-fuzz
+harness/compmbox-harness
+harness/imap-harness
+harness/maildir-harness
+harness/mbox-harness
+harness/mh-harness
+harness/mmdf-harness
+harness/nntp-harness
+harness/notmuch-harness
+harness/pop-harness
 
 # Build products
 *.o
