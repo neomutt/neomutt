@@ -845,7 +845,10 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
     return MX_STATUS_ERROR;
 
   if (rc > 0)
+  {
+    m->has_new = true;
     return MX_STATUS_NEW_MAIL;
+  }
 
   return MX_STATUS_OK;
 }

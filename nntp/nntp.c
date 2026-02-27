@@ -1674,7 +1674,10 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
       mdata->last_loaded = mdata->last_message;
     }
     if ((rc == MX_STATUS_OK) && (m->msg_count > oldmsgcount))
+    {
+      m->has_new = true;
       rc = MX_STATUS_NEW_MAIL;
+    }
   }
 
 #ifdef USE_HCACHE
