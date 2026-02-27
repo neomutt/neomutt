@@ -49,20 +49,33 @@
 # define countof(x)  (sizeof(x) / sizeof((x)[0]))
 #endif
 
-#define MUTT_MEM_CALLOC(n, type)  ((type *) mutt_mem_calloc(n, sizeof(type)))
-#define MUTT_MEM_MALLOC(n, type)  ((type *) mutt_mem_mallocarray(n, sizeof(type)))
+#if !defined(typeas)
+# define typeas(T)  typeof((T){0})
+#endif
 
-#define MUTT_MEM_REALLOC(pptr, n, type)                                       \
-(                                                                             \
-  _Generic(*(pptr), type *: mutt_mem_reallocarray(pptr, n, sizeof(type)))     \
+#define MUTT_MEM_CALLOC(n, T)  ((typeas(T) *) mutt_mem_calloc(n, sizeof(T)))
+#define MUTT_MEM_MALLOC(n, T)  ((typeas(T) *) mutt_mem_mallocarray(n, sizeof(T)))
+
+#define MUTT_MEM_REALLOC(pptr, n, T)                                  \
+(                                                                     \
+  _Generic(*(pptr), typeas(T) *: (void)0),                            \
+  mutt_mem_reallocarray(pptr, n, sizeof(T))                           \
 )
+
+#define MUTT_MEM_RECALLOC(pptr, n, T)                                 \
+({                                                                    \
+  _Generic(p, typeas(T) *: (void)0);                                  \
+  (typeas(T) *){mutt_mem_recallocarray(p, n, sizeof(T))};               \
+})
 
 void *mutt_mem_calloc(size_t nmemb, size_t size);
 void  mutt_mem_free(void *ptr);
 void *mutt_mem_malloc(size_t size);
 void *mutt_mem_mallocarray(size_t nmemb, size_t size);
-void  mutt_mem_realloc(void *pptr, size_t size);
+void *mutt_mem_realloc(void *ptr, size_t size);
 void  mutt_mem_reallocarray(void *pptr, size_t nmemb, size_t size);
+void *mutt_mem_recallocarray(void *p, size_t old_n, size_t n, size_t size);
+void *mutt_mem_recalloc(void *p, size_t old_size, size_t size);
 
 /// Free memory and set the pointer to NULL
 #define FREE(x) mutt_mem_free(x)

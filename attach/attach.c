@@ -71,12 +71,11 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
 
   if (actx->idxlen == actx->idxmax)
   {
-    actx->idxmax += grow;
-    MUTT_MEM_REALLOC(&actx->idx, actx->idxmax, struct AttachPtr *);
-    MUTT_MEM_REALLOC(&actx->v2r, actx->idxmax, short);
-
-    memset(&actx->idx[actx->idxlen], 0, grow * sizeof(struct AttachPtr *));
-    memset(&actx->v2r[actx->idxlen], 0, grow * sizeof(short));
+    int n;
+    n = actx->idxmax + grow;
+    actx->idx = MUTT_MEM_RECALLOC(actx->idx, actx->idxmax, n, struct AttachPtr *);
+    actx->v2r = MUTT_MEM_RECALLOC(actx->v2r, actx->idxmax, n, short);
+    actx->idxmax = n;
   }
 
   actx->idx[actx->idxlen++] = attach;
@@ -98,11 +97,11 @@ void mutt_actx_ins_attach(struct AttachCtx *actx, struct AttachPtr *attach, int 
 
   if (actx->idxlen == actx->idxmax)
   {
-    actx->idxmax += 5;
-    MUTT_MEM_REALLOC(&actx->idx, actx->idxmax, struct AttachPtr *);
-    MUTT_MEM_REALLOC(&actx->v2r, actx->idxmax, short);
-    for (int i = actx->idxlen; i < actx->idxmax; i++)
-      actx->idx[i] = NULL;
+    int n;
+    n = actx->idxmax + 5;
+    actx->idx = MUTT_MEM_RECALLOC(actx->idx, actx->idxmax, n, struct AttachPtr *);
+    actx->v2r = MUTT_MEM_RECALLOC(actx->v2r, actx->idxmax, n, short);
+    actx->idxmax = n;
   }
 
   actx->idxlen++;
@@ -125,10 +124,10 @@ void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
 
   if (actx->fp_len == actx->fp_max)
   {
-    actx->fp_max += 5;
-    MUTT_MEM_REALLOC(&actx->fp_idx, actx->fp_max, FILE *);
-    for (int i = actx->fp_len; i < actx->fp_max; i++)
-      actx->fp_idx[i] = NULL;
+    int n;
+    n = actx->fp_max + 5;
+    actx->fp_idx = MUTT_MEM_RECALLOC(actx->fp_idx, actx->fp_max, n, FILE *);
+    actx->fp_max = n;
   }
 
   actx->fp_idx[actx->fp_len++] = fp_new;
@@ -146,10 +145,10 @@ void mutt_actx_add_body(struct AttachCtx *actx, struct Body *b)
 
   if (actx->body_len == actx->body_max)
   {
-    actx->body_max += 5;
-    MUTT_MEM_REALLOC(&actx->body_idx, actx->body_max, struct Body *);
-    for (int i = actx->body_len; i < actx->body_max; i++)
-      actx->body_idx[i] = NULL;
+    int n;
+    n = actx->body_max + 5;
+    actx->body_idx = MUTT_MEM_RECALLOC(actx->body_idx, actx->body_max, n, struct Body *);
+    actx->body_max = n;
   }
 
   actx->body_idx[actx->body_len++] = b;
