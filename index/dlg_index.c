@@ -434,6 +434,8 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
     for (int i = 0; i < m->msg_count; i++)
     {
       struct Email *e = m->emails[i];
+      if (!e)
+        continue;
 
       if ((e->limit_visited && e->visible) ||
           mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
