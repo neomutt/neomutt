@@ -154,7 +154,7 @@ sortcheck-docs: docs/.keepme docs/manual.xml
 all-docs: docs/.keepme docs/neomuttrc
 
 clean-docs:
-	$(RM) docs/neomuttrc docs/makedoc$(EXEEXT)
+	$(RM) docs/.keepme docs/neomuttrc docs/makedoc$(EXEEXT)
 
 install-docs: all-docs
 	$(INSTALL_DIR) $(DESTDIR)$(sysconfdir)
