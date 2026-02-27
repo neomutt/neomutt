@@ -433,11 +433,18 @@ struct KeyEvent km_dokey(enum MenuType mtype, GetChFlags flags)
   struct KeyEvent event = { 0, OP_NULL };
   int pos = 0;
   const struct MenuDefinition *md = NULL;
+  const struct MenuDefinition *md2 = NULL;
   keycode_t keys[MAX_SEQ] = { 0 };
 
   ARRAY_FOREACH(md, &MenuDefs)
   {
     if (md->id == mtype)
+      break;
+  }
+
+  ARRAY_FOREACH(md2, &MenuDefs)
+  {
+    if (md2->id == MENU_EDITOR)
       break;
   }
 
@@ -458,6 +465,7 @@ struct KeyEvent km_dokey(enum MenuType mtype, GetChFlags flags)
     keys[pos] = event.ch;
     struct KeymapMatchArray kma = ARRAY_HEAD_INITIALIZER;
     KeyGatherFlags kfg = gather_functions(md, keys, pos + 1, &kma);
+    kfg |= gather_functions(md2, keys, pos + 1, &kma);
 
     mutt_debug(LL_DEBUG1, "KEY: flags = %x\n", kfg);
 

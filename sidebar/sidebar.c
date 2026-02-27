@@ -115,6 +115,7 @@ void sb_add_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
   struct IndexSharedData *shared = wdata->shared;
   struct SbEntry *entry = MUTT_MEM_CALLOC(1, struct SbEntry);
   entry->mailbox = m;
+  entry->score = -1;
 
   if (wdata->top_index < 0)
     wdata->top_index = ARRAY_SIZE(&wdata->entries);

@@ -414,6 +414,10 @@ FILTER_OBJS	= test/filter/filter_create.o \
 
 FROM_OBJS	= test/from/is_from.o
 
+FUZZY_OBJS	= test/fuzzy/fuzzy_match.o \
+		  test/fuzzy/fuzzy_subseq.o \
+		  test/fuzzy/fuzzy_utf8.o
+
 GROUP_OBJS	= test/group/grouplist_add_addrlist.o \
 		  test/group/grouplist_add_group.o \
 		  test/group/grouplist_add_regex.o \
@@ -738,18 +742,19 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/core $(PWD)/test/date $(PWD)/test/editor \
 		  $(PWD)/test/email $(PWD)/test/envelope $(PWD)/test/envlist \
 		  $(PWD)/test/eqi $(PWD)/test/expando $(PWD)/test/file \
-		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/group \
-		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
-		  $(PWD)/test/idna $(PWD)/test/imap $(PWD)/test/list \
-		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
-		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
-		  $(PWD)/test/neo $(PWD)/test/notify $(PWD)/test/notmuch \
-		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
-		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
-		  $(PWD)/test/random $(PWD)/test/regex $(PWD)/test/rfc2047 \
-		  $(PWD)/test/rfc2231 $(PWD)/test/signal $(PWD)/test/slist \
-		  $(PWD)/test/sort $(PWD)/test/store $(PWD)/test/string \
-		  $(PWD)/test/tags $(PWD)/test/thread $(PWD)/test/url
+		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/fuzzy \
+		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
+		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/imap \
+		  $(PWD)/test/list $(PWD)/test/logging $(PWD)/test/mailbox \
+		  $(PWD)/test/mapping $(PWD)/test/mbyte $(PWD)/test/md5 \
+		  $(PWD)/test/memory $(PWD)/test/neo $(PWD)/test/notify \
+		  $(PWD)/test/notmuch $(PWD)/test/parameter $(PWD)/test/parse \
+		  $(PWD)/test/path $(PWD)/test/pattern $(PWD)/test/pool \
+		  $(PWD)/test/prex $(PWD)/test/random $(PWD)/test/regex \
+		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/signal \
+		  $(PWD)/test/slist $(PWD)/test/sort $(PWD)/test/store \
+		  $(PWD)/test/string $(PWD)/test/tags $(PWD)/test/thread \
+		  $(PWD)/test/url
 
 TEST_OBJS	= test/common.o test/main.o test/module.o \
 		  $(ACCOUNT_OBJS) \
@@ -778,6 +783,7 @@ TEST_OBJS	= test/common.o test/main.o test/module.o \
 		  $(FILE_OBJS) \
 		  $(FILTER_OBJS) \
 		  $(FROM_OBJS) \
+		  $(FUZZY_OBJS) \
 		  $(GROUP_OBJS) \
 		  $(GUI_OBJS) \
 		  $(HASH_OBJS) \

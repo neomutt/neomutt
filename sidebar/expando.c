@@ -122,6 +122,18 @@ static long sidebar_flagged_count_num(const struct ExpandoNode *node,
 }
 
 /**
+ * sidebar_fuzzy_score_num - Sidebar: Fuzzy Score - Implements ::get_number_t - @ingroup expando_get_number_api
+ */
+static long sidebar_fuzzy_score_num(const struct ExpandoNode *node,
+                                      void *data, MuttFormatFlags flags)
+{
+  const struct SidebarData *sdata = data;
+  const struct SbEntry *sbe = sdata->entry;
+
+  return sbe->score;
+}
+
+/**
  * sidebar_limited_count_num - Sidebar: Number of limited messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long sidebar_limited_count_num(const struct ExpandoNode *node,
@@ -293,6 +305,7 @@ const struct ExpandoRenderCallback SidebarRenderCallbacks[] = {
   { ED_SIDEBAR, ED_SID_DESCRIPTION,   sidebar_description, NULL },
   { ED_SIDEBAR, ED_SID_FLAGGED,       sidebar_flagged,     NULL },
   { ED_SIDEBAR, ED_SID_FLAGGED_COUNT, NULL,                sidebar_flagged_count_num },
+  { ED_SIDEBAR, ED_SID_FUZZY_SCORE,   NULL,                sidebar_fuzzy_score_num },
   { ED_SIDEBAR, ED_SID_LIMITED_COUNT, NULL,                sidebar_limited_count_num },
   { ED_SIDEBAR, ED_SID_MESSAGE_COUNT, NULL,                sidebar_message_count_num },
   { ED_SIDEBAR, ED_SID_NAME,          sidebar_name,        NULL },
