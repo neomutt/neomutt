@@ -561,10 +561,12 @@ PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_new.o \
 		  test/parameter/mutt_param_set.o
 
-PARSE_OBJS	= test/parse/parse_extract_token.o \
+PARSE_OBJS	= test/parse/more_args.o \
+		  test/parse/parse_extract_token.o \
 		  test/parse/parse_rc.o \
 		  test/parse/parse_rc_line.o \
-		  test/parse/parse_set.o
+		  test/parse/parse_set.o \
+		  test/parse/skipws.o
 
 PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
