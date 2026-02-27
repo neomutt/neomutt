@@ -629,6 +629,25 @@ void buf_seek(struct Buffer *buf, size_t offset)
 }
 
 /**
+ * buf_tell - Return the current read/write position in a Buffer
+ * @param buf Buffer to inspect
+ * @retval num Offset into Buffer
+ *
+ * Return the current offset of the data pointer from the beginning of the
+ * Buffer. This is useful for reporting position in parsing error messages.
+ */
+size_t buf_tell(const struct Buffer *buf)
+{
+  if (!buf || !buf->data || !buf->dptr)
+    return 0;
+
+  if ((buf->dptr < buf->data) || (buf->dptr > (buf->data + buf->dsize)))
+    return 0;
+
+  return buf->dptr - buf->data;
+}
+
+/**
  * buf_find_string - Return a pointer to a substring found in the buffer
  * @param buf    Buffer to search
  * @param s      Substring to find
