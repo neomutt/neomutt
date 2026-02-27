@@ -456,6 +456,28 @@ void test_fini(void);
   /* from */                                                                   \
   NEOMUTT_TEST_ITEM(test_is_from)                                              \
                                                                                \
+  /* fuzzy */                                                                  \
+  NEOMUTT_TEST_ITEM(test_fuzzy_match)                                          \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_basic)                                   \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_case_sensitive)                          \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_smart_case)                              \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_scoring)                                 \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_prefer_prefix)                           \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_result_fields)                           \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_separators)                              \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_camelcase)                               \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_max_pattern)                             \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_edge_cases)                              \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_real_world)                              \
+  NEOMUTT_TEST_ITEM(test_fuzzy_utf8_bytewise_matching)                         \
+  NEOMUTT_TEST_ITEM(test_fuzzy_utf8_ascii_case_folding)                        \
+  NEOMUTT_TEST_ITEM(test_fuzzy_utf8_ascii_smart_case)                          \
+  NEOMUTT_TEST_ITEM(test_fuzzy_utf8_mixed_ascii_utf8)                          \
+  NEOMUTT_TEST_ITEM(test_fuzzy_utf8_boundaries)                                \
+  NEOMUTT_TEST_ITEM(test_fuzzy_utf8_camelcase)                                 \
+  NEOMUTT_TEST_ITEM(test_fuzzy_utf8_realistic_paths)                           \
+  NEOMUTT_TEST_ITEM(test_fuzzy_utf8_edge_cases)                                \
+                                                                               \
   /* group */                                                                  \
   NEOMUTT_TEST_ITEM(test_grouplist_add_addrlist)                               \
   NEOMUTT_TEST_ITEM(test_grouplist_add_group)                                  \

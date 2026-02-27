@@ -474,6 +474,19 @@ $(PWD)/expando:
 	$(MKDIR_P) $(PWD)/expando
 
 ###############################################################################
+# libfuzzy
+LIBFUZZY=	libfuzzy.a
+LIBFUZZYOBJS=	fuzzy/fuzzy.o fuzzy/subseq.o
+CLEANFILES+=	$(LIBFUZZY) $(LIBFUZZYOBJS)
+ALLOBJS+=	$(LIBFUZZYOBJS)
+
+$(LIBFUZZY): $(PWD)/fuzzy $(LIBFUZZYOBJS)
+	$(AR) cr $@ $(LIBFUZZYOBJS)
+	$(RANLIB) $@
+$(PWD)/fuzzy:
+	$(MKDIR_P) $(PWD)/fuzzy
+
+###############################################################################
 # libgui
 LIBGUI=		libgui.a
 LIBGUIOBJS=	gui/config.o gui/curs_lib.o gui/dialog.o gui/functions.o \
@@ -979,7 +992,7 @@ MUTTLIBS+=	$(LIBCORE) $(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBLUA) 
 		$(LIBHCACHE) $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
 		$(LIBHISTORY) $(LIBCORE) $(LIBPARSE) $(LIBEXPANDO) \
 		$(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) $(LIBDEBUG) $(LIBCLI) \
-		$(LIBMUTT)
+		$(LIBMUTT) $(LIBFUZZY)
 
 # neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
@@ -1067,6 +1080,7 @@ coverage: all test
 	  --directory editor \
 	  --directory email \
 	  --directory expando \
+	  --directory fuzzy \
 	  --directory hooks \
 	  --directory imap \
 	  --directory key \
