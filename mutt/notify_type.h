@@ -46,6 +46,7 @@ enum NotifyType
   NT_GLOBAL,    ///< Not object-related,            #NotifyGlobal
   NT_HEADER,    ///< A header has changed,          #NotifyHeader     #EventHeader
   NT_INDEX,     ///< Index data has changed,        #NotifyIndex,     #IndexSharedData
+  NT_KEY,       ///< Runtime key handling changed,  #NotifyKey,       #EventKeyProgress
   NT_MAILBOX,   ///< Mailbox has changed,           #NotifyMailbox,   #EventMailbox
   NT_MVIEW,     ///< MailboxView has changed,       #NotifyMview,     #EventMview
   NT_MENU,      ///< Menu has changed,              #MenuRedrawFlags

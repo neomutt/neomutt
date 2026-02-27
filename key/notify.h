@@ -24,6 +24,8 @@
 #define MUTT_KEY_NOTIFY_H
 
 #include "menu/lib.h"
+#include "get.h"
+#include "keymap.h"
 
 /**
  * struct EventBinding - A key binding Event
@@ -48,6 +50,27 @@ enum NotifyBinding
   NT_BINDING_DELETE,     ///< Key binding has been deleted
   NT_MACRO_ADD,          ///< Key macro has been added
   NT_MACRO_DELETE,       ///< Key macro has been deleted
+};
+
+/**
+ * struct EventKeyProgress - Runtime key progress event
+ */
+struct EventKeyProgress
+{
+  enum MenuType menu;                        ///< Menu being matched
+  int count;                                 ///< Parsed count prefix, if any
+  short key_len;                             ///< Number of keys entered
+  keycode_t keys[KEY_SEQ_MAX_LEN];           ///< Entered keys
+};
+
+/**
+ * enum NotifyKey - Key runtime notification types
+ *
+ * Observers of #NT_KEY will be passed an #EventKeyProgress.
+ */
+enum NotifyKey
+{
+  NT_KEY_PROGRESS = 1, ///< Key state has changed
 };
 
 #endif /* MUTT_KEY_NOTIFY_H */
