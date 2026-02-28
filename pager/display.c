@@ -812,7 +812,8 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
     }
 
     *bytes_read = ftello(fp);
-    b_read = (int) (*bytes_read - offset);
+    LOFF_T diff = *bytes_read - offset;
+    b_read = (diff > INT_MAX) ? INT_MAX : (int) diff;
     *buf_ready = 1;
 
     struct Buffer *stripped = buf_pool_get();
