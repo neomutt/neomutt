@@ -498,7 +498,8 @@ int dlg_pager(struct PagerView *pview)
     // marking the wrong message as read.
     if (check_read_delay(&priv->delay_read_timestamp))
     {
-      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true, true);
+      if (shared->mailbox && shared->email)
+        mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true, true);
     }
 
     if (SigWinch)
