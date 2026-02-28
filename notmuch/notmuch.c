@@ -536,6 +536,8 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
 static int update_message_path(struct Email *e, const char *path)
 {
   struct NmEmailData *edata = nm_edata_get(e);
+  if (!edata)
+    return 1;
 
   mutt_debug(LL_DEBUG2, "nm: path update requested path=%s, (%s)\n", path, edata->virtual_id);
 
