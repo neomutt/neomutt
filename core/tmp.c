@@ -80,7 +80,7 @@ FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
 
   const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
   int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(c_tmp_dir));
-  if (n < 0)
+  if ((n < 0) || ((size_t) n >= sizeof(name)))
     return NULL;
 
   int fd = mkstemp(name);
