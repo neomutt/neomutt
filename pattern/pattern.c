@@ -359,9 +359,11 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
     mv->collapsed = false;
     int padding = mx_msg_padding_size(m);
 
-    for (int i = 0; i < m->msg_count; i++)
+    for (int i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
 
@@ -527,8 +529,11 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
 
   if (pattern_changed)
   {
-    for (int i = 0; i < m->msg_count; i++)
-      m->emails[i]->searched = false;
+    for (int i = 0; i < mv->eview_count; i++)
+    {
+      if (mv->eviews[i] && mv->eviews[i]->email)
+        mv->eviews[i]->email->searched = false;
+    }
     if ((m->type == MUTT_IMAP) && (!imap_search(m, state->pattern)))
       return -1;
   }
