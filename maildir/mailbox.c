@@ -319,7 +319,8 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
   if (SigInt)
   {
     SigInt = false;
-    return -2; /* action aborted */
+    rc = -2; /* action aborted */
+    goto cleanup;
   }
 
   ARRAY_SORT(mda, maildir_sort_inode, NULL);
