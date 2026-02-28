@@ -2400,6 +2400,8 @@ static bool nm_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
   char path[PATH_MAX] = { 0 };
   char *folder = nm_email_get_folder(e);
+  if (!folder)
+    return false;
 
   snprintf(path, sizeof(path), "%s/%s", folder, e->path);
 
