@@ -567,7 +567,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
   /* remove a potential multipart/signed layer - useful when
    * resending messages */
-  if ((WithCrypto != 0) && mutt_is_multipart_signed(e_new->body))
+  if ((WithCrypto != 0) && mutt_is_multipart_signed(e_new->body) && e_new->body->parts)
   {
     e_new->security |= SEC_SIGN;
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
