@@ -474,6 +474,9 @@ err:
 static int update_email_tags(struct Email *e, notmuch_message_t *msg)
 {
   struct NmEmailData *edata = nm_edata_get(e);
+  if (!edata)
+    return 1;
+
   struct Buffer *new_tags = buf_pool_get();
   struct Buffer *old_tags = buf_pool_get();
 
