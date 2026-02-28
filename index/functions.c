@@ -1858,10 +1858,11 @@ static int op_main_show_limit(struct IndexSharedData *shared,
 {
   if (mview_has_limit(shared->mailbox_view))
   {
-    char buf2[256] = { 0 };
+    struct Buffer *buf = buf_pool_get();
     /* L10N: ask for a limit to apply */
-    snprintf(buf2, sizeof(buf2), _("Limit: %s"), shared->mailbox_view->pattern);
-    mutt_message("%s", buf2);
+    buf_printf(buf, _("Limit: %s"), shared->mailbox_view->pattern);
+    mutt_message("%s", buf_string(buf));
+    buf_pool_release(&buf);
   }
   else
   {
