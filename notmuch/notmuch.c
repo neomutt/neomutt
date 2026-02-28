@@ -1719,12 +1719,18 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
   char *orig_str = get_query_string(mdata, true);
 
   if (!db || !orig_str)
+  {
+    nm_db_release(m);
     return false;
+  }
 
   char *new_str = NULL;
   bool rc = false;
   if (mutt_str_asprintf(&new_str, "id:%s and (%s)", email_get_id(e), orig_str) < 0)
+  {
+    nm_db_release(m);
     return false;
+  }
 
   mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s\n", new_str);
 
@@ -1738,7 +1744,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
       notmuch_messages_t *messages = get_messages(q);
 
       if (!messages)
-        return false;
+        goto done;
 
       rc = notmuch_messages_valid(messages);
       notmuch_messages_destroy(messages);
@@ -1749,7 +1755,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
       notmuch_threads_t *threads = get_threads(q);
 
       if (!threads)
-        return false;
+        goto done;
 
       rc = notmuch_threads_valid(threads);
       notmuch_threads_destroy(threads);
@@ -1757,11 +1763,14 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
     }
   }
 
+done:
   notmuch_query_destroy(q);
 
   mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s = %s\n",
              new_str, rc ? "true" : "false");
 
+  FREE(&new_str);
+  nm_db_release(m);
   return rc;
 }
 
