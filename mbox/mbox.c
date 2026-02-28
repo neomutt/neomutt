@@ -239,8 +239,8 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
 
       if (!fgets(buf, sizeof(buf) - 1, adata->fp))
       {
-        /* TODO: memory leak??? */
         mutt_debug(LL_DEBUG1, "unexpected EOF\n");
+        email_free(&m->emails[m->msg_count]);
         break;
       }
 
