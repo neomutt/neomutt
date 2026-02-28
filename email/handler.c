@@ -1524,6 +1524,9 @@ static int valid_pgp_encrypted_handler(struct Body *b_email, struct State *state
  */
 static int malformed_pgp_encrypted_handler(struct Body *b_email, struct State *state)
 {
+  if (!b_email->parts || !b_email->parts->next || !b_email->parts->next->next)
+    return -1;
+
   struct Body *octetstream = b_email->parts->next->next;
 
   /* clear out any mime headers before the handler, so they can't be spoofed. */
