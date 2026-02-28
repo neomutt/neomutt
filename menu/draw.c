@@ -246,7 +246,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
       const struct AttrColor *ac_merge = merged_color_overlay(ac_def, ac_ind);
       mutt_curses_set_color(ac_merge);
     }
-    else if (*s == MUTT_SPECIAL_INDEX)
+    else if ((*s == MUTT_SPECIAL_INDEX) && (n >= 2))
     {
       s++;
       if (*s == MT_COLOR_INDEX)
