@@ -2371,6 +2371,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
                         "Unable to sync %d messages due to external mailbox modification",
                         mh_sync_errors),
                mh_sync_errors);
+    rc = MX_STATUS_ERROR;
   }
 
   buf_strcpy(&m->pathbuf, url);
