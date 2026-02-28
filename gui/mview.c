@@ -113,11 +113,11 @@ void mview_update(struct MailboxView *mv)
 
   const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
   struct Email *e = NULL;
-  for (int msgno = 0; msgno < m->msg_count; msgno++)
+  for (int msgno = 0; msgno < mv->eview_count; msgno++)
   {
-    e = m->emails[msgno];
-    if (!e)
+    if (!mv->eviews[msgno])
       continue;
+    e = mv->eviews[msgno]->email;
 
     if (WithCrypto)
     {
@@ -203,9 +203,11 @@ void mview_free(struct MailboxView **ptr)
     notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
 
     // Disconnect the Emails before freeing the Threads
-    for (int i = 0; i < mv->mailbox->msg_count; i++)
+    for (int i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = mv->mailbox->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         continue;
       e->thread = NULL;
@@ -335,13 +337,14 @@ int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e
 {
   if (use_tagged)
   {
-    if (!mv || !mv->mailbox || !mv->mailbox->emails)
+    if (!mv || !mv->eviews)
       return -1;
 
-    struct Mailbox *m = mv->mailbox;
-    for (int i = 0; i < m->msg_count; i++)
+    for (int i = 0; i < mv->eview_count; i++)
     {
-      e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      e = mv->eviews[i]->email;
       if (!e)
         break;
       if (!message_is_tagged(e))
@@ -450,8 +453,6 @@ bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e)
   if (!mv || !mv->mailbox || !e)
     return false;
 
-  struct Mailbox *m = mv->mailbox;
-
   struct MuttThread *me = top_of_thread(e);
   if (!me)
     return false;
@@ -460,9 +461,11 @@ bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e)
   mv->vsize = 0;
   mv->collapsed = false;
 
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    e = mv->eviews[i]->email;
     if (!e)
       break;
 
