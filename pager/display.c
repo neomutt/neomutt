@@ -710,7 +710,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
         offset = (lines[line_num].syntax)[i].last;
     } while (found || null_rx);
     if (nl > 0)
-      buf[nl] = '\n';
+      buf[nl - 1] = '\n';
   }
 }
 
