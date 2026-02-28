@@ -1937,11 +1937,19 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
     mview_free(&shared->mailbox_view);
   }
 
-  priv->menu->max = shared->mailbox->vcount;
-  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+  if (shared->mailbox)
+  {
+    priv->menu->max = shared->mailbox->vcount;
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
-  struct EventMailbox ev_m = { shared->mailbox };
-  notify_send(shared->mailbox->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+    struct EventMailbox ev_m = { shared->mailbox };
+    notify_send(shared->mailbox->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+  }
+  else
+  {
+    priv->menu->max = 0;
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+  }
 
   return FR_SUCCESS;
 }
