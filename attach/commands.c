@@ -345,6 +345,7 @@ static enum CommandResult parse_attach_list(const struct Command *cmd, struct Bu
     if (rc_regex != 0)
     {
       regerror(rc_regex, &a->minor_regex, err->data, err->dsize);
+      buf_fix_dptr(err);
       FREE(&a->major);
       FREE(&a);
       goto done;
