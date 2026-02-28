@@ -1114,11 +1114,12 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     else
     {
       cur_line->cid = MT_COLOR_NORMAL;
-      if (buf[11] == 'M')
+      size_t blen = mutt_str_len((const char *) buf);
+      if ((blen > 11) && (buf[11] == 'M'))
         cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_MESSAGE);
-      else if (buf[11] == 'W')
+      else if ((blen > 11) && (buf[11] == 'W'))
         cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_WARNING);
-      else if (buf[11] == 'E')
+      else if ((blen > 11) && (buf[11] == 'E'))
         cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_ERROR);
       else
         cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_NORMAL);
