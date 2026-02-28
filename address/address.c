@@ -712,24 +712,28 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
 
   if (strpbrk(value, specials))
   {
-    char tmp[256] = { 0 };
-    char *pc = tmp;
-    size_t tmplen = sizeof(tmp) - 3;
+    if (buflen < 4)
+    {
+      mutt_str_copy(buf, value, buflen);
+      return;
+    }
+
+    char *pc = buf;
+    size_t remaining = buflen - 3; // Reserve for opening quote, closing quote, NUL
 
     *pc++ = '"';
-    for (; *value && (tmplen > 1); value++)
+    for (; *value && (remaining > 1); value++)
     {
       if ((*value == '\\') || (*value == '"'))
       {
         *pc++ = '\\';
-        tmplen--;
+        remaining--;
       }
       *pc++ = *value;
-      tmplen--;
+      remaining--;
     }
     *pc++ = '"';
     *pc = '\0';
-    mutt_str_copy(buf, tmp, buflen);
   }
   else
   {
