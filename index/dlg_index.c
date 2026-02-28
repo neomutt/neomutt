@@ -425,9 +425,11 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
 
   if (lmt)
   {
-    for (int i = 0; i < m->msg_count; i++)
+    for (int i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         continue;
 
@@ -493,9 +495,11 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
     struct Mailbox *m = mv->mailbox;
     int padding = mx_msg_padding_size(m);
     mv->vcount = mv->vsize = 0;
-    for (int i = 0; i < m->msg_count; i++)
+    for (int i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
 

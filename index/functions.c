@@ -821,9 +821,12 @@ static int op_flag_message(struct IndexSharedData *shared,
   struct Mailbox *m = shared->mailbox;
   if (priv->tag_prefix)
   {
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (message_is_tagged(e))
@@ -1417,9 +1420,12 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
     if (m->type == MUTT_NOTMUCH)
       nm_db_longrun_init(m, true);
 #endif
-    for (int px = 0, i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (int px = 0, i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (!message_is_tagged(e))
@@ -1749,9 +1755,12 @@ static int op_main_quasi_delete(struct IndexSharedData *shared,
   if (priv->tag_prefix)
   {
     struct Mailbox *m = shared->mailbox;
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (message_is_tagged(e))
@@ -2219,10 +2228,12 @@ static int op_resend(struct IndexSharedData *shared,
   int rc = -1;
   if (priv->tag_prefix)
   {
-    struct Mailbox *m = shared->mailbox;
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (message_is_tagged(e))
@@ -2356,9 +2367,12 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
   if (priv->tag_prefix && !c_auto_tag)
   {
     struct Mailbox *m = shared->mailbox;
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (e->visible)
@@ -2417,9 +2431,12 @@ static int op_toggle_new(struct IndexSharedData *shared,
   struct Mailbox *m = shared->mailbox;
   if (priv->tag_prefix)
   {
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (!message_is_tagged(e))
@@ -2703,9 +2720,11 @@ static int op_get_children(struct IndexSharedData *shared,
     else
     {
       /* try to restore old position */
-      for (int i = 0; i < m->msg_count; i++)
+      for (int i = 0; i < mv->eview_count; i++)
       {
-        e2 = m->emails[i];
+        if (!mv->eviews[i])
+          continue;
+        e2 = mv->eviews[i]->email;
         if (!e2)
           break;
         if (e2->index == oldindex)

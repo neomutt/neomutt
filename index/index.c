@@ -198,11 +198,11 @@ static int config_reply_regex(struct MailboxView *mv)
   if (!mv || !mv->mailbox)
     return 0;
 
-  struct Mailbox *m = mv->mailbox;
-
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    struct Email *e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    struct Email *e = mv->eviews[i]->email;
     if (!e)
       break;
     struct Envelope *env = e->env;
@@ -286,13 +286,16 @@ static int index_color_observer(struct NotifyCallback *nc)
   struct IndexSharedData *shared = dlg->wdata;
 
   struct Mailbox *m = shared->mailbox;
-  if (!m)
+  struct MailboxView *mv = shared->mailbox_view;
+  if (!m || !mv)
     return 0;
 
   // Force re-caching of index colours
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    struct Email *e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    struct Email *e = mv->eviews[i]->email;
     if (!e)
       break;
     e->attr_color = NULL;
@@ -511,12 +514,15 @@ static int index_score_observer(struct NotifyCallback *nc)
   struct IndexSharedData *shared = dlg->wdata;
 
   struct Mailbox *m = shared->mailbox;
-  if (!m)
+  struct MailboxView *mv = shared->mailbox_view;
+  if (!m || !mv)
     return 0;
 
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    struct Email *e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    struct Email *e = mv->eviews[i]->email;
     if (!e)
       break;
 
