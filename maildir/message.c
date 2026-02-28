@@ -469,7 +469,11 @@ int maildir_rewrite_message(struct Mailbox *m, struct Email *e)
   struct Message *src = mx_msg_open(m, e);
   struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NO_FLAGS);
   if (!src || !dest)
+  {
+    mx_msg_close(m, &src);
+    mx_msg_close(m, &dest);
     return -1;
+  }
 
   int rc = mutt_copy_message(dest->fp, e, src, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN, 0);
   if (rc == 0)
