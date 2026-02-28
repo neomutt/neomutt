@@ -298,6 +298,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
       if (r != 0)
       {
         regerror(r, &rcol->regex, err->data, err->dsize);
+        buf_fix_dptr(err);
         regex_color_free(&rcol);
         return MUTT_CMD_ERROR;
       }
