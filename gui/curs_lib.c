@@ -468,7 +468,10 @@ size_t mutt_strnwidth(const char *s, size_t n)
   {
     if (*s == MUTT_SPECIAL_INDEX)
     {
+      if (n < 2)
+        break;
       s += 2; /* skip the index coloring sequence */
+      n -= 2;
       k = 0;
       continue;
     }
