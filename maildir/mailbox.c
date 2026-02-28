@@ -179,7 +179,7 @@ bool maildir_parse_stream(FILE *fp, const char *fname, bool is_old, struct Email
   e->old = is_old;
   maildir_parse_flags(e, fname);
 
-  return e;
+  return true;
 }
 
 /**
