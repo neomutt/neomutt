@@ -1233,7 +1233,7 @@ static int multilingual_handler(struct Body *b_email, struct State *state)
   {
     if (zxx_part)
       mutt_body_handler(zxx_part, state);
-    else
+    else if (first_part)
       mutt_body_handler(first_part, state);
   }
 
