@@ -899,7 +899,7 @@ static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
       return false;
     }
 
-    if (mbox_lock_mailbox(m, true, true) != false)
+    if (mbox_lock_mailbox(m, true, true) != 0)
     {
       mutt_error(_("Couldn't lock %s"), mailbox_path(m));
       mutt_file_fclose(&adata->fp);
