@@ -389,7 +389,7 @@ static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct
   /* construct a new file name. */
   struct Buffer *path = buf_pool_get();
   struct Buffer *full = buf_pool_get();
-  while (true)
+  for (int retries = 0; retries < 16; retries++)
   {
     buf_printf(path, "%s/%lld.R%" PRIu64 ".%s%s", subdir, (long long) mutt_date_now(),
                mutt_rand64(), NONULL(ShortHostname), suffix);
@@ -440,6 +440,10 @@ static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct
       goto cleanup;
     }
   }
+
+  /* All retries exhausted */
+  mutt_debug(LL_DEBUG1, "failed after 16 retries\n");
+  rc = -1;
 
 cleanup:
   buf_pool_release(&path);
@@ -565,7 +569,7 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
   mode_t old_umask = umask(new_umask);
   mutt_debug(LL_DEBUG3, "umask set to %03o\n", new_umask);
 
-  while (true)
+  for (int retries = 0; retries < 16; retries++)
   {
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
              mailbox_path(m), subdir, (long long) mutt_date_now(),
@@ -590,6 +594,13 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
       msg->path = mutt_str_dup(path);
       break;
     }
+  }
+
+  if (fd == -1)
+  {
+    umask(old_umask);
+    mutt_debug(LL_DEBUG1, "%s: failed after 16 retries\n", __func__);
+    return false;
   }
   umask(old_umask);
   mutt_debug(LL_DEBUG3, "umask set to %03o\n", old_umask);
