@@ -369,7 +369,13 @@ static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct
   }
 
   /* extract the subdir */
-  char *s = strrchr(msg->path, '/') + 1;
+  char *s = strrchr(msg->path, '/');
+  if (!s)
+  {
+    mutt_debug(LL_DEBUG1, "path '%s' lacks expected '/'\n", msg->path);
+    return -1;
+  }
+  s++;
   mutt_str_copy(subdir, s, 4);
 
   /* extract the flags */
