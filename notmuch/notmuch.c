@@ -2315,7 +2315,6 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
     if (edata->oldpath)
     {
       mutt_str_copy(old_file, edata->oldpath, sizeof(old_file));
-      old_file[sizeof(old_file) - 1] = '\0';
       mutt_debug(LL_DEBUG2, "nm: fixing obsolete path '%s'\n", old_file);
     }
     else
