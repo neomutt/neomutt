@@ -1709,7 +1709,7 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, const struct 
 
   // update attachment list
   int i = aidx + 1;
-  while (actx->idx[i]->level > level)
+  while ((i < actx->idxlen) && (actx->idx[i]->level > level))
   {
     actx->idx[i]->level--;
     if (actx->idx[i]->level == level)
@@ -1720,8 +1720,6 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, const struct 
         actx->idx[i]->body->next = b_next;
     }
     i++;
-    if (i == actx->idxlen)
-      break;
   }
 
   // free memory
