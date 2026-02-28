@@ -681,10 +681,10 @@ static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
 /**
  * get_message_last_filename - Get a message's last filename
  * @param msg Notmuch message
- * @retval ptr  Filename
+ * @retval ptr  Filename (strdup'd, caller must free)
  * @retval NULL Error
  */
-static const char *get_message_last_filename(notmuch_message_t *msg)
+static char *get_message_last_filename(notmuch_message_t *msg)
 {
   const char *name = NULL;
 
@@ -694,7 +694,7 @@ static const char *get_message_last_filename(notmuch_message_t *msg)
     name = notmuch_filenames_get(ls);
   }
 
-  return name;
+  return mutt_str_dup(name);
 }
 
 /**
@@ -791,7 +791,7 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
     return;
   }
 
-  const char *path = get_message_last_filename(msg);
+  char *path = get_message_last_filename(msg);
   if (!path)
     return;
 
@@ -872,6 +872,7 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
   nm_progress_update(m);
 done:
   FREE(&newpath);
+  FREE(&path);
 }
 
 /**
@@ -1120,12 +1121,14 @@ static bool nm_message_has_tag(notmuch_message_t *msg, const char *tag)
  */
 static void sync_email_path_with_nm(struct Email *e, notmuch_message_t *msg)
 {
-  const char *new_file = get_message_last_filename(msg);
+  char *new_file = get_message_last_filename(msg);
   char old_file[PATH_MAX] = { 0 };
   email_get_fullpath(e, old_file, sizeof(old_file));
 
   if (!mutt_str_equal(old_file, new_file))
     update_message_path(e, new_file);
+
+  FREE(&new_file);
 }
 
 /**
@@ -2205,7 +2208,7 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
 
     /* Check to see if the message has moved to a different subdirectory.
      * If so, update the associated filename.  */
-    const char *new_file = get_message_last_filename(msg);
+    char *new_file = get_message_last_filename(msg);
     char old_file[PATH_MAX] = { 0 };
     email_get_fullpath(e, old_file, sizeof(old_file));
 
@@ -2222,6 +2225,8 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
       maildir_update_flags(m, e, e_tmp);
       email_free(&e_tmp);
     }
+
+    FREE(&new_file);
 
     if (update_email_tags(e, msg) == 0)
       new_flags++;
