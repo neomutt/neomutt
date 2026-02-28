@@ -30,9 +30,7 @@
 
 #include "config.h"
 #include <errno.h>
-#include <limits.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -1880,13 +1878,18 @@ static int op_compose_ispell(struct ComposeSharedData *shared, const struct KeyE
 {
   endwin();
   const char *const c_ispell = cs_subset_string(shared->sub, "ispell");
-  char buf[PATH_MAX] = { 0 };
-  snprintf(buf, sizeof(buf), "%s -x %s", NONULL(c_ispell), shared->email->body->filename);
-  if (mutt_system(buf) == -1)
+  struct Buffer *cmd = buf_pool_get();
+  struct Buffer *quoted = buf_pool_get();
+  buf_quote_filename(quoted, shared->email->body->filename, true);
+  buf_printf(cmd, "%s -x %s", NONULL(c_ispell), buf_string(quoted));
+  buf_pool_release(&quoted);
+  if (mutt_system(buf_string(cmd)) == -1)
   {
-    mutt_error(_("Error running \"%s\""), buf);
+    mutt_error(_("Error running \"%s\""), buf_string(cmd));
+    buf_pool_release(&cmd);
     return FR_ERROR;
   }
+  buf_pool_release(&cmd);
 
   mutt_update_encoding(shared->email->body, shared->sub);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
