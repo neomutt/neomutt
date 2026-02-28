@@ -257,14 +257,14 @@ int query_run(const char *s, bool verbose, struct AliasArray *aa,
   mutt_file_fclose(&fp);
   if (filter_wait(pid))
   {
-    mutt_debug(LL_DEBUG1, "Error: %s\n", msg);
+    mutt_debug(LL_DEBUG1, "Error: %s\n", NONULL(msg));
     if (verbose)
-      mutt_error("%s", msg);
+      mutt_error("%s", NONULL(msg));
   }
   else
   {
     if (verbose)
-      mutt_message("%s", msg);
+      mutt_message("%s", NONULL(msg));
   }
   FREE(&msg);
 
