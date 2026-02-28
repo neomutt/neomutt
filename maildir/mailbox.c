@@ -724,6 +724,8 @@ void maildir_update_mtime(struct Mailbox *m)
   char buf[PATH_MAX] = { 0 };
   struct stat st = { 0 };
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
+  if (!mdata)
+    return;
 
   snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "cur");
   if (stat(buf, &st) == 0)
