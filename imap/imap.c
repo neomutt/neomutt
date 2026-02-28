@@ -2380,7 +2380,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   if (*buf == '\0')
     buf = NULL;
 
-  if (!(adata->mailbox->rights & MUTT_ACL_WRITE))
+  if (!(m->rights & MUTT_ACL_WRITE))
     return 0;
 
   snprintf(uid, sizeof(uid), "%u", imap_edata_get(e)->uid);
