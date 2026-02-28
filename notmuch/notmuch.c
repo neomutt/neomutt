@@ -2021,7 +2021,7 @@ done:
 int nm_get_all_tags(struct Mailbox *m, const char **tag_list, int *tag_count)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
-  if (!mdata)
+  if (!mdata || !tag_count)
     return -1;
 
   notmuch_database_t *db = NULL;
