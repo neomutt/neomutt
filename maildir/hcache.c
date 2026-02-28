@@ -45,7 +45,15 @@
  */
 static const char *maildir_hcache_key(struct Email *e)
 {
-  return e->path + 4;
+  /* Skip the subdir prefix ("cur/" or "new/") */
+  if (e->path &&
+      (mutt_strn_equal(e->path, "cur/", 4) || mutt_strn_equal(e->path, "new/", 4)))
+  {
+    return e->path + 4;
+  }
+
+  /* Fallback: return full path if prefix is unexpected */
+  return NONULL(e->path);
 }
 
 /**
