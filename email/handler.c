@@ -1435,6 +1435,10 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
       {
         mutt_perror(_("failed to re-open 'memory stream'"));
         FREE(&temp);
+        state->fp_in = fp;
+        state->prefix = save_prefix;
+        b->length = tmplength;
+        b->offset = tmpoffset;
         return -1;
       }
 #else
