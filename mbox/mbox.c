@@ -206,8 +206,6 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   mutt_file_get_stat_timespec(&adata->mtime, &st, MUTT_STAT_MTIME);
   m->size = st.st_size;
 
-  buf[sizeof(buf) - 1] = '\0';
-
   if (m->verbose)
   {
     progress = progress_new(MUTT_PROGRESS_READ, 0);
