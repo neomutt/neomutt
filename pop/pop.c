@@ -211,7 +211,7 @@ static int fetch_uidl(const char *line, void *data)
 
   errno = 0;
   int index = strtol(line, &endp, 10);
-  if (errno)
+  if ((errno != 0) || (endp == line))
     return -1;
   while (*endp == ' ')
     endp++;
