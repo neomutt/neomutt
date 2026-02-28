@@ -87,6 +87,7 @@ struct MailboxView *mview_new             (struct Mailbox *m, struct Notify *par
 bool                mview_has_limit       (const struct MailboxView *mv);
 struct Mailbox *    mview_mailbox         (struct MailboxView *mv);
 struct EmailView *  mview_eview_by_email  (struct MailboxView *mv, struct Email *e);
+void                mview_sync_eviews     (struct MailboxView *mv);
 
 bool message_is_tagged(struct Email *e);
 struct Email *mutt_get_virt_email(struct MailboxView *mv, int vnum);

@@ -373,8 +373,11 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
     mv->vcount = 0;
     mutt_clear_threads(mv->threads);
     mv->vsize = 0;
+    mview_sync_eviews(mv);
     return; /* nothing to do! */
   }
+
+  mview_sync_eviews(mv);
 
   if (m->verbose)
     mutt_message(_("Sorting mailbox..."));

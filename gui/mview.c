@@ -40,6 +40,49 @@
 #include "thread.h"
 
 /**
+ * mview_sync_eviews - Synchronize eviews array with Mailbox emails
+ * @param mv Mailbox View
+ *
+ * Rebuild the eviews array to mirror the current state of Mailbox.emails[].
+ * This should be called whenever the email list may have changed.
+ */
+void mview_sync_eviews(struct MailboxView *mv)
+{
+  if (!mv || !mv->mailbox)
+    return;
+
+  struct Mailbox *m = mv->mailbox;
+
+  /* free old eviews */
+  for (int i = 0; i < mv->eview_count; i++)
+    eview_free(&mv->eviews[i]);
+  mutt_hash_free(&mv->eview_hash);
+  mv->eview_count = 0;
+
+  /* grow array if needed */
+  if (m->email_max > mv->eview_max)
+  {
+    mutt_mem_realloc(&mv->eviews, m->email_max * sizeof(struct EmailView *));
+    memset(mv->eviews + mv->eview_max, 0,
+           (m->email_max - mv->eview_max) * sizeof(struct EmailView *));
+    mv->eview_max = m->email_max;
+  }
+  mv->eview_hash = mutt_hash_int_new(m->email_max, MUTT_HASH_NO_FLAGS);
+
+  /* rebuild from backend's email list */
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      continue;
+
+    mv->eviews[i] = eview_new(e);
+    mutt_hash_int_insert(mv->eview_hash, (intptr_t) e, mv->eviews[i]);
+    mv->eview_count = i + 1;
+  }
+}
+
+/**
  * mview_update - Update the MailboxView's message counts
  * @param mv Mailbox View
  *
@@ -64,18 +107,7 @@ void mview_update(struct MailboxView *mv)
   mv->vcount = 0;
   m->changed = false;
 
-  /* rebuild the eviews array */
-  for (int i = 0; i < mv->eview_count; i++)
-    eview_free(&mv->eviews[i]);
-  mutt_hash_free(&mv->eview_hash);
-  mv->eview_count = 0;
-
-  if (m->email_max > mv->eview_max)
-  {
-    mutt_mem_realloc(&mv->eviews, m->email_max * sizeof(struct EmailView *));
-    mv->eview_max = m->email_max;
-  }
-  mv->eview_hash = mutt_hash_int_new(m->email_max, MUTT_HASH_NO_FLAGS);
+  mview_sync_eviews(mv);
 
   mutt_clear_threads(mv->threads);
 
@@ -86,11 +118,6 @@ void mview_update(struct MailboxView *mv)
     e = m->emails[msgno];
     if (!e)
       continue;
-
-    /* populate eviews entry for this email */
-    mv->eviews[msgno] = eview_new(e);
-    mutt_hash_int_insert(mv->eview_hash, (intptr_t) e, mv->eviews[msgno]);
-    mv->eview_count = msgno + 1;
 
     if (WithCrypto)
     {
