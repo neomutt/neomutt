@@ -1790,9 +1790,10 @@ static int op_envelope_edit_headers(struct ComposeSharedData *shared,
   if (shared->email->body->type == TYPE_MULTIPART)
   {
     struct Body *b = shared->email->body->parts;
-    while (b->parts)
+    while (b && b->parts)
       b = b->parts;
-    mutt_edit_headers(NONULL(c_editor), b->filename, shared->email, shared->fcc);
+    if (b)
+      mutt_edit_headers(NONULL(c_editor), b->filename, shared->email, shared->fcc);
   }
   else
   {
