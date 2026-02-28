@@ -943,7 +943,8 @@ static int op_jump(struct IndexSharedData *shared,
   {
     mutt_warning(_("Invalid message number"));
   }
-  else if (!shared->mailbox->emails[msg_num - 1]->visible)
+  else if (!shared->mailbox->emails[msg_num - 1] ||
+           !shared->mailbox->emails[msg_num - 1]->visible)
   {
     mutt_warning(_("That message is not visible"));
   }
