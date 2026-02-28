@@ -64,6 +64,38 @@ static int imap_timeout_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * imap_mailbox_delete_observer - Notification that a Mailbox is about to be deleted - Implements ::observer_t - @ingroup observer_api
+ *
+ * Clear adata->mailbox and adata->prev_mailbox if they point to a
+ * Mailbox that is being freed, preventing dangling pointer dereferences.
+ */
+static int imap_mailbox_delete_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_MAILBOX)
+    return 0;
+  if (nc->event_subtype != NT_MAILBOX_DELETE)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
+    return -1;
+
+  struct ImapAccountData *adata = nc->global_data;
+  const struct EventMailbox *ev_m = nc->event_data;
+
+  if (adata->mailbox == ev_m->mailbox)
+  {
+    mutt_debug(LL_DEBUG3, "stranding adata->mailbox %p\n", (void *) adata->mailbox);
+    adata->mailbox = NULL;
+  }
+  if (adata->prev_mailbox == ev_m->mailbox)
+  {
+    mutt_debug(LL_DEBUG3, "stranding adata->prev_mailbox %p\n", (void *) adata->prev_mailbox);
+    adata->prev_mailbox = NULL;
+  }
+
+  return 0;
+}
+
+/**
  * imap_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  */
 void imap_adata_free(void **ptr)
@@ -74,6 +106,8 @@ void imap_adata_free(void **ptr)
   struct ImapAccountData *adata = *ptr;
 
   notify_observer_remove(NeoMutt->notify_timeout, imap_timeout_observer, adata);
+  if (adata->account)
+    notify_observer_remove(adata->account->notify, imap_mailbox_delete_observer, adata);
 
   FREE(&adata->capstr);
   buf_dealloc(&adata->cmdbuf);
@@ -111,6 +145,7 @@ struct ImapAccountData *imap_adata_new(struct Account *a)
     new_seqid = 'a';
 
   notify_observer_add(NeoMutt->notify_timeout, NT_TIMEOUT, imap_timeout_observer, adata);
+  notify_observer_add(a->notify, NT_MAILBOX, imap_mailbox_delete_observer, adata);
 
   return adata;
 }
