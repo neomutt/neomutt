@@ -445,6 +445,8 @@ void sb_win_add_observers(struct MuttWindow *win)
     return;
 
   struct MuttWindow *dlg = window_find_parent(win, WT_DLG_INDEX);
+  if (!dlg)
+    return;
 
   mutt_color_observer_add(sb_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_ACCOUNT, sb_account_observer, win);
@@ -465,6 +467,8 @@ void sb_win_remove_observers(struct MuttWindow *win)
     return;
 
   struct MuttWindow *dlg = window_find_parent(win, WT_DLG_INDEX);
+  if (!dlg)
+    return;
 
   mutt_color_observer_remove(sb_color_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_account_observer, win);
