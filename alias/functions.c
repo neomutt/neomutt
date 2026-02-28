@@ -177,8 +177,12 @@ static int op_create_alias(struct AliasMenuData *mdata, const struct KeyEvent *e
   }
   else
   {
+    struct AliasView *av = ARRAY_GET(&mdata->ava, menu_get_index(menu));
+    if (!av)
+      return FR_NO_ACTION;
+
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    if (alias_to_addrlist(&al, ARRAY_GET(&mdata->ava, menu_get_index(menu))->alias))
+    if (alias_to_addrlist(&al, av->alias))
     {
       alias_create(&al, mdata->sub);
       mutt_addrlist_clear(&al);
