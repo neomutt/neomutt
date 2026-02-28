@@ -722,13 +722,11 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
   if (!mv)
     return;
 
-  struct Mailbox *m = mv->mailbox;
-  if (!m || !m->emails)
-    return;
-
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    struct Email *e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    struct Email *e = mv->eviews[i]->email;
     if (!e)
       break;
 
@@ -979,10 +977,11 @@ static void check_subjects(struct MailboxView *mv, bool init)
   if (!mv)
     return;
 
-  struct Mailbox *m = mv->mailbox;
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    struct Email *e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    struct Email *e = mv->eviews[i]->email;
     if (!e || !e->thread)
       continue;
 
@@ -1066,9 +1065,11 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
    * new message as an identical child.  if we didn't attach the message to a
    * MuttThread, make a new one for it. */
   const bool c_duplicate_threads = cs_subset_bool(NeoMutt->sub, "duplicate_threads");
-  for (i = 0; i < m->msg_count; i++)
+  for (i = 0; i < mv->eview_count; i++)
   {
-    e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    e = mv->eviews[i]->email;
     if (!e)
       continue;
 
@@ -1160,9 +1161,11 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   }
 
   /* thread by references */
-  for (i = 0; i < m->msg_count; i++)
+  for (i = 0; i < mv->eview_count; i++)
   {
-    e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    e = mv->eviews[i]->email;
     if (!e)
       break;
 
@@ -1410,9 +1413,11 @@ off_t mutt_set_vnum(struct MailboxView *mv)
 
   mv->vcount = 0;
 
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    struct Email *e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    struct Email *e = mv->eviews[i]->email;
     if (!e)
       break;
 
