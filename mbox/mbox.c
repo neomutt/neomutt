@@ -1452,7 +1452,7 @@ static enum MxStatus mbox_mbox_close(struct Mailbox *m)
     struct timespec ts[2] = { { 0 }, { 0 } };
     ts[0] = adata->atime;
     ts[1] = adata->mtime;
-    utimensat(AT_FDCWD, m->path, ts, 0);
+    utimensat(AT_FDCWD, mailbox_path(m), ts, 0);
 #else
     struct utimbuf ut = { 0 };
     ut.actime = adata->atime.tv_sec;
