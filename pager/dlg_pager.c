@@ -337,6 +337,9 @@ int dlg_pager(struct PagerView *pview)
   if (!priv->fp)
   {
     mutt_perror("%s", pview->pdata->fname);
+    for (size_t i = 0; i < priv->lines_max; i++)
+      FREE(&priv->lines[i].syntax);
+    FREE(&priv->lines);
     return -1;
   }
 
@@ -344,6 +347,9 @@ int dlg_pager(struct PagerView *pview)
   {
     mutt_perror("%s", pview->pdata->fname);
     mutt_file_fclose(&priv->fp);
+    for (size_t i = 0; i < priv->lines_max; i++)
+      FREE(&priv->lines[i].syntax);
+    FREE(&priv->lines);
     return -1;
   }
   unlink(pview->pdata->fname);
