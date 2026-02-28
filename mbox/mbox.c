@@ -469,7 +469,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
            * are in this message.  */
           if (e_cur->lines == 0)
           {
-            int cl = e_cur->body->length;
+            LOFF_T cl = e_cur->body->length;
 
             /* count the number of lines in this message */
             (void) mutt_file_seek(adata->fp, loc, SEEK_SET);
