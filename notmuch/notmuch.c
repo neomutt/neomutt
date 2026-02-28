@@ -2171,7 +2171,7 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
   // TODO: Analyze impact of removing this version guard.
 #if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
   if (!msgs)
-    return MX_STATUS_OK;
+    goto done;
 #elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
   if (!msgs)
     goto done;
