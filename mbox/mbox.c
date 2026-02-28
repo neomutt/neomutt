@@ -356,7 +356,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
 
   struct stat st = { 0 };
   char buf[8192] = { 0 };
-  char return_path[256] = { 0 };
+  char return_path[1024] = { 0 };
   struct Email *e_cur = NULL;
   time_t t = 0;
   int count = 0, lines = 0;
