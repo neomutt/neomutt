@@ -1058,14 +1058,14 @@ static int op_save(struct IndexSharedData *shared,
     goto done;
   }
 
-  // Restore the read position
-  if (pos >= 0)
-    mutt_file_seek(priv->fp, pos, SEEK_CUR);
-
   mutt_message(_("Saved to: %s"), buf_string(buf));
   rc = FR_SUCCESS;
 
 done:
+  // Restore the read position (rewound at start of function)
+  if (pos >= 0)
+    mutt_file_seek(priv->fp, pos, SEEK_SET);
+
   mutt_file_fclose(&fp_save);
   buf_pool_release(&buf);
 
