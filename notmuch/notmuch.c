@@ -229,7 +229,14 @@ static char *email_get_id(struct Email *e)
  */
 static char *email_get_fullpath(struct Email *e, char *buf, size_t buflen)
 {
-  snprintf(buf, buflen, "%s/%s", nm_email_get_folder(e), e->path);
+  char *folder = nm_email_get_folder(e);
+  if (!folder)
+  {
+    *buf = '\0';
+    return buf;
+  }
+
+  snprintf(buf, buflen, "%s/%s", folder, e->path);
   return buf;
 }
 
