@@ -235,6 +235,9 @@ static int calc_move_view(struct Menu *menu, int relative)
  */
 MenuRedrawFlags menu_move_selection(struct Menu *menu, int index)
 {
+  if (menu->max == 0)
+    return MENU_REDRAW_NO_FLAGS;
+
   if (index < 0)
     index = 0;
   else if (index >= menu->max)
