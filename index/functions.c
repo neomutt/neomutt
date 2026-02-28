@@ -2034,8 +2034,8 @@ static int op_mark_msg(struct IndexSharedData *shared,
       buf_printf(buf, _("Message bound to %s"), str);
       mutt_message("%s", buf_string(buf));
       mutt_debug(LL_DEBUG1, "Mark: %s => %s\n", str, macro);
-      buf_pool_release(&buf);
     }
+    buf_pool_release(&buf);
   }
   else
   {
