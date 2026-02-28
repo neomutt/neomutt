@@ -1251,19 +1251,22 @@ static int op_main_limit(struct IndexSharedData *shared,
   const int op = event->op;
   if (op == OP_TOGGLE_READ)
   {
-    char buf2[1024] = { 0 };
+    struct Buffer *buf2 = buf_pool_get();
 
     if (!lmt || !mutt_strn_equal(shared->mailbox_view->pattern, "!~R!~D~s", 8))
     {
-      snprintf(buf2, sizeof(buf2), "!~R!~D~s%s", lmt ? shared->mailbox_view->pattern : ".*");
+      buf_printf(buf2, "!~R!~D~s%s", lmt ? shared->mailbox_view->pattern : ".*");
     }
     else
     {
-      mutt_str_copy(buf2, shared->mailbox_view->pattern + 8, sizeof(buf2));
-      if ((*buf2 == '\0') || mutt_strn_equal(buf2, ".*", 2))
-        snprintf(buf2, sizeof(buf2), "~A");
+      const char *pat = shared->mailbox_view->pattern + 8;
+      if ((*pat == '\0') || mutt_strn_equal(pat, ".*", 2))
+        buf_strcpy(buf2, "~A");
+      else
+        buf_strcpy(buf2, pat);
     }
-    mutt_str_replace(&shared->mailbox_view->pattern, buf2);
+    mutt_str_replace(&shared->mailbox_view->pattern, buf_string(buf2));
+    buf_pool_release(&buf2);
     mutt_pattern_func(shared->mailbox_view, MUTT_LIMIT, NULL);
   }
 
