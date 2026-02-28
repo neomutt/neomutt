@@ -881,12 +881,19 @@ done:
  * @param q     Notmuch query
  * @param top   Notmuch message
  * @param dedup De-duplicate the results
+ * @param depth Current recursion depth
  *
  * Careful, this calls itself recursively to make sure we get everything.
  */
-static void append_replies(struct HeaderCache *hc, struct Mailbox *m,
-                           notmuch_query_t *q, notmuch_message_t *top, bool dedup)
+static void append_replies(struct HeaderCache *hc, struct Mailbox *m, notmuch_query_t *q,
+                           notmuch_message_t *top, bool dedup, int depth)
 {
+  if (depth > 512)
+  {
+    mutt_debug(LL_DEBUG1, "nm: stripping thread replies stripping at depth %d\n", depth);
+    return;
+  }
+
   notmuch_messages_t *msgs = NULL;
 
   for (msgs = notmuch_message_get_replies(top); notmuch_messages_valid(msgs);
@@ -895,7 +902,7 @@ static void append_replies(struct HeaderCache *hc, struct Mailbox *m,
     notmuch_message_t *nm = notmuch_messages_get(msgs);
     append_message(hc, m, nm, dedup);
     /* recurse through all the replies to this message too */
-    append_replies(hc, m, q, nm, dedup);
+    append_replies(hc, m, q, nm, dedup, depth + 1);
     notmuch_message_destroy(nm);
   }
 }
@@ -921,7 +928,7 @@ static void append_thread(struct HeaderCache *hc, struct Mailbox *m,
   {
     notmuch_message_t *nm = notmuch_messages_get(msgs);
     append_message(hc, m, nm, dedup);
-    append_replies(hc, m, q, nm, dedup);
+    append_replies(hc, m, q, nm, dedup, 0);
     notmuch_message_destroy(nm);
   }
 }
