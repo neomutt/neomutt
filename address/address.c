@@ -1339,7 +1339,7 @@ int mutt_addrlist_to_intl(struct AddressList *al, char **err)
  */
 bool mutt_addr_to_local(struct Address *a)
 {
-  if (!a->mailbox)
+  if (!a || !a->mailbox)
   {
     return false;
   }
