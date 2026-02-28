@@ -141,6 +141,29 @@ bail:
   buf_pool_release(&cid);
 }
 
+/// Maximum MIME nesting depth for saving CID attachments
+#define CID_DEPTH_MAX 50
+
+/**
+ * cid_save_attachments_r - Recursively save attachments with Content-IDs
+ * @param[in]  body         First body in "multipart/related" group
+ * @param[out] cid_map_list List of Content-ID to filename mappings
+ * @param[in]  depth        Current recursion depth
+ */
+static void cid_save_attachments_r(struct Body *body, struct CidMapList *cid_map_list, int depth)
+{
+  if (!body || !cid_map_list || (depth >= CID_DEPTH_MAX))
+    return;
+
+  for (struct Body *b = body; b; b = b->next)
+  {
+    if (b->parts)
+      cid_save_attachments_r(b->parts, cid_map_list, depth + 1);
+    else
+      cid_save_attachment(b, cid_map_list);
+  }
+}
+
 /**
  * cid_save_attachments - Save all attachments in a "multipart/related" group with a Content-ID
  * @param[in]  body         First body in "multipart/related" group
@@ -148,16 +171,7 @@ bail:
  */
 void cid_save_attachments(struct Body *body, struct CidMapList *cid_map_list)
 {
-  if (!body || !cid_map_list)
-    return;
-
-  for (struct Body *b = body; b; b = b->next)
-  {
-    if (b->parts)
-      cid_save_attachments(b->parts, cid_map_list);
-    else
-      cid_save_attachment(b, cid_map_list);
-  }
+  cid_save_attachments_r(body, cid_map_list, 0);
 }
 
 /**
