@@ -1441,6 +1441,15 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
       state->fp_in = mutt_file_fopen(buf_string(tempfile), "r");
       unlink(buf_string(tempfile));
       buf_pool_release(&tempfile);
+      if (!state->fp_in)
+      {
+        mutt_perror(_("failed to re-open temporary file"));
+        state->fp_in = fp;
+        state->prefix = save_prefix;
+        b->length = tmplength;
+        b->offset = tmpoffset;
+        return -1;
+      }
 #endif
       /* restore the prefix */
       state->prefix = save_prefix;
