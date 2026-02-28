@@ -1625,6 +1625,8 @@ static int op_attachment_toggle_disposition(struct ComposeSharedData *shared,
                                             const struct KeyEvent *event)
 {
   /* toggle the content-disposition between inline/attachment */
+  if (!check_count(shared->adata->actx))
+    return FR_NO_ACTION;
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
   cur_att->body->disposition = (cur_att->body->disposition == DISP_INLINE) ?
