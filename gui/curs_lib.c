@@ -614,7 +614,7 @@ char *mutt_str_expand_tabs(char *str, size_t *len, int tabwidth)
   }
 
   // expand tabs
-  for (int i = 0; i < *len; i++)
+  for (int i = 0; str[i] != '\0'; i++)
   {
     if (str[i] == '\t')
     {
