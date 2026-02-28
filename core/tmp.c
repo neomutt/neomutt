@@ -88,6 +88,11 @@ FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
     return NULL;
 
   FILE *fp = fdopen(fd, "w+");
+  if (!fp)
+  {
+    close(fd);
+    return NULL;
+  }
 
   if ((unlink(name) != 0) && (errno != ENOENT))
   {
