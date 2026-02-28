@@ -349,13 +349,20 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
  * @param e_new             The new email template header
  * @param body              First body in email or group
  * @param protected_headers MIME headers for email template
+ * @param depth             Current MIME nesting depth
  * @retval  0 Success
  * @retval -1 Error
  */
 static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
                                             struct Email *e_new, struct Body *body,
-                                            struct Envelope *protected_headers)
+                                            struct Envelope *protected_headers, int depth)
 {
+  if (depth > 50)
+  {
+    mutt_debug(LL_DEBUG1, "stripping too deep MIME tree\n");
+    return -1;
+  }
+
   struct Body *b = NULL;
   struct State state = { 0 };
 
@@ -365,7 +372,8 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
   {
     if (b->type == TYPE_MULTIPART)
     {
-      if (create_tmp_files_for_attachments(fp_body, file, e_new, b->parts, protected_headers) < 0)
+      if (create_tmp_files_for_attachments(fp_body, file, e_new, b->parts,
+                                           protected_headers, depth + 1) < 0)
       {
         return -1;
       }
@@ -591,7 +599,8 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   file = buf_pool_get();
 
   /* create temporary files for all attachments */
-  if (create_tmp_files_for_attachments(fp_body, file, e_new, e_new->body, protected_headers) < 0)
+  if (create_tmp_files_for_attachments(fp_body, file, e_new, e_new->body,
+                                       protected_headers, 0) < 0)
   {
     goto bail;
   }
