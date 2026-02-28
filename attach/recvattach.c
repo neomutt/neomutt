@@ -846,6 +846,8 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             if (!state->fp_out)
             {
               mutt_error("BUG in print_attachment_list().  Please report this. ");
+              mutt_file_unlink(buf_string(newfile));
+              buf_pool_release(&newfile);
               return;
             }
 
