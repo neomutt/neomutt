@@ -406,8 +406,9 @@ int pop_open_connection(struct PopAccountData *adata)
     return rc;
   }
 
-  unsigned int n = 0, size = 0;
-  sscanf(buf, "+OK %u %u", &n, &size);
+  unsigned int n = 0;
+  size_t size = 0;
+  sscanf(buf, "+OK %u %zu", &n, &size);
   adata->size = size;
   return 0;
 
