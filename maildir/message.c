@@ -172,15 +172,21 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
   struct Buffer *unique = buf_pool_get();
   maildir_canon_filename(unique, msg);
 
+  /* Prevent counter saturation by halving both when either gets large */
+  if ((new_hits > (UINT_MAX / 2)) || (cur_hits > (UINT_MAX / 2)))
+  {
+    new_hits /= 2;
+    cur_hits /= 2;
+  }
+
   FILE *fp = maildir_open_find_message_dir(folder, buf_string(unique),
                                            (new_hits > cur_hits) ? "new" : "cur", newname);
   if (fp || (errno != ENOENT))
   {
-    if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
-    {
-      new_hits += ((new_hits > cur_hits) ? 1 : 0);
-      cur_hits += ((new_hits > cur_hits) ? 0 : 1);
-    }
+    if (new_hits > cur_hits)
+      new_hits++;
+    else
+      cur_hits++;
 
     goto cleanup;
   }
@@ -188,11 +194,10 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
                                      (new_hits > cur_hits) ? "cur" : "new", newname);
   if (fp || (errno != ENOENT))
   {
-    if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
-    {
-      new_hits += ((new_hits > cur_hits) ? 0 : 1);
-      cur_hits += ((new_hits > cur_hits) ? 1 : 0);
-    }
+    if (new_hits > cur_hits)
+      cur_hits++;
+    else
+      new_hits++;
 
     goto cleanup;
   }
