@@ -503,7 +503,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
 
   if (!mutt_file_seek(fp, e->offset, SEEK_SET))
   {
-    return -1;
+    goto bail;
   }
   e_new->offset = e->offset;
   /* enable header weeding for resent messages */
