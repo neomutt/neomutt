@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <stdint.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -63,6 +64,19 @@ void mview_update(struct MailboxView *mv)
   mv->vcount = 0;
   m->changed = false;
 
+  /* rebuild the eviews array */
+  for (int i = 0; i < mv->eview_count; i++)
+    eview_free(&mv->eviews[i]);
+  mutt_hash_free(&mv->eview_hash);
+  mv->eview_count = 0;
+
+  if (m->email_max > mv->eview_max)
+  {
+    mutt_mem_realloc(&mv->eviews, m->email_max * sizeof(struct EmailView *));
+    mv->eview_max = m->email_max;
+  }
+  mv->eview_hash = mutt_hash_int_new(m->email_max, MUTT_HASH_NO_FLAGS);
+
   mutt_clear_threads(mv->threads);
 
   const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
@@ -72,6 +86,11 @@ void mview_update(struct MailboxView *mv)
     e = m->emails[msgno];
     if (!e)
       continue;
+
+    /* populate eviews entry for this email */
+    mv->eviews[msgno] = eview_new(e);
+    mutt_hash_int_insert(mv->eview_hash, (intptr_t) e, mv->eviews[msgno]);
+    mv->eview_count = msgno + 1;
 
     if (WithCrypto)
     {
@@ -172,6 +191,11 @@ void mview_free(struct MailboxView **ptr)
   FREE(&mv->pattern);
   mutt_pattern_free(&mv->limit_pattern);
 
+  for (int i = 0; i < mv->eview_count; i++)
+    eview_free(&mv->eviews[i]);
+  mutt_hash_free(&mv->eview_hash);
+  FREE(&mv->eviews);
+
   for (size_t i = 0; i < mv->vcount; i++)
     eview_free(&mv->v2r[i]);
 
@@ -202,7 +226,10 @@ struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
   notify_observer_add(m->notify, NT_MAILBOX, mview_mailbox_observer, mv);
 
   mv->mailbox = m;
-  mv->v2r = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
+  mv->eviews = mutt_mem_calloc(m->email_max, sizeof(struct EmailView *));
+  mv->eview_max = m->email_max;
+  mv->eview_hash = mutt_hash_int_new(m->email_max, MUTT_HASH_NO_FLAGS);
+  mv->v2r = mutt_mem_calloc(m->email_max, sizeof(struct EmailView *));
   mv->threads = mutt_thread_ctx_init(mv);
   mv->msg_in_pager = -1;
   mv->collapsed = false;
@@ -221,6 +248,11 @@ static void mview_cleanup(struct MailboxView *mv)
   mutt_pattern_free(&mv->limit_pattern);
   if (mv->mailbox)
     notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
+
+  for (int i = 0; i < mv->eview_count; i++)
+    eview_free(&mv->eviews[i]);
+  mutt_hash_free(&mv->eview_hash);
+  FREE(&mv->eviews);
 
   struct Notify *notify = mv->notify;
   struct Mailbox *m = mv->mailbox;
@@ -343,6 +375,21 @@ bool mview_has_limit(const struct MailboxView *mv)
 struct Mailbox *mview_mailbox(struct MailboxView *mv)
 {
   return mv ? mv->mailbox : NULL;
+}
+
+/**
+ * mview_eview_by_email - Find the EmailView for a given Email
+ * @param mv MailboxView
+ * @param e  Email to look up
+ * @retval ptr  EmailView
+ * @retval NULL Not found
+ */
+struct EmailView *mview_eview_by_email(struct MailboxView *mv, struct Email *e)
+{
+  if (!mv || !mv->eview_hash || !e)
+    return NULL;
+
+  return mutt_hash_int_find(mv->eview_hash, (intptr_t) e);
 }
 
 /**
