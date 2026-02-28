@@ -1895,7 +1895,7 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   m->msg_flagged = count_query(db, qstr, limit);
   FREE(&qstr);
 
-  rc = (m->msg_new > 0) ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
+  rc = (m->msg_unread > 0) ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
 done:
   if (db)
   {
