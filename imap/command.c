@@ -1545,6 +1545,14 @@ void imap_cmd_finish(struct ImapAccountData *adata)
       }
     }
 
+    /* imap_read_headers may have triggered a fatal error that NULLed
+     * adata->mailbox.  Re-check before accessing mdata further. */
+    if (!adata->mailbox)
+    {
+      adata->status = 0;
+      return;
+    }
+
     // And to finish inform about MUTT_REOPEN if needed
     if (mdata->reopen & IMAP_EXPUNGE_PENDING && !(mdata->reopen & IMAP_EXPUNGE_EXPECTED))
       mdata->check_status |= IMAP_EXPUNGE_PENDING;
