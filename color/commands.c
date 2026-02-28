@@ -223,18 +223,11 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd, struct Buffe
     }
   }
 
-  unsigned int cid = MT_COLOR_NONE;
+  enum ColorId cid = MT_COLOR_NONE;
   color_debug(LL_DEBUG5, "uncolor: %s\n", buf_string(token));
   rc = parse_object(cmd, line, &cid, err);
   if (rc != MUTT_CMD_SUCCESS)
     goto done;
-
-  if (cid == -1)
-  {
-    buf_printf(err, _("%s: no such object"), buf_string(token));
-    rc = MUTT_CMD_ERROR;
-    goto done;
-  }
 
   if ((cid == MT_COLOR_STATUS) && !MoreArgs(line))
   {
