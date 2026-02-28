@@ -570,7 +570,6 @@ int dlg_pager(struct PagerView *pview)
     priv->search_compiled = false;
   }
   FREE(&priv->lines);
-  attr_color_list_clear(&priv->ansi_list);
   {
     struct AttrColor *ac = NULL;
     int count = 0;
@@ -580,6 +579,7 @@ int dlg_pager(struct PagerView *pview)
     }
     color_debug(LL_DEBUG5, "AnsiColors %d\n", count);
   }
+  attr_color_list_clear(&priv->ansi_list);
 
   priv->pview = NULL;
 
