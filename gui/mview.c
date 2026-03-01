@@ -65,6 +65,11 @@ void mview_sync_eviews(struct MailboxView *mv)
     mutt_mem_realloc(&mv->eviews, m->email_max * sizeof(struct EmailView *));
     memset(mv->eviews + mv->eview_max, 0,
            (m->email_max - mv->eview_max) * sizeof(struct EmailView *));
+
+    mutt_mem_realloc(&mv->v2r, m->email_max * sizeof(struct EmailView *));
+    memset(mv->v2r + mv->eview_max, 0,
+           (m->email_max - mv->eview_max) * sizeof(struct EmailView *));
+
     mv->eview_max = m->email_max;
   }
   mv->eview_hash = mutt_hash_int_new(m->email_max, MUTT_HASH_NO_FLAGS);

@@ -420,21 +420,41 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
   }
 
   /* adjust the virtual message numbers */
-  mv->vcount = 0;
-  for (int i = 0; i < m->msg_count; i++)
+  if (threaded)
   {
-    struct Email *e_cur = m->emails[i];
-    if (!e_cur)
-      break;
-
-    if ((e_cur->vnum != -1) || (e_cur->collapsed && e_cur->visible))
+    mv->vcount = 0;
+    for (int i = 0; i < m->msg_count; i++)
     {
-      e_cur->vnum = mv->vcount;
-      eview_free(&mv->v2r[mv->vcount]);
-      mv->v2r[mv->vcount] = eview_new(e_cur);
-      mv->vcount++;
+      struct Email *e_cur = m->emails[i];
+      if (!e_cur)
+        break;
+
+      if ((e_cur->vnum != -1) || (e_cur->collapsed && e_cur->visible))
+      {
+        e_cur->vnum = mv->vcount;
+        eview_free(&mv->v2r[mv->vcount]);
+        mv->v2r[mv->vcount] = eview_new(e_cur);
+        mv->vcount++;
+      }
+      e_cur->msgno = i;
     }
-    e_cur->msgno = i;
+  }
+  else
+  {
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e_cur = m->emails[i];
+      if (!e_cur)
+        break;
+      e_cur->msgno = i;
+    }
+
+    for (int i = 0; i < mv->vcount; i++)
+    {
+      if (!mv->v2r[i] || !mv->v2r[i]->email)
+        continue;
+      mv->v2r[i]->email->vnum = i;
+    }
   }
 
   /* re-collapse threads marked as collapsed */
