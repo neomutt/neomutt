@@ -172,15 +172,21 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
   struct Buffer *unique = buf_pool_get();
   maildir_canon_filename(unique, msg);
 
+  /* Prevent counter saturation by halving both when either gets large */
+  if ((new_hits > (UINT_MAX / 2)) || (cur_hits > (UINT_MAX / 2)))
+  {
+    new_hits /= 2;
+    cur_hits /= 2;
+  }
+
   FILE *fp = maildir_open_find_message_dir(folder, buf_string(unique),
                                            (new_hits > cur_hits) ? "new" : "cur", newname);
   if (fp || (errno != ENOENT))
   {
-    if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
-    {
-      new_hits += ((new_hits > cur_hits) ? 1 : 0);
-      cur_hits += ((new_hits > cur_hits) ? 0 : 1);
-    }
+    if (new_hits > cur_hits)
+      new_hits++;
+    else
+      cur_hits++;
 
     goto cleanup;
   }
@@ -188,11 +194,10 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
                                      (new_hits > cur_hits) ? "cur" : "new", newname);
   if (fp || (errno != ENOENT))
   {
-    if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
-    {
-      new_hits += ((new_hits > cur_hits) ? 0 : 1);
-      cur_hits += ((new_hits > cur_hits) ? 1 : 0);
-    }
+    if (new_hits > cur_hits)
+      cur_hits++;
+    else
+      new_hits++;
 
     goto cleanup;
   }
@@ -369,7 +374,13 @@ static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct
   }
 
   /* extract the subdir */
-  char *s = strrchr(msg->path, '/') + 1;
+  char *s = strrchr(msg->path, '/');
+  if (!s)
+  {
+    mutt_debug(LL_DEBUG1, "path '%s' lacks expected '/'\n", msg->path);
+    return -1;
+  }
+  s++;
   mutt_str_copy(subdir, s, 4);
 
   /* extract the flags */
@@ -383,7 +394,7 @@ static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct
   /* construct a new file name. */
   struct Buffer *path = buf_pool_get();
   struct Buffer *full = buf_pool_get();
-  while (true)
+  for (int retries = 0; retries < 16; retries++)
   {
     buf_printf(path, "%s/%lld.R%" PRIu64 ".%s%s", subdir, (long long) mutt_date_now(),
                mutt_rand64(), NONULL(ShortHostname), suffix);
@@ -435,6 +446,10 @@ static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct
     }
   }
 
+  /* All retries exhausted */
+  mutt_debug(LL_DEBUG1, "failed after 16 retries\n");
+  rc = -1;
+
 cleanup:
   buf_pool_release(&path);
   buf_pool_release(&full);
@@ -463,7 +478,11 @@ int maildir_rewrite_message(struct Mailbox *m, struct Email *e)
   struct Message *src = mx_msg_open(m, e);
   struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NO_FLAGS);
   if (!src || !dest)
+  {
+    mx_msg_close(m, &src);
+    mx_msg_close(m, &dest);
     return -1;
+  }
 
   int rc = mutt_copy_message(dest->fp, e, src, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN, 0);
   if (rc == 0)
@@ -555,7 +574,7 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
   mode_t old_umask = umask(new_umask);
   mutt_debug(LL_DEBUG3, "umask set to %03o\n", new_umask);
 
-  while (true)
+  for (int retries = 0; retries < 16; retries++)
   {
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
              mailbox_path(m), subdir, (long long) mutt_date_now(),
@@ -580,6 +599,13 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
       msg->path = mutt_str_dup(path);
       break;
     }
+  }
+
+  if (fd == -1)
+  {
+    umask(old_umask);
+    mutt_debug(LL_DEBUG1, "%s: failed after 16 retries\n", __func__);
+    return false;
   }
   umask(old_umask);
   mutt_debug(LL_DEBUG3, "umask set to %03o\n", old_umask);

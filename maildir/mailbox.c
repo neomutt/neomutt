@@ -179,7 +179,7 @@ bool maildir_parse_stream(FILE *fp, const char *fname, bool is_old, struct Email
   e->old = is_old;
   maildir_parse_flags(e, fname);
 
-  return e;
+  return true;
 }
 
 /**
@@ -319,7 +319,8 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
   if (SigInt)
   {
     SigInt = false;
-    return -2; /* action aborted */
+    rc = -2; /* action aborted */
+    goto cleanup;
   }
 
   ARRAY_SORT(mda, maildir_sort_inode, NULL);
@@ -723,6 +724,8 @@ void maildir_update_mtime(struct Mailbox *m)
   char buf[PATH_MAX] = { 0 };
   struct stat st = { 0 };
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
+  if (!mdata)
+    return;
 
   snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "cur");
   if (stat(buf, &st) == 0)
