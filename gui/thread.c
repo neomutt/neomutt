@@ -722,13 +722,11 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
   if (!mv)
     return;
 
-  struct Mailbox *m = mv->mailbox;
-  if (!m || !m->emails)
-    return;
-
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    struct Email *e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    struct Email *e = mv->eviews[i]->email;
     if (!e)
       break;
 
@@ -979,10 +977,11 @@ static void check_subjects(struct MailboxView *mv, bool init)
   if (!mv)
     return;
 
-  struct Mailbox *m = mv->mailbox;
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    struct Email *e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    struct Email *e = mv->eviews[i]->email;
     if (!e || !e->thread)
       continue;
 
@@ -1066,9 +1065,11 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
    * new message as an identical child.  if we didn't attach the message to a
    * MuttThread, make a new one for it. */
   const bool c_duplicate_threads = cs_subset_bool(NeoMutt->sub, "duplicate_threads");
-  for (i = 0; i < m->msg_count; i++)
+  for (i = 0; i < mv->eview_count; i++)
   {
-    e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    e = mv->eviews[i]->email;
     if (!e)
       continue;
 
@@ -1160,9 +1161,11 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   }
 
   /* thread by references */
-  for (i = 0; i < m->msg_count; i++)
+  for (i = 0; i < mv->eview_count; i++)
   {
-    e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    e = mv->eviews[i]->email;
     if (!e)
       break;
 
@@ -1396,30 +1399,34 @@ int mutt_parent_message(struct Email *e, bool find_root)
 
 /**
  * mutt_set_vnum - Set the virtual index number of all the messages in a mailbox
- * @param m       Mailbox
+ * @param mv Mailbox view
  * @retval num Size in bytes of all messages shown
  */
-off_t mutt_set_vnum(struct Mailbox *m)
+off_t mutt_set_vnum(struct MailboxView *mv)
 {
-  if (!m)
+  if (!mv)
     return 0;
 
   off_t vsize = 0;
+  struct Mailbox *m = mv->mailbox;
   const int padding = mx_msg_padding_size(m);
 
-  m->vcount = 0;
+  mv->vcount = 0;
 
-  for (int i = 0; i < m->msg_count; i++)
+  for (int i = 0; i < mv->eview_count; i++)
   {
-    struct Email *e = m->emails[i];
+    if (!mv->eviews[i])
+      continue;
+    struct Email *e = mv->eviews[i]->email;
     if (!e)
       break;
 
     if (e->vnum >= 0)
     {
-      e->vnum = m->vcount;
-      m->v2r[m->vcount] = i;
-      m->vcount++;
+      e->vnum = mv->vcount;
+      eview_free(&mv->v2r[mv->vcount]);
+      mv->v2r[mv->vcount] = eview_new(e);
+      mv->vcount++;
       vsize += e->body->length + e->body->offset - e->body->hdr_offset + padding;
     }
   }

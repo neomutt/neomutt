@@ -67,10 +67,13 @@ struct EmailCompare
  */
 static int email_sort_shim(const void *a, const void *b, void *sdata)
 {
-  const struct Email *ea = *(struct Email const *const *) a;
-  const struct Email *eb = *(struct Email const *const *) b;
   const struct EmailCompare *cmp = sdata;
-  return mutt_compare_emails(ea, eb, cmp->type, cmp->sort, cmp->sort_aux);
+  const struct EmailView *ev_a = *(struct EmailView const *const *) a;
+  const struct EmailView *ev_b = *(struct EmailView const *const *) b;
+
+  const struct Email *e_a = ev_a->email;
+  const struct Email *e_b = ev_b->email;
+  return mutt_compare_emails(e_a, e_b, cmp->type, cmp->sort, cmp->sort_aux);
 }
 
 /**
@@ -367,11 +370,14 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated
      * in that routine, so we must make sure to zero the vcount member.  */
-    m->vcount = 0;
+    mv->vcount = 0;
     mutt_clear_threads(mv->threads);
     mv->vsize = 0;
+    mview_sync_eviews(mv);
     return; /* nothing to do! */
   }
+
+  mview_sync_eviews(mv);
 
   if (m->verbose)
     mutt_message(_("Sorting mailbox..."));
@@ -409,32 +415,53 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
     cmp.type = mx_type(m);
     cmp.sort = cs_subset_sort(NeoMutt->sub, "sort");
     cmp.sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
-    mutt_qsort_r((void *) m->emails, m->msg_count, sizeof(struct Email *),
+    mutt_qsort_r((void *) mv->v2r, mv->vcount, sizeof(struct EmailView *),
                  email_sort_shim, &cmp);
   }
 
   /* adjust the virtual message numbers */
-  m->vcount = 0;
-  for (int i = 0; i < m->msg_count; i++)
+  if (threaded)
   {
-    struct Email *e_cur = m->emails[i];
-    if (!e_cur)
-      break;
-
-    if ((e_cur->vnum != -1) || (e_cur->collapsed && e_cur->visible))
+    mv->vcount = 0;
+    for (int i = 0; i < m->msg_count; i++)
     {
-      e_cur->vnum = m->vcount;
-      m->v2r[m->vcount] = i;
-      m->vcount++;
+      struct Email *e_cur = m->emails[i];
+      if (!e_cur)
+        break;
+
+      if ((e_cur->vnum != -1) || (e_cur->collapsed && e_cur->visible))
+      {
+        e_cur->vnum = mv->vcount;
+        eview_free(&mv->v2r[mv->vcount]);
+        mv->v2r[mv->vcount] = eview_new(e_cur);
+        mv->vcount++;
+      }
+      e_cur->msgno = i;
     }
-    e_cur->msgno = i;
+  }
+  else
+  {
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e_cur = m->emails[i];
+      if (!e_cur)
+        break;
+      e_cur->msgno = i;
+    }
+
+    for (int i = 0; i < mv->vcount; i++)
+    {
+      if (!mv->v2r[i] || !mv->v2r[i]->email)
+        continue;
+      mv->v2r[i]->email->vnum = i;
+    }
   }
 
   /* re-collapse threads marked as collapsed */
   if (threaded)
   {
     mutt_thread_collapse_collapsed(mv->threads);
-    mv->vsize = mutt_set_vnum(m);
+    mv->vsize = mutt_set_vnum(mv);
   }
 
   if (m->verbose)

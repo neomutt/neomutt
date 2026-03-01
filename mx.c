@@ -364,20 +364,17 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   m->msg_new = 0;
   m->msg_deleted = 0;
   m->msg_tagged = 0;
-  m->vcount = 0;
 
   enum MxOpenReturns rc = m->mx_ops->mbox_open(m);
   m->opened++;
 
   if ((rc == MX_OPEN_OK) || (rc == MX_OPEN_ABORT))
   {
-    if ((flags & MUTT_NOSORT) == 0)
-    {
-      /* avoid unnecessary work since the mailbox is completely unthreaded
-       * to begin with */
-      OptSortSubthreads = false;
-      OptNeedRescore = false;
-    }
+    /* avoid unnecessary work since the mailbox is completely unthreaded
+     * to begin with */
+    OptSortSubthreads = false;
+    OptNeedRescore = false;
+
     if (m->verbose)
       mutt_clear_error();
     if (rc == MX_OPEN_ABORT)
@@ -966,7 +963,6 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
         m->msg_deleted = 0;
       }
     }
-    mailbox_changed(m, NT_MAILBOX_UNTAG);
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
@@ -1009,22 +1005,6 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
       unlink(mailbox_path(m));
       mx_fastclose_mailbox(m, false);
       return MX_STATUS_OK;
-    }
-
-    /* if we haven't deleted any messages, we don't need to resort
-     * ... except for certain folder formats which need "unsorted"
-     * sort order in order to synchronize folders.
-     *
-     * MH and maildir are safe.  mbox-style seems to need re-sorting,
-     * at least with the new threading code.  */
-    if (purge || ((m->type != MUTT_MAILDIR) && (m->type != MUTT_MH)))
-    {
-      /* IMAP does this automatically after handling EXPUNGE */
-      if (m->type != MUTT_IMAP)
-      {
-        mailbox_changed(m, NT_MAILBOX_UPDATE);
-        mailbox_changed(m, NT_MAILBOX_RESORT);
-      }
     }
   }
 
@@ -1117,13 +1097,7 @@ enum MxStatus mx_mbox_check(struct Mailbox *m)
 
   m->last_checked = t;
 
-  enum MxStatus rc = m->mx_ops->mbox_check(m);
-  if ((rc == MX_STATUS_NEW_MAIL) || (rc == MX_STATUS_REOPENED))
-  {
-    mailbox_changed(m, NT_MAILBOX_INVALID);
-  }
-
-  return rc;
+  return m->mx_ops->mbox_check(m);
 }
 
 /**
@@ -1227,18 +1201,15 @@ void mx_alloc_memory(struct Mailbox *m, int req_size)
   if (m->emails)
   {
     MUTT_MEM_REALLOC(&m->emails, req_size, struct Email *);
-    MUTT_MEM_REALLOC(&m->v2r, req_size, int);
   }
   else
   {
     m->emails = MUTT_MEM_CALLOC(req_size, struct Email *);
-    m->v2r = MUTT_MEM_CALLOC(req_size, int);
   }
 
   for (int i = m->email_max; i < req_size; i++)
   {
     m->emails[i] = NULL;
-    m->v2r[i] = -1;
   }
 
   m->email_max = req_size;

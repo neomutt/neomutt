@@ -375,7 +375,7 @@ static bool resolve_email(struct IndexPrivateData *priv,
       break;
   }
 
-  if ((index < 0) || (index >= shared->mailbox->vcount))
+  if ((index < 0) || (index >= shared->mailbox_view->vcount))
   {
     // Resolve failed
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
@@ -406,7 +406,7 @@ bool index_next_undeleted(struct MuttWindow *win_index)
   const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
 
   int index = find_next_undeleted(shared->mailbox_view, menu_get_index(menu), uncollapse);
-  if ((index < 0) || (index >= shared->mailbox->vcount))
+  if ((index < 0) || (index >= shared->mailbox_view->vcount))
   {
     // Selection failed
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
@@ -633,7 +633,7 @@ static int op_display_message(struct IndexSharedData *shared,
   if (mutt_using_threads() && shared->email->collapsed)
   {
     mutt_uncollapse_thread(shared->email);
-    mutt_set_vnum(shared->mailbox);
+    mutt_set_vnum(shared->mailbox_view);
     const bool c_uncollapse_jump = cs_subset_bool(shared->sub, "uncollapse_jump");
     if (c_uncollapse_jump)
       menu_set_index(priv->menu, mutt_thread_next_unread(shared->email));
@@ -650,7 +650,7 @@ static int op_display_message(struct IndexSharedData *shared,
     ARRAY_FREE(&ea);
   }
   const int index = menu_get_index(priv->menu);
-  index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox, index));
+  index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox_view, index));
 
   const char *const c_pager = pager_get_pager(NeoMutt->sub);
   if (c_pager)
@@ -821,9 +821,12 @@ static int op_flag_message(struct IndexSharedData *shared,
   struct Mailbox *m = shared->mailbox;
   if (priv->tag_prefix)
   {
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (message_is_tagged(e))
@@ -954,7 +957,7 @@ static int op_jump(struct IndexSharedData *shared,
     if (mutt_messages_in_thread(shared->mailbox, e, MIT_POSITION) > 1)
     {
       mutt_uncollapse_thread(e);
-      mutt_set_vnum(shared->mailbox);
+      mutt_set_vnum(shared->mailbox_view);
     }
     menu_set_index(priv->menu, e->vnum);
     rc = FR_SUCCESS;
@@ -1192,7 +1195,7 @@ static int op_main_collapse_thread(struct IndexSharedData *shared,
   if (shared->email->collapsed)
   {
     int index = mutt_uncollapse_thread(shared->email);
-    mutt_set_vnum(shared->mailbox);
+    mutt_set_vnum(shared->mailbox_view);
     const bool c_uncollapse_jump = cs_subset_bool(shared->sub, "uncollapse_jump");
     if (c_uncollapse_jump)
       index = mutt_thread_next_unread(shared->email);
@@ -1201,7 +1204,7 @@ static int op_main_collapse_thread(struct IndexSharedData *shared,
   else if (mutt_thread_can_collapse(shared->email))
   {
     menu_set_index(priv->menu, mutt_collapse_thread(shared->email));
-    mutt_set_vnum(shared->mailbox);
+    mutt_set_vnum(shared->mailbox_view);
   }
   else
   {
@@ -1272,14 +1275,14 @@ static int op_main_limit(struct IndexSharedData *shared,
       ((op == OP_MAIN_LIMIT) && (mutt_pattern_func(shared->mailbox_view, MUTT_LIMIT,
                                                    _("Limit to messages matching: ")) == 0)))
   {
-    priv->menu->max = shared->mailbox->vcount;
+    priv->menu->max = shared->mailbox_view->vcount;
     menu_set_index(priv->menu, 0);
     if (old_index >= 0)
     {
       /* try to find what used to be the current message */
-      for (size_t i = 0; i < shared->mailbox->vcount; i++)
+      for (size_t i = 0; i < shared->mailbox_view->vcount; i++)
       {
-        struct Email *e = mutt_get_virt_email(shared->mailbox, i);
+        struct Email *e = mutt_get_virt_email(shared->mailbox_view, i);
         if (!e)
           continue;
         if (e->index == old_index)
@@ -1417,9 +1420,12 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
     if (m->type == MUTT_NOTMUCH)
       nm_db_longrun_init(m, true);
 #endif
-    for (int px = 0, i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (int px = 0, i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (!message_is_tagged(e))
@@ -1496,13 +1502,13 @@ static int op_main_next_new(struct IndexSharedData *shared,
   int index = -1;
   const bool threaded = mutt_using_threads();
   const int op = event->op;
-  for (size_t i = 0; i != shared->mailbox->vcount; i++)
+  for (size_t i = 0; i != shared->mailbox_view->vcount; i++)
   {
     if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_NEXT_UNREAD) ||
         (op == OP_MAIN_NEXT_NEW_THEN_UNREAD))
     {
       mcur++;
-      if (mcur > (shared->mailbox->vcount - 1))
+      if (mcur > (shared->mailbox_view->vcount - 1))
       {
         mcur = 0;
       }
@@ -1512,11 +1518,11 @@ static int op_main_next_new(struct IndexSharedData *shared,
       mcur--;
       if (mcur < 0)
       {
-        mcur = shared->mailbox->vcount - 1;
+        mcur = shared->mailbox_view->vcount - 1;
       }
     }
 
-    struct Email *e = mutt_get_virt_email(shared->mailbox, mcur);
+    struct Email *e = mutt_get_virt_email(shared->mailbox_view, mcur);
     if (!e)
       break;
     if (e->collapsed && threaded)
@@ -1657,7 +1663,7 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
                                   struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   int index = menu_get_index(priv->menu);
-  if (index >= (shared->mailbox->vcount - 1))
+  if (index >= (shared->mailbox_view->vcount - 1))
   {
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     mutt_message(_("You are on the last message"));
@@ -1749,9 +1755,12 @@ static int op_main_quasi_delete(struct IndexSharedData *shared,
   if (priv->tag_prefix)
   {
     struct Mailbox *m = shared->mailbox;
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (message_is_tagged(e))
@@ -1879,13 +1888,13 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
   if (!shared->mailbox || (shared->mailbox->msg_count == 0) || shared->mailbox->readonly)
     return FR_NO_ACTION;
 
-  int ovc = shared->mailbox->vcount;
+  int ovc = shared->mailbox_view->vcount;
   int oc = shared->mailbox->msg_count;
   struct Email *e = NULL;
 
   /* don't attempt to move the cursor if there are no visible messages in the current limit */
   int index = menu_get_index(priv->menu);
-  if (index < shared->mailbox->vcount)
+  if (index < shared->mailbox_view->vcount)
   {
     /* threads may be reordered, so figure out what header the cursor
      * should be on. */
@@ -1897,17 +1906,17 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
     if (newidx < 0)
       newidx = find_previous_undeleted(shared->mailbox_view, index, false);
     if (newidx >= 0)
-      e = mutt_get_virt_email(shared->mailbox, newidx);
+      e = mutt_get_virt_email(shared->mailbox_view, newidx);
   }
 
   enum MxStatus check = mx_mbox_sync(shared->mailbox);
   if (check == MX_STATUS_OK)
   {
-    if (e && (shared->mailbox->vcount != ovc))
+    if (e && (shared->mailbox_view->vcount != ovc))
     {
-      for (size_t i = 0; i < shared->mailbox->vcount; i++)
+      for (size_t i = 0; i < shared->mailbox_view->vcount; i++)
       {
-        struct Email *e2 = mutt_get_virt_email(shared->mailbox, i);
+        struct Email *e2 = mutt_get_virt_email(shared->mailbox_view, i);
         if (e2 == e)
         {
           menu_set_index(priv->menu, i);
@@ -1925,7 +1934,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
   /* do a sanity check even if mx_mbox_sync failed.  */
 
   index = menu_get_index(priv->menu);
-  if ((index < 0) || (shared->mailbox && (index >= shared->mailbox->vcount)))
+  if ((index < 0) || (shared->mailbox && (index >= shared->mailbox_view->vcount)))
   {
     menu_set_index(priv->menu, find_first_message(shared->mailbox_view));
   }
@@ -1936,7 +1945,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
     mview_free(&shared->mailbox_view);
   }
 
-  priv->menu->max = shared->mailbox->vcount;
+  priv->menu->max = shared->mailbox_view->vcount;
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
   struct EventMailbox ev_m = { shared->mailbox };
@@ -2055,7 +2064,7 @@ static int op_next_entry(struct IndexSharedData *shared,
                          struct IndexPrivateData *priv, const struct KeyEvent *event)
 {
   const int index = menu_get_index(priv->menu) + 1;
-  if (index >= shared->mailbox->vcount)
+  if (index >= shared->mailbox_view->vcount)
   {
     mutt_message(_("You are on the last message"));
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
@@ -2219,10 +2228,12 @@ static int op_resend(struct IndexSharedData *shared,
   int rc = -1;
   if (priv->tag_prefix)
   {
-    struct Mailbox *m = shared->mailbox;
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (message_is_tagged(e))
@@ -2356,9 +2367,12 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
   if (priv->tag_prefix && !c_auto_tag)
   {
     struct Mailbox *m = shared->mailbox;
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (e->visible)
@@ -2417,9 +2431,12 @@ static int op_toggle_new(struct IndexSharedData *shared,
   struct Mailbox *m = shared->mailbox;
   if (priv->tag_prefix)
   {
-    for (size_t i = 0; i < m->msg_count; i++)
+    struct MailboxView *mv = shared->mailbox_view;
+    for (size_t i = 0; i < mv->eview_count; i++)
     {
-      struct Email *e = m->emails[i];
+      if (!mv->eviews[i])
+        continue;
+      struct Email *e = mv->eviews[i]->email;
       if (!e)
         break;
       if (!message_is_tagged(e))
@@ -2703,9 +2720,11 @@ static int op_get_children(struct IndexSharedData *shared,
     else
     {
       /* try to restore old position */
-      for (int i = 0; i < m->msg_count; i++)
+      for (int i = 0; i < mv->eview_count; i++)
       {
-        e2 = m->emails[i];
+        if (!mv->eviews[i])
+          continue;
+        e2 = mv->eviews[i]->email;
         if (!e2)
           break;
         if (e2->index == oldindex)
@@ -2777,7 +2796,7 @@ static int op_get_message(struct IndexSharedData *shared,
     else if (e->collapsed)
     {
       mutt_uncollapse_thread(e);
-      mutt_set_vnum(m);
+      mutt_set_vnum(shared->mailbox_view);
       menu_set_index(priv->menu, e->vnum);
     }
     else
@@ -2979,7 +2998,7 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
   }
   priv->oldcount = shared->mailbox->msg_count;
   int index = menu_get_index(priv->menu);
-  struct Email *e_oldcur = mutt_get_virt_email(shared->mailbox, index);
+  struct Email *e_oldcur = mutt_get_virt_email(shared->mailbox_view, index);
   if (!e_oldcur)
     return FR_ERROR;
 
@@ -2999,7 +3018,7 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
     if (e_oldcur->collapsed || shared->mailbox_view->collapsed)
     {
       index = mutt_uncollapse_thread(e_oldcur);
-      mutt_set_vnum(shared->mailbox);
+      mutt_set_vnum(shared->mailbox_view);
     }
     menu_set_index(priv->menu, index);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -3145,8 +3164,7 @@ static bool prereq(struct IndexSharedData *shared, struct Menu *menu, CheckFlags
   }
 
   int index = menu_get_index(menu);
-  if (result && (checks & CHECK_VISIBLE) &&
-      ((index < 0) || (index >= mv->mailbox->vcount)))
+  if (result && (checks & CHECK_VISIBLE) && ((index < 0) || (index >= mv->vcount)))
   {
     mutt_error(_("No visible messages"));
     result = false;

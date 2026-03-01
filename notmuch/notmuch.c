@@ -70,7 +70,6 @@
 #include "editor/lib.h"
 #include "hcache/lib.h"
 #include "history/lib.h"
-#include "index/lib.h"
 #include "progress/lib.h"
 #include "adata.h"
 #include "edata.h"
@@ -1564,8 +1563,6 @@ int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
   mdata->mtime.tv_nsec = 0;
   rc = 0;
 
-  if (m->msg_count > mdata->oldmsgcount)
-    mailbox_changed(m, NT_MAILBOX_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);
@@ -2216,8 +2213,6 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
     }
   }
 
-  if (m->msg_count > mdata->oldmsgcount)
-    mailbox_changed(m, NT_MAILBOX_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);
@@ -2450,7 +2445,7 @@ static int nm_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   update_tags(msg, buf);
   update_email_flags(m, e, buf);
   update_email_tags(e, msg);
-  email_set_color(m, e);
+  //QWQ email_set_color(m, e);
 
   rc = 0;
   e->changed = true;

@@ -29,6 +29,8 @@
 
 struct Email;
 struct EmailArray;
+struct EmailView;
+struct HashTable;
 struct Mailbox;
 struct Notify;
 struct NotifyCallback;
@@ -44,6 +46,13 @@ struct MailboxView
   struct ThreadsContext *threads;    ///< Threads context
   int msg_in_pager;                  ///< Message currently shown in the pager
 
+  struct EmailView **eviews;         ///< Array of all EmailViews (1:1 with Mailbox.emails)
+  int eview_max;                     ///< Size of eviews array
+  int eview_count;                   ///< Number of active EmailViews
+  struct HashTable *eview_hash;      ///< Hash Table: Email pointer -> EmailView
+
+  struct EmailView **v2r;            ///< Array of visible Emails
+  int vcount;                        ///< The number of visible Emails
   struct Menu *menu;                 ///< Needed for pattern compilation
 
   bool collapsed : 1;                ///< Are all threads collapsed?
@@ -75,12 +84,13 @@ struct EventMview
 void                mview_free            (struct MailboxView **ptr);
 int                 mview_mailbox_observer(struct NotifyCallback *nc);
 struct MailboxView *mview_new             (struct Mailbox *m, struct Notify *parent);
-void                mview_update          (struct MailboxView *mv);
 bool                mview_has_limit       (const struct MailboxView *mv);
 struct Mailbox *    mview_mailbox         (struct MailboxView *mv);
+struct EmailView *  mview_eview_by_email  (struct MailboxView *mv, struct Email *e);
+void                mview_sync_eviews     (struct MailboxView *mv);
 
 bool message_is_tagged(struct Email *e);
-struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum);
+struct Email *mutt_get_virt_email(struct MailboxView *mv, int vnum);
 
 int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e, bool use_tagged);
 

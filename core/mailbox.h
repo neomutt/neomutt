@@ -94,8 +94,6 @@ struct Mailbox
 
   struct Email **emails;              ///< Array of Emails
   int email_max;                      ///< Size of `emails` array
-  int *v2r;                           ///< Mapping from virtual to real msgno
-  int vcount;                         ///< The number of virtual messages
 
   bool notified;                      ///< User has been notified
   enum MailboxType type;              ///< Mailbox type
@@ -173,13 +171,6 @@ enum NotifyMailbox
   NT_MAILBOX_DELETE,     ///< Mailbox is about to be deleted
   NT_MAILBOX_DELETE_ALL, ///< All Mailboxes are about to be deleted
   NT_MAILBOX_CHANGE,     ///< Mailbox has been changed
-
-  /* These don't really belong here as they are tied to GUI operations.
-   * Eventually, they'll be eliminated. */
-  NT_MAILBOX_INVALID,    ///< Email list was changed
-  NT_MAILBOX_RESORT,     ///< Email list needs resorting
-  NT_MAILBOX_UPDATE,     ///< Update internal tables
-  NT_MAILBOX_UNTAG,      ///< Clear the 'last-tagged' pointer
 };
 
 /**

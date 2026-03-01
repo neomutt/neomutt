@@ -135,19 +135,15 @@ const char *myvar_get(const char *var)
   return NULL;
 }
 
-struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
+struct Email *mutt_get_virt_email(struct MailboxView *mv, int vnum)
 {
-  if (!m || !m->emails || !m->v2r)
+  if (!mv || !mv->v2r)
     return NULL;
 
-  if ((vnum < 0) || (vnum >= m->vcount))
+  if ((vnum < 0) || (vnum >= mv->vcount))
     return NULL;
 
-  int inum = m->v2r[vnum];
-  if ((inum < 0) || (inum >= m->msg_count))
-    return NULL;
-
-  return m->emails[inum];
+  return mv->v2r[vnum]->email;
 }
 
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
