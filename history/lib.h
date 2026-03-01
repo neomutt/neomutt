@@ -52,14 +52,15 @@ struct StringArray;
  */
 enum HistoryClass
 {
-  HC_EXT_COMMAND, ///< External commands
-  HC_ALIAS,       ///< Aliases
-  HC_NEO_COMMAND, ///< NeoMutt commands
-  HC_FILE,        ///< Files
-  HC_PATTERN,     ///< Patterns
-  HC_OTHER,       ///< Miscellaneous strings
-  HC_MAILBOX,     ///< Mailboxes
-  HC_MAX,
+  HC_EXT_COMMAND,     ///< External commands
+  HC_ALIAS,           ///< Aliases
+  HC_NEO_COMMAND,     ///< NeoMutt commands
+  HC_FILE,            ///< Files
+  HC_PATTERN,         ///< Patterns
+  HC_OTHER,           ///< Miscellaneous strings
+  HC_MAILBOX,         ///< Mailboxes
+  HC_MAX,            
+  HC_NONE = HC_MAX,   ///< No History
 };
 
 /**

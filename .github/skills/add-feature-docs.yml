@@ -1,0 +1,372 @@
+name: add-feature-docs
+intent: Add a Feature Section to the NeoMutt Guide
+description: |
+  Create a new feature section in the NeoMutt Guide (docs/manual.xml.head),
+  written in DocBook XML. Features are the larger-scale improvements NeoMutt
+  has over Mutt and are shown separately on https://neomutt.org/feature.
+
+  The feature sections live in docs/manual.xml.head, between:
+    - First feature: <sect1 id="account-cmd">  (line ~12996)
+    - Last feature:  <sect1 id="use-threads-feature">  (line ~18481)
+
+  Features must be in **alphabetical order** by their sect1 id attribute.
+triggers:
+  - commands:
+      - "add feature docs"
+      - "document feature"
+      - "write feature section"
+      - "create feature page"
+  - files:
+      - "docs/manual.xml.head"
+tools:
+  - view
+  - edit
+  - grep
+  - bash
+inputs:
+  feature_id:
+    description: |
+      The DocBook id for the feature sect1, e.g. "sidebar", "ifdef", "compress".
+      Used as the XML id attribute and as a prefix for sub-section ids.
+    required: true
+  feature_title:
+    description: |
+      The human-readable title, e.g. "Sidebar Feature", "Ifdef Feature".
+      Conventionally ends with " Feature" unless the feature name is already
+      a noun phrase (e.g. "Compressed Folders Feature").
+    required: true
+  feature_subtitle:
+    description: |
+      A short, one-line description of what the feature does.
+      e.g. "Overview of mailboxes", "Conditional config options".
+    required: true
+
+instructions: |
+  ## Overview
+
+  A feature section is a `<sect1>` block inside `docs/manual.xml.head`.
+  Sub-sections are `<sect2>` elements, each with an id formed as
+  `{feature_id}-{subsection}` (e.g., `sidebar-variables`).
+
+  ## Sub-sections (in order, all optional except Credits)
+
+  Include only the sub-sections that are relevant to this feature.
+  The order must be preserved:
+
+  1.  **Support** – When the feature was added and any required dependencies.
+      Only include if the feature was added after 2016 or has optional deps.
+  2.  **Introduction** – What the feature does, written for non-technical users.
+      Be upbeat and positive. Explain the problem it solves.
+  3.  **Usage** – Practical how-to. Include `<screen>` examples.
+  4.  **Variables** – Config variables introduced by the feature.
+      Use a `<table>` with columns: Name, Type, Default (and optionally Description).
+  5.  **Commands** – New NeoMutt commands. Use `<cmdsynopsis>`.
+  6.  **Functions** – New NeoMutt functions (keybindable actions).
+      Use a `<table>` with columns: Menus, Function, Description (and optionally Default).
+  7.  **Colors** – New color objects. Use a `<table>` with columns: Name, Default Color, Description.
+  8.  **See Also** – Links to related manual sections using `<link linkend="...">`.
+  9.  **Limitations** – Known limitations or caveats. Honest but concise.
+  10. **neomuttrc** – A complete, practical example config file inside `<screen>`.
+      Comments use `<emphasis role="comment"># ...</emphasis>`.
+      End with `<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>`.
+  11. **Known Bugs** – Use `<para>None</para>` if there are none.
+  12. **Sort** – Sort values for any enum config variables. Use a `<table>`.
+  13. **Credits** – Comma-separated list of contributors. Always include.
+
+  ## DocBook XML Patterns
+
+  ### sect1 skeleton
+  ```xml
+      <sect1 id="FEATURE_ID">
+        <title>FEATURE TITLE</title>
+        <subtitle>FEATURE SUBTITLE</subtitle>
+
+        <!-- sub-sections here -->
+
+      </sect1>
+  ```
+
+  ### Support section
+  ```xml
+      <sect2 id="FEATURE_ID-support">
+        <title>Support</title>
+        <para><emphasis role="bold">Since:</emphasis> NeoMutt YYYY-MM-DD</para>
+        <!-- Optional: -->
+        <para><emphasis role="bold">Dependencies:</emphasis> Gpgme</para>
+      </sect2>
+  ```
+
+  ### Introduction section
+  ```xml
+      <sect2 id="FEATURE_ID-intro">
+        <title>Introduction</title>
+        <para>
+          Describe what the feature does in plain English...
+        </para>
+      </sect2>
+  ```
+
+  ### Variables table (3 or 4 columns)
+  ```xml
+      <sect2 id="FEATURE_ID-variables">
+        <title>Variables</title>
+        <table id="table-FEATURE_ID-variables">
+          <title>FEATURE Variables</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Name</entry>
+                <entry>Type</entry>
+                <entry>Default</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>variable_name</literal></entry>
+                <entry>boolean</entry>
+                <entry><literal>no</literal></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+  ```
+  Valid types: `boolean`, `number`, `string`, `enum`, `quad`.
+
+  ### Commands section
+  ```xml
+      <sect2 id="FEATURE_ID-commands">
+        <title>Commands</title>
+        <cmdsynopsis>
+          <command>command-name</command>
+          <arg choice="plain">
+            <replaceable class="parameter">argument</replaceable>
+          </arg>
+        </cmdsynopsis>
+        <para>Description of the command.</para>
+      </sect2>
+  ```
+
+  ### Functions table
+  ```xml
+      <sect2 id="FEATURE_ID-functions">
+        <title>Functions</title>
+        <para>
+          The FEATURE adds the following functions to NeoMutt.
+          By default, none of them are bound to keys.
+        </para>
+        <table id="table-FEATURE_ID-functions">
+          <title>FEATURE Functions</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Menus</entry>
+                <entry>Function</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>index,pager</entry>
+                <entry><literal>&lt;function-name&gt;</literal></entry>
+                <entry>What this function does</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+  ```
+  Common menus: `index`, `pager`, `compose`, `browser`, `attach`, `query`.
+
+  ### Colors table
+  ```xml
+      <sect2 id="FEATURE_ID-colors">
+        <title>Colors</title>
+        <table id="table-FEATURE_ID-colors">
+          <title>FEATURE Colors</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Name</entry>
+                <entry>Default Color</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>color_name</literal></entry>
+                <entry>default</entry>
+                <entry>What this color applies to</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+  ```
+
+  ### See Also section
+  ```xml
+      <sect2 id="FEATURE_ID-see-also">
+        <title>See Also</title>
+        <itemizedlist>
+          <listitem>
+            <para>
+              <link linkend="LINK_ID">Human-readable label</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </sect2>
+  ```
+  Common linkend values: `regex`, `patterns`, `color`, `hooks`,
+  `key-bindings`, `formatstrings`, `sidebar`, `notmuch`.
+
+  ### Limitations section
+  ```xml
+      <sect2 id="FEATURE_ID-limitations">
+        <title>Limitations</title>
+        <itemizedlist>
+          <listitem><para>Limitation description</para></listitem>
+        </itemizedlist>
+      </sect2>
+  ```
+
+  ### neomuttrc section
+  ```xml
+      <sect2 id="FEATURE_ID-neomuttrc">
+        <title>neomuttrc</title>
+  <screen>
+  <emphasis role="comment"># Example NeoMutt config file for the FEATURE_ID feature.</emphasis>
+
+  <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+  <emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
+  <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+  <emphasis role="comment"># Description of variable</emphasis>
+  set variable_name = value
+
+  <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+  <emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
+  <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+  bind index,pager KEY &lt;function-name&gt;
+
+  <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+  </screen>
+      </sect2>
+  ```
+  IMPORTANT: In `<screen>` blocks, use `&lt;` and `&gt;` for `<` and `>` in
+  config text, and `&amp;` for `&`. The `<emphasis role="comment">` tags are
+  used for comment text and DO NOT need escaping inside them.
+
+  ### Known Bugs section
+  ```xml
+      <sect2 id="FEATURE_ID-known-bugs">
+        <title>Known Bugs</title>
+        <para>
+          None
+        </para>
+      </sect2>
+  ```
+
+  ### Sort table
+  ```xml
+      <sect2 id="FEATURE_ID-sorting">
+        <title>Sort</title>
+        <table id="table-FEATURE_ID-sort">
+          <title>FEATURE Sort</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Sort</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>value</literal></entry>
+                <entry>Description of what this sort does</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+  ```
+
+  ### Credits section
+  ```xml
+      <sect2 id="FEATURE_ID-credits">
+        <title>Credits</title>
+        <para>
+          Name1, Name2, Name3
+        </para>
+      </sect2>
+  ```
+
+  ## Inline Markup
+
+  - Config variable names: `<literal>$variable_name</literal>` (with `$` prefix)
+  - Command/function names: `<literal>command-name</literal>`
+  - Function key names: `<literal>&lt;function-name&gt;</literal>`
+  - Technical terms/code: `<literal>value</literal>`
+  - Quotes: `<quote>text</quote>`
+  - Bold labels: `<emphasis role="bold">Label:</emphasis>`
+  - Cross-references: `<link linkend="id">text</link>`
+
+  ## Placement
+
+  Features are in **alphabetical order by sect1 id**. To find the correct
+  insertion point:
+
+  ```bash
+  grep -n 'sect1 id=' docs/manual.xml.head | grep -A1 -B1 'NEIGHBOURING_FEATURE'
+  ```
+
+  Insert the new `<sect1>...</sect1>` block between the closing `</sect1>` of
+  the preceding feature and the opening `<sect1` of the following feature.
+
+  ## Writing Style
+
+  - Write for a non-technical audience
+  - Be upbeat and positive about what the feature enables
+  - Use second person ("you can", "NeoMutt will")
+  - Give practical, copy-paste-ready config examples
+  - Explain *why* you'd use something, not just *what* it does
+  - Keep introductions concise (2–4 paragraphs)
+
+examples:
+  - description: Add documentation for a new "fuzzy-search" feature with variables and functions
+    prompt: |
+      Add a feature section to docs/manual.xml.head for the fuzzy-search feature.
+      - id: fuzzy-search
+      - title: Fuzzy Search Feature
+      - subtitle: Find emails with approximate matching
+      - Since: NeoMutt 2025-03-01
+      - Variables: fuzzy_search (boolean, default no), fuzzy_threshold (number, default 3)
+      - Functions: <fuzzy-search-toggle> in index menu
+      - Credits: Jane Smith, Bob Jones
+
+  - description: Add documentation for a small feature with only Introduction and Credits
+    prompt: |
+      Add a feature section to docs/manual.xml.head for the reply-with-xorig-patch feature.
+      Look at the existing entry at sect1 id="reply-with-xorig-patch" to understand
+      the minimal structure needed.
+
+success_criteria:
+  - "The new <sect1> block is valid DocBook XML"
+  - "Sub-section ids follow the pattern {feature_id}-{subsection}"
+  - "The feature is inserted in alphabetical order by id"
+  - "All <screen> blocks correctly escape < > & characters outside emphasis tags"
+  - "The neomuttrc example ends with: # vim: syntax=neomuttrc"
+  - "Credits sub-section is present"
+
+notes: |
+  - The manual.xml.head file is ~21000 lines; use grep to find the insertion point
+    rather than reading the whole file.
+  - Features between account-cmd and use-threads-feature are shown on neomutt.org/feature.
+  - Sub-sections not applicable to a feature should simply be omitted.
+  - The Support sub-section is only needed for newer features (post-2016) or those
+    with optional compile-time dependencies.
+  - When writing neomuttrc examples, include ALL variables with their defaults,
+    commented out or set, so users can copy-paste and tweak.
+  - In <screen> blocks, angle brackets in NeoMutt syntax (e.g., <sidebar-open>)
+    must be written as &lt;sidebar-open&gt; EXCEPT inside <emphasis> tags.
+  - Use grep to verify the new id doesn't already exist:
+      grep 'sect1 id="FEATURE_ID"' docs/manual.xml.head

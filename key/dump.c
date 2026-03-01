@@ -38,7 +38,6 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "dump.h"
-#include "menu/lib.h"
 #include "pager/lib.h"
 #include "get.h"
 #include "init.h"
@@ -295,9 +294,10 @@ void colon_bind(const struct MenuDefinition *md, FILE *fp)
   }
   else
   {
-    ARRAY_FOREACH(md, &MenuDefs)
+    struct MenuDefinition **mdp = NULL;
+    ARRAY_FOREACH(mdp, &MenuDefs)
     {
-      if (print_bind(md, fp) > 0)
+      if (print_bind((*mdp), fp) > 0)
       {
         fprintf(fp, "\n");
       }
@@ -366,9 +366,10 @@ void colon_macro(const struct MenuDefinition *md, FILE *fp)
   }
   else
   {
-    ARRAY_FOREACH(md, &MenuDefs)
+    struct MenuDefinition **mdp = NULL;
+    ARRAY_FOREACH(mdp, &MenuDefs)
     {
-      if (print_macro(md, fp) > 0)
+      if (print_macro((*mdp), fp) > 0)
       {
         fprintf(fp, "\n");
       }

@@ -51,10 +51,10 @@
  */
 struct ParseUnbind
 {
-  struct MenuDefinitionArray menus; ///< Menus to work on
-  bool all_menus;                   ///< Command affects all Menus
-  bool all_keys;                    ///< Command affects all key bindings
-  const char *key;                  ///< Key string to be removed
+  struct MenuDefinitionArray mda; ///< Menus to work on
+  bool all_menus;                 ///< Command affects all Menus
+  bool all_keys;                  ///< Command affects all key bindings
+  const char *key;                ///< Key string to be removed
 };
 
 /**
@@ -136,7 +136,7 @@ char *parse_keymap(const struct Command *cmd, struct MenuDefinitionArray *mda,
         buf_printf(err, _("%s: no such menu"), p);
         goto done;
       }
-      ARRAY_ADD(mda, *md);
+      ARRAY_ADD(mda, md);
       if (q)
         p = q + 1;
       else
@@ -188,7 +188,7 @@ void parse_menu(struct MenuDefinitionArray *menus, const char *s, struct Buffer 
     }
     else
     {
-      ARRAY_ADD(menus, *md);
+      ARRAY_ADD(menus, md);
     }
   }
 
@@ -281,9 +281,11 @@ enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line,
   if (mutt_istr_equal("noop", buf_string(token)))
   {
     keystr = buf_pool_get();
-    struct MenuDefinition *md = NULL;
-    ARRAY_FOREACH(md, &mda)
+    struct MenuDefinition **mdp = NULL;
+    ARRAY_FOREACH(mdp, &mda)
     {
+      struct MenuDefinition *md = *mdp;
+
       km_bind(md, key, OP_NULL, NULL, NULL, NULL); /* the 'unbind' command */
 
       buf_reset(keystr);
@@ -299,9 +301,11 @@ enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line,
   else
   {
     keystr = buf_pool_get();
-    struct MenuDefinition *md = NULL;
-    ARRAY_FOREACH(md, &mda)
+    struct MenuDefinition **mdp = NULL;
+    ARRAY_FOREACH(mdp, &mda)
     {
+      struct MenuDefinition *md = *mdp;
+
       int op = OP_NULL;
       struct SubMenu **ptr = NULL;
       ARRAY_FOREACH(ptr, &md->submenus)
@@ -478,7 +482,7 @@ bool parse_unbind_args(const struct Command *cmd, struct Buffer *line,
   }
   else
   {
-    parse_menu(&args->menus, buf_string(token), err);
+    parse_menu(&args->mda, buf_string(token), err);
     if (!buf_is_empty(err))
       goto done;
 
@@ -535,11 +539,11 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
   if (!cmd || !args || !err)
     return false;
 
-  keycode_t key_bytes[MAX_SEQ] = { 0 };
+  keycode_t key_bytes[KEY_SEQ_MAX_LEN] = { 0 };
   int key_len = 0;
   if (args->key)
   {
-    key_len = parse_keys(args->key, key_bytes, MAX_SEQ);
+    key_len = parse_keys(args->key, key_bytes, KEY_SEQ_MAX_LEN);
     if (key_len == 0)
       return false;
   }
@@ -547,16 +551,18 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
   bool success = false;
   struct Buffer *keystr = buf_pool_get();
   enum NotifyBinding nb = (cmd->id == CMD_UNBIND) ? NT_BINDING_DELETE : NT_MACRO_DELETE;
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     if (!args->all_menus)
     {
       bool found = false;
-      struct MenuDefinition *m = NULL;
-      ARRAY_FOREACH(m, &args->menus)
+      struct MenuDefinition **mdp2 = NULL;
+      ARRAY_FOREACH(mdp2, &args->mda)
       {
-        if (m->id == md->id)
+        if ((*mdp2)->id == md->id)
         {
           found = true;
           break;
@@ -651,7 +657,7 @@ enum CommandResult parse_unbind(const struct Command *cmd, struct Buffer *line,
     rc = MUTT_CMD_SUCCESS;
 
 done:
-  ARRAY_FREE(&args.menus);
+  ARRAY_FREE(&args.mda);
   FREE(&args.key);
   return rc;
 }
@@ -711,9 +717,11 @@ enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *line,
       else
       {
         keystr = buf_pool_get();
-        struct MenuDefinition *md = NULL;
-        ARRAY_FOREACH(md, &mda)
+        struct MenuDefinition **mdp = NULL;
+        ARRAY_FOREACH(mdp, &mda)
         {
+          struct MenuDefinition *md = *mdp;
+
           rc = km_bind(md, key, OP_MACRO, seq, token->data, NULL);
           if (rc == MUTT_CMD_SUCCESS)
           {
@@ -733,9 +741,11 @@ enum CommandResult parse_macro(const struct Command *cmd, struct Buffer *line,
     else
     {
       keystr = buf_pool_get();
-      struct MenuDefinition *md = NULL;
-      ARRAY_FOREACH(md, &mda)
+      struct MenuDefinition **mdp = NULL;
+      ARRAY_FOREACH(mdp, &mda)
       {
+        struct MenuDefinition *md = *mdp;
+
         rc = km_bind(md, key, OP_MACRO, token->data, NULL, NULL);
         if (rc == MUTT_CMD_SUCCESS)
         {

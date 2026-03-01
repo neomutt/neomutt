@@ -32,6 +32,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "menu.h"
+#include "get.h"
 #include "init.h"
 #include "keymap.h"
 
@@ -53,19 +54,20 @@ enum CommandResult km_bind(struct MenuDefinition *md, const char *key_str,
 {
   if (!md || ARRAY_EMPTY(&md->submenus))
     return MUTT_CMD_ERROR;
+  (void) err;
 
   enum CommandResult rc = MUTT_CMD_SUCCESS;
   struct Keymap *last = NULL;
   struct Keymap *np = NULL;
   struct Keymap *compare = NULL;
-  keycode_t buf[MAX_SEQ] = { 0 };
+  keycode_t buf[KEY_SEQ_MAX_LEN] = { 0 };
   size_t pos = 0;
   size_t lastpos = 0;
 
   struct SubMenu *sm = *ARRAY_FIRST(&md->submenus);
   struct KeymapList *kml = &sm->keymaps;
 
-  size_t len = parse_keys(key_str, buf, MAX_SEQ);
+  size_t len = parse_keys(key_str, buf, KEY_SEQ_MAX_LEN);
 
   struct Keymap *map = keymap_alloc(len, buf);
   map->op = op;
@@ -91,40 +93,23 @@ enum CommandResult km_bind(struct MenuDefinition *md, const char *key_str,
     }
     else /* equal keycodes */
     {
-      /* Don't warn on overwriting a 'noop' binding */
-      if ((np->len != len) && (np->op != OP_NULL))
+      if (np->len < len)
       {
-        static const char *guide_link = "https://neomutt.org/guide/configuration.html#bind-warnings";
-        /* Overwrite with the different lengths, warn */
-        struct Buffer *old_binding = buf_pool_get();
-        struct Buffer *new_binding = buf_pool_get();
-
-        keymap_expand_key(map, old_binding);
-        keymap_expand_key(np, new_binding);
-
-        char *err_msg = _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'");
-        if (err)
-        {
-          /* err was passed, put the string there */
-          buf_printf(err, err_msg, buf_string(old_binding),
-                     buf_string(new_binding), md->name, buf_string(new_binding));
-          buf_add_printf(err, "  %s", guide_link);
-        }
-        else
-        {
-          struct Buffer *tmp = buf_pool_get();
-          buf_printf(tmp, err_msg, buf_string(old_binding),
-                     buf_string(new_binding), md->name, buf_string(new_binding));
-          buf_add_printf(tmp, "  %s", guide_link);
-          mutt_error("%s", buf_string(tmp));
-          buf_pool_release(&tmp);
-        }
-        rc = MUTT_CMD_WARNING;
-
-        buf_pool_release(&old_binding);
-        buf_pool_release(&new_binding);
+        // Prefix-compatible binding, continue looking for insertion point.
+        last = np;
+        lastpos = np->len;
+        if (pos > np->eq)
+          pos = np->eq;
+        continue;
+      }
+      else if (np->len > len)
+      {
+        // Prefix-compatible binding, insert before the longer sequence.
+        map->eq = len;
+        break;
       }
 
+      // Exact same key sequence: replace existing mapping.
       map->eq = np->eq;
       STAILQ_REMOVE(kml, np, Keymap, entries);
       keymap_free(&np);
@@ -183,9 +168,10 @@ struct Keymap *km_find_func(const struct MenuDefinition *md, int func)
  */
 int km_get_op(const char *func)
 {
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
     struct SubMenu **smp = NULL;
 
     ARRAY_FOREACH(smp, &md->submenus)
@@ -211,9 +197,11 @@ int km_get_op(const char *func)
  */
 int km_get_op_menu(int mtype, const char *func)
 {
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     if (md->id != mtype)
       continue;
 
@@ -241,9 +229,11 @@ int km_get_op_menu(int mtype, const char *func)
  */
 struct MenuDefinition *menu_find(int menu)
 {
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     if (md->id == menu)
       return md;
   }
@@ -261,9 +251,11 @@ struct MenuDefinition *menu_find_by_name(const char *name)
   if (!name)
     return NULL;
 
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     if (mutt_str_equal(md->name, name))
       return md;
   }
