@@ -103,11 +103,17 @@ static int zstrm_close(struct Connection *conn)
 
   int rc = zctx->next_conn.close(&zctx->next_conn);
 
+  double read_ratio = (zctx->read.z.total_in != 0) ?
+                          (double) zctx->read.z.total_out /
+                              (double) zctx->read.z.total_in :
+                          0.0;
+  double write_ratio = (zctx->write.z.total_out != 0) ?
+                           (double) zctx->write.z.total_in /
+                               (double) zctx->write.z.total_out :
+                           0.0;
   mutt_debug(LL_DEBUG5, "read %lu->%lu (%.1fx) wrote %lu<-%lu (%.1fx)\n",
-             zctx->read.z.total_in, zctx->read.z.total_out,
-             (double) zctx->read.z.total_out / (double) zctx->read.z.total_in,
-             zctx->write.z.total_in, zctx->write.z.total_out,
-             (double) zctx->write.z.total_in / (double) zctx->write.z.total_out);
+             zctx->read.z.total_in, zctx->read.z.total_out, read_ratio,
+             zctx->write.z.total_in, zctx->write.z.total_out, write_ratio);
 
   // Restore the Connection's original functions
   conn->sockdata = zctx->next_conn.sockdata;
