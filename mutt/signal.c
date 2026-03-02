@@ -83,7 +83,7 @@ static void exit_print_uint(unsigned int n)
 
   if (write(STDOUT_FILENO, &digit, 1) == -1)
   {
-    // do nothing
+    // ignore - AS-safe, cannot handle error
   }
 }
 
@@ -97,7 +97,7 @@ static void exit_print_int(int n)
   {
     if (write(STDOUT_FILENO, "-", 1) == -1)
     {
-      // do nothing
+      // ignore - AS-safe, cannot handle error
     }
 
     n = -n;
@@ -116,7 +116,7 @@ static void exit_print_string(const char *str)
 
   if (write(STDOUT_FILENO, str, strlen(str)) == -1)
   {
-    // do nothing
+    // ignore - AS-safe, cannot handle error
   }
 }
 
