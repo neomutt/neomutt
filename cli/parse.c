@@ -93,7 +93,7 @@ static const struct option LongOptions[] = {
  * @param mode String to check
  * @retval enum #HelpMode, e.g. HM_CONFIG
  */
-int check_help_mode(const char *mode)
+enum HelpMode check_help_mode(const char *mode)
 {
   if (mutt_istr_equal(mode, "shared"))
     return HM_SHARED;
@@ -107,7 +107,7 @@ int check_help_mode(const char *mode)
     return HM_TUI;
   if (mutt_istr_equal(mode, "all"))
     return HM_ALL;
-  return 0;
+  return HM_NONE;
 }
 
 /**
