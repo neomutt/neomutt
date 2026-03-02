@@ -55,6 +55,7 @@ void mutt_update_content_info(struct Content *info, struct ContentState *s,
   int linelen = s->linelen;
   bool was_cr = s->was_cr;
 
+  /* A NULL buffer signals end-of-file; finalize any pending state */
   if (!buf) /* This signals EOF */
   {
     if (was_cr)
@@ -65,15 +66,18 @@ void mutt_update_content_info(struct Content *info, struct ContentState *s,
     return;
   }
 
+  /* Scan each byte in the buffer and classify it for MIME encoding decisions */
   for (; buflen; buf++, buflen--)
   {
     char ch = *buf;
 
+    /* A CR not followed by LF indicates binary content */
     if (was_cr)
     {
       was_cr = false;
       if (ch == '\n')
       {
+        /* CR+LF: complete line ending; record line statistics */
         if (whitespace)
           info->space = true;
         if (dot)
@@ -92,6 +96,7 @@ void mutt_update_content_info(struct Content *info, struct ContentState *s,
     linelen++;
     if (ch == '\n')
     {
+      /* Bare LF line ending */
       info->crlf++;
       if (whitespace)
         info->space = true;
@@ -112,6 +117,7 @@ void mutt_update_content_info(struct Content *info, struct ContentState *s,
     }
     else if (ch & 0x80)
     {
+      /* High-bit character: needs 8-bit or Base64 encoding */
       info->hibin++;
     }
     else if ((ch == '\t') || (ch == '\f'))
@@ -121,6 +127,7 @@ void mutt_update_content_info(struct Content *info, struct ContentState *s,
     }
     else if (ch == 0)
     {
+      /* NUL byte: forces binary encoding */
       info->nulbin++;
       info->lobin++;
     }
@@ -130,6 +137,7 @@ void mutt_update_content_info(struct Content *info, struct ContentState *s,
     }
     else
     {
+      /* Detect "From " at the start of a line (mbox from-quoting) */
       if (linelen == 1)
       {
         if ((ch == 'F') || (ch == 'f'))
@@ -143,6 +151,7 @@ void mutt_update_content_info(struct Content *info, struct ContentState *s,
       }
       else if (from)
       {
+        /* Check chars 2-4 for "rom" to complete "From" detection */
         if ((linelen == 2) && (ch != 'r'))
         {
           from = false;
