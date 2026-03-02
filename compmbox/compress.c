@@ -562,7 +562,7 @@ static enum MxStatus comp_mbox_check(struct Mailbox *m)
   if (!ops)
     return MX_STATUS_ERROR;
 
-  int size = mutt_file_get_size(m->realpath);
+  long size = mutt_file_get_size(m->realpath);
   if (size == ci->size)
     return MX_STATUS_OK;
 
