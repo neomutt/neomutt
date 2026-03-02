@@ -277,9 +277,13 @@ static int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e
     if (*cp == '\0')
     {
       if (!mutt_str_atoui(dep, &n))
+      {
         mutt_debug(LL_DEBUG2, "Invalid MH message number '%s'\n", dep);
-      if (n > hi)
+      }
+      else if (n > hi)
+      {
         hi = n;
+      }
     }
   }
   closedir(dir);
