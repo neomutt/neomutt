@@ -114,7 +114,7 @@ bool mutt_ts_capability(void)
   const char *term = mutt_str_getenv("TERM");
   for (const char **termp = known; *termp; termp++)
   {
-    if (term && !mutt_istr_startswith(term, *termp))
+    if (term && mutt_istr_startswith(term, *termp))
       return true;
   }
 

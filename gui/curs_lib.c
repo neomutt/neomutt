@@ -468,7 +468,10 @@ size_t mutt_strnwidth(const char *s, size_t n)
   {
     if (*s == MUTT_SPECIAL_INDEX)
     {
+      if (n < 2)
+        break;
       s += 2; /* skip the index coloring sequence */
+      n -= 2;
       k = 0;
       continue;
     }
@@ -611,7 +614,7 @@ char *mutt_str_expand_tabs(char *str, size_t *len, int tabwidth)
   }
 
   // expand tabs
-  for (int i = 0; i < *len; i++)
+  for (int i = 0; str[i] != '\0'; i++)
   {
     if (str[i] == '\t')
     {
