@@ -103,6 +103,7 @@ void filter_text(struct Buffer *buf, char **env_list)
 
   buf_reset(buf);
   size_t n = fread(buf->data, 1, buf->dsize - 1, fp_filter);
+  buf->data[n] = '\0';
   mutt_file_fclose(&fp_filter);
   buf_fix_dptr(buf);
 

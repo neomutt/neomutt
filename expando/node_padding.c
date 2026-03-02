@@ -79,7 +79,7 @@ int pad_string(const struct ExpandoNode *node, struct Buffer *buf, int max_cols)
   const int pad_cols = mutt_strnwidth(node->text, pad_len);
   int total_cols = 0;
 
-  if (pad_len != 0)
+  if ((pad_len != 0) && (pad_cols > 0))
   {
     while (pad_cols <= max_cols)
     {

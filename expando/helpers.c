@@ -100,6 +100,8 @@ void buf_lower_special(struct Buffer *buf)
   {
     if (*p == MUTT_SPECIAL_INDEX)
     {
+      if (!*(p + 1))
+        break;
       p += 2;
       continue;
     }
