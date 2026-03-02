@@ -943,7 +943,8 @@ static int op_jump(struct IndexSharedData *shared,
   {
     mutt_warning(_("Invalid message number"));
   }
-  else if (!shared->mailbox->emails[msg_num - 1]->visible)
+  else if (!shared->mailbox->emails[msg_num - 1] ||
+           !shared->mailbox->emails[msg_num - 1]->visible)
   {
     mutt_warning(_("That message is not visible"));
   }
@@ -1250,19 +1251,22 @@ static int op_main_limit(struct IndexSharedData *shared,
   const int op = event->op;
   if (op == OP_TOGGLE_READ)
   {
-    char buf2[1024] = { 0 };
+    struct Buffer *buf2 = buf_pool_get();
 
     if (!lmt || !mutt_strn_equal(shared->mailbox_view->pattern, "!~R!~D~s", 8))
     {
-      snprintf(buf2, sizeof(buf2), "!~R!~D~s%s", lmt ? shared->mailbox_view->pattern : ".*");
+      buf_printf(buf2, "!~R!~D~s%s", lmt ? shared->mailbox_view->pattern : ".*");
     }
     else
     {
-      mutt_str_copy(buf2, shared->mailbox_view->pattern + 8, sizeof(buf2));
-      if ((*buf2 == '\0') || mutt_strn_equal(buf2, ".*", 2))
-        snprintf(buf2, sizeof(buf2), "~A");
+      const char *pat = shared->mailbox_view->pattern + 8;
+      if ((*pat == '\0') || mutt_strn_equal(pat, ".*", 2))
+        buf_strcpy(buf2, "~A");
+      else
+        buf_strcpy(buf2, pat);
     }
-    mutt_str_replace(&shared->mailbox_view->pattern, buf2);
+    mutt_str_replace(&shared->mailbox_view->pattern, buf_string(buf2));
+    buf_pool_release(&buf2);
     mutt_pattern_func(shared->mailbox_view, MUTT_LIMIT, NULL);
   }
 
@@ -1857,10 +1861,11 @@ static int op_main_show_limit(struct IndexSharedData *shared,
 {
   if (mview_has_limit(shared->mailbox_view))
   {
-    char buf2[256] = { 0 };
+    struct Buffer *buf = buf_pool_get();
     /* L10N: ask for a limit to apply */
-    snprintf(buf2, sizeof(buf2), _("Limit: %s"), shared->mailbox_view->pattern);
-    mutt_message("%s", buf2);
+    buf_printf(buf, _("Limit: %s"), shared->mailbox_view->pattern);
+    mutt_message("%s", buf_string(buf));
+    buf_pool_release(&buf);
   }
   else
   {
@@ -1936,11 +1941,19 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
     mview_free(&shared->mailbox_view);
   }
 
-  priv->menu->max = shared->mailbox->vcount;
-  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+  if (shared->mailbox)
+  {
+    priv->menu->max = shared->mailbox->vcount;
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
-  struct EventMailbox ev_m = { shared->mailbox };
-  notify_send(shared->mailbox->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+    struct EventMailbox ev_m = { shared->mailbox };
+    notify_send(shared->mailbox->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+  }
+  else
+  {
+    priv->menu->max = 0;
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+  }
 
   return FR_SUCCESS;
 }
@@ -2034,8 +2047,8 @@ static int op_mark_msg(struct IndexSharedData *shared,
       buf_printf(buf, _("Message bound to %s"), str);
       mutt_message("%s", buf_string(buf));
       mutt_debug(LL_DEBUG1, "Mark: %s => %s\n", str, macro);
-      buf_pool_release(&buf);
     }
+    buf_pool_release(&buf);
   }
   else
   {
