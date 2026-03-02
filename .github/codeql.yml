@@ -1,8 +1,11 @@
 query-filters:
   - exclude:
       id: cpp/fixme-comment
+  # Exclude the default path-injection query; replaced by our custom version
+  # (neomutt/path-injection) that adds buf_pool_get() as a taint barrier.
+  - exclude:
+      id: cpp/path-injection
 
-# Include custom queries for Buffer pool sanitizers
 packs:
   - codeql/cpp-queries
   - .github/codeql-custom-queries

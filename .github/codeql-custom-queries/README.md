@@ -1,48 +1,74 @@
 # Custom CodeQL Queries for NeoMutt
 
-This directory contains custom CodeQL queries and libraries to reduce false positives in CodeQL security scanning.
+## The problem
 
-## Buffer Pool Sanitizers
+CodeQL's `cpp/path-injection` query ("Uncontrolled data used in path
+expression") produces false positives because of NeoMutt's Buffer Pool.
 
-### Problem
+The pattern:
 
-CodeQL was reporting false positives related to NeoMutt's Buffer Pool:
+1. **Code1** gets a Buffer from the pool — `buf_pool_get()`
+2. **Code1** writes untrusted data into the Buffer
+3. **Code1** returns the Buffer — `buf_pool_release()`, which calls
+   `buf_reset()` → `memset()` to zero-fill the storage
+4. **Code2** calls `buf_pool_get()` and receives the *same* Buffer
+5. CodeQL considers the Buffer still tainted (it isn't — step 3 cleared it)
 
-1. A function gets a Buffer from the Buffer Pool using `buf_pool_get()`
-2. It reads into that Buffer from untrusted input (e.g., user config)
-3. It returns the Buffer to the Pool using `buf_pool_release()`
-4. Later, another function gets that same Buffer from the Pool
-5. CodeQL incorrectly believed the Buffer was still tainted
+## How the fix works
 
-This is a false positive because `buf_pool_release()` calls `buf_reset()` which uses `memset()` to clear the Buffer's memory.
+### Step 1 — Exclude the default query
 
-### Solution
+`.github/codeql.yml` filters out the stock `cpp/path-injection` query so it
+never runs:
 
-We created custom CodeQL sanitizers that recognize when Buffers are cleared:
+```yaml
+query-filters:
+  - exclude:
+      id: cpp/path-injection
+```
 
-- **`CustomSanitizers.qll`**: A library file that defines `BufferPoolSanitizer` class
-- **`TaintWithBufferSanitizers.ql`**: A query that uses these sanitizers for taint tracking
+### Step 2 — Run a replacement query
 
-### Sanitized Functions
+`TaintedPath.ql` is a copy of the upstream query (from `github/codeql`,
+`cpp/ql/src/Security/CWE/CWE-022/TaintedPath.ql`) with one extra barrier
+clause added to `isBarrier()`:
 
-The following functions are recognized as sanitizers:
+```ql
+exists(Call call |
+  call.getTarget().hasName("buf_pool_get") and
+  (
+    node.asExpr() = call
+    or
+    node.asIndirectExpr() = call
+  )
+)
+```
 
-- `buf_reset(buf)`: Clears the Buffer with `memset(buf->data, 0, buf->dsize)`
-- `buf_pool_release(&buf)`: Calls `buf_reset()` internally before returning Buffer to Pool
-- `memset(ptr, 0, size)`: Explicitly clears memory to zero
-- `buf_pool_get()`: Returns a clean Buffer from the Pool
+This tells the taint-tracking engine: the value returned by `buf_pool_get()`
+is clean — do not propagate taint through it.
 
-## Files
+The replacement query is registered as `neomutt/path-injection` and included
+via the `packs` list in `.github/codeql.yml`.
 
-- **`qlpack.yml`**: Defines the CodeQL query pack
-- **`CustomSanitizers.qll`**: Library with sanitizer definitions
-- **`TaintWithBufferSanitizers.ql`**: Taint tracking query using the sanitizers
+### Step 3 — Model extensions (defence in depth)
 
-## Usage
+`models/neomutt.model.yml` uses CodeQL's data-extension mechanism to declare
+two additional models:
 
-These queries are automatically included by the GitHub Actions CodeQL workflow via the configuration in `.github/codeql.yml`.
+* **`barrierModel`** — marks the `buf_pool_get()` return value as a
+  `path-injection` barrier (for any query that consumes barrier models).
+* **`neutralModel`** — tells CodeQL that `buf_pool_get()` and
+  `buf_pool_release()` have no taint-propagating data flow, preventing
+  auto-generated flow summaries through the internal `BufferPool` array.
 
-## References
+These are loaded automatically because `qlpack.yml` declares
+`extensionTargets` and `dataExtensions` pointing at `codeql/cpp-all`.
 
-- [CodeQL C/C++ documentation](https://codeql.github.com/docs/codeql-language-guides/codeql-for-cpp/)
-- [CodeQL taint tracking](https://codeql.github.com/docs/codeql-language-guides/using-flow-labels-for-precise-data-flow-analysis/)
+## Maintenance
+
+When the upstream `cpp/path-injection` query changes (new barriers, sources,
+or sinks), `TaintedPath.ql` should be updated to match.  The upstream source
+lives at:
+
+https://github.com/github/codeql/blob/main/cpp/ql/src/Security/CWE/CWE-022/TaintedPath.ql
+

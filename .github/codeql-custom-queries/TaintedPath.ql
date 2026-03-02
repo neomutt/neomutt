@@ -1,0 +1,137 @@
+/**
+ * @name Uncontrolled data used in path expression
+ * @description Accessing paths influenced by users can allow an
+ *              attacker to access unexpected resources.
+ * @kind path-problem
+ * @problem.severity warning
+ * @security-severity 7.5
+ * @precision medium
+ * @id neomutt/path-injection
+ * @tags security
+ *       external/cwe/cwe-022
+ *       external/cwe/cwe-023
+ *       external/cwe/cwe-036
+ *       external/cwe/cwe-073
+ */
+
+// This is a customized version of the standard cpp/path-injection query from
+// github/codeql (cpp/ql/src/Security/CWE/CWE-022/TaintedPath.ql).
+//
+// It adds a barrier for NeoMutt's Buffer Pool: buf_pool_get() returns a buffer
+// that was cleared by buf_reset() -> memset() before being returned to the pool.
+// The standard query does not recognize this sanitization, causing false positives
+// when a buffer is reused from the pool.
+
+import cpp
+import semmle.code.cpp.security.FunctionWithWrappers
+import semmle.code.cpp.security.FlowSources
+import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import TaintedPath::PathGraph
+
+/**
+ * A function for opening a file.
+ */
+class FileFunction extends FunctionWithWrappers {
+  FileFunction() {
+    exists(string nme | this.hasGlobalName(nme) |
+      nme = ["fopen", "_fopen", "_wfopen", "open", "_open", "_wopen"]
+      or
+      // create file function on windows
+      nme.matches("CreateFile%")
+    )
+    or
+    this.hasQualifiedName("std", "fopen")
+    or
+    // on any of the fstream classes, or filebuf
+    exists(string nme | this.getDeclaringType().hasQualifiedName("std", nme) |
+      nme = ["basic_fstream", "basic_ifstream", "basic_ofstream", "basic_filebuf"]
+    ) and
+    // we look for either the open method or the constructor
+    (this.getName() = "open" or this instanceof Constructor)
+  }
+
+  // conveniently, all of these functions take the path as the first parameter!
+  override predicate interestingArg(int arg) { arg = 0 }
+}
+
+/**
+ * Holds for a variable that has any kind of upper-bound check anywhere in the program.
+ * This is biased towards being inclusive and being a coarse overapproximation because
+ * there are a lot of valid ways of doing an upper bounds checks if we don't consider
+ * where it occurs, for example:
+ * ```cpp
+ *   if (x < 10) { sink(x); }
+ *
+ *   if (10 > y) { sink(y); }
+ *
+ *   if (z > 10) { z = 10; }
+ *   sink(z);
+ * ```
+ */
+predicate hasUpperBoundsCheck(Variable var) {
+  exists(RelationalOperation oper, VariableAccess access |
+    oper.getAnOperand() = access and
+    access.getTarget() = var and
+    // Comparing to 0 is not an upper bound check
+    not oper.getAnOperand().getValue() = "0"
+  )
+}
+
+module TaintedPathConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
+
+  predicate isSink(DataFlow::Node node) {
+    exists(FileFunction fileFunction |
+      fileFunction.outermostWrapperFunctionCall(node.asIndirectArgument(), _)
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.asExpr().(Call).getTarget().getUnspecifiedType() instanceof ArithmeticType
+    or
+    exists(LoadInstruction load, Variable checkedVar |
+      load = node.asInstruction() and
+      checkedVar = load.getSourceAddress().(VariableAddressInstruction).getAstVariable() and
+      hasUpperBoundsCheck(checkedVar)
+    )
+    or
+    // NeoMutt Buffer Pool sanitizer: buf_pool_get() returns a clean buffer.
+    // Before a buffer is returned to the pool, buf_pool_release() calls
+    // buf_reset() which uses memset() to zero out the buffer's data.
+    // Any previous taint is therefore removed.
+    exists(Call call |
+      call.getTarget().hasName("buf_pool_get") and
+      (
+        node.asExpr() = call
+        or
+        node.asIndirectExpr() = call
+      )
+    )
+  }
+
+  predicate isBarrierOut(DataFlow::Node node) {
+    // make sinks barriers so that we only report the closest instance
+    isSink(node)
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.asIndirectArgument().getLocation()
+  }
+}
+
+module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
+
+from
+  FileFunction fileFunction, Expr taintedArg, FlowSource taintSource,
+  TaintedPath::PathNode sourceNode, TaintedPath::PathNode sinkNode, string callChain
+where
+  taintedArg = sinkNode.getNode().asIndirectArgument() and
+  fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
+  TaintedPath::flowPath(sourceNode, sinkNode) and
+  taintSource = sourceNode.getNode()
+select taintedArg, sourceNode, sinkNode,
+  "This argument to a file access function is derived from $@ and then passed to " + callChain + ".",
+  taintSource, "user input (" + taintSource.getSourceType() + ")"
