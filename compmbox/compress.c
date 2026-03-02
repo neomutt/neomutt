@@ -136,6 +136,10 @@ static bool lock_realpath(struct Mailbox *m, bool excl)
     m->readonly = true;
     return true;
   }
+  else
+  {
+    mutt_file_fclose(&ci->fp_lock);
+  }
 
   return r == 0;
 }
