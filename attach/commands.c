@@ -332,7 +332,7 @@ static enum CommandResult parse_attach_list(const struct Command *cmd, struct Bu
 
     len = strlen(a->minor);
     tmpminor = MUTT_MEM_MALLOC(len + 3, char);
-    strcpy(&tmpminor[1], a->minor);
+    memcpy(&tmpminor[1], a->minor, len);
     tmpminor[0] = '^';
     tmpminor[len + 1] = '$';
     tmpminor[len + 2] = '\0';
