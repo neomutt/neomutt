@@ -797,8 +797,12 @@ const char *buf_rfind(const struct Buffer *buf, const char *str)
   if (buf_is_empty(buf) || !str)
     return NULL;
 
-  int len = strlen(str);
-  const char *end = buf->data + buf->dsize - len;
+  size_t len = strlen(str);
+  size_t slen = buf_len(buf);
+  if (len > slen)
+    return NULL;
+
+  const char *end = buf->data + slen - len;
 
   for (const char *p = end; p >= buf->data; p--)
   {
