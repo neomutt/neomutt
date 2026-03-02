@@ -916,7 +916,7 @@ int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
   }
 
   if (!var || !cdef)
-    return INT_MIN; // LCOV_EXCL_LINE
+    return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
   if (!cst)
   {
@@ -975,7 +975,7 @@ int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
   }
 
   if (!var || !cdef)
-    return INT_MIN; // LCOV_EXCL_LINE
+    return CSR_ERR_CODE; // LCOV_EXCL_LINE
 
   if (!cst)
   {
