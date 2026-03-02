@@ -133,27 +133,33 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
   int rc = pop_query(adata, buf, sizeof(buf));
   if (rc == 0)
   {
-    sscanf(buf, "+OK %d %zu", &index, &length);
-
-    snprintf(buf, sizeof(buf), "TOP %d 0\r\n", edata->refno);
-    rc = pop_fetch_data(adata, buf, NULL, fetch_message, fp);
-
-    if (adata->cmd_top == 2)
+    if (sscanf(buf, "+OK %d %zu", &index, &length) == 2)
     {
-      if (rc == 0)
-      {
-        adata->cmd_top = 1;
+      snprintf(buf, sizeof(buf), "TOP %d 0\r\n", edata->refno);
+      rc = pop_fetch_data(adata, buf, NULL, fetch_message, fp);
 
-        mutt_debug(LL_DEBUG1, "set TOP capability\n");
+      if (adata->cmd_top == 2)
+      {
+        if (rc == 0)
+        {
+          adata->cmd_top = 1;
+
+          mutt_debug(LL_DEBUG1, "set TOP capability\n");
+        }
+
+        if (rc == -2)
+        {
+          adata->cmd_top = 0;
+
+          mutt_debug(LL_DEBUG1, "unset TOP capability\n");
+          snprintf(adata->err_msg, sizeof(adata->err_msg), "%s",
+                   _("Command TOP is not supported by server"));
+        }
       }
-
-      if (rc == -2)
+      else
       {
-        adata->cmd_top = 0;
-
-        mutt_debug(LL_DEBUG1, "unset TOP capability\n");
-        snprintf(adata->err_msg, sizeof(adata->err_msg), "%s",
-                 _("Command TOP is not supported by server"));
+        mutt_debug(LL_DEBUG1, "Malformed LIST response: %s\n", buf);
+        rc = -1;
       }
     }
   }
@@ -205,7 +211,7 @@ static int fetch_uidl(const char *line, void *data)
 
   errno = 0;
   int index = strtol(line, &endp, 10);
-  if (errno)
+  if ((errno != 0) || (endp == line))
     return -1;
   while (*endp == ' ')
     endp++;

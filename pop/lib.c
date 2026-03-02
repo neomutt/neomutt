@@ -406,8 +406,9 @@ int pop_open_connection(struct PopAccountData *adata)
     return rc;
   }
 
-  unsigned int n = 0, size = 0;
-  sscanf(buf, "+OK %u %u", &n, &size);
+  unsigned int n = 0;
+  size_t size = 0;
+  sscanf(buf, "+OK %u %zu", &n, &size);
   adata->size = size;
   return 0;
 
@@ -580,7 +581,7 @@ static int check_uidl(const char *line, void *data)
 
   errno = 0;
   unsigned int index = strtoul(line, &endp, 10);
-  if (errno != 0)
+  if ((errno != 0) || (endp == line))
     return -1;
   while (*endp == ' ')
     endp++;
