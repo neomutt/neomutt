@@ -272,7 +272,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
                cd->match_list[(numtabs - 2) % cd->num_matched]);
     }
 
-    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
+    mutt_str_copy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
     buf_fix_dptr(buf);
   }
   else if (buf_startswith(buf, "exec"))
@@ -338,7 +338,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
                cd->match_list[(numtabs - 2) % cd->num_matched]);
     }
 
-    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
+    mutt_str_copy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
     buf_fix_dptr(buf);
   }
   else
