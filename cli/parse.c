@@ -432,13 +432,29 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
       {
         if (opt == '?')
         {
-          // L10N: e.g. `neomutt -X`
-          mutt_warning(_("Invalid option: %c"), optopt);
+          if (optopt)
+          {
+            // L10N: e.g. `neomutt -X`
+            mutt_warning(_("Invalid option: -%c"), optopt);
+          }
+          else
+          {
+            // L10N: e.g. `neomutt --foobar`
+            mutt_warning(_("Invalid option: %s"), argv[optind - 1]);
+          }
         }
         else if (opt == ':')
         {
-          // L10N: e.g. `neomutt -F`
-          mutt_warning(_("Option %c requires an argument"), optopt);
+          if (optopt)
+          {
+            // L10N: e.g. `neomutt -F`
+            mutt_warning(_("Option -%c requires an argument"), optopt);
+          }
+          else
+          {
+            // L10N: e.g. `neomutt --config`
+            mutt_warning(_("Option %s requires an argument"), argv[optind - 1]);
+          }
         }
 
         cli->help.help = true;
