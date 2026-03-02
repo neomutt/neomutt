@@ -489,6 +489,8 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
 
   bool ws_pending = mutt_str_is_email_wsp(*s);
 
+  /* Parse the address string character by character, handling RFC 2822
+   * constructs: quoted strings, comments, route-addr, group syntax */
   s = mutt_str_skip_email_wsp(s);
   while (*s)
   {
@@ -496,6 +498,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
     {
       case ';':
       case ',':
+        /* Address separator: convert accumulated phrase into an address */
         if (phraselen != 0)
         {
           terminate_buffer(phrase, phraselen);
@@ -526,6 +529,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         break;
 
       case '(':
+        /* RFC 822 comment in parentheses */
         if ((commentlen != 0) && (commentlen < (sizeof(comment) - 1)))
           comment[commentlen++] = ' ';
         s = next_token(s, comment, &commentlen, sizeof(comment) - 1);
@@ -565,6 +569,7 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
 
       case '<':
       {
+        /* Route-addr: phrase before '<' becomes personal name */
         struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
         if (phraselen != 0)
