@@ -206,7 +206,8 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
       {
         if (linelen < 74)
         {
-          sprintf(line + linelen - 1, "=%2.2X", (unsigned char) line[linelen - 1]);
+          snprintf(line + linelen - 1, sizeof(line) - (linelen - 1), "=%2.2X",
+                   (unsigned char) line[linelen - 1]);
           fputs(line, fp_out);
         }
         else
@@ -239,7 +240,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
         fputc('\n', fp_out);
         linelen = 0;
       }
-      sprintf(line + linelen, "=%2.2X", (unsigned char) c);
+      snprintf(line + linelen, sizeof(line) - linelen, "=%2.2X", (unsigned char) c);
       linelen += 3;
     }
     else
@@ -258,7 +259,8 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
       /* take care of trailing whitespace */
       if (linelen < 74)
       {
-        sprintf(line + linelen - 1, "=%2.2X", (unsigned char) line[linelen - 1]);
+        snprintf(line + linelen - 1, sizeof(line) - (linelen - 1), "=%2.2X",
+                 (unsigned char) line[linelen - 1]);
       }
       else
       {
