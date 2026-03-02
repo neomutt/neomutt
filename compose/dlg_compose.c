@@ -254,9 +254,14 @@ static int compose_window_observer(struct NotifyCallback *nc)
  * @param b           Attachment
  * @param parent_type Attachment type, e.g #TYPE_MULTIPART
  * @param level       Nesting depth of attachment
+ *
+ * @note Recursion is limited to 20 levels to prevent stack overflow from
+ *       deeply nested MIME structures.
  */
 static void gen_attach_list(struct AttachCtx *actx, struct Body *b, int parent_type, int level)
 {
+  const int max_depth = 20;
+
   for (; b; b = b->next)
   {
     struct AttachPtr *ap = mutt_aptr_new();
@@ -265,7 +270,7 @@ static void gen_attach_list(struct AttachCtx *actx, struct Body *b, int parent_t
     b->aptr = ap;
     ap->parent_type = parent_type;
     ap->level = level;
-    if ((b->type == TYPE_MULTIPART) && b->parts &&
+    if ((level < max_depth) && (b->type == TYPE_MULTIPART) && b->parts &&
         (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(b)))
     {
       gen_attach_list(actx, b->parts, b->type, level + 1);

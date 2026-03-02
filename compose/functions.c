@@ -30,9 +30,7 @@
 
 #include "config.h"
 #include <errno.h>
-#include <limits.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -1627,6 +1625,8 @@ static int op_attachment_toggle_disposition(struct ComposeSharedData *shared,
                                             const struct KeyEvent *event)
 {
   /* toggle the content-disposition between inline/attachment */
+  if (!check_count(shared->adata->actx))
+    return FR_NO_ACTION;
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
   cur_att->body->disposition = (cur_att->body->disposition == DISP_INLINE) ?
@@ -1709,7 +1709,7 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, const struct 
 
   // update attachment list
   int i = aidx + 1;
-  while (actx->idx[i]->level > level)
+  while ((i < actx->idxlen) && (actx->idx[i]->level > level))
   {
     actx->idx[i]->level--;
     if (actx->idx[i]->level == level)
@@ -1720,8 +1720,6 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, const struct 
         actx->idx[i]->body->next = b_next;
     }
     i++;
-    if (i == actx->idxlen)
-      break;
   }
 
   // free memory
@@ -1792,9 +1790,10 @@ static int op_envelope_edit_headers(struct ComposeSharedData *shared,
   if (shared->email->body->type == TYPE_MULTIPART)
   {
     struct Body *b = shared->email->body->parts;
-    while (b->parts)
+    while (b && b->parts)
       b = b->parts;
-    mutt_edit_headers(NONULL(c_editor), b->filename, shared->email, shared->fcc);
+    if (b)
+      mutt_edit_headers(NONULL(c_editor), b->filename, shared->email, shared->fcc);
   }
   else
   {
@@ -1880,13 +1879,18 @@ static int op_compose_ispell(struct ComposeSharedData *shared, const struct KeyE
 {
   endwin();
   const char *const c_ispell = cs_subset_string(shared->sub, "ispell");
-  char buf[PATH_MAX] = { 0 };
-  snprintf(buf, sizeof(buf), "%s -x %s", NONULL(c_ispell), shared->email->body->filename);
-  if (mutt_system(buf) == -1)
+  struct Buffer *cmd = buf_pool_get();
+  struct Buffer *quoted = buf_pool_get();
+  buf_quote_filename(quoted, shared->email->body->filename, true);
+  buf_printf(cmd, "%s -x %s", NONULL(c_ispell), buf_string(quoted));
+  buf_pool_release(&quoted);
+  if (mutt_system(buf_string(cmd)) == -1)
   {
-    mutt_error(_("Error running \"%s\""), buf);
+    mutt_error(_("Error running \"%s\""), buf_string(cmd));
+    buf_pool_release(&cmd);
     return FR_ERROR;
   }
+  buf_pool_release(&cmd);
 
   mutt_update_encoding(shared->email->body, shared->sub);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
