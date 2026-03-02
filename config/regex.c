@@ -128,7 +128,10 @@ struct Regex *regex_new(const char *str, uint32_t flags, struct Buffer *err)
   if (rc != 0)
   {
     if (err)
+    {
       regerror(rc, reg->regex, err->data, err->dsize);
+      buf_fix_dptr(err);
+    }
     regex_free(&reg);
     return NULL;
   }
