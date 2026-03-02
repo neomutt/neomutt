@@ -229,7 +229,14 @@ static char *email_get_id(struct Email *e)
  */
 static char *email_get_fullpath(struct Email *e, char *buf, size_t buflen)
 {
-  snprintf(buf, buflen, "%s/%s", nm_email_get_folder(e), e->path);
+  char *folder = nm_email_get_folder(e);
+  if (!folder)
+  {
+    *buf = '\0';
+    return buf;
+  }
+
+  snprintf(buf, buflen, "%s/%s", folder, e->path);
   return buf;
 }
 
@@ -474,6 +481,9 @@ err:
 static int update_email_tags(struct Email *e, notmuch_message_t *msg)
 {
   struct NmEmailData *edata = nm_edata_get(e);
+  if (!edata)
+    return 1;
+
   struct Buffer *new_tags = buf_pool_get();
   struct Buffer *old_tags = buf_pool_get();
 
@@ -526,6 +536,8 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
 static int update_message_path(struct Email *e, const char *path)
 {
   struct NmEmailData *edata = nm_edata_get(e);
+  if (!edata)
+    return 1;
 
   mutt_debug(LL_DEBUG2, "nm: path update requested path=%s, (%s)\n", path, edata->virtual_id);
 
@@ -669,10 +681,10 @@ static int init_email(struct Email *e, const char *path, notmuch_message_t *msg)
 /**
  * get_message_last_filename - Get a message's last filename
  * @param msg Notmuch message
- * @retval ptr  Filename
+ * @retval ptr  Filename (strdup'd, caller must free)
  * @retval NULL Error
  */
-static const char *get_message_last_filename(notmuch_message_t *msg)
+static char *get_message_last_filename(notmuch_message_t *msg)
 {
   const char *name = NULL;
 
@@ -682,7 +694,7 @@ static const char *get_message_last_filename(notmuch_message_t *msg)
     name = notmuch_filenames_get(ls);
   }
 
-  return name;
+  return mutt_str_dup(name);
 }
 
 /**
@@ -779,7 +791,7 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
     return;
   }
 
-  const char *path = get_message_last_filename(msg);
+  char *path = get_message_last_filename(msg);
   if (!path)
     return;
 
@@ -860,6 +872,7 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
   nm_progress_update(m);
 done:
   FREE(&newpath);
+  FREE(&path);
 }
 
 /**
@@ -869,12 +882,19 @@ done:
  * @param q     Notmuch query
  * @param top   Notmuch message
  * @param dedup De-duplicate the results
+ * @param depth Current recursion depth
  *
  * Careful, this calls itself recursively to make sure we get everything.
  */
-static void append_replies(struct HeaderCache *hc, struct Mailbox *m,
-                           notmuch_query_t *q, notmuch_message_t *top, bool dedup)
+static void append_replies(struct HeaderCache *hc, struct Mailbox *m, notmuch_query_t *q,
+                           notmuch_message_t *top, bool dedup, int depth)
 {
+  if (depth > 512)
+  {
+    mutt_debug(LL_DEBUG1, "nm: stripping thread replies stripping at depth %d\n", depth);
+    return;
+  }
+
   notmuch_messages_t *msgs = NULL;
 
   for (msgs = notmuch_message_get_replies(top); notmuch_messages_valid(msgs);
@@ -883,7 +903,7 @@ static void append_replies(struct HeaderCache *hc, struct Mailbox *m,
     notmuch_message_t *nm = notmuch_messages_get(msgs);
     append_message(hc, m, nm, dedup);
     /* recurse through all the replies to this message too */
-    append_replies(hc, m, q, nm, dedup);
+    append_replies(hc, m, q, nm, dedup, depth + 1);
     notmuch_message_destroy(nm);
   }
 }
@@ -909,7 +929,7 @@ static void append_thread(struct HeaderCache *hc, struct Mailbox *m,
   {
     notmuch_message_t *nm = notmuch_messages_get(msgs);
     append_message(hc, m, nm, dedup);
-    append_replies(hc, m, q, nm, dedup);
+    append_replies(hc, m, q, nm, dedup, 0);
     notmuch_message_destroy(nm);
   }
 }
@@ -1101,12 +1121,14 @@ static bool nm_message_has_tag(notmuch_message_t *msg, const char *tag)
  */
 static void sync_email_path_with_nm(struct Email *e, notmuch_message_t *msg)
 {
-  const char *new_file = get_message_last_filename(msg);
+  char *new_file = get_message_last_filename(msg);
   char old_file[PATH_MAX] = { 0 };
   email_get_fullpath(e, old_file, sizeof(old_file));
 
   if (!mutt_str_equal(old_file, new_file))
     update_message_path(e, new_file);
+
+  FREE(&new_file);
 }
 
 /**
@@ -1719,12 +1741,18 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
   char *orig_str = get_query_string(mdata, true);
 
   if (!db || !orig_str)
+  {
+    nm_db_release(m);
     return false;
+  }
 
   char *new_str = NULL;
   bool rc = false;
   if (mutt_str_asprintf(&new_str, "id:%s and (%s)", email_get_id(e), orig_str) < 0)
+  {
+    nm_db_release(m);
     return false;
+  }
 
   mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s\n", new_str);
 
@@ -1738,7 +1766,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
       notmuch_messages_t *messages = get_messages(q);
 
       if (!messages)
-        return false;
+        goto done;
 
       rc = notmuch_messages_valid(messages);
       notmuch_messages_destroy(messages);
@@ -1749,7 +1777,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
       notmuch_threads_t *threads = get_threads(q);
 
       if (!threads)
-        return false;
+        goto done;
 
       rc = notmuch_threads_valid(threads);
       notmuch_threads_destroy(threads);
@@ -1757,11 +1785,14 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
     }
   }
 
+done:
   notmuch_query_destroy(q);
 
   mutt_debug(LL_DEBUG2, "nm: checking if message is still queried: %s = %s\n",
              new_str, rc ? "true" : "false");
 
+  FREE(&new_str);
+  nm_db_release(m);
   return rc;
 }
 
@@ -1867,7 +1898,7 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   m->msg_flagged = count_query(db, qstr, limit);
   FREE(&qstr);
 
-  rc = (m->msg_new > 0) ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
+  rc = (m->msg_unread > 0) ? MX_STATUS_NEW_MAIL : MX_STATUS_OK;
 done:
   if (db)
   {
@@ -1993,7 +2024,7 @@ done:
 int nm_get_all_tags(struct Mailbox *m, const char **tag_list, int *tag_count)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
-  if (!mdata)
+  if (!mdata || !tag_count)
     return -1;
 
   notmuch_database_t *db = NULL;
@@ -2150,7 +2181,7 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
   // TODO: Analyze impact of removing this version guard.
 #if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
   if (!msgs)
-    return MX_STATUS_OK;
+    goto done;
 #elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
   if (!msgs)
     goto done;
@@ -2177,7 +2208,7 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
 
     /* Check to see if the message has moved to a different subdirectory.
      * If so, update the associated filename.  */
-    const char *new_file = get_message_last_filename(msg);
+    char *new_file = get_message_last_filename(msg);
     char old_file[PATH_MAX] = { 0 };
     email_get_fullpath(e, old_file, sizeof(old_file));
 
@@ -2194,6 +2225,8 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
       maildir_update_flags(m, e, e_tmp);
       email_free(&e_tmp);
     }
+
+    FREE(&new_file);
 
     if (update_email_tags(e, msg) == 0)
       new_flags++;
@@ -2282,7 +2315,6 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
     if (edata->oldpath)
     {
       mutt_str_copy(old_file, edata->oldpath, sizeof(old_file));
-      old_file[sizeof(old_file) - 1] = '\0';
       mutt_debug(LL_DEBUG2, "nm: fixing obsolete path '%s'\n", old_file);
     }
     else
@@ -2343,6 +2375,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
                         "Unable to sync %d messages due to external mailbox modification",
                         mh_sync_errors),
                mh_sync_errors);
+    rc = MX_STATUS_ERROR;
   }
 
   buf_strcpy(&m->pathbuf, url);
@@ -2381,6 +2414,8 @@ static bool nm_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
   char path[PATH_MAX] = { 0 };
   char *folder = nm_email_get_folder(e);
+  if (!folder)
+    return false;
 
   snprintf(path, sizeof(path), "%s/%s", folder, e->path);
 
