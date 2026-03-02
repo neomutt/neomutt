@@ -652,8 +652,11 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
     }
     else
     {
-      mutt_str_copy(target_dir, strrchr(buf_string(&LastDirBackup), '/') + 1,
-                    sizeof(target_dir));
+      const char *slash = strrchr(buf_string(&LastDirBackup), '/');
+      if (slash)
+        mutt_str_copy(target_dir, slash + 1, sizeof(target_dir));
+      else
+        mutt_str_copy(target_dir, buf_string(&LastDirBackup), sizeof(target_dir));
     }
 
     /* If we get here, it means that LastDir is the parent directory of
