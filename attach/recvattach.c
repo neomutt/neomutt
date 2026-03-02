@@ -439,6 +439,9 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   const char *const c_attach_sep = cs_subset_string(NeoMutt->sub, "attach_sep");
   const bool c_attach_save_without_prompting = cs_subset_bool(NeoMutt->sub, "attach_save_without_prompting");
 
+  /* Iterate through attachments (or just the single one if not tagging).
+   * Behavior depends on attach_split: if true, save each to its own file;
+   * if false, concatenate all into one file with optional separator. */
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
