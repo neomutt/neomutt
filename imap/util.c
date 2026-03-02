@@ -778,7 +778,7 @@ void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_get_literal_count(const char *buf, unsigned int *bytes)
+int imap_get_literal_count(char *buf, unsigned int *bytes)
 {
   char *pc = NULL;
   char *pn = NULL;
