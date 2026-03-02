@@ -150,7 +150,7 @@ static int progress_window_recalc(struct MuttWindow *win)
   }
 
   if ((wdata->update_percent < 0) && (wdata->size != 0))
-    wdata->display_percent = 100 * wdata->display_pos / wdata->size;
+    wdata->display_percent = MIN(100 * wdata->display_pos / wdata->size, 100);
   else
     wdata->display_percent = wdata->update_percent;
 
