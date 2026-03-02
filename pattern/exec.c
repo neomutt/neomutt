@@ -844,6 +844,9 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                          struct Mailbox *m, struct Email *e,
                          struct Message *msg, struct PatternCache *cache)
 {
+  /* Dispatch on the pattern operation type.  Each case tests a specific
+   * email attribute (flags, dates, addresses, etc.) against the pattern,
+   * applying pat_not to invert the result when '!' was used. */
   switch (pat->op)
   {
     case MUTT_PAT_AND:
@@ -978,6 +981,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       if (!e->env)
         return false;
 
+      /* Use pattern cache to avoid repeated list membership lookups */
       bool result;
       if (cache)
       {
@@ -1065,6 +1069,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_COLLAPSED:
       return pat->pat_not ^ (e->collapsed && e->num_hidden > 1);
     case MUTT_PAT_CRYPT_SIGN:
+      /* Cryptographic flag patterns require WithCrypto to be enabled */
       if (!WithCrypto)
       {
         print_crypt_pattern_op_error(pat->op);
