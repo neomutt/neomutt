@@ -253,6 +253,9 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
  */
 int mutt_bcache_commit(struct BodyCache *bcache, const char *id)
 {
+  if (!id || (*id == '\0') || !bcache)
+    return -1;
+
   struct Buffer *tmpid = buf_pool_get();
   buf_printf(tmpid, "%s.tmp", id);
 
