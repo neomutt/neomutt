@@ -80,6 +80,10 @@ void alias_set_title(struct MuttWindow *sbar, char *menu_name, char *limit)
   char buf[256] = { 0 };
 
   int len = snprintf(buf, sizeof(buf), "%s - ", menu_name);
+  if (len < 0)
+    len = 0;
+  if (len >= (int) sizeof(buf))
+    len = sizeof(buf) - 1;
 
   snprintf(buf + len, sizeof(buf) - len, _("Limit: %s"), limit);
 

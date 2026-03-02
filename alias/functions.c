@@ -177,8 +177,12 @@ static int op_create_alias(struct AliasMenuData *mdata, const struct KeyEvent *e
   }
   else
   {
+    struct AliasView *av = ARRAY_GET(&mdata->ava, menu_get_index(menu));
+    if (!av)
+      return FR_NO_ACTION;
+
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    if (alias_to_addrlist(&al, ARRAY_GET(&mdata->ava, menu_get_index(menu))->alias))
+    if (alias_to_addrlist(&al, av->alias))
     {
       alias_create(&al, mdata->sub);
       mutt_addrlist_clear(&al);
@@ -208,7 +212,11 @@ static int op_delete(struct AliasMenuData *mdata, const struct KeyEvent *event)
   else
   {
     int index = menu_get_index(menu);
-    ARRAY_GET(&mdata->ava, index)->is_deleted = (op == OP_DELETE);
+    struct AliasView *av = ARRAY_GET(&mdata->ava, index);
+    if (!av)
+      return FR_NO_ACTION;
+
+    av->is_deleted = (op == OP_DELETE);
     menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
     const bool c_resolve = cs_subset_bool(mdata->sub, "resolve");
     if (c_resolve && (index < (menu->max - 1)))
