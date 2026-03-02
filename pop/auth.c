@@ -544,6 +544,7 @@ int pop_authenticate(struct PopAccountData *adata)
       mutt_debug(LL_DEBUG2, "Trying method %s\n", np->data);
       authenticator = PopAuthenticators;
 
+      /* Walk the built-in authenticator table looking for a match */
       while (authenticator->authenticate)
       {
         if (!authenticator->method || mutt_istr_equal(authenticator->method, np->data))
@@ -551,6 +552,7 @@ int pop_authenticate(struct PopAccountData *adata)
           rc = authenticator->authenticate(adata, np->data);
           if (rc == POP_A_SOCKET)
           {
+            /* Connection dropped; try reconnecting and retrying once */
             switch (pop_connect(adata))
             {
               case 0:
@@ -577,7 +579,7 @@ int pop_authenticate(struct PopAccountData *adata)
   }
   else
   {
-    /* Fall back to default: any authenticator */
+    /* Fall back to default: try every authenticator in order */
     mutt_debug(LL_DEBUG2, "Using any available method\n");
     authenticator = PopAuthenticators;
 
@@ -610,6 +612,7 @@ int pop_authenticate(struct PopAccountData *adata)
     }
   }
 
+  /* Map internal result code to the caller's return values */
   switch (rc)
   {
     case POP_A_SUCCESS:
