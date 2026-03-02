@@ -837,7 +837,7 @@ static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   char tmp[PATH_MAX] = { 0 };
   snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", mailbox_path(m));
-  const int i = creat(tmp, S_IRWXU);
+  const int i = creat(tmp, S_IRUSR | S_IWUSR);
   if (i == -1)
   {
     mutt_perror("%s", tmp);
