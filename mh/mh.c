@@ -531,7 +531,7 @@ static struct Email *mh_parse_message(const char *fname, struct Email *e)
 
   e->env = mutt_rfc822_read_header(fp, e, false, false);
 
-  if (e->received != 0)
+  if (e->received == 0)
     e->received = e->date_sent;
 
   /* always update the length since we have fresh information available. */
