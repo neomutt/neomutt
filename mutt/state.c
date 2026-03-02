@@ -146,6 +146,9 @@ static int state_putwc(struct State *state, wchar_t wc)
  */
 int state_putws(struct State *state, const wchar_t *ws)
 {
+  if (!state || !state->fp_out)
+    return -1;
+
   const wchar_t *p = ws;
 
   while (p && (*p != L'\0'))
@@ -186,6 +189,9 @@ void state_prefix_putc(struct State *state, char c)
  */
 int state_printf(struct State *state, const char *fmt, ...)
 {
+  if (!state || !state->fp_out)
+    return -1;
+
   int rc;
   va_list ap;
 
@@ -204,6 +210,9 @@ int state_printf(struct State *state, const char *fmt, ...)
  */
 void state_prefix_put(struct State *state, const char *buf, size_t buflen)
 {
+  if (!state || !state->fp_out || !buf)
+    return;
+
   if (state->prefix)
   {
     while (buflen--)
