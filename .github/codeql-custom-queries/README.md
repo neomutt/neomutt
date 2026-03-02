@@ -50,20 +50,6 @@ is clean — do not propagate taint through it.
 The replacement query is registered as `neomutt/path-injection` and included
 via the `packs` list in `.github/codeql.yml`.
 
-### Step 3 — Model extensions (defence in depth)
-
-`models/neomutt.model.yml` uses CodeQL's data-extension mechanism to declare
-two additional models:
-
-* **`barrierModel`** — marks the `buf_pool_get()` return value as a
-  `path-injection` barrier (for any query that consumes barrier models).
-* **`neutralModel`** — tells CodeQL that `buf_pool_get()` and
-  `buf_pool_release()` have no taint-propagating data flow, preventing
-  auto-generated flow summaries through the internal `BufferPool` array.
-
-These are loaded automatically because `qlpack.yml` declares
-`extensionTargets` and `dataExtensions` pointing at `codeql/cpp-all`.
-
 ## Maintenance
 
 When the upstream `cpp/path-injection` query changes (new barriers, sources,

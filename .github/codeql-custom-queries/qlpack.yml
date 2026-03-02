@@ -2,8 +2,4 @@ name: neomutt/codeql-custom-queries
 version: 1.0.0
 dependencies:
   codeql/cpp-all: "*"
-extensionTargets:
-  codeql/cpp-all: "*"
-dataExtensions:
-  - "models/**/*.yml"
 extractor: cpp
