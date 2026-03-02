@@ -552,6 +552,8 @@ static enum MxStatus maildir_check(struct Mailbox *m)
   bool flags_changed = false; /* message flags were changed in the mailbox */
   struct HashTable *hash_names = NULL; // Hash Table: "base-filename" -> MdEmail
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
+  if (!mdata)
+    return MX_STATUS_ERROR;
 
   const bool c_check_new = cs_subset_bool(NeoMutt->sub, "check_new");
   if (!c_check_new)

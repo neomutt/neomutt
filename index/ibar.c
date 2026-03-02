@@ -280,6 +280,8 @@ static int ibar_window_observer(struct NotifyCallback *nc)
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
     struct MuttWindow *dlg = window_find_parent(win_ibar, WT_DLG_INDEX);
+    if (!dlg)
+      return 0;
     struct IndexSharedData *shared = dlg->wdata;
 
     mutt_color_observer_remove(ibar_color_observer, win_ibar);
