@@ -963,6 +963,8 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   else
     OptNewsSend = false;
 
+  /* Determine the parent message for the reply: either the selected
+   * attachment's parent or the top-level email if not nested */
   if (!check_all_msg(actx, b, false))
   {
     nattach = count_tagged(actx);
@@ -979,6 +981,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     }
   }
 
+  /* Check if non-decodable attachments should be MIME-encapsulated */
   if ((nattach > 1) && !check_can_decode(actx, b))
   {
     const enum QuadOption ans = query_quadoption(_("Can't decode all tagged attachments.  MIME-encapsulate the others?"),
@@ -1003,6 +1006,8 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     goto cleanup;
   }
 
+  /* Create a temporary file for the reply body and write the quoted
+   * content of the selected attachment(s) into it */
   tempfile = buf_pool_get();
   buf_mktemp(tempfile);
   fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
