@@ -293,36 +293,40 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
     DIR *dir = NULL;
     struct dirent *de = NULL;
 
-    while (stat(dirname, &st) == -1)
+    // Work on a mutable copy to avoid modifying the const dirname parameter
+    char dstrbuf[PATH_MAX] = { 0 };
+    mutt_str_copy(dstrbuf, dirname, sizeof(dstrbuf));
+
+    while (stat(dstrbuf, &st) == -1)
     {
       if (errno == ENOENT)
       {
         /* The last used directory is deleted, try to use the parent dir. */
-        char *c = strrchr(dirname, '/');
+        char *c = strrchr(dstrbuf, '/');
 
-        if (c && (c > dirname))
+        if (c && (c > dstrbuf))
         {
           *c = '\0';
           continue;
         }
       }
-      mutt_perror("%s", dirname);
+      mutt_perror("%s", dstrbuf);
       goto ed_out;
     }
 
     if (!S_ISDIR(st.st_mode))
     {
-      mutt_error(_("%s is not a directory"), dirname);
+      mutt_error(_("%s is not a directory"), dstrbuf);
       goto ed_out;
     }
 
     if (m)
       mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
 
-    dir = mutt_file_opendir(dirname, MUTT_OPENDIR_NONE);
+    dir = mutt_file_opendir(dstrbuf, MUTT_OPENDIR_NONE);
     if (!dir)
     {
-      mutt_perror("%s", dirname);
+      mutt_perror("%s", dstrbuf);
       goto ed_out;
     }
 
@@ -345,7 +349,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
         continue;
       }
 
-      buf_concat_path(buf, dirname, de->d_name);
+      buf_concat_path(buf, dstrbuf, de->d_name);
       if (lstat(buf_string(buf), &st) == -1)
         continue;
 
