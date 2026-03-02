@@ -31,6 +31,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <stdint.h>
 #include <zconf.h>
 #include <zlib.h>
 #include "private.h"
@@ -101,7 +102,7 @@ static ComprHandle *compr_zlib_open(short level)
 static void *compr_zlib_compress(ComprHandle *handle, const char *data,
                                  size_t dlen, size_t *clen)
 {
-  if (!handle)
+  if (!handle || (dlen > UINT32_MAX))
     return NULL;
 
   // Decloak an opaque pointer
