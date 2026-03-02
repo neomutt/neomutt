@@ -79,7 +79,7 @@ struct Mailbox *sb_get_highlight(struct MuttWindow *win)
     return NULL;
 
   struct SidebarWindowData *wdata = sb_wdata_get(win);
-  if (wdata->hil_index < 0)
+  if (!wdata || (wdata->hil_index < 0))
     return NULL;
 
   struct SbEntry **sbep = ARRAY_GET(&wdata->entries, wdata->hil_index);

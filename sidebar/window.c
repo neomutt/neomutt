@@ -329,9 +329,15 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
   width = MIN(buflen, width);
   if (w < width)
   {
-    /* Pad with spaces */
-    memset(buf + s, ' ', width - w);
-    buf[s + width - w] = '\0';
+    /* Pad with spaces, capping to available buffer space */
+    int pad = width - w;
+    if ((s + pad) >= (int) buflen)
+      pad = (int) buflen - s - 1;
+    if (pad > 0)
+    {
+      memset(buf + s, ' ', pad);
+      buf[s + pad] = '\0';
+    }
   }
   else if (w > width)
   {
