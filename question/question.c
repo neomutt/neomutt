@@ -61,6 +61,9 @@
  */
 int mw_multi_choice(const char *prompt, const char *letters)
 {
+  if (!prompt || !letters)
+    return -1;
+
   struct MuttWindow *win = msgwin_new(true);
   if (!win)
     return -1;
@@ -124,7 +127,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
       break;
     }
 
-    char *p = strchr(letters, event.ch);
+    char *p = (event.ch != 0) ? strchr(letters, event.ch) : NULL;
     if (p)
     {
       choice = p - letters + 1;
