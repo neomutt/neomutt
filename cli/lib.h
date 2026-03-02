@@ -45,6 +45,4 @@
 
 bool cli_parse(int argc, char *const *argv, struct CommandLine *cli);
 
-void command_line_clear(struct CommandLine *cl);
-
 #endif /* MUTT_CLI_LIB_H */
