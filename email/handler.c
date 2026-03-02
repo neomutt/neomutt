@@ -1233,7 +1233,7 @@ static int multilingual_handler(struct Body *b_email, struct State *state)
   {
     if (zxx_part)
       mutt_body_handler(zxx_part, state);
-    else
+    else if (first_part)
       mutt_body_handler(first_part, state);
   }
 
@@ -1435,12 +1435,25 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
       {
         mutt_perror(_("failed to re-open 'memory stream'"));
         FREE(&temp);
+        state->fp_in = fp;
+        state->prefix = save_prefix;
+        b->length = tmplength;
+        b->offset = tmpoffset;
         return -1;
       }
 #else
       state->fp_in = mutt_file_fopen(buf_string(tempfile), "r");
       unlink(buf_string(tempfile));
       buf_pool_release(&tempfile);
+      if (!state->fp_in)
+      {
+        mutt_perror(_("failed to re-open temporary file"));
+        state->fp_in = fp;
+        state->prefix = save_prefix;
+        b->length = tmplength;
+        b->offset = tmpoffset;
+        return -1;
+      }
 #endif
       /* restore the prefix */
       state->prefix = save_prefix;
@@ -1511,6 +1524,9 @@ static int valid_pgp_encrypted_handler(struct Body *b_email, struct State *state
  */
 static int malformed_pgp_encrypted_handler(struct Body *b_email, struct State *state)
 {
+  if (!b_email->parts || !b_email->parts->next || !b_email->parts->next->next)
+    return -1;
+
   struct Body *octetstream = b_email->parts->next->next;
 
   /* clear out any mime headers before the handler, so they can't be spoofed. */
