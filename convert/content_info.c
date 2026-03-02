@@ -212,22 +212,24 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   if (!fname)
     return NULL;
 
-  if (stat(fname, &st) == -1)
+  fp = mutt_file_fopen(fname, "r");
+  if (!fp)
+  {
+    mutt_debug(LL_DEBUG1, "%s: %s (errno %d)\n", fname, strerror(errno), errno);
+    return NULL;
+  }
+
+  if (fstat(fileno(fp), &st) == -1)
   {
     mutt_error(_("Can't stat %s: %s"), fname, strerror(errno));
+    mutt_file_fclose(&fp);
     return NULL;
   }
 
   if (!S_ISREG(st.st_mode))
   {
     mutt_error(_("%s isn't a regular file"), fname);
-    return NULL;
-  }
-
-  fp = mutt_file_fopen(fname, "r");
-  if (!fp)
-  {
-    mutt_debug(LL_DEBUG1, "%s: %s (errno %d)\n", fname, strerror(errno), errno);
+    mutt_file_fclose(&fp);
     return NULL;
   }
 
