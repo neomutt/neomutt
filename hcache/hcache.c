@@ -84,14 +84,19 @@ static struct RealKey *realkey(struct HeaderCache *hc, const char *key,
 {
   static struct RealKey rk;
 
-  rk.keylen = snprintf(rk.key, sizeof(rk.key), "%s/%.*s", hc->folder, (int) keylen, key);
+  int n = snprintf(rk.key, sizeof(rk.key), "%s/%.*s", hc->folder, (int) keylen, key);
+  if (n < 0)
+    n = 0;
+  rk.keylen = MIN((size_t) n, sizeof(rk.key) - 1);
 
 #ifdef USE_HCACHE_COMPRESSION
   if (compress && hc->compr_ops)
   {
     // Append the compression type, e.g. "-zstd"
-    rk.keylen += snprintf(rk.key + rk.keylen, sizeof(rk.key) - rk.keylen, "-%s",
-                          hc->compr_ops->name);
+    n = snprintf(rk.key + rk.keylen, sizeof(rk.key) - rk.keylen, "-%s",
+                 hc->compr_ops->name);
+    if (n > 0)
+      rk.keylen += MIN((size_t) n, sizeof(rk.key) - 1 - rk.keylen);
   }
 #endif
 
