@@ -423,8 +423,8 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
         for (int i = optind; i < argc; i++)
         {
           ARRAY_ADD(&cli->send.addresses, mutt_str_dup(argv[i]));
+          cli->send.is_set = true;
         }
-        cli->send.is_set = true;
         optind = argc; // finish parsing
         break;
       }
