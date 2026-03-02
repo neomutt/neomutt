@@ -147,6 +147,7 @@ static int op_verify_key(struct PgpData *pd, const struct KeyEvent *event)
   {
     mutt_file_fclose(&fp_tmp);
     mutt_file_fclose(&fp_null);
+    buf_pool_release(&tempfile);
     return FR_ERROR;
   }
 
@@ -162,6 +163,8 @@ static int op_verify_key(struct PgpData *pd, const struct KeyEvent *event)
     unlink(buf_string(tempfile));
     mutt_file_fclose(&fp_tmp);
     mutt_file_fclose(&fp_null);
+    buf_pool_release(&tempfile);
+    return FR_ERROR;
   }
 
   filter_wait(pid);
