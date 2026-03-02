@@ -147,6 +147,8 @@ static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t 
   const unsigned char *cs = (const unsigned char *) cbuf;
   if (clen < 4)
     return NULL;
+  if ((clen - 4) > INT_MAX)
+    return NULL;
   size_t ulen = cs[0] + (cs[1] << 8) + (cs[2] << 16) + ((size_t) cs[3] << 24);
   if (ulen > INT_MAX)
     return NULL; // LCOV_EXCL_LINE
