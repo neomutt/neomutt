@@ -529,7 +529,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
     buf_reset(buf);
     mutt_addr_write(buf, addr, true);
-    size_t addr_len = buf_len(buf);
+    size_t addr_len = mutt_strwidth(buf_string(buf));
 
     sep = "";
     if (!addr->group)
