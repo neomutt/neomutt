@@ -60,7 +60,7 @@ static void hooks_dump_one(struct Hook *hook, const struct Command *cmd, struct 
 
     if ((hook->id == CMD_FOLDER_HOOK) || (hook->id == CMD_MBOX_HOOK))
     {
-      buf_strcpy(pretty, hook->regex.pattern);
+      buf_addstr(pretty, hook->regex.pattern);
       pretty_mailbox(pretty);
       buf_add_printf(buf, "\"%s\" ", buf_string(pretty));
     }
