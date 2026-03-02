@@ -245,7 +245,7 @@ static bool percent_needs_update(const struct ProgressWindowData *wdata, int per
  * @param pos   Current pos
  * @retval true Progress needs an update
  */
-static bool pos_needs_update(const struct ProgressWindowData *wdata, long pos)
+static bool pos_needs_update(const struct ProgressWindowData *wdata, size_t pos)
 {
   const unsigned shift = wdata->is_bytes ? 10 : 0;
   return pos >= (wdata->display_pos + (wdata->size_inc << shift));
