@@ -633,6 +633,9 @@ end:
 bool hcache_fetch_raw_obj_full(struct HeaderCache *hc, const char *key,
                                size_t keylen, void *dst, size_t dstlen)
 {
+  if (!hc)
+    return false;
+
   bool rc = true;
   size_t srclen = 0;
 
@@ -661,6 +664,9 @@ bool hcache_fetch_raw_obj_full(struct HeaderCache *hc, const char *key,
  */
 char *hcache_fetch_raw_str(struct HeaderCache *hc, const char *key, size_t keylen)
 {
+  if (!hc)
+    return NULL;
+
   char *res = NULL;
   size_t dlen = 0;
 
