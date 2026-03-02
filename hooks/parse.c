@@ -1200,7 +1200,7 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf_string(token)))
     {
-      if (CurrentHookId != TOKEN_NO_FLAGS)
+      if (CurrentHookId != CMD_NONE)
       {
         buf_addstr(err, _("unhook: Can't do unhook * from within a hook"));
         goto done;
