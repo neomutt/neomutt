@@ -409,7 +409,7 @@ static bool nntp_memchr(char **haystack, const char *sentinel, int needle)
 {
   char *start = *haystack;
   size_t max_offset = sentinel - start;
-  void *vp = memchr(start, max_offset, needle);
+  void *vp = memchr(start, needle, max_offset);
   if (!vp)
     return false;
   *haystack = vp;
