@@ -482,7 +482,8 @@ static int mh_parse_dir(struct Mailbox *m, struct MhEmailArray *mha, struct Prog
   if (SigInt)
   {
     SigInt = false;
-    return -2; /* action aborted */
+    rc = -2; /* action aborted */
+    goto cleanup;
   }
 
 cleanup:
