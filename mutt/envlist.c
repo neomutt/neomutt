@@ -106,20 +106,24 @@ bool envlist_set(char ***envp, const char *name, const char *value, bool overwri
     }
   }
 
-  // Format var=value string
-  char work[1024] = { 0 };
-  snprintf(work, sizeof(work), "%s=%s", name, NONULL(value));
+  // Format var=value string dynamically to avoid truncation
+  const char *val = NONULL(value);
+  size_t nlen = mutt_str_len(name);
+  size_t vlen = mutt_str_len(val);
+  char *work = MUTT_MEM_MALLOC(nlen + 1 + vlen + 1, char);
+  snprintf(work, nlen + 1 + vlen + 1, "%s=%s", name, val);
 
   if (match >= 0)
   {
     // match found, overwrite
-    mutt_str_replace(&(*envp)[match], work);
+    FREE(&(*envp)[match]);
+    (*envp)[match] = work;
   }
   else
   {
     // not found, add a new entry
     MUTT_MEM_REALLOC(envp, count + 2, char *);
-    (*envp)[count] = mutt_str_dup(work);
+    (*envp)[count] = work;
     (*envp)[count + 1] = NULL;
   }
 
