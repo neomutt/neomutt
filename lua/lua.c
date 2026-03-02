@@ -98,6 +98,9 @@ static int lua_cb_global_call(lua_State *l)
 
   if (lua_gettop(l) == 0)
   {
+    buf_pool_release(&buf);
+    parse_context_free(&pc);
+    parse_error_free(&pe);
     luaL_error(l, "Error command argument required");
     return -1;
   }
@@ -105,6 +108,9 @@ static int lua_cb_global_call(lua_State *l)
   cmd = commands_get(&NeoMutt->commands, lua_tostring(l, 1));
   if (!cmd)
   {
+    buf_pool_release(&buf);
+    parse_context_free(&pc);
+    parse_error_free(&pe);
     luaL_error(l, "Error command %s not found", lua_tostring(l, 1));
     return -1;
   }

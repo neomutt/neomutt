@@ -168,7 +168,7 @@ static int tunnel_socket_read(struct Connection *conn, char *buf, size_t count)
 static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
   struct TunnelSockData *tunnel = conn->sockdata;
-  int rc;
+  ssize_t rc;
   size_t sent = 0;
 
   do

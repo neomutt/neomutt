@@ -1064,7 +1064,7 @@ static int op_save(struct IndexSharedData *shared,
 done:
   // Restore the read position (rewound at start of function)
   if (pos >= 0)
-    mutt_file_seek(priv->fp, pos, SEEK_SET);
+    (void) mutt_file_seek(priv->fp, pos, SEEK_SET);
 
   mutt_file_fclose(&fp_save);
   buf_pool_release(&buf);
