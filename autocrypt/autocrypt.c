@@ -895,6 +895,8 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
     mutt_autocrypt_db_peer_free(&peer);
   }
 
+  rc = 0;
+
   mutt_addrlist_clear(&recips);
   mutt_autocrypt_db_account_free(&account);
   mutt_autocrypt_db_peer_free(&peer);
