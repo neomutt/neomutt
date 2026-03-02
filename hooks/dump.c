@@ -156,9 +156,10 @@ static void hooks_dump_index(struct Buffer *buf)
         found_header = true;
       }
 
+      const char *exp_str = hook->expando ? hook->expando->string : "";
       buf_add_printf(buf, "index-format-hook '%s' %s'%s' '%s'\n", name,
                      hook->regex.pat_not ? "! " : "",
-                     NONULL(hook->regex.pattern), NONULL(hook->expando->string));
+                     NONULL(hook->regex.pattern), NONULL(exp_str));
     }
   }
 
