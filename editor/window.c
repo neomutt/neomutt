@@ -196,6 +196,8 @@ static int enter_repaint(struct MuttWindow *win)
   mutt_window_get_coords(win, NULL, &prompt_length);
 
   int width = win->state.cols - prompt_length - 1;
+  if (width < 1)
+    width = 1;
 
   if (!wdata->pass)
   {
