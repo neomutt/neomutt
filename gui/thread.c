@@ -244,7 +244,8 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
   int hide_top_limited = c_hide_top_limited && !c_hide_limited;
   int depth = 0;
 
-  /* we walk each level backwards to make it easier to compute next_subtree_visible */
+  /* Walk each level backwards (right to left) to make it easier to
+   * compute next_subtree_visible for each node */
   while (tree->next)
     tree = tree->next;
   *max_depth = 0;
@@ -258,6 +259,7 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
     if (tree->message)
     {
       FREE(&tree->message->tree);
+      /* Visible messages propagate subtree_visible up to all ancestors */
       if (is_visible(tree->message))
       {
         tree->deep = true;
@@ -288,6 +290,9 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
       tree->visible = false;
       tree->deep = !c_hide_missing;
     }
+    /* Compute next_subtree_visible from the next sibling, then
+     * navigate: descend to children, retreat to previous sibling,
+     * or ascend to parent when at the leftmost node */
     tree->next_subtree_visible = tree->next && (tree->next->next_subtree_visible ||
                                                 tree->next->subtree_visible);
     if (tree->child)
