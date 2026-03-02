@@ -223,6 +223,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
     if (!S_ISDIR(st.st_mode))
     {
       mutt_error(_("Message cache isn't a directory: %s"), bcache->path);
+      buf_pool_release(&path);
       return NULL;
     }
   }
@@ -231,6 +232,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
     if (mutt_file_mkdir(bcache->path, S_IRWXU | S_IRWXG | S_IRWXO) < 0)
     {
       mutt_error(_("Can't create %s: %s"), bcache->path, strerror(errno));
+      buf_pool_release(&path);
       return NULL;
     }
   }
