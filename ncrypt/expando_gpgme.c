@@ -232,7 +232,7 @@ static long gpgme_key_date_num(const struct ExpandoNode *node, void *data, MuttF
 {
   const struct CryptEntry *entry = data;
   const struct CryptKeyInfo *key = entry->key;
-  return key->kobj->subkeys->timestamp;
+  return key->kobj->subkeys ? key->kobj->subkeys->timestamp : 0;
 }
 
 /**
