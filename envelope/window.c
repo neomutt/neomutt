@@ -553,6 +553,8 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     /* Calculate the "(+N more)" indicator width if we're on the last line */
     more_len = snprintf(more, sizeof(more),
                         ngettext("(+%d more)", "(+%d more)", count), count);
+    if ((more_len < 0) || (more_len >= sizeof(more)))
+      more_len = mutt_strwidth(more);
     mutt_debug(LL_DEBUG3, "text: '%s'  len: %d\n", more, more_len);
 
     int reserve = ((count > 0) && (lines_used == max_lines)) ? more_len : 0;
