@@ -232,6 +232,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
   struct Buffer *buf = buf_pool_get();
   buf_alloc(buf, 8192);
 
+  /* For NNTP posts, prompt for Newsgroups, Followup-To, and X-Comment-To */
   if (OptNewsSend)
   {
     if (en->newsgroups)
@@ -274,6 +275,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
   }
   else
   {
+    /* For email: prompt for To, Cc, Bcc addresses (skipped with fast_reply) */
     const bool c_fast_reply = cs_subset_bool(sub, "fast_reply");
     if (TAILQ_EMPTY(&en->to) || !c_fast_reply || (flags & SEND_REVIEW_TO))
     {
@@ -312,6 +314,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
   struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
   ASSERT(md);
 
+  /* Handle the Subject line: fast_reply skips the prompt if subject already set.
+   * Check user_header for any "Subject:" override from send-hooks. */
   if (en->subject)
   {
     const bool c_fast_reply = cs_subset_bool(sub, "fast_reply");
@@ -1162,6 +1166,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
   if (!ea && (flags & (SEND_REPLY | SEND_FORWARD)))
     return -1;
 
+  /* Handle reply: optionally include quoted original message(s) */
   if (flags & SEND_REPLY)
   {
     enum QuadOption ans = query_quadoption(_("Include message in reply?"), sub, "include");
@@ -1189,6 +1194,8 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
   }
   else if (flags & SEND_FORWARD)
   {
+    /* Handle forward: either as message/rfc822 MIME attachment
+     * or inline with optional attachment forwarding */
     enum QuadOption ans = query_quadoption(_("Forward as attachment?"), sub, "mime_forward");
     if (ans == MUTT_YES)
     {
@@ -1248,6 +1255,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
   }
   else if (((WithCrypto & APPLICATION_PGP) != 0) && (flags & SEND_KEY))
   {
+    /* Attach the user's PGP public key to the message */
     struct Body *b = NULL;
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && !(b = crypt_pgp_make_key_attachment()))
