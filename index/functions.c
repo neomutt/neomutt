@@ -1394,6 +1394,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
   struct Buffer *tags = buf_pool_get();
   if (!priv->tag_prefix)
     driver_tags_get_with_hidden(&shared->email->tags, tags);
+  /* Prompt the user to edit the tag string */
   buf = buf_pool_get();
   int rc2 = mx_tags_edit(m, buf_string(tags), buf);
   buf_pool_release(&tags);
@@ -1409,6 +1410,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
 
   if (priv->tag_prefix)
   {
+    /* Batch mode: apply the tag change to all tagged messages */
     struct Progress *progress = NULL;
 
     if (m->verbose)
@@ -1452,6 +1454,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
   }
   else
   {
+    /* Single message mode: apply tag change to the current message only */
     if (mx_tags_commit(m, shared->email, buf_string(buf)))
     {
       mutt_message(_("Failed to modify tags, aborting"));
@@ -1500,6 +1503,8 @@ static int op_main_next_new(struct IndexSharedData *shared,
   int index = -1;
   const bool threaded = mutt_using_threads();
   const int op = event->op;
+  /* Scan through all virtual messages in the mailbox, wrapping around.
+   * Track the first new and first unread message found. */
   for (size_t i = 0; i != shared->mailbox->vcount; i++)
   {
     if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_NEXT_UNREAD) ||
@@ -1550,6 +1555,8 @@ static int op_main_next_new(struct IndexSharedData *shared,
       break;
     }
   }
+  /* Select the best match based on the operation: prefer "new" for *_NEW ops,
+   * fall back to "unread" for *_THEN_UNREAD ops */
   if (((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_PREV_NEW) ||
        (op == OP_MAIN_NEXT_NEW_THEN_UNREAD) || (op == OP_MAIN_PREV_NEW_THEN_UNREAD)) &&
       (first_new != -1))
