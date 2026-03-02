@@ -206,8 +206,6 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   mutt_file_get_stat_timespec(&adata->mtime, &st, MUTT_STAT_MTIME);
   m->size = st.st_size;
 
-  buf[sizeof(buf) - 1] = '\0';
-
   if (m->verbose)
   {
     progress = progress_new(MUTT_PROGRESS_READ, 0);
@@ -239,8 +237,8 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
 
       if (!fgets(buf, sizeof(buf) - 1, adata->fp))
       {
-        /* TODO: memory leak??? */
         mutt_debug(LL_DEBUG1, "unexpected EOF\n");
+        email_free(&m->emails[m->msg_count]);
         break;
       }
 
@@ -356,7 +354,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
 
   struct stat st = { 0 };
   char buf[8192] = { 0 };
-  char return_path[256] = { 0 };
+  char return_path[1024] = { 0 };
   struct Email *e_cur = NULL;
   time_t t = 0;
   int count = 0, lines = 0;
@@ -469,7 +467,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
            * are in this message.  */
           if (e_cur->lines == 0)
           {
-            int cl = e_cur->body->length;
+            LOFF_T cl = e_cur->body->length;
 
             /* count the number of lines in this message */
             (void) mutt_file_seek(adata->fp, loc, SEEK_SET);
@@ -899,7 +897,7 @@ static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
       return false;
     }
 
-    if (mbox_lock_mailbox(m, true, true) != false)
+    if (mbox_lock_mailbox(m, true, true) != 0)
     {
       mutt_error(_("Couldn't lock %s"), mailbox_path(m));
       mutt_file_fclose(&adata->fp);
@@ -1452,7 +1450,7 @@ static enum MxStatus mbox_mbox_close(struct Mailbox *m)
     struct timespec ts[2] = { { 0 }, { 0 } };
     ts[0] = adata->atime;
     ts[1] = adata->mtime;
-    utimensat(AT_FDCWD, m->path, ts, 0);
+    utimensat(AT_FDCWD, mailbox_path(m), ts, 0);
 #else
     struct utimbuf ut = { 0 };
     ut.actime = adata->atime.tv_sec;
