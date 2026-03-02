@@ -214,6 +214,8 @@ static void *store_lmdb_fetch(StoreHandle *store, const char *key, size_t klen, 
   if (!store)
     return NULL;
 
+  *vlen = 0;
+
   MDB_val dkey = { 0 };
   MDB_val data = { 0 };
 
