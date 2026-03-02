@@ -324,7 +324,7 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t count)
  */
 int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
-  int rc;
+  ssize_t rc;
   size_t sent = 0;
 
   mutt_sig_allow_interrupt(true);
