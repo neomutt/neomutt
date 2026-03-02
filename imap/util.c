@@ -893,6 +893,12 @@ void imap_quote_string(char *dest, size_t dlen, const char *src, bool quote_back
   char *pt = dest;
   const char *s = src;
 
+  if (dlen < 3)
+  {
+    *dest = '\0';
+    return;
+  }
+
   *pt++ = '"';
   /* save room for quote-chars */
   dlen -= 3;
