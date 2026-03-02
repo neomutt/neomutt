@@ -326,6 +326,9 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
   if (rc < 0)
     return FR_ERROR;
 
+  if (ARRAY_EMPTY(&priv->state.entry))
+    return FR_ERROR;
+
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
   if (event->op == OP_CATCHUP)
@@ -493,6 +496,9 @@ static int op_create_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
  */
 static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  if (ARRAY_EMPTY(&priv->state.entry))
+    return FR_ERROR;
+
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
   if (!ff->imap)
@@ -859,6 +865,9 @@ static int op_mailbox_list(struct BrowserPrivateData *priv, const struct KeyEven
  */
 static int op_rename_mailbox(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  if (ARRAY_EMPTY(&priv->state.entry))
+    return FR_ERROR;
+
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
   if (!ff->imap)
