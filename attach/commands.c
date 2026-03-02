@@ -117,14 +117,18 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
   return false;
 }
 
+/// Maximum MIME nesting depth for counting body parts
+#define MIME_DEPTH_MAX 50
+
 /**
  * count_body_parts - Count the MIME Body parts
- * @param b Body of email
+ * @param b     Body of email
+ * @param depth Current recursion depth
  * @retval num Number of MIME Body parts
  */
-static int count_body_parts(struct Body *b)
+static int count_body_parts(struct Body *b, int depth)
 {
-  if (!b)
+  if (!b || (depth >= MIME_DEPTH_MAX))
     return 0;
 
   struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
@@ -203,7 +207,7 @@ static int count_body_parts(struct Body *b)
     if (shallrecurse)
     {
       mutt_debug(LL_DEBUG3, "%p pre count = %d\n", (void *) bp, count);
-      bp->attach_count = count_body_parts(bp->parts);
+      bp->attach_count = count_body_parts(bp->parts, depth + 1);
       count += bp->attach_count;
       mutt_debug(LL_DEBUG3, "%p post count = %d\n", (void *) bp, count);
     }
@@ -240,7 +244,7 @@ int mutt_count_body_parts(struct Email *e, FILE *fp)
   if (!STAILQ_EMPTY(&md->attach_allow) || !STAILQ_EMPTY(&md->attach_exclude) ||
       !STAILQ_EMPTY(&md->inline_allow) || !STAILQ_EMPTY(&md->inline_exclude))
   {
-    e->attach_total = count_body_parts(e->body);
+    e->attach_total = count_body_parts(e->body, 0);
   }
   else
   {
@@ -341,6 +345,7 @@ static enum CommandResult parse_attach_list(const struct Command *cmd, struct Bu
     if (rc_regex != 0)
     {
       regerror(rc_regex, &a->minor_regex, err->data, err->dsize);
+      buf_fix_dptr(err);
       FREE(&a->major);
       FREE(&a);
       goto done;

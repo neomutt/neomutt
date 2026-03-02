@@ -846,6 +846,8 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             if (!state->fp_out)
             {
               mutt_error("BUG in print_attachment_list().  Please report this. ");
+              mutt_file_unlink(buf_string(newfile));
+              buf_pool_release(&newfile);
               return;
             }
 
@@ -973,9 +975,10 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
           if (cur_att->body->type == TYPE_MULTIPART)
           {
             struct Body *b = cur_att->body->parts;
-            while (b->parts)
+            while (b && b->parts)
               b = b->parts;
-            cur_att = b->aptr;
+            if (b)
+              cur_att = b->aptr;
           }
         }
         op = mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_REGULAR,

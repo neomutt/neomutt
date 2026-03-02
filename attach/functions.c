@@ -656,6 +656,11 @@ static int op_followup(struct AttachPrivateData *priv, const struct KeyEvent *ev
     return FR_ERROR;
 
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
+  if (!cur_att->body->email || !cur_att->body->email->env)
+  {
+    mutt_error(_("You may only followup to message/rfc822 parts"));
+    return FR_ERROR;
+  }
   if (!cur_att->body->email->env->followup_to ||
       !mutt_istr_equal(cur_att->body->email->env->followup_to, "poster") ||
       (query_quadoption(_("Reply by mail as poster prefers?"), NeoMutt->sub,
