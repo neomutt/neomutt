@@ -85,6 +85,10 @@ static int autocrypt_dir_init(bool can_create)
       rc = -1;
     }
   }
+  else
+  {
+    rc = -1;
+  }
 
   buf_pool_release(&prompt);
   return rc;
