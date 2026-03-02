@@ -1476,9 +1476,11 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
 
   struct Address *a = NULL;
   const bool c_crypt_confirm_hook = cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
+  /* Iterate through each recipient address to find an encryption key */
   TAILQ_FOREACH(a, addrlist, entries)
   {
     key_selected = false;
+    /* Check for crypt-hook overrides for this recipient */
     mutt_crypt_hook(&crypt_hook_list, a);
     crypt_hook = STAILQ_FIRST(&crypt_hook_list);
     do
@@ -1486,6 +1488,8 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
       p = a;
       k_info = NULL;
 
+      /* If a crypt-hook provides a key ID, confirm with the user unless
+       * in opportunistic encryption mode */
       if (crypt_hook)
       {
         keyid = crypt_hook->data;
@@ -1534,12 +1538,14 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
         }
       }
 
+      /* If no key found yet, try looking up by address in the keyring */
       if (!k_info)
       {
         pgp_class_invoke_getkeys(p);
         k_info = pgp_getkeybyaddr(p, KEYFLAG_CANENCRYPT, PGP_PUBRING, oppenc_mode);
       }
 
+      /* Last resort: prompt the user to enter a key ID interactively */
       if (!k_info && !oppenc_mode && isatty(STDIN_FILENO))
       {
         snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), buf_string(p->mailbox));
@@ -1557,6 +1563,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
       keyid = pgp_fpr_or_lkeyid(k_info);
 
     bypass_selection:
+      /* Append the selected key ID to the space-separated keylist string */
       keylist_size += mutt_str_len(keyid) + 4;
       MUTT_MEM_REALLOC(&keylist, keylist_size, char);
       sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyid);
