@@ -257,7 +257,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
         mutt_param_set(&b->parameter, "charset", chsbuf);
       }
       FREE(&b->charset);
-      b->charset = mutt_str_dup(fromcode);
+      b->charset = fromcode;
+      fromcode = NULL;
       FREE(&tocode);
       mutt_file_fclose(&fp);
       slist_free(&c_charset_slist);

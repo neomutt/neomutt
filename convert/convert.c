@@ -239,7 +239,7 @@ size_t mutt_convert_file_from_to(FILE *fp, const struct Slist *fromcodes,
     rc = mutt_convert_file_to(fp, np->data, tocodes, &cn, info);
     if (rc != ICONV_ILLEGAL_SEQ)
     {
-      *fromcode = np->data;
+      *fromcode = mutt_str_dup(np->data);
       *tocode = tcode[cn];
       tcode[cn] = 0;
       break;
