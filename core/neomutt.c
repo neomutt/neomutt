@@ -345,6 +345,7 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
 
   ARRAY_INIT(&n->accounts);
   n->notify = notify_new();
+  notify_set_parent(n->sub->notify, n->notify);
 
   n->notify_timeout = notify_new();
   notify_set_parent(n->notify_timeout, n->notify);
@@ -422,6 +423,14 @@ void neomutt_free(struct NeoMutt **ptr)
   struct NeoMutt *n = *ptr;
 
   neomutt_accounts_free(n);
+
+  if (n->sub)
+  {
+    struct ConfigSet *cs = n->sub->cs;
+    cs_subset_free(&n->sub);
+    cs_free(&cs);
+  }
+
   notify_free(&n->notify_resize);
   notify_free(&n->notify_timeout);
   notify_free(&n->notify);
@@ -434,12 +443,6 @@ void neomutt_free(struct NeoMutt **ptr)
   FREE(&n->username);
 
   envlist_free(&n->env);
-  if (n->sub)
-  {
-    struct ConfigSet *cs = n->sub->cs;
-    cs_subset_free(&n->sub);
-    cs_free(&cs);
-  }
 
   FREE(ptr);
 }

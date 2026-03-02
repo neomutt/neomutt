@@ -144,7 +144,7 @@ const char *cc_maildir_field_delimiter(void)
  */
 void config_cache_cleanup(void)
 {
-  if (NeoMutt)
+  if (NeoMutt && NeoMutt->sub)
     notify_observer_remove(NeoMutt->sub->notify, cc_config_observer, NULL);
 
   // Don't free them, the config system owns the data
