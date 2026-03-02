@@ -153,11 +153,13 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
   /* dubious optimisation I saw elsewhere: make the whole string in one call */
   int off = buf_printf(obuf, "%s ", adata->conn->account.user);
   mutt_md5_toascii(hmac_response, obuf->data + off);
+  buf_fix_dptr(obuf);
   mutt_debug(LL_DEBUG2, "CRAM response: %s\n", buf_string(obuf));
 
   /* ibuf must be long enough to store the base64 encoding of obuf,
    * plus the additional debris */
-  mutt_b64_encode(obuf->data, obuf->dsize, ibuf->data, ibuf->dsize - 2);
+  mutt_b64_encode(obuf->data, buf_len(obuf), ibuf->data, ibuf->dsize - 2);
+  buf_fix_dptr(ibuf);
   buf_addstr(ibuf, "\r\n");
   mutt_socket_send(adata->conn, buf_string(ibuf));
 
