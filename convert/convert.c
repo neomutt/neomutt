@@ -67,7 +67,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
   char bufi[256] = { 0 };
   char bufu[512] = { 0 };
   char bufo[4 * sizeof(bufi)] = { 0 };
-  size_t rc;
+  size_t rc = ICONV_ILLEGAL_SEQ;
 
   const iconv_t cd1 = mutt_ch_iconv_open("utf-8", fromcode, MUTT_ICONV_NO_FLAGS);
   if (!iconv_t_valid(cd1))
