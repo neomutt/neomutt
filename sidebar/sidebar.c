@@ -166,7 +166,7 @@ void sb_remove_mailbox(struct SidebarWindowData *wdata, const struct Mailbox *m)
         // The last entry was deleted, so backtrack
         sb_prev(wdata);
       }
-      else if ((*sbep)->is_hidden)
+      else if ((*sbep_cur)->is_hidden)
       {
         // Find the next unhidden entry, or the previous
         if (!sb_next(wdata) && !sb_prev(wdata))
