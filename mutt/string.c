@@ -475,7 +475,10 @@ const char *mutt_istrn_rfind(const char *haystack, size_t haystack_length, const
   if (!haystack || (haystack_length == 0) || !needle)
     return NULL;
 
-  int needle_length = strlen(needle);
+  size_t needle_length = strlen(needle);
+  if (needle_length > haystack_length)
+    return NULL;
+
   const char *haystack_end = haystack + haystack_length - needle_length;
 
   for (const char *p = haystack_end; p >= haystack; p--)
