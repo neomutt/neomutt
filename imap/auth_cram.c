@@ -60,7 +60,7 @@ static void hmac_md5(const char *password, const char *challenge, unsigned char 
   {
     unsigned char hash_passwd[MD5_DIGEST_LEN];
     mutt_md5_bytes(password, secret_len, hash_passwd);
-    mutt_str_copy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
+    memcpy(secret, hash_passwd, MD5_DIGEST_LEN);
     secret_len = MD5_DIGEST_LEN;
   }
   else
