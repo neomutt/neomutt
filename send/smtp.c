@@ -637,6 +637,8 @@ static int smtp_auth_sasl(struct SmtpAccountData *adata, const char *mechlist)
   if (mutt_sasl_client_new(adata->conn, &saslconn) < 0)
     return SMTP_AUTH_FAIL;
 
+  /* Perform SASL client handshake: start negotiation with the server,
+   * handling any interactive prompts from the SASL library */
   do
   {
     rc_sasl = sasl_client_start(saslconn, mechlist, &interaction, &data, &data_len, &mech);
@@ -657,6 +659,8 @@ static int smtp_auth_sasl(struct SmtpAccountData *adata, const char *mechlist)
     mutt_message(_("Authenticating (%s)..."), mech);
   }
 
+  /* Build the initial AUTH command, optionally including the first
+   * base64-encoded SASL response as part of the AUTH line */
   temp_buf = buf_pool_get();
   output_buf = buf_pool_get();
   smtp_response_buf = buf_pool_get();
@@ -670,6 +674,8 @@ static int smtp_auth_sasl(struct SmtpAccountData *adata, const char *mechlist)
   }
   buf_addstr(output_buf, "\r\n");
 
+  /* Main SASL challenge/response loop: send base64-encoded data to the
+   * server, decode its response, and pass it to sasl_client_step() */
   do
   {
     if (mutt_socket_send(adata->conn, buf_string(output_buf)) < 0)
@@ -703,6 +709,7 @@ static int smtp_auth_sasl(struct SmtpAccountData *adata, const char *mechlist)
     buf_addstr(output_buf, "\r\n");
   } while (rc_sasl != SASL_FAIL);
 
+  /* Check final SMTP result and set up SASL security layer on success */
   if (smtp_success(rc_smtp))
   {
     mutt_sasl_setup_conn(adata->conn, saslconn);

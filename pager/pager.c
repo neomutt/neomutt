@@ -138,7 +138,8 @@ static int pager_repaint(struct MuttWindow *win)
 
   dump_pager(priv);
 
-  // We need to populate more lines, but not change position
+  /* Phase 1: Reflow the content if the window was resized or needs repopulating.
+   * Reset all line metadata and re-display lines up to the current position. */
   const bool repopulate = (priv->cur_line > priv->lines_used);
   if ((priv->redraw & PAGER_REDRAW_FLOW) || repopulate)
   {
@@ -187,6 +188,8 @@ static int pager_repaint(struct MuttWindow *win)
     }
   }
 
+  /* Phase 2: Repaint visible lines from top_line downward.  Repeatedly
+   * calls display_line() for each row in the pager window. */
   if ((priv->redraw & PAGER_REDRAW_PAGER) || (priv->top_line != priv->old_top_line))
   {
     do
@@ -217,6 +220,7 @@ static int pager_repaint(struct MuttWindow *win)
       }
     } while (priv->force_redraw);
 
+    /* Fill remaining rows with tilde characters (like vi) */
     const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
     mutt_curses_set_normal_backed_color_by_id(MT_COLOR_TILDE);
     while (priv->win_height < priv->pview->win_pager->state.rows)

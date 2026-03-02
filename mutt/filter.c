@@ -64,6 +64,8 @@ pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_e
 {
   int pin[2], pout[2], perr[2], pid;
 
+  /* Create pipes for each requested I/O stream (stdin, stdout, stderr).
+   * On failure, clean up any already-created pipes before returning. */
   if (fp_in)
   {
     *fp_in = NULL;
@@ -104,11 +106,14 @@ pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_e
     }
   }
 
+  /* Block signals around fork to prevent child from inheriting pending signals */
   mutt_sig_block_system();
 
   pid = fork();
   if (pid == 0)
   {
+    /* Child process: redirect pipe ends to stdin/stdout/stderr via dup2(),
+     * or use the caller-supplied file descriptors as fallback */
     mutt_sig_unblock_system(false);
     mutt_sig_reset_child_signals();
 
@@ -153,6 +158,7 @@ pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_e
   }
   else if (pid == -1)
   {
+    /* Fork failed: clean up all pipe file descriptors */
     mutt_sig_unblock_system(true);
 
     if (fp_in)
@@ -176,6 +182,8 @@ pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_e
     return -1;
   }
 
+  /* Parent process: close the child's end of each pipe and wrap
+   * the parent's end in a FILE stream for the caller */
   if (fp_out)
   {
     close(pout[1]);

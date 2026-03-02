@@ -1124,6 +1124,7 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   if (!b_email->mime_headers)
     goto blank;
 
+  /* Load display preferences: weeding, wrapping, and security debug flags */
   const bool c_devel_security = cs_subset_bool(NeoMutt->sub, "devel_security");
   const bool display = (state->flags & STATE_DISPLAY);
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
@@ -1134,6 +1135,8 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   struct Buffer *buf = buf_pool_get();
   bool weed = (display && c_weed && c_crypt_protected_headers_weed);
 
+  /* When devel_security is enabled, output all protected envelope headers
+   * (Date, From, To, Cc, etc.) subject to weed rules */
   if (c_devel_security)
   {
     if (b_email->mime_headers->date && (!display || !c_weed || !mutt_matches_ignore("date")))
@@ -1250,6 +1253,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
   int rc = 0;
   struct Buffer *tempfile = NULL;
 
+  /* Identify the signature type from the multipart/signed protocol parameter */
   b_email = b_email->parts;
   SecurityFlags signed_type = mutt_is_multipart_signed(top);
   if (signed_type == SEC_NO_FLAGS)
@@ -1260,6 +1264,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
     return mutt_body_handler(b_email, state);
   }
 
+  /* Validate that the second MIME part matches the expected signature type */
   if (!(b_email && b_email->next))
   {
     inconsistent = true;
@@ -1302,6 +1307,8 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
 
   if (state->flags & STATE_DISPLAY)
   {
+    /* Verify each signature part (PGP or S/MIME) against the signed body
+     * written to a temporary file */
     crypt_fetch_signatures(&signatures, b_email->next, &sigcnt);
 
     if (sigcnt != 0)

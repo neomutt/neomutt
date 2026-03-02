@@ -197,6 +197,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
   struct Progress *progress = NULL;
   enum MxOpenReturns rc = MX_OPEN_ERROR;
 
+  /* Record mailbox timestamps and size for change detection */
   if (stat(mailbox_path(m), &st) == -1)
   {
     mutt_perror("%s", mailbox_path(m));
@@ -212,6 +213,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
     progress_set_message(progress, _("Reading %s..."), mailbox_path(m));
   }
 
+  /* Read the file line-by-line looking for MMDF separator lines ("\001\001\001\001\n") */
   while (true)
   {
     if (!fgets(buf, sizeof(buf) - 1, adata->fp))
@@ -229,6 +231,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
       count++;
       progress_update(progress, count, (int) (loc / (m->size / 100 + 1)));
 
+      /* Allocate a new Email for this message */
       mx_alloc_memory(m, m->msg_count);
       e = email_new();
       m->emails[m->msg_count] = e;
@@ -242,6 +245,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
         break;
       }
 
+      /* Try to parse "From " line for return path and date */
       return_path[0] = '\0';
 
       if (!is_from(buf, return_path, sizeof(return_path), &t))
@@ -257,12 +261,15 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
         e->received = t - mutt_date_local_tz(t);
       }
 
+      /* Parse RFC 822 headers to populate the envelope */
       e->env = mutt_rfc822_read_header(adata->fp, e, false, false);
 
       loc = ftello(adata->fp);
       if (loc < 0)
         goto fail;
 
+      /* Try to validate the Content-Length by seeking to the expected end
+       * and verifying an MMDF separator is there */
       if ((e->body->length > 0) && (e->lines > 0))
       {
         tmploc = loc + e->body->length;
@@ -286,6 +293,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
         e->body->length = -1;
       }
 
+      /* If Content-Length was missing or invalid, scan for the next separator */
       if (e->body->length < 0)
       {
         lines = -1;
@@ -303,6 +311,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
         e->body->length = loc - e->body->offset;
       }
 
+      /* Populate return path and from address if missing from headers */
       if (TAILQ_EMPTY(&e->env->return_path) && return_path[0])
         mutt_addrlist_parse(&e->env->return_path, return_path);
 

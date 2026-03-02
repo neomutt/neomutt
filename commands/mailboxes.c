@@ -221,6 +221,8 @@ bool parse_mailboxes_args(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   bool rc = false;
 
+  /* Parse each mailbox specification: consume optional flags (-label, -notify,
+   * -poll and their negations) then the mailbox path itself */
   while (MoreArgs(line))
   {
     bool label_set = false;
@@ -288,6 +290,7 @@ bool parse_mailboxes_args(const struct Command *cmd, struct Buffer *line,
       goto done;
     }
 
+    /* Store the parsed mailbox entry with its associated options */
     struct ParseMailbox pm = {
       .path = buf_strdup(mailbox),
       .label = label_set ? buf_strdup(label) : NULL,

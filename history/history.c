@@ -215,6 +215,8 @@ static void shrink_histfile(void)
   if (!fp)
     return;
 
+  /* If duplicate removal is enabled, build per-class hash tables to track
+   * how many times each history entry appears in the file */
   const bool c_history_remove_dups = cs_subset_bool(NeoMutt->sub, "history_remove_dups");
   const short c_save_history = cs_subset_number(NeoMutt->sub, "save_history");
   if (c_history_remove_dups)
@@ -223,6 +225,8 @@ static void shrink_histfile(void)
       dup_hashes[hclass] = mutt_hash_new(MAX(10, c_save_history * 2), MUTT_HASH_STRDUP_KEYS);
   }
 
+  /* First pass: count entries per class, detect duplicates, and validate
+   * the file format (each line is "class:entry|") */
   line = 0;
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NO_FLAGS)))
   {
@@ -259,6 +263,8 @@ static void shrink_histfile(void)
 
   if (regen_file)
   {
+    /* Second pass: rewrite the file keeping only the most recent
+     * c_save_history entries per class, omitting duplicates */
     fp_tmp = mutt_file_mkstemp();
     if (!fp_tmp)
     {

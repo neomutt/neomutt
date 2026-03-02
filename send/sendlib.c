@@ -458,6 +458,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   CopyMessageFlags cmflags;
   SecurityFlags pgp = WithCrypto ? e->security : SEC_NO_FLAGS;
 
+  /* Ensure we have a valid passphrase before decrypting encrypted messages */
   const bool c_mime_forward_decode = cs_subset_bool(sub, "mime_forward_decode");
   const bool c_forward_decrypt = cs_subset_bool(sub, "forward_decrypt");
   if (WithCrypto)
@@ -469,6 +470,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
     }
   }
 
+  /* Create a temporary file to hold the serialised message/rfc822 body */
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
   fp = mutt_file_fopen_masked(buf_string(tempfile), "w+");
@@ -478,6 +480,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
     return NULL;
   }
 
+  /* Build a new Body representing the message/rfc822 attachment */
   body = mutt_body_new();
   body->type = TYPE_MESSAGE;
   body->subtype = mutt_str_dup("rfc822");
@@ -498,6 +501,9 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   }
   mutt_parse_mime_message(e, msg->fp);
 
+  /* Determine copy flags based on decode/decrypt config options.
+   * When MIME-forwarding with decode, strip MIME headers and convert charset.
+   * When forwarding encrypted content with decrypt, handle PGP/SMIME separately. */
   CopyHeaderFlags chflags = CH_XMIT;
   cmflags = MUTT_CM_NO_FLAGS;
 
@@ -535,6 +541,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
     }
   }
 
+  /* Copy the message content into the temp file, then reparse the headers */
   mutt_copy_message(fp, e, msg, cmflags, chflags, 0);
   mx_msg_close(m, &msg);
 

@@ -40,7 +40,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/time.h>
-#include <time.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"

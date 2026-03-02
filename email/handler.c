@@ -1145,6 +1145,7 @@ static int multilingual_handler(struct Body *b_email, struct State *state)
   int rc = 0;
 
   mutt_debug(LL_DEBUG2, "RFC8255 >> entering in handler multilingual handler\n");
+  /* If the body is transfer-encoded, decode it and re-parse the MIME parts */
   if ((b_email->encoding == ENC_BASE64) || (b_email->encoding == ENC_QUOTED_PRINTABLE) ||
       (b_email->encoding == ENC_UUENCODED))
   {
@@ -1173,6 +1174,7 @@ static int multilingual_handler(struct Body *b_email, struct State *state)
   struct Body *zxx_part = NULL;
   struct ListNode *np = NULL;
 
+  /* Find the first decodable part as a fallback */
   while (b)
   {
     if (mutt_can_decode(b))
@@ -1183,6 +1185,8 @@ static int multilingual_handler(struct Body *b_email, struct State *state)
     b = b->next;
   }
 
+  /* Search for a part matching the user's preferred languages (RFC 8255).
+   * Also track any "zxx" (no linguistic content) part as a secondary fallback. */
   const struct Slist *c_preferred_languages = cs_subset_slist(NeoMutt->sub, "preferred_languages");
   if (c_preferred_languages)
   {
@@ -1225,6 +1229,7 @@ static int multilingual_handler(struct Body *b_email, struct State *state)
     }
   }
 
+  /* Display the best match: preferred language > zxx > first decodable part */
   if (choice)
   {
     mutt_body_handler(choice, state);

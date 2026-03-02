@@ -504,6 +504,8 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 {
   draw_header(win, row, field);
 
+  /* Format addresses into displayable strings and wrap across multiple
+   * lines as needed, showing "(+N more)" when lines are exhausted */
   struct ListHead list = STAILQ_HEAD_INITIALIZER(list);
   int count = mutt_addrlist_count_recips(al);
 
@@ -548,6 +550,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
     count--;
   try_again:
+    /* Calculate the "(+N more)" indicator width if we're on the last line */
     more_len = snprintf(more, sizeof(more),
                         ngettext("(+%d more)", "(+%d more)", count), count);
     mutt_debug(LL_DEBUG3, "text: '%s'  len: %d\n", more, more_len);
@@ -595,6 +598,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
   mutt_list_free(&list);
   buf_pool_release(&buf);
 
+  /* Display the "(+N more)" overflow indicator, or clear the rest of the line */
   if (count > 0)
   {
     mutt_window_move(win, row, win->state.cols - more_len);

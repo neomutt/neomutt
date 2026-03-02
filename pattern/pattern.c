@@ -203,6 +203,8 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata,
 
   mutt_message(_("Compiling search pattern..."));
 
+  /* Compile the pattern string; "~A" means match-all.  If the simple string
+   * was expanded into a pattern, compile it for evaluation. */
   bool match_all = false;
   struct PatternList *pat = NULL;
   char *simple = buf_strdup(buf);
@@ -232,6 +234,8 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata,
   progress = progress_new(MUTT_PROGRESS_READ, ARRAY_SIZE(&mdata->ava));
   progress_set_message(progress, _("Executing command on matching messages..."));
 
+  /* Apply the action (tag, untag, or filter visibility) to each alias
+   * that matches the compiled pattern */
   int vcounter = 0;
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata->ava)

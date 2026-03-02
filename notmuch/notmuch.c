@@ -2297,6 +2297,8 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
 
   struct HeaderCache *hc = nm_hcache_open(m);
 
+  /* Iterate through all messages, syncing flag changes to the underlying
+   * maildir/mh files and updating the notmuch database for renames/deletes */
   int mh_sync_errors = 0;
   for (int i = 0; i < m->msg_count; i++)
   {
@@ -2324,13 +2326,16 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
       email_get_fullpath(e, old_file, sizeof(old_file));
     }
 
+    /* Temporarily set mailbox path and type to the message's backing
+     * maildir folder so maildir_sync_mailbox_message() can operate */
     buf_strcpy(&m->pathbuf, edata->folder);
     m->type = edata->type;
 
     bool ok = maildir_sync_mailbox_message(m, e, hc);
     if (!ok)
     {
-      // Syncing file failed, query notmuch for new filepath.
+      /* Syncing file failed, query notmuch for an updated filepath
+       * (another process may have moved the message on disk) */
       m->type = MUTT_NOTMUCH;
       notmuch_database_t *db = nm_db_get(m, true);
       if (db)
@@ -2348,6 +2353,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
       m->type = edata->type;
     }
 
+    /* Restore the virtual notmuch mailbox path */
     buf_strcpy(&m->pathbuf, url);
     m->type = MUTT_NOTMUCH;
 
@@ -2357,6 +2363,8 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
       continue;
     }
 
+    /* If the message was deleted or its file was renamed (e.g. flag change),
+     * update the notmuch database to reflect the new state */
     if (!e->deleted)
       email_get_fullpath(e, new_file, sizeof(new_file));
 
