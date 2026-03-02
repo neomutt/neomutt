@@ -597,7 +597,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
       if (lines[i].syntax_arr_size)
       {
         lines[i].syntax_arr_size = 0;
-        MUTT_MEM_REALLOC(&(lines[line_num].syntax), 1, struct TextSyntax);
+        MUTT_MEM_REALLOC(&(lines[i].syntax), 1, struct TextSyntax);
       }
       lines[i++].cid = MT_COLOR_SIGNATURE;
     }
@@ -711,7 +711,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
         offset = (lines[line_num].syntax)[i].last;
     } while (found || null_rx);
     if (nl > 0)
-      buf[nl] = '\n';
+      buf[nl - 1] = '\n';
   }
 }
 
@@ -812,7 +812,8 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
     }
 
     *bytes_read = ftello(fp);
-    b_read = (int) (*bytes_read - offset);
+    LOFF_T diff = *bytes_read - offset;
+    b_read = (diff > INT_MAX) ? INT_MAX : (int) diff;
     *buf_ready = 1;
 
     struct Buffer *stripped = buf_pool_get();
@@ -1114,11 +1115,12 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     else
     {
       cur_line->cid = MT_COLOR_NORMAL;
-      if (buf[11] == 'M')
+      size_t blen = mutt_str_len((const char *) buf);
+      if ((blen > 11) && (buf[11] == 'M'))
         cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_MESSAGE);
-      else if (buf[11] == 'W')
+      else if ((blen > 11) && (buf[11] == 'W'))
         cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_WARNING);
-      else if (buf[11] == 'E')
+      else if ((blen > 11) && (buf[11] == 'E'))
         cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_ERROR);
       else
         cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_NORMAL);

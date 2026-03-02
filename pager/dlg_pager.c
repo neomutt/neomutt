@@ -337,6 +337,9 @@ int dlg_pager(struct PagerView *pview)
   if (!priv->fp)
   {
     mutt_perror("%s", pview->pdata->fname);
+    for (size_t i = 0; i < priv->lines_max; i++)
+      FREE(&priv->lines[i].syntax);
+    FREE(&priv->lines);
     return -1;
   }
 
@@ -344,6 +347,9 @@ int dlg_pager(struct PagerView *pview)
   {
     mutt_perror("%s", pview->pdata->fname);
     mutt_file_fclose(&priv->fp);
+    for (size_t i = 0; i < priv->lines_max; i++)
+      FREE(&priv->lines[i].syntax);
+    FREE(&priv->lines);
     return -1;
   }
   unlink(pview->pdata->fname);
@@ -492,7 +498,8 @@ int dlg_pager(struct PagerView *pview)
     // marking the wrong message as read.
     if (check_read_delay(&priv->delay_read_timestamp))
     {
-      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true, true);
+      if (shared->mailbox && shared->email)
+        mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true, true);
     }
 
     if (SigWinch)
@@ -563,7 +570,6 @@ int dlg_pager(struct PagerView *pview)
     priv->search_compiled = false;
   }
   FREE(&priv->lines);
-  attr_color_list_clear(&priv->ansi_list);
   {
     struct AttrColor *ac = NULL;
     int count = 0;
@@ -573,6 +579,7 @@ int dlg_pager(struct PagerView *pview)
     }
     color_debug(LL_DEBUG5, "AnsiColors %d\n", count);
   }
+  attr_color_list_clear(&priv->ansi_list);
 
   priv->pview = NULL;
 
