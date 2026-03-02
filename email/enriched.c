@@ -125,6 +125,8 @@ static void enriched_wrap(struct EnrichedState *enriched)
 
   int x;
 
+  /* Output the current line content, applying center/flush-right alignment
+   * by stripping whitespace and adding leading spaces as needed */
   if (enriched->line_len)
   {
     if (enriched->tag_level[RICH_CENTER] || enriched->tag_level[RICH_FLUSHRIGHT])
@@ -185,6 +187,8 @@ static void enriched_wrap(struct EnrichedState *enriched)
     state_putws(enriched->state, (const wchar_t *) enriched->line);
   }
 
+  /* Start a new line: reset line buffer and apply indentation for
+   * the current nesting level (prefix, excerpt markers, indent spaces) */
   state_putc(enriched->state, '\n');
   enriched->line[0] = (wchar_t) '\0';
   enriched->line_len = 0;
