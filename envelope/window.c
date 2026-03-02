@@ -641,10 +641,7 @@ static int draw_envelope_user_hdrs(struct MuttWindow *win,
 
   /* Draw first entry on same line as prompt */
   draw_header(win, row, HDR_CUSTOM_HEADERS);
-  mutt_paddstr(win,
-               win->state.cols - (HeaderPadding[HDR_CUSTOM_HEADERS] +
-                                  mutt_strwidth(_(Prompts[HDR_CUSTOM_HEADERS]))),
-               first->data);
+  draw_header_content(win, row, HDR_CUSTOM_HEADERS, first->data);
   rows_used++;
 
   /* Draw any following entries on their own line */
