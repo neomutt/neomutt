@@ -491,7 +491,7 @@ void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
   if (!h)
     return; /* disabled */
 
-  if (*str)
+  if (str && *str)
   {
     int prev = h->last - 1;
     const short c_history = cs_subset_number(NeoMutt->sub, "history");
