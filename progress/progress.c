@@ -164,6 +164,9 @@ struct Progress *progress_new(enum ProgressType type, size_t size)
  */
 void progress_set_message(struct Progress *progress, const char *fmt, ...)
 {
+  if (!fmt)
+    return;
+
   // Decloak an opaque pointer
   struct MuttWindow *win = (struct MuttWindow *) progress;
 
