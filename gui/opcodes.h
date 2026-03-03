@@ -973,6 +973,12 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE */ \
   /*       Sidebar: <op_sidebar_toggle_visible> */ \
   _fmt(OP_SIDEBAR_TOGGLE_VISIBLE,             N_("make the sidebar (in)visible")) \
+  /* L10N: Help screen description for OP_SIDEBAR_ABORT_SEARCH */ \
+  /*       Sidebar: <op_sidebar_abort_search> */ \
+  _fmt(OP_SIDEBAR_ABORT_SEARCH,               N_("close the sidebar search")) \
+  /* L10N: Help screen description for OP_SIDEBAR_START_SEARCH */ \
+  /*       Sidebar: <op_sidebar_start_search> */ \
+  _fmt(OP_SIDEBAR_START_SEARCH,               N_("fuzzy search the sidebar")) \
 
 #define OPS_SMIME(_fmt) \
   /* L10N: Help screen description for OP_COMPOSE_SMIME_MENU */ \

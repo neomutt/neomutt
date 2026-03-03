@@ -14667,8 +14667,8 @@ set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
         <itemizedlist>
           <listitem>
             <para>
-              <!-- Features will be listed here as they adopt fuzzy searching. -->
-              None yet — watch this space.
+              <link linkend="sidebar-search">Sidebar Search</link> —
+              dynamically filter the Sidebar mailbox list as you type
             </para>
           </listitem>
         </itemizedlist>
@@ -14865,6 +14865,264 @@ set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
         <title>Credits</title>
         <para>
           Richard Russon
+        </para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="sidebar-search">
+      <title>Sidebar Search Feature</title>
+      <subtitle>Quickly select a mailbox by typing a few characters</subtitle>
+
+      <sect2 id="sidebar-search-support">
+        <title>Support</title>
+        <para><emphasis role="bold">Since:</emphasis> NeoMutt 2026-03-01</para>
+        <note>
+          <para>
+            This feature is under active development. Its behaviour and
+            keybindings may change in future releases.
+          </para>
+        </note>
+      </sect2>
+
+      <sect2 id="sidebar-search-intro">
+        <title>Introduction</title>
+        <para>
+          Sidebar Search lets you jump to any mailbox in the Sidebar by
+          typing a few characters of its name. As you type, the Sidebar
+          filters itself in real time, hiding entries that don't match and
+          highlighting the best match. Pressing <keysym>Enter</keysym>
+          opens the highlighted mailbox; pressing <keysym>Ctrl-G</keysym>
+          cancels and restores the original view.
+        </para>
+        <para>
+          If the Sidebar is currently hidden, it will be shown temporarily
+          during the search and hidden again afterwards.
+        </para>
+        <para>
+          The search uses the <link linkend="fuzzy">Fuzzy Search</link> engine,
+          so you don't need to type the exact name. For example, typing
+          <quote>mlnd</quote> is enough to reach
+          <quote>mailinglists/neomutt-dev</quote>.
+        </para>
+      </sect2>
+
+      <sect2 id="sidebar-search-function">
+        <title>NeoMutt Function</title>
+        <para>
+          The search is started with the <literal>sidebar-start-search</literal>
+          function. It has no default keybinding, so you must add one yourself.
+          A natural choice is <literal>Ctrl-S</literal>.
+        </para>
+        <screen>bind sidebar \CS sidebar-start-search</screen>
+        <para>
+          A prompt reading <quote>Sidebar search:</quote> will appear at the
+          bottom of the screen. Type your search pattern and the Sidebar will
+          filter as you type.
+        </para>
+      </sect2>
+
+      <sect2 id="sidebar-search-keys">
+        <title>Keybindings During Search</title>
+        <para>
+          While the search prompt is active, two sets of keybindings are
+          available simultaneously:
+        </para>
+        <variablelist>
+          <varlistentry>
+            <term>Navigation</term>
+            <listitem>
+              <para>
+                <keysym>Up</keysym> and <keysym>Down</keysym> move the
+                highlight through the filtered Sidebar so you can pick a
+                different match without leaving the prompt.
+              </para>
+              <para>
+                <literal>&lt;sidebar-abort-search&gt;</literal> (bound to
+                <keysym>Escape</keysym> by default) closes the search
+                prompt without making a selection.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>Editor functions</term>
+            <listitem>
+              <para>
+                The full set of line-editor keybindings is available for
+                editing the search pattern. Examples include:
+              </para>
+             <itemizedlist>
+               <listitem>
+                 <para>
+                 <literal>&lt;backward-char&gt;</literal>/ 
+                 <literal>&lt;forward-char&gt;</literal>— move the cursor left or right</para>
+               </listitem>
+               <listitem>
+                 <para>
+                 <literal>&lt;bol&gt;</literal>/ 
+                 <literal>&lt;eol&gt;</literal>— jump to the start or end of the pattern</para>
+               </listitem>
+               <listitem>
+                 <para>
+                 <literal>&lt;backward-word&gt;</literal>/ 
+                 <literal>&lt;forward-word&gt;</literal>— skip a word at a time</para>
+               </listitem>
+               <listitem>
+                 <para>
+                 <literal>&lt;backspace&gt;</literal>/ 
+                 <literal>&lt;delete-char&gt;</literal>— delete a character</para>
+               </listitem>
+               <listitem>
+                 <para>
+                 <literal>&lt;kill-word&gt;</literal>/ 
+                 <literal>&lt;kill-eol&gt;</literal>— delete to end of word or line</para>
+               </listitem>
+             </itemizedlist>
+              <para>
+                Any binding defined in the <literal>editor</literal> map can
+                be used; use <literal>:bind editor</literal> to customise
+                them.
+              </para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </sect2>
+
+      <sect2 id="sidebar-search-case">
+        <title>Case Sensitivity</title>
+        <para>
+          Sidebar Search uses <emphasis>smart case</emphasis> matching:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              If every letter in your pattern is lowercase, the search is
+              <emphasis>case-insensitive</emphasis>. Typing
+              <quote>inbox</quote> matches <quote>INBOX</quote>,
+              <quote>Inbox</quote>, and <quote>inbox</quote>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              If your pattern contains even one uppercase letter, the search
+              becomes <emphasis>case-sensitive</emphasis>. Typing
+              <quote>Inbox</quote> will only match mailboxes whose name
+              contains a capital <quote>I</quote>.
+            </para>
+          </listitem>
+        </itemizedlist>
+        <para>
+          This lets you search without caring about case in everyday use,
+          while still being able to narrow down precisely when you need to.
+        </para>
+      </sect2>
+
+      <sect2 id="sidebar-search-utf8">
+        <title>UTF-8 Support</title>
+        <para>
+          Mailbox names are matched as byte sequences, so UTF-8 mailbox names
+          work correctly: multi-byte characters are never split, and
+          non-ASCII characters are matched exactly as typed.
+        </para>
+        <para>
+          Case folding applies only to the ASCII letters A–Z. Accented
+          characters, CJK characters, and other non-ASCII text are always
+          matched byte-for-byte. Smart case detection also considers only
+          ASCII letters, so a pattern consisting entirely of non-ASCII
+          characters is treated as case-insensitive.
+        </para>
+      </sect2>
+
+      <sect2 id="sidebar-search-scoring">
+        <title>How Matches Are Ranked</title>
+        <para>
+          Every mailbox that contains all the letters of your pattern (in
+          order) is shown; the rest are hidden. Visible mailboxes are sorted
+          so that the best match is highlighted automatically. The ranking
+          rewards intuitive matches:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              <emphasis role="bold">Word boundaries score highest.</emphasis>
+              Matching the first letter of a path component (after
+              <literal>/</literal>, <literal>.</literal>,
+              <literal>-</literal>, or <literal>_</literal>) or the very
+              start of the name is rewarded more than a match buried in the
+              middle of a word.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis role="bold">Consecutive letters score higher than
+              scattered ones.</emphasis>
+              Typing <quote>box</quote> will rank <quote>mail<emphasis
+              role="bold">box</emphasis></quote> above a mailbox where the
+              three letters appear far apart.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis role="bold">Compact matches beat spread-out
+              ones.</emphasis>
+              The closer together the matched letters are, the better the
+              score.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis role="bold">Shorter names are preferred.</emphasis>
+              When two mailboxes match equally well, the shorter name ranks
+              higher.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis role="bold">New and unread mail boost the
+              score.</emphasis>
+              Mailboxes with unread messages are ranked higher so that
+              relevant mailboxes rise to the top when you're looking for
+              something to read. Each <emphasis>new</emphasis> (unseen)
+              message adds 2 points; each <emphasis>unread</emphasis> (seen
+              but not read) message adds 1 point.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </sect2>
+
+      <sect2 id="sidebar-search-expando">
+        <title>Debug Expando: Fuzzy Score</title>
+        <note>
+          <para>
+            This expando is a <emphasis>temporary development aid</emphasis>
+            and will be removed in a future release.
+          </para>
+        </note>
+        <para>
+          During development it can be useful to see the raw fuzzy score
+          assigned to each sidebar entry. Add the
+          <literal>%f</literal> (or <literal>%{fuzzy-score}</literal>)
+          expando to your <literal>$sidebar_format</literal> string:
+        </para>
+        <screen>set sidebar_format = "%D%*  %n  [%f]"</screen>
+        <para>
+          The score is <literal>-1</literal> when no search is active (all
+          mailboxes are shown). Once a search pattern is entered, each
+          visible entry shows its numeric score; hidden entries show
+          <literal>-1</literal>.
+        </para>
+      </sect2>
+
+      <sect2 id="sidebar-search-known-bugs">
+        <title>Known Bugs</title>
+        <para>
+          None
+        </para>
+      </sect2>
+
+      <sect2 id="sidebar-search-credits">
+        <title>Credits</title>
+        <para>
+          Lucian Langa, Richard Russon
         </para>
       </sect2>
     </sect1>
@@ -17855,6 +18113,11 @@ set browser_sort = "reverse-size"
             <tbody>
               <row>
                 <entry>index,pager</entry>
+                <entry><literal>&lt;sidebar-abort-search&gt;</literal></entry>
+                <entry>Close the Sidebar Search without a selection</entry>
+              </row>
+              <row>
+                <entry>index,pager</entry>
                 <entry><literal>&lt;sidebar-next&gt;</literal></entry>
                 <entry>Move the highlight to next mailbox</entry>
               </row>
@@ -17887,6 +18150,11 @@ set browser_sort = "reverse-size"
                 <entry>index,pager</entry>
                 <entry><literal>&lt;sidebar-prev-new&gt;</literal></entry>
                 <entry>Move the highlight to previous mailbox with new mail</entry>
+              </row>
+              <row>
+                <entry>index,pager</entry>
+                <entry><literal>&lt;sidebar-start-search&gt;</literal></entry>
+                <entry>Start the Sidebar Fuzzy Search</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
