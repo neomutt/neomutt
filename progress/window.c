@@ -150,7 +150,7 @@ static int progress_window_recalc(struct MuttWindow *win)
   }
 
   if ((wdata->update_percent < 0) && (wdata->size != 0))
-    wdata->display_percent = 100 * wdata->display_pos / wdata->size;
+    wdata->display_percent = MIN(100 * wdata->display_pos / wdata->size, 100);
   else
     wdata->display_percent = wdata->update_percent;
 
@@ -245,7 +245,7 @@ static bool percent_needs_update(const struct ProgressWindowData *wdata, int per
  * @param pos   Current pos
  * @retval true Progress needs an update
  */
-static bool pos_needs_update(const struct ProgressWindowData *wdata, long pos)
+static bool pos_needs_update(const struct ProgressWindowData *wdata, size_t pos)
 {
   const unsigned shift = wdata->is_bytes ? 10 : 0;
   return pos >= (wdata->display_pos + (wdata->size_inc << shift));
