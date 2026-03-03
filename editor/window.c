@@ -144,11 +144,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
   }
   else if (wc && ((wc < ' ') || IsWPrint(wc))) /* why? */
   {
-    if (wdata->state->lastchar >= wdata->state->wbuflen)
-    {
-      wdata->state->wbuflen = wdata->state->lastchar + 20;
-      MUTT_MEM_REALLOC(&wdata->state->wbuf, wdata->state->wbuflen, wchar_t);
-    }
+    enter_state_resize(wdata->state, wdata->state->lastchar + 1);
     memmove(wdata->state->wbuf + wdata->state->curpos + 1,
             wdata->state->wbuf + wdata->state->curpos,
             (wdata->state->lastchar - wdata->state->curpos) * sizeof(wchar_t));
@@ -196,6 +192,8 @@ static int enter_repaint(struct MuttWindow *win)
   mutt_window_get_coords(win, NULL, &prompt_length);
 
   int width = win->state.cols - prompt_length - 1;
+  if (width < 1)
+    width = 1;
 
   if (!wdata->pass)
   {
