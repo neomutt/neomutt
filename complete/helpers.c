@@ -59,7 +59,8 @@ void matches_ensure_morespace(struct CompletionData *cd, int new_size)
   new_size = ROUND_UP(new_size + 2, 512);
 
   MUTT_MEM_REALLOC(&cd->match_list, new_size, const char *);
-  memset(&cd->match_list[cd->match_list_len], 0, new_size - cd->match_list_len);
+  memset(&cd->match_list[cd->match_list_len], 0,
+         (new_size - cd->match_list_len) * sizeof(const char *));
 
   cd->match_list_len = new_size;
 }
@@ -141,7 +142,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
     {
       cd->num_matched = 0;
       mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
-      memset(cd->match_list, 0, cd->match_list_len);
+      memset(cd->match_list, 0, cd->match_list_len * sizeof(const char *));
       memset(cd->completed, 0, sizeof(cd->completed));
 
       const struct Command **cp = NULL;
@@ -234,7 +235,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
     {
       cd->num_matched = 0;
       mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
-      memset(cd->match_list, 0, cd->match_list_len);
+      memset(cd->match_list, 0, cd->match_list_len * sizeof(const char *));
       memset(cd->completed, 0, sizeof(cd->completed));
 
       struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, GEL_ALL_CONFIG);
@@ -271,7 +272,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
                cd->match_list[(numtabs - 2) % cd->num_matched]);
     }
 
-    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
+    mutt_str_copy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
     buf_fix_dptr(buf);
   }
   else if (buf_startswith(buf, "exec"))
@@ -282,7 +283,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
     {
       cd->num_matched = 0;
       mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
-      memset(cd->match_list, 0, cd->match_list_len);
+      memset(cd->match_list, 0, cd->match_list_len * sizeof(const char *));
       memset(cd->completed, 0, sizeof(cd->completed));
 
       enum MenuType mtype = MENU_GENERIC;
@@ -337,7 +338,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
                cd->match_list[(numtabs - 2) % cd->num_matched]);
     }
 
-    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
+    mutt_str_copy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
     buf_fix_dptr(buf);
   }
   else
@@ -382,7 +383,7 @@ int mutt_label_complete(struct CompletionData *cd, struct Buffer *buf, int numta
 
     cd->num_matched = 0;
     mutt_str_copy(cd->user_typed, buf_string(buf), sizeof(cd->user_typed));
-    memset(cd->match_list, 0, cd->match_list_len);
+    memset(cd->match_list, 0, cd->match_list_len * sizeof(const char *));
     memset(cd->completed, 0, sizeof(cd->completed));
     while ((he = mutt_hash_walk(m_cur->label_hash, &hws)))
       candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
