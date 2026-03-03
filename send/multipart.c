@@ -55,20 +55,27 @@ static int get_toplevel_encoding(struct Body *b)
   return e;
 }
 
+/// Maximum MIME nesting depth for boundary checking
+#define BOUNDARY_MAX_DEPTH 50
+
 /**
  * check_boundary - Check for duplicate boundary
  * @param boundary Boundary to look for
  * @param b        Body parts to check
+ * @param depth    Current recursion depth
  * @retval true Duplicate found
  */
-static bool check_boundary(const char *boundary, struct Body *b)
+static bool check_boundary(const char *boundary, struct Body *b, int depth)
 {
+  if (depth >= BOUNDARY_MAX_DEPTH)
+    return false;
+
   char *p = NULL;
 
-  if (b->parts && check_boundary(boundary, b->parts))
+  if (b->parts && check_boundary(boundary, b->parts, depth + 1))
     return true;
 
-  if (b->next && check_boundary(boundary, b->next))
+  if (b->next && check_boundary(boundary, b->next, depth))
     return true;
 
   p = mutt_param_get(&b->parameter, "boundary");
@@ -106,7 +113,7 @@ struct Body *mutt_make_multipart(struct Body *b)
   do
   {
     mutt_generate_boundary(&b_new->parameter);
-    if (check_boundary(mutt_param_get(&b_new->parameter, "boundary"), b))
+    if (check_boundary(mutt_param_get(&b_new->parameter, "boundary"), b, 0))
       mutt_param_delete(&b_new->parameter, "boundary");
   } while (!mutt_param_get(&b_new->parameter, "boundary"));
   b_new->use_disp = false;
