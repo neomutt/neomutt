@@ -96,14 +96,14 @@ static int long_string_set(void *var, struct ConfigDef *cdef, const char *value,
  */
 static int long_string_get(void *var, const struct ConfigDef *cdef, struct Buffer *result)
 {
-  int value;
+  long value;
 
   if (var)
     value = *(long *) var;
   else
-    value = (int) cdef->initial;
+    value = (long) cdef->initial;
 
-  buf_printf(result, "%d", value);
+  buf_printf(result, "%ld", value);
   return CSR_SUCCESS;
 }
 
