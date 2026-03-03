@@ -136,6 +136,10 @@ static bool lock_realpath(struct Mailbox *m, bool excl)
     m->readonly = true;
     return true;
   }
+  else
+  {
+    mutt_file_fclose(&ci->fp_lock);
+  }
 
   return r == 0;
 }
@@ -252,8 +256,8 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
   m->compress_info = ci;
 
   ci->cmd_open = validate_compress_expando(o);
-  ci->cmd_close = validate_compress_expando(c);
-  ci->cmd_append = validate_compress_expando(a);
+  ci->cmd_close = c ? validate_compress_expando(c) : NULL;
+  ci->cmd_append = a ? validate_compress_expando(a) : NULL;
 
   return ci;
 }
@@ -558,7 +562,7 @@ static enum MxStatus comp_mbox_check(struct Mailbox *m)
   if (!ops)
     return MX_STATUS_ERROR;
 
-  int size = mutt_file_get_size(m->realpath);
+  long size = mutt_file_get_size(m->realpath);
   if (size == ci->size)
     return MX_STATUS_OK;
 
