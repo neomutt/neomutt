@@ -61,6 +61,9 @@
  */
 int mw_multi_choice(const char *prompt, const char *letters)
 {
+  if (!prompt || !letters)
+    return -1;
+
   struct MuttWindow *win = msgwin_new(true);
   if (!win)
     return -1;
@@ -124,7 +127,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
       break;
     }
 
-    char *p = strchr(letters, event.ch);
+    char *p = (event.ch != 0) ? strchr(letters, event.ch) : NULL;
     if (p)
     {
       choice = p - letters + 1;
@@ -355,6 +358,9 @@ enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
                                    struct ConfigSubset *sub, const char *name)
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
+  if (!he)
+    return mw_yesorno(prompt, def, NULL, GETCH_NO_FLAGS);
+
   struct HashElem *he_base = cs_get_base(he);
   ASSERT(CONFIG_TYPE(he_base->type) == DT_BOOL);
 
@@ -378,6 +384,9 @@ enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
 enum QuadOption query_quadoption(const char *prompt, struct ConfigSubset *sub, const char *name)
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
+  if (!he)
+    return mw_yesorno(prompt, MUTT_NO, NULL, GETCH_NO_FLAGS);
+
   struct HashElem *he_base = cs_get_base(he);
   ASSERT(CONFIG_TYPE(he_base->type) == DT_QUAD);
 
