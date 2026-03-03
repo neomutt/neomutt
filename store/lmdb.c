@@ -169,7 +169,7 @@ static StoreHandle *store_lmdb_open(const char *path, bool create)
 
   mdb_env_set_mapsize(sdata->env, LMDB_DB_SIZE);
 
-  rc = mdb_env_open(sdata->env, path, MDB_NOSUBDIR, 0644);
+  rc = mdb_env_open(sdata->env, path, MDB_NOSUBDIR, 0600);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_env_open: %s\n", mdb_strerror(rc));
@@ -213,6 +213,8 @@ static void *store_lmdb_fetch(StoreHandle *store, const char *key, size_t klen, 
 {
   if (!store)
     return NULL;
+
+  *vlen = 0;
 
   MDB_val dkey = { 0 };
   MDB_val data = { 0 };

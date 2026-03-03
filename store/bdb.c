@@ -182,7 +182,7 @@ fail_close:
  */
 static void *store_bdb_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
-  if (!store)
+  if (!store || (klen > UINT32_MAX))
     return NULL;
 
   // Decloak an opaque pointer
@@ -215,7 +215,7 @@ static void store_bdb_free(StoreHandle *store, void **ptr)
 static int store_bdb_store(StoreHandle *store, const char *key, size_t klen,
                            void *value, size_t vlen)
 {
-  if (!store)
+  if (!store || (klen > UINT32_MAX) || (vlen > UINT32_MAX))
     return -1;
 
   // Decloak an opaque pointer
@@ -239,7 +239,7 @@ static int store_bdb_store(StoreHandle *store, const char *key, size_t klen,
  */
 static int store_bdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
-  if (!store)
+  if (!store || (klen > UINT32_MAX))
     return -1;
 
   // Decloak an opaque pointer
