@@ -60,7 +60,7 @@ static void hooks_dump_one(struct Hook *hook, const struct Command *cmd, struct 
 
     if ((hook->id == CMD_FOLDER_HOOK) || (hook->id == CMD_MBOX_HOOK))
     {
-      buf_strcpy(pretty, hook->regex.pattern);
+      buf_addstr(pretty, hook->regex.pattern);
       pretty_mailbox(pretty);
       buf_add_printf(buf, "\"%s\" ", buf_string(pretty));
     }
@@ -156,9 +156,10 @@ static void hooks_dump_index(struct Buffer *buf)
         found_header = true;
       }
 
+      const char *exp_str = hook->expando ? hook->expando->string : "";
       buf_add_printf(buf, "index-format-hook '%s' %s'%s' '%s'\n", name,
                      hook->regex.pat_not ? "! " : "",
-                     NONULL(hook->regex.pattern), NONULL(hook->expando->string));
+                     NONULL(hook->regex.pattern), NONULL(exp_str));
     }
   }
 

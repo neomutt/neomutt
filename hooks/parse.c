@@ -495,6 +495,7 @@ enum CommandResult parse_regex_hook(const struct Command *cmd, struct Buffer *li
   if (rc2 != 0)
   {
     regerror(rc2, rx, err->data, err->dsize);
+    buf_fix_dptr(err);
     FREE(&rx);
     goto cleanup;
   }
@@ -633,6 +634,7 @@ enum CommandResult parse_folder_hook(const struct Command *cmd, struct Buffer *l
   if (rc2 != 0)
   {
     regerror(rc2, rx, err->data, err->dsize);
+    buf_fix_dptr(err);
     FREE(&rx);
     goto cleanup;
   }
@@ -729,6 +731,7 @@ enum CommandResult parse_crypt_hook(const struct Command *cmd, struct Buffer *li
   if (rc2 != 0)
   {
     regerror(rc2, rx, err->data, err->dsize);
+    buf_fix_dptr(err);
     FREE(&rx);
     goto cleanup;
   }
@@ -874,6 +877,7 @@ enum CommandResult parse_mbox_hook(const struct Command *cmd, struct Buffer *lin
   if (rc2 != 0)
   {
     regerror(rc2, rx, err->data, err->dsize);
+    buf_fix_dptr(err);
     FREE(&rx);
     goto cleanup;
   }
@@ -982,6 +986,7 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
   if (rc2 != 0)
   {
     regerror(rc2, rx, err->data, err->dsize);
+    buf_fix_dptr(err);
     FREE(&rx);
     goto cleanup;
   }
@@ -1200,7 +1205,7 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf_string(token)))
     {
-      if (CurrentHookId != TOKEN_NO_FLAGS)
+      if (CurrentHookId != CMD_NONE)
       {
         buf_addstr(err, _("unhook: Can't do unhook * from within a hook"));
         goto done;
