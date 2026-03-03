@@ -529,7 +529,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
     buf_reset(buf);
     mutt_addr_write(buf, addr, true);
-    size_t addr_len = buf_len(buf);
+    size_t addr_len = mutt_strwidth(buf_string(buf));
 
     sep = "";
     if (!addr->group)
@@ -553,6 +553,8 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     /* Calculate the "(+N more)" indicator width if we're on the last line */
     more_len = snprintf(more, sizeof(more),
                         ngettext("(+%d more)", "(+%d more)", count), count);
+    if ((more_len < 0) || (more_len >= sizeof(more)))
+      more_len = mutt_strwidth(more);
     mutt_debug(LL_DEBUG3, "text: '%s'  len: %d\n", more, more_len);
 
     int reserve = ((count > 0) && (lines_used == max_lines)) ? more_len : 0;
@@ -641,10 +643,7 @@ static int draw_envelope_user_hdrs(struct MuttWindow *win,
 
   /* Draw first entry on same line as prompt */
   draw_header(win, row, HDR_CUSTOM_HEADERS);
-  mutt_paddstr(win,
-               win->state.cols - (HeaderPadding[HDR_CUSTOM_HEADERS] +
-                                  mutt_strwidth(_(Prompts[HDR_CUSTOM_HEADERS]))),
-               first->data);
+  draw_header_content(win, row, HDR_CUSTOM_HEADERS, first->data);
   rows_used++;
 
   /* Draw any following entries on their own line */
