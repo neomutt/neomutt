@@ -409,36 +409,48 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
 {
   struct AutocryptPeer *peer = NULL;
   struct AutocryptGossipHistory *gossip_hist = NULL;
+  struct Buffer *keyid = NULL;
   struct Address *peer_addr = NULL;
   struct Address ac_hdr_addr = { 0 };
   ac_hdr_addr.mailbox = buf_new(NULL);
+  struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
   bool update_db = false, insert_db = false, insert_db_history = false, import_gpg = false;
   int rc = -1;
 
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (!c_autocrypt)
-    return 0;
+  {
+    rc = 0;
+    goto cleanup;
+  }
 
   if (mutt_autocrypt_init(false))
-    return -1;
+    goto cleanup;
 
   if (!e || !e->env || !prot_headers)
-    return 0;
+  {
+    rc = 0;
+    goto cleanup;
+  }
 
   struct Envelope *env = e->env;
 
   struct Address *from = TAILQ_FIRST(&env->from);
   if (!from)
-    return 0;
+  {
+    rc = 0;
+    goto cleanup;
+  }
 
   /* Ignore emails that appear to be more than a week in the future,
    * since they can block all future updates during that time. */
   if (e->date_sent > (mutt_date_now() + (7 * 24 * 60 * 60)))
-    return 0;
+  {
+    rc = 0;
+    goto cleanup;
+  }
 
-  struct Buffer *keyid = buf_pool_get();
-
-  struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
+  keyid = buf_pool_get();
 
   /* Normalize the recipient list for comparison */
   mutt_addrlist_copy(&recips, &env->to, false);
