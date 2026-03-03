@@ -260,6 +260,10 @@ void cmd_parse_search(struct ImapAccountData *adata, const char *s)
 {
   unsigned int uid;
   struct Email *e = NULL;
+
+  if (!adata->mailbox)
+    return;
+
   struct ImapMboxData *mdata = adata->mailbox->mdata;
   if (!mdata)
     return;

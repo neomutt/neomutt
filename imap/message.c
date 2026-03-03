@@ -522,15 +522,17 @@ static bool query_abort_header_download(struct ImapAccountData *adata)
 
 /**
  * imap_alloc_uid_hash - Create a Hash Table for the UIDs
- * @param adata Imap Account data
+ * @param adata     Imap Account data
+ * @param m         Mailbox
  * @param msn_count Number of MSNs in use
  *
  * This function is run after imap_imap_msn_reserve, so we skip the
  * malicious msn_count size check.
  */
-static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_count)
+static void imap_alloc_uid_hash(struct ImapAccountData *adata,
+                                struct Mailbox *m, unsigned int msn_count)
 {
-  struct ImapMboxData *mdata = adata->mailbox->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(m);
   if (mdata && !mdata->uid_hash)
     mdata->uid_hash = mutt_hash_int_new(MAX(6 * msn_count / 5, 30), MUTT_HASH_NO_FLAGS);
 }
@@ -539,6 +541,7 @@ static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_
  * imap_fetch_msn_seqset - Generate a sequence set
  * @param[in]  buf           Buffer for the result
  * @param[in]  adata         Imap Account data
+ * @param[in]  m             Mailbox
  * @param[in]  evalhc        If true, check the Header Cache
  * @param[in]  msn_begin     First Message Sequence Number
  * @param[in]  msn_end       Last Message Sequence Number
@@ -553,14 +556,15 @@ static void imap_alloc_uid_hash(struct ImapAccountData *adata, unsigned int msn_
  * network connection, or just plain refusing the updates).
  */
 static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccountData *adata,
-                                          bool evalhc, unsigned int msn_begin,
-                                          unsigned int msn_end, unsigned int *fetch_msn_end)
+                                          struct Mailbox *m, bool evalhc,
+                                          unsigned int msn_begin, unsigned int msn_end,
+                                          unsigned int *fetch_msn_end)
 {
   buf_reset(buf);
   if (msn_end < msn_begin)
     return 0;
 
-  struct ImapMboxData *mdata = adata->mailbox->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(m);
   if (!mdata)
     return 0;
 
@@ -673,6 +677,7 @@ static void set_changed_flag(struct Mailbox *m, struct Email *e, int local_chang
 /**
  * read_headers_normal_eval_cache - Retrieve data from the header cache
  * @param adata              Imap Account data
+ * @param m                  Mailbox
  * @param msn_end            Last Message Sequence number
  * @param uid_next           UID of next email
  * @param store_flag_updates if true, save flags to the header cache
@@ -688,14 +693,14 @@ static void set_changed_flag(struct Mailbox *m, struct Email *e, int local_chang
  * read_headers_condstore_qresync_updates().
  */
 static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
-                                          unsigned int msn_end, unsigned int uid_next,
+                                          struct Mailbox *m, unsigned int msn_end,
+                                          unsigned int uid_next,
                                           bool store_flag_updates, bool eval_condstore)
 {
   struct Progress *progress = NULL;
   char buf[1024] = { 0 };
   int rc = -1;
 
-  struct Mailbox *m = adata->mailbox;
   struct ImapMboxData *mdata = imap_mdata_get(m);
   if (!mdata)
     return -1;
@@ -825,7 +830,8 @@ fail:
 
 /**
  * read_headers_qresync_eval_cache - Retrieve data from the header cache
- * @param adata Imap Account data
+ * @param adata      Imap Account data
+ * @param m          Mailbox
  * @param uid_seqset Sequence Set of UIDs
  * @retval >=0 Success
  * @retval  -1 Error
@@ -835,15 +841,15 @@ fail:
  * In read_headers_condstore_qresync_updates().  We will update change flags
  * using CHANGEDSINCE and find out what UIDs have been expunged using VANISHED.
  */
-static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *uid_seqset)
+static int read_headers_qresync_eval_cache(struct ImapAccountData *adata,
+                                           struct Mailbox *m, char *uid_seqset)
 {
   int rc;
   unsigned int uid = 0;
 
   mutt_debug(LL_DEBUG2, "Reading uid seqset from header cache\n");
-  struct Mailbox *m = adata->mailbox;
   unsigned int msn = 1;
-  struct ImapMboxData *mdata = adata->mailbox->mdata;
+  struct ImapMboxData *mdata = imap_mdata_get(m);
   if (!mdata)
     return -1;
 
@@ -914,6 +920,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
 /**
  * read_headers_condstore_qresync_updates - Retrieve updates from the server
  * @param adata        Imap Account data
+ * @param m            Mailbox
  * @param msn_end      Last Message Sequence number
  * @param uid_next     UID of next email
  * @param hc_modseq    Timestamp of last Header Cache update
@@ -924,14 +931,14 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
  * CONDSTORE and QRESYNC use FETCH extensions to grab updates.
  */
 static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
-                                                  unsigned int msn_end, unsigned int uid_next,
+                                                  struct Mailbox *m, unsigned int msn_end,
+                                                  unsigned int uid_next,
                                                   unsigned long long hc_modseq, bool eval_qresync)
 {
   struct Progress *progress = NULL;
   char buf[1024] = { 0 };
   unsigned int header_msn = 0;
 
-  struct Mailbox *m = adata->mailbox;
   struct ImapMboxData *mdata = imap_mdata_get(m);
   if (!mdata)
     return -1;
@@ -1191,7 +1198,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
    */
   edata = imap_edata_new();
   while ((fetch_msn_end < msn_end) &&
-         imap_fetch_msn_seqset(buf, adata, evalhc, msn_begin, msn_end, &fetch_msn_end))
+         imap_fetch_msn_seqset(buf, adata, m, evalhc, msn_begin, msn_end, &fetch_msn_end))
   {
     char *cmd = NULL;
     mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
@@ -1382,7 +1389,7 @@ retry:
   /* make sure context has room to hold the mailbox */
   mx_alloc_memory(m, msn_end);
   imap_msn_reserve(&mdata->msn, msn_end);
-  imap_alloc_uid_hash(adata, msn_end);
+  imap_alloc_uid_hash(adata, m, msn_end);
 
   mdata->reopen &= ~(IMAP_REOPEN_ALLOW | IMAP_NEWMAIL_PENDING);
   mdata->new_mail_count = 0;
@@ -1427,19 +1434,19 @@ retry:
   {
     if (eval_qresync)
     {
-      if (read_headers_qresync_eval_cache(adata, uid_seqset) < 0)
+      if (read_headers_qresync_eval_cache(adata, m, uid_seqset) < 0)
         goto bail;
     }
     else
     {
-      if (read_headers_normal_eval_cache(adata, msn_end, uid_next, has_condstore || has_qresync,
-                                         eval_condstore) < 0)
+      if (read_headers_normal_eval_cache(adata, m, msn_end, uid_next,
+                                         has_condstore || has_qresync, eval_condstore) < 0)
         goto bail;
     }
 
     if ((eval_condstore || eval_qresync) && (modseq != mdata->modseq))
     {
-      if (read_headers_condstore_qresync_updates(adata, msn_end, uid_next,
+      if (read_headers_condstore_qresync_updates(adata, m, msn_end, uid_next,
                                                  modseq, eval_qresync) < 0)
       {
         goto bail;
