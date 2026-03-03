@@ -882,11 +882,12 @@ int mutt_autocrypt_db_gossip_history_insert(struct Address *addr,
   if (sqlite3_bind_text(GossipHistoryInsertStmt, 2, gossip_hist->sender_email_addr,
                         -1, SQLITE_STATIC) != SQLITE_OK)
   {
-    if (sqlite3_bind_text(GossipHistoryInsertStmt, 3, gossip_hist->email_msgid,
-                          -1, SQLITE_STATIC) != SQLITE_OK)
-    {
-      goto cleanup;
-    }
+    goto cleanup;
+  }
+  if (sqlite3_bind_text(GossipHistoryInsertStmt, 3, gossip_hist->email_msgid,
+                        -1, SQLITE_STATIC) != SQLITE_OK)
+  {
+    goto cleanup;
   }
   if (sqlite3_bind_int64(GossipHistoryInsertStmt, 4, gossip_hist->timestamp) != SQLITE_OK)
     goto cleanup;

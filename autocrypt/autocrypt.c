@@ -85,6 +85,10 @@ static int autocrypt_dir_init(bool can_create)
       rc = -1;
     }
   }
+  else
+  {
+    rc = -1;
+  }
 
   buf_pool_release(&prompt);
   return rc;
@@ -407,6 +411,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
   struct AutocryptGossipHistory *gossip_hist = NULL;
   struct Address *peer_addr = NULL;
   struct Address ac_hdr_addr = { 0 };
+  ac_hdr_addr.mailbox = buf_new(NULL);
   bool update_db = false, insert_db = false, insert_db_history = false, import_gpg = false;
   int rc = -1;
 
@@ -537,7 +542,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
   rc = 0;
 
 cleanup:
-  FREE(&ac_hdr_addr.mailbox);
+  buf_free(&ac_hdr_addr.mailbox);
   mutt_addrlist_clear(&recips);
   mutt_autocrypt_db_peer_free(&peer);
   mutt_autocrypt_db_gossip_history_free(&gossip_hist);
@@ -894,6 +899,8 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
     mutt_autocrypt_db_account_free(&account);
     mutt_autocrypt_db_peer_free(&peer);
   }
+
+  rc = 0;
 
   mutt_addrlist_clear(&recips);
   mutt_autocrypt_db_account_free(&account);
