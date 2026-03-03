@@ -232,7 +232,7 @@ void imap_mdata_cache_reset(struct ImapMboxData *mdata);
 char *imap_fix_path(const char *mailbox, char *path, size_t plen);
 char *imap_fix_path_with_delim(char delim, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(char delim, const char *mailbox, struct Buffer *dest);
-int imap_get_literal_count(const char *buf, unsigned int *bytes);
+int imap_get_literal_count(char *buf, unsigned int *bytes);
 char *imap_get_qualifier(char *buf);
 char *imap_next_word(char *s);
 void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *conn_account, char *path);
