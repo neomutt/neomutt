@@ -277,9 +277,13 @@ static int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e
     if (*cp == '\0')
     {
       if (!mutt_str_atoui(dep, &n))
+      {
         mutt_debug(LL_DEBUG2, "Invalid MH message number '%s'\n", dep);
-      if (n > hi)
+      }
+      else if (n > hi)
+      {
         hi = n;
+      }
     }
   }
   closedir(dir);
@@ -478,7 +482,8 @@ static int mh_parse_dir(struct Mailbox *m, struct MhEmailArray *mha, struct Prog
   if (SigInt)
   {
     SigInt = false;
-    return -2; /* action aborted */
+    rc = -2; /* action aborted */
+    goto cleanup;
   }
 
 cleanup:
@@ -526,7 +531,7 @@ static struct Email *mh_parse_message(const char *fname, struct Email *e)
 
   e->env = mutt_rfc822_read_header(fp, e, false, false);
 
-  if (e->received != 0)
+  if (e->received == 0)
     e->received = e->date_sent;
 
   /* always update the length since we have fresh information available. */
@@ -832,7 +837,7 @@ static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   char tmp[PATH_MAX] = { 0 };
   snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", mailbox_path(m));
-  const int i = creat(tmp, S_IRWXU);
+  const int i = creat(tmp, S_IRUSR | S_IWUSR);
   if (i == -1)
   {
     mutt_perror("%s", tmp);

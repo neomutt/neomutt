@@ -78,7 +78,7 @@ void mh_seq_free(struct MhSequences *mhs)
  */
 MhSeqFlags mh_seq_check(struct MhSequences *mhs, int i)
 {
-  if (!mhs->flags || (i > mhs->max))
+  if ((i < 0) || !mhs->flags || (i > mhs->max))
     return 0;
   return mhs->flags[i];
 }
@@ -92,6 +92,8 @@ MhSeqFlags mh_seq_check(struct MhSequences *mhs, int i)
  */
 static MhSeqFlags mh_seq_set(struct MhSequences *mhs, int i, MhSeqFlags f)
 {
+  if (i < 0)
+    return 0;
   mh_seq_alloc(mhs, i);
   mhs->flags[i] |= f;
   return mhs->flags[i];
