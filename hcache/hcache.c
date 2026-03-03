@@ -84,14 +84,19 @@ static struct RealKey *realkey(struct HeaderCache *hc, const char *key,
 {
   static struct RealKey rk;
 
-  rk.keylen = snprintf(rk.key, sizeof(rk.key), "%s/%.*s", hc->folder, (int) keylen, key);
+  int n = snprintf(rk.key, sizeof(rk.key), "%s/%.*s", hc->folder, (int) keylen, key);
+  if (n < 0)
+    n = 0;
+  rk.keylen = MIN((size_t) n, sizeof(rk.key) - 1);
 
 #ifdef USE_HCACHE_COMPRESSION
   if (compress && hc->compr_ops)
   {
     // Append the compression type, e.g. "-zstd"
-    rk.keylen += snprintf(rk.key + rk.keylen, sizeof(rk.key) - rk.keylen, "-%s",
-                          hc->compr_ops->name);
+    n = snprintf(rk.key + rk.keylen, sizeof(rk.key) - rk.keylen, "-%s",
+                 hc->compr_ops->name);
+    if (n > 0)
+      rk.keylen += MIN((size_t) n, sizeof(rk.key) - 1 - rk.keylen);
   }
 #endif
 
@@ -628,6 +633,9 @@ end:
 bool hcache_fetch_raw_obj_full(struct HeaderCache *hc, const char *key,
                                size_t keylen, void *dst, size_t dstlen)
 {
+  if (!hc)
+    return false;
+
   bool rc = true;
   size_t srclen = 0;
 
@@ -656,6 +664,9 @@ bool hcache_fetch_raw_obj_full(struct HeaderCache *hc, const char *key,
  */
 char *hcache_fetch_raw_str(struct HeaderCache *hc, const char *key, size_t keylen)
 {
+  if (!hc)
+    return NULL;
+
   char *res = NULL;
   size_t dlen = 0;
 

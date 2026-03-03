@@ -40,6 +40,12 @@
 #include "core/lib.h"
 #include "serialize.h"
 
+/// Max size for a single serialized string field (256 KiB)
+#define SERIAL_MAX_CHAR_SIZE (256 * 1024)
+
+/// Max entries in a serialized list (addresses, headers, parameters, tags)
+#define SERIAL_MAX_LIST_COUNT 1024
+
 /**
  * lazy_realloc - Reallocate some memory
  * @param[in] ptr Pointer to resize
@@ -204,7 +210,7 @@ void serial_restore_char(char **c, const unsigned char *d, int *off, bool conver
   unsigned int size = 0;
   serial_restore_int(&size, d, off);
 
-  if (size == 0)
+  if ((size == 0) || (size > SERIAL_MAX_CHAR_SIZE))
   {
     *c = NULL;
     return;
@@ -273,6 +279,9 @@ void serial_restore_address(struct AddressList *al, const unsigned char *d,
 
   serial_restore_int(&counter, d, off);
 
+  if (counter > SERIAL_MAX_LIST_COUNT)
+    return;
+
   while (counter > 0)
   {
     struct Address *a = mutt_addr_new();
@@ -338,6 +347,9 @@ void serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
   unsigned int counter = 0;
 
   serial_restore_int(&counter, d, off);
+
+  if (counter > SERIAL_MAX_LIST_COUNT)
+    return;
 
   struct ListNode *np = NULL;
   while (counter > 0)
@@ -437,6 +449,9 @@ void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d,
   unsigned int counter = 0;
 
   serial_restore_int(&counter, d, off);
+
+  if (counter > SERIAL_MAX_LIST_COUNT)
+    return;
 
   struct Parameter *np = NULL;
   while (counter > 0)
@@ -715,6 +730,9 @@ void serial_restore_tags(struct TagList *tl, const unsigned char *d, int *off)
   unsigned int counter = 0;
 
   serial_restore_int(&counter, d, off);
+
+  if (counter > SERIAL_MAX_LIST_COUNT)
+    return;
 
   while (counter > 0)
   {
