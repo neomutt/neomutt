@@ -1966,8 +1966,8 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   if (!adata || !mdata)
     return MX_OPEN_ERROR;
 
-  mutt_debug(LL_DEBUG3, "opening %s, saving %s\n", m->pathbuf.data,
-             (adata->mailbox ? adata->mailbox->pathbuf.data : "(none)"));
+  mutt_debug(LL_DEBUG3, "opening %s, stranding %p\n", m->pathbuf.data,
+             (void *) adata->mailbox);
   adata->prev_mailbox = adata->mailbox;
   adata->mailbox = m;
 
@@ -2153,6 +2153,8 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   return MX_OPEN_OK;
 
 fail:
+  adata->mailbox = adata->prev_mailbox;
+  adata->prev_mailbox = NULL;
   if (adata->state == IMAP_SELECTED)
     adata->state = IMAP_AUTHENTICATED;
   return MX_OPEN_ERROR;
@@ -2241,10 +2243,11 @@ static enum MxStatus imap_mbox_close(struct Mailbox *m)
       adata->state = IMAP_AUTHENTICATED;
     }
 
-    mutt_debug(LL_DEBUG3, "closing %s, restoring %s\n", m->pathbuf.data,
-               (adata->prev_mailbox ? adata->prev_mailbox->pathbuf.data : "(none)"));
+    mutt_debug(LL_DEBUG3, "closing %s, restoring %p\n", m->pathbuf.data,
+               (void *) adata->prev_mailbox);
     adata->mailbox = adata->prev_mailbox;
-    imap_mbox_select(adata->prev_mailbox);
+    adata->prev_mailbox = NULL;
+    imap_mbox_select(adata->mailbox);
     imap_mdata_cache_reset(m->mdata);
   }
 
@@ -2377,7 +2380,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   if (*buf == '\0')
     buf = NULL;
 
-  if (!(adata->mailbox->rights & MUTT_ACL_WRITE))
+  if (!(m->rights & MUTT_ACL_WRITE))
     return 0;
 
   snprintf(uid, sizeof(uid), "%u", imap_edata_get(e)->uid);

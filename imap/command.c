@@ -191,6 +191,9 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
   if (!adata->mailbox)
     return;
 
+  mutt_debug(LL_DEBUG1, "adata->mailbox=%p, opened=%d\n",
+             (void *) adata->mailbox, adata->mailbox->opened);
+
   struct ImapMboxData *mdata = adata->mailbox->mdata;
   if (!mdata)
     return;
@@ -318,6 +321,9 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
 
   mutt_debug(LL_DEBUG2, "Handling EXPUNGE\n");
 
+  if (!adata->mailbox)
+    return;
+
   struct ImapMboxData *mdata = adata->mailbox->mdata;
   if (!mdata)
     return;
@@ -368,6 +374,9 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
   bool earlier = false;
   int rc;
   unsigned int uid = 0;
+
+  if (!adata->mailbox)
+    return;
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
   if (!mdata)
@@ -789,6 +798,9 @@ static void cmd_parse_myrights(struct ImapAccountData *adata, const char *s)
 {
   mutt_debug(LL_DEBUG2, "Handling MYRIGHTS\n");
 
+  if (!adata->mailbox)
+    return;
+
   s = imap_next_word((char *) s);
   s = imap_next_word((char *) s);
 
@@ -1056,6 +1068,9 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
     mutt_debug(LL_DEBUG1, "Malformed EXISTS: '%s'\n", pn);
     return;
   }
+
+  if (!adata->mailbox)
+    return;
 
   struct ImapMboxData *mdata = adata->mailbox->mdata;
   if (!mdata)
@@ -1483,7 +1498,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     return;
   }
 
-  if (!(adata->state >= IMAP_SELECTED) || (adata->mailbox && adata->closing))
+  if (!(adata->state >= IMAP_SELECTED) || !adata->mailbox || adata->closing)
   {
     adata->closing = false;
     return;
@@ -1519,6 +1534,14 @@ void imap_cmd_finish(struct ImapAccountData *adata)
                    max_msn + 1, mdata->new_mail_count);
         imap_read_headers(adata->mailbox, max_msn + 1, mdata->new_mail_count, false);
       }
+    }
+
+    /* imap_read_headers may have triggered a fatal error that NULLed
+     * adata->mailbox.  Re-check before accessing mdata further. */
+    if (!adata->mailbox)
+    {
+      adata->status = 0;
+      return;
     }
 
     // And to finish inform about MUTT_REOPEN if needed
