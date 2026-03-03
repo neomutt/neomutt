@@ -1146,7 +1146,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 
   if ((sum & GPGME_SIGSUM_KEY_EXPIRED))
   {
-    time_t at = key->subkeys->expires ? key->subkeys->expires : 0;
+    time_t at = (key->subkeys && key->subkeys->expires) ? key->subkeys->expires : 0;
     if (at)
     {
       state_puts(state, _("Warning: The key used to create the signature expired at: "));
@@ -2085,6 +2085,7 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     if (!*fp_out)
     {
       mutt_perror(_("Can't create temporary file"));
+      mutt_file_fclose(&fp_tmp2);
       return -1;
     }
 
