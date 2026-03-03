@@ -212,22 +212,24 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   if (!fname)
     return NULL;
 
-  if (stat(fname, &st) == -1)
+  fp = mutt_file_fopen(fname, "r");
+  if (!fp)
+  {
+    mutt_debug(LL_DEBUG1, "%s: %s (errno %d)\n", fname, strerror(errno), errno);
+    return NULL;
+  }
+
+  if (fstat(fileno(fp), &st) == -1)
   {
     mutt_error(_("Can't stat %s: %s"), fname, strerror(errno));
+    mutt_file_fclose(&fp);
     return NULL;
   }
 
   if (!S_ISREG(st.st_mode))
   {
     mutt_error(_("%s isn't a regular file"), fname);
-    return NULL;
-  }
-
-  fp = mutt_file_fopen(fname, "r");
-  if (!fp)
-  {
-    mutt_debug(LL_DEBUG1, "%s: %s (errno %d)\n", fname, strerror(errno), errno);
+    mutt_file_fclose(&fp);
     return NULL;
   }
 
@@ -257,7 +259,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
         mutt_param_set(&b->parameter, "charset", chsbuf);
       }
       FREE(&b->charset);
-      b->charset = mutt_str_dup(fromcode);
+      b->charset = fromcode;
+      fromcode = NULL;
       FREE(&tocode);
       mutt_file_fclose(&fp);
       slist_free(&c_charset_slist);
