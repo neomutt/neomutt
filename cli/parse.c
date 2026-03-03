@@ -93,7 +93,7 @@ static const struct option LongOptions[] = {
  * @param mode String to check
  * @retval enum #HelpMode, e.g. HM_CONFIG
  */
-int check_help_mode(const char *mode)
+enum HelpMode check_help_mode(const char *mode)
 {
   if (mutt_istr_equal(mode, "shared"))
     return HM_SHARED;
@@ -107,7 +107,7 @@ int check_help_mode(const char *mode)
     return HM_TUI;
   if (mutt_istr_equal(mode, "all"))
     return HM_ALL;
-  return 0;
+  return HM_NONE;
 }
 
 /**
@@ -423,8 +423,8 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
         for (int i = optind; i < argc; i++)
         {
           ARRAY_ADD(&cli->send.addresses, mutt_str_dup(argv[i]));
+          cli->send.is_set = true;
         }
-        cli->send.is_set = true;
         optind = argc; // finish parsing
         break;
       }
@@ -432,13 +432,29 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
       {
         if (opt == '?')
         {
-          // L10N: e.g. `neomutt -X`
-          mutt_warning(_("Invalid option: %c"), optopt);
+          if (optopt)
+          {
+            // L10N: e.g. `neomutt -X`
+            mutt_warning(_("Invalid option: -%c"), optopt);
+          }
+          else
+          {
+            // L10N: e.g. `neomutt --foobar`
+            mutt_warning(_("Invalid option: %s"), argv[optind - 1]);
+          }
         }
         else if (opt == ':')
         {
-          // L10N: e.g. `neomutt -F`
-          mutt_warning(_("Option %c requires an argument"), optopt);
+          if (optopt)
+          {
+            // L10N: e.g. `neomutt -F`
+            mutt_warning(_("Option -%c requires an argument"), optopt);
+          }
+          else
+          {
+            // L10N: e.g. `neomutt --config`
+            mutt_warning(_("Option %s requires an argument"), argv[optind - 1]);
+          }
         }
 
         cli->help.help = true;
