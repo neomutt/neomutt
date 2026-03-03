@@ -260,6 +260,10 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   }
   FREE(&token);
 
+  // Clamp snprintf return to actual buffer size to prevent over-read
+  if (oalen >= (int) sizeof(oauthbearer))
+    oalen = sizeof(oauthbearer) - 1;
+
   size_t encoded_len = oalen * 4 / 3 + 10;
   ASSERT(encoded_len < 6010); // Assure LGTM that we won't overflow
 

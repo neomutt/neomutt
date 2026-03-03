@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
@@ -48,11 +49,18 @@ static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const ch
   ASSERT(buf && cac);
 
   buf_addstr(buf, cmd);
-  buf_add_printf(buf, " --hostname %s", cac->host);
+
+  struct Buffer *quoted = buf_pool_get();
+
+  buf_quote_filename(quoted, cac->host, true);
+  buf_add_printf(buf, " --hostname %s", buf_string(quoted));
   if (cac->flags & MUTT_ACCT_USER)
   {
-    buf_add_printf(buf, " --username %s", cac->user);
+    buf_quote_filename(quoted, cac->user, true);
+    buf_add_printf(buf, " --username %s", buf_string(quoted));
   }
+
+  buf_pool_release(&quoted);
 
   static const char *types[] = { "", "imap", "pop", "smtp", "nntp" };
   ASSERT(sizeof(types) / sizeof(*types) == MUTT_ACCT_TYPE_MAX);
