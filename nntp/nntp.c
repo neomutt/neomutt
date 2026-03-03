@@ -409,7 +409,7 @@ static bool nntp_memchr(char **haystack, const char *sentinel, int needle)
 {
   char *start = *haystack;
   size_t max_offset = sentinel - start;
-  void *vp = memchr(start, max_offset, needle);
+  void *vp = memchr(start, needle, max_offset);
   if (!vp)
     return false;
   *haystack = vp;
@@ -426,6 +426,10 @@ static bool nntp_memchr(char **haystack, const char *sentinel, int needle)
 static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int dbg)
 {
   char tmp[1024] = { 0 };
+
+  if (len > sizeof(tmp) - 1)
+    len = sizeof(tmp) - 1;
+
   char *p = tmp;
   char *sentinel = tmp + len;
 

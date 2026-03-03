@@ -848,6 +848,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
   struct Buffer *file = buf_pool_get();
 
   cache_expand(cache->data, cache->dsize, &adata->conn->account, NULL);
+  buf_fix_dptr(cache);
   dir = mutt_file_opendir(buf_string(cache), MUTT_OPENDIR_NONE);
   if (!dir)
     goto done;
