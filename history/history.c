@@ -442,18 +442,14 @@ int mutt_hist_search(const char *find, enum HistoryClass hclass, struct StringAr
  */
 void mutt_hist_cleanup(void)
 {
-  if (!NeoMutt)
-    return;
-
-  const short c_history = cs_subset_number(NeoMutt->sub, "history");
   for (enum HistoryClass hclass = HC_FIRST; hclass < HC_MAX; hclass++)
   {
     struct History *h = &Histories[hclass];
     if (!h->hist)
       continue;
 
-    /* The array has (`$history`+1) elements */
-    for (int i = 0; i <= c_history; i++)
+    /* The array has (OldSize+1) elements */
+    for (int i = 0; i <= OldSize; i++)
     {
       FREE(&h->hist[i]);
     }
@@ -491,7 +487,7 @@ void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
   if (!h)
     return; /* disabled */
 
-  if (*str)
+  if (str && *str)
   {
     int prev = h->last - 1;
     const short c_history = cs_subset_number(NeoMutt->sub, "history");
