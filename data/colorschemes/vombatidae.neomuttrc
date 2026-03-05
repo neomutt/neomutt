@@ -94,4 +94,4 @@ color header            color29         color233    '^reply-to:'
 
 #color sidebar_new color39 color234
 
-# vim: syn=neomuttrc
+# vim: ft=neomuttrc

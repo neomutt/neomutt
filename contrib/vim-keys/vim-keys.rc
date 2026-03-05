@@ -37,4 +37,4 @@ bind pager,index                gT  previous-thread
 bind index                      za  collapse-thread
 bind index                      zA  collapse-all # Missing :folddisable/foldenable
 
-# vim: syn=neomuttrc
+# vim: ft=neomuttrc
