@@ -223,10 +223,10 @@ static const struct AttrColor *calc_color(const struct Mailbox *m, bool current,
   const struct AttrColor *ac = NULL;
 
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
-  if (simple_color_is_set(MT_COLOR_SIDEBAR_SPOOLFILE) &&
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_SPOOL_FILE) &&
       mutt_str_equal(mailbox_path(m), c_spool_file))
   {
-    ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_SPOOLFILE));
+    ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_SPOOL_FILE));
   }
 
   if (simple_color_is_set(MT_COLOR_SIDEBAR_FLAGGED) && (m->msg_flagged > 0))

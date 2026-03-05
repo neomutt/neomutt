@@ -102,7 +102,7 @@ const struct Mapping ColorFields[] = {
   { "sidebar_indicator",         MT_COLOR_SIDEBAR_INDICATOR },
   { "sidebar_new",               MT_COLOR_SIDEBAR_NEW },
   { "sidebar_ordinary",          MT_COLOR_SIDEBAR_ORDINARY },
-  { "sidebar_spool_file",        MT_COLOR_SIDEBAR_SPOOLFILE },
+  { "sidebar_spool_file",        MT_COLOR_SIDEBAR_SPOOL_FILE },
   { "sidebar_unread",            MT_COLOR_SIDEBAR_UNREAD },
   { "signature",                 MT_COLOR_SIGNATURE },
   { "status",                    MT_COLOR_STATUS },
@@ -114,7 +114,7 @@ const struct Mapping ColorFields[] = {
   { "warning",                   MT_COLOR_WARNING },
   // Deprecated
   { "quoted",                    MT_COLOR_QUOTED0 },
-  { "sidebar_spoolfile",         MT_COLOR_SIDEBAR_SPOOLFILE },
+  { "sidebar_spoolfile",         MT_COLOR_SIDEBAR_SPOOL_FILE },
   { NULL, 0 },
   // clang-format on
 };

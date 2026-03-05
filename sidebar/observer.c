@@ -231,7 +231,7 @@ static int sb_color_observer(struct NotifyCallback *nc)
     case MT_COLOR_SIDEBAR_INDICATOR:
     case MT_COLOR_SIDEBAR_NEW:
     case MT_COLOR_SIDEBAR_ORDINARY:
-    case MT_COLOR_SIDEBAR_SPOOLFILE:
+    case MT_COLOR_SIDEBAR_SPOOL_FILE:
     case MT_COLOR_SIDEBAR_UNREAD:
     case MT_COLOR_MAX: // Sent on `uncolor *`
       win->actions |= WA_REPAINT;
