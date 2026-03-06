@@ -2132,6 +2132,26 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
                 <entry>toggle collapse for all threads</entry>
               </row>
               <row>
+                <entry></entry>
+                <entry><literal>&lt;open-thread&gt;</literal></entry>
+                <entry>open the current thread</entry>
+              </row>
+              <row>
+                <entry></entry>
+                <entry><literal>&lt;open-all-threads&gt;</literal></entry>
+                <entry>open all threads</entry>
+              </row>
+              <row>
+                <entry></entry>
+                <entry><literal>&lt;close-thread&gt;</literal></entry>
+                <entry>collapse the current thread</entry>
+              </row>
+              <row>
+                <entry></entry>
+                <entry><literal>&lt;close-all-threads&gt;</literal></entry>
+                <entry>collapse all threads</entry>
+              </row>
+              <row>
                 <entry>P</entry>
                 <entry><literal>&lt;parent-message&gt;</literal></entry>
                 <entry>jump to parent message in thread</entry>
