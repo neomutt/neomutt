@@ -38,6 +38,10 @@ static const struct CommandTest Tests[] = {
   // push <string>
   { MUTT_CMD_WARNING, "" },
   { MUTT_CMD_SUCCESS, "<collapse-all>" },
+  { MUTT_CMD_SUCCESS, "<open-thread>" },
+  { MUTT_CMD_SUCCESS, "<open-all-threads>" },
+  { MUTT_CMD_SUCCESS, "<close-thread>" },
+  { MUTT_CMD_SUCCESS, "<close-all-threads>" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };

@@ -83,6 +83,16 @@ typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
 #define CHECK_READONLY   (1 << 3) ///< Is the mailbox readonly?
 #define CHECK_ATTACH     (1 << 4) ///< Is the user in message-attach mode?
 
+/**
+ * enum CollapseMode - Action to perform on a Thread
+ */
+enum CollapseMode
+{
+  COLLAPSE_MODE_TOGGLE, ///< Toggle collapsed state
+  COLLAPSE_MODE_CLOSE,  ///< Collapse all threads
+  COLLAPSE_MODE_OPEN,   ///< Open all threads
+};
+
 extern const struct Mapping IndexNewsHelp[];
 
 extern const struct ExpandoDefinition StatusFormatDef[];
@@ -93,7 +103,7 @@ void                    change_folder_mailbox   (struct Menu *menu, struct Mailb
 struct Mailbox *        change_folder_notmuch   (struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
 void                    change_folder_string    (struct Menu *menu, struct Buffer *buf, int *oldcount, struct IndexSharedData *shared, bool read_only);
 bool                    check_acl               (struct Mailbox *m, AclFlags acl, const char *msg);
-void                    collapse_all            (struct MailboxView *mv, struct Menu *menu, int toggle);
+void                    collapse_all            (struct MailboxView *mv, struct Menu *menu, enum CollapseMode mode);
 struct Mailbox *        dlg_index               (struct MuttWindow *dlg, struct Mailbox *m);
 int                     find_first_message      (struct MailboxView *mv);
 int                     find_next_undeleted     (struct MailboxView *mv, int msgno, bool uncollapse);
