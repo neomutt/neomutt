@@ -1298,7 +1298,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
   const enum UseThreads threaded = mutt_thread_style();
   if (threaded == UT_FLAT)
   {
-    mutt_error(_("Threading is not enabled"));
+    mutt_warning(_("Threading is not enabled"));
     return e->vnum;
   }
 
@@ -1364,7 +1364,7 @@ int mutt_parent_message(struct Email *e, bool find_root)
 
   if (!mutt_using_threads())
   {
-    mutt_error(_("Threading is not enabled"));
+    mutt_warning(_("Threading is not enabled"));
     return e->vnum;
   }
 
@@ -1450,7 +1450,7 @@ int mutt_traverse_thread(struct Email *e_cur, MuttThreadFlags flag)
 
   if (threaded == UT_FLAT)
   {
-    mutt_error(_("Threading is not enabled"));
+    mutt_warning(_("Threading is not enabled"));
     return e_cur->vnum;
   }
 

@@ -1165,8 +1165,8 @@ static int op_main_collapse_all(struct IndexSharedData *shared,
 {
   if (!mutt_using_threads())
   {
-    mutt_error(_("Threading is not enabled"));
-    return FR_ERROR;
+    mutt_warning(_("Threading is not enabled"));
+    return FR_NO_ACTION;
   }
   collapse_all(shared->mailbox_view, priv->menu, 1);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
@@ -1183,8 +1183,8 @@ static int op_main_collapse_thread(struct IndexSharedData *shared,
 {
   if (!mutt_using_threads())
   {
-    mutt_error(_("Threading is not enabled"));
-    return FR_ERROR;
+    mutt_warning(_("Threading is not enabled"));
+    return FR_NO_ACTION;
   }
 
   if (!shared->email)
@@ -1329,7 +1329,8 @@ static int op_main_link_threads(struct IndexSharedData *shared,
 
   if (!mutt_using_threads())
   {
-    mutt_error(_("Threading is not enabled"));
+    mutt_warning(_("Threading is not enabled"));
+    rc = FR_NO_ACTION;
   }
   else if (!e->env->message_id)
   {
