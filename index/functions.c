@@ -100,6 +100,8 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
 #endif
   { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
   { "clear-flag",                    OP_MAIN_CLEAR_FLAG },
+  { "close-all-threads",             OP_MAIN_CLOSE_ALL_THREADS },
+  { "close-thread",                  OP_MAIN_CLOSE_THREAD },
   { "collapse-all",                  OP_MAIN_COLLAPSE_ALL },
   { "collapse-thread",               OP_MAIN_COLLAPSE_THREAD },
   { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
@@ -160,6 +162,8 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "next-undeleted",                OP_MAIN_NEXT_UNDELETED },
   { "next-unread",                   OP_MAIN_NEXT_UNREAD },
   { "next-unread-mailbox",           OP_MAIN_NEXT_UNREAD_MAILBOX },
+  { "open-all-threads",              OP_MAIN_OPEN_ALL_THREADS },
+  { "open-thread",                   OP_MAIN_OPEN_THREAD },
   { "parent-message",                OP_MAIN_PARENT_MESSAGE },
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
@@ -1168,9 +1172,59 @@ static int op_main_collapse_all(struct IndexSharedData *shared,
     mutt_warning(_("Threading is not enabled"));
     return FR_NO_ACTION;
   }
-  collapse_all(shared->mailbox_view, priv->menu, 1);
+  collapse_all(shared->mailbox_view, priv->menu, COLLAPSE_MODE_TOGGLE);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
 
+  return FR_SUCCESS;
+}
+
+/**
+ * op_main_close_all_threads - Collapse all threads - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_main_close_all_threads(struct IndexSharedData *shared,
+                                     struct IndexPrivateData *priv,
+                                     const struct KeyEvent *event)
+{
+  if (!mutt_using_threads())
+  {
+    mutt_warning(_("Threading is not enabled"));
+    return FR_NO_ACTION;
+  }
+
+  if (!shared->mailbox_view || shared->mailbox_view->collapsed)
+    return FR_NO_ACTION;
+
+  collapse_all(shared->mailbox_view, priv->menu, COLLAPSE_MODE_CLOSE);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * op_main_close_thread - Collapse current thread - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_main_close_thread(struct IndexSharedData *shared,
+                                struct IndexPrivateData *priv, const struct KeyEvent *event)
+{
+  if (!mutt_using_threads())
+  {
+    mutt_warning(_("Threading is not enabled"));
+    return FR_NO_ACTION;
+  }
+
+  if (!shared->email || shared->email->collapsed)
+    return FR_NO_ACTION;
+
+  if (!mutt_thread_can_collapse(shared->email))
+  {
+    mutt_warning(_("Thread contains unread or flagged messages"));
+    return FR_ERROR;
+  }
+
+  menu_set_index(priv->menu, mutt_collapse_thread(shared->email));
+  mutt_set_vnum(shared->mailbox);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
   return FR_SUCCESS;
 }
 
@@ -1210,6 +1264,55 @@ static int op_main_collapse_thread(struct IndexSharedData *shared,
     return FR_ERROR;
   }
 
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * op_main_open_all_threads - Open all threads - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_main_open_all_threads(struct IndexSharedData *shared,
+                                    struct IndexPrivateData *priv,
+                                    const struct KeyEvent *event)
+{
+  if (!mutt_using_threads())
+  {
+    mutt_warning(_("Threading is not enabled"));
+    return FR_NO_ACTION;
+  }
+
+  if (!shared->mailbox_view || !shared->mailbox_view->collapsed)
+    return FR_NO_ACTION;
+
+  collapse_all(shared->mailbox_view, priv->menu, COLLAPSE_MODE_OPEN);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+
+  return FR_SUCCESS;
+}
+
+/**
+ * op_main_open_thread - Open current thread - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_main_open_thread(struct IndexSharedData *shared,
+                               struct IndexPrivateData *priv, const struct KeyEvent *event)
+{
+  if (!mutt_using_threads())
+  {
+    mutt_warning(_("Threading is not enabled"));
+    return FR_NO_ACTION;
+  }
+
+  if (!shared->email || !shared->email->collapsed)
+    return FR_NO_ACTION;
+
+  int index = mutt_uncollapse_thread(shared->email);
+  mutt_set_vnum(shared->mailbox);
+  const bool c_uncollapse_jump = cs_subset_bool(shared->sub, "uncollapse_jump");
+  if (c_uncollapse_jump)
+    index = mutt_thread_next_unread(shared->email);
+  menu_set_index(priv->menu, index);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
 
@@ -1298,7 +1401,7 @@ static int op_main_limit(struct IndexSharedData *shared,
     {
       const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
       if (c_collapse_all)
-        collapse_all(shared->mailbox_view, priv->menu, 0);
+        collapse_all(shared->mailbox_view, priv->menu, COLLAPSE_MODE_CLOSE);
       mutt_draw_tree(shared->mailbox_view->threads);
     }
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
@@ -3254,6 +3357,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_CHANGE_GROUP,                   op_main_change_group,                 CHECK_NO_FLAGS },
   { OP_MAIN_CHANGE_GROUP_READONLY,          op_main_change_group,                 CHECK_NO_FLAGS },
   { OP_MAIN_CLEAR_FLAG,                     op_main_set_flag,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
+  { OP_MAIN_CLOSE_ALL_THREADS,              op_main_close_all_threads,            CHECK_IN_MAILBOX },
+  { OP_MAIN_CLOSE_THREAD,                   op_main_close_thread,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_COLLAPSE_ALL,                   op_main_collapse_all,                 CHECK_IN_MAILBOX },
   { OP_MAIN_COLLAPSE_THREAD,                op_main_collapse_thread,              CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_DELETE_PATTERN,                 op_main_delete_pattern,               CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_READONLY },
@@ -3271,6 +3376,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_NEXT_UNDELETED,                 op_main_next_undeleted,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_UNREAD,                    op_main_next_new,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_UNREAD_MAILBOX,            op_main_next_unread_mailbox,          CHECK_IN_MAILBOX },
+  { OP_MAIN_OPEN_ALL_THREADS,               op_main_open_all_threads,             CHECK_IN_MAILBOX },
+  { OP_MAIN_OPEN_THREAD,                    op_main_open_thread,                  CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PARENT_MESSAGE,                 op_main_root_message,                 CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PREV_NEW,                       op_main_next_new,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PREV_NEW_THEN_UNREAD,           op_main_next_new,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
