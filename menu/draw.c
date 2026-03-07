@@ -62,30 +62,45 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
   }
 
   struct RegexColor *np = NULL;
+  const struct AttrColor *ac_merge = NULL;
 
   struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
   ASSERT(md);
 
+  struct Buffer *buf = buf_pool_get();
+  buf_strcpy(buf, (const char *) (s + 1));
+  char *marker = (char *) buf_find_char(buf, MUTT_SPECIAL_INDEX);
+  if (marker)
+    *marker = '\0';
+
+  // %Gx %{tags-transformed} - Transformed message tags
   if (type == MT_COLOR_INDEX_TAG)
   {
-    const struct AttrColor *ac_merge = NULL;
     STAILQ_FOREACH(np, rcl, entries)
     {
-      if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
-      {
-        ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
-        continue;
-      }
       const char *transform = mutt_hash_find(md->tag_transforms, np->pattern);
-      if (transform && mutt_strn_equal((const char *) (s + 1), transform, strlen(transform)))
+      if (transform && strstr(buf_string(buf), transform))
+
       {
         ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
       }
     }
-    return ac_merge;
+    goto done;
   }
 
-  const struct AttrColor *ac_merge = NULL;
+  // %g %{tags} / %J %{thread-tags} - Plain message tags
+  if (type == MT_COLOR_INDEX_TAGS)
+  {
+    STAILQ_FOREACH(np, rcl, entries)
+    {
+      if (strstr(buf_string(buf), np->pattern))
+      {
+        ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
+      }
+    }
+    goto done;
+  }
+
   STAILQ_FOREACH(np, rcl, entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
@@ -95,6 +110,8 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
     }
   }
 
+done:
+  buf_pool_release(&buf);
   return ac_merge;
 }
 
