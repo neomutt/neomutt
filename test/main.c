@@ -467,6 +467,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_fuzzy_subseq_separators)                              \
   NEOMUTT_TEST_ITEM(test_fuzzy_subseq_camelcase)                               \
   NEOMUTT_TEST_ITEM(test_fuzzy_subseq_max_pattern)                             \
+  NEOMUTT_TEST_ITEM(test_fuzzy_subseq_utf8_boundary)                           \
   NEOMUTT_TEST_ITEM(test_fuzzy_subseq_edge_cases)                              \
   NEOMUTT_TEST_ITEM(test_fuzzy_subseq_real_world)                              \
   NEOMUTT_TEST_ITEM(test_fuzzy_utf8_bytewise_matching)                         \

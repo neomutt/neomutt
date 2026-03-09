@@ -313,6 +313,9 @@ int fuzzy_subseq_match(const char *pattern, const char *candidate,
 
     // Non-ASCII pattern bytes must match as a whole UTF-8 codepoint.
     const int pchar_len = utf8_char_len(pattern + pi);
+    const int premaining = (int) plen - pi;
+    if ((pchar_len <= 0) || (pchar_len > premaining))
+      return -1;
     bool matched = false;
 
     while (candidate[ci])

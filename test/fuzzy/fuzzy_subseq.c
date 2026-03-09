@@ -351,6 +351,33 @@ void test_fuzzy_subseq_max_pattern(void)
   }
 }
 
+void test_fuzzy_subseq_utf8_boundary(void)
+{
+  enum
+  {
+    max_pattern = 256,
+  };
+  struct FuzzyResult result = { 0 };
+  struct FuzzyOptions opts = { 0 };
+
+  char pattern[max_pattern + 1];
+  char candidate[max_pattern + 1];
+
+  memset(pattern, 'a', max_pattern - 2);
+  pattern[max_pattern - 2] = (char) 0xC3;
+  pattern[max_pattern - 1] = (char) 0xA9;
+  pattern[max_pattern] = '\0';
+
+  memcpy(candidate, pattern, sizeof(pattern));
+
+  int score = fuzzy_match(pattern, candidate, FUZZY_ALGO_SUBSEQ, &opts, &result);
+  TEST_CHECK(score >= 0);
+  TEST_CHECK(result.start == 0);
+  TEST_CHECK(result.end == max_pattern - 1);
+  TEST_CHECK(result.span == max_pattern);
+  TEST_MSG("256-byte pattern ending in a UTF-8 codepoint should match safely");
+}
+
 void test_fuzzy_subseq_edge_cases(void)
 {
   struct FuzzyResult result = { 0 };
