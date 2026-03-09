@@ -199,11 +199,13 @@ void dump_submenus(bool brief, struct SubMenuIdArray *smia)
 void dump_menus(struct SubMenuIdArray *smia)
 {
   struct Buffer *buf = buf_pool_get();
-  struct MenuDefinition *md = NULL;
 
   mutt_debug(LL_DEBUG1, "Menus:\n");
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     buf_printf(buf, "    \"%s\" - %s (%d) - SubMenu IDs: ", md->name,
                name_menu_type(md->id), md->id);
 
@@ -257,9 +259,11 @@ void dump_menu_funcs(bool brief)
  */
 void dump_menu_binds(bool brief)
 {
-  struct MenuDefinition *md = NULL;
-  ARRAY_FOREACH(md, &MenuDefs)
+  struct MenuDefinition **mdp = NULL;
+  ARRAY_FOREACH(mdp, &MenuDefs)
   {
+    struct MenuDefinition *md = *mdp;
+
     struct SubMenu *sm = *ARRAY_FIRST(&md->submenus);
 
     int count = 0;
