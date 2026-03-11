@@ -24,6 +24,7 @@
 #define MUTT_GUI_MSGWIN_WDATA_H
 
 #include "mutt/lib.h"
+#include "color/color.h"
 
 struct MuttWindow;
 
@@ -41,6 +42,7 @@ struct MwChar
   unsigned char width;              ///< Width in screen cells
   unsigned char bytes;              ///< Number of bytes to represent
   const struct AttrColor *ac_color; ///< Colour to use
+  enum ColorId color_id;            ///< Colour ID for screenshot capture
 };
 ARRAY_HEAD(MwCharArray, struct MwChar);
 
@@ -57,6 +59,7 @@ struct MwChunk
   unsigned short bytes;             ///< Number of bytes in the row
   unsigned short width;             ///< Width of row in screen cells
   const struct AttrColor *ac_color; ///< Colour to use
+  enum ColorId color_id;            ///< Colour ID for screenshot capture
 };
 ARRAY_HEAD(MwChunkArray, struct MwChunk);
 
@@ -68,6 +71,7 @@ struct MsgWinWindowData
   struct Buffer *text;                       ///< Cached display string
   struct MwCharArray chars;                  ///< Text: Breakdown of bytes and widths
   struct MwChunkArray rows[MSGWIN_MAX_ROWS]; ///< String byte counts for each row
+  enum ColorId color_id;                     ///< Colour ID for message text
   int row;                                   ///< Cursor row
   int col;                                   ///< Cursor column
 };

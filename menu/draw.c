@@ -39,7 +39,10 @@
 #include "lib.h"
 #include "color/lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "pattern/lib.h"
+#include "key/menu.h"
+#include "menu/type.h"
 
 /**
  * get_color - Choose a colour for a line of the index
@@ -116,16 +119,32 @@ done:
 }
 
 /**
+ * menu_build_base_stack - Build a base ColorStack for menu rendering
+ * @param menu Menu to inspect
+ * @param cs   Stack to fill
+ */
+static void menu_build_base_stack(const struct Menu *menu, struct ColorStack *cs)
+{
+  color_stack_clear(cs);
+  color_stack_push(cs, MT_COLOR_NORMAL);
+  if (menu && menu->md && (menu->md->id == MENU_INDEX))
+    color_stack_push(cs, MT_COLOR_INDEX);
+}
+
+/**
  * print_enriched_string - Display a string with embedded colours and graphics
  * @param win      Window
  * @param index    Index number
  * @param ac_def   Default colour for the line
  * @param ac_ind   Indicator colour for the line
+ * @param base_cs  Colour stack
+ * @param use_ind  Use indicator colour
  * @param buf      String of embedded colour codes
  * @param sub      Config items
  */
 static void print_enriched_string(struct MuttWindow *win, int index,
                                   const struct AttrColor *ac_def, struct AttrColor *ac_ind,
+                                  const struct ColorStack *base_cs, bool use_ind,
                                   struct Buffer *buf, struct ConfigSubset *sub)
 {
   wchar_t wc = 0;
@@ -141,7 +160,15 @@ static void print_enriched_string(struct MuttWindow *win, int index,
     {
       /* Combining tree fg color and another bg color requires having
        * use_default_colors, because the other bg color may be undefined. */
-      mutt_curses_set_color(ac_ind);
+      struct ColorStack cs_tree = { 0 };
+      if (base_cs)
+        color_stack_copy(&cs_tree, base_cs);
+      else
+        color_stack_clear(&cs_tree);
+      color_stack_push(&cs_tree, MT_COLOR_TREE);
+      if (use_ind)
+        color_stack_push(&cs_tree, MT_COLOR_INDICATOR);
+      mutt_curses_set_color_stack(ac_ind, &cs_tree);
 
       while (*s && (*s < MUTT_TREE_MAX))
       {
@@ -152,7 +179,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
               mutt_window_addch(win, '`');
 #ifdef WACS_LLCORNER
             else
-              add_wch(WACS_LLCORNER);
+              mutt_window_addwch(win, WACS_LLCORNER);
 #else
             else if (CharsetIsUtf8)
               mutt_window_addstr(win, "\342\224\224"); /* WACS_LLCORNER */
@@ -165,7 +192,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
               mutt_window_addch(win, ',');
 #ifdef WACS_ULCORNER
             else
-              add_wch(WACS_ULCORNER);
+              mutt_window_addwch(win, WACS_ULCORNER);
 #else
             else if (CharsetIsUtf8)
               mutt_window_addstr(win, "\342\224\214"); /* WACS_ULCORNER */
@@ -178,7 +205,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
               mutt_window_addch(win, '|');
 #ifdef WACS_LTEE
             else
-              add_wch(WACS_LTEE);
+              mutt_window_addwch(win, WACS_LTEE);
 #else
             else if (CharsetIsUtf8)
               mutt_window_addstr(win, "\342\224\234"); /* WACS_LTEE */
@@ -191,7 +218,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
               mutt_window_addch(win, '-');
 #ifdef WACS_HLINE
             else
-              add_wch(WACS_HLINE);
+              mutt_window_addwch(win, WACS_HLINE);
 #else
             else if (CharsetIsUtf8)
               mutt_window_addstr(win, "\342\224\200"); /* WACS_HLINE */
@@ -204,7 +231,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
               mutt_window_addch(win, '|');
 #ifdef WACS_VLINE
             else
-              add_wch(WACS_VLINE);
+              mutt_window_addwch(win, WACS_VLINE);
 #else
             else if (CharsetIsUtf8)
               mutt_window_addstr(win, "\342\224\202"); /* WACS_VLINE */
@@ -217,7 +244,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
               mutt_window_addch(win, '-');
 #ifdef WACS_TTEE
             else
-              add_wch(WACS_TTEE);
+              mutt_window_addwch(win, WACS_TTEE);
 #else
             else if (CharsetIsUtf8)
               mutt_window_addstr(win, "\342\224\254"); /* WACS_TTEE */
@@ -230,7 +257,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
               mutt_window_addch(win, '-');
 #ifdef WACS_BTEE
             else
-              add_wch(WACS_BTEE);
+              mutt_window_addwch(win, WACS_BTEE);
 #else
             else if (CharsetIsUtf8)
               mutt_window_addstr(win, "\342\224\264"); /* WACS_BTEE */
@@ -261,7 +288,14 @@ static void print_enriched_string(struct MuttWindow *win, int index,
         n--;
       }
       const struct AttrColor *ac_merge = merged_color_overlay(ac_def, ac_ind);
-      mutt_curses_set_color(ac_merge);
+      struct ColorStack cs_line = { 0 };
+      if (base_cs)
+        color_stack_copy(&cs_line, base_cs);
+      else
+        color_stack_clear(&cs_line);
+      if (use_ind)
+        color_stack_push(&cs_line, MT_COLOR_INDICATOR);
+      mutt_curses_set_color_stack(ac_merge, &cs_line);
     }
     else if ((*s == MUTT_SPECIAL_INDEX) && (n >= 2))
     {
@@ -269,7 +303,14 @@ static void print_enriched_string(struct MuttWindow *win, int index,
       if (*s == MT_COLOR_INDEX)
       {
         const struct AttrColor *ac_merge = merged_color_overlay(ac_def, ac_ind);
-        mutt_curses_set_color(ac_merge);
+        struct ColorStack cs_line = { 0 };
+        if (base_cs)
+          color_stack_copy(&cs_line, base_cs);
+        else
+          color_stack_clear(&cs_line);
+        if (use_ind)
+          color_stack_push(&cs_line, MT_COLOR_INDICATOR);
+        mutt_curses_set_color_stack(ac_merge, &cs_line);
       }
       else
       {
@@ -277,7 +318,15 @@ static void print_enriched_string(struct MuttWindow *win, int index,
         const struct AttrColor *ac_merge = merged_color_overlay(ac_def, color);
         ac_merge = merged_color_overlay(ac_merge, ac_ind);
 
-        mutt_curses_set_color(ac_merge);
+        struct ColorStack cs_line = { 0 };
+        if (base_cs)
+          color_stack_copy(&cs_line, base_cs);
+        else
+          color_stack_clear(&cs_line);
+        color_stack_push(&cs_line, (enum ColorId) * s);
+        if (use_ind)
+          color_stack_push(&cs_line, MT_COLOR_INDICATOR);
+        mutt_curses_set_color_stack(ac_merge, &cs_line);
       }
       s++;
       n -= 2;
@@ -352,16 +401,22 @@ void menu_redraw_index(struct Menu *menu)
     if (i < menu->max)
     {
       ac = menu->color(menu, i);
+      const bool use_ind = menu->show_indicator && (i == menu->current);
+      struct ColorStack base_cs = { 0 };
+      menu_build_base_stack(menu, &base_cs);
+      struct ColorStack ind_cs = base_cs;
+      if (use_ind)
+        color_stack_push(&ind_cs, MT_COLOR_INDICATOR);
 
       buf_reset(buf);
       menu->make_entry(menu, i, menu->win->state.cols, buf);
       menu_pad_string(menu, buf);
 
-      mutt_curses_set_color(ac);
+      mutt_curses_set_color_stack(ac, &base_cs);
       mutt_window_move(menu->win, i - menu->top, 0);
 
       if (i == menu->current)
-        mutt_curses_set_color(ac_ind);
+        mutt_curses_set_color_stack(ac_ind, &ind_cs);
 
       if (c_arrow_cursor)
       {
@@ -380,11 +435,11 @@ void menu_redraw_index(struct Menu *menu)
 
       if ((i == menu->current) && !c_arrow_cursor)
       {
-        print_enriched_string(menu->win, i, ac, ac_ind, buf, menu->sub);
+        print_enriched_string(menu->win, i, ac, ac_ind, &base_cs, use_ind, buf, menu->sub);
       }
       else
       {
-        print_enriched_string(menu->win, i, ac, NULL, buf, menu->sub);
+        print_enriched_string(menu->win, i, ac, NULL, &base_cs, false, buf, menu->sub);
       }
     }
     else
@@ -411,8 +466,13 @@ void menu_redraw_motion(struct Menu *menu)
    * generate status messages.  So we want to call it *before* we
    * position the cursor for drawing. */
   const struct AttrColor *old_color = menu->color(menu, menu->old_current);
+  struct ColorStack base_cs = { 0 };
+  menu_build_base_stack(menu, &base_cs);
+  struct ColorStack ind_cs = base_cs;
+  if (menu->show_indicator)
+    color_stack_push(&ind_cs, MT_COLOR_INDICATOR);
   mutt_window_move(menu->win, menu->old_current - menu->top, 0);
-  mutt_curses_set_color(old_color);
+  mutt_curses_set_color_stack(old_color, &base_cs);
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   struct AttrColor *ac_ind = menu->show_indicator ? simple_color_get(MT_COLOR_INDICATOR) : NULL;
@@ -428,10 +488,11 @@ void menu_redraw_motion(struct Menu *menu)
     menu->make_entry(menu, menu->old_current, menu->win->state.cols, buf);
     menu_pad_string(menu, buf);
     mutt_window_move(menu->win, menu->old_current - menu->top, arrow_width + 1);
-    print_enriched_string(menu->win, menu->old_current, old_color, NULL, buf, menu->sub);
+    print_enriched_string(menu->win, menu->old_current, old_color, NULL,
+                          &base_cs, false, buf, menu->sub);
 
     /* now draw it in the new location */
-    mutt_curses_set_color(ac_ind);
+    mutt_curses_set_color_stack(ac_ind, &ind_cs);
     mutt_window_move(menu->win, menu->current - menu->top, 0);
     mutt_window_addstr(menu->win, c_arrow_string);
   }
@@ -441,7 +502,8 @@ void menu_redraw_motion(struct Menu *menu)
     /* erase the current indicator */
     menu->make_entry(menu, menu->old_current, menu->win->state.cols, buf);
     menu_pad_string(menu, buf);
-    print_enriched_string(menu->win, menu->old_current, old_color, NULL, buf, menu->sub);
+    print_enriched_string(menu->win, menu->old_current, old_color, NULL,
+                          &base_cs, false, buf, menu->sub);
 
     /* now draw the new one to reflect the change */
     const struct AttrColor *cur_color = menu->color(menu, menu->current);
@@ -450,8 +512,9 @@ void menu_redraw_motion(struct Menu *menu)
     menu->make_entry(menu, menu->current, menu->win->state.cols, buf);
     menu_pad_string(menu, buf);
     mutt_window_move(menu->win, menu->current - menu->top, 0);
-    mutt_curses_set_color(cur_color);
-    print_enriched_string(menu->win, menu->current, cur_color, ac_ind, buf, menu->sub);
+    mutt_curses_set_color_stack(cur_color, &ind_cs);
+    print_enriched_string(menu->win, menu->current, cur_color, ac_ind, &base_cs,
+                          true, buf, menu->sub);
   }
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   buf_pool_release(&buf);
@@ -465,6 +528,11 @@ void menu_redraw_current(struct Menu *menu)
 {
   struct Buffer *buf = buf_pool_get();
   const struct AttrColor *ac = menu->color(menu, menu->current);
+  struct ColorStack base_cs = { 0 };
+  menu_build_base_stack(menu, &base_cs);
+  struct ColorStack ind_cs = base_cs;
+  if (menu->show_indicator)
+    color_stack_push(&ind_cs, MT_COLOR_INDICATOR);
 
   mutt_window_move(menu->win, menu->current - menu->top, 0);
   menu->make_entry(menu, menu->current, menu->win->state.cols, buf);
@@ -474,17 +542,19 @@ void menu_redraw_current(struct Menu *menu)
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {
-    mutt_curses_set_color(ac_ind);
+    mutt_curses_set_color_stack(ac_ind, &ind_cs);
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
     mutt_window_addstr(menu->win, c_arrow_string);
-    mutt_curses_set_color(ac);
+    mutt_curses_set_color_stack(ac, &base_cs);
     mutt_window_addch(menu->win, ' ');
     menu_pad_string(menu, buf);
-    print_enriched_string(menu->win, menu->current, ac, NULL, buf, menu->sub);
+    print_enriched_string(menu->win, menu->current, ac, NULL, &base_cs, false,
+                          buf, menu->sub);
   }
   else
   {
-    print_enriched_string(menu->win, menu->current, ac, ac_ind, buf, menu->sub);
+    print_enriched_string(menu->win, menu->current, ac, ac_ind, &base_cs, true,
+                          buf, menu->sub);
   }
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   buf_pool_release(&buf);

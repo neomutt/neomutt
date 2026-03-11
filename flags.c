@@ -472,7 +472,9 @@ int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
   {
     window_redraw(NULL);
     event = mutt_getch(GETCH_NO_FLAGS);
-  } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
+    if (event.op == OP_SCREENSHOT)
+      global_function_dispatcher(win, &event);
+  } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT) || (event.op == OP_SCREENSHOT));
 
   win = msgcont_pop_window();
   window_set_focus(old_focus);

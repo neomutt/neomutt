@@ -52,6 +52,7 @@
 #include "history/lib.h"
 #include "key/lib.h"
 #include "question/lib.h"
+#include "global.h"
 #include "globals.h"
 #include "key/module_data.h"
 #include "msgcont.h"
@@ -250,10 +251,10 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   const struct AttrColor *ac_prompt = merged_color_overlay(ac_normal,
                                                            simple_color_get(MT_COLOR_PROMPT));
 
-  msgwin_add_text(win, prompt, ac_prompt);
-  msgwin_add_text(win, _(" ('?' for list): "), ac_prompt);
+  msgwin_add_text(win, prompt, ac_prompt, MT_COLOR_PROMPT);
+  msgwin_add_text(win, _(" ('?' for list): "), ac_prompt, MT_COLOR_PROMPT);
   if (!buf_is_empty(fname))
-    msgwin_add_text(win, buf_string(fname), ac_normal);
+    msgwin_add_text(win, buf_string(fname), ac_normal, MT_COLOR_NORMAL);
 
   msgcont_push_window(win);
   struct MuttWindow *old_focus = window_set_focus(win);
@@ -263,7 +264,9 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   {
     window_redraw(NULL);
     event = mutt_getch(GETCH_NO_FLAGS);
-  } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
+    if (event.op == OP_SCREENSHOT)
+      global_function_dispatcher(win, &event);
+  } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT) || (event.op == OP_SCREENSHOT));
 
   mutt_refresh();
   win = msgcont_pop_window();
@@ -527,51 +530,35 @@ void mw_what_key(void)
 
   // ---------------------------------------------------------------------------
   // Event Loop
-  timeout(1000); // 1 second
   while (true)
   {
-    int ch = getch();
-    if (ch == mod_data->abort_key)
+    struct KeyEvent event = mutt_getch(GETCH_NO_FLAGS);
+    if (event.op == OP_ABORT)
       break;
 
-    if (ch == KEY_RESIZE)
+    if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
     {
-      timeout(0);
-      while ((ch = getch()) == KEY_RESIZE)
-      {
-        // do nothing
-      }
+      window_redraw(NULL);
+      continue;
     }
 
-    if (ch == ERR)
+    if (event.op == OP_SCREENSHOT)
     {
-      if (!isatty(STDIN_FILENO)) // terminal was lost
-        mutt_exit(1);
-
-      if (SigWinch)
-      {
-        SigWinch = false;
-        notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
-        window_redraw(NULL);
-      }
-      else
-      {
-        notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
-      }
-
+      global_function_dispatcher(win, &event);
       continue;
     }
 
     msgwin_clear_text(win);
 
+    int ch = event.ch;
     buf_reset(key);
     keymap_get_name(ch, key);
 
     buf_printf(text, _("Char = %s, Octal = %o, Decimal = %d\n"), buf_string(key), ch, ch);
 
-    msgwin_add_text(win, buf_string(text), ac_normal);
-    msgwin_add_text(win, buf_string(prompt), ac_prompt);
-    msgwin_add_text(win, NULL, NULL);
+    msgwin_add_text(win, buf_string(text), ac_normal, MT_COLOR_NORMAL);
+    msgwin_add_text(win, buf_string(prompt), ac_prompt, MT_COLOR_PROMPT);
+    msgwin_add_text(win, NULL, NULL, MT_COLOR_NONE);
     window_redraw(NULL);
   }
   // ---------------------------------------------------------------------------

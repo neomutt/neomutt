@@ -384,6 +384,9 @@ int mw_get_field_notify(const char *prompt, struct Buffer *buf, CompletionFlags 
       if (rc_disp == FR_UNKNOWN)
         rc_disp = enter_function_dispatcher(win, &event);
 
+      if (rc_disp == FR_UNKNOWN)
+        rc_disp = global_function_dispatcher(win, &event);
+
       switch (rc_disp)
       {
         case FR_NO_ACTION:

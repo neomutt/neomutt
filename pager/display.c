@@ -41,6 +41,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "gui/screenshot.h"
 #include "display.h"
 #include "lib.h"
 #include "color/lib.h"
@@ -126,6 +127,8 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   bool search = false;
   int m;
   struct TextSyntax *matching_chunk = NULL;
+  enum ColorId cid_base = MT_COLOR_NORMAL;
+  enum ColorId cid_overlay = MT_COLOR_NONE;
 
   if (cnt == 0)
   {
@@ -156,8 +159,9 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   {
     if (flags & MUTT_PAGER_STRIPES)
     {
-      def_color = *simple_color_get(((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD :
-                                                            MT_COLOR_STRIPE_EVEN);
+      enum ColorId stripe = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
+      def_color = *simple_color_get(stripe);
+      cid_base = stripe;
     }
     else
     {
@@ -167,10 +171,12 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   else if ((lines[m].cid == MT_COLOR_HEADER) && lines[m].syntax[0].attr_color)
   {
     def_color = *lines[m].syntax[0].attr_color;
+    cid_base = MT_COLOR_HEADER;
   }
   else
   {
     def_color = *simple_color_get(lines[m].cid);
+    cid_base = lines[m].cid;
   }
 
   if ((flags & MUTT_SHOWCOLOR) && COLOR_QUOTED(lines[m].cid))
@@ -187,6 +193,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
         qc = qc->up;
       }
     }
+    cid_base = lines[m].cid;
   }
 
   color = def_color;
@@ -211,6 +218,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     {
       color = *simple_color_get(MT_COLOR_SEARCH);
       search = true;
+      cid_overlay = MT_COLOR_SEARCH;
     }
   }
 
@@ -218,23 +226,38 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   if (special & A_BOLD)
   {
     if (simple_color_is_set(MT_COLOR_BOLD) && !search)
+    {
       color = *simple_color_get(MT_COLOR_BOLD);
+      cid_overlay = MT_COLOR_BOLD;
+    }
     else
+    {
       color.attrs |= A_BOLD;
+    }
   }
   else if (special & A_UNDERLINE)
   {
     if (simple_color_is_set(MT_COLOR_UNDERLINE) && !search)
+    {
       color = *simple_color_get(MT_COLOR_UNDERLINE);
+      cid_overlay = MT_COLOR_UNDERLINE;
+    }
     else
+    {
       color.attrs |= A_UNDERLINE;
+    }
   }
   else if (special & A_ITALIC)
   {
     if (simple_color_is_set(MT_COLOR_ITALIC) && !search)
+    {
       color = *simple_color_get(MT_COLOR_ITALIC);
+      cid_overlay = MT_COLOR_ITALIC;
+    }
     else
+    {
       color.attrs |= A_ITALIC;
+    }
   }
   else if (ansi->attr_color)
   {
@@ -246,6 +269,15 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     const struct AttrColor *ac_merge = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL),
                                                             &color);
     mutt_curses_set_color(ac_merge);
+    {
+      struct ColorStack cs = { 0 };
+      color_stack_push(&cs, MT_COLOR_NORMAL);
+      color_stack_push(&cs, cid_base);
+      if (cid_overlay != MT_COLOR_NONE)
+        color_stack_push(&cs, cid_overlay);
+      if (ScreenshotActive)
+        screenshot_set_color_stack(ScreenshotActive, &cs);
+    }
     last_color = color;
   }
 }
@@ -1354,6 +1386,13 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     else
       ac_eol = ac_normal;
     mutt_curses_set_color(ac_eol);
+    {
+      struct ColorStack cs = { 0 };
+      color_stack_push(&cs, MT_COLOR_NORMAL);
+      color_stack_push(&cs, (*lines)[m].cid);
+      if (ScreenshotActive)
+        screenshot_set_color_stack(ScreenshotActive, &cs);
+    }
   }
 
   if (col < win_pager->state.cols)
@@ -1365,6 +1404,13 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       const struct AttrColor *stripe_color = simple_color_get(cid);
       const struct AttrColor *ac_eol = merged_color_overlay(ac_normal, stripe_color);
       mutt_curses_set_color(ac_eol);
+      {
+        struct ColorStack cs = { 0 };
+        color_stack_push(&cs, MT_COLOR_NORMAL);
+        color_stack_push(&cs, cid);
+        if (ScreenshotActive)
+          screenshot_set_color_stack(ScreenshotActive, &cs);
+      }
     }
     else
     {

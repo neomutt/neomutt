@@ -721,6 +721,9 @@ const char *opcodes_get_name       (int op);
   /*       Text Entry: <op_redraw> */ \
   /*       Global: <op_redraw> */ \
   _fmt(OP_REDRAW,                             N_("Clear and redraw the screen")) \
+  /* L10N: Help screen description for OP_SCREENSHOT */ \
+  /*       Global: <op_screenshot> */ \
+  _fmt(OP_SCREENSHOT,                         N_("write an HTML screenshot")) \
   /* L10N: Help screen description for OP_RENAME_MAILBOX */ \
   /*       Browser: <op_rename_mailbox> */ \
   _fmt(OP_RENAME_MAILBOX,                     N_("Rename the current mailbox (IMAP only)")) \

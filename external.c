@@ -626,8 +626,8 @@ void mutt_enter_command(struct MuttWindow *win)
 
   /* if enter is pressed after : with no command, just return */
   struct FileCompletionData cdata = { false, NULL, NULL, NULL, win };
-  if ((mw_get_field(":", buf, MUTT_COMP_NO_FLAGS, HC_NEO_COMMAND,
-                    &CompleteCommandOps, &cdata) != 0) ||
+  if ((mw_get_field_notify(":", buf, MUTT_COMP_NO_FLAGS, HC_NEO_COMMAND, &CompleteCommandOps,
+                           &cdata, NULL, win, NULL, global_function_dispatcher) != 0) ||
       buf_is_empty(buf))
   {
     goto done;

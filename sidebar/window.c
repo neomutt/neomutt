@@ -276,6 +276,68 @@ static const struct AttrColor *calc_color(const struct Mailbox *m, bool current,
 }
 
 /**
+ * calc_color_stack - Calculate the ColorStack of a Sidebar row
+ * @param m         Mailbox
+ * @param current   true, if this is the current Mailbox
+ * @param highlight true, if this Mailbox has the highlight on it
+ * @param cs        ColorStack to fill
+ */
+static void calc_color_stack(const struct Mailbox *m, bool current,
+                             bool highlight, struct ColorStack *cs)
+{
+  color_stack_clear(cs);
+  color_stack_push(cs, MT_COLOR_NORMAL);
+  color_stack_push(cs, MT_COLOR_SIDEBAR_BACKGROUND);
+  bool has_specific = false;
+
+  const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_SPOOL_FILE) &&
+      mutt_str_equal(mailbox_path(m), c_spool_file))
+  {
+    color_stack_push(cs, MT_COLOR_SIDEBAR_SPOOL_FILE);
+    has_specific = true;
+  }
+
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_FLAGGED) && (m->msg_flagged > 0))
+  {
+    color_stack_push(cs, MT_COLOR_SIDEBAR_FLAGGED);
+    has_specific = true;
+  }
+
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_UNREAD) && (m->msg_unread > 0))
+  {
+    color_stack_push(cs, MT_COLOR_SIDEBAR_UNREAD);
+    has_specific = true;
+  }
+
+  if (simple_color_is_set(MT_COLOR_SIDEBAR_NEW) && m->has_new)
+  {
+    color_stack_push(cs, MT_COLOR_SIDEBAR_NEW);
+    has_specific = true;
+  }
+
+  if (!has_specific && simple_color_is_set(MT_COLOR_SIDEBAR_ORDINARY))
+    color_stack_push(cs, MT_COLOR_SIDEBAR_ORDINARY);
+
+  if (current || highlight)
+  {
+    enum ColorId color;
+    if (current)
+    {
+      if (simple_color_is_set(MT_COLOR_SIDEBAR_INDICATOR))
+        color = MT_COLOR_SIDEBAR_INDICATOR;
+      else
+        color = MT_COLOR_INDICATOR;
+    }
+    else
+    {
+      color = MT_COLOR_SIDEBAR_HIGHLIGHT;
+    }
+    color_stack_push(cs, color);
+  }
+}
+
+/**
  * calc_path_depth - Calculate the depth of a Mailbox path
  * @param[in]  mbox      Mailbox path to examine
  * @param[in]  delims    Delimiter characters
@@ -656,7 +718,12 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
   const struct AttrColor *ac = simple_color_get(MT_COLOR_NORMAL);
   ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_BACKGROUND));
   ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_DIVIDER));
-  mutt_curses_set_color(ac);
+  struct ColorStack cs = { 0 };
+  color_stack_clear(&cs);
+  color_stack_push(&cs, MT_COLOR_NORMAL);
+  color_stack_push(&cs, MT_COLOR_SIDEBAR_BACKGROUND);
+  color_stack_push(&cs, MT_COLOR_SIDEBAR_DIVIDER);
+  mutt_curses_set_color_stack(ac, &cs);
 
   const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
   const int col = c_sidebar_on_right ? 0 : (num_cols - width);
@@ -691,7 +758,11 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
   /* Fill the remaining rows with blank space */
   const struct AttrColor *ac = simple_color_get(MT_COLOR_NORMAL);
   ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_BACKGROUND));
-  mutt_curses_set_color(ac);
+  struct ColorStack cs = { 0 };
+  color_stack_clear(&cs);
+  color_stack_push(&cs, MT_COLOR_NORMAL);
+  color_stack_push(&cs, MT_COLOR_SIDEBAR_BACKGROUND);
+  mutt_curses_set_color_stack(ac, &cs);
 
   const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
   if (!c_sidebar_on_right)
@@ -699,7 +770,7 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
   for (int r = 0; r < num_rows; r++)
   {
     mutt_window_move(win, first_row + r, div_width);
-    mutt_curses_set_color_by_id(MT_COLOR_SIDEBAR_BACKGROUND);
+    mutt_curses_set_color_stack(ac, &cs);
 
     for (int i = 0; i < num_cols; i++)
       mutt_window_addch(win, ' ');
@@ -734,8 +805,12 @@ int sb_repaint(struct MuttWindow *win)
         continue;
 
       struct SbEntry *entry = (*sbep);
+      const int entryidx = ARRAY_FOREACH_IDX_sbep;
+      struct ColorStack cs = { 0 };
+      calc_color_stack(entry->mailbox, (entryidx == wdata->opn_index),
+                       (entryidx == wdata->hil_index), &cs);
       mutt_window_move(win, row, col);
-      mutt_curses_set_color(entry->color);
+      mutt_curses_set_color_stack(entry->color, &cs);
       mutt_window_printf(win, "%s", entry->display);
       mutt_refresh();
       row++;

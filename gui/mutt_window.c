@@ -28,8 +28,11 @@
  */
 
 #include "config.h"
+#include <limits.h>
 #include <stdarg.h>
+#include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -39,6 +42,7 @@
 #include "module_data.h"
 #include "mutt_curses.h"
 #include "reflow.h"
+#include "screenshot.h"
 #ifdef USE_DEBUG_WINDOW
 #include "debug/lib.h"
 #endif
@@ -272,7 +276,7 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
     int curcol = col;
     while (curcol < (win->state.col_offset + win->state.cols))
     {
-      addch(' ');
+      mutt_window_addch(win, ' ');
       curcol++;
     }
     move(row, col);
@@ -310,6 +314,8 @@ void mutt_window_get_coords(struct MuttWindow *win, int *row, int *col)
  */
 int mutt_window_move(struct MuttWindow *win, int row, int col)
 {
+  if (ScreenshotActive && win)
+    screenshot_move_cursor(ScreenshotActive, win->state.row_offset + row, win->state.col_offset + col);
   return move(win->state.row_offset + row, win->state.col_offset + col);
 }
 
@@ -368,6 +374,11 @@ int mutt_window_wrap_cols(int width, short wrap)
  */
 int mutt_window_addch(struct MuttWindow *win, int ch)
 {
+  if (ScreenshotActive)
+  {
+    char c = (char) ch;
+    screenshot_write_text(ScreenshotActive, &c, 1);
+  }
   return addch(ch);
 }
 
@@ -384,6 +395,8 @@ int mutt_window_addnstr(struct MuttWindow *win, const char *str, int num)
   if (!str)
     return -1;
 
+  if (ScreenshotActive)
+    screenshot_write_text(ScreenshotActive, str, num);
   return addnstr(str, num);
 }
 
@@ -399,7 +412,48 @@ int mutt_window_addstr(struct MuttWindow *win, const char *str)
   if (!str)
     return -1;
 
+  if (ScreenshotActive)
+    screenshot_write_text(ScreenshotActive, str, -1);
   return addstr(str);
+}
+
+/**
+ * mutt_window_addwch - Write a wide character to a Window
+ * @param win Window
+ * @param wch Wide character to write
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+int mutt_window_addwch(struct MuttWindow *win, const cchar_t *wch)
+{
+  if (!wch)
+    return -1;
+
+#if defined(HAVE_SETCCHAR)
+  if (ScreenshotActive)
+  {
+    wchar_t wc = 0;
+    attr_t attrs = 0;
+    short pair = 0;
+    if (getcchar(wch, &wc, &attrs, &pair, NULL) == OK)
+    {
+      char out[MB_LEN_MAX] = { 0 };
+      mbstate_t state = { 0 };
+      size_t len = wcrtomb(out, wc, &state);
+      if (len == (size_t) -1)
+      {
+        char c = '?';
+        screenshot_write_text(ScreenshotActive, &c, 1);
+      }
+      else
+      {
+        screenshot_write_text(ScreenshotActive, out, (int) len);
+      }
+    }
+  }
+#endif
+
+  return add_wch(wch);
 }
 
 /**
@@ -413,8 +467,21 @@ int mutt_window_printf(struct MuttWindow *win, const char *fmt, ...)
 {
   va_list ap;
   va_start(ap, fmt);
+  va_list ap_copy;
+  va_copy(ap_copy, ap);
   int rc = vw_printw(stdscr, fmt, ap);
   va_end(ap);
+
+  if (ScreenshotActive)
+  {
+    char *out = NULL;
+    if (vasprintf(&out, fmt, ap_copy) >= 0)
+    {
+      screenshot_write_text(ScreenshotActive, out, -1);
+      FREE(&out);
+    }
+  }
+  va_end(ap_copy);
 
   return rc;
 }

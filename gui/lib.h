@@ -45,6 +45,7 @@
  * | gui/resize.c        | @subpage gui_resize        |
  * | gui/rootwin.c       | @subpage gui_rootwin       |
  * | gui/sbar.c          | @subpage gui_sbar          |
+ * | gui/screenshot.c    | @subpage gui_screenshot    |
  * | gui/simple.c        | @subpage gui_simple        |
  * | gui/terminal.c      | @subpage gui_terminal      |
  * | gui/thread.c        | @subpage gui_thread        |

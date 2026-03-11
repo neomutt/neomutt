@@ -165,6 +165,7 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "root-message",                  OP_MAIN_ROOT_MESSAGE },
   { "save-entry",                    OP_ATTACH_SAVE },
   { "save-message",                  OP_SAVE },
+  { "screenshot",                    OP_SCREENSHOT },
   { "search",                        OP_SEARCH },
   { "search-next",                   OP_SEARCH_NEXT },
   { "search-opposite",               OP_SEARCH_OPPOSITE },
