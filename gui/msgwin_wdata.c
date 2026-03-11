@@ -62,6 +62,7 @@ struct MsgWinWindowData *msgwin_wdata_new(void)
   struct MsgWinWindowData *wdata = MUTT_MEM_CALLOC(1, struct MsgWinWindowData);
 
   wdata->text = buf_new(NULL);
+  wdata->color_id = MT_COLOR_NORMAL;
 
   return wdata;
 }

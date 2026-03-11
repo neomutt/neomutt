@@ -551,3 +551,12 @@ int log_disp_curses(time_t stamp, const char *file, int line, const char *functi
 {
   return 0;
 }
+
+void mutt_enter_command(struct MuttWindow *win)
+{
+}
+
+bool mutt_shell_escape(void)
+{
+  return true;
+}

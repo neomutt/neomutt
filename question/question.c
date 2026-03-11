@@ -83,25 +83,25 @@ int mw_multi_choice(const char *prompt, const char *letters)
     while ((cur = strchr(prompt, '(')))
     {
       // write the part between prompt and cur using MT_COLOR_PROMPT
-      msgwin_add_text_n(win, prompt, cur - prompt, ac_prompt);
+      msgwin_add_text_n(win, prompt, cur - prompt, ac_prompt, MT_COLOR_PROMPT);
 
       if (mutt_isalnum(cur[1]) && (cur[2] == ')'))
       {
         // we have a single letter within parentheses - MT_COLOR_OPTIONS
-        msgwin_add_text_n(win, cur + 1, 1, ac_opts);
+        msgwin_add_text_n(win, cur + 1, 1, ac_opts, MT_COLOR_OPTIONS);
         prompt = cur + 3;
       }
       else
       {
         // we have a parenthesis followed by something else
-        msgwin_add_text_n(win, cur, 1, ac_prompt);
+        msgwin_add_text_n(win, cur, 1, ac_prompt, MT_COLOR_PROMPT);
         prompt = cur + 1;
       }
     }
   }
 
-  msgwin_add_text(win, prompt, ac_prompt);
-  msgwin_add_text(win, " ", ac_normal);
+  msgwin_add_text(win, prompt, ac_prompt, MT_COLOR_PROMPT);
+  msgwin_add_text(win, " ", ac_normal, MT_COLOR_NORMAL);
 
   msgcont_push_window(win);
   struct MuttWindow *old_focus = window_set_focus(win);
@@ -120,6 +120,12 @@ int mw_multi_choice(const char *prompt, const char *letters)
 
     if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
       continue;
+
+    if (event.op == OP_SCREENSHOT)
+    {
+      global_function_dispatcher(win, &event);
+      continue;
+    }
 
     if ((event.op == OP_ABORT) || key_is_return(event.ch))
     {
@@ -260,6 +266,12 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
       continue;
     }
 
+    if (event.op == OP_SCREENSHOT)
+    {
+      global_function_dispatcher(win, &event);
+      continue;
+    }
+
     if (key_is_return(event.ch))
       break; // Do nothing, use default
 
@@ -291,12 +303,12 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
       mutt_str_hyphenate(hyphen, sizeof(hyphen), cdef->name);
       buf_add_printf(text, "https://neomutt.org/guide/reference#%s\n", hyphen);
 
-      msgwin_add_text(win, buf_string(text), simple_color_get(MT_COLOR_NORMAL));
+      msgwin_add_text(win, buf_string(text), simple_color_get(MT_COLOR_NORMAL), MT_COLOR_NORMAL);
 
       buf_printf(text, "%s ([%s]/%s): ", prompt, (def == MUTT_YES) ? yes : no,
                  (def == MUTT_YES) ? no : yes);
-      msgwin_add_text(win, buf_string(text), simple_color_get(MT_COLOR_PROMPT));
-      msgwin_add_text(win, NULL, NULL);
+      msgwin_add_text(win, buf_string(text), simple_color_get(MT_COLOR_PROMPT), MT_COLOR_PROMPT);
+      msgwin_add_text(win, NULL, NULL, MT_COLOR_NONE);
 
       window_redraw(NULL);
       mutt_refresh();

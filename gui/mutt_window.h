@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
+#include "mutt_curses.h"
 
 struct ConfigSubset;
 
@@ -252,6 +253,7 @@ int                mutt_window_wrap_cols          (int width, short wrap);
 int  mutt_window_addch    (struct MuttWindow *win, int ch);
 int  mutt_window_addnstr  (struct MuttWindow *win, const char *str, int num);
 int  mutt_window_addstr   (struct MuttWindow *win, const char *str);
+int  mutt_window_addwch   (struct MuttWindow *win, const cchar_t *wch);
 void mutt_window_clearline(struct MuttWindow *win, int row);
 void mutt_window_clear    (struct MuttWindow *win);
 void mutt_window_clrtoeol (struct MuttWindow *win);

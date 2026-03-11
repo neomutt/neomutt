@@ -72,6 +72,7 @@ static const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "mailbox-cycle",                 OP_EDITOR_MAILBOX_CYCLE },
   { "quote-char",                    OP_EDITOR_QUOTE_CHAR },
   { "redraw-screen",                 OP_REDRAW },
+  { "screenshot",                    OP_SCREENSHOT },
   { "transpose-chars",               OP_EDITOR_TRANSPOSE_CHARS },
   { "upcase-word",                   OP_EDITOR_UPCASE_WORD },
   // Deprecated

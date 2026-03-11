@@ -1000,6 +1000,10 @@ void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf,
 
   const struct AttrColor *ac_base = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL),
                                                          simple_color_get(MT_COLOR_STATUS));
+  struct ColorStack base_cs = { 0 };
+  color_stack_clear(&base_cs);
+  color_stack_push(&base_cs, MT_COLOR_NORMAL);
+  color_stack_push(&base_cs, MT_COLOR_STATUS);
   do
   {
     struct RegexColor *cl = NULL;
@@ -1057,7 +1061,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf,
   {
     /* Text before the first highlight */
     mutt_window_addnstr(win, buf, MIN(len, syntax[0].first));
-    mutt_curses_set_color(ac_base);
+    mutt_curses_set_color_stack(ac_base, &base_cs);
     if (len <= syntax[0].first)
       goto dsl_finish; /* no more room */
 
@@ -1067,7 +1071,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf,
   for (i = 0; i < chunks; i++)
   {
     /* Highlighted text */
-    mutt_curses_set_color(syntax[i].attr_color);
+    mutt_curses_set_color_stack(syntax[i].attr_color, &base_cs);
     mutt_window_addnstr(win, buf + offset, MIN(len, syntax[i].last) - offset);
     if (len <= syntax[i].last)
       goto dsl_finish; /* no more room */
@@ -1082,7 +1086,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf,
       next = MIN(len, syntax[i + 1].first);
     }
 
-    mutt_curses_set_color(ac_base);
+    mutt_curses_set_color_stack(ac_base, &base_cs);
     offset = syntax[i].last;
     mutt_window_addnstr(win, buf + offset, next - offset);
 
@@ -1091,7 +1095,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf,
       goto dsl_finish; /* no more room */
   }
 
-  mutt_curses_set_color(ac_base);
+  mutt_curses_set_color_stack(ac_base, &base_cs);
   if (offset < len)
   {
     /* Text after the last highlight */

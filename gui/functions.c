@@ -102,6 +102,7 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "previous-line",                 OP_PREV_LINE },
   { "previous-page",                 OP_PREV_PAGE },
   { "redraw-screen",                 OP_REDRAW },
+  { "screenshot",                    OP_SCREENSHOT },
   { "search",                        OP_SEARCH },
   { "search-next",                   OP_SEARCH_NEXT },
   { "search-opposite",               OP_SEARCH_OPPOSITE },

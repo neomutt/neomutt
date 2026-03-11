@@ -33,9 +33,11 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "global.h"
 #include "index/lib.h"
 #include "key/lib.h"
+#include "menu/lib.h"
 #include "pager/lib.h"
 #include "curs_lib.h"
 #include "external.h"
@@ -43,6 +45,8 @@
 #include "mutt_mailbox.h"
 #include "mutt_window.h"
 #include "opcodes.h"
+#include "rootwin.h"
+#include "screenshot.h"
 #include "version.h"
 
 /**
@@ -74,6 +78,60 @@ static int op_redraw(struct MuttWindow *win, const struct KeyEvent *event)
   mutt_resize_screen();
   window_invalidate_all();
   window_redraw(NULL);
+  return FR_SUCCESS;
+}
+
+/**
+ * screenshot_prepare_window - Queue redraws needed for screenshot capture
+ * @param win Window tree to inspect
+ */
+static void screenshot_prepare_window(struct MuttWindow *win)
+{
+  if (!win)
+    return;
+
+  if ((win->type == WT_MENU) && win->wdata)
+  {
+    struct Menu *menu = win->wdata;
+    menu->redraw |= MENU_REDRAW_FULL;
+  }
+
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &win->children)
+  {
+    screenshot_prepare_window(*wp);
+  }
+}
+
+/**
+ * op_screenshot - Write an HTML screenshot - Implements ::global_function_t - @ingroup global_function_api
+ */
+int op_screenshot(struct MuttWindow *win, const struct KeyEvent *event)
+{
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->root_window)
+    return FR_ERROR;
+
+  if (ScreenshotActive)
+    return FR_ERROR;
+
+  char stamp[32] = { 0 };
+  mutt_date_localtime_format(stamp, sizeof(stamp), "%Y%m%d-%H%M%S", mutt_date_now());
+
+  char path[64] = { 0 };
+  snprintf(path, sizeof(path), "screenshot-%s.html", stamp);
+
+  ScreenshotActive = screenshot_new(mod_data->root_window->state.rows, mod_data->root_window->state.cols);
+  if (!ScreenshotActive)
+    return FR_ERROR;
+
+  screenshot_prepare_window(mod_data->root_window);
+  window_invalidate_all();
+  window_redraw(NULL);
+  if (screenshot_end_and_write(&ScreenshotActive, path))
+    mutt_message("Screenshot saved: %s", path);
+  else
+    mutt_error("Screenshot failed: %s", path);
   return FR_SUCCESS;
 }
 
@@ -166,6 +224,7 @@ static const struct GlobalFunction GlobalFunctions[] = {
   { OP_CHECK_STATS,           op_check_stats },
   { OP_ENTER_COMMAND,         op_enter_command },
   { OP_REDRAW,                op_redraw },
+  { OP_SCREENSHOT,            op_screenshot },
   { OP_SHELL_ESCAPE,          op_shell_escape },
   { OP_SHOW_LOG_MESSAGES,     op_show_log_messages },
   { OP_VERSION,               op_version },

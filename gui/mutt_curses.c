@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include "mutt_curses.h"
 #include "color/lib.h"
+#include "screenshot.h"
 
 /**
  * mutt_curses_set_color - Set the colour and attributes for text
@@ -54,6 +55,18 @@ void mutt_curses_set_color(const struct AttrColor *ac)
 }
 
 /**
+ * mutt_curses_set_color_stack - Set the colour and attributes and record a stack
+ * @param ac Colour and Attributes to set
+ * @param cs Colour stack (may be NULL)
+ */
+void mutt_curses_set_color_stack(const struct AttrColor *ac, const struct ColorStack *cs)
+{
+  mutt_curses_set_color(ac);
+  if (ScreenshotActive)
+    screenshot_set_color_stack(ScreenshotActive, cs);
+}
+
+/**
  * mutt_curses_set_normal_backed_color_by_id - Set the colour and attributes by the Colour ID
  * @param cid Colour ID, e.g. #MT_COLOR_WARNING
  * @retval ptr Colour set
@@ -68,6 +81,14 @@ const struct AttrColor *mutt_curses_set_normal_backed_color_by_id(enum ColorId c
   const struct AttrColor *ac_merge = merged_color_overlay(ac_normal, ac_color);
 
   mutt_curses_set_color(ac_merge);
+  {
+    struct ColorStack cs = { 0 };
+    color_stack_clear(&cs);
+    color_stack_push(&cs, MT_COLOR_NORMAL);
+    color_stack_push(&cs, cid);
+    if (ScreenshotActive)
+      screenshot_set_color_stack(ScreenshotActive, &cs);
+  }
   return ac_merge;
 }
 
@@ -83,6 +104,13 @@ const struct AttrColor *mutt_curses_set_color_by_id(enum ColorId cid)
     ac = simple_color_get(MT_COLOR_NORMAL);
 
   mutt_curses_set_color(ac);
+  {
+    struct ColorStack cs = { 0 };
+    color_stack_clear(&cs);
+    color_stack_push(&cs, cid);
+    if (ScreenshotActive)
+      screenshot_set_color_stack(ScreenshotActive, &cs);
+  }
   return ac;
 }
 

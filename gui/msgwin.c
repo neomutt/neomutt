@@ -101,10 +101,12 @@
  * @param chars    Results
  * @param str      String to measure
  * @param ac_color Colour to associate
+ * @param color_id Colour ID for screenshot capture
  *
  * Calculate the size of each character in a string in bytes and screen cells.
  */
-void measure(struct MwCharArray *chars, const char *str, const struct AttrColor *ac_color)
+void measure(struct MwCharArray *chars, const char *str,
+             const struct AttrColor *ac_color, enum ColorId color_id)
 {
   if (!str || !*str)
     return;
@@ -149,6 +151,7 @@ void measure(struct MwCharArray *chars, const char *str, const struct AttrColor 
     }
 
     mwc = (struct MwChar) { wchar_width, consumed, ac_color };
+    mwc.color_id = color_id;
     ARRAY_ADD(chars, mwc);
 
     str += consumed;
@@ -217,6 +220,7 @@ int msgwin_calc_rows(struct MsgWinWindowData *wdata, int cols, const char *str)
 
       // Start a new row
       struct MwChunk tmp = { offset, mwc->bytes, mwc->width, mwc->ac_color };
+      tmp.color_id = mwc->color_id;
 
       mutt_debug(LL_DEBUG5, "row = %d\n", row);
       ARRAY_ADD(&wdata->rows[row], tmp);
@@ -228,6 +232,7 @@ int msgwin_calc_rows(struct MsgWinWindowData *wdata, int cols, const char *str)
     {
       // CHANGE OF COLOUR
       struct MwChunk tmp = { offset, mwc->bytes, mwc->width, mwc->ac_color };
+      tmp.color_id = mwc->color_id;
       ARRAY_ADD(&wdata->rows[row], tmp);
       chunk = ARRAY_LAST(&wdata->rows[row]);
     }
@@ -263,7 +268,17 @@ static int msgwin_repaint(struct MuttWindow *win)
     struct MwChunk *chunk = NULL;
     ARRAY_FOREACH(chunk, &wdata->rows[i])
     {
-      mutt_curses_set_color(chunk->ac_color);
+      struct ColorStack cs = { 0 };
+      color_stack_clear(&cs);
+      color_stack_push(&cs, MT_COLOR_NORMAL);
+      enum ColorId cid = chunk->color_id;
+      if (cid == MT_COLOR_NONE)
+        cid = wdata->color_id;
+      if (cid == MT_COLOR_OPTIONS)
+        color_stack_push(&cs, MT_COLOR_PROMPT);
+      if ((cid > MT_COLOR_NONE) && (cid != MT_COLOR_NORMAL))
+        color_stack_push(&cs, cid);
+      mutt_curses_set_color_stack(chunk->ac_color, &cs);
       mutt_window_addnstr(win, str + chunk->offset, chunk->bytes);
     }
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
@@ -418,8 +433,10 @@ const char *msgwin_get_text(struct MuttWindow *win)
  * @param win      Message Window
  * @param text     Text to add
  * @param ac_color Colour for text
+ * @param color    Colour ID for screenshot capture
  */
-void msgwin_add_text(struct MuttWindow *win, const char *text, const struct AttrColor *ac_color)
+void msgwin_add_text(struct MuttWindow *win, const char *text,
+                     const struct AttrColor *ac_color, enum ColorId color)
 {
   if (!win)
     win = msgcont_get_msgwin();
@@ -431,7 +448,7 @@ void msgwin_add_text(struct MuttWindow *win, const char *text, const struct Attr
   if (text)
   {
     buf_addstr(wdata->text, text);
-    measure(&wdata->chars, text, ac_color);
+    measure(&wdata->chars, text, ac_color, color);
     mutt_debug(LL_DEBUG5, "MW ADD: %zu, %s\n", buf_len(wdata->text),
                buf_string(wdata->text));
   }
@@ -449,9 +466,10 @@ void msgwin_add_text(struct MuttWindow *win, const char *text, const struct Attr
  * @param text     Text to add
  * @param bytes    Number of bytes of text to add
  * @param ac_color Colour for text
+ * @param color    Colour ID for screenshot capture
  */
 void msgwin_add_text_n(struct MuttWindow *win, const char *text, int bytes,
-                       const struct AttrColor *ac_color)
+                       const struct AttrColor *ac_color, enum ColorId color)
 {
   if (!win)
     win = msgcont_get_msgwin();
@@ -464,7 +482,7 @@ void msgwin_add_text_n(struct MuttWindow *win, const char *text, int bytes,
   {
     const char *dptr = wdata->text->dptr;
     buf_addstr_n(wdata->text, text, bytes);
-    measure(&wdata->chars, dptr, ac_color);
+    measure(&wdata->chars, dptr, ac_color, color);
     mutt_debug(LL_DEBUG5, "MW ADD: %zu, %s\n", buf_len(wdata->text),
                buf_string(wdata->text));
   }
@@ -492,6 +510,7 @@ void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId colo
     return;
 
   struct MsgWinWindowData *wdata = win->wdata;
+  wdata->color_id = color;
 
   if (mutt_str_equal(buf_string(wdata->text), text))
     return;
@@ -504,7 +523,7 @@ void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId colo
     const struct AttrColor *ac_color = simple_color_get(color);
     const struct AttrColor *ac_merge = merged_color_overlay(ac_normal, ac_color);
 
-    measure(&wdata->chars, buf_string(wdata->text), ac_merge);
+    measure(&wdata->chars, buf_string(wdata->text), ac_merge, color);
   }
 
   mutt_debug(LL_DEBUG5, "MW SET: %zu, %s\n", buf_len(wdata->text),

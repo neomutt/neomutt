@@ -69,6 +69,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "gui/screenshot.h"
 #include "debug/lib.h"
 #include "lib.h"
 #include "color/lib.h"
@@ -135,6 +136,9 @@ static int pager_repaint(struct MuttWindow *win)
   struct PagerPrivateData *priv = win->wdata;
   if (!priv || !priv->pview || !priv->pview->pdata)
     return 0;
+
+  if (ScreenshotActive)
+    priv->redraw |= PAGER_REDRAW_PAGER;
 
   dump_pager(priv);
 

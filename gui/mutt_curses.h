@@ -68,6 +68,8 @@ enum MuttCursorState
 };
 
 void                    mutt_curses_set_color(const struct AttrColor *ac);
+void                    mutt_curses_set_color_stack(const struct AttrColor *ac,
+                                                    const struct ColorStack *cs);
 const struct AttrColor *mutt_curses_set_color_by_id(enum ColorId cid);
 enum MuttCursorState    mutt_curses_set_cursor(enum MuttCursorState state);
 const struct AttrColor *mutt_curses_set_normal_backed_color_by_id(enum ColorId cid);
