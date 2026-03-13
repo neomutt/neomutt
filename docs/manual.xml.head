@@ -13158,7 +13158,7 @@ color   attach_headers     brightmagenta   default    "can't handle these multip
 color   attach_headers     brightmagenta   default    "signature verification suppressed"
 color   attach_headers     brightmagenta   default    "invalid node with packet of type"
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -13246,7 +13246,7 @@ set crypt_opportunistic_encrypt = yes
 <emphasis role="comment"># Self encrypt mail</emphasis>
 set crypt_self_encrypt = yes
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -13446,7 +13446,7 @@ sendmailcmd = neomutt -C -H - &amp;&amp; true
 <emphasis role="comment"># Compose a new email (not a reply) to the sender</emphasis>
 bind index,pager @ compose-to-sender
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -13832,7 +13832,7 @@ close-hook  '\.pgp$' "pgp -fe YourPgpUserIdOrKeyId &lt; '%t' &gt; '%f'"
 open-hook   '\.gpg$' "gpg --decrypt &lt; '%f' &gt; '%t'"
 close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &gt; '%f'"
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -14198,7 +14198,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 <emphasis role="comment"># %[y   This year   %[%b %d]       Dec 10</emphasis>
 <emphasis role="comment">#  —    Older       %[%m/%y ]      06/15</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -14354,7 +14354,7 @@ set smime_self_encrypt = "yes"
 set smime_default_key = "SMIME-KEY"
 <emphasis role="comment"># set smime_sign_as = "SMIME-SIGNING-KEY"</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -14576,7 +14576,7 @@ set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
 <emphasis role="comment"># Français:</emphasis>
 <emphasis role="comment"># set abort_noattach_regex = "\\&lt;(attaché|attachés|attache|attachons|joint|jointe|joints|jointes|joins|joignons)\\&gt;"</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -15241,7 +15241,7 @@ startup-hook 'exec sync-mailbox'
 <emphasis role="comment"># When NeoMutt quits, run this NeoMutt command</emphasis>
 shutdown-hook 'exec sync-mailbox'
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -15371,7 +15371,7 @@ shutdown-hook 'exec sync-mailbox'
 set header_cache_compress_level = 1
 set header_cache_compress_method = ""
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -15544,7 +15544,7 @@ ifdef imap-fetch-mail 'source ~/.neomutt/imap.rc'
 <emphasis role="comment"># stop reading the current config file.</emphasis>
 ifndef sidebar finish
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -15693,7 +15693,7 @@ color index_number red default
 <emphasis role="comment"># Message size, %c %cr %l</emphasis>
 color index_size cyan default
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -15799,7 +15799,7 @@ set index_format='%4C %Z %{%b %d} %I (%&lt;l?%4l&amp;%4c&gt;) %s'
 <emphasis role="comment">#       3   + Nov 16 JH Voodoo Child    ( 263)</emphasis>
 <emphasis role="comment">#       4   + Nov 16 DH Parallel Lines  ( 540)</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -15975,7 +15975,7 @@ set index_format='%4C %Z %{%b %d} %I (%&lt;l?%4l&amp;%4c&gt;) %s'
 <emphasis role="comment"># Limit view to current thread</emphasis>
 bind index &lt;esc&gt;L limit-current-thread
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -16337,7 +16337,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l
 <emphasis role="comment">#       display the size of the message in bytes (%c)</emphasis>
 set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -16472,7 +16472,7 @@ set new_mail_command = ""
 <emphasis role="comment">#   -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -16871,7 +16871,7 @@ bind index \eG get-parent
 bind index \CG get-message
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -17104,7 +17104,7 @@ color index_tag red white "inbox"
 color index_tags green default
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -17537,7 +17537,7 @@ bind index &lt; vfolder-window-backward
 bind index &gt; vfolder-window-forward
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -17629,7 +17629,7 @@ bind index &gt; vfolder-window-forward
 <emphasis role="comment"># Stay at least 5 seconds on a message before the pager marks it as read</emphasis>
 set pager_read_delay = 5
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -17702,7 +17702,7 @@ set pager_read_delay = 5
 <emphasis role="comment"># White text on a red background</emphasis>
 color progress white red
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -17787,7 +17787,7 @@ color progress white red
 <emphasis role="comment"># from the index, but NOT deleted.</emphasis>
 bind index,pager Q quasi-delete
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -17868,7 +17868,7 @@ bind index,pager Q quasi-delete
 <emphasis role="comment"># is found.</emphasis>
 set reply_with_xorig = "yes"
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -18453,7 +18453,7 @@ color sidebar_spool_file color207 default
 color sidebar_unread color136 default
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -18623,7 +18623,7 @@ set pager_skip_quoted_context = 3
 <emphasis role="comment"># Preserve the first level of quoted text</emphasis>
 set toggle_quoted_show_levels = 1
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -18763,7 +18763,7 @@ color status red default '\[([^]]+)\]' 1
 color status brightwhite default 'NeoMutt: ([^ ]+)' 1
 <emphasis role="comment"># Search for 'NeoMutt: ' but only highlight what comes after it</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -18972,7 +18972,7 @@ set trash='/home/flatcap/Mail/Trash'
 bind index D purge-message
 <emphasis role="comment"># Note: Deleting emails from the 'trash' folder will REALLY delete them.</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>
@@ -19189,7 +19189,7 @@ set use_threads=threads sort=last-date sort_aux=date
 <emphasis role="comment">#   Barbara  12:05  thread 2</emphasis>
 <emphasis role="comment">#   Erica    12:08  `-&gt;re: thread 2</emphasis>
 
-<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: filetype=neomuttrc</emphasis>
 </screen>
 
       </sect2>

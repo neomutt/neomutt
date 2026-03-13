@@ -103,7 +103,7 @@ void log_file_close(bool verbose)
     return;
 
   fprintf(LogFileFP, "[%s] Closing log.\n", timestamp(0));
-  fprintf(LogFileFP, "# vim: syntax=neomuttlog\n");
+  fprintf(LogFileFP, "# vim: ft=neomuttlog\n");
   mutt_file_fclose(&LogFileFP);
   if (verbose)
     mutt_message(_("Closed log file: %s"), LogFileName);
