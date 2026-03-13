@@ -2326,12 +2326,12 @@
 ** by NeoMutt.  Otherwise, NeoMutt posts article using current connection to
 ** news server.  The following printf-style sequence is understood:
 ** .dl
-** .dt %a .dd account url
-** .dt %p .dd port
-** .dt %P .dd port if specified
-** .dt %s .dd news server name
-** .dt %S .dd url schema
-** .dt %u .dd username
+** .dt %a .dd %{account}  .dd account url
+** .dt %p .dd %{port}     .dd port
+** .dt %P .dd %{port-if}  .dd port if specified
+** .dt %s .dd %{server}   .dd news server name
+** .dt %S .dd %{schema}   .dd url schema
+** .dt %u .dd %{username} .dd username
 ** .de
 ** .pp
 ** Example:
