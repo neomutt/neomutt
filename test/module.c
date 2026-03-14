@@ -46,6 +46,7 @@ static struct ConfigDef TestVars[] = {
   { "simple_search",           DT_STRING,                                      IP "~f %s | ~s %s",        0, NULL },
   { "sleep_time",              DT_NUMBER|D_INTEGER_NOT_NEGATIVE,               0,                         0, NULL },
   { "tmp_dir",                 DT_PATH|D_PATH_DIR|D_NOT_EMPTY,                 IP TMPDIR,                 0, NULL },
+  { "tmp_draft_dir",           DT_PATH|D_PATH_DIR|D_NOT_EMPTY,                 IP TMPDIR,                 0, NULL },
   { NULL },
   // clang-format on
 };

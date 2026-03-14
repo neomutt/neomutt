@@ -502,7 +502,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   mutt_make_forward_subject(e_tmp->env, e_parent, NeoMutt->sub);
 
   tempfile = buf_pool_get();
-  buf_mktemp(tempfile);
+  buf_mktemp_draft(tempfile);
   FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_tmp)
   {
@@ -693,7 +693,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *b
   {
     /* no MIME encapsulation */
 
-    buf_mktemp(tempfile);
+    buf_mktemp_draft(tempfile);
     fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
     if (!fp_tmp)
     {
@@ -1009,7 +1009,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   /* Create a temporary file for the reply body and write the quoted
    * content of the selected attachment(s) into it */
   tempfile = buf_pool_get();
-  buf_mktemp(tempfile);
+  buf_mktemp_draft(tempfile);
   fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_tmp)
   {

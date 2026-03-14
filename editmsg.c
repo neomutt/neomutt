@@ -63,7 +63,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   bool old_append = m->append;
 
   struct Buffer *fname = buf_pool_get();
-  buf_mktemp(fname);
+  buf_mktemp_draft(fname);
 
   // Temporarily force $mbox_type to be MUTT_MBOX
   const unsigned char c_mbox_type = cs_subset_enum(NeoMutt->sub, "mbox_type");

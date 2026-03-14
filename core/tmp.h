@@ -28,10 +28,14 @@
 struct Buffer;
 
 void  buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
+void  buf_mktemp_draft_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 FILE *mutt_file_mkstemp_full (const char *file, int line, const char *func);
 
 #define buf_mktemp(buf)                         buf_mktemp_pfx_sfx(buf, "neomutt", NULL)
 #define buf_mktemp_pfx_sfx(buf, prefix, suffix) buf_mktemp_full(buf, prefix, suffix, __FILE__, __LINE__)
+
+#define buf_mktemp_draft(buf)                         buf_mktemp_draft_pfx_sfx(buf, "neomutt", NULL)
+#define buf_mktemp_draft_pfx_sfx(buf, prefix, suffix) buf_mktemp_draft_full(buf, prefix, suffix, __FILE__, __LINE__)
 
 #define mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)
 
