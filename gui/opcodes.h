@@ -526,6 +526,12 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help screen description for OP_MAIN_CLEAR_FLAG */ \
   /*       Index: <op_main_set_flag> */ \
   _fmt(OP_MAIN_CLEAR_FLAG,                    N_("clear a status flag from a message")) \
+  /* L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS */ \
+  /*       Index: <op_main_close_all_threads> */ \
+  _fmt(OP_MAIN_CLOSE_ALL_THREADS,             N_("collapse all threads")) \
+  /* L10N: Help screen description for OP_MAIN_CLOSE_THREAD */ \
+  /*       Index: <op_main_close_thread> */ \
+  _fmt(OP_MAIN_CLOSE_THREAD,                  N_("collapse current thread")) \
   /* L10N: Help screen description for OP_MAIN_COLLAPSE_ALL */ \
   /*       Index: <op_main_collapse_all> */ \
   _fmt(OP_MAIN_COLLAPSE_ALL,                  N_("collapse/uncollapse all threads")) \
@@ -578,6 +584,12 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX */ \
   /*       Index: <op_main_next_unread_mailbox> */ \
   _fmt(OP_MAIN_NEXT_UNREAD_MAILBOX,           N_("open next mailbox with new mail")) \
+  /* L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS */ \
+  /*       Index: <op_main_open_all_threads> */ \
+  _fmt(OP_MAIN_OPEN_ALL_THREADS,              N_("uncollapse all threads")) \
+  /* L10N: Help screen description for OP_MAIN_OPEN_THREAD */ \
+  /*       Index: <op_main_open_thread> */ \
+  _fmt(OP_MAIN_OPEN_THREAD,                   N_("uncollapse current thread")) \
   /* L10N: Help screen description for OP_MAIN_PARENT_MESSAGE */ \
   /*       Index: <op_main_root_message> */ \
   _fmt(OP_MAIN_PARENT_MESSAGE,                N_("jump to parent message in thread")) \

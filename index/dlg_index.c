@@ -149,17 +149,14 @@ bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg)
 
 /**
  * collapse_all - Collapse/uncollapse all threads
- * @param mv     Mailbox View
- * @param menu   current menu
- * @param toggle toggle collapsed state
+ * @param mv   Mailbox View
+ * @param menu Current menu
+ * @param mode Collapse mode
  *
- * This function is called by the OP_MAIN_COLLAPSE_ALL command and on folder
- * enter if the `$collapse_all` option is set. In the first case, the @a toggle
- * parameter is 1 to actually toggle collapsed/uncollapsed state on all
- * threads. In the second case, the @a toggle parameter is 0, actually turning
- * this function into a one-way collapse.
+ * This function is called by OP_MAIN_COLLAPSE_ALL, by the one-way open/close
+ * commands, and on folder enter if the `$collapse_all` option is set.
  */
-void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
+void collapse_all(struct MailboxView *mv, struct Menu *menu, enum CollapseMode mode)
 {
   if (!mv || !mv->mailbox || (mv->mailbox->msg_count == 0) || !menu)
     return;
@@ -172,12 +169,31 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
 
   /* Figure out what the current message would be after folding / unfolding,
    * so that we can restore the cursor in a sane way afterwards. */
-  if (e_cur->collapsed && toggle)
-    final = mutt_uncollapse_thread(e_cur);
-  else if (mutt_thread_can_collapse(e_cur))
-    final = mutt_collapse_thread(e_cur);
-  else
-    final = e_cur->vnum;
+  switch (mode)
+  {
+    case COLLAPSE_MODE_TOGGLE:
+      if (e_cur->collapsed)
+        final = mutt_uncollapse_thread(e_cur);
+      else if (mutt_thread_can_collapse(e_cur))
+        final = mutt_collapse_thread(e_cur);
+      else
+        final = e_cur->vnum;
+      break;
+
+    case COLLAPSE_MODE_CLOSE:
+      if (mutt_thread_can_collapse(e_cur))
+        final = mutt_collapse_thread(e_cur);
+      else
+        final = e_cur->vnum;
+      break;
+
+    case COLLAPSE_MODE_OPEN:
+      if (e_cur->collapsed)
+        final = mutt_uncollapse_thread(e_cur);
+      else
+        final = e_cur->vnum;
+      break;
+  }
 
   if (final == -1)
     return;
@@ -187,7 +203,10 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
     return;
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
-  mv->collapsed = toggle ? !mv->collapsed : true;
+  if (mode == COLLAPSE_MODE_TOGGLE)
+    mv->collapsed = !mv->collapsed;
+  else
+    mv->collapsed = (mode == COLLAPSE_MODE_CLOSE);
   mutt_thread_collapse(mv->threads, mv->collapsed);
 
   /* Restore the cursor */
@@ -707,7 +726,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
 
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
   if (mutt_using_threads() && c_collapse_all)
-    collapse_all(shared->mailbox_view, menu, 0);
+    collapse_all(shared->mailbox_view, menu, COLLAPSE_MODE_CLOSE);
 
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
@@ -1138,7 +1157,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
   if (mutt_using_threads() && c_collapse_all)
   {
-    collapse_all(shared->mailbox_view, priv->menu, 0);
+    collapse_all(shared->mailbox_view, priv->menu, COLLAPSE_MODE_CLOSE);
     menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   }
 
