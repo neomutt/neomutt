@@ -580,6 +580,9 @@ struct ConfigDef MainVars[] = {
   { "tmp_dir", DT_PATH|D_PATH_DIR|D_NOT_EMPTY, IP TMPDIR, 0, NULL,
     "Directory for temporary files"
   },
+  { "tmp_draft_dir", DT_PATH|D_PATH_DIR|D_NOT_EMPTY, IP "/var/tmp", 0, NULL,
+    "Directory for temporary draft files"
+  },
   { "trash", DT_STRING|D_STRING_MAILBOX, 0, 0, NULL,
     "Folder to put deleted emails"
   },
@@ -621,6 +624,7 @@ struct ConfigDef MainVars[] = {
   { "realname",                  DT_SYNONYM, IP "real_name",                  IP "2021-03-21" },
   { "spoolfile",                 DT_SYNONYM, IP "spool_file",                 IP "2021-03-21" },
   { "tmpdir",                    DT_SYNONYM, IP "tmp_dir",                    IP "2023-01-25" },
+  { "tmpdraftdir",               DT_SYNONYM, IP "tmp_draft_dir",              IP "2026-03-14" },
 
   { "devel_security", DT_BOOL, false, 0, NULL,
     "Devel feature: Security -- https://github.com/neomutt/neomutt/discussions/4251"

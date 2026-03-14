@@ -19594,7 +19594,8 @@ set use_threads=threads sort=last-date sort_aux=date
         digital signatures, etc. As long as being used, these files are visible
         by other users and maybe even readable in case of misconfiguration.
         Also, a different location for these files may be desired which can be
-        changed via the <link linkend="tmp-dir">$tmp_dir</link> variable.
+        changed via the <link linkend="tmp-dir">$tmp_dir</link> and
+        <link linkend="tmp-draft-dir">$tmp_draft_dir</link> variables.
       </para>
     </sect1>
 

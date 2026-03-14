@@ -514,9 +514,9 @@ and used for Native Language Support (NLS) if enabled.
 .TP
 .SM
 .B TMPDIR
-Directory in which temporary files are created.
-Defaults to \fI/tmp\fP if unset.
-Configuration variable $tmp_dir takes precedence over this one.
+Directory in which temporary files are created.  If unset, \fI/tmp\fP
+is used for $tmp_dir, and \fI/var/tmp\fP is used for $tmp_draft_dir.  See
+also the $tmp_dir and $tmp_draft_dir configuration variables.
 .
 .TP
 .SM

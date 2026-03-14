@@ -3,7 +3,7 @@
  * Create Temporary Files
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -57,6 +57,31 @@ void buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix,
              (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
 
   mutt_debug(LL_DEBUG3, "%s:%d: buf_mktemp returns \"%s\"\n", src, line, buf_string(buf));
+  if (unlink(buf_string(buf)) && (errno != ENOENT))
+  {
+    mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,
+               line, buf_string(buf), strerror(errno), errno);
+  }
+}
+
+/**
+ * buf_mktemp_draft_full - Create a temporary file for drafts
+ * @param buf    Buffer for result
+ * @param prefix Prefix for filename
+ * @param suffix Suffix for filename
+ * @param src    Source file of caller
+ * @param line   Source line number of caller
+ */
+void buf_mktemp_draft_full(struct Buffer *buf, const char *prefix,
+                           const char *suffix, const char *src, int line)
+{
+  const char *const c_tmp_draft_dir = cs_subset_path(NeoMutt->sub, "tmp_draft_dir");
+  buf_printf(buf, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmp_draft_dir),
+             NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
+             (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
+
+  mutt_debug(LL_DEBUG3, "%s:%d: buf_mktemp_draft returns \"%s\"\n", src, line,
+             buf_string(buf));
   if (unlink(buf_string(buf)) && (errno != ENOENT))
   {
     mutt_debug(LL_DEBUG1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src,

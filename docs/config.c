@@ -5414,10 +5414,24 @@
 /*
 ** .pp
 ** This variable allows you to specify where NeoMutt will place its
-** temporary files needed for displaying and composing messages.
+** temporary files needed for displaying messages.
 ** .pp
 ** If this variable is not set, the environment variable \fC$$$TMPDIR\fP is
 ** used.  Failing that, then "\fC/tmp\fP" is used.
+*/
+
+{ "tmp_draft_dir", DT_PATH, "/var/tmp" },
+/*
+** .pp
+** This variable allows you to specify where NeoMutt will place its
+** temporary files when composing messages.
+** .pp
+** If this variable is not set, the environment variable \fC$$$TMPDIR\fP is
+** used.  Failing that, then "\fC/var/tmp\fP" is used.
+** .pp
+** It is recommended that this be set to a directory whose contents
+** won't be removed during an unanticipated reboot, so that draft files
+** will survive a crash or other unplanned computer shutdown.
 */
 
 { "to_chars", DT_MBTABLE, " +TCFLR" },

@@ -2186,7 +2186,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       else
       {
         struct Buffer *buf = buf_pool_get();
-        buf_mktemp(buf);
+        buf_mktemp_draft(buf);
         fp_tmp = mutt_file_fopen(buf_string(buf), "w+");
         e_templ->body->filename = buf_strdup(buf);
         buf_pool_release(&buf);
@@ -2932,7 +2932,7 @@ static bool send_simple_email(struct Mailbox *m, struct EmailArray *ea,
   mutt_parse_content_type(ctype, e->body);
 
   struct Buffer *tempfile = buf_pool_get();
-  buf_mktemp(tempfile);
+  buf_mktemp_draft(tempfile);
   if (body)
   {
     FILE *fp = mutt_file_fopen(buf_string(tempfile), "w+");
