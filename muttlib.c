@@ -112,6 +112,45 @@ void mutt_adv_mktemp(struct Buffer *buf)
 }
 
 /**
+ * mutt_adv_mktemp_draft - Create a temporary file for drafts
+ * @param buf Buffer for the name
+ *
+ * Accept a "suggestion" for file name.  If that file exists, then
+ * construct one with unique name but keep any extension.
+ * This might fail, I guess.
+ */
+void mutt_adv_mktemp_draft(struct Buffer *buf)
+{
+  if (buf_is_empty(buf))
+  {
+    buf_mktemp_draft(buf);
+  }
+  else
+  {
+    struct Buffer *prefix = buf_pool_get();
+    buf_strcpy(prefix, buf->data);
+    mutt_file_sanitize_filename(prefix->data, true);
+    const char *const c_tmp_draft_dir = cs_subset_path(NeoMutt->sub, "tmp_draft_dir");
+    buf_printf(buf, "%s/%s", NONULL(c_tmp_draft_dir), buf_string(prefix));
+
+    struct stat st = { 0 };
+    if ((lstat(buf_string(buf), &st) == -1) && (errno == ENOENT))
+      goto out;
+
+    char *suffix = strchr(prefix->data, '.');
+    if (suffix)
+    {
+      *suffix = '\0';
+      suffix++;
+    }
+    buf_mktemp_draft_pfx_sfx(buf, prefix->data, suffix);
+
+  out:
+    buf_pool_release(&prefix);
+  }
+}
+
+/**
  * expand_path - Create the canonical path
  * @param buf   Buffer with path
  * @param regex If true, escape regex special characters

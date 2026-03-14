@@ -182,7 +182,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
                        struct Buffer *fcc)
 {
   struct Buffer *path = buf_pool_get();
-  buf_mktemp(path);
+  buf_mktemp_draft(path);
   FILE *fp_out = mutt_file_fopen(buf_string(path), "w");
   if (!fp_out)
   {

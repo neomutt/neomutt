@@ -98,6 +98,10 @@ static void init_tmp_dir(struct NeoMutt *n)
   struct HashElem *he = cs_get_elem(n->sub->cs, "tmp_dir");
   cs_he_initial_set(n->sub->cs, he, buf, NULL);
   cs_str_reset(n->sub->cs, "tmp_dir", NULL);
+
+  he = cs_get_elem(n->sub->cs, "tmp_draft_dir");
+  cs_he_initial_set(n->sub->cs, he, buf, NULL);
+  cs_str_reset(n->sub->cs, "tmp_draft_dir", NULL);
 }
 
 void test_gen_path(struct Buffer *buf, const char *fmt)
