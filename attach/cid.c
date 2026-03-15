@@ -203,9 +203,10 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
    * HTML file may be opened as plain text by the viewer */
   const char *suffix = buf_rfind(filename, ".");
   if (suffix && *(suffix++))
-    buf_mktemp_pfx_sfx(tempfile, "neomutt", suffix);
+    buf_mktemp_full(tempfile, "neomutt", suffix, __FILE__, __LINE__, "tmp_dir");
   else
     buf_mktemp(tempfile);
+
   fp_out = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp_out)
     goto bail;
