@@ -73,25 +73,26 @@ static const char *XdgDefaults[] = {
 };
 
 /**
- * mutt_adv_mktemp - Create a temporary file
+ * mutt_adv_mktemp_cfg - Create a temporary file
  * @param buf Buffer for the name
+ * @param cfg Config option for the temp directory
  *
  * Accept a "suggestion" for file name.  If that file exists, then
  * construct one with unique name but keep any extension.
  * This might fail, I guess.
  */
-void mutt_adv_mktemp(struct Buffer *buf)
+void mutt_adv_mktemp_cfg(struct Buffer *buf, const char *cfg)
 {
   if (buf_is_empty(buf))
   {
-    buf_mktemp(buf);
+    buf_mktemp_full(buf, "neomutt", NULL, __FILE__, __LINE__, cfg);
   }
   else
   {
     struct Buffer *prefix = buf_pool_get();
     buf_strcpy(prefix, buf->data);
     mutt_file_sanitize_filename(prefix->data, true);
-    const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+    const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, cfg);
     buf_printf(buf, "%s/%s", NONULL(c_tmp_dir), buf_string(prefix));
 
     struct stat st = { 0 };
@@ -104,46 +105,7 @@ void mutt_adv_mktemp(struct Buffer *buf)
       *suffix = '\0';
       suffix++;
     }
-    buf_mktemp_pfx_sfx(buf, prefix->data, suffix);
-
-  out:
-    buf_pool_release(&prefix);
-  }
-}
-
-/**
- * mutt_adv_mktemp_draft - Create a temporary file for drafts
- * @param buf Buffer for the name
- *
- * Accept a "suggestion" for file name.  If that file exists, then
- * construct one with unique name but keep any extension.
- * This might fail, I guess.
- */
-void mutt_adv_mktemp_draft(struct Buffer *buf)
-{
-  if (buf_is_empty(buf))
-  {
-    buf_mktemp_draft(buf);
-  }
-  else
-  {
-    struct Buffer *prefix = buf_pool_get();
-    buf_strcpy(prefix, buf->data);
-    mutt_file_sanitize_filename(prefix->data, true);
-    const char *const c_tmp_draft_dir = cs_subset_path(NeoMutt->sub, "tmp_draft_dir");
-    buf_printf(buf, "%s/%s", NONULL(c_tmp_draft_dir), buf_string(prefix));
-
-    struct stat st = { 0 };
-    if ((lstat(buf_string(buf), &st) == -1) && (errno == ENOENT))
-      goto out;
-
-    char *suffix = strchr(prefix->data, '.');
-    if (suffix)
-    {
-      *suffix = '\0';
-      suffix++;
-    }
-    buf_mktemp_draft_pfx_sfx(buf, prefix->data, suffix);
+    buf_mktemp_full(buf, prefix->data, suffix, __FILE__, __LINE__, cfg);
 
   out:
     buf_pool_release(&prefix);

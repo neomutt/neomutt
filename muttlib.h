@@ -35,8 +35,10 @@ struct Buffer;
 struct passwd;
 struct stat;
 
-void        mutt_adv_mktemp(struct Buffer *buf);
-void        mutt_adv_mktemp_draft(struct Buffer *buf);
+void        mutt_adv_mktemp_cfg(struct Buffer *buf, const char *cfg);
+#define     mutt_adv_mktemp(buf)       mutt_adv_mktemp_cfg(buf, "tmp_dir")
+#define     mutt_adv_mktemp_draft(buf) mutt_adv_mktemp_cfg(buf, "tmp_draft_dir")
+
 void        expand_path(struct Buffer *buf, bool regex);
 void        pretty_mailbox(struct Buffer *s);
 void        buf_sanitize_filename (struct Buffer *buf, const char *path, short slash);
