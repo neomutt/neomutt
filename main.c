@@ -514,7 +514,10 @@ static int mutt_init(struct ConfigSet *cs, struct Buffer *dlevel,
   /* "$tmp_dir" precedence: config file, environment, code */
   const char *env_tmp = mutt_str_getenv("TMPDIR");
   if (env_tmp)
+  {
     config_str_set_initial(cs, "tmp_dir", env_tmp);
+    config_str_set_initial(cs, "tmp_draft_dir", env_tmp);
+  }
 
   /* "$visual", "$editor" precedence: config file, environment, code */
   const char *env_ed = mutt_str_getenv("VISUAL");
@@ -1345,7 +1348,7 @@ int main(int argc, char *argv[], char *envp[])
         /* Copy input to a tempfile, and re-point fp_in to the tempfile.
          * Note: stdin is always copied to a tempfile, ensuring draft_file
          * can stat and get the correct st_size below.  */
-        buf_mktemp(tempfile);
+        buf_mktemp_draft(tempfile);
 
         fp_out = mutt_file_fopen(buf_string(tempfile), "w");
         if (!fp_out)

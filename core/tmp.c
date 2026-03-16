@@ -3,7 +3,7 @@
  * Create Temporary Files
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2026 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -47,11 +47,12 @@
  * @param suffix Suffix for filename
  * @param src    Source file of caller
  * @param line   Source line number of caller
+ * @param cfg    Config option for the temp directory
  */
 void buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix,
-                     const char *src, int line)
+                     const char *src, int line, const char *cfg)
 {
-  const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+  const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, cfg);
   buf_printf(buf, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmp_dir),
              NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
              (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));

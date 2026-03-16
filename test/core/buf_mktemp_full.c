@@ -31,11 +31,11 @@
 
 void test_buf_mktemp_full(void)
 {
-  // void buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
+  // void buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line, const char *cfg);
 
   {
     struct Buffer *buf = buf_pool_get();
-    buf_mktemp_full(buf, NULL, NULL, __FILE__, __LINE__);
+    buf_mktemp_full(buf, NULL, NULL, __FILE__, __LINE__, "tmp_dir");
     buf_pool_release(&buf);
   }
 }
