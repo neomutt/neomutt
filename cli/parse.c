@@ -108,7 +108,7 @@ bool cli_parse(int argc, char *const *argv, struct CommandLine *cli)
 
   opterr = 0; // We'll handle the errors
 // Always initialise getopt() or the tests will fail
-#if defined(BSD) || defined(__APPLE__)
+#if defined(BSD) || defined(__APPLE__) || defined(__sun)
   optreset = 1;
   optind = 1;
 #else
