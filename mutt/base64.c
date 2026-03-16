@@ -85,7 +85,7 @@ const int Index64[128] = {
 };
 
 /**
- * b64_encode - Convert raw bytes to NUL-terminated base64 string
+ * b64_encode_common - Convert raw bytes to NUL-terminated base64 string
  * @param in     Input buffer for the raw bytes
  * @param inlen  Length of the input buffer
  * @param out    Output buffer for the base64 encoded string
@@ -98,7 +98,7 @@ const int Index64[128] = {
  * NUL-byte is returned (equivalent to calling strlen() on the output buffer
  * after this function returns).
  */
-static size_t b64_encode(const char *in, size_t inlen, char *out, size_t outlen,
+static size_t b64_encode_common(const char *in, size_t inlen, char *out, size_t outlen,
                          const char *alpha)
 {
   if (!in || !out)
@@ -143,11 +143,11 @@ static size_t b64_encode(const char *in, size_t inlen, char *out, size_t outlen,
  * @param outlen Length of the output buffer
  * @retval num Length of the string written to the output buffer
  *
- * @sa b64_encode()
+ * @sa b64_encode_common()
  */
 size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
 {
-  return b64_encode(in, inlen, out, outlen, B64Chars);
+  return b64_encode_common(in, inlen, out, outlen, B64Chars);
 }
 
 /**
@@ -158,11 +158,11 @@ size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
  * @param outlen Length of the output buffer
  * @retval num Length of the string written to the output buffer
  *
- * @sa b64_encode()
+ * @sa b64_encode_common()
  */
 size_t mutt_b64_encode_urlsafe(const char *in, size_t inlen, char *out, size_t outlen)
 {
-  return b64_encode(in, inlen, out, outlen, B64CharsUrlSafe);
+  return b64_encode_common(in, inlen, out, outlen, B64CharsUrlSafe);
 }
 
 /**
