@@ -29,9 +29,22 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern const struct Command LuaCommands[];
+
+/**
+ * lua_init - Initialise a Module - Implements Module::init()
+ */
+static bool lua_init(struct NeoMutt *n)
+{
+  // struct LuaModuleData *md = MUTT_MEM_CALLOC(1, struct LuaModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_LUA, md);
+
+  return true;
+}
 
 /**
  * lua_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
@@ -42,16 +55,28 @@ static bool lua_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 }
 
 /**
+ * lua_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool lua_cleanup(struct NeoMutt *n)
+{
+  // struct LuaModuleData *md = neomutt_get_module_data(n, MODULE_ID_LUA);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleLua - Module for the Lua library
  */
 const struct Module ModuleLua = {
   MODULE_ID_LUA,
   "lua",
-  NULL, // init
+  lua_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   lua_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  lua_cleanup,
 };

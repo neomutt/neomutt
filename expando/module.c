@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern const struct ConfigSetType CstExpando;
+
+/**
+ * expando_init - Initialise a Module - Implements Module::init()
+ */
+static bool expando_init(struct NeoMutt *n)
+{
+  // struct ExpandoModuleData *md = MUTT_MEM_CALLOC(1, struct ExpandoModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_EXPANDO, md);
+
+  return true;
+}
 
 /**
  * expando_config_define_types - Set up Config Types - Implements Module::config_define_types()
@@ -43,16 +56,28 @@ static bool expando_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
 }
 
 /**
+ * expando_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool expando_cleanup(struct NeoMutt *n)
+{
+  // struct ExpandoModuleData *md = neomutt_get_module_data(n, MODULE_ID_EXPANDO);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleExpando - Module for the Expando library
  */
 const struct Module ModuleExpando = {
   MODULE_ID_EXPANDO,
   "expando",
-  NULL, // init
+  expando_init,
   expando_config_define_types,
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  expando_cleanup,
 };

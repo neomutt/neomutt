@@ -27,8 +27,34 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
+
+/**
+ * complete_init - Initialise a Module - Implements Module::init()
+ */
+static bool complete_init(struct NeoMutt *n)
+{
+  // struct CompleteModuleData *md = MUTT_MEM_CALLOC(1, struct CompleteModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COMPLETE, md);
+
+  return true;
+}
+
+/**
+ * complete_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool complete_cleanup(struct NeoMutt *n)
+{
+  // struct CompleteModuleData *md = neomutt_get_module_data(n, MODULE_ID_COMPLETE);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleComplete - Module for the Complete library
@@ -36,11 +62,11 @@
 const struct Module ModuleComplete = {
   MODULE_ID_COMPLETE,
   "complete",
-  NULL, // init
+  complete_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  complete_cleanup,
 };

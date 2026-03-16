@@ -29,8 +29,10 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef ConnVars[];
 extern struct ConfigDef ConnVarsGetaddr[];
@@ -38,6 +40,17 @@ extern struct ConfigDef ConnVarsGnutls[];
 extern struct ConfigDef ConnVarsOpenssl[];
 extern struct ConfigDef ConnVarsPartial[];
 extern struct ConfigDef ConnVarsSsl[];
+
+/**
+ * conn_init - Initialise a Module - Implements Module::init()
+ */
+static bool conn_init(struct NeoMutt *n)
+{
+  // struct ConnModuleData *md = MUTT_MEM_CALLOC(1, struct ConnModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_CONN, md);
+
+  return true;
+}
 
 /**
  * conn_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -72,16 +85,28 @@ static bool conn_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
 }
 
 /**
+ * conn_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool conn_cleanup(struct NeoMutt *n)
+{
+  // struct ConnModuleData *md = neomutt_get_module_data(n, MODULE_ID_CONN);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleConn - Module for the Conn library
  */
 const struct Module ModuleConn = {
   MODULE_ID_CONN,
   "conn",
-  NULL, // init
+  conn_init,
   NULL, // config_define_types
   conn_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  conn_cleanup,
 };

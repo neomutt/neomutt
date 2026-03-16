@@ -29,12 +29,25 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef NotmuchVars[];
 
 extern const struct Command NmCommands[];
+
+/**
+ * notmuch_init - Initialise a Module - Implements Module::init()
+ */
+static bool notmuch_init(struct NeoMutt *n)
+{
+  // struct NotmuchModuleData *md = MUTT_MEM_CALLOC(1, struct NotmuchModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_NOTMUCH, md);
+
+  return true;
+}
 
 /**
  * notmuch_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -59,16 +72,28 @@ static bool notmuch_commands_register(struct NeoMutt *n, struct CommandArray *ca
 }
 
 /**
+ * notmuch_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool notmuch_cleanup(struct NeoMutt *n)
+{
+  // struct NotmuchModuleData *md = neomutt_get_module_data(n, MODULE_ID_NOTMUCH);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleNotmuch - Module for the Notmuch library
  */
 const struct Module ModuleNotmuch = {
   MODULE_ID_NOTMUCH,
   "notmuch",
-  NULL, // init
+  notmuch_init,
   NULL, // config_define_types
   notmuch_config_define_variables,
   notmuch_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  notmuch_cleanup,
 };

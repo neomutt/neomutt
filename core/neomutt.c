@@ -384,7 +384,7 @@ static bool cleanup_modules(struct NeoMutt *n)
 
     if (mod->cleanup)
     {
-      mutt_debug(LL_DEBUG3, "%s:clenaup()\n", mod->name);
+      mutt_debug(LL_DEBUG3, "%s:cleanup()\n", mod->name);
       rc &= mod->cleanup(n);
     }
 

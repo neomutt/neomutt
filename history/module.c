@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef HistoryVars[];
+
+/**
+ * history_init - Initialise a Module - Implements Module::init()
+ */
+static bool history_init(struct NeoMutt *n)
+{
+  // struct HistoryModuleData *md = MUTT_MEM_CALLOC(1, struct HistoryModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_HISTORY, md);
+
+  return true;
+}
 
 /**
  * history_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool history_config_define_variables(struct NeoMutt *n, struct ConfigSet 
 }
 
 /**
+ * history_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool history_cleanup(struct NeoMutt *n)
+{
+  // struct HistoryModuleData *md = neomutt_get_module_data(n, MODULE_ID_HISTORY);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleHistory - Module for the History library
  */
 const struct Module ModuleHistory = {
   MODULE_ID_HISTORY,
   "history",
-  NULL, // init
+  history_init,
   NULL, // config_define_types
   history_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  history_cleanup,
 };

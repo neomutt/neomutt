@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef PagerVars[];
+
+/**
+ * pager_init - Initialise a Module - Implements Module::init()
+ */
+static bool pager_init(struct NeoMutt *n)
+{
+  // struct PagerModuleData *md = MUTT_MEM_CALLOC(1, struct PagerModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_PAGER, md);
+
+  return true;
+}
 
 /**
  * pager_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool pager_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
 }
 
 /**
+ * pager_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool pager_cleanup(struct NeoMutt *n)
+{
+  // struct PagerModuleData *md = neomutt_get_module_data(n, MODULE_ID_PAGER);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModulePager - Module for the Pager library
  */
 const struct Module ModulePager = {
   MODULE_ID_PAGER,
   "pager",
-  NULL, // init
+  pager_init,
   NULL, // config_define_types
   pager_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  pager_cleanup,
 };

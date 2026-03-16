@@ -27,19 +27,46 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "module_api.h"
+#include "module_data.h"
+#include "neomutt.h"
+
+/**
+ * core_init - Initialise a Module - Implements Module::init()
+ */
+static bool core_init(struct NeoMutt *n)
+{
+  // struct CoreModuleData *md = MUTT_MEM_CALLOC(1, struct CoreModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_CORE, md);
+
+  return true;
+}
+
+/**
+ * core_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool core_cleanup(struct NeoMutt *n)
+{
+  // struct CoreModuleData *md = neomutt_get_module_data(n, MODULE_ID_CORE);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleCore - Module for the Core library
  */
 const struct Module ModuleCore = {
   MODULE_ID_CORE, "core",
-  NULL, // init
+  core_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  core_cleanup,
 };

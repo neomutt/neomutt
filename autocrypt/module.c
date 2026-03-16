@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef AutocryptVars[];
+
+/**
+ * autocrypt_init - Initialise a Module - Implements Module::init()
+ */
+static bool autocrypt_init(struct NeoMutt *n)
+{
+  // struct AutocryptModuleData *md = MUTT_MEM_CALLOC(1, struct AutocryptModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_AUTOCRYPT, md);
+
+  return true;
+}
 
 /**
  * autocrypt_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -49,16 +62,28 @@ static bool autocrypt_config_define_variables(struct NeoMutt *n, struct ConfigSe
 }
 
 /**
+ * autocrypt_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool autocrypt_cleanup(struct NeoMutt *n)
+{
+  // struct AutocryptModuleData *md = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleAutocrypt - Module for the Autocrypt library
  */
 const struct Module ModuleAutocrypt = {
   MODULE_ID_AUTOCRYPT,
   "autocrypt",
-  NULL, // init
+  autocrypt_init,
   NULL, // config_define_types
   autocrypt_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  autocrypt_cleanup,
 };

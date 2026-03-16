@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef MhVars[];
+
+/**
+ * mh_init - Initialise a Module - Implements Module::init()
+ */
+static bool mh_init(struct NeoMutt *n)
+{
+  // struct MhModuleData *md = MUTT_MEM_CALLOC(1, struct MhModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_MH, md);
+
+  return true;
+}
 
 /**
  * mh_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool mh_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 }
 
 /**
+ * mh_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool mh_cleanup(struct NeoMutt *n)
+{
+  // struct MhModuleData *md = neomutt_get_module_data(n, MODULE_ID_MH);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleMh - Module for the Mh library
  */
 const struct Module ModuleMh = {
   MODULE_ID_MH,
   "mh",
-  NULL, // init
+  mh_init,
   NULL, // config_define_types
   mh_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  mh_cleanup,
 };

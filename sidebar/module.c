@@ -29,12 +29,25 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef SidebarVars[];
 
 extern const struct Command SbCommands[];
+
+/**
+ * sidebar_init - Initialise a Module - Implements Module::init()
+ */
+static bool sidebar_init(struct NeoMutt *n)
+{
+  // struct SidebarModuleData *md = MUTT_MEM_CALLOC(1, struct SidebarModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_SIDEBAR, md);
+
+  return true;
+}
 
 /**
  * sidebar_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -53,16 +66,28 @@ static bool sidebar_commands_register(struct NeoMutt *n, struct CommandArray *ca
 }
 
 /**
+ * sidebar_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool sidebar_cleanup(struct NeoMutt *n)
+{
+  // struct SidebarModuleData *md = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleSidebar - Module for the Sidebar library
  */
 const struct Module ModuleSidebar = {
   MODULE_ID_SIDEBAR,
   "sidebar",
-  NULL, // init
+  sidebar_init,
   NULL, // config_define_types
   sidebar_config_define_variables,
   sidebar_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  sidebar_cleanup,
 };

@@ -29,11 +29,24 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef HooksVars[];
 extern const struct Command HooksCommands[];
+
+/**
+ * hooks_init - Initialise a Module - Implements Module::init()
+ */
+static bool hooks_init(struct NeoMutt *n)
+{
+  // struct HooksModuleData *md = MUTT_MEM_CALLOC(1, struct HooksModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_HOOKS, md);
+
+  return true;
+}
 
 /**
  * hooks_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -52,16 +65,28 @@ static bool hooks_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 }
 
 /**
+ * hooks_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool hooks_cleanup(struct NeoMutt *n)
+{
+  // struct HooksModuleData *md = neomutt_get_module_data(n, MODULE_ID_HOOKS);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleHooks - Module for the Hooks library
  */
 const struct Module ModuleHooks = {
   MODULE_ID_HOOKS,
   "hooks",
-  NULL, // init
+  hooks_init,
   NULL, // config_define_types
   hooks_config_define_variables,
   hooks_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  hooks_cleanup,
 };

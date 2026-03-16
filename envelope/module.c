@@ -27,8 +27,34 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
+
+/**
+ * envelope_init - Initialise a Module - Implements Module::init()
+ */
+static bool envelope_init(struct NeoMutt *n)
+{
+  // struct EnvelopeModuleData *md = MUTT_MEM_CALLOC(1, struct EnvelopeModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_ENVELOPE, md);
+
+  return true;
+}
+
+/**
+ * envelope_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool envelope_cleanup(struct NeoMutt *n)
+{
+  // struct EnvelopeModuleData *md = neomutt_get_module_data(n, MODULE_ID_ENVELOPE);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleEnvelope - Module for the Envelope library
@@ -36,11 +62,11 @@
 const struct Module ModuleEnvelope = {
   MODULE_ID_ENVELOPE,
   "envelope",
-  NULL, // init
+  envelope_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  envelope_cleanup,
 };

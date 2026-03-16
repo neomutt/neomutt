@@ -27,8 +27,35 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "store/lib.h"
+#include "module_data.h" // IWYU pragma: keep
+
+/**
+ * store_init - Initialise a Module - Implements Module::init()
+ */
+static bool store_init(struct NeoMutt *n)
+{
+  // struct StoreModuleData *md = MUTT_MEM_CALLOC(1, struct StoreModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_STORE, md);
+
+  return true;
+}
+
+/**
+ * store_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool store_cleanup(struct NeoMutt *n)
+{
+  // struct StoreModuleData *md = neomutt_get_module_data(n, MODULE_ID_STORE);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleStore - Module for the Store library
@@ -36,11 +63,11 @@
 const struct Module ModuleStore = {
   MODULE_ID_STORE,
   "store",
-  NULL, // init
+  store_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  store_cleanup,
 };

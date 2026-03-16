@@ -29,10 +29,23 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
 
 extern struct ConfigDef GuiVars[];
+
+/**
+ * gui_init - Initialise a Module - Implements Module::init()
+ */
+static bool gui_init(struct NeoMutt *n)
+{
+  // struct GuiModuleData *md = MUTT_MEM_CALLOC(1, struct GuiModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_GUI, md);
+
+  return true;
+}
 
 /**
  * gui_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
@@ -43,16 +56,28 @@ static bool gui_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 }
 
 /**
+ * gui_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool gui_cleanup(struct NeoMutt *n)
+{
+  // struct GuiModuleData *md = neomutt_get_module_data(n, MODULE_ID_GUI);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
+
+/**
  * ModuleGui - Module for the Gui library
  */
 const struct Module ModuleGui = {
   MODULE_ID_GUI,
   "gui",
-  NULL, // init
+  gui_init,
   NULL, // config_define_types
   gui_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  gui_cleanup,
 };

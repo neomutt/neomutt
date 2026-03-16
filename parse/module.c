@@ -27,8 +27,34 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "core/lib.h"
+#include "module_data.h"
+
+/**
+ * parse_init - Initialise a Module - Implements Module::init()
+ */
+static bool parse_init(struct NeoMutt *n)
+{
+  // struct ParseModuleData *md = MUTT_MEM_CALLOC(1, struct ParseModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_PARSE, md);
+
+  return true;
+}
+
+/**
+ * parse_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool parse_cleanup(struct NeoMutt *n)
+{
+  // struct ParseModuleData *md = neomutt_get_module_data(n, MODULE_ID_PARSE);
+  // ASSERT(md);
+
+  // FREE(&md);
+  return true;
+}
 
 /**
  * ModuleParse - Module for the Parse library
@@ -36,11 +62,11 @@
 const struct Module ModuleParse = {
   MODULE_ID_PARSE,
   "parse",
-  NULL, // init
+  parse_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  parse_cleanup,
 };
