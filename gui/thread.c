@@ -132,6 +132,13 @@ static bool need_display_subject(struct Email *e)
   struct MuttThread *tmp = NULL;
   struct MuttThread *tree = e->thread;
 
+  if (!tree)
+  {
+    mutt_debug(LL_DEBUG1, "stranded Email with no thread info, stranded Email index=%d\n",
+               e->index);
+    return true;
+  }
+
   /* if the user disabled subject hiding, display it */
   const bool c_hide_thread_subject = cs_subset_bool(NeoMutt->sub, "hide_thread_subject");
   if (!c_hide_thread_subject)
@@ -259,6 +266,11 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
     if (tree->message)
     {
       FREE(&tree->message->tree);
+      if (tree->message->thread != tree)
+      {
+        mutt_debug(LL_DEBUG1, "thread<->message mismatch: Email index=%d, thread=%p, message->thread=%p\n",
+                   tree->message->index, (void *) tree, (void *) tree->message->thread);
+      }
       /* Visible messages propagate subtree_visible up to all ancestors */
       if (is_visible(tree->message))
       {
@@ -381,6 +393,64 @@ void mutt_thread_ctx_free(struct ThreadsContext **ptr)
 }
 
 /**
+ * thread_check_integrity - Verify and repair thread<->message back-pointers
+ * @param tree Root of the thread tree
+ * @retval num  Number of repairs made
+ *
+ * Walk the entire thread tree and ensure that every MuttThread node with a
+ * message has the bidirectional invariant: tree->message->thread == tree.
+ * If broken, repair it in-place and log a debug warning.
+ *
+ * At each sibling level, rewind via prev to the true head before walking
+ * forward via next, so that all nodes are visited even if the parent's child
+ * pointer doesn't reference the first sibling.
+ */
+static int thread_check_integrity(struct MuttThread *tree)
+{
+  if (!tree)
+    return 0;
+
+  /* Rewind to the true head of this sibling level */
+  while (tree->prev)
+    tree = tree->prev;
+
+  int repairs = 0;
+
+  while (true)
+  {
+    if (tree->message && (tree->message->thread != tree))
+    {
+      mutt_debug(LL_DEBUG1, "repairing thread<->message: Email index=%d, expected=%p, actual=%p\n",
+                 tree->message->index, (void *) tree, (void *) tree->message->thread);
+      tree->message->thread = tree;
+      repairs++;
+    }
+
+    if (tree->child)
+    {
+      tree = tree->child;
+      /* Rewind to the true head of this sibling level */
+      while (tree->prev)
+        tree = tree->prev;
+    }
+    else if (tree->next)
+    {
+      tree = tree->next;
+    }
+    else
+    {
+      while (tree && !tree->next)
+        tree = tree->parent;
+      if (!tree)
+        break;
+      tree = tree->next;
+    }
+  }
+
+  return repairs;
+}
+
+/**
  * mutt_draw_tree - Draw a tree of threaded emails
  * @param tctx Threading context
  *
@@ -394,6 +464,9 @@ void mutt_thread_ctx_free(struct ThreadsContext **ptr)
  */
 void mutt_draw_tree(struct ThreadsContext *tctx)
 {
+  if (!tctx || !tctx->tree)
+    return;
+
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
   const bool reverse = (mutt_thread_style() == UT_REVERSE);
   enum TreeChar corner = reverse ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
@@ -403,6 +476,9 @@ void mutt_draw_tree(struct ThreadsContext *tctx)
   struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL;
 
   struct MuttThread *tree = tctx->tree;
+
+  /* Verify and repair thread<->message back-pointers before traversal */
+  thread_check_integrity(tree);
 
   /* Do the visibility calculations and free the old thread chars.
    * From now on we can simply ignore invisible subtrees */
