@@ -61,8 +61,7 @@ static bool core_cleanup(struct NeoMutt *n)
  * ModuleCore - Module for the Core library
  */
 const struct Module ModuleCore = {
-  MODULE_ID_CORE, "core",
-  core_init,
+  MODULE_ID_CORE, "core", core_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register

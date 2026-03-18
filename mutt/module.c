@@ -61,8 +61,7 @@ static bool mutt_cleanup(struct NeoMutt *n)
  * ModuleMutt - Module for the Mutt library
  */
 const struct Module ModuleMutt = {
-  MODULE_ID_MUTT, "mutt",
-  mutt_init,
+  MODULE_ID_MUTT, "mutt", mutt_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register

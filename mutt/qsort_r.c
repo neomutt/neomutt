@@ -27,7 +27,6 @@
  * Context-free sorting function
  */
 
-
 #ifdef __sun
 /* According to qsort(3C) Solaris needs this definition to access qsort_s */
 #define __STDC_WANT_LIB_EXT1__ 1

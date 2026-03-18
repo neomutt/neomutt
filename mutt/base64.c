@@ -98,8 +98,8 @@ const int Index64[128] = {
  * NUL-byte is returned (equivalent to calling strlen() on the output buffer
  * after this function returns).
  */
-static size_t b64_encode_common(const char *in, size_t inlen, char *out, size_t outlen,
-                         const char *alpha)
+static size_t b64_encode_common(const char *in, size_t inlen, char *out,
+                                size_t outlen, const char *alpha)
 {
   if (!in || !out)
     return 0;
