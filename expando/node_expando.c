@@ -393,7 +393,26 @@ struct ExpandoNode *node_expando_parse_name(const char *str,
 
   struct ExpandoNode *node = parse_long_name(str, defs, flags, fmt, parsed_until, err);
   if (!node)
+  {
+    if (!err->position)
+    {
+      const char *end = str + strspn(str, "abcdefghijklmnopqrstuvwxyz0123456789-");
+
+      err->position = str;
+      if (*end != '}')
+      {
+        snprintf(err->message, sizeof(err->message),
+                 _("Expando is missing closing '}'"));
+      }
+      else
+      {
+        // L10N: e.g. "Unknown expando: %{bad}"
+        snprintf(err->message, sizeof(err->message), _("Unknown expando: %%{%.*s}"),
+                 (int) (end - str), str);
+      }
+    }
     goto fail;
+  }
 
   fmt = NULL; // owned by the node, now
 
