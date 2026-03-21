@@ -291,7 +291,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
       {
         struct FileCompletionData *fcd = cdata;
         struct MuttWindow *win = fcd->win;
-        if (win && win->wdata)
+        if (win && (win->type == WT_MENU) && win->wdata)
         {
           struct Menu *menu = win->wdata;
           mtype = menu->md->id;
