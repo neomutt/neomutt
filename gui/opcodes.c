@@ -71,11 +71,11 @@ const char *opcodes_get_description(int op)
     return "[UNKNOWN]";
 
   if (op == OP_ABORT)
-    return "abort the current action";
+    return "Abort the current action";
   if (op == OP_TIMEOUT)
-    return "timeout occurred";
+    return "Timeout occurred";
   if (op == OP_REPAINT)
-    return "repaint required";
+    return "Repaint required";
 
   return OpStrings[op][1];
 }

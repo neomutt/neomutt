@@ -3278,26 +3278,26 @@ msgstr "Znak = %s, Osmičkově = %o, Desítkově = %d\n"
 #. L10N: Help screen description for OP_ATTACH_ATTACH_FILE
 #. Compose Dialog: <op_attach_attach_file>
 #: gui/opcodes.h:42
-msgid "attach files to this message"
-msgstr "připojit soubory k této zprávě"
+msgid "Attach files to this message"
+msgstr "Připojit soubory k této zprávě"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:45
-msgid "attach messages to this message"
-msgstr "připojit zprávy k této zprávě"
+msgid "Attach messages to this message"
+msgstr "Připojit zprávy k této zprávě"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:48
-msgid "attach news articles to this message"
-msgstr "připojit články k této zprávě"
+msgid "Attach news articles to this message"
+msgstr "Připojit články k této zprávě"
 
 #. L10N: Help screen description for OP_ATTACH_COLLAPSE
 #. Attach Dialog: <op_attach_collapse>
 #: gui/opcodes.h:51
-msgid "toggle display of subparts"
-msgstr "přepnout zobrazování podčástí"
+msgid "Toggle display of subparts"
+msgstr "Přepnout zobrazování podčástí"
 
 #. L10N: Help screen description for OP_ATTACH_DELETE
 #. Attach Dialog: <op_attach_delete>
@@ -3308,94 +3308,94 @@ msgstr "přepnout zobrazování podčástí"
 #. Index: <op_delete>
 #. Postponed Dialog: <op_delete>
 #: gui/opcodes.h:54 gui/opcodes.h:57 gui/opcodes.h:279
-msgid "delete the current entry"
-msgstr "smazat aktuální položku"
+msgid "Delete the current entry"
+msgstr "Smazat aktuální položku"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attach_edit_content_id>
 #: gui/opcodes.h:60
-msgid "edit the 'Content-ID' of the attachment"
-msgstr "editovat „Content-ID“ přílohy"
+msgid "Edit the 'Content-ID' of the attachment"
+msgstr "Editovat „Content-ID“ přílohy"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attach_edit_description>
 #: gui/opcodes.h:63
-msgid "edit attachment description"
-msgstr "editovat popis přílohy"
+msgid "Edit attachment description"
+msgstr "Editovat popis přílohy"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_ENCODING
 #. Compose Dialog: <op_attach_edit_encoding>
 #: gui/opcodes.h:66
-msgid "edit attachment transfer-encoding"
-msgstr "editovat položku „transfer-encoding“ přílohy"
+msgid "Edit attachment transfer-encoding"
+msgstr "Editovat položku „transfer-encoding“ přílohy"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_LANGUAGE
 #. Compose Dialog: <op_attach_edit_language>
 #: gui/opcodes.h:69
-msgid "edit the 'Content-Language' of the attachment"
-msgstr "editovat „Content-Language“ u souboru, který bude připojen"
+msgid "Edit the 'Content-Language' of the attachment"
+msgstr "Editovat „Content-Language“ u souboru, který bude připojen"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_MIME
 #. Compose Dialog: <op_attach_edit_mime>
 #: gui/opcodes.h:72
-msgid "edit attachment using mailcap entry"
-msgstr "editovat přílohu za použití položky mailcap"
+msgid "Edit attachment using mailcap entry"
+msgstr "Editovat přílohu za použití položky mailcap"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_TYPE
 #. Attach Dialog: <op_attach_edit_type>
 #. Compose Dialog: <op_attach_edit_type>
 #. Index: <op_attach_edit_type>
 #: gui/opcodes.h:77
-msgid "edit attachment content type"
-msgstr "editovat typ přílohy"
+msgid "Edit attachment content type"
+msgstr "Editovat typ přílohy"
 
 #. L10N: Help screen description for OP_ATTACH_FILTER
 #. Compose Dialog: <op_attach_filter>
 #: gui/opcodes.h:80
-msgid "filter attachment through a shell command"
-msgstr "filtrovat přílohu příkazem shellu"
+msgid "Filter attachment through a shell command"
+msgstr "Filtrovat přílohu příkazem shellu"
 
 #. L10N: Help screen description for OP_ATTACH_GET_ATTACHMENT
 #. Compose Dialog: <op_attach_get_attachment>
 #: gui/opcodes.h:83
-msgid "get a temporary copy of an attachment"
-msgstr "pracovat s dočasnou kopií přílohy"
+msgid "Get a temporary copy of an attachment"
+msgstr "Pracovat s dočasnou kopií přílohy"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_ALTS
 #. Compose Dialog: <op_attach_group_alts>
 #: gui/opcodes.h:86
-msgid "group tagged attachments as 'multipart/alternative'"
-msgstr "seskupit označené přílohy jako alternativy, „multipart/alternative“"
+msgid "Group tagged attachments as 'multipart/alternative'"
+msgstr "Seskupit označené přílohy jako alternativy, „multipart/alternative“"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL
 #. Compose Dialog: <op_attach_group_lingual>
 #: gui/opcodes.h:89
-msgid "group tagged attachments as 'multipart/multilingual'"
-msgstr "seskupit označené přílohy jako vícejazyčné, „multipart/multilingual“"
+msgid "Group tagged attachments as 'multipart/multilingual'"
+msgstr "Seskupit označené přílohy jako vícejazyčné, „multipart/multilingual“"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_RELATED
 #. Compose Dialog: <op_attach_group_related>
 #: gui/opcodes.h:92
-msgid "group tagged attachments as 'multipart/related'"
-msgstr "seskupit označené přílohy jako „multipart/related“"
+msgid "Group tagged attachments as 'multipart/related'"
+msgstr "Seskupit označené přílohy jako „multipart/related“"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_DOWN
 #. Compose Dialog: <op_attach_move_down>
 #: gui/opcodes.h:95
-msgid "move an attachment down in the attachment list"
-msgstr "posunout přílohu v seznamu dolů"
+msgid "Move an attachment down in the attachment list"
+msgstr "Posunout přílohu v seznamu dolů"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_UP
 #. Compose Dialog: <op_attach_move_up>
 #: gui/opcodes.h:98
-msgid "move an attachment up in the attachment list"
-msgstr "posunout přílohu v seznamu nahoru"
+msgid "Move an attachment up in the attachment list"
+msgstr "Posunout přílohu v seznamu nahoru"
 
 #. L10N: Help screen description for OP_ATTACH_NEW_MIME
 #. Compose Dialog: <op_attach_new_mime>
 #: gui/opcodes.h:101
-msgid "compose new attachment using mailcap entry"
-msgstr "sestavit novou přílohu dle položky mailcapu"
+msgid "Compose new attachment using mailcap entry"
+msgstr "Sestavit novou přílohu dle položky mailcapu"
 
 #. L10N: Help screen description for OP_ATTACH_PIPE
 #. L10N: Help screen description for OP_PIPE
@@ -3403,8 +3403,8 @@ msgstr "sestavit novou přílohu dle položky mailcapu"
 #. Attach Dialog: <op_attach_pipe>
 #. Index: <op_pipe>
 #: gui/opcodes.h:103 gui/opcodes.h:681
-msgid "pipe message/attachment to a shell command"
-msgstr "poslat zprávu/přílohu rourou do příkazu shellu"
+msgid "Pipe message/attachment to a shell command"
+msgstr "Poslat zprávu/přílohu rourou do příkazu shellu"
 
 #. L10N: Help screen description for OP_ATTACH_PRINT
 #. Attach Dialog: <op_attach_print>
@@ -3412,14 +3412,14 @@ msgstr "poslat zprávu/přílohu rourou do příkazu shellu"
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
 #: gui/opcodes.h:107 gui/opcodes.h:699
-msgid "print the current entry"
-msgstr "vytisknout aktuální položku"
+msgid "Print the current entry"
+msgstr "Vytisknout aktuální položku"
 
 #. L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT
 #. Compose Dialog: <op_attach_rename_attachment>
 #: gui/opcodes.h:110
-msgid "send attachment with a different name"
-msgstr "poslat přílohu pod jiným názvem"
+msgid "Send attachment with a different name"
+msgstr "Poslat přílohu pod jiným názvem"
 
 #. L10N: Help screen description for OP_ATTACH_SAVE
 #. Attach Dialog: <op_attach_save>
@@ -3428,26 +3428,26 @@ msgstr "poslat přílohu pod jiným názvem"
 #. Index: <op_save>
 #. Pager: <op_save>
 #: gui/opcodes.h:114 gui/opcodes.h:742
-msgid "save message/attachment to a mailbox/file"
-msgstr "uložit zprávu/přílohu do schránky/souboru"
+msgid "Save message/attachment to a mailbox/file"
+msgstr "Uložit zprávu/přílohu do schránky/souboru"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attach_toggle_disposition>
 #: gui/opcodes.h:117
-msgid "toggle disposition between inline/attachment"
-msgstr "přepnout metodu přiložení mezi vložením a přílohou"
+msgid "Toggle disposition between inline/attachment"
+msgstr "Přepnout metodu přiložení mezi vložením a přílohou"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE
 #. Compose Dialog: <op_attach_toggle_recode>
 #: gui/opcodes.h:120
-msgid "toggle recoding of this attachment"
-msgstr "přepnout automatické ukládání této přílohy"
+msgid "Toggle recoding of this attachment"
+msgstr "Přepnout automatické ukládání této přílohy"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK
 #. Compose Dialog: <op_attach_toggle_unlink>
 #: gui/opcodes.h:123
-msgid "toggle whether to delete file after sending it"
-msgstr "přepnout, zda má být soubor po odeslání smazán"
+msgid "Toggle whether to delete file after sending it"
+msgstr "Přepnout, zda má být soubor po odeslání smazán"
 
 #. L10N: Help screen description for OP_ATTACH_UNDELETE
 #. Attach Dialog: <op_attach_undelete>
@@ -3456,504 +3456,504 @@ msgstr "přepnout, zda má být soubor po odeslání smazán"
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
 #: gui/opcodes.h:126 gui/opcodes.h:828
-msgid "undelete the current entry"
-msgstr "obnovit aktuální položku"
+msgid "Undelete the current entry"
+msgstr "Obnovit aktuální položku"
 
 #. L10N: Help screen description for OP_ATTACH_UNGROUP
 #. Compose Dialog: <op_attach_ungroup>
 #: gui/opcodes.h:129
-msgid "ungroup 'multipart' attachment"
-msgstr "rozdělit skupinu „příloh více částí“"
+msgid "Ungroup 'multipart' attachment"
+msgstr "Rozdělit skupinu „příloh více částí“"
 
 #. L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING
 #. Compose Dialog: <op_attach_update_encoding>
 #: gui/opcodes.h:132
-msgid "update an attachment's encoding info"
-msgstr "upravit informaci o kódování přílohy"
+msgid "Update an attachment's encoding info"
+msgstr "Upravit informaci o kódování přílohy"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:136
-msgid "view attachment using mailcap entry if necessary"
-msgstr "pokud je to nezbytné, zobrazit přílohy pomocí mailcapu"
+msgid "View attachment using mailcap entry if necessary"
+msgstr "Pokud je to nezbytné, zobrazit přílohy pomocí mailcapu"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP
 #. Attach Dialog: <op_attach_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:140
-msgid "force viewing of attachment using mailcap"
-msgstr "pro zobrazení příloh vynuceně použít mailcap"
+msgid "Force viewing of attachment using mailcap"
+msgstr "Pro zobrazení příloh vynuceně použít mailcap"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_PAGER
 #. Attach Dialog: <op_attach_view_pager>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:144
-msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "zobrazit přílohu v pageru pomocí copiousoutput mailcapu"
+msgid "View attachment in pager using copiousoutput mailcap"
+msgstr "Zobrazit přílohu v pageru pomocí copiousoutput mailcapu"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_TEXT
 #. Attach Dialog: <op_attach_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:148
-msgid "view attachment as text"
-msgstr "zobrazit přílohu jako text"
+msgid "View attachment as text"
+msgstr "Zobrazit přílohu jako text"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:151
-msgid "show the next page of the message"
-msgstr "zobrazit další stránku zprávy"
+msgid "Show the next page of the message"
+msgstr "Zobrazit další stránku zprávy"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:154
-msgid "show the previous page of the message"
-msgstr "zobrazit předchozí stránku zprávy"
+msgid "Show the previous page of the message"
+msgstr "Zobrazit předchozí stránku zprávy"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
 #: gui/opcodes.h:160
-msgid "manage autocrypt accounts"
-msgstr "spravovat autocrypt účty"
+msgid "Manage autocrypt accounts"
+msgstr "Spravovat autocrypt účty"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_create_acct>
 #: gui/opcodes.h:163
-msgid "create a new autocrypt account"
-msgstr "vytvořit nový autocrypt účet"
+msgid "Create a new autocrypt account"
+msgstr "Vytvořit nový autocrypt účet"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
 #: gui/opcodes.h:166
-msgid "delete the current account"
-msgstr "smazat aktuální účet"
+msgid "Delete the current account"
+msgstr "Smazat aktuální účet"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
 #: gui/opcodes.h:169
-msgid "toggle the current account active/inactive"
-msgstr "přepnout stávající účet mezi aktivní/neaktivní"
+msgid "Toggle the current account active/inactive"
+msgstr "Přepnout stávající účet mezi aktivní/neaktivní"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
 #: gui/opcodes.h:172
-msgid "toggle the current account prefer-encrypt flag"
-msgstr "přepnout příznak „preferovat šifrovaní“ (prefer-encrypt)"
+msgid "Toggle the current account prefer-encrypt flag"
+msgstr "Přepnout příznak „preferovat šifrovaní“ (prefer-encrypt)"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
 #: gui/opcodes.h:175
-msgid "show autocrypt compose menu options"
-msgstr "zobrazit možnosti autocrypt při psaní zprávy"
+msgid "Show autocrypt compose menu options"
+msgstr "Zobrazit možnosti autocrypt při psaní zprávy"
 
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
 #: gui/opcodes.h:183
-msgid "open the aliases dialog"
-msgstr "otevřít dialog s přezdívkami"
+msgid "Open the aliases dialog"
+msgstr "Otevřít dialog s přezdívkami"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:186
-msgid "move to the bottom of the page"
-msgstr "přeskočit na konec stránky"
+msgid "Move to the bottom of the page"
+msgstr "Přeskočit na konec stránky"
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
 #: gui/opcodes.h:190
-msgid "remail a message to another user"
-msgstr "zaslat kopii zprávy jinému uživateli"
+msgid "Remail a message to another user"
+msgstr "Zaslat kopii zprávy jinému uživateli"
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:193
-msgid "swap the current folder position with $folder if it exists"
-msgstr "prohodit pozici současné složky s $folder, pokud existuje"
+msgid "Swap the current folder position with $folder if it exists"
+msgstr "Prohodit pozici současné složky s $folder, pokud existuje"
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
 #: gui/opcodes.h:196
-msgid "select a new file in this directory"
-msgstr "zvolit jiný soubor v tomto adresáři"
+msgid "Select a new file in this directory"
+msgstr "Zvolit jiný soubor v tomto adresáři"
 
 #. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:199
-msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "přihlásit aktuální schránku (pouze IMAP/NNTP)"
+msgid "Subscribe to current mbox (IMAP/NNTP only)"
+msgstr "Přihlásit aktuální schránku (pouze IMAP/NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
 #: gui/opcodes.h:202
-msgid "display the currently selected file's name"
-msgstr "zobrazit jméno zvoleného souboru"
+msgid "Display the currently selected file's name"
+msgstr "Zobrazit jméno zvoleného souboru"
 
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
 #: gui/opcodes.h:205
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "přepnout zobrazení všech/přihlášených schránek (IMAP)"
+msgid "Toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "Přepnout zobrazení všech/přihlášených schránek (IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:208
-msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "odhlásit aktuální schránku (pouze IMAP/NNTP)"
+msgid "Unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "Odhlásit aktuální schránku (pouze IMAP/NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
 #: gui/opcodes.h:211
-msgid "view file"
-msgstr "zobrazit soubor"
+msgid "View file"
+msgstr "Zobrazit soubor"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
 #: gui/opcodes.h:215
-msgid "mark all articles in newsgroup as read"
-msgstr "označit všechny články ve skupině jako přečtené"
+msgid "Mark all articles in newsgroup as read"
+msgstr "Označit všechny články ve skupině jako přečtené"
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:218
-msgid "change directories"
-msgstr "změnit adresáře"
+msgid "Change directories"
+msgstr "Změnit adresáře"
 
 #. L10N: Help screen description for OP_CHECK_NEW
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:221
-msgid "check mailboxes for new mail"
-msgstr "zjistit zda schránky obsahují novou poštu"
+msgid "Check mailboxes for new mail"
+msgstr "Zjistit zda schránky obsahují novou poštu"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
 #: gui/opcodes.h:224
-msgid "calculate message statistics for all mailboxes"
-msgstr "spočítat statistiky zpráv ve všech schránkách"
+msgid "Calculate message statistics for all mailboxes"
+msgstr "Spočítat statistiky zpráv ve všech schránkách"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
 #: gui/opcodes.h:227
-msgid "edit the file to be attached"
-msgstr "editovat soubor, který bude připojen"
+msgid "Edit the file to be attached"
+msgstr "Editovat soubor, který bude připojen"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
 #: gui/opcodes.h:230
-msgid "edit the message"
-msgstr "editovat zprávu"
+msgid "Edit the message"
+msgstr "Editovat zprávu"
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
 #: gui/opcodes.h:233
-msgid "run ispell on the message"
-msgstr "zkontrolovat pravopis zprávy programem ispell"
+msgid "Run ispell on the message"
+msgstr "Zkontrolovat pravopis zprávy programem ispell"
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
 #: gui/opcodes.h:236
-msgid "save this message to send later"
-msgstr "odložit zprávu pro pozdější použití"
+msgid "Save this message to send later"
+msgstr "Odložit zprávu pro pozdější použití"
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
 #: gui/opcodes.h:239
-msgid "rename/move an attached file"
-msgstr "přejmenovat/přesunout přiložený soubor"
+msgid "Rename/move an attached file"
+msgstr "Přejmenovat/přesunout přiložený soubor"
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
 #: gui/opcodes.h:242
-msgid "send the message"
-msgstr "odeslat zprávu"
+msgid "Send the message"
+msgstr "Odeslat zprávu"
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
 #: gui/opcodes.h:246
-msgid "compose new message to the current message sender"
-msgstr "sepsat novou zprávu pro odesílatele"
+msgid "Compose new message to the current message sender"
+msgstr "Sepsat novou zprávu pro odesílatele"
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
 #: gui/opcodes.h:249
-msgid "write the message to a folder"
-msgstr "uložit zprávu do složky"
+msgid "Write the message to a folder"
+msgstr "Uložit zprávu do složky"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
 #: gui/opcodes.h:252
-msgid "copy a message to a file/mailbox"
-msgstr "uložit kopii zprávy do souboru/schránky"
+msgid "Copy a message to a file/mailbox"
+msgstr "Uložit kopii zprávy do souboru/schránky"
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
 #. Index: <op_create_alias>
 #: gui/opcodes.h:256
-msgid "create an alias from a message sender"
-msgstr "vytvořit přezdívku z odesílatele zprávy"
+msgid "Create an alias from a message sender"
+msgstr "Vytvořit přezdívku z odesílatele zprávy"
 
 #. L10N: Help screen description for OP_CREATE_MAILBOX
 #. Browser: <op_create_mailbox>
 #: gui/opcodes.h:259
-msgid "create a new mailbox (IMAP only)"
-msgstr "vytvořit novou schránku (pouze IMAP)"
+msgid "Create a new mailbox (IMAP only)"
+msgstr "Vytvořit novou schránku (pouze IMAP)"
 
 #. L10N: Help screen description for OP_CURRENT_BOTTOM
 #. Menu: <menu_movement>
 #: gui/opcodes.h:262
-msgid "move entry to bottom of screen"
-msgstr "přesunout položku na konec obrazovky"
+msgid "Move entry to bottom of screen"
+msgstr "Přesunout položku na konec obrazovky"
 
 #. L10N: Help screen description for OP_CURRENT_MIDDLE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:265
-msgid "move entry to middle of screen"
-msgstr "přesunout položku do středu obrazovky"
+msgid "Move entry to middle of screen"
+msgstr "Přesunout položku do středu obrazovky"
 
 #. L10N: Help screen description for OP_CURRENT_TOP
 #. Menu: <menu_movement>
 #: gui/opcodes.h:268
-msgid "move entry to top of screen"
-msgstr "přesunout položku na začátek obrazovky"
+msgid "Move entry to top of screen"
+msgstr "Přesunout položku na začátek obrazovky"
 
 #. L10N: Help screen description for OP_DECODE_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:271
-msgid "make decoded (text/plain) copy"
-msgstr "vytvořit kopii ve formátu „text/plain“"
+msgid "Make decoded (text/plain) copy"
+msgstr "Vytvořit kopii ve formátu „text/plain“"
 
 #. L10N: Help screen description for OP_DECODE_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:274
-msgid "make decoded copy (text/plain) and delete"
-msgstr "vytvořit kopii ve formátu „text/plain“ a smazat"
+msgid "Make decoded copy (text/plain) and delete"
+msgstr "Vytvořit kopii ve formátu „text/plain“ a smazat"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
 #: gui/opcodes.h:282
-msgid "delete the current mailbox (IMAP only)"
-msgstr "smazat aktuální schránku (pouze IMAP)"
+msgid "Delete the current mailbox (IMAP only)"
+msgstr "Smazat aktuální schránku (pouze IMAP)"
 
 #. L10N: Help screen description for OP_DELETE_SUBTHREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:285
-msgid "delete all messages in subthread"
-msgstr "smazat všechny zprávy v podvláknu"
+msgid "Delete all messages in subthread"
+msgstr "Smazat všechny zprávy v podvláknu"
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:288
-msgid "delete all messages in thread"
-msgstr "smazat všechny zprávy ve vláknu"
+msgid "Delete all messages in thread"
+msgstr "Smazat všechny zprávy ve vláknu"
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
 #: gui/opcodes.h:291
-msgid "descend into a directory"
-msgstr "vstoupit do adresáře"
+msgid "Descend into a directory"
+msgstr "Vstoupit do adresáře"
 
 #. L10N: Help screen description for OP_DISPLAY_ADDRESS
 #. Index: <op_display_address>
 #: gui/opcodes.h:294
-msgid "display full address of sender"
-msgstr "zobrazit úplnou adresu odesílatele"
+msgid "Display full address of sender"
+msgstr "Zobrazit úplnou adresu odesílatele"
 
 #. L10N: Help screen description for OP_DISPLAY_HEADERS
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
 #: gui/opcodes.h:299
-msgid "display message and toggle header weeding"
-msgstr "zobrazit zprávu a přepnout odstraňování hlaviček"
+msgid "Display message and toggle header weeding"
+msgstr "Zobrazit zprávu a přepnout odstraňování hlaviček"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
 #: gui/opcodes.h:302
-msgid "display a message"
-msgstr "zobrazit zprávu"
+msgid "Display a message"
+msgstr "Zobrazit zprávu"
 
 #. L10N: Help screen description for OP_EDITOR_BACKSPACE
 #. Text Entry: <op_editor_backspace>
 #: gui/opcodes.h:305
-msgid "delete the char in front of the cursor"
-msgstr "smazat znak před kurzorem"
+msgid "Delete the char in front of the cursor"
+msgstr "Smazat znak před kurzorem"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
 #: gui/opcodes.h:308
-msgid "move the cursor one character to the left"
-msgstr "posunout kurzor o jeden znak vlevo"
+msgid "Move the cursor one character to the left"
+msgstr "Posunout kurzor o jeden znak vlevo"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
 #: gui/opcodes.h:311
-msgid "move the cursor to the beginning of the word"
-msgstr "posunout kurzor na začátek slova"
+msgid "Move the cursor to the beginning of the word"
+msgstr "Posunout kurzor na začátek slova"
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
 #: gui/opcodes.h:314
-msgid "jump to the beginning of the line"
-msgstr "přeskočit na začátek řádku"
+msgid "Jump to the beginning of the line"
+msgstr "Přeskočit na začátek řádku"
 
 #. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:317
-msgid "capitalize the word"
-msgstr "převést všechna písmena slova na velká"
+msgid "Capitalize the word"
+msgstr "Převést všechna písmena slova na velká"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:320
-msgid "complete filename or alias"
-msgstr "doplnit jméno souboru nebo přezdívku"
+msgid "Complete filename or alias"
+msgstr "Doplnit jméno souboru nebo přezdívku"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:323
-msgid "complete address with query"
-msgstr "doplnit adresu výsledkem dotazu"
+msgid "Complete address with query"
+msgstr "Doplnit adresu výsledkem dotazu"
 
 #. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
 #. Text Entry: <op_editor_delete_char>
 #: gui/opcodes.h:326
-msgid "delete the char under the cursor"
-msgstr "smazat znak pod kurzorem"
+msgid "Delete the char under the cursor"
+msgstr "Smazat znak pod kurzorem"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:329
-msgid "convert the word to lower case"
-msgstr "převést všechna písmena slova na malá"
+msgid "Convert the word to lower case"
+msgstr "Převést všechna písmena slova na malá"
 
 #. L10N: Help screen description for OP_EDITOR_EOL
 #. Text Entry: <op_editor_eol>
 #: gui/opcodes.h:332
-msgid "jump to the end of the line"
-msgstr "přeskočit na konec řádku"
+msgid "Jump to the end of the line"
+msgstr "Přeskočit na konec řádku"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
 #. Text Entry: <op_editor_forward_char>
 #: gui/opcodes.h:335
-msgid "move the cursor one character to the right"
-msgstr "posunout kurzor o jeden znak vpravo"
+msgid "Move the cursor one character to the right"
+msgstr "Posunout kurzor o jeden znak vpravo"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
 #: gui/opcodes.h:338
-msgid "move the cursor to the end of the word"
-msgstr "posunout kurzor na konec slova"
+msgid "Move the cursor to the end of the word"
+msgstr "Posunout kurzor na konec slova"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
 #: gui/opcodes.h:341
-msgid "scroll down through the history list"
-msgstr "rolovat dolů seznamem provedených příkazů"
+msgid "Scroll down through the history list"
+msgstr "Rolovat dolů seznamem provedených příkazů"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
 #: gui/opcodes.h:344
-msgid "search through the history list"
-msgstr "hledat v seznamu provedených příkazů"
+msgid "Search through the history list"
+msgstr "Hledat v seznamu provedených příkazů"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_UP
 #. Text Entry: <op_editor_history_up>
 #: gui/opcodes.h:347
-msgid "scroll up through the history list"
-msgstr "rolovat nahoru seznamem provedených příkazů"
+msgid "Scroll up through the history list"
+msgstr "Rolovat nahoru seznamem provedených příkazů"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOL
 #. Text Entry: <op_editor_kill_eol>
 #: gui/opcodes.h:350
-msgid "delete chars from cursor to end of line"
-msgstr "smazat znaky od kurzoru do konce řádku"
+msgid "Delete chars from cursor to end of line"
+msgstr "Smazat znaky od kurzoru do konce řádku"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
 #: gui/opcodes.h:353
-msgid "delete chars from the cursor to the end of the word"
-msgstr "smazat znaky od kurzoru do konce slova"
+msgid "Delete chars from the cursor to the end of the word"
+msgstr "Smazat znaky od kurzoru do konce slova"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
 #: gui/opcodes.h:356
-msgid "delete chars from cursor to beginning the line"
-msgstr "smazat znaky od kurzoru do začátku řádku"
+msgid "Delete chars from cursor to beginning the line"
+msgstr "Smazat znaky od kurzoru do začátku řádku"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
 #: gui/opcodes.h:359
-msgid "delete all chars on the line"
-msgstr "smazat všechny znaky na řádku"
+msgid "Delete all chars on the line"
+msgstr "Smazat všechny znaky na řádku"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
 #: gui/opcodes.h:362
-msgid "delete the word in front of the cursor"
-msgstr "smazat slovo před kurzorem"
+msgid "Delete the word in front of the cursor"
+msgstr "Smazat slovo před kurzorem"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:365
-msgid "cycle among incoming mailboxes"
-msgstr "procházet schránkami, přijímajícími novou poštu"
+msgid "Cycle among incoming mailboxes"
+msgstr "Procházet schránkami, přijímajícími novou poštu"
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
 #: gui/opcodes.h:368
-msgid "quote the next typed key"
-msgstr "příští napsaný znak uzavřít do uvozovek"
+msgid "Quote the next typed key"
+msgstr "Příští napsaný znak uzavřít do uvozovek"
 
 #. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
 #. Text Entry: <op_editor_transpose_chars>
 #: gui/opcodes.h:371
-msgid "transpose character under cursor with previous"
-msgstr "přehodit znak pod kurzorem s předchozím"
+msgid "Transpose character under cursor with previous"
+msgstr "Přehodit znak pod kurzorem s předchozím"
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:374
-msgid "convert the word to upper case"
-msgstr "převést všechna písmena slova na velká"
+msgid "Convert the word to upper case"
+msgstr "Převést všechna písmena slova na velká"
 
 #. L10N: Help screen description for OP_EDIT_LABEL
 #. Index: <op_edit_label>
 #: gui/opcodes.h:377
-msgid "add, change, or delete a message's label"
-msgstr "přidat, změnit nebo smazat štítek zprávy"
+msgid "Add, change, or delete a message's label"
+msgstr "Přidat, změnit nebo smazat štítek zprávy"
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:380
-msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr "upravit celou zprávu pokud není schránka v režimu pouze pro čtení, jinak pouze zobrazit"
+msgid "Edit the raw message if the mailbox is not read-only, otherwise view it"
+msgstr "Upravit celou zprávu pokud není schránka v režimu pouze pro čtení, jinak pouze zobrazit"
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:383
-msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr "upravit celou zprávu (edit a edit-raw-message se chovají stejně)"
+msgid "Edit the raw message (edit and edit-raw-message are synonyms)"
+msgstr "Upravit celou zprávu (edit a edit-raw-message se chovají stejně)"
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
 #: gui/opcodes.h:386
-msgid "end of conditional execution (noop)"
-msgstr "konec podmíněného spuštění (noop)"
+msgid "End of conditional execution (noop)"
+msgstr "Konec podmíněného spuštění (noop)"
 
 #. L10N: Help screen description for OP_ENTER_COMMAND
 #. Global: <op_enter_command>
 #: gui/opcodes.h:389
-msgid "enter a neomuttrc command"
-msgstr "zadat neomuttrc příkaz"
+msgid "Enter a neomuttrc command"
+msgstr "Zadat neomuttrc příkaz"
 
 #. L10N: Help screen description for OP_ENTER_MASK
 #. Browser: <op_enter_mask>
 #: gui/opcodes.h:392
-msgid "enter a file mask"
-msgstr "změnit souborovou masku"
+msgid "Enter a file mask"
+msgstr "Změnit souborovou masku"
 
 #. L10N: Help screen description for OP_EXIT
 #. Alias Dialog: <op_exit>
@@ -3968,41 +3968,41 @@ msgstr "změnit souborovou masku"
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
 #: gui/opcodes.h:405
-msgid "exit this menu"
-msgstr "odejít z tohoto menu"
+msgid "Exit this menu"
+msgstr "Odejít z tohoto menu"
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:408
-msgid "move to the first entry"
-msgstr "přeskočit na první položku"
+msgid "Move to the first entry"
+msgstr "Přeskočit na první položku"
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
 #: gui/opcodes.h:411
-msgid "toggle a message's 'important' flag"
-msgstr "přepnout zprávě příznak důležitosti"
+msgid "Toggle a message's 'important' flag"
+msgstr "Přepnout zprávě příznak důležitosti"
 
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
 #: gui/opcodes.h:415
-msgid "followup to newsgroup"
-msgstr "odepsat do diskusní skupiny"
+msgid "Followup to newsgroup"
+msgstr "Odepsat do diskusní skupiny"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
 #: gui/opcodes.h:419
-msgid "forward a message with comments"
-msgstr "přeposlat zprávu jinému uživateli s komentářem"
+msgid "Forward a message with comments"
+msgstr "Přeposlat zprávu jinému uživateli s komentářem"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
 #: gui/opcodes.h:423
-msgid "forward to newsgroup"
-msgstr "přeposlat do diskusní skupiny"
+msgid "Forward to newsgroup"
+msgstr "Přeposlat do diskusní skupiny"
 
 #. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
 #. Alias Dialog: <op_generic_select_entry>
@@ -4014,68 +4014,68 @@ msgstr "přeposlat do diskusní skupiny"
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
 #: gui/opcodes.h:433
-msgid "select the current entry"
-msgstr "zvolit aktuální položku"
+msgid "Select the current entry"
+msgstr "Zvolit aktuální položku"
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
 #: gui/opcodes.h:436
-msgid "get all children of the current message"
-msgstr "získat všechny podřazené zprávy"
+msgid "Get all children of the current message"
+msgstr "Získat všechny podřazené zprávy"
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
-msgid "get message with Message-Id"
-msgstr "získat zprávu s Message-Id"
+msgid "Get message with Message-Id"
+msgstr "Získat zprávu s Message-Id"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
 #: gui/opcodes.h:442
-msgid "get parent of the current message"
-msgstr "získat nadřazenou zprávu"
+msgid "Get parent of the current message"
+msgstr "Získat nadřazenou zprávu"
 
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:445
-msgid "go to parent directory"
-msgstr "jít do nadřazeného adresáře"
+msgid "Go to parent directory"
+msgstr "Jít do nadřazeného adresáře"
 
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:449
-msgid "reply to all recipients preserving To/Cc"
-msgstr "odepsat všem příjemcům se zachováním Komu/Kopie"
+msgid "Reply to all recipients preserving To/Cc"
+msgstr "Odepsat všem příjemcům se zachováním Komu/Kopie"
 
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:453
-msgid "reply to all recipients"
-msgstr "odepsat všem příjemcům"
+msgid "Reply to all recipients"
+msgstr "Odepsat všem příjemcům"
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
 #: gui/opcodes.h:457
-msgid "scroll down 1/2 page"
-msgstr "rolovat dolů o 1/2 stránky"
+msgid "Scroll down 1/2 page"
+msgstr "Rolovat dolů o 1/2 stránky"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
 #: gui/opcodes.h:461
-msgid "scroll up 1/2 page"
-msgstr "rolovat nahoru o 1/2 stránky"
+msgid "Scroll up 1/2 page"
+msgstr "Rolovat nahoru o 1/2 stránky"
 
 #. L10N: Help screen description for OP_HELP
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
 #: gui/opcodes.h:466
-msgid "this screen"
-msgstr "tato obrazovka"
+msgid "This screen"
+msgstr "Tato obrazovka"
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
@@ -4083,497 +4083,497 @@ msgstr "tato obrazovka"
 #: gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473
 #: gui/opcodes.h:474 gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477
 #: gui/opcodes.h:478 gui/opcodes.h:479
-msgid "jump to an index number"
-msgstr "přeskočit na indexové číslo"
+msgid "Jump to an index number"
+msgstr "Přeskočit na indexové číslo"
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:482
-msgid "move to the last entry"
-msgstr "přeskočit na poslední položku"
+msgid "Move to the last entry"
+msgstr "Přeskočit na poslední položku"
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
 #: gui/opcodes.h:485
-msgid "limit view to current thread"
-msgstr "omezit zobrazení na současné vlákno"
+msgid "Limit view to current thread"
+msgstr "Omezit zobrazení na současné vlákno"
 
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:489
-msgid "reply to specified mailing list"
-msgstr "odepsat na specifikovanou poštovní konferenci"
+msgid "Reply to specified mailing list"
+msgstr "Odepsat na specifikovanou poštovní konferenci"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
 #: gui/opcodes.h:493
-msgid "subscribe to a mailing list"
-msgstr "přihlásit k odběru poštovní konference"
+msgid "Subscribe to a mailing list"
+msgstr "Přihlásit k odběru poštovní konference"
 
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
 #: gui/opcodes.h:497
-msgid "unsubscribe from a mailing list"
-msgstr "odhlásit odběr poštovní konference"
+msgid "Unsubscribe from a mailing list"
+msgstr "Odhlásit odběr poštovní konference"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
 #: gui/opcodes.h:500
-msgid "load list of all newsgroups from NNTP server"
-msgstr "načíst seznam všech diskusních skupin z NNTP serveru"
+msgid "Load list of all newsgroups from NNTP server"
+msgstr "Načíst seznam všech diskusních skupin z NNTP serveru"
 
 #. L10N: Help screen description for OP_MACRO
 #: gui/opcodes.h:502
-msgid "execute a macro"
-msgstr "spustit makro"
+msgid "Execute a macro"
+msgstr "Spustit makro"
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
 #: gui/opcodes.h:506
-msgid "compose a new mail message"
-msgstr "napsat novou zprávu"
+msgid "Compose a new mail message"
+msgstr "Napsat novou zprávu"
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
 #: gui/opcodes.h:510
-msgid "list mailboxes with new mail"
-msgstr "zobrazit schránky, které obsahují novou poštu"
+msgid "List mailboxes with new mail"
+msgstr "Zobrazit schránky, které obsahují novou poštu"
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
 #: gui/opcodes.h:513
-msgid "break the thread in two"
-msgstr "rozdělit vlákno na dvě"
+msgid "Break the thread in two"
+msgstr "Rozdělit vlákno na dvě"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:516
-msgid "open a different folder"
-msgstr "otevřít jinou složku"
+msgid "Open a different folder"
+msgstr "Otevřít jinou složku"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:519
-msgid "open a different folder in read only mode"
-msgstr "otevřít jinou složku pouze pro čtení"
+msgid "Open a different folder in read only mode"
+msgstr "Otevřít jinou složku pouze pro čtení"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:522
-msgid "open a different newsgroup"
-msgstr "otevřít jinou diskusní skupinu"
+msgid "Open a different newsgroup"
+msgstr "Otevřít jinou diskusní skupinu"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:525
-msgid "open a different newsgroup in read only mode"
-msgstr "otevřít jinou diskusní skupinu pouze pro čtení"
+msgid "Open a different newsgroup in read only mode"
+msgstr "Otevřít jinou diskusní skupinu pouze pro čtení"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:528
-msgid "clear a status flag from a message"
-msgstr "odstranit zprávě příznak stavu"
+msgid "Clear a status flag from a message"
+msgstr "Odstranit zprávě příznak stavu"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS
 #. Index: <op_main_close_all_threads>
 #: gui/opcodes.h:531
 #, fuzzy
-msgid "collapse all threads"
-msgstr "zavinout/rozvinout všechna vlákna"
+msgid "Collapse all threads"
+msgstr "Zavinout/rozvinout všechna vlákna"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_THREAD
 #. Index: <op_main_close_thread>
 #: gui/opcodes.h:534
 #, fuzzy
-msgid "collapse current thread"
-msgstr "zavinout/rozvinout toto vlákno"
+msgid "Collapse current thread"
+msgstr "Zavinout/rozvinout toto vlákno"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
 #: gui/opcodes.h:537
-msgid "collapse/uncollapse all threads"
-msgstr "zavinout/rozvinout všechna vlákna"
+msgid "Collapse/uncollapse all threads"
+msgstr "Zavinout/rozvinout všechna vlákna"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
 #: gui/opcodes.h:540
-msgid "collapse/uncollapse current thread"
-msgstr "zavinout/rozvinout toto vlákno"
+msgid "Collapse/uncollapse current thread"
+msgstr "Zavinout/rozvinout toto vlákno"
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
 #: gui/opcodes.h:543
-msgid "delete non-hidden messages matching a pattern"
-msgstr "smazat neskryté zprávy odpovídající vzoru"
+msgid "Delete non-hidden messages matching a pattern"
+msgstr "Smazat neskryté zprávy odpovídající vzoru"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
 #: gui/opcodes.h:546
-msgid "retrieve mail from POP server"
-msgstr "stáhnout poštu z POP serveru"
+msgid "Retrieve mail from POP server"
+msgstr "Stáhnout poštu z POP serveru"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
 #: gui/opcodes.h:549
-msgid "force retrieval of mail from IMAP server"
-msgstr "vynutit stažení pošty z IMAP serveru"
+msgid "Force retrieval of mail from IMAP server"
+msgstr "Vynutit stažení pošty z IMAP serveru"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
 #: gui/opcodes.h:552
-msgid "logout from all IMAP servers"
-msgstr "odhlásit ze všech IMAP serverů"
+msgid "Logout from all IMAP servers"
+msgstr "Odhlásit ze všech IMAP serverů"
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
 #: gui/opcodes.h:556
-msgid "show only messages matching a pattern"
-msgstr "zobrazovat pouze zprávy shodující se se vzorem"
+msgid "Show only messages matching a pattern"
+msgstr "Zobrazovat pouze zprávy shodující se se vzorem"
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
 #: gui/opcodes.h:559
-msgid "link tagged message to the current one"
-msgstr "k aktuální zprávě připojit označené zprávy"
+msgid "Link tagged message to the current one"
+msgstr "K aktuální zprávě připojit označené zprávy"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:562
-msgid "modify (notmuch/imap) tags"
-msgstr "upravit (notmuch/imap) značky"
+msgid "Modify (notmuch/imap) tags"
+msgstr "Upravit (notmuch/imap) značky"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:565
-msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "změnit (notmuch/imap) značky a schovat zprávu"
+msgid "Modify (notmuch/imap) tags and then hide message"
+msgstr "Změnit (notmuch/imap) značky a schovat zprávu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:568
-msgid "jump to the next new message"
-msgstr "přeskočit na následující novou zprávu"
+msgid "Jump to the next new message"
+msgstr "Přeskočit na následující novou zprávu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:571
-msgid "jump to the next new or unread message"
-msgstr "přeskočit na následující novou nebo nepřečtenou zprávu"
+msgid "Jump to the next new or unread message"
+msgstr "Přeskočit na následující novou nebo nepřečtenou zprávu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:574
-msgid "jump to the next subthread"
-msgstr "přeskočit na následující podvlákno"
+msgid "Jump to the next subthread"
+msgstr "Přeskočit na následující podvlákno"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:577
-msgid "jump to the next thread"
-msgstr "přeskočit na následující vlákno"
+msgid "Jump to the next thread"
+msgstr "Přeskočit na následující vlákno"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
 #: gui/opcodes.h:580
-msgid "move to the next undeleted message"
-msgstr "přeskočit na následující obnovenou zprávu"
+msgid "Move to the next undeleted message"
+msgstr "Přeskočit na následující obnovenou zprávu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:583
-msgid "jump to the next unread message"
-msgstr "přeskočit na následující nepřečtenou zprávu"
+msgid "Jump to the next unread message"
+msgstr "Přeskočit na následující nepřečtenou zprávu"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
 #: gui/opcodes.h:586
-msgid "open next mailbox with new mail"
-msgstr "otevřít další schránku s novou poštou"
+msgid "Open next mailbox with new mail"
+msgstr "Otevřít další schránku s novou poštou"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS
 #. Index: <op_main_open_all_threads>
 #: gui/opcodes.h:589
 #, fuzzy
-msgid "uncollapse all threads"
-msgstr "zavinout/rozvinout všechna vlákna"
+msgid "Uncollapse all threads"
+msgstr "Zavinout/rozvinout všechna vlákna"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_THREAD
 #. Index: <op_main_open_thread>
 #: gui/opcodes.h:592
 #, fuzzy
-msgid "uncollapse current thread"
-msgstr "zavinout/rozvinout toto vlákno"
+msgid "Uncollapse current thread"
+msgstr "Zavinout/rozvinout toto vlákno"
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:595
-msgid "jump to parent message in thread"
-msgstr "přeskočit na předchozí zprávu ve vláknu"
+msgid "Jump to parent message in thread"
+msgstr "Přeskočit na předchozí zprávu ve vláknu"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:598
-msgid "jump to the previous new message"
-msgstr "přeskočit na předchozí novou zprávu"
+msgid "Jump to the previous new message"
+msgstr "Přeskočit na předchozí novou zprávu"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:601
-msgid "jump to the previous new or unread message"
-msgstr "přeskočit na předchozí novou nebo nepřečtenou zprávu"
+msgid "Jump to the previous new or unread message"
+msgstr "Přeskočit na předchozí novou nebo nepřečtenou zprávu"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:604
-msgid "jump to previous subthread"
-msgstr "přeskočit na předchozí podvlákno"
+msgid "Jump to previous subthread"
+msgstr "Přeskočit na předchozí podvlákno"
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:607
-msgid "jump to previous thread"
-msgstr "přeskočit na předchozí vlákno"
+msgid "Jump to previous thread"
+msgstr "Přeskočit na předchozí vlákno"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
 #: gui/opcodes.h:610
-msgid "move to the previous undeleted message"
-msgstr "přeskočit na předchozí obnovenou zprávu"
+msgid "Move to the previous undeleted message"
+msgstr "Přeskočit na předchozí obnovenou zprávu"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:613
-msgid "jump to the previous unread message"
-msgstr "přeskočit na předchozí nepřečtenou zprávu"
+msgid "Jump to the previous unread message"
+msgstr "Přeskočit na předchozí nepřečtenou zprávu"
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
 #: gui/opcodes.h:616
-msgid "delete from NeoMutt, don't touch on disk"
-msgstr "smazat z NeoMuttu, nezapisovat na disk"
+msgid "Delete from NeoMutt, don't touch on disk"
+msgstr "Smazat z NeoMuttu, nezapisovat na disk"
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:619
-msgid "mark the current subthread as read"
-msgstr "označit toto podvlákno jako přečtené"
+msgid "Mark the current subthread as read"
+msgstr "Označit toto podvlákno jako přečtené"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:622
-msgid "mark the current thread as read"
-msgstr "označit toto vlákno jako přečtené"
+msgid "Mark the current thread as read"
+msgstr "Označit toto vlákno jako přečtené"
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:625
-msgid "jump to root message in thread"
-msgstr "přeskočit na kořenovou zprávu vlákna"
+msgid "Jump to root message in thread"
+msgstr "Přeskočit na kořenovou zprávu vlákna"
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:628
-msgid "set a status flag on a message"
-msgstr "nastavit zprávě příznak stavu"
+msgid "Set a status flag on a message"
+msgstr "Nastavit zprávě příznak stavu"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
 #: gui/opcodes.h:631
-msgid "show currently active limit pattern"
-msgstr "zobrazit aktivní omezující vzor"
+msgid "Show currently active limit pattern"
+msgstr "Zobrazit aktivní omezující vzor"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
 #: gui/opcodes.h:634
-msgid "save changes to mailbox"
-msgstr "uložit změny do schránky"
+msgid "Save changes to mailbox"
+msgstr "Uložit změny do schránky"
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
 #: gui/opcodes.h:637
-msgid "tag non-hidden messages matching a pattern"
-msgstr "označit neskryté zprávy odpovídající vzoru"
+msgid "Tag non-hidden messages matching a pattern"
+msgstr "Označit neskryté zprávy odpovídající vzoru"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
 #: gui/opcodes.h:640
-msgid "undelete non-hidden messages matching a pattern"
-msgstr "obnovit neskryté zprávy odpovídající vzoru"
+msgid "Undelete non-hidden messages matching a pattern"
+msgstr "Obnovit neskryté zprávy odpovídající vzoru"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
 #: gui/opcodes.h:643
-msgid "untag non-hidden messages matching a pattern"
-msgstr "odznačit neskryté zprávy odpovídající vzoru"
+msgid "Untag non-hidden messages matching a pattern"
+msgstr "Odznačit neskryté zprávy odpovídající vzoru"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
 #: gui/opcodes.h:646
-msgid "create a hotkey macro for the current message"
-msgstr "vytvořit horkou klávesu pro současnou zprávu"
+msgid "Create a hotkey macro for the current message"
+msgstr "Vytvořit horkou klávesu pro současnou zprávu"
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:649
-msgid "move to the middle of the page"
-msgstr "přeskočit do středu stránky"
+msgid "Move to the middle of the page"
+msgstr "Přeskočit do středu stránky"
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
 #: gui/opcodes.h:653
-msgid "move to the next entry"
-msgstr "přeskočit na další položku"
+msgid "Move to the next entry"
+msgstr "Přeskočit na další položku"
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
 #: gui/opcodes.h:657
-msgid "scroll down one line"
-msgstr "rolovat o řádek dolů"
+msgid "Scroll down one line"
+msgstr "Rolovat o řádek dolů"
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
 #: gui/opcodes.h:661
-msgid "move to the next page"
-msgstr "přeskočit na další stránku"
+msgid "Move to the next page"
+msgstr "Přeskočit na další stránku"
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
 #: gui/opcodes.h:664
-msgid "jump to the bottom of the message"
-msgstr "přeskočit na konec zprávy"
+msgid "Jump to the bottom of the message"
+msgstr "Přeskočit na konec zprávy"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
 #: gui/opcodes.h:667
-msgid "toggle display of quoted text"
-msgstr "přepnout zobrazování citovaného textu"
+msgid "Toggle display of quoted text"
+msgstr "Přepnout zobrazování citovaného textu"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
 #: gui/opcodes.h:670
-msgid "jump to first line after headers"
-msgstr "přejít na první řadku pod hlavičkami"
+msgid "Jump to first line after headers"
+msgstr "Přejít na první řadku pod hlavičkami"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
 #: gui/opcodes.h:673
-msgid "skip beyond quoted text"
-msgstr "přeskočit za citovaný text"
+msgid "Skip beyond quoted text"
+msgstr "Přeskočit za citovaný text"
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
 #: gui/opcodes.h:676
-msgid "jump to the top of the message"
-msgstr "přeskočit na začátek zprávy"
+msgid "Jump to the top of the message"
+msgstr "Přeskočit na začátek zprávy"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
 #: gui/opcodes.h:684
-msgid "post message to newsgroup"
-msgstr "odeslat zprávu do diskusní skupiny"
+msgid "Post message to newsgroup"
+msgstr "Odeslat zprávu do diskusní skupiny"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
 #: gui/opcodes.h:688
-msgid "move to the previous entry"
-msgstr "přeskočit na předchozí položku"
+msgid "Move to the previous entry"
+msgstr "Přeskočit na předchozí položku"
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
 #: gui/opcodes.h:692
-msgid "scroll up one line"
-msgstr "rolovat o řádek nahoru"
+msgid "Scroll up one line"
+msgstr "Rolovat o řádek nahoru"
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
 #: gui/opcodes.h:696
-msgid "move to the previous page"
-msgstr "přeskočit na předchozí stránku"
+msgid "Move to the previous page"
+msgstr "Přeskočit na předchozí stránku"
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
 #: gui/opcodes.h:702
-msgid "delete the current entry, bypassing the trash folder"
-msgstr "opravdu smazat aktuální položku a vynechat složku koše"
+msgid "Delete the current entry, bypassing the trash folder"
+msgstr "Opravdu smazat aktuální položku a vynechat složku koše"
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:705
-msgid "delete the current thread, bypassing the trash folder"
-msgstr "opravdu smazat aktuální vlákno a vynechat složku koše"
+msgid "Delete the current thread, bypassing the trash folder"
+msgstr "Opravdu smazat aktuální vlákno a vynechat složku koše"
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
 #: gui/opcodes.h:709
-msgid "query external program for addresses"
-msgstr "dotázat se externího programu na adresy"
+msgid "Query external program for addresses"
+msgstr "Dotázat se externího programu na adresy"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
 #: gui/opcodes.h:712
-msgid "append new query results to current results"
-msgstr "přidat výsledky nového dotazu k již existujícím"
+msgid "Append new query results to current results"
+msgstr "Přidat výsledky nového dotazu k již existujícím"
 
 #. L10N: Help screen description for OP_QUIT
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
 #: gui/opcodes.h:717
-msgid "save changes to mailbox and quit"
-msgstr "uložit změny do schránky a skončit"
+msgid "Save changes to mailbox and quit"
+msgstr "Uložit změny do schránky a skončit"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
 #: gui/opcodes.h:720
-msgid "recall a postponed message"
-msgstr "vrátit se k odložené zprávě"
+msgid "Recall a postponed message"
+msgstr "Vrátit se k odložené zprávě"
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
 #: gui/opcodes.h:723
-msgid "reconstruct thread containing current message"
-msgstr "znovu sestavit vlákno obsahující aktuální zprávu"
+msgid "Reconstruct thread containing current message"
+msgstr "Znovu sestavit vlákno obsahující aktuální zprávu"
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
 #: gui/opcodes.h:727
-msgid "clear and redraw the screen"
-msgstr "smazat a překreslit obrazovku"
+msgid "Clear and redraw the screen"
+msgstr "Smazat a překreslit obrazovku"
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
 #: gui/opcodes.h:730
-msgid "rename the current mailbox (IMAP only)"
-msgstr "přejmenovat aktuální schránku (pouze IMAP)"
+msgid "Rename the current mailbox (IMAP only)"
+msgstr "Přejmenovat aktuální schránku (pouze IMAP)"
 
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
 #: gui/opcodes.h:734
-msgid "reply to a message"
-msgstr "odepsat na zprávu"
+msgid "Reply to a message"
+msgstr "Odepsat na zprávu"
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
 #: gui/opcodes.h:738
-msgid "use the current message as a template for a new one"
-msgstr "použít aktuální zprávu jako šablonu pro novou"
+msgid "Use the current message as a template for a new one"
+msgstr "Použít aktuální zprávu jako šablonu pro novou"
 
 #. L10N: Help screen description for OP_SEARCH
 #. Menu: <menu_search>
@@ -4582,8 +4582,8 @@ msgstr "použít aktuální zprávu jako šablonu pro novou"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:749
-msgid "search for a regular expression"
-msgstr "vyhledat regulární výraz"
+msgid "Search for a regular expression"
+msgstr "Vyhledat regulární výraz"
 
 #. L10N: Help screen description for OP_SEARCH_NEXT
 #. Menu: <menu_search>
@@ -4592,8 +4592,8 @@ msgstr "vyhledat regulární výraz"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:756
-msgid "search for next match"
-msgstr "vyhledat následující shodu"
+msgid "Search for next match"
+msgstr "Vyhledat následující shodu"
 
 #. L10N: Help screen description for OP_SEARCH_OPPOSITE
 #. Menu: <menu_search>
@@ -4602,8 +4602,8 @@ msgstr "vyhledat následující shodu"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:763
-msgid "search for next match in opposite direction"
-msgstr "vyhledat následující shodu opačným směrem"
+msgid "Search for next match in opposite direction"
+msgstr "Vyhledat následující shodu opačným směrem"
 
 #. L10N: Help screen description for OP_SEARCH_REVERSE
 #. Menu: <menu_search>
@@ -4612,419 +4612,419 @@ msgstr "vyhledat následující shodu opačným směrem"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:770
-msgid "search backwards for a regular expression"
-msgstr "vyhledat regulární výraz opačným směrem"
+msgid "Search backwards for a regular expression"
+msgstr "Vyhledat regulární výraz opačným směrem"
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
 #: gui/opcodes.h:773
-msgid "toggle search pattern coloring"
-msgstr "přepnout obarvování hledaných vzorů"
+msgid "Toggle search pattern coloring"
+msgstr "Přepnout obarvování hledaných vzorů"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
 #: gui/opcodes.h:776
-msgid "invoke a command in a subshell"
-msgstr "spustit příkaz v podshellu"
+msgid "Invoke a command in a subshell"
+msgstr "Spustit příkaz v podshellu"
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
 #: gui/opcodes.h:779
-msgid "show log (and debug) messages"
-msgstr "zobrazit zaznamenané ladicí zprávy"
+msgid "Show log (and debug) messages"
+msgstr "Zobrazit zaznamenané ladicí zprávy"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:784
-msgid "sort messages"
-msgstr "seřadit zprávy"
+msgid "Sort messages"
+msgstr "Seřadit zprávy"
 
 #. L10N: Help screen description for OP_SORT_REVERSE
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:789
-msgid "sort messages in reverse order"
-msgstr "seřadit zprávy v opačném pořadí"
+msgid "Sort messages in reverse order"
+msgstr "Seřadit zprávy v opačném pořadí"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:792
-msgid "subscribe to newsgroups matching a pattern"
-msgstr "přihlásit do diskusních skupin vyhovujících vzoru"
+msgid "Subscribe to newsgroups matching a pattern"
+msgstr "Přihlásit do diskusních skupin vyhovujících vzoru"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
 #: gui/opcodes.h:795
-msgid "tag the current entry"
-msgstr "označit aktuální položku"
+msgid "Tag the current entry"
+msgstr "Označit aktuální položku"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
 #: gui/opcodes.h:797
-msgid "apply next function to tagged messages"
-msgstr "prefix funkce, která má být použita pouze pro označené zprávy"
+msgid "Apply next function to tagged messages"
+msgstr "Prefix funkce, která má být použita pouze pro označené zprávy"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
 #: gui/opcodes.h:799
-msgid "apply next function ONLY to tagged messages"
-msgstr "následující funkci použij POUZE pro označené zprávy"
+msgid "Apply next function ONLY to tagged messages"
+msgstr "Následující funkci použij POUZE pro označené zprávy"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:802
-msgid "tag the current subthread"
-msgstr "označit toto podvlákno"
+msgid "Tag the current subthread"
+msgstr "Označit toto podvlákno"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:805
-msgid "tag the current thread"
-msgstr "označit toto vlákno"
+msgid "Tag the current thread"
+msgstr "Označit toto vlákno"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:808
-msgid "toggle whether to browse mailboxes or all files"
-msgstr "přepnout, zda procházet schránky nebo všechny soubory"
+msgid "Toggle whether to browse mailboxes or all files"
+msgstr "Přepnout, zda procházet schránky nebo všechny soubory"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
 #: gui/opcodes.h:811
-msgid "toggle a message's 'new' flag"
-msgstr "přepnout zprávě příznak „nová“"
+msgid "Toggle a message's 'new' flag"
+msgstr "Přepnout zprávě příznak „nová“"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
 #: gui/opcodes.h:814
-msgid "toggle view of read messages"
-msgstr "přepnout zobrazování přečtených zpráv"
+msgid "Toggle view of read messages"
+msgstr "Přepnout zobrazování přečtených zpráv"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
 #: gui/opcodes.h:817
-msgid "toggle whether the mailbox will be rewritten"
-msgstr "přepnout, zda bude schránka přepsána"
+msgid "Toggle whether the mailbox will be rewritten"
+msgstr "Přepnout, zda bude schránka přepsána"
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:820
-msgid "move to the top of the page"
-msgstr "přeskočit na začátek stránky"
+msgid "Move to the top of the page"
+msgstr "Přeskočit na začátek stránky"
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
 #: gui/opcodes.h:823
-msgid "mark all articles in newsgroup as unread"
-msgstr "označit všechny články ve skupině za nepřečtené"
+msgid "Mark all articles in newsgroup as unread"
+msgstr "Označit všechny články ve skupině za nepřečtené"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:831
-msgid "undelete all messages in subthread"
-msgstr "obnovit všechny zprávy v podvláknu"
+msgid "Undelete all messages in subthread"
+msgstr "Obnovit všechny zprávy v podvláknu"
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:834
-msgid "undelete all messages in thread"
-msgstr "obnovit všechny zprávy ve vláknu"
+msgid "Undelete all messages in thread"
+msgstr "Obnovit všechny zprávy ve vláknu"
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:837
-msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "odhlásit z diskusních skupin vyhovujících vzoru"
+msgid "Unsubscribe from newsgroups matching a pattern"
+msgstr "Odhlásit z diskusních skupin vyhovujících vzoru"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
 #: gui/opcodes.h:840
-msgid "show the NeoMutt version number and date"
-msgstr "vypsat označení verze a datum"
+msgid "Show the NeoMutt version number and date"
+msgstr "Vypsat označení verze a datum"
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
 #: gui/opcodes.h:844
-msgid "show MIME attachments"
-msgstr "zobrazit MIME přílohy"
+msgid "Show MIME attachments"
+msgstr "Zobrazit MIME přílohy"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:847
-msgid "show the raw message"
-msgstr "zobrazit úplnou zprávu"
+msgid "Show the raw message"
+msgstr "Zobrazit úplnou zprávu"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
 #: gui/opcodes.h:850
-msgid "display the keycode for a key press"
-msgstr "zobraz kód stisknuté klávesy"
+msgid "Display the keycode for a key press"
+msgstr "Zobraz kód stisknuté klávesy"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:855
-msgid "make decrypted copy"
-msgstr "vytvořit dešifrovanou kopii"
+msgid "Make decrypted copy"
+msgstr "Vytvořit dešifrovanou kopii"
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:858
-msgid "make decrypted copy and delete"
-msgstr "vytvořit dešifrovanou kopii a smazat"
+msgid "Make decrypted copy and delete"
+msgstr "Vytvořit dešifrovanou kopii a smazat"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
 #: gui/opcodes.h:862
-msgid "extract supported public keys"
-msgstr "extrahovat všechny podporované veřejné klíče"
+msgid "Extract supported public keys"
+msgstr "Extrahovat všechny podporované veřejné klíče"
 
 #. L10N: Help screen description for OP_FORGET_PASSPHRASE
 #. Attach Dialog: <op_forget_passphrase>
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
 #: gui/opcodes.h:867
-msgid "wipe passphrases from memory"
-msgstr "odstranit všechna hesla z paměti"
+msgid "Wipe passphrases from memory"
+msgstr "Odstranit všechna hesla z paměti"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
 #: gui/opcodes.h:872
-msgid "edit the BCC list"
-msgstr "editovat BCC seznam"
+msgid "Edit the BCC list"
+msgstr "Editovat BCC seznam"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
 #: gui/opcodes.h:875
-msgid "edit the CC list"
-msgstr "editovat CC seznam"
+msgid "Edit the CC list"
+msgstr "Editovat CC seznam"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
 #: gui/opcodes.h:878
-msgid "enter a file to save a copy of this message in"
-msgstr "změnit soubor pro uložení kopie této zprávy"
+msgid "Enter a file to save a copy of this message in"
+msgstr "Změnit soubor pro uložení kopie této zprávy"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
 #: gui/opcodes.h:881
-msgid "edit the Followup-To field"
-msgstr "editovat položku Followup-To"
+msgid "Edit the Followup-To field"
+msgstr "Editovat položku Followup-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
 #: gui/opcodes.h:884
-msgid "edit the from field"
-msgstr "editovat položku „from“"
+msgid "Edit the from field"
+msgstr "Editovat položku „from“"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
 #: gui/opcodes.h:887
-msgid "edit the message with headers"
-msgstr "editovat zprávu i s hlavičkami"
+msgid "Edit the message with headers"
+msgstr "Editovat zprávu i s hlavičkami"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
 #: gui/opcodes.h:890
-msgid "edit the newsgroups list"
-msgstr "editovat seznam diskusních skupin"
+msgid "Edit the newsgroups list"
+msgstr "Editovat seznam diskusních skupin"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
 #: gui/opcodes.h:893
-msgid "edit the Reply-To field"
-msgstr "editovat položku „Reply-To“"
+msgid "Edit the Reply-To field"
+msgstr "Editovat položku „Reply-To“"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
 #: gui/opcodes.h:896
-msgid "edit the subject of this message"
-msgstr "editovat věc této zprávy"
+msgid "Edit the subject of this message"
+msgstr "Editovat věc této zprávy"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
 #: gui/opcodes.h:899
-msgid "edit the TO list"
-msgstr "editovat seznam „TO“"
+msgid "Edit the TO list"
+msgstr "Editovat seznam „TO“"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
 #: gui/opcodes.h:902
-msgid "edit the X-Comment-To field"
-msgstr "editovat položku „X-Comment-To“"
+msgid "Edit the X-Comment-To field"
+msgstr "Editovat položku „X-Comment-To“"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:908
-msgid "open a different virtual folder"
-msgstr "otevřít jinou virtuální složku"
+msgid "Open a different virtual folder"
+msgstr "Otevřít jinou virtuální složku"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
 #: gui/opcodes.h:911
-msgid "read entire thread of the current message"
-msgstr "načíst celé vlákno současné zprávy"
+msgid "Read entire thread of the current message"
+msgstr "Načíst celé vlákno současné zprávy"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:914
-msgid "generate virtual folder from query"
-msgstr "vytvoř virtuální složku z dotazu"
+msgid "Generate virtual folder from query"
+msgstr "Vytvoř virtuální složku z dotazu"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:917
-msgid "generate a read-only virtual folder from query"
-msgstr "vytvoř virtuální složku (pro čtení) z dotazu"
+msgid "Generate a read-only virtual folder from query"
+msgstr "Vytvoř virtuální složku (pro čtení) z dotazu"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:920
-msgid "shifts virtual folder time window backwards"
-msgstr "posune dozadu časový rozsah virtuální složky"
+msgid "Shifts virtual folder time window backwards"
+msgstr "Posune dozadu časový rozsah virtuální složky"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:923
-msgid "shifts virtual folder time window forwards"
-msgstr "posune dopředu časový rozsah virtuální složky"
+msgid "Shifts virtual folder time window forwards"
+msgstr "Posune dopředu časový rozsah virtuální složky"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:926
-msgid "resets virtual folder time window to the present"
-msgstr "vrátí nastavení časového rozsahu virtuální složky na přítomnost"
+msgid "Resets virtual folder time window to the present"
+msgstr "Vrátí nastavení časového rozsahu virtuální složky na přítomnost"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_KEY
 #. Compose Dialog: <op_attach_attach_key>
 #: gui/opcodes.h:934
-msgid "attach a PGP public key"
-msgstr "připojit veřejný PGP klíč"
+msgid "Attach a PGP public key"
+msgstr "Připojit veřejný PGP klíč"
 
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
 #: gui/opcodes.h:938
-msgid "check for classic PGP"
-msgstr "hledat klasické PGP"
+msgid "Check for classic PGP"
+msgstr "Hledat klasické PGP"
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
 #: gui/opcodes.h:941
-msgid "show PGP options"
-msgstr "zobrazit menu PGP"
+msgid "Show PGP options"
+msgstr "Zobrazit menu PGP"
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
 #: gui/opcodes.h:944
-msgid "mail a PGP public key"
-msgstr "odeslat veřejný klíč PGP"
+msgid "Mail a PGP public key"
+msgstr "Odeslat veřejný klíč PGP"
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:948
 #, fuzzy
-msgid "verify a public key"
-msgstr "ověřit veřejný klíč "
+msgid "Verify a public key"
+msgstr "Ověřit veřejný klíč "
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
 #: gui/opcodes.h:952
-msgid "view the key's user id"
-msgstr "zobrazit uživatelské ID klíče"
+msgid "View the key's user id"
+msgstr "Zobrazit uživatelské ID klíče"
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
 #: gui/opcodes.h:957
-msgid "move the highlight to the first mailbox"
-msgstr "přesunout zvýraznění na první schránku"
+msgid "Move the highlight to the first mailbox"
+msgstr "Přesunout zvýraznění na první schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
 #: gui/opcodes.h:960
-msgid "move the highlight to the last mailbox"
-msgstr "přesunout zvýraznění na poslední schránku"
+msgid "Move the highlight to the last mailbox"
+msgstr "Přesunout zvýraznění na poslední schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
 #: gui/opcodes.h:963
-msgid "move the highlight to next mailbox"
-msgstr "přesunout zvýraznění na další schránku"
+msgid "Move the highlight to next mailbox"
+msgstr "Přesunout zvýraznění na další schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
 #: gui/opcodes.h:966
-msgid "move the highlight to next mailbox with new mail"
-msgstr "přesunout zvýraznění na další schránku s novou poštou"
+msgid "Move the highlight to next mailbox with new mail"
+msgstr "Přesunout zvýraznění na další schránku s novou poštou"
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
 #: gui/opcodes.h:969
-msgid "open highlighted mailbox"
-msgstr "otevřít zvýrazněnou schránku"
+msgid "Open highlighted mailbox"
+msgstr "Otevřít zvýrazněnou schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
 #: gui/opcodes.h:972
-msgid "scroll the sidebar down 1 page"
-msgstr "rolovat postranní panel o 1 stránku dolů"
+msgid "Scroll the sidebar down 1 page"
+msgstr "Rolovat postranní panel o 1 stránku dolů"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
 #: gui/opcodes.h:975
-msgid "scroll the sidebar up 1 page"
-msgstr "rolovat postranní panel o 1 stránku nahoru"
+msgid "Scroll the sidebar up 1 page"
+msgstr "Rolovat postranní panel o 1 stránku nahoru"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
 #: gui/opcodes.h:978
-msgid "move the highlight to previous mailbox"
-msgstr "přesunout zvýraznění na předchozí schránku"
+msgid "Move the highlight to previous mailbox"
+msgstr "Přesunout zvýraznění na předchozí schránku"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
 #: gui/opcodes.h:981
-msgid "move the highlight to previous mailbox with new mail"
-msgstr "přesunout zvýraznění na předchozí schránku s novou poštou"
+msgid "Move the highlight to previous mailbox with new mail"
+msgstr "Přesunout zvýraznění na předchozí schránku s novou poštou"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
 #: gui/opcodes.h:984
-msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "přepnout, zda procházet schránky nebo virtuální složky"
+msgid "Toggle between mailboxes and virtual mailboxes"
+msgstr "Přepnout, zda procházet schránky nebo virtuální složky"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
 #: gui/opcodes.h:987
-msgid "make the sidebar (in)visible"
-msgstr "zobrazit/skrýt postranní panel"
+msgid "Make the sidebar (in)visible"
+msgstr "Zobrazit/skrýt postranní panel"
 
 #. L10N: Help screen description for OP_SIDEBAR_ABORT_SEARCH
 #. Sidebar: <op_sidebar_abort_search>
 #: gui/opcodes.h:990
 #, fuzzy
-msgid "close the sidebar search"
-msgstr "zobrazit/skrýt postranní panel"
+msgid "Close the sidebar search"
+msgstr "Zobrazit/skrýt postranní panel"
 
 #. L10N: Help screen description for OP_SIDEBAR_START_SEARCH
 #. Sidebar: <op_sidebar_start_search>
 #: gui/opcodes.h:993
-msgid "fuzzy search the sidebar"
+msgid "Fuzzy search the sidebar"
 msgstr ""
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
 #: gui/opcodes.h:998
-msgid "show S/MIME options"
-msgstr "zobrazit menu S/MIME"
+msgid "Show S/MIME options"
+msgstr "Zobrazit menu S/MIME"
 
 #: gui/opcodes.h:1001
-msgid "null operation"
-msgstr "nulová operace"
+msgid "Null operation"
+msgstr "Nulová operace"
 
 #: gui/thread.c:109
 #, c-format

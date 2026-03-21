@@ -3201,26 +3201,26 @@ msgstr "Signo = %s, Okume = %o, Dekume = %d\n"
 #. L10N: Help screen description for OP_ATTACH_ATTACH_FILE
 #. Compose Dialog: <op_attach_attach_file>
 #: gui/opcodes.h:42
-msgid "attach files to this message"
-msgstr "aldoni dosierojn al ĉi tiu mesaĝo"
+msgid "Attach files to this message"
+msgstr "Aldoni dosierojn al ĉi tiu mesaĝo"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:45
-msgid "attach messages to this message"
-msgstr "aldoni mesaĝojn al ĉi tiu mesaĝo"
+msgid "Attach messages to this message"
+msgstr "Aldoni mesaĝojn al ĉi tiu mesaĝo"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:48
-msgid "attach news articles to this message"
-msgstr "aldoni novaĵajn artikolojn al ĉi tiu mesaĝo"
+msgid "Attach news articles to this message"
+msgstr "Aldoni novaĵajn artikolojn al ĉi tiu mesaĝo"
 
 #. L10N: Help screen description for OP_ATTACH_COLLAPSE
 #. Attach Dialog: <op_attach_collapse>
 #: gui/opcodes.h:51
-msgid "toggle display of subparts"
-msgstr "ŝalti aŭ malŝalti montradon de subpartoj"
+msgid "Toggle display of subparts"
+msgstr "Ŝalti aŭ malŝalti montradon de subpartoj"
 
 #. L10N: Help screen description for OP_ATTACH_DELETE
 #. Attach Dialog: <op_attach_delete>
@@ -3231,94 +3231,94 @@ msgstr "ŝalti aŭ malŝalti montradon de subpartoj"
 #. Index: <op_delete>
 #. Postponed Dialog: <op_delete>
 #: gui/opcodes.h:54 gui/opcodes.h:57 gui/opcodes.h:279
-msgid "delete the current entry"
-msgstr "forviŝi registron"
+msgid "Delete the current entry"
+msgstr "Forviŝi registron"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attach_edit_content_id>
 #: gui/opcodes.h:60
-msgid "edit the 'Content-ID' of the attachment"
-msgstr "redakti la identigilo de la kunsendaĵo"
+msgid "Edit the 'Content-ID' of the attachment"
+msgstr "Redakti la identigilo de la kunsendaĵo"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attach_edit_description>
 #: gui/opcodes.h:63
-msgid "edit attachment description"
-msgstr "redakti priskribon de parto"
+msgid "Edit attachment description"
+msgstr "Redakti priskribon de parto"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_ENCODING
 #. Compose Dialog: <op_attach_edit_encoding>
 #: gui/opcodes.h:66
-msgid "edit attachment transfer-encoding"
-msgstr "redakti kodadon de parto"
+msgid "Edit attachment transfer-encoding"
+msgstr "Redakti kodadon de parto"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_LANGUAGE
 #. Compose Dialog: <op_attach_edit_language>
 #: gui/opcodes.h:69
-msgid "edit the 'Content-Language' of the attachment"
-msgstr "redakti la lingvon de la kunsendaĵo"
+msgid "Edit the 'Content-Language' of the attachment"
+msgstr "Redakti la lingvon de la kunsendaĵo"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_MIME
 #. Compose Dialog: <op_attach_edit_mime>
 #: gui/opcodes.h:72
-msgid "edit attachment using mailcap entry"
-msgstr "redakti parton, uzante mailcap"
+msgid "Edit attachment using mailcap entry"
+msgstr "Redakti parton, uzante mailcap"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_TYPE
 #. Attach Dialog: <op_attach_edit_type>
 #. Compose Dialog: <op_attach_edit_type>
 #. Index: <op_attach_edit_type>
 #: gui/opcodes.h:77
-msgid "edit attachment content type"
-msgstr "redakti MIME-enhavospecon de parto"
+msgid "Edit attachment content type"
+msgstr "Redakti MIME-enhavospecon de parto"
 
 #. L10N: Help screen description for OP_ATTACH_FILTER
 #. Compose Dialog: <op_attach_filter>
 #: gui/opcodes.h:80
-msgid "filter attachment through a shell command"
-msgstr "filtri parton tra ŝelkomando"
+msgid "Filter attachment through a shell command"
+msgstr "Filtri parton tra ŝelkomando"
 
 #. L10N: Help screen description for OP_ATTACH_GET_ATTACHMENT
 #. Compose Dialog: <op_attach_get_attachment>
 #: gui/opcodes.h:83
-msgid "get a temporary copy of an attachment"
-msgstr "akiri dumtempan kopion de parto"
+msgid "Get a temporary copy of an attachment"
+msgstr "Akiri dumtempan kopion de parto"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_ALTS
 #. Compose Dialog: <op_attach_group_alts>
 #: gui/opcodes.h:86
-msgid "group tagged attachments as 'multipart/alternative'"
-msgstr "grupo markis kunsendaĵojn kiel 'multiplart/alternative'"
+msgid "Group tagged attachments as 'multipart/alternative'"
+msgstr "Grupo markis kunsendaĵojn kiel 'multiplart/alternative'"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL
 #. Compose Dialog: <op_attach_group_lingual>
 #: gui/opcodes.h:89
-msgid "group tagged attachments as 'multipart/multilingual'"
-msgstr "grupo markis kunsendaĵojn kiel 'multiplart/multilingual'"
+msgid "Group tagged attachments as 'multipart/multilingual'"
+msgstr "Grupo markis kunsendaĵojn kiel 'multiplart/multilingual'"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_RELATED
 #. Compose Dialog: <op_attach_group_related>
 #: gui/opcodes.h:92
-msgid "group tagged attachments as 'multipart/related'"
-msgstr "grupo markis kunsendaĵojn per 'multipalt/related'"
+msgid "Group tagged attachments as 'multipart/related'"
+msgstr "Grupo markis kunsendaĵojn per 'multipalt/related'"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_DOWN
 #. Compose Dialog: <op_attach_move_down>
 #: gui/opcodes.h:95
-msgid "move an attachment down in the attachment list"
-msgstr "movi kunsendaĵon malsupren en al kunsendaĵa listo"
+msgid "Move an attachment down in the attachment list"
+msgstr "Movi kunsendaĵon malsupren en al kunsendaĵa listo"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_UP
 #. Compose Dialog: <op_attach_move_up>
 #: gui/opcodes.h:98
-msgid "move an attachment up in the attachment list"
-msgstr "movi kunsendaĵon supren en al kunsendaĵa listo"
+msgid "Move an attachment up in the attachment list"
+msgstr "Movi kunsendaĵon supren en al kunsendaĵa listo"
 
 #. L10N: Help screen description for OP_ATTACH_NEW_MIME
 #. Compose Dialog: <op_attach_new_mime>
 #: gui/opcodes.h:101
-msgid "compose new attachment using mailcap entry"
-msgstr "verki novan parton per mailcap"
+msgid "Compose new attachment using mailcap entry"
+msgstr "Verki novan parton per mailcap"
 
 #. L10N: Help screen description for OP_ATTACH_PIPE
 #. L10N: Help screen description for OP_PIPE
@@ -3326,8 +3326,8 @@ msgstr "verki novan parton per mailcap"
 #. Attach Dialog: <op_attach_pipe>
 #. Index: <op_pipe>
 #: gui/opcodes.h:103 gui/opcodes.h:681
-msgid "pipe message/attachment to a shell command"
-msgstr "trakti mesaĝon/parton per ŝelkomando"
+msgid "Pipe message/attachment to a shell command"
+msgstr "Trakti mesaĝon/parton per ŝelkomando"
 
 #. L10N: Help screen description for OP_ATTACH_PRINT
 #. Attach Dialog: <op_attach_print>
@@ -3335,14 +3335,14 @@ msgstr "trakti mesaĝon/parton per ŝelkomando"
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
 #: gui/opcodes.h:107 gui/opcodes.h:699
-msgid "print the current entry"
-msgstr "presi la aktualan registron"
+msgid "Print the current entry"
+msgstr "Presi la aktualan registron"
 
 #. L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT
 #. Compose Dialog: <op_attach_rename_attachment>
 #: gui/opcodes.h:110
-msgid "send attachment with a different name"
-msgstr "sendi parton kun alia nomo"
+msgid "Send attachment with a different name"
+msgstr "Sendi parton kun alia nomo"
 
 #. L10N: Help screen description for OP_ATTACH_SAVE
 #. Attach Dialog: <op_attach_save>
@@ -3351,26 +3351,26 @@ msgstr "sendi parton kun alia nomo"
 #. Index: <op_save>
 #. Pager: <op_save>
 #: gui/opcodes.h:114 gui/opcodes.h:742
-msgid "save message/attachment to a mailbox/file"
-msgstr "skribi mesaĝon/parton al poŝtfako/dosiero"
+msgid "Save message/attachment to a mailbox/file"
+msgstr "Skribi mesaĝon/parton al poŝtfako/dosiero"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attach_toggle_disposition>
 #: gui/opcodes.h:117
-msgid "toggle disposition between inline/attachment"
-msgstr "ŝalti dispozicion inter \"inline\" kaj \"attachment\""
+msgid "Toggle disposition between inline/attachment"
+msgstr "Ŝalti dispozicion inter \"inline\" kaj \"attachment\""
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE
 #. Compose Dialog: <op_attach_toggle_recode>
 #: gui/opcodes.h:120
-msgid "toggle recoding of this attachment"
-msgstr "ŝalti aŭ malŝalti rekodadon de ĉi tiu parto"
+msgid "Toggle recoding of this attachment"
+msgstr "Ŝalti aŭ malŝalti rekodadon de ĉi tiu parto"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK
 #. Compose Dialog: <op_attach_toggle_unlink>
 #: gui/opcodes.h:123
-msgid "toggle whether to delete file after sending it"
-msgstr "elekti ĉu forviŝi la dosieron post sendado"
+msgid "Toggle whether to delete file after sending it"
+msgstr "Elekti ĉu forviŝi la dosieron post sendado"
 
 #. L10N: Help screen description for OP_ATTACH_UNDELETE
 #. Attach Dialog: <op_attach_undelete>
@@ -3379,505 +3379,505 @@ msgstr "elekti ĉu forviŝi la dosieron post sendado"
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
 #: gui/opcodes.h:126 gui/opcodes.h:828
-msgid "undelete the current entry"
-msgstr "malforviŝi la aktualan registron"
+msgid "Undelete the current entry"
+msgstr "Malforviŝi la aktualan registron"
 
 #. L10N: Help screen description for OP_ATTACH_UNGROUP
 #. Compose Dialog: <op_attach_ungroup>
 #: gui/opcodes.h:129
-msgid "ungroup 'multipart' attachment"
-msgstr "elgrupigi 'multipart'-kunsendaĵon"
+msgid "Ungroup 'multipart' attachment"
+msgstr "Elgrupigi 'multipart'-kunsendaĵon"
 
 #. L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING
 #. Compose Dialog: <op_attach_update_encoding>
 #: gui/opcodes.h:132
-msgid "update an attachment's encoding info"
-msgstr "aktualigi la kodadon de parto"
+msgid "Update an attachment's encoding info"
+msgstr "Aktualigi la kodadon de parto"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:136
-msgid "view attachment using mailcap entry if necessary"
-msgstr "vidigi parton, per mailcap se necesas"
+msgid "View attachment using mailcap entry if necessary"
+msgstr "Vidigi parton, per mailcap se necesas"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP
 #. Attach Dialog: <op_attach_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:140
-msgid "force viewing of attachment using mailcap"
-msgstr "devigi vidigon de parto per mailcap"
+msgid "Force viewing of attachment using mailcap"
+msgstr "Devigi vidigon de parto per mailcap"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_PAGER
 #. Attach Dialog: <op_attach_view_pager>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:144
-msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "vidigi kunsendaĵon per copiousoutput mailcap"
+msgid "View attachment in pager using copiousoutput mailcap"
+msgstr "Vidigi kunsendaĵon per copiousoutput mailcap"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_TEXT
 #. Attach Dialog: <op_attach_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:148
-msgid "view attachment as text"
-msgstr "vidigi parton kiel tekston"
+msgid "View attachment as text"
+msgstr "Vidigi parton kiel tekston"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:151
-msgid "show the next page of the message"
-msgstr "montri la sekvan paĝon de la mesaĝo"
+msgid "Show the next page of the message"
+msgstr "Montri la sekvan paĝon de la mesaĝo"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:154
-msgid "show the previous page of the message"
-msgstr "montri la antaŭan paĝon de la mesaĝo"
+msgid "Show the previous page of the message"
+msgstr "Montri la antaŭan paĝon de la mesaĝo"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
 #: gui/opcodes.h:160
-msgid "manage autocrypt accounts"
-msgstr "administri autocrypt-kontojn"
+msgid "Manage autocrypt accounts"
+msgstr "Administri autocrypt-kontojn"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_create_acct>
 #: gui/opcodes.h:163
-msgid "create a new autocrypt account"
-msgstr "krei novan autocrypt-konton"
+msgid "Create a new autocrypt account"
+msgstr "Krei novan autocrypt-konton"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
 #: gui/opcodes.h:166
-msgid "delete the current account"
-msgstr "forviŝi ĉi tiun konton"
+msgid "Delete the current account"
+msgstr "Forviŝi ĉi tiun konton"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
 #: gui/opcodes.h:169
-msgid "toggle the current account active/inactive"
+msgid "Toggle the current account active/inactive"
 msgstr "(mal)aktivigi ĉi tiun konton"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
 #: gui/opcodes.h:172
-msgid "toggle the current account prefer-encrypt flag"
+msgid "Toggle the current account prefer-encrypt flag"
 msgstr "(mal)ŝalti la flagon \"preferi ĉifradon\""
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
 #: gui/opcodes.h:175
-msgid "show autocrypt compose menu options"
-msgstr "montri menuopciojn de autocrypt-verkado"
+msgid "Show autocrypt compose menu options"
+msgstr "Montri menuopciojn de autocrypt-verkado"
 
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
 #: gui/opcodes.h:183
-msgid "open the aliases dialog"
-msgstr "malfermi la dialogujo de alinomoj"
+msgid "Open the aliases dialog"
+msgstr "Malfermi la dialogujo de alinomoj"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:186
-msgid "move to the bottom of the page"
-msgstr "iri al fino de paĝo"
+msgid "Move to the bottom of the page"
+msgstr "Iri al fino de paĝo"
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
 #: gui/opcodes.h:190
-msgid "remail a message to another user"
-msgstr "redirekti mesaĝon al alia adreso"
+msgid "Remail a message to another user"
+msgstr "Redirekti mesaĝon al alia adreso"
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:193
-msgid "swap the current folder position with $folder if it exists"
-msgstr "interŝanĝi la nunan dosierujan pozicion kun $folder se ĝi ekzistas"
+msgid "Swap the current folder position with $folder if it exists"
+msgstr "Interŝanĝi la nunan dosierujan pozicion kun $folder se ĝi ekzistas"
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
 #: gui/opcodes.h:196
-msgid "select a new file in this directory"
-msgstr "elekti novan dosieron en ĉi tiu dosierujo"
+msgid "Select a new file in this directory"
+msgstr "Elekti novan dosieron en ĉi tiu dosierujo"
 
 #. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:199
-msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "ekaboni la nunan leterkeston (nur IMAP aŭ NNTP)"
+msgid "Subscribe to current mbox (IMAP/NNTP only)"
+msgstr "Ekaboni la nunan leterkeston (nur IMAP aŭ NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
 #: gui/opcodes.h:202
-msgid "display the currently selected file's name"
-msgstr "montri la nomon de la elektita dosiero"
+msgid "Display the currently selected file's name"
+msgstr "Montri la nomon de la elektita dosiero"
 
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
 #: gui/opcodes.h:205
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "elekti, ĉu vidi ĉiujn, aŭ nur abonitajn poŝtfakojn (nur IMAP)"
+msgid "Toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "Elekti, ĉu vidi ĉiujn, aŭ nur abonitajn poŝtfakojn (nur IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:208
-msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "malaboni la nunan leterkeston (nur IMAP aŭ NNTP)"
+msgid "Unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "Malaboni la nunan leterkeston (nur IMAP aŭ NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
 #: gui/opcodes.h:211
-msgid "view file"
-msgstr "vidigi dosieron"
+msgid "View file"
+msgstr "Vidigi dosieron"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
 #: gui/opcodes.h:215
-msgid "mark all articles in newsgroup as read"
-msgstr "marki ĉiujn artikolojn en novaĵgrupo kiel legitajn"
+msgid "Mark all articles in newsgroup as read"
+msgstr "Marki ĉiujn artikolojn en novaĵgrupo kiel legitajn"
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:218
-msgid "change directories"
-msgstr "ŝanĝi la dosierujon"
+msgid "Change directories"
+msgstr "Ŝanĝi la dosierujon"
 
 #. L10N: Help screen description for OP_CHECK_NEW
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:221
-msgid "check mailboxes for new mail"
-msgstr "kontroli poŝtfakojn pri novaj mesaĝoj"
+msgid "Check mailboxes for new mail"
+msgstr "Kontroli poŝtfakojn pri novaj mesaĝoj"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
 #: gui/opcodes.h:224
-msgid "calculate message statistics for all mailboxes"
-msgstr "kalkuli mesaĝostatistikojn de ĉiuj poŝtfakoj"
+msgid "Calculate message statistics for all mailboxes"
+msgstr "Kalkuli mesaĝostatistikojn de ĉiuj poŝtfakoj"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
 #: gui/opcodes.h:227
-msgid "edit the file to be attached"
-msgstr "redakti la dosieron aldonotan"
+msgid "Edit the file to be attached"
+msgstr "Redakti la dosieron aldonotan"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
 #: gui/opcodes.h:230
-msgid "edit the message"
-msgstr "redakti la mesaĝon"
+msgid "Edit the message"
+msgstr "Redakti la mesaĝon"
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
 #: gui/opcodes.h:233
-msgid "run ispell on the message"
-msgstr "apliki ispell al la mesaĝo"
+msgid "Run ispell on the message"
+msgstr "Apliki ispell al la mesaĝo"
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
 #: gui/opcodes.h:236
-msgid "save this message to send later"
-msgstr "skribi ĉi tiun mesaĝon por sendi ĝin poste"
+msgid "Save this message to send later"
+msgstr "Skribi ĉi tiun mesaĝon por sendi ĝin poste"
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
 #: gui/opcodes.h:239
-msgid "rename/move an attached file"
-msgstr "renomi/movi aldonitan dosieron"
+msgid "Rename/move an attached file"
+msgstr "Renomi/movi aldonitan dosieron"
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
 #: gui/opcodes.h:242
-msgid "send the message"
-msgstr "sendi la mesaĝon"
+msgid "Send the message"
+msgstr "Sendi la mesaĝon"
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
 #: gui/opcodes.h:246
-msgid "compose new message to the current message sender"
-msgstr "verki novan mesaĝon al la aktuala sendinto"
+msgid "Compose new message to the current message sender"
+msgstr "Verki novan mesaĝon al la aktuala sendinto"
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
 #: gui/opcodes.h:249
-msgid "write the message to a folder"
-msgstr "skribi la mesaĝon al poŝtfako"
+msgid "Write the message to a folder"
+msgstr "Skribi la mesaĝon al poŝtfako"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
 #: gui/opcodes.h:252
-msgid "copy a message to a file/mailbox"
-msgstr "kopii mesaĝon al dosiero/poŝtfako"
+msgid "Copy a message to a file/mailbox"
+msgstr "Kopii mesaĝon al dosiero/poŝtfako"
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
 #. Index: <op_create_alias>
 #: gui/opcodes.h:256
-msgid "create an alias from a message sender"
-msgstr "aldoni sendinton al adresaro"
+msgid "Create an alias from a message sender"
+msgstr "Aldoni sendinton al adresaro"
 
 #. L10N: Help screen description for OP_CREATE_MAILBOX
 #. Browser: <op_create_mailbox>
 #: gui/opcodes.h:259
-msgid "create a new mailbox (IMAP only)"
-msgstr "krei novan poŝtfakon (nur IMAP)"
+msgid "Create a new mailbox (IMAP only)"
+msgstr "Krei novan poŝtfakon (nur IMAP)"
 
 #. L10N: Help screen description for OP_CURRENT_BOTTOM
 #. Menu: <menu_movement>
 #: gui/opcodes.h:262
-msgid "move entry to bottom of screen"
-msgstr "movi registron al fino de ekrano"
+msgid "Move entry to bottom of screen"
+msgstr "Movi registron al fino de ekrano"
 
 #. L10N: Help screen description for OP_CURRENT_MIDDLE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:265
-msgid "move entry to middle of screen"
-msgstr "movi registron al mezo de ekrano"
+msgid "Move entry to middle of screen"
+msgstr "Movi registron al mezo de ekrano"
 
 #. L10N: Help screen description for OP_CURRENT_TOP
 #. Menu: <menu_movement>
 #: gui/opcodes.h:268
-msgid "move entry to top of screen"
-msgstr "movi registron al komenco de ekrano"
+msgid "Move entry to top of screen"
+msgstr "Movi registron al komenco de ekrano"
 
 #. L10N: Help screen description for OP_DECODE_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:271
-msgid "make decoded (text/plain) copy"
-msgstr "fari malkoditan kopion (text/plain)"
+msgid "Make decoded (text/plain) copy"
+msgstr "Fari malkoditan kopion (text/plain)"
 
 #. L10N: Help screen description for OP_DECODE_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:274
-msgid "make decoded copy (text/plain) and delete"
-msgstr "fari malkoditan kopion (text/plain) kaj forviŝi"
+msgid "Make decoded copy (text/plain) and delete"
+msgstr "Fari malkoditan kopion (text/plain) kaj forviŝi"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
 #: gui/opcodes.h:282
-msgid "delete the current mailbox (IMAP only)"
-msgstr "forviŝi la nunan poŝtfakon (nur IMAP)"
+msgid "Delete the current mailbox (IMAP only)"
+msgstr "Forviŝi la nunan poŝtfakon (nur IMAP)"
 
 #. L10N: Help screen description for OP_DELETE_SUBTHREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:285
-msgid "delete all messages in subthread"
-msgstr "forviŝi ĉiujn mesaĝojn en subfadeno"
+msgid "Delete all messages in subthread"
+msgstr "Forviŝi ĉiujn mesaĝojn en subfadeno"
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:288
-msgid "delete all messages in thread"
-msgstr "forviŝi ĉiujn mesaĝojn en fadeno"
+msgid "Delete all messages in thread"
+msgstr "Forviŝi ĉiujn mesaĝojn en fadeno"
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
 #: gui/opcodes.h:291
-msgid "descend into a directory"
-msgstr "eniri en dosierujon"
+msgid "Descend into a directory"
+msgstr "Eniri en dosierujon"
 
 #. L10N: Help screen description for OP_DISPLAY_ADDRESS
 #. Index: <op_display_address>
 #: gui/opcodes.h:294
-msgid "display full address of sender"
-msgstr "montri plenan adreson de sendinto"
+msgid "Display full address of sender"
+msgstr "Montri plenan adreson de sendinto"
 
 #. L10N: Help screen description for OP_DISPLAY_HEADERS
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
 #: gui/opcodes.h:299
-msgid "display message and toggle header weeding"
-msgstr "montri mesaĝon kaj (mal)ŝalti montradon de plena ĉapo"
+msgid "Display message and toggle header weeding"
+msgstr "Montri mesaĝon kaj (mal)ŝalti montradon de plena ĉapo"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
 #: gui/opcodes.h:302
-msgid "display a message"
-msgstr "montri mesaĝon"
+msgid "Display a message"
+msgstr "Montri mesaĝon"
 
 #. L10N: Help screen description for OP_EDITOR_BACKSPACE
 #. Text Entry: <op_editor_backspace>
 #: gui/opcodes.h:305
-msgid "delete the char in front of the cursor"
-msgstr "forviŝi la signon antaŭ la tajpmontrilo"
+msgid "Delete the char in front of the cursor"
+msgstr "Forviŝi la signon antaŭ la tajpmontrilo"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
 #: gui/opcodes.h:308
-msgid "move the cursor one character to the left"
-msgstr "movi la tajpmontrilon unu signon maldekstren"
+msgid "Move the cursor one character to the left"
+msgstr "Movi la tajpmontrilon unu signon maldekstren"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
 #: gui/opcodes.h:311
-msgid "move the cursor to the beginning of the word"
-msgstr "movi la tajpmontrilon al la komenco de la vorto"
+msgid "Move the cursor to the beginning of the word"
+msgstr "Movi la tajpmontrilon al la komenco de la vorto"
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
 #: gui/opcodes.h:314
-msgid "jump to the beginning of the line"
-msgstr "salti al la komenco de la linio"
+msgid "Jump to the beginning of the line"
+msgstr "Salti al la komenco de la linio"
 
 #. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:317
-msgid "capitalize the word"
-msgstr "majuskligi la vorton"
+msgid "Capitalize the word"
+msgstr "Majuskligi la vorton"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:320
-msgid "complete filename or alias"
-msgstr "kompletigi dosieronomon aŭ nomon el la adresaro"
+msgid "Complete filename or alias"
+msgstr "Kompletigi dosieronomon aŭ nomon el la adresaro"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:323
-msgid "complete address with query"
-msgstr "kompletigi adreson kun demando"
+msgid "Complete address with query"
+msgstr "Kompletigi adreson kun demando"
 
 #. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
 #. Text Entry: <op_editor_delete_char>
 #: gui/opcodes.h:326
-msgid "delete the char under the cursor"
-msgstr "forviŝi la signon sub la tajpmontrilo"
+msgid "Delete the char under the cursor"
+msgstr "Forviŝi la signon sub la tajpmontrilo"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:329
-msgid "convert the word to lower case"
-msgstr "konverti la vorton al minuskloj"
+msgid "Convert the word to lower case"
+msgstr "Konverti la vorton al minuskloj"
 
 #. L10N: Help screen description for OP_EDITOR_EOL
 #. Text Entry: <op_editor_eol>
 #: gui/opcodes.h:332
-msgid "jump to the end of the line"
-msgstr "salti al la fino de la linio"
+msgid "Jump to the end of the line"
+msgstr "Salti al la fino de la linio"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
 #. Text Entry: <op_editor_forward_char>
 #: gui/opcodes.h:335
-msgid "move the cursor one character to the right"
-msgstr "movi la tajpmontrilon unu signon dekstren"
+msgid "Move the cursor one character to the right"
+msgstr "Movi la tajpmontrilon unu signon dekstren"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
 #: gui/opcodes.h:338
-msgid "move the cursor to the end of the word"
-msgstr "movi la tajpmontrilon al la fino de la vorto"
+msgid "Move the cursor to the end of the word"
+msgstr "Movi la tajpmontrilon al la fino de la vorto"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
 #: gui/opcodes.h:341
-msgid "scroll down through the history list"
-msgstr "rulumi malsupren tra la histori-listo"
+msgid "Scroll down through the history list"
+msgstr "Rulumi malsupren tra la histori-listo"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
 #: gui/opcodes.h:344
-msgid "search through the history list"
-msgstr "traserĉi la historioliston"
+msgid "Search through the history list"
+msgstr "Traserĉi la historioliston"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_UP
 #. Text Entry: <op_editor_history_up>
 #: gui/opcodes.h:347
-msgid "scroll up through the history list"
-msgstr "rulumi supren tra la histori-listo"
+msgid "Scroll up through the history list"
+msgstr "Rulumi supren tra la histori-listo"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOL
 #. Text Entry: <op_editor_kill_eol>
 #: gui/opcodes.h:350
-msgid "delete chars from cursor to end of line"
-msgstr "forviŝi signojn de la tajpmontrilo ĝis linifino"
+msgid "Delete chars from cursor to end of line"
+msgstr "Forviŝi signojn de la tajpmontrilo ĝis linifino"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
 #: gui/opcodes.h:353
-msgid "delete chars from the cursor to the end of the word"
-msgstr "forviŝi signojn de la tajpmontrilo ĝis fino de la vorto"
+msgid "Delete chars from the cursor to the end of the word"
+msgstr "Forviŝi signojn de la tajpmontrilo ĝis fino de la vorto"
 
 # KB - Mi supozas, ke la anglalingva teksto malhavas la vorton 'de'.
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
 #: gui/opcodes.h:356
-msgid "delete chars from cursor to beginning the line"
-msgstr "forviŝi signojn de la kursora pozicio ĝis la komenco de la linio"
+msgid "Delete chars from cursor to beginning the line"
+msgstr "Forviŝi signojn de la kursora pozicio ĝis la komenco de la linio"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
 #: gui/opcodes.h:359
-msgid "delete all chars on the line"
-msgstr "forviŝi ĉiujn signojn en la linio"
+msgid "Delete all chars on the line"
+msgstr "Forviŝi ĉiujn signojn en la linio"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
 #: gui/opcodes.h:362
-msgid "delete the word in front of the cursor"
-msgstr "forviŝi la vorton antaŭ la tajpmontrilo"
+msgid "Delete the word in front of the cursor"
+msgstr "Forviŝi la vorton antaŭ la tajpmontrilo"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:365
-msgid "cycle among incoming mailboxes"
-msgstr "rondiri tra enir-poŝtfakoj"
+msgid "Cycle among incoming mailboxes"
+msgstr "Rondiri tra enir-poŝtfakoj"
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
 #: gui/opcodes.h:368
-msgid "quote the next typed key"
-msgstr "citi la sekvontan klavopremon"
+msgid "Quote the next typed key"
+msgstr "Citi la sekvontan klavopremon"
 
 #. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
 #. Text Entry: <op_editor_transpose_chars>
 #: gui/opcodes.h:371
-msgid "transpose character under cursor with previous"
-msgstr "interŝanĝi la signon sub la tajpmontrilo kun la antaŭa"
+msgid "Transpose character under cursor with previous"
+msgstr "Interŝanĝi la signon sub la tajpmontrilo kun la antaŭa"
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:374
-msgid "convert the word to upper case"
-msgstr "konverti la vorton al majuskloj"
+msgid "Convert the word to upper case"
+msgstr "Konverti la vorton al majuskloj"
 
 #. L10N: Help screen description for OP_EDIT_LABEL
 #. Index: <op_edit_label>
 #: gui/opcodes.h:377
-msgid "add, change, or delete a message's label"
-msgstr "alkroĉi, ŝanĝi, aŭ forigi mesaĝa etikedo"
+msgid "Add, change, or delete a message's label"
+msgstr "Alkroĉi, ŝanĝi, aŭ forigi mesaĝa etikedo"
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:380
-msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr "redakti la krudan mesaĝon se la leterkesto ne estas nurlega; aliokaze vidigi ĝin"
+msgid "Edit the raw message if the mailbox is not read-only, otherwise view it"
+msgstr "Redakti la krudan mesaĝon se la leterkesto ne estas nurlega; aliokaze vidigi ĝin"
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:383
-msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr "redakti la krudan mesaĝon (edit kaj edit-raw-message estas sinonimaj)"
+msgid "Edit the raw message (edit and edit-raw-message are synonyms)"
+msgstr "Redakti la krudan mesaĝon (edit kaj edit-raw-message estas sinonimaj)"
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
 #: gui/opcodes.h:386
-msgid "end of conditional execution (noop)"
-msgstr "fino de kondiĉa rulo (noop)"
+msgid "End of conditional execution (noop)"
+msgstr "Fino de kondiĉa rulo (noop)"
 
 #. L10N: Help screen description for OP_ENTER_COMMAND
 #. Global: <op_enter_command>
 #: gui/opcodes.h:389
-msgid "enter a neomuttrc command"
-msgstr "enigi neomuttrc-komandon"
+msgid "Enter a neomuttrc command"
+msgstr "Enigi neomuttrc-komandon"
 
 #. L10N: Help screen description for OP_ENTER_MASK
 #. Browser: <op_enter_mask>
 #: gui/opcodes.h:392
-msgid "enter a file mask"
-msgstr "enigi dosierŝablonon"
+msgid "Enter a file mask"
+msgstr "Enigi dosierŝablonon"
 
 #. L10N: Help screen description for OP_EXIT
 #. Alias Dialog: <op_exit>
@@ -3892,41 +3892,41 @@ msgstr "enigi dosierŝablonon"
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
 #: gui/opcodes.h:405
-msgid "exit this menu"
-msgstr "eliri el ĉi tiu menuo"
+msgid "Exit this menu"
+msgstr "Eliri el ĉi tiu menuo"
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:408
-msgid "move to the first entry"
-msgstr "iri al la unua registro"
+msgid "Move to the first entry"
+msgstr "Iri al la unua registro"
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
 #: gui/opcodes.h:411
-msgid "toggle a message's 'important' flag"
-msgstr "ŝanĝi la flagon 'grava' de mesaĝo"
+msgid "Toggle a message's 'important' flag"
+msgstr "Ŝanĝi la flagon 'grava' de mesaĝo"
 
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
 #: gui/opcodes.h:415
-msgid "followup to newsgroup"
-msgstr "respondi grupe en novaĵgrupo"
+msgid "Followup to newsgroup"
+msgstr "Respondi grupe en novaĵgrupo"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
 #: gui/opcodes.h:419
-msgid "forward a message with comments"
-msgstr "plusendi mesaĝon kun komentoj"
+msgid "Forward a message with comments"
+msgstr "Plusendi mesaĝon kun komentoj"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
 #: gui/opcodes.h:423
-msgid "forward to newsgroup"
-msgstr "plusendi al novaĵgrupo"
+msgid "Forward to newsgroup"
+msgstr "Plusendi al novaĵgrupo"
 
 #. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
 #. Alias Dialog: <op_generic_select_entry>
@@ -3938,68 +3938,68 @@ msgstr "plusendi al novaĵgrupo"
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
 #: gui/opcodes.h:433
-msgid "select the current entry"
-msgstr "elekti la aktualan registron"
+msgid "Select the current entry"
+msgstr "Elekti la aktualan registron"
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
 #: gui/opcodes.h:436
-msgid "get all children of the current message"
-msgstr "atingi ĉiujn ideojn de la nuna mesaĝo"
+msgid "Get all children of the current message"
+msgstr "Atingi ĉiujn ideojn de la nuna mesaĝo"
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
-msgid "get message with Message-Id"
-msgstr "atingi mesaĝon kun identigilo"
+msgid "Get message with Message-Id"
+msgstr "Atingi mesaĝon kun identigilo"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
 #: gui/opcodes.h:442
-msgid "get parent of the current message"
-msgstr "atingi patron de la nuna mesaĝo"
+msgid "Get parent of the current message"
+msgstr "Atingi patron de la nuna mesaĝo"
 
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:445
-msgid "go to parent directory"
-msgstr "iri al patra dosierujo"
+msgid "Go to parent directory"
+msgstr "Iri al patra dosierujo"
 
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:449
-msgid "reply to all recipients preserving To/Cc"
-msgstr "respondi al ĉiuj ricevintoj, konservante Al/Kopie-Al"
+msgid "Reply to all recipients preserving To/Cc"
+msgstr "Respondi al ĉiuj ricevintoj, konservante Al/Kopie-Al"
 
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:453
-msgid "reply to all recipients"
-msgstr "respondi al ĉiuj ricevintoj"
+msgid "Reply to all recipients"
+msgstr "Respondi al ĉiuj ricevintoj"
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
 #: gui/opcodes.h:457
-msgid "scroll down 1/2 page"
-msgstr "rulumi malsupren duonon de paĝo"
+msgid "Scroll down 1/2 page"
+msgstr "Rulumi malsupren duonon de paĝo"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
 #: gui/opcodes.h:461
-msgid "scroll up 1/2 page"
-msgstr "rulumi supren duonon de paĝo"
+msgid "Scroll up 1/2 page"
+msgstr "Rulumi supren duonon de paĝo"
 
 #. L10N: Help screen description for OP_HELP
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
 #: gui/opcodes.h:466
-msgid "this screen"
-msgstr "ĉi tiu ekrano"
+msgid "This screen"
+msgstr "Ĉi tiu ekrano"
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
@@ -4007,497 +4007,497 @@ msgstr "ĉi tiu ekrano"
 #: gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473
 #: gui/opcodes.h:474 gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477
 #: gui/opcodes.h:478 gui/opcodes.h:479
-msgid "jump to an index number"
-msgstr "salti al indeksnumero"
+msgid "Jump to an index number"
+msgstr "Salti al indeksnumero"
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:482
-msgid "move to the last entry"
-msgstr "iri al la lasta registro"
+msgid "Move to the last entry"
+msgstr "Iri al la lasta registro"
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
 #: gui/opcodes.h:485
-msgid "limit view to current thread"
-msgstr "montri nur la nunan fadenon"
+msgid "Limit view to current thread"
+msgstr "Montri nur la nunan fadenon"
 
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:489
-msgid "reply to specified mailing list"
-msgstr "respondi al specifita dissendolisto"
+msgid "Reply to specified mailing list"
+msgstr "Respondi al specifita dissendolisto"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
 #: gui/opcodes.h:493
-msgid "subscribe to a mailing list"
-msgstr "ekaboni dissendoliston"
+msgid "Subscribe to a mailing list"
+msgstr "Ekaboni dissendoliston"
 
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
 #: gui/opcodes.h:497
-msgid "unsubscribe from a mailing list"
-msgstr "malaboni de dissendolisto"
+msgid "Unsubscribe from a mailing list"
+msgstr "Malaboni de dissendolisto"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
 #: gui/opcodes.h:500
-msgid "load list of all newsgroups from NNTP server"
-msgstr "prezenti liston de ĉiuj novaĵgrupoj de NNTP-servilo"
+msgid "Load list of all newsgroups from NNTP server"
+msgstr "Prezenti liston de ĉiuj novaĵgrupoj de NNTP-servilo"
 
 #. L10N: Help screen description for OP_MACRO
 #: gui/opcodes.h:502
-msgid "execute a macro"
-msgstr "ruligi makroon"
+msgid "Execute a macro"
+msgstr "Ruligi makroon"
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
 #: gui/opcodes.h:506
-msgid "compose a new mail message"
-msgstr "verki novan mesaĝon"
+msgid "Compose a new mail message"
+msgstr "Verki novan mesaĝon"
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
 #: gui/opcodes.h:510
-msgid "list mailboxes with new mail"
-msgstr "listigi poŝtfakojn kun nova mesaĝo"
+msgid "List mailboxes with new mail"
+msgstr "Listigi poŝtfakojn kun nova mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
 #: gui/opcodes.h:513
-msgid "break the thread in two"
-msgstr "duigi la fadenon"
+msgid "Break the thread in two"
+msgstr "Duigi la fadenon"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:516
-msgid "open a different folder"
-msgstr "malfermi alian poŝtfakon"
+msgid "Open a different folder"
+msgstr "Malfermi alian poŝtfakon"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:519
-msgid "open a different folder in read only mode"
-msgstr "malfermi alian poŝtfakon nurlege"
+msgid "Open a different folder in read only mode"
+msgstr "Malfermi alian poŝtfakon nurlege"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:522
-msgid "open a different newsgroup"
-msgstr "malfermi alian novaĵgrupon"
+msgid "Open a different newsgroup"
+msgstr "Malfermi alian novaĵgrupon"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:525
-msgid "open a different newsgroup in read only mode"
-msgstr "malfermi alian novaĵgrupon nurlege"
+msgid "Open a different newsgroup in read only mode"
+msgstr "Malfermi alian novaĵgrupon nurlege"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:528
-msgid "clear a status flag from a message"
-msgstr "malŝalti flagon ĉe mesaĝo"
+msgid "Clear a status flag from a message"
+msgstr "Malŝalti flagon ĉe mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS
 #. Index: <op_main_close_all_threads>
 #: gui/opcodes.h:531
 #, fuzzy
-msgid "collapse all threads"
+msgid "Collapse all threads"
 msgstr "(mal)kolapsigi ĉiujn fadenojn"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_THREAD
 #. Index: <op_main_close_thread>
 #: gui/opcodes.h:534
 #, fuzzy
-msgid "collapse current thread"
+msgid "Collapse current thread"
 msgstr "(mal)kolapsigi la aktualan fadenon"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
 #: gui/opcodes.h:537
-msgid "collapse/uncollapse all threads"
+msgid "Collapse/uncollapse all threads"
 msgstr "(mal)kolapsigi ĉiujn fadenojn"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
 #: gui/opcodes.h:540
-msgid "collapse/uncollapse current thread"
+msgid "Collapse/uncollapse current thread"
 msgstr "(mal)kolapsigi la aktualan fadenon"
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
 #: gui/opcodes.h:543
-msgid "delete non-hidden messages matching a pattern"
-msgstr "forviŝi nekaŝitajn mesaĝojn laŭ ŝablono"
+msgid "Delete non-hidden messages matching a pattern"
+msgstr "Forviŝi nekaŝitajn mesaĝojn laŭ ŝablono"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
 #: gui/opcodes.h:546
-msgid "retrieve mail from POP server"
-msgstr "elŝuti mesaĝojn de POP-servilo"
+msgid "Retrieve mail from POP server"
+msgstr "Elŝuti mesaĝojn de POP-servilo"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
 #: gui/opcodes.h:549
-msgid "force retrieval of mail from IMAP server"
-msgstr "devigi prenadon de mesaĝoj de IMAP-servilo"
+msgid "Force retrieval of mail from IMAP server"
+msgstr "Devigi prenadon de mesaĝoj de IMAP-servilo"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
 #: gui/opcodes.h:552
-msgid "logout from all IMAP servers"
-msgstr "elsaluti el ĉiuj IMAP-serviloj"
+msgid "Logout from all IMAP servers"
+msgstr "Elsaluti el ĉiuj IMAP-serviloj"
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
 #: gui/opcodes.h:556
-msgid "show only messages matching a pattern"
-msgstr "montri nur la mesaĝojn kiuj kongruas kun ŝablono"
+msgid "Show only messages matching a pattern"
+msgstr "Montri nur la mesaĝojn kiuj kongruas kun ŝablono"
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
 #: gui/opcodes.h:559
-msgid "link tagged message to the current one"
-msgstr "ligi markitan mesaĝon al ĉi tiu"
+msgid "Link tagged message to the current one"
+msgstr "Ligi markitan mesaĝon al ĉi tiu"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:562
-msgid "modify (notmuch/imap) tags"
-msgstr "modifi (notmuch/IMAP) etikedojn"
+msgid "Modify (notmuch/imap) tags"
+msgstr "Modifi (notmuch/IMAP) etikedojn"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:565
-msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "modifi (notmuch/IMAP) etiketojn kaj poste kaŝi mesaĝon"
+msgid "Modify (notmuch/imap) tags and then hide message"
+msgstr "Modifi (notmuch/IMAP) etiketojn kaj poste kaŝi mesaĝon"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:568
-msgid "jump to the next new message"
-msgstr "salti al la unua nova mesaĝo"
+msgid "Jump to the next new message"
+msgstr "Salti al la unua nova mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:571
-msgid "jump to the next new or unread message"
-msgstr "salti al la sekva nova aŭ nelegita mesaĝo"
+msgid "Jump to the next new or unread message"
+msgstr "Salti al la sekva nova aŭ nelegita mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:574
-msgid "jump to the next subthread"
-msgstr "salti al la sekva subfadeno"
+msgid "Jump to the next subthread"
+msgstr "Salti al la sekva subfadeno"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:577
-msgid "jump to the next thread"
-msgstr "salti al la sekva fadeno"
+msgid "Jump to the next thread"
+msgstr "Salti al la sekva fadeno"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
 #: gui/opcodes.h:580
-msgid "move to the next undeleted message"
-msgstr "salti al la sekva malforviŝita mesaĝo"
+msgid "Move to the next undeleted message"
+msgstr "Salti al la sekva malforviŝita mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:583
-msgid "jump to the next unread message"
-msgstr "salti al la sekva nelegita mesaĝo"
+msgid "Jump to the next unread message"
+msgstr "Salti al la sekva nelegita mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
 #: gui/opcodes.h:586
-msgid "open next mailbox with new mail"
-msgstr "malfermi sekvan poŝtfakon kun nova poŝto"
+msgid "Open next mailbox with new mail"
+msgstr "Malfermi sekvan poŝtfakon kun nova poŝto"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS
 #. Index: <op_main_open_all_threads>
 #: gui/opcodes.h:589
 #, fuzzy
-msgid "uncollapse all threads"
+msgid "Uncollapse all threads"
 msgstr "(mal)kolapsigi ĉiujn fadenojn"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_THREAD
 #. Index: <op_main_open_thread>
 #: gui/opcodes.h:592
 #, fuzzy
-msgid "uncollapse current thread"
+msgid "Uncollapse current thread"
 msgstr "(mal)kolapsigi la aktualan fadenon"
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:595
-msgid "jump to parent message in thread"
-msgstr "salti al patra mesaĝo en fadeno"
+msgid "Jump to parent message in thread"
+msgstr "Salti al patra mesaĝo en fadeno"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:598
-msgid "jump to the previous new message"
-msgstr "salti al la antaŭa nova mesaĝo"
+msgid "Jump to the previous new message"
+msgstr "Salti al la antaŭa nova mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:601
-msgid "jump to the previous new or unread message"
-msgstr "salti al la antaŭa nova aŭ nelegita mesaĝo"
+msgid "Jump to the previous new or unread message"
+msgstr "Salti al la antaŭa nova aŭ nelegita mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:604
-msgid "jump to previous subthread"
-msgstr "salti al la antaŭa subfadeno"
+msgid "Jump to previous subthread"
+msgstr "Salti al la antaŭa subfadeno"
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:607
-msgid "jump to previous thread"
-msgstr "salti al la antaŭa fadeno"
+msgid "Jump to previous thread"
+msgstr "Salti al la antaŭa fadeno"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
 #: gui/opcodes.h:610
-msgid "move to the previous undeleted message"
-msgstr "salti al la antaŭa malforviŝita mesaĝo"
+msgid "Move to the previous undeleted message"
+msgstr "Salti al la antaŭa malforviŝita mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:613
-msgid "jump to the previous unread message"
-msgstr "salti al la antaŭa nelegita mesaĝo"
+msgid "Jump to the previous unread message"
+msgstr "Salti al la antaŭa nelegita mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
 #: gui/opcodes.h:616
-msgid "delete from NeoMutt, don't touch on disk"
-msgstr "forviŝi de NeoMutt, ne tuŝi en diskon"
+msgid "Delete from NeoMutt, don't touch on disk"
+msgstr "Forviŝi de NeoMutt, ne tuŝi en diskon"
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:619
-msgid "mark the current subthread as read"
-msgstr "marki la aktualan subfadenon kiel legitan"
+msgid "Mark the current subthread as read"
+msgstr "Marki la aktualan subfadenon kiel legitan"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:622
-msgid "mark the current thread as read"
-msgstr "marki la aktualan fadenon kiel legitan"
+msgid "Mark the current thread as read"
+msgstr "Marki la aktualan fadenon kiel legitan"
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:625
-msgid "jump to root message in thread"
-msgstr "salti al radika mesaĝo de fadeno"
+msgid "Jump to root message in thread"
+msgstr "Salti al radika mesaĝo de fadeno"
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:628
-msgid "set a status flag on a message"
-msgstr "ŝalti flagon ĉe mesaĝo"
+msgid "Set a status flag on a message"
+msgstr "Ŝalti flagon ĉe mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
 #: gui/opcodes.h:631
-msgid "show currently active limit pattern"
-msgstr "montri la aktivan limigŝablonon"
+msgid "Show currently active limit pattern"
+msgstr "Montri la aktivan limigŝablonon"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
 #: gui/opcodes.h:634
-msgid "save changes to mailbox"
-msgstr "skribi ŝanĝojn al poŝtfako"
+msgid "Save changes to mailbox"
+msgstr "Skribi ŝanĝojn al poŝtfako"
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
 #: gui/opcodes.h:637
-msgid "tag non-hidden messages matching a pattern"
-msgstr "marki nekaŝitajn mesaĝojn, kiuj laŭas ŝablonon"
+msgid "Tag non-hidden messages matching a pattern"
+msgstr "Marki nekaŝitajn mesaĝojn, kiuj laŭas ŝablonon"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
 #: gui/opcodes.h:640
-msgid "undelete non-hidden messages matching a pattern"
-msgstr "malforviŝi nekaŝitajn mesaĝojn laŭ ŝablono"
+msgid "Undelete non-hidden messages matching a pattern"
+msgstr "Malforviŝi nekaŝitajn mesaĝojn laŭ ŝablono"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
 #: gui/opcodes.h:643
-msgid "untag non-hidden messages matching a pattern"
-msgstr "malmarki nekaŝitajn mesaĝojn laŭ ŝablono"
+msgid "Untag non-hidden messages matching a pattern"
+msgstr "Malmarki nekaŝitajn mesaĝojn laŭ ŝablono"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
 #: gui/opcodes.h:646
-msgid "create a hotkey macro for the current message"
-msgstr "krei fulmklavan makroon por nuna mesaĝo"
+msgid "Create a hotkey macro for the current message"
+msgstr "Krei fulmklavan makroon por nuna mesaĝo"
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:649
-msgid "move to the middle of the page"
-msgstr "iri al la mezo de la paĝo"
+msgid "Move to the middle of the page"
+msgstr "Iri al la mezo de la paĝo"
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
 #: gui/opcodes.h:653
-msgid "move to the next entry"
-msgstr "iri al la sekva registro"
+msgid "Move to the next entry"
+msgstr "Iri al la sekva registro"
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
 #: gui/opcodes.h:657
-msgid "scroll down one line"
-msgstr "rulumi malsupren unu linion"
+msgid "Scroll down one line"
+msgstr "Rulumi malsupren unu linion"
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
 #: gui/opcodes.h:661
-msgid "move to the next page"
-msgstr "iri al la sekva paĝo"
+msgid "Move to the next page"
+msgstr "Iri al la sekva paĝo"
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
 #: gui/opcodes.h:664
-msgid "jump to the bottom of the message"
-msgstr "salti al la fino de la mesaĝo"
+msgid "Jump to the bottom of the message"
+msgstr "Salti al la fino de la mesaĝo"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
 #: gui/opcodes.h:667
-msgid "toggle display of quoted text"
-msgstr "ŝalti aŭ malŝalti montradon de citita teksto"
+msgid "Toggle display of quoted text"
+msgstr "Ŝalti aŭ malŝalti montradon de citita teksto"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
 #: gui/opcodes.h:670
-msgid "jump to first line after headers"
-msgstr "salti al la unua lino post ĉapoj"
+msgid "Jump to first line after headers"
+msgstr "Salti al la unua lino post ĉapoj"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
 #: gui/opcodes.h:673
-msgid "skip beyond quoted text"
-msgstr "supersalti cititan tekston"
+msgid "Skip beyond quoted text"
+msgstr "Supersalti cititan tekston"
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
 #: gui/opcodes.h:676
-msgid "jump to the top of the message"
-msgstr "salti al la komenco de mesaĝo"
+msgid "Jump to the top of the message"
+msgstr "Salti al la komenco de mesaĝo"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
 #: gui/opcodes.h:684
-msgid "post message to newsgroup"
-msgstr "afisi mesaĝon en novaĵgrupon"
+msgid "Post message to newsgroup"
+msgstr "Afisi mesaĝon en novaĵgrupon"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
 #: gui/opcodes.h:688
-msgid "move to the previous entry"
-msgstr "iri al la antaŭa registro"
+msgid "Move to the previous entry"
+msgstr "Iri al la antaŭa registro"
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
 #: gui/opcodes.h:692
-msgid "scroll up one line"
-msgstr "rulumi supren unu linion"
+msgid "Scroll up one line"
+msgstr "Rulumi supren unu linion"
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
 #: gui/opcodes.h:696
-msgid "move to the previous page"
-msgstr "iri al la antaŭa paĝo"
+msgid "Move to the previous page"
+msgstr "Iri al la antaŭa paĝo"
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
 #: gui/opcodes.h:702
-msgid "delete the current entry, bypassing the trash folder"
-msgstr "vere forviŝi ĉi tiun registron, preterpasante rubujon"
+msgid "Delete the current entry, bypassing the trash folder"
+msgstr "Vere forviŝi ĉi tiun registron, preterpasante rubujon"
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:705
-msgid "delete the current thread, bypassing the trash folder"
-msgstr "vere forviŝi la nunan fadenon, preterpasante la rubujon"
+msgid "Delete the current thread, bypassing the trash folder"
+msgstr "Vere forviŝi la nunan fadenon, preterpasante la rubujon"
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
 #: gui/opcodes.h:709
-msgid "query external program for addresses"
-msgstr "demandi eksteran programon pri adresoj"
+msgid "Query external program for addresses"
+msgstr "Demandi eksteran programon pri adresoj"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
 #: gui/opcodes.h:712
-msgid "append new query results to current results"
-msgstr "aldoni novajn demandrezultojn al jamaj rezultoj"
+msgid "Append new query results to current results"
+msgstr "Aldoni novajn demandrezultojn al jamaj rezultoj"
 
 #. L10N: Help screen description for OP_QUIT
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
 #: gui/opcodes.h:717
-msgid "save changes to mailbox and quit"
-msgstr "skribi ŝanĝojn al poŝtfako kaj eliri"
+msgid "Save changes to mailbox and quit"
+msgstr "Skribi ŝanĝojn al poŝtfako kaj eliri"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
 #: gui/opcodes.h:720
-msgid "recall a postponed message"
-msgstr "revoki prokrastitan mesaĝon"
+msgid "Recall a postponed message"
+msgstr "Revoki prokrastitan mesaĝon"
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
 #: gui/opcodes.h:723
-msgid "reconstruct thread containing current message"
-msgstr "rekonstrui fadenon, kiu enhavas la nunan mesaĝon"
+msgid "Reconstruct thread containing current message"
+msgstr "Rekonstrui fadenon, kiu enhavas la nunan mesaĝon"
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
 #: gui/opcodes.h:727
-msgid "clear and redraw the screen"
-msgstr "rekrei la enhavon de la ekrano"
+msgid "Clear and redraw the screen"
+msgstr "Rekrei la enhavon de la ekrano"
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
 #: gui/opcodes.h:730
-msgid "rename the current mailbox (IMAP only)"
-msgstr "renomi ĉi tiun poŝtfakon (nur IMAP)"
+msgid "Rename the current mailbox (IMAP only)"
+msgstr "Renomi ĉi tiun poŝtfakon (nur IMAP)"
 
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
 #: gui/opcodes.h:734
-msgid "reply to a message"
-msgstr "respondi al mesaĝo"
+msgid "Reply to a message"
+msgstr "Respondi al mesaĝo"
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
 #: gui/opcodes.h:738
-msgid "use the current message as a template for a new one"
-msgstr "uzi ĉi tiun mesaĝon kiel modelon por nova mesaĝo"
+msgid "Use the current message as a template for a new one"
+msgstr "Uzi ĉi tiun mesaĝon kiel modelon por nova mesaĝo"
 
 #. L10N: Help screen description for OP_SEARCH
 #. Menu: <menu_search>
@@ -4506,8 +4506,8 @@ msgstr "uzi ĉi tiun mesaĝon kiel modelon por nova mesaĝo"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:749
-msgid "search for a regular expression"
-msgstr "serĉi pri regula esprimo"
+msgid "Search for a regular expression"
+msgstr "Serĉi pri regula esprimo"
 
 #. L10N: Help screen description for OP_SEARCH_NEXT
 #. Menu: <menu_search>
@@ -4516,8 +4516,8 @@ msgstr "serĉi pri regula esprimo"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:756
-msgid "search for next match"
-msgstr "serĉi pri la sekva trafo"
+msgid "Search for next match"
+msgstr "Serĉi pri la sekva trafo"
 
 #. L10N: Help screen description for OP_SEARCH_OPPOSITE
 #. Menu: <menu_search>
@@ -4526,8 +4526,8 @@ msgstr "serĉi pri la sekva trafo"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:763
-msgid "search for next match in opposite direction"
-msgstr "serĉi pri la sekva trafo en la mala direkto"
+msgid "Search for next match in opposite direction"
+msgstr "Serĉi pri la sekva trafo en la mala direkto"
 
 #. L10N: Help screen description for OP_SEARCH_REVERSE
 #. Menu: <menu_search>
@@ -4536,418 +4536,418 @@ msgstr "serĉi pri la sekva trafo en la mala direkto"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:770
-msgid "search backwards for a regular expression"
-msgstr "serĉi malantaŭen per regula esprimo"
+msgid "Search backwards for a regular expression"
+msgstr "Serĉi malantaŭen per regula esprimo"
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
 #: gui/opcodes.h:773
-msgid "toggle search pattern coloring"
-msgstr "ŝalti aŭ malŝalti alikolorigon de serĉŝablono"
+msgid "Toggle search pattern coloring"
+msgstr "Ŝalti aŭ malŝalti alikolorigon de serĉŝablono"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
 #: gui/opcodes.h:776
-msgid "invoke a command in a subshell"
-msgstr "alvoki komandon en subŝelo"
+msgid "Invoke a command in a subshell"
+msgstr "Alvoki komandon en subŝelo"
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
 #: gui/opcodes.h:779
-msgid "show log (and debug) messages"
-msgstr "montri protokolajn (kaj senerarigajn) mesaĝojn"
+msgid "Show log (and debug) messages"
+msgstr "Montri protokolajn (kaj senerarigajn) mesaĝojn"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:784
-msgid "sort messages"
-msgstr "ordigi mesaĝojn"
+msgid "Sort messages"
+msgstr "Ordigi mesaĝojn"
 
 #. L10N: Help screen description for OP_SORT_REVERSE
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:789
-msgid "sort messages in reverse order"
-msgstr "ordigi mesaĝojn en inversa ordo"
+msgid "Sort messages in reverse order"
+msgstr "Ordigi mesaĝojn en inversa ordo"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:792
-msgid "subscribe to newsgroups matching a pattern"
-msgstr "ekaboni novaĵgrupojn laŭ ŝablono"
+msgid "Subscribe to newsgroups matching a pattern"
+msgstr "Ekaboni novaĵgrupojn laŭ ŝablono"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
 #: gui/opcodes.h:795
-msgid "tag the current entry"
-msgstr "marki la aktualan registron"
+msgid "Tag the current entry"
+msgstr "Marki la aktualan registron"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
 #: gui/opcodes.h:797
-msgid "apply next function to tagged messages"
-msgstr "apliki la sekvan komandon al ĉiuj markitaj mesaĝoj"
+msgid "Apply next function to tagged messages"
+msgstr "Apliki la sekvan komandon al ĉiuj markitaj mesaĝoj"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
 #: gui/opcodes.h:799
-msgid "apply next function ONLY to tagged messages"
-msgstr "apliki la sekvan funkcion NUR al markitaj mesaĝoj"
+msgid "Apply next function ONLY to tagged messages"
+msgstr "Apliki la sekvan funkcion NUR al markitaj mesaĝoj"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:802
-msgid "tag the current subthread"
-msgstr "marki la aktualan subfadenon"
+msgid "Tag the current subthread"
+msgstr "Marki la aktualan subfadenon"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:805
-msgid "tag the current thread"
-msgstr "marki la aktualan fadenon"
+msgid "Tag the current thread"
+msgstr "Marki la aktualan fadenon"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:808
-msgid "toggle whether to browse mailboxes or all files"
+msgid "Toggle whether to browse mailboxes or all files"
 msgstr "(mal)ŝali, ĉu vidi poŝtfakojn aŭ ĉiujn dosierojn"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
 #: gui/opcodes.h:811
-msgid "toggle a message's 'new' flag"
-msgstr "ŝanĝi la flagon 'nova' de mesaĝo"
+msgid "Toggle a message's 'new' flag"
+msgstr "Ŝanĝi la flagon 'nova' de mesaĝo"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
 #: gui/opcodes.h:814
-msgid "toggle view of read messages"
-msgstr "baskuli vidon de legitaj mesaĝojn"
+msgid "Toggle view of read messages"
+msgstr "Baskuli vidon de legitaj mesaĝojn"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
 #: gui/opcodes.h:817
-msgid "toggle whether the mailbox will be rewritten"
+msgid "Toggle whether the mailbox will be rewritten"
 msgstr "(mal)ŝalti, ĉu la poŝtfako estos reskribita"
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:820
-msgid "move to the top of the page"
-msgstr "iri al la supro de la paĝo"
+msgid "Move to the top of the page"
+msgstr "Iri al la supro de la paĝo"
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
 #: gui/opcodes.h:823
-msgid "mark all articles in newsgroup as unread"
-msgstr "marki ĉiujn artikolojn en novaĵgrupo kiel nelegitajn"
+msgid "Mark all articles in newsgroup as unread"
+msgstr "Marki ĉiujn artikolojn en novaĵgrupo kiel nelegitajn"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:831
-msgid "undelete all messages in subthread"
-msgstr "malforviŝi ĉiujn mesaĝojn en subfadeno"
+msgid "Undelete all messages in subthread"
+msgstr "Malforviŝi ĉiujn mesaĝojn en subfadeno"
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:834
-msgid "undelete all messages in thread"
-msgstr "malforviŝi ĉiujn mesaĝojn en fadeno"
+msgid "Undelete all messages in thread"
+msgstr "Malforviŝi ĉiujn mesaĝojn en fadeno"
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:837
-msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "malaboni de novaĵgrupoj laŭ ŝablono"
+msgid "Unsubscribe from newsgroups matching a pattern"
+msgstr "Malaboni de novaĵgrupoj laŭ ŝablono"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
 #: gui/opcodes.h:840
-msgid "show the NeoMutt version number and date"
-msgstr "montri la version kaj daton de NeoMutt"
+msgid "Show the NeoMutt version number and date"
+msgstr "Montri la version kaj daton de NeoMutt"
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
 #: gui/opcodes.h:844
-msgid "show MIME attachments"
-msgstr "montri MIME-partojn"
+msgid "Show MIME attachments"
+msgstr "Montri MIME-partojn"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:847
-msgid "show the raw message"
-msgstr "montri la krudan mesaĝon"
+msgid "Show the raw message"
+msgstr "Montri la krudan mesaĝon"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
 #: gui/opcodes.h:850
-msgid "display the keycode for a key press"
-msgstr "montri la klavokodon por klavopremo"
+msgid "Display the keycode for a key press"
+msgstr "Montri la klavokodon por klavopremo"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:855
-msgid "make decrypted copy"
-msgstr "fari malĉifritan kopion"
+msgid "Make decrypted copy"
+msgstr "Fari malĉifritan kopion"
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:858
-msgid "make decrypted copy and delete"
-msgstr "fari malĉifritan kopion kaj forviŝi"
+msgid "Make decrypted copy and delete"
+msgstr "Fari malĉifritan kopion kaj forviŝi"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
 #: gui/opcodes.h:862
-msgid "extract supported public keys"
-msgstr "eltiri publikajn ŝlosilojn"
+msgid "Extract supported public keys"
+msgstr "Eltiri publikajn ŝlosilojn"
 
 #. L10N: Help screen description for OP_FORGET_PASSPHRASE
 #. Attach Dialog: <op_forget_passphrase>
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
 #: gui/opcodes.h:867
-msgid "wipe passphrases from memory"
-msgstr "forviŝi pasfrazojn el memoro"
+msgid "Wipe passphrases from memory"
+msgstr "Forviŝi pasfrazojn el memoro"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
 #: gui/opcodes.h:872
-msgid "edit the BCC list"
-msgstr "redakti la BCC-liston"
+msgid "Edit the BCC list"
+msgstr "Redakti la BCC-liston"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
 #: gui/opcodes.h:875
-msgid "edit the CC list"
-msgstr "redakti la CC-liston"
+msgid "Edit the CC list"
+msgstr "Redakti la CC-liston"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
 #: gui/opcodes.h:878
-msgid "enter a file to save a copy of this message in"
-msgstr "donu dosieron, al kiu la mesaĝo estu skribita"
+msgid "Enter a file to save a copy of this message in"
+msgstr "Donu dosieron, al kiu la mesaĝo estu skribita"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
 #: gui/opcodes.h:881
-msgid "edit the Followup-To field"
-msgstr "redakti la kampon Reply-To"
+msgid "Edit the Followup-To field"
+msgstr "Redakti la kampon Reply-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
 #: gui/opcodes.h:884
-msgid "edit the from field"
-msgstr "redakti la From-kampon"
+msgid "Edit the from field"
+msgstr "Redakti la From-kampon"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
 #: gui/opcodes.h:887
-msgid "edit the message with headers"
-msgstr "redakti la mesaĝon kun ĉapoj"
+msgid "Edit the message with headers"
+msgstr "Redakti la mesaĝon kun ĉapoj"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
 #: gui/opcodes.h:890
-msgid "edit the newsgroups list"
-msgstr "redakti la novaĵgrupan liston"
+msgid "Edit the newsgroups list"
+msgstr "Redakti la novaĵgrupan liston"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
 #: gui/opcodes.h:893
-msgid "edit the Reply-To field"
-msgstr "redakti la kampon Reply-To"
+msgid "Edit the Reply-To field"
+msgstr "Redakti la kampon Reply-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
 #: gui/opcodes.h:896
-msgid "edit the subject of this message"
-msgstr "redakti la temlinion de le mesaĝo"
+msgid "Edit the subject of this message"
+msgstr "Redakti la temlinion de le mesaĝo"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
 #: gui/opcodes.h:899
-msgid "edit the TO list"
-msgstr "redakti la liston de ricevontoj"
+msgid "Edit the TO list"
+msgstr "Redakti la liston de ricevontoj"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
 #: gui/opcodes.h:902
-msgid "edit the X-Comment-To field"
-msgstr "redakti la kampon X-Commment-To"
+msgid "Edit the X-Comment-To field"
+msgstr "Redakti la kampon X-Commment-To"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:908
-msgid "open a different virtual folder"
-msgstr "malfermi alian virtualan dosierujon"
+msgid "Open a different virtual folder"
+msgstr "Malfermi alian virtualan dosierujon"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
 #: gui/opcodes.h:911
-msgid "read entire thread of the current message"
-msgstr "legi la tutan fadenon kun la nuna mesaĝo"
+msgid "Read entire thread of the current message"
+msgstr "Legi la tutan fadenon kun la nuna mesaĝo"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:914
-msgid "generate virtual folder from query"
-msgstr "generi virtualan dosierujon el informopeto"
+msgid "Generate virtual folder from query"
+msgstr "Generi virtualan dosierujon el informopeto"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:917
-msgid "generate a read-only virtual folder from query"
-msgstr "generi nurlegan virtualan dosierujon el impormopeto"
+msgid "Generate a read-only virtual folder from query"
+msgstr "Generi nurlegan virtualan dosierujon el impormopeto"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:920
-msgid "shifts virtual folder time window backwards"
-msgstr "fruigas la tempfenestron de la virtuala dosierujo"
+msgid "Shifts virtual folder time window backwards"
+msgstr "Fruigas la tempfenestron de la virtuala dosierujo"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:923
-msgid "shifts virtual folder time window forwards"
-msgstr "malfruigas la tempfenestron de la virtuala dosierujo"
+msgid "Shifts virtual folder time window forwards"
+msgstr "Malfruigas la tempfenestron de la virtuala dosierujo"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:926
-msgid "resets virtual folder time window to the present"
-msgstr "nuntempigas la tempfenestron de la virtuala dosierujo"
+msgid "Resets virtual folder time window to the present"
+msgstr "Nuntempigas la tempfenestron de la virtuala dosierujo"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_KEY
 #. Compose Dialog: <op_attach_attach_key>
 #: gui/opcodes.h:934
-msgid "attach a PGP public key"
-msgstr "aldoni publikan PGP-ŝlosilon"
+msgid "Attach a PGP public key"
+msgstr "Aldoni publikan PGP-ŝlosilon"
 
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
 #: gui/opcodes.h:938
-msgid "check for classic PGP"
-msgstr "kontroli pri klasika PGP"
+msgid "Check for classic PGP"
+msgstr "Kontroli pri klasika PGP"
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
 #: gui/opcodes.h:941
-msgid "show PGP options"
-msgstr "montri PGP-funkciojn"
+msgid "Show PGP options"
+msgstr "Montri PGP-funkciojn"
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
 #: gui/opcodes.h:944
-msgid "mail a PGP public key"
-msgstr "sendi publikan PGP-ŝlosilon"
+msgid "Mail a PGP public key"
+msgstr "Sendi publikan PGP-ŝlosilon"
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:948
-msgid "verify a public key"
-msgstr "kontroli publikan ŝlosilon"
+msgid "Verify a public key"
+msgstr "Kontroli publikan ŝlosilon"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
 #: gui/opcodes.h:952
-msgid "view the key's user id"
-msgstr "vidi la uzant-identigilon de la ŝlosilo"
+msgid "View the key's user id"
+msgstr "Vidi la uzant-identigilon de la ŝlosilo"
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
 #: gui/opcodes.h:957
-msgid "move the highlight to the first mailbox"
-msgstr "movi markilon al la unua poŝtfako"
+msgid "Move the highlight to the first mailbox"
+msgstr "Movi markilon al la unua poŝtfako"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
 #: gui/opcodes.h:960
-msgid "move the highlight to the last mailbox"
-msgstr "movi markilon al la lasta poŝtfako"
+msgid "Move the highlight to the last mailbox"
+msgstr "Movi markilon al la lasta poŝtfako"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
 #: gui/opcodes.h:963
-msgid "move the highlight to next mailbox"
-msgstr "movi markilon al sekvan poŝtfakon"
+msgid "Move the highlight to next mailbox"
+msgstr "Movi markilon al sekvan poŝtfakon"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
 #: gui/opcodes.h:966
-msgid "move the highlight to next mailbox with new mail"
-msgstr "movi markilon al sekvan poŝtfakon kun nova poŝto"
+msgid "Move the highlight to next mailbox with new mail"
+msgstr "Movi markilon al sekvan poŝtfakon kun nova poŝto"
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
 #: gui/opcodes.h:969
-msgid "open highlighted mailbox"
-msgstr "malfermi markitan poŝtfakon"
+msgid "Open highlighted mailbox"
+msgstr "Malfermi markitan poŝtfakon"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
 #: gui/opcodes.h:972
-msgid "scroll the sidebar down 1 page"
-msgstr "rulumi flankan strion suben je unu paĝo"
+msgid "Scroll the sidebar down 1 page"
+msgstr "Rulumi flankan strion suben je unu paĝo"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
 #: gui/opcodes.h:975
-msgid "scroll the sidebar up 1 page"
-msgstr "rulumi flankan strion supren je unu paĝo"
+msgid "Scroll the sidebar up 1 page"
+msgstr "Rulumi flankan strion supren je unu paĝo"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
 #: gui/opcodes.h:978
-msgid "move the highlight to previous mailbox"
-msgstr "movi markilon al antaŭan poŝtfakon"
+msgid "Move the highlight to previous mailbox"
+msgstr "Movi markilon al antaŭan poŝtfakon"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
 #: gui/opcodes.h:981
-msgid "move the highlight to previous mailbox with new mail"
-msgstr "movi markilon al antaŭan poŝtfakon kun nova poŝto"
+msgid "Move the highlight to previous mailbox with new mail"
+msgstr "Movi markilon al antaŭan poŝtfakon kun nova poŝto"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
 #: gui/opcodes.h:984
-msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "baskuli inter leterkestoj kaj virtualaj leterkestoj"
+msgid "Toggle between mailboxes and virtual mailboxes"
+msgstr "Baskuli inter leterkestoj kaj virtualaj leterkestoj"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
 #: gui/opcodes.h:987
-msgid "make the sidebar (in)visible"
-msgstr "kaŝi/malkaŝi la flankan strion"
+msgid "Make the sidebar (in)visible"
+msgstr "Kaŝi/malkaŝi la flankan strion"
 
 #. L10N: Help screen description for OP_SIDEBAR_ABORT_SEARCH
 #. Sidebar: <op_sidebar_abort_search>
 #: gui/opcodes.h:990
 #, fuzzy
-msgid "close the sidebar search"
-msgstr "kaŝi/malkaŝi la flankan strion"
+msgid "Close the sidebar search"
+msgstr "Kaŝi/malkaŝi la flankan strion"
 
 #. L10N: Help screen description for OP_SIDEBAR_START_SEARCH
 #. Sidebar: <op_sidebar_start_search>
 #: gui/opcodes.h:993
-msgid "fuzzy search the sidebar"
+msgid "Fuzzy search the sidebar"
 msgstr ""
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
 #: gui/opcodes.h:998
-msgid "show S/MIME options"
-msgstr "montri S/MIME-funkciojn"
+msgid "Show S/MIME options"
+msgstr "Montri S/MIME-funkciojn"
 
 #: gui/opcodes.h:1001
-msgid "null operation"
-msgstr "malplena funkcio"
+msgid "Null operation"
+msgstr "Malplena funkcio"
 
 #: gui/thread.c:109
 #, c-format

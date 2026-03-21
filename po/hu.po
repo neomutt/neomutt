@@ -3245,26 +3245,26 @@ msgstr "Karakter = %s, Oktális = %o, Decimális = %d\n"
 #. L10N: Help screen description for OP_ATTACH_ATTACH_FILE
 #. Compose Dialog: <op_attach_attach_file>
 #: gui/opcodes.h:42
-msgid "attach files to this message"
-msgstr "fájlok csatolása ehhez az üzenethez"
+msgid "Attach files to this message"
+msgstr "Fájlok csatolása ehhez az üzenethez"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:45
-msgid "attach messages to this message"
-msgstr "üzenetek csatolása ehhez az üzenethez"
+msgid "Attach messages to this message"
+msgstr "Üzenetek csatolása ehhez az üzenethez"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:48
-msgid "attach news articles to this message"
-msgstr "hírcsoport cikk csatolása ezen üzenethez"
+msgid "Attach news articles to this message"
+msgstr "Hírcsoport cikk csatolása ezen üzenethez"
 
 #. L10N: Help screen description for OP_ATTACH_COLLAPSE
 #. Attach Dialog: <op_attach_collapse>
 #: gui/opcodes.h:51
-msgid "toggle display of subparts"
-msgstr "további részek mutatása/elrejtése"
+msgid "Toggle display of subparts"
+msgstr "További részek mutatása/elrejtése"
 
 #. L10N: Help screen description for OP_ATTACH_DELETE
 #. Attach Dialog: <op_attach_delete>
@@ -3275,94 +3275,94 @@ msgstr "további részek mutatása/elrejtése"
 #. Index: <op_delete>
 #. Postponed Dialog: <op_delete>
 #: gui/opcodes.h:54 gui/opcodes.h:57 gui/opcodes.h:279
-msgid "delete the current entry"
-msgstr "aktuális bejegyzés törlése"
+msgid "Delete the current entry"
+msgstr "Aktuális bejegyzés törlése"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attach_edit_content_id>
 #: gui/opcodes.h:60
-msgid "edit the 'Content-ID' of the attachment"
-msgstr "melléklet 'Content-ID' szerkesztése"
+msgid "Edit the 'Content-ID' of the attachment"
+msgstr "Melléklet 'Content-ID' szerkesztése"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attach_edit_description>
 #: gui/opcodes.h:63
-msgid "edit attachment description"
-msgstr "melléklet-leírás szerkesztése"
+msgid "Edit attachment description"
+msgstr "Melléklet-leírás szerkesztése"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_ENCODING
 #. Compose Dialog: <op_attach_edit_encoding>
 #: gui/opcodes.h:66
-msgid "edit attachment transfer-encoding"
-msgstr "melléklet átviteli-kódolás szerkesztése"
+msgid "Edit attachment transfer-encoding"
+msgstr "Melléklet átviteli-kódolás szerkesztése"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_LANGUAGE
 #. Compose Dialog: <op_attach_edit_language>
 #: gui/opcodes.h:69
-msgid "edit the 'Content-Language' of the attachment"
-msgstr "melléklet 'Content-Language' szerkesztése"
+msgid "Edit the 'Content-Language' of the attachment"
+msgstr "Melléklet 'Content-Language' szerkesztése"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_MIME
 #. Compose Dialog: <op_attach_edit_mime>
 #: gui/opcodes.h:72
-msgid "edit attachment using mailcap entry"
-msgstr "melléklet szerkesztése a mailcap bejegyzés használatával"
+msgid "Edit attachment using mailcap entry"
+msgstr "Melléklet szerkesztése a mailcap bejegyzés használatával"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_TYPE
 #. Attach Dialog: <op_attach_edit_type>
 #. Compose Dialog: <op_attach_edit_type>
 #. Index: <op_attach_edit_type>
 #: gui/opcodes.h:77
-msgid "edit attachment content type"
-msgstr "melléklet tartalom-típusának szerkesztése"
+msgid "Edit attachment content type"
+msgstr "Melléklet tartalom-típusának szerkesztése"
 
 #. L10N: Help screen description for OP_ATTACH_FILTER
 #. Compose Dialog: <op_attach_filter>
 #: gui/opcodes.h:80
-msgid "filter attachment through a shell command"
-msgstr "melléklet szűrése egy shell parancson keresztül"
+msgid "Filter attachment through a shell command"
+msgstr "Melléklet szűrése egy shell parancson keresztül"
 
 #. L10N: Help screen description for OP_ATTACH_GET_ATTACHMENT
 #. Compose Dialog: <op_attach_get_attachment>
 #: gui/opcodes.h:83
-msgid "get a temporary copy of an attachment"
-msgstr "ideiglenes másolat készítése a mellékletről"
+msgid "Get a temporary copy of an attachment"
+msgstr "Ideiglenes másolat készítése a mellékletről"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_ALTS
 #. Compose Dialog: <op_attach_group_alts>
 #: gui/opcodes.h:86
-msgid "group tagged attachments as 'multipart/alternative'"
-msgstr "mellékletek csoportosan megjelölve 'multipart/alternative'-nak"
+msgid "Group tagged attachments as 'multipart/alternative'"
+msgstr "Mellékletek csoportosan megjelölve 'multipart/alternative'-nak"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL
 #. Compose Dialog: <op_attach_group_lingual>
 #: gui/opcodes.h:89
-msgid "group tagged attachments as 'multipart/multilingual'"
-msgstr "mellékletek csoportosan megjelölve 'multipart/multilingual'-nak"
+msgid "Group tagged attachments as 'multipart/multilingual'"
+msgstr "Mellékletek csoportosan megjelölve 'multipart/multilingual'-nak"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_RELATED
 #. Compose Dialog: <op_attach_group_related>
 #: gui/opcodes.h:92
-msgid "group tagged attachments as 'multipart/related'"
-msgstr "mellékletek csoportosan megjelölve 'multipart/related'-nak"
+msgid "Group tagged attachments as 'multipart/related'"
+msgstr "Mellékletek csoportosan megjelölve 'multipart/related'-nak"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_DOWN
 #. Compose Dialog: <op_attach_move_down>
 #: gui/opcodes.h:95
-msgid "move an attachment down in the attachment list"
-msgstr "melléklet lejjebb mozgatása a mellékletlistában"
+msgid "Move an attachment down in the attachment list"
+msgstr "Melléklet lejjebb mozgatása a mellékletlistában"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_UP
 #. Compose Dialog: <op_attach_move_up>
 #: gui/opcodes.h:98
-msgid "move an attachment up in the attachment list"
-msgstr "melléklet feljebb mozgatása a mellékletlistában"
+msgid "Move an attachment up in the attachment list"
+msgstr "Melléklet feljebb mozgatása a mellékletlistában"
 
 #. L10N: Help screen description for OP_ATTACH_NEW_MIME
 #. Compose Dialog: <op_attach_new_mime>
 #: gui/opcodes.h:101
-msgid "compose new attachment using mailcap entry"
-msgstr "új melléklet összeállítása a mailcap bejegyzéssel segítségével"
+msgid "Compose new attachment using mailcap entry"
+msgstr "Új melléklet összeállítása a mailcap bejegyzéssel segítségével"
 
 #. L10N: Help screen description for OP_ATTACH_PIPE
 #. L10N: Help screen description for OP_PIPE
@@ -3370,8 +3370,8 @@ msgstr "új melléklet összeállítása a mailcap bejegyzéssel segítségével
 #. Attach Dialog: <op_attach_pipe>
 #. Index: <op_pipe>
 #: gui/opcodes.h:103 gui/opcodes.h:681
-msgid "pipe message/attachment to a shell command"
-msgstr "üzenet/melléklet átadása csövön shell parancsnak"
+msgid "Pipe message/attachment to a shell command"
+msgstr "Üzenet/melléklet átadása csövön shell parancsnak"
 
 #. L10N: Help screen description for OP_ATTACH_PRINT
 #. Attach Dialog: <op_attach_print>
@@ -3379,14 +3379,14 @@ msgstr "üzenet/melléklet átadása csövön shell parancsnak"
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
 #: gui/opcodes.h:107 gui/opcodes.h:699
-msgid "print the current entry"
-msgstr "bejegyzés nyomtatása"
+msgid "Print the current entry"
+msgstr "Bejegyzés nyomtatása"
 
 #. L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT
 #. Compose Dialog: <op_attach_rename_attachment>
 #: gui/opcodes.h:110
-msgid "send attachment with a different name"
-msgstr "melléklet küldése más néven"
+msgid "Send attachment with a different name"
+msgstr "Melléklet küldése más néven"
 
 #. L10N: Help screen description for OP_ATTACH_SAVE
 #. Attach Dialog: <op_attach_save>
@@ -3395,26 +3395,26 @@ msgstr "melléklet küldése más néven"
 #. Index: <op_save>
 #. Pager: <op_save>
 #: gui/opcodes.h:114 gui/opcodes.h:742
-msgid "save message/attachment to a mailbox/file"
-msgstr "üzenet/melléklet mentése postafiókba/fájlba"
+msgid "Save message/attachment to a mailbox/file"
+msgstr "Üzenet/melléklet mentése postafiókba/fájlba"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attach_toggle_disposition>
 #: gui/opcodes.h:117
-msgid "toggle disposition between inline/attachment"
-msgstr "váltás beágyazás/csatolás között"
+msgid "Toggle disposition between inline/attachment"
+msgstr "Váltás beágyazás/csatolás között"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE
 #. Compose Dialog: <op_attach_toggle_recode>
 #: gui/opcodes.h:120
-msgid "toggle recoding of this attachment"
-msgstr "ezen melléklet újrakódolása"
+msgid "Toggle recoding of this attachment"
+msgstr "Ezen melléklet újrakódolása"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK
 #. Compose Dialog: <op_attach_toggle_unlink>
 #: gui/opcodes.h:123
-msgid "toggle whether to delete file after sending it"
-msgstr "fájl törlése/meghagyása küldés után"
+msgid "Toggle whether to delete file after sending it"
+msgstr "Fájl törlése/meghagyása küldés után"
 
 #. L10N: Help screen description for OP_ATTACH_UNDELETE
 #. Attach Dialog: <op_attach_undelete>
@@ -3423,504 +3423,504 @@ msgstr "fájl törlése/meghagyása küldés után"
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
 #: gui/opcodes.h:126 gui/opcodes.h:828
-msgid "undelete the current entry"
-msgstr "aktuális bejegyzés visszaállítása"
+msgid "Undelete the current entry"
+msgstr "Aktuális bejegyzés visszaállítása"
 
 #. L10N: Help screen description for OP_ATTACH_UNGROUP
 #. Compose Dialog: <op_attach_ungroup>
 #: gui/opcodes.h:129
-msgid "ungroup 'multipart' attachment"
-msgstr "csoportosítás feloldása a 'multipart' csatolmánynál"
+msgid "Ungroup 'multipart' attachment"
+msgstr "Csoportosítás feloldása a 'multipart' csatolmánynál"
 
 #. L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING
 #. Compose Dialog: <op_attach_update_encoding>
 #: gui/opcodes.h:132
-msgid "update an attachment's encoding info"
-msgstr "melléklet kódolási információinak frissítése"
+msgid "Update an attachment's encoding info"
+msgstr "Melléklet kódolási információinak frissítése"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:136
-msgid "view attachment using mailcap entry if necessary"
-msgstr "melléklet mutatása mailcap bejegyzés használatával, ha szükséges"
+msgid "View attachment using mailcap entry if necessary"
+msgstr "Melléklet mutatása mailcap bejegyzés használatával, ha szükséges"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP
 #. Attach Dialog: <op_attach_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:140
-msgid "force viewing of attachment using mailcap"
-msgstr "melléklet megtekintése mailcap segítségével"
+msgid "Force viewing of attachment using mailcap"
+msgstr "Melléklet megtekintése mailcap segítségével"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_PAGER
 #. Attach Dialog: <op_attach_view_pager>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:144
-msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "melléklet megtekintése copiousoutput mailcap segítségével"
+msgid "View attachment in pager using copiousoutput mailcap"
+msgstr "Melléklet megtekintése copiousoutput mailcap segítségével"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_TEXT
 #. Attach Dialog: <op_attach_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:148
-msgid "view attachment as text"
-msgstr "melléklet megtekintése szövegként"
+msgid "View attachment as text"
+msgstr "Melléklet megtekintése szövegként"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:151
-msgid "show the next page of the message"
-msgstr "ugrás az üzenet következő oldalára"
+msgid "Show the next page of the message"
+msgstr "Ugrás az üzenet következő oldalára"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:154
-msgid "show the previous page of the message"
-msgstr "ugrás az üzenet előző oldalára"
+msgid "Show the previous page of the message"
+msgstr "Ugrás az üzenet előző oldalára"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
 #: gui/opcodes.h:160
-msgid "manage autocrypt accounts"
-msgstr "autocrypt fiókok kezelése"
+msgid "Manage autocrypt accounts"
+msgstr "Autocrypt fiókok kezelése"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_create_acct>
 #: gui/opcodes.h:163
-msgid "create a new autocrypt account"
-msgstr "új autocrypt fiók létrehozása"
+msgid "Create a new autocrypt account"
+msgstr "Új autocrypt fiók létrehozása"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
 #: gui/opcodes.h:166
-msgid "delete the current account"
-msgstr "aktuális fiók törlése"
+msgid "Delete the current account"
+msgstr "Aktuális fiók törlése"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
 #: gui/opcodes.h:169
-msgid "toggle the current account active/inactive"
-msgstr "jelenlegi fiók váltása aktív/inaktív-ra"
+msgid "Toggle the current account active/inactive"
+msgstr "Jelenlegi fiók váltása aktív/inaktív-ra"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
 #: gui/opcodes.h:172
-msgid "toggle the current account prefer-encrypt flag"
-msgstr "jelenlegi fiók titkosítás-preferálás váltása"
+msgid "Toggle the current account prefer-encrypt flag"
+msgstr "Jelenlegi fiók titkosítás-preferálás váltása"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
 #: gui/opcodes.h:175
-msgid "show autocrypt compose menu options"
-msgstr "autocrypt szerkesztés menü opciók mutatása"
+msgid "Show autocrypt compose menu options"
+msgstr "Autocrypt szerkesztés menü opciók mutatása"
 
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
 #: gui/opcodes.h:183
-msgid "open the aliases dialog"
-msgstr "álnevek dialógusablak megnyitása"
+msgid "Open the aliases dialog"
+msgstr "Álnevek dialógusablak megnyitása"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:186
-msgid "move to the bottom of the page"
-msgstr "ugrás az oldal aljára"
+msgid "Move to the bottom of the page"
+msgstr "Ugrás az oldal aljára"
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
 #: gui/opcodes.h:190
-msgid "remail a message to another user"
-msgstr "levél újraküldése egy másik felhasználónak"
+msgid "Remail a message to another user"
+msgstr "Levél újraküldése egy másik felhasználónak"
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:193
-msgid "swap the current folder position with $folder if it exists"
-msgstr "a jelenlegi könyvtár pozíció cseréje a $folder -el ha létezik"
+msgid "Swap the current folder position with $folder if it exists"
+msgstr "A jelenlegi könyvtár pozíció cseréje a $folder -el ha létezik"
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
 #: gui/opcodes.h:196
-msgid "select a new file in this directory"
-msgstr "válassz egy új fájlt ebben a könyvtárban"
+msgid "Select a new file in this directory"
+msgstr "Válassz egy új fájlt ebben a könyvtárban"
 
 #. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:199
-msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "aktuális postafiók felírása (csak IMAP)"
+msgid "Subscribe to current mbox (IMAP/NNTP only)"
+msgstr "Aktuális postafiók felírása (csak IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
 #: gui/opcodes.h:202
-msgid "display the currently selected file's name"
-msgstr "kijelölt fájl nevének mutatása"
+msgid "Display the currently selected file's name"
+msgstr "Kijelölt fájl nevének mutatása"
 
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
 #: gui/opcodes.h:205
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "váltás az összes/felírt postafiók nézetek között (csak IMAP)"
+msgid "Toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "Váltás az összes/felírt postafiók nézetek között (csak IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:208
-msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "leiratkozás a jelenlegi postafiókról (csak IMAP/NNTP)"
+msgid "Unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "Leiratkozás a jelenlegi postafiókról (csak IMAP/NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
 #: gui/opcodes.h:211
-msgid "view file"
-msgstr "fájl megtekintése"
+msgid "View file"
+msgstr "Fájl megtekintése"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
 #: gui/opcodes.h:215
-msgid "mark all articles in newsgroup as read"
-msgstr "a hírcsoport minden cikkje megjelölése olvasottként"
+msgid "Mark all articles in newsgroup as read"
+msgstr "A hírcsoport minden cikkje megjelölése olvasottként"
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:218
-msgid "change directories"
-msgstr "könyvtár váltás"
+msgid "Change directories"
+msgstr "Könyvtár váltás"
 
 #. L10N: Help screen description for OP_CHECK_NEW
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:221
-msgid "check mailboxes for new mail"
-msgstr "új levél keresése a postafiókokban"
+msgid "Check mailboxes for new mail"
+msgstr "Új levél keresése a postafiókokban"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
 #: gui/opcodes.h:224
-msgid "calculate message statistics for all mailboxes"
-msgstr "üzenet statisztika számolása az összes postafiókhoz"
+msgid "Calculate message statistics for all mailboxes"
+msgstr "Üzenet statisztika számolása az összes postafiókhoz"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
 #: gui/opcodes.h:227
-msgid "edit the file to be attached"
-msgstr "csatolandó fájl szerkesztése"
+msgid "Edit the file to be attached"
+msgstr "Csatolandó fájl szerkesztése"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
 #: gui/opcodes.h:230
-msgid "edit the message"
-msgstr "üzenet szerkesztése"
+msgid "Edit the message"
+msgstr "Üzenet szerkesztése"
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
 #: gui/opcodes.h:233
-msgid "run ispell on the message"
-msgstr "levél ellenőrzése ispell-el"
+msgid "Run ispell on the message"
+msgstr "Levél ellenőrzése ispell-el"
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
 #: gui/opcodes.h:236
-msgid "save this message to send later"
-msgstr "üzenet elmentése későbbi küldéshez"
+msgid "Save this message to send later"
+msgstr "Üzenet elmentése későbbi küldéshez"
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
 #: gui/opcodes.h:239
-msgid "rename/move an attached file"
-msgstr "csatolt fájl átnevezése/mozgatása"
+msgid "Rename/move an attached file"
+msgstr "Csatolt fájl átnevezése/mozgatása"
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
 #: gui/opcodes.h:242
-msgid "send the message"
-msgstr "üzenet elküldése"
+msgid "Send the message"
+msgstr "Üzenet elküldése"
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
 #: gui/opcodes.h:246
-msgid "compose new message to the current message sender"
-msgstr "új üzenet készítése az aktuális küldő számára"
+msgid "Compose new message to the current message sender"
+msgstr "Új üzenet készítése az aktuális küldő számára"
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
 #: gui/opcodes.h:249
-msgid "write the message to a folder"
-msgstr "üzenet írása postafiókba"
+msgid "Write the message to a folder"
+msgstr "Üzenet írása postafiókba"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
 #: gui/opcodes.h:252
-msgid "copy a message to a file/mailbox"
-msgstr "üzenet másolása fájlba/postafiókba"
+msgid "Copy a message to a file/mailbox"
+msgstr "Üzenet másolása fájlba/postafiókba"
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
 #. Index: <op_create_alias>
 #: gui/opcodes.h:256
-msgid "create an alias from a message sender"
-msgstr "álnév létrehozása a feladóhoz"
+msgid "Create an alias from a message sender"
+msgstr "Álnév létrehozása a feladóhoz"
 
 #. L10N: Help screen description for OP_CREATE_MAILBOX
 #. Browser: <op_create_mailbox>
 #: gui/opcodes.h:259
-msgid "create a new mailbox (IMAP only)"
-msgstr "új postafiók létrehozása (csak IMAP)"
+msgid "Create a new mailbox (IMAP only)"
+msgstr "Új postafiók létrehozása (csak IMAP)"
 
 #. L10N: Help screen description for OP_CURRENT_BOTTOM
 #. Menu: <menu_movement>
 #: gui/opcodes.h:262
-msgid "move entry to bottom of screen"
-msgstr "lapozás a képernyő aljára"
+msgid "Move entry to bottom of screen"
+msgstr "Lapozás a képernyő aljára"
 
 #. L10N: Help screen description for OP_CURRENT_MIDDLE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:265
-msgid "move entry to middle of screen"
-msgstr "lapozás a képernyő közepére"
+msgid "Move entry to middle of screen"
+msgstr "Lapozás a képernyő közepére"
 
 #. L10N: Help screen description for OP_CURRENT_TOP
 #. Menu: <menu_movement>
 #: gui/opcodes.h:268
-msgid "move entry to top of screen"
-msgstr "lapozás a képernyő tetejére"
+msgid "Move entry to top of screen"
+msgstr "Lapozás a képernyő tetejére"
 
 #. L10N: Help screen description for OP_DECODE_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:271
-msgid "make decoded (text/plain) copy"
-msgstr "visszafejtett (sima szöveges) másolat készítése"
+msgid "Make decoded (text/plain) copy"
+msgstr "Visszafejtett (sima szöveges) másolat készítése"
 
 #. L10N: Help screen description for OP_DECODE_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:274
-msgid "make decoded copy (text/plain) and delete"
-msgstr "visszafejtett (sima szöveges) másolat készítése és törlés"
+msgid "Make decoded copy (text/plain) and delete"
+msgstr "Visszafejtett (sima szöveges) másolat készítése és törlés"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
 #: gui/opcodes.h:282
-msgid "delete the current mailbox (IMAP only)"
-msgstr "aktuális postafiók törlése (csak IMAP)"
+msgid "Delete the current mailbox (IMAP only)"
+msgstr "Aktuális postafiók törlése (csak IMAP)"
 
 #. L10N: Help screen description for OP_DELETE_SUBTHREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:285
-msgid "delete all messages in subthread"
-msgstr "témarész összes üzenetének törlése"
+msgid "Delete all messages in subthread"
+msgstr "Témarész összes üzenetének törlése"
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:288
-msgid "delete all messages in thread"
-msgstr "téma összes üzenetének törlése"
+msgid "Delete all messages in thread"
+msgstr "Téma összes üzenetének törlése"
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
 #: gui/opcodes.h:291
-msgid "descend into a directory"
-msgstr "könyvtár megnyitása"
+msgid "Descend into a directory"
+msgstr "Könyvtár megnyitása"
 
 #. L10N: Help screen description for OP_DISPLAY_ADDRESS
 #. Index: <op_display_address>
 #: gui/opcodes.h:294
-msgid "display full address of sender"
-msgstr "a feladó teljes címének mutatása"
+msgid "Display full address of sender"
+msgstr "A feladó teljes címének mutatása"
 
 #. L10N: Help screen description for OP_DISPLAY_HEADERS
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
 #: gui/opcodes.h:299
-msgid "display message and toggle header weeding"
-msgstr "üzenet megjelenítése és a teljes fejléc ki/bekapcsolása"
+msgid "Display message and toggle header weeding"
+msgstr "Üzenet megjelenítése és a teljes fejléc ki/bekapcsolása"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
 #: gui/opcodes.h:302
-msgid "display a message"
-msgstr "üzenet megjelenítése"
+msgid "Display a message"
+msgstr "Üzenet megjelenítése"
 
 #. L10N: Help screen description for OP_EDITOR_BACKSPACE
 #. Text Entry: <op_editor_backspace>
 #: gui/opcodes.h:305
-msgid "delete the char in front of the cursor"
-msgstr "a kurzor előtti karakter törlése"
+msgid "Delete the char in front of the cursor"
+msgstr "A kurzor előtti karakter törlése"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
 #: gui/opcodes.h:308
-msgid "move the cursor one character to the left"
-msgstr "kurzor mozgatása egy karakterrel balra"
+msgid "Move the cursor one character to the left"
+msgstr "Kurzor mozgatása egy karakterrel balra"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
 #: gui/opcodes.h:311
-msgid "move the cursor to the beginning of the word"
-msgstr "kurzor mozgatása a szó elejére"
+msgid "Move the cursor to the beginning of the word"
+msgstr "Kurzor mozgatása a szó elejére"
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
 #: gui/opcodes.h:314
-msgid "jump to the beginning of the line"
-msgstr "ugrás a sor elejére"
+msgid "Jump to the beginning of the line"
+msgstr "Ugrás a sor elejére"
 
 #. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:317
-msgid "capitalize the word"
-msgstr "szó nagy kezdőbetűssé alakítása"
+msgid "Capitalize the word"
+msgstr "Szó nagy kezdőbetűssé alakítása"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:320
-msgid "complete filename or alias"
-msgstr "teljes fájlnév vagy álnév"
+msgid "Complete filename or alias"
+msgstr "Teljes fájlnév vagy álnév"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:323
-msgid "complete address with query"
-msgstr "teljes cím lekérdezéssel"
+msgid "Complete address with query"
+msgstr "Teljes cím lekérdezéssel"
 
 #. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
 #. Text Entry: <op_editor_delete_char>
 #: gui/opcodes.h:326
-msgid "delete the char under the cursor"
-msgstr "kurzoron álló karakter törlése"
+msgid "Delete the char under the cursor"
+msgstr "Kurzoron álló karakter törlése"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:329
-msgid "convert the word to lower case"
-msgstr "szó kisbetűssé alakítása"
+msgid "Convert the word to lower case"
+msgstr "Szó kisbetűssé alakítása"
 
 #. L10N: Help screen description for OP_EDITOR_EOL
 #. Text Entry: <op_editor_eol>
 #: gui/opcodes.h:332
-msgid "jump to the end of the line"
-msgstr "ugrás a sor végére"
+msgid "Jump to the end of the line"
+msgstr "Ugrás a sor végére"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
 #. Text Entry: <op_editor_forward_char>
 #: gui/opcodes.h:335
-msgid "move the cursor one character to the right"
-msgstr "kurzor mozgatása egy karakterrel jobbra"
+msgid "Move the cursor one character to the right"
+msgstr "Kurzor mozgatása egy karakterrel jobbra"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
 #: gui/opcodes.h:338
-msgid "move the cursor to the end of the word"
-msgstr "kurzor mozgatása a szó végére"
+msgid "Move the cursor to the end of the word"
+msgstr "Kurzor mozgatása a szó végére"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
 #: gui/opcodes.h:341
-msgid "scroll down through the history list"
-msgstr "lapozás lefelé az előzményekben"
+msgid "Scroll down through the history list"
+msgstr "Lapozás lefelé az előzményekben"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
 #: gui/opcodes.h:344
-msgid "search through the history list"
-msgstr "keresés a történet listában"
+msgid "Search through the history list"
+msgstr "Keresés a történet listában"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_UP
 #. Text Entry: <op_editor_history_up>
 #: gui/opcodes.h:347
-msgid "scroll up through the history list"
-msgstr "lapozás felfelé az előzményekben"
+msgid "Scroll up through the history list"
+msgstr "Lapozás felfelé az előzményekben"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOL
 #. Text Entry: <op_editor_kill_eol>
 #: gui/opcodes.h:350
-msgid "delete chars from cursor to end of line"
-msgstr "karakterek törlése a sor végéig"
+msgid "Delete chars from cursor to end of line"
+msgstr "Karakterek törlése a sor végéig"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
 #: gui/opcodes.h:353
-msgid "delete chars from the cursor to the end of the word"
-msgstr "karakterek törlése a szó végéig"
+msgid "Delete chars from the cursor to the end of the word"
+msgstr "Karakterek törlése a szó végéig"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
 #: gui/opcodes.h:356
-msgid "delete chars from cursor to beginning the line"
-msgstr "karakterek törlése a kurzortól a sor elejéig"
+msgid "Delete chars from cursor to beginning the line"
+msgstr "Karakterek törlése a kurzortól a sor elejéig"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
 #: gui/opcodes.h:359
-msgid "delete all chars on the line"
-msgstr "karakter törlése a sorban"
+msgid "Delete all chars on the line"
+msgstr "Karakter törlése a sorban"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
 #: gui/opcodes.h:362
-msgid "delete the word in front of the cursor"
-msgstr "a kurzor előtti szó törlése"
+msgid "Delete the word in front of the cursor"
+msgstr "A kurzor előtti szó törlése"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:365
-msgid "cycle among incoming mailboxes"
-msgstr "bejövő postafiókok körbejárása"
+msgid "Cycle among incoming mailboxes"
+msgstr "Bejövő postafiókok körbejárása"
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
 #: gui/opcodes.h:368
-msgid "quote the next typed key"
-msgstr "a következő kulcs idézése"
+msgid "Quote the next typed key"
+msgstr "A következő kulcs idézése"
 
 #. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
 #. Text Entry: <op_editor_transpose_chars>
 #: gui/opcodes.h:371
-msgid "transpose character under cursor with previous"
-msgstr "az előző és az aktuális karakter cseréje"
+msgid "Transpose character under cursor with previous"
+msgstr "Az előző és az aktuális karakter cseréje"
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:374
-msgid "convert the word to upper case"
-msgstr "szó nagybetűssé alakítása"
+msgid "Convert the word to upper case"
+msgstr "Szó nagybetűssé alakítása"
 
 #. L10N: Help screen description for OP_EDIT_LABEL
 #. Index: <op_edit_label>
 #: gui/opcodes.h:377
-msgid "add, change, or delete a message's label"
-msgstr "hozzáad, változtat, vagy törli az üzenet cimkéjét"
+msgid "Add, change, or delete a message's label"
+msgstr "Hozzáad, változtat, vagy törli az üzenet cimkéjét"
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:380
-msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr "üzenet szerkesztése a fejléccel együtt, ha a postafiók nem csak olvasható, egyébként csak megtekintés"
+msgid "Edit the raw message if the mailbox is not read-only, otherwise view it"
+msgstr "Üzenet szerkesztése a fejléccel együtt, ha a postafiók nem csak olvasható, egyébként csak megtekintés"
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:383
-msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr "fejlécekkel együttes üzenet szerkesztés (edit és edit-raw-message szinonímák)"
+msgid "Edit the raw message (edit and edit-raw-message are synonyms)"
+msgstr "Fejlécekkel együttes üzenet szerkesztés (edit és edit-raw-message szinonímák)"
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
 #: gui/opcodes.h:386
-msgid "end of conditional execution (noop)"
-msgstr "vége a feltételes végrehajtásnak (noop)"
+msgid "End of conditional execution (noop)"
+msgstr "Vége a feltételes végrehajtásnak (noop)"
 
 #. L10N: Help screen description for OP_ENTER_COMMAND
 #. Global: <op_enter_command>
 #: gui/opcodes.h:389
-msgid "enter a neomuttrc command"
-msgstr "adj meg egy neomuttrc parancsot"
+msgid "Enter a neomuttrc command"
+msgstr "Adj meg egy neomuttrc parancsot"
 
 #. L10N: Help screen description for OP_ENTER_MASK
 #. Browser: <op_enter_mask>
 #: gui/opcodes.h:392
-msgid "enter a file mask"
-msgstr "adj meg egy fájlmaszkot"
+msgid "Enter a file mask"
+msgstr "Adj meg egy fájlmaszkot"
 
 #. L10N: Help screen description for OP_EXIT
 #. Alias Dialog: <op_exit>
@@ -3935,41 +3935,41 @@ msgstr "adj meg egy fájlmaszkot"
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
 #: gui/opcodes.h:405
-msgid "exit this menu"
-msgstr "kilépés ebből a menüből"
+msgid "Exit this menu"
+msgstr "Kilépés ebből a menüből"
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:408
-msgid "move to the first entry"
-msgstr "ugrás az első bejegyzésre"
+msgid "Move to the first entry"
+msgstr "Ugrás az első bejegyzésre"
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
 #: gui/opcodes.h:411
-msgid "toggle a message's 'important' flag"
-msgstr "üzenet 'fontos' jelzőjének állítása"
+msgid "Toggle a message's 'important' flag"
+msgstr "Üzenet 'fontos' jelzőjének állítása"
 
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
 #: gui/opcodes.h:415
-msgid "followup to newsgroup"
-msgstr "hírcsoport nyomonkövetése"
+msgid "Followup to newsgroup"
+msgstr "Hírcsoport nyomonkövetése"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
 #: gui/opcodes.h:419
-msgid "forward a message with comments"
-msgstr "üzenet továbbítása kommentekkel"
+msgid "Forward a message with comments"
+msgstr "Üzenet továbbítása kommentekkel"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
 #: gui/opcodes.h:423
-msgid "forward to newsgroup"
-msgstr "hírcsoportnak továbbít"
+msgid "Forward to newsgroup"
+msgstr "Hírcsoportnak továbbít"
 
 #. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
 #. Alias Dialog: <op_generic_select_entry>
@@ -3981,68 +3981,68 @@ msgstr "hírcsoportnak továbbít"
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
 #: gui/opcodes.h:433
-msgid "select the current entry"
-msgstr "aktuális bejegyzés kijelölése"
+msgid "Select the current entry"
+msgstr "Aktuális bejegyzés kijelölése"
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
 #: gui/opcodes.h:436
-msgid "get all children of the current message"
-msgstr "aktuális üzenet minden gyermekének mutatása"
+msgid "Get all children of the current message"
+msgstr "Aktuális üzenet minden gyermekének mutatása"
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
-msgid "get message with Message-Id"
-msgstr "message-Id hez tartozó üzenet keresése"
+msgid "Get message with Message-Id"
+msgstr "Message-Id hez tartozó üzenet keresése"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
 #: gui/opcodes.h:442
-msgid "get parent of the current message"
-msgstr "aktuális üzenet szülőjének megkeresée"
+msgid "Get parent of the current message"
+msgstr "Aktuális üzenet szülőjének megkeresée"
 
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:445
-msgid "go to parent directory"
-msgstr "szülő könyvtárhoz ugrás"
+msgid "Go to parent directory"
+msgstr "Szülő könyvtárhoz ugrás"
 
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:449
-msgid "reply to all recipients preserving To/Cc"
-msgstr "válaszol minden címzettnek a To/Cc mezők megtartásával"
+msgid "Reply to all recipients preserving To/Cc"
+msgstr "Válaszol minden címzettnek a To/Cc mezők megtartásával"
 
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:453
-msgid "reply to all recipients"
-msgstr "válasz az összes címzettnek"
+msgid "Reply to all recipients"
+msgstr "Válasz az összes címzettnek"
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
 #: gui/opcodes.h:457
-msgid "scroll down 1/2 page"
-msgstr "fél oldal lapozás lefelé"
+msgid "Scroll down 1/2 page"
+msgstr "Fél oldal lapozás lefelé"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
 #: gui/opcodes.h:461
-msgid "scroll up 1/2 page"
-msgstr "fél oldal lapozás felfelé"
+msgid "Scroll up 1/2 page"
+msgstr "Fél oldal lapozás felfelé"
 
 #. L10N: Help screen description for OP_HELP
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
 #: gui/opcodes.h:466
-msgid "this screen"
-msgstr "ez a képernyő"
+msgid "This screen"
+msgstr "Ez a képernyő"
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
@@ -4050,497 +4050,497 @@ msgstr "ez a képernyő"
 #: gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473
 #: gui/opcodes.h:474 gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477
 #: gui/opcodes.h:478 gui/opcodes.h:479
-msgid "jump to an index number"
-msgstr "ugrás sorszámra"
+msgid "Jump to an index number"
+msgstr "Ugrás sorszámra"
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:482
-msgid "move to the last entry"
-msgstr "ugrás az utolsó bejegyzésre"
+msgid "Move to the last entry"
+msgstr "Ugrás az utolsó bejegyzésre"
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
 #: gui/opcodes.h:485
-msgid "limit view to current thread"
-msgstr "nézet korlátozása aktuális témára"
+msgid "Limit view to current thread"
+msgstr "Nézet korlátozása aktuális témára"
 
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:489
-msgid "reply to specified mailing list"
-msgstr "válasz a megadott levelezőlistára"
+msgid "Reply to specified mailing list"
+msgstr "Válasz a megadott levelezőlistára"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
 #: gui/opcodes.h:493
-msgid "subscribe to a mailing list"
-msgstr "feliratkozás hírcsoportra"
+msgid "Subscribe to a mailing list"
+msgstr "Feliratkozás hírcsoportra"
 
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
 #: gui/opcodes.h:497
-msgid "unsubscribe from a mailing list"
-msgstr "leiratkozás hírcsoportról"
+msgid "Unsubscribe from a mailing list"
+msgstr "Leiratkozás hírcsoportról"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
 #: gui/opcodes.h:500
-msgid "load list of all newsgroups from NNTP server"
-msgstr "összes hírcsoport letöltése az NNTP szerverről"
+msgid "Load list of all newsgroups from NNTP server"
+msgstr "Összes hírcsoport letöltése az NNTP szerverről"
 
 #. L10N: Help screen description for OP_MACRO
 #: gui/opcodes.h:502
-msgid "execute a macro"
-msgstr "makró végrehajtása"
+msgid "Execute a macro"
+msgstr "Makró végrehajtása"
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
 #: gui/opcodes.h:506
-msgid "compose a new mail message"
-msgstr "új levél szerkesztése"
+msgid "Compose a new mail message"
+msgstr "Új levél szerkesztése"
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
 #: gui/opcodes.h:510
-msgid "list mailboxes with new mail"
-msgstr "új levelet tartalmazó postafiókok"
+msgid "List mailboxes with new mail"
+msgstr "Új levelet tartalmazó postafiókok"
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
 #: gui/opcodes.h:513
-msgid "break the thread in two"
-msgstr "téma ketté válaszás"
+msgid "Break the thread in two"
+msgstr "Téma ketté válaszás"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:516
-msgid "open a different folder"
-msgstr "más postafiók megnyitása"
+msgid "Open a different folder"
+msgstr "Más postafiók megnyitása"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:519
-msgid "open a different folder in read only mode"
-msgstr "más postafiók megnyitása csak olvasásra"
+msgid "Open a different folder in read only mode"
+msgstr "Más postafiók megnyitása csak olvasásra"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:522
-msgid "open a different newsgroup"
-msgstr "más hírcsoport megnyitása"
+msgid "Open a different newsgroup"
+msgstr "Más hírcsoport megnyitása"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:525
-msgid "open a different newsgroup in read only mode"
-msgstr "más hírcsoport megnyitása csak olvasásra"
+msgid "Open a different newsgroup in read only mode"
+msgstr "Más hírcsoport megnyitása csak olvasásra"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:528
-msgid "clear a status flag from a message"
-msgstr "levél-állapotjelző törlése"
+msgid "Clear a status flag from a message"
+msgstr "Levél-állapotjelző törlése"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS
 #. Index: <op_main_close_all_threads>
 #: gui/opcodes.h:531
 #, fuzzy
-msgid "collapse all threads"
-msgstr "összes téma kinyitása/bezárása"
+msgid "Collapse all threads"
+msgstr "Összes téma kinyitása/bezárása"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_THREAD
 #. Index: <op_main_close_thread>
 #: gui/opcodes.h:534
 #, fuzzy
-msgid "collapse current thread"
-msgstr "téma kinyitása/bezárása"
+msgid "Collapse current thread"
+msgstr "Téma kinyitása/bezárása"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
 #: gui/opcodes.h:537
-msgid "collapse/uncollapse all threads"
-msgstr "összes téma kinyitása/bezárása"
+msgid "Collapse/uncollapse all threads"
+msgstr "Összes téma kinyitása/bezárása"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
 #: gui/opcodes.h:540
-msgid "collapse/uncollapse current thread"
-msgstr "téma kinyitása/bezárása"
+msgid "Collapse/uncollapse current thread"
+msgstr "Téma kinyitása/bezárása"
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
 #: gui/opcodes.h:543
-msgid "delete non-hidden messages matching a pattern"
-msgstr "adott mintára illeszkedő, nem rejtett levelek törlése"
+msgid "Delete non-hidden messages matching a pattern"
+msgstr "Adott mintára illeszkedő, nem rejtett levelek törlése"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
 #: gui/opcodes.h:546
-msgid "retrieve mail from POP server"
-msgstr "levelek törlése POP szerverről"
+msgid "Retrieve mail from POP server"
+msgstr "Levelek törlése POP szerverről"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
 #: gui/opcodes.h:549
-msgid "force retrieval of mail from IMAP server"
-msgstr "kényszerített levélletöltés az IMAP szerverről"
+msgid "Force retrieval of mail from IMAP server"
+msgstr "Kényszerített levélletöltés az IMAP szerverről"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
 #: gui/opcodes.h:552
-msgid "logout from all IMAP servers"
-msgstr "kijelentkezés az IMAP szerverekről"
+msgid "Logout from all IMAP servers"
+msgstr "Kijelentkezés az IMAP szerverekről"
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
 #: gui/opcodes.h:556
-msgid "show only messages matching a pattern"
-msgstr "csak a mintára illeszkedő levelek mutatása"
+msgid "Show only messages matching a pattern"
+msgstr "Csak a mintára illeszkedő levelek mutatása"
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
 #: gui/opcodes.h:559
-msgid "link tagged message to the current one"
-msgstr "kijelölt üzenet aktuálishoz kapcsolása"
+msgid "Link tagged message to the current one"
+msgstr "Kijelölt üzenet aktuálishoz kapcsolása"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:562
-msgid "modify (notmuch/imap) tags"
+msgid "Modify (notmuch/imap) tags"
 msgstr "(notmuch/imap) címkék módosítása"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:565
-msgid "modify (notmuch/imap) tags and then hide message"
+msgid "Modify (notmuch/imap) tags and then hide message"
 msgstr "(notmuch/imap) címkék megváltoztatása, és üzenet elrejtése"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:568
-msgid "jump to the next new message"
-msgstr "ugrás a következő új levélre"
+msgid "Jump to the next new message"
+msgstr "Ugrás a következő új levélre"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:571
-msgid "jump to the next new or unread message"
-msgstr "ugrás a következő új vagy olvasatlan levélre"
+msgid "Jump to the next new or unread message"
+msgstr "Ugrás a következő új vagy olvasatlan levélre"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:574
-msgid "jump to the next subthread"
-msgstr "ugrás a következő témarészre"
+msgid "Jump to the next subthread"
+msgstr "Ugrás a következő témarészre"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:577
-msgid "jump to the next thread"
-msgstr "ugrás a következő témára"
+msgid "Jump to the next thread"
+msgstr "Ugrás a következő témára"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
 #: gui/opcodes.h:580
-msgid "move to the next undeleted message"
-msgstr "ugrás a következő visszaállított levélre"
+msgid "Move to the next undeleted message"
+msgstr "Ugrás a következő visszaállított levélre"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:583
-msgid "jump to the next unread message"
-msgstr "ugrás a következő olvasatlan levélre"
+msgid "Jump to the next unread message"
+msgstr "Ugrás a következő olvasatlan levélre"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
 #: gui/opcodes.h:586
-msgid "open next mailbox with new mail"
-msgstr "következő új levelet tartalmazó postafiók megnyitása"
+msgid "Open next mailbox with new mail"
+msgstr "Következő új levelet tartalmazó postafiók megnyitása"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS
 #. Index: <op_main_open_all_threads>
 #: gui/opcodes.h:589
 #, fuzzy
-msgid "uncollapse all threads"
-msgstr "összes téma kinyitása/bezárása"
+msgid "Uncollapse all threads"
+msgstr "Összes téma kinyitása/bezárása"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_THREAD
 #. Index: <op_main_open_thread>
 #: gui/opcodes.h:592
 #, fuzzy
-msgid "uncollapse current thread"
-msgstr "téma kinyitása/bezárása"
+msgid "Uncollapse current thread"
+msgstr "Téma kinyitása/bezárása"
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:595
-msgid "jump to parent message in thread"
-msgstr "ugrás a levél előzményére ebben a témában"
+msgid "Jump to parent message in thread"
+msgstr "Ugrás a levél előzményére ebben a témában"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:598
-msgid "jump to the previous new message"
-msgstr "ugrás az előző új levélre"
+msgid "Jump to the previous new message"
+msgstr "Ugrás az előző új levélre"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:601
-msgid "jump to the previous new or unread message"
-msgstr "ugrás az előző új vagy olvasatlan levélre"
+msgid "Jump to the previous new or unread message"
+msgstr "Ugrás az előző új vagy olvasatlan levélre"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:604
-msgid "jump to previous subthread"
-msgstr "ugrás az előző témarészre"
+msgid "Jump to previous subthread"
+msgstr "Ugrás az előző témarészre"
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:607
-msgid "jump to previous thread"
-msgstr "ugrás az előző témára"
+msgid "Jump to previous thread"
+msgstr "Ugrás az előző témára"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
 #: gui/opcodes.h:610
-msgid "move to the previous undeleted message"
-msgstr "ugrás az előző visszaállított levélre"
+msgid "Move to the previous undeleted message"
+msgstr "Ugrás az előző visszaállított levélre"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:613
-msgid "jump to the previous unread message"
-msgstr "ugrás az előző olvasatlan levélre"
+msgid "Jump to the previous unread message"
+msgstr "Ugrás az előző olvasatlan levélre"
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
 #: gui/opcodes.h:616
-msgid "delete from NeoMutt, don't touch on disk"
-msgstr "törlés NeoMutt-ról, a lemezől törlés nélkül"
+msgid "Delete from NeoMutt, don't touch on disk"
+msgstr "Törlés NeoMutt-ról, a lemezől törlés nélkül"
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:619
-msgid "mark the current subthread as read"
-msgstr "témarész jelölése olvasottnak"
+msgid "Mark the current subthread as read"
+msgstr "Témarész jelölése olvasottnak"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:622
-msgid "mark the current thread as read"
-msgstr "téma jelölése olvasottnak"
+msgid "Mark the current thread as read"
+msgstr "Téma jelölése olvasottnak"
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:625
-msgid "jump to root message in thread"
-msgstr "ugrás ebben a témában az első üzenetre"
+msgid "Jump to root message in thread"
+msgstr "Ugrás ebben a témában az első üzenetre"
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:628
-msgid "set a status flag on a message"
-msgstr "levél-állapotjelző beállítása"
+msgid "Set a status flag on a message"
+msgstr "Levél-állapotjelző beállítása"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
 #: gui/opcodes.h:631
-msgid "show currently active limit pattern"
-msgstr "aktuális szűrőminta mutatása"
+msgid "Show currently active limit pattern"
+msgstr "Aktuális szűrőminta mutatása"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
 #: gui/opcodes.h:634
-msgid "save changes to mailbox"
-msgstr "mentés postafiókba"
+msgid "Save changes to mailbox"
+msgstr "Mentés postafiókba"
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
 #: gui/opcodes.h:637
-msgid "tag non-hidden messages matching a pattern"
-msgstr "adott mintára illeszkedő, nem rejtett levelek megjelölése"
+msgid "Tag non-hidden messages matching a pattern"
+msgstr "Adott mintára illeszkedő, nem rejtett levelek megjelölése"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
 #: gui/opcodes.h:640
-msgid "undelete non-hidden messages matching a pattern"
-msgstr "adott mintára illeszkedő, nem rejtett levelek visszaállítása"
+msgid "Undelete non-hidden messages matching a pattern"
+msgstr "Adott mintára illeszkedő, nem rejtett levelek visszaállítása"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
 #: gui/opcodes.h:643
-msgid "untag non-hidden messages matching a pattern"
-msgstr "adott mintára illeszkedő, nem rejtett levelek megjelölésének visszavonása"
+msgid "Untag non-hidden messages matching a pattern"
+msgstr "Adott mintára illeszkedő, nem rejtett levelek megjelölésének visszavonása"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
 #: gui/opcodes.h:646
-msgid "create a hotkey macro for the current message"
-msgstr "jelenlegi üzenethez billentyű makró létrehozása"
+msgid "Create a hotkey macro for the current message"
+msgstr "Jelenlegi üzenethez billentyű makró létrehozása"
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:649
-msgid "move to the middle of the page"
-msgstr "mozgatás az oldal közepére"
+msgid "Move to the middle of the page"
+msgstr "Mozgatás az oldal közepére"
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
 #: gui/opcodes.h:653
-msgid "move to the next entry"
-msgstr "mozgatás a következő bejegyzésre"
+msgid "Move to the next entry"
+msgstr "Mozgatás a következő bejegyzésre"
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
 #: gui/opcodes.h:657
-msgid "scroll down one line"
-msgstr "mozgás egy sorral lejjebb"
+msgid "Scroll down one line"
+msgstr "Mozgás egy sorral lejjebb"
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
 #: gui/opcodes.h:661
-msgid "move to the next page"
-msgstr "ugrás a következő oldalra"
+msgid "Move to the next page"
+msgstr "Ugrás a következő oldalra"
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
 #: gui/opcodes.h:664
-msgid "jump to the bottom of the message"
-msgstr "ugrás az üzenet aljára"
+msgid "Jump to the bottom of the message"
+msgstr "Ugrás az üzenet aljára"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
 #: gui/opcodes.h:667
-msgid "toggle display of quoted text"
-msgstr "idézett szöveg mutatása/elrejtése"
+msgid "Toggle display of quoted text"
+msgstr "Idézett szöveg mutatása/elrejtése"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
 #: gui/opcodes.h:670
-msgid "jump to first line after headers"
-msgstr "a fejléc utáni első sorra ugrás"
+msgid "Jump to first line after headers"
+msgstr "A fejléc utáni első sorra ugrás"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
 #: gui/opcodes.h:673
-msgid "skip beyond quoted text"
-msgstr "idézett szöveg átlépése"
+msgid "Skip beyond quoted text"
+msgstr "Idézett szöveg átlépése"
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
 #: gui/opcodes.h:676
-msgid "jump to the top of the message"
-msgstr "ugrás az üzenet tetejére"
+msgid "Jump to the top of the message"
+msgstr "Ugrás az üzenet tetejére"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
 #: gui/opcodes.h:684
-msgid "post message to newsgroup"
-msgstr "üzenet közzététele a hírcsoportban"
+msgid "Post message to newsgroup"
+msgstr "Üzenet közzététele a hírcsoportban"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
 #: gui/opcodes.h:688
-msgid "move to the previous entry"
-msgstr "ugrás az előző bejegyzésre"
+msgid "Move to the previous entry"
+msgstr "Ugrás az előző bejegyzésre"
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
 #: gui/opcodes.h:692
-msgid "scroll up one line"
-msgstr "mozgás egy sorral feljebb"
+msgid "Scroll up one line"
+msgstr "Mozgás egy sorral feljebb"
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
 #: gui/opcodes.h:696
-msgid "move to the previous page"
-msgstr "ugrás az előző oldalra"
+msgid "Move to the previous page"
+msgstr "Ugrás az előző oldalra"
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
 #: gui/opcodes.h:702
-msgid "delete the current entry, bypassing the trash folder"
-msgstr "aktuális elem törlése a szemét könyvtár mellőzésével"
+msgid "Delete the current entry, bypassing the trash folder"
+msgstr "Aktuális elem törlése a szemét könyvtár mellőzésével"
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:705
-msgid "delete the current thread, bypassing the trash folder"
-msgstr "aktuális téma törlése, a szemét könyvtár mellőzésével"
+msgid "Delete the current thread, bypassing the trash folder"
+msgstr "Aktuális téma törlése, a szemét könyvtár mellőzésével"
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
 #: gui/opcodes.h:709
-msgid "query external program for addresses"
-msgstr "címek lekérdezése külső program segítségével"
+msgid "Query external program for addresses"
+msgstr "Címek lekérdezése külső program segítségével"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
 #: gui/opcodes.h:712
-msgid "append new query results to current results"
-msgstr "új lekérdezés eredményének hozzáfűzése az eddigiekhez"
+msgid "Append new query results to current results"
+msgstr "Új lekérdezés eredményének hozzáfűzése az eddigiekhez"
 
 #. L10N: Help screen description for OP_QUIT
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
 #: gui/opcodes.h:717
-msgid "save changes to mailbox and quit"
-msgstr "változások mentése és kilépés"
+msgid "Save changes to mailbox and quit"
+msgstr "Változások mentése és kilépés"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
 #: gui/opcodes.h:720
-msgid "recall a postponed message"
-msgstr "elhalasztott levél újrahívása"
+msgid "Recall a postponed message"
+msgstr "Elhalasztott levél újrahívása"
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
 #: gui/opcodes.h:723
-msgid "reconstruct thread containing current message"
-msgstr "aktuális üzenetet tartalmazó téma újraépítése"
+msgid "Reconstruct thread containing current message"
+msgstr "Aktuális üzenetet tartalmazó téma újraépítése"
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
 #: gui/opcodes.h:727
-msgid "clear and redraw the screen"
-msgstr "képernyő törlése és újrarajzolása"
+msgid "Clear and redraw the screen"
+msgstr "Képernyő törlése és újrarajzolása"
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
 #: gui/opcodes.h:730
-msgid "rename the current mailbox (IMAP only)"
-msgstr "aktuális postafiók átnevezése (csak IMAP esetén)"
+msgid "Rename the current mailbox (IMAP only)"
+msgstr "Aktuális postafiók átnevezése (csak IMAP esetén)"
 
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
 #: gui/opcodes.h:734
-msgid "reply to a message"
-msgstr "válasz a levélre"
+msgid "Reply to a message"
+msgstr "Válasz a levélre"
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
 #: gui/opcodes.h:738
-msgid "use the current message as a template for a new one"
-msgstr "levél sablonként használata egy új levélhez"
+msgid "Use the current message as a template for a new one"
+msgstr "Levél sablonként használata egy új levélhez"
 
 #. L10N: Help screen description for OP_SEARCH
 #. Menu: <menu_search>
@@ -4549,8 +4549,8 @@ msgstr "levél sablonként használata egy új levélhez"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:749
-msgid "search for a regular expression"
-msgstr "reguláris kifejezés keresése"
+msgid "Search for a regular expression"
+msgstr "Reguláris kifejezés keresése"
 
 #. L10N: Help screen description for OP_SEARCH_NEXT
 #. Menu: <menu_search>
@@ -4559,8 +4559,8 @@ msgstr "reguláris kifejezés keresése"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:756
-msgid "search for next match"
-msgstr "keresés tovább"
+msgid "Search for next match"
+msgstr "Keresés tovább"
 
 #. L10N: Help screen description for OP_SEARCH_OPPOSITE
 #. Menu: <menu_search>
@@ -4569,8 +4569,8 @@ msgstr "keresés tovább"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:763
-msgid "search for next match in opposite direction"
-msgstr "keresés visszafelé"
+msgid "Search for next match in opposite direction"
+msgstr "Keresés visszafelé"
 
 #. L10N: Help screen description for OP_SEARCH_REVERSE
 #. Menu: <menu_search>
@@ -4579,418 +4579,418 @@ msgstr "keresés visszafelé"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:770
-msgid "search backwards for a regular expression"
-msgstr "reguláris kifejezés keresése visszafelé"
+msgid "Search backwards for a regular expression"
+msgstr "Reguláris kifejezés keresése visszafelé"
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
 #: gui/opcodes.h:773
-msgid "toggle search pattern coloring"
-msgstr "keresett minta színezése ki/be"
+msgid "Toggle search pattern coloring"
+msgstr "Keresett minta színezése ki/be"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
 #: gui/opcodes.h:776
-msgid "invoke a command in a subshell"
-msgstr "parancs végrehajtása rész-shellben"
+msgid "Invoke a command in a subshell"
+msgstr "Parancs végrehajtása rész-shellben"
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
 #: gui/opcodes.h:779
-msgid "show log (and debug) messages"
-msgstr "loggolási és hibajavítási üzenetek megjelenítése"
+msgid "Show log (and debug) messages"
+msgstr "Loggolási és hibajavítási üzenetek megjelenítése"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:784
-msgid "sort messages"
-msgstr "üzenetek rendezése"
+msgid "Sort messages"
+msgstr "Üzenetek rendezése"
 
 #. L10N: Help screen description for OP_SORT_REVERSE
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:789
-msgid "sort messages in reverse order"
-msgstr "üzenetek rendezése fordított sorrendben"
+msgid "Sort messages in reverse order"
+msgstr "Üzenetek rendezése fordított sorrendben"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:792
-msgid "subscribe to newsgroups matching a pattern"
-msgstr "feliratkozni a mintához illeszkedő hírcsoportokra"
+msgid "Subscribe to newsgroups matching a pattern"
+msgstr "Feliratkozni a mintához illeszkedő hírcsoportokra"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
 #: gui/opcodes.h:795
-msgid "tag the current entry"
-msgstr "bejegyzés megjelölése"
+msgid "Tag the current entry"
+msgstr "Bejegyzés megjelölése"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
 #: gui/opcodes.h:797
-msgid "apply next function to tagged messages"
-msgstr "csoportos művelet végrehajtás a kijelölt üzenetekre"
+msgid "Apply next function to tagged messages"
+msgstr "Csoportos művelet végrehajtás a kijelölt üzenetekre"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
 #: gui/opcodes.h:799
-msgid "apply next function ONLY to tagged messages"
-msgstr "kizárólag a következő funkció alkalmazása a megjelült üzenetekre"
+msgid "Apply next function ONLY to tagged messages"
+msgstr "Kizárólag a következő funkció alkalmazása a megjelült üzenetekre"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:802
-msgid "tag the current subthread"
-msgstr "témarész megjelölése"
+msgid "Tag the current subthread"
+msgstr "Témarész megjelölése"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:805
-msgid "tag the current thread"
-msgstr "téma megjelölése"
+msgid "Tag the current thread"
+msgstr "Téma megjelölése"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:808
-msgid "toggle whether to browse mailboxes or all files"
-msgstr "váltás a csak postafiókok/összes fájl böngészése között"
+msgid "Toggle whether to browse mailboxes or all files"
+msgstr "Váltás a csak postafiókok/összes fájl böngészése között"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
 #: gui/opcodes.h:811
-msgid "toggle a message's 'new' flag"
-msgstr "levél 'új' jelzőjének állítása"
+msgid "Toggle a message's 'new' flag"
+msgstr "Levél 'új' jelzőjének állítása"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
 #: gui/opcodes.h:814
-msgid "toggle view of read messages"
-msgstr "olvasott üzenetek nézetének váltása"
+msgid "Toggle view of read messages"
+msgstr "Olvasott üzenetek nézetének váltása"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
 #: gui/opcodes.h:817
-msgid "toggle whether the mailbox will be rewritten"
-msgstr "a postafiók újraírásának ki/bekapcsolása"
+msgid "Toggle whether the mailbox will be rewritten"
+msgstr "A postafiók újraírásának ki/bekapcsolása"
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:820
-msgid "move to the top of the page"
-msgstr "ugrás az oldal tetejére"
+msgid "Move to the top of the page"
+msgstr "Ugrás az oldal tetejére"
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
 #: gui/opcodes.h:823
-msgid "mark all articles in newsgroup as unread"
-msgstr "a hírcsoport minden cikkét olvasatlannak jelölése"
+msgid "Mark all articles in newsgroup as unread"
+msgstr "A hírcsoport minden cikkét olvasatlannak jelölése"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:831
-msgid "undelete all messages in subthread"
-msgstr "a témarész összes levelének visszaállítása"
+msgid "Undelete all messages in subthread"
+msgstr "A témarész összes levelének visszaállítása"
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:834
-msgid "undelete all messages in thread"
-msgstr "a téma összes levelének visszaállítása"
+msgid "Undelete all messages in thread"
+msgstr "A téma összes levelének visszaállítása"
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:837
-msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "leiratkozás a mintára illeszkedő hírcsoportokról"
+msgid "Unsubscribe from newsgroups matching a pattern"
+msgstr "Leiratkozás a mintára illeszkedő hírcsoportokról"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
 #: gui/opcodes.h:840
-msgid "show the NeoMutt version number and date"
-msgstr "a NeoMutt verziójának és dátumának megjelenítése"
+msgid "Show the NeoMutt version number and date"
+msgstr "A NeoMutt verziójának és dátumának megjelenítése"
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
 #: gui/opcodes.h:844
-msgid "show MIME attachments"
-msgstr "a MIME mellékletek mutatása"
+msgid "Show MIME attachments"
+msgstr "A MIME mellékletek mutatása"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:847
-msgid "show the raw message"
-msgstr "nyers üzenet mutatása"
+msgid "Show the raw message"
+msgstr "Nyers üzenet mutatása"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
 #: gui/opcodes.h:850
-msgid "display the keycode for a key press"
-msgstr "billentyűleütés kódjának mutatása"
+msgid "Display the keycode for a key press"
+msgstr "Billentyűleütés kódjának mutatása"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:855
-msgid "make decrypted copy"
-msgstr "visszafejtett másolat készítése"
+msgid "Make decrypted copy"
+msgstr "Visszafejtett másolat készítése"
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:858
-msgid "make decrypted copy and delete"
-msgstr "visszafejtett másolat készítése és törlés"
+msgid "Make decrypted copy and delete"
+msgstr "Visszafejtett másolat készítése és törlés"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
 #: gui/opcodes.h:862
-msgid "extract supported public keys"
-msgstr "támogatott nyilvános kulcsok kibontása"
+msgid "Extract supported public keys"
+msgstr "Támogatott nyilvános kulcsok kibontása"
 
 #. L10N: Help screen description for OP_FORGET_PASSPHRASE
 #. Attach Dialog: <op_forget_passphrase>
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
 #: gui/opcodes.h:867
-msgid "wipe passphrases from memory"
-msgstr "jelszavak törlése a memóriából"
+msgid "Wipe passphrases from memory"
+msgstr "Jelszavak törlése a memóriából"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
 #: gui/opcodes.h:872
-msgid "edit the BCC list"
-msgstr "rejtett másolatot kap (BCC) lista szerkesztése"
+msgid "Edit the BCC list"
+msgstr "Rejtett másolatot kap (BCC) lista szerkesztése"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
 #: gui/opcodes.h:875
-msgid "edit the CC list"
-msgstr "másolatot kap lista (CC) szerkesztése"
+msgid "Edit the CC list"
+msgstr "Másolatot kap lista (CC) szerkesztése"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
 #: gui/opcodes.h:878
-msgid "enter a file to save a copy of this message in"
-msgstr "adj meg egy fájlnevet, ahova a levél másolatát elmentem"
+msgid "Enter a file to save a copy of this message in"
+msgstr "Adj meg egy fájlnevet, ahova a levél másolatát elmentem"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
 #: gui/opcodes.h:881
-msgid "edit the Followup-To field"
-msgstr "a Followup-To mező szerkesztése"
+msgid "Edit the Followup-To field"
+msgstr "A Followup-To mező szerkesztése"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
 #: gui/opcodes.h:884
-msgid "edit the from field"
-msgstr "feladó mező szerkesztése"
+msgid "Edit the from field"
+msgstr "Feladó mező szerkesztése"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
 #: gui/opcodes.h:887
-msgid "edit the message with headers"
-msgstr "üzenet szerkesztése fejlécekkel együtt"
+msgid "Edit the message with headers"
+msgstr "Üzenet szerkesztése fejlécekkel együtt"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
 #: gui/opcodes.h:890
-msgid "edit the newsgroups list"
-msgstr "hírcsoport lista szerkesztése"
+msgid "Edit the newsgroups list"
+msgstr "Hírcsoport lista szerkesztése"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
 #: gui/opcodes.h:893
-msgid "edit the Reply-To field"
-msgstr "a Válaszcím (Reply-To) szerkesztése"
+msgid "Edit the Reply-To field"
+msgstr "A Válaszcím (Reply-To) szerkesztése"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
 #: gui/opcodes.h:896
-msgid "edit the subject of this message"
-msgstr "levél tárgyának szerkesztése"
+msgid "Edit the subject of this message"
+msgstr "Levél tárgyának szerkesztése"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
 #: gui/opcodes.h:899
-msgid "edit the TO list"
-msgstr "a Címzett lista (TO) szerkesztése"
+msgid "Edit the TO list"
+msgstr "A Címzett lista (TO) szerkesztése"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
 #: gui/opcodes.h:902
-msgid "edit the X-Comment-To field"
-msgstr "az X-Comment-To mező szerkesztése"
+msgid "Edit the X-Comment-To field"
+msgstr "Az X-Comment-To mező szerkesztése"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:908
-msgid "open a different virtual folder"
-msgstr "másik virtuális postafiók megnyitása"
+msgid "Open a different virtual folder"
+msgstr "Másik virtuális postafiók megnyitása"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
 #: gui/opcodes.h:911
-msgid "read entire thread of the current message"
-msgstr "az aktuális üzenet teljes témájának beolvasása"
+msgid "Read entire thread of the current message"
+msgstr "Az aktuális üzenet teljes témájának beolvasása"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:914
-msgid "generate virtual folder from query"
-msgstr "virtuális könyvtár létrehozása lekérdezésből"
+msgid "Generate virtual folder from query"
+msgstr "Virtuális könyvtár létrehozása lekérdezésből"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:917
-msgid "generate a read-only virtual folder from query"
-msgstr "csal olvasható virtuális könyvtár létrehozása lekérdezésből"
+msgid "Generate a read-only virtual folder from query"
+msgstr "Csal olvasható virtuális könyvtár létrehozása lekérdezésből"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:920
-msgid "shifts virtual folder time window backwards"
-msgstr "virtuális könyvtár időablakát visszább állítja"
+msgid "Shifts virtual folder time window backwards"
+msgstr "Virtuális könyvtár időablakát visszább állítja"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:923
-msgid "shifts virtual folder time window forwards"
-msgstr "virtuális könyvtár időablakát előrébb állítja"
+msgid "Shifts virtual folder time window forwards"
+msgstr "Virtuális könyvtár időablakát előrébb állítja"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:926
-msgid "resets virtual folder time window to the present"
-msgstr "virtuális könyvtár időablakát a jelenre állítja vissza"
+msgid "Resets virtual folder time window to the present"
+msgstr "Virtuális könyvtár időablakát a jelenre állítja vissza"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_KEY
 #. Compose Dialog: <op_attach_attach_key>
 #: gui/opcodes.h:934
-msgid "attach a PGP public key"
-msgstr "egy PGP nyilvános kulcs csatolása"
+msgid "Attach a PGP public key"
+msgstr "Egy PGP nyilvános kulcs csatolása"
 
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
 #: gui/opcodes.h:938
-msgid "check for classic PGP"
-msgstr "hagyományos PGP keresése"
+msgid "Check for classic PGP"
+msgstr "Hagyományos PGP keresése"
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
 #: gui/opcodes.h:941
-msgid "show PGP options"
-msgstr "a PGP paraméterek mutatása"
+msgid "Show PGP options"
+msgstr "A PGP paraméterek mutatása"
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
 #: gui/opcodes.h:944
-msgid "mail a PGP public key"
-msgstr "a PGP nyilvános kulcs elküldése"
+msgid "Mail a PGP public key"
+msgstr "A PGP nyilvános kulcs elküldése"
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:948
-msgid "verify a public key"
-msgstr "a nyilvános kulcs ellenőrzése"
+msgid "Verify a public key"
+msgstr "A nyilvános kulcs ellenőrzése"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
 #: gui/opcodes.h:952
-msgid "view the key's user id"
-msgstr "a kulcstulajdonos azonosítójának megtekintése"
+msgid "View the key's user id"
+msgstr "A kulcstulajdonos azonosítójának megtekintése"
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
 #: gui/opcodes.h:957
-msgid "move the highlight to the first mailbox"
-msgstr "kiemelés mozgatása az első postafiókra"
+msgid "Move the highlight to the first mailbox"
+msgstr "Kiemelés mozgatása az első postafiókra"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
 #: gui/opcodes.h:960
-msgid "move the highlight to the last mailbox"
-msgstr "kiemelés mozgatása az utolsó postafiókra"
+msgid "Move the highlight to the last mailbox"
+msgstr "Kiemelés mozgatása az utolsó postafiókra"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
 #: gui/opcodes.h:963
-msgid "move the highlight to next mailbox"
-msgstr "kiemelés mozgatása az következő postafiókra"
+msgid "Move the highlight to next mailbox"
+msgstr "Kiemelés mozgatása az következő postafiókra"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
 #: gui/opcodes.h:966
-msgid "move the highlight to next mailbox with new mail"
-msgstr "kiemelés mozgatása az következő, új levelet tartalmazó postafiókra"
+msgid "Move the highlight to next mailbox with new mail"
+msgstr "Kiemelés mozgatása az következő, új levelet tartalmazó postafiókra"
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
 #: gui/opcodes.h:969
-msgid "open highlighted mailbox"
-msgstr "kiemelt postafiók megnyitása"
+msgid "Open highlighted mailbox"
+msgstr "Kiemelt postafiók megnyitása"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
 #: gui/opcodes.h:972
-msgid "scroll the sidebar down 1 page"
-msgstr "egy oldal lapozás lefelé"
+msgid "Scroll the sidebar down 1 page"
+msgstr "Egy oldal lapozás lefelé"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
 #: gui/opcodes.h:975
-msgid "scroll the sidebar up 1 page"
-msgstr "teljes oldal lapozás felfelé"
+msgid "Scroll the sidebar up 1 page"
+msgstr "Teljes oldal lapozás felfelé"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
 #: gui/opcodes.h:978
-msgid "move the highlight to previous mailbox"
-msgstr "kiemelés mozgatása az előző postafiókra"
+msgid "Move the highlight to previous mailbox"
+msgstr "Kiemelés mozgatása az előző postafiókra"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
 #: gui/opcodes.h:981
-msgid "move the highlight to previous mailbox with new mail"
-msgstr "kiemelés mozgatása az új levelet tartalmazó előző postafiókra"
+msgid "Move the highlight to previous mailbox with new mail"
+msgstr "Kiemelés mozgatása az új levelet tartalmazó előző postafiókra"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
 #: gui/opcodes.h:984
-msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "váltás a csak postafiókok és virtuális postafiókok között"
+msgid "Toggle between mailboxes and virtual mailboxes"
+msgstr "Váltás a csak postafiókok és virtuális postafiókok között"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
 #: gui/opcodes.h:987
-msgid "make the sidebar (in)visible"
-msgstr "az oldalablakot láthatóvá/láthatatlanná teszi"
+msgid "Make the sidebar (in)visible"
+msgstr "Az oldalablakot láthatóvá/láthatatlanná teszi"
 
 #. L10N: Help screen description for OP_SIDEBAR_ABORT_SEARCH
 #. Sidebar: <op_sidebar_abort_search>
 #: gui/opcodes.h:990
 #, fuzzy
-msgid "close the sidebar search"
-msgstr "az oldalablakot láthatóvá/láthatatlanná teszi"
+msgid "Close the sidebar search"
+msgstr "Az oldalablakot láthatóvá/láthatatlanná teszi"
 
 #. L10N: Help screen description for OP_SIDEBAR_START_SEARCH
 #. Sidebar: <op_sidebar_start_search>
 #: gui/opcodes.h:993
-msgid "fuzzy search the sidebar"
+msgid "Fuzzy search the sidebar"
 msgstr ""
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
 #: gui/opcodes.h:998
-msgid "show S/MIME options"
-msgstr "az S/MIME opciók mutatása"
+msgid "Show S/MIME options"
+msgstr "Az S/MIME opciók mutatása"
 
 #: gui/opcodes.h:1001
-msgid "null operation"
-msgstr "üres művelet"
+msgid "Null operation"
+msgstr "Üres művelet"
 
 #: gui/thread.c:109
 #, c-format

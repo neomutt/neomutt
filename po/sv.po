@@ -3307,27 +3307,27 @@ msgstr "Tecken = %s, Oktal = %o, Decimal = %d\n"
 #. Compose Dialog: <op_attach_attach_file>
 #: gui/opcodes.h:42
 #, fuzzy
-msgid "attach files to this message"
-msgstr "bifoga fil(er) till det här meddelandet"
+msgid "Attach files to this message"
+msgstr "Bifoga fil(er) till det här meddelandet"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:45
 #, fuzzy
-msgid "attach messages to this message"
-msgstr "bifoga meddelande(n) till det här meddelandet"
+msgid "Attach messages to this message"
+msgstr "Bifoga meddelande(n) till det här meddelandet"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:48
 #, fuzzy
-msgid "attach news articles to this message"
-msgstr "bifoga fil(er) till det här meddelandet"
+msgid "Attach news articles to this message"
+msgstr "Bifoga fil(er) till det här meddelandet"
 
 #. L10N: Help screen description for OP_ATTACH_COLLAPSE
 #. Attach Dialog: <op_attach_collapse>
 #: gui/opcodes.h:51
-msgid "toggle display of subparts"
+msgid "Toggle display of subparts"
 msgstr "Växla visning av underdelar"
 
 #. L10N: Help screen description for OP_ATTACH_DELETE
@@ -3339,99 +3339,99 @@ msgstr "Växla visning av underdelar"
 #. Index: <op_delete>
 #. Postponed Dialog: <op_delete>
 #: gui/opcodes.h:54 gui/opcodes.h:57 gui/opcodes.h:279
-msgid "delete the current entry"
-msgstr "radera den aktuella posten"
+msgid "Delete the current entry"
+msgstr "Radera den aktuella posten"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attach_edit_content_id>
 #: gui/opcodes.h:60
 #, fuzzy
-msgid "edit the 'Content-ID' of the attachment"
-msgstr "redigera filen som ska bifogas"
+msgid "Edit the 'Content-ID' of the attachment"
+msgstr "Redigera filen som ska bifogas"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attach_edit_description>
 #: gui/opcodes.h:63
-msgid "edit attachment description"
-msgstr "redigera bilagebeskrivning"
+msgid "Edit attachment description"
+msgstr "Redigera bilagebeskrivning"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_ENCODING
 #. Compose Dialog: <op_attach_edit_encoding>
 #: gui/opcodes.h:66
-msgid "edit attachment transfer-encoding"
-msgstr "redigera transportkodning för bilagan"
+msgid "Edit attachment transfer-encoding"
+msgstr "Redigera transportkodning för bilagan"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_LANGUAGE
 #. Compose Dialog: <op_attach_edit_language>
 #: gui/opcodes.h:69
 #, fuzzy
-msgid "edit the 'Content-Language' of the attachment"
-msgstr "redigera filen som ska bifogas"
+msgid "Edit the 'Content-Language' of the attachment"
+msgstr "Redigera filen som ska bifogas"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_MIME
 #. Compose Dialog: <op_attach_edit_mime>
 #: gui/opcodes.h:72
-msgid "edit attachment using mailcap entry"
-msgstr "redigera bilaga med \"mailcap\"-posten"
+msgid "Edit attachment using mailcap entry"
+msgstr "Redigera bilaga med \"mailcap\"-posten"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_TYPE
 #. Attach Dialog: <op_attach_edit_type>
 #. Compose Dialog: <op_attach_edit_type>
 #. Index: <op_attach_edit_type>
 #: gui/opcodes.h:77
-msgid "edit attachment content type"
-msgstr "redigera \"content type\" för bilaga"
+msgid "Edit attachment content type"
+msgstr "Redigera \"content type\" för bilaga"
 
 #. L10N: Help screen description for OP_ATTACH_FILTER
 #. Compose Dialog: <op_attach_filter>
 #: gui/opcodes.h:80
-msgid "filter attachment through a shell command"
-msgstr "filtrera bilaga genom ett skalkommando"
+msgid "Filter attachment through a shell command"
+msgstr "Filtrera bilaga genom ett skalkommando"
 
 #. L10N: Help screen description for OP_ATTACH_GET_ATTACHMENT
 #. Compose Dialog: <op_attach_get_attachment>
 #: gui/opcodes.h:83
-msgid "get a temporary copy of an attachment"
-msgstr "hämta en tillfällig kopia av en bilaga"
+msgid "Get a temporary copy of an attachment"
+msgstr "Hämta en tillfällig kopia av en bilaga"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_ALTS
 #. Compose Dialog: <op_attach_group_alts>
 #: gui/opcodes.h:86
-msgid "group tagged attachments as 'multipart/alternative'"
+msgid "Group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL
 #. Compose Dialog: <op_attach_group_lingual>
 #: gui/opcodes.h:89
-msgid "group tagged attachments as 'multipart/multilingual'"
+msgid "Group tagged attachments as 'multipart/multilingual'"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_RELATED
 #. Compose Dialog: <op_attach_group_related>
 #: gui/opcodes.h:92
 #, fuzzy
-msgid "group tagged attachments as 'multipart/related'"
+msgid "Group tagged attachments as 'multipart/related'"
 msgstr "Bilaga sparad"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_DOWN
 #. Compose Dialog: <op_attach_move_down>
 #: gui/opcodes.h:95
 #, fuzzy
-msgid "move an attachment down in the attachment list"
-msgstr "visa bilaga som text"
+msgid "Move an attachment down in the attachment list"
+msgstr "Visa bilaga som text"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_UP
 #. Compose Dialog: <op_attach_move_up>
 #: gui/opcodes.h:98
 #, fuzzy
-msgid "move an attachment up in the attachment list"
-msgstr "visa bilaga som text"
+msgid "Move an attachment up in the attachment list"
+msgstr "Visa bilaga som text"
 
 #. L10N: Help screen description for OP_ATTACH_NEW_MIME
 #. Compose Dialog: <op_attach_new_mime>
 #: gui/opcodes.h:101
-msgid "compose new attachment using mailcap entry"
-msgstr "komponera ny bilaga med \"mailcap\"-post"
+msgid "Compose new attachment using mailcap entry"
+msgstr "Komponera ny bilaga med \"mailcap\"-post"
 
 #. L10N: Help screen description for OP_ATTACH_PIPE
 #. L10N: Help screen description for OP_PIPE
@@ -3439,8 +3439,8 @@ msgstr "komponera ny bilaga med \"mailcap\"-post"
 #. Attach Dialog: <op_attach_pipe>
 #. Index: <op_pipe>
 #: gui/opcodes.h:103 gui/opcodes.h:681
-msgid "pipe message/attachment to a shell command"
-msgstr "skicka meddelandet/bilagan genom rör till ett skalkommando"
+msgid "Pipe message/attachment to a shell command"
+msgstr "Skicka meddelandet/bilagan genom rör till ett skalkommando"
 
 #. L10N: Help screen description for OP_ATTACH_PRINT
 #. Attach Dialog: <op_attach_print>
@@ -3448,14 +3448,14 @@ msgstr "skicka meddelandet/bilagan genom rör till ett skalkommando"
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
 #: gui/opcodes.h:107 gui/opcodes.h:699
-msgid "print the current entry"
-msgstr "skriv ut den aktuella posten"
+msgid "Print the current entry"
+msgstr "Skriv ut den aktuella posten"
 
 #. L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT
 #. Compose Dialog: <op_attach_rename_attachment>
 #: gui/opcodes.h:110
-msgid "send attachment with a different name"
-msgstr "skicka bilaga med ett annat namn"
+msgid "Send attachment with a different name"
+msgstr "Skicka bilaga med ett annat namn"
 
 #. L10N: Help screen description for OP_ATTACH_SAVE
 #. Attach Dialog: <op_attach_save>
@@ -3464,26 +3464,26 @@ msgstr "skicka bilaga med ett annat namn"
 #. Index: <op_save>
 #. Pager: <op_save>
 #: gui/opcodes.h:114 gui/opcodes.h:742
-msgid "save message/attachment to a mailbox/file"
-msgstr "spara meddelande/bilaga till en postlåda/fil"
+msgid "Save message/attachment to a mailbox/file"
+msgstr "Spara meddelande/bilaga till en postlåda/fil"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attach_toggle_disposition>
 #: gui/opcodes.h:117
-msgid "toggle disposition between inline/attachment"
-msgstr "växla dispositionen mellan integrerat/bifogat"
+msgid "Toggle disposition between inline/attachment"
+msgstr "Växla dispositionen mellan integrerat/bifogat"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE
 #. Compose Dialog: <op_attach_toggle_recode>
 #: gui/opcodes.h:120
-msgid "toggle recoding of this attachment"
-msgstr "växla omkodning av den här bilagan"
+msgid "Toggle recoding of this attachment"
+msgstr "Växla omkodning av den här bilagan"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK
 #. Compose Dialog: <op_attach_toggle_unlink>
 #: gui/opcodes.h:123
-msgid "toggle whether to delete file after sending it"
-msgstr "växla om fil ska tas bort efter att den har sänts"
+msgid "Toggle whether to delete file after sending it"
+msgstr "Växla om fil ska tas bort efter att den har sänts"
 
 #. L10N: Help screen description for OP_ATTACH_UNDELETE
 #. Attach Dialog: <op_attach_undelete>
@@ -3492,511 +3492,511 @@ msgstr "växla om fil ska tas bort efter att den har sänts"
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
 #: gui/opcodes.h:126 gui/opcodes.h:828
-msgid "undelete the current entry"
-msgstr "återställ den aktuella posten"
+msgid "Undelete the current entry"
+msgstr "Återställ den aktuella posten"
 
 #. L10N: Help screen description for OP_ATTACH_UNGROUP
 #. Compose Dialog: <op_attach_ungroup>
 #: gui/opcodes.h:129
-msgid "ungroup 'multipart' attachment"
+msgid "Ungroup 'multipart' attachment"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING
 #. Compose Dialog: <op_attach_update_encoding>
 #: gui/opcodes.h:132
-msgid "update an attachment's encoding info"
-msgstr "uppdatera en bilagas kodningsinformation"
+msgid "Update an attachment's encoding info"
+msgstr "Uppdatera en bilagas kodningsinformation"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:136
-msgid "view attachment using mailcap entry if necessary"
-msgstr "visa bilaga med \"mailcap\"-posten om nödvändigt"
+msgid "View attachment using mailcap entry if necessary"
+msgstr "Visa bilaga med \"mailcap\"-posten om nödvändigt"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP
 #. Attach Dialog: <op_attach_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:140
-msgid "force viewing of attachment using mailcap"
-msgstr "tvinga visning av bilagor med \"mailcap\""
+msgid "Force viewing of attachment using mailcap"
+msgstr "Tvinga visning av bilagor med \"mailcap\""
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_PAGER
 #. Attach Dialog: <op_attach_view_pager>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:144
 #, fuzzy
-msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "tvinga visning av bilagor med \"mailcap\""
+msgid "View attachment in pager using copiousoutput mailcap"
+msgstr "Tvinga visning av bilagor med \"mailcap\""
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_TEXT
 #. Attach Dialog: <op_attach_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:148
-msgid "view attachment as text"
-msgstr "visa bilaga som text"
+msgid "View attachment as text"
+msgstr "Visa bilaga som text"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:151
 #, fuzzy
-msgid "show the next page of the message"
-msgstr "hoppa till början av meddelandet"
+msgid "Show the next page of the message"
+msgstr "Hoppa till början av meddelandet"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:154
 #, fuzzy
-msgid "show the previous page of the message"
-msgstr "hoppa till föregående nya eller olästa meddelande"
+msgid "Show the previous page of the message"
+msgstr "Hoppa till föregående nya eller olästa meddelande"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
 #: gui/opcodes.h:160
-msgid "manage autocrypt accounts"
-msgstr "hantera autocrypt-konton"
+msgid "Manage autocrypt accounts"
+msgstr "Hantera autocrypt-konton"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_create_acct>
 #: gui/opcodes.h:163
-msgid "create a new autocrypt account"
-msgstr "skapa ett nytt autocrypt-konto"
+msgid "Create a new autocrypt account"
+msgstr "Skapa ett nytt autocrypt-konto"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
 #: gui/opcodes.h:166
-msgid "delete the current account"
-msgstr "ta bort det aktuella kontot"
+msgid "Delete the current account"
+msgstr "Ta bort det aktuella kontot"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
 #: gui/opcodes.h:169
-msgid "toggle the current account active/inactive"
-msgstr "växla mellan aktivt/inaktivt konto"
+msgid "Toggle the current account active/inactive"
+msgstr "Växla mellan aktivt/inaktivt konto"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
 #: gui/opcodes.h:172
-msgid "toggle the current account prefer-encrypt flag"
-msgstr "växla mellan flagga att föredra kryptering för aktuellt konto"
+msgid "Toggle the current account prefer-encrypt flag"
+msgstr "Växla mellan flagga att föredra kryptering för aktuellt konto"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
 #: gui/opcodes.h:175
-msgid "show autocrypt compose menu options"
-msgstr "visa alternativ i skrivmenyn för autocrypt"
+msgid "Show autocrypt compose menu options"
+msgstr "Visa alternativ i skrivmenyn för autocrypt"
 
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
 #: gui/opcodes.h:183
 #, fuzzy
-msgid "open the aliases dialog"
+msgid "Open the aliases dialog"
 msgstr "Du är på det sista meddelandet"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:186
-msgid "move to the bottom of the page"
-msgstr "flytta till slutet av sidan"
+msgid "Move to the bottom of the page"
+msgstr "Flytta till slutet av sidan"
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
 #: gui/opcodes.h:190
-msgid "remail a message to another user"
-msgstr "återsänd ett meddelande till en annan användare"
+msgid "Remail a message to another user"
+msgstr "Återsänd ett meddelande till en annan användare"
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:193
-msgid "swap the current folder position with $folder if it exists"
+msgid "Swap the current folder position with $folder if it exists"
 msgstr ""
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
 #: gui/opcodes.h:196
-msgid "select a new file in this directory"
-msgstr "välj en ny fil i den här katalogen"
+msgid "Select a new file in this directory"
+msgstr "Välj en ny fil i den här katalogen"
 
 #. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:199
 #, fuzzy
-msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "prenumerera på aktuell brevlåda (endast IMAP)"
+msgid "Subscribe to current mbox (IMAP/NNTP only)"
+msgstr "Prenumerera på aktuell brevlåda (endast IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
 #: gui/opcodes.h:202
-msgid "display the currently selected file's name"
-msgstr "visa namnet på den valda filen"
+msgid "Display the currently selected file's name"
+msgstr "Visa namnet på den valda filen"
 
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
 #: gui/opcodes.h:205
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "växla vy av alla/prenumererade postlådor (endast IMAP)"
+msgid "Toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "Växla vy av alla/prenumererade postlådor (endast IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:208
 #, fuzzy
-msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "avsluta prenumereration på aktuell brevlåda (endast IMAP)"
+msgid "Unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "Avsluta prenumereration på aktuell brevlåda (endast IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
 #: gui/opcodes.h:211
-msgid "view file"
-msgstr "visa fil"
+msgid "View file"
+msgstr "Visa fil"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
 #: gui/opcodes.h:215
-msgid "mark all articles in newsgroup as read"
+msgid "Mark all articles in newsgroup as read"
 msgstr ""
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:218
-msgid "change directories"
-msgstr "byt kataloger"
+msgid "Change directories"
+msgstr "Byt kataloger"
 
 #. L10N: Help screen description for OP_CHECK_NEW
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:221
-msgid "check mailboxes for new mail"
-msgstr "kolla postlådor efter ny post"
+msgid "Check mailboxes for new mail"
+msgstr "Kolla postlådor efter ny post"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
 #: gui/opcodes.h:224
-msgid "calculate message statistics for all mailboxes"
-msgstr "beräkna meddelandestatistik för alla postlådor"
+msgid "Calculate message statistics for all mailboxes"
+msgstr "Beräkna meddelandestatistik för alla postlådor"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
 #: gui/opcodes.h:227
-msgid "edit the file to be attached"
-msgstr "redigera filen som ska bifogas"
+msgid "Edit the file to be attached"
+msgstr "Redigera filen som ska bifogas"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
 #: gui/opcodes.h:230
-msgid "edit the message"
-msgstr "redigera meddelandet"
+msgid "Edit the message"
+msgstr "Redigera meddelandet"
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
 #: gui/opcodes.h:233
-msgid "run ispell on the message"
-msgstr "kör ispell på meddelandet"
+msgid "Run ispell on the message"
+msgstr "Kör ispell på meddelandet"
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
 #: gui/opcodes.h:236
-msgid "save this message to send later"
-msgstr "spara det här meddelandet för att skicka senare"
+msgid "Save this message to send later"
+msgstr "Spara det här meddelandet för att skicka senare"
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
 #: gui/opcodes.h:239
-msgid "rename/move an attached file"
-msgstr "byt namn på/flytta en bifogad fil"
+msgid "Rename/move an attached file"
+msgstr "Byt namn på/flytta en bifogad fil"
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
 #: gui/opcodes.h:242
-msgid "send the message"
-msgstr "skicka meddelandet"
+msgid "Send the message"
+msgstr "Skicka meddelandet"
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
 #: gui/opcodes.h:246
-msgid "compose new message to the current message sender"
-msgstr "skriv nytt meddelande till den aktuella avsändaren"
+msgid "Compose new message to the current message sender"
+msgstr "Skriv nytt meddelande till den aktuella avsändaren"
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
 #: gui/opcodes.h:249
-msgid "write the message to a folder"
-msgstr "skriv meddelandet till en mapp"
+msgid "Write the message to a folder"
+msgstr "Skriv meddelandet till en mapp"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
 #: gui/opcodes.h:252
-msgid "copy a message to a file/mailbox"
-msgstr "kopiera ett meddelande till en fil/postlåda"
+msgid "Copy a message to a file/mailbox"
+msgstr "Kopiera ett meddelande till en fil/postlåda"
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
 #. Index: <op_create_alias>
 #: gui/opcodes.h:256
-msgid "create an alias from a message sender"
-msgstr "skapa ett alias från avsändaren av ett meddelande"
+msgid "Create an alias from a message sender"
+msgstr "Skapa ett alias från avsändaren av ett meddelande"
 
 #. L10N: Help screen description for OP_CREATE_MAILBOX
 #. Browser: <op_create_mailbox>
 #: gui/opcodes.h:259
-msgid "create a new mailbox (IMAP only)"
-msgstr "skapa en ny postlåda (endast IMAP)"
+msgid "Create a new mailbox (IMAP only)"
+msgstr "Skapa en ny postlåda (endast IMAP)"
 
 #. L10N: Help screen description for OP_CURRENT_BOTTOM
 #. Menu: <menu_movement>
 #: gui/opcodes.h:262
-msgid "move entry to bottom of screen"
-msgstr "flytta post till slutet av skärmen"
+msgid "Move entry to bottom of screen"
+msgstr "Flytta post till slutet av skärmen"
 
 #. L10N: Help screen description for OP_CURRENT_MIDDLE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:265
-msgid "move entry to middle of screen"
-msgstr "flytta post till mitten av skärmen"
+msgid "Move entry to middle of screen"
+msgstr "Flytta post till mitten av skärmen"
 
 #. L10N: Help screen description for OP_CURRENT_TOP
 #. Menu: <menu_movement>
 #: gui/opcodes.h:268
-msgid "move entry to top of screen"
-msgstr "flytta post till början av skärmen"
+msgid "Move entry to top of screen"
+msgstr "Flytta post till början av skärmen"
 
 #. L10N: Help screen description for OP_DECODE_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:271
-msgid "make decoded (text/plain) copy"
-msgstr "skapa avkodad (text/plain) kopia"
+msgid "Make decoded (text/plain) copy"
+msgstr "Skapa avkodad (text/plain) kopia"
 
 #. L10N: Help screen description for OP_DECODE_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:274
-msgid "make decoded copy (text/plain) and delete"
-msgstr "skapa avkodad kopia (text/plain) och radera"
+msgid "Make decoded copy (text/plain) and delete"
+msgstr "Skapa avkodad kopia (text/plain) och radera"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
 #: gui/opcodes.h:282
-msgid "delete the current mailbox (IMAP only)"
-msgstr "radera den aktuella postlådan (endast för IMAP)"
+msgid "Delete the current mailbox (IMAP only)"
+msgstr "Radera den aktuella postlådan (endast för IMAP)"
 
 #. L10N: Help screen description for OP_DELETE_SUBTHREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:285
-msgid "delete all messages in subthread"
-msgstr "radera alla meddelanden i undertråd"
+msgid "Delete all messages in subthread"
+msgstr "Radera alla meddelanden i undertråd"
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:288
-msgid "delete all messages in thread"
-msgstr "radera alla meddelanden i tråd"
+msgid "Delete all messages in thread"
+msgstr "Radera alla meddelanden i tråd"
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
 #: gui/opcodes.h:291
-msgid "descend into a directory"
-msgstr "gå ner i en katalog"
+msgid "Descend into a directory"
+msgstr "Gå ner i en katalog"
 
 #. L10N: Help screen description for OP_DISPLAY_ADDRESS
 #. Index: <op_display_address>
 #: gui/opcodes.h:294
-msgid "display full address of sender"
-msgstr "visa avsändarens fullständiga adress"
+msgid "Display full address of sender"
+msgstr "Visa avsändarens fullständiga adress"
 
 #. L10N: Help screen description for OP_DISPLAY_HEADERS
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
 #: gui/opcodes.h:299
-msgid "display message and toggle header weeding"
-msgstr "visa meddelande och växla rensning av huvud"
+msgid "Display message and toggle header weeding"
+msgstr "Visa meddelande och växla rensning av huvud"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
 #: gui/opcodes.h:302
-msgid "display a message"
-msgstr "visa ett meddelande"
+msgid "Display a message"
+msgstr "Visa ett meddelande"
 
 #. L10N: Help screen description for OP_EDITOR_BACKSPACE
 #. Text Entry: <op_editor_backspace>
 #: gui/opcodes.h:305
-msgid "delete the char in front of the cursor"
-msgstr "radera tecknet före markören"
+msgid "Delete the char in front of the cursor"
+msgstr "Radera tecknet före markören"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
 #: gui/opcodes.h:308
-msgid "move the cursor one character to the left"
-msgstr "flytta markören ett tecken till vänster"
+msgid "Move the cursor one character to the left"
+msgstr "Flytta markören ett tecken till vänster"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
 #: gui/opcodes.h:311
-msgid "move the cursor to the beginning of the word"
-msgstr "flytta markören till början av ordet"
+msgid "Move the cursor to the beginning of the word"
+msgstr "Flytta markören till början av ordet"
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
 #: gui/opcodes.h:314
-msgid "jump to the beginning of the line"
-msgstr "hoppa till början av raden"
+msgid "Jump to the beginning of the line"
+msgstr "Hoppa till början av raden"
 
 #. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:317
-msgid "capitalize the word"
-msgstr "skriv ordet med versaler"
+msgid "Capitalize the word"
+msgstr "Skriv ordet med versaler"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:320
-msgid "complete filename or alias"
-msgstr "komplettera filnamn eller alias"
+msgid "Complete filename or alias"
+msgstr "Komplettera filnamn eller alias"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:323
-msgid "complete address with query"
-msgstr "komplettera adress med fråga"
+msgid "Complete address with query"
+msgstr "Komplettera adress med fråga"
 
 #. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
 #. Text Entry: <op_editor_delete_char>
 #: gui/opcodes.h:326
-msgid "delete the char under the cursor"
-msgstr "radera tecknet under markören"
+msgid "Delete the char under the cursor"
+msgstr "Radera tecknet under markören"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:329
-msgid "convert the word to lower case"
-msgstr "konvertera ordet till gemener"
+msgid "Convert the word to lower case"
+msgstr "Konvertera ordet till gemener"
 
 #. L10N: Help screen description for OP_EDITOR_EOL
 #. Text Entry: <op_editor_eol>
 #: gui/opcodes.h:332
-msgid "jump to the end of the line"
-msgstr "hoppa till slutet av raden"
+msgid "Jump to the end of the line"
+msgstr "Hoppa till slutet av raden"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
 #. Text Entry: <op_editor_forward_char>
 #: gui/opcodes.h:335
-msgid "move the cursor one character to the right"
-msgstr "flytta markören ett tecken till höger"
+msgid "Move the cursor one character to the right"
+msgstr "Flytta markören ett tecken till höger"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
 #: gui/opcodes.h:338
-msgid "move the cursor to the end of the word"
-msgstr "flytta markören till slutet av ordet"
+msgid "Move the cursor to the end of the word"
+msgstr "Flytta markören till slutet av ordet"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
 #: gui/opcodes.h:341
-msgid "scroll down through the history list"
-msgstr "rulla ner genom historielistan"
+msgid "Scroll down through the history list"
+msgstr "Rulla ner genom historielistan"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
 #: gui/opcodes.h:344
-msgid "search through the history list"
-msgstr "sök igenom historiklistan"
+msgid "Search through the history list"
+msgstr "Sök igenom historiklistan"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_UP
 #. Text Entry: <op_editor_history_up>
 #: gui/opcodes.h:347
-msgid "scroll up through the history list"
-msgstr "rulla upp genom historielistan"
+msgid "Scroll up through the history list"
+msgstr "Rulla upp genom historielistan"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOL
 #. Text Entry: <op_editor_kill_eol>
 #: gui/opcodes.h:350
-msgid "delete chars from cursor to end of line"
-msgstr "radera tecknen från markören till slutet på raden"
+msgid "Delete chars from cursor to end of line"
+msgstr "Radera tecknen från markören till slutet på raden"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
 #: gui/opcodes.h:353
-msgid "delete chars from the cursor to the end of the word"
-msgstr "radera tecknen från markören till slutet på ordet"
+msgid "Delete chars from the cursor to the end of the word"
+msgstr "Radera tecknen från markören till slutet på ordet"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
 #: gui/opcodes.h:356
 #, fuzzy
-msgid "delete chars from cursor to beginning the line"
-msgstr "radera tecknen från markören till slutet på raden"
+msgid "Delete chars from cursor to beginning the line"
+msgstr "Radera tecknen från markören till slutet på raden"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
 #: gui/opcodes.h:359
-msgid "delete all chars on the line"
-msgstr "radera alla tecken på raden"
+msgid "Delete all chars on the line"
+msgstr "Radera alla tecken på raden"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
 #: gui/opcodes.h:362
-msgid "delete the word in front of the cursor"
-msgstr "radera ordet framför markören"
+msgid "Delete the word in front of the cursor"
+msgstr "Radera ordet framför markören"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:365
-msgid "cycle among incoming mailboxes"
-msgstr "rotera bland inkomna postlådor"
+msgid "Cycle among incoming mailboxes"
+msgstr "Rotera bland inkomna postlådor"
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
 #: gui/opcodes.h:368
-msgid "quote the next typed key"
-msgstr "citera nästa tryckta tangent"
+msgid "Quote the next typed key"
+msgstr "Citera nästa tryckta tangent"
 
 #. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
 #. Text Entry: <op_editor_transpose_chars>
 #: gui/opcodes.h:371
-msgid "transpose character under cursor with previous"
-msgstr "byt tecknet under markören med föregående"
+msgid "Transpose character under cursor with previous"
+msgstr "Byt tecknet under markören med föregående"
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:374
-msgid "convert the word to upper case"
-msgstr "konvertera ordet till versaler"
+msgid "Convert the word to upper case"
+msgstr "Konvertera ordet till versaler"
 
 #. L10N: Help screen description for OP_EDIT_LABEL
 #. Index: <op_edit_label>
 #: gui/opcodes.h:377
-msgid "add, change, or delete a message's label"
-msgstr "lägg till, ändra eller ta bort en meddelandeetikett"
+msgid "Add, change, or delete a message's label"
+msgstr "Lägg till, ändra eller ta bort en meddelandeetikett"
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:380
-msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
+msgid "Edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr ""
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:383
-msgid "edit the raw message (edit and edit-raw-message are synonyms)"
+msgid "Edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
 #: gui/opcodes.h:386
-msgid "end of conditional execution (noop)"
-msgstr "slut på villkorlig exekvering (noop)"
+msgid "End of conditional execution (noop)"
+msgstr "Slut på villkorlig exekvering (noop)"
 
 #. L10N: Help screen description for OP_ENTER_COMMAND
 #. Global: <op_enter_command>
 #: gui/opcodes.h:389
-msgid "enter a neomuttrc command"
-msgstr "ange ett neomuttrc-kommando"
+msgid "Enter a neomuttrc command"
+msgstr "Ange ett neomuttrc-kommando"
 
 #. L10N: Help screen description for OP_ENTER_MASK
 #. Browser: <op_enter_mask>
 #: gui/opcodes.h:392
-msgid "enter a file mask"
-msgstr "ange en filmask"
+msgid "Enter a file mask"
+msgstr "Ange en filmask"
 
 #. L10N: Help screen description for OP_EXIT
 #. Alias Dialog: <op_exit>
@@ -4011,41 +4011,41 @@ msgstr "ange en filmask"
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
 #: gui/opcodes.h:405
-msgid "exit this menu"
-msgstr "avsluta den här menyn"
+msgid "Exit this menu"
+msgstr "Avsluta den här menyn"
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:408
-msgid "move to the first entry"
-msgstr "flytta till den första posten"
+msgid "Move to the first entry"
+msgstr "Flytta till den första posten"
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
 #: gui/opcodes.h:411
-msgid "toggle a message's 'important' flag"
-msgstr "växla ett meddelandes \"important\"-flagga"
+msgid "Toggle a message's 'important' flag"
+msgstr "Växla ett meddelandes \"important\"-flagga"
 
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
 #: gui/opcodes.h:415
 #, fuzzy
-msgid "followup to newsgroup"
+msgid "Followup to newsgroup"
 msgstr "Svara till %s%s?"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
 #: gui/opcodes.h:419
-msgid "forward a message with comments"
-msgstr "vidarebefordra ett meddelande med kommentarer"
+msgid "Forward a message with comments"
+msgstr "Vidarebefordra ett meddelande med kommentarer"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
 #: gui/opcodes.h:423
-msgid "forward to newsgroup"
+msgid "Forward to newsgroup"
 msgstr ""
 
 #. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
@@ -4058,72 +4058,72 @@ msgstr ""
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
 #: gui/opcodes.h:433
-msgid "select the current entry"
-msgstr "välj den aktuella posten"
+msgid "Select the current entry"
+msgstr "Välj den aktuella posten"
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
 #: gui/opcodes.h:436
 #, fuzzy
-msgid "get all children of the current message"
+msgid "Get all children of the current message"
 msgstr "Du är på det första meddelandet."
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
 #, fuzzy
-msgid "get message with Message-Id"
-msgstr "redigera meddelandet med huvuden"
+msgid "Get message with Message-Id"
+msgstr "Redigera meddelandet med huvuden"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
 #: gui/opcodes.h:442
 #, fuzzy
-msgid "get parent of the current message"
+msgid "Get parent of the current message"
 msgstr "Du är på det första meddelandet."
 
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:445
 #, fuzzy
-msgid "go to parent directory"
+msgid "Go to parent directory"
 msgstr "%s är inte en katalog."
 
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:449
-msgid "reply to all recipients preserving To/Cc"
-msgstr "svara alla mottagare och behåll Till/Cc"
+msgid "Reply to all recipients preserving To/Cc"
+msgstr "Svara alla mottagare och behåll Till/Cc"
 
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:453
-msgid "reply to all recipients"
-msgstr "svara till alla mottagare"
+msgid "Reply to all recipients"
+msgstr "Svara till alla mottagare"
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
 #: gui/opcodes.h:457
-msgid "scroll down 1/2 page"
-msgstr "rulla ner en halv sida"
+msgid "Scroll down 1/2 page"
+msgstr "Rulla ner en halv sida"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
 #: gui/opcodes.h:461
-msgid "scroll up 1/2 page"
-msgstr "rulla upp en halv sida"
+msgid "Scroll up 1/2 page"
+msgstr "Rulla upp en halv sida"
 
 #. L10N: Help screen description for OP_HELP
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
 #: gui/opcodes.h:466
-msgid "this screen"
-msgstr "den här skärmen"
+msgid "This screen"
+msgstr "Den här skärmen"
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
@@ -4131,510 +4131,510 @@ msgstr "den här skärmen"
 #: gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473
 #: gui/opcodes.h:474 gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477
 #: gui/opcodes.h:478 gui/opcodes.h:479
-msgid "jump to an index number"
-msgstr "hoppa till ett indexnummer"
+msgid "Jump to an index number"
+msgstr "Hoppa till ett indexnummer"
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:482
-msgid "move to the last entry"
-msgstr "flytta till den sista posten"
+msgid "Move to the last entry"
+msgstr "Flytta till den sista posten"
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
 #: gui/opcodes.h:485
 #, fuzzy
-msgid "limit view to current thread"
-msgstr "märk den aktuella tråden"
+msgid "Limit view to current thread"
+msgstr "Märk den aktuella tråden"
 
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:489
-msgid "reply to specified mailing list"
-msgstr "svara till angiven sändlista"
+msgid "Reply to specified mailing list"
+msgstr "Svara till angiven sändlista"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
 #: gui/opcodes.h:493
 #, fuzzy
-msgid "subscribe to a mailing list"
-msgstr "svara till angiven sändlista"
+msgid "Subscribe to a mailing list"
+msgstr "Svara till angiven sändlista"
 
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
 #: gui/opcodes.h:497
 #, fuzzy
-msgid "unsubscribe from a mailing list"
+msgid "Unsubscribe from a mailing list"
 msgstr "Avslutar prenumeration på %s"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
 #: gui/opcodes.h:500
-msgid "load list of all newsgroups from NNTP server"
+msgid "Load list of all newsgroups from NNTP server"
 msgstr ""
 
 #. L10N: Help screen description for OP_MACRO
 #: gui/opcodes.h:502
-msgid "execute a macro"
-msgstr "kör ett makro"
+msgid "Execute a macro"
+msgstr "Kör ett makro"
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
 #: gui/opcodes.h:506
-msgid "compose a new mail message"
-msgstr "komponera ett nytt brevmeddelande"
+msgid "Compose a new mail message"
+msgstr "Komponera ett nytt brevmeddelande"
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
 #: gui/opcodes.h:510
-msgid "list mailboxes with new mail"
-msgstr "lista postlådor med ny post"
+msgid "List mailboxes with new mail"
+msgstr "Lista postlådor med ny post"
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
 #: gui/opcodes.h:513
-msgid "break the thread in two"
-msgstr "dela tråden i två"
+msgid "Break the thread in two"
+msgstr "Dela tråden i två"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:516
-msgid "open a different folder"
-msgstr "öppna en annan mapp"
+msgid "Open a different folder"
+msgstr "Öppna en annan mapp"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:519
-msgid "open a different folder in read only mode"
-msgstr "öppna en annan mapp i skrivskyddat läge"
+msgid "Open a different folder in read only mode"
+msgstr "Öppna en annan mapp i skrivskyddat läge"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:522
 #, fuzzy
-msgid "open a different newsgroup"
-msgstr "öppna en annan folder"
+msgid "Open a different newsgroup"
+msgstr "Öppna en annan folder"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:525
 #, fuzzy
-msgid "open a different newsgroup in read only mode"
-msgstr "öppna en annan folder i skrivskyddat läge"
+msgid "Open a different newsgroup in read only mode"
+msgstr "Öppna en annan folder i skrivskyddat läge"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:528
-msgid "clear a status flag from a message"
-msgstr "rensa en statusflagga från ett meddelande"
+msgid "Clear a status flag from a message"
+msgstr "Rensa en statusflagga från ett meddelande"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS
 #. Index: <op_main_close_all_threads>
 #: gui/opcodes.h:531
 #, fuzzy
-msgid "collapse all threads"
-msgstr "komprimera/expandera alla trådar"
+msgid "Collapse all threads"
+msgstr "Komprimera/expandera alla trådar"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_THREAD
 #. Index: <op_main_close_thread>
 #: gui/opcodes.h:534
 #, fuzzy
-msgid "collapse current thread"
-msgstr "komprimera/expandera aktuell tråd"
+msgid "Collapse current thread"
+msgstr "Komprimera/expandera aktuell tråd"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
 #: gui/opcodes.h:537
-msgid "collapse/uncollapse all threads"
-msgstr "komprimera/expandera alla trådar"
+msgid "Collapse/uncollapse all threads"
+msgstr "Komprimera/expandera alla trådar"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
 #: gui/opcodes.h:540
-msgid "collapse/uncollapse current thread"
-msgstr "komprimera/expandera aktuell tråd"
+msgid "Collapse/uncollapse current thread"
+msgstr "Komprimera/expandera aktuell tråd"
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
 #: gui/opcodes.h:543
 #, fuzzy
-msgid "delete non-hidden messages matching a pattern"
-msgstr "radera meddelanden som matchar ett mönster"
+msgid "Delete non-hidden messages matching a pattern"
+msgstr "Radera meddelanden som matchar ett mönster"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
 #: gui/opcodes.h:546
-msgid "retrieve mail from POP server"
-msgstr "hämta post från POP-server"
+msgid "Retrieve mail from POP server"
+msgstr "Hämta post från POP-server"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
 #: gui/opcodes.h:549
-msgid "force retrieval of mail from IMAP server"
-msgstr "tvinga hämtning av post från IMAP-server"
+msgid "Force retrieval of mail from IMAP server"
+msgstr "Tvinga hämtning av post från IMAP-server"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
 #: gui/opcodes.h:552
-msgid "logout from all IMAP servers"
-msgstr "logga ut från alla IMAP-servrar"
+msgid "Logout from all IMAP servers"
+msgstr "Logga ut från alla IMAP-servrar"
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
 #: gui/opcodes.h:556
-msgid "show only messages matching a pattern"
-msgstr "visa endast meddelanden som matchar ett mönster"
+msgid "Show only messages matching a pattern"
+msgstr "Visa endast meddelanden som matchar ett mönster"
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
 #: gui/opcodes.h:559
-msgid "link tagged message to the current one"
-msgstr "länka markerade meddelande till det aktuella"
+msgid "Link tagged message to the current one"
+msgstr "Länka markerade meddelande till det aktuella"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:562
-msgid "modify (notmuch/imap) tags"
+msgid "Modify (notmuch/imap) tags"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:565
 #, fuzzy
-msgid "modify (notmuch/imap) tags and then hide message"
+msgid "Modify (notmuch/imap) tags and then hide message"
 msgstr "Du är på det första meddelandet."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:568
-msgid "jump to the next new message"
-msgstr "hoppa till nästa nya meddelande"
+msgid "Jump to the next new message"
+msgstr "Hoppa till nästa nya meddelande"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:571
-msgid "jump to the next new or unread message"
-msgstr "hoppa till nästa nya eller olästa meddelande"
+msgid "Jump to the next new or unread message"
+msgstr "Hoppa till nästa nya eller olästa meddelande"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:574
-msgid "jump to the next subthread"
-msgstr "hoppa till nästa undertråd"
+msgid "Jump to the next subthread"
+msgstr "Hoppa till nästa undertråd"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:577
-msgid "jump to the next thread"
-msgstr "hoppa till nästa tråd"
+msgid "Jump to the next thread"
+msgstr "Hoppa till nästa tråd"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
 #: gui/opcodes.h:580
-msgid "move to the next undeleted message"
-msgstr "flytta till nästa icke raderade meddelande"
+msgid "Move to the next undeleted message"
+msgstr "Flytta till nästa icke raderade meddelande"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:583
-msgid "jump to the next unread message"
-msgstr "hoppa till nästa olästa meddelande"
+msgid "Jump to the next unread message"
+msgstr "Hoppa till nästa olästa meddelande"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
 #: gui/opcodes.h:586
-msgid "open next mailbox with new mail"
-msgstr "öppna nästa postlåda med ny post"
+msgid "Open next mailbox with new mail"
+msgstr "Öppna nästa postlåda med ny post"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS
 #. Index: <op_main_open_all_threads>
 #: gui/opcodes.h:589
 #, fuzzy
-msgid "uncollapse all threads"
-msgstr "komprimera/expandera alla trådar"
+msgid "Uncollapse all threads"
+msgstr "Komprimera/expandera alla trådar"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_THREAD
 #. Index: <op_main_open_thread>
 #: gui/opcodes.h:592
 #, fuzzy
-msgid "uncollapse current thread"
-msgstr "komprimera/expandera aktuell tråd"
+msgid "Uncollapse current thread"
+msgstr "Komprimera/expandera aktuell tråd"
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:595
-msgid "jump to parent message in thread"
-msgstr "hoppa till första meddelandet i tråden"
+msgid "Jump to parent message in thread"
+msgstr "Hoppa till första meddelandet i tråden"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:598
-msgid "jump to the previous new message"
-msgstr "hoppa till föregående nya meddelande"
+msgid "Jump to the previous new message"
+msgstr "Hoppa till föregående nya meddelande"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:601
-msgid "jump to the previous new or unread message"
-msgstr "hoppa till föregående nya eller olästa meddelande"
+msgid "Jump to the previous new or unread message"
+msgstr "Hoppa till föregående nya eller olästa meddelande"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:604
-msgid "jump to previous subthread"
-msgstr "hoppa till föregående undertråd"
+msgid "Jump to previous subthread"
+msgstr "Hoppa till föregående undertråd"
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:607
-msgid "jump to previous thread"
-msgstr "hoppa till föregående tråd"
+msgid "Jump to previous thread"
+msgstr "Hoppa till föregående tråd"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
 #: gui/opcodes.h:610
-msgid "move to the previous undeleted message"
-msgstr "flytta till föregående icke raderade meddelande"
+msgid "Move to the previous undeleted message"
+msgstr "Flytta till föregående icke raderade meddelande"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:613
-msgid "jump to the previous unread message"
-msgstr "hoppa till föregående olästa meddelande"
+msgid "Jump to the previous unread message"
+msgstr "Hoppa till föregående olästa meddelande"
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
 #: gui/opcodes.h:616
-msgid "delete from NeoMutt, don't touch on disk"
+msgid "Delete from NeoMutt, don't touch on disk"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:619
-msgid "mark the current subthread as read"
-msgstr "märk den aktuella undertråden som läst"
+msgid "Mark the current subthread as read"
+msgstr "Märk den aktuella undertråden som läst"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:622
-msgid "mark the current thread as read"
-msgstr "märk den aktuella tråden som läst"
+msgid "Mark the current thread as read"
+msgstr "Märk den aktuella tråden som läst"
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:625
-msgid "jump to root message in thread"
-msgstr "hoppa till rotmeddelandet i tråden"
+msgid "Jump to root message in thread"
+msgstr "Hoppa till rotmeddelandet i tråden"
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:628
-msgid "set a status flag on a message"
-msgstr "sätt en statusflagga på ett meddelande"
+msgid "Set a status flag on a message"
+msgstr "Sätt en statusflagga på ett meddelande"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
 #: gui/opcodes.h:631
-msgid "show currently active limit pattern"
-msgstr "visa aktivt begränsningsmönster"
+msgid "Show currently active limit pattern"
+msgstr "Visa aktivt begränsningsmönster"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
 #: gui/opcodes.h:634
-msgid "save changes to mailbox"
-msgstr "spara ändringar av postlåda"
+msgid "Save changes to mailbox"
+msgstr "Spara ändringar av postlåda"
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
 #: gui/opcodes.h:637
 #, fuzzy
-msgid "tag non-hidden messages matching a pattern"
-msgstr "märk meddelanden som matchar ett mönster"
+msgid "Tag non-hidden messages matching a pattern"
+msgstr "Märk meddelanden som matchar ett mönster"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
 #: gui/opcodes.h:640
 #, fuzzy
-msgid "undelete non-hidden messages matching a pattern"
-msgstr "återställ meddelanden som matchar ett mönster"
+msgid "Undelete non-hidden messages matching a pattern"
+msgstr "Återställ meddelanden som matchar ett mönster"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
 #: gui/opcodes.h:643
 #, fuzzy
-msgid "untag non-hidden messages matching a pattern"
-msgstr "avmarkera meddelanden som matchar ett mönster"
+msgid "Untag non-hidden messages matching a pattern"
+msgstr "Avmarkera meddelanden som matchar ett mönster"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
 #: gui/opcodes.h:646
-msgid "create a hotkey macro for the current message"
-msgstr "skapa ett snabbtangentmakro för aktuellt meddelande"
+msgid "Create a hotkey macro for the current message"
+msgstr "Skapa ett snabbtangentmakro för aktuellt meddelande"
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:649
-msgid "move to the middle of the page"
-msgstr "flytta till mitten av sidan"
+msgid "Move to the middle of the page"
+msgstr "Flytta till mitten av sidan"
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
 #: gui/opcodes.h:653
-msgid "move to the next entry"
-msgstr "flytta till nästa post"
+msgid "Move to the next entry"
+msgstr "Flytta till nästa post"
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
 #: gui/opcodes.h:657
-msgid "scroll down one line"
-msgstr "rulla ner en rad"
+msgid "Scroll down one line"
+msgstr "Rulla ner en rad"
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
 #: gui/opcodes.h:661
-msgid "move to the next page"
-msgstr "flytta till nästa sida"
+msgid "Move to the next page"
+msgstr "Flytta till nästa sida"
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
 #: gui/opcodes.h:664
-msgid "jump to the bottom of the message"
-msgstr "hoppa till slutet av meddelandet"
+msgid "Jump to the bottom of the message"
+msgstr "Hoppa till slutet av meddelandet"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
 #: gui/opcodes.h:667
-msgid "toggle display of quoted text"
-msgstr "växla visning av citerad text"
+msgid "Toggle display of quoted text"
+msgstr "Växla visning av citerad text"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
 #: gui/opcodes.h:670
 #, fuzzy
-msgid "jump to first line after headers"
-msgstr "hoppa till nästa tråd"
+msgid "Jump to first line after headers"
+msgstr "Hoppa till nästa tråd"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
 #: gui/opcodes.h:673
-msgid "skip beyond quoted text"
-msgstr "hoppa över citerad text"
+msgid "Skip beyond quoted text"
+msgstr "Hoppa över citerad text"
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
 #: gui/opcodes.h:676
-msgid "jump to the top of the message"
-msgstr "hoppa till början av meddelandet"
+msgid "Jump to the top of the message"
+msgstr "Hoppa till början av meddelandet"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
 #: gui/opcodes.h:684
 #, fuzzy
-msgid "post message to newsgroup"
+msgid "Post message to newsgroup"
 msgstr "Återsänd meddelande till %s"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
 #: gui/opcodes.h:688
-msgid "move to the previous entry"
-msgstr "flytta till föregående post"
+msgid "Move to the previous entry"
+msgstr "Flytta till föregående post"
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
 #: gui/opcodes.h:692
-msgid "scroll up one line"
-msgstr "rulla upp en rad"
+msgid "Scroll up one line"
+msgstr "Rulla upp en rad"
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
 #: gui/opcodes.h:696
-msgid "move to the previous page"
-msgstr "flytta till föregående sida"
+msgid "Move to the previous page"
+msgstr "Flytta till föregående sida"
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
 #: gui/opcodes.h:702
-msgid "delete the current entry, bypassing the trash folder"
-msgstr "ta bort den aktuella posten, utan att lägga den i papperskorgen"
+msgid "Delete the current entry, bypassing the trash folder"
+msgstr "Ta bort den aktuella posten, utan att lägga den i papperskorgen"
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:705
-msgid "delete the current thread, bypassing the trash folder"
+msgid "Delete the current thread, bypassing the trash folder"
 msgstr ""
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
 #: gui/opcodes.h:709
-msgid "query external program for addresses"
-msgstr "fråga ett externt program efter adresser"
+msgid "Query external program for addresses"
+msgstr "Fråga ett externt program efter adresser"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
 #: gui/opcodes.h:712
-msgid "append new query results to current results"
-msgstr "lägg till nya förfrågningsresultat till aktuellt resultat"
+msgid "Append new query results to current results"
+msgstr "Lägg till nya förfrågningsresultat till aktuellt resultat"
 
 #. L10N: Help screen description for OP_QUIT
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
 #: gui/opcodes.h:717
-msgid "save changes to mailbox and quit"
-msgstr "spara ändringar till postlåda och avsluta"
+msgid "Save changes to mailbox and quit"
+msgstr "Spara ändringar till postlåda och avsluta"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
 #: gui/opcodes.h:720
-msgid "recall a postponed message"
-msgstr "återkalla ett uppskjutet meddelande"
+msgid "Recall a postponed message"
+msgstr "Återkalla ett uppskjutet meddelande"
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
 #: gui/opcodes.h:723
 #, fuzzy
-msgid "reconstruct thread containing current message"
+msgid "Reconstruct thread containing current message"
 msgstr "Tråden innehåller olästa meddelanden."
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
 #: gui/opcodes.h:727
-msgid "clear and redraw the screen"
-msgstr "rensa och rita om skärmen"
+msgid "Clear and redraw the screen"
+msgstr "Rensa och rita om skärmen"
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
 #: gui/opcodes.h:730
-msgid "rename the current mailbox (IMAP only)"
-msgstr "döp om den aktuella postlådan (endast för IMAP)"
+msgid "Rename the current mailbox (IMAP only)"
+msgstr "Döp om den aktuella postlådan (endast för IMAP)"
 
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
 #: gui/opcodes.h:734
-msgid "reply to a message"
-msgstr "svara på ett meddelande"
+msgid "Reply to a message"
+msgstr "Svara på ett meddelande"
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
 #: gui/opcodes.h:738
-msgid "use the current message as a template for a new one"
-msgstr "använd det aktuella meddelande som mall för ett nytt"
+msgid "Use the current message as a template for a new one"
+msgstr "Använd det aktuella meddelande som mall för ett nytt"
 
 #. L10N: Help screen description for OP_SEARCH
 #. Menu: <menu_search>
@@ -4643,8 +4643,8 @@ msgstr "använd det aktuella meddelande som mall för ett nytt"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:749
-msgid "search for a regular expression"
-msgstr "sök efter ett reguljärt uttryck"
+msgid "Search for a regular expression"
+msgstr "Sök efter ett reguljärt uttryck"
 
 #. L10N: Help screen description for OP_SEARCH_NEXT
 #. Menu: <menu_search>
@@ -4653,8 +4653,8 @@ msgstr "sök efter ett reguljärt uttryck"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:756
-msgid "search for next match"
-msgstr "sök efter nästa matchning"
+msgid "Search for next match"
+msgstr "Sök efter nästa matchning"
 
 #. L10N: Help screen description for OP_SEARCH_OPPOSITE
 #. Menu: <menu_search>
@@ -4663,8 +4663,8 @@ msgstr "sök efter nästa matchning"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:763
-msgid "search for next match in opposite direction"
-msgstr "sök efter nästa matchning i motsatt riktning"
+msgid "Search for next match in opposite direction"
+msgstr "Sök efter nästa matchning i motsatt riktning"
 
 #. L10N: Help screen description for OP_SEARCH_REVERSE
 #. Menu: <menu_search>
@@ -4673,179 +4673,179 @@ msgstr "sök efter nästa matchning i motsatt riktning"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:770
-msgid "search backwards for a regular expression"
-msgstr "sök bakåt efter ett reguljärt uttryck"
+msgid "Search backwards for a regular expression"
+msgstr "Sök bakåt efter ett reguljärt uttryck"
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
 #: gui/opcodes.h:773
-msgid "toggle search pattern coloring"
-msgstr "växla färg på sökmönster"
+msgid "Toggle search pattern coloring"
+msgstr "Växla färg på sökmönster"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
 #: gui/opcodes.h:776
-msgid "invoke a command in a subshell"
-msgstr "starta ett kommando i ett underskal"
+msgid "Invoke a command in a subshell"
+msgstr "Starta ett kommando i ett underskal"
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
 #: gui/opcodes.h:779
 #, fuzzy
-msgid "show log (and debug) messages"
-msgstr "sortera meddelanden"
+msgid "Show log (and debug) messages"
+msgstr "Sortera meddelanden"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:784
-msgid "sort messages"
-msgstr "sortera meddelanden"
+msgid "Sort messages"
+msgstr "Sortera meddelanden"
 
 #. L10N: Help screen description for OP_SORT_REVERSE
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:789
-msgid "sort messages in reverse order"
-msgstr "sortera meddelanden i omvänd ordning"
+msgid "Sort messages in reverse order"
+msgstr "Sortera meddelanden i omvänd ordning"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:792
 #, fuzzy
-msgid "subscribe to newsgroups matching a pattern"
-msgstr "avmarkera meddelanden som matchar ett mönster"
+msgid "Subscribe to newsgroups matching a pattern"
+msgstr "Avmarkera meddelanden som matchar ett mönster"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
 #: gui/opcodes.h:795
-msgid "tag the current entry"
-msgstr "märk den aktuella posten"
+msgid "Tag the current entry"
+msgstr "Märk den aktuella posten"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
 #: gui/opcodes.h:797
-msgid "apply next function to tagged messages"
-msgstr "applicera nästa funktion på märkta meddelanden"
+msgid "Apply next function to tagged messages"
+msgstr "Applicera nästa funktion på märkta meddelanden"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
 #: gui/opcodes.h:799
-msgid "apply next function ONLY to tagged messages"
-msgstr "applicera nästa funktion ENDAST på märkta meddelanden"
+msgid "Apply next function ONLY to tagged messages"
+msgstr "Applicera nästa funktion ENDAST på märkta meddelanden"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:802
-msgid "tag the current subthread"
-msgstr "märk den aktuella undertråden"
+msgid "Tag the current subthread"
+msgstr "Märk den aktuella undertråden"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:805
-msgid "tag the current thread"
-msgstr "märk den aktuella tråden"
+msgid "Tag the current thread"
+msgstr "Märk den aktuella tråden"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:808
-msgid "toggle whether to browse mailboxes or all files"
-msgstr "växla bläddring över postlådor eller alla filer"
+msgid "Toggle whether to browse mailboxes or all files"
+msgstr "Växla bläddring över postlådor eller alla filer"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
 #: gui/opcodes.h:811
-msgid "toggle a message's 'new' flag"
-msgstr "växla ett meddelandes \"nytt\" flagga"
+msgid "Toggle a message's 'new' flag"
+msgstr "Växla ett meddelandes \"nytt\" flagga"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
 #: gui/opcodes.h:814
 #, fuzzy
-msgid "toggle view of read messages"
-msgstr "hoppa till föregående nya eller olästa meddelande"
+msgid "Toggle view of read messages"
+msgstr "Hoppa till föregående nya eller olästa meddelande"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
 #: gui/opcodes.h:817
-msgid "toggle whether the mailbox will be rewritten"
-msgstr "växla huruvida postlådan ska skrivas om"
+msgid "Toggle whether the mailbox will be rewritten"
+msgstr "Växla huruvida postlådan ska skrivas om"
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:820
-msgid "move to the top of the page"
-msgstr "flytta till början av sidan"
+msgid "Move to the top of the page"
+msgstr "Flytta till början av sidan"
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
 #: gui/opcodes.h:823
-msgid "mark all articles in newsgroup as unread"
+msgid "Mark all articles in newsgroup as unread"
 msgstr ""
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:831
-msgid "undelete all messages in subthread"
-msgstr "återställ alla meddelanden i undertråden"
+msgid "Undelete all messages in subthread"
+msgstr "Återställ alla meddelanden i undertråden"
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:834
-msgid "undelete all messages in thread"
-msgstr "återställ all meddelanden i tråden"
+msgid "Undelete all messages in thread"
+msgstr "Återställ all meddelanden i tråden"
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:837
 #, fuzzy
-msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "avmarkera meddelanden som matchar ett mönster"
+msgid "Unsubscribe from newsgroups matching a pattern"
+msgstr "Avmarkera meddelanden som matchar ett mönster"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
 #: gui/opcodes.h:840
-msgid "show the NeoMutt version number and date"
-msgstr "visa NeoMutts versionsnummer och datum"
+msgid "Show the NeoMutt version number and date"
+msgstr "Visa NeoMutts versionsnummer och datum"
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
 #: gui/opcodes.h:844
-msgid "show MIME attachments"
-msgstr "visa MIME-bilagor"
+msgid "Show MIME attachments"
+msgstr "Visa MIME-bilagor"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:847
 #, fuzzy
-msgid "show the raw message"
-msgstr "ändra i själva meddelandet"
+msgid "Show the raw message"
+msgstr "Ändra i själva meddelandet"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
 #: gui/opcodes.h:850
-msgid "display the keycode for a key press"
-msgstr "visa tangentkoden för en tangenttryckning"
+msgid "Display the keycode for a key press"
+msgstr "Visa tangentkoden för en tangenttryckning"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:855
-msgid "make decrypted copy"
-msgstr "skapa avkrypterad kopia"
+msgid "Make decrypted copy"
+msgstr "Skapa avkrypterad kopia"
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:858
-msgid "make decrypted copy and delete"
-msgstr "skapa avkrypterad kopia och radera"
+msgid "Make decrypted copy and delete"
+msgstr "Skapa avkrypterad kopia och radera"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
 #: gui/opcodes.h:862
-msgid "extract supported public keys"
-msgstr "extrahera stödda publika nycklar"
+msgid "Extract supported public keys"
+msgstr "Extrahera stödda publika nycklar"
 
 #. L10N: Help screen description for OP_FORGET_PASSPHRASE
 #. Attach Dialog: <op_forget_passphrase>
@@ -4853,250 +4853,250 @@ msgstr "extrahera stödda publika nycklar"
 #. Index: <op_forget_passphrase>
 #: gui/opcodes.h:867
 #, fuzzy
-msgid "wipe passphrases from memory"
-msgstr "rensa lösenfras(er) från minnet"
+msgid "Wipe passphrases from memory"
+msgstr "Rensa lösenfras(er) från minnet"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
 #: gui/opcodes.h:872
-msgid "edit the BCC list"
-msgstr "redigera BCC-listan"
+msgid "Edit the BCC list"
+msgstr "Redigera BCC-listan"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
 #: gui/opcodes.h:875
-msgid "edit the CC list"
-msgstr "redigera CC-listan"
+msgid "Edit the CC list"
+msgstr "Redigera CC-listan"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
 #: gui/opcodes.h:878
-msgid "enter a file to save a copy of this message in"
-msgstr "ange en fil att spara en kopia av det här meddelandet till"
+msgid "Enter a file to save a copy of this message in"
+msgstr "Ange en fil att spara en kopia av det här meddelandet till"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
 #: gui/opcodes.h:881
 #, fuzzy
-msgid "edit the Followup-To field"
-msgstr "redigera Reply-To-fältet"
+msgid "Edit the Followup-To field"
+msgstr "Redigera Reply-To-fältet"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
 #: gui/opcodes.h:884
-msgid "edit the from field"
-msgstr "redigera avsändarfältet"
+msgid "Edit the from field"
+msgstr "Redigera avsändarfältet"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
 #: gui/opcodes.h:887
-msgid "edit the message with headers"
-msgstr "redigera meddelandet med huvuden"
+msgid "Edit the message with headers"
+msgstr "Redigera meddelandet med huvuden"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
 #: gui/opcodes.h:890
 #, fuzzy
-msgid "edit the newsgroups list"
-msgstr "redigera CC-listan"
+msgid "Edit the newsgroups list"
+msgstr "Redigera CC-listan"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
 #: gui/opcodes.h:893
-msgid "edit the Reply-To field"
-msgstr "redigera Reply-To-fältet"
+msgid "Edit the Reply-To field"
+msgstr "Redigera Reply-To-fältet"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
 #: gui/opcodes.h:896
-msgid "edit the subject of this message"
-msgstr "redigera ämnet på det här meddelandet"
+msgid "Edit the subject of this message"
+msgstr "Redigera ämnet på det här meddelandet"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
 #: gui/opcodes.h:899
-msgid "edit the TO list"
-msgstr "redigera TO-listan"
+msgid "Edit the TO list"
+msgstr "Redigera TO-listan"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
 #: gui/opcodes.h:902
 #, fuzzy
-msgid "edit the X-Comment-To field"
-msgstr "redigera Reply-To-fältet"
+msgid "Edit the X-Comment-To field"
+msgstr "Redigera Reply-To-fältet"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:908
 #, fuzzy
-msgid "open a different virtual folder"
-msgstr "öppna en annan folder"
+msgid "Open a different virtual folder"
+msgstr "Öppna en annan folder"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
 #: gui/opcodes.h:911
-msgid "read entire thread of the current message"
+msgid "Read entire thread of the current message"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:914
-msgid "generate virtual folder from query"
+msgid "Generate virtual folder from query"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:917
-msgid "generate a read-only virtual folder from query"
+msgid "Generate a read-only virtual folder from query"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:920
-msgid "shifts virtual folder time window backwards"
+msgid "Shifts virtual folder time window backwards"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:923
-msgid "shifts virtual folder time window forwards"
+msgid "Shifts virtual folder time window forwards"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:926
-msgid "resets virtual folder time window to the present"
+msgid "Resets virtual folder time window to the present"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_KEY
 #. Compose Dialog: <op_attach_attach_key>
 #: gui/opcodes.h:934
-msgid "attach a PGP public key"
-msgstr "bifoga en publik nyckel (PGP)"
+msgid "Attach a PGP public key"
+msgstr "Bifoga en publik nyckel (PGP)"
 
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
 #: gui/opcodes.h:938
-msgid "check for classic PGP"
-msgstr "kolla efter klassisk PGP"
+msgid "Check for classic PGP"
+msgstr "Kolla efter klassisk PGP"
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
 #: gui/opcodes.h:941
-msgid "show PGP options"
-msgstr "visa PGP-flaggor"
+msgid "Show PGP options"
+msgstr "Visa PGP-flaggor"
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
 #: gui/opcodes.h:944
-msgid "mail a PGP public key"
-msgstr "skicka en publik nyckel (PGP)"
+msgid "Mail a PGP public key"
+msgstr "Skicka en publik nyckel (PGP)"
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:948
 #, fuzzy
-msgid "verify a public key"
-msgstr "verifiera en publik nyckel ( )"
+msgid "Verify a public key"
+msgstr "Verifiera en publik nyckel ( )"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
 #: gui/opcodes.h:952
-msgid "view the key's user id"
-msgstr "visa nyckelns användaridentitet"
+msgid "View the key's user id"
+msgstr "Visa nyckelns användaridentitet"
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
 #: gui/opcodes.h:957
-msgid "move the highlight to the first mailbox"
-msgstr "flytta markeringen till den första postlådan"
+msgid "Move the highlight to the first mailbox"
+msgstr "Flytta markeringen till den första postlådan"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
 #: gui/opcodes.h:960
-msgid "move the highlight to the last mailbox"
-msgstr "flytta markeringen till den sista postlådan"
+msgid "Move the highlight to the last mailbox"
+msgstr "Flytta markeringen till den sista postlådan"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
 #: gui/opcodes.h:963
-msgid "move the highlight to next mailbox"
-msgstr "flytta markeringen till nästa postlåda"
+msgid "Move the highlight to next mailbox"
+msgstr "Flytta markeringen till nästa postlåda"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
 #: gui/opcodes.h:966
-msgid "move the highlight to next mailbox with new mail"
-msgstr "flytta markeringen till nästa postlåda med ny e-post"
+msgid "Move the highlight to next mailbox with new mail"
+msgstr "Flytta markeringen till nästa postlåda med ny e-post"
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
 #: gui/opcodes.h:969
-msgid "open highlighted mailbox"
-msgstr "öppna markerad postlåda"
+msgid "Open highlighted mailbox"
+msgstr "Öppna markerad postlåda"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
 #: gui/opcodes.h:972
-msgid "scroll the sidebar down 1 page"
-msgstr "bläddra nedåt i sidofältet 1 sida"
+msgid "Scroll the sidebar down 1 page"
+msgstr "Bläddra nedåt i sidofältet 1 sida"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
 #: gui/opcodes.h:975
-msgid "scroll the sidebar up 1 page"
-msgstr "bläddra uppåt i sidofältet 1 sida"
+msgid "Scroll the sidebar up 1 page"
+msgstr "Bläddra uppåt i sidofältet 1 sida"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
 #: gui/opcodes.h:978
-msgid "move the highlight to previous mailbox"
-msgstr "flytta markeringen till föregående postlåda"
+msgid "Move the highlight to previous mailbox"
+msgstr "Flytta markeringen till föregående postlåda"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
 #: gui/opcodes.h:981
-msgid "move the highlight to previous mailbox with new mail"
-msgstr "flytta markeringen till föregående postlåda med ny e-post"
+msgid "Move the highlight to previous mailbox with new mail"
+msgstr "Flytta markeringen till föregående postlåda med ny e-post"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
 #: gui/opcodes.h:984
 #, fuzzy
-msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "växla bläddring över brevlådor eller alla filer"
+msgid "Toggle between mailboxes and virtual mailboxes"
+msgstr "Växla bläddring över brevlådor eller alla filer"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
 #: gui/opcodes.h:987
-msgid "make the sidebar (in)visible"
-msgstr "göra sidofältet (o)synligt"
+msgid "Make the sidebar (in)visible"
+msgstr "Göra sidofältet (o)synligt"
 
 #. L10N: Help screen description for OP_SIDEBAR_ABORT_SEARCH
 #. Sidebar: <op_sidebar_abort_search>
 #: gui/opcodes.h:990
 #, fuzzy
-msgid "close the sidebar search"
-msgstr "göra sidofältet (o)synligt"
+msgid "Close the sidebar search"
+msgstr "Göra sidofältet (o)synligt"
 
 #. L10N: Help screen description for OP_SIDEBAR_START_SEARCH
 #. Sidebar: <op_sidebar_start_search>
 #: gui/opcodes.h:993
-msgid "fuzzy search the sidebar"
+msgid "Fuzzy search the sidebar"
 msgstr ""
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
 #: gui/opcodes.h:998
-msgid "show S/MIME options"
-msgstr "visa S/MIME-flaggor"
+msgid "Show S/MIME options"
+msgstr "Visa S/MIME-flaggor"
 
 #: gui/opcodes.h:1001
-msgid "null operation"
-msgstr "effektlös operation"
+msgid "Null operation"
+msgstr "Effektlös operation"
 
 #: gui/thread.c:109
 #, c-format

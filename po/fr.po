@@ -3384,26 +3384,26 @@ msgstr "Caractère = %s, Octal = %o, Décimal = %d\n"
 #. L10N: Help screen description for OP_ATTACH_ATTACH_FILE
 #. Compose Dialog: <op_attach_attach_file>
 #: gui/opcodes.h:42
-msgid "attach files to this message"
-msgstr "joindre des fichiers à ce message"
+msgid "Attach files to this message"
+msgstr "Joindre des fichiers à ce message"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:45
-msgid "attach messages to this message"
-msgstr "joindre des messages à ce message"
+msgid "Attach messages to this message"
+msgstr "Joindre des messages à ce message"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:48
-msgid "attach news articles to this message"
-msgstr "joindre des fichiers de groupes de discussion à ce message"
+msgid "Attach news articles to this message"
+msgstr "Joindre des fichiers de groupes de discussion à ce message"
 
 #. L10N: Help screen description for OP_ATTACH_COLLAPSE
 #. Attach Dialog: <op_attach_collapse>
 #: gui/opcodes.h:51
-msgid "toggle display of subparts"
-msgstr "activer/désactiver l'affichage des sous-parties"
+msgid "Toggle display of subparts"
+msgstr "Activer/désactiver l'affichage des sous-parties"
 
 #. L10N: Help screen description for OP_ATTACH_DELETE
 #. Attach Dialog: <op_attach_delete>
@@ -3414,97 +3414,97 @@ msgstr "activer/désactiver l'affichage des sous-parties"
 #. Index: <op_delete>
 #. Postponed Dialog: <op_delete>
 #: gui/opcodes.h:54 gui/opcodes.h:57 gui/opcodes.h:279
-msgid "delete the current entry"
-msgstr "supprimer l'entrée actuelle"
+msgid "Delete the current entry"
+msgstr "Supprimer l'entrée actuelle"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attach_edit_content_id>
 #: gui/opcodes.h:60
-msgid "edit the 'Content-ID' of the attachment"
-msgstr "modifier le 'Content-ID' de la pièce jointe"
+msgid "Edit the 'Content-ID' of the attachment"
+msgstr "Modifier le 'Content-ID' de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attach_edit_description>
 #: gui/opcodes.h:63
-msgid "edit attachment description"
-msgstr "modifier la description de la pièce jointe"
+msgid "Edit attachment description"
+msgstr "Modifier la description de la pièce jointe"
 
 # TODO: how to translate "transfer-encoding"
 #. L10N: Help screen description for OP_ATTACH_EDIT_ENCODING
 #. Compose Dialog: <op_attach_edit_encoding>
 #: gui/opcodes.h:66
 #, fuzzy
-msgid "edit attachment transfer-encoding"
-msgstr "modifier le transfer-encoding de la pièce jointe"
+msgid "Edit attachment transfer-encoding"
+msgstr "Modifier le transfer-encoding de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_LANGUAGE
 #. Compose Dialog: <op_attach_edit_language>
 #: gui/opcodes.h:69
-msgid "edit the 'Content-Language' of the attachment"
-msgstr "modifier le 'Content-Language' de la pièce jointe"
+msgid "Edit the 'Content-Language' of the attachment"
+msgstr "Modifier le 'Content-Language' de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_MIME
 #. Compose Dialog: <op_attach_edit_mime>
 #: gui/opcodes.h:72
-msgid "edit attachment using mailcap entry"
-msgstr "modifier la pièce jointe en utilisant l'entrée mailcap"
+msgid "Edit attachment using mailcap entry"
+msgstr "Modifier la pièce jointe en utilisant l'entrée mailcap"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_TYPE
 #. Attach Dialog: <op_attach_edit_type>
 #. Compose Dialog: <op_attach_edit_type>
 #. Index: <op_attach_edit_type>
 #: gui/opcodes.h:77
-msgid "edit attachment content type"
-msgstr "modifier le type de contenu de la pièce jointe"
+msgid "Edit attachment content type"
+msgstr "Modifier le type de contenu de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACH_FILTER
 #. Compose Dialog: <op_attach_filter>
 #: gui/opcodes.h:80
-msgid "filter attachment through a shell command"
-msgstr "traiter la pièce jointe au moyen d'une commande shell"
+msgid "Filter attachment through a shell command"
+msgstr "Traiter la pièce jointe au moyen d'une commande shell"
 
 #. L10N: Help screen description for OP_ATTACH_GET_ATTACHMENT
 #. Compose Dialog: <op_attach_get_attachment>
 #: gui/opcodes.h:83
-msgid "get a temporary copy of an attachment"
-msgstr "obtenir une copie temporaire d'une pièce jointe"
+msgid "Get a temporary copy of an attachment"
+msgstr "Obtenir une copie temporaire d'une pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_ALTS
 #. Compose Dialog: <op_attach_group_alts>
 #: gui/opcodes.h:86
-msgid "group tagged attachments as 'multipart/alternative'"
-msgstr "regrouper les pièces jointes marquées comme 'multipart/alternative'"
+msgid "Group tagged attachments as 'multipart/alternative'"
+msgstr "Regrouper les pièces jointes marquées comme 'multipart/alternative'"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL
 #. Compose Dialog: <op_attach_group_lingual>
 #: gui/opcodes.h:89
-msgid "group tagged attachments as 'multipart/multilingual'"
-msgstr "regrouper les pièces jointes marquées comme 'multipart/multilingual'"
+msgid "Group tagged attachments as 'multipart/multilingual'"
+msgstr "Regrouper les pièces jointes marquées comme 'multipart/multilingual'"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_RELATED
 #. Compose Dialog: <op_attach_group_related>
 #: gui/opcodes.h:92
 #, fuzzy
-msgid "group tagged attachments as 'multipart/related'"
-msgstr "regrouper les pièces jointes marquées comme 'multipart/related'"
+msgid "Group tagged attachments as 'multipart/related'"
+msgstr "Regrouper les pièces jointes marquées comme 'multipart/related'"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_DOWN
 #. Compose Dialog: <op_attach_move_down>
 #: gui/opcodes.h:95
-msgid "move an attachment down in the attachment list"
-msgstr "déplacer une pièce jointe vers le bas dans la liste des pièces jointes"
+msgid "Move an attachment down in the attachment list"
+msgstr "Déplacer une pièce jointe vers le bas dans la liste des pièces jointes"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_UP
 #. Compose Dialog: <op_attach_move_up>
 #: gui/opcodes.h:98
-msgid "move an attachment up in the attachment list"
-msgstr "déplacer une pièce jointe vers le haut dans la liste des pièce jointes"
+msgid "Move an attachment up in the attachment list"
+msgstr "Déplacer une pièce jointe vers le haut dans la liste des pièce jointes"
 
 #. L10N: Help screen description for OP_ATTACH_NEW_MIME
 #. Compose Dialog: <op_attach_new_mime>
 #: gui/opcodes.h:101
-msgid "compose new attachment using mailcap entry"
-msgstr "composer une nouvelle pièce jointe en utilisant l'entrée mailcap"
+msgid "Compose new attachment using mailcap entry"
+msgstr "Composer une nouvelle pièce jointe en utilisant l'entrée mailcap"
 
 #. L10N: Help screen description for OP_ATTACH_PIPE
 #. L10N: Help screen description for OP_PIPE
@@ -3512,8 +3512,8 @@ msgstr "composer une nouvelle pièce jointe en utilisant l'entrée mailcap"
 #. Attach Dialog: <op_attach_pipe>
 #. Index: <op_pipe>
 #: gui/opcodes.h:103 gui/opcodes.h:681
-msgid "pipe message/attachment to a shell command"
-msgstr "passer le message/la pièce jointe à une commande shell"
+msgid "Pipe message/attachment to a shell command"
+msgstr "Passer le message/la pièce jointe à une commande shell"
 
 #. L10N: Help screen description for OP_ATTACH_PRINT
 #. Attach Dialog: <op_attach_print>
@@ -3521,14 +3521,14 @@ msgstr "passer le message/la pièce jointe à une commande shell"
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
 #: gui/opcodes.h:107 gui/opcodes.h:699
-msgid "print the current entry"
-msgstr "imprimer l'entrée actuelle"
+msgid "Print the current entry"
+msgstr "Imprimer l'entrée actuelle"
 
 #. L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT
 #. Compose Dialog: <op_attach_rename_attachment>
 #: gui/opcodes.h:110
-msgid "send attachment with a different name"
-msgstr "envoyer la pièce jointe avec un autre nom"
+msgid "Send attachment with a different name"
+msgstr "Envoyer la pièce jointe avec un autre nom"
 
 #. L10N: Help screen description for OP_ATTACH_SAVE
 #. Attach Dialog: <op_attach_save>
@@ -3537,26 +3537,26 @@ msgstr "envoyer la pièce jointe avec un autre nom"
 #. Index: <op_save>
 #. Pager: <op_save>
 #: gui/opcodes.h:114 gui/opcodes.h:742
-msgid "save message/attachment to a mailbox/file"
-msgstr "enregistrer le message/la pièce jointe dans une boîte aux lettres ou un fichier"
+msgid "Save message/attachment to a mailbox/file"
+msgstr "Enregistrer le message/la pièce jointe dans une boîte aux lettres ou un fichier"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attach_toggle_disposition>
 #: gui/opcodes.h:117
-msgid "toggle disposition between inline/attachment"
-msgstr "basculer la disposition (en ligne / en pièce jointe)"
+msgid "Toggle disposition between inline/attachment"
+msgstr "Basculer la disposition (en ligne / en pièce jointe)"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE
 #. Compose Dialog: <op_attach_toggle_recode>
 #: gui/opcodes.h:120
-msgid "toggle recoding of this attachment"
-msgstr "activer/désactiver le recodage de cette pièce jointe"
+msgid "Toggle recoding of this attachment"
+msgstr "Activer/désactiver le recodage de cette pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK
 #. Compose Dialog: <op_attach_toggle_unlink>
 #: gui/opcodes.h:123
-msgid "toggle whether to delete file after sending it"
-msgstr "basculer l'option de suppression de fichier après l'envoi"
+msgid "Toggle whether to delete file after sending it"
+msgstr "Basculer l'option de suppression de fichier après l'envoi"
 
 #. L10N: Help screen description for OP_ATTACH_UNDELETE
 #. Attach Dialog: <op_attach_undelete>
@@ -3565,508 +3565,508 @@ msgstr "basculer l'option de suppression de fichier après l'envoi"
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
 #: gui/opcodes.h:126 gui/opcodes.h:828
-msgid "undelete the current entry"
-msgstr "récupérer l'entrée courante"
+msgid "Undelete the current entry"
+msgstr "Récupérer l'entrée courante"
 
 #. L10N: Help screen description for OP_ATTACH_UNGROUP
 #. Compose Dialog: <op_attach_ungroup>
 #: gui/opcodes.h:129
-msgid "ungroup 'multipart' attachment"
-msgstr "retirer la pièce jointe 'multipart'"
+msgid "Ungroup 'multipart' attachment"
+msgstr "Retirer la pièce jointe 'multipart'"
 
 #. L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING
 #. Compose Dialog: <op_attach_update_encoding>
 #: gui/opcodes.h:132
-msgid "update an attachment's encoding info"
-msgstr "mettre à jour l'information de codage d'une pièce jointe"
+msgid "Update an attachment's encoding info"
+msgstr "Mettre à jour l'information de codage d'une pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:136
-msgid "view attachment using mailcap entry if necessary"
-msgstr "visionner la pièce jointe en utilisant l'entrée mailcap si nécessaire"
+msgid "View attachment using mailcap entry if necessary"
+msgstr "Visionner la pièce jointe en utilisant l'entrée mailcap si nécessaire"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP
 #. Attach Dialog: <op_attach_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:140
-msgid "force viewing of attachment using mailcap"
-msgstr "forcer l'affichage d'une pièce jointe en utilisant le fichier mailcap"
+msgid "Force viewing of attachment using mailcap"
+msgstr "Forcer l'affichage d'une pièce jointe en utilisant le fichier mailcap"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_PAGER
 #. Attach Dialog: <op_attach_view_pager>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:144
-msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "visionner la pièce jointe avec le visionneur en utilisant mailcap avec l'option 'copiousoutput'"
+msgid "View attachment in pager using copiousoutput mailcap"
+msgstr "Visionner la pièce jointe avec le visionneur en utilisant mailcap avec l'option 'copiousoutput'"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_TEXT
 #. Attach Dialog: <op_attach_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:148
-msgid "view attachment as text"
-msgstr "visionner la pièce jointe en tant que texte"
+msgid "View attachment as text"
+msgstr "Visionner la pièce jointe en tant que texte"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:151
-msgid "show the next page of the message"
-msgstr "afficher la prochaine page du message"
+msgid "Show the next page of the message"
+msgstr "Afficher la prochaine page du message"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:154
-msgid "show the previous page of the message"
-msgstr "afficher la page précédente du message"
+msgid "Show the previous page of the message"
+msgstr "Afficher la page précédente du message"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
 #: gui/opcodes.h:160
-msgid "manage autocrypt accounts"
-msgstr "gérer les comptes autocrypt"
+msgid "Manage autocrypt accounts"
+msgstr "Gérer les comptes autocrypt"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_create_acct>
 #: gui/opcodes.h:163
-msgid "create a new autocrypt account"
-msgstr "créer un nouveau compte autocrypt"
+msgid "Create a new autocrypt account"
+msgstr "Créer un nouveau compte autocrypt"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
 #: gui/opcodes.h:166
-msgid "delete the current account"
-msgstr "supprimer le compte actuel"
+msgid "Delete the current account"
+msgstr "Supprimer le compte actuel"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
 #: gui/opcodes.h:169
-msgid "toggle the current account active/inactive"
-msgstr "basculer l'état actif/infactif du compte actuel"
+msgid "Toggle the current account active/inactive"
+msgstr "Basculer l'état actif/infactif du compte actuel"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
 #: gui/opcodes.h:172
-msgid "toggle the current account prefer-encrypt flag"
-msgstr "basculer le drapeau 'prefer-encrypt' du compte actuel"
+msgid "Toggle the current account prefer-encrypt flag"
+msgstr "Basculer le drapeau 'prefer-encrypt' du compte actuel"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
 #: gui/opcodes.h:175
-msgid "show autocrypt compose menu options"
-msgstr "afficher les options du menu de composition d'autocrypt"
+msgid "Show autocrypt compose menu options"
+msgstr "Afficher les options du menu de composition d'autocrypt"
 
 # TODO: Does "dialog" here refer to a pop-up or a separate window?
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
 #: gui/opcodes.h:183
 #, fuzzy
-msgid "open the aliases dialog"
+msgid "Open the aliases dialog"
 msgstr "Vous êtes sur le dernier message"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:186
-msgid "move to the bottom of the page"
-msgstr "aller en bas de la page"
+msgid "Move to the bottom of the page"
+msgstr "Aller en bas de la page"
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
 #: gui/opcodes.h:190
-msgid "remail a message to another user"
-msgstr "renvoyer un message à un autre utilisateur"
+msgid "Remail a message to another user"
+msgstr "Renvoyer un message à un autre utilisateur"
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:193
-msgid "swap the current folder position with $folder if it exists"
-msgstr "échanger la position du répertoire courant avec $folder s'il existe"
+msgid "Swap the current folder position with $folder if it exists"
+msgstr "Échanger la position du répertoire courant avec $folder s'il existe"
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
 #: gui/opcodes.h:196
-msgid "select a new file in this directory"
-msgstr "sélectionner un nouveau fichier dans ce répertoire"
+msgid "Select a new file in this directory"
+msgstr "Sélectionner un nouveau fichier dans ce répertoire"
 
 #. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:199
-msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "s'abonner à la boîte mail courante (IMAP/NNTP seulement)"
+msgid "Subscribe to current mbox (IMAP/NNTP only)"
+msgstr "S'abonner à la boîte mail courante (IMAP/NNTP seulement)"
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
 #: gui/opcodes.h:202
-msgid "display the currently selected file's name"
-msgstr "afficher le nom du fichier sélectionné actuellement"
+msgid "Display the currently selected file's name"
+msgstr "Afficher le nom du fichier sélectionné actuellement"
 
 # TODO: Try to find a way to shorten this translation
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
 #: gui/opcodes.h:205
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "changer entre voir toutes les boîtes aux lettres/voir les boîtes aux lettres abonnées (IMAP seulement)"
+msgid "Toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "Changer entre voir toutes les boîtes aux lettres/voir les boîtes aux lettres abonnées (IMAP seulement)"
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:208
-msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "se désabonner de la boîte aux lettres actuelle (IMAP seulement)"
+msgid "Unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "Se désabonner de la boîte aux lettres actuelle (IMAP seulement)"
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
 #: gui/opcodes.h:211
-msgid "view file"
-msgstr "visionner le fichier"
+msgid "View file"
+msgstr "Visionner le fichier"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
 #: gui/opcodes.h:215
-msgid "mark all articles in newsgroup as read"
-msgstr "marquer tous les articles de ce forum comme lus"
+msgid "Mark all articles in newsgroup as read"
+msgstr "Marquer tous les articles de ce forum comme lus"
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:218
-msgid "change directories"
-msgstr "changer de répertoires"
+msgid "Change directories"
+msgstr "Changer de répertoires"
 
 #. L10N: Help screen description for OP_CHECK_NEW
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:221
-msgid "check mailboxes for new mail"
-msgstr "vérifier s'il y a de nouveaux messages dans les boîtes aux lettres"
+msgid "Check mailboxes for new mail"
+msgstr "Vérifier s'il y a de nouveaux messages dans les boîtes aux lettres"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
 #: gui/opcodes.h:224
-msgid "calculate message statistics for all mailboxes"
-msgstr "calculer les statistiques des messages pour toutes les boîtes aux lettres"
+msgid "Calculate message statistics for all mailboxes"
+msgstr "Calculer les statistiques des messages pour toutes les boîtes aux lettres"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
 #: gui/opcodes.h:227
-msgid "edit the file to be attached"
-msgstr "éditer le fichier à attacher"
+msgid "Edit the file to be attached"
+msgstr "Éditer le fichier à attacher"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
 #: gui/opcodes.h:230
-msgid "edit the message"
-msgstr "éditer le message"
+msgid "Edit the message"
+msgstr "Éditer le message"
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
 #: gui/opcodes.h:233
-msgid "run ispell on the message"
-msgstr "lancer ispell sur le message"
+msgid "Run ispell on the message"
+msgstr "Lancer ispell sur le message"
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
 #: gui/opcodes.h:236
-msgid "save this message to send later"
-msgstr "sauvegarder ce message pour l'envoyer plus tard"
+msgid "Save this message to send later"
+msgstr "Sauvegarder ce message pour l'envoyer plus tard"
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
 #: gui/opcodes.h:239
-msgid "rename/move an attached file"
-msgstr "renommer/déplacer un fichier attaché"
+msgid "Rename/move an attached file"
+msgstr "Renommer/déplacer un fichier attaché"
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
 #: gui/opcodes.h:242
-msgid "send the message"
-msgstr "envoyer le message"
+msgid "Send the message"
+msgstr "Envoyer le message"
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
 #: gui/opcodes.h:246
-msgid "compose new message to the current message sender"
-msgstr "composer un nouveau message pour l'expéditeur du message courant"
+msgid "Compose new message to the current message sender"
+msgstr "Composer un nouveau message pour l'expéditeur du message courant"
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
 #: gui/opcodes.h:249
-msgid "write the message to a folder"
-msgstr "écrire le message dans un répertoire"
+msgid "Write the message to a folder"
+msgstr "Écrire le message dans un répertoire"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
 #: gui/opcodes.h:252
-msgid "copy a message to a file/mailbox"
-msgstr "copier un message dans un fichier ou une boîte aux lettres"
+msgid "Copy a message to a file/mailbox"
+msgstr "Copier un message dans un fichier ou une boîte aux lettres"
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
 #. Index: <op_create_alias>
 #: gui/opcodes.h:256
-msgid "create an alias from a message sender"
-msgstr "créer un alias à partir de l'expéditeur d'un message"
+msgid "Create an alias from a message sender"
+msgstr "Créer un alias à partir de l'expéditeur d'un message"
 
 #. L10N: Help screen description for OP_CREATE_MAILBOX
 #. Browser: <op_create_mailbox>
 #: gui/opcodes.h:259
-msgid "create a new mailbox (IMAP only)"
-msgstr "créer une nouvelle boîte aux lettres (IMAP seulement)"
+msgid "Create a new mailbox (IMAP only)"
+msgstr "Créer une nouvelle boîte aux lettres (IMAP seulement)"
 
 #. L10N: Help screen description for OP_CURRENT_BOTTOM
 #. Menu: <menu_movement>
 #: gui/opcodes.h:262
-msgid "move entry to bottom of screen"
-msgstr "déplacer l'entrée au bas de l'écran"
+msgid "Move entry to bottom of screen"
+msgstr "Déplacer l'entrée au bas de l'écran"
 
 #. L10N: Help screen description for OP_CURRENT_MIDDLE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:265
-msgid "move entry to middle of screen"
-msgstr "déplacer l'entrée au milieu de l'écran"
+msgid "Move entry to middle of screen"
+msgstr "Déplacer l'entrée au milieu de l'écran"
 
 #. L10N: Help screen description for OP_CURRENT_TOP
 #. Menu: <menu_movement>
 #: gui/opcodes.h:268
-msgid "move entry to top of screen"
-msgstr "déplacer l'entrée en haut de l'écran"
+msgid "Move entry to top of screen"
+msgstr "Déplacer l'entrée en haut de l'écran"
 
 #. L10N: Help screen description for OP_DECODE_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:271
-msgid "make decoded (text/plain) copy"
-msgstr "faire une copie décodée (text/plain)"
+msgid "Make decoded (text/plain) copy"
+msgstr "Faire une copie décodée (text/plain)"
 
 #. L10N: Help screen description for OP_DECODE_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:274
-msgid "make decoded copy (text/plain) and delete"
-msgstr "faire une copie décodée (text/plain) et supprimer"
+msgid "Make decoded copy (text/plain) and delete"
+msgstr "Faire une copie décodée (text/plain) et supprimer"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
 #: gui/opcodes.h:282
-msgid "delete the current mailbox (IMAP only)"
-msgstr "supprimer la boîte aux lettres actuelle (IMAP seulement)"
+msgid "Delete the current mailbox (IMAP only)"
+msgstr "Supprimer la boîte aux lettres actuelle (IMAP seulement)"
 
 #. L10N: Help screen description for OP_DELETE_SUBTHREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:285
-msgid "delete all messages in subthread"
-msgstr "supprimer tous les messages dans la sous-discussion"
+msgid "Delete all messages in subthread"
+msgstr "Supprimer tous les messages dans la sous-discussion"
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:288
-msgid "delete all messages in thread"
-msgstr "supprimer tous les messages dans la discussion"
+msgid "Delete all messages in thread"
+msgstr "Supprimer tous les messages dans la discussion"
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
 #: gui/opcodes.h:291
-msgid "descend into a directory"
-msgstr "descendre dans un répertoire"
+msgid "Descend into a directory"
+msgstr "Descendre dans un répertoire"
 
 #. L10N: Help screen description for OP_DISPLAY_ADDRESS
 #. Index: <op_display_address>
 #: gui/opcodes.h:294
-msgid "display full address of sender"
-msgstr "afficher l'adresse complète de l'expéditeur"
+msgid "Display full address of sender"
+msgstr "Afficher l'adresse complète de l'expéditeur"
 
 #. L10N: Help screen description for OP_DISPLAY_HEADERS
 #. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
 #: gui/opcodes.h:299
-msgid "display message and toggle header weeding"
-msgstr "afficher le message et activer/désactiver la restriction des en-têtes"
+msgid "Display message and toggle header weeding"
+msgstr "Afficher le message et activer/désactiver la restriction des en-têtes"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
 #: gui/opcodes.h:302
-msgid "display a message"
-msgstr "afficher un message"
+msgid "Display a message"
+msgstr "Afficher un message"
 
 #. L10N: Help screen description for OP_EDITOR_BACKSPACE
 #. Text Entry: <op_editor_backspace>
 #: gui/opcodes.h:305
-msgid "delete the char in front of the cursor"
-msgstr "supprimer le caractère situé devant le curseur"
+msgid "Delete the char in front of the cursor"
+msgstr "Supprimer le caractère situé devant le curseur"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
 #: gui/opcodes.h:308
-msgid "move the cursor one character to the left"
-msgstr "déplacer le curseur d'un caractère vers la gauche"
+msgid "Move the cursor one character to the left"
+msgstr "Déplacer le curseur d'un caractère vers la gauche"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
 #: gui/opcodes.h:311
-msgid "move the cursor to the beginning of the word"
-msgstr "déplacer le curseur au début du mot"
+msgid "Move the cursor to the beginning of the word"
+msgstr "Déplacer le curseur au début du mot"
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
 #: gui/opcodes.h:314
-msgid "jump to the beginning of the line"
-msgstr "aller au début de la ligne"
+msgid "Jump to the beginning of the line"
+msgstr "Aller au début de la ligne"
 
 #. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:317
-msgid "capitalize the word"
-msgstr "capitaliser le mot"
+msgid "Capitalize the word"
+msgstr "Capitaliser le mot"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:320
-msgid "complete filename or alias"
-msgstr "compléter un nom de fichier ou un alias"
+msgid "Complete filename or alias"
+msgstr "Compléter un nom de fichier ou un alias"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:323
-msgid "complete address with query"
-msgstr "compléter une adresse grâce à une requête"
+msgid "Complete address with query"
+msgstr "Compléter une adresse grâce à une requête"
 
 #. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
 #. Text Entry: <op_editor_delete_char>
 #: gui/opcodes.h:326
-msgid "delete the char under the cursor"
-msgstr "supprimer le caractère situé sous le curseur"
+msgid "Delete the char under the cursor"
+msgstr "Supprimer le caractère situé sous le curseur"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:329
-msgid "convert the word to lower case"
-msgstr "convertir le mot en minuscules"
+msgid "Convert the word to lower case"
+msgstr "Convertir le mot en minuscules"
 
 #. L10N: Help screen description for OP_EDITOR_EOL
 #. Text Entry: <op_editor_eol>
 #: gui/opcodes.h:332
-msgid "jump to the end of the line"
-msgstr "aller à la fin de la ligne"
+msgid "Jump to the end of the line"
+msgstr "Aller à la fin de la ligne"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
 #. Text Entry: <op_editor_forward_char>
 #: gui/opcodes.h:335
-msgid "move the cursor one character to the right"
-msgstr "déplacer le curseur d'un caractère vers la droite"
+msgid "Move the cursor one character to the right"
+msgstr "Déplacer le curseur d'un caractère vers la droite"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
 #: gui/opcodes.h:338
-msgid "move the cursor to the end of the word"
-msgstr "déplacer le curseur à la fin du mot"
+msgid "Move the cursor to the end of the word"
+msgstr "Déplacer le curseur à la fin du mot"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
 #: gui/opcodes.h:341
-msgid "scroll down through the history list"
-msgstr "redescendre dans l'historique"
+msgid "Scroll down through the history list"
+msgstr "Redescendre dans l'historique"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
 #: gui/opcodes.h:344
-msgid "search through the history list"
-msgstr "rechercher dans l'historique"
+msgid "Search through the history list"
+msgstr "Rechercher dans l'historique"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_UP
 #. Text Entry: <op_editor_history_up>
 #: gui/opcodes.h:347
-msgid "scroll up through the history list"
-msgstr "remonter dans l'historique"
+msgid "Scroll up through the history list"
+msgstr "Remonter dans l'historique"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOL
 #. Text Entry: <op_editor_kill_eol>
 #: gui/opcodes.h:350
-msgid "delete chars from cursor to end of line"
-msgstr "supprimer jusqu'à la fin de la ligne à partir du curseur"
+msgid "Delete chars from cursor to end of line"
+msgstr "Supprimer jusqu'à la fin de la ligne à partir du curseur"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
 #: gui/opcodes.h:353
-msgid "delete chars from the cursor to the end of the word"
-msgstr "supprimer jusqu'à la fin du mot à partir du curseur"
+msgid "Delete chars from the cursor to the end of the word"
+msgstr "Supprimer jusqu'à la fin du mot à partir du curseur"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
 #: gui/opcodes.h:356
-msgid "delete chars from cursor to beginning the line"
-msgstr "supprimer jusqu'au début de la ligne à partir du curseur"
+msgid "Delete chars from cursor to beginning the line"
+msgstr "Supprimer jusqu'au début de la ligne à partir du curseur"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
 #: gui/opcodes.h:359
-msgid "delete all chars on the line"
-msgstr "supprimer tous les caractères de la ligne"
+msgid "Delete all chars on the line"
+msgstr "Supprimer tous les caractères de la ligne"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
 #: gui/opcodes.h:362
-msgid "delete the word in front of the cursor"
-msgstr "supprimer le mot devant le curseur"
+msgid "Delete the word in front of the cursor"
+msgstr "Supprimer le mot devant le curseur"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:365
-msgid "cycle among incoming mailboxes"
-msgstr "faire défiler les boîtes aux lettres"
+msgid "Cycle among incoming mailboxes"
+msgstr "Faire défiler les boîtes aux lettres"
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
 #: gui/opcodes.h:368
 #, fuzzy
-msgid "quote the next typed key"
-msgstr "entrer le caractère correspondant à la prochaine touche"
+msgid "Quote the next typed key"
+msgstr "Entrer le caractère correspondant à la prochaine touche"
 
 #. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
 #. Text Entry: <op_editor_transpose_chars>
 #: gui/opcodes.h:371
-msgid "transpose character under cursor with previous"
-msgstr "échanger le caractère situé sous le curseur avec le précédent"
+msgid "Transpose character under cursor with previous"
+msgstr "Échanger le caractère situé sous le curseur avec le précédent"
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
 #: gui/opcodes.h:374
-msgid "convert the word to upper case"
-msgstr "convertir le mot en majuscules"
+msgid "Convert the word to upper case"
+msgstr "Convertir le mot en majuscules"
 
 #. L10N: Help screen description for OP_EDIT_LABEL
 #. Index: <op_edit_label>
 #: gui/opcodes.h:377
-msgid "add, change, or delete a message's label"
-msgstr "ajouter, changer ou supprimer le label d'un message"
+msgid "Add, change, or delete a message's label"
+msgstr "Ajouter, changer ou supprimer le label d'un message"
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:380
-msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr "éditer le message brut si la boîte aux lettres n'est pas en lecture seul, sinon l'afficher"
+msgid "Edit the raw message if the mailbox is not read-only, otherwise view it"
+msgstr "Éditer le message brut si la boîte aux lettres n'est pas en lecture seul, sinon l'afficher"
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:383
-msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr "edit modifie le message brut  (les commandes edit et edit-raw-message sont synonymes)"
+msgid "Edit the raw message (edit and edit-raw-message are synonyms)"
+msgstr "Edit modifie le message brut  (les commandes edit et edit-raw-message sont synonymes)"
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
 #: gui/opcodes.h:386
-msgid "end of conditional execution (noop)"
-msgstr "fin d'exécution conditionnelle (noop)"
+msgid "End of conditional execution (noop)"
+msgstr "Fin d'exécution conditionnelle (noop)"
 
 #. L10N: Help screen description for OP_ENTER_COMMAND
 #. Global: <op_enter_command>
 #: gui/opcodes.h:389
-msgid "enter a neomuttrc command"
-msgstr "entrer une commande neomuttrc"
+msgid "Enter a neomuttrc command"
+msgstr "Entrer une commande neomuttrc"
 
 #. L10N: Help screen description for OP_ENTER_MASK
 #. Browser: <op_enter_mask>
 #: gui/opcodes.h:392
-msgid "enter a file mask"
-msgstr "entrer un masque de fichier"
+msgid "Enter a file mask"
+msgstr "Entrer un masque de fichier"
 
 #. L10N: Help screen description for OP_EXIT
 #. Alias Dialog: <op_exit>
@@ -4081,42 +4081,42 @@ msgstr "entrer un masque de fichier"
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
 #: gui/opcodes.h:405
-msgid "exit this menu"
-msgstr "sortir de ce menu"
+msgid "Exit this menu"
+msgstr "Sortir de ce menu"
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:408
-msgid "move to the first entry"
-msgstr "aller à la première entrée"
+msgid "Move to the first entry"
+msgstr "Aller à la première entrée"
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
 #: gui/opcodes.h:411
-msgid "toggle a message's 'important' flag"
-msgstr "basculer le drapeau 'important' du message"
+msgid "Toggle a message's 'important' flag"
+msgstr "Basculer le drapeau 'important' du message"
 
 # , c-format
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
 #: gui/opcodes.h:415
-msgid "followup to newsgroup"
-msgstr "suivi du forum"
+msgid "Followup to newsgroup"
+msgstr "Suivi du forum"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
 #: gui/opcodes.h:419
-msgid "forward a message with comments"
-msgstr "transférer un message avec des commentaires"
+msgid "Forward a message with comments"
+msgstr "Transférer un message avec des commentaires"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
 #: gui/opcodes.h:423
-msgid "forward to newsgroup"
-msgstr "transférer au forum"
+msgid "Forward to newsgroup"
+msgstr "Transférer au forum"
 
 #. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
 #. Alias Dialog: <op_generic_select_entry>
@@ -4128,70 +4128,70 @@ msgstr "transférer au forum"
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
 #: gui/opcodes.h:433
-msgid "select the current entry"
-msgstr "sélectionner l'entrée courante"
+msgid "Select the current entry"
+msgstr "Sélectionner l'entrée courante"
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
 #: gui/opcodes.h:436
-msgid "get all children of the current message"
-msgstr "afficher le(s) message(s) enfant(s) du message courant"
+msgid "Get all children of the current message"
+msgstr "Afficher le(s) message(s) enfant(s) du message courant"
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
 #, fuzzy
-msgid "get message with Message-Id"
-msgstr "éditer le message avec ses en-têtes"
+msgid "Get message with Message-Id"
+msgstr "Éditer le message avec ses en-têtes"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
 #: gui/opcodes.h:442
-msgid "get parent of the current message"
-msgstr "afficher le message parent du message courant"
+msgid "Get parent of the current message"
+msgstr "Afficher le message parent du message courant"
 
 # , c-format
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
 #: gui/opcodes.h:445
-msgid "go to parent directory"
+msgid "Go to parent directory"
 msgstr "%s n'est pas un répertoire"
 
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:449
-msgid "reply to all recipients preserving To/Cc"
-msgstr "répondre à tous les destinataires en préservant À/Cc (To/Cc)"
+msgid "Reply to all recipients preserving To/Cc"
+msgstr "Répondre à tous les destinataires en préservant À/Cc (To/Cc)"
 
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:453
-msgid "reply to all recipients"
-msgstr "répondre à tous les destinataires"
+msgid "Reply to all recipients"
+msgstr "Répondre à tous les destinataires"
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
 #: gui/opcodes.h:457
-msgid "scroll down 1/2 page"
-msgstr "descendre d'1/2 page"
+msgid "Scroll down 1/2 page"
+msgstr "Descendre d'1/2 page"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
 #: gui/opcodes.h:461
-msgid "scroll up 1/2 page"
-msgstr "remonter d'1/2 page"
+msgid "Scroll up 1/2 page"
+msgstr "Remonter d'1/2 page"
 
 #. L10N: Help screen description for OP_HELP
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
 #: gui/opcodes.h:466
-msgid "this screen"
-msgstr "cet écran"
+msgid "This screen"
+msgstr "Cet écran"
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
@@ -4199,502 +4199,502 @@ msgstr "cet écran"
 #: gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473
 #: gui/opcodes.h:474 gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477
 #: gui/opcodes.h:478 gui/opcodes.h:479
-msgid "jump to an index number"
-msgstr "aller à un numéro d'index"
+msgid "Jump to an index number"
+msgstr "Aller à un numéro d'index"
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
 #: gui/opcodes.h:482
-msgid "move to the last entry"
-msgstr "aller à la dernière entrée"
+msgid "Move to the last entry"
+msgstr "Aller à la dernière entrée"
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
 #: gui/opcodes.h:485
 #, fuzzy
-msgid "limit view to current thread"
-msgstr "marquer la discussion courante"
+msgid "Limit view to current thread"
+msgstr "Marquer la discussion courante"
 
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:489
-msgid "reply to specified mailing list"
-msgstr "répondre à la liste de diffusion spécifiée"
+msgid "Reply to specified mailing list"
+msgstr "Répondre à la liste de diffusion spécifiée"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
 #: gui/opcodes.h:493
-msgid "subscribe to a mailing list"
-msgstr "s'abonner à la liste de diffusion spécifiée"
+msgid "Subscribe to a mailing list"
+msgstr "S'abonner à la liste de diffusion spécifiée"
 
 # , c-format
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
 #: gui/opcodes.h:497
-msgid "unsubscribe from a mailing list"
-msgstr "se désabonner d'une liste de diffusion"
+msgid "Unsubscribe from a mailing list"
+msgstr "Se désabonner d'une liste de diffusion"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
 #: gui/opcodes.h:500
-msgid "load list of all newsgroups from NNTP server"
-msgstr "charger la liste de tous les forums du serveur NNTP"
+msgid "Load list of all newsgroups from NNTP server"
+msgstr "Charger la liste de tous les forums du serveur NNTP"
 
 #. L10N: Help screen description for OP_MACRO
 #: gui/opcodes.h:502
-msgid "execute a macro"
-msgstr "exécuter une macro"
+msgid "Execute a macro"
+msgstr "Exécuter une macro"
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
 #: gui/opcodes.h:506
-msgid "compose a new mail message"
-msgstr "composer un nouveau message"
+msgid "Compose a new mail message"
+msgstr "Composer un nouveau message"
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
 #: gui/opcodes.h:510
-msgid "list mailboxes with new mail"
-msgstr "lister les boîtes aux lettres ayant de nouveaux messages"
+msgid "List mailboxes with new mail"
+msgstr "Lister les boîtes aux lettres ayant de nouveaux messages"
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
 #: gui/opcodes.h:513
-msgid "break the thread in two"
-msgstr "casser la discussion en deux"
+msgid "Break the thread in two"
+msgstr "Casser la discussion en deux"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:516
-msgid "open a different folder"
-msgstr "ouvrir un autre dossier"
+msgid "Open a different folder"
+msgstr "Ouvrir un autre dossier"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:519
-msgid "open a different folder in read only mode"
-msgstr "ouvrir un autre répertoire en lecture seule"
+msgid "Open a different folder in read only mode"
+msgstr "Ouvrir un autre répertoire en lecture seule"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:522
-msgid "open a different newsgroup"
-msgstr "ouvrir un autre forum"
+msgid "Open a different newsgroup"
+msgstr "Ouvrir un autre forum"
 
 # TODO: « dossier » vs « répertoire » and how to translate "newsgroup"
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:525
-msgid "open a different newsgroup in read only mode"
-msgstr "ouvrir un autre forum en lecture seule"
+msgid "Open a different newsgroup in read only mode"
+msgstr "Ouvrir un autre forum en lecture seule"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:528
-msgid "clear a status flag from a message"
-msgstr "effacer un drapeau de statut d'un message"
+msgid "Clear a status flag from a message"
+msgstr "Effacer un drapeau de statut d'un message"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS
 #. Index: <op_main_close_all_threads>
 #: gui/opcodes.h:531
 #, fuzzy
-msgid "collapse all threads"
-msgstr "comprimer/décomprimer toutes les discussions"
+msgid "Collapse all threads"
+msgstr "Comprimer/décomprimer toutes les discussions"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_THREAD
 #. Index: <op_main_close_thread>
 #: gui/opcodes.h:534
 #, fuzzy
-msgid "collapse current thread"
-msgstr "comprimer/décomprimer la discussion courante"
+msgid "Collapse current thread"
+msgstr "Comprimer/décomprimer la discussion courante"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
 #: gui/opcodes.h:537
-msgid "collapse/uncollapse all threads"
-msgstr "comprimer/décomprimer toutes les discussions"
+msgid "Collapse/uncollapse all threads"
+msgstr "Comprimer/décomprimer toutes les discussions"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
 #: gui/opcodes.h:540
-msgid "collapse/uncollapse current thread"
-msgstr "comprimer/décomprimer la discussion courante"
+msgid "Collapse/uncollapse current thread"
+msgstr "Comprimer/décomprimer la discussion courante"
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
 #: gui/opcodes.h:543
-msgid "delete non-hidden messages matching a pattern"
-msgstr "supprimer des messages non caché correspondant à un motif"
+msgid "Delete non-hidden messages matching a pattern"
+msgstr "Supprimer des messages non caché correspondant à un motif"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
 #: gui/opcodes.h:546
-msgid "retrieve mail from POP server"
-msgstr "récupérer des messages depuis un serveur POP"
+msgid "Retrieve mail from POP server"
+msgstr "Récupérer des messages depuis un serveur POP"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
 #: gui/opcodes.h:549
-msgid "force retrieval of mail from IMAP server"
-msgstr "forcer la récupération des messages depuis un serveur IMAP"
+msgid "Force retrieval of mail from IMAP server"
+msgstr "Forcer la récupération des messages depuis un serveur IMAP"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
 #: gui/opcodes.h:552
-msgid "logout from all IMAP servers"
-msgstr "se déconnecter de tous les serveurs IMAP"
+msgid "Logout from all IMAP servers"
+msgstr "Se déconnecter de tous les serveurs IMAP"
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
 #: gui/opcodes.h:556
-msgid "show only messages matching a pattern"
-msgstr "afficher seulement les messages correspondant à un motif"
+msgid "Show only messages matching a pattern"
+msgstr "Afficher seulement les messages correspondant à un motif"
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
 #: gui/opcodes.h:559
-msgid "link tagged message to the current one"
-msgstr "lier le message marqué au message courant"
+msgid "Link tagged message to the current one"
+msgstr "Lier le message marqué au message courant"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:562
-msgid "modify (notmuch/imap) tags"
-msgstr "modifier les étiquettes (notmuch/imap)"
+msgid "Modify (notmuch/imap) tags"
+msgstr "Modifier les étiquettes (notmuch/imap)"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:565
-msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "modifier les étiquettes (notmuch/imap), et puis cacher le message"
+msgid "Modify (notmuch/imap) tags and then hide message"
+msgstr "Modifier les étiquettes (notmuch/imap), et puis cacher le message"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:568
-msgid "jump to the next new message"
-msgstr "aller au nouveau message suivant"
+msgid "Jump to the next new message"
+msgstr "Aller au nouveau message suivant"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:571
-msgid "jump to the next new or unread message"
-msgstr "aller au message nouveau ou non lu suivant"
+msgid "Jump to the next new or unread message"
+msgstr "Aller au message nouveau ou non lu suivant"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:574
-msgid "jump to the next subthread"
-msgstr "aller à la sous-discussion suivante"
+msgid "Jump to the next subthread"
+msgstr "Aller à la sous-discussion suivante"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:577
-msgid "jump to the next thread"
-msgstr "aller à la discussion suivante"
+msgid "Jump to the next thread"
+msgstr "Aller à la discussion suivante"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
 #: gui/opcodes.h:580
-msgid "move to the next undeleted message"
-msgstr "aller au message non supprimé suivant"
+msgid "Move to the next undeleted message"
+msgstr "Aller au message non supprimé suivant"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:583
-msgid "jump to the next unread message"
-msgstr "aller au message non lu suivant"
+msgid "Jump to the next unread message"
+msgstr "Aller au message non lu suivant"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
 #: gui/opcodes.h:586
-msgid "open next mailbox with new mail"
-msgstr "ouvrir la boîte aux lettres avec de nouveaux messages suivante"
+msgid "Open next mailbox with new mail"
+msgstr "Ouvrir la boîte aux lettres avec de nouveaux messages suivante"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS
 #. Index: <op_main_open_all_threads>
 #: gui/opcodes.h:589
 #, fuzzy
-msgid "uncollapse all threads"
-msgstr "comprimer/décomprimer toutes les discussions"
+msgid "Uncollapse all threads"
+msgstr "Comprimer/décomprimer toutes les discussions"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_THREAD
 #. Index: <op_main_open_thread>
 #: gui/opcodes.h:592
 #, fuzzy
-msgid "uncollapse current thread"
-msgstr "comprimer/décomprimer la discussion courante"
+msgid "Uncollapse current thread"
+msgstr "Comprimer/décomprimer la discussion courante"
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:595
-msgid "jump to parent message in thread"
-msgstr "aller au message père dans la discussion"
+msgid "Jump to parent message in thread"
+msgstr "Aller au message père dans la discussion"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:598
-msgid "jump to the previous new message"
-msgstr "aller au nouveau message précédent"
+msgid "Jump to the previous new message"
+msgstr "Aller au nouveau message précédent"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:601
-msgid "jump to the previous new or unread message"
-msgstr "aller au message nouveau ou non lu précédent"
+msgid "Jump to the previous new or unread message"
+msgstr "Aller au message nouveau ou non lu précédent"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:604
-msgid "jump to previous subthread"
-msgstr "aller à la sous-discussion précédente"
+msgid "Jump to previous subthread"
+msgstr "Aller à la sous-discussion précédente"
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
 #: gui/opcodes.h:607
-msgid "jump to previous thread"
-msgstr "aller à la discussion précédente"
+msgid "Jump to previous thread"
+msgstr "Aller à la discussion précédente"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
 #: gui/opcodes.h:610
-msgid "move to the previous undeleted message"
-msgstr "aller au message non supprimé précédent"
+msgid "Move to the previous undeleted message"
+msgstr "Aller au message non supprimé précédent"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:613
-msgid "jump to the previous unread message"
-msgstr "aller au message non lu précédent"
+msgid "Jump to the previous unread message"
+msgstr "Aller au message non lu précédent"
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
 #: gui/opcodes.h:616
-msgid "delete from NeoMutt, don't touch on disk"
-msgstr "supprimer de NeoMutt, ne pas toucher au disque"
+msgid "Delete from NeoMutt, don't touch on disk"
+msgstr "Supprimer de NeoMutt, ne pas toucher au disque"
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:619
-msgid "mark the current subthread as read"
-msgstr "marquer la sous-discussion courante comme lue"
+msgid "Mark the current subthread as read"
+msgstr "Marquer la sous-discussion courante comme lue"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:622
-msgid "mark the current thread as read"
-msgstr "marquer la discussion courante comme lue"
+msgid "Mark the current thread as read"
+msgstr "Marquer la discussion courante comme lue"
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
 #: gui/opcodes.h:625
-msgid "jump to root message in thread"
-msgstr "aller au message racine dans la discussion"
+msgid "Jump to root message in thread"
+msgstr "Aller au message racine dans la discussion"
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:628
-msgid "set a status flag on a message"
-msgstr "marquer un message d'un drapeau d'état"
+msgid "Set a status flag on a message"
+msgstr "Marquer un message d'un drapeau d'état"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
 #: gui/opcodes.h:631
-msgid "show currently active limit pattern"
-msgstr "afficher le motif de limitation actuel"
+msgid "Show currently active limit pattern"
+msgstr "Afficher le motif de limitation actuel"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
 #: gui/opcodes.h:634
-msgid "save changes to mailbox"
-msgstr "enregistrer les modifications de la boîte aux lettres"
+msgid "Save changes to mailbox"
+msgstr "Enregistrer les modifications de la boîte aux lettres"
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
 #: gui/opcodes.h:637
-msgid "tag non-hidden messages matching a pattern"
-msgstr "étiqueter des messages non cachés correspondant à un motif"
+msgid "Tag non-hidden messages matching a pattern"
+msgstr "Étiqueter des messages non cachés correspondant à un motif"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
 #: gui/opcodes.h:640
-msgid "undelete non-hidden messages matching a pattern"
-msgstr "récupérer des messages non cachés correspondant à un motif"
+msgid "Undelete non-hidden messages matching a pattern"
+msgstr "Récupérer des messages non cachés correspondant à un motif"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
 #: gui/opcodes.h:643
-msgid "untag non-hidden messages matching a pattern"
-msgstr "enlever l'étiquette des messages non cachés correspondant à un motif"
+msgid "Untag non-hidden messages matching a pattern"
+msgstr "Enlever l'étiquette des messages non cachés correspondant à un motif"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
 #: gui/opcodes.h:646
-msgid "create a hotkey macro for the current message"
-msgstr "créer une macro hotkey (marque-page) pour le message courant"
+msgid "Create a hotkey macro for the current message"
+msgstr "Créer une macro hotkey (marque-page) pour le message courant"
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:649
-msgid "move to the middle of the page"
-msgstr "aller au milieu de la page"
+msgid "Move to the middle of the page"
+msgstr "Aller au milieu de la page"
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
 #: gui/opcodes.h:653
-msgid "move to the next entry"
-msgstr "aller à l'entrée suivante"
+msgid "Move to the next entry"
+msgstr "Aller à l'entrée suivante"
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
 #: gui/opcodes.h:657
-msgid "scroll down one line"
-msgstr "descendre d'une ligne"
+msgid "Scroll down one line"
+msgstr "Descendre d'une ligne"
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
 #: gui/opcodes.h:661
-msgid "move to the next page"
-msgstr "aller à la page suivante"
+msgid "Move to the next page"
+msgstr "Aller à la page suivante"
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
 #: gui/opcodes.h:664
-msgid "jump to the bottom of the message"
-msgstr "aller à la fin du message"
+msgid "Jump to the bottom of the message"
+msgstr "Aller à la fin du message"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
 #: gui/opcodes.h:667
-msgid "toggle display of quoted text"
-msgstr "activer/désactiver l'affichage du texte cité"
+msgid "Toggle display of quoted text"
+msgstr "Activer/désactiver l'affichage du texte cité"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
 #: gui/opcodes.h:670
 #, fuzzy
-msgid "jump to first line after headers"
-msgstr "aller à la discussion suivante"
+msgid "Jump to first line after headers"
+msgstr "Aller à la discussion suivante"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
 #: gui/opcodes.h:673
-msgid "skip beyond quoted text"
-msgstr "sauter le texte cité"
+msgid "Skip beyond quoted text"
+msgstr "Sauter le texte cité"
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
 #: gui/opcodes.h:676
-msgid "jump to the top of the message"
-msgstr "aller au début du message"
+msgid "Jump to the top of the message"
+msgstr "Aller au début du message"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
 #: gui/opcodes.h:684
-msgid "post message to newsgroup"
-msgstr "publier le message à un forum"
+msgid "Post message to newsgroup"
+msgstr "Publier le message à un forum"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
 #: gui/opcodes.h:688
-msgid "move to the previous entry"
-msgstr "aller à l'entrée précédente"
+msgid "Move to the previous entry"
+msgstr "Aller à l'entrée précédente"
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
 #: gui/opcodes.h:692
-msgid "scroll up one line"
-msgstr "remonter d'une ligne"
+msgid "Scroll up one line"
+msgstr "Remonter d'une ligne"
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
 #: gui/opcodes.h:696
-msgid "move to the previous page"
-msgstr "aller à la page précédente"
+msgid "Move to the previous page"
+msgstr "Aller à la page précédente"
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
 #: gui/opcodes.h:702
-msgid "delete the current entry, bypassing the trash folder"
-msgstr "supprimer l'entrée courante, sans utiliser la corbeille"
+msgid "Delete the current entry, bypassing the trash folder"
+msgstr "Supprimer l'entrée courante, sans utiliser la corbeille"
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:705
-msgid "delete the current thread, bypassing the trash folder"
-msgstr "supprimer le fil de discussion sélectionné, sans passer par la corbeille"
+msgid "Delete the current thread, bypassing the trash folder"
+msgstr "Supprimer le fil de discussion sélectionné, sans passer par la corbeille"
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
 #: gui/opcodes.h:709
-msgid "query external program for addresses"
-msgstr "demander des adresses à un programme externe"
+msgid "Query external program for addresses"
+msgstr "Demander des adresses à un programme externe"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
 #: gui/opcodes.h:712
-msgid "append new query results to current results"
-msgstr "ajouter les nouveaux résultats de la requête aux résultats courants"
+msgid "Append new query results to current results"
+msgstr "Ajouter les nouveaux résultats de la requête aux résultats courants"
 
 #. L10N: Help screen description for OP_QUIT
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
 #: gui/opcodes.h:717
-msgid "save changes to mailbox and quit"
-msgstr "enregistrer les modifications de la boîte aux lettres et quitter"
+msgid "Save changes to mailbox and quit"
+msgstr "Enregistrer les modifications de la boîte aux lettres et quitter"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
 #: gui/opcodes.h:720
-msgid "recall a postponed message"
-msgstr "rappeler un message ajourné"
+msgid "Recall a postponed message"
+msgstr "Rappeler un message ajourné"
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
 #: gui/opcodes.h:723
 #, fuzzy
-msgid "reconstruct thread containing current message"
-msgstr "cette fil de discussion contient des messages non lus."
+msgid "Reconstruct thread containing current message"
+msgstr "Cette fil de discussion contient des messages non lus."
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
 #: gui/opcodes.h:727
-msgid "clear and redraw the screen"
-msgstr "effacer l'écran et réafficher"
+msgid "Clear and redraw the screen"
+msgstr "Effacer l'écran et réafficher"
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
 #: gui/opcodes.h:730
-msgid "rename the current mailbox (IMAP only)"
-msgstr "renommer la boîte aux lettres actuelle (IMAP seulement)"
+msgid "Rename the current mailbox (IMAP only)"
+msgstr "Renommer la boîte aux lettres actuelle (IMAP seulement)"
 
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
 #: gui/opcodes.h:734
-msgid "reply to a message"
-msgstr "répondre à un message"
+msgid "Reply to a message"
+msgstr "Répondre à un message"
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
 #: gui/opcodes.h:738
-msgid "use the current message as a template for a new one"
-msgstr "utiliser le message courant comme modèle pour un nouveau message"
+msgid "Use the current message as a template for a new one"
+msgstr "Utiliser le message courant comme modèle pour un nouveau message"
 
 #. L10N: Help screen description for OP_SEARCH
 #. Menu: <menu_search>
@@ -4703,8 +4703,8 @@ msgstr "utiliser le message courant comme modèle pour un nouveau message"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:749
-msgid "search for a regular expression"
-msgstr "rechercher une expression rationnelle"
+msgid "Search for a regular expression"
+msgstr "Rechercher une expression rationnelle"
 
 #. L10N: Help screen description for OP_SEARCH_NEXT
 #. Menu: <menu_search>
@@ -4713,8 +4713,8 @@ msgstr "rechercher une expression rationnelle"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:756
-msgid "search for next match"
-msgstr "rechercher la prochaine occurrence"
+msgid "Search for next match"
+msgstr "Rechercher la prochaine occurrence"
 
 #. L10N: Help screen description for OP_SEARCH_OPPOSITE
 #. Menu: <menu_search>
@@ -4723,8 +4723,8 @@ msgstr "rechercher la prochaine occurrence"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:763
-msgid "search for next match in opposite direction"
-msgstr "rechercher la prochaine occurrence dans la direction opposée"
+msgid "Search for next match in opposite direction"
+msgstr "Rechercher la prochaine occurrence dans la direction opposée"
 
 #. L10N: Help screen description for OP_SEARCH_REVERSE
 #. Menu: <menu_search>
@@ -4733,176 +4733,176 @@ msgstr "rechercher la prochaine occurrence dans la direction opposée"
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
 #: gui/opcodes.h:770
-msgid "search backwards for a regular expression"
-msgstr "rechercher en arrière une expression rationnelle"
+msgid "Search backwards for a regular expression"
+msgstr "Rechercher en arrière une expression rationnelle"
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
 #: gui/opcodes.h:773
-msgid "toggle search pattern coloring"
-msgstr "activer/désactiver la coloration du motif de recherche"
+msgid "Toggle search pattern coloring"
+msgstr "Activer/désactiver la coloration du motif de recherche"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
 #: gui/opcodes.h:776
-msgid "invoke a command in a subshell"
-msgstr "exécuter une commande dans un sous-shell"
+msgid "Invoke a command in a subshell"
+msgstr "Exécuter une commande dans un sous-shell"
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
 #: gui/opcodes.h:779
-msgid "show log (and debug) messages"
-msgstr "afficher les messages de log (et de débogage)"
+msgid "Show log (and debug) messages"
+msgstr "Afficher les messages de log (et de débogage)"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:784
-msgid "sort messages"
-msgstr "trier les messages"
+msgid "Sort messages"
+msgstr "Trier les messages"
 
 #. L10N: Help screen description for OP_SORT_REVERSE
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
 #: gui/opcodes.h:789
-msgid "sort messages in reverse order"
-msgstr "trier les messages dans l'ordre inverse"
+msgid "Sort messages in reverse order"
+msgstr "Trier les messages dans l'ordre inverse"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:792
-msgid "subscribe to newsgroups matching a pattern"
-msgstr "s'abonner aux forums correspondant à un motif"
+msgid "Subscribe to newsgroups matching a pattern"
+msgstr "S'abonner aux forums correspondant à un motif"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
 #: gui/opcodes.h:795
-msgid "tag the current entry"
-msgstr "marquer l'entrée actuelle"
+msgid "Tag the current entry"
+msgstr "Marquer l'entrée actuelle"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
 #: gui/opcodes.h:797
-msgid "apply next function to tagged messages"
-msgstr "appliquer la prochaine fonction aux messages étiquettés"
+msgid "Apply next function to tagged messages"
+msgstr "Appliquer la prochaine fonction aux messages étiquettés"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
 #: gui/opcodes.h:799
-msgid "apply next function ONLY to tagged messages"
-msgstr "appliquer la prochaine fonction SEULEMENT aux messages marqués"
+msgid "Apply next function ONLY to tagged messages"
+msgstr "Appliquer la prochaine fonction SEULEMENT aux messages marqués"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:802
-msgid "tag the current subthread"
-msgstr "étiqueter la sous-discussion actuelle"
+msgid "Tag the current subthread"
+msgstr "Étiqueter la sous-discussion actuelle"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:805
-msgid "tag the current thread"
-msgstr "étiqueter la discussion actuelle"
+msgid "Tag the current thread"
+msgstr "Étiqueter la discussion actuelle"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:808
-msgid "toggle whether to browse mailboxes or all files"
-msgstr "basculer entre l'affichage des boîtes aux lettres ou celui de tous les fichiers"
+msgid "Toggle whether to browse mailboxes or all files"
+msgstr "Basculer entre l'affichage des boîtes aux lettres ou celui de tous les fichiers"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
 #: gui/opcodes.h:811
-msgid "toggle a message's 'new' flag"
-msgstr "basculer le drapeau 'nouveau' du message"
+msgid "Toggle a message's 'new' flag"
+msgstr "Basculer le drapeau 'nouveau' du message"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
 #: gui/opcodes.h:814
 #, fuzzy
-msgid "toggle view of read messages"
-msgstr "basculer la vue des messages lus"
+msgid "Toggle view of read messages"
+msgstr "Basculer la vue des messages lus"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
 #: gui/opcodes.h:817
 #, fuzzy
-msgid "toggle whether the mailbox will be rewritten"
-msgstr "changer l'option de mise à jour de la boîte aux lettres"
+msgid "Toggle whether the mailbox will be rewritten"
+msgstr "Changer l'option de mise à jour de la boîte aux lettres"
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
 #: gui/opcodes.h:820
-msgid "move to the top of the page"
-msgstr "aller en haut de la page"
+msgid "Move to the top of the page"
+msgstr "Aller en haut de la page"
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
 #: gui/opcodes.h:823
-msgid "mark all articles in newsgroup as unread"
-msgstr "marquer tous les articles du forum comme non lus"
+msgid "Mark all articles in newsgroup as unread"
+msgstr "Marquer tous les articles du forum comme non lus"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:831
-msgid "undelete all messages in subthread"
-msgstr "récupérer tous les messages de la sous-discussion"
+msgid "Undelete all messages in subthread"
+msgstr "Récupérer tous les messages de la sous-discussion"
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
 #: gui/opcodes.h:834
-msgid "undelete all messages in thread"
-msgstr "récupérer tous les messages de la discussion"
+msgid "Undelete all messages in thread"
+msgstr "Récupérer tous les messages de la discussion"
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:837
-msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "se désabonner des forums correspondant à un motif"
+msgid "Unsubscribe from newsgroups matching a pattern"
+msgstr "Se désabonner des forums correspondant à un motif"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
 #: gui/opcodes.h:840
-msgid "show the NeoMutt version number and date"
-msgstr "afficher la version de NeoMutt (numéro et date)"
+msgid "Show the NeoMutt version number and date"
+msgstr "Afficher la version de NeoMutt (numéro et date)"
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
 #: gui/opcodes.h:844
-msgid "show MIME attachments"
-msgstr "afficher les pièces jointes MIME"
+msgid "Show MIME attachments"
+msgstr "Afficher les pièces jointes MIME"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
 #: gui/opcodes.h:847
-msgid "show the raw message"
-msgstr "afficher le message brut"
+msgid "Show the raw message"
+msgstr "Afficher le message brut"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
 #: gui/opcodes.h:850
-msgid "display the keycode for a key press"
-msgstr "afficher le code d'une touche enfoncée"
+msgid "Display the keycode for a key press"
+msgstr "Afficher le code d'une touche enfoncée"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
 #: gui/opcodes.h:855
-msgid "make decrypted copy"
-msgstr "faire une copie déchiffrée"
+msgid "Make decrypted copy"
+msgstr "Faire une copie déchiffrée"
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
 #: gui/opcodes.h:858
-msgid "make decrypted copy and delete"
-msgstr "faire une copie déchiffrée et supprimer"
+msgid "Make decrypted copy and delete"
+msgstr "Faire une copie déchiffrée et supprimer"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
 #: gui/opcodes.h:862
-msgid "extract supported public keys"
-msgstr "extraire les clés publiques supportées"
+msgid "Extract supported public keys"
+msgstr "Extraire les clés publiques supportées"
 
 # Normally when we talk of deleting something in a computing context, the word
 # « supprimer » is better than « effacer ». However, in this case « effacer »
@@ -4913,253 +4913,253 @@ msgstr "extraire les clés publiques supportées"
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
 #: gui/opcodes.h:867
-msgid "wipe passphrases from memory"
-msgstr "effacer les phrases de passe de la mémoire"
+msgid "Wipe passphrases from memory"
+msgstr "Effacer les phrases de passe de la mémoire"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
 #: gui/opcodes.h:872
-msgid "edit the BCC list"
-msgstr "éditer la liste CCI"
+msgid "Edit the BCC list"
+msgstr "Éditer la liste CCI"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
 #: gui/opcodes.h:875
-msgid "edit the CC list"
-msgstr "éditer la liste CC"
+msgid "Edit the CC list"
+msgstr "Éditer la liste CC"
 
 # TODO: « taper » vs « entrer » here and elsewhere
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
 #: gui/opcodes.h:878
-msgid "enter a file to save a copy of this message in"
-msgstr "entrer le nom d'un fichier dans lequel enregistrer une copie de ce message"
+msgid "Enter a file to save a copy of this message in"
+msgstr "Entrer le nom d'un fichier dans lequel enregistrer une copie de ce message"
 
 # TODO: should the name of this field be translated?
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
 #: gui/opcodes.h:881
-msgid "edit the Followup-To field"
-msgstr "modifier le champ Followup-To"
+msgid "Edit the Followup-To field"
+msgstr "Modifier le champ Followup-To"
 
 # TODO: should the name of this field be translated?
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
 #: gui/opcodes.h:884
-msgid "edit the from field"
-msgstr "modifier le champ from"
+msgid "Edit the from field"
+msgstr "Modifier le champ from"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
 #: gui/opcodes.h:887
-msgid "edit the message with headers"
-msgstr "modifier le message avec ses en-têtes"
+msgid "Edit the message with headers"
+msgstr "Modifier le message avec ses en-têtes"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
 #: gui/opcodes.h:890
-msgid "edit the newsgroups list"
-msgstr "modifier la liste des forums"
+msgid "Edit the newsgroups list"
+msgstr "Modifier la liste des forums"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
 #: gui/opcodes.h:893
-msgid "edit the Reply-To field"
-msgstr "éditer le champ Reply-To"
+msgid "Edit the Reply-To field"
+msgstr "Éditer le champ Reply-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
 #: gui/opcodes.h:896
-msgid "edit the subject of this message"
-msgstr "éditer l'objet (Subject) de ce message"
+msgid "Edit the subject of this message"
+msgstr "Éditer l'objet (Subject) de ce message"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
 #: gui/opcodes.h:899
-msgid "edit the TO list"
-msgstr "éditer la liste TO"
+msgid "Edit the TO list"
+msgstr "Éditer la liste TO"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
 #: gui/opcodes.h:902
 #, fuzzy
-msgid "edit the X-Comment-To field"
-msgstr "éditer le champ Reply-To"
+msgid "Edit the X-Comment-To field"
+msgstr "Éditer le champ Reply-To"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:908
-msgid "open a different virtual folder"
-msgstr "ouvrir un autre répertoire virtuel"
+msgid "Open a different virtual folder"
+msgstr "Ouvrir un autre répertoire virtuel"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
 #: gui/opcodes.h:911
 #, fuzzy
-msgid "read entire thread of the current message"
-msgstr "créer une macro hotkey (marque-page) pour le message courant"
+msgid "Read entire thread of the current message"
+msgstr "Créer une macro hotkey (marque-page) pour le message courant"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:914
-msgid "generate virtual folder from query"
-msgstr "générer un répertoire virtuel depuis la requête"
+msgid "Generate virtual folder from query"
+msgstr "Générer un répertoire virtuel depuis la requête"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:917
-msgid "generate a read-only virtual folder from query"
-msgstr "générer un répertoire virtuel en lecture seule depuis la requête"
+msgid "Generate a read-only virtual folder from query"
+msgstr "Générer un répertoire virtuel en lecture seule depuis la requête"
 
 # TODO: Not sure about this one
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:920
-msgid "shifts virtual folder time window backwards"
-msgstr "décaler la fenêtre temporelle du répertoire virtuel vers l'arrière"
+msgid "Shifts virtual folder time window backwards"
+msgstr "Décaler la fenêtre temporelle du répertoire virtuel vers l'arrière"
 
 # TODO: Not sure about this one
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:923
-msgid "shifts virtual folder time window forwards"
-msgstr "décaler la fenêtre temporelle du répertoire virtuel vers l'avant"
+msgid "Shifts virtual folder time window forwards"
+msgstr "Décaler la fenêtre temporelle du répertoire virtuel vers l'avant"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:926
-msgid "resets virtual folder time window to the present"
-msgstr "remettre la fenêtre temporelle du répertoire virtuel au présent"
+msgid "Resets virtual folder time window to the present"
+msgstr "Remettre la fenêtre temporelle du répertoire virtuel au présent"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_KEY
 #. Compose Dialog: <op_attach_attach_key>
 #: gui/opcodes.h:934
-msgid "attach a PGP public key"
-msgstr "attacher une clé publique PGP"
+msgid "Attach a PGP public key"
+msgstr "Attacher une clé publique PGP"
 
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
 #: gui/opcodes.h:938
 #, fuzzy
-msgid "check for classic PGP"
-msgstr "reconnaissance PGP classique"
+msgid "Check for classic PGP"
+msgstr "Reconnaissance PGP classique"
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
 #: gui/opcodes.h:941
-msgid "show PGP options"
-msgstr "afficher les options PGP"
+msgid "Show PGP options"
+msgstr "Afficher les options PGP"
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
 #: gui/opcodes.h:944
-msgid "mail a PGP public key"
-msgstr "envoyer une clé publique PGP"
+msgid "Mail a PGP public key"
+msgstr "Envoyer une clé publique PGP"
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:948
 #, fuzzy
-msgid "verify a public key"
-msgstr "vérifier une clé publique "
+msgid "Verify a public key"
+msgstr "Vérifier une clé publique "
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
 #: gui/opcodes.h:952
-msgid "view the key's user id"
-msgstr "afficher le numéro d'utilisateur de la clé"
+msgid "View the key's user id"
+msgstr "Afficher le numéro d'utilisateur de la clé"
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
 #: gui/opcodes.h:957
-msgid "move the highlight to the first mailbox"
-msgstr "déplacer le focus vers la boîte aux lettres suivante"
+msgid "Move the highlight to the first mailbox"
+msgstr "Déplacer le focus vers la boîte aux lettres suivante"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
 #: gui/opcodes.h:960
-msgid "move the highlight to the last mailbox"
-msgstr "déplacer le focus vers la boîte aux lettres suivante"
+msgid "Move the highlight to the last mailbox"
+msgstr "Déplacer le focus vers la boîte aux lettres suivante"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
 #: gui/opcodes.h:963
-msgid "move the highlight to next mailbox"
-msgstr "déplacer le focus vers la boîte aux lettres suivante"
+msgid "Move the highlight to next mailbox"
+msgstr "Déplacer le focus vers la boîte aux lettres suivante"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
 #: gui/opcodes.h:966
-msgid "move the highlight to next mailbox with new mail"
-msgstr "déplacer le focus vers la boîte aux lettres avec de nouveaux messages suivante"
+msgid "Move the highlight to next mailbox with new mail"
+msgstr "Déplacer le focus vers la boîte aux lettres avec de nouveaux messages suivante"
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
 #: gui/opcodes.h:969
-msgid "open highlighted mailbox"
-msgstr "ouvrir la boîte aux lettres en surbrillance"
+msgid "Open highlighted mailbox"
+msgstr "Ouvrir la boîte aux lettres en surbrillance"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
 #: gui/opcodes.h:972
-msgid "scroll the sidebar down 1 page"
-msgstr "descendre la barre latérale d'une page"
+msgid "Scroll the sidebar down 1 page"
+msgstr "Descendre la barre latérale d'une page"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
 #: gui/opcodes.h:975
-msgid "scroll the sidebar up 1 page"
-msgstr "remonter la barre latérale d'une page"
+msgid "Scroll the sidebar up 1 page"
+msgstr "Remonter la barre latérale d'une page"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
 #: gui/opcodes.h:978
-msgid "move the highlight to previous mailbox"
-msgstr "déplacer la marque vers la boîte aux lettres précédente"
+msgid "Move the highlight to previous mailbox"
+msgstr "Déplacer la marque vers la boîte aux lettres précédente"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
 #: gui/opcodes.h:981
-msgid "move the highlight to previous mailbox with new mail"
-msgstr "déplacer la marque vers la boîte aux lettres avec de nouveaux messages précédente"
+msgid "Move the highlight to previous mailbox with new mail"
+msgstr "Déplacer la marque vers la boîte aux lettres avec de nouveaux messages précédente"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
 #: gui/opcodes.h:984
-msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "basculer entre l'affichage des boîtes aux lettres et celui des boîtes aux lettres virtuelles"
+msgid "Toggle between mailboxes and virtual mailboxes"
+msgstr "Basculer entre l'affichage des boîtes aux lettres et celui des boîtes aux lettres virtuelles"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
 #: gui/opcodes.h:987
-msgid "make the sidebar (in)visible"
-msgstr "rendre la barre latérale (in)visible"
+msgid "Make the sidebar (in)visible"
+msgstr "Rendre la barre latérale (in)visible"
 
 #. L10N: Help screen description for OP_SIDEBAR_ABORT_SEARCH
 #. Sidebar: <op_sidebar_abort_search>
 #: gui/opcodes.h:990
 #, fuzzy
-msgid "close the sidebar search"
-msgstr "rendre la barre latérale (in)visible"
+msgid "Close the sidebar search"
+msgstr "Rendre la barre latérale (in)visible"
 
 #. L10N: Help screen description for OP_SIDEBAR_START_SEARCH
 #. Sidebar: <op_sidebar_start_search>
 #: gui/opcodes.h:993
-msgid "fuzzy search the sidebar"
+msgid "Fuzzy search the sidebar"
 msgstr ""
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
 #: gui/opcodes.h:998
-msgid "show S/MIME options"
-msgstr "afficher les options S/MIME"
+msgid "Show S/MIME options"
+msgstr "Afficher les options S/MIME"
 
 #: gui/opcodes.h:1001
-msgid "null operation"
-msgstr "opération nulle"
+msgid "Null operation"
+msgstr "Opération nulle"
 
 #: gui/thread.c:109
 #, c-format
