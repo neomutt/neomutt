@@ -456,7 +456,17 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
   }
   if (CONFIG_TYPE(he->type) == DT_PATH)
     pretty_mailbox(value);
-  pretty_var(value->data, err);
+
+  const int type = CONFIG_TYPE(he->type);
+  if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
+      (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT))
+  {
+    pretty_var(value->data, err);
+  }
+  else
+  {
+    buf_addstr(err, value->data);
+  }
   buf_pool_release(&value);
 
   return MUTT_CMD_SUCCESS;

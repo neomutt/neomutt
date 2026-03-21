@@ -1259,6 +1259,10 @@ static void test_query(void)
       const char *expected[] = {
         "yes", "ask-yes", "555", "damson", "foo",
       };
+      // Bool, quad, and number values are not quoted; strings are
+      const bool quoted[] = {
+        false, false, false, true, true,
+      };
       for (int v = 0; v < countof(vars); v++)
       {
         parse_error_reset(pe);
@@ -1273,7 +1277,10 @@ static void test_query(void)
         }
 
         // Check effect
-        buf_printf(line, "%s=\"%s\"", vars[v], expected[v]);
+        if (quoted[v])
+          buf_printf(line, "%s=\"%s\"", vars[v], expected[v]);
+        else
+          buf_printf(line, "%s=%s", vars[v], expected[v]);
         if (!TEST_CHECK_STR_EQ(buf_string(pe->message), buf_string(line)))
         {
           TEST_MSG("Variable query failed for %s: got = %s, expected = %s",
@@ -1308,6 +1315,10 @@ static void test_query(void)
       "damson",
       "foo",
     };
+    // Number values are not quoted; strings are
+    const bool quoted[] = {
+      false, true, true,
+    };
     for (int v = 0; v < countof(vars); v++)
     {
       parse_error_reset(pe);
@@ -1322,7 +1333,10 @@ static void test_query(void)
       }
 
       // Check effect
-      buf_printf(line, "%s=\"%s\"", vars[v], expected[v]);
+      if (quoted[v])
+        buf_printf(line, "%s=\"%s\"", vars[v], expected[v]);
+      else
+        buf_printf(line, "%s=%s", vars[v], expected[v]);
       if (!TEST_CHECK_STR_EQ(buf_string(pe->message), buf_string(line)))
       {
         TEST_MSG("Variable query failed for %s: got = %s, expected = %s",
