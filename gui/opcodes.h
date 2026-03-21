@@ -36,116 +36,116 @@ const char *opcodes_get_name       (int op);
 #define OP_ABORT       -1 ///< $abort_key pressed (Ctrl-G)
 
 // clang-format off
-#define OPS_ATTACHMENT(_fmt) \
-  /* L10N: Help screen description for OP_ATTACHMENT_ATTACH_FILE */ \
-  /*       Compose Dialog: <op_attachment_attach_file> */ \
-  _fmt(OP_ATTACHMENT_ATTACH_FILE,             N_("attach files to this message")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE */ \
-  /*       Compose Dialog: <op_attachment_attach_message> */ \
-  _fmt(OP_ATTACHMENT_ATTACH_MESSAGE,          N_("attach messages to this message")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_ATTACH_NEWS_MESSAGE */ \
-  /*       Compose Dialog: <op_attachment_attach_message> */ \
-  _fmt(OP_ATTACHMENT_ATTACH_NEWS_MESSAGE,     N_("attach news articles to this message")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_COLLAPSE */ \
-  /*       Attach Dialog: <op_attachment_collapse> */ \
-  _fmt(OP_ATTACHMENT_COLLAPSE,                N_("toggle display of subparts")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_DELETE */ \
-  /*       Attach Dialog: <op_attachment_delete> */ \
-  _fmt(OP_ATTACHMENT_DELETE,                  N_("delete the current entry")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_DETACH */ \
-  /*       Compose Dialog: <op_attachment_detach> */ \
-  _fmt(OP_ATTACHMENT_DETACH,                  N_("delete the current entry")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID */ \
-  /*       Compose Dialog: <op_attachment_edit_content_id> */ \
-  _fmt(OP_ATTACHMENT_EDIT_CONTENT_ID,         N_("edit the 'Content-ID' of the attachment")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION */ \
-  /*       Compose Dialog: <op_attachment_edit_description> */ \
-  _fmt(OP_ATTACHMENT_EDIT_DESCRIPTION,        N_("edit attachment description")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING */ \
-  /*       Compose Dialog: <op_attachment_edit_encoding> */ \
-  _fmt(OP_ATTACHMENT_EDIT_ENCODING,           N_("edit attachment transfer-encoding")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE */ \
-  /*       Compose Dialog: <op_attachment_edit_language> */ \
-  _fmt(OP_ATTACHMENT_EDIT_LANGUAGE,           N_("edit the 'Content-Language' of the attachment")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_EDIT_MIME */ \
-  /*       Compose Dialog: <op_attachment_edit_mime> */ \
-  _fmt(OP_ATTACHMENT_EDIT_MIME,               N_("edit attachment using mailcap entry")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_EDIT_TYPE */ \
-  /*       Attach Dialog: <op_attachment_edit_type> */ \
-  /*       Compose Dialog: <op_attachment_edit_type> */ \
-  /*       Index: <op_attachment_edit_type> */ \
-  _fmt(OP_ATTACHMENT_EDIT_TYPE,               N_("edit attachment content type")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_FILTER */ \
-  /*       Compose Dialog: <op_attachment_filter> */ \
-  _fmt(OP_ATTACHMENT_FILTER,                  N_("filter attachment through a shell command")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT */ \
-  /*       Compose Dialog: <op_attachment_get_attachment> */ \
-  _fmt(OP_ATTACHMENT_GET_ATTACHMENT,          N_("get a temporary copy of an attachment")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_GROUP_ALTS */ \
-  /*       Compose Dialog: <op_attachment_group_alts> */ \
-  _fmt(OP_ATTACHMENT_GROUP_ALTS,              N_("group tagged attachments as 'multipart/alternative'")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_GROUP_LINGUAL */ \
-  /*       Compose Dialog: <op_attachment_group_lingual> */ \
-  _fmt(OP_ATTACHMENT_GROUP_LINGUAL,           N_("group tagged attachments as 'multipart/multilingual'")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_GROUP_RELATED */ \
-  /*       Compose Dialog: <op_attachment_group_related> */ \
-  _fmt(OP_ATTACHMENT_GROUP_RELATED,           N_("group tagged attachments as 'multipart/related'")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN */ \
-  /*       Compose Dialog: <op_attachment_move_down> */ \
-  _fmt(OP_ATTACHMENT_MOVE_DOWN,               N_("move an attachment down in the attachment list")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_MOVE_UP */ \
-  /*       Compose Dialog: <op_attachment_move_up> */ \
-  _fmt(OP_ATTACHMENT_MOVE_UP,                 N_("move an attachment up in the attachment list")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_NEW_MIME */ \
-  /*       Compose Dialog: <op_attachment_new_mime> */ \
-  _fmt(OP_ATTACHMENT_NEW_MIME,                N_("compose new attachment using mailcap entry")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_PIPE */ \
-  _fmt(OP_ATTACHMENT_PIPE,                    N_("pipe message/attachment to a shell command")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_PRINT */ \
-  /*       Attach Dialog: <op_attachment_print> */ \
-  /*       Compose Dialog: <op_attachment_print> */ \
-  _fmt(OP_ATTACHMENT_PRINT,                   N_("print the current entry")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_RENAME_ATTACHMENT */ \
-  /*       Compose Dialog: <op_attachment_rename_attachment> */ \
-  _fmt(OP_ATTACHMENT_RENAME_ATTACHMENT,       N_("send attachment with a different name")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_SAVE */ \
-  /*       Attach Dialog: <op_attachment_save> */ \
-  /*       Compose Dialog: <op_attachment_save> */ \
-  _fmt(OP_ATTACHMENT_SAVE,                    N_("save message/attachment to a mailbox/file")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION */ \
-  /*       Compose Dialog: <op_attachment_toggle_disposition> */ \
-  _fmt(OP_ATTACHMENT_TOGGLE_DISPOSITION,      N_("toggle disposition between inline/attachment")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE */ \
-  /*       Compose Dialog: <op_attachment_toggle_recode> */ \
-  _fmt(OP_ATTACHMENT_TOGGLE_RECODE,           N_("toggle recoding of this attachment")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK */ \
-  /*       Compose Dialog: <op_attachment_toggle_unlink> */ \
-  _fmt(OP_ATTACHMENT_TOGGLE_UNLINK,           N_("toggle whether to delete file after sending it")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_UNDELETE */ \
-  /*       Attach Dialog: <op_attachment_undelete> */ \
-  _fmt(OP_ATTACHMENT_UNDELETE,                N_("undelete the current entry")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_UNGROUP */ \
-  /*       Compose Dialog: <op_attachment_ungroup> */ \
-  _fmt(OP_ATTACHMENT_UNGROUP,                 N_("ungroup 'multipart' attachment")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_UPDATE_ENCODING */ \
-  /*       Compose Dialog: <op_attachment_update_encoding> */ \
-  _fmt(OP_ATTACHMENT_UPDATE_ENCODING,         N_("update an attachment's encoding info")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_VIEW */ \
-  /*       Attach Dialog: <op_attachment_view> */ \
+#define OPS_ATTACH(_fmt) \
+  /* L10N: Help screen description for OP_ATTACH_ATTACH_FILE */ \
+  /*       Compose Dialog: <op_attach_attach_file> */ \
+  _fmt(OP_ATTACH_ATTACH_FILE,                 N_("attach files to this message")) \
+  /* L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE */ \
+  /*       Compose Dialog: <op_attach_attach_message> */ \
+  _fmt(OP_ATTACH_ATTACH_MESSAGE,              N_("attach messages to this message")) \
+  /* L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE */ \
+  /*       Compose Dialog: <op_attach_attach_message> */ \
+  _fmt(OP_ATTACH_ATTACH_NEWS_MESSAGE,         N_("attach news articles to this message")) \
+  /* L10N: Help screen description for OP_ATTACH_COLLAPSE */ \
+  /*       Attach Dialog: <op_attach_collapse> */ \
+  _fmt(OP_ATTACH_COLLAPSE,                    N_("toggle display of subparts")) \
+  /* L10N: Help screen description for OP_ATTACH_DELETE */ \
+  /*       Attach Dialog: <op_attach_delete> */ \
+  _fmt(OP_ATTACH_DELETE,                      N_("delete the current entry")) \
+  /* L10N: Help screen description for OP_ATTACH_DETACH */ \
+  /*       Compose Dialog: <op_attach_detach> */ \
+  _fmt(OP_ATTACH_DETACH,                      N_("delete the current entry")) \
+  /* L10N: Help screen description for OP_ATTACH_EDIT_CONTENT_ID */ \
+  /*       Compose Dialog: <op_attach_edit_content_id> */ \
+  _fmt(OP_ATTACH_EDIT_CONTENT_ID,             N_("edit the 'Content-ID' of the attachment")) \
+  /* L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION */ \
+  /*       Compose Dialog: <op_attach_edit_description> */ \
+  _fmt(OP_ATTACH_EDIT_DESCRIPTION,            N_("edit attachment description")) \
+  /* L10N: Help screen description for OP_ATTACH_EDIT_ENCODING */ \
+  /*       Compose Dialog: <op_attach_edit_encoding> */ \
+  _fmt(OP_ATTACH_EDIT_ENCODING,               N_("edit attachment transfer-encoding")) \
+  /* L10N: Help screen description for OP_ATTACH_EDIT_LANGUAGE */ \
+  /*       Compose Dialog: <op_attach_edit_language> */ \
+  _fmt(OP_ATTACH_EDIT_LANGUAGE,               N_("edit the 'Content-Language' of the attachment")) \
+  /* L10N: Help screen description for OP_ATTACH_EDIT_MIME */ \
+  /*       Compose Dialog: <op_attach_edit_mime> */ \
+  _fmt(OP_ATTACH_EDIT_MIME,                   N_("edit attachment using mailcap entry")) \
+  /* L10N: Help screen description for OP_ATTACH_EDIT_TYPE */ \
+  /*       Attach Dialog: <op_attach_edit_type> */ \
+  /*       Compose Dialog: <op_attach_edit_type> */ \
+  /*       Index: <op_attach_edit_type> */ \
+  _fmt(OP_ATTACH_EDIT_TYPE,                   N_("edit attachment content type")) \
+  /* L10N: Help screen description for OP_ATTACH_FILTER */ \
+  /*       Compose Dialog: <op_attach_filter> */ \
+  _fmt(OP_ATTACH_FILTER,                      N_("filter attachment through a shell command")) \
+  /* L10N: Help screen description for OP_ATTACH_GET_ATTACHMENT */ \
+  /*       Compose Dialog: <op_attach_get_attachment> */ \
+  _fmt(OP_ATTACH_GET_ATTACHMENT,              N_("get a temporary copy of an attachment")) \
+  /* L10N: Help screen description for OP_ATTACH_GROUP_ALTS */ \
+  /*       Compose Dialog: <op_attach_group_alts> */ \
+  _fmt(OP_ATTACH_GROUP_ALTS,                  N_("group tagged attachments as 'multipart/alternative'")) \
+  /* L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL */ \
+  /*       Compose Dialog: <op_attach_group_lingual> */ \
+  _fmt(OP_ATTACH_GROUP_LINGUAL,               N_("group tagged attachments as 'multipart/multilingual'")) \
+  /* L10N: Help screen description for OP_ATTACH_GROUP_RELATED */ \
+  /*       Compose Dialog: <op_attach_group_related> */ \
+  _fmt(OP_ATTACH_GROUP_RELATED,               N_("group tagged attachments as 'multipart/related'")) \
+  /* L10N: Help screen description for OP_ATTACH_MOVE_DOWN */ \
+  /*       Compose Dialog: <op_attach_move_down> */ \
+  _fmt(OP_ATTACH_MOVE_DOWN,                   N_("move an attachment down in the attachment list")) \
+  /* L10N: Help screen description for OP_ATTACH_MOVE_UP */ \
+  /*       Compose Dialog: <op_attach_move_up> */ \
+  _fmt(OP_ATTACH_MOVE_UP,                     N_("move an attachment up in the attachment list")) \
+  /* L10N: Help screen description for OP_ATTACH_NEW_MIME */ \
+  /*       Compose Dialog: <op_attach_new_mime> */ \
+  _fmt(OP_ATTACH_NEW_MIME,                    N_("compose new attachment using mailcap entry")) \
+  /* L10N: Help screen description for OP_ATTACH_PIPE */ \
+  _fmt(OP_ATTACH_PIPE,                        N_("pipe message/attachment to a shell command")) \
+  /* L10N: Help screen description for OP_ATTACH_PRINT */ \
+  /*       Attach Dialog: <op_attach_print> */ \
+  /*       Compose Dialog: <op_attach_print> */ \
+  _fmt(OP_ATTACH_PRINT,                       N_("print the current entry")) \
+  /* L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT */ \
+  /*       Compose Dialog: <op_attach_rename_attachment> */ \
+  _fmt(OP_ATTACH_RENAME_ATTACHMENT,           N_("send attachment with a different name")) \
+  /* L10N: Help screen description for OP_ATTACH_SAVE */ \
+  /*       Attach Dialog: <op_attach_save> */ \
+  /*       Compose Dialog: <op_attach_save> */ \
+  _fmt(OP_ATTACH_SAVE,                        N_("save message/attachment to a mailbox/file")) \
+  /* L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION */ \
+  /*       Compose Dialog: <op_attach_toggle_disposition> */ \
+  _fmt(OP_ATTACH_TOGGLE_DISPOSITION,          N_("toggle disposition between inline/attachment")) \
+  /* L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE */ \
+  /*       Compose Dialog: <op_attach_toggle_recode> */ \
+  _fmt(OP_ATTACH_TOGGLE_RECODE,               N_("toggle recoding of this attachment")) \
+  /* L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK */ \
+  /*       Compose Dialog: <op_attach_toggle_unlink> */ \
+  _fmt(OP_ATTACH_TOGGLE_UNLINK,               N_("toggle whether to delete file after sending it")) \
+  /* L10N: Help screen description for OP_ATTACH_UNDELETE */ \
+  /*       Attach Dialog: <op_attach_undelete> */ \
+  _fmt(OP_ATTACH_UNDELETE,                    N_("undelete the current entry")) \
+  /* L10N: Help screen description for OP_ATTACH_UNGROUP */ \
+  /*       Compose Dialog: <op_attach_ungroup> */ \
+  _fmt(OP_ATTACH_UNGROUP,                     N_("ungroup 'multipart' attachment")) \
+  /* L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING */ \
+  /*       Compose Dialog: <op_attach_update_encoding> */ \
+  _fmt(OP_ATTACH_UPDATE_ENCODING,             N_("update an attachment's encoding info")) \
+  /* L10N: Help screen description for OP_ATTACH_VIEW */ \
+  /*       Attach Dialog: <op_attach_view> */ \
   /*       Compose Dialog: <op_display_headers> */ \
-  _fmt(OP_ATTACHMENT_VIEW,                    N_("view attachment using mailcap entry if necessary")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP */ \
-  /*       Attach Dialog: <op_attachment_view_mailcap> */ \
+  _fmt(OP_ATTACH_VIEW,                        N_("view attachment using mailcap entry if necessary")) \
+  /* L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP */ \
+  /*       Attach Dialog: <op_attach_view_mailcap> */ \
   /*       Compose Dialog: <op_display_headers> */ \
-  _fmt(OP_ATTACHMENT_VIEW_MAILCAP,            N_("force viewing of attachment using mailcap")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER */ \
-  /*       Attach Dialog: <op_attachment_view_pager> */ \
+  _fmt(OP_ATTACH_VIEW_MAILCAP,                N_("force viewing of attachment using mailcap")) \
+  /* L10N: Help screen description for OP_ATTACH_VIEW_PAGER */ \
+  /*       Attach Dialog: <op_attach_view_pager> */ \
   /*       Compose Dialog: <op_display_headers> */ \
-  _fmt(OP_ATTACHMENT_VIEW_PAGER,              N_("view attachment in pager using copiousoutput mailcap")) \
-  /* L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT */ \
-  /*       Attach Dialog: <op_attachment_view_text> */ \
+  _fmt(OP_ATTACH_VIEW_PAGER,                  N_("view attachment in pager using copiousoutput mailcap")) \
+  /* L10N: Help screen description for OP_ATTACH_VIEW_TEXT */ \
+  /*       Attach Dialog: <op_attach_view_text> */ \
   /*       Compose Dialog: <op_display_headers> */ \
-  _fmt(OP_ATTACHMENT_VIEW_TEXT,               N_("view attachment as text")) \
+  _fmt(OP_ATTACH_VIEW_TEXT,                   N_("view attachment as text")) \
   /* L10N: Help screen description for OP_PREVIEW_PAGE_DOWN */ \
   /*       Compose Dialog: <op_preview_page_down> */ \
   _fmt(OP_PREVIEW_PAGE_DOWN,                  N_("show the next page of the message")) \
@@ -293,7 +293,7 @@ const char *opcodes_get_name       (int op);
   /*       Index: <op_display_address> */ \
   _fmt(OP_DISPLAY_ADDRESS,                    N_("display full address of sender")) \
   /* L10N: Help screen description for OP_DISPLAY_HEADERS */ \
-  /*       Attach Dialog: <op_attachment_view> */ \
+  /*       Attach Dialog: <op_attach_view> */ \
   /*       Compose Dialog: <op_display_headers> */ \
   /*       Index: <op_display_message> */ \
   _fmt(OP_DISPLAY_HEADERS,                    N_("display message and toggle header weeding")) \
@@ -675,8 +675,8 @@ const char *opcodes_get_name       (int op);
   /*       Pager: <op_pager_top> */ \
   _fmt(OP_PAGER_TOP,                          N_("jump to the top of the message")) \
   /* L10N: Help screen description for OP_PIPE */ \
-  /*       Compose Dialog: <op_attachment_filter> */ \
-  /*       Attach Dialog: <op_attachment_pipe> */ \
+  /*       Compose Dialog: <op_attach_filter> */ \
+  /*       Attach Dialog: <op_attach_pipe> */ \
   /*       Index: <op_pipe> */ \
   _fmt(OP_PIPE,                               N_("pipe message/attachment to a shell command")) \
   /* L10N: Help screen description for OP_POST */ \
@@ -929,9 +929,9 @@ const char *opcodes_get_name       (int op);
 #endif
 
 #define OPS_PGP(_fmt) \
-  /* L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY */ \
-  /*       Compose Dialog: <op_attachment_attach_key> */ \
-  _fmt(OP_ATTACHMENT_ATTACH_KEY,              N_("attach a PGP public key")) \
+  /* L10N: Help screen description for OP_ATTACH_ATTACH_KEY */ \
+  /*       Compose Dialog: <op_attach_attach_key> */ \
+  _fmt(OP_ATTACH_ATTACH_KEY,                  N_("attach a PGP public key")) \
   /* L10N: Help screen description for OP_CHECK_TRADITIONAL */ \
   /*       Attach Dialog: <op_check_traditional> */ \
   /*       Index: <op_check_traditional> */ \
@@ -999,7 +999,7 @@ const char *opcodes_get_name       (int op);
 
 #define OPS(_fmt) \
   _fmt(OP_NULL,                               N_("null operation")) \
-  OPS_ATTACHMENT(_fmt) \
+  OPS_ATTACH(_fmt) \
   OPS_AUTOCRYPT(_fmt) \
   OPS_CORE(_fmt) \
   OPS_CRYPT(_fmt) \

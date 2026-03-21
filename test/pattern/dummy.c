@@ -50,7 +50,7 @@ bool OptGui = true;
 const struct MenuFuncOp OpAlias[] = {
   { NULL, OP_NULL },
 };
-const struct MenuFuncOp OpAttachment[] = {
+const struct MenuFuncOp OpAttach[] = {
   { NULL, OP_NULL },
 };
 const struct MenuFuncOp OpAutocrypt[] = {

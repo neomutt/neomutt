@@ -49,7 +49,7 @@ typedef int (*attach_function_t)(struct AttachPrivateData *priv, const struct Ke
  */
 struct AttachFunction
 {
-  int op;                     ///< Op code, e.g. OP_ATTACHMENT_COLLAPSE
+  int op;                     ///< Op code, e.g. OP_ATTACH_COLLAPSE
   attach_function_t function; ///< Function to call
 };
 

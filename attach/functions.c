@@ -56,16 +56,16 @@ struct MenuDefinition *MdAttach = NULL;
 
 // clang-format off
 /**
- * OpAttachment - Functions for the Attachment Menu
+ * OpAttach - Functions for the Attach Menu
  */
-static const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
+static const struct MenuFuncOp OpAttach[] = { /* map: attach */
   { "bounce-message",                OP_BOUNCE_MESSAGE },
   { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
-  { "collapse-parts",                OP_ATTACHMENT_COLLAPSE },
+  { "collapse-parts",                OP_ATTACH_COLLAPSE },
   { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
-  { "delete-entry",                  OP_ATTACHMENT_DELETE },
+  { "delete-entry",                  OP_ATTACH_DELETE },
   { "display-toggle-weed",           OP_DISPLAY_HEADERS },
-  { "edit-type",                     OP_ATTACHMENT_EDIT_TYPE },
+  { "edit-type",                     OP_ATTACH_EDIT_TYPE },
   { "exit",                          OP_EXIT },
   { "extract-keys",                  OP_EXTRACT_KEYS },
   { "followup-message",              OP_FOLLOWUP },
@@ -79,35 +79,35 @@ static const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
   { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
-  { "print-entry",                   OP_ATTACHMENT_PRINT },
+  { "print-entry",                   OP_ATTACH_PRINT },
   { "reply",                         OP_REPLY },
   { "resend-message",                OP_RESEND },
-  { "save-entry",                    OP_ATTACHMENT_SAVE },
-  { "undelete-entry",                OP_ATTACHMENT_UNDELETE },
-  { "view-attach",                   OP_ATTACHMENT_VIEW },
-  { "view-mailcap",                  OP_ATTACHMENT_VIEW_MAILCAP },
-  { "view-pager",                    OP_ATTACHMENT_VIEW_PAGER },
-  { "view-text",                     OP_ATTACHMENT_VIEW_TEXT },
+  { "save-entry",                    OP_ATTACH_SAVE },
+  { "undelete-entry",                OP_ATTACH_UNDELETE },
+  { "view-attach",                   OP_ATTACH_VIEW },
+  { "view-mailcap",                  OP_ATTACH_VIEW_MAILCAP },
+  { "view-pager",                    OP_ATTACH_VIEW_PAGER },
+  { "view-text",                     OP_ATTACH_VIEW_TEXT },
   { NULL, 0 },
 };
 
 /**
  * AttachmentDefaultBindings - Key bindings for the Attachment Menu
  */
-static const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment */
-  { OP_ATTACHMENT_COLLAPSE,                "v" },
-  { OP_ATTACHMENT_DELETE,                  "d" },
-  { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
+static const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attach */
+  { OP_ATTACH_COLLAPSE,                "v" },
+  { OP_ATTACH_DELETE,                  "d" },
+  { OP_ATTACH_EDIT_TYPE,               "\005" },           // <Ctrl-E>
   { OP_EXIT,                               "q" },
   { OP_PIPE,                               "|" },
-  { OP_ATTACHMENT_PRINT,                   "p" },
-  { OP_ATTACHMENT_SAVE,                    "s" },
-  { OP_ATTACHMENT_UNDELETE,                "u" },
-  { OP_ATTACHMENT_VIEW,                    "<keypadenter>" },
-  { OP_ATTACHMENT_VIEW,                    "\n" },             // <Enter>
-  { OP_ATTACHMENT_VIEW,                    "\r" },             // <Return>
-  { OP_ATTACHMENT_VIEW_MAILCAP,            "m" },
-  { OP_ATTACHMENT_VIEW_TEXT,               "T" },
+  { OP_ATTACH_PRINT,                   "p" },
+  { OP_ATTACH_SAVE,                    "s" },
+  { OP_ATTACH_UNDELETE,                "u" },
+  { OP_ATTACH_VIEW,                    "<keypadenter>" },
+  { OP_ATTACH_VIEW,                    "\n" },             // <Enter>
+  { OP_ATTACH_VIEW,                    "\r" },             // <Return>
+  { OP_ATTACH_VIEW_MAILCAP,            "m" },
+  { OP_ATTACH_VIEW_TEXT,               "T" },
   { OP_BOUNCE_MESSAGE,                     "b" },
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
   { OP_DISPLAY_HEADERS,                    "h" },
@@ -130,7 +130,7 @@ void attach_init_keys(struct SubMenu *sm_generic)
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
 
-  sm = km_register_submenu(OpAttachment);
+  sm = km_register_submenu(OpAttach);
   md = km_register_menu(MENU_ATTACH, "attach");
   km_menu_add_submenu(md, sm);
   km_menu_add_submenu(md, sm_generic);
@@ -262,9 +262,9 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
 // -----------------------------------------------------------------------------
 
 /**
- * op_attachment_collapse - toggle display of subparts - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_collapse - toggle display of subparts - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_collapse(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_collapse(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   if (!cur_att->body->parts)
@@ -278,9 +278,9 @@ static int op_attachment_collapse(struct AttachPrivateData *priv, const struct K
 }
 
 /**
- * op_attachment_delete - delete the current entry - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_delete - delete the current entry - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_delete(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_delete(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   if (check_readonly(priv->mailbox))
     return FR_ERROR;
@@ -354,9 +354,9 @@ static int op_attachment_delete(struct AttachPrivateData *priv, const struct Key
 }
 
 /**
- * op_attachment_edit_type - edit attachment content type - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_edit_type - edit attachment content type - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_edit_type(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_edit_type(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   recvattach_edit_content_type(priv->actx, priv->menu, priv->actx->email);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -364,9 +364,9 @@ static int op_attachment_edit_type(struct AttachPrivateData *priv, const struct 
 }
 
 /**
- * op_attachment_pipe - pipe message/attachment to a shell command - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_pipe - pipe message/attachment to a shell command - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_pipe(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_pipe(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_pipe_attachment_list(priv->actx, cur_att->fp, priv->menu->tag_prefix,
@@ -375,9 +375,9 @@ static int op_attachment_pipe(struct AttachPrivateData *priv, const struct KeyEv
 }
 
 /**
- * op_attachment_print - print the current entry - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_print - print the current entry - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_print(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_print(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_print_attachment_list(priv->actx, cur_att->fp, priv->menu->tag_prefix,
@@ -386,9 +386,9 @@ static int op_attachment_print(struct AttachPrivateData *priv, const struct KeyE
 }
 
 /**
- * op_attachment_save - save message/attachment to a mailbox/file - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_save - save message/attachment to a mailbox/file - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_save(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_save(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_save_attachment_list(priv->actx, cur_att->fp, priv->menu->tag_prefix,
@@ -402,9 +402,9 @@ static int op_attachment_save(struct AttachPrivateData *priv, const struct KeyEv
 }
 
 /**
- * op_attachment_undelete - undelete the current entry - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_undelete - undelete the current entry - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_undelete(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_undelete(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   if (check_readonly(priv->mailbox))
     return FR_ERROR;
@@ -440,9 +440,9 @@ static int op_attachment_undelete(struct AttachPrivateData *priv, const struct K
 }
 
 /**
- * op_attachment_view - view attachment using mailcap entry if necessary - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_view - view attachment using mailcap entry if necessary - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_view(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_view(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   priv->op = mutt_attach_display_loop(priv->sub, priv->menu, event->op,
                                       priv->actx->email, priv->actx, true);
@@ -452,10 +452,9 @@ static int op_attachment_view(struct AttachPrivateData *priv, const struct KeyEv
 }
 
 /**
- * op_attachment_view_mailcap - force viewing of attachment using mailcap - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_view_mailcap - force viewing of attachment using mailcap - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_view_mailcap(struct AttachPrivateData *priv,
-                                      const struct KeyEvent *event)
+static int op_attach_view_mailcap(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_MAILCAP,
@@ -465,9 +464,9 @@ static int op_attachment_view_mailcap(struct AttachPrivateData *priv,
 }
 
 /**
- * op_attachment_view_pager - view attachment in pager using copiousoutput mailcap - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_view_pager - view attachment in pager using copiousoutput mailcap - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_view_pager(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_view_pager(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_PAGER,
@@ -477,9 +476,9 @@ static int op_attachment_view_pager(struct AttachPrivateData *priv, const struct
 }
 
 /**
- * op_attachment_view_text - view attachment as text - Implements ::attach_function_t - @ingroup attach_function_api
+ * op_attach_view_text - view attachment as text - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attachment_view_text(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_view_text(struct AttachPrivateData *priv, const struct KeyEvent *event)
 {
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_AS_TEXT,
@@ -696,34 +695,34 @@ static int op_forward_to_group(struct AttachPrivateData *priv, const struct KeyE
  */
 static const struct AttachFunction AttachFunctions[] = {
   // clang-format off
-  { OP_ATTACHMENT_COLLAPSE,         op_attachment_collapse },
-  { OP_ATTACHMENT_DELETE,           op_attachment_delete },
-  { OP_ATTACHMENT_EDIT_TYPE,        op_attachment_edit_type },
-  { OP_PIPE,                        op_attachment_pipe },
-  { OP_ATTACHMENT_PRINT,            op_attachment_print },
-  { OP_ATTACHMENT_SAVE,             op_attachment_save },
-  { OP_ATTACHMENT_UNDELETE,         op_attachment_undelete },
-  { OP_ATTACHMENT_VIEW,             op_attachment_view },
-  { OP_ATTACHMENT_VIEW_MAILCAP,     op_attachment_view_mailcap },
-  { OP_ATTACHMENT_VIEW_PAGER,       op_attachment_view_pager },
-  { OP_ATTACHMENT_VIEW_TEXT,        op_attachment_view_text },
-  { OP_BOUNCE_MESSAGE,              op_bounce_message },
-  { OP_CHECK_TRADITIONAL,           op_check_traditional },
-  { OP_COMPOSE_TO_SENDER,           op_compose_to_sender },
-  { OP_DISPLAY_HEADERS,             op_attachment_view },
-  { OP_EXIT,                        op_exit },
-  { OP_EXTRACT_KEYS,                op_extract_keys },
-  { OP_FOLLOWUP,                    op_followup },
-  { OP_FORGET_PASSPHRASE,           op_forget_passphrase },
-  { OP_FORWARD_MESSAGE,             op_forward_message },
-  { OP_FORWARD_TO_GROUP,            op_forward_to_group },
-  { OP_GROUP_CHAT_REPLY,            op_reply },
-  { OP_GROUP_REPLY,                 op_reply },
-  { OP_LIST_REPLY,                  op_reply },
-  { OP_LIST_SUBSCRIBE,              op_list_subscribe },
-  { OP_LIST_UNSUBSCRIBE,            op_list_unsubscribe },
-  { OP_REPLY,                       op_reply },
-  { OP_RESEND,                      op_resend },
+  { OP_ATTACH_COLLAPSE,     op_attach_collapse     },
+  { OP_ATTACH_DELETE,       op_attach_delete       },
+  { OP_ATTACH_EDIT_TYPE,    op_attach_edit_type    },
+  { OP_ATTACH_PRINT,        op_attach_print        },
+  { OP_ATTACH_SAVE,         op_attach_save         },
+  { OP_ATTACH_UNDELETE,     op_attach_undelete     },
+  { OP_ATTACH_VIEW,         op_attach_view         },
+  { OP_ATTACH_VIEW_MAILCAP, op_attach_view_mailcap },
+  { OP_ATTACH_VIEW_PAGER,   op_attach_view_pager   },
+  { OP_ATTACH_VIEW_TEXT,    op_attach_view_text    },
+  { OP_BOUNCE_MESSAGE,      op_bounce_message      },
+  { OP_CHECK_TRADITIONAL,   op_check_traditional   },
+  { OP_COMPOSE_TO_SENDER,   op_compose_to_sender   },
+  { OP_DISPLAY_HEADERS,     op_attach_view         },
+  { OP_EXIT,                op_exit                },
+  { OP_EXTRACT_KEYS,        op_extract_keys        },
+  { OP_FOLLOWUP,            op_followup            },
+  { OP_FORGET_PASSPHRASE,   op_forget_passphrase   },
+  { OP_FORWARD_MESSAGE,     op_forward_message     },
+  { OP_FORWARD_TO_GROUP,    op_forward_to_group    },
+  { OP_GROUP_CHAT_REPLY,    op_reply               },
+  { OP_GROUP_REPLY,         op_reply               },
+  { OP_LIST_REPLY,          op_reply               },
+  { OP_LIST_SUBSCRIBE,      op_list_subscribe      },
+  { OP_LIST_UNSUBSCRIBE,    op_list_unsubscribe    },
+  { OP_PIPE,                op_attach_pipe         },
+  { OP_REPLY,               op_reply               },
+  { OP_RESEND,              op_resend              },
   { 0, NULL },
   // clang-format on
 };

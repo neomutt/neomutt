@@ -75,7 +75,7 @@ enum WindowType
 
   // Dialogs (nested Windows) displayed to the user
   WT_DLG_ALIAS,       ///< Alias Dialog,       dlg_alias()
-  WT_DLG_ATTACHMENT,  ///< Attachment Dialog,  dlg_attachment()
+  WT_DLG_ATTACH,      ///< Attach Dialog,      dlg_attach()
   WT_DLG_AUTOCRYPT,   ///< Autocrypt Dialog,   dlg_autocrypt()
   WT_DLG_BROWSER,     ///< Browser Dialog,     dlg_browser()
   WT_DLG_CERTIFICATE, ///< Certificate Dialog, dlg_certificate()

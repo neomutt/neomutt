@@ -10735,7 +10735,7 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
           <literal>message/rfc822</literal>.
         </para>
         <para>
-          See table <xref linkend="tab-attachment-bindings" /> for all
+          See table <xref linkend="tab-attach-bindings" /> for all
           available functions.
         </para>
 
@@ -14611,7 +14611,7 @@ set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
           </listitem>
           <listitem>
             <para>
-              <link linkend="attachment-map">The Attachment Menu key mappings</link>
+              <link linkend="attach-map">The Attachment Menu key mappings</link>
             </para>
           </listitem>
         </itemizedlist>

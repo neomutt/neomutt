@@ -401,14 +401,13 @@ struct ExpandoNode *node_expando_parse_name(const char *str,
       err->position = str;
       if (*end != '}')
       {
-        snprintf(err->message, sizeof(err->message),
-                 _("Expando is missing closing '}'"));
+        snprintf(err->message, sizeof(err->message), _("Expando is missing closing '}'"));
       }
       else
       {
         // L10N: e.g. "Unknown expando: %{bad}"
-        snprintf(err->message, sizeof(err->message), _("Unknown expando: %%{%.*s}"),
-                 (int) (end - str), str);
+        snprintf(err->message, sizeof(err->message),
+                 _("Unknown expando: %%{%.*s}"), (int) (end - str), str);
       }
     }
     goto fail;

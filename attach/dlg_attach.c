@@ -31,9 +31,9 @@
  *
  * ## Windows
  *
- * | Name                        | Type              | See Also         |
- * | :-------------------------- | :---------------- | :--------------- |
- * | Attachment Selection Dialog | WT_DLG_ATTACHMENT | dlg_attachment() |
+ * | Name                        | Type          | See Also     |
+ * | :-------------------------- | :------------ | :----------- |
+ * | Attachment Selection Dialog | WT_DLG_ATTACH | dlg_attach() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -91,9 +91,9 @@
 static const struct Mapping AttachmentHelp[] = {
   // clang-format off
   { N_("Exit"),  OP_EXIT },
-  { N_("Save"),  OP_ATTACHMENT_SAVE },
+  { N_("Save"),  OP_ATTACH_SAVE },
   { N_("Pipe"),  OP_PIPE },
-  { N_("Print"), OP_ATTACHMENT_PRINT },
+  { N_("Print"), OP_ATTACH_PRINT },
   { N_("Help"),  OP_HELP },
   { NULL, 0 },
   // clang-format on
@@ -193,7 +193,7 @@ static int attach_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_attachment - Show the attachments in a Menu - @ingroup gui_dlg
+ * dlg_attach - Show the attachments in a Menu - @ingroup gui_dlg
  * @param sub        Config Subset
  * @param mv         Mailbox view
  * @param e          Email
@@ -204,8 +204,8 @@ static int attach_window_observer(struct NotifyCallback *nc)
  * They can be viewed using the Pager or Mailcap programs.
  * They can also be saved, printed, deleted, etc.
  */
-void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
-                    struct Email *e, FILE *fp, bool attach_msg)
+void dlg_attach(struct ConfigSubset *sub, struct MailboxView *mv,
+                struct Email *e, FILE *fp, bool attach_msg)
 {
   if (!mv || !mv->mailbox || !e || !fp)
     return;
@@ -216,7 +216,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   mutt_parse_mime_message(e, fp);
   exec_message_hook(m, e, CMD_MESSAGE_HOOK);
 
-  struct SimpleDialogWindows sdw = simple_dialog_new(MdAttach, WT_DLG_ATTACHMENT, AttachmentHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MdAttach, WT_DLG_ATTACH, AttachmentHelp);
   struct Menu *menu = sdw.menu;
   menu->make_entry = attach_make_entry;
   menu->tag = attach_tag;

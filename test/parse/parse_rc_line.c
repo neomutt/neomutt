@@ -1317,7 +1317,9 @@ static void test_query(void)
     };
     // Number values are not quoted; strings are
     const bool quoted[] = {
-      false, true, true,
+      false,
+      true,
+      true,
     };
     for (int v = 0; v < countof(vars); v++)
     {

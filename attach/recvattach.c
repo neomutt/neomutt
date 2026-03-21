@@ -953,7 +953,7 @@ void recvattach_edit_content_type(struct AttachCtx *actx, struct Menu *menu, str
  * mutt_attach_display_loop - Event loop for the Attachment menu
  * @param sub  Config Subset
  * @param menu Menu listing Attachments
- * @param op   Operation, e.g. OP_ATTACHMENT_VIEW
+ * @param op   Operation, e.g. OP_ATTACH_VIEW
  * @param e  Email
  * @param actx Attachment context
  * @param recv true if these are received attachments (rather than in compose)
@@ -970,7 +970,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         bool_str_toggle(NeoMutt->sub, "weed", NULL);
         FALLTHROUGH;
 
-      case OP_ATTACHMENT_VIEW:
+      case OP_ATTACH_VIEW:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         if (!cur_att->fp)
@@ -996,7 +996,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         if (index < menu->max)
         {
           menu_set_index(menu, index);
-          op = OP_ATTACHMENT_VIEW;
+          op = OP_ATTACH_VIEW;
         }
         else
         {
@@ -1012,7 +1012,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         if (index >= 0)
         {
           menu_set_index(menu, index);
-          op = OP_ATTACHMENT_VIEW;
+          op = OP_ATTACH_VIEW;
         }
         else
         {
@@ -1021,7 +1021,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         break;
       }
 
-      case OP_ATTACHMENT_EDIT_TYPE:
+      case OP_ATTACH_EDIT_TYPE:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         /* when we edit the content-type, we should redisplay the attachment
@@ -1033,7 +1033,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
           mutt_edit_content_type(e, cur_att->body, cur_att->fp);
 
         menu_queue_redraw(menu, MENU_REDRAW_INDEX);
-        op = OP_ATTACHMENT_VIEW;
+        op = OP_ATTACH_VIEW;
         break;
       }
       /* functions which are passed through from the pager */
@@ -1041,21 +1041,21 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_pipe_attachment_list(actx, cur_att->fp, false, cur_att->body, false);
-        op = OP_ATTACHMENT_VIEW;
+        op = OP_ATTACH_VIEW;
         break;
       }
-      case OP_ATTACHMENT_PRINT:
+      case OP_ATTACH_PRINT:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_print_attachment_list(actx, cur_att->fp, false, cur_att->body);
-        op = OP_ATTACHMENT_VIEW;
+        op = OP_ATTACH_VIEW;
         break;
       }
-      case OP_ATTACHMENT_SAVE:
+      case OP_ATTACH_SAVE:
       {
         struct AttachPtr *cur_att = current_attachment(actx, menu);
         mutt_save_attachment_list(actx, cur_att->fp, false, cur_att->body, e, NULL);
-        op = OP_ATTACHMENT_VIEW;
+        op = OP_ATTACH_VIEW;
         break;
       }
       case OP_CHECK_TRADITIONAL:
@@ -1066,7 +1066,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
         }
         FALLTHROUGH;
 
-      case OP_ATTACHMENT_COLLAPSE:
+      case OP_ATTACH_COLLAPSE:
         if (recv)
           return op;
         FALLTHROUGH;

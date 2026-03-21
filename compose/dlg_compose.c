@@ -100,8 +100,8 @@ static const struct Mapping ComposeHelp[] = {
   { N_("CC"),          OP_ENVELOPE_EDIT_CC },
   /* L10N: compose menu help line entry */
   { N_("Subj"),        OP_ENVELOPE_EDIT_SUBJECT },
-  { N_("Attach file"), OP_ATTACHMENT_ATTACH_FILE },
-  { N_("Descrip"),     OP_ATTACHMENT_EDIT_DESCRIPTION },
+  { N_("Attach file"), OP_ATTACH_ATTACH_FILE },
+  { N_("Descrip"),     OP_ATTACH_EDIT_DESCRIPTION },
   { N_("Help"),        OP_HELP },
   { NULL, 0 },
   // clang-format on
@@ -114,8 +114,8 @@ static const struct Mapping ComposeNewsHelp[] = {
   { N_("Abort"),       OP_EXIT },
   { N_("Newsgroups"),  OP_ENVELOPE_EDIT_NEWSGROUPS },
   { N_("Subj"),        OP_ENVELOPE_EDIT_SUBJECT },
-  { N_("Attach file"), OP_ATTACHMENT_ATTACH_FILE },
-  { N_("Descrip"),     OP_ATTACHMENT_EDIT_DESCRIPTION },
+  { N_("Attach file"), OP_ATTACH_ATTACH_FILE },
+  { N_("Descrip"),     OP_ATTACH_EDIT_DESCRIPTION },
   { N_("Help"),        OP_HELP },
   { NULL, 0 },
   // clang-format on

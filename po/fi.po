@@ -3280,34 +3280,34 @@ msgstr "Näppäimet (^G peruu): "
 msgid "Char = %s, Octal = %o, Decimal = %d\n"
 msgstr "Merkki = %s, Oktaali = %o, Desimaali = %d\n"
 
-#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_FILE
-#. Compose Dialog: <op_attachment_attach_file>
+#. L10N: Help screen description for OP_ATTACH_ATTACH_FILE
+#. Compose Dialog: <op_attach_attach_file>
 #: gui/opcodes.h:42
 msgid "attach files to this message"
 msgstr "liitä tiedostoja tähän viestiin"
 
-#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE
-#. Compose Dialog: <op_attachment_attach_message>
+#. L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE
+#. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:45
 msgid "attach messages to this message"
 msgstr "liitä viestejä tähän viestiin"
 
-#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
-#. Compose Dialog: <op_attachment_attach_message>
+#. L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE
+#. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:48
 msgid "attach news articles to this message"
 msgstr "liitä uutisryhmäartikkeleja tähän viestiin"
 
-#. L10N: Help screen description for OP_ATTACHMENT_COLLAPSE
-#. Attach Dialog: <op_attachment_collapse>
+#. L10N: Help screen description for OP_ATTACH_COLLAPSE
+#. Attach Dialog: <op_attach_collapse>
 #: gui/opcodes.h:51
 msgid "toggle display of subparts"
 msgstr "vaihda aliosien näkyvyyttä"
 
-#. L10N: Help screen description for OP_ATTACHMENT_DELETE
-#. Attach Dialog: <op_attachment_delete>
-#. L10N: Help screen description for OP_ATTACHMENT_DETACH
-#. Compose Dialog: <op_attachment_detach>
+#. L10N: Help screen description for OP_ATTACH_DELETE
+#. Attach Dialog: <op_attach_delete>
+#. L10N: Help screen description for OP_ATTACH_DETACH
+#. Compose Dialog: <op_attach_detach>
 #. L10N: Help screen description for OP_DELETE
 #. Alias Dialog: <op_delete>
 #. Index: <op_delete>
@@ -3316,121 +3316,121 @@ msgstr "vaihda aliosien näkyvyyttä"
 msgid "delete the current entry"
 msgstr "poista nykyinen tietue"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
-#. Compose Dialog: <op_attachment_edit_content_id>
+#. L10N: Help screen description for OP_ATTACH_EDIT_CONTENT_ID
+#. Compose Dialog: <op_attach_edit_content_id>
 #: gui/opcodes.h:60
 #, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
 msgstr "muokkaa liitteen 'Content-Language'-kenttää"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION
-#. Compose Dialog: <op_attachment_edit_description>
+#. L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION
+#. Compose Dialog: <op_attach_edit_description>
 #: gui/opcodes.h:63
 msgid "edit attachment description"
 msgstr "muokkaa liitteen kuvausta"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
-#. Compose Dialog: <op_attachment_edit_encoding>
+#. L10N: Help screen description for OP_ATTACH_EDIT_ENCODING
+#. Compose Dialog: <op_attach_edit_encoding>
 #: gui/opcodes.h:66
 msgid "edit attachment transfer-encoding"
 msgstr "muokkaa liitteen transfer-encodingia"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
-#. Compose Dialog: <op_attachment_edit_language>
+#. L10N: Help screen description for OP_ATTACH_EDIT_LANGUAGE
+#. Compose Dialog: <op_attach_edit_language>
 #: gui/opcodes.h:69
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "muokkaa liitteen 'Content-Language'-kenttää"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_MIME
-#. Compose Dialog: <op_attachment_edit_mime>
+#. L10N: Help screen description for OP_ATTACH_EDIT_MIME
+#. Compose Dialog: <op_attach_edit_mime>
 #: gui/opcodes.h:72
 msgid "edit attachment using mailcap entry"
 msgstr "muokkaa liitettä mailcapin perusteella"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_TYPE
-#. Attach Dialog: <op_attachment_edit_type>
-#. Compose Dialog: <op_attachment_edit_type>
-#. Index: <op_attachment_edit_type>
+#. L10N: Help screen description for OP_ATTACH_EDIT_TYPE
+#. Attach Dialog: <op_attach_edit_type>
+#. Compose Dialog: <op_attach_edit_type>
+#. Index: <op_attach_edit_type>
 #: gui/opcodes.h:77
 msgid "edit attachment content type"
 msgstr "muokkaa liitteen sisältötyyppiä"
 
-#. L10N: Help screen description for OP_ATTACHMENT_FILTER
-#. Compose Dialog: <op_attachment_filter>
+#. L10N: Help screen description for OP_ATTACH_FILTER
+#. Compose Dialog: <op_attach_filter>
 #: gui/opcodes.h:80
 msgid "filter attachment through a shell command"
 msgstr "filtteröi liitteet shell-komennolla"
 
-#. L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT
-#. Compose Dialog: <op_attachment_get_attachment>
+#. L10N: Help screen description for OP_ATTACH_GET_ATTACHMENT
+#. Compose Dialog: <op_attach_get_attachment>
 #: gui/opcodes.h:83
 msgid "get a temporary copy of an attachment"
 msgstr "hae väliaikaiskopio liitteestä"
 
-#. L10N: Help screen description for OP_ATTACHMENT_GROUP_ALTS
-#. Compose Dialog: <op_attachment_group_alts>
+#. L10N: Help screen description for OP_ATTACH_GROUP_ALTS
+#. Compose Dialog: <op_attach_group_alts>
 #: gui/opcodes.h:86
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "ryhmitä merkityt liitteet tyypiksi 'multipart/alternative'"
 
-#. L10N: Help screen description for OP_ATTACHMENT_GROUP_LINGUAL
-#. Compose Dialog: <op_attachment_group_lingual>
+#. L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL
+#. Compose Dialog: <op_attach_group_lingual>
 #: gui/opcodes.h:89
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "ryhmitä merkityt liitteet tyypiksi 'multipart/multilingual'"
 
-#. L10N: Help screen description for OP_ATTACHMENT_GROUP_RELATED
-#. Compose Dialog: <op_attachment_group_related>
+#. L10N: Help screen description for OP_ATTACH_GROUP_RELATED
+#. Compose Dialog: <op_attach_group_related>
 #: gui/opcodes.h:92
 #, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
 msgstr "ryhmitä merkityt liitteet tyypiksi 'multipart/alternative'"
 
-#. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
-#. Compose Dialog: <op_attachment_move_down>
+#. L10N: Help screen description for OP_ATTACH_MOVE_DOWN
+#. Compose Dialog: <op_attach_move_down>
 #: gui/opcodes.h:95
 msgid "move an attachment down in the attachment list"
 msgstr "Siirrä liitettä alemmas liitelistassa"
 
-#. L10N: Help screen description for OP_ATTACHMENT_MOVE_UP
-#. Compose Dialog: <op_attachment_move_up>
+#. L10N: Help screen description for OP_ATTACH_MOVE_UP
+#. Compose Dialog: <op_attach_move_up>
 #: gui/opcodes.h:98
 msgid "move an attachment up in the attachment list"
 msgstr "Siirrä liitettä ylemmäs liitelistassa"
 
-#. L10N: Help screen description for OP_ATTACHMENT_NEW_MIME
-#. Compose Dialog: <op_attachment_new_mime>
+#. L10N: Help screen description for OP_ATTACH_NEW_MIME
+#. Compose Dialog: <op_attach_new_mime>
 #: gui/opcodes.h:101
 msgid "compose new attachment using mailcap entry"
 msgstr "luo uusi liite mailcapin perusteella"
 
-#. L10N: Help screen description for OP_ATTACHMENT_PIPE
+#. L10N: Help screen description for OP_ATTACH_PIPE
 #. L10N: Help screen description for OP_PIPE
-#. Compose Dialog: <op_attachment_filter>
-#. Attach Dialog: <op_attachment_pipe>
+#. Compose Dialog: <op_attach_filter>
+#. Attach Dialog: <op_attach_pipe>
 #. Index: <op_pipe>
 #: gui/opcodes.h:103 gui/opcodes.h:669
 msgid "pipe message/attachment to a shell command"
 msgstr "putkita viesti/liite shell-komennolle"
 
-#. L10N: Help screen description for OP_ATTACHMENT_PRINT
-#. Attach Dialog: <op_attachment_print>
-#. Compose Dialog: <op_attachment_print>
+#. L10N: Help screen description for OP_ATTACH_PRINT
+#. Attach Dialog: <op_attach_print>
+#. Compose Dialog: <op_attach_print>
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
 #: gui/opcodes.h:107 gui/opcodes.h:687
 msgid "print the current entry"
 msgstr "tulosta tämä tietue"
 
-#. L10N: Help screen description for OP_ATTACHMENT_RENAME_ATTACHMENT
-#. Compose Dialog: <op_attachment_rename_attachment>
+#. L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT
+#. Compose Dialog: <op_attach_rename_attachment>
 #: gui/opcodes.h:110
 msgid "send attachment with a different name"
 msgstr "lähetä liite toisella nimellä"
 
-#. L10N: Help screen description for OP_ATTACHMENT_SAVE
-#. Attach Dialog: <op_attachment_save>
-#. Compose Dialog: <op_attachment_save>
+#. L10N: Help screen description for OP_ATTACH_SAVE
+#. Attach Dialog: <op_attach_save>
+#. Compose Dialog: <op_attach_save>
 #. L10N: Help screen description for OP_SAVE
 #. Index: <op_save>
 #. Pager: <op_save>
@@ -3438,26 +3438,26 @@ msgstr "lähetä liite toisella nimellä"
 msgid "save message/attachment to a mailbox/file"
 msgstr "tallenna viesti/liite postilaatikkoon/tiedostoon"
 
-#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
-#. Compose Dialog: <op_attachment_toggle_disposition>
+#. L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION
+#. Compose Dialog: <op_attach_toggle_disposition>
 #: gui/opcodes.h:117
 msgid "toggle disposition between inline/attachment"
 msgstr "vaihda dispositioksi inline/attachment"
 
-#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
-#. Compose Dialog: <op_attachment_toggle_recode>
+#. L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE
+#. Compose Dialog: <op_attach_toggle_recode>
 #: gui/opcodes.h:120
 msgid "toggle recoding of this attachment"
 msgstr "vaihda liitteen uudelleenkoodausta"
 
-#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK
-#. Compose Dialog: <op_attachment_toggle_unlink>
+#. L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK
+#. Compose Dialog: <op_attach_toggle_unlink>
 #: gui/opcodes.h:123
 msgid "toggle whether to delete file after sending it"
 msgstr "vaihda poistetanako tiedosto lähettämisen jälkeen"
 
-#. L10N: Help screen description for OP_ATTACHMENT_UNDELETE
-#. Attach Dialog: <op_attachment_undelete>
+#. L10N: Help screen description for OP_ATTACH_UNDELETE
+#. Attach Dialog: <op_attach_undelete>
 #. L10N: Help screen description for OP_UNDELETE
 #. Alias Dialog: <op_delete>
 #. Postponed Dialog: <op_delete>
@@ -3466,42 +3466,42 @@ msgstr "vaihda poistetanako tiedosto lähettämisen jälkeen"
 msgid "undelete the current entry"
 msgstr "peru tämän tietueen poisto"
 
-#. L10N: Help screen description for OP_ATTACHMENT_UNGROUP
-#. Compose Dialog: <op_attachment_ungroup>
+#. L10N: Help screen description for OP_ATTACH_UNGROUP
+#. Compose Dialog: <op_attach_ungroup>
 #: gui/opcodes.h:129
 msgid "ungroup 'multipart' attachment"
 msgstr ""
 
-#. L10N: Help screen description for OP_ATTACHMENT_UPDATE_ENCODING
-#. Compose Dialog: <op_attachment_update_encoding>
+#. L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING
+#. Compose Dialog: <op_attach_update_encoding>
 #: gui/opcodes.h:132
 msgid "update an attachment's encoding info"
 msgstr "päivitä liitteen koodausinfo"
 
-#. L10N: Help screen description for OP_ATTACHMENT_VIEW
-#. Attach Dialog: <op_attachment_view>
+#. L10N: Help screen description for OP_ATTACH_VIEW
+#. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:136
 msgid "view attachment using mailcap entry if necessary"
 msgstr "näytä liitteet mailcapin perusteella jos tarpeen"
 
-#. L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP
-#. Attach Dialog: <op_attachment_view_mailcap>
+#. L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP
+#. Attach Dialog: <op_attach_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:140
 msgid "force viewing of attachment using mailcap"
 msgstr "näytä liitteet väkisin mailcapin perusteella"
 
-#. L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER
-#. Attach Dialog: <op_attachment_view_pager>
+#. L10N: Help screen description for OP_ATTACH_VIEW_PAGER
+#. Attach Dialog: <op_attach_view_pager>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:144
 #, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
 msgstr "näytä liitteet väkisin mailcapin perusteella"
 
-#. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
-#. Attach Dialog: <op_attachment_view_text>
+#. L10N: Help screen description for OP_ATTACH_VIEW_TEXT
+#. Attach Dialog: <op_attach_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:148
 msgid "view attachment as text"
@@ -3773,7 +3773,7 @@ msgid "display full address of sender"
 msgstr "näytä lähettäjän koko osoite"
 
 #. L10N: Help screen description for OP_DISPLAY_HEADERS
-#. Attach Dialog: <op_attachment_view>
+#. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
 #: gui/opcodes.h:299
@@ -4890,8 +4890,8 @@ msgstr "siirrä virtuaalikansion aikaikkunaa eteenpäin"
 msgid "resets virtual folder time window to the present"
 msgstr "siirrä virtuaalikansion aikaikkunaa eteenpäin"
 
-#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
-#. Compose Dialog: <op_attachment_attach_key>
+#. L10N: Help screen description for OP_ATTACH_ATTACH_KEY
+#. Compose Dialog: <op_attach_attach_key>
 #: gui/opcodes.h:922
 msgid "attach a PGP public key"
 msgstr "liitä julkinen PGP-avain"

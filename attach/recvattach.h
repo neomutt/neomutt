@@ -37,7 +37,7 @@ struct Menu;
 void mutt_attach_init(struct AttachCtx *actx);
 void mutt_update_tree(struct AttachCtx *actx);
 
-void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv, struct Email *e, FILE *fp, bool attach_msg);
+void dlg_attach(struct ConfigSubset *sub, struct MailboxView *mv, struct Email *e, FILE *fp, bool attach_msg);
 
 void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e, struct Body *parts, FILE *fp, int parent_type, int level, bool decrypted);
 struct AttachPtr *current_attachment(struct AttachCtx *actx, struct Menu *menu);

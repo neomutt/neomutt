@@ -3330,37 +3330,37 @@ msgstr "키 입력 (^G 취소): "
 msgid "Char = %s, Octal = %o, Decimal = %d\n"
 msgstr "Char = %s, Octal = %o, Decimal = %d\n"
 
-#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_FILE
-#. Compose Dialog: <op_attachment_attach_file>
+#. L10N: Help screen description for OP_ATTACH_ATTACH_FILE
+#. Compose Dialog: <op_attach_attach_file>
 #: gui/opcodes.h:42
 #, fuzzy
 msgid "attach files to this message"
 msgstr "현재 메세지에 파일 첨부"
 
-#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE
-#. Compose Dialog: <op_attachment_attach_message>
+#. L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE
+#. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:45
 #, fuzzy
 msgid "attach messages to this message"
 msgstr "현재 메세지에 메세지 첨부"
 
-#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
-#. Compose Dialog: <op_attachment_attach_message>
+#. L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE
+#. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:48
 #, fuzzy
 msgid "attach news articles to this message"
 msgstr "현재 메세지에 파일 첨부"
 
-#. L10N: Help screen description for OP_ATTACHMENT_COLLAPSE
-#. Attach Dialog: <op_attachment_collapse>
+#. L10N: Help screen description for OP_ATTACH_COLLAPSE
+#. Attach Dialog: <op_attach_collapse>
 #: gui/opcodes.h:51
 msgid "toggle display of subparts"
 msgstr "추가 첨부물의 표시 상태 바꿈"
 
-#. L10N: Help screen description for OP_ATTACHMENT_DELETE
-#. Attach Dialog: <op_attachment_delete>
-#. L10N: Help screen description for OP_ATTACHMENT_DETACH
-#. Compose Dialog: <op_attachment_detach>
+#. L10N: Help screen description for OP_ATTACH_DELETE
+#. Attach Dialog: <op_attach_delete>
+#. L10N: Help screen description for OP_ATTACH_DETACH
+#. Compose Dialog: <op_attach_detach>
 #. L10N: Help screen description for OP_DELETE
 #. Alias Dialog: <op_delete>
 #. Index: <op_delete>
@@ -3369,125 +3369,125 @@ msgstr "추가 첨부물의 표시 상태 바꿈"
 msgid "delete the current entry"
 msgstr "현재 항목 지움"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
-#. Compose Dialog: <op_attachment_edit_content_id>
+#. L10N: Help screen description for OP_ATTACH_EDIT_CONTENT_ID
+#. Compose Dialog: <op_attach_edit_content_id>
 #: gui/opcodes.h:60
 #, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
 msgstr "파일을 고친 후 첨부하기"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION
-#. Compose Dialog: <op_attachment_edit_description>
+#. L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION
+#. Compose Dialog: <op_attach_edit_description>
 #: gui/opcodes.h:63
 msgid "edit attachment description"
 msgstr "첨부물 설명 편집"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
-#. Compose Dialog: <op_attachment_edit_encoding>
+#. L10N: Help screen description for OP_ATTACH_EDIT_ENCODING
+#. Compose Dialog: <op_attach_edit_encoding>
 #: gui/opcodes.h:66
 msgid "edit attachment transfer-encoding"
 msgstr "첨부물 전송 부호화 방법 편집"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
-#. Compose Dialog: <op_attachment_edit_language>
+#. L10N: Help screen description for OP_ATTACH_EDIT_LANGUAGE
+#. Compose Dialog: <op_attach_edit_language>
 #: gui/opcodes.h:69
 #, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "파일을 고친 후 첨부하기"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_MIME
-#. Compose Dialog: <op_attachment_edit_mime>
+#. L10N: Help screen description for OP_ATTACH_EDIT_MIME
+#. Compose Dialog: <op_attach_edit_mime>
 #: gui/opcodes.h:72
 msgid "edit attachment using mailcap entry"
 msgstr "mailcap 항목을 사용하여 첨부물 편집"
 
-#. L10N: Help screen description for OP_ATTACHMENT_EDIT_TYPE
-#. Attach Dialog: <op_attachment_edit_type>
-#. Compose Dialog: <op_attachment_edit_type>
-#. Index: <op_attachment_edit_type>
+#. L10N: Help screen description for OP_ATTACH_EDIT_TYPE
+#. Attach Dialog: <op_attach_edit_type>
+#. Compose Dialog: <op_attach_edit_type>
+#. Index: <op_attach_edit_type>
 #: gui/opcodes.h:77
 msgid "edit attachment content type"
 msgstr "첨부물 내용 유형 편집"
 
-#. L10N: Help screen description for OP_ATTACHMENT_FILTER
-#. Compose Dialog: <op_attachment_filter>
+#. L10N: Help screen description for OP_ATTACH_FILTER
+#. Compose Dialog: <op_attach_filter>
 #: gui/opcodes.h:80
 msgid "filter attachment through a shell command"
 msgstr "쉘 명령어를 통해 첨부물 걸르기"
 
-#. L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT
-#. Compose Dialog: <op_attachment_get_attachment>
+#. L10N: Help screen description for OP_ATTACH_GET_ATTACHMENT
+#. Compose Dialog: <op_attach_get_attachment>
 #: gui/opcodes.h:83
 msgid "get a temporary copy of an attachment"
 msgstr "첨부물의 임시 사본 가져옴"
 
-#. L10N: Help screen description for OP_ATTACHMENT_GROUP_ALTS
-#. Compose Dialog: <op_attachment_group_alts>
+#. L10N: Help screen description for OP_ATTACH_GROUP_ALTS
+#. Compose Dialog: <op_attach_group_alts>
 #: gui/opcodes.h:86
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
-#. L10N: Help screen description for OP_ATTACHMENT_GROUP_LINGUAL
-#. Compose Dialog: <op_attachment_group_lingual>
+#. L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL
+#. Compose Dialog: <op_attach_group_lingual>
 #: gui/opcodes.h:89
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr ""
 
-#. L10N: Help screen description for OP_ATTACHMENT_GROUP_RELATED
-#. Compose Dialog: <op_attachment_group_related>
+#. L10N: Help screen description for OP_ATTACH_GROUP_RELATED
+#. Compose Dialog: <op_attach_group_related>
 #: gui/opcodes.h:92
 #, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
 msgstr "첨부물 저장됨"
 
-#. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
-#. Compose Dialog: <op_attachment_move_down>
+#. L10N: Help screen description for OP_ATTACH_MOVE_DOWN
+#. Compose Dialog: <op_attach_move_down>
 #: gui/opcodes.h:95
 #, fuzzy
 msgid "move an attachment down in the attachment list"
 msgstr "첨부물을 text로 보기"
 
-#. L10N: Help screen description for OP_ATTACHMENT_MOVE_UP
-#. Compose Dialog: <op_attachment_move_up>
+#. L10N: Help screen description for OP_ATTACH_MOVE_UP
+#. Compose Dialog: <op_attach_move_up>
 #: gui/opcodes.h:98
 #, fuzzy
 msgid "move an attachment up in the attachment list"
 msgstr "첨부물을 text로 보기"
 
-#. L10N: Help screen description for OP_ATTACHMENT_NEW_MIME
-#. Compose Dialog: <op_attachment_new_mime>
+#. L10N: Help screen description for OP_ATTACH_NEW_MIME
+#. Compose Dialog: <op_attach_new_mime>
 #: gui/opcodes.h:101
 msgid "compose new attachment using mailcap entry"
 msgstr "mailcap 항목을 사용해 새로운 첨부물 작성"
 
-#. L10N: Help screen description for OP_ATTACHMENT_PIPE
+#. L10N: Help screen description for OP_ATTACH_PIPE
 #. L10N: Help screen description for OP_PIPE
-#. Compose Dialog: <op_attachment_filter>
-#. Attach Dialog: <op_attachment_pipe>
+#. Compose Dialog: <op_attach_filter>
+#. Attach Dialog: <op_attach_pipe>
 #. Index: <op_pipe>
 #: gui/opcodes.h:103 gui/opcodes.h:669
 msgid "pipe message/attachment to a shell command"
 msgstr "메일/첨부물을 쉘 명령으로 연결하기"
 
-#. L10N: Help screen description for OP_ATTACHMENT_PRINT
-#. Attach Dialog: <op_attachment_print>
-#. Compose Dialog: <op_attachment_print>
+#. L10N: Help screen description for OP_ATTACH_PRINT
+#. Attach Dialog: <op_attach_print>
+#. Compose Dialog: <op_attach_print>
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
 #: gui/opcodes.h:107 gui/opcodes.h:687
 msgid "print the current entry"
 msgstr "현재 항목 출력"
 
-#. L10N: Help screen description for OP_ATTACHMENT_RENAME_ATTACHMENT
-#. Compose Dialog: <op_attachment_rename_attachment>
+#. L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT
+#. Compose Dialog: <op_attach_rename_attachment>
 #: gui/opcodes.h:110
 #, fuzzy
 msgid "send attachment with a different name"
 msgstr "첨부물 전송 부호화 방법 편집"
 
-#. L10N: Help screen description for OP_ATTACHMENT_SAVE
-#. Attach Dialog: <op_attachment_save>
-#. Compose Dialog: <op_attachment_save>
+#. L10N: Help screen description for OP_ATTACH_SAVE
+#. Attach Dialog: <op_attach_save>
+#. Compose Dialog: <op_attach_save>
 #. L10N: Help screen description for OP_SAVE
 #. Index: <op_save>
 #. Pager: <op_save>
@@ -3496,26 +3496,26 @@ msgstr "첨부물 전송 부호화 방법 편집"
 msgid "save message/attachment to a mailbox/file"
 msgstr "메일/첨부물 파일로 저장"
 
-#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
-#. Compose Dialog: <op_attachment_toggle_disposition>
+#. L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION
+#. Compose Dialog: <op_attach_toggle_disposition>
 #: gui/opcodes.h:117
 msgid "toggle disposition between inline/attachment"
 msgstr "inline 또는 attachment 선택"
 
-#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
-#. Compose Dialog: <op_attachment_toggle_recode>
+#. L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE
+#. Compose Dialog: <op_attach_toggle_recode>
 #: gui/opcodes.h:120
 msgid "toggle recoding of this attachment"
 msgstr "첨부물의 저장 상태 토글"
 
-#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK
-#. Compose Dialog: <op_attachment_toggle_unlink>
+#. L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK
+#. Compose Dialog: <op_attach_toggle_unlink>
 #: gui/opcodes.h:123
 msgid "toggle whether to delete file after sending it"
 msgstr "발신 후 파일을 지울지 선택"
 
-#. L10N: Help screen description for OP_ATTACHMENT_UNDELETE
-#. Attach Dialog: <op_attachment_undelete>
+#. L10N: Help screen description for OP_ATTACH_UNDELETE
+#. Attach Dialog: <op_attach_undelete>
 #. L10N: Help screen description for OP_UNDELETE
 #. Alias Dialog: <op_delete>
 #. Postponed Dialog: <op_delete>
@@ -3524,42 +3524,42 @@ msgstr "발신 후 파일을 지울지 선택"
 msgid "undelete the current entry"
 msgstr "현재 항목 복구"
 
-#. L10N: Help screen description for OP_ATTACHMENT_UNGROUP
-#. Compose Dialog: <op_attachment_ungroup>
+#. L10N: Help screen description for OP_ATTACH_UNGROUP
+#. Compose Dialog: <op_attach_ungroup>
 #: gui/opcodes.h:129
 msgid "ungroup 'multipart' attachment"
 msgstr ""
 
-#. L10N: Help screen description for OP_ATTACHMENT_UPDATE_ENCODING
-#. Compose Dialog: <op_attachment_update_encoding>
+#. L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING
+#. Compose Dialog: <op_attach_update_encoding>
 #: gui/opcodes.h:132
 msgid "update an attachment's encoding info"
 msgstr "첨부물의 인코딩 정보 다시 읽기"
 
-#. L10N: Help screen description for OP_ATTACHMENT_VIEW
-#. Attach Dialog: <op_attachment_view>
+#. L10N: Help screen description for OP_ATTACH_VIEW
+#. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:136
 msgid "view attachment using mailcap entry if necessary"
 msgstr "필요하다면 mailcap 항목을 사용해 첨부물을 보여줌"
 
-#. L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP
-#. Attach Dialog: <op_attachment_view_mailcap>
+#. L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP
+#. Attach Dialog: <op_attach_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:140
 msgid "force viewing of attachment using mailcap"
 msgstr "mailcap을 사용해 강제로 첨부물을 봄"
 
-#. L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER
-#. Attach Dialog: <op_attachment_view_pager>
+#. L10N: Help screen description for OP_ATTACH_VIEW_PAGER
+#. Attach Dialog: <op_attach_view_pager>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:144
 #, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
 msgstr "mailcap을 사용해 강제로 첨부물을 봄"
 
-#. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
-#. Attach Dialog: <op_attachment_view_text>
+#. L10N: Help screen description for OP_ATTACH_VIEW_TEXT
+#. Attach Dialog: <op_attach_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:148
 msgid "view attachment as text"
@@ -3837,7 +3837,7 @@ msgid "display full address of sender"
 msgstr "송신인의 주소 전부 보기"
 
 #. L10N: Help screen description for OP_DISPLAY_HEADERS
-#. Attach Dialog: <op_attachment_view>
+#. Attach Dialog: <op_attach_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
 #: gui/opcodes.h:299
@@ -4980,8 +4980,8 @@ msgstr ""
 msgid "resets virtual folder time window to the present"
 msgstr ""
 
-#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
-#. Compose Dialog: <op_attachment_attach_key>
+#. L10N: Help screen description for OP_ATTACH_ATTACH_KEY
+#. Compose Dialog: <op_attach_attach_key>
 #: gui/opcodes.h:922
 msgid "attach a PGP public key"
 msgstr "PGP 공개 열쇠 첨부"

@@ -97,7 +97,7 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "edit-label",                    OP_EDIT_LABEL },
   { "edit-or-view-raw-message",      OP_EDIT_OR_VIEW_RAW_MESSAGE },
   { "edit-raw-message",              OP_EDIT_RAW_MESSAGE },
-  { "edit-type",                     OP_ATTACHMENT_EDIT_TYPE },
+  { "edit-type",                     OP_ATTACH_EDIT_TYPE },
   { "enter-command",                 OP_ENTER_COMMAND },
 #ifdef USE_NOTMUCH
   { "entire-thread",                 OP_MAIN_ENTIRE_THREAD },
@@ -161,7 +161,7 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "previous-thread",               OP_MAIN_PREV_THREAD },
   { "previous-undeleted",            OP_MAIN_PREV_UNDELETED },
   { "previous-unread",               OP_MAIN_PREV_UNREAD },
-  { "print-entry",                   OP_ATTACHMENT_PRINT },
+  { "print-entry",                   OP_ATTACH_PRINT },
   { "print-message",                 OP_PRINT },
   { "purge-message",                 OP_PURGE_MESSAGE },
   { "purge-thread",                  OP_PURGE_THREAD },
@@ -175,7 +175,7 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "reply",                         OP_REPLY },
   { "resend-message",                OP_RESEND },
   { "root-message",                  OP_MAIN_ROOT_MESSAGE },
-  { "save-entry",                    OP_ATTACHMENT_SAVE },
+  { "save-entry",                    OP_ATTACH_SAVE },
   { "save-message",                  OP_SAVE },
   { "search",                        OP_SEARCH },
   { "search-next",                   OP_SEARCH_NEXT },
@@ -215,7 +215,7 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
  * PagerDefaultBindings - Key bindings for the Pager Menu
  */
 static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
-  { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
+  { OP_ATTACH_EDIT_TYPE,               "\005" },           // <Ctrl-E>
   { OP_BOUNCE_MESSAGE,                     "b" },
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
   { OP_COPY_MESSAGE,                       "C" },
@@ -1100,8 +1100,8 @@ static int op_view_attachments(struct IndexSharedData *shared,
 
   if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
     return FR_NOT_IMPL;
-  dlg_attachment(NeoMutt->sub, shared->mailbox_view, shared->email,
-                 pview->pdata->fp, shared->attach_msg);
+  dlg_attach(NeoMutt->sub, shared->mailbox_view, shared->email,
+             pview->pdata->fp, shared->attach_msg);
   if (shared->email->attach_del)
     shared->mailbox->changed = true;
   pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
