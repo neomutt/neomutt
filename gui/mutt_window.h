@@ -86,7 +86,7 @@ enum WindowType
   WT_DLG_INDEX,       ///< Index Dialog,       dlg_index()
   WT_DLG_PATTERN,     ///< Pattern Dialog,     dlg_pattern()
   WT_DLG_PGP,         ///< Pgp Dialog,         dlg_pgp()
-  WT_DLG_POSTPONED,   ///< Postponed Dialog,   dlg_postponed()
+  WT_DLG_POSTPONE,    ///< Postpone Dialog,    dlg_postpone()
   WT_DLG_QUERY,       ///< Query Dialog,       dlg_query()
   WT_DLG_SMIME,       ///< Smime Dialog,       dlg_smime()
 

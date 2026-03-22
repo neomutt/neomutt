@@ -48,7 +48,7 @@ struct SubMenu;
 
 void postponed_init_keys(struct SubMenu *sm_generic);
 
-struct Email *dlg_postponed             (struct Mailbox *m);
+struct Email *dlg_postpone              (struct Mailbox *m);
 int           mutt_get_postponed        (struct Mailbox *m_cur, struct Email *hdr, struct Email **cur, struct Buffer *fcc);
 int           mutt_num_postponed        (struct Mailbox *m, bool force);
 SecurityFlags mutt_parse_crypt_hdr      (const char *p, bool set_empty_signas, SecurityFlags crypt_app);

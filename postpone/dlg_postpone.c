@@ -30,9 +30,9 @@
  *
  * ## Windows
  *
- * | Name                             | Type             | See Also        |
- * | :------------------------------- | :--------------- | :-------------- |
- * | Postponed Email Selection Dialog | WT_DLG_POSTPONED | dlg_postponed() |
+ * | Name                             | Type            | See Also       |
+ * | :------------------------------- | :-------------- | :------------- |
+ * | Postponed Email Selection Dialog | WT_DLG_POSTPONE | dlg_postpone() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -197,7 +197,7 @@ static const struct AttrColor *post_color(struct Menu *menu, int line)
 }
 
 /**
- * dlg_postponed - Create a Menu to select a postponed message - @ingroup gui_dlg
+ * dlg_postpone - Create a Menu to select a postponed message - @ingroup gui_dlg
  * @param m Mailbox
  * @retval ptr Email
  *
@@ -206,9 +206,9 @@ static const struct AttrColor *post_color(struct Menu *menu, int line)
  *
  * This dialog is only shown if there are two or more postponed emails.
  */
-struct Email *dlg_postponed(struct Mailbox *m)
+struct Email *dlg_postpone(struct Mailbox *m)
 {
-  struct SimpleDialogWindows sdw = simple_dialog_new(MdPostpone, WT_DLG_POSTPONED, PostponedHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MdPostpone, WT_DLG_POSTPONE, PostponedHelp);
   // Required to number the emails
   struct MailboxView *mv = mview_new(m, NeoMutt->notify);
 

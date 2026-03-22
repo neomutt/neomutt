@@ -701,7 +701,7 @@ struct MailboxView *get_current_mailbox_view(void)
       return shared->mailbox_view;
     }
 
-    win = window_find_child(*wp, WT_DLG_POSTPONED);
+    win = window_find_child(*wp, WT_DLG_POSTPONE);
     if (win)
     {
       return postponed_get_mailbox_view(win);
