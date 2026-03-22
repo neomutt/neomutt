@@ -155,7 +155,7 @@ static int cmd_queue(struct ImapAccountData *adata, const char *cmdstr, ImapCmdF
   {
     mutt_debug(LL_DEBUG3, "Draining IMAP command pipeline\n");
 
-    const int rc = imap_exec(adata, NULL, flags & IMAP_CMD_POLL);
+    const int rc = imap_exec(adata, NULL, IMAP_CMD_POLL);
 
     if (rc == IMAP_EXEC_ERROR)
       return IMAP_RES_BAD;
