@@ -114,19 +114,19 @@
 ** Specifies the format of the data displayed for the "$alias" menu.  The
 ** following \fCprintf(3)\fP-style sequences are available:
 ** .dl
-** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
-** .dt \fC%A\fP    .dd \fC%{address}\fP      .dd Full Address (Name and Email)
-** .dt \fC%a\fP    .dd \fC%{alias}\fP        .dd Alias name
-** .dt \fC%C\fP    .dd \fC%{comment}\fP      .dd Comment
-** .dt \fC%E\fP    .dd \fC%{email}\fP        .dd Email Address
-** .dt \fC%f\fP    .dd \fC%{flags}\fP        .dd Flags - currently, a \fCd\fP for an alias marked for deletion
-** .dt \fC%i\fP    .dd \fC%{number}\fP       .dd Index number
-** .dt \fC%N\fP    .dd \fC%{name}\fP         .dd Real name
-** .dt \fC%t\fP    .dd \fC%{tagged}\fP       .dd Alias is tagged (selected)
-** .dt \fC%Y\fP    .dd \fC%{tags}\fP         .dd User-defined tags (labels)
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
+** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
+** .dt \fC%A\fP    .dd \fC%{address}\fP        .dd Full Address (Name and Email)
+** .dt \fC%a\fP    .dd \fC%{alias}\fP          .dd Alias name
+** .dt \fC%C\fP    .dd \fC%{comment}\fP        .dd Comment
+** .dt \fC%E\fP    .dd \fC%{email}\fP          .dd Email Address
+** .dt \fC%f\fP    .dd \fC%{flags}\fP          .dd Flags - currently, a \fCd\fP for an alias marked for deletion
+** .dt \fC%i\fP    .dd \fC%{number}\fP         .dd Index number
+** .dt \fC%N\fP    .dd \fC%{name}\fP           .dd Real name
+** .dt \fC%t\fP    .dd \fC%{tagged}\fP         .dd Alias is tagged (selected)
+** .dt \fC%Y\fP    .dd \fC%{tags}\fP           .dd User-defined tags (labels)
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -300,9 +300,9 @@
 ** .dt \fC%u\fP    .dd \fC%{unlink}\fP           .dd Unlink (=to delete) flag
 ** .dt \fC%X\fP    .dd \fC%{attach-count}\fP     .dd Number of qualifying MIME parts in this part and its children
 ** .dt             .dd                           .dd (see the $$attachments section for possible speed effects)
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP     .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP     .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP      .dd Pad to the end of the line with character \fCX\fP
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP   .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP   .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP    .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -427,15 +427,15 @@
 ** This variable describes the format of the "autocrypt account" menu.
 ** The following \fCprintf(3)\fP-style sequences are understood
 ** .dl
-** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
-** .dt \fC%a\fP    .dd \fC%{address}\fP        .dd Email address
-** .dt \fC%k\fP    .dd \fC%{keyid}\fP          .dd GPG keyid
-** .dt \fC%n\fP    .dd \fC%{number}\fP         .dd Current entry number
-** .dt \fC%p\fP    .dd \fC%{prefer-encrypt}\fP .dd Prefer-encrypt flag
-** .dt \fC%s\fP    .dd \fC%{enabled}\fP        .dd Status flag (active/inactive)
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP   .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP   .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP    .dd Pad to the end of the line with character \fCX\fP
+** .dt \fBShort\fP .dd \fBLong Name\fP          .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{address}\fP         .dd Email address
+** .dt \fC%k\fP    .dd \fC%{keyid}\fP           .dd GPG keyid
+** .dt \fC%n\fP    .dd \fC%{number}\fP          .dd Current entry number
+** .dt \fC%p\fP    .dd \fC%{prefer-encrypt}\fP  .dd Prefer-encrypt flag
+** .dt \fC%s\fP    .dd \fC%{enabled}\fP         .dd Status flag (active/inactive)
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP  .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP  .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP   .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** (Autocrypt only)
@@ -685,14 +685,14 @@
 ** menu.  This string is similar to $$status_format, but has its own
 ** set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
-** .dt \fC%a\fP    .dd \fC%{attach-count}\fP .dd Total number of attachments
-** .dt \fC%h\fP    .dd \fC%{hostname}\fP     .dd Local hostname
-** .dt \fC%l\fP    .dd \fC%{attach-size}\fP  .dd Approximate size (in bytes) of the current message (see $formatstrings-size)
-** .dt \fC%v\fP    .dd \fC%{version}\fP      .dd NeoMutt version string
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
+** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{attach-count}\fP   .dd Total number of attachments
+** .dt \fC%h\fP    .dd \fC%{hostname}\fP       .dd Local hostname
+** .dt \fC%l\fP    .dd \fC%{attach-size}\fP    .dd Approximate size (in bytes) of the current message (see $formatstrings-size)
+** .dt \fC%v\fP    .dd \fC%{version}\fP        .dd NeoMutt version string
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** See the text describing the $$status_format option for more
@@ -1438,29 +1438,29 @@
 ** personal taste.  This string is similar to $$index_format, but has
 ** its own set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt \fBShort\fP  .dd \fBLong Name\fP        .dd \fBDescription\fP
-** .dt \fC%a\fP     .dd \fC%{notify}\fP        .dd Alert: 1 if user is notified of new mail
-** .dt \fC%C\fP     .dd \fC%{number}\fP        .dd Current file number
-** .dt \fC%D\fP     .dd \fC%{date}\fP          .dd Date/time folder was last modified using $$date_format.
-** .dt              .dd                        .dd It is recommended to use \fC%[fmt]\fP instead, where \fCfmt\fP is the value of $$date_format.
-** .dt \fC%d\fP     .dd \fC%{date-format}\fP   .dd Date/time folder was last modified
-** .dt \fC%F\fP     .dd \fC%{file-mode}\fP     .dd File permissions
-** .dt \fC%f\fP     .dd \fC%{filename}\fP      .dd Filename (\fC/\fP is appended to directory names,
-** .dt              .dd                        .dd \fC@\fP to symbolic links and \fC*\fP to executable files)
-** .dt \fC%g\fP     .dd \fC%{file-group}\fP    .dd Group name (or numeric gid, if missing)
-** .dt \fC%i\fP     .dd \fC%{description}\fP   .dd Description of the folder
-** .dt \fC%l\fP     .dd \fC%{hard-links}\fP    .dd Number of hard links
-** .dt \fC%m\fP     .dd \fC%{message-count}\fP .dd Number of messages in the mailbox
-** .dt \fC%N\fP     .dd \fC%{new-mail}\fP      .dd \fCN\fP if mailbox has new mail, \fC \fP (space) otherwise
-** .dt \fC%n\fP     .dd \fC%{unread-count}\fP  .dd Number of unread messages in the mailbox
-** .dt \fC%p\fP     .dd \fC%{poll}\fP          .dd Poll: 1 if Mailbox is checked for new mail
-** .dt \fC%s\fP     .dd \fC%{file-size}\fP     .dd Size in bytes (see $formatstrings-size)
-** .dt \fC%t\fP     .dd \fC%{tagged}\fP        .dd \fC*\fP if the file is tagged, blank otherwise
-** .dt \fC%u\fP     .dd \fC%{file-owner}\fP    .dd Owner name (or numeric uid, if missing)
-** .dt \fC%[fmt]\fP .dd                        .dd Date/time folder was last modified using an \fCstrftime(3)\fP expression
-** .dt \fC%*X\fP    .dd \fC%{padding-soft}\fP  .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP    .dd \fC%{padding-hard}\fP  .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP    .dd \fC%{padding-eol}\fP   .dd Pad to the end of the line with character \fCX\fP
+** .dt \fBShort\fP  .dd \fBLong Name\fP          .dd \fBDescription\fP
+** .dt \fC%a\fP     .dd \fC%{notify}\fP          .dd Alert: 1 if user is notified of new mail
+** .dt \fC%C\fP     .dd \fC%{number}\fP          .dd Current file number
+** .dt \fC%D\fP     .dd \fC%{date}\fP            .dd Date/time folder was last modified using $$date_format.
+** .dt              .dd                          .dd It is recommended to use \fC%[fmt]\fP instead, where \fCfmt\fP is the value of $$date_format.
+** .dt \fC%d\fP     .dd \fC%{date-format}\fP     .dd Date/time folder was last modified
+** .dt \fC%F\fP     .dd \fC%{file-mode}\fP       .dd File permissions
+** .dt \fC%f\fP     .dd \fC%{filename}\fP        .dd Filename (\fC/\fP is appended to directory names,
+** .dt              .dd                          .dd \fC@\fP to symbolic links and \fC*\fP to executable files)
+** .dt \fC%g\fP     .dd \fC%{file-group}\fP      .dd Group name (or numeric gid, if missing)
+** .dt \fC%i\fP     .dd \fC%{description}\fP     .dd Description of the folder
+** .dt \fC%l\fP     .dd \fC%{hard-links}\fP      .dd Number of hard links
+** .dt \fC%m\fP     .dd \fC%{message-count}\fP   .dd Number of messages in the mailbox
+** .dt \fC%N\fP     .dd \fC%{new-mail}\fP        .dd \fCN\fP if mailbox has new mail, \fC \fP (space) otherwise
+** .dt \fC%n\fP     .dd \fC%{unread-count}\fP    .dd Number of unread messages in the mailbox
+** .dt \fC%p\fP     .dd \fC%{poll}\fP            .dd Poll: 1 if Mailbox is checked for new mail
+** .dt \fC%s\fP     .dd \fC%{file-size}\fP       .dd Size in bytes (see $formatstrings-size)
+** .dt \fC%t\fP     .dd \fC%{tagged}\fP          .dd \fC*\fP if the file is tagged, blank otherwise
+** .dt \fC%u\fP     .dd \fC%{file-owner}\fP      .dd Owner name (or numeric uid, if missing)
+** .dt \fC%[fmt]\fP .dd                          .dd Date/time folder was last modified using an \fCstrftime(3)\fP expression
+** .dt \fC%*X\fP    .dd \fC%{padding-soft:X}\fP  .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP    .dd \fC%{padding-hard:X}\fP  .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP    .dd \fC%{padding-eol:X}\fP   .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -1668,19 +1668,19 @@
 ** your personal taste.  This string is similar to "$index_format", but
 ** has its own set of printf()-like sequences:
 ** .dl
-** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
-** .dt \fC%a\fP    .dd \fC%{notify}\fP       .dd Alert: 1 if user is notified of new mail
-** .dt \fC%C\fP    .dd \fC%{number}\fP       .dd Current newsgroup number
-** .dt \fC%d\fP    .dd \fC%{description}\fP  .dd Description of newsgroup (becomes from server)
-** .dt \fC%f\fP    .dd \fC%{newsgroup}\fP    .dd Newsgroup name
-** .dt \fC%M\fP    .dd \fC%{flags}\fP        .dd \fC-\fP if newsgroup not allowed for direct post (moderated for example)
-** .dt \fC%N\fP    .dd \fC%{flags2}\fP       .dd \fCN\fP if newsgroup is new, \fCu\fP if unsubscribed, \fC \fP (space) otherwise
-** .dt \fC%n\fP    .dd \fC%{new-count}\fP    .dd Number of new articles in newsgroup
-** .dt \fC%p\fP    .dd \fC%{poll}\fP         .dd Poll: 1 if Mailbox is checked for new mail
-** .dt \fC%s\fP    .dd \fC%{unread-count}\fP .dd Number of unread articles in newsgroup
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
+** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{notify}\fP         .dd Alert: 1 if user is notified of new mail
+** .dt \fC%C\fP    .dd \fC%{number}\fP         .dd Current newsgroup number
+** .dt \fC%d\fP    .dd \fC%{description}\fP    .dd Description of newsgroup (becomes from server)
+** .dt \fC%f\fP    .dd \fC%{newsgroup}\fP      .dd Newsgroup name
+** .dt \fC%M\fP    .dd \fC%{flags}\fP          .dd \fC-\fP if newsgroup not allowed for direct post (moderated for example)
+** .dt \fC%N\fP    .dd \fC%{flags2}\fP         .dd \fCN\fP if newsgroup is new, \fCu\fP if unsubscribed, \fC \fP (space) otherwise
+** .dt \fC%n\fP    .dd \fC%{new-count}\fP      .dd Number of new articles in newsgroup
+** .dt \fC%p\fP    .dd \fC%{poll}\fP           .dd Poll: 1 if Mailbox is checked for new mail
+** .dt \fC%s\fP    .dd \fC%{unread-count}\fP   .dd Number of unread articles in newsgroup
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 */
 
@@ -1847,12 +1847,12 @@
 ** This string is similar to $$index_format, but has its own
 ** set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
-** .dt \fC%C\fP    .dd \fC%{number}\fP       .dd Line number
-** .dt \fC%s\fP    .dd \fC%{match}\fP        .dd History match
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
+** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
+** .dt \fC%C\fP    .dd \fC%{number}\fP         .dd Line number
+** .dt \fC%s\fP    .dd \fC%{match}\fP          .dd History match
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 */
 
@@ -2291,9 +2291,9 @@
 ** .dt               .dd                              .dd if the first character inside the brackets is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
 ** .dt \fC%(fmt)\fP  .dd                              .dd Local date and time when the message was received, and \fCfmt\fP is expanded by the library function \fCstrftime(3)\fP;
 ** .dt               .dd                              .dd if the first character inside the parentheses is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
-** .dt \fC%*X\fP     .dd \fC%{padding-soft}\fP        .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP     .dd \fC%{padding-hard}\fP        .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP     .dd \fC%{padding-eol}\fP         .dd Pad to the end of the line with character \fCX\fP
+** .dt \fC%*X\fP     .dd \fC%{padding-soft:X}\fP      .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP     .dd \fC%{padding-hard:X}\fP      .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP     .dd \fC%{padding-eol:X}\fP       .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** Date format expressions can be constructed based on relative dates. Using
@@ -3097,13 +3097,13 @@
 ** This variable describes the format of the "pattern completion" menu. The
 ** following \fCprintf(3)\fP-style sequences are understood:
 ** .dl
-** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
-** .dt \fC%d\fP    .dd \fC%{description}\fP  .dd Pattern description
-** .dt \fC%e\fP    .dd \fC%{expression}\fP   .dd Pattern expression
-** .dt \fC%n\fP    .dd \fC%{number}\fP       .dd Index number
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
+** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
+** .dt \fC%d\fP    .dd \fC%{description}\fP    .dd Pattern description
+** .dt \fC%e\fP    .dd \fC%{expression}\fP     .dd Pattern expression
+** .dt \fC%n\fP    .dd \fC%{number}\fP         .dd Index number
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 */
@@ -3293,9 +3293,9 @@
 ** .dt \fC%K\fP       .dd \fC%{pkey-id}\fP           .dd Primary Key id
 ** .dt \fC%L\fP       .dd \fC%{pkey-length}\fP       .dd Primary Key length
 ** .dt \fC%[<s>]\fP   .dd \fC%{date}\fP              .dd Date of the key where \fC<s>\fP is an \fCstrftime(3)\fP expression
-** .dt \fC%*X\fP      .dd \fC%{padding-soft}\fP      .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP      .dd \fC%{padding-hard}\fP      .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP      .dd \fC%{padding-eol}\fP       .dd Pad to the end of the line with character \fCX\fP
+** .dt \fC%*X\fP      .dd \fC%{padding-soft:X}\fP    .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP      .dd \fC%{padding-hard:X}\fP    .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP      .dd \fC%{padding-eol:X}\fP     .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** See the section "Sending Cryptographically Signed/Encrypted Messages" of the
@@ -3851,17 +3851,17 @@
 ** This variable describes the format of the "query" menu. The
 ** following \fCprintf(3)\fP-style sequences are understood:
 ** .dl
-** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
-** .dt \fC%A\fP    .dd \fC%{address}\fP      .dd Full Address (Name and Email)
-** .dt \fC%C\fP    .dd \fC%{comment}\fP      .dd Comment
-** .dt \fC%E\fP    .dd \fC%{email}\fP        .dd Email Address
-** .dt \fC%i\fP    .dd \fC%{number}\fP       .dd Index number
-** .dt \fC%N\fP    .dd \fC%{name}\fP         .dd Real name
-** .dt \fC%t\fP    .dd \fC%{tagged}\fP       .dd Alias is tagged (selected)
-** .dt \fC%Y\fP    .dd \fC%{tags}\fP         .dd User-defined tags (labels)
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
+** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
+** .dt \fC%A\fP    .dd \fC%{address}\fP        .dd Full Address (Name and Email)
+** .dt \fC%C\fP    .dd \fC%{comment}\fP        .dd Comment
+** .dt \fC%E\fP    .dd \fC%{email}\fP          .dd Email Address
+** .dt \fC%i\fP    .dd \fC%{number}\fP         .dd Index number
+** .dt \fC%N\fP    .dd \fC%{name}\fP           .dd Real name
+** .dt \fC%t\fP    .dd \fC%{tagged}\fP         .dd Alias is tagged (selected)
+** .dt \fC%Y\fP    .dd \fC%{tags}\fP           .dd User-defined tags (labels)
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -4421,27 +4421,27 @@
 ** similar to $$index_format, but has its own set of \fCprintf(3)\fP-like
 ** sequences:
 ** .dl
-** .dt \fBShort\fP .dd \fBLong Name\fP        .dd \fBCur\fP .dd \fBDescription\fP
-** .dt \fC%a\fP    .dd \fC%{notify}\fP        .dd           .dd Alert: 1 if user is notified of new mail
-** .dt \fC%B\fP    .dd \fC%{name}\fP          .dd           .dd Name of the mailbox
-** .dt \fC%D\fP    .dd \fC%{description}\fP   .dd           .dd Descriptive name of the mailbox
-** .dt \fC%d\fP    .dd \fC%{deleted-count}\fP .dd Cur       .dd Number of deleted messages in the mailbox
-** .dt \fC%F\fP    .dd \fC%{flagged-count}\fP .dd           .dd Number of flagged messages in the mailbox
-** .dt \fC%L\fP    .dd \fC%{limited-count}\fP .dd Cur       .dd Number of messages after limiting
-** .dt \fC%N\fP    .dd \fC%{new-mail}\fP      .dd           .dd Number of unread messages in the mailbox (seen or unseen)
-** .dt \fC%n\fP    .dd \fC%{unread-count}\fP  .dd           .dd \fCN\fP if mailbox has new mail, \fC \fP (space) otherwise
-** .dt \fC%o\fP    .dd \fC%{old-count}\fP     .dd           .dd Number of old messages in the mailbox (unread, seen)
-** .dt \fC%p\fP    .dd \fC%{poll}\fP          .dd           .dd Poll: 1 if Mailbox is checked for new mail
-** .dt \fC%r\fP    .dd \fC%{read-count}\fP    .dd           .dd Number of read messages in the mailbox (read, seen)
-** .dt \fC%S\fP    .dd \fC%{message-count}\fP .dd           .dd Size of mailbox (total number of messages)
-** .dt \fC%t\fP    .dd \fC%{tagged-count}\fP  .dd Cur       .dd Number of tagged messages in the mailbox
-** .dt \fC%Z\fP    .dd \fC%{unseen-count}\fP  .dd           .dd Number of new messages in the mailbox (unread, unseen)
-** .dt \fC%!\fP    .dd \fC%{flagged}\fP       .dd           .dd \fC!\fP : one flagged message
-** .dt             .dd                        .dd           .dd \fC!!\fP : two flagged messages
-** .dt             .dd                        .dd           .dd \fCn!\fP : n flagged messages (for n > 2)
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP  .dd           .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP  .dd           .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP   .dd           .dd Pad to the end of the line with character \fCX\fP
+** .dt \fBShort\fP .dd \fBLong Name\fP          .dd \fBCur\fP .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{notify}\fP          .dd           .dd Alert: 1 if user is notified of new mail
+** .dt \fC%B\fP    .dd \fC%{name}\fP            .dd           .dd Name of the mailbox
+** .dt \fC%D\fP    .dd \fC%{description}\fP     .dd           .dd Descriptive name of the mailbox
+** .dt \fC%d\fP    .dd \fC%{deleted-count}\fP   .dd Cur       .dd Number of deleted messages in the mailbox
+** .dt \fC%F\fP    .dd \fC%{flagged-count}\fP   .dd           .dd Number of flagged messages in the mailbox
+** .dt \fC%L\fP    .dd \fC%{limited-count}\fP   .dd Cur       .dd Number of messages after limiting
+** .dt \fC%N\fP    .dd \fC%{new-mail}\fP        .dd           .dd Number of unread messages in the mailbox (seen or unseen)
+** .dt \fC%n\fP    .dd \fC%{unread-count}\fP    .dd           .dd \fCN\fP if mailbox has new mail, \fC \fP (space) otherwise
+** .dt \fC%o\fP    .dd \fC%{old-count}\fP       .dd           .dd Number of old messages in the mailbox (unread, seen)
+** .dt \fC%p\fP    .dd \fC%{poll}\fP            .dd           .dd Poll: 1 if Mailbox is checked for new mail
+** .dt \fC%r\fP    .dd \fC%{read-count}\fP      .dd           .dd Number of read messages in the mailbox (read, seen)
+** .dt \fC%S\fP    .dd \fC%{message-count}\fP   .dd           .dd Size of mailbox (total number of messages)
+** .dt \fC%t\fP    .dd \fC%{tagged-count}\fP    .dd Cur       .dd Number of tagged messages in the mailbox
+** .dt \fC%Z\fP    .dd \fC%{unseen-count}\fP    .dd           .dd Number of new messages in the mailbox (unread, unseen)
+** .dt \fC%!\fP    .dd \fC%{flagged}\fP         .dd           .dd \fC!\fP : one flagged message
+** .dt             .dd                          .dd           .dd \fC!!\fP : two flagged messages
+** .dt             .dd                          .dd           .dd \fCn!\fP : n flagged messages (for n > 2)
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP  .dd           .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP  .dd           .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP   .dd           .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** \fBCur\fP = Only applicable to the current folder
@@ -5250,9 +5250,9 @@
 ** .dt \fC%u\fP    .dd \fC%{unread-count}\fP     .dd Number of unread messages in the mailbox (seen or unseen)
 ** .dt \fC%v\fP    .dd \fC%{limit-pattern}\fP    .dd NeoMutt version string
 ** .dt \fC%V\fP    .dd \fC%{version}\fP          .dd Currently active limit pattern, if any
-** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP     .dd Soft-fill with character \fCX\fP as pad
-** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP     .dd Right justify the rest of the string and pad with character \fCX\fP
-** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP      .dd Pad to the end of the line with character \fCX\fP
+** .dt \fC%*X\fP   .dd \fC%{padding-soft:X}\fP   .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard:X}\fP   .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol:X}\fP    .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
