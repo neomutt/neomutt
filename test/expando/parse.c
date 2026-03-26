@@ -35,6 +35,15 @@
 
 void expando_serialise(const struct Expando *exp, struct Buffer *buf);
 
+/// parse_curly_date - Parse a `%{...}` date expando (uses '}' as terminator)
+static struct ExpandoNode *parse_curly_date(const char *str, struct ExpandoFormat *fmt,
+                                            int did, int uid, ExpandoParserFlags flags,
+                                            const char **parsed_until,
+                                            struct ExpandoParseError *err)
+{
+  return node_expando_parse_enclosure(str, did, uid, '}', fmt, parsed_until, err);
+}
+
 void test_expando_parser(void)
 {
   static const struct ExpandoDefinition TestFormatDef[] = {
@@ -44,6 +53,7 @@ void test_expando_parser(void)
     { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      node_padding_parse },
     { "X", "attachment-count", ED_EMAIL,  ED_EMA_ATTACHMENT_COUNT, NULL },
     { "[", NULL,               ED_EMAIL,  ED_EMA_DATE_STRF_LOCAL,  parse_date },
+    { "{", NULL,               ED_EMAIL,  ED_EMA_DATE_STRF,        parse_curly_date },
     { "a", "apple",            ED_ALIAS,  ED_ALI_ADDRESS,          NULL },
     { "b", "banana",           ED_ALIAS,  ED_ALI_COMMENT,          NULL },
     { "c", "cherry",           ED_ALIAS,  ED_ALI_FLAGS,            NULL },
@@ -86,6 +96,7 @@ void test_expando_parser(void)
     // Dates
     { "%[%Y-%m-%d]",    "<EXP:'%Y-%m-%d'(ED_EMAIL,ED_EMA_DATE_STRF_LOCAL)>" },
     { "%-5[%Y-%m-%d]",  "<EXP:'%Y-%m-%d'(ED_EMAIL,ED_EMA_DATE_STRF_LOCAL):{5,-1,LEFT,' '}>" },
+    { "%{%b %d}",       "<EXP:'%b %d'(ED_EMAIL,ED_EMA_DATE_STRF)>" },
 
     // Conditional dates
     { "%<[1M?AAA&BBB>",  "<COND:<DATE:(ED_EMAIL,ED_EMA_DATE_STRF_LOCAL):1:M>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
@@ -150,6 +161,8 @@ void test_expando_parser(void)
       "%<baaa&bbb>",
       "%<b?aaa",
       "%<b?aaa&bbb",
+      "%{name",    // missing closing '}'
+      "%{bad}",    // unknown long name (not a short-name enclosure expando)
       // clang-format off
     };
 

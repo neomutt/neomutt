@@ -398,16 +398,22 @@ struct ExpandoNode *node_expando_parse_name(const char *str,
     {
       const char *end = str + strspn(str, "abcdefghijklmnopqrstuvwxyz0123456789-");
 
-      err->position = str;
-      if (*end != '}')
+      // Only report an error if the content looks like a long name (i.e. starts
+      // with at least one valid character).  If it doesn't, the '{' is probably
+      // a short-name expando like %{%b %d} — let node_expando_parse() handle it.
+      if (end != str)
       {
-        snprintf(err->message, sizeof(err->message), _("Expando is missing closing '}'"));
-      }
-      else
-      {
-        // L10N: e.g. "Unknown expando: %{bad}"
-        snprintf(err->message, sizeof(err->message),
-                 _("Unknown expando: %%{%.*s}"), (int) (end - str), str);
+        err->position = str;
+        if (*end != '}')
+        {
+          snprintf(err->message, sizeof(err->message), _("Expando is missing closing '}'"));
+        }
+        else
+        {
+          // L10N: e.g. "Unknown expando: %{bad}"
+          snprintf(err->message, sizeof(err->message),
+                   _("Unknown expando: %%{%.*s}"), (int) (end - str), str);
+        }
       }
     }
     goto fail;
