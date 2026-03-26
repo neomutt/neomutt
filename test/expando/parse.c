@@ -93,6 +93,18 @@ void test_expando_parser(void)
     { "%<X?AAA&BBB>",    "<COND:<BOOL(ED_EMAIL,ED_EMA_ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
     { "%=30<X?AAA&BBB>", "<COND:<BOOL(ED_EMAIL,ED_EMA_ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>:{30,-1,CENTER,' '}>" },
 
+    // Conditional (long name, old form)
+    { "%?{attachment-count}?AAA&BBB?", "<COND:<BOOL(ED_EMAIL,ED_EMA_ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%?{apple}??",                   "<COND:<BOOL(ED_ALIAS,ED_ALI_ADDRESS)>||>" },
+    { "%?{banana}?AAA?",               "<COND:<BOOL(ED_ALIAS,ED_ALI_COMMENT)>|<TEXT:'AAA'>|>" },
+
+    // Conditional (long name, new form)
+    { "%<{attachment-count}?AAA&BBB>", "<COND:<BOOL(ED_EMAIL,ED_EMA_ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<{apple}?>",                   "<COND:<BOOL(ED_ALIAS,ED_ALI_ADDRESS)>||>" },
+    { "%<{banana}?AAA>",               "<COND:<BOOL(ED_ALIAS,ED_ALI_COMMENT)>|<TEXT:'AAA'>|>" },
+    { "%<{cherry}?&BBB>",              "<COND:<BOOL(ED_ALIAS,ED_ALI_FLAGS)>||<TEXT:'BBB'>>" },
+    { "%=30<{damson}?AAA&BBB>",        "<COND:<BOOL(ED_ALIAS,ED_ALI_NAME)>|<TEXT:'AAA'>|<TEXT:'BBB'>:{30,-1,CENTER,' '}>" },
+
     // Dates
     { "%[%Y-%m-%d]",    "<EXP:'%Y-%m-%d'(ED_EMAIL,ED_EMA_DATE_STRF_LOCAL)>" },
     { "%-5[%Y-%m-%d]",  "<EXP:'%Y-%m-%d'(ED_EMAIL,ED_EMA_DATE_STRF_LOCAL):{5,-1,LEFT,' '}>" },
@@ -163,6 +175,8 @@ void test_expando_parser(void)
       "%<b?aaa&bbb",
       "%{name",    // missing closing '}'
       "%{bad}",    // unknown long name (not a short-name enclosure expando)
+      "%<{unknown}?aaa&bbb>",  // unknown long name in conditional
+      "%<{apple?aaa&bbb>",     // missing closing '}' in conditional
       // clang-format off
     };
 

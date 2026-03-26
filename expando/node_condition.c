@@ -168,9 +168,50 @@ struct ExpandoNode *node_condition_parse(const char *str, NodeTextTermFlags term
 
   //----------------------------------------------------------------------------
   // Parse the condition
-  node_cond = parse_short_name(str, defs, EP_CONDITIONAL, NULL, parsed_until, err);
+  // Try long name first if it looks like %<{NAME}?...>
+  if (str[0] == '{')
+  {
+    node_cond = parse_long_name(str + 1, defs, EP_CONDITIONAL, NULL, parsed_until, err);
+    if (node_cond)
+    {
+      if ((*parsed_until)[0] != '}')
+      {
+        err->position = *parsed_until;
+        snprintf(err->message, sizeof(err->message), _("Expando is missing closing '}'"));
+        goto fail;
+      }
+      (*parsed_until)++; // Skip the '}'
+    }
+    else if (err->position)
+    {
+      goto fail;
+    }
+    else
+    {
+      // Report an error if the content looks like a long name
+      const char *name_start = str + 1;
+      const char *end = name_start + strspn(name_start, "abcdefghijklmnopqrstuvwxyz0123456789-");
+      if (end != name_start)
+      {
+        err->position = name_start;
+        if (*end != '}')
+          snprintf(err->message, sizeof(err->message), _("Expando is missing closing '}'"));
+        else
+          // L10N: e.g. "Unknown expando: %{bad}"
+          snprintf(err->message, sizeof(err->message),
+                   _("Unknown expando: %%{%.*s}"), (int) (end - name_start), name_start);
+        goto fail;
+      }
+      // Doesn't look like a long name, fall through to parse_short_name
+    }
+  }
+
   if (!node_cond)
-    goto fail;
+  {
+    node_cond = parse_short_name(str, defs, EP_CONDITIONAL, NULL, parsed_until, err);
+    if (!node_cond)
+      goto fail;
+  }
 
   if (node_cond->type == ENT_EXPANDO)
   {

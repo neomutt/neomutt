@@ -7741,6 +7741,27 @@ mailboxes $my_mx +mailbox3
           <emphasis>else_string</emphasis> will be expanded.
         </para>
         <para>
+          Named expandos (long-form names enclosed in curly braces) may also be
+          used as the condition. For example, if an expando
+          <literal>%X</literal> has the long name
+          <literal>attachment-count</literal>, then these two conditionals are
+          equivalent:
+        </para>
+
+<screen>
+%&lt;X?%X attachments&gt;
+%&lt;{attachment-count}?%{attachment-count} attachments&gt;
+</screen>
+
+        <para>
+          The if-else form works the same way:
+        </para>
+
+<screen>
+%&lt;{attachment-count}?%{attachment-count} attachments&amp;no attachments&gt;
+</screen>
+
+        <para>
           The conditional sequences can also be nested by using the %&lt; and
           &gt; operators. The %? notation can still be used but requires
           quoting. For example:
@@ -16169,6 +16190,21 @@ macro index &lt;F1&gt; "&lt;enter-command&gt;lua 'sw()'&lt;enter&gt;
           <literal>%&lt;VAR?TRUE&amp;FALSE&gt;</literal> and allows them to be
           nested.
         </para>
+        <para>
+          Named expandos (long-form names in curly braces) are also supported
+          as the condition:
+        </para>
+        <screen>%&lt;{long-name}?TRUE&amp;FALSE&gt;</screen>
+        <para>
+          For example, if <literal>%M</literal> has the long name
+          <literal>message-count</literal>, then these two are equivalent:
+        </para>
+
+<screen>
+%&lt;M?%M Msgs &amp;No Msgs&gt;
+%&lt;{message-count}?%{message-count} Msgs &amp;No Msgs&gt;
+</screen>
+
         <para>
           The <literal>%&lt;...&gt;</literal> notation was used to format the
           current local time. but that's not really very useful since NeoMutt

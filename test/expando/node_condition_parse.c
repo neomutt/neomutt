@@ -43,10 +43,10 @@ void test_expando_node_condition_parse(void)
 
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "a", NULL, ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL, parse_test1 },
-    { "b", NULL, ED_EMAIL,    ED_EMA_INDEX_HOOK,      parse_test1 },
-    { "c", NULL, ED_ENVELOPE, ED_ENV_FROM,            NULL        },
-    { "d", NULL, ED_ENVELOPE, ED_ENV_SENDER,          NULL        },
+    { "a", NULL,    ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL, parse_test1 },
+    { "b", NULL,    ED_EMAIL,    ED_EMA_INDEX_HOOK,      parse_test1 },
+    { "c", "cherry", ED_ENVELOPE, ED_ENV_FROM,            NULL        },
+    { "d", "damson", ED_ENVELOPE, ED_ENV_SENDER,          NULL        },
     { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
@@ -125,5 +125,40 @@ void test_expando_node_condition_parse(void)
     node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
+  }
+
+  // Long-name conditional tests
+  {
+    const char *parsed_until = NULL;
+    struct ExpandoNode *node = NULL;
+    struct ExpandoParseError err = { 0 };
+    const char *str = NULL;
+
+    str = "%<{cherry}?aaa&bbb>"; // Valid long-name conditional
+    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(node != NULL);
+    node_free(&node);
+    memset(&err, 0, sizeof(err));
+
+    str = "%?{damson}?aaa&bbb?"; // Valid old-style long-name conditional
+    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(node != NULL);
+    node_free(&node);
+    memset(&err, 0, sizeof(err));
+
+    str = "%<{unknown}?aaa>"; // Unknown long name
+    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(node == NULL);
+    memset(&err, 0, sizeof(err));
+
+    str = "%<{cherry?aaa>"; // Missing closing '}'
+    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(node == NULL);
+    memset(&err, 0, sizeof(err));
+
+    str = "%<{}?aaa>"; // Empty braces (not a long name)
+    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(node == NULL);
+    memset(&err, 0, sizeof(err));
   }
 }
