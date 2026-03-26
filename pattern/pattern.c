@@ -641,7 +641,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur,
 
   if (buf_is_empty(state->string) || flags & SEARCH_PROMPT)
   {
-    if ((mw_get_field((flags & OP_SEARCH_REVERSE) ? _("Reverse search for: ") : _("Search for: "),
+    if ((mw_get_field(state->reverse ? _("Reverse search for: ") : _("Search for: "),
                       state->string, MUTT_COMP_CLEAR, HC_PATTERN,
                       &CompletePatternOps, NULL) != 0) ||
         buf_is_empty(state->string))
