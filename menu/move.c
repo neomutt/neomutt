@@ -256,6 +256,9 @@ MenuRedrawFlags menu_move_selection(struct Menu *menu, int index)
  */
 MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative)
 {
+  if (menu->max <= menu->page_len)
+    return menu_move_selection(menu, menu->current + relative);
+
   const bool c_menu_move_off = cs_subset_bool(menu->sub, "menu_move_off");
 
   short c_menu_context = cs_subset_number(menu->sub, "menu_context");
