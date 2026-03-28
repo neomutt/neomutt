@@ -165,7 +165,7 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, enum CollapseMode m
   if (!e_cur)
     return;
 
-  int final;
+  int final = -1;
 
   /* Figure out what the current message would be after folding / unfolding,
    * so that we can restore the cursor in a sane way afterwards. */
