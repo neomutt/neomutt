@@ -38,11 +38,29 @@
 #include "store/lib.h"
 
 /**
- * hcache_validator - Validate the "header_cache_backend" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * hcache_validator - Validate the "header_cache" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int hcache_validator(const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-#ifdef USE_HCACHE
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
+  if (!c_header_cache_backend)
+  {
+    buf_printf(err, _("Set option %s before setting %s"), "header_cache_backend", cdef->name);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+
+/**
+ * hcache_backend_validator - Validate the "header_cache_backend" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ */
+static int hcache_backend_validator(const struct ConfigDef *cdef,
+                                    intptr_t value, struct Buffer *err)
+{
   if (value == 0)
     return CSR_SUCCESS;
 
@@ -53,9 +71,6 @@ static int hcache_validator(const struct ConfigDef *cdef, intptr_t value, struct
 
   buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
   return CSR_ERR_INVALID;
-#else
-  return CSR_SUCCESS;
-#endif
 }
 
 #if defined(USE_HCACHE_COMPRESSION)
@@ -122,10 +137,10 @@ static int compress_level_validator(const struct ConfigDef *cdef,
  */
 struct ConfigDef HcacheVars[] = {
   // clang-format off
-  { "header_cache", DT_PATH, 0, 0, NULL,
+  { "header_cache", DT_PATH, 0, 0, hcache_validator,
     "(hcache) Directory/file for the header cache database"
   },
-  { "header_cache_backend", DT_STRING, 0, 0, hcache_validator,
+  { "header_cache_backend", DT_STRING, 0, 0, hcache_backend_validator,
     "(hcache) Header cache backend to use"
   },
   { NULL },

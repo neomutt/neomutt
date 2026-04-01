@@ -49,29 +49,29 @@ STORE_BACKEND(tokyocabinet)
  * StoreOps - Backend implementations
  */
 static const struct StoreOps *StoreOps[] = {
-#ifdef HAVE_TC
-  &store_tokyocabinet_ops,
+#ifdef HAVE_LMDB
+  &store_lmdb_ops, // Strongly recommended
 #endif
-#ifdef HAVE_KC
-  &store_kyotocabinet_ops,
-#endif
-#ifdef HAVE_QDBM
-  &store_qdbm_ops,
+#ifdef HAVE_GDBM
+  &store_gdbm_ops, // Good fallback
 #endif
 #ifdef HAVE_ROCKSDB
   &store_rocksdb_ops,
 #endif
-#ifdef HAVE_GDBM
-  &store_gdbm_ops,
-#endif
-#ifdef HAVE_BDB
-  &store_bdb_ops,
-#endif
 #ifdef HAVE_TDB
   &store_tdb_ops,
 #endif
-#ifdef HAVE_LMDB
-  &store_lmdb_ops,
+#ifdef HAVE_TC
+  &store_tokyocabinet_ops, // Deprecated
+#endif
+#ifdef HAVE_KC
+  &store_kyotocabinet_ops, // Deprecated
+#endif
+#ifdef HAVE_QDBM
+  &store_qdbm_ops, // Deprecated
+#endif
+#ifdef HAVE_BDB
+  &store_bdb_ops, // Deprecated
 #endif
   NULL,
 };
@@ -112,9 +112,9 @@ const struct StoreOps *store_get_backend_ops(const char *str)
 
   for (; *store_ops; store_ops++)
     if (mutt_str_equal(str, (*store_ops)->name))
-      break;
+      return *store_ops;
 
-  return *store_ops;
+  return NULL;
 }
 
 /**

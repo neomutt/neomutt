@@ -57,9 +57,7 @@ static bool hcache_config_define_variables(struct NeoMutt *n, struct ConfigSet *
 {
   bool rc = true;
 
-#if defined(USE_HCACHE)
   rc &= cs_register_variables(cs, HcacheVars);
-#endif
 
 #if defined(USE_HCACHE_COMPRESSION)
   rc &= cs_register_variables(cs, HcacheVarsComp);
