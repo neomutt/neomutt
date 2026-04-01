@@ -645,11 +645,8 @@ SLIST_OBJS	= test/slist/slist_add_string.o \
 
 SORT_OBJS	= test/sort/mutt_qsort_r.o
 
-@if HAVE_BDB || HAVE_GDBM || HAVE_LMDB || HAVE_ROCKSDB || HAVE_TDB
+@if HAVE_GDBM || HAVE_LMDB || HAVE_ROCKSDB || HAVE_TDB
 STORE_OBJS	+= test/store/common.o test/store/store.o
-@endif
-@if HAVE_BDB
-STORE_OBJS	+= test/store/bdb.o
 @endif
 @if HAVE_GDBM
 STORE_OBJS	+= test/store/gdbm.o

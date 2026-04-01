@@ -66,7 +66,6 @@ For a list of the currently supported options and a brief help text, run:
 | `--lua`                 | Path | Optional Feature                             |
 | `--notmuch`             | Path | Optional Feature                             |
 |                         |      |                                              |
-| `--bdb`                 | Path | Header cache backend                         |
 | `--gdbm`                | Path | Header cache backend                         |
 | `--lmdb`                | Path | Header cache backend                         |
 |                         |      |                                              |

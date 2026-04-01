@@ -14,7 +14,7 @@ task:
       libgpg-error libidn2 liblz4 libxslt lmdb lua53 lynx notmuch
       pcre2 pkgconf tdb urlview zstd
     CONFIGURE_COMMON:
-      --autocrypt --bdb --disable-idn --disable-inotify --fmemopen --full-doc
+      --autocrypt --disable-idn --disable-inotify --fmemopen --full-doc
       --gdbm --gpgme --gss --homespool --idn2 --lmdb --locales-fix
       --lua --lz4 --notmuch --pcre2 --sasl --tdb
       --with-domain=example.com --with-lock=flock --zlib --zstd

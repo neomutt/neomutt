@@ -13,7 +13,7 @@ jobs:
     container: ghcr.io/neomutt/ubuntu
 
     env:
-      CONFIGURE_OPTIONS: --autocrypt --bdb --full-doc --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb --with-lock=fcntl --zlib --zstd
+      CONFIGURE_OPTIONS: --autocrypt --full-doc --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb --with-lock=fcntl --zlib --zstd
 
     strategy:
       # Limit jobs to one at a time so that ccache really helps later builds

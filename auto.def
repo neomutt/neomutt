@@ -70,9 +70,6 @@ set valid_options {
 # PCRE2
   pcre2=0                   => "Enable PCRE2 regular expressions"
 # Header cache
-  bdb=0                     => "Use BerkeleyDB for the header cache"
-  with-bdb:path             => "Location of BerkeleyDB"
-  with-bdb-version:version  => "Version of BerkeleyDB"
   gdbm=0                    => "Use GNU dbm for the header cache"
   with-gdbm:path            => "Location of GNU dbm"
   lmdb=0                    => "Use LMDB for the header cache"
@@ -167,7 +164,7 @@ if {[llength $notices]} {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    asan autocrypt bdb compile-commands coverage debug-backtrace debug-color
+    asan autocrypt compile-commands coverage debug-backtrace debug-color
     debug-email debug-graphviz debug-keymap debug-logging debug-names
     debug-notify debug-queue debug-window doc everything fmemopen
     fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 inotify
@@ -182,7 +179,7 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gsasl gss homespool idn2 lmdb lua lz4
+    gdbm gnutls gpgme gsasl gss homespool idn2 lmdb lua lz4
     nls notmuch pcre2 rocksdb sasl sqlite ssl tdb zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
@@ -439,7 +436,7 @@ set prefix [opt-val with-sysroot][get-define prefix]
 ###############################################################################
 # Everything
 if {[get-define want-everything]} {
-  foreach opt {bdb gdbm gpgme lmdb lua lz4 notmuch pgp rocksdb
+  foreach opt {gdbm gpgme lmdb lua lz4 notmuch pgp rocksdb
                sasl smime ssl tdb zlib zstd} {
     define want-$opt
     append conf_options "--$opt "
@@ -802,69 +799,6 @@ if {[get-define want-pcre2]} {
   # See https://bugs.exim.org/show_bug.cgi?id=2707 and
   # https://github.com/neomutt/neomutt/issues/2865
   user-error "Found libpcre2-posix: please reconfigure with --pcre2"
-}
-
-###############################################################################
-# Header cache - bdb
-if {[get-define want-bdb]} {
-  proc find_bdb {bdb_prefix maj min path_tail lib_names} {
-    set ver_inc_dir $bdb_prefix/include/$path_tail
-    set ver_lib_dir $bdb_prefix/$::libdir_tail/$path_tail
-    set ver_inc_file $ver_inc_dir/db.h
-
-    # File exists?
-    msg-checking "Checking for BerkeleyDB in $ver_inc_dir..."
-    if {![file exists $ver_inc_file]} {
-      msg-result "no"
-      return 0
-    }
-
-    # Version is coherent?
-    set inc_maj [get-define-value $ver_inc_file DB_VERSION_MAJOR]
-    set inc_min [get-define-value $ver_inc_file DB_VERSION_MINOR]
-    if {$inc_maj eq {}   || $inc_min eq {} ||
-        $inc_maj != $maj || $inc_min != $min} {
-      msg-result "no (expecting $maj.$min, got $inc_maj.$inc_min)"
-      return 0
-    }
-    msg-result "yes"
-
-    # Can link?
-    foreach lib_name $lib_names {
-      cc-with [list -libs -L$ver_lib_dir -cflags -I$ver_inc_dir] {
-        check-inc-and-lib bdb {} db.h db_env_create $lib_name
-      }
-      if {[have-feature bdb]} {
-        define-append CFLAGS  -I$ver_inc_dir
-        define-append LDFLAGS -L$ver_lib_dir
-        define-append LIBS    -l$lib_name
-        define-append HCACHE_BACKENDS "bdb"
-        define USE_HCACHE
-        return 1
-      }
-    }
-    return 0
-  }
-
-  set bdb_versions [opt-val with-bdb-version { 18.1 5.3 6.2 4.8 }] ;# Will be checked in order
-  set bdb_prefix [opt-val with-bdb $prefix]
-
-  foreach ver $bdb_versions {
-    lassign [split $ver .] maj min
-    foreach path_tail [list "" db-$maj-$min db${maj}${min} db$maj.$min db-$maj db$maj] {
-      set lib_names [list db$maj-$maj.$min db$maj-$maj db-$maj.$min db-$maj]
-      if {[find_bdb $bdb_prefix $maj $min $path_tail $lib_names]} {
-        break
-      }
-    }
-    if {[have-feature bdb]} {
-      break
-    }
-  }
-
-  if {![have-feature bdb]} {
-    user-error "Unable to find BerkeleyDB"
-  }
 }
 
 ###############################################################################

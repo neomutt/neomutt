@@ -164,15 +164,3 @@ struct ConfigDef HcacheVarsComp[] = {
   // clang-format on
 };
 #endif
-
-#if defined(HAVE_GDBM) || defined(HAVE_BDB)
-/**
- * HcacheVarsPage - Deprecated Config definitions for the Header Cache
- */
-struct ConfigDef HcacheVarsPage[] = {
-  // clang-format off
-  { "header_cache_pagesize", D_INTERNAL_DEPRECATED|DT_LONG, 0, IP "2020-03-25" },
-  { NULL },
-  // clang-format on
-};
-#endif

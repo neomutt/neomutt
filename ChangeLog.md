@@ -2581,7 +2581,6 @@ Confirm when sending an e-mail with an empty To:
 
 - check that DTDs are installed
 - autosetup improvements
-- option for which version of bdb to use
 - drop test for resizeterm -- it's always present
 
 ### ⚙️ Code
@@ -3038,7 +3037,6 @@ Confirm when sending an e-mail with an empty To:
 - drop configure option `--enable-nfs-fix`
 - drop configure option `--disable-warnings`
 - Completely remove dotlock
-- More sophisticated check for BDB version + support for DB6 (non default)
 
 ### ⚙️ Tidy
 
@@ -3606,7 +3604,6 @@ Confirm when sending an e-mail with an empty To:
 - Fix imap server-side search to call `uid2msgno()` only once
 - Add a pattern_cache_t to speed up a few repeated matches
 - Canonicalize line endings for GPGME S/MIME encryption
-- Fix build for bdb
 - Create function to free header cache data
 - Prevent null pointer exception for `h->ai_canonname`
 - Show SHA1 fp in interactive cert check menu
