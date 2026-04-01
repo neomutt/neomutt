@@ -82,8 +82,6 @@ set valid_options {
   rocksdb=0                 => "Use RocksDB for the header cache"
   with-rocksdb:path         => "Location of RocksDB"
   tdb=0                     => "Use TDB for the header cache"
-  tokyocabinet=0            => "Use TokyoCabinet for the header cache"
-  with-tokyocabinet:path    => "Location of TokyoCabinet"
 # sqlite
   sqlite=0                  => "Enable SQLite support"
   with-sqlite:path          => "Location of SQLite"
@@ -179,7 +177,7 @@ if {1} {
     fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 inotify kyotocabinet
     lmdb locales-fix lua lz4 nls notmuch paths-in-cflags pcre2 pgp
     qdbm rocksdb sasl smime sqlite ssl tdb
-    tokyocabinet ubsan zlib zstd
+    ubsan zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -189,8 +187,7 @@ if {1} {
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
     bdb gdbm gnutls gpgme gsasl gss homespool idn2 kyotocabinet lmdb lua lz4
-    nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb tokyocabinet
-    zlib zstd
+    nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -447,7 +444,7 @@ set prefix [opt-val with-sysroot][get-define prefix]
 # Everything
 if {[get-define want-everything]} {
   foreach opt {bdb gdbm gpgme kyotocabinet lmdb lua lz4 notmuch pgp rocksdb
-               qdbm sasl smime ssl tokyocabinet tdb zlib zstd} {
+               qdbm sasl smime ssl tdb zlib zstd} {
     define want-$opt
     append conf_options "--$opt "
   }
@@ -934,15 +931,6 @@ if {[get-define want-tdb]} {
   pkgconf true tdb
   define-feature tdb
   define-append HCACHE_BACKENDS "tdb"
-  define USE_HCACHE
-}
-
-###############################################################################
-# Header Cache - TokyoCabinet
-if {[get-define want-tokyocabinet]} {
-  pkgconf true tokyocabinet
-  define-feature tc
-  define-append HCACHE_BACKENDS "tokyocabinet"
   define USE_HCACHE
 }
 

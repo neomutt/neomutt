@@ -48,7 +48,6 @@
  * | store/lmdb.c    | @subpage store_lmdb    | https://symas.com/lmdb/                   |
  * | store/qdbm.c    | @subpage store_qdbm    | https://dbmx.net/qdbm/                    |
  * | store/rocksdb.c | @subpage store_rocksdb | https://rocksdb.org/                      |
- * | store/tc.c      | @subpage store_tc      | https://dbmx.net/tokyocabinet/            |
  * | store/tdb.c     | @subpage store_tdb     | https://tdb.samba.org/                    |
  */
 

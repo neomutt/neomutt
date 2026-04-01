@@ -54,7 +54,6 @@ awk
 imapd
 fBplease
 startup
-tokyocabinet
 fCSTARTTLS
 charset
 backends

@@ -266,7 +266,7 @@ examples:
   - description: Quick coverage with minimal features (default)
     run: "copilot run code-coverage -- --jobs=0"
   - description: Full coverage with all features (matches CI)
-    run: "copilot run code-coverage -- --configure_opts='--full-doc --autocrypt --bdb --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd' --jobs=0"
+    run: "copilot run code-coverage -- --configure_opts='--full-doc --autocrypt --bdb --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --with-lock=fcntl --zlib --zstd' --jobs=0"
 success_criteria:
   - "NeoMutt builds successfully with --coverage flag"
   - "Tests run and generate coverage data"

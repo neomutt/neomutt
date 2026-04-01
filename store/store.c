@@ -42,7 +42,6 @@ STORE_BACKEND(lmdb)
 STORE_BACKEND(qdbm)
 STORE_BACKEND(rocksdb)
 STORE_BACKEND(tdb)
-STORE_BACKEND(tokyocabinet)
 #undef STORE_BACKEND
 
 /**
@@ -60,9 +59,6 @@ static const struct StoreOps *StoreOps[] = {
 #endif
 #ifdef HAVE_TDB
   &store_tdb_ops,
-#endif
-#ifdef HAVE_TC
-  &store_tokyocabinet_ops, // Deprecated
 #endif
 #ifdef HAVE_KC
   &store_kyotocabinet_ops, // Deprecated

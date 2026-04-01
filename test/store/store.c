@@ -39,14 +39,14 @@ void test_store_store(void)
   store_ops = store_get_backend_ops(NULL);
   TEST_CHECK(store_ops != NULL);
 
-#ifdef HAVE_TC
-  store_ops = store_get_backend_ops("tokyocabinet");
+#ifdef HAVE_LMDB
+  store_ops = store_get_backend_ops("lmdb");
   TEST_CHECK(store_ops != NULL);
 #endif
 
   TEST_CHECK(store_is_valid_backend(NULL) == true);
 
-#ifdef HAVE_TC
-  TEST_CHECK(store_is_valid_backend("tokyocabinet") == true);
+#ifdef HAVE_LMDB
+  TEST_CHECK(store_is_valid_backend("lmdb") == true);
 #endif
 }

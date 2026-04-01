@@ -811,7 +811,7 @@ NEOMUTT_TEST_LIST
 #ifdef USE_ZSTD
   NEOMUTT_TEST_ITEM(test_compress_zstd)
 #endif
-#if defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) || defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) || defined(HAVE_TC) || defined(HAVE_TDB)
+#if defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) || defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) || defined(HAVE_TDB)
   NEOMUTT_TEST_ITEM(test_store_store)
 #endif
 #ifdef HAVE_BDB
@@ -834,9 +834,6 @@ NEOMUTT_TEST_LIST
 #endif
 #ifdef HAVE_TDB
   NEOMUTT_TEST_ITEM(test_store_tdb)
-#endif
-#ifdef HAVE_TC
-  NEOMUTT_TEST_ITEM(test_store_tc)
 #endif
 #undef NEOMUTT_TEST_ITEM
 
@@ -863,7 +860,7 @@ NEOMUTT_TEST_ITEM(test_compress_common)
 #ifdef USE_ZSTD
   NEOMUTT_TEST_ITEM(test_compress_zstd)
 #endif
-#if defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) || defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) || defined(HAVE_TC) || defined(HAVE_TDB)
+#if defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) || defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) || defined(HAVE_TDB)
   NEOMUTT_TEST_ITEM(test_store_store)
 #endif
 #ifdef HAVE_BDB
@@ -886,9 +883,6 @@ NEOMUTT_TEST_ITEM(test_compress_common)
 #endif
 #ifdef HAVE_TDB
   NEOMUTT_TEST_ITEM(test_store_tdb)
-#endif
-#ifdef HAVE_TC
-  NEOMUTT_TEST_ITEM(test_store_tc)
 #endif
 #undef NEOMUTT_TEST_ITEM
   { 0 }

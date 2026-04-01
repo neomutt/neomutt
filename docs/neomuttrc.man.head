@@ -491,7 +491,7 @@ _
 \f[CR]pgp-menu\fP, \f[CR]group-related\fP	Function
 \f[CR]index-format-hook\fP, \f[CR]tag-transforms\fP	Command
 \f[CR]my_var\fP	My variable
-\f[CR]lmdb\fP, \f[CR]tokyocabinet\fP	Store (database)
+\f[CR]lmdb\fP, Store (database)
 \f[CR]HOME\fP, \f[CR]COLUMNS\fP	Environment variable
 .TE
 .

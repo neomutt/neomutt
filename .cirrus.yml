@@ -12,12 +12,12 @@ task:
     PKG_COMMON:
       cyrus-sasl db5 docbook-xsl gdbm gettext-tools git gpgme iconv jimtcl
       kyotocabinet libgpg-error libidn2 liblz4 libxslt lmdb lua53 lynx notmuch
-      pcre2 pkgconf qdbm tdb tokyocabinet urlview zstd
+      pcre2 pkgconf qdbm tdb urlview zstd
     CONFIGURE_COMMON:
       --autocrypt --bdb --disable-idn --disable-inotify --fmemopen --full-doc
       --gdbm --gpgme --gss --homespool --idn2 --kyotocabinet --lmdb --locales-fix
       --lua --lz4 --notmuch --pcre2 --qdbm --sasl --tdb
-      --tokyocabinet --with-domain=example.com --with-lock=flock --zlib --zstd
+      --with-domain=example.com --with-lock=flock --zlib --zstd
   matrix:
     - name: FreeBSD / Test
       env:
