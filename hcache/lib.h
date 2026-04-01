@@ -108,10 +108,15 @@ struct HCacheEntry
  *
  * Prototype for function to compose hcache file names
  *
- * @param path    Path of message
- * @param dest    Buffer for filename
+ * @param store_ops Backend store
+ * @param path      Path of message
+ * @param dest      Buffer for filename
+ *
+ * @pre store_ops is not NULL
+ * @pre path      is not NULL
+ * @pre dest      is not NULL
  */
-typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
+typedef void (*hcache_namer_t)(const struct StoreOps *store_ops, const char *path, struct Buffer *dest);
 
 /**
  * hcache_open - Open the connection to the header cache

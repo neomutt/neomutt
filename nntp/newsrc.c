@@ -684,9 +684,10 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
 /**
  * nntp_hcache_namer - Compose hcache file names - Implements ::hcache_namer_t - @ingroup hcache_namer_api
  */
-static void nntp_hcache_namer(const char *path, struct Buffer *dest)
+static void nntp_hcache_namer(const struct StoreOps *store_ops,
+                              const char *path, struct Buffer *dest)
 {
-  buf_printf(dest, "%s.hcache", path);
+  buf_printf(dest, "%s.%s.hcache", path, store_ops->name);
 
   /* Strip out any directories in the path */
   char *first = strchr(buf_string(dest), '/');
@@ -810,13 +811,18 @@ void nntp_delete_group_cache(struct NntpMboxData *mdata)
     return;
 
 #ifdef USE_HCACHE
-  struct Buffer *file = buf_pool_get();
-  nntp_hcache_namer(mdata->group, file);
-  cache_expand(file->data, file->dsize, &mdata->adata->conn->account, buf_string(file));
-  unlink(buf_string(file));
-  mdata->last_cached = 0;
-  mutt_debug(LL_DEBUG2, "%s\n", buf_string(file));
-  buf_pool_release(&file);
+  const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
+  const struct StoreOps *store_ops = store_get_backend_ops(c_header_cache_backend);
+  if (store_ops)
+  {
+    struct Buffer *file = buf_pool_get();
+    nntp_hcache_namer(store_ops, mdata->group, file);
+    cache_expand(file->data, file->dsize, &mdata->adata->conn->account, buf_string(file));
+    unlink(buf_string(file));
+    mdata->last_cached = 0;
+    mutt_debug(LL_DEBUG2, "%s\n", buf_string(file));
+    buf_pool_release(&file);
+  }
 #endif
 
   if (!mdata->bcache)

@@ -379,7 +379,7 @@ static void hcache_per_folder(struct HeaderCache *hc, struct Buffer *hcpath,
   struct Buffer *hcfile = buf_pool_get();
   if (namer)
   {
-    namer(hc->folder, hcfile);
+    namer(hc->store_ops, hc->folder, hcfile);
     mutt_encode_path(hcfile, buf_string(hcfile));
     buf_concat_path(hcpath, path, buf_string(hcfile));
   }

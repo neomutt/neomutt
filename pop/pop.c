@@ -290,9 +290,10 @@ static int pop_bcache_delete(const char *id, struct BodyCache *bcache, void *dat
 /**
  * pop_hcache_namer - Create a header cache filename for a POP mailbox - Implements ::hcache_namer_t - @ingroup hcache_namer_api
  */
-static void pop_hcache_namer(const char *path, struct Buffer *dest)
+static void pop_hcache_namer(const struct StoreOps *store_ops, const char *path,
+                             struct Buffer *dest)
 {
-  buf_printf(dest, "%s." HC_FEXT, path);
+  buf_printf(dest, "%s.%s." HC_FEXT, path, store_ops->name);
 }
 
 /**
