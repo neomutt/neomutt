@@ -37,7 +37,6 @@
 #define STORE_BACKEND(name) extern const struct StoreOps store_##name##_ops;
 STORE_BACKEND(bdb)
 STORE_BACKEND(gdbm)
-STORE_BACKEND(kyotocabinet)
 STORE_BACKEND(lmdb)
 STORE_BACKEND(qdbm)
 STORE_BACKEND(rocksdb)
@@ -59,9 +58,6 @@ static const struct StoreOps *StoreOps[] = {
 #endif
 #ifdef HAVE_TDB
   &store_tdb_ops,
-#endif
-#ifdef HAVE_KC
-  &store_kyotocabinet_ops, // Deprecated
 #endif
 #ifdef HAVE_QDBM
   &store_qdbm_ops, // Deprecated

@@ -165,7 +165,7 @@ struct ConfigDef HcacheVarsComp[] = {
 };
 #endif
 
-#if defined(HAVE_QDBM) || defined(HAVE_KC)
+#if defined(HAVE_QDBM)
 /**
  * HcacheVarsComp2 - Deprecated Config definitions for the Header Cache Compression
  */

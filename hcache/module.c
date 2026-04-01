@@ -63,7 +63,7 @@ static bool hcache_config_define_variables(struct NeoMutt *n, struct ConfigSet *
   rc &= cs_register_variables(cs, HcacheVarsComp);
 #endif
 
-#if defined(HAVE_QDBM) && defined(HAVE_KC)
+#if defined(HAVE_QDBM)
   rc &= cs_register_variables(cs, HcacheVarsComp2);
 #endif
 

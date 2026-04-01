@@ -75,7 +75,6 @@ set valid_options {
   with-bdb-version:version  => "Version of BerkeleyDB"
   gdbm=0                    => "Use GNU dbm for the header cache"
   with-gdbm:path            => "Location of GNU dbm"
-  kyotocabinet=0            => "Use KyotoCabinet for the header cache"
   lmdb=0                    => "Use LMDB for the header cache"
   with-lmdb:path            => "Location of LMDB"
   qdbm=0                    => "Use QDBM for the header cache"
@@ -131,7 +130,6 @@ set deprecated_options  {
   with-gsasl:
   with-idn:=
   with-idn2:
-  with-kyotocabinet:
   with-lua:
   with-lz4:
   with-mixmaster:
@@ -174,7 +172,7 @@ if {1} {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color
     debug-email debug-graphviz debug-keymap debug-logging debug-names
     debug-notify debug-queue debug-window doc everything fmemopen
-    fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 inotify kyotocabinet
+    fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 inotify
     lmdb locales-fix lua lz4 nls notmuch paths-in-cflags pcre2 pgp
     qdbm rocksdb sasl smime sqlite ssl tdb
     ubsan zlib zstd
@@ -186,7 +184,7 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gsasl gss homespool idn2 kyotocabinet lmdb lua lz4
+    bdb gdbm gnutls gpgme gsasl gss homespool idn2 lmdb lua lz4
     nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
@@ -443,7 +441,7 @@ set prefix [opt-val with-sysroot][get-define prefix]
 ###############################################################################
 # Everything
 if {[get-define want-everything]} {
-  foreach opt {bdb gdbm gpgme kyotocabinet lmdb lua lz4 notmuch pgp rocksdb
+  foreach opt {bdb gdbm gpgme lmdb lua lz4 notmuch pgp rocksdb
                qdbm sasl smime ssl tdb zlib zstd} {
     define want-$opt
     append conf_options "--$opt "
@@ -902,15 +900,6 @@ if {[get-define want-lmdb]} {
     user-error "Unable to find LMDB"
   }
   define-append HCACHE_BACKENDS "lmdb"
-  define USE_HCACHE
-}
-
-###############################################################################
-# Header cache - KyotoCabinet
-if {[get-define want-kyotocabinet]} {
-  pkgconf true kyotocabinet
-  define-feature kc
-  define-append HCACHE_BACKENDS "kyotocabinet"
   define USE_HCACHE
 }
 

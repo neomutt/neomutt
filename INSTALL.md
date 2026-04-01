@@ -68,7 +68,6 @@ For a list of the currently supported options and a brief help text, run:
 |                         |      |                                              |
 | `--bdb`                 | Path | Header cache backend                         |
 | `--gdbm`                | Path | Header cache backend                         |
-| `--kyotocabinet`        | Path | Header cache backend                         |
 | `--lmdb`                | Path | Header cache backend                         |
 | `--qdbm`                | Path | Header cache backend                         |
 |                         |      |                                              |

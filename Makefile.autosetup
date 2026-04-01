@@ -926,9 +926,6 @@ LIBSTOREOBJS+=	store/bdb.o
 @if HAVE_GDBM
 LIBSTOREOBJS+=	store/gdbm.o
 @endif
-@if HAVE_KC
-LIBSTOREOBJS+=	store/kc.o
-@endif
 @if HAVE_LMDB
 LIBSTOREOBJS+=	store/lmdb.o
 @endif
@@ -941,7 +938,7 @@ LIBSTOREOBJS+=	store/rocksdb.o
 @if HAVE_TDB
 LIBSTOREOBJS+=	store/tdb.o
 @endif
-@if HAVE_BDB || HAVE_GDBM || HAVE_KC || HAVE_LMDB || HAVE_QDBM || HAVE_ROCKSDB || HAVE_TDB
+@if HAVE_BDB || HAVE_GDBM || HAVE_LMDB || HAVE_QDBM || HAVE_ROCKSDB || HAVE_TDB
 LIBSTORE=	libstore.a
 LIBSTOREOBJS+=	store/store.o store/module.o
 CLEANFILES+=	$(LIBSTORE) $(LIBSTOREOBJS)

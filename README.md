@@ -40,7 +40,6 @@ sorted through them, fixed them up, and documented them.
 | Ifdef                    | Conditional config options
 | Index Color              | Custom rules for theming the email index
 | Initials Expando         | Expando for author's initials
-| Kyoto Cabinet            | Kyoto Cabinet backend for the header cache
 | Limit Current Thread     | Focus on one Email Thread
 | LMDB                     | LMDB backend for the header cache
 | Multiple FCC             | Save multiple copies of outgoing mail
