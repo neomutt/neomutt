@@ -54,7 +54,7 @@
 #include "serialize.h"
 
 #if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_LMDB) ||         \
-      defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) || defined(HAVE_TDB))
+      defined(HAVE_ROCKSDB) || defined(HAVE_TDB))
 #error "No hcache backend defined"
 #endif
 

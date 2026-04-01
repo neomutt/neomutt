@@ -22,7 +22,7 @@ jobs:
           - name: Minimal
             options: --disable-nls --disable-pgp --disable-smime --ssl --gsasl --with-lock=flock
           - name: Everything
-            options: --autocrypt --bdb --full-doc --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --sasl --tdb --with-lock=fcntl --zlib --zstd
+            options: --autocrypt --bdb --full-doc --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --sasl --tdb --with-lock=fcntl --zlib --zstd
 
     name: Fedora ${{ matrix.distro.version }} - ${{ matrix.config.name }}
     runs-on: ubuntu-latest

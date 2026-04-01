@@ -218,7 +218,6 @@ NFS
 makedoc
 CApath
 moe
-qdbm
 stdin
 fCmessage
 preauthenticated

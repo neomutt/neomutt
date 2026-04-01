@@ -165,18 +165,6 @@ struct ConfigDef HcacheVarsComp[] = {
 };
 #endif
 
-#if defined(HAVE_QDBM)
-/**
- * HcacheVarsComp2 - Deprecated Config definitions for the Header Cache Compression
- */
-struct ConfigDef HcacheVarsComp2[] = {
-  // clang-format off
-  { "header_cache_compress", D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2020-03-25" },
-  { NULL },
-  // clang-format on
-};
-#endif
-
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
 /**
  * HcacheVarsPage - Deprecated Config definitions for the Header Cache

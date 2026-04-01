@@ -148,7 +148,7 @@ make neomutt
 **Full Build (all features enabled):**
 ```bash
 ./configure --full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss \
-  --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb \
+  --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb \
   --testing --with-lock=fcntl --zlib --zstd
 make neomutt
 ```
@@ -333,7 +333,7 @@ The following libraries are candidates for future fuzz testing:
 - **Testing**: `--testing`
 - **Fuzzing**: `--fuzzing` (requires clang compiler)
 - **Authentication**: `--sasl`, `--gss`, `--gsasl`
-- **Header Cache**: `--lmdb`, `--gdbm`, `--bdb`, `--qdbm`, `--rocksdb`, `--tdb`
+- **Header Cache**: `--lmdb`, `--gdbm`, `--bdb`, `--rocksdb`, `--tdb`
 - **Compression**: `--lz4`, `--zlib`, `--zstd`
 - **Documentation**: `--full-doc` (build complete documentation set)
 

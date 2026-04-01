@@ -45,7 +45,6 @@
  * | store/bdb.c     | @subpage store_bdb     | https://en.wikipedia.org/wiki/Berkeley_DB |
  * | store/gdbm.c    | @subpage store_gdbm    | https://www.gnu.org.ua/software/gdbm/     |
  * | store/lmdb.c    | @subpage store_lmdb    | https://symas.com/lmdb/                   |
- * | store/qdbm.c    | @subpage store_qdbm    | https://dbmx.net/qdbm/                    |
  * | store/rocksdb.c | @subpage store_rocksdb | https://rocksdb.org/                      |
  * | store/tdb.c     | @subpage store_tdb     | https://tdb.samba.org/                    |
  */

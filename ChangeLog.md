@@ -1842,7 +1842,6 @@ Confirm when sending an e-mail with an empty To:
 - Check size of long using `LONG_MAX` instead of `__WORDSIZE`
 - Allow ./configure to not record cflags
 - fix out-of-tree build
-- Avoid locating gdbm symbols in qdbm library
 
 ### ⚙️ Code
 
@@ -3779,7 +3778,6 @@ Confirm when sending an e-mail with an empty To:
 
 - Index in pager crash
 - Tag with multiple labels
-- Make sure gdbm's symbols are not resolved in QDBM's compatibility layer
 - Fix crash when doing collapse_all on an empty folder
 - Fix: crash when browsing empty dir
 - Initialize imap_authenticate's return value to something meaningful

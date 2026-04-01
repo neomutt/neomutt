@@ -77,7 +77,6 @@ set valid_options {
   with-gdbm:path            => "Location of GNU dbm"
   lmdb=0                    => "Use LMDB for the header cache"
   with-lmdb:path            => "Location of LMDB"
-  qdbm=0                    => "Use QDBM for the header cache"
   rocksdb=0                 => "Use RocksDB for the header cache"
   with-rocksdb:path         => "Location of RocksDB"
   tdb=0                     => "Use TDB for the header cache"
@@ -134,7 +133,6 @@ set deprecated_options  {
   with-lz4:
   with-mixmaster:
   with-pcre2:
-  with-qdbm:
   with-slang:
   with-tdb:
   with-ui:
@@ -174,7 +172,7 @@ if {1} {
     debug-notify debug-queue debug-window doc everything fmemopen
     fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 inotify
     lmdb locales-fix lua lz4 nls notmuch paths-in-cflags pcre2 pgp
-    qdbm rocksdb sasl smime sqlite ssl tdb
+    rocksdb sasl smime sqlite ssl tdb
     ubsan zlib zstd
   } {
     define want-$opt [opt-bool $opt]
@@ -185,7 +183,7 @@ if {1} {
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
     bdb gdbm gnutls gpgme gsasl gss homespool idn2 lmdb lua lz4
-    nls notmuch pcre2 qdbm rocksdb sasl sqlite ssl tdb zlib zstd
+    nls notmuch pcre2 rocksdb sasl sqlite ssl tdb zlib zstd
   } {
     if {[opt-val with-$opt] ne {}} {
       define want-$opt 1
@@ -442,7 +440,7 @@ set prefix [opt-val with-sysroot][get-define prefix]
 # Everything
 if {[get-define want-everything]} {
   foreach opt {bdb gdbm gpgme lmdb lua lz4 notmuch pgp rocksdb
-               qdbm sasl smime ssl tdb zlib zstd} {
+               sasl smime ssl tdb zlib zstd} {
     define want-$opt
     append conf_options "--$opt "
   }
@@ -867,16 +865,6 @@ if {[get-define want-bdb]} {
   if {![have-feature bdb]} {
     user-error "Unable to find BerkeleyDB"
   }
-}
-
-###############################################################################
-# Header cache - QDBM
-# Note: qdbm must come before gdbm because they share library symbols.
-if {[get-define want-qdbm]} {
-  pkgconf true qdbm
-  define-feature qdbm
-  define-append HCACHE_BACKENDS "qdbm"
-  define USE_HCACHE
 }
 
 ###############################################################################

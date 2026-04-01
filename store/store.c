@@ -38,7 +38,6 @@
 STORE_BACKEND(bdb)
 STORE_BACKEND(gdbm)
 STORE_BACKEND(lmdb)
-STORE_BACKEND(qdbm)
 STORE_BACKEND(rocksdb)
 STORE_BACKEND(tdb)
 #undef STORE_BACKEND
@@ -58,9 +57,6 @@ static const struct StoreOps *StoreOps[] = {
 #endif
 #ifdef HAVE_TDB
   &store_tdb_ops,
-#endif
-#ifdef HAVE_QDBM
-  &store_qdbm_ops, // Deprecated
 #endif
 #ifdef HAVE_BDB
   &store_bdb_ops, // Deprecated
