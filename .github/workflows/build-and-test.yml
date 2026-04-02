@@ -54,7 +54,7 @@ jobs:
       run: |
         mkdir build-${{ matrix.cfg.name }}
         cd build-${{ matrix.cfg.name }}
-        ../configure --full-doc ${{ matrix.cfg.options }}
+        ../configure ${{ matrix.cfg.options }}
 
     - name: Build NeoMutt
       run: |

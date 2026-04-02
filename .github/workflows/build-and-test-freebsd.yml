@@ -43,7 +43,7 @@ jobs:
           cd test-files
           ./setup.sh
           cd -
-          ./configure --full-doc --autocrypt --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb --with-lock=fcntl --zlib --zstd
+          ./configure --autocrypt --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb --with-lock=fcntl --zlib --zstd
           make -j ${{steps.cpu-cores.outputs.count}} neomutt
           ./neomutt -v
           ./neomutt -h all
