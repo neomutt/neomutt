@@ -45,6 +45,7 @@
 #define CSR_INV_TYPE      (1 << 4) ///< Value is not valid for the type
 #define CSR_INV_VALIDATOR (1 << 5) ///< Value was rejected by the validator
 #define CSV_INV_NOT_IMPL  (1 << 6) ///< Operation not permitted for the type
+#define CSR_INV_WARNING   (1 << 7) ///< Report as a warning, not an error
 
 /// Mask to extract the result code from CSR_* flags
 #define CSR_RESULT_MASK 0x0F

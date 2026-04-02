@@ -73,8 +73,10 @@ static int bool_string_set(void *var, struct ConfigDef *cdef, const char *value,
 
   if (num < 0)
   {
-    buf_printf(err, _("Invalid boolean value: %s"), value);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
+    buf_printf(err, _("Invalid value for %s"), cdef->name);
+    buf_addch(err, '\n');
+    buf_add_printf(err, _("Choose from: %s"), "no, yes");
+    return CSR_ERR_INVALID | CSR_INV_TYPE | CSR_INV_WARNING;
   }
 
   if (var)

@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -69,8 +70,23 @@ static int hcache_backend_validator(const struct ConfigDef *cdef,
   if (store_is_valid_backend(str))
     return CSR_SUCCESS;
 
-  buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
-  return CSR_ERR_INVALID;
+  buf_printf(err, _("Invalid value for %s"), cdef->name);
+  buf_addch(err, '\n');
+  struct Slist *sl = store_backend_list();
+  struct Buffer *list = buf_pool_get();
+  struct ListNode *np = NULL;
+  bool first = true;
+  STAILQ_FOREACH(np, &sl->head, entries)
+  {
+    if (!first)
+      buf_addstr(list, ", ");
+    buf_addstr(list, np->data);
+    first = false;
+  }
+  buf_add_printf(err, _("Choose from: %s"), buf_string(list));
+  buf_pool_release(&list);
+  slist_free(&sl);
+  return CSR_ERR_INVALID | CSR_INV_WARNING;
 }
 
 #if defined(USE_HCACHE_COMPRESSION)
@@ -89,8 +105,23 @@ static int compress_method_validator(const struct ConfigDef *cdef,
   if (compress_get_ops(str))
     return CSR_SUCCESS;
 
-  buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
-  return CSR_ERR_INVALID;
+  buf_printf(err, _("Invalid value for %s"), cdef->name);
+  buf_addch(err, '\n');
+  struct Slist *sl = compress_list();
+  struct Buffer *list = buf_pool_get();
+  struct ListNode *np = NULL;
+  bool first = true;
+  STAILQ_FOREACH(np, &sl->head, entries)
+  {
+    if (!first)
+      buf_addstr(list, ", ");
+    buf_addstr(list, np->data);
+    first = false;
+  }
+  buf_add_printf(err, _("Choose from: %s"), buf_string(list));
+  buf_pool_release(&list);
+  slist_free(&sl);
+  return CSR_ERR_INVALID | CSR_INV_WARNING;
 #else
   return CSR_SUCCESS;
 #endif

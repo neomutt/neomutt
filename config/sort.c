@@ -87,8 +87,37 @@ static int sort_string_set(void *var, struct ConfigDef *cdef, const char *value,
 
   if (id < 0)
   {
-    buf_printf(err, _("Invalid sort name: %s"), value);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
+    buf_printf(err, _("Invalid value for %s"), cdef->name);
+    const struct Mapping *map = (const struct Mapping *) cdef->data;
+    if (map)
+    {
+      buf_addch(err, '\n');
+      struct Buffer *list = buf_pool_get();
+      int count = 0;
+      for (int i = 0; map[i].name; i++)
+      {
+        // Skip compatibility aliases (duplicate values)
+        bool dominated = false;
+        for (int j = 0; j < i; j++)
+        {
+          if (map[j].value == map[i].value)
+          {
+            dominated = true;
+            break;
+          }
+        }
+        if (dominated)
+          continue;
+
+        if (count > 0)
+          buf_addstr(list, ", ");
+        buf_addstr(list, map[i].name);
+        count++;
+      }
+      buf_add_printf(err, _("Choose from: %s"), buf_string(list));
+      buf_pool_release(&list);
+    }
+    return CSR_ERR_INVALID | CSR_INV_TYPE | CSR_INV_WARNING;
   }
 
   id |= flags;

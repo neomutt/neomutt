@@ -140,7 +140,11 @@ enum CommandResult command_set_set(struct Buffer *name, struct Buffer *value,
     rc = cs_subset_he_string_set(NeoMutt->sub, he, value->data, err);
   }
   if (CSR_RESULT(rc) != CSR_SUCCESS)
-    return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
+  {
+    if (rc & CSR_INV_WARNING)
+      return MUTT_CMD_WARNING;
+    return MUTT_CMD_ERROR;
+  }
 
   return MUTT_CMD_SUCCESS;
 }

@@ -55,8 +55,18 @@ static int enum_string_set(void *var, struct ConfigDef *cdef, const char *value,
   int num = mutt_map_get_value(value, ed->lookup);
   if (num < 0)
   {
-    buf_printf(err, _("Invalid enum value: %s"), value);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
+    buf_printf(err, _("Invalid value for %s"), cdef->name);
+    buf_addch(err, '\n');
+    struct Buffer *list = buf_pool_get();
+    for (int i = 0; i < ed->count; i++)
+    {
+      if (i > 0)
+        buf_addstr(list, ", ");
+      buf_addstr(list, ed->lookup[i].name);
+    }
+    buf_add_printf(err, _("Choose from: %s"), buf_string(list));
+    buf_pool_release(&list);
+    return CSR_ERR_INVALID | CSR_INV_TYPE | CSR_INV_WARNING;
   }
 
   if (var)

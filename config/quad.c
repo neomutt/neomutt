@@ -77,8 +77,18 @@ static int quad_string_set(void *var, struct ConfigDef *cdef, const char *value,
 
   if (num < 0)
   {
-    buf_printf(err, _("Invalid quad value: %s"), value);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
+    buf_printf(err, _("Invalid value for %s"), cdef->name);
+    buf_addch(err, '\n');
+    struct Buffer *list = buf_pool_get();
+    for (size_t i = 0; QuadValues[i]; i++)
+    {
+      if (i > 0)
+        buf_addstr(list, ", ");
+      buf_addstr(list, QuadValues[i]);
+    }
+    buf_add_printf(err, _("Choose from: %s"), buf_string(list));
+    buf_pool_release(&list);
+    return CSR_ERR_INVALID | CSR_INV_TYPE | CSR_INV_WARNING;
   }
 
   if (var)
