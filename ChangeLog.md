@@ -1842,7 +1842,6 @@ Confirm when sending an e-mail with an empty To:
 - Check size of long using `LONG_MAX` instead of `__WORDSIZE`
 - Allow ./configure to not record cflags
 - fix out-of-tree build
-- Avoid locating gdbm symbols in qdbm library
 
 ### ⚙️ Code
 
@@ -2582,7 +2581,6 @@ Confirm when sending an e-mail with an empty To:
 
 - check that DTDs are installed
 - autosetup improvements
-- option for which version of bdb to use
 - drop test for resizeterm -- it's always present
 
 ### ⚙️ Code
@@ -3039,7 +3037,6 @@ Confirm when sending an e-mail with an empty To:
 - drop configure option `--enable-nfs-fix`
 - drop configure option `--disable-warnings`
 - Completely remove dotlock
-- More sophisticated check for BDB version + support for DB6 (non default)
 
 ### ⚙️ Tidy
 
@@ -3522,7 +3519,6 @@ Confirm when sending an e-mail with an empty To:
 - Fixes missing failure return of notmuch msg open (#401)
 - Fix latest Coverity issues (#387)
 - Advance by the correct number of position even for unknown characters (#368)
-- Release KyotoCabinet data with `kcfree()` (#384)
 - 22 resource leaks
 
 ### 🏁 Translations
@@ -3608,9 +3604,7 @@ Confirm when sending an e-mail with an empty To:
 - Fix imap server-side search to call `uid2msgno()` only once
 - Add a pattern_cache_t to speed up a few repeated matches
 - Canonicalize line endings for GPGME S/MIME encryption
-- Fix build for bdb
 - Create function to free header cache data
-- Add Kyoto Cabinet support to the header cache
 - Prevent null pointer exception for `h->ai_canonname`
 - Show SHA1 fp in interactive cert check menu
 - Fix potential cert memory leak in `check_certificate_by_digest()`
@@ -3781,7 +3775,6 @@ Confirm when sending an e-mail with an empty To:
 
 - Index in pager crash
 - Tag with multiple labels
-- Make sure gdbm's symbols are not resolved in QDBM's compatibility layer
 - Fix crash when doing collapse_all on an empty folder
 - Fix: crash when browsing empty dir
 - Initialize imap_authenticate's return value to something meaningful
@@ -3961,7 +3954,6 @@ Confirm when sending an e-mail with an empty To:
 
 ### 🎁 Features
 
-- Kyoto Cabinet header cache
 - Compose to Sender
 - Forgotten Attachment uses a regex
 - Optimize LMDB's hcache backend
@@ -3977,7 +3969,6 @@ Confirm when sending an e-mail with an empty To:
 ### 📚 Docs
 
 - Add badges to README.neomutt
-- Document the Kyoto cabinet hcache backend
 - Fix the layout of the syntax file
 - Make the license clear to github
 - Fix the alignment in a 'nested-if' example
@@ -3988,7 +3979,6 @@ Confirm when sending an e-mail with an empty To:
 
 ### 🏗 Build
 
-- Travis: install the kyoto-cabinet dev files
 - Build source before docs
 - Build fix for strndup / malloc
 - Change gcc build options to prevent crashes

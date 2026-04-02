@@ -53,9 +53,7 @@
 #include "muttlib.h"
 #include "serialize.h"
 
-#if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \
-      defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_ROCKSDB) ||     \
-      defined(HAVE_TC) || defined(HAVE_TDB))
+#if !(defined(HAVE_GDBM) || defined(HAVE_LMDB) || defined(HAVE_ROCKSDB) || defined(HAVE_TDB))
 #error "No hcache backend defined"
 #endif
 
@@ -381,7 +379,7 @@ static void hcache_per_folder(struct HeaderCache *hc, struct Buffer *hcpath,
   struct Buffer *hcfile = buf_pool_get();
   if (namer)
   {
-    namer(hc->folder, hcfile);
+    namer(hc->store_ops, hc->folder, hcfile);
     mutt_encode_path(hcfile, buf_string(hcfile));
     buf_concat_path(hcpath, path, buf_string(hcfile));
   }

@@ -66,12 +66,8 @@ For a list of the currently supported options and a brief help text, run:
 | `--lua`                 | Path | Optional Feature                             |
 | `--notmuch`             | Path | Optional Feature                             |
 |                         |      |                                              |
-| `--bdb`                 | Path | Header cache backend                         |
 | `--gdbm`                | Path | Header cache backend                         |
-| `--kyotocabinet`        | Path | Header cache backend                         |
 | `--lmdb`                | Path | Header cache backend                         |
-| `--qdbm`                | Path | Header cache backend                         |
-| `--tokyocabinet`        | Path | Header cache backend                         |
 |                         |      |                                              |
 | `--with-lock=CHOICE`    |      | Select 'fcntl' or 'flock'                    |
 | `--locales-fix`         |      | Workaround for broken locales                |
@@ -116,7 +112,7 @@ For example: `make EXTRA_CFLAGS=-g`
 Here are the sample commands to configure and build NeoMutt:
 
 ```
-./configure --gnutls --gpgme --gss --sasl --tokyocabinet
+./configure --gnutls --gpgme --gss --sasl
 make
 ```
 

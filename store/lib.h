@@ -42,13 +42,9 @@
  *
  * | File            | Name                   | Home Page                                 |
  * | :-------------- | :--------------------- | :---------------------------------------- |
- * | store/bdb.c     | @subpage store_bdb     | https://en.wikipedia.org/wiki/Berkeley_DB |
  * | store/gdbm.c    | @subpage store_gdbm    | https://www.gnu.org.ua/software/gdbm/     |
- * | store/kc.c      | @subpage store_kc      | https://dbmx.net/kyotocabinet/            |
  * | store/lmdb.c    | @subpage store_lmdb    | https://symas.com/lmdb/                   |
- * | store/qdbm.c    | @subpage store_qdbm    | https://dbmx.net/qdbm/                    |
  * | store/rocksdb.c | @subpage store_rocksdb | https://rocksdb.org/                      |
- * | store/tc.c      | @subpage store_tc      | https://dbmx.net/tokyocabinet/            |
  * | store/tdb.c     | @subpage store_tdb     | https://tdb.samba.org/                    |
  */
 

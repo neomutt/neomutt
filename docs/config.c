@@ -1718,9 +1718,8 @@
 { "header_cache_backend", DT_STRING, 0 },
 /*
 ** .pp
-** This variable specifies the header cache backend.  If no backend is
-** specified, the first available backend will be used in the following order:
-** tokyocabinet, kyotocabinet, qdbm, rocksdb, gdbm, bdb, tdb, lmdb.
+** This variable specifies the header cache backend.  It can be one of:
+** lmdb (recommended), gdbm, rocksdb, tdb.
 */
 
 { "header_cache_compress_level", DT_NUMBER, 1 },

@@ -38,11 +38,29 @@
 #include "store/lib.h"
 
 /**
- * hcache_validator - Validate the "header_cache_backend" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * hcache_validator - Validate the "header_cache" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int hcache_validator(const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-#ifdef USE_HCACHE
+  if (value == 0)
+    return CSR_SUCCESS;
+
+  const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
+  if (!c_header_cache_backend)
+  {
+    buf_printf(err, _("Set option %s before setting %s"), "header_cache_backend", cdef->name);
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
+
+/**
+ * hcache_backend_validator - Validate the "header_cache_backend" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ */
+static int hcache_backend_validator(const struct ConfigDef *cdef,
+                                    intptr_t value, struct Buffer *err)
+{
   if (value == 0)
     return CSR_SUCCESS;
 
@@ -53,9 +71,6 @@ static int hcache_validator(const struct ConfigDef *cdef, intptr_t value, struct
 
   buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
   return CSR_ERR_INVALID;
-#else
-  return CSR_SUCCESS;
-#endif
 }
 
 #if defined(USE_HCACHE_COMPRESSION)
@@ -122,10 +137,10 @@ static int compress_level_validator(const struct ConfigDef *cdef,
  */
 struct ConfigDef HcacheVars[] = {
   // clang-format off
-  { "header_cache", DT_PATH, 0, 0, NULL,
+  { "header_cache", DT_PATH, 0, 0, hcache_validator,
     "(hcache) Directory/file for the header cache database"
   },
-  { "header_cache_backend", DT_STRING, 0, 0, hcache_validator,
+  { "header_cache_backend", DT_STRING, 0, 0, hcache_backend_validator,
     "(hcache) Header cache backend to use"
   },
   { NULL },
@@ -145,30 +160,6 @@ struct ConfigDef HcacheVarsComp[] = {
   { "header_cache_compress_level", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 1, 0, compress_level_validator,
     "(hcache) Level of compression for method"
   },
-  { NULL },
-  // clang-format on
-};
-#endif
-
-#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-/**
- * HcacheVarsComp2 - Deprecated Config definitions for the Header Cache Compression
- */
-struct ConfigDef HcacheVarsComp2[] = {
-  // clang-format off
-  { "header_cache_compress", D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2020-03-25" },
-  { NULL },
-  // clang-format on
-};
-#endif
-
-#if defined(HAVE_GDBM) || defined(HAVE_BDB)
-/**
- * HcacheVarsPage - Deprecated Config definitions for the Header Cache
- */
-struct ConfigDef HcacheVarsPage[] = {
-  // clang-format off
-  { "header_cache_pagesize", D_INTERNAL_DEPRECATED|DT_LONG, 0, IP "2020-03-25" },
   { NULL },
   // clang-format on
 };

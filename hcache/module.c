@@ -36,8 +36,6 @@
 
 extern struct ConfigDef HcacheVars[];
 extern struct ConfigDef HcacheVarsComp[];
-extern struct ConfigDef HcacheVarsComp2[];
-extern struct ConfigDef HcacheVarsPage[];
 
 /**
  * hcache_init - Initialise a Module - Implements Module::init()
@@ -57,20 +55,10 @@ static bool hcache_config_define_variables(struct NeoMutt *n, struct ConfigSet *
 {
   bool rc = true;
 
-#if defined(USE_HCACHE)
   rc &= cs_register_variables(cs, HcacheVars);
-#endif
 
 #if defined(USE_HCACHE_COMPRESSION)
   rc &= cs_register_variables(cs, HcacheVarsComp);
-#endif
-
-#if defined(HAVE_QDBM) && defined(HAVE_TC) && defined(HAVE_KC)
-  rc &= cs_register_variables(cs, HcacheVarsComp2);
-#endif
-
-#if defined(HAVE_GDBM) && defined(HAVE_BDB)
-  rc &= cs_register_variables(cs, HcacheVarsPage);
 #endif
 
   return rc;

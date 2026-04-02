@@ -112,7 +112,7 @@ commands:
           case "$OPTS" in
             "default") OPTS="--full-doc" ;;
             "minimal") OPTS="--full-doc --disable-nls --disable-pgp --disable-smime --ssl --gsasl" ;;
-            "full") OPTS="--full-doc --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd" ;;
+            "full") OPTS="--full-doc --autocrypt --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb --testing --with-lock=fcntl --zlib --zstd" ;;
           esac
           
           ../configure $OPTS

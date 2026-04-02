@@ -645,32 +645,20 @@ SLIST_OBJS	= test/slist/slist_add_string.o \
 
 SORT_OBJS	= test/sort/mutt_qsort_r.o
 
-@if HAVE_BDB || HAVE_GDBM || HAVE_KC || HAVE_LMDB || HAVE_QDBM || HAVE_ROCKSDB || HAVE_TDB || HAVE_TC
+@if HAVE_GDBM || HAVE_LMDB || HAVE_ROCKSDB || HAVE_TDB
 STORE_OBJS	+= test/store/common.o test/store/store.o
-@endif
-@if HAVE_BDB
-STORE_OBJS	+= test/store/bdb.o
 @endif
 @if HAVE_GDBM
 STORE_OBJS	+= test/store/gdbm.o
 @endif
-@if HAVE_KC
-STORE_OBJS	+= test/store/kc.o
-@endif
 @if HAVE_LMDB
 STORE_OBJS	+= test/store/lmdb.o
-@endif
-@if HAVE_QDBM
-STORE_OBJS	+= test/store/qdbm.o
 @endif
 @if HAVE_ROCKSDB
 STORE_OBJS	+= test/store/rocksdb.o
 @endif
 @if HAVE_TDB
 STORE_OBJS	+= test/store/tdb.o
-@endif
-@if HAVE_TC
-STORE_OBJS	+= test/store/tc.o
 @endif
 
 STRING_OBJS	= test/string/mutt_istrn_cmp.o \

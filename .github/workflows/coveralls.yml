@@ -13,7 +13,7 @@ jobs:
     container: ghcr.io/neomutt/ubuntu
 
     env:
-      OPTIONS: --coverage --autocrypt --bdb --full-doc --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
+      OPTIONS: --coverage --autocrypt --full-doc --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --sasl --tdb --with-lock=fcntl --zlib --zstd
 
     steps:
     - name: Get number of CPU cores
