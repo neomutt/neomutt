@@ -1067,7 +1067,8 @@ size_t mutt_addr_write(struct Buffer *buf, struct Address *addr, bool display)
 
   if (addr->personal)
   {
-    if (strpbrk(buf_string(addr->personal), AddressSpecials))
+    if (strpbrk(buf_string(addr->personal), AddressSpecials) ||
+        mutt_addr_uses_unicode(buf_string(addr->personal)))
     {
       buf_addch(buf, '"');
       for (const char *pc = buf_string(addr->personal); *pc; pc++)
