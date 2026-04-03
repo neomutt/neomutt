@@ -1157,14 +1157,10 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
 
     read += linelen;
 
-    size_t off = linelen - 1;
-    if (line[off] == '\n')
+    if (line[linelen - 1] == '\n')
     {
       /* We did get a full line: remove trailing space */
-      do
-      {
-        line[off] = '\0';
-      } while (off && mutt_str_is_email_wsp(line[--off]));
+      char *p = stpcpy(stprspn(line, MUTT_CTYPE_RFC5322_FWS), "");
 
       /* check to see if the next line is a continuation line */
       int ch = fgetc(fp);
@@ -1184,8 +1180,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       }
 
       ungetc(ch, fp);
-      line[off + 1] = ' '; /* string is still terminated because we removed
-                              at least one whitespace char above */
+      stpcpy(p, " ");
     }
 
     buf_addstr(buf, line);
