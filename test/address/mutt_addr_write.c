@@ -70,4 +70,52 @@ void test_mutt_addr_write(void)
     buf_free(&addr.mailbox);
     buf_pool_release(&buf);
   }
+
+  { /* display-names with specials stay quoted */
+    struct Buffer *buf = buf_pool_get();
+    char per[64] = "Bar X. Foo";
+    char mbx[64] = "bar@example.org";
+
+    struct Address addr = {
+      .personal = buf_new(per),
+      .mailbox = buf_new(mbx),
+      .group = 0,
+      .is_intl = 0,
+      .intl_checked = 0,
+    };
+
+    size_t len = mutt_addr_write(buf, &addr, false);
+
+    const char *expected = "\"Bar X. Foo\" <bar@example.org>";
+
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_CHECK(len == strlen(expected));
+    buf_free(&addr.personal);
+    buf_free(&addr.mailbox);
+    buf_pool_release(&buf);
+  }
+
+  { /* non-ASCII display-names must be quoted too */
+    struct Buffer *buf = buf_pool_get();
+    char per[64] = "F\xc3\xb6\xc3\xb6 B\xc3\xa4r";
+    char mbx[64] = "foo@example.org";
+
+    struct Address addr = {
+      .personal = buf_new(per),
+      .mailbox = buf_new(mbx),
+      .group = 0,
+      .is_intl = 0,
+      .intl_checked = 0,
+    };
+
+    size_t len = mutt_addr_write(buf, &addr, false);
+
+    const char *expected = "\"F\xc3\xb6\xc3\xb6 B\xc3\xa4r\" <foo@example.org>";
+
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+    TEST_CHECK(len == strlen(expected));
+    buf_free(&addr.personal);
+    buf_free(&addr.mailbox);
+    buf_pool_release(&buf);
+  }
 }
