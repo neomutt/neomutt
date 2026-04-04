@@ -163,7 +163,8 @@ struct ConfigDef SendVars[] = {
   { "abort_noattach", DT_QUAD, MUTT_NO, 0, NULL,
     "Abort sending the email if attachments are missing"
   },
-  { "abort_noattach_regex", DT_REGEX, IP "\\<(attach|attached|attachments?)\\>", 0, NULL,
+  // L10N: $abort_noattach_regex default format
+  { "abort_noattach_regex", DT_REGEX|D_L10N_STRING, IP N_("\\<(attach|attached|attachments?)\\>"), 0, NULL,
     "Regex to match text indicating attachments are expected"
   },
   { "abort_nosubject", DT_QUAD, MUTT_ASKYES, 0, NULL,

@@ -48,7 +48,7 @@
 ** .te
 */
 
-{ "abort_noattach_regex", DT_REGEX, "\\<(attach|attached|attachments?)\\>" },
+{ "abort_noattach_regex", DT_REGEX|D_L10N_STRING, N_("\\<(attach|attached|attachments?)\\>") },
 /*
 ** .pp
 ** Specifies a regular expression to match against the body of the message, to
