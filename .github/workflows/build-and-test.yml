@@ -28,6 +28,10 @@ jobs:
           - name: everything
             options: --autocrypt --fmemopen --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb --with-lock=fcntl --zlib --zstd
 
+    env:
+      # Force Node 24 until github-actions-cpu-cores gets a new release
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
     - name: Get number of CPU cores
       uses: SimenB/github-actions-cpu-cores@v2

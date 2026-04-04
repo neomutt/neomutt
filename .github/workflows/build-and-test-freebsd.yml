@@ -18,6 +18,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
+    env:
+      # Force Node 24 until github-actions-cpu-cores gets a new release
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
     - name: Get number of CPU cores
       uses: SimenB/github-actions-cpu-cores@v2

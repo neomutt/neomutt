@@ -18,6 +18,8 @@ jobs:
     env:
       ASAN_OPTIONS: detect_leaks=1:color=never:log_path=asan:print_legend=false:print_summary=false
       CONFIGURE_OPTIONS: --asan --autocrypt --gdbm --gnutls --gpgme --gss --lmdb --lua --lz4 --notmuch --sasl --tdb --with-lock=fcntl --zlib --zstd
+      # Force Node 24 until github-actions-cpu-cores gets a new release
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
     - name: Get number of CPU cores

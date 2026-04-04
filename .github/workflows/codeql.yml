@@ -21,6 +21,8 @@ jobs:
 
     env:
       CONFIGURE_OPTIONS: --gdbm --gnutls --gpgme --homespool --lmdb --lua --notmuch --sasl --with-domain=example.com --with-lock=flock
+      # Force Node 24 until github-actions-cpu-cores gets a new release
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Get number of CPU cores
