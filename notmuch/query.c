@@ -34,7 +34,29 @@
 #include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "query.h"
+
+/**
+ * NmTimebaseMethods - Choices for `$nm_query_window_timebase`
+ */
+static const struct Mapping NmTimebaseMethods[] = {
+  // clang-format off
+  { "hour",  NMTB_HOUR  },
+  { "day",   NMTB_DAY   },
+  { "week",  NMTB_WEEK  },
+  { "month", NMTB_MONTH },
+  { "year",  NMTB_YEAR  },
+  { NULL, 0 },
+  // clang-format on
+};
+
+/// Data for the `$nm_query_window_timebase` enumeration
+const struct EnumDef NmQueryWindowTimebaseDef = {
+  "nm_query_window_timebase",
+  5,
+  (struct Mapping *) &NmTimebaseMethods,
+};
 
 /**
  * nm_parse_type_from_query - Parse a query type out of a query
@@ -138,27 +160,6 @@ enum NmQueryType nm_string_to_query_type_mapper(const char *str)
 }
 
 /**
- * nm_query_window_check_timebase - Checks if a given timebase string is valid
- * @param[in] timebase: string containing a time base
- * @retval true The given time base is valid
- *
- * This function returns whether a given timebase string is valid or not,
- * which is used to validate the user settable configuration setting:
- *
- *     nm_query_window_timebase
- */
-bool nm_query_window_check_timebase(const char *timebase)
-{
-  if ((mutt_str_equal(timebase, "hour")) || (mutt_str_equal(timebase, "day")) ||
-      (mutt_str_equal(timebase, "week")) ||
-      (mutt_str_equal(timebase, "month")) || (mutt_str_equal(timebase, "year")))
-  {
-    return true;
-  }
-  return false;
-}
-
-/**
  * nm_windowed_query_from_query - Windows `buf` with notmuch `date:` search term
  * @param[out] buf    allocated string buffer to receive the modified search query
  * @param[in]  buflen allocated maximum size of the buf string buffer
@@ -166,8 +167,7 @@ bool nm_query_window_check_timebase(const char *timebase)
  * @param[in]  duration Duration of time between beginning and end for notmuch `date` search term
  * @param[in]  cur_pos  Current position of vfolder window
  * @param[in]  cur_search Current notmuch search
- * @param[in]  timebase Timebase for `date:` search term. Must be: `hour`,
- *                      `day`, `week`, `month`, or `year`
+ * @param[in]  timebase Timebase for `date:` search term
  * @param[in]  or_terms Additional notmuch search terms
  * @retval #NM_WINDOW_QUERY_SUCCESS          Prepended `buf` with `date:` search term
  * @retval #NM_WINDOW_QUERY_INVALID_DURATION Duration out-of-range for search term. `buf` *not* prepended with `date:`
@@ -206,7 +206,7 @@ bool nm_query_window_check_timebase(const char *timebase)
 enum NmWindowQueryRc
 nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
                              const short duration, const short cur_pos, const char *cur_search,
-                             const char *timebase, const char *or_terms)
+                             const enum NmTimebase timebase, const char *or_terms)
 {
   // if the duration is a non positive integer, disable the window unless the
   // user explicitly enables windowed queries.
@@ -226,7 +226,8 @@ nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
     beg = end;
   }
 
-  if (!nm_query_window_check_timebase(timebase))
+  const char *timebase_str = mutt_map_get_name(timebase, NmTimebaseMethods);
+  if (!timebase_str)
   {
     return NM_WINDOW_QUERY_INVALID_TIMEBASE;
   }
@@ -236,11 +237,11 @@ nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
   {
     // Open-ended date allows mail from the future.
     // This may occur is the sender's time settings are off.
-    length = snprintf(buf, buflen, "date:%d%s..", beg, timebase);
+    length = snprintf(buf, buflen, "date:%d%s..", beg, timebase_str);
   }
   else
   {
-    length = snprintf(buf, buflen, "date:%d%s..%d%s", beg, timebase, end, timebase);
+    length = snprintf(buf, buflen, "date:%d%s..%d%s", beg, timebase_str, end, timebase_str);
   }
 
   if (!mutt_str_equal(or_terms, ""))

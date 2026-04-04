@@ -17325,7 +17325,7 @@ named-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
               </row>
               <row>
                 <entry><literal>nm_query_window_timebase</literal></entry>
-                <entry>string</entry>
+                <entry>enum</entry>
                 <entry><literal>week</literal></entry>
                 <entry>
                   Time base for windowed notmuch queries.

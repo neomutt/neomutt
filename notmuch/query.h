@@ -26,6 +26,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+struct EnumDef;
+
 /**
  * enum NmQueryType - Notmuch Query Types
  *
@@ -39,6 +41,19 @@ enum NmQueryType
 };
 
 /**
+ * enum NmTimebase - Time periods for notmuch windowed queries
+ */
+enum NmTimebase
+{
+  NMTB_UNKNOWN = 0, ///< Unknown timebase
+  NMTB_HOUR,        ///< Hours
+  NMTB_DAY,         ///< Days
+  NMTB_WEEK,        ///< Weeks
+  NMTB_MONTH,       ///< Months
+  NMTB_YEAR,        ///< Years
+};
+
+/**
  * enum NmWindowQueryRc - Return codes for nm_windowed_query_from_query()
  */
 enum NmWindowQueryRc
@@ -48,6 +63,8 @@ enum NmWindowQueryRc
   NM_WINDOW_QUERY_INVALID_DURATION  ///< Invalid duration
 };
 
+extern const struct EnumDef NmQueryWindowTimebaseDef;
+
 enum NmQueryType nm_parse_type_from_query(char *buf, enum NmQueryType fallback);
 enum NmQueryType nm_string_to_query_type(const char *str);
 enum NmQueryType nm_string_to_query_type_mapper(const char *str);
@@ -55,8 +72,7 @@ const char *nm_query_type_to_string(enum NmQueryType query_type);
 enum NmWindowQueryRc
 nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
                              const short duration, const short current_pos,
-                             const char *current_search, const char *timebase,
+                             const char *current_search, enum NmTimebase timebase,
                              const char *or_terms);
-bool nm_query_window_check_timebase(const char *timebase);
 
 #endif /* MUTT_NOTMUCH_QUERY_H */

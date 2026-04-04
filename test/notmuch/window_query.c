@@ -35,7 +35,7 @@ struct TestCase
   int duration;
   int cur_pos;
   char *curr_search;
-  char *timebase;
+  enum NmTimebase timebase;
   char *or_terms;
   char *expected;
 };
@@ -46,33 +46,33 @@ void test_nm_windowed_query_from_query(void)
   {
     char buf[1024] = "\0";
     enum NmWindowQueryRc rc = nm_windowed_query_from_query(buf, 1024, false, 0, 0,
-                                                           "tag:inbox", "month", "");
+                                                           "tag:inbox", NMTB_MONTH, "");
     TEST_CHECK_NUM_EQ(rc, NM_WINDOW_QUERY_INVALID_DURATION);
   }
 
   // Check invalid timebase
   {
     char buf[1024] = "\0";
-    enum NmWindowQueryRc rc = nm_windowed_query_from_query(buf, 1024, false, 3, 3,
-                                                           "tag:inbox", "months", "");
+    enum NmWindowQueryRc rc = nm_windowed_query_from_query(buf, 1024, false, 3, 3, "tag:inbox",
+                                                           NMTB_UNKNOWN, "");
     TEST_CHECK_NUM_EQ(rc, NM_WINDOW_QUERY_INVALID_TIMEBASE);
   }
 
   static const struct TestCase tests[] = {
-    { false, 1, 0, "tag:inbox", "month", "", "date:1month.. and tag:inbox" },
-    { false, 1, 1, "tag:inbox", "month", "", "date:2month..1month and tag:inbox" },
-    { false, 1, 3, "tag:inbox", "month", "", "date:4month..3month and tag:inbox" },
-    { false, 3, 3, "tag:inbox", "month", "", "date:12month..9month and tag:inbox" },
-    { true, 0, 0, "tag:inbox", "month", "", "date:0month.. and tag:inbox" },
-    { true, 0, 1, "tag:inbox", "month", "", "date:1month..1month and tag:inbox" },
-    { true, 0, 3, "tag:inbox", "month", "", "date:3month..3month and tag:inbox" },
-    { false, 3, 3, "tag:inbox", "month", "tag:unread",
+    { false, 1, 0, "tag:inbox", NMTB_MONTH, "", "date:1month.. and tag:inbox" },
+    { false, 1, 1, "tag:inbox", NMTB_MONTH, "", "date:2month..1month and tag:inbox" },
+    { false, 1, 3, "tag:inbox", NMTB_MONTH, "", "date:4month..3month and tag:inbox" },
+    { false, 3, 3, "tag:inbox", NMTB_MONTH, "", "date:12month..9month and tag:inbox" },
+    { true, 0, 0, "tag:inbox", NMTB_MONTH, "", "date:0month.. and tag:inbox" },
+    { true, 0, 1, "tag:inbox", NMTB_MONTH, "", "date:1month..1month and tag:inbox" },
+    { true, 0, 3, "tag:inbox", NMTB_MONTH, "", "date:3month..3month and tag:inbox" },
+    { false, 3, 3, "tag:inbox", NMTB_MONTH, "tag:unread",
       "(date:12month..9month or (tag:unread)) and tag:inbox" },
-    { true, 0, 3, "tag:inbox", "month", "tag:unread",
+    { true, 0, 3, "tag:inbox", NMTB_MONTH, "tag:unread",
       "(date:3month..3month or (tag:unread)) and tag:inbox" },
-    { false, 3, 3, "tag:inbox", "month", "tag:unread and tag:flagged",
+    { false, 3, 3, "tag:inbox", NMTB_MONTH, "tag:unread and tag:flagged",
       "(date:12month..9month or (tag:unread and tag:flagged)) and tag:inbox" },
-    { true, 0, 3, "tag:inbox", "month", "tag:unread and tag:flagged",
+    { true, 0, 3, "tag:inbox", NMTB_MONTH, "tag:unread and tag:flagged",
       "(date:3month..3month or (tag:unread and tag:flagged)) and tag:inbox" },
   };
 

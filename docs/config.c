@@ -2903,11 +2903,11 @@
 ** notmuch://?query=tag:inbox and (date:... or (tag:flagged and tag:unread))
 */
 
-{ "nm_query_window_timebase", DT_STRING, "week" },
+{ "nm_query_window_timebase", DT_ENUM, NMTB_WEEK },
 /*
 ** .pp
 ** This variable sets the time base of a windowed notmuch query.
-** Accepted values are 'minute', 'hour', 'day', 'week', 'month', 'year'
+** Accepted values are 'hour', 'day', 'week', 'month', 'year'
 */
 
 { "nm_record", DT_BOOL, false },

@@ -1325,6 +1325,16 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
         strncpy(t, "mh", l);
       else if (strcasecmp(s, "MUTT_MAILDIR") == 0)
         strncpy(t, "maildir", l);
+      else if (strcasecmp(s, "NMTB_HOUR") == 0)
+        strncpy(t, "hour", l);
+      else if (strcasecmp(s, "NMTB_DAY") == 0)
+        strncpy(t, "day", l);
+      else if (strcasecmp(s, "NMTB_WEEK") == 0)
+        strncpy(t, "week", l);
+      else if (strcasecmp(s, "NMTB_MONTH") == 0)
+        strncpy(t, "month", l);
+      else if (strcasecmp(s, "NMTB_YEAR") == 0)
+        strncpy(t, "year", l);
       else if (strcasecmp(s, "UT_UNSET") == 0)
         strncpy(t, "unset", l);
       break;

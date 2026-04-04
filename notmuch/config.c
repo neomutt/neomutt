@@ -70,36 +70,6 @@ static int nm_default_url_validator(const struct ConfigDef *cdef,
 }
 
 /**
- * nm_query_window_timebase_validator - Validate the "nm_query_window_timebase" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
- *
- * Ensure $nm_query_window_timebase matches allowed values.
- *
- * Allowed values:
- * - hour
- * - day
- * - week
- * - month
- * - year
- */
-static int nm_query_window_timebase_validator(const struct ConfigDef *cdef,
-                                              intptr_t value, struct Buffer *err)
-{
-#ifdef USE_NOTMUCH
-  const char *timebase = (const char *) value;
-  if (!nm_query_window_check_timebase(timebase))
-  {
-    buf_printf(
-        // L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
-        //       They should not be translated.
-        err, _("Invalid nm_query_window_timebase value (valid values are: "
-               "hour, day, week, month, year)"));
-    return CSR_ERR_INVALID;
-  }
-#endif
-  return CSR_SUCCESS;
-}
-
-/**
  * NotmuchVars - Config definitions for the Notmuch library
  */
 struct ConfigDef NotmuchVars[] = {
@@ -143,7 +113,7 @@ struct ConfigDef NotmuchVars[] = {
   { "nm_query_window_or_terms", DT_STRING, 0, 0, NULL,
     "(notmuch) Additional notmuch search terms for messages to be shown regardless of date"
   },
-  { "nm_query_window_timebase", DT_STRING, IP "week", 0, nm_query_window_timebase_validator,
+  { "nm_query_window_timebase", DT_ENUM, NMTB_WEEK, IP &NmQueryWindowTimebaseDef, NULL,
     "(notmuch) Units for the time duration"
   },
   { "nm_record_tags", DT_STRING, 0, 0, NULL,

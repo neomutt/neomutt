@@ -198,8 +198,8 @@ struct ExpandoNode *node_condition_parse(const char *str, NodeTextTermFlags term
           snprintf(err->message, sizeof(err->message), _("Expando is missing closing '}'"));
         else
           // L10N: e.g. "Unknown expando: %{bad}"
-          snprintf(err->message, sizeof(err->message),
-                   _("Unknown expando: %%{%.*s}"), (int) (end - name_start), name_start);
+          snprintf(err->message, sizeof(err->message), _("Unknown expando: %%{%.*s}"),
+                   (int) (end - name_start), name_start);
         goto fail;
       }
       // Doesn't look like a long name, fall through to parse_short_name
