@@ -38,6 +38,24 @@
 #include "query.h"
 
 /**
+ * NmQueryTypeMethods - Choices for `$nm_query_type`
+ */
+static const struct Mapping NmQueryTypeMethods[] = {
+  // clang-format off
+  { "messages", NM_QUERY_TYPE_MESSAGES },
+  { "threads",  NM_QUERY_TYPE_THREADS  },
+  { NULL, 0 },
+  // clang-format on
+};
+
+/// Data for the `$nm_query_type` enumeration
+const struct EnumDef NmQueryTypeDef = {
+  "nm_query_type",
+  2,
+  (struct Mapping *) &NmQueryTypeMethods,
+};
+
+/**
  * NmTimebaseMethods - Choices for `$nm_query_window_timebase`
  */
 static const struct Mapping NmTimebaseMethods[] = {
@@ -91,7 +109,7 @@ enum NmQueryType nm_parse_type_from_query(char *buf, enum NmQueryType fallback)
   }
   else
   {
-    query_type = NM_QUERY_TYPE_MESGS;
+    query_type = NM_QUERY_TYPE_MESSAGES;
   }
 
   // Clean-up any valid "type=" statements.
@@ -118,17 +136,16 @@ enum NmQueryType nm_parse_type_from_query(char *buf, enum NmQueryType fallback)
  */
 const char *nm_query_type_to_string(enum NmQueryType query_type)
 {
-  if (query_type == NM_QUERY_TYPE_THREADS)
-    return "threads";
-  return "messages";
+  const char *name = mutt_map_get_name(query_type, NmQueryTypeMethods);
+  return name ? name : "messages";
 }
 
 /**
  * nm_string_to_query_type - Lookup a query type
  * @param str String to lookup
- * @retval enum #NmQueryType, e.g. #NM_QUERY_TYPE_MESGS
+ * @retval enum #NmQueryType, e.g. #NM_QUERY_TYPE_MESSAGES
  *
- * If there's an unknown query type, default to NM_QUERY_TYPE_MESGS.
+ * If there's an unknown query type, default to NM_QUERY_TYPE_MESSAGES.
  */
 enum NmQueryType nm_string_to_query_type(const char *str)
 {
@@ -137,7 +154,7 @@ enum NmQueryType nm_string_to_query_type(const char *str)
   if (query_type == NM_QUERY_TYPE_UNKNOWN)
   {
     mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
-    return NM_QUERY_TYPE_MESGS;
+    return NM_QUERY_TYPE_MESSAGES;
   }
 
   return query_type;
@@ -151,12 +168,8 @@ enum NmQueryType nm_string_to_query_type(const char *str)
  */
 enum NmQueryType nm_string_to_query_type_mapper(const char *str)
 {
-  if (mutt_str_equal(str, "threads"))
-    return NM_QUERY_TYPE_THREADS;
-  if (mutt_str_equal(str, "messages"))
-    return NM_QUERY_TYPE_MESGS;
-
-  return NM_QUERY_TYPE_UNKNOWN;
+  int query_type = mutt_map_get_value(str, NmQueryTypeMethods);
+  return (query_type < 0) ? NM_QUERY_TYPE_UNKNOWN : query_type;
 }
 
 /**

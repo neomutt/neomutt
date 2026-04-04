@@ -35,9 +35,9 @@ struct EnumDef;
  */
 enum NmQueryType
 {
-  NM_QUERY_TYPE_MESGS = 1, ///< Default: Messages only
-  NM_QUERY_TYPE_THREADS,   ///< Whole threads
-  NM_QUERY_TYPE_UNKNOWN,   ///< Unknown query type. Error in notmuch query.
+  NM_QUERY_TYPE_UNKNOWN = 0,  ///< Unknown query type. Error in notmuch query.
+  NM_QUERY_TYPE_MESSAGES,     ///< Default: Messages only
+  NM_QUERY_TYPE_THREADS,      ///< Whole threads
 };
 
 /**
@@ -64,6 +64,7 @@ enum NmWindowQueryRc
 };
 
 extern const struct EnumDef NmQueryWindowTimebaseDef;
+extern const struct EnumDef NmQueryTypeDef;
 
 enum NmQueryType nm_parse_type_from_query(char *buf, enum NmQueryType fallback);
 enum NmQueryType nm_string_to_query_type(const char *str);

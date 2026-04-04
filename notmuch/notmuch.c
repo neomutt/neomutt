@@ -352,8 +352,8 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
   if (mdata->db_query && !window)
     return mdata->db_query;
 
-  const char *const c_nm_query_type = cs_subset_string(NeoMutt->sub, "nm_query_type");
-  mdata->query_type = nm_string_to_query_type(c_nm_query_type); /* user's default */
+  const enum NmQueryType c_nm_query_type = cs_subset_enum(NeoMutt->sub, "nm_query_type");
+  mdata->query_type = c_nm_query_type; /* user's default */
 
   struct UrlQuery *item = NULL;
   STAILQ_FOREACH(item, &mdata->db_url->query_strings, entries)
@@ -1632,8 +1632,7 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
     using_default_data = true;
   }
 
-  enum NmQueryType query_type = nm_string_to_query_type(
-      cs_subset_string(NeoMutt->sub, "nm_query_type"));
+  enum NmQueryType query_type = cs_subset_enum(NeoMutt->sub, "nm_query_type");
   mdata->query_type = nm_parse_type_from_query(buf, query_type);
 
   const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");
@@ -1761,7 +1760,7 @@ bool nm_message_is_still_queried(struct Mailbox *m, struct Email *e)
   switch (mdata->query_type)
   {
     case NM_QUERY_TYPE_UNKNOWN: // UNKNOWN should never occur, but MESGS is default
-    case NM_QUERY_TYPE_MESGS:
+    case NM_QUERY_TYPE_MESSAGES:
     {
       notmuch_messages_t *messages = get_messages(q);
 
@@ -2109,7 +2108,7 @@ static enum MxOpenReturns nm_mbox_open(struct Mailbox *m)
     switch (mdata->query_type)
     {
       case NM_QUERY_TYPE_UNKNOWN: // UNKNOWN should never occur, but MESGS is default
-      case NM_QUERY_TYPE_MESGS:
+      case NM_QUERY_TYPE_MESSAGES:
         if (!read_mesgs_query(m, q, false))
           rc = MX_OPEN_ABORT;
         break;

@@ -2855,7 +2855,7 @@
 ** This variable specifies the timeout for database open in seconds.
 */
 
-{ "nm_query_type", DT_STRING, "messages" },
+{ "nm_query_type", DT_ENUM, NM_QUERY_TYPE_MESSAGES },
 /*
 ** .pp
 ** This variable specifies the default query type (threads or messages) used in

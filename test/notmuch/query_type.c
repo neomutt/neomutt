@@ -40,24 +40,24 @@ void test_nm_parse_type_from_query(void)
 {
   static const struct NmParseTypeTest tests[] = {
     { "&type=threads", NM_QUERY_TYPE_THREADS },
-    { "&type=messages", NM_QUERY_TYPE_MESGS },
+    { "&type=messages", NM_QUERY_TYPE_MESSAGES },
     { "type=threads&", NM_QUERY_TYPE_THREADS },
-    { "type=messages&", NM_QUERY_TYPE_MESGS },
+    { "type=messages&", NM_QUERY_TYPE_MESSAGES },
     { "type=threads", NM_QUERY_TYPE_THREADS },
-    { "type=messages", NM_QUERY_TYPE_MESGS },
-    { "", NM_QUERY_TYPE_MESGS },
-    { NULL, NM_QUERY_TYPE_MESGS },
-    { "type=non-existent", NM_QUERY_TYPE_MESGS },
+    { "type=messages", NM_QUERY_TYPE_MESSAGES },
+    { "", NM_QUERY_TYPE_MESSAGES },
+    { NULL, NM_QUERY_TYPE_MESSAGES },
+    { "type=non-existent", NM_QUERY_TYPE_MESSAGES },
     { "type=threads&type=non-existent", NM_QUERY_TYPE_THREADS },
-    { "type=messages&type=non-existent", NM_QUERY_TYPE_MESGS },
+    { "type=messages&type=non-existent", NM_QUERY_TYPE_MESSAGES },
     { "type=messages&type=threads", NM_QUERY_TYPE_THREADS },
-    { "type=messages&type=threads&type=messages", NM_QUERY_TYPE_MESGS },
+    { "type=messages&type=threads&type=messages", NM_QUERY_TYPE_MESSAGES },
     { "type=messages&type=threads&type=messages&type=threads", NM_QUERY_TYPE_THREADS },
     { "type=messages&type=threads&type=messages&type=threads&type=non-existent", NM_QUERY_TYPE_THREADS },
   };
 
   // Degenerate test
-  TEST_CHECK(nm_parse_type_from_query(NULL, NM_QUERY_TYPE_MESGS) == NM_QUERY_TYPE_MESGS);
+  TEST_CHECK(nm_parse_type_from_query(NULL, NM_QUERY_TYPE_MESSAGES) == NM_QUERY_TYPE_MESSAGES);
   TEST_CHECK(nm_parse_type_from_query(NULL, NM_QUERY_TYPE_THREADS) == NM_QUERY_TYPE_THREADS);
 
   char buf[1024];
@@ -67,7 +67,7 @@ void test_nm_parse_type_from_query(void)
     memset(buf, 0, sizeof(buf));
     mutt_str_copy(buf, t->input, sizeof(buf));
     TEST_CASE(buf);
-    TEST_CHECK(nm_parse_type_from_query(buf, NM_QUERY_TYPE_MESGS) == t->expected);
+    TEST_CHECK(nm_parse_type_from_query(buf, NM_QUERY_TYPE_MESSAGES) == t->expected);
   }
 }
 
@@ -81,12 +81,12 @@ void test_nm_string_to_query_type(void)
   }
 
   {
-    TEST_CHECK(nm_string_to_query_type("messages") == NM_QUERY_TYPE_MESGS);
+    TEST_CHECK(nm_string_to_query_type("messages") == NM_QUERY_TYPE_MESSAGES);
   }
 
   // Test that we're handling the error condition.
   {
-    TEST_CHECK(nm_string_to_query_type("junk") == NM_QUERY_TYPE_MESGS);
+    TEST_CHECK(nm_string_to_query_type("junk") == NM_QUERY_TYPE_MESSAGES);
   }
 }
 
@@ -97,7 +97,7 @@ void test_nm_string_to_query_type_mapper(void)
   }
 
   {
-    TEST_CHECK(nm_string_to_query_type_mapper("messages") == NM_QUERY_TYPE_MESGS);
+    TEST_CHECK(nm_string_to_query_type_mapper("messages") == NM_QUERY_TYPE_MESSAGES);
   }
 
   {
@@ -112,6 +112,6 @@ void test_nm_query_type_to_string(void)
   }
 
   {
-    TEST_CHECK_STR_EQ(nm_query_type_to_string(NM_QUERY_TYPE_MESGS), "messages");
+    TEST_CHECK_STR_EQ(nm_query_type_to_string(NM_QUERY_TYPE_MESSAGES), "messages");
   }
 }

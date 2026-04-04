@@ -17271,7 +17271,7 @@ named-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
               </row>
               <row>
                 <entry><literal>nm_query_type</literal></entry>
-                <entry>string</entry>
+                <entry>enum</entry>
                 <entry><literal>messages</literal></entry>
                 <entry></entry>
               </row>

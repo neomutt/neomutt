@@ -95,7 +95,7 @@ struct ConfigDef NotmuchVars[] = {
   { "nm_open_timeout", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 5, 0, NULL,
     "(notmuch) Database timeout"
   },
-  { "nm_query_type", DT_STRING, IP "messages", 0, NULL,
+  { "nm_query_type", DT_ENUM, NM_QUERY_TYPE_MESSAGES, IP &NmQueryTypeDef, NULL,
     "(notmuch) Default query type: 'threads' or 'messages'"
   },
   { "nm_query_window_current_position", DT_NUMBER, 0, 0, NULL,
