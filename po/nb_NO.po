@@ -4001,7 +4001,7 @@ msgstr "Hent alle undermapper av nåværende melding"
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
-msgid "Get message with Message-Id"
+msgid "Get message with Message-ID"
 msgstr "Hent melding med meldings-ID"
 
 #. L10N: Help screen description for OP_GET_PARENT
@@ -6064,7 +6064,7 @@ msgid "Logged out of IMAP servers"
 msgstr "Utlogget av IMAP-tjenere"
 
 #: index/functions.c:2776
-msgid "No Message-Id. Unable to perform operation."
+msgid "No Message-ID. Unable to perform operation."
 msgstr "Ingen meldings-ID. Klarrer ikke å utføre operasjon."
 
 #: index/functions.c:2847
@@ -6072,7 +6072,7 @@ msgid "No deleted messages found in the thread"
 msgstr "Fant ingen slettede meldinger i tråden"
 
 #: index/functions.c:2873
-msgid "Enter Message-Id: "
+msgid "Enter Message-ID: "
 msgstr "Skriv inn meldings-ID: "
 
 #: index/functions.c:2885
@@ -6106,7 +6106,7 @@ msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Å poste i denne gruppen tillates ikke, kan være moderert. Fortsett?"
 
 #: index/functions.c:3070
-msgid "No virtual folder and no Message-Id, aborting"
+msgid "No virtual folder and no Message-ID, aborting"
 msgstr "Ingen virtuell mappe, og ingen meldings-ID. Avbryter."
 
 #: index/functions.c:3099
@@ -8386,12 +8386,12 @@ msgstr "meldinger hvis søppelpost-etikett samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:117
-msgid "messages whose Message-Id: header matches REGEX"
+msgid "messages whose Message-ID: header matches REGEX"
 msgstr "meldinger hvis meldings-ID samsvarer med REGEX"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:120
-msgid "messages whose Message-Id: is included in results from $external_search_command"
+msgid "messages whose Message-ID: is included in results from $external_search_command"
 msgstr "meldinger hvis meldings-ID er å finne i resultatene fra et eksternt søkeprogram"
 
 #. L10N: Pattern Completion Menu description for ~k

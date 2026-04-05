@@ -27,7 +27,7 @@
 #include "expando/lib.h" // IWYU pragma: keep
 
 /**
- * struct MsgIdData - Data to generate a Message-Id
+ * struct MsgIdData - Data to generate a Message-ID
  */
 struct MsgIdData
 {
@@ -37,7 +37,7 @@ struct MsgIdData
 };
 
 /**
- * ExpandoDataMsgId - Expando Fields for the Message-Id
+ * ExpandoDataMsgId - Expando Fields for the Message-ID
  *
  * @sa ED_MSG, ExpandoDomain
  */

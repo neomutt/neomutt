@@ -267,7 +267,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   /* in case the user modifies/removes the In-Reply-To header with
    * $edit_headers set, we remove References: as they're likely invalid;
    * we can simply compare strings as we don't generate References for
-   * multiple Message-Ids in IRT anyways */
+   * multiple Message-IDs in IRT anyways */
   if (!OptNewsSend)
   {
     if (!STAILQ_EMPTY(&e->env->in_reply_to) &&

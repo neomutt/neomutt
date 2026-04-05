@@ -4121,7 +4121,7 @@ msgstr "Това е първото писмо."
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
 #, fuzzy
-msgid "Get message with Message-Id"
+msgid "Get message with Message-ID"
 msgstr "Редактира писмо и заглавните му полета"
 
 #. L10N: Help screen description for OP_GET_PARENT
@@ -6258,7 +6258,7 @@ msgid "Logged out of IMAP servers"
 msgstr "Затваряне на връзката към IMAP сървър.."
 
 #: index/functions.c:2776
-msgid "No Message-Id. Unable to perform operation."
+msgid "No Message-ID. Unable to perform operation."
 msgstr ""
 
 #: index/functions.c:2847
@@ -6268,7 +6268,7 @@ msgstr "изтрива всички писма в нишката"
 
 #: index/functions.c:2873
 #, fuzzy
-msgid "Enter Message-Id: "
+msgid "Enter Message-ID: "
 msgstr "Въведете ключов идентификатор: "
 
 #: index/functions.c:2885
@@ -6305,7 +6305,7 @@ msgstr ""
 
 #: index/functions.c:3070
 #, fuzzy
-msgid "No virtual folder and no Message-Id, aborting"
+msgid "No virtual folder and no Message-ID, aborting"
 msgstr "Прекъсване поради липса на тема"
 
 #: index/functions.c:3099
@@ -8693,12 +8693,12 @@ msgstr ""
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:117
 #, fuzzy
-msgid "messages whose Message-Id: header matches REGEX"
+msgid "messages whose Message-ID: header matches REGEX"
 msgstr "редактира писмо и заглавните му полета"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:120
-msgid "messages whose Message-Id: is included in results from $external_search_command"
+msgid "messages whose Message-ID: is included in results from $external_search_command"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~k

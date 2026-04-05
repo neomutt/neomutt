@@ -3968,7 +3968,7 @@ msgstr "Geçerli iletinin tüm alt iletilerini al"
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
-msgid "Get message with Message-Id"
+msgid "Get message with Message-ID"
 msgstr "Iletiyi Message/Id ile al"
 
 #. L10N: Help screen description for OP_GET_PARENT
@@ -6009,16 +6009,16 @@ msgid "Logged out of IMAP servers"
 msgstr "IMAP sunucularından çıkış yapıldı"
 
 #: index/functions.c:2776
-msgid "No Message-Id. Unable to perform operation."
-msgstr "Message-Id yok. İşlem gerçekleştirilemiyor."
+msgid "No Message-ID. Unable to perform operation."
+msgstr "Message-ID yok. İşlem gerçekleştirilemiyor."
 
 #: index/functions.c:2847
 msgid "No deleted messages found in the thread"
 msgstr "İlmekte kurtarılan iletiler bulunamadı"
 
 #: index/functions.c:2873
-msgid "Enter Message-Id: "
-msgstr "Message-Id girin: "
+msgid "Enter Message-ID: "
+msgstr "Message-ID girin: "
 
 #: index/functions.c:2885
 msgid "Article has no parent reference"
@@ -6051,8 +6051,8 @@ msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Bu gruba göndermeye izin verilmiyor, yönetiliyor olabilir. Sürdürülsün mü?"
 
 #: index/functions.c:3070
-msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Sanal klasör ve Message-Id yok, iptal ediliyor"
+msgid "No virtual folder and no Message-ID, aborting"
+msgstr "Sanal klasör ve Message-ID yok, iptal ediliyor"
 
 #: index/functions.c:3099
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
@@ -8341,13 +8341,13 @@ msgstr "istenmeyen etiketi İFADE ile eşleşen iletiler"
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:117
 #, fuzzy
-msgid "messages whose Message-Id: header matches REGEX"
+msgid "messages whose Message-ID: header matches REGEX"
 msgstr "Message-ID'si İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:120
 #, fuzzy
-msgid "messages whose Message-Id: is included in results from $external_search_command"
+msgid "messages whose Message-ID: is included in results from $external_search_command"
 msgstr "Message-ID'si dış arama programındaki sonuçlarda içerilen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~k

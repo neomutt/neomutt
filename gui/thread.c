@@ -721,7 +721,7 @@ static struct HashTable *make_subj_hash(struct Mailbox *m)
  * pseudo_threads - Thread messages by subject
  * @param tctx Threading context
  *
- * Thread by subject things that didn't get threaded by message-id
+ * Thread by subject things that didn't get threaded by Message-ID
  */
 static void pseudo_threads(struct ThreadsContext *tctx)
 {
@@ -1774,7 +1774,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
 }
 
 /**
- * mutt_make_id_hash - Create a Hash Table for message-ids
+ * mutt_make_id_hash - Create a Hash Table for Message-IDs
  * @param m Mailbox
  * @retval ptr Newly allocated Hash Table
  */

@@ -306,7 +306,7 @@ struct ConfigDef SendVars[] = {
     "Remove the user's address from the list of recipients"
   },
   { "message_id_format", DT_EXPANDO, IP "<%z@%f>", IP &MsgIdFormatDef, NULL,
-    "Custom format for the Message-Id"
+    "Custom format for the Message-ID"
   },
   { "mime_forward_decode", DT_BOOL, false, 0, NULL,
     "Decode the forwarded message before attaching it"

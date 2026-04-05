@@ -2773,7 +2773,7 @@ static int op_get_children(struct IndexSharedData *shared,
 
   if (!e->env->message_id)
   {
-    mutt_error(_("No Message-Id. Unable to perform operation."));
+    mutt_error(_("No Message-ID. Unable to perform operation."));
     return FR_ERROR;
   }
 
@@ -2870,7 +2870,7 @@ static int op_get_message(struct IndexSharedData *shared,
   const int op = event->op;
   if (op == OP_GET_MESSAGE)
   {
-    if ((mw_get_field(_("Enter Message-Id: "), buf, MUTT_COMP_NO_FLAGS,
+    if ((mw_get_field(_("Enter Message-ID: "), buf, MUTT_COMP_NO_FLAGS,
                       HC_OTHER, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
@@ -3067,9 +3067,9 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
     if (((shared->mailbox->type != MUTT_MH) && (shared->mailbox->type != MUTT_MAILDIR)) ||
         (!shared->email || !shared->email->env || !shared->email->env->message_id))
     {
-      mutt_message(_("No virtual folder and no Message-Id, aborting"));
+      mutt_message(_("No virtual folder and no Message-ID, aborting"));
       return FR_ERROR;
-    } // no virtual folder, but we have message-id, reconstruct thread on-the-fly
+    } // no virtual folder, but we have Message-ID, reconstruct thread on-the-fly
 
     struct Buffer *buf = buf_pool_get();
     buf_alloc(buf, PATH_MAX);
@@ -3091,7 +3091,7 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
 
     // If notmuch doesn't contain the message, we're left in an empty
     // vfolder. No messages are found, but nm_read_entire_thread assumes
-    // a valid message-id and will throw a segfault.
+    // a valid Message-ID and will throw a segfault.
     //
     // To prevent that, stay in the empty vfolder and print an error.
     if (shared->mailbox->msg_count == 0)

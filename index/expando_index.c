@@ -1283,7 +1283,7 @@ static void envelope_list_empty(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_message_id - Index: Message-id - Implements ::get_string_t - @ingroup expando_get_string_api
+ * envelope_message_id - Index: Message-ID - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_message_id(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)

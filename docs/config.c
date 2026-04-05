@@ -1235,7 +1235,7 @@
 /*
 ** .pp
 ** This variable controls whether NeoMutt, when $$sort is set to \fIthreads\fP,
-** threads messages with the same Message-Id together. If it is \fIset\fP, it
+** threads messages with the same Message-ID together. If it is \fIset\fP, it
 ** will indicate that it thinks they are duplicates of each other with an equals
 ** sign in the thread tree.
 */
@@ -2003,7 +2003,7 @@
 /*
 ** .pp
 ** NeoMutt requests these header fields in addition to the default headers
-** ("Date:", "From:", "Sender:", "Subject:", "To:", "Cc:", "Message-Id:",
+** ("Date:", "From:", "Sender:", "Subject:", "To:", "Cc:", "Message-ID:",
 ** "References:", "Content-Type:", "Content-Description:", "In-Reply-To:",
 ** "Reply-To:", "Lines:", "List-Post:", "X-Label:") from IMAP
 ** servers before displaying the index menu. You may want to add more
@@ -2243,7 +2243,7 @@
 ** .dt \fC%g\fP      .dd \fC%{tags}\fP                .dd Message tags (e.g. Notmuch tags/imap flags)
 ** .dt \fC%H\fP      .dd \fC%{spam}\fP                .dd Spam attribute(s) of this message
 ** .dt \fC%I\fP      .dd \fC%{initials}\fP            .dd Initials of author
-** .dt \fC%i\fP      .dd \fC%{message-id}\fP          .dd Message-id of the current message
+** .dt \fC%i\fP      .dd \fC%{message-id}\fP          .dd Message-ID of the current message
 ** .dt \fC%J\fP      .dd \fC%{thread-tags}\fP         .dd Message tags (if present, tree unfolded, and != parent's tags)
 ** .dt \fC%K\fP      .dd \fC%{list-empty}\fP          .dd List to which the email was sent (if any; otherwise: empty)
 ** .dt \fC%L\fP      .dd \fC%{from-list}\fP           .dd If an address in the \fCTo:\fP or \fCCc:\fP header field matches an address
@@ -2593,7 +2593,7 @@
 { "message_id_format", DT_STRING, "<%z@%f>" },
 /*
 ** .pp
-** This variable allows you to choose a custom format for the Message-Id when
+** This variable allows you to choose a custom format for the Message-ID when
 ** sending messages. The value may end in ``|'' to invoke an external filter.
 ** See $formatstrings-filters.
 ** .pp

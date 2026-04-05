@@ -151,8 +151,8 @@ enum PatternType
   MUTT_PAT_DUPLICATED,        ///< Duplicate message
   MUTT_PAT_UNREFERENCED,      ///< Message is unreferenced in the thread
   MUTT_PAT_BROKEN,            ///< Message is part of a broken thread
-  MUTT_PAT_ID,                ///< Pattern matches email's Message-Id
-  MUTT_PAT_ID_EXTERNAL,       ///< Message-Id is among results from an external query
+  MUTT_PAT_ID,                ///< Pattern matches email's Message-ID
+  MUTT_PAT_ID_EXTERNAL,       ///< Message-ID is among results from an external query
   MUTT_PAT_BODY,              ///< Pattern matches email's body
   MUTT_PAT_HEADER,            ///< Pattern matches email's header
   MUTT_PAT_HORMEL,            ///< Pattern matches email's spam score

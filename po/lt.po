@@ -4009,7 +4009,7 @@ msgstr "Gauti visus atsakymus į dabartinį laišką"
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
-msgid "Get message with Message-Id"
+msgid "Get message with Message-ID"
 msgstr "Gauti laišką pagal ID"
 
 #. L10N: Help screen description for OP_GET_PARENT
@@ -6075,15 +6075,15 @@ msgid "Logged out of IMAP servers"
 msgstr "Atsijungiau nuo IMAP serverių"
 
 #: index/functions.c:2776
-msgid "No Message-Id. Unable to perform operation."
-msgstr "Nėra Message-Id antraštės. Negaliu atlikti operacijos."
+msgid "No Message-ID. Unable to perform operation."
+msgstr "Nėra Message-ID antraštės. Negaliu atlikti operacijos."
 
 #: index/functions.c:2847
 msgid "No deleted messages found in the thread"
 msgstr "Šioje gijoje nėra ištrintų laiškų"
 
 #: index/functions.c:2873
-msgid "Enter Message-Id: "
+msgid "Enter Message-ID: "
 msgstr "Įvesk laiško ID: "
 
 #: index/functions.c:2885
@@ -6117,8 +6117,8 @@ msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Siuntimas į šią grupę neleidžiamas, gali būti moderuotas. Tęsti?"
 
 #: index/functions.c:3070
-msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Nėra virtualaus aplanko nei Message-Id, nutraukiu"
+msgid "No virtual folder and no Message-ID, aborting"
+msgstr "Nėra virtualaus aplanko nei Message-ID, nutraukiu"
 
 #: index/functions.c:3099
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
@@ -8408,12 +8408,12 @@ msgstr "laiškai kurių šlamšto etiketė atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:117
-msgid "messages whose Message-Id: header matches REGEX"
+msgid "messages whose Message-ID: header matches REGEX"
 msgstr "laiškai kurių Message-ID atitinka IŠRAIŠKĄ"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:120
-msgid "messages whose Message-Id: is included in results from $external_search_command"
+msgid "messages whose Message-ID: is included in results from $external_search_command"
 msgstr "laiškai kurių Message-ID yra tarp išorinės paieškos programos gražintų rezultatų"
 
 #. L10N: Pattern Completion Menu description for ~k

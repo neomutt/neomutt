@@ -42,7 +42,7 @@ struct ThreadsContext
 {
   struct MailboxView *mailbox_view; ///< Current mailbox
   struct MuttThread  *tree;         ///< Top of thread tree
-  struct HashTable   *hash;         ///< Hash Table: "message-id" -> MuttThread
+  struct HashTable   *hash;         ///< Hash Table: "Message-ID" -> MuttThread
   enum EmailSortType  c_sort;       ///< Last sort method
   enum EmailSortType  c_sort_aux;   ///< Last sort_aux method
 };

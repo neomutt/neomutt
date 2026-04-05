@@ -397,7 +397,7 @@ enum ContentType mutt_check_mime_type(const char *s)
 }
 
 /**
- * mutt_extract_message_id - Find a message-id
+ * mutt_extract_message_id - Find a Message-ID
  * @param[in]  s String to parse
  * @param[out] len Number of bytes of s parsed
  * @retval ptr  Message id found

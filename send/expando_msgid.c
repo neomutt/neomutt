@@ -242,7 +242,7 @@ static char *msgid_gen_random(void)
 }
 
 /**
- * msgid_generate - Generate a Message-Id
+ * msgid_generate - Generate a Message-ID
  * @retval ptr Message ID
  *
  * @note The caller should free the string

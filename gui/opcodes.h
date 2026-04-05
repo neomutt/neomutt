@@ -436,7 +436,7 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_GET_CHILDREN,                       N_("Get all children of the current message")) \
   /* L10N: Help screen description for OP_GET_MESSAGE */ \
   /*       Index: <op_get_message> */ \
-  _fmt(OP_GET_MESSAGE,                        N_("Get message with Message-Id")) \
+  _fmt(OP_GET_MESSAGE,                        N_("Get message with Message-ID")) \
   /* L10N: Help screen description for OP_GET_PARENT */ \
   /*       Index: <op_get_message> */ \
   _fmt(OP_GET_PARENT,                         N_("Get parent of the current message")) \

@@ -114,10 +114,10 @@ const struct PatternFlags Flags[] = {
     N_("messages whose spam header matches REGEX") },
   { '~', 'i', MUTT_PAT_ID, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~i
-    N_("messages whose Message-Id: header matches REGEX") },
+    N_("messages whose Message-ID: header matches REGEX") },
   { '~', 'I', MUTT_PAT_ID_EXTERNAL, 0, EAT_QUERY,
     // L10N: Pattern Completion Menu description for ~I
-    N_("messages whose Message-Id: is included in results from $external_search_command") },
+    N_("messages whose Message-ID: is included in results from $external_search_command") },
   { '~', 'k', MUTT_PAT_PGP_KEY, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~k
     N_("messages which contain a PGP key") },

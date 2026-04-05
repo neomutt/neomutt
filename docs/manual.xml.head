@@ -3019,7 +3019,7 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
           <title>In-Reply-To: Header</title>
           <para>
             When replying to messages, the <emphasis>In-Reply-To:</emphasis>
-            header contains the Message-Id of the message(s) you reply to. If
+            header contains the Message-ID of the message(s) you reply to. If
             you remove or modify its value, NeoMutt will not generate
             a <emphasis>References:</emphasis> field, which allows you to
             create a new message thread, for example to create a new message to
@@ -8595,12 +8595,12 @@ subscribe "only\\.dot@example\\.org"
               <row>
                 <entry>~i <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>messages whose <quote>Message-Id:</quote> header matches <emphasis>REGEX</emphasis></entry>
+                <entry>messages whose <quote>Message-ID:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>~I <emphasis>QUERY</emphasis></entry>
                 <entry></entry>
-                <entry>messages whose <quote>Message-Id:</quote> is included in results from $external_search_command (see: <xref linkend="external-search-command" />)</entry>
+                <entry>messages whose <quote>Message-ID:</quote> is included in results from $external_search_command (see: <xref linkend="external-search-command" />)</entry>
               </row>
               <row>
                 <entry>~k</entry>
@@ -16762,7 +16762,7 @@ set new_mail_command = ""
               <row>
                 <entry>index</entry>
                 <entry><literal>&lt;get-message&gt;</literal></entry>
-                <entry>get message with Message-Id</entry>
+                <entry>get message with Message-ID</entry>
               </row>
             </tbody>
           </tgroup>
@@ -16839,7 +16839,7 @@ bind attach,index,pager \eF forward-to-group
 bind index \eG get-parent
 <emphasis role="comment"># reconstruct thread containing current message</emphasis>
 <emphasis role="comment"># bind index ??? reconstruct-thread</emphasis>
-<emphasis role="comment"># get message with Message-Id</emphasis>
+<emphasis role="comment"># get message with Message-ID</emphasis>
 bind index \CG get-message
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 
@@ -19575,9 +19575,9 @@ set use_threads=threads sort=last-date sort_aux=date
       <title>Information Leaks</title>
 
       <sect2 id="security-leaks-mid">
-        <title>Message-Id: headers</title>
+        <title>Message-ID: headers</title>
         <para>
-          Since 2023-02-18 NeoMutt generates random Message-Id: headers, which
+          Since 2023-02-18 NeoMutt generates random Message-ID: headers, which
           do not leak any information beyond their randomness.
         </para>
       </sect2>

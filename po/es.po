@@ -4001,7 +4001,7 @@ msgstr "Conseguir todos los relacionados al mensaje actual"
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
-msgid "Get message with Message-Id"
+msgid "Get message with Message-ID"
 msgstr "Obtener mensaje con ID de mensaje"
 
 #. L10N: Help screen description for OP_GET_PARENT
@@ -6064,7 +6064,7 @@ msgid "Logged out of IMAP servers"
 msgstr "Se cerró la conexión a los servidores IMAP"
 
 #: index/functions.c:2776
-msgid "No Message-Id. Unable to perform operation."
+msgid "No Message-ID. Unable to perform operation."
 msgstr "Sin identificación de mensaje. No se puede realizar la operación."
 
 #: index/functions.c:2847
@@ -6072,7 +6072,7 @@ msgid "No deleted messages found in the thread"
 msgstr "Ningún mensaje borrado encontrado en el hilo"
 
 #: index/functions.c:2873
-msgid "Enter Message-Id: "
+msgid "Enter Message-ID: "
 msgstr "Introducir la identificación del mensaje: "
 
 #: index/functions.c:2885
@@ -6106,7 +6106,7 @@ msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Enviar un mensaje a este grupo no está permitido, podría ser moderado. ¿Continuar?"
 
 #: index/functions.c:3070
-msgid "No virtual folder and no Message-Id, aborting"
+msgid "No virtual folder and no Message-ID, aborting"
 msgstr "No existe carpeta virtual ni identificación de mensaje, cancelando"
 
 #: index/functions.c:3099
@@ -8389,12 +8389,12 @@ msgstr "Mensajes cuya marca de spam coincide con REGEX"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:117
-msgid "messages whose Message-Id: header matches REGEX"
+msgid "messages whose Message-ID: header matches REGEX"
 msgstr "Mensajes cuyo ID coincide con REGEX"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:120
-msgid "messages whose Message-Id: is included in results from $external_search_command"
+msgid "messages whose Message-ID: is included in results from $external_search_command"
 msgstr "Mensajes cuyo ID se encuentra en los resultados de un programa de búsqueda externo"
 
 #. L10N: Pattern Completion Menu description for ~k

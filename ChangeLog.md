@@ -1438,7 +1438,7 @@ Confirm when sending an e-mail with an empty To:
 - notmuch: allow windows with 0 duration
 - index: fix index selection on `<collapse-all>`
 - imap: fix crash when sync'ing labels
-- search: fix searching by Message-Id in `<mark-message>`
+- search: fix searching by Message-ID in `<mark-message>`
 - threads: fix double sorting of threads
 - stats: don't check mailbox stats unless told
 - alias: fix crash on empty query
