@@ -1,3 +1,33 @@
+2026-04-06  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #4799 Add IMAP connection monitoring, timeouts, and reconnection backoff
+* Bug Fixes
+  - #4755 Fix off-by-one in ARRAY_RESERVE()
+  - #4819 Fix IMAP crash when changing folders
+  - Fix freeze in IMAP with OpenSSL
+  - Fix blocking IMAP pipeline drain with many mailboxes
+  - Fix crash on threaded index update
+  - Fix crash on NULL thread in display subject
+  - Fix menu half-down when data fits in one page
+  - Fix alias search prompt
+  - Fix index tag colours
+  - Protect hooks against unhook during execution
+  - Fix leak in pattern alias search
+  - Consistently convert headers to LF EOL convention
+* Changed Config
+  - Changed: `compose_show_preview = yes`
+    Display a preview of the message body in the Compose window
+* Docs
+  - `$message_id_format`: mention Base64Url encoding
+  - Fix descriptions of deprecated config options
+* Build
+  - #4826 Use optreset on Solaris too
+  - #4827 Avoid function name clash on Solaris
+  - #4828 Allow Solaris to use qsort_s
+  - Check docs requirements in configure
+* Code
+  - Fix graphviz debug output
+
 2026-01-05  Richard Russon  \<rich@flatcap.org\>
 * Security
   - #4725	deprecate old ssl and tls options
