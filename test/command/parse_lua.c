@@ -38,7 +38,7 @@ static const struct CommandTest Tests[] = {
   // clang-format off
   // lua <lua-command>
   { MUTT_CMD_WARNING, "" },
-  { MUTT_CMD_SUCCESS, "'local num = 42'" },
+  { MUTT_CMD_SUCCESS, "local num = 42" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
