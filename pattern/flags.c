@@ -129,10 +129,10 @@ const struct PatternFlags Flags[] = {
     N_("messages addressed to known mailing lists") },
   { '~', 'L', MUTT_PAT_ADDRESS, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~L
-    N_("messages whose From:, Sender:, To: or Cc: header matches REGEX") },
+    N_("messages whose From:, Sender:, To:, Cc: or Bcc: header matches REGEX") },
   { '%', 'L', MUTT_PAT_ADDRESS, 0, EAT_GROUP,
     // L10N: Pattern Completion Menu description for %L
-    N_("messages whose From:, Sender:, To: or Cc: is a member of GROUP") },
+    N_("messages whose From:, Sender:, To:, Cc: or Bcc: is a member of GROUP") },
   { '~', 'm', MUTT_PAT_MESSAGE, 0, EAT_MESSAGE_RANGE,
     // L10N: Pattern Completion Menu description for ~m
     N_("messages whose number is in RANGE") },

@@ -8620,12 +8620,12 @@ subscribe "only\\.dot@example\\.org"
               <row>
                 <entry>~L <emphasis>REGEX</emphasis></entry>
                 <entry></entry>
-                <entry>messages whose <quote>From:</quote>, <quote>Sender:</quote>, <quote>To:</quote> or <quote>Cc:</quote> header matches <emphasis>REGEX</emphasis></entry>
+                <entry>messages whose <quote>From:</quote>, <quote>Sender:</quote>, <quote>To:</quote>, <quote>Cc:</quote> or <quote>Bcc:</quote> header matches <emphasis>REGEX</emphasis></entry>
               </row>
               <row>
                 <entry>%L <emphasis>GROUP</emphasis></entry>
                 <entry></entry>
-                <entry>messages whose <quote>From:</quote>, <quote>Sender:</quote>, <quote>To:</quote> or <quote>Cc:</quote> is a member of <emphasis>GROUP</emphasis></entry>
+                <entry>messages whose <quote>From:</quote>, <quote>Sender:</quote>, <quote>To:</quote>, <quote>Cc:</quote> or <quote>Bcc:</quote> is a member of <emphasis>GROUP</emphasis></entry>
               </row>
               <row>
                 <entry>~m <emphasis>RANGE</emphasis></entry>
@@ -9663,7 +9663,7 @@ send-hook ~C'^b@b\\.b$' my-header from: c@c.c
         In <xref linkend="ex-default-hook" />, by default the value of
         <link linkend="from">$from</link> and
         <link linkend="real-name">$real_name</link> is not overridden. When
-        sending messages either To: or Cc: to <literal>&lt;b@b.b&gt;</literal>,
+        sending messages To:, Cc: or Bcc: to <literal>&lt;b@b.b&gt;</literal>,
         the From: header is changed to <literal>&lt;c@c.c&gt;</literal>.
       </para>
 
