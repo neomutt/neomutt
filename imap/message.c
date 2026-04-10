@@ -270,6 +270,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
         /* store other system flags as well (mainly \\Draft) */
         buf_addstr(buf, edata->flags_system);
         buf_join_str(buf, flag_word, ' ');
+        FREE(&edata->flags_system);
         edata->flags_system = buf_strdup(buf);
       }
       else
@@ -277,6 +278,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
         /* store custom flags as well */
         buf_addstr(buf, edata->flags_remote);
         buf_join_str(buf, flag_word, ' ');
+        FREE(&edata->flags_remote);
         edata->flags_remote = buf_strdup(buf);
       }
       buf_pool_release(&buf);
