@@ -241,7 +241,7 @@ static int select_email_uids(struct Email **emails, int num_emails, enum Message
   for (int i = 0; i < num_emails; i++)
   {
     struct Email *e = emails[i];
-    if (changed && !e->changed)
+    if (!e || (changed && !e->changed))
       continue;
 
     /* don't include pending expunged messages.
