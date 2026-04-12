@@ -67,7 +67,9 @@ For a list of the currently supported options and a brief help text, run:
 | `--notmuch`             | Path | Optional Feature                             |
 |                         |      |                                              |
 | `--gdbm`                | Path | Header cache backend                         |
-| `--lmdb`                | Path | Header cache backend                         |
+| `--lmdb`                | Path | Header cache backend (recommended)           |
+| `--rocksdb`             | Path | Header cache backend                         |
+| `--tdb`                 |      | Header cache backend                         |
 |                         |      |                                              |
 | `--with-lock=CHOICE`    |      | Select 'fcntl' or 'flock'                    |
 | `--locales-fix`         |      | Workaround for broken locales                |
