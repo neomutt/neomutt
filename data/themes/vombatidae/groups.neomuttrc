@@ -65,11 +65,11 @@ color quoted1       $my_quoted1_fg     $my_quoted_bg
 color quoted2       $my_quoted2_fg     $my_quoted_bg
 color quoted3       $my_quoted3_fg     $my_quoted_bg
 color quoted4       $my_quoted4_fg     $my_quoted_bg
-color quoted5       $my_quoted0_fg     $my_quoted_bg
-color quoted6       $my_quoted1_fg     $my_quoted_bg
-color quoted7       $my_quoted2_fg     $my_quoted_bg
-color quoted8       $my_quoted3_fg     $my_quoted_bg
-color quoted9       $my_quoted4_fg     $my_quoted_bg
+color quoted5       $my_quoted5_fg     $my_quoted_bg
+color quoted6       $my_quoted6_fg     $my_quoted_bg
+color quoted7       $my_quoted7_fg     $my_quoted_bg
+color quoted8       $my_quoted8_fg     $my_quoted_bg
+color quoted9       $my_quoted9_fg     $my_quoted_bg
 
 # Index
 color index         $my_index_flag_fg  $my_index_bg    "~F"

@@ -15,7 +15,7 @@ set my_message_fg     = $my_cyan
 set my_message_bg     = $my_bg0
 set my_indicator_fg   = $my_bg0
 set my_indicator_bg   = $my_yellow
-set my_status_fg      = $my_fg1
+set my_status_fg      = $my_fg2
 set my_status_bg      = $my_bg1
 set my_search_fg      = $my_magenta
 set my_search_bg      = $my_bg0
@@ -88,7 +88,7 @@ set my_index_del_fg   = $my_bg1
 set my_index_del_bg   = $my_red
 set my_index_read_fg  = $my_fg3
 set my_index_me_fg    = $my_cyan
-set my_index_thread_fg = $my_fg1
+set my_index_thread_fg = $my_fg2
 set my_index_collapsed_fg = $my_fg4
 set my_index_bg       = $my_bg0
 

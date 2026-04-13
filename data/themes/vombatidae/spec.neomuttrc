@@ -82,6 +82,11 @@ set my_quoted1_fg     = "color66"
 set my_quoted2_fg     = "color32"
 set my_quoted3_fg     = $my_teal
 set my_quoted4_fg     = "color99"
+set my_quoted5_fg     = "color36"
+set my_quoted6_fg     = "color114"
+set my_quoted7_fg     = "color109"
+set my_quoted8_fg     = "color41"
+set my_quoted9_fg     = "color138"
 set my_quoted_bg      = $my_bg0
 
 # Index
