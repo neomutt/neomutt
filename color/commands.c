@@ -578,7 +578,7 @@ const struct Command ColorCommands[] = {
         "configuration.html#color-mono" },
   { "theme", CMD_THEME, parse_theme,
         N_("Load a color theme"),
-        N_("theme [ <name> ]"),
+        N_("theme [ <name> | list ]"),
         "configuration.html#theme" },
   { "uncolor", CMD_UNCOLOR, parse_uncolor,
         N_("Remove a `color` definition"),
