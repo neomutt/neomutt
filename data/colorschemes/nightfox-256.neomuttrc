@@ -65,12 +65,12 @@ color index                     color167        color235  "~="        # Duplicat
 
 # --- Headers ---
 color hdrdefault                color103        color233
-color header                    color140        color233  '^date:'
-color header                    color80         color233  '^(to|cc|bcc):'
-color header                    color108        color233  '^from:'
-color header                    color179        color233  '^subject:'
-color header                    color110        color233  '^user-agent:'
-color header                    color110        color233  '^reply-to:'
+color header                    color140        color233  "^date:"
+color header                    color80         color233  "^(to|cc|bcc):"
+color header                    color108        color233  "^from:"
+color header                    color179        color233  "^subject:"
+color header                    color110        color233  "^user-agent:"
+color header                    color110        color233  "^reply-to:"
 
 # --- Sidebar ---
 color sidebar_indicator         color254        color238
