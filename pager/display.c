@@ -597,6 +597,9 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
       {
         lines[i].syntax_arr_size = 0;
         MUTT_MEM_REALLOC(&(lines[i].syntax), 1, struct TextSyntax);
+        lines[i].syntax[0].attr_color = NULL;
+        lines[i].syntax[0].first = -1;
+        lines[i].syntax[0].last = -1;
       }
       lines[i++].cid = MT_COLOR_SIGNATURE;
     }
