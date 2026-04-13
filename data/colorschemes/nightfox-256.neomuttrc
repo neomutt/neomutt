@@ -31,59 +31,59 @@
 #   sel1    #3c5372  (search bg)     -> color60
 
 # --- General ---
-color normal            color252        color235
-color indicator         color254        color238
-color status            color145        color233
-color tree              color110        color235
-color signature         color243        color235
-color message           color252        color235
-color attachment        color80         color235
-color error             color167        color235
-color tilde             color60         color235
-color search            color235        color179
-color markers           color243        color235
+color normal                    color252        color235
+color indicator                 color254        color238
+color status                    color145        color233
+color tree                      color110        color235
+color signature                 color243        color235
+color message                   color252        color235
+color attachment                color80         color235
+color error                     color167        color235
+color tilde                     color60         color235
+color search                    color235        color179
+color markers                   color243        color235
 
-# --- Langstrumpf ---
-color quoted            color108        color235
-color quoted1           color110        color235
-color quoted2           color80         color235
-color quoted3           color140        color235
-color quoted4           color179        color235
-color quoted5           color215        color235
-color quoted6           color176        color235
-color quoted7           color108        color235
-color quoted8           color110        color235
-color quoted9           color80         color235
+# --- Media ---
+color quoted0                   color108        color235
+color quoted1                   color110        color235
+color quoted2                   color80         color235
+color quoted3                   color140        color235
+color quoted4                   color179        color235
+color quoted5                   color215        color235
+color quoted6                   color176        color235
+color quoted7                   color108        color235
+color quoted8                   color110        color235
+color quoted9                   color80         color235
 
 # --- Index ---
-color index             color110        color235  ~N         # New
-color index             color110        color235  ~O         # Old unread
-color index             color215        color235  ~F         # Flagged
-color index             color235        color108  ~T         # Tagged
-color index             color243        color235  ~D         # Deleted
-color index             color167        color235  ~=         # Duplicates
+color index                     color110        color235  "~N"        # New
+color index                     color110        color235  "~O"        # Old unread
+color index                     color215        color235  "~F"        # Flagged
+color index                     color235        color108  "~T"        # Tagged
+color index                     color243        color235  "~D"        # Deleted
+color index                     color167        color235  "~="        # Duplicates
 
 # --- Headers ---
-color hdrdefault        color103        color233
-color header            color140        color233  '^date:'
-color header            color80         color233  '^(to|cc|bcc):'
-color header            color108        color233  '^from:'
-color header            color179        color233  '^subject:'
-color header            color110        color233  '^user-agent:'
-color header            color110        color233  '^reply-to:'
+color hdrdefault                color103        color233
+color header                    color140        color233  '^date:'
+color header                    color80         color233  '^(to|cc|bcc):'
+color header                    color108        color233  '^from:'
+color header                    color179        color233  '^subject:'
+color header                    color110        color233  '^user-agent:'
+color header                    color110        color233  '^reply-to:'
 
 # --- Sidebar ---
-color sidebar_indicator color254        color238
-color sidebar_highlight color254        color238
-color sidebar_new       color110        color235
-color sidebar_ordinary  color252        color235
-color sidebar_divider   color60         color235
+color sidebar_indicator         color254        color238
+color sidebar_highlight         color254        color238
+color sidebar_new               color110        color235
+color sidebar_ordinary          color252        color235
+color sidebar_divider           color60         color235
 
 # --- Compose ---
-color compose header            color252        color235
-color compose security_encrypt  color108        color235
-color compose security_sign     color110        color235
-color compose security_both     color80         color235
-color compose security_none     color167        color235
+color compose_header            color252        color235
+color compose_security_encrypt  color108        color235
+color compose_security_sign     color110        color235
+color compose_security_both     color80         color235
+color compose_security_none     color167        color235
 
 # vim: ft=neomuttrc
