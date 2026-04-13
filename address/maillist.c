@@ -31,8 +31,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
+#include "alias/module_data.h"
 #include "maillist.h"
 #include "address.h"
 #include "muttlib.h"
@@ -44,7 +45,7 @@
  */
 bool mutt_is_mail_list(const struct Address *addr)
 {
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
   ASSERT(md);
 
   if (!mutt_regexlist_match(&md->unmail, buf_string(addr->mailbox)))
@@ -59,7 +60,7 @@ bool mutt_is_mail_list(const struct Address *addr)
  */
 bool mutt_is_subscribed_list(const struct Address *addr)
 {
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
   ASSERT(md);
 
   if (!mutt_regexlist_match(&md->unmail, buf_string(addr->mailbox)) &&

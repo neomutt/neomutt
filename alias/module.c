@@ -60,6 +60,12 @@ static bool alias_init(struct NeoMutt *n)
 
   md->groups = groups_new();
 
+  md->auto_subscribe_cache = NULL;
+  STAILQ_INIT(&md->mail);
+  STAILQ_INIT(&md->subscribed);
+  STAILQ_INIT(&md->unmail);
+  STAILQ_INIT(&md->unsubscribed);
+
   return true;
 }
 
@@ -102,6 +108,12 @@ static bool alias_cleanup(struct NeoMutt *n)
   alias_reverse_cleanup(&md->reverse_aliases);
 
   groups_free(&md->groups);
+
+  mutt_hash_free(&md->auto_subscribe_cache);
+  mutt_regexlist_free(&md->mail);
+  mutt_regexlist_free(&md->subscribed);
+  mutt_regexlist_free(&md->unmail);
+  mutt_regexlist_free(&md->unsubscribed);
 
   FREE(&md);
   return true;

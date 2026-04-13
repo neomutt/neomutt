@@ -47,20 +47,14 @@ static bool email_init(struct NeoMutt *n)
   struct EmailModuleData *md = MUTT_MEM_CALLOC(1, struct EmailModuleData);
   neomutt_set_module_data(n, MODULE_ID_EMAIL, md);
 
-  md->auto_subscribe_cache = NULL;
-
   STAILQ_INIT(&md->alternative_order);
   STAILQ_INIT(&md->auto_view);
   STAILQ_INIT(&md->header_order);
   STAILQ_INIT(&md->ignore);
-  STAILQ_INIT(&md->mail);
   STAILQ_INIT(&md->mail_to_allow);
   STAILQ_INIT(&md->no_spam);
   STAILQ_INIT(&md->spam);
-  STAILQ_INIT(&md->subscribed);
   STAILQ_INIT(&md->unignore);
-  STAILQ_INIT(&md->unmail);
-  STAILQ_INIT(&md->unsubscribed);
 
   /* RFC2368, "4. Unsafe headers"
    * The creator of a mailto URL can't expect the resolver of a URL to
@@ -103,8 +97,6 @@ static bool email_cleanup(struct NeoMutt *n)
   struct EmailModuleData *md = neomutt_get_module_data(n, MODULE_ID_EMAIL);
   ASSERT(md);
 
-  mutt_hash_free(&md->auto_subscribe_cache);
-
   mutt_list_free(&md->alternative_order);
   mutt_list_free(&md->auto_view);
   mutt_list_free(&md->header_order);
@@ -112,11 +104,7 @@ static bool email_cleanup(struct NeoMutt *n)
   mutt_list_free(&md->mail_to_allow);
   mutt_list_free(&md->unignore);
 
-  mutt_regexlist_free(&md->mail);
   mutt_regexlist_free(&md->no_spam);
-  mutt_regexlist_free(&md->subscribed);
-  mutt_regexlist_free(&md->unmail);
-  mutt_regexlist_free(&md->unsubscribed);
 
   mutt_replacelist_free(&md->spam);
 

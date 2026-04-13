@@ -39,6 +39,12 @@ struct AliasModuleData
   struct Notify    *alternates_notify;  ///< Notifications: #NotifyAlternates
 
   struct HashTable *groups;             ///< Hash Table: "group-name" -> Group
+
+  struct HashTable *auto_subscribe_cache;  ///< Hash Table: "mailto:" (no value)
+  struct RegexList  mail;                  ///< Regexes to match mailing lists
+  struct RegexList  subscribed;            ///< Regexes to match subscribed mailing lists
+  struct RegexList  unmail;                ///< Regexes to exclude false matches in mail
+  struct RegexList  unsubscribed;          ///< Regexes to exclude false matches in subscribed
 };
 
 #endif /* MUTT_ALIAS_MODULE_DATA_H */

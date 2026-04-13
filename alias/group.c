@@ -38,11 +38,10 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "group.h"
-#include "module_data.h"
 #include "parse/lib.h"
+#include "module_data.h"
 
 /**
  * parse_grouplist - Parse a group context
@@ -204,16 +203,14 @@ enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  struct AliasModuleData *amd = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(amd);
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
   ASSERT(md);
 
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, line, err, amd->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
       goto done;
 
     mutt_regexlist_remove(&md->unmail, buf_string(token));
@@ -254,16 +251,14 @@ enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *lin
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  struct AliasModuleData *amd = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(amd);
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
   ASSERT(md);
 
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, line, err, amd->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
       goto done;
 
     mutt_regexlist_remove(&md->unmail, buf_string(token));
@@ -307,7 +302,7 @@ enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
   ASSERT(md);
 
   mutt_hash_free(&md->auto_subscribe_cache);
@@ -348,7 +343,7 @@ enum CommandResult parse_unsubscribe(const struct Command *cmd, struct Buffer *l
     return MUTT_CMD_WARNING;
   }
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
   ASSERT(md);
 
   struct Buffer *token = buf_pool_get();

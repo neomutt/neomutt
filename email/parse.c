@@ -41,6 +41,8 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
+#include "alias/module_data.h"
 #include "mutt.h"
 #include "parse.h"
 #include "body.h"
@@ -110,7 +112,7 @@ void mutt_auto_subscribe(const char *mailto)
   if (!mailto)
     return;
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
   ASSERT(md);
 
   if (!md->auto_subscribe_cache)
