@@ -47,6 +47,7 @@
 #include "parse_color.h"
 #include "regex4.h"
 #include "simple2.h"
+#include "theme.h"
 
 /**
  * ColorFields - Mapping of colour names to their IDs
@@ -575,6 +576,10 @@ const struct Command ColorCommands[] = {
         N_("Deprecated: Use `color` instead"),
         N_("mono <object> <attribute> [ <pattern> | <regex> ]"),
         "configuration.html#color-mono" },
+  { "theme", CMD_THEME, parse_theme,
+        N_("Load a color theme"),
+        N_("theme [ <name> ]"),
+        "configuration.html#theme" },
   { "uncolor", CMD_UNCOLOR, parse_uncolor,
         N_("Remove a `color` definition"),
         N_("uncolor <object> { * | <pattern> ... }"),

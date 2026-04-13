@@ -118,6 +118,7 @@ enum CommandId
   CMD_SUBSCRIBE_TO,          ///< `:subscribe-to`        @sa #CMD_UNSUBSCRIBE_FROM
   CMD_TAG_FORMATS,           ///< `:tag-formats`         @sa #CMD_TAG_TRANSFORMS
   CMD_TAG_TRANSFORMS,        ///< `:tag-transforms`      @sa #CMD_TAG_FORMATS
+  CMD_THEME,                 ///< `:theme`
   CMD_TIMEOUT_HOOK,          ///< `:timeout-hook`
   CMD_TOGGLE,                ///< `:toggle`              @sa #CMD_RESET, #CMD_SET, #CMD_UNSET
   CMD_UNALIAS,               ///< `:unalias`             @sa #CMD_ALIAS

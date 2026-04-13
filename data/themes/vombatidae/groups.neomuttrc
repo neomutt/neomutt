@@ -1,0 +1,85 @@
+# vim: filetype=neomuttrc
+#
+# Vombatidae Groups
+#
+# Based on the original vombatidae.neomuttrc colorscheme.
+
+source spec.neomuttrc
+
+# Core UI
+color normal        $my_normal_fg      $my_normal_bg
+color error         $my_error_fg       $my_error_bg
+color warning       $my_warning_fg     $my_warning_bg
+color message       $my_message_fg     $my_message_bg
+color indicator     $my_indicator_fg   $my_indicator_bg
+color status        $my_status_fg      $my_status_bg
+color search        $my_search_fg      $my_search_bg
+color tree          $my_tree_fg        $my_tree_bg
+color tilde         $my_tilde_fg       $my_tilde_bg
+color markers       $my_markers_fg     $my_markers_bg
+color attachment    $my_attach_fg      $my_attach_bg
+color signature     $my_signature_fg   $my_signature_bg
+color prompt        $my_prompt_fg      $my_prompt_bg
+color options       $my_options_fg     $my_options_bg
+color progress      $my_progress_fg    $my_progress_bg
+
+# Text attributes
+color bold          $my_bold_fg        $my_bold_bg
+color italic        $my_italic_fg      $my_italic_bg
+color underline     $my_underline_fg   $my_underline_bg
+
+# Stripes
+color stripe_even   $my_stripe_even_fg $my_stripe_even_bg
+color stripe_odd    $my_stripe_odd_fg  $my_stripe_odd_bg
+
+# Sidebar
+color sidebar_background    $my_sidebar_fg      $my_sidebar_bg
+color sidebar_divider       $my_sidebar_div_fg   $my_sidebar_bg
+color sidebar_flagged       $my_sidebar_flag_fg  $my_sidebar_bg
+color sidebar_highlight     $my_indicator_fg     $my_indicator_bg
+color sidebar_indicator     $my_indicator_fg     $my_indicator_bg
+color sidebar_new           $my_sidebar_new_fg   $my_sidebar_bg
+color sidebar_ordinary      $my_sidebar_fg       $my_sidebar_bg
+color sidebar_spool_file    $my_sidebar_new_fg   $my_sidebar_bg
+color sidebar_unread        $my_sidebar_unread_fg $my_sidebar_bg
+
+# Compose
+color compose_header            $my_compose_fg     $my_compose_bg
+color compose_security_both     $my_sec_both_fg    $my_compose_bg
+color compose_security_encrypt  $my_sec_encrypt_fg $my_compose_bg
+color compose_security_none     $my_sec_none_fg    $my_compose_bg
+color compose_security_sign     $my_sec_sign_fg    $my_compose_bg
+
+# Headers
+color hdrdefault    $my_header_fg      $my_header_bg
+color header        $my_header_date_fg $my_header_bg   "^date:"
+color header        $my_header_to_fg   $my_header_bg   "^(to|cc|bcc):"
+color header        $my_header_from_fg $my_header_bg   "^from:"
+color header        $my_header_subj_fg $my_header_bg   "^subject:"
+color header        $my_header_ua_fg   $my_header_bg   "^user-agent:"
+color header        $my_header_reply_fg $my_header_bg  "^reply-to:"
+
+# Quoted text
+color quoted0       $my_quoted0_fg     $my_quoted_bg
+color quoted1       $my_quoted1_fg     $my_quoted_bg
+color quoted2       $my_quoted2_fg     $my_quoted_bg
+color quoted3       $my_quoted3_fg     $my_quoted_bg
+color quoted4       $my_quoted4_fg     $my_quoted_bg
+color quoted5       $my_quoted0_fg     $my_quoted_bg
+color quoted6       $my_quoted1_fg     $my_quoted_bg
+color quoted7       $my_quoted2_fg     $my_quoted_bg
+color quoted8       $my_quoted3_fg     $my_quoted_bg
+color quoted9       $my_quoted4_fg     $my_quoted_bg
+
+# Index
+color index         $my_index_flag_fg  $my_index_bg    "~F"
+color index         $my_index_new_fg   $my_index_bg    "~N"
+color index         $my_index_new_fg   $my_index_bg    "~O"
+color index         $my_index_tag_fg   $my_index_tag_bg "~T"
+color index         $my_index_del_fg   $my_index_bg    "~D"
+
+# Body patterns
+color body          $my_url_fg         $my_normal_bg   "(https?|ftp)://[^ >)\"\t]+"
+color body          $my_url_fg         $my_normal_bg   "[-a-z_0-9.+]+@[-a-z_0-9.]+"
+color body          $my_gpg_good_fg    $my_normal_bg   "^gpg: Good signature.*"
+color body          $my_gpg_bad_fg     $my_normal_bg   "^gpg: BAD signature.*"

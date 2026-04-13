@@ -1,0 +1,35 @@
+# vim: filetype=neomuttrc
+#
+# Nightfox Palette (256-color approximation)
+#
+# Based on the nightfox.nvim colorscheme by edeneast
+# https://github.com/edeneast/nightfox.nvim
+#
+# Colors approximated to the xterm-256 palette.
+
+# Background shades (dark to light)
+set my_bg0 = "color233"
+set my_bg1 = "color235"
+set my_bg2 = "color236"
+set my_bg3 = "color238"
+set my_bg4 = "color60"
+
+# Foreground shades (bright to dim)
+set my_fg0 = "color252"
+set my_fg1 = "color251"
+set my_fg2 = "color145"
+set my_fg3 = "color103"
+
+# Accent colors
+set my_black   = "color238"
+set my_red     = "color168"
+set my_green   = "color108"
+set my_yellow  = "color179"
+set my_blue    = "color110"
+set my_magenta = "color140"
+set my_cyan    = "color80"
+set my_orange  = "color173"
+set my_pink    = "color170"
+set my_comment = "color103"
+set my_sel0    = "color237"
+set my_sel1    = "color60"
