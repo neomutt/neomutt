@@ -157,6 +157,10 @@ static int pager_repaint(struct MuttWindow *win)
       priv->lines[i].quote = NULL;
 
       MUTT_MEM_REALLOC(&(priv->lines[i].syntax), 1, struct TextSyntax);
+      priv->lines[i].syntax[0].attr_color = NULL;
+      priv->lines[i].syntax[0].first = -1;
+      priv->lines[i].syntax[0].last = -1;
+
       if (priv->search_compiled && priv->lines[i].search)
         FREE(&(priv->lines[i].search));
     }
