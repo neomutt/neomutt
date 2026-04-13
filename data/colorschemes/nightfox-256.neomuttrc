@@ -1,0 +1,89 @@
+# NeoMutt color file
+# Maintainer: Pedro Schreiber
+# Last Change: 2026 Apr 10
+# Version: 0.1
+#
+# NeoMutt colorscheme based on the nightfox.nvim palette by EdenEast.
+# https://github.com/EdenEast/nightfox.nvim
+#
+# Palette reference:
+#   bg0     #131a24  (dark bg)       -> color233
+#   bg1     #192330  (default bg)    -> color235
+#   bg2     #212e3f  (lighter bg)    -> color236
+#   bg3     #29394f  (cursor line)   -> color238
+#   bg4     #39506d  (border)        -> color60
+#   fg0     #d6d6d7  (lighter fg)    -> color188
+#   fg1     #cdcecf  (default fg)    -> color252
+#   fg2     #aeafb0  (darker fg)     -> color145
+#   fg3     #71839b  (line numbers)  -> color103
+#   comment #738091                  -> color243
+#   black   #393b44                  -> color237
+#   red     #c94f6d                  -> color167
+#   green   #81b29a                  -> color108
+#   yellow  #dbc074                  -> color179
+#   blue    #719cd6                  -> color110
+#   magenta #9d79d6                  -> color140
+#   cyan    #63cdcf                  -> color80
+#   white   #dfdfe0                  -> color254
+#   orange  #f4a261                  -> color215
+#   pink    #d67ad2                  -> color176
+#   sel0    #2b3b51  (visual sel)    -> color237
+#   sel1    #3c5372  (search bg)     -> color60
+
+# --- General ---
+color normal                    color252        color235
+color indicator                 color254        color238
+color status                    color145        color233
+color tree                      color110        color235
+color signature                 color243        color235
+color message                   color252        color235
+color attachment                color80         color235
+color error                     color167        color235
+color tilde                     color60         color235
+color search                    color235        color179
+color markers                   color243        color235
+
+# --- Media ---
+color quoted0                   color108        color235
+color quoted1                   color110        color235
+color quoted2                   color80         color235
+color quoted3                   color140        color235
+color quoted4                   color179        color235
+color quoted5                   color215        color235
+color quoted6                   color176        color235
+color quoted7                   color108        color235
+color quoted8                   color110        color235
+color quoted9                   color80         color235
+
+# --- Index ---
+color index                     color110        color235  "~N"        # New
+color index                     color110        color235  "~O"        # Old unread
+color index                     color215        color235  "~F"        # Flagged
+color index                     color235        color108  "~T"        # Tagged
+color index                     color243        color235  "~D"        # Deleted
+color index                     color167        color235  "~="        # Duplicates
+
+# --- Headers ---
+color hdrdefault                color103        color233
+color header                    color140        color233  "^date:"
+color header                    color80         color233  "^(to|cc|bcc):"
+color header                    color108        color233  "^from:"
+color header                    color179        color233  "^subject:"
+color header                    color110        color233  "^user-agent:"
+color header                    color110        color233  "^reply-to:"
+
+# --- Sidebar ---
+color sidebar_indicator         color254        color238
+color sidebar_highlight         color254        color238
+color sidebar_new               color110        color235
+color sidebar_ordinary          color252        color235
+color sidebar_divider           color60         color235
+
+# --- Compose ---
+color compose_header            color252        color235
+color compose_security_encrypt  color108        color235
+color compose_security_sign     color110        color235
+color compose_security_both     color80         color235
+color compose_security_none     color167        color235
+
+# vim: ft=neomuttrc
