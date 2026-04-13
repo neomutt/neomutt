@@ -3,6 +3,7 @@
  * Theme loading and management
  *
  * @authors
+ * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2026 Pedro Schreiber
  *
  * @copyright

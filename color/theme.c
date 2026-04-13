@@ -3,6 +3,7 @@
  * Theme loading and management
  *
  * @authors
+ * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2026 Pedro Schreiber
  *
  * @copyright
@@ -44,12 +45,12 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "theme.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
+#include "color.h"
 #include "commands/source.h"
 #include "muttlib.h"
-#include "color.h"
-#include "theme.h"
 
 /// Name of the currently loaded theme
 static char *CurrentTheme = NULL;
@@ -101,8 +102,7 @@ static void theme_scan_dir(const char *path, const char *source, struct Buffer *
     if (stat(buf_string(gfile), &st) == 0)
     {
       bool is_current = CurrentTheme && mutt_str_equal(de->d_name, CurrentTheme);
-      buf_add_printf(buf, "  %s %-20s  (%s)\n",
-                     is_current ? "*" : " ", de->d_name, source);
+      buf_add_printf(buf, "  %s %-20s  (%s)\n", is_current ? "*" : " ", de->d_name, source);
     }
     buf_pool_release(&gfile);
   }
