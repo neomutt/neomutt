@@ -37,6 +37,8 @@ struct AliasModuleData
   struct RegexList  alternates;         ///< Regexes to match the user's alternate email addresses
   struct RegexList  unalternates;       ///< Regexes to exclude false matches in alternates
   struct Notify    *alternates_notify;  ///< Notifications: #NotifyAlternates
+
+  struct HashTable *groups;             ///< Hash Table: "group-name" -> Group
 };
 
 #endif /* MUTT_ALIAS_MODULE_DATA_H */

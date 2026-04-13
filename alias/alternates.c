@@ -86,7 +86,7 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *li
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
       goto done;
 
     mutt_regexlist_remove(&md->unalternates, buf_string(token));

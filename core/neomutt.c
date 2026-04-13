@@ -35,7 +35,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
 #include "config/lib.h"
 #include "neomutt.h"
 #include "account.h"
@@ -353,8 +352,6 @@ bool neomutt_init(struct NeoMutt *n, char **envp, const struct Module **modules)
   n->notify_resize = notify_new();
   notify_set_parent(n->notify_resize, n->notify);
 
-  n->groups = groups_new();
-
   // Change the current umask, and save the original one
   n->user_default_umask = umask(077);
   mutt_debug(LL_DEBUG1, "user's umask %03o\n", n->user_default_umask);
@@ -436,8 +433,6 @@ void neomutt_free(struct NeoMutt **ptr)
   notify_free(&n->notify);
   if (n->time_c_locale)
     freelocale(n->time_c_locale);
-
-  groups_free(&n->groups);
 
   FREE(&n->home_dir);
   FREE(&n->username);

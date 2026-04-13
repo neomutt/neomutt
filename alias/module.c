@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "alias.h"
@@ -56,6 +57,8 @@ static bool alias_init(struct NeoMutt *n)
 
   ARRAY_INIT(&md->aliases);
   md->reverse_aliases = alias_reverse_init();
+
+  md->groups = groups_new();
 
   return true;
 }
@@ -97,6 +100,8 @@ static bool alias_cleanup(struct NeoMutt *n)
   aliaslist_clear(&md->aliases);
 
   alias_reverse_cleanup(&md->reverse_aliases);
+
+  groups_free(&md->groups);
 
   FREE(&md);
   return true;

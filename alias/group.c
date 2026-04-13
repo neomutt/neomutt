@@ -41,6 +41,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "group.h"
+#include "module_data.h"
 #include "parse/lib.h"
 
 /**
@@ -98,6 +99,9 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
     return MUTT_CMD_WARNING;
   }
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum GroupState gstate = GS_NONE;
   struct Buffer *token = buf_pool_get();
@@ -106,12 +110,12 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
       goto done;
 
     if ((cmd->id == CMD_UNGROUP) && mutt_istr_equal(buf_string(token), "*"))
     {
-      groups_remove_grouplist(NeoMutt->groups, &gl);
+      groups_remove_grouplist(md->groups, &gl);
       rc = MUTT_CMD_SUCCESS;
       goto done;
     }
@@ -140,7 +144,7 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
             goto done;
           }
           else if ((cmd->id == CMD_UNGROUP) &&
-                   (groups_remove_regex(NeoMutt->groups, &gl, buf_string(token)) < 0))
+                   (groups_remove_regex(md->groups, &gl, buf_string(token)) < 0))
           {
             goto done;
           }
@@ -163,7 +167,7 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
           if (cmd->id == CMD_GROUP)
             grouplist_add_addrlist(&gl, &al);
           else if (cmd->id == CMD_UNGROUP)
-            groups_remove_addrlist(NeoMutt->groups, &gl, &al);
+            groups_remove_addrlist(md->groups, &gl, &al);
           mutt_addrlist_clear(&al);
           break;
         }
@@ -200,6 +204,8 @@ enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
+  struct AliasModuleData *amd = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(amd);
   struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
   ASSERT(md);
 
@@ -207,7 +213,7 @@ enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, amd->groups) == -1)
       goto done;
 
     mutt_regexlist_remove(&md->unmail, buf_string(token));
@@ -248,6 +254,8 @@ enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *lin
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
+  struct AliasModuleData *amd = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(amd);
   struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
   ASSERT(md);
 
@@ -255,7 +263,7 @@ enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *lin
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, amd->groups) == -1)
       goto done;
 
     mutt_regexlist_remove(&md->unmail, buf_string(token));

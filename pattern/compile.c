@@ -40,6 +40,8 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "alias/lib.h"
+#include "alias/module_data.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
@@ -155,8 +157,11 @@ static bool eat_group(struct Pattern *pat, PatternCompFlags flags,
     goto out;
   }
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   pat->group_match = true;
-  pat->p.group = groups_get_group(NeoMutt->groups, token->data);
+  pat->p.group = groups_get_group(md->groups, token->data);
 
   rc = true;
 

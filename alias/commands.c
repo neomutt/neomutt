@@ -146,6 +146,9 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
     return MUTT_CMD_WARNING;
   }
 
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   struct Alias *a = NULL;
   enum NotifyAlias event;
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
@@ -155,7 +158,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
   /* name */
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
   mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf_string(token));
-  if (parse_grouplist(&gl, token, line, err, NeoMutt->groups) == -1)
+  if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
     goto done;
 
   char *name = mutt_str_dup(buf_string(token));
@@ -181,9 +184,6 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
     FREE(&estr);
     goto done;
   }
-
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
 
   /* check to see if an alias with this name already exists */
   struct Alias **ap = NULL;
