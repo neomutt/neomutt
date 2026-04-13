@@ -31,9 +31,9 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "commands/lib.h"
 #include "parse/lib.h"
-#include "group.h"
 #include "ignore.h"
 #include "module_data.h"
 #include "score.h"

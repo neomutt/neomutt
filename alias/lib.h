@@ -37,6 +37,7 @@
  * | alias/dlg_query.c   | @subpage alias_dlg_query   |
  * | alias/expando.c     | @subpage alias_expando     |
  * | alias/functions.c   | @subpage alias_functions   |
+ * | alias/group.c       | @subpage alias_group       |
  * | alias/gui.c         | @subpage alias_gui         |
  * | alias/module.c      | @subpage alias_module      |
  * | alias/reverse.c     | @subpage alias_reverse     |
@@ -50,6 +51,7 @@
 #include "core/lib.h"
 #include "alternates.h" // IWYU pragma: keep
 #include "expando.h"    // IWYU pragma: keep
+#include "group.h"      // IWYU pragma: keep
 
 struct Address;
 struct AddressList;

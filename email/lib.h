@@ -36,7 +36,6 @@
  * | email/enriched.c       | @subpage email_enriched   |
  * | email/envelope.c       | @subpage email_envelope   |
  * | email/from.c           | @subpage email_from       |
- * | email/group.c          | @subpage email_group      |
  * | email/handler.c        | @subpage email_handler    |
  * | email/header.c         | @subpage email_header     |
  * | email/ignore.c         | @subpage email_ignore     |
@@ -71,7 +70,6 @@
 #include "enriched.h"
 #include "envelope.h"
 #include "from.h"
-#include "group.h"
 #include "handler.h"
 #include "header.h"
 #include "ignore.h"

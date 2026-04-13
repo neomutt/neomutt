@@ -25,8 +25,8 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "commands/lib.h"
 #include "parse/lib.h"
 #include "common.h"

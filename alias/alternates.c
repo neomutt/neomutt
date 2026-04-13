@@ -31,11 +31,11 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "alternates.h"
 #include "parse/lib.h"
+#include "group.h"
 #include "module_data.h"
 
 /**

@@ -96,7 +96,8 @@ LIBALIAS=	libalias.a
 LIBALIASOBJS=	alias/alias.o alias/alternates.o alias/array.o \
 		alias/commands.o alias/complete.o alias/config.o \
 		alias/dlg_alias.o alias/dlg_query.o alias/expando.o \
-		alias/functions.o alias/gui.o alias/reverse.o alias/sort.o \
+		alias/functions.o alias/group.o alias/gui.o \
+		alias/reverse.o alias/sort.o \
 		alias/module.o
 CLEANFILES+=	$(LIBALIAS) $(LIBALIASOBJS)
 ALLOBJS+=	$(LIBALIASOBJS)
@@ -426,7 +427,7 @@ $(PWD)/editor:
 LIBEMAIL=	libemail.a
 LIBEMAILOBJS=	email/body.o email/commands.o email/config.o \
 		email/copy_body.o email/copy_email.o email/email.o \
-		email/enriched.o email/envelope.o email/from.o email/group.o \
+		email/enriched.o email/envelope.o email/from.o \
 		email/handler.o email/header.o email/ignore.o email/mailcap.o \
 		email/mime.o email/module.o email/parameter.o email/parse.o \
 		email/rfc2047.o email/rfc2231.o email/rfc3676.o email/score.o \
