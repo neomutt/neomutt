@@ -34,17 +34,20 @@ struct AliasModuleData
   struct AliasArray aliases;            ///< User's email aliases
   struct HashTable *reverse_aliases;    ///< Hash Table of aliases (email address -> alias)
 
-  struct RegexList  alternates;         ///< Regexes to match the user's alternate email addresses
-  struct RegexList  unalternates;       ///< Regexes to exclude false matches in alternates
-  struct Notify    *alternates_notify;  ///< Notifications: #NotifyAlternates
+  struct RegexList       alternates;            ///< Regexes to match the user's alternate email addresses
+  struct RegexList       unalternates;          ///< Regexes to exclude false matches in alternates
+  struct Notify         *alternates_notify;     ///< Notifications: #NotifyAlternates
 
-  struct HashTable *groups;             ///< Hash Table: "group-name" -> Group
+  struct MenuDefinition *menu_alias;            ///< Alias menu definition
+  struct MenuDefinition *menu_query;            ///< Query menu definition
 
-  struct HashTable *auto_subscribe_cache;  ///< Hash Table: "mailto:" (no value)
-  struct RegexList  mail;                  ///< Regexes to match mailing lists
-  struct RegexList  subscribed;            ///< Regexes to match subscribed mailing lists
-  struct RegexList  unmail;                ///< Regexes to exclude false matches in mail
-  struct RegexList  unsubscribed;          ///< Regexes to exclude false matches in subscribed
+  struct HashTable      *groups;                ///< Hash Table: "group-name" -> Group
+
+  struct HashTable      *auto_subscribe_cache;  ///< Hash Table: "mailto:" (no value)
+  struct RegexList       mail;                  ///< Regexes to match mailing lists
+  struct RegexList       subscribed;            ///< Regexes to match subscribed mailing lists
+  struct RegexList       unmail;                ///< Regexes to exclude false matches in mail
+  struct RegexList       unsubscribed;          ///< Regexes to exclude false matches in subscribed
 };
 
 #endif /* MUTT_ALIAS_MODULE_DATA_H */

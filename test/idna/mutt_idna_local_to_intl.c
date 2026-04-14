@@ -23,31 +23,16 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "test_common.h" // IWYU pragma: keep
-
-#ifdef HAVE_LIBIDN
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "idn_decode", DT_BOOL, true, 0, NULL, },
-  { "idn_encode", DT_BOOL, true, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-#endif
 
 void test_mutt_idna_local_to_intl(void)
 {
   // char * mutt_idna_local_to_intl(const char *user, const char *domain);
 
 #ifdef HAVE_LIBIDN
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
-
   {
     const char *addr = mutt_idna_local_to_intl(NULL, "banana");
     TEST_CHECK(addr != NULL);

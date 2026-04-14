@@ -231,7 +231,10 @@ static int alias_window_observer(struct NotifyCallback *nc)
  */
 static struct SimpleDialogWindows alias_dialog_new(struct AliasMenuData *mdata)
 {
-  struct SimpleDialogWindows sdw = simple_dialog_new(MdAlias, WT_DLG_ALIAS, AliasHelp);
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
+  struct SimpleDialogWindows sdw = simple_dialog_new(md->menu_alias, WT_DLG_ALIAS, AliasHelp);
 
   struct Menu *menu = sdw.menu;
 
@@ -266,6 +269,9 @@ static struct SimpleDialogWindows alias_dialog_new(struct AliasMenuData *mdata)
  */
 static bool dlg_alias(struct AliasMenuData *mdata)
 {
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
   if (ARRAY_EMPTY(&mdata->ava))
   {
     mutt_warning(_("You have no aliases"));
@@ -298,14 +304,14 @@ static bool dlg_alias(struct AliasMenuData *mdata)
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(MdAlias, GETCH_NO_FLAGS);
+    event = km_dokey(md->menu_alias, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MdAlias);
+      km_error_key(md->menu_alias);
       continue;
     }
     mutt_clear_error();

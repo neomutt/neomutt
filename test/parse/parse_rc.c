@@ -25,11 +25,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
 #include "test_common.h" // IWYU pragma: keep
@@ -45,20 +43,6 @@ static const struct Command mutt_commands[] = {
   { "toggle", CMD_TOGGLE, parse_set},
   { "unset",  CMD_UNSET,  parse_set},
   { NULL, CMD_NONE, NULL},
-  // clang-format on
-};
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "from",              DT_ADDRESS,                       0,                     0,               NULL, },
-  { "beep",              DT_BOOL,                          true,                  0,               NULL, },
-  { "ispell",            DT_STRING|D_STRING_COMMAND,       IP "ispell",           0,               NULL, },
-  { "mbox_type",         DT_ENUM,                          MUTT_MBOX,             IP &MboxTypeDef, NULL, },
-  { "net_inc",           DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10,                    0,               NULL, },
-  { "print",             DT_QUAD,                          MUTT_ASKNO,            0,               NULL, },
-  { "mask",              DT_REGEX|D_REGEX_NOSUB,           IP "!^\\.[^.]",        0,               NULL, },
-  { "sort",              DT_SORT|D_SORT_LAST,              EMAIL_SORT_DATE,       IP SortMethods,  NULL, },
-  { NULL },
   // clang-format on
 };
 
@@ -147,7 +131,6 @@ void test_parse_rc(void)
   rc = parse_rc_line(line, pc, pe);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
   struct HashElem *he = cs_get_elem(NeoMutt->sub->cs, "from");
   cs_he_initial_set(NeoMutt->sub->cs, he, "rich@flatcap.org", NULL);
   cs_str_reset(NeoMutt->sub->cs, "from", NULL);

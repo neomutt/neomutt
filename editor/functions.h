@@ -31,8 +31,9 @@ struct EnterWindowData;
 struct KeyEvent;
 struct MuttWindow;
 
-extern struct MenuDefinition *MdEditor;
-extern struct SubMenu *SmEditor;
+struct MenuDefinition *editor_get_menu_definition(void);
+
+#define MdEditor (editor_get_menu_definition())
 
 /**
  * @defgroup enter_function_api Enter Function API

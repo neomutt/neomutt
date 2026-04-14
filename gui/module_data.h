@@ -23,12 +23,18 @@
 #ifndef MUTT_GUI_MODULE_DATA_H
 #define MUTT_GUI_MODULE_DATA_H
 
+struct MenuDefinition;
+struct SubMenu;
+
 /**
  * struct GuiModuleData - Gui private Module data
  */
 struct GuiModuleData
 {
-  int dummy;
+  struct MenuDefinition *md_generic; ///< Generic Menu Definition
+  struct MenuDefinition *md_dialog;  ///< Dialog Menu Definition
+  struct SubMenu *sm_generic;        ///< Generic functions
+  struct SubMenu *sm_dialog;         ///< Dialog functions
 };
 
 #endif /* MUTT_GUI_MODULE_DATA_H */

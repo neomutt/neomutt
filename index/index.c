@@ -84,6 +84,7 @@
 #include "postpone/lib.h"
 #include "functions.h"
 #include "globals.h"
+#include "module_data.h"
 #include "muttlib.h"
 #include "private_data.h"
 #include "shared_data.h"
@@ -656,7 +657,10 @@ static int index_repaint(struct MuttWindow *win)
  */
 struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
 {
-  struct MuttWindow *win = menu_window_new(MdIndex, NeoMutt->sub);
+  struct IndexModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mdata);
+
+  struct MuttWindow *win = menu_window_new(mdata->menu_index, NeoMutt->sub);
   win->recalc = index_recalc;
   win->repaint = index_repaint;
 

@@ -49,6 +49,7 @@
 #include "question/lib.h"
 #include "functions.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mx.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
@@ -334,7 +335,9 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
   if ((r != -1) && c_prompt_after)
   {
     mutt_unget_ch(mutt_any_key_to_continue(_("Command: ")));
-    struct KeyEvent event = km_dokey(MdPager, GETCH_NO_FLAGS);
+    struct PagerModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+    ASSERT(mdata);
+    struct KeyEvent event = km_dokey(mdata->menu_pager, GETCH_NO_FLAGS);
     rc = event.op;
   }
   else

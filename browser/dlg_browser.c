@@ -96,6 +96,7 @@
 #include "expando.h"
 #include "functions.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
@@ -1045,7 +1046,11 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   else
     help_data = FolderHelp;
 
-  struct SimpleDialogWindows sdw = simple_dialog_new(MdBrowser, WT_DLG_BROWSER, help_data);
+  struct BrowserModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
+  ASSERT(md);
+
+  struct SimpleDialogWindows sdw = simple_dialog_new(md->menu_browser,
+                                                     WT_DLG_BROWSER, help_data);
 
   struct Menu *menu = sdw.menu;
   menu->make_entry = folder_make_entry;
@@ -1092,14 +1097,14 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     menu_tagging_dispatcher(priv->menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(MdBrowser, GETCH_NO_FLAGS);
+    event = km_dokey(md->menu_browser, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MdBrowser);
+      km_error_key(md->menu_browser);
       continue;
     }
     mutt_clear_error();

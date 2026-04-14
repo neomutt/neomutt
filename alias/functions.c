@@ -45,12 +45,8 @@
 #include "question/lib.h"
 #include "alias.h"
 #include "gui.h"
+#include "module_data.h"
 #include "sort.h"
-
-/// Alias Menu Definition
-struct MenuDefinition *MdAlias = NULL;
-/// Query Menu Definition
-struct MenuDefinition *MdQuery = NULL;
 
 // clang-format off
 /**
@@ -127,6 +123,9 @@ static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
  */
 void alias_init_keys(struct SubMenu *sm_generic)
 {
+  struct AliasModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mdata);
+
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
 
@@ -136,7 +135,7 @@ void alias_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, AliasDefaultBindings);
 
-  MdAlias = md;
+  mdata->menu_alias = md;
 
   sm = km_register_submenu(OpQuery);
   md = km_register_menu(MENU_QUERY, "query");
@@ -144,7 +143,7 @@ void alias_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, QueryDefaultBindings);
 
-  MdQuery = md;
+  mdata->menu_query = md;
 }
 
 /**

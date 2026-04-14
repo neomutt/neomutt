@@ -23,12 +23,14 @@
 #ifndef MUTT_PAGER_MODULE_DATA_H
 #define MUTT_PAGER_MODULE_DATA_H
 
+struct MenuDefinition;
+
 /**
  * struct PagerModuleData - Pager private Module data
  */
 struct PagerModuleData
 {
-  int dummy;
+  struct MenuDefinition *menu_pager; ///< Pager menu definition
 };
 
 #endif /* MUTT_PAGER_MODULE_DATA_H */

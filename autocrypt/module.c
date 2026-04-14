@@ -41,8 +41,8 @@ extern struct ConfigDef AutocryptVars[];
  */
 static bool autocrypt_init(struct NeoMutt *n)
 {
-  // struct AutocryptModuleData *md = MUTT_MEM_CALLOC(1, struct AutocryptModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_AUTOCRYPT, md);
+  struct AutocryptModuleData *md = MUTT_MEM_CALLOC(1, struct AutocryptModuleData);
+  neomutt_set_module_data(n, MODULE_ID_AUTOCRYPT, md);
 
   return true;
 }
@@ -66,10 +66,10 @@ static bool autocrypt_config_define_variables(struct NeoMutt *n, struct ConfigSe
  */
 static bool autocrypt_cleanup(struct NeoMutt *n)
 {
-  // struct AutocryptModuleData *md = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
-  // ASSERT(md);
+  struct AutocryptModuleData *md = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
+  ASSERT(md);
 
-  // FREE(&md);
+  FREE(&md);
   return true;
 }
 

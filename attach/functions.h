@@ -23,11 +23,8 @@
 #ifndef MUTT_ATTACH_FUNCTIONS_H
 #define MUTT_ATTACH_FUNCTIONS_H
 
-struct AttachPrivateData;
 struct KeyEvent;
 struct MuttWindow;
-
-extern struct MenuDefinition *MdAttach;
 
 /**
  * @defgroup attach_function_api Attachment Function API

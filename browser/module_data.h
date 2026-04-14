@@ -23,12 +23,14 @@
 #ifndef MUTT_BROWSER_MODULE_DATA_H
 #define MUTT_BROWSER_MODULE_DATA_H
 
+struct MenuDefinition;
+
 /**
  * struct BrowserModuleData - Browser private Module data
  */
 struct BrowserModuleData
 {
-  int dummy;
+  struct MenuDefinition *menu_browser; ///< Browser menu definition
 };
 
 #endif /* MUTT_BROWSER_MODULE_DATA_H */

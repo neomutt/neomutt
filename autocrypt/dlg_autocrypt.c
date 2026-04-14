@@ -82,6 +82,7 @@
 #include "autocrypt_data.h"
 #include "expando.h"
 #include "functions.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 
 /// Help Bar for the Autocrypt Account selection dialog
@@ -239,6 +240,9 @@ static int autocrypt_window_observer(struct NotifyCallback *nc)
  */
 void dlg_autocrypt(void)
 {
+  struct AutocryptModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
+  ASSERT(md);
+
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (!c_autocrypt)
     return;
@@ -246,7 +250,8 @@ void dlg_autocrypt(void)
   if (mutt_autocrypt_init(false))
     return;
 
-  struct SimpleDialogWindows sdw = simple_dialog_new(MdAutocrypt, WT_DLG_AUTOCRYPT, AutocryptHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(md->menu_autocrypt,
+                                                     WT_DLG_AUTOCRYPT, AutocryptHelp);
 
   struct Menu *menu = sdw.menu;
 
@@ -276,14 +281,14 @@ void dlg_autocrypt(void)
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(MdAutocrypt, GETCH_NO_FLAGS);
+    event = km_dokey(md->menu_autocrypt, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MdAutocrypt);
+      km_error_key(md->menu_autocrypt);
       continue;
     }
     mutt_clear_error();

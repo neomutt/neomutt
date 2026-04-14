@@ -53,6 +53,7 @@ struct MenuDefinition;
 struct SubMenu;
 
 void editor_init_keys(struct SubMenu *sm_generic);
+struct SubMenu *editor_get_submenu(void);
 
 /**
  * @defgroup get_field_callback_api Get Field Callback API

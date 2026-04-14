@@ -25,7 +25,6 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
 #include "parse/lib.h"
@@ -36,13 +35,6 @@
 static const struct Command FolderHook = { "folder-hook", CMD_FOLDER_HOOK, NULL};
 static const struct Command UnHook     = { "unhook",      CMD_UNHOOK,      NULL};
 // clang-format on
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "default_hook", DT_STRING, IP "~f %s !~P | (~P ~C %s)", 0, NULL, },
-  { NULL },
-  // clang-format on
-};
 
 const struct Command unhook_test_commands[] = {
   // clang-format off
@@ -65,7 +57,6 @@ void test_parse_unhook(void)
 {
   // enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
   commands_register(&NeoMutt->commands, unhook_test_commands);
 
   struct Buffer *line = buf_pool_get();

@@ -56,6 +56,7 @@
 #include "sidebar/lib.h"
 #include "display.h"
 #include "functions.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mx.h"
@@ -312,8 +313,11 @@ int dlg_pager(struct PagerView *pview)
     }
   }
   //---------- setup help menu ------------------------------------------------
+  struct PagerModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mdata);
+
   pview->win_pager->help_data = pager_resolve_help_mapping(pview->mode, mailbox_type);
-  pview->win_pager->help_md = MdPager;
+  pview->win_pager->help_md = mdata->menu_pager;
 
   //---------- initialize redraw pdata  -----------------------------------------
   pview->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
@@ -489,7 +493,7 @@ int dlg_pager(struct PagerView *pview)
     // One of such functions is `mutt_enter_command()`
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index handles the operation and then restarts pager
-    struct KeyEvent event = km_dokey(MdPager, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(mdata->menu_pager, GETCH_NO_FLAGS);
     op = event.op;
 
     // km_dokey() can block, so recheck the timer.
@@ -515,7 +519,7 @@ int dlg_pager(struct PagerView *pview)
 
     if (op == OP_NULL)
     {
-      km_error_key(MdPager);
+      km_error_key(mdata->menu_pager);
       continue;
     }
 

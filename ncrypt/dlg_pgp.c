@@ -81,6 +81,7 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "expando_pgp.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "pgp_functions.h"
 #include "pgplib.h"
@@ -224,7 +225,10 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
 
   pgp_sort_keys(&pua);
 
-  struct SimpleDialogWindows sdw = simple_dialog_new(MdPgp, WT_DLG_PGP, PgpHelp);
+  struct NcryptModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mdata);
+
+  struct SimpleDialogWindows sdw = simple_dialog_new(mdata->menu_pgp, WT_DLG_PGP, PgpHelp);
   menu = sdw.menu;
   struct PgpData pd = { false, menu, &pua, NULL };
 
@@ -256,14 +260,14 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(MdPgp, GETCH_NO_FLAGS);
+    event = km_dokey(mdata->menu_pgp, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MdPgp);
+      km_error_key(mdata->menu_pgp);
       continue;
     }
     mutt_clear_error();

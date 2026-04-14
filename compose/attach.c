@@ -71,7 +71,7 @@
 #include "expando/lib.h"
 #include "menu/lib.h"
 #include "attach_data.h"
-#include "functions.h"
+#include "module_data.h"
 #include "shared_data.h"
 
 /**
@@ -268,7 +268,10 @@ static int attach_recalc(struct MuttWindow *win)
  */
 struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedData *shared)
 {
-  struct MuttWindow *win_attach = menu_window_new(MdCompose, NeoMutt->sub);
+  struct ComposeModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_COMPOSE);
+  ASSERT(mdata);
+
+  struct MuttWindow *win_attach = menu_window_new(mdata->md_compose, NeoMutt->sub);
 
   struct ComposeAttachData *adata = attach_data_new(shared->email);
 

@@ -60,6 +60,7 @@
 #include "sidebar/lib.h"
 #include "external.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -75,9 +76,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-
-/// Index Menu Definition
-struct MenuDefinition *MdIndex = NULL;
 
 // clang-format off
 /**
@@ -336,7 +334,9 @@ void index_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, IndexDefaultBindings);
 
-  MdIndex = md;
+  struct IndexModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mdata);
+  mdata->menu_index = md;
 }
 
 /**
@@ -2149,7 +2149,9 @@ static int op_mark_msg(struct IndexSharedData *shared,
 
       /* L10N: "message hotkey" is the key bindings menu description of a
          macro created by <mark-message>. */
-      km_bind(MdIndex, str, OP_MACRO, macro, _("message hotkey"), NULL);
+      struct IndexModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+      ASSERT(mdata);
+      km_bind(mdata->menu_index, str, OP_MACRO, macro, _("message hotkey"), NULL);
 
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed
@@ -3479,4 +3481,16 @@ int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
   return rc;
+}
+
+/**
+ * index_get_menu_definition - Get the Index Menu Definition
+ * @retval ptr Index Menu Definition
+ */
+struct MenuDefinition *index_get_menu_definition(void)
+{
+  struct IndexModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mdata);
+
+  return mdata->menu_index;
 }

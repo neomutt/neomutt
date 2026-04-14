@@ -23,10 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "parse/lib.h"
@@ -34,14 +32,6 @@
 #include "test_common.h"
 
 static const struct Command Alias = { "alias", CMD_ALIAS, NULL };
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "idn_decode", DT_BOOL, true, 0, NULL, },
-  { "idn_encode", DT_BOOL, true, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
 
 static const struct CommandTest Tests[] = {
   // clang-format off
@@ -61,8 +51,6 @@ static const struct CommandTest Tests[] = {
 
 void test_parse_alias(void)
 {
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
-
   // enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
   struct Buffer *line = buf_pool_get();

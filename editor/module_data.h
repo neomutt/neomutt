@@ -23,12 +23,16 @@
 #ifndef MUTT_EDITOR_MODULE_DATA_H
 #define MUTT_EDITOR_MODULE_DATA_H
 
+struct MenuDefinition;
+struct SubMenu;
+
 /**
  * struct EditorModuleData - Editor private Module data
  */
 struct EditorModuleData
 {
-  int dummy;
+  struct MenuDefinition *md_editor; ///< Editor Menu Definition
+  struct SubMenu *sm_editor;        ///< Editor functions
 };
 
 #endif /* MUTT_EDITOR_MODULE_DATA_H */

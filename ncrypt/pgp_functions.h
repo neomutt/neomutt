@@ -28,17 +28,15 @@
 struct KeyEvent;
 struct MuttWindow;
 
-extern struct MenuDefinition *MdPgp;
-
 /**
  * struct PgpData - Data to pass to the Pgp Functions
  */
 struct PgpData
 {
-  bool done;                      ///< Should we close the Dialog?
-  struct Menu *menu;              ///< Pgp Menu
-  struct PgpUidArray *key_table;  ///< Array of Keys
-  struct PgpKeyInfo *key;         ///< Selected Key
+  bool done;                     ///< Should we close the Dialog?
+  struct Menu *menu;             ///< Pgp Menu
+  struct PgpUidArray *key_table; ///< Array of Keys
+  struct PgpKeyInfo *key;        ///< Selected Key
 };
 
 /**
@@ -61,7 +59,7 @@ typedef int (*pgp_function_t)(struct PgpData *pd, const struct KeyEvent *event);
  */
 struct PgpFunction
 {
-  int op;                      ///< Op code, e.g. OP_GENERIC_SELECT_ENTRY
+  int op;                  ///< Op code, e.g. OP_GENERIC_SELECT_ENTRY
   pgp_function_t function; ///< Function to call
 };
 

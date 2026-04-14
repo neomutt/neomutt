@@ -50,6 +50,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -59,9 +60,6 @@
 #include "sort.h"
 
 static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct KeyEvent *event);
-
-/// Browser Menu Definition
-struct MenuDefinition *MdBrowser = NULL;
 
 // clang-format off
 /**
@@ -129,6 +127,9 @@ static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
  */
 void browser_init_keys(struct SubMenu *sm_generic)
 {
+  struct BrowserModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
+  ASSERT(mdata);
+
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
 
@@ -138,7 +139,7 @@ void browser_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, BrowserDefaultBindings);
 
-  MdBrowser = md;
+  mdata->menu_browser = md;
 }
 
 /**

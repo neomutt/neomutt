@@ -28,8 +28,6 @@
 struct MuttWindow;
 struct BrowserPrivateData;
 
-extern struct MenuDefinition *MdBrowser;
-
 /**
  * @defgroup browser_function_api Browser Function API
  *

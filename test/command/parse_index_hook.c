@@ -25,7 +25,6 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
 #include "parse/lib.h"
@@ -34,14 +33,6 @@
 
 static const struct Command IndexFormatHook = { "index-format-hook",
                                                 CMD_INDEX_FORMAT_HOOK, NULL };
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  // index-format-hook <name> [!]<pattern> <format-string>
-  { "default_hook", DT_STRING, IP "~f %s !~P | (~P ~C %s)", 0, NULL, },
-  { NULL },
-  // clang-format on
-};
 
 static const struct CommandTest Tests[] = {
   // clang-format off
@@ -57,8 +48,6 @@ static const struct CommandTest Tests[] = {
 void test_parse_hook_index(void)
 {
   // enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
-
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   struct Buffer *line = buf_pool_get();
   struct ParseContext *pc = parse_context_new();

@@ -86,6 +86,7 @@
 #include "cbar.h"
 #include "functions.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "shared_data.h"
 
@@ -322,6 +323,9 @@ void update_menu(struct AttachCtx *actx, struct Menu *menu, bool init)
 static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
                                            struct Email *e, struct Buffer *fcc)
 {
+  struct ComposeModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_COMPOSE);
+  ASSERT(mdata);
+
   struct ComposeSharedData *shared = compose_shared_data_new();
   shared->sub = sub;
   shared->email = e;
@@ -388,7 +392,7 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
   shared->win_attach_bar = win_abar;
 
   dlg->help_data = ComposeHelp;
-  dlg->help_md = MdCompose;
+  dlg->help_md = mdata->md_compose;
 
   return dlg;
 }
@@ -407,6 +411,9 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
  */
 int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct ConfigSubset *sub)
 {
+  struct ComposeModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_COMPOSE);
+  ASSERT(mdata);
+
   struct MuttWindow *dlg = compose_dlg_init(sub, e, fcc);
   struct ComposeSharedData *shared = dlg->wdata;
   shared->mailbox = get_current_mailbox();
@@ -425,7 +432,7 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
     dlg->help_data = ComposeNewsHelp;
   else
     dlg->help_data = ComposeHelp;
-  dlg->help_md = MdCompose;
+  dlg->help_md = mdata->md_compose;
 
   struct Menu *menu = shared->adata->menu;
   update_menu(shared->adata->actx, menu, true);
@@ -446,14 +453,14 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(MdCompose, GETCH_NO_FLAGS);
+    event = km_dokey(mdata->md_compose, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MdCompose);
+      km_error_key(mdata->md_compose);
       continue;
     }
     mutt_clear_error();

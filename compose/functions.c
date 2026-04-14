@@ -61,6 +61,7 @@
 #include "attach_data.h"
 #include "external.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -69,9 +70,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-
-/// Compose Menu Definition
-struct MenuDefinition *MdCompose = NULL;
 
 // clang-format off
 /**
@@ -210,6 +208,9 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
  */
 void compose_init_keys(struct SubMenu *sm_generic)
 {
+  struct ComposeModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_COMPOSE);
+  ASSERT(mdata);
+
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
 
@@ -219,7 +220,7 @@ void compose_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, ComposeDefaultBindings);
 
-  MdCompose = md;
+  mdata->md_compose = md;
 }
 
 /**

@@ -32,12 +32,7 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
-
-/// Pgp Menu Definition
-struct MenuDefinition *MdPgp = NULL;
-
-/// Smime Menu Definition
-struct MenuDefinition *MdSmime = NULL;
+#include "module_data.h"
 
 // clang-format off
 /**
@@ -99,7 +94,9 @@ void pgp_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, PgpDefaultBindings);
 
-  MdPgp = md;
+  struct NcryptModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mdata);
+  mdata->menu_pgp = md;
 
   sm = km_register_submenu(OpSmime);
   md = km_register_menu(MENU_SMIME, "smime");
@@ -107,5 +104,5 @@ void pgp_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, SmimeDefaultBindings);
 
-  MdSmime = md;
+  mdata->menu_smime = md;
 }

@@ -23,12 +23,16 @@
 #ifndef MUTT_AUTOCRYPT_MODULE_DATA_H
 #define MUTT_AUTOCRYPT_MODULE_DATA_H
 
+#include <sqlite3.h>
+
+struct MenuDefinition;
+
 /**
  * struct AutocryptModuleData - Autocrypt private Module data
  */
 struct AutocryptModuleData
 {
-  int dummy;
+  struct MenuDefinition *menu_autocrypt; ///< Autocrypt menu definition
 };
 
 #endif /* MUTT_AUTOCRYPT_MODULE_DATA_H */

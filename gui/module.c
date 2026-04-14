@@ -62,8 +62,11 @@ static void log_gui(void)
   mutt_debug(LL_DEBUG1, "    TERM=%s\n", NONULL(term));
   mutt_debug(LL_DEBUG1, "    COLORTERM=%s\n", NONULL(color_term));
   mutt_debug(LL_DEBUG1, "    True color support: %s\n", true_color ? "YES" : "NO");
-  mutt_debug(LL_DEBUG1, "    Screen: %dx%d\n", RootWindow->state.cols,
-             RootWindow->state.rows);
+  if (RootWindow)
+  {
+    mutt_debug(LL_DEBUG1, "    Screen: %dx%d\n", RootWindow->state.cols,
+               RootWindow->state.rows);
+  }
 }
 
 /**
@@ -71,8 +74,8 @@ static void log_gui(void)
  */
 static bool gui_init(struct NeoMutt *n)
 {
-  // struct GuiModuleData *md = MUTT_MEM_CALLOC(1, struct GuiModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_GUI, md);
+  struct GuiModuleData *md = MUTT_MEM_CALLOC(1, struct GuiModuleData);
+  neomutt_set_module_data(n, MODULE_ID_GUI, md);
 
   return true;
 }
@@ -120,10 +123,10 @@ static void gui_gui_cleanup(struct NeoMutt *n)
  */
 static bool gui_cleanup(struct NeoMutt *n)
 {
-  // struct GuiModuleData *md = neomutt_get_module_data(n, MODULE_ID_GUI);
-  // ASSERT(md);
+  struct GuiModuleData *md = neomutt_get_module_data(n, MODULE_ID_GUI);
+  ASSERT(md);
 
-  // FREE(&md);
+  FREE(&md);
   return true;
 }
 

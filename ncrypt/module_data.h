@@ -23,12 +23,15 @@
 #ifndef MUTT_NCRYPT_MODULE_DATA_H
 #define MUTT_NCRYPT_MODULE_DATA_H
 
+struct MenuDefinition;
+
 /**
  * struct NcryptModuleData - Ncrypt private Module data
  */
 struct NcryptModuleData
 {
-  int dummy;
+  struct MenuDefinition *menu_pgp;   ///< PGP menu definition
+  struct MenuDefinition *menu_smime; ///< S/MIME menu definition
 };
 
 #endif /* MUTT_NCRYPT_MODULE_DATA_H */

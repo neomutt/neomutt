@@ -41,8 +41,8 @@ extern struct ConfigDef PagerVars[];
  */
 static bool pager_init(struct NeoMutt *n)
 {
-  // struct PagerModuleData *md = MUTT_MEM_CALLOC(1, struct PagerModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_PAGER, md);
+  struct PagerModuleData *md = MUTT_MEM_CALLOC(1, struct PagerModuleData);
+  neomutt_set_module_data(n, MODULE_ID_PAGER, md);
 
   return true;
 }
@@ -60,10 +60,10 @@ static bool pager_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
  */
 static bool pager_cleanup(struct NeoMutt *n)
 {
-  // struct PagerModuleData *md = neomutt_get_module_data(n, MODULE_ID_PAGER);
-  // ASSERT(md);
+  struct PagerModuleData *md = neomutt_get_module_data(n, MODULE_ID_PAGER);
+  ASSERT(md);
 
-  // FREE(&md);
+  FREE(&md);
   return true;
 }
 

@@ -25,19 +25,11 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "hooks/lib.h"
 #include "parse/lib.h"
 #include "common.h"
 #include "test_common.h"
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "default_hook", DT_STRING, IP "~f %s !~P | (~P ~C %s)", 0, NULL, },
-  { NULL },
-  // clang-format on
-};
 
 // clang-format off
 static const struct Command MessageHook = { "message-hook", CMD_MESSAGE_HOOK, NULL };
@@ -175,8 +167,6 @@ static void test_parse_send2_hook(void)
 
 void test_parse_hook_pattern(void)
 {
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
-
   test_parse_message_hook();
   test_parse_reply_hook();
   test_parse_send_hook();

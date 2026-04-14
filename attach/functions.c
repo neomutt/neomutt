@@ -42,6 +42,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach.h"
+#include "module_data.h"
 #include "mutt_attach.h"
 #include "private_data.h"
 #include "recvattach.h"
@@ -50,9 +51,6 @@
 /// Error message for unavailable functions in attach mode
 static const char *Function_not_permitted_in_attach_message_mode = N_(
     "Function not permitted in attach-message mode");
-
-/// Attach Menu Definition
-struct MenuDefinition *MdAttach = NULL;
 
 // clang-format off
 /**
@@ -127,6 +125,9 @@ static const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attach */
  */
 void attach_init_keys(struct SubMenu *sm_generic)
 {
+  struct AttachModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mdata);
+
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
 
@@ -136,7 +137,7 @@ void attach_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, AttachmentDefaultBindings);
 
-  MdAttach = md;
+  mdata->menu_attach = md;
 }
 
 /**

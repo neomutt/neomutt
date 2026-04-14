@@ -213,6 +213,7 @@ void test_attr_colors(void)
   }
 
 #ifdef NEOMUTT_DIRECT_COLORS
+  StartupComplete = false;
   {
     color_t Colors[][2] = {
       // clang-format off
@@ -232,6 +233,8 @@ void test_attr_colors(void)
       // clang-format on
     };
 
+    cs_str_native_set(NeoMutt->sub->cs, "color_directcolor", true, NULL);
+
     for (int i = 0; i < countof(Colors); i++)
     {
       color_t col = color_xterm256_to_24bit(Colors[i][0]);
@@ -246,6 +249,7 @@ void test_attr_colors(void)
     color_t col = color_xterm256_to_24bit(123);
     TEST_CHECK_NUM_EQ(col, 123);
   }
+  StartupComplete = true;
 #endif
 
   {
@@ -279,5 +283,8 @@ void test_attr_colors(void)
     ac2.bg.color = 0x000007;
     ac2.bg.type = CT_RGB;
     attr_color_overwrite(&ac1, &ac2);
+
+    curses_color_free(&ac1.curses_color);
+    curses_color_free(&ac1.curses_color);
   }
 }

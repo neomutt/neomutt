@@ -39,14 +39,9 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "enter.h"
+#include "module_data.h"
 #include "state.h"
 #include "wdata.h"
-
-/// Editor Menu Definition
-struct MenuDefinition *MdEditor = NULL;
-
-/// Editor functions
-struct SubMenu *SmEditor = NULL;
 
 // clang-format off
 /**
@@ -130,6 +125,9 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
  */
 void editor_init_keys(struct SubMenu *sm_generic)
 {
+  struct EditorModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
+  ASSERT(mdata);
+
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
 
@@ -138,8 +136,8 @@ void editor_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm);
   km_menu_add_bindings(md, EditorDefaultBindings);
 
-  MdEditor = md;
-  SmEditor = sm;
+  mdata->md_editor = md;
+  mdata->sm_editor = sm;
 }
 
 /**
@@ -451,7 +449,10 @@ static int op_editor_transpose_chars(struct EnterWindowData *wdata, const struct
  */
 static int op_help(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
-  mutt_help(MdEditor);
+  struct EditorModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
+  ASSERT(mdata);
+
+  mutt_help(mdata->md_editor);
   return FR_SUCCESS;
 }
 
@@ -533,4 +534,28 @@ int enter_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
   return rc;
+}
+
+/**
+ * editor_get_menu_definition - Get the Editor Menu Definition
+ * @retval ptr Editor Menu Definition
+ */
+struct MenuDefinition *editor_get_menu_definition(void)
+{
+  struct EditorModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
+  ASSERT(mdata);
+
+  return mdata->md_editor;
+}
+
+/**
+ * editor_get_submenu - Get the Editor SubMenu
+ * @retval ptr Editor SubMenu
+ */
+struct SubMenu *editor_get_submenu(void)
+{
+  struct EditorModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
+  ASSERT(mdata);
+
+  return mdata->sm_editor;
 }

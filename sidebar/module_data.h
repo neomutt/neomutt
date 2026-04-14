@@ -23,12 +23,16 @@
 #ifndef MUTT_SIDEBAR_MODULE_DATA_H
 #define MUTT_SIDEBAR_MODULE_DATA_H
 
+struct MenuDefinition;
+struct SubMenu;
+
 /**
  * struct SidebarModuleData - Sidebar private Module data
  */
 struct SidebarModuleData
 {
-  int dummy;
+  struct MenuDefinition *md_sidebar; ///< Sidebar Menu Definition
+  struct SubMenu *sm_sidebar;        ///< Sidebar functions
 };
 
 #endif /* MUTT_SIDEBAR_MODULE_DATA_H */

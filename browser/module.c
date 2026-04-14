@@ -42,8 +42,8 @@ extern struct ConfigDef BrowserVars[];
  */
 static bool browser_init(struct NeoMutt *n)
 {
-  // struct BrowserModuleData *md = MUTT_MEM_CALLOC(1, struct BrowserModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_BROWSER, md);
+  struct BrowserModuleData *md = MUTT_MEM_CALLOC(1, struct BrowserModuleData);
+  neomutt_set_module_data(n, MODULE_ID_BROWSER, md);
 
   return true;
 }
@@ -61,10 +61,10 @@ static bool browser_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  */
 static bool browser_cleanup(struct NeoMutt *n)
 {
-  // struct BrowserModuleData *md = neomutt_get_module_data(n, MODULE_ID_BROWSER);
-  // ASSERT(md);
+  struct BrowserModuleData *md = neomutt_get_module_data(n, MODULE_ID_BROWSER);
+  ASSERT(md);
 
-  // FREE(&md);
+  FREE(&md);
   return true;
 }
 

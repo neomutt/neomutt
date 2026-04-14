@@ -25,13 +25,10 @@
 
 #include <stdbool.h>
 
-struct IndexSharedData;
 struct KeyEvent;
 struct MuttWindow;
 struct PagerPrivateData;
 struct PagerView;
-
-extern struct MenuDefinition *MdPager;
 
 /**
  * @defgroup pager_function_api Pager Function API
@@ -48,7 +45,9 @@ extern struct MenuDefinition *MdPager;
  * @pre priv   is not NULL
  * @pre event  is not NULL
  */
-typedef int (*pager_function_t)(struct IndexSharedData *shared, struct PagerPrivateData *priv, const struct KeyEvent *event);
+typedef int (*pager_function_t)(struct IndexSharedData *shared,
+                                struct PagerPrivateData *priv,
+                                const struct KeyEvent *event);
 
 /**
  * struct PagerFunction - A NeoMutt function
@@ -61,5 +60,8 @@ struct PagerFunction
 
 int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview);
+struct MenuDefinition *pager_get_menu_definition(void);
+
+#define MdPager (pager_get_menu_definition())
 
 #endif /* MUTT_PAGER_FUNCTIONS_H */

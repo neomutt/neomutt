@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "config/common.h" // IWYU pragma: keep
 #include "config/lib.h"
@@ -52,11 +53,16 @@ void test_config_cache(void)
   }
 
   {
+    StartupComplete = false;
+    int rc = cs_subset_str_string_set(sub, "maildir_field_delimiter", ":", NULL);
+    TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
+
     const char *c_maildir_field_delimiter = cc_maildir_field_delimiter();
     TEST_CHECK(c_maildir_field_delimiter != NULL);
-    int rc = cs_subset_str_string_set(sub, "maildir_field_delimiter", ";", NULL);
+    rc = cs_subset_str_string_set(sub, "maildir_field_delimiter", ";", NULL);
     TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
     config_cache_cleanup();
+    StartupComplete = true;
   }
 
   log_line(__func__);

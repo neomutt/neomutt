@@ -23,12 +23,14 @@
 #ifndef MUTT_POSTPONE_MODULE_DATA_H
 #define MUTT_POSTPONE_MODULE_DATA_H
 
+struct MenuDefinition;
+
 /**
  * struct PostponeModuleData - Postpone private Module data
  */
 struct PostponeModuleData
 {
-  int dummy;
+  struct MenuDefinition *menu_postpone; ///< Postpone menu definition
 };
 
 #endif /* MUTT_POSTPONE_MODULE_DATA_H */

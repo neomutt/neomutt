@@ -50,6 +50,7 @@
 #include "pattern/lib.h"
 #include "sidebar/lib.h"
 #include "display.h"
+#include "module_data.h"
 #include "muttlib.h"
 #include "private_data.h"
 
@@ -59,9 +60,6 @@ static const char *Not_available_in_this_menu = N_("Not available in this menu")
 static int op_pager_search_next(struct IndexSharedData *shared,
                                 struct PagerPrivateData *priv,
                                 const struct KeyEvent *event);
-
-/// Pager Menu Definition
-struct MenuDefinition *MdPager = NULL;
 
 // clang-format off
 /**
@@ -330,7 +328,9 @@ void pager_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_sidebar);
   km_menu_add_bindings(md, PagerDefaultBindings);
 
-  MdPager = md;
+  struct PagerModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mdata);
+  mdata->menu_pager = md;
 }
 
 /**
@@ -1008,7 +1008,10 @@ static int op_help(struct IndexSharedData *shared,
     mutt_error(_("Help is currently being shown"));
     return FR_ERROR;
   }
-  mutt_help(MdPager);
+  struct PagerModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mdata);
+
+  mutt_help(mdata->menu_pager);
   pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
@@ -1178,4 +1181,16 @@ int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
   return rc;
+}
+
+/**
+ * pager_get_menu_definition - Get the Pager Menu Definition
+ * @retval ptr Pager Menu Definition
+ */
+struct MenuDefinition *pager_get_menu_definition(void)
+{
+  struct PagerModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mdata);
+
+  return mdata->menu_pager;
 }

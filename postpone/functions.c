@@ -38,9 +38,7 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
-
-/// Postpone Menu Definition
-struct MenuDefinition *MdPostpone = NULL;
+#include "module_data.h"
 
 // clang-format off
 /**
@@ -78,7 +76,9 @@ void postponed_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, PostponedDefaultBindings);
 
-  MdPostpone = md;
+  struct PostponeModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
+  ASSERT(mdata);
+  mdata->menu_postpone = md;
 }
 
 /**
