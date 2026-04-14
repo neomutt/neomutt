@@ -69,6 +69,14 @@ static bool history_cleanup(struct NeoMutt *n)
 }
 
 /**
+ * history_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool history_gui_init(struct NeoMutt *n)
+{
+  return true;
+}
+
+/**
  * history_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
 void history_gui_cleanup(struct NeoMutt *n)
@@ -86,7 +94,7 @@ const struct Module ModuleHistory = {
   NULL, // config_define_types
   history_config_define_variables,
   NULL, // commands_register
-  NULL, // gui_init
+  history_gui_init,
   history_gui_cleanup,
   history_cleanup,
 };

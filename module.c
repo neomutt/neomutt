@@ -43,6 +43,14 @@ static bool main_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
 }
 
 /**
+ * main_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool main_gui_init(struct NeoMutt *n)
+{
+  return true;
+}
+
+/**
  * main_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
 void main_gui_cleanup(struct NeoMutt *n)
@@ -59,7 +67,7 @@ const struct Module ModuleMain = {
   NULL, // config_define_types
   main_config_define_variables,
   NULL, // commands_register
-  NULL, // gui_init
+  main_gui_init,
   main_gui_cleanup,
   NULL, // cleanup
 };

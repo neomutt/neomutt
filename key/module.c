@@ -68,6 +68,14 @@ static bool key_cleanup(struct NeoMutt *n)
 }
 
 /**
+ * key_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool key_gui_init(struct NeoMutt *n)
+{
+  return true;
+}
+
+/**
  * key_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
 void key_gui_cleanup(struct NeoMutt *n)
@@ -85,7 +93,7 @@ const struct Module ModuleKey = {
   NULL, // config_define_types
   NULL, // config_define_variables
   key_commands_register,
-  NULL, // gui_init
+  key_gui_init,
   key_gui_cleanup,
   key_cleanup,
 };

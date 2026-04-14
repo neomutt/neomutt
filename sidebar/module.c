@@ -79,6 +79,14 @@ static bool sidebar_cleanup(struct NeoMutt *n)
 }
 
 /**
+ * sidebar_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool sidebar_gui_init(struct NeoMutt *n)
+{
+  return true;
+}
+
+/**
  * sidebar_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
 void sidebar_gui_cleanup(struct NeoMutt *n)
@@ -96,7 +104,7 @@ const struct Module ModuleSidebar = {
   NULL, // config_define_types
   sidebar_config_define_variables,
   sidebar_commands_register,
-  NULL, // gui_init
+  sidebar_gui_init,
   sidebar_gui_cleanup,
   sidebar_cleanup,
 };

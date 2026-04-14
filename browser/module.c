@@ -69,6 +69,14 @@ static bool browser_cleanup(struct NeoMutt *n)
 }
 
 /**
+ * browser_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool browser_gui_init(struct NeoMutt *n)
+{
+  return true;
+}
+
+/**
  * browser_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
 void browser_gui_cleanup(struct NeoMutt *n)
@@ -86,7 +94,7 @@ const struct Module ModuleBrowser = {
   NULL, // config_define_types
   browser_config_define_variables,
   NULL, // commands_register
-  NULL, // gui_init
+  browser_gui_init,
   browser_gui_cleanup,
   browser_cleanup,
 };

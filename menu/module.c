@@ -69,6 +69,14 @@ static bool menu_cleanup(struct NeoMutt *n)
 }
 
 /**
+ * menu_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool menu_gui_init(struct NeoMutt *n)
+{
+  return true;
+}
+
+/**
  * menu_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
 void menu_gui_cleanup(struct NeoMutt *n)
@@ -86,7 +94,7 @@ const struct Module ModuleMenu = {
   NULL, // config_define_types
   menu_config_define_variables,
   NULL, // commands_register
-  NULL, // gui_init
+  menu_gui_init,
   menu_gui_cleanup,
   menu_cleanup,
 };
