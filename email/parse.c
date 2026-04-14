@@ -42,7 +42,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "alias/module_data.h"
 #include "mutt.h"
 #include "parse.h"
 #include "body.h"

@@ -50,6 +50,7 @@
 #include "ncrypt/lib.h"
 #include "progress/lib.h"
 #include "question/lib.h"
+#include "store/lib.h"
 #include "adata.h"
 #include "edata.h"
 #include "mutt_logging.h"

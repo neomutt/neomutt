@@ -52,6 +52,7 @@
 #include "lib.h"
 #include "bcache/lib.h"
 #include "question/lib.h"
+#include "store/lib.h"
 #include "adata.h"
 #include "edata.h"
 #include "globals.h"

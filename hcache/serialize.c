@@ -38,6 +38,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/lib.h"
 #include "serialize.h"
 
 /// Max size for a single serialized string field (256 KiB)

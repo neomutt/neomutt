@@ -27,7 +27,6 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
-#include "test_common.h"
 
 void test_mutt_parse_multipart(void)
 {

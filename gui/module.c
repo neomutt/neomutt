@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "color/lib.h"
 #include "curs_lib.h"
 #include "module_data.h"
 #include "mutt_curses.h"

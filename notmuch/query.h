@@ -26,8 +26,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-struct EnumDef;
-
 /**
  * enum NmQueryType - Notmuch Query Types
  *

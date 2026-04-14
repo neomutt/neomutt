@@ -29,7 +29,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "pattern/lib.h"
-#include "test_common.h"
 
 static struct ConfigDef Vars[] = {
   // clang-format off

@@ -30,9 +30,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "core/lib.h"
-#include "memory.h"
 #include "module_data.h"
-#include "signal2.h"
 
 /**
  * mutt_init - Initialise a Module - Implements Module::init()

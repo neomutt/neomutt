@@ -30,6 +30,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "node_condition.h"
 #include "definition.h"

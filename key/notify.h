@@ -23,8 +23,6 @@
 #ifndef MUTT_KEY_NOTIFY_H
 #define MUTT_KEY_NOTIFY_H
 
-struct MenuDefinition;
-
 /**
  * struct EventBinding - A key binding Event
  */

@@ -50,6 +50,7 @@
 #include "lib.h"
 #include "bcache/lib.h"
 #include "expando/lib.h"
+#include "store/lib.h"
 #include "adata.h"
 #include "edata.h"
 #include "expando_newsrc.h"

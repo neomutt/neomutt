@@ -69,7 +69,6 @@
 #include "attach/lib.h"
 #include "convert/lib.h"
 #include "expando/lib.h"
-#include "key/lib.h"
 #include "menu/lib.h"
 #include "attach_data.h"
 #include "functions.h"

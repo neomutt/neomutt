@@ -34,6 +34,8 @@
 #include "module_data.h"
 #include "neomutt.h"
 
+struct NeoMutt;
+
 /**
  * core_init - Initialise a Module - Implements Module::init()
  */

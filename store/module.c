@@ -31,7 +31,6 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "store/lib.h"
 #include "module_data.h" // IWYU pragma: keep
 
 /**

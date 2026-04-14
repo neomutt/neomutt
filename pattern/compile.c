@@ -43,7 +43,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "alias/module_data.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "parse/lib.h"

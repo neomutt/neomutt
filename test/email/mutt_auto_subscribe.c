@@ -24,7 +24,7 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include "email/lib.h"
+#include "alias/lib.h"
 
 void test_mutt_auto_subscribe(void)
 {

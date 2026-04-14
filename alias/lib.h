@@ -49,9 +49,10 @@
 
 #include <stdbool.h>
 #include "core/lib.h"
-#include "alternates.h" // IWYU pragma: keep
-#include "expando.h"    // IWYU pragma: keep
-#include "group.h"      // IWYU pragma: keep
+#include "alternates.h"  // IWYU pragma: keep
+#include "expando.h"     // IWYU pragma: keep
+#include "group.h"       // IWYU pragma: keep
+#include "module_data.h" // IWYU pragma: keep
 
 struct Address;
 struct AddressList;
@@ -92,5 +93,6 @@ int  query_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void query_index   (struct Mailbox *m, struct ConfigSubset *sub);
 
 struct Address *alias_reverse_lookup(const struct Address *addr);
+void mutt_auto_subscribe(const char *mailto);
 
 #endif /* MUTT_ALIAS_LIB_H */

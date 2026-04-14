@@ -25,7 +25,6 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "test_common.h"
 
 void test_mutt_mem_malloc(void)
 {

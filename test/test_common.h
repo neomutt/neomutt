@@ -30,7 +30,6 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <time.h>
 #include "mutt/lib.h"
 
 void test_gen_path(struct Buffer *buf, const char *fmt);

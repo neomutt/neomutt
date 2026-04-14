@@ -129,7 +129,6 @@
 #include "index/lib.h"
 #include "key/lib.h"
 #include "lua/lib.h"
-#include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
 #include "pager/lib.h"

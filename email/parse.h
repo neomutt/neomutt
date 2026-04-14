@@ -34,7 +34,6 @@ struct Buffer;
 struct Email;
 struct Envelope;
 
-void             mutt_auto_subscribe      (const char *mailto);
 int              mutt_check_encoding      (const char *c);
 enum ContentType mutt_check_mime_type     (const char *s);
 char *           mutt_extract_message_id  (const char *s, size_t *len);

@@ -40,7 +40,6 @@
 #include "gui/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
-#include "menu/lib.h"
 #include "pager/lib.h"
 
 /**

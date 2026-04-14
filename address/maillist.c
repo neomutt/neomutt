@@ -31,8 +31,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "alias/module_data.h"
 #include "maillist.h"
 #include "address.h"
