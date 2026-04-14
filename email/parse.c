@@ -104,45 +104,6 @@ void mutt_filter_commandline_header_value(char *header)
 }
 
 /**
- * mutt_auto_subscribe - Check if user is subscribed to mailing list
- * @param mailto URL of mailing list subscribe
- */
-void mutt_auto_subscribe(const char *mailto)
-{
-  if (!mailto)
-    return;
-
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
-
-  if (!md->auto_subscribe_cache)
-    md->auto_subscribe_cache = mutt_hash_new(200, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
-
-  if (mutt_hash_find(md->auto_subscribe_cache, mailto))
-    return;
-
-  mutt_hash_insert(md->auto_subscribe_cache, mailto, md->auto_subscribe_cache);
-
-  struct Envelope *lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
-
-  if (mutt_parse_mailto(lpenv, NULL, mailto) && !TAILQ_EMPTY(&lpenv->to))
-  {
-    const char *mailbox = buf_string(TAILQ_FIRST(&lpenv->to)->mailbox);
-    if (mailbox && !mutt_regexlist_match(&md->subscribed, mailbox) &&
-        !mutt_regexlist_match(&md->unmail, mailbox) &&
-        !mutt_regexlist_match(&md->unsubscribed, mailbox))
-    {
-      /* mutt_regexlist_add() detects duplicates, so it is safe to
-       * try to add here without any checks. */
-      mutt_regexlist_add(&md->mail, mailbox, REG_ICASE, NULL);
-      mutt_regexlist_add(&md->subscribed, mailbox, REG_ICASE, NULL);
-    }
-  }
-
-  mutt_env_free(&lpenv);
-}
-
-/**
  * parse_parameters - Parse a list of Parameters
  * @param pl                 Parameter list for the results
  * @param s                  String to parse

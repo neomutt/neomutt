@@ -38,8 +38,48 @@
 #include "parse/lib.h"
 #include "alias.h"
 #include "alternates.h"
+#include "group.h"
 #include "module_data.h"
 #include "reverse.h"
+
+/**
+ * mutt_auto_subscribe - Check if user is subscribed to mailing list
+ * @param mailto URL of mailing list subscribe
+ */
+void mutt_auto_subscribe(const char *mailto)
+{
+  if (!mailto)
+    return;
+
+  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(md);
+
+  if (!md->auto_subscribe_cache)
+    md->auto_subscribe_cache = mutt_hash_new(200, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
+
+  if (mutt_hash_find(md->auto_subscribe_cache, mailto))
+    return;
+
+  mutt_hash_insert(md->auto_subscribe_cache, mailto, md->auto_subscribe_cache);
+
+  struct Envelope *lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
+
+  if (mutt_parse_mailto(lpenv, NULL, mailto) && !TAILQ_EMPTY(&lpenv->to))
+  {
+    const char *mailbox = buf_string(TAILQ_FIRST(&lpenv->to)->mailbox);
+    if (mailbox && !mutt_regexlist_match(&md->subscribed, mailbox) &&
+        !mutt_regexlist_match(&md->unmail, mailbox) &&
+        !mutt_regexlist_match(&md->unsubscribed, mailbox))
+    {
+      /* mutt_regexlist_add() detects duplicates, so it is safe to
+       * try to add here without any checks. */
+      mutt_regexlist_add(&md->mail, mailbox, REG_ICASE, NULL);
+      mutt_regexlist_add(&md->subscribed, mailbox, REG_ICASE, NULL);
+    }
+  }
+
+  mutt_env_free(&lpenv);
+}
 
 /**
  * alias_tags_to_buffer - Write a comma-separated list of tags to a Buffer
@@ -328,6 +368,18 @@ const struct Command AliasCommands[] = {
         N_("Define a list of alternate email addresses for the user"),
         N_("alternates [ -group <name> ... ] <regex> [ <regex> ... ]"),
         "configuration.html#alternates" },
+  { "group", CMD_GROUP, parse_group,
+        N_("Add addresses to an address group"),
+        N_("group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"),
+        "configuration.html#addrgroup" },
+  { "lists", CMD_LISTS, parse_lists,
+        N_("Add address to the list of mailing lists"),
+        N_("lists [ -group <name> ... ] <regex> [ ... ]"),
+        "configuration.html#lists" },
+  { "subscribe", CMD_SUBSCRIBE, parse_subscribe,
+        N_("Add address to the list of subscribed mailing lists"),
+        N_("subscribe [ -group <name> ... ] <regex> [ ... ]"),
+        "configuration.html#lists" },
   { "unalias", CMD_UNALIAS, parse_unalias,
         N_("Remove an alias definition"),
         N_("unalias { * | <key> ... }"),
@@ -336,6 +388,18 @@ const struct Command AliasCommands[] = {
         N_("Remove addresses from `alternates` list"),
         N_("unalternates { * | <regex> ... }"),
         "configuration.html#alternates" },
+  { "ungroup", CMD_UNGROUP, parse_group,
+        N_("Remove addresses from an address `group`"),
+        N_("ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"),
+        "configuration.html#addrgroup" },
+  { "unlists", CMD_UNLISTS, parse_unlists,
+        N_("Remove address from the list of mailing lists"),
+        N_("unlists { * | <regex> ... }"),
+        "configuration.html#lists" },
+  { "unsubscribe", CMD_UNSUBSCRIBE, parse_unsubscribe,
+        N_("Remove address from the list of subscribed mailing lists"),
+        N_("unsubscribe { * | <regex> ... }"),
+        "configuration.html#lists" },
 
   { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on

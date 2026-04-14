@@ -29,9 +29,7 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "color/lib.h"
 #include "parse/lib.h"
 #include "ifdef.h"
@@ -97,10 +95,6 @@ const struct Command CommandsCommands[] = {
         N_("Read and execute commands from a config file"),
         N_("source <filename> [ <filename> ... ]"),
         "configuration.html#source" },
-  { "subscribe", CMD_SUBSCRIBE, parse_subscribe,
-        N_("Add address to the list of subscribed mailing lists"),
-        N_("subscribe [ -group <name> ... ] <regex> [ ... ]"),
-        "configuration.html#lists" },
   { "toggle", CMD_TOGGLE, parse_set,
         N_("Toggle the value of a boolean/quad config option"),
         N_("toggle <variable> [ ... ]"),
@@ -125,10 +119,6 @@ const struct Command CommandsCommands[] = {
         N_("Unset an environment variable"),
         N_("unsetenv <variable>"),
         "advancedusage.html#setenv" },
-  { "unsubscribe", CMD_UNSUBSCRIBE, parse_unsubscribe,
-        N_("Remove address from the list of subscribed mailing lists"),
-        N_("unsubscribe { * | <regex> ... }"),
-        "configuration.html#lists" },
   { "version", CMD_VERSION, parse_version,
         N_("Show NeoMutt version and build information"),
         N_("version"),

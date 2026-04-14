@@ -31,7 +31,6 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "commands/lib.h"
 #include "parse/lib.h"
 #include "ignore.h"
@@ -229,10 +228,6 @@ const struct Command EmailCommands[] = {
         N_("Automatically display specified MIME types inline"),
         N_("auto-view <mime-type>[/<mime-subtype> ] [ ... ]"),
         "mimesupport.html#auto-view" },
-  { "group", CMD_GROUP, parse_group,
-        N_("Add addresses to an address group"),
-        N_("group [ -group <name> ... ] { -rx <regex> ... | -addr <address> ... }"),
-        "configuration.html#addrgroup" },
   { "header-order", CMD_HEADER_ORDER, parse_list,
         N_("Define custom order of headers displayed"),
         N_("header-order <header> [ <header> ... ]"),
@@ -241,10 +236,6 @@ const struct Command EmailCommands[] = {
         N_("Hide specified headers when displaying messages"),
         N_("ignore <string> [ <string> ...]"),
         "configuration.html#ignore" },
-  { "lists", CMD_LISTS, parse_lists,
-        N_("Add address to the list of mailing lists"),
-        N_("lists [ -group <name> ... ] <regex> [ ... ]"),
-        "configuration.html#lists" },
   { "mailto-allow", CMD_MAILTO_ALLOW, parse_list,
         N_("Permit specific header-fields in mailto URL processing"),
         N_("mailto-allow { * | <header-field> ... }"),
@@ -277,10 +268,6 @@ const struct Command EmailCommands[] = {
         N_("Remove MIME types from `auto-view` list"),
         N_("unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"),
         "mimesupport.html#auto-view" },
-  { "ungroup", CMD_UNGROUP, parse_group,
-        N_("Remove addresses from an address `group`"),
-        N_("ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"),
-        "configuration.html#addrgroup" },
   { "unheader-order", CMD_UNHEADER_ORDER, parse_unlist,
         N_("Remove header from `header-order` list"),
         N_("unheader-order { * | <header> ... }"),
@@ -289,10 +276,6 @@ const struct Command EmailCommands[] = {
         N_("Remove a header from the `header-order` list"),
         N_("unignore { * | <string> ... }"),
         "configuration.html#ignore" },
-  { "unlists", CMD_UNLISTS, parse_unlists,
-        N_("Remove address from the list of mailing lists"),
-        N_("unlists { * | <regex> ... }"),
-        "configuration.html#lists" },
   { "unmailto-allow", CMD_UNMAILTO_ALLOW, parse_unlist,
         N_("Disallow header-fields in mailto processing"),
         N_("unmailto-allow { * | <header-field> ... }"),
