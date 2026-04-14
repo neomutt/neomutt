@@ -837,29 +837,6 @@ static void log_translation(void)
 }
 
 /**
- * log_gui - Log info about the GUI
- */
-static void log_gui(void)
-{
-  const char *term = mutt_str_getenv("TERM");
-  const char *color_term = mutt_str_getenv("COLORTERM");
-  bool true_color = false;
-#ifdef NEOMUTT_DIRECT_COLORS
-  true_color = true;
-#endif
-
-  mutt_debug(LL_DEBUG1, "GUI:\n");
-  mutt_debug(LL_DEBUG1, "    Curses: %s\n", curses_version());
-  mutt_debug(LL_DEBUG1, "    COLORS=%d\n", COLORS);
-  mutt_debug(LL_DEBUG1, "    COLOR_PAIRS=%d\n", COLOR_PAIRS);
-  mutt_debug(LL_DEBUG1, "    TERM=%s\n", NONULL(term));
-  mutt_debug(LL_DEBUG1, "    COLORTERM=%s\n", NONULL(color_term));
-  mutt_debug(LL_DEBUG1, "    True color support: %s\n", true_color ? "YES" : "NO");
-  mutt_debug(LL_DEBUG1, "    Screen: %dx%d\n", RootWindow->state.cols,
-             RootWindow->state.rows);
-}
-
-/**
  * main_timeout_observer - Notification that a timeout has occurred - Implements ::observer_t - @ingroup observer_api
  */
 static int main_timeout_observer(struct NotifyCallback *nc)
@@ -1120,45 +1097,12 @@ int main(int argc, char *argv[], char *envp[])
       goto main_curses; // TEST08: can't test -- fake term?
   }
 
-  /* Always create the mutt_windows because batch mode has some shared code
-   * paths that end up referencing them. */
-  rootwin_new();
-
-  if (OptGui)
-  {
-    /* check whether terminal status is supported (must follow curses init) */
-    TsSupported = mutt_ts_capability();
-    mutt_resize_screen();
-    log_gui();
-  }
-
-  menu_init2();
-  sb_init();
-
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, &cli->shared.log_level, &cli->shared.log_file,
                       cli->shared.disable_system, &cli->shared.user_files,
                       &cli->shared.commands);
   if (rc2 != 0)
     goto main_curses;
-
-  mutt_hist_init();
-  mutt_hist_read_file();
-
-#ifdef USE_NOTMUCH
-  const bool c_virtual_spool_file = cs_subset_bool(NeoMutt->sub, "virtual_spool_file");
-  if (c_virtual_spool_file)
-  {
-    /* Find the first virtual folder and open it */
-    struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_NOTMUCH);
-    struct Mailbox **mp = ARRAY_FIRST(&ma);
-    if (mp)
-      cs_str_string_set(cs, "spool_file", mailbox_path(*mp), NULL);
-    ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
-  }
-#endif
-
-  km_set_abort_key();
 
   init_nntp(&cli->tui.nntp_server, cs);
 
@@ -1174,14 +1118,10 @@ int main(int argc, char *argv[], char *envp[])
   if (!dump_info(&cli->info, cs))
     goto main_ok;
 
+  rootwin_new();
+
   if (OptGui)
-  {
-    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-    clear();
-    MuttLogger = log_disp_curses;
-    log_queue_flush(log_disp_curses);
-    log_queue_set_max_size(100);
-  }
+    neomutt_gui_init(NeoMutt);
 
 #ifdef USE_AUTOCRYPT
   /* Initialize autocrypt after curses messages are working,

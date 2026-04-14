@@ -72,13 +72,14 @@ static bool key_cleanup(struct NeoMutt *n)
  */
 static bool key_gui_init(struct NeoMutt *n)
 {
+  km_set_abort_key();
   return true;
 }
 
 /**
  * key_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
-void key_gui_cleanup(struct NeoMutt *n)
+static void key_gui_cleanup(struct NeoMutt *n)
 {
   km_cleanup();
 }

@@ -73,13 +73,14 @@ static bool menu_cleanup(struct NeoMutt *n)
  */
 static bool menu_gui_init(struct NeoMutt *n)
 {
+  menu_init2();
   return true;
 }
 
 /**
  * menu_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
-void menu_gui_cleanup(struct NeoMutt *n)
+static void menu_gui_cleanup(struct NeoMutt *n)
 {
   menu_cleanup(n);
 }

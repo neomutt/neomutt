@@ -73,13 +73,15 @@ static bool history_cleanup(struct NeoMutt *n)
  */
 static bool history_gui_init(struct NeoMutt *n)
 {
+  mutt_hist_init();
+  mutt_hist_read_file();
   return true;
 }
 
 /**
  * history_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
-void history_gui_cleanup(struct NeoMutt *n)
+static void history_gui_cleanup(struct NeoMutt *n)
 {
   mutt_hist_cleanup();
 }

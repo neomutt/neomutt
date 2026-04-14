@@ -72,6 +72,31 @@ static bool notmuch_commands_register(struct NeoMutt *n, struct CommandArray *ca
 }
 
 /**
+ * notmuch_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool notmuch_gui_init(struct NeoMutt *n)
+{
+  const bool c_virtual_spool_file = cs_subset_bool(n->sub, "virtual_spool_file");
+  if (c_virtual_spool_file)
+  {
+    /* Find the first virtual folder and open it */
+    struct MailboxArray ma = neomutt_mailboxes_get(n, MUTT_NOTMUCH);
+    struct Mailbox **mp = ARRAY_FIRST(&ma);
+    if (mp)
+      cs_str_string_set(n->cs, "spool_file", mailbox_path(*mp), NULL);
+    ARRAY_FREE(&ma); // Clean up the ARRAY, but not the Mailboxes
+  }
+  return true;
+}
+
+/**
+ * notmuch_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+static void notmuch_gui_cleanup(struct NeoMutt *n)
+{
+}
+
+/**
  * notmuch_cleanup - Clean up a Module - Implements Module::cleanup()
  */
 static bool notmuch_cleanup(struct NeoMutt *n)
@@ -93,7 +118,7 @@ const struct Module ModuleNotmuch = {
   NULL, // config_define_types
   notmuch_config_define_variables,
   notmuch_commands_register,
-  NULL, // gui_init
-  NULL, // gui_cleanup
+  notmuch_gui_init,
+  notmuch_gui_cleanup,
   notmuch_cleanup,
 };

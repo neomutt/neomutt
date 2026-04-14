@@ -34,9 +34,36 @@
 #include "core/lib.h"
 #include "curs_lib.h"
 #include "module_data.h"
+#include "mutt_curses.h"
+#include "mutt_logging.h"
+#include "mutt_window.h"
 #include "rootwin.h"
+#include "terminal.h"
 
 extern struct ConfigDef GuiVars[];
+
+/**
+ * log_gui - Log info about the GUI
+ */
+static void log_gui(void)
+{
+  const char *term = mutt_str_getenv("TERM");
+  const char *color_term = mutt_str_getenv("COLORTERM");
+  bool true_color = false;
+#ifdef NEOMUTT_DIRECT_COLORS
+  true_color = true;
+#endif
+
+  mutt_debug(LL_DEBUG1, "GUI:\n");
+  mutt_debug(LL_DEBUG1, "    Curses: %s\n", curses_version());
+  mutt_debug(LL_DEBUG1, "    COLORS=%d\n", COLORS);
+  mutt_debug(LL_DEBUG1, "    COLOR_PAIRS=%d\n", COLOR_PAIRS);
+  mutt_debug(LL_DEBUG1, "    TERM=%s\n", NONULL(term));
+  mutt_debug(LL_DEBUG1, "    COLORTERM=%s\n", NONULL(color_term));
+  mutt_debug(LL_DEBUG1, "    True color support: %s\n", true_color ? "YES" : "NO");
+  mutt_debug(LL_DEBUG1, "    Screen: %dx%d\n", RootWindow->state.cols,
+             RootWindow->state.rows);
+}
 
 /**
  * gui_init - Initialise a Module - Implements Module::init()
@@ -62,13 +89,25 @@ static bool gui_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
  */
 static bool gui_gui_init(struct NeoMutt *n)
 {
+  /* check whether terminal status is supported (must follow curses init) */
+  TsSupported = mutt_ts_capability();
+  mutt_resize_screen();
+  log_gui();
+
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+  clear();
+
+  MuttLogger = log_disp_curses;
+  log_queue_flush(log_disp_curses);
+  log_queue_set_max_size(100);
+
   return true;
 }
 
 /**
  * gui_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
-void gui_gui_cleanup(struct NeoMutt *n)
+static void gui_gui_cleanup(struct NeoMutt *n)
 {
   rootwin_cleanup();
 

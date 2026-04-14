@@ -53,7 +53,7 @@ static bool main_gui_init(struct NeoMutt *n)
 /**
  * main_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
-void main_gui_cleanup(struct NeoMutt *n)
+static void main_gui_cleanup(struct NeoMutt *n)
 {
 }
 

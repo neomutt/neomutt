@@ -83,13 +83,14 @@ static bool sidebar_cleanup(struct NeoMutt *n)
  */
 static bool sidebar_gui_init(struct NeoMutt *n)
 {
+  sb_init();
   return true;
 }
 
 /**
  * sidebar_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
-void sidebar_gui_cleanup(struct NeoMutt *n)
+static void sidebar_gui_cleanup(struct NeoMutt *n)
 {
   sb_cleanup();
 }

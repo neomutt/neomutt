@@ -79,7 +79,7 @@ static bool browser_gui_init(struct NeoMutt *n)
 /**
  * browser_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
-void browser_gui_cleanup(struct NeoMutt *n)
+static void browser_gui_cleanup(struct NeoMutt *n)
 {
   mutt_browser_cleanup();
 }

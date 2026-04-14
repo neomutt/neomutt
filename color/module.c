@@ -56,7 +56,7 @@ static bool color_gui_init(struct NeoMutt *n)
 /**
  * color_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
  */
-void color_gui_cleanup(struct NeoMutt *n)
+static void color_gui_cleanup(struct NeoMutt *n)
 {
   colors_cleanup();
 }
