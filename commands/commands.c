@@ -30,7 +30,6 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "color/lib.h"
 #include "parse/lib.h"
 #include "ifdef.h"
 #include "mailboxes.h"
@@ -47,10 +46,6 @@ const struct Command CommandsCommands[] = {
         N_("Change NeoMutt's current working directory"),
         N_("cd [ <directory> ]"),
         "configuration.html#cd" },
-  { "color", CMD_COLOR, parse_color,
-        N_("Define colors for the user interface"),
-        N_("color <object> [ <attribute> ... ] <fg> <bg> [ <regex> [ <num> ]]"),
-        "configuration.html#color" },
   { "echo", CMD_ECHO, parse_echo,
         N_("Print a message to the status line"),
         N_("echo <message>"),
@@ -71,10 +66,6 @@ const struct Command CommandsCommands[] = {
         N_("Define a list of mailboxes to watch"),
         N_("mailboxes [ -label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"),
         "configuration.html#mailboxes" },
-  { "mono", CMD_MONO, parse_mono,
-        N_("Deprecated: Use `color` instead"),
-        N_("mono <object> <attribute> [ <pattern> | <regex> ]"),
-        "configuration.html#color-mono" },
   { "named-mailboxes", CMD_NAMED_MAILBOXES, parse_mailboxes,
         N_("Define a list of labelled mailboxes to watch"),
         N_("named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"),
@@ -99,18 +90,10 @@ const struct Command CommandsCommands[] = {
         N_("Toggle the value of a boolean/quad config option"),
         N_("toggle <variable> [ ... ]"),
         "configuration.html#set" },
-  { "uncolor", CMD_UNCOLOR, parse_uncolor,
-        N_("Remove a `color` definition"),
-        N_("uncolor <object> { * | <pattern> ... }"),
-        "configuration.html#color" },
   { "unmailboxes", CMD_UNMAILBOXES, parse_unmailboxes,
         N_("Remove mailboxes from the watch list"),
         N_("unmailboxes { * | <mailbox> ... }"),
         "configuration.html#mailboxes" },
-  { "unmono", CMD_UNMONO, parse_unmono,
-        N_("Deprecated: Use `uncolor` instead"),
-        N_("unmono <object> { * | <pattern> ... }"),
-        "configuration.html#color-mono" },
   { "unset", CMD_UNSET, parse_set,
         N_("Reset a config option to false/empty"),
         N_("unset <variable> [ <variable> ... ]"),

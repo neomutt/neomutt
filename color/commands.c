@@ -561,3 +561,29 @@ done:
   buf_pool_release(&token);
   return rc;
 }
+
+/**
+ * ColorCommands - Colour Commands
+ */
+const struct Command ColorCommands[] = {
+  // clang-format off
+  { "color", CMD_COLOR, parse_color,
+        N_("Define colors for the user interface"),
+        N_("color <object> [ <attribute> ... ] <fg> <bg> [ <regex> [ <num> ]]"),
+        "configuration.html#color" },
+  { "mono", CMD_MONO, parse_mono,
+        N_("Deprecated: Use `color` instead"),
+        N_("mono <object> <attribute> [ <pattern> | <regex> ]"),
+        "configuration.html#color-mono" },
+  { "uncolor", CMD_UNCOLOR, parse_uncolor,
+        N_("Remove a `color` definition"),
+        N_("uncolor <object> { * | <pattern> ... }"),
+        "configuration.html#color" },
+  { "unmono", CMD_UNMONO, parse_unmono,
+        N_("Deprecated: Use `uncolor` instead"),
+        N_("unmono <object> { * | <pattern> ... }"),
+        "configuration.html#color-mono" },
+
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  // clang-format on
+};

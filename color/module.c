@@ -34,6 +34,8 @@
 #include "color.h"
 #include "module_data.h"
 
+extern const struct Command ColorCommands[];
+
 /**
  * color_init - Initialise a Module - Implements Module::init()
  */
@@ -43,6 +45,14 @@ static bool color_init(struct NeoMutt *n)
   // neomutt_set_module_data(n, MODULE_ID_COLOR, md);
 
   return true;
+}
+
+/**
+ * color_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool color_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, ColorCommands);
 }
 
 /**
@@ -82,7 +92,7 @@ const struct Module ModuleColor = {
   color_init,
   NULL, // config_define_types
   NULL, // config_define_variables
-  NULL, // commands_register
+  color_commands_register,
   color_gui_init,
   color_gui_cleanup,
   color_cleanup,
