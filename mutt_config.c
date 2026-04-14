@@ -385,9 +385,6 @@ struct ConfigDef MainVars[] = {
   { "charset", DT_STRING|D_NOT_EMPTY|D_CHARSET_SINGLE, 0, 0, charset_validator,
     "Default character set for displaying text on screen"
   },
-  { "color_directcolor", DT_BOOL|D_ON_STARTUP, false, 0, NULL,
-    "Use 24bit colors (aka truecolor aka directcolor)"
-  },
   { "config_charset", DT_STRING, 0, 0, charset_validator,
     "Character set that the config files are in"
   },

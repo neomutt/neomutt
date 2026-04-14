@@ -30,11 +30,13 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "color.h"
 #include "module_data.h"
 
 extern const struct Command ColorCommands[];
+extern struct ConfigDef ColorVars[];
 
 /**
  * color_init - Initialise a Module - Implements Module::init()
@@ -45,6 +47,14 @@ static bool color_init(struct NeoMutt *n)
   // neomutt_set_module_data(n, MODULE_ID_COLOR, md);
 
   return true;
+}
+
+/**
+ * color_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool color_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, ColorVars);
 }
 
 /**
@@ -91,7 +101,7 @@ const struct Module ModuleColor = {
   "color",
   color_init,
   NULL, // config_define_types
-  NULL, // config_define_variables
+  color_config_define_variables,
   color_commands_register,
   color_gui_init,
   color_gui_cleanup,
