@@ -1081,7 +1081,7 @@ static int imap_sort_email_uid(const void *a, const void *b, void *sdata)
 {
   struct Email *ea = *(struct Email *const *) a;
   struct Email *eb = *(struct Email *const *) b;
-  
+
   // Sort NULLs to the end
   if (!ea && !eb)
     return 0;

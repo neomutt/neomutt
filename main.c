@@ -1096,6 +1096,13 @@ int main(int argc, char *argv[], char *envp[])
       goto main_curses; // TEST08: can't test -- fake term?
   }
 
+  /* Always create the mutt_windows because batch mode has some shared code
+   * paths that end up referencing them. */
+  rootwin_new();
+
+  if (OptGui)
+    neomutt_gui_init(NeoMutt);
+
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, &cli->shared.log_level, &cli->shared.log_file,
                       cli->shared.disable_system, &cli->shared.user_files,
@@ -1116,11 +1123,6 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!dump_info(&cli->info, cs))
     goto main_ok;
-
-  rootwin_new();
-
-  if (OptGui)
-    neomutt_gui_init(NeoMutt);
 
 #ifdef USE_AUTOCRYPT
   /* Initialize autocrypt after curses messages are working,
