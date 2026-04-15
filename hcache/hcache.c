@@ -50,15 +50,13 @@
 #include "compress/lib.h"
 #include "store/lib.h"
 #include "hcache/hcversion.h" // path needed by out-of-tree build
+#include "module_data.h"
 #include "muttlib.h"
 #include "serialize.h"
 
 #if !(defined(HAVE_GDBM) || defined(HAVE_LMDB) || defined(HAVE_ROCKSDB) || defined(HAVE_TDB))
 #error "No hcache backend defined"
 #endif
-
-/// Header Cache version
-static unsigned int HcacheVer = 0x0;
 
 /**
  * struct RealKey - Hcache key name (including compression method)
@@ -482,13 +480,14 @@ struct HeaderCache *hcache_open(const char *path, const char *folder,
   if (!path || (path[0] == '\0'))
     return NULL;
 
-  if (HcacheVer == 0x0)
-    HcacheVer = generate_hcachever();
+  struct HcacheModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HCACHE);
+  if (mod_data->hcache_ver == 0x0)
+    mod_data->hcache_ver = generate_hcachever();
 
   struct HeaderCache *hc = hcache_new();
 
   hc->folder = get_foldername(folder);
-  hc->crc = HcacheVer;
+  hc->crc = mod_data->hcache_ver;
 
   const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
   hc->store_ops = store_get_backend_ops(c_header_cache_backend);
