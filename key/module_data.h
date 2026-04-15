@@ -23,12 +23,23 @@
 #ifndef MUTT_KEY_MODULE_DATA_H
 #define MUTT_KEY_MODULE_DATA_H
 
+#include "get.h"
+#include "keymap.h"
+#include "menu.h"
+
+struct Mapping;
+
 /**
  * struct KeyModuleData - Key private Module data
  */
 struct KeyModuleData
 {
-  int dummy;
+  struct KeyEventArray macro_events;       ///< Macro event buffer
+  struct KeyEventArray unget_key_events;   ///< Unget key event buffer
+  keycode_t abort_key;                     ///< Key to abort prompts, normally Ctrl-G
+  struct MenuDefinitionArray menu_defs;    ///< All registered Menus
+  struct SubMenuArray sub_menus;           ///< All registered SubMenus
+  struct Mapping *key_names;               ///< Key name lookup table
 };
 
 #endif /* MUTT_KEY_MODULE_DATA_H */

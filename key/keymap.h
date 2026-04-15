@@ -30,7 +30,7 @@
 /// Type for key storage, the rest of neomutt works fine with int type
 typedef short keycode_t;
 
-extern struct Mapping KeyNames[];
+struct Mapping *keymap_get_key_names(void);
 
 /**
  * struct Keymap - A keyboard mapping

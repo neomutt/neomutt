@@ -41,8 +41,8 @@ extern const struct Command KeyCommands[];
  */
 static bool key_init(struct NeoMutt *n)
 {
-  // struct KeyModuleData *mod_data = MUTT_MEM_CALLOC(1, struct KeyModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_KEY, mod_data);
+  struct KeyModuleData *mod_data = MUTT_MEM_CALLOC(1, struct KeyModuleData);
+  neomutt_set_module_data(n, MODULE_ID_KEY, mod_data);
 
   return true;
 }
@@ -60,10 +60,10 @@ static bool key_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  */
 static bool key_cleanup(struct NeoMutt *n)
 {
-  // struct KeyModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_KEY);
-  // ASSERT(mod_data);
+  struct KeyModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_KEY);
+  ASSERT(mod_data);
 
-  // FREE(&mod_data);
+  FREE(&mod_data);
   return true;
 }
 

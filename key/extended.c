@@ -30,9 +30,10 @@
 #include <stdbool.h>
 #include <strings.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "extended.h"
-#include "keymap.h"
+#include "module_data.h"
 
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style
@@ -113,13 +114,14 @@ const char *ext_key_find(const char *key)
  */
 void ext_keys_init(void)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   use_extended_names(true);
 
-  for (int i = 0; KeyNames[i].name; i++)
+  for (int i = 0; mod_data->key_names[i].name; i++)
   {
-    if (KeyNames[i].value == -1)
+    if (mod_data->key_names[i].value == -1)
     {
-      const char *keyname = ext_key_find(KeyNames[i].name);
+      const char *keyname = ext_key_find(mod_data->key_names[i].name);
 
       if (keyname)
       {
@@ -128,7 +130,7 @@ void ext_keys_init(void)
         {
           int code = key_defined(s);
           if (code > 0)
-            KeyNames[i].value = code;
+            mod_data->key_names[i].value = code;
         }
       }
     }

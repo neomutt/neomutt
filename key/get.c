@@ -38,9 +38,9 @@
 #include "get.h"
 #include "menu/lib.h"
 #include "globals.h"
-#include "init.h"
 #include "keymap.h"
 #include "menu.h"
+#include "module_data.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
@@ -51,21 +51,17 @@ static const int MaxKeyLoop = 10;
 // It's not possible to unget more than one char under some curses libs,
 // so roll our own input buffering routines.
 
-/// These are used for macros and exec/push commands.
-/// They can be temporarily ignored by passing #GETCH_IGNORE_MACRO
-struct KeyEventArray MacroEvents = ARRAY_HEAD_INITIALIZER;
-
-/// These are used in all other "normal" situations,
-/// and are not ignored when passing #GETCH_IGNORE_MACRO
-struct KeyEventArray UngetKeyEvents = ARRAY_HEAD_INITIALIZER;
+/// MacroEvents moved to KeyModuleData
+/// UngetKeyEvents moved to KeyModuleData
 
 /**
  * mutt_flushinp - Empty all the keyboard buffers
  */
 void mutt_flushinp(void)
 {
-  ARRAY_SHRINK(&UngetKeyEvents, ARRAY_SIZE(&UngetKeyEvents));
-  ARRAY_SHRINK(&MacroEvents, ARRAY_SIZE(&MacroEvents));
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  ARRAY_SHRINK(&mod_data->unget_key_events, ARRAY_SIZE(&mod_data->unget_key_events));
+  ARRAY_SHRINK(&mod_data->macro_events, ARRAY_SIZE(&mod_data->macro_events));
   flushinp();
 }
 
@@ -121,7 +117,8 @@ void array_to_endcond(struct KeyEventArray *a)
  */
 void mutt_unget_ch(int ch)
 {
-  array_add(&UngetKeyEvents, ch, OP_NULL);
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  array_add(&mod_data->unget_key_events, ch, OP_NULL);
 }
 
 /**
@@ -132,7 +129,8 @@ void mutt_unget_ch(int ch)
  */
 void mutt_unget_op(int op)
 {
-  array_add(&UngetKeyEvents, 0, op);
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  array_add(&mod_data->unget_key_events, 0, op);
 }
 
 /**
@@ -145,7 +143,8 @@ void mutt_unget_op(int op)
  */
 void mutt_push_macro_event(int ch, int op)
 {
-  array_add(&MacroEvents, ch, op);
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  array_add(&mod_data->macro_events, ch, op);
 }
 
 /**
@@ -156,7 +155,8 @@ void mutt_push_macro_event(int ch, int op)
  */
 void mutt_flush_macro_to_endcond(void)
 {
-  array_to_endcond(&MacroEvents);
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  array_to_endcond(&mod_data->macro_events);
 }
 
 #ifdef USE_INOTIFY
@@ -207,13 +207,15 @@ struct KeyEvent mutt_getch(GetChFlags flags)
   if (!OptGui)
     return event_abort;
 
-  struct KeyEvent *event_key = array_pop(&UngetKeyEvents);
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+
+  struct KeyEvent *event_key = array_pop(&mod_data->unget_key_events);
   if (event_key)
     return *event_key;
 
   if (!(flags & GETCH_IGNORE_MACRO))
   {
-    event_key = array_pop(&MacroEvents);
+    event_key = array_pop(&mod_data->macro_events);
     if (event_key)
       return *event_key;
   }
@@ -260,7 +262,7 @@ struct KeyEvent mutt_getch(GetChFlags flags)
     return event_timeout;
   }
 
-  if (ch == AbortKey)
+  if (ch == mod_data->abort_key)
     return event_abort;
 
   if (ch & 0x80)
@@ -308,6 +310,7 @@ void km_error_key(const struct MenuDefinition *md)
  */
 void generic_tokenize_push_string(char *s)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   char *pp = NULL;
   char *p = s + mutt_str_len(s) - 1;
   size_t l;
@@ -333,15 +336,15 @@ void generic_tokenize_push_string(char *s)
         }
 
         l = p - pp + 1;
-        for (i = 0; KeyNames[i].name; i++)
+        for (i = 0; mod_data->key_names[i].name; i++)
         {
-          if (mutt_istrn_equal(pp, KeyNames[i].name, l))
+          if (mutt_istrn_equal(pp, mod_data->key_names[i].name, l))
             break;
         }
-        if (KeyNames[i].name)
+        if (mod_data->key_names[i].name)
         {
           /* found a match */
-          mutt_push_macro_event(KeyNames[i].value, 0);
+          mutt_push_macro_event(mod_data->key_names[i].value, 0);
           p = pp - 1;
           continue;
         }

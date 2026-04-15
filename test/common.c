@@ -168,6 +168,7 @@ bool test_neomutt_create(void)
 
   init_tmp_dir(NeoMutt);
   init_home_dir(NeoMutt);
+  km_init();
 
   neomutt_gui_init(NeoMutt);
   MuttLogger = log_disp_terminal;

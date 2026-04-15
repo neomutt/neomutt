@@ -41,9 +41,9 @@
 #include "parse/lib.h"
 #include "dump.h"
 #include "get.h"
-#include "init.h"
 #include "keymap.h"
 #include "menu.h"
+#include "module_data.h"
 #include "notify.h"
 
 /**
@@ -539,6 +539,7 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
   if (!cmd || !args || !err)
     return false;
 
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   keycode_t key_bytes[MAX_SEQ] = { 0 };
   int key_len = 0;
   if (args->key)
@@ -552,7 +553,7 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
   struct Buffer *keystr = buf_pool_get();
   enum NotifyBinding nb = (cmd->id == CMD_UNBIND) ? NT_BINDING_DELETE : NT_MACRO_DELETE;
   struct MenuDefinition **mdp = NULL;
-  ARRAY_FOREACH(mdp, &MenuDefs)
+  ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
     struct MenuDefinition *md = *mdp;
 

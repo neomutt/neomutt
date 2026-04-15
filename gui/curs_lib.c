@@ -53,6 +53,7 @@
 #include "key/lib.h"
 #include "question/lib.h"
 #include "globals.h"
+#include "key/module_data.h"
 #include "msgcont.h"
 #include "msgwin.h"
 #include "mutt_curses.h"
@@ -82,7 +83,8 @@ void mutt_refresh(void)
     return;
 
   /* don't refresh in the middle of macros unless necessary */
-  if (!ARRAY_EMPTY(&MacroEvents) && !OptForceRefresh)
+  struct KeyModuleData *key_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  if (!ARRAY_EMPTY(&key_mod_data->macro_events) && !OptForceRefresh)
     return;
 
   /* else */
@@ -506,11 +508,12 @@ void mw_what_key(void)
   if (!win)
     return;
 
+  struct KeyModuleData *key_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct Buffer *key = buf_pool_get();
   struct Buffer *prompt = buf_pool_get();
   struct Buffer *text = buf_pool_get();
 
-  keymap_get_name(AbortKey, key);
+  keymap_get_name(key_mod_data->abort_key, key);
 
   buf_printf(prompt, _("Enter keys (%s to abort): "), buf_string(key));
   msgwin_set_text(win, buf_string(prompt), MT_COLOR_PROMPT);
@@ -528,7 +531,7 @@ void mw_what_key(void)
   while (true)
   {
     int ch = getch();
-    if (ch == AbortKey)
+    if (ch == key_mod_data->abort_key)
       break;
 
     if (ch == KEY_RESIZE)

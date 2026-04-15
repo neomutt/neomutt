@@ -31,9 +31,11 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "key/lib.h"
+#include "key/module_data.h"
 
 struct SubMenuId
 {
@@ -171,8 +173,9 @@ void dump_submenu_bindings(const struct MenuDefinition *md, const struct SubMenu
  */
 void dump_submenus(bool brief, struct SubMenuIdArray *smia)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct SubMenu *sm = NULL;
-  ARRAY_FOREACH(sm, &SubMenus)
+  ARRAY_FOREACH(sm, &mod_data->sub_menus)
   {
     struct SubMenuId smi = { ARRAY_FOREACH_IDX_sm, sm };
     ARRAY_ADD(smia, smi);
@@ -198,11 +201,12 @@ void dump_submenus(bool brief, struct SubMenuIdArray *smia)
  */
 void dump_menus(struct SubMenuIdArray *smia)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct Buffer *buf = buf_pool_get();
 
   mutt_debug(LL_DEBUG1, "Menus:\n");
   struct MenuDefinition **mdp = NULL;
-  ARRAY_FOREACH(mdp, &MenuDefs)
+  ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
     struct MenuDefinition *md = *mdp;
 
@@ -259,8 +263,9 @@ void dump_menu_funcs(bool brief)
  */
 void dump_menu_binds(bool brief)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct MenuDefinition **mdp = NULL;
-  ARRAY_FOREACH(mdp, &MenuDefs)
+  ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
     struct MenuDefinition *md = *mdp;
 
