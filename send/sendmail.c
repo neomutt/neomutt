@@ -51,6 +51,7 @@
 #include "nntp/lib.h"
 #include "pager/lib.h"
 #include "globals.h"
+#include "module_data.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
 #else
@@ -62,15 +63,14 @@
 extern char **environ;
 #endif
 
-static volatile sig_atomic_t SigAlrm; ///< true after SIGALRM is received
-
 /**
  * alarm_handler - Async notification of an alarm signal
  * @param sig Signal, (SIGALRM)
  */
 static void alarm_handler(int sig)
 {
-  SigAlrm = 1;
+  struct SendModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  mod_data->sig_alrm = 1;
 }
 
 /**
@@ -91,6 +91,7 @@ static int send_msg(const char *path, struct StringArray *args, const char *msg,
 {
   sigset_t set;
   int st;
+  struct SendModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
 
   mutt_sig_block_system();
 
@@ -184,7 +185,7 @@ static int send_msg(const char *path, struct StringArray *args, const char *msg,
      * wait_time < 0: don't wait */
     if (wait_time > 0)
     {
-      SigAlrm = 0;
+      mod_data->sig_alrm = 0;
       act.sa_handler = alarm_handler;
 #ifdef SA_INTERRUPT
       /* need to make sure waitpid() is interrupted on SIGALRM */
@@ -212,7 +213,7 @@ static int send_msg(const char *path, struct StringArray *args, const char *msg,
     }
     else
     {
-      st = ((wait_time > 0) && (errno == EINTR) && SigAlrm) ? S_BKG : S_ERR;
+      st = ((wait_time > 0) && (errno == EINTR) && mod_data->sig_alrm) ? S_BKG : S_ERR;
       if ((wait_time > 0) && tempfile && *tempfile)
       {
         unlink(*tempfile);
