@@ -48,6 +48,8 @@ extern struct ConfigDef GuiVars[];
  */
 static void log_gui(void)
 {
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+
   const char *term = mutt_str_getenv("TERM");
   const char *color_term = mutt_str_getenv("COLORTERM");
   bool true_color = false;
@@ -62,10 +64,10 @@ static void log_gui(void)
   mutt_debug(LL_DEBUG1, "    TERM=%s\n", NONULL(term));
   mutt_debug(LL_DEBUG1, "    COLORTERM=%s\n", NONULL(color_term));
   mutt_debug(LL_DEBUG1, "    True color support: %s\n", true_color ? "YES" : "NO");
-  if (RootWindow)
+  if (mod_data->root_window)
   {
-    mutt_debug(LL_DEBUG1, "    Screen: %dx%d\n", RootWindow->state.cols,
-               RootWindow->state.rows);
+    mutt_debug(LL_DEBUG1, "    Screen: %dx%d\n", mod_data->root_window->state.cols,
+               mod_data->root_window->state.rows);
   }
 }
 
@@ -93,8 +95,10 @@ static bool gui_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
  */
 static bool gui_gui_init(struct NeoMutt *n)
 {
+  struct GuiModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_GUI);
+
   /* check whether terminal status is supported (must follow curses init) */
-  TsSupported = mutt_ts_capability();
+  mod_data->ts_supported = mutt_ts_capability();
   mutt_resize_screen();
   log_gui();
 

@@ -32,12 +32,13 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "mutt_window.h"
 #include "curs_lib.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_curses.h"
 #include "reflow.h"
-#include "rootwin.h"
 #ifdef USE_DEBUG_WINDOW
 #include "debug/lib.h"
 #endif
@@ -145,7 +146,12 @@ static void window_notify(struct MuttWindow *win)
 void window_notify_all(struct MuttWindow *win)
 {
   if (!win)
-    win = RootWindow;
+  {
+    struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+    win = mod_data ? mod_data->root_window : NULL;
+  }
+  if (!win)
+    return;
 
   window_notify(win);
 
@@ -165,7 +171,12 @@ void window_notify_all(struct MuttWindow *win)
 void window_set_visible(struct MuttWindow *win, bool visible)
 {
   if (!win)
-    win = RootWindow;
+  {
+    struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+    win = mod_data ? mod_data->root_window : NULL;
+  }
+  if (!win)
+    return;
 
   win->state.visible = visible;
 }
@@ -312,7 +323,12 @@ void mutt_window_reflow(struct MuttWindow *win)
     return;
 
   if (!win)
-    win = RootWindow;
+  {
+    struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+    win = mod_data ? mod_data->root_window : NULL;
+  }
+  if (!win)
+    return;
 
   window_reflow(win);
   window_notify_all(win);
@@ -607,7 +623,12 @@ static void window_recursor(void)
 void window_redraw(struct MuttWindow *win)
 {
   if (!win)
-    win = RootWindow;
+  {
+    struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+    win = mod_data ? mod_data->root_window : NULL;
+  }
+  if (!win)
+    return;
 
   window_reflow(win);
   window_notify_all(win);
@@ -640,7 +661,8 @@ bool window_is_focused(const struct MuttWindow *win)
  */
 struct MuttWindow *window_get_focus(void)
 {
-  struct MuttWindow *win = RootWindow;
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  struct MuttWindow *win = mod_data ? mod_data->root_window : NULL;
 
   while (win && win->focus)
     win = win->focus;
@@ -739,7 +761,8 @@ static void window_invalidate(struct MuttWindow *win)
  */
 void window_invalidate_all(void)
 {
-  window_invalidate(RootWindow);
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  window_invalidate(mod_data ? mod_data->root_window : NULL);
   clearok(stdscr, true);
   keypad(stdscr, true);
 }

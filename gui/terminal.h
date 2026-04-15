@@ -25,8 +25,6 @@
 
 #include <stdbool.h>
 
-extern bool TsSupported;
-
 bool mutt_ts_capability(void);
 void mutt_ts_status(char *str);
 void mutt_ts_icon(char *str);

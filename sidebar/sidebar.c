@@ -217,10 +217,12 @@ void sb_init(void)
   if (!attr_color_is_set(ac))
     ac->attrs = A_UNDERLINE;
 
-  if (AllDialogsWindow)
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+
+  if (mod_data->all_dialogs_window)
   {
     // Listen for dialog creation events
-    notify_observer_add(AllDialogsWindow->notify, NT_WINDOW,
+    notify_observer_add(mod_data->all_dialogs_window->notify, NT_WINDOW,
                         sb_insertion_window_observer, NULL);
   }
 }
@@ -231,7 +233,9 @@ void sb_init(void)
 void sb_cleanup(void)
 {
   struct SidebarModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
-  if (AllDialogsWindow)
-    notify_observer_remove(AllDialogsWindow->notify, sb_insertion_window_observer, NULL);
+  struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (gui_data && gui_data->all_dialogs_window)
+    notify_observer_remove(gui_data->all_dialogs_window->notify,
+                           sb_insertion_window_observer, NULL);
   mutt_list_free(&mod_data->sidebar_pinned);
 }

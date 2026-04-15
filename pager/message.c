@@ -38,6 +38,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "gui/module_data.h"
 #include "mutt.h"
 #include "lib.h"
 #include "attach/lib.h"
@@ -47,7 +48,6 @@
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
-#include "functions.h"
 #include "globals.h"
 #include "module_data.h"
 #include "mx.h"
@@ -306,7 +306,8 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
 
   struct Buffer *buf = buf_pool_get();
   const struct Expando *c_pager_format = cs_subset_expando(NeoMutt->sub, "pager_format");
-  const int screen_width = RootWindow->state.cols;
+  struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  const int screen_width = gui_data->root_window->state.cols;
   mutt_make_string(buf, screen_width, c_pager_format, m, -1, e,
                    MUTT_FORMAT_NO_FLAGS, _(ExtPagerProgress));
 

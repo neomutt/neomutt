@@ -23,7 +23,10 @@
 #ifndef MUTT_GUI_MODULE_DATA_H
 #define MUTT_GUI_MODULE_DATA_H
 
+#include <stdbool.h>
+
 struct MenuDefinition;
+struct MuttWindow;
 struct SubMenu;
 
 /**
@@ -31,10 +34,14 @@ struct SubMenu;
  */
 struct GuiModuleData
 {
-  struct MenuDefinition *md_generic; ///< Generic Menu Definition
-  struct MenuDefinition *md_dialog;  ///< Dialog Menu Definition
-  struct SubMenu *sm_generic;        ///< Generic functions
-  struct SubMenu *sm_dialog;         ///< Dialog functions
+  struct MenuDefinition *md_generic;     ///< Generic Menu Definition
+  struct MenuDefinition *md_dialog;      ///< Dialog Menu Definition
+  struct SubMenu *sm_generic;            ///< Generic functions
+  struct SubMenu *sm_dialog;             ///< Dialog functions
+  struct MuttWindow *all_dialogs_window; ///< Parent of all Dialogs
+  struct MuttWindow *message_container;  ///< Message Container Window
+  struct MuttWindow *root_window;        ///< Parent of all Windows
+  bool ts_supported;                     ///< Terminal Setting is supported
 };
 
 #endif /* MUTT_GUI_MODULE_DATA_H */

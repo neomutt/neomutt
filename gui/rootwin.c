@@ -97,13 +97,12 @@
 #include "core/lib.h"
 #include "helpbar/lib.h"
 #include "dialog.h"
+#include "module_data.h"
 #include "msgcont.h"
 #include "msgwin.h"
 #include "mutt_window.h"
 
 void mutt_resize_screen(void);
-
-struct MuttWindow *RootWindow = NULL; ///< Parent of all Windows
 
 /**
  * rootwin_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
@@ -208,9 +207,13 @@ static int rootwin_window_observer(struct NotifyCallback *nc)
  */
 void rootwin_cleanup(void)
 {
-  AllDialogsWindow = NULL;
-  MessageContainer = NULL;
-  mutt_window_free(&RootWindow);
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (mod_data)
+  {
+    mod_data->all_dialogs_window = NULL;
+    mod_data->message_container = NULL;
+    mutt_window_free(&mod_data->root_window);
+  }
 }
 
 /**
@@ -220,10 +223,13 @@ void rootwin_cleanup(void)
  */
 void rootwin_new(void)
 {
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+
   struct MuttWindow *win_root = mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL,
                                                 MUTT_WIN_SIZE_FIXED, 0, 0);
   notify_set_parent(win_root->notify, NeoMutt->notify);
-  RootWindow = win_root;
+  if (mod_data)
+    mod_data->root_window = win_root;
 
   struct MuttWindow *win_helpbar = helpbar_new();
   struct MuttWindow *win_alldlgs = alldialogs_new();
@@ -259,25 +265,27 @@ void rootwin_new(void)
  */
 void rootwin_set_size(int cols, int rows)
 {
-  if (!RootWindow)
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->root_window)
     return;
 
+  struct MuttWindow *win_root = mod_data->root_window;
   bool changed = false;
 
-  if (RootWindow->state.rows != rows)
+  if (win_root->state.rows != rows)
   {
-    RootWindow->state.rows = rows;
+    win_root->state.rows = rows;
     changed = true;
   }
 
-  if (RootWindow->state.cols != cols)
+  if (win_root->state.cols != cols)
   {
-    RootWindow->state.cols = cols;
+    win_root->state.cols = cols;
     changed = true;
   }
 
   if (changed)
   {
-    mutt_window_reflow(RootWindow);
+    mutt_window_reflow(win_root);
   }
 }

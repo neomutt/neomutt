@@ -77,12 +77,12 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
+#include "gui/module_data.h"
 #include "attach/lib.h"
 #include "color/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "postpone/lib.h"
-#include "functions.h"
 #include "globals.h"
 #include "module_data.h"
 #include "muttlib.h"
@@ -692,11 +692,12 @@ struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
  */
 struct MailboxView *get_current_mailbox_view(void)
 {
-  if (!AllDialogsWindow)
+  struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!gui_data || !gui_data->all_dialogs_window)
     return NULL;
 
   struct MuttWindow **wp = NULL;
-  ARRAY_FOREACH_REVERSE(wp, &AllDialogsWindow->children)
+  ARRAY_FOREACH_REVERSE(wp, &gui_data->all_dialogs_window->children)
   {
     struct MuttWindow *win = window_find_child(*wp, WT_DLG_INDEX);
     if (win)
