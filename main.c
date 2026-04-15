@@ -1677,7 +1677,6 @@ main_exit:
 
   mutt_delete_hooks(CMD_NONE);
 
-  lua_cleanup();
   mutt_prex_cleanup();
   config_cache_cleanup();
   MuttLogger = log_disp_queue;

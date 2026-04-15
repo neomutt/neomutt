@@ -26,9 +26,12 @@
 /**
  * struct LuaModuleData - Lua private Module data
  */
+/**
+ * struct LuaModuleData - Lua private Module data
+ */
 struct LuaModuleData
 {
-  int dummy;
+  void *lua_state; ///< Lua State (lua_State*)
 };
 
 #endif /* MUTT_LUA_MODULE_DATA_H */
