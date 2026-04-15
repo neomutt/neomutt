@@ -50,12 +50,14 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "sasl.h"
 #include "editor/lib.h"
 #include "history/lib.h"
 #include "connaccount.h"
 #include "connection.h"
 #include "globals.h"
+#include "module_data.h"
 
 /**
  * struct SaslSockData - SASL authentication API - @extends Connection
@@ -118,10 +120,10 @@ static const char *const SaslAuthenticators[] = {
 #define IP_PORT_BUFLEN (NI_MAXHOST + NI_MAXSERV)
 
 /// SASL callback functions, e.g. mutt_sasl_cb_authname(), mutt_sasl_cb_pass()
-static sasl_callback_t MuttSaslCallbacks[5];
+// MuttSaslCallbacks moved to ConnModuleData
 
 /// SASL secret, to store the password
-static sasl_secret_t *SecretPtr = NULL;
+// SecretPtr moved to ConnModuleData
 
 /**
  * sasl_auth_validator - Validate an auth method against Cyrus SASL methods
@@ -366,12 +368,15 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
   if (mutt_account_getpass(cac) < 0)
     return SASL_FAIL;
 
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
   len = strlen(cac->pass);
 
-  mutt_mem_realloc(&SecretPtr, sizeof(sasl_secret_t) + len);
-  memcpy((char *) SecretPtr->data, cac->pass, (size_t) len);
-  SecretPtr->len = len;
-  *psecret = SecretPtr;
+  sasl_secret_t *secret = mod_data->secret_ptr;
+  mutt_mem_realloc(&secret, sizeof(sasl_secret_t) + len);
+  memcpy((char *) secret->data, cac->pass, (size_t) len);
+  secret->len = len;
+  mod_data->secret_ptr = secret;
+  *psecret = secret;
 
   return SASL_OK;
 }
@@ -383,7 +388,11 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
  */
 static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *cac)
 {
-  sasl_callback_t *callback = MuttSaslCallbacks;
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
+  if (!mod_data->mutt_sasl_callbacks)
+    mod_data->mutt_sasl_callbacks = mutt_mem_calloc(5, sizeof(sasl_callback_t));
+
+  sasl_callback_t *callback = mod_data->mutt_sasl_callbacks;
 
   callback->id = SASL_CB_USER;
   callback->proc = (int (*)(void))(intptr_t) mutt_sasl_cb_authname;
@@ -409,7 +418,7 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct ConnAccount *cac)
   callback->proc = NULL;
   callback->context = NULL;
 
-  return MuttSaslCallbacks;
+  return mod_data->mutt_sasl_callbacks;
 }
 
 /**

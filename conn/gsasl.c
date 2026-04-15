@@ -31,13 +31,12 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "connaccount.h"
 #include "connection.h"
 #include "gsasl2.h"
+#include "module_data.h"
 #include "mutt_account.h"
-
-/// Global GNU SASL handle
-static Gsasl *MuttGsaslCtx = NULL;
 
 /**
  * mutt_gsasl_callback - Callback to retrieve authname or user from ConnAccount
@@ -127,19 +126,21 @@ static int mutt_gsasl_callback(Gsasl *ctx, Gsasl_session *sctx, Gsasl_property p
  */
 static bool mutt_gsasl_init(void)
 {
-  if (MuttGsaslCtx)
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
+  if (mod_data->mutt_gsasl_ctx)
     return true;
 
-  int rc = gsasl_init(&MuttGsaslCtx);
+  Gsasl *ctx = NULL;
+  int rc = gsasl_init(&ctx);
   if (rc != GSASL_OK)
   {
-    MuttGsaslCtx = NULL;
     mutt_debug(LL_DEBUG1, "libgsasl initialisation failed (%d): %s\n", rc,
                gsasl_strerror(rc));
     return false;
   }
 
-  gsasl_callback_set(MuttGsaslCtx, mutt_gsasl_callback);
+  gsasl_callback_set(ctx, mutt_gsasl_callback);
+  mod_data->mutt_gsasl_ctx = ctx;
   return true;
 }
 
@@ -148,11 +149,12 @@ static bool mutt_gsasl_init(void)
  */
 void mutt_gsasl_cleanup(void)
 {
-  if (!MuttGsaslCtx)
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
+  if (!mod_data->mutt_gsasl_ctx)
     return;
 
-  gsasl_done(MuttGsaslCtx);
-  MuttGsaslCtx = NULL;
+  gsasl_done(mod_data->mutt_gsasl_ctx);
+  mod_data->mutt_gsasl_ctx = NULL;
 }
 
 /**
@@ -166,6 +168,8 @@ const char *mutt_gsasl_get_mech(const char *requested_mech, const char *server_m
   if (!mutt_gsasl_init())
     return NULL;
 
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
+
   /* libgsasl does not do case-independent string comparisons,
    * and stores its methods internally in uppercase. */
   char *uc_server_mechlist = mutt_str_dup(server_mechlist);
@@ -178,9 +182,9 @@ const char *mutt_gsasl_get_mech(const char *requested_mech, const char *server_m
 
   const char *sel_mech = NULL;
   if (uc_requested_mech)
-    sel_mech = gsasl_client_suggest_mechanism(MuttGsaslCtx, uc_requested_mech);
+    sel_mech = gsasl_client_suggest_mechanism(mod_data->mutt_gsasl_ctx, uc_requested_mech);
   else
-    sel_mech = gsasl_client_suggest_mechanism(MuttGsaslCtx, uc_server_mechlist);
+    sel_mech = gsasl_client_suggest_mechanism(mod_data->mutt_gsasl_ctx, uc_server_mechlist);
 
   FREE(&uc_requested_mech);
   FREE(&uc_server_mechlist);
@@ -201,7 +205,8 @@ int mutt_gsasl_client_new(struct Connection *conn, const char *mech, Gsasl_sessi
   if (!mutt_gsasl_init())
     return -1;
 
-  int rc = gsasl_client_start(MuttGsaslCtx, mech, sctx);
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
+  int rc = gsasl_client_start(mod_data->mutt_gsasl_ctx, mech, sctx);
   if (rc != GSASL_OK)
   {
     *sctx = NULL;

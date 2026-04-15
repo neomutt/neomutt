@@ -28,7 +28,12 @@
  */
 struct ConnModuleData
 {
-  int dummy;
+  int protocol_priority[5]; ///< GnuTLS protocol priority (USE_SSL_GNUTLS)
+  void *mutt_gsasl_ctx;     ///< GNU SASL context (Gsasl*, USE_SASL_GNU)
+  int host_ex_data_index;   ///< OpenSSL host extra data index (USE_SSL_OPENSSL)
+  int skip_mode_ex_data_index; ///< OpenSSL skip mode extra data index (USE_SSL_OPENSSL)
+  void *mutt_sasl_callbacks; ///< Cyrus SASL callbacks (sasl_callback_t[], USE_SASL_CYRUS)
+  void *secret_ptr;          ///< Cyrus SASL secret (sasl_secret_t*, USE_SASL_CYRUS)
 };
 
 #endif /* MUTT_CONN_MODULE_DATA_H */
