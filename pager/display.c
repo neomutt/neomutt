@@ -44,6 +44,7 @@
 #include "display.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "module_data.h"
 #include "private_data.h"
 
 /**
@@ -518,7 +519,8 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
     if (buf[0] == '\n') /* end of header */
     {
       lines[line_num].cid = MT_COLOR_NORMAL;
-      mutt_window_get_coords(win, &BrailleRow, &BrailleCol);
+      struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+      mutt_window_get_coords(win, &mod_data->braille_row, &mod_data->braille_col);
     }
     else
     {

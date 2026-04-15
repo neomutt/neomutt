@@ -192,9 +192,6 @@ typedef uint8_t PagerRedrawFlags;       ///< Flags, e.g. #PAGER_REDRAW_PAGER
 #define PAGER_REDRAW_PAGER     (1 << 1) ///< Redraw the pager
 #define PAGER_REDRAW_FLOW      (1 << 2) ///< Reflow the pager
 
-extern int BrailleRow;
-extern int BrailleCol;
-
 void pager_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 
 int dlg_pager(struct PagerView *pview);

@@ -62,11 +62,6 @@
 #include "mx.h"
 #include "private_data.h"
 
-/// Braille display: row to leave the cursor
-int BrailleRow = -1;
-/// Braille display: column to leave the cursor
-int BrailleCol = -1;
-
 /// Help Bar for the Pager's Help Page
 static const struct Mapping PagerHelp[] = {
   // clang-format off
@@ -389,10 +384,11 @@ int dlg_pager(struct PagerView *pview)
     const bool c_braille_friendly = cs_subset_bool(NeoMutt->sub, "braille_friendly");
     if (c_braille_friendly)
     {
-      if (BrailleRow != -1)
+      if (mod_data->braille_row != -1)
       {
-        mutt_window_move(priv->pview->win_pager, BrailleRow + 1, BrailleCol);
-        BrailleRow = -1;
+        mutt_window_move(priv->pview->win_pager, mod_data->braille_row + 1,
+                         mod_data->braille_col);
+        mod_data->braille_row = -1;
       }
     }
     else
