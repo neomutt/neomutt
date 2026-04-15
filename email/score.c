@@ -43,10 +43,29 @@
 #include "pattern/lib.h"
 #include "email.h"
 #include "globals.h"
+#include "module_data.h"
 #include "sort.h"
 
-/// Linked list of email scoring rules
-struct Score *ScoreList = NULL;
+/**
+ * score_list_free - Free a list of scoring rules
+ * @param[out] sp Head of the Score list
+ */
+void score_list_free(struct Score **sp)
+{
+  if (!sp)
+    return;
+
+  struct Score *sc = *sp;
+  while (sc)
+  {
+    struct Score *next = sc->next;
+    mutt_pattern_free(&sc->pat);
+    FREE(&sc->str);
+    FREE(&sc);
+    sc = next;
+  }
+  *sp = NULL;
+}
 
 /**
  * parse_score - Parse the 'score' command - Implements Command::parse() - @ingroup command_parse
@@ -58,6 +77,7 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
                                const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
 
   if (!MoreArgs(line))
   {
@@ -86,7 +106,7 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
 
   /* look for an existing entry and update the value, else add it to the end
    * of the list */
-  for (ptr = ScoreList, last = NULL; ptr; last = ptr, ptr = ptr->next)
+  for (ptr = mod_data->score_list, last = NULL; ptr; last = ptr, ptr = ptr->next)
     if (mutt_str_equal(pattern, ptr->str))
       break;
 
@@ -109,7 +129,7 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
     if (last)
       last->next = ptr;
     else
-      ScoreList = ptr;
+      mod_data->score_list = ptr;
     ptr->pat = pat;
     ptr->str = pattern;
     pattern = NULL;
@@ -147,6 +167,7 @@ enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line,
                                  const struct ParseContext *pc, struct ParseError *pe)
 {
   struct Buffer *err = pe->message;
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
 
   if (!MoreArgs(line))
   {
@@ -162,25 +183,18 @@ enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line,
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf_string(token)))
     {
-      for (tmp = ScoreList; tmp;)
-      {
-        last = tmp;
-        tmp = tmp->next;
-        mutt_pattern_free(&last->pat);
-        FREE(&last);
-      }
-      ScoreList = NULL;
+      score_list_free(&mod_data->score_list);
     }
     else
     {
-      for (tmp = ScoreList; tmp; last = tmp, tmp = tmp->next)
+      for (tmp = mod_data->score_list; tmp; last = tmp, tmp = tmp->next)
       {
         if (mutt_str_equal(buf_string(token), tmp->str))
         {
           if (last)
             last->next = tmp->next;
           else
-            ScoreList = tmp->next;
+            mod_data->score_list = tmp->next;
           mutt_pattern_free(&tmp->pat);
           FREE(&tmp);
           /* there should only be one score per pattern, so we can stop here */
@@ -228,11 +242,12 @@ void mutt_check_rescore(struct Mailbox *m)
  */
 void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
 {
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
   struct Score *tmp = NULL;
   struct PatternCache cache = { 0 };
 
   e->score = 0; /* in case of re-scoring */
-  for (tmp = ScoreList; tmp; tmp = tmp->next)
+  for (tmp = mod_data->score_list; tmp; tmp = tmp->next)
   {
     if (mutt_pattern_exec(SLIST_FIRST(tmp->pat), MUTT_MATCH_FULL_ADDRESS, NULL, e, &cache) > 0)
     {

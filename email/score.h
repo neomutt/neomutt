@@ -43,7 +43,7 @@ struct Score
   struct Score *next;      ///< Linked list
 };
 
-extern struct Score *ScoreList;
+void score_list_free(struct Score **sp);
 
 enum CommandResult parse_score  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);

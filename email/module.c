@@ -33,6 +33,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "module_data.h"
+#include "score.h"
 #include "tags.h"
 
 extern struct ConfigDef EmailVars[];
@@ -107,6 +108,8 @@ static bool email_cleanup(struct NeoMutt *n)
   mutt_regexlist_free(&mod_data->no_spam);
 
   mutt_replacelist_free(&mod_data->spam);
+
+  score_list_free(&mod_data->score_list);
 
   driver_tags_cleanup(mod_data);
 
