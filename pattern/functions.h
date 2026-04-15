@@ -23,10 +23,17 @@
 #ifndef MUTT_PATTERN_FUNCTIONS_H
 #define MUTT_PATTERN_FUNCTIONS_H
 
-#include "pattern_data.h"
-
 struct KeyEvent;
 struct MuttWindow;
+
+/**
+ * struct PatternFunctionData - Data passed to Pattern worker functions
+ */
+struct PatternFunctionData
+{
+  struct NeoMutt *n; ///< NeoMutt application data
+  struct PatternData *pd; ///< Pattern data
+};
 
 /**
  * @defgroup pattern_function_api Pattern Function API
@@ -34,14 +41,14 @@ struct MuttWindow;
  *
  * Prototype for a Pattern Function
  *
- * @param menu  Menu
+ * @param fdata   Pattern Function context data
  * @param event Event to process
  * @retval enum #FunctionRetval
  *
- * @pre menu  is not NULL
+ * @pre fdata   is not NULL
  * @pre event is not NULL
  */
-typedef int (*pattern_function_t)(struct PatternData *pd, const struct KeyEvent *event);
+typedef int (*pattern_function_t)(struct PatternFunctionData *fdata, const struct KeyEvent *event);
 
 /**
  * struct PatternFunction - A NeoMutt function

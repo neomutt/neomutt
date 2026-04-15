@@ -144,8 +144,9 @@ void attach_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
  * attach_collapse - Close the tree of the current attachment
  * @param actx Attachment context
  * @param menu Menu listing Attachments
+ * @param sub  Config subset
  */
-static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
+static void attach_collapse(struct AttachCtx *actx, struct Menu *menu, struct ConfigSubset *sub)
 {
   int rindex, curlevel;
 
@@ -159,7 +160,7 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
   const int index = menu_get_index(menu);
   rindex = actx->v2r[index] + 1;
 
-  const bool c_digest_collapse = cs_subset_bool(NeoMutt->sub, "digest_collapse");
+  const bool c_digest_collapse = cs_subset_bool(sub, "digest_collapse");
   while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel))
   {
     if (c_digest_collapse && (actx->idx[rindex]->body->type == TYPE_MULTIPART) &&
@@ -265,15 +266,16 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
 /**
  * op_attach_collapse - toggle display of subparts - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_collapse(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_collapse(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   if (!cur_att->body->parts)
   {
     mutt_error(_("There are no subparts to show"));
     return FR_NO_ACTION;
   }
-  attach_collapse(priv->actx, priv->menu);
+  attach_collapse(priv->actx, priv->menu, fdata->n->sub);
   mutt_update_recvattach_menu(priv->actx, priv->menu, false);
   return FR_SUCCESS;
 }
@@ -281,8 +283,9 @@ static int op_attach_collapse(struct AttachPrivateData *priv, const struct KeyEv
 /**
  * op_attach_delete - delete the current entry - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_delete(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_delete(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (check_readonly(priv->mailbox))
     return FR_ERROR;
 
@@ -334,7 +337,7 @@ static int op_attach_delete(struct AttachPrivateData *priv, const struct KeyEven
     if (cur_att->parent_type == TYPE_MULTIPART)
     {
       cur_att->body->deleted = true;
-      const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+      const bool c_resolve = cs_subset_bool(fdata->n->sub, "resolve");
       const int index = menu_get_index(priv->menu) + 1;
       if (c_resolve && (index < priv->menu->max))
       {
@@ -357,8 +360,9 @@ static int op_attach_delete(struct AttachPrivateData *priv, const struct KeyEven
 /**
  * op_attach_edit_type - edit attachment content type - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_edit_type(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_edit_type(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   recvattach_edit_content_type(priv->actx, priv->menu, priv->actx->email);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   return FR_SUCCESS;
@@ -367,8 +371,9 @@ static int op_attach_edit_type(struct AttachPrivateData *priv, const struct KeyE
 /**
  * op_attach_pipe - pipe message/attachment to a shell command - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_pipe(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_pipe(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_pipe_attachment_list(priv->actx, cur_att->fp, priv->menu->tag_prefix,
                             cur_att->body, false);
@@ -378,8 +383,9 @@ static int op_attach_pipe(struct AttachPrivateData *priv, const struct KeyEvent 
 /**
  * op_attach_print - print the current entry - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_print(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_print(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_print_attachment_list(priv->actx, cur_att->fp, priv->menu->tag_prefix,
                              cur_att->body);
@@ -389,13 +395,14 @@ static int op_attach_print(struct AttachPrivateData *priv, const struct KeyEvent
 /**
  * op_attach_save - save message/attachment to a mailbox/file - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_save(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_save(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_save_attachment_list(priv->actx, cur_att->fp, priv->menu->tag_prefix,
                             cur_att->body, priv->actx->email, priv->menu);
 
-  const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+  const bool c_resolve = cs_subset_bool(fdata->n->sub, "resolve");
   const int index = menu_get_index(priv->menu) + 1;
   if (!priv->menu->tag_prefix && c_resolve && (index < priv->menu->max))
     menu_set_index(priv->menu, index);
@@ -405,8 +412,9 @@ static int op_attach_save(struct AttachPrivateData *priv, const struct KeyEvent 
 /**
  * op_attach_undelete - undelete the current entry - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_undelete(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_undelete(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (check_readonly(priv->mailbox))
     return FR_ERROR;
 
@@ -425,7 +433,7 @@ static int op_attach_undelete(struct AttachPrivateData *priv, const struct KeyEv
   {
     struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
     cur_att->body->deleted = false;
-    const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
+    const bool c_resolve = cs_subset_bool(fdata->n->sub, "resolve");
     const int index = menu_get_index(priv->menu) + 1;
     if (c_resolve && (index < priv->menu->max))
     {
@@ -443,8 +451,9 @@ static int op_attach_undelete(struct AttachPrivateData *priv, const struct KeyEv
 /**
  * op_attach_view - view attachment using mailcap entry if necessary - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_view(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_view(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   priv->op = mutt_attach_display_loop(priv->sub, priv->menu, event->op,
                                       priv->actx->email, priv->actx, true);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -455,8 +464,9 @@ static int op_attach_view(struct AttachPrivateData *priv, const struct KeyEvent 
 /**
  * op_attach_view_mailcap - force viewing of attachment using mailcap - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_view_mailcap(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_view_mailcap(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_MAILCAP,
                        priv->actx->email, priv->actx, priv->menu->win);
@@ -467,8 +477,9 @@ static int op_attach_view_mailcap(struct AttachPrivateData *priv, const struct K
 /**
  * op_attach_view_pager - view attachment in pager using copiousoutput mailcap - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_view_pager(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_view_pager(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_PAGER,
                        priv->actx->email, priv->actx, priv->menu->win);
@@ -479,8 +490,9 @@ static int op_attach_view_pager(struct AttachPrivateData *priv, const struct Key
 /**
  * op_attach_view_text - view attachment as text - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_attach_view_text(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_attach_view_text(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_view_attachment(cur_att->fp, cur_att->body, MUTT_VA_AS_TEXT,
                        priv->actx->email, priv->actx, priv->menu->win);
@@ -491,8 +503,9 @@ static int op_attach_view_text(struct AttachPrivateData *priv, const struct KeyE
 /**
  * op_bounce_message - remail a message to another user - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_bounce_message(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_bounce_message(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
@@ -505,8 +518,9 @@ static int op_bounce_message(struct AttachPrivateData *priv, const struct KeyEve
 /**
  * op_check_traditional - check for classic PGP - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_check_traditional(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_check_traditional(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (((WithCrypto & APPLICATION_PGP) != 0) &&
       recvattach_pgp_check_traditional(priv->actx, priv->menu))
   {
@@ -519,8 +533,9 @@ static int op_check_traditional(struct AttachPrivateData *priv, const struct Key
 /**
  * op_compose_to_sender - compose new message to the current message sender - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_compose_to_sender(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_compose_to_sender(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
@@ -532,8 +547,9 @@ static int op_compose_to_sender(struct AttachPrivateData *priv, const struct Key
 /**
  * op_exit - exit this menu - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_exit(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_exit(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   priv->actx->email->attach_del = false;
   for (int i = 0; i < priv->actx->idxlen; i++)
   {
@@ -553,8 +569,9 @@ static int op_exit(struct AttachPrivateData *priv, const struct KeyEvent *event)
 /**
  * op_extract_keys - extract supported public keys - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_extract_keys(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_extract_keys(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (!(WithCrypto & APPLICATION_PGP))
     return FR_NO_ACTION;
 
@@ -567,7 +584,7 @@ static int op_extract_keys(struct AttachPrivateData *priv, const struct KeyEvent
 /**
  * op_forget_passphrase - wipe passphrases from memory - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_forget_passphrase(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_forget_passphrase(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
   crypt_forget_passphrase();
   return FR_SUCCESS;
@@ -576,8 +593,9 @@ static int op_forget_passphrase(struct AttachPrivateData *priv, const struct Key
 /**
  * op_forward_message - forward a message with comments - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_forward_message(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_forward_message(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
@@ -590,8 +608,9 @@ static int op_forward_message(struct AttachPrivateData *priv, const struct KeyEv
 /**
  * op_list_subscribe - subscribe to a mailing list - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_list_subscribe(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_list_subscribe(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (!check_attach(priv))
     mutt_send_list_subscribe(priv->mailbox, priv->actx->email);
   return FR_SUCCESS;
@@ -600,8 +619,9 @@ static int op_list_subscribe(struct AttachPrivateData *priv, const struct KeyEve
 /**
  * op_list_unsubscribe - unsubscribe from a mailing list - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_list_unsubscribe(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_list_unsubscribe(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (!check_attach(priv))
     mutt_send_list_unsubscribe(priv->mailbox, priv->actx->email);
   return FR_SUCCESS;
@@ -610,8 +630,9 @@ static int op_list_unsubscribe(struct AttachPrivateData *priv, const struct KeyE
 /**
  * op_reply - reply to a message - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_reply(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_reply(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (check_attach(priv))
     return FR_ERROR;
 
@@ -634,8 +655,9 @@ static int op_reply(struct AttachPrivateData *priv, const struct KeyEvent *event
 /**
  * op_resend - use the current message as a template for a new one - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_resend(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_resend(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
@@ -650,8 +672,9 @@ static int op_resend(struct AttachPrivateData *priv, const struct KeyEvent *even
 /**
  * op_followup - followup to newsgroup - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_followup(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_followup(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (check_attach(priv))
     return FR_ERROR;
 
@@ -663,7 +686,7 @@ static int op_followup(struct AttachPrivateData *priv, const struct KeyEvent *ev
   }
   if (!cur_att->body->email->env->followup_to ||
       !mutt_istr_equal(cur_att->body->email->env->followup_to, "poster") ||
-      (query_quadoption(_("Reply by mail as poster prefers?"), NeoMutt->sub,
+      (query_quadoption(_("Reply by mail as poster prefers?"), fdata->n->sub,
                         "followup_to_poster") != MUTT_YES))
   {
     mutt_attach_reply(cur_att->fp, priv->mailbox, priv->actx->email, priv->actx,
@@ -672,14 +695,15 @@ static int op_followup(struct AttachPrivateData *priv, const struct KeyEvent *ev
     return FR_SUCCESS;
   }
 
-  return op_reply(priv, event);
+  return op_reply(fdata, event);
 }
 
 /**
  * op_forward_to_group - forward to newsgroup - Implements ::attach_function_t - @ingroup attach_function_api
  */
-static int op_forward_to_group(struct AttachPrivateData *priv, const struct KeyEvent *event)
+static int op_forward_to_group(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct AttachPrivateData *priv = fdata->priv;
   if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
@@ -744,13 +768,19 @@ int attach_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *ev
     return FR_ERROR;
 
   const int op = event->op;
+
+  struct AttachFunctionData fdata = {
+    .n = NeoMutt,
+    .priv = priv,
+  };
+
   int rc = FR_UNKNOWN;
   for (size_t i = 0; AttachFunctions[i].op != OP_NULL; i++)
   {
     const struct AttachFunction *fn = &AttachFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(priv, event);
+      rc = fn->function(&fdata, event);
       break;
     }
   }

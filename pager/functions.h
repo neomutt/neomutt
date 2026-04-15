@@ -31,22 +31,30 @@ struct PagerPrivateData;
 struct PagerView;
 
 /**
+ * struct PagerFunctionData - Data passed to Pager worker functions
+ */
+struct PagerFunctionData
+{
+  struct NeoMutt *n;                ///< NeoMutt application data
+  struct PagerModuleData *mod_data; ///< Pager module data
+  struct IndexSharedData *shared;   ///< Shared Index data
+  struct PagerPrivateData *priv;    ///< Private Pager data
+};
+
+/**
  * @defgroup pager_function_api Pager Function API
  * @ingroup dispatcher_api
  *
  * Prototype for a Pager Function
  *
- * @param shared Shared Index data
- * @param priv   Private Index data
- * @param event  Event to process
+ * @param fdata   Pager Function context data
+ * @param event Event to process
  * @retval enum #FunctionRetval
  *
- * @pre shared is not NULL
- * @pre priv   is not NULL
- * @pre event  is not NULL
+ * @pre fdata   is not NULL
+ * @pre event is not NULL
  */
-typedef int (*pager_function_t)(struct IndexSharedData *shared,
-                                struct PagerPrivateData *priv,
+typedef int (*pager_function_t)(struct PagerFunctionData *fdata,
                                 const struct KeyEvent *event);
 
 /**

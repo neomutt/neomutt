@@ -25,7 +25,14 @@
 
 #include "key/lib.h"
 
-struct Menu;
+/**
+ * struct MenuFunctionData - Data passed to Menu worker functions
+ */
+struct MenuFunctionData
+{
+  struct NeoMutt *n; ///< NeoMutt application data
+  struct Menu *menu; ///< Menu data
+};
 
 /**
  * @defgroup menu_function_api Menu Function API
@@ -33,14 +40,14 @@ struct Menu;
  *
  * Prototype for a Menu Function
  *
- * @param menu  Menu
+ * @param fdata   Menu Function context data
  * @param event Event to process
  * @retval enum #FunctionRetval
  *
- * @pre menu  is not NULL
+ * @pre fdata   is not NULL
  * @pre event is not NULL
  */
-typedef int (*menu_function_t)(struct Menu *menu, const struct KeyEvent *event);
+typedef int (*menu_function_t)(struct MenuFunctionData *fdata, const struct KeyEvent *event);
 
 /**
  * struct MenuFunction - A NeoMutt function

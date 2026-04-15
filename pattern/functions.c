@@ -40,8 +40,10 @@
 /**
  * op_generic_select_entry - Select the current entry - Implements ::pattern_function_t - @ingroup pattern_function_api
  */
-static int op_generic_select_entry(struct PatternData *pd, const struct KeyEvent *event)
+static int op_generic_select_entry(struct PatternFunctionData *fdata,
+                                   const struct KeyEvent *event)
 {
+  struct PatternData *pd = fdata->pd;
   const int index = menu_get_index(pd->menu);
   struct PatternEntry *entry = ARRAY_GET(&pd->entries, index);
 
@@ -56,8 +58,9 @@ static int op_generic_select_entry(struct PatternData *pd, const struct KeyEvent
 /**
  * op_quit - Quit this menu - Implements ::pattern_function_t - @ingroup pattern_function_api
  */
-static int op_quit(struct PatternData *pd, const struct KeyEvent *event)
+static int op_quit(struct PatternFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PatternData *pd = fdata->pd;
   pd->done = true;
   pd->selection = false;
   return FR_SUCCESS;
@@ -93,13 +96,18 @@ int pattern_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *e
   if (!pd)
     return FR_ERROR;
 
+  struct PatternFunctionData fdata = {
+    .n = NeoMutt,
+    .pd = pd,
+  };
+
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PatternFunctions[i].op != OP_NULL; i++)
   {
     const struct PatternFunction *fn = &PatternFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(pd, event);
+      rc = fn->function(&fdata, event);
       break;
     }
   }
