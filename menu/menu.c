@@ -32,17 +32,16 @@
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
 #include "expando/lib.h" // IWYU pragma: keep
 #include "key/lib.h"
+#include "module_data.h"
 #include "type.h"
 
 struct ConfigSubset;
-
-/// Previous search string, one for each #MenuType
-char *SearchBuffers[MENU_MAX];
 
 /**
  * default_color - Get the default colour for a line of the menu - Implements Menu::color() - @ingroup menu_color
@@ -71,8 +70,9 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
  */
 void menu_cleanup2(void)
 {
+  struct MenuModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_MENU);
   for (int i = 0; i < MENU_MAX; i++)
-    FREE(&SearchBuffers[i]);
+    FREE(&mod_data->search_buffers[i]);
 }
 
 /**
@@ -80,8 +80,9 @@ void menu_cleanup2(void)
  */
 void menu_init2(void)
 {
+  struct MenuModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_MENU);
   for (int i = 0; i < MENU_MAX; i++)
-    SearchBuffers[i] = NULL;
+    mod_data->search_buffers[i] = NULL;
 }
 
 /**

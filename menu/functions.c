@@ -41,9 +41,8 @@
 #include "editor/lib.h"
 #include "history/lib.h"
 #include "key/lib.h"
+#include "module_data.h"
 #include "type.h"
-
-extern char *SearchBuffers[];
 
 #define MUTT_SEARCH_UP 1
 #define MUTT_SEARCH_DOWN 2
@@ -57,6 +56,7 @@ extern char *SearchBuffers[];
  */
 static int search(struct Menu *menu, int op)
 {
+  struct MenuModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_MENU);
   int rc = -1;
   int wrap = 0;
   int search_dir;
@@ -64,7 +64,7 @@ static int search(struct Menu *menu, int op)
   struct Buffer *buf = buf_pool_get();
 
   char *search_buf = (menu->md && (menu->md->id < MENU_MAX)) ?
-                         SearchBuffers[menu->md->id] :
+                         mod_data->search_buffers[menu->md->id] :
                          NULL;
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
@@ -78,8 +78,8 @@ static int search(struct Menu *menu, int op)
     }
     if (menu->md && (menu->md->id < MENU_MAX))
     {
-      mutt_str_replace(&SearchBuffers[menu->md->id], buf_string(buf));
-      search_buf = SearchBuffers[menu->md->id];
+      mutt_str_replace(&mod_data->search_buffers[menu->md->id], buf_string(buf));
+      search_buf = mod_data->search_buffers[menu->md->id];
     }
     menu->search_dir = ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                            MUTT_SEARCH_DOWN :

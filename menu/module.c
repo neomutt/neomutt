@@ -34,6 +34,7 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "module_data.h"
+#include "type.h"
 
 extern struct ConfigDef MenuVars[];
 
@@ -42,8 +43,8 @@ extern struct ConfigDef MenuVars[];
  */
 static bool menu_init(struct NeoMutt *n)
 {
-  // struct MenuModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MenuModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_MENU, mod_data);
+  struct MenuModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MenuModuleData);
+  neomutt_set_module_data(n, MODULE_ID_MENU, mod_data);
 
   return true;
 }
@@ -54,18 +55,6 @@ static bool menu_init(struct NeoMutt *n)
 static bool menu_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 {
   return cs_register_variables(cs, MenuVars);
-}
-
-/**
- * menu_cleanup - Clean up a Module - Implements Module::cleanup()
- */
-static bool menu_cleanup(struct NeoMutt *n)
-{
-  // struct MenuModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MENU);
-  // ASSERT(mod_data);
-
-  // FREE(&mod_data);
-  return true;
 }
 
 /**
@@ -82,7 +71,23 @@ static bool menu_gui_init(struct NeoMutt *n)
  */
 static void menu_gui_cleanup(struct NeoMutt *n)
 {
-  menu_cleanup(n);
+  struct MenuModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MENU);
+  ASSERT(mod_data);
+
+  for (int i = 0; i < MENU_MAX; i++)
+    FREE(&mod_data->search_buffers[i]);
+}
+
+/**
+ * menu_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static bool menu_cleanup(struct NeoMutt *n)
+{
+  struct MenuModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MENU);
+  ASSERT(mod_data);
+
+  FREE(&mod_data);
+  return true;
 }
 
 /**
