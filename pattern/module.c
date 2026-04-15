@@ -41,8 +41,8 @@ extern struct ConfigDef PatternVars[];
  */
 static bool pattern_init(struct NeoMutt *n)
 {
-  // struct PatternModuleData *md = MUTT_MEM_CALLOC(1, struct PatternModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_PATTERN, md);
+  // struct PatternModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PatternModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_PATTERN, mod_data);
 
   return true;
 }
@@ -60,10 +60,10 @@ static bool pattern_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  */
 static bool pattern_cleanup(struct NeoMutt *n)
 {
-  // struct PatternModuleData *md = neomutt_get_module_data(n, MODULE_ID_PATTERN);
-  // ASSERT(md);
+  // struct PatternModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PATTERN);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

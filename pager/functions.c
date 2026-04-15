@@ -328,9 +328,9 @@ void pager_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_sidebar);
   km_menu_add_bindings(md, PagerDefaultBindings);
 
-  struct PagerModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_PAGER);
-  ASSERT(mdata);
-  mdata->menu_pager = md;
+  struct PagerModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PAGER);
+  ASSERT(mod_data);
+  mod_data->menu_pager = md;
 }
 
 /**
@@ -1008,10 +1008,10 @@ static int op_help(struct IndexSharedData *shared,
     mutt_error(_("Help is currently being shown"));
     return FR_ERROR;
   }
-  struct PagerModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
-  ASSERT(mdata);
+  struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mod_data);
 
-  mutt_help(mdata->menu_pager);
+  mutt_help(mod_data->menu_pager);
   pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
@@ -1189,8 +1189,8 @@ int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
  */
 struct MenuDefinition *pager_get_menu_definition(void)
 {
-  struct PagerModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
-  ASSERT(mdata);
+  struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mod_data);
 
-  return mdata->menu_pager;
+  return mod_data->menu_pager;
 }

@@ -127,8 +127,8 @@ static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
  */
 void browser_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct BrowserModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_BROWSER);
-  ASSERT(mdata);
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_BROWSER);
+  ASSERT(mod_data);
 
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -139,7 +139,7 @@ void browser_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, BrowserDefaultBindings);
 
-  mdata->menu_browser = md;
+  mod_data->menu_browser = md;
 }
 
 /**

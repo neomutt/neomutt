@@ -38,8 +38,8 @@
  */
 static bool envelope_init(struct NeoMutt *n)
 {
-  // struct EnvelopeModuleData *md = MUTT_MEM_CALLOC(1, struct EnvelopeModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_ENVELOPE, md);
+  // struct EnvelopeModuleData *mod_data = MUTT_MEM_CALLOC(1, struct EnvelopeModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_ENVELOPE, mod_data);
 
   return true;
 }
@@ -49,10 +49,10 @@ static bool envelope_init(struct NeoMutt *n)
  */
 static bool envelope_cleanup(struct NeoMutt *n)
 {
-  // struct EnvelopeModuleData *md = neomutt_get_module_data(n, MODULE_ID_ENVELOPE);
-  // ASSERT(md);
+  // struct EnvelopeModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ENVELOPE);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

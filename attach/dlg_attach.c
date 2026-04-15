@@ -208,8 +208,8 @@ static int attach_window_observer(struct NotifyCallback *nc)
 void dlg_attach(struct ConfigSubset *sub, struct MailboxView *mv,
                 struct Email *e, FILE *fp, bool attach_msg)
 {
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
   if (!mv || !mv->mailbox || !e || !fp)
     return;
@@ -220,8 +220,8 @@ void dlg_attach(struct ConfigSubset *sub, struct MailboxView *mv,
   mutt_parse_mime_message(e, fp);
   exec_message_hook(m, e, CMD_MESSAGE_HOOK);
 
-  struct SimpleDialogWindows sdw = simple_dialog_new(md->menu_attach, WT_DLG_ATTACH,
-                                                     AttachmentHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(mod_data->menu_attach,
+                                                     WT_DLG_ATTACH, AttachmentHelp);
   struct Menu *menu = sdw.menu;
   menu->make_entry = attach_make_entry;
   menu->tag = attach_tag;
@@ -257,14 +257,14 @@ void dlg_attach(struct ConfigSubset *sub, struct MailboxView *mv,
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(md->menu_attach, GETCH_NO_FLAGS);
+    event = km_dokey(mod_data->menu_attach, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(md->menu_attach);
+      km_error_key(mod_data->menu_attach);
       continue;
     }
     mutt_clear_error();

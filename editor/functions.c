@@ -125,8 +125,8 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
  */
 void editor_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct EditorModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_EDITOR);
-  ASSERT(mdata);
+  struct EditorModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_EDITOR);
+  ASSERT(mod_data);
 
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -136,8 +136,8 @@ void editor_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm);
   km_menu_add_bindings(md, EditorDefaultBindings);
 
-  mdata->md_editor = md;
-  mdata->sm_editor = sm;
+  mod_data->md_editor = md;
+  mod_data->sm_editor = sm;
 }
 
 /**
@@ -449,10 +449,10 @@ static int op_editor_transpose_chars(struct EnterWindowData *wdata, const struct
  */
 static int op_help(struct EnterWindowData *wdata, const struct KeyEvent *event)
 {
-  struct EditorModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
-  ASSERT(mdata);
+  struct EditorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
+  ASSERT(mod_data);
 
-  mutt_help(mdata->md_editor);
+  mutt_help(mod_data->md_editor);
   return FR_SUCCESS;
 }
 
@@ -542,10 +542,10 @@ int enter_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
  */
 struct MenuDefinition *editor_get_menu_definition(void)
 {
-  struct EditorModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
-  ASSERT(mdata);
+  struct EditorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
+  ASSERT(mod_data);
 
-  return mdata->md_editor;
+  return mod_data->md_editor;
 }
 
 /**
@@ -554,8 +554,8 @@ struct MenuDefinition *editor_get_menu_definition(void)
  */
 struct SubMenu *editor_get_submenu(void)
 {
-  struct EditorModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
-  ASSERT(mdata);
+  struct EditorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
+  ASSERT(mod_data);
 
-  return mdata->sm_editor;
+  return mod_data->sm_editor;
 }

@@ -60,14 +60,14 @@ enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
 
   struct Buffer *token = buf_pool_get();
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    remove_from_stailq(&md->unignore, buf_string(token));
-    add_to_stailq(&md->ignore, buf_string(token));
+    remove_from_stailq(&mod_data->unignore, buf_string(token));
+    add_to_stailq(&mod_data->ignore, buf_string(token));
   } while (MoreArgs(line));
 
   buf_pool_release(&token);
@@ -93,8 +93,8 @@ enum CommandResult parse_unignore(const struct Command *cmd, struct Buffer *line
 
   struct Buffer *token = buf_pool_get();
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   do
   {
@@ -102,9 +102,9 @@ enum CommandResult parse_unignore(const struct Command *cmd, struct Buffer *line
 
     /* don't add "*" to the unignore list */
     if (!mutt_str_equal(buf_string(token), "*"))
-      add_to_stailq(&md->unignore, buf_string(token));
+      add_to_stailq(&mod_data->unignore, buf_string(token));
 
-    remove_from_stailq(&md->ignore, buf_string(token));
+    remove_from_stailq(&mod_data->ignore, buf_string(token));
   } while (MoreArgs(line));
 
   buf_pool_release(&token);

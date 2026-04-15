@@ -43,8 +43,8 @@ extern const struct Command NmCommands[];
  */
 static bool notmuch_init(struct NeoMutt *n)
 {
-  // struct NotmuchModuleData *md = MUTT_MEM_CALLOC(1, struct NotmuchModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_NOTMUCH, md);
+  // struct NotmuchModuleData *mod_data = MUTT_MEM_CALLOC(1, struct NotmuchModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_NOTMUCH, mod_data);
 
   return true;
 }
@@ -101,10 +101,10 @@ static void notmuch_gui_cleanup(struct NeoMutt *n)
  */
 static bool notmuch_cleanup(struct NeoMutt *n)
 {
-  // struct NotmuchModuleData *md = neomutt_get_module_data(n, MODULE_ID_NOTMUCH);
-  // ASSERT(md);
+  // struct NotmuchModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_NOTMUCH);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

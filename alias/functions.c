@@ -123,8 +123,8 @@ static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
  */
 void alias_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct AliasModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_ALIAS);
-  ASSERT(mdata);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -135,7 +135,7 @@ void alias_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, AliasDefaultBindings);
 
-  mdata->menu_alias = md;
+  mod_data->menu_alias = md;
 
   sm = km_register_submenu(OpQuery);
   md = km_register_menu(MENU_QUERY, "query");
@@ -143,7 +143,7 @@ void alias_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, QueryDefaultBindings);
 
-  mdata->menu_query = md;
+  mod_data->menu_query = md;
 }
 
 /**

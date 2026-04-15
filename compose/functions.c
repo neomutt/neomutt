@@ -208,8 +208,8 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
  */
 void compose_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct ComposeModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_COMPOSE);
-  ASSERT(mdata);
+  struct ComposeModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COMPOSE);
+  ASSERT(mod_data);
 
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -220,7 +220,7 @@ void compose_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, ComposeDefaultBindings);
 
-  mdata->md_compose = md;
+  mod_data->md_compose = md;
 }
 
 /**

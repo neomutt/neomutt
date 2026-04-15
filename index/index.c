@@ -657,10 +657,10 @@ static int index_repaint(struct MuttWindow *win)
  */
 struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
 {
-  struct IndexModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
-  ASSERT(mdata);
+  struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mod_data);
 
-  struct MuttWindow *win = menu_window_new(mdata->menu_index, NeoMutt->sub);
+  struct MuttWindow *win = menu_window_new(mod_data->menu_index, NeoMutt->sub);
   win->recalc = index_recalc;
   win->repaint = index_repaint;
 

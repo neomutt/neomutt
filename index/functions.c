@@ -334,9 +334,9 @@ void index_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, IndexDefaultBindings);
 
-  struct IndexModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_INDEX);
-  ASSERT(mdata);
-  mdata->menu_index = md;
+  struct IndexModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_INDEX);
+  ASSERT(mod_data);
+  mod_data->menu_index = md;
 }
 
 /**
@@ -2149,9 +2149,9 @@ static int op_mark_msg(struct IndexSharedData *shared,
 
       /* L10N: "message hotkey" is the key bindings menu description of a
          macro created by <mark-message>. */
-      struct IndexModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
-      ASSERT(mdata);
-      km_bind(mdata->menu_index, str, OP_MACRO, macro, _("message hotkey"), NULL);
+      struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+      ASSERT(mod_data);
+      km_bind(mod_data->menu_index, str, OP_MACRO, macro, _("message hotkey"), NULL);
 
       /* L10N: This is echoed after <mark-message> creates a new hotkey
          macro.  %s is the hotkey string ($mark_macro_prefix followed
@@ -3489,8 +3489,8 @@ int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
  */
 struct MenuDefinition *index_get_menu_definition(void)
 {
-  struct IndexModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
-  ASSERT(mdata);
+  struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mod_data);
 
-  return mdata->menu_index;
+  return mod_data->menu_index;
 }

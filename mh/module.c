@@ -41,8 +41,8 @@ extern struct ConfigDef MhVars[];
  */
 static bool mh_init(struct NeoMutt *n)
 {
-  // struct MhModuleData *md = MUTT_MEM_CALLOC(1, struct MhModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_MH, md);
+  // struct MhModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MhModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_MH, mod_data);
 
   return true;
 }
@@ -60,10 +60,10 @@ static bool mh_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
  */
 static bool mh_cleanup(struct NeoMutt *n)
 {
-  // struct MhModuleData *md = neomutt_get_module_data(n, MODULE_ID_MH);
-  // ASSERT(md);
+  // struct MhModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MH);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

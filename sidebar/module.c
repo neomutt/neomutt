@@ -44,8 +44,8 @@ extern const struct Command SbCommands[];
  */
 static bool sidebar_init(struct NeoMutt *n)
 {
-  struct SidebarModuleData *md = MUTT_MEM_CALLOC(1, struct SidebarModuleData);
-  neomutt_set_module_data(n, MODULE_ID_SIDEBAR, md);
+  struct SidebarModuleData *mod_data = MUTT_MEM_CALLOC(1, struct SidebarModuleData);
+  neomutt_set_module_data(n, MODULE_ID_SIDEBAR, mod_data);
 
   return true;
 }
@@ -71,10 +71,10 @@ static bool sidebar_commands_register(struct NeoMutt *n, struct CommandArray *ca
  */
 static bool sidebar_cleanup(struct NeoMutt *n)
 {
-  struct SidebarModuleData *md = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
-  ASSERT(md);
+  struct SidebarModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
+  ASSERT(mod_data);
 
-  FREE(&md);
+  FREE(&mod_data);
   return true;
 }
 

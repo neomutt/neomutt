@@ -64,8 +64,8 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
   struct RegexColor *np = NULL;
   const struct AttrColor *ac_merge = NULL;
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, (const char *) (s + 1));
@@ -78,7 +78,7 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
   {
     STAILQ_FOREACH(np, rcl, entries)
     {
-      const char *transform = mutt_hash_find(md->tag_transforms, np->pattern);
+      const char *transform = mutt_hash_find(mod_data->tag_transforms, np->pattern);
       if (transform && strstr(buf_string(buf), transform))
 
       {

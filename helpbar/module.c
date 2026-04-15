@@ -41,8 +41,8 @@ extern struct ConfigDef HelpbarVars[];
  */
 static bool helpbar_init(struct NeoMutt *n)
 {
-  // struct HelpbarModuleData *md = MUTT_MEM_CALLOC(1, struct HelpbarModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_HELPBAR, md);
+  // struct HelpbarModuleData *mod_data = MUTT_MEM_CALLOC(1, struct HelpbarModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_HELPBAR, mod_data);
 
   return true;
 }
@@ -60,10 +60,10 @@ static bool helpbar_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  */
 static bool helpbar_cleanup(struct NeoMutt *n)
 {
-  // struct HelpbarModuleData *md = neomutt_get_module_data(n, MODULE_ID_HELPBAR);
-  // ASSERT(md);
+  // struct HelpbarModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_HELPBAR);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

@@ -42,8 +42,8 @@ extern struct ConfigDef MaildirVarsHcache[];
  */
 static bool maildir_init(struct NeoMutt *n)
 {
-  // struct MaildirModuleData *md = MUTT_MEM_CALLOC(1, struct MaildirModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_MAILDIR, md);
+  // struct MaildirModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MaildirModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_MAILDIR, mod_data);
 
   return true;
 }
@@ -67,10 +67,10 @@ static bool maildir_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  */
 static bool maildir_cleanup(struct NeoMutt *n)
 {
-  // struct MaildirModuleData *md = neomutt_get_module_data(n, MODULE_ID_MAILDIR);
-  // ASSERT(md);
+  // struct MaildirModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MAILDIR);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

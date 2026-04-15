@@ -319,10 +319,10 @@ static void parse_content_language(const char *s, struct Body *b)
  */
 bool mutt_matches_ignore(const char *s)
 {
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
-  return mutt_list_match(s, &md->ignore) && !mutt_list_match(s, &md->unignore);
+  return mutt_list_match(s, &mod_data->ignore) && !mutt_list_match(s, &mod_data->unignore);
 }
 
 /**
@@ -1202,8 +1202,8 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     }
   }
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   while (true)
   {
@@ -1243,9 +1243,9 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     size_t name_len = p - lines;
 
     char buf[1024] = { 0 };
-    if (mutt_replacelist_match(&md->spam, buf, sizeof(buf), lines))
+    if (mutt_replacelist_match(&mod_data->spam, buf, sizeof(buf), lines))
     {
-      if (!mutt_regexlist_match(&md->no_spam, lines))
+      if (!mutt_regexlist_match(&mod_data->no_spam, lines))
       {
         /* if spam tag already exists, figure out how to amend it */
         if ((!buf_is_empty(&env->spam)) && (*buf != '\0'))
@@ -1739,8 +1739,8 @@ bool mutt_parse_mailto(struct Envelope *env, char **body, const char *src)
 
   mutt_addrlist_parse(&env->to, url->path);
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   struct UrlQuery *np;
   STAILQ_FOREACH(np, &url->query_strings, entries)
@@ -1758,7 +1758,7 @@ bool mutt_parse_mailto(struct Envelope *env, char **body, const char *src)
      * a message if any of the headers are considered dangerous; it may also
      * choose to create a message with only a subset of the headers given in
      * the URL.  */
-    if (mailto_header_allowed(tag, &md->mail_to_allow))
+    if (mailto_header_allowed(tag, &mod_data->mail_to_allow))
     {
       if (mutt_istr_equal(tag, "body"))
       {

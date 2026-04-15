@@ -38,8 +38,8 @@
  */
 static bool postpone_init(struct NeoMutt *n)
 {
-  struct PostponeModuleData *md = MUTT_MEM_CALLOC(1, struct PostponeModuleData);
-  neomutt_set_module_data(n, MODULE_ID_POSTPONE, md);
+  struct PostponeModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PostponeModuleData);
+  neomutt_set_module_data(n, MODULE_ID_POSTPONE, mod_data);
 
   return true;
 }
@@ -49,10 +49,10 @@ static bool postpone_init(struct NeoMutt *n)
  */
 static bool postpone_cleanup(struct NeoMutt *n)
 {
-  struct PostponeModuleData *md = neomutt_get_module_data(n, MODULE_ID_POSTPONE);
-  ASSERT(md);
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_POSTPONE);
+  ASSERT(mod_data);
 
-  FREE(&md);
+  FREE(&mod_data);
   return true;
 }
 

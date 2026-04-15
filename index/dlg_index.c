@@ -1131,14 +1131,14 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
   int op = OP_NULL;
 
-  struct IndexModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
-  ASSERT(mdata);
+  struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mod_data);
 
   if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP))
     dlg->help_data = IndexNewsHelp;
   else
     dlg->help_data = IndexHelp;
-  dlg->help_md = mdata->menu_index;
+  dlg->help_md = mod_data->menu_index;
 
   priv->menu = priv->win_index->wdata;
   priv->menu->make_entry = index_make_entry;
@@ -1320,7 +1320,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     mutt_refresh();
 
     window_redraw(NULL);
-    struct KeyEvent event = km_dokey(mdata->menu_index, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(mod_data->menu_index, GETCH_NO_FLAGS);
     op = event.op;
 
     if (op == OP_REPAINT)
@@ -1405,7 +1405,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       rc = global_function_dispatcher(priv->menu->win, &event);
 
     if (rc == FR_UNKNOWN)
-      km_error_key(mdata->menu_index);
+      km_error_key(mod_data->menu_index);
 
 #ifdef USE_NOTMUCH
     nm_db_debug_check(shared->mailbox);

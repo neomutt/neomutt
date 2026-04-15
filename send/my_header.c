@@ -71,11 +71,11 @@ enum CommandResult parse_my_header(const struct Command *cmd, struct Buffer *lin
     goto done;
   }
 
-  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
-  ASSERT(md);
+  struct SendModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(mod_data);
 
   struct EventHeader ev_h = { token->data };
-  struct ListNode *node = header_find(&md->user_header, buf_string(token));
+  struct ListNode *node = header_find(&mod_data->user_header, buf_string(token));
 
   if (node)
   {
@@ -85,7 +85,7 @@ enum CommandResult parse_my_header(const struct Command *cmd, struct Buffer *lin
   }
   else
   {
-    header_add(&md->user_header, buf_string(token));
+    header_add(&mod_data->user_header, buf_string(token));
     mutt_debug(LL_NOTIFY, "NT_HEADER_ADD: %s\n", buf_string(token));
     notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &ev_h);
   }
@@ -119,8 +119,8 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
   struct ListNode *np = NULL, *tmp = NULL;
   size_t l;
 
-  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
-  ASSERT(md);
+  struct SendModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(mod_data);
 
   do
   {
@@ -128,13 +128,13 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
     if (mutt_str_equal("*", buf_string(token)))
     {
       /* Clear all headers, send a notification for each header */
-      STAILQ_FOREACH(np, &md->user_header, entries)
+      STAILQ_FOREACH(np, &mod_data->user_header, entries)
       {
         mutt_debug(LL_NOTIFY, "NT_HEADER_DELETE: %s\n", np->data);
         struct EventHeader ev_h = { np->data };
         notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
       }
-      mutt_list_free(&md->user_header);
+      mutt_list_free(&mod_data->user_header);
       continue;
     }
 
@@ -142,7 +142,7 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
     if (buf_at(token, l - 1) == ':')
       l--;
 
-    STAILQ_FOREACH_SAFE(np, &md->user_header, entries, tmp)
+    STAILQ_FOREACH_SAFE(np, &mod_data->user_header, entries, tmp)
     {
       if (mutt_istrn_equal(buf_string(token), np->data, l) && (np->data[l] == ':'))
       {
@@ -150,7 +150,7 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
         struct EventHeader ev_h = { np->data };
         notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
 
-        header_free(&md->user_header, np);
+        header_free(&mod_data->user_header, np);
       }
     }
   } while (MoreArgs(line));

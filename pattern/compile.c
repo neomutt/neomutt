@@ -156,11 +156,11 @@ static bool eat_group(struct Pattern *pat, PatternCompFlags flags,
     goto out;
   }
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   pat->group_match = true;
-  pat->p.group = groups_get_group(md->groups, token->data);
+  pat->p.group = groups_get_group(mod_data->groups, token->data);
 
   rc = true;
 

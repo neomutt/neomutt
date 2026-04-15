@@ -104,10 +104,10 @@ void driver_tags_getter(struct TagList *tl, bool show_hidden, bool show_transfor
  */
 void driver_tags_add(struct TagList *tl, char *new_tag)
 {
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
-  char *new_tag_transformed = mutt_hash_find(md->tag_transforms, new_tag);
+  char *new_tag_transformed = mutt_hash_find(mod_data->tag_transforms, new_tag);
 
   struct Tag *tag = tag_new();
   tag->name = new_tag;
@@ -230,23 +230,23 @@ static void tags_deleter(int type, void *obj, intptr_t data)
 
 /**
  * driver_tags_init - Initialize structures used for tags
- * @param md Private Module data
+ * @param mod_data Private Module data
  */
-void driver_tags_init(struct EmailModuleData *md)
+void driver_tags_init(struct EmailModuleData *mod_data)
 {
-  md->tag_transforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
-  mutt_hash_set_destructor(md->tag_transforms, tags_deleter, 0);
+  mod_data->tag_transforms = mutt_hash_new(64, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
+  mutt_hash_set_destructor(mod_data->tag_transforms, tags_deleter, 0);
 
-  md->tag_formats = mutt_hash_new(64, MUTT_HASH_STRDUP_KEYS);
-  mutt_hash_set_destructor(md->tag_formats, tags_deleter, 0);
+  mod_data->tag_formats = mutt_hash_new(64, MUTT_HASH_STRDUP_KEYS);
+  mutt_hash_set_destructor(mod_data->tag_formats, tags_deleter, 0);
 }
 
 /**
  * driver_tags_cleanup - Deinitialize structures used for tags
- * @param md Private Module data
+ * @param mod_data Private Module data
  */
-void driver_tags_cleanup(struct EmailModuleData *md)
+void driver_tags_cleanup(struct EmailModuleData *mod_data)
 {
-  mutt_hash_free(&md->tag_formats);
-  mutt_hash_free(&md->tag_transforms);
+  mutt_hash_free(&mod_data->tag_formats);
+  mutt_hash_free(&mod_data->tag_transforms);
 }

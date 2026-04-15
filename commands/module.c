@@ -40,8 +40,8 @@ extern const struct Command CommandsCommands[];
  */
 static bool commands_init(struct NeoMutt *n)
 {
-  // struct CommandsModuleData *md = MUTT_MEM_CALLOC(1, struct CommandsModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_COMMANDS, md);
+  // struct CommandsModuleData *mod_data = MUTT_MEM_CALLOC(1, struct CommandsModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COMMANDS, mod_data);
 
   return true;
 }
@@ -59,10 +59,10 @@ static bool commands_commands_register(struct NeoMutt *n, struct CommandArray *c
  */
 static bool commands_cleanup(struct NeoMutt *n)
 {
-  // struct CommandsModuleData *md = neomutt_get_module_data(n, MODULE_ID_COMMANDS);
-  // ASSERT(md);
+  // struct CommandsModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COMMANDS);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

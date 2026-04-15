@@ -39,22 +39,22 @@
 /**
  * subjectrx_init - Create new Subject Regex List
  */
-void subjectrx_init(struct NeoMutt *n, struct IndexModuleData *md)
+void subjectrx_init(struct NeoMutt *n, struct IndexModuleData *mod_data)
 {
-  STAILQ_INIT(&md->subject_rx_list);
+  STAILQ_INIT(&mod_data->subject_rx_list);
 
-  md->subject_rx_notify = notify_new();
-  notify_set_parent(md->subject_rx_notify, n->notify);
+  mod_data->subject_rx_notify = notify_new();
+  notify_set_parent(mod_data->subject_rx_notify, n->notify);
 }
 
 /**
  * subjectrx_cleanup - Free the Subject Regex List
  */
-void subjectrx_cleanup(struct IndexModuleData *md)
+void subjectrx_cleanup(struct IndexModuleData *mod_data)
 {
-  notify_free(&md->subject_rx_notify);
+  notify_free(&mod_data->subject_rx_notify);
 
-  mutt_replacelist_free(&md->subject_rx_list);
+  mutt_replacelist_free(&mod_data->subject_rx_list);
 }
 
 /**
@@ -153,13 +153,13 @@ bool subjectrx_apply_mods(struct Envelope *env)
   if (env->disp_subj)
     return true;
 
-  struct IndexModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
-  ASSERT(md);
+  struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mod_data);
 
-  if (STAILQ_EMPTY(&md->subject_rx_list))
+  if (STAILQ_EMPTY(&mod_data->subject_rx_list))
     return false;
 
-  env->disp_subj = mutt_replacelist_apply(&md->subject_rx_list, env->subject);
+  env->disp_subj = mutt_replacelist_apply(&mod_data->subject_rx_list, env->subject);
   return true;
 }
 
@@ -201,16 +201,16 @@ enum CommandResult parse_subjectrx_list(const struct Command *cmd, struct Buffer
     return MUTT_CMD_WARNING;
   }
 
-  struct IndexModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
-  ASSERT(md);
+  struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mod_data);
 
   enum CommandResult rc;
 
-  rc = parse_replace_list(cmd, line, &md->subject_rx_list, err);
+  rc = parse_replace_list(cmd, line, &mod_data->subject_rx_list, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
     mutt_debug(LL_NOTIFY, "NT_SUBJECTRX_ADD: %s\n", cmd->name);
-    notify_send(md->subject_rx_notify, NT_SUBJECTRX, NT_SUBJECTRX_ADD, NULL);
+    notify_send(mod_data->subject_rx_notify, NT_SUBJECTRX, NT_SUBJECTRX_ADD, NULL);
   }
   return rc;
 }
@@ -233,16 +233,16 @@ enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buff
     return MUTT_CMD_WARNING;
   }
 
-  struct IndexModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
-  ASSERT(md);
+  struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mod_data);
 
   enum CommandResult rc;
 
-  rc = parse_unreplace_list(cmd, line, &md->subject_rx_list, err);
+  rc = parse_unreplace_list(cmd, line, &mod_data->subject_rx_list, err);
   if (rc == MUTT_CMD_SUCCESS)
   {
     mutt_debug(LL_NOTIFY, "NT_SUBJECTRX_DELETE: %s\n", cmd->name);
-    notify_send(md->subject_rx_notify, NT_SUBJECTRX, NT_SUBJECTRX_DELETE, NULL);
+    notify_send(mod_data->subject_rx_notify, NT_SUBJECTRX, NT_SUBJECTRX_DELETE, NULL);
   }
   return rc;
 }

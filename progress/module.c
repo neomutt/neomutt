@@ -41,8 +41,8 @@ extern struct ConfigDef ProgressVars[];
  */
 static bool progress_init(struct NeoMutt *n)
 {
-  // struct ProgressModuleData *md = MUTT_MEM_CALLOC(1, struct ProgressModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_PROGRESS, md);
+  // struct ProgressModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ProgressModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_PROGRESS, mod_data);
 
   return true;
 }
@@ -60,10 +60,10 @@ static bool progress_config_define_variables(struct NeoMutt *n, struct ConfigSet
  */
 static bool progress_cleanup(struct NeoMutt *n)
 {
-  // struct ProgressModuleData *md = neomutt_get_module_data(n, MODULE_ID_PROGRESS);
-  // ASSERT(md);
+  // struct ProgressModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PROGRESS);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

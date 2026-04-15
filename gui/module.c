@@ -74,8 +74,8 @@ static void log_gui(void)
  */
 static bool gui_init(struct NeoMutt *n)
 {
-  struct GuiModuleData *md = MUTT_MEM_CALLOC(1, struct GuiModuleData);
-  neomutt_set_module_data(n, MODULE_ID_GUI, md);
+  struct GuiModuleData *mod_data = MUTT_MEM_CALLOC(1, struct GuiModuleData);
+  neomutt_set_module_data(n, MODULE_ID_GUI, mod_data);
 
   return true;
 }
@@ -123,10 +123,10 @@ static void gui_gui_cleanup(struct NeoMutt *n)
  */
 static bool gui_cleanup(struct NeoMutt *n)
 {
-  struct GuiModuleData *md = neomutt_get_module_data(n, MODULE_ID_GUI);
-  ASSERT(md);
+  struct GuiModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_GUI);
+  ASSERT(mod_data);
 
-  FREE(&md);
+  FREE(&mod_data);
   return true;
 }
 

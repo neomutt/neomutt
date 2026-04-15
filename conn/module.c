@@ -46,8 +46,8 @@ extern struct ConfigDef ConnVarsSsl[];
  */
 static bool conn_init(struct NeoMutt *n)
 {
-  // struct ConnModuleData *md = MUTT_MEM_CALLOC(1, struct ConnModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_CONN, md);
+  // struct ConnModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ConnModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_CONN, mod_data);
 
   return true;
 }
@@ -89,10 +89,10 @@ static bool conn_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  */
 static bool conn_cleanup(struct NeoMutt *n)
 {
-  // struct ConnModuleData *md = neomutt_get_module_data(n, MODULE_ID_CONN);
-  // ASSERT(md);
+  // struct ConnModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_CONN);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

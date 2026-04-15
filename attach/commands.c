@@ -131,8 +131,8 @@ static int count_body_parts(struct Body *b, int depth)
   if (!b || (depth >= MIME_DEPTH_MAX))
     return 0;
 
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
   int count = 0;
 
@@ -184,16 +184,16 @@ static int count_body_parts(struct Body *b, int depth)
 
       if (bp->disposition == DISP_ATTACH)
       {
-        if (!count_body_parts_check(&md->attach_allow, bp, true))
+        if (!count_body_parts_check(&mod_data->attach_allow, bp, true))
           shallcount = false; /* attach not allowed */
-        if (count_body_parts_check(&md->attach_exclude, bp, false))
+        if (count_body_parts_check(&mod_data->attach_exclude, bp, false))
           shallcount = false; /* attach excluded */
       }
       else
       {
-        if (!count_body_parts_check(&md->inline_allow, bp, true))
+        if (!count_body_parts_check(&mod_data->inline_allow, bp, true))
           shallcount = false; /* inline not allowed */
-        if (count_body_parts_check(&md->inline_exclude, bp, false))
+        if (count_body_parts_check(&mod_data->inline_exclude, bp, false))
           shallcount = false; /* excluded */
       }
     }
@@ -228,8 +228,8 @@ int mutt_count_body_parts(struct Email *e, FILE *fp)
   if (!e)
     return 0;
 
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
   bool keep_parts = false;
 
@@ -241,8 +241,8 @@ int mutt_count_body_parts(struct Email *e, FILE *fp)
   else
     mutt_parse_mime_message(e, fp);
 
-  if (!STAILQ_EMPTY(&md->attach_allow) || !STAILQ_EMPTY(&md->attach_exclude) ||
-      !STAILQ_EMPTY(&md->inline_allow) || !STAILQ_EMPTY(&md->inline_exclude))
+  if (!STAILQ_EMPTY(&mod_data->attach_allow) || !STAILQ_EMPTY(&mod_data->attach_exclude) ||
+      !STAILQ_EMPTY(&mod_data->inline_allow) || !STAILQ_EMPTY(&mod_data->inline_exclude))
   {
     e->attach_total = count_body_parts(e->body, 0);
   }
@@ -298,8 +298,8 @@ static enum CommandResult parse_attach_list(const struct Command *cmd, struct Bu
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
   do
   {
@@ -360,7 +360,7 @@ static enum CommandResult parse_attach_list(const struct Command *cmd, struct Bu
     goto done;
 
   mutt_debug(LL_NOTIFY, "NT_ATTACH_ADD: %s/%s\n", a->major, a->minor);
-  notify_send(md->attachments_notify, NT_ATTACH, NT_ATTACH_ADD, NULL);
+  notify_send(mod_data->attachments_notify, NT_ATTACH, NT_ATTACH_ADD, NULL);
 
   rc = MUTT_CMD_SUCCESS;
 
@@ -382,8 +382,8 @@ static enum CommandResult parse_unattach_list(const struct Command *cmd, struct 
 {
   struct Buffer *token = buf_pool_get();
 
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
   struct AttachMatch *a = NULL;
   char *tmp = NULL;
@@ -436,7 +436,7 @@ static enum CommandResult parse_unattach_list(const struct Command *cmd, struct 
 
   FREE(&tmp);
 
-  notify_send(md->attachments_notify, NT_ATTACH, NT_ATTACH_DELETE, NULL);
+  notify_send(mod_data->attachments_notify, NT_ATTACH, NT_ATTACH_DELETE, NULL);
 
   buf_pool_release(&token);
   return MUTT_CMD_SUCCESS;
@@ -472,8 +472,8 @@ static int print_attach_list(struct ListHead *h, const char op, const char *name
 enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *line,
                                      const struct ParseContext *pc, struct ParseError *pe)
 {
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
   struct Buffer *err = pe->message;
 
@@ -496,10 +496,10 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *l
     mutt_endwin();
     fflush(stdout);
     printf("\n%s\n\n", _("Current attachments settings:"));
-    print_attach_list(&md->attach_allow, '+', "A");
-    print_attach_list(&md->attach_exclude, '-', "A");
-    print_attach_list(&md->inline_allow, '+', "I");
-    print_attach_list(&md->inline_exclude, '-', "I");
+    print_attach_list(&mod_data->attach_allow, '+', "A");
+    print_attach_list(&mod_data->attach_exclude, '-', "A");
+    print_attach_list(&mod_data->inline_allow, '+', "I");
+    print_attach_list(&mod_data->inline_exclude, '-', "I");
     mutt_any_key_to_continue(NULL);
 
     rc = MUTT_CMD_SUCCESS;
@@ -516,16 +516,16 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *l
   if (mutt_istr_startswith("attachment", category))
   {
     if (op == '+')
-      head = &md->attach_allow;
+      head = &mod_data->attach_allow;
     else
-      head = &md->attach_exclude;
+      head = &mod_data->attach_exclude;
   }
   else if (mutt_istr_startswith("inline", category))
   {
     if (op == '+')
-      head = &md->inline_allow;
+      head = &mod_data->inline_allow;
     else
-      head = &md->inline_exclude;
+      head = &mod_data->inline_exclude;
   }
   else
   {
@@ -558,8 +558,8 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
     return MUTT_CMD_WARNING;
   }
 
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
@@ -575,13 +575,13 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
 
   if (op == '*')
   {
-    mutt_list_free_type(&md->attach_allow, (list_free_t) attachmatch_free);
-    mutt_list_free_type(&md->attach_exclude, (list_free_t) attachmatch_free);
-    mutt_list_free_type(&md->inline_allow, (list_free_t) attachmatch_free);
-    mutt_list_free_type(&md->inline_exclude, (list_free_t) attachmatch_free);
+    mutt_list_free_type(&mod_data->attach_allow, (list_free_t) attachmatch_free);
+    mutt_list_free_type(&mod_data->attach_exclude, (list_free_t) attachmatch_free);
+    mutt_list_free_type(&mod_data->inline_allow, (list_free_t) attachmatch_free);
+    mutt_list_free_type(&mod_data->inline_exclude, (list_free_t) attachmatch_free);
 
     mutt_debug(LL_NOTIFY, "NT_ATTACH_DELETE_ALL\n");
-    notify_send(md->attachments_notify, NT_ATTACH, NT_ATTACH_DELETE_ALL, NULL);
+    notify_send(mod_data->attachments_notify, NT_ATTACH, NT_ATTACH_DELETE_ALL, NULL);
 
     rc = MUTT_CMD_SUCCESS;
     goto done;
@@ -595,16 +595,16 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
   if (mutt_istr_startswith("attachment", p))
   {
     if (op == '+')
-      head = &md->attach_allow;
+      head = &mod_data->attach_allow;
     else
-      head = &md->attach_exclude;
+      head = &mod_data->attach_exclude;
   }
   else if (mutt_istr_startswith("inline", p))
   {
     if (op == '+')
-      head = &md->inline_allow;
+      head = &mod_data->inline_allow;
     else
-      head = &md->inline_exclude;
+      head = &mod_data->inline_exclude;
   }
   else
   {
@@ -652,10 +652,10 @@ void mutt_parse_mime_message(struct Email *e, FILE *fp)
 enum CommandResult parse_mime_lookup(const struct Command *cmd, struct Buffer *line,
                                      const struct ParseContext *pc, struct ParseError *pe)
 {
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
-  return parse_stailq(cmd, line, &md->mime_lookup, pc, pe);
+  return parse_stailq(cmd, line, &mod_data->mime_lookup, pc, pe);
 }
 
 /**
@@ -668,10 +668,10 @@ enum CommandResult parse_mime_lookup(const struct Command *cmd, struct Buffer *l
 enum CommandResult parse_unmime_lookup(const struct Command *cmd, struct Buffer *line,
                                        const struct ParseContext *pc, struct ParseError *pe)
 {
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
-  return parse_unstailq(cmd, line, &md->mime_lookup, pc, pe);
+  return parse_unstailq(cmd, line, &mod_data->mime_lookup, pc, pe);
 }
 
 /**

@@ -81,8 +81,8 @@ const struct MenuOpSeq SidebarDefaultBindings[] = {
  */
 void sidebar_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct SidebarModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
-  ASSERT(mdata);
+  struct SidebarModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
+  ASSERT(mod_data);
 
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -95,8 +95,8 @@ void sidebar_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_editor);
   km_menu_add_bindings(md, SidebarDefaultBindings);
 
-  mdata->md_sidebar = md;
-  mdata->sm_sidebar = sm;
+  mod_data->md_sidebar = md;
+  mod_data->sm_sidebar = sm;
 }
 
 /**
@@ -105,10 +105,10 @@ void sidebar_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
  */
 struct SubMenu *sidebar_get_submenu(void)
 {
-  struct SidebarModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
-  ASSERT(mdata);
+  struct SidebarModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
+  ASSERT(mod_data);
 
-  return mdata->sm_sidebar;
+  return mod_data->sm_sidebar;
 }
 
 /**
@@ -532,12 +532,12 @@ static int op_sidebar_start_search(struct SidebarWindowData *wdata, const struct
 
   int rc = FR_NO_ACTION;
   wdata->search_active = true;
-  struct SidebarModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
-  ASSERT(mdata);
+  struct SidebarModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
+  ASSERT(mod_data);
 
   if (mw_get_field_notify(_("Sidebar search: "), buf, MUTT_COMP_UNBUFFERED,
                           HC_NONE, NULL, NULL, sidebar_matcher_cb, wdata->win,
-                          mdata->md_sidebar, sb_function_dispatcher) != 0)
+                          mod_data->md_sidebar, sb_function_dispatcher) != 0)
   {
     wdata->hil_index = orghlidx;
     goto done;

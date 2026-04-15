@@ -45,19 +45,19 @@ extern const struct Command AttachCommands[];
  */
 static bool attach_init(struct NeoMutt *n)
 {
-  struct AttachModuleData *md = MUTT_MEM_CALLOC(1, struct AttachModuleData);
-  neomutt_set_module_data(n, MODULE_ID_ATTACH, md);
+  struct AttachModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AttachModuleData);
+  neomutt_set_module_data(n, MODULE_ID_ATTACH, mod_data);
 
-  STAILQ_INIT(&md->attach_allow);
-  STAILQ_INIT(&md->attach_exclude);
-  STAILQ_INIT(&md->inline_allow);
-  STAILQ_INIT(&md->inline_exclude);
+  STAILQ_INIT(&mod_data->attach_allow);
+  STAILQ_INIT(&mod_data->attach_exclude);
+  STAILQ_INIT(&mod_data->inline_allow);
+  STAILQ_INIT(&mod_data->inline_exclude);
 
-  STAILQ_INIT(&md->mime_lookup);
-  STAILQ_INIT(&md->temp_attachments);
+  STAILQ_INIT(&mod_data->mime_lookup);
+  STAILQ_INIT(&mod_data->temp_attachments);
 
-  md->attachments_notify = notify_new();
-  notify_set_parent(md->attachments_notify, NeoMutt->notify);
+  mod_data->attachments_notify = notify_new();
+  notify_set_parent(mod_data->attachments_notify, NeoMutt->notify);
 
   return true;
 }
@@ -83,22 +83,22 @@ static bool attach_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  */
 static bool attach_cleanup(struct NeoMutt *n)
 {
-  struct AttachModuleData *md = neomutt_get_module_data(n, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
-  notify_free(&md->attachments_notify);
+  notify_free(&mod_data->attachments_notify);
 
   /* Lists of AttachMatch */
-  mutt_list_free_type(&md->attach_allow, (list_free_t) attachmatch_free);
-  mutt_list_free_type(&md->attach_exclude, (list_free_t) attachmatch_free);
-  mutt_list_free_type(&md->inline_allow, (list_free_t) attachmatch_free);
-  mutt_list_free_type(&md->inline_exclude, (list_free_t) attachmatch_free);
+  mutt_list_free_type(&mod_data->attach_allow, (list_free_t) attachmatch_free);
+  mutt_list_free_type(&mod_data->attach_exclude, (list_free_t) attachmatch_free);
+  mutt_list_free_type(&mod_data->inline_allow, (list_free_t) attachmatch_free);
+  mutt_list_free_type(&mod_data->inline_exclude, (list_free_t) attachmatch_free);
 
-  mutt_list_free(&md->mime_lookup);
+  mutt_list_free(&mod_data->mime_lookup);
 
   mutt_temp_attachments_cleanup();
 
-  FREE(&md);
+  FREE(&mod_data);
   return true;
 }
 

@@ -34,15 +34,13 @@
 #include "module_data.h"
 #include "neomutt.h"
 
-struct NeoMutt;
-
 /**
  * core_init - Initialise a Module - Implements Module::init()
  */
 static bool core_init(struct NeoMutt *n)
 {
-  // struct CoreModuleData *md = MUTT_MEM_CALLOC(1, struct CoreModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_CORE, md);
+  // struct CoreModuleData *mod_data = MUTT_MEM_CALLOC(1, struct CoreModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_CORE, mod_data);
 
   return true;
 }
@@ -52,10 +50,10 @@ static bool core_init(struct NeoMutt *n)
  */
 static bool core_cleanup(struct NeoMutt *n)
 {
-  // struct CoreModuleData *md = neomutt_get_module_data(n, MODULE_ID_CORE);
-  // ASSERT(md);
+  // struct CoreModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_CORE);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

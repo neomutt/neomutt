@@ -44,8 +44,8 @@ extern const struct Command ImapCommands[];
  */
 static bool imap_init(struct NeoMutt *n)
 {
-  // struct ImapModuleData *md = MUTT_MEM_CALLOC(1, struct ImapModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_IMAP, md);
+  // struct ImapModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ImapModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_IMAP, mod_data);
 
   return true;
 }
@@ -77,10 +77,10 @@ static bool imap_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  */
 static bool imap_cleanup(struct NeoMutt *n)
 {
-  // struct ImapModuleData *md = neomutt_get_module_data(n, MODULE_ID_IMAP);
-  // ASSERT(md);
+  // struct ImapModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_IMAP);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

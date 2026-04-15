@@ -76,9 +76,9 @@ void postponed_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, PostponedDefaultBindings);
 
-  struct PostponeModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_POSTPONE);
-  ASSERT(mdata);
-  mdata->menu_postpone = md;
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_POSTPONE);
+  ASSERT(mod_data);
+  mod_data->menu_postpone = md;
 }
 
 /**

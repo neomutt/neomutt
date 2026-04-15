@@ -38,8 +38,8 @@
  */
 static bool compress_init(struct NeoMutt *n)
 {
-  // struct CompressModuleData *md = MUTT_MEM_CALLOC(1, struct CompressModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_COMPRESS, md);
+  // struct CompressModuleData *mod_data = MUTT_MEM_CALLOC(1, struct CompressModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COMPRESS, mod_data);
 
   return true;
 }
@@ -49,10 +49,10 @@ static bool compress_init(struct NeoMutt *n)
  */
 static bool compress_cleanup(struct NeoMutt *n)
 {
-  // struct CompressModuleData *md = neomutt_get_module_data(n, MODULE_ID_COMPRESS);
-  // ASSERT(md);
+  // struct CompressModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COMPRESS);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

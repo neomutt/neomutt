@@ -38,8 +38,8 @@
  */
 static bool convert_init(struct NeoMutt *n)
 {
-  // struct ConvertModuleData *md = MUTT_MEM_CALLOC(1, struct ConvertModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_CONVERT, md);
+  // struct ConvertModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ConvertModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_CONVERT, mod_data);
 
   return true;
 }
@@ -49,10 +49,10 @@ static bool convert_init(struct NeoMutt *n)
  */
 static bool convert_cleanup(struct NeoMutt *n)
 {
-  // struct ConvertModuleData *md = neomutt_get_module_data(n, MODULE_ID_CONVERT);
-  // ASSERT(md);
+  // struct ConvertModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_CONVERT);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

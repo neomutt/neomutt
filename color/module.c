@@ -43,8 +43,8 @@ extern struct ConfigDef ColorVars[];
  */
 static bool color_init(struct NeoMutt *n)
 {
-  // struct ColorModuleData *md = MUTT_MEM_CALLOC(1, struct ColorModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_COLOR, md);
+  // struct ColorModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ColorModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COLOR, mod_data);
 
   return true;
 }
@@ -86,10 +86,10 @@ static void color_gui_cleanup(struct NeoMutt *n)
  */
 static bool color_cleanup(struct NeoMutt *n)
 {
-  // struct ColorModuleData *md = neomutt_get_module_data(n, MODULE_ID_COLOR);
-  // ASSERT(md);
+  // struct ColorModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COLOR);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

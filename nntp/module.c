@@ -41,8 +41,8 @@ extern struct ConfigDef NntpVars[];
  */
 static bool nntp_init(struct NeoMutt *n)
 {
-  // struct NntpModuleData *md = MUTT_MEM_CALLOC(1, struct NntpModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_NNTP, md);
+  // struct NntpModuleData *mod_data = MUTT_MEM_CALLOC(1, struct NntpModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_NNTP, mod_data);
 
   return true;
 }
@@ -60,10 +60,10 @@ static bool nntp_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  */
 static bool nntp_cleanup(struct NeoMutt *n)
 {
-  // struct NntpModuleData *md = neomutt_get_module_data(n, MODULE_ID_NNTP);
-  // ASSERT(md);
+  // struct NntpModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_NNTP);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

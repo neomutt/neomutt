@@ -74,8 +74,8 @@ static const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt a
  */
 void autocrypt_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct AutocryptModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
-  ASSERT(mdata);
+  struct AutocryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
+  ASSERT(mod_data);
 
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -86,7 +86,7 @@ void autocrypt_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, AutocryptDefaultBindings);
 
-  mdata->menu_autocrypt = md;
+  mod_data->menu_autocrypt = md;
 }
 
 /**

@@ -38,8 +38,8 @@
  */
 static bool complete_init(struct NeoMutt *n)
 {
-  // struct CompleteModuleData *md = MUTT_MEM_CALLOC(1, struct CompleteModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_COMPLETE, md);
+  // struct CompleteModuleData *mod_data = MUTT_MEM_CALLOC(1, struct CompleteModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_COMPLETE, mod_data);
 
   return true;
 }
@@ -49,10 +49,10 @@ static bool complete_init(struct NeoMutt *n)
  */
 static bool complete_cleanup(struct NeoMutt *n)
 {
-  // struct CompleteModuleData *md = neomutt_get_module_data(n, MODULE_ID_COMPLETE);
-  // ASSERT(md);
+  // struct CompleteModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COMPLETE);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

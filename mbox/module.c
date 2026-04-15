@@ -41,8 +41,8 @@ extern struct ConfigDef MboxVars[];
  */
 static bool mbox_init(struct NeoMutt *n)
 {
-  // struct MboxModuleData *md = MUTT_MEM_CALLOC(1, struct MboxModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_MBOX, md);
+  // struct MboxModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MboxModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_MBOX, mod_data);
 
   return true;
 }
@@ -60,10 +60,10 @@ static bool mbox_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  */
 static bool mbox_cleanup(struct NeoMutt *n)
 {
-  // struct MboxModuleData *md = neomutt_get_module_data(n, MODULE_ID_MBOX);
-  // ASSERT(md);
+  // struct MboxModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MBOX);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

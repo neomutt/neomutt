@@ -185,8 +185,8 @@ static const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
  */
 struct SubMenu *generic_init_keys(struct NeoMutt *n)
 {
-  struct GuiModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_GUI);
-  ASSERT(mdata);
+  struct GuiModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_GUI);
+  ASSERT(mod_data);
 
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -197,8 +197,8 @@ struct SubMenu *generic_init_keys(struct NeoMutt *n)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, GenericDefaultBindings);
 
-  mdata->md_generic = md;
-  mdata->sm_generic = sm_generic;
+  mod_data->md_generic = md;
+  mod_data->sm_generic = sm_generic;
 
   sm = km_register_submenu(OpDialog);
   md = km_register_menu(MENU_DIALOG, "dialog");
@@ -206,8 +206,8 @@ struct SubMenu *generic_init_keys(struct NeoMutt *n)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, DialogDefaultBindings);
 
-  mdata->md_dialog = md;
-  mdata->sm_dialog = sm;
+  mod_data->md_dialog = md;
+  mod_data->sm_dialog = sm;
 
   return sm_generic;
 }
@@ -218,10 +218,10 @@ struct SubMenu *generic_init_keys(struct NeoMutt *n)
  */
 struct MenuDefinition *gui_get_generic_menu_definition(void)
 {
-  struct GuiModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-  ASSERT(mdata);
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  ASSERT(mod_data);
 
-  return mdata->md_generic;
+  return mod_data->md_generic;
 }
 
 /**
@@ -230,8 +230,8 @@ struct MenuDefinition *gui_get_generic_menu_definition(void)
  */
 struct MenuDefinition *gui_get_dialog_menu_definition(void)
 {
-  struct GuiModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-  ASSERT(mdata);
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  ASSERT(mod_data);
 
-  return mdata->md_dialog;
+  return mod_data->md_dialog;
 }

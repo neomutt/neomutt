@@ -338,11 +338,11 @@ bailout:
  */
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
 {
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
   struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &md->mime_lookup, entries)
+  STAILQ_FOREACH(np, &mod_data->mime_lookup, entries)
   {
     const int i = (int) mutt_str_len(np->data) - 1;
     if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
@@ -1295,10 +1295,10 @@ out:
  */
 void mutt_add_temp_attachment(const char *filename)
 {
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
-  mutt_list_insert_tail(&md->temp_attachments, mutt_str_dup(filename));
+  mutt_list_insert_tail(&mod_data->temp_attachments, mutt_str_dup(filename));
 }
 
 /**
@@ -1306,16 +1306,16 @@ void mutt_add_temp_attachment(const char *filename)
  */
 void mutt_temp_attachments_cleanup(void)
 {
-  struct AttachModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(md);
+  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  ASSERT(mod_data);
 
   struct ListNode *np = NULL;
 
-  STAILQ_FOREACH(np, &md->temp_attachments, entries)
+  STAILQ_FOREACH(np, &mod_data->temp_attachments, entries)
   {
     (void) mutt_file_chmod_add(np->data, S_IWUSR);
     mutt_file_unlink(np->data);
   }
 
-  mutt_list_free(&md->temp_attachments);
+  mutt_list_free(&mod_data->temp_attachments);
 }

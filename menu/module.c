@@ -42,8 +42,8 @@ extern struct ConfigDef MenuVars[];
  */
 static bool menu_init(struct NeoMutt *n)
 {
-  // struct MenuModuleData *md = MUTT_MEM_CALLOC(1, struct MenuModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_MENU, md);
+  // struct MenuModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MenuModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_MENU, mod_data);
 
   return true;
 }
@@ -61,10 +61,10 @@ static bool menu_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  */
 static bool menu_cleanup(struct NeoMutt *n)
 {
-  // struct MenuModuleData *md = neomutt_get_module_data(n, MODULE_ID_MENU);
-  // ASSERT(md);
+  // struct MenuModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MENU);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

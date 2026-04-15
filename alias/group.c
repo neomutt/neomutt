@@ -98,8 +98,8 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
     return MUTT_CMD_WARNING;
   }
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum GroupState gstate = GS_NONE;
@@ -109,12 +109,12 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, mod_data->groups) == -1)
       goto done;
 
     if ((cmd->id == CMD_UNGROUP) && mutt_istr_equal(buf_string(token), "*"))
     {
-      groups_remove_grouplist(md->groups, &gl);
+      groups_remove_grouplist(mod_data->groups, &gl);
       rc = MUTT_CMD_SUCCESS;
       goto done;
     }
@@ -143,7 +143,7 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
             goto done;
           }
           else if ((cmd->id == CMD_UNGROUP) &&
-                   (groups_remove_regex(md->groups, &gl, buf_string(token)) < 0))
+                   (groups_remove_regex(mod_data->groups, &gl, buf_string(token)) < 0))
           {
             goto done;
           }
@@ -166,7 +166,7 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
           if (cmd->id == CMD_GROUP)
             grouplist_add_addrlist(&gl, &al);
           else if (cmd->id == CMD_UNGROUP)
-            groups_remove_addrlist(md->groups, &gl, &al);
+            groups_remove_addrlist(mod_data->groups, &gl, &al);
           mutt_addrlist_clear(&al);
           break;
         }
@@ -203,19 +203,19 @@ enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, mod_data->groups) == -1)
       goto done;
 
-    mutt_regexlist_remove(&md->unmail, buf_string(token));
+    mutt_regexlist_remove(&mod_data->unmail, buf_string(token));
 
-    if (mutt_regexlist_add(&md->mail, buf_string(token), REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&mod_data->mail, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
     if (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
@@ -251,23 +251,23 @@ enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *lin
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, mod_data->groups) == -1)
       goto done;
 
-    mutt_regexlist_remove(&md->unmail, buf_string(token));
-    mutt_regexlist_remove(&md->unsubscribed, buf_string(token));
+    mutt_regexlist_remove(&mod_data->unmail, buf_string(token));
+    mutt_regexlist_remove(&mod_data->unsubscribed, buf_string(token));
 
-    if (mutt_regexlist_add(&md->mail, buf_string(token), REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&mod_data->mail, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
-    if (mutt_regexlist_add(&md->subscribed, buf_string(token), REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&mod_data->subscribed, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
     if (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
@@ -302,18 +302,18 @@ enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
-  mutt_hash_free(&md->auto_subscribe_cache);
+  mutt_hash_free(&mod_data->auto_subscribe_cache);
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&md->subscribed, buf_string(token));
-    mutt_regexlist_remove(&md->mail, buf_string(token));
+    mutt_regexlist_remove(&mod_data->subscribed, buf_string(token));
+    mutt_regexlist_remove(&mod_data->mail, buf_string(token));
 
     if (!mutt_str_equal(buf_string(token), "*") &&
-        (mutt_regexlist_add(&md->unmail, buf_string(token), REG_ICASE, err) != 0))
+        (mutt_regexlist_add(&mod_data->unmail, buf_string(token), REG_ICASE, err) != 0))
     {
       goto done;
     }
@@ -343,20 +343,20 @@ enum CommandResult parse_unsubscribe(const struct Command *cmd, struct Buffer *l
     return MUTT_CMD_WARNING;
   }
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  mutt_hash_free(&md->auto_subscribe_cache);
+  mutt_hash_free(&mod_data->auto_subscribe_cache);
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&md->subscribed, buf_string(token));
+    mutt_regexlist_remove(&mod_data->subscribed, buf_string(token));
 
     if (!mutt_str_equal(buf_string(token), "*") &&
-        (mutt_regexlist_add(&md->unsubscribed, buf_string(token), REG_ICASE, err) != 0))
+        (mutt_regexlist_add(&mod_data->unsubscribed, buf_string(token), REG_ICASE, err) != 0))
     {
       goto done;
     }

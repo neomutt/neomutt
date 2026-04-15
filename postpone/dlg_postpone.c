@@ -209,10 +209,10 @@ static const struct AttrColor *post_color(struct Menu *menu, int line)
  */
 struct Email *dlg_postpone(struct Mailbox *m)
 {
-  struct PostponeModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
-  ASSERT(mdata);
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
+  ASSERT(mod_data);
 
-  struct SimpleDialogWindows sdw = simple_dialog_new(mdata->menu_postpone,
+  struct SimpleDialogWindows sdw = simple_dialog_new(mod_data->menu_postpone,
                                                      WT_DLG_POSTPONE, PostponedHelp);
   // Required to number the emails
   struct MailboxView *mv = mview_new(m, NeoMutt->notify);
@@ -248,14 +248,14 @@ struct Email *dlg_postpone(struct Mailbox *m)
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(mdata->menu_postpone, GETCH_NO_FLAGS);
+    event = km_dokey(mod_data->menu_postpone, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(mdata->menu_postpone);
+      km_error_key(mod_data->menu_postpone);
       continue;
     }
     mutt_clear_error();

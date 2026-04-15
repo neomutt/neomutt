@@ -41,8 +41,8 @@ extern struct ConfigDef PopVars[];
  */
 static bool pop_init(struct NeoMutt *n)
 {
-  // struct PopModuleData *md = MUTT_MEM_CALLOC(1, struct PopModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_POP, md);
+  // struct PopModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PopModuleData);
+  // neomutt_set_module_data(n, MODULE_ID_POP, mod_data);
 
   return true;
 }
@@ -60,10 +60,10 @@ static bool pop_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
  */
 static bool pop_cleanup(struct NeoMutt *n)
 {
-  // struct PopModuleData *md = neomutt_get_module_data(n, MODULE_ID_POP);
-  // ASSERT(md);
+  // struct PopModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_POP);
+  // ASSERT(mod_data);
 
-  // FREE(&md);
+  // FREE(&mod_data);
   return true;
 }
 

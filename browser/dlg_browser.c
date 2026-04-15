@@ -1046,10 +1046,10 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   else
     help_data = FolderHelp;
 
-  struct BrowserModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
-  ASSERT(md);
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
+  ASSERT(mod_data);
 
-  struct SimpleDialogWindows sdw = simple_dialog_new(md->menu_browser,
+  struct SimpleDialogWindows sdw = simple_dialog_new(mod_data->menu_browser,
                                                      WT_DLG_BROWSER, help_data);
 
   struct Menu *menu = sdw.menu;
@@ -1097,14 +1097,14 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     menu_tagging_dispatcher(priv->menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(md->menu_browser, GETCH_NO_FLAGS);
+    event = km_dokey(mod_data->menu_browser, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(md->menu_browser);
+      km_error_key(mod_data->menu_browser);
       continue;
     }
     mutt_clear_error();

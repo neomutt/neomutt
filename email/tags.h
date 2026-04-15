@@ -57,7 +57,7 @@ void driver_tags_get_with_hidden    (struct TagList *tl, struct Buffer *tags);
 bool driver_tags_replace            (struct TagList *tl, const char *tags);
 void driver_tags_add                (struct TagList *tl, char *tag);
 
-void driver_tags_init   (struct EmailModuleData *md);
-void driver_tags_cleanup(struct EmailModuleData *md);
+void driver_tags_init   (struct EmailModuleData *mod_data);
+void driver_tags_cleanup(struct EmailModuleData *mod_data);
 
 #endif /* MUTT_EMAIL_TAGS_H */

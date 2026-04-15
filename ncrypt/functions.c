@@ -28,6 +28,8 @@
 
 #include "config.h"
 #include <stddef.h>
+#include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
@@ -94,9 +96,9 @@ void pgp_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, PgpDefaultBindings);
 
-  struct NcryptModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
-  ASSERT(mdata);
-  mdata->menu_pgp = md;
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+  mod_data->menu_pgp = md;
 
   sm = km_register_submenu(OpSmime);
   md = km_register_menu(MENU_SMIME, "smime");
@@ -104,5 +106,5 @@ void pgp_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, SmimeDefaultBindings);
 
-  mdata->menu_smime = md;
+  mod_data->menu_smime = md;
 }

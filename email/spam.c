@@ -71,27 +71,27 @@ enum CommandResult parse_nospam(const struct Command *cmd, struct Buffer *line,
     goto done;
   }
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   // "*" is special - clear both spam and nospam lists
   if (mutt_str_equal(buf_string(token), "*"))
   {
-    mutt_replacelist_free(&md->spam);
-    mutt_regexlist_free(&md->no_spam);
+    mutt_replacelist_free(&mod_data->spam);
+    mutt_regexlist_free(&mod_data->no_spam);
     rc = MUTT_CMD_SUCCESS;
     goto done;
   }
 
   // If it's on the spam list, just remove it
-  if (mutt_replacelist_remove(&md->spam, buf_string(token)) != 0)
+  if (mutt_replacelist_remove(&mod_data->spam, buf_string(token)) != 0)
   {
     rc = MUTT_CMD_SUCCESS;
     goto done;
   }
 
   // Otherwise, add it to the nospam list
-  if (mutt_regexlist_add(&md->no_spam, buf_string(token), REG_ICASE, err) != 0)
+  if (mutt_regexlist_add(&mod_data->no_spam, buf_string(token), REG_ICASE, err) != 0)
   {
     rc = MUTT_CMD_ERROR;
     goto done;
@@ -128,8 +128,8 @@ enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
   // Extract the first token, a regex
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   // If there's a second parameter, it's a template for the spam tag
   if (MoreArgs(line))
@@ -138,13 +138,13 @@ enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
     parse_extract_token(templ, line, TOKEN_NO_FLAGS);
 
     // Add to the spam list
-    if (mutt_replacelist_add(&md->spam, buf_string(token), buf_string(templ), err) != 0)
+    if (mutt_replacelist_add(&mod_data->spam, buf_string(token), buf_string(templ), err) != 0)
       goto done;
   }
   else
   {
     // If not, try to remove from the nospam list
-    mutt_regexlist_remove(&md->no_spam, buf_string(token));
+    mutt_regexlist_remove(&mod_data->no_spam, buf_string(token));
   }
 
   rc = MUTT_CMD_SUCCESS;
