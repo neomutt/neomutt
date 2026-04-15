@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "color/lib.h"
+#include "color/module_data.h"
 #include "test_common.h"
 
 int color_observer(struct NotifyCallback *nc)
@@ -46,8 +47,9 @@ void test_color_notify(void)
 
   mutt_color_observer_add(color_observer, NULL);
 
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct EventColor ev_c = { MT_COLOR_INDICATOR, NULL };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+  notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
   mutt_color_observer_remove(color_observer, NULL);
 

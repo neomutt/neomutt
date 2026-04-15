@@ -30,22 +30,22 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "color.h"
 #include "curses2.h"
 #include "debug.h"
-
-struct CursesColorList CursesColors; ///< List of all Curses colours
-int NumCursesColors; ///< Number of ncurses colours left to allocate
+#include "module_data.h"
 
 /**
  * curses_colors_init - Initialise the Curses colours
  */
 void curses_colors_init(void)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   color_debug(LL_DEBUG5, "init CursesColors\n");
-  TAILQ_INIT(&CursesColors);
-  NumCursesColors = 0;
+  TAILQ_INIT(&mod_data->curses_colors);
+  mod_data->num_curses_colors = 0;
 }
 
 /**
@@ -56,8 +56,9 @@ void curses_colors_init(void)
  */
 struct CursesColor *curses_colors_find(color_t fg, color_t bg)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct CursesColor *cc = NULL;
-  TAILQ_FOREACH(cc, &CursesColors, entries)
+  TAILQ_FOREACH(cc, &mod_data->curses_colors, entries)
   {
     if ((cc->fg == fg) && (cc->bg == bg))
     {
@@ -77,10 +78,11 @@ struct CursesColor *curses_colors_find(color_t fg, color_t bg)
  */
 static int curses_color_init(color_t fg, color_t bg)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   color_debug(LL_DEBUG5, "find lowest index\n");
   int index = 16;
   struct CursesColor *cc = NULL;
-  TAILQ_FOREACH(cc, &CursesColors, entries)
+  TAILQ_FOREACH(cc, &mod_data->curses_colors, entries)
   {
     if (cc->index == index)
       index++;
@@ -133,9 +135,10 @@ void curses_color_free(struct CursesColor **ptr)
   }
 
   curses_color_dump(cc, "curses free");
-  TAILQ_REMOVE(&CursesColors, cc, entries);
-  NumCursesColors--;
-  color_debug(LL_DEBUG5, "CursesColors: %d\n", NumCursesColors);
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  TAILQ_REMOVE(&mod_data->curses_colors, cc, entries);
+  mod_data->num_curses_colors--;
+  color_debug(LL_DEBUG5, "CursesColors: %d\n", mod_data->num_curses_colors);
   FREE(ptr);
 }
 
@@ -170,8 +173,9 @@ struct CursesColor *curses_color_new(color_t fg, color_t bg)
   if (index == 0)
     return NULL;
 
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct CursesColor *cc_new = MUTT_MEM_CALLOC(1, struct CursesColor);
-  NumCursesColors++;
+  mod_data->num_curses_colors++;
   color_debug(LL_DEBUG5, "CursesColor %p\n", (void *) cc_new);
   cc_new->fg = fg;
   cc_new->bg = bg;
@@ -179,7 +183,7 @@ struct CursesColor *curses_color_new(color_t fg, color_t bg)
   cc_new->index = index;
 
   // insert curses colour
-  TAILQ_FOREACH(cc, &CursesColors, entries)
+  TAILQ_FOREACH(cc, &mod_data->curses_colors, entries)
   {
     if (cc->index > index)
     {
@@ -189,11 +193,11 @@ struct CursesColor *curses_color_new(color_t fg, color_t bg)
     }
   }
 
-  TAILQ_INSERT_TAIL(&CursesColors, cc_new, entries);
+  TAILQ_INSERT_TAIL(&mod_data->curses_colors, cc_new, entries);
   color_debug(LL_DEBUG5, "tail\n");
 
 done:
   curses_color_dump(cc_new, "curses new");
-  color_debug(LL_DEBUG5, "CursesColors: %d\n", NumCursesColors);
+  color_debug(LL_DEBUG5, "CursesColors: %d\n", mod_data->num_curses_colors);
   return cc_new;
 }

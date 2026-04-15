@@ -38,6 +38,7 @@
 #include "curses2.h"
 #include "debug.h"
 #include "merged.h"
+#include "module_data.h"
 #include "notify2.h"
 #include "quoted.h"
 #include "regex4.h"
@@ -74,8 +75,9 @@ void colors_reset(void)
   quoted_colors_reset();
   regex_colors_reset();
 
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct EventColor ev_c = { MT_COLOR_MAX, NULL };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+  notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 }
 
 /**

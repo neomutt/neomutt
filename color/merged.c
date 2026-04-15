@@ -32,18 +32,19 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "attr.h"
 #include "color.h"
 #include "curses2.h"
-
-struct AttrColorList MergedColors; ///< Array of user colours
+#include "module_data.h"
 
 /**
  * merged_colors_init - Initialise the Merged colours
  */
 void merged_colors_init(void)
 {
-  TAILQ_INIT(&MergedColors);
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  TAILQ_INIT(&mod_data->merged_colors);
 }
 
 /**
@@ -51,12 +52,13 @@ void merged_colors_init(void)
  */
 void merged_colors_cleanup(void)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct AttrColor *ac = NULL;
   struct AttrColor *tmp = NULL;
 
-  TAILQ_FOREACH_SAFE(ac, &MergedColors, entries, tmp)
+  TAILQ_FOREACH_SAFE(ac, &mod_data->merged_colors, entries, tmp)
   {
-    TAILQ_REMOVE(&MergedColors, ac, entries);
+    TAILQ_REMOVE(&mod_data->merged_colors, ac, entries);
     curses_color_free(&ac->curses_color);
     FREE(&ac);
   }
@@ -71,8 +73,9 @@ void merged_colors_cleanup(void)
  */
 static struct AttrColor *merged_colors_find(color_t fg, color_t bg, int attrs)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct AttrColor *ac = NULL;
-  TAILQ_FOREACH(ac, &MergedColors, entries)
+  TAILQ_FOREACH(ac, &mod_data->merged_colors, entries)
   {
     if (ac->attrs != attrs)
       continue;
@@ -112,6 +115,7 @@ const struct AttrColor *merged_color_overlay(const struct AttrColor *base,
   if (!attr_color_is_set(base))
     return over;
 
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct CursesColor *cc_base = base->curses_color;
   struct CursesColor *cc_over = over->curses_color;
 
@@ -143,7 +147,7 @@ const struct AttrColor *merged_color_overlay(const struct AttrColor *base,
   ac->attrs = attrs;
   ac->fg = (base->fg.color == COLOR_DEFAULT) ? over->fg : base->fg;
   ac->bg = (base->bg.color == COLOR_DEFAULT) ? over->bg : base->bg;
-  TAILQ_INSERT_TAIL(&MergedColors, ac, entries);
+  TAILQ_INSERT_TAIL(&mod_data->merged_colors, ac, entries);
 
   return ac;
 }

@@ -29,16 +29,15 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "debug.h"
 #include "pager/lib.h"
 #include "attr.h"
 #include "curses2.h"
 #include "dump.h"
+#include "module_data.h"
 #include "pager/private_data.h"
-
-extern struct AttrColorList MergedColors;
-extern struct CursesColorList CursesColors;
 
 /**
  * color_log_color - Get a colourful string to represent a colour in the log
@@ -142,7 +141,8 @@ void curses_color_dump(struct CursesColor *cc, const char *prefix)
  */
 void curses_colors_dump(struct Buffer *buf)
 {
-  if (TAILQ_EMPTY(&CursesColors))
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  if (TAILQ_EMPTY(&mod_data->curses_colors))
     return;
 
   struct Buffer *swatch = buf_pool_get();
@@ -151,7 +151,7 @@ void curses_colors_dump(struct Buffer *buf)
   buf_add_printf(buf, "# Index fg      bg      Color  rc\n");
 
   struct CursesColor *cc = NULL;
-  TAILQ_FOREACH(cc, &CursesColors, entries)
+  TAILQ_FOREACH(cc, &mod_data->curses_colors, entries)
   {
     char fg[16] = "-";
     char bg[16] = "-";
@@ -175,7 +175,8 @@ void curses_colors_dump(struct Buffer *buf)
  */
 void merged_colors_dump(struct Buffer *buf)
 {
-  if (TAILQ_EMPTY(&MergedColors))
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  if (TAILQ_EMPTY(&mod_data->merged_colors))
     return;
 
   struct Buffer *swatch = buf_pool_get();
@@ -184,7 +185,7 @@ void merged_colors_dump(struct Buffer *buf)
 
   buf_addstr(buf, "# Merged Colors\n");
   struct AttrColor *ac = NULL;
-  TAILQ_FOREACH(ac, &MergedColors, entries)
+  TAILQ_FOREACH(ac, &mod_data->merged_colors, entries)
   {
     struct CursesColor *cc = ac->curses_color;
     if (!cc)

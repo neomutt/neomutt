@@ -27,13 +27,12 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
+#include "module_data.h"
 #include "notify2.h"
 
 struct Notify;
-
-struct Notify *ColorsNotify = NULL; ///< Notifications: #ColorId, #EventColor
 
 /**
  * color_notify_init - Initialise the Colour notification
@@ -41,8 +40,9 @@ struct Notify *ColorsNotify = NULL; ///< Notifications: #ColorId, #EventColor
  */
 void color_notify_init(struct Notify *parent)
 {
-  ColorsNotify = notify_new();
-  notify_set_parent(ColorsNotify, parent);
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  mod_data->colors_notify = notify_new();
+  notify_set_parent(mod_data->colors_notify, parent);
 }
 
 /**
@@ -50,7 +50,8 @@ void color_notify_init(struct Notify *parent)
  */
 void color_notify_cleanup(void)
 {
-  notify_free(&ColorsNotify);
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  notify_free(&mod_data->colors_notify);
 }
 
 /**
@@ -60,7 +61,8 @@ void color_notify_cleanup(void)
  */
 void mutt_color_observer_add(observer_t callback, void *global_data)
 {
-  notify_observer_add(ColorsNotify, NT_COLOR, callback, global_data);
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  notify_observer_add(mod_data->colors_notify, NT_COLOR, callback, global_data);
 }
 
 /**
@@ -70,5 +72,6 @@ void mutt_color_observer_add(observer_t callback, void *global_data)
  */
 void mutt_color_observer_remove(observer_t callback, void *global_data)
 {
-  notify_observer_remove(ColorsNotify, callback, global_data);
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  notify_observer_remove(mod_data->colors_notify, callback, global_data);
 }

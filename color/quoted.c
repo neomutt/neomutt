@@ -29,12 +29,12 @@
 #include "config.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "quoted.h"
 #include "color.h"
+#include "module_data.h"
 #include "notify2.h"
 #include "simple2.h"
-
-static int NumQuotedColors = 0; ///< Number of colours for quoted email text
 
 /**
  * quoted_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
@@ -52,12 +52,14 @@ static int quoted_color_observer(struct NotifyCallback *nc)
   if (!COLOR_QUOTED(cid))
     return 0;
 
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+
   // Find the highest-numbered quotedN in use
   for (int i = MT_COLOR_QUOTED9; i >= MT_COLOR_QUOTED0; i--)
   {
     if (simple_color_is_set(i))
     {
-      NumQuotedColors = i - MT_COLOR_QUOTED0 + 1;
+      mod_data->num_quoted_colors = i - MT_COLOR_QUOTED0 + 1;
       break;
     }
   }
@@ -78,7 +80,8 @@ void quoted_colors_init(void)
  */
 void quoted_colors_reset(void)
 {
-  NumQuotedColors = 0;
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  mod_data->num_quoted_colors = 0;
 }
 
 /**
@@ -97,11 +100,12 @@ void quoted_colors_cleanup(void)
  */
 struct AttrColor *quoted_colors_get(int q)
 {
-  if (NumQuotedColors == 0)
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  if (mod_data->num_quoted_colors == 0)
     return NULL;
 
   // If we have too few colours, cycle around
-  q %= NumQuotedColors;
+  q %= mod_data->num_quoted_colors;
 
   return simple_color_get(MT_COLOR_QUOTED0 + q);
 }
@@ -112,5 +116,6 @@ struct AttrColor *quoted_colors_get(int q)
  */
 int quoted_colors_num_used(void)
 {
-  return NumQuotedColors;
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  return mod_data->num_quoted_colors;
 }
