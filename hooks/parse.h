@@ -29,10 +29,6 @@ struct Buffer;
 struct ParseContext;
 struct ParseError;
 
-extern struct HookList Hooks;
-extern struct HashTable *IdxFmtHooks;
-extern enum CommandId CurrentHookId;
-
 enum CommandResult parse_charset_hook (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_crypt_hook   (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
@@ -44,5 +40,7 @@ enum CommandResult parse_mbox_hook    (const struct Command *cmd, struct Buffer 
 enum CommandResult parse_pattern_hook (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_regex_hook   (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unhook       (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
+
+void delete_idxfmt_hooks(void);
 
 #endif /* MUTT_HOOKS_PARSE_H */

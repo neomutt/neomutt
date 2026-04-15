@@ -128,7 +128,6 @@
 #include "imap/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
-#include "lua/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
 #include "pager/lib.h"
@@ -1674,8 +1673,6 @@ main_exit:
   FREE(&CurrentFolder);
   FREE(&LastFolder);
   FREE(&ShortHostname);
-
-  mutt_delete_hooks(CMD_NONE);
 
   mutt_prex_cleanup();
   config_cache_cleanup();

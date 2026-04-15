@@ -32,7 +32,9 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "exec.h"
 #include "module_data.h"
+#include "parse.h"
 
 extern struct ConfigDef HooksVars[];
 extern const struct Command HooksCommands[];
@@ -42,8 +44,9 @@ extern const struct Command HooksCommands[];
  */
 static bool hooks_init(struct NeoMutt *n)
 {
-  // struct HooksModuleData *mod_data = MUTT_MEM_CALLOC(1, struct HooksModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_HOOKS, mod_data);
+  struct HooksModuleData *mod_data = MUTT_MEM_CALLOC(1, struct HooksModuleData);
+  TAILQ_INIT(&mod_data->hooks);
+  neomutt_set_module_data(n, MODULE_ID_HOOKS, mod_data);
 
   return true;
 }
@@ -69,10 +72,13 @@ static bool hooks_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  */
 static bool hooks_cleanup(struct NeoMutt *n)
 {
-  // struct HooksModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_HOOKS);
-  // ASSERT(mod_data);
+  struct HooksModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_HOOKS);
+  ASSERT(mod_data);
 
-  // FREE(&mod_data);
+  mutt_delete_hooks(CMD_NONE);
+  delete_idxfmt_hooks();
+
+  FREE(&mod_data);
   return true;
 }
 

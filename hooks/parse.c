@@ -41,18 +41,10 @@
 #include "pattern/lib.h"
 #include "globals.h"
 #include "hook.h"
+#include "module_data.h"
 #include "muttlib.h"
 
 extern const struct ExpandoDefinition IndexFormatDef[];
-
-/// All simple hooks, e.g. CMD_FOLDER_HOOK
-struct HookList Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
-
-/// All Index Format hooks
-struct HashTable *IdxFmtHooks = NULL;
-
-/// The ID of the Hook currently being executed, e.g. #CMD_SAVE_HOOK
-enum CommandId CurrentHookId = CMD_NONE;
 
 /**
  * parse_charset_hook - Parse charset Hook commands - Implements Command::parse() - @ingroup command_parse
@@ -120,6 +112,7 @@ enum CommandResult parse_global_hook(const struct Command *cmd, struct Buffer *l
 {
   struct Buffer *err = pe->message;
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
 
@@ -143,7 +136,7 @@ enum CommandResult parse_global_hook(const struct Command *cmd, struct Buffer *l
   }
 
   /* check to make sure that a matching Hook doesn't already exist */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     /* Ignore duplicate global Hooks */
     if ((hook->id == cmd->id) && mutt_str_equal(hook->command, buf_string(command)))
@@ -163,7 +156,7 @@ enum CommandResult parse_global_hook(const struct Command *cmd, struct Buffer *l
   hook->regex.pat_not = false;
   hook->expando = NULL;
 
-  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  TAILQ_INSERT_TAIL(&mod_data->hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
@@ -185,6 +178,7 @@ enum CommandResult parse_pattern_hook(const struct Command *cmd, struct Buffer *
 {
   struct Buffer *err = pe->message;
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -233,7 +227,7 @@ enum CommandResult parse_pattern_hook(const struct Command *cmd, struct Buffer *
   }
 
   /* check to make sure that a matching hook doesn't already exist */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(pattern), hook->regex.pattern))
@@ -272,7 +266,7 @@ enum CommandResult parse_pattern_hook(const struct Command *cmd, struct Buffer *
   hook->regex.pat_not = pat_not;
   hook->expando = NULL;
 
-  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  TAILQ_INSERT_TAIL(&mod_data->hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
@@ -293,11 +287,12 @@ cleanup:
 enum CommandResult add_mailbox_hook(enum CommandId id, struct Buffer *mailbox,
                                     struct Buffer *pattern, bool pat_not, struct Buffer *err)
 {
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   struct PatternList *pat = NULL;
 
   /* check to make sure that a matching hook doesn't already exist */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if ((hook->id == id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(pattern), hook->regex.pattern))
@@ -338,7 +333,7 @@ enum CommandResult add_mailbox_hook(enum CommandId id, struct Buffer *mailbox,
   hook->regex.pat_not = pat_not;
   hook->expando = exp;
 
-  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  TAILQ_INSERT_TAIL(&mod_data->hooks, hook, entries);
   return MUTT_CMD_SUCCESS;
 }
 
@@ -434,6 +429,7 @@ enum CommandResult parse_regex_hook(const struct Command *cmd, struct Buffer *li
 {
   struct Buffer *err = pe->message;
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -475,7 +471,7 @@ enum CommandResult parse_regex_hook(const struct Command *cmd, struct Buffer *li
   }
 
   /* check to make sure that a matching hook doesn't already exist */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
@@ -510,7 +506,7 @@ enum CommandResult parse_regex_hook(const struct Command *cmd, struct Buffer *li
   hook->regex.pat_not = pat_not;
   hook->expando = NULL;
 
-  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  TAILQ_INSERT_TAIL(&mod_data->hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
@@ -530,6 +526,7 @@ enum CommandResult parse_folder_hook(const struct Command *cmd, struct Buffer *l
 {
   struct Buffer *err = pe->message;
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -614,7 +611,7 @@ enum CommandResult parse_folder_hook(const struct Command *cmd, struct Buffer *l
   buf_pool_release(&tmp);
 
   /* check to make sure that a matching hook doesn't already exist */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
@@ -649,7 +646,7 @@ enum CommandResult parse_folder_hook(const struct Command *cmd, struct Buffer *l
   hook->regex.pat_not = pat_not;
   hook->expando = NULL;
 
-  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  TAILQ_INSERT_TAIL(&mod_data->hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
@@ -670,6 +667,7 @@ enum CommandResult parse_crypt_hook(const struct Command *cmd, struct Buffer *li
 {
   struct Buffer *err = pe->message;
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -711,7 +709,7 @@ enum CommandResult parse_crypt_hook(const struct Command *cmd, struct Buffer *li
   }
 
   /* check to make sure that a matching hook doesn't already exist */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
@@ -746,7 +744,7 @@ enum CommandResult parse_crypt_hook(const struct Command *cmd, struct Buffer *li
   hook->regex.pat_not = pat_not;
   hook->expando = NULL;
 
-  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  TAILQ_INSERT_TAIL(&mod_data->hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
@@ -766,6 +764,7 @@ enum CommandResult parse_mbox_hook(const struct Command *cmd, struct Buffer *lin
 {
   struct Buffer *err = pe->message;
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -852,7 +851,7 @@ enum CommandResult parse_mbox_hook(const struct Command *cmd, struct Buffer *lin
   expand_path(command, false);
 
   /* check to make sure that a matching hook doesn't already exist */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
@@ -894,7 +893,7 @@ enum CommandResult parse_mbox_hook(const struct Command *cmd, struct Buffer *lin
   hook->regex.pat_not = pat_not;
   hook->expando = exp;
 
-  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  TAILQ_INSERT_TAIL(&mod_data->hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
@@ -916,6 +915,7 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
 {
   struct Buffer *err = pe->message;
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
@@ -964,7 +964,7 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
   }
 
   /* check to make sure that a matching hook doesn't already exist */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if ((hook->id == cmd->id) && (hook->regex.pat_not == pat_not) &&
         mutt_str_equal(buf_string(regex), hook->regex.pattern))
@@ -1001,7 +1001,7 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
   hook->regex.pat_not = pat_not;
   hook->expando = NULL;
 
-  TAILQ_INSERT_TAIL(&Hooks, hook, entries);
+  TAILQ_INSERT_TAIL(&mod_data->hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
 cleanup:
@@ -1018,14 +1018,15 @@ cleanup:
  */
 void mutt_delete_hooks(enum CommandId id)
 {
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *h = NULL;
   struct Hook *tmp = NULL;
 
-  TAILQ_FOREACH_SAFE(h, &Hooks, entries, tmp)
+  TAILQ_FOREACH_SAFE(h, &mod_data->hooks, entries, tmp)
   {
     if ((id == CMD_NONE) || (id == h->id))
     {
-      TAILQ_REMOVE(&Hooks, h, entries);
+      TAILQ_REMOVE(&mod_data->hooks, h, entries);
       hook_free(&h);
     }
   }
@@ -1052,9 +1053,10 @@ static void idxfmt_hashelem_free(int type, void *obj, intptr_t data)
 /**
  * delete_idxfmt_hooks - Delete all the index-format-hooks
  */
-static void delete_idxfmt_hooks(void)
+void delete_idxfmt_hooks(void)
 {
-  mutt_hash_free(&IdxFmtHooks);
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
+  mutt_hash_free(&mod_data->idx_fmt_hooks);
 }
 
 /**
@@ -1074,6 +1076,7 @@ enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *li
     return MUTT_CMD_WARNING;
   }
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   enum CommandResult rc = MUTT_CMD_ERROR;
   bool pat_not = false;
 
@@ -1082,14 +1085,14 @@ enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *li
   struct Buffer *fmt = buf_pool_get();
   struct Expando *exp = NULL;
 
-  if (!IdxFmtHooks)
+  if (!mod_data->idx_fmt_hooks)
   {
-    IdxFmtHooks = mutt_hash_new(30, MUTT_HASH_STRDUP_KEYS);
-    mutt_hash_set_destructor(IdxFmtHooks, idxfmt_hashelem_free, 0);
+    mod_data->idx_fmt_hooks = mutt_hash_new(30, MUTT_HASH_STRDUP_KEYS);
+    mutt_hash_set_destructor(mod_data->idx_fmt_hooks, idxfmt_hashelem_free, 0);
   }
 
   parse_extract_token(name, line, TOKEN_NO_FLAGS);
-  struct HookList *hl = mutt_hash_find(IdxFmtHooks, buf_string(name));
+  struct HookList *hl = mutt_hash_find(mod_data->idx_fmt_hooks, buf_string(name));
 
   if (*line->dptr == '!')
   {
@@ -1165,7 +1168,7 @@ enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *li
   {
     hl = MUTT_MEM_CALLOC(1, struct HookList);
     TAILQ_INIT(hl);
-    mutt_hash_insert(IdxFmtHooks, buf_string(name), hl);
+    mutt_hash_insert(mod_data->idx_fmt_hooks, buf_string(name), hl);
   }
 
   TAILQ_INSERT_TAIL(hl, hook, entries);
@@ -1197,6 +1200,7 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
     return MUTT_CMD_WARNING;
   }
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_WARNING;
 
@@ -1205,7 +1209,7 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf_string(token)))
     {
-      if (CurrentHookId != CMD_NONE)
+      if (mod_data->current_hook_id != CMD_NONE)
       {
         buf_addstr(err, _("unhook: Can't do unhook * from within a hook"));
         goto done;
@@ -1231,7 +1235,7 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
         rc = MUTT_CMD_SUCCESS;
         goto done;
       }
-      if (CurrentHookId == hook->id)
+      if (mod_data->current_hook_id == hook->id)
       {
         buf_printf(err, _("unhook: Can't delete a %s from within a %s"),
                    buf_string(token), buf_string(token));

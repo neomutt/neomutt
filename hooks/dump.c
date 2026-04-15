@@ -38,8 +38,8 @@
 #include "pager/lib.h"
 #include "parse/lib.h"
 #include "hook.h"
+#include "module_data.h"
 #include "muttlib.h"
-#include "parse.h"
 
 /**
  * hooks_dump_one - Dump a single hook to the buffer
@@ -93,6 +93,7 @@ static void hooks_dump_one(struct Hook *hook, const struct Command *cmd, struct 
  */
 static void hooks_dump_simple(struct Buffer *buf)
 {
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   // Dump all the Hooks, except: CMD_CHARSET_HOOK, CMD_ICONV_HOOK, CMD_INDEX_FORMAT_HOOK
   static const enum CommandId hook_ids[] = {
     CMD_ACCOUNT_HOOK, CMD_APPEND_HOOK,   CMD_CLOSE_HOOK,   CMD_CRYPT_HOOK,
@@ -108,7 +109,7 @@ static void hooks_dump_simple(struct Buffer *buf)
     bool found_header = false;
     struct Hook *hook = NULL;
 
-    TAILQ_FOREACH(hook, &Hooks, entries)
+    TAILQ_FOREACH(hook, &mod_data->hooks, entries)
     {
       if (hook->id != id)
         continue;
@@ -133,14 +134,15 @@ static void hooks_dump_simple(struct Buffer *buf)
  */
 static void hooks_dump_index(struct Buffer *buf)
 {
-  if (!IdxFmtHooks)
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
+  if (!mod_data->idx_fmt_hooks)
     return;
 
   struct HashWalkState hws = { 0 };
   struct HashElem *he = NULL;
   bool found_header = false;
 
-  while ((he = mutt_hash_walk(IdxFmtHooks, &hws)))
+  while ((he = mutt_hash_walk(mod_data->idx_fmt_hooks, &hws)))
   {
     const char *name = he->key.strkey;
     struct HookList *hl = he->data;
@@ -236,7 +238,8 @@ enum CommandResult parse_hooks(const struct Command *cmd, struct Buffer *line,
   if (!StartupComplete)
     return MUTT_CMD_SUCCESS;
 
-  if (TAILQ_EMPTY(&Hooks))
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
+  if (TAILQ_EMPTY(&mod_data->hooks))
   {
     buf_printf(err, _("%s: No Hooks are configured"), cmd->name);
     return MUTT_CMD_WARNING;

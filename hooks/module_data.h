@@ -23,12 +23,17 @@
 #ifndef MUTT_HOOKS_MODULE_DATA_H
 #define MUTT_HOOKS_MODULE_DATA_H
 
+#include "mutt/lib.h"
+#include "hook.h"
+
 /**
  * struct HooksModuleData - Hooks private Module data
  */
 struct HooksModuleData
 {
-  int dummy;
+  struct HookList hooks;           ///< All simple hooks, e.g. CMD_FOLDER_HOOK
+  struct HashTable *idx_fmt_hooks; ///< All Index Format hooks
+  int current_hook_id;             ///< The ID of the Hook currently being executed
 };
 
 #endif /* MUTT_HOOKS_MODULE_DATA_H */
