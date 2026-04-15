@@ -64,6 +64,7 @@
 #include "crypt.h"
 #include "globals.h"
 #include "gpgme_functions.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
@@ -87,13 +88,6 @@ struct CryptCache
   char *dflt;              ///< Default key ID
   struct CryptCache *next; ///< Linked list
 };
-
-/// Cache of GPGME keys
-static struct CryptCache *IdDefaults = NULL;
-/// PGP Key to sign with
-static gpgme_key_t SignatureKey = NULL;
-/// Email address of the sender
-static char *CurrentSender = NULL;
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"
 
@@ -769,7 +763,9 @@ static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_sm
  */
 static gpgme_error_t set_pka_sig_notation(gpgme_ctx_t ctx)
 {
-  gpgme_error_t err = gpgme_sig_notation_add(ctx, PKA_NOTATION_NAME, CurrentSender, 0);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  gpgme_error_t err = gpgme_sig_notation_add(ctx, PKA_NOTATION_NAME,
+                                             mod_data->current_sender, 0);
   if (err != GPG_ERR_NO_ERROR)
   {
     mutt_error(_("error setting PKA signature notation: %s"), gpgme_strerror(err));
@@ -1466,6 +1462,7 @@ static void show_encryption_info(struct State *state, gpgme_decrypt_result_t res
  */
 static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   const char *fpr = NULL;
   gpgme_key_t key = NULL;
   bool anybad = false, anywarn = false;
@@ -1485,10 +1482,10 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
     if (!sig)
       return -1; /* Signature not found.  */
 
-    if (SignatureKey)
+    if ((gpgme_key_t) mod_data->signature_key)
     {
-      gpgme_key_unref(SignatureKey);
-      SignatureKey = NULL;
+      gpgme_key_unref((gpgme_key_t) mod_data->signature_key);
+      mod_data->signature_key = NULL;
     }
 
     fpr = sig->fpr;
@@ -1502,8 +1499,10 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
       err = gpgme_get_key(ctx, fpr, &key, 0); /* secret key?  */
       if (err == GPG_ERR_NO_ERROR)
       {
-        if (!SignatureKey)
-          SignatureKey = key;
+        /* Only cache the signer key for S/MIME sender verification.
+         * (For OpenPGP, this cached key isn't used and would leak if left set.) */
+        if (!mod_data->signature_key && key && (key->protocol == GPGME_PROTOCOL_CMS))
+          mod_data->signature_key = key;
       }
       else
       {
@@ -1567,7 +1566,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
       anywarn = true;
     }
 
-    if (key != SignatureKey)
+    if (key != (gpgme_key_t) mod_data->signature_key)
       gpgme_key_unref(key);
   }
 
@@ -1589,6 +1588,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
  */
 static int verify_one(struct Body *b, struct State *state, const char *tempfile, bool is_smime)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   int badsig = -1;
   int anywarn = 0;
   gpgme_ctx_t ctx = NULL;
@@ -1633,10 +1633,10 @@ static int verify_one(struct Body *b, struct State *state, const char *tempfile,
   { /* Verification succeeded, see what the result is. */
     gpgme_verify_result_t verify_result = NULL;
 
-    if (SignatureKey)
+    if ((gpgme_key_t) mod_data->signature_key)
     {
-      gpgme_key_unref(SignatureKey);
-      SignatureKey = NULL;
+      gpgme_key_unref((gpgme_key_t) mod_data->signature_key);
+      mod_data->signature_key = NULL;
     }
 
     verify_result = gpgme_op_verify_result(ctx);
@@ -3474,6 +3474,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatf
                                               KeyFlags abilities,
                                               unsigned int app, bool *forced_valid)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct CryptKeyInfo *key = NULL;
   struct CryptCache *l = NULL;
   struct Buffer *resp = buf_pool_get();
@@ -3482,7 +3483,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatf
 
   if (whatfor)
   {
-    for (l = IdDefaults; l; l = l->next)
+    for (l = (struct CryptCache *) mod_data->gpgme_id_defaults; l; l = l->next)
     {
       if (mutt_istr_equal(whatfor, l->what))
       {
@@ -3509,8 +3510,8 @@ static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatf
       else
       {
         l = MUTT_MEM_MALLOC(1, struct CryptCache);
-        l->next = IdDefaults;
-        IdDefaults = l;
+        l->next = (struct CryptCache *) mod_data->gpgme_id_defaults;
+        mod_data->gpgme_id_defaults = l;
         l->what = mutt_str_dup(whatfor);
         l->dflt = buf_strdup(resp);
       }
@@ -4079,6 +4080,7 @@ SecurityFlags smime_gpgme_send_menu(struct Email *e)
  */
 static bool verify_sender(struct Email *e)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct Address *sender = NULL;
   bool rc = true;
 
@@ -4095,9 +4097,9 @@ static bool verify_sender(struct Email *e)
 
   if (sender)
   {
-    if (SignatureKey)
+    if ((gpgme_key_t) mod_data->signature_key)
     {
-      gpgme_key_t key = SignatureKey;
+      gpgme_key_t key = (gpgme_key_t) mod_data->signature_key;
       gpgme_user_id_t uid = NULL;
       int sender_length = buf_len(sender->mailbox);
       for (uid = key->uids; uid && rc; uid = uid->next)
@@ -4144,10 +4146,10 @@ static bool verify_sender(struct Email *e)
     mutt_any_key_to_continue(_("Failed to figure out sender"));
   }
 
-  if (SignatureKey)
+  if ((gpgme_key_t) mod_data->signature_key)
   {
-    gpgme_key_unref(SignatureKey);
-    SignatureKey = NULL;
+    gpgme_key_unref((gpgme_key_t) mod_data->signature_key);
+    mod_data->signature_key = NULL;
   }
 
   return rc;
@@ -4166,9 +4168,10 @@ int smime_gpgme_verify_sender(struct Email *e, struct Message *msg)
  */
 void pgp_gpgme_set_sender(const char *sender)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   mutt_debug(LL_DEBUG2, "setting to: %s\n", sender);
-  FREE(&CurrentSender);
-  CurrentSender = mutt_str_dup(sender);
+  FREE(&mod_data->current_sender);
+  mod_data->current_sender = mutt_str_dup(sender);
 }
 
 /**
@@ -4178,4 +4181,28 @@ void pgp_gpgme_set_sender(const char *sender)
 const char *mutt_gpgme_print_version(void)
 {
   return GPGME_VERSION;
+}
+
+/**
+ * gpgme_id_defaults_cleanup - Free the GPGME IdDefaults cache
+ */
+void gpgme_id_defaults_cleanup(void)
+{
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  struct CryptCache *l = mod_data->gpgme_id_defaults;
+  while (l)
+  {
+    struct CryptCache *next = l->next;
+    FREE(&l->what);
+    FREE(&l->dflt);
+    FREE(&l);
+    l = next;
+  }
+  mod_data->gpgme_id_defaults = NULL;
+
+  if ((gpgme_key_t) mod_data->signature_key)
+  {
+    gpgme_key_unref((gpgme_key_t) mod_data->signature_key);
+    mod_data->signature_key = NULL;
+  }
 }

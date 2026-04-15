@@ -56,6 +56,7 @@
 #include "crypt.h"
 #include "cryptglue.h"
 #include "globals.h"
+#include "module_data.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
 #include "pgpmicalg.h"
@@ -64,18 +65,14 @@
 #include "pgplib.h"
 #endif
 
-/// Cached PGP Passphrase
-static char PgpPass[1024];
-/// Unix time when #PgpPass expires
-static time_t PgpExptime = 0; /* when does the cached passphrase expire? */
-
 /**
  * pgp_class_void_passphrase - Forget the cached passphrase - Implements CryptModuleSpecs::void_passphrase() - @ingroup crypto_void_passphrase
  */
 void pgp_class_void_passphrase(void)
 {
-  memset(PgpPass, 0, sizeof(PgpPass));
-  PgpExptime = 0;
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  memset(mod_data->pgp_pass, 0, sizeof(mod_data->pgp_pass));
+  mod_data->pgp_exptime = 0;
 }
 
 /**
@@ -83,13 +80,14 @@ void pgp_class_void_passphrase(void)
  */
 bool pgp_class_valid_passphrase(void)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   if (pgp_use_gpg_agent())
   {
-    *PgpPass = '\0';
+    *mod_data->pgp_pass = '\0';
     return true; /* handled by gpg-agent */
   }
 
-  if (mutt_date_now() < PgpExptime)
+  if (mutt_date_now() < mod_data->pgp_exptime)
   {
     /* Use cached copy.  */
     return true;
@@ -100,18 +98,18 @@ bool pgp_class_valid_passphrase(void)
   struct Buffer *buf = buf_pool_get();
   const int rc = mw_get_field(_("Enter PGP passphrase:"), buf,
                               MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED, HC_OTHER, NULL, NULL);
-  mutt_str_copy(PgpPass, buf_string(buf), sizeof(PgpPass));
+  mutt_str_copy(mod_data->pgp_pass, buf_string(buf), sizeof(mod_data->pgp_pass));
   buf_pool_release(&buf);
 
   if (rc == 0)
   {
     const long c_pgp_timeout = cs_subset_long(NeoMutt->sub, "pgp_timeout");
-    PgpExptime = mutt_date_add_timeout(mutt_date_now(), c_pgp_timeout);
+    mod_data->pgp_exptime = mutt_date_add_timeout(mutt_date_now(), c_pgp_timeout);
     return true;
   }
   else
   {
-    PgpExptime = 0;
+    mod_data->pgp_exptime = 0;
   }
 
   return false;
@@ -470,6 +468,7 @@ static void pgp_copy_clearsigned(FILE *fp_in, struct State *state, char *charset
  */
 int pgp_class_application_handler(struct Body *b, struct State *state)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   bool could_not_decrypt = false;
   int decrypt_okay_rc = 0;
   int needpass = -1;
@@ -614,8 +613,8 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
             if (!pgp_class_valid_passphrase())
               pgp_class_void_passphrase();
             if (pgp_use_gpg_agent())
-              *PgpPass = '\0';
-            fprintf(fp_pgp_in, "%s\n", PgpPass);
+              *mod_data->pgp_pass = '\0';
+            fprintf(fp_pgp_in, "%s\n", mod_data->pgp_pass);
           }
 
           mutt_file_fclose(&fp_pgp_in);
@@ -1028,6 +1027,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
   if (!a || !state || !fp_out || !p)
     return NULL;
 
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   char buf[1024] = { 0 };
   FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_tmp = NULL;
   struct Body *tattach = NULL;
@@ -1079,7 +1079,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
   /* send the PGP passphrase to the subprocess.  Never do this if the agent is
    * active, because this might lead to a passphrase send as the message. */
   if (!pgp_use_gpg_agent())
-    fputs(PgpPass, fp_pgp_in);
+    fputs(mod_data->pgp_pass, fp_pgp_in);
   fputc('\n', fp_pgp_in);
   mutt_file_fclose(&fp_pgp_in);
 
@@ -1330,6 +1330,7 @@ int pgp_class_encrypted_handler(struct Body *b, struct State *state)
  */
 struct Body *pgp_class_sign_message(struct Body *b, const struct AddressList *from)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct Body *b_enc = NULL, *rv = NULL;
   char buf[1024] = { 0 };
   FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_err = NULL, *fp_signed = NULL;
@@ -1375,7 +1376,7 @@ struct Body *pgp_class_sign_message(struct Body *b, const struct AddressList *fr
   }
 
   if (!pgp_use_gpg_agent())
-    fputs(PgpPass, fp_pgp_in);
+    fputs(mod_data->pgp_pass, fp_pgp_in);
   fputc('\n', fp_pgp_in);
   mutt_file_fclose(&fp_pgp_in);
 
@@ -1593,6 +1594,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
 struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
                                        const struct AddressList *from)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   char buf[1024] = { 0 };
   FILE *fp_pgp_in = NULL, *fp_tmp = NULL;
   struct Body *b_enc = NULL;
@@ -1651,7 +1653,7 @@ struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
   if (sign)
   {
     if (!pgp_use_gpg_agent())
-      fputs(PgpPass, fp_pgp_in);
+      fputs(mod_data->pgp_pass, fp_pgp_in);
     fputc('\n', fp_pgp_in);
   }
   mutt_file_fclose(&fp_pgp_in);
@@ -1726,6 +1728,7 @@ cleanup:
  */
 struct Body *pgp_class_traditional_encryptsign(struct Body *b, SecurityFlags flags, char *keylist)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct Body *b_enc = NULL;
   char body_charset[256] = { 0 };
   const char *from_charset = NULL;
@@ -1823,9 +1826,9 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *b, SecurityFlags fla
   }
 
   if (pgp_use_gpg_agent())
-    *PgpPass = '\0';
+    *mod_data->pgp_pass = '\0';
   if (flags & SEC_SIGN)
-    fprintf(fp_pgp_in, "%s\n", PgpPass);
+    fprintf(fp_pgp_in, "%s\n", mod_data->pgp_pass);
   mutt_file_fclose(&fp_pgp_in);
 
   const bool c_pgp_check_exit = cs_subset_bool(NeoMutt->sub, "pgp_check_exit");

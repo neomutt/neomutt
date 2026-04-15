@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/lib.h"
 #include "lib.h"
 
 struct Address;
@@ -34,7 +35,6 @@ struct Body;
 struct Email;
 struct Envelope;
 struct Message;
-struct State;
 
 /**
  * @defgroup crypto_api Crypto API
@@ -304,6 +304,18 @@ struct CryptModuleSpecs
    */
   void (*smime_invoke_import)(const char *infile, const char *mailbox);
 };
+
+/**
+ * struct CryptModule - A crypto plugin module
+ *
+ * A type of a variable to keep track of registered crypto modules.
+ */
+struct CryptModule
+{
+  const struct CryptModuleSpecs *specs; ///< Crypto module definition
+  STAILQ_ENTRY(CryptModule) entries;    ///< Linked list
+};
+STAILQ_HEAD(CryptModuleList, CryptModule);
 
 /* High Level crypto module interface */
 void crypto_module_register(const struct CryptModuleSpecs *specs);

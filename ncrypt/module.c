@@ -45,6 +45,7 @@ extern struct ConfigDef NcryptVarsSmime[];
 static bool ncrypt_init(struct NeoMutt *n)
 {
   struct NcryptModuleData *mod_data = MUTT_MEM_CALLOC(1, struct NcryptModuleData);
+  STAILQ_INIT(&mod_data->crypt_modules);
   neomutt_set_module_data(n, MODULE_ID_NCRYPT, mod_data);
 
   return true;
@@ -81,6 +82,10 @@ static bool ncrypt_cleanup(struct NeoMutt *n)
 {
   struct NcryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
   ASSERT(mod_data);
+
+  FREE(&mod_data->current_sender);
+  FREE(&mod_data->charset);
+  FREE(&mod_data->packet_buf);
 
   FREE(&mod_data);
   return true;

@@ -47,13 +47,11 @@
 #include "question/lib.h"
 #include "crypt_gpgme.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-
-/// Number of padding spaces needed after each of the strings in #KeyInfoPrompts after translation
-int KeyInfoPadding[KIP_MAX] = { 0 };
 
 /// Names of header fields used in the pgp key display, e.g. Name:, Fingerprint:
 static const char *const KeyInfoPrompts[] = {
@@ -387,6 +385,7 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
  */
 static void print_key_info(gpgme_key_t key, FILE *fp)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   int idx;
   const char *s = NULL, *s2 = NULL;
   time_t tt = 0;
@@ -400,14 +399,14 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   {
     for (int i = 0; i < KIP_MAX; i++)
     {
-      KeyInfoPadding[i] = mutt_str_len(_(KeyInfoPrompts[i]));
+      mod_data->key_info_padding[i] = mutt_str_len(_(KeyInfoPrompts[i]));
       const int width = mutt_strwidth(_(KeyInfoPrompts[i]));
       if (max_header_width < width)
         max_header_width = width;
-      KeyInfoPadding[i] -= width;
+      mod_data->key_info_padding[i] -= width;
     }
     for (int i = 0; i < KIP_MAX; i++)
-      KeyInfoPadding[i] += max_header_width;
+      mod_data->key_info_padding[i] += max_header_width;
   }
 
   bool is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
@@ -421,9 +420,9 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     /* L10N: DOTFILL */
 
     if (idx == 0)
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_NAME], _(KeyInfoPrompts[KIP_NAME]));
+      fprintf(fp, "%*s", mod_data->key_info_padding[KIP_NAME], _(KeyInfoPrompts[KIP_NAME]));
     else
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_AKA], _(KeyInfoPrompts[KIP_AKA]));
+      fprintf(fp, "%*s", mod_data->key_info_padding[KIP_AKA], _(KeyInfoPrompts[KIP_AKA]));
     if (uid->invalid)
     {
       /* L10N: comes after the Name or aka if the key is invalid */
@@ -442,7 +441,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     tt = key->subkeys->timestamp;
 
     mutt_date_localtime_format(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tt);
-    fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_FROM],
+    fprintf(fp, "%*s%s\n", mod_data->key_info_padding[KIP_VALID_FROM],
             _(KeyInfoPrompts[KIP_VALID_FROM]), shortbuf);
   }
 
@@ -451,7 +450,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     tt = key->subkeys->expires;
 
     mutt_date_localtime_format(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tt);
-    fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_TO],
+    fprintf(fp, "%*s%s\n", mod_data->key_info_padding[KIP_VALID_TO],
             _(KeyInfoPrompts[KIP_VALID_TO]), shortbuf);
   }
 
@@ -465,11 +464,13 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   if (key->subkeys)
     aval = key->subkeys->length;
 
-  fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
+  fprintf(fp, "%*s", mod_data->key_info_padding[KIP_KEY_TYPE],
+          _(KeyInfoPrompts[KIP_KEY_TYPE]));
   /* L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA */
   fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), s2, aval, s);
 
-  fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
+  fprintf(fp, "%*s", mod_data->key_info_padding[KIP_KEY_USAGE],
+          _(KeyInfoPrompts[KIP_KEY_USAGE]));
   delim = "";
 
   if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
@@ -494,7 +495,8 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   if (key->subkeys)
   {
     s = key->subkeys->fpr;
-    fprintf(fp, "%*s", KeyInfoPadding[KIP_FINGERPRINT], _(KeyInfoPrompts[KIP_FINGERPRINT]));
+    fprintf(fp, "%*s", mod_data->key_info_padding[KIP_FINGERPRINT],
+            _(KeyInfoPrompts[KIP_FINGERPRINT]));
     if (is_pgp && (strlen(s) == 40))
     {
       for (int i = 0; (s[0] != '\0') && (s[1] != '\0') && (s[2] != '\0') &&
@@ -527,14 +529,15 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   if (key->issuer_serial)
   {
     s = key->issuer_serial;
-    fprintf(fp, "%*s0x%s\n", KeyInfoPadding[KIP_SERIAL_NO],
+    fprintf(fp, "%*s0x%s\n", mod_data->key_info_padding[KIP_SERIAL_NO],
             _(KeyInfoPrompts[KIP_SERIAL_NO]), s);
   }
 
   if (key->issuer_name)
   {
     s = key->issuer_name;
-    fprintf(fp, "%*s", KeyInfoPadding[KIP_ISSUED_BY], _(KeyInfoPrompts[KIP_ISSUED_BY]));
+    fprintf(fp, "%*s", mod_data->key_info_padding[KIP_ISSUED_BY],
+            _(KeyInfoPrompts[KIP_ISSUED_BY]));
     parse_and_print_user_id(fp, s);
     putc('\n', fp);
   }
@@ -551,7 +554,8 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
       putc('\n', fp);
       if (strlen(s) == 16)
         s += 8; /* display only the short keyID */
-      fprintf(fp, "%*s0x%s", KeyInfoPadding[KIP_SUBKEY], _(KeyInfoPrompts[KIP_SUBKEY]), s);
+      fprintf(fp, "%*s0x%s", mod_data->key_info_padding[KIP_SUBKEY],
+              _(KeyInfoPrompts[KIP_SUBKEY]), s);
       if (subkey->revoked)
       {
         putc(' ', fp);
@@ -583,7 +587,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         tt = subkey->timestamp;
 
         mutt_date_localtime_format(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tt);
-        fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_FROM],
+        fprintf(fp, "%*s%s\n", mod_data->key_info_padding[KIP_VALID_FROM],
                 _(KeyInfoPrompts[KIP_VALID_FROM]), shortbuf);
       }
 
@@ -592,7 +596,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         tt = subkey->expires;
 
         mutt_date_localtime_format(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tt);
-        fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_TO],
+        fprintf(fp, "%*s%s\n", mod_data->key_info_padding[KIP_VALID_TO],
                 _(KeyInfoPrompts[KIP_VALID_TO]), shortbuf);
       }
 
@@ -600,11 +604,13 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
 
       aval = subkey->length;
 
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
+      fprintf(fp, "%*s", mod_data->key_info_padding[KIP_KEY_TYPE],
+              _(KeyInfoPrompts[KIP_KEY_TYPE]));
       /* L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA */
       fprintf(fp, ngettext("%s, %lu bit %s\n", "%s, %lu bit %s\n", aval), "PGP", aval, s);
 
-      fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
+      fprintf(fp, "%*s", mod_data->key_info_padding[KIP_KEY_USAGE],
+              _(KeyInfoPrompts[KIP_KEY_USAGE]));
       delim = "";
 
       if (subkey->can_encrypt)
