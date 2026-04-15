@@ -45,6 +45,7 @@ extern const struct Command SbCommands[];
 static bool sidebar_init(struct NeoMutt *n)
 {
   struct SidebarModuleData *mod_data = MUTT_MEM_CALLOC(1, struct SidebarModuleData);
+  STAILQ_INIT(&mod_data->sidebar_pinned);
   neomutt_set_module_data(n, MODULE_ID_SIDEBAR, mod_data);
 
   return true;
@@ -74,6 +75,7 @@ static bool sidebar_cleanup(struct NeoMutt *n)
   struct SidebarModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
   ASSERT(mod_data);
 
+  mutt_list_free(&mod_data->sidebar_pinned);
   FREE(&mod_data);
   return true;
 }

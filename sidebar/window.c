@@ -79,6 +79,7 @@
 #include "expando/lib.h"
 #include "index/lib.h"
 #include "expando.h"
+#include "module_data.h"
 
 /**
  * imap_is_prefix - Check if folder matches the beginning of mbox
@@ -405,6 +406,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
  */
 static void update_entries_visibility(struct SidebarWindowData *wdata)
 {
+  struct SidebarModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
   /* Aliases for readability */
   const bool c_sidebar_new_mail_only = cs_subset_bool(NeoMutt->sub, "sidebar_new_mail_only");
   const bool c_sidebar_non_empty_mailbox_only = cs_subset_bool(NeoMutt->sub, "sidebar_non_empty_mailbox_only");
@@ -432,8 +434,8 @@ static void update_entries_visibility(struct SidebarWindowData *wdata)
       continue;
     }
 
-    if (mutt_list_find(&SidebarPinned, mailbox_path(sbe->mailbox)) ||
-        mutt_list_find(&SidebarPinned, sbe->mailbox->name))
+    if (mutt_list_find(&mod_data->sidebar_pinned, mailbox_path(sbe->mailbox)) ||
+        mutt_list_find(&mod_data->sidebar_pinned, sbe->mailbox->name))
     {
       /* Explicitly asked to be visible */
       continue;

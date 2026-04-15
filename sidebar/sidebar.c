@@ -40,8 +40,7 @@
 #include "lib.h"
 #include "color/lib.h"
 #include "index/lib.h"
-
-struct ListHead SidebarPinned = STAILQ_HEAD_INITIALIZER(SidebarPinned); ///< List of mailboxes to always display in the sidebar
+#include "module_data.h"
 
 /**
  * SbCommands - Sidebar Commands
@@ -213,9 +212,10 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
  */
 void sb_init(void)
 {
-  // Set a default style
+  // Set a default style, if unset
   struct AttrColor *ac = simple_color_get(MT_COLOR_SIDEBAR_HIGHLIGHT);
-  ac->attrs = A_UNDERLINE;
+  if (!attr_color_is_set(ac))
+    ac->attrs = A_UNDERLINE;
 
   if (AllDialogsWindow)
   {
@@ -230,7 +230,8 @@ void sb_init(void)
  */
 void sb_cleanup(void)
 {
+  struct SidebarModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
   if (AllDialogsWindow)
     notify_observer_remove(AllDialogsWindow->notify, sb_insertion_window_observer, NULL);
-  mutt_list_free(&SidebarPinned);
+  mutt_list_free(&mod_data->sidebar_pinned);
 }

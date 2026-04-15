@@ -23,8 +23,7 @@
 #ifndef MUTT_SIDEBAR_MODULE_DATA_H
 #define MUTT_SIDEBAR_MODULE_DATA_H
 
-struct MenuDefinition;
-struct SubMenu;
+#include "mutt/lib.h"
 
 /**
  * struct SidebarModuleData - Sidebar private Module data
@@ -33,6 +32,7 @@ struct SidebarModuleData
 {
   struct MenuDefinition *md_sidebar; ///< Sidebar Menu Definition
   struct SubMenu *sm_sidebar;        ///< Sidebar functions
+  struct ListHead sidebar_pinned;    ///< List of mailboxes to always display in the sidebar
 };
 
 #endif /* MUTT_SIDEBAR_MODULE_DATA_H */

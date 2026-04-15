@@ -33,6 +33,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+#include "module_data.h"
 #include "muttlib.h"
 
 /**
@@ -44,6 +45,7 @@
 enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *line,
                                      const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct SidebarModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
   struct Buffer *err = pe->message;
 
   if (!MoreArgs(line))
@@ -58,7 +60,7 @@ enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *l
   {
     parse_extract_token(path, line, TOKEN_BACKTICK_VARS);
     expand_path(path, false);
-    add_to_stailq(&SidebarPinned, buf_string(path));
+    add_to_stailq(&mod_data->sidebar_pinned, buf_string(path));
   } while (MoreArgs(line));
   buf_pool_release(&path);
 
@@ -74,6 +76,7 @@ enum CommandResult parse_sidebar_pin(const struct Command *cmd, struct Buffer *l
 enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer *line,
                                        const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct SidebarModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
   struct Buffer *err = pe->message;
 
   if (!MoreArgs(line))
@@ -90,11 +93,11 @@ enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer 
     /* Check for deletion of entire list */
     if (mutt_str_equal(buf_string(path), "*"))
     {
-      mutt_list_free(&SidebarPinned);
+      mutt_list_free(&mod_data->sidebar_pinned);
       break;
     }
     expand_path(path, false);
-    remove_from_stailq(&SidebarPinned, buf_string(path));
+    remove_from_stailq(&mod_data->sidebar_pinned, buf_string(path));
   } while (MoreArgs(line));
   buf_pool_release(&path);
 
