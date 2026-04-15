@@ -125,9 +125,9 @@ static const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
 /**
  * browser_init_keys - Initialise the Browser Keybindings - Implements ::init_keys_api
  */
-void browser_init_keys(struct SubMenu *sm_generic)
+void browser_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct BrowserModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
+  struct BrowserModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_BROWSER);
   ASSERT(mdata);
 
   struct MenuDefinition *md = NULL;

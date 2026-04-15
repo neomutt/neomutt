@@ -123,9 +123,9 @@ static const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
 /**
  * editor_init_keys - Initialise the Editor Keybindings - Implements ::init_keys_api
  */
-void editor_init_keys(struct SubMenu *sm_generic)
+void editor_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct EditorModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
+  struct EditorModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_EDITOR);
   ASSERT(mdata);
 
   struct MenuDefinition *md = NULL;

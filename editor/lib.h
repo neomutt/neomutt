@@ -52,7 +52,7 @@ struct CompleteOps;
 struct MenuDefinition;
 struct SubMenu;
 
-void editor_init_keys(struct SubMenu *sm_generic);
+void editor_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 struct SubMenu *editor_get_submenu(void);
 
 /**

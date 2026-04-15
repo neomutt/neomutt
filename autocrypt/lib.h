@@ -173,7 +173,9 @@ enum AutocryptRec
 extern char *AutocryptSignAs;
 extern char *AutocryptDefaultKey;
 
-void autocrypt_init_keys(struct SubMenu *sm_generic);
+struct NeoMutt;
+
+void autocrypt_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 
 void              dlg_autocrypt                          (void);
 void              mutt_autocrypt_cleanup                 (void);

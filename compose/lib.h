@@ -48,12 +48,13 @@
 struct Buffer;
 struct ConfigSubset;
 struct Email;
+struct NeoMutt;
 struct SubMenu;
 
 /// Don't free the header when closing compose dialog
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
-void compose_init_keys(struct SubMenu *sm_generic);
+void compose_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 
 int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct ConfigSubset *sub);
 

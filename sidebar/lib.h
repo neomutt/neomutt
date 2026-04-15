@@ -45,6 +45,7 @@
 struct Buffer;
 struct Command;
 struct KeyEvent;
+struct NeoMutt;
 struct MuttWindow;
 struct ParseContext;
 struct ParseError;
@@ -62,7 +63,7 @@ enum CommandResult parse_sidebar_unpin(const struct Command *cmd, struct Buffer 
                                        const struct ParseContext *pc,
                                        struct ParseError *pe);
 
-void sidebar_init_keys(struct SubMenu *sm_generic);
+void sidebar_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 struct SubMenu *sidebar_get_submenu(void);
 
 #endif /* MUTT_SIDEBAR_LIB_H */

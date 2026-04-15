@@ -183,9 +183,9 @@ static const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
 /**
  * generic_init_keys - Initialise the Generic Keybindings
  */
-struct SubMenu *generic_init_keys(void)
+struct SubMenu *generic_init_keys(struct NeoMutt *n)
 {
-  struct GuiModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  struct GuiModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_GUI);
   ASSERT(mdata);
 
   struct MenuDefinition *md = NULL;

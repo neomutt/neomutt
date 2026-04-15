@@ -709,25 +709,25 @@ static int get_elem_queries(struct StringArray *queries, struct HashElemArray *h
 /**
  * init_keys - Initialise the Keybindings
  */
-static void init_keys(void)
+static void init_keys(struct NeoMutt *n)
 {
   km_init();
 
-  struct SubMenu *sm_generic = generic_init_keys();
+  struct SubMenu *sm_generic = generic_init_keys(n);
 
-  alias_init_keys(sm_generic);
-  attach_init_keys(sm_generic);
+  alias_init_keys(n, sm_generic);
+  attach_init_keys(n, sm_generic);
 #ifdef USE_AUTOCRYPT
-  autocrypt_init_keys(sm_generic);
+  autocrypt_init_keys(n, sm_generic);
 #endif
-  browser_init_keys(sm_generic);
-  compose_init_keys(sm_generic);
-  editor_init_keys(sm_generic);
-  sidebar_init_keys(sm_generic);
-  index_init_keys(sm_generic);
-  pager_init_keys(sm_generic);
-  pgp_init_keys(sm_generic);
-  postponed_init_keys(sm_generic);
+  browser_init_keys(n, sm_generic);
+  compose_init_keys(n, sm_generic);
+  editor_init_keys(n, sm_generic);
+  sidebar_init_keys(n, sm_generic);
+  index_init_keys(n, sm_generic);
+  pager_init_keys(n, sm_generic);
+  pgp_init_keys(n, sm_generic);
+  postponed_init_keys(n, sm_generic);
 
   km_sort();
 }
@@ -1056,7 +1056,7 @@ int main(int argc, char *argv[], char *envp[])
   if (!show_help(&cli->help))
     goto main_ok;
 
-  init_keys();
+  init_keys(NeoMutt);
 
 #ifdef USE_DEBUG_NOTIFY
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_all_observer, NULL);

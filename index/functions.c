@@ -321,7 +321,7 @@ enum ResolveMethod
 /**
  * index_init_keys - Initialise the Index Keybindings - Implements ::init_keys_api
  */
-void index_init_keys(struct SubMenu *sm_generic)
+void index_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm_index = NULL;
@@ -334,7 +334,7 @@ void index_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, IndexDefaultBindings);
 
-  struct IndexModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  struct IndexModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_INDEX);
   ASSERT(mdata);
   mdata->menu_index = md;
 }

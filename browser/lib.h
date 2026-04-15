@@ -149,8 +149,9 @@ struct BrowserState
   bool is_mailbox_list;             ///< Viewing mailboxes
 };
 
+struct NeoMutt;
 
-void browser_init_keys(struct SubMenu *sm_generic);
+void browser_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 
 void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);

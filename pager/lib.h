@@ -55,6 +55,7 @@ struct IndexSharedData;
 struct ConfigSubset;
 struct MailboxView;
 struct MuttWindow;
+struct NeoMutt;
 struct PagerPrivateData;
 struct SubMenu;
 
@@ -194,7 +195,7 @@ typedef uint8_t PagerRedrawFlags;       ///< Flags, e.g. #PAGER_REDRAW_PAGER
 extern int BrailleRow;
 extern int BrailleCol;
 
-void pager_init_keys(struct SubMenu *sm_generic);
+void pager_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 
 int dlg_pager(struct PagerView *pview);
 int mutt_do_pager(struct PagerView *pview, struct Email *e);

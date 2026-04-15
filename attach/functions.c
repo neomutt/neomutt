@@ -123,9 +123,9 @@ static const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attach */
 /**
  * attach_init_keys - Initialise the Attach Keybindings - Implements ::init_keys_api
  */
-void attach_init_keys(struct SubMenu *sm_generic)
+void attach_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct AttachModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  struct AttachModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_ATTACH);
   ASSERT(mdata);
 
   struct MenuDefinition *md = NULL;

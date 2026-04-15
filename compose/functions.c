@@ -206,9 +206,9 @@ static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
 /**
  * compose_init_keys - Initialise the Compose Keybindings - Implements ::init_keys_api
  */
-void compose_init_keys(struct SubMenu *sm_generic)
+void compose_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct ComposeModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_COMPOSE);
+  struct ComposeModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_COMPOSE);
   ASSERT(mdata);
 
   struct MenuDefinition *md = NULL;

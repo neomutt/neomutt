@@ -83,7 +83,7 @@ static const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
 /**
  * pgp_init_keys - Initialise the PGP Keybindings - Implements ::init_keys_api
  */
-void pgp_init_keys(struct SubMenu *sm_generic)
+void pgp_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -94,7 +94,7 @@ void pgp_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, PgpDefaultBindings);
 
-  struct NcryptModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  struct NcryptModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
   ASSERT(mdata);
   mdata->menu_pgp = md;
 

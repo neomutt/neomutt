@@ -65,7 +65,7 @@ static const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
 /**
  * postponed_init_keys - Initialise the Postponed Keybindings - Implements ::init_keys_api
  */
-void postponed_init_keys(struct SubMenu *sm_generic)
+void postponed_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -76,7 +76,7 @@ void postponed_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, PostponedDefaultBindings);
 
-  struct PostponeModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
+  struct PostponeModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_POSTPONE);
   ASSERT(mdata);
   mdata->menu_postpone = md;
 }

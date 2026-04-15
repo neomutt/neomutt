@@ -79,9 +79,9 @@ const struct MenuOpSeq SidebarDefaultBindings[] = {
 /**
  * sidebar_init_keys - Initialise the Sidebar Keybindings - Implements ::init_keys_api
  */
-void sidebar_init_keys(struct SubMenu *sm_generic)
+void sidebar_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct SidebarModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
+  struct SidebarModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
   ASSERT(mdata);
 
   struct MenuDefinition *md = NULL;

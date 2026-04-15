@@ -121,9 +121,9 @@ static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
 /**
  * alias_init_keys - Initialise the Alias Keybindings - Implements ::init_keys_api
  */
-void alias_init_keys(struct SubMenu *sm_generic)
+void alias_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
-  struct AliasModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  struct AliasModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_ALIAS);
   ASSERT(mdata);
 
   struct MenuDefinition *md = NULL;

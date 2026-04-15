@@ -316,7 +316,7 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
 /**
  * pager_init_keys - Initialise the Pager Keybindings - Implements ::init_keys_api
  */
-void pager_init_keys(struct SubMenu *sm_generic)
+void pager_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm_pager = NULL;
@@ -328,7 +328,7 @@ void pager_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_sidebar);
   km_menu_add_bindings(md, PagerDefaultBindings);
 
-  struct PagerModuleData *mdata = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  struct PagerModuleData *mdata = neomutt_get_module_data(n, MODULE_ID_PAGER);
   ASSERT(mdata);
   mdata->menu_pager = md;
 }
