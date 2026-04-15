@@ -93,7 +93,8 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
   const int index = menu_get_index(menu);
   /* should deleted draft messages be saved in the trash folder? */
   mutt_set_flag(m, m->emails[index], MUTT_DELETE, (event->op == OP_DELETE), true);
-  PostCount = m->msg_count - m->msg_deleted;
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
+  mod_data->post_count = m->msg_count - m->msg_deleted;
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve && (index < (menu->max - 1)))
   {

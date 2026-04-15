@@ -47,14 +47,10 @@
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mx.h"
-
-/// Number of postponed (draft) emails
-short PostCount = 0;
-/// When true, force a recount of the postponed (draft) emails
-static bool UpdateNumPostponed = false;
 
 /**
  * mutt_num_postponed - Return the number of postponed messages
@@ -67,13 +63,14 @@ static bool UpdateNumPostponed = false;
 int mutt_num_postponed(struct Mailbox *m, bool force)
 {
   struct stat st = { 0 };
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
 
   static time_t LastModify = 0;
   static char *OldPostponed = NULL;
 
-  if (UpdateNumPostponed)
+  if (mod_data->update_num_postponed)
   {
-    UpdateNumPostponed = false;
+    mod_data->update_num_postponed = false;
     force = true;
   }
 
@@ -92,8 +89,8 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
   // We currently are in the `$postponed` mailbox so just pick the current status
   if (m && mutt_str_equal(c_postponed, m->realpath))
   {
-    PostCount = m->msg_count - m->msg_deleted;
-    return PostCount;
+    mod_data->post_count = m->msg_count - m->msg_deleted;
+    return mod_data->post_count;
   }
 
   /* LastModify is useless for IMAP */
@@ -106,20 +103,20 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
       newpc = imap_path_status(c_postponed, false);
       if (newpc >= 0)
       {
-        PostCount = newpc;
-        mutt_debug(LL_DEBUG3, "%d postponed IMAP messages found\n", PostCount);
+        mod_data->post_count = newpc;
+        mutt_debug(LL_DEBUG3, "%d postponed IMAP messages found\n", mod_data->post_count);
       }
       else
       {
         mutt_debug(LL_DEBUG3, "using old IMAP postponed count\n");
       }
     }
-    return PostCount;
+    return mod_data->post_count;
   }
 
   if (stat(c_postponed, &st) == -1)
   {
-    PostCount = 0;
+    mod_data->post_count = 0;
     LastModify = 0;
     return 0;
   }
@@ -132,7 +129,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     buf_printf(buf, "%s/new", c_postponed);
     if ((access(buf_string(buf), F_OK) == 0) && (stat(buf_string(buf), &st) == -1))
     {
-      PostCount = 0;
+      mod_data->post_count = 0;
       LastModify = 0;
       buf_pool_release(&buf);
       return 0;
@@ -146,18 +143,18 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     LastModify = st.st_mtime;
 
     if (access(c_postponed, R_OK | F_OK) != 0)
-      return PostCount = 0;
+      return mod_data->post_count = 0;
     if (optnews)
       OptNews = false;
     struct Mailbox *m_post = mx_path_resolve(c_postponed);
     if (mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET))
     {
-      PostCount = m_post->msg_count;
+      mod_data->post_count = m_post->msg_count;
       mx_fastclose_mailbox(m_post, false);
     }
     else
     {
-      PostCount = 0;
+      mod_data->post_count = 0;
     }
     mailbox_free(&m_post);
 
@@ -165,7 +162,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
       OptNews = true;
   }
 
-  return PostCount;
+  return mod_data->post_count;
 }
 
 /**
@@ -173,7 +170,8 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
  */
 void mutt_update_num_postponed(void)
 {
-  UpdateNumPostponed = true;
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
+  mod_data->update_num_postponed = true;
 }
 
 /**
@@ -667,6 +665,7 @@ bail:
 int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
                        struct Email **cur, struct Buffer *fcc)
 {
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
   const char *const c_postponed = cs_subset_string(NeoMutt->sub, "postponed");
   if (!c_postponed)
     return -1;
@@ -680,7 +679,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   {
     if (!mx_mbox_open(m, MUTT_NOSORT))
     {
-      PostCount = 0;
+      mod_data->post_count = 0;
       mutt_error(_("No postponed messages"));
       mailbox_free(&m);
       return -1;
@@ -691,7 +690,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
 
   if (m->msg_count == 0)
   {
-    PostCount = 0;
+    mod_data->post_count = 0;
     mutt_error(_("No postponed messages"));
     if (m_cur != m)
     {
@@ -727,7 +726,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   mutt_set_flag(m, e, MUTT_PURGE, true, true);
 
   /* update the count for the status display */
-  PostCount = m->msg_count - m->msg_deleted;
+  mod_data->post_count = m->msg_count - m->msg_deleted;
 
   struct ListNode *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
