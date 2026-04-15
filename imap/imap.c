@@ -980,8 +980,16 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
  */
 static int imap_sort_email_uid(const void *a, const void *b, void *sdata)
 {
-  const struct Email *ea = *(struct Email const *const *) a;
-  const struct Email *eb = *(struct Email const *const *) b;
+  struct Email *ea = *(struct Email *const *) a;
+  struct Email *eb = *(struct Email *const *) b;
+  
+  // Sort NULLs to the end
+  if (!ea && !eb)
+    return 0;
+  if (!ea)
+    return 1;
+  if (!eb)
+    return -1;
 
   const unsigned int ua = imap_edata_get((struct Email *) ea)->uid;
   const unsigned int ub = imap_edata_get((struct Email *) eb)->uid;
