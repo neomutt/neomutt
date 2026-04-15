@@ -49,6 +49,7 @@
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
+#include "module_data.h"
 #include "muttlib.h"
 #include "mx.h"
 
@@ -102,7 +103,8 @@ static int autocrypt_dir_init(bool can_create)
  */
 int mutt_autocrypt_init(bool can_create)
 {
-  if (AutocryptDB)
+  struct AutocryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
+  if (mod_data->autocrypt_db)
     return 0;
 
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
@@ -715,6 +717,7 @@ int mutt_autocrypt_set_sign_as_default_key(struct Email *e)
 {
   int rc = -1;
   struct AutocryptAccount *account = NULL;
+  struct AutocryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
 
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (!c_autocrypt || mutt_autocrypt_init(false) || !e)
@@ -731,8 +734,8 @@ int mutt_autocrypt_set_sign_as_default_key(struct Email *e)
   if (!account->enabled)
     goto cleanup;
 
-  mutt_str_replace(&AutocryptSignAs, account->keyid);
-  mutt_str_replace(&AutocryptDefaultKey, account->keyid);
+  mutt_str_replace(&mod_data->autocrypt_sign_as, account->keyid);
+  mutt_str_replace(&mod_data->autocrypt_default_key, account->keyid);
 
   rc = 0;
 

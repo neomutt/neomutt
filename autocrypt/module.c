@@ -69,6 +69,9 @@ static bool autocrypt_cleanup(struct NeoMutt *n)
   struct AutocryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
   ASSERT(mod_data);
 
+  FREE(&mod_data->autocrypt_sign_as);
+  FREE(&mod_data->autocrypt_default_key);
+
   FREE(&mod_data);
   return true;
 }

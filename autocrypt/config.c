@@ -33,11 +33,6 @@
 #include "config/lib.h"
 #include "expando/lib.h"
 
-// clang-format off
-char *AutocryptSignAs = NULL;     ///< Autocrypt Key id to sign as
-char *AutocryptDefaultKey = NULL; ///< Autocrypt default key id (used for postponing messages)
-// clang-format on
-
 /**
  * AutocryptFormatDef - Expando definitions
  *

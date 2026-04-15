@@ -101,6 +101,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "module_data.h"
 
 struct Email;
 struct Envelope;
@@ -169,9 +170,6 @@ enum AutocryptRec
   AUTOCRYPT_REC_AVAILABLE,  ///< Autocrypt is available
   AUTOCRYPT_REC_YES,        ///< Autocrypt should be used
 };
-
-extern char *AutocryptSignAs;
-extern char *AutocryptDefaultKey;
 
 struct NeoMutt;
 

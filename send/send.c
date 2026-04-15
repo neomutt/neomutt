@@ -90,6 +90,7 @@
 #endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
+#include "autocrypt/module_data.h"
 #endif
 
 /**
@@ -1915,7 +1916,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
         mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
       }
-      encrypt_as = AutocryptDefaultKey;
+      struct AutocryptModuleData *ac_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
+      encrypt_as = ac_mod_data->autocrypt_default_key;
     }
 #endif
 

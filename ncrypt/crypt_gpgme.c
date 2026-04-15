@@ -723,13 +723,22 @@ static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_sm
   const char *const c_pgp_default_key = cs_subset_string(NeoMutt->sub, "pgp_default_key");
   const char *const c_smime_default_key = cs_subset_string(NeoMutt->sub, "smime_default_key");
   if (for_smime)
+  {
     signid = c_smime_sign_as ? c_smime_sign_as : c_smime_default_key;
+  }
 #ifdef USE_AUTOCRYPT
   else if (OptAutocryptGpgme)
-    signid = AutocryptSignAs;
+  {
+    struct AutocryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
+    ASSERT(mod_data);
+
+    signid = mod_data->autocrypt_sign_as;
+  }
 #endif
   else
+  {
     signid = c_pgp_sign_as ? c_pgp_sign_as : c_pgp_default_key;
+  }
 
   /* Try getting the signing key from config entries */
   if (signid && set_signer_from_address(ctx, signid, for_smime))
