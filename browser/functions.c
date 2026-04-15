@@ -167,8 +167,9 @@ void destroy_state(struct BrowserState *state)
  */
 static int op_browser_new_file(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   struct Buffer *buf = buf_pool_get();
-  buf_printf(buf, "%s/", buf_string(&LastDir));
+  buf_printf(buf, "%s/", buf_string(&mod_data->last_dir));
 
   struct FileCompletionData cdata = { false, priv->mailbox, NULL, NULL, NULL };
   const int rc = mw_get_field(_("New file name: "), buf, MUTT_COMP_NO_FLAGS,
@@ -274,6 +275,7 @@ static int op_browser_toggle_lsub(struct BrowserPrivateData *priv, const struct 
  */
 static int op_browser_view_file(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (ARRAY_EMPTY(&priv->state.entry))
   {
     mutt_error(_("No files match the file mask"));
@@ -289,7 +291,7 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, const struct Ke
     return FR_DONE;
   }
   else if (S_ISDIR(ff->mode) ||
-           (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)))
+           (S_ISLNK(ff->mode) && link_is_dir(buf_string(&mod_data->last_dir), ff->name)))
   {
     mutt_error(_("Can't view a directory"));
     return FR_ERROR;
@@ -297,7 +299,7 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, const struct Ke
   else
   {
     struct Buffer *path = buf_pool_get();
-    buf_concat_path(path, buf_string(&LastDir), ff->name);
+    buf_concat_path(path, buf_string(&mod_data->last_dir), ff->name);
     struct Body *b = mutt_make_file_attach(buf_string(path), NeoMutt->sub);
     if (b)
     {
@@ -363,16 +365,17 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
  */
 static int op_change_directory(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (OptNews)
     return FR_NOT_IMPL;
 
   struct Buffer *buf = buf_pool_get();
-  buf_copy(buf, &LastDir);
+  buf_copy(buf, &mod_data->last_dir);
   if (!priv->state.imap_browse)
   {
     /* add '/' at the end of the directory name if not already there */
     size_t len = buf_len(buf);
-    if ((len > 0) && (buf_string(&LastDir)[len - 1] != '/'))
+    if ((len > 0) && (buf_string(&mod_data->last_dir)[len - 1] != '/'))
       buf_addch(buf, '/');
   }
 
@@ -399,11 +402,11 @@ static int op_change_directory(struct BrowserPrivateData *priv, const struct Key
     expand_path(buf, false);
     if (imap_path_probe(buf_string(buf), NULL) == MUTT_IMAP)
     {
-      buf_copy(&LastDir, buf);
+      buf_copy(&mod_data->last_dir, buf);
       destroy_state(&priv->state);
       init_state(&priv->state);
       priv->state.imap_browse = true;
-      imap_browse(buf_string(&LastDir), &priv->state);
+      imap_browse(buf_string(&mod_data->last_dir), &priv->state);
       browser_sort(&priv->state);
       browser_highlight_default(&priv->state, priv->menu);
       init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
@@ -415,7 +418,7 @@ static int op_change_directory(struct BrowserPrivateData *priv, const struct Key
         /* in case dir is relative, make it relative to LastDir,
          * not current working dir */
         struct Buffer *tmp = buf_pool_get();
-        buf_concat_path(tmp, buf_string(&LastDir), buf_string(buf));
+        buf_concat_path(tmp, buf_string(&mod_data->last_dir), buf_string(buf));
         buf_copy(buf, tmp);
         buf_pool_release(&tmp);
       }
@@ -437,13 +440,14 @@ static int op_change_directory(struct BrowserPrivateData *priv, const struct Key
           if (examine_directory(priv->mailbox, priv->menu, &priv->state,
                                 buf_string(buf), buf_string(priv->prefix)) == 0)
           {
-            buf_copy(&LastDir, buf);
+            buf_copy(&mod_data->last_dir, buf);
           }
           else
           {
             mutt_error(_("Error scanning directory"));
             if (examine_directory(priv->mailbox, priv->menu, &priv->state,
-                                  buf_string(&LastDir), buf_string(priv->prefix)) == -1)
+                                  buf_string(&mod_data->last_dir),
+                                  buf_string(priv->prefix)) == -1)
             {
               priv->done = true;
               return FR_ERROR;
@@ -472,13 +476,14 @@ static int op_change_directory(struct BrowserPrivateData *priv, const struct Key
  */
 static int op_create_mailbox(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (!priv->state.imap_browse)
   {
     mutt_error(_("Create is only supported for IMAP mailboxes"));
     return FR_ERROR;
   }
 
-  if (imap_mailbox_create(buf_string(&LastDir)) != 0)
+  if (imap_mailbox_create(buf_string(&mod_data->last_dir)) != 0)
     return FR_ERROR;
 
   /* TODO: find a way to detect if the new folder would appear in
@@ -486,7 +491,7 @@ static int op_create_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
   destroy_state(&priv->state);
   init_state(&priv->state);
   priv->state.imap_browse = true;
-  imap_browse(buf_string(&LastDir), &priv->state);
+  imap_browse(buf_string(&mod_data->last_dir), &priv->state);
   browser_sort(&priv->state);
   browser_highlight_default(&priv->state, priv->menu);
   init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
@@ -550,6 +555,7 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
  */
 static int op_enter_mask(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, c_mask ? c_mask->pattern : NULL);
@@ -585,12 +591,12 @@ static int op_enter_mask(struct BrowserPrivateData *priv, const struct KeyEvent 
   {
     init_state(&priv->state);
     priv->state.imap_browse = true;
-    imap_browse(buf_string(&LastDir), &priv->state);
+    imap_browse(buf_string(&mod_data->last_dir), &priv->state);
     browser_sort(&priv->state);
     init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
   }
   else if (examine_directory(priv->mailbox, priv->menu, &priv->state,
-                             buf_string(&LastDir), NULL) == 0)
+                             buf_string(&mod_data->last_dir), NULL) == 0)
   {
     init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
   }
@@ -614,6 +620,7 @@ static int op_enter_mask(struct BrowserPrivateData *priv, const struct KeyEvent 
  */
 static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (priv->multiple)
   {
     char **tfiles = NULL;
@@ -629,7 +636,7 @@ static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event
         if (ff->tagged)
         {
           struct Buffer *buf = buf_pool_get();
-          buf_concat_path(buf, buf_string(&LastDir), ff->name);
+          buf_concat_path(buf, buf_string(&mod_data->last_dir), ff->name);
           expand_path(buf, false);
           tfiles[j++] = buf_strdup(buf);
           buf_pool_release(&buf);
@@ -660,6 +667,7 @@ static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event
  */
 static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (ARRAY_EMPTY(&priv->state.entry))
   {
     mutt_warning(_("No files match the file mask"));
@@ -674,7 +682,8 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
     // Do nothing
   }
   else if (S_ISDIR(ff->mode) ||
-           (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)) || ff->inferiors)
+           (S_ISLNK(ff->mode) && link_is_dir(buf_string(&mod_data->last_dir), ff->name)) ||
+           ff->inferiors)
   {
     /* make sure this isn't a MH or maildir mailbox */
     struct Buffer *buf = buf_pool_get();
@@ -689,7 +698,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
     }
     else
     {
-      buf_concat_path(buf, buf_string(&LastDir), ff->name);
+      buf_concat_path(buf, buf_string(&mod_data->last_dir), ff->name);
     }
 
     enum MailboxType type = mx_path_probe(buf_string(buf));
@@ -699,58 +708,59 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
         (type == MUTT_UNKNOWN) || ff->inferiors)
     {
       /* save the old directory */
-      buf_copy(priv->old_last_dir, &LastDir);
+      buf_copy(priv->old_last_dir, &mod_data->last_dir);
 
       if (mutt_str_equal(ff->name, ".."))
       {
-        size_t lastdirlen = buf_len(&LastDir);
-        if ((lastdirlen > 1) && mutt_str_equal("..", buf_string(&LastDir) + lastdirlen - 2))
+        size_t lastdirlen = buf_len(&mod_data->last_dir);
+        if ((lastdirlen > 1) &&
+            mutt_str_equal("..", buf_string(&mod_data->last_dir) + lastdirlen - 2))
         {
-          buf_addstr(&LastDir, "/..");
+          buf_addstr(&mod_data->last_dir, "/..");
         }
         else
         {
           char *p = NULL;
           if (lastdirlen > 1)
-            p = strrchr(LastDir.data + 1, '/');
+            p = strrchr(mod_data->last_dir.data + 1, '/');
 
           if (p)
           {
             *p = '\0';
-            buf_fix_dptr(&LastDir);
+            buf_fix_dptr(&mod_data->last_dir);
           }
           else
           {
-            if (buf_string(&LastDir)[0] == '/')
-              buf_strcpy(&LastDir, "/");
+            if (buf_string(&mod_data->last_dir)[0] == '/')
+              buf_strcpy(&mod_data->last_dir, "/");
             else
-              buf_addstr(&LastDir, "/..");
+              buf_addstr(&mod_data->last_dir, "/..");
           }
         }
       }
       else if (priv->state.is_mailbox_list)
       {
-        buf_strcpy(&LastDir, ff->name);
-        expand_path(&LastDir, false);
+        buf_strcpy(&mod_data->last_dir, ff->name);
+        expand_path(&mod_data->last_dir, false);
       }
       else if (priv->state.imap_browse)
       {
-        buf_strcpy(&LastDir, ff->name);
+        buf_strcpy(&mod_data->last_dir, ff->name);
         /* tack on delimiter here */
 
         /* special case "" needs no delimiter */
         struct Url *url = url_parse(ff->name);
         if (url && url->path && (ff->delim != '\0'))
         {
-          buf_addch(&LastDir, ff->delim);
+          buf_addch(&mod_data->last_dir, ff->delim);
         }
         url_free(&url);
       }
       else
       {
         struct Buffer *tmp = buf_pool_get();
-        buf_concat_path(tmp, buf_string(&LastDir), ff->name);
-        buf_copy(&LastDir, tmp);
+        buf_concat_path(tmp, buf_string(&mod_data->last_dir), ff->name);
+        buf_copy(&mod_data->last_dir, tmp);
         buf_pool_release(&tmp);
       }
 
@@ -765,26 +775,28 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
       {
         init_state(&priv->state);
         priv->state.imap_browse = true;
-        imap_browse(buf_string(&LastDir), &priv->state);
+        imap_browse(buf_string(&mod_data->last_dir), &priv->state);
         browser_sort(&priv->state);
       }
       else
       {
         if (examine_directory(priv->mailbox, priv->menu, &priv->state,
-                              buf_string(&LastDir), buf_string(priv->prefix)) == -1)
+                              buf_string(&mod_data->last_dir),
+                              buf_string(priv->prefix)) == -1)
         {
           /* try to restore the old values */
-          buf_copy(&LastDir, priv->old_last_dir);
+          buf_copy(&mod_data->last_dir, priv->old_last_dir);
           if (examine_directory(priv->mailbox, priv->menu, &priv->state,
-                                buf_string(&LastDir), buf_string(priv->prefix)) == -1)
+                                buf_string(&mod_data->last_dir),
+                                buf_string(priv->prefix)) == -1)
           {
-            buf_strcpy(&LastDir, NeoMutt->home_dir);
+            buf_strcpy(&mod_data->last_dir, NeoMutt->home_dir);
             priv->done = true;
             return FR_DONE;
           }
         }
         /* resolve paths navigated from GUI */
-        if (mutt_path_realpath(&LastDir) == 0)
+        if (mutt_path_realpath(&mod_data->last_dir) == 0)
           return FR_ERROR;
       }
 
@@ -811,7 +823,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
   }
   else
   {
-    buf_concat_path(priv->file, buf_string(&LastDir), ff->name);
+    buf_concat_path(priv->file, buf_string(&mod_data->last_dir), ff->name);
   }
 
   return op_exit(priv, event);
@@ -869,6 +881,7 @@ static int op_mailbox_list(struct BrowserPrivateData *priv, const struct KeyEven
  */
 static int op_rename_mailbox(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (ARRAY_EMPTY(&priv->state.entry))
     return FR_ERROR;
 
@@ -886,7 +899,7 @@ static int op_rename_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
   destroy_state(&priv->state);
   init_state(&priv->state);
   priv->state.imap_browse = true;
-  imap_browse(buf_string(&LastDir), &priv->state);
+  imap_browse(buf_string(&mod_data->last_dir), &priv->state);
   browser_sort(&priv->state);
   browser_highlight_default(&priv->state, priv->menu);
   init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
@@ -1056,6 +1069,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct Ke
  */
 static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (priv->state.is_mailbox_list)
   {
     priv->last_selected_mailbox = menu_get_index(priv->menu);
@@ -1074,21 +1088,22 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct Key
     if (c_folder)
     {
       mutt_debug(LL_DEBUG3, "= hit! Folder: %s, LastDir: %s\n", c_folder,
-                 buf_string(&LastDir));
+                 buf_string(&mod_data->last_dir));
       if (priv->goto_swapper[0] == '\0')
       {
-        if (!mutt_str_equal(buf_string(&LastDir), c_folder))
+        if (!mutt_str_equal(buf_string(&mod_data->last_dir), c_folder))
         {
           /* Stores into goto_swapper LastDir, and swaps to `$folder` */
-          mutt_str_copy(priv->goto_swapper, buf_string(&LastDir), sizeof(priv->goto_swapper));
-          buf_copy(&LastDirBackup, &LastDir);
-          buf_strcpy(&LastDir, c_folder);
+          mutt_str_copy(priv->goto_swapper, buf_string(&mod_data->last_dir),
+                        sizeof(priv->goto_swapper));
+          buf_copy(&mod_data->last_dir_backup, &mod_data->last_dir);
+          buf_strcpy(&mod_data->last_dir, c_folder);
         }
       }
       else
       {
-        buf_copy(&LastDirBackup, &LastDir);
-        buf_strcpy(&LastDir, priv->goto_swapper);
+        buf_copy(&mod_data->last_dir_backup, &mod_data->last_dir);
+        buf_strcpy(&mod_data->last_dir, priv->goto_swapper);
         priv->goto_swapper[0] = '\0';
       }
     }
@@ -1101,15 +1116,16 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, const struct Key
   {
     examine_mailboxes(priv->mailbox, priv->menu, &priv->state);
   }
-  else if (imap_path_probe(buf_string(&LastDir), NULL) == MUTT_IMAP)
+  else if (imap_path_probe(buf_string(&mod_data->last_dir), NULL) == MUTT_IMAP)
   {
     init_state(&priv->state);
     priv->state.imap_browse = true;
-    imap_browse(buf_string(&LastDir), &priv->state);
+    imap_browse(buf_string(&mod_data->last_dir), &priv->state);
     browser_sort(&priv->state);
   }
   else if (examine_directory(priv->mailbox, priv->menu, &priv->state,
-                             buf_string(&LastDir), buf_string(priv->prefix)) == -1)
+                             buf_string(&mod_data->last_dir),
+                             buf_string(priv->prefix)) == -1)
   {
     priv->done = true;
     return FR_ERROR;

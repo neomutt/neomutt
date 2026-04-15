@@ -27,12 +27,12 @@
  */
 
 #include "config.h"
+#include <limits.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "lib.h"
 #include "module_data.h"
 
 extern struct ConfigDef BrowserVars[];
@@ -44,6 +44,9 @@ static bool browser_init(struct NeoMutt *n)
 {
   struct BrowserModuleData *mod_data = MUTT_MEM_CALLOC(1, struct BrowserModuleData);
   neomutt_set_module_data(n, MODULE_ID_BROWSER, mod_data);
+
+  buf_alloc(&mod_data->last_dir, PATH_MAX);
+  buf_alloc(&mod_data->last_dir_backup, PATH_MAX);
 
   return true;
 }
@@ -64,6 +67,8 @@ static bool browser_cleanup(struct NeoMutt *n)
   struct BrowserModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_BROWSER);
   ASSERT(mod_data);
 
+  buf_dealloc(&mod_data->last_dir);
+  buf_dealloc(&mod_data->last_dir_backup);
   FREE(&mod_data);
   return true;
 }
@@ -77,14 +82,6 @@ static bool browser_gui_init(struct NeoMutt *n)
 }
 
 /**
- * browser_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
- */
-static void browser_gui_cleanup(struct NeoMutt *n)
-{
-  mutt_browser_cleanup();
-}
-
-/**
  * ModuleBrowser - Module for the Browser library
  */
 const struct Module ModuleBrowser = {
@@ -95,6 +92,6 @@ const struct Module ModuleBrowser = {
   browser_config_define_variables,
   NULL, // commands_register
   browser_gui_init,
-  browser_gui_cleanup,
+  NULL, // gui_cleanup
   browser_cleanup,
 };

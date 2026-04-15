@@ -132,36 +132,6 @@ static const struct Mapping FolderNewsHelp[] = {
   // clang-format on
 };
 
-/// Browser: previous selected directory
-struct Buffer LastDir = { 0 };
-/// Browser: backup copy of the current directory
-struct Buffer LastDirBackup = { 0 };
-
-/**
- * init_lastdir - Initialise the browser directories
- *
- * These keep track of where the browser used to be looking.
- */
-static void init_lastdir(void)
-{
-  static bool done = false;
-  if (!done)
-  {
-    buf_alloc(&LastDir, PATH_MAX);
-    buf_alloc(&LastDirBackup, PATH_MAX);
-    done = true;
-  }
-}
-
-/**
- * mutt_browser_cleanup - Clean up working Buffers
- */
-void mutt_browser_cleanup(void)
-{
-  buf_dealloc(&LastDir);
-  buf_dealloc(&LastDirBackup);
-}
-
 /**
  * link_is_dir - Does this symlink point to a directory?
  * @param folder Folder
@@ -589,7 +559,8 @@ void browser_highlight_default(struct BrowserState *state, struct Menu *menu)
 void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
                struct MuttWindow *sbar)
 {
-  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
+  struct NntpModuleData *nntp_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   char title[256] = { 0 };
   menu->max = ARRAY_SIZE(&state->entry);
 
@@ -612,7 +583,7 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
     else
     {
       snprintf(title, sizeof(title), _("Newsgroups on server [%s]"),
-               mod_data->current_news_srv->conn->account.host);
+               nntp_mod_data->current_news_srv->conn->account.host);
     }
   }
   else
@@ -625,7 +596,7 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
     else
     {
       struct Buffer *path = buf_pool_get();
-      buf_copy(path, &LastDir);
+      buf_copy(path, &mod_data->last_dir);
       pretty_mailbox(path);
       const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
       const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
@@ -648,23 +619,24 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
    * The goal is to highlight the good directory if LastDir is the parent dir
    * of LastDirBackup (this occurs mostly when one hit "../"). It should also work
    * properly when the user is in examine_mailboxes-mode.  */
-  if (mutt_str_startswith(buf_string(&LastDirBackup), buf_string(&LastDir)))
+  if (mutt_str_startswith(buf_string(&mod_data->last_dir_backup),
+                          buf_string(&mod_data->last_dir)))
   {
     char target_dir[PATH_MAX] = { 0 };
 
     /* Check what kind of dir LastDirBackup is. */
-    if (imap_path_probe(buf_string(&LastDirBackup), NULL) == MUTT_IMAP)
+    if (imap_path_probe(buf_string(&mod_data->last_dir_backup), NULL) == MUTT_IMAP)
     {
-      mutt_str_copy(target_dir, buf_string(&LastDirBackup), sizeof(target_dir));
+      mutt_str_copy(target_dir, buf_string(&mod_data->last_dir_backup), sizeof(target_dir));
       imap_clean_path(target_dir, sizeof(target_dir));
     }
     else
     {
-      const char *slash = strrchr(buf_string(&LastDirBackup), '/');
+      const char *slash = strrchr(buf_string(&mod_data->last_dir_backup), '/');
       if (slash)
         mutt_str_copy(target_dir, slash + 1, sizeof(target_dir));
       else
-        mutt_str_copy(target_dir, buf_string(&LastDirBackup), sizeof(target_dir));
+        mutt_str_copy(target_dir, buf_string(&mod_data->last_dir_backup), sizeof(target_dir));
     }
 
     /* If we get here, it means that LastDir is the parent directory of
@@ -697,11 +669,12 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
  */
 static int file_tag(struct Menu *menu, int sel, int act)
 {
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   struct BrowserPrivateData *priv = menu->mdata;
   struct BrowserEntryArray *entry = &priv->state.entry;
   struct FolderFile *ff = ARRAY_GET(entry, sel);
   if (S_ISDIR(ff->mode) ||
-      (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)))
+      (S_ISLNK(ff->mode) && link_is_dir(buf_string(&mod_data->last_dir), ff->name)))
   {
     mutt_error(_("Can't attach a directory"));
     return 0;
@@ -837,14 +810,14 @@ static int browser_window_observer(struct NotifyCallback *nc)
  */
 void mutt_browser_select_dir(const char *f)
 {
-  init_lastdir();
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
 
-  buf_strcpy(&LastDirBackup, f);
+  buf_strcpy(&mod_data->last_dir_backup, f);
 
   /* Method that will fetch the parent path depending on the type of the path. */
   char buf[PATH_MAX] = { 0 };
-  mutt_get_parent_path(buf_string(&LastDirBackup), buf, sizeof(buf));
-  buf_strcpy(&LastDir, buf);
+  mutt_get_parent_path(buf_string(&mod_data->last_dir_backup), buf, sizeof(buf));
+  buf_strcpy(&mod_data->last_dir, buf);
 }
 
 /**
@@ -862,6 +835,8 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
                  char ***files, int *numfiles)
 {
   struct NntpModuleData *nntp_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
+  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
+  ASSERT(mod_data);
   struct BrowserPrivateData *priv = browser_private_data_new();
   priv->file = file;
   priv->mailbox = m;
@@ -871,8 +846,6 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   priv->folder = (flags & MUTT_SEL_FOLDER);
   priv->state.is_mailbox_list = (flags & MUTT_SEL_MAILBOX) && priv->folder;
   priv->last_selected_mailbox = -1;
-
-  init_lastdir();
 
   if (OptNews)
   {
@@ -906,7 +879,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
       priv->state.imap_browse = true;
       if (imap_browse(buf_string(file), &priv->state) == 0)
       {
-        buf_strcpy(&LastDir, priv->state.folder);
+        buf_strcpy(&mod_data->last_dir, priv->state.folder);
         browser_sort(&priv->state);
       }
     }
@@ -923,21 +896,21 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
       {
         if ((buf_string(file))[0] == '/')
         {
-          buf_strcpy_n(&LastDir, buf_string(file), i);
+          buf_strcpy_n(&mod_data->last_dir, buf_string(file), i);
         }
         else
         {
-          mutt_path_getcwd(&LastDir);
-          buf_addch(&LastDir, '/');
-          buf_addstr_n(&LastDir, buf_string(file), i);
+          mutt_path_getcwd(&mod_data->last_dir);
+          buf_addch(&mod_data->last_dir, '/');
+          buf_addstr_n(&mod_data->last_dir, buf_string(file), i);
         }
       }
       else
       {
         if ((buf_string(file))[0] == '/')
-          buf_strcpy(&LastDir, "/");
+          buf_strcpy(&mod_data->last_dir, "/");
         else
-          mutt_path_getcwd(&LastDir);
+          mutt_path_getcwd(&mod_data->last_dir);
       }
 
       if ((i <= 0) && (buf_string(file)[0] != '/'))
@@ -982,7 +955,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
        * meaning only with sort methods SUBJECT/DESC for now.  */
       if (CurrentFolder)
       {
-        if (buf_is_empty(&LastDir))
+        if (buf_is_empty(&mod_data->last_dir))
         {
           /* If browsing in "local"-mode, than we chose to define LastDir to
            * MailDir */
@@ -997,7 +970,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
               const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
               const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
               if (c_folder)
-                buf_strcpy(&LastDir, c_folder);
+                buf_strcpy(&mod_data->last_dir, c_folder);
               else if (c_spool_file)
                 mutt_browser_select_dir(c_spool_file);
               break;
@@ -1007,7 +980,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
               break;
           }
         }
-        else if (!mutt_str_equal(CurrentFolder, buf_string(&LastDirBackup)))
+        else if (!mutt_str_equal(CurrentFolder, buf_string(&mod_data->last_dir_backup)))
         {
           mutt_browser_select_dir(CurrentFolder);
         }
@@ -1015,29 +988,29 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
 
       /* When browser tracking feature is disabled, clear LastDirBackup */
       if (!browser_track)
-        buf_reset(&LastDirBackup);
+        buf_reset(&mod_data->last_dir_backup);
     }
     else
     {
-      mutt_path_getcwd(&LastDir);
+      mutt_path_getcwd(&mod_data->last_dir);
     }
 
     if (!priv->state.is_mailbox_list &&
-        (imap_path_probe(buf_string(&LastDir), NULL) == MUTT_IMAP))
+        (imap_path_probe(buf_string(&mod_data->last_dir), NULL) == MUTT_IMAP))
     {
       init_state(&priv->state);
       priv->state.imap_browse = true;
-      imap_browse(buf_string(&LastDir), &priv->state);
+      imap_browse(buf_string(&mod_data->last_dir), &priv->state);
       browser_sort(&priv->state);
     }
     else
     {
-      size_t i = buf_len(&LastDir);
-      while ((i > 0) && (buf_string(&LastDir)[--i] == '/'))
-        LastDir.data[i] = '\0';
-      buf_fix_dptr(&LastDir);
-      if (buf_is_empty(&LastDir))
-        mutt_path_getcwd(&LastDir);
+      size_t i = buf_len(&mod_data->last_dir);
+      while ((i > 0) && (buf_string(&mod_data->last_dir)[--i] == '/'))
+        mod_data->last_dir.data[i] = '\0';
+      buf_fix_dptr(&mod_data->last_dir);
+      if (buf_is_empty(&mod_data->last_dir))
+        mutt_path_getcwd(&mod_data->last_dir);
     }
   }
 
@@ -1049,9 +1022,6 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     help_data = FolderNewsHelp;
   else
     help_data = FolderHelp;
-
-  struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
-  ASSERT(mod_data);
 
   struct SimpleDialogWindows sdw = simple_dialog_new(mod_data->menu_browser,
                                                      WT_DLG_BROWSER, help_data);
@@ -1083,7 +1053,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   else if (!priv->state.imap_browse)
   {
     // examine_directory() calls browser_add_folder() which needs the menu
-    if (examine_directory(m, priv->menu, &priv->state, buf_string(&LastDir),
+    if (examine_directory(m, priv->menu, &priv->state, buf_string(&mod_data->last_dir),
                           buf_string(priv->prefix)) == -1)
     {
       goto bail;
