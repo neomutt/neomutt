@@ -23,12 +23,15 @@
 #ifndef MUTT_ENVELOPE_MODULE_DATA_H
 #define MUTT_ENVELOPE_MODULE_DATA_H
 
+#include "private.h"
+
 /**
  * struct EnvelopeModuleData - Envelope private Module data
  */
 struct EnvelopeModuleData
 {
-  int dummy;
+  int header_padding[HDR_ATTACH_TITLE]; ///< Width of each header prompt
+  int max_header_width;                 ///< Width of the widest header
 };
 
 #endif /* MUTT_ENVELOPE_MODULE_DATA_H */

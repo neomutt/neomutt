@@ -73,6 +73,7 @@
 #include "ncrypt/lib.h"
 #include "functions.h"
 #include "globals.h"
+#include "module_data.h"
 #include "wdata.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -83,11 +84,6 @@
 
 /// Maximum number of rows to use for the Headers: field
 #define MAX_USER_HDR_ROWS 5
-
-/// Number of padding spaces needed after each of the strings in #Prompts after translation
-static int HeaderPadding[HDR_ATTACH_TITLE] = { 0 };
-/// Widest of the #Prompts strings after translation
-static int MaxHeaderWidth = 0;
 
 /// Names of header fields used in the envelope, e.g. From:, To:
 const char *const Prompts[] = {
@@ -154,19 +150,21 @@ static const char *const AutocryptRecUiFlags[] = {
 
 /**
  * calc_header_width_padding - Calculate the width needed for the compose labels
- * @param idx      Store the result at this index of HeaderPadding
+ * @param mod_data Module data
+ * @param idx      Store the result at this index of header_padding
  * @param header   Header string
  * @param calc_max If true, calculate the maximum width
  */
-static void calc_header_width_padding(int idx, const char *header, bool calc_max)
+static void calc_header_width_padding(struct EnvelopeModuleData *mod_data,
+                                      int idx, const char *header, bool calc_max)
 {
   int width;
 
-  HeaderPadding[idx] = mutt_str_len(header);
+  mod_data->header_padding[idx] = mutt_str_len(header);
   width = mutt_strwidth(header);
-  if (calc_max && (MaxHeaderWidth < width))
-    MaxHeaderWidth = width;
-  HeaderPadding[idx] -= width;
+  if (calc_max && (mod_data->max_header_width < width))
+    mod_data->max_header_width = width;
+  mod_data->header_padding[idx] -= width;
 }
 
 /**
@@ -174,7 +172,7 @@ static void calc_header_width_padding(int idx, const char *header, bool calc_max
  *
  * The padding needed for each header is strlen() + max_width - strwidth().
  *
- * calc_header_width_padding sets each entry in HeaderPadding to strlen -
+ * calc_header_width_padding sets each entry in header_padding to strlen -
  * width.  Then, afterwards, we go through and add max_width to each entry.
  */
 static void init_header_padding(void)
@@ -185,23 +183,25 @@ static void init_header_padding(void)
     return;
   done = true;
 
+  struct EnvelopeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ENVELOPE);
+
   for (int i = 0; i < HDR_ATTACH_TITLE; i++)
   {
     if (i == HDR_CRYPTINFO)
       continue;
-    calc_header_width_padding(i, _(Prompts[i]), true);
+    calc_header_width_padding(mod_data, i, _(Prompts[i]), true);
   }
 
   /* Don't include "Sign as: " in the MaxHeaderWidth calculation.  It
    * doesn't show up by default, and so can make the indentation of
    * the other fields look funny. */
-  calc_header_width_padding(HDR_CRYPTINFO, _(Prompts[HDR_CRYPTINFO]), false);
+  calc_header_width_padding(mod_data, HDR_CRYPTINFO, _(Prompts[HDR_CRYPTINFO]), false);
 
   for (int i = 0; i < HDR_ATTACH_TITLE; i++)
   {
-    HeaderPadding[i] += MaxHeaderWidth;
-    if (HeaderPadding[i] < 0)
-      HeaderPadding[i] = 0;
+    mod_data->header_padding[i] += mod_data->max_header_width;
+    if (mod_data->header_padding[i] < 0)
+      mod_data->header_padding[i] = 0;
   }
 }
 
@@ -306,8 +306,9 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
   int rows = 4; // 'From:', 'Subject:', 'Reply-To:', 'Fcc:'
   struct Email *e = wdata->email;
 
+  struct EnvelopeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ENVELOPE);
   struct Envelope *env = e->env;
-  const int cols = win->state.cols - MaxHeaderWidth;
+  const int cols = win->state.cols - mod_data->max_header_width;
 
   if (wdata->is_news)
   {
@@ -353,9 +354,10 @@ static void draw_floating(struct MuttWindow *win, int col, int row, const char *
  */
 static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
 {
+  struct EnvelopeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ENVELOPE);
   mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_HEADER);
   mutt_window_move(win, row, 0);
-  mutt_window_printf(win, "%*s", HeaderPadding[field], _(Prompts[field]));
+  mutt_window_printf(win, "%*s", mod_data->header_padding[field], _(Prompts[field]));
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
 
@@ -371,8 +373,9 @@ static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
 static void draw_header_content(struct MuttWindow *win, int row,
                                 enum HeaderField field, const char *content)
 {
-  mutt_window_move(win, row, HeaderPadding[field]);
-  mutt_paddstr(win, win->state.cols - HeaderPadding[field], content);
+  struct EnvelopeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ENVELOPE);
+  mutt_window_move(win, row, mod_data->header_padding[field]);
+  mutt_paddstr(win, win->state.cols - mod_data->header_padding[field], content);
 }
 
 /**
@@ -504,13 +507,15 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 {
   draw_header(win, row, field);
 
+  struct EnvelopeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ENVELOPE);
+
   /* Format addresses into displayable strings and wrap across multiple
    * lines as needed, showing "(+N more)" when lines are exhausted */
   struct ListHead list = STAILQ_HEAD_INITIALIZER(list);
   int count = mutt_addrlist_count_recips(al);
 
   int lines_used = 1;
-  int width_left = win->state.cols - MaxHeaderWidth;
+  int width_left = win->state.cols - mod_data->max_header_width;
   char more[32] = { 0 };
   int more_len = 0;
 
@@ -571,7 +576,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
         break;
       }
 
-      if (width_left == (win->state.cols - MaxHeaderWidth))
+      if (width_left == (win->state.cols - mod_data->max_header_width))
       {
         mutt_debug(LL_DEBUG3, "couldn't print: %s\n", buf_string(buf));
         mutt_paddstr(win, width_left, buf_string(buf));
@@ -582,8 +587,8 @@ static int draw_envelope_addr(int field, struct AddressList *al,
       mutt_window_clrtoeol(win);
       row++;
       lines_used++;
-      width_left = win->state.cols - MaxHeaderWidth;
-      mutt_window_move(win, row, MaxHeaderWidth);
+      width_left = win->state.cols - mod_data->max_header_width;
+      mutt_window_move(win, row, mod_data->max_header_width);
       goto try_again;
     }
 
@@ -674,7 +679,8 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
 {
   struct Email *e = wdata->email;
   const char *fcc = buf_string(wdata->fcc);
-  const int cols = win->state.cols - MaxHeaderWidth;
+  struct EnvelopeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ENVELOPE);
+  const int cols = win->state.cols - mod_data->max_header_width;
 
   mutt_window_clear(win);
   int row = draw_envelope_addr(HDR_FROM, &e->env->from, win, 0, 1);
