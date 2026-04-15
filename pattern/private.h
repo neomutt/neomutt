@@ -148,7 +148,6 @@ static inline int email_msgno(struct Email *e)
 
 #define MUTT_MAXRANGE -1
 
-extern struct RangeRegex RangeRegexes[];
 extern const struct PatternFlags Flags[];
 
 const struct PatternFlags *lookup_op(int op);

@@ -33,7 +33,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
-#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -51,21 +50,6 @@
 #include "mutt_logging.h"
 #include "mx.h"
 #include "search_state.h"
-
-/**
- * RangeRegexes - Set of Regexes for various range types
- *
- * This array, will also contain the compiled regexes.
- */
-struct RangeRegex RangeRegexes[] = {
-  // clang-format off
-  [RANGE_K_REL]  = { RANGE_REL_RX,  1, 3, 0, { 0 } },
-  [RANGE_K_ABS]  = { RANGE_ABS_RX,  1, 3, 0, { 0 } },
-  [RANGE_K_LT]   = { RANGE_LT_RX,   1, 2, 0, { 0 } },
-  [RANGE_K_GT]   = { RANGE_GT_RX,   2, 1, 0, { 0 } },
-  [RANGE_K_BARE] = { RANGE_BARE_RX, 1, 1, 0, { 0 } },
-  // clang-format on
-};
 
 /**
  * @defgroup eat_arg_api Parse a pattern API
