@@ -50,6 +50,11 @@
  * nm_db_get_filename - Get the filename of the Notmuch database
  * @param m Mailbox
  * @retval ptr Filename
+ * @retval NULL No notmuch-specific database path configured
+ *
+ * Returns the database path from the mailbox URL or $nm_default_url.
+ * On libnotmuch >= 5.4, a NULL return allows notmuch to resolve the
+ * database path from its own configuration file or environment variables.
  *
  * @note The return value is a pointer into the `$nm_default_url` global variable.
  *       If that variable changes, the result will be invalid.
@@ -66,12 +71,8 @@ const char *nm_db_get_filename(struct Mailbox *m)
   else
     db_filename = c_nm_default_url;
 
-  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
-  if (!db_filename && !c_folder)
-    return NULL;
-
   if (!db_filename)
-    db_filename = c_folder;
+    return NULL;
 
   if (nm_path_probe(db_filename, NULL) == MUTT_NOTMUCH)
     db_filename += NmUrlProtocolLen;
@@ -120,8 +121,9 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   char *msg = NULL;
 
   const short c_nm_open_timeout = cs_subset_number(NeoMutt->sub, "nm_open_timeout");
-  mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n", filename,
-             writable ? "[WRITE]" : "[READ]", c_nm_open_timeout);
+  mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n",
+             filename ? filename : "(auto)", writable ? "[WRITE]" : "[READ]",
+             c_nm_open_timeout);
 
   const notmuch_database_mode_t mode = writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
                                                   NOTMUCH_DATABASE_MODE_READ_ONLY;
@@ -218,8 +220,19 @@ notmuch_database_t *nm_db_get(struct Mailbox *m, bool writable)
     return adata->db;
 
   const char *db_filename = nm_db_get_filename(m);
+#if LIBNOTMUCH_CHECK_VERSION(5, 4, 0)
+  // On libnotmuch >= 5.4, NULL db_filename lets notmuch resolve the
+  // database path from its config file or environment variables.
+  adata->db = nm_db_do_open(db_filename, writable, true);
+#else
+  if (!db_filename)
+  {
+    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    db_filename = c_folder;
+  }
   if (db_filename)
     adata->db = nm_db_do_open(db_filename, writable, true);
+#endif
 
   return adata->db;
 }
@@ -320,6 +333,8 @@ int nm_db_get_mtime(struct Mailbox *m, time_t *mtime)
   struct stat st = { 0 };
   char path[PATH_MAX] = { 0 };
   const char *db_filename = nm_db_get_filename(m);
+  if (!db_filename)
+    return -1;
 
   mutt_debug(LL_DEBUG2, "nm: checking database mtime '%s'\n", db_filename);
 

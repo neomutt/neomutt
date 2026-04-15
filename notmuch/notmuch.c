@@ -1635,16 +1635,20 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
   enum NmQueryType query_type = cs_subset_enum(NeoMutt->sub, "nm_query_type");
   mdata->query_type = nm_parse_type_from_query(buf, query_type);
 
+  const char *db_filename = nm_db_get_filename(m);
+  if (!db_filename)
+    db_filename = "";
+
   const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");
   if (get_limit(mdata) == c_nm_db_limit)
   {
     added = snprintf(url, sizeof(url), "%s%s?type=%s&query=", NmUrlProtocol,
-                     nm_db_get_filename(m), nm_query_type_to_string(mdata->query_type));
+                     db_filename, nm_query_type_to_string(mdata->query_type));
   }
   else
   {
     added = snprintf(url, sizeof(url), "%s%s?type=%s&limit=%d&query=", NmUrlProtocol,
-                     nm_db_get_filename(m),
+                     db_filename,
                      nm_query_type_to_string(mdata->query_type), get_limit(mdata));
   }
 
@@ -1872,9 +1876,21 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (!db_filename)
     db_filename = nm_db_get_filename(m);
 
+#if LIBNOTMUCH_CHECK_VERSION(5, 4, 0)
   /* don't be verbose about connection, as we're called from
    * sidebar/mailbox very often */
   db = nm_db_do_open(db_filename, false, false);
+#else
+  if (!db_filename)
+  {
+    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    db_filename = c_folder;
+  }
+  /* don't be verbose about connection, as we're called from
+   * sidebar/mailbox very often */
+  if (db_filename)
+    db = nm_db_do_open(db_filename, false, false);
+#endif
   if (!db)
     goto done;
 
@@ -2141,13 +2157,13 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
 {
   struct NmMboxData *mdata = nm_mdata_get(m);
   time_t mtime = 0;
-  if (!mdata || (nm_db_get_mtime(m, &mtime) != 0))
+  if (!mdata)
     return MX_STATUS_ERROR;
 
   int new_flags = 0;
   bool occult = false;
 
-  if (mdata->mtime.tv_sec >= mtime)
+  if ((nm_db_get_mtime(m, &mtime) == 0) && (mdata->mtime.tv_sec >= mtime))
   {
     mutt_debug(LL_DEBUG2, "nm: check unnecessary (db=%llu mailbox=%llu)\n",
                (unsigned long long) mtime, (unsigned long long) mdata->mtime.tv_sec);
