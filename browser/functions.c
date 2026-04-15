@@ -194,11 +194,12 @@ static int op_browser_new_file(struct BrowserPrivateData *priv, const struct Key
  */
 static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   const int op = event->op;
 
   if (OptNews)
   {
-    struct NntpAccountData *adata = CurrentNewsSrv;
+    struct NntpAccountData *adata = mod_data->current_news_srv;
     int index = menu_get_index(priv->menu);
 
     if (ARRAY_EMPTY(&priv->state.entry))
@@ -318,12 +319,13 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, const struct Ke
  */
 static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   if (!OptNews)
     return FR_NOT_IMPL;
 
   struct NntpMboxData *mdata = NULL;
 
-  int rc = nntp_newsrc_parse(CurrentNewsSrv);
+  int rc = nntp_newsrc_parse(mod_data->current_news_srv);
   if (rc < 0)
     return FR_ERROR;
 
@@ -333,13 +335,13 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
   if (event->op == OP_CATCHUP)
-    mdata = mutt_newsgroup_catchup(priv->mailbox, CurrentNewsSrv, ff->name);
+    mdata = mutt_newsgroup_catchup(priv->mailbox, mod_data->current_news_srv, ff->name);
   else
-    mdata = mutt_newsgroup_uncatchup(priv->mailbox, CurrentNewsSrv, ff->name);
+    mdata = mutt_newsgroup_uncatchup(priv->mailbox, mod_data->current_news_srv, ff->name);
 
   if (mdata)
   {
-    nntp_newsrc_update(CurrentNewsSrv);
+    nntp_newsrc_update(mod_data->current_news_srv);
     index = menu_get_index(priv->menu) + 1;
     if (index < priv->menu->max)
       menu_set_index(priv->menu, index);
@@ -348,7 +350,7 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
   if (rc != 0)
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
-  nntp_newsrc_close(CurrentNewsSrv);
+  nntp_newsrc_close(mod_data->current_news_srv);
   return FR_ERROR;
 }
 
@@ -820,10 +822,11 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct
  */
 static int op_load_active(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   if (!OptNews)
     return FR_NOT_IMPL;
 
-  struct NntpAccountData *adata = CurrentNewsSrv;
+  struct NntpAccountData *adata = mod_data->current_news_srv;
 
   if (nntp_newsrc_parse(adata) < 0)
     return FR_ERROR;
@@ -966,10 +969,11 @@ static int op_sort(struct BrowserPrivateData *priv, const struct KeyEvent *event
  */
 static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   if (!OptNews)
     return FR_NOT_IMPL;
 
-  struct NntpAccountData *adata = CurrentNewsSrv;
+  struct NntpAccountData *adata = mod_data->current_news_srv;
   regex_t rx = { 0 };
   int index = menu_get_index(priv->menu);
 

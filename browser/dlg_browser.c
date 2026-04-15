@@ -265,11 +265,12 @@ void init_state(struct BrowserState *state)
 int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState *state,
                       const char *dirname, const char *prefix)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   int rc = -1;
   struct Buffer *buf = buf_pool_get();
   if (OptNews)
   {
-    struct NntpAccountData *adata = CurrentNewsSrv;
+    struct NntpAccountData *adata = mod_data->current_news_srv;
 
     init_state(state);
 
@@ -395,13 +396,14 @@ ed_out:
  */
 int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState *state)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   struct stat st = { 0 };
   struct Buffer *md = NULL;
   struct Buffer *mailbox = NULL;
 
   if (OptNews)
   {
-    struct NntpAccountData *adata = CurrentNewsSrv;
+    struct NntpAccountData *adata = mod_data->current_news_srv;
 
     init_state(state);
 
@@ -587,6 +589,7 @@ void browser_highlight_default(struct BrowserState *state, struct Menu *menu)
 void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
                struct MuttWindow *sbar)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   char title[256] = { 0 };
   menu->max = ARRAY_SIZE(&state->entry);
 
@@ -609,7 +612,7 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
     else
     {
       snprintf(title, sizeof(title), _("Newsgroups on server [%s]"),
-               CurrentNewsSrv->conn->account.host);
+               mod_data->current_news_srv->conn->account.host);
     }
   }
   else
@@ -858,6 +861,7 @@ void mutt_browser_select_dir(const char *f)
 void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
                  char ***files, int *numfiles)
 {
+  struct NntpModuleData *nntp_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   struct BrowserPrivateData *priv = browser_private_data_new();
   priv->file = file;
   priv->mailbox = m;
@@ -874,7 +878,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   {
     if (buf_is_empty(file))
     {
-      struct NntpAccountData *adata = CurrentNewsSrv;
+      struct NntpAccountData *adata = nntp_mod_data->current_news_srv;
 
       /* default state for news reader mode is browse subscribed newsgroups */
       priv->state.is_mailbox_list = false;

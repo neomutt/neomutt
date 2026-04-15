@@ -23,12 +23,14 @@
 #ifndef MUTT_NNTP_MODULE_DATA_H
 #define MUTT_NNTP_MODULE_DATA_H
 
+struct NntpAccountData;
+
 /**
  * struct NntpModuleData - Nntp private Module data
  */
 struct NntpModuleData
 {
-  int dummy;
+  struct NntpAccountData *current_news_srv; ///< Current NNTP news server
 };
 
 #endif /* MUTT_NNTP_MODULE_DATA_H */

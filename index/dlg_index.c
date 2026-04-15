@@ -86,6 +86,7 @@
 #include "mutt_mailbox.h"
 #include "mx.h"
 #include "nntp/adata.h"
+#include "nntp/module_data.h"
 #include "private_data.h"
 #include "shared_data.h"
 #include "status.h"
@@ -776,10 +777,11 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
 void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
                           struct IndexSharedData *shared, bool read_only)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   if (OptNews)
   {
     OptNews = false;
-    nntp_expand_path(buf->data, buf->dsize, &CurrentNewsSrv->conn->account);
+    nntp_expand_path(buf->data, buf->dsize, &mod_data->current_news_srv->conn->account);
   }
   else
   {

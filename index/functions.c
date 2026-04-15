@@ -65,6 +65,7 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "nntp/mdata.h"
+#include "nntp/module_data.h"
 #include "private_data.h"
 #include "shared_data.h"
 #ifdef USE_AUTOCRYPT
@@ -2999,6 +3000,7 @@ done:
  */
 static int op_main_change_group(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
   struct Buffer *folderbuf = buf_pool_get();
@@ -3029,9 +3031,9 @@ static int op_main_change_group(struct IndexFunctionData *fdata, const struct Ke
 
   OptNews = true;
   const char *const c_news_server = cs_subset_string(shared->sub, "news_server");
-  if (!CurrentNewsSrv)
-    CurrentNewsSrv = nntp_select_server(shared->mailbox, c_news_server, false);
-  if (!CurrentNewsSrv)
+  if (!mod_data->current_news_srv)
+    mod_data->current_news_srv = nntp_select_server(shared->mailbox, c_news_server, false);
+  if (!mod_data->current_news_srv)
     goto changefoldercleanup2;
 
   nntp_mailbox(shared->mailbox, folderbuf->data, folderbuf->dsize);

@@ -48,6 +48,7 @@
 #include "core/lib.h"
 #include "expando/lib.h"
 #include "expando_browser.h" // IWYU pragma: keep
+#include "module_data.h"     // IWYU pragma: keep
 
 struct Buffer;
 struct ConnAccount;
@@ -55,7 +56,6 @@ struct Email;
 struct NntpAccountData;
 struct stat;
 
-extern struct NntpAccountData *CurrentNewsSrv; ///< Current NNTP news server
 extern const struct MxOps MxNntpOps;
 extern const struct ExpandoRenderCallback NntpRenderCallbacks[];
 

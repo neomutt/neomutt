@@ -1522,10 +1522,11 @@ int main(int argc, char *argv[], char *envp[])
     {
       if (cli->tui.start_nntp)
       {
+        struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
         const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
         OptNews = true;
-        CurrentNewsSrv = nntp_select_server(NULL, c_news_server, false);
-        if (!CurrentNewsSrv)
+        mod_data->current_news_srv = nntp_select_server(NULL, c_news_server, false);
+        if (!mod_data->current_news_srv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
       else if (ARRAY_EMPTY(&NeoMutt->accounts))
@@ -1562,9 +1563,11 @@ int main(int argc, char *argv[], char *envp[])
 
     if (OptNews)
     {
+      struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
       OptNews = false;
       buf_alloc(folder, PATH_MAX);
-      nntp_expand_path(folder->data, folder->dsize, &CurrentNewsSrv->conn->account);
+      nntp_expand_path(folder->data, folder->dsize,
+                       &mod_data->current_news_srv->conn->account);
     }
     else
     {

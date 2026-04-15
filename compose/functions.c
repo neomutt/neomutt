@@ -841,6 +841,7 @@ static int op_attach_attach_key(struct ComposeFunctionData *fdata, const struct 
 static int op_attach_attach_message(struct ComposeFunctionData *fdata,
                                     const struct KeyEvent *event)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   struct ComposeSharedData *shared = fdata->shared;
   char *prompt = _("Open mailbox to attach message from");
 
@@ -849,8 +850,8 @@ static int op_attach_attach_message(struct ComposeFunctionData *fdata,
   if (shared->mailbox && (op == OP_ATTACH_ATTACH_NEWS_MESSAGE))
   {
     const char *const c_news_server = cs_subset_string(shared->sub, "news_server");
-    CurrentNewsSrv = nntp_select_server(shared->mailbox, c_news_server, false);
-    if (!CurrentNewsSrv)
+    mod_data->current_news_srv = nntp_select_server(shared->mailbox, c_news_server, false);
+    if (!mod_data->current_news_srv)
       return FR_NO_ACTION;
 
     prompt = _("Open newsgroup to attach message from");
@@ -876,7 +877,8 @@ static int op_attach_attach_message(struct ComposeFunctionData *fdata,
   }
 
   if (OptNews)
-    nntp_expand_path(fname->data, fname->dsize, &CurrentNewsSrv->conn->account);
+    nntp_expand_path(fname->data, fname->dsize,
+                     &mod_data->current_news_srv->conn->account);
   else
     expand_path(fname, false);
 
