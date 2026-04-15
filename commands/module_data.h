@@ -28,7 +28,7 @@
  */
 struct CommandsModuleData
 {
-  int dummy;
+  struct ListHead muttrc_stack; ///< LIFO of sourced config files (avoid cycles)
 };
 
 #endif /* MUTT_COMMANDS_MODULE_DATA_H */
