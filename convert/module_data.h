@@ -28,7 +28,7 @@
  */
 struct ConvertModuleData
 {
-  int dummy;
+  struct Notify *notify;  ///< Notifications
 };
 
 #endif /* MUTT_CONVERT_MODULE_DATA_H */

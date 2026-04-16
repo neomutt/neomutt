@@ -28,7 +28,7 @@
  */
 struct AddressModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_ADDRESS_MODULE_DATA_H */

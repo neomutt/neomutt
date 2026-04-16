@@ -44,6 +44,9 @@ static bool pager_init(struct NeoMutt *n)
   struct PagerModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PagerModuleData);
   neomutt_set_module_data(n, MODULE_ID_PAGER, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   mod_data->braille_row = -1;
   mod_data->braille_col = -1;
 
@@ -65,6 +68,8 @@ static bool pager_cleanup(struct NeoMutt *n)
 {
   struct PagerModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PAGER);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   FREE(&mod_data);
   return true;

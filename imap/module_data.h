@@ -28,7 +28,8 @@
  */
 struct ImapModuleData
 {
-  int imap_max_cmdlen; ///< Maximum length of IMAP commands before split
+  struct Notify *notify;           ///< Notifications
+  int            imap_max_cmdlen;  ///< Maximum length of IMAP commands before split
 };
 
 #endif /* MUTT_IMAP_MODULE_DATA_H */

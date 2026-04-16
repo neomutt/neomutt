@@ -28,7 +28,7 @@
  */
 struct BcacheModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_BCACHE_MODULE_DATA_H */

@@ -54,6 +54,9 @@ static bool pattern_init(struct NeoMutt *n)
 
   neomutt_set_module_data(n, MODULE_ID_PATTERN, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   return true;
 }
 
@@ -72,6 +75,8 @@ static bool pattern_cleanup(struct NeoMutt *n)
 {
   struct PatternModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PATTERN);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   for (int i = 0; i < RANGE_K_INVALID; i++)
   {

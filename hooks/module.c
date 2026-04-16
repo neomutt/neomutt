@@ -48,6 +48,9 @@ static bool hooks_init(struct NeoMutt *n)
   TAILQ_INIT(&mod_data->hooks);
   neomutt_set_module_data(n, MODULE_ID_HOOKS, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   return true;
 }
 
@@ -74,6 +77,8 @@ static bool hooks_cleanup(struct NeoMutt *n)
 {
   struct HooksModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_HOOKS);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   mutt_delete_hooks(CMD_NONE);
   delete_idxfmt_hooks();

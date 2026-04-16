@@ -48,6 +48,9 @@ static bool email_init(struct NeoMutt *n)
   struct EmailModuleData *mod_data = MUTT_MEM_CALLOC(1, struct EmailModuleData);
   neomutt_set_module_data(n, MODULE_ID_EMAIL, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   STAILQ_INIT(&mod_data->alternative_order);
   STAILQ_INIT(&mod_data->auto_view);
   STAILQ_INIT(&mod_data->header_order);
@@ -97,6 +100,8 @@ static bool email_cleanup(struct NeoMutt *n)
 {
   struct EmailModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_EMAIL);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   mutt_list_free(&mod_data->alternative_order);
   mutt_list_free(&mod_data->auto_view);

@@ -28,7 +28,7 @@
  */
 struct CompressModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_COMPRESS_MODULE_DATA_H */

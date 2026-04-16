@@ -25,16 +25,15 @@
 
 #include <stdbool.h>
 
-struct MenuDefinition;
-
 /**
  * struct PostponeModuleData - Postpone private Module data
  */
 struct PostponeModuleData
 {
-  struct MenuDefinition *menu_postpone; ///< Postpone menu definition
-  short post_count;                     ///< Number of postponed (draft) emails
-  bool update_num_postponed;            ///< When true, force recount of drafts
+  struct Notify         *notify;                ///< Notifications
+  struct MenuDefinition *menu_postpone;         ///< Postpone menu definition
+  short                  post_count;            ///< Number of postponed (draft) emails
+  bool                   update_num_postponed;  ///< When true, force recount of drafts
 };
 
 #endif /* MUTT_POSTPONE_MODULE_DATA_H */

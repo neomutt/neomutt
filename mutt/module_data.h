@@ -28,7 +28,7 @@
  */
 struct MuttModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_MUTT_MODULE_DATA_H */

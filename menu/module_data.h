@@ -30,7 +30,8 @@
  */
 struct MenuModuleData
 {
-  char *search_buffers[MENU_MAX]; ///< Previous search string, one for each #MenuType
+  struct Notify *notify;                    ///< Notifications
+  char          *search_buffers[MENU_MAX];  ///< Previous search string, one for each #MenuType
 };
 
 #endif /* MUTT_MENU_MODULE_DATA_H */

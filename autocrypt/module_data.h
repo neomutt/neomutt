@@ -25,13 +25,12 @@
 
 #include <sqlite3.h>
 
-struct MenuDefinition;
-
 /**
  * struct AutocryptModuleData - Autocrypt private Module data
  */
 struct AutocryptModuleData
 {
+  struct Notify         *notify;                      ///< Notifications
   struct MenuDefinition *menu_autocrypt;              ///< Autocrypt menu definition
   char                  *autocrypt_default_key;       ///< Autocrypt default key id (used for postponing messages)
   char                  *autocrypt_sign_as;           ///< Autocrypt Key id to sign as

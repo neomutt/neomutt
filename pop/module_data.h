@@ -28,7 +28,7 @@
  */
 struct PopModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_POP_MODULE_DATA_H */

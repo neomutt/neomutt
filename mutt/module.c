@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "core/lib.h"
+#include "memory.h"
 #include "module_data.h"
 #include "notify.h"
 #include "signal2.h"
@@ -39,8 +40,11 @@
  */
 static bool mutt_init(struct NeoMutt *n)
 {
-  // struct MuttModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MuttModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_MUTT, mod_data);
+  struct MuttModuleData *mod_data = MUTT_MEM_CALLOC(1, struct MuttModuleData);
+  neomutt_set_module_data(n, MODULE_ID_MUTT, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -50,10 +54,12 @@ static bool mutt_init(struct NeoMutt *n)
  */
 static bool mutt_cleanup(struct NeoMutt *n)
 {
-  // struct MuttModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MUTT);
-  // ASSERT(mod_data);
+  struct MuttModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MUTT);
+  ASSERT(mod_data);
 
-  // FREE(&mod_data);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data);
   return true;
 }
 

@@ -41,6 +41,9 @@ static bool postpone_init(struct NeoMutt *n)
   struct PostponeModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PostponeModuleData);
   neomutt_set_module_data(n, MODULE_ID_POSTPONE, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   return true;
 }
 
@@ -51,6 +54,8 @@ static bool postpone_cleanup(struct NeoMutt *n)
 {
   struct PostponeModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_POSTPONE);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   FREE(&mod_data);
   return true;

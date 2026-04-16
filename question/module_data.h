@@ -28,7 +28,7 @@
  */
 struct QuestionModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_QUESTION_MODULE_DATA_H */

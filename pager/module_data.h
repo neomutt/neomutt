@@ -23,16 +23,15 @@
 #ifndef MUTT_PAGER_MODULE_DATA_H
 #define MUTT_PAGER_MODULE_DATA_H
 
-struct MenuDefinition;
-
 /**
  * struct PagerModuleData - Pager private Module data
  */
 struct PagerModuleData
 {
-  struct MenuDefinition *menu_pager; ///< Pager menu definition
-  int braille_row;                   ///< Braille strobe row
-  int braille_col;                   ///< Braille strobe column
+  struct Notify         *notify;        ///< Notifications
+  struct MenuDefinition *menu_pager;    ///< Pager menu definition
+  int                    braille_row;   ///< Braille strobe row
+  int                    braille_col;   ///< Braille strobe column
 };
 
 #endif /* MUTT_PAGER_MODULE_DATA_H */

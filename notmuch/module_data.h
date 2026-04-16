@@ -28,7 +28,7 @@
  */
 struct NotmuchModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_NOTMUCH_MODULE_DATA_H */

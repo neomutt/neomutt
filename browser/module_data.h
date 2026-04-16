@@ -30,9 +30,10 @@
  */
 struct BrowserModuleData
 {
-  struct MenuDefinition *menu_browser; ///< Browser menu definition
-  struct Buffer last_dir;              ///< Browser: previous selected directory
-  struct Buffer last_dir_backup;       ///< Browser: backup copy of the current directory
+  struct Notify         *notify;           ///< Notifications
+  struct MenuDefinition *menu_browser;     ///< Browser menu definition
+  struct Buffer          last_dir;         ///< Browser: previous selected directory
+  struct Buffer          last_dir_backup;  ///< Browser: backup copy of the current directory
 };
 
 #endif /* MUTT_BROWSER_MODULE_DATA_H */

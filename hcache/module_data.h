@@ -28,7 +28,8 @@
  */
 struct HcacheModuleData
 {
-  unsigned int hcache_ver; ///< Header Cache version
+  struct Notify *notify;       ///< Notifications
+  unsigned int   hcache_ver;   ///< Header Cache version
 };
 
 #endif /* MUTT_HCACHE_MODULE_DATA_H */

@@ -49,6 +49,9 @@ static bool alias_init(struct NeoMutt *n)
   struct AliasModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AliasModuleData);
   neomutt_set_module_data(n, MODULE_ID_ALIAS, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   STAILQ_INIT(&mod_data->alternates);
   STAILQ_INIT(&mod_data->unalternates);
 
@@ -93,6 +96,7 @@ static bool alias_cleanup(struct NeoMutt *n)
   struct AliasModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ALIAS);
   ASSERT(mod_data);
 
+  notify_free(&mod_data->notify);
   notify_free(&mod_data->alternates_notify);
 
   mutt_regexlist_free(&mod_data->alternates);

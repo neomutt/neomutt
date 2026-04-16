@@ -48,6 +48,9 @@ static bool attach_init(struct NeoMutt *n)
   struct AttachModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AttachModuleData);
   neomutt_set_module_data(n, MODULE_ID_ATTACH, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   STAILQ_INIT(&mod_data->attach_allow);
   STAILQ_INIT(&mod_data->attach_exclude);
   STAILQ_INIT(&mod_data->inline_allow);
@@ -86,6 +89,7 @@ static bool attach_cleanup(struct NeoMutt *n)
   struct AttachModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ATTACH);
   ASSERT(mod_data);
 
+  notify_free(&mod_data->notify);
   notify_free(&mod_data->attachments_notify);
 
   /* Lists of AttachMatch */

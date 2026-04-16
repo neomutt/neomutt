@@ -45,6 +45,9 @@ static bool browser_init(struct NeoMutt *n)
   struct BrowserModuleData *mod_data = MUTT_MEM_CALLOC(1, struct BrowserModuleData);
   neomutt_set_module_data(n, MODULE_ID_BROWSER, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   buf_alloc(&mod_data->last_dir, PATH_MAX);
   buf_alloc(&mod_data->last_dir_backup, PATH_MAX);
 
@@ -66,6 +69,8 @@ static bool browser_cleanup(struct NeoMutt *n)
 {
   struct BrowserModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_BROWSER);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   buf_dealloc(&mod_data->last_dir);
   buf_dealloc(&mod_data->last_dir_backup);

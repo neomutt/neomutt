@@ -47,6 +47,9 @@ static bool imap_init(struct NeoMutt *n)
   struct ImapModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ImapModuleData);
   neomutt_set_module_data(n, MODULE_ID_IMAP, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   mod_data->imap_max_cmdlen = 8192;
 
   return true;
@@ -81,6 +84,8 @@ static bool imap_cleanup(struct NeoMutt *n)
 {
   struct ImapModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_IMAP);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   FREE(&mod_data);
   return true;

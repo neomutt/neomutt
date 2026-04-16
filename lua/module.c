@@ -44,6 +44,9 @@ static bool lua_init(struct NeoMutt *n)
   struct LuaModuleData *mod_data = MUTT_MEM_CALLOC(1, struct LuaModuleData);
   neomutt_set_module_data(n, MODULE_ID_LUA, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   return true;
 }
 
@@ -62,6 +65,8 @@ static bool lua_cleanup(struct NeoMutt *n)
 {
   struct LuaModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_LUA);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   lua_State *lua_state = mod_data->lua_state;
   if (lua_state)

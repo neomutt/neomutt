@@ -23,14 +23,13 @@
 #ifndef MUTT_COMPOSE_MODULE_DATA_H
 #define MUTT_COMPOSE_MODULE_DATA_H
 
-struct MenuDefinition;
-
 /**
  * struct ComposeModuleData - Compose private Module data
  */
 struct ComposeModuleData
 {
-  struct MenuDefinition *md_compose; ///< Compose Menu Definition
+  struct Notify         *notify;      ///< Notifications
+  struct MenuDefinition *md_compose;  ///< Compose Menu Definition
 };
 
 #endif /* MUTT_COMPOSE_MODULE_DATA_H */

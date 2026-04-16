@@ -30,11 +30,12 @@
  */
 struct AttachModuleData
 {
-  struct ListHead attach_allow;          ///< List of attachment types to be counted
-  struct ListHead attach_exclude;        ///< List of attachment types to be ignored
-  struct ListHead inline_allow;          ///< List of inline types to counted
-  struct ListHead inline_exclude;        ///< List of inline types to ignore
-  struct Notify  *attachments_notify;    ///< Notifications: #NotifyAttach
+  struct Notify         *notify;                 ///< Notifications
+  struct ListHead        attach_allow;           ///< List of attachment types to be counted
+  struct ListHead        attach_exclude;         ///< List of attachment types to be ignored
+  struct ListHead        inline_allow;           ///< List of inline types to counted
+  struct ListHead        inline_exclude;         ///< List of inline types to ignore
+  struct Notify         *attachments_notify;     ///< Notifications: #NotifyAttach
 
   struct MenuDefinition *menu_attach;            ///< Attach menu definition
 

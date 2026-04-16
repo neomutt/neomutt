@@ -30,9 +30,10 @@
  */
 struct IndexModuleData
 {
-  struct MenuDefinition *menu_index; ///< Index menu definition
-  struct ReplaceList subject_rx_list; /// List of subject-regex rules for modifying the Subject:
-  struct Notify *subject_rx_notify; ///< Notifications: #NotifySubjectRx
+  struct Notify         *notify;             ///< Notifications
+  struct MenuDefinition *menu_index;         ///< Index menu definition
+  struct ReplaceList     subject_rx_list;    ///< List of subject-regex rules for modifying the Subject:
+  struct Notify         *subject_rx_notify;  ///< Notifications: #NotifySubjectRx
 };
 
 #endif /* MUTT_INDEX_MODULE_DATA_H */

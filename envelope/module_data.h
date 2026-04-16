@@ -30,8 +30,9 @@
  */
 struct EnvelopeModuleData
 {
-  int header_padding[HDR_ATTACH_TITLE]; ///< Width of each header prompt
-  int max_header_width;                 ///< Width of the widest header
+  struct Notify *notify;                            ///< Notifications
+  int            header_padding[HDR_ATTACH_TITLE];  ///< Width of each header prompt
+  int            max_header_width;                  ///< Width of the widest header
 };
 
 #endif /* MUTT_ENVELOPE_MODULE_DATA_H */

@@ -79,6 +79,9 @@ static bool gui_init(struct NeoMutt *n)
   struct GuiModuleData *mod_data = MUTT_MEM_CALLOC(1, struct GuiModuleData);
   neomutt_set_module_data(n, MODULE_ID_GUI, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   return true;
 }
 
@@ -129,6 +132,8 @@ static bool gui_cleanup(struct NeoMutt *n)
 {
   struct GuiModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_GUI);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   FREE(&mod_data);
   return true;

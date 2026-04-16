@@ -54,6 +54,9 @@ static bool conn_init(struct NeoMutt *n)
   mod_data->skip_mode_ex_data_index = -1;
 #endif
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   return true;
 }
 
@@ -96,6 +99,8 @@ static bool conn_cleanup(struct NeoMutt *n)
 {
   struct ConnModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_CONN);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
 #ifdef USE_SASL_CYRUS
   FREE(&mod_data->mutt_sasl_callbacks);

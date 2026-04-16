@@ -47,6 +47,9 @@ static bool index_init(struct NeoMutt *n)
   struct IndexModuleData *mod_data = MUTT_MEM_CALLOC(1, struct IndexModuleData);
   neomutt_set_module_data(n, MODULE_ID_INDEX, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   subjectrx_init(n, mod_data);
   return true;
 }
@@ -74,6 +77,8 @@ static bool index_cleanup(struct NeoMutt *n)
 {
   struct IndexModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_INDEX);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   subjectrx_cleanup(mod_data);
 

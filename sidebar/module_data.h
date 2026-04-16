@@ -30,9 +30,10 @@
  */
 struct SidebarModuleData
 {
-  struct MenuDefinition *md_sidebar; ///< Sidebar Menu Definition
-  struct SubMenu *sm_sidebar;        ///< Sidebar functions
-  struct ListHead sidebar_pinned;    ///< List of mailboxes to always display in the sidebar
+  struct Notify         *notify;          ///< Notifications
+  struct MenuDefinition *md_sidebar;      ///< Sidebar Menu Definition
+  struct SubMenu        *sm_sidebar;      ///< Sidebar functions
+  struct ListHead        sidebar_pinned;  ///< List of mailboxes to always display in the sidebar
 };
 
 #endif /* MUTT_SIDEBAR_MODULE_DATA_H */

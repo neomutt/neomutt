@@ -23,12 +23,15 @@
 #ifndef MUTT_COMMANDS_MODULE_DATA_H
 #define MUTT_COMMANDS_MODULE_DATA_H
 
+#include "mutt/lib.h"
+
 /**
  * struct CommandsModuleData - Commands private Module data
  */
 struct CommandsModuleData
 {
-  struct ListHead muttrc_stack; ///< LIFO of sourced config files (avoid cycles)
+  struct Notify   *notify;        ///< Notifications
+  struct ListHead  muttrc_stack;  ///< LIFO of sourced config files (avoid cycles)
 };
 
 #endif /* MUTT_COMMANDS_MODULE_DATA_H */

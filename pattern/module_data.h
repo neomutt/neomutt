@@ -30,7 +30,8 @@
  */
 struct PatternModuleData
 {
-  struct RangeRegex range_regexes[RANGE_K_INVALID]; ///< Set of Regexes for various range types
+  struct Notify     *notify;                          ///< Notifications
+  struct RangeRegex  range_regexes[RANGE_K_INVALID];  ///< Set of Regexes for various range types
 };
 
 #endif /* MUTT_PATTERN_MODULE_DATA_H */

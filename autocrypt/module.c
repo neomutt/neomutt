@@ -44,6 +44,9 @@ static bool autocrypt_init(struct NeoMutt *n)
   struct AutocryptModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AutocryptModuleData);
   neomutt_set_module_data(n, MODULE_ID_AUTOCRYPT, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   return true;
 }
 
@@ -68,6 +71,8 @@ static bool autocrypt_cleanup(struct NeoMutt *n)
 {
   struct AutocryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   FREE(&mod_data->autocrypt_sign_as);
   FREE(&mod_data->autocrypt_default_key);

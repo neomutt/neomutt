@@ -28,7 +28,7 @@
  */
 struct ProgressModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_PROGRESS_MODULE_DATA_H */

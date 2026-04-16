@@ -36,7 +36,7 @@
  */
 struct NcryptModuleData
 {
-
+  struct Notify          *notify;                      ///< Notifications
   struct MenuDefinition  *menu_pgp;                    ///< PGP menu definition
   struct MenuDefinition  *menu_smime;                  ///< S/MIME menu definition
   struct CryptCache      *gpgme_id_defaults;           ///< GPGME IdDefaults cache

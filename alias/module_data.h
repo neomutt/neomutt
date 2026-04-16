@@ -31,8 +31,9 @@
  */
 struct AliasModuleData
 {
-  struct AliasArray aliases;            ///< User's email aliases
-  struct HashTable *reverse_aliases;    ///< Hash Table of aliases (email address -> alias)
+  struct Notify         *notify;                ///< Notifications
+  struct AliasArray      aliases;               ///< User's email aliases
+  struct HashTable      *reverse_aliases;       ///< Hash Table of aliases (email address -> alias)
 
   struct RegexList       alternates;            ///< Regexes to match the user's alternate email addresses
   struct RegexList       unalternates;          ///< Regexes to exclude false matches in alternates

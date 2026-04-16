@@ -28,7 +28,7 @@
  */
 struct CoreModuleData
 {
-  int dummy;
+  struct Notify *notify;  ///< Notifications
 };
 
 #endif /* MUTT_CORE_MODULE_DATA_H */

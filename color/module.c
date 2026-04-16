@@ -46,6 +46,9 @@ static bool color_init(struct NeoMutt *n)
   struct ColorModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ColorModuleData);
   neomutt_set_module_data(n, MODULE_ID_COLOR, mod_data);
 
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
   return true;
 }
 
@@ -88,6 +91,8 @@ static bool color_cleanup(struct NeoMutt *n)
 {
   struct ColorModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COLOR);
   ASSERT(mod_data);
+
+  notify_free(&mod_data->notify);
 
   FREE(&mod_data);
   return true;

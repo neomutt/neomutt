@@ -42,8 +42,9 @@ struct History
  */
 struct HistoryModuleData
 {
-  struct History histories[HC_MAX]; ///< Command histories, one for each #HistoryClass
-  int old_size;                     ///< The previous number of history entries to save
+  struct Notify  *notify;             ///< Notifications
+  struct History histories[HC_MAX];   ///< Command histories, one for each #HistoryClass
+  int            old_size;            ///< The previous number of history entries to save
 };
 
 #endif /* MUTT_HISTORY_MODULE_DATA_H */
