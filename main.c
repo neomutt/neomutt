@@ -1100,15 +1100,15 @@ int main(int argc, char *argv[], char *envp[])
    * paths that end up referencing them. */
   rootwin_new();
 
-  if (OptGui)
-    neomutt_gui_init(NeoMutt);
-
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, &cli->shared.log_level, &cli->shared.log_file,
                       cli->shared.disable_system, &cli->shared.user_files,
                       &cli->shared.commands);
   if (rc2 != 0)
     goto main_curses;
+
+  if (OptGui)
+    neomutt_gui_init(NeoMutt);
 
   init_nntp(&cli->tui.nntp_server, cs);
 
