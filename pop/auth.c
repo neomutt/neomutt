@@ -60,6 +60,7 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
   struct Buffer *input_buf = NULL;
   int rc = POP_A_FAILURE;
   int gsasl_rc = GSASL_OK;
+  int first_challenge = 1;
 
   const char *chosen_mech = mutt_gsasl_get_mech(method, buf_string(&adata->auth_list));
   if (!chosen_mech)
@@ -102,6 +103,16 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
       break;
 
     const char *pop_auth_data = buf_string(input_buf) + 2;
+
+    /* Workaround for broken POP3 servers. See pop_auth_sasl() above. */
+    if (first_challenge)
+    {
+      first_challenge = 0;
+      // Reuse output_buf as a temporary decode buffer
+      if (mutt_b64_buffer_decode(output_buf, pop_auth_data) < 0)
+        pop_auth_data = "";
+    }
+
     char *gsasl_step_output = NULL;
     gsasl_rc = gsasl_step64(gsasl_session, pop_auth_data, &gsasl_step_output);
     if ((gsasl_rc == GSASL_NEEDS_MORE) || (gsasl_rc == GSASL_OK))
@@ -150,6 +161,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
   int rc;
+  int first_challenge = 1;
   char inbuf[1024] = { 0 };
   const char *mech = NULL;
   const char *pc = NULL;
@@ -222,8 +234,20 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
         (sasl_decode64(inbuf + 2, strlen(inbuf + 2), buf, bufsize - 1, &len) != SASL_OK))
     {
       mutt_debug(LL_DEBUG1, "error base64-decoding server response\n");
-      goto bail;
+
+      /* Some server implementations may send non-base64-encoded challenge,
+       * which is against RFC 5034. However, for certain SASL mechanism, e.g.
+       * PLAIN, the content of challenge doesn't really matter, thus we try to
+       * keep going to improve compatibility if the first challenge fails to
+       * decode.
+       */
+      if (first_challenge)
+        len = 0;
+      else
+        goto bail;
     }
+
+    first_challenge = 0;
 
     if (client_start)
     {

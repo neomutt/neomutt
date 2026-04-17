@@ -1126,11 +1126,14 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   const char *errmsg = NULL;
   struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
 
-  mod_data->host_ex_data_index = SSL_get_ex_new_index(0, "host", NULL, NULL, NULL);
   if (mod_data->host_ex_data_index == -1)
   {
-    mutt_debug(LL_DEBUG1, "#1 failed to get index for application specific data\n");
-    return -1;
+    mod_data->host_ex_data_index = SSL_get_ex_new_index(0, "host", NULL, NULL, NULL);
+    if (mod_data->host_ex_data_index == -1)
+    {
+      mutt_debug(LL_DEBUG1, "#1 failed to get index for application specific data\n");
+      return -1;
+    }
   }
 
   if (!SSL_set_ex_data(ssldata->ssl, mod_data->host_ex_data_index, conn->account.host))
@@ -1139,11 +1142,14 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
     return -1;
   }
 
-  mod_data->skip_mode_ex_data_index = SSL_get_ex_new_index(0, "skip", NULL, NULL, NULL);
   if (mod_data->skip_mode_ex_data_index == -1)
   {
-    mutt_debug(LL_DEBUG1, "#3 failed to get index for application specific data\n");
-    return -1;
+    mod_data->skip_mode_ex_data_index = SSL_get_ex_new_index(0, "skip", NULL, NULL, NULL);
+    if (mod_data->skip_mode_ex_data_index == -1)
+    {
+      mutt_debug(LL_DEBUG1, "#3 failed to get index for application specific data\n");
+      return -1;
+    }
   }
 
   if (!SSL_set_ex_data(ssldata->ssl, mod_data->skip_mode_ex_data_index, NULL))

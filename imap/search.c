@@ -232,6 +232,7 @@ bool imap_search(struct Mailbox *m, const struct PatternList *pat)
     if (!e)
       break;
     e->matched = false;
+    e->searched = false;
   }
 
   if (check_pattern_list(pat) == 0)

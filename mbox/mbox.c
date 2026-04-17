@@ -367,6 +367,8 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   struct Email *e_cur = NULL;
   time_t t = 0;
   int count = 0, lines = 0;
+  bool has_mbox_sep = false;
+  bool expect_from_line = true;
   LOFF_T loc;
   struct Progress *progress = NULL;
   enum MxOpenReturns rc = MX_OPEN_ERROR;
@@ -406,9 +408,14 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
       if (count > 0)
       {
         struct Email *e = m->emails[m->msg_count - 1];
+        if (!has_mbox_sep)
+        {
+          mutt_debug(LL_DEBUG1, "mbox_parse_mailbox: missing separator at location: " OFF_T_FMT "\n",
+                     loc);
+        }
         if (e->body->length < 0)
         {
-          e->body->length = loc - e->body->offset - 1;
+          e->body->length = loc - e->body->offset - (has_mbox_sep ? 1 : 0);
           if (e->body->length < 0)
             e->body->length = 0;
         }
@@ -417,6 +424,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
       }
 
       count++;
+      expect_from_line = false;
 
       progress_update(progress, count, (int) (ftello(adata->fp) / (m->size / 100 + 1)));
 
@@ -487,8 +495,9 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
             }
           }
 
-          /* return to the offset of the next message separator */
-          (void) mutt_file_seek(adata->fp, tmploc, SEEK_SET);
+          /* return to the offset of the next *mbox* separator */
+          (void) mutt_file_seek(adata->fp, tmploc - 1, SEEK_SET);
+          expect_from_line = true;
         }
       }
 
@@ -503,10 +512,19 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
         mutt_addrlist_copy(&e_cur->env->from, &e_cur->env->return_path, false);
 
       lines = 0;
+      has_mbox_sep = false;
     }
     else
     {
       lines++;
+      has_mbox_sep = mutt_str_equal(MBOX_SEP, buf);
+      if (expect_from_line && !has_mbox_sep)
+      {
+        mutt_debug(LL_DEBUG1, "mbox_parse_mailbox: missing From_ line at location: " OFF_T_FMT "\n",
+                   loc);
+        mutt_error(_("Mailbox is corrupt"));
+        goto fail;
+      }
     }
 
     loc = ftello(adata->fp);
@@ -519,9 +537,14 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   if (count > 0)
   {
     struct Email *e = m->emails[m->msg_count - 1];
+    if (!has_mbox_sep)
+    {
+      mutt_debug(LL_DEBUG1,
+                 "mbox_parse_mailbox: missing separator at location: " OFF_T_FMT "\n", loc);
+    }
     if (e->body->length < 0)
     {
-      e->body->length = ftello(adata->fp) - e->body->offset - 1;
+      e->body->length = ftello(adata->fp) - e->body->offset - (has_mbox_sep ? 1 : 0);
       if (e->body->length < 0)
         e->body->length = 0;
     }
@@ -1236,7 +1259,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
       }
       else
       {
-        if (fputs("\n", fp) == EOF)
+        if (fputs(MBOX_SEP, fp) == EOF)
         {
           mutt_perror("%s", buf_string(tempfile));
           goto bail;
@@ -1505,7 +1528,7 @@ static bool mbox_msg_open_new(struct Mailbox *m, struct Message *msg, const stru
  */
 static int mbox_msg_commit(struct Mailbox *m, struct Message *msg)
 {
-  if (fputc('\n', msg->fp) == EOF)
+  if (fputs(MBOX_SEP, msg->fp) == EOF)
     return -1;
 
   if ((fflush(msg->fp) == EOF) || (fsync(fileno(msg->fp)) == -1))

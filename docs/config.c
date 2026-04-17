@@ -4824,6 +4824,21 @@
 ** This option points to the location of the private keys. (S/MIME only)
 */
 
+{ "smime_pkcs7_default_smime_type", DT_STRING, "signed" },
+/*
+** .pp
+** The \fCapplication/pkcs7-mime\fP ``.p7m'' type can contain EnvelopedData
+** (encrypted) or SignedData. Senders should include a ``smime-type''
+** parameter to allow receiving clients to classify it correctly, but some
+** clients omit this parameter.
+** .pp
+** This option controls which type to assume when the parameter is missing
+** for ``.p7m'' attachments.
+** .pp
+** Accepted values are ``enveloped'' and ``signed''.
+** (S/MIME only)
+*/
+
 { "smime_pk7out_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
@@ -5075,12 +5090,15 @@
 { "spool_file", D_STRING_MAILBOX, 0 },
 /*
 ** .pp
-** If your spool mailbox is in a non-default place where NeoMutt can't find
-** it, you can specify its location with this variable. The description from
-** "named-mailboxes" may be used for the spool_file.
+** If your default mailbox or spool file is in a non-default place where
+** NeoMutt can't find it, you can specify its location with this variable.
+** The description from "named-mailboxes" may be used for the spool_file.
 ** .pp
 ** If not specified, then the environment variables \fC$$$MAIL\fP and
 ** \fC$$$MAILDIR\fP will be checked.
+** .pp
+** Note: Despite the name, this can refer to a local or remote mailbox, e.g.,
+** "+INBOX".
 */
 
 { "ssl_ca_certificates_file", DT_PATH, 0 },

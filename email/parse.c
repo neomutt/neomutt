@@ -1218,7 +1218,6 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     p = strpbrk(lines, ": \t");
     if (!p || (*p != ':'))
     {
-      char return_path[1024] = { 0 };
       time_t t = 0;
 
       /* some bogus MTAs will quote the original "From " line */
@@ -1226,7 +1225,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
       {
         continue; /* just ignore */
       }
-      else if (is_from(lines, return_path, sizeof(return_path), &t))
+      else if (is_from(lines, NULL, 0, &t))
       {
         /* MH sometimes has the From_ line in the middle of the header! */
         if (e && (e->received == 0))

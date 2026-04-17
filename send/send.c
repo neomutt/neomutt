@@ -1680,28 +1680,6 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
 
   expand_path(fcc, false);
 
-  /* Don't save a copy when we are in batch-mode, and the FCC
-   * folder is on an IMAP server: This would involve possibly lots
-   * of user interaction, which is not available in batch mode.
-   *
-   * Note: A patch to fix the problems with the use of IMAP servers
-   * from non-curses mode is available from Brendan Cully.  However,
-   * I'd like to think a bit more about this before including it.  */
-
-  if ((flags & SEND_BATCH) && !buf_is_empty(fcc) &&
-      (imap_path_probe(buf_string(fcc), NULL) == MUTT_IMAP))
-  {
-    mutt_error(_("Warning: Fcc to an IMAP mailbox is not supported in batch mode"));
-    /* L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
-       To make it clearer that the message doesn't mean NeoMutt is aborting
-       sending the mail too.
-       %s is the full mailbox URL, including imap(s)://
-    */
-    mutt_error(_("Skipping Fcc to %s"), buf_string(fcc));
-    buf_reset(fcc);
-    return rc;
-  }
-
   if (buf_is_empty(fcc) || mutt_str_equal("/dev/null", buf_string(fcc)))
     return rc;
 
@@ -1789,6 +1767,13 @@ full_fcc:
      * message was first postponed.  */
     e->received = mutt_date_now();
     rc = mutt_write_multiple_fcc(buf_string(fcc), e, NULL, false, NULL, finalpath, sub);
+    if (rc && (flags & SEND_BATCH))
+    {
+      /* Printed when an Fcc in batch mode fails. */
+      mutt_error(_("Warning: Fcc to %s failed"), buf_string(fcc));
+      return rc;
+    }
+
     while (rc && !(flags & SEND_BATCH))
     {
       mutt_clear_error();
@@ -2792,7 +2777,15 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   const bool c_fcc_before_send = cs_subset_bool(sub, "fcc_before_send");
   if (c_fcc_before_send)
-    save_fcc(m, e_templ, fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
+  {
+    if (save_fcc(m, e_templ, fcc, clear_content, pgpkeylist, flags, &finalpath, sub) &&
+        (flags & SEND_BATCH))
+    {
+      /* In batch mode with $fcc_before_send set, abort sending if Fcc fails. */
+      puts(_("Fcc failed.  Aborting sending."));
+      goto cleanup;
+    }
+  }
 
   i = invoke_mta(m, e_templ, sub);
   if (i < 0)

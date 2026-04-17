@@ -60,6 +60,8 @@ int                  mx_tags_commit       (struct Mailbox *m, struct Email *e, c
 int                  mx_tags_edit         (struct Mailbox *m, const char *tags, struct Buffer *buf);
 enum MailboxType     mx_type              (struct Mailbox *m);
 
+#define MBOX_SEP "\n"
+
 struct Account *     mx_ac_find           (struct Mailbox *m);
 struct Mailbox *     mx_mbox_find         (struct Account *a, const char *path);
 struct Mailbox *     mx_mbox_find2        (const char *path);
