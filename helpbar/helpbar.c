@@ -302,9 +302,9 @@ static int helpbar_window_observer(struct NotifyCallback *nc)
     mutt_color_observer_remove(helpbar_color_observer, win_helpbar);
     notify_observer_remove(NeoMutt->notify, helpbar_binding_observer, win_helpbar);
     notify_observer_remove(NeoMutt->sub->notify, helpbar_config_observer, win_helpbar);
-    struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-    if (gui_data && gui_data->root_window)
-      notify_observer_remove(gui_data->root_window->notify,
+    struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+    if (mod_data && mod_data->root_window)
+      notify_observer_remove(mod_data->root_window->notify,
                              helpbar_window_observer, win_helpbar);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
@@ -334,7 +334,7 @@ struct MuttWindow *helpbar_new(void)
   mutt_color_observer_add(helpbar_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_BINDING, helpbar_binding_observer, win);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, helpbar_config_observer, win);
-  struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-  notify_observer_add(gui_data->root_window->notify, NT_WINDOW, helpbar_window_observer, win);
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  notify_observer_add(mod_data->root_window->notify, NT_WINDOW, helpbar_window_observer, win);
   return win;
 }

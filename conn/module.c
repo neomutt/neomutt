@@ -32,6 +32,12 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#ifdef USE_SASL_GNU
+#include "gsasl2.h"
+#endif
+#ifdef USE_SASL_CYRUS
+#include "sasl.h"
+#endif
 #include "module_data.h"
 
 extern struct ConfigDef ConnVars[];
@@ -101,6 +107,13 @@ static bool conn_cleanup(struct NeoMutt *n)
   ASSERT(mod_data);
 
   notify_free(&mod_data->notify);
+
+#ifdef USE_SASL_CYRUS
+  mutt_sasl_cleanup();
+#endif
+#ifdef USE_SASL_GNU
+  mutt_gsasl_cleanup();
+#endif
 
 #ifdef USE_SASL_CYRUS
   FREE(&mod_data->mutt_sasl_callbacks);

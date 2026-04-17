@@ -692,12 +692,12 @@ struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
  */
 struct MailboxView *get_current_mailbox_view(void)
 {
-  struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-  if (!gui_data || !gui_data->all_dialogs_window)
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->all_dialogs_window)
     return NULL;
 
   struct MuttWindow **wp = NULL;
-  ARRAY_FOREACH_REVERSE(wp, &gui_data->all_dialogs_window->children)
+  ARRAY_FOREACH_REVERSE(wp, &mod_data->all_dialogs_window->children)
   {
     struct MuttWindow *win = window_find_child(*wp, WT_DLG_INDEX);
     if (win)

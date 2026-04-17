@@ -31,6 +31,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "extended.h"
 #include "init.h"
 #include "module_data.h"
 
@@ -46,6 +47,8 @@ static bool key_init(struct NeoMutt *n)
 
   mod_data->notify = notify_new();
   notify_set_parent(mod_data->notify, n->notify);
+
+  km_init();
 
   return true;
 }
@@ -77,6 +80,7 @@ static bool key_cleanup(struct NeoMutt *n)
  */
 static bool key_gui_init(struct NeoMutt *n)
 {
+  ext_keys_init();
   km_set_abort_key();
   return true;
 }

@@ -43,8 +43,6 @@ int color_observer(struct NotifyCallback *nc)
 
 void test_color_notify(void)
 {
-  color_notify_init(NeoMutt->notify);
-
   mutt_color_observer_add(color_observer, NULL);
 
   struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
@@ -52,6 +50,4 @@ void test_color_notify(void)
   notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
   mutt_color_observer_remove(color_observer, NULL);
-
-  color_notify_cleanup();
 }

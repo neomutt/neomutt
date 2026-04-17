@@ -701,8 +701,6 @@ static int get_elem_queries(struct StringArray *queries, struct HashElemArray *h
  */
 static void init_keys(struct NeoMutt *n)
 {
-  km_init();
-
   struct SubMenu *sm_generic = generic_init_keys(n);
 
   alias_init_keys(n, sm_generic);
@@ -746,7 +744,6 @@ static int start_curses(void)
   nonl();
   typeahead(-1); /* simulate smooth scrolling */
   meta(stdscr, true);
-  ext_keys_init();
   /* Now that curses is set up, we drop back to normal screen mode.
    * This simplifies displaying error messages to the user.
    * The first call to refresh() will swap us back to curses screen mode. */
@@ -1621,15 +1618,6 @@ int main(int argc, char *argv[], char *envp[])
       repeat_error = false;
     }
     imap_logout_all();
-#ifdef USE_SASL_CYRUS
-    mutt_sasl_cleanup();
-#endif
-#ifdef USE_SASL_GNU
-    mutt_gsasl_cleanup();
-#endif
-#ifdef USE_AUTOCRYPT
-    mutt_autocrypt_cleanup();
-#endif
     // TEST43: neomutt (no change to mailbox)
     // TEST44: neomutt (change mailbox)
   }
@@ -1651,11 +1639,9 @@ main_exit:
 
   buf_pool_release(&expanded_infile);
   buf_pool_release(&tempfile);
-  crypto_module_cleanup();
   if (NeoMutt)
     envlist_free(&NeoMutt->env);
   external_cleanup();
-  crypt_cleanup();
   mutt_ch_cache_cleanup();
   command_line_free(&cli);
 
