@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <lua.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
@@ -40,8 +41,11 @@ extern const struct Command LuaCommands[];
  */
 static bool lua_init(struct NeoMutt *n)
 {
-  // struct LuaModuleData *md = MUTT_MEM_CALLOC(1, struct LuaModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_LUA, md);
+  struct LuaModuleData *mod_data = MUTT_MEM_CALLOC(1, struct LuaModuleData);
+  neomutt_set_module_data(n, MODULE_ID_LUA, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -59,10 +63,19 @@ static bool lua_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  */
 static bool lua_cleanup(struct NeoMutt *n)
 {
-  // struct LuaModuleData *md = neomutt_get_module_data(n, MODULE_ID_LUA);
-  // ASSERT(md);
+  struct LuaModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_LUA);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  lua_State *lua_state = mod_data->lua_state;
+  if (lua_state)
+  {
+    lua_close(lua_state);
+    mod_data->lua_state = NULL;
+  }
+
+  FREE(&mod_data);
   return true;
 }
 

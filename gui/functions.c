@@ -42,21 +42,12 @@
 
 #include "config.h"
 #include <stddef.h>
+#include "mutt/lib.h"
+#include "core/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "module_data.h"
 #include "opcodes.h"
-
-/// Generic Menu Definition
-struct MenuDefinition *MdGeneric = NULL;
-
-/// Dialog Menu Definition
-struct MenuDefinition *MdDialog = NULL;
-
-/// Generic functions
-struct SubMenu *SmGeneric = NULL;
-
-/// Dialog functions
-struct SubMenu *SmDialog = NULL;
 
 // clang-format off
 /**
@@ -192,8 +183,11 @@ static const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
 /**
  * generic_init_keys - Initialise the Generic Keybindings
  */
-struct SubMenu *generic_init_keys(void)
+struct SubMenu *generic_init_keys(struct NeoMutt *n)
 {
+  struct GuiModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_GUI);
+  ASSERT(mod_data);
+
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
   struct SubMenu *sm_generic = NULL;
@@ -203,8 +197,8 @@ struct SubMenu *generic_init_keys(void)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, GenericDefaultBindings);
 
-  MdGeneric = md;
-  SmGeneric = sm;
+  mod_data->md_generic = md;
+  mod_data->sm_generic = sm_generic;
 
   sm = km_register_submenu(OpDialog);
   md = km_register_menu(MENU_DIALOG, "dialog");
@@ -212,8 +206,32 @@ struct SubMenu *generic_init_keys(void)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, DialogDefaultBindings);
 
-  MdDialog = md;
-  SmDialog = sm;
+  mod_data->md_dialog = md;
+  mod_data->sm_dialog = sm;
 
   return sm_generic;
+}
+
+/**
+ * gui_get_generic_menu_definition - Get the Generic Menu Definition
+ * @retval ptr Generic Menu Definition
+ */
+struct MenuDefinition *gui_get_generic_menu_definition(void)
+{
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  ASSERT(mod_data);
+
+  return mod_data->md_generic;
+}
+
+/**
+ * gui_get_dialog_menu_definition - Get the Dialog Menu Definition
+ * @retval ptr Dialog Menu Definition
+ */
+struct MenuDefinition *gui_get_dialog_menu_definition(void)
+{
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  ASSERT(mod_data);
+
+  return mod_data->md_dialog;
 }

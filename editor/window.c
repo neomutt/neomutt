@@ -39,6 +39,7 @@
 #include "history/lib.h"
 #include "key/lib.h"
 #include "functions.h"
+#include "module_data.h"
 #include "muttlib.h"
 #include "state.h"
 #include "wdata.h"
@@ -267,6 +268,9 @@ int mw_get_field_notify(const char *prompt, struct Buffer *buf, CompletionFlags 
                         void *cdata, get_field_callback_t callback, void *cb_data,
                         const struct MenuDefinition *md, function_dispatcher_t fn_disp)
 {
+  struct EditorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EDITOR);
+  ASSERT(mod_data);
+
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
 
@@ -279,14 +283,14 @@ int mw_get_field_notify(const char *prompt, struct Buffer *buf, CompletionFlags 
     cbuf = buf_pool_get();
 
   if (!md)
-    md = MdEditor;
+    md = mod_data->md_editor;
 
   int rc = 0;
 
   struct EnterState *es = enter_state_new();
 
   win->help_data = EditorHelp;
-  win->help_md = MdEditor;
+  win->help_md = mod_data->md_editor;
 
   msgcont_push_window(win);
   struct MuttWindow *old_focus = window_set_focus(win);

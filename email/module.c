@@ -33,6 +33,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "module_data.h"
+#include "score.h"
 #include "tags.h"
 
 extern struct ConfigDef EmailVars[];
@@ -44,31 +45,34 @@ extern const struct Command EmailCommands[];
  */
 static bool email_init(struct NeoMutt *n)
 {
-  struct EmailModuleData *md = MUTT_MEM_CALLOC(1, struct EmailModuleData);
-  neomutt_set_module_data(n, MODULE_ID_EMAIL, md);
+  struct EmailModuleData *mod_data = MUTT_MEM_CALLOC(1, struct EmailModuleData);
+  neomutt_set_module_data(n, MODULE_ID_EMAIL, mod_data);
 
-  STAILQ_INIT(&md->alternative_order);
-  STAILQ_INIT(&md->auto_view);
-  STAILQ_INIT(&md->header_order);
-  STAILQ_INIT(&md->ignore);
-  STAILQ_INIT(&md->mail_to_allow);
-  STAILQ_INIT(&md->no_spam);
-  STAILQ_INIT(&md->spam);
-  STAILQ_INIT(&md->unignore);
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
+  STAILQ_INIT(&mod_data->alternative_order);
+  STAILQ_INIT(&mod_data->auto_view);
+  STAILQ_INIT(&mod_data->header_order);
+  STAILQ_INIT(&mod_data->ignore);
+  STAILQ_INIT(&mod_data->mail_to_allow);
+  STAILQ_INIT(&mod_data->no_spam);
+  STAILQ_INIT(&mod_data->spam);
+  STAILQ_INIT(&mod_data->unignore);
 
   /* RFC2368, "4. Unsafe headers"
    * The creator of a mailto URL can't expect the resolver of a URL to
    * understand more than the "subject" and "body" headers. Clients that
    * resolve mailto URLs into mail messages should be able to correctly create
    * RFC822-compliant mail messages using the "subject" and "body" headers. */
-  add_to_stailq(&md->mail_to_allow, "body");
-  add_to_stailq(&md->mail_to_allow, "subject");
+  add_to_stailq(&mod_data->mail_to_allow, "body");
+  add_to_stailq(&mod_data->mail_to_allow, "subject");
   // Cc, In-Reply-To, and References help with not breaking threading on mailing lists
-  add_to_stailq(&md->mail_to_allow, "cc");
-  add_to_stailq(&md->mail_to_allow, "in-reply-to");
-  add_to_stailq(&md->mail_to_allow, "references");
+  add_to_stailq(&mod_data->mail_to_allow, "cc");
+  add_to_stailq(&mod_data->mail_to_allow, "in-reply-to");
+  add_to_stailq(&mod_data->mail_to_allow, "references");
 
-  driver_tags_init(md);
+  driver_tags_init(mod_data);
 
   return true;
 }
@@ -94,23 +98,27 @@ static bool email_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  */
 static bool email_cleanup(struct NeoMutt *n)
 {
-  struct EmailModuleData *md = neomutt_get_module_data(n, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
-  mutt_list_free(&md->alternative_order);
-  mutt_list_free(&md->auto_view);
-  mutt_list_free(&md->header_order);
-  mutt_list_free(&md->ignore);
-  mutt_list_free(&md->mail_to_allow);
-  mutt_list_free(&md->unignore);
+  notify_free(&mod_data->notify);
 
-  mutt_regexlist_free(&md->no_spam);
+  mutt_list_free(&mod_data->alternative_order);
+  mutt_list_free(&mod_data->auto_view);
+  mutt_list_free(&mod_data->header_order);
+  mutt_list_free(&mod_data->ignore);
+  mutt_list_free(&mod_data->mail_to_allow);
+  mutt_list_free(&mod_data->unignore);
 
-  mutt_replacelist_free(&md->spam);
+  mutt_regexlist_free(&mod_data->no_spam);
 
-  driver_tags_cleanup(md);
+  mutt_replacelist_free(&mod_data->spam);
 
-  FREE(&md);
+  score_list_free(&mod_data->score_list);
+
+  driver_tags_cleanup(mod_data);
+
+  FREE(&mod_data);
   return true;
 }
 

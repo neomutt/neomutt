@@ -45,11 +45,11 @@
  */
 bool mutt_is_mail_list(const struct Address *addr)
 {
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
-  if (!mutt_regexlist_match(&md->unmail, buf_string(addr->mailbox)))
-    return mutt_regexlist_match(&md->mail, buf_string(addr->mailbox));
+  if (!mutt_regexlist_match(&mod_data->unmail, buf_string(addr->mailbox)))
+    return mutt_regexlist_match(&mod_data->mail, buf_string(addr->mailbox));
   return false;
 }
 
@@ -60,13 +60,13 @@ bool mutt_is_mail_list(const struct Address *addr)
  */
 bool mutt_is_subscribed_list(const struct Address *addr)
 {
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
-  if (!mutt_regexlist_match(&md->unmail, buf_string(addr->mailbox)) &&
-      !mutt_regexlist_match(&md->unsubscribed, buf_string(addr->mailbox)))
+  if (!mutt_regexlist_match(&mod_data->unmail, buf_string(addr->mailbox)) &&
+      !mutt_regexlist_match(&mod_data->unsubscribed, buf_string(addr->mailbox)))
   {
-    return mutt_regexlist_match(&md->subscribed, buf_string(addr->mailbox));
+    return mutt_regexlist_match(&mod_data->subscribed, buf_string(addr->mailbox));
   }
   return false;
 }

@@ -23,12 +23,28 @@
 #ifndef MUTT_HISTORY_MODULE_DATA_H
 #define MUTT_HISTORY_MODULE_DATA_H
 
+#include "lib.h"
+
+/**
+ * struct History - Saved list of user-entered commands/searches
+ *
+ * This is a ring buffer of strings.
+ */
+struct History
+{
+  char  **hist;  ///< Array of history items
+  short   cur;   ///< Current history item
+  short   last;  ///< Last history item
+};
+
 /**
  * struct HistoryModuleData - History private Module data
  */
 struct HistoryModuleData
 {
-  int dummy;
+  struct Notify  *notify;             ///< Notifications
+  struct History histories[HC_MAX];   ///< Command histories, one for each #HistoryClass
+  int            old_size;            ///< The previous number of history entries to save
 };
 
 #endif /* MUTT_HISTORY_MODULE_DATA_H */

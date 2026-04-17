@@ -25,20 +25,10 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "test_common.h"
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "idn_decode", DT_BOOL, true, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
 
 void test_mutt_addr_for_display(void)
 {
@@ -59,8 +49,6 @@ void test_mutt_addr_for_display(void)
       .is_intl = 0,
       .intl_checked = 0,
     };
-
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
     const char *expected = "bob@bobsdomain";
     const char *actual = mutt_addr_for_display(&addr);

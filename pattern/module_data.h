@@ -23,12 +23,15 @@
 #ifndef MUTT_PATTERN_MODULE_DATA_H
 #define MUTT_PATTERN_MODULE_DATA_H
 
+#include "private.h"
+
 /**
  * struct PatternModuleData - Pattern private Module data
  */
 struct PatternModuleData
 {
-  int dummy;
+  struct Notify     *notify;                          ///< Notifications
+  struct RangeRegex  range_regexes[RANGE_K_INVALID];  ///< Set of Regexes for various range types
 };
 
 #endif /* MUTT_PATTERN_MODULE_DATA_H */

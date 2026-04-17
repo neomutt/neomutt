@@ -28,7 +28,7 @@
  */
 struct HelpbarModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_HELPBAR_MODULE_DATA_H */

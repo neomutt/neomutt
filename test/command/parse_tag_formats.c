@@ -47,8 +47,8 @@ void test_parse_tag_formats(void)
 {
   // enum CommandResult parse_tag_formats(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   struct Buffer *line = buf_pool_get();
   struct ParseContext *pc = parse_context_new();

@@ -28,16 +28,13 @@
 
 #include "config.h"
 #include <stddef.h>
+#include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
-
-/// Pgp Menu Definition
-struct MenuDefinition *MdPgp = NULL;
-
-/// Smime Menu Definition
-struct MenuDefinition *MdSmime = NULL;
+#include "module_data.h"
 
 // clang-format off
 /**
@@ -88,7 +85,7 @@ static const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
 /**
  * pgp_init_keys - Initialise the PGP Keybindings - Implements ::init_keys_api
  */
-void pgp_init_keys(struct SubMenu *sm_generic)
+void pgp_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -99,7 +96,9 @@ void pgp_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, PgpDefaultBindings);
 
-  MdPgp = md;
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+  mod_data->menu_pgp = md;
 
   sm = km_register_submenu(OpSmime);
   md = km_register_menu(MENU_SMIME, "smime");
@@ -107,5 +106,5 @@ void pgp_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, SmimeDefaultBindings);
 
-  MdSmime = md;
+  mod_data->menu_smime = md;
 }

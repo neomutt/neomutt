@@ -33,14 +33,6 @@
 #include "core/lib.h"
 #include "test_common.h"
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "idn_decode", DT_BOOL, true, 0, NULL, },
-  { "idn_encode", DT_BOOL, true, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
 void test_mutt_addrlist_to_intl(void)
 {
   // int mutt_addrlist_to_intl(struct AddressList *al, char **err);
@@ -64,8 +56,6 @@ void test_mutt_addrlist_to_intl(void)
                        { .local = "test@nixieröhre.nixieclock-tube.com",
                          .intl = "test@xn--nixierhre-57a.nixieclock-tube.com" },
                        { .local = "test@வலைப்பூ.com", .intl = "test@xn--xlcawl2e7azb.com" } };
-
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
     cs_subset_str_string_set(NeoMutt->sub, "charset", "utf-8", NULL);
 #ifdef HAVE_LIBIDN

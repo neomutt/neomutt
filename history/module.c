@@ -42,8 +42,11 @@ extern struct ConfigDef HistoryVars[];
  */
 static bool history_init(struct NeoMutt *n)
 {
-  // struct HistoryModuleData *md = MUTT_MEM_CALLOC(1, struct HistoryModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_HISTORY, md);
+  struct HistoryModuleData *mod_data = MUTT_MEM_CALLOC(1, struct HistoryModuleData);
+  neomutt_set_module_data(n, MODULE_ID_HISTORY, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -61,10 +64,12 @@ static bool history_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  */
 static bool history_cleanup(struct NeoMutt *n)
 {
-  // struct HistoryModuleData *md = neomutt_get_module_data(n, MODULE_ID_HISTORY);
-  // ASSERT(md);
+  struct HistoryModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_HISTORY);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data);
   return true;
 }
 

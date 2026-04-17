@@ -30,14 +30,13 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "msgcont.h"
+#include "module_data.h"
 #include "mutt_window.h"
 #ifdef USE_DEBUG_WINDOW
 #include "debug/lib.h"
 #endif
-
-/// Window acting as a stack for the message windows
-struct MuttWindow *MessageContainer = NULL;
 
 /**
  * msgcont_new - Create a new Message Container
@@ -45,9 +44,13 @@ struct MuttWindow *MessageContainer = NULL;
  */
 struct MuttWindow *msgcont_new(void)
 {
-  MessageContainer = mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL,
-                                     MUTT_WIN_SIZE_MINIMISE, MUTT_WIN_SIZE_UNLIMITED, 1);
-  return MessageContainer;
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  struct MuttWindow *win = mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL,
+                                           MUTT_WIN_SIZE_MINIMISE,
+                                           MUTT_WIN_SIZE_UNLIMITED, 1);
+  if (mod_data)
+    mod_data->message_container = win;
+  return win;
 }
 
 /**
@@ -56,28 +59,30 @@ struct MuttWindow *msgcont_new(void)
  */
 struct MuttWindow *msgcont_pop_window(void)
 {
-  if (!MessageContainer)
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->message_container)
     return NULL;
 
-  struct MuttWindow **wp_pop = ARRAY_LAST(&MessageContainer->children);
+  struct MuttWindow *mc = mod_data->message_container;
+
+  struct MuttWindow **wp_pop = ARRAY_LAST(&mc->children);
   if (!wp_pop)
     return NULL;
 
   struct MuttWindow *win_pop = *wp_pop;
 
   // Don't pop the last entry (check if there's a previous one)
-  if (ARRAY_SIZE(&MessageContainer->children) <= 1)
+  if (ARRAY_SIZE(&mc->children) <= 1)
     return NULL;
 
   // Hide the old window
   window_set_visible(win_pop, false);
 
   // Get the window that will become top of stack
-  struct MuttWindow **wp_top = ARRAY_GET(&MessageContainer->children,
-                                         ARRAY_SIZE(&MessageContainer->children) - 2);
+  struct MuttWindow **wp_top = ARRAY_GET(&mc->children, ARRAY_SIZE(&mc->children) - 2);
   struct MuttWindow *win_top = wp_top ? *wp_top : NULL;
 
-  ARRAY_REMOVE(&MessageContainer->children, wp_pop);
+  ARRAY_REMOVE(&mc->children, wp_pop);
 
   if (win_top)
   {
@@ -99,15 +104,18 @@ struct MuttWindow *msgcont_pop_window(void)
  */
 void msgcont_push_window(struct MuttWindow *win)
 {
-  if (!MessageContainer || !win)
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->message_container || !win)
     return;
 
+  struct MuttWindow *mc = mod_data->message_container;
+
   // Hide the current top window
-  struct MuttWindow **wp_top = ARRAY_LAST(&MessageContainer->children);
+  struct MuttWindow **wp_top = ARRAY_LAST(&mc->children);
   if (wp_top)
     window_set_visible(*wp_top, false);
 
-  mutt_window_add_child(MessageContainer, win);
+  mutt_window_add_child(mc, win);
   mutt_window_reflow(NULL);
   window_redraw(NULL);
 #ifdef USE_DEBUG_WINDOW
@@ -124,10 +132,11 @@ void msgcont_push_window(struct MuttWindow *win)
  */
 struct MuttWindow *msgcont_get_msgwin(void)
 {
-  if (!MessageContainer)
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->message_container)
     return NULL;
 
-  struct MuttWindow **wp = ARRAY_FIRST(&MessageContainer->children);
+  struct MuttWindow **wp = ARRAY_FIRST(&mod_data->message_container->children);
   if (!wp)
     return NULL;
 

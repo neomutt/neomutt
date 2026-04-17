@@ -128,7 +128,6 @@
 #include "imap/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
-#include "lua/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
 #include "pager/lib.h"
@@ -709,25 +708,25 @@ static int get_elem_queries(struct StringArray *queries, struct HashElemArray *h
 /**
  * init_keys - Initialise the Keybindings
  */
-static void init_keys(void)
+static void init_keys(struct NeoMutt *n)
 {
   km_init();
 
-  struct SubMenu *sm_generic = generic_init_keys();
+  struct SubMenu *sm_generic = generic_init_keys(n);
 
-  alias_init_keys(sm_generic);
-  attach_init_keys(sm_generic);
+  alias_init_keys(n, sm_generic);
+  attach_init_keys(n, sm_generic);
 #ifdef USE_AUTOCRYPT
-  autocrypt_init_keys(sm_generic);
+  autocrypt_init_keys(n, sm_generic);
 #endif
-  browser_init_keys(sm_generic);
-  compose_init_keys(sm_generic);
-  editor_init_keys(sm_generic);
-  sidebar_init_keys(sm_generic);
-  index_init_keys(sm_generic);
-  pager_init_keys(sm_generic);
-  pgp_init_keys(sm_generic);
-  postponed_init_keys(sm_generic);
+  browser_init_keys(n, sm_generic);
+  compose_init_keys(n, sm_generic);
+  editor_init_keys(n, sm_generic);
+  sidebar_init_keys(n, sm_generic);
+  index_init_keys(n, sm_generic);
+  pager_init_keys(n, sm_generic);
+  pgp_init_keys(n, sm_generic);
+  postponed_init_keys(n, sm_generic);
 
   km_sort();
 }
@@ -1056,7 +1055,7 @@ int main(int argc, char *argv[], char *envp[])
   if (!show_help(&cli->help))
     goto main_ok;
 
-  init_keys();
+  init_keys(NeoMutt);
 
 #ifdef USE_DEBUG_NOTIFY
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_all_observer, NULL);
@@ -1522,10 +1521,11 @@ int main(int argc, char *argv[], char *envp[])
     {
       if (cli->tui.start_nntp)
       {
+        struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
         const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
         OptNews = true;
-        CurrentNewsSrv = nntp_select_server(NULL, c_news_server, false);
-        if (!CurrentNewsSrv)
+        mod_data->current_news_srv = nntp_select_server(NULL, c_news_server, false);
+        if (!mod_data->current_news_srv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
       else if (ARRAY_EMPTY(&NeoMutt->accounts))
@@ -1562,9 +1562,11 @@ int main(int argc, char *argv[], char *envp[])
 
     if (OptNews)
     {
+      struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
       OptNews = false;
       buf_alloc(folder, PATH_MAX);
-      nntp_expand_path(folder->data, folder->dsize, &CurrentNewsSrv->conn->account);
+      nntp_expand_path(folder->data, folder->dsize,
+                       &mod_data->current_news_srv->conn->account);
     }
     else
     {
@@ -1672,9 +1674,6 @@ main_exit:
   FREE(&LastFolder);
   FREE(&ShortHostname);
 
-  mutt_delete_hooks(CMD_NONE);
-
-  lua_cleanup();
   mutt_prex_cleanup();
   config_cache_cleanup();
   MuttLogger = log_disp_queue;

@@ -41,9 +41,8 @@
 #include "editor/lib.h"
 #include "history/lib.h"
 #include "key/lib.h"
+#include "module_data.h"
 #include "type.h"
-
-extern char *SearchBuffers[];
 
 #define MUTT_SEARCH_UP 1
 #define MUTT_SEARCH_DOWN 2
@@ -57,6 +56,7 @@ extern char *SearchBuffers[];
  */
 static int search(struct Menu *menu, int op)
 {
+  struct MenuModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_MENU);
   int rc = -1;
   int wrap = 0;
   int search_dir;
@@ -64,7 +64,7 @@ static int search(struct Menu *menu, int op)
   struct Buffer *buf = buf_pool_get();
 
   char *search_buf = (menu->md && (menu->md->id < MENU_MAX)) ?
-                         SearchBuffers[menu->md->id] :
+                         mod_data->search_buffers[menu->md->id] :
                          NULL;
 
   if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
@@ -78,8 +78,8 @@ static int search(struct Menu *menu, int op)
     }
     if (menu->md && (menu->md->id < MENU_MAX))
     {
-      mutt_str_replace(&SearchBuffers[menu->md->id], buf_string(buf));
-      search_buf = SearchBuffers[menu->md->id];
+      mutt_str_replace(&mod_data->search_buffers[menu->md->id], buf_string(buf));
+      search_buf = mod_data->search_buffers[menu->md->id];
     }
     menu->search_dir = ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
                            MUTT_SEARCH_DOWN :
@@ -139,8 +139,9 @@ done:
 /**
  * menu_movement - Handle all the common Menu movements - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int menu_movement(struct Menu *menu, const struct KeyEvent *event)
+static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct Menu *menu = fdata->menu;
   switch (event->op)
   {
     case OP_BOTTOM_PAGE:
@@ -215,8 +216,9 @@ static int menu_movement(struct Menu *menu, const struct KeyEvent *event)
 /**
  * menu_search - Handle Menu searching - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int menu_search(struct Menu *menu, const struct KeyEvent *event)
+static int menu_search(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct Menu *menu = fdata->menu;
   if (menu->search)
   {
     int index = search(menu, event->op);
@@ -229,8 +231,9 @@ static int menu_search(struct Menu *menu, const struct KeyEvent *event)
 /**
  * op_help - Show the help screen - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int op_help(struct Menu *menu, const struct KeyEvent *event)
+static int op_help(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct Menu *menu = fdata->menu;
   mutt_help(menu->md);
   menu->redraw = MENU_REDRAW_FULL;
   return FR_SUCCESS;
@@ -239,8 +242,9 @@ static int op_help(struct Menu *menu, const struct KeyEvent *event)
 /**
  * op_jump - Jump to an index number - Implements ::menu_function_t - @ingroup menu_function_api
  */
-static int op_jump(struct Menu *menu, const struct KeyEvent *event)
+static int op_jump(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct Menu *menu = fdata->menu;
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
@@ -325,13 +329,18 @@ int menu_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *even
   const int op = event->op;
   struct Menu *menu = win->wdata;
 
+  struct MenuFunctionData fdata = {
+    .n = NeoMutt,
+    .menu = menu,
+  };
+
   int rc = FR_UNKNOWN;
   for (size_t i = 0; MenuFunctions[i].op != OP_NULL; i++)
   {
     const struct MenuFunction *fn = &MenuFunctions[i];
     if (fn->op == op)
     {
-      rc = fn->function(menu, event);
+      rc = fn->function(&fdata, event);
       break;
     }
   }

@@ -46,8 +46,16 @@ extern struct ConfigDef ConnVarsSsl[];
  */
 static bool conn_init(struct NeoMutt *n)
 {
-  // struct ConnModuleData *md = MUTT_MEM_CALLOC(1, struct ConnModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_CONN, md);
+  struct ConnModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ConnModuleData);
+  neomutt_set_module_data(n, MODULE_ID_CONN, mod_data);
+
+#ifdef USE_SSL_OPENSSL
+  mod_data->host_ex_data_index = -1;
+  mod_data->skip_mode_ex_data_index = -1;
+#endif
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -89,10 +97,16 @@ static bool conn_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  */
 static bool conn_cleanup(struct NeoMutt *n)
 {
-  // struct ConnModuleData *md = neomutt_get_module_data(n, MODULE_ID_CONN);
-  // ASSERT(md);
+  struct ConnModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_CONN);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+#ifdef USE_SASL_CYRUS
+  FREE(&mod_data->mutt_sasl_callbacks);
+  FREE(&mod_data->secret_ptr);
+#endif
+  FREE(&mod_data);
   return true;
 }
 

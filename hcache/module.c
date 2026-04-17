@@ -42,8 +42,11 @@ extern struct ConfigDef HcacheVarsComp[];
  */
 static bool hcache_init(struct NeoMutt *n)
 {
-  // struct HcacheModuleData *md = MUTT_MEM_CALLOC(1, struct HcacheModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_HCACHE, md);
+  struct HcacheModuleData *mod_data = MUTT_MEM_CALLOC(1, struct HcacheModuleData);
+  neomutt_set_module_data(n, MODULE_ID_HCACHE, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -69,10 +72,12 @@ static bool hcache_config_define_variables(struct NeoMutt *n, struct ConfigSet *
  */
 static bool hcache_cleanup(struct NeoMutt *n)
 {
-  // struct HcacheModuleData *md = neomutt_get_module_data(n, MODULE_ID_HCACHE);
-  // ASSERT(md);
+  struct HcacheModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_HCACHE);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data);
   return true;
 }
 

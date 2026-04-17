@@ -43,6 +43,7 @@
 #include "debug.h"
 #include "dump.h"
 #include "globals.h"
+#include "module_data.h"
 #include "notify2.h"
 #include "parse_color.h"
 #include "regex4.h"
@@ -426,8 +427,9 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
   {
     get_colorid_name(cid, token);
     color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(token));
+    struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
     struct EventColor ev_c = { cid, NULL };
-    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+    notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
 done:

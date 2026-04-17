@@ -28,7 +28,7 @@
  */
 struct CompleteModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_COMPLETE_MODULE_DATA_H */

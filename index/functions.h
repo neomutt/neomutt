@@ -25,12 +25,19 @@
 
 #include <stdbool.h>
 
-struct IndexPrivateData;
-struct IndexSharedData;
 struct KeyEvent;
 struct MuttWindow;
 
-extern struct MenuDefinition *MdIndex;
+/**
+ * struct IndexFunctionData - Data passed to Index worker functions
+ */
+struct IndexFunctionData
+{
+  struct NeoMutt *n;                ///< NeoMutt application data
+  struct IndexModuleData *mod_data; ///< Index module data
+  struct IndexSharedData *shared;   ///< Shared Index data
+  struct IndexPrivateData *priv;    ///< Private Index data
+};
 
 /**
  * @defgroup index_function_api Index Function API
@@ -38,16 +45,15 @@ extern struct MenuDefinition *MdIndex;
  *
  * Prototype for an Index Function
  *
- * @param shared Shared Index data
- * @param priv   Private Index data
+ * @param fdata   Index Function context data
  * @param event Event to process
  * @retval num #FunctionRetval or opcode, e.g. OP_JUMP
  *
- * @pre shared is not NULL
- * @pre priv   is not NULL
- * @pre event  is not NULL
+ * @pre fdata   is not NULL
+ * @pre event is not NULL
  */
-typedef int (*index_function_t)(struct IndexSharedData *shared, struct IndexPrivateData *priv, const struct KeyEvent *event);
+typedef int (*index_function_t)(struct IndexFunctionData *fdata,
+                                const struct KeyEvent *event);
 
 /**
  * struct IndexFunction - A NeoMutt function
@@ -56,10 +62,13 @@ struct IndexFunction
 {
   int op;                    ///< Op code, e.g. OP_MAIN_LIMIT
   index_function_t function; ///< Function to call
-  int flags;                 ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
+  int flags; ///< Prerequisites for the function, e.g. #CHECK_IN_MAILBOX
 };
 
 int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 bool index_next_undeleted(struct MuttWindow *win_index);
+struct MenuDefinition *index_get_menu_definition(void);
+
+#define MdIndex (index_get_menu_definition())
 
 #endif /* MUTT_INDEX_FUNCTIONS_H */

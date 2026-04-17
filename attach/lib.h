@@ -62,7 +62,7 @@ struct ParseContext;
 struct ParseError;
 struct SubMenu;
 
-void attach_init_keys(struct SubMenu *sm_generic);
+void attach_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 
 extern const struct ExpandoRenderCallback AttachRenderCallbacks[];
 

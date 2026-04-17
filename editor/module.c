@@ -38,8 +38,11 @@
  */
 static bool editor_init(struct NeoMutt *n)
 {
-  // struct EditorModuleData *md = MUTT_MEM_CALLOC(1, struct EditorModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_EDITOR, md);
+  struct EditorModuleData *mod_data = MUTT_MEM_CALLOC(1, struct EditorModuleData);
+  neomutt_set_module_data(n, MODULE_ID_EDITOR, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -49,10 +52,12 @@ static bool editor_init(struct NeoMutt *n)
  */
 static bool editor_cleanup(struct NeoMutt *n)
 {
-  // struct EditorModuleData *md = neomutt_get_module_data(n, MODULE_ID_EDITOR);
-  // ASSERT(md);
+  struct EditorModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_EDITOR);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data);
   return true;
 }
 

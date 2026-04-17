@@ -28,7 +28,7 @@
  */
 struct ConfigModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_CONFIG_MODULE_DATA_H */

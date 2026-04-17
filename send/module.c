@@ -43,10 +43,13 @@ extern const struct Command SendCommands[];
  */
 static bool send_init(struct NeoMutt *n)
 {
-  struct SendModuleData *md = MUTT_MEM_CALLOC(1, struct SendModuleData);
-  neomutt_set_module_data(n, MODULE_ID_SEND, md);
+  struct SendModuleData *mod_data = MUTT_MEM_CALLOC(1, struct SendModuleData);
+  neomutt_set_module_data(n, MODULE_ID_SEND, mod_data);
 
-  STAILQ_INIT(&md->user_header);
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
+
+  STAILQ_INIT(&mod_data->user_header);
 
   return true;
 }
@@ -72,12 +75,14 @@ static bool send_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  */
 static bool send_cleanup(struct NeoMutt *n)
 {
-  struct SendModuleData *md = neomutt_get_module_data(n, MODULE_ID_SEND);
-  ASSERT(md);
+  struct SendModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_SEND);
+  ASSERT(mod_data);
 
-  mutt_list_free(&md->user_header);
+  notify_free(&mod_data->notify);
 
-  FREE(&md);
+  mutt_list_free(&mod_data->user_header);
+
+  FREE(&mod_data);
   return true;
 }
 

@@ -73,7 +73,6 @@ int gnutls_protocol_set_priority(gnutls_session_t session, const int *list);
  * 3.4 (2015-04).  TLS 1.3 support wasn't added until version 3.6.5.
  * Therefore, no attempt is made to support $ssl_use_tlsv1_3 in this code.
  */
-static int ProtocolPriority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1, GNUTLS_SSL3, 0 };
 #endif
 
 /**
@@ -820,12 +819,13 @@ cleanup:
  */
 static int tls_set_priority(struct TlsSockData *data)
 {
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
   size_t nproto = 0; /* number of tls/ssl protocols */
 
   const bool c_ssl_use_tlsv1_2 = cs_subset_bool(NeoMutt->sub, "ssl_use_tlsv1_2");
   if (c_ssl_use_tlsv1_2)
-    ProtocolPriority[nproto++] = GNUTLS_TLS1_2;
-  ProtocolPriority[nproto] = 0;
+    mod_data->protocol_priority[nproto++] = GNUTLS_TLS1_2;
+  mod_data->protocol_priority[nproto] = 0;
 
   if (nproto == 0)
   {
@@ -842,7 +842,7 @@ static int tls_set_priority(struct TlsSockData *data)
   /* We use default priorities (see gnutls documentation),
    * except for protocol version */
   gnutls_set_default_priority(data->session);
-  gnutls_protocol_set_priority(data->session, ProtocolPriority);
+  gnutls_protocol_set_priority(data->session, mod_data->protocol_priority);
   return 0;
 }
 #endif

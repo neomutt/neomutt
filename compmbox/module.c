@@ -40,8 +40,11 @@ extern const struct Command CompCommands[];
  */
 static bool compmbox_init(struct NeoMutt *n)
 {
-  // struct CompmboxModuleData *md = MUTT_MEM_CALLOC(1, struct CompmboxModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_COMPMBOX, md);
+  struct CompmboxModuleData *mod_data = MUTT_MEM_CALLOC(1, struct CompmboxModuleData);
+  neomutt_set_module_data(n, MODULE_ID_COMPMBOX, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -59,10 +62,12 @@ static bool compmbox_commands_register(struct NeoMutt *n, struct CommandArray *c
  */
 static bool compmbox_cleanup(struct NeoMutt *n)
 {
-  // struct CompmboxModuleData *md = neomutt_get_module_data(n, MODULE_ID_COMPMBOX);
-  // ASSERT(md);
+  struct CompmboxModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COMPMBOX);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data);
   return true;
 }
 

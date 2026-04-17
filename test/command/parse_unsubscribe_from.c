@@ -25,7 +25,6 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "imap/lib.h"
 #include "parse/lib.h"
@@ -44,18 +43,9 @@ static const struct CommandTest Tests[] = {
   // clang-format on
 };
 
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "imap_delim_chars", DT_STRING, IP "/.", 0, NULL, },
-  { NULL },
-  // clang-format on
-};
-
 void test_parse_unsubscribe_from(void)
 {
   // enum CommandResult parse_unsubscribe_from(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe)
-
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   struct Buffer *line = buf_pool_get();
   struct ParseContext *pc = parse_context_new();

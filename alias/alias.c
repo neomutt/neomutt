@@ -274,10 +274,10 @@ struct AddressList *alias_lookup(const char *name)
 {
   struct Alias **ap = NULL;
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
-  ARRAY_FOREACH(ap, &md->aliases)
+  ARRAY_FOREACH(ap, &mod_data->aliases)
   {
     struct Alias *a = *ap;
 
@@ -509,11 +509,11 @@ retry_name:
     goto done;
   }
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   alias_reverse_add(alias);
-  ARRAY_ADD(&md->aliases, alias);
+  ARRAY_ADD(&mod_data->aliases, alias);
 
   const char *const c_alias_file = cs_subset_path(sub, "alias_file");
   buf_strcpy(buf, c_alias_file);

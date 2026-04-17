@@ -27,8 +27,6 @@ struct AutocryptData;
 struct KeyEvent;
 struct MuttWindow;
 
-extern struct MenuDefinition *MdAutocrypt;
-
 /**
  * @defgroup autocrypt_function_api Autocrypt Function API
  * @ingroup dispatcher_api

@@ -28,7 +28,7 @@
  */
 struct ExpandoModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_EXPANDO_MODULE_DATA_H */

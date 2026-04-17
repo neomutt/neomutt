@@ -81,10 +81,12 @@
 #include "expando_index.h"
 #include "functions.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mx.h"
 #include "nntp/adata.h"
+#include "nntp/module_data.h"
 #include "private_data.h"
 #include "shared_data.h"
 #include "status.h"
@@ -775,10 +777,11 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
 void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
                           struct IndexSharedData *shared, bool read_only)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   if (OptNews)
   {
     OptNews = false;
-    nntp_expand_path(buf->data, buf->dsize, &CurrentNewsSrv->conn->account);
+    nntp_expand_path(buf->data, buf->dsize, &mod_data->current_news_srv->conn->account);
   }
   else
   {
@@ -1130,11 +1133,14 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
   int op = OP_NULL;
 
+  struct IndexModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_INDEX);
+  ASSERT(mod_data);
+
   if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP))
     dlg->help_data = IndexNewsHelp;
   else
     dlg->help_data = IndexHelp;
-  dlg->help_md = MdIndex;
+  dlg->help_md = mod_data->menu_index;
 
   priv->menu = priv->win_index->wdata;
   priv->menu->make_entry = index_make_entry;
@@ -1316,7 +1322,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     mutt_refresh();
 
     window_redraw(NULL);
-    struct KeyEvent event = km_dokey(MdIndex, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(mod_data->menu_index, GETCH_NO_FLAGS);
     op = event.op;
 
     if (op == OP_REPAINT)
@@ -1401,7 +1407,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       rc = global_function_dispatcher(priv->menu->win, &event);
 
     if (rc == FR_UNKNOWN)
-      km_error_key(MdIndex);
+      km_error_key(mod_data->menu_index);
 
 #ifdef USE_NOTMUCH
     nm_db_debug_check(shared->mailbox);

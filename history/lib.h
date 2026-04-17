@@ -59,7 +59,7 @@ enum HistoryClass
   HC_PATTERN,         ///< Patterns
   HC_OTHER,           ///< Miscellaneous strings
   HC_MAILBOX,         ///< Mailboxes
-  HC_MAX,            
+  HC_MAX,
   HC_NONE = HC_MAX,   ///< No History
 };
 

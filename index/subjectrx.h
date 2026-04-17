@@ -47,8 +47,8 @@ enum NotifySubjectRx
   NT_SUBJECTRX_DELETE_ALL, ///< All Subject Regexes have been deleted
 };
 
-void subjectrx_init   (struct NeoMutt *n, struct IndexModuleData *md);
-void subjectrx_cleanup(struct IndexModuleData *md);
+void subjectrx_init   (struct NeoMutt *n, struct IndexModuleData *mod_data);
+void subjectrx_cleanup(struct IndexModuleData *mod_data);
 
 enum CommandResult parse_subjectrx_list  (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unsubjectrx_list(const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);

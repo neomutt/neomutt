@@ -90,6 +90,7 @@
 #endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
+#include "autocrypt/module_data.h"
 #endif
 
 /**
@@ -311,8 +312,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     }
   }
 
-  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
-  ASSERT(md);
+  struct SendModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(mod_data);
 
   /* Handle the Subject line: fast_reply skips the prompt if subject already set.
    * Check user_header for any "Subject:" override from send-hooks. */
@@ -332,7 +333,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
 
     buf_reset(buf);
     struct ListNode *uh = NULL;
-    STAILQ_FOREACH(uh, &md->user_header, entries)
+    STAILQ_FOREACH(uh, &mod_data->user_header, entries)
     {
       size_t plen = mutt_istr_startswith(uh->data, "subject:");
       if (plen)
@@ -377,11 +378,11 @@ static char *nntp_get_header(const char *s)
  */
 static void process_user_recips(struct Envelope *env)
 {
-  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
-  ASSERT(md);
+  struct SendModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(mod_data);
 
   struct ListNode *uh = NULL;
-  STAILQ_FOREACH(uh, &md->user_header, entries)
+  STAILQ_FOREACH(uh, &mod_data->user_header, entries)
   {
     size_t plen;
     if ((plen = mutt_istr_startswith(uh->data, "to:")))
@@ -405,11 +406,11 @@ static void process_user_recips(struct Envelope *env)
  */
 static void process_user_header(struct Envelope *env)
 {
-  struct SendModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
-  ASSERT(md);
+  struct SendModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SEND);
+  ASSERT(mod_data);
 
   struct ListNode *uh = NULL;
-  STAILQ_FOREACH(uh, &md->user_header, entries)
+  STAILQ_FOREACH(uh, &mod_data->user_header, entries)
   {
     size_t plen;
     if ((plen = mutt_istr_startswith(uh->data, "from:")))
@@ -1915,7 +1916,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
         mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
       }
-      encrypt_as = AutocryptDefaultKey;
+      struct AutocryptModuleData *ac_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
+      encrypt_as = ac_mod_data->autocrypt_default_key;
     }
 #endif
 

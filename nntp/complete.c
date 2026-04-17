@@ -31,9 +31,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "lib.h"
 #include "adata.h"
 #include "mdata.h"
+#include "module_data.h"
 
 /**
  * nntp_complete - Auto-complete NNTP newsgroups
@@ -45,7 +47,8 @@
  */
 int nntp_complete(struct Buffer *buf)
 {
-  struct NntpAccountData *adata = CurrentNewsSrv;
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
+  struct NntpAccountData *adata = mod_data->current_news_srv;
   size_t n = 0;
   struct Buffer *filepart = buf_new(buf_string(buf));
   bool init = false;

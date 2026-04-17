@@ -78,12 +78,12 @@ static const struct CommandTest UnMacroTests[] = {
 
 static void init_menus(void)
 {
-  struct SubMenu *sm_generic = generic_init_keys();
+  struct SubMenu *sm_generic = generic_init_keys(NeoMutt);
 
-  editor_init_keys(sm_generic);
-  sidebar_init_keys(sm_generic);
-  index_init_keys(sm_generic);
-  pager_init_keys(sm_generic);
+  editor_init_keys(NeoMutt, sm_generic);
+  sidebar_init_keys(NeoMutt, sm_generic);
+  index_init_keys(NeoMutt, sm_generic);
+  pager_init_keys(NeoMutt, sm_generic);
 }
 
 static void test_parse_unbind2(void)

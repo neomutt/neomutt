@@ -41,48 +41,32 @@
 #include "color.h"
 #include "commands.h"
 #include "debug.h"
+#include "module_data.h"
 #include "notify2.h"
 #include "regex4.h"
-
-// clang-format off
-struct RegexColorList AttachList;         ///< List of colours applied to the attachment headers
-struct RegexColorList BodyList;           ///< List of colours applied to the email body
-struct RegexColorList HeaderList;         ///< List of colours applied to the email headers
-struct RegexColorList IndexAuthorList;    ///< List of colours applied to the author in the index
-struct RegexColorList IndexCollapsedList; ///< List of colours applied to a collapsed thread in the index
-struct RegexColorList IndexDateList;      ///< List of colours applied to the date in the index
-struct RegexColorList IndexFlagsList;     ///< List of colours applied to the flags in the index
-struct RegexColorList IndexLabelList;     ///< List of colours applied to the label in the index
-struct RegexColorList IndexList;          ///< List of default colours applied to the index
-struct RegexColorList IndexNumberList;    ///< List of colours applied to the message number in the index
-struct RegexColorList IndexSizeList;      ///< List of colours applied to the size in the index
-struct RegexColorList IndexSubjectList;   ///< List of colours applied to the subject in the index
-struct RegexColorList IndexTagList;       ///< List of colours applied to tags in the index
-struct RegexColorList IndexTagsList;      ///< List of colours applied to the tags in the index
-struct RegexColorList StatusList;         ///< List of colours applied to the status bar
-// clang-format on
 
 /**
  * regex_colors_init - Initialise the Regex colours
  */
 void regex_colors_init(void)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   color_debug(LL_DEBUG5, "init AttachList, BodyList, etc\n");
-  STAILQ_INIT(&AttachList);
-  STAILQ_INIT(&BodyList);
-  STAILQ_INIT(&HeaderList);
-  STAILQ_INIT(&IndexAuthorList);
-  STAILQ_INIT(&IndexCollapsedList);
-  STAILQ_INIT(&IndexDateList);
-  STAILQ_INIT(&IndexLabelList);
-  STAILQ_INIT(&IndexNumberList);
-  STAILQ_INIT(&IndexSizeList);
-  STAILQ_INIT(&IndexTagsList);
-  STAILQ_INIT(&IndexFlagsList);
-  STAILQ_INIT(&IndexList);
-  STAILQ_INIT(&IndexSubjectList);
-  STAILQ_INIT(&IndexTagList);
-  STAILQ_INIT(&StatusList);
+  STAILQ_INIT(&mod_data->attach_list);
+  STAILQ_INIT(&mod_data->body_list);
+  STAILQ_INIT(&mod_data->header_list);
+  STAILQ_INIT(&mod_data->index_author_list);
+  STAILQ_INIT(&mod_data->index_collapsed_list);
+  STAILQ_INIT(&mod_data->index_date_list);
+  STAILQ_INIT(&mod_data->index_label_list);
+  STAILQ_INIT(&mod_data->index_number_list);
+  STAILQ_INIT(&mod_data->index_size_list);
+  STAILQ_INIT(&mod_data->index_tags_list);
+  STAILQ_INIT(&mod_data->index_flags_list);
+  STAILQ_INIT(&mod_data->index_list);
+  STAILQ_INIT(&mod_data->index_subject_list);
+  STAILQ_INIT(&mod_data->index_tag_list);
+  STAILQ_INIT(&mod_data->status_list);
 }
 
 /**
@@ -90,22 +74,23 @@ void regex_colors_init(void)
  */
 void regex_colors_reset(void)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   color_debug(LL_DEBUG5, "reset regex\n");
-  regex_color_list_clear(&AttachList);
-  regex_color_list_clear(&BodyList);
-  regex_color_list_clear(&HeaderList);
-  regex_color_list_clear(&IndexList);
-  regex_color_list_clear(&IndexAuthorList);
-  regex_color_list_clear(&IndexCollapsedList);
-  regex_color_list_clear(&IndexDateList);
-  regex_color_list_clear(&IndexLabelList);
-  regex_color_list_clear(&IndexNumberList);
-  regex_color_list_clear(&IndexSizeList);
-  regex_color_list_clear(&IndexTagsList);
-  regex_color_list_clear(&IndexFlagsList);
-  regex_color_list_clear(&IndexSubjectList);
-  regex_color_list_clear(&IndexTagList);
-  regex_color_list_clear(&StatusList);
+  regex_color_list_clear(&mod_data->attach_list);
+  regex_color_list_clear(&mod_data->body_list);
+  regex_color_list_clear(&mod_data->header_list);
+  regex_color_list_clear(&mod_data->index_list);
+  regex_color_list_clear(&mod_data->index_author_list);
+  regex_color_list_clear(&mod_data->index_collapsed_list);
+  regex_color_list_clear(&mod_data->index_date_list);
+  regex_color_list_clear(&mod_data->index_label_list);
+  regex_color_list_clear(&mod_data->index_number_list);
+  regex_color_list_clear(&mod_data->index_size_list);
+  regex_color_list_clear(&mod_data->index_tags_list);
+  regex_color_list_clear(&mod_data->index_flags_list);
+  regex_color_list_clear(&mod_data->index_subject_list);
+  regex_color_list_clear(&mod_data->index_tag_list);
+  regex_color_list_clear(&mod_data->status_list);
 }
 
 /**
@@ -204,38 +189,39 @@ void regex_color_list_clear(struct RegexColorList *rcl)
  */
 struct RegexColorList *regex_colors_get_list(enum ColorId cid)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   switch (cid)
   {
     case MT_COLOR_ATTACH_HEADERS:
-      return &AttachList;
+      return &mod_data->attach_list;
     case MT_COLOR_BODY:
-      return &BodyList;
+      return &mod_data->body_list;
     case MT_COLOR_HEADER:
-      return &HeaderList;
+      return &mod_data->header_list;
     case MT_COLOR_INDEX:
-      return &IndexList;
+      return &mod_data->index_list;
     case MT_COLOR_INDEX_AUTHOR:
-      return &IndexAuthorList;
+      return &mod_data->index_author_list;
     case MT_COLOR_INDEX_COLLAPSED:
-      return &IndexCollapsedList;
+      return &mod_data->index_collapsed_list;
     case MT_COLOR_INDEX_DATE:
-      return &IndexDateList;
+      return &mod_data->index_date_list;
     case MT_COLOR_INDEX_FLAGS:
-      return &IndexFlagsList;
+      return &mod_data->index_flags_list;
     case MT_COLOR_INDEX_LABEL:
-      return &IndexLabelList;
+      return &mod_data->index_label_list;
     case MT_COLOR_INDEX_NUMBER:
-      return &IndexNumberList;
+      return &mod_data->index_number_list;
     case MT_COLOR_INDEX_SIZE:
-      return &IndexSizeList;
+      return &mod_data->index_size_list;
     case MT_COLOR_INDEX_SUBJECT:
-      return &IndexSubjectList;
+      return &mod_data->index_subject_list;
     case MT_COLOR_INDEX_TAG:
-      return &IndexTagList;
+      return &mod_data->index_tag_list;
     case MT_COLOR_INDEX_TAGS:
-      return &IndexTagsList;
+      return &mod_data->index_tags_list;
     case MT_COLOR_STATUS:
-      return &StatusList;
+      return &mod_data->status_list;
     default:
       return NULL;
   }
@@ -316,8 +302,9 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
   if (is_index)
   {
     /* force re-caching of index colors */
+    struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
     struct EventColor ev_c = { MT_COLOR_INDEX, NULL };
-    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+    notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -379,8 +366,9 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
 
   if (!is_index) // else it will be logged in add_pattern()
   {
+    struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
     struct EventColor ev_c = { cid, NULL };
-    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+    notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
   return true;
@@ -401,7 +389,8 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
   if (cid != MT_COLOR_STATUS)
     return MUTT_CMD_ERROR;
 
-  int rc = add_pattern(&StatusList, pat, ac, err, false, match);
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  int rc = add_pattern(&mod_data->status_list, pat, ac, err, false, match);
   if (rc != MUTT_CMD_SUCCESS)
     return rc;
 
@@ -411,7 +400,7 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
   buf_pool_release(&buf);
 
   struct EventColor ev_c = { cid, NULL };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+  notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
   return rc;
 }
@@ -428,6 +417,8 @@ bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat)
   if (!cl)
     return false;
 
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+
   if (!pat) // Reset all patterns
   {
     if (STAILQ_EMPTY(cl))
@@ -435,7 +426,7 @@ bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat)
 
     mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
     struct EventColor ev_c = { cid, NULL };
-    notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+    notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 
     regex_color_list_clear(cl);
     return true;
@@ -458,7 +449,7 @@ bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat)
 
       mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: XXX\n");
       struct EventColor ev_c = { cid, &np->attr_color };
-      notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+      notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 
       regex_color_free(&np);
       break;

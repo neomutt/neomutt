@@ -23,12 +23,17 @@
 #ifndef MUTT_BROWSER_MODULE_DATA_H
 #define MUTT_BROWSER_MODULE_DATA_H
 
+#include "mutt/lib.h"
+
 /**
  * struct BrowserModuleData - Browser private Module data
  */
 struct BrowserModuleData
 {
-  int dummy;
+  struct Notify         *notify;           ///< Notifications
+  struct MenuDefinition *menu_browser;     ///< Browser menu definition
+  struct Buffer          last_dir;         ///< Browser: previous selected directory
+  struct Buffer          last_dir_backup;  ///< Browser: backup copy of the current directory
 };
 
 #endif /* MUTT_BROWSER_MODULE_DATA_H */

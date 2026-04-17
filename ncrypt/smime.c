@@ -56,31 +56,21 @@
 #include "crypt.h"
 #include "cryptglue.h"
 #include "expando_smime.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 #include "smime.h"
 #endif
-
-/// Cached Smime Passphrase
-static char SmimePass[256];
-/// Unix time when #SmimePass expires
-static time_t SmimeExpTime = 0; /* when does the cached passphrase expire? */
-
-/// Smime key to use
-static struct Buffer SmimeKeyToUse = { 0 };
-/// Smime certificate to use
-static struct Buffer SmimeCertToUse = { 0 };
-/// Smime intermediate certificate to use
-static struct Buffer SmimeIntermediateToUse = { 0 };
 
 /**
  * smime_init - Initialise smime globals
  */
 void smime_init(void)
 {
-  buf_alloc(&SmimeKeyToUse, 256);
-  buf_alloc(&SmimeCertToUse, 256);
-  buf_alloc(&SmimeIntermediateToUse, 256);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  buf_alloc(&mod_data->smime_key_to_use, 256);
+  buf_alloc(&mod_data->smime_cert_to_use, 256);
+  buf_alloc(&mod_data->smime_intermediate_to_use, 256);
 }
 
 /**
@@ -88,9 +78,10 @@ void smime_init(void)
  */
 void smime_cleanup(void)
 {
-  buf_dealloc(&SmimeKeyToUse);
-  buf_dealloc(&SmimeCertToUse);
-  buf_dealloc(&SmimeIntermediateToUse);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  buf_dealloc(&mod_data->smime_key_to_use);
+  buf_dealloc(&mod_data->smime_cert_to_use);
+  buf_dealloc(&mod_data->smime_intermediate_to_use);
 }
 
 /**
@@ -145,8 +136,9 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
  */
 void smime_class_void_passphrase(void)
 {
-  memset(SmimePass, 0, sizeof(SmimePass));
-  SmimeExpTime = 0;
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  memset(mod_data->smime_pass, 0, sizeof(mod_data->smime_pass));
+  mod_data->smime_exp_time = 0;
 }
 
 /**
@@ -154,8 +146,9 @@ void smime_class_void_passphrase(void)
  */
 bool smime_class_valid_passphrase(void)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   const time_t now = mutt_date_now();
-  if (now < SmimeExpTime)
+  if (now < mod_data->smime_exp_time)
   {
     /* Use cached copy.  */
     return true;
@@ -166,18 +159,18 @@ bool smime_class_valid_passphrase(void)
   struct Buffer *buf = buf_pool_get();
   const int rc = mw_get_field(_("Enter S/MIME passphrase:"), buf,
                               MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED, HC_OTHER, NULL, NULL);
-  mutt_str_copy(SmimePass, buf_string(buf), sizeof(SmimePass));
+  mutt_str_copy(mod_data->smime_pass, buf_string(buf), sizeof(mod_data->smime_pass));
   buf_pool_release(&buf);
 
   if (rc == 0)
   {
     const short c_smime_timeout = cs_subset_number(NeoMutt->sub, "smime_timeout");
-    SmimeExpTime = mutt_date_add_timeout(now, c_smime_timeout);
+    mod_data->smime_exp_time = mutt_date_add_timeout(now, c_smime_timeout);
     return true;
   }
   else
   {
-    SmimeExpTime = 0;
+    mod_data->smime_exp_time = 0;
   }
 
   return false;
@@ -577,6 +570,7 @@ done:
  */
 static void getkeys(const char *mailbox)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   const char *k = NULL;
 
   struct SmimeKey *key = smime_get_key_by_addr(mailbox, KEYFLAG_CANENCRYPT, false, false);
@@ -596,13 +590,13 @@ static void getkeys(const char *mailbox)
   k = key ? key->hash : NONULL(c_smime_default_key);
 
   /* if the key is different from last time */
-  if ((buf_len(&SmimeKeyToUse) <= smime_keys_len) ||
-      !mutt_istr_equal(k, SmimeKeyToUse.data + smime_keys_len + 1))
+  if ((buf_len(&mod_data->smime_key_to_use) <= smime_keys_len) ||
+      !mutt_istr_equal(k, mod_data->smime_key_to_use.data + smime_keys_len + 1))
   {
     smime_class_void_passphrase();
-    buf_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), k);
+    buf_printf(&mod_data->smime_key_to_use, "%s/%s", NONULL(c_smime_keys), k);
     const char *const c_smime_certificates = cs_subset_path(NeoMutt->sub, "smime_certificates");
-    buf_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), k);
+    buf_printf(&mod_data->smime_cert_to_use, "%s/%s", NONULL(c_smime_certificates), k);
   }
 
   smime_key_free(&key);
@@ -613,14 +607,16 @@ static void getkeys(const char *mailbox)
  */
 void smime_class_getkeys(struct Envelope *env)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   const bool c_smime_decrypt_use_default_key = cs_subset_bool(NeoMutt->sub, "smime_decrypt_use_default_key");
   const char *const c_smime_default_key = cs_subset_string(NeoMutt->sub, "smime_default_key");
   if (c_smime_decrypt_use_default_key && c_smime_default_key)
   {
     const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
-    buf_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), c_smime_default_key);
+    buf_printf(&mod_data->smime_key_to_use, "%s/%s", NONULL(c_smime_keys), c_smime_default_key);
     const char *const c_smime_certificates = cs_subset_path(NeoMutt->sub, "smime_certificates");
-    buf_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), c_smime_default_key);
+    buf_printf(&mod_data->smime_cert_to_use, "%s/%s",
+               NONULL(c_smime_certificates), c_smime_default_key);
     return;
   }
 
@@ -1175,12 +1171,14 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
                                FILE **fp_smime_err, int fp_smime_infd, int fp_smime_outfd,
                                int fp_smime_errfd, const char *fname)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   const char *const c_smime_sign_digest_alg = cs_subset_string(NeoMutt->sub, "smime_sign_digest_alg");
   const struct Expando *c_smime_sign_command = cs_subset_expando(NeoMutt->sub, "smime_sign_command");
-  return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd, fp_smime_outfd,
-                      fp_smime_errfd, fname, NULL, NULL, c_smime_sign_digest_alg,
-                      buf_string(&SmimeKeyToUse), buf_string(&SmimeCertToUse),
-                      buf_string(&SmimeIntermediateToUse), c_smime_sign_command);
+  return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
+                      fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL,
+                      c_smime_sign_digest_alg, buf_string(&mod_data->smime_key_to_use),
+                      buf_string(&mod_data->smime_cert_to_use),
+                      buf_string(&mod_data->smime_intermediate_to_use), c_smime_sign_command);
 }
 
 /**
@@ -1353,6 +1351,7 @@ static char *openssl_md_to_smime_micalg(const char *md)
  */
 struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *from)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct Body *b_sign = NULL;
   struct Body *rc = NULL;
   char buf[1024] = { 0 };
@@ -1400,8 +1399,8 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
 
   const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
   const char *const c_smime_certificates = cs_subset_path(NeoMutt->sub, "smime_certificates");
-  buf_printf(&SmimeKeyToUse, "%s/%s", NONULL(c_smime_keys), signas);
-  buf_printf(&SmimeCertToUse, "%s/%s", NONULL(c_smime_certificates), signas);
+  buf_printf(&mod_data->smime_key_to_use, "%s/%s", NONULL(c_smime_keys), signas);
+  buf_printf(&mod_data->smime_cert_to_use, "%s/%s", NONULL(c_smime_certificates), signas);
 
   struct SmimeKey *signas_key = smime_get_key_by_hash(signas, 1);
   if (!signas_key || mutt_str_equal("?", signas_key->issuer))
@@ -1409,7 +1408,8 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
   else
     intermediates = signas_key->issuer;
 
-  buf_printf(&SmimeIntermediateToUse, "%s/%s", NONULL(c_smime_certificates), intermediates);
+  buf_printf(&mod_data->smime_intermediate_to_use, "%s/%s",
+             NONULL(c_smime_certificates), intermediates);
 
   smime_key_free(&signas_key);
 
@@ -1421,7 +1421,7 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
     mutt_file_unlink(buf_string(filetosign));
     goto cleanup;
   }
-  fputs(SmimePass, fp_smime_in);
+  fputs(mod_data->smime_pass, fp_smime_in);
   fputc('\n', fp_smime_in);
   mutt_file_fclose(&fp_smime_in);
 
@@ -1553,11 +1553,13 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
                                   FILE **fp_smime_err, int fp_smime_infd, int fp_smime_outfd,
                                   int fp_smime_errfd, const char *fname)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   const struct Expando *c_smime_decrypt_command = cs_subset_expando(NeoMutt->sub, "smime_decrypt_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL, NULL,
-                      buf_string(&SmimeKeyToUse), buf_string(&SmimeCertToUse),
-                      NULL, c_smime_decrypt_command);
+                      buf_string(&mod_data->smime_key_to_use),
+                      buf_string(&mod_data->smime_cert_to_use), NULL,
+                      c_smime_decrypt_command);
 }
 
 /**
@@ -1679,6 +1681,7 @@ cleanup:
  */
 static struct Body *smime_handle_entity(struct Body *b, struct State *state, FILE *fp_out_file)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct Buffer *tmpfname = buf_pool_get();
   FILE *fp_smime_out = NULL, *fp_smime_in = NULL, *fp_smime_err = NULL;
   FILE *fp_tmp = NULL, *fp_out = NULL;
@@ -1750,7 +1753,7 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
   {
     if (!smime_class_valid_passphrase())
       smime_class_void_passphrase();
-    fputs(SmimePass, fp_smime_in);
+    fputs(mod_data->smime_pass, fp_smime_in);
     fputc('\n', fp_smime_in);
   }
 

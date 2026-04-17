@@ -53,9 +53,6 @@ struct KeyEvent
 };
 ARRAY_HEAD(KeyEventArray, struct KeyEvent);
 
-extern struct KeyEventArray MacroEvents;
-extern struct KeyEventArray UngetKeyEvents;
-
 /**
  * struct KeymapMatch - Result of Matching Keybinding
  *

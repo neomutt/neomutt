@@ -56,15 +56,11 @@
 #include "sidebar/lib.h"
 #include "display.h"
 #include "functions.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mx.h"
 #include "private_data.h"
-
-/// Braille display: row to leave the cursor
-int BrailleRow = -1;
-/// Braille display: column to leave the cursor
-int BrailleCol = -1;
 
 /// Help Bar for the Pager's Help Page
 static const struct Mapping PagerHelp[] = {
@@ -312,8 +308,11 @@ int dlg_pager(struct PagerView *pview)
     }
   }
   //---------- setup help menu ------------------------------------------------
+  struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mod_data);
+
   pview->win_pager->help_data = pager_resolve_help_mapping(pview->mode, mailbox_type);
-  pview->win_pager->help_md = MdPager;
+  pview->win_pager->help_md = mod_data->menu_pager;
 
   //---------- initialize redraw pdata  -----------------------------------------
   pview->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
@@ -385,10 +384,11 @@ int dlg_pager(struct PagerView *pview)
     const bool c_braille_friendly = cs_subset_bool(NeoMutt->sub, "braille_friendly");
     if (c_braille_friendly)
     {
-      if (BrailleRow != -1)
+      if (mod_data->braille_row != -1)
       {
-        mutt_window_move(priv->pview->win_pager, BrailleRow + 1, BrailleCol);
-        BrailleRow = -1;
+        mutt_window_move(priv->pview->win_pager, mod_data->braille_row + 1,
+                         mod_data->braille_col);
+        mod_data->braille_row = -1;
       }
     }
     else
@@ -489,7 +489,7 @@ int dlg_pager(struct PagerView *pview)
     // One of such functions is `mutt_enter_command()`
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index handles the operation and then restarts pager
-    struct KeyEvent event = km_dokey(MdPager, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(mod_data->menu_pager, GETCH_NO_FLAGS);
     op = event.op;
 
     // km_dokey() can block, so recheck the timer.
@@ -515,7 +515,7 @@ int dlg_pager(struct PagerView *pview)
 
     if (op == OP_NULL)
     {
-      km_error_key(MdPager);
+      km_error_key(mod_data->menu_pager);
       continue;
     }
 

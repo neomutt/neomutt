@@ -974,10 +974,10 @@ static void email_tags_transformed(const struct ExpandoNode *node, void *data,
   if (!e)
     return;
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
-  char *tag = mutt_hash_find(md->tag_formats, node->text);
+  char *tag = mutt_hash_find(mod_data->tag_formats, node->text);
   if (!tag)
     return;
 

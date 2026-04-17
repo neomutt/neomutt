@@ -35,11 +35,12 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "keymap.h"
+#include "module_data.h"
 
 /**
  * KeyNames - Key name lookup table
  */
-struct Mapping KeyNames[] = {
+static struct Mapping KeyNames[] = {
   // clang-format off
   { "<PageUp>",      KEY_PPAGE },
   { "<PageDown>",    KEY_NPAGE },
@@ -102,6 +103,15 @@ struct Mapping KeyNames[] = {
   { NULL, 0 },
   // clang-format on
 };
+
+/**
+ * keymap_get_key_names - Get the KeyNames lookup table
+ * @retval ptr KeyNames array
+ */
+struct Mapping *keymap_get_key_names(void)
+{
+  return KeyNames;
+}
 
 /**
  * keymap_alloc - Allocate space for a sequence of keys

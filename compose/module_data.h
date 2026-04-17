@@ -28,7 +28,8 @@
  */
 struct ComposeModuleData
 {
-  int dummy;
+  struct Notify         *notify;      ///< Notifications
+  struct MenuDefinition *md_compose;  ///< Compose Menu Definition
 };
 
 #endif /* MUTT_COMPOSE_MODULE_DATA_H */

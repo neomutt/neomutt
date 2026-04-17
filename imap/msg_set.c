@@ -38,15 +38,9 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "msg_set.h"
-
-/**
- * ImapMaxCmdlen - Maximum length of IMAP commands before they must be split
- *
- * This is suggested in RFC7162 (dated 2014).
- * - https://datatracker.ietf.org/doc/html/rfc7162#section-4
- */
-int ImapMaxCmdlen = 8192;
+#include "module_data.h"
 
 /**
  * imap_sort_uid - Compare two UIDs - Implements ::sort_t - @ingroup sort_api
@@ -83,7 +77,8 @@ int imap_make_msg_set(struct UidArray *uida, struct Buffer *buf, int *pos)
   unsigned int start = *ARRAY_GET(uida, i);
   unsigned int prev = start;
 
-  for (i++; (i < array_size) && (buf_len(buf) < ImapMaxCmdlen); i++, count++)
+  struct ImapModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_IMAP);
+  for (i++; (i < array_size) && (buf_len(buf) < mod_data->imap_max_cmdlen); i++, count++)
   {
     unsigned int uid = *ARRAY_GET(uida, i);
 

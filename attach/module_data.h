@@ -30,14 +30,17 @@
  */
 struct AttachModuleData
 {
-  struct ListHead attach_allow;          ///< List of attachment types to be counted
-  struct ListHead attach_exclude;        ///< List of attachment types to be ignored
-  struct ListHead inline_allow;          ///< List of inline types to counted
-  struct ListHead inline_exclude;        ///< List of inline types to ignore
-  struct Notify  *attachments_notify;    ///< Notifications: #NotifyAttach
+  struct Notify         *notify;                 ///< Notifications
+  struct ListHead        attach_allow;           ///< List of attachment types to be counted
+  struct ListHead        attach_exclude;         ///< List of attachment types to be ignored
+  struct ListHead        inline_allow;           ///< List of inline types to counted
+  struct ListHead        inline_exclude;         ///< List of inline types to ignore
+  struct Notify         *attachments_notify;     ///< Notifications: #NotifyAttach
 
-  struct ListHead mime_lookup;           ///< List of mime types that that shouldn't use the mailcap entry
-  struct ListHead temp_attachments;      ///< List of temporary files for displaying attachments
+  struct MenuDefinition *menu_attach;            ///< Attach menu definition
+
+  struct ListHead        mime_lookup;            ///< List of mime types that that shouldn't use the mailcap entry
+  struct ListHead        temp_attachments;       ///< List of temporary files for displaying attachments
 };
 
 #endif /* MUTT_ATTACH_MODULE_DATA_H */

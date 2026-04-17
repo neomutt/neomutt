@@ -23,12 +23,18 @@
 #ifndef MUTT_LUA_MODULE_DATA_H
 #define MUTT_LUA_MODULE_DATA_H
 
+#include <lua.h>
+
+/**
+ * struct LuaModuleData - Lua private Module data
+ */
 /**
  * struct LuaModuleData - Lua private Module data
  */
 struct LuaModuleData
 {
-  int dummy;
+  struct Notify *notify;      ///< Notifications
+  lua_State     *lua_state;   ///< Lua State
 };
 
 #endif /* MUTT_LUA_MODULE_DATA_H */

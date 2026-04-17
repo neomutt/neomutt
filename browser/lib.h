@@ -51,9 +51,6 @@ struct MuttWindow;
 struct stat;
 struct SubMenu;
 
-extern struct Buffer LastDir;
-extern struct Buffer LastDirBackup;
-
 typedef uint8_t SelectFileFlags;  ///< Flags for mutt_select_file(), e.g. #MUTT_SEL_MAILBOX
 #define MUTT_SEL_NO_FLAGS      0  ///< No flags are set
 #define MUTT_SEL_MAILBOX (1 << 0) ///< Select a mailbox
@@ -149,13 +146,12 @@ struct BrowserState
   bool is_mailbox_list;             ///< Viewing mailboxes
 };
 
+struct NeoMutt;
 
-void browser_init_keys(struct SubMenu *sm_generic);
+void browser_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 
 void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);
-void mutt_browser_cleanup(void);
-
 void browser_sort(struct BrowserState *state);
 void browser_add_folder(const struct Menu *menu, struct BrowserState *state, const char *name, const char *desc, const struct stat *st, struct Mailbox *m, void *data);
 void browser_highlight_default(struct BrowserState *state, struct Menu *menu);

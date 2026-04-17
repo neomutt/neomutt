@@ -28,14 +28,19 @@
 struct AddressList;
 struct Alias;
 struct AliasArray;
-struct AliasMenuData;
 struct AliasViewArray;
 struct ConfigSubset;
 struct KeyEvent;
 struct MuttWindow;
 
-extern struct MenuDefinition *MdAlias;
-extern struct MenuDefinition *MdQuery;
+/**
+ * struct AliasFunctionData - Data passed to Alias worker functions
+ */
+struct AliasFunctionData
+{
+  struct NeoMutt *n; ///< NeoMutt application data
+  struct AliasMenuData *wdata; ///< Alias menu data
+};
 
 /**
  * @defgroup alias_function_api Alias Function API
@@ -43,14 +48,14 @@ extern struct MenuDefinition *MdQuery;
  *
  * Prototype for a Alias Function
  *
- * @param wdata Alias Window data
+ * @param fdata   Alias Function context data
  * @param event Event to process
  * @retval enum #FunctionRetval
  *
- * @pre wdata is not NULL
+ * @pre fdata   is not NULL
  * @pre event is not NULL
  */
-typedef int (*alias_function_t)(struct AliasMenuData *wdata, const struct KeyEvent *event);
+typedef int (*alias_function_t)(struct AliasFunctionData *fdata, const struct KeyEvent *event);
 
 /**
  * struct AliasFunction - A NeoMutt function

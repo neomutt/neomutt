@@ -33,8 +33,6 @@ struct MuttWindow;
 struct ParseContext;
 struct ParseError;
 
-extern struct ListHead SidebarPinned;
-
 /**
  * struct SbEntry - Info about folders in the sidebar
  */

@@ -37,6 +37,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "menu/lib.h"
+#include "module_data.h"
 
 #define KILO 1024    ///< 1024 bytes (1 kibibyte)
 #define MEGA 1048576 ///< 1048576 bytes (1 mebibyte)
@@ -216,9 +217,10 @@ static void order_range(struct Pattern *pat)
 static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
                               struct Buffer *err, struct MailboxView *mv)
 {
+  struct PatternModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PATTERN);
   int regerr;
   regmatch_t pmatch[RANGE_RX_GROUPS] = { 0 };
-  struct RangeRegex *pspec = &RangeRegexes[kind];
+  struct RangeRegex *pspec = &mod_data->range_regexes[kind];
 
   /* First time through, compile the big regex */
   if (!pspec->ready)

@@ -59,6 +59,7 @@
 #include "connaccount.h"
 #include "connection.h"
 #include "globals.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "ssl.h"
 #ifdef HAVE_RAND_EGD
@@ -83,11 +84,11 @@
 #endif
 
 /// index for storing hostname as application specific data in SSL structure
-static int HostExDataIndex = -1;
+// HostExDataIndex moved to ConnModuleData
 
 /** Index for storing the "skip mode" state in SSL structure.  When the user
  * skips a certificate in the chain, the stored value will be non-null. */
-static int SkipModeExDataIndex = -1;
+// SkipModeExDataIndex moved to ConnModuleData
 
 /** Keep a handle on accepted certificates in case we want to
  * open up another connection to the same server in this session */
@@ -891,6 +892,7 @@ static void add_cert(const char *title, X509 *cert, bool issuer, struct StringAr
  */
 static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bool allow_always)
 {
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
   if (!OptGui)
   {
     mutt_debug(LL_DEBUG1, "unable to prompt for certificate in batch mode\n");
@@ -956,7 +958,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
     case 1: // Reject
       break;
     case 2: // Once
-      SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
+      SSL_set_ex_data(ssl, mod_data->skip_mode_ex_data_index, NULL);
       ssl_cache_trusted_cert(cert);
       break;
     case 3: // Always
@@ -975,12 +977,12 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
       else
         mutt_error(_("Warning: Couldn't save certificate"));
 
-      SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
+      SSL_set_ex_data(ssl, mod_data->skip_mode_ex_data_index, NULL);
       ssl_cache_trusted_cert(cert);
       break;
     }
     case 4: // Skip
-      SSL_set_ex_data(ssl, SkipModeExDataIndex, &SkipModeExDataIndex);
+      SSL_set_ex_data(ssl, mod_data->skip_mode_ex_data_index, &mod_data->skip_mode_ex_data_index);
       break;
   }
 
@@ -1011,7 +1013,8 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
     mutt_debug(LL_DEBUG1, "failed to retrieve SSL structure from X509_STORE_CTX\n");
     return false;
   }
-  const char *host = SSL_get_ex_data(ssl, HostExDataIndex);
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
+  const char *host = SSL_get_ex_data(ssl, mod_data->host_ex_data_index);
   if (!host)
   {
     mutt_debug(LL_DEBUG1, "failed to retrieve hostname from SSL structure\n");
@@ -1023,7 +1026,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
    * $ssl_verify_partial_chains option.
    * In this case, all following certificates need to be treated as non-verified
    * until one is actually verified.  */
-  bool skip_mode = (SSL_get_ex_data(ssl, SkipModeExDataIndex));
+  bool skip_mode = (SSL_get_ex_data(ssl, mod_data->skip_mode_ex_data_index));
 
   X509 *cert = X509_STORE_CTX_get_current_cert(ctx);
   int pos = X509_STORE_CTX_get_error_depth(ctx);
@@ -1065,7 +1068,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   if (check_certificate_cache(cert))
   {
     mutt_debug(LL_DEBUG2, "using cached certificate\n");
-    SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
+    SSL_set_ex_data(ssl, mod_data->skip_mode_ex_data_index, NULL);
     return true;
   }
 
@@ -1091,7 +1094,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
     if (c_certificate_file && check_certificate_by_digest(cert))
     {
       mutt_debug(LL_DEBUG2, "digest check passed\n");
-      SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
+      SSL_set_ex_data(ssl, mod_data->skip_mode_ex_data_index, NULL);
       return true;
     }
 
@@ -1121,28 +1124,29 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
 {
   int err;
   const char *errmsg = NULL;
+  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
 
-  HostExDataIndex = SSL_get_ex_new_index(0, "host", NULL, NULL, NULL);
-  if (HostExDataIndex == -1)
+  mod_data->host_ex_data_index = SSL_get_ex_new_index(0, "host", NULL, NULL, NULL);
+  if (mod_data->host_ex_data_index == -1)
   {
     mutt_debug(LL_DEBUG1, "#1 failed to get index for application specific data\n");
     return -1;
   }
 
-  if (!SSL_set_ex_data(ssldata->ssl, HostExDataIndex, conn->account.host))
+  if (!SSL_set_ex_data(ssldata->ssl, mod_data->host_ex_data_index, conn->account.host))
   {
     mutt_debug(LL_DEBUG1, "#2 failed to save hostname in SSL structure\n");
     return -1;
   }
 
-  SkipModeExDataIndex = SSL_get_ex_new_index(0, "skip", NULL, NULL, NULL);
-  if (SkipModeExDataIndex == -1)
+  mod_data->skip_mode_ex_data_index = SSL_get_ex_new_index(0, "skip", NULL, NULL, NULL);
+  if (mod_data->skip_mode_ex_data_index == -1)
   {
     mutt_debug(LL_DEBUG1, "#3 failed to get index for application specific data\n");
     return -1;
   }
 
-  if (!SSL_set_ex_data(ssldata->ssl, SkipModeExDataIndex, NULL))
+  if (!SSL_set_ex_data(ssldata->ssl, mod_data->skip_mode_ex_data_index, NULL))
   {
     mutt_debug(LL_DEBUG1, "#4 failed to save skip mode in SSL structure\n");
     return -1;

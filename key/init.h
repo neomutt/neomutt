@@ -23,15 +23,9 @@
 #ifndef MUTT_KEY_INIT_H
 #define MUTT_KEY_INIT_H
 
-#include "keymap.h"
 #include "menu.h"
 
 struct NotifyCallback;
-
-extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
-
-extern struct SubMenuArray        SubMenus;
-extern struct MenuDefinitionArray MenuDefs;
 
 void                   km_cleanup          (void);
 int                    km_config_observer  (struct NotifyCallback *nc);

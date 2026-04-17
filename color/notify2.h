@@ -28,8 +28,6 @@
 
 struct Notify;
 
-extern struct Notify *ColorsNotify;
-
 /**
  * enum NotifyColor - Types of Color Event
  *

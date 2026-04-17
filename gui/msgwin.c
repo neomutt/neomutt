@@ -87,8 +87,10 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "msgwin.h"
 #include "color/lib.h"
+#include "module_data.h"
 #include "msgcont.h"
 #include "msgwin_wdata.h"
 #include "mutt_curses.h"
@@ -383,7 +385,9 @@ struct MuttWindow *msgwin_new(bool interactive)
     win->recursor = msgwin_recursor;
 
   // Copy the container's dimensions
-  win->state = MessageContainer->state;
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (mod_data && mod_data->message_container)
+    win->state = mod_data->message_container->state;
 
   notify_observer_add(win->notify, NT_WINDOW, msgwin_window_observer, win);
 

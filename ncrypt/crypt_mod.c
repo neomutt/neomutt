@@ -29,23 +29,10 @@
 
 #include "config.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "crypt_mod.h"
 #include "lib.h"
-
-/**
- * struct CryptModule - A crypto plugin module
- *
- * A type of a variable to keep track of registered crypto modules.
- */
-struct CryptModule
-{
-  const struct CryptModuleSpecs *specs; ///< Crypto module definition
-  STAILQ_ENTRY(CryptModule) entries;    ///< Linked list
-};
-STAILQ_HEAD(CryptModuleList, CryptModule);
-
-/// Linked list of crypto modules, e.g. #CryptModSmimeClassic, #CryptModPgpGpgme
-static struct CryptModuleList CryptModules = STAILQ_HEAD_INITIALIZER(CryptModules);
+#include "module_data.h"
 
 /**
  * crypto_module_register - Register a new crypto module
@@ -53,9 +40,10 @@ static struct CryptModuleList CryptModules = STAILQ_HEAD_INITIALIZER(CryptModule
  */
 void crypto_module_register(const struct CryptModuleSpecs *specs)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct CryptModule *module = MUTT_MEM_CALLOC(1, struct CryptModule);
   module->specs = specs;
-  STAILQ_INSERT_HEAD(&CryptModules, module, entries);
+  STAILQ_INSERT_HEAD(&mod_data->crypt_modules, module, entries);
 }
 
 /**
@@ -67,8 +55,9 @@ void crypto_module_register(const struct CryptModuleSpecs *specs)
  */
 const struct CryptModuleSpecs *crypto_module_lookup(int identifier)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   const struct CryptModule *module = NULL;
-  STAILQ_FOREACH(module, &CryptModules, entries)
+  STAILQ_FOREACH(module, &mod_data->crypt_modules, entries)
   {
     if (module->specs->identifier == identifier)
     {
@@ -83,10 +72,11 @@ const struct CryptModuleSpecs *crypto_module_lookup(int identifier)
  */
 void crypto_module_cleanup(void)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct CryptModule *np = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(np, &CryptModules, entries, tmp)
+  STAILQ_FOREACH_SAFE(np, &mod_data->crypt_modules, entries, tmp)
   {
-    STAILQ_REMOVE(&CryptModules, np, CryptModule, entries);
+    STAILQ_REMOVE(&mod_data->crypt_modules, np, CryptModule, entries);
     FREE(&np);
   }
 }

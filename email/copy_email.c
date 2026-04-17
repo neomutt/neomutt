@@ -209,8 +209,8 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
   hdr_count = 1;
   x = 0;
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   /* We are going to read and collect the headers in an array
    * so we are able to do re-ordering.
@@ -218,7 +218,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
   if (chflags & CH_REORDER)
   {
     struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &md->header_order, entries)
+    STAILQ_FOREACH(np, &mod_data->header_order, entries)
     {
       mutt_debug(LL_DEBUG3, "Reorder list: %s\n", np->data);
       hdr_count++;
@@ -325,7 +325,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
         int match = -1;
         size_t match_len = 0;
 
-        STAILQ_FOREACH(np, &md->header_order, entries)
+        STAILQ_FOREACH(np, &mod_data->header_order, entries)
         {
           size_t hdr_order_len = mutt_str_len(np->data);
           if (mutt_istrn_equal(buf, np->data, hdr_order_len))

@@ -24,13 +24,16 @@
 #define MUTT_SEND_MODULE_DATA_H
 
 #include "mutt/lib.h"
+#include <signal.h>
 
 /**
  * struct SendModuleData - Send private Module data
  */
 struct SendModuleData
 {
-  struct ListHead user_header;      ///< Custom headers to add to outgoing emails
+  struct Notify         *notify;       ///< Notifications
+  struct ListHead       user_header;   ///< Custom headers to add to outgoing emails
+  volatile sig_atomic_t sig_alrm;      ///< true after SIGALRM is received
 };
 
 #endif /* MUTT_SEND_MODULE_DATA_H */

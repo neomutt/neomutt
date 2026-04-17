@@ -25,7 +25,15 @@
 
 #include "key/lib.h"
 
-struct SidebarWindowData;
+/**
+ * struct SidebarFunctionData - Data passed to Sidebar worker functions
+ */
+struct SidebarFunctionData
+{
+  struct NeoMutt *n; ///< NeoMutt application data
+  struct SidebarModuleData *mod_data; ///< Sidebar module data
+  struct SidebarWindowData *wdata; ///< Sidebar window data
+};
 
 /**
  * @defgroup sidebar_function_api Sidebar Function API
@@ -33,14 +41,14 @@ struct SidebarWindowData;
  *
  * Prototype for a Sidebar Function
  *
- * @param wdata Sidebar Window data
+ * @param fdata   Sidebar Function context data
  * @param event Event to process
  * @retval enum #FunctionRetval
  *
- * @pre wdata is not NULL
+ * @pre fdata   is not NULL
  * @pre event is not NULL
  */
-typedef int (*sidebar_function_t)(struct SidebarWindowData *wdata, const struct KeyEvent *event);
+typedef int (*sidebar_function_t)(struct SidebarFunctionData *fdata, const struct KeyEvent *event);
 
 /**
  * struct SidebarFunction - A NeoMutt function

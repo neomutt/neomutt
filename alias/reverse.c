@@ -69,14 +69,14 @@ void alias_reverse_add(struct Alias *alias)
    * by all callers, but added here mostly as documentation. */
   mutt_addrlist_to_intl(&alias->addr, NULL);
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   struct Address *addr = NULL;
   TAILQ_FOREACH(addr, &alias->addr, entries)
   {
     if (!addr->group && addr->mailbox)
-      mutt_hash_insert(md->reverse_aliases, buf_string(addr->mailbox), addr);
+      mutt_hash_insert(mod_data->reverse_aliases, buf_string(addr->mailbox), addr);
   }
 }
 
@@ -93,14 +93,14 @@ void alias_reverse_delete(struct Alias *alias)
    * match the hash entries. */
   mutt_addrlist_to_intl(&alias->addr, NULL);
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   struct Address *addr = NULL;
   TAILQ_FOREACH(addr, &alias->addr, entries)
   {
     if (!addr->group && addr->mailbox)
-      mutt_hash_delete(md->reverse_aliases, buf_string(addr->mailbox), addr);
+      mutt_hash_delete(mod_data->reverse_aliases, buf_string(addr->mailbox), addr);
   }
 }
 
@@ -114,8 +114,8 @@ struct Address *alias_reverse_lookup(const struct Address *addr)
   if (!addr || !addr->mailbox)
     return NULL;
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
-  return mutt_hash_find(md->reverse_aliases, buf_string(addr->mailbox));
+  return mutt_hash_find(mod_data->reverse_aliases, buf_string(addr->mailbox));
 }

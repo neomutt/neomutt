@@ -23,12 +23,17 @@
 #ifndef MUTT_POSTPONE_MODULE_DATA_H
 #define MUTT_POSTPONE_MODULE_DATA_H
 
+#include <stdbool.h>
+
 /**
  * struct PostponeModuleData - Postpone private Module data
  */
 struct PostponeModuleData
 {
-  int dummy;
+  struct Notify         *notify;                ///< Notifications
+  struct MenuDefinition *menu_postpone;         ///< Postpone menu definition
+  short                  post_count;            ///< Number of postponed (draft) emails
+  bool                   update_num_postponed;  ///< When true, force recount of drafts
 };
 
 #endif /* MUTT_POSTPONE_MODULE_DATA_H */

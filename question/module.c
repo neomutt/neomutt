@@ -38,8 +38,11 @@
  */
 static bool question_init(struct NeoMutt *n)
 {
-  // struct QuestionModuleData *md = MUTT_MEM_CALLOC(1, struct QuestionModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_QUESTION, md);
+  struct QuestionModuleData *mod_data = MUTT_MEM_CALLOC(1, struct QuestionModuleData);
+  neomutt_set_module_data(n, MODULE_ID_QUESTION, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -49,10 +52,12 @@ static bool question_init(struct NeoMutt *n)
  */
 static bool question_cleanup(struct NeoMutt *n)
 {
-  // struct QuestionModuleData *md = neomutt_get_module_data(n, MODULE_ID_QUESTION);
-  // ASSERT(md);
+  struct QuestionModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_QUESTION);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data);
   return true;
 }
 

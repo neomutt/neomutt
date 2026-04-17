@@ -92,6 +92,7 @@
 #include "expando.h"
 #include "functions.h"
 #include "gui.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 
 /// Help Bar for the Address Query dialog
@@ -306,7 +307,11 @@ static int query_window_observer(struct NotifyCallback *nc)
 static struct SimpleDialogWindows query_dialog_new(struct AliasMenuData *mdata,
                                                    const char *query)
 {
-  struct SimpleDialogWindows sdw = simple_dialog_new(MdQuery, WT_DLG_QUERY, QueryHelp);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
+
+  struct SimpleDialogWindows sdw = simple_dialog_new(mod_data->menu_query,
+                                                     WT_DLG_QUERY, QueryHelp);
 
   struct Menu *menu = sdw.menu;
 
@@ -346,6 +351,9 @@ static struct SimpleDialogWindows query_dialog_new(struct AliasMenuData *mdata,
  */
 static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
 {
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
+
   struct SimpleDialogWindows sdw = query_dialog_new(mdata, buf_string(buf));
   struct Menu *menu = sdw.menu;
   mdata->menu = menu;
@@ -371,14 +379,14 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(MdQuery, GETCH_NO_FLAGS);
+    event = km_dokey(mod_data->menu_query, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MdQuery);
+      km_error_key(mod_data->menu_query);
       continue;
     }
     mutt_clear_error();

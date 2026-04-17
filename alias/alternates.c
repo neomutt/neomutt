@@ -80,19 +80,19 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *li
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
+    if (parse_grouplist(&gl, token, line, err, mod_data->groups) == -1)
       goto done;
 
-    mutt_regexlist_remove(&md->unalternates, buf_string(token));
+    mutt_regexlist_remove(&mod_data->unalternates, buf_string(token));
 
-    if (mutt_regexlist_add(&md->alternates, buf_string(token), REG_ICASE, err) != 0)
+    if (mutt_regexlist_add(&mod_data->alternates, buf_string(token), REG_ICASE, err) != 0)
       goto done;
 
     if (grouplist_add_regex(&gl, buf_string(token), REG_ICASE, err) != 0)
@@ -100,7 +100,7 @@ enum CommandResult parse_alternates(const struct Command *cmd, struct Buffer *li
   } while (MoreArgs(line));
 
   mutt_debug(LL_NOTIFY, "NT_ALTERN_ADD: %s\n", buf_string(token));
-  notify_send(md->alternates_notify, NT_ALTERN, NT_ALTERN_ADD, NULL);
+  notify_send(mod_data->alternates_notify, NT_ALTERN, NT_ALTERN_ADD, NULL);
 
   rc = MUTT_CMD_SUCCESS;
 
@@ -130,16 +130,16 @@ enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   do
   {
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
-    mutt_regexlist_remove(&md->alternates, buf_string(token));
+    mutt_regexlist_remove(&mod_data->alternates, buf_string(token));
 
     if (!mutt_str_equal(buf_string(token), "*") &&
-        (mutt_regexlist_add(&md->unalternates, buf_string(token), REG_ICASE, err) != 0))
+        (mutt_regexlist_add(&mod_data->unalternates, buf_string(token), REG_ICASE, err) != 0))
     {
       goto done;
     }
@@ -147,7 +147,7 @@ enum CommandResult parse_unalternates(const struct Command *cmd, struct Buffer *
   } while (MoreArgs(line));
 
   mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", buf_string(token));
-  notify_send(md->alternates_notify, NT_ALTERN, NT_ALTERN_DELETE, NULL);
+  notify_send(mod_data->alternates_notify, NT_ALTERN, NT_ALTERN_DELETE, NULL);
 
   rc = MUTT_CMD_SUCCESS;
 
@@ -166,13 +166,13 @@ bool mutt_alternates_match(const char *addr)
   if (!addr)
     return false;
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
-  if (mutt_regexlist_match(&md->alternates, addr))
+  if (mutt_regexlist_match(&mod_data->alternates, addr))
   {
     mutt_debug(LL_DEBUG5, "yes, %s matched by alternates\n", addr);
-    if (mutt_regexlist_match(&md->unalternates, addr))
+    if (mutt_regexlist_match(&mod_data->unalternates, addr))
       mutt_debug(LL_DEBUG5, "but, %s matched by unalternates\n", addr);
     else
       return true;

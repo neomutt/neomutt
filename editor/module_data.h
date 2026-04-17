@@ -28,7 +28,9 @@
  */
 struct EditorModuleData
 {
-  int dummy;
+  struct Notify         *notify;      ///< Notifications
+  struct MenuDefinition *md_editor;   ///< Editor Menu Definition
+  struct SubMenu        *sm_editor;   ///< Editor functions
 };
 
 #endif /* MUTT_EDITOR_MODULE_DATA_H */

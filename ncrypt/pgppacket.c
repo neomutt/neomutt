@@ -31,12 +31,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "pgppacket.h"
+#include "module_data.h"
 
 #define CHUNK_SIZE 1024 ///< Amount of data to read at once
-
-static unsigned char *PacketBuf = NULL; ///< Cached PGP data packet
-static size_t PacketBufLen = 0;         ///< Length of cached packet
 
 /**
  * read_material - Read PGP data into a buffer
@@ -46,18 +45,19 @@ static size_t PacketBufLen = 0;         ///< Length of cached packet
  * @retval  0 Success
  * @retval -1 Failure (see errno)
  *
- * This function uses a cache to store the data: #PacketBuf, #PacketBufLen.
+ * This function uses a cache to store the data: #NcryptModuleData::packet_buf
  */
 static int read_material(size_t material, size_t *used, FILE *fp)
 {
-  if ((*used + material) >= PacketBufLen)
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  if ((*used + material) >= mod_data->packet_buf_len)
   {
-    PacketBufLen = *used + material + CHUNK_SIZE;
+    mod_data->packet_buf_len = *used + material + CHUNK_SIZE;
 
-    MUTT_MEM_REALLOC(&PacketBuf, PacketBufLen, unsigned char);
+    MUTT_MEM_REALLOC(&mod_data->packet_buf, mod_data->packet_buf_len, unsigned char);
   }
 
-  if (fread(PacketBuf + *used, 1, material, fp) < material)
+  if (fread(mod_data->packet_buf + *used, 1, material, fp) < material)
   {
     mutt_perror("fread");
     return -1;
@@ -73,10 +73,11 @@ static int read_material(size_t material, size_t *used, FILE *fp)
  * @param[out] len Number of bytes read
  * @retval ptr PGP data packet
  *
- * This function uses a cache to store the data: #PacketBuf, #PacketBufLen.
+ * This function uses a cache to store the data: #NcryptModuleData::packet_buf
  */
 unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   size_t used = 0;
   LOFF_T startpos;
   unsigned char ctb;
@@ -87,10 +88,10 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (startpos < 0)
     return NULL;
 
-  if (PacketBufLen == 0)
+  if (mod_data->packet_buf_len == 0)
   {
-    PacketBufLen = CHUNK_SIZE;
-    PacketBuf = MUTT_MEM_MALLOC(PacketBufLen, unsigned char);
+    mod_data->packet_buf_len = CHUNK_SIZE;
+    mod_data->packet_buf = MUTT_MEM_MALLOC(mod_data->packet_buf_len, unsigned char);
   }
 
   if (fread(&ctb, 1, 1, fp) < 1)
@@ -108,7 +109,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (ctb & 0x40) /* handle PGP 5.0 packets. */
   {
     bool partial = false;
-    PacketBuf[0] = ctb;
+    mod_data->packet_buf[0] = ctb;
     used++;
 
     do
@@ -163,7 +164,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   else /* Old-Style PGP */
   {
     int bytes = 0;
-    PacketBuf[0] = 0x80 | ((ctb >> 2) & 0x0f);
+    mod_data->packet_buf[0] = 0x80 | ((ctb >> 2) & 0x0f);
     used++;
 
     switch (ctb & 0x03)
@@ -215,7 +216,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (len)
     *len = used;
 
-  return PacketBuf;
+  return mod_data->packet_buf;
 
 bail:
 
@@ -226,10 +227,11 @@ bail:
 /**
  * pgp_release_packet - Free the cached PGP packet
  *
- * Free the data stored in #PacketBuf.
+ * Free the data stored in #NcryptModuleData::packet_buf
  */
 void pgp_release_packet(void)
 {
-  PacketBufLen = 0;
-  FREE(&PacketBuf);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  mod_data->packet_buf_len = 0;
+  FREE(&mod_data->packet_buf);
 }

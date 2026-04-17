@@ -28,7 +28,7 @@
  */
 struct CompmboxModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_COMPMBOX_MODULE_DATA_H */

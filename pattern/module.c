@@ -29,6 +29,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -41,8 +42,20 @@ extern struct ConfigDef PatternVars[];
  */
 static bool pattern_init(struct NeoMutt *n)
 {
-  // struct PatternModuleData *md = MUTT_MEM_CALLOC(1, struct PatternModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_PATTERN, md);
+  struct PatternModuleData *mod_data = MUTT_MEM_CALLOC(1, struct PatternModuleData);
+
+  // clang-format off
+  mod_data->range_regexes[RANGE_K_REL]  = (struct RangeRegex){ RANGE_REL_RX,  1, 3, 0, { 0 } };
+  mod_data->range_regexes[RANGE_K_ABS]  = (struct RangeRegex){ RANGE_ABS_RX,  1, 3, 0, { 0 } };
+  mod_data->range_regexes[RANGE_K_LT]   = (struct RangeRegex){ RANGE_LT_RX,   1, 2, 0, { 0 } };
+  mod_data->range_regexes[RANGE_K_GT]   = (struct RangeRegex){ RANGE_GT_RX,   2, 1, 0, { 0 } };
+  mod_data->range_regexes[RANGE_K_BARE] = (struct RangeRegex){ RANGE_BARE_RX, 1, 1, 0, { 0 } };
+  // clang-format on
+
+  neomutt_set_module_data(n, MODULE_ID_PATTERN, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -60,10 +73,18 @@ static bool pattern_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  */
 static bool pattern_cleanup(struct NeoMutt *n)
 {
-  // struct PatternModuleData *md = neomutt_get_module_data(n, MODULE_ID_PATTERN);
-  // ASSERT(md);
+  struct PatternModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PATTERN);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  for (int i = 0; i < RANGE_K_INVALID; i++)
+  {
+    if (mod_data->range_regexes[i].ready)
+      regfree(&mod_data->range_regexes[i].cooked);
+  }
+
+  FREE(&mod_data);
   return true;
 }
 

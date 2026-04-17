@@ -30,13 +30,15 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
+#include "gui/module_data.h"
 #include "lib.h"
 
 // #define DEBUG_SHOW_SERIALISE
 
 /// The Window that is currently focused.
-/// The focus spans from #RootWindow through MuttWindow.focus
+/// The focus spans from the Root Window through MuttWindow.focus
 static struct MuttWindow *WinFocus = NULL;
 
 /**
@@ -113,13 +115,16 @@ static void win_serialise(struct MuttWindow *win, struct Buffer *buf)
  */
 void debug_win_dump(void)
 {
+  struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  struct MuttWindow *win_root = gui_data ? gui_data->root_window : NULL;
+
   WinFocus = window_get_focus();
   mutt_debug(LL_DEBUG1, "\n");
-  win_dump(RootWindow, 0);
+  win_dump(win_root, 0);
   mutt_debug(LL_DEBUG1, "\n");
 #ifdef DEBUG_SHOW_SERIALISE
   struct Buffer buf = buf_pool_get();
-  win_serialise(RootWindow, buf);
+  win_serialise(win_root, buf);
   mutt_debug(LL_DEBUG1, "%s\n", buf_string(buf));
   buf_pool_release(&buf);
 #endif

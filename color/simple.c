@@ -31,37 +31,38 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "attr.h"
 #include "color.h"
 #include "commands.h"
 #include "debug.h"
+#include "module_data.h"
 #include "notify2.h"
 #include "simple2.h"
-
-struct AttrColor SimpleColors[MT_COLOR_MAX]; ///< Array of Simple colours
 
 /**
  * simple_colors_init - Initialise the simple colour definitions
  */
 void simple_colors_init(void)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   for (int i = 0; i < MT_COLOR_MAX; i++)
   {
-    SimpleColors[i].fg.color = COLOR_DEFAULT;
-    SimpleColors[i].bg.color = COLOR_DEFAULT;
+    mod_data->simple_colors[i].fg.color = COLOR_DEFAULT;
+    mod_data->simple_colors[i].bg.color = COLOR_DEFAULT;
   }
 
   // Set some defaults
   color_debug(LL_DEBUG5, "init indicator, markers, etc\n");
-  SimpleColors[MT_COLOR_BOLD].attrs = A_BOLD;
-  SimpleColors[MT_COLOR_INDICATOR].attrs = A_REVERSE;
-  SimpleColors[MT_COLOR_ITALIC].attrs = A_ITALIC;
-  SimpleColors[MT_COLOR_MARKERS].attrs = A_REVERSE;
-  SimpleColors[MT_COLOR_SEARCH].attrs = A_REVERSE;
-  SimpleColors[MT_COLOR_STATUS].attrs = A_REVERSE;
-  SimpleColors[MT_COLOR_STRIPE_EVEN].attrs = A_BOLD;
-  SimpleColors[MT_COLOR_UNDERLINE].attrs = A_UNDERLINE;
+  mod_data->simple_colors[MT_COLOR_BOLD].attrs = A_BOLD;
+  mod_data->simple_colors[MT_COLOR_INDICATOR].attrs = A_REVERSE;
+  mod_data->simple_colors[MT_COLOR_ITALIC].attrs = A_ITALIC;
+  mod_data->simple_colors[MT_COLOR_MARKERS].attrs = A_REVERSE;
+  mod_data->simple_colors[MT_COLOR_SEARCH].attrs = A_REVERSE;
+  mod_data->simple_colors[MT_COLOR_STATUS].attrs = A_REVERSE;
+  mod_data->simple_colors[MT_COLOR_STRIPE_EVEN].attrs = A_BOLD;
+  mod_data->simple_colors[MT_COLOR_UNDERLINE].attrs = A_UNDERLINE;
 }
 
 /**
@@ -69,10 +70,11 @@ void simple_colors_init(void)
  */
 void simple_colors_reset(void)
 {
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   color_debug(LL_DEBUG5, "reset defs\n");
   for (size_t i = 0; i < MT_COLOR_MAX; i++)
   {
-    attr_color_clear(&SimpleColors[i]);
+    attr_color_clear(&mod_data->simple_colors[i]);
   }
   simple_colors_init();
 }
@@ -105,7 +107,8 @@ struct AttrColor *simple_color_get(enum ColorId cid)
     return NULL;
   }
 
-  return &SimpleColors[cid];
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  return &mod_data->simple_colors[cid];
 }
 
 /**
@@ -137,8 +140,9 @@ struct AttrColor *simple_color_set(enum ColorId cid, struct AttrColor *ac_val)
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
   buf_pool_release(&buf);
 
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct EventColor ev_c = { cid, NULL };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+  notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
   return ac;
 }
@@ -160,6 +164,7 @@ void simple_color_reset(enum ColorId cid)
 
   attr_color_clear(ac);
 
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct EventColor ev_c = { cid, ac };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+  notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 }

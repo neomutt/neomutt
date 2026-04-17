@@ -26,16 +26,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "pattern/lib.h"
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "external_search_command", DT_STRING, IP "grep", 0, NULL },
-  { NULL },
-  // clang-format on
-};
 
 static void test_one_leak(const char *pattern)
 {
@@ -48,7 +39,6 @@ static void test_one_leak(const char *pattern)
 void test_mutt_pattern_leak(void)
 {
   MuttLogger = log_disp_null;
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   test_one_leak("~E ~F | ~D");
   test_one_leak("~D | ~E ~F");

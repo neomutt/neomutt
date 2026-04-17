@@ -34,17 +34,13 @@
 #include "gui/lib.h"
 #include "init.h"
 #include "commands.h"
-#include "get.h"
 #include "keymap.h"
 #include "menu.h"
+#include "module_data.h"
 
-/// All the registered Menus
-struct MenuDefinitionArray MenuDefs;
-
-/// All the registered SubMenus
-struct SubMenuArray SubMenus;
-
-keycode_t AbortKey; ///< code of key to abort prompts, normally Ctrl-G
+/// All the registered Menus - moved to KeyModuleData
+/// All the registered SubMenus - moved to KeyModuleData
+/// AbortKey - moved to KeyModuleData
 
 /**
  * KeyCommands - Key Binding Commands
@@ -90,12 +86,13 @@ const struct Command KeyCommands[] = {
  */
 struct SubMenu *km_register_submenu(const struct MenuFuncOp functions[])
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct SubMenu sm = { 0 };
   sm.functions = functions;
   ARRAY_INIT(&sm.keymaps);
 
-  ARRAY_ADD(&SubMenus, sm);
-  return ARRAY_LAST(&SubMenus);
+  ARRAY_ADD(&mod_data->sub_menus, sm);
+  return ARRAY_LAST(&mod_data->sub_menus);
 }
 
 /**
@@ -106,13 +103,14 @@ struct SubMenu *km_register_submenu(const struct MenuFuncOp functions[])
  */
 struct MenuDefinition *km_register_menu(int menu, const char *name)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct MenuDefinition *md = MUTT_MEM_CALLOC(1, struct MenuDefinition);
   md->id = menu;
   md->name = mutt_str_dup(name);
   ARRAY_INIT(&md->submenus);
 
-  ARRAY_ADD(&MenuDefs, md);
-  return *ARRAY_LAST(&MenuDefs);
+  ARRAY_ADD(&mod_data->menu_defs, md);
+  return *ARRAY_LAST(&mod_data->menu_defs);
 }
 
 /**
@@ -169,8 +167,10 @@ int km_config_observer(struct NotifyCallback *nc)
  */
 void km_init(void)
 {
-  ARRAY_INIT(&MenuDefs);
-  ARRAY_INIT(&SubMenus);
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  ARRAY_INIT(&mod_data->menu_defs);
+  ARRAY_INIT(&mod_data->sub_menus);
+  mod_data->key_names = keymap_get_key_names();
 
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, km_config_observer, NULL);
 }
@@ -191,7 +191,8 @@ static int menu_defs_sort(const void *a, const void *b, void *sdata)
  */
 void km_sort(void)
 {
-  ARRAY_SORT(&MenuDefs, menu_defs_sort, NULL);
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  ARRAY_SORT(&mod_data->menu_defs, menu_defs_sort, NULL);
 }
 
 /**
@@ -202,8 +203,10 @@ void km_cleanup(void)
   if (NeoMutt && NeoMutt->sub)
     notify_observer_remove(NeoMutt->sub->notify, km_config_observer, NULL);
 
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+
   struct MenuDefinition **mdp = NULL;
-  ARRAY_FOREACH(mdp, &MenuDefs)
+  ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
     struct MenuDefinition *md = *mdp;
 
@@ -211,17 +214,17 @@ void km_cleanup(void)
     ARRAY_FREE(&md->submenus);
     FREE(&md);
   }
-  ARRAY_FREE(&MenuDefs);
+  ARRAY_FREE(&mod_data->menu_defs);
 
   struct SubMenu *sm = NULL;
-  ARRAY_FOREACH(sm, &SubMenus)
+  ARRAY_FOREACH(sm, &mod_data->sub_menus)
   {
     keymaplist_free(&sm->keymaps);
   }
-  ARRAY_FREE(&SubMenus);
+  ARRAY_FREE(&mod_data->sub_menus);
 
-  ARRAY_FREE(&MacroEvents);
-  ARRAY_FREE(&UngetKeyEvents);
+  ARRAY_FREE(&mod_data->macro_events);
+  ARRAY_FREE(&mod_data->unget_key_events);
 }
 
 /**
@@ -231,6 +234,7 @@ void km_cleanup(void)
  */
 void km_set_abort_key(void)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   keycode_t buf[4] = { 0 };
   const char *const c_abort_key = cs_subset_string(NeoMutt->sub, "abort_key");
 
@@ -238,7 +242,7 @@ void km_set_abort_key(void)
   if (len == 0)
   {
     mutt_error(_("Abort key is not set, defaulting to Ctrl-G"));
-    AbortKey = ctrl('G');
+    mod_data->abort_key = ctrl('G');
     return;
   }
 
@@ -247,5 +251,5 @@ void km_set_abort_key(void)
     mutt_warning(_("Specified abort key sequence (%s) will be truncated to first key"),
                  c_abort_key);
   }
-  AbortKey = buf[0];
+  mod_data->abort_key = buf[0];
 }

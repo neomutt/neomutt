@@ -51,30 +51,30 @@ void mutt_auto_subscribe(const char *mailto)
   if (!mailto)
     return;
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
-  if (!md->auto_subscribe_cache)
-    md->auto_subscribe_cache = mutt_hash_new(200, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
+  if (!mod_data->auto_subscribe_cache)
+    mod_data->auto_subscribe_cache = mutt_hash_new(200, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
 
-  if (mutt_hash_find(md->auto_subscribe_cache, mailto))
+  if (mutt_hash_find(mod_data->auto_subscribe_cache, mailto))
     return;
 
-  mutt_hash_insert(md->auto_subscribe_cache, mailto, md->auto_subscribe_cache);
+  mutt_hash_insert(mod_data->auto_subscribe_cache, mailto, mod_data->auto_subscribe_cache);
 
   struct Envelope *lpenv = mutt_env_new(); /* parsed envelope from the List-Post mailto: URL */
 
   if (mutt_parse_mailto(lpenv, NULL, mailto) && !TAILQ_EMPTY(&lpenv->to))
   {
     const char *mailbox = buf_string(TAILQ_FIRST(&lpenv->to)->mailbox);
-    if (mailbox && !mutt_regexlist_match(&md->subscribed, mailbox) &&
-        !mutt_regexlist_match(&md->unmail, mailbox) &&
-        !mutt_regexlist_match(&md->unsubscribed, mailbox))
+    if (mailbox && !mutt_regexlist_match(&mod_data->subscribed, mailbox) &&
+        !mutt_regexlist_match(&mod_data->unmail, mailbox) &&
+        !mutt_regexlist_match(&mod_data->unsubscribed, mailbox))
     {
       /* mutt_regexlist_add() detects duplicates, so it is safe to
        * try to add here without any checks. */
-      mutt_regexlist_add(&md->mail, mailbox, REG_ICASE, NULL);
-      mutt_regexlist_add(&md->subscribed, mailbox, REG_ICASE, NULL);
+      mutt_regexlist_add(&mod_data->mail, mailbox, REG_ICASE, NULL);
+      mutt_regexlist_add(&mod_data->subscribed, mailbox, REG_ICASE, NULL);
     }
   }
 
@@ -186,8 +186,8 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
     return MUTT_CMD_WARNING;
   }
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   struct Alias *a = NULL;
   enum NotifyAlias event;
@@ -198,7 +198,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
   /* name */
   parse_extract_token(token, line, TOKEN_NO_FLAGS);
   mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf_string(token));
-  if (parse_grouplist(&gl, token, line, err, md->groups) == -1)
+  if (parse_grouplist(&gl, token, line, err, mod_data->groups) == -1)
     goto done;
 
   char *name = mutt_str_dup(buf_string(token));
@@ -227,7 +227,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
 
   /* check to see if an alias with this name already exists */
   struct Alias **ap = NULL;
-  ARRAY_FOREACH(ap, &md->aliases)
+  ARRAY_FOREACH(ap, &mod_data->aliases)
   {
     if (mutt_istr_equal((*ap)->name, name))
     {
@@ -250,7 +250,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
     /* create a new alias */
     a = alias_new();
     a->name = name;
-    ARRAY_ADD(&md->aliases, a);
+    ARRAY_ADD(&mod_data->aliases, a);
     event = NT_ALIAS_ADD;
   }
   a->addr = al;
@@ -318,8 +318,8 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
 
   struct Buffer *token = buf_pool_get();
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   do
   {
@@ -328,22 +328,22 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
     struct Alias **ap = NULL;
     if (mutt_str_equal("*", buf_string(token)))
     {
-      ARRAY_FOREACH(ap, &md->aliases)
+      ARRAY_FOREACH(ap, &mod_data->aliases)
       {
         alias_reverse_delete(*ap);
       }
 
-      aliaslist_clear(&md->aliases);
+      aliaslist_clear(&mod_data->aliases);
       goto done;
     }
 
-    ARRAY_FOREACH(ap, &md->aliases)
+    ARRAY_FOREACH(ap, &mod_data->aliases)
     {
       if (!mutt_istr_equal(buf_string(token), (*ap)->name))
         continue;
 
       struct Alias *a = *ap;
-      ARRAY_REMOVE(&md->aliases, ap);
+      ARRAY_REMOVE(&mod_data->aliases, ap);
       alias_reverse_delete(a);
       alias_free(&a);
       break;

@@ -27,21 +27,11 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "test_common.h"
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "idn_decode", DT_BOOL, 0, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
 
 void test_mutt_addrlist_write_list(void)
 {
   {
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     const char in[] = "some-group: first@example.com,second@example.com; John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
     mutt_addrlist_parse(&al, in);

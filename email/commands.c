@@ -50,22 +50,22 @@
 enum CommandResult parse_list(const struct Command *cmd, struct Buffer *line,
                               const struct ParseContext *pc, struct ParseError *pe)
 {
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   switch (cmd->id)
   {
     case CMD_ALTERNATIVE_ORDER:
-      return parse_stailq(cmd, line, &md->alternative_order, pc, pe);
+      return parse_stailq(cmd, line, &mod_data->alternative_order, pc, pe);
 
     case CMD_AUTO_VIEW:
-      return parse_stailq(cmd, line, &md->auto_view, pc, pe);
+      return parse_stailq(cmd, line, &mod_data->auto_view, pc, pe);
 
     case CMD_HEADER_ORDER:
-      return parse_stailq(cmd, line, &md->header_order, pc, pe);
+      return parse_stailq(cmd, line, &mod_data->header_order, pc, pe);
 
     case CMD_MAILTO_ALLOW:
-      return parse_stailq(cmd, line, &md->mail_to_allow, pc, pe);
+      return parse_stailq(cmd, line, &mod_data->mail_to_allow, pc, pe);
 
     default:
       ASSERT(false);
@@ -86,22 +86,22 @@ enum CommandResult parse_list(const struct Command *cmd, struct Buffer *line,
 enum CommandResult parse_unlist(const struct Command *cmd, struct Buffer *line,
                                 const struct ParseContext *pc, struct ParseError *pe)
 {
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   switch (cmd->id)
   {
     case CMD_UNALTERNATIVE_ORDER:
-      return parse_unstailq(cmd, line, &md->alternative_order, pc, pe);
+      return parse_unstailq(cmd, line, &mod_data->alternative_order, pc, pe);
 
     case CMD_UNAUTO_VIEW:
-      return parse_unstailq(cmd, line, &md->auto_view, pc, pe);
+      return parse_unstailq(cmd, line, &mod_data->auto_view, pc, pe);
 
     case CMD_UNHEADER_ORDER:
-      return parse_unstailq(cmd, line, &md->header_order, pc, pe);
+      return parse_unstailq(cmd, line, &mod_data->header_order, pc, pe);
 
     case CMD_UNMAILTO_ALLOW:
-      return parse_unstailq(cmd, line, &md->mail_to_allow, pc, pe);
+      return parse_unstailq(cmd, line, &mod_data->mail_to_allow, pc, pe);
 
     default:
       ASSERT(false);
@@ -134,8 +134,8 @@ enum CommandResult parse_tag_formats(const struct Command *cmd, struct Buffer *l
   struct Buffer *tag = buf_pool_get();
   struct Buffer *fmt = buf_pool_get();
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   while (MoreArgs(line))
   {
@@ -146,14 +146,14 @@ enum CommandResult parse_tag_formats(const struct Command *cmd, struct Buffer *l
     parse_extract_token(fmt, line, TOKEN_NO_FLAGS);
 
     /* avoid duplicates */
-    const char *tmp = mutt_hash_find(md->tag_formats, buf_string(fmt));
+    const char *tmp = mutt_hash_find(mod_data->tag_formats, buf_string(fmt));
     if (tmp)
     {
       mutt_warning(_("tag format '%s' already registered as '%s'"), buf_string(fmt), tmp);
       continue;
     }
 
-    mutt_hash_insert(md->tag_formats, buf_string(fmt), buf_strdup(tag));
+    mutt_hash_insert(mod_data->tag_formats, buf_string(fmt), buf_strdup(tag));
   }
 
   buf_pool_release(&tag);
@@ -186,8 +186,8 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd, struct Buffer
   struct Buffer *tag = buf_pool_get();
   struct Buffer *trans = buf_pool_get();
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   while (MoreArgs(line))
   {
@@ -199,7 +199,7 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd, struct Buffer
     const char *trn = buf_string(trans);
 
     /* avoid duplicates */
-    const char *tmp = mutt_hash_find(md->tag_transforms, buf_string(tag));
+    const char *tmp = mutt_hash_find(mod_data->tag_transforms, buf_string(tag));
     if (tmp)
     {
       mutt_warning(_("tag transform '%s' already registered as '%s'"),
@@ -207,7 +207,7 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd, struct Buffer
       continue;
     }
 
-    mutt_hash_insert(md->tag_transforms, buf_string(tag), mutt_str_dup(trn));
+    mutt_hash_insert(mod_data->tag_transforms, buf_string(tag), mutt_str_dup(trn));
   }
 
   buf_pool_release(&tag);

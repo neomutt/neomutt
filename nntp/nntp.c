@@ -57,6 +57,7 @@
 #include "adata.h"
 #include "edata.h"
 #include "mdata.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -69,9 +70,6 @@
 #endif
 
 struct stat;
-
-/// Current news server
-struct NntpAccountData *CurrentNewsSrv = NULL;
 
 /// Fields to get from server, if it supports the LIST OVERVIEW.FMT feature
 static const char *OverviewFmt = "Subject:\0"
@@ -1946,6 +1944,7 @@ done:
  */
 int nntp_post(struct Mailbox *m, const char *msg)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   struct NntpMboxData *mdata = NULL;
   struct NntpMboxData tmp_mdata = { 0 };
   char buf[1024] = { 0 };
@@ -1958,12 +1957,12 @@ int nntp_post(struct Mailbox *m, const char *msg)
   else
   {
     const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
-    CurrentNewsSrv = nntp_select_server(m, c_news_server, false);
-    if (!CurrentNewsSrv)
+    mod_data->current_news_srv = nntp_select_server(m, c_news_server, false);
+    if (!mod_data->current_news_srv)
       goto done;
 
     mdata = &tmp_mdata;
-    mdata->adata = CurrentNewsSrv;
+    mdata->adata = mod_data->current_news_srv;
     mdata->group = NULL;
   }
 
@@ -2383,6 +2382,7 @@ static bool nntp_ac_add(struct Account *a, struct Mailbox *m)
  */
 static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
 {
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   if (!m->account)
     return MX_OPEN_ERROR;
 
@@ -2412,7 +2412,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   exec_account_hook(m->realpath);
   struct NntpAccountData *adata = m->account->adata;
   if (!adata)
-    adata = CurrentNewsSrv;
+    adata = mod_data->current_news_srv;
   if (!adata)
   {
     adata = nntp_select_server(m, server, true);
@@ -2425,7 +2425,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
     url_free(&url);
     return MX_OPEN_ERROR;
   }
-  CurrentNewsSrv = adata;
+  mod_data->current_news_srv = adata;
 
   m->msg_count = 0;
   m->msg_unread = 0;

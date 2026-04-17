@@ -51,4 +51,6 @@ bool               pgp_keys_are_valid(struct PgpKeyInfo *keys);
 bool               pgp_key_is_valid  (struct PgpKeyInfo *k);
 struct PgpKeyInfo *pgp_principal_key (struct PgpKeyInfo *key);
 
+void               pgp_id_defaults_cleanup(void);
+
 #endif /* MUTT_NCRYPT_PGPKEY_H */

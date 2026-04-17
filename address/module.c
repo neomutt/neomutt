@@ -44,8 +44,11 @@ extern struct ConfigDef AddressVarsIdn[];
  */
 static bool address_init(struct NeoMutt *n)
 {
-  // struct AddressModuleData *md = MUTT_MEM_CALLOC(1, struct AddressModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_ADDRESS, md);
+  struct AddressModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AddressModuleData);
+  neomutt_set_module_data(n, MODULE_ID_ADDRESS, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -77,10 +80,12 @@ static bool address_config_define_variables(struct NeoMutt *n, struct ConfigSet 
  */
 static bool address_cleanup(struct NeoMutt *n)
 {
-  // struct AddressModuleData *md = neomutt_get_module_data(n, MODULE_ID_ADDRESS);
-  // ASSERT(md);
+  struct AddressModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ADDRESS);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data);
   return true;
 }
 

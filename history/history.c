@@ -79,28 +79,9 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "module_data.h"
 
 #define HC_FIRST HC_EXT_COMMAND
-
-/**
- * struct History - Saved list of user-entered commands/searches
- *
- * This is a ring buffer of strings.
- */
-struct History
-{
-  char **hist; ///< Array of history items
-  short cur;   ///< Current history item
-  short last;  ///< Last history item
-};
-
-/* global vars used for the string-history routines */
-
-/// Command histories, one for each #HistoryClass
-static struct History Histories[HC_MAX];
-/// The previous number of history entries to save
-/// @sa $history
-static int OldSize = 0;
 
 /**
  * get_history - Get a particular history
@@ -109,27 +90,29 @@ static int OldSize = 0;
  */
 static struct History *get_history(enum HistoryClass hclass)
 {
+  struct HistoryModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HISTORY);
   const short c_history = cs_subset_number(NeoMutt->sub, "history");
   if ((hclass >= HC_MAX) || (c_history == 0))
     return NULL;
 
-  struct History *hist = &Histories[hclass];
+  struct History *hist = &mod_data->histories[hclass];
   return hist->hist ? hist : NULL;
 }
 
 /**
  * init_history - Set up a new History ring buffer
- * @param h History to populate
+ * @param h        History to populate
+ * @param old_size Previous number of history entries to save
  *
  * If the History already has entries, they will be freed.
  */
-static void init_history(struct History *h)
+static void init_history(struct History *h, int old_size)
 {
-  if (OldSize != 0)
+  if (old_size != 0)
   {
     if (h->hist)
     {
-      for (int i = 0; i <= OldSize; i++)
+      for (int i = 0; i <= old_size; i++)
         FREE(&h->hist[i]);
       FREE(&h->hist);
     }
@@ -442,14 +425,15 @@ int mutt_hist_search(const char *find, enum HistoryClass hclass, struct StringAr
  */
 void mutt_hist_cleanup(void)
 {
+  struct HistoryModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HISTORY);
   for (enum HistoryClass hclass = HC_FIRST; hclass < HC_MAX; hclass++)
   {
-    struct History *h = &Histories[hclass];
+    struct History *h = &mod_data->histories[hclass];
     if (!h->hist)
       continue;
 
-    /* The array has (OldSize+1) elements */
-    for (int i = 0; i <= OldSize; i++)
+    /* The array has (mod_data->old_size+1) elements */
+    for (int i = 0; i <= mod_data->old_size; i++)
     {
       FREE(&h->hist[i]);
     }
@@ -465,14 +449,15 @@ void mutt_hist_cleanup(void)
  */
 void mutt_hist_init(void)
 {
+  struct HistoryModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HISTORY);
   const short c_history = cs_subset_number(NeoMutt->sub, "history");
-  if (c_history == OldSize)
+  if (c_history == mod_data->old_size)
     return;
 
   for (enum HistoryClass hclass = HC_FIRST; hclass < HC_MAX; hclass++)
-    init_history(&Histories[hclass]);
+    init_history(&mod_data->histories[hclass], mod_data->old_size);
 
-  OldSize = c_history;
+  mod_data->old_size = c_history;
 }
 
 /**

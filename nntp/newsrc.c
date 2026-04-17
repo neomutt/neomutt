@@ -55,6 +55,7 @@
 #include "edata.h"
 #include "expando_newsrc.h"
 #include "mdata.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
@@ -1317,9 +1318,10 @@ void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen)
   if (!m)
     return;
 
-  for (unsigned int i = 0; i < CurrentNewsSrv->groups_num; i++)
+  struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
+  for (unsigned int i = 0; i < mod_data->current_news_srv->groups_num; i++)
   {
-    struct NntpMboxData *mdata = CurrentNewsSrv->groups_list[i];
+    struct NntpMboxData *mdata = mod_data->current_news_srv->groups_list[i];
 
     if (!mdata || !mdata->subscribed || !mdata->unread)
       continue;

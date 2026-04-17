@@ -23,12 +23,28 @@
 #ifndef MUTT_AUTOCRYPT_MODULE_DATA_H
 #define MUTT_AUTOCRYPT_MODULE_DATA_H
 
+#include <sqlite3.h>
+
 /**
  * struct AutocryptModuleData - Autocrypt private Module data
  */
 struct AutocryptModuleData
 {
-  int dummy;
+  struct Notify         *notify;                      ///< Notifications
+  struct MenuDefinition *menu_autocrypt;              ///< Autocrypt menu definition
+  char                  *autocrypt_default_key;       ///< Autocrypt default key id (used for postponing messages)
+  char                  *autocrypt_sign_as;           ///< Autocrypt Key id to sign as
+
+  sqlite3               *autocrypt_db;                ///< Autocrypt database
+  sqlite3_stmt          *account_delete_stmt;         ///< Delete an autocrypt account
+  sqlite3_stmt          *account_get_stmt;            ///< Get the matching autocrypt accounts
+  sqlite3_stmt          *account_insert_stmt;         ///< Insert a new autocrypt account
+  sqlite3_stmt          *account_update_stmt;         ///< Update an autocrypt account
+  sqlite3_stmt          *gossip_history_insert_stmt;  ///< Add to the gossip history
+  sqlite3_stmt          *peer_get_stmt;               ///< Get the matching peer addresses
+  sqlite3_stmt          *peer_history_insert_stmt;    ///< Add to the peer history
+  sqlite3_stmt          *peer_insert_stmt;            ///< Insert a new peer address
+  sqlite3_stmt          *peer_update_stmt;            ///< Update a peer address
 };
 
 #endif /* MUTT_AUTOCRYPT_MODULE_DATA_H */

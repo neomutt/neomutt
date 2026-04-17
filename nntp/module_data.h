@@ -28,7 +28,8 @@
  */
 struct NntpModuleData
 {
-  int dummy;
+  struct Notify          *notify;             ///< Notifications
+  struct NntpAccountData *current_news_srv;   ///< Current NNTP news server
 };
 
 #endif /* MUTT_NNTP_MODULE_DATA_H */

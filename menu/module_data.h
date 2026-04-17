@@ -23,12 +23,15 @@
 #ifndef MUTT_MENU_MODULE_DATA_H
 #define MUTT_MENU_MODULE_DATA_H
 
+#include "type.h"
+
 /**
  * struct MenuModuleData - Menu private Module data
  */
 struct MenuModuleData
 {
-  int dummy;
+  struct Notify *notify;                    ///< Notifications
+  char          *search_buffers[MENU_MAX];  ///< Previous search string, one for each #MenuType
 };
 
 #endif /* MUTT_MENU_MODULE_DATA_H */

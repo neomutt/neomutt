@@ -41,8 +41,11 @@ extern const struct ConfigSetType CstExpando;
  */
 static bool expando_init(struct NeoMutt *n)
 {
-  // struct ExpandoModuleData *md = MUTT_MEM_CALLOC(1, struct ExpandoModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_EXPANDO, md);
+  struct ExpandoModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ExpandoModuleData);
+  neomutt_set_module_data(n, MODULE_ID_EXPANDO, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -60,10 +63,12 @@ static bool expando_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
  */
 static bool expando_cleanup(struct NeoMutt *n)
 {
-  // struct ExpandoModuleData *md = neomutt_get_module_data(n, MODULE_ID_EXPANDO);
-  // ASSERT(md);
+  struct ExpandoModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_EXPANDO);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data);
   return true;
 }
 

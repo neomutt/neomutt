@@ -32,6 +32,8 @@
 #include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "core/lib.h"
+#include "module_data.h"
 
 /**
  * mutt_autocrypt_schema_init - Set up an Autocrypt database
@@ -41,6 +43,8 @@
 int mutt_autocrypt_schema_init(void)
 {
   char *errmsg = NULL;
+  struct AutocryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
+  sqlite3 *db = mod_data->autocrypt_db;
 
   const char *schema = "BEGIN TRANSACTION; "
 
@@ -90,7 +94,7 @@ int mutt_autocrypt_schema_init(void)
 
                        "COMMIT TRANSACTION";
 
-  if (sqlite3_exec(AutocryptDB, schema, NULL, NULL, &errmsg) != SQLITE_OK)
+  if (sqlite3_exec(db, schema, NULL, NULL, &errmsg) != SQLITE_OK)
   {
     mutt_debug(LL_DEBUG1, "mutt_autocrypt_schema_init() returned %s\n", errmsg);
     sqlite3_free(errmsg);
@@ -108,8 +112,10 @@ int mutt_autocrypt_schema_update(void)
 {
   sqlite3_stmt *stmt = NULL;
   int rc = -1;
+  struct AutocryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
+  sqlite3 *db = mod_data->autocrypt_db;
 
-  if (sqlite3_prepare_v2(AutocryptDB, "SELECT version FROM schema;", -1, &stmt, NULL) != SQLITE_OK)
+  if (sqlite3_prepare_v2(db, "SELECT version FROM schema;", -1, &stmt, NULL) != SQLITE_OK)
     goto cleanup;
 
   if (sqlite3_step(stmt) != SQLITE_ROW)

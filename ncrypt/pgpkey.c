@@ -52,6 +52,7 @@
 #include "crypt.h"
 #include "globals.h"
 #include "gnupgparse.h"
+#include "module_data.h"
 #include "mutt_logging.h"
 #include "pgpinvoke.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
@@ -68,9 +69,6 @@ struct PgpCache
   char *dflt;            ///< Default key ID
   struct PgpCache *next; ///< Linked list
 };
-
-/// Cache of GPGME keys
-static struct PgpCache *IdDefaults = NULL;
 
 // clang-format off
 typedef uint8_t PgpKeyValidFlags; ///< Flags for valid Pgp Key fields, e.g. #PGP_KV_VALID
@@ -198,6 +196,7 @@ static PgpKeyValidFlags pgp_id_matches_addr(struct Address *addr,
 struct PgpKeyInfo *pgp_ask_for_key(char *tag, const char *whatfor,
                                    KeyFlags abilities, enum PgpRing keyring)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct PgpKeyInfo *key = NULL;
   struct PgpCache *l = NULL;
   struct Buffer *resp = buf_pool_get();
@@ -206,7 +205,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, const char *whatfor,
 
   if (whatfor)
   {
-    for (l = IdDefaults; l; l = l->next)
+    for (l = (struct PgpCache *) mod_data->pgp_id_defaults; l; l = l->next)
     {
       if (mutt_istr_equal(whatfor, l->what))
       {
@@ -233,8 +232,8 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, const char *whatfor,
       else
       {
         l = MUTT_MEM_MALLOC(1, struct PgpCache);
-        l->next = IdDefaults;
-        IdDefaults = l;
+        l->next = (struct PgpCache *) mod_data->pgp_id_defaults;
+        mod_data->pgp_id_defaults = l;
         l->what = mutt_str_dup(whatfor);
         l->dflt = buf_strdup(resp);
       }
@@ -603,4 +602,22 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
   FREE(&pfcopy);
   FREE(&p);
   return k;
+}
+
+/**
+ * pgp_id_defaults_cleanup - Free the PGP IdDefaults cache
+ */
+void pgp_id_defaults_cleanup(void)
+{
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  struct PgpCache *l = mod_data->pgp_id_defaults;
+  while (l)
+  {
+    struct PgpCache *next = l->next;
+    FREE(&l->what);
+    FREE(&l->dflt);
+    FREE(&l);
+    l = next;
+  }
+  mod_data->pgp_id_defaults = NULL;
 }

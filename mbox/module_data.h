@@ -28,7 +28,7 @@
  */
 struct MboxModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_MBOX_MODULE_DATA_H */

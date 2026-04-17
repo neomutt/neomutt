@@ -23,10 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "parse/lib.h"
@@ -37,14 +35,6 @@
 static const struct Command Group   = { "group",   CMD_GROUP,   NULL};
 static const struct Command UnGroup = { "ungroup", CMD_UNGROUP, NULL};
 // clang-format on
-
-static struct ConfigDef Vars[] = {
-  // clang-format off
-  { "idn_decode", DT_BOOL, true, 0, NULL, },
-  { "idn_encode", DT_BOOL, true, 0, NULL, },
-  { NULL },
-  // clang-format on
-};
 
 static const struct CommandTest GroupTests[] = {
   // clang-format off
@@ -121,8 +111,6 @@ static void test_parse_ungroup(void)
 
 void test_parse_group(void)
 {
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
-
   test_parse_group2();
   test_parse_ungroup();
 }

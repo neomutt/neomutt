@@ -48,6 +48,7 @@
 #include "core/lib.h"
 #include "gnupgparse.h"
 #include "lib.h"
+#include "module_data.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
@@ -71,15 +72,13 @@
  *   - signature class
  */
 
-/// Cached copy of $charset
-static char *Charset = NULL;
-
 /**
  * fix_uid - Decode backslash-escaped user ids (in place)
  * @param uid String to decode
  */
 static void fix_uid(char *uid)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   char *s = NULL, *d = NULL;
   iconv_t cd = ICONV_T_INVALID;
 
@@ -97,7 +96,8 @@ static void fix_uid(char *uid)
   }
   *d = '\0';
 
-  if (Charset && iconv_t_valid(cd = mutt_ch_iconv_open(Charset, "utf-8", MUTT_ICONV_NO_FLAGS)))
+  if (mod_data->charset &&
+      iconv_t_valid(cd = mutt_ch_iconv_open(mod_data->charset, "utf-8", MUTT_ICONV_NO_FLAGS)))
   {
     int n = s - uid + 1; /* chars available in original buffer */
 
@@ -416,6 +416,7 @@ bail:
  */
 struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hints)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   FILE *fp = NULL;
   pid_t pid;
   char buf[1024] = { 0 };
@@ -426,7 +427,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   if (fd_null == -1)
     return NULL;
 
-  mutt_str_replace(&Charset, cc_charset());
+  mutt_str_replace(&mod_data->charset, cc_charset());
 
   pid = pgp_invoke_list_keys(NULL, &fp, NULL, -1, -1, fd_null, keyring, hints);
   if (pid == -1)

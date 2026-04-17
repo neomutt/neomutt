@@ -41,9 +41,7 @@
 #include "menu/lib.h"
 #include "question/lib.h"
 #include "autocrypt_data.h"
-
-/// Autocrypt Menu Definition
-struct MenuDefinition *MdAutocrypt = NULL;
+#include "module_data.h"
 
 // clang-format off
 /**
@@ -74,8 +72,11 @@ static const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt a
 /**
  * autocrypt_init_keys - Initialise the Autocrypt Keybindings - Implements ::init_keys_api
  */
-void autocrypt_init_keys(struct SubMenu *sm_generic)
+void autocrypt_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
+  struct AutocryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
+  ASSERT(mod_data);
+
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
 
@@ -85,7 +86,7 @@ void autocrypt_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, AutocryptDefaultBindings);
 
-  MdAutocrypt = md;
+  mod_data->menu_autocrypt = md;
 }
 
 /**

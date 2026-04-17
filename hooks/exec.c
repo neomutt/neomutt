@@ -52,9 +52,9 @@
 #include "parse/lib.h"
 #include "pattern/lib.h"
 #include "hook.h"
+#include "module_data.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "parse.h"
 
 /**
  * exec_folder_hook - Perform a folder hook
@@ -66,13 +66,14 @@ void exec_folder_hook(const char *path, const char *desc)
   if (!path && !desc)
     return;
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
 
-  CurrentHookId = CMD_FOLDER_HOOK;
+  mod_data->current_hook_id = CMD_FOLDER_HOOK;
 
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if (!hook->command)
       continue;
@@ -98,7 +99,7 @@ void exec_folder_hook(const char *path, const char *desc)
     }
   }
 
-  CurrentHookId = CMD_NONE;
+  mod_data->current_hook_id = CMD_NONE;
   parse_context_free(&pc);
   parse_error_free(&pe);
 }
@@ -113,9 +114,10 @@ void exec_folder_hook(const char *path, const char *desc)
  */
 char *mutt_find_hook(enum CommandId id, const char *pat)
 {
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
 
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if (hook->id == id)
     {
@@ -134,14 +136,15 @@ char *mutt_find_hook(enum CommandId id, const char *pat)
  */
 void exec_message_hook(struct Mailbox *m, struct Email *e, enum CommandId id)
 {
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
 
-  CurrentHookId = id;
+  mod_data->current_hook_id = id;
 
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if (!hook->command)
       continue;
@@ -164,7 +167,7 @@ void exec_message_hook(struct Mailbox *m, struct Email *e, enum CommandId id)
   }
 
 done:
-  CurrentHookId = CMD_NONE;
+  mod_data->current_hook_id = CMD_NONE;
   parse_context_free(&pc);
   parse_error_free(&pe);
 }
@@ -181,11 +184,12 @@ done:
 static int addr_hook(struct Buffer *path, enum CommandId id, struct Mailbox *m,
                      struct Email *e)
 {
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
 
   /* determine if a matching hook exists */
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if (!hook->command)
       continue;
@@ -293,9 +297,10 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
  */
 static void list_hook(struct ListHead *matches, const char *match, enum CommandId id)
 {
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *tmp = NULL;
 
-  TAILQ_FOREACH(tmp, &Hooks, entries)
+  TAILQ_FOREACH(tmp, &mod_data->hooks, entries)
   {
     if ((tmp->id == id) && mutt_regex_match(&tmp->regex, match))
     {
@@ -329,13 +334,14 @@ void exec_account_hook(const char *url)
   if (inhook)
     return;
 
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
 
-  CurrentHookId = CMD_ACCOUNT_HOOK;
+  mod_data->current_hook_id = CMD_ACCOUNT_HOOK;
 
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if (!(hook->command && (hook->id == CMD_ACCOUNT_HOOK)))
       continue;
@@ -358,7 +364,7 @@ void exec_account_hook(const char *url)
   }
 
 done:
-  CurrentHookId = CMD_NONE;
+  mod_data->current_hook_id = CMD_NONE;
   parse_context_free(&pc);
   parse_error_free(&pe);
 }
@@ -371,13 +377,14 @@ done:
  */
 void exec_timeout_hook(void)
 {
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
 
-  CurrentHookId = CMD_TIMEOUT_HOOK;
+  mod_data->current_hook_id = CMD_TIMEOUT_HOOK;
 
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if (!(hook->command && (hook->id == CMD_TIMEOUT_HOOK)))
       continue;
@@ -395,7 +402,7 @@ void exec_timeout_hook(void)
   /* Delete temporary attachment files */
   mutt_temp_attachments_cleanup();
 
-  CurrentHookId = CMD_NONE;
+  mod_data->current_hook_id = CMD_NONE;
   parse_context_free(&pc);
   parse_error_free(&pe);
 }
@@ -409,13 +416,14 @@ void exec_timeout_hook(void)
  */
 void exec_startup_shutdown_hook(enum CommandId id)
 {
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *hook = NULL;
   struct ParseContext *pc = parse_context_new();
   struct ParseError *pe = parse_error_new();
 
-  CurrentHookId = id;
+  mod_data->current_hook_id = id;
 
-  TAILQ_FOREACH(hook, &Hooks, entries)
+  TAILQ_FOREACH(hook, &mod_data->hooks, entries)
   {
     if (!(hook->command && (hook->id == id)))
       continue;
@@ -427,7 +435,7 @@ void exec_startup_shutdown_hook(enum CommandId id)
     }
   }
 
-  CurrentHookId = CMD_NONE;
+  mod_data->current_hook_id = CMD_NONE;
   parse_context_free(&pc);
   parse_error_free(&pe);
 }
@@ -442,10 +450,11 @@ void exec_startup_shutdown_hook(enum CommandId id)
  */
 const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *e)
 {
-  if (!IdxFmtHooks)
+  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
+  if (!mod_data->idx_fmt_hooks)
     return NULL;
 
-  struct HookList *hl = mutt_hash_find(IdxFmtHooks, name);
+  struct HookList *hl = mutt_hash_find(mod_data->idx_fmt_hooks, name);
   if (!hl)
     return NULL;
 

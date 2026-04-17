@@ -231,7 +231,11 @@ static int alias_window_observer(struct NotifyCallback *nc)
  */
 static struct SimpleDialogWindows alias_dialog_new(struct AliasMenuData *mdata)
 {
-  struct SimpleDialogWindows sdw = simple_dialog_new(MdAlias, WT_DLG_ALIAS, AliasHelp);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
+
+  struct SimpleDialogWindows sdw = simple_dialog_new(mod_data->menu_alias,
+                                                     WT_DLG_ALIAS, AliasHelp);
 
   struct Menu *menu = sdw.menu;
 
@@ -266,6 +270,9 @@ static struct SimpleDialogWindows alias_dialog_new(struct AliasMenuData *mdata)
  */
 static bool dlg_alias(struct AliasMenuData *mdata)
 {
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
+
   if (ARRAY_EMPTY(&mdata->ava))
   {
     mutt_warning(_("You have no aliases"));
@@ -298,14 +305,14 @@ static bool dlg_alias(struct AliasMenuData *mdata)
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(MdAlias, GETCH_NO_FLAGS);
+    event = km_dokey(mod_data->menu_alias, GETCH_NO_FLAGS);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MdAlias);
+      km_error_key(mod_data->menu_alias);
       continue;
     }
     mutt_clear_error();
@@ -345,13 +352,13 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
   mdata.limit = buf_strdup(buf);
   mdata.search_state = search_state_new();
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   if (buf_at(buf, 0) != '\0')
   {
     struct Alias **ap = NULL;
-    ARRAY_FOREACH(ap, &md->aliases)
+    ARRAY_FOREACH(ap, &mod_data->aliases)
     {
       struct Alias *a = *ap;
       if (a->name && mutt_strn_equal(a->name, buf_string(buf), buf_len(buf)))
@@ -389,7 +396,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     {
       // Create a View Array of all the Aliases
       FREE(&mdata.limit);
-      ARRAY_FOREACH(ap, &md->aliases)
+      ARRAY_FOREACH(ap, &mod_data->aliases)
       {
         alias_array_alias_add(&mdata.ava, *ap);
       }
@@ -412,7 +419,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
       }
 
       /* build alias list and show it */
-      ARRAY_FOREACH(ap, &md->aliases)
+      ARRAY_FOREACH(ap, &mod_data->aliases)
       {
         struct Alias *a = *ap;
         int aasize = alias_array_alias_add(&mdata.ava, a);
@@ -430,7 +437,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
   if (ARRAY_EMPTY(&mdata.ava))
   {
     struct Alias **ap = NULL;
-    ARRAY_FOREACH(ap, &md->aliases)
+    ARRAY_FOREACH(ap, &mod_data->aliases)
     {
       alias_array_alias_add(&mdata.ava, *ap);
     }
@@ -466,11 +473,11 @@ done:
 
     // Find and remove the alias from the Aliases array
     struct Alias **ap = NULL;
-    ARRAY_FOREACH(ap, &md->aliases)
+    ARRAY_FOREACH(ap, &mod_data->aliases)
     {
       if (*ap == avp->alias)
       {
-        ARRAY_REMOVE(&md->aliases, ap);
+        ARRAY_REMOVE(&mod_data->aliases, ap);
         break;
       }
     }
@@ -497,11 +504,11 @@ void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.search_state = search_state_new();
 
-  struct AliasModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
   // Create a View Array of all the Aliases
-  ARRAY_FOREACH(ap, &md->aliases)
+  ARRAY_FOREACH(ap, &mod_data->aliases)
   {
     alias_array_alias_add(&mdata.ava, *ap);
   }
@@ -536,11 +543,11 @@ done:
     if (avp->is_deleted)
     {
       // Find and remove the alias from the Aliases array
-      ARRAY_FOREACH(ap, &md->aliases)
+      ARRAY_FOREACH(ap, &mod_data->aliases)
       {
         if (*ap == avp->alias)
         {
-          ARRAY_REMOVE(&md->aliases, ap);
+          ARRAY_REMOVE(&mod_data->aliases, ap);
           break;
         }
       }

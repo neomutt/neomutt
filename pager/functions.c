@@ -50,18 +50,14 @@
 #include "pattern/lib.h"
 #include "sidebar/lib.h"
 #include "display.h"
+#include "module_data.h"
 #include "muttlib.h"
 #include "private_data.h"
 
 /// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
 
-static int op_pager_search_next(struct IndexSharedData *shared,
-                                struct PagerPrivateData *priv,
-                                const struct KeyEvent *event);
-
-/// Pager Menu Definition
-struct MenuDefinition *MdPager = NULL;
+static int op_pager_search_next(struct PagerFunctionData *fdata, const struct KeyEvent *event);
 
 // clang-format off
 /**
@@ -318,7 +314,7 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
 /**
  * pager_init_keys - Initialise the Pager Keybindings - Implements ::init_keys_api
  */
-void pager_init_keys(struct SubMenu *sm_generic)
+void pager_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm_pager = NULL;
@@ -330,7 +326,9 @@ void pager_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_sidebar);
   km_menu_add_bindings(md, PagerDefaultBindings);
 
-  MdPager = md;
+  struct PagerModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PAGER);
+  ASSERT(mod_data);
+  mod_data->menu_pager = md;
 }
 
 /**
@@ -406,9 +404,9 @@ bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview)
 /**
  * op_pager_bottom - Jump to the bottom of the message - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_bottom(struct IndexSharedData *shared,
-                           struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_bottom(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (!jump_to_bottom(priv, priv->pview))
     mutt_message(_("Bottom of message is shown"));
 
@@ -418,10 +416,10 @@ static int op_pager_bottom(struct IndexSharedData *shared,
 /**
  * op_pager_half_down - Scroll down 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_half_down(struct IndexSharedData *shared,
-                              struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_half_down(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
-  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
+  struct PagerPrivateData *priv = fdata->priv;
+  const bool c_pager_stop = cs_subset_bool(fdata->n->sub, "pager_stop");
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
     priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2,
@@ -444,9 +442,9 @@ static int op_pager_half_down(struct IndexSharedData *shared,
 /**
  * op_pager_half_up - Scroll up 1/2 page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_half_up(struct IndexSharedData *shared,
-                            struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_half_up(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (priv->top_line)
   {
     priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2 +
@@ -464,9 +462,9 @@ static int op_pager_half_up(struct IndexSharedData *shared,
 /**
  * op_pager_hide_quoted - Toggle display of quoted text - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_hide_quoted(struct IndexSharedData *shared,
-                                struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_hide_quoted(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (!priv->has_types)
     return FR_NO_ACTION;
 
@@ -486,9 +484,9 @@ static int op_pager_hide_quoted(struct IndexSharedData *shared,
 /**
  * op_pager_next_line - Scroll down one line - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_next_line(struct IndexSharedData *shared,
-                              struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_next_line(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
     priv->top_line++;
@@ -512,13 +510,13 @@ static int op_pager_next_line(struct IndexSharedData *shared,
 /**
  * op_pager_next_page - Move to the next page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_next_page(struct IndexSharedData *shared,
-                              struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_next_page(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
-  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
+  struct PagerPrivateData *priv = fdata->priv;
+  const bool c_pager_stop = cs_subset_bool(fdata->n->sub, "pager_stop");
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
-    const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
+    const short c_pager_context = cs_subset_number(fdata->n->sub, "pager_context");
     priv->top_line = up_n_lines(c_pager_context, priv->lines, priv->cur_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
@@ -538,9 +536,9 @@ static int op_pager_next_page(struct IndexSharedData *shared,
 /**
  * op_pager_prev_line - Scroll up one line - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_prev_line(struct IndexSharedData *shared,
-                              struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_prev_line(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (priv->top_line)
   {
     priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
@@ -556,16 +554,16 @@ static int op_pager_prev_line(struct IndexSharedData *shared,
 /**
  * op_pager_prev_page - Move to the previous page - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_prev_page(struct IndexSharedData *shared,
-                              struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_prev_page(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (priv->top_line == 0)
   {
     mutt_message(_("Top of message is shown"));
   }
   else
   {
-    const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
+    const short c_pager_context = cs_subset_number(fdata->n->sub, "pager_context");
     priv->top_line = up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
                                 priv->lines, priv->top_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
@@ -580,9 +578,9 @@ static int op_pager_prev_page(struct IndexSharedData *shared,
  * - OP_SEARCH
  * - OP_SEARCH_REVERSE
  */
-static int op_pager_search(struct IndexSharedData *shared,
-                           struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_search(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   struct PagerView *pview = priv->pview;
 
   int rc = FR_NO_ACTION;
@@ -609,7 +607,7 @@ static int op_pager_search(struct IndexSharedData *shared,
         event_s.op = OP_SEARCH_OPPOSITE;
 
       priv->wrapped = false;
-      op_pager_search_next(shared, priv, &event_s);
+      op_pager_search_next(fdata, &event_s);
     }
   }
 
@@ -703,7 +701,7 @@ static int op_pager_search(struct IndexSharedData *shared,
     }
     else
     {
-      const short c_search_context = cs_subset_number(NeoMutt->sub, "search_context");
+      const short c_search_context = cs_subset_number(fdata->n->sub, "search_context");
       priv->search_flag = MUTT_SEARCH;
       /* give some context for search results */
       if (c_search_context < priv->pview->win_pager->state.rows)
@@ -730,12 +728,12 @@ done:
  * - OP_SEARCH_NEXT
  * - OP_SEARCH_OPPOSITE
  */
-static int op_pager_search_next(struct IndexSharedData *shared,
-                                struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_search_next(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (priv->search_compiled)
   {
-    const short c_search_context = cs_subset_number(NeoMutt->sub, "search_context");
+    const short c_search_context = cs_subset_number(fdata->n->sub, "search_context");
     priv->wrapped = false;
 
     if (c_search_context < priv->pview->win_pager->state.rows)
@@ -761,7 +759,7 @@ static int op_pager_search_next(struct IndexSharedData *shared,
         }
       }
 
-      const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+      const bool c_wrap_search = cs_subset_bool(fdata->n->sub, "wrap_search");
       if (i < priv->lines_used)
       {
         priv->top_line = i;
@@ -792,7 +790,7 @@ static int op_pager_search_next(struct IndexSharedData *shared,
         }
       }
 
-      const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+      const bool c_wrap_search = cs_subset_bool(fdata->n->sub, "wrap_search");
       if (i >= 0)
       {
         priv->top_line = i;
@@ -822,15 +820,15 @@ static int op_pager_search_next(struct IndexSharedData *shared,
   }
 
   /* no previous search pattern */
-  return op_pager_search(shared, priv, event);
+  return op_pager_search(fdata, event);
 }
 
 /**
  * op_pager_skip_headers - Jump to first line after headers - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_skip_headers(struct IndexSharedData *shared,
-                                 struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_skip_headers(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   struct PagerView *pview = priv->pview;
 
   if (!priv->has_types)
@@ -867,15 +865,15 @@ static int op_pager_skip_headers(struct IndexSharedData *shared,
 /**
  * op_pager_skip_quoted - Skip beyond quoted text - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_skip_quoted(struct IndexSharedData *shared,
-                                struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   struct PagerView *pview = priv->pview;
 
   if (!priv->has_types)
     return FR_NO_ACTION;
 
-  const short c_pager_skip_quoted_context = cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
+  const short c_pager_skip_quoted_context = cs_subset_number(fdata->n->sub, "pager_skip_quoted_context");
   int rc = 0;
   int new_topline = priv->top_line;
   int num_quoted = 0;
@@ -967,9 +965,9 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
 /**
  * op_pager_top - Jump to the top of the message - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_pager_top(struct IndexSharedData *shared,
-                        struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_pager_top(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (priv->top_line == 0)
   {
     mutt_message(_("Top of message is shown"));
@@ -988,9 +986,9 @@ static int op_pager_top(struct IndexSharedData *shared,
 /**
  * op_exit - Exit this menu - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_exit(struct IndexSharedData *shared,
-                   struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_exit(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   priv->rc = -1;
   priv->loop = PAGER_LOOP_QUIT;
   return FR_DONE;
@@ -999,16 +997,16 @@ static int op_exit(struct IndexSharedData *shared,
 /**
  * op_help - Help screen - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_help(struct IndexSharedData *shared,
-                   struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_help(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (priv->pview->mode == PAGER_MODE_HELP)
   {
     /* don't let the user enter the help-menu from the help screen! */
     mutt_error(_("Help is currently being shown"));
     return FR_ERROR;
   }
-  mutt_help(MdPager);
+  mutt_help(fdata->mod_data->menu_pager);
   pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   return FR_SUCCESS;
 }
@@ -1016,9 +1014,9 @@ static int op_help(struct IndexSharedData *shared,
 /**
  * op_save - Save the Pager text - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_save(struct IndexSharedData *shared,
-                   struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_save(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   struct PagerView *pview = priv->pview;
   if (pview->mode != PAGER_MODE_OTHER)
     return FR_UNKNOWN;
@@ -1075,9 +1073,9 @@ done:
 /**
  * op_search_toggle - Toggle search pattern coloring - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_search_toggle(struct IndexSharedData *shared,
-                            struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_search_toggle(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct PagerPrivateData *priv = fdata->priv;
   if (priv->search_compiled)
   {
     priv->search_flag ^= MUTT_SEARCH;
@@ -1089,9 +1087,10 @@ static int op_search_toggle(struct IndexSharedData *shared,
 /**
  * op_view_attachments - Show MIME attachments - Implements ::pager_function_t - @ingroup pager_function_api
  */
-static int op_view_attachments(struct IndexSharedData *shared,
-                               struct PagerPrivateData *priv, const struct KeyEvent *event)
+static int op_view_attachments(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
+  struct IndexSharedData *shared = fdata->shared;
+  struct PagerPrivateData *priv = fdata->priv;
   struct PagerView *pview = priv->pview;
 
   // This needs to be delegated
@@ -1100,7 +1099,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
 
   if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
     return FR_NOT_IMPL;
-  dlg_attach(NeoMutt->sub, shared->mailbox_view, shared->email,
+  dlg_attach(fdata->n->sub, shared->mailbox_view, shared->email,
              pview->pdata->fp, shared->attach_msg);
   if (shared->email->attach_del)
     shared->mailbox->changed = true;
@@ -1159,14 +1158,23 @@ int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
     return FR_ERROR;
 
   const int op = event->op;
+
+  struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+
+  struct PagerFunctionData fdata = {
+    .n = NeoMutt,
+    .mod_data = mod_data,
+    .shared = dlg->wdata,
+    .priv = priv,
+  };
+
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PagerFunctions[i].op != OP_NULL; i++)
   {
     const struct PagerFunction *fn = &PagerFunctions[i];
     if (fn->op == op)
     {
-      struct IndexSharedData *shared = dlg->wdata;
-      rc = fn->function(shared, priv, event);
+      rc = fn->function(&fdata, event);
       break;
     }
   }
@@ -1178,4 +1186,16 @@ int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
   return rc;
+}
+
+/**
+ * pager_get_menu_definition - Get the Pager Menu Definition
+ * @retval ptr Pager Menu Definition
+ */
+struct MenuDefinition *pager_get_menu_definition(void)
+{
+  struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
+  ASSERT(mod_data);
+
+  return mod_data->menu_pager;
 }

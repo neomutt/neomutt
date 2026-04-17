@@ -71,13 +71,13 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "dialog.h"
+#include "module_data.h"
 #include "mutt_window.h"
 #ifdef USE_DEBUG_WINDOW
 #include "debug/lib.h"
 #endif
-
-struct MuttWindow *AllDialogsWindow = NULL; ///< Parent of all Dialogs
 
 /**
  * dialog_find - Find the parent Dialog of a Window
@@ -108,15 +108,21 @@ struct MuttWindow *dialog_find(struct MuttWindow *win)
  */
 void dialog_push(struct MuttWindow *dlg)
 {
-  if (!dlg || !AllDialogsWindow)
+  if (!dlg)
     return;
 
-  struct MuttWindow **wp_last = ARRAY_LAST(&AllDialogsWindow->children);
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->all_dialogs_window)
+    return;
+
+  struct MuttWindow *win_alldlgs = mod_data->all_dialogs_window;
+
+  struct MuttWindow **wp_last = ARRAY_LAST(&win_alldlgs->children);
   if (wp_last)
     (*wp_last)->state.visible = false;
 
-  ARRAY_ADD(&AllDialogsWindow->children, dlg);
-  notify_set_parent(dlg->notify, AllDialogsWindow->notify);
+  ARRAY_ADD(&win_alldlgs->children, dlg);
+  notify_set_parent(dlg->notify, win_alldlgs->notify);
 
   // Notify the world, allowing plugins to integrate
   mutt_debug(LL_NOTIFY, "NT_WINDOW_DIALOG visible: %s, %p\n",
@@ -125,8 +131,8 @@ void dialog_push(struct MuttWindow *dlg)
   notify_send(dlg->notify, NT_WINDOW, NT_WINDOW_DIALOG, &ev_w);
 
   dlg->state.visible = true;
-  dlg->parent = AllDialogsWindow;
-  mutt_window_reflow(AllDialogsWindow);
+  dlg->parent = win_alldlgs;
+  mutt_window_reflow(win_alldlgs);
 
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
@@ -141,10 +147,13 @@ void dialog_push(struct MuttWindow *dlg)
  */
 void dialog_pop(void)
 {
-  if (!AllDialogsWindow)
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->all_dialogs_window)
     return;
 
-  struct MuttWindow **wp_last = ARRAY_LAST(&AllDialogsWindow->children);
+  struct MuttWindow *win_alldlgs = mod_data->all_dialogs_window;
+
+  struct MuttWindow **wp_last = ARRAY_LAST(&win_alldlgs->children);
   if (!wp_last)
     return;
 
@@ -158,17 +167,17 @@ void dialog_pop(void)
 
   win_last->state.visible = false;
   win_last->parent = NULL;
-  ARRAY_REMOVE(&AllDialogsWindow->children, wp_last);
+  ARRAY_REMOVE(&win_alldlgs->children, wp_last);
 
-  wp_last = ARRAY_LAST(&AllDialogsWindow->children);
+  wp_last = ARRAY_LAST(&win_alldlgs->children);
   if (wp_last)
   {
     (*wp_last)->state.visible = true;
-    mutt_window_reflow(AllDialogsWindow);
+    mutt_window_reflow(win_alldlgs);
   }
   else
   {
-    AllDialogsWindow->focus = NULL;
+    win_alldlgs->focus = NULL;
   }
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
@@ -198,7 +207,9 @@ static int alldialogs_window_observer(struct NotifyCallback *nc)
 
   notify_observer_remove(win_alldlgs->notify, alldialogs_window_observer, win_alldlgs);
 
-  AllDialogsWindow = NULL;
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (mod_data)
+    mod_data->all_dialogs_window = NULL;
   mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
 }
@@ -217,7 +228,9 @@ struct MuttWindow *alldialogs_new(void)
 
   notify_observer_add(win_alldlgs->notify, NT_WINDOW, alldialogs_window_observer, win_alldlgs);
 
-  AllDialogsWindow = win_alldlgs;
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (mod_data)
+    mod_data->all_dialogs_window = win_alldlgs;
 
   return win_alldlgs;
 }

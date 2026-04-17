@@ -23,8 +23,6 @@
 #ifndef MUTT_GUI_ROOTWIN_H
 #define MUTT_GUI_ROOTWIN_H
 
-extern struct MuttWindow *RootWindow;
-
 void rootwin_cleanup(void);
 void rootwin_new(void);
 void rootwin_set_size(int cols, int rows);

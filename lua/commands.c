@@ -42,9 +42,8 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
+#include "module_data.h"
 #include "muttlib.h"
-
-extern lua_State *LuaState;
 
 bool lua_init_state(lua_State **l);
 
@@ -57,6 +56,7 @@ bool lua_init_state(lua_State **l);
 enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line,
                              const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct LuaModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_LUA);
   struct Buffer *err = pe->message;
 
   if (!MoreArgs(line))
@@ -68,15 +68,17 @@ enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line,
   // From here on, use the remainder of `line`, raw
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  lua_init_state(&LuaState);
+  lua_State *lua_state = mod_data->lua_state;
+  lua_init_state(&lua_state);
+  mod_data->lua_state = lua_state;
   mutt_debug(LL_DEBUG2, "%s\n", line->dptr);
 
-  if (luaL_dostring(LuaState, line->dptr) != LUA_OK)
+  if (luaL_dostring(lua_state, line->dptr) != LUA_OK)
   {
     mutt_debug(LL_DEBUG2, "%s -> failure\n", line->dptr);
-    buf_printf(err, "%s: %s", line->dptr, lua_tostring(LuaState, -1));
+    buf_printf(err, "%s: %s", line->dptr, lua_tostring(lua_state, -1));
     /* pop error message from the stack */
-    lua_pop(LuaState, 1);
+    lua_pop(lua_state, 1);
     goto done;
   }
   mutt_debug(LL_DEBUG2, "%s -> success\n", line->dptr);
@@ -97,6 +99,7 @@ done:
 enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *line,
                                     const struct ParseContext *pc, struct ParseError *pe)
 {
+  struct LuaModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_LUA);
   struct Buffer *err = pe->message;
 
   if (!MoreArgs(line))
@@ -110,7 +113,9 @@ enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *li
 
   mutt_debug(LL_DEBUG2, "enter\n");
 
-  lua_init_state(&LuaState);
+  lua_State *lua_state = mod_data->lua_state;
+  lua_init_state(&lua_state);
+  mod_data->lua_state = lua_state;
 
   if (parse_extract_token(token, line, TOKEN_NO_FLAGS) != 0)
   {
@@ -126,10 +131,10 @@ enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *li
 
   expand_path(token, false);
 
-  if (luaL_dofile(LuaState, buf_string(token)) != LUA_OK)
+  if (luaL_dofile(lua_state, buf_string(token)) != LUA_OK)
   {
-    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(LuaState, -1));
-    lua_pop(LuaState, 1);
+    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(lua_state, -1));
+    lua_pop(lua_state, 1);
     goto done;
   }
 
@@ -157,15 +162,3 @@ const struct Command LuaCommands[] = {
   { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
   // clang-format on
 };
-
-/**
- * lua_cleanup - Clean up Lua
- */
-void lua_cleanup(void)
-{
-  if (LuaState)
-  {
-    lua_close(LuaState);
-    LuaState = NULL;
-  }
-}

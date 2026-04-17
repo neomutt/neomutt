@@ -66,6 +66,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "gui/module_data.h"
 #include "lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"
@@ -95,6 +96,7 @@ static int ibar_recalc(struct MuttWindow *win)
   struct IBarPrivateData *ibar_data = win->wdata;
   struct IndexSharedData *shared = ibar_data->shared;
   struct IndexPrivateData *priv = ibar_data->priv;
+  struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
 
   const struct Expando *c_status_format = cs_subset_expando(shared->sub, "status_format");
   menu_status_line(buf, shared, priv->menu, win->state.cols, c_status_format);
@@ -107,7 +109,7 @@ static int ibar_recalc(struct MuttWindow *win)
   }
 
   const bool c_ts_enabled = cs_subset_bool(shared->sub, "ts_enabled");
-  if (c_ts_enabled && TsSupported)
+  if (c_ts_enabled && gui_data && gui_data->ts_supported)
   {
     buf_reset(buf);
     const struct Expando *c_ts_status_format = cs_subset_expando(shared->sub, "ts_status_format");
@@ -152,7 +154,8 @@ static int ibar_repaint(struct MuttWindow *win)
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
   const bool c_ts_enabled = cs_subset_bool(shared->sub, "ts_enabled");
-  if (c_ts_enabled && TsSupported)
+  struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (c_ts_enabled && gui_data && gui_data->ts_supported)
   {
     mutt_ts_status(ibar_data->ts_status_format);
     mutt_ts_icon(ibar_data->ts_icon_format);

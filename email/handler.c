@@ -495,8 +495,8 @@ static bool is_autoview(struct Body *b)
 
   snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   const bool c_implicit_auto_view = cs_subset_bool(NeoMutt->sub, "implicit_auto_view");
   if (c_implicit_auto_view)
@@ -509,7 +509,7 @@ static bool is_autoview(struct Body *b)
     /* determine if this type is on the user's auto-view list */
     mutt_check_lookup_list(b, type, sizeof(type));
     struct ListNode *np = NULL;
-    STAILQ_FOREACH(np, &md->auto_view, entries)
+    STAILQ_FOREACH(np, &mod_data->auto_view, entries)
     {
       int i = mutt_str_len(np->data);
       i--;
@@ -973,12 +973,12 @@ static int alternative_handler(struct Body *b_email, struct State *state)
 
   b_email = b;
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  ASSERT(md);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  ASSERT(mod_data);
 
   /* First, search list of preferred types */
   struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &md->alternative_order, entries)
+  STAILQ_FOREACH(np, &mod_data->alternative_order, entries)
   {
     int btlen; /* length of basetype */
     bool wild; /* do we have a wildcard to match all subtypes? */

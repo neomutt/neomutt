@@ -28,7 +28,7 @@
  */
 struct MaildirModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_MAILDIR_MODULE_DATA_H */

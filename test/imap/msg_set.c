@@ -31,8 +31,6 @@
 #include "imap/private.h" // IWYU pragma: keep
 #include "test_common.h"
 
-extern int ImapMaxCmdlen;
-
 struct TestCase
 {
   int input[150];

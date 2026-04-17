@@ -57,6 +57,7 @@
 #include "dialog.h"
 #include "functions.h"
 #include "global.h"
+#include "module_data.h"
 #include "msgcont.h"
 #include "msgwin.h"
 #include "mutt_curses.h"

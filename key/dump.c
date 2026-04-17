@@ -40,9 +40,9 @@
 #include "dump.h"
 #include "pager/lib.h"
 #include "get.h"
-#include "init.h"
 #include "keymap.h"
 #include "menu.h"
+#include "module_data.h"
 
 /**
  * escape_macro - Escape any special characters in a macro
@@ -288,6 +288,7 @@ int print_bind(const struct MenuDefinition *md, FILE *fp)
  */
 void colon_bind(const struct MenuDefinition *md, FILE *fp)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   if (md)
   {
     print_bind(md, fp);
@@ -295,7 +296,7 @@ void colon_bind(const struct MenuDefinition *md, FILE *fp)
   else
   {
     struct MenuDefinition **mdp = NULL;
-    ARRAY_FOREACH(mdp, &MenuDefs)
+    ARRAY_FOREACH(mdp, &mod_data->menu_defs)
     {
       if (print_bind((*mdp), fp) > 0)
       {
@@ -360,6 +361,7 @@ int print_macro(const struct MenuDefinition *md, FILE *fp)
  */
 void colon_macro(const struct MenuDefinition *md, FILE *fp)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   if (md)
   {
     print_macro(md, fp);
@@ -367,7 +369,7 @@ void colon_macro(const struct MenuDefinition *md, FILE *fp)
   else
   {
     struct MenuDefinition **mdp = NULL;
-    ARRAY_FOREACH(mdp, &MenuDefs)
+    ARRAY_FOREACH(mdp, &mod_data->menu_defs)
     {
       if (print_macro((*mdp), fp) > 0)
       {

@@ -23,26 +23,32 @@
 #ifndef MUTT_ATTACH_FUNCTIONS_H
 #define MUTT_ATTACH_FUNCTIONS_H
 
-struct AttachPrivateData;
 struct KeyEvent;
 struct MuttWindow;
 
-extern struct MenuDefinition *MdAttach;
+/**
+ * struct AttachFunctionData - Data passed to Attach worker functions
+ */
+struct AttachFunctionData
+{
+  struct NeoMutt *n; ///< NeoMutt application data
+  struct AttachPrivateData *priv; ///< Attach private data
+};
 
 /**
- * @defgroup attach_function_api Attachment Function API
+ * @defgroup attach_function_api Attach Function API
  * @ingroup dispatcher_api
  *
- * Prototype for an Attachment Function
+ * Prototype for a Attach Function
  *
- * @param priv  Private Attach data
+ * @param fdata   Attach Function context data
  * @param event Event to process
  * @retval enum #FunctionRetval
  *
- * @pre priv  is not NULL
+ * @pre fdata   is not NULL
  * @pre event is not NULL
  */
-typedef int (*attach_function_t)(struct AttachPrivateData *priv, const struct KeyEvent *event);
+typedef int (*attach_function_t)(struct AttachFunctionData *fdata, const struct KeyEvent *event);
 
 /**
  * struct AttachFunction - A NeoMutt function

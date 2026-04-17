@@ -84,9 +84,8 @@
 #include "crypt_gpgme.h"
 #include "expando_gpgme.h"
 #include "gpgme_functions.h"
+#include "module_data.h"
 #include "mutt_logging.h"
-#include "pgp_functions.h"
-#include "smime_functions.h"
 #include "sort.h"
 
 /// Help Bar for the GPGME key selection dialog
@@ -219,11 +218,14 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
 
   gpgme_sort_keys(&ckia);
 
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
   struct MenuDefinition *md = NULL;
   if (app & APPLICATION_PGP)
-    md = MdPgp;
+    md = mod_data->menu_pgp;
   else if (app & APPLICATION_SMIME)
-    md = MdSmime;
+    md = mod_data->menu_smime;
 
   struct SimpleDialogWindows sdw = simple_dialog_new(md, WT_DLG_GPGME, GpgmeHelp);
 

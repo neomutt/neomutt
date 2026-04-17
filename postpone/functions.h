@@ -28,18 +28,16 @@
 struct KeyEvent;
 struct MuttWindow;
 
-extern struct MenuDefinition *MdPostpone;
-
 /**
  * struct PostponeData - Data to pass to the Postpone Functions
  */
 struct PostponeData
 {
-  struct MailboxView *mailbox_view;  ///< Postponed Mailbox view
-  struct Menu        *menu;          ///< Postponed Menu
-  struct Email       *email;         ///< Selected Email
-  bool                done;          ///< Should we close the Dialog?
-  struct SearchState *search_state;  ///< State of the current search
+  struct MailboxView *mailbox_view; ///< Postponed Mailbox view
+  struct Menu *menu;                ///< Postponed Menu
+  struct Email *email;              ///< Selected Email
+  bool done;                        ///< Should we close the Dialog?
+  struct SearchState *search_state; ///< State of the current search
 };
 
 /**
@@ -62,7 +60,7 @@ typedef int (*postpone_function_t)(struct PostponeData *pd, const struct KeyEven
  */
 struct PostponeFunction
 {
-  int op;                      ///< Op code, e.g. OP_DELETE
+  int op;                       ///< Op code, e.g. OP_DELETE
   postpone_function_t function; ///< Function to call
 };
 

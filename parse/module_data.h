@@ -28,7 +28,7 @@
  */
 struct ParseModuleData
 {
-  int dummy;
+  struct Notify *notify; ///< Notifications
 };
 
 #endif /* MUTT_PARSE_MODULE_DATA_H */

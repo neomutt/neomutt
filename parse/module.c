@@ -38,8 +38,11 @@
  */
 static bool parse_init(struct NeoMutt *n)
 {
-  // struct ParseModuleData *md = MUTT_MEM_CALLOC(1, struct ParseModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_PARSE, md);
+  struct ParseModuleData *mod_data = MUTT_MEM_CALLOC(1, struct ParseModuleData);
+  neomutt_set_module_data(n, MODULE_ID_PARSE, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -49,10 +52,12 @@ static bool parse_init(struct NeoMutt *n)
  */
 static bool parse_cleanup(struct NeoMutt *n)
 {
-  // struct ParseModuleData *md = neomutt_get_module_data(n, MODULE_ID_PARSE);
-  // ASSERT(md);
+  struct ParseModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PARSE);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data);
   return true;
 }
 

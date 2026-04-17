@@ -37,8 +37,6 @@ struct AutocryptPeer;
 struct AutocryptPeerHistory;
 struct Menu;
 
-extern sqlite3 *AutocryptDB;
-
 /**
  * struct AccountEntry - An entry in the Autocrypt account Menu
  */

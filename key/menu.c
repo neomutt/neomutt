@@ -32,8 +32,8 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "menu.h"
-#include "init.h"
 #include "keymap.h"
+#include "module_data.h"
 
 /**
  * km_bind - Set up a key binding
@@ -183,8 +183,9 @@ struct Keymap *km_find_func(const struct MenuDefinition *md, int func)
  */
 int km_get_op(const char *func)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct MenuDefinition **mdp = NULL;
-  ARRAY_FOREACH(mdp, &MenuDefs)
+  ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
     struct MenuDefinition *md = *mdp;
     struct SubMenu **smp = NULL;
@@ -212,8 +213,9 @@ int km_get_op(const char *func)
  */
 int km_get_op_menu(int mtype, const char *func)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct MenuDefinition **mdp = NULL;
-  ARRAY_FOREACH(mdp, &MenuDefs)
+  ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
     struct MenuDefinition *md = *mdp;
 
@@ -244,8 +246,9 @@ int km_get_op_menu(int mtype, const char *func)
  */
 struct MenuDefinition *menu_find(int menu)
 {
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct MenuDefinition **mdp = NULL;
-  ARRAY_FOREACH(mdp, &MenuDefs)
+  ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
     struct MenuDefinition *md = *mdp;
 
@@ -266,8 +269,9 @@ struct MenuDefinition *menu_find_by_name(const char *name)
   if (!name)
     return NULL;
 
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   struct MenuDefinition **mdp = NULL;
-  ARRAY_FOREACH(mdp, &MenuDefs)
+  ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
     struct MenuDefinition *md = *mdp;
 

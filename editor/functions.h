@@ -31,22 +31,33 @@ struct EnterWindowData;
 struct KeyEvent;
 struct MuttWindow;
 
-extern struct MenuDefinition *MdEditor;
-extern struct SubMenu *SmEditor;
+struct MenuDefinition *editor_get_menu_definition(void);
+
+#define MdEditor (editor_get_menu_definition())
+
+/**
+ * struct EnterFunctionData - Data passed to Enter worker functions
+ */
+struct EnterFunctionData
+{
+  struct NeoMutt *n;                ///< NeoMutt application data
+  struct EditorModuleData *mod_data; ///< Editor module data
+  struct EnterWindowData *wdata;    ///< Enter window data
+};
 
 /**
  * @defgroup enter_function_api Enter Function API
  *
  * Prototype for a Enter Function
  *
- * @param wdata Enter Window data
+ * @param fdata   Enter Function context data
  * @param event Event to process
  * @retval enum #FunctionRetval
  *
- * @pre wdata is not NULL
+ * @pre fdata   is not NULL
  * @pre event is not NULL
  */
-typedef int (*enter_function_t)(struct EnterWindowData *wdata, const struct KeyEvent *event);
+typedef int (*enter_function_t)(struct EnterFunctionData *fdata, const struct KeyEvent *event);
 
 /**
  * struct EnterFunction - A NeoMutt function

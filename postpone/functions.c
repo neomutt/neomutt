@@ -38,9 +38,7 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
-
-/// Postpone Menu Definition
-struct MenuDefinition *MdPostpone = NULL;
+#include "module_data.h"
 
 // clang-format off
 /**
@@ -67,7 +65,7 @@ static const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
 /**
  * postponed_init_keys - Initialise the Postponed Keybindings - Implements ::init_keys_api
  */
-void postponed_init_keys(struct SubMenu *sm_generic)
+void postponed_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
@@ -78,7 +76,9 @@ void postponed_init_keys(struct SubMenu *sm_generic)
   km_menu_add_submenu(md, sm_generic);
   km_menu_add_bindings(md, PostponedDefaultBindings);
 
-  MdPostpone = md;
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_POSTPONE);
+  ASSERT(mod_data);
+  mod_data->menu_postpone = md;
 }
 
 /**
@@ -93,7 +93,8 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
   const int index = menu_get_index(menu);
   /* should deleted draft messages be saved in the trash folder? */
   mutt_set_flag(m, m->emails[index], MUTT_DELETE, (event->op == OP_DELETE), true);
-  PostCount = m->msg_count - m->msg_deleted;
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
+  mod_data->post_count = m->msg_count - m->msg_deleted;
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve && (index < (menu->max - 1)))
   {

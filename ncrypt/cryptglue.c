@@ -48,10 +48,15 @@
 #if defined(CRYPT_BACKEND_GPGME) || defined(USE_AUTOCRYPT)
 #include "config/lib.h"
 #endif
+#ifdef CRYPT_BACKEND_GPGME
+#include "crypt_gpgme.h"
+#endif
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+#include "pgpkey.h"
+#endif
 #ifdef USE_AUTOCRYPT
 #include "email/lib.h"
 #include "autocrypt/lib.h"
-#include "crypt_gpgme.h"
 #include "globals.h"
 #else
 struct Envelope;
@@ -145,6 +150,14 @@ void crypt_cleanup(void)
 
   if (CRYPT_MOD_CALL_CHECK(SMIME, cleanup))
     (CRYPT_MOD_CALL(SMIME, cleanup))();
+
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+  pgp_id_defaults_cleanup();
+#endif
+
+#ifdef CRYPT_BACKEND_GPGME
+  gpgme_id_defaults_cleanup();
+#endif
 }
 
 /**

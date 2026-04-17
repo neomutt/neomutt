@@ -47,6 +47,7 @@
 #include "browser/lib.h"
 #include "color/lib.h"
 #include "complete/lib.h"
+#include "key/lib.h"
 #include "send/lib.h"
 #include "external.h"
 #include "mx.h"
@@ -73,15 +74,53 @@ struct ListHead AutoViewList = STAILQ_HEAD_INITIALIZER(AutoViewList);
 struct ListHead HeaderOrderList = STAILQ_HEAD_INITIALIZER(HeaderOrderList);
 struct ListHead MimeLookupList = STAILQ_HEAD_INITIALIZER(MimeLookupList);
 
+// clang-format off
 extern const struct Module ModuleTest;
-extern const struct Module ModuleAlias;
-extern const struct Module ModuleAttach;
-extern const struct Module ModuleEmail;
-extern const struct Module ModuleIndex;
-extern const struct Module ModuleSend;
+extern const struct Module ModuleAddress;  extern const struct Module ModuleAlias;    extern const struct Module ModuleAttach;   extern const struct Module ModuleAutocrypt;
+extern const struct Module ModuleBcache;   extern const struct Module ModuleBrowser;  extern const struct Module ModuleColor;    extern const struct Module ModuleCommands;
+extern const struct Module ModuleComplete; extern const struct Module ModuleCompmbox; extern const struct Module ModuleCompose;  extern const struct Module ModuleCompress;
+extern const struct Module ModuleConfig;   extern const struct Module ModuleConn;     extern const struct Module ModuleConvert;  extern const struct Module ModuleCore;
+extern const struct Module ModuleEditor;   extern const struct Module ModuleEmail;    extern const struct Module ModuleEnvelope; extern const struct Module ModuleExpando;
+extern const struct Module ModuleGui;      extern const struct Module ModuleHcache;   extern const struct Module ModuleHelpbar;  extern const struct Module ModuleHistory;
+extern const struct Module ModuleHooks;    extern const struct Module ModuleImap;     extern const struct Module ModuleIndex;    extern const struct Module ModuleKey;
+extern const struct Module ModuleLua;      extern const struct Module ModuleMaildir;  extern const struct Module ModuleMbox;     extern const struct Module ModuleMenu;
+extern const struct Module ModuleMh;       extern const struct Module ModuleMutt;     extern const struct Module ModuleNcrypt;   extern const struct Module ModuleNntp;
+extern const struct Module ModuleNotmuch;  extern const struct Module ModulePager;    extern const struct Module ModuleParse;    extern const struct Module ModulePattern;
+extern const struct Module ModulePop;      extern const struct Module ModulePostpone; extern const struct Module ModuleProgress; extern const struct Module ModuleQuestion;
+extern const struct Module ModuleSend;     extern const struct Module ModuleSidebar;  extern const struct Module ModuleStore;
+// clang-format on
+
 static const struct Module *Modules[] = {
-  &ModuleTest,  &ModuleAlias, &ModuleAttach, &ModuleEmail,
-  &ModuleIndex, &ModuleSend,  NULL,
+  // clang-format off
+  &ModuleTest,     &ModuleGui,
+  &ModuleAddress,  &ModuleAlias,    &ModuleAttach,   &ModuleBcache,   &ModuleBrowser,
+  &ModuleColor,    &ModuleCommands, &ModuleComplete, &ModuleCompmbox, &ModuleCompose,
+  &ModuleConfig,   &ModuleConn,     &ModuleConvert,  &ModuleCore,     &ModuleEditor,
+  &ModuleEmail,    &ModuleEnvelope, &ModuleExpando,  &ModuleHelpbar,  &ModuleHistory,
+  &ModuleHooks,    &ModuleImap,     &ModuleIndex,    &ModuleKey,      &ModuleMaildir,
+  &ModuleMbox,     &ModuleMenu,     &ModuleMh,       &ModuleMutt,     &ModuleNcrypt,
+  &ModuleNntp,     &ModulePager,    &ModuleParse,    &ModulePattern,  &ModulePop,
+  &ModulePostpone, &ModuleProgress, &ModuleQuestion, &ModuleSend,     &ModuleSidebar,
+// clang-format on
+#ifdef USE_AUTOCRYPT
+  &ModuleAutocrypt,
+#endif
+#ifdef USE_HCACHE_COMPRESSION
+  &ModuleCompress,
+#endif
+#ifdef USE_HCACHE
+  &ModuleHcache,
+#endif
+#ifdef USE_LUA
+  &ModuleLua,
+#endif
+#ifdef USE_NOTMUCH
+  &ModuleNotmuch,
+#endif
+#ifdef USE_HCACHE
+  &ModuleStore,
+#endif
+  NULL,
 };
 
 const char *get_test_dir(void)
@@ -129,6 +168,10 @@ bool test_neomutt_create(void)
 
   init_tmp_dir(NeoMutt);
   init_home_dir(NeoMutt);
+  km_init();
+
+  neomutt_gui_init(NeoMutt);
+  MuttLogger = log_disp_terminal;
 
   return NeoMutt;
 }
@@ -503,7 +546,8 @@ enum MailboxType mx_type(struct Mailbox *m)
   return MUTT_MAILDIR;
 }
 
-int mutt_comp_valid_command(const char *cmd)
+int log_disp_curses(time_t stamp, const char *file, int line, const char *function,
+                    enum LogLevel level, const char *format, ...)
 {
-  return 1;
+  return 0;
 }

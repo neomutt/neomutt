@@ -46,14 +46,11 @@
 #include "core/lib.h"
 #include "source.h"
 #include "parse/lib.h"
+#include "module_data.h"
 #include "muttlib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-
-/// LIFO designed to contain the list of config files that have been sourced and
-/// avoid cyclic sourcing.
-static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 
 #define MAX_ERRS 128
 
@@ -69,6 +66,7 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
   if (!rcfile_path || !pc || !pe)
     return -1;
 
+  struct CommandsModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COMMANDS);
   struct Buffer *err = pe->message;
 
   int lineno = 0, rc = 0, warnings = 0;
@@ -90,14 +88,14 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
 
   if (!ispipe)
   {
-    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+    struct ListNode *np = STAILQ_FIRST(&mod_data->muttrc_stack);
     if (!mutt_path_to_absolute(rcfile, np ? NONULL(np->data) : ""))
     {
       mutt_error(_("Error: Can't build path of '%s'"), rcfile_path);
       return -1;
     }
 
-    STAILQ_FOREACH(np, &MuttrcStack, entries)
+    STAILQ_FOREACH(np, &mod_data->muttrc_stack, entries)
     {
       if (mutt_str_equal(np->data, rcfile))
       {
@@ -110,7 +108,7 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
       return -1;
     }
 
-    mutt_list_insert_head(&MuttrcStack, mutt_str_dup(rcfile));
+    mutt_list_insert_head(&mod_data->muttrc_stack, mutt_str_dup(rcfile));
   }
 
   mutt_debug(LL_DEBUG2, "Reading configuration file '%s'\n", rcfile);
@@ -208,10 +206,10 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
     }
   }
 
-  if (!ispipe && !STAILQ_EMPTY(&MuttrcStack))
+  if (!ispipe && !STAILQ_EMPTY(&mod_data->muttrc_stack))
   {
-    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-    STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
+    struct ListNode *np = STAILQ_FIRST(&mod_data->muttrc_stack);
+    STAILQ_REMOVE_HEAD(&mod_data->muttrc_stack, entries);
     FREE(&np->data);
     FREE(&np);
   }
@@ -273,7 +271,8 @@ done:
  */
 void source_stack_cleanup(void)
 {
-  mutt_list_free(&MuttrcStack);
+  struct CommandsModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COMMANDS);
+  mutt_list_free(&mod_data->muttrc_stack);
 }
 
 /**
@@ -290,15 +289,16 @@ enum CommandResult parse_rc_line_cwd(const char *line, char *cwd,
   if (!line || !cwd || !pc || !pe)
     return MUTT_CMD_ERROR;
 
-  mutt_list_insert_head(&MuttrcStack, mutt_str_dup(NONULL(cwd)));
+  struct CommandsModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COMMANDS);
+  mutt_list_insert_head(&mod_data->muttrc_stack, mutt_str_dup(NONULL(cwd)));
 
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, line);
   enum CommandResult ret = parse_rc_line(buf, pc, pe);
   buf_pool_release(&buf);
 
-  struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-  STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
+  struct ListNode *np = STAILQ_FIRST(&mod_data->muttrc_stack);
+  STAILQ_REMOVE_HEAD(&mod_data->muttrc_stack, entries);
   FREE(&np->data);
   FREE(&np);
 
@@ -313,7 +313,8 @@ enum CommandResult parse_rc_line_cwd(const char *line, char *cwd,
  */
 char *mutt_get_sourced_cwd(void)
 {
-  struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+  struct CommandsModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COMMANDS);
+  struct ListNode *np = STAILQ_FIRST(&mod_data->muttrc_stack);
   if (np && np->data)
     return mutt_str_dup(np->data);
 

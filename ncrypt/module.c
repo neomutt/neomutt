@@ -44,8 +44,12 @@ extern struct ConfigDef NcryptVarsSmime[];
  */
 static bool ncrypt_init(struct NeoMutt *n)
 {
-  // struct NcryptModuleData *md = MUTT_MEM_CALLOC(1, struct NcryptModuleData);
-  // neomutt_set_module_data(n, MODULE_ID_NCRYPT, md);
+  struct NcryptModuleData *mod_data = MUTT_MEM_CALLOC(1, struct NcryptModuleData);
+  STAILQ_INIT(&mod_data->crypt_modules);
+  neomutt_set_module_data(n, MODULE_ID_NCRYPT, mod_data);
+
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
   return true;
 }
@@ -79,10 +83,16 @@ static bool ncrypt_config_define_variables(struct NeoMutt *n, struct ConfigSet *
  */
 static bool ncrypt_cleanup(struct NeoMutt *n)
 {
-  // struct NcryptModuleData *md = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
-  // ASSERT(md);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
 
-  // FREE(&md);
+  notify_free(&mod_data->notify);
+
+  FREE(&mod_data->current_sender);
+  FREE(&mod_data->charset);
+  FREE(&mod_data->packet_buf);
+
+  FREE(&mod_data);
   return true;
 }
 

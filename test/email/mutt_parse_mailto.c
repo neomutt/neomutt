@@ -57,11 +57,11 @@ void test_mutt_parse_mailto(void)
 {
   // int mutt_parse_mailto(struct Envelope *e, char **body, const char *src);
 
-  struct EmailModuleData *md = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
-  TEST_CHECK(md != NULL);
+  struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
+  TEST_CHECK(mod_data != NULL);
 
-  mutt_list_insert_head(&md->mail_to_allow, mutt_str_dup("cc"));
-  mutt_list_insert_head(&md->mail_to_allow, mutt_str_dup("body"));
+  mutt_list_insert_head(&mod_data->mail_to_allow, mutt_str_dup("cc"));
+  mutt_list_insert_head(&mod_data->mail_to_allow, mutt_str_dup("body"));
 
   {
     char *body = NULL;

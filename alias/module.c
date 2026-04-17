@@ -46,25 +46,28 @@ extern const struct Command AliasCommands[];
  */
 static bool alias_init(struct NeoMutt *n)
 {
-  struct AliasModuleData *md = MUTT_MEM_CALLOC(1, struct AliasModuleData);
-  neomutt_set_module_data(n, MODULE_ID_ALIAS, md);
+  struct AliasModuleData *mod_data = MUTT_MEM_CALLOC(1, struct AliasModuleData);
+  neomutt_set_module_data(n, MODULE_ID_ALIAS, mod_data);
 
-  STAILQ_INIT(&md->alternates);
-  STAILQ_INIT(&md->unalternates);
+  mod_data->notify = notify_new();
+  notify_set_parent(mod_data->notify, n->notify);
 
-  md->alternates_notify = notify_new();
-  notify_set_parent(md->alternates_notify, n->notify);
+  STAILQ_INIT(&mod_data->alternates);
+  STAILQ_INIT(&mod_data->unalternates);
 
-  ARRAY_INIT(&md->aliases);
-  md->reverse_aliases = alias_reverse_init();
+  mod_data->alternates_notify = notify_new();
+  notify_set_parent(mod_data->alternates_notify, n->notify);
 
-  md->groups = groups_new();
+  ARRAY_INIT(&mod_data->aliases);
+  mod_data->reverse_aliases = alias_reverse_init();
 
-  md->auto_subscribe_cache = NULL;
-  STAILQ_INIT(&md->mail);
-  STAILQ_INIT(&md->subscribed);
-  STAILQ_INIT(&md->unmail);
-  STAILQ_INIT(&md->unsubscribed);
+  mod_data->groups = groups_new();
+
+  mod_data->auto_subscribe_cache = NULL;
+  STAILQ_INIT(&mod_data->mail);
+  STAILQ_INIT(&mod_data->subscribed);
+  STAILQ_INIT(&mod_data->unmail);
+  STAILQ_INIT(&mod_data->unsubscribed);
 
   return true;
 }
@@ -90,32 +93,33 @@ static bool alias_commands_register(struct NeoMutt *n, struct CommandArray *ca)
  */
 static bool alias_cleanup(struct NeoMutt *n)
 {
-  struct AliasModuleData *md = neomutt_get_module_data(n, MODULE_ID_ALIAS);
-  ASSERT(md);
+  struct AliasModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ALIAS);
+  ASSERT(mod_data);
 
-  notify_free(&md->alternates_notify);
+  notify_free(&mod_data->notify);
+  notify_free(&mod_data->alternates_notify);
 
-  mutt_regexlist_free(&md->alternates);
-  mutt_regexlist_free(&md->unalternates);
+  mutt_regexlist_free(&mod_data->alternates);
+  mutt_regexlist_free(&mod_data->unalternates);
 
   struct Alias **ap = NULL;
-  ARRAY_FOREACH(ap, &md->aliases)
+  ARRAY_FOREACH(ap, &mod_data->aliases)
   {
     alias_reverse_delete(*ap);
   }
-  aliaslist_clear(&md->aliases);
+  aliaslist_clear(&mod_data->aliases);
 
-  alias_reverse_cleanup(&md->reverse_aliases);
+  alias_reverse_cleanup(&mod_data->reverse_aliases);
 
-  groups_free(&md->groups);
+  groups_free(&mod_data->groups);
 
-  mutt_hash_free(&md->auto_subscribe_cache);
-  mutt_regexlist_free(&md->mail);
-  mutt_regexlist_free(&md->subscribed);
-  mutt_regexlist_free(&md->unmail);
-  mutt_regexlist_free(&md->unsubscribed);
+  mutt_hash_free(&mod_data->auto_subscribe_cache);
+  mutt_regexlist_free(&mod_data->mail);
+  mutt_regexlist_free(&mod_data->subscribed);
+  mutt_regexlist_free(&mod_data->unmail);
+  mutt_regexlist_free(&mod_data->unsubscribed);
 
-  FREE(&md);
+  FREE(&mod_data);
   return true;
 }
 
