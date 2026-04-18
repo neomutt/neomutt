@@ -1,0 +1,11 @@
+# CLIWatch benchmark configuration
+# Docs: https://docs.cliwatch.com/guides/example-suites
+
+cli: neomutt
+version_command: "neomutt --version"
+
+providers:
+  - anthropic/claude-sonnet-4-5-20250929
+
+tasks:
+  - "file://tasks/*.yaml"
