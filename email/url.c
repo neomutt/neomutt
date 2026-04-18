@@ -200,7 +200,10 @@ int url_pct_decode(char *s)
       if ((s[1] != '\0') && (s[2] != '\0') && mutt_isxdigit(s[1]) &&
           mutt_isxdigit(s[2]) && (hexval(s[1]) >= 0) && (hexval(s[2]) >= 0))
       {
-        *d++ = (hexval(s[1]) << 4) | (hexval(s[2]));
+        unsigned char c = (hexval(s[1]) << 4) | (hexval(s[2]));
+        if (c == '\0')
+          return -1;
+        *d++ = c;
         s += 2;
       }
       else
