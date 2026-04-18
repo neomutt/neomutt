@@ -69,6 +69,10 @@ struct stat;
 #define HC_FNAME "neomutt" /* filename for hcache as POP lacks paths */
 #define HC_FEXT "hcache"   /* extension for hcache as POP lacks paths */
 
+/// Hard limit on UIDL responses to prevent a malicious server from
+/// causing unbounded memory growth.
+#define POP_MAX_MESSAGES 500000
+
 /**
  * cache_id - Make a message-cache-compatible id
  * @param id POP message id
@@ -226,6 +230,12 @@ static int fetch_uidl(const char *line, void *data)
 
   if (i == m->msg_count)
   {
+    if (m->msg_count >= POP_MAX_MESSAGES)
+    {
+      mutt_debug(LL_DEBUG1, "UIDL response limit reached (%d)\n", POP_MAX_MESSAGES);
+      return -1;
+    }
+
     mutt_debug(LL_DEBUG1, "new header %d %s\n", index, line);
 
     mx_alloc_memory(m, i);

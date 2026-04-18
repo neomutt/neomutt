@@ -41,4 +41,29 @@ void test_url_pct_decode(void)
     TEST_CHECK_NUM_EQ(url_pct_decode(s), 0);
     TEST_CHECK_STR_EQ(s, "Hello world");
   }
+
+  {
+    TEST_CASE("Reject embedded NUL (%00)");
+    char s[] = "user%00evil@domain";
+    TEST_CHECK_NUM_EQ(url_pct_decode(s), -1);
+  }
+
+  {
+    TEST_CASE("Reject %00 at start");
+    char s[] = "%00start";
+    TEST_CHECK_NUM_EQ(url_pct_decode(s), -1);
+  }
+
+  {
+    TEST_CASE("Reject %00 at end");
+    char s[] = "end%00";
+    TEST_CHECK_NUM_EQ(url_pct_decode(s), -1);
+  }
+
+  {
+    TEST_CASE("Allow other percent-encoded chars");
+    char s[] = "%41%42%43";
+    TEST_CHECK_NUM_EQ(url_pct_decode(s), 0);
+    TEST_CHECK_STR_EQ(s, "ABC");
+  }
 }
