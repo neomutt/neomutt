@@ -1,14 +1,14 @@
 # Usage tasks: safe, non-interactive commands
 
 - id: show-all-help
-  intent: "Show detailed command-line help for all neomutt modes"
+  intent: "Show the full neomutt command-line help in one command, including the shared, help, info, send, and tui sections"
   difficulty: medium
   category: usage
-  max_turns: 3
+  max_turns: 5
   assert:
     - ran: "neomutt"
     - exit_code: 0
-    - output_contains: "shared"
+    - output_contains: "shared:"
 
 - id: show-license
   intent: "Show the license information for neomutt"

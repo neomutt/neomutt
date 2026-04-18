@@ -23,7 +23,9 @@ jobs:
         run: |
           mkdir build-cliwatch
           cd build-cliwatch
-          ../configure
+          ../configure --full-doc --autocrypt --fmemopen --gdbm --gnutls --gpgme --gss \
+            --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb \
+            --testing --with-lock=fcntl --zlib --zstd
           make -j"$(nproc)" neomutt
           install -D neomutt "$HOME/.local/bin/neomutt"
 
