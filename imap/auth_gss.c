@@ -264,6 +264,17 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   }
   mutt_debug(LL_DEBUG2, "Credential exchange complete\n");
 
+  /* The unwrapped token must be at least 4 bytes: 1 byte of security flags
+   * followed by 3 bytes of maximum buffer size.  Reject tokens that are
+   * too short to prevent an out-of-bounds read. */
+  if (send_token.length < 4)
+  {
+    mutt_debug(LL_DEBUG2, "Unwrapped security token too short (%zu bytes)\n",
+               send_token.length);
+    gss_release_buffer(&min_stat, &send_token);
+    goto err_abort_cmd;
+  }
+
   /* first byte is security levels supported. We want NONE */
   server_conf_flags = ((char *) send_token.value)[0];
   if (!(((char *) send_token.value)[0] & GSS_AUTH_P_NONE))
