@@ -726,6 +726,8 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
   GENERAL_NAME *subj_alt_name = NULL;
   /* did we find a name matching hostname? */
   bool match_found;
+  /* did the SAN extension contain any dNSName entries? (RFC6125 §6.4.4) */
+  bool has_san_dns = false;
 
   /* Check if 'hostname' matches the one of the subjectAltName extensions of
    * type DNS or the Common Name (CN). */
@@ -750,6 +752,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       subj_alt_name = sk_GENERAL_NAME_value(subj_alt_names, i);
       if (subj_alt_name->type == GEN_DNS)
       {
+        has_san_dns = true;
         if ((subj_alt_name->d.ia5->length >= 0) &&
             (mutt_str_len((char *) subj_alt_name->d.ia5->data) ==
              (size_t) subj_alt_name->d.ia5->length) &&
@@ -763,9 +766,10 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     GENERAL_NAMES_free(subj_alt_names);
   }
 
-  if (!match_found)
+  if (!match_found && !has_san_dns)
   {
-    /* Try the common name */
+    /* Only fall back to CN when the SAN extension has no dNSName entries.
+     * RFC6125 §6.4.4: if SANs of type dNSName are present, the CN must not be checked. */
     x509_subject = X509_get_subject_name(x509cert);
     if (!x509_subject)
     {
