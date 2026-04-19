@@ -23,8 +23,10 @@
 #ifndef MUTT_GUI_ROOTWIN_H
 #define MUTT_GUI_ROOTWIN_H
 
-void rootwin_cleanup(void);
-void rootwin_new(void);
+struct GuiModuleData;
+
+void rootwin_cleanup(struct GuiModuleData *mod_data);
+void rootwin_new(struct GuiModuleData *mod_data);
 void rootwin_set_size(int cols, int rows);
 
 #endif /* MUTT_GUI_ROOTWIN_H */

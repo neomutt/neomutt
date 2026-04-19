@@ -80,8 +80,8 @@ static bool hooks_cleanup(struct NeoMutt *n)
 
   notify_free(&mod_data->notify);
 
-  mutt_delete_hooks(CMD_NONE);
-  delete_idxfmt_hooks();
+  mutt_delete_hooks(&mod_data->hooks, CMD_NONE);
+  delete_idxfmt_hooks(&mod_data->idx_fmt_hooks);
 
   FREE(&mod_data);
   return true;

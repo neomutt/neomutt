@@ -104,6 +104,7 @@ const char *ext_key_find(const char *key)
 
 /**
  * ext_keys_init - Initialise map of ncurses extended keys
+ * @param key_names Array of key name/value mappings to populate
  *
  * Determine the keycodes for ncurses extended keys and fill in the KeyNames array.
  *
@@ -112,16 +113,15 @@ const char *ext_key_find(const char *key)
  * prior to start_curses().  This means that the default keybindings can't
  * include any of the extended keys because they won't be defined until later.
  */
-void ext_keys_init(void)
+void ext_keys_init(struct Mapping *key_names)
 {
-  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   use_extended_names(true);
 
-  for (int i = 0; mod_data->key_names[i].name; i++)
+  for (int i = 0; key_names[i].name; i++)
   {
-    if (mod_data->key_names[i].value == -1)
+    if (key_names[i].value == -1)
     {
-      const char *keyname = ext_key_find(mod_data->key_names[i].name);
+      const char *keyname = ext_key_find(key_names[i].name);
 
       if (keyname)
       {
@@ -130,7 +130,7 @@ void ext_keys_init(void)
         {
           int code = key_defined(s);
           if (code > 0)
-            mod_data->key_names[i].value = code;
+            key_names[i].value = code;
         }
       }
     }

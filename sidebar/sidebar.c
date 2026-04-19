@@ -209,33 +209,31 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
 
 /**
  * sb_init - Set up the Sidebar
+ * @param all_dialogs_window All Dialogs Window
  */
-void sb_init(void)
+void sb_init(struct MuttWindow *all_dialogs_window)
 {
   // Set a default style, if unset
   struct AttrColor *ac = simple_color_get(MT_COLOR_SIDEBAR_HIGHLIGHT);
   if (!attr_color_is_set(ac))
     ac->attrs = A_UNDERLINE;
 
-  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-
-  if (mod_data->all_dialogs_window)
+  if (all_dialogs_window)
   {
     // Listen for dialog creation events
-    notify_observer_add(mod_data->all_dialogs_window->notify, NT_WINDOW,
+    notify_observer_add(all_dialogs_window->notify, NT_WINDOW,
                         sb_insertion_window_observer, NULL);
   }
 }
 
 /**
  * sb_cleanup - Clean up the Sidebar
+ * @param sidebar_pinned List of pinned sidebar entries
+ * @param all_dialogs_window All Dialogs Window
  */
-void sb_cleanup(void)
+void sb_cleanup(struct ListHead *sidebar_pinned, struct MuttWindow *all_dialogs_window)
 {
-  struct SidebarModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_SIDEBAR);
-  struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-  if (gui_data && gui_data->all_dialogs_window)
-    notify_observer_remove(gui_data->all_dialogs_window->notify,
-                           sb_insertion_window_observer, NULL);
-  mutt_list_free(&mod_data->sidebar_pinned);
+  if (all_dialogs_window)
+    notify_observer_remove(all_dialogs_window->notify, sb_insertion_window_observer, NULL);
+  mutt_list_free(sidebar_pinned);
 }

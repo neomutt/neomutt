@@ -30,6 +30,6 @@ struct HashTable *alias_reverse_init   (void);
 void              alias_reverse_cleanup(struct HashTable **reverse);
 
 void alias_reverse_add   (struct Alias *alias);
-void alias_reverse_delete(struct Alias *alias);
+void alias_reverse_delete(struct HashTable *reverse_aliases, struct Alias *alias);
 
 #endif /* MUTT_ALIAS_REVERSE_H */

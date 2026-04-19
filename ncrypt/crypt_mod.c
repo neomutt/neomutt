@@ -69,10 +69,10 @@ const struct CryptModuleSpecs *crypto_module_lookup(int identifier)
 
 /**
  * crypto_module_cleanup - Clean up the crypto modules
+ * @param mod_data Ncrypt module data
  */
-void crypto_module_cleanup(void)
+void crypto_module_cleanup(struct NcryptModuleData *mod_data)
 {
-  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct CryptModule *np = NULL, *tmp = NULL;
   STAILQ_FOREACH_SAFE(np, &mod_data->crypt_modules, entries, tmp)
   {

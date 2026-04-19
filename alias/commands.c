@@ -239,7 +239,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
   if (a)
   {
     FREE(&name);
-    alias_reverse_delete(a);
+    alias_reverse_delete(mod_data->reverse_aliases, a);
     /* override the previous value */
     mutt_addrlist_clear(&a->addr);
     FREE(&a->comment);
@@ -330,7 +330,7 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
     {
       ARRAY_FOREACH(ap, &mod_data->aliases)
       {
-        alias_reverse_delete(*ap);
+        alias_reverse_delete(mod_data->reverse_aliases, *ap);
       }
 
       aliaslist_clear(&mod_data->aliases);
@@ -344,7 +344,7 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
 
       struct Alias *a = *ap;
       ARRAY_REMOVE(&mod_data->aliases, ap);
-      alias_reverse_delete(a);
+      alias_reverse_delete(mod_data->reverse_aliases, a);
       alias_free(&a);
       break;
     }

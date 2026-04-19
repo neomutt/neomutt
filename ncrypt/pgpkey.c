@@ -606,11 +606,11 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
 
 /**
  * pgp_id_defaults_cleanup - Free the PGP IdDefaults cache
+ * @param pgp_id_defaults Pointer to the PGP cache head
  */
-void pgp_id_defaults_cleanup(void)
+void pgp_id_defaults_cleanup(struct PgpCache **pgp_id_defaults)
 {
-  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
-  struct PgpCache *l = mod_data->pgp_id_defaults;
+  struct PgpCache *l = *pgp_id_defaults;
   while (l)
   {
     struct PgpCache *next = l->next;
@@ -619,5 +619,5 @@ void pgp_id_defaults_cleanup(void)
     FREE(&l);
     l = next;
   }
-  mod_data->pgp_id_defaults = NULL;
+  *pgp_id_defaults = NULL;
 }

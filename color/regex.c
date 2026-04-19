@@ -47,10 +47,10 @@
 
 /**
  * regex_colors_init - Initialise the Regex colours
+ * @param mod_data Color module data
  */
-void regex_colors_init(void)
+void regex_colors_init(struct ColorModuleData *mod_data)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   color_debug(LL_DEBUG5, "init AttachList, BodyList, etc\n");
   STAILQ_INIT(&mod_data->attach_list);
   STAILQ_INIT(&mod_data->body_list);
@@ -71,10 +71,10 @@ void regex_colors_init(void)
 
 /**
  * regex_colors_reset - Reset the Regex colours
+ * @param mod_data Color module data
  */
-void regex_colors_reset(void)
+void regex_colors_reset(struct ColorModuleData *mod_data)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   color_debug(LL_DEBUG5, "reset regex\n");
   regex_color_list_clear(&mod_data->attach_list);
   regex_color_list_clear(&mod_data->body_list);
@@ -95,10 +95,11 @@ void regex_colors_reset(void)
 
 /**
  * regex_colors_cleanup - Cleanup the Regex colours
+ * @param mod_data Color module data
  */
-void regex_colors_cleanup(void)
+void regex_colors_cleanup(struct ColorModuleData *mod_data)
 {
-  regex_colors_reset();
+  regex_colors_reset(mod_data);
 }
 
 /**

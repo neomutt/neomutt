@@ -105,7 +105,7 @@ static bool alias_cleanup(struct NeoMutt *n)
   struct Alias **ap = NULL;
   ARRAY_FOREACH(ap, &mod_data->aliases)
   {
-    alias_reverse_delete(*ap);
+    alias_reverse_delete(mod_data->reverse_aliases, *ap);
   }
   aliaslist_clear(&mod_data->aliases);
 

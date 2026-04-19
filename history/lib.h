@@ -42,6 +42,7 @@
 #include "functions.h" // IWYU pragma: keep
 
 struct Buffer;
+struct HistoryModuleData;
 struct NotifyCallback;
 struct StringArray;
 
@@ -85,8 +86,8 @@ enum ExpandoDataHistory
 
 void  mutt_hist_add         (enum HistoryClass hclass, const char *str, bool save);
 bool  mutt_hist_at_scratch  (enum HistoryClass hclass);
-void  mutt_hist_cleanup     (void);
-void  mutt_hist_init        (void);
+void  mutt_hist_cleanup     (struct HistoryModuleData *mod_data);
+void  mutt_hist_init        (struct HistoryModuleData *mod_data);
 char *mutt_hist_next        (enum HistoryClass hclass);
 char *mutt_hist_prev        (enum HistoryClass hclass);
 void  mutt_hist_read_file   (void);

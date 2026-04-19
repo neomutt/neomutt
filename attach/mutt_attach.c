@@ -1303,19 +1303,20 @@ void mutt_add_temp_attachment(const char *filename)
 
 /**
  * mutt_temp_attachments_cleanup - Delete all temporary attachments
+ * @param list List of temporary attachment files
  */
-void mutt_temp_attachments_cleanup(void)
+void mutt_temp_attachments_cleanup(struct ListHead *list)
 {
-  struct AttachModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
-  ASSERT(mod_data);
+  if (!list)
+    return;
 
   struct ListNode *np = NULL;
 
-  STAILQ_FOREACH(np, &mod_data->temp_attachments, entries)
+  STAILQ_FOREACH(np, list, entries)
   {
     (void) mutt_file_chmod_add(np->data, S_IWUSR);
     mutt_file_unlink(np->data);
   }
 
-  mutt_list_free(&mod_data->temp_attachments);
+  mutt_list_free(list);
 }

@@ -128,6 +128,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "sidebar/lib.h"
+#include "color/module_data.h"
 #include "external.h"
 #include "globals.h"
 #include "mutt_logging.h"
@@ -737,7 +738,8 @@ static int start_curses(void)
     return 1;
   }
 
-  colors_init();
+  struct ColorModuleData *color_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  colors_init(color_mod_data);
   keypad(stdscr, true);
   cbreak();
   noecho();
@@ -1085,7 +1087,8 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Always create the mutt_windows because batch mode has some shared code
    * paths that end up referencing them. */
-  rootwin_new();
+  struct GuiModuleData *gui_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  rootwin_new(gui_mod_data);
 
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, &cli->shared.log_level, &cli->shared.log_file,
@@ -1473,7 +1476,7 @@ int main(int argc, char *argv[], char *envp[])
     if (!buf_is_empty(tempfile))
       unlink(buf_string(tempfile));
 
-    rootwin_cleanup();
+    rootwin_cleanup(gui_mod_data);
 
     if (rv != 0)
       goto main_curses; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)

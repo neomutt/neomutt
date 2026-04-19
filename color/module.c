@@ -81,7 +81,8 @@ static bool color_gui_init(struct NeoMutt *n)
  */
 static void color_gui_cleanup(struct NeoMutt *n)
 {
-  colors_cleanup();
+  struct ColorModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COLOR);
+  colors_cleanup(mod_data);
 }
 
 /**

@@ -48,7 +48,7 @@ static bool key_init(struct NeoMutt *n)
   mod_data->notify = notify_new();
   notify_set_parent(mod_data->notify, n->notify);
 
-  km_init();
+  km_init(mod_data);
 
   return true;
 }
@@ -80,8 +80,9 @@ static bool key_cleanup(struct NeoMutt *n)
  */
 static bool key_gui_init(struct NeoMutt *n)
 {
-  ext_keys_init();
-  km_set_abort_key();
+  struct KeyModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_KEY);
+  ext_keys_init(mod_data->key_names);
+  km_set_abort_key(&mod_data->abort_key);
   return true;
 }
 
@@ -90,7 +91,8 @@ static bool key_gui_init(struct NeoMutt *n)
  */
 static void key_gui_cleanup(struct NeoMutt *n)
 {
-  km_cleanup();
+  struct KeyModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_KEY);
+  km_cleanup(mod_data);
 }
 
 /**

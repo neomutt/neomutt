@@ -42,6 +42,7 @@
 #include "cryptglue.h"
 #include "lib.h"
 #include "crypt_mod.h"
+#include "module_data.h"
 #ifndef CRYPT_BACKEND_GPGME
 #include "gui/lib.h"
 #endif
@@ -142,8 +143,9 @@ void crypt_init(void)
 
 /**
  * crypt_cleanup - Clean up backend
+ * @param mod_data Ncrypt module data
  */
-void crypt_cleanup(void)
+void crypt_cleanup(struct NcryptModuleData *mod_data)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, cleanup))
     (CRYPT_MOD_CALL(PGP, cleanup))();
@@ -152,11 +154,11 @@ void crypt_cleanup(void)
     (CRYPT_MOD_CALL(SMIME, cleanup))();
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-  pgp_id_defaults_cleanup();
+  pgp_id_defaults_cleanup(&mod_data->pgp_id_defaults);
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-  gpgme_id_defaults_cleanup();
+  gpgme_id_defaults_cleanup(mod_data);
 #endif
 }
 

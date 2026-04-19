@@ -25,16 +25,17 @@
 
 #include "menu.h"
 
+struct KeyModuleData;
 struct NotifyCallback;
 
-void                   km_cleanup          (void);
+void                   km_cleanup          (struct KeyModuleData *mod_data);
 int                    km_config_observer  (struct NotifyCallback *nc);
-void                   km_init             (void);
+void                   km_init             (struct KeyModuleData *mod_data);
 void                   km_menu_add_bindings(struct MenuDefinition *md, const struct MenuOpSeq bindings[]);
 void                   km_menu_add_submenu (struct MenuDefinition *md, struct SubMenu *sm);
 struct MenuDefinition *km_register_menu    (int menu, const char *name);
 struct SubMenu *       km_register_submenu (const struct MenuFuncOp functions[]);
-void                   km_set_abort_key    (void);
+void                   km_set_abort_key    (keycode_t *abort_key);
 void                   km_sort             (void);
 
 #endif /* MUTT_KEY_INIT_H */

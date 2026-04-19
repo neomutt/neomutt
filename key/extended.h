@@ -27,10 +27,12 @@
 
 const char *ext_key_find(const char *key);
 
+struct Mapping;
+
 #ifdef HAVE_USE_EXTENDED_NAMES
-void ext_keys_init(void);
+void ext_keys_init(struct Mapping *key_names);
 #else
-static inline void ext_keys_init(void) {}
+static inline void ext_keys_init(struct Mapping *key_names) {}
 #endif
 
 #endif /* MUTT_KEY_EXTENDED_H */

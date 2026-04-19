@@ -31,6 +31,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "color/module_data.h"
 #include "test_common.h" // IWYU pragma: keep
 
 color_t color_xterm256_to_24bit(const color_t color);
@@ -54,7 +55,8 @@ void test_attr_colors(void)
   COLOR_PAIRS = 32;
 #endif
 
-  curses_colors_init();
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  curses_colors_init(&mod_data->curses_colors, &mod_data->num_curses_colors);
 
   {
     attr_color_free(NULL);

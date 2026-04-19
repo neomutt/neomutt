@@ -89,8 +89,8 @@ static bool ncrypt_cleanup(struct NeoMutt *n)
 
   notify_free(&mod_data->notify);
 
-  crypt_cleanup();
-  crypto_module_cleanup();
+  crypt_cleanup(mod_data);
+  crypto_module_cleanup(mod_data);
 
   FREE(&mod_data->current_sender);
   FREE(&mod_data->charset);

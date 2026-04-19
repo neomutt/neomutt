@@ -112,7 +112,7 @@ static bool conn_cleanup(struct NeoMutt *n)
   mutt_sasl_cleanup();
 #endif
 #ifdef USE_SASL_GNU
-  mutt_gsasl_cleanup();
+  mutt_gsasl_cleanup(&mod_data->mutt_gsasl_ctx);
 #endif
 
 #ifdef USE_SASL_CYRUS

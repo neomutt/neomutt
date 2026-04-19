@@ -39,13 +39,14 @@
 
 /**
  * curses_colors_init - Initialise the Curses colours
+ * @param curses_colors     List of Curses colours
+ * @param num_curses_colors Pointer to the count of Curses colours
  */
-void curses_colors_init(void)
+void curses_colors_init(struct CursesColorList *curses_colors, int *num_curses_colors)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   color_debug(LL_DEBUG5, "init CursesColors\n");
-  TAILQ_INIT(&mod_data->curses_colors);
-  mod_data->num_curses_colors = 0;
+  TAILQ_INIT(curses_colors);
+  *num_curses_colors = 0;
 }
 
 /**

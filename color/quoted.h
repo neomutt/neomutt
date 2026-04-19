@@ -28,8 +28,8 @@
 #define COLOR_QUOTED(cid) (((cid) >= MT_COLOR_QUOTED0) && ((cid) <= MT_COLOR_QUOTED9))
 
 void quoted_colors_init   (void);
-void quoted_colors_reset  (void);
-void quoted_colors_cleanup(void);
+void quoted_colors_reset  (int *num_quoted_colors);
+void quoted_colors_cleanup(int *num_quoted_colors);
 
 struct AttrColor * quoted_colors_get(int q);
 int                quoted_colors_num_used(void);

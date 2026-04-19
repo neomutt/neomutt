@@ -82,9 +82,10 @@ void alias_reverse_add(struct Alias *alias)
 
 /**
  * alias_reverse_delete - Remove an email address lookup for an Alias
- * @param alias Alias to use
+ * @param reverse_aliases Reverse alias Hash Table
+ * @param alias           Alias to use
  */
-void alias_reverse_delete(struct Alias *alias)
+void alias_reverse_delete(struct HashTable *reverse_aliases, struct Alias *alias)
 {
   if (!alias)
     return;
@@ -93,14 +94,11 @@ void alias_reverse_delete(struct Alias *alias)
    * match the hash entries. */
   mutt_addrlist_to_intl(&alias->addr, NULL);
 
-  struct AliasModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ALIAS);
-  ASSERT(mod_data);
-
   struct Address *addr = NULL;
   TAILQ_FOREACH(addr, &alias->addr, entries)
   {
     if (!addr->group && addr->mailbox)
-      mutt_hash_delete(mod_data->reverse_aliases, buf_string(addr->mailbox), addr);
+      mutt_hash_delete(reverse_aliases, buf_string(addr->mailbox), addr);
   }
 }
 

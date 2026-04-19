@@ -100,7 +100,7 @@ static bool attach_cleanup(struct NeoMutt *n)
 
   mutt_list_free(&mod_data->mime_lookup);
 
-  mutt_temp_attachments_cleanup();
+  mutt_temp_attachments_cleanup(&mod_data->temp_attachments);
 
   FREE(&mod_data);
   return true;

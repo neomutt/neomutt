@@ -95,7 +95,8 @@ static void curses_exit_handler(int sig)
 {
   mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   endwin(); /* just to be safe */
-  mutt_temp_attachments_cleanup();
+  struct AttachModuleData *att_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  mutt_temp_attachments_cleanup(&att_data->temp_attachments);
   mutt_sig_exit_handler(sig); /* DOES NOT RETURN */
 }
 

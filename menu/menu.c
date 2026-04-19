@@ -67,12 +67,12 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
 
 /**
  * menu_init2 - Initialise all the Menus
+ * @param search_buffers Array of search buffer pointers to initialise
  */
-void menu_init2(void)
+void menu_init2(char **search_buffers)
 {
-  struct MenuModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_MENU);
   for (int i = 0; i < MENU_MAX; i++)
-    mod_data->search_buffers[i] = NULL;
+    search_buffers[i] = NULL;
 }
 
 /**

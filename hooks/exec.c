@@ -400,7 +400,8 @@ void exec_timeout_hook(void)
   }
 
   /* Delete temporary attachment files */
-  mutt_temp_attachments_cleanup();
+  struct AttachModuleData *att_data = neomutt_get_module_data(NeoMutt, MODULE_ID_ATTACH);
+  mutt_temp_attachments_cleanup(&att_data->temp_attachments);
 
   mod_data->current_hook_id = CMD_NONE;
   parse_context_free(&pc);

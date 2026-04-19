@@ -1012,21 +1012,21 @@ cleanup:
 
 /**
  * mutt_delete_hooks - Delete matching hooks
- * @param id Hook CommandId to delete, e.g. #CMD_SEND_HOOK
+ * @param hooks Hook list to modify
+ * @param id    Hook CommandId to delete, e.g. #CMD_SEND_HOOK
  *
  * If CMD_NONE is passed, all the hooks will be deleted.
  */
-void mutt_delete_hooks(enum CommandId id)
+void mutt_delete_hooks(struct HookList *hooks, enum CommandId id)
 {
-  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
   struct Hook *h = NULL;
   struct Hook *tmp = NULL;
 
-  TAILQ_FOREACH_SAFE(h, &mod_data->hooks, entries, tmp)
+  TAILQ_FOREACH_SAFE(h, hooks, entries, tmp)
   {
     if ((id == CMD_NONE) || (id == h->id))
     {
-      TAILQ_REMOVE(&mod_data->hooks, h, entries);
+      TAILQ_REMOVE(hooks, h, entries);
       hook_free(&h);
     }
   }
@@ -1052,11 +1052,11 @@ static void idxfmt_hashelem_free(int type, void *obj, intptr_t data)
 
 /**
  * delete_idxfmt_hooks - Delete all the index-format-hooks
+ * @param idx_fmt_hooks Pointer to the hash table to free
  */
-void delete_idxfmt_hooks(void)
+void delete_idxfmt_hooks(struct HashTable **idx_fmt_hooks)
 {
-  struct HooksModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HOOKS);
-  mutt_hash_free(&mod_data->idx_fmt_hooks);
+  mutt_hash_free(idx_fmt_hooks);
 }
 
 /**
@@ -1214,8 +1214,8 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
         buf_addstr(err, _("unhook: Can't do unhook * from within a hook"));
         goto done;
       }
-      mutt_delete_hooks(CMD_NONE);
-      delete_idxfmt_hooks();
+      mutt_delete_hooks(&mod_data->hooks, CMD_NONE);
+      delete_idxfmt_hooks(&mod_data->idx_fmt_hooks);
       mutt_ch_lookup_remove();
     }
     else
@@ -1243,9 +1243,9 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
         goto done;
       }
       if (hook->id == CMD_INDEX_FORMAT_HOOK)
-        delete_idxfmt_hooks();
+        delete_idxfmt_hooks(&mod_data->idx_fmt_hooks);
       else
-        mutt_delete_hooks(hook->id);
+        mutt_delete_hooks(&mod_data->hooks, hook->id);
     }
   }
 

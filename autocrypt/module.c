@@ -77,7 +77,7 @@ static bool autocrypt_cleanup(struct NeoMutt *n)
 
   notify_free(&mod_data->notify);
 
-  mutt_autocrypt_cleanup();
+  mutt_autocrypt_cleanup(mod_data);
 
   FREE(&mod_data->autocrypt_sign_as);
   FREE(&mod_data->autocrypt_default_key);

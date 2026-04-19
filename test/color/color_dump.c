@@ -24,8 +24,10 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "color/module_data.h"
 
 void test_color_dump(void)
 {
@@ -33,11 +35,12 @@ void test_color_dump(void)
 
   color_dump();
 
-  curses_colors_init();
-  merged_colors_init();
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  curses_colors_init(&mod_data->curses_colors, &mod_data->num_curses_colors);
+  merged_colors_init(&mod_data->merged_colors);
   quoted_colors_init();
-  regex_colors_init();
-  simple_colors_init();
+  regex_colors_init(mod_data);
+  simple_colors_init(mod_data->simple_colors);
 
   struct AttrColor ac = { 0 };
 

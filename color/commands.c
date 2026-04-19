@@ -218,7 +218,8 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd, struct Buffe
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
     if (mutt_str_equal(buf_string(token), "*"))
     {
-      colors_reset();
+      struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+      colors_reset(mod_data);
       rc = MUTT_CMD_SUCCESS;
       goto done;
     }

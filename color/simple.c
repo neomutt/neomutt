@@ -43,48 +43,49 @@
 
 /**
  * simple_colors_init - Initialise the simple colour definitions
+ * @param simple_colors Array of simple colours to initialise
  */
-void simple_colors_init(void)
+void simple_colors_init(struct AttrColor *simple_colors)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   for (int i = 0; i < MT_COLOR_MAX; i++)
   {
-    mod_data->simple_colors[i].fg.color = COLOR_DEFAULT;
-    mod_data->simple_colors[i].bg.color = COLOR_DEFAULT;
+    simple_colors[i].fg.color = COLOR_DEFAULT;
+    simple_colors[i].bg.color = COLOR_DEFAULT;
   }
 
   // Set some defaults
   color_debug(LL_DEBUG5, "init indicator, markers, etc\n");
-  mod_data->simple_colors[MT_COLOR_BOLD].attrs = A_BOLD;
-  mod_data->simple_colors[MT_COLOR_INDICATOR].attrs = A_REVERSE;
-  mod_data->simple_colors[MT_COLOR_ITALIC].attrs = A_ITALIC;
-  mod_data->simple_colors[MT_COLOR_MARKERS].attrs = A_REVERSE;
-  mod_data->simple_colors[MT_COLOR_SEARCH].attrs = A_REVERSE;
-  mod_data->simple_colors[MT_COLOR_STATUS].attrs = A_REVERSE;
-  mod_data->simple_colors[MT_COLOR_STRIPE_EVEN].attrs = A_BOLD;
-  mod_data->simple_colors[MT_COLOR_UNDERLINE].attrs = A_UNDERLINE;
+  simple_colors[MT_COLOR_BOLD].attrs = A_BOLD;
+  simple_colors[MT_COLOR_INDICATOR].attrs = A_REVERSE;
+  simple_colors[MT_COLOR_ITALIC].attrs = A_ITALIC;
+  simple_colors[MT_COLOR_MARKERS].attrs = A_REVERSE;
+  simple_colors[MT_COLOR_SEARCH].attrs = A_REVERSE;
+  simple_colors[MT_COLOR_STATUS].attrs = A_REVERSE;
+  simple_colors[MT_COLOR_STRIPE_EVEN].attrs = A_BOLD;
+  simple_colors[MT_COLOR_UNDERLINE].attrs = A_UNDERLINE;
 }
 
 /**
  * simple_colors_reset - Reset the simple colour definitions
+ * @param simple_colors Array of simple colours to reset
  */
-void simple_colors_reset(void)
+void simple_colors_reset(struct AttrColor *simple_colors)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   color_debug(LL_DEBUG5, "reset defs\n");
   for (size_t i = 0; i < MT_COLOR_MAX; i++)
   {
-    attr_color_clear(&mod_data->simple_colors[i]);
+    attr_color_clear(&simple_colors[i]);
   }
-  simple_colors_init();
+  simple_colors_init(simple_colors);
 }
 
 /**
  * simple_colors_cleanup - Cleanup the simple colour definitions
+ * @param simple_colors Array of simple colours to cleanup
  */
-void simple_colors_cleanup(void)
+void simple_colors_cleanup(struct AttrColor *simple_colors)
 {
-  simple_colors_reset();
+  simple_colors_reset(simple_colors);
 }
 
 /**

@@ -65,7 +65,8 @@ static bool menu_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  */
 static bool menu_gui_init(struct NeoMutt *n)
 {
-  menu_init2();
+  struct MenuModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MENU);
+  menu_init2(mod_data->search_buffers);
   return true;
 }
 

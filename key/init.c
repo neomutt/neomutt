@@ -157,17 +157,18 @@ int km_config_observer(struct NotifyCallback *nc)
   if (!mutt_str_equal(ev_c->name, "abort_key"))
     return 0;
 
-  km_set_abort_key();
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  km_set_abort_key(&mod_data->abort_key);
   mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
 
 /**
  * km_init - Initialise all the menu keybindings
+ * @param mod_data Key module data
  */
-void km_init(void)
+void km_init(struct KeyModuleData *mod_data)
 {
-  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   ARRAY_INIT(&mod_data->menu_defs);
   ARRAY_INIT(&mod_data->sub_menus);
   mod_data->key_names = keymap_get_key_names();
@@ -197,13 +198,12 @@ void km_sort(void)
 
 /**
  * km_cleanup - Free the key maps
+ * @param mod_data Key module data
  */
-void km_cleanup(void)
+void km_cleanup(struct KeyModuleData *mod_data)
 {
   if (NeoMutt && NeoMutt->sub)
     notify_observer_remove(NeoMutt->sub->notify, km_config_observer, NULL);
-
-  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
 
   struct MenuDefinition **mdp = NULL;
   ARRAY_FOREACH(mdp, &mod_data->menu_defs)
@@ -229,12 +229,12 @@ void km_cleanup(void)
 
 /**
  * km_set_abort_key - Parse the abort_key config string
+ * @param abort_key Pointer to the abort key variable to set
  *
  * Parse the string into `$abort_key` and put the keycode into AbortKey.
  */
-void km_set_abort_key(void)
+void km_set_abort_key(keycode_t *abort_key)
 {
-  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   keycode_t buf[4] = { 0 };
   const char *const c_abort_key = cs_subset_string(NeoMutt->sub, "abort_key");
 
@@ -242,7 +242,7 @@ void km_set_abort_key(void)
   if (len == 0)
   {
     mutt_error(_("Abort key is not set, defaulting to Ctrl-G"));
-    mod_data->abort_key = ctrl('G');
+    *abort_key = ctrl('G');
     return;
   }
 
@@ -251,5 +251,5 @@ void km_set_abort_key(void)
     mutt_warning(_("Specified abort key sequence (%s) will be truncated to first key"),
                  c_abort_key);
   }
-  mod_data->abort_key = buf[0];
+  *abort_key = buf[0];
 }

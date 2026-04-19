@@ -78,7 +78,8 @@ static bool history_cleanup(struct NeoMutt *n)
  */
 static bool history_gui_init(struct NeoMutt *n)
 {
-  mutt_hist_init();
+  struct HistoryModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_HISTORY);
+  mutt_hist_init(mod_data);
   mutt_hist_read_file();
   return true;
 }
@@ -88,7 +89,8 @@ static bool history_gui_init(struct NeoMutt *n)
  */
 static void history_gui_cleanup(struct NeoMutt *n)
 {
-  mutt_hist_cleanup();
+  struct HistoryModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_HISTORY);
+  mutt_hist_cleanup(mod_data);
 }
 
 /**
