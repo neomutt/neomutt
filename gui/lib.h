@@ -27,6 +27,7 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | gui/bottombar.c     | @subpage gui_bottombar     |
  * | gui/config.c        | @subpage gui_config        |
  * | gui/curs_lib.c      | @subpage gui_curs_lib      |
  * | gui/dialog.c        | @subpage gui_dialog        |
@@ -47,12 +48,14 @@
  * | gui/simple.c        | @subpage gui_simple        |
  * | gui/terminal.c      | @subpage gui_terminal      |
  * | gui/thread.c        | @subpage gui_thread        |
+ * | gui/utilwin.c       | @subpage gui_utilwin       |
  */
 
 #ifndef MUTT_GUI_LIB_H
 #define MUTT_GUI_LIB_H
 
 // IWYU pragma: begin_keep
+#include "bottombar.h"
 #include "curs_lib.h"
 #include "dialog.h"
 #include "functions.h"
@@ -70,6 +73,7 @@
 #include "simple.h"
 #include "terminal.h"
 #include "thread.h"
+#include "utilwin.h"
 // IWYU pragma: end_keep
 
 #endif /* MUTT_GUI_LIB_H */

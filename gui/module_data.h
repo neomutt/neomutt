@@ -36,8 +36,10 @@ struct GuiModuleData
   struct SubMenu        *sm_generic;          ///< Generic functions
   struct SubMenu        *sm_dialog;           ///< Dialog functions
   struct MuttWindow     *all_dialogs_window;  ///< Parent of all Dialogs
+  struct MuttWindow     *bottom_bar;          ///< Bottom Bar Container Window
   struct MuttWindow     *message_container;   ///< Message Container Window
   struct MuttWindow     *root_window;         ///< Parent of all Windows
+  struct MuttWindow     *utility_window;      ///< Utility Window
   bool                   ts_supported;        ///< Terminal Setting is supported
 };
 

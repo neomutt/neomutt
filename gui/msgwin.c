@@ -310,9 +310,14 @@ void msgwin_set_rows(struct MuttWindow *win, short rows)
 
   rows = CLAMP(rows, 1, MSGWIN_MAX_ROWS);
 
-  if (rows != win->state.rows)
+  if (rows != win->req_rows)
   {
     win->req_rows = rows;
+
+    struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+    if (mod_data && mod_data->bottom_bar)
+      mod_data->bottom_bar->req_rows = rows;
+
     mutt_window_reflow(NULL);
   }
 }
