@@ -495,8 +495,8 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
   bool feedback_active = false;
   keycode_t keys[KEY_SEQ_MAX_LEN] = { 0 };
 
-  const int c_key_timeout_idle = 1000;
-  const int c_key_timeout_progress = 700;
+  const short c_key_timeout_idle = cs_subset_number(NeoMutt->sub, "key_timeout_idle");
+  const short c_key_timeout_progress = cs_subset_number(NeoMutt->sub, "key_timeout_partial");
 
   if (!md)
     return event;

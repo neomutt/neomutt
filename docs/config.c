@@ -2355,6 +2355,32 @@
 ** Note that $$keep_flagged only has an effect if $$move is set.
 */
 
+{ "key_timeout_idle", DT_NUMBER, 1000 },
+/*
+** .pp
+** This variable sets the timeout in milliseconds that NeoMutt will wait for
+** the first keypress when idle in a menu.  After this time, NeoMutt will
+** perform housekeeping tasks such as checking for new mail.
+** .pp
+** The default value is 1000 milliseconds (1 second).
+** .pp
+** The value must be between 50 and 10000 (10 seconds) inclusive.
+*/
+
+{ "key_timeout_partial", DT_NUMBER, 700 },
+/*
+** .pp
+** This variable sets the timeout in milliseconds that NeoMutt will wait for
+** additional keypresses after a partial key sequence match.  This allows
+** NeoMutt to distinguish between keybindings that share a common prefix,
+** e.g., \fCab\fP vs \fCabc\fP.  If no further input is received within
+** this time, NeoMutt will accept the shortest complete match.
+** .pp
+** The default value is 700 milliseconds.
+** .pp
+** The value must be between 50 and 10000 (10 seconds) inclusive.
+*/
+
 { "local_date_header", DT_BOOL, true },
 /*
 ** .pp
