@@ -142,6 +142,7 @@ done:
 static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
   struct Menu *menu = fdata->menu;
+  const int count = event->count;
   switch (event->op)
   {
     case OP_BOTTOM_PAGE:
@@ -165,11 +166,11 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       return FR_SUCCESS;
 
     case OP_HALF_DOWN:
-      menu_half_down(menu);
+      menu_half_down(menu, count);
       return FR_SUCCESS;
 
     case OP_HALF_UP:
-      menu_half_up(menu);
+      menu_half_up(menu, count);
       return FR_SUCCESS;
 
     case OP_LAST_ENTRY:
@@ -181,27 +182,27 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       return FR_SUCCESS;
 
     case OP_NEXT_ENTRY:
-      menu_next_entry(menu);
+      menu_next_entry(menu, count);
       return FR_SUCCESS;
 
     case OP_NEXT_LINE:
-      menu_next_line(menu);
+      menu_next_line(menu, count);
       return FR_SUCCESS;
 
     case OP_NEXT_PAGE:
-      menu_next_page(menu);
+      menu_next_page(menu, count);
       return FR_SUCCESS;
 
     case OP_PREV_ENTRY:
-      menu_prev_entry(menu);
+      menu_prev_entry(menu, count);
       return FR_SUCCESS;
 
     case OP_PREV_LINE:
-      menu_prev_line(menu);
+      menu_prev_line(menu, count);
       return FR_SUCCESS;
 
     case OP_PREV_PAGE:
-      menu_prev_page(menu);
+      menu_prev_page(menu, count);
       return FR_SUCCESS;
 
     case OP_TOP_PAGE:
