@@ -34,6 +34,7 @@ typedef uint8_t GetChFlags;             ///< Flags for mutt_getch(), e.g. #GETCH
 #define GETCH_NO_FLAGS              0   ///< No flags are set
 #define GETCH_IGNORE_MACRO    (1 << 0)  ///< Don't use MacroEvents
 #define GETCH_NO_COUNTER      (1 << 1)  ///< km_dokey(): disable numeric count prefix parsing
+#define GETCH_NO_FEEDBACK     (1 << 2)  ///< km_dokey(): suppress key progress notifications
 
 /// Maximum number of digits in a key count prefix, e.g. `123j`
 #define KEY_COUNT_MAX_DIGITS 6

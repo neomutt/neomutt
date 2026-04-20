@@ -133,6 +133,50 @@ static void utilwin_wdata_free(struct MuttWindow *win, void **ptr)
 }
 
 /**
+ * utilwin_key_observer - Notification that key progress has changed - Implements ::observer_t - @ingroup observer_api
+ *
+ * Display key binding progress in the Utility Window.
+ * Shows count prefix and/or multi-key sequences, e.g. "123ab".
+ * Single-key bindings without a count prefix are not shown.
+ */
+static int utilwin_key_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_KEY)
+    return 0;
+  if (nc->event_subtype != NT_KEY_PROGRESS)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
+    return -1;
+
+  struct MuttWindow *win = nc->global_data;
+  struct EventKeyProgress *ev_k = nc->event_data;
+
+  // Nothing to display — clear/hide the window
+  if ((ev_k->count == 0) && (ev_k->key_len == 0))
+  {
+    utilwin_set_text(win, NULL);
+    window_redraw(NULL);
+    return 0;
+  }
+
+  struct Buffer *buf = buf_pool_get();
+
+  if (ev_k->count > 0)
+    buf_add_printf(buf, "%d", ev_k->count);
+
+  for (int i = 0; i < ev_k->key_len; i++)
+  {
+    keymap_get_name(ev_k->keys[i], buf);
+  }
+
+  utilwin_set_text(win, buf_string(buf));
+  buf_pool_release(&buf);
+  window_redraw(NULL);
+
+  return 0;
+}
+
+/**
  * utilwin_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int utilwin_window_observer(struct NotifyCallback *nc)
@@ -154,6 +198,7 @@ static int utilwin_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
+    notify_observer_remove(NeoMutt->notify, utilwin_key_observer, win);
     notify_observer_remove(win->notify, utilwin_window_observer, win);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
@@ -185,6 +230,7 @@ struct MuttWindow *utilwin_new(void)
   if (mod_data)
     mod_data->utility_window = win;
 
+  notify_observer_add(NeoMutt->notify, NT_KEY, utilwin_key_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, utilwin_window_observer, win);
 
   return win;
