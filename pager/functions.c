@@ -353,6 +353,30 @@ static int up_n_lines(int nlines, struct Line *info, int cur, bool hiding)
 }
 
 /**
+ * down_n_lines - Reposition the pager's view down by n lines
+ * @param nlines Number of lines to move
+ * @param info   Line info array
+ * @param cur    Current line number
+ * @param max    Number of lines used
+ * @param hiding true if lines have been hidden
+ * @retval num New current line number
+ */
+static int down_n_lines(int nlines, struct Line *info, int cur, int max, bool hiding)
+{
+  while ((cur < max) && (nlines > 0))
+  {
+    cur++;
+    if ((cur < max) && (!hiding || !COLOR_QUOTED(info[cur].cid)))
+      nlines--;
+  }
+
+  if (cur > max)
+    cur = max;
+
+  return cur;
+}
+
+/**
  * jump_to_bottom - Make sure the bottom line is displayed
  * @param priv   Private Pager data
  * @param pview PagerView
@@ -408,15 +432,27 @@ static int op_pager_half_down(struct PagerFunctionData *fdata, const struct KeyE
   const bool c_pager_stop = cs_subset_bool(fdata->n->sub, "pager_stop");
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
-    priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2,
-                                priv->lines, priv->cur_line, priv->hide_quoted);
+    int rows = priv->pview->win_pager->state.rows;
+    if (event->count > 0)
+    {
+      int advance = event->count * (rows / 2);
+      priv->top_line = down_n_lines(advance, priv->lines, priv->top_line,
+                                    priv->lines_used, priv->hide_quoted);
+    }
+    else
+    {
+      priv->top_line = up_n_lines(rows / 2, priv->lines, priv->cur_line, priv->hide_quoted);
+    }
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
   else if (c_pager_stop)
   {
     /* emulate "less -q" and don't go on to the next message. */
-    mutt_message(_("Bottom of message is shown"));
-    return FR_ERROR;
+    if (event->count == 0)
+    {
+      mutt_message(_("Bottom of message is shown"));
+      return FR_ERROR;
+    }
   }
   else
   {
@@ -435,12 +471,12 @@ static int op_pager_half_up(struct PagerFunctionData *fdata, const struct KeyEve
   const int old_top_line = priv->top_line;
   if (priv->top_line)
   {
-    priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2 +
-                                    (priv->pview->win_pager->state.rows % 2),
-                                priv->lines, priv->top_line, priv->hide_quoted);
+    int rows = priv->pview->win_pager->state.rows;
+    int n = MAX(event->count, 1) * (rows / 2 + rows % 2);
+    priv->top_line = up_n_lines(n, priv->lines, priv->top_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
-  else
+  else if (event->count == 0)
   {
     mutt_message(_("Top of message is shown"));
   }
@@ -477,18 +513,12 @@ static int op_pager_next_line(struct PagerFunctionData *fdata, const struct KeyE
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
-    priv->top_line++;
-    if (priv->hide_quoted)
-    {
-      while ((priv->top_line < priv->lines_used) &&
-             COLOR_QUOTED(priv->lines[priv->top_line].cid))
-      {
-        priv->top_line++;
-      }
-    }
+    int n = MAX(event->count, 1);
+    priv->top_line = down_n_lines(n, priv->lines, priv->top_line,
+                                  priv->lines_used, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
-  else
+  else if (event->count == 0)
   {
     mutt_message(_("Bottom of message is shown"));
     return FR_ERROR;
@@ -506,14 +536,27 @@ static int op_pager_next_page(struct PagerFunctionData *fdata, const struct KeyE
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
     const short c_pager_context = cs_subset_number(fdata->n->sub, "pager_context");
-    priv->top_line = up_n_lines(c_pager_context, priv->lines, priv->cur_line, priv->hide_quoted);
+    if (event->count > 0)
+    {
+      int advance = event->count * (priv->pview->win_pager->state.rows - c_pager_context);
+      priv->top_line = down_n_lines(advance, priv->lines, priv->top_line,
+                                    priv->lines_used, priv->hide_quoted);
+    }
+    else
+    {
+      priv->top_line = up_n_lines(c_pager_context, priv->lines, priv->cur_line,
+                                  priv->hide_quoted);
+    }
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
   else if (c_pager_stop)
   {
     /* emulate "less -q" and don't go on to the next message. */
-    mutt_message(_("Bottom of message is shown"));
-    return FR_ERROR;
+    if (event->count == 0)
+    {
+      mutt_message(_("Bottom of message is shown"));
+      return FR_ERROR;
+    }
   }
   else
   {
@@ -531,10 +574,11 @@ static int op_pager_prev_line(struct PagerFunctionData *fdata, const struct KeyE
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->top_line)
   {
-    priv->top_line = up_n_lines(1, priv->lines, priv->top_line, priv->hide_quoted);
+    int n = MAX(event->count, 1);
+    priv->top_line = up_n_lines(n, priv->lines, priv->top_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
-  else
+  else if (event->count == 0)
   {
     mutt_message(_("Top of message is shown"));
     return FR_ERROR;
@@ -550,14 +594,17 @@ static int op_pager_prev_page(struct PagerFunctionData *fdata, const struct KeyE
   struct PagerPrivateData *priv = fdata->priv;
   if (priv->top_line == 0)
   {
-    mutt_message(_("Top of message is shown"));
-    return FR_ERROR;
+    if (event->count == 0)
+    {
+      mutt_message(_("Top of message is shown"));
+      return FR_ERROR;
+    }
   }
   else
   {
     const short c_pager_context = cs_subset_number(fdata->n->sub, "pager_context");
-    priv->top_line = up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
-                                priv->lines, priv->top_line, priv->hide_quoted);
+    int n = MAX(event->count, 1) * (priv->pview->win_pager->state.rows - c_pager_context);
+    priv->top_line = up_n_lines(n, priv->lines, priv->top_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
   return FR_SUCCESS;
