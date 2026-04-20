@@ -169,6 +169,7 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
   const int old_current = menu->current;
   MenuRedrawFlags flags = MENU_REDRAW_NO_FLAGS;
 
+  const int count = event->count;
   switch (event->op)
   {
     case OP_BOTTOM_PAGE:
@@ -192,11 +193,11 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_HALF_DOWN:
-      menu_half_down(menu);
+      menu_half_down(menu, count);
       return FR_SUCCESS;
 
     case OP_HALF_UP:
-      menu_half_up(menu);
+      menu_half_up(menu, count);
       return FR_SUCCESS;
 
     case OP_LAST_ENTRY:
@@ -208,39 +209,39 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_NEXT_ENTRY:
-      flags = menu_next_entry(menu);
+      flags = menu_next_entry(menu, count);
       return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
 
     case OP_NEXT_LINE:
-      flags = menu_next_line(menu);
+      flags = menu_next_line(menu, count);
       return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
 
     case OP_NEXT_PAGE:
-      menu_next_page(menu);
+      menu_next_page(menu, count);
       return FR_SUCCESS;
 
     case OP_PREV_ENTRY:
-      flags = menu_prev_entry(menu);
+      flags = menu_prev_entry(menu, count);
       return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
 
     case OP_PREV_LINE:
-      flags = menu_prev_line(menu);
+      flags = menu_prev_line(menu, count);
       return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
 
     case OP_PREV_PAGE:
-      menu_prev_page(menu);
+      menu_prev_page(menu, count);
       return FR_SUCCESS;
 
     case OP_TOP_PAGE:
