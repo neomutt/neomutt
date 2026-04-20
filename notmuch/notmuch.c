@@ -1647,8 +1647,8 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
   }
   else
   {
-    added = snprintf(url, sizeof(url), "%s%s?type=%s&limit=%d&query=", NmUrlProtocol,
-                     db_filename,
+    added = snprintf(url, sizeof(url),
+                     "%s%s?type=%s&limit=%d&query=", NmUrlProtocol, db_filename,
                      nm_query_type_to_string(mdata->query_type), get_limit(mdata));
   }
 

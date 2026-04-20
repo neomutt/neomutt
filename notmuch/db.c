@@ -121,9 +121,8 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   char *msg = NULL;
 
   const short c_nm_open_timeout = cs_subset_number(NeoMutt->sub, "nm_open_timeout");
-  mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n",
-             filename ? filename : "(auto)", writable ? "[WRITE]" : "[READ]",
-             c_nm_open_timeout);
+  mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n", filename ? filename : "(auto)",
+             writable ? "[WRITE]" : "[READ]", c_nm_open_timeout);
 
   const notmuch_database_mode_t mode = writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
                                                   NOTMUCH_DATABASE_MODE_READ_ONLY;

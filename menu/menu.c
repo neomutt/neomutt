@@ -66,16 +66,6 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
 }
 
 /**
- * menu_cleanup2 - Free the saved Menu searches
- */
-void menu_cleanup2(void)
-{
-  struct MenuModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_MENU);
-  for (int i = 0; i < MENU_MAX; i++)
-    FREE(&mod_data->search_buffers[i]);
-}
-
-/**
  * menu_init2 - Initialise all the Menus
  */
 void menu_init2(void)
