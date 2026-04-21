@@ -171,12 +171,13 @@ enum AutocryptRec
   AUTOCRYPT_REC_YES,        ///< Autocrypt should be used
 };
 
+struct AutocryptModuleData;
 struct NeoMutt;
 
 void autocrypt_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 
 void              dlg_autocrypt                          (void);
-void              mutt_autocrypt_cleanup                 (void);
+void              mutt_autocrypt_cleanup                 (struct AutocryptModuleData *mod_data);
 int               mutt_autocrypt_generate_gossip_list    (struct Email *e);
 int               mutt_autocrypt_init                    (bool can_create);
 int               mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *env);

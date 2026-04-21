@@ -28,6 +28,7 @@
 #include "lib.h"
 
 struct Address;
+struct PgpCache;
 struct PgpKeyInfo;
 struct PgpUid;
 
@@ -51,6 +52,6 @@ bool               pgp_keys_are_valid(struct PgpKeyInfo *keys);
 bool               pgp_key_is_valid  (struct PgpKeyInfo *k);
 struct PgpKeyInfo *pgp_principal_key (struct PgpKeyInfo *key);
 
-void               pgp_id_defaults_cleanup(void);
+void               pgp_id_defaults_cleanup(struct PgpCache **pgp_id_defaults);
 
 #endif /* MUTT_NCRYPT_PGPKEY_H */

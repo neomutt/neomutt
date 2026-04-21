@@ -61,10 +61,9 @@ static bool compose_config_define_variables(struct NeoMutt *n, struct ConfigSet 
 /**
  * compose_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool compose_cleanup(struct NeoMutt *n)
+static bool compose_cleanup(struct NeoMutt *n, void *data)
 {
-  struct ComposeModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COMPOSE);
-  ASSERT(mod_data);
+  struct ComposeModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

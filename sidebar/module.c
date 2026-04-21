@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "gui/module_data.h"
 #include "lib.h"
 #include "module_data.h"
 
@@ -73,10 +74,9 @@ static bool sidebar_commands_register(struct NeoMutt *n, struct CommandArray *ca
 /**
  * sidebar_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool sidebar_cleanup(struct NeoMutt *n)
+static bool sidebar_cleanup(struct NeoMutt *n, void *data)
 {
-  struct SidebarModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
-  ASSERT(mod_data);
+  struct SidebarModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 
@@ -90,7 +90,8 @@ static bool sidebar_cleanup(struct NeoMutt *n)
  */
 static bool sidebar_gui_init(struct NeoMutt *n)
 {
-  sb_init();
+  struct GuiModuleData *gui_data = neomutt_get_module_data(n, MODULE_ID_GUI);
+  sb_init(gui_data ? gui_data->all_dialogs_window : NULL);
   return true;
 }
 
@@ -99,7 +100,9 @@ static bool sidebar_gui_init(struct NeoMutt *n)
  */
 static void sidebar_gui_cleanup(struct NeoMutt *n)
 {
-  sb_cleanup();
+  struct SidebarModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
+  struct GuiModuleData *gui_data = neomutt_get_module_data(n, MODULE_ID_GUI);
+  sb_cleanup(&mod_data->sidebar_pinned, (gui_data ? gui_data->all_dialogs_window : NULL));
 }
 
 /**

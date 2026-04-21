@@ -45,9 +45,9 @@ static void smime_class_init(void)
 /**
  * smime_class_cleanup - Clean up smime - Implements ::CryptModuleSpecs::cleanup() - @ingroup crypto_cleanup
  */
-static void smime_class_cleanup(void)
+static void smime_class_cleanup(struct NcryptModuleData *mod_data)
 {
-  smime_cleanup();
+  smime_cleanup(mod_data);
 }
 
 /**

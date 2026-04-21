@@ -26,15 +26,18 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "color/module_data.h"
 #include "test_common.h"
 
 void test_ansi_color(void)
 {
   // int ansi_color_parse(const char *str, struct AnsiColor *ansi, struct AttrColorList *acl, bool dry_run);
 
-  curses_colors_init();
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  curses_colors_init(&mod_data->curses_colors, &mod_data->num_curses_colors);
 
   const char *str = NULL;
   int rc;

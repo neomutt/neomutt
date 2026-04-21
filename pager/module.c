@@ -64,10 +64,9 @@ static bool pager_config_define_variables(struct NeoMutt *n, struct ConfigSet *c
 /**
  * pager_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool pager_cleanup(struct NeoMutt *n)
+static bool pager_cleanup(struct NeoMutt *n, void *data)
 {
-  struct PagerModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PAGER);
-  ASSERT(mod_data);
+  struct PagerModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

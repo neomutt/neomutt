@@ -51,10 +51,9 @@ static bool core_init(struct NeoMutt *n)
 /**
  * core_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool core_cleanup(struct NeoMutt *n)
+static bool core_cleanup(struct NeoMutt *n, void *data)
 {
-  struct CoreModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_CORE);
-  ASSERT(mod_data);
+  struct CoreModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

@@ -36,22 +36,22 @@ struct Notify;
 
 /**
  * color_notify_init - Initialise the Colour notification
- * @param parent Parent notification object
+ * @param colors_notify Pointer to the notification object
+ * @param parent        Parent notification object
  */
-void color_notify_init(struct Notify *parent)
+void color_notify_init(struct Notify **colors_notify, struct Notify *parent)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
-  mod_data->colors_notify = notify_new();
-  notify_set_parent(mod_data->colors_notify, parent);
+  *colors_notify = notify_new();
+  notify_set_parent(*colors_notify, parent);
 }
 
 /**
  * color_notify_cleanup - Free the Colour notification
+ * @param colors_notify Pointer to the notification object
  */
-void color_notify_cleanup(void)
+void color_notify_cleanup(struct Notify **colors_notify)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
-  notify_free(&mod_data->colors_notify);
+  notify_free(colors_notify);
 }
 
 /**

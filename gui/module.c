@@ -120,7 +120,8 @@ static bool gui_gui_init(struct NeoMutt *n)
  */
 static void gui_gui_cleanup(struct NeoMutt *n)
 {
-  rootwin_cleanup();
+  struct GuiModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_GUI);
+  rootwin_cleanup(mod_data);
 
   mutt_endwin();
 }
@@ -128,10 +129,9 @@ static void gui_gui_cleanup(struct NeoMutt *n)
 /**
  * gui_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool gui_cleanup(struct NeoMutt *n)
+static bool gui_cleanup(struct NeoMutt *n, void *data)
 {
-  struct GuiModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_GUI);
-  ASSERT(mod_data);
+  struct GuiModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

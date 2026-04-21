@@ -78,6 +78,7 @@ struct EmailArray;
 struct Envelope;
 struct Mailbox;
 struct Message;
+struct NcryptModuleData;
 struct NeoMutt;
 struct State;
 struct SubMenu;
@@ -171,7 +172,7 @@ bool          mutt_should_hide_protected_subject       (struct Email *e);
 int           mutt_signed_handler                      (struct Body *b, struct State *state);
 
 /* cryptglue.c */
-void          crypt_cleanup                            (void);
+void          crypt_cleanup                            (struct NcryptModuleData *mod_data);
 bool          crypt_has_module_backend                 (SecurityFlags type);
 void          crypt_init                               (void);
 void          crypt_invoke_message                     (SecurityFlags type);
@@ -190,7 +191,7 @@ SecurityFlags crypt_smime_send_menu                    (struct Email *e);
 int           crypt_smime_verify_sender                (struct Email *e, struct Message *msg);
 
 /* crypt_mod.c */
-void          crypto_module_cleanup                    (void);
+void          crypto_module_cleanup                    (struct NcryptModuleData *mod_data);
 
 #ifdef CRYPT_BACKEND_GPGME
 /* crypt_gpgme.c */

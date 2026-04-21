@@ -33,6 +33,7 @@ struct AddressList;
 struct AutocryptAccount;
 struct AutocryptAccountArray;
 struct AutocryptGossipHistory;
+struct AutocryptModuleData;
 struct AutocryptPeer;
 struct AutocryptPeerHistory;
 struct Menu;
@@ -72,7 +73,7 @@ int                            mutt_autocrypt_db_account_get_all(struct Autocryp
 int                            mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid, const char *keydata, bool prefer_encrypt);
 struct AutocryptAccount *      mutt_autocrypt_db_account_new(void);
 int                            mutt_autocrypt_db_account_update(struct AutocryptAccount *acct);
-void                           mutt_autocrypt_db_close(void);
+void                           mutt_autocrypt_db_close(struct AutocryptModuleData *mod_data);
 void                           mutt_autocrypt_db_gossip_history_free(struct AutocryptGossipHistory **ptr);
 int                            mutt_autocrypt_db_gossip_history_insert(struct Address *addr, struct AutocryptGossipHistory *gossip_hist);
 struct AutocryptGossipHistory *mutt_autocrypt_db_gossip_history_new(void);

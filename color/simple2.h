@@ -30,9 +30,9 @@ struct AttrColor;
 
 #define COLOR_COMPOSE(cid) (((cid) >= MT_COLOR_COMPOSE_HEADER) && ((cid) <= MT_COLOR_COMPOSE_SECURITY_SIGN))
 
-void simple_colors_init   (void);
-void simple_colors_reset  (void);
-void simple_colors_cleanup(void);
+void simple_colors_init   (struct AttrColor *simple_colors);
+void simple_colors_reset  (struct AttrColor *simple_colors);
+void simple_colors_cleanup(struct AttrColor *simple_colors);
 
 struct AttrColor *simple_color_get      (enum ColorId cid);
 bool              simple_color_is_set   (enum ColorId cid);

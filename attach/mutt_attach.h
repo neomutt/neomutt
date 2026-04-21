@@ -78,6 +78,6 @@ int  mutt_save_attachment       (FILE *fp, struct Body *b, const char *path, enu
 
 /* small helper functions to handle temporary attachment files */
 void mutt_add_temp_attachment(const char *filename);
-void mutt_temp_attachments_cleanup(void);
+void mutt_temp_attachments_cleanup(struct ListHead *list);
 
 #endif /* MUTT_ATTACH_MUTT_ATTACH_H */

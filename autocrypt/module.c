@@ -32,6 +32,9 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#ifdef USE_AUTOCRYPT
+#include "lib.h"
+#endif
 #include "module_data.h"
 
 extern struct ConfigDef AutocryptVars[];
@@ -67,12 +70,13 @@ static bool autocrypt_config_define_variables(struct NeoMutt *n, struct ConfigSe
 /**
  * autocrypt_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool autocrypt_cleanup(struct NeoMutt *n)
+static bool autocrypt_cleanup(struct NeoMutt *n, void *data)
 {
-  struct AutocryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
-  ASSERT(mod_data);
+  struct AutocryptModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
+
+  mutt_autocrypt_cleanup(mod_data);
 
   FREE(&mod_data->autocrypt_sign_as);
   FREE(&mod_data->autocrypt_default_key);

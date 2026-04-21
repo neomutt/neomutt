@@ -50,10 +50,9 @@ static bool store_init(struct NeoMutt *n)
 /**
  * store_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool store_cleanup(struct NeoMutt *n)
+static bool store_cleanup(struct NeoMutt *n, void *data)
 {
-  struct StoreModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_STORE);
-  ASSERT(mod_data);
+  struct StoreModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

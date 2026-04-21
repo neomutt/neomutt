@@ -65,7 +65,8 @@ static bool menu_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
  */
 static bool menu_gui_init(struct NeoMutt *n)
 {
-  menu_init2();
+  struct MenuModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MENU);
+  menu_init2(mod_data->search_buffers);
   return true;
 }
 
@@ -84,10 +85,9 @@ static void menu_gui_cleanup(struct NeoMutt *n)
 /**
  * menu_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool menu_cleanup(struct NeoMutt *n)
+static bool menu_cleanup(struct NeoMutt *n, void *data)
 {
-  struct MenuModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MENU);
-  ASSERT(mod_data);
+  struct MenuModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

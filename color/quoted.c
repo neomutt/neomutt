@@ -77,20 +77,21 @@ void quoted_colors_init(void)
 
 /**
  * quoted_colors_reset - Reset the quoted-email colours
+ * @param num_quoted_colors Pointer to the quoted color count
  */
-void quoted_colors_reset(void)
+void quoted_colors_reset(int *num_quoted_colors)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
-  mod_data->num_quoted_colors = 0;
+  *num_quoted_colors = 0;
 }
 
 /**
  * quoted_colors_cleanup - Cleanup the quoted-email colours
+ * @param num_quoted_colors Pointer to the quoted color count
  */
-void quoted_colors_cleanup(void)
+void quoted_colors_cleanup(int *num_quoted_colors)
 {
   mutt_color_observer_remove(quoted_color_observer, NULL);
-  quoted_colors_reset();
+  quoted_colors_reset(num_quoted_colors);
 }
 
 /**

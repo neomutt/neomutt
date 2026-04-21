@@ -61,10 +61,9 @@ static bool commands_commands_register(struct NeoMutt *n, struct CommandArray *c
 /**
  * commands_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool commands_cleanup(struct NeoMutt *n)
+static bool commands_cleanup(struct NeoMutt *n, void *data)
 {
-  struct CommandsModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COMMANDS);
-  ASSERT(mod_data);
+  struct CommandsModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

@@ -125,16 +125,17 @@ int mutt_autocrypt_init(bool can_create)
 
 bail:
   cs_subset_str_native_set(NeoMutt->sub, "autocrypt", false, NULL);
-  mutt_autocrypt_db_close();
+  mutt_autocrypt_db_close(mod_data);
   return -1;
 }
 
 /**
  * mutt_autocrypt_cleanup - Shutdown Autocrypt
+ * @param mod_data Autocrypt module data
  */
-void mutt_autocrypt_cleanup(void)
+void mutt_autocrypt_cleanup(struct AutocryptModuleData *mod_data)
 {
-  mutt_autocrypt_db_close();
+  mutt_autocrypt_db_close(mod_data);
 }
 
 /**

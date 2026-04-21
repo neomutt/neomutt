@@ -101,9 +101,11 @@ extern const struct Mapping ColorFields[];
 
 #define COLOR_DEFAULT -1
 
-void colors_init   (void);
-void colors_reset  (void);
-void colors_cleanup(void);
+struct ColorModuleData;
+
+void colors_init   (struct ColorModuleData *mod_data);
+void colors_reset  (struct ColorModuleData *mod_data);
+void colors_cleanup(struct ColorModuleData *mod_data);
 
 bool mutt_color_has_pattern(enum ColorId cid);
 

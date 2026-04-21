@@ -422,10 +422,10 @@ int mutt_hist_search(const char *find, enum HistoryClass hclass, struct StringAr
 
 /**
  * mutt_hist_cleanup - Free all the history lists
+ * @param mod_data History module data
  */
-void mutt_hist_cleanup(void)
+void mutt_hist_cleanup(struct HistoryModuleData *mod_data)
 {
-  struct HistoryModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HISTORY);
   for (enum HistoryClass hclass = HC_FIRST; hclass < HC_MAX; hclass++)
   {
     struct History *h = &mod_data->histories[hclass];
@@ -443,13 +443,13 @@ void mutt_hist_cleanup(void)
 
 /**
  * mutt_hist_init - Create a set of empty History ring buffers
+ * @param mod_data History module data
  *
  * This just creates empty histories.
  * To fill them, call mutt_hist_read_file().
  */
-void mutt_hist_init(void)
+void mutt_hist_init(struct HistoryModuleData *mod_data)
 {
-  struct HistoryModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HISTORY);
   const short c_history = cs_subset_number(NeoMutt->sub, "history");
   if (c_history == mod_data->old_size)
     return;
@@ -697,7 +697,8 @@ int main_hist_observer(struct NotifyCallback *nc)
   if (!mutt_str_equal(ev_c->name, "history"))
     return 0;
 
-  mutt_hist_init();
+  struct HistoryModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_HISTORY);
+  mutt_hist_init(mod_data);
   mutt_debug(LL_DEBUG5, "history done\n");
   return 0;
 }

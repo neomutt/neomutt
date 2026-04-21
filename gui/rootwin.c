@@ -204,10 +204,10 @@ static int rootwin_window_observer(struct NotifyCallback *nc)
 
 /**
  * rootwin_cleanup - Free all the default Windows
+ * @param mod_data GUI module data
  */
-void rootwin_cleanup(void)
+void rootwin_cleanup(struct GuiModuleData *mod_data)
 {
-  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
   if (mod_data)
   {
     mod_data->all_dialogs_window = NULL;
@@ -218,13 +218,12 @@ void rootwin_cleanup(void)
 
 /**
  * rootwin_new - Create the default Windows
+ * @param mod_data GUI module data
  *
  * Create the Help, Index, Status, Message and Sidebar Windows.
  */
-void rootwin_new(void)
+void rootwin_new(struct GuiModuleData *mod_data)
 {
-  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-
   struct MuttWindow *win_root = mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL,
                                                 MUTT_WIN_SIZE_FIXED, 0, 0);
   notify_set_parent(win_root->notify, NeoMutt->notify);

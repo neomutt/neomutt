@@ -26,6 +26,7 @@
 #include "core/lib.h"
 
 struct Buffer;
+struct HashTable;
 struct ParseContext;
 struct ParseError;
 
@@ -41,6 +42,6 @@ enum CommandResult parse_pattern_hook (const struct Command *cmd, struct Buffer 
 enum CommandResult parse_regex_hook   (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 enum CommandResult parse_unhook       (const struct Command *cmd, struct Buffer *line, const struct ParseContext *pc, struct ParseError *pe);
 
-void delete_idxfmt_hooks(void);
+void delete_idxfmt_hooks(struct HashTable **idx_fmt_hooks);
 
 #endif /* MUTT_HOOKS_PARSE_H */

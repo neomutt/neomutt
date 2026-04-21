@@ -61,10 +61,9 @@ static bool lua_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 /**
  * lua_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool lua_cleanup(struct NeoMutt *n)
+static bool lua_cleanup(struct NeoMutt *n, void *data)
 {
-  struct LuaModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_LUA);
-  ASSERT(mod_data);
+  struct LuaModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

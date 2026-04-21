@@ -34,6 +34,7 @@
 #include "parse/lib.h"
 #include "sidebar/lib.h"
 #include "common.h"
+#include "key/module_data.h"
 #include "test_common.h"
 
 // clang-format off
@@ -106,7 +107,7 @@ static void test_parse_unbind2(void)
     rc = parse_unbind(&UnBind, line, pc, pe);
     TEST_CHECK_NUM_EQ(rc, UnBindTests[i].rc);
 
-    km_cleanup();
+    km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
   }
 
   parse_context_free(&pc);
@@ -137,7 +138,7 @@ static void test_parse_unmacro(void)
   parse_context_free(&pc);
   parse_error_free(&pe);
   buf_pool_release(&line);
-  km_cleanup();
+  km_cleanup(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 }
 
 void test_parse_unbind(void)

@@ -421,10 +421,13 @@ static bool cleanup_modules(struct NeoMutt *n)
     if (!mod)
       continue;
 
-    if (mod->cleanup)
+    void *mod_data = n->module_data[mod->mid];
+
+    if (mod->cleanup && mod_data)
     {
+      n->module_data[mod->mid] = NULL;
       mutt_debug(LL_DEBUG3, "%s:cleanup()\n", mod->name);
-      rc &= mod->cleanup(n);
+      rc &= mod->cleanup(n, mod_data);
     }
 
     if (n->module_data[mod->mid])

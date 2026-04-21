@@ -71,10 +71,9 @@ static bool pattern_config_define_variables(struct NeoMutt *n, struct ConfigSet 
 /**
  * pattern_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool pattern_cleanup(struct NeoMutt *n)
+static bool pattern_cleanup(struct NeoMutt *n, void *data)
 {
-  struct PatternModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PATTERN);
-  ASSERT(mod_data);
+  struct PatternModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

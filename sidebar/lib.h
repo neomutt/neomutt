@@ -42,6 +42,8 @@
 #ifndef MUTT_SIDEBAR_LIB_H
 #define MUTT_SIDEBAR_LIB_H
 
+#include "mutt/list.h"
+
 struct Buffer;
 struct Command;
 struct KeyEvent;
@@ -51,8 +53,8 @@ struct ParseContext;
 struct ParseError;
 struct SubMenu;
 
-void sb_init(void);
-void sb_cleanup(void);
+void sb_init(struct MuttWindow *all_dialogs_window);
+void sb_cleanup(struct ListHead *sidebar_pinned, struct MuttWindow *all_dialogs_window);
 
 int sb_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *event);
 

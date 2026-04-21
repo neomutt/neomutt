@@ -49,7 +49,7 @@ TAILQ_HEAD(CursesColorList, CursesColor);
 void                curses_color_free(struct CursesColor **ptr);
 struct CursesColor *curses_color_new (color_t fg, color_t bg);
 
-void                curses_colors_init(void);
+void                curses_colors_init(struct CursesColorList *curses_colors, int *num_curses_colors);
 struct CursesColor *curses_colors_find(color_t fg, color_t bg);
 
 #endif /* MUTT_COLOR_CURSES2_H */

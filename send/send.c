@@ -1901,8 +1901,8 @@ static int postpone_message(struct Email *e_post, struct Email *e_cur,
         mutt_error(_("Error encrypting message. Check your crypt settings."));
         return -1;
       }
-      struct AutocryptModuleData *ac_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
-      encrypt_as = ac_mod_data->autocrypt_default_key;
+      struct AutocryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
+      encrypt_as = mod_data->autocrypt_default_key;
     }
 #endif
 

@@ -75,10 +75,10 @@ void smime_init(void)
 
 /**
  * smime_cleanup - Clean up smime globals
+ * @param mod_data Ncrypt module data
  */
-void smime_cleanup(void)
+void smime_cleanup(struct NcryptModuleData *mod_data)
 {
-  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   buf_dealloc(&mod_data->smime_key_to_use);
   buf_dealloc(&mod_data->smime_cert_to_use);
   buf_dealloc(&mod_data->smime_intermediate_to_use);

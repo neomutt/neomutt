@@ -50,10 +50,9 @@ static bool bcache_init(struct NeoMutt *n)
 /**
  * bcache_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool bcache_cleanup(struct NeoMutt *n)
+static bool bcache_cleanup(struct NeoMutt *n, void *data)
 {
-  struct BcacheModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_BCACHE);
-  ASSERT(mod_data);
+  struct BcacheModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

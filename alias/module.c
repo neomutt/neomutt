@@ -91,10 +91,9 @@ static bool alias_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 /**
  * alias_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool alias_cleanup(struct NeoMutt *n)
+static bool alias_cleanup(struct NeoMutt *n, void *data)
 {
-  struct AliasModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ALIAS);
-  ASSERT(mod_data);
+  struct AliasModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
   notify_free(&mod_data->alternates_notify);
@@ -105,7 +104,7 @@ static bool alias_cleanup(struct NeoMutt *n)
   struct Alias **ap = NULL;
   ARRAY_FOREACH(ap, &mod_data->aliases)
   {
-    alias_reverse_delete(*ap);
+    alias_reverse_delete(mod_data->reverse_aliases, *ap);
   }
   aliaslist_clear(&mod_data->aliases);
 

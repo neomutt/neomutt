@@ -46,17 +46,18 @@
 
 /**
  * colors_init - Initialize colours
+ * @param mod_data Color module data
  */
-void colors_init(void)
+void colors_init(struct ColorModuleData *mod_data)
 {
   color_debug(LL_DEBUG5, "init\n");
-  color_notify_init(NeoMutt->notify);
+  color_notify_init(&mod_data->colors_notify, NeoMutt->notify);
 
-  curses_colors_init();
-  merged_colors_init();
+  curses_colors_init(&mod_data->curses_colors, &mod_data->num_curses_colors);
+  merged_colors_init(&mod_data->merged_colors);
   quoted_colors_init();
-  regex_colors_init();
-  simple_colors_init();
+  regex_colors_init(mod_data);
+  simple_colors_init(mod_data->simple_colors);
 
   start_color();
   use_default_colors();
@@ -65,31 +66,32 @@ void colors_init(void)
 
 /**
  * colors_reset - Reset all the simple, quoted and regex colours
+ * @param mod_data Color module data
  */
-void colors_reset(void)
+void colors_reset(struct ColorModuleData *mod_data)
 {
   color_debug(LL_DEBUG5, "reset\n");
   mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
 
-  simple_colors_reset();
-  quoted_colors_reset();
-  regex_colors_reset();
+  simple_colors_reset(mod_data->simple_colors);
+  quoted_colors_reset(&mod_data->num_quoted_colors);
+  regex_colors_reset(mod_data);
 
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct EventColor ev_c = { MT_COLOR_MAX, NULL };
   notify_send(mod_data->colors_notify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 }
 
 /**
  * colors_cleanup - Cleanup all the colours
+ * @param mod_data Color module data
  */
-void colors_cleanup(void)
+void colors_cleanup(struct ColorModuleData *mod_data)
 {
-  simple_colors_cleanup();
-  quoted_colors_cleanup();
-  regex_colors_cleanup();
-  merged_colors_cleanup();
-  color_notify_cleanup();
+  simple_colors_cleanup(mod_data->simple_colors);
+  quoted_colors_cleanup(&mod_data->num_quoted_colors);
+  regex_colors_cleanup(mod_data);
+  merged_colors_cleanup(&mod_data->merged_colors);
+  color_notify_cleanup(&mod_data->colors_notify);
 }
 
 /**

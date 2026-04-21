@@ -61,10 +61,9 @@ static bool pop_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
 /**
  * pop_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool pop_cleanup(struct NeoMutt *n)
+static bool pop_cleanup(struct NeoMutt *n, void *data)
 {
-  struct PopModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_POP);
-  ASSERT(mod_data);
+  struct PopModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

@@ -50,10 +50,9 @@ static bool compress_init(struct NeoMutt *n)
 /**
  * compress_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool compress_cleanup(struct NeoMutt *n)
+static bool compress_cleanup(struct NeoMutt *n, void *data)
 {
-  struct CompressModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COMPRESS);
-  ASSERT(mod_data);
+  struct CompressModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

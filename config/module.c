@@ -87,10 +87,9 @@ static bool config_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
 /**
  * config_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool config_cleanup(struct NeoMutt *n)
+static bool config_cleanup(struct NeoMutt *n, void *data)
 {
-  struct ConfigModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_CONFIG);
-  ASSERT(mod_data);
+  struct ConfigModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

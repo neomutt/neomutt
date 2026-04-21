@@ -61,10 +61,9 @@ static bool mbox_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
 /**
  * mbox_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool mbox_cleanup(struct NeoMutt *n)
+static bool mbox_cleanup(struct NeoMutt *n, void *data)
 {
-  struct MboxModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MBOX);
-  ASSERT(mod_data);
+  struct MboxModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

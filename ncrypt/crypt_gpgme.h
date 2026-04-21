@@ -88,7 +88,7 @@ struct CryptEntry
   struct CryptKeyInfo *key; ///< Key
 };
 
-void                 gpgme_id_defaults_cleanup       (void);
+void                 gpgme_id_defaults_cleanup       (struct NcryptModuleData *mod_data);
 void                 pgp_gpgme_set_sender           (const char *sender);
 
 int                  pgp_gpgme_application_handler  (struct Body *b, struct State *state);

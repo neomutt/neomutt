@@ -4185,10 +4185,10 @@ const char *mutt_gpgme_print_version(void)
 
 /**
  * gpgme_id_defaults_cleanup - Free the GPGME IdDefaults cache
+ * @param mod_data Ncrypt module data
  */
-void gpgme_id_defaults_cleanup(void)
+void gpgme_id_defaults_cleanup(struct NcryptModuleData *mod_data)
 {
-  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   struct CryptCache *l = mod_data->gpgme_id_defaults;
   while (l)
   {

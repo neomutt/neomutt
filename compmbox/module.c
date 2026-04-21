@@ -60,10 +60,9 @@ static bool compmbox_commands_register(struct NeoMutt *n, struct CommandArray *c
 /**
  * compmbox_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool compmbox_cleanup(struct NeoMutt *n)
+static bool compmbox_cleanup(struct NeoMutt *n, void *data)
 {
-  struct CompmboxModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COMPMBOX);
-  ASSERT(mod_data);
+  struct CompmboxModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

@@ -40,25 +40,25 @@
 
 /**
  * merged_colors_init - Initialise the Merged colours
+ * @param merged_colors List of merged colours
  */
-void merged_colors_init(void)
+void merged_colors_init(struct AttrColorList *merged_colors)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
-  TAILQ_INIT(&mod_data->merged_colors);
+  TAILQ_INIT(merged_colors);
 }
 
 /**
  * merged_colors_cleanup - Free the list of Merged colours
+ * @param merged_colors List of merged colours
  */
-void merged_colors_cleanup(void)
+void merged_colors_cleanup(struct AttrColorList *merged_colors)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
   struct AttrColor *ac = NULL;
   struct AttrColor *tmp = NULL;
 
-  TAILQ_FOREACH_SAFE(ac, &mod_data->merged_colors, entries, tmp)
+  TAILQ_FOREACH_SAFE(ac, merged_colors, entries, tmp)
   {
-    TAILQ_REMOVE(&mod_data->merged_colors, ac, entries);
+    TAILQ_REMOVE(merged_colors, ac, entries);
     curses_color_free(&ac->curses_color);
     FREE(&ac);
   }

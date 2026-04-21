@@ -35,6 +35,7 @@ struct Body;
 struct Email;
 struct Envelope;
 struct Message;
+struct NcryptModuleData;
 
 /**
  * @defgroup crypto_api Crypto API
@@ -61,7 +62,7 @@ struct CryptModuleSpecs
    *
    * cleanup - Clean up the crypt module
    */
-  void(*cleanup)(void);
+  void (*cleanup)(struct NcryptModuleData *mod_data);
 
   /**
    * @defgroup crypto_void_passphrase void_passphrase()
@@ -319,6 +320,6 @@ STAILQ_HEAD(CryptModuleList, CryptModule);
 
 /* High Level crypto module interface */
 void crypto_module_register(const struct CryptModuleSpecs *specs);
-const struct CryptModuleSpecs *crypto_module_lookup(int identifier);
+const struct CryptModuleSpecs *crypto_module_lookup(struct NcryptModuleData *mod_data, int identifier);
 
 #endif /* MUTT_NCRYPT_CRYPT_MOD_H */

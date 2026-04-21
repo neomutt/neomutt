@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "lib.h"
 #include "module_data.h"
 
 extern struct ConfigDef NcryptVars[];
@@ -81,12 +82,14 @@ static bool ncrypt_config_define_variables(struct NeoMutt *n, struct ConfigSet *
 /**
  * ncrypt_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool ncrypt_cleanup(struct NeoMutt *n)
+static bool ncrypt_cleanup(struct NeoMutt *n, void *data)
 {
-  struct NcryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
-  ASSERT(mod_data);
+  struct NcryptModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
+
+  crypt_cleanup(mod_data);
+  crypto_module_cleanup(mod_data);
 
   FREE(&mod_data->current_sender);
   FREE(&mod_data->charset);

@@ -54,8 +54,8 @@ struct EventColor
   struct AttrColor *attr_color; ///< Colour object that has changed
 };
 
-void color_notify_init(struct Notify *parent);
-void color_notify_cleanup(void);
+void color_notify_init(struct Notify **colors_notify, struct Notify *parent);
+void color_notify_cleanup(struct Notify **colors_notify);
 
 void mutt_color_observer_add   (observer_t callback, void *global_data);
 void mutt_color_observer_remove(observer_t callback, void *global_data);

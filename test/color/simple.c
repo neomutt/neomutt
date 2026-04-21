@@ -26,14 +26,17 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "color/module_data.h"
 
 void test_simple_colors(void)
 {
   MuttLogger = log_disp_null;
 
-  simple_colors_init();
+  struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  simple_colors_init(mod_data->simple_colors);
 
   struct AttrColor *ac = NULL;
 
@@ -66,5 +69,5 @@ void test_simple_colors(void)
 
   simple_color_reset(MT_COLOR_INDICATOR);
 
-  simple_colors_cleanup();
+  simple_colors_cleanup(mod_data->simple_colors);
 }

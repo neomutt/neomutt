@@ -24,11 +24,11 @@
 #define MUTT_COLOR_MERGED_H
 
 
-struct AttrColor;
+#include "attr.h"
 
 const struct AttrColor * merged_color_overlay(const struct AttrColor *base, const struct AttrColor *over);
 
-void               merged_colors_cleanup(void);
-void               merged_colors_init(void);
+void               merged_colors_cleanup(struct AttrColorList *merged_colors);
+void               merged_colors_init(struct AttrColorList *merged_colors);
 
 #endif /* MUTT_COLOR_MERGED_H */

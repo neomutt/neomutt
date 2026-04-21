@@ -122,11 +122,10 @@ cleanup:
 
 /**
  * mutt_autocrypt_db_close - Close the Autocrypt SQLite database connection
+ * @param mod_data Autocrypt module data
  */
-void mutt_autocrypt_db_close(void)
+void mutt_autocrypt_db_close(struct AutocryptModuleData *mod_data)
 {
-  struct AutocryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_AUTOCRYPT);
-
   if (!mod_data->autocrypt_db)
     return;
 

@@ -31,6 +31,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "extended.h"
 #include "init.h"
 #include "module_data.h"
 
@@ -47,6 +48,8 @@ static bool key_init(struct NeoMutt *n)
   mod_data->notify = notify_new();
   notify_set_parent(mod_data->notify, n->notify);
 
+  km_init(mod_data);
+
   return true;
 }
 
@@ -61,10 +64,9 @@ static bool key_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 /**
  * key_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool key_cleanup(struct NeoMutt *n)
+static bool key_cleanup(struct NeoMutt *n, void *data)
 {
-  struct KeyModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_KEY);
-  ASSERT(mod_data);
+  struct KeyModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 
@@ -77,7 +79,9 @@ static bool key_cleanup(struct NeoMutt *n)
  */
 static bool key_gui_init(struct NeoMutt *n)
 {
-  km_set_abort_key();
+  struct KeyModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_KEY);
+  ext_keys_init(mod_data->key_names);
+  km_set_abort_key(&mod_data->abort_key);
   return true;
 }
 
@@ -86,7 +90,8 @@ static bool key_gui_init(struct NeoMutt *n)
  */
 static void key_gui_cleanup(struct NeoMutt *n)
 {
-  km_cleanup();
+  struct KeyModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_KEY);
+  km_cleanup(mod_data);
 }
 
 /**

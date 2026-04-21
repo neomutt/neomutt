@@ -50,10 +50,9 @@ static bool editor_init(struct NeoMutt *n)
 /**
  * editor_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool editor_cleanup(struct NeoMutt *n)
+static bool editor_cleanup(struct NeoMutt *n, void *data)
 {
-  struct EditorModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_EDITOR);
-  ASSERT(mod_data);
+  struct EditorModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

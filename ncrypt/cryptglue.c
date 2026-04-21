@@ -42,6 +42,7 @@
 #include "cryptglue.h"
 #include "lib.h"
 #include "crypt_mod.h"
+#include "module_data.h"
 #ifndef CRYPT_BACKEND_GPGME
 #include "gui/lib.h"
 #endif
@@ -81,14 +82,14 @@ extern const struct CryptModuleSpecs CryptModSmimeGpgme;
 /* If the crypto module identifier by IDENTIFIER has been registered,
  * call its function FUNC.  Do nothing else.  This may be used as an
  * expression. */
-#define CRYPT_MOD_CALL_CHECK(identifier, func)                                 \
-  (crypto_module_lookup(APPLICATION_##identifier) &&                           \
-   (crypto_module_lookup(APPLICATION_##identifier))->func)
+#define CRYPT_MOD_CALL_CHECK(mod_data, identifier, func)                       \
+  (crypto_module_lookup(mod_data, APPLICATION_##identifier) &&                 \
+   (crypto_module_lookup(mod_data, APPLICATION_##identifier))->func)
 
 /* Call the function FUNC in the crypto module identified by
  * IDENTIFIER. This may be used as an expression. */
-#define CRYPT_MOD_CALL(identifier, func)                                       \
-  (*(crypto_module_lookup(APPLICATION_##identifier))->func)
+#define CRYPT_MOD_CALL(mod_data, identifier, func)                             \
+  (*(crypto_module_lookup(mod_data, APPLICATION_##identifier))->func)
 
 /**
  * crypt_init - Initialise the crypto backends
@@ -132,31 +133,35 @@ void crypt_init(void)
 
 #if defined(CRYPT_BACKEND_CLASSIC_PGP) ||                                      \
     defined(CRYPT_BACKEND_CLASSIC_SMIME) || defined(CRYPT_BACKEND_GPGME)
-  if (CRYPT_MOD_CALL_CHECK(PGP, init))
-    CRYPT_MOD_CALL(PGP, init)();
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
 
-  if (CRYPT_MOD_CALL_CHECK(SMIME, init))
-    CRYPT_MOD_CALL(SMIME, init)();
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, init))
+    CRYPT_MOD_CALL(mod_data, PGP, init)();
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, init))
+    CRYPT_MOD_CALL(mod_data, SMIME, init)();
 #endif
 }
 
 /**
  * crypt_cleanup - Clean up backend
+ * @param mod_data Ncrypt module data
  */
-void crypt_cleanup(void)
+void crypt_cleanup(struct NcryptModuleData *mod_data)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, cleanup))
-    (CRYPT_MOD_CALL(PGP, cleanup))();
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, cleanup))
+    (CRYPT_MOD_CALL(mod_data, PGP, cleanup))(mod_data);
 
-  if (CRYPT_MOD_CALL_CHECK(SMIME, cleanup))
-    (CRYPT_MOD_CALL(SMIME, cleanup))();
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, cleanup))
+    (CRYPT_MOD_CALL(mod_data, SMIME, cleanup))(mod_data);
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-  pgp_id_defaults_cleanup();
+  pgp_id_defaults_cleanup(&mod_data->pgp_id_defaults);
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-  gpgme_id_defaults_cleanup();
+  gpgme_id_defaults_cleanup(mod_data);
 #endif
 }
 
@@ -182,14 +187,17 @@ void crypt_invoke_message(SecurityFlags type)
  */
 bool crypt_has_module_backend(SecurityFlags type)
 {
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
   if (((WithCrypto & APPLICATION_PGP) != 0) && (type & APPLICATION_PGP) &&
-      crypto_module_lookup(APPLICATION_PGP))
+      crypto_module_lookup(mod_data, APPLICATION_PGP))
   {
     return true;
   }
 
   if (((WithCrypto & APPLICATION_SMIME) != 0) && (type & APPLICATION_SMIME) &&
-      crypto_module_lookup(APPLICATION_SMIME))
+      crypto_module_lookup(mod_data, APPLICATION_SMIME))
   {
     return true;
   }
@@ -202,8 +210,11 @@ bool crypt_has_module_backend(SecurityFlags type)
  */
 void crypt_pgp_void_passphrase(void)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, void_passphrase))
-    CRYPT_MOD_CALL(PGP, void_passphrase)();
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, void_passphrase))
+    CRYPT_MOD_CALL(mod_data, PGP, void_passphrase)();
 }
 
 /**
@@ -211,8 +222,11 @@ void crypt_pgp_void_passphrase(void)
  */
 bool crypt_pgp_valid_passphrase(void)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, valid_passphrase))
-    return CRYPT_MOD_CALL(PGP, valid_passphrase)();
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, valid_passphrase))
+    return CRYPT_MOD_CALL(mod_data, PGP, valid_passphrase)();
 
   return false;
 }
@@ -237,8 +251,11 @@ int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   }
 #endif
 
-  if (CRYPT_MOD_CALL_CHECK(PGP, decrypt_mime))
-    return CRYPT_MOD_CALL(PGP, decrypt_mime)(fp_in, fp_out, b, b_dec);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, decrypt_mime))
+    return CRYPT_MOD_CALL(mod_data, PGP, decrypt_mime)(fp_in, fp_out, b, b_dec);
 
   return -1;
 }
@@ -248,8 +265,11 @@ int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
  */
 int crypt_pgp_application_handler(struct Body *b_email, struct State *state)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, application_handler))
-    return CRYPT_MOD_CALL(PGP, application_handler)(b_email, state);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, application_handler))
+    return CRYPT_MOD_CALL(mod_data, PGP, application_handler)(b_email, state);
 
   return -1;
 }
@@ -274,8 +294,11 @@ int crypt_pgp_encrypted_handler(struct Body *b_email, struct State *state)
   }
 #endif
 
-  if (CRYPT_MOD_CALL_CHECK(PGP, encrypted_handler))
-    return CRYPT_MOD_CALL(PGP, encrypted_handler)(b_email, state);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, encrypted_handler))
+    return CRYPT_MOD_CALL(mod_data, PGP, encrypted_handler)(b_email, state);
 
   return -1;
 }
@@ -285,8 +308,11 @@ int crypt_pgp_encrypted_handler(struct Body *b_email, struct State *state)
  */
 void crypt_pgp_invoke_getkeys(struct Address *addr)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_invoke_getkeys))
-    CRYPT_MOD_CALL(PGP, pgp_invoke_getkeys)(addr);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, pgp_invoke_getkeys))
+    CRYPT_MOD_CALL(mod_data, PGP, pgp_invoke_getkeys)(addr);
 }
 
 /**
@@ -294,8 +320,11 @@ void crypt_pgp_invoke_getkeys(struct Address *addr)
  */
 bool crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_check_traditional))
-    return CRYPT_MOD_CALL(PGP, pgp_check_traditional)(fp, b, just_one);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, pgp_check_traditional))
+    return CRYPT_MOD_CALL(mod_data, PGP, pgp_check_traditional)(fp, b, just_one);
 
   return false;
 }
@@ -305,8 +334,11 @@ bool crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one)
  */
 struct Body *crypt_pgp_traditional_encryptsign(struct Body *b, SecurityFlags flags, char *keylist)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_traditional_encryptsign))
-    return CRYPT_MOD_CALL(PGP, pgp_traditional_encryptsign)(b, flags, keylist);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, pgp_traditional_encryptsign))
+    return CRYPT_MOD_CALL(mod_data, PGP, pgp_traditional_encryptsign)(b, flags, keylist);
 
   return NULL;
 }
@@ -316,8 +348,11 @@ struct Body *crypt_pgp_traditional_encryptsign(struct Body *b, SecurityFlags fla
  */
 struct Body *crypt_pgp_make_key_attachment(void)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_make_key_attachment))
-    return CRYPT_MOD_CALL(PGP, pgp_make_key_attachment)();
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, pgp_make_key_attachment))
+    return CRYPT_MOD_CALL(mod_data, PGP, pgp_make_key_attachment)();
 
   return NULL;
 }
@@ -327,8 +362,11 @@ struct Body *crypt_pgp_make_key_attachment(void)
  */
 char *crypt_pgp_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, find_keys))
-    return CRYPT_MOD_CALL(PGP, find_keys)(addrlist, oppenc_mode);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, find_keys))
+    return CRYPT_MOD_CALL(mod_data, PGP, find_keys)(addrlist, oppenc_mode);
 
   return NULL;
 }
@@ -338,8 +376,11 @@ char *crypt_pgp_find_keys(struct AddressList *addrlist, bool oppenc_mode)
  */
 struct Body *crypt_pgp_sign_message(struct Body *b, const struct AddressList *from)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, sign_message))
-    return CRYPT_MOD_CALL(PGP, sign_message)(b, from);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, sign_message))
+    return CRYPT_MOD_CALL(mod_data, PGP, sign_message)(b, from);
 
   return NULL;
 }
@@ -364,8 +405,11 @@ struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *b, char *ke
   }
 #endif
 
-  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_encrypt_message))
-    return CRYPT_MOD_CALL(PGP, pgp_encrypt_message)(b, keylist, sign, from);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, pgp_encrypt_message))
+    return CRYPT_MOD_CALL(mod_data, PGP, pgp_encrypt_message)(b, keylist, sign, from);
 
   return NULL;
 }
@@ -375,8 +419,11 @@ struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *b, char *ke
  */
 void crypt_pgp_invoke_import(const char *fname)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_invoke_import))
-    CRYPT_MOD_CALL(PGP, pgp_invoke_import)(fname);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, pgp_invoke_import))
+    CRYPT_MOD_CALL(mod_data, PGP, pgp_invoke_import)(fname);
 }
 
 /**
@@ -384,8 +431,11 @@ void crypt_pgp_invoke_import(const char *fname)
  */
 int crypt_pgp_verify_one(struct Body *b, struct State *state, const char *tempf)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, verify_one))
-    return CRYPT_MOD_CALL(PGP, verify_one)(b, state, tempf);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, verify_one))
+    return CRYPT_MOD_CALL(mod_data, PGP, verify_one)(b, state, tempf);
 
   return -1;
 }
@@ -395,8 +445,11 @@ int crypt_pgp_verify_one(struct Body *b, struct State *state, const char *tempf)
  */
 SecurityFlags crypt_pgp_send_menu(struct Email *e)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, send_menu))
-    return CRYPT_MOD_CALL(PGP, send_menu)(e);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, send_menu))
+    return CRYPT_MOD_CALL(mod_data, PGP, send_menu)(e);
 
   return 0;
 }
@@ -406,8 +459,11 @@ SecurityFlags crypt_pgp_send_menu(struct Email *e)
  */
 void crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *b)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, pgp_extract_key_from_attachment))
-    CRYPT_MOD_CALL(PGP, pgp_extract_key_from_attachment)(fp, b);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, pgp_extract_key_from_attachment))
+    CRYPT_MOD_CALL(mod_data, PGP, pgp_extract_key_from_attachment)(fp, b);
 }
 
 /**
@@ -415,8 +471,11 @@ void crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *b)
  */
 void crypt_pgp_set_sender(const char *sender)
 {
-  if (CRYPT_MOD_CALL_CHECK(PGP, set_sender))
-    CRYPT_MOD_CALL(PGP, set_sender)(sender);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, PGP, set_sender))
+    CRYPT_MOD_CALL(mod_data, PGP, set_sender)(sender);
 }
 
 /**
@@ -424,8 +483,11 @@ void crypt_pgp_set_sender(const char *sender)
  */
 void crypt_smime_void_passphrase(void)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, void_passphrase))
-    CRYPT_MOD_CALL(SMIME, void_passphrase)();
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, void_passphrase))
+    CRYPT_MOD_CALL(mod_data, SMIME, void_passphrase)();
 }
 
 /**
@@ -433,8 +495,11 @@ void crypt_smime_void_passphrase(void)
  */
 bool crypt_smime_valid_passphrase(void)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, valid_passphrase))
-    return CRYPT_MOD_CALL(SMIME, valid_passphrase)();
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, valid_passphrase))
+    return CRYPT_MOD_CALL(mod_data, SMIME, valid_passphrase)();
 
   return false;
 }
@@ -444,8 +509,11 @@ bool crypt_smime_valid_passphrase(void)
  */
 int crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **b_dec)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, decrypt_mime))
-    return CRYPT_MOD_CALL(SMIME, decrypt_mime)(fp_in, fp_out, b, b_dec);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, decrypt_mime))
+    return CRYPT_MOD_CALL(mod_data, SMIME, decrypt_mime)(fp_in, fp_out, b, b_dec);
 
   return -1;
 }
@@ -455,8 +523,11 @@ int crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
  */
 int crypt_smime_application_handler(struct Body *b_email, struct State *state)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, application_handler))
-    return CRYPT_MOD_CALL(SMIME, application_handler)(b_email, state);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, application_handler))
+    return CRYPT_MOD_CALL(mod_data, SMIME, application_handler)(b_email, state);
 
   return -1;
 }
@@ -466,8 +537,11 @@ int crypt_smime_application_handler(struct Body *b_email, struct State *state)
  */
 void crypt_smime_getkeys(struct Envelope *env)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, smime_getkeys))
-    CRYPT_MOD_CALL(SMIME, smime_getkeys)(env);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, smime_getkeys))
+    CRYPT_MOD_CALL(mod_data, SMIME, smime_getkeys)(env);
 }
 
 /**
@@ -475,8 +549,11 @@ void crypt_smime_getkeys(struct Envelope *env)
  */
 int crypt_smime_verify_sender(struct Email *e, struct Message *msg)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, smime_verify_sender))
-    return CRYPT_MOD_CALL(SMIME, smime_verify_sender)(e, msg);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, smime_verify_sender))
+    return CRYPT_MOD_CALL(mod_data, SMIME, smime_verify_sender)(e, msg);
 
   return 1;
 }
@@ -486,8 +563,11 @@ int crypt_smime_verify_sender(struct Email *e, struct Message *msg)
  */
 char *crypt_smime_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, find_keys))
-    return CRYPT_MOD_CALL(SMIME, find_keys)(addrlist, oppenc_mode);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, find_keys))
+    return CRYPT_MOD_CALL(mod_data, SMIME, find_keys)(addrlist, oppenc_mode);
 
   return NULL;
 }
@@ -497,8 +577,11 @@ char *crypt_smime_find_keys(struct AddressList *addrlist, bool oppenc_mode)
  */
 struct Body *crypt_smime_sign_message(struct Body *b, const struct AddressList *from)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, sign_message))
-    return CRYPT_MOD_CALL(SMIME, sign_message)(b, from);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, sign_message))
+    return CRYPT_MOD_CALL(mod_data, SMIME, sign_message)(b, from);
 
   return NULL;
 }
@@ -508,8 +591,11 @@ struct Body *crypt_smime_sign_message(struct Body *b, const struct AddressList *
  */
 struct Body *crypt_smime_build_smime_entity(struct Body *b, char *certlist)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, smime_build_smime_entity))
-    return CRYPT_MOD_CALL(SMIME, smime_build_smime_entity)(b, certlist);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, smime_build_smime_entity))
+    return CRYPT_MOD_CALL(mod_data, SMIME, smime_build_smime_entity)(b, certlist);
 
   return NULL;
 }
@@ -519,8 +605,11 @@ struct Body *crypt_smime_build_smime_entity(struct Body *b, char *certlist)
  */
 void crypt_smime_invoke_import(const char *infile, const char *mailbox)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, smime_invoke_import))
-    CRYPT_MOD_CALL(SMIME, smime_invoke_import)(infile, mailbox);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, smime_invoke_import))
+    CRYPT_MOD_CALL(mod_data, SMIME, smime_invoke_import)(infile, mailbox);
 }
 
 /**
@@ -528,8 +617,11 @@ void crypt_smime_invoke_import(const char *infile, const char *mailbox)
  */
 int crypt_smime_verify_one(struct Body *b, struct State *state, const char *tempf)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, verify_one))
-    return CRYPT_MOD_CALL(SMIME, verify_one)(b, state, tempf);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, verify_one))
+    return CRYPT_MOD_CALL(mod_data, SMIME, verify_one)(b, state, tempf);
 
   return -1;
 }
@@ -539,8 +631,11 @@ int crypt_smime_verify_one(struct Body *b, struct State *state, const char *temp
  */
 SecurityFlags crypt_smime_send_menu(struct Email *e)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, send_menu))
-    return CRYPT_MOD_CALL(SMIME, send_menu)(e);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, send_menu))
+    return CRYPT_MOD_CALL(mod_data, SMIME, send_menu)(e);
 
   return 0;
 }
@@ -550,6 +645,9 @@ SecurityFlags crypt_smime_send_menu(struct Email *e)
  */
 void crypt_smime_set_sender(const char *sender)
 {
-  if (CRYPT_MOD_CALL_CHECK(SMIME, set_sender))
-    CRYPT_MOD_CALL(SMIME, set_sender)(sender);
+  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
+  ASSERT(mod_data);
+
+  if (CRYPT_MOD_CALL_CHECK(mod_data, SMIME, set_sender))
+    CRYPT_MOD_CALL(mod_data, SMIME, set_sender)(sender);
 }

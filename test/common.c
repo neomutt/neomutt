@@ -49,7 +49,9 @@
 #include "complete/lib.h"
 #include "key/lib.h"
 #include "send/lib.h"
+#include "color/module_data.h"
 #include "external.h"
+#include "key/module_data.h"
 #include "mx.h"
 
 struct AttachCtx;
@@ -168,7 +170,7 @@ bool test_neomutt_create(void)
 
   init_tmp_dir(NeoMutt);
   init_home_dir(NeoMutt);
-  km_init();
+  km_init(neomutt_get_module_data(NeoMutt, MODULE_ID_KEY));
 
   neomutt_gui_init(NeoMutt);
   MuttLogger = log_disp_terminal;
@@ -229,7 +231,8 @@ void test_init(void)
     goto done;
   }
 
-  regex_colors_init();
+  struct ColorModuleData *color_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  regex_colors_init(color_mod_data);
   success = true;
 done:
   if (!success)
@@ -241,7 +244,8 @@ done:
 
 void test_fini(void)
 {
-  regex_colors_cleanup();
+  struct ColorModuleData *color_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  regex_colors_cleanup(color_mod_data);
   config_cache_cleanup();
   test_neomutt_destroy();
   buf_pool_cleanup();

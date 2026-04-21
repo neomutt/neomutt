@@ -188,7 +188,7 @@ void         menu_redraw_motion (struct Menu *menu);
 int          menu_redraw        (struct Menu *menu);
 
 enum MenuType menu_get_current_type(void);
-void         menu_init2(void);
+void         menu_init2(char **search_buffers);
 
 struct MuttWindow *menu_window_new(const struct MenuDefinition *md, struct ConfigSubset *sub);
 

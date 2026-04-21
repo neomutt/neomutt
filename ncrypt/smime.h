@@ -34,6 +34,7 @@ struct Body;
 struct Email;
 struct Envelope;
 struct Message;
+struct NcryptModuleData;
 
 /**
  * struct SmimeKey - An SIME key
@@ -82,7 +83,7 @@ enum ExpandoDataSmimeCmd
 };
 
 void smime_init(void);
-void smime_cleanup(void);
+void smime_cleanup(struct NcryptModuleData *mod_data);
 
 int           smime_class_application_handler(struct Body *b, struct State *s);
 struct Body * smime_class_build_smime_entity (struct Body *b, char *certlist);

@@ -28,6 +28,8 @@
 #include "attr.h"
 #include "color.h"
 
+struct ColorModuleData;
+
 /**
  * struct RegexColor - A regular expression and a color to highlight a line
  */
@@ -45,9 +47,9 @@ struct RegexColor
 };
 STAILQ_HEAD(RegexColorList, RegexColor);
 
-void regex_colors_init   (void);
-void regex_colors_reset  (void);
-void regex_colors_cleanup(void);
+void regex_colors_init   (struct ColorModuleData *mod_data);
+void regex_colors_reset  (struct ColorModuleData *mod_data);
+void regex_colors_cleanup(struct ColorModuleData *mod_data);
 
 void                   regex_color_clear(struct RegexColor *rcol);
 void                   regex_color_free (struct RegexColor **ptr);

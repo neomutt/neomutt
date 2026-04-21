@@ -50,10 +50,9 @@ static bool convert_init(struct NeoMutt *n)
 /**
  * convert_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool convert_cleanup(struct NeoMutt *n)
+static bool convert_cleanup(struct NeoMutt *n, void *data)
 {
-  struct ConvertModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_CONVERT);
-  ASSERT(mod_data);
+  struct ConvertModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

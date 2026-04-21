@@ -146,15 +146,15 @@ static bool mutt_gsasl_init(void)
 
 /**
  * mutt_gsasl_cleanup - Shutdown GNU SASL library
+ * @param ctx GNU SASL context to clean up
  */
-void mutt_gsasl_cleanup(void)
+void mutt_gsasl_cleanup(Gsasl **ctx)
 {
-  struct ConnModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_CONN);
-  if (!mod_data->mutt_gsasl_ctx)
+  if (!ctx || !*ctx)
     return;
 
-  gsasl_done(mod_data->mutt_gsasl_ctx);
-  mod_data->mutt_gsasl_ctx = NULL;
+  gsasl_done(*ctx);
+  *ctx = NULL;
 }
 
 /**

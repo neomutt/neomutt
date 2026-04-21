@@ -128,6 +128,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "sidebar/lib.h"
+#include "color/module_data.h"
 #include "external.h"
 #include "globals.h"
 #include "mutt_logging.h"
@@ -701,8 +702,6 @@ static int get_elem_queries(struct StringArray *queries, struct HashElemArray *h
  */
 static void init_keys(struct NeoMutt *n)
 {
-  km_init();
-
   struct SubMenu *sm_generic = generic_init_keys(n);
 
   alias_init_keys(n, sm_generic);
@@ -739,14 +738,14 @@ static int start_curses(void)
     return 1;
   }
 
-  colors_init();
+  struct ColorModuleData *color_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
+  colors_init(color_mod_data);
   keypad(stdscr, true);
   cbreak();
   noecho();
   nonl();
   typeahead(-1); /* simulate smooth scrolling */
   meta(stdscr, true);
-  ext_keys_init();
   /* Now that curses is set up, we drop back to normal screen mode.
    * This simplifies displaying error messages to the user.
    * The first call to refresh() will swap us back to curses screen mode. */
@@ -1088,7 +1087,8 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Always create the mutt_windows because batch mode has some shared code
    * paths that end up referencing them. */
-  rootwin_new();
+  struct GuiModuleData *gui_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  rootwin_new(gui_mod_data);
 
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, &cli->shared.log_level, &cli->shared.log_file,
@@ -1476,7 +1476,7 @@ int main(int argc, char *argv[], char *envp[])
     if (!buf_is_empty(tempfile))
       unlink(buf_string(tempfile));
 
-    rootwin_cleanup();
+    rootwin_cleanup(gui_mod_data);
 
     if (rv != 0)
       goto main_curses; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)
@@ -1621,15 +1621,6 @@ int main(int argc, char *argv[], char *envp[])
       repeat_error = false;
     }
     imap_logout_all();
-#ifdef USE_SASL_CYRUS
-    mutt_sasl_cleanup();
-#endif
-#ifdef USE_SASL_GNU
-    mutt_gsasl_cleanup();
-#endif
-#ifdef USE_AUTOCRYPT
-    mutt_autocrypt_cleanup();
-#endif
     // TEST43: neomutt (no change to mailbox)
     // TEST44: neomutt (change mailbox)
   }
@@ -1651,11 +1642,9 @@ main_exit:
 
   buf_pool_release(&expanded_infile);
   buf_pool_release(&tempfile);
-  crypto_module_cleanup();
   if (NeoMutt)
     envlist_free(&NeoMutt->env);
   external_cleanup();
-  crypt_cleanup();
   mutt_ch_cache_cleanup();
   command_line_free(&cli);
 

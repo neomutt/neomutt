@@ -84,10 +84,9 @@ static bool attach_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 /**
  * attach_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool attach_cleanup(struct NeoMutt *n)
+static bool attach_cleanup(struct NeoMutt *n, void *data)
 {
-  struct AttachModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ATTACH);
-  ASSERT(mod_data);
+  struct AttachModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
   notify_free(&mod_data->attachments_notify);
@@ -100,7 +99,7 @@ static bool attach_cleanup(struct NeoMutt *n)
 
   mutt_list_free(&mod_data->mime_lookup);
 
-  mutt_temp_attachments_cleanup();
+  mutt_temp_attachments_cleanup(&mod_data->temp_attachments);
 
   FREE(&mod_data);
   return true;

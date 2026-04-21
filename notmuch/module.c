@@ -102,10 +102,9 @@ static void notmuch_gui_cleanup(struct NeoMutt *n)
 /**
  * notmuch_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool notmuch_cleanup(struct NeoMutt *n)
+static bool notmuch_cleanup(struct NeoMutt *n, void *data)
 {
-  struct NotmuchModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_NOTMUCH);
-  ASSERT(mod_data);
+  struct NotmuchModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 
