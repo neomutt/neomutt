@@ -39,11 +39,6 @@ void test_mutt_str_expand_tabs(void)
 {
   // char *mutt_str_expand_tabs(char *str, size_t *len, int tabwidth);
 
-  {
-    TEST_CHECK(mutt_str_expand_tabs(NULL, 0, 4) == NULL);
-    TEST_CHECK(mutt_str_expand_tabs("", 0, 4) == NULL);
-  }
-
   static struct TestCase tests[] = {
     // clang-format off
     { "\tapple",      "    apple",     4 },
@@ -72,9 +67,9 @@ void test_mutt_str_expand_tabs(void)
       TEST_CASE(tests[i].in);
       char *str = mutt_str_dup(tests[i].in);
       size_t len = mutt_str_len(str);
-      char *result = mutt_str_expand_tabs(str, &len, tests[i].tabwidth);
-      TEST_CHECK_STR_EQ(result, tests[i].result);
-      FREE(&result);
+      mutt_str_expand_tabs(&str, &len, tests[i].tabwidth);
+      TEST_CHECK_STR_EQ(str, tests[i].result);
+      FREE(&str);
     }
   }
 }

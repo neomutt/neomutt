@@ -54,7 +54,7 @@ void         mutt_need_hard_redraw(void);
 void         mutt_paddstr(struct MuttWindow *win, int n, const char *s);
 void         mutt_query_exit(void);
 void         mutt_refresh(void);
-char *       mutt_str_expand_tabs(char *str, size_t *len, int tabwidth);
+void         mutt_str_expand_tabs(char **str, size_t *len, int tabwidth);
 size_t       mutt_strwidth(const char *s);
 size_t       mutt_strnwidth(const char *s, size_t len);
 size_t       mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
