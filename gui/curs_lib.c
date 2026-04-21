@@ -636,7 +636,7 @@ void mutt_str_expand_tabs(char **str, size_t *len, int tabwidth)
   {
     *len = ROUND_UP(required_len, 256);
   }
-  char* out = MUTT_MEM_CALLOC(*len, char);
+  char *out = MUTT_MEM_CALLOC(*len, char);
 
   // expand tabs
   for (int i = 0, o = 0; in[i] != '\0'; i++)
