@@ -1581,13 +1581,31 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     return -1;
   }
 
-  /* This function is only called when the calling code expects the context
-   * to be changed. */
-  imap_allow_reopen(m);
+  /* Mark sync in progress to prevent expunge/newmail processing mid-sync.
+   * Do NOT set IMAP_REOPEN_ALLOW here — it makes timeouts destructive
+   * by allowing imap_cmd_finish to process expunges during sync commands. */
+  mdata->reopen |= IMAP_SYNC_IN_PROGRESS;
 
   enum MxStatus check = imap_check_mailbox(m, false);
   if (check == MX_STATUS_ERROR)
+  {
+    /* Persist pending flag changes to hcache before aborting, so they
+     * survive a reconnect and can be replayed on next sync. */
+#ifdef USE_HCACHE
+    imap_hcache_open(adata, mdata, true);
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      if (e->active && e->changed)
+        imap_hcache_put(mdata, e);
+    }
+    imap_hcache_close(mdata);
+#endif
+    mdata->reopen &= ~IMAP_SYNC_IN_PROGRESS;
     return check;
+  }
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && (m->rights & MUTT_ACL_DELETE))
@@ -1600,6 +1618,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     if (rc < 0)
     {
       mutt_error(_("Expunge failed"));
+      mdata->reopen &= ~IMAP_SYNC_IN_PROGRESS;
       return rc;
     }
 
@@ -1702,6 +1721,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       if (query_yesorno(_("Error saving flags. Close anyway?"), MUTT_NO) == MUTT_YES)
       {
         adata->state = IMAP_AUTHENTICATED;
+        mdata->reopen &= ~IMAP_SYNC_IN_PROGRESS;
         return 0;
       }
     }
@@ -1709,6 +1729,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     {
       mutt_error(_("Error saving flags"));
     }
+    mdata->reopen &= ~IMAP_SYNC_IN_PROGRESS;
     return -1;
   }
 
@@ -1730,6 +1751,10 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   }
   m->changed = false;
 
+  /* Now that sync is done, allow reopen for the EXPUNGE phase. */
+  mdata->reopen &= ~IMAP_SYNC_IN_PROGRESS;
+  imap_allow_reopen(m);
+
   /* We must send an EXPUNGE command if we're not closing. */
   if (expunge && !close && (m->rights & MUTT_ACL_DELETE))
   {
@@ -1741,6 +1766,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
     {
       mdata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
       imap_error(_("imap_sync_mailbox: EXPUNGE failed"), adata->buf);
+      mdata->reopen &= ~IMAP_SYNC_IN_PROGRESS;
       return -1;
     }
     mdata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
@@ -2105,6 +2131,72 @@ static int imap_select_and_poll(struct Mailbox *m, int *countp)
 
   *countp = count;
   return 0;
+}
+
+/**
+ * imap_reopen_mailbox - Re-SELECT the current mailbox after reconnecting
+ * @param adata Imap Account data (must be in IMAP_AUTHENTICATED state)
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * After a connection drop and successful reconnect, re-SELECT the previously
+ * open mailbox, clear stale message state, and re-fetch all headers so the
+ * index is repopulated.  This avoids the destructive mx_fastclose_mailbox()
+ * path that used to leave the user with an empty screen.
+ */
+int imap_reopen_mailbox(struct ImapAccountData *adata)
+{
+  if (!adata || !adata->mailbox)
+    return -1;
+
+  struct Mailbox *m = adata->mailbox;
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+  if (!mdata)
+    return -1;
+
+  mutt_debug(LL_DEBUG1, "Re-selecting mailbox %s after reconnect\n", mdata->name);
+
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      continue;
+    imap_edata_free((void **) &e->edata);
+    email_free(&m->emails[i]);
+  }
+  m->msg_count = 0;
+  m->msg_unread = 0;
+  m->msg_flagged = 0;
+  m->msg_new = 0;
+  m->msg_deleted = 0;
+  m->size = 0;
+  m->vcount = 0;
+
+  imap_mdata_cache_reset(mdata);
+
+  mdata->new_mail_count = 0;
+  mdata->reopen = IMAP_OPEN_NO_FLAGS;
+  mdata->check_status = IMAP_OPEN_NO_FLAGS;
+
+  int count = 0;
+  if (imap_select_and_poll(m, &count) < 0)
+    goto fail;
+
+  mx_alloc_memory(m, count);
+
+  if ((count > 0) && (imap_read_headers(m, 1, count, true) < 0))
+    goto fail;
+
+  mutt_debug(LL_DEBUG1, "Reopened mailbox %s with %d messages\n", mdata->name, m->msg_count);
+  mailbox_changed(m, NT_MAILBOX_UPDATE);
+  mailbox_changed(m, NT_MAILBOX_RESORT);
+  return 0;
+
+fail:
+  mutt_debug(LL_DEBUG1, "Failed to reopen mailbox %s\n", mdata->name);
+  if (adata->state == IMAP_SELECTED)
+    adata->state = IMAP_AUTHENTICATED;
+  return -1;
 }
 
 /**
