@@ -64,10 +64,9 @@ static bool key_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 /**
  * key_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool key_cleanup(struct NeoMutt *n)
+static bool key_cleanup(struct NeoMutt *n, void *data)
 {
-  struct KeyModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_KEY);
-  ASSERT(mod_data);
+  struct KeyModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

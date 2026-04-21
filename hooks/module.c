@@ -73,10 +73,9 @@ static bool hooks_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 /**
  * hooks_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool hooks_cleanup(struct NeoMutt *n)
+static bool hooks_cleanup(struct NeoMutt *n, void *data)
 {
-  struct HooksModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_HOOKS);
-  ASSERT(mod_data);
+  struct HooksModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

@@ -50,10 +50,9 @@ static bool parse_init(struct NeoMutt *n)
 /**
  * parse_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool parse_cleanup(struct NeoMutt *n)
+static bool parse_cleanup(struct NeoMutt *n, void *data)
 {
-  struct ParseModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PARSE);
-  ASSERT(mod_data);
+  struct ParseModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

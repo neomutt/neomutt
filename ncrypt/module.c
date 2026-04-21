@@ -82,10 +82,9 @@ static bool ncrypt_config_define_variables(struct NeoMutt *n, struct ConfigSet *
 /**
  * ncrypt_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool ncrypt_cleanup(struct NeoMutt *n)
+static bool ncrypt_cleanup(struct NeoMutt *n, void *data)
 {
-  struct NcryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_NCRYPT);
-  ASSERT(mod_data);
+  struct NcryptModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

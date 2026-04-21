@@ -73,10 +73,9 @@ static bool index_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 /**
  * index_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool index_cleanup(struct NeoMutt *n)
+static bool index_cleanup(struct NeoMutt *n, void *data)
 {
-  struct IndexModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_INDEX);
-  ASSERT(mod_data);
+  struct IndexModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

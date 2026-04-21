@@ -96,10 +96,9 @@ static bool email_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 /**
  * email_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool email_cleanup(struct NeoMutt *n)
+static bool email_cleanup(struct NeoMutt *n, void *data)
 {
-  struct EmailModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_EMAIL);
-  ASSERT(mod_data);
+  struct EmailModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

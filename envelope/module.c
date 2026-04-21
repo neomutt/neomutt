@@ -50,10 +50,9 @@ static bool envelope_init(struct NeoMutt *n)
 /**
  * envelope_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool envelope_cleanup(struct NeoMutt *n)
+static bool envelope_cleanup(struct NeoMutt *n, void *data)
 {
-  struct EnvelopeModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_ENVELOPE);
-  ASSERT(mod_data);
+  struct EnvelopeModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

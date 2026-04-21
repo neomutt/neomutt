@@ -80,10 +80,9 @@ static bool imap_commands_register(struct NeoMutt *n, struct CommandArray *ca)
 /**
  * imap_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool imap_cleanup(struct NeoMutt *n)
+static bool imap_cleanup(struct NeoMutt *n, void *data)
 {
-  struct ImapModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_IMAP);
-  ASSERT(mod_data);
+  struct ImapModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

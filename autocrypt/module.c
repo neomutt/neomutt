@@ -70,10 +70,9 @@ static bool autocrypt_config_define_variables(struct NeoMutt *n, struct ConfigSe
 /**
  * autocrypt_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool autocrypt_cleanup(struct NeoMutt *n)
+static bool autocrypt_cleanup(struct NeoMutt *n, void *data)
 {
-  struct AutocryptModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_AUTOCRYPT);
-  ASSERT(mod_data);
+  struct AutocryptModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

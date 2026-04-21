@@ -74,10 +74,9 @@ static bool sidebar_commands_register(struct NeoMutt *n, struct CommandArray *ca
 /**
  * sidebar_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool sidebar_cleanup(struct NeoMutt *n)
+static bool sidebar_cleanup(struct NeoMutt *n, void *data)
 {
-  struct SidebarModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_SIDEBAR);
-  ASSERT(mod_data);
+  struct SidebarModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

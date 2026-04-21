@@ -109,6 +109,8 @@ struct Module
    *
    * init - Initialise a Module
    * @retval true Success
+   *
+   * @pre n is not NULL
    */
   bool (*init)(struct NeoMutt *n);
 
@@ -120,6 +122,7 @@ struct Module
    * @param cs Config Set
    * @retval true Success
    *
+   * @pre n  is not NULL
    * @pre cs is not NULL
    */
   bool (*config_define_types)(struct NeoMutt *n, struct ConfigSet *cs);
@@ -132,6 +135,7 @@ struct Module
    * @param cs Config Set
    * @retval true Success
    *
+   * @pre n  is not NULL
    * @pre cs is not NULL
    */
   bool (*config_define_variables)(struct NeoMutt *n, struct ConfigSet *cs);
@@ -144,6 +148,7 @@ struct Module
    * @param ca Command Array
    * @retval true Success
    *
+   * @pre n  is not NULL
    * @pre ca is not NULL
    */
   bool (*commands_register)(struct NeoMutt *n, struct CommandArray *ca);
@@ -154,6 +159,8 @@ struct Module
    *
    * gui_init - Initialise the GUI
    * @retval true Success
+   *
+   * @pre n  is not NULL
    */
   bool (*gui_init)(struct NeoMutt *n);
 
@@ -162,8 +169,9 @@ struct Module
    * @ingroup module_api
    *
    * gui_cleanup - Clean up the GUI
-   *
    * @retval true Success
+   *
+   * @pre n  is not NULL
    */
   void (*gui_cleanup)(struct NeoMutt *n);
 
@@ -172,9 +180,13 @@ struct Module
    * @ingroup module_api
    *
    * cleanup - Clean up a Module
+   * @param data Private Module data
    * @retval true Success
+   *
+   * @pre n    is not NULL
+   * @pre data is not NULL
    */
-  bool (*cleanup)(struct NeoMutt *n);
+  bool (*cleanup)(struct NeoMutt *n, void *data);
 };
 
 #endif /* MUTT_CORE_MODULE_H */

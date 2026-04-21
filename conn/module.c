@@ -101,10 +101,9 @@ static bool conn_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs
 /**
  * conn_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool conn_cleanup(struct NeoMutt *n)
+static bool conn_cleanup(struct NeoMutt *n, void *data)
 {
-  struct ConnModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_CONN);
-  ASSERT(mod_data);
+  struct ConnModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

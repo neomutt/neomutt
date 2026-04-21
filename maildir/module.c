@@ -68,10 +68,9 @@ static bool maildir_config_define_variables(struct NeoMutt *n, struct ConfigSet 
 /**
  * maildir_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool maildir_cleanup(struct NeoMutt *n)
+static bool maildir_cleanup(struct NeoMutt *n, void *data)
 {
-  struct MaildirModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_MAILDIR);
-  ASSERT(mod_data);
+  struct MaildirModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

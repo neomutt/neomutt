@@ -88,10 +88,9 @@ static void color_gui_cleanup(struct NeoMutt *n)
 /**
  * color_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool color_cleanup(struct NeoMutt *n)
+static bool color_cleanup(struct NeoMutt *n, void *data)
 {
-  struct ColorModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_COLOR);
-  ASSERT(mod_data);
+  struct ColorModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 

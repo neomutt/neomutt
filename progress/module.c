@@ -61,10 +61,9 @@ static bool progress_config_define_variables(struct NeoMutt *n, struct ConfigSet
 /**
  * progress_cleanup - Clean up a Module - Implements Module::cleanup()
  */
-static bool progress_cleanup(struct NeoMutt *n)
+static bool progress_cleanup(struct NeoMutt *n, void *data)
 {
-  struct ProgressModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_PROGRESS);
-  ASSERT(mod_data);
+  struct ProgressModuleData *mod_data = data;
 
   notify_free(&mod_data->notify);
 
