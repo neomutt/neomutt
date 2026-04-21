@@ -201,12 +201,7 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
   if (!mdata)
     return;
 
-  if ((adata->state >= IMAP_SELECTED) && (mdata->reopen & IMAP_REOPEN_ALLOW))
-  {
-    mx_fastclose_mailbox(adata->mailbox, true);
-    mutt_error(_("Mailbox %s@%s closed"), adata->conn->account.user,
-               adata->conn->account.host);
-  }
+  bool was_selected = (adata->state >= IMAP_SELECTED);
 
   imap_close_connection(adata);
   if (!adata->recovering)
@@ -232,6 +227,16 @@ static void cmd_handle_fatal(struct ImapAccountData *adata)
     {
       mutt_message(_("Reconnected to %s"), adata->conn->account.host);
       adata->retry_count = 0; // Reset on success
+
+      if (was_selected && (imap_reopen_mailbox(adata) == 0))
+      {
+        mutt_message(_("Reopened mailbox on %s"), adata->conn->account.host);
+      }
+      else if (was_selected)
+      {
+        mutt_error(_("Reconnected to %s but failed to reopen mailbox"),
+                   adata->conn->account.host);
+      }
     }
     else
     {
@@ -1425,9 +1430,17 @@ int imap_exec(struct ImapAccountData *adata, const char *cmdstr, ImapCmdFlags fl
 
     if (idle_time > IMAP_CONN_STALE_THRESHOLD)
     {
-      mutt_debug(LL_DEBUG2, "Connection idle for %ld seconds, sending NOOP to verify\n",
-                 (long) idle_time);
-      /* Connection may be stale - let the command proceed and handle any error */
+      static bool probing = false;
+      if (!probing)
+      {
+        mutt_debug(LL_DEBUG2, "Connection idle for %ld seconds, sending NOOP probe\n",
+                   (long) idle_time);
+        probing = true;
+        int noop_rc = imap_exec(adata, "NOOP", IMAP_CMD_POLL);
+        probing = false;
+        if (noop_rc == IMAP_EXEC_FATAL)
+          return IMAP_EXEC_FATAL;
+      }
     }
   }
 
@@ -1517,7 +1530,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
 
   struct ImapMboxData *mdata = imap_mdata_get(adata->mailbox);
 
-  if (mdata && mdata->reopen & IMAP_REOPEN_ALLOW)
+  if (mdata && (mdata->reopen & IMAP_REOPEN_ALLOW) && !(mdata->reopen & IMAP_SYNC_IN_PROGRESS))
   {
     // First remove expunged emails from the msn_index
     if (mdata->reopen & IMAP_EXPUNGE_PENDING)
