@@ -5,8 +5,6 @@ query-filters:
   # (neomutt/path-injection) that adds buf_pool_get() as a taint barrier.
   - exclude:
       id: cpp/path-injection
-  - exclude:
-      id: cpp/commented-out-code
 
 packs:
   - codeql/cpp-queries
