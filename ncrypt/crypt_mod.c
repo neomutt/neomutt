@@ -48,14 +48,14 @@ void crypto_module_register(const struct CryptModuleSpecs *specs)
 
 /**
  * crypto_module_lookup - Lookup a crypto module by name
+ * @param mod_data   Ncrypt module data
  * @param identifier Name, e.g. #APPLICATION_PGP
  * @retval ptr Crypto module
  *
  * This function is usually used via the CRYPT_MOD_CALL[_CHECK] macros.
  */
-const struct CryptModuleSpecs *crypto_module_lookup(int identifier)
+const struct CryptModuleSpecs *crypto_module_lookup(struct NcryptModuleData *mod_data, int identifier)
 {
-  struct NcryptModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NCRYPT);
   const struct CryptModule *module = NULL;
   STAILQ_FOREACH(module, &mod_data->crypt_modules, entries)
   {
