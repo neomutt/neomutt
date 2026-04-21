@@ -39,6 +39,16 @@ void test_mutt_str_expand_tabs(void)
 {
   // char *mutt_str_expand_tabs(char *str, size_t *len, int tabwidth);
 
+  /* Explicit test for null-termination */
+  {
+    size_t len = 8;
+    char *buf = MUTT_MEM_CALLOC(len, char);
+    buf[0] = '\t';
+    mutt_str_expand_tabs(&buf, &len, 8);
+    TEST_CHECK_STR_EQ(buf, "        ");
+    FREE(&buf);
+  }
+
   static struct TestCase tests[] = {
     // clang-format off
     { "\tapple",      "    apple",     4 },

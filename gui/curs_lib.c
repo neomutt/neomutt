@@ -614,12 +614,21 @@ void mutt_str_expand_tabs(char **str, size_t *len, int tabwidth)
       required_len += tabwidth; // cheat, just assume full tab width
     }
     else
+    {
       required_len++;
+    }
   }
 
   if (!found_tabs)
   {
     return;
+  }
+
+  // tab expansion can fill in the whole buffer; we need to make some more room
+  // for the \0-terminator.
+  if (required_len == *len)
+  {
+    ++required_len;
   }
 
   // resize the string if there isn't enough space
