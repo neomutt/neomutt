@@ -587,46 +587,76 @@ void mw_what_key(void)
 
 /**
  * mutt_str_expand_tabs - Convert tabs to spaces in a string
- * @param str       Input string
+ * @param str       Input/output string
  * @param len       Length of the string
  * @param tabwidth  The number of spaces per indentation-level
  *
  * Replace tab characters (`\t`) with spaces in the string. The string will be
  * resized to fit the expanded version if necessary.
  */
-char *mutt_str_expand_tabs(char *str, size_t *len, int tabwidth)
+void mutt_str_expand_tabs(char **str, size_t *len, int tabwidth)
 {
-  if (!str || !len || (tabwidth < 1))
-    return NULL;
+  if (!str || !*str || !len || (tabwidth < 1))
+  {
+    return;
+  }
+
+  char *in = *str;
 
   // calculate how much space we need
   size_t required_len = 0;
-  for (int i = 0; (i < *len) && (str[i] != '\0'); i++)
+  bool found_tabs = false;
+  for (int i = 0; (i < *len) && (in[i] != '\0'); i++)
   {
-    if (str[i] == '\t')
-      required_len += tabwidth; // cheat, just assume full tab width
-    else
-      required_len++;
-  }
-
-  // resize the string if there isn't enough space
-  while (required_len > *len)
-  {
-    *len += 256;
-    MUTT_MEM_REALLOC(&str, *len, char);
-  }
-
-  // expand tabs
-  for (int i = 0; str[i] != '\0'; i++)
-  {
-    if (str[i] == '\t')
+    if (in[i] == '\t')
     {
-      int num_cells = mutt_strnwidth(str, i);
-      int indent = abs((num_cells % tabwidth) - tabwidth);
-      memmove(str + i + indent, str + i + 1, *len - (i + indent) - indent);
-      memset(str + i, ' ', indent);
+      found_tabs = true;
+      required_len += tabwidth; // cheat, just assume full tab width
+    }
+    else
+    {
+      required_len++;
     }
   }
 
-  return str;
+  if (!found_tabs)
+  {
+    return;
+  }
+
+  // tab expansion can fill in the whole buffer; we need to make some more room
+  // for the \0-terminator.
+  if (required_len == *len)
+  {
+    ++required_len;
+  }
+
+  // resize the string if there isn't enough space
+  if (required_len > *len)
+  {
+    *len = ROUND_UP(required_len, 256);
+  }
+  char *out = MUTT_MEM_CALLOC(*len, char);
+
+  // expand tabs
+  for (int i = 0, o = 0; in[i] != '\0'; i++)
+  {
+    if (in[i] == '\t')
+    {
+      // TODO - we could keep a running width instead of recomputing this from
+      // scratch for each encountered tab.
+      int num_cells = mutt_strnwidth(out, o);
+      int indent = abs((num_cells % tabwidth) - tabwidth);
+      memset(out + o, ' ', indent);
+      o += indent;
+    }
+    else
+    {
+      out[o] = in[i];
+      ++o;
+    }
+  }
+
+  FREE(str);
+  *str = out;
 }
