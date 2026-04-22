@@ -55,8 +55,12 @@ static int imap_timeout_observer(struct NotifyCallback *nc)
 
   if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + c_imap_keep_alive)))
   {
+    if (adata->checking)
+      return 0;
+    adata->checking = true;
     mutt_debug(LL_DEBUG5, "imap_keep_alive\n");
     imap_check_mailbox(adata->mailbox, true);
+    adata->checking = false;
   }
 
   mutt_debug(LL_DEBUG5, "imap timeout done\n");
