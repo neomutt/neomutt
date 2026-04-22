@@ -424,8 +424,11 @@ int mutt_check_encoding(const char *c)
  * mutt_parse_content_type - Parse a content type
  * @param s String to parse
  * @param b Body to save the result
+ * 
+ * WARNING: this function modifies the 's' argument to segregate type, subtype,
+ * and parametners, so, e.g., a param of "text/plain" will be changed into
+ * "text\0plain".
  *
- * e.g. parse a string "inline" and set #DISP_INLINE.
  */
 void mutt_parse_content_type(const char *s, struct Body *b)
 {
