@@ -528,7 +528,22 @@ bool mailcap_lookup(struct Body *b, char *type, size_t typelen,
   buf_pool_release(&path);
 
   if (entry && !found)
-    mutt_error(_("mailcap entry for type %s not found"), type);
+  {
+    if (opt == MUTT_MC_NO_FLAGS)
+    {
+      mutt_warning(_("mailcap entry for type %s not found"), type);
+    }
+    else
+    {
+      mutt_warning(_("mailcap entry with field '%s' for type %s not found"),
+                   (opt == MUTT_MC_EDIT)     ? "edit" :
+                   (opt == MUTT_MC_COMPOSE)  ? "compose" :
+                   (opt == MUTT_MC_PRINT)    ? "print" :
+                   (opt == MUTT_MC_AUTOVIEW) ? "copiousoutput" :
+                                               NULL,
+                   type);
+    }
+  }
 
   return found;
 }
