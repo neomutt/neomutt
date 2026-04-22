@@ -563,31 +563,41 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
 
     mutt_debug(LL_DEBUG3, "KEY: getch() '%c'\n", isprint(event.ch) ? event.ch : '?');
 
+    // Check if digit keys have explicit bindings before using them as a counter
     if (!(flags & GETCH_NO_COUNTER) && (state != DKS_NEED_MORE) &&
         (event.ch >= '0') && (event.ch <= '9'))
     {
-      if (count_digits >= KEY_COUNT_MAX_DIGITS)
-      {
-        key_progress_notify(md, count, keys, key_len, flags);
-        key_progress_notify(md, 0, NULL, 0, flags);
-        return (struct KeyEvent) { event.ch, OP_NULL, 0 };
-      }
+      keycode_t digit_key = event.ch;
+      struct KeymapMatchArray digit_kma = ARRAY_HEAD_INITIALIZER;
+      KeyGatherFlags digit_kgf = gather_functions(md, &digit_key, 1, &digit_kma);
+      bool digit_bound = (digit_kgf & KEY_GATHER_MATCH);
+      ARRAY_FREE(&digit_kma);
 
-      const int digit = event.ch - '0';
-      if ((count > (INT_MAX / 10)) ||
-          ((count == (INT_MAX / 10)) && (digit > (INT_MAX % 10))))
+      if (!digit_bound)
       {
-        key_progress_notify(md, count, keys, key_len, flags);
-        key_progress_notify(md, 0, NULL, 0, flags);
-        return (struct KeyEvent) { event.ch, OP_NULL, 0 };
-      }
+        if (count_digits >= KEY_COUNT_MAX_DIGITS)
+        {
+          key_progress_notify(md, count, keys, key_len, flags);
+          key_progress_notify(md, 0, NULL, 0, flags);
+          return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+        }
 
-      count = (count * 10) + digit;
-      count_digits++;
-      state = DKS_COUNTER;
-      feedback_active = true;
-      key_progress_notify(md, count, keys, key_len, flags);
-      continue;
+        const int digit = event.ch - '0';
+        if ((count > (INT_MAX / 10)) ||
+            ((count == (INT_MAX / 10)) && (digit > (INT_MAX % 10))))
+        {
+          key_progress_notify(md, count, keys, key_len, flags);
+          key_progress_notify(md, 0, NULL, 0, flags);
+          return (struct KeyEvent) { event.ch, OP_NULL, 0 };
+        }
+
+        count = (count * 10) + digit;
+        count_digits++;
+        state = DKS_COUNTER;
+        feedback_active = true;
+        key_progress_notify(md, count, keys, key_len, flags);
+        continue;
+      }
     }
 
     if (key_len >= KEY_SEQ_MAX_LEN)
