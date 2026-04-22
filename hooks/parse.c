@@ -1217,6 +1217,7 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
       mutt_delete_hooks(&mod_data->hooks, CMD_NONE);
       delete_idxfmt_hooks(&mod_data->idx_fmt_hooks);
       mutt_ch_lookup_remove();
+      break;
     }
     else
     {
@@ -1232,20 +1233,30 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
       if ((hook->id == CMD_CHARSET_HOOK) || (hook->id == CMD_ICONV_HOOK))
       {
         mutt_ch_lookup_remove();
-        rc = MUTT_CMD_SUCCESS;
-        goto done;
       }
-      if (mod_data->current_hook_id == hook->id)
+      else if ((mod_data->current_hook_id == hook->id) ||
+               ((hook->id == CMD_FCC_SAVE_HOOK) &&
+                ((mod_data->current_hook_id == CMD_FCC_HOOK) ||
+                 (mod_data->current_hook_id == CMD_SAVE_HOOK))))
       {
         buf_printf(err, _("unhook: Can't delete a %s from within a %s"),
                    buf_string(token), buf_string(token));
         rc = MUTT_CMD_WARNING;
         goto done;
       }
-      if (hook->id == CMD_INDEX_FORMAT_HOOK)
+      else if (hook->id == CMD_INDEX_FORMAT_HOOK)
+      {
         delete_idxfmt_hooks(&mod_data->idx_fmt_hooks);
+      }
+      else if (hook->id == CMD_FCC_SAVE_HOOK)
+      {
+        mutt_delete_hooks(&mod_data->hooks, CMD_FCC_HOOK);
+        mutt_delete_hooks(&mod_data->hooks, CMD_SAVE_HOOK);
+      }
       else
+      {
         mutt_delete_hooks(&mod_data->hooks, hook->id);
+      }
     }
   }
 
