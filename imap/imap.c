@@ -2072,6 +2072,156 @@ int imap_login(struct ImapAccountData *adata)
 }
 
 /**
+ * imap_select_and_poll - Send SELECT and parse the untagged responses
+ * @param m        Mailbox
+ * @param[out] countp  Number of messages reported by EXISTS
+ * @retval  0 Success
+ * @retval -1 Failure (protocol error or parse error)
+ *
+ * Issues the SELECT command via imap_mbox_select() and then reads the
+ * untagged responses, populating mdata fields (flags, uidvalidity,
+ * uid_next, modseq, readonly) and returning the EXISTS count.  Both
+ * imap_mbox_open and imap_reopen_mailbox share this code path.
+ */
+static int imap_select_and_poll(struct Mailbox *m, int *countp)
+{
+  struct ImapAccountData *adata = imap_adata_get(m);
+  struct ImapMboxData *mdata = imap_mdata_get(m);
+
+  imap_mbox_select(m);
+
+  int count = 0;
+  int rc;
+  do
+  {
+    char *pc = NULL;
+
+    rc = imap_cmd_step(adata);
+    if (rc != IMAP_RES_CONTINUE)
+      break;
+
+    if (!mutt_strn_equal(adata->buf, "* ", 2))
+      continue;
+    pc = imap_next_word(adata->buf);
+
+    /* Obtain list of available flags here, may be overridden by a
+     * PERMANENTFLAGS tag in the OK response */
+    if (mutt_istr_startswith(pc, "FLAGS"))
+    {
+      /* don't override PERMANENTFLAGS */
+      if (STAILQ_EMPTY(&mdata->flags))
+      {
+        mutt_debug(LL_DEBUG3, "Getting mailbox FLAGS\n");
+        pc = get_flags(&mdata->flags, pc);
+        if (!pc)
+          return -1;
+      }
+    }
+    else if (mutt_istr_startswith(pc, "OK [PERMANENTFLAGS"))
+    {
+      /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
+      mutt_debug(LL_DEBUG3, "Getting mailbox PERMANENTFLAGS\n");
+      /* safe to call on NULL */
+      mutt_list_free(&mdata->flags);
+      /* skip "OK [PERMANENT" so syntax is the same as FLAGS */
+      pc += 13;
+      pc = get_flags(&(mdata->flags), pc);
+      if (!pc)
+        return -1;
+    }
+    else if (mutt_istr_startswith(pc, "OK [UIDVALIDITY"))
+    {
+      /* save UIDVALIDITY for the header cache */
+      mutt_debug(LL_DEBUG3, "Getting mailbox UIDVALIDITY\n");
+      pc += 3;
+      pc = imap_next_word(pc);
+      if (!mutt_str_atoui(pc, &mdata->uidvalidity))
+        return -1;
+    }
+    else if (mutt_istr_startswith(pc, "OK [UIDNEXT"))
+    {
+      mutt_debug(LL_DEBUG3, "Getting mailbox UIDNEXT\n");
+      pc += 3;
+      pc = imap_next_word(pc);
+      if (!mutt_str_atoui(pc, &mdata->uid_next))
+        return -1;
+    }
+    else if (mutt_istr_startswith(pc, "OK [HIGHESTMODSEQ"))
+    {
+      mutt_debug(LL_DEBUG3, "Getting mailbox HIGHESTMODSEQ\n");
+      pc += 3;
+      pc = imap_next_word(pc);
+      if (!mutt_str_atoull(pc, &mdata->modseq))
+        return -1;
+    }
+    else if (mutt_istr_startswith(pc, "OK [NOMODSEQ"))
+    {
+      mutt_debug(LL_DEBUG3, "Mailbox has NOMODSEQ set\n");
+      mdata->modseq = 0;
+    }
+    else
+    {
+      pc = imap_next_word(pc);
+      if (mutt_istr_startswith(pc, "EXISTS"))
+      {
+        count = mdata->new_mail_count;
+        mdata->new_mail_count = 0;
+      }
+    }
+  } while (rc == IMAP_RES_CONTINUE);
+
+  if (rc == IMAP_RES_NO)
+  {
+    char *s = imap_next_word(adata->buf); /* skip seq */
+    s = imap_next_word(s);                /* Skip response */
+    mutt_error("%s", s);
+    return -1;
+  }
+
+  if (rc != IMAP_RES_OK)
+    return -1;
+
+  /* check for READ-ONLY notification */
+  if (mutt_istr_startswith(imap_get_qualifier(adata->buf), "[READ-ONLY]") &&
+      !(adata->capabilities & IMAP_CAP_ACL))
+  {
+    mutt_debug(LL_DEBUG2, "Mailbox is read-only\n");
+    m->readonly = true;
+  }
+
+  /* dump the mailbox flags we've found */
+  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  if (c_debug_level > LL_DEBUG2)
+  {
+    if (STAILQ_EMPTY(&mdata->flags))
+    {
+      mutt_debug(LL_DEBUG3, "No folder flags found\n");
+    }
+    else
+    {
+      struct ListNode *np = NULL;
+      struct Buffer *flag_buffer = buf_pool_get();
+      buf_printf(flag_buffer, "Mailbox flags: ");
+      STAILQ_FOREACH(np, &mdata->flags, entries)
+      {
+        buf_add_printf(flag_buffer, "[%s] ", np->data);
+      }
+      mutt_debug(LL_DEBUG3, "%s\n", buf_string(flag_buffer));
+      buf_pool_release(&flag_buffer);
+    }
+  }
+
+  if (!((m->rights & MUTT_ACL_DELETE) || (m->rights & MUTT_ACL_SEEN) ||
+        (m->rights & MUTT_ACL_WRITE) || (m->rights & MUTT_ACL_INSERT)))
+  {
+    m->readonly = true;
+  }
+
+  *countp = count;
+  return 0;
+}
+
+/**
  * imap_mbox_open - Open a mailbox - Implements MxOps::mbox_open() - @ingroup mx_mbox_open
  */
 static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
@@ -2081,7 +2231,6 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
 
   char buf[PATH_MAX] = { 0 };
   int count = 0;
-  int rc;
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -2128,132 +2277,8 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   if (c_imap_check_subscribed)
     imap_exec(adata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
 
-  imap_mbox_select(m);
-
-  do
-  {
-    char *pc = NULL;
-
-    rc = imap_cmd_step(adata);
-    if (rc != IMAP_RES_CONTINUE)
-      break;
-
-    if (!mutt_strn_equal(adata->buf, "* ", 2))
-      continue;
-    pc = imap_next_word(adata->buf);
-
-    /* Obtain list of available flags here, may be overridden by a
-     * PERMANENTFLAGS tag in the OK response */
-    if (mutt_istr_startswith(pc, "FLAGS"))
-    {
-      /* don't override PERMANENTFLAGS */
-      if (STAILQ_EMPTY(&mdata->flags))
-      {
-        mutt_debug(LL_DEBUG3, "Getting mailbox FLAGS\n");
-        pc = get_flags(&mdata->flags, pc);
-        if (!pc)
-          goto fail;
-      }
-    }
-    else if (mutt_istr_startswith(pc, "OK [PERMANENTFLAGS"))
-    {
-      /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
-      mutt_debug(LL_DEBUG3, "Getting mailbox PERMANENTFLAGS\n");
-      /* safe to call on NULL */
-      mutt_list_free(&mdata->flags);
-      /* skip "OK [PERMANENT" so syntax is the same as FLAGS */
-      pc += 13;
-      pc = get_flags(&(mdata->flags), pc);
-      if (!pc)
-        goto fail;
-    }
-    else if (mutt_istr_startswith(pc, "OK [UIDVALIDITY"))
-    {
-      /* save UIDVALIDITY for the header cache */
-      mutt_debug(LL_DEBUG3, "Getting mailbox UIDVALIDITY\n");
-      pc += 3;
-      pc = imap_next_word(pc);
-      if (!mutt_str_atoui(pc, &mdata->uidvalidity))
-        goto fail;
-    }
-    else if (mutt_istr_startswith(pc, "OK [UIDNEXT"))
-    {
-      mutt_debug(LL_DEBUG3, "Getting mailbox UIDNEXT\n");
-      pc += 3;
-      pc = imap_next_word(pc);
-      if (!mutt_str_atoui(pc, &mdata->uid_next))
-        goto fail;
-    }
-    else if (mutt_istr_startswith(pc, "OK [HIGHESTMODSEQ"))
-    {
-      mutt_debug(LL_DEBUG3, "Getting mailbox HIGHESTMODSEQ\n");
-      pc += 3;
-      pc = imap_next_word(pc);
-      if (!mutt_str_atoull(pc, &mdata->modseq))
-        goto fail;
-    }
-    else if (mutt_istr_startswith(pc, "OK [NOMODSEQ"))
-    {
-      mutt_debug(LL_DEBUG3, "Mailbox has NOMODSEQ set\n");
-      mdata->modseq = 0;
-    }
-    else
-    {
-      pc = imap_next_word(pc);
-      if (mutt_istr_startswith(pc, "EXISTS"))
-      {
-        count = mdata->new_mail_count;
-        mdata->new_mail_count = 0;
-      }
-    }
-  } while (rc == IMAP_RES_CONTINUE);
-
-  if (rc == IMAP_RES_NO)
-  {
-    char *s = imap_next_word(adata->buf); /* skip seq */
-    s = imap_next_word(s);                /* Skip response */
-    mutt_error("%s", s);
+  if (imap_select_and_poll(m, &count) < 0)
     goto fail;
-  }
-
-  if (rc != IMAP_RES_OK)
-    goto fail;
-
-  /* check for READ-ONLY notification */
-  if (mutt_istr_startswith(imap_get_qualifier(adata->buf), "[READ-ONLY]") &&
-      !(adata->capabilities & IMAP_CAP_ACL))
-  {
-    mutt_debug(LL_DEBUG2, "Mailbox is read-only\n");
-    m->readonly = true;
-  }
-
-  /* dump the mailbox flags we've found */
-  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
-  if (c_debug_level > LL_DEBUG2)
-  {
-    if (STAILQ_EMPTY(&mdata->flags))
-    {
-      mutt_debug(LL_DEBUG3, "No folder flags found\n");
-    }
-    else
-    {
-      struct ListNode *np = NULL;
-      struct Buffer *flag_buffer = buf_pool_get();
-      buf_printf(flag_buffer, "Mailbox flags: ");
-      STAILQ_FOREACH(np, &mdata->flags, entries)
-      {
-        buf_add_printf(flag_buffer, "[%s] ", np->data);
-      }
-      mutt_debug(LL_DEBUG3, "%s\n", buf_string(flag_buffer));
-      buf_pool_release(&flag_buffer);
-    }
-  }
-
-  if (!((m->rights & MUTT_ACL_DELETE) || (m->rights & MUTT_ACL_SEEN) ||
-        (m->rights & MUTT_ACL_WRITE) || (m->rights & MUTT_ACL_INSERT)))
-  {
-    m->readonly = true;
-  }
 
   mx_alloc_memory(m, count);
 
