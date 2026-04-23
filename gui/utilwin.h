@@ -23,6 +23,19 @@
 #ifndef MUTT_GUI_UTILWIN_H
 #define MUTT_GUI_UTILWIN_H
 
+#include "config/lib.h"
+
+/**
+ * enum KeyPreviewPosition - Position of the key preview window
+ */
+enum KeyPreviewPosition
+{
+  KEY_PREVIEW_LEFT,  ///< Key preview on the left
+  KEY_PREVIEW_RIGHT, ///< Key preview on the right
+};
+
+extern const struct EnumDef KeyPreviewPositionDef;
+
 struct MuttWindow;
 
 struct MuttWindow *utilwin_new     (void);
