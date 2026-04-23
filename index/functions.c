@@ -2032,7 +2032,30 @@ static int op_main_next_undeleted(struct IndexFunctionData *fdata, const struct 
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
+  const int count = event->count;
   int index = menu_get_index(priv->menu);
+
+  if (count > 0)
+  {
+    const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
+    int last_good = index;
+    for (int i = 0; i < count; i++)
+    {
+      int next = find_next_undeleted(shared->mailbox_view, index, uncollapse);
+      if (next == -1)
+        break;
+      last_good = next;
+      index = next;
+    }
+    if (last_good != menu_get_index(priv->menu))
+    {
+      menu_set_index(priv->menu, last_good);
+      if (uncollapse)
+        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+    }
+    return FR_SUCCESS;
+  }
+
   if (index >= (shared->mailbox->vcount - 1))
   {
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
@@ -2117,7 +2140,30 @@ static int op_main_prev_undeleted(struct IndexFunctionData *fdata, const struct 
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
+  const int count = event->count;
   int index = menu_get_index(priv->menu);
+
+  if (count > 0)
+  {
+    const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
+    int last_good = index;
+    for (int i = 0; i < count; i++)
+    {
+      int prev = find_previous_undeleted(shared->mailbox_view, index, uncollapse);
+      if (prev == -1)
+        break;
+      last_good = prev;
+      index = prev;
+    }
+    if (last_good != menu_get_index(priv->menu))
+    {
+      menu_set_index(priv->menu, last_good);
+      if (uncollapse)
+        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+    }
+    return FR_SUCCESS;
+  }
+
   if (index < 1)
   {
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
