@@ -419,6 +419,11 @@ bool mutt_mailbox_list(void)
   return true;
 }
 
+struct Mailbox *mutt_mailbox_prev_unread(struct Mailbox *m_cur, struct Buffer *s)
+{
+  return NULL;
+}
+
 struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s)
 {
   return NULL;
