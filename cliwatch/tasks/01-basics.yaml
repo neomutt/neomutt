@@ -1,0 +1,19 @@
+# Basic tasks: verify the CLI is installed and discoverable
+
+- id: show-help
+  intent: "Show the overview help for neomutt"
+  difficulty: easy
+  category: basics
+  max_turns: 2
+  assert:
+    - exit_code: 0
+    - output_contains: "NeoMutt"
+
+- id: show-version
+  intent: "Show the version of neomutt"
+  difficulty: easy
+  category: basics
+  max_turns: 2
+  assert:
+    - exit_code: 0
+    - output_contains: "NeoMutt"

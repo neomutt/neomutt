@@ -1,0 +1,45 @@
+name: CLIWatch Benchmarks
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    name: Benchmark neomutt
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/ubuntu
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build neomutt
+        run: |
+          mkdir build-cliwatch
+          cd build-cliwatch
+          ../configure --full-doc --autocrypt --fmemopen --gdbm --gnutls --gpgme --gss \
+            --lmdb --lua --lz4 --notmuch --pcre2 --rocksdb --sasl --tdb \
+            --testing --with-lock=fcntl --zlib --zstd
+          make -j"$(nproc)" neomutt
+          install -D neomutt "$HOME/.local/bin/neomutt"
+
+      - name: Add neomutt to PATH
+        run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Install CLIWatch
+        run: npm install -g @cliwatch/cli
+
+      - name: Validate CLIWatch config
+        run: cliwatch validate --file cliwatch/cli-bench.yaml
+
+      - name: Run CLIWatch benchmarks
+        run: cliwatch bench --config cliwatch/cli-bench.yaml --upload
+        env:
+          AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
+          CLIWATCH_API_KEY: ${{ secrets.CLIWATCH_API_KEY }}
