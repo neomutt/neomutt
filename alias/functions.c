@@ -238,6 +238,29 @@ static int op_exit(struct AliasFunctionData *fdata, const struct KeyEvent *event
 }
 
 /**
+ * op_jump - Jump to an index number - Implements ::alias_function_t - @ingroup alias_function_api
+ */
+static int op_jump(struct AliasFunctionData *fdata, const struct KeyEvent *event)
+{
+  int num = event->count;
+
+  if (num == 0)
+    return FR_NO_ACTION;
+
+  struct AliasMenuData *mdata = fdata->wdata;
+  struct Menu *menu = mdata->menu;
+
+  if ((num < 1) || (num > menu->max))
+  {
+    mutt_warning(_("Invalid message number"));
+    return FR_ERROR;
+  }
+
+  menu_set_index(menu, num - 1); // Num is 1-based
+  return FR_SUCCESS;
+}
+
+/**
  * op_generic_select_entry - select the current entry - Implements ::alias_function_t - @ingroup alias_function_api
  *
  * This function handles:
@@ -248,6 +271,9 @@ static int op_exit(struct AliasFunctionData *fdata, const struct KeyEvent *event
  */
 static int op_generic_select_entry(struct AliasFunctionData *fdata, const struct KeyEvent *event)
 {
+  if (event->count > 0)
+    return op_jump(fdata, event);
+
   struct AliasMenuData *mdata = fdata->wdata;
   struct Menu *menu = mdata->menu;
   if (menu->tag_prefix)

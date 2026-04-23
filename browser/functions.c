@@ -659,6 +659,28 @@ static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event
 }
 
 /**
+ * op_jump - Jump to an index number - Implements ::browser_function_t - @ingroup browser_function_api
+ */
+static int op_jump(struct BrowserPrivateData *priv, const struct KeyEvent *event)
+{
+  int num = event->count;
+
+  if (num == 0)
+    return FR_NO_ACTION;
+
+  struct Menu *menu = priv->menu;
+
+  if ((num < 1) || (num > menu->max))
+  {
+    mutt_warning(_("Invalid message number"));
+    return FR_ERROR;
+  }
+
+  menu_set_index(menu, num - 1); // Num is 1-based
+  return FR_SUCCESS;
+}
+
+/**
  * op_generic_select_entry - Select the current entry - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
@@ -667,6 +689,9 @@ static int op_exit(struct BrowserPrivateData *priv, const struct KeyEvent *event
  */
 static int op_generic_select_entry(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
+  if (event->count > 0)
+    return op_jump(priv, event);
+
   struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   if (ARRAY_EMPTY(&priv->state.entry))
   {
