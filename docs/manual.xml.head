@@ -4589,6 +4589,42 @@ set alias_file=~/.mail_aliases
                 <entry>Space bar</entry>
               </row>
               <row>
+                <entry>&lt;hash&gt;</entry>
+                <entry># (hash/comment character)</entry>
+              </row>
+              <row>
+                <entry>&lt;semicolon&gt;</entry>
+                <entry>; (semicolon/command separator)</entry>
+              </row>
+              <row>
+                <entry>&lt;doublequote&gt;</entry>
+                <entry>" (double quote)</entry>
+              </row>
+              <row>
+                <entry>&lt;quote&gt;</entry>
+                <entry>' (single quote/apostrophe)</entry>
+              </row>
+              <row>
+                <entry>&lt;backslash&gt;</entry>
+                <entry>\ (backslash)</entry>
+              </row>
+              <row>
+                <entry>&lt;backtick&gt;</entry>
+                <entry>` (backtick)</entry>
+              </row>
+              <row>
+                <entry>&lt;dollar&gt;</entry>
+                <entry>$ (dollar sign)</entry>
+              </row>
+              <row>
+                <entry>&lt;less&gt;</entry>
+                <entry>&lt; (less-than)</entry>
+              </row>
+              <row>
+                <entry>&lt;greater&gt;</entry>
+                <entry>&gt; (greater-than)</entry>
+              </row>
+              <row>
                 <entry>&lt;f1&gt;</entry>
                 <entry>function key 1</entry>
               </row>
@@ -4609,6 +4645,16 @@ set alias_file=~/.mail_aliases
           <emphasis>key</emphasis> does not need to be enclosed in quotes unless
           it contains a space (<quote>&#160;</quote>) or semi-colon
           (<quote>;</quote>).
+          Characters that are special to the config parser
+          (<literal>#</literal>, <literal>;</literal>,
+          <literal>"</literal>, <literal>'</literal>,
+          <literal>\</literal>, <literal>`</literal>,
+          <literal>$</literal>, <literal>&lt;</literal>,
+          <literal>&gt;</literal>)
+          can also be referred to by their symbolic names, e.g.
+          <literal>&lt;hash&gt;</literal>,
+          <literal>&lt;semicolon&gt;</literal>,
+          <literal>&lt;backslash&gt;</literal>, etc.
         </para>
         <para>
           <emphasis>function</emphasis> specifies which action to take when

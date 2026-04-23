@@ -226,6 +226,14 @@ a three digit octal number prefixed with a \(lq\fB\(rs\fP\(rq or as a symbolic
 name. The \fB<what-key>\fP function can be used to explore keycode and
 symbolic names for the keys on your keyboard.
 .IP
+Characters that are special to the config parser
+(\fB#\fP, \fB;\fP, \fB"\fP, \fB'\fP, \fB\(rs\fP, \fB`\fP, \fB$\fP,
+\fB<\fP, \fB>\fP)
+can also be referred to by their symbolic names:
+\fB<hash>\fP, \fB<semicolon>\fP, \fB<doublequote>\fP, \fB<quote>\fP,
+\fB<backslash>\fP, \fB<backtick>\fP, \fB<dollar>\fP, \fB<less>\fP,
+\fB<greater>\fP.
+.IP
 \fIfunction\fP specifies which action to take when key is pressed. Note that
 the function name is to be specified without angle brackets.
 .IP
