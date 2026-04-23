@@ -34,6 +34,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -47,6 +48,24 @@
 #include "mx.h"
 
 extern const struct ExpandoDefinition IndexFormatDef[];
+
+/**
+ * key_timeout_validator - Validate key_timeout_idle and key_timeout_partial - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ */
+static int key_timeout_validator(const struct ConfigDef *cdef, intptr_t value,
+                                 struct Buffer *err)
+{
+  const int min_timeout = 50;
+  const int max_timeout = 10000;
+
+  if ((value >= min_timeout) && (value <= max_timeout))
+    return CSR_SUCCESS;
+
+  // L10N: This applies to the "$key_timeout_idle" and "$key_timeout_partial" config variables.
+  buf_printf(err, _("Option %s must be between %d and %d inclusive"),
+             cdef->name, min_timeout, max_timeout);
+  return CSR_ERR_INVALID;
+}
 
 /**
  * SortAuxMethods - Sort methods for '$sort_aux' for the index
@@ -444,6 +463,12 @@ struct ConfigDef MainVars[] = {
   },
   { "keep_flagged", DT_BOOL, false, 0, NULL,
     "Don't move flagged messages from `$spool_file` to `$mbox`"
+  },
+  { "key_timeout_idle", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 1000, 0, key_timeout_validator,
+    "Timeout (ms) before the first keypress"
+  },
+  { "key_timeout_partial", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 700, 0, key_timeout_validator,
+    "Timeout (ms) to wait for more keys after a partial match"
   },
   { "local_date_header", DT_BOOL, true, 0, NULL,
     "Convert the date in the Date header of sent emails into local timezone, UTC otherwise"

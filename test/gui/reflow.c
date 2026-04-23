@@ -120,6 +120,97 @@ void test_window_reflow(void)
   }
 
   {
+    // Root containing ('fix -5')
+    static const char *expected = "<FIX {0x,0y} [80C,24R]<FIX {0x,0y} [0C,24R]>>";
+
+    struct MuttWindow *root = mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_FIXED, 80, 24);
+    root->state.rows = root->req_rows;
+    root->state.cols = root->req_cols;
+
+    struct MuttWindow *fix1 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_FIXED, -5,
+                                              MUTT_WIN_SIZE_UNLIMITED);
+    fix1->req_cols = -5;
+
+    mutt_window_add_child(root, fix1);
+
+    window_reflow(root);
+
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+
+    buf_pool_release(&buf);
+    mutt_window_free(&root);
+  }
+
+  {
+    // Root width 2 containing 'max', 'max', 'max'
+    static const char *expected = "<FIX {0x,0y} [2C,24R]<MAX {0x,0y} [1C,24R]><MAX {1x,0y} [1C,24R]><MAX {2x,0y} [0C,24R]>>";
+
+    struct MuttWindow *root = mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_FIXED, 2, 24);
+    root->state.rows = root->req_rows;
+    root->state.cols = root->req_cols;
+
+    struct MuttWindow *max1 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                              MUTT_WIN_SIZE_UNLIMITED);
+    struct MuttWindow *max2 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                              MUTT_WIN_SIZE_UNLIMITED);
+    struct MuttWindow *max3 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                              MUTT_WIN_SIZE_UNLIMITED);
+
+    mutt_window_add_child(root, max1);
+    mutt_window_add_child(root, max2);
+    mutt_window_add_child(root, max3);
+
+    window_reflow(root);
+
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+
+    buf_pool_release(&buf);
+    mutt_window_free(&root);
+  }
+
+  {
+    // Root containing ('fix 8' and ('min' containing ('fix 5')))
+    static const char *expected = "<FIX {0x,0y} [10C,24R]<FIX {0x,0y} [8C,24R]><MIN {8x,0y} [2C,24R]<FIX {8x,0y} [2C,24R]>>>";
+
+    struct MuttWindow *root = mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_FIXED, 10, 24);
+    root->state.rows = root->req_rows;
+    root->state.cols = root->req_cols;
+
+    struct MuttWindow *fix1 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_FIXED, 8,
+                                              MUTT_WIN_SIZE_UNLIMITED);
+    struct MuttWindow *min1 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_MINIMISE, 0, 0);
+    struct MuttWindow *fix2 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_HORIZONTAL,
+                                              MUTT_WIN_SIZE_FIXED, 5,
+                                              MUTT_WIN_SIZE_UNLIMITED);
+
+    mutt_window_add_child(root, fix1);
+    mutt_window_add_child(root, min1);
+    mutt_window_add_child(min1, fix2);
+
+    window_reflow(root);
+
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+
+    buf_pool_release(&buf);
+    mutt_window_free(&root);
+  }
+
+  {
     // Root containing 'max'
     static const char *expected = "<FIX {0x,0y} [80C,24R]<MAX {0x,0y} [80C,24R]>>";
 
@@ -133,6 +224,39 @@ void test_window_reflow(void)
                                               MUTT_WIN_SIZE_UNLIMITED);
 
     mutt_window_add_child(root, max1);
+
+    window_reflow(root);
+
+    struct Buffer *buf = buf_pool_get();
+    win_serialise(root, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
+
+    buf_pool_release(&buf);
+    mutt_window_free(&root);
+  }
+
+  {
+    // Root height 2 containing 'max', 'max', 'max'
+    static const char *expected = "<FIX {0x,0y} [80C,2R]<MAX {0x,0y} [80C,1R]><MAX {0x,1y} [80C,1R]><MAX {0x,2y} [80C,0R]>>";
+
+    struct MuttWindow *root = mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL,
+                                              MUTT_WIN_SIZE_FIXED, 80, 2);
+    root->state.rows = root->req_rows;
+    root->state.cols = root->req_cols;
+
+    struct MuttWindow *max1 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
+                                              MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                              MUTT_WIN_SIZE_UNLIMITED);
+    struct MuttWindow *max2 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
+                                              MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                              MUTT_WIN_SIZE_UNLIMITED);
+    struct MuttWindow *max3 = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL,
+                                              MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
+                                              MUTT_WIN_SIZE_UNLIMITED);
+
+    mutt_window_add_child(root, max1);
+    mutt_window_add_child(root, max2);
+    mutt_window_add_child(root, max3);
 
     window_reflow(root);
 

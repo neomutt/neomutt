@@ -46,7 +46,7 @@ struct MuttWindow *msgcont_new(void)
 {
   struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
   struct MuttWindow *win = mutt_window_new(WT_CONTAINER, MUTT_WIN_ORIENT_VERTICAL,
-                                           MUTT_WIN_SIZE_MINIMISE,
+                                           MUTT_WIN_SIZE_MAXIMISE,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
   if (mod_data)
     mod_data->message_container = win;
@@ -88,6 +88,9 @@ struct MuttWindow *msgcont_pop_window(void)
   {
     window_set_visible(win_top, true);
     win_top->actions |= WA_RECALC;
+
+    if (mod_data->bottom_bar)
+      mod_data->bottom_bar->req_rows = win_top->req_rows;
   }
 
   mutt_window_reflow(NULL);
@@ -116,6 +119,10 @@ void msgcont_push_window(struct MuttWindow *win)
     window_set_visible(*wp_top, false);
 
   mutt_window_add_child(mc, win);
+
+  if (mod_data->bottom_bar)
+    mod_data->bottom_bar->req_rows = win->req_rows;
+
   mutt_window_reflow(NULL);
   window_redraw(NULL);
 #ifdef USE_DEBUG_WINDOW

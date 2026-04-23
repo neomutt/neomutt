@@ -70,7 +70,7 @@
  * **Children**
  * - @ref helpbar_helpbar
  * - @ref gui_dialog
- * - @ref gui_msgwin
+ * - @ref gui_bottombar
  *
  * ## Data
  *
@@ -96,11 +96,13 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "helpbar/lib.h"
+#include "bottombar.h"
 #include "dialog.h"
 #include "module_data.h"
 #include "msgcont.h"
 #include "msgwin.h"
 #include "mutt_window.h"
+#include "utilwin.h"
 
 void mutt_resize_screen(void);
 
@@ -211,7 +213,9 @@ void rootwin_cleanup(struct GuiModuleData *mod_data)
   if (mod_data)
   {
     mod_data->all_dialogs_window = NULL;
+    mod_data->bottom_bar = NULL;
     mod_data->message_container = NULL;
+    mod_data->utility_window = NULL;
     mutt_window_free(&mod_data->root_window);
   }
 }
@@ -245,10 +249,14 @@ void rootwin_new(struct GuiModuleData *mod_data)
     mutt_window_add_child(win_root, win_alldlgs);
   }
 
+  struct MuttWindow *win_bbar = bottombar_new();
   struct MuttWindow *win_cont = msgcont_new();
   struct MuttWindow *win_msg = msgwin_new(false);
+  struct MuttWindow *win_util = utilwin_new();
   mutt_window_add_child(win_cont, win_msg);
-  mutt_window_add_child(win_root, win_cont);
+  mutt_window_add_child(win_bbar, win_cont);
+  mutt_window_add_child(win_bbar, win_util);
+  mutt_window_add_child(win_root, win_bbar);
 
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, rootwin_config_observer, win_root);
   notify_observer_add(NeoMutt->notify_resize, NT_RESIZE, rootwin_resize_observer, win_root);

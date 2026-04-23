@@ -540,11 +540,11 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
     return false;
 
   struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
-  keycode_t key_bytes[MAX_SEQ] = { 0 };
+  keycode_t key_bytes[KEY_SEQ_MAX_LEN] = { 0 };
   int key_len = 0;
   if (args->key)
   {
-    key_len = parse_keys(args->key, key_bytes, MAX_SEQ);
+    key_len = parse_keys(args->key, key_bytes, KEY_SEQ_MAX_LEN);
     if (key_len == 0)
       return false;
   }
