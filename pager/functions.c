@@ -887,16 +887,15 @@ static int op_pager_skip_headers(struct PagerFunctionData *fdata, const struct K
 }
 
 /**
- * op_pager_skip_quoted - Skip beyond quoted text - Implements ::pager_function_t - @ingroup pager_function_api
+ * pager_skip_quoted_once - Skip to next unquoted block
+ * @param priv  Pager private data
+ * @param fdata Pager function data
+ * @retval 0 Success
+ * @retval -1 No more unquoted text
  */
-static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+static int pager_skip_quoted_once(struct PagerPrivateData *priv, struct PagerFunctionData *fdata)
 {
-  struct PagerPrivateData *priv = fdata->priv;
   struct PagerView *pview = priv->pview;
-
-  if (!priv->has_types)
-    return FR_NO_ACTION;
-
   const short c_pager_skip_quoted_context = cs_subset_number(fdata->n->sub, "pager_skip_quoted_context");
   int rc = 0;
   int new_topline = priv->top_line;
@@ -917,7 +916,7 @@ static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct Ke
     }
     priv->top_line = new_topline;
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-    return FR_SUCCESS;
+    return 0;
   }
 
   /* Already in the body? Skip past previous "context" quoted lines */
@@ -936,10 +935,7 @@ static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct Ke
     }
 
     if (rc < 0)
-    {
-      mutt_error(_("No more unquoted text after quoted text"));
-      return FR_NO_ACTION;
-    }
+      return -1;
   }
 
   if (num_quoted <= c_pager_skip_quoted_context)
@@ -958,10 +954,7 @@ static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct Ke
     }
 
     if (rc < 0)
-    {
-      mutt_error(_("No more quoted text"));
-      return FR_NO_ACTION;
-    }
+      return -1;
 
     while (((new_topline < priv->lines_used) ||
             (0 == (rc = display_line(priv->fp, &priv->bytes_read, &priv->lines,
@@ -976,13 +969,33 @@ static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct Ke
     }
 
     if (rc < 0)
-    {
-      mutt_error(_("No more unquoted text after quoted text"));
-      return FR_NO_ACTION;
-    }
+      return -1;
   }
   priv->top_line = new_topline - MIN(c_pager_skip_quoted_context, num_quoted);
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  return 0;
+}
+
+/**
+ * op_pager_skip_quoted - Skip beyond quoted text - Implements ::pager_function_t - @ingroup pager_function_api
+ *
+ * With a count prefix, skip N quoted blocks instead of 1.
+ */
+static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct KeyEvent *event)
+{
+  struct PagerPrivateData *priv = fdata->priv;
+
+  if (!priv->has_types)
+    return FR_NO_ACTION;
+
+  const int count = MAX(event->count, 1);
+
+  for (int i = 0; i < count; i++)
+  {
+    if (pager_skip_quoted_once(priv, fdata) < 0)
+      return FR_NO_ACTION;
+  }
+
   return FR_SUCCESS;
 }
 
