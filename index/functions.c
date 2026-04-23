@@ -2011,33 +2011,31 @@ static int op_main_next_thread(struct IndexFunctionData *fdata, const struct Key
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  int index = -1;
   const int op = event->op;
-  switch (op)
+  const int count = event->count;
+  const bool forwards = (op == OP_MAIN_NEXT_THREAD) || (op == OP_MAIN_NEXT_SUBTHREAD);
+  const bool subthreads = (op == OP_MAIN_NEXT_SUBTHREAD) || (op == OP_MAIN_PREV_SUBTHREAD);
+
+  if (count > 0)
   {
-    case OP_MAIN_NEXT_THREAD:
-      index = mutt_next_thread(shared->email);
-      break;
-
-    case OP_MAIN_NEXT_SUBTHREAD:
-      index = mutt_next_subthread(shared->email);
-      break;
-
-    case OP_MAIN_PREV_THREAD:
-      index = mutt_previous_thread(shared->email);
-      break;
-
-    case OP_MAIN_PREV_SUBTHREAD:
-      index = mutt_previous_subthread(shared->email);
-      break;
+    for (int i = 0; i < count; i++)
+    {
+      int index = mutt_aside_thread(shared->email, forwards, subthreads);
+      if (index == -1)
+        break;
+      menu_set_index(priv->menu, index);
+    }
+    return FR_SUCCESS;
   }
+
+  int index = mutt_aside_thread(shared->email, forwards, subthreads);
 
   if (index != -1)
     menu_set_index(priv->menu, index);
 
   if (index < 0)
   {
-    if ((op == OP_MAIN_NEXT_THREAD) || (op == OP_MAIN_NEXT_SUBTHREAD))
+    if (forwards)
       mutt_error(_("No more threads"));
     else
       mutt_error(_("You are on the first thread"));
