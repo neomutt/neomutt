@@ -461,11 +461,6 @@ static void cleanup_gui_modules(struct NeoMutt *n)
       mutt_debug(LL_DEBUG3, "%s:gui_cleanup()\n", mod->name);
       mod->gui_cleanup(n);
     }
-
-    if (n->module_data[mod->mid])
-    {
-      mutt_debug(LL_DEBUG1, "Module %s didn't clean up its data\n", mod->name);
-    }
   }
 }
 
