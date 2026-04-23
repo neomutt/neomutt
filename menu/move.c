@@ -418,32 +418,40 @@ MenuRedrawFlags menu_next_entry(struct Menu *menu, int count)
 
 /**
  * menu_first_entry - Move the focus to the first entry in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Jump to line N (1-based) if >0, otherwise go to first entry
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_first_entry(struct Menu *menu)
+MenuRedrawFlags menu_first_entry(struct Menu *menu, int count)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
     return MENU_REDRAW_NO_FLAGS;
   }
+
+  if (count > 0)
+    return menu_move_selection(menu, count - 1);
 
   return menu_move_selection(menu, 0);
 }
 
 /**
  * menu_last_entry - Move the focus to the last entry in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Jump to line N (1-based) if >0, otherwise go to last entry
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_last_entry(struct Menu *menu)
+MenuRedrawFlags menu_last_entry(struct Menu *menu, int count)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
     return MENU_REDRAW_NO_FLAGS;
   }
+
+  if (count > 0)
+    return menu_move_selection(menu, count - 1);
 
   return menu_move_selection(menu, menu->max - 1);
 }
