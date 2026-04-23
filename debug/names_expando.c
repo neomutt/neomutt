@@ -383,10 +383,12 @@ const char *name_expando_uid_mailbox(int uid)
 
 const char *name_expando_uid_menu(int uid)
 {
-  if (uid == ED_MEN_PERCENTAGE)
-    return "ED_MEN_PERCENTAGE";
-
-  return "UNKNOWN";
+  switch (uid)
+  {
+    DEBUG_NAME(ED_MEN_PERCENTAGE);
+    DEBUG_NAME(ED_MEN_RELATIVE_NUMBER);
+    DEBUG_DEFAULT;
+  }
 }
 
 const char *name_expando_uid_msg_id(int uid)

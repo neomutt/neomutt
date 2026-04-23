@@ -67,6 +67,7 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 enum ExpandoDataMenu
 {
   ED_MEN_PERCENTAGE,           ///< Menu.top, ...
+  ED_MEN_RELATIVE_NUMBER,      ///< Relative position in menu (offset from current selection)
 };
 
 /**
