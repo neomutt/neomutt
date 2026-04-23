@@ -398,6 +398,72 @@ struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s
 }
 
 /**
+ * find_prev_mailbox - Find the previous mailbox with unread mail
+ * @param s Buffer containing name of current mailbox
+ * @retval ptr Mailbox
+ *
+ * Given a folder name, find the previous mailbox with unread mail.
+ * The search wraps around from the beginning to the end.
+ * The Mailbox will be returned and a pretty version of the path put into s.
+ */
+static struct Mailbox *find_prev_mailbox(struct Buffer *s)
+{
+  bool found = false;
+  struct Mailbox *m_result = NULL;
+
+  for (int pass = 0; pass < 2; pass++)
+  {
+    struct MailboxArray ma = neomutt_mailboxes_get(NeoMutt, MUTT_MAILBOX_ANY);
+    int count = ARRAY_SIZE(&ma);
+    for (int i = count - 1; i >= 0; i--)
+    {
+      struct Mailbox **mp = ARRAY_GET(&ma, i);
+      if (!mp)
+        continue;
+      struct Mailbox *m = *mp;
+
+      expand_path(&m->pathbuf, false);
+      struct Mailbox *m_cur = m;
+
+      if ((found || (pass > 0)) && (m_cur->msg_unread > 0))
+      {
+        buf_strcpy(s, mailbox_path(m));
+        pretty_mailbox(s);
+        m_result = m;
+        ARRAY_FREE(&ma);
+        return m_result;
+      }
+      if (mutt_str_equal(buf_string(s), mailbox_path(m)))
+        found = true;
+    }
+    ARRAY_FREE(&ma);
+  }
+
+  return NULL;
+}
+
+/**
+ * mutt_mailbox_prev_unread - Find previous mailbox with unread mail
+ * @param m_cur Current Mailbox
+ * @param s     Buffer containing name of current mailbox
+ * @retval ptr Mailbox
+ *
+ * Given a folder name, find the previous mailbox with unread mail.
+ * The Mailbox will be returned and a pretty version of the path put into s.
+ */
+struct Mailbox *mutt_mailbox_prev_unread(struct Mailbox *m_cur, struct Buffer *s)
+{
+  expand_path(s, false);
+
+  struct Mailbox *m_res = find_prev_mailbox(s);
+  if (m_res)
+    return m_res;
+
+  buf_reset(s); // no folders with new mail
+  return NULL;
+}
+
+/**
  * mailbox_restore_timestamp - Restore the timestamp of a mailbox
  * @param path Path to the mailbox
  * @param st   Timestamp info from stat()

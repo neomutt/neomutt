@@ -148,6 +148,7 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "previous-thread",               OP_MAIN_PREV_THREAD },
   { "previous-undeleted",            OP_MAIN_PREV_UNDELETED },
   { "previous-unread",               OP_MAIN_PREV_UNREAD },
+  { "previous-unread-mailbox",       OP_MAIN_PREV_UNREAD_MAILBOX },
   { "print-entry",                   OP_ATTACH_PRINT },
   { "print-message",                 OP_PRINT },
   { "purge-message",                 OP_PURGE_MESSAGE },

@@ -175,6 +175,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "previous-thread",               OP_MAIN_PREV_THREAD },
   { "previous-undeleted",            OP_MAIN_PREV_UNDELETED },
   { "previous-unread",               OP_MAIN_PREV_UNREAD },
+  { "previous-unread-mailbox",       OP_MAIN_PREV_UNREAD_MAILBOX },
   { "print-message",                 OP_PRINT },
   { "purge-message",                 OP_PURGE_MESSAGE },
   { "purge-thread",                  OP_PURGE_THREAD },
@@ -1861,6 +1862,31 @@ static int op_main_next_unread_mailbox(struct IndexFunctionData *fdata,
 }
 
 /**
+ * op_main_prev_unread_mailbox - Open previous mailbox with unread mail - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_main_prev_unread_mailbox(struct IndexFunctionData *fdata,
+                                       const struct KeyEvent *event)
+{
+  struct IndexSharedData *shared = fdata->shared;
+  struct IndexPrivateData *priv = fdata->priv;
+  struct Mailbox *m = shared->mailbox;
+
+  struct Buffer *folderbuf = buf_pool_get();
+  buf_strcpy(folderbuf, mailbox_path(m));
+  m = mutt_mailbox_prev_unread(m, folderbuf);
+  buf_pool_release(&folderbuf);
+
+  if (!m)
+  {
+    mutt_error(_("No mailboxes have new mail"));
+    return FR_ERROR;
+  }
+
+  change_folder_mailbox(priv->menu, m, &priv->oldcount, shared, false);
+  return FR_SUCCESS;
+}
+
+/**
  * op_main_prev_undeleted - Move to the previous undeleted message - Implements ::index_function_t - @ingroup index_function_api
  */
 static int op_main_prev_undeleted(struct IndexFunctionData *fdata, const struct KeyEvent *event)
@@ -3439,6 +3465,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_NEXT_UNDELETED,              op_main_next_undeleted,      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_UNREAD,                 op_main_next_new,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_NEXT_UNREAD_MAILBOX,         op_main_next_unread_mailbox, CHECK_IN_MAILBOX },
+  { OP_MAIN_PREV_UNREAD_MAILBOX,         op_main_prev_unread_mailbox, CHECK_IN_MAILBOX },
   { OP_MAIN_OPEN_ALL_THREADS,            op_main_open_all_threads,    CHECK_IN_MAILBOX },
   { OP_MAIN_OPEN_THREAD,                 op_main_open_thread,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_PARENT_MESSAGE,              op_main_root_message,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },

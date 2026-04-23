@@ -574,7 +574,12 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_MAIN_NEXT_UNREAD,                   N_("Jump to the next unread message")) \
   /* L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX */ \
   /*       Index: <op_main_next_unread_mailbox> */ \
+  /*       Pager: <op_main_next_unread_mailbox> */ \
   _fmt(OP_MAIN_NEXT_UNREAD_MAILBOX,           N_("Open next mailbox with new mail")) \
+  /* L10N: Help screen description for OP_MAIN_PREV_UNREAD_MAILBOX */ \
+  /*       Index: <op_main_prev_unread_mailbox> */ \
+  /*       Pager: <op_main_prev_unread_mailbox> */ \
+  _fmt(OP_MAIN_PREV_UNREAD_MAILBOX,           N_("Open previous mailbox with new mail")) \
   /* L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS */ \
   /*       Index: <op_main_open_all_threads> */ \
   _fmt(OP_MAIN_OPEN_ALL_THREADS,              N_("Uncollapse all threads")) \
