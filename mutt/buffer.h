@@ -51,6 +51,7 @@ void           buf_reset           (struct Buffer *buf);
 char *         buf_strdup          (const struct Buffer *buf);
 struct Buffer *buf_dup             (const struct Buffer *buf);
 void           buf_seek            (struct Buffer *buf, size_t offset);
+size_t         buf_tell            (const struct Buffer *buf);
 const char*    buf_find_string     (const struct Buffer *buf, const char *s);
 const char*    buf_find_char       (const struct Buffer *buf, const char c);
 char           buf_at              (const struct Buffer *buf, size_t offset);
