@@ -162,7 +162,7 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       return FR_SUCCESS;
 
     case OP_FIRST_ENTRY:
-      menu_first_entry(menu);
+      menu_first_entry(menu, count);
       return FR_SUCCESS;
 
     case OP_HALF_DOWN:
@@ -174,7 +174,7 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       return FR_SUCCESS;
 
     case OP_LAST_ENTRY:
-      menu_last_entry(menu);
+      menu_last_entry(menu, count);
       return FR_SUCCESS;
 
     case OP_MIDDLE_PAGE:
