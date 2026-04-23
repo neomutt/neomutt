@@ -1853,41 +1853,38 @@ done:
  * - OP_MAIN_PREV_NEW_THEN_UNREAD
  * - OP_MAIN_PREV_UNREAD
  */
-static int op_main_next_new(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+/**
+ * find_next_new_email - Find the next new/unread message with wrapping
+ * @param m        Mailbox
+ * @param start    Index to start searching from
+ * @param forwards Direction: true for next, false for previous
+ * @param op       Operation to determine match type
+ * @retval >=0 Index of matching message
+ * @retval  -1 No match found
+ */
+static int find_next_new_email(struct Mailbox *m, int start, bool forwards, int op)
 {
-  struct IndexSharedData *shared = fdata->shared;
-  struct IndexPrivateData *priv = fdata->priv;
   int first_unread = -1;
   int first_new = -1;
-
-  const int saved_current = menu_get_index(priv->menu);
-  int mcur = saved_current;
-  int index = -1;
+  int mcur = start;
   const bool threaded = mutt_using_threads();
-  const int op = event->op;
-  /* Scan through all virtual messages in the mailbox, wrapping around.
-   * Track the first new and first unread message found. */
-  for (size_t i = 0; i != shared->mailbox->vcount; i++)
+
+  for (int i = 0; i < m->vcount; i++)
   {
-    if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_NEXT_UNREAD) ||
-        (op == OP_MAIN_NEXT_NEW_THEN_UNREAD))
+    if (forwards)
     {
       mcur++;
-      if (mcur > (shared->mailbox->vcount - 1))
-      {
+      if (mcur > (m->vcount - 1))
         mcur = 0;
-      }
     }
     else
     {
       mcur--;
       if (mcur < 0)
-      {
-        mcur = shared->mailbox->vcount - 1;
-      }
+        mcur = m->vcount - 1;
     }
 
-    struct Email *e = mutt_get_virt_email(shared->mailbox, mcur);
+    struct Email *e = mutt_get_virt_email(m, mcur);
     if (!e)
       break;
     if (e->collapsed && threaded)
@@ -1907,9 +1904,7 @@ static int op_main_next_new(struct IndexFunctionData *fdata, const struct KeyEve
     }
 
     if (((op == OP_MAIN_NEXT_UNREAD) || (op == OP_MAIN_PREV_UNREAD)) && (first_unread != -1))
-    {
       break;
-    }
     if (((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_PREV_NEW) ||
          (op == OP_MAIN_NEXT_NEW_THEN_UNREAD) || (op == OP_MAIN_PREV_NEW_THEN_UNREAD)) &&
         (first_new != -1))
@@ -1917,20 +1912,52 @@ static int op_main_next_new(struct IndexFunctionData *fdata, const struct KeyEve
       break;
     }
   }
-  /* Select the best match based on the operation: prefer "new" for *_NEW ops,
-   * fall back to "unread" for *_THEN_UNREAD ops */
+
   if (((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_PREV_NEW) ||
        (op == OP_MAIN_NEXT_NEW_THEN_UNREAD) || (op == OP_MAIN_PREV_NEW_THEN_UNREAD)) &&
       (first_new != -1))
   {
-    index = first_new;
+    return first_new;
   }
-  else if (((op == OP_MAIN_NEXT_UNREAD) || (op == OP_MAIN_PREV_UNREAD) ||
-            (op == OP_MAIN_NEXT_NEW_THEN_UNREAD) || (op == OP_MAIN_PREV_NEW_THEN_UNREAD)) &&
-           (first_unread != -1))
+  if (((op == OP_MAIN_NEXT_UNREAD) || (op == OP_MAIN_PREV_UNREAD) ||
+       (op == OP_MAIN_NEXT_NEW_THEN_UNREAD) || (op == OP_MAIN_PREV_NEW_THEN_UNREAD)) &&
+      (first_unread != -1))
   {
-    index = first_unread;
+    return first_unread;
   }
+
+  return -1;
+}
+
+static int op_main_next_new(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+{
+  struct IndexSharedData *shared = fdata->shared;
+  struct IndexPrivateData *priv = fdata->priv;
+
+  const int saved_current = menu_get_index(priv->menu);
+  const int op = event->op;
+  const bool forwards = (op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_NEXT_UNREAD) ||
+                        (op == OP_MAIN_NEXT_NEW_THEN_UNREAD);
+  const int count = event->count;
+
+  if (count > 0)
+  {
+    int cur = saved_current;
+    int last_good = saved_current;
+    for (int i = 0; i < count; i++)
+    {
+      int next = find_next_new_email(shared->mailbox, cur, forwards, op);
+      if (next == -1)
+        break;
+      last_good = next;
+      cur = next;
+    }
+    if (last_good != saved_current)
+      menu_set_index(priv->menu, last_good);
+    return FR_SUCCESS;
+  }
+
+  int index = find_next_new_email(shared->mailbox, saved_current, forwards, op);
 
   if (index == -1)
   {
@@ -1952,14 +1979,11 @@ static int op_main_next_new(struct IndexFunctionData *fdata, const struct KeyEve
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     return FR_ERROR;
   }
-  else
-  {
-    menu_set_index(priv->menu, index);
-  }
+
+  menu_set_index(priv->menu, index);
 
   index = menu_get_index(priv->menu);
-  if ((op == OP_MAIN_NEXT_NEW) || (op == OP_MAIN_NEXT_UNREAD) ||
-      (op == OP_MAIN_NEXT_NEW_THEN_UNREAD))
+  if (forwards)
   {
     if (saved_current > index)
     {
