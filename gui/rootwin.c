@@ -254,8 +254,18 @@ void rootwin_new(struct GuiModuleData *mod_data)
   struct MuttWindow *win_msg = msgwin_new(false);
   struct MuttWindow *win_util = utilwin_new();
   mutt_window_add_child(win_cont, win_msg);
-  mutt_window_add_child(win_bbar, win_cont);
-  mutt_window_add_child(win_bbar, win_util);
+
+  const unsigned char c_pos = cs_subset_enum(NeoMutt->sub, "key_preview_position");
+  if (c_pos == KEY_PREVIEW_LEFT)
+  {
+    mutt_window_add_child(win_bbar, win_util);
+    mutt_window_add_child(win_bbar, win_cont);
+  }
+  else
+  {
+    mutt_window_add_child(win_bbar, win_cont);
+    mutt_window_add_child(win_bbar, win_util);
+  }
   mutt_window_add_child(win_root, win_bbar);
 
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, rootwin_config_observer, win_root);

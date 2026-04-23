@@ -1341,6 +1341,10 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
         strncpy(t, "year", l);
       else if (strcasecmp(s, "UT_UNSET") == 0)
         strncpy(t, "unset", l);
+      else if (strcasecmp(s, "KEY_PREVIEW_LEFT") == 0)
+        strncpy(t, "left", l);
+      else if (strcasecmp(s, "KEY_PREVIEW_RIGHT") == 0)
+        strncpy(t, "right", l);
       break;
     }
     case DT_SORT:

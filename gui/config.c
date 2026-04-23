@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "config/lib.h"
+#include "utilwin.h"
 
 /**
  * GuiVars - Config definitions for the Gui library
@@ -62,6 +63,9 @@ struct ConfigDef GuiVars[] = {
   },
   { "hide_top_missing", DT_BOOL, true, 0, NULL,
     "Don't indicate missing top message, in the thread tree"
+  },
+  { "key_preview_position", DT_ENUM, KEY_PREVIEW_RIGHT, IP &KeyPreviewPositionDef, NULL,
+    "Position of the key preview window: 'left' or 'right'"
   },
   { "narrow_tree", DT_BOOL, false, 0, NULL,
     "Draw a narrower thread tree in the index"
