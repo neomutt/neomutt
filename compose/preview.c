@@ -81,6 +81,7 @@ struct PreviewWindowData
   struct MuttWindow *win; ///< Window holding the message preview
   struct MuttWindow *bar; ///< Status bar above the preview window
   bool more_content;      ///< Is there more content to scroll down to?
+  int content_lines;      ///< Total number of wrapped content lines
 };
 
 /**
@@ -214,6 +215,18 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
 
   FREE(&line);
   mutt_file_fclose(&fp);
+
+  // Store content_lines for boundary checking
+  wdata->content_lines = content_lines;
+
+  // Clamp scroll_offset to prevent empty pages
+  // Maximum valid offset is when we can still show at least one line of content
+  if (content_lines > 0)
+  {
+    int max_offset = MAX(0, content_lines - win->state.rows);
+    if (wdata->scroll_offset > max_offset)
+      wdata->scroll_offset = max_offset;
+  }
 
   // Show the scroll percentage in the status bar
   if ((content_lines != 0) && (content_lines > win->state.rows))
@@ -373,23 +386,37 @@ struct MuttWindow *preview_window_new(struct Email *e, struct MuttWindow *bar)
 static int preview_page_up(struct PreviewWindowData *wdata, const struct KeyEvent *event)
 {
   if (wdata->scroll_offset <= 0)
+  {
+    if (event->count == 0)
+      mutt_message(_("Top of message is shown"));
     return FR_NO_ACTION;
+  }
 
-  wdata->scroll_offset -= MAX(wdata->win->state.rows - 1, 1);
+  const int count = MAX(event->count, 1);
+  const int page = MAX(wdata->win->state.rows - 1, 1);
+  wdata->scroll_offset -= count * page;
+  if (wdata->scroll_offset < 0)
+    wdata->scroll_offset = 0;
   draw_preview(wdata->win, wdata);
 
   return FR_SUCCESS;
 }
 
 /**
- * preview_page_down - Show the previous page of the message - Implements ::preview_function_t - @ingroup preview_function_api
+ * preview_page_down - Show the next page of the message - Implements ::preview_function_t - @ingroup preview_function_api
  */
 static int preview_page_down(struct PreviewWindowData *wdata, const struct KeyEvent *event)
 {
   if (!wdata->more_content)
+  {
+    if (event->count == 0)
+      mutt_message(_("Bottom of message is shown"));
     return FR_NO_ACTION;
+  }
 
-  wdata->scroll_offset += MAX(wdata->win->state.rows - 1, 1);
+  const int count = MAX(event->count, 1);
+  const int page = MAX(wdata->win->state.rows - 1, 1);
+  wdata->scroll_offset += count * page;
   draw_preview(wdata->win, wdata);
 
   return FR_SUCCESS;
