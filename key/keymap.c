@@ -63,6 +63,15 @@ static struct Mapping KeyNames[] = {
   { "<Esc>",         '\033' }, // Escape
   { "<Tab>",         '\t' },
   { "<Space>",       ' ' },
+  { "<Hash>",        '#' },
+  { "<Semicolon>",   ';' },
+  { "<DoubleQuote>", '"' },
+  { "<Quote>",       '\'' },
+  { "<Backslash>",   '\\' },
+  { "<Backtick>",    '`' },
+  { "<Dollar>",      '$' },
+  { "<Less>",        '<' },
+  { "<Greater>",     '>' },
 #ifdef KEY_BTAB
   { "<BackTab>",     KEY_BTAB },
 #endif
