@@ -66,6 +66,7 @@
 #include "color/lib.h"
 #include "key/lib.h"
 #include "module_data.h"
+#include "msgwin.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
 
@@ -332,6 +333,7 @@ const char *utilwin_get_text(struct MuttWindow *win)
  * @param text Text to display (NULL or empty to hide)
  *
  * Setting text makes the window visible; clearing it hides the window.
+ * When transitioning from empty to having text, the message window is cleared.
  *
  * @note The text string will be copied
  */
@@ -357,6 +359,14 @@ void utilwin_set_text(struct MuttWindow *win, const char *text)
     window_set_visible(win, false);
     mutt_window_reflow(NULL);
     return;
+  }
+
+  // Transitioning from empty to having text: clear the message window
+  if (!priv->text)
+  {
+    struct MuttWindow *msgwin = msgwin_get_window();
+    if (msgwin)
+      msgwin_clear_text(msgwin);
   }
 
   mutt_str_replace(&priv->text, text);
