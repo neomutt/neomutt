@@ -450,7 +450,15 @@ static int op_change_directory(struct BrowserPrivateData *priv, const struct Key
   }
   else if (op == OP_GOTO_PARENT)
   {
-    mutt_get_parent_path(buf_string(buf), buf->data, buf->dsize);
+    const int count = MAX(event->count, 1);
+    for (int i = 0; i < count; i++)
+    {
+      char prev[PATH_MAX];
+      mutt_str_copy(prev, buf_string(buf), sizeof(prev));
+      mutt_get_parent_path(buf_string(buf), buf->data, buf->dsize);
+      if (mutt_str_equal(buf_string(buf), prev))
+        break;
+    }
   }
 
   if (!buf_is_empty(buf))
