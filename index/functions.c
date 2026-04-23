@@ -2566,13 +2566,19 @@ static int op_next_entry(struct IndexFunctionData *fdata, const struct KeyEvent 
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  const int index = menu_get_index(priv->menu) + 1;
+  int count = MAX(event->count, 1);
+  int index = menu_get_index(priv->menu) + count;
+
   if (index >= shared->mailbox->vcount)
   {
-    mutt_message(_("You are on the last message"));
-    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
-    return FR_ERROR;
+    index = shared->mailbox->vcount - 1;
+    if (event->count == 0)
+    {
+      mutt_message(_("You are on the last message"));
+      notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+    }
   }
+
   menu_set_index(priv->menu, index);
   return FR_SUCCESS;
 }
@@ -2607,14 +2613,20 @@ static int op_prev_entry(struct IndexFunctionData *fdata, const struct KeyEvent 
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  int index = menu_get_index(priv->menu);
-  if (index < 1)
+  int count = MAX(event->count, 1);
+  int index = menu_get_index(priv->menu) - count;
+
+  if (index < 0)
   {
-    notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
-    mutt_message(_("You are on the first message"));
-    return FR_ERROR;
+    index = 0;
+    if (event->count == 0)
+    {
+      notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+      mutt_message(_("You are on the first message"));
+    }
   }
-  menu_set_index(priv->menu, index - 1);
+
+  menu_set_index(priv->menu, index);
   return FR_SUCCESS;
 }
 
