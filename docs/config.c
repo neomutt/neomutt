@@ -2381,6 +2381,16 @@
 ** The value must be between 50 and 10000 (10 seconds) inclusive.
 */
 
+{ "key_preview_position", DT_ENUM, KEY_PREVIEW_RIGHT },
+/*
+** .pp
+** This variable controls the position of the key preview window, which
+** displays multi-key binding progress at the bottom of the screen.
+** It may be set to "left" or "right".
+** .pp
+** The default value is "right".
+*/
+
 { "local_date_header", DT_BOOL, true },
 /*
 ** .pp

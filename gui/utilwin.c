@@ -50,6 +50,7 @@
  *
  * | Event Type            | Handler                    |
  * | :-------------------- | :------------------------- |
+ * | #NT_CONFIG            | utilwin_config_observer()  |
  * | #NT_WINDOW            | utilwin_window_observer()  |
  * | MuttWindow::recalc()  | utilwin_recalc()           |
  * | MuttWindow::repaint() | utilwin_repaint()          |
@@ -59,6 +60,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "utilwin.h"
 #include "color/lib.h"
@@ -66,6 +68,24 @@
 #include "module_data.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
+
+/**
+ * KeyPreviewPositionMap - Choices for '$key_preview_position'
+ */
+static const struct Mapping KeyPreviewPositionMap[] = {
+  // clang-format off
+  { "left",  KEY_PREVIEW_LEFT  },
+  { "right", KEY_PREVIEW_RIGHT },
+  { NULL, 0 },
+  // clang-format on
+};
+
+/// Data for the $key_preview_position enumeration
+const struct EnumDef KeyPreviewPositionDef = {
+  "key_preview_position",
+  2,
+  (struct Mapping *) &KeyPreviewPositionMap,
+};
 
 /// Width of the Utility Window in columns
 #define UTILWIN_COLS 10
@@ -177,6 +197,51 @@ static int utilwin_key_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * utilwin_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
+ *
+ * The Utility Window is affected by changes to `$key_preview_position`.
+ */
+static int utilwin_config_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
+    return -1;
+
+  struct EventConfig *ev_c = nc->event_data;
+  if (!mutt_str_equal(ev_c->name, "key_preview_position"))
+    return 0;
+
+  struct MuttWindow *win = nc->global_data;
+  struct MuttWindow *parent = win->parent;
+  if (!parent)
+    return 0;
+
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->message_container)
+    return 0;
+
+  const unsigned char c_pos = cs_subset_enum(NeoMutt->sub, "key_preview_position");
+  struct MuttWindow **wp_first = ARRAY_FIRST(&parent->children);
+  if (!wp_first)
+    return 0;
+
+  bool util_is_first = (*wp_first == win);
+  if ((c_pos == KEY_PREVIEW_LEFT) && !util_is_first)
+  {
+    mutt_window_swap(parent, win, mod_data->message_container);
+    mutt_window_reflow(parent);
+  }
+  else if ((c_pos == KEY_PREVIEW_RIGHT) && util_is_first)
+  {
+    mutt_window_swap(parent, win, mod_data->message_container);
+    mutt_window_reflow(parent);
+  }
+
+  return 0;
+}
+
+/**
  * utilwin_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int utilwin_window_observer(struct NotifyCallback *nc)
@@ -198,6 +263,7 @@ static int utilwin_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
+    notify_observer_remove(NeoMutt->sub->notify, utilwin_config_observer, win);
     notify_observer_remove(NeoMutt->notify, utilwin_key_observer, win);
     notify_observer_remove(win->notify, utilwin_window_observer, win);
     mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -230,6 +296,7 @@ struct MuttWindow *utilwin_new(void)
   if (mod_data)
     mod_data->utility_window = win;
 
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, utilwin_config_observer, win);
   notify_observer_add(NeoMutt->notify, NT_KEY, utilwin_key_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, utilwin_window_observer, win);
 
