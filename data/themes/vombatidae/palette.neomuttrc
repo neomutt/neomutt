@@ -1,0 +1,27 @@
+# vim: filetype=neomuttrc
+#
+# Vombatidae Palette
+
+# Background shades
+set my_bg0 = "color234"
+set my_bg1 = "color233"
+set my_bg2 = "color235"
+set my_bg3 = "color238"
+
+# Foreground shades
+set my_fg0 = "color253"
+set my_fg1 = "color230"
+set my_fg2 = "color240"
+set my_fg3 = "color102"
+
+# Accent colors
+set my_red     = "color202"
+set my_green   = "color39"
+set my_yellow  = "color178"
+set my_blue    = "color117"
+set my_magenta = "color132"
+set my_cyan    = "color29"
+set my_orange  = "color208"
+set my_teal    = "color30"
+set my_lime    = "color120"
+set my_search  = "color100"

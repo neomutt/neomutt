@@ -191,7 +191,7 @@ LIBCOLOROBJS=	color/ansi.o color/attr.o color/color.o color/commands.o \
 		color/config.o color/curses.o color/dump.o color/merged.o \
 		color/module.o color/notify.o color/parse_ansi.o \
 		color/parse_color.o color/qstyle.o color/quoted.o \
-		color/regex.o color/simple.o
+		color/regex.o color/simple.o color/theme.o
 @if USE_DEBUG_COLOR
 LIBCOLOROBJS+=	color/debug.o
 @endif
@@ -976,7 +976,7 @@ MUTTLIBS+=	$(LIBCORE) $(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBLUA) 
 		$(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) \
 		$(LIBNNTP) $(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) \
-		$(LIBCOMMANDS) $(LIBHOOKS) $(LIBENVELOPE) $(LIBHELPBAR) \
+		$(LIBCOMMANDS) $(LIBCOLOR) $(LIBHOOKS) $(LIBENVELOPE) $(LIBHELPBAR) \
 		$(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) \
 		$(LIBCOMPLETE) $(LIBNNTP) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
 		$(LIBHCACHE) $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
