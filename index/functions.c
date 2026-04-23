@@ -2059,12 +2059,16 @@ static int op_main_read_thread(struct IndexFunctionData *fdata, const struct Key
  * This function handles:
  * - OP_MAIN_PARENT_MESSAGE
  * - OP_MAIN_ROOT_MESSAGE
+ *
+ * When called with a count prefix, will jump N ancestors up the thread
+ * (for parent-message, not for root-message which always goes to root).
  */
 static int op_main_root_message(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  int index = mutt_parent_message(shared->email, event->op == OP_MAIN_ROOT_MESSAGE);
+  int count = event->op == OP_MAIN_ROOT_MESSAGE ? 0 : MAX(event->count, 1);
+  int index = mutt_parent_message(shared->email, event->op == OP_MAIN_ROOT_MESSAGE, count);
   if (index != -1)
     menu_set_index(priv->menu, index);
 

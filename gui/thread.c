@@ -1427,10 +1427,11 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
  * mutt_parent_message - Find the parent of a message
  * @param e         Current Email
  * @param find_root If true, find the root message
+ * @param count     Number of generations to go up (1 for direct parent, 0 = count as 1)
  * @retval >=0 Virtual index number of parent/root message
  * @retval -1 Error
  */
-int mutt_parent_message(struct Email *e, bool find_root)
+int mutt_parent_message(struct Email *e, bool find_root, int count)
 {
   if (!e)
     return -1;
@@ -1444,6 +1445,10 @@ int mutt_parent_message(struct Email *e, bool find_root)
     return e->vnum;
   }
 
+  /* Normalize count to at least 1 */
+  if (count <= 0)
+    count = 1;
+
   /* Root may be the current message */
   if (find_root)
     e_parent = e;
@@ -1455,7 +1460,11 @@ int mutt_parent_message(struct Email *e, bool find_root)
     {
       e_parent = e;
       if (!find_root)
-        break;
+      {
+        count--;
+        if (count == 0)
+          break;
+      }
     }
   }
 
