@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2026-03-22 15:05+0000\n"
-"PO-Revision-Date: 2026-01-20 15:00+0300\n"
+"PO-Revision-Date: 2026-04-24 03:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -62,7 +62,7 @@ msgstr "Yorum: "
 
 #: alias/alias.c:475
 msgid "Tags (comma-separated): "
-msgstr "Etiketler (virgülle ayrılmış): "
+msgstr "Künyeler (virgülle ayrılmış): "
 
 #: alias/alias.c:504
 msgid "Accept?"
@@ -128,9 +128,8 @@ msgid "Define an alias (name to email address)"
 msgstr "Arma tanımla (e-posta adresi adı)"
 
 #: alias/commands.c:325
-#, fuzzy
 msgid "alias [ -group <name> ... ] <key> <address> [,...] [ # <comments> ]"
-msgstr "alias [ -group <ad> ... ] <düğme> <adres> [, <adres> ... ]"
+msgstr "alias [ -group <ad> ... ] <anahtar> <adres> [,...] [ # <yorumlar> ]"
 
 #: alias/commands.c:328
 msgid "Define a list of alternate email addresses for the user"
@@ -149,7 +148,6 @@ msgid "unalias { * | <key> ... }"
 msgstr "unalias { * | <anahtar> ... }"
 
 #: alias/commands.c:336
-#, fuzzy
 msgid "Remove addresses from `alternates` list"
 msgstr "\"alternates\" listesinden adresleri kaldır"
 
@@ -246,11 +244,11 @@ msgstr "Yalnızca eşleşen adresler: "
 
 #: alias/functions.c:300
 msgid "Tag addresses matching: "
-msgstr "Eşleşen iletileri etiketle: "
+msgstr "Eşleşen iletileri künyele: "
 
 #: alias/functions.c:316
 msgid "Untag addresses matching: "
-msgstr "Eşleşen iletilerdeki etiketi kaldır: "
+msgstr "Eşleşen iletilerdeki künyeyi kaldır: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:432
@@ -298,18 +296,16 @@ msgid "Map specified MIME types/subtypes to display handlers"
 msgstr "Görüntülenen üstbilgilere belirli MIME tür/alt türlerini eşlemle"
 
 #: attach/commands.c:688
-#, fuzzy
 msgid "mime-lookup <mime-type>[/<mime-subtype> ] [ ... ]"
-msgstr "unmime-lookup { * | [ <mime-türü>[/<mime-alt-türü> ] ... ] }"
+msgstr "mime-lookup <mime-türü>[/<mime-alt-türü> ] [ ... ]"
 
 #: attach/commands.c:691
 msgid "Remove attachment counting rules"
 msgstr "Ek sayım kurallarını kaldır"
 
 #: attach/commands.c:692
-#, fuzzy
 msgid "unattachments { * | { + | - }<disposition> <mime-type> [ ... ] }"
-msgstr "unattachments { * | { + | - } <eğilim> <mime-türü> [ <mime-türü> ... ] }"
+msgstr "unattachments { * | { + | - }<dispozisyon> <mime-türü> [ ... ] }"
 
 #: attach/commands.c:695
 msgid "Remove custom MIME-type handlers"
@@ -368,9 +364,8 @@ msgid "Only deletion of multipart attachments is supported"
 msgstr "Yalnızca çok parçalı eklerin silinmesi destekleniyor"
 
 #: attach/functions.c:660
-#, fuzzy
 msgid "You may only followup to message/rfc822 parts"
-msgstr "Yalnızca ileti veya rfc822 kısımları geri gönderilebilir"
+msgstr "Yalnızca message/rfc822 kısımlarına yanıt verebilirsiniz"
 
 #: attach/functions.c:665 index/functions.c:3028
 msgid "Reply by mail as poster prefers?"
@@ -1017,31 +1012,31 @@ msgstr "Aboneliği iptal dizgisi: "
 #: cli/parse.c:163
 #, c-format
 msgid "Invalid option syntax: %s (use space instead of '=')"
-msgstr ""
+msgstr "Geçersiz seçenek sözdizimi: %s (\"=\" yerine boşluk kullanın)"
 
 #. L10N: e.g. `neomutt -X`
 #: cli/parse.c:438
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid option: -%c"
-msgstr "Geçersiz long: %s"
+msgstr "Geçersiz seçenek: -%c"
 
 #. L10N: e.g. `neomutt --foobar`
 #: cli/parse.c:443
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid option: %s"
-msgstr "Geçersiz long: %s"
+msgstr "Geçersiz seçenek: %s"
 
 #. L10N: e.g. `neomutt -F`
 #: cli/parse.c:451
 #, c-format
 msgid "Option -%c requires an argument"
-msgstr ""
+msgstr "-%c seçeneği bir argüman gerektiriyor"
 
 #. L10N: e.g. `neomutt --config`
 #: cli/parse.c:456
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s requires an argument"
-msgstr "'%s' seçeneği artık kullanılmıyor"
+msgstr "%s seçeneği bir argüman gerektiriyor"
 
 #: color/commands.c:179
 #, c-format
@@ -1135,9 +1130,8 @@ msgid "Define colors for the user interface"
 msgstr "Kullanıcı arayüzü renklerini tanımla"
 
 #: commands/commands.c:53
-#, fuzzy
 msgid "color <object> [ <attribute> ... ] <fg> <bg> [ <regex> [ <num> ]]"
-msgstr "color <nesne> [ <öznitelik> ... ] <ön-plan> <arka-plan> [ <d-ifade> [ <sayı> ]]"
+msgstr "color <nesne> [ <öznitelik> ... ] <öp> <ap> [ <d-ifade> [ <sayı> ]]"
 
 #: commands/commands.c:56
 msgid "Print a message to the status line"
@@ -1176,16 +1170,12 @@ msgid "Define a list of mailboxes to watch"
 msgstr "İzlenecek posta kutuları listesi tanımla"
 
 #: commands/commands.c:73
-#, fuzzy
 msgid "mailboxes [ -label <label> ] [ -notify ] [ -poll ] <mailbox> [ ... ]"
-msgstr ""
-"mailboxes [[ -label <etiket> ] | -nolabel ] [[ -notify | -nonotify ]\n"
-"  [ -poll | -nopoll ] <kutu> ] [ ... ]"
+msgstr "mailboxes [ -label <etiket> ] [ -notify ] [ -poll ] <kutu> [ ... ]"
 
 #: commands/commands.c:76
-#, fuzzy
 msgid "Deprecated: Use `color` instead"
-msgstr "Artık kullanılmıyor: Yerine \"color\" kullan"
+msgstr "Artık kullanılmıyor: Yerine \"color\" kullanın"
 
 #: commands/commands.c:77
 msgid "mono <object> <attribute> [ <pattern> | <regex> ]"
@@ -1196,9 +1186,8 @@ msgid "Define a list of labelled mailboxes to watch"
 msgstr "İzlenecek etiketli bir posta kutusu listesi tanımla"
 
 #: commands/commands.c:81
-#, fuzzy
 msgid "named-mailboxes [ -notify ] [ -poll ] <label> <mailbox> [ ... ]"
-msgstr "named-mailboxes <açıklama> <kutu> [ <açıklama> <kutu> ... ]"
+msgstr "named-mailboxes [ -notify ] [ -poll ] <etiket> <kutu> [ ... ]"
 
 #: commands/commands.c:84
 msgid "Reset a config option to its initial value"
@@ -1213,48 +1202,43 @@ msgid "Set a config variable"
 msgstr "Yapılandırma değişkeni ayarla"
 
 #: commands/commands.c:89
-#, fuzzy
 msgid "set [ no | inv | & ] <variable> [?] | <variable> [=|+=|-=] <value> [...]"
-msgstr "set { [ no | inv | & ] <değişken> [?] | <değişken> [=|+=|-=] <value> } [ ... ]"
+msgstr ""
+"set [ no | inv | & ] <değişken> [?] | <değişken> [=|+=|-=] <değer> [...]"
 
 #: commands/commands.c:92
 msgid "Set an environment variable"
 msgstr "Çevre değişkeni ayarla"
 
 #: commands/commands.c:93
-#, fuzzy
 msgid "setenv { <variable>? | <variable>=<value> }"
-msgstr "setenv { <değişken>? | <değişken> <değer> }"
+msgstr "setenv { <değişken>? | <değişken>=<değer> }"
 
 #: commands/commands.c:96
 msgid "Read and execute commands from a config file"
 msgstr "Yapılandırma dosyasından komutlar oku ve yürüt"
 
 #: commands/commands.c:97
-#, fuzzy
 msgid "source <filename> [ <filename> ... ]"
-msgstr "source <dosya-adı>"
+msgstr "source <dosya-adı> [ <dosya-adı> ... ]"
 
 #: commands/commands.c:100
 msgid "Add address to the list of subscribed mailing lists"
 msgstr "Abone posta listeleri listesine adres ekle"
 
 #: commands/commands.c:101
-#, fuzzy
 msgid "subscribe [ -group <name> ... ] <regex> [ ... ]"
-msgstr "subscribe [ -group <ad> ... ] <d-ifade> [ <d-ifade> ... ]"
+msgstr "subscribe [ -group <ad> ... ] <d-ifade> [ ... ]"
 
 #: commands/commands.c:104
 msgid "Toggle the value of a boolean/quad config option"
 msgstr "Boole/Dörtlü yapılandırma seçeneği değerini değiştir"
 
 #: commands/commands.c:105
-#, fuzzy
 msgid "toggle <variable> [ ... ]"
-msgstr "toggle <değişken> [ <değişken> ... ]"
+msgstr "toggle <değişken> [ ... ]"
 
 #: commands/commands.c:108
-#, fuzzy
 msgid "Remove a `color` definition"
 msgstr "Bir \"color\" tanımını kaldır"
 
@@ -1271,9 +1255,8 @@ msgid "unmailboxes { * | <mailbox> ... }"
 msgstr "unmailboxes { * | <kutu> ... }"
 
 #: commands/commands.c:116
-#, fuzzy
 msgid "Deprecated: Use `uncolor` instead"
-msgstr "Artık kullanılmıyor: \"uncolor\" kullan"
+msgstr "Artık kullanılmıyor: Yerine \"uncolor\" kullanın"
 
 #: commands/commands.c:117
 msgid "unmono <object> { * | <pattern> ... }"
@@ -1322,9 +1305,9 @@ msgid "Can't query option with the '%s' command"
 msgstr "'%s' komutuyla bir seçenek sorgulanamaz"
 
 #: commands/setenv.c:152 commands/setenv.c:160
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid variable name '%s'"
-msgstr "%s: Geçersiz numara: %s"
+msgstr "%s: Geçersiz değişken adı: \"%s\""
 
 #: commands/setenv.c:176 parse/set.c:562
 msgid "Can't use a prefix when querying a variable"
@@ -1338,17 +1321,17 @@ msgstr "%s ayarlanmadı"
 #: commands/source.c:96
 #, c-format
 msgid "Error: Can't build path of '%s'"
-msgstr "Hata: '%s' ögesinin yolu yapılamıyor"
+msgstr "Hata: \"%s\" ögesinin yolu yapılamıyor"
 
 #: commands/source.c:109
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
-msgstr "Hata: '%s' yapılandırma dosyasının çevrimsel kaynak alımı"
+msgstr "Hata: \"%s\" yapılandırma dosyasının çevrimsel kaynak alımı"
 
 #: commands/source.c:186
 #, c-format
 msgid "Command '%s' exited with status %d"
-msgstr ""
+msgstr "\"%s\" komutu, %d durumuyla çıktı"
 
 #: commands/source.c:196
 #, c-format
@@ -1676,11 +1659,11 @@ msgstr "Yeniden kodlama yalnızca metin ekleri üzerinde etkilidir"
 
 #: compose/functions.c:1651
 msgid "The current attachment won't be converted"
-msgstr "Mevcut ek dönüştürülmeyecek"
+msgstr "Geçerli ek dönüştürülmeyecek"
 
 #: compose/functions.c:1653
 msgid "The current attachment will be converted"
-msgstr "Mevcut ek dönüştürülecek"
+msgstr "Geçerli ek dönüştürülecek"
 
 #: compose/functions.c:1683
 msgid "Attachment is not 'multipart'"
@@ -1808,7 +1791,7 @@ msgstr "Geçersiz sayı: %s"
 #: config/number.c:91 config/number.c:203 config/number.c:244
 #, c-format
 msgid "Number is too big: %s"
-msgstr "Sayı çok büyük: %s"
+msgstr "Sayı pek büyük: %s"
 
 #: config/number.c:151
 #, c-format
@@ -1890,7 +1873,7 @@ msgstr "Komut boş dizi döndürdü"
 #: conn/connaccount.c:241
 #, c-format
 msgid "OAUTH token is too big: %ld"
-msgstr "OAUTH jetonu çok büyük: %ld"
+msgstr "OAUTH jetonu pek büyük: %ld"
 
 #: conn/dlg_verifycert.c:185
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
@@ -2039,7 +2022,7 @@ msgstr "Uyarı: Sertifika kaydedilemedi"
 
 #: conn/gnutls.c:795 conn/gnutls.c:832
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr "SSL/TLS bağlantısı için mevcut bütün protokoller devre dışı"
+msgstr "SSL/TLS bağlantısı için var olan bütün protokoller devre dışı"
 
 #: conn/gnutls.c:839
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
@@ -2290,30 +2273,28 @@ msgstr "Sözcük Sonlandır"
 #: email/commands.c:153
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr "etiket biçimi '%s', halihazırda '%s' olarak kaydedilmiş"
+msgstr "künye biçimi \"%s\", halihazırda \"%s\" olarak kaydedilmiş"
 
 #: email/commands.c:206
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr "etiket dönüştürmesi '%s', halihazırda '%s' olarak kaydedilmiş"
+msgstr "künye dönüşümü \"%s\", halihazırda \"%s\" olarak kaydedilmiş"
 
 #: email/commands.c:225
 msgid "Set preference order for multipart alternatives"
 msgstr "Çok kısımlı alternatifler için tercih sırası ayarla"
 
 #: email/commands.c:226
-#, fuzzy
 msgid "alternative-order <mime-type>[/<mime-subtype> ] [ ... ]"
-msgstr "unalternative-order { * | [ <mime-türü>[/<mime-alt-türü> ] ... ] }"
+msgstr "alternative-order <mime-türü>[/<mime-alt-türü> ] [ ... ]"
 
 #: email/commands.c:229
 msgid "Automatically display specified MIME types inline"
 msgstr "Belirtilen MIME türlerini kendiliğinden satır için görüntüle"
 
 #: email/commands.c:230
-#, fuzzy
 msgid "auto-view <mime-type>[/<mime-subtype> ] [ ... ]"
-msgstr "unauto-view { * | [ <mime-türü>[/<mime-alt-türü> ] ... ] }"
+msgstr "auto-view <mime-türü>[/<mime-alt-türü> ] [ ... ]"
 
 #: email/commands.c:233
 msgid "Add addresses to an address group"
@@ -2336,18 +2317,16 @@ msgid "Hide specified headers when displaying messages"
 msgstr "İletileri görüntülerken belirli üstbilgileri gizle"
 
 #: email/commands.c:242
-#, fuzzy
 msgid "ignore <string> [ <string> ...]"
-msgstr "ignore { * | <dizi> ... }"
+msgstr "ignore <dizi> [ <dizi> ...]"
 
 #: email/commands.c:245
 msgid "Add address to the list of mailing lists"
 msgstr "Posta listeleri listesine adres ekle"
 
 #: email/commands.c:246
-#, fuzzy
 msgid "lists [ -group <name> ... ] <regex> [ ... ]"
-msgstr "lists [ -group <ad> ... ] <d-ifade> [ <d-ifade> ... ]"
+msgstr "lists [ -group <ad> ... ] <d-ifade> [ ... ]"
 
 #: email/commands.c:249
 msgid "Permit specific header-fields in mailto URL processing"
@@ -2378,27 +2357,24 @@ msgid "Define rules to parse spam detection headers"
 msgstr "İstenmeyen algılama üstbilgisinden ayrıştırma kuralları tanımla"
 
 #: email/commands.c:262
-#, fuzzy
 msgid "spam <regex> [ <format> ]"
-msgstr "spam <d-ifade> <biçim>"
+msgstr "spam <d-ifade> [ <biçim> ]"
 
 #: email/commands.c:265
 msgid "Define expandos tags"
 msgstr "Expandos künyeleri tanımla"
 
 #: email/commands.c:266
-#, fuzzy
 msgid "tag-formats <tag> <format-string> [ ... ] }"
-msgstr "tag-formats <künye> <biçim-dizisi> { <künye> <biçim-dizisi> ... }"
+msgstr "tag-formats <künye> <biçim-dizisi> [ ... ] }"
 
 #: email/commands.c:269
 msgid "Rules to transform tags into icons"
 msgstr "Künyeleri simgelere dönüştürme kuralları"
 
 #: email/commands.c:270
-#, fuzzy
 msgid "tag-transforms <tag> <transformed-string> [ ... ]"
-msgstr "tag-transforms <künye> <dönüşmüş-dizi> { <künye> <dönüşmüş-dizi> ... }"
+msgstr "tag-transforms <künye> <dönüşmüş-dizi> [ ... ]"
 
 #: email/commands.c:273
 msgid "Remove MIME types from preference order"
@@ -2409,7 +2385,6 @@ msgid "unalternative-order { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 msgstr "unalternative-order { * | [ <mime-türü>[/<mime-alt-türü> ] ... ] }"
 
 #: email/commands.c:277
-#, fuzzy
 msgid "Remove MIME types from `auto-view` list"
 msgstr "\"auto-view\" listesinden MIME türlerini kaldır"
 
@@ -2418,16 +2393,15 @@ msgid "unauto-view { * | [ <mime-type>[/<mime-subtype> ] ... ] }"
 msgstr "unauto-view { * | [ <mime-türü>[/<mime-alt-türü> ] ... ] }"
 
 #: email/commands.c:281
-#, fuzzy
 msgid "Remove addresses from an address `group`"
-msgstr "Bir adres \"grubundan\" adresleri kaldır"
+msgstr "Bir adres \"group\"tan adresleri kaldır"
 
 #: email/commands.c:282
 msgid "ungroup [ -group <name> ... ] { * | -rx <regex> ... | -addr <address> ... }"
-msgstr "ungroup [ -group <ad> ... ] { * | -rx <d-ifade> ... | -addr <adres> ... }"
+msgstr ""
+"ungroup [ -group <ad> ... ] { * | -rx <d-ifade> ... | -addr <adres> ... }"
 
 #: email/commands.c:285
-#, fuzzy
 msgid "Remove header from `header-order` list"
 msgstr "\"header-order\" listesinden üstbilgiyi kaldır"
 
@@ -2436,7 +2410,6 @@ msgid "unheader-order { * | <header> ... }"
 msgstr "unheader-order { * | <üstbilgi> ... }"
 
 #: email/commands.c:289
-#, fuzzy
 msgid "Remove a header from the `header-order` list"
 msgstr "\"header-order\" listesinden bir üstbilgiyi kaldır"
 
@@ -2688,12 +2661,11 @@ msgstr "Geçici dosya açılamadı"
 
 #: email/handler.c:1441
 msgid "failed to re-open 'memory stream'"
-msgstr "bellek akışını yeniden açma başarısız oldu"
+msgstr "Bellek akışını yeniden açma başarısız oldu"
 
 #: email/handler.c:1455
-#, fuzzy
 msgid "failed to re-open temporary file"
-msgstr "Geçici dosya açılamadı"
+msgstr "Geçici dosya yeniden açılamadı"
 
 #: email/handler.c:1748
 msgid "Error: multipart/signed has no protocol"
@@ -2990,7 +2962,7 @@ msgstr "Geçersiz zaman dönemi: '%c', 'ymwdHM' içinden biri olmalı"
 #: expando/node_condition.c:188 expando/node_condition.c:232
 #, c-format
 msgid "Conditional expando is missing '%c'"
-msgstr "Koşullu expando'da '%c' eksik"
+msgstr "Koşullu expando'da \"%c\" eksik"
 
 #. L10N: e.g. "Unknown expando: %Q"
 #: expando/node_expando.c:359
@@ -2999,21 +2971,21 @@ msgid "Unknown expando: %%%.1s"
 msgstr "Geçersiz expando: %%%.1s"
 
 #: expando/node_expando.c:404
-#, fuzzy, c-format
+#, c-format
 msgid "Expando is missing closing '}'"
-msgstr "Expando'da sonlandırıcı eksik: '%c'"
+msgstr "Expando'da kapama \"}\"sı eksik"
 
 #: expando/node_expando.c:410
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown expando: %%{%.*s}"
-msgstr "Geçersiz expando: %%{%s}"
+msgstr "Geçersiz expando: %%{%.*s}"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/node_expando.c:486
 #, c-format
 msgid "Expando is missing terminator: '%c'"
-msgstr "Expando'da sonlandırıcı eksik: '%c'"
+msgstr "Expando'da sonlandırıcı eksik: \"%c\""
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
 #: expando/node_padding.c:242
@@ -4125,16 +4097,14 @@ msgstr "Iletinin durum bayrağını temizle"
 #. L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS
 #. Index: <op_main_close_all_threads>
 #: gui/opcodes.h:531
-#, fuzzy
 msgid "Collapse all threads"
-msgstr "Bütün ilmekleri aç/sar"
+msgstr "Bütün ilmekleri sar"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_THREAD
 #. Index: <op_main_close_thread>
 #: gui/opcodes.h:534
-#, fuzzy
 msgid "Collapse current thread"
-msgstr "Geçerli ilmeği aç/sar"
+msgstr "Geçerli ilmeği sar"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
@@ -4242,16 +4212,14 @@ msgstr "Yeni posta içeren sonraki posta kutusunu aç"
 #. L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS
 #. Index: <op_main_open_all_threads>
 #: gui/opcodes.h:589
-#, fuzzy
 msgid "Uncollapse all threads"
-msgstr "Bütün ilmekleri aç/sar"
+msgstr "Bütün ilmekleri aç"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_THREAD
 #. Index: <op_main_open_thread>
 #: gui/opcodes.h:592
-#, fuzzy
 msgid "Uncollapse current thread"
-msgstr "Geçerli ilmeği aç/sar"
+msgstr "Geçerli ilmeği aç"
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
@@ -4341,7 +4309,7 @@ msgstr "Kutudaki değişiklikleri kaydet"
 #. Index: <op_main_tag_pattern>
 #: gui/opcodes.h:637
 msgid "Tag non-hidden messages matching a pattern"
-msgstr "Bir dizgiyle eşleşen gizli olmayan iletileri etiketle"
+msgstr "Bir dizgiyle eşleşen gizli olmayan iletileri künyele"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
@@ -4353,7 +4321,7 @@ msgstr "Bir dizgiyle eşleşen gizli olmayan iletileri kurtar"
 #. Index: <op_main_untag_pattern>
 #: gui/opcodes.h:643
 msgid "Untag non-hidden messages matching a pattern"
-msgstr "Bir dizgiyle eşleşen gizli olmayan iletilerin etiketini kaldır"
+msgstr "Bir dizgiyle eşleşen gizli olmayan iletilerin künyesini kaldır"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
@@ -4947,15 +4915,14 @@ msgstr "Kenar çubuğunu görünür/görünmez yap"
 #. L10N: Help screen description for OP_SIDEBAR_ABORT_SEARCH
 #. Sidebar: <op_sidebar_abort_search>
 #: gui/opcodes.h:990
-#, fuzzy
 msgid "Close the sidebar search"
-msgstr "Kenar çubuğunu görünür/görünmez yap"
+msgstr "Kenar çubuğunu aramasını kapat"
 
 #. L10N: Help screen description for OP_SIDEBAR_START_SEARCH
 #. Sidebar: <op_sidebar_start_search>
 #: gui/opcodes.h:993
 msgid "Fuzzy search the sidebar"
-msgstr ""
+msgstr "Kenar çubuğunda bulanık ara"
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
@@ -4974,7 +4941,7 @@ msgstr "%s için 'last-' öneki 'threads' ile kullanılamıyor"
 
 #: gui/thread.c:1464
 msgid "Parent message is not available"
-msgstr "Ana ileti mevcut değil"
+msgstr "Ana ileti kullanılabilir değil"
 
 #: gui/thread.c:1470
 msgid "Root message is not visible in this limited view"
@@ -4999,7 +4966,7 @@ msgstr "%s seçeneği %d ve %d arasında olmalıdır (dahil)"
 
 #: help.c:52
 msgid "message is tagged"
-msgstr "ileti etiketlendi"
+msgstr "ileti künyelendi"
 
 #: help.c:53
 msgid "message is flagged"
@@ -5159,9 +5126,8 @@ msgid "fcc-hook <pattern> <mailbox>"
 msgstr "fcc-hook <dizgi> <kutu>"
 
 #: hooks/commands.c:59
-#, fuzzy
 msgid "Equivalent to both `fcc-hook` and `save-hook`"
-msgstr "hem \"fcc-hook\" hem \"save-hook\" eşdeğeri"
+msgstr "Hem \"fcc-hook\" hem \"save-hook\" eşdeğeri"
 
 #: hooks/commands.c:60
 msgid "fcc-save-hook <pattern> <mailbox>"
@@ -5188,9 +5154,8 @@ msgid "Create dynamic index format strings"
 msgstr "Devingen indeksli biçim dizisi oluştur"
 
 #: hooks/commands.c:72
-#, fuzzy
 msgid "index-format-hook <name> [!]<pattern> <format-string>"
-msgstr "index-format-hook <ad> [ ! ] <dizgi> <biçim-dizisi>"
+msgstr "index-format-hook <ad> [!]<dizgi> <biçim-dizisi>"
 
 #: hooks/commands.c:75
 msgid "On leaving a mailbox, move read messages matching a regex"
@@ -5399,24 +5364,24 @@ msgid "Mailbox %s@%s closed"
 msgstr "Posta kutusu %s@%s kapatıldı"
 
 #: imap/command.c:224
-#, fuzzy, c-format
+#, c-format
 msgid "Connection lost. Retrying in %u seconds..."
-msgstr "%s bağlantısı kesildi. Yeniden bağlanılsın mı?"
+msgstr "Bağlantı kesildi. %u saniye içinde yeniden deneniyor..."
 
 #: imap/command.c:233
-#, fuzzy, c-format
+#, c-format
 msgid "Reconnected to %s"
-msgstr "%s bağlantısı kuruldu. %s"
+msgstr "%s bağlantısı yeniden kuruldu"
 
 #: imap/command.c:244
 #, c-format
 msgid "Failed to reconnect to %s after %d attempts"
-msgstr ""
+msgstr "%s konumuna yeniden bağlanma, %d denemeden sonra başarısız oldu"
 
 #: imap/command.c:250
 #, c-format
 msgid "Reconnection to %s failed. Will retry automatically."
-msgstr ""
+msgstr "%s konumuna yeniden bağlanılamadı. Kendiliğinden yeniden denenecek."
 
 #: imap/command.c:1336
 #, c-format
@@ -5424,14 +5389,14 @@ msgid "IMAP command failed: %s"
 msgstr "IMAP komutu başarısız: %s"
 
 #: imap/command.c:1594
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s timed out waiting for IDLE response"
-msgstr "%s bağlantısı zaman aşımına uğradı"
+msgstr "%s bağlantısı, IDLE yanıtını beklerken zaman aşımına uğradı"
 
 #: imap/command.c:1618
-#, fuzzy, c-format
+#, c-format
 msgid "IDLE command failed for %s"
-msgstr "IMAP komutu başarısız: %s"
+msgstr "IDLE komutu, %s için başarısız oldu"
 
 #: imap/config.c:60 pop/config.c:60 send/config.c:92
 #, c-format
@@ -5489,14 +5454,13 @@ msgid "Closing connection to %s..."
 msgstr "%s bağlantısı kapatılıyor..."
 
 #: imap/imap.c:739
-#, fuzzy
 msgid "Download interrupted"
-msgstr "Arama iptal edildi"
+msgstr "İndirme yarıda kesildi"
 
 #: imap/imap.c:752
 #, c-format
 msgid "Download stalled - no data received for %d seconds"
-msgstr ""
+msgstr "İndirme durdu - %d saniyedir herhangi bir veri alınmadı"
 
 #: imap/imap.c:952 nntp/nntp.c:1854 pop/lib.c:339 send/smtp.c:1052
 msgid "Secure connection with TLS?"
@@ -5508,7 +5472,7 @@ msgstr "TLS bağlantısı pazarlığı yapılamadı"
 
 #: imap/imap.c:984 imap/imap.c:1001 pop/lib.c:378
 msgid "Encrypted connection unavailable"
-msgstr "Şifrelenmiş bağlantı mevcut değil"
+msgstr "Şifrelenmiş bağlantı kullanılabilir değil"
 
 #: imap/imap.c:1414
 #, c-format
@@ -5661,7 +5625,7 @@ msgstr "unsubject-regex { * | <d-ifade> }"
 #. L10N: $status_format default format
 #: index/config.c:123
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
-msgstr "-%r-NeoMutt: %D [İltl:%<M?%M/>%m%<n? Yeni:%n>%<o? Eski:%o>%<d? Sil:%d>%<F? Bayrak:%F>%<t? Etiket:%t>%<p? Gönder:%p>%<b? İçer:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
+msgstr "-%r-NeoMutt: %D [İltl:%<M?%M/>%m%<n? Yeni:%n>%<o? Eski:%o>%<d? Sil:%d>%<F? Bayrak:%F>%<t? Künye:%t>%<p? Gönder:%p>%<b? İçer:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
 #. L10N: $ts_icon_format default format
 #: index/config.c:136
@@ -6152,9 +6116,8 @@ msgid "Define a keyboard macro"
 msgstr "Klavye makrosu tanımla"
 
 #: key/init.c:64
-#, fuzzy
 msgid "macro <map>[,<map> ... ] <key> <sequence> [ <description> ]"
-msgstr "macro <menü> [,<menü> ... ] <düğme> <sekans> [ <açıklama> ]"
+msgstr "macro <eşlem>[,<eşlem> ... ] <düğme> <sekans> [ <açıklama> ]"
 
 #: key/init.c:67
 msgid "Push a string into NeoMutt's input queue (simulate typing)"
@@ -6169,19 +6132,16 @@ msgid "Remove a key binding"
 msgstr "Düğme bağıntısını kaldır"
 
 #: key/init.c:72
-#, fuzzy
 msgid "unbind { * | <map>[,<map> ... ] } [ <key> ]"
-msgstr "unbind { * | <menü> [,<menü> ... ] } [ <düğme> ]"
+msgstr "unbind { * | <eşlem>[,<eşlem> ... ] } [ <düğme> ]"
 
 #: key/init.c:75
-#, fuzzy
 msgid "Remove a keyboard `macro`"
-msgstr "Klavye \"makrosunu\" kaldır"
+msgstr "Klavye \"macro\"sunu kaldır"
 
 #: key/init.c:76
-#, fuzzy
 msgid "unmacro { * | <map>[,<map> ... ] } [ <key> ]"
-msgstr "unmacro { * | <menü> [,<menü> ... ] } [ <düğme> ]"
+msgstr "unmacro { * | <eşlem>[,<eşlem> ... ] } [ <düğme> ]"
 
 #: key/init.c:240
 msgid "Abort key is not set, defaulting to Ctrl-G"
@@ -6207,18 +6167,16 @@ msgid "Run a Lua expression or call a Lua function"
 msgstr "Lua işlevi çağır veya Lua ifadesi çalıştır"
 
 #: lua/commands.c:153
-#, fuzzy
 msgid "lua <lua-command>"
-msgstr "lua '<lua-komutları>'"
+msgstr "lua <lua-komutu>"
 
 #: lua/commands.c:156
 msgid "Execute a Lua script file"
 msgstr "Lua betiği yürüt"
 
 #: lua/commands.c:157
-#, fuzzy
 msgid "lua-source <filename>"
-msgstr "source <dosya-adı>"
+msgstr "lua-source <dosya-adı>"
 
 #: lua/lua.c:458
 msgid "Error: Couldn't load the lua interpreter"
@@ -6846,11 +6804,11 @@ msgstr "Eksik bir anahtar veya sertifikadan dolayı doğrulama yapılamıyor\n"
 
 #: ncrypt/crypt_gpgme.c:1184
 msgid "The CRL is not available\n"
-msgstr "CRL mevcut değil\n"
+msgstr "CRL kullanılabilir değil\n"
 
 #: ncrypt/crypt_gpgme.c:1190
 msgid "Available CRL is too old\n"
-msgstr "Mevcut CRL çok eski\n"
+msgstr "Kullanılabilir CRL pek eski\n"
 
 #: ncrypt/crypt_gpgme.c:1195
 msgid "A policy requirement was not met\n"
@@ -7445,7 +7403,7 @@ msgstr "Yayımcı anahtarı bulunamadı: %s\n"
 
 #: ncrypt/gpgme_functions.c:676
 msgid "Error: certification chain too long - stopping here\n"
-msgstr "Hata: Sertifikasyon zinciri çok uzun - burada duruldu\n"
+msgstr "Hata: Sertifikasyon zinciri pek uzun - burada duruldu\n"
 
 #: ncrypt/gpgme_functions.c:687 ncrypt/pgp_functions.c:175
 #, c-format
@@ -7909,7 +7867,7 @@ msgstr "Sonraki"
 
 #: pager/functions.c:57
 msgid "Not available in this menu"
-msgstr "Öge bu menüde mevcut değil"
+msgstr "Öge bu menüde kullanılabilir değil"
 
 #: pager/functions.c:413 pager/functions.c:434 pager/functions.c:507
 #: pager/functions.c:528
@@ -8118,16 +8076,15 @@ msgstr "TARİHERİMİ"
 #.
 #: pattern/dlg_pattern.c:158
 msgid "GROUP"
-msgstr ""
+msgstr "GRUP"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a message range.
 #. Used by ~m.
 #.
 #: pattern/dlg_pattern.c:165
-#, fuzzy
 msgid "MSGRANGE"
-msgstr "ERİM"
+msgstr "İLETİERİMİ"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -8158,7 +8115,7 @@ msgstr "İFADE"
 #.
 #: pattern/dlg_pattern.c:192
 msgid "STRING"
-msgstr ""
+msgstr "DİZİ"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
@@ -8236,7 +8193,7 @@ msgstr "gövdesi İFADE ile eşleşen iletiler"
 #. L10N: Pattern Completion Menu description for =b
 #: pattern/flags.c:57
 msgid "IMAP: messages whose body contains STRING"
-msgstr ""
+msgstr "gövdesi DİZİ içeren \"IMAP:\" iletileri"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:60
@@ -8246,29 +8203,27 @@ msgstr "gövdesi veya üstbilgisi İFADE ile eşleşen iletiler"
 #. L10N: Pattern Completion Menu description for =B
 #: pattern/flags.c:63
 msgid "IMAP: messages whose body or headers contain STRING"
-msgstr ""
+msgstr "gövdesi veya üstbilgileri DİZİ içeren \"IMAP:\" iletileri"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:66
-#, fuzzy
 msgid "messages whose Cc: header matches REGEX"
-msgstr "kopya üstbilgisi İFADE ile eşleşen iletiler"
+msgstr "\"Cc:\" üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for %c
 #: pattern/flags.c:69
 msgid "messages whose Cc: is a member of GROUP"
-msgstr ""
+msgstr "\"Cc:\" üstbilgisi GRUP'un üyesi olan iletiler"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:72
-#, fuzzy
 msgid "messages whose To:, Cc: or Bcc: header matches REGEX"
-msgstr "alıcısı İFADE ile eşleşen iletiler"
+msgstr "\"To:\", \"Cc:\" veya \"Bcc:\" üstbilgileri İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for %C
 #: pattern/flags.c:75
 msgid "messages whose To:, Cc: or Bcc: is a member of GROUP"
-msgstr ""
+msgstr "\"To:\", \"Cc:\" veya \"Bcc:\" üstbilgileri GRUP'un üyesi olan iletiler"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:78
@@ -8282,14 +8237,13 @@ msgstr "silinen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:84
-#, fuzzy
 msgid "messages whose Sender: header matches REGEX"
-msgstr "gönderen üstbilgisi İFADE ile eşleşen iletiler"
+msgstr "\"Sender:\" üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for %e
 #: pattern/flags.c:87
 msgid "messages whose Sender: is a member of GROUP"
-msgstr ""
+msgstr "\"Sender:\" üstbilgisi GRUP'un üyesi olan iletiler"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:90
@@ -8298,14 +8252,13 @@ msgstr "süresi dolmuş iletiler"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:93
-#, fuzzy
 msgid "messages whose From: header matches REGEX"
-msgstr "kimden üstbilgisi İFADE ile eşleşen iletiler"
+msgstr "\"From:\" üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for %f
 #: pattern/flags.c:96
 msgid "messages whose From: is a member of GROUP"
-msgstr ""
+msgstr "\"From:\" üstbilgisi GRUP'un üyesi olan iletiler"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:99
@@ -8330,37 +8283,33 @@ msgstr "üstbilgisi İFADE ile eşleşen iletiler"
 #. L10N: Pattern Completion Menu description for =h
 #: pattern/flags.c:111
 msgid "IMAP: messages whose header contains STRING"
-msgstr ""
+msgstr "üstbilgisi DİZİ içeren \"IMAP:\" iletileri"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:114
-#, fuzzy
 msgid "messages whose spam header matches REGEX"
-msgstr "istenmeyen etiketi İFADE ile eşleşen iletiler"
+msgstr "istenmeyen üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:117
-#, fuzzy
 msgid "messages whose Message-Id: header matches REGEX"
-msgstr "Message-ID'si İFADE ile eşleşen iletiler"
+msgstr "\"Message-ID\" üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:120
-#, fuzzy
 msgid "messages whose Message-Id: is included in results from $external_search_command"
-msgstr "Message-ID'si dış arama programındaki sonuçlarda içerilen iletiler"
+msgstr ""
+"\"Message-ID\"si $external_search_command sonuçlarında içerilen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:123
-#, fuzzy
 msgid "messages which contain a PGP key"
 msgstr "PGP anahtarı içeren iletiler"
 
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:126
-#, fuzzy
 msgid "messages whose Bcc: header matches REGEX"
-msgstr "gizli kopya üstbilgisi İFADE ile eşleşen iletiler"
+msgstr "\"Bcc:\" üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:129
@@ -8369,14 +8318,13 @@ msgstr "tanıdık posta listelerine hitap eden iletiler"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:132
-#, fuzzy
 msgid "messages whose From:, Sender:, To: or Cc: header matches REGEX"
-msgstr "kimden/gönderici/kime/kopya bilgileri İFADE ile eşleşen iletiler"
+msgstr "\"To:\", \"Cc:\" veya \"Bcc:\" üstbilgileri İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for %L
 #: pattern/flags.c:135
 msgid "messages whose From:, Sender:, To: or Cc: is a member of GROUP"
-msgstr ""
+msgstr "\"To:\", \"Cc:\" veya \"Bcc:\" üstbilgileri GRUP'un üyesi olan iletiler"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:138
@@ -8386,7 +8334,7 @@ msgstr "numarası ERİM içinde olan iletiler"
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:141
 msgid "messages with a Content-Type matching REGEX"
-msgstr "Content-Type'ı İFADE ile eşleşen iletiler"
+msgstr "\"Content-Type\"ı İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:144
@@ -8425,15 +8373,13 @@ msgstr "TARİHERİMİ aralığında alınan iletiler"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:165
-#, fuzzy
 msgid "read messages"
-msgstr "halihazırda okunmuş iletiler"
+msgstr "okunmuş iletiler"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:168
-#, fuzzy
 msgid "messages whose Subject: header matches REGEX"
-msgstr "konu üstbilgisi İFADE ile eşleşen iletiler"
+msgstr "\"Subject:\" üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:171
@@ -8442,14 +8388,13 @@ msgstr "yerine başkası gelen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:174
-#, fuzzy
 msgid "messages whose To: header matches REGEX"
-msgstr "kime üstbilgisi İFADE ile eşleşen iletiler"
+msgstr "\"To:\" üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:177
 msgid "tagged messages"
-msgstr "etiketlenmiş iletiler"
+msgstr "künyelenmiş iletiler"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:180
@@ -8478,9 +8423,9 @@ msgstr "İFADE ile eşleşen haber grupları"
 
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:195
-#, fuzzy
 msgid "messages whose References: or In-Reply-To: header matches REGEX"
-msgstr "başvurular üstbilgisi İFADE ile eşleşen iletiler"
+msgstr ""
+"\"References:\" veya \"In-Reply-To:\" üstbilgileri İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:198
@@ -8489,14 +8434,13 @@ msgstr "ERİM eki olan iletiler"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:201
-#, fuzzy
 msgid "messages whose X-Label: header matches REGEX"
-msgstr "X-Label etiketi İFADE ile eşleşen iletiler"
+msgstr "\"X-Label:\" üstbilgisi İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:204
 msgid "messages whose tags match REGEX"
-msgstr "imleri İFADE ile eşleşen iletiler"
+msgstr "künyeleri İFADE ile eşleşen iletiler"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:207
@@ -8515,9 +8459,8 @@ msgstr "başvurulmamış iletiler"
 
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:216
-#, fuzzy
 msgid "GMail: custom server-side search for STRING"
-msgstr "DİZİ için IMAP özel sunucu tarafı araması"
+msgstr "DİZİ için \"GMail:\" özel sunucu tarafı araması"
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:219
@@ -8746,7 +8689,7 @@ msgstr "Sınırlandırma değişkeni bulunamadı [bu hatayı bildirin]"
 #: send/body.c:345
 #, c-format
 msgid "%s no longer exists"
-msgstr "%s artık mevcut değil"
+msgstr "%s artık yok"
 
 #: send/commands.c:41
 msgid "Add a custom header to outgoing messages"
@@ -8757,7 +8700,6 @@ msgid "my-header <string>"
 msgstr "my-header <dizi>"
 
 #: send/commands.c:45
-#, fuzzy
 msgid "Remove a header previously added with `my-header`"
 msgstr "Daha önceden \"my-header\" ile eklenmiş bir üstbilgiyi kaldır"
 
@@ -9044,9 +8986,8 @@ msgid "Invalid server response"
 msgstr "Geçersiz sunucu yanıtı"
 
 #: sidebar/functions.c:532
-#, fuzzy
 msgid "Sidebar search: "
-msgstr "Ters ara: "
+msgstr "Kenar çubuğu arama: "
 
 #: sidebar/sidebar.c:52
 msgid "Pin a mailbox in the sidebar (keep visible)"
@@ -9069,624 +9010,507 @@ msgstr "sidebar-unpin { * | <kutu> ... }"
 #. Plus two helper modes: shared, all
 #. These should not be translated.
 #: usage.c:60
-#, fuzzy
 msgid "NeoMutt has four modes of operation:"
 msgstr "NeoMutt'ın dört işlem kipi vardır:"
 
 #: usage.c:66
-#, fuzzy
 msgid "The default mode, if no command line arguments are specified, is tui."
 msgstr "Bir komut satırı argümanı sağlanmazsa öntanımlı TUI kipi açılır."
 
 #. L10N: Parameters in <>s may be translated
 #. L10N: Shared Help -- `neomutt --help shared`
 #: usage.c:70 usage.c:131
-#, fuzzy
 msgid "Options that apply to all modes"
 msgstr "Tüm kiplere uyan seçenekler"
 
 #: usage.c:71
-#, fuzzy
 msgid "neomutt -n, --no-system-config       Don't read system config file"
 msgstr "neomutt -n, --no-system-config       Sistem yapılandırma dosyasını okuma"
 
 #: usage.c:72
-#, fuzzy
 msgid "        -F, --config <file>          Use this user config file"
-msgstr "        -F, --config <yapılandırma>  Bu yapılandırma dosyasını kullan"
+msgstr "        -F, --config <dosya>         Bu yapılandırma dosyasını kullan"
 
 #: usage.c:73
-#, fuzzy
 msgid "        -e, --command <command>      Run extra commands"
 msgstr "        -e, --command <komut>        Ek komutlar çalıştır"
 
 #: usage.c:74
-#, fuzzy
 msgid "        -m, --mbox-type <type>       Set default mailbox type"
 msgstr "        -m, --mbox-type <tür>        Öntanımlı posta kutusu türünü ayarla"
 
 #: usage.c:75
-#, fuzzy
 msgid "        -d, --debug-level <level>    Set logging level (1..5)"
 msgstr "        -d, --debug-level <düzey>    Günlükleme düzeyini ayarla (1..5)"
 
 #: usage.c:76
-#, fuzzy
 msgid "        -l, --debug-file <file>      Set logging file"
 msgstr "        -l, --debug-file <dosya>     Günlükleme dosyasını ayarla"
 
 #. L10N: Help Help -- `neomutt --help help`
 #: usage.c:79 usage.c:187
-#, fuzzy
 msgid "Get command line help for NeoMutt"
-msgstr "NeoMutt için komut satırı yardımı al"
+msgstr "NeoMutt için komut satırı yardımı alın"
 
 #: usage.c:80
-#, fuzzy
 msgid "neomutt -h, --help <mode>            Detailed help for a mode"
 msgstr "neomutt -h, --help <kip>             Bir kip için ayrıntılı yardım"
 
 #: usage.c:81
-#, fuzzy
 msgid "        -v, --version                Version"
-msgstr "        -v, --version\t             Sürüm veya lisans"
+msgstr "        -v, --version                Sürüm"
 
 #: usage.c:82
-#, fuzzy
 msgid "        -vv, --license               License"
-msgstr "        -vv, --license               License"
+msgstr "        -vv, --license               Lisans"
 
 #. L10N: Info Help -- `neomutt --help info`
 #: usage.c:85 usage.c:214
-#, fuzzy
 msgid "Ask NeoMutt for config information"
 msgstr "Yapılandırma bilgisini NeoMutt'a sorun"
 
 #: usage.c:86
-#, fuzzy
 msgid "neomutt -A, --alias <alias> [...]             Lookup email aliases"
-msgstr "neomutt -A <arma> [...]                       E-posta armalarını ara"
+msgstr "neomutt -A, --alias <arma> [...]              E-posta armalarını ara"
 
 #: usage.c:87
-#, fuzzy
 msgid "        -D, --dump-config [-O] [-S]           Dump the config"
 msgstr "        -D, --dump-config [-O] [-S]           Yapılandırmayı dök"
 
 #: usage.c:88
-#, fuzzy
 msgid "        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"
-msgstr "        -DD, --dump-changed-config [-O] [-S]  Dump the changed config options"
+msgstr "        -DD, --dump-changed-config [-O] [-S]  Değişmiş seçenekleri dök"
 
 #: usage.c:89
-#, fuzzy
 msgid "        -Q, --query <option> [...] [-O] [-S]  Query config options"
-msgstr "        -Q, --query <seçenek> [...] [-O] [-S] Yapılandırma seçeneklerini sorgula"
+msgstr "        -Q, --query <seçenek> [...] [-O] [-S] Seçenekleri sorgula"
 
 #: usage.c:90
-#, fuzzy
 msgid "        -O, --with-docs                       Add one-liner documentation"
-msgstr "        -O, --with-docs                       Add one-liner documentation"
+msgstr "        -O, --with-docs                       Tek satırlık bilgi ekle"
 
 #: usage.c:91
-#, fuzzy
 msgid "        -S, --hide-sensitive                  Hide sensitive option values"
-msgstr "        -S, --hide-sensitive                  Hide sensitive option values"
+msgstr "        -S, --hide-sensitive                  Hassas değerleri gizle"
 
 #. L10N: Sending Help -- `neomutt --help send`
 #: usage.c:94 usage.c:253
-#, fuzzy
 msgid "Send an email from the command line"
 msgstr "Komut satırından bir e-posta gönderin"
 
 #: usage.c:95
-#, fuzzy
 msgid "neomutt -a, --attach <file> [...]    Attach files"
 msgstr "neomutt -a, --attach <dosya> [...]   Dosyalar iliştir"
 
 #: usage.c:96
-#, fuzzy
 msgid "        -b, --bcc <address>          Add Bcc: address"
-msgstr "        -b, --bcc <adres>            Gizli kopya: adresi ekle"
+msgstr "        -b, --bcc <adres>            Bcc: (gizli kopya) adresi ekle"
 
 #: usage.c:97
-#, fuzzy
 msgid "        -C, --crypto                 Use crypto (signing/encryption)"
 msgstr "        -C, --crypto                 Kripto kullan (imza/şifre)"
 
 #: usage.c:98
-#, fuzzy
 msgid "        -c, --cc <address>           Add Cc: address"
-msgstr "        -c, --cc <adres>             Kopya: adresi ekle"
+msgstr "        -c, --cc <adres>             Cc: (kopya) adresi ekle"
 
 #: usage.c:99
-#, fuzzy
 msgid "        -E, --edit-message           Edit message (draft/include)"
-msgstr "        -E, --edit-message           İletiyi düzenle"
+msgstr "        -E, --edit-message           İletiyi düzenle (taslak/içer)"
 
 #: usage.c:100
-#, fuzzy
 msgid "        -H, --draft <file>           Use draft email file"
 msgstr "        -H, --draft <taslak>         Taslak e-postayı kullan"
 
 #: usage.c:101
-#, fuzzy
 msgid "        -i, --include <file>         Include body file"
-msgstr "        -i, --include <içer>         Gövde dosyası içer"
+msgstr "        -i, --include <dosya>        Gövde dosyası içer"
 
 #: usage.c:102
-#, fuzzy
 msgid "        -s, --subject <subject>      Set Subject:"
-msgstr "        -s, --subject <konu>         Konu: ayarla"
+msgstr "        -s, --subject <konu>         Subject: (konuyu) ayarla"
 
 #: usage.c:103
-#, fuzzy
 msgid "        -- <address> [...]           Add To: addresses"
-msgstr "        -- <adres> [...]             Kime: adresi ekle"
+msgstr "        -- <adres> [...]             To: (kime) adresi ekle"
 
 #. L10N: TUI Help -- `neomutt --help tui`
 #: usage.c:106 usage.c:297
-#, fuzzy
 msgid "Start NeoMutt's TUI (Terminal User Interface)"
-msgstr "NeoMutt'ın Uçbirim Kullanıcı Arayüzü'nü (TUI) başlat"
+msgstr "NeoMutt'ın Uçbirim Kullanıcı Arayüzü'nü (TUI) başlatın"
 
 #: usage.c:107
-#, fuzzy
 msgid "neomutt                              Start NeoMutt's TUI"
 msgstr "neomutt                              NeoMutt'ın TUI'sini başlat"
 
 #: usage.c:108
-#, fuzzy
 msgid "        -f, --folder <mailbox>       Open this mailbox"
 msgstr "        -f, --folder <kutu>          Bu posta kutusunu aç"
 
 #: usage.c:109
-#, fuzzy
 msgid "        -G, --nntp-browser           Open NNTP browser"
 msgstr "        -G, --nntp-browser           NNTP tarayıcısını aç"
 
 #: usage.c:110
-#, fuzzy
 msgid "        -g, --nntp-server <server>   Use this NNTP server"
 msgstr "        -g, --nntp-server <sunucu>   Bu NNTP sunucusunu kullan"
 
 #: usage.c:111
-#, fuzzy
 msgid "        -p, --postponed              Resume postponed email"
 msgstr "        -p, --postponed              Ertelenen postayı sürdür"
 
 #: usage.c:112
-#, fuzzy
 msgid "        -R, --read-only              Open mailbox read-only"
 msgstr "        -R, --read-only              Posta kutusunu saltokunur aç"
 
 #: usage.c:113
-#, fuzzy
 msgid "        -y, --browser                Open mailbox browser"
 msgstr "        -y, --browser                Posta kutusu tarayıcısını aç"
 
 #: usage.c:114
-#, fuzzy
 msgid "        -Z, --check-new-mail         Check for new mail"
 msgstr "        -Z, --check-new-mail         Yeni postayı denetle"
 
 #: usage.c:115
-#, fuzzy
 msgid "        -z, --check-any-mail         Check for any mail"
 msgstr "        -z, --check-any-mail         Herhangi bir postayı denetle"
 
 #: usage.c:119 usage.c:121
-#, fuzzy
 msgid "For detailed help, run:"
 msgstr "Ayrıntılı yardım için şunu çalıştırın:"
 
 #: usage.c:134
-#, fuzzy
 msgid "By default NeoMutt loads one system and one user config file,"
-msgstr "Öntanımlı olarak NeoMutt, bir sistem ve bir kullanıcı yapılandırması yükler."
+msgstr ""
+"Öntanımlı olarak NeoMutt, bir sistem ve bir kullanıcı yapılandırması yükler."
 
 #: usage.c:135
-#, fuzzy
 msgid "e.g. /etc/neomuttrc and ~/.neomuttrc"
 msgstr "örneğin, /etc/neomuttrc ve ~/.neomuttrc"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:138
-#, fuzzy
 msgid "  -n, --no-system-config      Don't read system config file"
 msgstr "  -n, --no-system-config      Sistem yapılandırma dosyasını okuma"
 
 #: usage.c:139
-#, fuzzy
 msgid "  -F, --config <file>         Use this user config file"
 msgstr "  -F, --config <dosya>        Bu yapılandırma dosyasını kullan"
 
 #: usage.c:140 usage.c:147
-#, fuzzy
 msgid "                              May be used multiple times"
 msgstr "                              Birden çok kez kullanılabilir"
 
 #: usage.c:143
-#, fuzzy
 msgid "These options override the config:"
 msgstr "Bu seçenekler, yapılandırmayı geçersiz kılar:"
 
 #: usage.c:144
-#, fuzzy
 msgid "  -m, --mbox-type <type>      Set default mailbox type"
 msgstr "  -m, --mbox-type <tür>       Öntanımlı posta kutusu türünü ayarla"
 
 #: usage.c:145
-#, fuzzy
 msgid "                              May be: maildir, mbox, mh, mmdf"
 msgstr "                              Şunlar olabilir: maildir, mbox, mh, mmdf"
 
 #: usage.c:146
-#, fuzzy
 msgid "  -e, --command <command>     Run extra commands"
 msgstr "  -e, --command <komut>       Ek komutlar çalıştır"
 
 #: usage.c:150
-#, fuzzy
 msgid "These logging options override the config:"
 msgstr "Bu günlükleme seçenekleri, yapılandırmayı geçersiz kılabilir:"
 
 #: usage.c:151
-#, fuzzy
 msgid "  -d, --debug-level <level>   Set logging level"
 msgstr "  -d, --debug-level <düzey>   Günlükleme düzeyini ayarla"
 
 #: usage.c:152
-#, fuzzy
 msgid "                              0 (off), 1 (low) .. 5 (high)"
 msgstr "                              0 (kapalı), 1 (düşük) .. 5 (yüksek)"
 
 #: usage.c:153
-#, fuzzy
 msgid "  -l, --debug-file <file>     Set logging file"
 msgstr "  -l, --debug-file <dosya>    Günlükleme dosyası ayarla"
 
 #: usage.c:154
-#, fuzzy
 msgid "                              Default file '~/.neomuttdebug0'"
-msgstr "                              Öntanımlı dosya '~/.neomuttdebug0'dır"
+msgstr "                              Öntanımlı dosya \"~/.neomuttdebug0\"dır"
 
 #: usage.c:158 usage.c:160 usage.c:198 usage.c:200 usage.c:235 usage.c:237
 #: usage.c:279 usage.c:281 usage.c:321 usage.c:323
-#, fuzzy
 msgid "Examples:"
 msgstr "Örnekler:"
 
 #. L10N: Examples: Filenames may be translated
 #: usage.c:163
-#, fuzzy
 msgid "  neomutt --no-system-config"
 msgstr "  neomutt --no-system-config"
 
 #: usage.c:164
-#, fuzzy
 msgid "  neomutt --config work.rc"
 msgstr "  neomutt --config iş.rc"
 
 #: usage.c:165
-#, fuzzy
 msgid "  neomutt --config work.rc --config colours.rc"
 msgstr "  neomutt --config iş.rc --config renkler.rc"
 
 #: usage.c:168
-#, fuzzy
 msgid "  neomutt --mbox-type maildir"
 msgstr "  neomutt --mbox-type maildir"
 
 #: usage.c:169
-#, fuzzy
 msgid "  neomutt --command 'set ask_cc = yes'"
 msgstr "  neomutt --command 'set ask_cc = yes'"
 
 #: usage.c:172
-#, fuzzy
 msgid "  neomutt --debug-level 2"
 msgstr "  neomutt --debug-level 2"
 
 #: usage.c:173
-#, fuzzy
 msgid "  neomutt --debug-level 5 --debug-file neolog"
 msgstr "  neomutt --debug-level 5 --debug-file neolog"
 
 #: usage.c:176
-#, fuzzy
 msgid "See also:"
 msgstr "Ayrıca bakınız:"
 
 #: usage.c:177
-#, fuzzy
 msgid "- Config files: https://neomutt.org/guide/configuration"
 msgstr "- Yapılandırma dosyaları: https://neomutt.org/guide/configuration"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:191
-#, fuzzy
 msgid "  -h, --help           Overview of command line options"
 msgstr "  -h, --help           Komut satırı seçeneklerine genel bakış"
 
 #: usage.c:192
-#, fuzzy
 msgid "  -h, --help <mode>    Detailed help for: shared, help, info, send, tui, all"
 msgstr "  -h, --help <kip>     Ayrıntılı yardım: shared, help, info, send, tui, all"
 
 #: usage.c:193
-#, fuzzy
 msgid "  -v, --version        NeoMutt version and build parameters"
 msgstr "  -v, --version        NeoMutt sürümü ve yapı parametreleri"
 
 #: usage.c:194
-#, fuzzy
 msgid "  -vv, --license       NeoMutt Copyright and license"
 msgstr "  -vv, --license       NeoMutt telif hakkı ve lisansı"
 
 #. L10N: Examples
 #: usage.c:203
-#, fuzzy
 msgid "  neomutt --help info"
 msgstr "  neomutt --help info"
 
 #: usage.c:204
-#, fuzzy
 msgid "  neomutt --license"
 msgstr "  neomutt --license"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:218
-#, fuzzy
 msgid "  -A, --alias <alias> [...]   Lookup email aliases"
-msgstr "  -A, --alias <arma> [...]    E-posta adresini ara"
+msgstr "  -A, --alias <arma> [...]    E-posta armalarını ara"
 
 #: usage.c:219
-#, fuzzy
 msgid "                              Multiple aliases can be looked up (space-separated)"
 msgstr "                              Birden çok arma aranabilir (boşlukla ayırın)"
 
 #: usage.c:222
-#, fuzzy
 msgid "  -D, --dump-config           Dump all the config options"
 msgstr "  -D, --dump-config           Tüm yapılandıma seçeneklerini dök"
 
 #: usage.c:223
-#, fuzzy
 msgid "  -DD, --dump-changed-config  Dump the changed config options"
-msgstr "  -DD, --dump-changed-config  -D gibi; ancak değiştirileni gösterir"
+msgstr "  -DD, --dump-changed-config  Değiştirilmiş seçenekleri dök"
 
 #: usage.c:226
-#, fuzzy
 msgid "  -Q, --query <option> [...]  Query config options"
-msgstr "  -Q, --query <sçnk> [...]    Yapılandırma seçeneklerini ara"
+msgstr "  -Q, --query <seçenek> [...] Yapılandırma seçeneklerini sorgula"
 
 #: usage.c:227
-#, fuzzy
 msgid "                              Multiple options can be looked up (space-separated)"
 msgstr "                              Birden çok seçenek aranabilir (boşlukla ayırın)"
 
 #: usage.c:229
-#, fuzzy
 msgid "Modify the -D and -Q options:"
 msgstr "-D ve -Q seçeneklerinde değişiklik yapın:"
 
 #: usage.c:230
-#, fuzzy
 msgid "  -O, --with-docs             Add one-liner documentation"
-msgstr "  -O, --with-docs             Tek satırlık belgelendirme ekle"
+msgstr "  -O, --with-docs             Tek satırlık bilgi ekle"
 
 #: usage.c:231
-#, fuzzy
 msgid "  -S, --hide-sensitive        Hide the value of sensitive options"
 msgstr "  -S, --hide-sensitive        Hassas seçeneklerin değerini gizle"
 
 #. L10N: Examples
 #: usage.c:240
-#, fuzzy
 msgid "  neomutt --alias flatcap gahr"
-msgstr "  neomutt -A bilge ayça"
+msgstr "  neomutt --alias bilge ayça"
 
 #: usage.c:241
-#, fuzzy
 msgid "  neomutt --dump-config --with-docs"
 msgstr "  neomutt --dump-config --with-docs"
 
 #: usage.c:242
-#, fuzzy
 msgid "  neomutt --dump-changed-config --hide-sensitive"
 msgstr "  neomutt --dump-changed-config --hide-sensitive"
 
 #: usage.c:243
-#, fuzzy
 msgid "  neomutt --with-docs --query alias_format index_format"
 msgstr "  neomutt --with-docs --query alias_format index_format"
 
 #: usage.c:256
-#, fuzzy
 msgid "These options can supply everything NeoMutt needs to send an email."
-msgstr "Bunlar, NeoMutt'ın bir e-posta gönderebilmesi için gerekli her şeyi sağlar."
+msgstr ""
+"Bu seçenekler, NeoMutt'ın e-posta gönderebilmesi için gerekli her şeyi sağlar."
 
 #: usage.c:257
-#, fuzzy
 msgid "If any parts are missing, NeoMutt will start the TUI to ask for them."
 msgstr "Eksik bir kısım varsa NeoMutt onları sormak için TUI'yi başlatır."
 
 #: usage.c:258
-#, fuzzy
 msgid "Addresses may be used before the options, or after a -- marker."
-msgstr "Adresler seçeneklerden önce veya -- imleyicisinden sonra kullanılabilir."
+msgstr ""
+"Adresler seçeneklerden önce veya -- imleyicisinden sonra kullanılabilir."
 
 #: usage.c:259
-#, fuzzy
 msgid "Aliases may be used in place of addresses."
 msgstr "Adreslerin yerine armalar kullanılabilir."
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:263
-#, fuzzy
 msgid "  -a, --attach <file> [...]   Attach files"
 msgstr "  -a, --attach <dosya> [...]  Dosyalar iliştir"
 
 #: usage.c:264
-#, fuzzy
 msgid "                              Terminated by -- or another option"
 msgstr "                              -- veya başka bir seçenekle sonlandırılır"
 
 #: usage.c:265
-#, fuzzy
 msgid "  -b, --bcc <address>         Add Bcc: address"
-msgstr "  -b, --bcc <adres>           Gizli kopya: adresi ekle"
+msgstr "  -b, --bcc <adres>           Bcc: (gizli kopya) adresi ekle"
 
 #: usage.c:266
-#, fuzzy
 msgid "  -C, --crypto                Use crypto (signing/encryption)"
 msgstr "  -C, --crypto                Kripto kullan (imza/şifre)"
 
 #: usage.c:267
-#, fuzzy
 msgid "                              Must be set up in the config file"
 msgstr "                              Yapılandırma dosyasında ayarlanmalıdır"
 
 #: usage.c:268
-#, fuzzy
 msgid "  -c, --cc <address>          Add Cc: address"
-msgstr "  -c, --cc <adres>            Kopya: adresi ekle"
+msgstr "  -c, --cc <adres>            Cc: (kopya) adresi ekle"
 
 #: usage.c:269
-#, fuzzy
 msgid "  -E, --edit-message          Edit message (draft/include)"
-msgstr "  -E, --edit-message          İletiyi düzenle"
+msgstr "  -E, --edit-message          İletiyi düzenle (taslak/içer)"
 
 #: usage.c:270
-#, fuzzy
 msgid "                              (supplied by -H or -i)"
 msgstr "                              (-H veya -i ile sağlanır)"
 
 #: usage.c:271
-#, fuzzy
 msgid "  -H, --draft <file>          Use draft email file"
-msgstr "  -H, --draft <taslak>        Taslak e-postayı kullan"
+msgstr "  -H, --draft <dosya>         Taslak e-postayı kullan"
 
 #: usage.c:272
-#, fuzzy
 msgid "                              Full email with headers and body"
 msgstr "                              Üstbilgi ve gövde ile tam e-posta"
 
 #: usage.c:273
-#, fuzzy
 msgid "  -i, --include <file>        Include body file"
-msgstr "  -i, --include <içer>        Gövde dosyası içer"
+msgstr "  -i, --include <dosya>       Gövde dosyası içer"
 
 #: usage.c:274
-#, fuzzy
 msgid "  -s, --subject <subject>     Set Subject:"
-msgstr "  -s, --subject <konu>        Konu: ayarla"
+msgstr "  -s, --subject <konu>        Subject: (konuyu) ayarla"
 
 #: usage.c:275
-#, fuzzy
 msgid "  -- <address> [...]          Add To: addresses"
-msgstr "  -- <adres> [...]            Kime: adresi ekle"
+msgstr "  -- <adres> [...]            To: (kime) adresi ekle"
 
 #. L10N: Examples: Filenames and email subjects may be translated
 #: usage.c:284
-#, fuzzy
 msgid "  neomutt flatcap --subject 'Meeting' < meeting.txt"
 msgstr "  neomutt hakan --subject 'Toplantı' < toplantı.txt"
 
 #: usage.c:285
-#, fuzzy
 msgid "  neomutt jim@example.com --cc bob@example.com --subject 'Party' --include party.txt"
-msgstr "  neomutt aylin@örnek.com --cc aysu@örnek.com -s 'Parti' --include parti.txt"
+msgstr "  neomutt aylin@örnek.com --cc aysu@örnek.com --subject 'Parti' --include parti.txt"
 
 #: usage.c:286
-#, fuzzy
 msgid "  neomutt --subject 'Receipts' --attach receipt1.pdf receipt2.pdf -- rocco"
-msgstr "  neomutt -s 'Makbuzlar' --attach makbuz1.pdf makbuz2.pdf -- patron"
+msgstr "  neomutt --subject 'Makbuzlar' --attach makbuz1.pdf makbuz2.pdf -- patron"
 
 #: usage.c:287
-#, fuzzy
 msgid "  cat secret.txt | neomutt gahr --subject 'Secret' --crypto"
 msgstr "  cat gizli.txt | neomutt umay --subject 'Gizli' --crypto"
 
 #: usage.c:300
-#, fuzzy
 msgid "Running NeoMutt with no options will read the config and start the TUI."
-msgstr "NeoMutt'ı seçenek olmadan çalıştırmak yapılandırmayı okur ve TUI'yi başlatır."
+msgstr ""
+"NeoMutt'ı seçenek vermeden çalıştırmak yapılandırmayı okur ve TUI'yi başlatır."
 
 #: usage.c:301
-#, fuzzy
 msgid "By default, it will open the Index Dialog with the $spool_file Mailbox."
 msgstr "Öntanımlı olarak, $spool_file posta kutusuyla indeks penceresini açar."
 
 #: usage.c:304
-#, fuzzy
 msgid "These options cause NeoMutt to check a mailbox for mail."
 msgstr "Bu seçenekler, NeoMutt'ın posta için posta kutusunu denetlemesini sağlar."
 
 #: usage.c:305
-#, fuzzy
 msgid "If the condition isn't matched, NeoMutt exits."
 msgstr "Koşul eşleşmezse NeoMutt çıkar."
 
 #: usage.c:306
-#, fuzzy
 msgid "  -p, --postponed       Resume postponed email"
 msgstr "  -p, --postponed       Ertelenen postayı sürdür"
 
 #: usage.c:307
-#, fuzzy
 msgid "  -Z, --check-new-mail  Check for new mail"
 msgstr "  -Z, --check-new-mail  Yeni postayı denetle"
 
 #: usage.c:308
-#, fuzzy
 msgid "  -z, --check-any-mail  Check for any mail"
 msgstr "  -z, --check-any-mail  Herhangi bir postayı denetle"
 
 #. L10N: Parameters in <>s may be translated
 #: usage.c:312
-#, fuzzy
 msgid "These options change the starting behavior:"
 msgstr "Bu seçenekler, başlatma davranışını değiştirir:"
 
 #: usage.c:313
-#, fuzzy
 msgid "  -f, --folder <mailbox>      Open this mailbox"
 msgstr "  -f, --folder <kutu>         Bu posta kutusunu aç"
 
 #: usage.c:314
-#, fuzzy
 msgid "  -G, --nntp-browser          Open NNTP browser"
 msgstr "  -G, --nntp-browser          NNTP tarayıcısını aç"
 
 #: usage.c:315
-#, fuzzy
 msgid "  -g, --nntp-server <server>  Use this NNTP server"
 msgstr "  -g, --nntp-server <sunucu>  Bu NNTP sunucusunu kullan"
 
 #: usage.c:316
-#, fuzzy
 msgid "  -R, --read-only             Open mailbox read-only"
 msgstr "  -R, --read-only             Posta kutusunu saltokunur aç"
 
 #: usage.c:317
-#, fuzzy
 msgid "  -y, --browser               Open mailbox browser"
 msgstr "  -y, --browser               Posta kutusu tarayıcısını aç"
 
 #. L10N: Examples: Path may be translated
 #: usage.c:326
-#, fuzzy
 msgid "  neomutt --folder ~/mail --check-new-mail"
 msgstr "  neomutt --folder ~/mail --check-new-mail"
 
 #: usage.c:327
-#, fuzzy
 msgid "  neomutt --postponed"
 msgstr "  neomutt --postponed"
 
 #: usage.c:328
-#, fuzzy
 msgid "  neomutt --browser"
 msgstr "  neomutt --browser"
 
@@ -9747,6 +9571,7 @@ msgstr "Telif hakkı (C) 2015-2026 Richard Russon ve diğerleri"
 #: version.c:111
 msgid "NeoMutt is free software, provided without warranty: `neomutt -vv` for details"
 msgstr ""
+"NeoMutt; garantisiz, ücretsiz bir yazılımdır; ayrıntılar için \"neomutt -vv\""
 
 #: version.c:671
 msgid "Compile options:"
