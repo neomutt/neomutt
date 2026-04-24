@@ -439,7 +439,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
   return 0;
 }
 
-int mutt_parent_message(struct Email *e, bool find_root)
+int mutt_parent_message(struct Email *e, bool find_root, int count)
 {
   return 0;
 }
