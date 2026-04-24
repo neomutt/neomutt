@@ -115,9 +115,12 @@ static int op_tag(struct Menu *menu, int op, int count)
     }
 
     const bool c_resolve = cs_subset_bool(menu->sub, "resolve");
-    if ((tag_count > 0) && c_resolve && (menu->current + tag_count < menu->max))
+    if ((tag_count > 0) && c_resolve)
     {
-      menu_set_index(menu, menu->current + tag_count);
+      int next_index = menu->current + tag_count;
+      if (next_index >= menu->max)
+        next_index = menu->max - 1;
+      menu_set_index(menu, next_index);
       menu->redraw |= MENU_REDRAW_INDEX;
     }
     else
