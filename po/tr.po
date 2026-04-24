@@ -3193,25 +3193,25 @@ msgstr "Karakter = %s, Sekizlik = %o, Onluk = %d\n"
 #. Compose Dialog: <op_attach_attach_file>
 #: gui/opcodes.h:42
 msgid "Attach files to this message"
-msgstr "Bu iletiye dosya ekle"
+msgstr "İletiye dosya iliştir"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:45
 msgid "Attach messages to this message"
-msgstr "Bu iletiye ileti ekle"
+msgstr "İletiye ileti iliştir"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_NEWS_MESSAGE
 #. Compose Dialog: <op_attach_attach_message>
 #: gui/opcodes.h:48
 msgid "Attach news articles to this message"
-msgstr "Bu iletiye haber yazıları ekle"
+msgstr "İletiye haber yazıları ekle"
 
 #. L10N: Help screen description for OP_ATTACH_COLLAPSE
 #. Attach Dialog: <op_attach_collapse>
 #: gui/opcodes.h:51
 msgid "Toggle display of subparts"
-msgstr "Alt bölümlerin görüntülenmesini aç/kapat"
+msgstr "Alt kısımları aç/kapat"
 
 #. L10N: Help screen description for OP_ATTACH_DELETE
 #. Attach Dialog: <op_attach_delete>
@@ -3229,7 +3229,7 @@ msgstr "Geçerli girdiyi sil"
 #. Compose Dialog: <op_attach_edit_content_id>
 #: gui/opcodes.h:60
 msgid "Edit the 'Content-ID' of the attachment"
-msgstr "Posta ekinin 'Content-ID'sini düzenle"
+msgstr "Posta eki 'Content-ID'sini düzenle"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attach_edit_description>
@@ -3247,13 +3247,13 @@ msgstr "Posta eki aktarım kodlamasını düzenle"
 #. Compose Dialog: <op_attach_edit_language>
 #: gui/opcodes.h:69
 msgid "Edit the 'Content-Language' of the attachment"
-msgstr "Posta ekinin 'Content-Language'ini düzenle"
+msgstr "Ekin 'Content-Language'ini düzenle"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_MIME
 #. Compose Dialog: <op_attach_edit_mime>
 #: gui/opcodes.h:72
 msgid "Edit attachment using mailcap entry"
-msgstr "Mailcap girdisini kullanarak posta ekini düzenle"
+msgstr "\"mailcap\"i kullanarak eki düzenle"
 
 #. L10N: Help screen description for OP_ATTACH_EDIT_TYPE
 #. Attach Dialog: <op_attach_edit_type>
@@ -3279,37 +3279,37 @@ msgstr "Posta ekinin geçici bir kopyasını al"
 #. Compose Dialog: <op_attach_group_alts>
 #: gui/opcodes.h:86
 msgid "Group tagged attachments as 'multipart/alternative'"
-msgstr "Imlenen posta eklerini 'multipart/alternative' olarak grupla"
+msgstr "Künyeli ekleri 'multipart/alternative' olarak grupla"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_LINGUAL
 #. Compose Dialog: <op_attach_group_lingual>
 #: gui/opcodes.h:89
 msgid "Group tagged attachments as 'multipart/multilingual'"
-msgstr "Imlenen posta eklerini 'multipart/multilingual' olarak grupla"
+msgstr "Künyeli ekleri 'multipart/multilingual' olarak grupla"
 
 #. L10N: Help screen description for OP_ATTACH_GROUP_RELATED
 #. Compose Dialog: <op_attach_group_related>
 #: gui/opcodes.h:92
 msgid "Group tagged attachments as 'multipart/related'"
-msgstr "Imlenen posta eklerini 'multipart/related' olarak grupla"
+msgstr "Künyeli ekleri 'multipart/related' olarak grupla"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_DOWN
 #. Compose Dialog: <op_attach_move_down>
 #: gui/opcodes.h:95
 msgid "Move an attachment down in the attachment list"
-msgstr "Bir posta ekini, ek listesinde aşağı taşı"
+msgstr "Posta ekini ek listesinde aşağı taşı"
 
 #. L10N: Help screen description for OP_ATTACH_MOVE_UP
 #. Compose Dialog: <op_attach_move_up>
 #: gui/opcodes.h:98
 msgid "Move an attachment up in the attachment list"
-msgstr "Bir posta ekini, ek listesinde yukarı taşı"
+msgstr "Posta ekini ek listesinde yukarı taşı"
 
 #. L10N: Help screen description for OP_ATTACH_NEW_MIME
 #. Compose Dialog: <op_attach_new_mime>
 #: gui/opcodes.h:101
 msgid "Compose new attachment using mailcap entry"
-msgstr "Mailcap girdisini kullanarak yeni bir ek oluştur"
+msgstr "\"mailcap\"i kullanarak yeni ek yap"
 
 #. L10N: Help screen description for OP_ATTACH_PIPE
 #. L10N: Help screen description for OP_PIPE
@@ -3318,7 +3318,7 @@ msgstr "Mailcap girdisini kullanarak yeni bir ek oluştur"
 #. Index: <op_pipe>
 #: gui/opcodes.h:103 gui/opcodes.h:681
 msgid "Pipe message/attachment to a shell command"
-msgstr "Iletiyi/eki kabuk komutuna veriyolu yap"
+msgstr "İletiyi/eki komuta veriyolu yap"
 
 #. L10N: Help screen description for OP_ATTACH_PRINT
 #. Attach Dialog: <op_attach_print>
@@ -3327,7 +3327,7 @@ msgstr "Iletiyi/eki kabuk komutuna veriyolu yap"
 #. Index: <op_print>
 #: gui/opcodes.h:107 gui/opcodes.h:699
 msgid "Print the current entry"
-msgstr "Geçerli ögeyi yazdır"
+msgstr "Geçerli girdiyi yazdır"
 
 #. L10N: Help screen description for OP_ATTACH_RENAME_ATTACHMENT
 #. Compose Dialog: <op_attach_rename_attachment>
@@ -3343,25 +3343,25 @@ msgstr "Posta ekini başka bir adla gönder"
 #. Pager: <op_save>
 #: gui/opcodes.h:114 gui/opcodes.h:742
 msgid "Save message/attachment to a mailbox/file"
-msgstr "Iletiyi/eki kutuya/dosyaya kaydet"
+msgstr "İletiyi/eki kutuya/dosyaya kaydet"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attach_toggle_disposition>
 #: gui/opcodes.h:117
 msgid "Toggle disposition between inline/attachment"
-msgstr "Satıriçi/ek olarak dispozisyon kipleri arasında geçiş yap"
+msgstr "Satıriçi/ek dispozisyonu geçişi yap"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_RECODE
 #. Compose Dialog: <op_attach_toggle_recode>
 #: gui/opcodes.h:120
 msgid "Toggle recoding of this attachment"
-msgstr "Bu ekin yeniden kodlanma özelliğini aç/kapat"
+msgstr "Eki yeniden kodlamayı aç/kapat"
 
 #. L10N: Help screen description for OP_ATTACH_TOGGLE_UNLINK
 #. Compose Dialog: <op_attach_toggle_unlink>
 #: gui/opcodes.h:123
 msgid "Toggle whether to delete file after sending it"
-msgstr "Dosyanın gönderildikten sonra silinmesi özelliğini aç/kapat"
+msgstr "Gönderme ile dosya silmeyi aç/kapat"
 
 #. L10N: Help screen description for OP_ATTACH_UNDELETE
 #. Attach Dialog: <op_attach_undelete>
@@ -3371,13 +3371,13 @@ msgstr "Dosyanın gönderildikten sonra silinmesi özelliğini aç/kapat"
 #. Index: <op_undelete>
 #: gui/opcodes.h:126 gui/opcodes.h:828
 msgid "Undelete the current entry"
-msgstr "Geçerli ögeyi kurtar"
+msgstr "Geçerli girdiyi kurtar"
 
 #. L10N: Help screen description for OP_ATTACH_UNGROUP
 #. Compose Dialog: <op_attach_ungroup>
 #: gui/opcodes.h:129
 msgid "Ungroup 'multipart' attachment"
-msgstr "'multipart' posta ekini gruptan çıkar"
+msgstr "\"multipart\" eki gruptan çıkar"
 
 #. L10N: Help screen description for OP_ATTACH_UPDATE_ENCODING
 #. Compose Dialog: <op_attach_update_encoding>
@@ -3390,21 +3390,21 @@ msgstr "Eke ait kodlama bilgisini güncelle"
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:136
 msgid "View attachment using mailcap entry if necessary"
-msgstr "Posta ekini gerekiyorsa mailcap kaydını kullanarak görüntüle"
+msgstr "Eki gerekiyorsa mailcap ile görüntüle"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_MAILCAP
 #. Attach Dialog: <op_attach_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:140
 msgid "Force viewing of attachment using mailcap"
-msgstr "Mailcap kullanarak ekin görüntülenmesini sağla"
+msgstr "Eki mailcap ile görüntülemeyi zorla"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_PAGER
 #. Attach Dialog: <op_attach_view_pager>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:144
 msgid "View attachment in pager using copiousoutput mailcap"
-msgstr "Copiousoutput mailcap kullanarak eki sayfalayıcıda görüntüle"
+msgstr "copiousoutput mailcap ile eki sayfala"
 
 #. L10N: Help screen description for OP_ATTACH_VIEW_TEXT
 #. Attach Dialog: <op_attach_view_text>
@@ -3417,13 +3417,13 @@ msgstr "Eki metin olarak göster"
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:151
 msgid "Show the next page of the message"
-msgstr "Iletinin sonraki sayfasını göster"
+msgstr "İletinin sonraki sayfasını göster"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:154
 msgid "Show the previous page of the message"
-msgstr "Iletinin önceki sayfasını göster"
+msgstr "İletinin önceki sayfasını göster"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
@@ -3453,13 +3453,13 @@ msgstr "Geçerli hesabı etkin/devre dışı yap"
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
 #: gui/opcodes.h:172
 msgid "Toggle the current account prefer-encrypt flag"
-msgstr "Geçerli hesabın prefer-encrypt bayrağını aç/kapat"
+msgstr "Geçerli hesap prefer-encrypt aç/kapat"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
 #: gui/opcodes.h:175
 msgid "Show autocrypt compose menu options"
-msgstr "Autocrypt oluştur menü seçeneklerini göster"
+msgstr "autocrypt oluştur seçeneğini göster"
 
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
@@ -3471,20 +3471,20 @@ msgstr "Armalar iletişim kutusunu aç"
 #. Menu: <menu_movement>
 #: gui/opcodes.h:186
 msgid "Move to the bottom of the page"
-msgstr "Sayfanın sonuna geç"
+msgstr "Sayfanın sonuna git"
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
 #: gui/opcodes.h:190
 msgid "Remail a message to another user"
-msgstr "Iletiyi başka bir kullanıcıya yeniden gönder"
+msgstr "İletiyi başkasına yeniden gönder"
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:193
 msgid "Swap the current folder position with $folder if it exists"
-msgstr "Varsa geçerli klasör konumunu $folder ile değiştir"
+msgstr "Varsa geçerli konumu $folder yap"
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
@@ -3496,7 +3496,7 @@ msgstr "Bu dizinde yeni bir dosya seç"
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:199
 msgid "Subscribe to current mbox (IMAP/NNTP only)"
-msgstr "Geçerli mbox'a abone ol (yalnızca IMAP/NNTP)"
+msgstr "Geçerli mbox'a abone ol (IMAP/NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
@@ -3508,26 +3508,26 @@ msgstr "Seçili dosyanın adını göster"
 #. Browser: <op_browser_toggle_lsub>
 #: gui/opcodes.h:205
 msgid "Toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "Görüntüleme kipleri arasında geçiş yap: hepsi/abone olunanlar (yalnızca IMAP)"
+msgstr "Görüntü: Tümü/abone (yalnızca IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
 #: gui/opcodes.h:208
 msgid "Unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "Geçerli mbox aboneliğinden çık (yalnızca IMAP/NNTP)"
+msgstr "mbox aboneliğinden çık (IMAP/NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
 #: gui/opcodes.h:211
 msgid "View file"
-msgstr "Dosya görüntüle"
+msgstr "Dosyayı görüntüle"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
 #: gui/opcodes.h:215
 msgid "Mark all articles in newsgroup as read"
-msgstr "Haber grubundaki tüm yazıları okundu olarak imle"
+msgstr "Gruptaki tüm yazıları okundu imle"
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
@@ -3539,68 +3539,68 @@ msgstr "Dizin değiştir"
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:221
 msgid "Check mailboxes for new mail"
-msgstr "Posta kutularını yeni posta için denetle"
+msgstr "Kutulardaki yeni postayı denetle"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
 #: gui/opcodes.h:224
 msgid "Calculate message statistics for all mailboxes"
-msgstr "Tüm kutular için ileti istatistiklerini hesapla"
+msgstr "Kutuların ileti istatistiğini hesapla"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
 #: gui/opcodes.h:227
 msgid "Edit the file to be attached"
-msgstr "Eklenecek dosyayı düzenle"
+msgstr "İliştirilecek dosyayı düzenle"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
 #: gui/opcodes.h:230
 msgid "Edit the message"
-msgstr "Iletiyi düzenle"
+msgstr "İletiyi düzenle"
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
 #: gui/opcodes.h:233
 msgid "Run ispell on the message"
-msgstr "Iletiye ispell komutunu uygula"
+msgstr "İletiye ispell komutunu uygula"
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
 #: gui/opcodes.h:236
 msgid "Save this message to send later"
-msgstr "Bu iletiyi daha sonra göndermek üzere kaydet"
+msgstr "İletiyi sonra göndermek üzere kaydet"
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
 #: gui/opcodes.h:239
 msgid "Rename/move an attached file"
-msgstr "Ekli bir dosyayı yeniden adlandır/taşı"
+msgstr "İlişik dosyayı yeniden adlandır/taşı"
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
 #: gui/opcodes.h:242
 msgid "Send the message"
-msgstr "Iletiyi gönder"
+msgstr "İletiyi gönder"
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
 #: gui/opcodes.h:246
 msgid "Compose new message to the current message sender"
-msgstr "Geçerlinin göndericisine yeni ileti yaz"
+msgstr "İleti gönderenine yeni ileti yaz"
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
 #: gui/opcodes.h:249
 msgid "Write the message to a folder"
-msgstr "Iletiyi bir klasöre yaz"
+msgstr "İletiyi bir klasöre yaz"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
 #: gui/opcodes.h:252
 msgid "Copy a message to a file/mailbox"
-msgstr "Iletiyi dosyaya/kutuya kopyala"
+msgstr "İletiyi dosyaya/kutuya kopyala"
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
@@ -3643,7 +3643,7 @@ msgstr "Çözülmüş (text/plain) kopya yap"
 #. Index: <op_save>
 #: gui/opcodes.h:274
 msgid "Make decoded copy (text/plain) and delete"
-msgstr "Çözülmüş (text/plain) kopya yap/diğerini sil"
+msgstr "Çözülü (text/plain) kopya yap ve sil"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
@@ -3681,7 +3681,7 @@ msgstr "Gönderenin tam adresini göster"
 #. Index: <op_display_message>
 #: gui/opcodes.h:299
 msgid "Display message and toggle header weeding"
-msgstr "Ileti görüntüle ve başlık aç/kapat"
+msgstr "İleti görüntüle ve başlık aç/kapat"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
@@ -3693,19 +3693,19 @@ msgstr "Bir ileti görüntüle"
 #. Text Entry: <op_editor_backspace>
 #: gui/opcodes.h:305
 msgid "Delete the char in front of the cursor"
-msgstr "Imlecin önündeki karakteri sil"
+msgstr "İmlecin önündeki karakteri sil"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
 #: gui/opcodes.h:308
 msgid "Move the cursor one character to the left"
-msgstr "Imleci bir karakter sola taşı"
+msgstr "İmleci bir karakter sola taşı"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
 #: gui/opcodes.h:311
 msgid "Move the cursor to the beginning of the word"
-msgstr "Imleci sözcük başına taşı"
+msgstr "İmleci sözcük başına taşı"
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
@@ -3735,7 +3735,7 @@ msgstr "Adresi bir sorgulama yaparak tamamla"
 #. Text Entry: <op_editor_delete_char>
 #: gui/opcodes.h:326
 msgid "Delete the char under the cursor"
-msgstr "Imlecin altındaki karakteri sil"
+msgstr "İmlecin altındaki karakteri sil"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
@@ -3753,19 +3753,19 @@ msgstr "Satır sonuna geç"
 #. Text Entry: <op_editor_forward_char>
 #: gui/opcodes.h:335
 msgid "Move the cursor one character to the right"
-msgstr "Imleci bir karakter sağa taşı"
+msgstr "İmleci bir karakter sağa taşı"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
 #: gui/opcodes.h:338
 msgid "Move the cursor to the end of the word"
-msgstr "Imleci sözcük sonuna taşı"
+msgstr "İmleci sözcük sonuna taşı"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
 #: gui/opcodes.h:341
 msgid "Scroll down through the history list"
-msgstr "Geçmiş listesinde aşağıya in"
+msgstr "Geçmiş listesinde aşağı sar"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
@@ -3783,19 +3783,19 @@ msgstr "Geçmiş listesinde yukarıya çık"
 #. Text Entry: <op_editor_kill_eol>
 #: gui/opcodes.h:350
 msgid "Delete chars from cursor to end of line"
-msgstr "Imleçten satır sonuna kadar olan karakterleri sil"
+msgstr "İmleçten satır sonuna kadar olan karakterleri sil"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
 #: gui/opcodes.h:353
 msgid "Delete chars from the cursor to the end of the word"
-msgstr "Imleçten sözcük sonuna kadar olan karakterleri sil"
+msgstr "İmleçten sözcük sonuna kadar olan karakterleri sil"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
 #: gui/opcodes.h:356
 msgid "Delete chars from cursor to beginning the line"
-msgstr "Imleçten satır başına kadar olan karakterleri sil"
+msgstr "İmleçten satır başına kadar olan karakterleri sil"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
@@ -3807,7 +3807,7 @@ msgstr "Satırdaki bütün karakterleri sil"
 #. Text Entry: <op_editor_kill_word>
 #: gui/opcodes.h:362
 msgid "Delete the word in front of the cursor"
-msgstr "Imlecin önündeki sözcüğü sil"
+msgstr "İmlecin önündeki sözcüğü sil"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
@@ -3825,7 +3825,7 @@ msgstr "Girilen karakteri tırnak içine al"
 #. Text Entry: <op_editor_transpose_chars>
 #: gui/opcodes.h:371
 msgid "Transpose character under cursor with previous"
-msgstr "Imlecin üzerinde bulunduğu karakteri öncekiyle değiştir"
+msgstr "İmlecin üzerinde bulunduğu karakteri öncekiyle değiştir"
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
@@ -3837,7 +3837,7 @@ msgstr "Sözcüğü büyük harfe çevir"
 #. Index: <op_edit_label>
 #: gui/opcodes.h:377
 msgid "Add, change, or delete a message's label"
-msgstr "Iletinin etiketini ekle, değiştir/sil"
+msgstr "İletinin etiketini ekle, değiştir/sil"
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
@@ -3895,7 +3895,7 @@ msgstr "Ilk ögeye geç"
 #. Index: <op_flag_message>
 #: gui/opcodes.h:411
 msgid "Toggle a message's 'important' flag"
-msgstr "Iletinin 'önemli' bayrağını aç/kapat"
+msgstr "İletinin \"önemli\" bayrağını aç/kapat"
 
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
@@ -3909,7 +3909,7 @@ msgstr "Bir haber grubunun ardından izle"
 #. Index: <op_forward_message>
 #: gui/opcodes.h:419
 msgid "Forward a message with comments"
-msgstr "Iletiyi düzenleyerek ilet"
+msgstr "İletiyi düzenleyerek ilet"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
@@ -3935,13 +3935,13 @@ msgstr "Geçerli girdiyi seç"
 #. Index: <op_get_children>
 #: gui/opcodes.h:436
 msgid "Get all children of the current message"
-msgstr "Geçerli iletinin tüm alt iletilerini al"
+msgstr "Geçerli iletinin alt iletilerini al"
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
 #: gui/opcodes.h:439
 msgid "Get message with Message-Id"
-msgstr "Iletiyi Message/Id ile al"
+msgstr "İletiyi Message/Id ile al"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
@@ -3974,14 +3974,14 @@ msgstr "Bütün alıcıları yanıtla"
 #. Pager: <op_pager_half_down>
 #: gui/opcodes.h:457
 msgid "Scroll down 1/2 page"
-msgstr "Yarım sayfa aşağı in"
+msgstr "Yarım sayfa aşağı sar"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
 #: gui/opcodes.h:461
 msgid "Scroll up 1/2 page"
-msgstr "Yarım sayfa yukarı çık"
+msgstr "Yarım sayfa yukarı sar"
 
 #. L10N: Help screen description for OP_HELP
 #. Text Entry: <op_help>
@@ -4037,7 +4037,7 @@ msgstr "Bir posta listesi aboneliğinden çık"
 #. Browser: <op_load_active>
 #: gui/opcodes.h:500
 msgid "Load list of all newsgroups from NNTP server"
-msgstr "NNTP sunucusundan tüm haber gruplarının listesini yükle"
+msgstr "NNTP sunucusundan tüm haber grupları listesini yükle"
 
 #. L10N: Help screen description for OP_MACRO
 #: gui/opcodes.h:502
@@ -4062,7 +4062,7 @@ msgstr "Yeni postalı kutuları listele"
 #. Index: <op_main_break_thread>
 #: gui/opcodes.h:513
 msgid "Break the thread in two"
-msgstr "Ilmeği ikiye böl"
+msgstr "İlmeği ikiye böl"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
@@ -4074,25 +4074,25 @@ msgstr "Başka bir dizin aç"
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:519
 msgid "Open a different folder in read only mode"
-msgstr "Başka bir dizini saltokunur kipte aç"
+msgstr "Başka dizini saltokunur kipte aç"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:522
 msgid "Open a different newsgroup"
-msgstr "Başka bir haber grubu aç"
+msgstr "Başka haber grubu aç"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:525
 msgid "Open a different newsgroup in read only mode"
-msgstr "Başka bir haber grubunu saltokunur kipte aç"
+msgstr "Başka haber grubunu saltokunur aç"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:528
 msgid "Clear a status flag from a message"
-msgstr "Iletinin durum bayrağını temizle"
+msgstr "İletinin durum bayrağını temizle"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS
 #. Index: <op_main_close_all_threads>
@@ -4122,7 +4122,7 @@ msgstr "Geçerli ilmeği aç/sar"
 #. Index: <op_main_delete_pattern>
 #: gui/opcodes.h:543
 msgid "Delete non-hidden messages matching a pattern"
-msgstr "Bir dizgiyle eşleşen gizli olmayan iletileri sil"
+msgstr "Dizgiyle eşleşen gizli olmayan iletileri sil"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
@@ -4134,7 +4134,7 @@ msgstr "POP sunucusundan postaları al"
 #. Index: <op_main_imap_fetch>
 #: gui/opcodes.h:549
 msgid "Force retrieval of mail from IMAP server"
-msgstr "IMAP sunucularından posta alımını zorla"
+msgstr "IMAP sunucusundan posta alımını zorla"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
@@ -4153,19 +4153,19 @@ msgstr "Yalnızca eşleşen iletileri göster"
 #. Index: <op_main_link_threads>
 #: gui/opcodes.h:559
 msgid "Link tagged message to the current one"
-msgstr "Imli iletiyi geçerliye bağla"
+msgstr "Künyeli iletiyi geçerliye bağla"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:562
 msgid "Modify (notmuch/imap) tags"
-msgstr "Imleri (notmuch/imap) değiştir"
+msgstr "Künyeleri (notmuch/imap) değiştir"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:565
 msgid "Modify (notmuch/imap) tags and then hide message"
-msgstr "Imleri (notmuch/imap) değiştir ve iletiyi gizle"
+msgstr "Künyeleri (notmuch/imap) değiştir ve iletiyi gizle"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
@@ -4237,7 +4237,7 @@ msgstr "Önceki yeni iletiye geç"
 #. Index: <op_main_next_new>
 #: gui/opcodes.h:601
 msgid "Jump to the previous new or unread message"
-msgstr "Önceki yeni veya okunmamış iletiye geç"
+msgstr "Önceki yeni/okunmamış iletiye geç"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
@@ -4273,7 +4273,7 @@ msgstr "NeoMutt'tan sil, disktekine dokunma"
 #. Index: <op_main_read_thread>
 #: gui/opcodes.h:619
 msgid "Mark the current subthread as read"
-msgstr "Geçerli alt ilmeği okunmuş olarak imle"
+msgstr "Geçerli alt ilmeği okundu olarak imle"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
@@ -4291,13 +4291,13 @@ msgstr "Ilmeğin ilk iletisine atla"
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:628
 msgid "Set a status flag on a message"
-msgstr "Iletinin durum bayrağını ayarla"
+msgstr "İletinin durum bayrağını ayarla"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
 #: gui/opcodes.h:631
 msgid "Show currently active limit pattern"
-msgstr "Etkin durumdaki sınırlama dizgisini göster"
+msgstr "Etkin sınırlama dizgisini göster"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
@@ -4309,25 +4309,25 @@ msgstr "Kutudaki değişiklikleri kaydet"
 #. Index: <op_main_tag_pattern>
 #: gui/opcodes.h:637
 msgid "Tag non-hidden messages matching a pattern"
-msgstr "Bir dizgiyle eşleşen gizli olmayan iletileri künyele"
+msgstr "Dizgiyle eşleşen gizli olmayan iletileri künyele"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
 #: gui/opcodes.h:640
 msgid "Undelete non-hidden messages matching a pattern"
-msgstr "Bir dizgiyle eşleşen gizli olmayan iletileri kurtar"
+msgstr "Dizgiyle eşleşen gizli olmayan iletileri kurtar"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
 #: gui/opcodes.h:643
 msgid "Untag non-hidden messages matching a pattern"
-msgstr "Bir dizgiyle eşleşen gizli olmayan iletilerin künyesini kaldır"
+msgstr "Dizgiyle eşleşen gizli olmayan iletilerin künyesini kaldır"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
 #: gui/opcodes.h:646
 msgid "Create a hotkey macro for the current message"
-msgstr "Geçerli ileti için bir makro kısayol oluştur"
+msgstr "Geçerli ileti için makro kısayol yap"
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
@@ -4360,7 +4360,7 @@ msgstr "Sonraki sayfaya geç"
 #. Pager: <op_pager_bottom>
 #: gui/opcodes.h:664
 msgid "Jump to the bottom of the message"
-msgstr "Iletinin sonuna geç"
+msgstr "İletinin sonuna geç"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
@@ -4384,13 +4384,13 @@ msgstr "Alıntı metni atla"
 #. Pager: <op_pager_top>
 #: gui/opcodes.h:676
 msgid "Jump to the top of the message"
-msgstr "Iletinin başına geç"
+msgstr "İletinin başına geç"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
 #: gui/opcodes.h:684
 msgid "Post message to newsgroup"
-msgstr "Iletiyi haber grubuna gönder"
+msgstr "İletiyi haber grubuna gönder"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
@@ -4430,13 +4430,13 @@ msgstr "Geçerli ilmeği çöpe atmadan sil"
 #. Index: <op_query>
 #: gui/opcodes.h:709
 msgid "Query external program for addresses"
-msgstr "Adresler için bir dış uygulamayı sorgula"
+msgstr "Adresler için dış uygulama sorgula"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
 #: gui/opcodes.h:712
 msgid "Append new query results to current results"
-msgstr "Yeni sorgulama sonuçlarını geçerli sonuçlara ekle"
+msgstr "Yeni sorgu sonuçlarını geçerliye ekle"
 
 #. L10N: Help screen description for OP_QUIT
 #. History Dialog: <op_quit>
@@ -4444,7 +4444,7 @@ msgstr "Yeni sorgulama sonuçlarını geçerli sonuçlara ekle"
 #. Pattern Dialog: <op_quit>
 #: gui/opcodes.h:717
 msgid "Save changes to mailbox and quit"
-msgstr "Kutuya yapılan değişiklikleri kaydet/çık"
+msgstr "Kutudaki değişiklikleri kaydet/çık"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
@@ -4541,7 +4541,7 @@ msgstr "Alt kabukta bir komut çalıştır"
 #. Global: <op_show_log_messages>
 #: gui/opcodes.h:779
 msgid "Show log (and debug) messages"
-msgstr "Günlük (ve hata ayıklama) iletilerini göster"
+msgstr "Günlük/hata ayıklama iletisini göster"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
@@ -4549,7 +4549,7 @@ msgstr "Günlük (ve hata ayıklama) iletilerini göster"
 #. Index: <op_sort>
 #: gui/opcodes.h:784
 msgid "Sort messages"
-msgstr "Iletileri sırala"
+msgstr "İletileri sırala"
 
 #. L10N: Help screen description for OP_SORT_REVERSE
 #. Alias Dialog: <op_sort>
@@ -4557,13 +4557,13 @@ msgstr "Iletileri sırala"
 #. Index: <op_sort>
 #: gui/opcodes.h:789
 msgid "Sort messages in reverse order"
-msgstr "Iletileri ters sırala"
+msgstr "İletileri ters sırala"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:792
 msgid "Subscribe to newsgroups matching a pattern"
-msgstr "Bir dizgi ile eşleşen haber gruplarına abone ol"
+msgstr "Dizgiyle eşleşen gruplara abone ol"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
@@ -4574,42 +4574,42 @@ msgstr "Geçerli ögeyi imle"
 #. L10N: Help screen description for OP_TAG_PREFIX
 #: gui/opcodes.h:797
 msgid "Apply next function to tagged messages"
-msgstr "Imli iletilere sonraki işlevi uygula"
+msgstr "Künyeli iletiye sonraki işlevi uygula"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
 #: gui/opcodes.h:799
 msgid "Apply next function ONLY to tagged messages"
-msgstr "Sonraki işlevi YALNIZCA imli iletilere uygula"
+msgstr "Sonraki işlev YALNIZCA künyelilere"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:802
 msgid "Tag the current subthread"
-msgstr "Geçerli alt ilmeği imle"
+msgstr "Geçerli alt ilmeği künyele"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:805
 msgid "Tag the current thread"
-msgstr "Geçerli ilmeği imle"
+msgstr "Geçerli ilmeği künyele"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:808
 msgid "Toggle whether to browse mailboxes or all files"
-msgstr "Posta kutuları veya bütün dosyaların görüntülemesi arasında geçiş yap"
+msgstr "Kutuları veya dosyaları görüntüle"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
 #: gui/opcodes.h:811
 msgid "Toggle a message's 'new' flag"
-msgstr "Iletinin 'yeni' bayrağını aç/kapat"
+msgstr "İletinin \"new\" bayrağını aç/kapat"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
 #: gui/opcodes.h:814
 msgid "Toggle view of read messages"
-msgstr "Okunmuş iletilerin görünümünü aç/kapat"
+msgstr "Okunmuş iletiler görünümünü aç/kapat"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
@@ -4627,7 +4627,7 @@ msgstr "Sayfanın başına geç"
 #. Browser: <op_catchup>
 #: gui/opcodes.h:823
 msgid "Mark all articles in newsgroup as unread"
-msgstr "Haber grubundaki tüm yazıları okunmamış olarak imle"
+msgstr "Gruptaki tüm yazıları okunmadı imle"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
@@ -4645,7 +4645,7 @@ msgstr "Ilmekteki bütün iletileri kurtar"
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:837
 msgid "Unsubscribe from newsgroups matching a pattern"
-msgstr "Bir dizgi ile eşleşen haber grupları aboneliğinden çık"
+msgstr "Dizgiyle eşleşen abonelikten çık"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
@@ -4670,7 +4670,7 @@ msgstr "Kaynak iletiyi düzenle"
 #. Global: <op_what_key>
 #: gui/opcodes.h:850
 msgid "Display the keycode for a key press"
-msgstr "Girilen düğmenin düğme kodunu görüntüle"
+msgstr "Girilen düğme kodunu görüntüle"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
@@ -4703,37 +4703,37 @@ msgstr "Anahtar parolalarını bellekten kaldır"
 #. Envelope Window: <op_envelope_edit_bcc>
 #: gui/opcodes.h:872
 msgid "Edit the BCC list"
-msgstr "Gizli kopya listesini düzenle"
+msgstr "\"Bcc\" (gizli kopya) listesini düzenle"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
 #: gui/opcodes.h:875
 msgid "Edit the CC list"
-msgstr "Kopya listesini düzenle"
+msgstr "\"Cc\" (kopya) listesini düzenle"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
 #: gui/opcodes.h:878
 msgid "Enter a file to save a copy of this message in"
-msgstr "Bu iletinin bir kopyasının kaydedileceği dosyayı gir"
+msgstr "İleti kopyasının kaydedileceği dosya"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
 #: gui/opcodes.h:881
 msgid "Edit the Followup-To field"
-msgstr "Followup-To (ardından izle) alanını düzenle"
+msgstr "\"Followup-To\" (takip) alanını düzenle"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
 #: gui/opcodes.h:884
 msgid "Edit the from field"
-msgstr "Gönderen alanını düzenle"
+msgstr "\"From\" (kimden) alanını düzenle"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
 #: gui/opcodes.h:887
 msgid "Edit the message with headers"
-msgstr "Iletiyi üstbilgisiyle düzenle"
+msgstr "İletiyi üstbilgisiyle düzenle"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
@@ -4745,7 +4745,7 @@ msgstr "Haber grupları listesini düzenle"
 #. Envelope Window: <op_envelope_edit_reply_to>
 #: gui/opcodes.h:893
 msgid "Edit the Reply-To field"
-msgstr "\"Reply-To\" (Yanıtla) alanını düzenle"
+msgstr "\"Reply-To\" (yanıt) alanını düzenle"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
@@ -4757,13 +4757,13 @@ msgstr "Bu iletinin konusunu düzenle"
 #. Envelope Window: <op_envelope_edit_to>
 #: gui/opcodes.h:899
 msgid "Edit the TO list"
-msgstr "Kime (TO) listesini düzenle"
+msgstr "\"To\" (kime) listesini düzenle"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
 #: gui/opcodes.h:902
 msgid "Edit the X-Comment-To field"
-msgstr "X-Comment-To (Özgün yazara kopya) alanını düzenle"
+msgstr "\"X-Comment-To\" alanını düzenle"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
@@ -4781,31 +4781,31 @@ msgstr "Geçerli iletinin tüm ilmeğini oku"
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:914
 msgid "Generate virtual folder from query"
-msgstr "Sorgudan sanal klasör oluştur"
+msgstr "Sorgudan sanal klasör"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:917
 msgid "Generate a read-only virtual folder from query"
-msgstr "Sorgudan saltokunur bir sanal klasör oluştur"
+msgstr "Sorgudan saltokunur sanal klasör"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:920
 msgid "Shifts virtual folder time window backwards"
-msgstr "Sanal klasör zaman penceresini geri kaydırır"
+msgstr "Sanal klasör zamanını geri kaydırır"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:923
 msgid "Shifts virtual folder time window forwards"
-msgstr "Sanal klasör zaman penceresini ileri kaydırır"
+msgstr "Sanal klasör zamanını ileri kaydırır"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:926
 msgid "Resets virtual folder time window to the present"
-msgstr "Sanal klasör zaman penceresini geçerli zamana kaydırır"
+msgstr "Sanal klasör zamanını şimdiye taşı"
 
 #. L10N: Help screen description for OP_ATTACH_ATTACH_KEY
 #. Compose Dialog: <op_attach_attach_key>
@@ -4850,25 +4850,25 @@ msgstr "Anahtarın kullanıcı kimliğini göster"
 #. Sidebar: <op_sidebar_first>
 #: gui/opcodes.h:957
 msgid "Move the highlight to the first mailbox"
-msgstr "Vurguyu ilk posta kutusuna taşı"
+msgstr "Vurgu ilk kutuya"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
 #: gui/opcodes.h:960
 msgid "Move the highlight to the last mailbox"
-msgstr "Vurguya son posta kutusuna taşı"
+msgstr "Vurgu son kutuya"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
 #: gui/opcodes.h:963
 msgid "Move the highlight to next mailbox"
-msgstr "Vurguyu sonraki posta kutusuna taşı"
+msgstr "Vurgu sonraki kutuya"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
 #: gui/opcodes.h:966
 msgid "Move the highlight to next mailbox with new mail"
-msgstr "Vurguyu yeni postalı sonraki kutuya taşı"
+msgstr "Vurgu yeni postalı sonraki kutuya"
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
@@ -4880,25 +4880,25 @@ msgstr "Vurgulanan posta kutusunu aç"
 #. Sidebar: <op_sidebar_page_down>
 #: gui/opcodes.h:972
 msgid "Scroll the sidebar down 1 page"
-msgstr "Kenar çubuğunu bir sayfa aşağı kaydır"
+msgstr "Kenar çubuğunu bir sayfa aşağı sar"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
 #: gui/opcodes.h:975
 msgid "Scroll the sidebar up 1 page"
-msgstr "Kenar çubuğunu bir sayfa yukarı kaydır"
+msgstr "Kenar çubuğunu bir sayfa yukarı sar"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
 #: gui/opcodes.h:978
 msgid "Move the highlight to previous mailbox"
-msgstr "Vurguyu önceki posta kutusuna taşı"
+msgstr "Vurgu önceki kutuya"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
 #: gui/opcodes.h:981
 msgid "Move the highlight to previous mailbox with new mail"
-msgstr "Vurguyu yeni postalı önceki kutuya taşı"
+msgstr "Vurgu yeni postalı önceki kutuya"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
