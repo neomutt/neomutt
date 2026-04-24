@@ -636,9 +636,6 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
 
     if (!has_exact && !has_longer)
     {
-      // Push back unused keys (all but the last, which is returned in event)
-      for (int i = key_len - 2; i >= 0; i--)
-        mutt_unget_ch(keys[i]);
       key_progress_notify(md, count, keys, key_len, flags);
       key_progress_notify(md, 0, NULL, 0, flags);
       mutt_debug(LL_DEBUG3, "KEY: FAIL1: ('%c', %s)\n",
