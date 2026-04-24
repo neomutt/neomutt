@@ -79,11 +79,12 @@ static int op_end_cond(struct Menu *menu, int op)
 
 /**
  * op_tag - Tag the current entry
- * @param menu Menu
- * @param op   Operation to perform, e.g. OP_TAG
+ * @param menu  Menu
+ * @param op    Operation to perform, e.g. OP_TAG
+ * @param count Repeat count for tagging multiple consecutive entries
  * @retval enum #FunctionRetval
  */
-static int op_tag(struct Menu *menu, int op)
+static int op_tag(struct Menu *menu, int op, int count)
 {
   const bool c_auto_tag = cs_subset_bool(menu->sub, "auto_tag");
   int rc = FR_SUCCESS;
@@ -106,17 +107,22 @@ static int op_tag(struct Menu *menu, int op)
   }
   else if (menu->max != 0)
   {
-    int num = menu->tag(menu, menu->current, -1);
-    menu->num_tagged += num;
+    int tag_count = MAX(count, 1);
+    for (int i = 0; i < tag_count && menu->current + i < menu->max; i++)
+    {
+      int num = menu->tag(menu, menu->current + i, -1);
+      menu->num_tagged += num;
+    }
 
     const bool c_resolve = cs_subset_bool(menu->sub, "resolve");
-    if ((num != 0) && c_resolve && (menu->current < (menu->max - 1)))
+    if ((tag_count > 0) && c_resolve && (menu->current + tag_count < menu->max))
     {
-      menu_set_index(menu, menu->current + 1);
+      menu_set_index(menu, menu->current + tag_count);
+      menu->redraw |= MENU_REDRAW_INDEX;
     }
     else
     {
-      menu->redraw |= MENU_REDRAW_CURRENT;
+      menu->redraw |= MENU_REDRAW_INDEX;
     }
   }
   else
@@ -240,7 +246,7 @@ int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event
     case OP_END_COND:
       return op_end_cond(menu, op);
     case OP_TAG:
-      return op_tag(menu, op);
+      return op_tag(menu, op, event->count);
     case OP_TAG_PREFIX:
       return op_tag_prefix(menu, op);
     case OP_TAG_PREFIX_COND:

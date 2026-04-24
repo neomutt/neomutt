@@ -2664,9 +2664,19 @@ static int op_tag(struct IndexFunctionData *fdata, const struct KeyEvent *event)
   if (!shared->email)
     return FR_NO_ACTION;
 
-  mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged, true);
+  int count = MAX(event->count, 1);
+  int current_index = menu_get_index(priv->menu);
 
-  resolve_email(priv, shared, RESOLVE_NEXT_EMAIL);
+  for (int i = 0; i < count && current_index + i < shared->mailbox->vcount; i++)
+  {
+    struct Email *e = mutt_get_virt_email(shared->mailbox, current_index + i);
+    if (e)
+      mutt_set_flag(shared->mailbox, e, MUTT_TAG, !e->tagged, true);
+  }
+
+  if (count > 0)
+    resolve_email(priv, shared, RESOLVE_NEXT_EMAIL);
+
   return FR_SUCCESS;
 }
 
