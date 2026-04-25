@@ -468,6 +468,8 @@ IDNA_OBJS	= test/idna/mutt_idna_intl_to_local.o \
 
 IMAP_OBJS	= test/imap/msg_set.o
 
+KEY_OBJS	= test/key/mutt_push_macro_repeated.o
+
 LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_clear.o \
 		  test/list/mutt_list_copy_tail.o \
@@ -733,7 +735,8 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/fuzzy \
 		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
 		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/imap \
-		  $(PWD)/test/list $(PWD)/test/logging $(PWD)/test/mailbox \
+		  $(PWD)/test/key $(PWD)/test/list $(PWD)/test/logging \
+		  $(PWD)/test/mailbox \
 		  $(PWD)/test/mapping $(PWD)/test/mbyte $(PWD)/test/md5 \
 		  $(PWD)/test/memory $(PWD)/test/neo $(PWD)/test/notify \
 		  $(PWD)/test/notmuch $(PWD)/test/parameter $(PWD)/test/parse \
@@ -778,6 +781,7 @@ TEST_OBJS	= test/common.o test/main.o test/module.o \
 		  $(HISTORY_OBJS) \
 		  $(IDNA_OBJS) \
 		  $(IMAP_OBJS) \
+		  $(KEY_OBJS) \
 		  $(LIST_OBJS) \
 		  $(LOGGING_OBJS) \
 		  $(MAILBOX_OBJS) \
