@@ -35,6 +35,7 @@ static struct ConfigDef TestVars[] = {
   { "config_charset",          DT_STRING,                                      0,                         0, NULL },
   { "debug_level",             DT_NUMBER,                                      0,                         0, NULL },
   { "folder",                  DT_STRING|D_STRING_MAILBOX,                     IP "/home/mutt/Mail",      0, NULL },
+  { "macro_repeat_max",        DT_NUMBER|D_INTEGER_NOT_NEGATIVE,               1000,                      0, NULL },
   { "mbox",                    DT_STRING|D_STRING_MAILBOX,                     IP "/home/mutt/mbox",      0, NULL },
   { "postponed",               DT_STRING|D_STRING_MAILBOX,                     IP "/home/mutt/postponed", 0, NULL },
   { "record",                  DT_STRING|D_STRING_MAILBOX,                     IP "/home/mutt/sent",      0, NULL },

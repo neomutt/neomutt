@@ -50,21 +50,20 @@
 /// XXX
 static const int MaxKeyLoop = 64;
 
-/// Maximum number of times a macro may be repeated via a count prefix
-static const int MacroRepeatMax = 1000;
-
 /**
  * mutt_push_macro_repeated - Push a macro string into the input queue, optionally repeated
  * @param macro Macro string to expand
  * @param count Number of times to repeat (0 or 1 means once)
  *
- * The repeat count is clamped to #MacroRepeatMax to bound queue growth.
+ * The repeat count is clamped to `$macro_repeat_max` to bound queue growth.
  */
 void mutt_push_macro_repeated(char *macro, int count)
 {
   int repeat = (count > 0) ? count : 1;
-  if (repeat > MacroRepeatMax)
-    repeat = MacroRepeatMax;
+
+  const short c_macro_repeat_max = cs_subset_number(NeoMutt->sub, "macro_repeat_max");
+  if ((c_macro_repeat_max > 0) && (repeat > c_macro_repeat_max))
+    repeat = c_macro_repeat_max;
 
   for (int i = 0; i < repeat; i++)
     generic_tokenize_push_string(macro);

@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "key/lib.h"
 #include "key/module_data.h"
@@ -61,11 +62,18 @@ void test_mutt_push_macro_repeated(void)
   TEST_CHECK_NUM_EQ(ARRAY_SIZE(&mod_data->macro_events), 3);
   mutt_flushinp();
 
-  // Counts above the cap are clamped to MacroRepeatMax (== 1000)
+  // Counts above the cap are clamped to $macro_repeat_max (default 1000)
   char macro2[] = "x";
   mutt_push_macro_repeated(macro2, 9999);
   TEST_CHECK_NUM_EQ(ARRAY_SIZE(&mod_data->macro_events), 1000);
   mutt_flushinp();
+
+  // Lower the cap and verify it's honoured
+  cs_str_native_set(NeoMutt->sub->cs, "macro_repeat_max", 7, NULL);
+  mutt_push_macro_repeated(macro2, 50);
+  TEST_CHECK_NUM_EQ(ARRAY_SIZE(&mod_data->macro_events), 7);
+  mutt_flushinp();
+  cs_str_reset(NeoMutt->sub->cs, "macro_repeat_max", NULL);
 
   // Verify ordering: a 3-char macro expanded twice should pop in macro order, twice
   mutt_push_macro_repeated(macro1, 2);
