@@ -2389,6 +2389,17 @@
 ** leaking information about your current location.
 */
 
+{ "macro_repeat_max", DT_NUMBER, 1000 },
+/*
+** .pp
+** When a macro is invoked with a numeric prefix (e.g. \fC5<F5>\fP), this
+** variable caps how many times the macro body is expanded.  This bounds the
+** size of the input queue and prevents runaway counts from monopolising
+** NeoMutt.
+** .pp
+** A value of 0 disables the cap (use with care).
+*/
+
 { "mail_check", DT_NUMBER, 5 },
 /*
 ** .pp
