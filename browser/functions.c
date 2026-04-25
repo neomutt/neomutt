@@ -266,6 +266,9 @@ static int op_browser_toggle_lsub(struct BrowserPrivateData *priv, const struct 
 {
   bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
 
+  const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
+  mutt_message("set imap_list_subscribed = %s", c_imap_list_subscribed ? "yes" : "no");
+
   mutt_unget_op(OP_CHECK_NEW);
   return FR_SUCCESS;
 }
