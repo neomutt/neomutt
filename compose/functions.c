@@ -999,13 +999,56 @@ static int op_attach_detach(struct ComposeFunctionData *fdata, const struct KeyE
     return FR_NO_ACTION;
 
   struct Menu *menu = shared->adata->menu;
-  struct AttachPtr *cur_att = current_attachment(actx, menu);
-  if (cur_att->unowned)
-    cur_att->body->unlink = false;
+  int rc = FR_NO_ACTION;
 
-  int index = menu_get_index(menu);
-  if (delete_attachment(actx, index, fdata->n->sub) == -1)
-    return FR_ERROR;
+  if (menu->tag_prefix)
+  {
+    for (int i = actx->idxlen - 1; i >= 0; i--)
+    {
+      struct AttachPtr *ap = actx->idx[i];
+      if (!ap->body->tagged)
+        continue;
+
+      if (ap->unowned)
+        ap->body->unlink = false;
+
+      if (delete_attachment(actx, i, fdata->n->sub) == 0)
+        rc = FR_SUCCESS;
+    }
+
+    if (rc != FR_SUCCESS)
+    {
+      menu->num_tagged = 0;
+      for (int i = 0; i < actx->idxlen; i++)
+      {
+        if (actx->idx[i]->body->tagged)
+          menu->num_tagged++;
+      }
+      update_menu(actx, menu, false);
+      return FR_ERROR;
+    }
+  }
+  else
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    if (cur_att->unowned)
+      cur_att->body->unlink = false;
+
+    const int index = menu_get_index(menu);
+    if (delete_attachment(actx, index, fdata->n->sub) == -1)
+    {
+      menu->num_tagged = 0;
+      for (int i = 0; i < actx->idxlen; i++)
+      {
+        if (actx->idx[i]->body->tagged)
+          menu->num_tagged++;
+      }
+      update_menu(actx, menu, false);
+      return FR_ERROR;
+    }
+
+    rc = FR_SUCCESS;
+  }
 
   menu->num_tagged = 0;
   for (int i = 0; i < actx->idxlen; i++)
@@ -1017,12 +1060,12 @@ static int op_attach_detach(struct ComposeFunctionData *fdata, const struct KeyE
   update_menu(actx, menu, false);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
 
-  index = menu_get_index(menu);
+  const int index = menu_get_index(menu);
   if (index == 0)
     shared->email->body = actx->idx[0]->body;
 
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -1087,28 +1130,43 @@ static int op_attach_edit_description(struct ComposeFunctionData *fdata,
                                       const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
   struct Buffer *buf = buf_pool_get();
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
 
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
   buf_strcpy(buf, cur_att->body->description);
 
   /* header names should not be translated */
   if (mw_get_field("Description: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->description, buf_string(buf)))
+    ba_add_tagged(&ba, actx, menu);
+
+    bool changed = false;
+    struct Body **bp = NULL;
+    ARRAY_FOREACH(bp, &ba)
     {
-      mutt_str_replace(&cur_att->body->description, buf_string(buf));
-      menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+      if (!mutt_str_equal((*bp)->description, buf_string(buf)))
+      {
+        mutt_str_replace(&(*bp)->description, buf_string(buf));
+        changed = true;
+      }
+    }
+
+    if (changed)
+    {
+      menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
       exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
       rc = FR_SUCCESS;
     }
   }
 
+  ARRAY_FREE(&ba);
   buf_pool_release(&buf);
   return rc;
 }
@@ -1120,14 +1178,16 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
                                    const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
   struct Buffer *buf = buf_pool_get();
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
 
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
   buf_strcpy(buf, ENCODING(cur_att->body->encoding));
 
   if ((mw_get_field("Content-Transfer-Encoding: ", buf, MUTT_COMP_NO_FLAGS,
@@ -1137,10 +1197,22 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
     int enc = mutt_check_encoding(buf_string(buf));
     if ((enc != ENC_OTHER) && (enc != ENC_UUENCODED))
     {
-      if (enc != cur_att->body->encoding)
+      ba_add_tagged(&ba, actx, menu);
+
+      bool changed = false;
+      struct Body **bp = NULL;
+      ARRAY_FOREACH(bp, &ba)
       {
-        cur_att->body->encoding = enc;
-        menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+        if ((*bp)->encoding != enc)
+        {
+          (*bp)->encoding = enc;
+          changed = true;
+        }
+      }
+
+      if (changed)
+      {
+        menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         mutt_clear_error();
         exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
@@ -1154,6 +1226,7 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
     }
   }
 
+  ARRAY_FREE(&ba);
   buf_pool_release(&buf);
   return rc;
 }
@@ -1165,21 +1238,35 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
                                    const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
   struct Buffer *buf = buf_pool_get();
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
 
   buf_strcpy(buf, cur_att->body->language);
   if (mw_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->language, buf_string(buf)))
+    ba_add_tagged(&ba, actx, menu);
+
+    bool changed = false;
+    struct Body **bp = NULL;
+    ARRAY_FOREACH(bp, &ba)
     {
-      mutt_str_replace(&cur_att->body->language, buf_string(buf));
-      menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+      if (!mutt_str_equal((*bp)->language, buf_string(buf)))
+      {
+        mutt_str_replace(&(*bp)->language, buf_string(buf));
+        changed = true;
+      }
+    }
+
+    if (changed)
+    {
+      menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
       notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
       exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
       rc = FR_SUCCESS;
@@ -1192,6 +1279,7 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
     rc = FR_ERROR;
   }
 
+  ARRAY_FREE(&ba);
   buf_pool_release(&buf);
   return rc;
 }
@@ -1202,17 +1290,36 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
 static int op_attach_edit_mime(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
-  if (!mutt_edit_attachment(cur_att->body))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return FR_NO_ACTION;
 
-  mutt_update_encoding(cur_att->body, shared->sub);
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
+  int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+  if (ARRAY_EMPTY(&ba))
+    goto done;
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
+  {
+    if (!mutt_edit_attachment(*bp))
+      continue;
+
+    mutt_update_encoding(*bp, shared->sub);
+    rc = FR_SUCCESS;
+  }
+
+  if (rc != FR_SUCCESS)
+    goto done;
+
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
-  return FR_SUCCESS;
+
+done:
+  ARRAY_FREE(&ba);
+  return rc;
 }
 
 /**
