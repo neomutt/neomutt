@@ -275,6 +275,31 @@ static bool check_cid(const char *cid)
 }
 
 /**
+ * content_id_exists - Check whether a Content-ID is already in use
+ * @param actx Attachment context
+ * @param skip Body to ignore
+ * @param cid  Content-ID to check
+ * @retval true Content-ID already exists
+ */
+static bool content_id_exists(struct AttachCtx *actx, const struct Body *skip, const char *cid)
+{
+  if (!actx || !cid)
+    return false;
+
+  for (int i = 0; i < actx->idxlen; i++)
+  {
+    struct Body *b = actx->idx[i]->body;
+    if ((b == skip) || !b->content_id)
+      continue;
+
+    if (mutt_str_equal(b->content_id, cid))
+      return true;
+  }
+
+  return false;
+}
+
+/**
  * check_attachments - Check if any attachments have changed or been deleted
  * @param actx Attachment context
  * @param sub  ConfigSubset
@@ -1075,13 +1100,18 @@ static int op_attach_edit_content_id(struct ComposeFunctionData *fdata,
                                      const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return FR_NO_ACTION;
 
   int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
   struct Buffer *buf = buf_pool_get();
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
+  struct Buffer *cid = buf_pool_get();
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
 
   char *id = cur_att->body->content_id;
   if (id)
@@ -1097,24 +1127,49 @@ static int op_attach_edit_content_id(struct ComposeFunctionData *fdata,
 
   if (mw_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(id, buf_string(buf)))
+    if (check_cid(buf_string(buf)))
     {
-      if (check_cid(buf_string(buf)))
+      bool changed = false;
+      struct Body **bp = NULL;
+      ARRAY_FOREACH(bp, &ba)
       {
-        mutt_str_replace(&cur_att->body->content_id, buf_string(buf));
-        menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+        const bool multi = (ARRAY_SIZE(&ba) > 1);
+        int suffix = multi ? (ARRAY_FOREACH_IDX_bp + 1) : 0;
+
+        do
+        {
+          if (suffix == 0)
+            buf_strcpy(cid, buf_string(buf));
+          else
+            buf_printf(cid, "%s-%d", buf_string(buf), suffix);
+
+          suffix++;
+        } while (content_id_exists(actx, *bp, buf_string(cid)));
+
+        if (!mutt_str_equal((*bp)->content_id, buf_string(cid)))
+        {
+          mutt_str_replace(&(*bp)->content_id, buf_string(cid));
+          changed = true;
+        }
+      }
+
+      if (changed)
+      {
+        menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
         rc = FR_SUCCESS;
       }
-      else
-      {
-        mutt_error(_("Content-ID can only contain the characters: -.0-9@A-Z_a-z"));
-        rc = FR_ERROR;
-      }
+    }
+    else
+    {
+      mutt_error(_("Content-ID can only contain the characters: -.0-9@A-Z_a-z"));
+      rc = FR_ERROR;
     }
   }
 
+  ARRAY_FREE(&ba);
+  buf_pool_release(&cid);
   buf_pool_release(&buf);
 
   if (rc != FR_ERROR)
