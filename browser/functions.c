@@ -1203,6 +1203,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct Ke
  * op_toggle_mailboxes - Toggle whether to browse mailboxes or all files - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
+ * - OP_BROWSER_GOTO_FOLDER
  * - OP_CHECK_NEW
  * - OP_TOGGLE_MAILBOXES
  */

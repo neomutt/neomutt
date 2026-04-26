@@ -193,6 +193,10 @@ static int op_create_alias(struct AliasFunctionData *fdata, const struct KeyEven
 
 /**
  * op_delete - delete the current entry - Implements ::alias_function_t - @ingroup alias_function_api
+ *
+ * This function handles:
+ * - OP_DELETE
+ * - OP_UNDELETE
  */
 static int op_delete(struct AliasFunctionData *fdata, const struct KeyEvent *event)
 {

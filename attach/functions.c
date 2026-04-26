@@ -456,6 +456,10 @@ static int op_attach_undelete(struct AttachFunctionData *fdata, const struct Key
 
 /**
  * op_attach_view - view attachment using mailcap entry if necessary - Implements ::attach_function_t - @ingroup attach_function_api
+ *
+ * This function handles:
+ * - OP_ATTACH_VIEW
+ * - OP_DISPLAY_HEADERS
  */
 static int op_attach_view(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -637,6 +641,12 @@ static int op_list_unsubscribe(struct AttachFunctionData *fdata, const struct Ke
 
 /**
  * op_reply - reply to a message - Implements ::attach_function_t - @ingroup attach_function_api
+ *
+ * This function handles:
+ * - OP_GROUP_CHAT_REPLY
+ * - OP_GROUP_REPLY
+ * - OP_LIST_REPLY
+ * - OP_REPLY
  */
 static int op_reply(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {

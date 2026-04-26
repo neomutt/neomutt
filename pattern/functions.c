@@ -57,6 +57,10 @@ static int op_generic_select_entry(struct PatternFunctionData *fdata,
 
 /**
  * op_quit - Quit this menu - Implements ::pattern_function_t - @ingroup pattern_function_api
+ *
+ * This function handles:
+ * - OP_EXIT
+ * - OP_QUIT
  */
 static int op_quit(struct PatternFunctionData *fdata, const struct KeyEvent *event)
 {

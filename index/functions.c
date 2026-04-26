@@ -833,6 +833,7 @@ static int op_display_address(struct IndexFunctionData *fdata, const struct KeyE
  * This function handles:
  * - OP_DISPLAY_HEADERS
  * - OP_DISPLAY_MESSAGE
+ * - OP_GENERIC_SELECT_ENTRY
  */
 static int op_display_message(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -1842,7 +1843,7 @@ done:
 }
 
 /**
- * op_main_next_new - Jump to the next new message - Implements ::index_function_t - @ingroup index_function_api
+ * op_main_next_new - Jump to next new message - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
  * - OP_MAIN_NEXT_NEW
@@ -3366,6 +3367,7 @@ changefoldercleanup2:
  *
  * This function handles:
  * - OP_FOLLOWUP
+ * - OP_FORWARD_TO_GROUP
  * - OP_POST
  */
 static int op_post(struct IndexFunctionData *fdata, const struct KeyEvent *event)

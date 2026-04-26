@@ -143,6 +143,24 @@ done:
 
 /**
  * menu_movement - Handle all the common Menu movements - Implements ::menu_function_t - @ingroup menu_function_api
+ *
+ * This function handles:
+ * - OP_BOTTOM_PAGE
+ * - OP_CURRENT_BOTTOM
+ * - OP_CURRENT_MIDDLE
+ * - OP_CURRENT_TOP
+ * - OP_FIRST_ENTRY
+ * - OP_HALF_DOWN
+ * - OP_HALF_UP
+ * - OP_LAST_ENTRY
+ * - OP_MIDDLE_PAGE
+ * - OP_NEXT_ENTRY
+ * - OP_NEXT_LINE
+ * - OP_NEXT_PAGE
+ * - OP_PREV_ENTRY
+ * - OP_PREV_LINE
+ * - OP_PREV_PAGE
+ * - OP_TOP_PAGE
  */
 static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -236,6 +254,12 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
 
 /**
  * menu_search - Handle Menu searching - Implements ::menu_function_t - @ingroup menu_function_api
+ *
+ * This function handles:
+ * - OP_SEARCH
+ * - OP_SEARCH_NEXT
+ * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_REVERSE
  */
 static int menu_search(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {

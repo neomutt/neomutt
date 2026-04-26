@@ -83,6 +83,10 @@ void postponed_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 
 /**
  * op_delete - Delete the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
+ *
+ * This function handles:
+ * - OP_DELETE
+ * - OP_UNDELETE
  */
 static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
 {
@@ -137,6 +141,12 @@ static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEven
 
 /**
  * op_search - Search for a regular expression - Implements ::postpone_function_t - @ingroup postpone_function_api
+ *
+ * This function handles:
+ * - OP_SEARCH
+ * - OP_SEARCH_NEXT
+ * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_REVERSE
  */
 static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
 {

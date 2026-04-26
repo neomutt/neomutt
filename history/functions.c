@@ -53,6 +53,10 @@ static int op_generic_select_entry(struct HistoryData *hd, const struct KeyEvent
 
 /**
  * op_quit - Quit this menu - Implements ::history_function_t - @ingroup history_function_api
+ *
+ * This function handles:
+ * - OP_EXIT
+ * - OP_QUIT
  */
 static int op_quit(struct HistoryData *hd, const struct KeyEvent *event)
 {

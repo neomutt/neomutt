@@ -186,6 +186,7 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
  * This function handles:
  * - OP_EDITOR_COMPLETE
  * - OP_EDITOR_COMPLETE_QUERY
+ * - OP_EDITOR_MAILBOX_CYCLE
  */
 static int op_editor_complete(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
