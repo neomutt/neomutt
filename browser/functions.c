@@ -572,6 +572,7 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
   if (tagged)
   {
     struct FolderFile *ff = NULL;
+    bool failed = false;
     ARRAY_FOREACH(ff, &priv->state.entry)
     {
       if (!ff->tagged)
@@ -607,6 +608,7 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
       if (imap_delete_mailbox(priv->mailbox, ff->name) != 0)
       {
         mutt_error(_("Mailbox deletion failed"));
+        failed = true;
         continue;
       }
       /* free the mailbox from the browser */
@@ -618,7 +620,7 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
     }
     mutt_message(_("%d mailboxes deleted"), deleted);
     init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
-    return FR_SUCCESS;
+    return failed ? FR_ERROR : FR_SUCCESS;
   }
 
   int index = menu_get_index(priv->menu);

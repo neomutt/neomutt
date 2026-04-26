@@ -92,8 +92,10 @@ void autocrypt_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 /**
  * toggle_active - Toggle whether an Autocrypt account is active
  * @param entry Menu Entry for the account
+ * @retval true  Success
+ * @retval false Error
  */
-static void toggle_active(struct AccountEntry *entry)
+static bool toggle_active(struct AccountEntry *entry)
 {
   entry->account->enabled = !entry->account->enabled;
   if (mutt_autocrypt_db_account_update(entry->account) != 0)
@@ -102,21 +104,29 @@ static void toggle_active(struct AccountEntry *entry)
     /* L10N: This error message is displayed if a database update of an
        account record fails for some odd reason.  */
     mutt_error(_("Error updating account record"));
+    return false;
   }
+
+  return true;
 }
 
 /**
  * toggle_prefer_encrypt - Toggle whether an Autocrypt account prefers encryption
  * @param entry Menu Entry for the account
+ * @retval true  Success
+ * @retval false Error
  */
-static void toggle_prefer_encrypt(struct AccountEntry *entry)
+static bool toggle_prefer_encrypt(struct AccountEntry *entry)
 {
   entry->account->prefer_encrypt = !entry->account->prefer_encrypt;
   if (mutt_autocrypt_db_account_update(entry->account))
   {
     entry->account->prefer_encrypt = !entry->account->prefer_encrypt;
     mutt_error(_("Error updating account record"));
+    return false;
   }
+
+  return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -171,9 +181,10 @@ static int op_autocrypt_toggle_active(struct AutocryptData *ad, const struct Key
   if (!pentry)
     return 0;
 
-  toggle_active((*pentry));
-  menu_queue_redraw(ad->menu, MENU_REDRAW_FULL);
+  if (!toggle_active((*pentry)))
+    return FR_ERROR;
 
+  menu_queue_redraw(ad->menu, MENU_REDRAW_FULL);
   return FR_SUCCESS;
 }
 
@@ -190,9 +201,10 @@ static int op_autocrypt_toggle_prefer(struct AutocryptData *ad, const struct Key
   if (!pentry)
     return 0;
 
-  toggle_prefer_encrypt((*pentry));
-  menu_queue_redraw(ad->menu, MENU_REDRAW_FULL);
+  if (!toggle_prefer_encrypt((*pentry)))
+    return FR_ERROR;
 
+  menu_queue_redraw(ad->menu, MENU_REDRAW_FULL);
   return FR_SUCCESS;
 }
 
