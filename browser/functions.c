@@ -238,8 +238,7 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct Ke
       menu_set_index(priv->menu, index + 1);
     }
 
-    if (rc > 0)
-      menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     nntp_newsrc_update(adata);
     nntp_clear_cache(adata);
     nntp_newsrc_close(adata);
@@ -408,8 +407,7 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
     }
   }
 
-  if (rc != 0)
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   nntp_newsrc_close(mod_data->current_news_srv);
   return FR_ERROR;

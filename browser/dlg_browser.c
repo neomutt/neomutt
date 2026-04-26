@@ -666,6 +666,14 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
 
 /**
  * file_tag - Tag an entry in the menu - Implements Menu::tag() - @ingroup menu_tag
+ * @param menu Menu
+ * @param sel  Selection (entry index)
+ * @param act  Action: 0 untag, 1 tag, -1 toggle
+ * @return Net change in number of tagged entries (0 or ±1)
+ 
+ * This function tags/untags entries in the browser.
+ * - For file selection mode, prevents tagging directories
+ * - For NNTP newsgroups, allows tagging of newsgroup entries for bulk operations
  */
 static int file_tag(struct Menu *menu, int sel, int act)
 {
@@ -673,8 +681,12 @@ static int file_tag(struct Menu *menu, int sel, int act)
   struct BrowserPrivateData *priv = menu->mdata;
   struct BrowserEntryArray *entry = &priv->state.entry;
   struct FolderFile *ff = ARRAY_GET(entry, sel);
-  if (S_ISDIR(ff->mode) ||
-      (S_ISLNK(ff->mode) && link_is_dir(buf_string(&mod_data->last_dir), ff->name)))
+
+  /* Allow tagging NNTP newsgroups, but disallow tagging directories for file selection */
+  bool is_nntp = (ff->nd != NULL);
+  if (!is_nntp &&
+      (S_ISDIR(ff->mode) ||
+       (S_ISLNK(ff->mode) && link_is_dir(buf_string(&mod_data->last_dir), ff->name))))
   {
     mutt_error(_("Can't attach a directory"));
     return 0;
@@ -834,7 +846,6 @@ void mutt_browser_select_dir(const char *f)
 void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
                  char ***files, int *numfiles)
 {
-  struct NntpModuleData *nntp_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   struct BrowserModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_BROWSER);
   ASSERT(mod_data);
   struct BrowserPrivateData *priv = browser_private_data_new();
@@ -851,19 +862,21 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   {
     if (buf_is_empty(file))
     {
-      struct NntpAccountData *adata = nntp_mod_data->current_news_srv;
+      priv->state.is_mailbox_list = true;
+      // struct NntpModuleData *nntp_mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
+      // struct NntpAccountData *adata = nntp_mod_data->current_news_srv;
 
-      /* default state for news reader mode is browse subscribed newsgroups */
-      priv->state.is_mailbox_list = false;
-      for (size_t i = 0; i < adata->groups_num; i++)
-      {
-        struct NntpMboxData *mdata = adata->groups_list[i];
-        if (mdata && mdata->subscribed)
-        {
-          priv->state.is_mailbox_list = true;
-          break;
-        }
-      }
+      // /* default state for news reader mode is browse subscribed newsgroups */
+      // priv->state.is_mailbox_list = false;
+      // for (size_t i = 0; i < adata->groups_num; i++)
+      // {
+      //   struct NntpMboxData *mdata = adata->groups_list[i];
+      //   if (mdata && mdata->subscribed)
+      //   {
+      //     priv->state.is_mailbox_list = true;
+      //     break;
+      //   }
+      // }
     }
     else
     {
@@ -1032,7 +1045,8 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   menu->mdata = priv;
 
   priv->menu = menu;
-  if (priv->multiple)
+  /* Enable tagging for file selection (multiple) and mailbox/newsgroup lists */
+  if (priv->multiple || priv->state.is_mailbox_list)
     priv->menu->tag = file_tag;
 
   priv->sbar = sdw.sbar;
