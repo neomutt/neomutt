@@ -1129,16 +1129,24 @@ int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   if (!win || !event)
   {
     mutt_error("%s", _(Not_available_in_this_menu));
+    dispatcher_flush_on_error(FR_ERROR);
+    return FR_ERROR;
+  }
+
+  if (!win->parent || !win->parent->wdata)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
   }
 
   struct PagerPrivateData *priv = win->parent->wdata;
-  if (!priv)
-    return FR_ERROR;
 
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   const int op = event->op;
 
@@ -1168,6 +1176,7 @@ int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   const char *result = dispatcher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
+  dispatcher_flush_on_error(rc);
   return rc;
 }
 

@@ -230,26 +230,40 @@ static int menu_other(struct Menu *menu)
 int menu_tagging_dispatcher(struct MuttWindow *win, const struct KeyEvent *event)
 {
   if (!win || !win->wdata || !event)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   struct Menu *menu = win->wdata;
   const int op = event->op;
+  int rc = FR_UNKNOWN;
 
   switch (op)
   {
     case OP_END_COND:
-      return op_end_cond(menu, op);
+      rc = op_end_cond(menu, op);
+      break;
     case OP_TAG:
-      return op_tag(menu, op);
+      rc = op_tag(menu, op);
+      break;
     case OP_TAG_PREFIX:
-      return op_tag_prefix(menu, op);
+      rc = op_tag_prefix(menu, op);
+      break;
     case OP_TAG_PREFIX_COND:
-      return op_tag_prefix_cond(menu, op);
+      rc = op_tag_prefix_cond(menu, op);
+      break;
     case OP_ABORT:
-      return menu_abort(menu);
+      rc = menu_abort(menu);
+      break;
     case OP_TIMEOUT:
-      return menu_timeout(menu);
+      rc = menu_timeout(menu);
+      break;
     default:
-      return menu_other(menu);
+      rc = menu_other(menu);
+      break;
   }
+
+  dispatcher_flush_on_error(rc);
+  return rc;
 }

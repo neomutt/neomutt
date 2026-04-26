@@ -194,13 +194,19 @@ int postpone_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!event || !dlg || !dlg->wdata)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct PostponeData *pd = menu->mdata;
   if (!pd)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PostponeFunctions[i].op != OP_NULL; i++)
@@ -219,6 +225,7 @@ int postpone_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *
   const char *result = dispatcher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
+  dispatcher_flush_on_error(rc);
   return rc;
 }
 

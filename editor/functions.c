@@ -561,6 +561,7 @@ int enter_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   const char *result = dispatcher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
+  dispatcher_flush_on_error(rc);
   return rc;
 }
 

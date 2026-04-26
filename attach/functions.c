@@ -760,12 +760,18 @@ int attach_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *ev
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!event || !dlg || !dlg->wdata)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   struct Menu *menu = dlg->wdata;
   struct AttachPrivateData *priv = menu->mdata;
   if (!priv)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   const int op = event->op;
 
@@ -785,5 +791,6 @@ int attach_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *ev
     }
   }
 
+  dispatcher_flush_on_error(rc);
   return rc;
 }

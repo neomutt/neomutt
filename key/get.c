@@ -62,8 +62,12 @@ static const int MaxKeyLoop = 64;
 void mutt_flushinp(void)
 {
   struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  const size_t unget_count = ARRAY_SIZE(&mod_data->unget_key_events);
+  const size_t macro_count = ARRAY_SIZE(&mod_data->macro_events);
   ARRAY_SHRINK(&mod_data->unget_key_events, ARRAY_SIZE(&mod_data->unget_key_events));
   ARRAY_SHRINK(&mod_data->macro_events, ARRAY_SIZE(&mod_data->macro_events));
+  mutt_debug(LL_DEBUG1, "Flushed %zu queued key events (%zu unget, %zu macro)\n",
+             unget_count + macro_count, unget_count, macro_count);
   flushinp();
 }
 
