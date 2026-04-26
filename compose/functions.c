@@ -1751,16 +1751,28 @@ static int op_attach_toggle_disposition(struct ComposeFunctionData *fdata,
 {
   struct ComposeSharedData *shared = fdata->shared;
   /* toggle the content-disposition between inline/attachment */
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return FR_NO_ACTION;
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
-  cur_att->body->disposition = (cur_att->body->disposition == DISP_INLINE) ?
-                                   DISP_ATTACH :
-                                   DISP_INLINE;
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+
+  int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
+  {
+    (*bp)->disposition = ((*bp)->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
+    rc = FR_SUCCESS;
+  }
+
+  if (rc == FR_SUCCESS)
+    menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
+
+  ARRAY_FREE(&ba);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -1770,21 +1782,47 @@ static int op_attach_toggle_recode(struct ComposeFunctionData *fdata,
                                    const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return FR_NO_ACTION;
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
-  if (!mutt_is_text_part(cur_att->body))
+
+  int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
+  {
+    if (!mutt_is_text_part(*bp))
+      continue;
+
+    (*bp)->noconv = !(*bp)->noconv;
+    rc = FR_SUCCESS;
+  }
+
+  if (rc == FR_NO_ACTION)
   {
     mutt_error(_("Recoding only affects text attachments"));
+    ARRAY_FREE(&ba);
     return FR_ERROR;
   }
-  cur_att->body->noconv = !cur_att->body->noconv;
-  if (cur_att->body->noconv)
-    mutt_message(_("The current attachment won't be converted"));
+
+  if (!menu->tag_prefix)
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    if (cur_att->body->noconv)
+      mutt_message(_("The current attachment won't be converted"));
+    else
+      mutt_message(_("The current attachment will be converted"));
+  }
   else
-    mutt_message(_("The current attachment will be converted"));
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  {
+    mutt_clear_error();
+  }
+
+  menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
+  ARRAY_FREE(&ba);
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
@@ -1796,15 +1834,28 @@ static int op_attach_toggle_unlink(struct ComposeFunctionData *fdata,
                                    const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
     return FR_NO_ACTION;
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
-  cur_att->body->unlink = !cur_att->body->unlink;
 
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
+  {
+    (*bp)->unlink = !(*bp)->unlink;
+    rc = FR_SUCCESS;
+  }
+
+  if (rc == FR_SUCCESS)
+    menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+
+  ARRAY_FREE(&ba);
   /* No send2hook since this doesn't change the message. */
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
