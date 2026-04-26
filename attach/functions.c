@@ -273,7 +273,7 @@ static int op_attach_collapse(struct AttachFunctionData *fdata, const struct Key
   if (!cur_att->body->parts)
   {
     mutt_error(_("There are no subparts to show"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
   attach_collapse(priv->actx, priv->menu, fdata->n->sub);
   mutt_update_recvattach_menu(priv->actx, priv->menu, false);
@@ -313,6 +313,8 @@ static int op_attach_delete(struct AttachFunctionData *fdata, const struct KeyEv
     mutt_message(_("Deletion of attachments from signed messages may invalidate the signature"));
   }
 
+  bool deleted = false;
+  bool blocked = false;
   if (priv->menu->tag_prefix)
   {
     for (int i = 0; i < priv->menu->max; i++)
@@ -322,10 +324,12 @@ static int op_attach_delete(struct AttachFunctionData *fdata, const struct KeyEv
         if (priv->actx->idx[i]->parent_type == TYPE_MULTIPART)
         {
           priv->actx->idx[i]->body->deleted = true;
+          deleted = true;
           menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
         }
         else
         {
+          blocked = true;
           mutt_message(_("Only deletion of multipart attachments is supported"));
         }
       }
@@ -337,6 +341,7 @@ static int op_attach_delete(struct AttachFunctionData *fdata, const struct KeyEv
     if (cur_att->parent_type == TYPE_MULTIPART)
     {
       cur_att->body->deleted = true;
+      deleted = true;
       const bool c_resolve = cs_subset_bool(fdata->n->sub, "resolve");
       const int index = menu_get_index(priv->menu) + 1;
       if (c_resolve && (index < priv->menu->max))
@@ -350,11 +355,12 @@ static int op_attach_delete(struct AttachFunctionData *fdata, const struct KeyEv
     }
     else
     {
+      blocked = true;
       mutt_message(_("Only deletion of multipart attachments is supported"));
     }
   }
 
-  return FR_SUCCESS;
+  return deleted ? FR_SUCCESS : (blocked ? FR_ERROR : FR_NO_ACTION);
 }
 
 /**
@@ -611,9 +617,10 @@ static int op_forward_message(struct AttachFunctionData *fdata, const struct Key
 static int op_list_subscribe(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
   struct AttachPrivateData *priv = fdata->priv;
-  if (!check_attach(priv))
-    mutt_send_list_subscribe(priv->mailbox, priv->actx->email);
-  return FR_SUCCESS;
+  if (check_attach(priv))
+    return FR_ERROR;
+
+  return mutt_send_list_subscribe(priv->mailbox, priv->actx->email) ? FR_SUCCESS : FR_ERROR;
 }
 
 /**
@@ -622,9 +629,10 @@ static int op_list_subscribe(struct AttachFunctionData *fdata, const struct KeyE
 static int op_list_unsubscribe(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
   struct AttachPrivateData *priv = fdata->priv;
-  if (!check_attach(priv))
-    mutt_send_list_unsubscribe(priv->mailbox, priv->actx->email);
-  return FR_SUCCESS;
+  if (check_attach(priv))
+    return FR_ERROR;
+
+  return mutt_send_list_unsubscribe(priv->mailbox, priv->actx->email) ? FR_SUCCESS : FR_ERROR;
 }
 
 /**

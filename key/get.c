@@ -66,8 +66,12 @@ void mutt_flushinp(void)
   const size_t macro_count = ARRAY_SIZE(&mod_data->macro_events);
   ARRAY_SHRINK(&mod_data->unget_key_events, ARRAY_SIZE(&mod_data->unget_key_events));
   ARRAY_SHRINK(&mod_data->macro_events, ARRAY_SIZE(&mod_data->macro_events));
-  mutt_debug(LL_DEBUG1, "Flushed %zu queued key events (%zu unget, %zu macro)\n",
-             unget_count + macro_count, unget_count, macro_count);
+
+  if ((unget_count + macro_count) > 0)
+  {
+    mutt_debug(LL_DEBUG1, "Flushed %zu queued key events (%zu unget, %zu macro)\n",
+               unget_count + macro_count, unget_count, macro_count);
+  }
   flushinp();
 }
 

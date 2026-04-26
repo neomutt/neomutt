@@ -677,7 +677,7 @@ static int op_main_change_thread(struct IndexFunctionData *fdata, enum CollapseM
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
@@ -1234,7 +1234,7 @@ static int op_list_reply(struct IndexFunctionData *fdata, const struct KeyEvent 
 static int op_list_subscribe(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
-  return mutt_send_list_subscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_NO_ACTION;
+  return mutt_send_list_subscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_ERROR;
 }
 
 /**
@@ -1243,7 +1243,7 @@ static int op_list_subscribe(struct IndexFunctionData *fdata, const struct KeyEv
 static int op_list_unsubscribe(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
-  return mutt_send_list_unsubscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_NO_ACTION;
+  return mutt_send_list_unsubscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_ERROR;
 }
 
 /**
@@ -1302,7 +1302,7 @@ static int op_main_break_thread(struct IndexFunctionData *fdata, const struct Ke
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   struct MailboxView *mv = shared->mailbox_view;
@@ -1322,6 +1322,7 @@ static int op_main_break_thread(struct IndexFunctionData *fdata, const struct Ke
   else
   {
     mutt_error(_("Thread can't be broken, message is not part of a thread"));
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;
@@ -1408,7 +1409,7 @@ static int op_main_collapse_all(struct IndexFunctionData *fdata, const struct Ke
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
   collapse_all(shared->mailbox_view, priv->menu, COLLAPSE_MODE_TOGGLE);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
@@ -1427,7 +1428,7 @@ static int op_main_close_all_threads(struct IndexFunctionData *fdata,
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   if (!shared->mailbox_view || shared->mailbox_view->collapsed)
@@ -1449,7 +1450,7 @@ static int op_main_close_thread(struct IndexFunctionData *fdata, const struct Ke
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   if (priv->tag_prefix)
@@ -1481,7 +1482,7 @@ static int op_main_collapse_thread(struct IndexFunctionData *fdata, const struct
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   if (priv->tag_prefix)
@@ -1527,7 +1528,7 @@ static int op_main_open_all_threads(struct IndexFunctionData *fdata,
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   if (!shared->mailbox_view || !shared->mailbox_view->collapsed)
@@ -1549,7 +1550,7 @@ static int op_main_open_thread(struct IndexFunctionData *fdata, const struct Key
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   if (priv->tag_prefix)
@@ -1687,7 +1688,7 @@ static int op_main_link_threads(struct IndexFunctionData *fdata, const struct Ke
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    rc = FR_NO_ACTION;
+    rc = FR_ERROR;
   }
   else if (!e->env->message_id)
   {
@@ -1711,7 +1712,7 @@ static int op_main_link_threads(struct IndexFunctionData *fdata, const struct Ke
     else
     {
       mutt_error(_("No thread linked"));
-      rc = FR_NO_ACTION;
+      rc = FR_ERROR;
     }
 
     ARRAY_FREE(&ea);
@@ -2017,6 +2018,7 @@ static int op_main_next_thread(struct IndexFunctionData *fdata, const struct Key
       mutt_error(_("You are on the first thread"));
 
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;
@@ -2051,6 +2053,7 @@ static int op_main_next_undeleted(struct IndexFunctionData *fdata, const struct 
   {
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     mutt_error(_("No undeleted messages"));
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;
@@ -2135,6 +2138,7 @@ static int op_main_prev_undeleted(struct IndexFunctionData *fdata, const struct 
   {
     mutt_error(_("No undeleted messages"));
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;
@@ -3189,6 +3193,7 @@ static int op_get_children(struct IndexFunctionData *fdata, const struct KeyEven
   else if (rc >= 0)
   {
     mutt_error(_("No deleted messages found in the thread"));
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;

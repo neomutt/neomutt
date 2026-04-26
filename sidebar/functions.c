@@ -259,7 +259,7 @@ static int op_sidebar_next(struct SidebarFunctionData *fdata, const struct KeyEv
     return FR_NO_ACTION;
 
   if (!sb_next(wdata))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   wdata->win->actions |= WA_RECALC;
   return FR_SUCCESS;
@@ -375,7 +375,7 @@ static int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEv
     return FR_NO_ACTION;
 
   if (!sb_prev(wdata))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   wdata->win->actions |= WA_RECALC;
   return FR_SUCCESS;
@@ -522,7 +522,7 @@ static int op_sidebar_start_search(struct SidebarFunctionData *fdata,
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
   {
     mutt_warning(_("There are no mailboxes"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   const bool was_visible = cs_subset_bool(fdata->n->sub, "sidebar_visible");

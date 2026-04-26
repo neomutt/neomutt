@@ -658,7 +658,7 @@ static int move_attachment(struct ComposeSharedData *shared, bool up)
 {
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
   struct AttachPtr *cur_att = current_attachment(actx, menu);
@@ -731,7 +731,7 @@ static int move_attachment(struct ComposeSharedData *shared, bool up)
 
 done:
   ARRAY_FREE(&ba);
-  return FR_NO_ACTION;
+  return FR_ERROR;
 }
 
 /**
@@ -1019,7 +1019,7 @@ static int op_attach_attach_file(struct ComposeFunctionData *fdata, const struct
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   if (added_attachment)
     exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
-  return FR_SUCCESS;
+  return added_attachment ? FR_SUCCESS : (error ? FR_ERROR : FR_NO_ACTION);
 }
 
 /**
@@ -1136,7 +1136,7 @@ static int op_attach_attach_message(struct ComposeFunctionData *fdata,
   {
     mx_mbox_close(m_attach);
     mutt_error(_("No messages in that folder"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   /* `$sort`, `$sort_aux`, `$use_threads` could be changed in dlg_index() */
@@ -1201,7 +1201,7 @@ static int op_attach_attach_message(struct ComposeFunctionData *fdata,
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   if (added_attachment)
     exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
-  return FR_SUCCESS;
+  return added_attachment ? FR_SUCCESS : FR_ERROR;
 }
 
 /**
@@ -1212,7 +1212,7 @@ static int op_attach_detach(struct ComposeFunctionData *fdata, const struct KeyE
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
   int rc = FR_NO_ACTION;
@@ -1293,7 +1293,7 @@ static int op_attach_edit_content_id(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -1378,7 +1378,7 @@ static int op_attach_edit_description(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -1426,7 +1426,7 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -1486,7 +1486,7 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -1538,7 +1538,7 @@ static int op_attach_edit_mime(struct ComposeFunctionData *fdata, const struct K
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -1575,7 +1575,7 @@ static int op_attach_edit_type(struct ComposeFunctionData *fdata, const struct K
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
@@ -1601,7 +1601,7 @@ static int op_attach_filter(struct ComposeFunctionData *fdata, const struct KeyE
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
   struct AttachPtr *cur_att = current_attachment(actx, menu);
@@ -1632,7 +1632,7 @@ static int op_attach_get_attachment(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_ERROR;
   struct Menu *menu = shared->adata->menu;
@@ -1642,6 +1642,7 @@ static int op_attach_get_attachment(struct ComposeFunctionData *fdata,
     goto done;
 
   struct Body **bp = NULL;
+  bool got_attachment = false;
   ARRAY_FOREACH(bp, &ba)
   {
     if ((*bp)->type == TYPE_MULTIPART)
@@ -1650,10 +1651,14 @@ static int op_attach_get_attachment(struct ComposeFunctionData *fdata,
       continue;
     }
     mutt_get_tmp_attachment(*bp);
+    got_attachment = true;
   }
 
-  menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  rc = FR_SUCCESS;
+  if (got_attachment)
+  {
+    menu_queue_redraw(menu, MENU_REDRAW_FULL);
+    rc = FR_SUCCESS;
+  }
 
 done:
   ARRAY_FREE(&ba);
@@ -1755,7 +1760,7 @@ static int op_attach_move_down(struct ComposeFunctionData *fdata, const struct K
   if (index == (actx->idxlen - 1))
   {
     mutt_error(_("Attachment is already at bottom"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
   if ((actx->idx[index]->parent_type == TYPE_MULTIPART) &&
       !actx->idx[index]->body->next)
@@ -1774,7 +1779,7 @@ static int op_attach_move_down(struct ComposeFunctionData *fdata, const struct K
   if (nextidx == actx->idxlen)
   {
     mutt_error(_("Attachment is already at bottom"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   // find final position
@@ -1814,7 +1819,7 @@ static int op_attach_move_up(struct ComposeFunctionData *fdata, const struct Key
   if (index == 0)
   {
     mutt_error(_("Attachment is already at top"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
   if (actx->idx[index - 1]->level < actx->idx[index]->level)
   {
@@ -1926,7 +1931,7 @@ static int op_attach_print(struct ComposeFunctionData *fdata, const struct KeyEv
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
   struct AttachPtr *cur_att = current_attachment(actx, menu);
@@ -1949,7 +1954,7 @@ static int op_attach_rename_attachment(struct ComposeFunctionData *fdata,
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
   char *src = NULL;
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
@@ -1980,7 +1985,7 @@ static int op_attach_save(struct ComposeFunctionData *fdata, const struct KeyEve
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
   struct AttachPtr *cur_att = current_attachment(actx, menu);
@@ -2005,7 +2010,7 @@ static int op_attach_toggle_disposition(struct ComposeFunctionData *fdata,
   /* toggle the content-disposition between inline/attachment */
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -2036,7 +2041,7 @@ static int op_attach_toggle_recode(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -2088,7 +2093,7 @@ static int op_attach_toggle_unlink(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -2182,7 +2187,7 @@ static int op_attach_update_encoding(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -2266,7 +2271,7 @@ static int op_compose_edit_file(struct ComposeFunctionData *fdata, const struct 
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
   if (cur_att->body->type == TYPE_MULTIPART)
@@ -2359,7 +2364,7 @@ static int op_compose_rename_file(struct ComposeFunctionData *fdata,
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
   if (cur_att->body->type == TYPE_MULTIPART)
@@ -2482,7 +2487,7 @@ static int op_display_headers(struct ComposeFunctionData *fdata, const struct Ke
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   enum ViewAttachMode mode = MUTT_VA_REGULAR;
 

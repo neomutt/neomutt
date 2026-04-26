@@ -391,7 +391,10 @@ static int op_pager_bottom(struct PagerFunctionData *fdata, const struct KeyEven
 {
   struct PagerPrivateData *priv = fdata->priv;
   if (!jump_to_bottom(priv, priv->pview))
+  {
     mutt_message(_("Bottom of message is shown"));
+    return FR_ERROR;
+  }
 
   return FR_SUCCESS;
 }
@@ -413,6 +416,7 @@ static int op_pager_half_down(struct PagerFunctionData *fdata, const struct KeyE
   {
     /* emulate "less -q" and don't go on to the next message. */
     mutt_message(_("Bottom of message is shown"));
+    return FR_ERROR;
   }
   else
   {
@@ -428,6 +432,7 @@ static int op_pager_half_down(struct PagerFunctionData *fdata, const struct KeyE
 static int op_pager_half_up(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
   struct PagerPrivateData *priv = fdata->priv;
+  const int old_top_line = priv->top_line;
   if (priv->top_line)
   {
     priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2 +
@@ -439,7 +444,7 @@ static int op_pager_half_up(struct PagerFunctionData *fdata, const struct KeyEve
   {
     mutt_message(_("Top of message is shown"));
   }
-  return FR_SUCCESS;
+  return (old_top_line == 0) ? FR_ERROR : FR_SUCCESS;
 }
 
 /**
@@ -486,6 +491,7 @@ static int op_pager_next_line(struct PagerFunctionData *fdata, const struct KeyE
   else
   {
     mutt_message(_("Bottom of message is shown"));
+    return FR_ERROR;
   }
   return FR_SUCCESS;
 }
@@ -507,6 +513,7 @@ static int op_pager_next_page(struct PagerFunctionData *fdata, const struct KeyE
   {
     /* emulate "less -q" and don't go on to the next message. */
     mutt_message(_("Bottom of message is shown"));
+    return FR_ERROR;
   }
   else
   {
@@ -530,6 +537,7 @@ static int op_pager_prev_line(struct PagerFunctionData *fdata, const struct KeyE
   else
   {
     mutt_message(_("Top of message is shown"));
+    return FR_ERROR;
   }
   return FR_SUCCESS;
 }
@@ -543,6 +551,7 @@ static int op_pager_prev_page(struct PagerFunctionData *fdata, const struct KeyE
   if (priv->top_line == 0)
   {
     mutt_message(_("Top of message is shown"));
+    return FR_ERROR;
   }
   else
   {
@@ -629,6 +638,7 @@ static int op_pager_search(struct PagerFunctionData *fdata, const struct KeyEven
     }
     priv->search_flag = 0;
     priv->search_compiled = false;
+    rc = FR_ERROR;
   }
   else
   {
@@ -681,6 +691,7 @@ static int op_pager_search(struct PagerFunctionData *fdata, const struct KeyEven
     {
       priv->search_flag = 0;
       mutt_error(_("Not found"));
+      rc = FR_ERROR;
     }
     else
     {
@@ -693,11 +704,11 @@ static int op_pager_search(struct PagerFunctionData *fdata, const struct KeyEven
         priv->searchctx = 0;
       if (priv->top_line - priv->searchctx > 0)
         priv->top_line -= priv->searchctx;
+      rc = FR_SUCCESS;
     }
   }
   pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
-  rc = FR_SUCCESS;
 
 done:
   buf_pool_release(&buf);
@@ -717,6 +728,7 @@ static int op_pager_search_next(struct PagerFunctionData *fdata, const struct Ke
   if (priv->search_compiled)
   {
     const short c_search_context = cs_subset_number(fdata->n->sub, "search_context");
+    bool found = false;
     priv->wrapped = false;
 
     if (c_search_context < priv->pview->win_pager->state.rows)
@@ -746,6 +758,7 @@ static int op_pager_search_next(struct PagerFunctionData *fdata, const struct Ke
       if (i < priv->lines_used)
       {
         priv->top_line = i;
+        found = true;
       }
       else if (priv->wrapped || !c_wrap_search)
       {
@@ -777,6 +790,7 @@ static int op_pager_search_next(struct PagerFunctionData *fdata, const struct Ke
       if (i >= 0)
       {
         priv->top_line = i;
+        found = true;
       }
       else if (priv->wrapped || !c_wrap_search)
       {
@@ -789,6 +803,9 @@ static int op_pager_search_next(struct PagerFunctionData *fdata, const struct Ke
         goto search_next;
       }
     }
+
+    if (!found)
+      return FR_ERROR;
 
     if (priv->lines[priv->top_line].search_arr_size > 0)
     {
@@ -838,7 +855,7 @@ static int op_pager_skip_headers(struct PagerFunctionData *fdata, const struct K
        (I don't think this is actually possible in Mutt's code, but
        display some kind of message in case it somehow occurs.) */
     mutt_warning(_("No text past headers"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
   priv->top_line = new_topline;
   notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
@@ -954,6 +971,7 @@ static int op_pager_top(struct PagerFunctionData *fdata, const struct KeyEvent *
   if (priv->top_line == 0)
   {
     mutt_message(_("Top of message is shown"));
+    return FR_ERROR;
   }
   else
   {
