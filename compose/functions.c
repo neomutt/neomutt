@@ -544,6 +544,197 @@ static void compose_attach_swap(struct Email *e, struct AttachCtx *actx, int fir
 }
 
 /**
+ * body_index - Find the index of an attachment body
+ * @param actx Attachment context
+ * @param b    Body to find
+ * @retval num Index of body
+ * @retval -1  Body wasn't found
+ */
+static int body_index(struct AttachCtx *actx, const struct Body *b)
+{
+  if (!actx || !b)
+    return -1;
+
+  for (int i = 0; i < actx->idxlen; i++)
+  {
+    if (actx->idx[i]->body == b)
+      return i;
+  }
+
+  return -1;
+}
+
+/**
+ * prev_sibling - Find the previous sibling of an attachment
+ * @param actx  Attachment context
+ * @param index Index of attachment
+ * @retval num Index of previous sibling
+ * @retval -1  No previous sibling
+ */
+static int prev_sibling(struct AttachCtx *actx, int index)
+{
+  if (!actx || (index <= 0) || (index >= actx->idxlen))
+    return -1;
+
+  const int level = actx->idx[index]->level;
+  int previdx = index - 1;
+  while ((previdx > 0) && (actx->idx[previdx]->level > level))
+    previdx--;
+
+  return (actx->idx[previdx]->level == level) ? previdx : -1;
+}
+
+/**
+ * next_sibling - Find the next sibling of an attachment
+ * @param actx  Attachment context
+ * @param index Index of attachment
+ * @retval num Index of next sibling
+ * @retval -1  No next sibling
+ */
+static int next_sibling(struct AttachCtx *actx, int index)
+{
+  if (!actx || (index < 0) || (index >= actx->idxlen))
+    return -1;
+
+  const int level = actx->idx[index]->level;
+  int nextidx = index + 1;
+  while ((nextidx < actx->idxlen) && (actx->idx[nextidx]->level > level))
+    nextidx++;
+
+  if ((nextidx >= actx->idxlen) || (actx->idx[nextidx]->level != level))
+    return -1;
+
+  return nextidx;
+}
+
+/**
+ * tagged_attachments_are_siblings - Check whether tagged attachments are siblings
+ * @param e    Email
+ * @param actx Attachment context
+ * @retval true Tagged attachments are siblings
+ */
+static bool tagged_attachments_are_siblings(struct Email *e, struct AttachCtx *actx)
+{
+  if (!e || !actx)
+    return false;
+
+  int level = -1;
+  struct Body *parent = NULL;
+
+  for (int i = 0; i < actx->idxlen; i++)
+  {
+    struct AttachPtr *ap = actx->idx[i];
+    if (!ap->body->tagged)
+      continue;
+
+    struct Body *this_parent = NULL;
+    if (ap->level > 0)
+    {
+      if (!attach_body_parent(e->body, NULL, ap->body, &this_parent))
+        return false;
+    }
+
+    if (level == -1)
+    {
+      level = ap->level;
+      parent = this_parent;
+      continue;
+    }
+
+    if ((level != ap->level) || (parent != this_parent))
+      return false;
+  }
+
+  return true;
+}
+
+/**
+ * move_attachment - Move attachments in the attachment list
+ * @param shared Shared compose data
+ * @param up     If true, move up, otherwise move down
+ * @retval enum #FunctionRetval
+ */
+static int move_attachment(struct ComposeSharedData *shared, bool up)
+{
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_NO_ACTION;
+
+  struct Menu *menu = shared->adata->menu;
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
+  if (!cur_att)
+    return FR_ERROR;
+
+  struct Body *cur_body = cur_att->body;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+  if (ARRAY_EMPTY(&ba))
+    goto done;
+
+  if (menu->tag_prefix && !tagged_attachments_are_siblings(shared->email, actx))
+  {
+    mutt_error(_("Tagged attachments must be siblings"));
+    ARRAY_FREE(&ba);
+    return FR_ERROR;
+  }
+
+  bool moved = false;
+  if (up)
+  {
+    struct Body **bp = NULL;
+    ARRAY_FOREACH(bp, &ba)
+    {
+      const int index = body_index(actx, *bp);
+      const int previdx = prev_sibling(actx, index);
+      if (previdx < 0)
+        continue;
+      if (menu->tag_prefix && actx->idx[previdx]->body->tagged)
+        continue;
+
+      compose_attach_swap(shared->email, actx, previdx, index);
+      moved = true;
+    }
+  }
+  else
+  {
+    for (int i = ARRAY_SIZE(&ba) - 1; i >= 0; i--)
+    {
+      struct Body **bp = ARRAY_GET(&ba, i);
+      const int index = body_index(actx, *bp);
+      const int nextidx = next_sibling(actx, index);
+      if (nextidx < 0)
+        continue;
+      if (menu->tag_prefix && actx->idx[nextidx]->body->tagged)
+        continue;
+
+      compose_attach_swap(shared->email, actx, index, nextidx);
+      moved = true;
+    }
+  }
+
+  if (!moved)
+  {
+    mutt_error(up ? _("Attachment is already at top") : _("Attachment is already at bottom"));
+    goto done;
+  }
+
+  mutt_update_tree(actx);
+  menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
+
+  const int index = body_index(actx, cur_body);
+  if (index >= 0)
+    menu_set_index(menu, index);
+
+  ARRAY_FREE(&ba);
+  return FR_SUCCESS;
+
+done:
+  ARRAY_FREE(&ba);
+  return FR_NO_ACTION;
+}
+
+/**
  * group_attachments - Group tagged attachments into a multipart group
  * @param  shared     Shared compose data
  * @param  subtype    MIME subtype
@@ -1551,6 +1742,9 @@ static int op_attach_group_related(struct ComposeFunctionData *fdata,
 static int op_attach_move_down(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
+  if (shared->adata->menu->tag_prefix)
+    return move_attachment(shared, false);
+
   int index = menu_get_index(shared->adata->menu);
 
   struct AttachCtx *actx = shared->adata->actx;
@@ -1608,6 +1802,9 @@ static int op_attach_move_down(struct ComposeFunctionData *fdata, const struct K
 static int op_attach_move_up(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
+  if (shared->adata->menu->tag_prefix)
+    return move_attachment(shared, true);
+
   int index = menu_get_index(shared->adata->menu);
   if (index < 0)
     return FR_ERROR;
