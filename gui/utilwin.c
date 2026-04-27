@@ -237,29 +237,6 @@ struct MuttWindow *utilwin_new(void)
 }
 
 /**
- * utilwin_get_text - Get the text from the Utility Window
- * @param win Utility Window
- * @retval ptr  Text string
- * @retval NULL No text or invalid window
- *
- * @note Do not free the returned string
- */
-const char *utilwin_get_text(struct MuttWindow *win)
-{
-  if (!win)
-  {
-    struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-    if (mod_data)
-      win = mod_data->utility_window;
-  }
-  if (!win)
-    return NULL;
-
-  struct UtilWinData *priv = win->wdata;
-  return priv->text;
-}
-
-/**
  * utilwin_set_text - Set the text for the Utility Window
  * @param win  Utility Window (may be NULL to use the default)
  * @param text Text to display (NULL or empty to hide)

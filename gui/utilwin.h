@@ -26,7 +26,6 @@
 struct MuttWindow;
 
 struct MuttWindow *utilwin_new     (void);
-const char *       utilwin_get_text(struct MuttWindow *win);
 void               utilwin_set_text(struct MuttWindow *win, const char *text);
 
 #endif /* MUTT_GUI_UTILWIN_H */
