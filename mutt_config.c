@@ -473,6 +473,9 @@ struct ConfigDef MainVars[] = {
   { "local_date_header", DT_BOOL, true, 0, NULL,
     "Convert the date in the Date header of sent emails into local timezone, UTC otherwise"
   },
+  { "macro_repeat_max", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 1000, 0, NULL,
+    "Maximum number of times a macro may be repeated via a numeric prefix"
+  },
   { "mail_check", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 5, 0, NULL,
     "Number of seconds before NeoMutt checks for new mail"
   },

@@ -86,6 +86,7 @@ void             mutt_flush_macro_to_endcond (void);
 struct KeyEvent  mutt_getch                  (GetChFlags flags);
 int              mutt_monitor_getch          (void);
 void             mutt_push_macro_event       (int ch, int op);
+void             mutt_push_macro_repeated    (char *macro, int count);
 void             mutt_unget_ch               (int ch);
 void             mutt_unget_op               (int op);
 

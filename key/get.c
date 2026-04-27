@@ -50,6 +50,25 @@
 /// XXX
 static const int MaxKeyLoop = 64;
 
+/**
+ * mutt_push_macro_repeated - Push a macro string into the input queue, optionally repeated
+ * @param macro Macro string to expand
+ * @param count Number of times to repeat (0 or 1 means once)
+ *
+ * The repeat count is clamped to `$macro_repeat_max` to bound queue growth.
+ */
+void mutt_push_macro_repeated(char *macro, int count)
+{
+  int repeat = (count > 0) ? count : 1;
+
+  const short c_macro_repeat_max = cs_subset_number(NeoMutt->sub, "macro_repeat_max");
+  if ((c_macro_repeat_max > 0) && (repeat > c_macro_repeat_max))
+    repeat = c_macro_repeat_max;
+
+  for (int i = 0; i < repeat; i++)
+    generic_tokenize_push_string(macro);
+}
+
 // It's not possible to unget more than one char under some curses libs,
 // so roll our own input buffering routines.
 
@@ -538,7 +557,7 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
             return (struct KeyEvent) { 0, OP_NULL, 0 };
           }
 
-          generic_tokenize_push_string(pending_exact->macro);
+          mutt_push_macro_repeated(pending_exact->macro, count_digits > 0 ? count : 0);
           state = DKS_START;
           count = 0;
           count_digits = 0;
@@ -701,7 +720,7 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
         return (struct KeyEvent) { event.ch, OP_NULL, 0 };
       }
 
-      generic_tokenize_push_string(map->macro);
+      mutt_push_macro_repeated(map->macro, count_digits > 0 ? count : 0);
       state = DKS_START;
       count = 0;
       count_digits = 0;

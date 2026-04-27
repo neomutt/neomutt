@@ -535,6 +535,9 @@ void test_fini(void);
   /* imap */                                                                   \
   NEOMUTT_TEST_ITEM(test_imap_msg_set)                                         \
                                                                                \
+  /* key */                                                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_push_macro_repeated)                             \
+                                                                               \
   /* list */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_list_clear)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_list_copy_tail)                                  \
