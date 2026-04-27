@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -6479,11 +6479,11 @@ msgstr "跳到："
 msgid "Invalid index number"
 msgstr "无效的索引编号"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "您现在在第一项"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "您现在在最后一项"
 
@@ -9103,16 +9103,6 @@ msgstr "SMTP 会话失败：写错误"
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "无效的服务器回应"
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "您现在在最后一项"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "您现在在第一项"
 
 #: sidebar/functions.c:641
 #, fuzzy

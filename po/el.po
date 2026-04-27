@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -6614,11 +6614,11 @@ msgstr "Μετακίνηση στο: "
 msgid "Invalid index number"
 msgstr "Μη έγκυρος αριθμός δείκτη"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "Είστε στην πρώτη καταχώρηση"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "Είστε στην τελευταία καταχώρηση"
 
@@ -9374,16 +9374,6 @@ msgstr "Απέτυχε η συνεδρία SMTP: σφάλμα write"
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "Μη έγκυρη απάντηση από τον διακομιστή"
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "Είστε στην τελευταία καταχώρηση"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "Είστε στην πρώτη καταχώρηση"
 
 #: sidebar/functions.c:641
 #, fuzzy

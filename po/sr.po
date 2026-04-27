@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2026-01-31 19:19+0100\n"
 "Last-Translator: Страхиња Радић <sr@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
@@ -6412,11 +6412,11 @@ msgstr "Скочи на: "
 msgid "Invalid index number"
 msgstr "Неисправан број индекса"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "Налазите се на првом уносу"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "Налазите се на последњем уносу"
 
@@ -9041,16 +9041,6 @@ msgstr "Неуспешна SMTP сесија: грешка приликом пи
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "Погрешан одговор сервера"
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "Налазите се на последњем уносу"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "Налазите се на првом уносу"
 
 #: sidebar/functions.c:641
 #, fuzzy

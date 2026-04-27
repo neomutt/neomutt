@@ -304,7 +304,7 @@ static int op_sidebar_next(struct SidebarFunctionData *fdata, const struct KeyEv
   {
     if (!sb_next(wdata))
     {
-      mutt_message(_("Already on last entry"));
+      mutt_message(_("You are on the last entry"));
       return FR_ERROR;
     }
   }
@@ -452,7 +452,7 @@ static int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEv
   {
     if (!sb_prev(wdata))
     {
-      mutt_message(_("Already on first entry"));
+      mutt_message(_("You are on the first entry"));
       return FR_ERROR;
     }
   }

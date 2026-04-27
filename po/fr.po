@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2023-05-08 12:38+0000\n"
 "Last-Translator: Ryan d'Huart <homoelectromagneticus@protonmail.com>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -6701,11 +6701,11 @@ msgstr "Aller à : "
 msgid "Invalid index number"
 msgstr "Numéro d'index invalide"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "Vous êtes sur la première entrée"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "Vous êtes sur la dernière entrée"
 
@@ -9432,16 +9432,6 @@ msgstr "La session SMTP a échoué : erreur d'écriture"
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "La réponse du serveur n'est pas valide"
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "Vous êtes sur la dernière entrée"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "Vous êtes sur la première entrée"
 
 #: sidebar/functions.c:641
 #, fuzzy

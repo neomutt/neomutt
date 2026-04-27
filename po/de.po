@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2026-01-08 19:34+0100\n"
 "Last-Translator: xbcb <gerrit@macclub-os.de>\n"
 "Language-Team: none\n"
@@ -6397,11 +6397,11 @@ msgstr "Springe zu: "
 msgid "Invalid index number"
 msgstr "Ungültige Indexnummer"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "Dies ist der erste Eintrag"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "Dies ist der letzte Eintrag"
 
@@ -9018,16 +9018,6 @@ msgstr "SMTP-Verbindung fehlgeschlagen: Schreibfehler"
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "Ungültige Serverantwort"
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "Dies ist der letzte Eintrag"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "Dies ist der erste Eintrag"
 
 #: sidebar/functions.c:641
 #, fuzzy

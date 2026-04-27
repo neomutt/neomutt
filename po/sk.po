@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -6502,11 +6502,11 @@ msgstr "Preskoč na: "
 msgid "Invalid index number"
 msgstr "Neplatné číslo indexu"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "Ste na prvej položke"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "Ste na poslednej položke"
 
@@ -9135,16 +9135,6 @@ msgstr "SMTP relácia zlyhala: chyba zápisu"
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "Neplatná odpoveď serveru"
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "Ste na poslednej položke"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "Ste na prvej položke"
 
 #: sidebar/functions.c:641
 #, fuzzy

@@ -55,7 +55,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -6769,11 +6769,11 @@ msgstr "Salta a: "
 msgid "Invalid index number"
 msgstr "El número d’índex no és vàlid"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "Vos trobeu a la primera entrada"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "Vos trobeu a la darrera entrada"
 
@@ -9573,16 +9573,6 @@ msgstr "La sessió SMTP ha fallat: error d’escriptura"
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "La resposta del servidor no és vàlida."
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "Vos trobeu a la darrera entrada"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "Vos trobeu a la primera entrada"
 
 #: sidebar/functions.c:641
 #, fuzzy

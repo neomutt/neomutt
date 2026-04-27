@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2021-05-16 19:33+0000\n"
 "Last-Translator: Ivan Shmakov\n"
 "Language-Team: \n"
@@ -6598,11 +6598,11 @@ msgstr "Перейти к: "
 msgid "Invalid index number"
 msgstr "Неверный индекс"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "Вы уже на первой записи"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "Вы уже на последней записи"
 
@@ -9278,16 +9278,6 @@ msgstr "Ошибка SMTP сессии: ошибка записи"
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "Неверный ответ сервера"
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "Вы уже на последней записи"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "Вы уже на первой записи"
 
 #: sidebar/functions.c:641
 #, fuzzy

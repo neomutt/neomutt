@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2026-03-03 19:36-0500\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -6399,11 +6399,11 @@ msgstr "Salti al: "
 msgid "Invalid index number"
 msgstr "Nevalida indeksnumero"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "Ĉi tiu estas la unua elemento"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "Ĉi tiu estas la lasta elemento"
 
@@ -9016,16 +9016,6 @@ msgstr "SMTP-konekto malsukcesis: skriberaro"
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "Nevalida respondo de servilo"
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "Ĉi tiu estas la lasta elemento"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "Ĉi tiu estas la unua elemento"
 
 #: sidebar/functions.c:641
 #, fuzzy

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2017-04-17 17:06+0100\n"
 "Last-Translator: Richard Russon <rich@flatcap.org>\n"
 "Language-Team: none\n"
@@ -6380,11 +6380,11 @@ msgstr "Jump to: "
 msgid "Invalid index number"
 msgstr "Invalid index number"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "You are on the first entry"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "You are on the last entry"
 
@@ -8999,14 +8999,6 @@ msgstr "SMTP session failed: write error"
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr "Invalid server response"
-
-#: sidebar/functions.c:307
-msgid "Already on last entry"
-msgstr "Already on last entry"
-
-#: sidebar/functions.c:455
-msgid "Already on first entry"
-msgstr "Already on first entry"
 
 #: sidebar/functions.c:641
 msgid "Sidebar search: "

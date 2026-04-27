@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-12-11\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2026-04-27 16:59+0100\n"
+"POT-Creation-Date: 2026-04-27 17:08+0100\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -6661,11 +6661,11 @@ msgstr "이동할 위치: "
 msgid "Invalid index number"
 msgstr "잘못된 색인 번호"
 
-#: menu/move.c:397
+#: menu/move.c:397 sidebar/functions.c:455
 msgid "You are on the first entry"
 msgstr "첫번째 항목에 위치하고 있습니다"
 
-#: menu/move.c:415
+#: menu/move.c:415 sidebar/functions.c:307
 msgid "You are on the last entry"
 msgstr "마지막 항목에 위치하고 있습니다"
 
@@ -9412,16 +9412,6 @@ msgstr ""
 #: send/smtp.c:1229
 msgid "Invalid server response"
 msgstr ""
-
-#: sidebar/functions.c:307
-#, fuzzy
-msgid "Already on last entry"
-msgstr "마지막 항목에 위치하고 있습니다"
-
-#: sidebar/functions.c:455
-#, fuzzy
-msgid "Already on first entry"
-msgstr "첫번째 항목에 위치하고 있습니다"
 
 #: sidebar/functions.c:641
 #, fuzzy
