@@ -51,17 +51,22 @@
  * search - Search a menu
  * @param menu Menu to search
  * @param op   Search operation, e.g. OP_SEARCH_NEXT
- * @retval >=0 Index of matching item
- * @retval -1  Search failed, or was cancelled
+ * @param[out] match Index of matching item, or -1 on failure
+ * @retval FR_SUCCESS   Match found
+ * @retval FR_NO_ACTION Search was cancelled
+ * @retval FR_ERROR     Search failed
  */
-static int search(struct Menu *menu, int op)
+static int search(struct Menu *menu, int op, int *match)
 {
   struct MenuModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_MENU);
-  int rc = -1;
+  int reg_rc = 0;
   int wrap = 0;
   int search_dir;
+  int rc = FR_ERROR;
   regex_t re = { 0 };
   struct Buffer *buf = buf_pool_get();
+
+  *match = -1;
 
   char *search_buf = (menu->md && (menu->md->id < MENU_MAX)) ?
                          mod_data->search_buffers[menu->md->id] :
@@ -74,6 +79,7 @@ static int search(struct Menu *menu, int op)
                       buf, MUTT_COMP_CLEAR, HC_OTHER, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
+      rc = FR_NO_ACTION;
       goto done;
     }
     if (menu->md && (menu->md->id < MENU_MAX))
@@ -93,41 +99,40 @@ static int search(struct Menu *menu, int op)
   if (search_buf)
   {
     uint16_t flags = mutt_mb_is_lower(search_buf) ? REG_ICASE : 0;
-    rc = REG_COMP(&re, search_buf, REG_NOSUB | flags);
+    reg_rc = REG_COMP(&re, search_buf, REG_NOSUB | flags);
   }
 
-  if (rc != 0)
+  if (reg_rc != 0)
   {
-    regerror(rc, &re, buf->data, buf->dsize);
+    regerror(reg_rc, &re, buf->data, buf->dsize);
     mutt_error("%s", buf_string(buf));
-    rc = -1;
     goto done;
   }
 
-  rc = menu->current + search_dir;
+  *match = menu->current + search_dir;
 search_next:
   if (wrap)
     mutt_message(_("Search wrapped to top"));
-  while ((rc >= 0) && (rc < menu->max))
+  while ((*match >= 0) && (*match < menu->max))
   {
-    if (menu->search(menu, &re, rc) == 0)
+    if (menu->search(menu, &re, *match) == 0)
     {
       regfree(&re);
+      rc = FR_SUCCESS;
       goto done;
     }
 
-    rc += search_dir;
+    *match += search_dir;
   }
 
   const bool c_wrap_search = cs_subset_bool(menu->sub, "wrap_search");
   if (c_wrap_search && (wrap++ == 0))
   {
-    rc = (search_dir == 1) ? 0 : menu->max - 1;
+    *match = (search_dir == 1) ? 0 : menu->max - 1;
     goto search_next;
   }
   regfree(&re);
   mutt_error(_("Not found"));
-  rc = -1;
 
 done:
   buf_pool_release(&buf);
@@ -138,31 +143,53 @@ done:
 
 /**
  * menu_movement - Handle all the common Menu movements - Implements ::menu_function_t - @ingroup menu_function_api
+ *
+ * This function handles:
+ * - OP_BOTTOM_PAGE
+ * - OP_CURRENT_BOTTOM
+ * - OP_CURRENT_MIDDLE
+ * - OP_CURRENT_TOP
+ * - OP_FIRST_ENTRY
+ * - OP_HALF_DOWN
+ * - OP_HALF_UP
+ * - OP_LAST_ENTRY
+ * - OP_MIDDLE_PAGE
+ * - OP_NEXT_ENTRY
+ * - OP_NEXT_LINE
+ * - OP_NEXT_PAGE
+ * - OP_PREV_ENTRY
+ * - OP_PREV_LINE
+ * - OP_PREV_PAGE
+ * - OP_TOP_PAGE
  */
 static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
   struct Menu *menu = fdata->menu;
+  const int old_top = menu->top;
+  const int old_current = menu->current;
+  MenuRedrawFlags flags = MENU_REDRAW_NO_FLAGS;
+
   switch (event->op)
   {
     case OP_BOTTOM_PAGE:
-      menu_bottom_page(menu);
-      return FR_SUCCESS;
+      flags = menu_bottom_page(menu);
+      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_CURRENT_BOTTOM:
-      menu_current_bottom(menu);
-      return FR_SUCCESS;
+      flags = menu_current_bottom(menu);
+      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_CURRENT_MIDDLE:
-      menu_current_middle(menu);
-      return FR_SUCCESS;
+      flags = menu_current_middle(menu);
+      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_CURRENT_TOP:
-      menu_current_top(menu);
-      return FR_SUCCESS;
+      flags = menu_current_top(menu);
+      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_FIRST_ENTRY:
-      menu_first_entry(menu);
-      return FR_SUCCESS;
+      flags = menu_first_entry(menu);
+      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_HALF_DOWN:
       menu_half_down(menu);
@@ -173,32 +200,44 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
       return FR_SUCCESS;
 
     case OP_LAST_ENTRY:
-      menu_last_entry(menu);
-      return FR_SUCCESS;
+      flags = menu_last_entry(menu);
+      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_MIDDLE_PAGE:
-      menu_middle_page(menu);
-      return FR_SUCCESS;
+      flags = menu_middle_page(menu);
+      return (menu->max == 0) ? FR_ERROR : FR_SUCCESS;
 
     case OP_NEXT_ENTRY:
-      menu_next_entry(menu);
-      return FR_SUCCESS;
+      flags = menu_next_entry(menu);
+      return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
+              (menu->current == old_current)) ?
+                 FR_ERROR :
+                 FR_SUCCESS;
 
     case OP_NEXT_LINE:
-      menu_next_line(menu);
-      return FR_SUCCESS;
+      flags = menu_next_line(menu);
+      return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
+              (menu->current == old_current)) ?
+                 FR_ERROR :
+                 FR_SUCCESS;
 
     case OP_NEXT_PAGE:
       menu_next_page(menu);
       return FR_SUCCESS;
 
     case OP_PREV_ENTRY:
-      menu_prev_entry(menu);
-      return FR_SUCCESS;
+      flags = menu_prev_entry(menu);
+      return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
+              (menu->current == old_current)) ?
+                 FR_ERROR :
+                 FR_SUCCESS;
 
     case OP_PREV_LINE:
-      menu_prev_line(menu);
-      return FR_SUCCESS;
+      flags = menu_prev_line(menu);
+      return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
+              (menu->current == old_current)) ?
+                 FR_ERROR :
+                 FR_SUCCESS;
 
     case OP_PREV_PAGE:
       menu_prev_page(menu);
@@ -215,15 +254,23 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
 
 /**
  * menu_search - Handle Menu searching - Implements ::menu_function_t - @ingroup menu_function_api
+ *
+ * This function handles:
+ * - OP_SEARCH
+ * - OP_SEARCH_NEXT
+ * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_REVERSE
  */
 static int menu_search(struct MenuFunctionData *fdata, const struct KeyEvent *event)
 {
   struct Menu *menu = fdata->menu;
   if (menu->search)
   {
-    int index = search(menu, event->op);
-    if (index != -1)
+    int index = -1;
+    const int rc = search(menu, event->op, &index);
+    if ((rc == FR_SUCCESS) && (index != -1))
       menu_set_index(menu, index);
+    return rc;
   }
   return FR_SUCCESS;
 }
@@ -248,7 +295,7 @@ static int op_jump(struct MenuFunctionData *fdata, const struct KeyEvent *event)
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return FR_SUCCESS;
+    return FR_ERROR;
   }
 
   struct Buffer *buf = buf_pool_get();
@@ -345,5 +392,6 @@ int menu_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *even
   const char *result = dispatcher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
+  dispatcher_flush_on_error(rc);
   return rc;
 }

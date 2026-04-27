@@ -186,6 +186,7 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
  * This function handles:
  * - OP_EDITOR_COMPLETE
  * - OP_EDITOR_COMPLETE_QUERY
+ * - OP_EDITOR_MAILBOX_CYCLE
  */
 static int op_editor_complete(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -561,6 +562,7 @@ int enter_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   const char *result = dispatcher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
+  dispatcher_flush_on_error(rc);
   return rc;
 }
 

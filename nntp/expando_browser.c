@@ -63,6 +63,12 @@ static void group_index_description(const struct ExpandoNode *node, void *data,
 
 /**
  * group_index_flags - NNTP: Moderated flag - Implements ::get_string_t - @ingroup expando_get_string_api
+ *
+ * Display flags for NNTP newsgroups with priority:
+ * - '*' if newsgroup is tagged
+ * - 'D' if newsgroup is deleted
+ * - '-' if posting not allowed (moderated)
+ * - ' ' if posting allowed
  */
 static void group_index_flags(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -71,7 +77,13 @@ static void group_index_flags(const struct ExpandoNode *node, void *data,
 
   const char *s = NULL;
   // NOTE(g0mb4): use $flag_chars?
-  if (folder->ff->nd->deleted)
+
+  /* Tagged status has priority */
+  if (folder->ff->tagged)
+  {
+    s = "*";
+  }
+  else if (folder->ff->nd->deleted)
   {
     s = "D";
   }

@@ -30,6 +30,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "dispatcher.h"
+#include "key/lib.h"
 
 /// Lookup for function results
 static const struct Mapping RetvalNames[] = {
@@ -55,4 +56,14 @@ const char *dispatcher_get_retval_name(int rv)
 {
   const char *name = mutt_map_get_name(rv, RetvalNames);
   return NONULL(name);
+}
+
+/**
+ * dispatcher_flush_on_error - Flush pending keys after a dispatch error
+ * @param rv Return value, e.g. #FR_ERROR
+ */
+void dispatcher_flush_on_error(int rv)
+{
+  if (rv == FR_ERROR)
+    mutt_flushinp();
 }

@@ -197,11 +197,11 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct Ke
 {
   struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   const int op = event->op;
+  const bool tagged = priv->menu->tag_prefix && (priv->menu->num_tagged > 0);
 
   if (OptNews)
   {
     struct NntpAccountData *adata = mod_data->current_news_srv;
-    int index = menu_get_index(priv->menu);
 
     if (ARRAY_EMPTY(&priv->state.entry))
     {
@@ -213,16 +213,32 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct Ke
     if (rc < 0)
       return FR_ERROR;
 
-    struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-    if (op == OP_BROWSER_SUBSCRIBE)
-      mutt_newsgroup_subscribe(adata, ff->name);
+    if (tagged)
+    {
+      struct FolderFile *ff = NULL;
+      ARRAY_FOREACH(ff, &priv->state.entry)
+      {
+        if (!ff->tagged)
+          continue;
+        if (op == OP_BROWSER_SUBSCRIBE)
+          mutt_newsgroup_subscribe(adata, ff->name);
+        else
+          mutt_newsgroup_unsubscribe(adata, ff->name);
+      }
+    }
     else
-      mutt_newsgroup_unsubscribe(adata, ff->name);
+    {
+      int index = menu_get_index(priv->menu);
+      struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
+      if (op == OP_BROWSER_SUBSCRIBE)
+        mutt_newsgroup_subscribe(adata, ff->name);
+      else
+        mutt_newsgroup_unsubscribe(adata, ff->name);
 
-    menu_set_index(priv->menu, index + 1);
+      menu_set_index(priv->menu, index + 1);
+    }
 
-    if (rc > 0)
-      menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
     nntp_newsrc_update(adata);
     nntp_clear_cache(adata);
     nntp_newsrc_close(adata);
@@ -236,11 +252,26 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct Ke
     }
 
     struct Buffer *buf = buf_pool_get();
-    int index = menu_get_index(priv->menu);
-    struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-    buf_strcpy(buf, ff->name);
-    expand_path(buf, false);
-    imap_subscribe(buf_string(buf), (op == OP_BROWSER_SUBSCRIBE));
+    if (tagged)
+    {
+      struct FolderFile *ff = NULL;
+      ARRAY_FOREACH(ff, &priv->state.entry)
+      {
+        if (!ff->tagged)
+          continue;
+        buf_strcpy(buf, ff->name);
+        expand_path(buf, false);
+        imap_subscribe(buf_string(buf), (op == OP_BROWSER_SUBSCRIBE));
+      }
+    }
+    else
+    {
+      int index = menu_get_index(priv->menu);
+      struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
+      buf_strcpy(buf, ff->name);
+      expand_path(buf, false);
+      imap_subscribe(buf_string(buf), (op == OP_BROWSER_SUBSCRIBE));
+    }
     buf_pool_release(&buf);
   }
   return FR_SUCCESS;
@@ -265,6 +296,9 @@ static int op_browser_tell(struct BrowserPrivateData *priv, const struct KeyEven
 static int op_browser_toggle_lsub(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
+
+  const bool c_imap_list_subscribed = cs_subset_bool(NeoMutt->sub, "imap_list_subscribed");
+  mutt_message("set imap_list_subscribed = %s", c_imap_list_subscribed ? "yes" : "no");
 
   mutt_unget_op(OP_CHECK_NEW);
   return FR_SUCCESS;
@@ -318,6 +352,10 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, const struct Ke
 
 /**
  * op_catchup - Mark all articles in newsgroup as read - Implements ::browser_function_t - @ingroup browser_function_api
+ *
+ * This function handles:
+ * - OP_CATCHUP
+ * - OP_UNCATCHUP
  */
 static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
@@ -334,23 +372,42 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
   if (ARRAY_EMPTY(&priv->state.entry))
     return FR_ERROR;
 
-  int index = menu_get_index(priv->menu);
-  struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-  if (event->op == OP_CATCHUP)
-    mdata = mutt_newsgroup_catchup(priv->mailbox, mod_data->current_news_srv, ff->name);
-  else
-    mdata = mutt_newsgroup_uncatchup(priv->mailbox, mod_data->current_news_srv, ff->name);
-
-  if (mdata)
+  const bool tagged = priv->menu->tag_prefix && (priv->menu->num_tagged > 0);
+  if (tagged)
   {
-    nntp_newsrc_update(mod_data->current_news_srv);
-    index = menu_get_index(priv->menu) + 1;
-    if (index < priv->menu->max)
-      menu_set_index(priv->menu, index);
+    struct FolderFile *ff = NULL;
+    ARRAY_FOREACH(ff, &priv->state.entry)
+    {
+      if (!ff->tagged)
+        continue;
+      if (event->op == OP_CATCHUP)
+        mdata = mutt_newsgroup_catchup(priv->mailbox, mod_data->current_news_srv, ff->name);
+      else
+        mdata = mutt_newsgroup_uncatchup(priv->mailbox,
+                                         mod_data->current_news_srv, ff->name);
+    }
+    if (mdata)
+      nntp_newsrc_update(mod_data->current_news_srv);
+  }
+  else
+  {
+    int index = menu_get_index(priv->menu);
+    struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
+    if (event->op == OP_CATCHUP)
+      mdata = mutt_newsgroup_catchup(priv->mailbox, mod_data->current_news_srv, ff->name);
+    else
+      mdata = mutt_newsgroup_uncatchup(priv->mailbox, mod_data->current_news_srv, ff->name);
+
+    if (mdata)
+    {
+      nntp_newsrc_update(mod_data->current_news_srv);
+      index = menu_get_index(priv->menu) + 1;
+      if (index < priv->menu->max)
+        menu_set_index(priv->menu, index);
+    }
   }
 
-  if (rc != 0)
-    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   nntp_newsrc_close(mod_data->current_news_srv);
   return FR_ERROR;
@@ -507,6 +564,63 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
   if (ARRAY_EMPTY(&priv->state.entry))
     return FR_ERROR;
 
+  const bool tagged = priv->menu->tag_prefix && (priv->menu->num_tagged > 0);
+  char msg[128] = { 0 };
+
+  if (tagged)
+  {
+    struct FolderFile *ff = NULL;
+    bool failed = false;
+    ARRAY_FOREACH(ff, &priv->state.entry)
+    {
+      if (!ff->tagged)
+        continue;
+      if (!ff->imap)
+      {
+        mutt_error(_("Delete is only supported for IMAP mailboxes"));
+        return FR_ERROR;
+      }
+      // TODO(sileht): It could be better to select INBOX instead. But I
+      // don't want to manipulate Mailboxes/mailbox->account here for now.
+      // Let's just protect neomutt against crash for now. #1417
+      if (mutt_str_equal(mailbox_path(priv->mailbox), ff->name))
+      {
+        mutt_error(_("Can't delete currently selected mailbox"));
+        return FR_ERROR;
+      }
+    }
+
+    snprintf(msg, sizeof(msg), _("Really delete %d tagged mailboxes?"),
+             priv->menu->num_tagged);
+    if (query_yesorno(msg, MUTT_NO) != MUTT_YES)
+    {
+      mutt_message(_("Mailbox not deleted"));
+      return FR_NO_ACTION;
+    }
+
+    int deleted = 0;
+    ARRAY_FOREACH_REVERSE(ff, &priv->state.entry)
+    {
+      if (!ff->tagged)
+        continue;
+      if (imap_delete_mailbox(priv->mailbox, ff->name) != 0)
+      {
+        mutt_error(_("Mailbox deletion failed"));
+        failed = true;
+        continue;
+      }
+      /* free the mailbox from the browser */
+      FREE(&ff->name);
+      FREE(&ff->desc);
+      /* and move all other entries up */
+      ARRAY_REMOVE(&priv->state.entry, ff);
+      deleted++;
+    }
+    mutt_message(_("%d mailboxes deleted"), deleted);
+    init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
+    return failed ? FR_ERROR : FR_SUCCESS;
+  }
+
   int index = menu_get_index(priv->menu);
   struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
   if (!ff->imap)
@@ -514,8 +628,6 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
     mutt_error(_("Delete is only supported for IMAP mailboxes"));
     return FR_ERROR;
   }
-
-  char msg[128] = { 0 };
 
   // TODO(sileht): It could be better to select INBOX instead. But I
   // don't want to manipulate Mailboxes/mailbox->account here for now.
@@ -1089,6 +1201,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, const struct Ke
  * op_toggle_mailboxes - Toggle whether to browse mailboxes or all files - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
+ * - OP_BROWSER_GOTO_FOLDER
  * - OP_CHECK_NEW
  * - OP_TOGGLE_MAILBOXES
  */

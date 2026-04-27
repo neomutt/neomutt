@@ -275,6 +275,31 @@ static bool check_cid(const char *cid)
 }
 
 /**
+ * content_id_exists - Check whether a Content-ID is already in use
+ * @param actx Attachment context
+ * @param skip Body to ignore
+ * @param cid  Content-ID to check
+ * @retval true Content-ID already exists
+ */
+static bool content_id_exists(struct AttachCtx *actx, const struct Body *skip, const char *cid)
+{
+  if (!actx || !cid)
+    return false;
+
+  for (int i = 0; i < actx->idxlen; i++)
+  {
+    struct Body *b = actx->idx[i]->body;
+    if ((b == skip) || !b->content_id)
+      continue;
+
+    if (mutt_str_equal(b->content_id, cid))
+      return true;
+  }
+
+  return false;
+}
+
+/**
  * check_attachments - Check if any attachments have changed or been deleted
  * @param actx Attachment context
  * @param sub  ConfigSubset
@@ -516,6 +541,197 @@ static void compose_attach_swap(struct Email *e, struct AttachCtx *actx, int fir
         break;
     }
   }
+}
+
+/**
+ * body_index - Find the index of an attachment body
+ * @param actx Attachment context
+ * @param b    Body to find
+ * @retval num Index of body
+ * @retval -1  Body wasn't found
+ */
+static int body_index(struct AttachCtx *actx, const struct Body *b)
+{
+  if (!actx || !b)
+    return -1;
+
+  for (int i = 0; i < actx->idxlen; i++)
+  {
+    if (actx->idx[i]->body == b)
+      return i;
+  }
+
+  return -1;
+}
+
+/**
+ * prev_sibling - Find the previous sibling of an attachment
+ * @param actx  Attachment context
+ * @param index Index of attachment
+ * @retval num Index of previous sibling
+ * @retval -1  No previous sibling
+ */
+static int prev_sibling(struct AttachCtx *actx, int index)
+{
+  if (!actx || (index <= 0) || (index >= actx->idxlen))
+    return -1;
+
+  const int level = actx->idx[index]->level;
+  int previdx = index - 1;
+  while ((previdx > 0) && (actx->idx[previdx]->level > level))
+    previdx--;
+
+  return (actx->idx[previdx]->level == level) ? previdx : -1;
+}
+
+/**
+ * next_sibling - Find the next sibling of an attachment
+ * @param actx  Attachment context
+ * @param index Index of attachment
+ * @retval num Index of next sibling
+ * @retval -1  No next sibling
+ */
+static int next_sibling(struct AttachCtx *actx, int index)
+{
+  if (!actx || (index < 0) || (index >= actx->idxlen))
+    return -1;
+
+  const int level = actx->idx[index]->level;
+  int nextidx = index + 1;
+  while ((nextidx < actx->idxlen) && (actx->idx[nextidx]->level > level))
+    nextidx++;
+
+  if ((nextidx >= actx->idxlen) || (actx->idx[nextidx]->level != level))
+    return -1;
+
+  return nextidx;
+}
+
+/**
+ * tagged_attachments_are_siblings - Check whether tagged attachments are siblings
+ * @param e    Email
+ * @param actx Attachment context
+ * @retval true Tagged attachments are siblings
+ */
+static bool tagged_attachments_are_siblings(struct Email *e, struct AttachCtx *actx)
+{
+  if (!e || !actx)
+    return false;
+
+  int level = -1;
+  struct Body *parent = NULL;
+
+  for (int i = 0; i < actx->idxlen; i++)
+  {
+    struct AttachPtr *ap = actx->idx[i];
+    if (!ap->body->tagged)
+      continue;
+
+    struct Body *this_parent = NULL;
+    if (ap->level > 0)
+    {
+      if (!attach_body_parent(e->body, NULL, ap->body, &this_parent))
+        return false;
+    }
+
+    if (level == -1)
+    {
+      level = ap->level;
+      parent = this_parent;
+      continue;
+    }
+
+    if ((level != ap->level) || (parent != this_parent))
+      return false;
+  }
+
+  return true;
+}
+
+/**
+ * move_attachment - Move attachments in the attachment list
+ * @param shared Shared compose data
+ * @param up     If true, move up, otherwise move down
+ * @retval enum #FunctionRetval
+ */
+static int move_attachment(struct ComposeSharedData *shared, bool up)
+{
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_ERROR;
+
+  struct Menu *menu = shared->adata->menu;
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
+  if (!cur_att)
+    return FR_ERROR;
+
+  struct Body *cur_body = cur_att->body;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+  if (ARRAY_EMPTY(&ba))
+    goto done;
+
+  if (menu->tag_prefix && !tagged_attachments_are_siblings(shared->email, actx))
+  {
+    mutt_error(_("Tagged attachments must be siblings"));
+    ARRAY_FREE(&ba);
+    return FR_ERROR;
+  }
+
+  bool moved = false;
+  if (up)
+  {
+    struct Body **bp = NULL;
+    ARRAY_FOREACH(bp, &ba)
+    {
+      const int index = body_index(actx, *bp);
+      const int previdx = prev_sibling(actx, index);
+      if (previdx < 0)
+        continue;
+      if (menu->tag_prefix && actx->idx[previdx]->body->tagged)
+        continue;
+
+      compose_attach_swap(shared->email, actx, previdx, index);
+      moved = true;
+    }
+  }
+  else
+  {
+    for (int i = ARRAY_SIZE(&ba) - 1; i >= 0; i--)
+    {
+      struct Body **bp = ARRAY_GET(&ba, i);
+      const int index = body_index(actx, *bp);
+      const int nextidx = next_sibling(actx, index);
+      if (nextidx < 0)
+        continue;
+      if (menu->tag_prefix && actx->idx[nextidx]->body->tagged)
+        continue;
+
+      compose_attach_swap(shared->email, actx, index, nextidx);
+      moved = true;
+    }
+  }
+
+  if (!moved)
+  {
+    mutt_error(up ? _("Attachment is already at top") : _("Attachment is already at bottom"));
+    goto done;
+  }
+
+  mutt_update_tree(actx);
+  menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
+
+  const int index = body_index(actx, cur_body);
+  if (index >= 0)
+    menu_set_index(menu, index);
+
+  ARRAY_FREE(&ba);
+  return FR_SUCCESS;
+
+done:
+  ARRAY_FREE(&ba);
+  return FR_ERROR;
 }
 
 /**
@@ -803,7 +1019,7 @@ static int op_attach_attach_file(struct ComposeFunctionData *fdata, const struct
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   if (added_attachment)
     exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
-  return FR_SUCCESS;
+  return added_attachment ? FR_SUCCESS : (error ? FR_ERROR : FR_NO_ACTION);
 }
 
 /**
@@ -920,7 +1136,7 @@ static int op_attach_attach_message(struct ComposeFunctionData *fdata,
   {
     mx_mbox_close(m_attach);
     mutt_error(_("No messages in that folder"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   /* `$sort`, `$sort_aux`, `$use_threads` could be changed in dlg_index() */
@@ -985,7 +1201,7 @@ static int op_attach_attach_message(struct ComposeFunctionData *fdata,
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   if (added_attachment)
     exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
-  return FR_SUCCESS;
+  return added_attachment ? FR_SUCCESS : FR_ERROR;
 }
 
 /**
@@ -996,16 +1212,59 @@ static int op_attach_detach(struct ComposeFunctionData *fdata, const struct KeyE
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
-  struct AttachPtr *cur_att = current_attachment(actx, menu);
-  if (cur_att->unowned)
-    cur_att->body->unlink = false;
+  int rc = FR_NO_ACTION;
 
-  int index = menu_get_index(menu);
-  if (delete_attachment(actx, index, fdata->n->sub) == -1)
-    return FR_ERROR;
+  if (menu->tag_prefix)
+  {
+    for (int i = actx->idxlen - 1; i >= 0; i--)
+    {
+      struct AttachPtr *ap = actx->idx[i];
+      if (!ap->body->tagged)
+        continue;
+
+      if (ap->unowned)
+        ap->body->unlink = false;
+
+      if (delete_attachment(actx, i, fdata->n->sub) == 0)
+        rc = FR_SUCCESS;
+    }
+
+    if (rc != FR_SUCCESS)
+    {
+      menu->num_tagged = 0;
+      for (int i = 0; i < actx->idxlen; i++)
+      {
+        if (actx->idx[i]->body->tagged)
+          menu->num_tagged++;
+      }
+      update_menu(actx, menu, false);
+      return FR_ERROR;
+    }
+  }
+  else
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    if (cur_att->unowned)
+      cur_att->body->unlink = false;
+
+    const int index = menu_get_index(menu);
+    if (delete_attachment(actx, index, fdata->n->sub) == -1)
+    {
+      menu->num_tagged = 0;
+      for (int i = 0; i < actx->idxlen; i++)
+      {
+        if (actx->idx[i]->body->tagged)
+          menu->num_tagged++;
+      }
+      update_menu(actx, menu, false);
+      return FR_ERROR;
+    }
+
+    rc = FR_SUCCESS;
+  }
 
   menu->num_tagged = 0;
   for (int i = 0; i < actx->idxlen; i++)
@@ -1017,12 +1276,12 @@ static int op_attach_detach(struct ComposeFunctionData *fdata, const struct KeyE
   update_menu(actx, menu, false);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
 
-  index = menu_get_index(menu);
+  const int index = menu_get_index(menu);
   if (index == 0)
     shared->email->body = actx->idx[0]->body;
 
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -1032,13 +1291,18 @@ static int op_attach_edit_content_id(struct ComposeFunctionData *fdata,
                                      const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
   struct Buffer *buf = buf_pool_get();
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
+  struct Buffer *cid = buf_pool_get();
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
 
   char *id = cur_att->body->content_id;
   if (id)
@@ -1054,24 +1318,49 @@ static int op_attach_edit_content_id(struct ComposeFunctionData *fdata,
 
   if (mw_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(id, buf_string(buf)))
+    if (check_cid(buf_string(buf)))
     {
-      if (check_cid(buf_string(buf)))
+      bool changed = false;
+      struct Body **bp = NULL;
+      ARRAY_FOREACH(bp, &ba)
       {
-        mutt_str_replace(&cur_att->body->content_id, buf_string(buf));
-        menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+        const bool multi = (ARRAY_SIZE(&ba) > 1);
+        int suffix = multi ? (ARRAY_FOREACH_IDX_bp + 1) : 0;
+
+        do
+        {
+          if (suffix == 0)
+            buf_strcpy(cid, buf_string(buf));
+          else
+            buf_printf(cid, "%s-%d", buf_string(buf), suffix);
+
+          suffix++;
+        } while (content_id_exists(actx, *bp, buf_string(cid)));
+
+        if (!mutt_str_equal((*bp)->content_id, buf_string(cid)))
+        {
+          mutt_str_replace(&(*bp)->content_id, buf_string(cid));
+          changed = true;
+        }
+      }
+
+      if (changed)
+      {
+        menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
         rc = FR_SUCCESS;
       }
-      else
-      {
-        mutt_error(_("Content-ID can only contain the characters: -.0-9@A-Z_a-z"));
-        rc = FR_ERROR;
-      }
+    }
+    else
+    {
+      mutt_error(_("Content-ID can only contain the characters: -.0-9@A-Z_a-z"));
+      rc = FR_ERROR;
     }
   }
 
+  ARRAY_FREE(&ba);
+  buf_pool_release(&cid);
   buf_pool_release(&buf);
 
   if (rc != FR_ERROR)
@@ -1087,28 +1376,43 @@ static int op_attach_edit_description(struct ComposeFunctionData *fdata,
                                       const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
   struct Buffer *buf = buf_pool_get();
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
 
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
   buf_strcpy(buf, cur_att->body->description);
 
   /* header names should not be translated */
   if (mw_get_field("Description: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->description, buf_string(buf)))
+    ba_add_tagged(&ba, actx, menu);
+
+    bool changed = false;
+    struct Body **bp = NULL;
+    ARRAY_FOREACH(bp, &ba)
     {
-      mutt_str_replace(&cur_att->body->description, buf_string(buf));
-      menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+      if (!mutt_str_equal((*bp)->description, buf_string(buf)))
+      {
+        mutt_str_replace(&(*bp)->description, buf_string(buf));
+        changed = true;
+      }
+    }
+
+    if (changed)
+    {
+      menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
       exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
       rc = FR_SUCCESS;
     }
   }
 
+  ARRAY_FREE(&ba);
   buf_pool_release(&buf);
   return rc;
 }
@@ -1120,14 +1424,16 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
                                    const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
   struct Buffer *buf = buf_pool_get();
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
 
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
   buf_strcpy(buf, ENCODING(cur_att->body->encoding));
 
   if ((mw_get_field("Content-Transfer-Encoding: ", buf, MUTT_COMP_NO_FLAGS,
@@ -1137,10 +1443,22 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
     int enc = mutt_check_encoding(buf_string(buf));
     if ((enc != ENC_OTHER) && (enc != ENC_UUENCODED))
     {
-      if (enc != cur_att->body->encoding)
+      ba_add_tagged(&ba, actx, menu);
+
+      bool changed = false;
+      struct Body **bp = NULL;
+      ARRAY_FOREACH(bp, &ba)
       {
-        cur_att->body->encoding = enc;
-        menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+        if ((*bp)->encoding != enc)
+        {
+          (*bp)->encoding = enc;
+          changed = true;
+        }
+      }
+
+      if (changed)
+      {
+        menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         mutt_clear_error();
         exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
@@ -1154,6 +1472,7 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
     }
   }
 
+  ARRAY_FREE(&ba);
   buf_pool_release(&buf);
   return rc;
 }
@@ -1165,21 +1484,35 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
                                    const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
   struct Buffer *buf = buf_pool_get();
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  struct AttachPtr *cur_att = current_attachment(actx, menu);
 
   buf_strcpy(buf, cur_att->body->language);
   if (mw_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->language, buf_string(buf)))
+    ba_add_tagged(&ba, actx, menu);
+
+    bool changed = false;
+    struct Body **bp = NULL;
+    ARRAY_FOREACH(bp, &ba)
     {
-      mutt_str_replace(&cur_att->body->language, buf_string(buf));
-      menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+      if (!mutt_str_equal((*bp)->language, buf_string(buf)))
+      {
+        mutt_str_replace(&(*bp)->language, buf_string(buf));
+        changed = true;
+      }
+    }
+
+    if (changed)
+    {
+      menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
       notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
       exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
       rc = FR_SUCCESS;
@@ -1192,6 +1525,7 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
     rc = FR_ERROR;
   }
 
+  ARRAY_FREE(&ba);
   buf_pool_release(&buf);
   return rc;
 }
@@ -1202,17 +1536,36 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
 static int op_attach_edit_mime(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
-  if (!mutt_edit_attachment(cur_att->body))
-    return FR_NO_ACTION;
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_ERROR;
 
-  mutt_update_encoding(cur_att->body, shared->sub);
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
+  int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+  if (ARRAY_EMPTY(&ba))
+    goto done;
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
+  {
+    if (!mutt_edit_attachment(*bp))
+      continue;
+
+    mutt_update_encoding(*bp, shared->sub);
+    rc = FR_SUCCESS;
+  }
+
+  if (rc != FR_SUCCESS)
+    goto done;
+
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
-  return FR_SUCCESS;
+
+done:
+  ARRAY_FREE(&ba);
+  return rc;
 }
 
 /**
@@ -1222,7 +1575,7 @@ static int op_attach_edit_type(struct ComposeFunctionData *fdata, const struct K
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
@@ -1248,7 +1601,7 @@ static int op_attach_filter(struct ComposeFunctionData *fdata, const struct KeyE
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
   struct AttachPtr *cur_att = current_attachment(actx, menu);
@@ -1279,7 +1632,7 @@ static int op_attach_get_attachment(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_ERROR;
   struct Menu *menu = shared->adata->menu;
@@ -1289,6 +1642,7 @@ static int op_attach_get_attachment(struct ComposeFunctionData *fdata,
     goto done;
 
   struct Body **bp = NULL;
+  bool got_attachment = false;
   ARRAY_FOREACH(bp, &ba)
   {
     if ((*bp)->type == TYPE_MULTIPART)
@@ -1297,10 +1651,14 @@ static int op_attach_get_attachment(struct ComposeFunctionData *fdata,
       continue;
     }
     mutt_get_tmp_attachment(*bp);
+    got_attachment = true;
   }
 
-  menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  rc = FR_SUCCESS;
+  if (got_attachment)
+  {
+    menu_queue_redraw(menu, MENU_REDRAW_FULL);
+    rc = FR_SUCCESS;
+  }
 
 done:
   ARRAY_FREE(&ba);
@@ -1389,6 +1747,9 @@ static int op_attach_group_related(struct ComposeFunctionData *fdata,
 static int op_attach_move_down(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
+  if (shared->adata->menu->tag_prefix)
+    return move_attachment(shared, false);
+
   int index = menu_get_index(shared->adata->menu);
 
   struct AttachCtx *actx = shared->adata->actx;
@@ -1399,7 +1760,7 @@ static int op_attach_move_down(struct ComposeFunctionData *fdata, const struct K
   if (index == (actx->idxlen - 1))
   {
     mutt_error(_("Attachment is already at bottom"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
   if ((actx->idx[index]->parent_type == TYPE_MULTIPART) &&
       !actx->idx[index]->body->next)
@@ -1418,7 +1779,7 @@ static int op_attach_move_down(struct ComposeFunctionData *fdata, const struct K
   if (nextidx == actx->idxlen)
   {
     mutt_error(_("Attachment is already at bottom"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   // find final position
@@ -1446,6 +1807,9 @@ static int op_attach_move_down(struct ComposeFunctionData *fdata, const struct K
 static int op_attach_move_up(struct ComposeFunctionData *fdata, const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
+  if (shared->adata->menu->tag_prefix)
+    return move_attachment(shared, true);
+
   int index = menu_get_index(shared->adata->menu);
   if (index < 0)
     return FR_ERROR;
@@ -1455,7 +1819,7 @@ static int op_attach_move_up(struct ComposeFunctionData *fdata, const struct Key
   if (index == 0)
   {
     mutt_error(_("Attachment is already at top"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
   if (actx->idx[index - 1]->level < actx->idx[index]->level)
   {
@@ -1567,7 +1931,7 @@ static int op_attach_print(struct ComposeFunctionData *fdata, const struct KeyEv
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
   struct AttachPtr *cur_att = current_attachment(actx, menu);
@@ -1590,7 +1954,7 @@ static int op_attach_rename_attachment(struct ComposeFunctionData *fdata,
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
   char *src = NULL;
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
@@ -1621,7 +1985,7 @@ static int op_attach_save(struct ComposeFunctionData *fdata, const struct KeyEve
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   struct Menu *menu = shared->adata->menu;
   struct AttachPtr *cur_att = current_attachment(actx, menu);
@@ -1644,16 +2008,28 @@ static int op_attach_toggle_disposition(struct ComposeFunctionData *fdata,
 {
   struct ComposeSharedData *shared = fdata->shared;
   /* toggle the content-disposition between inline/attachment */
-  if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
-  cur_att->body->disposition = (cur_att->body->disposition == DISP_INLINE) ?
-                                   DISP_ATTACH :
-                                   DISP_INLINE;
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_ERROR;
+
+  int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
+  {
+    (*bp)->disposition = ((*bp)->disposition == DISP_INLINE) ? DISP_ATTACH : DISP_INLINE;
+    rc = FR_SUCCESS;
+  }
+
+  if (rc == FR_SUCCESS)
+    menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
+
+  ARRAY_FREE(&ba);
   notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -1663,21 +2039,47 @@ static int op_attach_toggle_recode(struct ComposeFunctionData *fdata,
                                    const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
-  if (!mutt_is_text_part(cur_att->body))
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_ERROR;
+
+  int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
+  {
+    if (!mutt_is_text_part(*bp))
+      continue;
+
+    (*bp)->noconv = !(*bp)->noconv;
+    rc = FR_SUCCESS;
+  }
+
+  if (rc == FR_NO_ACTION)
   {
     mutt_error(_("Recoding only affects text attachments"));
+    ARRAY_FREE(&ba);
     return FR_ERROR;
   }
-  cur_att->body->noconv = !cur_att->body->noconv;
-  if (cur_att->body->noconv)
-    mutt_message(_("The current attachment won't be converted"));
+
+  if (!menu->tag_prefix)
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    if (cur_att->body->noconv)
+      mutt_message(_("The current attachment won't be converted"));
+    else
+      mutt_message(_("The current attachment will be converted"));
+  }
   else
-    mutt_message(_("The current attachment will be converted"));
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  {
+    mutt_clear_error();
+  }
+
+  menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_FULL : MENU_REDRAW_CURRENT);
+  ARRAY_FREE(&ba);
   exec_message_hook(NULL, shared->email, CMD_SEND2_HOOK);
   return FR_SUCCESS;
 }
@@ -1689,15 +2091,28 @@ static int op_attach_toggle_unlink(struct ComposeFunctionData *fdata,
                                    const struct KeyEvent *event)
 {
   struct ComposeSharedData *shared = fdata->shared;
-  if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
-  struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
-                                                 shared->adata->menu);
-  cur_att->body->unlink = !cur_att->body->unlink;
+  struct AttachCtx *actx = shared->adata->actx;
+  if (!check_count(actx))
+    return FR_ERROR;
 
-  menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  int rc = FR_NO_ACTION;
+  struct Menu *menu = shared->adata->menu;
+  struct BodyArray ba = ARRAY_HEAD_INITIALIZER;
+  ba_add_tagged(&ba, actx, menu);
+
+  struct Body **bp = NULL;
+  ARRAY_FOREACH(bp, &ba)
+  {
+    (*bp)->unlink = !(*bp)->unlink;
+    rc = FR_SUCCESS;
+  }
+
+  if (rc == FR_SUCCESS)
+    menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+
+  ARRAY_FREE(&ba);
   /* No send2hook since this doesn't change the message. */
-  return FR_SUCCESS;
+  return rc;
 }
 
 /**
@@ -1772,7 +2187,7 @@ static int op_attach_update_encoding(struct ComposeFunctionData *fdata,
   struct ComposeSharedData *shared = fdata->shared;
   struct AttachCtx *actx = shared->adata->actx;
   if (!check_count(actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   int rc = FR_NO_ACTION;
   struct Menu *menu = shared->adata->menu;
@@ -1856,7 +2271,7 @@ static int op_compose_edit_file(struct ComposeFunctionData *fdata, const struct 
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
   if (cur_att->body->type == TYPE_MULTIPART)
@@ -1949,7 +2364,7 @@ static int op_compose_rename_file(struct ComposeFunctionData *fdata,
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
   if (cur_att->body->type == TYPE_MULTIPART)
@@ -2072,7 +2487,7 @@ static int op_display_headers(struct ComposeFunctionData *fdata, const struct Ke
 {
   struct ComposeSharedData *shared = fdata->shared;
   if (!check_count(shared->adata->actx))
-    return FR_NO_ACTION;
+    return FR_ERROR;
 
   enum ViewAttachMode mode = MUTT_VA_REGULAR;
 
@@ -2221,7 +2636,10 @@ int compose_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *e
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!event || !dlg || !dlg->wdata)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   const int op = event->op;
 
@@ -2250,5 +2668,6 @@ int compose_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *e
   const char *result = dispatcher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
+  dispatcher_flush_on_error(rc);
   return rc;
 }

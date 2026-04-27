@@ -562,6 +562,198 @@ static int op_delete(struct IndexFunctionData *fdata, const struct KeyEvent *eve
 }
 
 /**
+ * thread_target - Get the thread/subthread target for an email
+ * @param e         Email
+ * @param subthread If true, use the current subthread
+ * @retval ptr Thread/subthread target
+ */
+static struct MuttThread *thread_target(struct Email *e, bool subthread)
+{
+  if (!e || !e->thread)
+    return NULL;
+
+  struct MuttThread *thread = e->thread;
+  if (!subthread)
+  {
+    while (thread->parent)
+      thread = thread->parent;
+  }
+
+  return thread;
+}
+
+/**
+ * ea_add_tagged_threads - Get an array of unique tagged threads/subthreads
+ * @param ea         Empty EmailArray to populate
+ * @param mv         Current MailboxView
+ * @param e          Current Email
+ * @param use_tagged Use tagged emails
+ * @param subthread  If true, act on subthreads
+ * @retval num Number of selected threads/subthreads
+ * @retval -1  Error
+ */
+static int ea_add_tagged_threads(struct EmailArray *ea, struct MailboxView *mv,
+                                 struct Email *e, bool use_tagged, bool subthread)
+{
+  if (!ea)
+    return -1;
+
+  if (!use_tagged)
+  {
+    if (!e)
+      return -1;
+
+    ARRAY_ADD(ea, e);
+    return ARRAY_SIZE(ea);
+  }
+
+  if (!mv || !mv->mailbox || !mv->mailbox->emails)
+    return -1;
+
+  struct Mailbox *m = mv->mailbox;
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    struct Email *et = m->emails[i];
+    if (!et)
+      break;
+    if (!message_is_tagged(et))
+      continue;
+
+    struct MuttThread *target = thread_target(et, subthread);
+    if (!target)
+      continue;
+
+    bool exists = false;
+    struct Email **ep = NULL;
+    ARRAY_FOREACH(ep, ea)
+    {
+      if (thread_target(*ep, subthread) == target)
+      {
+        exists = true;
+        break;
+      }
+    }
+
+    if (!exists)
+      ARRAY_ADD(ea, et);
+  }
+
+  return ARRAY_SIZE(ea);
+}
+
+/**
+ * update_thread_email - Focus a visible email in the current thread
+ * @param priv  Index private data
+ * @param email Current email
+ */
+static void update_thread_email(struct IndexPrivateData *priv, struct Email *email)
+{
+  if (!priv || !priv->menu || !email)
+    return;
+
+  int index = email->vnum;
+  if (index < 0)
+  {
+    struct MuttThread *thread = thread_target(email, false);
+    struct Email *e = find_virtual(thread, false);
+    if (e)
+      index = e->vnum;
+  }
+
+  if (index >= 0)
+    menu_set_index(priv->menu, index);
+}
+
+/**
+ * op_main_change_thread - Open/close/collapse tagged threads
+ * @param fdata Index function data
+ * @param mode  Collapse mode to apply
+ * @retval enum #FunctionRetval
+ */
+static int op_main_change_thread(struct IndexFunctionData *fdata, enum CollapseMode mode)
+{
+  struct IndexSharedData *shared = fdata->shared;
+  struct IndexPrivateData *priv = fdata->priv;
+  if (!mutt_using_threads())
+  {
+    mutt_warning(_("Threading is not enabled"));
+    return FR_ERROR;
+  }
+
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_tagged_threads(&ea, shared->mailbox_view, shared->email, true, false);
+  if (ARRAY_EMPTY(&ea))
+  {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
+
+  bool changed = false;
+  bool blocked = false;
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
+  {
+    struct Email *e = *ep;
+    if (!e)
+      continue;
+
+    switch (mode)
+    {
+      case COLLAPSE_MODE_OPEN:
+        if (!e->collapsed)
+          continue;
+        mutt_uncollapse_thread(e);
+        changed = true;
+        break;
+      case COLLAPSE_MODE_CLOSE:
+        if (e->collapsed)
+          continue;
+        if (!mutt_thread_can_collapse(e))
+        {
+          blocked = true;
+          continue;
+        }
+        mutt_collapse_thread(e);
+        changed = true;
+        break;
+      case COLLAPSE_MODE_TOGGLE:
+        if (e->collapsed)
+        {
+          mutt_uncollapse_thread(e);
+          changed = true;
+        }
+        else if (mutt_thread_can_collapse(e))
+        {
+          mutt_collapse_thread(e);
+          changed = true;
+        }
+        else
+        {
+          blocked = true;
+        }
+        break;
+    }
+  }
+  ARRAY_FREE(&ea);
+
+  if (!changed)
+  {
+    if (blocked)
+    {
+      mutt_warning(_("Thread contains unread or flagged messages"));
+      return FR_ERROR;
+    }
+    return FR_NO_ACTION;
+  }
+
+  mutt_set_vnum(shared->mailbox);
+  update_thread_email(priv, shared->email);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+  return FR_SUCCESS;
+}
+
+/**
  * op_delete_thread - Delete all messages in thread - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
@@ -583,20 +775,39 @@ static int op_delete_thread(struct IndexFunctionData *fdata, const struct KeyEve
     return FR_NO_ACTION;
 
   const int op = event->op;
-  int subthread = (op == OP_DELETE_SUBTHREAD);
-  int rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_DELETE, true, subthread);
+  const bool subthread = (op == OP_DELETE_SUBTHREAD);
+  int rc = 0;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_tagged_threads(&ea, shared->mailbox_view, shared->email, priv->tag_prefix, subthread);
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
+  {
+    rc = mutt_thread_set_flag(shared->mailbox, *ep, MUTT_DELETE, true, subthread);
+    if (rc == -1)
+      break;
+
+    if (op == OP_PURGE_THREAD)
+    {
+      rc = mutt_thread_set_flag(shared->mailbox, *ep, MUTT_PURGE, true, subthread);
+      if (rc == -1)
+        break;
+    }
+
+    const bool c_delete_untag = cs_subset_bool(shared->sub, "delete_untag");
+    if (c_delete_untag)
+      mutt_thread_set_flag(shared->mailbox, *ep, MUTT_TAG, false, subthread);
+  }
+  ARRAY_FREE(&ea);
+
   if (rc == -1)
     return FR_ERROR;
-  if (op == OP_PURGE_THREAD)
-  {
-    rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_PURGE, true, subthread);
-    if (rc == -1)
-      return FR_ERROR;
-  }
 
-  const bool c_delete_untag = cs_subset_bool(shared->sub, "delete_untag");
-  if (c_delete_untag)
-    mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_TAG, false, subthread);
+  if (priv->tag_prefix)
+  {
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+    return FR_SUCCESS;
+  }
 
   resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -622,6 +833,7 @@ static int op_display_address(struct IndexFunctionData *fdata, const struct KeyE
  * This function handles:
  * - OP_DISPLAY_HEADERS
  * - OP_DISPLAY_MESSAGE
+ * - OP_GENERIC_SELECT_ENTRY
  */
 static int op_display_message(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -1023,7 +1235,7 @@ static int op_list_reply(struct IndexFunctionData *fdata, const struct KeyEvent 
 static int op_list_subscribe(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
-  return mutt_send_list_subscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_NO_ACTION;
+  return mutt_send_list_subscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_ERROR;
 }
 
 /**
@@ -1032,7 +1244,7 @@ static int op_list_subscribe(struct IndexFunctionData *fdata, const struct KeyEv
 static int op_list_unsubscribe(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
   struct IndexSharedData *shared = fdata->shared;
-  return mutt_send_list_unsubscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_NO_ACTION;
+  return mutt_send_list_unsubscribe(shared->mailbox, shared->email) ? FR_SUCCESS : FR_ERROR;
 }
 
 /**
@@ -1091,7 +1303,7 @@ static int op_main_break_thread(struct IndexFunctionData *fdata, const struct Ke
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   struct MailboxView *mv = shared->mailbox_view;
@@ -1111,6 +1323,7 @@ static int op_main_break_thread(struct IndexFunctionData *fdata, const struct Ke
   else
   {
     mutt_error(_("Thread can't be broken, message is not part of a thread"));
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;
@@ -1197,7 +1410,7 @@ static int op_main_collapse_all(struct IndexFunctionData *fdata, const struct Ke
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
   collapse_all(shared->mailbox_view, priv->menu, COLLAPSE_MODE_TOGGLE);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
@@ -1216,7 +1429,7 @@ static int op_main_close_all_threads(struct IndexFunctionData *fdata,
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   if (!shared->mailbox_view || shared->mailbox_view->collapsed)
@@ -1238,8 +1451,11 @@ static int op_main_close_thread(struct IndexFunctionData *fdata, const struct Ke
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
+
+  if (priv->tag_prefix)
+    return op_main_change_thread(fdata, COLLAPSE_MODE_CLOSE);
 
   if (!shared->email || shared->email->collapsed)
     return FR_NO_ACTION;
@@ -1267,8 +1483,11 @@ static int op_main_collapse_thread(struct IndexFunctionData *fdata, const struct
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
+
+  if (priv->tag_prefix)
+    return op_main_change_thread(fdata, COLLAPSE_MODE_TOGGLE);
 
   if (!shared->email)
     return FR_NO_ACTION;
@@ -1310,7 +1529,7 @@ static int op_main_open_all_threads(struct IndexFunctionData *fdata,
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
 
   if (!shared->mailbox_view || !shared->mailbox_view->collapsed)
@@ -1332,8 +1551,11 @@ static int op_main_open_thread(struct IndexFunctionData *fdata, const struct Key
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    return FR_NO_ACTION;
+    return FR_ERROR;
   }
+
+  if (priv->tag_prefix)
+    return op_main_change_thread(fdata, COLLAPSE_MODE_OPEN);
 
   if (!shared->email || !shared->email->collapsed)
     return FR_NO_ACTION;
@@ -1467,7 +1689,7 @@ static int op_main_link_threads(struct IndexFunctionData *fdata, const struct Ke
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
-    rc = FR_NO_ACTION;
+    rc = FR_ERROR;
   }
   else if (!e->env->message_id)
   {
@@ -1491,7 +1713,7 @@ static int op_main_link_threads(struct IndexFunctionData *fdata, const struct Ke
     else
     {
       mutt_error(_("No thread linked"));
-      rc = FR_NO_ACTION;
+      rc = FR_ERROR;
     }
 
     ARRAY_FREE(&ea);
@@ -1621,7 +1843,7 @@ done:
 }
 
 /**
- * op_main_next_new - Jump to the next new message - Implements ::index_function_t - @ingroup index_function_api
+ * op_main_next_new - Jump to next new message - Implements ::index_function_t - @ingroup index_function_api
  *
  * This function handles:
  * - OP_MAIN_NEXT_NEW
@@ -1797,6 +2019,7 @@ static int op_main_next_thread(struct IndexFunctionData *fdata, const struct Key
       mutt_error(_("You are on the first thread"));
 
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;
@@ -1831,6 +2054,7 @@ static int op_main_next_undeleted(struct IndexFunctionData *fdata, const struct 
   {
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
     mutt_error(_("No undeleted messages"));
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;
@@ -1915,6 +2139,7 @@ static int op_main_prev_undeleted(struct IndexFunctionData *fdata, const struct 
   {
     mutt_error(_("No undeleted messages"));
     notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;
@@ -1972,16 +2197,33 @@ static int op_main_read_thread(struct IndexFunctionData *fdata, const struct Key
     return FR_ERROR;
 
   const int op = event->op;
-  int rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_READ, true,
-                                (op != OP_MAIN_READ_THREAD));
-  if (rc != -1)
+  const bool subthread = (op != OP_MAIN_READ_THREAD);
+  int rc = 0;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_tagged_threads(&ea, shared->mailbox_view, shared->email, priv->tag_prefix, subthread);
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
   {
-    const enum ResolveMethod rm = (op == OP_MAIN_READ_THREAD) ? RESOLVE_NEXT_THREAD :
-                                                                RESOLVE_NEXT_SUBTHREAD;
-    resolve_email(priv, shared, rm);
+    rc = mutt_thread_set_flag(shared->mailbox, *ep, MUTT_READ, true, subthread);
+    if (rc == -1)
+      break;
+  }
+  ARRAY_FREE(&ea);
+
+  if (rc == -1)
+    return FR_ERROR;
+
+  if (priv->tag_prefix)
+  {
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+    return FR_SUCCESS;
   }
 
+  const enum ResolveMethod rm = (op == OP_MAIN_READ_THREAD) ? RESOLVE_NEXT_THREAD :
+                                                              RESOLVE_NEXT_SUBTHREAD;
+  resolve_email(priv, shared, rm);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   return FR_SUCCESS;
 }
 
@@ -2717,21 +2959,36 @@ static int op_undelete_thread(struct IndexFunctionData *fdata, const struct KeyE
     return FR_ERROR;
 
   const int op = event->op;
-  int rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_DELETE,
-                                false, (op != OP_UNDELETE_THREAD));
-  if (rc != -1)
+  const bool subthread = (op != OP_UNDELETE_THREAD);
+  int rc = 0;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_tagged_threads(&ea, shared->mailbox_view, shared->email, priv->tag_prefix, subthread);
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
   {
-    rc = mutt_thread_set_flag(shared->mailbox, shared->email, MUTT_PURGE, false,
-                              (op != OP_UNDELETE_THREAD));
+    rc = mutt_thread_set_flag(shared->mailbox, *ep, MUTT_DELETE, false, subthread);
+    if (rc == -1)
+      break;
+    rc = mutt_thread_set_flag(shared->mailbox, *ep, MUTT_PURGE, false, subthread);
+    if (rc == -1)
+      break;
   }
-  if (rc != -1)
+  ARRAY_FREE(&ea);
+
+  if (rc == -1)
+    return FR_ERROR;
+
+  if (priv->tag_prefix)
   {
-    const enum ResolveMethod rm = (op == OP_UNDELETE_THREAD) ? RESOLVE_NEXT_THREAD :
-                                                               RESOLVE_NEXT_SUBTHREAD;
-    resolve_email(priv, shared, rm);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+    return FR_SUCCESS;
   }
 
+  const enum ResolveMethod rm = (op == OP_UNDELETE_THREAD) ? RESOLVE_NEXT_THREAD :
+                                                             RESOLVE_NEXT_SUBTHREAD;
+  resolve_email(priv, shared, rm);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   return FR_SUCCESS;
 }
 
@@ -2937,6 +3194,7 @@ static int op_get_children(struct IndexFunctionData *fdata, const struct KeyEven
   else if (rc >= 0)
   {
     mutt_error(_("No deleted messages found in the thread"));
+    return FR_ERROR;
   }
 
   return FR_SUCCESS;
@@ -3109,6 +3367,7 @@ changefoldercleanup2:
  *
  * This function handles:
  * - OP_FOLLOWUP
+ * - OP_FORWARD_TO_GROUP
  * - OP_POST
  */
 static int op_post(struct IndexFunctionData *fdata, const struct KeyEvent *event)
@@ -3541,7 +3800,10 @@ int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!event || !dlg || !dlg->wdata || !win->parent || !win->parent->wdata)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   const int op = event->op;
   struct IndexPrivateData *priv = win->parent->wdata;
@@ -3578,6 +3840,7 @@ int index_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
   const char *result = dispatcher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
+  dispatcher_flush_on_error(rc);
   return rc;
 }
 

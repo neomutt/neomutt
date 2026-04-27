@@ -48,6 +48,7 @@ static const struct MenuFuncOp OpPostponed[] = { /* map: postpone */
   { "exit",                          OP_EXIT },
   { "delete-entry",                  OP_DELETE },
   { "undelete-entry",                OP_UNDELETE },
+  { "tag-entry",                     OP_TAG },
   { NULL, 0 },
 };
 
@@ -57,6 +58,7 @@ static const struct MenuFuncOp OpPostponed[] = { /* map: postpone */
 static const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
   { OP_EXIT,                               "q" },
+  { OP_TAG,                                "t" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
 };
@@ -83,6 +85,10 @@ void postponed_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 
 /**
  * op_delete - Delete the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
+ *
+ * This function handles:
+ * - OP_DELETE
+ * - OP_UNDELETE
  */
 static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
 {
@@ -91,12 +97,25 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
   struct Mailbox *m = mv->mailbox;
 
   const int index = menu_get_index(menu);
+  const bool bf = (event->op == OP_DELETE);
   /* should deleted draft messages be saved in the trash folder? */
-  mutt_set_flag(m, m->emails[index], MUTT_DELETE, (event->op == OP_DELETE), true);
+  if (menu->tag_prefix)
+  {
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (e && e->tagged)
+        mutt_set_flag(m, e, MUTT_DELETE, bf, true);
+    }
+  }
+  else
+  {
+    mutt_set_flag(m, m->emails[index], MUTT_DELETE, bf, true);
+  }
   struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
   mod_data->post_count = m->msg_count - m->msg_deleted;
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-  if (c_resolve && (index < (menu->max - 1)))
+  if (!menu->tag_prefix && c_resolve && (index < (menu->max - 1)))
   {
     menu_set_index(menu, index + 1);
     if (index >= (menu->top + menu->page_len))
@@ -107,7 +126,7 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
   }
   else
   {
-    menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
+    menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT);
   }
 
   return FR_SUCCESS;
@@ -137,6 +156,12 @@ static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEven
 
 /**
  * op_search - Search for a regular expression - Implements ::postpone_function_t - @ingroup postpone_function_api
+ *
+ * This function handles:
+ * - OP_SEARCH
+ * - OP_SEARCH_NEXT
+ * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_REVERSE
  */
 static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
 {
@@ -194,13 +219,19 @@ int postpone_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *
   // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!event || !dlg || !dlg->wdata)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   const int op = event->op;
   struct Menu *menu = dlg->wdata;
   struct PostponeData *pd = menu->mdata;
   if (!pd)
+  {
+    dispatcher_flush_on_error(FR_ERROR);
     return FR_ERROR;
+  }
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PostponeFunctions[i].op != OP_NULL; i++)
@@ -219,6 +250,7 @@ int postpone_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *
   const char *result = dispatcher_get_retval_name(rc);
   mutt_debug(LL_DEBUG1, "Handled %s (%d) -> %s\n", opcodes_get_name(op), op, NONULL(result));
 
+  dispatcher_flush_on_error(rc);
   return rc;
 }
 

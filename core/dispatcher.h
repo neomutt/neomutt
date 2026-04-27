@@ -53,5 +53,6 @@ enum FunctionRetval
 typedef int (*function_dispatcher_t)(struct MuttWindow *win, const struct KeyEvent *event);
 
 const char *dispatcher_get_retval_name(int rv);
+void dispatcher_flush_on_error(int rv);
 
 #endif /* MUTT_CORE_DISPATCHER_H */
