@@ -132,6 +132,42 @@ bool sb_next(struct SidebarWindowData *wdata)
 }
 
 /**
+ * sb_next_n - Move down N unhidden Mailboxes, capping at the last
+ * @param wdata Sidebar data
+ * @param count Number of entries to move
+ * @retval true  Moved at least one entry
+ * @retval false Already at the last unhidden entry
+ */
+static bool sb_next_n(struct SidebarWindowData *wdata, int count)
+{
+  int orig = wdata->hil_index;
+  for (int i = 0; i < count; i++)
+  {
+    if (!sb_next(wdata))
+      break;
+  }
+  return (wdata->hil_index != orig);
+}
+
+/**
+ * sb_prev_n - Move up N unhidden Mailboxes, capping at the first
+ * @param wdata Sidebar data
+ * @param count Number of entries to move
+ * @retval true  Moved at least one entry
+ * @retval false Already at the first unhidden entry
+ */
+static bool sb_prev_n(struct SidebarWindowData *wdata, int count)
+{
+  int orig = wdata->hil_index;
+  for (int i = 0; i < count; i++)
+  {
+    if (!sb_prev(wdata))
+      break;
+  }
+  return (wdata->hil_index != orig);
+}
+
+/**
  * sb_next_new - Return the next mailbox with new messages
  * @param wdata Sidebar data
  * @param begin Starting index for searching
@@ -258,8 +294,20 @@ static int op_sidebar_next(struct SidebarFunctionData *fdata, const struct KeyEv
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return FR_NO_ACTION;
 
-  if (!sb_next(wdata))
-    return FR_ERROR;
+  const int count = event->count;
+  if (count > 0)
+  {
+    if (!sb_next_n(wdata, count))
+      return FR_NO_ACTION;
+  }
+  else
+  {
+    if (!sb_next(wdata))
+    {
+      mutt_message(_("Already on last entry"));
+      return FR_ERROR;
+    }
+  }
 
   wdata->win->actions |= WA_RECALC;
   return FR_SUCCESS;
@@ -280,17 +328,29 @@ static int op_sidebar_next_new(struct SidebarFunctionData *fdata, const struct K
   if ((max_entries == 0) || (wdata->hil_index < 0))
     return FR_NO_ACTION;
 
+  const int count = MAX(event->count, 1);
   const bool c_sidebar_next_new_wrap = cs_subset_bool(fdata->n->sub, "sidebar_next_new_wrap");
-  struct SbEntry **sbep = NULL;
-  if ((sbep = sb_next_new(wdata, wdata->hil_index + 1, max_entries)) ||
-      (c_sidebar_next_new_wrap && (sbep = sb_next_new(wdata, 0, wdata->hil_index))))
+  int orig_hil_index = wdata->hil_index;
+
+  for (int i = 0; i < count; i++)
   {
-    wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
-    wdata->win->actions |= WA_RECALC;
-    return FR_SUCCESS;
+    struct SbEntry **sbep = NULL;
+    if ((sbep = sb_next_new(wdata, wdata->hil_index + 1, max_entries)) ||
+        (c_sidebar_next_new_wrap && (sbep = sb_next_new(wdata, 0, wdata->hil_index))))
+    {
+      wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
+    }
+    else
+    {
+      break;
+    }
   }
 
-  return FR_NO_ACTION;
+  if (wdata->hil_index == orig_hil_index)
+    return FR_NO_ACTION;
+
+  wdata->win->actions |= WA_RECALC;
+  return FR_SUCCESS;
 }
 
 /**
@@ -321,16 +381,20 @@ static int op_sidebar_page_down(struct SidebarFunctionData *fdata, const struct 
     return FR_NO_ACTION;
 
   int orig_hil_index = wdata->hil_index;
+  const int page_size = wdata->win->state.rows;
+  const int count = MAX(event->count, 1);
 
-  wdata->hil_index = wdata->bot_index;
-  sb_next(wdata);
-  /* If the rest of the entries are hidden, go up to the last unhidden one */
+  if (!sb_next_n(wdata, count * page_size))
+    return FR_NO_ACTION;
+
+  /* If we landed on a hidden entry, go up to the last unhidden one */
   if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
     sb_prev(wdata);
 
   if (orig_hil_index == wdata->hil_index)
     return FR_NO_ACTION;
 
+  wdata->repage = true;
   wdata->win->actions |= WA_RECALC;
   return FR_SUCCESS;
 }
@@ -348,16 +412,20 @@ static int op_sidebar_page_up(struct SidebarFunctionData *fdata, const struct Ke
     return FR_NO_ACTION;
 
   int orig_hil_index = wdata->hil_index;
+  const int page_size = wdata->win->state.rows;
+  const int count = MAX(event->count, 1);
 
-  wdata->hil_index = wdata->top_index;
-  sb_prev(wdata);
-  /* If the rest of the entries are hidden, go down to the last unhidden one */
+  if (!sb_prev_n(wdata, count * page_size))
+    return FR_NO_ACTION;
+
+  /* If we landed on a hidden entry, go down to the last unhidden one */
   if ((*ARRAY_GET(&wdata->entries, wdata->hil_index))->is_hidden)
     sb_next(wdata);
 
   if (orig_hil_index == wdata->hil_index)
     return FR_NO_ACTION;
 
+  wdata->repage = true;
   wdata->win->actions |= WA_RECALC;
   return FR_SUCCESS;
 }
@@ -374,8 +442,20 @@ static int op_sidebar_prev(struct SidebarFunctionData *fdata, const struct KeyEv
   if (ARRAY_EMPTY(&wdata->entries) || (wdata->hil_index < 0))
     return FR_NO_ACTION;
 
-  if (!sb_prev(wdata))
-    return FR_ERROR;
+  const int count = event->count;
+  if (count > 0)
+  {
+    if (!sb_prev_n(wdata, count))
+      return FR_NO_ACTION;
+  }
+  else
+  {
+    if (!sb_prev(wdata))
+    {
+      mutt_message(_("Already on first entry"));
+      return FR_ERROR;
+    }
+  }
 
   wdata->win->actions |= WA_RECALC;
   return FR_SUCCESS;
@@ -396,18 +476,30 @@ static int op_sidebar_prev_new(struct SidebarFunctionData *fdata, const struct K
   if ((max_entries == 0) || (wdata->hil_index < 0))
     return FR_NO_ACTION;
 
+  const int count = MAX(event->count, 1);
   const bool c_sidebar_next_new_wrap = cs_subset_bool(fdata->n->sub, "sidebar_next_new_wrap");
-  struct SbEntry **sbep = NULL;
-  if ((sbep = sb_prev_new(wdata, 0, wdata->hil_index)) ||
-      (c_sidebar_next_new_wrap &&
-       (sbep = sb_prev_new(wdata, wdata->hil_index + 1, max_entries))))
+  int orig_hil_index = wdata->hil_index;
+
+  for (int i = 0; i < count; i++)
   {
-    wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
-    wdata->win->actions |= WA_RECALC;
-    return FR_SUCCESS;
+    struct SbEntry **sbep = NULL;
+    if ((sbep = sb_prev_new(wdata, 0, wdata->hil_index)) ||
+        (c_sidebar_next_new_wrap &&
+         (sbep = sb_prev_new(wdata, wdata->hil_index + 1, max_entries))))
+    {
+      wdata->hil_index = ARRAY_IDX(&wdata->entries, sbep);
+    }
+    else
+    {
+      break;
+    }
   }
 
-  return FR_NO_ACTION;
+  if (wdata->hil_index == orig_hil_index)
+    return FR_NO_ACTION;
+
+  wdata->win->actions |= WA_RECALC;
+  return FR_SUCCESS;
 }
 
 /**

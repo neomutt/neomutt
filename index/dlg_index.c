@@ -410,7 +410,7 @@ void resort_index(struct MailboxView *mv, struct Menu *menu)
   }
 
   if (mutt_using_threads() && (old_index < 0))
-    new_index = mutt_parent_message(e_cur, false);
+    new_index = mutt_parent_message(e_cur, false, 1);
 
   if (old_index < 0)
     new_index = find_first_message(mv);

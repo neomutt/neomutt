@@ -382,11 +382,15 @@ MenuRedrawFlags menu_bottom_page(struct Menu *menu)
 
 /**
  * menu_prev_entry - Move the focus to the previous item in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Number of entries to move (0 = move by 1, show warning at boundary)
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_prev_entry(struct Menu *menu)
+MenuRedrawFlags menu_prev_entry(struct Menu *menu, int count)
 {
+  if (count > 0)
+    return menu_move_selection(menu, menu->current - count);
+
   if (menu->current > 0)
     return menu_move_selection(menu, menu->current - 1);
 
@@ -396,11 +400,15 @@ MenuRedrawFlags menu_prev_entry(struct Menu *menu)
 
 /**
  * menu_next_entry - Move the focus to the next item in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Number of entries to move (0 = move by 1, show warning at boundary)
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_next_entry(struct Menu *menu)
+MenuRedrawFlags menu_next_entry(struct Menu *menu, int count)
 {
+  if (count > 0)
+    return menu_move_selection(menu, menu->current + count);
+
   if (menu->current < (menu->max - 1))
     return menu_move_selection(menu, menu->current + 1);
 
@@ -410,32 +418,40 @@ MenuRedrawFlags menu_next_entry(struct Menu *menu)
 
 /**
  * menu_first_entry - Move the focus to the first entry in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Jump to line N (1-based) if >0, otherwise go to first entry
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_first_entry(struct Menu *menu)
+MenuRedrawFlags menu_first_entry(struct Menu *menu, int count)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
     return MENU_REDRAW_NO_FLAGS;
   }
+
+  if (count > 0)
+    return menu_move_selection(menu, count - 1);
 
   return menu_move_selection(menu, 0);
 }
 
 /**
  * menu_last_entry - Move the focus to the last entry in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Jump to line N (1-based) if >0, otherwise go to last entry
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_last_entry(struct Menu *menu)
+MenuRedrawFlags menu_last_entry(struct Menu *menu, int count)
 {
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
     return MENU_REDRAW_NO_FLAGS;
   }
+
+  if (count > 0)
+    return menu_move_selection(menu, count - 1);
 
   return menu_move_selection(menu, menu->max - 1);
 }
@@ -506,66 +522,72 @@ MenuRedrawFlags menu_current_bottom(struct Menu *menu)
 
 /**
  * menu_half_up - Move the focus up half a page in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Number of half-pages to move (0 = move by 1)
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_half_up(struct Menu *menu)
+MenuRedrawFlags menu_half_up(struct Menu *menu, int count)
 {
-  return menu_move_view_relative(menu, 0 - (menu->page_len / 2));
+  return menu_move_view_relative(menu, 0 - MAX(count, 1) * (menu->page_len / 2));
 }
 
 /**
  * menu_half_down - Move the focus down half a page in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Number of half-pages to move (0 = move by 1)
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_half_down(struct Menu *menu)
+MenuRedrawFlags menu_half_down(struct Menu *menu, int count)
 {
-  return menu_move_view_relative(menu, (menu->page_len / 2));
+  return menu_move_view_relative(menu, MAX(count, 1) * (menu->page_len / 2));
 }
 
 /**
  * menu_prev_line - Move the view up one line, keeping the selection the same
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Number of lines to scroll (0 = scroll by 1, show warning at boundary)
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_prev_line(struct Menu *menu)
+MenuRedrawFlags menu_prev_line(struct Menu *menu, int count)
 {
-  MenuRedrawFlags flags = menu_move_view_relative(menu, -1);
-  if (flags == MENU_REDRAW_NO_FLAGS)
+  MenuRedrawFlags flags = menu_move_view_relative(menu, 0 - MAX(count, 1));
+  if ((count == 0) && (flags == MENU_REDRAW_NO_FLAGS))
     mutt_message(_("You can't scroll up farther"));
   return flags;
 }
 
 /**
  * menu_next_line - Move the view down one line, keeping the selection the same
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Number of lines to scroll (0 = scroll by 1, show warning at boundary)
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_next_line(struct Menu *menu)
+MenuRedrawFlags menu_next_line(struct Menu *menu, int count)
 {
-  MenuRedrawFlags flags = menu_move_view_relative(menu, 1);
-  if (flags == MENU_REDRAW_NO_FLAGS)
+  MenuRedrawFlags flags = menu_move_view_relative(menu, MAX(count, 1));
+  if ((count == 0) && (flags == MENU_REDRAW_NO_FLAGS))
     mutt_message(_("You can't scroll down farther"));
   return flags;
 }
 
 /**
  * menu_prev_page - Move the focus to the previous page in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Number of pages to move (0 = move by 1)
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_prev_page(struct Menu *menu)
+MenuRedrawFlags menu_prev_page(struct Menu *menu, int count)
 {
-  return menu_move_view_relative(menu, 0 - menu->page_len);
+  return menu_move_view_relative(menu, 0 - MAX(count, 1) * menu->page_len);
 }
 
 /**
  * menu_next_page - Move the focus to the next page in the menu
- * @param menu Current Menu
+ * @param menu  Current Menu
+ * @param count Number of pages to move (0 = move by 1)
  * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
-MenuRedrawFlags menu_next_page(struct Menu *menu)
+MenuRedrawFlags menu_next_page(struct Menu *menu, int count)
 {
-  return menu_move_view_relative(menu, menu->page_len);
+  return menu_move_view_relative(menu, MAX(count, 1) * menu->page_len);
 }
