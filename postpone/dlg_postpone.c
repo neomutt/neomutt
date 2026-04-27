@@ -89,6 +89,7 @@ static const struct Mapping PostponedHelp[] = {
   { N_("Exit"),  OP_EXIT },
   { N_("Del"),   OP_DELETE },
   { N_("Undel"), OP_UNDELETE },
+  { N_("Tag"),   OP_TAG },
   { N_("Help"),  OP_HELP },
   { NULL, 0 },
   // clang-format on
@@ -173,6 +174,39 @@ static int postponed_window_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * post_tag - Tag an email in the postpone menu - Implements Menu::tag() - @ingroup menu_tag
+ */
+static int post_tag(struct Menu *menu, int sel, int act)
+{
+  struct PostponeData *pd = menu->mdata;
+  struct MailboxView *mv = pd->mailbox_view;
+  struct Mailbox *m = mv->mailbox;
+
+  const bool c_auto_tag = cs_subset_bool(NeoMutt->sub, "auto_tag");
+  if (menu->tag_prefix && !c_auto_tag)
+  {
+    for (size_t i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (!e)
+        break;
+      mutt_set_flag(m, e, MUTT_TAG, false, true);
+    }
+    menu_queue_redraw(menu, MENU_REDRAW_INDEX);
+    return FR_SUCCESS;
+  }
+
+  int index = menu_get_index(menu);
+  struct Email *e = m->emails[index];
+  if (!e)
+    return FR_NO_ACTION;
+
+  mutt_set_flag(m, e, MUTT_TAG, !e->tagged, true);
+
+  return FR_SUCCESS;
+}
+
+/**
  * post_color - Calculate the colour for a line of the postpone index - Implements Menu::color() - @ingroup menu_color
  */
 static const struct AttrColor *post_color(struct Menu *menu, int line)
@@ -220,6 +254,7 @@ struct Email *dlg_postpone(struct Mailbox *m)
   struct Menu *menu = sdw.menu;
   menu->make_entry = post_make_entry;
   menu->color = post_color;
+  menu->tag = post_tag;
   menu->max = m->msg_count;
 
   struct PostponeData pd = { mv, menu, NULL, false, search_state_new() };

@@ -48,6 +48,7 @@ static const struct MenuFuncOp OpPostponed[] = { /* map: postpone */
   { "exit",                          OP_EXIT },
   { "delete-entry",                  OP_DELETE },
   { "undelete-entry",                OP_UNDELETE },
+  { "tag-entry",                     OP_TAG },
   { NULL, 0 },
 };
 
@@ -57,6 +58,7 @@ static const struct MenuFuncOp OpPostponed[] = { /* map: postpone */
 static const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
   { OP_EXIT,                               "q" },
+  { OP_TAG,                                "t" },
   { OP_UNDELETE,                           "u" },
   { 0, NULL },
 };
