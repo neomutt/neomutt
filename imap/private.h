@@ -66,6 +66,7 @@ typedef uint8_t ImapOpenFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
 #define IMAP_EXPUNGE_PENDING  (1 << 2) ///< Messages on the server have been expunged
 #define IMAP_NEWMAIL_PENDING  (1 << 3) ///< New mail is waiting on the server
 #define IMAP_FLAGS_PENDING    (1 << 4) ///< Flags have changed on the server
+#define IMAP_SYNC_IN_PROGRESS (1 << 5) ///< Sync is in progress, block expunge/newmail processing
 
 typedef uint8_t ImapCmdFlags;          ///< Flags for imap_exec(), e.g. #IMAP_CMD_PASS
 #define IMAP_CMD_NO_FLAGS          0   ///< No flags are set
@@ -189,6 +190,7 @@ int imap_login(struct ImapAccountData *adata);
 int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e, struct Buffer *cmd, enum QuadOption *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 int imap_adata_find(const char *path, struct ImapAccountData **adata, struct ImapMboxData **mdata);
+int imap_reopen_mailbox(struct ImapAccountData *adata);
 
 /* auth.c */
 int imap_authenticate(struct ImapAccountData *adata);
