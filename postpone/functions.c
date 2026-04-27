@@ -97,12 +97,25 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
   struct Mailbox *m = mv->mailbox;
 
   const int index = menu_get_index(menu);
+  const bool bf = (event->op == OP_DELETE);
   /* should deleted draft messages be saved in the trash folder? */
-  mutt_set_flag(m, m->emails[index], MUTT_DELETE, (event->op == OP_DELETE), true);
+  if (menu->tag_prefix)
+  {
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (e && e->tagged)
+        mutt_set_flag(m, e, MUTT_DELETE, bf, true);
+    }
+  }
+  else
+  {
+    mutt_set_flag(m, m->emails[index], MUTT_DELETE, bf, true);
+  }
   struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
   mod_data->post_count = m->msg_count - m->msg_deleted;
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-  if (c_resolve && (index < (menu->max - 1)))
+  if (!menu->tag_prefix && c_resolve && (index < (menu->max - 1)))
   {
     menu_set_index(menu, index + 1);
     if (index >= (menu->top + menu->page_len))
@@ -113,7 +126,7 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
   }
   else
   {
-    menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
+    menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT);
   }
 
   return FR_SUCCESS;
