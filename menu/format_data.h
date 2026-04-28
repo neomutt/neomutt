@@ -64,8 +64,7 @@ static inline long menu_relative_number(const struct MenuFormatData *mfd)
   if (mfd->line == mfd->menu->current)
     return mfd->line + 1;
 
-  const long relative = mfd->line - mfd->menu->current;
-  return (relative < 0) ? -relative : relative;
+  return labs(mfd->line - mfd->menu->current);
 }
 
 #endif /* MUTT_MENU_FORMAT_DATA_H */
