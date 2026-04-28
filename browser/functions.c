@@ -163,6 +163,64 @@ void destroy_state(struct BrowserState *state)
 // -----------------------------------------------------------------------------
 
 /**
+ * struct FolderFilePtrArray - Working set of FolderFile pointers
+ */
+ARRAY_HEAD(FolderFilePtrArray, struct FolderFile *);
+
+/**
+ * browser_add_selection - Build a working set of FolderFile pointers for an action
+ * @param ws     Empty FolderFilePtrArray to populate
+ * @param state  Browser state (source of entries)
+ * @param menu   Menu
+ * @param tagged Use tagged entries (tag-prefix)
+ * @param count  Repeat-count (0 or 1 == just the current selection)
+ * @retval num Number of entries added
+ *
+ * If @a tagged is true, the array is filled with the tagged entries (in
+ * source order) and @a count is ignored.
+ *
+ * Otherwise the array is filled with the current selection and the next
+ * @a count - 1 entries. Overruns are silently capped at the end of the list.
+ */
+static int browser_add_selection(struct FolderFilePtrArray *ws, struct BrowserState *state,
+                                 struct Menu *menu, bool tagged, int count)
+{
+  if (!ws || !state || !menu)
+    return 0;
+
+  const int max = ARRAY_SIZE(&state->entry);
+
+  if (tagged)
+  {
+    struct FolderFile *ff = NULL;
+    ARRAY_FOREACH(ff, &state->entry)
+    {
+      if (ff->tagged)
+        ARRAY_ADD(ws, ff);
+    }
+  }
+  else
+  {
+    const int index = menu_get_index(menu);
+    if ((index < 0) || (index >= max))
+      return 0;
+
+    int n = (count > 1) ? count : 1;
+    if ((index + n) > max)
+      n = max - index;
+
+    for (int i = 0; i < n; i++)
+    {
+      struct FolderFile *ff = ARRAY_GET(&state->entry, index + i);
+      if (ff)
+        ARRAY_ADD(ws, ff);
+    }
+  }
+
+  return ARRAY_SIZE(ws);
+}
+
+/**
  * op_browser_new_file - Select a new file in this directory - Implements ::browser_function_t - @ingroup browser_function_api
  */
 static int op_browser_new_file(struct BrowserPrivateData *priv, const struct KeyEvent *event)
@@ -187,55 +245,103 @@ static int op_browser_new_file(struct BrowserPrivateData *priv, const struct Key
 }
 
 /**
+ * browser_apply_subscribe_nntp - Subscribe/unsubscribe to NNTP newsgroups
+ * @param ws        Working set of FolderFiles
+ * @param adata     NNTP account
+ * @param subscribe true to subscribe, false to unsubscribe
+ */
+static void browser_apply_subscribe_nntp(struct FolderFilePtrArray *ws,
+                                         struct NntpAccountData *adata, bool subscribe)
+{
+  if (!ws || !adata)
+    return;
+
+  struct FolderFile **ffp = NULL;
+  ARRAY_FOREACH(ffp, ws)
+  {
+    struct FolderFile *ff = *ffp;
+    if (!ff || !ff->name)
+      continue;
+    if (subscribe)
+      mutt_newsgroup_subscribe(adata, ff->name);
+    else
+      mutt_newsgroup_unsubscribe(adata, ff->name);
+  }
+}
+
+/**
+ * browser_apply_subscribe_imap - Subscribe/unsubscribe to IMAP mailboxes
+ * @param ws        Working set of FolderFiles
+ * @param subscribe true to subscribe, false to unsubscribe
+ */
+static void browser_apply_subscribe_imap(struct FolderFilePtrArray *ws, bool subscribe)
+{
+  if (!ws)
+    return;
+
+  struct Buffer *buf = buf_pool_get();
+  struct FolderFile **ffp = NULL;
+  ARRAY_FOREACH(ffp, ws)
+  {
+    struct FolderFile *ff = *ffp;
+    if (!ff || !ff->name)
+      continue;
+    buf_strcpy(buf, ff->name);
+    expand_path(buf, false);
+    imap_subscribe(buf_string(buf), subscribe);
+  }
+  buf_pool_release(&buf);
+}
+
+/**
  * op_browser_subscribe - Subscribe to current mbox (IMAP/NNTP only) - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
  * - OP_BROWSER_SUBSCRIBE
  * - OP_BROWSER_UNSUBSCRIBE
+ *
+ * Supports repeat-count: `5<subscribe>` operates on the current entry and the
+ * next 4. Overruns are silently capped at the end of the list.
  */
 static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
-  const int op = event->op;
+  const bool subscribe = (event->op == OP_BROWSER_SUBSCRIBE);
   const bool tagged = priv->menu->tag_prefix && (priv->menu->num_tagged > 0);
+
+  if (ARRAY_EMPTY(&priv->state.entry))
+  {
+    mutt_error(OptNews ? _("No newsgroups match the mask") : _("There are no mailboxes"));
+    return FR_ERROR;
+  }
+
+  struct FolderFilePtrArray ws = ARRAY_HEAD_INITIALIZER;
+  browser_add_selection(&ws, &priv->state, priv->menu, tagged, event->count);
+  if (ARRAY_EMPTY(&ws))
+  {
+    ARRAY_FREE(&ws);
+    return FR_NO_ACTION;
+  }
+  const int num = ARRAY_SIZE(&ws);
 
   if (OptNews)
   {
     struct NntpAccountData *adata = mod_data->current_news_srv;
-
-    if (ARRAY_EMPTY(&priv->state.entry))
-    {
-      mutt_error(_("No newsgroups match the mask"));
-      return FR_ERROR;
-    }
-
     int rc = nntp_newsrc_parse(adata);
     if (rc < 0)
+    {
+      ARRAY_FREE(&ws);
       return FR_ERROR;
-
-    if (tagged)
-    {
-      struct FolderFile *ff = NULL;
-      ARRAY_FOREACH(ff, &priv->state.entry)
-      {
-        if (!ff->tagged)
-          continue;
-        if (op == OP_BROWSER_SUBSCRIBE)
-          mutt_newsgroup_subscribe(adata, ff->name);
-        else
-          mutt_newsgroup_unsubscribe(adata, ff->name);
-      }
     }
-    else
-    {
-      int index = menu_get_index(priv->menu);
-      struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-      if (op == OP_BROWSER_SUBSCRIBE)
-        mutt_newsgroup_subscribe(adata, ff->name);
-      else
-        mutt_newsgroup_unsubscribe(adata, ff->name);
 
-      menu_set_index(priv->menu, index + 1);
+    browser_apply_subscribe_nntp(&ws, adata, subscribe);
+
+    if (!tagged)
+    {
+      const int index = menu_get_index(priv->menu);
+      const int next = index + num;
+      if (next < ARRAY_SIZE(&priv->state.entry))
+        menu_set_index(priv->menu, next);
     }
 
     menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -245,35 +351,10 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, const struct Ke
   }
   else
   {
-    if (ARRAY_EMPTY(&priv->state.entry))
-    {
-      mutt_error(_("There are no mailboxes"));
-      return FR_ERROR;
-    }
-
-    struct Buffer *buf = buf_pool_get();
-    if (tagged)
-    {
-      struct FolderFile *ff = NULL;
-      ARRAY_FOREACH(ff, &priv->state.entry)
-      {
-        if (!ff->tagged)
-          continue;
-        buf_strcpy(buf, ff->name);
-        expand_path(buf, false);
-        imap_subscribe(buf_string(buf), (op == OP_BROWSER_SUBSCRIBE));
-      }
-    }
-    else
-    {
-      int index = menu_get_index(priv->menu);
-      struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-      buf_strcpy(buf, ff->name);
-      expand_path(buf, false);
-      imap_subscribe(buf_string(buf), (op == OP_BROWSER_SUBSCRIBE));
-    }
-    buf_pool_release(&buf);
+    browser_apply_subscribe_imap(&ws, subscribe);
   }
+
+  ARRAY_FREE(&ws);
   return FR_SUCCESS;
 }
 
@@ -351,19 +432,50 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, const struct Ke
 }
 
 /**
+ * browser_apply_catchup - (Un)catchup a working set of newsgroups
+ * @param ws    Working set of FolderFiles
+ * @param m     Mailbox
+ * @param adata NNTP account
+ * @param up    true to catchup, false to uncatchup
+ * @retval ptr  Last NntpMboxData touched (NULL if nothing changed)
+ */
+static struct NntpMboxData *browser_apply_catchup(struct FolderFilePtrArray *ws,
+                                                  struct Mailbox *m,
+                                                  struct NntpAccountData *adata, bool up)
+{
+  if (!ws || !adata)
+    return NULL;
+
+  struct NntpMboxData *mdata = NULL;
+  struct FolderFile **ffp = NULL;
+  ARRAY_FOREACH(ffp, ws)
+  {
+    struct FolderFile *ff = *ffp;
+    if (!ff || !ff->name)
+      continue;
+    if (up)
+      mdata = mutt_newsgroup_catchup(m, adata, ff->name);
+    else
+      mdata = mutt_newsgroup_uncatchup(m, adata, ff->name);
+  }
+  return mdata;
+}
+
+/**
  * op_catchup - Mark all articles in newsgroup as read - Implements ::browser_function_t - @ingroup browser_function_api
  *
  * This function handles:
  * - OP_CATCHUP
  * - OP_UNCATCHUP
+ *
+ * Supports repeat-count: `5<catchup>` operates on the current entry and the
+ * next 4. Overruns are silently capped at the end of the list.
  */
 static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
   struct NntpModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_NNTP);
   if (!OptNews)
     return FR_NOT_IMPL;
-
-  struct NntpMboxData *mdata = NULL;
 
   int rc = nntp_newsrc_parse(mod_data->current_news_srv);
   if (rc < 0)
@@ -373,37 +485,29 @@ static int op_catchup(struct BrowserPrivateData *priv, const struct KeyEvent *ev
     return FR_ERROR;
 
   const bool tagged = priv->menu->tag_prefix && (priv->menu->num_tagged > 0);
-  if (tagged)
-  {
-    struct FolderFile *ff = NULL;
-    ARRAY_FOREACH(ff, &priv->state.entry)
-    {
-      if (!ff->tagged)
-        continue;
-      if (event->op == OP_CATCHUP)
-        mdata = mutt_newsgroup_catchup(priv->mailbox, mod_data->current_news_srv, ff->name);
-      else
-        mdata = mutt_newsgroup_uncatchup(priv->mailbox,
-                                         mod_data->current_news_srv, ff->name);
-    }
-    if (mdata)
-      nntp_newsrc_update(mod_data->current_news_srv);
-  }
-  else
-  {
-    int index = menu_get_index(priv->menu);
-    struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-    if (event->op == OP_CATCHUP)
-      mdata = mutt_newsgroup_catchup(priv->mailbox, mod_data->current_news_srv, ff->name);
-    else
-      mdata = mutt_newsgroup_uncatchup(priv->mailbox, mod_data->current_news_srv, ff->name);
 
-    if (mdata)
+  struct FolderFilePtrArray ws = ARRAY_HEAD_INITIALIZER;
+  browser_add_selection(&ws, &priv->state, priv->menu, tagged, event->count);
+  if (ARRAY_EMPTY(&ws))
+  {
+    ARRAY_FREE(&ws);
+    return FR_NO_ACTION;
+  }
+  const int num = ARRAY_SIZE(&ws);
+
+  struct NntpMboxData *mdata = browser_apply_catchup(&ws, priv->mailbox,
+                                                     mod_data->current_news_srv,
+                                                     (event->op == OP_CATCHUP));
+  ARRAY_FREE(&ws);
+
+  if (mdata)
+  {
+    nntp_newsrc_update(mod_data->current_news_srv);
+    if (!tagged)
     {
-      nntp_newsrc_update(mod_data->current_news_srv);
-      index = menu_get_index(priv->menu) + 1;
-      if (index < priv->menu->max)
-        menu_set_index(priv->menu, index);
+      const int next = menu_get_index(priv->menu) + num;
+      if (next < priv->menu->max)
+        menu_set_index(priv->menu, next);
     }
   }
 
@@ -565,7 +669,53 @@ static int op_create_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
 }
 
 /**
+ * browser_apply_delete_mailbox - Delete a working set of IMAP mailboxes
+ * @param[in]  ws         Working set of FolderFiles (ascending source order)
+ * @param[in]  state      Browser state (source array)
+ * @param[in]  m          Current mailbox
+ * @param[out] num_failed Number of mailbox deletions that failed
+ * @retval num Number of mailboxes successfully deleted (and removed from state)
+ *
+ * Iterates the working set in reverse so that ARRAY_REMOVE() does not
+ * invalidate the pointers we still need.
+ */
+static int browser_apply_delete_mailbox(struct FolderFilePtrArray *ws,
+                                        struct BrowserState *state,
+                                        struct Mailbox *m, int *num_failed)
+{
+  int deleted = 0;
+  int failed = 0;
+
+  if (ws && state)
+  {
+    struct FolderFile **ffp = NULL;
+    ARRAY_FOREACH_REVERSE(ffp, ws)
+    {
+      struct FolderFile *ff = *ffp;
+      if (!ff || !ff->name)
+        continue;
+      if (imap_delete_mailbox(m, ff->name) != 0)
+      {
+        failed++;
+        continue;
+      }
+      FREE(&ff->name);
+      FREE(&ff->desc);
+      ARRAY_REMOVE(&state->entry, ff);
+      deleted++;
+    }
+  }
+
+  if (num_failed)
+    *num_failed = failed;
+  return deleted;
+}
+
+/**
  * op_delete_mailbox - Delete the current mailbox (IMAP only) - Implements ::browser_function_t - @ingroup browser_function_api
+ *
+ * Supports repeat-count: `5<delete-mailbox>` deletes the current entry and
+ * the next 4. Overruns are silently capped at the end of the list.
  */
 static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEvent *event)
 {
@@ -573,101 +723,68 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, const struct KeyEv
     return FR_ERROR;
 
   const bool tagged = priv->menu->tag_prefix && (priv->menu->num_tagged > 0);
-  char msg[128] = { 0 };
 
-  if (tagged)
+  struct FolderFilePtrArray ws = ARRAY_HEAD_INITIALIZER;
+  browser_add_selection(&ws, &priv->state, priv->menu, tagged, event->count);
+  if (ARRAY_EMPTY(&ws))
   {
-    struct FolderFile *ff = NULL;
-    bool failed = false;
-    ARRAY_FOREACH(ff, &priv->state.entry)
-    {
-      if (!ff->tagged)
-        continue;
-      if (!ff->imap)
-      {
-        mutt_error(_("Delete is only supported for IMAP mailboxes"));
-        return FR_ERROR;
-      }
-      // TODO(sileht): It could be better to select INBOX instead. But I
-      // don't want to manipulate Mailboxes/mailbox->account here for now.
-      // Let's just protect neomutt against crash for now. #1417
-      if (mutt_str_equal(mailbox_path(priv->mailbox), ff->name))
-      {
-        mutt_error(_("Can't delete currently selected mailbox"));
-        return FR_ERROR;
-      }
-    }
-
-    snprintf(msg, sizeof(msg), _("Really delete %d tagged mailboxes?"),
-             priv->menu->num_tagged);
-    if (query_yesorno(msg, MUTT_NO) != MUTT_YES)
-    {
-      mutt_message(_("Mailbox not deleted"));
-      return FR_NO_ACTION;
-    }
-
-    int deleted = 0;
-    ARRAY_FOREACH_REVERSE(ff, &priv->state.entry)
-    {
-      if (!ff->tagged)
-        continue;
-      if (imap_delete_mailbox(priv->mailbox, ff->name) != 0)
-      {
-        mutt_error(_("Mailbox deletion failed"));
-        failed = true;
-        continue;
-      }
-      /* free the mailbox from the browser */
-      FREE(&ff->name);
-      FREE(&ff->desc);
-      /* and move all other entries up */
-      ARRAY_REMOVE(&priv->state.entry, ff);
-      deleted++;
-    }
-    mutt_message(_("%d mailboxes deleted"), deleted);
-    init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
-    return failed ? FR_ERROR : FR_SUCCESS;
-  }
-
-  int index = menu_get_index(priv->menu);
-  struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-  if (!ff->imap)
-  {
-    mutt_error(_("Delete is only supported for IMAP mailboxes"));
-    return FR_ERROR;
-  }
-
-  // TODO(sileht): It could be better to select INBOX instead. But I
-  // don't want to manipulate Mailboxes/mailbox->account here for now.
-  // Let's just protect neomutt against crash for now. #1417
-  if (mutt_str_equal(mailbox_path(priv->mailbox), ff->name))
-  {
-    mutt_error(_("Can't delete currently selected mailbox"));
-    return FR_ERROR;
-  }
-
-  snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), ff->name);
-  if (query_yesorno(msg, MUTT_NO) != MUTT_YES)
-  {
-    mutt_message(_("Mailbox not deleted"));
+    ARRAY_FREE(&ws);
     return FR_NO_ACTION;
   }
 
-  if (imap_delete_mailbox(priv->mailbox, ff->name) != 0)
+  // Pre-flight validation
+  struct FolderFile **ffp = NULL;
+  ARRAY_FOREACH(ffp, &ws)
   {
-    mutt_error(_("Mailbox deletion failed"));
-    return FR_ERROR;
+    struct FolderFile *ff = *ffp;
+    if (!ff->imap)
+    {
+      mutt_error(_("Delete is only supported for IMAP mailboxes"));
+      ARRAY_FREE(&ws);
+      return FR_ERROR;
+    }
+    // TODO(sileht): It could be better to select INBOX instead. But I
+    // don't want to manipulate Mailboxes/mailbox->account here for now.
+    // Let's just protect neomutt against crash for now. #1417
+    if (mutt_str_equal(mailbox_path(priv->mailbox), ff->name))
+    {
+      mutt_error(_("Can't delete currently selected mailbox"));
+      ARRAY_FREE(&ws);
+      return FR_ERROR;
+    }
   }
 
-  /* free the mailbox from the browser */
-  FREE(&ff->name);
-  FREE(&ff->desc);
-  /* and move all other entries up */
-  ARRAY_REMOVE(&priv->state.entry, ff);
-  mutt_message(_("Mailbox deleted"));
-  init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
+  const int num = ARRAY_SIZE(&ws);
+  char msg[128] = { 0 };
+  if (num > 1)
+  {
+    snprintf(msg, sizeof(msg), _("Really delete %d tagged mailboxes?"), num);
+  }
+  else
+  {
+    struct FolderFile *ff = *ARRAY_FIRST(&ws);
+    snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), ff->name);
+  }
+  if (query_yesorno(msg, MUTT_NO) != MUTT_YES)
+  {
+    mutt_message(_("Mailbox not deleted"));
+    ARRAY_FREE(&ws);
+    return FR_NO_ACTION;
+  }
 
-  return FR_SUCCESS;
+  int failed = 0;
+  const int deleted = browser_apply_delete_mailbox(&ws, &priv->state, priv->mailbox, &failed);
+  ARRAY_FREE(&ws);
+
+  if (failed > 0)
+    mutt_error(_("Mailbox deletion failed"));
+  else if (num > 1)
+    mutt_message(_("%d mailboxes deleted"), deleted);
+  else if (deleted == 1)
+    mutt_message(_("Mailbox deleted"));
+
+  init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
+  return failed ? FR_ERROR : FR_SUCCESS;
 }
 
 /**
