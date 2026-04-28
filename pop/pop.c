@@ -540,14 +540,11 @@ void pop_fetch_mail(void)
   int last = 0, msgs = 0, bytes = 0, rset = 0, rc;
   struct ConnAccount cac = { { 0 } };
 
-  char *p = MUTT_MEM_CALLOC(strlen(c_pop_host) + 7, char);
-  char *url = p;
+  char *url = NULL;
   if (url_check_scheme(c_pop_host) == U_UNKNOWN)
-  {
-    strcpy(url, "pop://");
-    p = strchr(url, '\0');
-  }
-  strcpy(p, c_pop_host);
+    mutt_str_asprintf(&url, "pop://%s", c_pop_host);
+  else
+    url = mutt_str_dup(c_pop_host);
 
   rc = pop_parse_path(url, &cac);
   FREE(&url);
