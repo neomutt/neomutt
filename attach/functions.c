@@ -52,6 +52,62 @@
 static const char *Function_not_permitted_in_attach_message_mode = N_(
     "Function not permitted in attach-message mode");
 
+/**
+ * struct AttachPtrArray - Working set of AttachPtr pointers
+ */
+ARRAY_HEAD(AttachPtrArray, struct AttachPtr *);
+
+/**
+ * attach_add_selection - Build a working set of AttachPtr pointers for an action
+ * @param ap_arr Empty AttachPtrArray to populate
+ * @param actx   Attachment context
+ * @param menu   Menu
+ * @param tagged Use tagged attachments (tag-prefix)
+ * @param count  Repeat-count (0 or 1 == just the current selection)
+ * @retval num Number of AttachPtrs added
+ *
+ * If @a tagged is true, the array is filled with the tagged attachments and
+ * @a count is ignored.
+ *
+ * Otherwise the array is filled with the current selection and the next
+ * @a count - 1 attachments. Overruns are silently capped at the end of the list.
+ */
+static int attach_add_selection(struct AttachPtrArray *ap_arr, struct AttachCtx *actx,
+                                struct Menu *menu, bool tagged, int count)
+{
+  if (!ap_arr || !actx || !menu)
+    return 0;
+
+  if (tagged)
+  {
+    for (int i = 0; i < actx->idxlen; i++)
+    {
+      struct AttachPtr *ap = actx->idx[i];
+      if (ap && ap->body && ap->body->tagged)
+        ARRAY_ADD(ap_arr, ap);
+    }
+  }
+  else
+  {
+    const int index = menu_get_index(menu);
+    if ((index < 0) || (index >= actx->idxlen))
+      return 0;
+
+    int n = (count > 1) ? count : 1;
+    if ((index + n) > actx->idxlen)
+      n = actx->idxlen - index;
+
+    for (int i = 0; i < n; i++)
+    {
+      struct AttachPtr *ap = actx->idx[index + i];
+      if (ap)
+        ARRAY_ADD(ap_arr, ap);
+    }
+  }
+
+  return ARRAY_SIZE(ap_arr);
+}
+
 // clang-format off
 /**
  * OpAttach - Functions for the Attach Menu
@@ -281,7 +337,54 @@ static int op_attach_collapse(struct AttachFunctionData *fdata, const struct Key
 }
 
 /**
+ * attach_apply_set_deleted - Apply the deleted flag to a working set of attachments
+ * @param[in]  ap_arr      Working set of AttachPtr pointers
+ * @param[in]  deleted     true to mark as deleted, false to undelete
+ * @param[out] num_changed Number of attachments actually changed
+ * @param[out] num_blocked Number of attachments rejected (non-multipart)
+ *
+ * Only multipart attachments may be deleted. Non-multipart attachments in
+ * the working set are skipped and counted in @a num_blocked.
+ */
+static void attach_apply_set_deleted(struct AttachPtrArray *ap_arr, bool deleted,
+                                     int *num_changed, int *num_blocked)
+{
+  int changed = 0;
+  int blocked = 0;
+
+  if (ap_arr)
+  {
+    struct AttachPtr **app = NULL;
+    ARRAY_FOREACH(app, ap_arr)
+    {
+      struct AttachPtr *ap = *app;
+      if (!ap || !ap->body)
+        continue;
+
+      if (deleted && (ap->parent_type != TYPE_MULTIPART))
+      {
+        blocked++;
+        continue;
+      }
+
+      ap->body->deleted = deleted;
+      changed++;
+    }
+  }
+
+  if (num_changed)
+    *num_changed = changed;
+  if (num_blocked)
+    *num_blocked = blocked;
+}
+
+/**
  * op_attach_delete - delete the current entry - Implements ::attach_function_t - @ingroup attach_function_api
+ *
+ * Supports repeat-count: `5<delete-entry>` deletes the current entry and the
+ * next 4 (only multipart attachments can be deleted; non-multipart entries in
+ * the working set are silently skipped). Overruns are silently capped at the
+ * end of the list.
  */
 static int op_attach_delete(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -313,54 +416,46 @@ static int op_attach_delete(struct AttachFunctionData *fdata, const struct KeyEv
     mutt_message(_("Deletion of attachments from signed messages may invalidate the signature"));
   }
 
-  bool deleted = false;
-  bool blocked = false;
+  struct AttachPtrArray ws = ARRAY_HEAD_INITIALIZER;
+  attach_add_selection(&ws, priv->actx, priv->menu, priv->menu->tag_prefix,
+                       event->count);
+  if (ARRAY_EMPTY(&ws))
+  {
+    ARRAY_FREE(&ws);
+    return FR_NO_ACTION;
+  }
+
+  int changed = 0;
+  int blocked = 0;
+  attach_apply_set_deleted(&ws, true, &changed, &blocked);
+  const int num = ARRAY_SIZE(&ws);
+  ARRAY_FREE(&ws);
+
+  if (blocked > 0)
+    mutt_message(_("Only deletion of multipart attachments is supported"));
+
+  if (changed == 0)
+    return blocked ? FR_ERROR : FR_NO_ACTION;
+
   if (priv->menu->tag_prefix)
   {
-    for (int i = 0; i < priv->menu->max; i++)
-    {
-      if (priv->actx->idx[i]->body->tagged)
-      {
-        if (priv->actx->idx[i]->parent_type == TYPE_MULTIPART)
-        {
-          priv->actx->idx[i]->body->deleted = true;
-          deleted = true;
-          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-        }
-        else
-        {
-          blocked = true;
-          mutt_message(_("Only deletion of multipart attachments is supported"));
-        }
-      }
-    }
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
   else
   {
-    struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
-    if (cur_att->parent_type == TYPE_MULTIPART)
+    const bool c_resolve = cs_subset_bool(fdata->n->sub, "resolve");
+    const int next = menu_get_index(priv->menu) + num;
+    if (c_resolve && (next < priv->menu->max))
     {
-      cur_att->body->deleted = true;
-      deleted = true;
-      const bool c_resolve = cs_subset_bool(fdata->n->sub, "resolve");
-      const int index = menu_get_index(priv->menu) + 1;
-      if (c_resolve && (index < priv->menu->max))
-      {
-        menu_set_index(priv->menu, index);
-      }
-      else
-      {
-        menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
-      }
+      menu_set_index(priv->menu, next);
     }
     else
     {
-      blocked = true;
-      mutt_message(_("Only deletion of multipart attachments is supported"));
+      menu_queue_redraw(priv->menu, (num > 1) ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT);
     }
   }
 
-  return deleted ? FR_SUCCESS : (blocked ? FR_ERROR : FR_NO_ACTION);
+  return FR_SUCCESS;
 }
 
 /**
@@ -417,6 +512,9 @@ static int op_attach_save(struct AttachFunctionData *fdata, const struct KeyEven
 
 /**
  * op_attach_undelete - undelete the current entry - Implements ::attach_function_t - @ingroup attach_function_api
+ *
+ * Supports repeat-count: `5<undelete-entry>` undeletes the current entry and
+ * the next 4. Overruns are silently capped at the end of the list.
  */
 static int op_attach_undelete(struct AttachFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -424,30 +522,35 @@ static int op_attach_undelete(struct AttachFunctionData *fdata, const struct Key
   if (check_readonly(priv->mailbox))
     return FR_ERROR;
 
+  struct AttachPtrArray ws = ARRAY_HEAD_INITIALIZER;
+  attach_add_selection(&ws, priv->actx, priv->menu, priv->menu->tag_prefix,
+                       event->count);
+  if (ARRAY_EMPTY(&ws))
+  {
+    ARRAY_FREE(&ws);
+    return FR_NO_ACTION;
+  }
+
+  int changed = 0;
+  attach_apply_set_deleted(&ws, false, &changed, NULL);
+  const int num = ARRAY_SIZE(&ws);
+  ARRAY_FREE(&ws);
+
   if (priv->menu->tag_prefix)
   {
-    for (int i = 0; i < priv->menu->max; i++)
-    {
-      if (priv->actx->idx[i]->body->tagged)
-      {
-        priv->actx->idx[i]->body->deleted = false;
-        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-      }
-    }
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
   else
   {
-    struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
-    cur_att->body->deleted = false;
     const bool c_resolve = cs_subset_bool(fdata->n->sub, "resolve");
-    const int index = menu_get_index(priv->menu) + 1;
-    if (c_resolve && (index < priv->menu->max))
+    const int next = menu_get_index(priv->menu) + num;
+    if (c_resolve && (next < priv->menu->max))
     {
-      menu_set_index(priv->menu, index);
+      menu_set_index(priv->menu, next);
     }
     else
     {
-      menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
+      menu_queue_redraw(priv->menu, (num > 1) ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT);
     }
   }
 
