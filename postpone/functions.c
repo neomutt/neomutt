@@ -91,13 +91,17 @@ void postponed_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
  * @param menu   Postpone Menu
  * @param m      Mailbox
  * @param tagged Use tagged emails (tag-prefix)
+ * @param count  Repeat-count (0 or 1 == just the current selection)
  * @retval num Number of emails added
  *
- * If @a tagged is true, the array is filled with the tagged emails.
- * Otherwise, the array is filled with just the current selection.
+ * If @a tagged is true, the array is filled with the tagged emails and
+ * @a count is ignored.
+ *
+ * Otherwise the array is filled with the current selection and the next
+ * @a count - 1 emails.  Overruns are silently capped at the end of the list.
  */
 static int postpone_add_selection(struct EmailArray *ea, struct Menu *menu,
-                                  struct Mailbox *m, bool tagged)
+                                  struct Mailbox *m, bool tagged, int count)
 {
   if (!ea || !menu || !m || !m->emails)
     return 0;
@@ -116,9 +120,17 @@ static int postpone_add_selection(struct EmailArray *ea, struct Menu *menu,
     const int index = menu_get_index(menu);
     if ((index < 0) || (index >= m->msg_count))
       return 0;
-    struct Email *e = m->emails[index];
-    if (e)
-      ARRAY_ADD(ea, e);
+
+    int n = (count > 1) ? count : 1;
+    if ((index + n) > m->msg_count)
+      n = m->msg_count - index;
+
+    for (int i = 0; i < n; i++)
+    {
+      struct Email *e = m->emails[index + i];
+      if (e)
+        ARRAY_ADD(ea, e);
+    }
   }
 
   return ARRAY_SIZE(ea);
@@ -155,6 +167,9 @@ static void postpone_apply_set_deleted(struct Mailbox *m, struct EmailArray *ea,
  * This function handles:
  * - OP_DELETE
  * - OP_UNDELETE
+ *
+ * Supports repeat-count: `5<delete-entry>` deletes the current entry and the
+ * next 4. Overruns are silently capped at the end of the list.
  */
 static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
 {
@@ -167,23 +182,26 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
 
   /* should deleted draft messages be saved in the trash folder? */
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  postpone_add_selection(&ea, menu, m, menu->tag_prefix);
+  postpone_add_selection(&ea, menu, m, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&ea);
   postpone_apply_set_deleted(m, &ea, bf);
   ARRAY_FREE(&ea);
 
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-  if (!menu->tag_prefix && c_resolve && (index < (menu->max - 1)))
+  if (!menu->tag_prefix && c_resolve && ((index + num) < menu->max))
   {
-    menu_set_index(menu, index + 1);
-    if (index >= (menu->top + menu->page_len))
+    const int new_index = index + num;
+    menu_set_index(menu, new_index);
+    if (new_index >= (menu->top + menu->page_len))
     {
-      menu->top = index;
+      menu->top = new_index;
       menu_queue_redraw(menu, MENU_REDRAW_INDEX);
     }
   }
   else
   {
-    menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT);
+    menu_queue_redraw(menu, (menu->tag_prefix || (num > 1)) ? MENU_REDRAW_INDEX :
+                                                              MENU_REDRAW_CURRENT);
   }
 
   return FR_SUCCESS;
