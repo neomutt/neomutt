@@ -79,6 +79,11 @@
 #endif
 
 static int op_jump(struct IndexFunctionData *fdata, const struct KeyEvent *event);
+static int ea_add_selection(struct EmailArray *ea, struct MailboxView *mv,
+                            struct Email *e, bool use_tagged, int count);
+static int ea_add_selection_threads(struct EmailArray *ea,
+                                    struct MailboxView *mv, struct Email *e,
+                                    bool use_tagged, bool subthread, int count);
 
 // clang-format off
 /**
@@ -565,7 +570,13 @@ static int op_delete(struct IndexFunctionData *fdata, const struct KeyEvent *eve
     return FR_ERROR;
 
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  if (ARRAY_EMPTY(&ea))
+  {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
 
   mutt_emails_set_flag(shared->mailbox, &ea, MUTT_DELETE, true);
   mutt_emails_set_flag(shared->mailbox, &ea, MUTT_PURGE, (event->op == OP_PURGE_MESSAGE));
@@ -608,27 +619,107 @@ static struct MuttThread *thread_target(struct Email *e, bool subthread)
 }
 
 /**
- * ea_add_tagged_threads - Get an array of unique tagged threads/subthreads
+ * ea_add_selection - Build a working set of Emails for an action
+ * @param ea         Empty EmailArray to populate
+ * @param mv         Current MailboxView
+ * @param e          Current Email
+ * @param use_tagged Use tagged emails
+ * @param count      Repeat-count (0 or 1 == just the current selection)
+ * @retval num Number of selected emails
+ * @retval -1  Error
+ */
+static int ea_add_selection(struct EmailArray *ea, struct MailboxView *mv,
+                            struct Email *e, bool use_tagged, int count)
+{
+  if (!ea)
+    return -1;
+
+  if (use_tagged)
+    return ea_add_tagged(ea, mv, e, true);
+
+  if (!mv || !mv->mailbox || !e)
+    return -1;
+
+  const int index = e->vnum;
+  if ((index < 0) || (index >= mv->mailbox->vcount))
+    return -1;
+
+  int n = (count > 1) ? count : 1;
+  if ((index + n) > mv->mailbox->vcount)
+    n = mv->mailbox->vcount - index;
+
+  for (int i = 0; i < n; i++)
+  {
+    struct Email *sel = mutt_get_virt_email(mv->mailbox, index + i);
+    if (sel)
+      ARRAY_ADD(ea, sel);
+  }
+
+  return ARRAY_SIZE(ea);
+}
+
+/**
+ * ea_contains_thread_target - Does the array already include this thread target?
+ * @param ea        Selected emails
+ * @param e         Candidate email
+ * @param subthread If true, compare subthreads instead of top-level threads
+ * @retval true The target is already represented in the array
+ */
+static bool ea_contains_thread_target(struct EmailArray *ea, struct Email *e, bool subthread)
+{
+  if (!ea || !e)
+    return false;
+
+  struct MuttThread *target = thread_target(e, subthread);
+  if (!target)
+    return false;
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
+  {
+    if (thread_target(*ep, subthread) == target)
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * ea_add_selection_threads - Build a working set of threads/subthreads
  * @param ea         Empty EmailArray to populate
  * @param mv         Current MailboxView
  * @param e          Current Email
  * @param use_tagged Use tagged emails
  * @param subthread  If true, act on subthreads
+ * @param count      Repeat-count (0 or 1 == just the current thread/subthread)
  * @retval num Number of selected threads/subthreads
  * @retval -1  Error
  */
-static int ea_add_tagged_threads(struct EmailArray *ea, struct MailboxView *mv,
-                                 struct Email *e, bool use_tagged, bool subthread)
+static int ea_add_selection_threads(struct EmailArray *ea,
+                                    struct MailboxView *mv, struct Email *e,
+                                    bool use_tagged, bool subthread, int count)
 {
   if (!ea)
     return -1;
 
   if (!use_tagged)
   {
-    if (!e)
+    if (!mv || !mv->mailbox || !e)
       return -1;
 
-    ARRAY_ADD(ea, e);
+    const int index = e->vnum;
+    if ((index < 0) || (index >= mv->mailbox->vcount))
+      return -1;
+
+    const int n = (count > 1) ? count : 1;
+    for (int i = index; (i < mv->mailbox->vcount) && (ARRAY_SIZE(ea) < n); i++)
+    {
+      struct Email *sel = mutt_get_virt_email(mv->mailbox, i);
+      if (!sel || ea_contains_thread_target(ea, sel, subthread))
+        continue;
+
+      ARRAY_ADD(ea, sel);
+    }
     return ARRAY_SIZE(ea);
   }
 
@@ -644,22 +735,7 @@ static int ea_add_tagged_threads(struct EmailArray *ea, struct MailboxView *mv,
     if (!message_is_tagged(et))
       continue;
 
-    struct MuttThread *target = thread_target(et, subthread);
-    if (!target)
-      continue;
-
-    bool exists = false;
-    struct Email **ep = NULL;
-    ARRAY_FOREACH(ep, ea)
-    {
-      if (thread_target(*ep, subthread) == target)
-      {
-        exists = true;
-        break;
-      }
-    }
-
-    if (!exists)
+    if (!ea_contains_thread_target(ea, et, subthread))
       ARRAY_ADD(ea, et);
   }
 
@@ -690,12 +766,15 @@ static void update_thread_email(struct IndexPrivateData *priv, struct Email *ema
 }
 
 /**
- * op_main_change_thread - Open/close/collapse tagged threads
+ * op_main_change_thread - Open/close/collapse a working set of threads
  * @param fdata Index function data
+ * @param ea    Working set of thread roots
  * @param mode  Collapse mode to apply
+ * @param tagged Use tagged threads
  * @retval enum #FunctionRetval
  */
-static int op_main_change_thread(struct IndexFunctionData *fdata, enum CollapseMode mode)
+static int op_main_change_thread(struct IndexFunctionData *fdata, struct EmailArray *ea,
+                                 enum CollapseMode mode, bool tagged)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -705,18 +784,13 @@ static int op_main_change_thread(struct IndexFunctionData *fdata, enum CollapseM
     return FR_ERROR;
   }
 
-  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged_threads(&ea, shared->mailbox_view, shared->email, true, false);
-  if (ARRAY_EMPTY(&ea))
-  {
-    ARRAY_FREE(&ea);
+  if (!ea || ARRAY_EMPTY(ea))
     return FR_NO_ACTION;
-  }
 
   bool changed = false;
   bool blocked = false;
   struct Email **ep = NULL;
-  ARRAY_FOREACH(ep, &ea)
+  ARRAY_FOREACH(ep, ea)
   {
     struct Email *e = *ep;
     if (!e)
@@ -759,7 +833,6 @@ static int op_main_change_thread(struct IndexFunctionData *fdata, enum CollapseM
         break;
     }
   }
-  ARRAY_FREE(&ea);
 
   if (!changed)
   {
@@ -772,7 +845,10 @@ static int op_main_change_thread(struct IndexFunctionData *fdata, enum CollapseM
   }
 
   mutt_set_vnum(shared->mailbox);
-  update_thread_email(priv, shared->email);
+  if (tagged)
+    update_thread_email(priv, shared->email);
+  else
+    resolve_email(priv, shared, RESOLVE_NEXT_THREAD, ARRAY_SIZE(ea));
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
   return FR_SUCCESS;
@@ -803,7 +879,8 @@ static int op_delete_thread(struct IndexFunctionData *fdata, const struct KeyEve
   const bool subthread = (op == OP_DELETE_SUBTHREAD);
   int rc = 0;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged_threads(&ea, shared->mailbox_view, shared->email, priv->tag_prefix, subthread);
+  ea_add_selection_threads(&ea, shared->mailbox_view, shared->email,
+                           priv->tag_prefix, subthread, event->count);
 
   struct Email **ep = NULL;
   ARRAY_FOREACH(ep, &ea)
@@ -941,7 +1018,14 @@ static int op_edit_label(struct IndexFunctionData *fdata, const struct KeyEvent 
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  if (ARRAY_EMPTY(&ea))
+  {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
+  const int num = ARRAY_SIZE(&ea);
   int num_changed = mutt_label_message(shared->mailbox_view, &ea);
   ARRAY_FREE(&ea);
 
@@ -954,7 +1038,7 @@ static int op_edit_label(struct IndexFunctionData *fdata, const struct KeyEvent 
     mutt_message(ngettext("%d label changed", "%d labels changed", num_changed), num_changed);
 
     if (!priv->tag_prefix)
-      resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED, 1);
+      resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED, num);
     return FR_SUCCESS;
   }
 
@@ -1077,26 +1161,30 @@ static int op_flag_message(struct IndexFunctionData *fdata, const struct KeyEven
     return FR_ERROR;
 
   struct Mailbox *m = shared->mailbox;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  if (ARRAY_EMPTY(&ea))
+  {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
+  const int num = ARRAY_SIZE(&ea);
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
+  mutt_set_flag(m, *ep, MUTT_FLAG, !(*ep)->flagged, true);
+  ARRAY_FREE(&ea);
+
   if (priv->tag_prefix)
   {
-    for (size_t i = 0; i < m->msg_count; i++)
-    {
-      struct Email *e = m->emails[i];
-      if (!e)
-        break;
-      if (message_is_tagged(e))
-        mutt_set_flag(m, e, MUTT_FLAG, !e->flagged, true);
-    }
-
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
   else
   {
-    if (!shared->email)
-      return FR_NO_ACTION;
-    mutt_set_flag(m, shared->email, MUTT_FLAG, !shared->email->flagged, true);
-
-    resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED, 1);
+    resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED, num);
+    if (num > 1)
+      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
   return FR_SUCCESS;
@@ -1473,29 +1561,12 @@ static int op_main_close_thread(struct IndexFunctionData *fdata, const struct Ke
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  if (!mutt_using_threads())
-  {
-    mutt_warning(_("Threading is not enabled"));
-    return FR_ERROR;
-  }
-
-  if (priv->tag_prefix)
-    return op_main_change_thread(fdata, COLLAPSE_MODE_CLOSE);
-
-  if (!shared->email || shared->email->collapsed)
-    return FR_NO_ACTION;
-
-  if (!mutt_thread_can_collapse(shared->email))
-  {
-    mutt_warning(_("Thread contains unread or flagged messages"));
-    return FR_ERROR;
-  }
-
-  menu_set_index(priv->menu, mutt_collapse_thread(shared->email));
-  mutt_set_vnum(shared->mailbox);
-  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
-  return FR_SUCCESS;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_selection_threads(&ea, shared->mailbox_view, shared->email,
+                           priv->tag_prefix, false, event->count);
+  const int rc = op_main_change_thread(fdata, &ea, COLLAPSE_MODE_CLOSE, priv->tag_prefix);
+  ARRAY_FREE(&ea);
+  return rc;
 }
 
 /**
@@ -1505,42 +1576,12 @@ static int op_main_collapse_thread(struct IndexFunctionData *fdata, const struct
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  if (!mutt_using_threads())
-  {
-    mutt_warning(_("Threading is not enabled"));
-    return FR_ERROR;
-  }
-
-  if (priv->tag_prefix)
-    return op_main_change_thread(fdata, COLLAPSE_MODE_TOGGLE);
-
-  if (!shared->email)
-    return FR_NO_ACTION;
-
-  if (shared->email->collapsed)
-  {
-    int index = mutt_uncollapse_thread(shared->email);
-    mutt_set_vnum(shared->mailbox);
-    const bool c_uncollapse_jump = cs_subset_bool(shared->sub, "uncollapse_jump");
-    if (c_uncollapse_jump)
-      index = mutt_thread_next_unread(shared->email);
-    menu_set_index(priv->menu, index);
-  }
-  else if (mutt_thread_can_collapse(shared->email))
-  {
-    menu_set_index(priv->menu, mutt_collapse_thread(shared->email));
-    mutt_set_vnum(shared->mailbox);
-  }
-  else
-  {
-    mutt_error(_("Thread contains unread or flagged messages"));
-    return FR_ERROR;
-  }
-
-  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
-
-  return FR_SUCCESS;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_selection_threads(&ea, shared->mailbox_view, shared->email,
+                           priv->tag_prefix, false, event->count);
+  const int rc = op_main_change_thread(fdata, &ea, COLLAPSE_MODE_TOGGLE, priv->tag_prefix);
+  ARRAY_FREE(&ea);
+  return rc;
 }
 
 /**
@@ -1573,28 +1614,12 @@ static int op_main_open_thread(struct IndexFunctionData *fdata, const struct Key
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  if (!mutt_using_threads())
-  {
-    mutt_warning(_("Threading is not enabled"));
-    return FR_ERROR;
-  }
-
-  if (priv->tag_prefix)
-    return op_main_change_thread(fdata, COLLAPSE_MODE_OPEN);
-
-  if (!shared->email || !shared->email->collapsed)
-    return FR_NO_ACTION;
-
-  int index = mutt_uncollapse_thread(shared->email);
-  mutt_set_vnum(shared->mailbox);
-  const bool c_uncollapse_jump = cs_subset_bool(shared->sub, "uncollapse_jump");
-  if (c_uncollapse_jump)
-    index = mutt_thread_next_unread(shared->email);
-  menu_set_index(priv->menu, index);
-  menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-  notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
-
-  return FR_SUCCESS;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_selection_threads(&ea, shared->mailbox_view, shared->email,
+                           priv->tag_prefix, false, event->count);
+  const int rc = op_main_change_thread(fdata, &ea, COLLAPSE_MODE_OPEN, priv->tag_prefix);
+  ARRAY_FREE(&ea);
+  return rc;
 }
 
 /**
@@ -1724,7 +1749,13 @@ static int op_main_link_threads(struct IndexFunctionData *fdata, const struct Ke
   {
     struct MailboxView *mv = shared->mailbox_view;
     struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-    ea_add_tagged(&ea, mv, NULL, true);
+    ea_add_selection(&ea, mv, e, priv->tag_prefix, event->count);
+    if (!priv->tag_prefix)
+    {
+      struct Email **ep = ARRAY_GET(&ea, 0);
+      if (ep && (*ep == e))
+        ARRAY_REMOVE(&ea, ep);
+    }
 
     if (mutt_link_threads(e, &ea, m))
     {
@@ -1761,6 +1792,7 @@ static int op_main_modify_tags(struct IndexFunctionData *fdata, const struct Key
   struct IndexPrivateData *priv = fdata->priv;
   int rc = FR_ERROR;
   struct Buffer *buf = NULL;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
 
   if (!shared->mailbox)
     goto done;
@@ -1794,14 +1826,17 @@ static int op_main_modify_tags(struct IndexFunctionData *fdata, const struct Key
     goto done;
   }
 
-  if (priv->tag_prefix)
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  const int num = ARRAY_SIZE(&ea);
+
+  if (priv->tag_prefix || (num > 1))
   {
-    /* Batch mode: apply the tag change to all tagged messages */
     struct Progress *progress = NULL;
 
     if (m->verbose)
     {
-      progress = progress_new(MUTT_PROGRESS_WRITE, m->msg_tagged);
+      progress = progress_new(MUTT_PROGRESS_WRITE, num);
       progress_set_message(progress, _("Update tags..."));
     }
 
@@ -1809,13 +1844,11 @@ static int op_main_modify_tags(struct IndexFunctionData *fdata, const struct Key
     if (m->type == MUTT_NOTMUCH)
       nm_db_longrun_init(m, true);
 #endif
-    for (int px = 0, i = 0; i < m->msg_count; i++)
+    struct Email **ep = NULL;
+    int px = 0;
+    ARRAY_FOREACH(ep, &ea)
     {
-      struct Email *e = m->emails[i];
-      if (!e)
-        break;
-      if (!message_is_tagged(e))
-        continue;
+      struct Email *e = *ep;
 
       progress_update(progress, ++px, -1);
       mx_tags_commit(m, e, buf_string(buf));
@@ -1837,10 +1870,12 @@ static int op_main_modify_tags(struct IndexFunctionData *fdata, const struct Key
       nm_db_longrun_done(m);
 #endif
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+    if (!priv->tag_prefix)
+      resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED,
+                    (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE) ? 1 : num);
   }
   else
   {
-    /* Single message mode: apply tag change to the current message only */
     if (mx_tags_commit(m, shared->email, buf_string(buf)))
     {
       mutt_message(_("Failed to modify tags, aborting"));
@@ -1858,11 +1893,13 @@ static int op_main_modify_tags(struct IndexFunctionData *fdata, const struct Key
       m->changed = true;
     }
 
-    resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED, 1);
+    resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED,
+                  (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE) ? 1 : num);
   }
   rc = FR_SUCCESS;
 
 done:
+  ARRAY_FREE(&ea);
   buf_pool_release(&buf);
   return rc;
 }
@@ -2245,28 +2282,27 @@ static int op_main_quasi_delete(struct IndexFunctionData *fdata, const struct Ke
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  if (priv->tag_prefix)
+  struct Mailbox *m = shared->mailbox;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  if (ARRAY_EMPTY(&ea))
   {
-    struct Mailbox *m = shared->mailbox;
-    for (size_t i = 0; i < m->msg_count; i++)
-    {
-      struct Email *e = m->emails[i];
-      if (!e)
-        break;
-      if (message_is_tagged(e))
-      {
-        e->quasi_deleted = true;
-        m->changed = true;
-      }
-    }
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
   }
-  else
+  const int num = ARRAY_SIZE(&ea);
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
   {
-    if (!shared->email)
-      return FR_NO_ACTION;
-    shared->email->quasi_deleted = true;
-    shared->mailbox->changed = true;
+    (*ep)->quasi_deleted = true;
+    m->changed = true;
   }
+  ARRAY_FREE(&ea);
+
+  if (priv->tag_prefix || (num > 1))
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return FR_SUCCESS;
 }
@@ -2293,7 +2329,9 @@ static int op_main_read_thread(struct IndexFunctionData *fdata, const struct Key
   const bool subthread = (op != OP_MAIN_READ_THREAD);
   int rc = 0;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged_threads(&ea, shared->mailbox_view, shared->email, priv->tag_prefix, subthread);
+  ea_add_selection_threads(&ea, shared->mailbox_view, shared->email,
+                           priv->tag_prefix, subthread, event->count);
+  const int num = ARRAY_SIZE(&ea);
 
   struct Email **ep = NULL;
   ARRAY_FOREACH(ep, &ea)
@@ -2309,16 +2347,13 @@ static int op_main_read_thread(struct IndexFunctionData *fdata, const struct Key
 
   if (priv->tag_prefix)
   {
-    const enum ResolveMethod rm = (op == OP_MAIN_READ_THREAD) ? RESOLVE_NEXT_THREAD :
-                                                                RESOLVE_NEXT_SUBTHREAD;
-    resolve_email(priv, shared, rm, 1);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
     return FR_SUCCESS;
   }
 
   const enum ResolveMethod rm = (op == OP_MAIN_READ_THREAD) ? RESOLVE_NEXT_THREAD :
                                                               RESOLVE_NEXT_SUBTHREAD;
-  resolve_email(priv, shared, rm, 1);
+  resolve_email(priv, shared, rm, num);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   return FR_SUCCESS;
 }
@@ -2357,7 +2392,14 @@ static int op_main_set_flag(struct IndexFunctionData *fdata, const struct KeyEve
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  if (ARRAY_EMPTY(&ea))
+  {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
+  const int num = ARRAY_SIZE(&ea);
 
   if (mw_change_flag(shared->mailbox, &ea, (event->op == OP_MAIN_SET_FLAG)) == 0)
   {
@@ -2367,7 +2409,9 @@ static int op_main_set_flag(struct IndexFunctionData *fdata, const struct KeyEve
     }
     else
     {
-      resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED, 1);
+      resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED, num);
+      if (num > 1)
+        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
     }
   }
   ARRAY_FREE(&ea);
@@ -2666,7 +2710,14 @@ static int op_print(struct IndexFunctionData *fdata, const struct KeyEvent *even
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  if (ARRAY_EMPTY(&ea))
+  {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
+  const int num = ARRAY_SIZE(&ea);
   mutt_print_message(shared->mailbox, &ea);
   ARRAY_FREE(&ea);
 
@@ -2675,7 +2726,8 @@ static int op_print(struct IndexFunctionData *fdata, const struct KeyEvent *even
   const bool c_imap_peek = cs_subset_bool(shared->sub, "imap_peek");
   if ((shared->mailbox->type == MUTT_IMAP) && !c_imap_peek)
   {
-    menu_queue_redraw(priv->menu, (priv->tag_prefix ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT));
+    menu_queue_redraw(priv->menu,
+                      ((priv->tag_prefix || (num > 1)) ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT));
   }
 
   return FR_SUCCESS;
@@ -2817,7 +2869,14 @@ static int op_save(struct IndexFunctionData *fdata, const struct KeyEvent *event
     return FR_NOT_IMPL;
 
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  if (ARRAY_EMPTY(&ea))
+  {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
+  const int num = ARRAY_SIZE(&ea);
 
   const enum MessageSaveOpt save_opt = ((op == OP_SAVE) || (op == OP_DECODE_SAVE) ||
                                         (op == OP_DECRYPT_SAVE)) ?
@@ -2836,7 +2895,7 @@ static int op_save(struct IndexFunctionData *fdata, const struct KeyEvent *event
   }
   ARRAY_FREE(&ea);
 
-  if (priv->tag_prefix)
+  if (priv->tag_prefix || (num > 1))
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return (rc == -1) ? FR_ERROR : FR_SUCCESS;
@@ -2990,33 +3049,35 @@ static int op_toggle_new(struct IndexFunctionData *fdata, const struct KeyEvent 
     return FR_ERROR;
 
   struct Mailbox *m = shared->mailbox;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  if (ARRAY_EMPTY(&ea))
+  {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
+  const int num = ARRAY_SIZE(&ea);
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
+  {
+    if ((*ep)->read || (*ep)->old)
+      mutt_set_flag(m, *ep, MUTT_NEW, true, true);
+    else
+      mutt_set_flag(m, *ep, MUTT_READ, true, true);
+  }
+  ARRAY_FREE(&ea);
+
   if (priv->tag_prefix)
   {
-    for (size_t i = 0; i < m->msg_count; i++)
-    {
-      struct Email *e = m->emails[i];
-      if (!e)
-        break;
-      if (!message_is_tagged(e))
-        continue;
-
-      if (e->read || e->old)
-        mutt_set_flag(m, e, MUTT_NEW, true, true);
-      else
-        mutt_set_flag(m, e, MUTT_READ, true, true);
-    }
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
   else
   {
-    if (!shared->email)
-      return FR_NO_ACTION;
-    if (shared->email->read || shared->email->old)
-      mutt_set_flag(m, shared->email, MUTT_NEW, true, true);
-    else
-      mutt_set_flag(m, shared->email, MUTT_READ, true, true);
-
-    resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED, 1);
+    resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED, num);
+    if (num > 1)
+      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
   return FR_SUCCESS;
@@ -3044,7 +3105,14 @@ static int op_undelete(struct IndexFunctionData *fdata, const struct KeyEvent *e
     return FR_ERROR;
 
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
+  ea_add_selection(&ea, shared->mailbox_view, shared->email, priv->tag_prefix,
+                   event->count);
+  if (ARRAY_EMPTY(&ea))
+  {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
+  const int num = ARRAY_SIZE(&ea);
 
   mutt_emails_set_flag(shared->mailbox, &ea, MUTT_DELETE, false);
   mutt_emails_set_flag(shared->mailbox, &ea, MUTT_PURGE, false);
@@ -3056,7 +3124,9 @@ static int op_undelete(struct IndexFunctionData *fdata, const struct KeyEvent *e
   }
   else
   {
-    resolve_email(priv, shared, RESOLVE_NEXT_EMAIL, 1);
+    resolve_email(priv, shared, RESOLVE_NEXT_EMAIL, num);
+    if (num > 1)
+      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
 
   return FR_SUCCESS;
@@ -3084,7 +3154,9 @@ static int op_undelete_thread(struct IndexFunctionData *fdata, const struct KeyE
   const bool subthread = (op != OP_UNDELETE_THREAD);
   int rc = 0;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-  ea_add_tagged_threads(&ea, shared->mailbox_view, shared->email, priv->tag_prefix, subthread);
+  ea_add_selection_threads(&ea, shared->mailbox_view, shared->email,
+                           priv->tag_prefix, subthread, event->count);
+  const int num = ARRAY_SIZE(&ea);
 
   struct Email **ep = NULL;
   ARRAY_FOREACH(ep, &ea)
@@ -3103,16 +3175,13 @@ static int op_undelete_thread(struct IndexFunctionData *fdata, const struct KeyE
 
   if (priv->tag_prefix)
   {
-    const enum ResolveMethod rm = (op == OP_UNDELETE_THREAD) ? RESOLVE_NEXT_THREAD :
-                                                               RESOLVE_NEXT_SUBTHREAD;
-    resolve_email(priv, shared, rm, 1);
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
     return FR_SUCCESS;
   }
 
   const enum ResolveMethod rm = (op == OP_UNDELETE_THREAD) ? RESOLVE_NEXT_THREAD :
                                                              RESOLVE_NEXT_SUBTHREAD;
-  resolve_email(priv, shared, rm, 1);
+  resolve_email(priv, shared, rm, num);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   return FR_SUCCESS;
 }
