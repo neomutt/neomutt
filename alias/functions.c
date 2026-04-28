@@ -201,13 +201,18 @@ static int op_create_alias(struct AliasFunctionData *fdata, const struct KeyEven
  * @param avp_arr Empty AliasViewPtrArray to populate
  * @param mdata   Alias Menu data
  * @param tagged  Use tagged AliasViews (tag-prefix)
+ * @param count   Repeat-count (0 or 1 == just the current selection)
  * @retval num Number of AliasViews added
  *
- * If @a tagged is true, the array is filled with the tagged AliasViews.
- * Otherwise, the array is filled with just the current selection.
+ * If @a tagged is true, the array is filled with the tagged AliasViews and
+ * @a count is ignored.
+ *
+ * Otherwise the array is filled with the current selection and the next
+ * @a count - 1 visible AliasViews. Overruns are silently capped at the end
+ * of the visible list.
  */
 static int alias_add_selection(struct AliasViewPtrArray *avp_arr,
-                               struct AliasMenuData *mdata, bool tagged)
+                               struct AliasMenuData *mdata, bool tagged, int count)
 {
   if (!avp_arr || !mdata)
     return 0;
@@ -225,9 +230,19 @@ static int alias_add_selection(struct AliasViewPtrArray *avp_arr,
   {
     struct Menu *menu = mdata->menu;
     const int index = menu_get_index(menu);
-    struct AliasView *av = ARRAY_GET(&mdata->ava, index);
-    if (av)
-      ARRAY_ADD(avp_arr, av);
+    if ((index < 0) || (index >= menu->max))
+      return 0;
+
+    int n = (count > 1) ? count : 1;
+    if ((index + n) > menu->max)
+      n = menu->max - index;
+
+    for (int i = 0; i < n; i++)
+    {
+      struct AliasView *av = ARRAY_GET(&mdata->ava, index + i);
+      if (av)
+        ARRAY_ADD(avp_arr, av);
+    }
   }
 
   return ARRAY_SIZE(avp_arr);
@@ -257,6 +272,9 @@ static void alias_apply_set_deleted(struct AliasViewPtrArray *avp_arr, bool dele
  * This function handles:
  * - OP_DELETE
  * - OP_UNDELETE
+ *
+ * Supports repeat-count: `5<delete-entry>` deletes the current entry and the
+ * next 4. Overruns are silently capped at the end of the visible list.
  */
 static int op_delete(struct AliasFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -265,7 +283,7 @@ static int op_delete(struct AliasFunctionData *fdata, const struct KeyEvent *eve
   const bool deleted = (event->op == OP_DELETE);
 
   struct AliasViewPtrArray ws = ARRAY_HEAD_INITIALIZER;
-  alias_add_selection(&ws, mdata, menu->tag_prefix);
+  alias_add_selection(&ws, mdata, menu->tag_prefix, event->count);
   if (ARRAY_EMPTY(&ws))
   {
     ARRAY_FREE(&ws);
