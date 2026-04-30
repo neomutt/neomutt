@@ -468,7 +468,8 @@ IDNA_OBJS	= test/idna/mutt_idna_intl_to_local.o \
 
 IMAP_OBJS	= test/imap/msg_set.o
 
-KEY_OBJS	= test/key/mutt_push_macro_repeated.o
+KEY_OBJS	= test/key/mutt_push_macro_repeated.o \
+		  test/key/parse_keys.o
 
 LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_clear.o \

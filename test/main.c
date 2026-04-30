@@ -537,6 +537,8 @@ void test_fini(void);
                                                                                \
   /* key */                                                                    \
   NEOMUTT_TEST_ITEM(test_mutt_push_macro_repeated)                             \
+  NEOMUTT_TEST_ITEM(test_parse_keys)                                           \
+  NEOMUTT_TEST_ITEM(test_keymap_get_name)                                      \
                                                                                \
   /* list */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_list_clear)                                      \
