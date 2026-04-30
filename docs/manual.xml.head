@@ -4473,21 +4473,65 @@ set alias_file=~/.mail_aliases
         </variablelist>
         <para>
           <emphasis>key</emphasis> is the key (or key sequence) you wish to bind.
-          To specify a control character, use the sequence
-          <emphasis>\Cx</emphasis>, where <emphasis>x</emphasis> is the letter of
-          the control character (for example, to specify control-A use
-          <quote>\Ca</quote>). Note that the case of <emphasis>x</emphasis> as
-          well as <emphasis>\C</emphasis> is ignored, so that
-          <emphasis>\CA</emphasis>, <emphasis>\Ca</emphasis>,
-          <emphasis>\cA</emphasis> and <emphasis>\ca</emphasis> are all
-          equivalent. An alternative form is to specify the key as a three digit
-          octal number prefixed with a <quote>\</quote> (for example
-          <emphasis>\177</emphasis> is equivalent to <emphasis>\c?</emphasis>).
-          You can also use the form <emphasis>&lt;177&gt;</emphasis>, which
-          allows octal numbers with an arbitrary number of digits.  In addition,
-          <emphasis>key</emphasis> may be a symbolic name as shown in <xref
-          linkend="tab-key-names"/>.
-
+          The recommended way to write modified keys is the modern
+          <emphasis>&lt;modifiers-base&gt;</emphasis> grammar, where one or
+          more of the following case-insensitive prefixes may be combined in
+          any order before the base key:
+          <itemizedlist>
+            <listitem><para><emphasis>C-</emphasis> Control</para></listitem>
+            <listitem><para><emphasis>A-</emphasis> Alt</para></listitem>
+            <listitem><para><emphasis>M-</emphasis> Meta (alias of Alt)</para></listitem>
+            <listitem><para><emphasis>S-</emphasis> Shift</para></listitem>
+          </itemizedlist>
+          For example, <emphasis>&lt;C-a&gt;</emphasis> is Ctrl-A,
+          <emphasis>&lt;A-x&gt;</emphasis> is Alt-X,
+          <emphasis>&lt;C-A-S-Right&gt;</emphasis> is Ctrl-Alt-Shift-Right
+          and <emphasis>&lt;M-Tab&gt;</emphasis> is Alt-Tab.  The base may
+          be a single character, an F-key
+          (<emphasis>&lt;F1&gt;</emphasis>…) or any of the symbolic names in
+          <xref linkend="tab-key-names"/>.  Alt is internally encoded as an
+          <emphasis>&lt;Esc&gt;</emphasis> prefix followed by the base key,
+          which matches what xterm-style terminals send.
+        </para>
+        <para>
+          The historical forms below remain fully supported and may still
+          appear in older configurations:
+          <itemizedlist>
+            <listitem>
+              <para>
+                <emphasis>\Cx</emphasis> — Ctrl modifier on letter
+                <emphasis>x</emphasis>, e.g. <emphasis>\Ca</emphasis> is
+                Ctrl-A.  The case of both <emphasis>\C</emphasis> and
+                <emphasis>x</emphasis> is ignored, so
+                <emphasis>\CA</emphasis>, <emphasis>\Ca</emphasis>,
+                <emphasis>\cA</emphasis> and <emphasis>\ca</emphasis> are all
+                equivalent.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis>\eX</emphasis> — Alt modifier (i.e. an
+                <emphasis>&lt;Esc&gt;</emphasis> prefix), so
+                <emphasis>\ea</emphasis> is the same as
+                <emphasis>&lt;A-a&gt;</emphasis>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis>\NNN</emphasis> — a three-digit octal number, e.g.
+                <emphasis>\177</emphasis> is equivalent to
+                <emphasis>\c?</emphasis>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis>&lt;NNN&gt;</emphasis> — an octal number of arbitrary
+                length wrapped in angle brackets.
+              </para>
+            </listitem>
+          </itemizedlist>
+          In addition, <emphasis>key</emphasis> may be a symbolic name as
+          shown in <xref linkend="tab-key-names"/>.
         </para>
 
         <table id="tab-key-names">

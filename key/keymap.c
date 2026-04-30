@@ -200,6 +200,14 @@ struct Keymap *keymap_compare(struct Keymap *km1, struct Keymap *km2, size_t *po
  * keymap_get_name - Get the human name for a key
  * @param[in]  c   Key code
  * @param[out] buf Buffer for the result
+ *
+ * The key is rendered using the modern `<…>` grammar where applicable:
+ *   - control bytes  -> `<C-x>` (e.g. `0x01` -> `<C-a>`)
+ *   - 0x7f (DEL)     -> `<C-?>`
+ *   - named keys     -> table lookup (`<Up>`, `<Esc>`, …)
+ *   - F-keys         -> `<F1>`, `<F2>`, …
+ *   - printable      -> the literal character
+ *   - everything else -> `<NNN>` octal fallback
  */
 void keymap_get_name(int c, struct Buffer *buf)
 {
@@ -215,8 +223,23 @@ void keymap_get_name(int c, struct Buffer *buf)
     if (c < 0)
       c += 256;
 
-    if (c < 128)
+    if (c == 0x7f)
     {
+      buf_addstr(buf, "<C-?>");
+    }
+    else if ((c >= 1) && (c <= 26))
+    {
+      /* 0x01 .. 0x1A  ->  <C-a> .. <C-z> */
+      buf_add_printf(buf, "<C-%c>", 'a' + c - 1);
+    }
+    else if ((c >= 0x1c) && (c <= 0x1f))
+    {
+      /* 0x1c..0x1f  ->  <C-\>, <C-]>, <C-^>, <C-_> */
+      buf_add_printf(buf, "<C-%c>", '@' + c);
+    }
+    else if (c < 128)
+    {
+      /* ^@ (NUL) and any other control byte without a named entry */
       buf_addch(buf, '^');
       buf_addch(buf, (c + '@') & 0x7f);
     }
@@ -244,17 +267,51 @@ void keymap_get_name(int c, struct Buffer *buf)
  * @param[in]  km  Keybinding map
  * @param[out] buf Buffer for the result
  * @retval true Success
+ *
+ * Consecutive `<Esc>` + key pairs are folded into `<A-…>` form, so that
+ * `\ea` (which is stored internally as ESC followed by `a`) is shown as the
+ * modern `<A-a>`.  ESC followed by another ESC is not folded.
  */
 bool keymap_expand_key(struct Keymap *km, struct Buffer *buf)
 {
   if (!km || !buf)
     return false;
 
-  for (int i = 0; i < km->len; i++)
+  struct Buffer *tmp = buf_pool_get();
+
+  int i = 0;
+  while (i < km->len)
   {
-    keymap_get_name(km->keys[i], buf);
+    int c = km->keys[i];
+    /* Try to fold `<Esc> + key`  ->  `<A-key>` */
+    if ((c == '\033') && ((i + 1) < km->len) && (km->keys[i + 1] != '\033'))
+    {
+      int next = km->keys[i + 1];
+      buf_reset(tmp);
+      keymap_get_name(next, tmp);
+      const char *name = buf_string(tmp);
+      size_t nlen = buf_len(tmp);
+
+      if ((nlen >= 2) && (name[0] == '<') && (name[nlen - 1] == '>'))
+      {
+        /* Strip surrounding `<` `>` and prepend `A-` */
+        buf_addstr(buf, "<A-");
+        buf_addstr_n(buf, name + 1, nlen - 2);
+        buf_addch(buf, '>');
+      }
+      else
+      {
+        buf_add_printf(buf, "<A-%s>", name);
+      }
+      i += 2; // consumed this key and the next key
+      continue;
+    }
+
+    keymap_get_name(c, buf);
+    i++;
   }
 
+  buf_pool_release(&tmp);
   return true;
 }
 
@@ -328,11 +385,194 @@ int parse_keycode(const char *str)
 }
 
 /**
+ * apply_ctrl - Convert a base character to its Control-modified form
+ * @param ch Input character
+ * @retval num Resulting keycode (-1 on failure)
+ *
+ * Implements the standard ASCII Ctrl folding:
+ *   - letters       -> ch & 0x1f      (`C-a` -> 0x01, `C-z` -> 0x1a)
+ *   - `@` or space  -> 0x00 (NUL)
+ *   - `[` `\` `]` `^` `_` -> 0x1b..0x1f
+ *   - `?`           -> 0x7f (DEL)
+ *   - any other     -> -1
+ */
+static int apply_ctrl(int ch)
+{
+  if (mutt_isalpha(ch))
+    return mutt_toupper(ch) & 0x1f;
+  if ((ch == '@') || (ch == ' '))
+    return 0;
+  if ((ch >= '[') && (ch <= '_'))
+    return ch & 0x1f;
+  if (ch == '?')
+    return 0x7f;
+  return -1;
+}
+
+/**
+ * parse_modifier_key - Try to parse a `<C-/A-/S-/M-…>` modifier-key token
+ * @param[in]  inner Inner content of the `<…>` token (e.g. "C-A-x")
+ * @param[out] d     Buffer to write keycodes into
+ * @param[in]  max   Capacity of `d`
+ * @retval num   Number of keycodes written (>0 on success, 0 if not a
+ *               modifier-key token, -1 on parse error)
+ *
+ * Accepts any combination of the modifier prefixes (case-insensitive):
+ *   - `C-` Ctrl
+ *   - `A-` Alt
+ *   - `M-` Meta (alias of Alt)
+ *   - `S-` Shift
+ *
+ * The order of the prefixes is irrelevant, e.g. `<C-A-x>`, `<A-C-x>` and
+ * `<M-C-x>` are equivalent.
+ *
+ * The base may be:
+ *   - a single ASCII character (`<C-a>`, `<S-1>`)
+ *   - a symbolic key name (`<A-Tab>`, `<C-Up>`, `<F4>` etc.)
+ *
+ * Alt is encoded as an `<Esc>` prefix followed by the base keycode, which
+ * matches what xterm-style terminals send for `Alt-key`.
+ */
+static int parse_modifier_key(const char *inner, keycode_t *d, size_t max)
+{
+  if (!inner || !d || (max < 1))
+    return 0;
+
+  bool mod_c = false;
+  bool mod_a = false;
+  bool mod_s = false;
+  const char *s = inner;
+
+  /* Parse modifier prefixes greedily, requiring at least one character to
+   * remain after the last `X-` (otherwise `S-` could swallow the trailing
+   * dash of a real binding such as `<S->`). */
+  while ((s[0] != '\0') && (s[1] == '-') && (s[2] != '\0'))
+  {
+    char c = mutt_tolower((unsigned char) s[0]);
+    if (c == 'c')
+      mod_c = true;
+    else if ((c == 'a') || (c == 'm'))
+      mod_a = true;
+    else if (c == 's')
+      mod_s = true;
+    else
+      break;
+    s += 2;
+  }
+
+  if (!mod_c && !mod_a && !mod_s)
+    return 0; /* no modifier prefix found */
+
+  size_t base_len = strlen(s);
+  if (base_len == 0)
+    return -1;
+
+  size_t out = 0;
+
+  /* Alt becomes an ESC prefix followed by the rest. */
+  if (mod_a)
+  {
+    if (max < 2)
+      return -1;
+    d[out++] = '\033';
+  }
+
+  int base_kc = -1;
+
+  if (base_len == 1)
+  {
+    int ch = (unsigned char) s[0];
+    if (mod_s && mutt_isalpha(ch))
+      ch = mutt_toupper(ch);
+    if (mod_c)
+    {
+      ch = apply_ctrl(ch);
+      if (ch < 0)
+        return -1;
+    }
+    base_kc = ch;
+  }
+  else
+  {
+    /* Symbolic name.  Try modifier-prefixed forms first so that the
+     * `<C-Up>` / `<S-Up>` / `<A-Up>` curses-extended entries are honoured.
+     * Then fall back to the bare `<base>` lookup, in which case Ctrl/Shift
+     * modifiers cannot be applied without an explicit keycode. */
+    char buf[128] = { 0 };
+
+    if (mod_c && mod_s)
+    {
+      snprintf(buf, sizeof(buf), "<C-S-%s>", s);
+      base_kc = mutt_map_get_value(buf, KeyNames);
+      if (base_kc != -1)
+      {
+        mod_c = false;
+        mod_s = false;
+      }
+    }
+    if ((base_kc == -1) && mod_c)
+    {
+      snprintf(buf, sizeof(buf), "<C-%s>", s);
+      base_kc = mutt_map_get_value(buf, KeyNames);
+      if (base_kc != -1)
+        mod_c = false;
+    }
+    if ((base_kc == -1) && mod_s)
+    {
+      snprintf(buf, sizeof(buf), "<S-%s>", s);
+      base_kc = mutt_map_get_value(buf, KeyNames);
+      if (base_kc != -1)
+        mod_s = false;
+    }
+    if (base_kc == -1)
+    {
+      snprintf(buf, sizeof(buf), "<%s>", s);
+      base_kc = mutt_map_get_value(buf, KeyNames);
+      if (base_kc == -1)
+      {
+        int fk = parse_fkey(buf);
+        if (fk > 0)
+          base_kc = KEY_F(fk);
+      }
+      if (base_kc == -1)
+      {
+        int kc = parse_keycode(buf);
+        if (kc > 0)
+          base_kc = kc;
+      }
+    }
+
+    if (base_kc == -1)
+      return -1;
+
+    /* Any C/S modifier still active means we couldn't combine it with the
+     * special key (no curses entry, etc.) — bail out. */
+    if (mod_c || mod_s)
+      return -1;
+  }
+
+  if (base_kc <= 0)
+    return -1;
+
+  d[out++] = (keycode_t) base_kc;
+  return (int) out;
+}
+
+/**
  * parse_keys - Parse a key string into key codes
  * @param str Key string
  * @param d   Array for key codes
  * @param max Maximum length of key sequence
  * @retval num Length of key sequence
+ *
+ * Recognised forms inside `<…>`:
+ *   - Symbolic key names (`<Up>`, `<Tab>`, `<Hash>`, …) — see KeyNames
+ *   - F-keys (`<F1>`, `<F30>`, …)
+ *   - Octal keycodes (`<177>`, `<0407>`, …)
+ *   - Modifier prefixes (`<C-a>`, `<A-x>`, `<C-A-S-Right>`, …)
+ *
+ * Plain bytes (and backslash escapes that the tokenizer has already
+ * resolved) become themselves.
  */
 size_t parse_keys(const char *str, keycode_t *d, size_t max)
 {
@@ -369,6 +609,26 @@ size_t parse_keys(const char *str, keycode_t *d, size_t max)
       {
         s = t;
         *d = n;
+      }
+      else
+      {
+        /* Try the modern `<C-/A-/S-/M-…>` grammar.  The function may emit
+         * one or two keycodes (e.g. Alt-x becomes `<Esc>` + `x`). */
+        size_t inner_len = strlen(s);
+        if ((inner_len >= 3) && (s[inner_len - 1] == '>'))
+        {
+          s[inner_len - 1] = '\0'; /* temporarily strip closing `>` */
+          int written = parse_modifier_key(s + 1, d, len);
+          s[inner_len - 1] = '>';
+          if (written > 0)
+          {
+            s = t;
+            /* The bottom of the loop already advances `d` and `len` by 1.
+             * Account here for any *additional* keycodes emitted. */
+            d += (written - 1);
+            len -= (written - 1);
+          }
+        }
       }
 
       *t = c;
