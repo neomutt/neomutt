@@ -48,6 +48,11 @@
 #include "module_data.h"
 #include "sort.h"
 
+/**
+ * struct AliasViewPtrArray - Working set of AliasView pointers
+ */
+ARRAY_HEAD(AliasViewPtrArray, struct AliasView *);
+
 // clang-format off
 /**
  * OpAlias - Functions for the Alias Menu
@@ -192,41 +197,114 @@ static int op_create_alias(struct AliasFunctionData *fdata, const struct KeyEven
 }
 
 /**
- * op_delete - delete the current entry - Implements ::alias_function_t - @ingroup alias_function_api
+ * alias_add_selection - Build a working set of AliasView pointers for an action
+ * @param avp_arr Empty AliasViewPtrArray to populate
+ * @param mdata   Alias Menu data
+ * @param tagged  Use tagged AliasViews (tag-prefix)
+ * @param count   Repeat-count (0 or 1 == just the current selection)
+ * @retval num Number of AliasViews added
  *
- * This function handles:
- * - OP_DELETE
- * - OP_UNDELETE
+ * If @a tagged is true, the array is filled with the tagged AliasViews and
+ * @a count is ignored.
+ *
+ * Otherwise the array is filled with the current selection and the next
+ * @a count - 1 visible AliasViews. Overruns are silently capped at the end
+ * of the visible list.
  */
-static int op_delete(struct AliasFunctionData *fdata, const struct KeyEvent *event)
+static int alias_add_selection(struct AliasViewPtrArray *avp_arr,
+                               struct AliasMenuData *mdata, bool tagged, int count)
 {
-  struct AliasMenuData *mdata = fdata->wdata;
-  struct Menu *menu = mdata->menu;
-  const int op = event->op;
+  if (!avp_arr || !mdata)
+    return 0;
 
-  if (menu->tag_prefix)
+  if (tagged)
   {
     struct AliasView *avp = NULL;
     ARRAY_FOREACH(avp, &mdata->ava)
     {
       if (avp->is_tagged)
-        avp->is_deleted = (op == OP_DELETE);
+        ARRAY_ADD(avp_arr, avp);
     }
+  }
+  else
+  {
+    struct Menu *menu = mdata->menu;
+    const int index = menu_get_index(menu);
+    if ((index < 0) || (index >= menu->max))
+      return 0;
+
+    int n = (count > 1) ? count : 1;
+    if ((index + n) > menu->max)
+      n = menu->max - index;
+
+    for (int i = 0; i < n; i++)
+    {
+      struct AliasView *av = ARRAY_GET(&mdata->ava, index + i);
+      if (av)
+        ARRAY_ADD(avp_arr, av);
+    }
+  }
+
+  return ARRAY_SIZE(avp_arr);
+}
+
+/**
+ * alias_apply_set_deleted - Apply the deleted flag to a working set of AliasViews
+ * @param avp_arr Working set of AliasView pointers
+ * @param deleted true to mark as deleted, false to undelete
+ */
+static void alias_apply_set_deleted(struct AliasViewPtrArray *avp_arr, bool deleted)
+{
+  if (!avp_arr)
+    return;
+
+  struct AliasView **avpp = NULL;
+  ARRAY_FOREACH(avpp, avp_arr)
+  {
+    if (*avpp)
+      (*avpp)->is_deleted = deleted;
+  }
+}
+
+/**
+ * op_delete - delete the current entry - Implements ::alias_function_t - @ingroup alias_function_api
+ *
+ * This function handles:
+ * - OP_DELETE
+ * - OP_UNDELETE
+ *
+ * Supports repeat-count: `5<delete-entry>` deletes the current entry and the
+ * next 4. Overruns are silently capped at the end of the visible list.
+ */
+static int op_delete(struct AliasFunctionData *fdata, const struct KeyEvent *event)
+{
+  struct AliasMenuData *mdata = fdata->wdata;
+  struct Menu *menu = mdata->menu;
+  const bool deleted = (event->op == OP_DELETE);
+
+  struct AliasViewPtrArray ws = ARRAY_HEAD_INITIALIZER;
+  alias_add_selection(&ws, mdata, menu->tag_prefix, event->count);
+  if (ARRAY_EMPTY(&ws))
+  {
+    ARRAY_FREE(&ws);
+    return FR_NO_ACTION;
+  }
+  alias_apply_set_deleted(&ws, deleted);
+  const int num = ARRAY_SIZE(&ws);
+  ARRAY_FREE(&ws);
+
+  if (menu->tag_prefix)
+  {
     menu_queue_redraw(menu, MENU_REDRAW_INDEX);
   }
   else
   {
-    int index = menu_get_index(menu);
-    struct AliasView *av = ARRAY_GET(&mdata->ava, index);
-    if (!av)
-      return FR_NO_ACTION;
-
-    av->is_deleted = (op == OP_DELETE);
-    menu_queue_redraw(menu, MENU_REDRAW_CURRENT);
+    const int index = menu_get_index(menu);
+    menu_queue_redraw(menu, (num > 1) ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT);
     const bool c_resolve = cs_subset_bool(mdata->sub, "resolve");
-    if (c_resolve && (index < (menu->max - 1)))
+    if (c_resolve && ((index + num) < menu->max))
     {
-      menu_set_index(menu, index + 1);
+      menu_set_index(menu, index + num);
       menu_queue_redraw(menu, MENU_REDRAW_INDEX);
     }
   }

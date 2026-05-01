@@ -28,9 +28,11 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
@@ -84,11 +86,90 @@ void postponed_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 }
 
 /**
+ * postpone_add_selection - Build a working set of Emails for an action
+ * @param ea     Empty EmailArray to populate
+ * @param menu   Postpone Menu
+ * @param m      Mailbox
+ * @param tagged Use tagged emails (tag-prefix)
+ * @param count  Repeat-count (0 or 1 == just the current selection)
+ * @retval num Number of emails added
+ *
+ * If @a tagged is true, the array is filled with the tagged emails and
+ * @a count is ignored.
+ *
+ * Otherwise the array is filled with the current selection and the next
+ * @a count - 1 emails.  Overruns are silently capped at the end of the list.
+ */
+static int postpone_add_selection(struct EmailArray *ea, struct Menu *menu,
+                                  struct Mailbox *m, bool tagged, int count)
+{
+  if (!ea || !menu || !m || !m->emails)
+    return 0;
+
+  if (tagged)
+  {
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      struct Email *e = m->emails[i];
+      if (e && e->tagged)
+        ARRAY_ADD(ea, e);
+    }
+  }
+  else
+  {
+    const int index = menu_get_index(menu);
+    if ((index < 0) || (index >= m->msg_count))
+      return 0;
+
+    int n = (count > 1) ? count : 1;
+    if ((index + n) > m->msg_count)
+      n = m->msg_count - index;
+
+    for (int i = 0; i < n; i++)
+    {
+      struct Email *e = m->emails[index + i];
+      if (e)
+        ARRAY_ADD(ea, e);
+    }
+  }
+
+  return ARRAY_SIZE(ea);
+}
+
+/**
+ * postpone_apply_set_deleted - Apply the deleted flag to a working set of Emails
+ * @param m       Mailbox
+ * @param ea      Working set of Emails
+ * @param deleted true to mark as deleted, false to undelete
+ *
+ * Also updates the postponed message count.
+ */
+static void postpone_apply_set_deleted(struct Mailbox *m, struct EmailArray *ea, bool deleted)
+{
+  if (!m || !ea)
+    return;
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
+  {
+    if (*ep)
+      mutt_set_flag(m, *ep, MUTT_DELETE, deleted, true);
+  }
+
+  struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
+  if (mod_data)
+    mod_data->post_count = m->msg_count - m->msg_deleted;
+}
+
+/**
  * op_delete - Delete the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
  *
  * This function handles:
  * - OP_DELETE
  * - OP_UNDELETE
+ *
+ * Supports repeat-count: `5<delete-entry>` deletes the current entry and the
+ * next 4. Overruns are silently capped at the end of the list.
  */
 static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
 {
@@ -98,35 +179,29 @@ static int op_delete(struct PostponeData *pd, const struct KeyEvent *event)
 
   const int index = menu_get_index(menu);
   const bool bf = (event->op == OP_DELETE);
+
   /* should deleted draft messages be saved in the trash folder? */
-  if (menu->tag_prefix)
-  {
-    for (int i = 0; i < m->msg_count; i++)
-    {
-      struct Email *e = m->emails[i];
-      if (e && e->tagged)
-        mutt_set_flag(m, e, MUTT_DELETE, bf, true);
-    }
-  }
-  else
-  {
-    mutt_set_flag(m, m->emails[index], MUTT_DELETE, bf, true);
-  }
-  struct PostponeModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_POSTPONE);
-  mod_data->post_count = m->msg_count - m->msg_deleted;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  postpone_add_selection(&ea, menu, m, menu->tag_prefix, event->count);
+  const int num = ARRAY_SIZE(&ea);
+  postpone_apply_set_deleted(m, &ea, bf);
+  ARRAY_FREE(&ea);
+
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
-  if (!menu->tag_prefix && c_resolve && (index < (menu->max - 1)))
+  if (!menu->tag_prefix && c_resolve && ((index + num) < menu->max))
   {
-    menu_set_index(menu, index + 1);
-    if (index >= (menu->top + menu->page_len))
+    const int new_index = index + num;
+    menu_set_index(menu, new_index);
+    if (new_index >= (menu->top + menu->page_len))
     {
-      menu->top = index;
+      menu->top = new_index;
       menu_queue_redraw(menu, MENU_REDRAW_INDEX);
     }
   }
   else
   {
-    menu_queue_redraw(menu, menu->tag_prefix ? MENU_REDRAW_INDEX : MENU_REDRAW_CURRENT);
+    menu_queue_redraw(menu, (menu->tag_prefix || (num > 1)) ? MENU_REDRAW_INDEX :
+                                                              MENU_REDRAW_CURRENT);
   }
 
   return FR_SUCCESS;

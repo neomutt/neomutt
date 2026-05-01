@@ -9612,6 +9612,14 @@ Limit to messages matching: ~d 19950120-19951031
         requiring the <quote>tag-prefix</quote>.
       </para>
       <para>
+        Many line-based action functions also honour a numeric repeat-count.
+        Without <quote>tag-prefix</quote>, a command like
+        <literal>5&lt;delete-message&gt;</literal> applies to the current entry
+        and the next four visible entries, silently stopping at the end of the
+        list. If <quote>tag-prefix</quote> is active, tagged entries still take
+        precedence and the repeat-count is ignored.
+      </para>
+      <para>
         In <link linkend="macro"><command>macro</command></link>s or
         <link linkend="push"><command>push</command></link> commands, you can
         use the <literal>&lt;tag-prefix-cond&gt;</literal> operator. If there
