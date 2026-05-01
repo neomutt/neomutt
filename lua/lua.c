@@ -31,13 +31,6 @@
  * Integrated Lua scripting
  */
 
-#ifndef LUA_COMPAT_ALL
-#define LUA_COMPAT_ALL
-#endif
-#ifndef LUA_COMPAT_5_1
-#define LUA_COMPAT_5_1
-#endif
-
 #include "config.h"
 #include <lauxlib.h>
 #include <lua.h>
@@ -49,7 +42,13 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+#include "config2.h"
+#include "global.h"
+#include "gui.h"
+#include "logging.h"
+#include "module_data.h"
 #include "muttlib.h"
+#include "neomutt.h"
 #include "version.h"
 
 /**
@@ -435,6 +434,13 @@ static void lua_expose_mutt(lua_State *l)
   }
 }
 
+void lua_account_class(lua_State *l);
+void lua_email_class(lua_State *l);
+void lua_emailarray_class(lua_State *l);
+void lua_index_class(lua_State *l);
+void lua_mailbox_class(lua_State *l);
+void lua_neomutt_class(lua_State *l);
+
 /**
  * lua_init_state - Initialise a Lua State
  * @param[out] l Lua State
@@ -447,12 +453,20 @@ bool lua_init_state(lua_State **l)
   if (*l)
     return true;
 
-  mutt_debug(LL_DEBUG2, "enter\n");
+  struct LuaModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_LUA);
+  if (!mod_data)
+    return false;
+
+  if (!mod_data->log_file)
+    mod_data->log_file = lua_log_open();
+
+  lua_debug(LL_DEBUG2, "enter\n");
   *l = luaL_newstate();
 
   if (!*l)
   {
-    mutt_error(_("Error: Couldn't load the lua interpreter"));
+    lua_error(_("Error: Couldn't load the lua interpreter"));
+    lua_log_close(&mod_data->log_file);
     return false;
   }
 
@@ -460,6 +474,17 @@ bool lua_init_state(lua_State **l)
 
   /* load various Lua libraries */
   luaL_openlibs(*l);
+  lua_log_init(*l);
+  lua_global_init(*l);
+  lua_config_init(*l);
+  lua_emailarray_class(*l);
+  lua_account_class(*l);
+  lua_email_class(*l);
+  lua_index_class(*l);
+  lua_mailbox_class(*l);
+  lua_neomutt_class(*l);
+  lua_neomutt_init(*l);
+  lua_gui_init(*l);
   lua_expose_mutt(*l);
 
   return true;

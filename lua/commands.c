@@ -26,13 +26,6 @@
  * Lua Commands
  */
 
-#ifndef LUA_COMPAT_ALL
-#define LUA_COMPAT_ALL
-#endif
-#ifndef LUA_COMPAT_5_1
-#define LUA_COMPAT_5_1
-#endif
-
 #include "config.h"
 #include <lauxlib.h>
 #include <lua.h>
@@ -42,6 +35,8 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
+#include "console.h"
+#include "logging.h"
 #include "module_data.h"
 #include "muttlib.h"
 
@@ -71,22 +66,94 @@ enum CommandResult parse_lua(const struct Command *cmd, struct Buffer *line,
   lua_State *lua_state = mod_data->lua_state;
   lua_init_state(&lua_state);
   mod_data->lua_state = lua_state;
-  mutt_debug(LL_DEBUG2, "%s\n", line->dptr);
+  lua_debug(LL_DEBUG2, "%s\n", line->dptr);
 
   if (luaL_dostring(lua_state, line->dptr) != LUA_OK)
   {
-    mutt_debug(LL_DEBUG2, "%s -> failure\n", line->dptr);
-    buf_printf(err, "%s: %s", line->dptr, lua_tostring(lua_state, -1));
+    lua_debug(LL_DEBUG2, "%s -> failure\n", line->dptr);
+    buf_strcpy(err, lua_tostring(lua_state, -1));
     /* pop error message from the stack */
     lua_pop(lua_state, 1);
     goto done;
   }
-  mutt_debug(LL_DEBUG2, "%s -> success\n", line->dptr);
+  lua_debug(LL_DEBUG2, "%s -> success\n", line->dptr);
   buf_reset(line); // Clear the rest of the line
+  // mutt_refresh();
 
   rc = MUTT_CMD_SUCCESS;
 
 done:
+  return rc;
+}
+
+/**
+ * parse_lua_console - Parse the 'lua-console' command - Implements Command::parse() - @ingroup command_parse
+ */
+static enum CommandResult parse_lua_console(const struct Command *cmd, struct Buffer *line,
+                                            const struct ParseContext *pc,
+                                            struct ParseError *pe)
+{
+  struct Buffer *err = pe->message;
+  lua_debug(LL_DEBUG2, "enter\n");
+
+  if (!MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too few arguments"), "lua-console");
+    return MUTT_CMD_WARNING;
+  }
+
+  struct Buffer *token = buf_pool_get();
+  enum CommandResult rc = MUTT_CMD_ERROR;
+
+  if (parse_extract_token(token, line, TOKEN_NO_FLAGS) != 0)
+  {
+    buf_printf(err, _("source: error at %s"), buf_string(line));
+    return MUTT_CMD_ERROR;
+  }
+
+  if (MoreArgs(line))
+  {
+    buf_printf(err, _("%s: too many arguments"), cmd->name);
+    rc = MUTT_CMD_WARNING;
+    goto done;
+  }
+
+  rc = MUTT_CMD_SUCCESS;
+  if (mutt_str_equal(buf_string(token), "show"))
+  {
+    lua_console_set_visibility(LCV_SHOW);
+    goto done;
+  }
+
+  if (mutt_str_equal(buf_string(token), "hide"))
+  {
+    lua_console_set_visibility(LCV_HIDE);
+    goto done;
+  }
+
+  if (mutt_str_equal(buf_string(token), "toggle"))
+  {
+    lua_console_set_visibility(LCV_TOGGLE);
+    goto done;
+  }
+
+  if (mutt_str_equal(buf_string(token), "reset"))
+  {
+    struct LuaModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_LUA);
+    if (mod_data)
+    {
+      lua_log_reset(mod_data->log_file);
+      lua_console_update();
+    }
+
+    goto done;
+  }
+
+  buf_printf(err, _("%s: unknown command '%s'"), cmd->name, buf_string(token));
+  rc = MUTT_CMD_WARNING;
+
+done:
+  buf_pool_release(&token);
   return rc;
 }
 
@@ -111,7 +178,7 @@ enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *li
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  mutt_debug(LL_DEBUG2, "enter\n");
+  lua_debug(LL_DEBUG2, "enter\n");
 
   lua_State *lua_state = mod_data->lua_state;
   lua_init_state(&lua_state);
@@ -131,9 +198,11 @@ enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *li
 
   expand_path(token, false);
 
-  if (luaL_dofile(lua_state, buf_string(token)) != LUA_OK)
+  int rc_lua = luaL_dofile(lua_state, buf_string(token));
+  lua_debug(LL_DEBUG2, "luaL_dofile() -> %d\n", rc_lua);
+  if (rc_lua != LUA_OK)
   {
-    mutt_error(_("Couldn't source lua source: %s"), lua_tostring(lua_state, -1));
+    lua_error("%s", lua_tostring(lua_state, -1));
     lua_pop(lua_state, 1);
     goto done;
   }
@@ -152,8 +221,12 @@ const struct Command LuaCommands[] = {
   // clang-format off
   { "lua", CMD_LUA, parse_lua,
         N_("Run a Lua expression or call a Lua function"),
-        N_("lua <lua-command>"),
-        "optionalfeatures.html#lua" },
+        N_("lua '<lua-commands>'"),
+        "optionalfeatures.html#lua-commands" },
+  { "lua-console", CMD_LUA_CONSOLE, parse_lua_console,
+        N_("Show the Lua Console"),
+        N_("lua-console"),
+        "optionalfeatures.html#lua-commands" },
   { "lua-source", CMD_LUA_SOURCE, parse_lua_source,
         N_("Execute a Lua script file"),
         N_("lua-source <filename>"),
