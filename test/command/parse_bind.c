@@ -42,6 +42,7 @@ static const struct CommandTest Tests[] = {
   { MUTT_CMD_SUCCESS, "index j next-undeleted" },
   { MUTT_CMD_SUCCESS, "index,pager s sidebar-toggle-visible" },
   { MUTT_CMD_SUCCESS, "pager <f1> help" },
+  { MUTT_CMD_ERROR,   "index R apple" },
   { MUTT_CMD_ERROR,   NULL },
   // clang-format on
 };
@@ -58,6 +59,7 @@ static const struct MenuFuncOp OpPager[] = {
   // clang-format off
   { "next-undeleted",         OP_MAIN_NEXT_UNDELETED },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
+  { "help",                   OP_HELP },
   { NULL, 0 },
   // clang-format on
 };

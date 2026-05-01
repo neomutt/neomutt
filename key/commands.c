@@ -321,6 +321,15 @@ enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line,
             break;
           }
         }
+        if (op != OP_NULL)
+          break;
+      }
+
+      if (op == OP_NULL)
+      {
+        buf_printf(err, _("%s: no such function: %s"), cmd->name, buf_string(token));
+        rc = MUTT_CMD_ERROR;
+        goto done;
       }
 
       rc = km_bind(md, key, op, NULL, NULL, err);
