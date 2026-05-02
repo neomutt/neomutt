@@ -1761,6 +1761,7 @@ int main(int argc, char *argv[], char *envp[])
 main_ok:
   rc = 0;
 main_curses:
+  mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   mutt_endwin();
   mutt_temp_attachments_cleanup();
   /* Repeat the last message to the user */
