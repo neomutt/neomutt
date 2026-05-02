@@ -1238,7 +1238,7 @@ int main(int argc, char *argv[], char *envp[])
     clear();
     MuttLogger = log_disp_curses;
     log_queue_flush(log_disp_curses);
-    log_queue_set_max_size(100);
+    log_queue_set_max_size(5000);
   }
 
 #ifdef USE_AUTOCRYPT
