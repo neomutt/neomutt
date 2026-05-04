@@ -29,7 +29,6 @@ msgstr ""
 #: address/config_type.c:87 config/long.c:51 config/path.c:98 config/path.c:173
 #: config/sort.c:60 config/string.c:69 config/string.c:144
 #: expando/config_type.c:69 expando/config_type.c:167
-#, c-format
 msgid "Option %s may not be empty"
 msgstr "Option %s darf nicht leer sein"
 
@@ -439,9 +438,8 @@ msgid "Only deletion of multipart attachments is supported"
 msgstr "Kann nur aus mehrteiligen Anhängen löschen"
 
 #: attach/functions.c:702
-#, fuzzy
 msgid "You may only followup to message/rfc822 parts"
-msgstr "Nur message/rfc822-Anhänge können erneut versendet werden"
+msgstr "Nur message/rfc822-Teile können beantwortet werden"
 
 #: attach/functions.c:707 index/functions.c:3508
 msgid "Reply by mail as poster prefers?"
@@ -1034,9 +1032,8 @@ msgid "Can't delete currently selected mailbox"
 msgstr "Kann derzeit ausgewählte Mailbox nicht löschen"
 
 #: browser/functions.c:601
-#, fuzzy, c-format
 msgid "Really delete %d tagged mailboxes?"
-msgstr "Mailbox \"%s\" wirklich löschen?"
+msgstr "%d markierte Mailboxen wirklich löschen?"
 
 #: browser/functions.c:605 browser/functions.c:652
 msgid "Mailbox not deleted"
@@ -1047,9 +1044,8 @@ msgid "Mailbox deletion failed"
 msgstr "Mailbox konnte nicht gelöscht werden"
 
 #: browser/functions.c:627
-#, fuzzy, c-format
 msgid "%d mailboxes deleted"
-msgstr "Mailbox gelöscht"
+msgstr "%d Mailboxen gelöscht"
 
 #: browser/functions.c:649
 #, c-format
@@ -1102,27 +1098,23 @@ msgstr "Unzulässige Optionenschreibweise:%s (verwende Leerzeichen anstelle '=')
 
 #. L10N: e.g. `neomutt -X`
 #: cli/parse.c:438
-#, fuzzy, c-format
 msgid "Invalid option: -%c"
-msgstr "Unzulässige Option: %c"
+msgstr "Unzulässige Option: -%c"
 
 #. L10N: e.g. `neomutt --foobar`
 #: cli/parse.c:443
-#, fuzzy, c-format
 msgid "Invalid option: %s"
-msgstr "Unzulässige Option: %c"
+msgstr "Unzulässige Option: %s"
 
 #. L10N: e.g. `neomutt -F`
 #: cli/parse.c:451
-#, fuzzy, c-format
 msgid "Option -%c requires an argument"
-msgstr "Option %c benötigt ein Argument"
+msgstr "Option -%c benötigt ein Argument"
 
 #. L10N: e.g. `neomutt --config`
 #: cli/parse.c:456
-#, fuzzy, c-format
 msgid "Option %s requires an argument"
-msgstr "Option %c benötigt ein Argument"
+msgstr "Option %s benötigt ein Argument"
 
 #: color/commands.c:180
 #, c-format
@@ -1597,9 +1589,8 @@ msgid "Can't leave group with only one attachment"
 msgstr "Kann mit nur einem Anhang nicht gruppieren"
 
 #: compose/functions.c:676
-#, fuzzy
 msgid "Tagged attachments must be siblings"
-msgstr "Aktuelle Einstellung für Anhänge:"
+msgstr "Markierte Anhänge müssen Geschwister sein"
 
 #: compose/functions.c:717 compose/functions.c:1762 compose/functions.c:1781
 msgid "Attachment is already at bottom"
@@ -1817,15 +1808,13 @@ msgstr "Das Ende der Nachricht wird angezeigt"
 
 #: config/bool.c:76 config/enum.c:58 config/quad.c:80 config/sort.c:90
 #: hcache/config.c:73 hcache/config.c:108
-#, fuzzy, c-format
 msgid "Invalid value for %s"
-msgstr "Ungültiger Wert für Option %s: %s"
+msgstr "Ungültiger Wert für %s"
 
 #: config/bool.c:78 config/enum.c:67 config/quad.c:89 config/sort.c:117
 #: hcache/config.c:86 hcache/config.c:121
-#, fuzzy, c-format
 msgid "Choose from: %s"
-msgstr "    von %s"
+msgstr "Wähle von: %s"
 
 #: config/bool.c:135
 #, c-format
@@ -2689,9 +2678,8 @@ msgid "failed to re-open 'memory stream'"
 msgstr "Konnte Datenstrom nicht erneut öffnen"
 
 #: email/handler.c:1455
-#, fuzzy
 msgid "failed to re-open temporary file"
-msgstr "Konnte Temporärdatei nicht öffnen"
+msgstr "Konnte temporäre Datei nicht erneut öffnen"
 
 #: email/handler.c:1748
 msgid "Error: multipart/signed has no protocol"
@@ -2763,9 +2751,8 @@ msgid "mailcap entry for type %s not found"
 msgstr "Kann keinen Mailcap-Eintrag für %s finden"
 
 #: email/mailcap.c:539
-#, fuzzy, c-format
 msgid "mailcap entry with field '%s' for type %s not found"
-msgstr "Kann keinen Mailcap-Eintrag für %s finden"
+msgstr "Fand keinen Mailcap-Eintrag mit Feld '%s' des Typs %s"
 
 #: email/parse.c:1565
 msgid "multipart message has no boundary parameter"
@@ -2990,15 +2977,13 @@ msgstr "Verbotenes Zeitintervall: '%c', erwarte Form 'ymwdHM'"
 
 #: expando/node_condition.c:181 expando/node_condition.c:199
 #: expando/node_expando.c:410
-#, fuzzy, c-format
 msgid "Expando is missing closing '}'"
-msgstr "Expando vermisst Terminierung: '%c'"
+msgstr "Expando vermisst abschließendes '}'"
 
 #. L10N: e.g. "Unknown expando: %{bad}"
 #: expando/node_condition.c:202 expando/node_expando.c:416
-#, fuzzy, c-format
 msgid "Unknown expando: %%{%.*s}"
-msgstr "Unbekanntes Expando: %%{%s}"
+msgstr "Unbekanntes Expando: %%{%.*s}"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
@@ -4128,16 +4113,14 @@ msgstr "Entferne einen Statusindikator"
 #. L10N: Help screen description for OP_MAIN_CLOSE_ALL_THREADS
 #. Index: <op_main_close_all_threads>
 #: gui/opcodes.h:522
-#, fuzzy
 msgid "Collapse all threads"
-msgstr "Auf- und Zuklappen aller Diskussionsfäden"
+msgstr "Zuklappen aller Diskussionsfäden"
 
 #. L10N: Help screen description for OP_MAIN_CLOSE_THREAD
 #. Index: <op_main_close_thread>
 #: gui/opcodes.h:525
-#, fuzzy
 msgid "Collapse current thread"
-msgstr "Auf- und Zuklappen des aktuellen Diskussionsfadens"
+msgstr "Zuklappen des aktuellen Diskussionsfadens"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
@@ -4247,23 +4230,20 @@ msgstr "Öffne nächste Mailbox mit neuen Nachrichten"
 #. Index: <op_main_prev_unread_mailbox>
 #. Pager: <op_main_prev_unread_mailbox>
 #: gui/opcodes.h:582
-#, fuzzy
 msgid "Open previous mailbox with new mail"
-msgstr "Öffne nächste Mailbox mit neuen Nachrichten"
+msgstr "Öffne vorherige Mailbox mit neuen Nachrichten"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_ALL_THREADS
 #. Index: <op_main_open_all_threads>
 #: gui/opcodes.h:585
-#, fuzzy
 msgid "Uncollapse all threads"
-msgstr "Auf- und Zuklappen aller Diskussionsfäden"
+msgstr "Aufklappen aller Diskussionsfäden"
 
 #. L10N: Help screen description for OP_MAIN_OPEN_THREAD
 #. Index: <op_main_open_thread>
 #: gui/opcodes.h:588
-#, fuzzy
 msgid "Uncollapse current thread"
-msgstr "Auf- und Zuklappen des aktuellen Diskussionsfadens"
+msgstr "Aufklappen des aktuellen Diskussionsfadens"
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
@@ -4959,15 +4939,14 @@ msgstr "Schalte um zwischen Seitenleiste sichtbar/unsichtbar"
 #. L10N: Help screen description for OP_SIDEBAR_ABORT_SEARCH
 #. Sidebar: <op_sidebar_abort_search>
 #: gui/opcodes.h:986
-#, fuzzy
 msgid "Close the sidebar search"
-msgstr "Schalte um zwischen Seitenleiste sichtbar/unsichtbar"
+msgstr "Schließe Such-Seitenleiste"
 
 #. L10N: Help screen description for OP_SIDEBAR_START_SEARCH
 #. Sidebar: <op_sidebar_start_search>
 #: gui/opcodes.h:989
 msgid "Fuzzy search the sidebar"
-msgstr ""
+msgstr "Fuzzy Suche in Seitenleiste"
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
@@ -5405,34 +5384,28 @@ msgid "Mailbox renamed"
 msgstr "Mailbox umbenannt"
 
 #: imap/command.c:219
-#, fuzzy, c-format
 msgid "Connection lost. Retrying in %u seconds..."
-msgstr "Verbindung zu %s verloren. Erneut verbinden?"
+msgstr "Verbindung verloren. Versuche nach %u Sekunden..."
 
 #: imap/command.c:228
-#, fuzzy, c-format
 msgid "Reconnected to %s"
-msgstr "Verbunden mit %s. %s"
+msgstr "Wiederverbunden mit %s"
 
 #: imap/command.c:233
-#, fuzzy, c-format
 msgid "Reopened mailbox on %s"
-msgstr "Benenne Mailbox %s um in: "
+msgstr "Öffne Mailbox auf %s erneu "
 
 #: imap/command.c:237
-#, fuzzy, c-format
 msgid "Reconnected to %s but failed to reopen mailbox"
-msgstr "Konnte Mailbox nicht erneut öffnen"
+msgstr "Wiederverbunden mit %s, aber konnte Mailbox nicht wieder öffnen"
 
 #: imap/command.c:249
-#, c-format
 msgid "Failed to reconnect to %s after %d attempts"
-msgstr ""
+msgstr "%d Verbindungsversuche zu %s fehlgeschlagen"
 
 #: imap/command.c:255
-#, c-format
 msgid "Reconnection to %s failed. Will retry automatically."
-msgstr ""
+msgstr "Wiederverbindung zu %s fehlgeschlagen. Versuche weiter..."
 
 #: imap/command.c:1341
 #, c-format
@@ -5440,14 +5413,12 @@ msgid "IMAP command failed: %s"
 msgstr "Der IMAP Befehlt wurde nicht ausgeführt: %s"
 
 #: imap/command.c:1607
-#, fuzzy, c-format
 msgid "Connection to %s timed out waiting for IDLE response"
-msgstr "Verbindung zu %s beendet"
+msgstr "Zeitüberschreitung der Verbindung zu %s beim Warten auf IDLE Antwort"
 
 #: imap/command.c:1631
-#, fuzzy, c-format
 msgid "IDLE command failed for %s"
-msgstr "Der IMAP Befehlt wurde nicht ausgeführt: %s"
+msgstr "IDLE Befehl fehlgeschlagen für %s"
 
 #: imap/config.c:60 pop/config.c:60 send/config.c:92
 #, c-format
@@ -5505,14 +5476,12 @@ msgid "Closing connection to %s..."
 msgstr "Beende Verbindung zu %s..."
 
 #: imap/imap.c:739
-#, fuzzy
 msgid "Download interrupted"
-msgstr "Suche unterbrochen"
+msgstr "Herunterladen unterbrochen"
 
 #: imap/imap.c:752
-#, c-format
 msgid "Download stalled - no data received for %d seconds"
-msgstr ""
+msgstr "Herunterladen stockt - seit %d Sek. keine Daten erhalten"
 
 #: imap/imap.c:952 nntp/nntp.c:1852 pop/lib.c:339 send/smtp.c:1073
 msgid "Secure connection with TLS?"
@@ -8342,15 +8311,13 @@ msgstr "Nachrichten, die an bekannte mailing listen adressiert sind"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:132
-#, fuzzy
 msgid "messages whose From:, Sender:, To:, Cc: or Bcc: header matches REGEX"
-msgstr "Nachrichten, deren From:, Sender:, To: oder Cc: Eintrag REGEX entspricht"
+msgstr "Nachrichten, deren From:, Sender:, To: Cc: oder Bcc: Eintrag REGEX entspricht"
 
 #. L10N: Pattern Completion Menu description for %L
 #: pattern/flags.c:135
-#, fuzzy
 msgid "messages whose From:, Sender:, To:, Cc: or Bcc: is a member of GROUP"
-msgstr "Nachrichten deren From:, Sender:, To: oder Cc: GRUPPE angehört"
+msgstr "Nachrichten deren From:, Sender:, To: Cc: oder Bcc: einer GRUPPE angehört"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:138
@@ -8633,7 +8600,7 @@ msgstr "Kann Nachricht nicht in Temporärdatei schreiben"
 
 #: postpone/dlg_postpone.c:92
 msgid "Tag"
-msgstr ""
+msgstr "Markierung"
 
 #: postpone/dlg_postpone.c:268
 msgid "Postponed Messages"
@@ -8745,7 +8712,7 @@ msgstr "Option %s darf keine Shell-Metazeichen beinhalten: %c"
 #. L10N: $abort_noattach_regex default format
 #: send/config.c:167
 msgid "\\<(attach|attached|attachments?)\\>"
-msgstr ""
+msgstr "\\<(anhängend|angehängt|Anhänge?)\\"
 
 #. L10N: $attribution_intro default format
 #: send/config.c:195
@@ -8823,9 +8790,8 @@ msgid "Save attachments in Fcc?"
 msgstr "Anhänge in Fcc-Mailbox speichern?"
 
 #: send/send.c:1773
-#, fuzzy, c-format
 msgid "Warning: Fcc to %s failed"
-msgstr "Überspringe Fcc , sende %s"
+msgstr "Warnung: Fcc zu %s fehlgeschlagen"
 
 #. L10N: Called when saving to $record or Fcc failed after sending.
 #. (r)etry tries the same mailbox again.
@@ -8922,7 +8888,7 @@ msgstr "Versende Nachricht..."
 
 #: send/send.c:2783
 msgid "Fcc failed.  Aborting sending."
-msgstr ""
+msgstr "Fcc fehlgeschlagen. Breche Senden ab."
 
 #: send/send.c:2826
 msgid "Could not send the message"
@@ -8985,9 +8951,8 @@ msgid "SMTP session failed: %s"
 msgstr "SMTP-Verbindung fehlgeschlagen: %s"
 
 #: send/smtp.c:231
-#, fuzzy, c-format
 msgid "SMTP session failed: cannot add recipient <%s>"
-msgstr "SMTP-Verbindung fehlgeschlagen: Kann %s nicht öffnen"
+msgstr "SMTP Verbindung fehlgeschlagen: Kann Empfänger <%s> nicht hinzufügen"
 
 #: send/smtp.c:258
 #, c-format
@@ -9020,9 +8985,8 @@ msgid "Invalid server response"
 msgstr "Ungültige Serverantwort"
 
 #: sidebar/functions.c:641
-#, fuzzy
 msgid "Sidebar search: "
-msgstr "Rückwärtssuche nach: "
+msgstr "Suche in Seitenleiste: "
 
 #: sidebar/sidebar.c:51
 msgid "Pin a mailbox in the sidebar (keep visible)"
