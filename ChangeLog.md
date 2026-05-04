@@ -1,4 +1,81 @@
 <details open>
+<summary>NeoMutt 2026-05-04</summary>
+
+## 2026-05-04  Richard Russon  \<rich@flatcap.org\>
+
+### 🔒 Security
+
+- Fix GSSAPI buffer underflow on short unwrapped tokens
+- Reject percent-encoded NUL bytes in URL decoding
+- Skip CN fallback when SAN dNSName entries exist (RFC6125)
+- Cap POP3 UIDL responses to prevent OOM from a malicious server
+- Harden POP host URL copy
+
+### 🐞 Bug Fixes
+
+- #4836 imap: fix memory leak in `msg_parse_flags`
+- #4849 Fix memmove in `mutt_str_expand_tabs`
+- #4850 IMAP: enhance stability with re-entrancy protection and reconnection fixes
+- #4852 Say which mailcap field we are looking for
+- #4853 Don't overwrite content_type
+- pager: fix crash on `uncolor *`
+- pager: fix wrong line index in signature syntax realloc
+- pager: fix OOB read on short log lines in `display_line()`
+- pager: fix off-by-one in newline restoration
+- imap: fix sort for missing emails
+- imap: fix crash when syncing mailbox on exit
+- Fix crash in `cmd_parse_fetch()` when edata is NULL
+- log: fix missing errors on startup
+- Force cursor to be visible on exit
+
+</details>
+<details open>
+<summary>NeoMutt 2026-04-06</summary>
+
+## 2026-04-06  Richard Russon  \<rich@flatcap.org\>
+
+### 🎁 Features
+
+- #4799 Add IMAP connection monitoring, timeouts, and reconnection backoff
+
+### 🐞 Bug Fixes
+
+- #4755 Fix off-by-one in ARRAY_RESERVE()
+- #4819 Fix IMAP crash when changing folders
+- Fix freeze in IMAP with OpenSSL
+- Fix blocking IMAP pipeline drain with many mailboxes
+- Fix crash on threaded index update
+- Fix crash on NULL thread in display subject
+- Fix menu half-down when data fits in one page
+- Fix alias search prompt
+- Fix index tag colours
+- Protect hooks against unhook during execution
+- Fix leak in pattern alias search
+- Consistently convert headers to LF EOL convention
+
+### 🔧 Changed Config
+
+- Changed: `compose_show_preview = yes`
+Display a preview of the message body in the Compose window
+
+### 📚 Docs
+
+- `$message_id_format`: mention Base64Url encoding
+- Fix descriptions of deprecated config options
+
+### 🏗 Build
+
+- #4826 Use optreset on Solaris too
+- #4827 Avoid function name clash on Solaris
+- #4828 Allow Solaris to use qsort_s
+- Check docs requirements in configure
+
+### ⚙️ Code
+
+- Fix graphviz debug output
+
+</details>
+<details open>
 <summary>NeoMutt 2026-01-05</summary>
 
 ## 2026-01-05 Richard Russon \<rich@flatcap.org\>
@@ -82,7 +159,7 @@
 ### ⚠️ Superseded by 2026-01-05
 
 </details>
-<details open>
+<details>
 <summary>NeoMutt 2025-09-05</summary>
 
 ## 2025-09-05 Richard Russon \<rich@flatcap.org\>
@@ -134,7 +211,7 @@ Confirm when sending an e-mail with an empty To:
 - #4659 Include term.h and [n]curses.h consistently
 
 </details>
-<details open>
+<details>
 <summary>NeoMutt 2025-05-10</summary>
 
 ## 2025-05-10 Richard Russon \<rich@flatcap.org\>
@@ -167,7 +244,7 @@ Confirm when sending an e-mail with an empty To:
 - #4618 Build and test on FreeBSD
 
 </details>
-<details open>
+<details>
 <summary>NeoMutt 2025-04-04</summary>
 
 ## 2025-04-04 Richard Russon \<rich@flatcap.org\>
@@ -248,7 +325,7 @@ Confirm when sending an e-mail with an empty To:
 - Fix NULL pointer dereference when calling `imap_logout_all()`
 
 </details>
-<details open>
+<details>
 <summary>NeoMutt 2025-01-13</summary>
 
 ## 2025-01-13 Richard Russon \<rich@flatcap.org\>
