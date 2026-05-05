@@ -585,6 +585,11 @@ struct KeyEvent km_dokey(const struct MenuDefinition *md, GetChFlags flags)
       {
         key_progress_notify(md, 0, NULL, 0, flags);
       }
+      // Apply any count digits that arrived ahead of this op
+      // (e.g. "5<next-entry>" inside a macro body),
+      // preserving an explicit count already attached to the event.
+      if ((event.count == 0) && (count_digits > 0))
+        event.count = count;
       return event;
     }
 
