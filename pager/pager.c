@@ -72,7 +72,9 @@
 #include "debug/lib.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "hooks/lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "display.h"
 #include "private_data.h"
 
@@ -301,9 +303,13 @@ static int pager_config_observer(struct NotifyCallback *nc)
   if (!nc->global_data || !nc->event_data)
     return -1;
 
-  struct EventConfig *ev_c = nc->event_data;
   struct MuttWindow *win_pager = nc->global_data;
+  struct MuttWindow *focus = window_get_focus();
+  // Either the Pager isn't visible, or isn't active
+  if (focus != win_pager)
+    return 0;
 
+  struct EventConfig *ev_c = nc->event_data;
   if (mutt_str_equal(ev_c->name, "pager_index_lines"))
   {
     config_pager_index_lines(win_pager);
@@ -322,6 +328,18 @@ static int pager_config_observer(struct NotifyCallback *nc)
       return -1;
 
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
+  }
+  else if (mutt_str_equal(ev_c->name, "pager"))
+  {
+    const char *const c_pager = pager_get_pager(NeoMutt->sub);
+    if (c_pager)
+    {
+      // A message-hook has set $pager
+      // Close the Pager and let the Index handle the message
+      struct PagerPrivateData *priv = win_pager->parent->wdata;
+      priv->loop = PAGER_LOOP_QUIT;
+      mutt_push_macro_event(0, OP_DISPLAY_MESSAGE);
+    }
   }
 
   return 0;
@@ -359,6 +377,7 @@ static int pager_index_observer(struct NotifyCallback *nc)
     if (shared && shared->email && (priv->loop != PAGER_LOOP_QUIT))
     {
       priv->loop = PAGER_LOOP_RELOAD;
+      exec_message_hook(shared->mailbox, shared->email, CMD_MESSAGE_HOOK);
     }
     else
     {
