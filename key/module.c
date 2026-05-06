@@ -80,7 +80,6 @@ static bool key_cleanup(struct NeoMutt *n, void *data)
 static bool key_gui_init(struct NeoMutt *n)
 {
   struct KeyModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_KEY);
-  ext_keys_init(mod_data->key_names);
   km_set_abort_key(&mod_data->abort_key);
   return true;
 }

@@ -131,6 +131,7 @@
 #include "color/module_data.h"
 #include "external.h"
 #include "globals.h"
+#include "key/module_data.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
@@ -746,6 +747,8 @@ static int start_curses(void)
   nonl();
   typeahead(-1); /* simulate smooth scrolling */
   meta(stdscr, true);
+  struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
+  ext_keys_init(mod_data->key_names);
   /* Now that curses is set up, we drop back to normal screen mode.
    * This simplifies displaying error messages to the user.
    * The first call to refresh() will swap us back to curses screen mode. */
