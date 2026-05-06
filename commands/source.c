@@ -272,7 +272,8 @@ done:
 void source_stack_cleanup(void)
 {
   struct CommandsModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COMMANDS);
-  mutt_list_free(&mod_data->muttrc_stack);
+  if (mod_data)
+    mutt_list_free(&mod_data->muttrc_stack);
 }
 
 /**

@@ -749,6 +749,7 @@ static int start_curses(void)
   meta(stdscr, true);
   struct KeyModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_KEY);
   ext_keys_init(mod_data->key_names);
+
   /* Now that curses is set up, we drop back to normal screen mode.
    * This simplifies displaying error messages to the user.
    * The first call to refresh() will swap us back to curses screen mode. */
@@ -1019,6 +1020,8 @@ static bool dump_info(struct CliInfo *ci, struct ConfigSet *cs)
  */
 int main(int argc, char *argv[], char *envp[])
 {
+  MuttLogger = log_disp_queue;
+
   struct Email *e = NULL;
   SendFlags sendflags = SEND_NO_FLAGS;
   int rc = 1;
@@ -1027,8 +1030,6 @@ int main(int argc, char *argv[], char *envp[])
   struct Buffer *tempfile = buf_pool_get();
   struct ConfigSet *cs = NULL;
   struct CommandLine *cli = command_line_new();
-
-  MuttLogger = log_disp_terminal;
 
   /* sanity check against stupid administrators */
   if (getegid() != getgid())
@@ -1062,7 +1063,6 @@ int main(int argc, char *argv[], char *envp[])
     goto main_exit;
 
   mutt_log_prep();
-  MuttLogger = log_disp_queue;
   log_translation();
 
   /* Check for a batch send. */
