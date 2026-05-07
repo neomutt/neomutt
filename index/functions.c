@@ -484,7 +484,7 @@ static int ea_add_selection(struct EmailArray *ea, struct MailboxView *mv,
   {
     struct Email *sel = mutt_get_virt_email(mv->mailbox, index + i);
     if (sel)
-      ARRAY_ADD(ea, sel);
+      ea_add_tagged(ea, mv, sel, false);
   }
 
   return ARRAY_SIZE(ea);

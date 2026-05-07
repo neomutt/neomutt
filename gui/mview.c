@@ -364,6 +364,97 @@ bool message_is_tagged(struct Email *e)
 }
 
 /**
+ * ea_contains_email - Does a working set already include an Email?
+ * @param ea Selected emails
+ * @param e  Candidate email
+ * @retval true Email is selected
+ */
+static bool ea_contains_email(struct EmailArray *ea, struct Email *e)
+{
+  if (!ea || !e)
+    return false;
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
+  {
+    if (*ep == e)
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * ea_add_email - Add an Email to a working set
+ * @param ea Selected emails
+ * @param e  Email to add
+ */
+static void ea_add_email(struct EmailArray *ea, struct Email *e)
+{
+  if (!ea_contains_email(ea, e))
+    ARRAY_ADD(ea, e);
+}
+
+/**
+ * ea_add_collapsed_thread - Add all emails in a collapsed thread
+ * @param ea Selected emails
+ * @param e  Collapsed email
+ */
+static void ea_add_collapsed_thread(struct EmailArray *ea, struct Email *e)
+{
+  if (!e || !e->collapsed || !e->thread)
+    return;
+
+  struct MuttThread *top = e->thread;
+  while (top->parent)
+    top = top->parent;
+
+  struct MuttThread *thread = top;
+  while (true)
+  {
+    struct Email *et = thread->message;
+    if (et && et->visible)
+      ea_add_email(ea, et);
+
+    if (thread->child)
+    {
+      thread = thread->child;
+    }
+    else if (thread->next)
+    {
+      thread = thread->next;
+    }
+    else
+    {
+      bool done = false;
+      while (!thread->next)
+      {
+        thread = thread->parent;
+        if (thread == top)
+        {
+          done = true;
+          break;
+        }
+      }
+      if (done)
+        break;
+      thread = thread->next;
+    }
+  }
+}
+
+/**
+ * ea_add_folded - Add an Email, expanding collapsed threads
+ * @param ea Selected emails
+ * @param e  Email to add
+ */
+static void ea_add_folded(struct EmailArray *ea, struct Email *e)
+{
+  ea_add_email(ea, e);
+  ea_add_collapsed_thread(ea, e);
+}
+
+/**
  * ea_add_tagged - Get an array of the tagged Emails
  * @param ea         Empty EmailArray to populate
  * @param mv         Current Mailbox
@@ -388,7 +479,7 @@ int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e
       if (!message_is_tagged(e))
         continue;
 
-      ARRAY_ADD(ea, e);
+      ea_add_folded(ea, e);
     }
   }
   else
@@ -396,7 +487,7 @@ int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e
     if (!e)
       return -1;
 
-    ARRAY_ADD(ea, e);
+    ea_add_folded(ea, e);
   }
 
   return ARRAY_SIZE(ea);
