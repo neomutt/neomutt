@@ -1196,6 +1196,62 @@ void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, bool
 }
 
 /**
+ * aa_contains_attach - Does a working set already include an Attachment?
+ * @param aa Selected attachments
+ * @param ap Candidate attachment
+ * @retval true Attachment is selected
+ */
+static bool aa_contains_attach(struct AttachPtrArray *aa, struct AttachPtr *ap)
+{
+  if (!aa || !ap)
+    return false;
+
+  struct AttachPtr **app = NULL;
+  ARRAY_FOREACH(app, aa)
+  {
+    if (*app == ap)
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * aa_add_attach - Add an Attachment to a working set
+ * @param aa Selected attachments
+ * @param ap Attachment to add
+ */
+static void aa_add_attach(struct AttachPtrArray *aa, struct AttachPtr *ap)
+{
+  if (!aa_contains_attach(aa, ap))
+    ARRAY_ADD(aa, ap);
+}
+
+/**
+ * aa_add_folded - Add an Attachment, expanding collapsed children
+ * @param aa     Selected attachments
+ * @param actx   List of Attachments
+ * @param rindex Real attachment index
+ */
+static void aa_add_folded(struct AttachPtrArray *aa, struct AttachCtx *actx, int rindex)
+{
+  if (!aa || !actx || (rindex < 0) || (rindex >= actx->idxlen))
+    return;
+
+  struct AttachPtr *ap = actx->idx[rindex];
+  aa_add_attach(aa, ap);
+
+  if (!ap->collapsed)
+    return;
+
+  const int level = ap->level;
+  for (int i = rindex + 1; (i < actx->idxlen) && (actx->idx[i]->level > level); i++)
+  {
+    aa_add_attach(aa, actx->idx[i]);
+  }
+}
+
+/**
  * aa_add_tagged - Get an array of tagged Attachments
  * @param aa   Empty AttachPtrArray to populate
  * @param actx List of Attachments
@@ -1210,7 +1266,7 @@ static int aa_add_tagged(struct AttachPtrArray *aa, struct AttachCtx *actx)
   for (int i = 0; i < actx->idxlen; i++)
   {
     if (actx->idx[i]->body->tagged)
-      ARRAY_ADD(aa, actx->idx[i]);
+      aa_add_folded(aa, actx, i);
   }
 
   return ARRAY_SIZE(aa);
@@ -1249,7 +1305,7 @@ int aa_add_selection(struct AttachPtrArray *aa, struct AttachCtx *actx,
     if ((rindex < 0) || (rindex >= actx->idxlen))
       return -1;
 
-    ARRAY_ADD(aa, actx->idx[rindex]);
+    aa_add_folded(aa, actx, rindex);
   }
 
   return ARRAY_SIZE(aa);
