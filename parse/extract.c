@@ -39,6 +39,55 @@
 #include "extract.h"
 
 /**
+ * more_args - Check if there are more arguments to parse (with flags)
+ * @param buf   Buffer containing tokens
+ * @param flags Token parsing flags
+ * @retval true  There are more arguments
+ * @retval false No more arguments based on flags
+ *
+ * This function checks if there are more arguments to parse in the buffer,
+ * taking into account the token flags that control parsing behavior.
+ *
+ * @note For legacy MoreArgs() behavior (only check #, ;, and empty), use
+ *       more_args(buf, TOKEN_SPACE) which allows whitespace.
+ */
+bool more_args(struct Buffer *buf, TokenFlags flags)
+{
+  if (!buf || !buf->dptr || !*buf->dptr)
+    return false;
+
+  char ch = *buf->dptr;
+
+  // Check whitespace - terminates unless TOKEN_SPACE is set
+  if (mutt_isspace(ch) && !(flags & TOKEN_SPACE))
+    return false;
+
+  // Check comment - terminates unless TOKEN_COMMENT is set
+  if ((ch == '#') && !(flags & TOKEN_COMMENT))
+    return false;
+
+  // Check special characters that become terminators when their flag is set
+  if ((ch == '+') && (flags & TOKEN_PLUS))
+    return false;
+  if ((ch == '-') && (flags & TOKEN_MINUS))
+    return false;
+  if ((ch == '=') && (flags & TOKEN_EQUAL))
+    return false;
+  if ((ch == '?') && (flags & TOKEN_QUESTION))
+    return false;
+
+  // Check semicolon - terminates unless TOKEN_SEMICOLON is set
+  if ((ch == ';') && !(flags & TOKEN_SEMICOLON))
+    return false;
+
+  // Check pattern characters - when TOKEN_PATTERN is set, only ~%=!| are valid
+  if ((flags & TOKEN_PATTERN) && !strchr("~%=!|", ch))
+    return false;
+
+  return true;
+}
+
+/**
  * parse_extract_token - Extract one token from a string
  * @param dest  Buffer for the result
  * @param line   Buffer containing tokens
@@ -57,7 +106,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *line, TokenFlags fla
 
   buf_reset(dest);
 
-  SKIPWS(line->dptr);
+  skip_ws(&line->dptr);
   while ((ch = *line->dptr))
   {
     if (qc == '\0')
@@ -299,6 +348,6 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *line, TokenFlags fla
     }
   }
 
-  SKIPWS(line->dptr);
+  skip_ws(&line->dptr);
   return 0;
 }
