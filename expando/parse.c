@@ -63,11 +63,11 @@ struct ExpandoNode *node_parse_one(const char *str, NodeTextTermFlags term_chars
   if (node)
     return node;
 
-  node = node_expando_parse_name(str, defs, EP_NO_FLAGS, parsed_until, err);
+  node = node_expando_parse_name(str, defs, EP_NONE, parsed_until, err);
   if (node)
     return node;
 
-  return node_expando_parse(str, defs, EP_NO_FLAGS, parsed_until, err);
+  return node_expando_parse(str, defs, EP_NONE, parsed_until, err);
 }
 
 /**

@@ -209,27 +209,27 @@ void test_expando_parser(void)
 
     // struct ExpandoNode *node_parse_one(const char *str, NodeTextTermFlags term_chars, const struct ExpandoDefinition *defs, const char **parsed_until, struct ExpandoParseError *err);
 
-    node = node_parse_one(NULL, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_parse_one(NULL, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
-    node = node_parse_one("", NTE_NO_FLAGS, NULL, &parsed_until, &err);
+    node = node_parse_one("", NTE_NONE, NULL, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
-    node = node_parse_one("", NTE_NO_FLAGS, TestFormatDef, NULL, &err);
+    node = node_parse_one("", NTE_NONE, TestFormatDef, NULL, &err);
     TEST_CHECK(node == NULL);
 
-    node = node_parse_one("", NTE_NO_FLAGS, TestFormatDef, &parsed_until, NULL);
+    node = node_parse_one("", NTE_NONE, TestFormatDef, &parsed_until, NULL);
     TEST_CHECK(node == NULL);
 
-    node = node_parse_one("abc", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_parse_one("abc", NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
 
-    node = node_parse_one("%<a?b&c>", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_parse_one("%<a?b&c>", NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
 
-    node = node_parse_one("%a", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_parse_one("%a", NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
   }
@@ -240,19 +240,19 @@ void test_expando_parser(void)
     struct ExpandoParseError err = { 0 };
     bool rc = false;
 
-    rc = node_parse_many(NULL, "%a", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    rc = node_parse_many(NULL, "%a", NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(rc == false);
 
-    rc = node_parse_many(node, NULL, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    rc = node_parse_many(node, NULL, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(rc == false);
 
-    rc = node_parse_many(node, "%a", NTE_NO_FLAGS, NULL, &parsed_until, &err);
+    rc = node_parse_many(node, "%a", NTE_NONE, NULL, &parsed_until, &err);
     TEST_CHECK(rc == false);
 
-    rc = node_parse_many(node, "%a", NTE_NO_FLAGS, TestFormatDef, NULL, &err);
+    rc = node_parse_many(node, "%a", NTE_NONE, TestFormatDef, NULL, &err);
     TEST_CHECK(rc == false);
 
-    rc = node_parse_many(node, "%a", NTE_NO_FLAGS, TestFormatDef, &parsed_until, NULL);
+    rc = node_parse_many(node, "%a", NTE_NONE, TestFormatDef, &parsed_until, NULL);
     TEST_CHECK(rc == false);
 
     node_free(&node);

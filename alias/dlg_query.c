@@ -215,8 +215,8 @@ int query_run(const char *s, bool verbose, struct AliasArray *aa,
   struct Buffer *addr = buf_pool_get();
   /* The query protocol first reads one NL-terminated line. If an error
    * occurs, this is assumed to be an error message. Otherwise it's ignored. */
-  msg = mutt_file_read_line(msg, &msglen, fp, NULL, MUTT_RL_NO_FLAGS);
-  while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, MUTT_RL_NO_FLAGS)))
+  msg = mutt_file_read_line(msg, &msglen, fp, NULL, MUTT_RL_NONE);
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, MUTT_RL_NONE)))
   {
     tok = buf;
     next_tok = strchr(tok, '\t');
@@ -379,7 +379,7 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(mod_data->menu_query, GETCH_NO_FLAGS);
+    event = km_dokey(mod_data->menu_query, GETCH_NONE);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
@@ -503,7 +503,7 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
   mdata.search_state = search_state_new();
 
   struct Buffer *buf = buf_pool_get();
-  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
+  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;

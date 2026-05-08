@@ -124,7 +124,7 @@ enum CommandResult parse_unmy_header(const struct Command *cmd, struct Buffer *l
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     if (mutt_str_equal("*", buf_string(token)))
     {
       /* Clear all headers, send a notification for each header */

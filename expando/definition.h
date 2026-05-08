@@ -30,9 +30,15 @@
 struct ExpandoFormat;
 struct ExpandoParseError;
 
-typedef uint8_t ExpandoParserFlags;       ///< Flags for expando_parse(), e.g. #EP_CONDITIONAL
-#define EP_NO_FLAGS                 0     ///< No flags are set
-#define EP_CONDITIONAL        (1 << 0)    ///< Expando is being used as a condition
+/**
+ * enum ExpandoParserFlag - Flags for expando_parse(), e.g. #EP_CONDITIONAL
+ */
+enum ExpandoParserFlag
+{
+  EP_NONE        =       0,  ///< No flags are set
+  EP_CONDITIONAL = 1U << 0,  ///< Expando is being used as a condition
+};
+typedef uint8_t ExpandoParserFlags;
 
 /**
  * struct ExpandoDefinition - Definition of a format string

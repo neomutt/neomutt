@@ -59,21 +59,33 @@ struct Progress;
 /// Length of IMAP sequence buffer
 #define SEQ_LEN 16
 
-typedef uint8_t ImapOpenFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
-#define IMAP_OPEN_NO_FLAGS          0  ///< No flags are set
-#define IMAP_REOPEN_ALLOW     (1 << 0) ///< Allow re-opening a folder upon expunge
-#define IMAP_EXPUNGE_EXPECTED (1 << 1) ///< Messages will be expunged from the server
-#define IMAP_EXPUNGE_PENDING  (1 << 2) ///< Messages on the server have been expunged
-#define IMAP_NEWMAIL_PENDING  (1 << 3) ///< New mail is waiting on the server
-#define IMAP_FLAGS_PENDING    (1 << 4) ///< Flags have changed on the server
-#define IMAP_SYNC_IN_PROGRESS (1 << 5) ///< Sync is in progress, block expunge/newmail processing
+/**
+ * enum ImapOpenFlag - State flags for IMAP mailbox reopen and sync handling
+ */
+enum ImapOpenFlag
+{
+  IMAP_OPEN_NONE        =       0,  ///< No flags are set
+  IMAP_REOPEN_ALLOW     = 1U << 0,  ///< Allow re-opening a folder upon expunge
+  IMAP_EXPUNGE_EXPECTED = 1U << 1,  ///< Messages will be expunged from the server
+  IMAP_EXPUNGE_PENDING  = 1U << 2,  ///< Messages on the server have been expunged
+  IMAP_NEWMAIL_PENDING  = 1U << 3,  ///< New mail is waiting on the server
+  IMAP_FLAGS_PENDING    = 1U << 4,  ///< Flags have changed on the server
+  IMAP_SYNC_IN_PROGRESS = 1U << 5,  ///< Sync is in progress, block expunge/newmail processing
+};
+typedef uint8_t ImapOpenFlags;
 
-typedef uint8_t ImapCmdFlags;          ///< Flags for imap_exec(), e.g. #IMAP_CMD_PASS
-#define IMAP_CMD_NO_FLAGS          0   ///< No flags are set
-#define IMAP_CMD_PASS        (1 << 0)  ///< Command contains a password. Suppress logging
-#define IMAP_CMD_QUEUE       (1 << 1)  ///< Queue a command, do not execute
-#define IMAP_CMD_POLL        (1 << 2)  ///< Poll the tcp connection before running the imap command
-#define IMAP_CMD_SINGLE      (1 << 3)  ///< Run a single command
+/**
+ * enum ImapCmdFlag - Flags for imap_exec(), e.g. #IMAP_CMD_PASS
+ */
+enum ImapCmdFlag
+{
+  IMAP_CMD_NONE   =       0,  ///< No flags are set
+  IMAP_CMD_PASS   = 1U << 0,  ///< Command contains a password. Suppress logging
+  IMAP_CMD_QUEUE  = 1U << 1,  ///< Queue a command, do not execute
+  IMAP_CMD_POLL   = 1U << 2,  ///< Poll the tcp connection before running the imap command
+  IMAP_CMD_SINGLE = 1U << 3,  ///< Run a single command
+};
+typedef uint8_t ImapCmdFlags;
 
 /**
  * enum ImapExecResult - Imap_exec return code
@@ -113,33 +125,36 @@ enum ImapState
 };
 
 /**
- * typedef ImapCapFlags - Capabilities we are interested in
+ * enum ImapCapFlag - Capabilities we are interested in
  *
  * @note This must be kept in the same order as Capabilities.
  */
-typedef uint32_t ImapCapFlags;              ///< Flags, e.g. #IMAP_CAP_IMAP4
-#define IMAP_CAP_NO_FLAGS                0  ///< No flags are set
-#define IMAP_CAP_IMAP4            (1 <<  0) ///< Server supports IMAP4
-#define IMAP_CAP_IMAP4REV1        (1 <<  1) ///< Server supports IMAP4rev1
-#define IMAP_CAP_STATUS           (1 <<  2) ///< Server supports STATUS command
-#define IMAP_CAP_ACL              (1 <<  3) ///< RFC2086: IMAP4 ACL extension
-#define IMAP_CAP_NAMESPACE        (1 <<  4) ///< RFC2342: IMAP4 Namespace
-#define IMAP_CAP_AUTH_CRAM_MD5    (1 <<  5) ///< RFC2195: CRAM-MD5 authentication
-#define IMAP_CAP_AUTH_GSSAPI      (1 <<  6) ///< RFC1731: GSSAPI authentication
-#define IMAP_CAP_AUTH_ANONYMOUS   (1 <<  7) ///< AUTH=ANONYMOUS
-#define IMAP_CAP_AUTH_OAUTHBEARER (1 <<  8) ///< RFC7628: AUTH=OAUTHBEARER
-#define IMAP_CAP_AUTH_XOAUTH2     (1 <<  9) ///< AUTH=XOAUTH2, deprecated but used by OWA
-#define IMAP_CAP_STARTTLS         (1 << 10) ///< RFC2595: STARTTLS
-#define IMAP_CAP_LOGINDISABLED    (1 << 11) ///< RFC2595: LOGINDISABLED
-#define IMAP_CAP_IDLE             (1 << 12) ///< RFC2177: IDLE
-#define IMAP_CAP_SASL_IR          (1 << 13) ///< SASL initial response draft
-#define IMAP_CAP_ENABLE           (1 << 14) ///< RFC5161
-#define IMAP_CAP_CONDSTORE        (1 << 15) ///< RFC7162
-#define IMAP_CAP_QRESYNC          (1 << 16) ///< RFC7162
-#define IMAP_CAP_LIST_EXTENDED    (1 << 17) ///< RFC5258: IMAP4 LIST Command Extensions
-#define IMAP_CAP_COMPRESS         (1 << 18) ///< RFC4978: COMPRESS=DEFLATE
-#define IMAP_CAP_X_GM_EXT_1       (1 << 19) ///< https://developers.google.com/gmail/imap/imap-extensions
-#define IMAP_CAP_ID               (1 << 20) ///< RFC2971: IMAP4 ID extension
+enum ImapCapFlag
+{
+  IMAP_CAP_NONE             =        0,  ///< No flags are set
+  IMAP_CAP_IMAP4            = 1U <<  0,  ///< Server supports IMAP4
+  IMAP_CAP_IMAP4REV1        = 1U <<  1,  ///< Server supports IMAP4rev1
+  IMAP_CAP_STATUS           = 1U <<  2,  ///< Server supports STATUS command
+  IMAP_CAP_ACL              = 1U <<  3,  ///< RFC2086: IMAP4 ACL extension
+  IMAP_CAP_NAMESPACE        = 1U <<  4,  ///< RFC2342: IMAP4 Namespace
+  IMAP_CAP_AUTH_CRAM_MD5    = 1U <<  5,  ///< RFC2195: CRAM-MD5 authentication
+  IMAP_CAP_AUTH_GSSAPI      = 1U <<  6,  ///< RFC1731: GSSAPI authentication
+  IMAP_CAP_AUTH_ANONYMOUS   = 1U <<  7,  ///< AUTH=ANONYMOUS
+  IMAP_CAP_AUTH_OAUTHBEARER = 1U <<  8,  ///< RFC7628: AUTH=OAUTHBEARER
+  IMAP_CAP_AUTH_XOAUTH2     = 1U <<  9,  ///< AUTH=XOAUTH2, deprecated but used by OWA
+  IMAP_CAP_STARTTLS         = 1U << 10,  ///< RFC2595: STARTTLS
+  IMAP_CAP_LOGINDISABLED    = 1U << 11,  ///< RFC2595: LOGINDISABLED
+  IMAP_CAP_IDLE             = 1U << 12,  ///< RFC2177: IDLE
+  IMAP_CAP_SASL_IR          = 1U << 13,  ///< SASL initial response draft
+  IMAP_CAP_ENABLE           = 1U << 14,  ///< RFC5161
+  IMAP_CAP_CONDSTORE        = 1U << 15,  ///< RFC7162
+  IMAP_CAP_QRESYNC          = 1U << 16,  ///< RFC7162
+  IMAP_CAP_LIST_EXTENDED    = 1U << 17,  ///< RFC5258: IMAP4 LIST Command Extensions
+  IMAP_CAP_COMPRESS         = 1U << 18,  ///< RFC4978: COMPRESS=DEFLATE
+  IMAP_CAP_X_GM_EXT_1       = 1U << 19,  ///< https://developers.google.com/gmail/imap/imap-extensions
+  IMAP_CAP_ID               = 1U << 20,  ///< RFC2971: IMAP4 ID extension
+};
+typedef uint32_t ImapCapFlags;
 
 #define IMAP_CAP_ALL             ((1 << 21) - 1)
 

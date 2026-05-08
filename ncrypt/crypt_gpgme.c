@@ -2004,7 +2004,7 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   LOFF_T saved_b_offset;
   size_t saved_b_length;
 
-  if (mutt_is_application_smime(b) == SEC_NO_FLAGS)
+  if (mutt_is_application_smime(b) == SEC_NONE)
     return -1;
 
   if (b->parts)
@@ -2232,8 +2232,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  if (mutt_decode_save_attachment(fp, b, buf_string(tempfile), STATE_NO_FLAGS,
-                                  MUTT_SAVE_NO_FLAGS) != 0)
+  if (mutt_decode_save_attachment(fp, b, buf_string(tempfile), STATE_NONE, MUTT_SAVE_NONE) != 0)
   {
     unlink(buf_string(tempfile));
     goto cleanup;
@@ -3130,7 +3129,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
 
     while ((err = gpgme_op_keylist_next(ctx, &key)) == GPG_ERR_NO_ERROR)
     {
-      KeyFlags flags = KEYFLAG_NO_FLAGS;
+      KeyFlags flags = KEYFLAG_NONE;
 
       if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
         flags |= KEYFLAG_CANENCRYPT;
@@ -3496,7 +3495,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatf
   while (true)
   {
     buf_reset(resp);
-    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0)
+    if (mw_get_field(tag, resp, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -3718,7 +3717,7 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
 
   while ((err = gpgme_op_keylist_next(ctx, &key)) == GPG_ERR_NO_ERROR)
   {
-    KeyFlags flags = KEYFLAG_NO_FLAGS;
+    KeyFlags flags = KEYFLAG_NONE;
 
     if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
       flags |= KEYFLAG_CANENCRYPT;
@@ -3790,7 +3789,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
   OptPgpCheckTrust = false;
 
   struct CryptKeyInfo *key = crypt_ask_for_key(_("Please enter the key ID: "), NULL,
-                                               KEYFLAG_NO_FLAGS, APPLICATION_PGP, NULL);
+                                               KEYFLAG_NONE, APPLICATION_PGP, NULL);
   if (!key)
     goto bail;
   export_keys[0] = key->kobj;

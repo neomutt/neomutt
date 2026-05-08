@@ -75,7 +75,7 @@ int mutt_get_tmp_attachment(struct Body *b)
   struct Buffer *tempfile = buf_pool_get();
   struct MailcapEntry *entry = mailcap_entry_new();
   snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
-  mailcap_lookup(b, type, sizeof(type), entry, MUTT_MC_NO_FLAGS);
+  mailcap_lookup(b, type, sizeof(type), entry, MUTT_MC_NONE);
   mailcap_expand_filename(entry->nametemplate, b->filename, tempfile);
 
   mailcap_entry_free(&entry);
@@ -452,7 +452,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
   if (use_mailcap)
   {
     entry = mailcap_entry_new();
-    enum MailcapLookup mailcap_opt = (mode == MUTT_VA_PAGER) ? MUTT_MC_AUTOVIEW : MUTT_MC_NO_FLAGS;
+    enum MailcapLookup mailcap_opt = (mode == MUTT_VA_PAGER) ? MUTT_MC_AUTOVIEW : MUTT_MC_NONE;
     if (!mailcap_lookup(b, type, sizeof(type), entry, mailcap_opt))
     {
       if ((mode == MUTT_VA_REGULAR) || (mode == MUTT_VA_PAGER))
@@ -644,7 +644,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
         /* in compose mode, just copy the file.  we can't use
          * mutt_decode_attachment() since it assumes the content-encoding has
          * already been applied */
-        if (mutt_save_attachment(fp, b, buf_string(pagerfile), MUTT_SAVE_NO_FLAGS, NULL))
+        if (mutt_save_attachment(fp, b, buf_string(pagerfile), MUTT_SAVE_NONE, NULL))
           goto return_error;
         unlink_pagerfile = true;
       }
@@ -658,7 +658,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
         flags |= STATE_PAGER;
 
       /* Use built-in handler */
-      if (mutt_decode_save_attachment(fp, b, buf_string(pagerfile), flags, MUTT_SAVE_NO_FLAGS))
+      if (mutt_decode_save_attachment(fp, b, buf_string(pagerfile), flags, MUTT_SAVE_NONE))
       {
         goto return_error;
       }
@@ -687,9 +687,8 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
 
     pview.banner = desc;
     pview.flags = MUTT_PAGER_ATTACHMENT |
-                  (is_message ? MUTT_PAGER_MESSAGE : MUTT_PAGER_NO_FLAGS) |
-                  ((use_mailcap && entry->xneomuttnowrap) ? MUTT_PAGER_NOWRAP :
-                                                            MUTT_PAGER_NO_FLAGS);
+                  (is_message ? MUTT_PAGER_MESSAGE : MUTT_PAGER_NONE) |
+                  ((use_mailcap && entry->xneomuttnowrap) ? MUTT_PAGER_NOWRAP : MUTT_PAGER_NONE);
     pview.mode = PAGER_MODE_ATTACH;
 
     rc = mutt_do_pager(&pview, e);
@@ -822,7 +821,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char 
     if (is_flowed)
     {
       if (mutt_save_attachment(fp, b, buf_string(unstuff_tempfile),
-                               MUTT_SAVE_NO_FLAGS, NULL) == -1)
+                               MUTT_SAVE_NONE, NULL) == -1)
       {
         goto bail;
       }
@@ -918,7 +917,7 @@ int mutt_save_attachment(FILE *fp, struct Body *b, const char *path,
 
       char buf[8192] = { 0 };
       struct Message *msg = NULL;
-      CopyHeaderFlags chflags = CH_NO_FLAGS;
+      CopyHeaderFlags chflags = CH_NONE;
       int rc = -1;
 
       struct Email *e_new = b->email;
@@ -935,8 +934,7 @@ int mutt_save_attachment(FILE *fp, struct Body *b, const char *path,
         mailbox_free(&m_att);
         return -1;
       }
-      msg = mx_msg_open_new(m_att, e_new,
-                            is_from(buf, NULL, 0, NULL) ? MUTT_MSG_NO_FLAGS : MUTT_ADD_FROM);
+      msg = mx_msg_open_new(m_att, e_new, is_from(buf, NULL, 0, NULL) ? MUTT_MSG_NONE : MUTT_ADD_FROM);
       if (!msg)
       {
         mx_mbox_close(m_att);
@@ -945,7 +943,7 @@ int mutt_save_attachment(FILE *fp, struct Body *b, const char *path,
       if ((m_att->type == MUTT_MBOX) || (m_att->type == MUTT_MMDF))
         chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= ((m_att->type == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
-      if ((mutt_copy_message_fp(msg->fp, fp, e_new, MUTT_CM_NO_FLAGS, chflags, 0) == 0) &&
+      if ((mutt_copy_message_fp(msg->fp, fp, e_new, MUTT_CM_NONE, chflags, 0) == 0) &&
           (mx_msg_commit(m_att, msg) == 0))
       {
         rc = 0;
@@ -1160,7 +1158,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
     mailcap_expand_filename(entry->nametemplate, sanitized_fname, newfile);
     FREE(&sanitized_fname);
 
-    if (mutt_save_attachment(fp, b, buf_string(newfile), MUTT_SAVE_NO_FLAGS, NULL) == -1)
+    if (mutt_save_attachment(fp, b, buf_string(newfile), MUTT_SAVE_NONE, NULL) == -1)
     {
       goto mailcap_cleanup;
     }
@@ -1235,7 +1233,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
 
     buf_mktemp(newfile);
     if (mutt_decode_save_attachment(fp, b, buf_string(newfile), STATE_PRINTING,
-                                    MUTT_SAVE_NO_FLAGS) == 0)
+                                    MUTT_SAVE_NONE) == 0)
     {
       unlink_newfile = true;
       mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n",

@@ -100,7 +100,7 @@ enum CommandResult parse_ifdef(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
 
   // is the item defined as:
   bool res = cs_subset_lookup(NeoMutt->sub, buf_string(token)) // a variable?

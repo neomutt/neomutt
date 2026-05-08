@@ -115,7 +115,7 @@ void test_expando_nested_if_else_render(void)
   };
 
   struct Buffer *buf = buf_pool_get();
-  expando_render(exp, render, &data_X, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(exp, render, &data_X, MUTT_FORMAT_NONE, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected_X);
 
@@ -126,7 +126,7 @@ void test_expando_nested_if_else_render(void)
   };
 
   buf_reset(buf);
-  expando_render(exp, render, &data_Y, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(exp, render, &data_Y, MUTT_FORMAT_NONE, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected_Y);
 
@@ -137,7 +137,7 @@ void test_expando_nested_if_else_render(void)
   };
 
   buf_reset(buf);
-  expando_render(exp, render, &data_XY, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(exp, render, &data_XY, MUTT_FORMAT_NONE, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected_XY);
 
@@ -148,7 +148,7 @@ void test_expando_nested_if_else_render(void)
   };
 
   buf_reset(buf);
-  expando_render(exp, render, &data_NONE, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(exp, render, &data_NONE, MUTT_FORMAT_NONE, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected_NONE);
 

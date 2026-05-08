@@ -343,7 +343,7 @@ enum CommandResult parse_attr_spec(const struct Command *cmd, struct Buffer *lin
     goto done;
   }
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
 
   int attr = mutt_map_get_value(buf_string(token), AttributeNames);
   if (attr == -1)

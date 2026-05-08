@@ -94,7 +94,7 @@ void test_expando_empty_if_else_render(void)
   };
 
   struct Buffer *buf = buf_pool_get();
-  expando_render(exp, render, &data1, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(exp, render, &data1, MUTT_FORMAT_NONE, buf->dsize, buf);
 
   const char *expected1 = "3";
   TEST_CHECK_STR_EQ(buf_string(buf), expected1);
@@ -105,7 +105,7 @@ void test_expando_empty_if_else_render(void)
   };
 
   buf_reset(buf);
-  expando_render(exp, render, &data2, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(exp, render, &data2, MUTT_FORMAT_NONE, buf->dsize, buf);
 
   const char *expected2 = "";
   TEST_CHECK_STR_EQ(buf_string(buf), expected2);

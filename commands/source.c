@@ -132,7 +132,7 @@ int source_rc(const char *rcfile_path, struct ParseContext *pc, struct ParseErro
       currentline = mutt_str_dup(line);
       if (!currentline)
         continue;
-      mutt_ch_convert_string(&currentline, c_config_charset, c_charset, MUTT_ICONV_NO_FLAGS);
+      mutt_ch_convert_string(&currentline, c_config_charset, c_charset, MUTT_ICONV_NONE);
     }
     else
     {

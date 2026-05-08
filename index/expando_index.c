@@ -723,8 +723,8 @@ static void email_index_hook(const struct ExpandoNode *node, void *data,
   if (!exp)
     return;
 
-  expando_filter(exp, IndexRenderCallbacks, data, MUTT_FORMAT_NO_FLAGS,
-                 buf->dsize, NeoMutt->env, buf);
+  expando_filter(exp, IndexRenderCallbacks, data, MUTT_FORMAT_NONE, buf->dsize,
+                 NeoMutt->env, buf);
 }
 
 /**
@@ -1385,7 +1385,7 @@ static void envelope_sender(const struct ExpandoNode *node, void *data,
 
   char tmp[128] = { 0 };
 
-  make_from(e->env, tmp, sizeof(tmp), false, MUTT_FORMAT_NO_FLAGS);
+  make_from(e->env, tmp, sizeof(tmp), false, MUTT_FORMAT_NONE);
 
   if (flags & MUTT_FORMAT_INDEX)
     node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);

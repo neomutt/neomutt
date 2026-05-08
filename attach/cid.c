@@ -212,7 +212,7 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
     goto bail;
 
   /* Read in lines from filename into buf */
-  while ((buf = mutt_file_read_line(buf, &blen, fp_in, NULL, MUTT_RL_NO_FLAGS)) != NULL)
+  while ((buf = mutt_file_read_line(buf, &blen, fp_in, NULL, MUTT_RL_NONE)) != NULL)
   {
     if (mutt_str_len(buf) == 0)
     {

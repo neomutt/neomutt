@@ -50,6 +50,6 @@ const struct Command IndexCommands[] = {
   { "subjectrx",           CMD_NONE, NULL, "subject-regex",       NULL, NULL, CF_SYNONYM },
   { "unsubjectrx",         CMD_NONE, NULL, "unsubject-regex",     NULL, NULL, CF_SYNONYM },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };

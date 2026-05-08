@@ -575,7 +575,7 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
     buf_pool_release(&tmp);
   }
 
-  if ((*opt == MUTT_SAVE_NO_FLAGS) && (access(buf_string(fname), F_OK) == 0))
+  if ((*opt == MUTT_SAVE_NONE) && (access(buf_string(fname), F_OK) == 0))
   {
     char buf[4096] = { 0 };
     snprintf(buf, sizeof(buf), "%s - %s", buf_string(fname),
@@ -803,7 +803,7 @@ void mutt_sleep(short s)
 void mutt_encode_path(struct Buffer *buf, const char *src)
 {
   char *p = mutt_str_dup(src);
-  int rc = mutt_ch_convert_string(&p, cc_charset(), "us-ascii", MUTT_ICONV_NO_FLAGS);
+  int rc = mutt_ch_convert_string(&p, cc_charset(), "us-ascii", MUTT_ICONV_NONE);
   size_t len = buf_strcpy(buf, (rc == 0) ? NONULL(p) : NONULL(src));
 
   /* convert the path to POSIX "Portable Filename Character Set" */

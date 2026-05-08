@@ -37,25 +37,31 @@ struct EmailArray;
 struct Envelope;
 struct Mailbox;
 
-typedef uint32_t SendFlags;             ///< Flags for mutt_send_message(), e.g. #SEND_REPLY
-#define SEND_NO_FLAGS               0   ///< No flags are set
-#define SEND_REPLY            (1 << 0)  ///< Reply to sender
-#define SEND_GROUP_REPLY      (1 << 1)  ///< Reply to all
-#define SEND_LIST_REPLY       (1 << 2)  ///< Reply to mailing list
-#define SEND_FORWARD          (1 << 3)  ///< Forward email
-#define SEND_POSTPONED        (1 << 4)  ///< Recall a postponed email
-#define SEND_BATCH            (1 << 5)  ///< Send email in batch mode (without user interaction)
-#define SEND_KEY              (1 << 6)  ///< Mail a PGP public key
-#define SEND_RESEND           (1 << 7)  ///< Reply using the current email as a template
-#define SEND_POSTPONED_FCC    (1 << 8)  ///< Used by mutt_get_postponed() to signal that the Mutt-Fcc header field was present
-#define SEND_NO_FREE_HEADER   (1 << 9)  ///< Used by the -E flag
-#define SEND_DRAFT_FILE       (1 << 10) ///< Used by the -H flag
-#define SEND_TO_SENDER        (1 << 11) ///< Compose new email to sender
-#define SEND_GROUP_CHAT_REPLY (1 << 12) ///< Reply to all recipients preserving To/Cc
-#define SEND_NEWS             (1 << 13) ///< Reply to a news article
-#define SEND_REVIEW_TO        (1 << 14) ///< Allow the user to edit the To field
-#define SEND_CONSUMED_STDIN   (1 << 15) ///< stdin has been read; don't read it twice
-#define SEND_CLI_CRYPTO       (1 << 16) ///< Enable message security in modes that by default don't enable it
+/**
+ * enum SendFlag - Flags for mutt_send_message(), e.g. #SEND_REPLY
+ */
+enum SendFlag
+{
+  SEND_NONE             =        0,  ///< No flags are set
+  SEND_REPLY            = 1U <<  0,  ///< Reply to sender
+  SEND_GROUP_REPLY      = 1U <<  1,  ///< Reply to all
+  SEND_LIST_REPLY       = 1U <<  2,  ///< Reply to mailing list
+  SEND_FORWARD          = 1U <<  3,  ///< Forward email
+  SEND_POSTPONED        = 1U <<  4,  ///< Recall a postponed email
+  SEND_BATCH            = 1U <<  5,  ///< Send email in batch mode (without user interaction)
+  SEND_KEY              = 1U <<  6,  ///< Mail a PGP public key
+  SEND_RESEND           = 1U <<  7,  ///< Reply using the current email as a template
+  SEND_POSTPONED_FCC    = 1U <<  8,  ///< Used by mutt_get_postponed() to signal that the Mutt-Fcc header field was present
+  SEND_NO_FREE_HEADER   = 1U <<  9,  ///< Used by the -E flag
+  SEND_DRAFT_FILE       = 1U << 10,  ///< Used by the -H flag
+  SEND_TO_SENDER        = 1U << 11,  ///< Compose new email to sender
+  SEND_GROUP_CHAT_REPLY = 1U << 12,  ///< Reply to all recipients preserving To/Cc
+  SEND_NEWS             = 1U << 13,  ///< Reply to a news article
+  SEND_REVIEW_TO        = 1U << 14,  ///< Allow the user to edit the To field
+  SEND_CONSUMED_STDIN   = 1U << 15,  ///< stdin has been read; don't read it twice
+  SEND_CLI_CRYPTO       = 1U << 16,  ///< Enable message security in modes that by default don't enable it
+};
+typedef uint32_t SendFlags;
 
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *env_cur, struct ConfigSubset *sub);
 struct Address *mutt_default_from(struct ConfigSubset *sub);

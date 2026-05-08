@@ -29,14 +29,20 @@
 struct Buffer;
 struct ExpandoNode;
 
-typedef uint8_t MuttFormatFlags;         ///< Flags for expando_render(), e.g. #MUTT_FORMAT_FORCESUBJ
-#define MUTT_FORMAT_NO_FLAGS          0  ///< No flags are set
-#define MUTT_FORMAT_FORCESUBJ   (1 << 0) ///< Print the subject even if unchanged
-#define MUTT_FORMAT_TREE        (1 << 1) ///< Draw the thread tree
-#define MUTT_FORMAT_STAT_FILE   (1 << 2) ///< Used by attach_format_str
-#define MUTT_FORMAT_ARROWCURSOR (1 << 3) ///< Reserve space for arrow_cursor
-#define MUTT_FORMAT_INDEX       (1 << 4) ///< This is a main index entry
-#define MUTT_FORMAT_PLAIN       (1 << 5) ///< Do not prepend DISP_TO, DISP_CC ...
+/**
+ * enum MuttFormatFlag - Flags for expando_render(), e.g. #MUTT_FORMAT_FORCESUBJ
+ */
+enum MuttFormatFlag
+{
+  MUTT_FORMAT_NONE        =       0,  ///< No flags are set
+  MUTT_FORMAT_FORCESUBJ   = 1U << 0,  ///< Print the subject even if unchanged
+  MUTT_FORMAT_TREE        = 1U << 1,  ///< Draw the thread tree
+  MUTT_FORMAT_STAT_FILE   = 1U << 2,  ///< Used by attach_format_str
+  MUTT_FORMAT_ARROWCURSOR = 1U << 3,  ///< Reserve space for arrow_cursor
+  MUTT_FORMAT_INDEX       = 1U << 4,  ///< This is a main index entry
+  MUTT_FORMAT_PLAIN       = 1U << 5,  ///< Do not prepend DISP_TO, DISP_CC ...
+};
+typedef uint8_t MuttFormatFlags;
 
 /**
  * @defgroup expando_get_string_api Expando Get String API

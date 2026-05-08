@@ -471,7 +471,7 @@ int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
   do
   {
     window_redraw(NULL);
-    event = mutt_getch(GETCH_NO_FLAGS);
+    event = mutt_getch(GETCH_NONE);
   } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
 
   win = msgcont_pop_window();

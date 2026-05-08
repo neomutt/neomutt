@@ -697,7 +697,7 @@ static int text_plain_handler(struct Body *b_email, struct State *state)
   size_t sz = 0;
 
   const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
-  while ((buf = mutt_file_read_line(buf, &sz, state->fp_in, NULL, MUTT_RL_NO_FLAGS)))
+  while ((buf = mutt_file_read_line(buf, &sz, state->fp_in, NULL, MUTT_RL_NONE)))
   {
     if (!mutt_str_equal(buf, "-- ") && c_text_flowed)
     {

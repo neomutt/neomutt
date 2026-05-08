@@ -73,7 +73,7 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1---";
     struct Buffer *buf = buf_pool_get();
-    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NONE, 8, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
@@ -106,7 +106,7 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1--------";
     struct Buffer *buf = buf_pool_get();
-    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NONE, 13, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
@@ -141,7 +141,7 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1tex";
     struct Buffer *buf = buf_pool_get();
-    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NONE, 8, buf);
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
     expando_free(&exp);
@@ -175,7 +175,7 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1---text2";
     struct Buffer *buf = buf_pool_get();
-    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NONE, 13, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
@@ -210,7 +210,7 @@ void test_expando_padding_render(void)
 
     const char *expected = "textext2";
     struct Buffer *buf = buf_pool_get();
-    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NONE, 8, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
@@ -245,7 +245,7 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1---text2";
     struct Buffer *buf = buf_pool_get();
-    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NONE, 13, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
@@ -280,7 +280,7 @@ void test_expando_padding_render(void)
 
     const char *expected = "text2";
     struct Buffer *buf = buf_pool_get();
-    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 5, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NONE, 5, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 

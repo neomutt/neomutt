@@ -72,7 +72,7 @@ const struct Command KeyCommands[] = {
         N_("unmacro { * | <map>[,<map> ... ] } [ <key> ]"),
         "configuration.html#unmacro" },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };
 

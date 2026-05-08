@@ -83,19 +83,25 @@ struct NeoMutt;
 struct State;
 struct SubMenu;
 
-typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
-#define SEC_NO_FLAGS                  0   ///< No flags are set
-#define SEC_ENCRYPT             (1 << 0)  ///< Email is encrypted
-#define SEC_SIGN                (1 << 1)  ///< Email is signed
-#define SEC_GOODSIGN            (1 << 2)  ///< Email has a valid signature
-#define SEC_BADSIGN             (1 << 3)  ///< Email has a bad signature
-#define SEC_PARTSIGN            (1 << 4)  ///< Not all parts of the email is signed
-#define SEC_SIGNOPAQUE          (1 << 5)  ///< Email has an opaque signature (encrypted)
-#define SEC_KEYBLOCK            (1 << 6)  ///< Email has a key attached
-#define SEC_INLINE              (1 << 7)  ///< Email has an inline signature
-#define SEC_OPPENCRYPT          (1 << 8)  ///< Opportunistic encrypt mode
-#define SEC_AUTOCRYPT           (1 << 9)  ///< (Autocrypt) Message will be, or was Autocrypt encrypt+signed
-#define SEC_AUTOCRYPT_OVERRIDE  (1 << 10) ///< (Autocrypt) Indicates manual set/unset of encryption
+/**
+ * enum SecurityFlag - Flags describing an email's cryptographic state
+ */
+enum SecurityFlag
+{
+  SEC_NONE               =       0,  ///< No flags are set
+  SEC_ENCRYPT            = 1U << 0,  ///< Email is encrypted
+  SEC_SIGN               = 1U << 1,  ///< Email is signed
+  SEC_GOODSIGN           = 1U << 2,  ///< Email has a valid signature
+  SEC_BADSIGN            = 1U << 3,  ///< Email has a bad signature
+  SEC_PARTSIGN           = 1U << 4,  ///< Not all parts of the email is signed
+  SEC_SIGNOPAQUE         = 1U << 5,  ///< Email has an opaque signature (encrypted)
+  SEC_KEYBLOCK           = 1U << 6,  ///< Email has a key attached
+  SEC_INLINE             = 1U << 7,  ///< Email has an inline signature
+  SEC_OPPENCRYPT         = 1U << 8,  ///< Opportunistic encrypt mode
+  SEC_AUTOCRYPT          = 1U << 9,  ///< (Autocrypt) Message will be, or was Autocrypt encrypt+signed
+  SEC_AUTOCRYPT_OVERRIDE = 1U << 10, ///< (Autocrypt) Indicates manual set/unset of encryption
+};
+typedef uint16_t SecurityFlags;
 
 #define APPLICATION_PGP         (1 << 11) ///< Use PGP to encrypt/sign
 #define APPLICATION_SMIME       (1 << 12) ///< Use SMIME to encrypt/sign
@@ -132,19 +138,25 @@ typedef uint16_t SecurityFlags;           ///< Flags, e.g. #SEC_ENCRYPT
 #define WithCrypto 0
 #endif
 
-typedef uint16_t KeyFlags;                  ///< Flags describing PGP/SMIME keys, e.g. #KEYFLAG_CANSIGN
-#define KEYFLAG_NO_FLAGS                0   ///< No flags are set
-#define KEYFLAG_CANSIGN           (1 << 0)  ///< Key is suitable for signing
-#define KEYFLAG_CANENCRYPT        (1 << 1)  ///< Key is suitable for encryption
-#define KEYFLAG_ISX509            (1 << 2)  ///< Key is an X.509 key
-#define KEYFLAG_SECRET            (1 << 7)  ///< Key is a secret key
-#define KEYFLAG_EXPIRED           (1 << 8)  ///< Key is expired
-#define KEYFLAG_REVOKED           (1 << 9)  ///< Key is revoked
-#define KEYFLAG_DISABLED          (1 << 10) ///< Key is marked disabled
-#define KEYFLAG_SUBKEY            (1 << 11) ///< Key is a subkey
-#define KEYFLAG_CRITICAL          (1 << 12) ///< Key is marked critical
-#define KEYFLAG_PREFER_ENCRYPTION (1 << 13) ///< Key's owner prefers encryption
-#define KEYFLAG_PREFER_SIGNING    (1 << 14) ///< Key's owner prefers signing
+/**
+ * enum KeyFlag - Flags describing PGP/SMIME keys
+ */
+enum KeyFlag
+{
+  KEYFLAG_NONE              =        0,  ///< No flags are set
+  KEYFLAG_CANSIGN           = 1U <<  0,  ///< Key is suitable for signing
+  KEYFLAG_CANENCRYPT        = 1U <<  1,  ///< Key is suitable for encryption
+  KEYFLAG_ISX509            = 1U <<  2,  ///< Key is an X.509 key
+  KEYFLAG_SECRET            = 1U <<  7,  ///< Key is a secret key
+  KEYFLAG_EXPIRED           = 1U <<  8,  ///< Key is expired
+  KEYFLAG_REVOKED           = 1U <<  9,  ///< Key is revoked
+  KEYFLAG_DISABLED          = 1U << 10,  ///< Key is marked disabled
+  KEYFLAG_SUBKEY            = 1U << 11,  ///< Key is a subkey
+  KEYFLAG_CRITICAL          = 1U << 12,  ///< Key is marked critical
+  KEYFLAG_PREFER_ENCRYPTION = 1U << 13,  ///< Key's owner prefers encryption
+  KEYFLAG_PREFER_SIGNING    = 1U << 14,  ///< Key's owner prefers signing
+};
+typedef uint16_t KeyFlags;
 
 #define KEYFLAG_CANTUSE (KEYFLAG_DISABLED | KEYFLAG_REVOKED | KEYFLAG_EXPIRED)
 #define KEYFLAG_RESTRICTIONS (KEYFLAG_CANTUSE | KEYFLAG_CRITICAL)

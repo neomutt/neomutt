@@ -139,11 +139,11 @@ enum CommandResult parse_tag_formats(const struct Command *cmd, struct Buffer *l
 
   while (MoreArgs(line))
   {
-    parse_extract_token(tag, line, TOKEN_NO_FLAGS);
+    parse_extract_token(tag, line, TOKEN_NONE);
     if (buf_is_empty(tag))
       continue;
 
-    parse_extract_token(fmt, line, TOKEN_NO_FLAGS);
+    parse_extract_token(fmt, line, TOKEN_NONE);
 
     /* avoid duplicates */
     const char *tmp = mutt_hash_find(mod_data->tag_formats, buf_string(fmt));
@@ -191,11 +191,11 @@ enum CommandResult parse_tag_transforms(const struct Command *cmd, struct Buffer
 
   while (MoreArgs(line))
   {
-    parse_extract_token(tag, line, TOKEN_NO_FLAGS);
+    parse_extract_token(tag, line, TOKEN_NONE);
     if (buf_is_empty(tag))
       continue;
 
-    parse_extract_token(trans, line, TOKEN_NO_FLAGS);
+    parse_extract_token(trans, line, TOKEN_NONE);
     const char *trn = buf_string(trans);
 
     /* avoid duplicates */
@@ -295,6 +295,6 @@ const struct Command EmailCommands[] = {
   { "unhdr_order",         CMD_NONE, NULL, "unheader-order",      NULL, NULL, CF_SYNONYM },
   { "unmailto_allow",      CMD_NONE, NULL, "unmailto-allow",      NULL, NULL, CF_SYNONYM },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };

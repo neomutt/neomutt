@@ -296,21 +296,21 @@ bool test_dump_config_neo(void)
 
     // Degenerate tests
 
-    dump_config_neo(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(NULL, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, NULL, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, NULL, &buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, NULL)");
+    dump_config_neo(NULL, he, buf_val, buf_init, CS_DUMP_NONE, fp);
+    TEST_CHECK_(1, "dump_config_neo(NULL, he, &buf_val, &buf_init, CS_DUMP_NONE, fp)");
+    dump_config_neo(cs, NULL, buf_val, buf_init, CS_DUMP_NONE, fp);
+    TEST_CHECK_(1, "dump_config_neo(cs, NULL, &buf_val, &buf_init, CS_DUMP_NONE, fp)");
+    dump_config_neo(cs, he, NULL, buf_init, CS_DUMP_NONE, fp);
+    TEST_CHECK_(1, "dump_config_neo(cs, he, NULL, &buf_init, CS_DUMP_NONE, fp)");
+    dump_config_neo(cs, he, buf_val, NULL, CS_DUMP_NONE, fp);
+    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, NULL, CS_DUMP_NONE, fp)");
+    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NONE, NULL);
+    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NONE, NULL)");
 
     // Normal tests
 
-    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
+    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NONE, fp);
+    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NONE, fp)");
 
     dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_ONLY_CHANGED, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_ONLY_CHANGED, fp)");
@@ -322,8 +322,8 @@ bool test_dump_config_neo(void)
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_SHOW_DEFAULTS, fp)");
 
     he = mutt_hash_find_elem(cs->hash, "Damson");
-    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
-    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
+    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NONE, fp);
+    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NONE, fp)");
 
     fclose(fp);
     buf_pool_release(&buf_val);
@@ -351,20 +351,20 @@ bool test_dump_config(void)
 
     // Degenerate tests
 
-    TEST_CHECK(!dump_config(NULL, &hea, CS_DUMP_NO_FLAGS, fp));
-    TEST_CHECK(!dump_config(cs, NULL, CS_DUMP_NO_FLAGS, fp));
-    TEST_CHECK(!dump_config(cs, &hea, CS_DUMP_NO_FLAGS, NULL));
+    TEST_CHECK(!dump_config(NULL, &hea, CS_DUMP_NONE, fp));
+    TEST_CHECK(!dump_config(cs, NULL, CS_DUMP_NONE, fp));
+    TEST_CHECK(!dump_config(cs, &hea, CS_DUMP_NONE, NULL));
 
     // Normal tests
 
-    TEST_CHECK(dump_config(cs, &hea, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(dump_config(cs, &hea, CS_DUMP_NONE, fp));
     TEST_CHECK(dump_config(cs, &hea, CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp));
     TEST_CHECK(dump_config(cs, &hea, CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp));
     TEST_CHECK(dump_config(cs, &hea, CS_DUMP_SHOW_DOCS | CS_DUMP_LINK_DOCS, fp));
     TEST_CHECK(dump_config(cs, &hea, CS_DUMP_SHOW_DISABLED, fp));
 
     struct ConfigSet *cs_bad = cs_new(30);
-    TEST_CHECK(!dump_config(cs_bad, &hea, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(!dump_config(cs_bad, &hea, CS_DUMP_NONE, fp));
 
     ARRAY_FREE(&hea);
     fclose(fp);

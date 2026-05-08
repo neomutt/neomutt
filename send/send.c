@@ -197,7 +197,7 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
     if (!buf_is_empty(buf))
       buf_addstr(buf, ", ");
 
-    if (mw_get_field(field, buf, MUTT_COMP_NO_FLAGS, HC_ALIAS, &CompleteAliasOps, NULL) != 0)
+    if (mw_get_field(field, buf, MUTT_COMP_NONE, HC_ALIAS, &CompleteAliasOps, NULL) != 0)
     {
       rc = -1;
       goto done;
@@ -241,7 +241,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     else
       buf_reset(buf);
 
-    if (mw_get_field("Newsgroups: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0)
+    if (mw_get_field("Newsgroups: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -253,8 +253,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
       buf_reset(buf);
 
     const bool c_ask_followup_to = cs_subset_bool(sub, "ask_followup_to");
-    if (c_ask_followup_to && (mw_get_field("Followup-To: ", buf, MUTT_COMP_NO_FLAGS,
-                                           HC_OTHER, NULL, NULL) != 0))
+    if (c_ask_followup_to &&
+        (mw_get_field("Followup-To: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0))
     {
       goto done;
     }
@@ -268,7 +268,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
     const bool c_ask_x_comment_to = cs_subset_bool(sub, "ask_x_comment_to");
     if (c_x_comment_to && c_ask_x_comment_to &&
-        (mw_get_field("X-Comment-To: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0))
+        (mw_get_field("X-Comment-To: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0))
     {
       goto done;
     }
@@ -344,7 +344,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     }
   }
 
-  if ((mw_get_field(_("Subject: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
+  if ((mw_get_field(_("Subject: "), buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0) ||
       (buf_is_empty(buf) &&
        (query_quadoption(_("No subject, abort?"), sub, "abort_nosubject") != MUTT_NO)))
   {
@@ -468,8 +468,7 @@ void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 
   struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, -1, c_forward_attribution_intro, NULL, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, -1, c_forward_attribution_intro, NULL, -1, e, MUTT_FORMAT_NONE, NULL);
   setlocale(LC_TIME, "");
   fputs(buf_string(buf), fp);
   fputs("\n\n", fp);
@@ -493,7 +492,7 @@ void mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub)
   struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
   mutt_make_string(buf, -1, c_forward_attribution_trailer, NULL, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
+                   MUTT_FORMAT_NONE, NULL);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
   fputs(buf_string(buf), fp);
@@ -514,7 +513,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
                            struct ConfigSubset *sub)
 {
   CopyHeaderFlags chflags = CH_DECODE;
-  CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
+  CopyMessageFlags cmflags = MUTT_CM_NONE;
 
   struct Message *msg = mx_msg_open(m, e);
   if (!msg)
@@ -653,7 +652,7 @@ static void format_attribution(const struct Expando *exp, struct Email *e,
 
   struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, -1, exp, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, -1, exp, NULL, -1, e, MUTT_FORMAT_NONE, NULL);
   setlocale(LC_TIME, "");
   fputs(buf_string(buf), fp_out);
   fputc('\n', fp_out);
@@ -698,7 +697,7 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
 
   struct Buffer *buf = buf_pool_get();
 
-  expando_filter(c_greeting, GreetingRenderCallbacks, e, MUTT_FORMAT_NO_FLAGS,
+  expando_filter(c_greeting, GreetingRenderCallbacks, e, MUTT_FORMAT_NONE,
                  buf->dsize, NeoMutt->env, buf);
 
   fputs(buf_string(buf), fp_out);
@@ -998,7 +997,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct Con
 
   struct Buffer *buf = buf_pool_get();
   /* set the default subject for the message. */
-  mutt_make_string(buf, -1, c_forward_format, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, -1, c_forward_format, NULL, -1, e, MUTT_FORMAT_NONE, NULL);
   mutt_env_set_subject(env, buf_string(buf));
   buf_pool_release(&buf);
 }
@@ -1792,8 +1791,7 @@ full_fcc:
         case 2: /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
-          rc = mw_enter_fname(_("Fcc mailbox"), fcc, true, m, false, NULL, NULL,
-                              MUTT_SEL_NO_FLAGS);
+          rc = mw_enter_fname(_("Fcc mailbox"), fcc, true, m, false, NULL, NULL, MUTT_SEL_NONE);
           if ((rc == -1) || buf_is_empty(fcc))
           {
             rc = 0;
@@ -2585,7 +2583,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     /* No permissible mechanisms found.  Don't sign or encrypt. */
     if (!(e_templ->security & (APPLICATION_SMIME | APPLICATION_PGP)))
-      e_templ->security = SEC_NO_FLAGS;
+      e_templ->security = SEC_NONE;
   }
 
   /* Deal with the corner case where the crypto module backend is not available.
@@ -2594,7 +2592,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   if (e_templ->security && !crypt_has_module_backend(e_templ->security))
   {
     mutt_error(_("No crypto backend configured.  Disabling message security setting."));
-    e_templ->security = SEC_NO_FLAGS;
+    e_templ->security = SEC_NONE;
   }
 
   /* specify a default fcc.  if we are in batchmode, only save a copy of

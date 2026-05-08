@@ -36,7 +36,7 @@ void test_mutt_file_read_line(void)
     size_t size = 0;
     FILE *fp = fopen("/dev/null", "r");
     int line_num = 0;
-    TEST_CHECK(!mutt_file_read_line(NULL, &size, fp, &line_num, MUTT_RL_NO_FLAGS));
+    TEST_CHECK(!mutt_file_read_line(NULL, &size, fp, &line_num, MUTT_RL_NONE));
     fclose(fp);
   }
 
@@ -44,7 +44,7 @@ void test_mutt_file_read_line(void)
     FILE *fp = fopen("/dev/null", "r");
     char *line = strdup("apple");
     int line_num = 0;
-    TEST_CHECK(!mutt_file_read_line(line, NULL, fp, &line_num, MUTT_RL_NO_FLAGS));
+    TEST_CHECK(!mutt_file_read_line(line, NULL, fp, &line_num, MUTT_RL_NONE));
     free(line);
     fclose(fp);
   }
@@ -53,7 +53,7 @@ void test_mutt_file_read_line(void)
     size_t size = 0;
     char *line = strdup("apple");
     int line_num = 0;
-    TEST_CHECK(!mutt_file_read_line(line, &size, NULL, &line_num, MUTT_RL_NO_FLAGS));
+    TEST_CHECK(!mutt_file_read_line(line, &size, NULL, &line_num, MUTT_RL_NONE));
     free(line);
   }
 
@@ -61,7 +61,7 @@ void test_mutt_file_read_line(void)
     size_t size = 0;
     char *line = strdup("apple");
     FILE *fp = fopen("/dev/null", "r");
-    TEST_CHECK(!mutt_file_read_line(line, &size, fp, NULL, MUTT_RL_NO_FLAGS));
+    TEST_CHECK(!mutt_file_read_line(line, &size, fp, NULL, MUTT_RL_NONE));
     fclose(fp);
   }
 }

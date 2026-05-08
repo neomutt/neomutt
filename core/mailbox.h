@@ -53,21 +53,24 @@ enum MailboxType
 };
 
 /**
- * ACL Rights - These show permission to...
+ * enum AclFlag - Mailbox ACL rights
  */
-typedef uint16_t AclFlags;          ///< Flags, e.g. #MUTT_ACL_ADMIN
-#define MUTT_ACL_NO_FLAGS       0   ///< No flags are set
-#define MUTT_ACL_ADMIN   (1 <<  0)  ///< Administer the account (get/set permissions)
-#define MUTT_ACL_CREATE  (1 <<  1)  ///< Create a mailbox
-#define MUTT_ACL_DELETE  (1 <<  2)  ///< Delete a message
-#define MUTT_ACL_DELMX   (1 <<  3)  ///< Delete a mailbox
-#define MUTT_ACL_EXPUNGE (1 <<  4)  ///< Expunge messages
-#define MUTT_ACL_INSERT  (1 <<  5)  ///< Add/copy into the mailbox (used when editing a message)
-#define MUTT_ACL_LOOKUP  (1 <<  6)  ///< Lookup mailbox (visible to 'list')
-#define MUTT_ACL_POST    (1 <<  7)  ///< Post (submit messages to the server)
-#define MUTT_ACL_READ    (1 <<  8)  ///< Read the mailbox
-#define MUTT_ACL_SEEN    (1 <<  9)  ///< Change the 'seen' status of a message
-#define MUTT_ACL_WRITE   (1 << 10)  ///< Write to a message (for flagging or linking threads)
+enum AclFlag
+{
+  MUTT_ACL_NONE    =        0,  ///< No flags are set
+  MUTT_ACL_ADMIN   = 1U <<  0,  ///< Administer the account (get/set permissions)
+  MUTT_ACL_CREATE  = 1U <<  1,  ///< Create a mailbox
+  MUTT_ACL_DELETE  = 1U <<  2,  ///< Delete a message
+  MUTT_ACL_DELMX   = 1U <<  3,  ///< Delete a mailbox
+  MUTT_ACL_EXPUNGE = 1U <<  4,  ///< Expunge messages
+  MUTT_ACL_INSERT  = 1U <<  5,  ///< Add/copy into the mailbox (used when editing a message)
+  MUTT_ACL_LOOKUP  = 1U <<  6,  ///< Lookup mailbox (visible to 'list')
+  MUTT_ACL_POST    = 1U <<  7,  ///< Post (submit messages to the server)
+  MUTT_ACL_READ    = 1U <<  8,  ///< Read the mailbox
+  MUTT_ACL_SEEN    = 1U <<  9,  ///< Change the 'seen' status of a message
+  MUTT_ACL_WRITE   = 1U << 10,  ///< Write to a message (for flagging or linking threads)
+};
+typedef uint16_t AclFlags;
 
 #define MUTT_ACL_ALL    ((1 << 11) - 1) ///< All permissions
 

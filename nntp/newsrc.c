@@ -560,7 +560,7 @@ void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *cac)
 
   account_to_url(cac, &url);
   url.path = mutt_str_dup(buf);
-  url_tostring(&url, buf, buflen, U_NO_FLAGS);
+  url_tostring(&url, buf, buflen, U_NONE);
   FREE(&url.path);
 }
 
@@ -1035,7 +1035,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   {
     const struct Expando *c_newsrc = cs_subset_expando(NeoMutt->sub, "newsrc");
     struct Buffer *buf = buf_pool_get();
-    expando_filter(c_newsrc, NntpRenderCallbacks, adata, MUTT_FORMAT_NO_FLAGS,
+    expando_filter(c_newsrc, NntpRenderCallbacks, adata, MUTT_FORMAT_NONE,
                    buf->dsize, NeoMutt->env, buf);
     expand_path(buf, false);
     adata->newsrc_file = buf_strdup(buf);

@@ -333,7 +333,7 @@ int mutt_ch_convert_nonmime_string(const struct Slist *const assumed_charset,
     char *fromcode = MUTT_MEM_MALLOC(n + 1, char);
     mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_strn_dup(u, ulen);
-    int m = mutt_ch_convert_string(&s, fromcode, charset, MUTT_ICONV_NO_FLAGS);
+    int m = mutt_ch_convert_string(&s, fromcode, charset, MUTT_ICONV_NONE);
     FREE(&fromcode);
     if (m == 0)
     {
@@ -785,7 +785,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
     return -1;
 
   int rc = 0;
-  iconv_t cd = mutt_ch_iconv_open(to, from, MUTT_ICONV_NO_FLAGS);
+  iconv_t cd = mutt_ch_iconv_open(to, from, MUTT_ICONV_NONE);
   if (!iconv_t_valid(cd))
     return -1;
 
@@ -897,7 +897,7 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
     }
   }
 
-  iconv_t cd = mutt_ch_iconv_open(cs, cs, MUTT_ICONV_NO_FLAGS);
+  iconv_t cd = mutt_ch_iconv_open(cs, cs, MUTT_ICONV_NONE);
   if (iconv_t_valid(cd))
   {
     return true;
@@ -1109,7 +1109,7 @@ char *mutt_ch_choose(const char *fromcode, const struct Slist *charsets,
 
     size_t n = mutt_str_len(t);
     char *s = mutt_strn_dup(u, ulen);
-    const int rc = d ? mutt_ch_convert_string(&s, fromcode, t, MUTT_ICONV_NO_FLAGS) :
+    const int rc = d ? mutt_ch_convert_string(&s, fromcode, t, MUTT_ICONV_NONE) :
                        mutt_ch_check(s, ulen, fromcode, t);
     if (rc)
     {

@@ -36,13 +36,13 @@ void test_mutt_file_iter_line(void)
 
   {
     FILE *fp = fopen("/dev/null", "r");
-    TEST_CHECK(!mutt_file_iter_line(NULL, fp, MUTT_RL_NO_FLAGS));
+    TEST_CHECK(!mutt_file_iter_line(NULL, fp, MUTT_RL_NONE));
     fclose(fp);
   }
 
   {
     struct MuttFileIter muttfileiter = { 0 };
-    TEST_CHECK(!mutt_file_iter_line(&muttfileiter, NULL, MUTT_RL_NO_FLAGS));
+    TEST_CHECK(!mutt_file_iter_line(&muttfileiter, NULL, MUTT_RL_NONE));
   }
 
   {
@@ -53,7 +53,7 @@ void test_mutt_file_iter_line(void)
     bool res;
     for (int i = 0; file_lines[i]; i++)
     {
-      res = mutt_file_iter_line(&iter, fp, MUTT_RL_NO_FLAGS);
+      res = mutt_file_iter_line(&iter, fp, MUTT_RL_NONE);
       if (!TEST_CHECK(res))
       {
         TEST_MSG("Expected: true");
@@ -66,7 +66,7 @@ void test_mutt_file_iter_line(void)
         TEST_MSG("Actual: %d", iter.line_num);
       }
     }
-    res = mutt_file_iter_line(&iter, fp, MUTT_RL_NO_FLAGS);
+    res = mutt_file_iter_line(&iter, fp, MUTT_RL_NONE);
     if (!TEST_CHECK(!res))
     {
       TEST_MSG("Expected: false");

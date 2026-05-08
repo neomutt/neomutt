@@ -303,7 +303,7 @@ static enum CommandResult parse_attach_list(const struct Command *cmd, struct Bu
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     if (buf_is_empty(token))
       continue;
@@ -391,7 +391,7 @@ static enum CommandResult parse_unattach_list(const struct Command *cmd, struct 
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     FREE(&tmp);
 
     if (mutt_istr_equal(token->data, "any"))
@@ -486,7 +486,7 @@ enum CommandResult parse_attachments(const struct Command *cmd, struct Buffer *l
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
 
   char *category = token->data;
   char op = *category++;
@@ -568,7 +568,7 @@ enum CommandResult parse_unattachments(const struct Command *cmd, struct Buffer 
   const char *p = NULL;
   struct ListHead *head = NULL;
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
 
   p = buf_string(token);
   op = *p++;
@@ -700,6 +700,6 @@ const struct Command AttachCommands[] = {
   { "mime_lookup",         CMD_NONE, NULL, "mime-lookup",         NULL, NULL, CF_SYNONYM },
   { "unmime_lookup",       CMD_NONE, NULL, "unmime-lookup",       NULL, NULL, CF_SYNONYM },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };

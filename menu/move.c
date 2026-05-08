@@ -65,7 +65,7 @@
  */
 MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index)
 {
-  MenuRedrawFlags flags = MENU_REDRAW_NO_FLAGS;
+  MenuRedrawFlags flags = MENU_REDRAW_NONE;
 
   if (top != menu->top)
   {
@@ -78,7 +78,7 @@ MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index)
     menu->old_current = menu->current;
     menu->current = index;
 
-    if (menu->redraw == MENU_REDRAW_NO_FLAGS)
+    if (menu->redraw == MENU_REDRAW_NONE)
     {
       // If this is the only change
       flags |= MENU_REDRAW_MOTION;
@@ -90,7 +90,7 @@ MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index)
     }
   }
 
-  if (flags != MENU_REDRAW_NO_FLAGS)
+  if (flags != MENU_REDRAW_NONE)
   {
     menu->redraw |= flags;
     menu->win->actions |= WA_REPAINT;
@@ -236,7 +236,7 @@ static int calc_move_view(struct Menu *menu, int relative)
 MenuRedrawFlags menu_move_selection(struct Menu *menu, int index)
 {
   if (menu->max == 0)
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
 
   if (index < 0)
     index = 0;
@@ -351,7 +351,7 @@ MenuRedrawFlags menu_middle_page(struct Menu *menu)
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
   }
 
   int i = menu->top + menu->page_len;
@@ -371,7 +371,7 @@ MenuRedrawFlags menu_bottom_page(struct Menu *menu)
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
   }
 
   int index = menu->top + menu->page_len - 1;
@@ -395,7 +395,7 @@ MenuRedrawFlags menu_prev_entry(struct Menu *menu, int count)
     return menu_move_selection(menu, menu->current - 1);
 
   mutt_message(_("You are on the first entry"));
-  return MENU_REDRAW_NO_FLAGS;
+  return MENU_REDRAW_NONE;
 }
 
 /**
@@ -413,7 +413,7 @@ MenuRedrawFlags menu_next_entry(struct Menu *menu, int count)
     return menu_move_selection(menu, menu->current + 1);
 
   mutt_message(_("You are on the last entry"));
-  return MENU_REDRAW_NO_FLAGS;
+  return MENU_REDRAW_NONE;
 }
 
 /**
@@ -427,7 +427,7 @@ MenuRedrawFlags menu_first_entry(struct Menu *menu, int count)
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
   }
 
   if (count > 0)
@@ -447,7 +447,7 @@ MenuRedrawFlags menu_last_entry(struct Menu *menu, int count)
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
   }
 
   if (count > 0)
@@ -467,12 +467,12 @@ MenuRedrawFlags menu_current_top(struct Menu *menu)
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
   }
 
   short c_menu_context = cs_subset_number(menu->sub, "menu_context");
   if (c_menu_context > (menu->page_len / 2))
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
 
   c_menu_context = MIN(c_menu_context, (menu->page_len / 2));
   return menu_move_view_relative(menu, menu->current - menu->top - c_menu_context);
@@ -488,12 +488,12 @@ MenuRedrawFlags menu_current_middle(struct Menu *menu)
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
   }
 
   short c_menu_context = cs_subset_number(menu->sub, "menu_context");
   if (c_menu_context > (menu->page_len / 2))
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
 
   return menu_move_view_relative(menu, menu->current - (menu->top + (menu->page_len / 2)));
 }
@@ -508,12 +508,12 @@ MenuRedrawFlags menu_current_bottom(struct Menu *menu)
   if (menu->max == 0)
   {
     mutt_error(_("No entries"));
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
   }
 
   short c_menu_context = cs_subset_number(menu->sub, "menu_context");
   if (c_menu_context > (menu->page_len / 2))
-    return MENU_REDRAW_NO_FLAGS;
+    return MENU_REDRAW_NONE;
 
   c_menu_context = MIN(c_menu_context, (menu->page_len / 2));
   return menu_move_view_relative(menu, 0 - (menu->top + menu->page_len - 1 -
@@ -551,7 +551,7 @@ MenuRedrawFlags menu_half_down(struct Menu *menu, int count)
 MenuRedrawFlags menu_prev_line(struct Menu *menu, int count)
 {
   MenuRedrawFlags flags = menu_move_view_relative(menu, 0 - MAX(count, 1));
-  if ((count == 0) && (flags == MENU_REDRAW_NO_FLAGS))
+  if ((count == 0) && (flags == MENU_REDRAW_NONE))
     mutt_message(_("You can't scroll up farther"));
   return flags;
 }
@@ -565,7 +565,7 @@ MenuRedrawFlags menu_prev_line(struct Menu *menu, int count)
 MenuRedrawFlags menu_next_line(struct Menu *menu, int count)
 {
   MenuRedrawFlags flags = menu_move_view_relative(menu, MAX(count, 1));
-  if ((count == 0) && (flags == MENU_REDRAW_NO_FLAGS))
+  if ((count == 0) && (flags == MENU_REDRAW_NONE))
     mutt_message(_("You can't scroll down farther"));
   return flags;
 }

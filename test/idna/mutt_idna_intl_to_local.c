@@ -34,13 +34,13 @@ void test_mutt_idna_intl_to_local(void)
 
 #ifdef HAVE_LIBIDN
   {
-    const char *addr = mutt_idna_intl_to_local(NULL, "banana", MI_NO_FLAGS);
+    const char *addr = mutt_idna_intl_to_local(NULL, "banana", MI_NONE);
     TEST_CHECK(addr != NULL);
     FREE(&addr);
   }
 
   {
-    const char *addr = mutt_idna_intl_to_local("apple", NULL, MI_NO_FLAGS);
+    const char *addr = mutt_idna_intl_to_local("apple", NULL, MI_NONE);
     TEST_CHECK(addr != NULL);
     FREE(&addr);
   }

@@ -211,7 +211,7 @@ static void shrink_histfile(void)
   /* First pass: count entries per class, detect duplicates, and validate
    * the file format (each line is "class:entry|") */
   line = 0;
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NO_FLAGS)))
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NONE)))
   {
     if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
         (*(p = linebuf + strlen(linebuf) - 1) != '|') || (hclass < 0))
@@ -256,7 +256,7 @@ static void shrink_histfile(void)
     }
     rewind(fp);
     line = 0;
-    while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NO_FLAGS)))
+    while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NONE)))
     {
       if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
           (*(p = linebuf + strlen(linebuf) - 1) != '|') || (hclass < 0))
@@ -314,7 +314,7 @@ static void save_history(enum HistoryClass hclass, const char *str)
     return;
 
   char *tmp = mutt_str_dup(str);
-  mutt_ch_convert_string(&tmp, cc_charset(), "utf-8", MUTT_ICONV_NO_FLAGS);
+  mutt_ch_convert_string(&tmp, cc_charset(), "utf-8", MUTT_ICONV_NONE);
 
   // If tmp contains '\n' terminate it there.
   char *nl = strchr(tmp, '\n');
@@ -591,7 +591,7 @@ void mutt_hist_read_file(void)
   size_t buflen;
 
   const char *const c_charset = cc_charset();
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NO_FLAGS)))
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, fp, &line, MUTT_RL_NONE)))
   {
     read = 0;
     if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
@@ -607,7 +607,7 @@ void mutt_hist_read_file(void)
     p = mutt_str_dup(linebuf + read);
     if (p)
     {
-      mutt_ch_convert_string(&p, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS);
+      mutt_ch_convert_string(&p, "utf-8", c_charset, MUTT_ICONV_NONE);
       mutt_hist_add(hclass, p, false);
       FREE(&p);
     }

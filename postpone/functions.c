@@ -240,7 +240,7 @@ static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEven
  */
 static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
 {
-  SearchFlags flags = SEARCH_NO_FLAGS;
+  SearchFlags flags = SEARCH_NONE;
   switch (event->op)
   {
     case OP_SEARCH:

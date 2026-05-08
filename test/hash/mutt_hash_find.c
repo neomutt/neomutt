@@ -39,13 +39,13 @@ void test_mutt_hash_find(void)
   }
 
   {
-    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NONE);
     TEST_CHECK(!mutt_hash_find(table, "apple"));
     mutt_hash_free(&table);
   }
 
   {
-    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NO_FLAGS);
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_NONE);
     mutt_hash_insert(table, "apple", &dummy1);
     mutt_hash_insert(table, "banana", &dummy2);
     mutt_hash_insert(table, "cherry", &dummy3);

@@ -187,7 +187,7 @@ void attach_bounce_message(struct AttachPtrArray *aa, struct Mailbox *m)
   else
     buf_strcpy(prompt, _("Bounce messages to: "));
 
-  if ((mw_get_field(buf_string(prompt), buf, MUTT_COMP_NO_FLAGS, HC_ALIAS,
+  if ((mw_get_field(buf_string(prompt), buf, MUTT_COMP_NONE, HC_ALIAS,
                     &CompleteAliasOps, NULL) != 0) ||
       buf_is_empty(buf))
   {
@@ -383,7 +383,7 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e,
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
       const struct Expando *c_indent_string = cs_subset_expando(NeoMutt->sub, "indent_string");
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix2, -1, c_indent_string, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix2, -1, c_indent_string, NULL, -1, e, MUTT_FORMAT_NONE, NULL);
       setlocale(LC_TIME, "");
     }
     else
@@ -494,7 +494,7 @@ static void attach_forward_bodies(struct Email *e, struct AttachCtx *actx,
       const struct Expando *c_indent_string = cs_subset_expando(NeoMutt->sub, "indent_string");
       setlocale(LC_TIME, NONULL(c_attribution_locale));
       mutt_make_string(prefix, -1, c_indent_string, NULL, -1, e_parent,
-                       MUTT_FORMAT_NO_FLAGS, NULL);
+                       MUTT_FORMAT_NONE, NULL);
       setlocale(LC_TIME, "");
     }
   }
@@ -588,8 +588,7 @@ static void attach_forward_bodies(struct Email *e, struct AttachCtx *actx,
   /* now that we have the template, send it. */
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ARRAY_ADD(&ea, e_parent);
-  mutt_send_message(SEND_NO_FLAGS, e_tmp, buf_string(tempfile), NULL, &ea,
-                    NeoMutt->sub);
+  mutt_send_message(SEND_NONE, e_tmp, buf_string(tempfile), NULL, &ea, NeoMutt->sub);
   ARRAY_FREE(&ea);
   buf_pool_release(&tempfile);
   buf_pool_release(&prefix);
@@ -656,7 +655,7 @@ static void attach_forward_msgs(struct AttachPtrArray *aa, SendFlags flags)
       goto cleanup;
     }
 
-    CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
+    CopyMessageFlags cmflags = MUTT_CM_NONE;
     const bool c_forward_quote = cs_subset_bool(NeoMutt->sub, "forward_quote");
     if (c_forward_quote)
     {
@@ -981,8 +980,7 @@ void mutt_attach_reply(struct AttachPtrArray *aa, struct Mailbox *m,
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
       const struct Expando *c_indent_string = cs_subset_expando(NeoMutt->sub, "indent_string");
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix, -1, c_indent_string, m, -1, e_parent,
-                       MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix, -1, c_indent_string, m, -1, e_parent, MUTT_FORMAT_NONE, NULL);
       setlocale(LC_TIME, "");
     }
 
@@ -1098,5 +1096,5 @@ void mutt_attach_mail_sender(struct AttachPtrArray *aa)
   }
 
   // This call will free e_tmp for us
-  mutt_send_message(SEND_NO_FLAGS, e_tmp, NULL, NULL, NULL, NeoMutt->sub);
+  mutt_send_message(SEND_NONE, e_tmp, NULL, NULL, NULL, NeoMutt->sub);
 }

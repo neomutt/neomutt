@@ -559,7 +559,7 @@ static int trash_append(struct Mailbox *m)
 
     if (e->deleted && !e->purge)
     {
-      if (mutt_append_message(m_trash, m, e, NULL, MUTT_CM_NO_FLAGS, CH_NO_FLAGS) == -1)
+      if (mutt_append_message(m_trash, m, e, NULL, MUTT_CM_NONE, CH_NONE) == -1)
       {
         mx_mbox_close(m_trash);
         // L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
@@ -771,7 +771,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
           break;
         if (e->read && !e->deleted && !(e->flagged && c_keep_flagged))
         {
-          if (mutt_append_message(m_read, m, e, NULL, MUTT_CM_NO_FLAGS, CH_UPDATE_LEN) == 0)
+          if (mutt_append_message(m_read, m, e, NULL, MUTT_CM_NONE, CH_UPDATE_LEN) == 0)
           {
             mutt_set_flag(m, e, MUTT_DELETE, true, true);
             mutt_set_flag(m, e, MUTT_PURGE, true, true);

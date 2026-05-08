@@ -201,10 +201,10 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
   char smime_cryptalg[1024] = { 0 };
   char sign_as[1024] = { 0 };
   char *q = NULL;
-  SecurityFlags flags = SEC_NO_FLAGS;
+  SecurityFlags flags = SEC_NONE;
 
   if (!WithCrypto)
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
 
   p = mutt_str_skip_email_wsp(p);
   for (; p[0] != '\0'; p++)
@@ -226,7 +226,7 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
           if (p[0] != '>')
           {
             mutt_error(_("Illegal S/MIME header"));
-            return SEC_NO_FLAGS;
+            return SEC_NONE;
           }
         }
 
@@ -258,7 +258,7 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
         if (p[0] != '>')
         {
           mutt_error(_("Illegal crypto header"));
-          return SEC_NO_FLAGS;
+          return SEC_NONE;
         }
         break;
 
@@ -297,7 +297,7 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
           if (p[0] != '>')
           {
             mutt_error(_("Illegal crypto header"));
-            return SEC_NO_FLAGS;
+            return SEC_NONE;
           }
         }
 
@@ -306,7 +306,7 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
 
       default:
         mutt_error(_("Illegal crypto header"));
-        return SEC_NO_FLAGS;
+        return SEC_NONE;
     }
   }
 
@@ -414,10 +414,10 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
       if (!state.fp_out)
         return -1;
 
-      SecurityFlags sec_type = SEC_NO_FLAGS;
-      if (((WithCrypto & APPLICATION_PGP) != 0) && sec_type == SEC_NO_FLAGS)
+      SecurityFlags sec_type = SEC_NONE;
+      if (((WithCrypto & APPLICATION_PGP) != 0) && sec_type == SEC_NONE)
         sec_type = mutt_is_application_pgp(b);
-      if (((WithCrypto & APPLICATION_SMIME) != 0) && sec_type == SEC_NO_FLAGS)
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && sec_type == SEC_NONE)
         sec_type = mutt_is_application_smime(b);
       if (sec_type & (SEC_ENCRYPT | SEC_SIGN))
       {
@@ -526,12 +526,12 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
     mutt_addrlist_clear(&e_new->env->mail_followup_to);
   }
 
-  SecurityFlags sec_type = SEC_NO_FLAGS;
-  if (((WithCrypto & APPLICATION_PGP) != 0) && sec_type == SEC_NO_FLAGS)
+  SecurityFlags sec_type = SEC_NONE;
+  if (((WithCrypto & APPLICATION_PGP) != 0) && sec_type == SEC_NONE)
     sec_type = mutt_is_multipart_encrypted(e_new->body);
-  if (((WithCrypto & APPLICATION_SMIME) != 0) && sec_type == SEC_NO_FLAGS)
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && sec_type == SEC_NONE)
     sec_type = mutt_is_application_smime(e_new->body);
-  if (sec_type != SEC_NO_FLAGS)
+  if (sec_type != SEC_NONE)
   {
     e_new->security |= sec_type;
     if (!crypt_valid_passphrase(sec_type))

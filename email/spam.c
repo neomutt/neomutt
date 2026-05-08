@@ -63,7 +63,7 @@ enum CommandResult parse_nospam(const struct Command *cmd, struct Buffer *line,
   enum CommandResult rc = MUTT_CMD_WARNING;
 
   // Extract the first token, a regex or "*"
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
 
   if (MoreArgs(line))
   {
@@ -126,7 +126,7 @@ enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
   enum CommandResult rc = MUTT_CMD_ERROR;
 
   // Extract the first token, a regex
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
 
   struct EmailModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_EMAIL);
   ASSERT(mod_data);
@@ -135,7 +135,7 @@ enum CommandResult parse_spam(const struct Command *cmd, struct Buffer *line,
   if (MoreArgs(line))
   {
     templ = buf_pool_get();
-    parse_extract_token(templ, line, TOKEN_NO_FLAGS);
+    parse_extract_token(templ, line, TOKEN_NONE);
 
     // Add to the spam list
     if (mutt_replacelist_add(&mod_data->spam, buf_string(token), buf_string(templ), err) != 0)

@@ -181,7 +181,7 @@ static int op_verify_key(struct PgpData *pd, const struct KeyEvent *event)
   pdata.fname = buf_string(tempfile);
 
   pview.banner = title;
-  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.flags = MUTT_PAGER_NONE;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);

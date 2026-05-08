@@ -150,13 +150,13 @@ void test_expando_node_conddate(void)
 
       int test_date = now - ((test_dates[i].time * 9) / 10); // 10% newer
 
-      int rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
+      int rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NONE);
       TEST_CHECK_NUM_EQ(rc, 1);
       TEST_CHECK(buf_is_empty(buf));
 
       test_date = now - ((test_dates[i].time * 11) / 10); // 10% older
 
-      rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
+      rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NONE);
       TEST_CHECK_NUM_EQ(rc, 0);
       TEST_CHECK(buf_is_empty(buf));
 
@@ -199,7 +199,7 @@ void test_expando_node_conddate(void)
 
       int test_date = now - ((test_dates[i].time * 11) / 10); // 10% older
 
-      int rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
+      int rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NONE);
       TEST_CHECK_NUM_EQ(rc, 0);
       TEST_CHECK(buf_is_empty(buf));
 

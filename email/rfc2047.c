@@ -207,7 +207,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
 
   if (fromcode)
   {
-    iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NO_FLAGS);
+    iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NONE);
     ASSERT(iconv_t_valid(cd));
     ib = d;
     ibl = dlen;
@@ -287,7 +287,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
     return (*encoder)(str, buf, buflen, tocode);
   }
 
-  const iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NO_FLAGS);
+  const iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NONE);
   ASSERT(iconv_t_valid(cd));
   const char *ib = buf;
   size_t ibl = buflen;
@@ -447,7 +447,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
 
   /* Try to convert to UTF-8. */
   char *u = mutt_strn_dup(d, dlen);
-  if (mutt_ch_convert_string(&u, fromcode, icode, MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(&u, fromcode, icode, MUTT_ICONV_NONE) != 0)
   {
     rc = 1;
     icode = 0;

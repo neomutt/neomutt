@@ -47,16 +47,22 @@
 #include "lib.h"
 #include "parse/lib.h"
 
-// clang-format off
-typedef uint16_t ParseDateRangeFlags; ///< Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS
-#define MUTT_PDR_NO_FLAGS       0  ///< No flags are set
-#define MUTT_PDR_MINUS    (1 << 0) ///< Pattern contains a range
-#define MUTT_PDR_PLUS     (1 << 1) ///< Extend the range using '+'
-#define MUTT_PDR_WINDOW   (1 << 2) ///< Extend the range in both directions using '*'
-#define MUTT_PDR_ABSOLUTE (1 << 3) ///< Absolute pattern range
-#define MUTT_PDR_DONE     (1 << 4) ///< Pattern parse successfully
-#define MUTT_PDR_ERROR    (1 << 8) ///< Invalid pattern
-// clang-format on
+/**
+ * enum ParseDateRangeFlag - Flags for parse_date_range(), e.g. #MUTT_PDR_MINUS
+ */
+enum ParseDateRangeFlag
+{
+  // clang-format off
+  MUTT_PDR_NONE     =       0,  ///< No flags are set
+  MUTT_PDR_MINUS    = 1U << 0,  ///< Pattern contains a range
+  MUTT_PDR_PLUS     = 1U << 1,  ///< Extend the range using '+'
+  MUTT_PDR_WINDOW   = 1U << 2,  ///< Extend the range in both directions using '*'
+  MUTT_PDR_ABSOLUTE = 1U << 3,  ///< Absolute pattern range
+  MUTT_PDR_DONE     = 1U << 4,  ///< Pattern parse successfully
+  MUTT_PDR_ERROR    = 1U << 5,  ///< Invalid pattern
+  // clang-format on
+};
+typedef uint8_t ParseDateRangeFlags;
 
 #define MUTT_PDR_ERRORDONE (MUTT_PDR_ERROR | MUTT_PDR_DONE)
 
@@ -249,7 +255,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
     goto out;
   }
 
-  mutt_file_map_lines(add_query_msgid, &pat->p.multi_cases, fp, MUTT_RL_NO_FLAGS);
+  mutt_file_map_lines(add_query_msgid, &pat->p.multi_cases, fp, MUTT_RL_NONE);
   mutt_file_fclose(&fp);
   filter_wait(pid);
 
@@ -416,7 +422,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
                                     bool have_min, struct tm *base_min, struct Buffer *err)
 {
-  ParseDateRangeFlags flags = MUTT_PDR_NO_FLAGS;
+  ParseDateRangeFlags flags = MUTT_PDR_NONE;
   while (*pc && ((flags & MUTT_PDR_DONE) == 0))
   {
     const char *pt = NULL;
@@ -430,7 +436,7 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
         pt = get_offset(min, pc, -1);
         if (pc == pt)
         {
-          if (flags == MUTT_PDR_NO_FLAGS)
+          if (flags == MUTT_PDR_NONE)
           { /* nothing yet and no offset parsed => absolute date? */
             if (!get_date(pc, max, err))
             {
@@ -452,7 +458,7 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
         else
         {
           pc = pt;
-          if ((flags == MUTT_PDR_NO_FLAGS) && !have_min)
+          if ((flags == MUTT_PDR_NONE) && !have_min)
           { /* the very first "-3d" without a previous absolute date */
             max->tm_year = min->tm_year;
             max->tm_mon = min->tm_mon;

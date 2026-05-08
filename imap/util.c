@@ -110,8 +110,8 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
  */
 void imap_mdata_cache_reset(struct ImapMboxData *mdata)
 {
-  mdata->check_status = IMAP_OPEN_NO_FLAGS;
-  mdata->reopen = IMAP_OPEN_NO_FLAGS;
+  mdata->check_status = IMAP_OPEN_NONE;
+  mdata->reopen = IMAP_OPEN_NONE;
   mutt_hash_free(&mdata->uid_hash);
   imap_msn_free(&mdata->msn);
   mutt_bcache_close(&mdata->bcache);
@@ -642,7 +642,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
 fallback:
   account_to_url(&cac_target, &url);
   url.path = target_mailbox;
-  url_tostring(&url, path, pathlen, U_NO_FLAGS);
+  url_tostring(&url, path, pathlen, U_NONE);
 }
 
 /**
@@ -862,7 +862,7 @@ void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *cac, char *
   struct Url url = { 0 };
   account_to_url(cac, &url);
   url.path = path;
-  url_tostring(&url, buf, buflen, U_NO_FLAGS);
+  url_tostring(&url, buf, buflen, U_NONE);
 }
 
 /**
@@ -876,7 +876,7 @@ void imap_buf_qualify_path(struct Buffer *buf, struct ConnAccount *cac, char *pa
   struct Url url = { 0 };
   account_to_url(cac, &url);
   url.path = path;
-  url_tobuffer(&url, buf, U_NO_FLAGS);
+  url_tobuffer(&url, buf, U_NONE);
 }
 
 /**

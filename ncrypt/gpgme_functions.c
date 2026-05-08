@@ -88,7 +88,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
 
   /* fromcode "utf-8" is sure, so we don't want
    * charset-hook corrections: flags must be 0.  */
-  mutt_ch_convert_string(&tstr, "utf-8", cc_charset(), MUTT_ICONV_NO_FLAGS);
+  mutt_ch_convert_string(&tstr, "utf-8", cc_charset(), MUTT_ICONV_NONE);
   fputs(tstr, fp);
   FREE(&tstr);
 }
@@ -698,7 +698,7 @@ leave:
   pdata.fname = buf_string(tempfile);
 
   pview.banner = title;
-  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.flags = MUTT_PAGER_NONE;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);

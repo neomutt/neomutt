@@ -63,7 +63,7 @@ enum LookupType
   MUTT_LOOKUP_ICONV,   ///< Character set conversion
 };
 
-#define MUTT_ICONV_NO_FLAGS  0 ///< No flags are set
+#define MUTT_ICONV_NONE      0 ///< No flags are set
 #define MUTT_ICONV_HOOK_FROM 1 ///< apply charset-hooks to fromcode
 
 /**

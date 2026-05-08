@@ -262,7 +262,7 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   do
   {
     window_redraw(NULL);
-    event = mutt_getch(GETCH_NO_FLAGS);
+    event = mutt_getch(GETCH_NONE);
   } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
 
   mutt_refresh();
@@ -277,7 +277,7 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   {
     buf_reset(fname);
 
-    if (flags == MUTT_SEL_NO_FLAGS)
+    if (flags == MUTT_SEL_NONE)
       flags = MUTT_SEL_FOLDER;
     if (multiple)
       flags |= MUTT_SEL_MULTI;

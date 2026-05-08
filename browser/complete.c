@@ -71,7 +71,7 @@ enum FunctionRetval complete_file_mbox(struct EnterWindowData *wdata, int op)
       (wdata->tempbuf && (wdata->templen == wdata->state->lastchar) &&
        (wmemcmp(wdata->tempbuf, wdata->state->wbuf, wdata->state->lastchar) == 0)))
   {
-    SelectFileFlags flags = MUTT_SEL_NO_FLAGS;
+    SelectFileFlags flags = MUTT_SEL_NONE;
     if (wdata->hclass == HC_MAILBOX)
       flags |= MUTT_SEL_FOLDER;
     if (cdata->multiple)
@@ -124,7 +124,7 @@ enum FunctionRetval complete_file_simple(struct EnterWindowData *wdata, int op)
   if (wdata->tempbuf && (wdata->templen == (wdata->state->lastchar - i)) &&
       (wmemcmp(wdata->tempbuf, wdata->state->wbuf + i, wdata->state->lastchar - i) == 0))
   {
-    dlg_browser(wdata->buffer, MUTT_SEL_NO_FLAGS, NULL, NULL, NULL);
+    dlg_browser(wdata->buffer, MUTT_SEL_NONE, NULL, NULL, NULL);
     if (!buf_is_empty(wdata->buffer))
       replace_part(wdata->state, i, buf_string(wdata->buffer));
     return FR_CONTINUE;

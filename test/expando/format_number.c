@@ -131,7 +131,7 @@ void test_expando_format_number(void)
     buf_reset(buf);
     num = 0;
     len = strlen(tests[i].zero);
-    rc = expando_render(exp, TestRenderCallback, &num, MUTT_FORMAT_NO_FLAGS, 80, buf);
+    rc = expando_render(exp, TestRenderCallback, &num, MUTT_FORMAT_NONE, 80, buf);
     TEST_CHECK(rc == len);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), tests[i].zero);
@@ -139,7 +139,7 @@ void test_expando_format_number(void)
     buf_reset(buf);
     num = 42;
     len = strlen(tests[i].positive);
-    rc = expando_render(exp, TestRenderCallback, &num, MUTT_FORMAT_NO_FLAGS, 80, buf);
+    rc = expando_render(exp, TestRenderCallback, &num, MUTT_FORMAT_NONE, 80, buf);
     TEST_CHECK(rc == len);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), tests[i].positive);
@@ -147,7 +147,7 @@ void test_expando_format_number(void)
     buf_reset(buf);
     num = -42;
     len = strlen(tests[i].negative);
-    rc = expando_render(exp, TestRenderCallback, &num, MUTT_FORMAT_NO_FLAGS, 80, buf);
+    rc = expando_render(exp, TestRenderCallback, &num, MUTT_FORMAT_NONE, 80, buf);
     TEST_CHECK(rc == len);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), tests[i].negative);

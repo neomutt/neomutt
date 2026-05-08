@@ -1789,7 +1789,7 @@ int mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInTh
  */
 struct HashTable *mutt_make_id_hash(struct Mailbox *m)
 {
-  struct HashTable *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_NO_FLAGS);
+  struct HashTable *hash = mutt_hash_new(m->msg_count * 2, MUTT_HASH_NONE);
 
   for (int i = 0; i < m->msg_count; i++)
   {

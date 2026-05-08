@@ -155,7 +155,7 @@ static enum CommandResult parse_object(const struct Command *cmd, struct Buffer 
 
   struct Buffer *token = buf_pool_get();
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   color_debug(LL_DEBUG5, "color: %s\n", buf_string(token));
 
   if (mutt_istr_equal(buf_string(token), "compose"))
@@ -168,7 +168,7 @@ static enum CommandResult parse_object(const struct Command *cmd, struct Buffer 
     }
 
     struct Buffer *suffix = buf_pool_get();
-    parse_extract_token(suffix, line, TOKEN_NO_FLAGS);
+    parse_extract_token(suffix, line, TOKEN_NONE);
     buf_fix_dptr(token);
     buf_add_printf(token, "_%s", buf_string(suffix));
     buf_pool_release(&suffix);
@@ -215,7 +215,7 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd, struct Buffe
   // Peek at the next token ('*' won't match a colour name)
   if (line->dptr[0] == '*')
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     if (mutt_str_equal(buf_string(token), "*"))
     {
       struct ColorModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_COLOR);
@@ -256,7 +256,7 @@ enum CommandResult parse_uncolor_command(const struct Command *cmd, struct Buffe
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     if (mutt_str_equal("*", buf_string(token)))
     {
       if (regex_colors_parse_uncolor(cid, NULL))
@@ -361,7 +361,7 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
     color_debug(LL_DEBUG5, "regex needed\n");
     if (MoreArgs(line))
     {
-      parse_extract_token(token, line, TOKEN_NO_FLAGS);
+      parse_extract_token(token, line, TOKEN_NONE);
     }
     else
     {
@@ -389,12 +389,12 @@ static enum CommandResult parse_color_command(const struct Command *cmd,
      * 0 arguments: sets the default status color (handled below by else part)
      * 1 argument : colorize pattern on match
      * 2 arguments: colorize nth submatch of pattern */
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     if (MoreArgs(line))
     {
       struct Buffer *tmp = buf_pool_get();
-      parse_extract_token(tmp, line, TOKEN_NO_FLAGS);
+      parse_extract_token(tmp, line, TOKEN_NONE);
       if (!mutt_str_atoui_full(buf_string(tmp), &match))
       {
         buf_printf(err, _("%s: invalid number: %s"), cmd->name, buf_string(tmp));
@@ -463,7 +463,7 @@ enum CommandResult parse_uncolor(const struct Command *cmd, struct Buffer *line,
   {
     while (MoreArgs(line))
     {
-      parse_extract_token(token, line, TOKEN_NO_FLAGS);
+      parse_extract_token(token, line, TOKEN_NONE);
     }
     goto done;
   }
@@ -490,7 +490,7 @@ enum CommandResult parse_unmono(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   while (MoreArgs(line))
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
   }
   buf_pool_release(&token);
 
@@ -518,7 +518,7 @@ enum CommandResult parse_color(const struct Command *cmd, struct Buffer *line,
   {
     while (MoreArgs(line))
     {
-      parse_extract_token(token, line, TOKEN_NO_FLAGS);
+      parse_extract_token(token, line, TOKEN_NONE);
     }
     goto done;
   }
@@ -551,7 +551,7 @@ enum CommandResult parse_mono(const struct Command *cmd, struct Buffer *line,
   {
     while (MoreArgs(line))
     {
-      parse_extract_token(token, line, TOKEN_NO_FLAGS);
+      parse_extract_token(token, line, TOKEN_NONE);
     }
     goto done;
   }
@@ -587,6 +587,6 @@ const struct Command ColorCommands[] = {
         N_("unmono <object> { * | <pattern> ... }"),
         "configuration.html#color-mono" },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };

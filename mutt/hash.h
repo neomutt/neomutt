@@ -107,11 +107,17 @@ struct HashTable
   hash_hdata_free_t hdata_free; ///< Function to free a Hash element
 };
 
-typedef uint8_t HashFlags;             ///< Flags for mutt_hash_new(), e.g. #MUTT_HASH_STRCASECMP
-#define MUTT_HASH_NO_FLAGS          0  ///< No flags are set
-#define MUTT_HASH_STRCASECMP  (1 << 0) ///< use strcasecmp() to compare keys
-#define MUTT_HASH_STRDUP_KEYS (1 << 1) ///< make a copy of the keys
-#define MUTT_HASH_ALLOW_DUPS  (1 << 2) ///< allow duplicate keys to be inserted
+/**
+ * enum HashFlag - Flags for mutt_hash_new(), e.g. #MUTT_HASH_STRCASECMP
+ */
+enum HashFlag
+{
+  MUTT_HASH_NONE        =       0,  ///< No flags are set
+  MUTT_HASH_STRCASECMP  = 1U << 0,  ///< use strcasecmp() to compare keys
+  MUTT_HASH_STRDUP_KEYS = 1U << 1,  ///< make a copy of the keys
+  MUTT_HASH_ALLOW_DUPS  = 1U << 2,  ///< allow duplicate keys to be inserted
+};
+typedef uint8_t HashFlags;
 
 void              mutt_hash_delete        (struct HashTable *table, const char *strkey, const void *data);
 struct HashElem * mutt_hash_find_bucket   (const struct HashTable *table, const char *strkey);

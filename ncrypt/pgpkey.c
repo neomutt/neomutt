@@ -70,14 +70,20 @@ struct PgpCache
   struct PgpCache *next; ///< Linked list
 };
 
-// clang-format off
-typedef uint8_t PgpKeyValidFlags; ///< Flags for valid Pgp Key fields, e.g. #PGP_KV_VALID
-#define PGP_KV_NO_FLAGS       0   ///< No flags are set
-#define PGP_KV_VALID    (1 << 0)  ///< PGP Key ID is valid
-#define PGP_KV_ADDR     (1 << 1)  ///< PGP Key address is valid
-#define PGP_KV_STRING   (1 << 2)  ///< PGP Key name string is valid
-#define PGP_KV_STRONGID (1 << 3)  ///< PGP Key is strong
-// clang-format on
+/**
+ * enum PgpKeyValidFlag - Flags for valid Pgp Key fields
+ */
+enum PgpKeyValidFlag
+{
+  // clang-format off
+  PGP_KV_NONE     =       0,  ///< No flags are set
+  PGP_KV_VALID    = 1U << 0,  ///< PGP Key ID is valid
+  PGP_KV_ADDR     = 1U << 1,  ///< PGP Key address is valid
+  PGP_KV_STRING   = 1U << 2,  ///< PGP Key name string is valid
+  PGP_KV_STRONGID = 1U << 3,  ///< PGP Key is strong
+  // clang-format on
+};
+typedef uint8_t PgpKeyValidFlags;
 
 #define PGP_KV_MATCH (PGP_KV_ADDR | PGP_KV_STRING)
 
@@ -163,7 +169,7 @@ bool pgp_id_is_valid(struct PgpUid *uid)
 static PgpKeyValidFlags pgp_id_matches_addr(struct Address *addr,
                                             struct Address *u_addr, struct PgpUid *uid)
 {
-  PgpKeyValidFlags flags = PGP_KV_NO_FLAGS;
+  PgpKeyValidFlags flags = PGP_KV_NONE;
 
   if (pgp_id_is_valid(uid))
     flags |= PGP_KV_VALID;
@@ -218,7 +224,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, const char *whatfor,
   while (true)
   {
     buf_reset(resp);
-    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0)
+    if (mw_get_field(tag, resp, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -264,7 +270,7 @@ struct Body *pgp_class_make_key_attachment(void)
   OptPgpCheckTrust = false;
 
   struct PgpKeyInfo *key = pgp_ask_for_key(_("Please enter the key ID: "), NULL,
-                                           KEYFLAG_NO_FLAGS, PGP_PUBRING);
+                                           KEYFLAG_NONE, PGP_PUBRING);
 
   if (!key)
     return NULL;

@@ -238,7 +238,7 @@ static int pager_repaint(struct MuttWindow *win)
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   }
 
-  priv->redraw = PAGER_REDRAW_NO_FLAGS;
+  priv->redraw = PAGER_REDRAW_NONE;
   mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }

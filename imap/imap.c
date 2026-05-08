@@ -106,7 +106,7 @@ enum CommandResult parse_subscribe_to(const struct Command *cmd, struct Buffer *
 
   buf_reset(err);
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
 
   if (MoreArgs(line))
   {
@@ -155,7 +155,7 @@ enum CommandResult parse_unsubscribe_from(const struct Command *cmd, struct Buff
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_WARNING;
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
 
   if (MoreArgs(line))
   {
@@ -194,7 +194,7 @@ const struct Command ImapCommands[] = {
         N_("unsubscribe-from <imap-folder-uri>"),
         "optionalfeatures.html#imap" },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };
 
@@ -206,7 +206,7 @@ const struct Command ImapCommands[] = {
  */
 static int check_capabilities(struct ImapAccountData *adata)
 {
-  if (imap_exec(adata, "CAPABILITY", IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, "CAPABILITY", IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS)
   {
     imap_error("check_capabilities", adata->buf);
     return -1;
@@ -513,7 +513,7 @@ static int complete_hosts(struct Buffer *buf)
     /* FIXME: how to handle multiple users on the same host? */
     url.user = NULL;
     url.path = NULL;
-    url_tostring(&url, urlstr, sizeof(urlstr), U_NO_FLAGS);
+    url_tostring(&url, urlstr, sizeof(urlstr), U_NONE);
     if (mutt_strn_equal(buf, urlstr, matchlen))
     {
       if (rc)
@@ -547,7 +547,7 @@ int imap_create_mailbox(struct ImapAccountData *adata, const char *mailbox)
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), mailbox);
   snprintf(buf, sizeof(buf), "CREATE %s", mbox);
 
-  if (imap_exec(adata, buf, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, buf, IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS)
   {
     mutt_error(_("CREATE failed: %s"), imap_cmd_trailer(adata));
     return -1;
@@ -593,7 +593,7 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
   struct Buffer *buf = buf_pool_get();
   buf_printf(buf, "RENAME %s %s", oldmbox, newmbox);
 
-  if (imap_exec(adata, buf_string(buf), IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, buf_string(buf), IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS)
     rc = -1;
 
   buf_pool_release(&buf);
@@ -624,7 +624,7 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), url->path);
   url_free(&url);
   snprintf(buf, sizeof(buf), "DELETE %s", mbox);
-  if (imap_exec(m->account->adata, buf, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(m->account->adata, buf, IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS)
     return -1;
 
   return 0;
@@ -972,7 +972,7 @@ int imap_open_connection(struct ImapAccountData *adata)
           else
           {
             /* RFC2595 demands we recheck CAPABILITY after TLS completes. */
-            if (imap_exec(adata, "CAPABILITY", IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+            if (imap_exec(adata, "CAPABILITY", IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS)
               goto bail;
           }
         }
@@ -1186,7 +1186,7 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   /* after all this it's still possible to have no flags, if you
    * have no ACL rights */
   if (!buf_is_empty(flags) &&
-      (imap_exec(adata, cmd->data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS) &&
+      (imap_exec(adata, cmd->data, IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS) &&
       err_continue && (*err_continue != MUTT_YES))
   {
     *err_continue = imap_continue("imap_sync_message: STORE failed", adata->buf);
@@ -1278,7 +1278,7 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
   else if (rc < 0)
     check = MX_STATUS_ERROR;
 
-  mdata->check_status = IMAP_OPEN_NO_FLAGS;
+  mdata->check_status = IMAP_OPEN_NONE;
 
   if (force)
     m->last_checked = 0; // force a check on the next mx_mbox_check() call
@@ -1426,7 +1426,7 @@ int imap_subscribe(const char *path, bool subscribe)
   char buf[2048] = { 0 };
   snprintf(buf, sizeof(buf), "%sSUBSCRIBE %s", subscribe ? "" : "UN", mdata->munge_name);
 
-  if (imap_exec(adata, buf, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+  if (imap_exec(adata, buf, IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS)
   {
     imap_mdata_free((void *) &mdata);
     return -1;
@@ -1626,7 +1626,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
     ARRAY_FREE(&uida);
 
     /* let's get it on */
-    rc = imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS);
+    rc = imap_exec(adata, NULL, IMAP_CMD_NONE);
     if (rc == IMAP_EXEC_ERROR)
     {
       if (triedcreate)
@@ -1825,7 +1825,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 
   /* Flush the queued flags if any were changed in sync_helper. */
   if (rc > 0)
-    if (imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+    if (imap_exec(adata, NULL, IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS)
       rc = -1;
 
   if (rc < 0)
@@ -1876,7 +1876,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       mutt_message(_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
     mdata->reopen |= IMAP_EXPUNGE_EXPECTED;
-    if (imap_exec(adata, "EXPUNGE", IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
+    if (imap_exec(adata, "EXPUNGE", IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS)
     {
       mdata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
       imap_error(_("imap_sync_mailbox: EXPUNGE failed"), adata->buf);
@@ -1889,7 +1889,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   if (expunge && close)
   {
     adata->closing = true;
-    imap_exec(adata, "CLOSE", IMAP_CMD_NO_FLAGS);
+    imap_exec(adata, "CLOSE", IMAP_CMD_NONE);
     adata->state = IMAP_AUTHENTICATED;
   }
 
@@ -2082,7 +2082,7 @@ int imap_login(struct ImapAccountData *adata)
     imap_exec(adata, "LIST \"\" \"\"", IMAP_CMD_QUEUE);
 
     /* we may need the root delimiter before we open a mailbox */
-    imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS);
+    imap_exec(adata, NULL, IMAP_CMD_NONE);
 
     /* select the mailbox that used to be open before disconnect */
     if (adata->mailbox)
@@ -2289,8 +2289,8 @@ int imap_reopen_mailbox(struct ImapAccountData *adata)
   imap_mdata_cache_reset(mdata);
 
   mdata->new_mail_count = 0;
-  mdata->reopen = IMAP_OPEN_NO_FLAGS;
-  mdata->check_status = IMAP_OPEN_NO_FLAGS;
+  mdata->reopen = IMAP_OPEN_NONE;
+  mdata->check_status = IMAP_OPEN_NONE;
 
   int count = 0;
   if (imap_select_and_poll(m, &count) < 0)
@@ -2477,7 +2477,7 @@ static enum MxStatus imap_mbox_close(struct Mailbox *m)
       if (m->msg_deleted == 0)
       {
         adata->closing = true;
-        imap_exec(adata, "CLOSE", IMAP_CMD_NO_FLAGS);
+        imap_exec(adata, "CLOSE", IMAP_CMD_NONE);
       }
       adata->state = IMAP_AUTHENTICATED;
     }
@@ -2541,7 +2541,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *bu
   if (tags)
     buf_strcpy(buf, tags);
 
-  if (mw_get_field("Tags: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0)
+  if (mw_get_field("Tags: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0)
     return -1;
 
   /* each keyword must be atom defined by rfc822 as:
@@ -2636,7 +2636,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
 
     /* Should we return here, or we are fine and we could
      * continue to add new flags */
-    int rc = imap_exec(adata, buf_string(cmd), IMAP_CMD_NO_FLAGS);
+    int rc = imap_exec(adata, buf_string(cmd), IMAP_CMD_NONE);
     buf_pool_release(&cmd);
     if (rc != IMAP_EXEC_SUCCESS)
     {
@@ -2654,7 +2654,7 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
     buf_addstr(cmd, buf);
     buf_addstr(cmd, ")");
 
-    int rc = imap_exec(adata, buf_string(cmd), IMAP_CMD_NO_FLAGS);
+    int rc = imap_exec(adata, buf_string(cmd), IMAP_CMD_NONE);
     buf_pool_release(&cmd);
     if (rc != IMAP_EXEC_SUCCESS)
     {
@@ -2713,7 +2713,7 @@ int imap_path_canon(struct Buffer *path)
     }
     url->path = tmp;
   }
-  url_tostring(url, tmp2, sizeof(tmp2), U_NO_FLAGS);
+  url_tostring(url, tmp2, sizeof(tmp2), U_NONE);
   buf_strcpy(path, tmp2);
   url_free(&url);
 

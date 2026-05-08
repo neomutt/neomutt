@@ -422,7 +422,7 @@ void dump_bind_macro(const struct Command *cmd, const struct MenuDefinition *md,
   pdata.fname = buf_string(tempfile);
 
   pview.banner = cmd->name;
-  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.flags = MUTT_PAGER_NONE;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);

@@ -65,11 +65,17 @@ struct Menu;
 
 extern const struct CompleteOps CompletePatternOps;
 
-typedef uint8_t PatternCompFlags;           ///< Flags for mutt_pattern_comp(), e.g. #MUTT_PC_FULL_MSG
-#define MUTT_PC_NO_FLAGS                0   ///< No flags are set
-#define MUTT_PC_FULL_MSG          (1 << 0)  ///< Enable body and header matching
-#define MUTT_PC_PATTERN_DYNAMIC   (1 << 1)  ///< Enable runtime date range evaluation
-#define MUTT_PC_SEND_MODE_SEARCH  (1 << 2)  ///< Allow send-mode body searching
+/**
+ * enum PatternCompFlag - Flags for mutt_pattern_comp(), e.g. #MUTT_PC_FULL_MSG
+ */
+enum PatternCompFlag
+{
+  MUTT_PC_NONE             =       0,  ///< No flags are set
+  MUTT_PC_FULL_MSG         = 1U << 0,  ///< Enable body and header matching
+  MUTT_PC_PATTERN_DYNAMIC  = 1U << 1,  ///< Enable runtime date range evaluation
+  MUTT_PC_SEND_MODE_SEARCH = 1U << 2,  ///< Allow send-mode body searching
+};
+typedef uint8_t PatternCompFlags;
 
 /**
  * struct Pattern - A simple (non-regex) pattern
@@ -102,9 +108,15 @@ struct Pattern
 };
 SLIST_HEAD(PatternList, Pattern);
 
-typedef uint8_t PatternExecFlags;         ///< Flags for mutt_pattern_exec(), e.g. #MUTT_MATCH_FULL_ADDRESS
-#define MUTT_PAT_EXEC_NO_FLAGS         0  ///< No flags are set
-#define MUTT_MATCH_FULL_ADDRESS  (1 << 0) ///< Match the full address
+/**
+ * enum PatternExecFlag - Flags for mutt_pattern_exec(), e.g. #MUTT_MATCH_FULL_ADDRESS
+ */
+enum PatternExecFlag
+{
+  MUTT_PAT_EXEC_NONE      =       0,  ///< No flags are set
+  MUTT_MATCH_FULL_ADDRESS = 1U << 0,  ///< Match the full address
+};
+typedef uint8_t PatternExecFlags;
 
 /**
  * struct PatternCache - Cache commonly-used patterns

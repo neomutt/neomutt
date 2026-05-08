@@ -410,7 +410,7 @@ static long index_unread_mailboxes_num(const struct ExpandoNode *node,
   const struct IndexSharedData *shared = msld->shared;
   struct Mailbox *m = shared->mailbox;
 
-  return mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
+  return mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NONE);
 }
 
 /**

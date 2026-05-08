@@ -112,7 +112,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
   struct KeyEvent event = { 0, OP_NULL };
   while (true)
   {
-    event = mutt_getch(GETCH_NO_FLAGS);
+    event = mutt_getch(GETCH_NONE);
     mutt_debug(LL_DEBUG1, "mw_multi_choice: EVENT(%d,%d)\n", event.ch, event.op);
 
     if (event.op == OP_REPAINT)
@@ -328,7 +328,7 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
  */
 enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
 {
-  return mw_yesorno(prompt, def, NULL, GETCH_NO_FLAGS);
+  return mw_yesorno(prompt, def, NULL, GETCH_NONE);
 }
 
 /**
@@ -359,7 +359,7 @@ enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   if (!he)
-    return mw_yesorno(prompt, def, NULL, GETCH_NO_FLAGS);
+    return mw_yesorno(prompt, def, NULL, GETCH_NONE);
 
   struct HashElem *he_base = cs_get_base(he);
   ASSERT(CONFIG_TYPE(he_base->type) == DT_BOOL);
@@ -368,7 +368,7 @@ enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
   ASSERT(value != INT_MIN);
 
   struct ConfigDef *cdef = he_base->data;
-  return mw_yesorno(prompt, def, cdef, GETCH_NO_FLAGS);
+  return mw_yesorno(prompt, def, cdef, GETCH_NONE);
 }
 
 /**
@@ -385,7 +385,7 @@ enum QuadOption query_quadoption(const char *prompt, struct ConfigSubset *sub, c
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   if (!he)
-    return mw_yesorno(prompt, MUTT_NO, NULL, GETCH_NO_FLAGS);
+    return mw_yesorno(prompt, MUTT_NO, NULL, GETCH_NONE);
 
   struct HashElem *he_base = cs_get_base(he);
   ASSERT(CONFIG_TYPE(he_base->type) == DT_QUAD);
@@ -398,5 +398,5 @@ enum QuadOption query_quadoption(const char *prompt, struct ConfigSubset *sub, c
 
   struct ConfigDef *cdef = he_base->data;
   enum QuadOption def = (value == MUTT_ASKYES) ? MUTT_YES : MUTT_NO;
-  return mw_yesorno(prompt, def, cdef, GETCH_NO_FLAGS);
+  return mw_yesorno(prompt, def, cdef, GETCH_NONE);
 }

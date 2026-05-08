@@ -1268,8 +1268,7 @@ static int op_jump(struct IndexFunctionData *fdata, const struct KeyEvent *event
   int num = event->count;
   if (num == 0)
   {
-    if ((mw_get_field(_("Jump to message: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER,
-                      NULL, NULL) != 0) ||
+    if ((mw_get_field(_("Jump to message: "), buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       mutt_message(_("Nothing to do"));
@@ -1362,7 +1361,7 @@ static int op_mail(struct IndexFunctionData *fdata, const struct KeyEvent *event
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  int rc = mutt_send_message(SEND_NO_FLAGS, NULL, NULL, shared->mailbox, NULL,
+  int rc = mutt_send_message(SEND_NONE, NULL, NULL, shared->mailbox, NULL,
                              shared->sub);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return (rc == -1) ? FR_ERROR : FR_SUCCESS;
@@ -1477,7 +1476,7 @@ static int op_main_change_folder(struct IndexFunctionData *fdata, const struct K
   mutt_mailbox_next(shared->mailbox_view ? shared->mailbox : NULL, folderbuf);
 
   if (mw_enter_fname(cp, folderbuf, true, shared->mailbox, false, NULL, NULL,
-                     MUTT_SEL_NO_FLAGS) == -1)
+                     MUTT_SEL_NONE) == -1)
   {
     goto changefoldercleanup;
   }
@@ -2588,8 +2587,8 @@ static int op_mark_msg(struct IndexFunctionData *fdata, const struct KeyEvent *e
     /* L10N: This is the prompt for <mark-message>.  Whatever they
        enter will be prefixed by $mark_macro_prefix and will become
        a macro hotkey to jump to the currently selected message. */
-    if ((mw_get_field(_("Enter macro stroke: "), buf, MUTT_COMP_NO_FLAGS,
-                      HC_OTHER, NULL, NULL) == 0) &&
+    if ((mw_get_field(_("Enter macro stroke: "), buf, MUTT_COMP_NONE, HC_OTHER,
+                      NULL, NULL) == 0) &&
         !buf_is_empty(buf))
     {
       const char *const c_mark_macro_prefix = cs_subset_string(shared->sub, "mark_macro_prefix");
@@ -2912,7 +2911,7 @@ static int op_search(struct IndexFunctionData *fdata, const struct KeyEvent *eve
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
-  SearchFlags flags = SEARCH_NO_FLAGS;
+  SearchFlags flags = SEARCH_NONE;
   switch (event->op)
   {
     case OP_SEARCH:
@@ -3413,8 +3412,7 @@ static int op_get_message(struct IndexFunctionData *fdata, const struct KeyEvent
   const int op = event->op;
   if (op == OP_GET_MESSAGE)
   {
-    if ((mw_get_field(_("Enter Message-ID: "), buf, MUTT_COMP_NO_FLAGS,
-                      HC_OTHER, NULL, NULL) != 0) ||
+    if ((mw_get_field(_("Enter Message-ID: "), buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       goto done;
@@ -3523,7 +3521,7 @@ static int op_main_change_group(struct IndexFunctionData *fdata, const struct Ke
   nntp_mailbox(shared->mailbox, folderbuf->data, folderbuf->dsize);
 
   if (mw_enter_fname(cp, folderbuf, true, shared->mailbox, false, NULL, NULL,
-                     MUTT_SEL_NO_FLAGS) == -1)
+                     MUTT_SEL_NONE) == -1)
   {
     goto changefoldercleanup2;
   }
@@ -3694,8 +3692,7 @@ static int op_main_vfolder_from_query(struct IndexFunctionData *fdata,
   int rc = FR_SUCCESS;
   struct Buffer *buf = buf_pool_get();
 
-  if ((mw_get_field("Query: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER,
-                    &CompleteNmQueryOps, NULL) != 0) ||
+  if ((mw_get_field("Query: ", buf, MUTT_COMP_NONE, HC_OTHER, &CompleteNmQueryOps, NULL) != 0) ||
       buf_is_empty(buf))
   {
     mutt_message(_("No query, aborting"));
@@ -3848,14 +3845,14 @@ static bool prereq(struct IndexSharedData *shared, struct Menu *menu, CheckFlags
  */
 static const struct IndexFunction IndexFunctions[] = {
   // clang-format off
-  { OP_ALIAS_DIALOG,                     op_alias_dialog,             CHECK_NO_FLAGS },
+  { OP_ALIAS_DIALOG,                     op_alias_dialog,             CHECK_NONE },
   { OP_ATTACH_EDIT_TYPE,                 op_attach_edit_type,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_BOUNCE_MESSAGE,                   op_bounce_message,           CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_CATCHUP,                          op_catchup,                  CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY },
   { OP_CHECK_TRADITIONAL,                op_check_traditional,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_COMPOSE_TO_SENDER,                op_compose_to_sender,        CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_COPY_MESSAGE,                     op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_CREATE_ALIAS,                     op_create_alias,             CHECK_NO_FLAGS },
+  { OP_CREATE_ALIAS,                     op_create_alias,             CHECK_NONE },
   { OP_DECODE_COPY,                      op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_DECODE_SAVE,                      op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_DECRYPT_COPY,                     op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3869,12 +3866,12 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_EDIT_LABEL,                       op_edit_label,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_EDIT_OR_VIEW_RAW_MESSAGE,         op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_EDIT_RAW_MESSAGE,                 op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_END_COND,                         op_end_cond,                 CHECK_NO_FLAGS },
-  { OP_EXIT,                             op_exit,                     CHECK_NO_FLAGS },
+  { OP_END_COND,                         op_end_cond,                 CHECK_NONE },
+  { OP_EXIT,                             op_exit,                     CHECK_NONE },
   { OP_EXTRACT_KEYS,                     op_extract_keys,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FLAG_MESSAGE,                     op_flag_message,             CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_FOLLOWUP,                         op_post,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_FORGET_PASSPHRASE,                op_forget_passphrase,        CHECK_NO_FLAGS },
+  { OP_FORGET_PASSPHRASE,                op_forget_passphrase,        CHECK_NONE },
   { OP_FORWARD_MESSAGE,                  op_forward_message,          CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_FORWARD_TO_GROUP,                 op_post,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GET_CHILDREN,                     op_get_children,             CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
@@ -3889,13 +3886,13 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_LIST_SUBSCRIBE,                   op_list_subscribe,           CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_LIST_UNSUBSCRIBE,                 op_list_unsubscribe,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIL,                             op_mail,                     CHECK_ATTACH },
-  { OP_MAILBOX_LIST,                     op_mailbox_list,             CHECK_NO_FLAGS },
+  { OP_MAILBOX_LIST,                     op_mailbox_list,             CHECK_NONE },
   { OP_MAIL_KEY,                         op_mail_key,                 CHECK_ATTACH },
   { OP_MAIN_BREAK_THREAD,                op_main_break_thread,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
-  { OP_MAIN_CHANGE_FOLDER,               op_main_change_folder,       CHECK_NO_FLAGS },
-  { OP_MAIN_CHANGE_FOLDER_READONLY,      op_main_change_folder,       CHECK_NO_FLAGS },
-  { OP_MAIN_CHANGE_GROUP,                op_main_change_group,        CHECK_NO_FLAGS },
-  { OP_MAIN_CHANGE_GROUP_READONLY,       op_main_change_group,        CHECK_NO_FLAGS },
+  { OP_MAIN_CHANGE_FOLDER,               op_main_change_folder,       CHECK_NONE },
+  { OP_MAIN_CHANGE_FOLDER_READONLY,      op_main_change_folder,       CHECK_NONE },
+  { OP_MAIN_CHANGE_GROUP,                op_main_change_group,        CHECK_NONE },
+  { OP_MAIN_CHANGE_GROUP_READONLY,       op_main_change_group,        CHECK_NONE },
   { OP_MAIN_CLEAR_FLAG,                  op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_CLOSE_ALL_THREADS,           op_main_close_all_threads,   CHECK_IN_MAILBOX },
   { OP_MAIN_CLOSE_THREAD,                op_main_close_thread,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3903,8 +3900,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_COLLAPSE_THREAD,             op_main_collapse_thread,     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_DELETE_PATTERN,              op_main_delete_pattern,      CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_READONLY },
   { OP_MAIN_FETCH_MAIL,                  op_main_fetch_mail,          CHECK_ATTACH },
-  { OP_MAIN_IMAP_FETCH,                  op_main_imap_fetch,          CHECK_NO_FLAGS },
-  { OP_MAIN_IMAP_LOGOUT_ALL,             op_main_imap_logout_all,     CHECK_NO_FLAGS },
+  { OP_MAIN_IMAP_FETCH,                  op_main_imap_fetch,          CHECK_NONE },
+  { OP_MAIN_IMAP_LOGOUT_ALL,             op_main_imap_logout_all,     CHECK_NONE },
   { OP_MAIN_LIMIT,                       op_main_limit,               CHECK_IN_MAILBOX },
   { OP_MAIN_LINK_THREADS,                op_main_link_threads,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_MODIFY_TAGS,                 op_main_modify_tags,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
@@ -3932,7 +3929,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_MAIN_ROOT_MESSAGE,                op_main_root_message,        CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_MAIN_SET_FLAG,                    op_main_set_flag,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_MAIN_SHOW_LIMIT,                  op_main_show_limit,          CHECK_IN_MAILBOX },
-  { OP_MAIN_SYNC_FOLDER,                 op_main_sync_folder,         CHECK_NO_FLAGS },
+  { OP_MAIN_SYNC_FOLDER,                 op_main_sync_folder,         CHECK_NONE },
   { OP_MAIN_TAG_PATTERN,                 op_main_tag_pattern,         CHECK_IN_MAILBOX },
   { OP_MAIN_UNDELETE_PATTERN,            op_main_undelete_pattern,    CHECK_IN_MAILBOX | CHECK_READONLY },
   { OP_MAIN_UNTAG_PATTERN,               op_main_untag_pattern,       CHECK_IN_MAILBOX },
@@ -3945,7 +3942,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_PURGE_MESSAGE,                    op_delete,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_PURGE_THREAD,                     op_delete_thread,            CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_QUERY,                            op_query,                    CHECK_ATTACH },
-  { OP_QUIT,                             op_quit,                     CHECK_NO_FLAGS },
+  { OP_QUIT,                             op_quit,                     CHECK_NONE },
   { OP_RECALL_MESSAGE,                   op_recall_message,           CHECK_ATTACH },
   { OP_RECONSTRUCT_THREAD,               op_get_children,             CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_REPLY,                            op_reply,                    CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3955,8 +3952,8 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_SEARCH_NEXT,                      op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SEARCH_OPPOSITE,                  op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SEARCH_REVERSE,                   op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SORT,                             op_sort,                     CHECK_NO_FLAGS },
-  { OP_SORT_REVERSE,                     op_sort,                     CHECK_NO_FLAGS },
+  { OP_SORT,                             op_sort,                     CHECK_NONE },
+  { OP_SORT_REVERSE,                     op_sort,                     CHECK_NONE },
   { OP_TAG,                              op_tag,                      CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TAG_SUBTHREAD,                    op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_TAG_THREAD,                       op_tag_thread,               CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
@@ -3969,18 +3966,18 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_VIEW_ATTACHMENTS,                 op_view_attachments,         CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_VIEW_RAW_MESSAGE,                 op_edit_raw_message,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
 #ifdef USE_AUTOCRYPT
-  { OP_AUTOCRYPT_ACCT_MENU,              op_autocrypt_acct_menu,      CHECK_NO_FLAGS },
+  { OP_AUTOCRYPT_ACCT_MENU,              op_autocrypt_acct_menu,      CHECK_NONE },
 #endif
 #ifdef USE_NOTMUCH
-  { OP_MAIN_CHANGE_VFOLDER,              op_main_change_folder,       CHECK_NO_FLAGS },
+  { OP_MAIN_CHANGE_VFOLDER,              op_main_change_folder,       CHECK_NONE },
   { OP_MAIN_ENTIRE_THREAD,               op_main_entire_thread,       CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_MAIN_VFOLDER_FROM_QUERY,          op_main_vfolder_from_query,  CHECK_NO_FLAGS },
-  { OP_MAIN_VFOLDER_FROM_QUERY_READONLY, op_main_vfolder_from_query,  CHECK_NO_FLAGS },
+  { OP_MAIN_VFOLDER_FROM_QUERY,          op_main_vfolder_from_query,  CHECK_NONE },
+  { OP_MAIN_VFOLDER_FROM_QUERY_READONLY, op_main_vfolder_from_query,  CHECK_NONE },
   { OP_MAIN_WINDOWED_VFOLDER_BACKWARD,   op_main_windowed_vfolder,    CHECK_IN_MAILBOX },
   { OP_MAIN_WINDOWED_VFOLDER_FORWARD,    op_main_windowed_vfolder,    CHECK_IN_MAILBOX },
   { OP_MAIN_WINDOWED_VFOLDER_RESET,      op_main_windowed_vfolder,    CHECK_IN_MAILBOX },
 #endif
-  { 0, NULL, CHECK_NO_FLAGS },
+  { 0, NULL, CHECK_NONE },
   // clang-format on
 };
 

@@ -94,7 +94,7 @@ const struct Command NmCommands[] = {
   { "unvirtual-mailboxes", CMD_NONE, NULL, "unmailboxes",     NULL, NULL, CF_SYNONYM },
   { "virtual-mailboxes",   CMD_NONE, NULL, "named-mailboxes", NULL, NULL, CF_SYNONYM },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };
 
@@ -2478,7 +2478,7 @@ static int nm_msg_close(struct Mailbox *m, struct Message *msg)
 static int nm_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *buf)
 {
   buf_reset(buf);
-  if (mw_get_field("Add/remove labels: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER,
+  if (mw_get_field("Add/remove labels: ", buf, MUTT_COMP_NONE, HC_OTHER,
                    &CompleteNmTagOps, NULL) != 0)
   {
     return -1;

@@ -489,7 +489,7 @@ int dlg_pager(struct PagerView *pview)
     // One of such functions is `mutt_enter_command()`
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index handles the operation and then restarts pager
-    struct KeyEvent event = km_dokey(mod_data->menu_pager, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(mod_data->menu_pager, GETCH_NONE);
     op = event.op;
 
     // km_dokey() can block, so recheck the timer.

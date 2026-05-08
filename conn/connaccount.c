@@ -60,7 +60,7 @@ int mutt_account_getuser(struct ConnAccount *cac)
   {
     mutt_str_copy(cac->user, user, sizeof(cac->user));
   }
-  else if (mutt_account_call_external_cmd(cac) != MUTT_ACCT_NO_FLAGS)
+  else if (mutt_account_call_external_cmd(cac) != MUTT_ACCT_NONE)
   {
     /* The external command might interact with the screen */
     if (OptGui)
@@ -139,7 +139,7 @@ int mutt_account_getpass(struct ConnAccount *cac)
   {
     mutt_str_copy(cac->pass, pass, sizeof(cac->pass));
   }
-  else if (mutt_account_call_external_cmd(cac) != MUTT_ACCT_NO_FLAGS)
+  else if (mutt_account_call_external_cmd(cac) != MUTT_ACCT_NONE)
   {
     /* The external command might interact with the screen */
     if (OptGui)
@@ -221,7 +221,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   }
 
   size_t token_size = 0;
-  char *token = mutt_file_read_line(NULL, &token_size, fp, NULL, MUTT_RL_NO_FLAGS);
+  char *token = mutt_file_read_line(NULL, &token_size, fp, NULL, MUTT_RL_NONE);
   mutt_file_fclose(&fp);
   filter_wait(pid);
 

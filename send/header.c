@@ -399,7 +399,7 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
     }
 
     *colon = '\0';
-    mutt_write_one_header(fp, tmp->data, value, NULL, 0, CH_NO_FLAGS, sub);
+    mutt_write_one_header(fp, tmp->data, value, NULL, 0, CH_NONE, sub);
     *colon = ':';
   }
 
@@ -662,11 +662,11 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b,
     {
       const char *const c_crypt_protected_headers_subject = cs_subset_string(sub, "crypt_protected_headers_subject");
       mutt_write_one_header(fp, "Subject", c_crypt_protected_headers_subject,
-                            NULL, 0, CH_NO_FLAGS, sub);
+                            NULL, 0, CH_NONE, sub);
     }
     else
     {
-      mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, CH_NO_FLAGS, sub);
+      mutt_write_one_header(fp, "Subject", env->subject, NULL, 0, CH_NONE, sub);
     }
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)

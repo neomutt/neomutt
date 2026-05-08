@@ -185,8 +185,7 @@ bool smime_class_valid_passphrase(void)
 static void smime_command(struct Buffer *buf, struct SmimeCommandContext *cctx,
                           const struct Expando *exp)
 {
-  expando_render(exp, SmimeCommandRenderCallbacks, cctx, MUTT_FORMAT_NO_FLAGS,
-                 buf->dsize, buf);
+  expando_render(exp, SmimeCommandRenderCallbacks, cctx, MUTT_FORMAT_NONE, buf->dsize, buf);
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(buf));
 }
 
@@ -544,7 +543,7 @@ static struct SmimeKey *smime_ask_for_key(const char *prompt, KeyFlags abilities
   while (true)
   {
     buf_reset(resp);
-    if (mw_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0)
+    if (mw_get_field(prompt, resp, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -1004,7 +1003,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   const bool c_smime_ask_cert_label = cs_subset_bool(NeoMutt->sub, "smime_ask_cert_label");
   if (c_smime_ask_cert_label)
   {
-    if ((mw_get_field(_("Label for certificate: "), buf, MUTT_COMP_NO_FLAGS,
+    if ((mw_get_field(_("Label for certificate: "), buf, MUTT_COMP_NONE,
                       HC_OTHER, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
@@ -1072,8 +1071,8 @@ int smime_class_verify_sender(struct Email *e, struct Message *msg)
 
   const bool encrypt = e->security & SEC_ENCRYPT;
   mutt_copy_message(fp_out, e, msg,
-                    encrypt ? (MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME) : MUTT_CM_NO_FLAGS,
-                    encrypt ? (CH_MIME | CH_WEED | CH_NONEWLINE) : CH_NO_FLAGS, 0);
+                    encrypt ? (MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME) : MUTT_CM_NONE,
+                    encrypt ? (CH_MIME | CH_WEED | CH_NONEWLINE) : CH_NONE, 0);
 
   fflush(fp_out);
   mutt_file_fclose(&fp_out);
@@ -1641,7 +1640,7 @@ int smime_class_verify_one(struct Body *b, struct State *state, const char *temp
       fflush(fp_smime_err);
       rewind(fp_smime_err);
 
-      line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, MUTT_RL_NO_FLAGS);
+      line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, MUTT_RL_NONE);
       if (linelen && mutt_istr_equal(line, "verification successful"))
         badsig = 0;
 
@@ -1895,7 +1894,7 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
 
     rewind(fp_smime_err);
 
-    line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, MUTT_RL_NO_FLAGS);
+    line = mutt_file_read_line(line, &linelen, fp_smime_err, NULL, MUTT_RL_NONE);
     if (linelen && mutt_istr_equal(line, "verification successful"))
       b->goodsig = true;
     FREE(&line);

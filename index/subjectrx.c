@@ -78,7 +78,7 @@ static enum CommandResult parse_unreplace_list(const struct Command *cmd,
   struct Buffer *token = buf_pool_get();
 
   /* First token is a regex. */
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
 
   /* "*" is a special case. */
   if (mutt_str_equal(buf_string(token), "*"))
@@ -115,7 +115,7 @@ static enum CommandResult parse_replace_list(const struct Command *cmd, struct B
   }
 
   /* First token is a regex. */
-  parse_extract_token(regex, line, TOKEN_NO_FLAGS);
+  parse_extract_token(regex, line, TOKEN_NONE);
 
   if (!MoreArgs(line))
   {
@@ -124,7 +124,7 @@ static enum CommandResult parse_replace_list(const struct Command *cmd, struct B
   }
 
   /* Second token is a replacement template */
-  parse_extract_token(templ, line, TOKEN_NO_FLAGS);
+  parse_extract_token(templ, line, TOKEN_NONE);
 
   if (mutt_replacelist_add(list, buf_string(regex), buf_string(templ), err) != 0)
   {

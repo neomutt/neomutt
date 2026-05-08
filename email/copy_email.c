@@ -681,7 +681,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       const struct Expando *c_indent_string = cs_subset_expando(NeoMutt->sub, "indent_string");
       struct Mailbox *m_cur = get_current_mailbox();
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix, -1, c_indent_string, m_cur, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix, -1, c_indent_string, m_cur, -1, e, MUTT_FORMAT_NONE, NULL);
       setlocale(LC_TIME, "");
     }
   }
@@ -959,7 +959,7 @@ static int append_message(struct Mailbox *dest, FILE *fp_in, struct Mailbox *src
   if (!fgets(buf, sizeof(buf), fp_in))
     return -1;
 
-  msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? MUTT_MSG_NO_FLAGS : MUTT_ADD_FROM);
+  msg = mx_msg_open_new(dest, e, is_from(buf, NULL, 0, NULL) ? MUTT_MSG_NONE : MUTT_ADD_FROM);
   if (!msg)
     return -1;
   if ((dest->type == MUTT_MBOX) || (dest->type == MUTT_MMDF))

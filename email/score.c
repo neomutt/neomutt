@@ -90,14 +90,14 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     goto done;
   }
   pattern = buf_strdup(token);
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   if (MoreArgs(line))
   {
     buf_printf(err, _("%s: too many arguments"), cmd->name);
@@ -120,7 +120,7 @@ enum CommandResult parse_score(const struct Command *cmd, struct Buffer *line,
   else
   {
     struct MailboxView *mv_cur = get_current_mailbox_view();
-    struct PatternList *pat = mutt_pattern_comp(mv_cur, pattern, MUTT_PC_NO_FLAGS, err);
+    struct PatternList *pat = mutt_pattern_comp(mv_cur, pattern, MUTT_PC_NONE, err);
     if (!pat)
     {
       goto done;
@@ -180,7 +180,7 @@ enum CommandResult parse_unscore(const struct Command *cmd, struct Buffer *line,
 
   while (MoreArgs(line))
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     if (mutt_str_equal("*", buf_string(token)))
     {
       score_list_free(&mod_data->score_list);

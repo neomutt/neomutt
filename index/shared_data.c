@@ -162,7 +162,7 @@ void index_shared_data_set_mview(struct IndexSharedData *shared, struct MailboxV
   if (!shared)
     return;
 
-  NotifyIndex subtype = NT_INDEX_NO_FLAGS;
+  NotifyIndex subtype = NT_INDEX_NONE;
 
   if (shared->mailbox_view != mv)
   {
@@ -220,7 +220,7 @@ void index_shared_data_set_mview(struct IndexSharedData *shared, struct MailboxV
     subtype |= NT_INDEX_SUBSET;
   }
 
-  if (subtype != NT_INDEX_NO_FLAGS)
+  if (subtype != NT_INDEX_NONE)
   {
     mutt_debug(LL_NOTIFY, "NT_INDEX: %p\n", (void *) shared);
     notify_send(shared->notify, NT_INDEX, subtype, shared);

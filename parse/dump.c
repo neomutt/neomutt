@@ -67,7 +67,7 @@ enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err)
 
   struct ConfigSet *cs = NeoMutt->sub->cs;
   struct HashElemArray hea = get_elem_list(cs, flags);
-  dump_config(cs, &hea, CS_DUMP_NO_FLAGS, fp_out);
+  dump_config(cs, &hea, CS_DUMP_NONE, fp_out);
   ARRAY_FREE(&hea);
 
   mutt_file_fclose(&fp_out);
@@ -78,7 +78,7 @@ enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err)
   pdata.fname = buf_string(tempfile);
 
   pview.banner = "set";
-  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.flags = MUTT_PAGER_NONE;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);

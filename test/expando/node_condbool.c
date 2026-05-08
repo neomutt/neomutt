@@ -110,51 +110,51 @@ void test_expando_node_condbool(void)
     struct ExpandoParseError err = { 0 };
 
     str = "%<a?x&y>";
-    node = node_parse_one(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_parse_one(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NONE);
     TEST_CHECK_NUM_EQ(rc, 1);
     node_free(&node);
 
     str = "%<b?x&y>";
     memset(&err, 0, sizeof(err));
-    node = node_parse_one(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_parse_one(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NONE);
     TEST_CHECK_NUM_EQ(rc, 0);
     node_free(&node);
 
     str = "%<c?x&y>";
     memset(&err, 0, sizeof(err));
-    node = node_parse_one(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_parse_one(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NONE);
     TEST_CHECK_NUM_EQ(rc, 1);
     node_free(&node);
 
     str = "%<d?x&y>";
     memset(&err, 0, sizeof(err));
-    node = node_parse_one(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_parse_one(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NONE);
     TEST_CHECK_NUM_EQ(rc, 0);
     node_free(&node);
 
     str = "%<e?x&y>";
     memset(&err, 0, sizeof(err));
-    node = node_parse_one(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_parse_one(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NONE);
     TEST_CHECK_NUM_EQ(rc, 0);
     node_free(&node);
 

@@ -64,7 +64,7 @@ enum CommandResult parse_cd(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   if (buf_is_empty(token))
   {
     buf_strcpy(token, NeoMutt->home_dir);
@@ -106,7 +106,7 @@ enum CommandResult parse_echo(const struct Command *cmd, struct Buffer *line,
 
   struct Buffer *token = buf_pool_get();
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   OptForceRefresh = true;
   mutt_message("%s", buf_string(token));
   OptForceRefresh = false;
@@ -159,7 +159,7 @@ enum CommandResult parse_version(const struct Command *cmd, struct Buffer *line,
   pdata.fname = buf_string(tempfile);
 
   pview.banner = cmd->name;
-  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.flags = MUTT_PAGER_NONE;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);

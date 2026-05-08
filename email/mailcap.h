@@ -54,7 +54,7 @@ struct MailcapEntry
  */
 enum MailcapLookup
 {
-  MUTT_MC_NO_FLAGS = 0, ///< No flags set
+  MUTT_MC_NONE = 0,     ///< No flags set
   MUTT_MC_EDIT,         ///< Mailcap edit field
   MUTT_MC_COMPOSE,      ///< Mailcap compose field
   MUTT_MC_PRINT,        ///< Mailcap print field

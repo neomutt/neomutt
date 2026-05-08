@@ -68,9 +68,9 @@ enum CommandResult parse_charset_hook(const struct Command *cmd, struct Buffer *
   struct Buffer *charset = buf_pool_get();
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  if (parse_extract_token(alias, line, TOKEN_NO_FLAGS) < 0)
+  if (parse_extract_token(alias, line, TOKEN_NONE) < 0)
     goto done;
-  if (parse_extract_token(charset, line, TOKEN_NO_FLAGS) < 0)
+  if (parse_extract_token(charset, line, TOKEN_NONE) < 0)
     goto done;
 
   const enum LookupType type = (cmd->id == CMD_ICONV_HOOK) ? MUTT_LOOKUP_ICONV :
@@ -194,7 +194,7 @@ enum CommandResult parse_pattern_hook(const struct Command *cmd, struct Buffer *
     pat_not = true;
   }
 
-  parse_extract_token(pattern, line, TOKEN_NO_FLAGS);
+  parse_extract_token(pattern, line, TOKEN_NONE);
 
   if (!MoreArgs(line))
   {
@@ -247,7 +247,7 @@ enum CommandResult parse_pattern_hook(const struct Command *cmd, struct Buffer *
   if (cmd->id == CMD_SEND2_HOOK)
     comp_flags = MUTT_PC_SEND_MODE_SEARCH;
   else if (cmd->id == CMD_SEND_HOOK)
-    comp_flags = MUTT_PC_NO_FLAGS;
+    comp_flags = MUTT_PC_NONE;
   else
     comp_flags = MUTT_PC_FULL_MSG;
 
@@ -312,7 +312,7 @@ enum CommandResult add_mailbox_hook(enum CommandId id, struct Buffer *mailbox,
 
   PatternCompFlags comp_flags;
   if (id == CMD_FCC_HOOK)
-    comp_flags = MUTT_PC_NO_FLAGS;
+    comp_flags = MUTT_PC_NONE;
   else
     comp_flags = MUTT_PC_FULL_MSG;
 
@@ -363,7 +363,7 @@ enum CommandResult parse_mailbox_hook(const struct Command *cmd, struct Buffer *
     pat_not = true;
   }
 
-  parse_extract_token(pattern, line, TOKEN_NO_FLAGS);
+  parse_extract_token(pattern, line, TOKEN_NONE);
 
   if (!MoreArgs(line))
   {
@@ -372,7 +372,7 @@ enum CommandResult parse_mailbox_hook(const struct Command *cmd, struct Buffer *
     goto cleanup;
   }
 
-  parse_extract_token(mailbox, line, TOKEN_NO_FLAGS);
+  parse_extract_token(mailbox, line, TOKEN_NONE);
 
   if (buf_is_empty(mailbox))
   {
@@ -445,7 +445,7 @@ enum CommandResult parse_regex_hook(const struct Command *cmd, struct Buffer *li
     pat_not = true;
   }
 
-  parse_extract_token(regex, line, TOKEN_NO_FLAGS);
+  parse_extract_token(regex, line, TOKEN_NONE);
 
   if (!MoreArgs(line))
   {
@@ -543,7 +543,7 @@ enum CommandResult parse_folder_hook(const struct Command *cmd, struct Buffer *l
     pat_not = true;
   }
 
-  parse_extract_token(regex, line, TOKEN_NO_FLAGS);
+  parse_extract_token(regex, line, TOKEN_NONE);
   if (mutt_str_equal(buf_string(regex), "-noregex"))
   {
     use_regex = false;
@@ -553,7 +553,7 @@ enum CommandResult parse_folder_hook(const struct Command *cmd, struct Buffer *l
       rc = MUTT_CMD_WARNING;
       goto cleanup;
     }
-    parse_extract_token(regex, line, TOKEN_NO_FLAGS);
+    parse_extract_token(regex, line, TOKEN_NONE);
   }
 
   if (!MoreArgs(line))
@@ -683,7 +683,7 @@ enum CommandResult parse_crypt_hook(const struct Command *cmd, struct Buffer *li
     pat_not = true;
   }
 
-  parse_extract_token(regex, line, TOKEN_NO_FLAGS);
+  parse_extract_token(regex, line, TOKEN_NONE);
 
   if (!MoreArgs(line))
   {
@@ -692,7 +692,7 @@ enum CommandResult parse_crypt_hook(const struct Command *cmd, struct Buffer *li
     goto cleanup;
   }
 
-  parse_extract_token(keyid, line, TOKEN_NO_FLAGS);
+  parse_extract_token(keyid, line, TOKEN_NONE);
 
   if (buf_is_empty(keyid))
   {
@@ -781,7 +781,7 @@ enum CommandResult parse_mbox_hook(const struct Command *cmd, struct Buffer *lin
     pat_not = true;
   }
 
-  parse_extract_token(regex, line, TOKEN_NO_FLAGS);
+  parse_extract_token(regex, line, TOKEN_NONE);
   if (mutt_str_equal(buf_string(regex), "-noregex"))
   {
     use_regex = false;
@@ -791,7 +791,7 @@ enum CommandResult parse_mbox_hook(const struct Command *cmd, struct Buffer *lin
       rc = MUTT_CMD_WARNING;
       goto cleanup;
     }
-    parse_extract_token(regex, line, TOKEN_NO_FLAGS);
+    parse_extract_token(regex, line, TOKEN_NONE);
   }
 
   if (!MoreArgs(line))
@@ -801,7 +801,7 @@ enum CommandResult parse_mbox_hook(const struct Command *cmd, struct Buffer *lin
     goto cleanup;
   }
 
-  parse_extract_token(command, line, TOKEN_NO_FLAGS);
+  parse_extract_token(command, line, TOKEN_NONE);
 
   if (buf_is_empty(command))
   {
@@ -931,7 +931,7 @@ enum CommandResult parse_compress_hook(const struct Command *cmd, struct Buffer 
     pat_not = true;
   }
 
-  parse_extract_token(regex, line, TOKEN_NO_FLAGS);
+  parse_extract_token(regex, line, TOKEN_NONE);
 
   if (!MoreArgs(line))
   {
@@ -1091,7 +1091,7 @@ enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *li
     mutt_hash_set_destructor(mod_data->idx_fmt_hooks, idxfmt_hashelem_free, 0);
   }
 
-  parse_extract_token(name, line, TOKEN_NO_FLAGS);
+  parse_extract_token(name, line, TOKEN_NONE);
   struct HookList *hl = mutt_hash_find(mod_data->idx_fmt_hooks, buf_string(name));
 
   if (*line->dptr == '!')
@@ -1100,14 +1100,14 @@ enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *li
     SKIPWS(line->dptr);
     pat_not = true;
   }
-  parse_extract_token(pattern, line, TOKEN_NO_FLAGS);
+  parse_extract_token(pattern, line, TOKEN_NONE);
 
   if (!MoreArgs(line))
   {
     buf_printf(err, _("%s: too few arguments"), cmd->name);
     goto out;
   }
-  parse_extract_token(fmt, line, TOKEN_NO_FLAGS);
+  parse_extract_token(fmt, line, TOKEN_NONE);
 
   exp = expando_parse(buf_string(fmt), IndexFormatDef, err);
   if (!exp)
@@ -1206,7 +1206,7 @@ enum CommandResult parse_unhook(const struct Command *cmd, struct Buffer *line,
 
   while (MoreArgs(line))
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     if (mutt_str_equal("*", buf_string(token)))
     {
       if (mod_data->current_hook_id != CMD_NONE)

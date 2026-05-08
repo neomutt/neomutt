@@ -708,7 +708,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   if (!m)
     return;
 
-  const OpenMailboxFlags flags = read_only ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS;
+  const OpenMailboxFlags flags = read_only ? MUTT_READONLY : MUTT_OPEN_NONE;
   if (mx_mbox_open(m, flags))
   {
     struct MailboxView *mv = mview_new(m, NeoMutt->notify);
@@ -1268,7 +1268,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (!shared->attach_msg)
     {
       /* check for new mail in the incoming folders */
-      mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NO_FLAGS);
+      mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NONE);
       if (priv->do_mailbox_notify)
       {
         if (mutt_mailbox_notify(shared->mailbox))
@@ -1322,7 +1322,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     mutt_refresh();
 
     window_redraw(NULL);
-    struct KeyEvent event = km_dokey(mod_data->menu_index, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(mod_data->menu_index, GETCH_NONE);
     op = event.op;
 
     if (op == OP_REPAINT)

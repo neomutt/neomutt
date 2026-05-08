@@ -71,7 +71,7 @@ enum CommandResult parse_dump(const struct Command *cmd, struct Buffer *line,
 
   if (MoreArgs(line))
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     if (MoreArgs(line))
     {
@@ -120,7 +120,7 @@ char *parse_keymap(const struct Command *cmd, struct MenuDefinitionArray *mda,
   char *result = NULL;
 
   /* menu name */
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   char *p = token->data;
   if (MoreArgs(line))
   {
@@ -143,7 +143,7 @@ char *parse_keymap(const struct Command *cmd, struct MenuDefinitionArray *mda,
         break;
     }
     /* key sequence */
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     if (buf_at(token, 0) == '\0')
     {
@@ -269,7 +269,7 @@ enum CommandResult parse_bind(const struct Command *cmd, struct Buffer *line,
     goto done;
 
   /* function to execute */
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   if (MoreArgs(line))
   {
     buf_printf(err, _("%s: too many arguments"), cmd->name);
@@ -470,7 +470,7 @@ bool parse_unbind_args(const struct Command *cmd, struct Buffer *line,
   struct Buffer *token = buf_pool_get();
   bool rc = false;
 
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   if (mutt_str_equal(buf_string(token), "*"))
   {
     args->all_menus = true;
@@ -479,7 +479,7 @@ bool parse_unbind_args(const struct Command *cmd, struct Buffer *line,
     {
       // `unbind * key`
       // `unmacro * key`
-      parse_extract_token(token, line, TOKEN_NO_FLAGS);
+      parse_extract_token(token, line, TOKEN_NONE);
       args->key = buf_strdup(token);
     }
     else
@@ -497,7 +497,7 @@ bool parse_unbind_args(const struct Command *cmd, struct Buffer *line,
 
     if (MoreArgs(line))
     {
-      parse_extract_token(token, line, TOKEN_NO_FLAGS);
+      parse_extract_token(token, line, TOKEN_NONE);
       if (mutt_str_equal(buf_string(token), "*"))
       {
         // `unbind  menu *`
@@ -805,7 +805,7 @@ enum CommandResult parse_exec(const struct Command *cmd, struct Buffer *line,
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     function = token->data;
 
     const enum MenuType mtype = menu_get_current_type();

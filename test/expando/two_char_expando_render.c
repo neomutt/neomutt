@@ -90,7 +90,7 @@ void test_expando_two_char_expando_render(void)
   };
 
   struct Buffer *buf = buf_pool_get();
-  expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(exp, render, &data, MUTT_FORMAT_NONE, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected);
 

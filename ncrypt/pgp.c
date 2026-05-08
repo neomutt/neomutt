@@ -258,7 +258,7 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
     char *line = NULL;
     size_t linelen;
 
-    while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, MUTT_RL_NO_FLAGS)))
+    while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, MUTT_RL_NONE)))
     {
       if (mutt_regex_match(c_pgp_good_sign, line))
       {
@@ -307,7 +307,7 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
     char *line = NULL;
     size_t linelen;
 
-    while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, MUTT_RL_NO_FLAGS)))
+    while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, MUTT_RL_NONE)))
     {
       if (mutt_regex_match(c_pgp_decryption_okay, line))
       {
@@ -362,7 +362,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
   if (!c_pgp_check_gpg_decrypt_status_fd)
     return pgp_check_pgp_decryption_okay_regex(fp_in);
 
-  while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, MUTT_RL_NO_FLAGS)))
+  while ((line = mutt_file_read_line(line, &linelen, fp_in, NULL, MUTT_RL_NONE)))
   {
     size_t plen = mutt_str_startswith(line, "[GNUPG:] ");
     if (plen == 0)
@@ -811,8 +811,7 @@ static bool pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  if (mutt_decode_save_attachment(fp, b, buf_string(tempfile), STATE_NO_FLAGS,
-                                  MUTT_SAVE_NO_FLAGS) != 0)
+  if (mutt_decode_save_attachment(fp, b, buf_string(tempfile), STATE_NONE, MUTT_SAVE_NONE) != 0)
   {
     unlink(buf_string(tempfile));
     goto cleanup;
@@ -1788,7 +1787,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *b, SecurityFlags fla
       send_charset = "utf-8";
 
     /* fromcode is assumed to be correct: we set flags to 0 */
-    fc = mutt_ch_fgetconv_open(fp_body, from_charset, "utf-8", MUTT_ICONV_NO_FLAGS);
+    fc = mutt_ch_fgetconv_open(fp_body, from_charset, "utf-8", MUTT_ICONV_NONE);
     while ((c = mutt_ch_fgetconv(fc)) != EOF)
       fputc(c, fp_pgp_in);
 
@@ -2022,7 +2021,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
       case 'a': /* sign (a)s */
         OptPgpCheckTrust = false;
 
-        p = pgp_ask_for_key(_("Sign as: "), NULL, KEYFLAG_NO_FLAGS, PGP_SECRING);
+        p = pgp_ask_for_key(_("Sign as: "), NULL, KEYFLAG_NONE, PGP_SECRING);
         if (p)
         {
           char input_signas[128] = { 0 };

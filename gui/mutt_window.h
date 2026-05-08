@@ -103,11 +103,17 @@ enum WindowType
 
 ARRAY_HEAD(MuttWindowArray, struct MuttWindow *);
 
-typedef uint8_t WindowActionFlags; ///< Flags for Actions waiting to be performed on a MuttWindow, e.g. #WA_REFLOW
-#define WA_NO_FLAGS        0       ///< No flags are set
-#define WA_REFLOW    (1 << 0)      ///< Reflow the Window and its children
-#define WA_RECALC    (1 << 1)      ///< Recalculate the contents of the Window
-#define WA_REPAINT   (1 << 2)      ///< Redraw the contents of the Window
+/**
+ * enum WindowActionFlag - Flags for Actions waiting to be performed on a MuttWindow
+ */
+enum WindowActionFlag
+{
+  WA_NONE    =       0,  ///< No flags are set
+  WA_REFLOW  = 1U << 0,  ///< Reflow the Window and its children
+  WA_RECALC  = 1U << 1,  ///< Recalculate the contents of the Window
+  WA_REPAINT = 1U << 2,  ///< Redraw the contents of the Window
+};
+typedef uint8_t WindowActionFlags;
 
 /**
  * @defgroup window_api Window API
@@ -203,15 +209,21 @@ struct MuttWindow
   bool (*recursor)(struct MuttWindow *win);
 };
 
-typedef uint8_t WindowNotifyFlags; ///< Flags for Changes to a MuttWindow, e.g. #WN_TALLER
-#define WN_NO_FLAGS        0       ///< No flags are set
-#define WN_TALLER    (1 << 0)      ///< Window became taller
-#define WN_SHORTER   (1 << 1)      ///< Window became shorter
-#define WN_WIDER     (1 << 2)      ///< Window became wider
-#define WN_NARROWER  (1 << 3)      ///< Window became narrower
-#define WN_MOVED     (1 << 4)      ///< Window moved
-#define WN_VISIBLE   (1 << 5)      ///< Window became visible
-#define WN_HIDDEN    (1 << 6)      ///< Window became hidden
+/**
+ * enum WindowNotifyFlag - Flags for Changes to a MuttWindow
+ */
+enum WindowNotifyFlag
+{
+  WN_NONE     =       0,  ///< No flags are set
+  WN_TALLER   = 1U << 0,  ///< Window became taller
+  WN_SHORTER  = 1U << 1,  ///< Window became shorter
+  WN_WIDER    = 1U << 2,  ///< Window became wider
+  WN_NARROWER = 1U << 3,  ///< Window became narrower
+  WN_MOVED    = 1U << 4,  ///< Window moved
+  WN_VISIBLE  = 1U << 5,  ///< Window became visible
+  WN_HIDDEN   = 1U << 6,  ///< Window became hidden
+};
+typedef uint8_t WindowNotifyFlags;
 
 /**
  * enum NotifyWindow - Window notification types

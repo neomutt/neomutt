@@ -65,7 +65,7 @@ enum CommandResult parse_ignore(const struct Command *cmd, struct Buffer *line,
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     remove_from_stailq(&mod_data->unignore, buf_string(token));
     add_to_stailq(&mod_data->ignore, buf_string(token));
   } while (MoreArgs(line));
@@ -98,7 +98,7 @@ enum CommandResult parse_unignore(const struct Command *cmd, struct Buffer *line
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     /* don't add "*" to the unignore list */
     if (!mutt_str_equal(buf_string(token), "*"))

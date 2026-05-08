@@ -1115,7 +1115,7 @@ static int op_attach_attach_message(struct ComposeFunctionData *fdata,
   }
 
   if ((mw_enter_fname(prompt, fname, true, shared->mailbox, false, NULL, NULL,
-                      MUTT_SEL_NO_FLAGS) == -1) ||
+                      MUTT_SEL_NONE) == -1) ||
       buf_is_empty(fname))
   {
     buf_pool_release(&fname);
@@ -1353,7 +1353,7 @@ static int op_attach_edit_content_id(struct ComposeFunctionData *fdata,
     FREE(&id);
   }
 
-  if (mw_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
+  if (mw_get_field("Content-ID: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) == 0)
   {
     if (check_cid(buf_string(buf)))
     {
@@ -1426,7 +1426,7 @@ static int op_attach_edit_description(struct ComposeFunctionData *fdata,
   buf_strcpy(buf, cur_att->body->description);
 
   /* header names should not be translated */
-  if (mw_get_field("Description: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
+  if (mw_get_field("Description: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) == 0)
   {
     ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
 
@@ -1473,7 +1473,7 @@ static int op_attach_edit_encoding(struct ComposeFunctionData *fdata,
   struct AttachPtr *cur_att = current_attachment(actx, menu);
   buf_strcpy(buf, ENCODING(cur_att->body->encoding));
 
-  if ((mw_get_field("Content-Transfer-Encoding: ", buf, MUTT_COMP_NO_FLAGS,
+  if ((mw_get_field("Content-Transfer-Encoding: ", buf, MUTT_COMP_NONE,
                     HC_OTHER, NULL, NULL) == 0) &&
       !buf_is_empty(buf))
   {
@@ -1532,7 +1532,7 @@ static int op_attach_edit_language(struct ComposeFunctionData *fdata,
   struct AttachPtr *cur_att = current_attachment(actx, menu);
 
   buf_strcpy(buf, cur_att->body->language);
-  if (mw_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
+  if (mw_get_field("Content-Language: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) == 0)
   {
     ba_add_selection(&ba, actx, menu, menu->tag_prefix, event->count);
 
@@ -1917,7 +1917,7 @@ static int op_attach_new_mime(struct ComposeFunctionData *fdata, const struct Ke
   struct AttachPtr *ap = NULL;
 
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL, NULL };
-  if ((mw_get_field(_("New file: "), fname, MUTT_COMP_NO_FLAGS, HC_FILE,
+  if ((mw_get_field(_("New file: "), fname, MUTT_COMP_NONE, HC_FILE,
                     &CompleteFileOps, &cdata) != 0) ||
       buf_is_empty(fname))
   {
@@ -1927,7 +1927,7 @@ static int op_attach_new_mime(struct ComposeFunctionData *fdata, const struct Ke
 
   /* Call to lookup_mime_type () ?  maybe later */
   type = buf_pool_get();
-  if ((mw_get_field("Content-Type: ", type, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
+  if ((mw_get_field("Content-Type: ", type, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0) ||
       buf_is_empty(type))
   {
     goto done;
@@ -2037,8 +2037,8 @@ static int op_attach_rename_attachment(struct ComposeFunctionData *fdata,
   struct Buffer *fname = buf_pool_get();
   buf_strcpy(fname, mutt_path_basename(NONULL(src)));
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL, NULL };
-  int rc = mw_get_field(_("Send attachment with name: "), fname,
-                        MUTT_COMP_NO_FLAGS, HC_FILE, &CompleteFileOps, &cdata);
+  int rc = mw_get_field(_("Send attachment with name: "), fname, MUTT_COMP_NONE,
+                        HC_FILE, &CompleteFileOps, &cdata);
   if (rc == 0)
   {
     // It's valid to set an empty string here, to erase what was set
@@ -2455,7 +2455,7 @@ static int op_compose_rename_file(struct ComposeFunctionData *fdata,
   buf_strcpy(fname, cur_att->body->filename);
   pretty_mailbox(fname);
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL, NULL };
-  if ((mw_get_field(_("Rename to: "), fname, MUTT_COMP_NO_FLAGS, HC_FILE,
+  if ((mw_get_field(_("Rename to: "), fname, MUTT_COMP_NONE, HC_FILE,
                     &CompleteFileOps, &cdata) == 0) &&
       !buf_is_empty(fname))
   {
@@ -2531,8 +2531,8 @@ static int op_compose_write_message(struct ComposeFunctionData *fdata,
   }
   if (shared->adata->actx->idxlen)
     shared->email->body = shared->adata->actx->idx[0]->body;
-  if ((mw_enter_fname(_("Write message to mailbox"), fname, true, shared->mailbox,
-                      false, NULL, NULL, MUTT_SEL_NO_FLAGS) != -1) &&
+  if ((mw_enter_fname(_("Write message to mailbox"), fname, true,
+                      shared->mailbox, false, NULL, NULL, MUTT_SEL_NONE) != -1) &&
       !buf_is_empty(fname))
   {
     mutt_message(_("Writing message to %s ..."), buf_string(fname));

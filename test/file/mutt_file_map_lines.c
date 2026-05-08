@@ -48,7 +48,7 @@ static void test_file_map_lines_breaking_after(int last_line, bool expected)
   FILE *fp = SET_UP();
   if (!fp)
     return;
-  bool res = mutt_file_map_lines(mapping_func, &last_line, fp, MUTT_RL_NO_FLAGS);
+  bool res = mutt_file_map_lines(mapping_func, &last_line, fp, MUTT_RL_NONE);
   if (!TEST_CHECK(res == expected))
   {
     TEST_MSG("Expected: %s", BOOLIFY(expected));
@@ -63,20 +63,20 @@ void test_mutt_file_map_lines(void)
 
   {
     FILE *fp = fopen("/dev/null", "r");
-    TEST_CHECK(!mutt_file_map_lines(NULL, "apple", fp, MUTT_RL_NO_FLAGS));
+    TEST_CHECK(!mutt_file_map_lines(NULL, "apple", fp, MUTT_RL_NONE));
     fclose(fp);
   }
 
   {
     mutt_file_map_t map = map_dummy;
     FILE *fp = fopen("/dev/null", "r");
-    TEST_CHECK(mutt_file_map_lines(map, NULL, fp, MUTT_RL_NO_FLAGS));
+    TEST_CHECK(mutt_file_map_lines(map, NULL, fp, MUTT_RL_NONE));
     fclose(fp);
   }
 
   {
     mutt_file_map_t map = map_dummy;
-    TEST_CHECK(!mutt_file_map_lines(map, "apple", NULL, MUTT_RL_NO_FLAGS));
+    TEST_CHECK(!mutt_file_map_lines(map, "apple", NULL, MUTT_RL_NONE));
   }
 
   {

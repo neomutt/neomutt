@@ -70,7 +70,7 @@ enum CommandResult parse_rc_line(struct Buffer *line, struct ParseContext *pc,
       line->dptr++;
       continue;
     }
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     const int token_len = buf_len(token);
     if ((token_len > 0) && (buf_at(token, token_len - 1) == '?'))

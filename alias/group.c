@@ -64,7 +64,7 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *token, struct Buffer *l
       return -1;
     }
 
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     grouplist_add_group(gl, groups_get_group(groups, token->data));
 
@@ -74,7 +74,7 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *token, struct Buffer *l
       return -1;
     }
 
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
   }
 
   return 0;
@@ -108,7 +108,7 @@ enum CommandResult parse_group(const struct Command *cmd, struct Buffer *line,
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     if (parse_grouplist(&gl, token, line, err, mod_data->groups) == -1)
       goto done;
 
@@ -208,7 +208,7 @@ enum CommandResult parse_lists(const struct Command *cmd, struct Buffer *line,
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     if (parse_grouplist(&gl, token, line, err, mod_data->groups) == -1)
       goto done;
@@ -256,7 +256,7 @@ enum CommandResult parse_subscribe(const struct Command *cmd, struct Buffer *lin
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     if (parse_grouplist(&gl, token, line, err, mod_data->groups) == -1)
       goto done;
@@ -308,7 +308,7 @@ enum CommandResult parse_unlists(const struct Command *cmd, struct Buffer *line,
   mutt_hash_free(&mod_data->auto_subscribe_cache);
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     mutt_regexlist_remove(&mod_data->subscribed, buf_string(token));
     mutt_regexlist_remove(&mod_data->mail, buf_string(token));
 
@@ -352,7 +352,7 @@ enum CommandResult parse_unsubscribe(const struct Command *cmd, struct Buffer *l
   mutt_hash_free(&mod_data->auto_subscribe_cache);
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     mutt_regexlist_remove(&mod_data->subscribed, buf_string(token));
 
     if (!mutt_str_equal(buf_string(token), "*") &&

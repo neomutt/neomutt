@@ -645,7 +645,7 @@ static int index_repaint(struct MuttWindow *win)
     }
   }
 
-  menu->redraw = MENU_REDRAW_NO_FLAGS;
+  menu->redraw = MENU_REDRAW_NONE;
   mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }

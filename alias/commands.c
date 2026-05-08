@@ -196,7 +196,7 @@ enum CommandResult parse_alias(const struct Command *cmd, struct Buffer *line,
   enum CommandResult rc = MUTT_CMD_ERROR;
 
   /* name */
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   mutt_debug(LL_DEBUG5, "First token is '%s'\n", buf_string(token));
   if (parse_grouplist(&gl, token, line, err, mod_data->groups) == -1)
     goto done;
@@ -323,7 +323,7 @@ enum CommandResult parse_unalias(const struct Command *cmd, struct Buffer *line,
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     struct Alias **ap = NULL;
     if (mutt_str_equal("*", buf_string(token)))
@@ -401,6 +401,6 @@ const struct Command AliasCommands[] = {
         N_("unsubscribe { * | <regex> ... }"),
         "configuration.html#lists" },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };

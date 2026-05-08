@@ -69,7 +69,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
   char bufo[4 * sizeof(bufi)] = { 0 };
   size_t rc = ICONV_ILLEGAL_SEQ;
 
-  const iconv_t cd1 = mutt_ch_iconv_open("utf-8", fromcode, MUTT_ICONV_NO_FLAGS);
+  const iconv_t cd1 = mutt_ch_iconv_open("utf-8", fromcode, MUTT_ICONV_NONE);
   if (!iconv_t_valid(cd1))
     return -1;
 
@@ -85,7 +85,7 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
   {
     if (!mutt_istr_equal(np->data, "utf-8"))
     {
-      cd[ni] = mutt_ch_iconv_open(np->data, "utf-8", MUTT_ICONV_NO_FLAGS);
+      cd[ni] = mutt_ch_iconv_open(np->data, "utf-8", MUTT_ICONV_NONE);
     }
     else
     {

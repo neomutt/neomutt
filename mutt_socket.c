@@ -93,7 +93,7 @@ struct Connection *mutt_conn_find(const struct ConnAccount *cac)
   /* cac isn't actually modified, since url isn't either */
   account_to_url((struct ConnAccount *) cac, &url);
   url.path = NULL;
-  url_tostring(&url, hook, sizeof(hook), U_NO_FLAGS);
+  url_tostring(&url, hook, sizeof(hook), U_NONE);
   exec_account_hook(hook);
 
   return mutt_conn_new(cac);

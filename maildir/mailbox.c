@@ -615,7 +615,7 @@ static enum MxStatus maildir_check(struct Mailbox *m)
   /* we create a hash table keyed off the canonical (sans flags) filename
    * of each message we scanned.  This is used in the loop over the
    * existing messages below to do some correlation.  */
-  hash_names = mutt_hash_new(ARRAY_SIZE(&mda), MUTT_HASH_NO_FLAGS);
+  hash_names = mutt_hash_new(ARRAY_SIZE(&mda), MUTT_HASH_NONE);
 
   struct MdEmail *md = NULL;
   struct MdEmail **mdp = NULL;

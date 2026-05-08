@@ -657,7 +657,7 @@ static int op_forward_message(struct AttachFunctionData *fdata, const struct Key
     return FR_ERROR;
   struct AttachPtrArray aa = ARRAY_HEAD_INITIALIZER;
   aa_add_selection(&aa, priv->actx, priv->menu, priv->menu->tag_prefix, event->count);
-  mutt_attach_forward(&aa, priv->actx->email, priv->actx, SEND_NO_FLAGS);
+  mutt_attach_forward(&aa, priv->actx->email, priv->actx, SEND_NONE);
   ARRAY_FREE(&aa);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return FR_SUCCESS;

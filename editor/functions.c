@@ -445,7 +445,7 @@ static int op_editor_quote_char(struct EnterFunctionData *fdata, const struct Ke
   do
   {
     window_redraw(NULL);
-    event_q = mutt_getch(GETCH_NO_FLAGS);
+    event_q = mutt_getch(GETCH_NONE);
   } while ((event_q.op == OP_TIMEOUT) || (event_q.op == OP_REPAINT));
 
   if (event_q.op != OP_ABORT)

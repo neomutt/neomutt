@@ -31,10 +31,10 @@ void test_mutt_ch_iconv_open(void)
   // iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t flags);
 
   {
-    TEST_CHECK(mutt_ch_iconv_open(NULL, "banana", MUTT_ICONV_NO_FLAGS) != NULL);
+    TEST_CHECK(mutt_ch_iconv_open(NULL, "banana", MUTT_ICONV_NONE) != NULL);
   }
 
   {
-    TEST_CHECK(mutt_ch_iconv_open("apple", NULL, MUTT_ICONV_NO_FLAGS) != NULL);
+    TEST_CHECK(mutt_ch_iconv_open("apple", NULL, MUTT_ICONV_NONE) != NULL);
   }
 }

@@ -408,7 +408,7 @@ void imap_utf_encode(bool unicode, char **s)
     return;
   }
 
-  if (mutt_ch_convert_string(s, c_charset, "utf-8", MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(s, c_charset, "utf-8", MUTT_ICONV_NONE) != 0)
   {
     FREE(s);
     return;
@@ -448,7 +448,7 @@ void imap_utf_decode(bool unicode, char **s)
     *s = utf8;
   }
 
-  if (mutt_ch_convert_string(s, "utf-8", c_charset, MUTT_ICONV_NO_FLAGS) != 0)
+  if (mutt_ch_convert_string(s, "utf-8", c_charset, MUTT_ICONV_NONE) != 0)
   {
     FREE(s);
   }

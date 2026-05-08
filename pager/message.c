@@ -242,7 +242,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
   }
 
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-  CopyHeaderFlags chflags = (c_weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) |
+  CopyHeaderFlags chflags = (c_weed ? (CH_WEED | CH_REORDER) : CH_NONE) |
                             CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
   if (m->type == MUTT_NOTMUCH)
@@ -309,7 +309,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
   struct GuiModuleData *gui_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
   const int screen_width = gui_data->root_window->state.cols;
   mutt_make_string(buf, screen_width, c_pager_format, m, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, _(ExtPagerProgress));
+                   MUTT_FORMAT_NONE, _(ExtPagerProgress));
 
   struct Buffer *tempfile = buf_pool_get();
 
@@ -338,7 +338,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
     mutt_unget_ch(mutt_any_key_to_continue(_("Command: ")));
     struct PagerModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_PAGER);
     ASSERT(mod_data);
-    struct KeyEvent event = km_dokey(mod_data->menu_pager, GETCH_NO_FLAGS);
+    struct KeyEvent event = km_dokey(mod_data->menu_pager, GETCH_NONE);
     rc = event.op;
   }
   else

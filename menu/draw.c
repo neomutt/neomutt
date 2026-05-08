@@ -394,7 +394,7 @@ void menu_redraw_index(struct Menu *menu)
     }
   }
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-  menu->redraw = MENU_REDRAW_NO_FLAGS;
+  menu->redraw = MENU_REDRAW_NONE;
   buf_pool_release(&buf);
 }
 

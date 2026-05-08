@@ -603,7 +603,7 @@ void pop_fetch_mail(void)
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
   struct Mailbox *m_spool = mx_path_resolve(c_spool_file);
 
-  if (!mx_mbox_open(m_spool, MUTT_OPEN_NO_FLAGS))
+  if (!mx_mbox_open(m_spool, MUTT_OPEN_NONE))
   {
     mailbox_free(&m_spool);
     goto finish;
@@ -768,7 +768,7 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
 
   account_to_url(&cac, &url);
   url.path = NULL;
-  url_tostring(&url, buf, sizeof(buf), U_NO_FLAGS);
+  url_tostring(&url, buf, sizeof(buf), U_NONE);
 
   buf_strcpy(&m->pathbuf, buf);
   mutt_str_replace(&m->realpath, mailbox_path(m));

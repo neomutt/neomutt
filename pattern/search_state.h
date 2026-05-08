@@ -40,10 +40,16 @@ struct SearchState
   bool                reverse;     ///< search backwards
 };
 
-typedef uint8_t SearchFlags;       ///< Flags for a specific search, e.g. #SEARCH_PROMPT
-#define SEARCH_NO_FLAGS        0   ///< No flags are set
-#define SEARCH_PROMPT    (1 << 0)  ///< Ask for search input
-#define SEARCH_OPPOSITE  (1 << 1)  ///< Search in the opposite direction
+/**
+ * enum SearchFlag - Flags for a specific search
+ */
+enum SearchFlag
+{
+  SEARCH_NONE     =       0,  ///< No flags are set
+  SEARCH_PROMPT   = 1U << 0,  ///< Ask for search input
+  SEARCH_OPPOSITE = 1U << 1,  ///< Search in the opposite direction
+};
+typedef uint8_t SearchFlags;
 
 struct SearchState *search_state_new(void);
 void search_state_free(struct SearchState **search);

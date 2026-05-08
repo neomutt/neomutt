@@ -52,12 +52,18 @@ struct MenuDefinition;
 struct MuttWindow;
 
 // Observers of #NT_MENU will not be passed any Event data.
-typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
-#define MENU_REDRAW_NO_FLAGS        0  ///< No flags are set
-#define MENU_REDRAW_INDEX     (1 << 0) ///< Redraw the index
-#define MENU_REDRAW_MOTION    (1 << 1) ///< Redraw after moving the menu list
-#define MENU_REDRAW_CURRENT   (1 << 2) ///< Redraw the current line of the menu
-#define MENU_REDRAW_FULL      (1 << 3) ///< Redraw everything
+/**
+ * enum MenuRedrawFlag - Flags, e.g. #MENU_REDRAW_INDEX
+ */
+enum MenuRedrawFlag
+{
+  MENU_REDRAW_NONE    =       0,  ///< No flags are set
+  MENU_REDRAW_INDEX   = 1U << 0,  ///< Redraw the index
+  MENU_REDRAW_MOTION  = 1U << 1,  ///< Redraw after moving the menu list
+  MENU_REDRAW_CURRENT = 1U << 2,  ///< Redraw the current line of the menu
+  MENU_REDRAW_FULL    = 1U << 3,  ///< Redraw everything
+};
+typedef uint8_t MenuRedrawFlags;
 
 /**
  * ExpandoDataMenu - Expando UIDs for Menus

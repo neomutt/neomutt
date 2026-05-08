@@ -27,13 +27,16 @@
 #include <stdint.h>
 
 /**
- * typedef NodeTextTermFlags - Special characters that end a text string
+ * enum NodeTextTermFlag - Special characters that end a text string
  */
-typedef uint8_t NodeTextTermFlags;    ///< Flags, e.g. #NTE_NO_FLAGS
-#define NTE_NO_FLAGS               0  ///< No flags are set
-#define NTE_AMPERSAND       (1 <<  0) ///< '&' Ampersand
-#define NTE_GREATER         (1 <<  1) ///< '>' Greater than
-#define NTE_QUESTION        (1 <<  2) ///< '?' Question mark
+enum NodeTextTermFlag
+{
+  NTE_NONE      =        0,  ///< No flags are set
+  NTE_AMPERSAND = 1U <<  0,  ///< '&' Ampersand
+  NTE_GREATER   = 1U <<  1,  ///< '>' Greater than
+  NTE_QUESTION  = 1U <<  2,  ///< '?' Question mark
+};
+typedef uint8_t NodeTextTermFlags;
 
 struct ExpandoNode *node_text_new(const char *text);
 struct ExpandoNode *node_text_parse(const char *str, NodeTextTermFlags term_chars, const char **parsed_until);

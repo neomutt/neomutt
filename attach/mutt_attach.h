@@ -56,8 +56,8 @@ enum ViewAttachMode
  */
 enum SaveAttach
 {
-  MUTT_SAVE_NO_FLAGS  = 0, ///< Overwrite existing file (the default)
-  MUTT_SAVE_APPEND,        ///< Append to existing file
+  MUTT_SAVE_NONE   =       0,  ///< Overwrite existing file (the default)
+  MUTT_SAVE_APPEND = 1U << 0,  ///< Append to existing file
 };
 
 int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op, struct Email *e, struct AttachCtx *actx, bool recv);

@@ -38,13 +38,19 @@ enum ConnAccountField
   MUTT_CA_OAUTH_CMD, ///< OAuth refresh command
 };
 
-typedef uint8_t MuttAccountFlags;     ///< Flags, Which ConnAccount fields are initialised, e.g. #MUTT_ACCT_PORT
-#define MUTT_ACCT_NO_FLAGS        0   ///< No flags are set
-#define MUTT_ACCT_PORT      (1 << 0)  ///< Port field has been set
-#define MUTT_ACCT_USER      (1 << 1)  ///< User field has been set
-#define MUTT_ACCT_LOGIN     (1 << 2)  ///< Login field has been set
-#define MUTT_ACCT_PASS      (1 << 3)  ///< Password field has been set
-#define MUTT_ACCT_SSL       (1 << 4)  ///< Account uses SSL/TLS
+/**
+ * enum MuttAccountFlag - Flags, Which ConnAccount fields are initialised
+ */
+enum MuttAccountFlag
+{
+  MUTT_ACCT_NONE  =       0,  ///< No flags are set
+  MUTT_ACCT_PORT  = 1U << 0,  ///< Port field has been set
+  MUTT_ACCT_USER  = 1U << 1,  ///< User field has been set
+  MUTT_ACCT_LOGIN = 1U << 2,  ///< Login field has been set
+  MUTT_ACCT_PASS  = 1U << 3,  ///< Password field has been set
+  MUTT_ACCT_SSL   = 1U << 4,  ///< Account uses SSL/TLS
+};
+typedef uint8_t MuttAccountFlags;
 
 /**
  * struct ConnAccount - Login details for a remote server

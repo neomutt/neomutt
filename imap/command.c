@@ -794,7 +794,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   const char *const c_imap_user = cs_subset_string(NeoMutt->sub, "imap_user");
   if (mutt_str_equal(url.user, c_imap_user))
     url.user = NULL;
-  url_tobuffer(&url, buf, U_NO_FLAGS);
+  url_tobuffer(&url, buf, U_NONE);
 
   if (!mailbox_add_simple(buf_string(buf), err))
     mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", buf_string(err));
@@ -1215,7 +1215,7 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
  */
 int imap_cmd_start(struct ImapAccountData *adata, const char *cmdstr)
 {
-  return cmd_start(adata, cmdstr, IMAP_CMD_NO_FLAGS);
+  return cmd_start(adata, cmdstr, IMAP_CMD_NONE);
 }
 
 /**

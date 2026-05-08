@@ -32,11 +32,11 @@ void test_url_tostring(void)
 
   {
     char buf[32] = { 0 };
-    TEST_CHECK(url_tostring(NULL, buf, sizeof(buf), U_NO_FLAGS) != 0);
+    TEST_CHECK(url_tostring(NULL, buf, sizeof(buf), U_NONE) != 0);
   }
 
   {
     struct Url url = { 0 };
-    TEST_CHECK(url_tostring(&url, NULL, 10, U_NO_FLAGS) != 0);
+    TEST_CHECK(url_tostring(&url, NULL, 10, U_NONE) != 0);
   }
 }

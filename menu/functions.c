@@ -167,7 +167,7 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
   struct Menu *menu = fdata->menu;
   const int old_top = menu->top;
   const int old_current = menu->current;
-  MenuRedrawFlags flags = MENU_REDRAW_NO_FLAGS;
+  MenuRedrawFlags flags = MENU_REDRAW_NONE;
 
   const int count = event->count;
   switch (event->op)
@@ -210,14 +210,14 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
 
     case OP_NEXT_ENTRY:
       flags = menu_next_entry(menu, count);
-      return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
+      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
 
     case OP_NEXT_LINE:
       flags = menu_next_line(menu, count);
-      return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
+      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
@@ -228,14 +228,14 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
 
     case OP_PREV_ENTRY:
       flags = menu_prev_entry(menu, count);
-      return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
+      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
 
     case OP_PREV_LINE:
       flags = menu_prev_line(menu, count);
-      return ((flags == MENU_REDRAW_NO_FLAGS) && (menu->top == old_top) &&
+      return ((flags == MENU_REDRAW_NONE) && (menu->top == old_top) &&
               (menu->current == old_current)) ?
                  FR_ERROR :
                  FR_SUCCESS;
@@ -305,7 +305,7 @@ static int op_jump(struct MenuFunctionData *fdata, const struct KeyEvent *event)
   int num = event->count;
   if (num == 0)
   {
-    if ((mw_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
+    if ((mw_get_field(_("Jump to: "), buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       rc = FR_NO_ACTION;

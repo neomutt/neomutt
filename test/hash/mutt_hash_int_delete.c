@@ -36,7 +36,7 @@ void test_mutt_hash_int_delete(void)
   }
 
   {
-    struct HashTable *table = mutt_hash_int_new(10, MUTT_HASH_NO_FLAGS);
+    struct HashTable *table = mutt_hash_int_new(10, MUTT_HASH_NONE);
     mutt_hash_int_delete(table, 0, NULL);
     TEST_CHECK_(1, "mutt_hash_int_delete(table, 0, NULL)");
     mutt_hash_free(&table);

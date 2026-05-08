@@ -74,10 +74,10 @@ void test_expando_parse_short_name(void)
     struct ExpandoNode *node = NULL;
     const char *parsed_until = NULL;
 
-    node = parse_short_name(NULL, TestFormatDef, EP_NO_FLAGS, NULL, &parsed_until, NULL);
+    node = parse_short_name(NULL, TestFormatDef, EP_NONE, NULL, &parsed_until, NULL);
     TEST_CHECK(node == NULL);
 
-    node = parse_short_name("a", NULL, EP_NO_FLAGS, NULL, &parsed_until, NULL);
+    node = parse_short_name("a", NULL, EP_NONE, NULL, &parsed_until, NULL);
     TEST_CHECK(node == NULL);
   }
 

@@ -35,7 +35,7 @@ void test_mutt_hash_new(void)
   int dummy3 = 99;
 
   {
-    struct HashTable *table = mutt_hash_new(0, MUTT_HASH_NO_FLAGS);
+    struct HashTable *table = mutt_hash_new(0, MUTT_HASH_NONE);
     mutt_hash_free(&table);
   }
 

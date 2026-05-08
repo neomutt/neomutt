@@ -265,7 +265,7 @@ char *msgid_generate(void)
   struct Buffer *buf = buf_pool_get();
 
   expando_filter(c_message_id_format, MsgIdRenderCallbacks, &mid,
-                 MUTT_FORMAT_NO_FLAGS, buf->dsize, NeoMutt->env, buf);
+                 MUTT_FORMAT_NONE, buf->dsize, NeoMutt->env, buf);
   if (buf_is_empty(buf))
   {
     buf_pool_release(&buf);

@@ -91,7 +91,7 @@ static enum ImapAuthRes imap_auth_oauth_xoauth2(struct ImapAccountData *adata,
     /* The error response was in SASL continuation, so continue the SASL
      * to cause a failure and exit SASL input.  See RFC7628 3.2.3 */
     mutt_socket_send(adata->conn, "\001");
-    rc = imap_exec(adata, ibuf, IMAP_CMD_NO_FLAGS);
+    rc = imap_exec(adata, ibuf, IMAP_CMD_NONE);
   }
 
   if (rc == IMAP_EXEC_SUCCESS)

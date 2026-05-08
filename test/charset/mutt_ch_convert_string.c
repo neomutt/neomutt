@@ -32,23 +32,23 @@ void test_mutt_ch_convert_string(void)
   // int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t flags);
 
   {
-    TEST_CHECK(mutt_ch_convert_string(NULL, "apple", "banana", MUTT_ICONV_NO_FLAGS) != 0);
+    TEST_CHECK(mutt_ch_convert_string(NULL, "apple", "banana", MUTT_ICONV_NONE) != 0);
   }
 
   {
     char *ps = NULL;
-    TEST_CHECK(mutt_ch_convert_string(&ps, "apple", "banana", MUTT_ICONV_NO_FLAGS) == 0);
+    TEST_CHECK(mutt_ch_convert_string(&ps, "apple", "banana", MUTT_ICONV_NONE) == 0);
   }
 
   {
     char *ps = strdup("apple");
-    TEST_CHECK(mutt_ch_convert_string(&ps, NULL, "banana", MUTT_ICONV_NO_FLAGS) != 0);
+    TEST_CHECK(mutt_ch_convert_string(&ps, NULL, "banana", MUTT_ICONV_NONE) != 0);
     free(ps);
   }
 
   {
     char *ps = strdup("apple");
-    TEST_CHECK(mutt_ch_convert_string(&ps, "apple", NULL, MUTT_ICONV_NO_FLAGS) != 0);
+    TEST_CHECK(mutt_ch_convert_string(&ps, "apple", NULL, MUTT_ICONV_NONE) != 0);
     free(ps);
   }
 }

@@ -30,25 +30,43 @@
 
 struct MenuDefinition;
 
-typedef uint8_t GetChFlags;             ///< Flags for mutt_getch(), e.g. #GETCH_NO_FLAGS
-#define GETCH_NO_FLAGS              0   ///< No flags are set
-#define GETCH_IGNORE_MACRO    (1 << 0)  ///< Don't use MacroEvents
-#define GETCH_NO_COUNTER      (1 << 1)  ///< km_dokey(): disable numeric count prefix parsing
-#define GETCH_NO_FEEDBACK     (1 << 2)  ///< km_dokey(): suppress key progress notifications
+/**
+ * enum GetChFlag - Flags for mutt_getch(), e.g. #GETCH_NONE
+ */
+enum GetChFlag
+{
+  GETCH_NONE         =       0,  ///< No flags are set
+  GETCH_IGNORE_MACRO = 1U << 0,  ///< Don't use MacroEvents
+  GETCH_NO_COUNTER   = 1U << 1,  ///< km_dokey(): disable numeric count prefix parsing
+  GETCH_NO_FEEDBACK  = 1U << 2,  ///< km_dokey(): suppress key progress notifications
+};
+typedef uint8_t GetChFlags;
 
 /// Maximum number of digits in a key count prefix, e.g. `123j`
 #define KEY_COUNT_MAX_DIGITS 6
 /// Maximum number of keys in a key sequence, e.g. `abc`
 #define KEY_SEQ_MAX_LEN 8
 
-typedef uint8_t KeyGatherFlags;         ///< Flags for gather_functions(), e.g. #KEY_GATHER_NO_MATCH
-#define KEY_GATHER_NO_MATCH         0   ///< No bindings match the search string
-#define KEY_GATHER_MATCH      (1 << 0)  ///< Binding matches the search string
-#define KEY_GATHER_LONGER     (1 << 1)  ///< No bindings match, but longer strings might
+/**
+ * enum KeyGatherFlag - Flags for gather_functions(), e.g. #KEY_GATHER_NO_MATCH
+ */
+enum KeyGatherFlag
+{
+  KEY_GATHER_NO_MATCH =       0,  ///< No bindings match the search string
+  KEY_GATHER_MATCH    = 1U << 0,  ///< Binding matches the search string
+  KEY_GATHER_LONGER   = 1U << 1,  ///< No bindings match, but longer strings might
+};
+typedef uint8_t KeyGatherFlags;
 
-typedef uint8_t MenuFuncFlags;          ///< Flags, e.g. #MFF_DEPRECATED
-#define MFF_NO_FLAGS               0    ///< No flags are set
-#define MFF_DEPRECATED       (1 << 1)   ///< Redraw the pager
+/**
+ * enum MenuFuncFlag - Menu function property flags
+ */
+enum MenuFuncFlag
+{
+  MFF_NONE       =       0,  ///< No flags are set
+  MFF_DEPRECATED = 1U << 1,  ///< Function is deprecated
+};
+typedef uint8_t MenuFuncFlags;
 
 /**
  * struct KeyEvent - An event such as a keypress

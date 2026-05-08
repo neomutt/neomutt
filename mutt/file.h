@@ -35,16 +35,21 @@ struct Buffer;
 struct stat;
 extern const char FilenameSafeChars[];
 
-/* Flags for mutt_file_read_line() */
-typedef uint8_t ReadLineFlags;             ///< Flags for mutt_file_read_line(), e.g. #MUTT_RL_CONT
-#define MUTT_RL_NO_FLAGS        0  ///< No flags are set
-#define MUTT_RL_CONT      (1 << 0) ///< \-continuation
-#define MUTT_RL_EOL       (1 << 1) ///< don't strip `\n` / `\r\n`
+/**
+ * enum ReadLineFlag - Flags for mutt_file_read_line(), e.g. #MUTT_RL_CONT
+ */
+enum ReadLineFlag
+{
+  MUTT_RL_NONE =       0,  ///< No flags are set
+  MUTT_RL_CONT = 1U << 0,  ///< \-continuation
+  MUTT_RL_EOL  = 1U << 1,  ///< don't strip `\n` / `\r\n`
+};
+typedef uint8_t ReadLineFlags;
 
 struct timespec;
 
 /**
- * enum MuttStatType - Flags for mutt_file_get_stat_timespec
+ * enum MuttStatType - File timestamp selectors for mutt_file_get_stat_timespec()
  *
  * These represent filesystem timestamps returned by stat()
  */
@@ -52,7 +57,7 @@ enum MuttStatType
 {
   MUTT_STAT_ATIME, ///< File/dir's atime - last accessed time
   MUTT_STAT_MTIME, ///< File/dir's mtime - last modified time
-  MUTT_STAT_CTIME, ///< File/dir's ctime - creation time
+  MUTT_STAT_CTIME, ///< File/dir's ctime - last status change time
 };
 
 /**

@@ -62,7 +62,7 @@ const struct Command SbCommands[] = {
   { "sidebar_whitelist",   CMD_NONE, NULL, "sidebar-pin",   NULL, NULL, CF_SYNONYM },
   { "unsidebar_whitelist", CMD_NONE, NULL, "sidebar-unpin", NULL, NULL, CF_SYNONYM },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };
 

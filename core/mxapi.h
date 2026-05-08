@@ -34,22 +34,33 @@ struct Email;
 struct Message;
 struct stat;
 
-/* flags for mutt_open_mailbox() */
-typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MUTT_NOSORT
-#define MUTT_OPEN_NO_FLAGS       0  ///< No flags are set
-#define MUTT_NOSORT        (1 << 0) ///< Do not sort the mailbox after opening it
-#define MUTT_APPEND        (1 << 1) ///< Open mailbox for appending messages
-#define MUTT_READONLY      (1 << 2) ///< Open in read-only mode
-#define MUTT_QUIET         (1 << 3) ///< Do not print any messages
-#define MUTT_PEEK          (1 << 5) ///< Revert atime back after taking a look (if applicable)
-#define MUTT_APPENDNEW     (1 << 6) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
-                                    ///< Used by maildir/mh to create the mailbox.
+/**
+ * enum OpenMailboxFlag - Flags for mutt_open_mailbox(), e.g. #MUTT_NOSORT
+ */
+enum OpenMailboxFlag
+{
+  MUTT_OPEN_NONE =       0,  ///< No flags are set
+  MUTT_NOSORT    = 1U << 0,  ///< Do not sort the mailbox after opening it
+  MUTT_APPEND    = 1U << 1,  ///< Open mailbox for appending messages
+  MUTT_READONLY  = 1U << 2,  ///< Open in read-only mode
+  MUTT_QUIET     = 1U << 3,  ///< Do not print any messages
+  MUTT_PEEK      = 1U << 5,  ///< Revert atime back after taking a look (if applicable)
+  MUTT_APPENDNEW = 1U << 6,  ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
+                             ///< Used by maildir/mh to create the mailbox.
+};
+typedef uint8_t OpenMailboxFlags;
 
-typedef uint8_t CheckStatsFlags;     ///< Flags for mutt_mailbox_check
-#define MUTT_MAILBOX_CHECK_NO_FLAGS  0  ///< No flags are set
-#define MUTT_MAILBOX_CHECK_POSTPONED (1 << 0) ///< Make sure the number of postponed messages is updated
-#define MUTT_MAILBOX_CHECK_STATS     (1 << 1) ///< Ignore mail_check_stats and calculate statistics (used by <check-stats>)
-#define MUTT_MAILBOX_CHECK_IMMEDIATE (1 << 2) ///< Don't postpone the actual checking
+/**
+ * enum CheckStatsFlag - Flags for mutt_mailbox_check
+ */
+enum CheckStatsFlag
+{
+  MUTT_MAILBOX_CHECK_NONE      =       0,  ///< No flags are set
+  MUTT_MAILBOX_CHECK_POSTPONED = 1U << 0,  ///< Make sure the number of postponed messages is updated
+  MUTT_MAILBOX_CHECK_STATS     = 1U << 1,  ///< Ignore mail_check_stats and calculate statistics (used by <check-stats>)
+  MUTT_MAILBOX_CHECK_IMMEDIATE = 1U << 2,  ///< Don't postpone the actual checking
+};
+typedef uint8_t CheckStatsFlags;
 
 /**
  * enum MxStatus - Return values from mbox_check(), mbox_check_stats(),

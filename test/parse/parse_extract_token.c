@@ -32,6 +32,6 @@ void test_parse_extract_token(void)
   // int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
 
   TEST_CASE("parse_extract_token");
-  int rc = parse_extract_token(NULL, NULL, TOKEN_NO_FLAGS);
+  int rc = parse_extract_token(NULL, NULL, TOKEN_NONE);
   TEST_CHECK_NUM_EQ(rc, -1);
 }

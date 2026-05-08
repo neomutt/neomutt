@@ -50,6 +50,6 @@ const struct Command SendCommands[] = {
   { "my_hdr",              CMD_NONE, NULL, "my-header",           NULL, NULL, CF_SYNONYM },
   { "unmy_hdr",            CMD_NONE, NULL, "unmy-header",         NULL, NULL, CF_SYNONYM },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };

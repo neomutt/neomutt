@@ -77,19 +77,23 @@
 #define SMTP_AUTH_UNAVAIL 1 ///< Authentication method unavailable
 #define SMTP_AUTH_FAIL -1   ///< Authentication failed
 
-// clang-format off
 /**
- * typedef SmtpCapFlags - SMTP server capabilities
+ * enum SmtpCapFlag - SMTP server capabilities
  */
-typedef uint8_t SmtpCapFlags;               ///< Flags, e.g. #SMTP_CAP_STARTTLS
-#define SMTP_CAP_NO_FLAGS           0       ///< No flags are set
-#define SMTP_CAP_STARTTLS     (1 << 0)      ///< Server supports STARTTLS command
-#define SMTP_CAP_AUTH         (1 << 1)      ///< Server supports AUTH command
-#define SMTP_CAP_DSN          (1 << 2)      ///< Server supports Delivery Status Notification
-#define SMTP_CAP_EIGHTBITMIME (1 << 3)      ///< Server supports 8-bit MIME content
-#define SMTP_CAP_SMTPUTF8     (1 << 4)      ///< Server accepts UTF-8 strings
-#define SMTP_CAP_ALL         ((1 << 5) - 1) ///< All SMTP capability flags
-// clang-format on
+enum SmtpCapFlag
+{
+  // clang-format off
+  SMTP_CAP_NONE         =       0,  ///< No flags are set
+  SMTP_CAP_STARTTLS     = 1U << 0,  ///< Server supports STARTTLS command
+  SMTP_CAP_AUTH         = 1U << 1,  ///< Server supports AUTH command
+  SMTP_CAP_DSN          = 1U << 2,  ///< Server supports Delivery Status Notification
+  SMTP_CAP_EIGHTBITMIME = 1U << 3,  ///< Server supports 8-bit MIME content
+  SMTP_CAP_SMTPUTF8     = 1U << 4,  ///< Server accepts UTF-8 strings
+  // clang-format on
+};
+typedef uint8_t SmtpCapFlags;
+
+#define SMTP_CAP_ALL ((1U << 5) - 1) ///< All SMTP capability flags
 
 /**
  * struct SmtpAccountData - Server connection data
@@ -420,7 +424,7 @@ static int smtp_fill_account(struct SmtpAccountData *adata, struct ConnAccount *
  */
 static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
 {
-  adata->capabilities = SMTP_CAP_NO_FLAGS;
+  adata->capabilities = SMTP_CAP_NONE;
 
   if (!esmtp)
   {

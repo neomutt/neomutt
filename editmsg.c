@@ -82,9 +82,9 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
 
   const CopyHeaderFlags chflags = CH_NOLEN |
                                   (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ?
-                                       CH_NO_FLAGS :
+                                       CH_NONE :
                                        CH_NOSTATUS);
-  rc = mutt_append_message(m_fname, m, e, NULL, MUTT_CM_NO_FLAGS, chflags);
+  rc = mutt_append_message(m_fname, m, e, NULL, MUTT_CM_NONE, chflags);
   int oerrno = errno;
 
   mx_mbox_close(m_fname);
@@ -198,8 +198,8 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
     goto bail;
   }
-  MsgOpenFlags of = MUTT_MSG_NO_FLAGS;
-  CopyHeaderFlags cf = (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ? CH_NO_FLAGS : CH_NOSTATUS);
+  MsgOpenFlags of = MUTT_MSG_NONE;
+  CopyHeaderFlags cf = (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ? CH_NONE : CH_NOSTATUS);
 
   if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {

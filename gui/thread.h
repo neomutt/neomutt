@@ -72,16 +72,22 @@ enum TreeChar
   MUTT_SPECIAL_INDEX = MUTT_TREE_MAX, ///< Colour indicator
 };
 
-typedef uint8_t MuttThreadFlags;         ///< Flags, e.g. #MUTT_THREAD_COLLAPSE
-#define MUTT_THREAD_NO_FLAGS          0  ///< No flags are set
-#define MUTT_THREAD_COLLAPSE    (1 << 0) ///< Collapse an email thread
-#define MUTT_THREAD_UNCOLLAPSE  (1 << 1) ///< Uncollapse an email thread
-#define MUTT_THREAD_UNREAD      (1 << 2) ///< Count unread emails in a thread
-#define MUTT_THREAD_NEXT_UNREAD (1 << 3) ///< Find the next unread email
-#define MUTT_THREAD_FLAGGED     (1 << 4) ///< Count flagged emails in a thread
+/**
+ * enum MuttThreadFlag - Flags, e.g. #MUTT_THREAD_COLLAPSE
+ */
+enum MuttThreadFlag
+{
+  MUTT_THREAD_NONE        =       0,  ///< No flags are set
+  MUTT_THREAD_COLLAPSE    = 1U << 0,  ///< Collapse an email thread
+  MUTT_THREAD_UNCOLLAPSE  = 1U << 1,  ///< Uncollapse an email thread
+  MUTT_THREAD_UNREAD      = 1U << 2,  ///< Count unread emails in a thread
+  MUTT_THREAD_NEXT_UNREAD = 1U << 3,  ///< Find the next unread email
+  MUTT_THREAD_FLAGGED     = 1U << 4,  ///< Count flagged emails in a thread
+};
+typedef uint8_t MuttThreadFlags;
 
 /**
- * enum MessageInThread - Flags for mutt_messages_in_thread()
+ * enum MessageInThread - Result selectors for mutt_messages_in_thread()
  */
 enum MessageInThread
 {

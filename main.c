@@ -311,7 +311,7 @@ static char *getmailname(void)
       continue;
 
     size_t len = 0;
-    mailname = mutt_file_read_line(NULL, &len, fp, NULL, MUTT_RL_NO_FLAGS);
+    mailname = mutt_file_read_line(NULL, &len, fp, NULL, MUTT_RL_NONE);
     mutt_file_fclose(&fp);
     if (mailname && *mailname)
       break;
@@ -963,7 +963,7 @@ static bool dump_info(struct CliInfo *ci, struct ConfigSet *cs)
   {
     const bool tty = isatty(STDOUT_FILENO);
 
-    ConfigDumpFlags cdflags = CS_DUMP_NO_FLAGS;
+    ConfigDumpFlags cdflags = CS_DUMP_NONE;
     if (tty)
       cdflags |= CS_DUMP_LINK_DOCS;
     if (ci->hide_sensitive)
@@ -1023,7 +1023,7 @@ int main(int argc, char *argv[], char *envp[])
   MuttLogger = log_disp_queue;
 
   struct Email *e = NULL;
-  SendFlags sendflags = SEND_NO_FLAGS;
+  SendFlags sendflags = SEND_NONE;
   int rc = 1;
   bool repeat_error = false;
   struct Buffer *expanded_infile = buf_pool_get();
@@ -1606,7 +1606,7 @@ int main(int argc, char *argv[], char *envp[])
     repeat_error = true;
     struct Mailbox *m = mx_resolve(buf_string(folder));
     const bool c_read_only = cs_subset_bool(NeoMutt->sub, "read_only");
-    if (!mx_mbox_open(m, (cli->tui.read_only || c_read_only) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS))
+    if (!mx_mbox_open(m, (cli->tui.read_only || c_read_only) ? MUTT_READONLY : MUTT_OPEN_NONE))
     {
       if (m->account)
         account_mailbox_remove(m->account, m);

@@ -266,7 +266,7 @@ int grouplist_add_regex(struct GroupList *gl, const char *str, uint16_t flags,
  */
 struct HashTable *groups_new(void)
 {
-  struct HashTable *groups = mutt_hash_new(1031, MUTT_HASH_NO_FLAGS);
+  struct HashTable *groups = mutt_hash_new(1031, MUTT_HASH_NONE);
 
   mutt_hash_set_destructor(groups, group_hash_free, 0);
 

@@ -60,7 +60,7 @@ struct PagerPrivateData;
 struct SubMenu;
 
 typedef uint16_t PagerFlags;              ///< Flags for dlg_pager(), e.g. #MUTT_SHOWFLAT
-#define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set
+#define MUTT_PAGER_NONE             0     ///< No flags are set
 #define MUTT_SHOWFLAT         (1 << 0)    ///< Show characters (used for displaying help)
 #define MUTT_SHOWCOLOR        (1 << 1)    ///< Show characters in color otherwise don't show characters
 #define MUTT_HIDE             (1 << 2)    ///< Don't show quoted text
@@ -182,15 +182,27 @@ struct PagerView
 };
 
 // Observers of #NT_PAGER will be passed a #PagerPrivateData.
-typedef uint8_t NotifyPager;         ///< Flags, e.g. #NT_PAGER_DELETE
-#define NT_PAGER_NO_FLAGS        0   ///< No flags are set
-#define NT_PAGER_DELETE    (1 << 0)  ///< Pager Private Data is about to be freed
-#define NT_PAGER_VIEW      (1 << 1)  ///< Pager View has changed
+/**
+ * enum NotifyPagerFlag - Notification flags for pager changes
+ */
+enum NotifyPagerFlag
+{
+  NT_PAGER_NONE   =       0,  ///< No flags are set
+  NT_PAGER_DELETE = 1U << 0,  ///< Pager Private Data is about to be freed
+  NT_PAGER_VIEW   = 1U << 1,  ///< Pager View has changed
+};
+typedef uint8_t NotifyPager;
 
-typedef uint8_t PagerRedrawFlags;       ///< Flags, e.g. #PAGER_REDRAW_PAGER
-#define PAGER_REDRAW_NO_FLAGS        0  ///< No flags are set
-#define PAGER_REDRAW_PAGER     (1 << 1) ///< Redraw the pager
-#define PAGER_REDRAW_FLOW      (1 << 2) ///< Reflow the pager
+/**
+ * enum PagerRedrawFlag - Redraw flags for pager updates
+ */
+enum PagerRedrawFlag
+{
+  PAGER_REDRAW_NONE  =       0,  ///< No flags are set
+  PAGER_REDRAW_PAGER = 1U << 1,  ///< Redraw the pager
+  PAGER_REDRAW_FLOW  = 1U << 2,  ///< Reflow the pager
+};
+typedef uint8_t PagerRedrawFlags;
 
 void pager_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic);
 

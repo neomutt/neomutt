@@ -207,7 +207,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *line, TokenFlags fla
       /* read line */
       char *expn = NULL;
       size_t expn_len = 0;
-      expn = mutt_file_read_line(expn, &expn_len, fp, NULL, MUTT_RL_NO_FLAGS);
+      expn = mutt_file_read_line(expn, &expn_len, fp, NULL, MUTT_RL_NONE);
       mutt_file_fclose(&fp);
       int rc = filter_wait(pid);
       if (rc != 0)

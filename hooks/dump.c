@@ -272,7 +272,7 @@ enum CommandResult parse_hooks(const struct Command *cmd, struct Buffer *line,
   pdata.fname = buf_string(tempfile);
 
   pview.banner = "hooks";
-  pview.flags = MUTT_PAGER_NO_FLAGS;
+  pview.flags = MUTT_PAGER_NONE;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);

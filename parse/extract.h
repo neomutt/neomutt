@@ -41,20 +41,26 @@
     ((*(buf)->dptr != ';') || ((flags) & TOKEN_SEMICOLON)) && \
     (!((flags) & TOKEN_PATTERN) || strchr("~%=!|", *(buf)->dptr)))
 
-typedef uint16_t TokenFlags;          ///< Flags for parse_extract_token(), e.g. #TOKEN_EQUAL
-#define TOKEN_NO_FLAGS            0   ///< No flags are set
-#define TOKEN_EQUAL         (1 << 0)  ///< Treat '=' as a special
-#define TOKEN_CONDENSE      (1 << 1)  ///< ^(char) to control chars (macros)
-#define TOKEN_SPACE         (1 << 2)  ///< Don't treat whitespace as a term
-#define TOKEN_QUOTE         (1 << 3)  ///< Don't interpret quotes
-#define TOKEN_PATTERN       (1 << 4)  ///< ~%=!| are terms (for patterns)
-#define TOKEN_COMMENT       (1 << 5)  ///< Don't reap comments
-#define TOKEN_SEMICOLON     (1 << 6)  ///< Don't treat ; as special
-#define TOKEN_BACKTICK_VARS (1 << 7)  ///< Expand variables within backticks
-#define TOKEN_NOSHELL       (1 << 8)  ///< Don't expand environment variables
-#define TOKEN_QUESTION      (1 << 9)  ///< Treat '?' as a special
-#define TOKEN_PLUS          (1 << 10) ///< Treat '+' as a special
-#define TOKEN_MINUS         (1 << 11) ///< Treat '-' as a special
+/**
+ * enum TokenFlag - Flags for parse_extract_token(), e.g. #TOKEN_EQUAL
+ */
+enum TokenFlag
+{
+  TOKEN_NONE          =        0,  ///< No flags are set
+  TOKEN_EQUAL         = 1U <<  0,  ///< Treat '=' as a special
+  TOKEN_CONDENSE      = 1U <<  1,  ///< ^(char) to control chars (macros)
+  TOKEN_SPACE         = 1U <<  2,  ///< Don't treat whitespace as a term
+  TOKEN_QUOTE         = 1U <<  3,  ///< Don't interpret quotes
+  TOKEN_PATTERN       = 1U <<  4,  ///< ~%=!| are terms (for patterns)
+  TOKEN_COMMENT       = 1U <<  5,  ///< Don't reap comments
+  TOKEN_SEMICOLON     = 1U <<  6,  ///< Don't treat ; as special
+  TOKEN_BACKTICK_VARS = 1U <<  7,  ///< Expand variables within backticks
+  TOKEN_NOSHELL       = 1U <<  8,  ///< Don't expand environment variables
+  TOKEN_QUESTION      = 1U <<  9,  ///< Treat '?' as a special
+  TOKEN_PLUS          = 1U << 10,  ///< Treat '+' as a special
+  TOKEN_MINUS         = 1U << 11,  ///< Treat '-' as a special
+};
+typedef uint16_t TokenFlags;
 
 int parse_extract_token(struct Buffer *dest, struct Buffer *line, TokenFlags flags);
 

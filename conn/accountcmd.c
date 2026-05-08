@@ -76,7 +76,7 @@ static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const ch
  * @param cac ConnAccount to write to
  * @param line Line from the response
  * @retval num #MuttAccountFlags that matched
- * @retval #MUTT_ACCT_NO_FLAGS Failure
+ * @retval #MUTT_ACCT_NONE Failure
  */
 static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
 {
@@ -86,7 +86,7 @@ static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
   if (!match)
   {
     mutt_perror(_("Line is malformed: expected <key: val>, got <%s>"), line);
-    return MUTT_ACCT_NO_FLAGS;
+    return MUTT_ACCT_NONE;
   }
 
   const regmatch_t *keymatch = &match[PREX_ACCOUNT_CMD_MATCH_KEY];
@@ -126,7 +126,7 @@ static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
   }
 
   mutt_warning(_("Unhandled key in line <%s: %s>"), key, val);
-  return MUTT_ACCT_NO_FLAGS;
+  return MUTT_ACCT_NONE;
 }
 
 /**
@@ -134,13 +134,13 @@ static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
  * @param cac ConnAccount to write to
  * @param cmd Command line to run
  * @retval num #MuttAccountFlags that matched
- * @retval #MUTT_ACCT_NO_FLAGS Failure
+ * @retval #MUTT_ACCT_NONE Failure
  */
 static MuttAccountFlags call_cmd(struct ConnAccount *cac, const struct Buffer *cmd)
 {
   ASSERT(cac && cmd);
 
-  MuttAccountFlags rc = MUTT_ACCT_NO_FLAGS;
+  MuttAccountFlags rc = MUTT_ACCT_NONE;
 
   FILE *fp = NULL;
   pid_t pid = filter_create(buf_string(cmd), NULL, &fp, NULL, NeoMutt->env);
@@ -152,7 +152,7 @@ static MuttAccountFlags call_cmd(struct ConnAccount *cac, const struct Buffer *c
 
   size_t len = 0;
   char *line = NULL;
-  while ((line = mutt_file_read_line(NULL, &len, fp, NULL, MUTT_RL_NO_FLAGS)))
+  while ((line = mutt_file_read_line(NULL, &len, fp, NULL, MUTT_RL_NONE)))
   {
     rc |= parse_one(cac, line);
     FREE(&line);
@@ -167,22 +167,22 @@ static MuttAccountFlags call_cmd(struct ConnAccount *cac, const struct Buffer *c
  * mutt_account_call_external_cmd - Retrieve account credentials via an external command
  * @param cac ConnAccount to fill
  * @retval num A bitmask of MuttAccountFlags that were retrieved on success
- * @retval #MUTT_ACCT_NO_FLAGS Failure
+ * @retval #MUTT_ACCT_NONE Failure
  */
 MuttAccountFlags mutt_account_call_external_cmd(struct ConnAccount *cac)
 {
   if (!cac || (cac->host[0] == '\0') || (cac->type == MUTT_ACCT_TYPE_NONE))
   {
-    return MUTT_ACCT_NO_FLAGS;
+    return MUTT_ACCT_NONE;
   }
 
   const char *c_account_command = cs_subset_string(NeoMutt->sub, "account_command");
   if (!c_account_command)
   {
-    return MUTT_ACCT_NO_FLAGS;
+    return MUTT_ACCT_NONE;
   }
 
-  MuttAccountFlags rc = MUTT_ACCT_NO_FLAGS;
+  MuttAccountFlags rc = MUTT_ACCT_NONE;
   struct Buffer *cmd_buf = buf_pool_get();
 
   make_cmd(cmd_buf, cac, c_account_command);

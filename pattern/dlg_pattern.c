@@ -332,7 +332,7 @@ bool dlg_pattern(struct Buffer *buf)
     menu_tagging_dispatcher(menu->win, &event);
     window_redraw(NULL);
 
-    event = km_dokey(MdDialog, GETCH_NO_FLAGS);
+    event = km_dokey(MdDialog, GETCH_NONE);
     op = event.op;
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)

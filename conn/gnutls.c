@@ -199,7 +199,7 @@ static bool tls_check_stored_hostname(const gnutls_datum_t *cert, const char *ho
   struct Buffer *buf = buf_pool_get();
 
   tls_fingerprint(GNUTLS_DIG_MD5, buf, cert);
-  while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, NULL, MUTT_RL_NO_FLAGS)))
+  while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, NULL, MUTT_RL_NONE)))
   {
     regmatch_t *match = mutt_prex_capture(PREX_GNUTLS_CERT_HOST_HASH, linestr);
     if (match)

@@ -117,7 +117,7 @@ enum CommandResult parse_lua_source(const struct Command *cmd, struct Buffer *li
   lua_init_state(&lua_state);
   mod_data->lua_state = lua_state;
 
-  if (parse_extract_token(token, line, TOKEN_NO_FLAGS) != 0)
+  if (parse_extract_token(token, line, TOKEN_NONE) != 0)
   {
     buf_printf(err, _("source: error at %s"), line->dptr);
     goto done;
@@ -159,6 +159,6 @@ const struct Command LuaCommands[] = {
         N_("lua-source <filename>"),
         "optionalfeatures.html#lua" },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };

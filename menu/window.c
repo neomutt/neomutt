@@ -98,7 +98,7 @@ static int menu_repaint(struct MuttWindow *win)
 
   struct Menu *menu = win->wdata;
   menu_redraw(menu);
-  menu->redraw = MENU_REDRAW_NO_FLAGS;
+  menu->redraw = MENU_REDRAW_NONE;
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const bool c_braille_friendly = cs_subset_bool(menu->sub, "braille_friendly");

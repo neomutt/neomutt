@@ -476,7 +476,7 @@ int maildir_rewrite_message(struct Mailbox *m, struct Email *e)
   long old_hdr_lines = e->lines;
 
   struct Message *src = mx_msg_open(m, e);
-  struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NO_FLAGS);
+  struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NONE);
   if (!src || !dest)
   {
     mx_msg_close(m, &src);

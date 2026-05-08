@@ -65,23 +65,35 @@ struct MuttWindow;
 struct SubMenu;
 
 // Observers of #NT_INDEX will be passed an #IndexSharedData.
-typedef uint8_t NotifyIndex;         ///< Flags, e.g. #NT_INDEX_ACCOUNT
-#define NT_INDEX_NO_FLAGS        0   ///< No flags are set
-#define NT_INDEX_ADD       (1 << 0)  ///< New Index Shared Data has been created
-#define NT_INDEX_DELETE    (1 << 1)  ///< Index Shared Data is about to be freed
-#define NT_INDEX_SUBSET    (1 << 2)  ///< Config Subset has changed
-#define NT_INDEX_ACCOUNT   (1 << 3)  ///< Account has changed
-#define NT_INDEX_MVIEW     (1 << 4)  ///< MailboxView has changed
-#define NT_INDEX_MAILBOX   (1 << 5)  ///< Mailbox has changed
-#define NT_INDEX_EMAIL     (1 << 6)  ///< Email has changed
+/**
+ * enum NotifyIndexFlag - Flags, e.g. #NT_INDEX_ACCOUNT
+ */
+enum NotifyIndexFlag
+{
+  NT_INDEX_NONE    =       0,  ///< No flags are set
+  NT_INDEX_ADD     = 1U << 0,  ///< New Index Shared Data has been created
+  NT_INDEX_DELETE  = 1U << 1,  ///< Index Shared Data is about to be freed
+  NT_INDEX_SUBSET  = 1U << 2,  ///< Config Subset has changed
+  NT_INDEX_ACCOUNT = 1U << 3,  ///< Account has changed
+  NT_INDEX_MVIEW   = 1U << 4,  ///< MailboxView has changed
+  NT_INDEX_MAILBOX = 1U << 5,  ///< Mailbox has changed
+  NT_INDEX_EMAIL   = 1U << 6,  ///< Email has changed
+};
+typedef uint8_t NotifyIndex;
 
-typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
-#define CHECK_NO_FLAGS         0  ///< No flags are set
-#define CHECK_IN_MAILBOX (1 << 0) ///< Is there a mailbox open?
-#define CHECK_MSGCOUNT   (1 << 1) ///< Are there any messages?
-#define CHECK_VISIBLE    (1 << 2) ///< Is the selected message visible in the index?
-#define CHECK_READONLY   (1 << 3) ///< Is the mailbox readonly?
-#define CHECK_ATTACH     (1 << 4) ///< Is the user in message-attach mode?
+/**
+ * enum CheckFlag - Flags, e.g. #CHECK_IN_MAILBOX
+ */
+enum CheckFlag
+{
+  CHECK_NONE       =       0,  ///< No flags are set
+  CHECK_IN_MAILBOX = 1U << 0,  ///< Is there a mailbox open?
+  CHECK_MSGCOUNT   = 1U << 1,  ///< Are there any messages?
+  CHECK_VISIBLE    = 1U << 2,  ///< Is the selected message visible in the index?
+  CHECK_READONLY   = 1U << 3,  ///< Is the mailbox readonly?
+  CHECK_ATTACH     = 1U << 4,  ///< Is the user in message-attach mode?
+};
+typedef uint8_t CheckFlags;
 
 /**
  * enum CollapseMode - Action to perform on a Thread

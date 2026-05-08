@@ -246,7 +246,7 @@ bool imap_search(struct Mailbox *m, const struct PatternList *pat)
     return false;
 
   const bool ok = compile_search(adata, SLIST_FIRST(pat), buf) &&
-                  (imap_exec(adata, buf_string(buf), IMAP_CMD_NO_FLAGS) == IMAP_EXEC_SUCCESS);
+                  (imap_exec(adata, buf_string(buf), IMAP_CMD_NONE) == IMAP_EXEC_SUCCESS);
 
   buf_pool_release(&buf);
   return ok;

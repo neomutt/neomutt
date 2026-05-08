@@ -107,7 +107,7 @@ const struct Command CommandsCommands[] = {
         N_("version"),
         "advancedusage.html#version" },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };
 

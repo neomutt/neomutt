@@ -36,7 +36,7 @@ void test_mutt_hash_int_find(void)
   }
 
   {
-    struct HashTable *table = mutt_hash_int_new(128, MUTT_HASH_NO_FLAGS);
+    struct HashTable *table = mutt_hash_int_new(128, MUTT_HASH_NONE);
     mutt_hash_int_insert(table, 42, "apple");
     mutt_hash_int_insert(table, 42, "banana");
     mutt_hash_int_insert(table, 42 + 128, "cherry");

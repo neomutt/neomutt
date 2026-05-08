@@ -146,7 +146,7 @@ int mutt_label_message(struct MailboxView *mv, struct EmailArray *ea)
       buf_strcpy(buf, e->env->x_label);
   }
 
-  if (mw_get_field("Label: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, &CompleteLabelOps, NULL) != 0)
+  if (mw_get_field("Label: ", buf, MUTT_COMP_NONE, HC_OTHER, &CompleteLabelOps, NULL) != 0)
   {
     goto done;
   }
@@ -360,7 +360,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
               (plen = mutt_istr_startswith(np->data, "pgp:"))))
     {
       SecurityFlags sec = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_PGP);
-      if (sec != SEC_NO_FLAGS)
+      if (sec != SEC_NONE)
         sec |= APPLICATION_PGP;
       if (sec != e->security)
       {
@@ -376,7 +376,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
               (plen = mutt_istr_startswith(np->data, "smime:"))))
     {
       SecurityFlags sec = mutt_parse_crypt_hdr(np->data + plen, false, APPLICATION_SMIME);
-      if (sec != SEC_NO_FLAGS)
+      if (sec != SEC_NONE)
         sec |= APPLICATION_SMIME;
       if (sec != e->security)
       {

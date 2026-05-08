@@ -34,12 +34,12 @@ void test_url_tobuffer(void)
 
   {
     struct Buffer *buf = buf_pool_get();
-    TEST_CHECK(url_tobuffer(NULL, buf, U_NO_FLAGS) != 0);
+    TEST_CHECK(url_tobuffer(NULL, buf, U_NONE) != 0);
     buf_pool_release(&buf);
   }
 
   {
     struct Url url = { 0 };
-    TEST_CHECK(url_tobuffer(&url, NULL, U_NO_FLAGS) != 0);
+    TEST_CHECK(url_tobuffer(&url, NULL, U_NONE) != 0);
   }
 }

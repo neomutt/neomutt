@@ -179,7 +179,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
   const short c_mail_check_stats_interval = cs_subset_number(NeoMutt->sub, "mail_check_stats_interval");
 
   time_t t = mutt_date_now();
-  if ((flags == MUTT_MAILBOX_CHECK_NO_FLAGS) && ((t - MailboxTime) < c_mail_check))
+  if ((flags == MUTT_MAILBOX_CHECK_NONE) && ((t - MailboxTime) < c_mail_check))
     return MailboxCount;
 
   if ((flags & MUTT_MAILBOX_CHECK_STATS) ||
@@ -233,7 +233,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
  */
 bool mutt_mailbox_notify(struct Mailbox *m_cur)
 {
-  if ((mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NO_FLAGS) > 0) && (MailboxNotify != 0))
+  if ((mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NONE) > 0) && (MailboxNotify != 0))
   {
     return mutt_mailbox_list();
   }
@@ -363,7 +363,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
 {
   expand_path(s, false);
 
-  if (mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NO_FLAGS) > 0)
+  if (mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NONE) > 0)
   {
     struct Mailbox *m_res = find_next_mailbox(s, true);
     if (m_res)

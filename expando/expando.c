@@ -89,7 +89,7 @@ struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *d
   struct ExpandoParseError error = { 0 };
 
   const char *parsed_until = NULL;
-  node_parse_many(exp->node, str, NTE_NO_FLAGS, defs, &parsed_until, &error);
+  node_parse_many(exp->node, str, NTE_NONE, defs, &parsed_until, &error);
 
   if (error.position)
   {

@@ -74,7 +74,7 @@ const struct Command CompCommands[] = {
         N_("open-hook <regex> <shell-command>"),
         "optionalfeatures.html#open-hook" },
 
-  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NO_FLAGS },
+  { NULL, CMD_NONE, NULL, NULL, NULL, NULL, CF_NONE },
   // clang-format on
 };
 
@@ -308,8 +308,7 @@ static bool execute_command(struct Mailbox *m, const struct Expando *exp, const 
   mutt_endwin();
   fflush(stdout);
 
-  expando_render(exp, CompressRenderCallbacks, m, MUTT_FORMAT_NO_FLAGS,
-                 sys_cmd->dsize, sys_cmd);
+  expando_render(exp, CompressRenderCallbacks, m, MUTT_FORMAT_NONE, sys_cmd->dsize, sys_cmd);
 
   if (mutt_system(buf_string(sys_cmd)) != 0)
   {

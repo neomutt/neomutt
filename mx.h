@@ -34,10 +34,16 @@ struct Email;
 
 extern const struct EnumDef MboxTypeDef;
 
-typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_ADD_FROM
-#define MUTT_MSG_NO_FLAGS       0  ///< No flags are set
-#define MUTT_ADD_FROM     (1 << 0) ///< add a From_ line
-#define MUTT_SET_DRAFT    (1 << 1) ///< set the message draft flag
+/**
+ * enum MsgOpenFlag - Flags for mx_msg_open_new(), e.g. #MUTT_ADD_FROM
+ */
+enum MsgOpenFlag
+{
+  MUTT_MSG_NONE  =       0,  ///< No flags are set
+  MUTT_ADD_FROM  = 1U << 0,  ///< add a From_ line
+  MUTT_SET_DRAFT = 1U << 1,  ///< set the message draft flag
+};
+typedef uint8_t MsgOpenFlags;
 
 /* Wrappers for the Mailbox API, see MxOps */
 enum MxStatus        mx_mbox_check        (struct Mailbox *m);

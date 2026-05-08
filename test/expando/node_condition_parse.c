@@ -57,16 +57,16 @@ void test_expando_node_condition_parse(void)
     struct ExpandoNode *node = NULL;
     struct ExpandoParseError err = { 0 };
 
-    node = node_condition_parse(NULL, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(NULL, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
-    node = node_condition_parse("", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse("", NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
-    node = node_condition_parse("abc", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse("abc", NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
-    node = node_condition_parse("%abc", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse("%abc", NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
   }
 
@@ -77,52 +77,52 @@ void test_expando_node_condition_parse(void)
     const char *str = NULL;
 
     str = "%9999999<"; // Bad format
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%x"; // Not a conditional
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<x?"; // Not a valid expando
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<a?"; // Missing true, false, end
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<a?aaa"; // Missing false, end
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<a?%-99999b"; // Bad true
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<a?aaa&"; // Missing false, end
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<a?aaa&%-99999b"; // Bad false
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<a?aaa&bbb"; // Missing end
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<a?aaa&bbb>"; // Valid conditional
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
   }
@@ -135,29 +135,29 @@ void test_expando_node_condition_parse(void)
     const char *str = NULL;
 
     str = "%<{cherry}?aaa&bbb>"; // Valid long-name conditional
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
     memset(&err, 0, sizeof(err));
 
     str = "%?{damson}?aaa&bbb?"; // Valid old-style long-name conditional
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
     memset(&err, 0, sizeof(err));
 
     str = "%<{unknown}?aaa>"; // Unknown long name
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<{cherry?aaa>"; // Missing closing '}'
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
 
     str = "%<{}?aaa>"; // Empty braces (not a long name)
-    node = node_condition_parse(str, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    node = node_condition_parse(str, NTE_NONE, TestFormatDef, &parsed_until, &err);
     TEST_CHECK(node == NULL);
     memset(&err, 0, sizeof(err));
   }

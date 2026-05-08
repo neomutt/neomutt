@@ -351,11 +351,11 @@ int mutt_write_mime_body(struct Body *b, FILE *fp, struct ConfigSubset *sub)
     char send_charset[128] = { 0 };
     fc = mutt_ch_fgetconv_open(fp_in, b->charset,
                                mutt_body_get_charset(b, send_charset, sizeof(send_charset)),
-                               MUTT_ICONV_NO_FLAGS);
+                               MUTT_ICONV_NONE);
   }
   else
   {
-    fc = mutt_ch_fgetconv_open(fp_in, 0, 0, MUTT_ICONV_NO_FLAGS);
+    fc = mutt_ch_fgetconv_open(fp_in, 0, 0, MUTT_ICONV_NONE);
   }
 
   mutt_sig_allow_interrupt(true);

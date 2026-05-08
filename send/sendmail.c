@@ -311,8 +311,8 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
     struct Buffer *cmd = buf_pool_get();
 
     const struct Expando *c_inews_command = cs_subset_expando(sub, "inews_command");
-    expando_filter(c_inews_command, NntpRenderCallbacks, 0,
-                   MUTT_FORMAT_NO_FLAGS, cmd->dsize, NeoMutt->env, cmd);
+    expando_filter(c_inews_command, NntpRenderCallbacks, 0, MUTT_FORMAT_NONE,
+                   cmd->dsize, NeoMutt->env, cmd);
     if (buf_is_empty(cmd))
     {
       i = nntp_post(m, msg);
@@ -450,7 +450,7 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
           pdata.fname = childout;
 
           pview.banner = _("Output of the delivery process");
-          pview.flags = MUTT_PAGER_NO_FLAGS;
+          pview.flags = MUTT_PAGER_NONE;
           pview.mode = PAGER_MODE_OTHER;
 
           mutt_do_pager(&pview, NULL);

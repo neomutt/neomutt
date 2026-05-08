@@ -46,28 +46,28 @@ void test_expando_node_text_parse(void)
     struct ExpandoNode *node = NULL;
     const char *parsed_until = NULL;
 
-    node = node_text_parse(NULL, NTE_NO_FLAGS, &parsed_until);
+    node = node_text_parse(NULL, NTE_NONE, &parsed_until);
     TEST_CHECK(node == NULL);
 
-    node = node_text_parse("", NTE_NO_FLAGS, &parsed_until);
+    node = node_text_parse("", NTE_NONE, &parsed_until);
     TEST_CHECK(node == NULL);
 
-    node = node_text_parse("apple", NTE_NO_FLAGS, NULL);
+    node = node_text_parse("apple", NTE_NONE, NULL);
     TEST_CHECK(node == NULL);
   }
 
   static const struct TextTest tests[] = {
     // clang-format off
-    { "apple",     NTE_NO_FLAGS, "apple",   '\0' },
-    { "ap\\ple",   NTE_NO_FLAGS, "apple",   '\0' },
-    { "ap\\\\ple", NTE_NO_FLAGS, "ap\\ple", '\0' },
-    { "apple\\",   NTE_NO_FLAGS, "apple\\", '\0' },
-    { "app%le",    NTE_NO_FLAGS, "app",     '%'  },
-    { "app%%le",   NTE_NO_FLAGS, "app%le",  '\0' },
-    { "app\\%le",  NTE_NO_FLAGS, "app%le",  '\0' },
-    { "app\\&le",  NTE_NO_FLAGS, "app&le",  '\0' },
-    { "app\\>le",  NTE_NO_FLAGS, "app>le",  '\0' },
-    { "app\\?le",  NTE_NO_FLAGS, "app?le",  '\0' },
+    { "apple",     NTE_NONE, "apple",   '\0' },
+    { "ap\\ple",   NTE_NONE, "apple",   '\0' },
+    { "ap\\\\ple", NTE_NONE, "ap\\ple", '\0' },
+    { "apple\\",   NTE_NONE, "apple\\", '\0' },
+    { "app%le",    NTE_NONE, "app",     '%'  },
+    { "app%%le",   NTE_NONE, "app%le",  '\0' },
+    { "app\\%le",  NTE_NONE, "app%le",  '\0' },
+    { "app\\&le",  NTE_NONE, "app&le",  '\0' },
+    { "app\\>le",  NTE_NONE, "app>le",  '\0' },
+    { "app\\?le",  NTE_NONE, "app?le",  '\0' },
 
     { "banana",    NTE_AMPERSAND, "banana",  '\0' },
     { "ban&ana",   NTE_AMPERSAND, "ban",     '&'  },
@@ -96,7 +96,7 @@ void test_expando_node_text_parse(void)
     { "end?ive",         NTE_AMPERSAND | NTE_GREATER | NTE_QUESTION, "end",       '?'  },
     { "en\\&d\\?i\\>ve", NTE_AMPERSAND | NTE_GREATER | NTE_QUESTION, "en&d?i>ve", '\0' },
 
-    { NULL, NTE_NO_FLAGS, NULL },
+    { NULL, NTE_NONE, NULL },
     // clang-format on
   };
 

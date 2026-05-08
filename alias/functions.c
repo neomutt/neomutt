@@ -442,7 +442,7 @@ static int op_query(struct AliasFunctionData *fdata, const struct KeyEvent *even
 {
   struct AliasMenuData *mdata = fdata->wdata;
   struct Buffer *buf = mdata->query;
-  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
+  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     return FR_NO_ACTION;
@@ -495,7 +495,7 @@ static int op_query(struct AliasFunctionData *fdata, const struct KeyEvent *even
 static int op_search(struct AliasFunctionData *fdata, const struct KeyEvent *event)
 {
   struct AliasMenuData *mdata = fdata->wdata;
-  SearchFlags flags = SEARCH_NO_FLAGS;
+  SearchFlags flags = SEARCH_NONE;
   switch (event->op)
   {
     case OP_SEARCH:

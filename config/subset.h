@@ -74,7 +74,7 @@ struct EventConfig
 };
 
 /**
- * enum GetElemListFlags - Flags for get_elem_list()
+ * enum GetElemListFlags - Filtering modes for get_elem_list()
  */
 enum GetElemListFlags
 {

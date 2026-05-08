@@ -28,18 +28,24 @@
 #include <stdint.h>
 #include <stdio.h>
 
-typedef uint16_t StateFlags;          ///< Flags for State->flags, e.g. #STATE_DISPLAY
-#define STATE_NO_FLAGS             0  ///< No flags are set
-#define STATE_DISPLAY        (1 << 0) ///< Output is displayed to the user
-#define STATE_VERIFY         (1 << 1) ///< Perform signature verification
-#define STATE_PENDINGPREFIX  (1 << 2) ///< Prefix to write, but character must follow
-#define STATE_WEED           (1 << 3) ///< Weed headers even when not in display mode
-#define STATE_CHARCONV       (1 << 4) ///< Do character set conversions
-#define STATE_PRINTING       (1 << 5) ///< Are we printing? - STATE_DISPLAY "light"
-#define STATE_REPLYING       (1 << 6) ///< Are we replying?
-#define STATE_FIRSTDONE      (1 << 7) ///< The first attachment has been done
-#define STATE_DISPLAY_ATTACH (1 << 8) ///< We are displaying an attachment
-#define STATE_PAGER          (1 << 9) ///< Output will be displayed in the Pager
+/**
+ * enum StateFlag - Flags for State->flags
+ */
+enum StateFlag
+{
+  STATE_NONE           =       0,  ///< No flags are set
+  STATE_DISPLAY        = 1U << 0,  ///< Output is displayed to the user
+  STATE_VERIFY         = 1U << 1,  ///< Perform signature verification
+  STATE_PENDINGPREFIX  = 1U << 2,  ///< Prefix to write, but character must follow
+  STATE_WEED           = 1U << 3,  ///< Weed headers even when not in display mode
+  STATE_CHARCONV       = 1U << 4,  ///< Do character set conversions
+  STATE_PRINTING       = 1U << 5,  ///< Are we printing? - STATE_DISPLAY "light"
+  STATE_REPLYING       = 1U << 6,  ///< Are we replying?
+  STATE_FIRSTDONE      = 1U << 7,  ///< The first attachment has been done
+  STATE_DISPLAY_ATTACH = 1U << 8,  ///< We are displaying an attachment
+  STATE_PAGER          = 1U << 9,  ///< Output will be displayed in the Pager
+};
+typedef uint16_t StateFlags;
 
 /**
  * struct State - Keep track when processing files

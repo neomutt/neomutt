@@ -125,7 +125,7 @@ void test_expando_filter(void)
       // clang-format on
     };
 
-    TEST_CHECK(expando_filter(NULL, NULL, NULL, MUTT_FORMAT_NO_FLAGS, 0, EnvList, NULL) == 0);
+    TEST_CHECK(expando_filter(NULL, NULL, NULL, MUTT_FORMAT_NONE, 0, EnvList, NULL) == 0);
 
     struct Buffer *err = buf_pool_get();
     struct Buffer *buf = buf_pool_get();
@@ -135,8 +135,7 @@ void test_expando_filter(void)
     const char *str = ">%a<";
     exp = expando_parse(str, TestFormatDef, err);
     TEST_CHECK(exp != NULL);
-    rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1,
-                        EnvList, buf);
+    rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NONE, -1, EnvList, buf);
     TEST_CHECK_NUM_EQ(rc, 7);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), ">apple<");
@@ -146,8 +145,7 @@ void test_expando_filter(void)
     buf_reset(buf);
     exp = expando_parse(str, TestFormatDef, err);
     TEST_CHECK(exp != NULL);
-    rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1,
-                        EnvList, buf);
+    rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NONE, -1, EnvList, buf);
     TEST_CHECK_NUM_EQ(rc, 7);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), ">apple<");

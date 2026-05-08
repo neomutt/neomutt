@@ -67,7 +67,7 @@ int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src)
   }
 
   mutt_adv_mktemp(tmp);
-  if (mutt_save_attachment(fp, b_src, buf_string(tmp), MUTT_SAVE_NO_FLAGS, NULL) == -1)
+  if (mutt_save_attachment(fp, b_src, buf_string(tmp), MUTT_SAVE_NONE, NULL) == -1)
   {
     buf_pool_release(&tmp);
     return -1;

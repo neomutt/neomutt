@@ -116,7 +116,7 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
     pdata.fname = buf_string(tempfile);
 
     pview.banner = cmd->name;
-    pview.flags = MUTT_PAGER_NO_FLAGS;
+    pview.flags = MUTT_PAGER_NONE;
     pview.mode = PAGER_MODE_OTHER;
 
     mutt_do_pager(&pview, NULL);
@@ -232,7 +232,7 @@ enum CommandResult parse_setenv(const struct Command *cmd, struct Buffer *line,
   }
 
   char *varname = mutt_str_dup(buf_string(token));
-  parse_extract_token(token, line, TOKEN_NO_FLAGS);
+  parse_extract_token(token, line, TOKEN_NONE);
   envlist_set(&NeoMutt->env, varname, buf_string(token), true);
   FREE(&varname);
 

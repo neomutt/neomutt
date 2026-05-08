@@ -42,12 +42,15 @@ enum CommandResult
 };
 
 /**
- * typedef CommandFlags - Special characters that end a text string
+ * enum CommandFlag - Flags describing command aliases and deprecations
  */
-typedef uint8_t CommandFlags;        ///< Flags, e.g. #CF_NO_FLAGS
-#define CF_NO_FLAGS               0  ///< No flags are set
-#define CF_SYNONYM         (1 <<  0) ///< Command is a synonym for another command
-#define CF_DEPRECATED      (1 <<  1) ///< Command is deprecated
+enum CommandFlag
+{
+  CF_NONE       =        0,  ///< No flags are set
+  CF_SYNONYM    = 1U <<  0,  ///< Command is a synonym for another command
+  CF_DEPRECATED = 1U <<  1,  ///< Command is deprecated
+};
+typedef uint8_t CommandFlags;
 
 /**
  * enum CommandId - ID of Command

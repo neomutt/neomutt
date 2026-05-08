@@ -97,7 +97,7 @@ static void fix_uid(char *uid)
   *d = '\0';
 
   if (mod_data->charset &&
-      iconv_t_valid(cd = mutt_ch_iconv_open(mod_data->charset, "utf-8", MUTT_ICONV_NO_FLAGS)))
+      iconv_t_valid(cd = mutt_ch_iconv_open(mod_data->charset, "utf-8", MUTT_ICONV_NONE)))
   {
     int n = s - uid + 1; /* chars available in original buffer */
 
@@ -140,7 +140,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
   bool is_fpr = false;
   char *pend = NULL, *p = NULL;
   int trust = 0;
-  KeyFlags flags = KEYFLAG_NO_FLAGS;
+  KeyFlags flags = KEYFLAG_NONE;
   char tstr[11] = { 0 };
 
   *is_subkey = false;

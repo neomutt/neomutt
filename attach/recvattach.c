@@ -235,7 +235,7 @@ static int save_attachment_flowed_helper(FILE *fp, struct Body *b, const char *p
     struct Buffer *tempfile = buf_pool_get();
     buf_mktemp(tempfile);
 
-    rc = mutt_save_attachment(fp, b, buf_string(tempfile), MUTT_SAVE_NO_FLAGS, e);
+    rc = mutt_save_attachment(fp, b, buf_string(tempfile), MUTT_SAVE_NONE, e);
     if (rc != 0)
       goto cleanup;
 
@@ -272,7 +272,7 @@ static int save_attachment_flowed_helper(FILE *fp, struct Body *b, const char *p
 static int query_save_attachment(FILE *fp, struct Body *b, struct Email *e, char **directory)
 {
   char *prompt = NULL;
-  enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
+  enum SaveAttach opt = MUTT_SAVE_NONE;
   int rc = -1;
 
   struct Buffer *buf = buf_pool_get();
@@ -375,7 +375,7 @@ cleanup:
  */
 static int save_without_prompting(FILE *fp, struct Body *b, struct Email *e)
 {
-  enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
+  enum SaveAttach opt = MUTT_SAVE_NONE;
   int rc = -1;
   struct Buffer *buf = buf_pool_get();
   struct Buffer *tfile = buf_pool_get();
@@ -468,7 +468,7 @@ void mutt_save_attachment_list(struct AttachPtrArray *aa, struct Email *e, struc
     }
     else
     {
-      enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
+      enum SaveAttach opt = MUTT_SAVE_NONE;
 
       if (buf_is_empty(buf))
       {
@@ -711,7 +711,7 @@ void mutt_pipe_attachment_list(struct AttachPtrArray *aa, bool filter)
   state.flags = STATE_CHARCONV;
 
   if (mw_get_field((filter ? _("Filter through: ") : _("Pipe to: ")), buf,
-                   MUTT_COMP_NO_FLAGS, HC_EXT_COMMAND, &CompleteFileOps, NULL) != 0)
+                   MUTT_COMP_NONE, HC_EXT_COMMAND, &CompleteFileOps, NULL) != 0)
   {
     goto cleanup;
   }
@@ -809,7 +809,7 @@ static void print_attachment_list(struct AttachPtrArray *aa, struct State *state
 
         buf_mktemp(newfile);
         if (mutt_decode_save_attachment(fp, b, buf_string(newfile),
-                                        STATE_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
+                                        STATE_PRINTING, MUTT_SAVE_NONE) == 0)
         {
           if (!state->fp_out)
           {

@@ -138,7 +138,7 @@ void mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool re
   FILE *fp_old = mutt_file_fopen(sequences, "r");
   if (fp_old)
   {
-    while ((buf = mutt_file_read_line(buf, &sz, fp_old, NULL, MUTT_RL_NO_FLAGS)))
+    while ((buf = mutt_file_read_line(buf, &sz, fp_old, NULL, MUTT_RL_NONE)))
     {
       if (unseen && mutt_strn_equal(buf, seq_unseen, mutt_str_len(seq_unseen)))
       {
@@ -272,7 +272,7 @@ void mh_seq_update(struct Mailbox *m)
   FILE *fp_old = mutt_file_fopen(sequences, "r");
   if (fp_old)
   {
-    while ((buf = mutt_file_read_line(buf, &s, fp_old, NULL, MUTT_RL_NO_FLAGS)))
+    while ((buf = mutt_file_read_line(buf, &s, fp_old, NULL, MUTT_RL_NONE)))
     {
       if (mutt_str_startswith(buf, seq_unseen) || mutt_str_startswith(buf, seq_flagged) ||
           mutt_str_startswith(buf, seq_replied))
@@ -395,7 +395,7 @@ int mh_seq_read(struct MhSequences *mhs, const char *path)
   const char *const c_mh_seq_unseen = cs_subset_string(NeoMutt->sub, "mh_seq_unseen");
   const char *const c_mh_seq_flagged = cs_subset_string(NeoMutt->sub, "mh_seq_flagged");
   const char *const c_mh_seq_replied = cs_subset_string(NeoMutt->sub, "mh_seq_replied");
-  while ((buf = mutt_file_read_line(buf, &sz, fp, NULL, MUTT_RL_NO_FLAGS)))
+  while ((buf = mutt_file_read_line(buf, &sz, fp, NULL, MUTT_RL_NONE)))
   {
     char *t = strtok(buf, " \t:");
     if (!t)

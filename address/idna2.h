@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define MI_NO_FLAGS                  0
+#define MI_NONE                      0
 #define MI_MAY_BE_IRREVERSIBLE (1 << 0)
 
 char *      mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flags);

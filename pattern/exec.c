@@ -742,7 +742,7 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
     fflush(fp);
     if (mutt_file_seek(fp, 0, SEEK_SET))
     {
-      while ((buf = mutt_file_read_line(buf, &blen, fp, NULL, MUTT_RL_NO_FLAGS)) != NULL)
+      while ((buf = mutt_file_read_line(buf, &blen, fp, NULL, MUTT_RL_NONE)) != NULL)
       {
         if (patmatch(pat, buf) == 0)
         {
@@ -770,7 +770,7 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
       return 0;
     }
 
-    while ((buf = mutt_file_read_line(buf, &blen, fp, NULL, MUTT_RL_NO_FLAGS)) != NULL)
+    while ((buf = mutt_file_read_line(buf, &blen, fp, NULL, MUTT_RL_NONE)) != NULL)
     {
       if (patmatch(pat, buf) == 0)
       {

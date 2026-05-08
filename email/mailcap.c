@@ -530,7 +530,7 @@ bool mailcap_lookup(struct Body *b, char *type, size_t typelen,
 
   if (entry && !found)
   {
-    if (opt == MUTT_MC_NO_FLAGS)
+    if (opt == MUTT_MC_NONE)
     {
       mutt_warning(_("mailcap entry for type %s not found"), type);
     }

@@ -129,7 +129,7 @@ struct ConfigSet *cs_new(size_t size)
 {
   struct ConfigSet *cs = MUTT_MEM_CALLOC(1, struct ConfigSet);
 
-  cs->hash = mutt_hash_new(size, MUTT_HASH_NO_FLAGS);
+  cs->hash = mutt_hash_new(size, MUTT_HASH_NONE);
   mutt_hash_set_destructor(cs->hash, cs_hashelem_free, (intptr_t) cs);
 
   return cs;

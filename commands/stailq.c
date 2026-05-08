@@ -65,7 +65,7 @@ enum CommandResult parse_stailq(const struct Command *cmd, struct Buffer *line,
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     add_to_stailq(list, buf_string(token));
   } while (MoreArgs(line));
 
@@ -98,7 +98,7 @@ enum CommandResult parse_unstailq(const struct Command *cmd,
 
   do
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
     /* Check for deletion of entire list */
     if (mutt_str_equal(buf_string(token), "*"))
     {

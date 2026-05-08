@@ -167,7 +167,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   int sign = security & (SEC_AUTOCRYPT | SEC_SIGN);
   if (postpone)
   {
-    sign = SEC_NO_FLAGS;
+    sign = SEC_NONE;
     security &= ~SEC_SIGN;
   }
 
@@ -333,7 +333,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
         goto bail;
 
       has_retainable_sig = true;
-      sign = SEC_NO_FLAGS;
+      sign = SEC_NONE;
       pbody = tmp_pbody;
       tmp_pgp_pbody = tmp_pbody;
     }
@@ -403,18 +403,18 @@ bail:
  * mutt_is_multipart_signed - Is a message signed?
  * @param b Body of email
  * @retval num Message is signed, see #SecurityFlags
- * @retval   0 Message is not signed (#SEC_NO_FLAGS)
+ * @retval   0 Message is not signed (#SEC_NONE)
  */
 SecurityFlags mutt_is_multipart_signed(struct Body *b)
 {
   if (!b || (b->type != TYPE_MULTIPART) || !b->subtype || !mutt_istr_equal(b->subtype, "signed"))
   {
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
   }
 
   char *p = mutt_param_get(&b->parameter, "protocol");
   if (!p)
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
 
   if (mutt_istr_equal(p, "multipart/mixed"))
     return SEC_SIGN;
@@ -431,19 +431,19 @@ SecurityFlags mutt_is_multipart_signed(struct Body *b)
     return SMIME_SIGN;
   }
 
-  return SEC_NO_FLAGS;
+  return SEC_NONE;
 }
 
 /**
  * mutt_is_multipart_encrypted - Does the message have encrypted parts?
  * @param b Body of email
  * @retval num Message has got encrypted parts, see #SecurityFlags
- * @retval   0 Message hasn't got encrypted parts (#SEC_NO_FLAGS)
+ * @retval   0 Message hasn't got encrypted parts (#SEC_NONE)
  */
 SecurityFlags mutt_is_multipart_encrypted(struct Body *b)
 {
   if ((WithCrypto & APPLICATION_PGP) == 0)
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
 
   char *p = NULL;
 
@@ -452,7 +452,7 @@ SecurityFlags mutt_is_multipart_encrypted(struct Body *b)
       !(p = mutt_param_get(&b->parameter, "protocol")) ||
       !mutt_istr_equal(p, "application/pgp-encrypted"))
   {
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
   }
 
   return PGP_ENCRYPT;
@@ -466,7 +466,7 @@ SecurityFlags mutt_is_multipart_encrypted(struct Body *b)
  */
 int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 {
-  if (mutt_is_multipart_encrypted(b) == SEC_NO_FLAGS)
+  if (mutt_is_multipart_encrypted(b) == SEC_NONE)
     return 0;
 
   b = b->parts;
@@ -490,7 +490,7 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
  * mutt_is_malformed_multipart_pgp_encrypted - Check for malformed layout
  * @param b Body of email
  * @retval num Success, see #SecurityFlags
- * @retval   0 Error, (#SEC_NO_FLAGS)
+ * @retval   0 Error, (#SEC_NONE)
  *
  * This checks for the malformed layout caused by MS Exchange in
  * some cases:
@@ -504,37 +504,37 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
 {
   if (!(WithCrypto & APPLICATION_PGP))
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
 
   if (!b || (b->type != TYPE_MULTIPART) || !b->subtype || !mutt_istr_equal(b->subtype, "mixed"))
   {
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
   }
 
   b = b->parts;
   if (!b || (b->type != TYPE_TEXT) || !b->subtype ||
       !mutt_istr_equal(b->subtype, "plain") || (b->length != 0))
   {
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
   }
 
   b = b->next;
   if (!b || (b->type != TYPE_APPLICATION) || !b->subtype ||
       !mutt_istr_equal(b->subtype, "pgp-encrypted"))
   {
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
   }
 
   b = b->next;
   if (!b || (b->type != TYPE_APPLICATION) || !b->subtype ||
       !mutt_istr_equal(b->subtype, "octet-stream"))
   {
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
   }
 
   b = b->next;
   if (b)
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
 
   return PGP_ENCRYPT;
 }
@@ -543,11 +543,11 @@ SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
  * mutt_is_application_pgp - Does the message use PGP?
  * @param b Body of email
  * @retval >0 Message uses PGP, e.g. #PGP_ENCRYPT
- * @retval  0 Message doesn't use PGP, (#SEC_NO_FLAGS)
+ * @retval  0 Message doesn't use PGP, (#SEC_NONE)
  */
 SecurityFlags mutt_is_application_pgp(const struct Body *b)
 {
-  SecurityFlags t = SEC_NO_FLAGS;
+  SecurityFlags t = SEC_NONE;
   char *p = NULL;
 
   if (b->type == TYPE_APPLICATION)
@@ -566,7 +566,7 @@ SecurityFlags mutt_is_application_pgp(const struct Body *b)
         t |= PGP_KEY;
       }
 
-      if (t == SEC_NO_FLAGS)
+      if (t == SEC_NONE)
         t |= PGP_ENCRYPT; /* not necessarily correct, but... */
     }
 
@@ -604,15 +604,15 @@ SecurityFlags mutt_is_application_pgp(const struct Body *b)
  * mutt_is_application_smime - Does the message use S/MIME?
  * @param b Body of email
  * @retval >0 Message uses S/MIME, e.g. #SMIME_ENCRYPT
- * @retval  0 Message doesn't use S/MIME, (#SEC_NO_FLAGS)
+ * @retval  0 Message doesn't use S/MIME, (#SEC_NONE)
  */
 SecurityFlags mutt_is_application_smime(struct Body *b)
 {
   if (!b)
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
 
   if (((b->type & TYPE_APPLICATION) == 0) || !b->subtype)
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
 
   char *t = NULL;
   bool complain = false;
@@ -626,7 +626,7 @@ SecurityFlags mutt_is_application_smime(struct Body *b)
         return SMIME_ENCRYPT;
       if (mutt_istr_equal(t, "signed-data"))
         return SMIME_SIGN | SMIME_OPAQUE;
-      return SEC_NO_FLAGS;
+      return SEC_NONE;
     }
     /* Netscape 4.7 uses
      * Content-Description: S/MIME Encrypted Message
@@ -637,7 +637,7 @@ SecurityFlags mutt_is_application_smime(struct Body *b)
   }
   else if (!mutt_istr_equal(b->subtype, "octet-stream"))
   {
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
   }
 
   t = mutt_param_get(&b->parameter, "name");
@@ -652,7 +652,7 @@ SecurityFlags mutt_is_application_smime(struct Body *b)
     {
       mutt_message(_("S/MIME messages with no hints on content are unsupported"));
     }
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
   }
 
   /* no .p7c, .p10 support yet. */
@@ -670,7 +670,7 @@ SecurityFlags mutt_is_application_smime(struct Body *b)
       else if (mutt_istr_equal(c_smime_pkcs7_default_smime_type, "enveloped"))
         return SMIME_ENCRYPT;
       else
-        return SEC_NO_FLAGS;
+        return SEC_NONE;
     }
     else if (mutt_istr_equal((t + len), "p7s"))
     {
@@ -678,23 +678,23 @@ SecurityFlags mutt_is_application_smime(struct Body *b)
     }
   }
 
-  return SEC_NO_FLAGS;
+  return SEC_NONE;
 }
 
 /**
  * crypt_query - Check out the type of encryption used
  * @param b Body of email
  * @retval num Flags, see #SecurityFlags
- * @retval 0   Error (#SEC_NO_FLAGS)
+ * @retval 0   Error (#SEC_NONE)
  *
  * Set the cached status values if there are any.
  */
 SecurityFlags crypt_query(struct Body *b)
 {
   if (!WithCrypto || !b)
-    return SEC_NO_FLAGS;
+    return SEC_NONE;
 
-  SecurityFlags rc = SEC_NO_FLAGS;
+  SecurityFlags rc = SEC_NONE;
 
   if (b->type == TYPE_APPLICATION)
   {
@@ -733,8 +733,8 @@ SecurityFlags crypt_query(struct Body *b)
 
   if ((b->type == TYPE_MULTIPART) || (b->type == TYPE_MESSAGE))
   {
-    SecurityFlags u = b->parts ? SEC_ALL_FLAGS : SEC_NO_FLAGS; /* Bits set in all parts */
-    SecurityFlags w = SEC_NO_FLAGS; /* Bits set in any part  */
+    SecurityFlags u = b->parts ? SEC_ALL_FLAGS : SEC_NONE; /* Bits set in all parts */
+    SecurityFlags w = SEC_NONE; /* Bits set in any part  */
 
     for (b = b->parts; b; b = b->next)
     {
@@ -896,7 +896,7 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
 
     if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & APPLICATION_PGP))
     {
-      mutt_copy_message(fp_out, e, msg, MUTT_CM_DECODE | MUTT_CM_CHARCONV, CH_NO_FLAGS, 0);
+      mutt_copy_message(fp_out, e, msg, MUTT_CM_DECODE | MUTT_CM_CHARCONV, CH_NONE, 0);
       fflush(fp_out);
 
       mutt_endwin();
@@ -909,8 +909,8 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
       const bool encrypt = e->security & SEC_ENCRYPT;
       mutt_copy_message(fp_out, e, msg,
                         encrypt ? MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME :
-                                  MUTT_CM_NO_FLAGS,
-                        CH_NO_FLAGS, 0);
+                                  MUTT_CM_NONE,
+                        CH_NONE, 0);
       fflush(fp_out);
 
       const char *mbox = NULL;
@@ -1136,7 +1136,7 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   const bool c_crypt_protected_headers_weed = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_weed");
   const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
   const int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
-  const CopyHeaderFlags chflags = display ? CH_DISPLAY : CH_NO_FLAGS;
+  const CopyHeaderFlags chflags = display ? CH_DISPLAY : CH_NONE;
   struct Buffer *buf = buf_pool_get();
   bool weed = (display && c_weed && c_crypt_protected_headers_weed);
 
@@ -1261,7 +1261,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
   /* Identify the signature type from the multipart/signed protocol parameter */
   b_email = b_email->parts;
   SecurityFlags signed_type = mutt_is_multipart_signed(top);
-  if (signed_type == SEC_NO_FLAGS)
+  if (signed_type == SEC_NONE)
   {
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf(state, _("[-- Error: Unknown multipart/signed protocol %s --]\n\n"),

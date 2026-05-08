@@ -456,7 +456,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
   struct Body *body = NULL;
   FILE *fp = NULL;
   CopyMessageFlags cmflags;
-  SecurityFlags pgp = WithCrypto ? e->security : SEC_NO_FLAGS;
+  SecurityFlags pgp = WithCrypto ? e->security : SEC_NONE;
 
   /* Ensure we have a valid passphrase before decrypting encrypted messages */
   const bool c_mime_forward_decode = cs_subset_bool(sub, "mime_forward_decode");
@@ -505,7 +505,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
    * When MIME-forwarding with decode, strip MIME headers and convert charset.
    * When forwarding encrypted content with decrypt, handle PGP/SMIME separately. */
   CopyHeaderFlags chflags = CH_XMIT;
-  cmflags = MUTT_CM_NO_FLAGS;
+  cmflags = MUTT_CM_NONE;
 
   /* If we are attaching a message, ignore `$mime_forward_decode` */
   if (!attach_msg && c_mime_forward_decode)
@@ -590,7 +590,7 @@ static void run_mime_type_query(struct Body *b, struct ConfigSubset *sub)
   }
   buf_pool_release(&cmd);
 
-  buf = mutt_file_read_line(buf, &buflen, fp, NULL, MUTT_RL_NO_FLAGS);
+  buf = mutt_file_read_line(buf, &buflen, fp, NULL, MUTT_RL_NONE);
   if (buf)
   {
     if (strchr(buf, '/'))

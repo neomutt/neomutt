@@ -232,7 +232,7 @@ bool parse_mailboxes_args(const struct Command *cmd, struct Buffer *line,
     do
     {
       // Start by handling the options
-      parse_extract_token(token, line, TOKEN_NO_FLAGS);
+      parse_extract_token(token, line, TOKEN_NONE);
 
       if (mutt_str_equal(buf_string(token), "-label"))
       {
@@ -242,7 +242,7 @@ bool parse_mailboxes_args(const struct Command *cmd, struct Buffer *line,
           goto done;
         }
 
-        parse_extract_token(label, line, TOKEN_NO_FLAGS);
+        parse_extract_token(label, line, TOKEN_NONE);
         label_set = true;
       }
       else if (mutt_str_equal(buf_string(token), "-nolabel"))
@@ -452,7 +452,7 @@ enum CommandResult parse_unmailboxes(const struct Command *cmd, struct Buffer *l
 
   while (MoreArgs(line))
   {
-    parse_extract_token(token, line, TOKEN_NO_FLAGS);
+    parse_extract_token(token, line, TOKEN_NONE);
 
     if (mutt_str_equal(buf_string(token), "*"))
     {

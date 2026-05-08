@@ -336,7 +336,7 @@ static int mh_rewrite_message(struct Mailbox *m, struct Email *e)
   long old_hdr_lines = e->lines;
 
   struct Message *src = mx_msg_open(m, e);
-  struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NO_FLAGS);
+  struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NONE);
   if (!src || !dest)
     return -1;
 
@@ -985,7 +985,7 @@ static enum MxStatus mh_check(struct Mailbox *m)
   mh_seq_free(&mhs);
 
   /* check for modifications and adjust flags */
-  fnames = mutt_hash_new(ARRAY_SIZE(&mha), MUTT_HASH_NO_FLAGS);
+  fnames = mutt_hash_new(ARRAY_SIZE(&mha), MUTT_HASH_NONE);
 
   struct MhEmail *md = NULL;
   struct MhEmail **mdp = NULL;

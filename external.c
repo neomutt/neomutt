@@ -113,7 +113,7 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
   else
     buf_strcpy(prompt, _("Bounce tagged messages to: "));
 
-  rc = mw_get_field(buf_string(prompt), buf, MUTT_COMP_NO_FLAGS, HC_ALIAS,
+  rc = mw_get_field(buf_string(prompt), buf, MUTT_COMP_NONE, HC_ALIAS,
                     &CompleteAliasOps, NULL);
   if ((rc != 0) || buf_is_empty(buf))
     goto done;
@@ -223,7 +223,7 @@ static void pipe_set_flags(bool decode, bool print, CopyMessageFlags *cmflags,
 static void pipe_msg(struct Mailbox *m, struct Email *e, struct Message *msg,
                      FILE *fp, bool decode, bool print)
 {
-  CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
+  CopyMessageFlags cmflags = MUTT_CM_NONE;
   CopyHeaderFlags chflags = CH_FROM;
 
   pipe_set_flags(decode, print, &cmflags, &chflags);
@@ -408,8 +408,8 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
 
   struct Buffer *buf = buf_pool_get();
 
-  if (mw_get_field(_("Pipe to command: "), buf, MUTT_COMP_NO_FLAGS,
-                   HC_EXT_COMMAND, &CompleteFileOps, NULL) != 0)
+  if (mw_get_field(_("Pipe to command: "), buf, MUTT_COMP_NONE, HC_EXT_COMMAND,
+                   &CompleteFileOps, NULL) != 0)
   {
     goto cleanup;
   }
@@ -580,8 +580,8 @@ bool mutt_shell_escape(void)
   bool rc = false;
   struct Buffer *buf = buf_pool_get();
 
-  if (mw_get_field(_("Shell command: "), buf, MUTT_COMP_NO_FLAGS,
-                   HC_EXT_COMMAND, &CompleteFileOps, NULL) != 0)
+  if (mw_get_field(_("Shell command: "), buf, MUTT_COMP_NONE, HC_EXT_COMMAND,
+                   &CompleteFileOps, NULL) != 0)
   {
     goto done;
   }
@@ -628,8 +628,7 @@ void mutt_enter_command(struct MuttWindow *win)
 
   /* if enter is pressed after : with no command, just return */
   struct FileCompletionData cdata = { false, NULL, NULL, NULL, win };
-  if ((mw_get_field(":", buf, MUTT_COMP_NO_FLAGS, HC_NEO_COMMAND,
-                    &CompleteCommandOps, &cdata) != 0) ||
+  if ((mw_get_field(":", buf, MUTT_COMP_NONE, HC_NEO_COMMAND, &CompleteCommandOps, &cdata) != 0) ||
       buf_is_empty(buf))
   {
     goto done;
@@ -690,7 +689,7 @@ void mutt_display_address(struct Envelope *env)
 static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_opt,
                            CopyMessageFlags *cmflags, CopyHeaderFlags *chflags)
 {
-  *cmflags = MUTT_CM_NO_FLAGS;
+  *cmflags = MUTT_CM_NONE;
   *chflags = CH_UPDATE_LEN;
 
   const bool need_decrypt = (transform_opt == TRANSFORM_DECRYPT) &&
@@ -741,8 +740,8 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
 int mutt_save_message_mbox(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt,
                            enum MessageTransformOpt transform_opt, struct Mailbox *m_dst)
 {
-  CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
-  CopyHeaderFlags chflags = CH_NO_FLAGS;
+  CopyMessageFlags cmflags = MUTT_CM_NONE;
+  CopyHeaderFlags chflags = CH_NONE;
   int rc;
 
   set_copy_flags(e, transform_opt, &cmflags, &chflags);
@@ -794,7 +793,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
   struct stat st = { 0 };
   struct Email *e_cur = *ARRAY_GET(ea, 0);
 
-  const SecurityFlags security_flags = WithCrypto ? e_cur->security : SEC_NO_FLAGS;
+  const SecurityFlags security_flags = WithCrypto ? e_cur->security : SEC_NONE;
   const bool is_passphrase_needed = security_flags & SEC_ENCRYPT;
 
   const char *prompt = NULL;
@@ -846,7 +845,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
   mutt_default_save(buf, e_cur);
   pretty_mailbox(buf);
 
-  if (mw_enter_fname(prompt, buf, false, NULL, false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
+  if (mw_enter_fname(prompt, buf, false, NULL, false, NULL, NULL, MUTT_SEL_NONE) == -1)
   {
     goto cleanup;
   }
@@ -1098,7 +1097,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
     }
   }
 
-  if ((mw_get_field("Content-Type: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
+  if ((mw_get_field("Content-Type: ", buf, MUTT_COMP_NONE, HC_OTHER, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;
@@ -1163,7 +1162,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   if ((WithCrypto != 0) && e)
   {
     if (e->body == b)
-      e->security = SEC_NO_FLAGS;
+      e->security = SEC_NONE;
 
     e->security |= crypt_query(b);
   }

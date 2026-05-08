@@ -2407,7 +2407,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
     group++;
 
   url->path = strchr(url->path, '\0');
-  url_tostring(url, server, sizeof(server), U_NO_FLAGS);
+  url_tostring(url, server, sizeof(server), U_NONE);
 
   exec_account_hook(m->realpath);
   struct NntpAccountData *adata = m->account->adata;
