@@ -40,6 +40,7 @@
  * | attach/private_data.c | @subpage attach_private_data |
  * | attach/recvattach.c   | @subpage attach_recvattach   |
  * | attach/recvcmd.c      | @subpage attach_recvcmd      |
+ * | attach/selection.c    | @subpage attach_selection    |
  */
 
 #ifndef MUTT_ATTACH_LIB_H
