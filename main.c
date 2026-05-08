@@ -1035,19 +1035,22 @@ int main(int argc, char *argv[], char *envp[])
   if (getegid() != getgid())
   {
     mutt_error("%s: I don't want to run with privileges!", (argc != 0) ? argv[0] : "neomutt");
-    goto main_exit; // TEST01: neomutt (as root, chgrp mail neomutt; chmod +s neomutt)
+    goto done; // TEST01: neomutt (as root, chgrp mail neomutt; chmod +s neomutt)
   }
 
   OptGui = true;
 
   NeoMutt = neomutt_new();
   if (!neomutt_init(NeoMutt, envp, Modules))
-    goto main_curses;
+    goto done;
 
   cli_parse(argc, argv, cli);
 
   if (!show_help(&cli->help))
-    goto main_ok;
+  {
+    rc = 0;
+    goto done;
+  }
 
   init_keys(NeoMutt);
 
@@ -1057,10 +1060,10 @@ int main(int argc, char *argv[], char *envp[])
 
   cs = NeoMutt->sub->cs;
   if (!get_user_info(cs))
-    goto main_exit;
+    goto done;
 
   if (!init_logging(&cli->shared, cs))
-    goto main_exit;
+    goto done;
 
   mutt_log_prep();
   log_translation();
@@ -1077,7 +1080,7 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Check to make sure stdout is available in curses mode. */
   if (OptGui && !isatty(STDOUT_FILENO))
-    goto main_curses;
+    goto done;
 
   /* This must come before mutt_init() because curses needs to be started
    * before calling the init_pair() function to set the color scheme.  */
@@ -1085,7 +1088,7 @@ int main(int argc, char *argv[], char *envp[])
   {
     int crc = start_curses();
     if (crc != 0)
-      goto main_curses; // TEST08: can't test -- fake term?
+      goto done; // TEST08: can't test -- fake term?
   }
 
   /* Always create the mutt_windows because batch mode has some shared code
@@ -1098,7 +1101,7 @@ int main(int argc, char *argv[], char *envp[])
                       cli->shared.disable_system, &cli->shared.user_files,
                       &cli->shared.commands);
   if (rc2 != 0)
-    goto main_curses;
+    goto done;
 
   if (OptGui)
     neomutt_gui_init(NeoMutt);
@@ -1111,11 +1114,14 @@ int main(int argc, char *argv[], char *envp[])
   if (!buf_is_empty(&cli->shared.mbox_type) &&
       !config_str_set_initial(cs, "mbox_type", buf_string(&cli->shared.mbox_type)))
   {
-    goto main_curses;
+    goto done;
   }
 
   if (!dump_info(&cli->info, cs))
-    goto main_ok;
+  {
+    rc = 0;
+    goto done;
+  }
 
 #ifdef USE_AUTOCRYPT
   /* Initialize autocrypt after curses messages are working,
@@ -1168,7 +1174,7 @@ int main(int argc, char *argv[], char *envp[])
     // TEST24: neomutt -p (no postponed message)
     log_queue_empty();
     repeat_error = true;
-    goto main_curses;
+    goto done;
   }
   else if (cli->send.is_set)
   {
@@ -1204,7 +1210,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_error(_("Failed to parse mailto: link"));
           email_free(&e);
-          goto main_curses; // TEST25: neomutt mailto:?
+          goto done; // TEST25: neomutt mailto:?
         }
       }
       else
@@ -1219,7 +1225,7 @@ int main(int argc, char *argv[], char *envp[])
     {
       mutt_error(_("No recipients specified"));
       email_free(&e);
-      goto main_curses; // TEST26: neomutt -s test (with auto_edit=yes)
+      goto done; // TEST26: neomutt -s test (with auto_edit=yes)
     }
 
     if (!buf_is_empty(&cli->send.subject))
@@ -1253,7 +1259,7 @@ int main(int argc, char *argv[], char *envp[])
           {
             mutt_error(_("Can't use -E flag with stdin"));
             email_free(&e);
-            goto main_curses; // TEST27: neomutt -E -H -
+            goto done; // TEST27: neomutt -E -H -
           }
           fp_in = stdin;
         }
@@ -1266,7 +1272,7 @@ int main(int argc, char *argv[], char *envp[])
           {
             mutt_perror("%s", buf_string(expanded_infile));
             email_free(&e);
-            goto main_curses; // TEST28: neomutt -E -H missing
+            goto done; // TEST28: neomutt -E -H missing
           }
         }
       }
@@ -1290,7 +1296,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_file_fclose(&fp_in);
           mutt_perror("%s", buf_string(tempfile));
           email_free(&e);
-          goto main_curses; // TEST29: neomutt -H existing-file (where tmpdir=/path/to/FILE blocking tmpdir)
+          goto done; // TEST29: neomutt -H existing-file (where tmpdir=/path/to/FILE blocking tmpdir)
         }
         if (fp_in)
         {
@@ -1311,7 +1317,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_perror("%s", buf_string(tempfile));
           email_free(&e);
-          goto main_curses; // TEST30: can't test
+          goto done; // TEST30: can't test
         }
       }
 
@@ -1335,7 +1341,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_perror("%s", buf_string(&cli->send.draft_file));
           email_free(&e);
           email_free(&e_tmp);
-          goto main_curses; // TEST31: can't test
+          goto done; // TEST31: can't test
         }
         e_tmp->body->length = st.st_size;
 
@@ -1345,7 +1351,7 @@ int main(int argc, char *argv[], char *envp[])
                      buf_string(&cli->send.draft_file));
           email_free(&e);
           email_free(&e_tmp);
-          goto main_curses;
+          goto done;
         }
 
         /* Scan for neomutt header to set `$resume_draft_files` */
@@ -1414,7 +1420,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_error(_("%s: unable to attach file"), *cp);
           email_free(&e);
-          goto main_curses; // TEST32: neomutt john@example.com -a missing
+          goto done; // TEST32: neomutt john@example.com -a missing
         }
       }
     }
@@ -1433,14 +1439,14 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_perror("%s", buf_string(expanded_infile));
           email_free(&e);
-          goto main_curses; // TEST33: neomutt -H read-only -s test john@example.com -E
+          goto done; // TEST33: neomutt -H read-only -s test john@example.com -E
         }
         fp_out = mutt_file_fopen(buf_string(expanded_infile), "a");
         if (!fp_out)
         {
           mutt_perror("%s", buf_string(expanded_infile));
           email_free(&e);
-          goto main_curses; // TEST34: can't test
+          goto done; // TEST34: can't test
         }
 
         /* If the message was sent or postponed, these will already
@@ -1467,7 +1473,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_file_fclose(&fp_out);
           email_free(&e);
-          goto main_curses; // TEST35: can't test
+          goto done; // TEST35: can't test
         }
         mutt_file_fclose(&fp_out);
       }
@@ -1482,14 +1488,14 @@ int main(int argc, char *argv[], char *envp[])
     rootwin_cleanup(gui_mod_data);
 
     if (rv != 0)
-      goto main_curses; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)
+      goto done; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)
   }
   else if (sendflags & SEND_BATCH)
   {
     /* This guards against invoking `neomutt < /dev/null` and accidentally
      * sending an email due to a my-header or other setting.  */
     mutt_error(_("No recipients specified"));
-    goto main_curses;
+    goto done;
   }
   else
   {
@@ -1505,7 +1511,7 @@ int main(int argc, char *argv[], char *envp[])
       {
         mutt_message(_("No mailbox with new mail"));
         repeat_error = true;
-        goto main_curses; // TEST37: neomutt -Z (no new mail)
+        goto done; // TEST37: neomutt -Z (no new mail)
       }
       buf_reset(folder);
       mutt_mailbox_next(NULL, folder);
@@ -1520,18 +1526,19 @@ int main(int argc, char *argv[], char *envp[])
         OptNews = true;
         mod_data->current_news_srv = nntp_select_server(NULL, c_news_server, false);
         if (!mod_data->current_news_srv)
-          goto main_curses; // TEST38: neomutt -G (unset news_server)
+          goto done; // TEST38: neomutt -G (unset news_server)
       }
       else if (ARRAY_EMPTY(&NeoMutt->accounts))
       {
         mutt_error(_("No incoming mailboxes defined"));
-        goto main_curses; // TEST39: neomutt -n -F /dev/null -y
+        goto done; // TEST39: neomutt -n -F /dev/null -y
       }
       buf_reset(folder);
       dlg_browser(folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, NULL, NULL, NULL);
       if (buf_is_empty(folder))
       {
-        goto main_ok; // TEST40: neomutt -y (quit selection)
+        rc = 0;
+        goto done; // TEST40: neomutt -y (quit selection)
       }
     }
 
@@ -1577,10 +1584,10 @@ int main(int argc, char *argv[], char *envp[])
       {
         case -1:
           mutt_perror("%s", buf_string(folder));
-          goto main_curses; // TEST41: neomutt -z -f missing
+          goto done; // TEST41: neomutt -z -f missing
         case 1:
           mutt_error(_("Mailbox is empty"));
-          goto main_curses; // TEST42: neomutt -z -f /dev/null
+          goto done; // TEST42: neomutt -z -f /dev/null
       }
     }
 
@@ -1627,15 +1634,14 @@ int main(int argc, char *argv[], char *envp[])
     // TEST43: neomutt (no change to mailbox)
     // TEST44: neomutt (change mailbox)
   }
-
-main_ok:
   rc = 0;
-main_curses:
+
+done:
   neomutt_gui_cleanup(NeoMutt);
   /* Repeat the last message to the user */
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
-main_exit:
+
   if (NeoMutt && NeoMutt->sub)
   {
     notify_observer_remove(NeoMutt->sub->notify, main_hist_observer, NULL);
