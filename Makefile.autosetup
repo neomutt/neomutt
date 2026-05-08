@@ -115,7 +115,7 @@ LIBATTACHOBJS=	attach/attach.o attach/cid.o attach/commands.o \
 		attach/config.o attach/dlg_attach.o attach/expando.o \
 		attach/functions.o attach/lib.o attach/mutt_attach.o \
 		attach/private_data.o attach/recvattach.o attach/recvcmd.o \
-		attach/module.o
+		attach/selection.o attach/module.o
 CLEANFILES+=	$(LIBATTACH) $(LIBATTACHOBJS)
 ALLOBJS+=	$(LIBATTACHOBJS)
 
@@ -495,7 +495,7 @@ LIBGUIOBJS=	gui/bottombar.o gui/config.o gui/curs_lib.o gui/dialog.o gui/functio
 		gui/global.o gui/module.o gui/msgcont.o gui/msgwin.o \
 		gui/msgwin_wdata.o gui/mutt_curses.o gui/mutt_window.o \
 		gui/mview.o gui/opcodes.o gui/reflow.o gui/resize.o \
-		gui/rootwin.o gui/sbar.o gui/simple.o gui/terminal.o \
+		gui/rootwin.o gui/sbar.o gui/selection.o gui/simple.o gui/terminal.o \
 		gui/thread.o gui/utilwin.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
