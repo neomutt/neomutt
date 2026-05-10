@@ -452,8 +452,16 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
     alias_array_alias_add(&mdata.ava, *ap);
   }
 
+  struct MuttWindow *hidden_prompt = alias_dialog_hide_prompt();
+  const bool selected = dlg_query(buf, &mdata);
+  if (hidden_prompt)
+  {
+    window_set_visible(hidden_prompt, true);
+    msgcont_push_window(hidden_prompt);
+  }
+
   /* multiple results, choose from query menu */
-  if (!dlg_query(buf, &mdata))
+  if (!selected)
     goto done;
 
   buf_reset(buf);
