@@ -81,7 +81,7 @@ static void ea_add_collapsed_thread(struct EmailArray *ea, struct Email *e)
     top = top->parent;
 
   struct MuttThread *thread = top;
-  while (true)
+  while (thread)
   {
     struct Email *et = thread->message;
     if (et && et->visible)
@@ -90,27 +90,18 @@ static void ea_add_collapsed_thread(struct EmailArray *ea, struct Email *e)
     if (thread->child)
     {
       thread = thread->child;
+      continue;
     }
-    else if (thread->next)
-    {
-      thread = thread->next;
-    }
-    else
-    {
-      bool done = false;
-      while (!thread->next)
-      {
-        thread = thread->parent;
-        if (thread == top)
-        {
-          done = true;
-          break;
-        }
-      }
-      if (done)
-        break;
-      thread = thread->next;
-    }
+
+    // Leaf node: backtrack to find the next sibling,
+    // but stay within the subtree rooted at `top`
+    while ((thread != top) && !thread->next)
+      thread = thread->parent;
+
+    if (thread == top)
+      break;
+
+    thread = thread->next;
   }
 }
 
