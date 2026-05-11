@@ -445,7 +445,15 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     mutt_pattern_alias_func(NULL, &mdata, PAA_VISIBLE, NULL);
   }
 
-  if (!dlg_alias(&mdata))
+  struct MuttWindow *hidden_prompt = alias_dialog_hide_prompt();
+  const bool selected = dlg_alias(&mdata);
+  if (hidden_prompt)
+  {
+    window_set_visible(hidden_prompt, true);
+    msgcont_push_window(hidden_prompt);
+  }
+
+  if (!selected)
     goto done;
 
   buf_reset(buf);
