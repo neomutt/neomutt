@@ -356,7 +356,7 @@ int pop_open_connection(struct PopAccountData *adata)
       {
         mutt_error("%s", adata->err_msg);
       }
-      else if (mutt_ssl_starttls(adata->conn))
+      else if (mutt_ssl_starttls(adata->conn) != 0)
       {
         mutt_error(_("Could not negotiate TLS connection"));
         return -2;

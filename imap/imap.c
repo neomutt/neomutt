@@ -964,16 +964,16 @@ int imap_open_connection(struct ImapAccountData *adata)
           goto bail;
         if (rc != IMAP_EXEC_ERROR)
         {
-          if (mutt_ssl_starttls(adata->conn))
-          {
-            mutt_error(_("Could not negotiate TLS connection"));
-            goto bail;
-          }
-          else
+          if (mutt_ssl_starttls(adata->conn) == 0)
           {
             /* RFC2595 demands we recheck CAPABILITY after TLS completes. */
             if (imap_exec(adata, "CAPABILITY", IMAP_CMD_NONE) != IMAP_EXEC_SUCCESS)
               goto bail;
+          }
+          else
+          {
+            mutt_error(_("Could not negotiate TLS connection"));
+            goto bail;
           }
         }
       }

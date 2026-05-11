@@ -1090,7 +1090,7 @@ static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
     if (rc != 0)
       return rc;
 
-    if (mutt_ssl_starttls(adata->conn))
+    if (mutt_ssl_starttls(adata->conn) != 0)
     {
       mutt_error(_("Could not negotiate TLS connection"));
       return -1;

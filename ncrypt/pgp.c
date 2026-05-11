@@ -1167,7 +1167,7 @@ int pgp_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   FILE *fp_decoded = NULL;
   int rc = 0;
 
-  if (mutt_is_valid_multipart_pgp_encrypted(b))
+  if (mutt_is_valid_multipart_pgp_encrypted(b) == PGP_ENCRYPT)
   {
     b = b->parts->next;
     /* Some clients improperly encode the octetstream part. */

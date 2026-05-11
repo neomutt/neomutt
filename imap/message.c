@@ -1736,7 +1736,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
     return 1;
   }
 
-  if (imap_parse_path(dest, &cac, buf, sizeof(buf)))
+  if (imap_parse_path(dest, &cac, buf, sizeof(buf)) != 0)
   {
     mutt_debug(LL_DEBUG1, "bad destination %s\n", dest);
     return -1;

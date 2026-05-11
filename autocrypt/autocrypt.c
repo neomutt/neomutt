@@ -273,7 +273,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   if (!c_autocrypt)
     return 0;
 
-  if (mutt_autocrypt_init(false))
+  if (mutt_autocrypt_init(false) != 0)
     return -1;
 
   if (!e || !e->body || !env)
@@ -427,7 +427,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
     goto cleanup;
   }
 
-  if (mutt_autocrypt_init(false))
+  if (mutt_autocrypt_init(false) != 0)
     goto cleanup;
 
   if (!e || !e->env || !prot_headers)

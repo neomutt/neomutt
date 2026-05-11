@@ -117,7 +117,7 @@ gpgme_ctx_t          create_gpgme_context           (bool for_smime);
 struct CryptKeyInfo *crypt_copy_key                 (struct CryptKeyInfo *key);
 const char *         crypt_fpr_or_lkeyid            (struct CryptKeyInfo *k);
 bool                 crypt_id_is_strong             (struct CryptKeyInfo *key);
-int                  crypt_id_is_valid              (struct CryptKeyInfo *key);
+bool                 crypt_id_is_valid              (struct CryptKeyInfo *key);
 const char *         crypt_keyid                    (struct CryptKeyInfo *k);
 int                  digit                          (const char *s);
 unsigned int         key_check_cap                  (gpgme_key_t key, enum KeyCap cap);

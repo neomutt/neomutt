@@ -198,7 +198,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
     return NULL;
 
   /* The oauthbearer token includes the login */
-  if (mutt_account_getlogin(cac))
+  if (mutt_account_getlogin(cac) != 0)
     return NULL;
 
   const char *cmd = cac->get_field(MUTT_CA_OAUTH_CMD, cac->gf_data);

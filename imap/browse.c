@@ -74,7 +74,7 @@ static void add_folder(char delim, char *folder, bool noselect, bool noinferiors
   char mailbox[1024] = { 0 };
   struct FolderFile ff = { 0 };
 
-  if (imap_parse_path(state->folder, &cac, mailbox, sizeof(mailbox)))
+  if (imap_parse_path(state->folder, &cac, mailbox, sizeof(mailbox)) != 0)
     return;
 
   if (isparent)
@@ -207,7 +207,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   bool showparents = false;
   int rc = -1;
 
-  if (imap_parse_path(path, &cac, buf, sizeof(buf)))
+  if (imap_parse_path(path, &cac, buf, sizeof(buf)) != 0)
   {
     mutt_error(_("%s is an invalid IMAP path"), path);
     return -1;

@@ -1869,7 +1869,7 @@ int nntp_open_connection(struct NntpAccountData *adata)
         adata->use_tls = 0;
         mutt_error("STARTTLS: %s", buf);
       }
-      else if (mutt_ssl_starttls(conn))
+      else if (mutt_ssl_starttls(conn) != 0)
       {
         adata->use_tls = 0;
         adata->status = NNTP_NONE;

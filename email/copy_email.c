@@ -717,8 +717,11 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       new_lines = e->lines - del;
 
       /* Copy the headers */
-      if (mutt_copy_header(fp_in, e, fp_out, chflags | CH_NOLEN | CH_NONEWLINE, NULL, wraplen))
+      if (mutt_copy_header(fp_in, e, fp_out, chflags | CH_NOLEN | CH_NONEWLINE,
+                           NULL, wraplen) != 0)
+      {
         goto attach_del_cleanup;
+      }
       fprintf(fp_out, "Content-Length: " OFF_T_FMT "\n", new_length);
       if (new_lines <= 0)
         new_lines = 0;
@@ -1032,7 +1035,7 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, const c
     if (part->deleted || part->parts)
     {
       /* Copy till start of this part */
-      if (mutt_file_copy_bytes(fp_in, fp_out, part->hdr_offset - ftello(fp_in)))
+      if (mutt_file_copy_bytes(fp_in, fp_out, part->hdr_offset - ftello(fp_in)) != 0)
       {
         return -1;
       }
@@ -1051,7 +1054,7 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, const c
         }
 
         /* Copy the original mime headers */
-        if (mutt_file_copy_bytes(fp_in, fp_out, part->offset - ftello(fp_in)))
+        if (mutt_file_copy_bytes(fp_in, fp_out, part->offset - ftello(fp_in)) != 0)
         {
           return -1;
         }
@@ -1073,7 +1076,7 @@ static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out, const c
   }
 
   /* Copy the last parts */
-  if (mutt_file_copy_bytes(fp_in, fp_out, b->offset + b->length - ftello(fp_in)))
+  if (mutt_file_copy_bytes(fp_in, fp_out, b->offset + b->length - ftello(fp_in)) != 0)
     return -1;
 
   return 0;

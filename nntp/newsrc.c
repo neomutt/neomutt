@@ -192,7 +192,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
 
   /* lock it */
   mutt_debug(LL_DEBUG1, "Locking %s\n", adata->newsrc_file);
-  if (mutt_file_lock(fileno(adata->fp_newsrc), false, true))
+  if (mutt_file_lock(fileno(adata->fp_newsrc), false, true) != 0)
   {
     mutt_file_fclose(&adata->fp_newsrc);
     return -1;

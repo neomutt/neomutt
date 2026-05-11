@@ -301,10 +301,10 @@ bool crypt_id_is_strong(struct CryptKeyInfo *key)
  *
  * When the key is not marked as unusable
  */
-int crypt_id_is_valid(struct CryptKeyInfo *key)
+bool crypt_id_is_valid(struct CryptKeyInfo *key)
 {
   if (!key)
-    return 0;
+    return false;
 
   return !(key->flags & KEYFLAG_CANTUSE);
 }
@@ -1914,7 +1914,7 @@ int pgp_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
   first_part->goodsig = false;
   first_part->warnsig = false;
 
-  if (mutt_is_valid_multipart_pgp_encrypted(b))
+  if (mutt_is_valid_multipart_pgp_encrypted(b) == PGP_ENCRYPT)
   {
     b = b->parts->next;
     /* Some clients improperly encode the octetstream part. */

@@ -1749,7 +1749,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
       else if (state->flags & STATE_VERIFY)
         handler = mutt_signed_handler;
     }
-    else if (mutt_is_valid_multipart_pgp_encrypted(b))
+    else if (mutt_is_valid_multipart_pgp_encrypted(b) == PGP_ENCRYPT)
     {
       encrypted_handler = valid_pgp_encrypted_handler;
       handler = encrypted_handler;

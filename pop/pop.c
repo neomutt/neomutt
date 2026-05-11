@@ -727,7 +727,7 @@ static bool pop_ac_add(struct Account *a, struct Mailbox *m)
     return true;
 
   struct ConnAccount cac = { { 0 } };
-  if (pop_parse_path(mailbox_path(m), &cac))
+  if (pop_parse_path(mailbox_path(m), &cac) != 0)
   {
     mutt_error(_("%s is an invalid POP path"), mailbox_path(m));
     return false;
@@ -760,7 +760,7 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
   struct ConnAccount cac = { { 0 } };
   struct Url url = { 0 };
 
-  if (pop_parse_path(mailbox_path(m), &cac))
+  if (pop_parse_path(mailbox_path(m), &cac) != 0)
   {
     mutt_error(_("%s is an invalid POP path"), mailbox_path(m));
     return MX_OPEN_ERROR;
