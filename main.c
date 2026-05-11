@@ -1510,7 +1510,6 @@ int main(int argc, char *argv[], char *envp[])
       if (mutt_mailbox_check(NULL, csflags) == 0)
       {
         mutt_message(_("No mailbox with new mail"));
-        repeat_error = true;
         goto done; // TEST37: neomutt -Z (no new mail)
       }
       buf_reset(folder);
