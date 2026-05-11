@@ -765,11 +765,10 @@ static void update_thread_email(struct IndexPrivateData *priv, struct Email *ema
  * @param fdata Index function data
  * @param ea    Working set of thread roots
  * @param mode  Collapse mode to apply
- * @param tagged Use tagged threads
  * @retval enum #FunctionRetval
  */
-static int op_main_change_thread(struct IndexFunctionData *fdata, struct EmailArray *ea,
-                                 enum CollapseMode mode, bool tagged)
+static int op_main_change_thread(struct IndexFunctionData *fdata,
+                                 struct EmailArray *ea, enum CollapseMode mode)
 {
   struct IndexSharedData *shared = fdata->shared;
   struct IndexPrivateData *priv = fdata->priv;
@@ -840,10 +839,7 @@ static int op_main_change_thread(struct IndexFunctionData *fdata, struct EmailAr
   }
 
   mutt_set_vnum(shared->mailbox);
-  if (tagged)
-    update_thread_email(priv, shared->email);
-  else
-    resolve_email(priv, shared, RESOLVE_NEXT_THREAD, ARRAY_SIZE(ea));
+  update_thread_email(priv, shared->email);
   menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_EMAIL, NULL);
   return FR_SUCCESS;
@@ -1558,7 +1554,7 @@ static int op_main_close_thread(struct IndexFunctionData *fdata, const struct Ke
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_selection_threads(&ea, shared->mailbox_view, shared->email,
                            priv->tag_prefix, false, event->count);
-  const int rc = op_main_change_thread(fdata, &ea, COLLAPSE_MODE_CLOSE, priv->tag_prefix);
+  const int rc = op_main_change_thread(fdata, &ea, COLLAPSE_MODE_CLOSE);
   ARRAY_FREE(&ea);
   return rc;
 }
@@ -1573,7 +1569,7 @@ static int op_main_collapse_thread(struct IndexFunctionData *fdata, const struct
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_selection_threads(&ea, shared->mailbox_view, shared->email,
                            priv->tag_prefix, false, event->count);
-  const int rc = op_main_change_thread(fdata, &ea, COLLAPSE_MODE_TOGGLE, priv->tag_prefix);
+  const int rc = op_main_change_thread(fdata, &ea, COLLAPSE_MODE_TOGGLE);
   ARRAY_FREE(&ea);
   return rc;
 }
@@ -1611,7 +1607,7 @@ static int op_main_open_thread(struct IndexFunctionData *fdata, const struct Key
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_selection_threads(&ea, shared->mailbox_view, shared->email,
                            priv->tag_prefix, false, event->count);
-  const int rc = op_main_change_thread(fdata, &ea, COLLAPSE_MODE_OPEN, priv->tag_prefix);
+  const int rc = op_main_change_thread(fdata, &ea, COLLAPSE_MODE_OPEN);
   ARRAY_FREE(&ea);
   return rc;
 }
