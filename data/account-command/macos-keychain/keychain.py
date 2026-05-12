@@ -3,7 +3,7 @@
 import os
 import re
 import sys
-import subprocess
+import asyncio
 from argparse import ArgumentParser
 
 SECURITY_PROG = "/usr/bin/security"
@@ -22,20 +22,21 @@ def getKeychainData(user, host, protocol):
     protocol protocol name. Used for generating the server name query string,
           as 'protocol'://'host'.
     """
-    params = {
-        "security": SECURITY_PROG,
-        "server": protocol + "://" + host,
-        "account": user,
-        "keychain": os.path.expanduser("~/Library/Keychains/login.keychain")
-        }
-
-    cmdStr = "{security} find-internet-password -g -a {account} -s {server} "+\
-             "{keychain}"
-    cmd = cmdStr.format(**params)
+    keychain = os.path.expanduser("~/Library/Keychains/login.keychain")
+    server = protocol + "://" + host
+    cmd = [SECURITY_PROG, "find-internet-password", "-g",
+           "-a", user, "-s", server, keychain]
     try:
-        output = subprocess.check_output(cmd, shell=True,
-                                         stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError:
+        async def _run_cmd():
+            proc = await asyncio.create_subprocess_exec(
+                *cmd, stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.STDOUT)
+            stdout, _ = await proc.communicate()
+            if proc.returncode != 0:
+                raise RuntimeError("command failed")
+            return stdout
+        output = asyncio.run(_run_cmd())
+    except Exception:
         return None
 
     output = output.decode("utf-8")
