@@ -2,8 +2,8 @@
 
 import os
 import re
-import sys
 import subprocess
+import sys
 from argparse import ArgumentParser
 
 SECURITY_PROG = "/usr/bin/security"
@@ -22,19 +22,12 @@ def getKeychainData(user, host, protocol):
     protocol protocol name. Used for generating the server name query string,
           as 'protocol'://'host'.
     """
-    params = {
-        "security": SECURITY_PROG,
-        "server": protocol + "://" + host,
-        "account": user,
-        "keychain": os.path.expanduser("~/Library/Keychains/login.keychain")
-        }
-
-    cmdStr = "{security} find-internet-password -g -a {account} -s {server} "+\
-             "{keychain}"
-    cmd = cmdStr.format(**params)
+    keychain = os.path.expanduser("~/Library/Keychains/login.keychain")
+    server = protocol + "://" + host
+    cmd = [SECURITY_PROG, "find-internet-password", "-g",
+           "-a", user, "-s", server, keychain]
     try:
-        output = subprocess.check_output(cmd, shell=True,
-                                         stderr=subprocess.STDOUT)
+        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError:
         return None
 
