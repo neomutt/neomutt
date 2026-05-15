@@ -112,6 +112,25 @@ static void global_hostname(const struct ExpandoNode *node, void *data,
 }
 
 /**
+ * global_last_log - Status: Last log message - Implements ::get_string_t - @ingroup expando_get_string_api
+ */
+static void global_last_log(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct LogLineList lll = log_queue_get();
+  const struct LogLine *ll = NULL;
+  const struct LogLine *last = NULL;
+  STAILQ_FOREACH(ll, &lll, entries)
+  {
+    if ((ll->level >= LL_PERROR) && (ll->level <= LL_WARNING))
+      last = ll;
+  }
+
+  if (last && last->message)
+    buf_strcpy(buf, last->message);
+}
+
+/**
  * global_version - Status: Version string - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void global_version(const struct ExpandoNode *node, void *data,
@@ -470,6 +489,7 @@ const struct ExpandoRenderCallback StatusRenderCallbacks[] = {
   { ED_GLOBAL, ED_GLO_CONFIG_SORT_AUX,    global_config_sort_aux,    NULL },
   { ED_GLOBAL, ED_GLO_CONFIG_USE_THREADS, global_config_use_threads, NULL },
   { ED_GLOBAL, ED_GLO_HOSTNAME,           global_hostname,           NULL },
+  { ED_GLOBAL, ED_GLO_LAST_LOG,           global_last_log,           NULL },
   { ED_GLOBAL, ED_GLO_VERSION,            global_version,            NULL },
   { ED_INDEX,  ED_IND_DELETED_COUNT,      NULL,                      index_deleted_count_num },
   { ED_INDEX,  ED_IND_DESCRIPTION,        index_description,         NULL },

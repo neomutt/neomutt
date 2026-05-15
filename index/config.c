@@ -57,6 +57,7 @@ const struct ExpandoDefinition StatusFormatDef[] = {
   { "f", "mailbox-path",     ED_INDEX,  ED_IND_MAILBOX_PATH,       NULL },
   { "F", "flagged-count",    ED_INDEX,  ED_IND_FLAGGED_COUNT,      NULL },
   { "h", "hostname",         ED_GLOBAL, ED_GLO_HOSTNAME,           NULL },
+  { NULL,"last-log",         ED_GLOBAL, ED_GLO_LAST_LOG,           NULL },
   { "l", "mailbox-size",     ED_INDEX,  ED_IND_MAILBOX_SIZE,       NULL },
   { "L", "limit-size",       ED_INDEX,  ED_IND_LIMIT_SIZE,         NULL },
   { "m", "message-count",    ED_INDEX,  ED_IND_MESSAGE_COUNT,      NULL },
