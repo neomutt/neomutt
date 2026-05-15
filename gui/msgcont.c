@@ -33,6 +33,7 @@
 #include "core/lib.h"
 #include "msgcont.h"
 #include "module_data.h"
+#include "msgwin.h"
 #include "mutt_window.h"
 #ifdef USE_DEBUG_WINDOW
 #include "debug/lib.h"
@@ -130,10 +131,9 @@ struct MuttWindow *msgcont_pop_window(void)
   {
     window_set_visible(win_top, true);
     win_top->actions |= WA_RECALC;
-
-    if (mod_data->bottom_bar)
-      mod_data->bottom_bar->req_rows = win_top->req_rows;
   }
+
+  msgcont_recalc_rows();
 
   mutt_window_reflow(NULL);
   window_redraw(NULL);
@@ -154,16 +154,24 @@ void msgcont_push_window(struct MuttWindow *win)
     return;
 
   struct MuttWindow *mc = mod_data->message_container;
+  const bool keep_msgwin = msgwin_has_text();
 
-  // Hide the current top window
-  struct MuttWindow **wp_top = ARRAY_LAST(&mc->children);
-  if (wp_top)
-    window_set_visible(*wp_top, false);
+  // Hide all currently visible children: the new window will take over the
+  // space.  If the Message Window currently holds any text, it should remain
+  // visible so the user still sees the message.
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &mc->children)
+  {
+    if (!(*wp)->state.visible)
+      continue;
+    if (keep_msgwin && ((*wp)->type == WT_MESSAGE))
+      continue;
+    window_set_visible(*wp, false);
+  }
 
   mutt_window_add_child(mc, win);
 
-  if (mod_data->bottom_bar)
-    mod_data->bottom_bar->req_rows = win->req_rows;
+  msgcont_recalc_rows();
 
   mutt_window_reflow(NULL);
   window_redraw(NULL);

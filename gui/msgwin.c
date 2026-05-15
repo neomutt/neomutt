@@ -178,13 +178,16 @@ static int msgwin_recalc(struct MuttWindow *win)
  */
 int msgwin_calc_rows(struct MsgWinWindowData *wdata, int cols, const char *str)
 {
-  if (!wdata || !str || !*str)
+  if (!wdata)
     return 0;
 
   for (int i = 0; i < MSGWIN_MAX_ROWS; i++)
   {
     ARRAY_FREE(&wdata->rows[i]);
   }
+
+  if (!str || !*str)
+    return 0;
 
   int width = 0;  ///< Screen width used
   int offset = 0; ///< Offset into str
@@ -254,11 +257,16 @@ static int msgwin_repaint(struct MuttWindow *win)
   struct MsgWinWindowData *wdata = win->wdata;
 
   const char *str = buf_string(wdata->text);
-  for (int i = 0; i < MSGWIN_MAX_ROWS; i++)
+  const int max_rows = MIN(MSGWIN_MAX_ROWS, win->state.rows);
+  for (int i = 0; i < max_rows; i++)
   {
     mutt_window_move(win, i, 0);
     if (ARRAY_EMPTY(&wdata->rows[i]))
+    {
+      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+      mutt_window_clrtoeol(win);
       break;
+    }
 
     struct MwChunk *chunk = NULL;
     ARRAY_FOREACH(chunk, &wdata->rows[i])
@@ -269,8 +277,6 @@ static int msgwin_repaint(struct MuttWindow *win)
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_window_clrtoeol(win);
   }
-  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-  mutt_window_clrtoeol(win);
 
   mutt_window_get_coords(win, &wdata->row, &wdata->col);
 
@@ -314,9 +320,7 @@ void msgwin_set_rows(struct MuttWindow *win, short rows)
   {
     win->req_rows = rows;
 
-    struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-    if (mod_data && mod_data->bottom_bar)
-      mod_data->bottom_bar->req_rows = rows;
+    msgcont_recalc_rows();
 
     mutt_window_reflow(NULL);
   }
@@ -488,6 +492,10 @@ void msgwin_add_text_n(struct MuttWindow *win, const char *text, int bytes,
  * @param color Colour for text
  *
  * @note The text string will be copied
+ *
+ * If the Message Window is currently hidden (because another Window has been
+ * pushed on top of it in the Message Container) it will make itself visible
+ * and trigger a reflow so the message is shown to the user.
  */
 void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId color)
 {
@@ -496,9 +504,13 @@ void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId colo
   if (!win)
     return;
 
+  const bool hidden = !win->state.visible;
+
   struct MsgWinWindowData *wdata = win->wdata;
 
-  if (mutt_str_equal(buf_string(wdata->text), text))
+  // If the text is unchanged: nothing to do, except reveal the window if it
+  // was hidden so the user actually sees it.
+  if (mutt_str_equal(buf_string(wdata->text), text) && !hidden)
     return;
 
   buf_strcpy(wdata->text, text);
@@ -515,6 +527,18 @@ void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId colo
   mutt_debug(LL_DEBUG5, "MW SET: %zu, %s\n", buf_len(wdata->text),
              buf_string(wdata->text));
 
+  // If the window was hidden, reveal it and reflow so the message is seen.
+  if (!win->state.visible)
+  {
+    window_set_visible(win, true);
+    int rows = msgwin_calc_rows(wdata, win->state.cols, buf_string(wdata->text));
+    win->req_rows = CLAMP(rows, 1, MSGWIN_MAX_ROWS);
+    msgcont_recalc_rows();
+    win->actions |= WA_RECALC;
+    window_redraw(NULL);
+    return;
+  }
+
   int rows = msgwin_calc_rows(wdata, win->state.cols, buf_string(wdata->text));
   msgwin_set_rows(win, rows);
   win->actions |= WA_RECALC;
@@ -523,10 +547,45 @@ void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId colo
 /**
  * msgwin_clear_text - Clear the text in the Message Window
  * @param win Message Window
+ *
+ * Clear the displayed text.  If the Message Window is not the only Window in
+ * the Message Container, it is also hidden and the Windows are reflowed.
  */
 void msgwin_clear_text(struct MuttWindow *win)
 {
-  msgwin_set_text(win, NULL, MT_COLOR_NORMAL);
+  if (!win)
+    win = msgcont_get_msgwin();
+  if (!win)
+    return;
+
+  struct MsgWinWindowData *wdata = win->wdata;
+
+  // Force-clear even if the window was hidden (msgwin_set_text would skip it).
+  if (!buf_is_empty(wdata->text))
+  {
+    buf_reset(wdata->text);
+    ARRAY_FREE(&wdata->chars);
+    for (int i = 0; i < MSGWIN_MAX_ROWS; i++)
+    {
+      ARRAY_FREE(&wdata->rows[i]);
+    }
+
+    if (win->state.visible)
+    {
+      int rows = msgwin_calc_rows(wdata, win->state.cols, buf_string(wdata->text));
+      msgwin_set_rows(win, rows);
+      win->actions |= WA_RECALC;
+    }
+  }
+
+  // If the Message Window isn't alone in the stack, hide it again so the
+  // Window beneath us regains the space.
+  if (win->state.visible && (msgcont_num_windows() > 1))
+  {
+    window_set_visible(win, false);
+    msgcont_recalc_rows();
+    window_redraw(NULL);
+  }
 }
 
 /**
