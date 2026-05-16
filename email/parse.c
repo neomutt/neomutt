@@ -633,6 +633,89 @@ char *mutt_rfc2369_first_mailto(const char *body)
 }
 
 /**
+ * mutt_rfc2369_list_headers_free - Free RFC 2369 mailing-list header values
+ * @param headers Headers to free
+ */
+void mutt_rfc2369_list_headers_free(struct Rfc2369ListHeaders *headers)
+{
+  if (!headers)
+    return;
+
+  FREE(&headers->archive);
+  FREE(&headers->help);
+  FREE(&headers->owner);
+  FREE(&headers->post);
+  FREE(&headers->subscribe);
+  FREE(&headers->unsubscribe);
+}
+
+/**
+ * mutt_rfc2369_read_headers - Read RFC 2369 mailing-list headers
+ * @param fp      Message stream positioned at the start of the headers
+ * @param headers Parsed header values
+ */
+void mutt_rfc2369_read_headers(FILE *fp, struct Rfc2369ListHeaders *headers)
+{
+  if (!fp || !headers)
+    return;
+
+  mutt_rfc2369_list_headers_free(headers);
+
+  struct Buffer *line = buf_pool_get();
+  while (true)
+  {
+    size_t len = mutt_rfc822_read_line(fp, line);
+    if ((len == 0) || buf_is_empty(line))
+      break;
+
+    const char *lines = buf_string(line);
+    const char *p = strpbrk(lines, ": \t");
+    if (!p || (*p != ':'))
+    {
+      time_t t = 0;
+
+      /* Some MTAs quote the original mbox separator. */
+      if (mutt_str_startswith(lines, ">From "))
+        continue;
+      if (is_from(lines, NULL, 0, &t))
+        continue;
+
+      break;
+    }
+
+    const size_t name_len = p - lines;
+    const char *body = mutt_str_skip_whitespace(p + 1);
+    if (*body == '\0')
+      continue;
+
+    char **value = NULL;
+    if ((name_len == 12) && eqi12(lines, "List-Archive"))
+      value = &headers->archive;
+    else if ((name_len == 9) && eqi9(lines, "List-Help"))
+      value = &headers->help;
+    else if ((name_len == 10) && eqi10(lines, "List-Owner"))
+      value = &headers->owner;
+    else if ((name_len == 9) && eqi9(lines, "List-Post"))
+      value = &headers->post;
+    else if ((name_len == 14) && eqi14(lines, "List-Subscribe"))
+      value = &headers->subscribe;
+    else if ((name_len == 16) && eqi16(lines, "List-Unsubscribe"))
+      value = &headers->unsubscribe;
+
+    if (!value)
+      continue;
+
+    char *mailto = mutt_rfc2369_first_mailto(body);
+    if (mailto)
+    {
+      FREE(value);
+      *value = mailto;
+    }
+  }
+  buf_pool_release(&line);
+}
+
+/**
  * mutt_rfc822_parse_line - Parse an email header
  * @param env       Envelope of the email
  * @param e         Email
