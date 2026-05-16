@@ -2921,6 +2921,8 @@ static bool send_simple_email(struct Mailbox *m, struct EmailArray *ea,
   e->body = mutt_body_new();
   char ctype[] = "text/plain";
   mutt_parse_content_type(ctype, e->body);
+  e->body->use_disp = false;
+  e->body->disposition = DISP_INLINE;
 
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp_draft(tempfile);
