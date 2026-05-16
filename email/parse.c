@@ -599,12 +599,15 @@ cleanup:
 #endif
 
 /**
- * rfc2369_first_mailto - Extract the first mailto: URL from a RFC2369 list
+ * mutt_rfc2369_first_mailto - Extract the first mailto: URL from an RFC 2369 list
  * @param body Body of the header
  * @retval ptr First mailto: URL found, or NULL if none was found
  */
-static char *rfc2369_first_mailto(const char *body)
+char *mutt_rfc2369_first_mailto(const char *body)
 {
+  if (!body)
+    return NULL;
+
   for (const char *beg = body, *end = NULL; beg; beg = strchr(end, ','))
   {
     beg = strchr(beg, '<');
@@ -830,7 +833,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
         /* RFC2369 */
         if (!mutt_strn_equal(mutt_str_skip_whitespace(body), "NO", 2))
         {
-          char *mailto = rfc2369_first_mailto(body);
+          char *mailto = mutt_rfc2369_first_mailto(body);
           if (mailto)
           {
             FREE(&env->list_post);
@@ -845,7 +848,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
       else if ((name_len == 14) && eqi13(name + 1, "ist-subscribe"))
       {
         /* RFC2369 */
-        char *mailto = rfc2369_first_mailto(body);
+        char *mailto = mutt_rfc2369_first_mailto(body);
         if (mailto)
         {
           FREE(&env->list_subscribe);
@@ -856,7 +859,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
       else if ((name_len == 16) && eqi15(name + 1, "ist-unsubscribe"))
       {
         /* RFC2369 */
-        char *mailto = rfc2369_first_mailto(body);
+        char *mailto = mutt_rfc2369_first_mailto(body);
         if (mailto)
         {
           FREE(&env->list_unsubscribe);

@@ -41,6 +41,7 @@ bool             mutt_is_message_type     (int type, const char *subtype);
 bool             mutt_matches_ignore      (const char *s);
 void             mutt_parse_content_type  (const char *s, struct Body *b);
 bool             mutt_parse_mailto        (struct Envelope *env, char **body, const char *src);
+char *           mutt_rfc2369_first_mailto(const char *body);
 struct Body *    mutt_parse_multipart     (FILE *fp, const char *boundary, LOFF_T end_off, bool digest);
 void             mutt_parse_part          (FILE *fp, struct Body *b);
 struct Body *    mutt_read_mime_header    (FILE *fp, bool digest);
