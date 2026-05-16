@@ -145,6 +145,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "limit",                         OP_MAIN_LIMIT },
   { "limit-current-thread",          OP_LIMIT_CURRENT_THREAD },
   { "link-threads",                  OP_MAIN_LINK_THREADS },
+  { "list-action",                   OP_LIST_ACTION },
   { "list-reply",                    OP_LIST_REPLY },
   { "list-subscribe",                OP_LIST_SUBSCRIBE },
   { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
@@ -221,6 +222,20 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
 };
 
 /**
+ * OpList - Functions for the List Dialog
+ */
+static const struct MenuFuncOp OpList[] = { /* map: list */
+  { "exit",                          OP_EXIT },
+  { "list-archive",                  OP_LIST_ARCHIVE },
+  { "list-help",                     OP_LIST_HELP },
+  { "list-owner",                    OP_LIST_OWNER },
+  { "list-post",                     OP_LIST_POST },
+  { "list-subscribe",                OP_LIST_SUBSCRIBE },
+  { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
+  { NULL, 0 },
+};
+
+/**
  * IndexDefaultBindings - Key bindings for the Index Menu
  */
 static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
@@ -251,6 +266,7 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_FORWARD_MESSAGE,                    "f" },
   { OP_GROUP_REPLY,                        "g" },
+  { OP_LIST_ACTION,                        "\033L" },          // <Alt-L>
   { OP_LIST_REPLY,                         "L" },
   { OP_MAIL,                               "m" },
   { OP_MAILBOX_LIST,                       "." },
@@ -309,6 +325,20 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_VIEW_ATTACHMENTS,                   "v" },
   { 0, NULL },
 };
+
+/**
+ * ListDefaultBindings - Key bindings for the List Dialog
+ */
+static const struct MenuOpSeq ListDefaultBindings[] = { /* map: list */
+  { OP_EXIT,                               "q" },
+  { OP_LIST_ARCHIVE,                       "a" },
+  { OP_LIST_HELP,                          "h" },
+  { OP_LIST_OWNER,                         "o" },
+  { OP_LIST_POST,                          "p" },
+  { OP_LIST_SUBSCRIBE,                     "s" },
+  { OP_LIST_UNSUBSCRIBE,                   "u" },
+  { 0, NULL },
+};
 // clang-format on
 
 /**
@@ -328,8 +358,16 @@ enum ResolveMethod
 void index_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
+  struct MenuDefinition *md_list = NULL;
   struct SubMenu *sm_index = NULL;
+  struct SubMenu *sm_list = NULL;
   struct SubMenu *sm_sidebar = sidebar_get_submenu();
+
+  sm_list = km_register_submenu(OpList);
+  md_list = km_register_menu(MENU_LIST, "list");
+  km_menu_add_submenu(md_list, sm_list);
+  km_menu_add_submenu(md_list, sm_generic);
+  km_menu_add_bindings(md_list, ListDefaultBindings);
 
   sm_index = km_register_submenu(OpIndex);
   md = km_register_menu(MENU_INDEX, "index");
@@ -340,6 +378,7 @@ void index_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 
   struct IndexModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_INDEX);
   ASSERT(mod_data);
+  mod_data->menu_list = md_list;
   mod_data->menu_index = md;
 }
 
@@ -1304,6 +1343,19 @@ static int op_jump(struct IndexFunctionData *fdata, const struct KeyEvent *event
 done:
   buf_pool_release(&buf);
   return rc;
+}
+
+/**
+ * op_list_action - Show mailing-list actions - Implements ::index_function_t - @ingroup index_function_api
+ */
+static int op_list_action(struct IndexFunctionData *fdata, const struct KeyEvent *event)
+{
+  struct IndexSharedData *shared = fdata->shared;
+  struct IndexPrivateData *priv = fdata->priv;
+
+  dlg_list(shared->mailbox, shared->email);
+  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+  return FR_SUCCESS;
 }
 
 /**
@@ -3878,6 +3930,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_GROUP_REPLY,                      op_group_reply,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_JUMP,                             op_jump,                     CHECK_IN_MAILBOX },
   { OP_LIMIT_CURRENT_THREAD,             op_main_limit,               CHECK_IN_MAILBOX },
+  { OP_LIST_ACTION,                      op_list_action,              CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_LIST_REPLY,                       op_list_reply,               CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_LIST_SUBSCRIBE,                   op_list_subscribe,           CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_LIST_UNSUBSCRIBE,                 op_list_unsubscribe,         CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },

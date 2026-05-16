@@ -30,6 +30,7 @@
  * | index/commands.c       | @subpage index_commands       |
  * | index/config.c         | @subpage index_config         |
  * | index/dlg_index.c      | @subpage index_dlg_index      |
+ * | index/dlg_list.c       | Mailing-list action dialog    |
  * | index/expando_index.c  | @subpage index_expando_index  |
  * | index/expando_status.c | @subpage index_expando_status |
  * | index/functions.c      | @subpage index_functions      |
@@ -116,6 +117,7 @@ struct Mailbox *        change_folder_notmuch   (struct Menu *menu, char *buf, i
 void                    change_folder_string    (struct Menu *menu, struct Buffer *buf, int *oldcount, struct IndexSharedData *shared, bool read_only);
 bool                    check_acl               (struct Mailbox *m, AclFlags acl, const char *msg);
 void                    collapse_all            (struct MailboxView *mv, struct Menu *menu, enum CollapseMode mode);
+void                    dlg_list                (struct Mailbox *m, struct Email *e);
 struct Mailbox *        dlg_index               (struct MuttWindow *dlg, struct Mailbox *m);
 int                     find_first_message      (struct MailboxView *mv);
 int                     find_next_undeleted     (struct MailboxView *mv, int msgno, bool uncollapse);

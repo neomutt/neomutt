@@ -287,6 +287,7 @@ const char *name_menu_type(enum MenuType mt)
     DEBUG_NAME(MENU_EDITOR);
     DEBUG_NAME(MENU_GENERIC);
     DEBUG_NAME(MENU_INDEX);
+    DEBUG_NAME(MENU_LIST);
     DEBUG_NAME(MENU_PAGER);
     DEBUG_NAME(MENU_PGP);
     DEBUG_NAME(MENU_POSTPONE);
@@ -390,6 +391,7 @@ const char *name_window_type(const struct MuttWindow *win)
     DEBUG_NAME(WT_DLG_GPGME);
     DEBUG_NAME(WT_DLG_HISTORY);
     DEBUG_NAME(WT_DLG_INDEX);
+    DEBUG_NAME(WT_DLG_LIST);
     DEBUG_NAME(WT_DLG_PAGER);
     DEBUG_NAME(WT_DLG_PATTERN);
     DEBUG_NAME(WT_DLG_PGP);

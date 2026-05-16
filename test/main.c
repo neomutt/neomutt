@@ -341,6 +341,8 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_matches_ignore)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_parse_content_type)                              \
   NEOMUTT_TEST_ITEM(test_mutt_parse_mailto)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc2369_first_mailto)                            \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc2369_read_headers)                            \
   NEOMUTT_TEST_ITEM(test_mutt_parse_multipart)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_parse_part)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_read_mime_header)                                \

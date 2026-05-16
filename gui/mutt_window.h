@@ -84,6 +84,7 @@ enum WindowType
   WT_DLG_PAGER,       ///< Pager Dialog,       dlg_pager()
   WT_DLG_HISTORY,     ///< History Dialog,     dlg_history()
   WT_DLG_INDEX,       ///< Index Dialog,       dlg_index()
+  WT_DLG_LIST,        ///< List Dialog,        dlg_list()
   WT_DLG_PATTERN,     ///< Pattern Dialog,     dlg_pattern()
   WT_DLG_PGP,         ///< Pgp Dialog,         dlg_pgp()
   WT_DLG_POSTPONE,    ///< Postpone Dialog,    dlg_postpone()

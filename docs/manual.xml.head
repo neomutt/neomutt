@@ -1190,6 +1190,17 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
           internals.
         </para>
       </sect2>
+
+      <sect2 id="intro-list">
+        <title>List Dialog</title>
+        <para>
+          The list dialog provides quick access to mailing-list actions
+          advertised in <literal>List-*</literal> headers. It lets you inspect
+          and invoke common actions such as requesting help, posting to the
+          list, subscribing, unsubscribing, contacting the owner, or retrieving
+          archive information.
+        </para>
+      </sect2>
     </sect1>
 
     <sect1 id="menus">
@@ -2447,6 +2458,20 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
           </varlistentry>
           <varlistentry>
             <term>
+              <literal>&lt;list-action&gt;</literal> (default: Alt-L)
+              <anchor id="list-action" />
+            </term>
+            <listitem>
+              <para>
+                Open the mailing-list action dialog for the current message.
+                The dialog inspects RFC 2369 <literal>List-*</literal> headers
+                and offers any available help, post, subscribe, unsubscribe,
+                archive, or owner actions.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
               <literal>&lt;list-reply&gt;</literal> (default: L)
               <anchor id="list-reply" />
             </term>
@@ -2670,6 +2695,11 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
                 <entry></entry>
                 <entry><literal>&lt;group-chat-reply&gt;</literal></entry>
                 <entry>reply to all recipients preserving To/Cc</entry>
+              </row>
+              <row>
+                <entry>Alt-L</entry>
+                <entry><literal>&lt;list-action&gt;</literal></entry>
+                <entry>open the mailing list action dialog</entry>
               </row>
               <row>
                 <entry>L</entry>
@@ -10148,6 +10178,18 @@ ma@yew.com      Murray Abraham  Oscar
         <emphasis>pager</emphasis>, helps reduce the clutter by only replying
         to the known mailing list addresses instead of all recipients (except
         as specified by <literal>Mail-Followup-To</literal>, see below).
+      </para>
+      <para>
+        If a message advertises RFC 2369 mailing-list headers, the
+        <link linkend="list-action"><literal>&lt;list-action&gt;</literal></link>
+        function opens a dialog of available actions. By default this is bound
+        to <quote>Alt-L</quote> in the <emphasis>index</emphasis> menu and the
+        <emphasis>pager</emphasis>. The dialog exposes the actions from
+        <literal>List-Help</literal>, <literal>List-Post</literal>,
+        <literal>List-Subscribe</literal>, <literal>List-Unsubscribe</literal>,
+        <literal>List-Archive</literal>, and <literal>List-Owner</literal>.
+        NeoMutt uses the first <literal>mailto:</literal> URL it finds for each
+        action.
       </para>
       <para>
         NeoMutt also supports the <literal>Mail-Followup-To</literal> header.
