@@ -849,7 +849,7 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
  * @param buflen Length of the buffer
  * @param str    String to convert
  *
- * Replace underscores (`_`) with hyphens -`).
+ * Replace underscores (`_`) with hyphens (`-`)
  */
 void mutt_str_hyphenate(char *buf, size_t buflen, const char *str)
 {
