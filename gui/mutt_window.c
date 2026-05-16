@@ -58,6 +58,7 @@ static const struct Mapping WindowNames[] = {
   { "WT_DLG_GPGME",       WT_DLG_GPGME },
   { "WT_DLG_HISTORY",     WT_DLG_HISTORY },
   { "WT_DLG_INDEX",       WT_DLG_INDEX },
+  { "WT_DLG_LIST",        WT_DLG_LIST },
   { "WT_DLG_PAGER",       WT_DLG_PAGER },
   { "WT_DLG_PATTERN",     WT_DLG_PATTERN },
   { "WT_DLG_PGP",         WT_DLG_PGP },

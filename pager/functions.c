@@ -114,6 +114,7 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "imap-logout-all",               OP_MAIN_IMAP_LOGOUT_ALL },
   { "jump",                          OP_JUMP },
   { "link-threads",                  OP_MAIN_LINK_THREADS },
+  { "list-action",                   OP_LIST_ACTION },
   { "list-reply",                    OP_LIST_REPLY },
   { "list-subscribe",                OP_LIST_SUBSCRIBE },
   { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
@@ -226,6 +227,7 @@ static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
   { OP_FORWARD_MESSAGE,                    "f" },
   { OP_GROUP_REPLY,                        "g" },
   { OP_HELP,                               "?" },
+  { OP_LIST_ACTION,                        "\033L" },          // <Alt-L>
   { OP_LIST_REPLY,                         "L" },
   { OP_MAIL,                               "m" },
   { OP_MAILBOX_LIST,                       "." },

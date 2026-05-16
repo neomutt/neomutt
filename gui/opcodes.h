@@ -474,6 +474,22 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help screen description for OP_LIMIT_CURRENT_THREAD */ \
   /*       Index: <op_main_limit> */ \
   _fmt(OP_LIMIT_CURRENT_THREAD,               N_("Limit view to current thread")) \
+  /* L10N: Help screen description for OP_LIST_ACTION */ \
+  /*       Index: <op_list_action> */ \
+  /*       Pager: <op_list_action> */ \
+  _fmt(OP_LIST_ACTION,                        N_("Perform mailing list action")) \
+  /* L10N: Help screen description for OP_LIST_ARCHIVE */ \
+  /*       List Dialog: <op_list_archive> */ \
+  _fmt(OP_LIST_ARCHIVE,                       N_("Retrieve list archive information")) \
+  /* L10N: Help screen description for OP_LIST_HELP */ \
+  /*       List Dialog: <op_list_help> */ \
+  _fmt(OP_LIST_HELP,                          N_("Retrieve list help")) \
+  /* L10N: Help screen description for OP_LIST_OWNER */ \
+  /*       List Dialog: <op_list_owner> */ \
+  _fmt(OP_LIST_OWNER,                         N_("Contact list owner")) \
+  /* L10N: Help screen description for OP_LIST_POST */ \
+  /*       List Dialog: <op_list_post> */ \
+  _fmt(OP_LIST_POST,                          N_("Post to mailing list")) \
   /* L10N: Help screen description for OP_LIST_REPLY */ \
   /*       Index: <op_list_reply> */ \
   /*       Attach Dialog: <op_reply> */ \
