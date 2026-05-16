@@ -13,6 +13,7 @@
 __print_map(generic)
 __print_map(index)
 __print_map(pager)
+__print_map(list)
 __print_map(alias)
 __print_map(query)
 __print_map(attach)
@@ -68,4 +69,3 @@ __print_map(autocrypt account)
 <!--
 vim: ft=xml ts=2 sw=2 sts=2 expandtab:
 -->
-
