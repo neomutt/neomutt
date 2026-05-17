@@ -64,7 +64,7 @@ enum CommandResult parse_my_header(const struct Command *cmd, struct Buffer *lin
   enum CommandResult rc = MUTT_CMD_WARNING;
 
   parse_extract_token(token, line, TOKEN_SPACE | TOKEN_QUOTE);
-  char *p = strpbrk(buf_string(token), ": \t");
+  const char *p = strpbrk(buf_string(token), ": \t");
   if (!p || (*p != ':'))
   {
     buf_strcpy(err, _("invalid header field"));

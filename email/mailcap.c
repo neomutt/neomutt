@@ -569,7 +569,7 @@ void mailcap_expand_filename(const char *nametemplate, const char *oldfile,
                              struct Buffer *newfile)
 {
   int i, j, k;
-  char *s = NULL;
+  const char *s = NULL;
   bool lmatch = false, rmatch = false;
 
   buf_reset(newfile);

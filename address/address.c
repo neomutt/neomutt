@@ -968,7 +968,7 @@ static int addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
   if (!mbox || !user || !domain)
     return -1;
 
-  char *ptr = strchr(mbox, '@');
+  const char *ptr = strchr(mbox, '@');
 
   /* Fail if '@' is missing, at the start, or at the end */
   if (!ptr || (ptr == mbox) || (ptr[1] == '\0'))

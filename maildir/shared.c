@@ -74,7 +74,7 @@ void maildir_canon_filename(struct Buffer *dest, const char *src)
   if (!dest || !src)
     return;
 
-  char *t = strrchr(src, '/');
+  const char *t = strrchr(src, '/');
   if (t)
     src = t + 1;
 

@@ -1635,7 +1635,7 @@ static void mailbox_mailbox_name(const struct ExpandoNode *node, void *data,
     return;
   }
 
-  char *p = NULL;
+  const char *p = NULL;
 
 #ifdef USE_NOTMUCH
   struct Email *e = efi->email;

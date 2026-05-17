@@ -1026,7 +1026,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
       {
         if (e && (e->received == 0))
         {
-          char *d = strrchr(body, ';');
+          const char *d = strrchr(body, ';');
           if (d)
           {
             d = mutt_str_skip_email_wsp(d + 1);

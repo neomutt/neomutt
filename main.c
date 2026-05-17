@@ -357,7 +357,7 @@ static bool get_hostname(struct ConfigSet *cs)
   }
 
   /* some systems report the FQDN instead of just the hostname */
-  char *dot = strchr(short_host, '.');
+  const char *dot = strchr(short_host, '.');
   if (dot)
     ShortHostname = mutt_strn_dup(short_host, dot - short_host);
   else
@@ -816,7 +816,7 @@ static void log_translation(void)
   {
     lang += strlen(label); // skip label
     SKIPWS(lang);
-    char *nl = strchr(lang, '\n');
+    const char *nl = strchr(lang, '\n');
     if (nl)
       len = (nl - lang);
   }

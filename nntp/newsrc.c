@@ -693,7 +693,7 @@ static void nntp_hcache_namer(const struct StoreOps *store_ops,
 
   /* Strip out any directories in the path */
   char *first = strchr(buf_string(dest), '/');
-  char *last = strrchr(buf_string(dest), '/');
+  const char *last = strrchr(buf_string(dest), '/');
   if (first && last && (last > first))
   {
     memmove(first, last, strlen(last) + 1);

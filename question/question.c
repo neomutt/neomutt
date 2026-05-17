@@ -78,7 +78,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
   {
     const struct AttrColor *ac_opts = merged_color_overlay(ac_prompt,
                                                            simple_color_get(MT_COLOR_OPTIONS));
-    char *cur = NULL;
+    const char *cur = NULL;
 
     while ((cur = strchr(prompt, '(')))
     {
@@ -127,7 +127,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
       break;
     }
 
-    char *p = (event.ch != 0) ? strchr(letters, event.ch) : NULL;
+    const char *p = (event.ch != 0) ? strchr(letters, event.ch) : NULL;
     if (p)
     {
       choice = p - letters + 1;

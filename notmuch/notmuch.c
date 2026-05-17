@@ -541,7 +541,7 @@ static int update_message_path(struct Email *e, const char *path)
 
   mutt_debug(LL_DEBUG2, "nm: path update requested path=%s, (%s)\n", path, edata->virtual_id);
 
-  char *p = strrchr(path, '/');
+  const char *p = strrchr(path, '/');
   if (p && ((p - path) > 3) &&
       (mutt_strn_equal(p - 3, "cur", 3) || mutt_strn_equal(p - 3, "new", 3) ||
        mutt_strn_equal(p - 3, "tmp", 3)))
@@ -599,7 +599,7 @@ static int update_message_path(struct Email *e, const char *path)
  */
 static char *get_folder_from_path(const char *path)
 {
-  char *p = strrchr(path, '/');
+  const char *p = strrchr(path, '/');
 
   if (p && ((p - path) > 3) &&
       (mutt_strn_equal(p - 3, "cur", 3) || mutt_strn_equal(p - 3, "new", 3) ||

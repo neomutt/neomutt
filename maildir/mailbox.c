@@ -95,7 +95,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
   }
 
   const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
-  char *p = strrchr(path, c_maildir_field_delimiter);
+  const char *p = strrchr(path, c_maildir_field_delimiter);
   if (p && mutt_str_startswith(p + 1, "2,"))
   {
     p += 3;
