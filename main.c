@@ -1306,6 +1306,9 @@ int main(int argc, char *argv[], char *envp[])
     if (OptGui)
       mutt_flushinp();
 
+    if (cli->send.use_crypto)
+      sendflags |= SEND_CLI_CRYPTO;
+
     e = email_new();
     e->env = mutt_env_new();
 
