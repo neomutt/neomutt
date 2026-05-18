@@ -989,7 +989,7 @@ static void init_nntp(struct Buffer *server, struct ConfigSet *cs)
     cli_nntp = buf_string(server);
 
   /* "$news_server" precedence: command line, config file, environment, system file */
-  if (cli_nntp)
+  if (!cli_nntp)
     cli_nntp = cs_subset_string(NeoMutt->sub, "news_server");
 
   if (!cli_nntp)
