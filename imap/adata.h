@@ -42,6 +42,7 @@ struct ImapAccountData
   bool recovering;                ///< Recovering after a fatal error
   bool closing;                   ///< If true, we are waiting for CLOSE completion
   bool checking;                  ///< If true, imap_check_mailbox is in progress (re-entrancy guard)
+  bool authenticating;            ///< If true, imap_authenticate is in progress (re-entrancy guard)
   unsigned char state;            ///< ImapState, e.g. #IMAP_AUTHENTICATED
   unsigned char status;           ///< ImapFlags, e.g. #IMAP_FATAL
   /* let me explain capstr: SASL needs the capability string (not bits).
