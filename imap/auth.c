@@ -37,6 +37,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "adata.h"
 #include "auth.h"
 
 /**
@@ -116,6 +117,16 @@ int imap_authenticate(struct ImapAccountData *adata)
 {
   int rc = IMAP_AUTH_FAILURE;
 
+  /* Re-entrancy guard.  A partial SASL exchange that triggers a fatal IMAP
+   * error causes cmd_handle_fatal() to close the connection and call
+   * imap_login() -> imap_authenticate() recursively.  Without this guard,
+   * the recursive call would start the whole auth chain again on the new
+   * connection, and the outer loop would then keep trying methods on a
+   * connection that is no longer in IMAP_CONNECTED state. */
+  if (adata->authenticating)
+    return IMAP_AUTH_FAILURE;
+  adata->authenticating = true;
+
   const struct Slist *c_imap_authenticators = cs_subset_slist(NeoMutt->sub, "imap_authenticators");
   if (c_imap_authenticators && (c_imap_authenticators->count > 0))
   {
@@ -134,9 +145,21 @@ int imap_authenticate(struct ImapAccountData *adata)
         {
           rc = auth->authenticate(adata, np->data);
           if (rc == IMAP_AUTH_SUCCESS)
+            goto done;
+
+          /* A nested recovery (cmd_handle_fatal -> imap_login) may have
+           * already re-authenticated this connection.  If so, we're done. */
+          if (adata->state >= IMAP_AUTHENTICATED)
           {
-            return rc;
+            rc = IMAP_AUTH_SUCCESS;
+            goto done;
           }
+
+          /* The previous attempt left the connection unusable (e.g. the
+           * server closed it after a SASL abort).  Subsequent methods
+           * cannot succeed, so stop trying. */
+          if (adata->state != IMAP_CONNECTED)
+            goto done;
         }
       }
     }
@@ -150,10 +173,27 @@ int imap_authenticate(struct ImapAccountData *adata)
     {
       rc = ImapAuthenticators[i].authenticate(adata, NULL);
       if (rc == IMAP_AUTH_SUCCESS)
-        return rc;
+        goto done;
+
+      /* A nested recovery (cmd_handle_fatal -> imap_login) may have
+       * already re-authenticated this connection.  If so, we're done. */
+      if (adata->state >= IMAP_AUTHENTICATED)
+      {
+        rc = IMAP_AUTH_SUCCESS;
+        goto done;
+      }
+
+      /* The previous attempt left the connection unusable (e.g. the
+       * server closed it after a SASL abort).  Subsequent methods cannot
+       * succeed, so stop trying. */
+      if (adata->state != IMAP_CONNECTED)
+        goto done;
     }
   }
 
   mutt_error(_("No authenticators available or wrong credentials"));
+
+done:
+  adata->authenticating = false;
   return rc;
 }
