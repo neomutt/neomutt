@@ -712,6 +712,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   if (m->verbose)
   {
     /* L10N: Comparing the cached data with the IMAP server's data */
+    mutt_clear_error();
     progress = progress_new(MUTT_PROGRESS_READ, msn_end);
     progress_set_message(progress, _("Evaluating cache..."));
   }
@@ -948,6 +949,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   if (m->verbose)
   {
     /* L10N: Fetching IMAP flag changes, using the CONDSTORE extension */
+    mutt_clear_error();
     progress = progress_new(MUTT_PROGRESS_READ, msn_end);
     progress_set_message(progress, _("Fetching flag updates..."));
   }
@@ -1182,6 +1184,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   if (m->verbose)
   {
+    mutt_clear_error();
     progress = progress_new(MUTT_PROGRESS_READ, msn_end);
     progress_set_message(progress, _("Fetching message headers..."));
   }
@@ -1593,6 +1596,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
 
   if (m->verbose)
   {
+    mutt_clear_error();
     progress = progress_new(MUTT_PROGRESS_NET, len);
     progress_set_message(progress, _("Uploading message..."));
   }
