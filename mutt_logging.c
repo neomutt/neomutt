@@ -135,6 +135,7 @@ int log_disp_curses(time_t stamp, const char *file, int line, const char *functi
     enum ColorId cid = MT_COLOR_NORMAL;
     switch (level)
     {
+      case LL_PERROR:
       case LL_ERROR:
         mutt_beep(false);
         cid = MT_COLOR_ERROR;
