@@ -54,6 +54,48 @@ struct MuttWindow *msgcont_new(void)
 }
 
 /**
+ * msgcont_recalc_rows - Recalculate the Bottom Bar height
+ *
+ * Sum the req_rows of all visible children of the Message Container and
+ * apply the result to the Bottom Bar's req_rows.  The caller is responsible
+ * for triggering a reflow if needed.
+ */
+void msgcont_recalc_rows(void)
+{
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->message_container || !mod_data->bottom_bar)
+    return;
+
+  struct MuttWindow *mc = mod_data->message_container;
+  int rows = 0;
+  struct MuttWindow **wp = NULL;
+  ARRAY_FOREACH(wp, &mc->children)
+  {
+    if (!(*wp)->state.visible)
+      continue;
+    rows += MAX(0, (*wp)->req_rows);
+  }
+
+  if (rows < 1)
+    rows = 1;
+
+  mod_data->bottom_bar->req_rows = rows;
+}
+
+/**
+ * msgcont_num_windows - Count the Windows in the Message Container
+ * @retval num Number of children windows
+ */
+int msgcont_num_windows(void)
+{
+  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
+  if (!mod_data || !mod_data->message_container)
+    return 0;
+
+  return ARRAY_SIZE(&mod_data->message_container->children);
+}
+
+/**
  * msgcont_pop_window - Remove the last Window from the Container Stack
  * @retval ptr Window removed from the stack
  */

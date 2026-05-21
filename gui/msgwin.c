@@ -539,3 +539,20 @@ struct MuttWindow *msgwin_get_window(void)
 {
   return msgcont_get_msgwin();
 }
+
+/**
+ * msgwin_has_text - Does the Message Window currently hold any text?
+ * @retval true The Message Window currently displays a message
+ *
+ * Used by msgcont_push_window() to decide whether the Message Window should
+ * remain visible when another Window is pushed on top of it.
+ */
+bool msgwin_has_text(void)
+{
+  struct MuttWindow *win = msgcont_get_msgwin();
+  if (!win || !win->wdata)
+    return false;
+
+  const struct MsgWinWindowData *wdata = win->wdata;
+  return !buf_is_empty(wdata->text);
+}

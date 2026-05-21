@@ -29,6 +29,7 @@
 struct MuttWindow;
 
 void               msgwin_clear_text(struct MuttWindow *win);
+bool               msgwin_has_text  (void);
 struct MuttWindow *msgwin_new       (bool interactive);
 void               msgwin_add_text  (struct MuttWindow *win, const char *text, const struct AttrColor *ac_color);
 void               msgwin_add_text_n(struct MuttWindow *win, const char *text, int bytes, const struct AttrColor *ac_color);
