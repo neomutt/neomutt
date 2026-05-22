@@ -29,5 +29,7 @@ struct MuttWindow *msgcont_get_msgwin(void);
 struct MuttWindow *msgcont_new(void);
 struct MuttWindow *msgcont_pop_window(void);
 void               msgcont_push_window(struct MuttWindow *win);
+void               msgcont_recalc_rows(void);
+int                msgcont_num_windows(void);
 
 #endif /* MUTT_GUI_MSGCONT_H */

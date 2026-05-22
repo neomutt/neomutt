@@ -40,6 +40,7 @@
 #include "menu/lib.h"
 #include "enter.h"
 #include "module_data.h"
+#include "mutt_logging.h"
 #include "state.h"
 #include "wdata.h"
 
@@ -483,6 +484,7 @@ static int op_help(struct EnterFunctionData *fdata, const struct KeyEvent *event
  */
 static int op_redraw(struct EnterFunctionData *fdata, const struct KeyEvent *event)
 {
+  mutt_clear_error();
   clearok(stdscr, true);
   mutt_resize_screen();
   window_invalidate_all();

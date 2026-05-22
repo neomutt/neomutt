@@ -120,7 +120,10 @@ static int menu_window_observer(struct NotifyCallback *nc)
     notify_observer_remove(NeoMutt->sub->notify, menu_config_observer, menu);
     notify_observer_remove(win->notify, menu_window_observer, menu);
     mutt_color_observer_remove(menu_color_observer, menu);
-    msgwin_clear_text(NULL);
+    // If a prompt is still stacked in the Message Container, preserve any
+    // revealed warning/error so the user can see why the dialog closed.
+    if (msgcont_num_windows() <= 1)
+      msgwin_clear_text(NULL);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
 

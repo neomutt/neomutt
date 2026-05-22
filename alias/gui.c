@@ -64,29 +64,6 @@ int alias_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * alias_dialog_hide_prompt - Hide the stacked prompt during alias/query selection
- * @retval ptr Hidden prompt window
- * @retval NULL No prompt was hidden
- */
-struct MuttWindow *alias_dialog_hide_prompt(void)
-{
-  struct MuttWindow *msgwin = msgcont_get_msgwin();
-  struct MuttWindow *focus = window_get_focus();
-  if (!msgwin || !focus || (focus == msgwin))
-    return NULL;
-
-  struct MuttWindow *msgcont = msgwin->parent;
-  if (!msgcont || (focus->parent != msgcont))
-    return NULL;
-
-  struct MuttWindow **wp_top = ARRAY_LAST(&msgcont->children);
-  if (!wp_top || (*wp_top != focus))
-    return NULL;
-
-  return msgcont_pop_window();
-}
-
-/**
  * alias_set_title - Create a title string for the Menu
  * @param sbar      Simple Bar Window
  * @param menu_name Menu name

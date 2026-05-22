@@ -249,6 +249,39 @@ static bool enter_recursor(struct MuttWindow *win)
 }
 
 /**
+ * enter_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
+ *
+ * This function is triggered by changes to the windows:
+ * - State (this window): refresh the window
+ * - Delete (this window): clean up the observer
+ */
+static int enter_window_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_WINDOW)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
+    return -1;
+
+  struct MuttWindow *win = nc->global_data;
+  struct EventWindow *ev_w = nc->event_data;
+  if (ev_w->win != win)
+    return 0;
+
+  if (nc->event_subtype == NT_WINDOW_STATE)
+  {
+    win->actions |= WA_REPAINT;
+    mutt_debug(LL_DEBUG5, "window state done, request WA_REPAINT\n");
+  }
+  else if (nc->event_subtype == NT_WINDOW_DELETE)
+  {
+    notify_observer_remove(win->notify, enter_window_observer, win);
+    mutt_debug(LL_DEBUG5, "window delete done\n");
+  }
+
+  return 0;
+}
+
+/**
  * mw_get_field_notify - Ask the user for a string and call a notify function on keypress
  * @param[in]  prompt   Prompt
  * @param[in]  buf      Buffer for the result
@@ -305,6 +338,8 @@ int mw_get_field_notify(const char *prompt, struct Buffer *buf, CompletionFlags 
   win->recalc = enter_recalc;
   win->repaint = enter_repaint;
   win->recursor = enter_recursor;
+
+  notify_observer_add(win->notify, NT_WINDOW, enter_window_observer, win);
 
   window_redraw(win);
 
