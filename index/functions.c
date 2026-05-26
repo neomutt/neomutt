@@ -1455,6 +1455,8 @@ static int op_main_break_thread(struct IndexFunctionData *fdata, const struct Ke
   if (!e)
     return FR_NO_ACTION;
 
+  const bool has_repeat_count = (event->count > 0);
+
   if (!mutt_using_threads())
   {
     mutt_warning(_("Threading is not enabled"));
@@ -1462,20 +1464,38 @@ static int op_main_break_thread(struct IndexFunctionData *fdata, const struct Ke
   }
 
   struct MailboxView *mv = shared->mailbox_view;
-  if (!STAILQ_EMPTY(&e->env->in_reply_to) || !STAILQ_EMPTY(&e->env->references))
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  if (ea_add_selection(&ea, mv, e, false, event->count) <= 0)
   {
+    ARRAY_FREE(&ea);
+    return FR_NO_ACTION;
+  }
+
+  bool changed = false;
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
+  {
+    e = *ep;
+    if (!e || (STAILQ_EMPTY(&e->env->in_reply_to) && STAILQ_EMPTY(&e->env->references)))
+      continue;
+
     {
       mutt_break_thread(e);
-      mutt_sort_headers(mv, true);
-      menu_set_index(priv->menu, e->vnum);
+      changed = true;
     }
+  }
+  ARRAY_FREE(&ea);
 
+  if (changed)
+  {
+    mutt_sort_headers(mv, true);
+    menu_set_index(priv->menu, shared->email->vnum);
     m->changed = true;
     mutt_message(_("Thread broken"));
 
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
-  else
+  else if (!has_repeat_count)
   {
     mutt_error(_("Thread can't be broken, message is not part of a thread"));
     return FR_ERROR;
