@@ -1762,6 +1762,9 @@ static int op_main_limit(struct IndexFunctionData *fdata, const struct KeyEvent 
 
 /**
  * op_main_link_threads - Link tagged message to the current one - Implements ::index_function_t - @ingroup index_function_api
+ *
+ * `<link-threads>` is only meaningful with tagged emails.
+ * Let the user run the function with or without `<tag-prefix>`.
  */
 static int op_main_link_threads(struct IndexFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -1791,8 +1794,13 @@ static int op_main_link_threads(struct IndexFunctionData *fdata, const struct Ke
   {
     struct MailboxView *mv = shared->mailbox_view;
     struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
-    ea_add_selection(&ea, mv, e, priv->tag_prefix, event->count);
-    if (!priv->tag_prefix)
+
+    // If there's a repeat-count, use it.
+    // If not, behave as if <tag-prefix> has been pressed.
+    const bool tag_prefix = (event->count < 1);
+    ea_add_selection(&ea, mv, e, tag_prefix, event->count);
+
+    if (!tag_prefix)
     {
       struct Email **ep = ARRAY_GET(&ea, 0);
       if (ep && (*ep == e))
