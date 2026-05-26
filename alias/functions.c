@@ -338,20 +338,14 @@ static int op_jump(struct AliasFunctionData *fdata, const struct KeyEvent *event
 }
 
 /**
- * op_generic_select_entry - select the current entry - Implements ::alias_function_t - @ingroup alias_function_api
- *
- * This function handles:
- * - OP_GENERIC_SELECT_ENTRY
- * - OP_MAIL
- *
+ * alias_select_entries - Select entries to return from the Alias Dialog
+ * @param mdata Alias Menu data
+ * @param count Repeat-count (0 or 1 == just the current selection)
+ * @retval enum #FunctionRetval
  * @note AliasMenuData.is_tagged will show the user's selection
  */
-static int op_generic_select_entry(struct AliasFunctionData *fdata, const struct KeyEvent *event)
+static int alias_select_entries(struct AliasMenuData *mdata, int count)
 {
-  if (event->count > 0)
-    return op_jump(fdata, event);
-
-  struct AliasMenuData *mdata = fdata->wdata;
   struct Menu *menu = mdata->menu;
   if (menu->tag_prefix)
   {
@@ -365,16 +359,50 @@ static int op_generic_select_entry(struct AliasFunctionData *fdata, const struct
   }
   else
   {
-    // Untag all but the current alias
+    struct AliasViewPtrArray avpa = ARRAY_HEAD_INITIALIZER;
+    alias_add_selection(&avpa, mdata, false, count);
+    if (ARRAY_EMPTY(&avpa))
+    {
+      ARRAY_FREE(&avpa);
+      return FR_NO_ACTION;
+    }
+
+    // Untag all but the selected alias(es)
     struct AliasView *avp = NULL;
-    const int idx = menu_get_index(menu);
     ARRAY_FOREACH(avp, &mdata->ava)
     {
-      avp->is_tagged = (ARRAY_FOREACH_IDX_avp == idx);
+      avp->is_tagged = false;
     }
+
+    struct AliasView **avpp = NULL;
+    ARRAY_FOREACH(avpp, &avpa)
+    {
+      if (*avpp)
+        (*avpp)->is_tagged = true;
+    }
+    ARRAY_FREE(&avpa);
   }
 
   return FR_CONTINUE;
+}
+
+/**
+ * op_generic_select_entry - select the current entry - Implements ::alias_function_t - @ingroup alias_function_api
+ */
+static int op_generic_select_entry(struct AliasFunctionData *fdata, const struct KeyEvent *event)
+{
+  if (event->count > 0)
+    return op_jump(fdata, event);
+
+  return alias_select_entries(fdata->wdata, 0);
+}
+
+/**
+ * op_mail - mail the selected entries - Implements ::alias_function_t - @ingroup alias_function_api
+ */
+static int op_mail(struct AliasFunctionData *fdata, const struct KeyEvent *event)
+{
+  return alias_select_entries(fdata->wdata, event->count);
 }
 
 /**
@@ -589,7 +617,7 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_DELETE,                 op_delete },
   { OP_EXIT,                   op_exit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
-  { OP_MAIL,                   op_generic_select_entry },
+  { OP_MAIL,                   op_mail },
   { OP_MAIN_LIMIT,             op_main_limit },
   { OP_MAIN_TAG_PATTERN,       op_main_tag_pattern },
   { OP_MAIN_UNTAG_PATTERN,     op_main_untag_pattern },
