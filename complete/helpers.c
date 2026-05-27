@@ -55,10 +55,11 @@ void matches_ensure_morespace(struct CompletionData *cd, int new_size)
   if (new_size <= (cd->match_list_len - 2))
     return;
 
+  const int old_size = cd->match_list_len;
   new_size = ROUND_UP(new_size + 2, 512);
 
   MUTT_MEM_REALLOC(&cd->match_list, new_size, const char *);
-  memset(&cd->match_list[cd->match_list_len], 0, new_size - cd->match_list_len);
+  memset(&cd->match_list[old_size], 0, (new_size - old_size) * sizeof(char *));
 
   cd->match_list_len = new_size;
 }
@@ -127,10 +128,8 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
     {
-      cd->num_matched = 0;
+      completion_data_reset(cd);
       mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
-      memset(cd->match_list, 0, cd->match_list_len);
-      memset(cd->completed, 0, sizeof(cd->completed));
 
       const struct Command **cp = NULL;
       ARRAY_FOREACH(cp, &NeoMutt->commands)
@@ -190,10 +189,8 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
     {
-      cd->num_matched = 0;
+      completion_data_reset(cd);
       mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
-      memset(cd->match_list, 0, cd->match_list_len);
-      memset(cd->completed, 0, sizeof(cd->completed));
 
       struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, GEL_ALL_CONFIG);
       struct HashElem **hep = NULL;
@@ -257,10 +254,8 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf,
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
     {
-      cd->num_matched = 0;
+      completion_data_reset(cd);
       mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
-      memset(cd->match_list, 0, cd->match_list_len);
-      memset(cd->completed, 0, sizeof(cd->completed));
       for (int num = 0; funcs[num].name; num++)
         candidate(cd, cd->user_typed, funcs[num].name, cd->completed, sizeof(cd->completed));
       /* try the generic menu */
@@ -339,10 +334,8 @@ int mutt_label_complete(struct CompletionData *cd, struct Buffer *buf, int numta
     struct HashElem *he = NULL;
     struct HashWalkState hws = { 0 };
 
-    cd->num_matched = 0;
+    completion_data_reset(cd);
     mutt_str_copy(cd->user_typed, buf_string(buf), sizeof(cd->user_typed));
-    memset(cd->match_list, 0, cd->match_list_len);
-    memset(cd->completed, 0, sizeof(cd->completed));
     while ((he = mutt_hash_walk(m_cur->label_hash, &hws)))
       candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
     matches_ensure_morespace(cd, cd->num_matched);

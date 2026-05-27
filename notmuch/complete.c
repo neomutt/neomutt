@@ -48,13 +48,13 @@
 int complete_all_nm_tags(struct CompletionData *cd, const char *pt)
 {
   struct Mailbox *m_cur = get_current_mailbox();
+  const char **nm_tags = NULL;
   int tag_count_1 = 0;
   int tag_count_2 = 0;
   int rc = -1;
 
+  completion_data_reset(cd);
   mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
-  memset(cd->match_list, 0, cd->match_list_len);
-  memset(cd->completed, 0, sizeof(cd->completed));
   cd->free_match_strings = true;
 
   nm_db_longrun_init(m_cur, false);
@@ -64,7 +64,7 @@ int complete_all_nm_tags(struct CompletionData *cd, const char *pt)
     goto done;
 
   /* Get all the tags. */
-  const char **nm_tags = MUTT_MEM_CALLOC(tag_count_1, const char *);
+  nm_tags = MUTT_MEM_CALLOC(tag_count_1, const char *);
   if ((nm_get_all_tags(m_cur, nm_tags, &tag_count_2) != 0) || (tag_count_1 != tag_count_2))
   {
     completion_data_free_match_strings(cd);
@@ -101,10 +101,8 @@ done:
 bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int numtabs)
 {
   char *pt = buf->data;
-  int spaces;
 
   SKIPWS(pt);
-  spaces = pt - buf->data;
 
   pt = (char *) buf_rfind(buf, "tag:");
   if (pt)
@@ -134,11 +132,12 @@ bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int n
     {
       /* cycle through all the matches */
       snprintf(cd->completed, sizeof(cd->completed), "%s",
-               cd->match_list[(numtabs - 2) % cd->num_matched]);
+               NONULL(cd->match_list[(numtabs - 2) % cd->num_matched]));
     }
 
     /* return the completed query */
-    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
+    mutt_str_copy(pt, cd->completed, buf->dsize - (pt - buf->data));
+    buf_fix_dptr(buf);
   }
   else
   {
@@ -202,7 +201,8 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, struct Buffer *buf, int num
   }
 
   /* return the completed query */
-  strncpy(pt, cd->completed, buf->data + buf->dsize - pt);
+  mutt_str_copy(pt, cd->completed, buf->dsize - (pt - buf->data));
+  buf_fix_dptr(buf);
 
   return true;
 }

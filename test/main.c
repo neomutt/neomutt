@@ -716,6 +716,8 @@ NEOMUTT_TEST_LIST
   NEOMUTT_TEST_ITEM(test_nm_query_type_to_string)
   NEOMUTT_TEST_ITEM(test_nm_string_to_query_type)
   NEOMUTT_TEST_ITEM(test_nm_string_to_query_type_mapper)
+  NEOMUTT_TEST_ITEM(test_nm_query_complete_resets_old_matches)
+  NEOMUTT_TEST_ITEM(test_nm_query_complete_without_mailbox)
   NEOMUTT_TEST_ITEM(test_nm_windowed_query_from_query)
   NEOMUTT_TEST_ITEM(test_nm_tag_string_to_tags)
 #endif
@@ -768,6 +770,8 @@ NEOMUTT_TEST_ITEM(test_compress_common)
   NEOMUTT_TEST_ITEM(test_nm_query_type_to_string)
   NEOMUTT_TEST_ITEM(test_nm_string_to_query_type)
   NEOMUTT_TEST_ITEM(test_nm_string_to_query_type_mapper)
+  NEOMUTT_TEST_ITEM(test_nm_query_complete_resets_old_matches)
+  NEOMUTT_TEST_ITEM(test_nm_query_complete_without_mailbox)
   NEOMUTT_TEST_ITEM(test_nm_windowed_query_from_query)
   NEOMUTT_TEST_ITEM(test_nm_tag_string_to_tags)
 #endif
