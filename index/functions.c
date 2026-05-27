@@ -3716,6 +3716,9 @@ static int op_main_entire_thread(struct IndexFunctionData *fdata, const struct K
     // a valid Message-ID and will throw a segfault.
     //
     // To prevent that, stay in the empty vfolder and print an error.
+    if (!shared->mailbox)
+      return FR_ERROR;
+
     if (shared->mailbox->msg_count == 0)
     {
       mutt_error(_("failed to find message in notmuch database. try running 'notmuch new'."));
