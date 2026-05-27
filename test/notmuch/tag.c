@@ -26,6 +26,7 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
+#include "complete/lib.h"
 #include "notmuch/tag.h" // IWYU pragma: keep
 #include "notmuch/lib.h"
 #include "test_common.h"
@@ -92,4 +93,39 @@ void test_nm_tag_string_to_tags(void)
 
     nm_tag_array_free(&output);
   }
+}
+
+void test_nm_query_complete_without_mailbox(void)
+{
+  struct CompletionData *cd = completion_data_new();
+  struct Buffer *buf = buf_pool_get();
+
+  buf_strcpy(buf, "tag:");
+  TEST_CHECK(mutt_nm_query_complete(cd, buf, 1));
+  TEST_CHECK_STR_EQ(buf_string(buf), "tag:");
+  TEST_CHECK_NUM_EQ(cd->num_matched, 0);
+
+  buf_pool_release(&buf);
+  completion_data_free(&cd);
+}
+
+void test_nm_query_complete_resets_old_matches(void)
+{
+  struct CompletionData *cd = completion_data_new();
+  struct Buffer *buf = buf_pool_get();
+
+  cd->num_matched = 1;
+  cd->free_match_strings = true;
+  cd->match_list[0] = mutt_str_dup("stale-tag");
+  memset(cd->completed, 'x', sizeof(cd->completed) - 1);
+  cd->completed[sizeof(cd->completed) - 1] = '\0';
+
+  buf_strcpy(buf, "tag:inbox");
+  TEST_CHECK(!mutt_nm_query_complete(cd, buf, 1));
+  TEST_CHECK_NUM_EQ(cd->num_matched, 0);
+  TEST_CHECK_STR_EQ(cd->user_typed, "inbox");
+  TEST_CHECK_STR_EQ(cd->completed, "");
+
+  buf_pool_release(&buf);
+  completion_data_free(&cd);
 }

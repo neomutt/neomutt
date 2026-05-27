@@ -54,6 +54,7 @@ bool StartupComplete = true;
 char *HomeDir = NULL;
 char *ShortHostname = "example";
 bool MonitorContextChanged = false;
+bool MonitorCurMboxChanged = false;
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
 
@@ -214,6 +215,10 @@ struct Mailbox *get_current_mailbox(void)
 struct MailboxView *get_current_mailbox_view(void)
 {
   return NULL;
+}
+
+void email_set_color(struct Mailbox *m, struct Email *e)
+{
 }
 
 int mutt_do_pager(struct PagerView *pview, struct Email *e)
