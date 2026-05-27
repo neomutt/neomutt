@@ -89,6 +89,9 @@ struct HashElemArray get_elem_list(struct ConfigSet *cs, enum GetElemListFlags f
   struct HashElem *he = NULL;
   while ((he = mutt_hash_walk(cs->hash, &walk)))
   {
+    if (he->type & D_INTERNAL_INHERITED)
+      continue;
+
     if ((CONFIG_TYPE(he->type) == DT_SYNONYM) || (he->type & D_INTERNAL_DEPRECATED))
       continue;
 

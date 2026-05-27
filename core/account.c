@@ -51,7 +51,7 @@ struct Account *account_new(const char *name, struct ConfigSubset *sub)
   ARRAY_INIT(&a->mailboxes);
   a->notify = notify_new();
   a->name = mutt_str_dup(name);
-  a->sub = cs_subset_new(name, sub, a->notify);
+  a->sub = cs_subset_new(NULL, sub, a->notify);
   a->sub->cs = sub->cs;
   a->sub->scope = SET_SCOPE_ACCOUNT;
 
