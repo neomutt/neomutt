@@ -90,6 +90,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
   if (!edata)
   {
     e->edata = maildir_edata_new();
+    e->edata_free = maildir_edata_free;
     edata = e->edata;
   }
 
