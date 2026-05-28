@@ -471,6 +471,30 @@ bool cs_he_has_been_set(const struct ConfigSet *cs, struct HashElem *he)
   if (!cs || !he)
     return false;
 
+  if (he->type & D_INTERNAL_INHERITED)
+  {
+    if (CONFIG_TYPE(he->type) == 0)
+      return false;
+
+    struct Inheritance *i = he->data;
+    struct Buffer value = { 0 };
+    struct Buffer parent = { 0 };
+
+    buf_init(&value);
+    buf_init(&parent);
+
+    bool rc = false;
+    if ((CSR_RESULT(cs_he_string_get(cs, he, &value)) == CSR_SUCCESS) &&
+        (CSR_RESULT(cs_he_string_get(cs, i->parent, &parent)) == CSR_SUCCESS))
+    {
+      rc = !mutt_str_equal(buf_string(&value), buf_string(&parent));
+    }
+
+    buf_dealloc(&parent);
+    buf_dealloc(&value);
+    return rc;
+  }
+
   const struct ConfigSetType *cst = cs_get_type_def(cs, he->type);
   if (!cst)
     return false; // LCOV_EXCL_LINE
