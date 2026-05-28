@@ -36,8 +36,9 @@
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",  DT_NUMBER,  0, 0, NULL, },
-  { "Banana", DT_BOOL,    1, 0, NULL, },
+  { "Apple",      DT_NUMBER,  0,          0, NULL, },
+  { "Banana",     DT_BOOL,    1,          0, NULL, },
+  { "Cantaloupe", DT_STRING, IP "apple",  0, NULL, },
   { NULL },
 };
 // clang-format on
@@ -356,6 +357,76 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
   return true;
 }
 
+static bool inheritance_tests(struct ConfigSet *cs, struct Buffer *err)
+{
+  struct HashElem *parent_bool = cs_get_elem(cs, "Banana");
+  struct HashElem *parent_str = cs_get_elem(cs, "Cantaloupe");
+  if (!TEST_CHECK(parent_bool != NULL))
+    return false;
+  if (!TEST_CHECK(parent_str != NULL))
+    return false;
+
+  struct HashElem *child_bool = cs_inherit_variable(cs, parent_bool, "berry");
+  struct HashElem *child_str = cs_inherit_variable(cs, parent_str, "citrus");
+  if (!TEST_CHECK(child_bool != NULL))
+    return false;
+  if (!TEST_CHECK(child_str != NULL))
+    return false;
+
+  if (!TEST_CHECK(!cs_he_has_been_set(cs, child_bool)))
+    return false;
+  if (!TEST_CHECK(!cs_str_has_been_set(cs, "berry")))
+    return false;
+  if (!TEST_CHECK(!cs_he_has_been_set(cs, child_str)))
+    return false;
+  if (!TEST_CHECK(!cs_str_has_been_set(cs, "citrus")))
+    return false;
+
+  buf_reset(err);
+  int rc = cs_str_string_set(cs, "Banana", "no", err);
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(!cs_he_has_been_set(cs, child_bool)))
+    return false;
+
+  rc = cs_str_native_set(cs, "berry", false, err);
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(!cs_he_has_been_set(cs, child_bool)))
+    return false;
+
+  rc = cs_str_native_set(cs, "berry", true, err);
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_has_been_set(cs, child_bool)))
+    return false;
+
+  buf_reset(err);
+  rc = cs_str_string_set(cs, "Cantaloupe", "banana", err);
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(!cs_he_has_been_set(cs, child_str)))
+    return false;
+
+  buf_reset(err);
+  rc = cs_str_string_set(cs, "citrus", "banana", err);
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(!cs_he_has_been_set(cs, child_str)))
+    return false;
+
+  buf_reset(err);
+  rc = cs_str_string_set(cs, "citrus", "cherry", err);
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(cs_he_has_been_set(cs, child_str)))
+    return false;
+
+  cs_uninherit_variable(cs, "berry");
+  cs_uninherit_variable(cs, "citrus");
+  return true;
+}
+
 void test_config_set(void)
 {
   log_line(__func__);
@@ -406,6 +477,7 @@ void test_config_set(void)
 
   cs_register_type(cs, &CstBool);
   cs_register_type(cs, &CstBool); /* second one should fail */
+  cs_register_type(cs, &CstString);
 
   if (TEST_CHECK(!cs_register_variables(cs, Vars)))
   {
@@ -498,6 +570,9 @@ void test_config_set(void)
 
   const struct ConfigSetType *cst = cs_get_type_def(cs, 15);
   if (!TEST_CHECK(!cst))
+    return;
+
+  if (!inheritance_tests(cs, err))
     return;
 
   /* Test deleting elements.  This deletes Banana from cs! */
