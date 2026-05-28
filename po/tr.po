@@ -9069,8 +9069,8 @@ msgid "        -m, --mbox-type <type>       Set default mailbox type"
 msgstr "        -m, --mbox-type <tür>        Öntanımlı posta kutusu türünü ayarla"
 
 #: usage.c:75
-msgid "        -d, --debug-level <level>    Set logging level (1..5)"
-msgstr "        -d, --debug-level <düzey>    Günlükleme düzeyini ayarla (1..5)"
+msgid "        -d, --debug-level <level>    Set logging level (0..6)"
+msgstr "        -d, --debug-level <düzey>    Günlükleme düzeyini ayarla (0..6)"
 
 #: usage.c:76
 msgid "        -l, --debug-file <file>      Set logging file"

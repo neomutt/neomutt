@@ -9098,8 +9098,8 @@ msgid "        -m, --mbox-type <type>       Set default mailbox type"
 msgstr "        -m, --mbox-type <врста>      Задаје подразумевану врсту сандучета"
 
 #: usage.c:75
-msgid "        -d, --debug-level <level>    Set logging level (1..5)"
-msgstr "        -d, --debug-level <ниво>     Задаје ниво бележења у дневник (1..5)"
+msgid "        -d, --debug-level <level>    Set logging level (0..6)"
+msgstr "        -d, --debug-level <ниво>     Задаје ниво бележења у дневник (0..6)"
 
 #: usage.c:76
 msgid "        -l, --debug-file <file>      Set logging file"
