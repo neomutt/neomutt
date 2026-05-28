@@ -1110,7 +1110,7 @@
 ** The debug level controls how much information is saved to the log file. If
 ** you have a problem with NeoMutt, then enabling logging may help find the
 ** cause. Levels 1-3 will usually provide enough information for writing a bug
-** report. Levels 4,5 will be extremely verbose.
+** report. Levels 4,5,6 will be extremely verbose.
 ** .pp
 ** Warning: Logging at high levels may save private information to the file.
 ** .pp
