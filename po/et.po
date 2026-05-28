@@ -9521,8 +9521,8 @@ msgstr "        -m, --mbox-type <type>       Set default mailbox type"
 
 #: usage.c:75
 #, fuzzy
-msgid "        -d, --debug-level <level>    Set logging level (0..6)"
-msgstr "        -d, --debug-level <level>    Set logging level (0..6)"
+msgid "        -d, --debug-level <level>    Set logging level (%d..%d)\n"
+msgstr "        -d, --debug-level <level>    Set logging level (%d..%d)\n"
 
 #: usage.c:76
 #, fuzzy

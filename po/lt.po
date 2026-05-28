@@ -9196,8 +9196,8 @@ msgstr "        -m, --mbox-type <tipas>      Nutylėtasis pašto dėžutės tipa
 
 #: usage.c:75
 #, fuzzy
-msgid "        -d, --debug-level <level>    Set logging level (0..6)"
-msgstr "        -d, --debug-level <lygis>    Žurnalo lygis (0..6)"
+msgid "        -d, --debug-level <level>    Set logging level (%d..%d)\n"
+msgstr "        -d, --debug-level <lygis>    Žurnalo lygis (%d..%d)\n"
 
 #: usage.c:76
 #, fuzzy
