@@ -271,7 +271,7 @@ bool mailbox_set_subset(struct Mailbox *m, struct ConfigSubset *sub)
   if (!m || m->sub || !sub)
     return false;
 
-  m->sub = cs_subset_new(NULL, sub, m->notify);
+  m->sub = cs_subset_new(m->name, sub, m->notify);
   m->sub->scope = SET_SCOPE_MAILBOX;
   return true;
 }
