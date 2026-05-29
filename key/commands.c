@@ -54,6 +54,7 @@ struct ParseUnbind
   struct MenuDefinitionArray mda; ///< Menus to work on
   bool all_menus;                 ///< Command affects all Menus
   bool all_keys;                  ///< Command affects all key bindings
+  bool restore_defaults;          ///< Restore fallback bindings after unbind
   const char *key;                ///< Key string to be removed
 };
 
@@ -480,20 +481,31 @@ bool parse_unbind_args(const struct Command *cmd, struct Buffer *line,
       // `unbind * key`
       // `unmacro * key`
       parse_extract_token(token, line, TOKEN_NONE);
-      args->key = buf_strdup(token);
+      if (mutt_str_equal(buf_string(token), "*"))
+        args->all_keys = true;
+      else
+        args->key = buf_strdup(token);
     }
     else
     {
       // `unbind *`
       // `unmacro *`
       args->all_keys = true;
+      args->restore_defaults = (cmd->id == CMD_UNBIND);
     }
   }
   else
   {
-    parse_menu(&args->mda, buf_string(token), err);
-    if (!buf_is_empty(err))
-      goto done;
+    if (mutt_str_equal(buf_string(token), "*"))
+    {
+      args->all_menus = true;
+    }
+    else
+    {
+      parse_menu(&args->mda, buf_string(token), err);
+      if (!buf_is_empty(err))
+        goto done;
+    }
 
     if (MoreArgs(line))
     {
@@ -516,6 +528,7 @@ bool parse_unbind_args(const struct Command *cmd, struct Buffer *line,
       // `unbind  menu`
       // `unmacro menu`
       args->all_keys = true;
+      args->restore_defaults = (cmd->id == CMD_UNBIND);
     }
   }
 
@@ -540,8 +553,7 @@ done:
  * @retval true Success
  *
  * The user is trying to remove a binding or a macro.
- * We choose *not* to distinguish the two, since a key can only be bound to one or the other.
- * i.e. `unbind` will also clear macros, `unmacro` will also clear bindings
+ * `unbind` only removes regular bindings; `unmacro` only removes macros.
  */
 bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, struct Buffer *err)
 {
@@ -565,6 +577,7 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
   ARRAY_FOREACH(mdp, &mod_data->menu_defs)
   {
     struct MenuDefinition *md = *mdp;
+    bool menu_success = false;
 
     if (!args->all_menus)
     {
@@ -592,12 +605,19 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
     struct Keymap *km_tmp = NULL;
     STAILQ_FOREACH_SAFE(km, &sm->keymaps, entries, km_tmp)
     {
-      if (args->all_keys ||
-          ((key_len == km->len) && (memcmp(km->keys, key_bytes, km->len) == 0)))
+      bool match = args->all_keys || ((key_len == km->len) &&
+                                      (memcmp(km->keys, key_bytes, km->len) == 0));
+      if ((cmd->id == CMD_UNMACRO) && (km->op != OP_MACRO))
+        match = false;
+      if ((cmd->id == CMD_UNBIND) && (km->op == OP_MACRO))
+        match = false;
+
+      if (match)
       {
         STAILQ_REMOVE(&sm->keymaps, km, Keymap, entries);
         keymap_free(&km);
         success = true;
+        menu_success = true;
 
         if (!args->all_keys && !args->all_menus)
         {
@@ -612,32 +632,38 @@ bool parse_unbind_exec(const struct Command *cmd, struct ParseUnbind *args, stru
       }
     }
 
-    if (args->all_keys && !args->all_menus && success)
+    if (args->all_keys && !args->all_menus)
     {
-      buf_reset(keystr);
-      keymap_expand_string(args->key, keystr);
-      mutt_debug(LL_NOTIFY, "%s: %s %s\n", notify_binding_name(nb), md->name,
-                 buf_string(keystr));
+      if (menu_success)
+      {
+        buf_reset(keystr);
+        keymap_expand_string(args->key, keystr);
+        mutt_debug(LL_NOTIFY, "%s: %s %s\n", notify_binding_name(nb), md->name,
+                   buf_string(keystr));
 
-      struct EventBinding ev_b = { md, args->key, OP_NULL };
-      notify_send(NeoMutt->notify, NT_BINDING, nb, &ev_b);
+        struct EventBinding ev_b = { md, args->key, OP_NULL };
+        notify_send(NeoMutt->notify, NT_BINDING, nb, &ev_b);
+      }
 
-      // restore some bindings for this menu
-      set_default_bindings(md);
+      if (args->restore_defaults)
+        set_default_bindings(md);
     }
   }
 
-  if (args->all_menus && success)
+  if (args->all_menus && args->all_keys)
   {
-    buf_reset(keystr);
-    keymap_expand_string(args->key, keystr);
-    mutt_debug(LL_NOTIFY, "%s: ALL %s\n", notify_binding_name(nb), buf_string(keystr));
+    if (success)
+    {
+      buf_reset(keystr);
+      keymap_expand_string(args->key, keystr);
+      mutt_debug(LL_NOTIFY, "%s: ALL %s\n", notify_binding_name(nb), buf_string(keystr));
 
-    struct EventBinding ev_b = { NULL, args->key, OP_NULL };
-    notify_send(NeoMutt->notify, NT_BINDING, nb, &ev_b);
+      struct EventBinding ev_b = { NULL, args->key, OP_NULL };
+      notify_send(NeoMutt->notify, NT_BINDING, nb, &ev_b);
+    }
 
-    // restore some bindings for all menus
-    set_default_bindings(NULL);
+    if (args->restore_defaults)
+      set_default_bindings(NULL);
   }
 
   buf_pool_release(&keystr);

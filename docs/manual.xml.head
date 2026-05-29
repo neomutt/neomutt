@@ -4346,6 +4346,9 @@ set alias_file=~/.mail_aliases
         </group>
         <group choice="opt">
           <arg choice="plain">
+            <replaceable class="parameter">*</replaceable>
+          </arg>
+          <arg choice="plain">
             <replaceable class="parameter">key</replaceable>
           </arg>
         </group>
@@ -4723,6 +4726,9 @@ set alias_file=~/.mail_aliases
           </group>
           <group choice="opt">
             <arg choice="plain">
+              <replaceable class="parameter">*</replaceable>
+            </arg>
+            <arg choice="plain">
               <replaceable class="parameter">key</replaceable>
             </arg>
           </group>
@@ -4737,11 +4743,55 @@ set alias_file=~/.mail_aliases
         </para>
         <para>
           <emphasis>key</emphasis> is the key or key sequence to be unbound.
-          It may be omitted in which case all keybindings in the given menus
-          are removed.  To prevent NeoMutt from becoming unusable some fallback
-          key bindings are added afterwards.  The fallback keybindings added
-          depend on the menu, they are listed in <xref linkend="tab-fallback-key-bindings" />.
+          It may be omitted, or given as <literal>*</literal>, in which case
+          every keybinding in the given menus is removed.  If
+          <emphasis>key</emphasis> is omitted, <literal>unbind</literal>
+          restores a small set of fallback bindings afterwards to prevent
+          NeoMutt from becoming unusable.  If <emphasis>key</emphasis> is
+          explicitly given as <literal>*</literal>, no fallback bindings are
+          restored.  The fallback keybindings added depend on the menu, they
+          are listed in <xref linkend="tab-fallback-key-bindings" />.
         </para>
+        <para>
+          <literal>unbind</literal> removes only regular bindings; key
+          <link linkend="macro">macros</link> are left untouched.  Use
+          <link linkend="unmacro"><literal>unmacro</literal></link> to remove
+          macros.
+        </para>
+        <para>
+          The two wildcard forms behave differently:
+        </para>
+        <variablelist>
+          <varlistentry>
+            <term><literal>unbind *</literal></term>
+            <listitem>
+              <para>
+                Removes every binding from every menu, then restores the
+                fallback bindings listed in
+                <xref linkend="tab-fallback-key-bindings" /> so that NeoMutt
+                remains usable.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><literal>unbind * *</literal></term>
+            <listitem>
+              <para>
+                Removes every binding from every menu and does
+                <emphasis>not</emphasis> restore any fallback bindings.
+              </para>
+              <warning>
+                <para>
+                  After <literal>unbind * *</literal> NeoMutt has no key
+                  bindings at all and is effectively unusable until further
+                  <literal>bind</literal> commands are issued (for example
+                  from a config file sourced afterwards).  Use this form only
+                  if you intend to install a completely custom key map.
+                </para>
+              </warning>
+            </listitem>
+          </varlistentry>
+        </variablelist>
         <table id="tab-fallback-key-bindings">
           <title>Fallback key bindings</title>
           <tgroup cols="3">
@@ -5085,13 +5135,18 @@ folder-hook work "set sort=threads"
             <replaceable class="parameter">*</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">map</replaceable>
-          </arg>
-          <arg choice="opt" rep="repeat">
-            <replaceable class="parameter">,map</replaceable>
+            <arg choice="plain">
+              <replaceable class="parameter">map</replaceable>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">,map</replaceable>
+            </arg>
           </arg>
         </group>
         <group choice="opt">
+          <arg choice="plain">
+            <replaceable class="parameter">*</replaceable>
+          </arg>
           <arg choice="plain">
             <replaceable class="parameter">key</replaceable>
           </arg>
@@ -5178,18 +5233,27 @@ folder-hook work "set sort=threads"
         </para>
         <cmdsynopsis>
           <command>unmacro</command>
-          <arg choice="plain">
-            <replaceable class="parameter">map</replaceable>
-          </arg>
-          <arg choice="opt" rep="repeat">
-            <replaceable class="parameter">,map</replaceable>
-          </arg>
-          <arg choice="plain">
-            <replaceable class="parameter">key</replaceable>
-          </arg>
-          <arg choice="plain">
-            <replaceable class="parameter">sequence</replaceable>
-         </arg>
+          <group choice="req">
+            <arg choice="plain">
+              <replaceable class="parameter">*</replaceable>
+            </arg>
+            <arg choice="plain">
+              <arg choice="plain">
+                <replaceable class="parameter">map</replaceable>
+              </arg>
+              <arg choice="opt" rep="repeat">
+                <replaceable class="parameter">,map</replaceable>
+              </arg>
+            </arg>
+          </group>
+          <group choice="opt">
+            <arg choice="plain">
+              <replaceable class="parameter">*</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">key</replaceable>
+            </arg>
+          </group>
         </cmdsynopsis>
         <para>
           <emphasis>map</emphasis> specifies from which menus the macro
@@ -5200,14 +5264,22 @@ folder-hook work "set sort=threads"
           <link linkend="maps">in the <literal>bind</literal> section</link>.
         </para>
         <para>
-          <emphasis>key</emphasis> is the key or key sequence to be unbound.
-          It may be omitted in which case all macros in the given menus
-          are removed.
+          <emphasis>key</emphasis> is the key or key sequence to be removed.
+          It may be omitted, or given as <literal>*</literal>, in which case
+          all macros in the given menus are removed.
+          <literal>unmacro *</literal> removes every macro from every menu.
         </para>
         <note>
           <para>
-            Missing key sequence in unmacro command means unmacro all macros in menus
-            given in <emphasis>map</emphasis>.
+            <literal>unmacro</literal> only removes
+            <link linkend="macro">macros</link>; regular key
+            <link linkend="bind">bindings</link> are left untouched (use
+            <link linkend="unbind"><literal>unbind</literal></link> for
+            those).  Because of this, the <literal>* *</literal> wildcard
+            form has no special meaning for <literal>unmacro</literal>:
+            <literal>unmacro *</literal> and <literal>unmacro * *</literal>
+            both simply remove every macro from every menu, and no fallback
+            bindings need to be restored.
           </para>
         </note>
       </sect2>
@@ -20631,6 +20703,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </group>
             <group choice="opt">
               <arg choice="plain">
+                <replaceable class="parameter">*</replaceable>
+              </arg>
+              <arg choice="plain">
                 <replaceable class="parameter">key</replaceable>
               </arg>
             </group>
@@ -21089,6 +21164,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               </arg>
             </group>
             <group choice="opt">
+              <arg choice="plain">
+                <replaceable class="parameter">*</replaceable>
+              </arg>
               <arg choice="plain">
                 <replaceable class="parameter">key</replaceable>
               </arg>

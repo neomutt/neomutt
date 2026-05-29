@@ -208,7 +208,7 @@ A \fImime-subtype\fP of \(lq\fB*\fP\(rq matches any
 .PP
 .nf
 \fBbind\fP \fImap\fP[\fB,\fP\fImap\fP ... ] \fIkey\fP \fIfunction\fP
-\fBunbind\fP { \fB*\fP | \fImap\fP | [\fB,\fP\fImap\fP...]} [ \fIkey\fP ]
+\fBunbind\fP { \fB*\fP | \fImap\fP[\fB,\fP\fImap\fP...] } [ { \fB*\fP | \fIkey\fP } ]
 .fi
 .IP
 This command allows you to change the default or define additional key bindings
@@ -237,8 +237,21 @@ can also be referred to by their symbolic names:
 \fIfunction\fP specifies which action to take when key is pressed. Note that
 the function name is to be specified without angle brackets.
 .IP
-A missing key sequence in the \fBunbind\fP command means unbind all bindings
-in the menus given in \fImap\fP.
+If \fIkey\fP is omitted (or specified as \fB*\fP) when \fImap\fP names one or
+more specific menus, all bindings in those menus are removed and a small set
+of safe fallback bindings is restored so the menus remain usable.
+.IP
+\fBunbind\fP only removes regular bindings; key macros are left untouched
+(use \fBunmacro\fP for those).
+.IP
+\fBunbind *\fP removes every binding from every menu and then restores a small
+set of safe fallback bindings, so NeoMutt remains usable.
+.IP
+\fBunbind * *\fP removes every binding from every menu without restoring any
+fallbacks.
+.B Warning:
+after this command NeoMutt has no key bindings at all and is effectively
+unusable until further \fBbind\fP commands are issued.
 .IP
 For more information on keys and functions, please consult the NeoMutt manual.
 .
@@ -561,7 +574,7 @@ These commands allow you to run Lua scripts within NeoMutt.
 .PP
 .nf
 \fBmacro\fP \fImenu\fP[\fB,\fP\fImenu\fP ... ] \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
-\fBunmacro\fP { \fB*\fP | \fImenu\fP | [\fB,\fP\fImenu\fP...]} [ \fIkey\fP ]
+\fBunmacro\fP { \fB*\fP | \fImenu\fP[\fB,\fP\fImenu\fP...] } [ { \fB*\fP | \fIkey\fP } ]
 .fi
 .IP
 This command binds the given \fIsequence\fP of keys to the given \fIkey\fP in
@@ -571,8 +584,12 @@ command above. To specify multiple menus, put only a comma between the menus.
 Optionally you can specify a descriptive text after \fIsequence\fP, which is
 shown in the help screens if they contain a \fIdescription\fP.
 .IP
-Missing key sequence in \fBunmacro\fP command means unmacro all macros in menus
-given in \fImenu\fP.
+If \fIkey\fP is omitted (or specified as \fB*\fP), all macros in the given
+\fImenu\fPs are removed.  \fBunmacro *\fP removes every macro from every menu.
+.IP
+\fBunmacro\fP only removes macros; regular key bindings are left untouched
+(use \fBunbind\fP for those).  \fBunmacro *\fP and \fBunmacro * *\fP therefore
+behave identically.
 .
 .PP
 .nf
