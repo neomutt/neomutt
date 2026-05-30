@@ -67,7 +67,14 @@ static struct ConfigDef Vars[] = {
   { "autocrypt", DT_BOOL, false, 0, NULL, NULL },
 #endif
   { "charset", DT_STRING|D_NOT_EMPTY|D_CHARSET_SINGLE, IP "utf-8", 0, NULL, },
+  { "folder", DT_STRING|D_STRING_MAILBOX, IP "~/Mail", 0, NULL, NULL },
   { "maildir_field_delimiter", DT_STRING, IP ":", 0, NULL, },
+#ifdef USE_NOTMUCH
+  { "nm_config_file", DT_PATH|D_PATH_FILE, IP "auto", 0, NULL, NULL },
+  { "nm_config_profile", DT_STRING, 0, 0, NULL, NULL },
+  { "nm_default_url", DT_STRING, 0, 0, NULL, NULL },
+  { "nm_open_timeout", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 5, 0, NULL, NULL },
+#endif
   { "tmp_dir", DT_PATH|D_PATH_DIR|D_NOT_EMPTY, IP TMPDIR, 0, NULL, },
   { NULL },
   // clang-format on

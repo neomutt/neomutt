@@ -30,7 +30,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
@@ -39,52 +41,86 @@
 #include "index/lib.h"
 
 /**
+ * nm_complete_data_init - Reset the completion state for a tag lookup
+ * @param cd Completion Data
+ * @param pt User input being completed
+ */
+static void nm_complete_data_init(struct CompletionData *cd, const char *pt)
+{
+  completion_data_free_match_strings(cd);
+  mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
+  memset(cd->match_list, 0, cd->match_list_len * sizeof(const char *));
+  memset(cd->completed, 0, sizeof(cd->completed));
+  cd->num_matched = 0;
+  cd->free_match_strings = true;
+}
+
+/**
+ * complete_all_nm_tags_fresh - Query notmuch directly for a fresh tag list
+ * @param cd Completion Data
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+static int complete_all_nm_tags_fresh(struct CompletionData *cd)
+{
+  int rc = -1;
+  struct Mailbox *m_cur = get_current_mailbox();
+  notmuch_database_t *db = NULL;
+  notmuch_tags_t *tags = NULL;
+  const char *db_filename = nm_db_get_filename(m_cur);
+
+#if !LIBNOTMUCH_CHECK_VERSION(5, 4, 0)
+  if (!db_filename)
+    db_filename = cs_subset_string(NeoMutt->sub, "folder");
+#endif
+
+  if (!(db = nm_db_do_open(db_filename, false, false)) ||
+      !(tags = notmuch_database_get_all_tags(db)))
+  {
+    goto done;
+  }
+
+  while (notmuch_tags_valid(tags))
+  {
+    const char *tag = notmuch_tags_get(tags);
+
+    /* Keep a private copy because notmuch owns the iterator storage. */
+    if (*tag && candidate(cd, cd->user_typed, tag, cd->completed, sizeof(cd->completed)))
+      cd->match_list[cd->num_matched - 1] = mutt_str_dup(tag);
+
+    notmuch_tags_move_to_next(tags);
+  }
+
+  rc = 0;
+
+done:
+  if (tags)
+    notmuch_tags_destroy(tags);
+  if (db)
+    nm_db_free(db);
+
+  return rc;
+}
+
+/**
  * complete_all_nm_tags - Pass a list of Notmuch tags to the completion code
  * @param cd Completion Data
- * @param pt List of all Notmuch tags
+ * @param pt User input being completed
  * @retval  0 Success
  * @retval -1 Error
  */
 int complete_all_nm_tags(struct CompletionData *cd, const char *pt)
 {
-  struct Mailbox *m_cur = get_current_mailbox();
-  const char **nm_tags = NULL;
-  int tag_count_1 = 0;
-  int tag_count_2 = 0;
   int rc = -1;
 
-  completion_data_reset(cd);
-  mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
-  cd->free_match_strings = true;
-
-  nm_db_longrun_init(m_cur, false);
-
-  /* Work out how many tags there are. */
-  if ((nm_get_all_tags(m_cur, NULL, &tag_count_1) != 0) || (tag_count_1 == 0))
-    goto done;
-
-  /* Get all the tags. */
-  nm_tags = MUTT_MEM_CALLOC(tag_count_1, const char *);
-  if ((nm_get_all_tags(m_cur, nm_tags, &tag_count_2) != 0) || (tag_count_1 != tag_count_2))
+  nm_complete_data_init(cd, pt);
+  rc = complete_all_nm_tags_fresh(cd);
+  if (rc == 0)
   {
-    completion_data_free_match_strings(cd);
-    goto done;
+    matches_ensure_morespace(cd, cd->num_matched);
+    cd->match_list[cd->num_matched++] = mutt_str_dup(cd->user_typed);
   }
 
-  /* Put them into the completion machinery. */
-  for (int i = 0; i < tag_count_1; i++)
-  {
-    if (!candidate(cd, cd->user_typed, nm_tags[i], cd->completed, sizeof(cd->completed)))
-      FREE(&nm_tags[i]);
-  }
-
-  matches_ensure_morespace(cd, cd->num_matched);
-  cd->match_list[cd->num_matched++] = mutt_str_dup(cd->user_typed);
-  rc = 0;
-
-done:
-  FREE(&nm_tags);
-  nm_db_longrun_done(m_cur);
   return rc;
 }
 
@@ -126,7 +162,7 @@ bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int n
      * user-typed string is always stored */
     if ((numtabs == 1) && (cd->num_matched == 2))
     {
-      snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
+      snprintf(cd->completed, sizeof(cd->completed), "%s", NONULL(cd->match_list[0]));
     }
     else if ((numtabs > 1) && (cd->num_matched > 2))
     {
@@ -191,13 +227,13 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, struct Buffer *buf, int num
    * user-typed string is always stored */
   if ((numtabs == 1) && (cd->num_matched == 2))
   {
-    snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
+    snprintf(cd->completed, sizeof(cd->completed), "%s", NONULL(cd->match_list[0]));
   }
   else if ((numtabs > 1) && (cd->num_matched > 2))
   {
     /* cycle through all the matches */
     snprintf(cd->completed, sizeof(cd->completed), "%s",
-             cd->match_list[(numtabs - 2) % cd->num_matched]);
+             NONULL(cd->match_list[(numtabs - 2) % cd->num_matched]));
   }
 
   /* return the completed query */
