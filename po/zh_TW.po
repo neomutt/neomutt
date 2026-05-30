@@ -9494,8 +9494,8 @@ msgstr "        -m, --mbox-type <type>       設定預設的信箱類型"
 
 #: usage.c:75
 #, fuzzy
-msgid "        -d, --debug-level <level>    Set logging level (1..5)"
-msgstr "        -d, --debug-level <level>    設定紀錄/除錯等級 (1..5)"
+msgid "        -d, --debug-level <level>    Set logging level (0..5)"
+msgstr "        -d, --debug-level <level>    設定紀錄/除錯等級 (0..5)"
 
 #: usage.c:76
 #, fuzzy

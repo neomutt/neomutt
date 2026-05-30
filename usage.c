@@ -72,7 +72,7 @@ static void show_cli_overview(bool use_color)
   puts(_("        -F, --config <file>          Use this user config file"));
   puts(_("        -e, --command <command>      Run extra commands"));
   puts(_("        -m, --mbox-type <type>       Set default mailbox type"));
-  puts(_("        -d, --debug-level <level>    Set logging level (1..5)"));
+  puts(_("        -d, --debug-level <level>    Set logging level (0..5)"));
   puts(_("        -l, --debug-file <file>      Set logging file"));
   puts("");
 

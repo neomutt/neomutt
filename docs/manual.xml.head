@@ -20082,13 +20082,13 @@ neomutt -a image.jpg *.png -- address1 address2
               <entry>
                 Log debugging output to a file (default is
                 &quot;<literal>~/.neomuttdebug0</literal>&quot;).
-                The <literal>level</literal> can range from 1&ndash;5 and
-                affects verbosity (a value of 2 is recommended). Using this
-                option along with <emphasis role="bold">-l</emphasis> is useful
-                to log the early startup process (before reading any
-                configuration and hence
-                <link linkend="debug-level">$debug_level</link> and
-                <link linkend="debug-file">$debug_file</link>)
+                The <literal>level</literal> can range from 0&ndash;5
+                and affects verbosity (a value of 2 is recommended). A
+                value of 0 disables logging. Using this option along with
+                <emphasis role="bold">-l</emphasis> is useful to log the
+                early startup process (before reading any configuration
+                and hence <link linkend="debug-level">$debug_level</link>
+                and <link linkend="debug-file">$debug_file</link>)
               </entry>
             </row>
             <row>
