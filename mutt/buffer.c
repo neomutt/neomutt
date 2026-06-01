@@ -306,7 +306,11 @@ struct Buffer *buf_new(const char *str)
   struct Buffer *buf = MUTT_MEM_CALLOC(1, struct Buffer);
 
   if (str)
-    buf_addstr(buf, str);
+  {
+    const size_t slen = mutt_str_len(str);
+    buf_alloc_exact(buf, slen + 1);
+    buf_addstr_n(buf, str, slen);
+  }
   else
     buf_alloc(buf, 1);
   return buf;
@@ -355,10 +359,34 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
     // LCOV_EXCL_STOP
   }
 
+  buf_alloc_exact(buf, ROUND_UP(new_size + 1, BufferStepSize));
+}
+
+/**
+ * buf_alloc_exact - Make sure a buffer can store at least new_size bytes,
+ * without rounding up.
+ * @param buf      Buffer to change
+ * @param new_size New size
+ *
+ * @sa buf_alloc
+ */
+void buf_alloc_exact(struct Buffer *buf, size_t new_size)
+{
+  if (!buf)
+    return;
+
   const bool was_empty = (buf->dptr == NULL);
   const size_t offset = (buf->dptr && buf->data) ? (buf->dptr - buf->data) : 0;
 
-  buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
+  if (buf->data && (new_size <= buf->dsize))
+  {
+    // Extra sanity-checking
+    if (!buf->dptr || (buf->dptr < buf->data) || (buf->dptr > (buf->data + buf->dsize)))
+      buf->dptr = buf->data; // LCOV_EXCL_LINE
+    return;
+  }
+
+  buf->dsize = new_size;
 
   MUTT_MEM_REALLOC(&buf->data, buf->dsize, char);
   buf->dptr = buf->data + offset;

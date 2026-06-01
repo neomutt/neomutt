@@ -42,6 +42,7 @@ struct Buffer
 struct Buffer *buf_new             (const char *str);
 void           buf_free            (struct Buffer **ptr);
 void           buf_alloc           (struct Buffer *buf, size_t size);
+void           buf_alloc_exact     (struct Buffer *buf, size_t size);
 void           buf_dealloc         (struct Buffer *buf);
 void           buf_fix_dptr        (struct Buffer *buf);
 struct Buffer *buf_init            (struct Buffer *buf);
