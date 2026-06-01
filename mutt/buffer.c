@@ -312,7 +312,10 @@ struct Buffer *buf_new(const char *str)
     buf_addstr_n(buf, str, slen);
   }
   else
+  {
     buf_alloc(buf, 1);
+  }
+
   return buf;
 }
 
@@ -363,8 +366,7 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
 }
 
 /**
- * buf_alloc_exact - Make sure a buffer can store at least new_size bytes,
- * without rounding up.
+ * buf_alloc_exact - Make sure a buffer can store at least new_size bytes, without rounding up
  * @param buf      Buffer to change
  * @param new_size New size
  *
