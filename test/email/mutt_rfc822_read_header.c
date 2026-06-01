@@ -25,7 +25,9 @@
 #include "acutest.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include "email/lib.h"
+#include "test_common.h"
 
 void test_mutt_rfc822_read_header(void)
 {
@@ -41,6 +43,31 @@ void test_mutt_rfc822_read_header(void)
     struct Envelope *env = NULL;
     TEST_CHECK((env = mutt_rfc822_read_header(fp, NULL, false, false)) != NULL);
     mutt_env_free(&env);
+    fclose(fp);
+  }
+
+  {
+    char data[] = "From user@host Thu Jan  1 12:00:00 2026\n"
+                  "rom user@host Thu Jan  1 12:00:00 2026\n"
+                  "Return-Path: <user@example.com>\n"
+                  "\n";
+    FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
+    if (!TEST_CHECK(fp != NULL))
+      return;
+
+    char buf[128] = { 0 };
+    TEST_CHECK(fgets(buf, sizeof(buf), fp) != NULL);
+    const long header_offset = strlen(buf);
+
+    struct Email e = { 0 };
+    e.offset = 0;
+    struct Envelope *env = mutt_rfc822_read_header(fp, &e, false, false);
+    TEST_CHECK(env != NULL);
+    TEST_CHECK_NUM_EQ(ftello(fp), header_offset);
+    TEST_CHECK_NUM_EQ(e.body->offset, header_offset);
+
+    mutt_env_free(&env);
+    mutt_body_free(&e.body);
     fclose(fp);
   }
 }

@@ -63,6 +63,9 @@ const struct CompleteOps CompleteMailboxOps = { 0 };
 static struct ConfigDef Vars[] = {
   // clang-format off
   { "assumed_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, NULL, },
+#if defined(USE_AUTOCRYPT)
+  { "autocrypt", DT_BOOL, false, 0, NULL, NULL },
+#endif
   { "charset", DT_STRING|D_NOT_EMPTY|D_CHARSET_SINGLE, IP "utf-8", 0, NULL, },
   { "maildir_field_delimiter", DT_STRING, IP ":", 0, NULL, },
   { "tmp_dir", DT_PATH|D_PATH_DIR|D_NOT_EMPTY, IP TMPDIR, 0, NULL, },
