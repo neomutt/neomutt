@@ -1265,7 +1265,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
 
   struct Envelope *env = mutt_env_new();
   char *p = NULL;
-  LOFF_T loc = e ? e->offset : ftello(fp);
+  LOFF_T loc = ftello(fp);
   if (loc < 0)
   {
     mutt_debug(LL_DEBUG1, "ftello: %s (errno %d)\n", strerror(errno), errno);
