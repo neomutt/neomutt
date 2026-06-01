@@ -44,6 +44,17 @@ void test_buf_alloc(void)
   }
 
   {
+    struct Buffer *buf = MUTT_MEM_CALLOC(1, struct Buffer);
+    buf_alloc_exact(buf, 0);
+    TEST_CHECK(buf != NULL);
+    TEST_CHECK(buf->data != NULL);
+    TEST_CHECK(buf->dptr == buf->data);
+    TEST_CHECK(buf->dsize == 1);
+    TEST_CHECK(buf->data[0] == '\0');
+    buf_free(&buf);
+  }
+
+  {
     const int orig_size = 64;
     static int sizes[][2] = {
       { 0, 128 },

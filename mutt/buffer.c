@@ -375,6 +375,9 @@ void buf_alloc_exact(struct Buffer *buf, size_t new_size)
   if (!buf)
     return;
 
+  if (new_size == 0)
+    new_size = 1;
+
   const bool was_empty = (buf->dptr == NULL);
   const size_t offset = (buf->dptr && buf->data) ? (buf->dptr - buf->data) : 0;
 
