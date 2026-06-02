@@ -48,8 +48,23 @@
 #include "message.h"
 #include "string2.h"
 
-/// When increasing the size of a Buffer, add this much extra space
-static const int BufferStepSize = 128;
+/**
+ * buf_step_size - Decide how much memory to allocate
+ * @param size Requested memory in bytes
+ * @retval num Number of bytes to actually allocate
+ */
+static size_t buf_step_size(size_t size)
+{
+  if (size <= 16)
+    return 16;
+  if (size <= 32)
+    return 32;
+  if (size <= 64)
+    return 64;
+  if (size <= 128)
+    return 128;
+  return ROUND_UP(size, 128);
+}
 
 /**
  * buf_init - Initialise a new Buffer
@@ -98,16 +113,10 @@ size_t buf_addstr_n(struct Buffer *buf, const char *s, size_t len)
   if (!buf || !s)
     return 0;
 
-  if (len > (SIZE_MAX - BufferStepSize))
-  {
-    // LCOV_EXCL_START
-    mutt_error("%s", strerror(ENOMEM));
-    mutt_exit(1);
-    // LCOV_EXCL_STOP
-  }
-
   if (!buf->data || !buf->dptr || ((buf->dptr + len + 1) > (buf->data + buf->dsize)))
-    buf_alloc(buf, buf->dsize + MAX(BufferStepSize, len + 1));
+  {
+    buf_alloc(buf, buf->dsize + len);
+  }
 
   memcpy(buf->dptr, s, len);
   buf->dptr += len;
@@ -331,8 +340,6 @@ void buf_free(struct Buffer **ptr)
  * buf_alloc - Make sure a buffer can store at least new_size bytes
  * @param buf      Buffer to change
  * @param new_size New size
- *
- * @note new_size will be rounded up to #BufferStepSize
  */
 void buf_alloc(struct Buffer *buf, size_t new_size)
 {
@@ -347,7 +354,8 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
     return;
   }
 
-  if (new_size > (SIZE_MAX - BufferStepSize))
+  const size_t dsize = buf_step_size(new_size + 1);
+  if (dsize <= new_size)
   {
     // LCOV_EXCL_START
     mutt_error(_("Out of memory"));
@@ -358,7 +366,7 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
   const bool was_empty = (buf->dptr == NULL);
   const size_t offset = (buf->dptr && buf->data) ? (buf->dptr - buf->data) : 0;
 
-  buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
+  buf->dsize = dsize;
 
   MUTT_MEM_REALLOC(&buf->data, buf->dsize, char);
   buf->dptr = buf->data + offset;
