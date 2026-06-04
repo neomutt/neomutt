@@ -2888,8 +2888,7 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
 {
   if (shared->mailbox->type != MUTT_NOTMUCH)
   {
-    if (((shared->mailbox->type != MUTT_MH) && (shared->mailbox->type != MUTT_MAILDIR)) ||
-        (!shared->email || !shared->email->env || !shared->email->env->message_id))
+    if (!shared->email || !shared->email->env || !shared->email->env->message_id)
     {
       mutt_message(_("No virtual folder and no Message-Id, aborting"));
       return FR_ERROR;
