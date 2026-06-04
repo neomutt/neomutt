@@ -37,6 +37,7 @@ static const struct Command IndexFormatHook = { "index-format-hook",
 static const struct CommandTest Tests[] = {
   // clang-format off
   { MUTT_CMD_WARNING, "" },
+  { MUTT_CMD_SUCCESS, "date '~d<1d' ''" },
   { MUTT_CMD_SUCCESS, "date '~d<1d' '%[%H:%M]'" },
   { MUTT_CMD_SUCCESS, "date '~d<1m' '%[%a %d]'" },
   { MUTT_CMD_SUCCESS, "date '~d<1y' '%[%b %d]'" },

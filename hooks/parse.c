@@ -1110,7 +1110,7 @@ enum CommandResult parse_index_hook(const struct Command *cmd, struct Buffer *li
   parse_extract_token(fmt, line, TOKEN_NONE);
 
   exp = expando_parse(buf_string(fmt), IndexFormatDef, err);
-  if (!exp)
+  if (!buf_is_empty(err))
     goto out;
 
   if (MoreArgs(line))
