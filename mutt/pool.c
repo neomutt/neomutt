@@ -63,7 +63,7 @@ static void pool_increase_size(void)
   MUTT_MEM_REALLOC(&BufferPool, BufferPoolLen, struct Buffer *);
   while (BufferPoolCount < BufferPoolIncrement)
   {
-    struct Buffer *newbuf = buf_new(NULL);
+    struct Buffer *newbuf = MUTT_MEM_CALLOC(1, struct Buffer);
     buf_alloc(newbuf, BufferPoolInitialBufferSize);
     BufferPool[BufferPoolCount++] = newbuf;
   }
