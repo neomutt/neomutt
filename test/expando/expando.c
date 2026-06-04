@@ -83,6 +83,7 @@ void test_expando_expando(void)
     };
     const char *str_good = "%a";
     const char *str_bad = "%z";
+    const char *str_empty = "";
 
     struct Buffer *err = buf_pool_get();
     struct Expando *exp = NULL;
@@ -91,15 +92,20 @@ void test_expando_expando(void)
     TEST_CHECK(exp == NULL);
     exp = expando_parse(str_good, NULL, err);
     TEST_CHECK(exp == NULL);
+    exp = expando_parse(str_empty, NULL, err);
+    TEST_CHECK(exp == NULL);
 
     exp = expando_parse(str_bad, TestFormatDef, err);
     TEST_CHECK(exp == NULL);
 
     exp = expando_parse(str_good, TestFormatDef, err);
     TEST_CHECK(exp != NULL);
+    expando_free(&exp);
+    exp = expando_parse(str_empty, TestFormatDef, err);
+    TEST_CHECK(exp != NULL);
+    expando_free(&exp);
 
     buf_pool_release(&err);
-    expando_free(&exp);
   }
 
   // int expando_render(const struct Expando *exp, const struct ExpandoRenderCallback *rdata, void *data, MuttFormatFlags flags, int cols, struct Buffer *buf);
@@ -139,6 +145,28 @@ void test_expando_expando(void)
 
       rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NONE, -1, buf);
       TEST_CHECK_NUM_EQ(rc, 5);
+
+      buf_pool_release(&buf);
+      buf_pool_release(&err);
+      expando_free(&exp);
+    }
+
+    {
+      const char *str = "";
+
+      struct Buffer *err = buf_pool_get();
+      struct Expando *exp = NULL;
+
+      exp = expando_parse(str, TestFormatDef, err);
+      TEST_CHECK(exp != NULL);
+
+      int rc;
+
+      struct Buffer *buf = buf_pool_get();
+
+      rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NONE, -1, buf);
+      TEST_CHECK_NUM_EQ(rc, 0);
+      TEST_CHECK_STR_EQ(buf_string(buf), "");
 
       buf_pool_release(&buf);
       buf_pool_release(&err);

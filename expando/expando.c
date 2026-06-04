@@ -73,15 +73,16 @@ void expando_free(struct Expando **ptr)
 
 /**
  * expando_parse - Parse an Expando string
- * @param str  String to parse
- * @param defs Data defining Expando
+ * @param str  String to parse; must be non-NULL
+ * @param defs Data defining Expando; must be non-NULL
  * @param err  Buffer for error messages
  * @retval ptr New Expando
+ * @retval NULL Error
  */
 struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *defs,
                               struct Buffer *err)
 {
-  if (!str || (*str == '\0') || !defs)
+  if (!str || !defs)
     return NULL;
 
   struct Expando *exp = expando_new(str);
