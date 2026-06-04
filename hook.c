@@ -479,7 +479,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
   parse_extract_token(fmtstring, s, TOKEN_NO_FLAGS);
 
   exp = expando_parse(buf_string(fmtstring), IndexFormatDef, err);
-  if (!exp)
+  if (!buf_is_empty(err))
     goto out;
 
   if (MoreArgs(s))
