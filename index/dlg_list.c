@@ -211,14 +211,36 @@ static int op_exit(struct ListData *ld, const struct KeyEvent *event)
  * @param ld    Dialog state
  * @param event Event being handled
  * @retval enum #FunctionRetval
+ *
+ * For a specific list opcode (e.g. OP_LIST_UNSUBSCRIBE) the matching action is used.
+ * For a generic selection the currently highlighted action is used.
  */
 static int op_select_action(struct ListData *ld, const struct KeyEvent *event)
 {
-  const int index = menu_get_index(ld->menu);
-  if ((index < 0) || (index >= (int) countof(ListActions)))
-    return FR_NO_ACTION;
+  const struct ListAction *action = NULL;
 
-  ld->done = compose_list_action(ld, &ListActions[index]);
+  if (event->op == OP_GENERIC_SELECT_ENTRY)
+  {
+    const int index = menu_get_index(ld->menu);
+    if ((index < 0) || (index >= (int) countof(ListActions)))
+      return FR_NO_ACTION;
+    action = &ListActions[index];
+  }
+  else
+  {
+    for (size_t i = 0; i < countof(ListActions); i++)
+    {
+      if (ListActions[i].op == event->op)
+      {
+        action = &ListActions[i];
+        break;
+      }
+    }
+    if (!action)
+      return FR_NO_ACTION;
+  }
+
+  ld->done = compose_list_action(ld, action);
   return FR_SUCCESS;
 }
 
