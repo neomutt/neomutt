@@ -241,7 +241,7 @@ enum CommandResult parse_source(const struct Command *cmd, struct Buffer *line,
 
   do
   {
-    if (parse_extract_token(token, line, TOKEN_BACKTICK_VARS) != 0)
+    if (parse_extract_token(token, line, TOKEN_NONE) != 0)
     {
       buf_printf(err, _("source: error at %s"), line->dptr);
       goto done;

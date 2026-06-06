@@ -182,16 +182,15 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *line, TokenFlags fla
       }
       struct Buffer *cmd = buf_pool_get();
       *pc = '\0';
-      if (flags & TOKEN_BACKTICK_VARS)
+      /* Recursively extract tokens to interpolate NeoMutt variables.
+       * TOKEN_NOSHELL leaves unknown/env variables for the shell to expand. */
+      if (parse_extract_token(cmd, line,
+                              TOKEN_QUOTE | TOKEN_SPACE | TOKEN_COMMENT |
+                                  TOKEN_SEMICOLON | TOKEN_NOSHELL) != 0)
       {
-        /* recursively extract tokens to interpolate variables */
-        parse_extract_token(cmd, line,
-                            TOKEN_QUOTE | TOKEN_SPACE | TOKEN_COMMENT |
-                                TOKEN_SEMICOLON | TOKEN_NOSHELL);
-      }
-      else
-      {
-        buf_strcpy(cmd, line->dptr);
+        *pc = '`';
+        buf_pool_release(&cmd);
+        return -1;
       }
       *pc = '`';
       pid = filter_create(buf_string(cmd), NULL, &fp, NULL, NeoMutt->env);

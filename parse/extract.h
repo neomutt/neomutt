@@ -54,11 +54,10 @@ enum TokenFlag
   TOKEN_PATTERN       = 1U <<  4,  ///< ~%=!| are terms (for patterns)
   TOKEN_COMMENT       = 1U <<  5,  ///< Don't reap comments
   TOKEN_SEMICOLON     = 1U <<  6,  ///< Don't treat ; as special
-  TOKEN_BACKTICK_VARS = 1U <<  7,  ///< Expand variables within backticks
-  TOKEN_NOSHELL       = 1U <<  8,  ///< Don't expand environment variables
-  TOKEN_QUESTION      = 1U <<  9,  ///< Treat '?' as a special
-  TOKEN_PLUS          = 1U << 10,  ///< Treat '+' as a special
-  TOKEN_MINUS         = 1U << 11,  ///< Treat '-' as a special
+  TOKEN_NOSHELL       = 1U <<  7,  ///< Don't expand environment variables
+  TOKEN_QUESTION      = 1U <<  8,  ///< Treat '?' as a special
+  TOKEN_PLUS          = 1U <<  9,  ///< Treat '+' as a special
+  TOKEN_MINUS         = 1U << 10,  ///< Treat '-' as a special
 };
 typedef uint16_t TokenFlags;
 

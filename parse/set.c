@@ -676,7 +676,7 @@ enum CommandResult parse_set(const struct Command *cmd, struct Buffer *line,
       // implies 'equals', we can group them in this single case guarded by
       // 'equals'.
       struct Buffer *value = buf_pool_get();
-      parse_extract_token(value, line, TOKEN_BACKTICK_VARS);
+      parse_extract_token(value, line, TOKEN_NONE);
       if (increment)
         rc = command_set_increment(token, value, err);
       else if (decrement)
