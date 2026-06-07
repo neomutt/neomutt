@@ -717,7 +717,7 @@ static void init_keys(struct NeoMutt *n)
   index_init_keys(n, sm_generic);
   pager_init_keys(n, sm_generic);
   pgp_init_keys(n, sm_generic);
-  postponed_init_keys(n, sm_generic);
+  postpone_init_keys(n, sm_generic);
 
   km_sort();
 }

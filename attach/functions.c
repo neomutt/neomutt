@@ -90,22 +90,22 @@ static const struct MenuFuncOp OpAttach[] = { /* map: attach */
 };
 
 /**
- * AttachmentDefaultBindings - Key bindings for the Attachment Menu
+ * AttachDefaultBindings - Key bindings for the Attachment Menu
  */
-static const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attach */
-  { OP_ATTACH_COLLAPSE,                "v" },
-  { OP_ATTACH_DELETE,                  "d" },
-  { OP_ATTACH_EDIT_TYPE,               "\005" },           // <Ctrl-E>
+static const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attach */
+  { OP_ATTACH_COLLAPSE,                    "v" },
+  { OP_ATTACH_DELETE,                      "d" },
+  { OP_ATTACH_EDIT_TYPE,                   "\005" },           // <Ctrl-E>
   { OP_EXIT,                               "q" },
   { OP_PIPE,                               "|" },
-  { OP_ATTACH_PRINT,                   "p" },
-  { OP_ATTACH_SAVE,                    "s" },
-  { OP_ATTACH_UNDELETE,                "u" },
-  { OP_ATTACH_VIEW,                    "<keypadenter>" },
-  { OP_ATTACH_VIEW,                    "\n" },             // <Enter>
-  { OP_ATTACH_VIEW,                    "\r" },             // <Return>
-  { OP_ATTACH_VIEW_MAILCAP,            "m" },
-  { OP_ATTACH_VIEW_TEXT,               "T" },
+  { OP_ATTACH_PRINT,                       "p" },
+  { OP_ATTACH_SAVE,                        "s" },
+  { OP_ATTACH_UNDELETE,                    "u" },
+  { OP_ATTACH_VIEW,                        "<keypadenter>" },
+  { OP_ATTACH_VIEW,                        "\n" },             // <Enter>
+  { OP_ATTACH_VIEW,                        "\r" },             // <Return>
+  { OP_ATTACH_VIEW_MAILCAP,                "m" },
+  { OP_ATTACH_VIEW_TEXT,                   "T" },
   { OP_BOUNCE_MESSAGE,                     "b" },
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
   { OP_DISPLAY_HEADERS,                    "h" },
@@ -135,7 +135,7 @@ void attach_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
   md = km_register_menu(MENU_ATTACH, "attach");
   km_menu_add_submenu(md, sm);
   km_menu_add_submenu(md, sm_generic);
-  km_menu_add_bindings(md, AttachmentDefaultBindings);
+  km_menu_add_bindings(md, AttachDefaultBindings);
 
   mod_data->menu_attach = md;
 }

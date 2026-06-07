@@ -709,7 +709,7 @@ struct MailboxView *get_current_mailbox_view(void)
     win = window_find_child(*wp, WT_DLG_POSTPONE);
     if (win)
     {
-      return postponed_get_mailbox_view(win);
+      return postpone_get_mailbox_view(win);
     }
   }
 

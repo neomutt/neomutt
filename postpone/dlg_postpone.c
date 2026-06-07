@@ -54,8 +54,8 @@
  *
  * | Event Type  | Handler                     |
  * | :---------- | :-------------------------- |
- * | #NT_CONFIG  | postponed_config_observer() |
- * | #NT_WINDOW  | postponed_window_observer() |
+ * | #NT_CONFIG  | postpone_config_observer() |
+ * | #NT_WINDOW  | postpone_window_observer() |
  *
  * The Postponed Email Selection Dialog doesn't have any specific colours, so
  * it doesn't need to support #NT_COLOR.
@@ -84,7 +84,7 @@
 #include "mutt_logging.h"
 
 /// Help Bar for the Postponed email selection dialog
-static const struct Mapping PostponedHelp[] = {
+static const struct Mapping PostponeHelp[] = {
   // clang-format off
   { N_("Exit"),  OP_EXIT },
   { N_("Del"),   OP_DELETE },
@@ -120,11 +120,11 @@ static int post_make_entry(struct Menu *menu, int line, int max_cols, struct Buf
 }
 
 /**
- * postponed_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
+ * postpone_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  *
  * The Address Book Window is affected by changes to `$sort_postponed`.
  */
-static int postponed_config_observer(struct NotifyCallback *nc)
+static int postpone_config_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_CONFIG)
     return 0;
@@ -144,13 +144,13 @@ static int postponed_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * postponed_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
+ * postpone_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
  *
  * - Delete (this window): clean up the resources held by the Help Bar
  */
-static int postponed_window_observer(struct NotifyCallback *nc)
+static int postpone_window_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_WINDOW)
     return 0;
@@ -166,8 +166,8 @@ static int postponed_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->sub->notify, postponed_config_observer, menu);
-  notify_observer_remove(win_menu->notify, postponed_window_observer, win_menu);
+  notify_observer_remove(NeoMutt->sub->notify, postpone_config_observer, menu);
+  notify_observer_remove(win_menu->notify, postpone_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
@@ -247,7 +247,7 @@ struct Email *dlg_postpone(struct Mailbox *m)
   ASSERT(mod_data);
 
   struct SimpleDialogWindows sdw = simple_dialog_new(mod_data->menu_postpone,
-                                                     WT_DLG_POSTPONE, PostponedHelp);
+                                                     WT_DLG_POSTPONE, PostponeHelp);
   // Required to number the emails
   struct MailboxView *mv = mview_new(m, NeoMutt->notify);
 
@@ -262,8 +262,8 @@ struct Email *dlg_postpone(struct Mailbox *m)
   menu->mdata_free = NULL; // Menu doesn't own the data
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, postponed_config_observer, menu);
-  notify_observer_add(menu->win->notify, NT_WINDOW, postponed_window_observer, menu->win);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, postpone_config_observer, menu);
+  notify_observer_add(menu->win->notify, NT_WINDOW, postpone_window_observer, menu->win);
 
   sbar_set_title(sdw.sbar, _("Postponed Messages"));
 

@@ -44,9 +44,9 @@
 
 // clang-format off
 /**
- * OpPostponed - Functions for the Postpone Menu
+ * OpPostpone - Functions for the Postpone Menu
  */
-static const struct MenuFuncOp OpPostponed[] = { /* map: postpone */
+static const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
   { "exit",                          OP_EXIT },
   { "delete-entry",                  OP_DELETE },
   { "undelete-entry",                OP_UNDELETE },
@@ -55,9 +55,9 @@ static const struct MenuFuncOp OpPostponed[] = { /* map: postpone */
 };
 
 /**
- * PostponedDefaultBindings - Key bindings for the Postpone Menu
+ * PostponeDefaultBindings - Key bindings for the Postpone Menu
  */
-static const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
+static const struct MenuOpSeq PostponeDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
   { OP_EXIT,                               "q" },
   { OP_TAG,                                "t" },
@@ -67,18 +67,18 @@ static const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
 // clang-format on
 
 /**
- * postponed_init_keys - Initialise the Postponed Keybindings - Implements ::init_keys_api
+ * postpone_init_keys - Initialise the Postponed Keybindings - Implements ::init_keys_api
  */
-void postponed_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
+void postpone_init_keys(struct NeoMutt *n, struct SubMenu *sm_generic)
 {
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
 
-  sm = km_register_submenu(OpPostponed);
+  sm = km_register_submenu(OpPostpone);
   md = km_register_menu(MENU_POSTPONE, "postpone");
   km_menu_add_submenu(md, sm);
   km_menu_add_submenu(md, sm_generic);
-  km_menu_add_bindings(md, PostponedDefaultBindings);
+  km_menu_add_bindings(md, PostponeDefaultBindings);
 
   struct PostponeModuleData *mod_data = neomutt_get_module_data(n, MODULE_ID_POSTPONE);
   ASSERT(mod_data);
@@ -330,11 +330,11 @@ int postpone_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *
 }
 
 /**
- * postponed_get_mailbox_view - Extract the Mailbox from the Postponed Dialog
+ * postpone_get_mailbox_view - Extract the Mailbox from the Postponed Dialog
  * @param dlg Postponed Dialog
  * @retval ptr Mailbox view
  */
-struct MailboxView *postponed_get_mailbox_view(struct MuttWindow *dlg)
+struct MailboxView *postpone_get_mailbox_view(struct MuttWindow *dlg)
 {
   if (!dlg)
     return NULL;
