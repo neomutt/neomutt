@@ -51,15 +51,6 @@
 
 // clang-format off
 /**
- * OpDialog - Functions for Simple Dialogs
- */
-static const struct MenuFuncOp OpDialog[] = {
-  { "quit",                          OP_QUIT },
-  { "exit",                          OP_EXIT },
-  { NULL, 0 },
-};
-
-/**
  * OpGeneric - Functions for the Generic Menu
  */
 static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
@@ -92,6 +83,7 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "previous-entry",                OP_PREV_ENTRY },
   { "previous-line",                 OP_PREV_LINE },
   { "previous-page",                 OP_PREV_PAGE },
+  { "quit",                          OP_QUIT },
   { "redraw-screen",                 OP_REDRAW },
   { "search",                        OP_SEARCH },
   { "search-next",                   OP_SEARCH_NEXT },
@@ -110,14 +102,6 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "error-history",                 OP_SHOW_LOG_MESSAGES, MFF_DEPRECATED },
   { "refresh",                       OP_REDRAW,            MFF_DEPRECATED },
   { NULL, 0 },
-};
-
-/**
- * DialogDefaultBindings - Key bindings for Simple Dialogs
- */
-static const struct MenuOpSeq DialogDefaultBindings[] = {
-  { OP_QUIT,                               "q" },
-  { 0, NULL },
 };
 
 /**
@@ -149,6 +133,7 @@ static const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { OP_PREV_PAGE,                          "<left>" },
   { OP_PREV_PAGE,                          "<pageup>" },
   { OP_PREV_PAGE,                          "Z" },
+  { OP_QUIT,                               "q" },
   { OP_REDRAW,                             "\014" },           // <Ctrl-L>
   { OP_SEARCH,                             "/" },
   { OP_SEARCH_NEXT,                        "n" },
@@ -172,26 +157,16 @@ struct SubMenu *generic_init_keys(struct NeoMutt *n)
 
   struct MenuDefinition *md = NULL;
   struct SubMenu *sm = NULL;
-  struct SubMenu *sm_generic = NULL;
 
-  sm_generic = km_register_submenu(OpGeneric);
+  sm = km_register_submenu(OpGeneric);
   md = km_register_menu(MENU_GENERIC, "generic");
-  km_menu_add_submenu(md, sm_generic);
+  km_menu_add_submenu(md, sm);
   km_menu_add_bindings(md, GenericDefaultBindings);
 
   mod_data->md_generic = md;
-  mod_data->sm_generic = sm_generic;
+  mod_data->sm_generic = sm;
 
-  sm = km_register_submenu(OpDialog);
-  md = km_register_menu(MENU_DIALOG, "dialog");
-  km_menu_add_submenu(md, sm);
-  km_menu_add_submenu(md, sm_generic);
-  km_menu_add_bindings(md, DialogDefaultBindings);
-
-  mod_data->md_dialog = md;
-  mod_data->sm_dialog = sm;
-
-  return sm_generic;
+  return sm;
 }
 
 /**
@@ -204,16 +179,4 @@ struct MenuDefinition *generic_get_menu_definition(void)
   ASSERT(mod_data);
 
   return mod_data->md_generic;
-}
-
-/**
- * dialog_get_menu_definition - Get the Dialog Menu Definition
- * @retval ptr Dialog Menu Definition
- */
-struct MenuDefinition *dialog_get_menu_definition(void)
-{
-  struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
-  ASSERT(mod_data);
-
-  return mod_data->md_dialog;
 }

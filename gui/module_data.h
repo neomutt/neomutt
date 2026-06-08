@@ -32,9 +32,7 @@ struct GuiModuleData
 {
   struct Notify         *notify;              ///< Notifications
   struct MenuDefinition *md_generic;          ///< Generic Menu Definition
-  struct MenuDefinition *md_dialog;           ///< Dialog Menu Definition
   struct SubMenu        *sm_generic;          ///< Generic functions
-  struct SubMenu        *sm_dialog;           ///< Dialog functions
   struct MuttWindow     *all_dialogs_window;  ///< Parent of all Dialogs
   struct MuttWindow     *bottom_bar;          ///< Bottom Bar Container Window
   struct MuttWindow     *message_container;   ///< Message Container Window
