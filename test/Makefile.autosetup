@@ -304,6 +304,7 @@ EMAIL_OBJS	= test/email/email_cmp_strict.o \
 		  test/email/mutt_parse_content_type.o \
 		  test/email/mutt_parse_mailto.o \
 		  test/email/mutt_rfc2369_first_mailto.o \
+		  test/email/mutt_rfc2369_parse.o \
 		  test/email/mutt_rfc2369_read_headers.o \
 		  test/email/mutt_parse_multipart.o \
 		  test/email/mutt_parse_part.o \

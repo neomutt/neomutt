@@ -65,8 +65,8 @@ struct Envelope
   struct AddressList mail_followup_to; ///< Email's 'mail-followup-to'
   struct AddressList x_original_to;    ///< Email's 'X-Original-to'
   char *list_post;                     ///< This stores a mailto URL, or nothing
-  char *list_subscribe;                ///< This stores a mailto URL, or nothing
-  char *list_unsubscribe;              ///< This stores a mailto URL, or nothing
+  char *list_subscribe;                ///< This stores a list URI, preferring mailto
+  char *list_unsubscribe;              ///< This stores a list URI, preferring mailto
   char *const subject;                 ///< Email's subject
   char *const real_subj;               ///< Offset of the real subject
   char *disp_subj;                     ///< Display subject (modified copy of subject)

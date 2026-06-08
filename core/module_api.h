@@ -76,6 +76,7 @@ enum ModuleId
   MODULE_ID_MBOX,          ///< #ModuleMbox,      @ref lib_mbox
   MODULE_ID_MENU,          ///< #ModuleMenu,      @ref lib_menu
   MODULE_ID_MH,            ///< #ModuleMh,        @ref lib_mh
+  MODULE_ID_MLIST,         ///< #ModuleMlist,     @ref lib_mlist
   MODULE_ID_MUTT,          ///< #ModuleMutt,      @ref lib_mutt
   MODULE_ID_NCRYPT,        ///< #ModuleNcrypt,    @ref lib_ncrypt
   MODULE_ID_NNTP,          ///< #ModuleNntp,      @ref lib_nntp

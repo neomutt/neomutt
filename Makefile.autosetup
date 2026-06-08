@@ -595,7 +595,6 @@ $(PWD)/imap:
 # libindex
 LIBINDEX=	libindex.a
 LIBINDEXOBJS=	index/commands.o index/config.o index/dlg_index.o \
-		index/dlg_list.o \
 		index/expando_index.o index/expando_status.o index/functions.o \
 		index/ibar.o index/index.o index/ipanel.o index/private_data.o \
 		index/shared_data.o index/status.o index/subjectrx.o \
@@ -701,6 +700,19 @@ $(LIBMH): $(PWD)/mh $(LIBMHOBJS)
 	$(RANLIB) $@
 $(PWD)/mh:
 	$(MKDIR_P) $(PWD)/mh
+
+###############################################################################
+# libmlist
+LIBMLIST=	libmlist.a
+LIBMLISTOBJS=	mlist/dlg_mlist.o mlist/functions.o mlist/module.o
+CLEANFILES+=	$(LIBMLIST) $(LIBMLISTOBJS)
+ALLOBJS+=	$(LIBMLISTOBJS)
+
+$(LIBMLIST): $(PWD)/mlist $(LIBMLISTOBJS)
+	$(AR) cr $@ $(LIBMLISTOBJS)
+	$(RANLIB) $@
+$(PWD)/mlist:
+	$(MKDIR_P) $(PWD)/mlist
 
 ###############################################################################
 # libmutt
@@ -972,6 +984,7 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBCORE) $(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBLUA) \
+		$(LIBMLIST) \
 		$(LIBAUTOCRYPT) $(LIBPOP) $(LIBEDITOR) $(LIBCOMPLETE) \
 		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) $(LIBPROGRESS) \
 		$(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \

@@ -1,6 +1,6 @@
 /**
  * @file
- * Index private Module data
+ * Mlist private Module data
  *
  * @authors
  * Copyright (C) 2026 Richard Russon <rich@flatcap.org>
@@ -20,20 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_INDEX_MODULE_DATA_H
-#define MUTT_INDEX_MODULE_DATA_H
+#ifndef MUTT_MLIST_MODULE_DATA_H
+#define MUTT_MLIST_MODULE_DATA_H
 
 #include "mutt/lib.h"
 
 /**
- * struct IndexModuleData - Index private Module data
+ * struct MlistModuleData - Mlist private Module data
  */
-struct IndexModuleData
+struct MlistModuleData
 {
-  struct Notify         *notify;             ///< Notifications
-  struct MenuDefinition *menu_index;         ///< Index menu definition
-  struct ReplaceList     subject_rx_list;    ///< List of subject-regex rules for modifying the Subject:
-  struct Notify         *subject_rx_notify;  ///< Notifications: #NotifySubjectRx
+  struct MenuDefinition *menu_mlist;            ///< Mlist menu definition
 };
 
-#endif /* MUTT_INDEX_MODULE_DATA_H */
+#endif /* MUTT_MLIST_MODULE_DATA_H */

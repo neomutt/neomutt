@@ -599,37 +599,102 @@ cleanup:
 #endif
 
 /**
+ * rfc2369_first_value - Extract the first useful URL from an RFC 2369 list
+ * @param body        Body of the header
+ * @param mailto_only If true, only return mailto: URLs
+ * @retval ptr First matching URL found, or NULL if none was found
+ */
+static char *rfc2369_first_value(const char *body, bool mailto_only)
+{
+  struct ListHead links = { 0 };
+  char *value = NULL;
+
+  mutt_rfc2369_parse(body, &links);
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &links, entries)
+  {
+    if (mutt_istr_startswith(np->data, "mailto:"))
+    {
+      FREE(&value);
+      value = mutt_str_dup(np->data);
+      break;
+    }
+
+    if (!mailto_only && !value)
+      value = mutt_str_dup(np->data);
+  }
+
+  mutt_list_free(&links);
+  return value;
+}
+
+/**
+ * mutt_rfc2369_parse - Extract URLs from an RFC 2369 list header
+ * @param body  Body of the header
+ * @param links List of extracted URLs
+ * @retval num Number of URLs extracted
+ */
+size_t mutt_rfc2369_parse(const char *body, struct ListHead *links)
+{
+  if (!body || !links)
+    return 0;
+
+  if (!links->stqh_last)
+    STAILQ_INIT(links);
+
+  size_t count = 0;
+  for (const char *beg = body; (beg = strchr(beg, '<')) != NULL; beg++)
+  {
+    beg++;
+
+    const char *end = strchr(beg, '>');
+    if (!end)
+      break;
+
+    if (end > beg)
+    {
+      mutt_list_insert_tail(links, mutt_strn_dup(beg, end - beg));
+      count++;
+    }
+
+    beg = end;
+  }
+
+  return count;
+}
+
+/**
  * mutt_rfc2369_first_mailto - Extract the first mailto: URL from an RFC 2369 list
  * @param body Body of the header
  * @retval ptr First mailto: URL found, or NULL if none was found
  */
 char *mutt_rfc2369_first_mailto(const char *body)
 {
-  if (!body)
-    return NULL;
+  return rfc2369_first_value(body, true);
+}
 
-  for (const char *beg = body, *end = NULL; beg; beg = strchr(end, ','))
-  {
-    beg = strchr(beg, '<');
-    if (!beg)
-    {
-      break;
-    }
-    beg++;
-    end = strchr(beg, '>');
-    if (!end)
-    {
-      break;
-    }
+/**
+ * rfc2369_list_headers_ensure_init - Initialise RFC 2369 header lists
+ * @param headers Headers to initialise
+ */
+static void rfc2369_list_headers_ensure_init(struct Rfc2369ListHeaders *headers)
+{
+  if (!headers)
+    return;
 
-    char *mlist = mutt_strn_dup(beg, end - beg);
-    if (url_check_scheme(mlist) == U_MAILTO)
-    {
-      return mlist;
-    }
-    FREE(&mlist);
-  }
-  return NULL;
+  if (!headers->archive.stqh_last)
+    STAILQ_INIT(&headers->archive);
+  if (!headers->help.stqh_last)
+    STAILQ_INIT(&headers->help);
+  if (!headers->owner.stqh_last)
+    STAILQ_INIT(&headers->owner);
+  if (!headers->post.stqh_last)
+    STAILQ_INIT(&headers->post);
+  if (!headers->subscribe.stqh_last)
+    STAILQ_INIT(&headers->subscribe);
+  if (!headers->unsubscribe.stqh_last)
+    STAILQ_INIT(&headers->unsubscribe);
 }
 
 /**
@@ -641,12 +706,14 @@ void mutt_rfc2369_list_headers_free(struct Rfc2369ListHeaders *headers)
   if (!headers)
     return;
 
-  FREE(&headers->archive);
-  FREE(&headers->help);
-  FREE(&headers->owner);
-  FREE(&headers->post);
-  FREE(&headers->subscribe);
-  FREE(&headers->unsubscribe);
+  rfc2369_list_headers_ensure_init(headers);
+
+  mutt_list_free(&headers->archive);
+  mutt_list_free(&headers->help);
+  mutt_list_free(&headers->owner);
+  mutt_list_free(&headers->post);
+  mutt_list_free(&headers->subscribe);
+  mutt_list_free(&headers->unsubscribe);
 }
 
 /**
@@ -659,6 +726,7 @@ void mutt_rfc2369_read_headers(FILE *fp, struct Rfc2369ListHeaders *headers)
   if (!fp || !headers)
     return;
 
+  rfc2369_list_headers_ensure_init(headers);
   mutt_rfc2369_list_headers_free(headers);
 
   struct Buffer *line = buf_pool_get();
@@ -688,7 +756,7 @@ void mutt_rfc2369_read_headers(FILE *fp, struct Rfc2369ListHeaders *headers)
     if (*body == '\0')
       continue;
 
-    char **value = NULL;
+    struct ListHead *value = NULL;
     if ((name_len == 12) && eqi12(lines, "List-Archive"))
       value = &headers->archive;
     else if ((name_len == 9) && eqi9(lines, "List-Help"))
@@ -705,12 +773,8 @@ void mutt_rfc2369_read_headers(FILE *fp, struct Rfc2369ListHeaders *headers)
     if (!value)
       continue;
 
-    char *mailto = mutt_rfc2369_first_mailto(body);
-    if (mailto)
-    {
-      FREE(value);
-      *value = mailto;
-    }
+    mutt_list_free(value);
+    mutt_rfc2369_parse(body, value);
   }
   buf_pool_release(&line);
 }
@@ -931,22 +995,22 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
       else if ((name_len == 14) && eqi13(name + 1, "ist-subscribe"))
       {
         /* RFC2369 */
-        char *mailto = mutt_rfc2369_first_mailto(body);
-        if (mailto)
+        char *uri = rfc2369_first_value(body, false);
+        if (uri)
         {
           FREE(&env->list_subscribe);
-          env->list_subscribe = mailto;
+          env->list_subscribe = uri;
         }
         matched = true;
       }
       else if ((name_len == 16) && eqi15(name + 1, "ist-unsubscribe"))
       {
         /* RFC2369 */
-        char *mailto = mutt_rfc2369_first_mailto(body);
-        if (mailto)
+        char *uri = rfc2369_first_value(body, false);
+        if (uri)
         {
           FREE(&env->list_unsubscribe);
-          env->list_unsubscribe = mailto;
+          env->list_unsubscribe = uri;
         }
         matched = true;
       }

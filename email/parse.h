@@ -27,6 +27,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/list.h"
 #include "mime.h"
 
 struct Body;
@@ -39,12 +40,12 @@ struct Envelope;
  */
 struct Rfc2369ListHeaders
 {
-  char *archive;      ///< List-Archive
-  char *help;         ///< List-Help
-  char *owner;        ///< List-Owner
-  char *post;         ///< List-Post
-  char *subscribe;    ///< List-Subscribe
-  char *unsubscribe;  ///< List-Unsubscribe
+  struct ListHead archive;     ///< List-Archive
+  struct ListHead help;        ///< List-Help
+  struct ListHead owner;       ///< List-Owner
+  struct ListHead post;        ///< List-Post
+  struct ListHead subscribe;   ///< List-Subscribe
+  struct ListHead unsubscribe; ///< List-Unsubscribe
 };
 
 int              mutt_check_encoding      (const char *c);
@@ -54,6 +55,7 @@ bool             mutt_is_message_type     (int type, const char *subtype);
 bool             mutt_matches_ignore      (const char *s);
 void             mutt_parse_content_type  (const char *s, struct Body *b);
 bool             mutt_parse_mailto        (struct Envelope *env, char **body, const char *src);
+size_t           mutt_rfc2369_parse       (const char *body, struct ListHead *links);
 char *           mutt_rfc2369_first_mailto(const char *body);
 void             mutt_rfc2369_list_headers_free(struct Rfc2369ListHeaders *headers);
 void             mutt_rfc2369_read_headers(FILE *fp, struct Rfc2369ListHeaders *headers);

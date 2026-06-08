@@ -119,6 +119,7 @@
 #include "imap/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
+#include "mlist/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
 #include "pager/lib.h"
@@ -165,10 +166,10 @@ extern const struct Module ModuleEditor;   extern const struct Module ModuleEmai
 extern const struct Module ModuleGui;      extern const struct Module ModuleHcache;   extern const struct Module ModuleHelpbar;  extern const struct Module ModuleHistory;
 extern const struct Module ModuleHooks;    extern const struct Module ModuleImap;     extern const struct Module ModuleIndex;    extern const struct Module ModuleKey;
 extern const struct Module ModuleLua;      extern const struct Module ModuleMaildir;  extern const struct Module ModuleMbox;     extern const struct Module ModuleMenu;
-extern const struct Module ModuleMh;       extern const struct Module ModuleMutt;     extern const struct Module ModuleNcrypt;   extern const struct Module ModuleNntp;
-extern const struct Module ModuleNotmuch;  extern const struct Module ModulePager;    extern const struct Module ModuleParse;    extern const struct Module ModulePattern;
-extern const struct Module ModulePop;      extern const struct Module ModulePostpone; extern const struct Module ModuleProgress; extern const struct Module ModuleQuestion;
-extern const struct Module ModuleSend;     extern const struct Module ModuleSidebar;  extern const struct Module ModuleStore;
+extern const struct Module ModuleMh;       extern const struct Module ModuleMlist;    extern const struct Module ModuleMutt;     extern const struct Module ModuleNcrypt;
+extern const struct Module ModuleNntp;     extern const struct Module ModuleNotmuch;  extern const struct Module ModulePager;    extern const struct Module ModuleParse;
+extern const struct Module ModulePattern;  extern const struct Module ModulePop;      extern const struct Module ModulePostpone; extern const struct Module ModuleProgress;
+extern const struct Module ModuleQuestion; extern const struct Module ModuleSend;     extern const struct Module ModuleSidebar;  extern const struct Module ModuleStore;
 // clang-format on
 
 /**
@@ -176,15 +177,16 @@ extern const struct Module ModuleSend;     extern const struct Module ModuleSide
  */
 static const struct Module *Modules[] = {
   // clang-format off
-  &ModuleMain,     &ModuleGui,      // These two have priority
-  &ModuleAddress,  &ModuleAlias,    &ModuleAttach,   &ModuleBcache,   &ModuleBrowser,
-  &ModuleColor,    &ModuleCommands, &ModuleComplete, &ModuleCompmbox, &ModuleCompose,
-  &ModuleConfig,   &ModuleConn,     &ModuleConvert,  &ModuleCore,     &ModuleEditor,
-  &ModuleEmail,    &ModuleEnvelope, &ModuleExpando,  &ModuleHelpbar,  &ModuleHistory,
-  &ModuleHooks,    &ModuleImap,     &ModuleIndex,    &ModuleKey,      &ModuleMaildir,
-  &ModuleMbox,     &ModuleMenu,     &ModuleMh,       &ModuleMutt,     &ModuleNcrypt,
-  &ModuleNntp,     &ModulePager,    &ModuleParse,    &ModulePattern,  &ModulePop,
-  &ModulePostpone, &ModuleProgress, &ModuleQuestion, &ModuleSend,     &ModuleSidebar,
+  &ModuleMain,    &ModuleGui,      // These two have priority
+  &ModuleAddress, &ModuleAlias,    &ModuleAttach,   &ModuleBcache,   &ModuleBrowser,
+  &ModuleColor,   &ModuleCommands, &ModuleComplete, &ModuleCompmbox, &ModuleCompose,
+  &ModuleConfig,  &ModuleConn,     &ModuleConvert,  &ModuleCore,     &ModuleEditor,
+  &ModuleEmail,   &ModuleEnvelope, &ModuleExpando,  &ModuleHelpbar,  &ModuleHistory,
+  &ModuleHooks,   &ModuleImap,     &ModuleIndex,    &ModuleKey,      &ModuleMaildir,
+  &ModuleMbox,    &ModuleMenu,     &ModuleMh,       &ModuleMlist,    &ModuleMutt,
+  &ModuleNcrypt,  &ModuleNntp,     &ModulePager,    &ModuleParse,    &ModulePattern,
+  &ModulePop,     &ModulePostpone, &ModuleProgress, &ModuleQuestion, &ModuleSend,
+  &ModuleSidebar,
 // clang-format on
 #ifdef USE_AUTOCRYPT
   &ModuleAutocrypt,
@@ -715,6 +717,7 @@ static void init_keys(struct NeoMutt *n)
   editor_init_keys(n, sm_generic);
   sidebar_init_keys(n, sm_generic);
   index_init_keys(n, sm_generic);
+  mlist_init_keys(n, sm_generic);
   pager_init_keys(n, sm_generic);
   pgp_init_keys(n, sm_generic);
   postpone_init_keys(n, sm_generic);

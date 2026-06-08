@@ -2960,8 +2960,8 @@ bool mutt_send_list_subscribe(struct Mailbox *m, struct Email *e)
     return false;
   }
 
-  const char *mailto = e->env->list_subscribe;
-  if (!mailto)
+  const char *uri = e->env->list_subscribe;
+  if (!uri)
   {
     mutt_warning(_("No List-Subscribe header found"));
     return false;
@@ -2969,7 +2969,7 @@ bool mutt_send_list_subscribe(struct Mailbox *m, struct Email *e)
 
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ARRAY_ADD(&ea, e);
-  bool rc = send_simple_email(m, &ea, mailto, "Subscribe", "subscribe");
+  bool rc = send_simple_email(m, &ea, uri, "Subscribe", "subscribe");
   ARRAY_FREE(&ea);
 
   return rc;
@@ -2989,8 +2989,8 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, struct Email *e)
     return false;
   }
 
-  const char *mailto = e->env->list_unsubscribe;
-  if (!mailto)
+  const char *uri = e->env->list_unsubscribe;
+  if (!uri)
   {
     mutt_warning(_("No List-Unsubscribe header found"));
     return false;
@@ -2998,7 +2998,7 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, struct Email *e)
 
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ARRAY_ADD(&ea, e);
-  bool rc = send_simple_email(m, &ea, mailto, "Unsubscribe", "unsubscribe");
+  bool rc = send_simple_email(m, &ea, uri, "Unsubscribe", "unsubscribe");
   ARRAY_FREE(&ea);
 
   return rc;

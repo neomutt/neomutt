@@ -27,17 +27,19 @@
 #include <string.h>
 #include "email/lib.h"
 
-static void check_header(const char *actual, const char *expected)
+static void check_header(const struct ListHead *actual, const char *expected[],
+                         size_t num_expected)
 {
-  if (!expected)
+  size_t num_actual = 0;
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, actual, entries)
   {
-    TEST_CHECK(actual == NULL);
-    return;
+    TEST_CHECK(num_actual < num_expected);
+    if (num_actual < num_expected)
+      TEST_CHECK(strcmp(np->data, expected[num_actual]) == 0);
+    num_actual++;
   }
-
-  TEST_CHECK(actual != NULL);
-  if (actual)
-    TEST_CHECK(strcmp(actual, expected) == 0);
+  TEST_CHECK(num_actual == num_expected);
 }
 
 void test_mutt_rfc2369_read_headers(void)
@@ -67,12 +69,28 @@ void test_mutt_rfc2369_read_headers(void)
 
   mutt_rfc2369_read_headers(fp, &headers);
 
-  check_header(headers.archive, "mailto:archive@example.com");
-  check_header(headers.help, "mailto:help@example.com");
-  check_header(headers.owner, "mailto:owner@example.com");
-  check_header(headers.post, NULL);
-  check_header(headers.subscribe, "mailto:subscribe@example.com");
-  check_header(headers.unsubscribe, "mailto:unsubscribe@example.com");
+  const char *archive[] = {
+    "https://example.com/archive",
+    "mailto:archive@example.com",
+  };
+  check_header(&headers.archive, archive, countof(archive));
+
+  const char *help[] = { "mailto:help@example.com" };
+  check_header(&headers.help, help, countof(help));
+
+  const char *owner[] = { "mailto:owner@example.com" };
+  check_header(&headers.owner, owner, countof(owner));
+
+  check_header(&headers.post, NULL, 0);
+
+  const char *subscribe[] = {
+    "https://example.com/subscribe",
+    "mailto:subscribe@example.com",
+  };
+  check_header(&headers.subscribe, subscribe, countof(subscribe));
+
+  const char *unsubscribe[] = { "mailto:unsubscribe@example.com" };
+  check_header(&headers.unsubscribe, unsubscribe, countof(unsubscribe));
 
   mutt_rfc2369_list_headers_free(&headers);
   fclose(fp);

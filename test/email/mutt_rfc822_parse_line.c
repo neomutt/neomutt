@@ -58,4 +58,24 @@ void test_mutt_rfc822_parse_line(void)
     TEST_CHECK(mutt_rfc822_parse_line(&envelope, &e, "apple", strlen("apple"),
                                       NULL, false, false, false) == 0);
   }
+
+  {
+    struct Envelope envelope = { 0 };
+    TEST_CHECK(mutt_rfc822_parse_line(&envelope, NULL, "List-Subscribe",
+                                      strlen("List-Subscribe"),
+                                      "<https://example.com/subscribe>", false,
+                                      false, false) == 1);
+    TEST_CHECK(strcmp(envelope.list_subscribe, "https://example.com/subscribe") == 0);
+    FREE(&envelope.list_subscribe);
+  }
+
+  {
+    struct Envelope envelope = { 0 };
+    TEST_CHECK(mutt_rfc822_parse_line(&envelope, NULL, "List-Unsubscribe",
+                                      strlen("List-Unsubscribe"),
+                                      "<https://example.com/unsubscribe>, <mailto:list@example.com>",
+                                      false, false, false) == 1);
+    TEST_CHECK(strcmp(envelope.list_unsubscribe, "mailto:list@example.com") == 0);
+    FREE(&envelope.list_unsubscribe);
+  }
 }
