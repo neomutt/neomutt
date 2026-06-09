@@ -128,7 +128,6 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
 #ifdef USE_NOTMUCH
   { "entire-thread",                 OP_MAIN_ENTIRE_THREAD },
 #endif
-  { "exit",                          OP_EXIT },
   { "extract-keys",                  OP_EXTRACT_KEYS },
   { "fetch-mail",                    OP_MAIN_FETCH_MAIL },
   { "flag-message",                  OP_FLAG_MESSAGE },
@@ -183,7 +182,6 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "purge-thread",                  OP_PURGE_THREAD },
   { "quasi-delete",                  OP_MAIN_QUASI_DELETE },
   { "query",                         OP_QUERY },
-  { "quit",                          OP_QUIT },
   { "read-subthread",                OP_MAIN_READ_SUBTHREAD },
   { "read-thread",                   OP_MAIN_READ_THREAD },
   { "recall-message",                OP_RECALL_MESSAGE },
@@ -953,9 +951,16 @@ static int op_display_message(struct IndexFunctionData *fdata, const struct KeyE
   if (event->count > 0)
     return op_jump(fdata, event);
 
+  int op = event->op;
+
+  if (op == OP_DISPLAY_MESSAGE)
+  {
+    if (!window_is_focused(priv->win_index))
+      return FR_SUCCESS;
+  }
+
   exec_message_hook(shared->mailbox, shared->email, CMD_MESSAGE_HOOK);
 
-  int op = event->op;
   /* toggle the weeding of headers so that a user can press the key
    * again while reading the message.  */
   if (op == OP_DISPLAY_HEADERS)

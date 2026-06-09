@@ -3,7 +3,7 @@
 use strict;
 
 my (%OPS, %MAP_FUNC_TO_OP, %MAP_OP_TO_SEQSET, %DOC, $map);
-my (%GENERIC_OP_TO_FUNC);
+my (%GENERIC_OP_TO_FUNC, %INDEX_OP_TO_FUNC);
 
 my $xml = shift @ARGV;
 
@@ -15,13 +15,20 @@ while (<F>) {
 }
 close F;
 
-while (<STDIN>) {
+# Slurp all input so the maps can be processed in two passes.  This makes
+# the cross-referencing order-independent: the inherited maps ('index' and
+# 'generic') may appear in the input after the maps that inherit from them.
+my @lines = <STDIN>;
+
+# Pass 1: parse the MenuFuncOp tables (function -> op) for every map.
+for (my $i = 0; $i <= $#lines; $i++) {
+  $_ = $lines[$i];
   if (/^(?:static )*const struct MenuFuncOp Op.*{ \/\* map: (.*) \*\//) {
     $map = $1;
     $DOC{$map} = "";
     $MAP_FUNC_TO_OP{$map} = {};
     $MAP_OP_TO_SEQSET{$map} = {};
-    while (<STDIN>) {
+    while (defined($_ = $lines[++$i])) {
       last if (/^}/);
       if (/^\s*\*\*\s*(.*)/) {
         $DOC{$map} .= "$1\n";
@@ -36,26 +43,35 @@ while (<STDIN>) {
         if ($map eq "generic" && !exists($GENERIC_OP_TO_FUNC{$op})) {
             $GENERIC_OP_TO_FUNC{$op} = $function;
         }
+        if ($map eq "index" && !exists($INDEX_OP_TO_FUNC{$op})) {
+            $INDEX_OP_TO_FUNC{$op} = $function;
+        }
       }
     }
   }
-  elsif (/^(?:static )*const struct MenuOpSeq .*{ \/\* map: (.*) \*\//) {
+}
+
+# Pass 2: parse the MenuOpSeq tables (op -> key binding) for every map.
+for (my $i = 0; $i <= $#lines; $i++) {
+  $_ = $lines[$i];
+  if (/^(?:static )*const struct MenuOpSeq .*{ \/\* map: (.*) \*\//) {
     $map = $1;
     die "unknown map $map" unless $MAP_FUNC_TO_OP{$map};
-    while (<STDIN>) {
+    while (defined($_ = $lines[++$i])) {
       last if (/^}/);
       if (/{\s*(\w+)\s*,\s*"(.+)"\s*}/) {
         my ($op, $binding) = ($1, $2);
 
-        # If the $op is NOT in the current map, but it IS
-        # in the generic map, then we need to add a stub entry
-        # in $MAP_FUNC_TO_OP and $MAP_OP_TO_SEQSET for this case.
+        # If the $op is NOT in the current map, but it IS in an
+        # inherited map (index or generic), then we need to add a
+        # stub entry in $MAP_FUNC_TO_OP and $MAP_OP_TO_SEQSET for
+        # this case.
         unless ($MAP_OP_TO_SEQSET{$map}->{$op}) {
-          if (($map eq "pager") or ($map eq "editor")) {
+          if ($map eq "editor") {
             die "unknown OP $op for map $map";
           }
 
-          my $function = $GENERIC_OP_TO_FUNC{$op};
+          my $function = $INDEX_OP_TO_FUNC{$op} // $GENERIC_OP_TO_FUNC{$op};
           unless ($function) {
             die "unknown OP $op for map $map";
           }
