@@ -226,7 +226,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
  * IndexDefaultBindings - Key bindings for the Index Menu
  */
 static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
-  { OP_ATTACH_EDIT_TYPE,               "\005" },           // <Ctrl-E>
+  { OP_ATTACH_EDIT_TYPE,                   "\005" },           // <Ctrl-E>
 #ifdef USE_AUTOCRYPT
   { OP_AUTOCRYPT_ACCT_MENU,                "A" },
 #endif

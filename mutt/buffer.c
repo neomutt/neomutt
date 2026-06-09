@@ -764,7 +764,7 @@ void buf_join_str(struct Buffer *buf, const char *str, char sep)
   buf_addstr(buf, str);
 }
 
-/*
+/**
  * buf_inline_replace - Replace part of a string
  * @param buf   Buffer to modify
  * @param pos   Starting position of string to overwrite

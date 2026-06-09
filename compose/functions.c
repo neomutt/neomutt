@@ -144,36 +144,36 @@ static const struct MenuFuncOp OpCompose[] = { /* map: compose */
  * ComposeDefaultBindings - Key bindings for the Compose Menu
  */
 static const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
-  { OP_ATTACH_ATTACH_FILE,             "a" },
-  { OP_ATTACH_ATTACH_KEY,              "\033k" },          // <Alt-k>
-  { OP_ATTACH_ATTACH_MESSAGE,          "A" },
-  { OP_ATTACH_DETACH,                  "D" },
-  { OP_ATTACH_EDIT_CONTENT_ID,         "\033i" },          // <Alt-i>
-  { OP_ATTACH_EDIT_DESCRIPTION,        "d" },
-  { OP_ATTACH_EDIT_ENCODING,           "\005" },           // <Ctrl-E>
-  { OP_ATTACH_EDIT_LANGUAGE,           "\014" },           // <Ctrl-L>
-  { OP_ATTACH_EDIT_MIME,               "m" },
-  { OP_ATTACH_EDIT_TYPE,               "\024" },           // <Ctrl-T>
-  { OP_ATTACH_FILTER,                  "F" },
-  { OP_ATTACH_GET_ATTACHMENT,          "G" },
-  { OP_ATTACH_GROUP_ALTS,              "&" },
-  { OP_ATTACH_GROUP_LINGUAL,           "^" },
-  { OP_ATTACH_GROUP_RELATED,           "%" },
-  { OP_ATTACH_MOVE_DOWN,               "+" },
-  { OP_ATTACH_MOVE_UP,                 "-" },
-  { OP_ATTACH_NEW_MIME,                "n" },
+  { OP_ATTACH_ATTACH_FILE,                 "a" },
+  { OP_ATTACH_ATTACH_KEY,                  "\033k" },          // <Alt-k>
+  { OP_ATTACH_ATTACH_MESSAGE,              "A" },
+  { OP_ATTACH_DETACH,                      "D" },
+  { OP_ATTACH_EDIT_CONTENT_ID,             "\033i" },          // <Alt-i>
+  { OP_ATTACH_EDIT_DESCRIPTION,            "d" },
+  { OP_ATTACH_EDIT_ENCODING,               "\005" },           // <Ctrl-E>
+  { OP_ATTACH_EDIT_LANGUAGE,               "\014" },           // <Ctrl-L>
+  { OP_ATTACH_EDIT_MIME,                   "m" },
+  { OP_ATTACH_EDIT_TYPE,                   "\024" },           // <Ctrl-T>
+  { OP_ATTACH_FILTER,                      "F" },
+  { OP_ATTACH_GET_ATTACHMENT,              "G" },
+  { OP_ATTACH_GROUP_ALTS,                  "&" },
+  { OP_ATTACH_GROUP_LINGUAL,               "^" },
+  { OP_ATTACH_GROUP_RELATED,               "%" },
+  { OP_ATTACH_MOVE_DOWN,                   "+" },
+  { OP_ATTACH_MOVE_UP,                     "-" },
+  { OP_ATTACH_NEW_MIME,                    "n" },
   { OP_EXIT,                               "q" },
   { OP_PIPE,                               "|" },
-  { OP_ATTACH_PRINT,                   "l" },
-  { OP_ATTACH_RENAME_ATTACHMENT,       "\017" },           // <Ctrl-O>
-  { OP_ATTACH_SAVE,                    "C" },
-  { OP_ATTACH_TOGGLE_DISPOSITION,      "\004" },           // <Ctrl-D>
-  { OP_ATTACH_TOGGLE_UNLINK,           "u" },
-  { OP_ATTACH_UNGROUP,                 "#" },
-  { OP_ATTACH_UPDATE_ENCODING,         "U" },
-  { OP_ATTACH_VIEW,                    "<keypadenter>" },
-  { OP_ATTACH_VIEW,                    "\n" },             // <Enter>
-  { OP_ATTACH_VIEW,                    "\r" },             // <Return>
+  { OP_ATTACH_PRINT,                       "l" },
+  { OP_ATTACH_RENAME_ATTACHMENT,           "\017" },           // <Ctrl-O>
+  { OP_ATTACH_SAVE,                        "C" },
+  { OP_ATTACH_TOGGLE_DISPOSITION,          "\004" },           // <Ctrl-D>
+  { OP_ATTACH_TOGGLE_UNLINK,               "u" },
+  { OP_ATTACH_UNGROUP,                     "#" },
+  { OP_ATTACH_UPDATE_ENCODING,             "U" },
+  { OP_ATTACH_VIEW,                        "<keypadenter>" },
+  { OP_ATTACH_VIEW,                        "\n" },             // <Enter>
+  { OP_ATTACH_VIEW,                        "\r" },             // <Return>
 #ifdef USE_AUTOCRYPT
   { OP_COMPOSE_AUTOCRYPT_MENU,             "o" },
 #endif

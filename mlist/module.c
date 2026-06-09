@@ -58,7 +58,6 @@ static bool mlist_cleanup(struct NeoMutt *n, void *data)
   return true;
 }
 
-
 /**
  * ModuleMlist - Module for the Mlist library
  */

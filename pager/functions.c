@@ -204,7 +204,7 @@ static const struct MenuFuncOp OpPager[] = { /* map: pager */
  * PagerDefaultBindings - Key bindings for the Pager Menu
  */
 static const struct MenuOpSeq PagerDefaultBindings[] = { /* map: pager */
-  { OP_ATTACH_EDIT_TYPE,               "\005" },           // <Ctrl-E>
+  { OP_ATTACH_EDIT_TYPE,                   "\005" },           // <Ctrl-E>
   { OP_BOUNCE_MESSAGE,                     "b" },
   { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
   { OP_COPY_MESSAGE,                       "C" },

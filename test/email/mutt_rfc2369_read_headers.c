@@ -27,8 +27,7 @@
 #include <string.h>
 #include "email/lib.h"
 
-static void check_header(const struct ListHead *actual, const char *expected[],
-                         size_t num_expected)
+static void check_header(const struct ListHead *actual, const char *expected[], size_t num_expected)
 {
   size_t num_actual = 0;
   struct ListNode *np = NULL;
