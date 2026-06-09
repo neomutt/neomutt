@@ -42,6 +42,9 @@
 #include "mailbox.h"
 #include "module_api.h"
 #include "muttlib.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
 

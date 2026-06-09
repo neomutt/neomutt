@@ -38,7 +38,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "gui/module_data.h"
 #include "mutt.h"
 #include "lib.h"
 #include "attach/lib.h"

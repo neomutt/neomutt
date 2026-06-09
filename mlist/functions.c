@@ -31,18 +31,15 @@
 #include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "functions.h"
 #include "lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "send/lib.h"
 #include "module_data.h"
-#include "mutt_logging.h"
 
 /// Mailing-list actions shown in the dialog
 const struct ListAction ListActions[] = {

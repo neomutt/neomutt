@@ -30,10 +30,8 @@
 #include <stdbool.h>
 #include <strings.h>
 #include "mutt/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
 #include "extended.h"
-#include "module_data.h"
 
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style

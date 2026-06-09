@@ -57,7 +57,6 @@
 #include "edata.h"
 #include "mdata.h"
 #include "msn.h"
-#include "mx.h"
 
 /// Default buffer size for IMAP commands
 #define IMAP_CMD_BUFSIZE 512

@@ -34,6 +34,7 @@ struct AddressList;
 struct Body;
 struct Email;
 struct Message;
+struct NcryptModuleData;
 
 /* We work based on user IDs, getting from a user ID to the key is
  * check and does not need any memory (GPGME uses reference counting). */

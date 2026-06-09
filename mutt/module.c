@@ -33,7 +33,6 @@
 #include "memory.h"
 #include "module_data.h"
 #include "notify.h"
-#include "signal2.h"
 
 /**
  * mutt_init - Initialise a Module - Implements Module::init()

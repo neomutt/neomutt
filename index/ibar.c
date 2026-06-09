@@ -66,7 +66,6 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "gui/module_data.h"
 #include "lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"

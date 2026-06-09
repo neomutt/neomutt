@@ -101,7 +101,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "module_data.h"
+#include "module_data.h" // IWYU pragma: keep
 
 struct Email;
 struct Envelope;

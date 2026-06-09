@@ -47,8 +47,9 @@
 struct Buffer;
 struct Command;
 struct KeyEvent;
-struct NeoMutt;
+struct ListHead;
 struct MuttWindow;
+struct NeoMutt;
 struct ParseContext;
 struct ParseError;
 struct SubMenu;

@@ -31,7 +31,6 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "extended.h"
 #include "init.h"
 #include "module_data.h"
 

@@ -35,7 +35,6 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "keymap.h"
-#include "module_data.h"
 
 /**
  * KeyNames - Key name lookup table

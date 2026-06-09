@@ -23,6 +23,7 @@
 #ifndef MUTT_KEY_INIT_H
 #define MUTT_KEY_INIT_H
 
+#include "keymap.h"
 #include "menu.h"
 
 struct KeyModuleData;

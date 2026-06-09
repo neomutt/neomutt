@@ -27,11 +27,10 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "mutt/list.h"
+#include "mutt/lib.h"
 #include "mime.h"
 
 struct Body;
-struct Buffer;
 struct Email;
 struct Envelope;
 

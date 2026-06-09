@@ -129,19 +129,14 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "sidebar/lib.h"
-#include "color/module_data.h"
 #include "external.h"
 #include "globals.h"
-#include "key/module_data.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "nntp/adata.h" // IWYU pragma: keep
 #include "version.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

@@ -48,6 +48,7 @@
 #include "init.h"
 #include "keymap.h"
 #include "menu.h"
+#include "module_data.h"
 #include "notify.h"
 // IWYU pragma: end_keep
 

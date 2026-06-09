@@ -64,7 +64,6 @@
 #include "expando/lib.h"
 #include "history/lib.h"
 #include "hooks/lib.h"
-#include "imap/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"

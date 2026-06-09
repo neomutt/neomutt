@@ -23,6 +23,7 @@
 #ifndef MUTT_NCRYPT_MODULE_DATA_H
 #define MUTT_NCRYPT_MODULE_DATA_H
 
+#include "config.h"
 #include <time.h>
 #include "mutt/lib.h"
 #include "crypt_mod.h"

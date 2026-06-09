@@ -40,7 +40,6 @@
 #include "lib.h"
 #include "color/lib.h"
 #include "index/lib.h"
-#include "module_data.h"
 
 /**
  * SbCommands - Sidebar Commands

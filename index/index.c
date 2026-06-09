@@ -77,7 +77,6 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"
-#include "gui/module_data.h"
 #include "attach/lib.h"
 #include "color/lib.h"
 #include "index/lib.h"

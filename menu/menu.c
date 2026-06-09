@@ -32,13 +32,11 @@
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
 #include "expando/lib.h" // IWYU pragma: keep
 #include "key/lib.h"
-#include "module_data.h"
 #include "type.h"
 
 struct ConfigSubset;

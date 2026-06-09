@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <gpgme.h>
 #include <locale.h>
 #include <stdbool.h>
 #include "mutt/lib.h"

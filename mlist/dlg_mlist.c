@@ -27,15 +27,15 @@
  */
 
 #include "config.h"
-#include <stddef.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "functions.h"
 #include "lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "functions.h"
 #include "mutt_logging.h"
 #include "mx.h"
 

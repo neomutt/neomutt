@@ -53,7 +53,6 @@
 #include "key/lib.h"
 #include "question/lib.h"
 #include "globals.h"
-#include "key/module_data.h"
 #include "msgcont.h"
 #include "msgwin.h"
 #include "mutt_curses.h"

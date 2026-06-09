@@ -26,6 +26,7 @@
 #define MUTT_PARSE_EXTRACT_H
 
 #include <stdint.h>
+#include <string.h>
 #include "mutt/lib.h" // IWYU pragma: keep
 
 #define MoreArgs(buf) (*(buf)->dptr && (*(buf)->dptr != ';') && (*(buf)->dptr != '#'))

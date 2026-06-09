@@ -295,7 +295,6 @@ static const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_PREV_ENTRY,                         "K" },
   { OP_PRINT,                              "p" },
   { OP_QUERY,                              "Q" },
-  { OP_QUIT,                               "q" },
   { OP_RECALL_MESSAGE,                     "R" },
   { OP_REPLY,                              "r" },
   { OP_RESEND,                             "\033e" },          // <Alt-e>

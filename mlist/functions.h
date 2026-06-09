@@ -29,8 +29,6 @@
 #include "email/lib.h"
 
 struct KeyEvent;
-struct Mailbox;
-struct Menu;
 struct MuttWindow;
 
 /**

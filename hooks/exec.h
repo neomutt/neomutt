@@ -24,11 +24,11 @@
 #define MUTT_HOOKS_EXEC_H
 
 #include "core/lib.h"
-#include "hook.h"
 
 struct Address;
 struct Buffer;
 struct Email;
+struct HookList;
 struct ListHead;
 
 void                  exec_account_hook            (const char *url);

@@ -34,6 +34,8 @@
 #include "smime.h"
 #endif
 
+struct NcryptModuleData;
+
 /**
  * smime_class_init - Initialise smime - Implements CryptModuleSpecs::init() - @ingroup crypto_init
  */
