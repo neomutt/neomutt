@@ -48,9 +48,9 @@
 #include "pgplib.h"
 
 /**
- * op_exit - Exit this menu - Implements ::pgp_function_t - @ingroup pgp_function_api
+ * op_quit - Save changes and exit this dialog - Implements ::pgp_function_t - @ingroup pgp_function_api
  */
-static int op_exit(struct PgpData *pd, const struct KeyEvent *event)
+static int op_quit(struct PgpData *pd, const struct KeyEvent *event)
 {
   pd->done = true;
   return FR_SUCCESS;
@@ -211,8 +211,9 @@ static int op_view_id(struct PgpData *pd, const struct KeyEvent *event)
  */
 static const struct PgpFunction PgpFunctions[] = {
   // clang-format off
-  { OP_EXIT,                   op_exit },
+  { OP_EXIT,                   op_quit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_QUIT,                   op_quit },
   { OP_VERIFY_KEY,             op_verify_key },
   { OP_VIEW_ID,                op_view_id },
   { 0, NULL },

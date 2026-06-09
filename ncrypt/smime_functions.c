@@ -40,9 +40,9 @@
 #include "smime.h"
 
 /**
- * op_exit - Exit this menu - Implements ::smime_function_t - @ingroup smime_function_api
+ * op_quit - Save changes and exit this dialog - Implements ::smime_function_t - @ingroup smime_function_api
  */
-static int op_exit(struct SmimeData *sd, const struct KeyEvent *event)
+static int op_quit(struct SmimeData *sd, const struct KeyEvent *event)
 {
   sd->done = true;
   return FR_SUCCESS;
@@ -98,8 +98,9 @@ static int op_generic_select_entry(struct SmimeData *sd, const struct KeyEvent *
  */
 static const struct SmimeFunction SmimeFunctions[] = {
   // clang-format off
-  { OP_EXIT,                   op_exit },
+  { OP_EXIT,                   op_quit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_QUIT,                   op_quit },
   { 0, NULL },
   // clang-format on
 };

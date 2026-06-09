@@ -54,7 +54,6 @@
  */
 static const struct MenuFuncOp OpAlias[] = { /* map: alias */
   { "delete-entry",                  OP_DELETE },
-  { "exit",                          OP_EXIT },
   { "limit",                         OP_MAIN_LIMIT },
   { "mail",                          OP_MAIL },
   { "sort-alias",                    OP_SORT },
@@ -70,7 +69,6 @@ static const struct MenuFuncOp OpAlias[] = { /* map: alias */
  */
 const struct MenuFuncOp OpQuery[] = { /* map: query */
   { "create-alias",                  OP_CREATE_ALIAS },
-  { "exit",                          OP_EXIT },
   { "limit",                         OP_MAIN_LIMIT },
   { "mail",                          OP_MAIL },
   { "query",                         OP_QUERY },
@@ -87,7 +85,6 @@ const struct MenuFuncOp OpQuery[] = { /* map: query */
  */
 static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
   { OP_DELETE,                             "d" },
-  { OP_EXIT,                               "q" },
   { OP_MAIL,                               "m" },
   { OP_MAIN_LIMIT,                         "l" },
   { OP_MAIN_TAG_PATTERN,                   "T" },
@@ -104,7 +101,6 @@ static const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
  */
 static const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_CREATE_ALIAS,                       "a" },
-  { OP_EXIT,                               "q" },
   { OP_MAIL,                               "m" },
   { OP_MAIN_LIMIT,                         "l" },
   { OP_MAIN_TAG_PATTERN,                   "T" },
@@ -307,9 +303,9 @@ static int op_delete(struct AliasFunctionData *fdata, const struct KeyEvent *eve
 }
 
 /**
- * op_exit - exit this menu - Implements ::alias_function_t - @ingroup alias_function_api
+ * op_quit - Save changes and exit this dialog - Implements ::alias_function_t - @ingroup alias_function_api
  */
-static int op_exit(struct AliasFunctionData *fdata, const struct KeyEvent *event)
+static int op_quit(struct AliasFunctionData *fdata, const struct KeyEvent *event)
 {
   return FR_DONE;
 }
@@ -615,7 +611,7 @@ static const struct AliasFunction AliasFunctions[] = {
   // clang-format off
   { OP_CREATE_ALIAS,           op_create_alias },
   { OP_DELETE,                 op_delete },
-  { OP_EXIT,                   op_exit },
+  { OP_EXIT,                   op_quit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
   { OP_MAIL,                   op_mail },
   { OP_MAIN_LIMIT,             op_main_limit },
@@ -623,6 +619,7 @@ static const struct AliasFunction AliasFunctions[] = {
   { OP_MAIN_UNTAG_PATTERN,     op_main_untag_pattern },
   { OP_QUERY,                  op_query },
   { OP_QUERY_APPEND,           op_query },
+  { OP_QUIT,                   op_quit },
   { OP_SEARCH,                 op_search },
   { OP_SEARCH_NEXT,            op_search },
   { OP_SEARCH_OPPOSITE,        op_search },

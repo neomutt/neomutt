@@ -90,7 +90,7 @@ typedef int (*mlist_function_t)(struct ListData *ld, const struct KeyEvent *even
  */
 struct MlistFunction
 {
-  int op;                    ///< Op code
+  int op;                    ///< Op code, e.g. OP_QUIT
   mlist_function_t function; ///< Function to call
 };
 

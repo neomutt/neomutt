@@ -41,7 +41,6 @@
  * OpPgp - Functions for the Pgp Menu
  */
 static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
-  { "exit",                          OP_EXIT },
   { "verify-key",                    OP_VERIFY_KEY },
   { "view-name",                     OP_VIEW_ID },
   { NULL, 0 },
@@ -51,7 +50,6 @@ static const struct MenuFuncOp OpPgp[] = { /* map: pgp */
  * OpSmime - Functions for the Smime Menu
  */
 static const struct MenuFuncOp OpSmime[] = { /* map: smime */
-  { "exit",                          OP_EXIT },
 #ifdef CRYPT_BACKEND_GPGME
   { "verify-key",                    OP_VERIFY_KEY },
   { "view-name",                     OP_VIEW_ID },
@@ -63,7 +61,6 @@ static const struct MenuFuncOp OpSmime[] = { /* map: smime */
  * PgpDefaultBindings - Key bindings for the Pgp Menu
  */
 static const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
-  { OP_EXIT,                               "q" },
   { OP_VERIFY_KEY,                         "c" },
   { OP_VIEW_ID,                            "%" },
   { 0, NULL },
@@ -73,7 +70,6 @@ static const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
  * SmimeDefaultBindings - Key bindings for the Smime Menu
  */
 static const struct MenuOpSeq SmimeDefaultBindings[] = { /* map: smime */
-  { OP_EXIT,                               "q" },
 #ifdef CRYPT_BACKEND_GPGME
   { OP_VERIFY_KEY,                         "c" },
   { OP_VIEW_ID,                            "%" },
