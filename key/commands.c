@@ -362,44 +362,49 @@ void set_default_bindings(const struct MenuDefinition *md)
 {
   bool success = false;
 
-  if (!md || (md == MdGeneric))
+  const struct MenuDefinition *md_generic = generic_get_menu_definition();
+  if (!md || (md == md_generic))
   {
-    km_bind(MdGeneric, "<enter>", OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
-    km_bind(MdGeneric, "<return>", OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
-    km_bind(MdGeneric, ":", OP_ENTER_COMMAND, NULL, NULL, NULL);
-    km_bind(MdGeneric, "?", OP_HELP, NULL, NULL, NULL);
-    km_bind(MdGeneric, "q", OP_EXIT, NULL, NULL, NULL);
+    km_bind(md_generic, "<enter>", OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
+    km_bind(md_generic, "<return>", OP_GENERIC_SELECT_ENTRY, NULL, NULL, NULL);
+    km_bind(md_generic, ":", OP_ENTER_COMMAND, NULL, NULL, NULL);
+    km_bind(md_generic, "?", OP_HELP, NULL, NULL, NULL);
+    km_bind(md_generic, "q", OP_EXIT, NULL, NULL, NULL);
     success = true;
   }
 
-  if (!md || (md == MdIndex))
+  const struct MenuDefinition *md_index = index_get_menu_definition();
+  if (!md || (md == md_index))
   {
-    km_bind(MdIndex, "<enter>", OP_DISPLAY_MESSAGE, NULL, NULL, NULL);
-    km_bind(MdIndex, "<return>", OP_DISPLAY_MESSAGE, NULL, NULL, NULL);
-    km_bind(MdIndex, "q", OP_EXIT, NULL, NULL, NULL);
+    km_bind(md_index, "<enter>", OP_DISPLAY_MESSAGE, NULL, NULL, NULL);
+    km_bind(md_index, "<return>", OP_DISPLAY_MESSAGE, NULL, NULL, NULL);
+    km_bind(md_index, "q", OP_EXIT, NULL, NULL, NULL);
     success = true;
   }
 
-  if (!md || (md == MdEditor))
+  const struct MenuDefinition *md_editor = editor_get_menu_definition();
+  if (!md || (md == md_editor))
   {
-    km_bind(MdEditor, "<backspace>", OP_EDITOR_BACKSPACE, NULL, NULL, NULL);
-    km_bind(MdEditor, "\177", OP_EDITOR_BACKSPACE, NULL, NULL, NULL);
+    km_bind(md_editor, "<backspace>", OP_EDITOR_BACKSPACE, NULL, NULL, NULL);
+    km_bind(md_editor, "\177", OP_EDITOR_BACKSPACE, NULL, NULL, NULL);
     success = true;
   }
 
-  if (!md || (md == MdPager))
+  const struct MenuDefinition *md_pager = pager_get_menu_definition();
+  if (!md || (md == md_pager))
   {
-    km_bind(MdPager, ":", OP_ENTER_COMMAND, NULL, NULL, NULL);
-    km_bind(MdPager, "?", OP_HELP, NULL, NULL, NULL);
-    km_bind(MdPager, "q", OP_EXIT, NULL, NULL, NULL);
+    km_bind(md_pager, ":", OP_ENTER_COMMAND, NULL, NULL, NULL);
+    km_bind(md_pager, "?", OP_HELP, NULL, NULL, NULL);
+    km_bind(md_pager, "q", OP_EXIT, NULL, NULL, NULL);
     success = true;
   }
 
-  if (!md || (md == MdDialog))
+  const struct MenuDefinition *md_dialog = dialog_get_menu_definition();
+  if (!md || (md == md_dialog))
   {
-    km_bind(MdDialog, ":", OP_ENTER_COMMAND, NULL, NULL, NULL);
-    km_bind(MdDialog, "?", OP_HELP, NULL, NULL, NULL);
-    km_bind(MdDialog, "q", OP_EXIT, NULL, NULL, NULL);
+    km_bind(md_dialog, ":", OP_ENTER_COMMAND, NULL, NULL, NULL);
+    km_bind(md_dialog, "?", OP_HELP, NULL, NULL, NULL);
+    km_bind(md_dialog, "q", OP_EXIT, NULL, NULL, NULL);
     success = true;
   }
 

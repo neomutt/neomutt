@@ -195,10 +195,10 @@ struct SubMenu *generic_init_keys(struct NeoMutt *n)
 }
 
 /**
- * gui_get_generic_menu_definition - Get the Generic Menu Definition
+ * generic_get_menu_definition - Get the Generic Menu Definition
  * @retval ptr Generic Menu Definition
  */
-struct MenuDefinition *gui_get_generic_menu_definition(void)
+struct MenuDefinition *generic_get_menu_definition(void)
 {
   struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
   ASSERT(mod_data);
@@ -207,10 +207,10 @@ struct MenuDefinition *gui_get_generic_menu_definition(void)
 }
 
 /**
- * gui_get_dialog_menu_definition - Get the Dialog Menu Definition
+ * dialog_get_menu_definition - Get the Dialog Menu Definition
  * @retval ptr Dialog Menu Definition
  */
-struct MenuDefinition *gui_get_dialog_menu_definition(void)
+struct MenuDefinition *dialog_get_menu_definition(void)
 {
   struct GuiModuleData *mod_data = neomutt_get_module_data(NeoMutt, MODULE_ID_GUI);
   ASSERT(mod_data);

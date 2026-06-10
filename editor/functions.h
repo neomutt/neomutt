@@ -33,8 +33,6 @@ struct MuttWindow;
 
 struct MenuDefinition *editor_get_menu_definition(void);
 
-#define MdEditor (editor_get_menu_definition())
-
 /**
  * struct EnterFunctionData - Data passed to Enter worker functions
  */

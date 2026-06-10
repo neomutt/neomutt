@@ -101,7 +101,8 @@ static const char *ToCharsDesc[] = {
  */
 static void dump_message_flags(const struct MenuDefinition *md, FILE *fp)
 {
-  if (md != MdIndex)
+  const struct MenuDefinition *md_index = index_get_menu_definition();
+  if (md != md_index)
     return;
 
   const char *flag = NULL;

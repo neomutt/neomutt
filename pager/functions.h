@@ -70,6 +70,4 @@ int pager_function_dispatcher(struct MuttWindow *win, const struct KeyEvent *eve
 bool jump_to_bottom(struct PagerPrivateData *priv, struct PagerView *pview);
 struct MenuDefinition *pager_get_menu_definition(void);
 
-#define MdPager (pager_get_menu_definition())
-
 #endif /* MUTT_PAGER_FUNCTIONS_H */
