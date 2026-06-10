@@ -87,7 +87,23 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
   }
   buf_fix_dptr(host);
 
-  buf_addstr(host, mailbox);
+  /* A server-supplied mailbox name with '..' components would let the cache
+   * path escape $message_cache_dir.  Replace them with '__' so the path stays
+   * inside the cache directory.  imap_hcache_open() rejects these names for
+   * the header cache. */
+  for (const char *p = mailbox; p && *p;)
+  {
+    const char *slash = strchr(p, '/');
+    const size_t len = slash ? (size_t) (slash - p) : strlen(p);
+    if ((len == 2) && (p[0] == '.') && (p[1] == '.'))
+      buf_addstr(host, "__");
+    else
+      buf_addstr_n(host, p, len);
+    if (!slash)
+      break;
+    buf_addch(host, '/');
+    p = slash + 1;
+  }
 
   struct Buffer *path = buf_pool_get();
   struct Buffer *dst = buf_pool_get();
