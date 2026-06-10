@@ -521,7 +521,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
   }
 
   int incr = state->reverse ? -1 : 1;
-  if (flags & SEARCH_OPPOSITE)
+  if (flags & SEARCH_PREVIOUS)
     incr = -incr;
 
   progress = progress_new(MUTT_PROGRESS_READ, m->vcount);
@@ -676,7 +676,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur,
   }
 
   int incr = state->reverse ? -1 : 1;
-  if (flags & SEARCH_OPPOSITE)
+  if (flags & SEARCH_PREVIOUS)
     incr = -incr;
 
   progress = progress_new(MUTT_PROGRESS_READ, ARRAY_SIZE(ava));

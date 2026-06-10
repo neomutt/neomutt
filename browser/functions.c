@@ -91,6 +91,7 @@ static const struct MenuFuncOp OpBrowser[] = { /* map: browser */
   { "unsubscribe",                   OP_BROWSER_UNSUBSCRIBE },
   { "unsubscribe-pattern",           OP_UNSUBSCRIBE_PATTERN },
   { "view-file",                     OP_BROWSER_VIEW_FILE },
+
   // Deprecated
   { "buffy-list",                    OP_MAILBOX_LIST, MFF_DEPRECATED },
   { NULL, 0 },

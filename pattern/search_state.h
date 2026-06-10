@@ -47,7 +47,7 @@ enum SearchFlag
 {
   SEARCH_NONE     =       0,  ///< No flags are set
   SEARCH_PROMPT   = 1U << 0,  ///< Ask for search input
-  SEARCH_OPPOSITE = 1U << 1,  ///< Search in the opposite direction
+  SEARCH_PREVIOUS = 1U << 1,  ///< Search in the opposite direction
 };
 typedef uint8_t SearchFlags;
 

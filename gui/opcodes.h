@@ -472,7 +472,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help for Generic function: <search-next> */ \
   _fmt(OP_SEARCH_NEXT,                        N_("Search for next match")) \
   /* L10N: Help for Generic function: <search-opposite> */ \
-  _fmt(OP_SEARCH_OPPOSITE,                    N_("Search for next match in opposite direction")) \
+  _fmt(OP_SEARCH_PREVIOUS,                    N_("Search for next match in opposite direction")) \
   /* L10N: Help for Generic function: <search-reverse> */ \
   _fmt(OP_SEARCH_REVERSE,                     N_("Search backwards for a regular expression")) \
   /* L10N: Help for Pager function: <search-toggle> */ \
@@ -609,10 +609,10 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_SIDEBAR_PAGE_DOWN,                  N_("Scroll the sidebar down 1 page")) \
   /* L10N: Help for Sidebar function: <sidebar-page-up> */ \
   _fmt(OP_SIDEBAR_PAGE_UP,                    N_("Scroll the sidebar up 1 page")) \
-  /* L10N: Help for Sidebar function: <sidebar-prev> */ \
-  _fmt(OP_SIDEBAR_PREV,                       N_("Move the highlight to previous mailbox")) \
-  /* L10N: Help for Sidebar function: <sidebar-prev-new> */ \
-  _fmt(OP_SIDEBAR_PREV_NEW,                   N_("Move the highlight to previous mailbox with new mail")) \
+  /* L10N: Help for Sidebar function: <sidebar-previous> */ \
+  _fmt(OP_SIDEBAR_PREVIOUS,                   N_("Move the highlight to previous mailbox")) \
+  /* L10N: Help for Sidebar function: <sidebar-previous-new> */ \
+  _fmt(OP_SIDEBAR_PREVIOUS_NEW,               N_("Move the highlight to previous mailbox with new mail")) \
   /* L10N: Help for Sidebar function: <sidebar-toggle-virtual> */ \
   _fmt(OP_SIDEBAR_TOGGLE_VIRTUAL,             N_("Toggle between mailboxes and virtual mailboxes")) \
   /* L10N: Help for Sidebar function: <sidebar-toggle-visible> */ \

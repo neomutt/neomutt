@@ -474,7 +474,7 @@ static int op_pager_search(struct PagerFunctionData *fdata, const struct KeyEven
       if (op == OP_SEARCH)
         event_s.op = OP_SEARCH_NEXT;
       else
-        event_s.op = OP_SEARCH_OPPOSITE;
+        event_s.op = OP_SEARCH_PREVIOUS;
 
       priv->wrapped = false;
       op_pager_search_next(fdata, &event_s);
@@ -598,7 +598,7 @@ done:
  *
  * This function handles:
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_PREVIOUS
  */
 static int op_pager_search_next(struct PagerFunctionData *fdata, const struct KeyEvent *event)
 {
@@ -618,7 +618,7 @@ static int op_pager_search_next(struct PagerFunctionData *fdata, const struct Ke
 
   search_next:
     if ((!priv->search_back && (op == OP_SEARCH_NEXT)) ||
-        (priv->search_back && (op == OP_SEARCH_OPPOSITE)))
+        (priv->search_back && (op == OP_SEARCH_PREVIOUS)))
     {
       /* searching forward */
       int i;
@@ -853,7 +853,6 @@ static int op_pager_skip_quoted(struct PagerFunctionData *fdata, const struct Ke
   return FR_SUCCESS;
 }
 
-
 // -----------------------------------------------------------------------------
 
 /**
@@ -1011,7 +1010,7 @@ static const struct PagerFunction PagerFunctions[] = {
   { OP_SAVE,                   op_save },
   { OP_SEARCH,                 op_pager_search },
   { OP_SEARCH_NEXT,            op_pager_search_next },
-  { OP_SEARCH_OPPOSITE,        op_pager_search_next },
+  { OP_SEARCH_PREVIOUS,        op_pager_search_next },
   { OP_SEARCH_REVERSE,         op_pager_search },
   { OP_SEARCH_TOGGLE,          op_search_toggle },
   { OP_VIEW_ATTACHMENTS,       op_view_attachments },

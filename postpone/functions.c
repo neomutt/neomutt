@@ -233,7 +233,7 @@ static int op_generic_select_entry(struct PostponeData *pd, const struct KeyEven
  * This function handles:
  * - OP_SEARCH
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_PREVIOUS
  * - OP_SEARCH_REVERSE
  */
 static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
@@ -251,8 +251,8 @@ static int op_search(struct PostponeData *pd, const struct KeyEvent *event)
       break;
     case OP_SEARCH_NEXT:
       break;
-    case OP_SEARCH_OPPOSITE:
-      flags |= SEARCH_OPPOSITE;
+    case OP_SEARCH_PREVIOUS:
+      flags |= SEARCH_PREVIOUS;
       break;
   }
 
@@ -278,7 +278,7 @@ static const struct PostponeFunction PostponeFunctions[] = {
   { OP_QUIT,                   op_quit },
   { OP_SEARCH,                 op_search },
   { OP_SEARCH_NEXT,            op_search },
-  { OP_SEARCH_OPPOSITE,        op_search },
+  { OP_SEARCH_PREVIOUS,        op_search },
   { OP_SEARCH_REVERSE,         op_search },
   { OP_UNDELETE,               op_delete },
   { 0, NULL },

@@ -271,7 +271,7 @@ int dlg_certificate(const char *title, struct StringArray *carr, bool allow_alwa
 
       case OP_SEARCH:
       case OP_SEARCH_NEXT:
-      case OP_SEARCH_OPPOSITE:
+      case OP_SEARCH_PREVIOUS:
       case OP_SEARCH_REVERSE:
         mutt_error(_("Search is not implemented for this menu"));
         continue;

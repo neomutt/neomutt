@@ -192,7 +192,7 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "save-message",                  OP_SAVE },
   { "set-flag",                      OP_MAIN_SET_FLAG },
   { "show-limit",                    OP_MAIN_SHOW_LIMIT },
-  { "sort-mailbox",                  OP_SORT },
+  { "sort",                          OP_SORT },
   { "sort-reverse",                  OP_SORT_REVERSE },
   { "sync-mailbox",                  OP_MAIN_SYNC_FOLDER },
   { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
@@ -215,7 +215,9 @@ static const struct MenuFuncOp OpIndex[] = { /* map: index */
 #endif
   { "view-attachments",              OP_VIEW_ATTACHMENTS },
   { "view-raw-message",              OP_VIEW_RAW_MESSAGE },
+
   // Deprecated
+  { "sort-mailbox",                  OP_SORT,         MFF_DEPRECATED },
   { "buffy-list",                    OP_MAILBOX_LIST, MFF_DEPRECATED },
   { NULL, 0 },
 };
@@ -2961,7 +2963,7 @@ static int op_save(struct IndexFunctionData *fdata, const struct KeyEvent *event
  * This function handles:
  * - OP_SEARCH
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_PREVIOUS
  * - OP_SEARCH_REVERSE
  */
 static int op_search(struct IndexFunctionData *fdata, const struct KeyEvent *event)
@@ -2981,8 +2983,8 @@ static int op_search(struct IndexFunctionData *fdata, const struct KeyEvent *eve
       break;
     case OP_SEARCH_NEXT:
       break;
-    case OP_SEARCH_OPPOSITE:
-      flags |= SEARCH_OPPOSITE;
+    case OP_SEARCH_PREVIOUS:
+      flags |= SEARCH_PREVIOUS;
       break;
   }
 
@@ -4010,7 +4012,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_SAVE,                             op_save,                     CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SEARCH,                           op_search,                   CHECK_IN_MAILBOX },
   { OP_SEARCH_NEXT,                      op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
-  { OP_SEARCH_OPPOSITE,                  op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_SEARCH_PREVIOUS,                  op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SEARCH_REVERSE,                   op_search,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_SORT,                             op_sort,                     CHECK_NONE },
   { OP_SORT_REVERSE,                     op_sort,                     CHECK_NONE },

@@ -87,7 +87,7 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "redraw-screen",                 OP_REDRAW },
   { "search",                        OP_SEARCH },
   { "search-next",                   OP_SEARCH_NEXT },
-  { "search-opposite",               OP_SEARCH_OPPOSITE },
+  { "search-previous",               OP_SEARCH_PREVIOUS },
   { "search-reverse",                OP_SEARCH_REVERSE },
   { "select-entry",                  OP_GENERIC_SELECT_ENTRY },
   { "shell-escape",                  OP_SHELL_ESCAPE },
@@ -98,9 +98,11 @@ static const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "tag-prefix-cond",               OP_TAG_PREFIX_COND },
   { "top-page",                      OP_TOP_PAGE },
   { "what-key",                      OP_WHAT_KEY },
+
   // Deprecated
   { "error-history",                 OP_SHOW_LOG_MESSAGES, MFF_DEPRECATED },
   { "refresh",                       OP_REDRAW,            MFF_DEPRECATED },
+  { "search-opposite",               OP_SEARCH_PREVIOUS },
   { NULL, 0 },
 };
 

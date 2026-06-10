@@ -72,7 +72,7 @@ static int search(struct Menu *menu, int op, int *match)
                          mod_data->search_buffers[menu->md->id] :
                          NULL;
 
-  if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
+  if (!(search_buf && *search_buf) || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_PREVIOUS)))
   {
     buf_strcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "");
     if ((mw_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
@@ -93,7 +93,7 @@ static int search(struct Menu *menu, int op, int *match)
   }
 
   search_dir = (menu->search_dir == MUTT_SEARCH_UP) ? -1 : 1;
-  if (op == OP_SEARCH_OPPOSITE)
+  if (op == OP_SEARCH_PREVIOUS)
     search_dir = -search_dir;
 
   if (search_buf)
@@ -259,7 +259,7 @@ static int menu_movement(struct MenuFunctionData *fdata, const struct KeyEvent *
  * This function handles:
  * - OP_SEARCH
  * - OP_SEARCH_NEXT
- * - OP_SEARCH_OPPOSITE
+ * - OP_SEARCH_PREVIOUS
  * - OP_SEARCH_REVERSE
  */
 static int menu_search(struct MenuFunctionData *fdata, const struct KeyEvent *event)
@@ -353,7 +353,7 @@ static const struct MenuFunction MenuFunctions[] = {
   { OP_PREV_PAGE,              menu_movement },
   { OP_SEARCH,                 menu_search },
   { OP_SEARCH_NEXT,            menu_search },
-  { OP_SEARCH_OPPOSITE,        menu_search },
+  { OP_SEARCH_PREVIOUS,        menu_search },
   { OP_SEARCH_REVERSE,         menu_search },
   { OP_TOP_PAGE,               menu_movement },
   { 0, NULL },
